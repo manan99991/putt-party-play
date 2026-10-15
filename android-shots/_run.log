@@ -21,8 +21,8 @@ latest
 + /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 yes: standard output: Broken pipe
 + for try in 1 2 3
-+ tail -3
 + /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install platform-tools emulator 'system-images;android-34;google_apis;x86_64'
++ tail -3
 Loading package information...                                                  Loading local repository...                                                     [                                       ] 3% Loading local repository...        [                                       ] 3% Fetch remote repository...         [=                                      ] 3% Fetch remote repository...         [=                                      ] 4% Fetch remote repository...         [=                                      ] 5% Fetch remote repository...         [==                                     ] 5% Fetch remote repository...         [==                                     ] 6% Fetch remote repository...         [==                                     ] 7% Fetch remote repository...         [==                                     ] 7% Computing updates...               [===                                    ] 8% Computing updates...               [===                                    ] 10% Computing updates...              [===                                    ] 10% Installing Android Emulator       [===                                    ] 10% Downloading emulator-linux_x64-164[====                                   ] 10% Downloading emulator-linux_x64-164[====                                   ] 11% Downloading emulator-linux_x64-164[====                                   ] 12% Downloading emulator-linux_x64-164[=====                                  ] 13% Downloading emulator-linux_x64-164[=====                                  ] 14% Downloading emulator-linux_x64-164[=====                                  ] 15% Downloading emulator-linux_x64-164[======                                 ] 15% Downloading emulator-linux_x64-164[======                                 ] 16% Downloading emulator-linux_x64-164[======                                 ] 17% Downloading emulator-linux_x64-164[=======                                ] 18% Downloading emulator-linux_x64-164[=======                                ] 19% Downloading emulator-linux_x64-164[=======                                ] 20% Downloading emulator-linux_x64-164[========                               ] 20% Downloading emulator-linux_x64-164[========                               ] 21% Downloading emulator-linux_x64-164[========                               ] 21% Unzipping...                      [========                               ] 21% Unzipping... emulator/            [========                               ] 21% Unzipping... emulator/resources/  [========                               ] 21% Unzipping... emulator/qsn         [========                               ] 21% Unzipping... emulator/emulator    [========                               ] 21% Unzipping... emulator/netsimd     [========                               ] 22% Unzipping... emulator/netsimd     [========                               ] 22% Unzipping... emulator/bin64/      [========                               ] 22% Unzipping... emulator/qemu/       [========                               ] 22% Unzipping... emulator/NOTICE.txt  [========                               ] 22% Unzipping... emulator/crashpad_han[========                               ] 22% Unzipping... emulator/source.prope[========                               ] 22% Unzipping... emulator/nimble_bridg[========                               ] 22% Unzipping... emulator/LICENSE     [========                               ] 22% Unzipping... emulator/lib/        [========                               ] 22% Unzipping... emulator/qemu-img    [========                               ] 22% Unzipping... emulator/include/    [========                               ] 22% Unzipping... emulator/NOTICE.csv  [========                               ] 22% Unzipping... emulator/lib64/      [========                               ] 22% Unzipping... emulator/emulator-che[========                               ] 22% Unzipping... emulator/crashreport [========                               ] 22% Unzipping... emulator/mksdcard    [========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/ma[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/sk[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/ma[========                               ] 22% Unzipping... emulator/resources/po[========                               ] 22% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/resources/sk[=========                              ] 23% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/bin64/e2fsck[=========                              ] 23% Unzipping... emulator/bin64/fsck.e[=========                              ] 23% Unzipping... emulator/bin64/tune2f[=========                              ] 23% Unzipping... emulator/bin64/resize[=========                              ] 23% Unzipping... emulator/bin64/mkfs.e[=========                              ] 23% Unzipping... emulator/qemu/linux-x[=========                              ] 24% Unzipping... emulator/qemu/linux-x[=========                              ] 25% Unzipping... emulator/qemu/linux-x[==========                             ] 25% Unzipping... emulator/qemu/linux-x[==========                             ] 25% Unzipping... emulator/lib/emulator[==========                             ] 25% Unzipping... emulator/lib/rtc_serv[==========                             ] 25% Unzipping... emulator/lib/advanced[==========                             ] 25% Unzipping... emulator/lib/cmake/  [==========                             ] 25% Unzipping... emulator/lib/emulator[==========                             ] 25% Unzipping... emulator/lib/control_[==========                             ] 25% Unzipping... emulator/lib/emulated[==========                             ] 25% Unzipping... emulator/lib/rtc_serv[==========                             ] 25% Unzipping... emulator/lib/emu-orig[==========                             ] 25% Unzipping... emulator/lib/hardware[==========                             ] 25% Unzipping... emulator/lib/pkgconfi[==========                             ] 25% Unzipping... emulator/lib/pc-bios/[==========                             ] 25% Unzipping... emulator/lib/snapshot[==========                             ] 25% Unzipping... emulator/lib/adb_serv[==========                             ] 25% Unzipping... emulator/lib/hostapd.[==========                             ] 25% Unzipping... emulator/lib/grpc_end[==========                             ] 25% Unzipping... emulator/lib/ca-bundl[==========                             ] 25% Unzipping... emulator/lib/ui_contr[==========                             ] 25% Unzipping... emulator/lib/snapshot[==========                             ] 25% Unzipping... emulator/lib/ice_conf[==========                             ] 25% Unzipping... emulator/lib/libflatb[==========                             ] 26% Unzipping... emulator/lib/libflatb[==========                             ] 26% Unzipping... emulator/lib/emulator[==========                             ] 26% Unzipping... emulator/lib/waterfal[==========                             ] 26% Unzipping... emulator/lib/emulated[==========                             ] 26% Unzipping... emulator/lib/cmake/fl[==========                             ] 26% Unzipping... emulator/lib/pkgconfi[==========                             ] 26% Unzipping... emulator/lib/pc-bios/[==========                             ] 26% Unzipping... emulator/include/flat[==========                             ] 26% Unzipping... emulator/lib64/libgli[==========                             ] 26% Unzipping... emulator/lib64/libpro[==========                             ] 26% Unzipping... emulator/lib64/qt/   [==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libgfx[==========                             ] 26% Unzipping... emulator/lib64/gles_l[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/vulkan[==========                             ] 26% Unzipping... emulator/lib64/gles_s[==========                             ] 26% Unzipping... emulator/lib64/libemu[==========                             ] 26% Unzipping... emulator/lib64/libpro[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libtcm[==========                             ] 26% Unzipping... emulator/lib64/libima[==========                             ] 26% Unzipping... emulator/lib64/libc++[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libabs[==========                             ] 26% Unzipping... emulator/lib64/gles_a[==========                             ] 26% Unzipping... emulator/lib64/libsha[==========                             ] 26% Unzipping... emulator/lib64/libc++[==========                             ] 26% Unzipping... emulator/lib64/qt/res[==========                             ] 26% Unzipping... emulator/lib64/qt/lib[==========                             ] 26% Unzipping... emulator/lib64/qt/tra[==========                             ] 26% Unzipping... emulator/lib64/qt/plu[==========                             ] 26% Unzipping... emulator/lib64/qt/res[==========                             ] 27% Unzipping... emulator/lib64/qt/res[==========                             ] 27% Unzipping... emulator/lib64/qt/lib[===========                            ] 28% Unzipping... emulator/lib64/qt/lib[===========                            ] 29% Unzipping... emulator/lib64/qt/lib[===========                            ] 30% Unzipping... emulator/lib64/qt/lib[============                           ] 30% Unzipping... emulator/lib64/qt/lib[============                           ] 30% Unzipping... emulator/lib64/qt/tra[============                           ] 30% Unzipping... emulator/lib64/qt/plu[============                           ] 30% Unzipping... emulator/lib64/gles_l[============                           ] 31% Unzipping... emulator/lib64/gles_l[============                           ] 31% Unzipping... emulator/lib64/vulkan[============                           ] 32% Unzipping... emulator/lib64/vulkan[============                           ] 32% Unzipping... emulator/lib64/gles_s[============                           ] 32% Unzipping... emulator/lib64/gles_a[=============                          ] 33% Unzipping... emulator/lib64/gles_a[=====================                  ] 55% Unzipping... emulator/lib64/gles_a[=====================                  ] 55% Installing Google APIs Intel x86_6[=====================                  ] 55% Downloading x86_64-34_r14.zip... e[======================                 ] 55% Downloading x86_64-34_r14.zip... e[======================                 ] 56% Downloading x86_64-34_r14.zip... e[======================                 ] 57% Downloading x86_64-34_r14.zip... e[=======================                ] 58% Downloading x86_64-34_r14.zip... e[=======================                ] 59% Downloading x86_64-34_r14.zip... e[=======================                ] 60% Downloading x86_64-34_r14.zip... e[========================               ] 60% Downloading x86_64-34_r14.zip... e[========================               ] 61% Downloading x86_64-34_r14.zip... e[========================               ] 62% Downloading x86_64-34_r14.zip... e[=========================              ] 63% Downloading x86_64-34_r14.zip... e[=========================              ] 64% Downloading x86_64-34_r14.zip... e[=========================              ] 65% Downloading x86_64-34_r14.zip... e[==========================             ] 65% Downloading x86_64-34_r14.zip... e[==========================             ] 66% Downloading x86_64-34_r14.zip... e[==========================             ] 66% Unzipping... emulator/lib64/gles_a[==========================             ] 66% Unzipping... x86_64/NOTICE.txt    [==========================             ] 66% Unzipping... x86_64/VerifiedBootPa[==========================             ] 66% Unzipping... x86_64/advancedFeatur[==========================             ] 66% Unzipping... x86_64/build.prop    [==========================             ] 66% Unzipping... x86_64/encryptionkey.[==========================             ] 66% Unzipping... x86_64/kernel-ranchu [==========================             ] 66% Unzipping... x86_64/ramdisk.img   [==========================             ] 66% Unzipping... x86_64/source.propert[==========================             ] 66% Unzipping... x86_64/system.img    [==========================             ] 67% Unzipping... x86_64/system.img    [===========================            ] 68% Unzipping... x86_64/system.img    [===========================            ] 69% Unzipping... x86_64/system.img    [===========================            ] 70% Unzipping... x86_64/system.img    [============================           ] 70% Unzipping... x86_64/system.img    [============================           ] 71% Unzipping... x86_64/system.img    [============================           ] 72% Unzipping... x86_64/system.img    [=============================          ] 73% Unzipping... x86_64/system.img    [=============================          ] 74% Unzipping... x86_64/system.img    [=============================          ] 75% Unzipping... x86_64/system.img    [==============================         ] 75% Unzipping... x86_64/system.img    [==============================         ] 76% Unzipping... x86_64/system.img    [==============================         ] 77% Unzipping... x86_64/system.img    [==============================         ] 77% Unzipping... x86_64/userdata.img  [==============================         ] 77% Unzipping... x86_64/vendor.img    [==============================         ] 77% Unzipping... x86_64/data/local.pro[==============================         ] 77% Unzipping... x86_64/data/misc/Gold[==============================         ] 77% Unzipping... x86_64/data/misc/apns[==============================         ] 77% Unzipping... x86_64/data/misc/emul[==============================         ] 77% Unzipping... x86_64/data/misc/gcec[==============================         ] 77% Unzipping... x86_64/data/misc/mode[==============================         ] 77% Unzipping... x86_64/data/misc/pixe[==============================         ] 78% Unzipping... x86_64/data/misc/pixe[=======================================] 100% Unzipping... x86_64/data/misc/pix
 
 + '[' -x /usr/local/lib/android/sdk/emulator/emulator ']'
@@ -39,15 +39,15 @@ Loading local repository...                                                     
 Auto-selecting single ABI x86_64
 + ls -la /home/runner/.android/avd
 total 16
-drwxr-xr-x 3 runner runner 4096 Oct 15 22:18 .
-drwxr-xr-x 3 runner runner 4096 Oct 15 22:18 ..
-drwxr-xr-x 2 runner runner 4096 Oct 15 22:18 shot.avd
--rw-r--r-- 1 runner runner   81 Oct 15 22:18 shot.ini
+drwxr-xr-x 3 runner runner 4096 Oct 15 21:52 .
+drwxr-xr-x 3 runner runner 4096 Oct 15 21:52 ..
+drwxr-xr-x 2 runner runner 4096 Oct 15 21:52 shot.avd
+-rw-r--r-- 1 runner runner   81 Oct 15 21:52 shot.ini
 + /usr/local/lib/android/sdk/emulator/emulator -list-avds
 shot
 + export PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 + PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-+ EMU=2637
++ EMU=2471
 + nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
 ++ seq 1 90
 + for i in $(seq 1 90)
@@ -55,7 +55,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2637
++ kill -0 2471
 + '[' 1 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -63,7 +63,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2637
++ kill -0 2471
 + '[' 2 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -71,16 +71,8 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2637
++ kill -0 2471
 + '[' 3 -eq 0 ']'
-+ sleep 10
-+ for i in $(seq 1 90)
-++ adb shell getprop sys.boot_completed
-++ tr -d '\r'
-+ b=
-+ '[' '' = 1 ']'
-+ kill -0 2637
-+ '[' 4 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
 ++ adb shell getprop sys.boot_completed
@@ -91,8 +83,6 @@ shot
 + adb shell getprop sys.boot_completed
 1
 + tail -30 emulator.log
-INFO         |   androidboot.qemu.gltransport.drawFlushInterval=800
-INFO         |   androidboot.qemu.gltransport.name=pipe
 INFO         |   androidboot.qemu.hwcodec.avcdec=2
 INFO         |   androidboot.qemu.hwcodec.hevcdec=2
 INFO         |   androidboot.qemu.hwcodec.vpxdec=2
@@ -105,14 +95,14 @@ INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2b
 INFO         |   androidboot.vbmeta.hash_alg=sha256
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f34fe801000 as it is in the protected range from 0x7f345e800000 to 0x7f34fea00000
+WARNING: cannnot unmap ptr 0x7f3b82401000 as it is in the protected range from 0x7f3ae2400000 to 0x7f3b82600000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2637/jwks/ddfd056c-5939-4422-956b-05c5b28555e2/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2637/jwks/ddfd056c-5939-4422-956b-05c5b28555e2 for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2471/jwks/f08758cd-2695-4db3-9104-7a54b2235aa7/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2471/jwks/f08758cd-2695-4db3-9104-7a54b2235aa7 for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2637.ini
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2471.ini
 INFO         | Activated packet streamer for bluetooth emulation
 INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
@@ -121,7 +111,8 @@ INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-+ adb shell settings put global hide_error_dialogs 1
+INFO         | Boot completed in 30095 ms
+INFO         | Increasing screen off timeout, logcat buffer size to 2M.
 + adb shell settings put global window_animation_scale 0
 + adb shell settings put global transition_animation_scale 0
 + adb shell settings put global animator_duration_scale 0
@@ -137,183 +128,147 @@ Success
 + adb shell cmd uimode night no
 Night mode: no
 + sleep 2
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
-+ adb shell am force-stop com.handytools.app
-+ adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding
-Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
-Status: ok
-LaunchState: COLD
-Activity: com.handytools.app/.MainActivity
-TotalTime: 9576
-WaitTime: 9731
-Complete
-+ sleep 6
-+ adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
-+ adb shell am force-stop com.handytools.app
-+ adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding2
-Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
-Status: ok
-LaunchState: COLD
-Activity: com.handytools.app/.MainActivity
-TotalTime: 7044
-WaitTime: 7060
-Complete
-+ sleep 6
-+ adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
-+ adb shell am force-stop com.handytools.app
-+ adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding3
-Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
-Status: ok
-LaunchState: COLD
-Activity: com.handytools.app/.MainActivity
-TotalTime: 5939
-WaitTime: 5957
-Complete
-+ sleep 6
-+ adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route home
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 4760
-WaitTime: 4765
+TotalTime: 7178
+WaitTime: 7199
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route clipboard
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 5040
-WaitTime: 5098
+TotalTime: 4925
+WaitTime: 4974
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route screenshot
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 5765
-WaitTime: 5869
+TotalTime: 2873
+WaitTime: 2916
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route quick
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 5419
-WaitTime: 5430
+TotalTime: 3469
+WaitTime: 3513
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route shortcut
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3948
-WaitTime: 3952
+TotalTime: 3320
+WaitTime: 3331
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route alarm
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2777
-WaitTime: 2807
+TotalTime: 3081
+WaitTime: 3141
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route volume
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 4572
-WaitTime: 4600
+TotalTime: 2964
+WaitTime: 3067
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route ocr
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 4259
-WaitTime: 4276
+TotalTime: 3380
+WaitTime: 3395
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route notifs
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2852
-WaitTime: 2875
+TotalTime: 2268
+WaitTime: 2339
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route scratchpad
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2913
-WaitTime: 2921
+TotalTime: 1895
+WaitTime: 1898
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route awake
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2617
-WaitTime: 2620
+TotalTime: 2118
+WaitTime: 2132
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route paywall
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2901
-WaitTime: 2920
+TotalTime: 2506
+WaitTime: 2528
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -322,221 +277,179 @@ Complete
 + adb shell cmd uimode night yes
 Night mode: yes
 + sleep 2
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
-+ adb shell am force-stop com.handytools.app
-+ adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding
-Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
-Status: ok
-LaunchState: COLD
-Activity: com.handytools.app/.MainActivity
-TotalTime: 2826
-WaitTime: 2881
-Complete
-+ sleep 6
-+ adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
-+ adb shell am force-stop com.handytools.app
-+ adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding2
-Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
-Status: ok
-LaunchState: COLD
-Activity: com.handytools.app/.MainActivity
-TotalTime: 2467
-WaitTime: 2470
-Complete
-+ sleep 6
-+ adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
-+ adb shell am force-stop com.handytools.app
-+ adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding3
-Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
-Status: ok
-LaunchState: COLD
-Activity: com.handytools.app/.MainActivity
-TotalTime: 2348
-WaitTime: 2350
-Complete
-+ sleep 6
-+ adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route home
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2637
-WaitTime: 2642
+TotalTime: 2038
+WaitTime: 2060
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route clipboard
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3023
-WaitTime: 3114
+TotalTime: 2133
+WaitTime: 2137
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route screenshot
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2586
-WaitTime: 2595
+TotalTime: 2023
+WaitTime: 2027
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route quick
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2813
-WaitTime: 2818
+TotalTime: 1685
+WaitTime: 1687
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route shortcut
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2578
-WaitTime: 2847
+TotalTime: 1742
+WaitTime: 1745
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route alarm
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2761
-WaitTime: 2777
+TotalTime: 1981
+WaitTime: 1990
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route volume
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3016
-WaitTime: 3030
+TotalTime: 2039
+WaitTime: 2065
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route ocr
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2786
-WaitTime: 2852
+TotalTime: 2094
+WaitTime: 2099
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route notifs
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2799
-WaitTime: 2806
+TotalTime: 1953
+WaitTime: 1978
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route scratchpad
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2790
-WaitTime: 2803
+TotalTime: 1745
+WaitTime: 1751
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route awake
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3288
-WaitTime: 3324
+TotalTime: 1970
+WaitTime: 1991
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route paywall
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3872
-WaitTime: 3884
+TotalTime: 2375
+WaitTime: 2432
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + ls -la shots
-total 4212
-drwxr-xr-x 2 runner runner   4096 Oct 15 22:24 .
-drwxr-xr-x 5 runner runner   4096 Oct 15 22:19 ..
--rw-r--r-- 1 runner runner  36853 Oct 15 22:24 _run.log
--rw-r--r-- 1 runner runner 122787 Oct 15 22:23 android-dark-alarm.png
--rw-r--r-- 1 runner runner 116787 Oct 15 22:24 android-dark-awake.png
--rw-r--r-- 1 runner runner 184983 Oct 15 22:23 android-dark-clipboard.png
--rw-r--r-- 1 runner runner 219457 Oct 15 22:23 android-dark-home.png
--rw-r--r-- 1 runner runner 148250 Oct 15 22:24 android-dark-notifs.png
--rw-r--r-- 1 runner runner 153414 Oct 15 22:24 android-dark-ocr.png
--rw-r--r-- 1 runner runner  92676 Oct 15 22:22 android-dark-onboarding.png
--rw-r--r-- 1 runner runner 101481 Oct 15 22:22 android-dark-onboarding2.png
--rw-r--r-- 1 runner runner  97682 Oct 15 22:22 android-dark-onboarding3.png
--rw-r--r-- 1 runner runner 180088 Oct 15 22:24 android-dark-paywall.png
--rw-r--r-- 1 runner runner 137296 Oct 15 22:23 android-dark-quick.png
--rw-r--r-- 1 runner runner 123563 Oct 15 22:24 android-dark-scratchpad.png
--rw-r--r-- 1 runner runner 166723 Oct 15 22:23 android-dark-screenshot.png
--rw-r--r-- 1 runner runner 112275 Oct 15 22:23 android-dark-shortcut.png
--rw-r--r-- 1 runner runner 163481 Oct 15 22:24 android-dark-volume.png
--rw-r--r-- 1 runner runner 115368 Oct 15 22:21 android-light-alarm.png
--rw-r--r-- 1 runner runner 114835 Oct 15 22:22 android-light-awake.png
--rw-r--r-- 1 runner runner 182316 Oct 15 22:20 android-light-clipboard.png
--rw-r--r-- 1 runner runner 215321 Oct 15 22:20 android-light-home.png
--rw-r--r-- 1 runner runner 146393 Oct 15 22:21 android-light-notifs.png
--rw-r--r-- 1 runner runner 155896 Oct 15 22:21 android-light-ocr.png
--rw-r--r-- 1 runner runner  93552 Oct 15 22:19 android-light-onboarding.png
--rw-r--r-- 1 runner runner  98862 Oct 15 22:20 android-light-onboarding2.png
--rw-r--r-- 1 runner runner  94824 Oct 15 22:20 android-light-onboarding3.png
--rw-r--r-- 1 runner runner 181280 Oct 15 22:22 android-light-paywall.png
--rw-r--r-- 1 runner runner 132291 Oct 15 22:21 android-light-quick.png
--rw-r--r-- 1 runner runner 127086 Oct 15 22:22 android-light-scratchpad.png
--rw-r--r-- 1 runner runner 157869 Oct 15 22:20 android-light-screenshot.png
--rw-r--r-- 1 runner runner 144856 Oct 15 22:21 android-light-shortcut.png
--rw-r--r-- 1 runner runner 117331 Oct 15 22:21 android-light-volume.png
+total 4844
+drwxr-xr-x 2 runner runner    4096 Oct 15 21:57 .
+drwxr-xr-x 5 runner runner    4096 Oct 15 21:53 ..
+-rw-r--r-- 1 runner runner   32899 Oct 15 21:57 _run.log
+-rw-r--r-- 1 runner runner  123060 Oct 15 21:56 android-dark-alarm.png
+-rw-r--r-- 1 runner runner  121607 Oct 15 21:57 android-dark-awake.png
+-rw-r--r-- 1 runner runner  181317 Oct 15 21:56 android-dark-clipboard.png
+-rw-r--r-- 1 runner runner  223412 Oct 15 21:55 android-dark-home.png
+-rw-r--r-- 1 runner runner  152866 Oct 15 21:57 android-dark-notifs.png
+-rw-r--r-- 1 runner runner  153985 Oct 15 21:56 android-dark-ocr.png
+-rw-r--r-- 1 runner runner  180056 Oct 15 21:57 android-dark-paywall.png
+-rw-r--r-- 1 runner runner  137354 Oct 15 21:56 android-dark-quick.png
+-rw-r--r-- 1 runner runner  127762 Oct 15 21:57 android-dark-scratchpad.png
+-rw-r--r-- 1 runner runner  166515 Oct 15 21:56 android-dark-screenshot.png
+-rw-r--r-- 1 runner runner  112225 Oct 15 21:56 android-dark-shortcut.png
+-rw-r--r-- 1 runner runner  160922 Oct 15 21:56 android-dark-volume.png
+-rw-r--r-- 1 runner runner  120157 Oct 15 21:54 android-light-alarm.png
+-rw-r--r-- 1 runner runner  120067 Oct 15 21:55 android-light-awake.png
+-rw-r--r-- 1 runner runner  179665 Oct 15 21:54 android-light-clipboard.png
+-rw-r--r-- 1 runner runner  174894 Oct 15 21:53 android-light-home.png
+-rw-r--r-- 1 runner runner  146470 Oct 15 21:55 android-light-notifs.png
+-rw-r--r-- 1 runner runner  151652 Oct 15 21:55 android-light-ocr.png
+-rw-r--r-- 1 runner runner  181322 Oct 15 21:55 android-light-paywall.png
+-rw-r--r-- 1 runner runner  136556 Oct 15 21:54 android-light-quick.png
+-rw-r--r-- 1 runner runner  122852 Oct 15 21:55 android-light-scratchpad.png
+-rw-r--r-- 1 runner runner  158343 Oct 15 21:54 android-light-screenshot.png
+-rw-r--r-- 1 runner runner 1374366 Oct 15 21:54 android-light-shortcut.png
+-rw-r--r-- 1 runner runner  159319 Oct 15 21:54 android-light-volume.png
 + adb logcat -d -s AndroidRuntime:E
 + adb logcat -d
 + grep -iE handytools
@@ -544,10 +457,10 @@ drwxr-xr-x 5 runner runner   4096 Oct 15 22:19 ..
 + tail -20 emulator.log
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2637/jwks/ddfd056c-5939-4422-956b-05c5b28555e2/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2637/jwks/ddfd056c-5939-4422-956b-05c5b28555e2 for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2471/jwks/f08758cd-2695-4db3-9104-7a54b2235aa7/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2471/jwks/f08758cd-2695-4db3-9104-7a54b2235aa7 for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2637.ini
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2471.ini
 INFO         | Activated packet streamer for bluetooth emulation
 INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
@@ -556,9 +469,9 @@ INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 42014 ms
+INFO         | Boot completed in 30095 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
-ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x5603e68d9b88
+ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x5598f5b15688
 ERROR        | Failed to restore previous context: 12297
-ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x5603e622afa8
+ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x5598f502bae8
 ERROR        | Failed to restore previous context: 12297
