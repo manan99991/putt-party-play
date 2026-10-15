@@ -84,16 +84,22 @@ jobs:
           profile: pixel_7
           disable-animations: true
           script: |
-            adb install -r logs/android-apk.bin
             mkdir -p shots
-            adb shell settings put global window_animation_scale 0
-            for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall; do
-              adb shell am force-stop com.handytools.app
-              adb shell am start -n com.handytools.app/.MainActivity --es route $r >/dev/null
-              sleep 5
-              adb exec-out screencap -p > shots/android-$r.png
-            done
-            ls -la shots
+            {
+              set -x
+              ls -la logs/ | head
+              cp logs/android-apk.bin HandyTools.apk
+              adb devices
+              adb install -r HandyTools.apk
+              adb shell settings put global window_animation_scale 0
+              for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall; do
+                adb shell am force-stop com.handytools.app || true
+                adb shell am start -n com.handytools.app/.MainActivity --es route $r || true
+                sleep 6
+                adb exec-out screencap -p > shots/android-$r.png || true
+              done
+              ls -la shots
+            } 2>&1 | tee shots/_run.log
       - name: Publish screenshots
         if: always()
         working-directory: src
