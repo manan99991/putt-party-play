@@ -20,10 +20,10 @@ Daemon will be stopped at the end of the build
 > Task :app:mapDebugSourceSetPaths
 > Task :app:generateDebugResources
 > Task :app:packageDebugResources
+> Task :app:mergeDebugResources
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
 > Task :app:parseDebugLocalResources
-> Task :app:mergeDebugResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
 > Task :app:javaPreCompileDebug
@@ -31,14 +31,15 @@ Daemon will be stopped at the end of the build
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
-> Task :app:desugarDebugFileDependencies
-> Task :app:compressDebugAssets
-> Task :app:mergeDebugJniLibFolders
 > Task :app:processDebugManifestForPackage
-> Task :app:checkDebugDuplicateClasses
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
 > Task :app:processDebugResources
+> Task :app:checkDebugDuplicateClasses
+> Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
 > Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -47,59 +48,23 @@ Daemon will be stopped at the end of the build
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so, libmlkit_google_ocr_pipeline.so.
 
-> Task :app:kspDebugKotlin
-e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
-    1. Kotlin compile daemon is ready
+> Task :app:compileDebugKotlin
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:255:48 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun CoroutineScope.launch(context: CoroutineContext = ..., start: CoroutineStart = ..., block: suspend CoroutineScope.() -> Unit): Job
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:256:25 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:256:25 Restricted suspending functions can invoke member or extension suspending functions only on their restricted coroutine scope.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:256:25 Cannot access 'suspend fun <T, V : AnimationVector> AnimationState<T, V>.animate(animation: Animation<T, V>, startTimeNanos: Long = ..., block: AnimationScope<T, V>.() -> Unit = ...): Unit': it is internal in file.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:256:25 Suspension functions can only be called within coroutine body.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:256:41 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:256:70 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:256:73 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/ClipboardScreen.kt:72:32 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shortcut/WebShortcutScreen.kt:137:18 Unresolved reference 'background'.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shortcut/WebShortcutScreen.kt:151:22 Unresolved reference 'background'.
+e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:86:32 @Composable invocations can only happen from the context of a @Composable function
 
 > Task :app:compileDebugKotlin FAILED
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:253:35 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
-fun CoroutineScope.launch(context: CoroutineContext = ..., start: CoroutineStart = ..., block: suspend CoroutineScope.() -> Unit): Job
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:254:25 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:254:25 Restricted suspending functions can invoke member or extension suspending functions only on their restricted coroutine scope.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:254:25 Cannot access 'suspend fun <T, V : AnimationVector> AnimationState<T, V>.animate(animation: Animation<T, V>, startTimeNanos: Long = ..., block: AnimationScope<T, V>.() -> Unit = ...): Unit': it is internal in file.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:254:25 Suspension functions can only be called within coroutine body.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:254:41 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:254:70 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:254:73 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingActivity.kt:267:42 Unresolved reference 'positionChange'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/ClipboardScreen.kt:70:32 Unresolved reference 'rememberReduceMotion'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/ClipboardScreen.kt:72:47 Unresolved reference 'handyListEnter'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:97:27 Argument type mismatch: actual type is 'kotlin.collections.List<com.handytools.app.data.NotifEntry>', but 'kotlin.Int' was expected.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:97:44 Unresolved reference 'id'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:99:36 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:99:36 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:99:47 Unresolved reference 'pkg'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:99:52 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:100:29 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:100:41 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:100:83 Unresolved reference 'pkg'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:102:25 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:102:67 Unresolved reference 'dismissedAt'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:103:76 Unresolved reference 'pkg'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:106:51 Unresolved reference 'appName'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:110:48 Unresolved reference 'appName'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:111:84 Unresolved reference 'postedAt'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:113:43 Unresolved reference 'title'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:113:70 Unresolved reference 'title'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:114:43 Unresolved reference 'text'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:114:69 Unresolved reference 'text'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/notifhistory/NotifHistoryScreen.kt:115:43 Unresolved reference 'dismissedAt'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/ocr/ScreenTextScreen.kt:86:72 Unresolved reference 'width'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/ocr/ScreenTextScreen.kt:88:34 Unresolved reference 'width'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/ocr/ScreenTextScreen.kt:89:30 Unresolved reference 'background'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenshotScreen.kt:130:17 'when' expression must be exhaustive. Add the 'OCR' branch or an 'else' branch.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shortcut/WebShortcutScreen.kt:132:18 Unresolved reference 'clip'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shortcut/WebShortcutScreen.kt:146:22 Unresolved reference 'clip'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:86:32 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/Motion.kt:13:33 Unresolved reference 'composed'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/Motion.kt:67:76 Unresolved reference 'composed'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/Motion.kt:67:85 Unresolved reference 'offset'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/Motion.kt:68:32 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/Motion.kt:69:17 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/Motion.kt:71:14 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/Motion.kt:72:5 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/Motion.kt:77:29 Unresolved reference 'offset'.
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792105921627.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792106329381.json
 
 FAILURE: Build failed with an exception.
 
@@ -144,6 +109,35 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:com
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:267)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
@@ -268,6 +262,35 @@ Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionExcept
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:44)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:267)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:131)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
@@ -303,5 +326,5 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 	... 2 more
 
 
-BUILD FAILED in 2m 27s
+BUILD FAILED in 3m 34s
 30 actionable tasks: 30 executed
