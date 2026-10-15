@@ -1,0 +1,15 @@
+<resources>
+    <style name="Theme.HandyTools" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <style name="Theme.HandyTools.Ring" parent="android:Theme.Material.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">#0E0E12</item>
+    </style>
+    <style name="Theme.HandyTools.Transparent" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>

@@ -1,0 +1,4 @@
+-keep class com.google.android.gms.ads.** { *; }
+-keep class com.android.vending.billing.** { *; }
+-keep class com.google.mlkit.** { *; }
+-dontwarn com.google.android.gms.**

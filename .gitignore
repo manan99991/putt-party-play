@@ -1,0 +1,9 @@
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/upload.jks
+ios/HandyTools.xcodeproj/
+ios/build/
+*.log
+.DS_Store

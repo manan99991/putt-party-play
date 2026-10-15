@@ -1,0 +1,119 @@
+# XcodeGen spec. Run:  brew install xcodegen && cd ios && xcodegen && open HandyTools.xcodeproj
+# Change BUNDLE_PREFIX + TEAM_ID once; everything else derives from them.
+name: HandyTools
+options:
+  bundleIdPrefix: com.handytools
+  deploymentTarget:
+    iOS: "26.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: "YOUR_TEAM_ID"      # <- Apple Developer team id
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    TARGETED_DEVICE_FAMILY: "1"
+    SWIFT_STRICT_CONCURRENCY: minimal
+    OTHER_LDFLAGS: "-ObjC"                 # required by Google Mobile Ads
+
+packages:
+  GoogleMobileAds:
+    url: https://github.com/googleads/swift-package-manager-google-mobile-ads.git
+    from: "12.0.0"
+
+targets:
+  HandyTools:
+    type: application
+    platform: iOS
+    sources:
+      - path: HandyTools
+      - path: Shared
+    dependencies:
+      - package: GoogleMobileAds
+      - target: ClipboardKeyboard
+      - target: ShareExtension
+      - target: StickyWidget
+      - sdk: AlarmKit.framework
+      - sdk: VisionKit.framework
+      - sdk: Vision.framework
+    entitlements:
+      path: HandyTools/HandyTools.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.handytools.shared]
+    info:
+      path: HandyTools/Info.plist
+      properties:
+        CFBundleDisplayName: HandyTools
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        ITSAppUsesNonExemptEncryption: false
+        # --- AdMob (TEST app id — swap for yours before release) ---
+        GADApplicationIdentifier: ca-app-pub-3940256099942544~1458002511
+        SKAdNetworkItems:
+          - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
+        NSUserTrackingUsageDescription: Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones.
+        # --- Tool permissions ---
+        NSAlarmKitUsageDescription: HandyTools schedules the alarms you create so they ring even in silent mode and Focus.
+        NSCameraUsageDescription: Needed for the document scanner, QR scanner and flashlight.
+        NSMicrophoneUsageDescription: Needed for the decibel meter. Audio is measured, never recorded or saved.
+        NSPhotoLibraryUsageDescription: Needed to read text from screenshots and to view or strip photo metadata.
+        NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.
+        NSSupportsLiveActivities: true
+
+  ClipboardKeyboard:
+    type: app-extension
+    platform: iOS
+    sources: [ClipboardKeyboard, Shared]
+    entitlements:
+      path: ClipboardKeyboard/ClipboardKeyboard.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.handytools.shared]
+    info:
+      path: ClipboardKeyboard/Info.plist
+      properties:
+        CFBundleDisplayName: HandyTools Clips
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.keyboard-service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
+          NSExtensionAttributes:
+            PrimaryLanguage: en-US
+            IsASCIICapable: false
+            RequestsOpenAccess: true
+            PrefersRightToLeft: false
+
+  ShareExtension:
+    type: app-extension
+    platform: iOS
+    sources: [ShareExtension, Shared]
+    entitlements:
+      path: ShareExtension/ShareExtension.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.handytools.shared]
+    info:
+      path: ShareExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Save to Clips
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsText: true
+              NSExtensionActivationSupportsWebURLWithMaxCount: 1
+
+  StickyWidget:
+    type: app-extension
+    platform: iOS
+    sources: [StickyWidget, Shared]
+    entitlements:
+      path: StickyWidget/StickyWidget.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.handytools.shared]
+    info:
+      path: StickyWidget/Info.plist
+      properties:
+        CFBundleDisplayName: Sticky Note
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension

@@ -1,0 +1,52 @@
+name: Android
+
+on:
+  push:
+    branches: [handytools]
+    paths: ["android/**", ".github/workflows/android.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run: { working-directory: android }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17" }
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: "8.9" }
+
+      - name: Build debug APK
+        run: gradle --no-daemon assembleDebug --stacktrace --warning-mode none 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
+
+      - name: Build release AAB (signed if secrets exist, otherwise debug-signed)
+        if: success()
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then echo "$KEYSTORE_B64" | base64 -d > upload.jks; fi
+          gradle --no-daemon bundleRelease --warning-mode none
+
+      - name: Publish build log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh android android/build.log
+
+      - name: Upload APK + AAB
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: handytools-android
+          path: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/bundle/release/app-release.aab

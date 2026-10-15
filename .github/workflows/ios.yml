@@ -1,0 +1,95 @@
+name: iOS
+
+on:
+  push:
+    branches: [handytools]
+    paths: ["ios/**", ".github/workflows/ios.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: |
+          ls /Applications | grep -i xcode
+          sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          xcodebuild -version
+          xcodebuild -showsdks | grep -i ios
+      - name: Install XcodeGen + generate + resolve
+        run: |
+          set -o pipefail
+          { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tee setup.log
+      - name: Build (simulator, unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|warning: unre|BUILD|\*\*" || true
+          grep -q "BUILD SUCCEEDED" build.log
+      - name: Publish build log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "== xcode"; ls /Applications | grep -i xcode; xcodebuild -version 2>&1; echo "== setup.log"; cat ios/setup.log 2>/dev/null; echo "== build.log"; cat ios/build.log 2>/dev/null; } > ios-full.log
+          bash .github/publish-log.sh ios ios-full.log
+
+  # Runs only when App Store Connect secrets are present. Archives, signs with an
+  # ASC API key via automatic signing, and uploads to TestFlight.
+  testflight:
+    needs: build
+    if: ${{ vars.TESTFLIGHT_ENABLED == 'true' }}
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_B64: ${{ secrets.ASC_KEY_P8_B64 }}
+      TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+      - run: brew install xcodegen
+      - name: Inject team id + generate
+        run: |
+          sed -i '' "s/YOUR_TEAM_ID/$TEAM_ID/g" project.yml HandyTools/Resources/Products.storekit
+          xcodegen generate
+      - name: Write ASC key
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo "$ASC_KEY_P8_B64" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8
+      - name: Archive
+        run: |
+          xcodebuild archive -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination 'generic/platform=iOS' -archivePath build/HandyTools.xcarchive \
+            -allowProvisioningUpdates -allowProvisioningDeviceRegistration \
+            -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8 \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM="$TEAM_ID"
+      - name: Export + upload
+        run: |
+          cat > ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$TEAM_ID</string>
+            <key>signingStyle</key><string>automatic</string>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath build/HandyTools.xcarchive -exportOptionsPlist ExportOptions.plist \
+            -exportPath build/export -allowProvisioningUpdates \
+            -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8 \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
