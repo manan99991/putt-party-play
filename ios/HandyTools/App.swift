@@ -13,6 +13,7 @@ struct HandyToolsApp: App {
     }
 }
 
+@MainActor
 struct Tool: Identifiable {
     let id: String
     let name: String
@@ -21,7 +22,7 @@ struct Tool: Identifiable {
     let view: () -> AnyView
 }
 
-let TOOLS: [Tool] = [
+@MainActor let TOOLS: [Tool] = [
     Tool(id: "alarm", name: "Alarm Pro", blurb: "Your own snooze length, limits, sounds", icon: "alarm.fill") { AnyView(AlarmProView()) },
     Tool(id: "clips", name: "Multi-Clipboard", blurb: "Stack copies, paste any from the keyboard", icon: "doc.on.clipboard.fill") { AnyView(ClipboardView()) },
     Tool(id: "flash", name: "Flashlight Dimmer", blurb: "Brightness slider, SOS, strobe", icon: "flashlight.on.fill") { AnyView(FlashlightView()) },
