@@ -23,11 +23,9 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -78,34 +76,37 @@ fun AlarmListScreen(onUpgrade: () -> Unit) {
         }
     }
 
-    Scaffold(floatingActionButton = {
-        FloatingActionButton(onClick = {
-            if (!premium && alarms.size >= 3) onUpgrade() else editing = Alarm(hour = 7, minute = 0)
-        }) { Text("+", fontSize = 28.sp) }
-    }) { pad ->
-        Column(Modifier.fillMaxSize().padding(pad).statusBarsPadding().padding(horizontal = 20.dp)) {
-            ToolHeader("Alarm Pro", "Each alarm has its own volume, snooze length, ramp-up and limits.")
-            PermissionCard("Exact alarms", "Android needs this so alarms ring on the minute.", Permissions.canExactAlarms(ctx), Permissions.exactAlarmIntent(ctx))
-            LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(alarms, key = { it.id }) { a ->
-                    Card(Modifier.fillMaxWidth().clickable { editing = a }) {
-                        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Column(Modifier.weight(1f)) {
-                                Text(String.format("%02d:%02d", a.hour, a.minute), fontSize = 32.sp)
-                                Text(buildString {
-                                    append(a.label.ifBlank { if (a.repeatDays == 0) "Once" else "Repeats" })
-                                    append(" · vol ${a.volume}% · snooze ${a.snoozeMinutes}m")
-                                    if (a.repeatDays != 0) append(" · " + DAYS.filterIndexed { i, _ -> a.repeatDays and (1 shl i) != 0 }.joinToString(""))
-                                }, style = MaterialTheme.typography.bodySmall)
-                            }
-                            Switch(a.enabled, { save(a.copy(enabled = it, snoozeUntil = null, snoozedCount = 0)) })
+    Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = 20.dp)) {
+        ToolHeader("Alarm Pro", "Each alarm has its own volume, snooze length, ramp-up and limits.")
+        PermissionCard("Exact alarms", "Android needs this so alarms ring on the minute.", Permissions.canExactAlarms(ctx), Permissions.exactAlarmIntent(ctx))
+        Button(
+            onClick = { if (!premium && alarms.size >= 3) onUpgrade() else editing = Alarm(hour = 7, minute = 0) },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+        ) { Text("New alarm") }
+        if (alarms.isEmpty()) {
+            Text("No alarms yet. Tap New alarm — pick a time, your own snooze length, and how loud.",
+                style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(vertical = 8.dp))
+        }
+        LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(alarms, key = { it.id }) { a ->
+                Card(Modifier.fillMaxWidth().clickable { editing = a }) {
+                    Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(String.format("%02d:%02d", a.hour, a.minute), fontSize = 32.sp)
+                            Text(buildString {
+                                append(a.label.ifBlank { if (a.repeatDays == 0) "Once" else "Repeats" })
+                                append(" · vol ${a.volume}% · snooze ${a.snoozeMinutes}m")
+                                if (a.repeatDays != 0) append(" · " + DAYS.filterIndexed { i, _ -> a.repeatDays and (1 shl i) != 0 }.joinToString(""))
+                            }, style = MaterialTheme.typography.bodySmall)
                         }
+                        Switch(a.enabled, { save(a.copy(enabled = it, snoozeUntil = null, snoozedCount = 0)) })
                     }
                 }
             }
-            if (!premium) Text("Free: 3 alarms. Pro: unlimited.", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(vertical = 4.dp))
-            BannerAd()
         }
+        if (!premium) Text("Free: 3 alarms. Pro: unlimited.", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(vertical = 4.dp))
+        BannerAd()
     }
     editing?.let { AlarmEditor(it, onSave = ::save, onDelete = ::delete, onCancel = { editing = null }) }
 }
