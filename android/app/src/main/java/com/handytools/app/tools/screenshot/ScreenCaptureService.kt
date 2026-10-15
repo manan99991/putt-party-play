@@ -27,6 +27,7 @@ import com.handytools.app.MainActivity
 import com.handytools.app.R
 import com.handytools.app.tools.OverlayBubble
 import com.handytools.app.tools.clipboard.ClipboardAccessibilityService
+import com.handytools.app.tools.ocr.ScreenOcr
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
