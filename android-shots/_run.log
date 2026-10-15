@@ -39,15 +39,15 @@ Loading local repository...                                                     
 Auto-selecting single ABI x86_64
 + ls -la /home/runner/.android/avd
 total 16
-drwxr-xr-x 3 runner runner 4096 Oct 15 22:51 .
-drwxr-xr-x 3 runner runner 4096 Oct 15 22:51 ..
-drwxr-xr-x 2 runner runner 4096 Oct 15 22:51 shot.avd
--rw-r--r-- 1 runner runner   81 Oct 15 22:51 shot.ini
+drwxr-xr-x 3 runner runner 4096 Oct 15 23:34 .
+drwxr-xr-x 3 runner runner 4096 Oct 15 23:34 ..
+drwxr-xr-x 2 runner runner 4096 Oct 15 23:34 shot.avd
+-rw-r--r-- 1 runner runner   81 Oct 15 23:34 shot.ini
 + /usr/local/lib/android/sdk/emulator/emulator -list-avds
 shot
 + export PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 + PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-+ EMU=2638
++ EMU=2437
 + nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
 ++ seq 1 90
 + for i in $(seq 1 90)
@@ -55,7 +55,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2638
++ kill -0 2437
 + '[' 1 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -63,7 +63,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2638
++ kill -0 2437
 + '[' 2 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -71,16 +71,8 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2638
++ kill -0 2437
 + '[' 3 -eq 0 ']'
-+ sleep 10
-+ for i in $(seq 1 90)
-++ adb shell getprop sys.boot_completed
-++ tr -d '\r'
-+ b=
-+ '[' '' = 1 ']'
-+ kill -0 2638
-+ '[' 4 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
 ++ adb shell getprop sys.boot_completed
@@ -103,23 +95,23 @@ INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2b
 INFO         |   androidboot.vbmeta.hash_alg=sha256
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f2412401000 as it is in the protected range from 0x7f2372400000 to 0x7f2412600000
+WARNING: cannnot unmap ptr 0x7fc87f601000 as it is in the protected range from 0x7fc7df600000 to 0x7fc87f800000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2638/jwks/01ed828e-57ef-45f6-b59f-4891ff2bb7a4/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2638/jwks/01ed828e-57ef-45f6-b59f-4891ff2bb7a4 for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2437/jwks/ad75410d-3cfd-4271-9af5-e8514094751e/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2437/jwks/ad75410d-3cfd-4271-9af5-e8514094751e for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2638.ini
-INFO         | Successfully initialized netsim WiFi
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2437.ini
 INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 36980 ms
+INFO         | Boot completed in 29338 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
 + adb shell settings put global hide_error_dialogs 1
 + adb shell settings put global window_animation_scale 0
@@ -137,219 +129,231 @@ Success
 + adb shell cmd uimode night no
 Night mode: no
 + sleep 2
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 7001
-WaitTime: 7007
+TotalTime: 4888
+WaitTime: 4905
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding2
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 6032
-WaitTime: 6058
+TotalTime: 2417
+WaitTime: 2420
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding3
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 4462
-WaitTime: 4466
+TotalTime: 4265
+WaitTime: 4269
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route setup
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3985
-WaitTime: 4016
+TotalTime: 3131
+WaitTime: 3171
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route settings
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 5115
-WaitTime: 5193
+TotalTime: 3206
+WaitTime: 3225
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route privacy
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 6182
-WaitTime: 6186
+TotalTime: 3155
+WaitTime: 3215
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route home
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3403
-WaitTime: 3420
+TotalTime: 2806
+WaitTime: 2807
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route clipboard
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2640
-WaitTime: 2646
+TotalTime: 1479
+WaitTime: 1489
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route screenshot
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3597
-WaitTime: 3608
+TotalTime: 2994
+WaitTime: 3064
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route quick
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2899
-WaitTime: 2939
+TotalTime: 1650
+WaitTime: 1679
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route shortcut
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2638
-WaitTime: 2874
+TotalTime: 1448
+WaitTime: 1454
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route alarm
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2377
-WaitTime: 2385
+TotalTime: 1976
+WaitTime: 2166
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route volume
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3023
-WaitTime: 3134
+TotalTime: 2309
+WaitTime: 2311
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route ocr
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2311
-WaitTime: 2329
+TotalTime: 1635
+WaitTime: 1639
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route notifs
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2109
-WaitTime: 2116
+TotalTime: 1776
+WaitTime: 1782
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route scratchpad
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2521
-WaitTime: 2527
+TotalTime: 2525
+WaitTime: 2526
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route awake
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2517
-WaitTime: 2531
+TotalTime: 1943
+WaitTime: 1946
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route paywall
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3154
-WaitTime: 3246
+TotalTime: 2177
+WaitTime: 2202
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route ring
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 1923
+WaitTime: 1978
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -358,285 +362,299 @@ Complete
 + adb shell cmd uimode night yes
 Night mode: yes
 + sleep 2
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2327
-WaitTime: 2374
+TotalTime: 1622
+WaitTime: 1625
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding2
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2313
-WaitTime: 2387
+TotalTime: 1727
+WaitTime: 1758
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route onboarding3
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2581
-WaitTime: 2586
+TotalTime: 1499
+WaitTime: 1502
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route setup
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2183
-WaitTime: 2209
+TotalTime: 1671
+WaitTime: 1681
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route settings
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2409
-WaitTime: 2437
+TotalTime: 1445
+WaitTime: 1447
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route privacy
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2155
-WaitTime: 2168
+TotalTime: 1554
+WaitTime: 1561
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route home
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2241
-WaitTime: 2246
+TotalTime: 1566
+WaitTime: 1573
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route clipboard
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3039
-WaitTime: 3097
+TotalTime: 1735
+WaitTime: 1744
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route screenshot
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2523
-WaitTime: 2530
+TotalTime: 1834
+WaitTime: 1845
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route quick
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2844
-WaitTime: 2855
+TotalTime: 1801
+WaitTime: 1806
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route shortcut
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2476
-WaitTime: 2530
+TotalTime: 1405
+WaitTime: 1411
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route alarm
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2644
-WaitTime: 2647
+TotalTime: 1672
+WaitTime: 1675
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route volume
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2799
-WaitTime: 2856
+TotalTime: 1788
+WaitTime: 1806
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route ocr
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2615
-WaitTime: 2658
+TotalTime: 1528
+WaitTime: 1530
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route notifs
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2240
-WaitTime: 2244
+TotalTime: 1598
+WaitTime: 1604
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route scratchpad
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2410
-WaitTime: 2418
+TotalTime: 1801
+WaitTime: 1824
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route awake
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2133
-WaitTime: 2155
+TotalTime: 1378
+WaitTime: 1383
 Complete
 + sleep 6
 + adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
 + adb shell am force-stop com.handytools.app
 + adb shell am start -W -n com.handytools.app/.MainActivity --es route paywall
 Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2794
-WaitTime: 2817
+TotalTime: 1872
+WaitTime: 1882
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route ring
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 1426
+WaitTime: 1476
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + ls -la shots
-total 5980
-drwxr-xr-x 2 runner runner   4096 Oct 15 22:58 .
-drwxr-xr-x 5 runner runner   4096 Oct 15 22:52 ..
--rw-r--r-- 1 runner runner  40555 Oct 15 22:58 _run.log
--rw-r--r-- 1 runner runner 131905 Oct 15 22:57 android-dark-alarm.png
--rw-r--r-- 1 runner runner 131993 Oct 15 22:58 android-dark-awake.png
--rw-r--r-- 1 runner runner 195647 Oct 15 22:56 android-dark-clipboard.png
--rw-r--r-- 1 runner runner 235505 Oct 15 22:56 android-dark-home.png
--rw-r--r-- 1 runner runner 157868 Oct 15 22:57 android-dark-notifs.png
--rw-r--r-- 1 runner runner 168215 Oct 15 22:57 android-dark-ocr.png
--rw-r--r-- 1 runner runner  92709 Oct 15 22:55 android-dark-onboarding.png
--rw-r--r-- 1 runner runner 102456 Oct 15 22:56 android-dark-onboarding2.png
--rw-r--r-- 1 runner runner  98686 Oct 15 22:56 android-dark-onboarding3.png
--rw-r--r-- 1 runner runner 194255 Oct 15 22:58 android-dark-paywall.png
--rw-r--r-- 1 runner runner 327022 Oct 15 22:56 android-dark-privacy.png
--rw-r--r-- 1 runner runner 148609 Oct 15 22:57 android-dark-quick.png
--rw-r--r-- 1 runner runner 133986 Oct 15 22:58 android-dark-scratchpad.png
--rw-r--r-- 1 runner runner 171624 Oct 15 22:57 android-dark-screenshot.png
--rw-r--r-- 1 runner runner 189148 Oct 15 22:56 android-dark-settings.png
--rw-r--r-- 1 runner runner 231004 Oct 15 22:56 android-dark-setup.png
--rw-r--r-- 1 runner runner 122690 Oct 15 22:57 android-dark-shortcut.png
--rw-r--r-- 1 runner runner 175207 Oct 15 22:57 android-dark-volume.png
--rw-r--r-- 1 runner runner 126091 Oct 15 22:54 android-light-alarm.png
--rw-r--r-- 1 runner runner 126003 Oct 15 22:55 android-light-awake.png
--rw-r--r-- 1 runner runner 188713 Oct 15 22:54 android-light-clipboard.png
--rw-r--r-- 1 runner runner 259040 Oct 15 22:54 android-light-home.png
--rw-r--r-- 1 runner runner 158845 Oct 15 22:55 android-light-notifs.png
--rw-r--r-- 1 runner runner 165385 Oct 15 22:55 android-light-ocr.png
--rw-r--r-- 1 runner runner  93957 Oct 15 22:52 android-light-onboarding.png
--rw-r--r-- 1 runner runner  99883 Oct 15 22:53 android-light-onboarding2.png
--rw-r--r-- 1 runner runner  95546 Oct 15 22:53 android-light-onboarding3.png
--rw-r--r-- 1 runner runner 196357 Oct 15 22:55 android-light-paywall.png
--rw-r--r-- 1 runner runner 323992 Oct 15 22:53 android-light-privacy.png
--rw-r--r-- 1 runner runner 141593 Oct 15 22:54 android-light-quick.png
--rw-r--r-- 1 runner runner 132257 Oct 15 22:55 android-light-scratchpad.png
--rw-r--r-- 1 runner runner 168856 Oct 15 22:54 android-light-screenshot.png
--rw-r--r-- 1 runner runner 187506 Oct 15 22:53 android-light-settings.png
--rw-r--r-- 1 runner runner 223496 Oct 15 22:53 android-light-setup.png
--rw-r--r-- 1 runner runner 125077 Oct 15 22:54 android-light-shortcut.png
--rw-r--r-- 1 runner runner 172565 Oct 15 22:54 android-light-volume.png
+total 6228
+drwxr-xr-x 2 runner runner   4096 Oct 15 23:40 .
+drwxr-xr-x 5 runner runner   4096 Oct 15 23:35 ..
+-rw-r--r-- 1 runner runner  41604 Oct 15 23:40 _run.log
+-rw-r--r-- 1 runner runner 131605 Oct 15 23:39 android-dark-alarm.png
+-rw-r--r-- 1 runner runner 135570 Oct 15 23:40 android-dark-awake.png
+-rw-r--r-- 1 runner runner 195070 Oct 15 23:39 android-dark-clipboard.png
+-rw-r--r-- 1 runner runner 235631 Oct 15 23:39 android-dark-home.png
+-rw-r--r-- 1 runner runner 156870 Oct 15 23:40 android-dark-notifs.png
+-rw-r--r-- 1 runner runner 192223 Oct 15 23:40 android-dark-ocr.png
+-rw-r--r-- 1 runner runner  92931 Oct 15 23:38 android-dark-onboarding.png
+-rw-r--r-- 1 runner runner 101952 Oct 15 23:38 android-dark-onboarding2.png
+-rw-r--r-- 1 runner runner  98127 Oct 15 23:38 android-dark-onboarding3.png
+-rw-r--r-- 1 runner runner 194111 Oct 15 23:40 android-dark-paywall.png
+-rw-r--r-- 1 runner runner 325729 Oct 15 23:39 android-dark-privacy.png
+-rw-r--r-- 1 runner runner 143904 Oct 15 23:39 android-dark-quick.png
+-rw-r--r-- 1 runner runner  74502 Oct 15 23:40 android-dark-ring.png
+-rw-r--r-- 1 runner runner 135067 Oct 15 23:40 android-dark-scratchpad.png
+-rw-r--r-- 1 runner runner 195667 Oct 15 23:39 android-dark-screenshot.png
+-rw-r--r-- 1 runner runner 188444 Oct 15 23:38 android-dark-settings.png
+-rw-r--r-- 1 runner runner 235537 Oct 15 23:38 android-dark-setup.png
+-rw-r--r-- 1 runner runner 127182 Oct 15 23:39 android-dark-shortcut.png
+-rw-r--r-- 1 runner runner 170054 Oct 15 23:39 android-dark-volume.png
+-rw-r--r-- 1 runner runner 129963 Oct 15 23:37 android-light-alarm.png
+-rw-r--r-- 1 runner runner 133567 Oct 15 23:37 android-light-awake.png
+-rw-r--r-- 1 runner runner 193113 Oct 15 23:36 android-light-clipboard.png
+-rw-r--r-- 1 runner runner 259815 Oct 15 23:36 android-light-home.png
+-rw-r--r-- 1 runner runner 155573 Oct 15 23:37 android-light-notifs.png
+-rw-r--r-- 1 runner runner 186424 Oct 15 23:37 android-light-ocr.png
+-rw-r--r-- 1 runner runner  93413 Oct 15 23:35 android-light-onboarding.png
+-rw-r--r-- 1 runner runner  98988 Oct 15 23:35 android-light-onboarding2.png
+-rw-r--r-- 1 runner runner  94974 Oct 15 23:35 android-light-onboarding3.png
+-rw-r--r-- 1 runner runner 197548 Oct 15 23:38 android-light-paywall.png
+-rw-r--r-- 1 runner runner 323148 Oct 15 23:36 android-light-privacy.png
+-rw-r--r-- 1 runner runner 141529 Oct 15 23:36 android-light-quick.png
+-rw-r--r-- 1 runner runner  73339 Oct 15 23:38 android-light-ring.png
+-rw-r--r-- 1 runner runner 135068 Oct 15 23:37 android-light-scratchpad.png
+-rw-r--r-- 1 runner runner 194215 Oct 15 23:36 android-light-screenshot.png
+-rw-r--r-- 1 runner runner 186544 Oct 15 23:36 android-light-settings.png
+-rw-r--r-- 1 runner runner 227313 Oct 15 23:36 android-light-setup.png
+-rw-r--r-- 1 runner runner 124430 Oct 15 23:37 android-light-shortcut.png
+-rw-r--r-- 1 runner runner 166850 Oct 15 23:37 android-light-volume.png
 + adb logcat -d -s AndroidRuntime:E
-+ adb logcat -d
 + grep -iE handytools
 + tail -300
++ adb logcat -d
 + tail -20 emulator.log
-INFO         |   androidboot.vbmeta.size=6656
-INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f2412401000 as it is in the protected range from 0x7f2372400000 to 0x7f2412600000
+WARNING: cannnot unmap ptr 0x7fc87f601000 as it is in the protected range from 0x7fc7df600000 to 0x7fc87f800000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2638/jwks/01ed828e-57ef-45f6-b59f-4891ff2bb7a4/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2638/jwks/01ed828e-57ef-45f6-b59f-4891ff2bb7a4 for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2437/jwks/ad75410d-3cfd-4271-9af5-e8514094751e/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2437/jwks/ad75410d-3cfd-4271-9af5-e8514094751e for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2638.ini
-INFO         | Successfully initialized netsim WiFi
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2437.ini
 INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 36980 ms
+INFO         | Boot completed in 29338 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x55b24f1af868
+ERROR        | Failed to restore previous context: 12297
