@@ -49,9 +49,7 @@ final class Interstitials {
 
     func preload() {
         guard !StoreManager.shared.isPremium, ad == nil else { return }
-        InterstitialAd.load(with: AdUnits.interstitial, request: Request()) { [weak self] ad, _ in
-            MainActor.assumeIsolated { self?.ad = ad } // GMA invokes completion on the main thread
-        }
+        InterstitialAd.load(with: AdUnits.interstitial, request: Request()) { [weak self] ad, _ in self?.ad = ad } // GMA calls back on main
     }
 
     func showIfReady() {
