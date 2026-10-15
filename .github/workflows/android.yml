@@ -53,6 +53,7 @@ jobs:
 
       - name: GitHub Release with the APK (direct download link for phones)
         if: success()
+        continue-on-error: true
         uses: softprops/action-gh-release@v2
         with:
           tag_name: handytools-android-latest
