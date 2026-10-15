@@ -64,6 +64,7 @@ jobs:
   screenshots:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with: { ref: ci-logs, path: logs }
@@ -75,6 +76,7 @@ jobs:
           sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
           ls -la /dev/kvm || true
       - name: Emulator + screenshots
+        timeout-minutes: 20
         run: |
           mkdir -p shots
           {
@@ -88,10 +90,16 @@ jobs:
             AVDM=$(dirname $SDKM)/avdmanager
             echo no | $AVDM create avd -n shot -k "system-images;android-34;google_apis;x86_64" -d pixel_7 --force
             export PATH=$SDK/emulator:$SDK/platform-tools:$PATH
-            nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none > emulator.log 2>&1 &
-            adb wait-for-device
-            for i in $(seq 1 60); do b=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r'); [ "$b" = "1" ] && break; sleep 5; done
-            adb shell getprop sys.boot_completed
+            nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on > emulator.log 2>&1 &
+            EMU=$!
+            for i in $(seq 1 90); do
+              b=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r'); [ "$b" = "1" ] && break
+              kill -0 $EMU 2>/dev/null || { echo "emulator process died"; break; }
+              [ $((i % 6)) -eq 0 ] && { echo "boot wait ${i}0s"; adb devices; tail -3 emulator.log; }
+              sleep 10
+            done
+            adb shell getprop sys.boot_completed || true
+            tail -30 emulator.log
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
