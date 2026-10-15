@@ -3,7 +3,17 @@ package com.handytools.app.ads
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyTokens
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,23 +38,28 @@ object AdUnits {
     const val INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712"
 }
 
-/** Anchored adaptive banner. Renders nothing for Pro users. */
+/** Anchored adaptive banner in a chrome strip: hairline on top, bg color, height reserved so nothing jumps. Nothing for Pro. */
 @Composable
 fun BannerAd(modifier: Modifier = Modifier) {
     val premium by HandyApp.instance.billing.isPremium.collectAsState()
     if (premium) return
     val ctx = LocalContext.current
-    AndroidView(
-        modifier = modifier.fillMaxWidth(),
-        factory = {
-            AdView(ctx).apply {
-                val widthDp = (ctx.resources.displayMetrics.widthPixels / ctx.resources.displayMetrics.density).toInt()
-                setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(ctx, widthDp))
-                adUnitId = AdUnits.BANNER
-                loadAd(AdRequest.Builder().build())
-            }
+    Column(modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+        Box(Modifier.fillMaxWidth().height(1.dp).background(Handy.palette.border))
+        Box(Modifier.fillMaxWidth().heightIn(min = HandyTokens.AdReservedHeight), contentAlignment = Alignment.Center) {
+            AndroidView(
+                modifier = Modifier.fillMaxWidth(),
+                factory = {
+                    AdView(ctx).apply {
+                        val widthDp = (ctx.resources.displayMetrics.widthPixels / ctx.resources.displayMetrics.density).toInt()
+                        setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(ctx, widthDp))
+                        adUnitId = AdUnits.BANNER
+                        loadAd(AdRequest.Builder().build())
+                    }
+                }
+            )
         }
-    )
+    }
 }
 
 /**

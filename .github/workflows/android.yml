@@ -110,11 +110,15 @@ jobs:
             adb install -r HandyTools.apk
             adb logcat -c
             sleep 3
-            for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall; do
-              adb shell am force-stop com.handytools.app || true
-              adb shell am start -W -n com.handytools.app/.MainActivity --es route $r || true
-              sleep 6
-              adb exec-out screencap -p > shots/android-$r.png || true
+            for mode in light dark; do
+              if [ $mode = dark ]; then adb shell cmd uimode night yes; else adb shell cmd uimode night no; fi
+              sleep 2
+              for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall; do
+                adb shell am force-stop com.handytools.app || true
+                adb shell am start -W -n com.handytools.app/.MainActivity --es route $r || true
+                sleep 6
+                adb exec-out screencap -p > shots/android-$mode-$r.png || true
+              done
             done
             ls -la shots
             tail -20 emulator.log

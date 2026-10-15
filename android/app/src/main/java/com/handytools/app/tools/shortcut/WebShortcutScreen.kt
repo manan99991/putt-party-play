@@ -36,6 +36,18 @@ import androidx.compose.ui.unit.dp
 import com.handytools.app.ads.BannerAd
 import com.handytools.app.ads.Interstitials
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 import kotlinx.coroutines.launch
 
 @Composable
@@ -64,19 +76,16 @@ fun WebShortcutScreen(initialUrl: String? = null) {
         ToolHeader("Web → Home", "Paste a link. We pick a name and icon. Tap Add. Done.")
         OutlinedTextField(url, { url = it }, label = { Text("URL") }, singleLine = true, modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.height(8.dp))
-        Row {
-            OutlinedButton(onClick = {
-                val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val t = cm.primaryClip?.getItemAt(0)?.coerceToText(ctx)?.toString()?.trim() ?: ""
-                Regex("https?://\\S+|[\\w.-]+\\.[a-z]{2,}\\S*").find(t)?.value?.let { url = it; load(it) }
-            }) { Text("Paste from clipboard") }
-            Spacer(Modifier.width(8.dp))
-            Button(onClick = { load(url) }, enabled = url.isNotBlank() && !loading) { Text("Fetch") }
+        HPrimaryButton("Fetch", enabled = url.isNotBlank() && !loading) { load(url) }
+        HTextButton("Paste from clipboard") {
+            val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val t = cm.primaryClip?.getItemAt(0)?.coerceToText(ctx)?.toString()?.trim() ?: ""
+            Regex("https?://\\S+|[\\w.-]+\\.[a-z]{2,}\\S*").find(t)?.value?.let { url = it; load(it) }
         }
         Spacer(Modifier.height(20.dp))
         if (loading) CircularProgressIndicator()
         preview?.let { p ->
-            Card(Modifier.fillMaxWidth()) {
+            HCard(Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     p.icon?.let { Image(it.asImageBitmap(), null, Modifier.size(48.dp)) }
                     Spacer(Modifier.width(12.dp))
@@ -84,16 +93,16 @@ fun WebShortcutScreen(initialUrl: String? = null) {
                 }
             }
             Spacer(Modifier.height(12.dp))
-            Button(onClick = {
+            HPrimaryButton("Add to home screen") {
                 val ok = WebShortcut.pin(ctx, p.copy(title = name.ifBlank { p.title }))
                 done = ok
                 if (ok) Interstitials.showIfReady(ctx as Activity)
-            }, modifier = Modifier.fillMaxWidth()) { Text("Add to home screen") }
+            }
             if (done) Text("Added to your home screen.", style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 12.dp))
         }
         Spacer(Modifier.height(16.dp))
-        Text("Tip: share any link to HandyTools from your browser and it lands here.", style = MaterialTheme.typography.bodySmall)
+        LimitNote("Tip: share any link to HandyTools from your browser and it lands here.")
         Spacer(Modifier.weight(1f))
         BannerAd()
     }

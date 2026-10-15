@@ -24,6 +24,18 @@ import com.handytools.app.ads.BannerAd
 import com.handytools.app.tools.scratchpad.ServiceState
 import com.handytools.app.ui.BigToggle
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 
 @Composable
 fun KeepAwakeScreen() {
@@ -34,11 +46,8 @@ fun KeepAwakeScreen() {
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
         ToolHeader("Keep Awake", "Screen stays on until you say otherwise. Recipes, maps, video calls.")
         Text("Auto-off", style = MaterialTheme.typography.titleMedium)
-        Row(Modifier.padding(vertical = 8.dp)) {
-            listOf(0 to "Never", 15 to "15m", 30 to "30m", 60 to "1h", 120 to "2h").forEach { (m, l) ->
-                FilterChip(selected = minutes == m, onClick = { minutes = m }, label = { Text(l) })
-                Spacer(Modifier.padding(3.dp))
-            }
+        Row(Modifier.padding(vertical = 8.dp), horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
+            listOf(0 to "Never", 15 to "15m", 30 to "30m", 60 to "1h", 120 to "2h").forEach { (m, l) -> HChip(l, minutes == m) { minutes = m } }
         }
         BigToggle("Keep screen on", on) { v ->
             on = v

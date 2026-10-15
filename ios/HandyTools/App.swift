@@ -8,7 +8,7 @@ struct HandyToolsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView().environmentObject(store).tint(Color(red: 0.12, green: 0.37, blue: 1.0))
+            HomeView().environmentObject(store).tint(HandyColor.accent)
         }
     }
 }
@@ -51,64 +51,117 @@ struct HomeView: View {
         NavigationStack(path: $path) {
             VStack(spacing: 0) {
                 ScrollView {
-                    LazyVGrid(columns: cols, spacing: 12) {
-                        ForEach(TOOLS) { t in
-                            NavigationLink(value: t.id) {
-                                VStack(alignment: .leading, spacing: 6) {
-                                    Image(systemName: t.icon).font(.title2).foregroundStyle(.tint)
-                                    Spacer()
-                                    Text(t.name).font(.headline).foregroundStyle(.primary)
-                                    Text(t.blurb).font(.caption).foregroundStyle(.secondary).lineLimit(2)
+                    VStack(alignment: .leading, spacing: HandySpacing.s4) {
+                        HStack(alignment: .top) {
+                            VStack(alignment: .leading, spacing: HandySpacing.s4) {
+                                Text("HandyTools").font(HandyFont.display)
+                                Text(store.isPremium ? "Pro · no ads" : "10 tools your phone should've had")
+                                    .font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
+                            }
+                            Spacer()
+                            if !store.isPremium {
+                                Button { showPaywall = true } label: {
+                                    Image(systemName: "crown.fill").font(.system(size: 20)).foregroundStyle(HandyColor.accent)
+                                        .frame(width: 44, height: 44)
+                                        .background(HandyColor.accentSoft, in: Circle())
                                 }
-                                .frame(maxWidth: .infinity, minHeight: 120, alignment: .leading)
-                                .padding(16)
-                                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                                .accessibilityLabel("Go Pro")
                             }
                         }
+                        .padding(.horizontal, HandySpacing.gutter)
+                        .padding(.top, HandySpacing.s8)
+                        .padding(.bottom, HandySpacing.s12)
+                        LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
+                            ForEach(TOOLS) { t in
+                                NavigationLink(value: t.id) { ToolCard(tool: t) }.buttonStyle(ToolCardPress())
+                            }
+                        }
+                        .padding(.horizontal, HandySpacing.gutter)
+                        .padding(.bottom, HandySpacing.s16)
                     }
-                    .padding(16)
                 }
                 BannerAd()
             }
+            .background(HandyColor.bg)
             .navigationDestination(for: String.self) { id in
-                if id == "paywall" { PaywallView() } else { (TOOLS.first { $0.id == id }?.view() ?? AnyView(EmptyView())).toolbarRole(.editor) }
+                (TOOLS.first { $0.id == id }?.view() ?? AnyView(EmptyView())).toolbarRole(.editor)
             }
-            .navigationTitle("HandyTools")
-            .toolbar {
-                if !store.isPremium {
-                    Button { showPaywall = true } label: { Label("Go Pro", systemImage: "crown.fill") }
-                }
+            .toolbar(.hidden, for: .navigationBar)
+            .onChange(of: path) { _, p in if p.last == "paywall" { path.removeLast(); showPaywall = true } }
+            .onAppear { if Launch.route == "paywall" { showPaywall = true } }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible)
+                    .presentationBackground(HandyColor.surfaceRaised).presentationCornerRadius(HandyRadius.sheet)
             }
-            .sheet(isPresented: $showPaywall) { PaywallView() }
         }
     }
 }
 
+/// Home grid card: icon in an accentSoft circle, name, one-line blurb.
+struct ToolCard: View {
+    let tool: Tool
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s4) {
+            ZStack {
+                Circle().fill(HandyColor.accentSoft).frame(width: 40, height: 40)
+                Image(systemName: tool.icon).font(.system(size: 18, weight: .medium)).foregroundStyle(HandyColor.accent)
+            }
+            Spacer(minLength: HandySpacing.s12)
+            Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
+            Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+        }
+        .frame(maxWidth: .infinity, minHeight: 140, alignment: .leading)
+        .cardStyle()
+    }
+}
+
+struct ToolCardPress: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.scaleEffect(configuration.isPressed ? HandyMotion.pressScale : 1)
+            .animation(.easeOut(duration: HandyMotion.fast), value: configuration.isPressed)
+    }
+}
+
+/// Paywall as a bottom sheet. Honest: price, term, cancel path, no timers, no fake discounts.
 struct PaywallView: View {
     @EnvironmentObject var store: StoreManager
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("HandyTools Pro").font(.largeTitle.bold())
-            Text("One yearly payment. Ads gone for good.").foregroundStyle(.secondary)
-            ForEach(["No banner or full-screen ads", "Unlimited clipboard history (free: 20)", "Unlimited alarms (free: 3)", "Support one indie developer"], id: \.self) {
-                Label($0, systemImage: "checkmark.circle.fill")
+        VStack(spacing: HandySpacing.s16) {
+            ZStack {
+                Circle().fill(HandyColor.accentSoft).frame(width: 64, height: 64)
+                Image(systemName: "crown.fill").font(.system(size: 28)).foregroundStyle(HandyColor.accent)
             }
+            .padding(.top, HandySpacing.s24)
+            Text("HandyTools Pro").font(.system(size: 28, weight: .bold))
+            Text("One yearly payment. Ads gone for good.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                ForEach(["No banner or full-screen ads", "Unlimited clipboard history (free: 20)", "Unlimited alarms (free: 3)", "Support one indie developer"], id: \.self) {
+                    Label { Text($0).font(HandyFont.body) } icon: { Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent) }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, HandySpacing.s8)
             Spacer()
             if store.isPremium {
-                Text("You're Pro. Thank you.").font(.headline)
+                Label("You're Pro. Thank you.", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             } else {
                 Button { Task { await store.purchase(); if store.isPremium { dismiss() } } } label: {
-                    Text(store.product == nil ? "Loading price…" : "Go Pro · \(store.priceLabel)").frame(maxWidth: .infinity)
+                    Text(store.product == nil ? "Loading price…" : "Go Pro · \(store.priceLabel)")
                 }
-                .buttonStyle(.borderedProminent).controlSize(.large).disabled(store.product == nil)
-                Button("Restore purchases") { Task { await store.restore() } }.frame(maxWidth: .infinity)
-                Text("Auto-renews yearly. Cancel anytime in Settings › Apple ID › Subscriptions.").font(.caption).foregroundStyle(.secondary)
+                .primaryButton().disabled(store.product == nil)
+                Text("Auto-renews yearly. Cancel anytime in Settings › Apple ID › Subscriptions.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                HStack(spacing: HandySpacing.s24) {
+                    Button("Restore purchases") { Task { await store.restore() } }.textButton()
+                    Button("Not now") { dismiss() }.textButton()
+                }
             }
-            if let e = store.purchaseError { Text(e).font(.caption).foregroundStyle(.red) }
+            if let e = store.purchaseError { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
-        .padding(24)
+        .padding(.horizontal, HandySpacing.s24)
+        .padding(.bottom, HandySpacing.s24)
     }
 }
 
@@ -120,14 +173,17 @@ struct ToolPage<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text(subtitle).foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: HandySpacing.s16) {
+                    Text(title).font(HandyFont.display)
+                    Text(subtitle).font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary).padding(.top, -HandySpacing.s8)
                     content()
                 }
-                .padding(20)
+                .padding(.horizontal, HandySpacing.gutter)
+                .padding(.vertical, HandySpacing.s8)
             }
             BannerAd()
         }
-        .navigationTitle(title)
+        .background(HandyColor.bg)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }

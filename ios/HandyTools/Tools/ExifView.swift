@@ -14,14 +14,14 @@ struct ExifView: View {
     var body: some View {
         ToolPage(title: "Photo Metadata", subtitle: "See where and when a photo was taken — and strip that before you send it to a stranger.") {
             PhotosPicker(selection: $pick, matching: .images) { Label("Choose a photo", systemImage: "photo").frame(maxWidth: .infinity) }
-                .buttonStyle(.borderedProminent).controlSize(.large)
+                .primaryButton()
             if let image { Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 200).clipShape(RoundedRectangle(cornerRadius: 12)) }
             if !rows.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    ForEach(rows, id: \.0) { r in HStack(alignment: .top) { Text(r.0).foregroundStyle(.secondary).frame(width: 110, alignment: .leading); Text(r.1) }.font(.callout) }
-                }.padding(12).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
-                Button { strip() } label: { Label("Make a clean copy (no metadata)", systemImage: "eraser").frame(maxWidth: .infinity) }.buttonStyle(.bordered).controlSize(.large)
-                if let cleanURL { ShareLink(item: cleanURL) { Label("Share clean copy", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.buttonStyle(.borderedProminent).controlSize(.large) }
+                VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                    ForEach(rows, id: \.0) { r in HStack(alignment: .top) { Text(r.0).foregroundStyle(HandyColor.textSecondary).frame(width: 110, alignment: .leading); Text(r.1).foregroundStyle(HandyColor.textPrimary) }.font(.system(size: 15)) }
+                }.cardStyle(padding: HandySpacing.s12)
+                Button { strip() } label: { Label("Make a clean copy (no metadata)", systemImage: "eraser").frame(maxWidth: .infinity) }.secondaryButton()
+                if let cleanURL { ShareLink(item: cleanURL) { Label("Share clean copy", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton() }
             }
         }
         .onChange(of: pick) { _, item in Task { await load(item) } }

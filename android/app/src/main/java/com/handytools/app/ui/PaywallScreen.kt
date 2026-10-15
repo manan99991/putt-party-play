@@ -1,22 +1,29 @@
 package com.handytools.app.ui
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.WorkspacePremium
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,53 +31,61 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.handytools.app.HandyApp
 
+/** Paywall as a bottom sheet over whatever screen opened it. Honest: price, term, cancel path, no timers. */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaywallScreen(onBack: () -> Unit) {
+    val state = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(
+        onDismissRequest = onBack, sheetState = state,
+        containerColor = Handy.palette.surfaceRaised, shape = MaterialTheme.shapes.large
+    ) { PaywallContent(onBack) }
+}
+
+@Composable
+fun PaywallContent(onBack: () -> Unit) {
     val billing = HandyApp.instance.billing
     val premium by billing.isPremium.collectAsState()
     val product by billing.product.collectAsState()
     val activity = LocalContext.current as Activity
 
-    Column(
-        Modifier.fillMaxSize().padding(24.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text("HandyTools Pro", style = MaterialTheme.typography.headlineLarge)
-        Spacer(Modifier.height(8.dp))
-        Text("One yearly payment. Ads gone for good.", style = MaterialTheme.typography.bodyLarge)
-        Spacer(Modifier.height(24.dp))
-        listOf(
-            "No banner or full-screen ads",
-            "Unlimited clipboard history (free: last 20)",
-            "Unlimited alarms (free: 3)",
-            "Support one indie developer"
-        ).forEach {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 6.dp)) {
-                Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary)
-                Spacer(Modifier.width(12.dp))
-                Text(it)
+    Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Space24).padding(bottom = HandyTokens.Space24).navigationBarsPadding(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(Modifier.size(64.dp).background(Handy.palette.accentSoft, CircleShape), contentAlignment = Alignment.Center) {
+            Icon(Icons.Outlined.WorkspacePremium, null, Modifier.size(32.dp), tint = HandyColors.Accent)
+        }
+        Spacer(Modifier.height(HandyTokens.Space16))
+        Text("HandyTools Pro", style = MaterialTheme.typography.headlineSmall.copy(fontSize = 28.sp))
+        Spacer(Modifier.height(HandyTokens.Space4))
+        Text("One yearly payment. Ads gone for good.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+        Spacer(Modifier.height(HandyTokens.Space24))
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+            listOf("No banner or full-screen ads", "Unlimited clipboard history (free: 20)", "Unlimited alarms (free: 3)", "Support one indie developer").forEach {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Outlined.CheckCircle, null, Modifier.size(22.dp), tint = HandyColors.Accent)
+                    Spacer(Modifier.width(HandyTokens.Space12))
+                    Text(it, style = MaterialTheme.typography.bodyLarge)
+                }
             }
         }
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(HandyTokens.Space32))
         if (premium) {
-            Text("You're Pro. Thank you.", style = MaterialTheme.typography.titleMedium)
-        } else {
-            Button(
-                onClick = { billing.launchPurchase(activity) },
-                enabled = product != null,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(if (product == null) "Loading price…" else "Go Pro · ${billing.priceLabel}")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Outlined.CheckCircle, null, tint = HandyColors.Success)
+                Spacer(Modifier.width(HandyTokens.Space8))
+                Text("You're Pro. Thank you.", style = MaterialTheme.typography.titleMedium)
             }
-            Text(
-                "Auto-renews yearly. Cancel anytime in Google Play.",
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 8.dp)
-            )
+        } else {
+            HPrimaryButton(if (product == null) "Loading price…" else "Go Pro · ${billing.priceLabel}", enabled = product != null) {
+                billing.launchPurchase(activity)
+            }
+            Spacer(Modifier.height(HandyTokens.Space8))
+            Text("Auto-renews yearly. Cancel anytime in Google Play.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
-        Spacer(Modifier.height(16.dp))
-        TextButton(onClick = onBack) { Text("Not now") }
+        Spacer(Modifier.height(HandyTokens.Space8))
+        HTextButton("Not now", onClick = onBack)
     }
 }

@@ -23,7 +23,13 @@ enum AdsBootstrap {
 struct BannerAd: View {
     @ObservedObject private var store = StoreManager.shared
     var body: some View {
-        if !store.isPremium { BannerViewRep().frame(height: 60) }
+        if !store.isPremium {
+            VStack(spacing: 0) {
+                Rectangle().fill(HandyColor.border).frame(height: 1)
+                BannerViewRep().frame(height: HandySpacing.adReservedHeight)
+            }
+            .background(HandyColor.bg)
+        }
     }
 }
 

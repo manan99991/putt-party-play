@@ -38,6 +38,18 @@ import androidx.compose.ui.unit.dp
 import com.handytools.app.ads.BannerAd
 import com.handytools.app.ads.Interstitials
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 
 @Composable
 fun QuickButtonsScreen() {
@@ -56,14 +68,12 @@ fun QuickButtonsScreen() {
             item { Big("Selfie", Icons.Default.Cameraswitch) { QuickActions.openSelfie(ctx) } }
         }
         if (maxLevel > 1) {
-            Spacer(Modifier.height(20.dp))
-            Text("Flashlight brightness", style = MaterialTheme.typography.titleMedium)
-            Slider(value = level, onValueChange = { level = it }, onValueChangeFinished = { QuickActions.setFlashlightLevel(ctx, level.toInt()); torch = true },
-                valueRange = 1f..maxLevel.toFloat(), steps = maxOf(0, maxLevel - 2))
+            Spacer(Modifier.height(12.dp))
+            SliderRow("Flashlight brightness", "${(level / maxLevel * 100).toInt()}%", level, { level = it }, 1f..maxLevel.toFloat(), maxOf(0, maxLevel - 2)) {
+                QuickActions.setFlashlightLevel(ctx, level.toInt()); torch = true
+            }
         }
-        Spacer(Modifier.height(12.dp))
-        Text("Hotspot: Android doesn't let apps flip it directly anymore, so this jumps straight to the toggle.",
-            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        LimitNote("Hotspot: Android doesn't let apps flip it directly anymore, so this jumps straight to the toggle.")
         Spacer(Modifier.weight(1f))
         BannerAd()
     }
@@ -73,12 +83,14 @@ fun QuickButtonsScreen() {
 private fun Big(label: String, icon: ImageVector, active: Boolean = false, onClick: () -> Unit) {
     Card(
         Modifier.fillMaxWidth().height(120.dp).clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(containerColor = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface)
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = if (active) HandyColors.Accent else MaterialTheme.colorScheme.surface),
+        border = if (active) null else androidx.compose.foundation.BorderStroke(1.dp, Handy.palette.border),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Icon(icon, null, Modifier.height(36.dp), tint = if (active) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary)
-            Spacer(Modifier.height(8.dp))
-            Text(label, style = MaterialTheme.typography.titleMedium, color = if (active) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface)
+        Column(Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.SpaceBetween) {
+            Icon(icon, null, Modifier.height(32.dp), tint = if (active) androidx.compose.ui.graphics.Color.White else HandyColors.Accent)
+            Text(label, style = MaterialTheme.typography.titleMedium, color = if (active) androidx.compose.ui.graphics.Color.White else MaterialTheme.colorScheme.onSurface)
         }
     }
 }

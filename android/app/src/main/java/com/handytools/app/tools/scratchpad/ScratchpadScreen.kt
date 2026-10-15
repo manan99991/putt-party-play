@@ -1,12 +1,12 @@
 package com.handytools.app.tools.scratchpad
 
+import androidx.compose.foundation.background
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +27,18 @@ import com.handytools.app.data.Note
 import com.handytools.app.ui.BigToggle
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,7 +63,17 @@ fun ScratchpadScreen() {
             val i = Intent(ctx, ScratchpadBubbleService::class.java)
             if (v) ContextCompat.startForegroundService(ctx, i) else ctx.startService(i.setAction(ScratchpadBubbleService.ACTION_STOP))
         }
-        OutlinedTextField(text, { text = it }, modifier = Modifier.fillMaxWidth().weight(1f).padding(vertical = 12.dp), placeholder = { Text("Jot anything…") })
+        androidx.compose.foundation.layout.Box(
+            Modifier.fillMaxWidth().weight(1f).padding(vertical = 12.dp)
+                .background(Handy.palette.sticky, MaterialTheme.shapes.medium)
+        ) {
+            androidx.compose.foundation.text.BasicTextField(
+                text, { text = it }, modifier = Modifier.fillMaxSize().padding(20.dp),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
+                cursorBrush = androidx.compose.ui.graphics.SolidColor(HandyColors.Accent),
+                decorationBox = { inner -> if (text.isEmpty()) Text("Jot anything…", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary); inner() }
+            )
+        }
         BannerAd()
     }
 }

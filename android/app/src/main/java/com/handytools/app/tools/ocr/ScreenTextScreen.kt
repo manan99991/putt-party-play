@@ -27,6 +27,18 @@ import com.handytools.app.tools.screenshot.ProjectionPermissionActivity
 import com.handytools.app.tools.screenshot.ScreenCaptureService
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 
 @Composable
 fun ScreenTextScreen() {
@@ -37,16 +49,10 @@ fun ScreenTextScreen() {
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
         ToolHeader("Grab Screen Text", "A floating button that copies every word on screen — from apps that don't let you select text.")
         PermissionCard("Draw over other apps", "Needed for the floating button.", overlay, Permissions.overlayIntent(ctx))
-        Button(onClick = { ProjectionPermissionActivity.launch(ctx, ScreenCaptureService.Mode.OCR) }, enabled = overlay, modifier = Modifier.fillMaxWidth()) {
-            Text("Start text grabber")
-        }
+        HPrimaryButton("Start text grabber", enabled = overlay) { ProjectionPermissionActivity.launch(ctx, ScreenCaptureService.Mode.OCR) }
         Spacer(Modifier.height(8.dp))
-        OutlinedButton(onClick = {
-            ctx.startService(Intent(ctx, ScreenCaptureService::class.java).setAction(ScreenCaptureService.ACTION_STOP))
-        }, modifier = Modifier.fillMaxWidth()) { Text("Stop") }
-        Spacer(Modifier.height(12.dp))
-        Text("Grabbed text goes to the clipboard and into your Multi-Clipboard history. Works offline.",
-            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        HSecondaryButton("Stop") { ctx.startService(Intent(ctx, ScreenCaptureService::class.java).setAction(ScreenCaptureService.ACTION_STOP)) }
+        LimitNote("Grabbed text goes to the clipboard and into your Multi-Clipboard history. Works offline.")
         Spacer(Modifier.weight(1f))
         BannerAd()
     }

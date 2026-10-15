@@ -42,17 +42,25 @@ struct DecibelMeterView: View {
     @StateObject private var m = DecibelMeter()
     var body: some View {
         ToolPage(title: "Decibel Meter", subtitle: "Is the restaurant too loud? Is the baby room quiet? Now you know.") {
-            VStack(spacing: 4) {
-                Text("\(Int(m.db))").font(.system(size: 96, weight: .thin)).monospacedDigit().contentTransition(.numericText())
-                Text("dB (approx.)").foregroundStyle(.secondary)
-                Text(label(m.db)).font(.headline).foregroundStyle(.tint)
-            }.frame(maxWidth: .infinity)
-            Gauge(value: m.db, in: 0...120) { Text("") }.gaugeStyle(.accessoryLinearCapacity).tint(gradient)
-            HStack { Text("Peak"); Spacer(); Text("\(Int(m.peak)) dB").monospacedDigit() }.font(.callout)
+            ZStack {
+                Circle().trim(from: 0.125, to: 0.875).stroke(HandyColor.border, style: StrokeStyle(lineWidth: 14, lineCap: .round)).rotationEffect(.degrees(90))
+                Circle().trim(from: 0.125, to: 0.125 + 0.75 * min(m.db, 120) / 120)
+                    .stroke(AngularGradient(gradient: gradient, center: .center, startAngle: .degrees(135), endAngle: .degrees(405)), style: StrokeStyle(lineWidth: 14, lineCap: .round))
+                    .rotationEffect(.degrees(90)).animation(.easeOut(duration: HandyMotion.fast), value: m.db)
+                Circle().trim(from: 0.125 + 0.75 * min(m.peak, 120) / 120 - 0.004, to: 0.125 + 0.75 * min(m.peak, 120) / 120 + 0.004)
+                    .stroke(HandyColor.textPrimary, style: StrokeStyle(lineWidth: 18, lineCap: .butt)).rotationEffect(.degrees(90))
+                VStack(spacing: 2) {
+                    Text("\(Int(m.db))").font(.system(size: 72, weight: .thin)).monospacedDigit().contentTransition(.numericText())
+                    Text("dB (approx.)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(label(m.db)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent).padding(.top, HandySpacing.s4)
+                }
+            }
+            .frame(width: 220, height: 220).frame(maxWidth: .infinity).padding(.vertical, HandySpacing.s8)
+            HStack { Text("Peak").font(HandyFont.body); Spacer(); Text("\(Int(m.peak)) dB").font(HandyFont.bodyStrong).monospacedDigit() }.cardStyle()
             Button { m.running ? m.stop() : m.start() } label: { Label(m.running ? "Stop" : "Start", systemImage: m.running ? "stop.fill" : "mic.fill").frame(maxWidth: .infinity) }
-                .buttonStyle(.borderedProminent).controlSize(.large)
-            if m.denied { Text("Microphone access is off. Enable it in Settings › HandyTools.").font(.caption).foregroundStyle(.red) }
-            Text("Phone mics aren't calibrated lab gear; treat this as ±5 dB.").font(.caption2).foregroundStyle(.tertiary)
+                .primaryButton()
+            if m.denied { Text("Microphone access is off. Enable it in Settings › HandyTools.").font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+            LimitNote("Phone mics aren't calibrated lab gear; treat this as ±5 dB.")
         }
         .onDisappear { m.stop() }
     }

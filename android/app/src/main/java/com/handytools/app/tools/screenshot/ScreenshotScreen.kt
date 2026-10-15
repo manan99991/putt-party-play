@@ -27,6 +27,18 @@ import com.handytools.app.ads.BannerAd
 import com.handytools.app.tools.clipboard.ClipboardAccessibilityService
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 
 @Composable
 fun ScreenshotScreen() {
@@ -45,27 +57,20 @@ fun ScreenshotScreen() {
         PermissionCard("Draw over other apps", "Needed for the floating capture button.", overlay, Permissions.overlayIntent(ctx))
         Text("Mode", style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(8.dp))
-        androidx.compose.foundation.layout.Row {
-            FilterChip(selected = mode == ScreenCaptureService.Mode.SINGLE, onClick = { mode = ScreenCaptureService.Mode.SINGLE }, label = { Text("Single") })
-            Spacer(Modifier.padding(4.dp))
-            FilterChip(selected = mode == ScreenCaptureService.Mode.FULL_PAGE, onClick = { mode = ScreenCaptureService.Mode.FULL_PAGE }, label = { Text("Full page") })
-            Spacer(Modifier.padding(4.dp))
-            FilterChip(selected = mode == ScreenCaptureService.Mode.BURST, onClick = { mode = ScreenCaptureService.Mode.BURST }, label = { Text("Burst (3 shots)") })
+        ChipRow {
+            HChip("Single", mode == ScreenCaptureService.Mode.SINGLE) { mode = ScreenCaptureService.Mode.SINGLE }
+            HChip("Full page", mode == ScreenCaptureService.Mode.FULL_PAGE) { mode = ScreenCaptureService.Mode.FULL_PAGE }
+            HChip("Burst (3 shots)", mode == ScreenCaptureService.Mode.BURST) { mode = ScreenCaptureService.Mode.BURST }
         }
         if (mode == ScreenCaptureService.Mode.FULL_PAGE) {
             Spacer(Modifier.height(8.dp))
             PermissionCard("Accessibility access", "Full page needs HandyTools to scroll the page for you.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings")
         }
         Spacer(Modifier.height(24.dp))
-        Button(onClick = { ProjectionPermissionActivity.launch(ctx, mode) }, enabled = overlay, modifier = Modifier.fillMaxWidth()) {
-            Text("Start floating button")
-        }
+        HPrimaryButton("Start floating button", enabled = overlay) { ProjectionPermissionActivity.launch(ctx, mode) }
         Spacer(Modifier.height(8.dp))
-        OutlinedButton(onClick = {
-            ctx.startService(Intent(ctx, ScreenCaptureService::class.java).setAction(ScreenCaptureService.ACTION_STOP))
-        }, modifier = Modifier.fillMaxWidth()) { Text("Stop") }
-        Spacer(Modifier.height(8.dp))
-        Text("Saved to Pictures/HandyTools.", style = MaterialTheme.typography.bodySmall)
+        HSecondaryButton("Stop") { ctx.startService(Intent(ctx, ScreenCaptureService::class.java).setAction(ScreenCaptureService.ACTION_STOP)) }
+        LimitNote("Saved to Pictures/HandyTools.")
         Spacer(Modifier.weight(1f))
         BannerAd()
     }

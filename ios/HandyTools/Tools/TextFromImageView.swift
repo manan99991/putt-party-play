@@ -12,15 +12,15 @@ struct TextFromImageView: View {
     var body: some View {
         ToolPage(title: "Text from Image", subtitle: "Screenshots of chats, slides, menus, error messages — get the words out.") {
             PhotosPicker(selection: $pick, matching: .images) { Label("Choose a screenshot or photo", systemImage: "photo").frame(maxWidth: .infinity) }
-                .buttonStyle(.borderedProminent).controlSize(.large)
+                .primaryButton()
             if let image { Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 220).clipShape(RoundedRectangle(cornerRadius: 12)) }
             if busy { ProgressView("Reading…") }
             if !text.isEmpty {
                 HStack {
-                    Button { UIPasteboard.general.string = text; ClipStore.add(text) } label: { Label("Copy all", systemImage: "doc.on.doc") }.buttonStyle(.bordered)
-                    ShareLink(item: text) { Label("Share", systemImage: "square.and.arrow.up") }.buttonStyle(.bordered)
+                    Button { UIPasteboard.general.string = text; ClipStore.add(text) } label: { Label("Copy all", systemImage: "doc.on.doc") }.secondaryButton()
+                    ShareLink(item: text) { Label("Share", systemImage: "square.and.arrow.up") }.secondaryButton()
                 }
-                Text(text).textSelection(.enabled).font(.callout).padding(12).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                Text(text).textSelection(.enabled).font(HandyFont.body).cardStyle(padding: HandySpacing.s12)
             }
         }
         .onChange(of: pick) { _, item in Task { await load(item) } }

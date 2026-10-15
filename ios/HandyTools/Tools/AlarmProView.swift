@@ -110,27 +110,33 @@ struct AlarmProView: View {
 
     var body: some View {
         ToolPage(title: "Alarm Pro", subtitle: "Snooze as long or short as you want. Rings through silent and Focus.") {
-            if let e = m.error { Text(e).foregroundStyle(.red).font(.caption) }
+            if let e = m.error { Text(e).foregroundStyle(HandyColor.danger).font(HandyFont.caption) }
+            Button {
+                if !store.isPremium && m.alarms.count >= AlarmProModel.freeLimit { showPaywall = true } else { editing = SavedAlarm() }
+            } label: { Label("New alarm", systemImage: "plus") }
+            .primaryButton()
+            if m.alarms.isEmpty { EmptyState(icon: "alarm", line: "No alarms yet.", sub: "Tap New alarm to set your first.") }
             ForEach(m.alarms) { a in
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(String(format: "%02d:%02d", a.hour, a.minute)).font(.system(size: 34, weight: .light))
-                        Text(summary(a)).font(.caption).foregroundStyle(.secondary)
+                HStack(alignment: .center) {
+                    VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                        HStack(alignment: .lastTextBaseline, spacing: 4) {
+                            Text(String(format: "%d:%02d", a.hour % 12 == 0 ? 12 : a.hour % 12, a.minute)).font(.system(size: 40, weight: .light)).monospacedDigit()
+                            Text(a.hour < 12 ? "AM" : "PM").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        }
+                        Text(summary(a)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        HStack(spacing: 6) {
+                            ForEach(1...7, id: \.self) { d in Circle().fill(a.weekdays.contains(d) ? HandyColor.accent : HandyColor.border).frame(width: 8, height: 8) }
+                        }
                     }
                     Spacer()
-                    Toggle("", isOn: Binding(get: { a.enabled }, set: { v in var c = a; c.enabled = v; Task { await m.upsert(c) } })).labelsHidden()
+                    Toggle("", isOn: Binding(get: { a.enabled }, set: { v in var c = a; c.enabled = v; Task { await m.upsert(c) } })).labelsHidden().tint(HandyColor.accent)
                 }
-                .padding(14).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+                .cardStyle()
                 .contentShape(Rectangle())
                 .onTapGesture { editing = a }
             }
-            Button {
-                if !store.isPremium && m.alarms.count >= AlarmProModel.freeLimit { showPaywall = true } else { editing = SavedAlarm() }
-            } label: { Label("New alarm", systemImage: "plus").frame(maxWidth: .infinity) }
-            .buttonStyle(.borderedProminent).controlSize(.large)
-            if !store.isPremium { Text("Free: 3 alarms. Pro: unlimited.").font(.caption).foregroundStyle(.secondary) }
-            Text("iOS plays every alarm at the system alarm volume; per-alarm volume isn't something Apple lets any app set yet.")
-                .font(.caption2).foregroundStyle(.tertiary)
+            if !store.isPremium { LimitNote("Free: 3 alarms. Pro: unlimited.") }
+            LimitNote("iOS plays every alarm at the system alarm volume; per-alarm volume isn't something Apple lets any app set yet.")
         }
         .task { if !Launch.screenshots { await m.requestAuth() } }
         .sheet(item: $editing) { a in AlarmEditor(alarm: a, onSave: { saved in Task { await m.upsert(saved) } }, onDelete: { gone in m.delete(gone) }) }
@@ -139,8 +145,8 @@ struct AlarmProView: View {
 
     private func summary(_ a: SavedAlarm) -> String {
         let days = ["S", "M", "T", "W", "T", "F", "S"]
-        let rep = a.weekdays.isEmpty ? "Once" : a.weekdays.sorted().map { days[$0 - 1] }.joined()
-        return [a.label.isEmpty ? nil : a.label, rep, "snooze \(a.snoozeMinutes)m"].compactMap { $0 }.joined(separator: " · ")
+        let rep = a.weekdays.isEmpty ? "Once" : (a.weekdays.count == 7 ? "Every day" : "Repeats")
+        return [a.label.isEmpty ? nil : a.label, rep, "snooze \(a.snoozeMinutes) min"].compactMap { $0 }.joined(separator: " · ")
     }
 }
 
@@ -165,15 +171,24 @@ struct AlarmEditor: View {
                         ForEach(1...7, id: \.self) { d in
                             let on = alarm.weekdays.contains(d)
                             Text(days[d - 1]).frame(maxWidth: .infinity).padding(.vertical, 8)
-                                .background(on ? Color.accentColor : Color.secondary.opacity(0.15), in: Circle())
+                                .background(on ? HandyColor.accent : HandyColor.accentSoft, in: Circle())
                                 .foregroundStyle(on ? .white : .primary)
                                 .onTapGesture { if on { alarm.weekdays.removeAll { $0 == d } } else { alarm.weekdays.append(d) } }
                         }
                     }
                 }
-                Section("Snooze length: \(alarm.snoozeMinutes) min") {
-                    Slider(value: Binding(get: { Double(alarm.snoozeMinutes) }, set: { alarm.snoozeMinutes = Int($0) }), in: 1...30, step: 1)
-                }
+                Section {
+                    VStack(spacing: HandySpacing.s8) {
+                        HStack(alignment: .lastTextBaseline) {
+                            Text("Snooze length").font(HandyFont.body)
+                            Spacer()
+                            Text("\(alarm.snoozeMinutes) min").font(.system(size: 28, weight: .semibold)).monospacedDigit().foregroundStyle(HandyColor.accent)
+                                .contentTransition(.numericText())
+                        }
+                        Slider(value: Binding(get: { Double(alarm.snoozeMinutes) }, set: { alarm.snoozeMinutes = Int($0) }), in: 1...30, step: 1).tint(HandyColor.accent)
+                    }
+                    .padding(.vertical, HandySpacing.s4)
+                } footer: { Text("The one thing the Clock app won't let you change.") }
                 Picker("Sound", selection: $alarm.sound) { ForEach(sounds, id: \.self) { Text($0.capitalized) } }
                 if !alarm.label.isEmpty || alarm.hour != 7 {
                     Button("Delete alarm", role: .destructive) { onDelete(alarm); dismiss() }

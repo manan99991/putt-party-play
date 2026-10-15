@@ -47,13 +47,23 @@ struct FlashlightView: View {
     @StateObject private var torch = Torch()
     var body: some View {
         ToolPage(title: "Flashlight Dimmer", subtitle: "Full brightness slider, plus strobe and SOS.") {
-            if !torch.available { Text("No flash on this device.").foregroundStyle(.secondary) }
+            if !torch.available { LimitNote("No flash on this device.") }
             Button { torch.toggle() } label: {
                 Label(torch.isOn ? "Turn off" : "Turn on", systemImage: torch.isOn ? "flashlight.off.fill" : "flashlight.on.fill").frame(maxWidth: .infinity)
-            }.buttonStyle(.borderedProminent).controlSize(.large).disabled(!torch.available)
-            Text("Brightness \(Int(torch.level * 100))%").font(.headline)
-            Slider(value: $torch.level, in: 0.05...1.0)
-            Picker("Mode", selection: $torch.mode) { ForEach(Torch.Mode.allCases, id: \.self) { Text($0.rawValue) } }.pickerStyle(.segmented)
+            }.primaryButton().disabled(!torch.available)
+            VStack(spacing: HandySpacing.s16) {
+                Image(systemName: "lightbulb.fill").font(.system(size: 44))
+                    .foregroundStyle(HandyColor.accent.opacity(torch.isOn ? 0.35 + 0.65 * Double(torch.level) : 0.25))
+                    .shadow(color: HandyColor.accent.opacity(torch.isOn ? Double(torch.level) * 0.6 : 0), radius: 24)
+                Text("\(Int(torch.level * 100))%").font(.system(size: 28, weight: .semibold)).monospacedDigit().contentTransition(.numericText())
+                Slider(value: $torch.level, in: 0.05...1.0).tint(HandyColor.accent)
+                    .frame(width: 240).rotationEffect(.degrees(-90)).frame(width: 60, height: 240)
+            }
+            .frame(maxWidth: .infinity)
+            .cardStyle()
+            HStack(spacing: HandySpacing.s8) {
+                ForEach(Torch.Mode.allCases, id: \.self) { m in HChip(text: m.rawValue, selected: torch.mode == m) { torch.mode = m } }
+            }
         }
         .onDisappear { if torch.isOn { torch.toggle() } }
     }

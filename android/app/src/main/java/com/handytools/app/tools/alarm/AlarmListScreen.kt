@@ -1,5 +1,7 @@
 package com.handytools.app.tools.alarm
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.media.RingtoneManager
@@ -21,7 +23,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.outlined.Alarm
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -48,6 +51,18 @@ import com.handytools.app.ads.BannerAd
 import com.handytools.app.data.Alarm
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -79,33 +94,37 @@ fun AlarmListScreen(onUpgrade: () -> Unit) {
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = 20.dp)) {
         ToolHeader("Alarm Pro", "Each alarm has its own volume, snooze length, ramp-up and limits.")
         PermissionCard("Exact alarms", "Android needs this so alarms ring on the minute.", Permissions.canExactAlarms(ctx), Permissions.exactAlarmIntent(ctx))
-        Button(
-            onClick = { if (!premium && alarms.size >= 3) onUpgrade() else editing = Alarm(hour = 7, minute = 0) },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
-        ) { Text("New alarm") }
+        HPrimaryButton("New alarm", Modifier.padding(bottom = 12.dp)) { if (!premium && alarms.size >= 3) onUpgrade() else editing = Alarm(hour = 7, minute = 0) }
         if (alarms.isEmpty()) {
-            Text("No alarms yet. Tap New alarm — pick a time, your own snooze length, and how loud.",
-                style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(vertical = 8.dp))
+            EmptyState(androidx.compose.material.icons.Icons.Outlined.Alarm, "No alarms yet.", "Tap New alarm to set your first.")
         }
         LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(alarms, key = { it.id }) { a ->
-                Card(Modifier.fillMaxWidth().clickable { editing = a }) {
+                HCard(Modifier.fillMaxWidth(), onClick = { editing = a }) {
                     Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
-                            Text(String.format("%02d:%02d", a.hour, a.minute), fontSize = 32.sp)
+                            Text(String.format("%02d:%02d", a.hour, a.minute), fontSize = 40.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.Light)
                             Text(buildString {
                                 append(a.label.ifBlank { if (a.repeatDays == 0) "Once" else "Repeats" })
                                 append(" · vol ${a.volume}% · snooze ${a.snoozeMinutes}m")
-                                if (a.repeatDays != 0) append(" · " + DAYS.filterIndexed { i, _ -> a.repeatDays and (1 shl i) != 0 }.joinToString(""))
-                            }, style = MaterialTheme.typography.bodySmall)
+                            }, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                            Spacer(Modifier.height(8.dp))
+                            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                DAYS.forEachIndexed { i, d ->
+                                    val on = a.repeatDays and (1 shl i) != 0
+                                    androidx.compose.foundation.layout.Box(
+                                        Modifier.size(8.dp).background(if (on) HandyColors.Accent else Handy.palette.border, CircleShape)
+                                    )
+                                }
+                            }
                         }
-                        Switch(a.enabled, { save(a.copy(enabled = it, snoozeUntil = null, snoozedCount = 0)) })
+                        Switch(a.enabled, { save(a.copy(enabled = it, snoozeUntil = null, snoozedCount = 0)) },
+                            colors = androidx.compose.material3.SwitchDefaults.colors(checkedTrackColor = HandyColors.Accent, checkedThumbColor = androidx.compose.ui.graphics.Color.White))
                     }
                 }
             }
         }
-        if (!premium) Text("Free: 3 alarms. Pro: unlimited.", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(vertical = 4.dp))
+        if (!premium) LimitNote("Free: 3 alarms. Pro: unlimited.")
         BannerAd()
     }
     editing?.let { AlarmEditor(it, onSave = ::save, onDelete = ::delete, onCancel = { editing = null }) }
@@ -146,20 +165,17 @@ private fun AlarmEditor(initial: Alarm, onSave: (Alarm) -> Unit, onDelete: (Alar
                     }
                 }
 
-                Text("Volume: ${a.volume}%", style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 12.dp))
-                Slider(a.volume.toFloat(), { a = a.copy(volume = it.toInt()) }, valueRange = 10f..100f)
-
-                Text("Snooze length: ${a.snoozeMinutes} min", style = MaterialTheme.typography.labelLarge)
+                Spacer(Modifier.height(16.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom) {
+                    Text("Snooze length", style = MaterialTheme.typography.bodyLarge)
+                    Text("${a.snoozeMinutes} min", fontSize = 28.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold, color = HandyColors.Accent)
+                }
                 Slider(a.snoozeMinutes.toFloat(), { a = a.copy(snoozeMinutes = it.toInt()) }, valueRange = 1f..30f, steps = 28)
 
-                Text("Max snoozes: ${if (a.maxSnoozes == 0) "unlimited" else a.maxSnoozes}", style = MaterialTheme.typography.labelLarge)
-                Slider(a.maxSnoozes.toFloat(), { a = a.copy(maxSnoozes = it.toInt()) }, valueRange = 0f..5f, steps = 4)
-
-                Text("Ramp up over: ${if (a.gradualSeconds == 0) "off" else "${a.gradualSeconds}s"}", style = MaterialTheme.typography.labelLarge)
-                Slider(a.gradualSeconds.toFloat(), { a = a.copy(gradualSeconds = it.toInt()) }, valueRange = 0f..120f, steps = 11)
-
-                Text("Auto-stop after: ${a.timeoutMinutes} min", style = MaterialTheme.typography.labelLarge)
-                Slider(a.timeoutMinutes.toFloat(), { a = a.copy(timeoutMinutes = it.toInt()) }, valueRange = 1f..30f, steps = 28)
+                SliderRow("Volume", "${a.volume}%", a.volume.toFloat(), { a = a.copy(volume = it.toInt()) }, 10f..100f)
+                SliderRow("Max snoozes", if (a.maxSnoozes == 0) "unlimited" else "${a.maxSnoozes}", a.maxSnoozes.toFloat(), { a = a.copy(maxSnoozes = it.toInt()) }, 0f..5f, 4)
+                SliderRow("Ramp up over", if (a.gradualSeconds == 0) "off" else "${a.gradualSeconds}s", a.gradualSeconds.toFloat(), { a = a.copy(gradualSeconds = it.toInt()) }, 0f..120f, 11)
+                SliderRow("Auto-stop after", "${a.timeoutMinutes} min", a.timeoutMinutes.toFloat(), { a = a.copy(timeoutMinutes = it.toInt()) }, 1f..30f, 28)
 
                 RowToggle("Vibrate", a.vibrate) { a = a.copy(vibrate = it) }
                 RowToggle("Math problem to dismiss", a.mathToDismiss) { a = a.copy(mathToDismiss = it) }

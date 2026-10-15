@@ -17,29 +17,29 @@ struct QRToolsView: View {
 
     var body: some View {
         ToolPage(title: "QR Tools", subtitle: "Scan codes, or make one to share a link or your Wi‑Fi.") {
-            Picker("", selection: $tab) { Text("Scan").tag(0); Text("Make").tag(1) }.pickerStyle(.segmented)
+            HStack(spacing: HandySpacing.s8) { HChip(text: "Scan", selected: tab == 0) { tab = 0 }; HChip(text: "Make", selected: tab == 1) { tab = 1 } }
             if tab == 0 {
                 Button { showScanner = true } label: { Label("Open scanner", systemImage: "qrcode.viewfinder").frame(maxWidth: .infinity) }
-                    .buttonStyle(.borderedProminent).controlSize(.large).disabled(!DataScannerViewController.isSupported)
+                    .primaryButton().disabled(!DataScannerViewController.isSupported)
                 if let s = scanned {
-                    Text(s).textSelection(.enabled).padding(12).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                    Text(s).font(HandyFont.body).textSelection(.enabled).cardStyle(padding: HandySpacing.s12)
                     HStack {
-                        Button { UIPasteboard.general.string = s; ClipStore.add(s) } label: { Label("Copy", systemImage: "doc.on.doc") }.buttonStyle(.bordered)
-                        if let u = URL(string: s), u.scheme?.hasPrefix("http") == true { Link(destination: u) { Label("Open", systemImage: "safari") }.buttonStyle(.bordered) }
+                        Button { UIPasteboard.general.string = s; ClipStore.add(s) } label: { Label("Copy", systemImage: "doc.on.doc") }.secondaryButton()
+                        if let u = URL(string: s), u.scheme?.hasPrefix("http") == true { Link(destination: u) { Label("Open", systemImage: "safari") }.secondaryButton() }
                     }
                 }
             } else {
-                Picker("Type", selection: $kind) { Text("Link / text").tag(0); Text("Wi‑Fi").tag(1) }.pickerStyle(.segmented)
-                if kind == 0 { TextField("https://… or any text", text: $text).textFieldStyle(.roundedBorder) }
+                HStack(spacing: HandySpacing.s8) { HChip(text: "Link / text", selected: kind == 0) { kind = 0 }; HChip(text: "Wi‑Fi", selected: kind == 1) { kind = 1 } }
+                if kind == 0 { TextField("https://… or any text", text: $text).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous)).overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1)) }
                 else {
-                    TextField("Network name (SSID)", text: $ssid).textFieldStyle(.roundedBorder)
-                    SecureField("Password", text: $password).textFieldStyle(.roundedBorder)
+                    TextField("Network name (SSID)", text: $ssid).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous)).overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                    SecureField("Password", text: $password).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous)).overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 }
-                Button { generate() } label: { Label("Make QR code", systemImage: "qrcode").frame(maxWidth: .infinity) }.buttonStyle(.borderedProminent).controlSize(.large)
+                Button { generate() } label: { Label("Make QR code", systemImage: "qrcode").frame(maxWidth: .infinity) }.primaryButton()
                 if let qrImage {
                     Image(uiImage: qrImage).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).frame(maxWidth: .infinity)
-                        .padding(16).background(.white, in: RoundedRectangle(cornerRadius: 16))
-                    ShareLink(item: Image(uiImage: qrImage), preview: SharePreview("QR code", image: Image(uiImage: qrImage))) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.buttonStyle(.bordered)
+                        .padding(HandySpacing.s24).background(.white, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+                    ShareLink(item: Image(uiImage: qrImage), preview: SharePreview("QR code", image: Image(uiImage: qrImage))) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                 }
             }
         }

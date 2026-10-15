@@ -16,20 +16,20 @@ struct WebClipView: View {
 
     var body: some View {
         ToolPage(title: "Web → Home", subtitle: "Paste a link. We pick the name and icon. Install the profile, and it's on your home screen.") {
-            TextField("https://…", text: $url).textFieldStyle(.roundedBorder).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
-            HStack {
+            TextField("https://…", text: $url).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous)).overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1)).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
+            HStack(spacing: HandySpacing.s12) {
                 Button("Paste") { if let s = UIPasteboard.general.string, let m = s.range(of: #"https?://\S+"#, options: .regularExpression) { url = String(s[m]); Task { await fetch() } } }
-                Button("Fetch") { Task { await fetch() } }.buttonStyle(.borderedProminent).disabled(url.isEmpty || loading)
+                Button("Fetch") { Task { await fetch() } }.compactButton().disabled(url.isEmpty || loading)
                 if loading { ProgressView() }
             }
             if icon != nil || !name.isEmpty {
-                HStack(spacing: 12) {
-                    if let icon { Image(uiImage: icon).resizable().frame(width: 56, height: 56).clipShape(RoundedRectangle(cornerRadius: 12)) }
-                    TextField("Name", text: $name).textFieldStyle(.roundedBorder)
+                HStack(spacing: HandySpacing.s12) {
+                    if let icon { Image(uiImage: icon).resizable().frame(width: 60, height: 60).clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous)) }
+                    TextField("Name", text: $name).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous)).overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 }
                 Button { makeProfile() } label: { Label("Add to home screen", systemImage: "plus.app").frame(maxWidth: .infinity) }
-                    .buttonStyle(.borderedProminent).controlSize(.large)
-                Button("Or: open in Safari and use Share › Add to Home Screen") { if let u = URL(string: normalized) { UIApplication.shared.open(u) } }.font(.footnote)
+                    .primaryButton()
+                Button("Or: open in Safari and use Share › Add to Home Screen") { if let u = URL(string: normalized) { UIApplication.shared.open(u) } }.textButton().font(HandyFont.caption)
             }
             if status != nil {
                 VStack(alignment: .leading, spacing: 4) {

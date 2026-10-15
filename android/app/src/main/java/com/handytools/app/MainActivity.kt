@@ -42,7 +42,11 @@ class MainActivity : ComponentActivity() {
                 val nav = rememberNavController()
                 NavHost(nav, startDestination = startRoute) {
                     composable("home") { HomeScreen(onOpen = { nav.navigate(it) }) }
-                    composable("paywall") { PaywallScreen(onBack = { nav.popBackStack() }) }
+                    composable("paywall") {
+                        // Sheet over the home grid; dismissing pops back.
+                        HomeScreen(onOpen = { nav.navigate(it) })
+                        PaywallScreen(onBack = { if (!nav.popBackStack()) nav.navigate("home") })
+                    }
                     composable("clipboard") { ClipboardScreen() }
                     composable("screenshot") { ScreenshotScreen() }
                     composable("quick") { QuickButtonsScreen() }

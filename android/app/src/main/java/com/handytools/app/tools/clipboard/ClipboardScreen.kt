@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +30,18 @@ import com.handytools.app.ads.BannerAd
 import com.handytools.app.ui.BigToggle
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 
 @Composable
 fun ClipboardScreen() {
@@ -46,20 +58,22 @@ fun ClipboardScreen() {
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
         ToolHeader("Multi-Clipboard", "Turn it on, copy as many things as you want in any app, then tap the bubble to paste any of them.")
-        PermissionCard("Accessibility access", "This is how HandyTools sees copies from other apps. Text stays on your phone.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings")
+        PermissionCard("Accessibility access", "This is how HandyTools sees copies from other apps.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings", privacy = "Text stays on your phone. Nothing is uploaded.")
         PermissionCard("Draw over other apps", "Needed for the floating bubble.", overlay, Permissions.overlayIntent(ctx))
         BigToggle("Clipboard bubble", on && a11y && overlay) { v ->
             on = v; ClipboardOverlay.setEnabled(ctx, v)
         }
         Text("History", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
-        LazyColumn(Modifier.weight(1f)) {
+        if (clips.isEmpty()) {
+            Column(Modifier.weight(1f)) { EmptyState(androidx.compose.material.icons.Icons.Outlined.ContentPaste, "Copy something in any app — it shows up here.") }
+        } else LazyColumn(Modifier.weight(1f), verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
             items(clips, key = { it.id }) { c ->
-                Card(Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable {
+                HCard(Modifier.fillMaxWidth(), onClick = {
                     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
                         .setPrimaryClip(ClipData.newPlainText("HandyTools", c.text))
                     ClipboardOverlay.lastPastedText = c.text
                 }) {
-                    Text(c.text, Modifier.padding(12.dp), maxLines = 3)
+                    Text((if (c.pinned) "📌 " else "") + c.text, Modifier.padding(14.dp), maxLines = 3, style = MaterialTheme.typography.bodyLarge)
                 }
             }
         }

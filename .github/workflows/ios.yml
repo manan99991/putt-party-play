@@ -56,11 +56,15 @@ jobs:
           xcrun simctl spawn "$UDID" defaults write com.apple.AppTrackingTransparency.plist 2>/dev/null || true
           xcrun simctl terminate "$UDID" com.handytools.app || true
           mkdir -p shots
-          for r in home alarm clips flash webclip sticky ocr scan db exif qr paywall; do
-            xcrun simctl terminate "$UDID" com.handytools.app 2>/dev/null || true
-            if [ "$r" = home ]; then xcrun simctl launch "$UDID" com.handytools.app -screenshots; else xcrun simctl launch "$UDID" com.handytools.app -screenshots -route $r; fi
-            sleep 5
-            xcrun simctl io "$UDID" screenshot shots/ios-$r.png
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
+          for mode in light dark; do
+            xcrun simctl ui "$UDID" appearance $mode
+            for r in home alarm clips flash webclip sticky ocr scan db exif qr paywall; do
+              xcrun simctl terminate "$UDID" com.handytools.app 2>/dev/null || true
+              if [ "$r" = home ]; then xcrun simctl launch "$UDID" com.handytools.app -screenshots; else xcrun simctl launch "$UDID" com.handytools.app -screenshots -route $r; fi
+              sleep 5
+              xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
+            done
           done
           ls -la shots
       - name: Publish screenshots

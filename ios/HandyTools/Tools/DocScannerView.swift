@@ -11,10 +11,10 @@ struct DocScannerView: View {
     var body: some View {
         ToolPage(title: "Doc Scanner", subtitle: "Point at a page. Auto-crop, auto-flatten, multi-page PDF.") {
             Button { showScanner = true } label: { Label("Scan", systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
-                .buttonStyle(.borderedProminent).controlSize(.large).disabled(!VNDocumentCameraViewController.isSupported)
+                .primaryButton().disabled(!VNDocumentCameraViewController.isSupported)
             if let pdfURL {
-                Text("\(pageCount) page\(pageCount == 1 ? "" : "s") scanned").font(.headline)
-                ShareLink(item: pdfURL) { Label("Share PDF", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.buttonStyle(.bordered).controlSize(.large)
+                Text("\(pageCount) page\(pageCount == 1 ? "" : "s") scanned").font(HandyFont.bodyStrong)
+                ShareLink(item: pdfURL) { Label("Share PDF", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
         }
         .fullScreenCover(isPresented: $showScanner) {

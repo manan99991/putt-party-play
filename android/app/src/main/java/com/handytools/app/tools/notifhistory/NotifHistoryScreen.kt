@@ -1,5 +1,6 @@
 package com.handytools.app.tools.notifhistory
 
+import androidx.compose.ui.draw.alpha
 import android.content.Intent
 import android.text.format.DateUtils
 import androidx.compose.foundation.clickable
@@ -12,10 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,6 +33,18 @@ import com.handytools.app.Permissions
 import com.handytools.app.ads.BannerAd
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.HTextButton
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HChip
+import com.handytools.app.ui.ChipRow
+import com.handytools.app.ui.SliderRow
+import com.handytools.app.ui.LimitNote
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.Handy
+import com.handytools.app.ui.HandyColors
+import com.handytools.app.ui.HandyTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,12 +60,14 @@ fun NotifHistoryScreen() {
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             ToolHeader("Notification Log", "Everything from the last 7 days, including what you swiped away.")
-            TextButton(onClick = { scope.launch { withContext(Dispatchers.IO) { HandyApp.instance.db.notifs().clear() } } }) { Text("Clear") }
+            HTextButton("Clear") { scope.launch { withContext(Dispatchers.IO) { HandyApp.instance.db.notifs().clear() } } }
         }
-        PermissionCard("Notification access", "Lets HandyTools keep a local copy of notifications. Nothing is uploaded.", granted, Permissions.notifListenerIntent(), "Open settings")
-        LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        PermissionCard("Notification access", "Lets HandyTools keep a copy of notifications so you can re-read them.", granted, Permissions.notifListenerIntent(), "Open settings", privacy = "Stored on your phone only. Nothing is uploaded.")
+        if (items.isEmpty()) {
+            Column(Modifier.weight(1f)) { EmptyState(androidx.compose.material.icons.Icons.Outlined.Notifications, "Nothing logged yet.", "Notifications appear here as they arrive.") }
+        } else LazyColumn(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(items, key = { it.id }) { n ->
-                Card(Modifier.fillMaxWidth().clickable {
+                HCard(Modifier.fillMaxWidth().alpha(if (n.dismissedAt != null) 0.6f else 1f), onClick = {
                     ctx.packageManager.getLaunchIntentForPackage(n.pkg)?.let { ctx.startActivity(it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
                 }) {
                     Column(Modifier.padding(12.dp)) {

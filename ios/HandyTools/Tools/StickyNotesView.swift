@@ -7,11 +7,14 @@ struct StickyNotesView: View {
     var body: some View {
         ToolPage(title: "Sticky Note", subtitle: "Edit here. Add the “Sticky Note” widget to your home or lock screen to see it everywhere.") {
             TextEditor(text: $text)
+                .scrollContentBackground(.hidden)
+                .font(HandyFont.body)
                 .frame(minHeight: 260)
-                .padding(8)
-                .background(Color.yellow.opacity(0.25), in: RoundedRectangle(cornerRadius: 14))
+                .padding(HandySpacing.s12)
+                .background(HandyColor.sticky, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+                .rotationEffect(.degrees(-0.5))
                 .onChange(of: text) { _, t in NoteStore.text = t; WidgetCenter.shared.reloadTimelines(ofKind: "StickyWidget") }
-            Text("Long-press your home screen › Edit › Add Widget › HandyTools.").font(.caption).foregroundStyle(.secondary)
+            LimitNote("Long-press your home screen › Edit › Add Widget › HandyTools.")
         }
     }
 }
