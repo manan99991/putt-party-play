@@ -58,6 +58,6 @@ struct DecibelMeterView: View {
     }
     private var gradient: Gradient { Gradient(colors: [.green, .yellow, .orange, .red]) }
     private func label(_ d: Double) -> String {
-        switch d { case ..<30: "Whisper quiet"; case ..<50: "Quiet room"; case ..<65: "Conversation"; case ..<80: "Busy street"; case ..<95: "Loud — limit exposure"; default: "Very loud — protect your ears" }
+        switch d { case ..<30: "Whisper quiet"; case ..<50: "Quiet room"; case ..<65: "Conversation"; case ..<80: "Busy street"; case ..<95: "Loud. Limit exposure."; default: "Very loud. Protect your ears." }
     }
 }

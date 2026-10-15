@@ -50,7 +50,7 @@ fun ScreenshotScreen() {
             Spacer(Modifier.padding(4.dp))
             FilterChip(selected = mode == ScreenCaptureService.Mode.FULL_PAGE, onClick = { mode = ScreenCaptureService.Mode.FULL_PAGE }, label = { Text("Full page") })
             Spacer(Modifier.padding(4.dp))
-            FilterChip(selected = mode == ScreenCaptureService.Mode.BURST, onClick = { mode = ScreenCaptureService.Mode.BURST }, label = { Text("Burst ×3") })
+            FilterChip(selected = mode == ScreenCaptureService.Mode.BURST, onClick = { mode = ScreenCaptureService.Mode.BURST }, label = { Text("Burst (3 shots)") })
         }
         if (mode == ScreenCaptureService.Mode.FULL_PAGE) {
             Spacer(Modifier.height(8.dp))

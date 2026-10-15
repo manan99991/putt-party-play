@@ -45,7 +45,7 @@ fun PaywallScreen(onBack: () -> Unit) {
             "No banner or full-screen ads",
             "Unlimited clipboard history (free: last 20)",
             "Unlimited alarms (free: 3)",
-            "Support one small developer"
+            "Support one indie developer"
         ).forEach {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(vertical = 6.dp)) {
                 Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.primary)

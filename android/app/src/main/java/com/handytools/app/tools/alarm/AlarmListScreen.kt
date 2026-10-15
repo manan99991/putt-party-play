@@ -125,7 +125,7 @@ private fun AlarmEditor(initial: Alarm, onSave: (Alarm) -> Unit, onDelete: (Alar
         confirmButton = { Button(onClick = { onSave(a) }) { Text("Save") } },
         dismissButton = {
             Row {
-                if (initial.id != 0L) TextButton(onClick = { onDelete(initial) }) { Text("Delete") }
+                if (initial.id != 0L) TextButton(onClick = { onDelete(initial) }) { Text("Delete alarm") }
                 TextButton(onClick = onCancel) { Text("Cancel") }
             }
         },

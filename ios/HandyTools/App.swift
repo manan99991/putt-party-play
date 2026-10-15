@@ -92,7 +92,7 @@ struct PaywallView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("HandyTools Pro").font(.largeTitle.bold())
             Text("One yearly payment. Ads gone for good.").foregroundStyle(.secondary)
-            ForEach(["No banner or full-screen ads", "Unlimited clipboard history (free: 20)", "Unlimited alarms (free: 3)", "Support one small developer"], id: \.self) {
+            ForEach(["No banner or full-screen ads", "Unlimited clipboard history (free: 20)", "Unlimited alarms (free: 3)", "Support one indie developer"], id: \.self) {
                 Label($0, systemImage: "checkmark.circle.fill")
             }
             Spacer()

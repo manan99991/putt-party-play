@@ -89,7 +89,7 @@ fun WebShortcutScreen(initialUrl: String? = null) {
                 done = ok
                 if (ok) Interstitials.showIfReady(ctx as Activity)
             }, modifier = Modifier.fillMaxWidth()) { Text("Add to home screen") }
-            if (done) Text("✓ Added. Check your home screen.", style = MaterialTheme.typography.titleMedium,
+            if (done) Text("Added to your home screen.", style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 12.dp))
         }
         Spacer(Modifier.height(16.dp))

@@ -11,7 +11,7 @@ struct ClipboardView: View {
             Button { grab() } label: { Label("Grab what's on the clipboard now", systemImage: "arrow.down.doc").frame(maxWidth: .infinity) }
                 .buttonStyle(.borderedProminent).controlSize(.large)
 
-            GroupBox("Set up once") {
+            GroupBox("Set up once (2 minutes)") {
                 VStack(alignment: .leading, spacing: 8) {
                     Label("Settings › General › Keyboard › Keyboards › Add “HandyTools Clips”, then Allow Full Access.", systemImage: "keyboard")
                     Label("Share Sheet › “Save to Clips” works from any app (Safari, Notes, Messages).", systemImage: "square.and.arrow.up")

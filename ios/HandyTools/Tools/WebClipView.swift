@@ -31,7 +31,14 @@ struct WebClipView: View {
                     .buttonStyle(.borderedProminent).controlSize(.large)
                 Button("Or: open in Safari and use Share › Add to Home Screen") { if let u = URL(string: normalized) { UIApplication.shared.open(u) } }.font(.footnote)
             }
-            if let s = status { Text(s).font(.callout).foregroundStyle(.tint) }
+            if status != nil {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Profile ready. Three taps to finish:").font(.callout.bold())
+                    Text("1. In the sheet, choose Save to Files.")
+                    Text("2. Open the file in Files.")
+                    Text("3. Settings › Profile Downloaded › Install. (\"Not Signed\" is normal for home-screen profiles.)")
+                }.font(.callout)
+            }
             if let p = profileURL { ShareLink(item: p) { Label("Share / save profile again", systemImage: "square.and.arrow.up") }.font(.footnote) }
         }
     }
@@ -80,7 +87,7 @@ struct WebClipView: View {
         let file = FileManager.default.temporaryDirectory.appendingPathComponent("\(name.filter { $0.isLetter || $0.isNumber }).mobileconfig")
         try? data.write(to: file)
         profileURL = file
-        status = "Profile ready. In the sheet that opens, choose “Save to Files”, tap the file, then Settings › Profile Downloaded › Install."
+        status = "ready"
         // Hand the file to the system; tapping it from Files triggers the profile installer.
         let av = UIActivityViewController(activityItems: [file], applicationActivities: nil)
         UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController }.first?
