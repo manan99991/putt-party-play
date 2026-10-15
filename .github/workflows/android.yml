@@ -121,6 +121,8 @@ jobs:
               done
             done
             ls -la shots
+            adb logcat -d -s AndroidRuntime:E > shots/_crashes.log 2>&1 || true
+            adb logcat -d 2>/dev/null | grep -iE 'handytools' | tail -300 > shots/_logcat-handytools.log || true
             tail -20 emulator.log
           } 2>&1 | tee shots/_run.log
       - name: Publish screenshots

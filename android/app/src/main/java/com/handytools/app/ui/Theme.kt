@@ -179,7 +179,7 @@ fun HandyTheme(content: @Composable () -> Unit) {
         HandyColors.BorderLight, HandyColors.SurfaceLight, HandyColors.TextSecondaryLight, false)
     CompositionLocalProvider(LocalHandy provides palette) {
         MaterialTheme(colorScheme = if (dark) DarkColors else LightColors, typography = HandyTypography, shapes = HandyShapes) {
-            Box(Modifier.background(MaterialTheme.colorScheme.background)) { content() }
+            androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background, contentColor = MaterialTheme.colorScheme.onBackground) { content() }
         }
     }
 }

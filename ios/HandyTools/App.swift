@@ -107,7 +107,7 @@ struct ToolCard: View {
                 Image(systemName: tool.icon).font(.system(size: 18, weight: .medium)).foregroundStyle(HandyColor.accent)
             }
             Spacer(minLength: HandySpacing.s12)
-            Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
+            Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(2).minimumScaleFactor(0.9)
             Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
         }
         .frame(maxWidth: .infinity, minHeight: 140, alignment: .leading)
