@@ -1,6 +1,8 @@
 package com.handytools.app.ui
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,7 +52,7 @@ fun PaywallContent(onBack: () -> Unit) {
     val billing = HandyApp.instance.billing
     val premium by billing.isPremium.collectAsState()
     val product by billing.product.collectAsState()
-    val activity = LocalContext.current as Activity
+    val activity = LocalContext.current.findActivity()
 
     Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Space24).padding(bottom = HandyTokens.Space24).navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally) {
@@ -88,4 +90,11 @@ fun PaywallContent(onBack: () -> Unit) {
         Spacer(Modifier.height(HandyTokens.Space8))
         HTextButton("Not now", onClick = onBack)
     }
+}
+
+/** Dialogs and sheets hand composables a ContextThemeWrapper; walk up to the real Activity. */
+private fun Context.findActivity(): Activity {
+    var c: Context = this
+    while (c is ContextWrapper) { if (c is Activity) return c; c = c.baseContext }
+    error("No Activity in context chain")
 }
