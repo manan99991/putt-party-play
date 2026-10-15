@@ -1,5 +1,6 @@
 import SwiftUI
 import AlarmKit
+import ActivityKit
 import AppIntents
 
 /// AlarmKit (iOS 26) gives real alarms that ring through silent mode and Focus.
@@ -78,14 +79,13 @@ final class AlarmProModel: ObservableObject {
 
         // postAlert = the snooze length. This is the knob the Clock app hides.
         let duration = Alarm.CountdownDuration(preAlert: nil, postAlert: TimeInterval(a.snoozeMinutes * 60))
-        let sound: AlertConfiguration.AlertSound = a.sound == "default" ? .default : .named(a.sound)
 
         let config = AlarmManager.AlarmConfiguration(
             countdownDuration: duration,
             schedule: schedule,
             attributes: attributes,
             stopIntent: StopAlarmIntent(alarmID: a.id.uuidString),
-            sound: sound)
+            sound: a.sound == "default" ? .default : .named(a.sound))
         do { _ = try await AlarmManager.shared.schedule(id: a.id, configuration: config) }
         catch { self.error = error.localizedDescription }
     }
