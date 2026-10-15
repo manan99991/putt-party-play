@@ -73,33 +73,41 @@ jobs:
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
-      - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: "17" }
-      - name: Boot emulator, install, screenshot every tool
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_apis
-          arch: x86_64
-          profile: pixel_7
-          disable-animations: true
-          script: |
-            mkdir -p shots
-            {
-              set -x
-              ls -la logs/ | head
-              cp logs/android-apk.bin HandyTools.apk
-              adb devices
-              adb install -r HandyTools.apk
-              adb shell settings put global window_animation_scale 0
-              for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall; do
-                adb shell am force-stop com.handytools.app || true
-                adb shell am start -n com.handytools.app/.MainActivity --es route $r || true
-                sleep 6
-                adb exec-out screencap -p > shots/android-$r.png || true
-              done
-              ls -la shots
-            } 2>&1 | tee shots/_run.log
+          ls -la /dev/kvm || true
+      - name: Emulator + screenshots
+        run: |
+          mkdir -p shots
+          {
+            set -x
+            echo "ANDROID_HOME=$ANDROID_HOME ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+            SDK=${ANDROID_SDK_ROOT:-$ANDROID_HOME}
+            ls $SDK; ls $SDK/cmdline-tools || true
+            SDKM=$(ls -d $SDK/cmdline-tools/*/bin/sdkmanager | sort -V | tail -1)
+            yes | $SDKM --licenses >/dev/null 2>&1 || true
+            $SDKM --install "platform-tools" "emulator" "system-images;android-34;google_apis;x86_64" 2>&1 | tail -3
+            AVDM=$(dirname $SDKM)/avdmanager
+            echo no | $AVDM create avd -n shot -k "system-images;android-34;google_apis;x86_64" -d pixel_7 --force
+            export PATH=$SDK/emulator:$SDK/platform-tools:$PATH
+            nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none > emulator.log 2>&1 &
+            adb wait-for-device
+            for i in $(seq 1 60); do b=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r'); [ "$b" = "1" ] && break; sleep 5; done
+            adb shell getprop sys.boot_completed
+            adb shell settings put global window_animation_scale 0
+            adb shell settings put global transition_animation_scale 0
+            adb shell settings put global animator_duration_scale 0
+            adb shell input keyevent 82 || true
+            cp logs/android-apk.bin HandyTools.apk
+            adb install -r HandyTools.apk
+            sleep 3
+            for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall; do
+              adb shell am force-stop com.handytools.app || true
+              adb shell am start -W -n com.handytools.app/.MainActivity --es route $r || true
+              sleep 6
+              adb exec-out screencap -p > shots/android-$r.png || true
+            done
+            ls -la shots
+            tail -20 emulator.log
+          } 2>&1 | tee shots/_run.log
       - name: Publish screenshots
         if: always()
         working-directory: src
