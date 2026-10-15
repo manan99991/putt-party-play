@@ -56,6 +56,12 @@ Why they differ: iOS doesn't let third-party apps read the clipboard in the back
 - Capabilities already in the project: App Groups (`group.com.handytools.shared`), AlarmKit, Live Activities.
 - Review notes to include: keyboard requests Full Access only to read the clipboard for the Clips stack; nothing leaves the device.
 
+## CI (GitHub Actions, branch `handytools`)
+
+- `.github/workflows/android.yml` — builds debug APK + release AAB on every push, publishes both to the `ci-logs` branch and attaches the APK to the `handytools-android-latest` GitHub Release. Signs the AAB when the four `ANDROID_*` secrets exist.
+- `.github/workflows/ios.yml` — builds the app + 3 extensions on `macos-26` / Xcode 26.6 (simulator, unsigned) on every push; the `testflight` job archives and uploads when `TESTFLIGHT_ENABLED=true` and the `ASC_*` secrets exist.
+- Both compile clean as of this commit. See `LAUNCH-CHECKLIST.md` for the store steps.
+
 ## Known edges
 
 - **Android hotspot:** no public API since Android 8. The button opens the tethering toggle directly.
@@ -63,7 +69,6 @@ Why they differ: iOS doesn't let third-party apps read the clipboard in the back
 - **iOS alarm volume:** AlarmKit plays at system alarm volume. No app can set per-alarm volume on iOS. Snooze length, sound, repeat days are the win.
 - **iOS Web → Home:** the profile route is unsigned, so iOS shows "Not signed" before install. That's normal for Web Clip profiles. If you'd rather avoid it, the Safari route is one tap away.
 - **AlarmKit:** API shipped with iOS 26.0; if Apple renames a parameter in a point release, `AlarmProView.swift` is the only file to touch.
-- Neither project could be compiled in the environment this was written in (no Google/Apple toolchains reachable). Expect a first-build pass of minor fixes — imports, a deprecated signature — not architectural ones.
 
 ## Privacy copy (for both store listings)
 
