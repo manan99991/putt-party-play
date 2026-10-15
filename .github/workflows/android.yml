@@ -41,11 +41,22 @@ jobs:
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: bash .github/publish-log.sh android android/build.log
 
-      - name: Upload APK + AAB
+      - name: Publish APK + AAB to ci-logs branch
         if: success()
-        uses: actions/upload-artifact@v4
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          mkdir -p out && cp android/app/build/outputs/apk/debug/app-debug.apk out/HandyTools-debug.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab out/HandyTools-release-unsigned.aab
+          bash .github/publish-log.sh android-apk out/HandyTools-debug.apk
+          bash .github/publish-log.sh android-aab out/HandyTools-release-unsigned.aab
+
+      - name: GitHub Release with the APK (direct download link for phones)
+        if: success()
+        uses: softprops/action-gh-release@v2
         with:
-          name: handytools-android
-          path: |
-            android/app/build/outputs/apk/debug/app-debug.apk
-            android/app/build/outputs/bundle/release/app-release.aab
+          tag_name: handytools-android-latest
+          name: HandyTools Android (latest build)
+          body: "Debug build for testing. Install on Android: download, open, allow 'install unknown apps'."
+          prerelease: true
+          files: out/HandyTools-debug.apk

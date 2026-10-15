@@ -22,8 +22,8 @@ android {
     }
 
     // Upload key. CI decodes ANDROID_KEYSTORE_B64 into android/upload.jks; locally, put your
-    // upload.jks there and export the same four env vars. Without them, release falls back to
-    // the debug key so the build still succeeds (Play will reject that upload — expected).
+    // upload.jks there and export the same four env vars. Without them the release bundle is
+    // produced unsigned; sign it with: jarsigner -keystore upload.jks app-release.aab handytools
     val ks = rootProject.file("upload.jks")
     signingConfigs {
         if (ks.exists()) create("upload") {
@@ -38,7 +38,8 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = if (ks.exists()) signingConfigs.getByName("upload") else signingConfigs.getByName("debug")
+            // No keystore -> unsigned bundle (sign later with jarsigner or let CI sign with secrets).
+            if (ks.exists()) signingConfig = signingConfigs.getByName("upload")
         }
     }
     compileOptions {

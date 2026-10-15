@@ -49,7 +49,7 @@ final class Interstitials {
 
     func preload() {
         guard !StoreManager.shared.isPremium, ad == nil else { return }
-        InterstitialAd.load(with: AdUnits.interstitial, request: Request()) { [weak self] ad, _ in self?.ad = ad }
+        InterstitialAd.load(with: AdUnits.interstitial, request: Request()) { [weak self] ad, _ in Task { @MainActor in self?.ad = ad } }
     }
 
     func showIfReady() {
