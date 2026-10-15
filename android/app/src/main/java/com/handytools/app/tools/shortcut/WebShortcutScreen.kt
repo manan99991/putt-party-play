@@ -1,5 +1,9 @@
 package com.handytools.app.tools.shortcut
 
+import com.handytools.app.ui.HandyHaptics
+
+import androidx.compose.ui.draw.clip
+
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context

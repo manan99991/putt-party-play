@@ -1,5 +1,7 @@
 package com.handytools.app.tools.ocr
 
+import com.handytools.app.ui.HandyHaptics
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context

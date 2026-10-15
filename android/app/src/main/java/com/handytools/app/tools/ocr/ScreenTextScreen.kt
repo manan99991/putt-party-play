@@ -1,5 +1,10 @@
 package com.handytools.app.tools.ocr
 
+import com.handytools.app.ui.rememberReduceMotion
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.width
+
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

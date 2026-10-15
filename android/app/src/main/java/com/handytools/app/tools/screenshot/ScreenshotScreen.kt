@@ -137,7 +137,8 @@ private fun ModeChip(label: String, selected: Boolean, mode: ScreenCaptureServic
                             size = androidx.compose.ui.geometry.Size(size.width - 24f - i * 12f, 18f),
                             cornerRadius = r, style = stroke)
                     }
-                    ScreenCaptureService.Mode.BURST ->
+                    ScreenCaptureService.Mode.OCR -> Unit
+                ScreenCaptureService.Mode.BURST ->
                         drawRoundRect(ink, topLeft = androidx.compose.ui.geometry.Offset(14f, 2f),
                             size = androidx.compose.ui.geometry.Size(size.width - 28f, size.height - 4f), cornerRadius = r, style = stroke)
                 }

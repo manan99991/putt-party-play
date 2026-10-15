@@ -52,6 +52,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -247,10 +248,11 @@ private fun DismissPill(enabled: Boolean, onDismiss: () -> Unit) {
             .background(if (enabled) accent.copy(alpha = 0.35f) else Color.Gray.copy(alpha = 0.25f))
             .pointerInput(enabled) {
                 if (!enabled) return@pointerInput
+                val gestureScope = this
                 awaitEachGesture {
                     val down = awaitFirstDown()
                     var dismissed = false
-                    val holdJob = launch {
+                    val holdJob = gestureScope.launch {
                         animate(0f, 1f, tween(HOLD_TO_DISMISS_MS)) { v, _ ->
                             if (!dismissed) pressProgress = v
                         }
