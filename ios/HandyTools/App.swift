@@ -137,8 +137,11 @@ struct PaywallView: View {
             Text("HandyTools Pro").font(.system(size: 28, weight: .bold))
             Text("One yearly payment. Ads gone for good.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                ForEach(["No banner or full-screen ads", "Unlimited clipboard history (free: 20)", "Unlimited alarms (free: 3)", "Support one indie developer"], id: \.self) {
-                    Label { Text($0).font(HandyFont.body) } icon: { Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent) }
+                ForEach(["No banner or full-screen ads", "Unlimited clipboard history (free: 20)", "Unlimited alarms (free: 3)", "Support one indie developer"], id: \.self) { line in
+                    HStack(spacing: HandySpacing.s12) {
+                        Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent)
+                        Text(line).font(HandyFont.body)
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
