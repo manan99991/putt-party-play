@@ -75,6 +75,8 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                 IconButton(onClick = { onOpen("settings") }) { Icon(Icons.Outlined.Settings, "Settings", tint = Handy.palette.textSecondary) }
             }
         }
+        // Entrance: fade + 8dp slide, staggered 30ms, max 6 (crossfade under Reduce Motion).
+        val reduceMotion = rememberReduceMotion()
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.weight(1f),
@@ -82,8 +84,6 @@ fun HomeScreen(onOpen: (String) -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space12),
             verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)
         ) {
-            // Entrance: fade + 8dp slide, staggered 30ms, max 6 (crossfade under Reduce Motion).
-            val reduceMotion = rememberReduceMotion()
             itemsIndexed(TOOLS, key = { _, t -> t.route }) { i, t ->
                 Box(Modifier.handyListEnter(i, reduceMotion)) {
                     ToolCard(t.name, t.blurb, t.icon) { onOpen(t.route) }

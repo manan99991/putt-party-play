@@ -66,10 +66,10 @@ fun ClipboardScreen() {
             on = v; ClipboardOverlay.setEnabled(ctx, v)
         }
         Text("History", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+        val reduceMotion = rememberReduceMotion()
         if (clips.isEmpty()) {
             Column(Modifier.weight(1f)) { EmptyState(androidx.compose.material.icons.Icons.Outlined.ContentPaste, "Copy something in any app — it shows up here.") }
         } else LazyColumn(Modifier.weight(1f), verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
-            val reduceMotion = rememberReduceMotion()
             itemsIndexed(clips, key = { _, c -> c.id }) { i, c ->
                 HCard(Modifier.fillMaxWidth().handyListEnter(i, reduceMotion), onClick = {
                     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)

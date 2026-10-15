@@ -14,7 +14,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -42,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -238,7 +239,8 @@ internal fun RingScreen(a: Alarm?, onSnooze: () -> Unit, onDismiss: () -> Unit) 
 @Composable
 private fun DismissPill(enabled: Boolean, onDismiss: () -> Unit) {
     val accent = HandyColors.Accent
-    var pressProgress by remember { mutableFloatStateOf(0f) }
+    val progress = remember { Animatable(0f) }
+    val scope = rememberCoroutineScope()
     val density = LocalDensity.current
     val swipeThresholdPx = with(density) { SWIPE_DISMISS_DP.dp.toPx() }
 
@@ -248,17 +250,15 @@ private fun DismissPill(enabled: Boolean, onDismiss: () -> Unit) {
             .background(if (enabled) accent.copy(alpha = 0.35f) else Color.Gray.copy(alpha = 0.25f))
             .pointerInput(enabled) {
                 if (!enabled) return@pointerInput
-                val gestureScope = this
                 awaitEachGesture {
                     val down = awaitFirstDown()
                     var dismissed = false
-                    val holdJob = gestureScope.launch {
-                        animate(0f, 1f, tween(HOLD_TO_DISMISS_MS)) { v, _ ->
-                            if (!dismissed) pressProgress = v
-                        }
-                        dismissed = true
-                        pressProgress = 1f
-                        onDismiss()
+                    // Hold-to-dismiss: fill animates to full over HOLD_TO_DISMISS_MS on a real
+                    // coroutine scope (the gesture scope is restricted and can't launch/animate).
+                    val holdJob = scope.launch {
+                        progress.snapTo(0f)
+                        progress.animateTo(1f, tween(HOLD_TO_DISMISS_MS))
+                        if (!dismissed) { dismissed = true; onDismiss() }
                     }
                     try {
                         var dx = 0f
@@ -271,13 +271,12 @@ private fun DismissPill(enabled: Boolean, onDismiss: () -> Unit) {
                             if (dx > swipeThresholdPx) {
                                 dismissed = true
                                 holdJob.cancel()
-                                pressProgress = 1f
                                 onDismiss()
                                 break
                             }
                         }
                     } finally {
-                        if (!dismissed) { holdJob.cancel(); pressProgress = 0f }
+                        if (!dismissed) { holdJob.cancel(); scope.launch { progress.animateTo(0f, tween(150)) } }
                     }
                 }
             },
@@ -285,7 +284,7 @@ private fun DismissPill(enabled: Boolean, onDismiss: () -> Unit) {
     ) {
         // Progress fill during the hold.
         Box(
-            Modifier.fillMaxWidth(pressProgress).fillMaxHeight()
+            Modifier.fillMaxWidth(progress.value.coerceIn(0f, 1f)).fillMaxHeight()
                 .background(if (enabled) accent else Color.Transparent)
         )
         Text("Dismiss", fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
