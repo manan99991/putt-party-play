@@ -35,15 +35,15 @@ Loading local repository...                                                     
 Auto-selecting single ABI x86_64
 + ls -la /home/runner/.android/avd
 total 16
-drwxr-xr-x 3 runner runner 4096 Oct 15 14:53 .
-drwxr-xr-x 3 runner runner 4096 Oct 15 14:53 ..
-drwxr-xr-x 2 runner runner 4096 Oct 15 14:53 shot.avd
--rw-r--r-- 1 runner runner   81 Oct 15 14:53 shot.ini
+drwxr-xr-x 3 runner runner 4096 Oct 15 15:08 .
+drwxr-xr-x 3 runner runner 4096 Oct 15 15:08 ..
+drwxr-xr-x 2 runner runner 4096 Oct 15 15:08 shot.avd
+-rw-r--r-- 1 runner runner   81 Oct 15 15:08 shot.ini
 + /usr/local/lib/android/sdk/emulator/emulator -list-avds
 shot
 + export PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 + PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-+ EMU=2697
++ EMU=2425
 + nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
 ++ seq 1 90
 + for i in $(seq 1 90)
@@ -51,7 +51,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2697
++ kill -0 2425
 + '[' 1 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -59,7 +59,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2697
++ kill -0 2425
 + '[' 2 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -67,15 +67,15 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2697
++ kill -0 2425
 + '[' 3 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
-++ adb shell getprop sys.boot_completed
 ++ tr -d '\r'
+++ adb shell getprop sys.boot_completed
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2697
++ kill -0 2425
 + '[' 4 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -99,23 +99,23 @@ INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2b
 INFO         |   androidboot.vbmeta.hash_alg=sha256
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7faec8401000 as it is in the protected range from 0x7fae28400000 to 0x7faec8600000
+WARNING: cannnot unmap ptr 0x7f78bfc01000 as it is in the protected range from 0x7f781fc00000 to 0x7f78bfe00000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2697/jwks/ab3e7875-ae85-47b7-9457-312a3076e635/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2697/jwks/ab3e7875-ae85-47b7-9457-312a3076e635 for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2425/jwks/c7bb4b58-36a3-4b73-ab10-433ebd757696/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2425/jwks/c7bb4b58-36a3-4b73-ab10-433ebd757696 for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2697.ini
-INFO         | Successfully initialized netsim WiFi
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2425.ini
 INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 39395 ms
+INFO         | Boot completed in 33266 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
 + adb shell settings put global window_animation_scale 0
 + adb shell settings put global transition_animation_scale 0
@@ -134,8 +134,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 8891
-WaitTime: 8979
+TotalTime: 5989
+WaitTime: 6001
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -146,8 +146,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 5834
-WaitTime: 5840
+TotalTime: 5388
+WaitTime: 5461
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -158,8 +158,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 5408
-WaitTime: 5423
+TotalTime: 3298
+WaitTime: 3299
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -170,8 +170,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 4657
-WaitTime: 4659
+TotalTime: 4392
+WaitTime: 4396
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -182,8 +182,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 5104
-WaitTime: 5130
+TotalTime: 3608
+WaitTime: 3624
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -194,8 +194,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 4737
-WaitTime: 4786
+TotalTime: 2633
+WaitTime: 2650
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -206,8 +206,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 6095
-WaitTime: 6149
+TotalTime: 3997
+WaitTime: 4001
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -218,8 +218,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3600
-WaitTime: 3618
+TotalTime: 2784
+WaitTime: 2799
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -230,8 +230,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3231
-WaitTime: 3258
+TotalTime: 2219
+WaitTime: 2222
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -242,8 +242,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3109
-WaitTime: 3200
+TotalTime: 1739
+WaitTime: 1741
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -254,8 +254,8 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 2607
-WaitTime: 2681
+TotalTime: 1766
+WaitTime: 1770
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -266,46 +266,46 @@ Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
 Activity: com.handytools.app/.MainActivity
-TotalTime: 3507
-WaitTime: 3561
+TotalTime: 1723
+WaitTime: 1757
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + ls -la shots
-total 1576
-drwxr-xr-x 2 runner runner   4096 Oct 15 14:57 .
-drwxr-xr-x 5 runner runner   4096 Oct 15 14:54 ..
--rw-r--r-- 1 runner runner  27305 Oct 15 14:57 _run.log
--rw-r--r-- 1 runner runner 126542 Oct 15 14:56 android-alarm.png
--rw-r--r-- 1 runner runner 113801 Oct 15 14:56 android-awake.png
--rw-r--r-- 1 runner runner 159595 Oct 15 14:55 android-clipboard.png
--rw-r--r-- 1 runner runner 162248 Oct 15 14:55 android-home.png
--rw-r--r-- 1 runner runner 119934 Oct 15 14:56 android-notifs.png
--rw-r--r-- 1 runner runner 144301 Oct 15 14:56 android-ocr.png
--rw-r--r-- 1 runner runner  97762 Oct 15 14:57 android-paywall.png
--rw-r--r-- 1 runner runner 120758 Oct 15 14:55 android-quick.png
--rw-r--r-- 1 runner runner 123622 Oct 15 14:56 android-scratchpad.png
--rw-r--r-- 1 runner runner 150153 Oct 15 14:55 android-screenshot.png
--rw-r--r-- 1 runner runner 111623 Oct 15 14:55 android-shortcut.png
--rw-r--r-- 1 runner runner 126153 Oct 15 14:56 android-volume.png
+total 2788
+drwxr-xr-x 2 runner runner    4096 Oct 15 15:11 .
+drwxr-xr-x 5 runner runner    4096 Oct 15 15:09 ..
+-rw-r--r-- 1 runner runner   27305 Oct 15 15:11 _run.log
+-rw-r--r-- 1 runner runner  114922 Oct 15 15:10 android-alarm.png
+-rw-r--r-- 1 runner runner  112819 Oct 15 15:11 android-awake.png
+-rw-r--r-- 1 runner runner  160217 Oct 15 15:09 android-clipboard.png
+-rw-r--r-- 1 runner runner  162860 Oct 15 15:09 android-home.png
+-rw-r--r-- 1 runner runner  114084 Oct 15 15:10 android-notifs.png
+-rw-r--r-- 1 runner runner  143499 Oct 15 15:10 android-ocr.png
+-rw-r--r-- 1 runner runner   96928 Oct 15 15:11 android-paywall.png
+-rw-r--r-- 1 runner runner  121243 Oct 15 15:10 android-quick.png
+-rw-r--r-- 1 runner runner  118168 Oct 15 15:10 android-scratchpad.png
+-rw-r--r-- 1 runner runner  151007 Oct 15 15:09 android-screenshot.png
+-rw-r--r-- 1 runner runner 1374170 Oct 15 15:10 android-shortcut.png
+-rw-r--r-- 1 runner runner  125720 Oct 15 15:10 android-volume.png
 + tail -20 emulator.log
+INFO         |   androidboot.vbmeta.size=6656
+INFO         |   androidboot.veritymode=enforcing
+WARNING: cannnot unmap ptr 0x7f78bfc01000 as it is in the protected range from 0x7f781fc00000 to 0x7f78bfe00000
+INFO         | Monitoring duration of emulator setup.
+WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
+INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2425/jwks/c7bb4b58-36a3-4b73-ab10-433ebd757696/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2425/jwks/c7bb4b58-36a3-4b73-ab10-433ebd757696 for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2697.ini
-INFO         | Successfully initialized netsim WiFi
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2425.ini
 INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 39395 ms
+INFO         | Boot completed in 33266 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
-ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x5557fa184788
-ERROR        | Failed to restore previous context: 12297
-ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x5557fb9b6328
-ERROR        | Failed to restore previous context: 12297
-ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x5557f80f75e8
-ERROR        | Failed to restore previous context: 12297
-ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x5557f5c041e8
-ERROR        | Failed to restore previous context: 12297
