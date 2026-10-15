@@ -26,13 +26,24 @@ Loading package information...                                                  
 
 ++ dirname /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager
 + AVDM=/usr/local/lib/android/sdk/cmdline-tools/latest/bin/avdmanager
++ export ANDROID_AVD_HOME=/home/runner/.android/avd
++ ANDROID_AVD_HOME=/home/runner/.android/avd
++ mkdir -p /home/runner/.android/avd
 + echo no
 + /usr/local/lib/android/sdk/cmdline-tools/latest/bin/avdmanager create avd -n shot -k 'system-images;android-34;google_apis;x86_64' -d pixel_7 --force
 Loading local repository...                                                     [=========                              ] 25% Loading local repository...       [=========                              ] 25% Fetch remote repository...        [=======================================] 100% Fetch remote repository...       
 Auto-selecting single ABI x86_64
++ ls -la /home/runner/.android/avd
+total 16
+drwxr-xr-x 3 runner runner 4096 Oct 15 14:39 .
+drwxr-xr-x 3 runner runner 4096 Oct 15 14:39 ..
+drwxr-xr-x 2 runner runner 4096 Oct 15 14:39 shot.avd
+-rw-r--r-- 1 runner runner   81 Oct 15 14:39 shot.ini
++ /usr/local/lib/android/sdk/emulator/emulator -list-avds
+shot
 + export PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 + PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-+ EMU=2656
++ EMU=2506
 + nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
 ++ seq 1 90
 + for i in $(seq 1 90)
@@ -40,18 +51,260 @@ Auto-selecting single ABI x86_64
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2656
-+ echo 'emulator process died'
-emulator process died
++ kill -0 2506
++ '[' 1 -eq 0 ']'
++ sleep 10
++ for i in $(seq 1 90)
+++ adb shell getprop sys.boot_completed
+++ tr -d '\r'
++ b=
++ '[' '' = 1 ']'
++ kill -0 2506
++ '[' 2 -eq 0 ']'
++ sleep 10
++ for i in $(seq 1 90)
+++ adb shell getprop sys.boot_completed
+++ tr -d '\r'
++ b=
++ '[' '' = 1 ']'
++ kill -0 2506
++ '[' 3 -eq 0 ']'
++ sleep 10
++ for i in $(seq 1 90)
+++ adb shell getprop sys.boot_completed
+++ tr -d '\r'
++ b=
++ '[' '' = 1 ']'
++ kill -0 2506
++ '[' 4 -eq 0 ']'
++ sleep 10
++ for i in $(seq 1 90)
+++ adb shell getprop sys.boot_completed
+++ tr -d '\r'
++ b=1
++ '[' 1 = 1 ']'
 + break
 + adb shell getprop sys.boot_completed
-adb: no devices/emulators found
-+ true
+1
 + tail -30 emulator.log
-INFO         | Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)
-INFO         | Graphics backend: gfxstream
-ERROR        | Unknown AVD name [shot], use -list-avds to see valid list.
-ERROR        | HOME is defined but there is no file shot.ini in $HOME/.android/avd
-ERROR        | (Note: Directories are searched in the order $ANDROID_AVD_HOME, $ANDROID_SDK_HOME/avd and $HOME/.android/avd)
+INFO         |   androidboot.qemu.hwcodec.avcdec=2
+INFO         |   androidboot.qemu.hwcodec.hevcdec=2
+INFO         |   androidboot.qemu.hwcodec.vpxdec=2
+INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
+INFO         |   androidboot.qemu.skin=1080x2400
+INFO         |   androidboot.qemu.virtiowifi=1
+INFO         |   androidboot.qemu.vsync=60
+INFO         |   androidboot.serialno=EMULATOR37X2X12X0
+INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2bc5bb30a5c3ff23679ca15d3bcd3
+INFO         |   androidboot.vbmeta.hash_alg=sha256
+INFO         |   androidboot.vbmeta.size=6656
+INFO         |   androidboot.veritymode=enforcing
+WARNING: cannnot unmap ptr 0x7f8f7f801000 as it is in the protected range from 0x7f8edf800000 to 0x7f8f7fa00000
+INFO         | Monitoring duration of emulator setup.
+WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
+INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2506/jwks/fb69e778-b9a6-49c8-ab95-fefc388ec9c9/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2506/jwks/fb69e778-b9a6-49c8-ab95-fefc388ec9c9 for jwk keys.
+INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2506.ini
+INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
+INFO         | setDisplayActiveConfig: id:0, 1080x2400
+INFO         | emulatorSetupEnvironment: Environment scene is not required
+USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
+WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
+WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
+INFO         | Boot completed in 32926 ms
+INFO         | Increasing screen off timeout, logcat buffer size to 2M.
 + adb shell settings put global window_animation_scale 0
-adb: no devices/emulators found
++ adb shell settings put global transition_animation_scale 0
++ adb shell settings put global animator_duration_scale 0
++ adb shell input keyevent 82
++ cp logs/android-apk.bin HandyTools.apk
++ adb install -r HandyTools.apk
+Performing Streamed Install
+Success
++ sleep 3
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route home
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 5684
+WaitTime: 5720
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route clipboard
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 4897
+WaitTime: 5048
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route screenshot
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 2960
+WaitTime: 3078
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route quick
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 3611
+WaitTime: 3618
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route shortcut
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 3377
+WaitTime: 3393
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route alarm
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 3171
+WaitTime: 3182
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route volume
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 4673
+WaitTime: 4699
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route ocr
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 2190
+WaitTime: 2195
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route notifs
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 2082
+WaitTime: 2089
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route scratchpad
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 2008
+WaitTime: 2037
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route awake
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 1710
+WaitTime: 1714
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall
++ adb shell am force-stop com.handytools.app
++ adb shell am start -W -n com.handytools.app/.MainActivity --es route paywall
+Starting: Intent { cmp=com.handytools.app/.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.handytools.app/.MainActivity
+TotalTime: 1962
+WaitTime: 1985
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ ls -la shots
+total 2812
+drwxr-xr-x 2 runner runner    4096 Oct 15 14:42 .
+drwxr-xr-x 5 runner runner    4096 Oct 15 14:40 ..
+-rw-r--r-- 1 runner runner   27289 Oct 15 14:42 _run.log
+-rw-r--r-- 1 runner runner 1373879 Oct 15 14:41 android-alarm.png
+-rw-r--r-- 1 runner runner  109726 Oct 15 14:42 android-awake.png
+-rw-r--r-- 1 runner runner  159801 Oct 15 14:40 android-clipboard.png
+-rw-r--r-- 1 runner runner  162504 Oct 15 14:40 android-home.png
+-rw-r--r-- 1 runner runner  113962 Oct 15 14:41 android-notifs.png
+-rw-r--r-- 1 runner runner  142918 Oct 15 14:41 android-ocr.png
+-rw-r--r-- 1 runner runner   97167 Oct 15 14:42 android-paywall.png
+-rw-r--r-- 1 runner runner  155338 Oct 15 14:41 android-quick.png
+-rw-r--r-- 1 runner runner  122097 Oct 15 14:42 android-scratchpad.png
+-rw-r--r-- 1 runner runner  154452 Oct 15 14:40 android-screenshot.png
+-rw-r--r-- 1 runner runner  107951 Oct 15 14:41 android-shortcut.png
+-rw-r--r-- 1 runner runner  125413 Oct 15 14:41 android-volume.png
++ tail -20 emulator.log
+WARNING: cannnot unmap ptr 0x7f8f7f801000 as it is in the protected range from 0x7f8edf800000 to 0x7f8f7fa00000
+INFO         | Monitoring duration of emulator setup.
+WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
+INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2506/jwks/fb69e778-b9a6-49c8-ab95-fefc388ec9c9/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2506/jwks/fb69e778-b9a6-49c8-ab95-fefc388ec9c9 for jwk keys.
+INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2506.ini
+INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
+INFO         | setDisplayActiveConfig: id:0, 1080x2400
+INFO         | emulatorSetupEnvironment: Environment scene is not required
+USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
+WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
+WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
+INFO         | Boot completed in 32926 ms
+INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x55e74eaff5e8
+ERROR        | Failed to restore previous context: 12297
