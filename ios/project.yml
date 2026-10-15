@@ -27,6 +27,8 @@ targets:
   HandyTools:
     type: application
     platform: iOS
+    settings:
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.handytools.app }
     sources:
       - path: HandyTools
       - path: Shared
@@ -65,6 +67,8 @@ targets:
   ClipboardKeyboard:
     type: app-extension
     platform: iOS
+    settings:
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.handytools.app.keyboard }
     sources: [ClipboardKeyboard, Shared]
     entitlements:
       path: ClipboardKeyboard/ClipboardKeyboard.entitlements
@@ -86,6 +90,8 @@ targets:
   ShareExtension:
     type: app-extension
     platform: iOS
+    settings:
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.handytools.app.share }
     sources: [ShareExtension, Shared]
     entitlements:
       path: ShareExtension/ShareExtension.entitlements
@@ -106,6 +112,8 @@ targets:
   StickyWidget:
     type: app-extension
     platform: iOS
+    settings:
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.handytools.app.widget }
     sources: [StickyWidget, Shared]
     entitlements:
       path: StickyWidget/StickyWidget.entitlements
