@@ -36,6 +36,33 @@ jobs:
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee build.log | grep -E "error:|warning: unre|BUILD|\*\*" || true
           grep -q "BUILD SUCCEEDED" build.log
+      - name: Simulator screenshots of every tool
+        run: |
+          set -x
+          APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/HandyTools.app" -maxdepth 6 | head -1)
+          echo "APP=$APP"
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone 17 Pro") or x["name"].startswith("iPhone 16 Pro") or x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
+          print(c[0]["udid"]); print(c[0]["name"], file=sys.stderr)')
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" "$APP"
+          mkdir -p shots
+          for r in home alarm clips flash webclip sticky ocr scan db exif qr paywall; do
+            xcrun simctl terminate "$UDID" com.handytools.app 2>/dev/null || true
+            if [ "$r" = home ]; then xcrun simctl launch "$UDID" com.handytools.app -screenshots; else xcrun simctl launch "$UDID" com.handytools.app -screenshots -route $r; fi
+            sleep 5
+            xcrun simctl io "$UDID" screenshot shots/ios-$r.png
+          done
+          ls -la shots
+      - name: Publish screenshots
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh ios-shots ios/shots
       - name: Publish build log
         if: always()
         working-directory: .

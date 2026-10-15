@@ -132,7 +132,7 @@ struct AlarmProView: View {
             Text("iOS plays every alarm at the system alarm volume; per-alarm volume isn't something Apple lets any app set yet.")
                 .font(.caption2).foregroundStyle(.tertiary)
         }
-        .task { await m.requestAuth() }
+        .task { if !Launch.screenshots { await m.requestAuth() } }
         .sheet(item: $editing) { a in AlarmEditor(alarm: a, onSave: { saved in Task { await m.upsert(saved) } }, onDelete: { gone in m.delete(gone) }) }
         .sheet(isPresented: $showPaywall) { PaywallView() }
     }

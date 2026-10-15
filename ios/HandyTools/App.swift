@@ -35,18 +35,25 @@ struct Tool: Identifiable {
     Tool(id: "qr", name: "QR Tools", blurb: "Scan, or make Wi‑Fi / link codes", icon: "qrcode.viewfinder") { AnyView(QRToolsView()) },
 ]
 
+enum Launch {
+    static var args: [String] { ProcessInfo.processInfo.arguments }
+    static var route: String? { args.firstIndex(of: "-route").flatMap { args.indices.contains($0 + 1) ? args[$0 + 1] : nil } }
+    static var screenshots: Bool { args.contains("-screenshots") }
+}
+
 struct HomeView: View {
     @EnvironmentObject var store: StoreManager
     @State private var showPaywall = false
+    @State private var path: [String] = Launch.route.map { [$0] } ?? []
     private let cols = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack(spacing: 0) {
                 ScrollView {
                     LazyVGrid(columns: cols, spacing: 12) {
                         ForEach(TOOLS) { t in
-                            NavigationLink { t.view().toolbarRole(.editor) } label: {
+                            NavigationLink(value: t.id) {
                                 VStack(alignment: .leading, spacing: 6) {
                                     Image(systemName: t.icon).font(.title2).foregroundStyle(.tint)
                                     Spacer()
@@ -62,6 +69,9 @@ struct HomeView: View {
                     .padding(16)
                 }
                 BannerAd()
+            }
+            .navigationDestination(for: String.self) { id in
+                if id == "paywall" { PaywallView() } else { (TOOLS.first { $0.id == id }?.view() ?? AnyView(EmptyView())).toolbarRole(.editor) }
             }
             .navigationTitle("HandyTools")
             .toolbar {

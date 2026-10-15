@@ -35,11 +35,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         sharedUrl = extractSharedUrl(intent)
         Interstitials.preload(this)
+        val startRoute = intent.getStringExtra("route") ?: if (sharedUrl != null) "shortcut" else "home"
 
         setContent {
             HandyTheme {
                 val nav = rememberNavController()
-                NavHost(nav, startDestination = if (sharedUrl != null) "shortcut" else "home") {
+                NavHost(nav, startDestination = startRoute) {
                     composable("home") { HomeScreen(onOpen = { nav.navigate(it) }) }
                     composable("paywall") { PaywallScreen(onBack = { nav.popBackStack() }) }
                     composable("clipboard") { ClipboardScreen() }
