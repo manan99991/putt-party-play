@@ -30,7 +30,7 @@ struct SetupView: View {
                     SetupRow(icon: "alarm", title: "Alarms", why: "Lets HandyTools ring through Silent mode and Focus, like the Clock app.", unlocks: "Alarm Pro", granted: alarms) {
                         Task { alarms = (try? await AlarmManager.shared.requestAuthorization()) == .authorized }
                     }
-                    SetupRow(icon: "keyboard", title: "Clips keyboard", why: "Settings › General › Keyboard › Keyboards › Add New › HandyTools Clips › Allow Full Access. Full Access is used only to read the clipboard when you tap Grab.", unlocks: "Multi-Clipboard", granted: false, buttonLabel: "Open Settings") {
+                    SetupRow(icon: "keyboard", title: "Clips keyboard", why: "Settings › General › Keyboard › Keyboards › Add New. Allow Full Access: it only reads the clipboard when you tap Grab.", unlocks: "Multi-Clipboard", granted: false, buttonLabel: "Open Settings") {
                         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                     }
                     Text("Everything stays on your iPhone. No account, no cloud. Camera, microphone and photos are asked for by the tool that needs them, when you first use it.")

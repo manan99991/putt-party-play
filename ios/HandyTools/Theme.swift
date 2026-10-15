@@ -111,6 +111,8 @@ struct HandyCompactButtonStyle: ButtonStyle {
         configuration.label
             .font(.system(size: 14, weight: .semibold))
             .foregroundStyle(.white)
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
             .padding(.horizontal, HandySpacing.s16)
             .frame(minHeight: HandySpacing.compactButtonHeight)
             .background(configuration.isPressed ? HandyColor.accentPressed : HandyColor.accent, in: Capsule())
