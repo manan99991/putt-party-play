@@ -50,6 +50,11 @@ jobs:
           xcrun simctl boot "$UDID" || true
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl install "$UDID" "$APP"
+          xcrun simctl privacy "$UDID" grant all com.handytools.app || true
+          # Pre-answer the App Tracking Transparency prompt so it doesn't cover every screenshot
+          xcrun simctl launch "$UDID" com.handytools.app -screenshots; sleep 4
+          xcrun simctl spawn "$UDID" defaults write com.apple.AppTrackingTransparency.plist 2>/dev/null || true
+          xcrun simctl terminate "$UDID" com.handytools.app || true
           mkdir -p shots
           for r in home alarm clips flash webclip sticky ocr scan db exif qr paywall; do
             xcrun simctl terminate "$UDID" com.handytools.app 2>/dev/null || true

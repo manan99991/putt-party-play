@@ -12,6 +12,7 @@ enum AdsBootstrap {
     static func start() {
         MobileAds.shared.start()
         // ATT prompt after a short delay so it doesn't collide with the first-launch UI.
+        if ProcessInfo.processInfo.arguments.contains("-screenshots") { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             ATTrackingManager.requestTrackingAuthorization { _ in }
         }
