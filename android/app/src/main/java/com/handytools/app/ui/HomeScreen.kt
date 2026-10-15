@@ -21,6 +21,7 @@ import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Screenshot
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.Visibility
@@ -68,8 +69,9 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                 Text(if (premium) "Pro · no ads" else "10 tools your phone should've had",
                     style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
             }
-            if (!premium) IconButton(onClick = { onOpen("paywall") }) {
-                Icon(Icons.Outlined.WorkspacePremium, "Go Pro", tint = HandyColors.Accent)
+            Row {
+                if (!premium) IconButton(onClick = { onOpen("paywall") }) { Icon(Icons.Outlined.WorkspacePremium, "Go Pro", tint = HandyColors.Accent) }
+                IconButton(onClick = { onOpen("settings") }) { Icon(Icons.Outlined.Settings, "Settings", tint = Handy.palette.textSecondary) }
             }
         }
         LazyVerticalGrid(

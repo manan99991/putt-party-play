@@ -4,6 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import com.handytools.app.ui.HandyColors
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,14 +44,25 @@ object AdUnits {
     const val INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712"
 }
 
+/** Provided by MainActivity so any screen's banner can open the paywall. */
+val LocalRemoveAds = androidx.compose.runtime.staticCompositionLocalOf<(() -> Unit)?> { null }
+
 /** Anchored adaptive banner in a chrome strip: hairline on top, bg color, height reserved so nothing jumps. Nothing for Pro. */
 @Composable
-fun BannerAd(modifier: Modifier = Modifier) {
+fun BannerAd(modifier: Modifier = Modifier, onRemoveAds: (() -> Unit)? = LocalRemoveAds.current) {
     val premium by HandyApp.instance.billing.isPremium.collectAsState()
     if (premium) return
     val ctx = LocalContext.current
     Column(modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
         Box(Modifier.fillMaxWidth().height(1.dp).background(Handy.palette.border))
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter, vertical = 2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Ads keep HandyTools free", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+            Text("Remove ads", style = MaterialTheme.typography.labelSmall, color = HandyColors.Accent,
+                modifier = Modifier.clickable { onRemoveAds?.invoke() })
+        }
         Box(Modifier.fillMaxWidth().heightIn(min = HandyTokens.AdReservedHeight), contentAlignment = Alignment.Center) {
             AndroidView(
                 modifier = Modifier.fillMaxWidth(),

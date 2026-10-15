@@ -26,6 +26,12 @@ struct BannerAd: View {
         if !store.isPremium {
             VStack(spacing: 0) {
                 Rectangle().fill(HandyColor.border).frame(height: 1)
+                HStack {
+                    Text("Ads keep HandyTools free").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    Spacer()
+                    Button("Remove ads") { NotificationCenter.default.post(name: .showPaywall, object: nil) }.font(HandyFont.micro).foregroundStyle(HandyColor.accent)
+                }
+                .padding(.horizontal, HandySpacing.gutter).padding(.vertical, 2)
                 BannerViewRep().frame(height: HandySpacing.adReservedHeight)
             }
             .background(HandyColor.bg)

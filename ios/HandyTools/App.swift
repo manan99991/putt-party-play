@@ -15,7 +15,7 @@ struct HandyToolsApp: App {
                 HomeView().environmentObject(store).tint(HandyColor.accent)
                 if showOnboarding {
                     OnboardingView(startPage: onboardingPage,
-                                   onDone: { OnboardingFlag.seen = true; withAnimation(.easeOut(duration: HandyMotion.slow)) { showOnboarding = false } },
+                                   onDone: { OnboardingFlag.seen = true; withAnimation(.easeOut(duration: HandyMotion.slow)) { showOnboarding = false }; NotificationCenter.default.post(name: .showSetup, object: nil) },
                                    onSeePro: { OnboardingFlag.seen = true; showOnboarding = false; NotificationCenter.default.post(name: .showPaywall, object: nil) })
                         .environmentObject(store)
                         .transition(.opacity)
@@ -74,13 +74,18 @@ struct HomeView: View {
                                     .font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
                             }
                             Spacer()
-                            if !store.isPremium {
-                                Button { showPaywall = true } label: {
-                                    Image(systemName: "crown.fill").font(.system(size: 20)).foregroundStyle(HandyColor.accent)
-                                        .frame(width: 44, height: 44)
-                                        .background(HandyColor.accentSoft, in: Circle())
+                            HStack(spacing: HandySpacing.s8) {
+                                if !store.isPremium {
+                                    Button { showPaywall = true } label: {
+                                        Image(systemName: "crown.fill").font(.system(size: 20)).foregroundStyle(HandyColor.accent)
+                                            .frame(width: 44, height: 44).background(HandyColor.accentSoft, in: Circle())
+                                    }
+                                    .accessibilityLabel("Go Pro")
                                 }
-                                .accessibilityLabel("Go Pro")
+                                NavigationLink(value: "settings") {
+                                    Image(systemName: "gearshape").font(.system(size: 20)).foregroundStyle(HandyColor.textSecondary).frame(width: 44, height: 44)
+                                }
+                                .accessibilityLabel("Settings")
                             }
                         }
                         .padding(.horizontal, HandySpacing.gutter)
@@ -99,12 +104,18 @@ struct HomeView: View {
             }
             .background(HandyColor.bg)
             .navigationDestination(for: String.self) { id in
-                (TOOLS.first { $0.id == id }?.view() ?? AnyView(EmptyView())).toolbarRole(.editor)
+                switch id {
+                case "settings": SettingsView().toolbarRole(.editor)
+                case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
+                case "privacy": PrivacyView().toolbarRole(.editor)
+                default: (TOOLS.first { $0.id == id }?.view() ?? AnyView(EmptyView())).toolbarRole(.editor)
+                }
             }
             .toolbar(.hidden, for: .navigationBar)
             .onChange(of: path) { _, p in if p.last == "paywall" { path.removeLast(); showPaywall = true } }
             .onAppear { if Launch.route == "paywall" { showPaywall = true } }
             .onReceive(NotificationCenter.default.publisher(for: .showPaywall)) { _ in showPaywall = true }
+            .onReceive(NotificationCenter.default.publisher(for: .showSetup)) { _ in if !(Launch.route?.hasPrefix("onboarding") ?? false) { path = ["setup"] } }
             .sheet(isPresented: $showPaywall) {
                 PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible)
                     .presentationBackground(HandyColor.surfaceRaised).presentationCornerRadius(HandyRadius.sheet)
@@ -167,10 +178,10 @@ struct PaywallView: View {
                 Label("You're Pro. Thank you.", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             } else {
                 Button { Task { await store.purchase(); if store.isPremium { dismiss() } } } label: {
-                    Text(store.product == nil ? "Loading price…" : "Go Pro · \(store.priceLabel)")
+                    Text("Go Pro · \(store.product == nil ? "$9.99 / year" : store.priceLabel)")
                 }
-                .primaryButton().disabled(store.product == nil)
-                Text("Auto-renews yearly. Cancel anytime in Settings › Apple ID › Subscriptions.")
+                .primaryButton()
+                Text("$9.99 a year, auto-renews. Cancel anytime in Settings › Apple ID › Subscriptions. Price shown in your currency at checkout.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 HStack(spacing: HandySpacing.s24) {
                     Button("Restore purchases") { Task { await store.restore() } }.textButton()
@@ -207,4 +218,7 @@ struct ToolPage<Content: View>: View {
     }
 }
 
-extension Notification.Name { static let showPaywall = Notification.Name("handytools.showPaywall") }
+extension Notification.Name {
+    static let showPaywall = Notification.Name("handytools.showPaywall")
+    static let showSetup = Notification.Name("handytools.showSetup")
+}

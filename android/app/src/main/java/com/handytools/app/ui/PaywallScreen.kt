@@ -81,11 +81,10 @@ fun PaywallContent(onBack: () -> Unit) {
                 Text("You're Pro. Thank you.", style = MaterialTheme.typography.titleMedium)
             }
         } else {
-            HPrimaryButton(if (product == null) "Loading price…" else "Go Pro · ${billing.priceLabel}", enabled = product != null) {
-                billing.launchPurchase(activity)
-            }
+            HPrimaryButton("Go Pro · ${billing.priceLabel ?: "$9.99 / year"}") { billing.launchPurchase(activity) }
             Spacer(Modifier.height(HandyTokens.Space8))
-            Text("Auto-renews yearly. Cancel anytime in Google Play.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text("$9.99 a year, auto-renews. Cancel anytime in Google Play. Price shown in your currency at checkout.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         }
         Spacer(Modifier.height(HandyTokens.Space8))
         HTextButton("Not now", onClick = onBack)

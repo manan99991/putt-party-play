@@ -26,6 +26,9 @@ import com.handytools.app.ui.HandyTheme
 import com.handytools.app.ui.HomeScreen
 import com.handytools.app.ui.Onboarding
 import com.handytools.app.ui.OnboardingScreen
+import com.handytools.app.ui.PrivacyScreen
+import com.handytools.app.ui.SettingsScreen
+import com.handytools.app.ui.SetupScreen
 import com.handytools.app.ui.PaywallScreen
 
 class MainActivity : ComponentActivity() {
@@ -43,9 +46,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             HandyTheme {
                 val nav = rememberNavController()
+                androidx.compose.runtime.CompositionLocalProvider(com.handytools.app.ads.LocalRemoveAds provides { nav.navigate("paywall") }) {
                 NavHost(nav, startDestination = startRoute) {
                     composable("home") { HomeScreen(onOpen = { nav.navigate(it) }) }
-                    composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("home") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
+                    composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("setup") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
+                    composable("setup") { SetupScreen(onDone = { nav.navigate("home") { popUpTo("setup") { inclusive = true } } }) }
+                    composable("settings") { SettingsScreen(onOpen = { nav.navigate(it) }) }
+                    composable("privacy") { PrivacyScreen() }
                     composable("onboarding2") { OnboardingScreen(startPage = 1, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }
                     composable("onboarding3") { OnboardingScreen(startPage = 2, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }
                     composable("paywall") {
@@ -63,6 +70,7 @@ class MainActivity : ComponentActivity() {
                     composable("notifs") { NotifHistoryScreen() }
                     composable("scratchpad") { ScratchpadScreen() }
                     composable("awake") { KeepAwakeScreen() }
+                }
                 }
             }
         }
