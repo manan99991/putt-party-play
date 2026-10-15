@@ -24,6 +24,8 @@ import com.handytools.app.tools.shortcut.WebShortcutScreen
 import com.handytools.app.tools.volume.VolumeMixerScreen
 import com.handytools.app.ui.HandyTheme
 import com.handytools.app.ui.HomeScreen
+import com.handytools.app.ui.Onboarding
+import com.handytools.app.ui.OnboardingScreen
 import com.handytools.app.ui.PaywallScreen
 
 class MainActivity : ComponentActivity() {
@@ -35,13 +37,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         sharedUrl = extractSharedUrl(intent)
         Interstitials.preload(this)
-        val startRoute = intent.getStringExtra("route") ?: if (sharedUrl != null) "shortcut" else "home"
+        val routeExtra = intent.getStringExtra("route")
+        val startRoute = routeExtra ?: if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
 
         setContent {
             HandyTheme {
                 val nav = rememberNavController()
                 NavHost(nav, startDestination = startRoute) {
                     composable("home") { HomeScreen(onOpen = { nav.navigate(it) }) }
+                    composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("home") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
+                    composable("onboarding2") { OnboardingScreen(startPage = 1, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }
+                    composable("onboarding3") { OnboardingScreen(startPage = 2, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }
                     composable("paywall") {
                         // Sheet over the home grid; dismissing pops back.
                         HomeScreen(onOpen = { nav.navigate(it) })

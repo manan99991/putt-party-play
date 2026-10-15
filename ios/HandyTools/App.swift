@@ -6,9 +6,24 @@ struct HandyToolsApp: App {
 
     init() { AdsBootstrap.start(); Task { @MainActor in Interstitials.shared.preload() } }
 
+    @State private var showOnboarding = !OnboardingFlag.seen && Launch.route == nil
+    @State private var onboardingPage = 0
+
     var body: some Scene {
         WindowGroup {
-            HomeView().environmentObject(store).tint(HandyColor.accent)
+            ZStack {
+                HomeView().environmentObject(store).tint(HandyColor.accent)
+                if showOnboarding {
+                    OnboardingView(startPage: onboardingPage,
+                                   onDone: { OnboardingFlag.seen = true; withAnimation(.easeOut(duration: HandyMotion.slow)) { showOnboarding = false } },
+                                   onSeePro: { OnboardingFlag.seen = true; showOnboarding = false; NotificationCenter.default.post(name: .showPaywall, object: nil) })
+                        .environmentObject(store)
+                        .transition(.opacity)
+                }
+            }
+            .onAppear {
+                if let r = Launch.route, r.hasPrefix("onboarding") { onboardingPage = Int(r.dropFirst("onboarding".count)).map { $0 - 1 } ?? 0; showOnboarding = true }
+            }
         }
     }
 }
@@ -44,7 +59,7 @@ enum Launch {
 struct HomeView: View {
     @EnvironmentObject var store: StoreManager
     @State private var showPaywall = false
-    @State private var path: [String] = Launch.route.map { [$0] } ?? []
+    @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" ? nil : [$0] } ?? []
     private let cols = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
 
     var body: some View {
@@ -89,6 +104,7 @@ struct HomeView: View {
             .toolbar(.hidden, for: .navigationBar)
             .onChange(of: path) { _, p in if p.last == "paywall" { path.removeLast(); showPaywall = true } }
             .onAppear { if Launch.route == "paywall" { showPaywall = true } }
+            .onReceive(NotificationCenter.default.publisher(for: .showPaywall)) { _ in showPaywall = true }
             .sheet(isPresented: $showPaywall) {
                 PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible)
                     .presentationBackground(HandyColor.surfaceRaised).presentationCornerRadius(HandyRadius.sheet)
@@ -190,3 +206,5 @@ struct ToolPage<Content: View>: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+
+extension Notification.Name { static let showPaywall = Notification.Name("handytools.showPaywall") }
