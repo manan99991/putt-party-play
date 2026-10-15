@@ -107,6 +107,7 @@ jobs:
             done
             adb shell getprop sys.boot_completed || true
             tail -30 emulator.log
+            adb shell settings put global hide_error_dialogs 1
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
