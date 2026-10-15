@@ -86,7 +86,11 @@ jobs:
             ls $SDK; ls $SDK/cmdline-tools || true
             SDKM=$(ls -d $SDK/cmdline-tools/*/bin/sdkmanager | sort -V | tail -1)
             yes | $SDKM --licenses >/dev/null 2>&1 || true
-            $SDKM --install "platform-tools" "emulator" "system-images;android-34;google_apis;x86_64" 2>&1 | tail -3
+            for try in 1 2 3; do
+              $SDKM --install "platform-tools" "emulator" "system-images;android-34;google_apis;x86_64" 2>&1 | tail -3
+              [ -x $SDK/emulator/emulator ] && [ -f $SDK/system-images/android-34/google_apis/x86_64/system.img ] && break
+              echo "sdk install incomplete, retry $try"; sleep 10
+            done
             AVDM=$(dirname $SDKM)/avdmanager
             export ANDROID_AVD_HOME=$HOME/.android/avd; mkdir -p $ANDROID_AVD_HOME
             echo no | $AVDM create avd -n shot -k "system-images;android-34;google_apis;x86_64" -d pixel_7 --force
