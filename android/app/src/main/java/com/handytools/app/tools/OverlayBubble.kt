@@ -1,16 +1,24 @@
 package com.handytools.app.tools
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.drawable.GradientDrawable
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.dynamicanimation.animation.FloatValueHolder
+import androidx.dynamicanimation.animation.SpringAnimation
+import androidx.dynamicanimation.animation.SpringForce
+import com.handytools.app.ui.HandyMotion
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  * A draggable floating button drawn over every app. Shared by the clipboard stack,
@@ -44,12 +52,27 @@ class OverlayBubble(
         attachDrag()
     }
 
+    private val dimHandler = Handler(Looper.getMainLooper())
+    private val dimTask = Runnable {
+        // Dim to 70% after 3s idle (fast fade; skipped if the user grabs the bubble).
+        ValueAnimator.ofFloat(view.alpha, HandyMotion.BUBBLE_DIM_ALPHA).apply {
+            duration = HandyMotion.FAST_MS.toLong()
+            addUpdateListener { view.alpha = it.animatedValue as Float }
+            start()
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun attachDrag() {
         var startX = 0; var startY = 0; var touchX = 0f; var touchY = 0f; var moved = false
         view.setOnTouchListener { _, e ->
             when (e.action) {
-                MotionEvent.ACTION_DOWN -> { startX = params.x; startY = params.y; touchX = e.rawX; touchY = e.rawY; moved = false; true }
+                MotionEvent.ACTION_DOWN -> {
+                    startX = params.x; startY = params.y; touchX = e.rawX; touchY = e.rawY; moved = false
+                    dimHandler.removeCallbacks(dimTask)
+                    view.animate().cancel(); view.alpha = 1f
+                    true
+                }
                 MotionEvent.ACTION_MOVE -> {
                     val dx = e.rawX - touchX; val dy = e.rawY - touchY
                     if (abs(dx) > 8 || abs(dy) > 8) moved = true
@@ -63,14 +86,38 @@ class OverlayBubble(
         }
     }
 
+    /**
+     * Snap to the nearest edge with a spring (damping 0.8). The animated position is clamped
+     * so overshoot never exceeds 2dp past the target edge.
+     */
     private fun snapToEdge() {
         val w = ctx.resources.displayMetrics.widthPixels
-        params.x = if (params.x + size / 2 < w / 2) 0 else w - size
-        if (shown) wm.updateViewLayout(view, params)
+        val target = if (params.x + size / 2 < w / 2) 0 else w - size
+        val maxDev = HandyMotion.BUBBLE_MAX_OVERSHOOT_DP * ctx.resources.displayMetrics.density
+        val anim = SpringAnimation(FloatValueHolder(params.x.toFloat())).apply {
+            spring = SpringForce(target.toFloat())
+                .setDampingRatio(HandyMotion.BUBBLE_DAMPING_RATIO)
+                .setStiffness(SpringForce.STIFFNESS_MEDIUM)
+            addUpdateListener { _, value, _ ->
+                params.x = value.coerceIn(target - maxDev, target + maxDev).roundToInt()
+                if (shown) wm.updateViewLayout(view, params)
+            }
+            addEndListener { _, _, _, _ ->
+                params.x = target
+                if (shown) wm.updateViewLayout(view, params)
+                scheduleDim()
+            }
+        }
+        anim.start()
     }
 
-    fun show() { if (!shown) { wm.addView(view, params); shown = true } }
-    fun hide() { if (shown) { runCatching { wm.removeView(view) }; shown = false } }
+    private fun scheduleDim() {
+        dimHandler.removeCallbacks(dimTask)
+        dimHandler.postDelayed(dimTask, HandyMotion.BUBBLE_IDLE_DIM_MS)
+    }
+
+    fun show() { if (!shown) { wm.addView(view, params); shown = true; scheduleDim() } }
+    fun hide() { if (shown) { dimHandler.removeCallbacks(dimTask); runCatching { wm.removeView(view) }; shown = false } }
     fun setVisible(v: Boolean) { view.visibility = if (v) View.VISIBLE else View.GONE }
     val isShown get() = shown
 }

@@ -25,6 +25,7 @@ object ScreenOcr {
             if (text.isBlank()) { Toast.makeText(ctx, "No text found on screen", Toast.LENGTH_SHORT).show(); return@withContext }
             ClipboardOverlay.lastPastedText = null
             (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Screen text", text))
+            com.handytools.app.ui.HandyHaptics.medium(ctx)
             Toast.makeText(ctx, "Copied ${text.lines().size} lines of text", Toast.LENGTH_SHORT).show()
         }
         withContext(Dispatchers.IO) { HandyApp.instance.db.clips().insert(Clip(text = text, sourceApp = "ocr")) }

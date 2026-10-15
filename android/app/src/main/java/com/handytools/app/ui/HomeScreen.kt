@@ -12,7 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.AppShortcut
@@ -81,7 +82,13 @@ fun HomeScreen(onOpen: (String) -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space12),
             verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)
         ) {
-            items(TOOLS) { t -> ToolCard(t.name, t.blurb, t.icon) { onOpen(t.route) } }
+            // Entrance: fade + 8dp slide, staggered 30ms, max 6 (crossfade under Reduce Motion).
+            val reduceMotion = rememberReduceMotion()
+            itemsIndexed(TOOLS, key = { _, t -> t.route }) { i, t ->
+                Box(Modifier.handyListEnter(i, reduceMotion)) {
+                    ToolCard(t.name, t.blurb, t.icon) { onOpen(t.route) }
+                }
+            }
         }
         BannerAd()
     }

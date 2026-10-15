@@ -85,6 +85,10 @@ fun WebShortcutScreen(initialUrl: String? = null) {
         Spacer(Modifier.height(20.dp))
         if (loading) CircularProgressIndicator()
         preview?.let { p ->
+            // Hero: the result rendered as a real home-screen icon mock — the fetched favicon in a
+            // 60dp rounded square on a blurred-wallpaper tile, with the name under it in launcher label style.
+            HomeIconMock(p, name.ifBlank { p.title })
+            Spacer(Modifier.height(12.dp))
             HCard(Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     p.icon?.let { Image(it.asImageBitmap(), null, Modifier.size(48.dp)) }
@@ -96,7 +100,10 @@ fun WebShortcutScreen(initialUrl: String? = null) {
             HPrimaryButton("Add to home screen") {
                 val ok = WebShortcut.pin(ctx, p.copy(title = name.ifBlank { p.title }))
                 done = ok
-                if (ok) Interstitials.showIfReady(ctx as Activity)
+                if (ok) {
+                    com.handytools.app.ui.HandyHaptics.success(ctx)
+                    Interstitials.showIfReady(ctx as Activity)
+                }
             }
             if (done) Text("Added to your home screen.", style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 12.dp))
@@ -105,5 +112,50 @@ fun WebShortcutScreen(initialUrl: String? = null) {
         LimitNote("Tip: share any link to HandyTools from your browser and it lands here.")
         Spacer(Modifier.weight(1f))
         BannerAd()
+    }
+}
+
+/**
+ * Hero: home-screen icon mock. The fetched favicon sits in a 60dp rounded square on a
+ * wallpaper-style tile, with the shortcut name under it in launcher label style.
+ * (The tile uses a soft vertical gradient as the wallpaper; a true RenderEffect blur needs
+ * API 31+, so the gradient stands in on older devices.)
+ */
+@Composable
+private fun HomeIconMock(p: PagePreview, label: String) {
+    androidx.compose.foundation.layout.Column(
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        androidx.compose.foundation.layout.Box(
+            Modifier.size(140.dp)
+                .clip(androidx.compose.foundation.shape.RoundedCornerShape(28.dp))
+                .background(
+                    androidx.compose.ui.graphics.Brush.verticalGradient(
+                        listOf(
+                            androidx.compose.ui.graphics.Color(0xFF2B68FF),
+                            androidx.compose.ui.graphics.Color(0xFF1F5EFF),
+                            androidx.compose.ui.graphics.Color(0xFF1649D6)
+                        )
+                    )
+                ),
+            contentAlignment = androidx.compose.ui.Alignment.Center
+        ) {
+            androidx.compose.foundation.layout.Box(
+                Modifier.size(60.dp)
+                    .clip(androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
+                    .background(androidx.compose.ui.graphics.Color.White),
+                contentAlignment = androidx.compose.ui.Alignment.Center
+            ) {
+                val icon = p.icon
+                if (icon != null) Image(icon.asImageBitmap(), null, Modifier.size(44.dp))
+                else Text(
+                    label.take(1).uppercase(), style = MaterialTheme.typography.titleMedium,
+                    color = com.handytools.app.ui.HandyColors.Accent
+                )
+            }
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface)
     }
 }

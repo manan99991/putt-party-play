@@ -2,6 +2,7 @@ package com.handytools.app.ui
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -266,30 +267,41 @@ fun ToolCard(name: String, blurb: String, icon: ImageVector, onClick: () -> Unit
     }
 }
 
-/** Amber permission card: OS name, one-line why, optional privacy line, one button to the exact settings page. */
+/**
+ * Amber permission card: OS name, one-line why, optional privacy line, one button to the exact
+ * settings page. When granted, the card collapses (height -> 0 + fade over base) and is replaced
+ * by nothing.
+ */
 @Composable
 fun PermissionCard(title: String, why: String, granted: Boolean, intent: Intent, buttonText: String = "Allow", privacy: String? = null) {
-    if (granted) return
     val ctx: Context = LocalContext.current
-    Card(
-        Modifier.fillMaxWidth().padding(bottom = HandyTokens.Space12),
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(containerColor = Handy.palette.warningSoft),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    val reduceMotion = rememberReduceMotion()
+    androidx.compose.animation.AnimatedVisibility(
+        visible = !granted,
+        enter = androidx.compose.animation.fadeIn(tween(HandyMotion.BASE_MS, easing = HandyMotion.EnterEasing)),
+        exit = androidx.compose.animation.shrinkVertically(tween(if (reduceMotion) HandyMotion.FAST_MS else HandyMotion.BASE_MS, easing = HandyMotion.ExitEasing)) +
+            androidx.compose.animation.fadeOut(tween(if (reduceMotion) HandyMotion.FAST_MS else HandyMotion.BASE_MS))
     ) {
-        Row(Modifier.padding(HandyTokens.Space16)) {
-            Icon(Icons.Outlined.Shield, null, Modifier.size(24.dp), tint = HandyColors.Amber)
-            Spacer(Modifier.width(HandyTokens.Space12))
-            Column {
-                Text(title, style = MaterialTheme.typography.titleMedium.copy(fontSize = 16.sp))
-                Spacer(Modifier.height(HandyTokens.Space4))
-                Text(why, style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp))
-                if (privacy != null) {
+        Card(
+            Modifier.fillMaxWidth().padding(bottom = HandyTokens.Space12),
+            shape = MaterialTheme.shapes.medium,
+            colors = CardDefaults.cardColors(containerColor = Handy.palette.warningSoft),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        ) {
+            Row(Modifier.padding(HandyTokens.Space16)) {
+                Icon(Icons.Outlined.Shield, null, Modifier.size(24.dp), tint = HandyColors.Amber)
+                Spacer(Modifier.width(HandyTokens.Space12))
+                Column {
+                    Text(title, style = MaterialTheme.typography.titleMedium.copy(fontSize = 16.sp))
                     Spacer(Modifier.height(HandyTokens.Space4))
-                    Text(privacy, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    Text(why, style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp))
+                    if (privacy != null) {
+                        Spacer(Modifier.height(HandyTokens.Space4))
+                        Text(privacy, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    }
+                    Spacer(Modifier.height(HandyTokens.Space12))
+                    HCompactButton(buttonText) { ctx.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
                 }
-                Spacer(Modifier.height(HandyTokens.Space12))
-                HCompactButton(buttonText) { ctx.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
             }
         }
     }
@@ -304,16 +316,17 @@ fun ToolHeader(title: String, subtitle: String) {
     }
 }
 
-/** 56dp toggle row with a hairline below. */
+/** 56dp toggle row with a hairline below. Light haptic on toggle. */
 @Composable
 fun BigToggle(label: String, on: Boolean, onToggle: (Boolean) -> Unit) {
+    val ctx: Context = LocalContext.current
     Column {
         Row(
             Modifier.fillMaxWidth().height(56.dp),
             horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
         ) {
             Text(label, style = MaterialTheme.typography.bodyLarge)
-            Switch(checked = on, onCheckedChange = onToggle,
+            Switch(checked = on, onCheckedChange = { v -> HandyHaptics.light(ctx); onToggle(v) },
                 colors = SwitchDefaults.colors(checkedTrackColor = HandyColors.Accent, checkedThumbColor = Color.White))
         }
         Box(Modifier.fillMaxWidth().height(1.dp).background(Handy.palette.border))
@@ -332,11 +345,13 @@ fun SliderRow(label: String, valueText: String, value: Float, onChange: (Float) 
     }
 }
 
-/** Pill chip, 36dp. Selected = accentSoft fill + accent text + accent border. */
+/** Pill chip, 36dp. Selected = accentSoft fill + accent text + accent border. Light haptic on select. */
 @Composable
 fun HChip(text: String, selected: Boolean, onClick: () -> Unit) {
+    val ctx: Context = LocalContext.current
     FilterChip(
-        selected = selected, onClick = onClick, label = { Text(text, style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp)) },
+        selected = selected, onClick = { HandyHaptics.light(ctx); onClick() },
+        label = { Text(text, style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp)) },
         shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight),
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = Handy.palette.accentSoft, selectedLabelColor = HandyColors.Accent,

@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -67,8 +67,9 @@ fun ClipboardScreen() {
         if (clips.isEmpty()) {
             Column(Modifier.weight(1f)) { EmptyState(androidx.compose.material.icons.Icons.Outlined.ContentPaste, "Copy something in any app — it shows up here.") }
         } else LazyColumn(Modifier.weight(1f), verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
-            items(clips, key = { it.id }) { c ->
-                HCard(Modifier.fillMaxWidth(), onClick = {
+            val reduceMotion = rememberReduceMotion()
+            itemsIndexed(clips, key = { _, c -> c.id }) { i, c ->
+                HCard(Modifier.fillMaxWidth().handyListEnter(i, reduceMotion), onClick = {
                     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
                         .setPrimaryClip(ClipData.newPlainText("HandyTools", c.text))
                     ClipboardOverlay.lastPastedText = c.text

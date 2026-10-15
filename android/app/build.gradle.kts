@@ -64,6 +64,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     implementation("androidx.navigation:navigation-compose:2.8.5")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.dynamicanimation:dynamicanimation:1.0.0")
 
     // Room (alarms, clipboard history, notification log, notes)
     implementation("androidx.room:room-runtime:2.6.1")

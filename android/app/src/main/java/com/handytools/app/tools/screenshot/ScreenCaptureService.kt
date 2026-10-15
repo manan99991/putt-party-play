@@ -164,6 +164,7 @@ class ScreenCaptureService : Service() {
         val a11y = ClipboardAccessibilityService.instance ?: run {
             toast("Enable HandyTools in Accessibility settings for full-page capture"); return captureFrame()
         }
+        toast("Capturing full page…")
         val frames = mutableListOf<Bitmap>()
         var last: Bitmap = captureFrame() ?: return null
         frames += last
@@ -176,7 +177,8 @@ class ScreenCaptureService : Service() {
             frames += next; last = next
         }
         toast("Stitched ${frames.size} screens")
-        return Stitcher.stitch(frames)
+        // Stitching is CPU-bound; keep it off the main thread so the UI stays interactive.
+        return withContext(Dispatchers.Default) { Stitcher.stitch(frames) }
     }
 
     private fun scrollForward(a11y: ClipboardAccessibilityService): Boolean {
@@ -200,7 +202,10 @@ class ScreenCaptureService : Service() {
         }
         val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return@withContext
         contentResolver.openOutputStream(uri)?.use { b.compress(Bitmap.CompressFormat.PNG, 100, it) }
-        withContext(Dispatchers.Main) { toast("Saved to Pictures/HandyTools") }
+        withContext(Dispatchers.Main) {
+            com.handytools.app.ui.HandyHaptics.medium(this@ScreenCaptureService)
+            toast("Saved to Pictures/HandyTools")
+        }
     }
 
     private fun toast(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
