@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import com.handytools.app.ui.HandyColors
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
@@ -51,9 +53,9 @@ val LocalRemoveAds = androidx.compose.runtime.staticCompositionLocalOf<(() -> Un
 @Composable
 fun BannerAd(modifier: Modifier = Modifier, onRemoveAds: (() -> Unit)? = LocalRemoveAds.current) {
     val premium by HandyApp.instance.billing.isPremium.collectAsState()
-    if (premium) return
+    if (premium) { Spacer(Modifier.fillMaxWidth().navigationBarsPadding()); return }
     val ctx = LocalContext.current
-    Column(modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)) {
+    Column(modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background).navigationBarsPadding()) {
         Box(Modifier.fillMaxWidth().height(1.dp).background(Handy.palette.border))
         Row(
             Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter, vertical = 2.dp),

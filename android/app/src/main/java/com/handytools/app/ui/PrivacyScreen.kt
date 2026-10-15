@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -27,7 +28,7 @@ import androidx.compose.ui.unit.dp
 /** The privacy policy, written to be read: what stays, what leaves, in two lists. Same text is hosted at PRIVACY_URL. */
 @Composable
 fun PrivacyScreen() {
-    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter)) {
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).navigationBarsPadding().padding(horizontal = HandyTokens.Gutter)) {
         Spacer(Modifier.height(HandyTokens.Space16))
         Text("Privacy", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(HandyTokens.Space4))
