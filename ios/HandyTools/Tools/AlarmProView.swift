@@ -133,7 +133,7 @@ struct AlarmProView: View {
                 .font(.caption2).foregroundStyle(.tertiary)
         }
         .task { await m.requestAuth() }
-        .sheet(item: $editing) { a in AlarmEditor(alarm: a, onSave: { Task { await m.upsert($0) } }, onDelete: { m.delete($0) }) }
+        .sheet(item: $editing) { a in AlarmEditor(alarm: a, onSave: { saved in Task { await m.upsert(saved) } }, onDelete: { gone in m.delete(gone) }) }
         .sheet(isPresented: $showPaywall) { PaywallView() }
     }
 
