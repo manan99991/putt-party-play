@@ -7,6 +7,8 @@ struct DocScannerView: View {
     @State private var showScanner = false
     @State private var pdfURL: URL?
     @State private var pageCount = 0
+    @State private var pageImages: [UIImage] = []
+    @State private var pdfBytes = 0
 
     var body: some View {
         ToolPage(title: "Doc Scanner", subtitle: "Point at a page. Auto-crop, auto-flatten, multi-page PDF.") {
@@ -14,7 +16,29 @@ struct DocScannerView: View {
                 .primaryButton().disabled(!VNDocumentCameraViewController.isSupported)
             if let pdfURL {
                 Text("\(pageCount) page\(pageCount == 1 ? "" : "s") scanned").font(HandyFont.bodyStrong)
-                ShareLink(item: pdfURL) { Label("Share PDF", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                // Hero: horizontal strip of page thumbnails with a page-count badge.
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: HandySpacing.s8) {
+                        ForEach(Array(pageImages.enumerated()), id: \.offset) { i, img in
+                            ZStack(alignment: .topTrailing) {
+                                Image(uiImage: img).resizable().scaledToFit()
+                                    .frame(width: 72, height: 96)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                    .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(HandyColor.border))
+                                if i == 0 {
+                                    Text("\(pageCount)").font(HandyFont.micro).foregroundStyle(.white)
+                                        .padding(.horizontal, 8).padding(.vertical, 3)
+                                        .background(HandyColor.accent, in: Capsule())
+                                        .offset(x: 6, y: -6)
+                                }
+                            }
+                        }
+                    }.padding(.vertical, 4)
+                }
+                ShareLink(item: pdfURL) {
+                    Label("Share PDF · \(ByteCountFormatter.string(fromByteCount: Int64(pdfBytes), countStyle: .file))",
+                          systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                }.secondaryButton()
             }
         }
         .fullScreenCover(isPresented: $showScanner) {
@@ -25,6 +49,8 @@ struct DocScannerView: View {
                 for (i, img) in images.enumerated() { if let p = PDFPage(image: img) { pdf.insert(p, at: i) } }
                 let url = FileManager.default.temporaryDirectory.appendingPathComponent("Scan-\(Int(Date().timeIntervalSince1970)).pdf")
                 pdf.write(to: url); pdfURL = url; pageCount = images.count
+                pageImages = images
+                pdfBytes = pdf.dataRepresentation()?.count ?? 0
                 Interstitials.shared.showIfReady()
             }.ignoresSafeArea()
         }

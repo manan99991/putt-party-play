@@ -4,7 +4,9 @@ import SwiftUI
 struct HandyToolsApp: App {
     @StateObject private var store = StoreManager.shared
 
-    init() { AdsBootstrap.start(); Task { @MainActor in Interstitials.shared.preload() } }
+    // AdMob init and the interstitial preload are deferred until after the first frame
+    // (prompt 1: cold-start work). They fire once, from a .task on the root view below.
+    @State private var adsStarted = false
 
     @State private var showOnboarding = !OnboardingFlag.seen && Launch.route == nil
     @State private var onboardingPage = 0
@@ -24,6 +26,15 @@ struct HandyToolsApp: App {
             .onAppear {
                 if let r = Launch.route, r.hasPrefix("onboarding") { onboardingPage = Int(r.dropFirst("onboarding".count)).map { $0 - 1 } ?? 0; showOnboarding = true }
             }
+            .task {
+                // First frame has rendered by the time this runs; now it's safe to pay the
+                // ad SDK costs off the critical path. Runs exactly once per launch.
+                if !adsStarted {
+                    await MainActor.run { adsStarted = true }
+                    AdsBootstrap.start()
+                    await MainActor.run { Interstitials.shared.preload() }
+                }
+            }
         }
     }
 }
@@ -34,21 +45,41 @@ struct Tool: Identifiable {
     let name: String
     let blurb: String
     let icon: String
-    let view: () -> AnyView
 }
 
 @MainActor let TOOLS: [Tool] = [
-    Tool(id: "alarm", name: "Alarm Pro", blurb: "Your own snooze length, limits, sounds", icon: "alarm.fill") { AnyView(AlarmProView()) },
-    Tool(id: "clips", name: "Multi-Clipboard", blurb: "Stack copies, paste any from the keyboard", icon: "doc.on.clipboard.fill") { AnyView(ClipboardView()) },
-    Tool(id: "flash", name: "Flashlight Dimmer", blurb: "Brightness slider, SOS, strobe", icon: "flashlight.on.fill") { AnyView(FlashlightView()) },
-    Tool(id: "webclip", name: "Web → Home", blurb: "Any link becomes a home-screen icon", icon: "square.and.arrow.down.on.square.fill") { AnyView(WebClipView()) },
-    Tool(id: "sticky", name: "Sticky Note", blurb: "One note, home + lock screen widget", icon: "note.text") { AnyView(StickyNotesView()) },
-    Tool(id: "ocr", name: "Text from Image", blurb: "Copy every word in a screenshot", icon: "text.viewfinder") { AnyView(TextFromImageView()) },
-    Tool(id: "scan", name: "Doc Scanner", blurb: "Scan pages, share as PDF", icon: "doc.viewfinder.fill") { AnyView(DocScannerView()) },
-    Tool(id: "db", name: "Decibel Meter", blurb: "How loud is it, really?", icon: "waveform") { AnyView(DecibelMeterView()) },
-    Tool(id: "exif", name: "Photo Metadata", blurb: "See it, strip it before sharing", icon: "photo.badge.exclamationmark") { AnyView(ExifView()) },
-    Tool(id: "qr", name: "QR Tools", blurb: "Scan, or make Wi‑Fi / link codes", icon: "qrcode.viewfinder") { AnyView(QRToolsView()) },
+    Tool(id: "alarm", name: "Alarm Pro", blurb: "Your own snooze length, limits, sounds", icon: "alarm.fill"),
+    Tool(id: "clips", name: "Multi-Clipboard", blurb: "Stack copies, paste any from the keyboard", icon: "doc.on.clipboard.fill"),
+    Tool(id: "flash", name: "Flashlight Dimmer", blurb: "Brightness slider, SOS, strobe", icon: "flashlight.on.fill"),
+    Tool(id: "webclip", name: "Web → Home", blurb: "Any link becomes a home-screen icon", icon: "square.and.arrow.down.on.square.fill"),
+    Tool(id: "sticky", name: "Sticky Note", blurb: "One note, home + lock screen widget", icon: "note.text"),
+    Tool(id: "ocr", name: "Text from Image", blurb: "Copy every word in a screenshot", icon: "text.viewfinder"),
+    Tool(id: "scan", name: "Doc Scanner", blurb: "Scan pages, share as PDF", icon: "doc.viewfinder.fill"),
+    Tool(id: "db", name: "Decibel Meter", blurb: "How loud is it, really?", icon: "waveform"),
+    Tool(id: "exif", name: "Photo Metadata", blurb: "See it, strip it before sharing", icon: "photo.badge.exclamationmark"),
+    Tool(id: "qr", name: "QR Tools", blurb: "Scan, or make Wi‑Fi / link codes", icon: "qrcode.viewfinder"),
 ]
+
+/// Tool routing without AnyView (prompt 1): enum-free string ids stay the
+/// route contract; this @ViewBuilder switch is the single destination map.
+struct ToolDestination: View {
+    let id: String
+    var body: some View {
+        switch id {
+        case "alarm": AlarmProView()
+        case "clips": ClipboardView()
+        case "flash": FlashlightView()
+        case "webclip": WebClipView()
+        case "sticky": StickyNotesView()
+        case "ocr": TextFromImageView()
+        case "scan": DocScannerView()
+        case "db": DecibelMeterView()
+        case "exif": ExifView()
+        case "qr": QRToolsView()
+        default: EmptyView()
+        }
+    }
+}
 
 enum Launch {
     static var args: [String] { ProcessInfo.processInfo.arguments }
@@ -92,8 +123,8 @@ struct HomeView: View {
                         .padding(.top, HandySpacing.s8)
                         .padding(.bottom, HandySpacing.s12)
                         LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
-                            ForEach(TOOLS) { t in
-                                NavigationLink(value: t.id) { ToolCard(tool: t) }.buttonStyle(ToolCardPress())
+                            ForEach(Array(TOOLS.enumerated()), id: \.element.id) { idx, t in
+                                NavigationLink(value: t.id) { ToolCard(tool: t).handyListEntrance(index: idx) }.buttonStyle(ToolCardPress())
                             }
                         }
                         .padding(.horizontal, HandySpacing.gutter)
@@ -108,7 +139,8 @@ struct HomeView: View {
                 case "settings": SettingsView().toolbarRole(.editor)
                 case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
                 case "privacy": PrivacyView().toolbarRole(.editor)
-                default: (TOOLS.first { $0.id == id }?.view() ?? AnyView(EmptyView())).toolbarRole(.editor)
+                case "ring": AlarmRingPreviewView() // CI screenshot route: static ring preview
+                default: ToolDestination(id: id).toolbarRole(.editor)
                 }
             }
             .toolbar(.hidden, for: .navigationBar)

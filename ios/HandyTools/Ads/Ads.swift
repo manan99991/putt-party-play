@@ -9,8 +9,26 @@ enum AdUnits {
 }
 
 enum AdsBootstrap {
+    private static var started = false
+
     static func start() {
-        MobileAds.shared.start()
+        guard !started else { return }
+        started = true
+        // Defer the SDK start until after the first frame: the first foreground activation
+        // lands right after first render, so cold start stays under 800ms with no ad SDK
+        // on the main thread before first draw.
+        // MEASURE: cold-start timing — CI measures with the xctrace 'App Launch' template.
+        if ProcessInfo.processInfo.arguments.contains("-screenshots") {
+            MobileAds.shared.start()
+        } else {
+            var token: NSObjectProtocol?
+            token = NotificationCenter.default.addObserver(
+                forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main
+            ) { _ in
+                if let token { NotificationCenter.default.removeObserver(token) }
+                MobileAds.shared.start()
+            }
+        }
         // ATT prompt after a short delay so it doesn't collide with the first-launch UI.
         if ProcessInfo.processInfo.arguments.contains("-screenshots") { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {

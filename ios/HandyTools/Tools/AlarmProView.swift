@@ -54,6 +54,17 @@ final class AlarmProModel: ObservableObject {
     }
 
     /// Pushes one SavedAlarm into AlarmKit (or cancels it if disabled).
+    ///
+    /// How the shared alarm-ring spec maps onto AlarmKit, as far as the API allows:
+    /// - Background: AlarmKit draws the system alert itself; the app cannot force the #0E0E12
+    ///   ring background there. The in-app ring preview (`AlarmRingPreviewView`, route `ring`)
+    ///   renders the dark layout for CI screenshots.
+    /// - Dismiss gesture: not expressible — AlarmKit exposes a plain `stopButton`, so Stop is a
+    ///   single tap. Android instead requires a 400ms long-press (with progress fill) or a
+    ///   swipe-right, so a sleepy tap can't kill it.
+    /// - Snooze count: AlarmKit's model has no remaining-snooze count, so the secondary button
+    ///   reads "Snooze Nm" without Android's "(N left)" suffix.
+    /// - Math-to-dismiss: not expressible in AlarmKit; Android-only.
     func sync(_ a: SavedAlarm) async {
         try? AlarmManager.shared.cancel(id: a.id)
         guard a.enabled else { return }
@@ -75,7 +86,8 @@ final class AlarmProModel: ObservableObject {
         let attributes = AlarmAttributes(
             presentation: AlarmPresentation(alert: alert, countdown: countdown),
             metadata: HTAlarmMetadata(label: a.label),
-            tintColor: Color(red: 0.12, green: 0.37, blue: 1.0))
+            // Single-accent token, not a hardcoded RGB: this is the same #1F5EFF as the UI.
+            tintColor: HandyColor.accent)
 
         // postAlert = the snooze length. This is the knob the Clock app hides.
         let duration = Alarm.CountdownDuration(preAlert: nil, postAlert: TimeInterval(a.snoozeMinutes * 60))

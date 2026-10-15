@@ -1,6 +1,7 @@
 import SwiftUI
 import PhotosUI
 import ImageIO
+import MapKit
 import UniformTypeIdentifiers
 
 /// Shows the hidden data inside a photo (GPS, device, time) and makes a clean copy with none of it.
@@ -10,6 +11,8 @@ struct ExifView: View {
     @State private var image: UIImage?
     @State private var rows: [(String, String)] = []
     @State private var cleanURL: URL?
+    @State private var coordinate: CLLocationCoordinate2D?
+    @State private var mapImage: UIImage?
 
     var body: some View {
         ToolPage(title: "Photo Metadata", subtitle: "See where and when a photo was taken — and strip that before you send it to a stranger.") {
@@ -18,13 +21,42 @@ struct ExifView: View {
             if let image { Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 200).clipShape(RoundedRectangle(cornerRadius: 12)) }
             if !rows.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    ForEach(rows, id: \.0) { r in HStack(alignment: .top) { Text(r.0).foregroundStyle(HandyColor.textSecondary).frame(width: 110, alignment: .leading); Text(r.1).foregroundStyle(HandyColor.textPrimary) }.font(.system(size: 15)) }
+                    ForEach(Array(rows.enumerated()), id: \.offset) { _, r in
+                        HStack(alignment: .top) { Text(r.0).foregroundStyle(HandyColor.textSecondary).frame(width: 110, alignment: .leading); Text(r.1).foregroundStyle(HandyColor.textPrimary) }.font(.system(size: 15))
+                        // Hero: when location exists, a 120pt static MapKit snapshot with a pin,
+                        // right under the location row — the "oh" moment that makes people strip it.
+                        if r.0.contains("Location"), let mapImage {
+                            Image(uiImage: mapImage).resizable().aspectRatio(contentMode: .fill)
+                                .frame(height: 120).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                        }
+                    }
                 }.cardStyle(padding: HandySpacing.s12)
                 Button { strip() } label: { Label("Make a clean copy (no metadata)", systemImage: "eraser").frame(maxWidth: .infinity) }.secondaryButton()
                 if let cleanURL { ShareLink(item: cleanURL) { Label("Share clean copy", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton() }
             }
         }
         .onChange(of: pick) { _, item in Task { await load(item) } }
+        .task(id: coordinate?.latitude) {
+            guard let c = coordinate else { mapImage = nil; return }
+            mapImage = await ExifView.mapSnapshot(center: c)
+        }
+    }
+
+    /// Static 120pt-tall map snapshot with an accent pin at the photo's GPS point.
+    private static func mapSnapshot(center: CLLocationCoordinate2D) async -> UIImage? {
+        let opts = MKMapSnapshotter.Options()
+        opts.region = MKCoordinateRegion(center: center, latitudinalMeters: 2500, longitudinalMeters: 2500)
+        opts.size = CGSize(width: 640, height: 240)
+        guard let shot = try? await MKMapSnapshotter(options: opts).start() else { return nil }
+        return UIGraphicsImageRenderer(size: opts.size).image { _ in
+            shot.image.draw(at: .zero)
+            let p = shot.point(for: center)
+            let r: CGFloat = 11
+            UIColor(HandyColor.accent).setFill()
+            UIBezierPath(ovalIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)).fill()
+            UIColor.white.setStroke()
+            UIBezierPath(ovalIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)).stroke()
+        }
     }
 
     private func load(_ item: PhotosPickerItem?) async {
@@ -43,7 +75,8 @@ struct ExifView: View {
             let ns = (gps[kCGImagePropertyGPSLatitudeRef as String] as? String) == "S" ? -1.0 : 1.0
             let ew = (gps[kCGImagePropertyGPSLongitudeRef as String] as? String) == "W" ? -1.0 : 1.0
             r.append(("📍 Location", String(format: "%.5f, %.5f", lat * ns, lon * ew)))
-        } else { r.append(("Location", "none")) }
+            coordinate = CLLocationCoordinate2D(latitude: lat * ns, longitude: lon * ew)
+        } else { r.append(("Location", "none")); coordinate = nil }
         if let s = tiff[kCGImagePropertyTIFFSoftware as String] { r.append(("Software", "\(s)")) }
         rows = r
     }

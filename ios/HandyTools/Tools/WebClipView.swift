@@ -23,6 +23,21 @@ struct WebClipView: View {
                 if loading { ProgressView() }
             }
             if icon != nil || !name.isEmpty {
+                // Hero: the result as a real home-screen icon mock — the fetched favicon in a
+                // 60pt rounded square on a blurred-wallpaper tile, name under it in launcher label style.
+                VStack(spacing: HandySpacing.s8) {
+                    ZStack {
+                        LinearGradient(colors: [HandyColor.accent.opacity(0.9), HandyColor.accentPressed],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing)
+                            .frame(width: 160, height: 160)
+                            .clipShape(RoundedRectangle(cornerRadius: 36, style: .continuous))
+                        LinearGradient(colors: [.white.opacity(0.28), .clear], startPoint: .top, endPoint: .bottom)
+                            .frame(width: 160, height: 160).blur(radius: 24)
+                            .clipShape(RoundedRectangle(cornerRadius: 36, style: .continuous))
+                        if let icon { Image(uiImage: icon).resizable().frame(width: 60, height: 60).clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous)) }
+                    }
+                    Text(name.isEmpty ? " " : name).font(.system(size: 12)).foregroundStyle(HandyColor.textPrimary)
+                }.frame(maxWidth: .infinity)
                 HStack(spacing: HandySpacing.s12) {
                     if let icon { Image(uiImage: icon).resizable().frame(width: 60, height: 60).clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous)) }
                     TextField("Name", text: $name).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous)).overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
@@ -88,6 +103,7 @@ struct WebClipView: View {
         try? data.write(to: file)
         profileURL = file
         status = "ready"
+        HandyHaptics.success()
         // Hand the file to the system; tapping it from Files triggers the profile installer.
         let av = UIActivityViewController(activityItems: [file], applicationActivities: nil)
         UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController }.first?

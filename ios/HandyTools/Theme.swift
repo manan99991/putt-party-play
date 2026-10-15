@@ -52,6 +52,31 @@ enum HandyMotion {
     static let pressScale: CGFloat = 0.98
 }
 
+// Motion additions (prompt 1): enter/exit curves, sheet timing, bubble spring spec,
+// list-item stagger timing, reduce-motion crossfade, haptics. No existing token values changed.
+extension HandyMotion {
+    /// Ease-out for enter, ease-in for exit. Things slide and fade; they never bounce.
+    static var enter: Animation { .easeOut(duration: base) }
+    static var exit: Animation { .easeIn(duration: base) }
+    static var sheet: Animation { .easeOut(duration: slow) }
+    static var crossfade: Animation { .easeOut(duration: fast) }
+    /// List items: fade + 8pt slide, staggered 30ms, max 6 staggered.
+    static func listDelay(index: Int) -> Double { Double(min(index, 5)) * 0.03 }
+    /// Floating-bubble snap spring: damping ratio 0.8 (stiffness 100 / damping 16 ≈ ζ 0.8).
+    /// Overshoot is capped at 2pt at the call site; the bubble dims to 70% after 3s idle.
+    static let bubbleSpring: Animation = .interpolatingSpring(stiffness: 100, damping: 16)
+    static let bubbleIdleDimDelay: Double = 3.0
+    static let bubbleDimOpacity: Double = 0.7
+    static let listSlide: CGFloat = 8
+}
+
+/** Haptics: light on chip select/toggle, medium on clip saved, success on "Added to home screen". */
+enum HandyHaptics {
+    static func light() { UIImpactFeedbackGenerator(style: .light).impactOccurred() }
+    static func medium() { UIImpactFeedbackGenerator(style: .medium).impactOccurred() }
+    static func success() { UINotificationFeedbackGenerator().notificationOccurred(.success) }
+}
+
 // ---------------------------------------------------------------------------------------------
 // Components
 // ---------------------------------------------------------------------------------------------
