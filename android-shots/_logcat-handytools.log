@@ -1,300 +1,300 @@
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d455d8c com.android.simappdialog.auto_generated_rro_product__/10030} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f51acd5 com.android.htmlviewer/10115} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{a2dacea com.google.android.health.connect.backuprestore/10180} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{ab0c678 com.android.systemui.auto_generated_rro_product__/10031} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{28d4151 com.google.android.soundpicker/10137} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5b1adb6 com.google.android.marvin.talkbackoverlay/10077} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{589ab7 com.google.android.configupdater/10129} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{567d224 com.android.internal.emulation.pixel_3a_xl/10044} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b13a18d com.android.internal.emulation.pixel_6_pro/10018} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2a2ef42 com.android.internal.emulation.pixel_7_pro/10004} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{3522b53 com.android.internal.emulation.pixel_8_pro/10058} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{861ec90 com.android.internal.emulation.pixel_3a/10053} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f25c989 com.android.internal.emulation.pixel_4a/10011} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f74bd8e com.android.internal.emulation.pixel_6a/10023} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{4a29af com.android.internal.emulation.pixel_7a/10033} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{4a141bc com.google.android.overlay.googlewebview/10049} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e187545 com.google.android.hotspot2.osulogin/10184} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c83249a com.android.simappdialog/10112} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{219b1cb com.android.internal.display.cutout.emulation.hole/10073} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{71ebda8 com.android.internal.display.cutout.emulation.tall/10065} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{dd020c1 com.android.internal.systemui.navbar.threebutton/10068} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{1def066 com.android.systemui.auto_generated_rro_vendor__/10076} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e0f9fa7 com.google.android.deskclock/10153} BLOCKED
-10-15 21:38:14.380   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{1760c54 com.android.internal.systemui.navbar.twobutton/10020} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2da7e3d com.google.android.as/10125} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c50580a com.google.android.gm/10144} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{3fd07fd com.android.internal.systemui.navbar.gestural_extra_wide_back/10045} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5d9acf2 com.android.systemui.emulation.pixel_3/10015} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{58c8f43 com.android.systemui.emulation.pixel_4/10037} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{15199c0 com.android.systemui.emulation.pixel_5/10071} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{51a63e com.android.systemui.emulation.pixel_6/10074} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{55edc9f com.android.systemui.emulation.pixel_7/10072} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{29691ec com.android.systemui.emulation.pixel_8/10070} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{31a39b5 com.android.nfc.auto_generated_rro_product__/10027} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6bde84a com.android.printspooler/10104} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{edea3bb com.android.emergency.auto_generated_rro_product__/10041} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{850e0d8 com.google.android.connectivity.resources.goldfish.overlay/10079} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e01bc31 com.android.dreams.basic/10103} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{cfa3f16 com.google.android.networkstack.tethering.emulator/10022} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6c9c097 com.android.providers.settings.auto_generated_rro_product__/10002} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{85f3284 com.google.android.as.oss/10122} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{804ea6d com.android.traceur.auto_generated_rro_product__/10005} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{7dcb9dd com.google.android.devicelockcontroller/10189} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5dfcf33 com.android.internal.emulation.pixel_3/10046} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5def2f0 com.android.internal.emulation.pixel_4/10060} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{392c069 com.android.internal.emulation.pixel_5/10012} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6521aee com.android.internal.emulation.pixel_6/10038} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{73e2b8f com.android.internal.emulation.pixel_7/10067} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6584e1c com.android.internal.emulation.pixel_8/10039} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{10dfa25 com.google.android.captiveportallogin/10113} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2c8f7fa com.android.musicfx/10088} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9331b87 com.google.android.apps.maps/10154} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b4f53aa com.google.android.modulemetadata/10147} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{54dab38 com.google.android.markup/10135} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{3270076 com.android.providers.settings.auto_generated_rro_vendor__/10080} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{911f01 com.google.android.rkpdapp/10181} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b8e8364 com.google.android.contacts/10152} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f8c234d com.android.server.telecom.auto_generated_rro_product__/10032} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{bfaae02 com.google.android.overlay.googleconfig/10055} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{24ce313 com.android.bips.auto_generated_rro_product__/10035} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b9ea950 com.google.android.apps.customization.pixel/10143} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e04a749 com.google.android.tag/10082} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e69a84e com.google.android.overlay.permissioncontroller/10003} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e989d6f com.google.android.partnersetup/10124} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9cd0a7c com.google.android.apps.wallpaper.nexus/10141} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d676f05 com.google.android.apps.nexuslauncher/10169} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{bbbfb5a com.google.android.nearby.halfsheet/10175} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{73ba18b com.android.theme.font.notoserifsource/10066} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c1e5268 com.google.android.safetycenter.resources/10186} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{a74f681 com.android.internal.display.cutout.emulation.waterfall/10040} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{fae7326 com.android.internal.systemui.navbar.transparent/10029} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9c0cb67 com.google.android.connectivity.resources/10174} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{dba2d14 com.android.providers.contacts.auto_generated_rro_product__/10019} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{37979bd com.google.android.feedback/10162} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2fe9bb2 com.google.android.printservice.recommendation/10110} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{784b703 com.google.android.apps.photos/10140} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2970680 com.google.android.documentsui/10098} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{548f4b9 com.android.systemui.emulation.pixel_3a_xl/10021} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{ab6c0fe com.android.systemui.emulation.pixel_6_pro/10063} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{111c05f com.android.systemui.emulation.pixel_7_pro/10054} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5a60aac com.android.systemui.emulation.pixel_8_pro/10001} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{bfb2375 com.google.mainline.telemetry/10151} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{39ef0a com.android.carrierconfig.auto_generated_rro_product__/10064} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b3c037b com.android.providers.partnerbookmarks/10101} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{dbf2598 com.android.wallpaper.livepicker/10090} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{fe1f2e3 com.android.providers.telephony.auto_generated_rro_product__/10062} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9c7c4e0 com.android.phone.auto_generated_rro_vendor__/10081} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d4b4399 com.google.mainline.adservices/10136} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{8fa965e com.android.imsserviceentitlement/10117} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{736da3f com.google.android.healthconnect.controller/10179} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{4944f0c com.android.internal.emulation.pixel_2_xl/10016} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2838055 com.android.internal.emulation.pixel_3_xl/10056} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9d5ba6a com.android.internal.emulation.pixel_4_xl/10047} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6c8db5b com.android.internal.emulation.pixel_fold/10006} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9bd4ff8 com.android.bookmarkprovider/10114} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5c8ccd1 com.google.android.overlay.pixelconfigcommon/10014} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f8d1336 com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__/10050} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{cafd237 com.android.systemui.emulation.pixel_3a/10013} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{67373a4 com.android.systemui.emulation.pixel_4a/10000} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{13c650d com.android.systemui.emulation.pixel_6a/10042} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{28f2cc2 com.android.systemui.emulation.pixel_7a/10017} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{863f76e com.google.android.settings.intelligence/10118} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9ad2243 com.google.android.projection.gearhead/10123} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{8462610 com.google.android.uwb.resources/10171} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{59b5765 com.android.cts.ctsshim/10177} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5d74509 com.google.android.wifi.resources/10182} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{1a7530e com.google.android.wifi.dialog/10183} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{a60d12f com.google.android.apps.wallpaper/10161} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{44f933c com.google.android.odad/10121} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{12628c5 com.android.settings.auto_generated_rro_product__/10028} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b09921a com.android.internal.systemui.navbar.gestural/10051} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{531c392 com.google.android.apps.youtube.music/10156} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{7b3514b com.android.bluetoothmidiservice/10106} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{520a728 com.android.storagemanager.auto_generated_rro_product__/10026} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2c58c41 com.google.android.cellbroadcastreceiver/10185} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b6d0dd4 com.android.phone.auto_generated_rro_product__/10061} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d9dab7d android.auto_generated_rro_product__/10069} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6104a72 com.android.internal.systemui.navbar.gestural_narrow_back/10052} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{de8279 com.google.android.inputmethod.latin/10146} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d149bbe android.auto_generated_rro_vendor__/10075} BLOCKED
-10-15 21:38:14.381   519  1919 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c2e641f com.google.android.apps.restore/10120} BLOCKED
-10-15 21:38:14.391 10573 10573 W .handytools.app: Accessing hidden method Landroid/os/Trace;->isTagEnabled(J)Z (unsupported, reflection, allowed)
-10-15 21:38:14.392 10573 10573 W .handytools.app: Accessing hidden method Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V (unsupported, reflection, allowed)
-10-15 21:38:14.392 10573 10573 W .handytools.app: Accessing hidden method Landroid/os/Trace;->traceEnd(J)V (unsupported, reflection, allowed)
-10-15 21:38:14.392 10573 10573 W .handytools.app: Accessing hidden method Landroid/os/Trace;->asyncTraceBegin(JLjava/lang/String;I)V (unsupported, reflection, allowed)
-10-15 21:38:14.392 10573 10573 W .handytools.app: Accessing hidden method Landroid/os/Trace;->asyncTraceEnd(JLjava/lang/String;I)V (unsupported, reflection, allowed)
-10-15 21:38:14.405 10573 10631 I cr_VariationsUtils: Failed reading seed file "/data/user/0/com.handytools.app/app_webview/variations_seed_new"
-10-15 21:38:14.441   519   547 I ActivityManager: Start proc 10634:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i25 for  {com.handytools.app/org.chromium.content.app.SandboxedProcessService0:0}
-10-15 21:38:14.485   519  1919 D ConnectivityService: requestNetwork for uid/pid:10192/10573 activeRequest: null callbackRequest: 328 [NetworkRequest [ REQUEST id=329, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
-10-15 21:38:14.486   519   744 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=329, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
-10-15 21:38:14.486   519   744 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=329, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
-10-15 21:38:14.486   519   744 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=329, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
-10-15 21:38:14.486   519   744 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=329, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
-10-15 21:38:14.584   519   900 D ConnectivityService: requestNetwork for uid/pid:10192/10573 activeRequest: null callbackRequest: 331 [NetworkRequest [ REQUEST id=332, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
-10-15 21:38:14.590   519   744 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=332, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
-10-15 21:38:14.590   519   744 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=332, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
-10-15 21:38:14.590   519   744 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=332, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
-10-15 21:38:14.590   519   744 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=332, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
-10-15 21:38:14.610 10573 10611 W ziparchive: Unable to open '/data/user/0/com.handytools.app/app_pccache/6/8EA12D10E7E5AC8881B8D236F0E49DCB45B786B5/pcam.dm': No such file or directory
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c9ce1eb com.android.cts.priv.ctsshim/10176} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6cda72e com.google.android.youtube/10139} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{263fb48 com.android.internal.display.cutout.emulation.corner/10025} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{cd21de1 com.android.internal.display.cutout.emulation.double/10048} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2c0b3b4 com.google.android.googlequicksearchbox/10131} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{7977706 com.google.android.onetimeinitializer/10126} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{665b1c7 com.google.android.ext.shared/10100} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c6183f4 com.android.internal.systemui.navbar.gestural_wide_back/10007} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e71b71d com.android.virtualmachine.res/10170} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9a3fd92 com.google.android.federatedcompute/10190} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{301a363 com.android.managedprovisioning.auto_generated_rro_product__/10024} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{90ceb60 com.android.carrierconfig.auto_generated_rro_vendor__/10078} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{677a819 com.android.systemui.emulation.pixel_3_xl/10034} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{28060de com.android.systemui.emulation.pixel_4_xl/10059} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{7e112bf com.android.systemui.emulation.pixel_fold/10009} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d455d8c com.android.simappdialog.auto_generated_rro_product__/10030} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f51acd5 com.android.htmlviewer/10115} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{a2dacea com.google.android.health.connect.backuprestore/10180} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{ab0c678 com.android.systemui.auto_generated_rro_product__/10031} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{28d4151 com.google.android.soundpicker/10137} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5b1adb6 com.google.android.marvin.talkbackoverlay/10077} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{589ab7 com.google.android.configupdater/10129} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{567d224 com.android.internal.emulation.pixel_3a_xl/10044} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b13a18d com.android.internal.emulation.pixel_6_pro/10018} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2a2ef42 com.android.internal.emulation.pixel_7_pro/10004} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{3522b53 com.android.internal.emulation.pixel_8_pro/10058} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{861ec90 com.android.internal.emulation.pixel_3a/10053} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f25c989 com.android.internal.emulation.pixel_4a/10011} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f74bd8e com.android.internal.emulation.pixel_6a/10023} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{4a29af com.android.internal.emulation.pixel_7a/10033} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{4a141bc com.google.android.overlay.googlewebview/10049} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e187545 com.google.android.hotspot2.osulogin/10184} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c83249a com.android.simappdialog/10112} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{219b1cb com.android.internal.display.cutout.emulation.hole/10073} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{71ebda8 com.android.internal.display.cutout.emulation.tall/10065} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{dd020c1 com.android.internal.systemui.navbar.threebutton/10068} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{1def066 com.android.systemui.auto_generated_rro_vendor__/10076} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e0f9fa7 com.google.android.deskclock/10153} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{1760c54 com.android.internal.systemui.navbar.twobutton/10020} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2da7e3d com.google.android.as/10125} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c50580a com.google.android.gm/10144} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{3fd07fd com.android.internal.systemui.navbar.gestural_extra_wide_back/10045} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5d9acf2 com.android.systemui.emulation.pixel_3/10015} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{58c8f43 com.android.systemui.emulation.pixel_4/10037} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{15199c0 com.android.systemui.emulation.pixel_5/10071} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{51a63e com.android.systemui.emulation.pixel_6/10074} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{55edc9f com.android.systemui.emulation.pixel_7/10072} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{29691ec com.android.systemui.emulation.pixel_8/10070} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{31a39b5 com.android.nfc.auto_generated_rro_product__/10027} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6bde84a com.android.printspooler/10104} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{edea3bb com.android.emergency.auto_generated_rro_product__/10041} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{850e0d8 com.google.android.connectivity.resources.goldfish.overlay/10079} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e01bc31 com.android.dreams.basic/10103} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{cfa3f16 com.google.android.networkstack.tethering.emulator/10022} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6c9c097 com.android.providers.settings.auto_generated_rro_product__/10002} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{85f3284 com.google.android.as.oss/10122} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{804ea6d com.android.traceur.auto_generated_rro_product__/10005} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{7dcb9dd com.google.android.devicelockcontroller/10189} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5dfcf33 com.android.internal.emulation.pixel_3/10046} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5def2f0 com.android.internal.emulation.pixel_4/10060} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{392c069 com.android.internal.emulation.pixel_5/10012} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6521aee com.android.internal.emulation.pixel_6/10038} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{73e2b8f com.android.internal.emulation.pixel_7/10067} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6584e1c com.android.internal.emulation.pixel_8/10039} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{10dfa25 com.google.android.captiveportallogin/10113} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2c8f7fa com.android.musicfx/10088} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9331b87 com.google.android.apps.maps/10154} BLOCKED
-10-15 21:38:14.611   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b4f53aa com.google.android.modulemetadata/10147} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{54dab38 com.google.android.markup/10135} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{3270076 com.android.providers.settings.auto_generated_rro_vendor__/10080} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{911f01 com.google.android.rkpdapp/10181} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b8e8364 com.google.android.contacts/10152} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f8c234d com.android.server.telecom.auto_generated_rro_product__/10032} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{bfaae02 com.google.android.overlay.googleconfig/10055} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{24ce313 com.android.bips.auto_generated_rro_product__/10035} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b9ea950 com.google.android.apps.customization.pixel/10143} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e04a749 com.google.android.tag/10082} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e69a84e com.google.android.overlay.permissioncontroller/10003} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{e989d6f com.google.android.partnersetup/10124} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9cd0a7c com.google.android.apps.wallpaper.nexus/10141} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d676f05 com.google.android.apps.nexuslauncher/10169} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{bbbfb5a com.google.android.nearby.halfsheet/10175} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{73ba18b com.android.theme.font.notoserifsource/10066} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c1e5268 com.google.android.safetycenter.resources/10186} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{a74f681 com.android.internal.display.cutout.emulation.waterfall/10040} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{fae7326 com.android.internal.systemui.navbar.transparent/10029} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9c0cb67 com.google.android.connectivity.resources/10174} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{dba2d14 com.android.providers.contacts.auto_generated_rro_product__/10019} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{37979bd com.google.android.feedback/10162} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2fe9bb2 com.google.android.printservice.recommendation/10110} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{784b703 com.google.android.apps.photos/10140} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2970680 com.google.android.documentsui/10098} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{548f4b9 com.android.systemui.emulation.pixel_3a_xl/10021} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{ab6c0fe com.android.systemui.emulation.pixel_6_pro/10063} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{111c05f com.android.systemui.emulation.pixel_7_pro/10054} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5a60aac com.android.systemui.emulation.pixel_8_pro/10001} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{bfb2375 com.google.mainline.telemetry/10151} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{39ef0a com.android.carrierconfig.auto_generated_rro_product__/10064} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b3c037b com.android.providers.partnerbookmarks/10101} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{dbf2598 com.android.wallpaper.livepicker/10090} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{fe1f2e3 com.android.providers.telephony.auto_generated_rro_product__/10062} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9c7c4e0 com.android.phone.auto_generated_rro_vendor__/10081} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d4b4399 com.google.mainline.adservices/10136} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{8fa965e com.android.imsserviceentitlement/10117} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{736da3f com.google.android.healthconnect.controller/10179} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{4944f0c com.android.internal.emulation.pixel_2_xl/10016} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2838055 com.android.internal.emulation.pixel_3_xl/10056} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9d5ba6a com.android.internal.emulation.pixel_4_xl/10047} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6c8db5b com.android.internal.emulation.pixel_fold/10006} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9bd4ff8 com.android.bookmarkprovider/10114} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5c8ccd1 com.google.android.overlay.pixelconfigcommon/10014} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{f8d1336 com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__/10050} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{cafd237 com.android.systemui.emulation.pixel_3a/10013} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{67373a4 com.android.systemui.emulation.pixel_4a/10000} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{13c650d com.android.systemui.emulation.pixel_6a/10042} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{28f2cc2 com.android.systemui.emulation.pixel_7a/10017} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{863f76e com.google.android.settings.intelligence/10118} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9ad2243 com.google.android.projection.gearhead/10123} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{8462610 com.google.android.uwb.resources/10171} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{59b5765 com.android.cts.ctsshim/10177} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{5d74509 com.google.android.wifi.resources/10182} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{1a7530e com.google.android.wifi.dialog/10183} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{a60d12f com.google.android.apps.wallpaper/10161} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{44f933c com.google.android.odad/10121} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{12628c5 com.android.settings.auto_generated_rro_product__/10028} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b09921a com.android.internal.systemui.navbar.gestural/10051} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{531c392 com.google.android.apps.youtube.music/10156} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{7b3514b com.android.bluetoothmidiservice/10106} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{520a728 com.android.storagemanager.auto_generated_rro_product__/10026} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{2c58c41 com.google.android.cellbroadcastreceiver/10185} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{b6d0dd4 com.android.phone.auto_generated_rro_product__/10061} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d9dab7d android.auto_generated_rro_product__/10069} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{6104a72 com.android.internal.systemui.navbar.gestural_narrow_back/10052} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{de8279 com.google.android.inputmethod.latin/10146} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d149bbe android.auto_generated_rro_vendor__/10075} BLOCKED
-10-15 21:38:14.612   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{c2e641f com.google.android.apps.restore/10120} BLOCKED
-10-15 21:38:14.667 10573 10573 W AdWorker(Defaul: type=1400 audit(0.0:75): avc:  granted  { execute } for  path="/data/data/com.handytools.app/app_pccache/6/8EA12D10E7E5AC8881B8D236F0E49DCB45B786B5/pcam.jar" dev="dm-40" ino=328418 scontext=u:r:untrusted_app:s0:c192,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c192,c256,c512,c768 tclass=file app=com.handytools.app
-10-15 21:38:14.680   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{9331b87 com.google.android.apps.maps/10154} BLOCKED
-10-15 21:38:14.710   519  1918 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d676f05 com.google.android.apps.nexuslauncher/10169} BLOCKED
-10-15 21:38:14.938 10573 10573 W .handytools.app: Method boolean androidx.compose.runtime.snapshots.SnapshotStateList.conditionalUpdate(boolean, kotlin.jvm.functions.Function1) failed lock verification and will run slower.
-10-15 21:38:14.938 10573 10573 W .handytools.app: Common causes for lock verification issues are non-optimized dex code
-10-15 21:38:14.938 10573 10573 W .handytools.app: and incorrect proguard optimizations.
-10-15 21:38:14.939 10573 10573 W .handytools.app: Method boolean androidx.compose.runtime.snapshots.SnapshotStateList.conditionalUpdate$default(androidx.compose.runtime.snapshots.SnapshotStateList, boolean, kotlin.jvm.functions.Function1, int, java.lang.Object) failed lock verification and will run slower.
-10-15 21:38:14.939 10573 10573 W .handytools.app: Method java.lang.Object androidx.compose.runtime.snapshots.SnapshotStateList.mutate(kotlin.jvm.functions.Function1) failed lock verification and will run slower.
-10-15 21:38:14.939 10573 10573 W .handytools.app: Method void androidx.compose.runtime.snapshots.SnapshotStateList.update(boolean, kotlin.jvm.functions.Function1) failed lock verification and will run slower.
-10-15 21:38:14.939 10573 10573 W .handytools.app: Method void androidx.compose.runtime.snapshots.SnapshotStateList.update$default(androidx.compose.runtime.snapshots.SnapshotStateList, boolean, kotlin.jvm.functions.Function1, int, java.lang.Object) failed lock verification and will run slower.
-10-15 21:38:15.031   519   900 I AppsFilter: interaction: PackageSetting{218a492 com.handytools.app/10192} -> PackageSetting{d676f05 com.google.android.apps.nexuslauncher/10169} BLOCKED
-10-15 21:38:15.068   519  1918 D CoreBackPreview: Window{1bfe675 u0 com.handytools.app/com.handytools.app.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@8a40757, mPriority=0, mIsAnimationCallback=false}
-10-15 21:38:15.847   519   900 D CoreBackPreview: Window{1f0e4a6 u0 Splash Screen com.handytools.app EXITING}: Setting back callback null
-10-15 21:38:15.847   519   900 W InputManager-JNI: Input channel object '1f0e4a6 Splash Screen com.handytools.app (client)' was disposed without first being removed with the input manager!
-10-15 21:38:16.028 10573 10573 E AndroidRuntime: Process: com.handytools.app, PID: 10573
-10-15 21:38:16.028 10573 10573 E AndroidRuntime: 	at com.handytools.app.ui.PaywallScreenKt.PaywallContent(PaywallScreen.kt:53)
-10-15 21:38:16.028 10573 10573 E AndroidRuntime: 	at com.handytools.app.ui.PaywallScreenKt$PaywallScreen$1.invoke(PaywallScreen.kt:45)
-10-15 21:38:16.028 10573 10573 E AndroidRuntime: 	at com.handytools.app.ui.PaywallScreenKt$PaywallScreen$1.invoke(PaywallScreen.kt:45)
-10-15 21:38:16.057 10573 10573 W .handytools.app: Attempt to remove non-JNI local reference
-10-15 21:38:16.081   519   900 W ActivityTaskManager:   Force finishing activity com.handytools.app/.MainActivity
-10-15 21:38:16.089   519   537 I ActivityManager: Showing crash dialog for package com.handytools.app u0
-10-15 21:38:16.144   519   537 D CoreBackPreview: Window{bb3ec7a u0 Application Error: com.handytools.app}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.WindowOnBackInvokedDispatcher$OnBackInvokedCallbackWrapper@77cd5a3, mPriority=0, mIsAnimationCallback=false}
-10-15 21:38:16.584   519   539 W ActivityTaskManager: Activity top resumed state loss timeout for ActivityRecord{73254da u0 com.handytools.app/.MainActivity t31 f}}
-10-15 21:38:16.584   519   539 W ActivityTaskManager: Activity pause timeout for ActivityRecord{73254da u0 com.handytools.app/.MainActivity t31 f}}
-10-15 21:38:16.757   519   536 V WindowManager:     info={id=49 t=CLOSE f=0x10 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{7d5880f Task{9b2cbe9 #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0x317e753 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{RemoteToken{e188fd7 Task{e4bd0b #31 type=standard A=10192:com.handytools.app}}} m=CLOSE f=NONE leash=Surface(name=Task=31)/@0xd6fa971 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{547f616 token=android.os.Binder@aa7ef31})/@0x36578d1 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5dd181b com.android.systemui.emulation.pixel_3_xl/10034} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{c5dadb8 com.android.systemui.emulation.pixel_4_xl/10059} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3213791 com.android.systemui.emulation.pixel_fold/10009} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{f3906f6 com.android.simappdialog.auto_generated_rro_product__/10030} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3ab1af7 com.android.htmlviewer/10115} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{41bed64 com.google.android.health.connect.backuprestore/10174} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{190bbcd com.android.systemui.auto_generated_rro_product__/10031} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1669c82 com.google.android.soundpicker/10137} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{aec6f93 com.google.android.marvin.talkbackoverlay/10077} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{f5c7bd0 com.google.android.configupdater/10130} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{afa47c9 com.android.internal.emulation.pixel_3a_xl/10044} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ce5fece com.android.internal.emulation.pixel_6_pro/10018} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2e471ef com.android.internal.emulation.pixel_7_pro/10004} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3d584fc com.android.internal.emulation.pixel_8_pro/10058} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{7569785 com.android.internal.emulation.pixel_3a/10053} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{7e739da com.android.internal.emulation.pixel_4a/10011} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9b03e0b com.android.internal.emulation.pixel_6a/10023} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a73f4e8 com.android.internal.emulation.pixel_7a/10033} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{b6e2701 com.google.android.overlay.googlewebview/10049} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{98f19a6 com.google.android.hotspot2.osulogin/10190} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{822afe7 com.android.simappdialog/10112} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{c077794 com.android.internal.display.cutout.emulation.hole/10073} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{615323d com.android.internal.display.cutout.emulation.tall/10065} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4832a32 com.android.internal.systemui.navbar.threebutton/10068} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{7606383 com.android.systemui.auto_generated_rro_vendor__/10076} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{cae7900 com.google.android.deskclock/10152} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{527b539 com.android.internal.systemui.navbar.twobutton/10020} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{527e259 com.google.android.as/10125} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1faff22 com.google.android.gm/10140} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{202252c com.android.internal.systemui.navbar.gestural_extra_wide_back/10045} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e456bf5 com.android.systemui.emulation.pixel_3/10015} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ef1cd8a com.android.systemui.emulation.pixel_4/10037} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{c50bffb com.android.systemui.emulation.pixel_5/10071} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{26818 com.android.systemui.emulation.pixel_6/10074} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{74dd271 com.android.systemui.emulation.pixel_7/10072} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{6a73856 com.android.systemui.emulation.pixel_8/10070} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e160d7 com.android.nfc.auto_generated_rro_product__/10027} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{8c1edc4 com.android.printspooler/10103} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a9c24ad com.android.emergency.auto_generated_rro_product__/10041} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{27683e2 com.google.android.connectivity.resources.goldfish.overlay/10079} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{b713373 com.android.dreams.basic/10105} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ad22230 com.google.android.networkstack.tethering.emulator/10022} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3035ea9 com.android.providers.settings.auto_generated_rro_product__/10002} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{efcfc2e com.google.android.as.oss/10122} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2193cf com.android.traceur.auto_generated_rro_product__/10005} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a6f315c com.google.android.devicelockcontroller/10184} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{b8a3c65 com.android.internal.emulation.pixel_3/10046} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{360ad3a com.android.internal.emulation.pixel_4/10060} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9cd9deb com.android.internal.emulation.pixel_5/10012} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{16c0748 com.android.internal.emulation.pixel_6/10038} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ee739e1 com.android.internal.emulation.pixel_7/10067} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{11c6306 com.android.internal.emulation.pixel_8/10039} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{be62dc7 com.google.android.captiveportallogin/10113} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1de4ff4 com.android.musicfx/10088} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ca23807 com.google.android.apps.maps/10154} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2bc931d com.google.android.modulemetadata/10146} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{48ba992 com.google.android.markup/10135} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{60ddf63 com.android.providers.settings.auto_generated_rro_vendor__/10080} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a944419 com.google.android.rkpdapp/10179} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{84c64d3 com.google.android.contacts/10155} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{236ccde com.android.server.telecom.auto_generated_rro_product__/10032} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5750ebf com.google.android.overlay.googleconfig/10055} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{40fa98c com.android.bips.auto_generated_rro_product__/10035} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e9c08d5 com.google.android.apps.customization.pixel/10143} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{cded8ea com.google.android.tag/10082} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ff5d7db com.google.android.overlay.permissioncontroller/10003} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1d3d278 com.google.android.partnersetup/10124} BLOCKED
+10-15 21:55:34.976   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2215d51 com.google.android.apps.wallpaper.nexus/10145} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4999b6 com.google.android.apps.nexuslauncher/10169} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4f016b7 com.google.android.nearby.halfsheet/10186} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9af9e24 com.android.theme.font.notoserifsource/10066} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5cd7d8d com.google.android.safetycenter.resources/10170} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ccd9b42 com.android.internal.display.cutout.emulation.waterfall/10040} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{fe56753 com.android.internal.systemui.navbar.transparent/10029} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{75a7890 com.google.android.connectivity.resources/10185} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1a16589 com.android.providers.contacts.auto_generated_rro_product__/10019} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{f9e298e com.google.android.feedback/10162} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{8d525af com.google.android.printservice.recommendation/10110} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{8968dbc com.google.android.apps.photos/10141} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2b1d145 com.google.android.documentsui/10098} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3d7509a com.android.systemui.emulation.pixel_3a_xl/10021} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e586dcb com.android.systemui.emulation.pixel_6_pro/10063} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{31cc9a8 com.android.systemui.emulation.pixel_7_pro/10054} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{8a33cc1 com.android.systemui.emulation.pixel_8_pro/10001} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{849dc66 com.google.mainline.telemetry/10151} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{d48d854 com.android.carrierconfig.auto_generated_rro_product__/10064} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{60758f2 com.android.providers.partnerbookmarks/10100} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{b66cb43 com.android.wallpaper.livepicker/10090} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{58525c0 com.android.providers.telephony.auto_generated_rro_product__/10062} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{db1c2f9 com.android.phone.auto_generated_rro_vendor__/10081} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3ae123e com.google.mainline.adservices/10136} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4a0d89f com.android.imsserviceentitlement/10117} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{476ddec com.google.android.healthconnect.controller/10173} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ec295b5 com.android.internal.emulation.pixel_2_xl/10016} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{175144a com.android.internal.emulation.pixel_3_xl/10056} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{6445fbb com.android.internal.emulation.pixel_4_xl/10047} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5e9ecd8 com.android.internal.emulation.pixel_fold/10006} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1d3d831 com.android.bookmarkprovider/10114} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9f82b16 com.google.android.overlay.pixelconfigcommon/10014} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4cf3c97 com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__/10050} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{47cfe84 com.android.systemui.emulation.pixel_3a/10013} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{cdcc66d com.android.systemui.emulation.pixel_4a/10000} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{62549ed com.android.systemui.emulation.pixel_6a/10042} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4b4e022 com.android.systemui.emulation.pixel_7a/10017} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{39e5095 com.google.android.settings.intelligence/10118} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e6d37c8 com.google.android.projection.gearhead/10123} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a647870 com.google.android.uwb.resources/10187} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{762c869 com.android.cts.ctsshim/10178} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1997e9 com.google.android.wifi.resources/10188} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e64dc6e com.google.android.wifi.dialog/10189} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{72f8f0f com.google.android.apps.wallpaper/10160} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5c6793d com.google.android.odad/10121} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a06532 com.android.settings.auto_generated_rro_product__/10028} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9cc8283 com.android.internal.systemui.navbar.gestural/10051} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9be4538 com.google.android.apps.youtube.music/10156} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{29ac00 com.android.bluetoothmidiservice/10107} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{c266c39 com.android.storagemanager.auto_generated_rro_product__/10026} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e6ba27e com.google.android.cellbroadcastreceiver/10191} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{acac3df com.android.phone.auto_generated_rro_product__/10061} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{d7d882c android.auto_generated_rro_product__/10069} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{bf892f5 com.android.internal.systemui.navbar.gestural_narrow_back/10052} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{6ab911 com.google.android.inputmethod.latin/10142} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{41b688a android.auto_generated_rro_vendor__/10075} BLOCKED
+10-15 21:55:34.977   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e41befb com.google.android.apps.restore/10120} BLOCKED
+10-15 21:55:34.994 10512 10512 W .handytools.app: Accessing hidden method Landroid/os/Trace;->isTagEnabled(J)Z (unsupported, reflection, allowed)
+10-15 21:55:34.995 10512 10512 W .handytools.app: Accessing hidden method Landroid/os/Trace;->traceBegin(JLjava/lang/String;)V (unsupported, reflection, allowed)
+10-15 21:55:34.995 10512 10512 W .handytools.app: Accessing hidden method Landroid/os/Trace;->traceEnd(J)V (unsupported, reflection, allowed)
+10-15 21:55:34.995 10512 10512 W .handytools.app: Accessing hidden method Landroid/os/Trace;->asyncTraceBegin(JLjava/lang/String;I)V (unsupported, reflection, allowed)
+10-15 21:55:34.995 10512 10512 W .handytools.app: Accessing hidden method Landroid/os/Trace;->asyncTraceEnd(JLjava/lang/String;I)V (unsupported, reflection, allowed)
+10-15 21:55:35.008 10512 10567 I cr_VariationsUtils: Failed reading seed file "/data/user/0/com.handytools.app/app_webview/variations_seed_new"
+10-15 21:55:35.039   520   548 I ActivityManager: Start proc 10570:com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0/u0i25 for  {com.handytools.app/org.chromium.content.app.SandboxedProcessService0:0}
+10-15 21:55:35.097   520  1373 D ConnectivityService: requestNetwork for uid/pid:10192/10512 activeRequest: null callbackRequest: 326 [NetworkRequest [ REQUEST id=327, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
+10-15 21:55:35.098   520   745 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=327, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
+10-15 21:55:35.099   520   745 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=327, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
+10-15 21:55:35.099   520   745 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=327, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
+10-15 21:55:35.099   520   745 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=327, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
+10-15 21:55:35.168   520  1758 D ConnectivityService: requestNetwork for uid/pid:10192/10512 activeRequest: null callbackRequest: 329 [NetworkRequest [ REQUEST id=330, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647
+10-15 21:55:35.169   520   745 D WifiNetworkFactory: got request NetworkRequest [ REQUEST id=330, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
+10-15 21:55:35.169   520   745 D UntrustedWifiNetworkFactory: got request NetworkRequest [ REQUEST id=330, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
+10-15 21:55:35.169   520   745 D OemPaidWifiNetworkFactory: got request NetworkRequest [ REQUEST id=330, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
+10-15 21:55:35.170   520   745 D MultiInternetWifiNetworkFactory: got request NetworkRequest [ REQUEST id=330, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED Uid: 10192 RequestorUid: 10192 RequestorPkg: com.handytools.app UnderlyingNetworks: Null] ]
+10-15 21:55:35.183 10512 10547 W ziparchive: Unable to open '/data/user/0/com.handytools.app/app_pccache/6/8EA12D10E7E5AC8881B8D236F0E49DCB45B786B5/pcam.dm': No such file or directory
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{33ba207 com.android.cts.priv.ctsshim/10177} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{81f69bd com.google.android.youtube/10139} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{d37c15d com.android.internal.display.cutout.emulation.corner/10025} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{895dad2 com.android.internal.display.cutout.emulation.double/10048} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9566421 com.google.android.googlequicksearchbox/10132} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{bd92aa0 com.google.android.onetimeinitializer/10126} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e341659 com.google.android.ext.shared/10101} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{cd2d21e com.android.internal.systemui.navbar.gestural_wide_back/10007} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2fccaff com.android.virtualmachine.res/10175} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{bb650cc com.google.android.federatedcompute/10182} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{306bf15 com.android.managedprovisioning.auto_generated_rro_product__/10024} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{755f22a com.android.carrierconfig.auto_generated_rro_vendor__/10078} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5dd181b com.android.systemui.emulation.pixel_3_xl/10034} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{c5dadb8 com.android.systemui.emulation.pixel_4_xl/10059} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3213791 com.android.systemui.emulation.pixel_fold/10009} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{f3906f6 com.android.simappdialog.auto_generated_rro_product__/10030} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3ab1af7 com.android.htmlviewer/10115} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{41bed64 com.google.android.health.connect.backuprestore/10174} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{190bbcd com.android.systemui.auto_generated_rro_product__/10031} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1669c82 com.google.android.soundpicker/10137} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{aec6f93 com.google.android.marvin.talkbackoverlay/10077} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{f5c7bd0 com.google.android.configupdater/10130} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{afa47c9 com.android.internal.emulation.pixel_3a_xl/10044} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ce5fece com.android.internal.emulation.pixel_6_pro/10018} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2e471ef com.android.internal.emulation.pixel_7_pro/10004} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3d584fc com.android.internal.emulation.pixel_8_pro/10058} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{7569785 com.android.internal.emulation.pixel_3a/10053} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{7e739da com.android.internal.emulation.pixel_4a/10011} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9b03e0b com.android.internal.emulation.pixel_6a/10023} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a73f4e8 com.android.internal.emulation.pixel_7a/10033} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{b6e2701 com.google.android.overlay.googlewebview/10049} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{98f19a6 com.google.android.hotspot2.osulogin/10190} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{822afe7 com.android.simappdialog/10112} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{c077794 com.android.internal.display.cutout.emulation.hole/10073} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{615323d com.android.internal.display.cutout.emulation.tall/10065} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4832a32 com.android.internal.systemui.navbar.threebutton/10068} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{7606383 com.android.systemui.auto_generated_rro_vendor__/10076} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{cae7900 com.google.android.deskclock/10152} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{527b539 com.android.internal.systemui.navbar.twobutton/10020} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{527e259 com.google.android.as/10125} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1faff22 com.google.android.gm/10140} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{202252c com.android.internal.systemui.navbar.gestural_extra_wide_back/10045} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e456bf5 com.android.systemui.emulation.pixel_3/10015} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ef1cd8a com.android.systemui.emulation.pixel_4/10037} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{c50bffb com.android.systemui.emulation.pixel_5/10071} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{26818 com.android.systemui.emulation.pixel_6/10074} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{74dd271 com.android.systemui.emulation.pixel_7/10072} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{6a73856 com.android.systemui.emulation.pixel_8/10070} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e160d7 com.android.nfc.auto_generated_rro_product__/10027} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{8c1edc4 com.android.printspooler/10103} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a9c24ad com.android.emergency.auto_generated_rro_product__/10041} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{27683e2 com.google.android.connectivity.resources.goldfish.overlay/10079} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{b713373 com.android.dreams.basic/10105} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ad22230 com.google.android.networkstack.tethering.emulator/10022} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3035ea9 com.android.providers.settings.auto_generated_rro_product__/10002} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{efcfc2e com.google.android.as.oss/10122} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2193cf com.android.traceur.auto_generated_rro_product__/10005} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a6f315c com.google.android.devicelockcontroller/10184} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{b8a3c65 com.android.internal.emulation.pixel_3/10046} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{360ad3a com.android.internal.emulation.pixel_4/10060} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9cd9deb com.android.internal.emulation.pixel_5/10012} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{16c0748 com.android.internal.emulation.pixel_6/10038} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ee739e1 com.android.internal.emulation.pixel_7/10067} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{11c6306 com.android.internal.emulation.pixel_8/10039} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{be62dc7 com.google.android.captiveportallogin/10113} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1de4ff4 com.android.musicfx/10088} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ca23807 com.google.android.apps.maps/10154} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2bc931d com.google.android.modulemetadata/10146} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{48ba992 com.google.android.markup/10135} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{60ddf63 com.android.providers.settings.auto_generated_rro_vendor__/10080} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a944419 com.google.android.rkpdapp/10179} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{84c64d3 com.google.android.contacts/10155} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{236ccde com.android.server.telecom.auto_generated_rro_product__/10032} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5750ebf com.google.android.overlay.googleconfig/10055} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{40fa98c com.android.bips.auto_generated_rro_product__/10035} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e9c08d5 com.google.android.apps.customization.pixel/10143} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{cded8ea com.google.android.tag/10082} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ff5d7db com.google.android.overlay.permissioncontroller/10003} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1d3d278 com.google.android.partnersetup/10124} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2215d51 com.google.android.apps.wallpaper.nexus/10145} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4999b6 com.google.android.apps.nexuslauncher/10169} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4f016b7 com.google.android.nearby.halfsheet/10186} BLOCKED
+10-15 21:55:35.184   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9af9e24 com.android.theme.font.notoserifsource/10066} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5cd7d8d com.google.android.safetycenter.resources/10170} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ccd9b42 com.android.internal.display.cutout.emulation.waterfall/10040} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{fe56753 com.android.internal.systemui.navbar.transparent/10029} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{75a7890 com.google.android.connectivity.resources/10185} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1a16589 com.android.providers.contacts.auto_generated_rro_product__/10019} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{f9e298e com.google.android.feedback/10162} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{8d525af com.google.android.printservice.recommendation/10110} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{8968dbc com.google.android.apps.photos/10141} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{2b1d145 com.google.android.documentsui/10098} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3d7509a com.android.systemui.emulation.pixel_3a_xl/10021} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e586dcb com.android.systemui.emulation.pixel_6_pro/10063} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{31cc9a8 com.android.systemui.emulation.pixel_7_pro/10054} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{8a33cc1 com.android.systemui.emulation.pixel_8_pro/10001} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{849dc66 com.google.mainline.telemetry/10151} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{d48d854 com.android.carrierconfig.auto_generated_rro_product__/10064} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{60758f2 com.android.providers.partnerbookmarks/10100} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{b66cb43 com.android.wallpaper.livepicker/10090} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{58525c0 com.android.providers.telephony.auto_generated_rro_product__/10062} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{db1c2f9 com.android.phone.auto_generated_rro_vendor__/10081} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{3ae123e com.google.mainline.adservices/10136} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4a0d89f com.android.imsserviceentitlement/10117} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{476ddec com.google.android.healthconnect.controller/10173} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ec295b5 com.android.internal.emulation.pixel_2_xl/10016} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{175144a com.android.internal.emulation.pixel_3_xl/10056} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{6445fbb com.android.internal.emulation.pixel_4_xl/10047} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5e9ecd8 com.android.internal.emulation.pixel_fold/10006} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1d3d831 com.android.bookmarkprovider/10114} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9f82b16 com.google.android.overlay.pixelconfigcommon/10014} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4cf3c97 com.android.systemui.accessibility.accessibilitymenu.auto_generated_rro_product__/10050} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{47cfe84 com.android.systemui.emulation.pixel_3a/10013} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{cdcc66d com.android.systemui.emulation.pixel_4a/10000} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{62549ed com.android.systemui.emulation.pixel_6a/10042} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4b4e022 com.android.systemui.emulation.pixel_7a/10017} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{39e5095 com.google.android.settings.intelligence/10118} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e6d37c8 com.google.android.projection.gearhead/10123} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a647870 com.google.android.uwb.resources/10187} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{762c869 com.android.cts.ctsshim/10178} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{1997e9 com.google.android.wifi.resources/10188} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e64dc6e com.google.android.wifi.dialog/10189} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{72f8f0f com.google.android.apps.wallpaper/10160} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{5c6793d com.google.android.odad/10121} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{a06532 com.android.settings.auto_generated_rro_product__/10028} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9cc8283 com.android.internal.systemui.navbar.gestural/10051} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{9be4538 com.google.android.apps.youtube.music/10156} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{29ac00 com.android.bluetoothmidiservice/10107} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{c266c39 com.android.storagemanager.auto_generated_rro_product__/10026} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e6ba27e com.google.android.cellbroadcastreceiver/10191} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{acac3df com.android.phone.auto_generated_rro_product__/10061} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{d7d882c android.auto_generated_rro_product__/10069} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{bf892f5 com.android.internal.systemui.navbar.gestural_narrow_back/10052} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{6ab911 com.google.android.inputmethod.latin/10142} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{41b688a android.auto_generated_rro_vendor__/10075} BLOCKED
+10-15 21:55:35.185   520  1758 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{e41befb com.google.android.apps.restore/10120} BLOCKED
+10-15 21:55:35.242 10512 10512 W AdWorker(Defaul: type=1400 audit(0.0:82): avc:  granted  { execute } for  path="/data/data/com.handytools.app/app_pccache/6/8EA12D10E7E5AC8881B8D236F0E49DCB45B786B5/pcam.jar" dev="dm-40" ino=328777 scontext=u:r:untrusted_app:s0:c192,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c192,c256,c512,c768 tclass=file app=com.handytools.app
+10-15 21:55:35.259   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{ca23807 com.google.android.apps.maps/10154} BLOCKED
+10-15 21:55:35.263   520  1373 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4999b6 com.google.android.apps.nexuslauncher/10169} BLOCKED
+10-15 21:55:35.485 10512 10512 W .handytools.app: Method boolean androidx.compose.runtime.snapshots.SnapshotStateList.conditionalUpdate(boolean, kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+10-15 21:55:35.485 10512 10512 W .handytools.app: Common causes for lock verification issues are non-optimized dex code
+10-15 21:55:35.485 10512 10512 W .handytools.app: and incorrect proguard optimizations.
+10-15 21:55:35.485 10512 10512 W .handytools.app: Method boolean androidx.compose.runtime.snapshots.SnapshotStateList.conditionalUpdate$default(androidx.compose.runtime.snapshots.SnapshotStateList, boolean, kotlin.jvm.functions.Function1, int, java.lang.Object) failed lock verification and will run slower.
+10-15 21:55:35.485 10512 10512 W .handytools.app: Method java.lang.Object androidx.compose.runtime.snapshots.SnapshotStateList.mutate(kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+10-15 21:55:35.485 10512 10512 W .handytools.app: Method void androidx.compose.runtime.snapshots.SnapshotStateList.update(boolean, kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+10-15 21:55:35.485 10512 10512 W .handytools.app: Method void androidx.compose.runtime.snapshots.SnapshotStateList.update$default(androidx.compose.runtime.snapshots.SnapshotStateList, boolean, kotlin.jvm.functions.Function1, int, java.lang.Object) failed lock verification and will run slower.
+10-15 21:55:35.581   520  2480 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4999b6 com.google.android.apps.nexuslauncher/10169} BLOCKED
+10-15 21:55:35.608   520  2480 D CoreBackPreview: Window{fa65001 u0 com.handytools.app/com.handytools.app.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@4c2ac4, mPriority=0, mIsAnimationCallback=false}
+10-15 21:55:36.208   520  2480 D CoreBackPreview: Window{fdd4f50 u0 Splash Screen com.handytools.app EXITING}: Setting back callback null
+10-15 21:55:36.209   520  2480 W InputManager-JNI: Input channel object 'fdd4f50 Splash Screen com.handytools.app (client)' was disposed without first being removed with the input manager!
+10-15 21:55:36.397   520  2480 D CoreBackPreview: Window{5af328a u0 com.handytools.app/com.handytools.app.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@d9e4651, mPriority=0, mIsAnimationCallback=false}
+10-15 21:55:36.501   520   537 W ziparchive: Unable to open '/data/app/~~dER92tZsdAyvlFNNGo_yoQ==/com.handytools.app-Vutpdv1DoomI5B-3sGC2mA==/base.dm': No such file or directory
+10-15 21:55:36.503   520   537 I ActivityTaskManager: Displayed com.handytools.app/.MainActivity for user 0: +2s551ms
+10-15 21:55:36.716   520   586 I ImeTracker: com.handytools.app:3e3b363e: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+10-15 21:55:36.717   520   586 I ImeTracker: com.handytools.app:3e3b363e: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-15 21:55:36.743  1552  1552 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.handytools.app fieldId=0 fieldName=null extras=null}, false)
+10-15 21:55:38.469   520   533 I AppsFilter: interaction: PackageSetting{b8bdd4f com.handytools.app/10192} -> PackageSetting{4999b6 com.google.android.apps.nexuslauncher/10169} BLOCKED
+10-15 21:55:40.863 10512 10679 D ProfileInstaller: Installing profile for com.handytools.app
