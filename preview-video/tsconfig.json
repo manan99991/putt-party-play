@@ -1,0 +1,1 @@
+{"compilerOptions":{"baseUrl":".","esModuleInterop":true,"jsx":"react-jsx","lib":["dom","es2017"],"module":"commonjs","moduleResolution":"node","paths":{"remotion":["./node_modules/remotion"]},"resolveJsonModule":true,"skipLibCheck":true,"strict":true,"target":"ES2017"},"include":["src","remotion.config.ts"]}
