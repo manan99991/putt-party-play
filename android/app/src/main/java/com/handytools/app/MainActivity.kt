@@ -49,6 +49,7 @@ class MainActivity : ComponentActivity() {
         sharedUrl = extractSharedUrl(intent)
         Interstitials.preload(this)
         val routeExtra = intent.getStringExtra("route")
+        if (routeExtra == "homepro") HandyApp.instance.billing.setPreviewPremium(true)
         val startRoute = routeExtra ?: if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
 
         setContent {
@@ -65,6 +66,8 @@ class MainActivity : ComponentActivity() {
                     popExitTransition = { slideOutHorizontally(animationSpec = tween(200, easing = EaseIn)) { (it * 0.06f).toInt() } + fadeOut(animationSpec = tween(200, easing = EaseIn)) }
                 ) {
                     composable("home") { HomeScreen(onOpen = { nav.navigate(it) }) }
+                    // CI screenshot route: home in Pro state (no ad strip) for the store split slide.
+                    composable("homepro") { HomeScreen(onOpen = { nav.navigate(it) }) }
                     composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("setup") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
                     composable("setup") { SetupScreen(onDone = { nav.navigate("home") { popUpTo("setup") { inclusive = true } } }) }
                     composable("settings") { SettingsScreen(onOpen = { nav.navigate(it) }) }

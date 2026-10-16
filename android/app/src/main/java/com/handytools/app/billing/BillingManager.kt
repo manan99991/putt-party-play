@@ -131,6 +131,10 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
         _isPremium.value = v
         PremiumCache.write(ctx, v)
     }
+
+    /** CI screenshot only: flip the in-memory entitlement for the `homepro` capture.
+     *  Never written to PremiumCache, so it never persists past the process. */
+    fun setPreviewPremium(v: Boolean) { _isPremium.value = v }
 }
 
 /** Tiny cache so the first frame after launch doesn't flash a banner at paying users. */

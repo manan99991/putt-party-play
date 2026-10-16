@@ -22,6 +22,11 @@ final class StoreManager: ObservableObject {
     private var updates: Task<Void, Never>?
 
     private init() {
+        // CI screenshot only: the `homepro` route renders Home in Pro state (no ad strip)
+        // for the store split slide. In-memory only; never written to Premium.isActive.
+        if CommandLine.arguments.firstIndex(of: "-route").map({ CommandLine.arguments.indices.contains($0 + 1) && CommandLine.arguments[$0 + 1] == "homepro" }) == true {
+            isPremium = true
+        }
         updates = Task { await listenForTransactions() }
         Task { await load(); await refresh() }
     }
