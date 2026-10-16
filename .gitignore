@@ -7,3 +7,7 @@ ios/HandyTools.xcodeproj/
 ios/build/
 *.log
 .DS_Store
+# Local screenshot pipeline working artifacts (regenerable; not source)
+captures/
+store-screenshots/output/
+store-out/
