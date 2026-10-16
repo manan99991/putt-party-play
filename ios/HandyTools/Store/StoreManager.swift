@@ -21,12 +21,13 @@ final class StoreManager: ObservableObject {
 
     private var updates: Task<Void, Never>?
 
+    // CI screenshot only: the `homepro` route renders Home in Pro state (no ad strip) for the
+    // store split slide. In-memory only; never written to Premium.isActive, and it makes
+    // refresh() a no-op so the real (empty) sim entitlement can't downgrade it back to free.
+    private let previewPremium = CommandLine.arguments.contains("homepro")
+
     private init() {
-        // CI screenshot only: the `homepro` route renders Home in Pro state (no ad strip)
-        // for the store split slide. In-memory only; never written to Premium.isActive.
-        if CommandLine.arguments.firstIndex(of: "-route").map({ CommandLine.arguments.indices.contains($0 + 1) && CommandLine.arguments[$0 + 1] == "homepro" }) == true {
-            isPremium = true
-        }
+        if previewPremium { isPremium = true }
         updates = Task { await listenForTransactions() }
         Task { await load(); await refresh() }
     }
@@ -38,6 +39,7 @@ final class StoreManager: ObservableObject {
     }
 
     func refresh() async {
+        if previewPremium { return }
         var active = false
         for await result in Transaction.currentEntitlements {
             if case .verified(let t) = result, t.productID == Self.productID, t.revocationDate == nil { active = true }
