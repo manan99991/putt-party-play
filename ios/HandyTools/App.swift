@@ -92,7 +92,7 @@ enum Launch {
 struct HomeView: View {
     @EnvironmentObject var store: StoreManager
     @State private var showPaywall = false
-    @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" || $0 == "homepro" ? nil : [$0] } ?? []
+    @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" || $0 == "home" || $0 == "homepro" ? nil : [$0] } ?? []
     private let cols = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
 
     var body: some View {

@@ -61,7 +61,7 @@ jobs:
             xcrun simctl ui "$UDID" appearance $mode
             for r in onboarding onboarding2 onboarding3 setup settings privacy home alarm clips flash webclip sticky ocr scan db exif qr paywall ring homepro; do
               xcrun simctl terminate "$UDID" com.handytools.app 2>/dev/null || true
-              if [ "$r" = home ]; then xcrun simctl launch "$UDID" com.handytools.app -screenshots; else xcrun simctl launch "$UDID" com.handytools.app -screenshots -route $r; fi
+              xcrun simctl launch "$UDID" com.handytools.app -screenshots -route $r
               sleep 5
               xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
             done
