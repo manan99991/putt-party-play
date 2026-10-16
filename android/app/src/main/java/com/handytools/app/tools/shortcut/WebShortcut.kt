@@ -78,7 +78,7 @@ object WebShortcut {
     private fun letterIcon(title: String): Bitmap {
         val size = 192
         val out = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-        val c = Canvas(out); c.drawColor(0xFF1F5EFF.toInt())
+        val c = Canvas(out); c.drawColor(com.handytools.app.ui.HandyColors.AccentArgb)
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE; textSize = 96f; textAlign = Paint.Align.CENTER }
         c.drawText(title.take(1).uppercase(), size / 2f, size / 2f + 34f, p)
         return out

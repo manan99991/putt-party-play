@@ -136,13 +136,7 @@ private fun HomeIconMock(p: PagePreview, label: String) {
             Modifier.size(140.dp)
                 .clip(androidx.compose.foundation.shape.RoundedCornerShape(28.dp))
                 .background(
-                    androidx.compose.ui.graphics.Brush.verticalGradient(
-                        listOf(
-                            androidx.compose.ui.graphics.Color(0xFF2B68FF),
-                            androidx.compose.ui.graphics.Color(0xFF1F5EFF),
-                            androidx.compose.ui.graphics.Color(0xFF1649D6)
-                        )
-                    )
+                    androidx.compose.ui.graphics.Brush.verticalGradient(com.handytools.app.ui.HandyColors.AccentGradient)
                 ),
             contentAlignment = androidx.compose.ui.Alignment.Center
         ) {

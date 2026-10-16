@@ -28,7 +28,7 @@ class OverlayBubble(
     private val ctx: Context,
     iconRes: Int,
     tint: Int = Color.WHITE,
-    bg: Int = 0xFF1F5EFF.toInt(),
+    bg: Int = com.handytools.app.ui.HandyColors.AccentArgb,
     private val onTap: () -> Unit
 ) {
     private val wm = ctx.getSystemService(Context.WINDOW_SERVICE) as WindowManager

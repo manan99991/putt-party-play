@@ -66,6 +66,11 @@ import androidx.compose.ui.unit.sp
 object HandyColors {
     val Accent = Color(0xFF1F5EFF)
     val AccentPressed = Color(0xFF1649D6)
+    // Single source of truth for the brand accent in non-Compose contexts (overlays,
+    // launcher-icon bitmaps) that can't read a Compose Color. Same value as Accent.
+    const val AccentArgb: Int = 0xFF1F5EFF.toInt()
+    // Brand gradient for the generated home-screen icon mock (light → accent → dark).
+    val AccentGradient = listOf(Color(0xFF2B68FF), Color(0xFF1F5EFF), Color(0xFF1649D6))
     val AccentSoftLight = Color(0xFFE8EEFF)
     val AccentSoftDark = Color(0xFF16224A)
     val Danger = Color(0xFFE53935)
