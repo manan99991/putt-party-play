@@ -30,9 +30,11 @@ struct HandyToolsApp: App {
                 // First frame has rendered by the time this runs; now it's safe to pay the
                 // ad SDK costs off the critical path. Runs exactly once per launch.
                 if !adsStarted {
-                    await MainActor.run { adsStarted = true }
-                    AdsBootstrap.start()
-                    await MainActor.run { Interstitials.shared.preload() }
+                    await MainActor.run {
+                        adsStarted = true
+                        AdsBootstrap.start()
+                        Interstitials.shared.preload()
+                    }
                 }
             }
         }
