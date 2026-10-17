@@ -64,7 +64,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792267115502.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792267117389.json
 
-BUILD SUCCESSFUL in 2m 54s
+BUILD SUCCESSFUL in 2m 52s
 38 actionable tasks: 38 executed
