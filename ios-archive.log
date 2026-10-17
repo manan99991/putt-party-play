@@ -1,88 +1,77 @@
-== fastlane.log errors ==
+===== register.log =====
++ echo '### app group'
+### app group
++ fastlane produce group --api_key_path /Users/runner/work/putt-party-play/putt-party-play/ios/asc_key.json -g group.com.tenzy.shared -n 'Tenzy Shared' --team_id 5622NBPJ9W
+[22:09:22]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[22:09:22]: fastlane 2.241.0 (Ruby 3.4.11, gem)
+[22:09:23]: Sending anonymous analytics information
+[22:09:23]: Learn more at https://docs.fastlane.tools/#metrics
+[22:09:23]: No personal or sensitive data is sent.
+[22:09:23]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[31m
+[!] No value found for 'username'[0m
+
+#######################################################################
+# fastlane 2.241.1 is available. You are on 2.241.0.
+# You should use the latest version.
+# Please update using `gem install fastlane`.
+# To see what's new, open https://github.com/fastlane/fastlane/releases.
+#######################################################################
+
+===== fastlane.log errors =====
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:06:04]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
-[22:06:04]: [33mCouldn't find an existing certificate... creating a new one[0m
-[22:06:05]: Verifying the certificate is properly installed locally...
-[22:06:05]: [32mSuccessfully installed certificate D22S7J8SAL[0m
-[22:06:05]: [32mUse signing certificate 'D22S7J8SAL' from now on![0m
-| include_all_certificates            | false             |
-| skip_certificate_verification       | false             |
-| fail_on_name_taken                  | false             |
-[22:06:06]: Provisioning Profile cert_id : '24QVV6RW8U' does not match given cert_id : 'D22S7J8SAL', skipping this one...
-[22:06:06]: Verifying certificates...
-[22:06:06]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[22:06:07]: [33mCreating new provisioning profile for 'com.tenzy.toolkit' with name 'com.tenzy.toolkit AppStore 1792274766' for 'ios' platform[0m
-[22:06:08]: [33mDownloading provisioning profile...[0m
-[22:06:08]: [32mSuccessfully downloaded provisioning profile...[0m
-[22:06:08]: Installing provisioning profile...
-[22:06:08]: Setting Provisioning Profile type to 'app-store'
-| include_all_certificates            | false                      |
-| skip_certificate_verification       | false                      |
-| fail_on_name_taken                  | false                      |
-[22:06:08]: Verifying certificates...
-[22:06:08]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[22:06:08]: Could not find App ID with bundle identifier 'com.tenzy.toolkit.keyboard'
-| CERT_CERTIFICATE_ID       | D22S7J8SAL                                                                                                           |
-[22:06:08]: [31mfastlane finished with errors[0m
-[!] Could not find App with App Identifier 'com.tenzy.toolkit.keyboard'[0m
+[22:09:27]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
+[22:09:27]: [31mCertificate D22S7J8SAL (Manan Shah) can't be found on your local computer[0m
+[22:09:27]: [33mCouldn't find an existing certificate... creating a new one[0m
+[22:09:27]: [31m    38:	    # Distribution certificate (created if the team has none).[0m
+[22:09:27]: [31mfastlane finished with errors[0m
+➡️  [33mStop creating new certificates.[0m
+➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
+and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
+[!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
 
-== tail ==
-| adhoc                               | false                      |
-| developer_id                        | false                      |
-| development                         | false                      |
-| skip_install                        | false                      |
-| force                               | false                      |
-| include_mac_in_profiles             | false                      |
-| offline_profile                     | false                      |
-| ignore_profiles_with_different_name | false                      |
-| cert_id                             | D22S7J8SAL                 |
-| skip_fetch_profiles                 | false                      |
-| include_all_certificates            | false                      |
-| skip_certificate_verification       | false                      |
-| readonly                            | false                      |
-| fail_on_name_taken                  | false                      |
-+-------------------------------------+----------------------------+
+===== fastlane.log tail =====
++-------------------------+--------------------------------------------+
+| api_key                 | API_KEY_REDACTED                           |
+| keychain_path           | /Users/runner/Library/Keychains/tenzyci-db |
+| keychain_password       | KEYCHAIN_PASSWORD_REDACTED                 |
+| development             | false                                      |
+| force                   | false                                      |
+| generate_apple_certs    | true                                       |
+| skip_set_partition_list | false                                      |
+| platform                | ios                                        |
++-------------------------+--------------------------------------------+
 
-[22:06:08]: Creating authorization token for App Store Connect API
-[22:06:08]: Fetching profiles...
-[22:06:08]: Verifying certificates...
-[22:06:08]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[22:06:08]: 
-[22:06:08]: [33m==========================================[0m
-[22:06:08]: Could not find App ID with bundle identifier 'com.tenzy.toolkit.keyboard'
-[22:06:08]: You can easily generate a new App ID on the Developer Portal using 'produce':
-[22:06:08]: 
-[22:06:08]: [33mfastlane produce -u  -a com.tenzy.toolkit.keyboard --skip_itc[0m
-[22:06:08]: 
-[22:06:08]: You will be asked for any missing information, like the full name of your app
-[22:06:08]: If the app should also be created on App Store Connect, remove the [33m--skip_itc[0m from the command above
-[22:06:08]: [33m==========================================[0m
-[22:06:08]: 
-+--------------------------------------------------------------------------------------------------------------------------------------------------+
-|                                                                   [33mLane Context[0m                                                                   |
-+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| DEFAULT_PLATFORM          | ios                                                                                                                  |
-| PLATFORM_NAME             | ios                                                                                                                  |
-| LANE_NAME                 | ios beta                                                                                                             |
-| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                                                                                          |
-| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db"                                                                  |
-| CERT_FILE_PATH            | /Users/runner/work/putt-party-play/putt-party-play/ios/build/certs/D22S7J8SAL.cer                                    |
-| CERT_CERTIFICATE_ID       | D22S7J8SAL                                                                                                           |
-| SIGH_PROFILE_PATH         | /Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision     |
-| SIGH_PROFILE_PATHS        | ["/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision"] |
-| SIGH_UDID                 | 728cf2e6-fc94-4ed4-ab5c-8cec4ceba852                                                                                 |
-| SIGH_UUID                 | 728cf2e6-fc94-4ed4-ab5c-8cec4ceba852                                                                                 |
-| SIGH_NAME                 | com.tenzy.toolkit AppStore 1792274766                                                                                |
-| SIGH_PROFILE_TYPE         | app-store                                                                                                            |
-+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-[22:06:08]: [31mCalled from Fastfile at line 49[0m
-[22:06:08]: [31m```[0m
-[22:06:08]: [31m    47:	    profiles = {}[0m
-[22:06:08]: [31m    48:	    BUNDLE_IDS.each do |bid|[0m
-[22:06:08]: [31m => 49:	      sigh([0m
-[22:06:08]: [31m    50:	        api_key: key,[0m
-[22:06:08]: [31m    51:	        app_identifier: bid,[0m
-[22:06:08]: [31m```[0m
+[22:09:25]: Creating authorization token for App Store Connect API
+[22:09:27]: [31mThere are no local code signing identities found.
+You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
+This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
+(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
+[22:09:27]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+[22:09:27]: [31mThere are no local code signing identities found.
+You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
+This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
+(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
+[22:09:27]: [31mCertificate D22S7J8SAL (Manan Shah) can't be found on your local computer[0m
+[22:09:27]: [33mCouldn't find an existing certificate... creating a new one[0m
++---------------------------------------------------------------------------------+
+|                                  [33mLane Context[0m                                   |
++---------------------------+-----------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                 |
+| PLATFORM_NAME             | ios                                                 |
+| LANE_NAME                 | ios beta                                            |
+| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                         |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db" |
++---------------------------+-----------------------------------------------------+
+[22:09:27]: [31mCalled from Fastfile at line 39[0m
+[22:09:27]: [31m```[0m
+[22:09:27]: [31m    37:	[0m
+[22:09:27]: [31m    38:	    # Distribution certificate (created if the team has none).[0m
+[22:09:27]: [31m => 39:	    cert([0m
+[22:09:27]: [31m    40:	      api_key: key,[0m
+[22:09:27]: [31m    41:	      keychain_path: keychain_path,[0m
+[22:09:27]: [31m```[0m
 
 +------------------------------------------------+
 |                [32mfastlane summary[0m                |
@@ -92,14 +81,30 @@
 | 1    | default_platform          | 0           |
 | 2    | app_store_connect_api_key | 0           |
 | 3    | create_keychain           | 0           |
-| 4    | cert                      | 3           |
-| 5    | sigh                      | 2           |
-| 💥   | [31msigh[0m                      | 0           |
+| 💥   | [31mcert[0m                      | 2           |
 +------+---------------------------+-------------+
 
-[22:06:08]: [31mfastlane finished with errors[0m
+[22:09:27]: [31mfastlane finished with errors[0m
+
+Looking for related GitHub issues on fastlane/fastlane...
+
+➡️  [33mStop creating new certificates.[0m
+    https://github.com/fastlane/fastlane/issues/19150 [[32mclosed[0m] 22 💬
+    12 Jul 2026
+
+➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
+    https://github.com/fastlane/fastlane/issues/19349 [[32mclosed[0m] 17 💬
+    07 Jan 2026
+
+➡️  [33mApple ID auth not working - 503 Service Temporarily Unavailable on various fastlane modules[0m
+    https://github.com/fastlane/fastlane/issues/26368 [[32mclosed[0m] 216 💬
+    27 Apr 2026
+
+and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
+
+🔗  You can ⌘ + double-click on links to open them directly in your browser.
 [31m
-[!] Could not find App with App Identifier 'com.tenzy.toolkit.keyboard'[0m
+[!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
 
 #######################################################################
 # fastlane 2.241.1 is available. You are on 2.241.0.
