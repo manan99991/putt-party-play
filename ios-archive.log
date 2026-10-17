@@ -1,14 +1,14 @@
 == archive.log (errors) ==
     /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild archive -project HandyTools.xcodeproj -scheme HandyTools -destination generic/platform=iOS -archivePath build/HandyTools.xcarchive -allowProvisioningUpdates -allowProvisioningDeviceRegistration -authenticationKeyPath /Users/runner/.appstoreconnect/private_keys/AuthKey_YDD6FY7LL3.p8 -authenticationKeyID YDD6FY7LL3 -authenticationKeyIssuerID e6112e2d-081a-413e-bf7f-9a17e9279dc0 CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM=5622NBPJ9W
 GatherProvisioningInputs
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'HandyTools' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit'. (in target 'HandyTools' from project 'HandyTools')
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ShareExtension' from project 'HandyTools')
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.share' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.share'. (in target 'ShareExtension' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'StickyWidget' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.widget' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.widget'. (in target 'StickyWidget' from project 'HandyTools')
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ClipboardKeyboard' from project 'HandyTools')
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.keyboard' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.keyboard'. (in target 'ClipboardKeyboard' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'HandyTools' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit'. (in target 'HandyTools' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'StickyWidget' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.widget' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.widget'. (in target 'StickyWidget' from project 'HandyTools')
 ** ARCHIVE FAILED **
 
 == tail ==
@@ -56,16 +56,16 @@ ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/X
 
 ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --version --output-format xml1
 
-Build description signature: 7becc58f21fe34dd69d9267ddbfbdba9
-Build description path: /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/XCBuildData/7becc58f21fe34dd69d9267ddbfbdba9.xcbuilddata
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'HandyTools' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit'. (in target 'HandyTools' from project 'HandyTools')
+Build description signature: 802e409c3ad55487c62270d142fc840c
+Build description path: /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/XCBuildData/802e409c3ad55487c62270d142fc840c.xcbuilddata
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ShareExtension' from project 'HandyTools')
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.share' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.share'. (in target 'ShareExtension' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'StickyWidget' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.widget' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.widget'. (in target 'StickyWidget' from project 'HandyTools')
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ClipboardKeyboard' from project 'HandyTools')
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.keyboard' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.keyboard'. (in target 'ClipboardKeyboard' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'HandyTools' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit'. (in target 'HandyTools' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'StickyWidget' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.widget' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.widget'. (in target 'StickyWidget' from project 'HandyTools')
 ** ARCHIVE FAILED **
 
 
