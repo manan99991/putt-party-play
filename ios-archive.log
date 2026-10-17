@@ -1,106 +1,177 @@
 ===== fastlane.log errors =====
-  "errors" : [ {
-    "code" : "ENTITY_ERROR",
-    "detail" : "This certificate cannot be revoked because it is not in an &quot;issued&quot; state."
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:49:08]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
-(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:49:08]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
-[22:49:08]: [33mCouldn't find an existing certificate... creating a new one[0m
-[22:49:09]: [31mfastlane finished with errors[0m
-➡️  [33mStop creating new certificates.[0m
-➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
-and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
-[!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
+[22:51:45]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+[22:51:45]: [33mCouldn't find an existing certificate... creating a new one[0m
+[22:51:46]: [32mSuccessfully generated C8G52LDDFV which was imported to the local machine.[0m
+[22:51:46]: Verifying the certificate is properly installed locally...
+[22:51:46]: [32mSuccessfully installed certificate C8G52LDDFV[0m
+[22:51:46]: [32mUse signing certificate 'C8G52LDDFV' from now on![0m
+| include_all_certificates            | false             |
+| skip_certificate_verification       | false             |
+| fail_on_name_taken                  | false             |
+[22:51:47]: Provisioning Profile cert_id : '24QVV6RW8U' does not match given cert_id : 'C8G52LDDFV', skipping this one...
+[22:51:47]: Provisioning Profile cert_id : 'D22S7J8SAL' does not match given cert_id : 'C8G52LDDFV', skipping this one...
+[22:51:47]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'C8G52LDDFV', skipping this one...
+[22:51:47]: Verifying certificates...
+[22:51:47]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:51:47]: [33mCreating new provisioning profile for 'com.tenzy.toolkit' with name 'com.tenzy.toolkit AppStore 1792277507' for 'ios' platform[0m
+[22:51:48]: [33mDownloading provisioning profile...[0m
+[22:51:48]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:51:48]: Installing provisioning profile...
+[22:51:48]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                      |
+| skip_certificate_verification       | false                      |
+| fail_on_name_taken                  | false                      |
+[22:51:48]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'C8G52LDDFV', skipping this one...
+[22:51:48]: Verifying certificates...
+[22:51:48]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:51:48]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.keyboard' with name 'com.tenzy.toolkit.keyboard AppStore 1792277508' for 'ios' platform[0m
+[22:51:49]: [33mDownloading provisioning profile...[0m
+[22:51:49]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:51:49]: Installing provisioning profile...
+[22:51:49]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                   |
+| skip_certificate_verification       | false                   |
+| fail_on_name_taken                  | false                   |
+[22:51:49]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'C8G52LDDFV', skipping this one...
+[22:51:49]: Verifying certificates...
+[22:51:49]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:51:49]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.share' with name 'com.tenzy.toolkit.share AppStore 1792277509' for 'ios' platform[0m
+[22:51:50]: [33mDownloading provisioning profile...[0m
+[22:51:50]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:51:50]: Installing provisioning profile...
+[22:51:50]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                    |
+| skip_certificate_verification       | false                    |
+| fail_on_name_taken                  | false                    |
+[22:51:50]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'C8G52LDDFV', skipping this one...
+[22:51:50]: Verifying certificates...
+[22:51:50]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:51:51]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.widget' with name 'com.tenzy.toolkit.widget AppStore 1792277510' for 'ios' platform[0m
+[22:51:51]: [33mDownloading provisioning profile...[0m
+[22:51:51]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:51:51]: Installing provisioning profile...
+[22:51:51]: Setting Provisioning Profile type to 'app-store'
+[22:51:51]: Provisioning profiles: {"com.tenzy.toolkit" => "com.tenzy.toolkit AppStore 1792277507", "com.tenzy.toolkit.keyboard" => "com.tenzy.toolkit.keyboard AppStore 1792277508", "com.tenzy.toolkit.share" => "com.tenzy.toolkit.share AppStore 1792277509", "com.tenzy.toolkit.widget" => "com.tenzy.toolkit.widget AppStore 1792277510"}
+[22:51:51]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792277507 for target: HandyTools for build configuration: Debug[0m
+[22:51:51]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Debug[0m
+[22:51:51]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792277507 for target: HandyTools for build configuration: Release[0m
+[22:51:51]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Release[0m
+[22:51:51]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[22:51:51]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792277508 for target: ClipboardKeyboard for build configuration: Debug[0m
+[22:51:51]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Debug[0m
+[22:51:51]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792277508 for target: ClipboardKeyboard for build configuration: Release[0m
+[22:51:51]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Release[0m
+[22:51:51]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[22:51:51]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792277509 for target: ShareExtension for build configuration: Debug[0m
+[22:51:51]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Debug[0m
+[22:51:51]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792277509 for target: ShareExtension for build configuration: Release[0m
+[22:51:51]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Release[0m
+[22:51:51]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[22:51:51]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792277510 for target: StickyWidget for build configuration: Debug[0m
+[22:51:51]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Debug[0m
+[22:51:51]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792277510 for target: StickyWidget for build configuration: Release[0m
+[22:51:51]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Release[0m
+[22:51:51]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[22:52:16]: Detected provisioning profile mapping: {"com.tenzy.toolkit": "com.tenzy.toolkit AppStore 1792277507", "com.tenzy.toolkit.keyboard": "com.tenzy.toolkit.keyboard AppStore 1792277508", "com.tenzy.toolkit.share": "com.tenzy.toolkit.share AppStore 1792277509", "com.tenzy.toolkit.widget": "com.tenzy.toolkit.widget AppStore 1792277510"}
+| export_options.provisioningProfiles.com.tenzy.toolkit          | com.tenzy.toolkit AppStore 1792277507                     |
+| export_options.provisioningProfiles.com.tenzy.toolkit.keyboard | com.tenzy.toolkit.keyboard AppStore 1792277508            |
+| export_options.provisioningProfiles.com.tenzy.toolkit.share    | com.tenzy.toolkit.share AppStore 1792277509               |
+| export_options.provisioningProfiles.com.tenzy.toolkit.widget   | com.tenzy.toolkit.widget AppStore 1792277510              |
+[22:52:16]: [36m$ set -o pipefail && xcodebuild -scheme HandyTools -project HandyTools.xcodeproj -configuration Release -destination generic/platform\=iOS -archivePath /Users/runner/Library/Developer/Xcode/Archives/2026-10-17/Tenzy\ 2026-10-17\ 22.52.16.xcarchive archive | tee /Users/runner/Library/Logs/gym/HandyTools-HandyTools.log | xcbeautify[0m
+[22:52:26]: ▸ [35m[[36mStickyWidget[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:52:26]: ▸ [35m[[36mShareExtension[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
 
 ===== fastlane.log tail =====
-[22:49:07]: [32m-----------------------------[0m
-[22:49:07]: [36m$ security list-keychains -d user[0m
-[22:49:07]: ▸ [35m"/Users/runner/Library/Keychains/tenzyci-db"[0m
-[22:49:07]: [33mFound keychain '/Users/runner/Library/Keychains/tenzyci-db' in list-keychains, adding to search list skipped[0m
-[22:49:07]: [32m------------------[0m
-[22:49:07]: [32m--- Step: cert ---[0m
-[22:49:07]: [32m------------------[0m
-
-+----------------------------------------------------------------------+
-|                       [32mSummary for cert 2.241.0[0m                       |
-+-------------------------+--------------------------------------------+
-| api_key                 | API_KEY_REDACTED                           |
-| keychain_path           | /Users/runner/Library/Keychains/tenzyci-db |
-| keychain_password       | KEYCHAIN_PASSWORD_REDACTED                 |
-| development             | false                                      |
-| force                   | false                                      |
-| generate_apple_certs    | true                                       |
-| skip_set_partition_list | false                                      |
-| platform                | ios                                        |
-+-------------------------+--------------------------------------------+
-
-[22:49:07]: Creating authorization token for App Store Connect API
-[22:49:08]: [31mThere are no local code signing identities found.
-You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
-This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
-(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:49:08]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
-[22:49:08]: [31mThere are no local code signing identities found.
-You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
-This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
-(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:49:08]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
-[22:49:08]: [33mCouldn't find an existing certificate... creating a new one[0m
-+---------------------------------------------------------------------------------+
-|                                  [33mLane Context[0m                                   |
-+---------------------------+-----------------------------------------------------+
-| DEFAULT_PLATFORM          | ios                                                 |
-| PLATFORM_NAME             | ios                                                 |
-| LANE_NAME                 | ios beta                                            |
-| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                         |
-| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db" |
-+---------------------------+-----------------------------------------------------+
-[22:49:09]: [31mCalled from Fastfile at line 64[0m
-[22:49:09]: [31m```[0m
-[22:49:09]: [31m    62:	    keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")[0m
-[22:49:09]: [31m    63:	[0m
-[22:49:09]: [31m => 64:	    cert([0m
-[22:49:09]: [31m    65:	      api_key: key,[0m
-[22:49:09]: [31m    66:	      keychain_path: keychain_path,[0m
-[22:49:09]: [31m```[0m
-
-+------------------------------------------------+
-|                [32mfastlane summary[0m                |
-+------+---------------------------+-------------+
-| Step | Action                    | Time (in s) |
-+------+---------------------------+-------------+
-| 1    | default_platform          | 0           |
-| 2    | app_store_connect_api_key | 0           |
-| 3    | create_keychain           | 0           |
-| 💥   | [31mcert[0m                      | 1           |
-+------+---------------------------+-------------+
-
-[22:49:09]: [31mfastlane finished with errors[0m
-
-Looking for related GitHub issues on fastlane/fastlane...
-
-➡️  [33mStop creating new certificates.[0m
-    https://github.com/fastlane/fastlane/issues/19150 [[32mclosed[0m] 22 💬
-    12 Jul 2026
-
-➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
-    https://github.com/fastlane/fastlane/issues/19349 [[32mclosed[0m] 17 💬
-    07 Jan 2026
-
-➡️  [33mApple ID auth not working - 503 Service Temporarily Unavailable on various fastlane modules[0m
-    https://github.com/fastlane/fastlane/issues/26368 [[32mclosed[0m] 216 💬
-    27 Apr 2026
-
-and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
-
-🔗  You can ⌘ + double-click on links to open them directly in your browser.
-[31m
-[!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
-
-#######################################################################
-# fastlane 2.241.1 is available. You are on 2.241.0.
-# You should use the latest version.
-# Please update using `gem install fastlane`.
-# To see what's new, open https://github.com/fastlane/fastlane/releases.
-#######################################################################
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard.SwiftFileList[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard.SwiftConstValuesFileList[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard.LinkFileList[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard-OutputFileMap.json[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard.hmap[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard.DependencyStaticMetadataFileList[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard.DependencyMetadataFileList[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard-project-headers.hmap[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard-own-target-headers.hmap[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard-generated-files.hmap[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard-all-target-headers.hmap[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m ClipboardKeyboard-all-non-framework-target-headers.hmap[0m
+[22:52:26]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mWrite Auxiliary File[0m UserMessagingPlatformTarget.modulemap[0m
+[22:52:26]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mWrite Auxiliary File[0m UserMessagingPlatformTarget.DependencyStaticMetadataFileList[0m
+[22:52:26]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mWrite Auxiliary File[0m UserMessagingPlatformTarget.DependencyMetadataFileList[0m
+[22:52:26]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mWrite Auxiliary File[0m e6072d4f65d7061329687fe24e3d63a7-common-args.resp[0m
+[22:52:26]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mWrite Auxiliary File[0m UserMessagingPlatformTarget.LinkFileList[0m
+[22:52:26]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mCopy[0m UserMessagingPlatformTarget.modulemap -> UserMessagingPlatformTarget.modulemap[0m
+[22:52:26]: ▸ [35m[[36mStickyWidget[0m] [1mProcessing[0m Info.plist[0m
+[22:52:26]: ▸ [35m[[36mShareExtension[0m] [1mProcessing[0m Info.plist[0m
+[22:52:26]: ▸ [35m[[36mClipboardKeyboard[0m] [1mProcessing[0m Info.plist[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools.SwiftFileList[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools_const_extract_protocols.json[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools.SwiftConstValuesFileList[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools.LinkFileList[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools-OutputFileMap.json[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools.hmap[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools.DependencyStaticMetadataFileList[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools.DependencyMetadataFileList[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools-project-headers.hmap[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools-own-target-headers.hmap[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools-generated-files.hmap[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools-all-target-headers.hmap[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m HandyTools-all-non-framework-target-headers.hmap[0m
+[22:52:26]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mWrite Auxiliary File[0m GoogleMobileAdsTarget_const_extract_protocols.json[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mWrite Auxiliary File[0m GoogleMobileAdsTarget.SwiftFileList[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mWrite Auxiliary File[0m GoogleMobileAdsTarget.SwiftConstValuesFileList[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mWrite Auxiliary File[0m GoogleMobileAdsTarget.LinkFileList[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mWrite Auxiliary File[0m GoogleMobileAdsTarget-OutputFileMap.json[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mWrite Auxiliary File[0m GoogleMobileAdsTarget.modulemap[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mWrite Auxiliary File[0m GoogleMobileAdsTarget.DependencyStaticMetadataFileList[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mWrite Auxiliary File[0m GoogleMobileAdsTarget.DependencyMetadataFileList[0m
+[22:52:26]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mCopy[0m GoogleMobileAdsTarget.modulemap -> GoogleMobileAdsTarget.modulemap[0m
+[22:52:28]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mCompiling[0m placeholder.swift[0m
+[22:52:29]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mCompiling[0m placeholder.m[0m
+[22:52:29]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> GoogleMobileAdsTarget.swiftmodule[0m
+[22:52:29]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> GoogleMobileAdsTarget.swiftdoc[0m
+[22:52:29]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mCopy[0m arm64-apple-ios.abi.json -> GoogleMobileAdsTarget.abi.json[0m
+[22:52:29]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mLinking[0m UserMessagingPlatformTarget.o[0m
+[22:52:29]: ▸ [35m[[36mUserMessagingPlatformTarget[0m] [1mRegisterExecutionPolicyException[0m UserMessagingPlatformTarget.o[0m
+[22:52:29]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mLinking[0m GoogleMobileAdsTarget.o[0m
+[22:52:29]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mExtract App Intents Metadata[0m
+[22:52:30]: ▸ [35m[[36mGoogleMobileAdsTarget[0m] [1mRegisterExecutionPolicyException[0m GoogleMobileAdsTarget.o[0m
+[22:52:34]: ▸ [35m[[36mStickyWidget[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> StickyWidget.swiftmodule[0m
+[22:52:34]: ▸ [35m[[36mStickyWidget[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> StickyWidget.swiftdoc[0m
+[22:52:34]: ▸ [35m[[36mStickyWidget[0m] [1mCopy[0m arm64-apple-ios.abi.json -> StickyWidget.abi.json[0m
+[22:52:34]: ▸ [35m[[36mStickyWidget[0m] [1mLinking[0m StickyWidget[0m
+[22:52:34]: ▸ [35m[[36mStickyWidget[0m] [1mGenerating[0m StickyWidget.appex.dSYM[0m
+[22:52:34]: ▸ [35m[[36mStickyWidget[0m] [1mExtract App Intents Metadata[0m
+[22:52:34]: ▸ [35m[1mSigning[0m StickyWidget.appex (in target 'StickyWidget' from project 'HandyTools')[0m
+[22:52:34]: ▸ [35m[[36mClipboardKeyboard[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> ClipboardKeyboard.swiftmodule[0m
+[22:52:34]: ▸ [35m[[36mClipboardKeyboard[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> ClipboardKeyboard.swiftdoc[0m
+[22:52:34]: ▸ [35m[[36mClipboardKeyboard[0m] [1mCopy[0m arm64-apple-ios.abi.json -> ClipboardKeyboard.abi.json[0m
+[22:52:34]: ▸ [35m[[36mClipboardKeyboard[0m] [1mLinking[0m ClipboardKeyboard[0m
+[22:52:35]: ▸ [35m[[36mShareExtension[0m] [1mCopy[0m arm64-apple-ios.swiftmodule -> ShareExtension.swiftmodule[0m
+[22:52:35]: ▸ [35m[[36mShareExtension[0m] [1mCopy[0m arm64-apple-ios.swiftdoc -> ShareExtension.swiftdoc[0m
+[22:52:35]: ▸ [35m[[36mShareExtension[0m] [1mCopy[0m arm64-apple-ios.abi.json -> ShareExtension.abi.json[0m
+[22:52:35]: ▸ [35m[[36mShareExtension[0m] [1mLinking[0m ShareExtension[0m
+[22:52:35]: ▸ [35m[[36mStickyWidget[0m] [1mRegisterExecutionPolicyException[0m StickyWidget.appex[0m
+[22:52:35]: ▸ [35m[[36mStickyWidget[0m] [1mTouching[0m StickyWidget.appex[0m
+[22:52:35]: ▸ [35m[[36mHandyTools[0m] [1mGenerate Asset Symbols[0m Assets.xcassets[0m
+[22:52:44]: ▸ [35m[[36mClipboardKeyboard[0m] [1mGenerating[0m ClipboardKeyboard.appex.dSYM[0m
+[22:52:44]: ▸ [35m[[36mShareExtension[0m] [1mGenerating[0m ShareExtension.appex.dSYM[0m
+[22:52:44]: ▸ [35m[[36mShareExtension[0m] [1mExtract App Intents Metadata[0m
+[22:52:44]: ▸ [35m[[36mClipboardKeyboard[0m] [1mExtract App Intents Metadata[0m
+[22:52:44]: ▸ [35m[1mSigning[0m ShareExtension.appex (in target 'ShareExtension' from project 'HandyTools')[0m
+[22:52:44]: ▸ [35m[[36mShareExtension[0m] [1mRegisterExecutionPolicyException[0m ShareExtension.appex[0m
+[22:52:44]: ▸ [35m[[36mShareExtension[0m] [1mTouching[0m ShareExtension.appex[0m
+[22:52:44]: ▸ [35m[1mSigning[0m ClipboardKeyboard.appex (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
+[22:52:44]: ▸ [35m[[36mClipboardKeyboard[0m] [1mRegisterExecutionPolicyException[0m ClipboardKeyboard.appex[0m
+[22:52:44]: ▸ [35m[[36mClipboardKeyboard[0m] [1mTouching[0m ClipboardKeyboard.appex[0m
+[22:52:44]: ▸ [35m[[36mHandyTools[0m] [1mCopying[0m Products.storekit[0m
+[22:52:44]: ▸ [35m[[36mHandyTools[0m] [1mCopy[0m UserMessagingPlatform.framework -> UserMessagingPlatform.framework[0m
+[22:52:44]: ▸ [35m[36;1mnote: [0mInjecting stub binary into codeless framework (in target 'HandyTools' from project 'HandyTools')[0m
+[22:52:44]: ▸ [35m[[36mHandyTools[0m] [1mCopy[0m GoogleMobileAds.framework -> GoogleMobileAds.framework[0m
+[22:52:44]: ▸ [35m[36;1mnote: [0mInjecting stub binary into codeless framework (in target 'HandyTools' from project 'HandyTools')[0m
+[22:52:44]: ▸ [35m[1mSigning[0m UserMessagingPlatform.framework (in target 'HandyTools' from project 'HandyTools')[0m
+[22:52:44]: ▸ [35m[1mSigning[0m GoogleMobileAds.framework (in target 'HandyTools' from project 'HandyTools')[0m
