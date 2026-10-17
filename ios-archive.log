@@ -1,0 +1,74 @@
+== archive.log (errors) ==
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild archive -project HandyTools.xcodeproj -scheme HandyTools -destination generic/platform=iOS -archivePath build/HandyTools.xcarchive -allowProvisioningUpdates -allowProvisioningDeviceRegistration -authenticationKeyPath /Users/runner/.appstoreconnect/private_keys/AuthKey_YDD6FY7LL3.p8 -authenticationKeyID YDD6FY7LL3 -authenticationKeyIssuerID e6112e2d-081a-413e-bf7f-9a17e9279dc0 CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM=5622NBPJ9W
+GatherProvisioningInputs
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ShareExtension' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.share' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.share'. (in target 'ShareExtension' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'StickyWidget' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.widget' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.widget'. (in target 'StickyWidget' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ClipboardKeyboard' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.keyboard' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.keyboard'. (in target 'ClipboardKeyboard' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'HandyTools' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit'. (in target 'HandyTools' from project 'HandyTools')
+** ARCHIVE FAILED **
+
+== tail ==
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (8 targets)
+    Target 'HandyTools' in project 'HandyTools'
+        ➜ Explicit dependency on target 'ClipboardKeyboard' in project 'HandyTools'
+        ➜ Explicit dependency on target 'ShareExtension' in project 'HandyTools'
+        ➜ Explicit dependency on target 'StickyWidget' in project 'HandyTools'
+        ➜ Explicit dependency on target 'GoogleMobileAds' in project 'GoogleMobileAds'
+    Target 'GoogleMobileAds' in project 'GoogleMobileAds'
+        ➜ Explicit dependency on target 'GoogleMobileAdsTarget' in project 'GoogleMobileAds'
+        ➜ Explicit dependency on target 'GoogleUserMessagingPlatform' in project 'GoogleUserMessagingPlatform'
+    Target 'GoogleMobileAdsTarget' in project 'GoogleMobileAds'
+        ➜ Explicit dependency on target 'GoogleUserMessagingPlatform' in project 'GoogleUserMessagingPlatform'
+    Target 'GoogleUserMessagingPlatform' in project 'GoogleUserMessagingPlatform'
+        ➜ Explicit dependency on target 'UserMessagingPlatformTarget' in project 'GoogleUserMessagingPlatform'
+    Target 'UserMessagingPlatformTarget' in project 'GoogleUserMessagingPlatform' (no dependencies)
+    Target 'StickyWidget' in project 'HandyTools' (no dependencies)
+    Target 'ShareExtension' in project 'HandyTools' (no dependencies)
+    Target 'ClipboardKeyboard' in project 'HandyTools' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x objective-c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+Build description signature: 9498cbc81cada9dc0e50a472d1fd985b
+Build description path: /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/XCBuildData/9498cbc81cada9dc0e50a472d1fd985b.xcbuilddata
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ShareExtension' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.share' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.share'. (in target 'ShareExtension' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'StickyWidget' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.widget' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.widget'. (in target 'StickyWidget' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ClipboardKeyboard' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.keyboard' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.keyboard'. (in target 'ClipboardKeyboard' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'HandyTools' from project 'HandyTools')
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit'. (in target 'HandyTools' from project 'HandyTools')
+** ARCHIVE FAILED **
+
+
+The following build commands failed:
+	Archiving project HandyTools with scheme HandyTools
+(1 failure)
