@@ -3,24 +3,24 @@
     "code" : "ENTITY_ERROR",
     "detail" : "This certificate cannot be revoked because it is not in an &quot;issued&quot; state."
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:30:36]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+[22:49:08]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:30:36]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
-[22:30:36]: [33mCouldn't find an existing certificate... creating a new one[0m
-[22:30:36]: [31mfastlane finished with errors[0m
+[22:49:08]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
+[22:49:08]: [33mCouldn't find an existing certificate... creating a new one[0m
+[22:49:09]: [31mfastlane finished with errors[0m
 ➡️  [33mStop creating new certificates.[0m
 ➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
 and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
 [!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
 
 ===== fastlane.log tail =====
-[22:30:33]: [32m-----------------------------[0m
-[22:30:33]: [36m$ security list-keychains -d user[0m
-[22:30:33]: ▸ [35m"/Users/runner/Library/Keychains/tenzyci-db"[0m
-[22:30:33]: [33mFound keychain '/Users/runner/Library/Keychains/tenzyci-db' in list-keychains, adding to search list skipped[0m
-[22:30:34]: [32m------------------[0m
-[22:30:34]: [32m--- Step: cert ---[0m
-[22:30:34]: [32m------------------[0m
+[22:49:07]: [32m-----------------------------[0m
+[22:49:07]: [36m$ security list-keychains -d user[0m
+[22:49:07]: ▸ [35m"/Users/runner/Library/Keychains/tenzyci-db"[0m
+[22:49:07]: [33mFound keychain '/Users/runner/Library/Keychains/tenzyci-db' in list-keychains, adding to search list skipped[0m
+[22:49:07]: [32m------------------[0m
+[22:49:07]: [32m--- Step: cert ---[0m
+[22:49:07]: [32m------------------[0m
 
 +----------------------------------------------------------------------+
 |                       [32mSummary for cert 2.241.0[0m                       |
@@ -35,18 +35,18 @@ and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20crea
 | platform                | ios                                        |
 +-------------------------+--------------------------------------------+
 
-[22:30:34]: Creating authorization token for App Store Connect API
-[22:30:36]: [31mThere are no local code signing identities found.
+[22:49:07]: Creating authorization token for App Store Connect API
+[22:49:08]: [31mThere are no local code signing identities found.
 You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
 This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:30:36]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
-[22:30:36]: [31mThere are no local code signing identities found.
+[22:49:08]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+[22:49:08]: [31mThere are no local code signing identities found.
 You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
 This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:30:36]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
-[22:30:36]: [33mCouldn't find an existing certificate... creating a new one[0m
+[22:49:08]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
+[22:49:08]: [33mCouldn't find an existing certificate... creating a new one[0m
 +---------------------------------------------------------------------------------+
 |                                  [33mLane Context[0m                                   |
 +---------------------------+-----------------------------------------------------+
@@ -56,14 +56,14 @@ This Stack Overflow thread has more information: https://stackoverflow.com/q/353
 | KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                         |
 | ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db" |
 +---------------------------+-----------------------------------------------------+
-[22:30:36]: [31mCalled from Fastfile at line 64[0m
-[22:30:36]: [31m```[0m
-[22:30:36]: [31m    62:	    keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")[0m
-[22:30:36]: [31m    63:	[0m
-[22:30:36]: [31m => 64:	    cert([0m
-[22:30:36]: [31m    65:	      api_key: key,[0m
-[22:30:36]: [31m    66:	      keychain_path: keychain_path,[0m
-[22:30:36]: [31m```[0m
+[22:49:09]: [31mCalled from Fastfile at line 64[0m
+[22:49:09]: [31m```[0m
+[22:49:09]: [31m    62:	    keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")[0m
+[22:49:09]: [31m    63:	[0m
+[22:49:09]: [31m => 64:	    cert([0m
+[22:49:09]: [31m    65:	      api_key: key,[0m
+[22:49:09]: [31m    66:	      keychain_path: keychain_path,[0m
+[22:49:09]: [31m```[0m
 
 +------------------------------------------------+
 |                [32mfastlane summary[0m                |
@@ -73,10 +73,10 @@ This Stack Overflow thread has more information: https://stackoverflow.com/q/353
 | 1    | default_platform          | 0           |
 | 2    | app_store_connect_api_key | 0           |
 | 3    | create_keychain           | 0           |
-| 💥   | [31mcert[0m                      | 2           |
+| 💥   | [31mcert[0m                      | 1           |
 +------+---------------------------+-------------+
 
-[22:30:36]: [31mfastlane finished with errors[0m
+[22:49:09]: [31mfastlane finished with errors[0m
 
 Looking for related GitHub issues on fastlane/fastlane...
 
