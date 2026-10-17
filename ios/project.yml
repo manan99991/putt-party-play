@@ -52,6 +52,7 @@ targets:
         CFBundleDisplayName: Tenzy
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
         # --- AdMob (live Tenzy app id) ---
         GADApplicationIdentifier: ca-app-pub-5414801919054534~3553659163
