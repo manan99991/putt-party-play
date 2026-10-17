@@ -83,7 +83,7 @@ jobs:
   # Runs only when App Store Connect secrets are present. Archives, signs with an
   # ASC API key via automatic signing, and uploads to TestFlight.
   testflight:
-    needs: build
+    # Decoupled from `build` so signing can be iterated fast — `archive` compiles the code too.
     if: ${{ vars.TESTFLIGHT_ENABLED == 'true' }}
     runs-on: macos-26
     defaults:
