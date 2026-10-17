@@ -44,7 +44,7 @@ import com.handytools.app.BuildConfig
 import com.handytools.app.HandyApp
 import com.handytools.app.ads.BannerAd
 
-const val PRIVACY_URL = "https://manan99991.github.io/putt-party-play/privacy.html"
+const val PRIVACY_URL = "https://manan99991.github.io/tenzy/privacy.html"
 const val SUPPORT_EMAIL = "tenzy.app@gmail.com"
 
 @Composable

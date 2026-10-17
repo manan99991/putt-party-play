@@ -3,7 +3,7 @@ import StoreKit
 import UserNotifications
 import AlarmKit
 
-let PRIVACY_URL = URL(string: "https://manan99991.github.io/putt-party-play/privacy.html")!
+let PRIVACY_URL = URL(string: "https://manan99991.github.io/tenzy/privacy.html")!
 let SUPPORT_EMAIL = "tenzy.app@gmail.com"
 
 // MARK: - One-time setup
