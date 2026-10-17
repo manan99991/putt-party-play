@@ -1,102 +1,204 @@
 ===== fastlane.log errors =====
-  "errors" : [ {
-    "code" : "ENTITY_ERROR",
-    "detail" : "This certificate cannot be revoked because it is not in an &quot;issued&quot; state."
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:49:08]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
-(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:49:08]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
-[22:49:08]: [33mCouldn't find an existing certificate... creating a new one[0m
-[22:49:09]: [31mfastlane finished with errors[0m
-➡️  [33mStop creating new certificates.[0m
-➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
-and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
-[!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
+[22:52:02]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+[22:52:02]: [33mCouldn't find an existing certificate... creating a new one[0m
+[22:52:04]: [32mSuccessfully generated A7FW5889J5 which was imported to the local machine.[0m
+[22:52:04]: Verifying the certificate is properly installed locally...
+[22:52:04]: [32mSuccessfully installed certificate A7FW5889J5[0m
+[22:52:04]: [32mUse signing certificate 'A7FW5889J5' from now on![0m
+| include_all_certificates            | false             |
+| skip_certificate_verification       | false             |
+| fail_on_name_taken                  | false             |
+[22:52:04]: Provisioning Profile cert_id : '24QVV6RW8U' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:04]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:04]: Provisioning Profile cert_id : 'D22S7J8SAL' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:04]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:04]: Verifying certificates...
+[22:52:04]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:52:05]: [33mCreating new provisioning profile for 'com.tenzy.toolkit' with name 'com.tenzy.toolkit AppStore 1792277525' for 'ios' platform[0m
+[22:52:05]: [33mDownloading provisioning profile...[0m
+[22:52:05]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:52:05]: Installing provisioning profile...
+[22:52:05]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                      |
+| skip_certificate_verification       | false                      |
+| fail_on_name_taken                  | false                      |
+[22:52:06]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:06]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:06]: Verifying certificates...
+[22:52:06]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:52:06]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.keyboard' with name 'com.tenzy.toolkit.keyboard AppStore 1792277526' for 'ios' platform[0m
+[22:52:06]: [33mDownloading provisioning profile...[0m
+[22:52:06]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:52:06]: Installing provisioning profile...
+[22:52:06]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                   |
+| skip_certificate_verification       | false                   |
+| fail_on_name_taken                  | false                   |
+[22:52:07]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:07]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:07]: Verifying certificates...
+[22:52:07]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:52:07]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.share' with name 'com.tenzy.toolkit.share AppStore 1792277527' for 'ios' platform[0m
+[22:52:08]: [33mDownloading provisioning profile...[0m
+[22:52:08]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:52:08]: Installing provisioning profile...
+[22:52:08]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                    |
+| skip_certificate_verification       | false                    |
+| fail_on_name_taken                  | false                    |
+[22:52:08]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:08]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'A7FW5889J5', skipping this one...
+[22:52:08]: Verifying certificates...
+[22:52:08]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:52:08]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.widget' with name 'com.tenzy.toolkit.widget AppStore 1792277528' for 'ios' platform[0m
+[22:52:09]: [33mDownloading provisioning profile...[0m
+[22:52:09]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:52:09]: Installing provisioning profile...
+[22:52:09]: Setting Provisioning Profile type to 'app-store'
+[22:52:09]: Provisioning profiles: {"com.tenzy.toolkit" => "com.tenzy.toolkit AppStore 1792277525", "com.tenzy.toolkit.keyboard" => "com.tenzy.toolkit.keyboard AppStore 1792277526", "com.tenzy.toolkit.share" => "com.tenzy.toolkit.share AppStore 1792277527", "com.tenzy.toolkit.widget" => "com.tenzy.toolkit.widget AppStore 1792277528"}
+[22:52:09]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792277525 for target: HandyTools for build configuration: Debug[0m
+[22:52:09]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Debug[0m
+[22:52:09]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792277525 for target: HandyTools for build configuration: Release[0m
+[22:52:09]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Release[0m
+[22:52:09]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[22:52:09]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792277526 for target: ClipboardKeyboard for build configuration: Debug[0m
+[22:52:09]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Debug[0m
+[22:52:09]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792277526 for target: ClipboardKeyboard for build configuration: Release[0m
+[22:52:09]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Release[0m
+[22:52:09]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[22:52:09]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792277527 for target: ShareExtension for build configuration: Debug[0m
+[22:52:09]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Debug[0m
+[22:52:09]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792277527 for target: ShareExtension for build configuration: Release[0m
+[22:52:09]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Release[0m
+[22:52:09]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[22:52:09]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792277528 for target: StickyWidget for build configuration: Debug[0m
+[22:52:09]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Debug[0m
+[22:52:09]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792277528 for target: StickyWidget for build configuration: Release[0m
+[22:52:09]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Release[0m
+[22:52:09]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[22:52:35]: Detected provisioning profile mapping: {"com.tenzy.toolkit": "com.tenzy.toolkit AppStore 1792277525", "com.tenzy.toolkit.keyboard": "com.tenzy.toolkit.keyboard AppStore 1792277526", "com.tenzy.toolkit.share": "com.tenzy.toolkit.share AppStore 1792277527", "com.tenzy.toolkit.widget": "com.tenzy.toolkit.widget AppStore 1792277528"}
+| export_options.provisioningProfiles.com.tenzy.toolkit          | com.tenzy.toolkit AppStore 1792277525                     |
+| export_options.provisioningProfiles.com.tenzy.toolkit.keyboard | com.tenzy.toolkit.keyboard AppStore 1792277526            |
+| export_options.provisioningProfiles.com.tenzy.toolkit.share    | com.tenzy.toolkit.share AppStore 1792277527               |
+| export_options.provisioningProfiles.com.tenzy.toolkit.widget   | com.tenzy.toolkit.widget AppStore 1792277528              |
+[22:52:35]: [36m$ set -o pipefail && xcodebuild -scheme HandyTools -project HandyTools.xcodeproj -configuration Release -destination generic/platform\=iOS -archivePath /Users/runner/Library/Developer/Xcode/Archives/2026-10-17/Tenzy\ 2026-10-17\ 22.52.35.xcarchive archive | tee /Users/runner/Library/Logs/gym/HandyTools-HandyTools.log | xcbeautify[0m
+[22:52:45]: ▸ [35m[[36mStickyWidget[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:52:45]: ▸ [35m[[36mShareExtension[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:52:45]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:52:45]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[22:53:52]: ▸ [35m::warning file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Ads/Ads.swift,line=1,col=1::add '@preconcurrency' to treat 'Sendable'-related errors from module 'ObjectiveC' as warnings[0m
+[22:53:56]: ▸ [35m  "provisioningProfiles": {[0m
+[22:54:01]: [32mSuccessfully exported and compressed dSYM file[0m
+[22:54:01]: [32mSuccessfully exported and signed the ipa file:[0m
+[22:54:01]: [32m--- Step: upload_to_testflight ---[0m
+[22:54:01]: [32mReady to upload new build to TestFlight (App: 6824023361)...[0m
+[22:55:15]: [33m[altool] 2026-10-17 22:55:15.419 [1m[31mERROR: [ContentDelivery.Uploader.BF5038480] 
+[22:55:15]: [33m[altool] UPLOAD FAILED with 1 error
+[22:55:15]: [33m[altool] Failed to upload package.
+[22:55:15]: [33m[altool] 2026-10-17 22:55:15.420 [1m[31mERROR: [altool.BF5038480] Invalid bundle. The “UIInterfaceOrientationPortrait” orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the “UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight” orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations. (90474) The server’s response was: ‘{
+[22:55:15]: [33m[altool]     description = "Invalid bundle. The \U201cUIInterfaceOrientationPortrait\U201d orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the \U201cUIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight\U201d orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations.";
+[22:55:15]: [33m[altool]    NSUnderlyingError : A server error occurred. (-19241)
+[22:55:15]: [33m[altool]       description : Invalid bundle. The “UIInterfaceOrientationPortrait” orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the “UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight” orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations.
+[22:55:15]: [33m[altool] 2026-10-17 22:55:15.424 [1m[31mERROR: [altool.10134ADD0] ExitFailure (31)[0m
+[22:55:15]: [31m[altool.BF5038480] Invalid bundle. The “UIInterfaceOrientationPortrait” orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the “UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight” orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations. (90474) The server’s response was: ‘{[0m
+[22:55:15]: [31m[altool.10134ADD0] ExitFailure (31)[0m[0m
+[22:55:15]: [31mThe call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
+[22:55:15]: [31mCould not download/upload from App Store Connect![0m
+| CERT_CERTIFICATE_ID       | A7FW5889J5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+[22:55:15]: [31m => 113:	    upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)[0m
+| 💥   | [31mupload_to_testflight[0m         | 74          |
+[22:55:15]: [31mfastlane finished with errors[0m
+[!] Error uploading ipa file: 
+ [Application Loader Error Output]: [ContentDelivery.Uploader.BF5038480] 
+[Application Loader Error Output]: [altool.BF5038480] Invalid bundle. The “UIInterfaceOrientationPortrait” orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the “UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight” orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations. (90474) The server’s response was: ‘{
+[Application Loader Error Output]: [altool.10134ADD0] ExitFailure (31)[0m
+[Application Loader Error Output]: The call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
 
 ===== fastlane.log tail =====
-[22:49:07]: [32m-----------------------------[0m
-[22:49:07]: [36m$ security list-keychains -d user[0m
-[22:49:07]: ▸ [35m"/Users/runner/Library/Keychains/tenzyci-db"[0m
-[22:49:07]: [33mFound keychain '/Users/runner/Library/Keychains/tenzyci-db' in list-keychains, adding to search list skipped[0m
-[22:49:07]: [32m------------------[0m
-[22:49:07]: [32m--- Step: cert ---[0m
-[22:49:07]: [32m------------------[0m
+[22:55:15]: [33m[altool] 2026-10-17 22:55:15.420 [1m[31mERROR: [altool.BF5038480] Invalid bundle. The “UIInterfaceOrientationPortrait” orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the “UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight” orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations. (90474) The server’s response was: ‘{
+[0m
+[22:55:15]: [33m[altool]     code = 90474;
+[0m
+[22:55:15]: [33m[altool]     description = "Invalid bundle. The \U201cUIInterfaceOrientationPortrait\U201d orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the \U201cUIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight\U201d orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations.";
+[0m
+[22:55:15]: [33m[altool] }’.
+[0m
+[22:55:15]: [33m[altool]    NSUnderlyingError : A server error occurred. (-19241)
+[0m
+[22:55:15]: [33m[altool]       code : 90474
+[0m
+[22:55:15]: [33m[altool]       description : Invalid bundle. The “UIInterfaceOrientationPortrait” orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the “UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight” orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations.
+[0m
+[22:55:15]: [33m[altool]    iris-code : 90474
+[0m
+[22:55:15]: [33m[altool] [0m
+[0m
+[22:55:15]: [33m[altool] 2026-10-17 22:55:15.424 [1m[31mERROR: [altool.10134ADD0] ExitFailure (31)[0m
+[0m
+[22:55:15]: Application Loader output above ^
+[22:55:15]: [31m[ContentDelivery.Uploader.BF5038480] [0m
+[22:55:15]: [31m[altool.BF5038480] Invalid bundle. The “UIInterfaceOrientationPortrait” orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the “UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight” orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations. (90474) The server’s response was: ‘{[0m
+[22:55:15]: [31m[altool.10134ADD0] ExitFailure (31)[0m[0m
+[22:55:15]: [31mThe call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
+[22:55:15]: [31mCould not download/upload from App Store Connect![0m
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                                                                                                                            [33mLane Context[0m                                                                                                                                                                                                                                                            |
++---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| PLATFORM_NAME             | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| LANE_NAME                 | ios beta                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db"                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| CERT_FILE_PATH            | /Users/runner/work/putt-party-play/putt-party-play/ios/build/certs/A7FW5889J5.cer                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| CERT_CERTIFICATE_ID       | A7FW5889J5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| SIGH_PROFILE_PATH         | /Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision                                                                                                                                                                                                                                                                                                                                                                                |
+| SIGH_PROFILE_PATHS        | ["/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.keyboard.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.share.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision"] |
+| SIGH_UDID                 | 6f95f938-7ae0-47c7-8fcc-62ea8259f79a                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| SIGH_UUID                 | 6f95f938-7ae0-47c7-8fcc-62ea8259f79a                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| SIGH_NAME                 | com.tenzy.toolkit.widget AppStore 1792277528                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| SIGH_PROFILE_TYPE         | app-store                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| IPA_OUTPUT_PATH           | /Users/runner/work/putt-party-play/putt-party-play/ios/build/Tenzy.ipa                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| XCODEBUILD_ARCHIVE        | /Users/runner/Library/Developer/Xcode/Archives/2026-10-17/Tenzy 2026-10-17 22.52.35.xcarchive                                                                                                                                                                                                                                                                                                                                                                                                          |
+| DSYM_OUTPUT_PATH          | /Users/runner/work/putt-party-play/putt-party-play/ios/build/Tenzy.app.dSYM.zip                                                                                                                                                                                                                                                                                                                                                                                                                        |
++---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[22:55:15]: [31mCalled from Fastfile at line 113[0m
+[22:55:15]: [31m```[0m
+[22:55:15]: [31m    111:	    )[0m
+[22:55:15]: [31m    112:	[0m
+[22:55:15]: [31m => 113:	    upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)[0m
+[22:55:15]: [31m    114:	  end[0m
+[22:55:15]: [31m    115:	end[0m
+[22:55:15]: [31m```[0m
 
-+----------------------------------------------------------------------+
-|                       [32mSummary for cert 2.241.0[0m                       |
-+-------------------------+--------------------------------------------+
-| api_key                 | API_KEY_REDACTED                           |
-| keychain_path           | /Users/runner/Library/Keychains/tenzyci-db |
-| keychain_password       | KEYCHAIN_PASSWORD_REDACTED                 |
-| development             | false                                      |
-| force                   | false                                      |
-| generate_apple_certs    | true                                       |
-| skip_set_partition_list | false                                      |
-| platform                | ios                                        |
-+-------------------------+--------------------------------------------+
++---------------------------------------------------+
+|                 [32mfastlane summary[0m                  |
++------+------------------------------+-------------+
+| Step | Action                       | Time (in s) |
++------+------------------------------+-------------+
+| 1    | default_platform             | 0           |
+| 2    | app_store_connect_api_key    | 0           |
+| 3    | create_keychain              | 0           |
+| 4    | cert                         | 4           |
+| 5    | sigh                         | 1           |
+| 6    | sigh                         | 1           |
+| 7    | sigh                         | 1           |
+| 8    | sigh                         | 1           |
+| 9    | update_code_signing_settings | 0           |
+| 10   | update_code_signing_settings | 0           |
+| 11   | update_code_signing_settings | 0           |
+| 12   | update_code_signing_settings | 0           |
+| 13   | build_app                    | 111         |
+| 💥   | [31mupload_to_testflight[0m         | 74          |
++------+------------------------------+-------------+
 
-[22:49:07]: Creating authorization token for App Store Connect API
-[22:49:08]: [31mThere are no local code signing identities found.
-You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
-This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
-(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:49:08]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
-[22:49:08]: [31mThere are no local code signing identities found.
-You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
-This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
-(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:49:08]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
-[22:49:08]: [33mCouldn't find an existing certificate... creating a new one[0m
-+---------------------------------------------------------------------------------+
-|                                  [33mLane Context[0m                                   |
-+---------------------------+-----------------------------------------------------+
-| DEFAULT_PLATFORM          | ios                                                 |
-| PLATFORM_NAME             | ios                                                 |
-| LANE_NAME                 | ios beta                                            |
-| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                         |
-| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db" |
-+---------------------------+-----------------------------------------------------+
-[22:49:09]: [31mCalled from Fastfile at line 64[0m
-[22:49:09]: [31m```[0m
-[22:49:09]: [31m    62:	    keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")[0m
-[22:49:09]: [31m    63:	[0m
-[22:49:09]: [31m => 64:	    cert([0m
-[22:49:09]: [31m    65:	      api_key: key,[0m
-[22:49:09]: [31m    66:	      keychain_path: keychain_path,[0m
-[22:49:09]: [31m```[0m
-
-+------------------------------------------------+
-|                [32mfastlane summary[0m                |
-+------+---------------------------+-------------+
-| Step | Action                    | Time (in s) |
-+------+---------------------------+-------------+
-| 1    | default_platform          | 0           |
-| 2    | app_store_connect_api_key | 0           |
-| 3    | create_keychain           | 0           |
-| 💥   | [31mcert[0m                      | 1           |
-+------+---------------------------+-------------+
-
-[22:49:09]: [31mfastlane finished with errors[0m
-
-Looking for related GitHub issues on fastlane/fastlane...
-
-➡️  [33mStop creating new certificates.[0m
-    https://github.com/fastlane/fastlane/issues/19150 [[32mclosed[0m] 22 💬
-    12 Jul 2026
-
-➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
-    https://github.com/fastlane/fastlane/issues/19349 [[32mclosed[0m] 17 💬
-    07 Jan 2026
-
-➡️  [33mApple ID auth not working - 503 Service Temporarily Unavailable on various fastlane modules[0m
-    https://github.com/fastlane/fastlane/issues/26368 [[32mclosed[0m] 216 💬
-    27 Apr 2026
-
-and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
-
-🔗  You can ⌘ + double-click on links to open them directly in your browser.
+[22:55:15]: [31mfastlane finished with errors[0m
 [31m
-[!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
+[!] Error uploading ipa file: 
+ [Application Loader Error Output]: [ContentDelivery.Uploader.BF5038480] 
+[Application Loader Error Output]: [altool.BF5038480] Invalid bundle. The “UIInterfaceOrientationPortrait” orientations were provided for the UISupportedInterfaceOrientations Info.plist key in the com.tenzy.toolkit bundle, but you need to include all of the “UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown,UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight” orientations to support iPad multitasking. For details, visit: https://developer.apple.com/documentation/bundleresources/information_property_list/uisupportedinterfaceorientations. (90474) The server’s response was: ‘{
+[Application Loader Error Output]: [altool.10134ADD0] ExitFailure (31)[0m
+[Application Loader Error Output]: The call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
 
 #######################################################################
 # fastlane 2.241.1 is available. You are on 2.241.0.
