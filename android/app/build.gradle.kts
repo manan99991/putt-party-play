@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.handytools.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.tenzy.toolkit"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0.0"
 
@@ -73,7 +73,7 @@ dependencies {
 
     // Monetization
     implementation("com.google.android.gms:play-services-ads:23.6.0")
-    implementation("com.android.billingclient:billing-ktx:7.1.1")
+    implementation("com.android.billingclient:billing-ktx:8.0.0")
 
     // Screen OCR
     implementation("com.google.mlkit:text-recognition:16.0.1")

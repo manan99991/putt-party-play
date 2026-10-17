@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: "17" }
       - uses: gradle/actions/setup-gradle@v4
-        with: { gradle-version: "8.9" }
+        with: { gradle-version: "8.11.1" }
 
       - name: Build debug APK
         run: gradle --no-daemon assembleDebug --stacktrace --warning-mode none 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
