@@ -1,74 +1,106 @@
-== archive.log (errors) ==
-    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild archive -project HandyTools.xcodeproj -scheme HandyTools -destination generic/platform=iOS -archivePath build/HandyTools.xcarchive -allowProvisioningUpdates -allowProvisioningDeviceRegistration -authenticationKeyPath /Users/runner/.appstoreconnect/private_keys/AuthKey_XXF995FS8M.p8 -authenticationKeyID XXF995FS8M -authenticationKeyIssuerID e6112e2d-081a-413e-bf7f-9a17e9279dc0 CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM=5622NBPJ9W
-GatherProvisioningInputs
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ClipboardKeyboard' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.keyboard' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.keyboard'. (in target 'ClipboardKeyboard' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'StickyWidget' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.widget' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.widget'. (in target 'StickyWidget' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'HandyTools' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit'. (in target 'HandyTools' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ShareExtension' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.share' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.share'. (in target 'ShareExtension' from project 'HandyTools')
-** ARCHIVE FAILED **
+== fastlane.log errors ==
+[22:05:55]: [33mCouldn't find an existing certificate... creating a new one[0m
+[22:05:55]: Verifying the certificate is properly installed locally...
+[22:05:56]: [32mSuccessfully installed certificate 24QVV6RW8U[0m
+[22:05:56]: [32mUse signing certificate '24QVV6RW8U' from now on![0m
+| include_all_certificates            | false             |
+| skip_certificate_verification       | false             |
+| fail_on_name_taken                  | false             |
+[22:05:56]: Verifying certificates...
+[22:05:56]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:05:56]: [33mCreating new provisioning profile for 'com.tenzy.toolkit' with name 'com.tenzy.toolkit AppStore' for 'ios' platform[0m
+[22:05:57]: [33mDownloading provisioning profile...[0m
+[22:05:57]: [32mSuccessfully downloaded provisioning profile...[0m
+[22:05:57]: Installing provisioning profile...
+[22:05:57]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                      |
+| skip_certificate_verification       | false                      |
+| fail_on_name_taken                  | false                      |
+[22:05:57]: Verifying certificates...
+[22:05:57]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:05:57]: Could not find App ID with bundle identifier 'com.tenzy.toolkit.keyboard'
+| CERT_CERTIFICATE_ID       | 24QVV6RW8U                                                                                                           |
+[22:05:57]: [31mfastlane finished with errors[0m
+[!] Could not find App with App Identifier 'com.tenzy.toolkit.keyboard'[0m
 
 == tail ==
-CreateBuildRequest
+| adhoc                               | false                      |
+| developer_id                        | false                      |
+| development                         | false                      |
+| skip_install                        | false                      |
+| force                               | false                      |
+| include_mac_in_profiles             | false                      |
+| offline_profile                     | false                      |
+| ignore_profiles_with_different_name | false                      |
+| cert_id                             | 24QVV6RW8U                 |
+| skip_fetch_profiles                 | false                      |
+| include_all_certificates            | false                      |
+| skip_certificate_verification       | false                      |
+| readonly                            | false                      |
+| fail_on_name_taken                  | false                      |
++-------------------------------------+----------------------------+
 
-SendProjectDescription
+[22:05:57]: Creating authorization token for App Store Connect API
+[22:05:57]: Fetching profiles...
+[22:05:57]: Verifying certificates...
+[22:05:57]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[22:05:57]: 
+[22:05:57]: [33m==========================================[0m
+[22:05:57]: Could not find App ID with bundle identifier 'com.tenzy.toolkit.keyboard'
+[22:05:57]: You can easily generate a new App ID on the Developer Portal using 'produce':
+[22:05:57]: 
+[22:05:57]: [33mfastlane produce -u  -a com.tenzy.toolkit.keyboard --skip_itc[0m
+[22:05:57]: 
+[22:05:57]: You will be asked for any missing information, like the full name of your app
+[22:05:57]: If the app should also be created on App Store Connect, remove the [33m--skip_itc[0m from the command above
+[22:05:57]: [33m==========================================[0m
+[22:05:57]: 
++--------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                   [33mLane Context[0m                                                                   |
++---------------------------+----------------------------------------------------------------------------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                                                                                  |
+| PLATFORM_NAME             | ios                                                                                                                  |
+| LANE_NAME                 | ios beta                                                                                                             |
+| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                                                                                          |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db"                                                                  |
+| CERT_FILE_PATH            | /Users/runner/work/putt-party-play/putt-party-play/ios/build/certs/24QVV6RW8U.cer                                    |
+| CERT_CERTIFICATE_ID       | 24QVV6RW8U                                                                                                           |
+| SIGH_PROFILE_PATH         | /Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision     |
+| SIGH_PROFILE_PATHS        | ["/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision"] |
+| SIGH_UDID                 | 1687c126-a86b-41f3-a3df-d06cd59fb8ac                                                                                 |
+| SIGH_UUID                 | 1687c126-a86b-41f3-a3df-d06cd59fb8ac                                                                                 |
+| SIGH_NAME                 | com.tenzy.toolkit AppStore                                                                                           |
+| SIGH_PROFILE_TYPE         | app-store                                                                                                            |
++---------------------------+----------------------------------------------------------------------------------------------------------------------+
+[22:05:57]: [31mCalled from Fastfile at line 49[0m
+[22:05:57]: [31m```[0m
+[22:05:57]: [31m    47:	    profiles = {}[0m
+[22:05:57]: [31m    48:	    BUNDLE_IDS.each do |bid|[0m
+[22:05:57]: [31m => 49:	      sigh([0m
+[22:05:57]: [31m    50:	        api_key: key,[0m
+[22:05:57]: [31m    51:	        app_identifier: bid,[0m
+[22:05:57]: [31m```[0m
 
-CreateBuildOperation
++------------------------------------------------+
+|                [32mfastlane summary[0m                |
++------+---------------------------+-------------+
+| Step | Action                    | Time (in s) |
++------+---------------------------+-------------+
+| 1    | default_platform          | 0           |
+| 2    | app_store_connect_api_key | 0           |
+| 3    | create_keychain           | 0           |
+| 4    | cert                      | 1           |
+| 5    | sigh                      | 0           |
+| 💥   | [31msigh[0m                      | 0           |
++------+---------------------------+-------------+
 
-ComputeTargetDependencyGraph
-note: Building targets in dependency order
-note: Target dependency graph (8 targets)
-    Target 'HandyTools' in project 'HandyTools'
-        ➜ Explicit dependency on target 'ClipboardKeyboard' in project 'HandyTools'
-        ➜ Explicit dependency on target 'ShareExtension' in project 'HandyTools'
-        ➜ Explicit dependency on target 'StickyWidget' in project 'HandyTools'
-        ➜ Explicit dependency on target 'GoogleMobileAds' in project 'GoogleMobileAds'
-    Target 'GoogleMobileAds' in project 'GoogleMobileAds'
-        ➜ Explicit dependency on target 'GoogleMobileAdsTarget' in project 'GoogleMobileAds'
-        ➜ Explicit dependency on target 'GoogleUserMessagingPlatform' in project 'GoogleUserMessagingPlatform'
-    Target 'GoogleMobileAdsTarget' in project 'GoogleMobileAds'
-        ➜ Explicit dependency on target 'GoogleUserMessagingPlatform' in project 'GoogleUserMessagingPlatform'
-    Target 'GoogleUserMessagingPlatform' in project 'GoogleUserMessagingPlatform'
-        ➜ Explicit dependency on target 'UserMessagingPlatformTarget' in project 'GoogleUserMessagingPlatform'
-    Target 'UserMessagingPlatformTarget' in project 'GoogleUserMessagingPlatform' (no dependencies)
-    Target 'StickyWidget' in project 'HandyTools' (no dependencies)
-    Target 'ShareExtension' in project 'HandyTools' (no dependencies)
-    Target 'ClipboardKeyboard' in project 'HandyTools' (no dependencies)
+[22:05:57]: [31mfastlane finished with errors[0m
+[31m
+[!] Could not find App with App Identifier 'com.tenzy.toolkit.keyboard'[0m
 
-GatherProvisioningInputs
-
-CreateBuildDescription
-
-ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
-
-ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x objective-c -c /dev/null
-
-ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Assets.xcassets
-
-ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
-
-ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
-
-ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
-
-ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --version --output-format xml1
-
-Build description signature: 63097e631cff6c62641fb14c11628727
-Build description path: /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/XCBuildData/63097e631cff6c62641fb14c11628727.xcbuilddata
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ClipboardKeyboard' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.keyboard' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.keyboard'. (in target 'ClipboardKeyboard' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'StickyWidget' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.widget' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.widget'. (in target 'StickyWidget' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'HandyTools' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit'. (in target 'HandyTools' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Authentication failed: Make sure a bearer token was provided, it is properly configured and signed, and it has not expired. (in target 'ShareExtension' from project 'HandyTools')
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: No profiles for 'com.tenzy.toolkit.share' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.tenzy.toolkit.share'. (in target 'ShareExtension' from project 'HandyTools')
-** ARCHIVE FAILED **
-
-
-The following build commands failed:
-	Archiving project HandyTools with scheme HandyTools
-(1 failure)
+#######################################################################
+# fastlane 2.241.1 is available. You are on 2.241.0.
+# You should use the latest version.
+# Please update using `gem install fastlane`.
+# To see what's new, open https://github.com/fastlane/fastlane/releases.
+#######################################################################
