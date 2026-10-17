@@ -50,18 +50,18 @@ jobs:
           xcrun simctl boot "$UDID" || true
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl install "$UDID" "$APP"
-          xcrun simctl privacy "$UDID" grant all com.handytools.app || true
+          xcrun simctl privacy "$UDID" grant all com.oddbox.app || true
           # Pre-answer the App Tracking Transparency prompt so it doesn't cover every screenshot
-          xcrun simctl launch "$UDID" com.handytools.app -screenshots; sleep 4
+          xcrun simctl launch "$UDID" com.oddbox.app -screenshots; sleep 4
           xcrun simctl spawn "$UDID" defaults write com.apple.AppTrackingTransparency.plist 2>/dev/null || true
-          xcrun simctl terminate "$UDID" com.handytools.app || true
+          xcrun simctl terminate "$UDID" com.oddbox.app || true
           mkdir -p shots
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           for mode in light dark; do
             xcrun simctl ui "$UDID" appearance $mode
             for r in onboarding onboarding2 onboarding3 setup settings privacy home alarm clips flash webclip sticky ocr scan db exif qr paywall ring homepro; do
-              xcrun simctl terminate "$UDID" com.handytools.app 2>/dev/null || true
-              xcrun simctl launch "$UDID" com.handytools.app -screenshots -route $r
+              xcrun simctl terminate "$UDID" com.oddbox.app 2>/dev/null || true
+              xcrun simctl launch "$UDID" com.oddbox.app -screenshots -route $r
               sleep 9
               xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
             done
