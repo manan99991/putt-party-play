@@ -18,7 +18,7 @@ android {
 
         // AdMob app ID. Replace with yours from https://apps.admob.com before release.
         // This is Google's official TEST app id — safe to ship to internal testing.
-        manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
+        manifestPlaceholders["admobAppId"] = "ca-app-pub-5414801919054534~4620337988"
     }
 
     // Upload key. CI decodes ANDROID_KEYSTORE_B64 into android/upload.jks; locally, put your

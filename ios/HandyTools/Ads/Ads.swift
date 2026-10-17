@@ -2,10 +2,10 @@ import SwiftUI
 import GoogleMobileAds
 import AppTrackingTransparency
 
-/// Google's official TEST ad unit ids. Replace in AdMob console before shipping.
+/// Live Tenzy AdMob ad unit ids.
 enum AdUnits {
-    static let banner = "ca-app-pub-3940256099942544/2435281174"
-    static let interstitial = "ca-app-pub-3940256099942544/4411468910"
+    static let banner = "ca-app-pub-5414801919054534/9681092972"
+    static let interstitial = "ca-app-pub-5414801919054534/5362574012"
 }
 
 @MainActor

@@ -53,8 +53,8 @@ targets:
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         ITSAppUsesNonExemptEncryption: false
-        # --- AdMob (TEST app id — swap for yours before release) ---
-        GADApplicationIdentifier: ca-app-pub-3940256099942544~1458002511
+        # --- AdMob (live Tenzy app id) ---
+        GADApplicationIdentifier: ca-app-pub-5414801919054534~3553659163
         SKAdNetworkItems:
           - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
         NSUserTrackingUsageDescription: Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones.

@@ -42,8 +42,8 @@ import com.handytools.app.HandyApp
  * (AdMob console > Apps > Tenzy > Ad units) or you'll get your account flagged.
  */
 object AdUnits {
-    const val BANNER = "ca-app-pub-3940256099942544/6300978111"
-    const val INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712"
+    const val BANNER = "ca-app-pub-5414801919054534/1045634061"
+    const val INTERSTITIAL = "ca-app-pub-5414801919054534/4808040249"
 }
 
 /** Provided by MainActivity so any screen's banner can open the paywall. */
