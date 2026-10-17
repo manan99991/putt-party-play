@@ -39,7 +39,18 @@ final class KeyboardViewController: UIInputViewController, UITableViewDataSource
         ])
     }
 
-    override func viewWillAppear(_ animated: Bool) { super.viewWillAppear(animated); reload() }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        autoGrab()   // capture whatever was just copied, the moment the keyboard opens
+        reload()
+    }
+
+    /// iOS only keeps the latest clipboard item and bans background monitoring, so the best we can
+    /// do is grab the current clip every time the keyboard appears — capture-as-you-go.
+    private func autoGrab() {
+        guard hasFullAccess, let s = UIPasteboard.general.string, !s.isEmpty else { return }
+        _ = ClipStore.add(s)
+    }
 
     private func key(_ title: String, _ sel: Selector, isGlobe: Bool = false) -> UIButton {
         let b = UIButton(type: .system)
@@ -65,7 +76,7 @@ final class KeyboardViewController: UIInputViewController, UITableViewDataSource
         let c = t.dequeueReusableCell(withIdentifier: "c", for: ip)
         c.backgroundColor = .clear
         var cfg = c.defaultContentConfiguration()
-        if clips.isEmpty { cfg.text = "Nothing saved yet. Copy text, then tap ＋ Grab clipboard."; cfg.textProperties.color = .secondaryLabel }
+        if clips.isEmpty { cfg.text = "Nothing saved yet. Copy some text, then open this keyboard — it grabs it automatically."; cfg.textProperties.color = .secondaryLabel }
         else { cfg.text = (clips[ip.row].pinned ? "📌 " : "") + clips[ip.row].text; cfg.textProperties.numberOfLines = 2 }
         c.contentConfiguration = cfg
         return c

@@ -97,13 +97,18 @@ jobs:
       - uses: actions/checkout@v4
       - run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
       - run: brew install xcodegen
-      - name: Inject team id + build number + generate
+      - name: Inject team id + generate + stamp build number
         run: |
           sed -i '' "s/YOUR_TEAM_ID/$TEAM_ID/g" project.yml HandyTools/Resources/Products.storekit
-          # Unique, ever-increasing build number baked at generation time (CFBundleVersion =
-          # $(CURRENT_PROJECT_VERSION) in the generated Info.plists).
-          sed -i '' "s/CURRENT_PROJECT_VERSION: \"1\"/CURRENT_PROJECT_VERSION: \"$(date +%s)\"/" project.yml
           xcodegen generate
+          # Force a unique, ever-increasing CFBundleVersion directly into every generated Info.plist
+          # (XcodeGen writes a literal "1", so a build-setting override alone doesn't take).
+          BN=$(date +%s)
+          for p in HandyTools ClipboardKeyboard ShareExtension StickyWidget; do
+            /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BN" "$p/Info.plist" 2>/dev/null \
+              || /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $BN" "$p/Info.plist"
+          done
+          echo "stamped build number $BN"
       - name: Write ASC key + export fastlane auth env
         run: |
           mkdir -p ~/.appstoreconnect/private_keys

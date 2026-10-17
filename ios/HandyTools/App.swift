@@ -244,8 +244,12 @@ struct ToolPage<Content: View>: View {
                 }
                 .padding(.horizontal, HandySpacing.gutter)
                 .padding(.vertical, HandySpacing.s8)
+                // Breathing room so the keyboard never traps the last control at the bottom.
+                .padding(.bottom, HandySpacing.s48)
             }
+            .scrollDismissesKeyboard(.interactively)
             BannerAd()
+                .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .background(HandyColor.bg)
         .navigationBarTitleDisplayMode(.inline)
