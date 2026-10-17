@@ -1,194 +1,193 @@
 ===== fastlane.log errors =====
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[23:09:16]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
-[23:09:16]: [33mCouldn't find an existing certificate... creating a new one[0m
-[23:09:17]: [32mSuccessfully generated K9CG5X5LVS which was imported to the local machine.[0m
-[23:09:17]: Verifying the certificate is properly installed locally...
-[23:09:17]: [32mSuccessfully installed certificate K9CG5X5LVS[0m
-[23:09:17]: [32mUse signing certificate 'K9CG5X5LVS' from now on![0m
+[23:14:17]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+[23:14:17]: [33mCouldn't find an existing certificate... creating a new one[0m
+[23:14:17]: [32mSuccessfully generated L4FQN3GH3F which was imported to the local machine.[0m
+[23:14:17]: Verifying the certificate is properly installed locally...
+[23:14:17]: [32mSuccessfully installed certificate L4FQN3GH3F[0m
+[23:14:17]: [32mUse signing certificate 'L4FQN3GH3F' from now on![0m
 | include_all_certificates            | false             |
 | skip_certificate_verification       | false             |
 | fail_on_name_taken                  | false             |
-[23:09:18]: Provisioning Profile cert_id : '24QVV6RW8U' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:18]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:18]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:18]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:18]: Provisioning Profile cert_id : 'D22S7J8SAL' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:18]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:18]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:18]: Verifying certificates...
-[23:09:18]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[23:09:18]: [33mCreating new provisioning profile for 'com.tenzy.toolkit' with name 'com.tenzy.toolkit AppStore 1792278558' for 'ios' platform[0m
-[23:09:20]: [33mDownloading provisioning profile...[0m
-[23:09:20]: [32mSuccessfully downloaded provisioning profile...[0m
-[23:09:20]: Installing provisioning profile...
-[23:09:20]: Setting Provisioning Profile type to 'app-store'
+[23:14:18]: Provisioning Profile cert_id : 'K9CG5X5LVS' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:18]: Provisioning Profile cert_id : '24QVV6RW8U' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:18]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:18]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:18]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:18]: Provisioning Profile cert_id : 'D22S7J8SAL' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:18]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:18]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:18]: Verifying certificates...
+[23:14:18]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[23:14:19]: [33mCreating new provisioning profile for 'com.tenzy.toolkit' with name 'com.tenzy.toolkit AppStore 1792278859' for 'ios' platform[0m
+[23:14:20]: [33mDownloading provisioning profile...[0m
+[23:14:20]: [32mSuccessfully downloaded provisioning profile...[0m
+[23:14:20]: Installing provisioning profile...
+[23:14:20]: Setting Provisioning Profile type to 'app-store'
 | include_all_certificates            | false                      |
 | skip_certificate_verification       | false                      |
 | fail_on_name_taken                  | false                      |
-[23:09:20]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:20]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:20]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:20]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:20]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:20]: Verifying certificates...
-[23:09:20]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[23:09:21]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.keyboard' with name 'com.tenzy.toolkit.keyboard AppStore 1792278561' for 'ios' platform[0m
-[23:09:22]: [33mDownloading provisioning profile...[0m
-[23:09:22]: [32mSuccessfully downloaded provisioning profile...[0m
-[23:09:22]: Installing provisioning profile...
-[23:09:22]: Setting Provisioning Profile type to 'app-store'
+[23:14:21]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:21]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:21]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:21]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:21]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:21]: Provisioning Profile cert_id : 'K9CG5X5LVS' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:21]: Verifying certificates...
+[23:14:21]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[23:14:21]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.keyboard' with name 'com.tenzy.toolkit.keyboard AppStore 1792278861' for 'ios' platform[0m
+[23:14:22]: [33mDownloading provisioning profile...[0m
+[23:14:22]: [32mSuccessfully downloaded provisioning profile...[0m
+[23:14:22]: Installing provisioning profile...
+[23:14:22]: Setting Provisioning Profile type to 'app-store'
 | include_all_certificates            | false                   |
 | skip_certificate_verification       | false                   |
 | fail_on_name_taken                  | false                   |
-[23:09:22]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:22]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:22]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:22]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:22]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:22]: Verifying certificates...
-[23:09:22]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[23:09:23]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.share' with name 'com.tenzy.toolkit.share AppStore 1792278563' for 'ios' platform[0m
-[23:09:24]: [33mDownloading provisioning profile...[0m
-[23:09:24]: [32mSuccessfully downloaded provisioning profile...[0m
-[23:09:24]: Installing provisioning profile...
-[23:09:24]: Setting Provisioning Profile type to 'app-store'
+[23:14:23]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:23]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:23]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:23]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:23]: Provisioning Profile cert_id : 'K9CG5X5LVS' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:23]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:23]: Verifying certificates...
+[23:14:23]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[23:14:24]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.share' with name 'com.tenzy.toolkit.share AppStore 1792278863' for 'ios' platform[0m
+[23:14:24]: [33mDownloading provisioning profile...[0m
+[23:14:24]: [32mSuccessfully downloaded provisioning profile...[0m
+[23:14:24]: Installing provisioning profile...
+[23:14:24]: Setting Provisioning Profile type to 'app-store'
 | include_all_certificates            | false                    |
 | skip_certificate_verification       | false                    |
 | fail_on_name_taken                  | false                    |
-[23:09:24]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:24]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:24]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:24]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:24]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'K9CG5X5LVS', skipping this one...
-[23:09:24]: Verifying certificates...
-[23:09:24]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[23:09:25]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.widget' with name 'com.tenzy.toolkit.widget AppStore 1792278565' for 'ios' platform[0m
-[23:09:26]: [33mDownloading provisioning profile...[0m
-[23:09:26]: [32mSuccessfully downloaded provisioning profile...[0m
-[23:09:26]: Installing provisioning profile...
-[23:09:26]: Setting Provisioning Profile type to 'app-store'
-[23:09:26]: Provisioning profiles: {"com.tenzy.toolkit" => "com.tenzy.toolkit AppStore 1792278558", "com.tenzy.toolkit.keyboard" => "com.tenzy.toolkit.keyboard AppStore 1792278561", "com.tenzy.toolkit.share" => "com.tenzy.toolkit.share AppStore 1792278563", "com.tenzy.toolkit.widget" => "com.tenzy.toolkit.widget AppStore 1792278565"}
-[23:09:26]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792278558 for target: HandyTools for build configuration: Debug[0m
-[23:09:26]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Debug[0m
-[23:09:26]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792278558 for target: HandyTools for build configuration: Release[0m
-[23:09:26]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Release[0m
-[23:09:26]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
-[23:09:26]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792278561 for target: ClipboardKeyboard for build configuration: Debug[0m
-[23:09:26]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Debug[0m
-[23:09:26]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792278561 for target: ClipboardKeyboard for build configuration: Release[0m
-[23:09:26]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Release[0m
-[23:09:26]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
-[23:09:26]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792278563 for target: ShareExtension for build configuration: Debug[0m
-[23:09:26]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Debug[0m
-[23:09:26]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792278563 for target: ShareExtension for build configuration: Release[0m
-[23:09:26]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Release[0m
-[23:09:26]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
-[23:09:26]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792278565 for target: StickyWidget for build configuration: Debug[0m
-[23:09:26]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Debug[0m
-[23:09:26]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792278565 for target: StickyWidget for build configuration: Release[0m
-[23:09:26]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Release[0m
-[23:09:26]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
-[23:09:26]: [32m--- Step: latest_testflight_build_number ---[0m
-[23:09:52]: Detected provisioning profile mapping: {"com.tenzy.toolkit": "com.tenzy.toolkit AppStore 1792278558", "com.tenzy.toolkit.keyboard": "com.tenzy.toolkit.keyboard AppStore 1792278561", "com.tenzy.toolkit.share": "com.tenzy.toolkit.share AppStore 1792278563", "com.tenzy.toolkit.widget": "com.tenzy.toolkit.widget AppStore 1792278565"}
-| export_options.provisioningProfiles.com.tenzy.toolkit          | com.tenzy.toolkit AppStore 1792278558                     |
-| export_options.provisioningProfiles.com.tenzy.toolkit.keyboard | com.tenzy.toolkit.keyboard AppStore 1792278561            |
-| export_options.provisioningProfiles.com.tenzy.toolkit.share    | com.tenzy.toolkit.share AppStore 1792278563               |
-| export_options.provisioningProfiles.com.tenzy.toolkit.widget   | com.tenzy.toolkit.widget AppStore 1792278565              |
-[23:09:53]: [36m$ set -o pipefail && xcodebuild -scheme HandyTools -project HandyTools.xcodeproj -configuration Release -destination generic/platform\=iOS -archivePath /Users/runner/Library/Developer/Xcode/Archives/2026-10-17/Tenzy\ 2026-10-17\ 23.09.53.xcarchive CURRENT_PROJECT_VERSION=2 archive | tee /Users/runner/Library/Logs/gym/HandyTools-HandyTools.log | xcbeautify[0m
-[23:10:00]: ▸ [35m[[36mStickyWidget[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
-[23:10:00]: ▸ [35m[[36mShareExtension[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
-[23:10:00]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
-[23:10:00]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
-[23:10:38]: ▸ [35m::warning file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Ads/Ads.swift,line=1,col=1::add '@preconcurrency' to treat 'Sendable'-related errors from module 'ObjectiveC' as warnings[0m
-[23:10:42]: ▸ [35m  "provisioningProfiles": {[0m
-[23:10:47]: [32mSuccessfully exported and compressed dSYM file[0m
-[23:10:47]: [32mSuccessfully exported and signed the ipa file:[0m
-[23:10:47]: [32m--- Step: upload_to_testflight ---[0m
-[23:10:47]: [32mReady to upload new build to TestFlight (App: 6824023361)...[0m
-[23:10:52]: [33m[altool] 2026-10-17 23:10:52.503 [1m[31mERROR: [ContentDelivery.Uploader.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)
-[23:10:52]: [33m[altool]    NSUnderlyingError : The provided entity includes an attribute with a value that has already been used (-19241) The bundle version must be higher than the previously uploaded version.
-[23:10:52]: [33m[altool]       detail : The bundle version must be higher than the previously uploaded version.
-[23:10:52]: [33m[altool]       code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE
-[23:10:52]: [33m[altool]    iris-code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE[0m
-[23:10:52]: [33m[altool] 2026-10-17 23:10:52.505 [1m[31mERROR: [altool.C8B050480] Failed to upload package.[0m
-[23:10:52]: [33m[altool] Failed to upload archive at '/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/7a38090d-f983-4201-800f-1e880b87b0a6.ipa'.
-[23:10:52]: [33m[altool] 2026-10-17 23:10:52.507 [1m[31mERROR: [altool.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)
-[23:10:52]: [33m[altool]    NSUnderlyingError : The provided entity includes an attribute with a value that has already been used (-19241) The bundle version must be higher than the previously uploaded version.
-[23:10:52]: [33m[altool]       detail : The bundle version must be higher than the previously uploaded version.
-[23:10:52]: [33m[altool]       code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE
-[23:10:52]: [33m[altool]    iris-code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE
-[23:10:52]: [33m[altool] 2026-10-17 23:10:52.515 [1m[31mERROR: [altool.104B62E50] ExitFailure (31)[0m
-[23:10:52]: [31m[ContentDelivery.Uploader.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)[0m
-[23:10:52]: [31m[altool.C8B050480] Failed to upload package.[0m[0m
-[23:10:52]: [31m[altool.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)[0m
-[23:10:52]: [31m[altool.104B62E50] ExitFailure (31)[0m[0m
-[23:10:52]: [31mThe call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
-[23:10:52]: [31mCould not download/upload from App Store Connect![0m
-| CERT_CERTIFICATE_ID            | K9CG5X5LVS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| LATEST_TESTFLIGHT_BUILD_NUMBER | 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| LATEST_TESTFLIGHT_VERSION      | 1.0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-[23:10:52]: [31m => 148:	    upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)[0m
-| 16   | latest_testflight_build_number                                | 0           |
+[23:14:25]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:25]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:25]: Provisioning Profile cert_id : 'K9CG5X5LVS' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:25]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:25]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:25]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : 'L4FQN3GH3F', skipping this one...
+[23:14:25]: Verifying certificates...
+[23:14:25]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[23:14:26]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.widget' with name 'com.tenzy.toolkit.widget AppStore 1792278866' for 'ios' platform[0m
+[23:14:27]: [33mDownloading provisioning profile...[0m
+[23:14:27]: [32mSuccessfully downloaded provisioning profile...[0m
+[23:14:27]: Installing provisioning profile...
+[23:14:27]: Setting Provisioning Profile type to 'app-store'
+[23:14:27]: Provisioning profiles: {"com.tenzy.toolkit" => "com.tenzy.toolkit AppStore 1792278859", "com.tenzy.toolkit.keyboard" => "com.tenzy.toolkit.keyboard AppStore 1792278861", "com.tenzy.toolkit.share" => "com.tenzy.toolkit.share AppStore 1792278863", "com.tenzy.toolkit.widget" => "com.tenzy.toolkit.widget AppStore 1792278866"}
+[23:14:27]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792278859 for target: HandyTools for build configuration: Debug[0m
+[23:14:27]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Debug[0m
+[23:14:27]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792278859 for target: HandyTools for build configuration: Release[0m
+[23:14:27]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Release[0m
+[23:14:27]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[23:14:27]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792278861 for target: ClipboardKeyboard for build configuration: Debug[0m
+[23:14:27]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Debug[0m
+[23:14:27]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792278861 for target: ClipboardKeyboard for build configuration: Release[0m
+[23:14:27]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Release[0m
+[23:14:27]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[23:14:27]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792278863 for target: ShareExtension for build configuration: Debug[0m
+[23:14:27]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Debug[0m
+[23:14:27]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792278863 for target: ShareExtension for build configuration: Release[0m
+[23:14:27]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Release[0m
+[23:14:27]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[23:14:27]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792278866 for target: StickyWidget for build configuration: Debug[0m
+[23:14:27]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Debug[0m
+[23:14:27]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792278866 for target: StickyWidget for build configuration: Release[0m
+[23:14:27]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Release[0m
+[23:14:27]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[23:14:45]: Detected provisioning profile mapping: {"com.tenzy.toolkit": "com.tenzy.toolkit AppStore 1792278859", "com.tenzy.toolkit.keyboard": "com.tenzy.toolkit.keyboard AppStore 1792278861", "com.tenzy.toolkit.share": "com.tenzy.toolkit.share AppStore 1792278863", "com.tenzy.toolkit.widget": "com.tenzy.toolkit.widget AppStore 1792278866"}
+| export_options.provisioningProfiles.com.tenzy.toolkit          | com.tenzy.toolkit AppStore 1792278859                     |
+| export_options.provisioningProfiles.com.tenzy.toolkit.keyboard | com.tenzy.toolkit.keyboard AppStore 1792278861            |
+| export_options.provisioningProfiles.com.tenzy.toolkit.share    | com.tenzy.toolkit.share AppStore 1792278863               |
+| export_options.provisioningProfiles.com.tenzy.toolkit.widget   | com.tenzy.toolkit.widget AppStore 1792278866              |
+[23:14:45]: [36m$ set -o pipefail && xcodebuild -scheme HandyTools -project HandyTools.xcodeproj -configuration Release -destination generic/platform\=iOS -archivePath /Users/runner/Library/Developer/Xcode/Archives/2026-10-17/Tenzy\ 2026-10-17\ 23.14.45.xcarchive CURRENT_PROJECT_VERSION=1792278867 archive | tee /Users/runner/Library/Logs/gym/HandyTools-HandyTools.log | xcbeautify[0m
+[23:14:50]: ▸ [35m[[36mStickyWidget[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[23:14:50]: ▸ [35m[[36mShareExtension[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[23:14:50]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[23:14:50]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[23:15:17]: ▸ [35m::warning file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Ads/Ads.swift,line=1,col=1::add '@preconcurrency' to treat 'Sendable'-related errors from module 'ObjectiveC' as warnings[0m
+[23:15:19]: ▸ [35m  "provisioningProfiles": {[0m
+[23:15:22]: [32mSuccessfully exported and compressed dSYM file[0m
+[23:15:22]: [32mSuccessfully exported and signed the ipa file:[0m
+[23:15:22]: [32m--- Step: upload_to_testflight ---[0m
+[23:15:22]: [32mReady to upload new build to TestFlight (App: 6824023361)...[0m
+[23:15:26]: [33m[altool] 2026-10-17 23:15:26.225 [1m[31mERROR: [ContentDelivery.Uploader.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)
+[23:15:26]: [33m[altool]    NSUnderlyingError : The provided entity includes an attribute with a value that has already been used (-19241) The bundle version must be higher than the previously uploaded version.
+[23:15:26]: [33m[altool]       detail : The bundle version must be higher than the previously uploaded version.
+[23:15:26]: [33m[altool]       code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE
+[23:15:26]: [33m[altool]    iris-code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE[0m
+[23:15:26]: [33m[altool] 2026-10-17 23:15:26.226 [1m[31mERROR: [altool.788C40480] Failed to upload package.[0m
+[23:15:26]: [33m[altool] Failed to upload archive at '/var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/97b8ba50-ea3b-42e2-9148-ebd471310358.ipa'.
+[23:15:26]: [33m[altool] 2026-10-17 23:15:26.227 [1m[31mERROR: [altool.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)
+[23:15:26]: [33m[altool]    NSUnderlyingError : The provided entity includes an attribute with a value that has already been used (-19241) The bundle version must be higher than the previously uploaded version.
+[23:15:26]: [33m[altool]       detail : The bundle version must be higher than the previously uploaded version.
+[23:15:26]: [33m[altool]       code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE
+[23:15:26]: [33m[altool]    iris-code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE
+[23:15:26]: [33m[altool] 2026-10-17 23:15:26.230 [1m[31mERROR: [altool.100A36D70] ExitFailure (31)[0m
+[23:15:26]: [31m[ContentDelivery.Uploader.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)[0m
+[23:15:26]: [31m[altool.788C40480] Failed to upload package.[0m[0m
+[23:15:26]: [31m[altool.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)[0m
+[23:15:26]: [31m[altool.100A36D70] ExitFailure (31)[0m[0m
+[23:15:26]: [31mThe call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
+[23:15:26]: [31mCould not download/upload from App Store Connect![0m
+| CERT_CERTIFICATE_ID       | L4FQN3GH3F                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+[23:15:26]: [31m => 144:	    upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)[0m
 | 💥   | [31mupload_to_testflight[0m                                          | 4           |
-[23:10:52]: [31mfastlane finished with errors[0m
+[23:15:26]: [31mfastlane finished with errors[0m
 [!] Error uploading ipa file: 
- [Application Loader Error Output]: [ContentDelivery.Uploader.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)
-[Application Loader Error Output]: [altool.C8B050480] Failed to upload package.[0m
-[Application Loader Error Output]: [altool.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)
-[Application Loader Error Output]: [altool.104B62E50] ExitFailure (31)[0m
+ [Application Loader Error Output]: [ContentDelivery.Uploader.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)
+[Application Loader Error Output]: [altool.788C40480] Failed to upload package.[0m
+[Application Loader Error Output]: [altool.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)
+[Application Loader Error Output]: [altool.100A36D70] ExitFailure (31)[0m
 [Application Loader Error Output]: The call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
 
 ===== fastlane.log tail =====
-[23:10:52]: [33m[altool]       meta : 
 [0m
-[23:10:52]: [33m[altool]          previousBundleVersion : 1
+[23:15:26]: [33m[altool]       meta : 
 [0m
-[23:10:52]: [33m[altool]    previousBundleVersion : 1
+[23:15:26]: [33m[altool]          previousBundleVersion : 1
 [0m
-[23:10:52]: [33m[altool]    iris-code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE
+[23:15:26]: [33m[altool]    previousBundleVersion : 1
 [0m
-[23:10:52]: [33m[altool] [0m
+[23:15:26]: [33m[altool]    iris-code : ENTITY_ERROR.ATTRIBUTE.INVALID.DUPLICATE
 [0m
-[23:10:52]: [33m[altool] 2026-10-17 23:10:52.515 [1m[31mERROR: [altool.104B62E50] ExitFailure (31)[0m
+[23:15:26]: [33m[altool] [0m
 [0m
-[23:10:52]: Application Loader output above ^
-[23:10:52]: [31m[ContentDelivery.Uploader.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)[0m
-[23:10:52]: [31m[altool.C8B050480] Failed to upload package.[0m[0m
-[23:10:52]: [31m[altool.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)[0m
-[23:10:52]: [31m[altool.104B62E50] ExitFailure (31)[0m[0m
-[23:10:52]: [31mThe call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
-[23:10:52]: [31mCould not download/upload from App Store Connect![0m
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|                                                                                                                                                                                                                                                              [33mLane Context[0m                                                                                                                                                                                                                                                               |
-+--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| DEFAULT_PLATFORM               | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| PLATFORM_NAME                  | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| LANE_NAME                      | ios beta                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| KEYCHAIN_PATH                  | ~/Library/Keychains/tenzyci                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| ORIGINAL_DEFAULT_KEYCHAIN      | "/Users/runner/Library/Keychains/login.keychain-db"                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| CERT_FILE_PATH                 | /Users/runner/work/putt-party-play/putt-party-play/ios/build/certs/K9CG5X5LVS.cer                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| CERT_CERTIFICATE_ID            | K9CG5X5LVS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| SIGH_PROFILE_PATH              | /Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision                                                                                                                                                                                                                                                                                                                                                                                |
-| SIGH_PROFILE_PATHS             | ["/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.keyboard.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.share.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision"] |
-| SIGH_UDID                      | 581cb336-feb4-496a-b7a8-61ef69c48e70                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| SIGH_UUID                      | 581cb336-feb4-496a-b7a8-61ef69c48e70                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| SIGH_NAME                      | com.tenzy.toolkit.widget AppStore 1792278565                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| SIGH_PROFILE_TYPE              | app-store                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| LATEST_TESTFLIGHT_BUILD_NUMBER | 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| LATEST_TESTFLIGHT_VERSION      | 1.0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| IPA_OUTPUT_PATH                | /Users/runner/work/putt-party-play/putt-party-play/ios/build/Tenzy.ipa                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| XCODEBUILD_ARCHIVE             | /Users/runner/Library/Developer/Xcode/Archives/2026-10-17/Tenzy 2026-10-17 23.09.53.xcarchive                                                                                                                                                                                                                                                                                                                                                                                                          |
-| DSYM_OUTPUT_PATH               | /Users/runner/work/putt-party-play/putt-party-play/ios/build/Tenzy.app.dSYM.zip                                                                                                                                                                                                                                                                                                                                                                                                                        |
-+--------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-[23:10:52]: [31mCalled from Fastfile at line 148[0m
-[23:10:52]: [31m```[0m
-[23:10:52]: [31m    146:	    )[0m
-[23:10:52]: [31m    147:	[0m
-[23:10:52]: [31m => 148:	    upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)[0m
-[23:10:52]: [31m    149:	  end[0m
-[23:10:52]: [31m    150:	end[0m
-[23:10:52]: [31m```[0m
+[23:15:26]: [33m[altool] 2026-10-17 23:15:26.230 [1m[31mERROR: [altool.100A36D70] ExitFailure (31)[0m
+[0m
+[23:15:26]: Application Loader output above ^
+[23:15:26]: [31m[ContentDelivery.Uploader.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)[0m
+[23:15:26]: [31m[altool.788C40480] Failed to upload package.[0m[0m
+[23:15:26]: [31m[altool.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)[0m
+[23:15:26]: [31m[altool.100A36D70] ExitFailure (31)[0m[0m
+[23:15:26]: [31mThe call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
+[23:15:26]: [31mCould not download/upload from App Store Connect![0m
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                                                                                                                            [33mLane Context[0m                                                                                                                                                                                                                                                            |
++---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| PLATFORM_NAME             | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| LANE_NAME                 | ios beta                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db"                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| CERT_FILE_PATH            | /Users/runner/work/putt-party-play/putt-party-play/ios/build/certs/L4FQN3GH3F.cer                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| CERT_CERTIFICATE_ID       | L4FQN3GH3F                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| SIGH_PROFILE_PATH         | /Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision                                                                                                                                                                                                                                                                                                                                                                                |
+| SIGH_PROFILE_PATHS        | ["/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.keyboard.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.share.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision"] |
+| SIGH_UDID                 | 51d5d6ca-caf9-4ee4-9e24-4443553bbb1c                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| SIGH_UUID                 | 51d5d6ca-caf9-4ee4-9e24-4443553bbb1c                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| SIGH_NAME                 | com.tenzy.toolkit.widget AppStore 1792278866                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| SIGH_PROFILE_TYPE         | app-store                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| IPA_OUTPUT_PATH           | /Users/runner/work/putt-party-play/putt-party-play/ios/build/Tenzy.ipa                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| XCODEBUILD_ARCHIVE        | /Users/runner/Library/Developer/Xcode/Archives/2026-10-17/Tenzy 2026-10-17 23.14.45.xcarchive                                                                                                                                                                                                                                                                                                                                                                                                          |
+| DSYM_OUTPUT_PATH          | /Users/runner/work/putt-party-play/putt-party-play/ios/build/Tenzy.app.dSYM.zip                                                                                                                                                                                                                                                                                                                                                                                                                        |
++---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[23:15:26]: [31mCalled from Fastfile at line 144[0m
+[23:15:26]: [31m```[0m
+[23:15:26]: [31m    142:	    )[0m
+[23:15:26]: [31m    143:	[0m
+[23:15:26]: [31m => 144:	    upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)[0m
+[23:15:26]: [31m    145:	  end[0m
+[23:15:26]: [31m    146:	end[0m
+[23:15:26]: [31m```[0m
 
 +------------------------------------------------------------------------------------+
 |                                  [32mfastlane summary[0m                                  |
@@ -205,23 +204,22 @@
 | 8    | sigh                                                          | 2           |
 | 9    | sigh                                                          | 2           |
 | 10   | sigh                                                          | 2           |
-| 11   | sigh                                                          | 1           |
+| 11   | sigh                                                          | 2           |
 | 12   | update_code_signing_settings                                  | 0           |
 | 13   | update_code_signing_settings                                  | 0           |
 | 14   | update_code_signing_settings                                  | 0           |
 | 15   | update_code_signing_settings                                  | 0           |
-| 16   | latest_testflight_build_number                                | 0           |
-| 17   | build_app                                                     | 80          |
+| 16   | build_app                                                     | 54          |
 | 💥   | [31mupload_to_testflight[0m                                          | 4           |
 +------+---------------------------------------------------------------+-------------+
 
-[23:10:52]: [31mfastlane finished with errors[0m
+[23:15:26]: [31mfastlane finished with errors[0m
 [31m
 [!] Error uploading ipa file: 
- [Application Loader Error Output]: [ContentDelivery.Uploader.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)
-[Application Loader Error Output]: [altool.C8B050480] Failed to upload package.[0m
-[Application Loader Error Output]: [altool.C8B050480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 4764bac9-528f-46ba-8786-5857a5f0ad67)
-[Application Loader Error Output]: [altool.104B62E50] ExitFailure (31)[0m
+ [Application Loader Error Output]: [ContentDelivery.Uploader.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)
+[Application Loader Error Output]: [altool.788C40480] Failed to upload package.[0m
+[Application Loader Error Output]: [altool.788C40480] The provided entity includes an attribute with a value that has already been used (-19232) The bundle version must be higher than the previously uploaded version: ‘1’. (ID: 8f42870f-5d60-4eb4-958d-52da8a562400)
+[Application Loader Error Output]: [altool.100A36D70] ExitFailure (31)[0m
 [Application Loader Error Output]: The call to the altool completed with a non-zero exit status: 1. This indicates a failure.[0m
 
 #######################################################################
@@ -229,4 +227,6 @@
 # You should use the latest version.
 # Please update using `gem install fastlane`.
 # To see what's new, open https://github.com/fastlane/fastlane/releases.
+#######################################################################
+# Run `gem cleanup` from time to time to speed up fastlane
 #######################################################################
