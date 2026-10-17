@@ -1,3 +1,5 @@
+require 'spaceship'
+
 default_platform(:ios)
 
 # bundle id => Xcode target name
@@ -11,9 +13,9 @@ BUNDLE_IDS = TARGETS.keys.freeze
 
 platform :ios do
   # Build + sign + upload to TestFlight using an App Store Connect API key.
-  # Fastlane (spaceship) authenticates to the same API that already works for `produce`,
-  # so it creates the distribution cert + App Store profiles itself instead of relying on
-  # xcodebuild's cloud signing (which rejects the token).
+  # Fastlane authenticates to the App Store Connect API (which the key works for), creates the
+  # distribution cert + App Store profiles itself, and signs manually — avoiding xcodebuild's
+  # cloud-signing path, which rejects the API token.
   lane :beta do
     key = app_store_connect_api_key(
       key_id: ENV["ASC_KEY_ID"],
@@ -22,42 +24,65 @@ platform :ios do
       in_house: false
     )
 
-    # Dedicated keychain so cert import never blocks on the login keychain.
+    # Direct ConnectAPI token for the bits the fastlane actions don't cover.
+    Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      filepath: ENV["ASC_KEY_PATH"]
+    )
+
+    # Ensure every bundle id exists as an App ID (extensions are created here; the user then
+    # enables the App Group on them in the Developer portal — the one thing the API can't do).
+    existing = Spaceship::ConnectAPI::BundleId.all.map(&:identifier)
+    BUNDLE_IDS.each do |bid|
+      next if existing.include?(bid)
+      UI.message("Creating App ID #{bid}")
+      Spaceship::ConnectAPI::BundleId.create(name: "Tenzy #{bid.split('.').last}", identifier: bid, platform: "IOS")
+    end
+
+    # Free Tenzy's distribution-cert slot: revoke the cert our previous run created (id passed in
+    # via TENZY_PREV_CERT_ID) so we stay under Apple's 2-cert cap. Only ever Tenzy's own id — other
+    # apps' certs (e.g. Reckato) are never touched.
+    prev = ENV["TENZY_PREV_CERT_ID"].to_s.strip
+    unless prev.empty?
+      begin
+        Spaceship::ConnectAPI::Certificate.all.each do |c|
+          if c.id == prev
+            c.delete
+            UI.message("Revoked old Tenzy cert #{c.id}")
+          end
+        end
+      rescue => e
+        UI.important("Old-cert revoke skipped: #{e}")
+      end
+    end
+
     keychain_name = "tenzyci"
     keychain_pw = "tenzyci-pw"
     create_keychain(
-      name: keychain_name,
-      password: keychain_pw,
-      default_keychain: true,
-      unlock: true,
-      timeout: 3600,
-      lock_when_sleeps: false
+      name: keychain_name, password: keychain_pw,
+      default_keychain: true, unlock: true, timeout: 3600, lock_when_sleeps: false
     )
     keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")
 
-    # Distribution certificate (created if the team has none).
     cert(
       api_key: key,
       keychain_path: keychain_path,
       keychain_password: keychain_pw,
       output_path: "build/certs"
     )
+    # Record the new cert id so the next run can revoke it.
+    File.write("tenzy-cert-id.txt", lane_context[SharedValues::CERT_CERTIFICATE_ID].to_s)
 
     # One App Store provisioning profile per target.
     profiles = {}
     BUNDLE_IDS.each do |bid|
-      sigh(
-        api_key: key,
-        app_identifier: bid,
-        platform: "ios",
-        output_path: "build/profiles"
-      )
+      sigh(api_key: key, app_identifier: bid, platform: "ios", output_path: "build/profiles", force: true)
       profiles[bid] = lane_context[SharedValues::SIGH_NAME]
     end
     UI.message("Provisioning profiles: #{profiles}")
 
-    # Switch each target to manual signing with its specific profile, so the archive doesn't
-    # fall back to xcodebuild cloud signing (the path that rejects the API token).
+    # Manual signing per target so the archive uses our profiles, not xcodebuild cloud signing.
     TARGETS.each do |bid, target|
       update_code_signing_settings(
         use_automatic_signing: false,
@@ -84,9 +109,6 @@ platform :ios do
       }
     )
 
-    upload_to_testflight(
-      api_key: key,
-      skip_waiting_for_build_processing: true
-    )
+    upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)
   end
 end

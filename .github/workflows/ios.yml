@@ -118,33 +118,28 @@ jobs:
           p8 = open(os.path.expanduser(f"~/.appstoreconnect/private_keys/AuthKey_{kid}.p8")).read()
           print(json.dumps({"key_id": kid, "issuer_id": os.environ["ASC_ISSUER_ID"], "key": p8, "in_house": False}))
           PY
-      - name: Register identifiers, app group, and capabilities
-        continue-on-error: true
+      - name: Read previous Tenzy cert id (to revoke + stay under the cert cap)
+        working-directory: .
         run: |
-          set -x
-          AK="--api_key_path $(pwd)/asc_key.json"
-          {
-            echo "### app group"
-            fastlane produce group $AK -g group.com.tenzy.shared -n "Tenzy Shared" --team_id "$TEAM_ID"
-            for bid in com.tenzy.toolkit.keyboard com.tenzy.toolkit.share com.tenzy.toolkit.widget; do
-              echo "### create App ID $bid"
-              fastlane produce create $AK -a "$bid" -n "Tenzy ${bid##*.}" --skip_itc --team_id "$TEAM_ID"
-            done
-            for bid in com.tenzy.toolkit com.tenzy.toolkit.keyboard com.tenzy.toolkit.share com.tenzy.toolkit.widget; do
-              echo "### enable+associate app group on $bid"
-              fastlane produce enable_services $AK -a "$bid" --app-group --team_id "$TEAM_ID"
-              fastlane produce associate_group $AK -a "$bid" group.com.tenzy.shared --team_id "$TEAM_ID"
-            done
-            echo "### capability setup done"
-          } 2>&1 | tee register.log
+          git fetch -q origin ci-logs 2>/dev/null || true
+          PREV=$(git show FETCH_HEAD:tenzy-cert.log 2>/dev/null | tr -d '[:space:]' || true)
+          [ -z "$PREV" ] && PREV="D22S7J8SAL"   # seed: the orphan cert our first run created
+          echo "TENZY_PREV_CERT_ID=$PREV" >> $GITHUB_ENV
+          echo "prev Tenzy cert id: $PREV"
       - name: Fastlane build + upload to TestFlight
         run: |
           set -o pipefail
           fastlane beta 2>&1 | tee fastlane.log
+      - name: Publish new Tenzy cert id (always)
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          if [ -s ios/tenzy-cert-id.txt ]; then bash .github/publish-log.sh tenzy-cert ios/tenzy-cert-id.txt; fi
       - name: Publish fastlane log (always)
         if: always()
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { echo "===== register.log ====="; cat ios/register.log 2>/dev/null; echo; echo "===== fastlane.log errors ====="; grep -iE "error|fail|❌|could not|unable|invalid|no profiles|certificate|provisioning|entitlement|app group|Authentication|bundle id|\[!\]|Successfully|Uploaded|TestFlight" ios/fastlane.log 2>/dev/null | head -120; echo; echo "===== fastlane.log tail ====="; tail -80 ios/fastlane.log 2>/dev/null; } > ios-fastlane-err.log
+          { echo "===== fastlane.log errors ====="; grep -iE "error|fail|❌|could not|unable|invalid|no profiles|certificate|provisioning|entitlement|app group|Authentication|bundle id|\[!\]|Successfully|Uploaded|TestFlight|App ID" ios/fastlane.log 2>/dev/null | head -140; echo; echo "===== fastlane.log tail ====="; tail -90 ios/fastlane.log 2>/dev/null; } > ios-fastlane-err.log
           bash .github/publish-log.sh ios-archive ios-fastlane-err.log
