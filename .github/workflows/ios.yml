@@ -118,24 +118,15 @@ jobs:
           p8 = open(os.path.expanduser(f"~/.appstoreconnect/private_keys/AuthKey_{kid}.p8")).read()
           print(json.dumps({"key_id": kid, "issuer_id": os.environ["ASC_ISSUER_ID"], "key": p8, "in_house": False}))
           PY
-      - name: Read previous Tenzy cert id (to revoke + stay under the cert cap)
-        working-directory: .
-        run: |
-          git fetch -q origin ci-logs 2>/dev/null || true
-          PREV=$(git show FETCH_HEAD:tenzy-cert.log 2>/dev/null | tr -d '[:space:]' || true)
-          [ -z "$PREV" ] && PREV="D22S7J8SAL"   # seed: the orphan cert our first run created
-          echo "TENZY_PREV_CERT_ID=$PREV" >> $GITHUB_ENV
-          echo "prev Tenzy cert id: $PREV"
+      - name: Restore/save the distribution cert (private Actions cache)
+        uses: actions/cache@v4
+        with:
+          path: ios/cert-cache
+          key: tenzy-dist-cert-v1
       - name: Fastlane build + upload to TestFlight
         run: |
           set -o pipefail
           fastlane beta 2>&1 | tee fastlane.log
-      - name: Publish new Tenzy cert id (always)
-        if: always()
-        working-directory: .
-        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
-        run: |
-          if [ -s ios/tenzy-cert-id.txt ]; then bash .github/publish-log.sh tenzy-cert ios/tenzy-cert-id.txt; fi
       - name: Publish fastlane log (always)
         if: always()
         working-directory: .

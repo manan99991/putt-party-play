@@ -11,3 +11,6 @@ ios/build/
 captures/
 store-screenshots/output/
 store-out/
+
+# iOS CI cert cache (never commit signing material)
+ios/cert-cache/
