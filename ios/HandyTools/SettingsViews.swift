@@ -6,6 +6,23 @@ import AlarmKit
 let PRIVACY_URL = URL(string: "https://manan99991.github.io/tenzy/privacy.html")!
 let SUPPORT_EMAIL = "tenzy.app@gmail.com"
 
+extension View {
+    /// Floating close button for sheet-presented pages, so users aren't forced to swipe to dismiss.
+    func sheetCloseButton(_ onClose: @escaping () -> Void) -> some View {
+        overlay(alignment: .topTrailing) {
+            Button(action: onClose) {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 28))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(HandyColor.textSecondary, HandyColor.surface)
+            }
+            .padding(.top, HandySpacing.s12)
+            .padding(.trailing, HandySpacing.s16)
+            .accessibilityLabel("Close")
+        }
+    }
+}
+
 // MARK: - One-time setup
 
 /// iPhone needs far less than Android: notifications (for alarms), alarm permission, and the Clips keyboard.
@@ -134,9 +151,9 @@ struct SettingsView: View {
         }
         .background(HandyColor.bg)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(isPresented: $showPaywall) { PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible).presentationBackground(HandyColor.surfaceRaised) }
-        .sheet(isPresented: $showSetup) { SetupView(onDone: { showSetup = false }) }
-        .sheet(isPresented: $showPrivacy) { PrivacyView() }
+        .sheet(isPresented: $showPaywall) { PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible).presentationBackground(HandyColor.surfaceRaised).sheetCloseButton { showPaywall = false } }
+        .sheet(isPresented: $showSetup) { SetupView(onDone: { showSetup = false }).sheetCloseButton { showSetup = false } }
+        .sheet(isPresented: $showPrivacy) { PrivacyView().sheetCloseButton { showPrivacy = false } }
     }
 
     @ViewBuilder private func Section(_ title: String, @ViewBuilder content: () -> some View) -> some View {

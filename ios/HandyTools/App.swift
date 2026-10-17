@@ -162,17 +162,17 @@ struct HomeView: View {
 struct ToolCard: View {
     let tool: Tool
     var body: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s4) {
+        // Compact so all 10 tools fit one screen without scrolling.
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
             ZStack {
-                Circle().fill(HandyColor.accentSoft).frame(width: 40, height: 40)
-                Image(systemName: tool.icon).font(.system(size: 18, weight: .medium)).foregroundStyle(HandyColor.accent)
+                Circle().fill(HandyColor.accentSoft).frame(width: 34, height: 34)
+                Image(systemName: tool.icon).font(.system(size: 16, weight: .medium)).foregroundStyle(HandyColor.accent)
             }
-            Spacer(minLength: HandySpacing.s12)
-            Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(2).minimumScaleFactor(0.9)
-            Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+            Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.8)
+            Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.9)
         }
-        .frame(maxWidth: .infinity, minHeight: 140, alignment: .leading)
-        .cardStyle()
+        .frame(maxWidth: .infinity, minHeight: 92, alignment: .leading)
+        .cardStyle(padding: HandySpacing.s12)
     }
 }
 

@@ -148,3 +148,4 @@ jobs:
         run: |
           { echo "===== fastlane.log errors ====="; grep -iE "error|fail|❌|could not|unable|invalid|no profiles|certificate|provisioning|entitlement|app group|Authentication|bundle id|\[!\]|Successfully|Uploaded|TestFlight|App ID" ios/fastlane.log 2>/dev/null | head -140; echo; echo "===== fastlane.log tail ====="; tail -90 ios/fastlane.log 2>/dev/null; } > ios-fastlane-err.log
           bash .github/publish-log.sh ios-archive ios-fastlane-err.log
+          bash .github/publish-log.sh "ios-archive-${GITHUB_RUN_ID}" ios-fastlane-err.log
