@@ -45,7 +45,7 @@ targets:
     entitlements:
       path: HandyTools/HandyTools.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.tenzy.shared]
+        com.apple.security.application-groups: [group.com.tenzy.toolkit]
     info:
       path: HandyTools/Info.plist
       properties:
@@ -75,7 +75,7 @@ targets:
     entitlements:
       path: ClipboardKeyboard/ClipboardKeyboard.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.tenzy.shared]
+        com.apple.security.application-groups: [group.com.tenzy.toolkit]
     info:
       path: ClipboardKeyboard/Info.plist
       properties:
@@ -98,7 +98,7 @@ targets:
     entitlements:
       path: ShareExtension/ShareExtension.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.tenzy.shared]
+        com.apple.security.application-groups: [group.com.tenzy.toolkit]
     info:
       path: ShareExtension/Info.plist
       properties:
@@ -120,7 +120,7 @@ targets:
     entitlements:
       path: StickyWidget/StickyWidget.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.tenzy.shared]
+        com.apple.security.application-groups: [group.com.tenzy.toolkit]
     info:
       path: StickyWidget/Info.plist
       properties:
