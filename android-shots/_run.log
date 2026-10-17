@@ -39,15 +39,15 @@ Loading local repository...                                                     
 Auto-selecting single ABI x86_64
 + ls -la /home/runner/.android/avd
 total 16
-drwxr-xr-x 3 runner runner 4096 Oct 17 17:32 .
-drwxr-xr-x 3 runner runner 4096 Oct 17 17:32 ..
-drwxr-xr-x 2 runner runner 4096 Oct 17 17:32 shot.avd
--rw-r--r-- 1 runner runner   81 Oct 17 17:32 shot.ini
+drwxr-xr-x 3 runner runner 4096 Oct 17 17:41 .
+drwxr-xr-x 3 runner runner 4096 Oct 17 17:41 ..
+drwxr-xr-x 2 runner runner 4096 Oct 17 17:41 shot.avd
+-rw-r--r-- 1 runner runner   81 Oct 17 17:41 shot.ini
 + /usr/local/lib/android/sdk/emulator/emulator -list-avds
 shot
 + export PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 + PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-+ EMU=2435
++ EMU=2637
 + nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
 ++ seq 1 90
 + for i in $(seq 1 90)
@@ -55,7 +55,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2435
++ kill -0 2637
 + '[' 1 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -63,7 +63,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2435
++ kill -0 2637
 + '[' 2 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -71,8 +71,16 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2435
++ kill -0 2637
 + '[' 3 -eq 0 ']'
++ sleep 10
++ for i in $(seq 1 90)
+++ adb shell getprop sys.boot_completed
+++ tr -d '\r'
++ b=
++ '[' '' = 1 ']'
++ kill -0 2637
++ '[' 4 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
 ++ adb shell getprop sys.boot_completed
@@ -95,23 +103,23 @@ INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2b
 INFO         |   androidboot.vbmeta.hash_alg=sha256
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f5a84e01000 as it is in the protected range from 0x7f59e4e00000 to 0x7f5a85000000
+WARNING: cannnot unmap ptr 0x7f8ee8e01000 as it is in the protected range from 0x7f8e48e00000 to 0x7f8ee9000000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2435/jwks/f70a00c6-de3b-4d90-a0f9-748e424bf35c/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2435/jwks/f70a00c6-de3b-4d90-a0f9-748e424bf35c for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2637/jwks/1d0cc80c-cefa-4a55-88f6-1aeffe00324a/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2637/jwks/1d0cc80c-cefa-4a55-88f6-1aeffe00324a for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2435.ini
-INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2637.ini
 INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for bluetooth emulation
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 28345 ms
+INFO         | Boot completed in 37887 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
 + adb shell settings put global hide_error_dialogs 1
 + adb shell settings put global window_animation_scale 0
@@ -130,241 +138,241 @@ Success
 Night mode: no
 + sleep 2
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route onboarding
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route onboarding
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 5895
-WaitTime: 5900
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 8726
+WaitTime: 8781
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route onboarding2
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route onboarding2
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 3959
-WaitTime: 4055
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 5746
+WaitTime: 5876
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route onboarding3
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route onboarding3
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 3510
-WaitTime: 3535
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 4737
+WaitTime: 4891
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route setup
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route setup
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 3295
-WaitTime: 3339
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 3548
+WaitTime: 3592
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route settings
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route settings
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 2909
-WaitTime: 2912
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 4932
+WaitTime: 4942
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route privacy
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route privacy
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 2135
-WaitTime: 2165
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 3752
+WaitTime: 3755
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route home
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route home
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
+Status: ok
+LaunchState: COLD
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 4299
+WaitTime: 4306
+Complete
++ sleep 6
++ adb exec-out screencap -p
++ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route clipboard
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: UNKNOWN (0)
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-WaitTime: 789
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+WaitTime: 1014
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route clipboard
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route screenshot
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1820
-WaitTime: 1824
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 3604
+WaitTime: 3636
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route screenshot
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route quick
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1705
-WaitTime: 1708
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 3627
+WaitTime: 3663
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route quick
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route shortcut
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 2091
-WaitTime: 2136
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2452
+WaitTime: 2462
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route shortcut
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route alarm
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1488
-WaitTime: 1495
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2940
+WaitTime: 2946
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route alarm
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route volume
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1703
-WaitTime: 1704
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2780
+WaitTime: 2861
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route volume
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route ocr
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1927
-WaitTime: 1933
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2064
+WaitTime: 2079
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route ocr
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route notifs
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1543
-WaitTime: 1549
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2069
+WaitTime: 2073
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route notifs
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route scratchpad
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1516
-WaitTime: 1521
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2650
+WaitTime: 2658
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route scratchpad
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route awake
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1853
-WaitTime: 1869
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2496
+WaitTime: 2515
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route awake
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route paywall
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1978
-WaitTime: 2001
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2850
+WaitTime: 2861
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route paywall
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route ring
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 2183
-WaitTime: 2251
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2057
+WaitTime: 2073
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route ring
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route homepro
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1390
-WaitTime: 1394
-Complete
-+ sleep 6
-+ adb exec-out screencap -p
-+ for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route homepro
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
-Status: ok
-LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1741
-WaitTime: 1746
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2403
+WaitTime: 2636
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -374,312 +382,312 @@ Complete
 Night mode: yes
 + sleep 2
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route onboarding
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route onboarding
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1687
-WaitTime: 1691
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2302
+WaitTime: 2310
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route onboarding2
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route onboarding2
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1911
-WaitTime: 1943
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2224
+WaitTime: 2232
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route onboarding3
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route onboarding3
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1832
-WaitTime: 1854
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2577
+WaitTime: 2585
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route setup
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route setup
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1998
-WaitTime: 2020
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2442
+WaitTime: 2457
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route settings
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route settings
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1818
-WaitTime: 1831
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2514
+WaitTime: 2540
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route privacy
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route privacy
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1908
-WaitTime: 1910
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2368
+WaitTime: 2371
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route home
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route home
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 2026
-WaitTime: 2030
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2107
+WaitTime: 2109
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route clipboard
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route clipboard
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1871
-WaitTime: 1895
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2103
+WaitTime: 2140
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route screenshot
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route screenshot
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1861
-WaitTime: 1899
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2287
+WaitTime: 2293
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route quick
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route quick
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1827
-WaitTime: 1830
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2608
+WaitTime: 2611
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route shortcut
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route shortcut
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1445
-WaitTime: 1491
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2376
+WaitTime: 2379
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route alarm
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route alarm
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1753
-WaitTime: 1758
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2462
+WaitTime: 2470
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route volume
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route volume
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1714
-WaitTime: 1715
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2882
+WaitTime: 2898
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route ocr
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route ocr
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1955
-WaitTime: 1964
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2387
+WaitTime: 2447
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route notifs
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route notifs
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 2032
-WaitTime: 2083
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2390
+WaitTime: 2393
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route scratchpad
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route scratchpad
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1827
-WaitTime: 1833
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2658
+WaitTime: 2714
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route awake
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route awake
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1541
-WaitTime: 1542
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 3369
+WaitTime: 3393
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route paywall
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route paywall
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 2087
-WaitTime: 2156
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2753
+WaitTime: 2760
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route ring
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route ring
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1634
-WaitTime: 1651
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 1961
+WaitTime: 1965
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro
-+ adb shell am force-stop com.tenzy.app
-+ adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route homepro
-Starting: Intent { cmp=com.tenzy.app/com.handytools.app.MainActivity (has extras) }
++ adb shell am force-stop com.tenzy.toolkit
++ adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route homepro
+Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has extras) }
 Status: ok
 LaunchState: COLD
-Activity: com.tenzy.app/com.handytools.app.MainActivity
-TotalTime: 1598
-WaitTime: 1601
+Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
+TotalTime: 2575
+WaitTime: 2580
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + ls -la shots
-total 7740
-drwxr-xr-x 2 runner runner    4096 Oct 17 17:38 .
-drwxr-xr-x 5 runner runner    4096 Oct 17 17:32 ..
--rw-r--r-- 1 runner runner   44292 Oct 17 17:38 _run.log
--rw-r--r-- 1 runner runner   86744 Oct 17 17:37 android-dark-alarm.png
--rw-r--r-- 1 runner runner   91752 Oct 17 17:38 android-dark-awake.png
--rw-r--r-- 1 runner runner  146401 Oct 17 17:36 android-dark-clipboard.png
--rw-r--r-- 1 runner runner  181503 Oct 17 17:36 android-dark-home.png
--rw-r--r-- 1 runner runner  185462 Oct 17 17:38 android-dark-homepro.png
--rw-r--r-- 1 runner runner  113788 Oct 17 17:37 android-dark-notifs.png
--rw-r--r-- 1 runner runner  147203 Oct 17 17:37 android-dark-ocr.png
--rw-r--r-- 1 runner runner   92686 Oct 17 17:35 android-dark-onboarding.png
--rw-r--r-- 1 runner runner  102306 Oct 17 17:36 android-dark-onboarding2.png
--rw-r--r-- 1 runner runner   97888 Oct 17 17:36 android-dark-onboarding3.png
--rw-r--r-- 1 runner runner  188095 Oct 17 17:38 android-dark-paywall.png
--rw-r--r-- 1 runner runner  322229 Oct 17 17:36 android-dark-privacy.png
--rw-r--r-- 1 runner runner  101674 Oct 17 17:37 android-dark-quick.png
--rw-r--r-- 1 runner runner   75338 Oct 17 17:38 android-dark-ring.png
--rw-r--r-- 1 runner runner   91548 Oct 17 17:37 android-dark-scratchpad.png
--rw-r--r-- 1 runner runner  149106 Oct 17 17:37 android-dark-screenshot.png
--rw-r--r-- 1 runner runner  135347 Oct 17 17:36 android-dark-settings.png
--rw-r--r-- 1 runner runner  229015 Oct 17 17:36 android-dark-setup.png
--rw-r--r-- 1 runner runner   78600 Oct 17 17:37 android-dark-shortcut.png
--rw-r--r-- 1 runner runner  128095 Oct 17 17:37 android-dark-volume.png
--rw-r--r-- 1 runner runner   84673 Oct 17 17:34 android-light-alarm.png
--rw-r--r-- 1 runner runner   88356 Oct 17 17:35 android-light-awake.png
--rw-r--r-- 1 runner runner  145193 Oct 17 17:34 android-light-clipboard.png
--rw-r--r-- 1 runner runner 1375927 Oct 17 17:33 android-light-home.png
--rw-r--r-- 1 runner runner  181973 Oct 17 17:35 android-light-homepro.png
--rw-r--r-- 1 runner runner  112001 Oct 17 17:35 android-light-notifs.png
--rw-r--r-- 1 runner runner  144936 Oct 17 17:34 android-light-ocr.png
--rw-r--r-- 1 runner runner   93412 Oct 17 17:33 android-light-onboarding.png
--rw-r--r-- 1 runner runner   98930 Oct 17 17:33 android-light-onboarding2.png
--rw-r--r-- 1 runner runner   94284 Oct 17 17:33 android-light-onboarding3.png
--rw-r--r-- 1 runner runner  190214 Oct 17 17:35 android-light-paywall.png
--rw-r--r-- 1 runner runner  318983 Oct 17 17:33 android-light-privacy.png
--rw-r--r-- 1 runner runner  100073 Oct 17 17:34 android-light-quick.png
--rw-r--r-- 1 runner runner   73236 Oct 17 17:35 android-light-ring.png
--rw-r--r-- 1 runner runner   90807 Oct 17 17:35 android-light-scratchpad.png
--rw-r--r-- 1 runner runner  147023 Oct 17 17:34 android-light-screenshot.png
--rw-r--r-- 1 runner runner  133216 Oct 17 17:33 android-light-settings.png
--rw-r--r-- 1 runner runner 1376168 Oct 17 17:33 android-light-setup.png
--rw-r--r-- 1 runner runner   76879 Oct 17 17:34 android-light-shortcut.png
--rw-r--r-- 1 runner runner  126387 Oct 17 17:34 android-light-volume.png
+total 7856
+drwxr-xr-x 2 runner runner    4096 Oct 17 17:49 .
+drwxr-xr-x 5 runner runner    4096 Oct 17 17:42 ..
+-rw-r--r-- 1 runner runner   45076 Oct 17 17:49 _run.log
+-rw-r--r-- 1 runner runner   86530 Oct 17 17:47 android-dark-alarm.png
+-rw-r--r-- 1 runner runner   91426 Oct 17 17:48 android-dark-awake.png
+-rw-r--r-- 1 runner runner  145963 Oct 17 17:47 android-dark-clipboard.png
+-rw-r--r-- 1 runner runner  180882 Oct 17 17:47 android-dark-home.png
+-rw-r--r-- 1 runner runner  185156 Oct 17 17:49 android-dark-homepro.png
+-rw-r--r-- 1 runner runner  113912 Oct 17 17:48 android-dark-notifs.png
+-rw-r--r-- 1 runner runner  147378 Oct 17 17:48 android-dark-ocr.png
+-rw-r--r-- 1 runner runner   92977 Oct 17 17:46 android-dark-onboarding.png
+-rw-r--r-- 1 runner runner  101901 Oct 17 17:46 android-dark-onboarding2.png
+-rw-r--r-- 1 runner runner   97591 Oct 17 17:46 android-dark-onboarding3.png
+-rw-r--r-- 1 runner runner  187825 Oct 17 17:48 android-dark-paywall.png
+-rw-r--r-- 1 runner runner  321564 Oct 17 17:47 android-dark-privacy.png
+-rw-r--r-- 1 runner runner  101478 Oct 17 17:47 android-dark-quick.png
+-rw-r--r-- 1 runner runner   74986 Oct 17 17:49 android-dark-ring.png
+-rw-r--r-- 1 runner runner   91668 Oct 17 17:48 android-dark-scratchpad.png
+-rw-r--r-- 1 runner runner  148814 Oct 17 17:47 android-dark-screenshot.png
+-rw-r--r-- 1 runner runner  135093 Oct 17 17:46 android-dark-settings.png
+-rw-r--r-- 1 runner runner  228746 Oct 17 17:46 android-dark-setup.png
+-rw-r--r-- 1 runner runner   78361 Oct 17 17:47 android-dark-shortcut.png
+-rw-r--r-- 1 runner runner  128312 Oct 17 17:48 android-dark-volume.png
+-rw-r--r-- 1 runner runner   84004 Oct 17 17:44 android-light-alarm.png
+-rw-r--r-- 1 runner runner   88134 Oct 17 17:45 android-light-awake.png
+-rw-r--r-- 1 runner runner 1375392 Oct 17 17:44 android-light-clipboard.png
+-rw-r--r-- 1 runner runner  176833 Oct 17 17:44 android-light-home.png
+-rw-r--r-- 1 runner runner  182310 Oct 17 17:46 android-light-homepro.png
+-rw-r--r-- 1 runner runner  111616 Oct 17 17:45 android-light-notifs.png
+-rw-r--r-- 1 runner runner  144049 Oct 17 17:45 android-light-ocr.png
+-rw-r--r-- 1 runner runner   93768 Oct 17 17:43 android-light-onboarding.png
+-rw-r--r-- 1 runner runner   99421 Oct 17 17:43 android-light-onboarding2.png
+-rw-r--r-- 1 runner runner   94679 Oct 17 17:43 android-light-onboarding3.png
+-rw-r--r-- 1 runner runner  189873 Oct 17 17:45 android-light-paywall.png
+-rw-r--r-- 1 runner runner  318633 Oct 17 17:44 android-light-privacy.png
+-rw-r--r-- 1 runner runner   99411 Oct 17 17:44 android-light-quick.png
+-rw-r--r-- 1 runner runner   73366 Oct 17 17:46 android-light-ring.png
+-rw-r--r-- 1 runner runner   90466 Oct 17 17:45 android-light-scratchpad.png
+-rw-r--r-- 1 runner runner  146244 Oct 17 17:44 android-light-screenshot.png
+-rw-r--r-- 1 runner runner 1376071 Oct 17 17:43 android-light-settings.png
+-rw-r--r-- 1 runner runner  220868 Oct 17 17:43 android-light-setup.png
+-rw-r--r-- 1 runner runner   76118 Oct 17 17:44 android-light-shortcut.png
+-rw-r--r-- 1 runner runner  125896 Oct 17 17:45 android-light-volume.png
 + adb logcat -d -s AndroidRuntime:E
 + adb logcat -d
 + grep -iE handytools
 + tail -300
 + tail -20 emulator.log
-INFO         |   androidboot.vbmeta.size=6656
-INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f5a84e01000 as it is in the protected range from 0x7f59e4e00000 to 0x7f5a85000000
+WARNING: cannnot unmap ptr 0x7f8ee8e01000 as it is in the protected range from 0x7f8e48e00000 to 0x7f8ee9000000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2435/jwks/f70a00c6-de3b-4d90-a0f9-748e424bf35c/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2435/jwks/f70a00c6-de3b-4d90-a0f9-748e424bf35c for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2637/jwks/1d0cc80c-cefa-4a55-88f6-1aeffe00324a/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2637/jwks/1d0cc80c-cefa-4a55-88f6-1aeffe00324a for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2435.ini
-INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2637.ini
 INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for bluetooth emulation
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 28345 ms
+INFO         | Boot completed in 37887 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x56324e368a08
+ERROR        | Failed to restore previous context: 12297
