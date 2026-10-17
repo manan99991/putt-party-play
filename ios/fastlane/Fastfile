@@ -46,12 +46,8 @@ platform :ios do
     prev = ENV["TENZY_PREV_CERT_ID"].to_s.strip
     unless prev.empty?
       begin
-        Spaceship::ConnectAPI::Certificate.all.each do |c|
-          if c.id == prev
-            c.delete
-            UI.message("Revoked old Tenzy cert #{c.id}")
-          end
-        end
+        Spaceship::ConnectAPI.delete_certificate(certificate_id: prev)
+        UI.message("Revoked old Tenzy cert #{prev}")
       rescue => e
         UI.important("Old-cert revoke skipped: #{e}")
       end
