@@ -120,6 +120,16 @@ platform :ios do
       )
     end
 
+    # Each TestFlight upload needs a build number higher than the last. Ask App Store Connect for
+    # the current highest and add 1 (fall back to the CI run number if the query fails).
+    build_num = begin
+      latest_testflight_build_number(api_key: key, app_identifier: "com.tenzy.toolkit", initial_build_number: 0) + 1
+    rescue => e
+      UI.important("Could not fetch latest build number (#{e}); using run number")
+      (ENV["GITHUB_RUN_NUMBER"] || "2").to_i + 1
+    end
+    UI.message("Using build number #{build_num}")
+
     build_app(
       project: "HandyTools.xcodeproj",
       scheme: "HandyTools",
@@ -127,6 +137,7 @@ platform :ios do
       export_method: "app-store",
       output_directory: "build",
       output_name: "Tenzy.ipa",
+      xcargs: "CURRENT_PROJECT_VERSION=#{build_num}",
       export_options: {
         teamID: ENV["TEAM_ID"],
         signingStyle: "manual",
