@@ -120,12 +120,8 @@ platform :ios do
       )
     end
 
-    # Each TestFlight upload needs a build number higher than the last. A Unix timestamp is always
-    # unique and monotonically increasing, so it never collides (the ASC "latest build" query can
-    # return 0 while a build is still processing, which is what caused the earlier '1' collision).
-    build_num = Time.now.to_i
-    UI.message("Using build number #{build_num}")
-
+    # Build number (CFBundleVersion) is baked at project-generation time in CI as a Unix timestamp,
+    # so every upload is unique and ever-increasing.
     build_app(
       project: "HandyTools.xcodeproj",
       scheme: "HandyTools",
@@ -133,7 +129,6 @@ platform :ios do
       export_method: "app-store",
       output_directory: "build",
       output_name: "Tenzy.ipa",
-      xcargs: "CURRENT_PROJECT_VERSION=#{build_num}",
       export_options: {
         teamID: ENV["TEAM_ID"],
         signingStyle: "manual",
