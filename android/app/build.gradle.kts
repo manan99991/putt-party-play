@@ -10,7 +10,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.tenzy.app"
+        applicationId = "com.tenzy.toolkit"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

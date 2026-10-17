@@ -29,7 +29,7 @@ targets:
     platform: iOS
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     sources:
       - path: HandyTools
@@ -70,7 +70,7 @@ targets:
     type: app-extension
     platform: iOS
     settings:
-      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.app.keyboard }
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit.keyboard }
     sources: [ClipboardKeyboard, Shared]
     entitlements:
       path: ClipboardKeyboard/ClipboardKeyboard.entitlements
@@ -93,7 +93,7 @@ targets:
     type: app-extension
     platform: iOS
     settings:
-      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.app.share }
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit.share }
     sources: [ShareExtension, Shared]
     entitlements:
       path: ShareExtension/ShareExtension.entitlements
@@ -115,7 +115,7 @@ targets:
     type: app-extension
     platform: iOS
     settings:
-      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.app.widget }
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit.widget }
     sources: [StickyWidget, Shared]
     entitlements:
       path: StickyWidget/StickyWidget.entitlements
