@@ -28,22 +28,20 @@ import com.handytools.app.HandyApp
 import com.handytools.app.MainActivity
 import com.handytools.app.R
 import com.handytools.app.tools.OverlayBubble
-import com.handytools.app.tools.clipboard.ClipboardAccessibilityService
 import com.handytools.app.tools.ocr.ScreenOcr
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.resume
 
 /**
  * One foreground service powers both Screenshot+ (tool 2) and Grab Screen Text (tool 7).
  *
- * Modes: SINGLE (one frame), FULL_PAGE (scroll + stitch; needs the accessibility service to
- * scroll on the user's behalf), BURST (N frames 1s apart).
+ * Modes: SINGLE (one frame), FULL_PAGE (long screenshot — Tenzy samples its own screen frames
+ * while you scroll, de-dups, and stitches; no AccessibilityService), BURST (N frames 1s apart).
  *
  * Apps that set FLAG_SECURE come back as solid black from MediaProjection — we detect that
  * and refuse to save, which is the boundary you asked to respect.
@@ -58,6 +56,11 @@ class ScreenCaptureService : Service() {
     private var reader: ImageReader? = null
     private var bubble: OverlayBubble? = null
     private var busy = false
+
+    // Long-screenshot session state (FULL_PAGE): tap once to start sampling, tap again to stitch.
+    private var longActive = false
+    private var longJob: Job? = null
+    private val longFrames = mutableListOf<Bitmap>()
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -110,6 +113,8 @@ class ScreenCaptureService : Service() {
     }
 
     private fun onBubbleTap() {
+        // Long screenshot is a session: first tap starts, second tap finishes + stitches.
+        if (mode == Mode.FULL_PAGE) { if (longActive) finishLongCapture() else startLongCapture(); return }
         if (busy) return
         busy = true
         bubble?.setVisible(false)
@@ -119,8 +124,8 @@ class ScreenCaptureService : Service() {
                 when (mode) {
                     Mode.SINGLE -> captureFrame()?.let { save(it, "shot") }
                     Mode.BURST -> repeat(3) { i -> captureFrame()?.let { save(it, "burst${i + 1}") }; delay(1000) }
-                    Mode.FULL_PAGE -> captureFullPage()?.let { save(it, "fullpage") }
                     Mode.OCR -> captureFrame()?.let { ScreenOcr.recognizeAndCopy(this@ScreenCaptureService, it) }
+                    Mode.FULL_PAGE -> Unit // handled above
                 }
             } finally {
                 bubble?.setVisible(true); busy = false
@@ -159,40 +164,71 @@ class ScreenCaptureService : Service() {
     }
 
     /**
-     * Scrolls the foreground app via accessibility, capturing after each scroll, and stitches
-     * by finding the overlap between consecutive frames. Stops when content stops changing.
+     * Long screenshot, no AccessibilityService: once started, Tenzy grabs a frame of its own
+     * MediaProjection stream roughly once a second while you scroll the page by hand. Frames that
+     * are nearly identical to the last kept one (you paused, or hit the bottom) are dropped, so
+     * you just scroll at a comfortable pace and tap the button again to stitch + save.
      */
-    private suspend fun captureFullPage(): Bitmap? {
-        val a11y = ClipboardAccessibilityService.instance ?: run {
-            toast("Enable Tenzy in Accessibility settings for full-page capture"); return captureFrame()
+    private fun startLongCapture() {
+        if (longActive) return
+        longActive = true
+        longFrames.clear()
+        toast("Long shot: scroll down slowly. Tap the button again to finish.")
+        longJob = scope.launch {
+            captureLongFrame()
+            while (longActive && longFrames.size < MAX_PAGES) {
+                delay(900)
+                captureLongFrame()
+            }
+            if (longActive && longFrames.size >= MAX_PAGES) { toast("Reached max length"); finishLongCapture() }
         }
-        toast("Capturing full page…")
-        val frames = mutableListOf<Bitmap>()
-        var last: Bitmap = captureFrame() ?: return null
-        frames += last
-        var pages = 0
-        while (pages++ < MAX_PAGES) {
-            if (!scrollForward(a11y)) break
-            delay(450)
-            val next = captureFrame() ?: break
-            if (next.sameAs(last)) break // reached the bottom
-            frames += next; last = next
-        }
-        toast("Stitched ${frames.size} screens")
-        // Stitching is CPU-bound; keep it off the main thread so the UI stays interactive.
-        return withContext(Dispatchers.Default) { Stitcher.stitch(frames) }
     }
 
-    private fun scrollForward(a11y: ClipboardAccessibilityService): Boolean {
-        val root = a11y.rootInActiveWindow ?: return false
-        val node = findScrollable(root) ?: return false
-        return node.performAction(android.view.accessibility.AccessibilityNodeInfo.ACTION_SCROLL_FORWARD)
+    private suspend fun captureLongFrame() {
+        bubble?.setVisible(false)
+        delay(120) // let the bubble clear the frame
+        val f = captureFrame()
+        bubble?.setVisible(true)
+        f ?: return
+        val last = longFrames.lastOrNull()
+        if (last != null && nearlySame(last, f)) return // paused or bottom — nothing new
+        longFrames += f
     }
 
-    private fun findScrollable(n: android.view.accessibility.AccessibilityNodeInfo): android.view.accessibility.AccessibilityNodeInfo? {
-        if (n.isScrollable) return n
-        for (i in 0 until n.childCount) n.getChild(i)?.let { c -> findScrollable(c)?.let { return it } }
-        return null
+    private fun finishLongCapture() {
+        if (!longActive) return
+        longActive = false
+        longJob?.cancel()
+        val frames = longFrames.toList()
+        longFrames.clear()
+        if (frames.isEmpty()) { toast("Nothing captured"); return }
+        scope.launch {
+            toast("Stitching ${frames.size} screens…")
+            val out = withContext(Dispatchers.Default) { Stitcher.stitch(frames) }
+            save(out, "longshot")
+        }
+    }
+
+    /** Cheap sampled comparison: true when two frames are visually the same (scrolling stopped). */
+    private fun nearlySame(a: Bitmap, b: Bitmap): Boolean {
+        if (a.width != b.width || a.height != b.height) return false
+        val stepX = maxOf(1, a.width / 24)
+        val stepY = maxOf(1, a.height / 40)
+        var diff = 0L; var n = 0
+        var y = (a.height * 0.1f).toInt()
+        val yEnd = (a.height * 0.9f).toInt()
+        while (y < yEnd) {
+            var x = 0
+            while (x < a.width) {
+                val pa = a.getPixel(x, y); val pb = b.getPixel(x, y)
+                diff += kotlin.math.abs((pa shr 16 and 0xFF) - (pb shr 16 and 0xFF)) +
+                    kotlin.math.abs((pa shr 8 and 0xFF) - (pb shr 8 and 0xFF)) +
+                    kotlin.math.abs((pa and 0xFF) - (pb and 0xFF))
+                n++; x += stepX
+            }
+            y += stepY
+        }
+        return n > 0 && diff / n < 8
     }
 
     private suspend fun save(b: Bitmap, tag: String) = withContext(Dispatchers.IO) {
@@ -213,6 +249,7 @@ class ScreenCaptureService : Service() {
     private fun toast(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
 
     override fun onDestroy() {
+        longActive = false; longJob?.cancel()
         bubble?.hide()
         display?.release(); reader?.close(); projection?.stop()
         super.onDestroy()

@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.handytools.app.Permissions
 import com.handytools.app.ads.BannerAd
-import com.handytools.app.tools.clipboard.ClipboardAccessibilityService
 import com.handytools.app.ui.HandyHaptics
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.ToolHeader
@@ -57,11 +56,9 @@ import com.handytools.app.ui.HandyTokens
 fun ScreenshotScreen() {
     val ctx = LocalContext.current
     var overlay by remember { mutableStateOf(Permissions.canOverlay(ctx)) }
-    var a11y by remember { mutableStateOf(Permissions.accessibilityEnabled(ctx, ClipboardAccessibilityService::class.java)) }
     var mode by remember { mutableStateOf(ScreenCaptureService.Mode.SINGLE) }
     LifecycleResumeEffect(Unit) {
         overlay = Permissions.canOverlay(ctx)
-        a11y = Permissions.accessibilityEnabled(ctx, ClipboardAccessibilityService::class.java)
         onPauseOrDispose { }
     }
 
@@ -79,7 +76,10 @@ fun ScreenshotScreen() {
             }
             if (mode == ScreenCaptureService.Mode.FULL_PAGE) {
                 Spacer(Modifier.height(8.dp))
-                PermissionCard("Accessibility access", "Full page needs Tenzy to scroll the page for you.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings")
+                Text(
+                    "Long screenshot: tap the floating button to start, scroll down slowly, then tap it again — Tenzy stitches the screens into one tall image. No extra permission needed.",
+                    style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary
+                )
             }
             Spacer(Modifier.height(24.dp))
             HPrimaryButton("Start floating button", enabled = overlay) { ProjectionPermissionActivity.launch(ctx, mode) }

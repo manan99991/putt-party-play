@@ -23,13 +23,12 @@ object ScreenOcr {
     /** OCR the frame, copy all text to the clipboard AND push it onto the clipboard stack. */
     suspend fun recognizeAndCopy(ctx: Context, frame: Bitmap) {
         val text = runCatching { recognizer.process(InputImage.fromBitmap(frame, 0)).await().text }.getOrDefault("")
+        if (text.isBlank()) { withContext(Dispatchers.Main) { Toast.makeText(ctx, "No text found on screen", Toast.LENGTH_SHORT).show() }; return }
         withContext(Dispatchers.Main) {
-            if (text.isBlank()) { Toast.makeText(ctx, "No text found on screen", Toast.LENGTH_SHORT).show(); return@withContext }
-            ClipboardOverlay.lastPastedText = null
             (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Screen text", text))
             com.handytools.app.ui.HandyHaptics.medium(ctx)
             Toast.makeText(ctx, "Copied ${text.lines().size} lines of text", Toast.LENGTH_SHORT).show()
         }
-        withContext(Dispatchers.IO) { HandyApp.instance.db.clips().insert(Clip(text = text, sourceApp = "ocr")) }
+        com.handytools.app.tools.clipboard.ClipStore.save(text, "ocr")
     }
 }

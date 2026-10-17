@@ -13,8 +13,8 @@ android {
         applicationId = "com.tenzy.toolkit"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2
-        versionName = "1.0.0"
+        versionCode = 3
+        versionName = "1.0.1"
 
         // AdMob app ID. Replace with yours from https://apps.admob.com before release.
         // This is Google's official TEST app id — safe to ship to internal testing.

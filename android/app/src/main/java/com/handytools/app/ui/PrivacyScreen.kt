@@ -36,7 +36,7 @@ fun PrivacyScreen() {
         Spacer(Modifier.height(HandyTokens.Space24))
 
         Block("Stays on your phone", true, listOf(
-            "Text you copy while Multi-Clipboard is on",
+            "Clips you save (via Share, the tile, or the button) — only the ones you choose",
             "Screenshots and screen text you capture (saved to Pictures/Tenzy)",
             "Alarms you set",
             "Notifications, for 7 days, while Notification Log is on",
@@ -45,7 +45,7 @@ fun PrivacyScreen() {
 
         Block("Never collected", true, listOf(
             "Your name, email, or any account — there isn't one",
-            "Passwords (Accessibility is told to ignore password fields)",
+            "What you copy in other apps — Tenzy only ever sees a clip when you hand it one",
             "Your location, contacts, photos, or files",
             "Analytics or crash reports — Tenzy has none",
         ), null)
@@ -60,9 +60,9 @@ fun PrivacyScreen() {
         Block("Payments", false, listOf("Pro is $9.99 a year, billed by Google Play. We never see your card."), null)
         Block("Permissions", false, listOf(
             "Each one is asked for by the tool that needs it, with the reason next to the switch.",
-            "Accessibility: Multi-Clipboard and full-page screenshots only.",
+            "Draw over other apps: the floating buttons (clipboard, screenshot, scratchpad).",
             "Notification access: Notification Log only.",
-            "Draw over other apps: the floating buttons.",
+            "Tenzy uses no Accessibility service.",
         ), null)
         Block("Children", false, listOf("Tenzy isn't for children under 13 and doesn't knowingly collect anything from them."), null)
         Text("Questions: $SUPPORT_EMAIL · Last updated October 15, 2026", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)

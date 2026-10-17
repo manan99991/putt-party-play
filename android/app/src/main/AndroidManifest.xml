@@ -84,18 +84,40 @@
             android:excludeFromRecents="true"
             android:theme="@style/Theme.HandyTools.Transparent" />
 
-        <!-- Tool 1: Multi-clipboard. Accessibility service = only way to see copies from other apps on Android 10+ -->
-        <service
-            android:name=".tools.clipboard.ClipboardAccessibilityService"
-            android:exported="false"
-            android:label="@string/clipboard_service_label"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+        <!-- Tool 1: Multi-clipboard. No AccessibilityService — clips are captured deliberately. -->
+        <!-- Share target: select text in any app -> Share -> "Save to Tenzy". -->
+        <activity
+            android:name=".tools.clipboard.SaveClipActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:label="@string/clip_save_label"
+            android:theme="@style/Theme.HandyTools.Transparent">
             <intent-filter>
-                <action android:name="android.accessibilityservice.AccessibilityService" />
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
             </intent-filter>
-            <meta-data
-                android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility_service_config" />
+        </activity>
+
+        <!-- Floating clipboard bubble host (draw-over-apps overlay). -->
+        <service
+            android:name=".tools.clipboard.ClipboardBubbleService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="floating_clipboard" />
+        </service>
+
+        <!-- Quick-Settings tile: save the current clipboard in one tap from the shade. -->
+        <service
+            android:name=".tools.clipboard.ClipSaveTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_notif"
+            android:label="@string/tile_clip_save"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
         </service>
 
         <!-- Tool 2 + 7: Screen capture foreground service (screenshot + screen OCR) -->

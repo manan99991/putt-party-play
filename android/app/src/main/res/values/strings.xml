@@ -2,7 +2,9 @@
     <string name="app_name">Tenzy</string>
     <string name="clipboard_service_label">HandyTools Multi-Clipboard</string>
     <string name="clipboard_service_desc">Lets HandyTools stack everything you copy (in any app) so you can paste any of them later. Nothing leaves your phone.</string>
-    <string name="notif_service_label">HandyTools Notification History</string>
+    <string name="notif_service_label">Tenzy Notification Log</string>
+    <string name="clip_save_label">Save to Tenzy</string>
+    <string name="tile_clip_save">Save clip</string>
     <string name="tile_flashlight">Flashlight</string>
     <string name="channel_tools">Running tools</string>
     <string name="channel_alarm">Alarms</string>

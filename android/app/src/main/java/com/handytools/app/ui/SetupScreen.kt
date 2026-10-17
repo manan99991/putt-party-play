@@ -24,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Accessibility
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Layers
@@ -48,7 +47,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.handytools.app.Permissions
-import com.handytools.app.tools.clipboard.ClipboardAccessibilityService
 
 private data class Perm(
     val icon: ImageVector, val title: String, val why: String, val unlocks: String,
@@ -58,8 +56,6 @@ private data class Perm(
 private val PERMS = listOf(
     Perm(Icons.Outlined.Layers, "Draw over other apps", "Puts the floating buttons on top of whatever you're using.",
         "Multi-Clipboard · Screenshot+ · Grab Screen Text · Scratchpad", { Permissions.canOverlay(it) }, { Permissions.overlayIntent(it) }),
-    Perm(Icons.Outlined.Accessibility, "Accessibility", "How Tenzy sees what you copy in other apps and scrolls a page for a full-page capture. Never reads passwords; nothing leaves the phone.",
-        "Multi-Clipboard · Screenshot+ full page", { Permissions.accessibilityEnabled(it, ClipboardAccessibilityService::class.java) }, { Permissions.accessibilityIntent() }),
     Perm(Icons.Outlined.Notifications, "Notification access", "Keeps a local copy of notifications so you can re-read the ones you swiped away.",
         "Notification Log", { Permissions.notifListenerEnabled(it) }, { Permissions.notifListenerIntent() }),
     Perm(Icons.Outlined.Alarm, "Exact alarms", "So alarms ring on the minute, even in battery saver.",
@@ -87,7 +83,7 @@ fun SetupScreen(onDone: () -> Unit) {
             Spacer(Modifier.height(HandyTokens.Space16))
             Text("Set up once", style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(HandyTokens.Space4))
-            Text("Five switches, one tap each. Android makes every app ask for these in Settings; after this page Tenzy won't ask again.",
+            Text("Four switches, one tap each. Android makes every app ask for these in Settings; after this page Tenzy won't ask again.",
                 style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space8))
             Text("$done of ${PERMS.size} done", style = MaterialTheme.typography.labelMedium, color = HandyColors.Accent)

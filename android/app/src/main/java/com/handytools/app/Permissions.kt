@@ -3,7 +3,6 @@ package com.handytools.app
 import android.Manifest
 import android.app.AlarmManager
 import android.app.NotificationManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,13 +18,6 @@ object Permissions {
     fun canOverlay(ctx: Context) = Settings.canDrawOverlays(ctx)
     fun overlayIntent(ctx: Context) =
         Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${ctx.packageName}"))
-
-    fun accessibilityEnabled(ctx: Context, service: Class<*>): Boolean {
-        val expected = ComponentName(ctx, service).flattenToString()
-        val enabled = Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) ?: return false
-        return enabled.split(':').any { it.equals(expected, ignoreCase = true) }
-    }
-    fun accessibilityIntent() = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
 
     fun notifListenerEnabled(ctx: Context) =
         NotificationManagerCompat.getEnabledListenerPackages(ctx).contains(ctx.packageName)

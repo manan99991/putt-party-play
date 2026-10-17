@@ -3,14 +3,16 @@ package com.handytools.app.tools.clipboard
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,53 +30,61 @@ import com.handytools.app.HandyApp
 import com.handytools.app.Permissions
 import com.handytools.app.ads.BannerAd
 import com.handytools.app.ui.BigToggle
+import com.handytools.app.ui.EmptyState
+import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HPrimaryButton
+import com.handytools.app.ui.Handy
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.ToolHeader
-import com.handytools.app.ui.HPrimaryButton
-import com.handytools.app.ui.HSecondaryButton
-import com.handytools.app.ui.HTextButton
-import com.handytools.app.ui.HCard
-import com.handytools.app.ui.HChip
-import com.handytools.app.ui.ChipRow
-import com.handytools.app.ui.SliderRow
-import com.handytools.app.ui.LimitNote
-import com.handytools.app.ui.EmptyState
-import com.handytools.app.ui.Handy
-import com.handytools.app.ui.rememberReduceMotion
 import com.handytools.app.ui.handyListEnter
-import com.handytools.app.ui.HandyColors
-import com.handytools.app.ui.HandyTokens
+import com.handytools.app.ui.rememberReduceMotion
 
 @Composable
 fun ClipboardScreen() {
     val ctx = LocalContext.current
-    var a11y by remember { mutableStateOf(Permissions.accessibilityEnabled(ctx, ClipboardAccessibilityService::class.java)) }
     var overlay by remember { mutableStateOf(Permissions.canOverlay(ctx)) }
     var on by remember { mutableStateOf(ClipboardOverlay.isEnabled(ctx)) }
     LifecycleResumeEffect(Unit) {
-        a11y = Permissions.accessibilityEnabled(ctx, ClipboardAccessibilityService::class.java)
         overlay = Permissions.canOverlay(ctx)
         onPauseOrDispose { }
     }
     val clips by HandyApp.instance.db.clips().all().collectAsState(initial = emptyList())
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Multi-Clipboard", "Turn it on, copy as many things as you want in any app, then tap the bubble to paste any of them.")
-        PermissionCard("Accessibility access", "This is how Tenzy sees copies from other apps.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings", privacy = "Text stays on your phone. Nothing is uploaded.")
-        PermissionCard("Draw over other apps", "Needed for the floating bubble.", overlay, Permissions.overlayIntent(ctx))
-        BigToggle("Clipboard bubble", on && a11y && overlay) { v ->
+        ToolHeader("Multi-Clipboard", "Save as many clips as you like and paste any of them later. Three one-tap ways to capture — pick whatever's handy.")
+
+        Text("3 ways to save a clip", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 8.dp, bottom = 4.dp))
+        Text(
+            "1.  In any app, select text → Share → “Save to Tenzy”.\n" +
+            "2.  Add the Tenzy “Save clip” tile to Quick Settings — one tap from the shade.\n" +
+            "3.  Copy something, then tap the button below (or “+ Grab copy” on the bubble).",
+            style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary
+        )
+        Spacer(Modifier.height(12.dp))
+        HPrimaryButton("Save what I just copied") {
+            ctx.startActivity(SaveClipActivity.grabIntent(ctx))
+        }
+        Spacer(Modifier.height(16.dp))
+
+        PermissionCard(
+            "Floating bubble (optional)",
+            "Draw-over-apps lets a bubble follow you into other apps so your clips are one tap away anywhere. Not required — the tool works without it.",
+            overlay, Permissions.overlayIntent(ctx)
+        )
+        BigToggle("Clipboard bubble", on && overlay) { v ->
             on = v; ClipboardOverlay.setEnabled(ctx, v)
         }
+
         Text("History", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
         val reduceMotion = rememberReduceMotion()
         if (clips.isEmpty()) {
-            Column(Modifier.weight(1f)) { EmptyState(androidx.compose.material.icons.Icons.Outlined.ContentPaste, "Copy something in any app — it shows up here.") }
+            Column(Modifier.weight(1f)) { EmptyState(Icons.Outlined.ContentPaste, "No clips yet — save one with any of the three ways above.") }
         } else LazyColumn(Modifier.weight(1f), verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
             itemsIndexed(clips, key = { _, c -> c.id }) { i, c ->
                 HCard(Modifier.fillMaxWidth().handyListEnter(i, reduceMotion), onClick = {
                     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
                         .setPrimaryClip(ClipData.newPlainText("Tenzy", c.text))
-                    ClipboardOverlay.lastPastedText = c.text
+                    android.widget.Toast.makeText(ctx, "Copied — paste it anywhere", android.widget.Toast.LENGTH_SHORT).show()
                 }) {
                     Text((if (c.pinned) "📌 " else "") + c.text, Modifier.padding(14.dp), maxLines = 3, style = MaterialTheme.typography.bodyLarge)
                 }

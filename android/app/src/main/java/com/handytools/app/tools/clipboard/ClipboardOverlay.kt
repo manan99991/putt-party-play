@@ -3,6 +3,7 @@ package com.handytools.app.tools.clipboard
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.view.Gravity
@@ -12,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.handytools.app.HandyApp
 import com.handytools.app.R
 import com.handytools.app.data.Clip
@@ -24,13 +26,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * The floating clipboard stack: a bubble that opens a bottom panel listing every copy.
- * Tap a row -> pasted into the focused field (via the accessibility service) or, if nothing
- * is focused, placed on the clipboard. "Copy all" joins them with newlines.
+ * The floating clipboard stack: a bubble that opens a panel listing every clip you've saved.
+ * Hosted by [ClipboardBubbleService] (a draw-over-apps overlay — no AccessibilityService).
+ *
+ * Capture is deliberate and compliant: "+ Grab copy" pulls in whatever is on the clipboard now,
+ * or you Share → Save to Tenzy, or use the Quick-Settings tile. Tap a row to re-copy it, then
+ * paste where you need it. "Copy all" joins them with newlines.
  */
 object ClipboardOverlay {
     private const val PREF = "clip_overlay"
-    @Volatile var lastPastedText: String? = null
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var bubble: OverlayBubble? = null
@@ -38,15 +42,17 @@ object ClipboardOverlay {
     private var list: LinearLayout? = null
 
     fun isEnabled(ctx: Context) = ctx.getSharedPreferences(PREF, 0).getBoolean("on", false)
+
     fun setEnabled(ctx: Context, on: Boolean) {
         ctx.getSharedPreferences(PREF, 0).edit().putBoolean("on", on).apply()
-        val svc = ClipboardAccessibilityService.instance
-        if (on && svc != null) showIfEnabled(svc) else hide()
+        val i = Intent(ctx, ClipboardBubbleService::class.java)
+        if (on) ContextCompat.startForegroundService(ctx, i)
+        else ctx.stopService(i)
     }
 
-    fun showIfEnabled(ctx: Context) {
-        if (!isEnabled(ctx) || !android.provider.Settings.canDrawOverlays(ctx)) return
-        if (bubble != null) return
+    /** Built by the bubble service once it's foreground and overlay permission is granted. */
+    fun show(ctx: Context) {
+        if (!android.provider.Settings.canDrawOverlays(ctx) || bubble != null) return
         val d = ctx.resources.displayMetrics.density
         list = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL; setPadding((16 * d).toInt(), (12 * d).toInt(), (16 * d).toInt(), (12 * d).toInt()) }
         val root = LinearLayout(ctx).apply {
@@ -55,9 +61,10 @@ object ClipboardOverlay {
                 orientation = LinearLayout.HORIZONTAL
                 setPadding((16 * d).toInt(), (14 * d).toInt(), (8 * d).toInt(), 0)
                 addView(TextView(ctx).apply {
-                    text = "Clipboard stack"; setTextColor(Color.WHITE); textSize = 17f; typeface = Typeface.DEFAULT_BOLD
+                    text = "Clipboard"; setTextColor(Color.WHITE); textSize = 17f; typeface = Typeface.DEFAULT_BOLD
                     layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
                 })
+                addView(smallButton(ctx, "+ Grab copy") { grabCurrent(ctx) })
                 addView(smallButton(ctx, "Copy all") { copyAll(ctx) })
                 addView(smallButton(ctx, "Clear") { scope.launch { HandyApp.instance.db.clips().clearUnpinned(); refresh() } })
             }
@@ -82,7 +89,10 @@ object ClipboardOverlay {
             val clips = withContext(Dispatchers.IO) { HandyApp.instance.db.clips().allOnce() }
             l.removeAllViews()
             if (clips.isEmpty()) {
-                l.addView(TextView(ctx).apply { text = "Copy something in any app — it shows up here."; setTextColor(0xFFAAAAAA.toInt()); setPadding(0, 24, 0, 24) })
+                l.addView(TextView(ctx).apply {
+                    text = "No clips yet. Tap “+ Grab copy” after copying something, or Share → Save to Tenzy from any app."
+                    setTextColor(0xFFAAAAAA.toInt()); setPadding(0, 24, 0, 24); textSize = 14f
+                })
             }
             clips.forEach { c -> l.addView(row(ctx, c)) }
         }
@@ -98,28 +108,32 @@ object ClipboardOverlay {
             (layoutParams as? LinearLayout.LayoutParams ?: LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)).also {
                 it.bottomMargin = (8 * d).toInt(); layoutParams = it
             }
-            setOnClickListener { paste(ctx, c.text) }
+            setOnClickListener { recopy(ctx, c.text) }
             setOnLongClickListener {
                 scope.launch { HandyApp.instance.db.clips().update(c.copy(pinned = !c.pinned)); refresh() }; true
             }
         }
     }
 
-    private fun paste(ctx: Context, text: String) {
+    /** Re-copy a saved clip to the system clipboard, ready to paste in the field you're in. */
+    private fun recopy(ctx: Context, text: String) {
         panel?.hide()
-        val pasted = ClipboardAccessibilityService.instance?.pasteIntoFocused(text) == true
-        if (!pasted) {
-            lastPastedText = text
-            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", text))
-            Toast.makeText(ctx, "Ready to paste", Toast.LENGTH_SHORT).show()
-        }
+        (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
+            .setPrimaryClip(ClipData.newPlainText("Tenzy", text))
+        Toast.makeText(ctx, "Copied — long-press the field and tap Paste", Toast.LENGTH_SHORT).show()
+    }
+
+    /** Pull whatever is on the clipboard right now into the stack (via the transparent grabber). */
+    private fun grabCurrent(ctx: Context) {
+        panel?.hide()
+        runCatching { ctx.startActivity(SaveClipActivity.grabIntent(ctx)) }
     }
 
     private fun copyAll(ctx: Context) {
         scope.launch {
             val all = withContext(Dispatchers.IO) { HandyApp.instance.db.clips().allOnce() }
+            if (all.isEmpty()) { Toast.makeText(ctx, "Nothing to copy yet", Toast.LENGTH_SHORT).show(); return@launch }
             val joined = all.joinToString("\n") { it.text }
-            lastPastedText = joined
             (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", joined))
             Toast.makeText(ctx, "${all.size} items copied, ready to paste", Toast.LENGTH_SHORT).show()
             panel?.hide()
@@ -129,5 +143,7 @@ object ClipboardOverlay {
     private fun smallButton(ctx: Context, label: String, onClick: () -> Unit) = Button(ctx).apply {
         text = label; textSize = 12f; isAllCaps = false; setOnClickListener { onClick() }
         setTextColor(Color.WHITE); setBackgroundColor(Color.TRANSPARENT); gravity = Gravity.CENTER
+        minWidth = 0; minimumWidth = 0
+        setPadding((10 * ctx.resources.displayMetrics.density).toInt(), 0, (10 * ctx.resources.displayMetrics.density).toInt(), 0)
     }
 }
