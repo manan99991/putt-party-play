@@ -94,7 +94,7 @@ struct WebClipView: View {
                 "PayloadDescription": "Adds \(name) to your home screen", "PayloadDisplayName": name,
                 "PayloadIdentifier": "\(id).clip", "PayloadType": "com.apple.webClip.managed", "PayloadUUID": UUID().uuidString, "PayloadVersion": 1,
             ]],
-            "PayloadDescription": "Home screen shortcut for \(name), made by Oddbox. Remove anytime in Settings › General › VPN & Device Management.",
+            "PayloadDescription": "Home screen shortcut for \(name), made by Tenzy. Remove anytime in Settings › General › VPN & Device Management.",
             "PayloadDisplayName": "\(name) — Home Screen Icon", "PayloadIdentifier": id, "PayloadRemovalDisallowed": false,
             "PayloadType": "Configuration", "PayloadUUID": UUID().uuidString, "PayloadVersion": 1,
         ]

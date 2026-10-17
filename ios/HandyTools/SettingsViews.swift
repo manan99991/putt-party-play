@@ -4,7 +4,7 @@ import UserNotifications
 import AlarmKit
 
 let PRIVACY_URL = URL(string: "https://manan99991.github.io/putt-party-play/privacy.html")!
-let SUPPORT_EMAIL = "oddbox.app@gmail.com"
+let SUPPORT_EMAIL = "tenzy.app@gmail.com"
 
 // MARK: - One-time setup
 
@@ -22,12 +22,12 @@ struct SetupView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
                     Text("Set up once").font(HandyFont.display)
-                    Text("Three switches, one tap each. After this page Oddbox won't ask again.").font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
+                    Text("Three switches, one tap each. After this page Tenzy won't ask again.").font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
                     Text("\([notifs, alarms].filter { $0 }.count) of 3 done").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                     SetupRow(icon: "bell.badge", title: "Notifications", why: "The alarm itself, and a quiet 'saved' confirmation now and then.", unlocks: "Alarm Pro", granted: notifs) {
                         Task { _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]); await refresh() }
                     }
-                    SetupRow(icon: "alarm", title: "Alarms", why: "Lets Oddbox ring through Silent mode and Focus, like the Clock app.", unlocks: "Alarm Pro", granted: alarms) {
+                    SetupRow(icon: "alarm", title: "Alarms", why: "Lets Tenzy ring through Silent mode and Focus, like the Clock app.", unlocks: "Alarm Pro", granted: alarms) {
                         Task { alarms = (try? await AlarmManager.shared.requestAuthorization()) == .authorized }
                     }
                     SetupRow(icon: "keyboard", title: "Clips keyboard", why: "Settings › General › Keyboard › Keyboards › Add New. Allow Full Access: it only reads the clipboard when you tap Grab.", unlocks: "Multi-Clipboard", granted: false, buttonLabel: "Open Settings") {
@@ -98,7 +98,7 @@ struct SettingsView: View {
                                 Image(systemName: "crown.fill").foregroundStyle(store.isPremium ? .white : HandyColor.accent)
                             }
                             VStack(alignment: .leading, spacing: 3) {
-                                Text(store.isPremium ? "Oddbox Pro" : "Go Pro").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                Text(store.isPremium ? "Tenzy Pro" : "Go Pro").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                                 Text(store.isPremium ? "Ads off. Renews yearly at $9.99." : "$9.99 a year. Ads gone, unlimited clips and alarms.")
                                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.leading)
                             }
@@ -120,9 +120,9 @@ struct SettingsView: View {
                     }
                     Section("Help") {
                         SettingsRow(icon: "envelope", title: "Send feedback", sub: SUPPORT_EMAIL) {
-                            UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Oddbox%20iOS%20\(version)")!)
+                            UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!)
                         }
-                        SettingsRow(icon: "star", title: "Rate Oddbox", sub: "30 seconds, means a lot") {
+                        SettingsRow(icon: "star", title: "Rate Tenzy", sub: "30 seconds, means a lot") {
                             if let s = UIApplication.shared.connectedScenes.first as? UIWindowScene { AppStore.requestReview(in: s) }
                         }
                         SettingsRow(icon: "info.circle", title: "About", sub: "Version \(version) · Made by one person in Illinois") { }
@@ -176,7 +176,7 @@ struct PrivacyView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s24) {
                 VStack(alignment: .leading, spacing: HandySpacing.s4) {
                     Text("Privacy").font(HandyFont.display).padding(.top, HandySpacing.s24)
-                    Text("Short version: everything you do in Oddbox stays on this iPhone.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                    Text("Short version: everything you do in Tenzy stays on this iPhone.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                 }
                 Block("Stays on your phone", check: true, [
                     "Clips you save (keyboard, Share Sheet, or Grab)",
@@ -188,7 +188,7 @@ struct PrivacyView: View {
                     "Your name, email, or any account — there isn't one",
                     "Keystrokes — the Clips keyboard never logs what you type",
                     "Your location, contacts, or photo library beyond the single photo you pick",
-                    "Analytics or crash reports — Oddbox has none",
+                    "Analytics or crash reports — Tenzy has none",
                 ], note: nil)
                 Block("The one exception: ads", check: false, [
                     "The free version shows ads through Google AdMob.",
@@ -202,7 +202,7 @@ struct PrivacyView: View {
                     "Camera: Doc Scanner, QR scanner, flashlight.",
                     "Keyboard Full Access: reads the clipboard only when you tap Grab.",
                 ], note: nil)
-                Block("Children", check: false, ["Oddbox isn't for children under 13 and doesn't knowingly collect anything from them."], note: nil)
+                Block("Children", check: false, ["Tenzy isn't for children under 13 and doesn't knowingly collect anything from them."], note: nil)
                 Text("Questions: \(SUPPORT_EMAIL) · Last updated October 15, 2026").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.bottom, HandySpacing.s32)
             }
             .padding(.horizontal, HandySpacing.gutter)

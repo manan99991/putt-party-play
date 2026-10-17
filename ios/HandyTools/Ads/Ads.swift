@@ -46,7 +46,7 @@ struct BannerAd: View {
             VStack(spacing: 0) {
                 Rectangle().fill(HandyColor.border).frame(height: 1)
                 HStack {
-                    Text("Ads keep Oddbox free").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    Text("Ads keep Tenzy free").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     Spacer()
                     Button("Remove ads") { NotificationCenter.default.post(name: .showPaywall, object: nil) }.font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                 }

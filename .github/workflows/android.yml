@@ -120,8 +120,8 @@ jobs:
               if [ $mode = dark ]; then adb shell cmd uimode night yes; else adb shell cmd uimode night no; fi
               sleep 2
               for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro; do
-                adb shell am force-stop com.oddbox.app || true
-                adb shell am start -W -n com.oddbox.app/com.handytools.app.MainActivity --es route $r || true
+                adb shell am force-stop com.tenzy.app || true
+                adb shell am start -W -n com.tenzy.app/com.handytools.app.MainActivity --es route $r || true
                 sleep 6
                 adb exec-out screencap -p > shots/android-$mode-$r.png || true
               done

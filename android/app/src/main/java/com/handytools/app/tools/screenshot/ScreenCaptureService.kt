@@ -164,7 +164,7 @@ class ScreenCaptureService : Service() {
      */
     private suspend fun captureFullPage(): Bitmap? {
         val a11y = ClipboardAccessibilityService.instance ?: run {
-            toast("Enable Oddbox in Accessibility settings for full-page capture"); return captureFrame()
+            toast("Enable Tenzy in Accessibility settings for full-page capture"); return captureFrame()
         }
         toast("Capturing full page…")
         val frames = mutableListOf<Bitmap>()
@@ -196,17 +196,17 @@ class ScreenCaptureService : Service() {
     }
 
     private suspend fun save(b: Bitmap, tag: String) = withContext(Dispatchers.IO) {
-        val name = "Oddbox_${tag}_${System.currentTimeMillis()}.png"
+        val name = "Tenzy_${tag}_${System.currentTimeMillis()}.png"
         val values = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, name)
             put(MediaStore.Images.Media.MIME_TYPE, "image/png")
-            if (Build.VERSION.SDK_INT >= 29) put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Oddbox")
+            if (Build.VERSION.SDK_INT >= 29) put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Tenzy")
         }
         val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return@withContext
         contentResolver.openOutputStream(uri)?.use { b.compress(Bitmap.CompressFormat.PNG, 100, it) }
         withContext(Dispatchers.Main) {
             com.handytools.app.ui.HandyHaptics.medium(this@ScreenCaptureService)
-            toast("Saved to Pictures/Oddbox")
+            toast("Saved to Pictures/Tenzy")
         }
     }
 

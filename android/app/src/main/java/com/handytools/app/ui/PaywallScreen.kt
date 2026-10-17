@@ -60,7 +60,7 @@ fun PaywallContent(onBack: () -> Unit) {
             Icon(Icons.Outlined.WorkspacePremium, null, Modifier.size(32.dp), tint = HandyColors.Accent)
         }
         Spacer(Modifier.height(HandyTokens.Space16))
-        Text("Oddbox Pro", style = MaterialTheme.typography.headlineSmall.copy(fontSize = 28.sp))
+        Text("Tenzy Pro", style = MaterialTheme.typography.headlineSmall.copy(fontSize = 28.sp))
         Spacer(Modifier.height(HandyTokens.Space4))
         Text("One yearly payment. Ads gone for good.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space24))

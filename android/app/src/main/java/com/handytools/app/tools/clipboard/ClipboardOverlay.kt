@@ -110,7 +110,7 @@ object ClipboardOverlay {
         val pasted = ClipboardAccessibilityService.instance?.pasteIntoFocused(text) == true
         if (!pasted) {
             lastPastedText = text
-            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Oddbox", text))
+            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", text))
             Toast.makeText(ctx, "Ready to paste", Toast.LENGTH_SHORT).show()
         }
     }
@@ -120,7 +120,7 @@ object ClipboardOverlay {
             val all = withContext(Dispatchers.IO) { HandyApp.instance.db.clips().allOnce() }
             val joined = all.joinToString("\n") { it.text }
             lastPastedText = joined
-            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Oddbox", joined))
+            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", joined))
             Toast.makeText(ctx, "${all.size} items copied, ready to paste", Toast.LENGTH_SHORT).show()
             panel?.hide()
         }

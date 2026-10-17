@@ -65,7 +65,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text("Oddbox", style = MaterialTheme.typography.headlineMedium)
+                Text("Tenzy", style = MaterialTheme.typography.headlineMedium)
                 Spacer(Modifier.height(HandyTokens.Space4))
                 Text(if (premium) "Pro · no ads" else "10 tools your phone should've had",
                     style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)

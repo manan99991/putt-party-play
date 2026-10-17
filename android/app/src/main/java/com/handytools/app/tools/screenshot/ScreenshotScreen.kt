@@ -79,13 +79,13 @@ fun ScreenshotScreen() {
             }
             if (mode == ScreenCaptureService.Mode.FULL_PAGE) {
                 Spacer(Modifier.height(8.dp))
-                PermissionCard("Accessibility access", "Full page needs Oddbox to scroll the page for you.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings")
+                PermissionCard("Accessibility access", "Full page needs Tenzy to scroll the page for you.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings")
             }
             Spacer(Modifier.height(24.dp))
             HPrimaryButton("Start floating button", enabled = overlay) { ProjectionPermissionActivity.launch(ctx, mode) }
             Spacer(Modifier.height(8.dp))
             HSecondaryButton("Stop") { ctx.startService(Intent(ctx, ScreenCaptureService::class.java).setAction(ScreenCaptureService.ACTION_STOP)) }
-            LimitNote("Saved to Pictures/Oddbox.")
+            LimitNote("Saved to Pictures/Tenzy.")
             Spacer(Modifier.weight(1f))
             BannerAd()
         }

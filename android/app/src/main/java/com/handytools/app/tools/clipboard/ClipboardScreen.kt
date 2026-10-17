@@ -60,7 +60,7 @@ fun ClipboardScreen() {
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
         ToolHeader("Multi-Clipboard", "Turn it on, copy as many things as you want in any app, then tap the bubble to paste any of them.")
-        PermissionCard("Accessibility access", "This is how Oddbox sees copies from other apps.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings", privacy = "Text stays on your phone. Nothing is uploaded.")
+        PermissionCard("Accessibility access", "This is how Tenzy sees copies from other apps.", a11y, Permissions.accessibilityIntent(), "Open Accessibility settings", privacy = "Text stays on your phone. Nothing is uploaded.")
         PermissionCard("Draw over other apps", "Needed for the floating bubble.", overlay, Permissions.overlayIntent(ctx))
         BigToggle("Clipboard bubble", on && a11y && overlay) { v ->
             on = v; ClipboardOverlay.setEnabled(ctx, v)
@@ -73,7 +73,7 @@ fun ClipboardScreen() {
             itemsIndexed(clips, key = { _, c -> c.id }) { i, c ->
                 HCard(Modifier.fillMaxWidth().handyListEnter(i, reduceMotion), onClick = {
                     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
-                        .setPrimaryClip(ClipData.newPlainText("Oddbox", c.text))
+                        .setPrimaryClip(ClipData.newPlainText("Tenzy", c.text))
                     ClipboardOverlay.lastPastedText = c.text
                 }) {
                     Text((if (c.pinned) "📌 " else "") + c.text, Modifier.padding(14.dp), maxLines = 3, style = MaterialTheme.typography.bodyLarge)

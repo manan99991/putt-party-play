@@ -2,7 +2,7 @@ import Foundation
 
 /// App Group container shared by the app, keyboard, share extension and widget.
 enum AppGroup {
-    static let id = "group.com.oddbox.shared"
+    static let id = "group.com.tenzy.shared"
     static var defaults: UserDefaults { UserDefaults(suiteName: id)! }
 }
 

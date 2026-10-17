@@ -4,16 +4,16 @@ import StoreKit
 /// StoreKit 2. Yearly auto-renewing subscription only.
 ///
 /// App Store Connect setup (one time):
-///   App > Subscriptions > Create group "Oddbox Pro"
-///   Product ID: oddbox_pro_yearly   (must match `productID`)
+///   App > Subscriptions > Create group "Tenzy Pro"
+///   Product ID: tenzy_pro_yearly   (must match `productID`)
 ///   Duration: 1 year. Optional 1-week free trial as an introductory offer.
 ///
-/// For local testing without ASC, use Oddbox/Resources/Products.storekit
+/// For local testing without ASC, use Tenzy/Resources/Products.storekit
 /// (Edit Scheme > Run > Options > StoreKit Configuration).
 @MainActor
 final class StoreManager: ObservableObject {
     static let shared = StoreManager()
-    static let productID = "oddbox_pro_yearly"
+    static let productID = "tenzy_pro_yearly"
 
     @Published private(set) var product: Product?
     @Published private(set) var isPremium: Bool = Premium.isActive

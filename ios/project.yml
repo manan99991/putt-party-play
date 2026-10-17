@@ -2,7 +2,7 @@
 # Change BUNDLE_PREFIX + TEAM_ID once; everything else derives from them.
 name: HandyTools
 options:
-  bundleIdPrefix: com.oddbox
+  bundleIdPrefix: com.tenzy
   deploymentTarget:
     iOS: "26.0"
   xcodeVersion: "26.0"
@@ -29,7 +29,7 @@ targets:
     platform: iOS
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.oddbox.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.app
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
     sources:
       - path: HandyTools
@@ -45,11 +45,11 @@ targets:
     entitlements:
       path: HandyTools/HandyTools.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.oddbox.shared]
+        com.apple.security.application-groups: [group.com.tenzy.shared]
     info:
       path: HandyTools/Info.plist
       properties:
-        CFBundleDisplayName: Oddbox
+        CFBundleDisplayName: Tenzy
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         ITSAppUsesNonExemptEncryption: false
@@ -59,7 +59,7 @@ targets:
           - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
         NSUserTrackingUsageDescription: Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones.
         # --- Tool permissions ---
-        NSAlarmKitUsageDescription: Oddbox schedules the alarms you create so they ring even in silent mode and Focus.
+        NSAlarmKitUsageDescription: Tenzy schedules the alarms you create so they ring even in silent mode and Focus.
         NSCameraUsageDescription: Needed for the document scanner, QR scanner and flashlight.
         NSMicrophoneUsageDescription: Needed for the decibel meter. Audio is measured, never recorded or saved.
         NSPhotoLibraryUsageDescription: Needed to read text from screenshots and to view or strip photo metadata.
@@ -70,16 +70,16 @@ targets:
     type: app-extension
     platform: iOS
     settings:
-      base: { PRODUCT_BUNDLE_IDENTIFIER: com.oddbox.app.keyboard }
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.app.keyboard }
     sources: [ClipboardKeyboard, Shared]
     entitlements:
       path: ClipboardKeyboard/ClipboardKeyboard.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.oddbox.shared]
+        com.apple.security.application-groups: [group.com.tenzy.shared]
     info:
       path: ClipboardKeyboard/Info.plist
       properties:
-        CFBundleDisplayName: Oddbox Clips
+        CFBundleDisplayName: Tenzy Clips
         NSExtension:
           NSExtensionPointIdentifier: com.apple.keyboard-service
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
@@ -93,12 +93,12 @@ targets:
     type: app-extension
     platform: iOS
     settings:
-      base: { PRODUCT_BUNDLE_IDENTIFIER: com.oddbox.app.share }
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.app.share }
     sources: [ShareExtension, Shared]
     entitlements:
       path: ShareExtension/ShareExtension.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.oddbox.shared]
+        com.apple.security.application-groups: [group.com.tenzy.shared]
     info:
       path: ShareExtension/Info.plist
       properties:
@@ -115,12 +115,12 @@ targets:
     type: app-extension
     platform: iOS
     settings:
-      base: { PRODUCT_BUNDLE_IDENTIFIER: com.oddbox.app.widget }
+      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.app.widget }
     sources: [StickyWidget, Shared]
     entitlements:
       path: StickyWidget/StickyWidget.entitlements
       properties:
-        com.apple.security.application-groups: [group.com.oddbox.shared]
+        com.apple.security.application-groups: [group.com.tenzy.shared]
     info:
       path: StickyWidget/Info.plist
       properties:

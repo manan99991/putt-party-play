@@ -59,7 +59,7 @@ struct DecibelMeterView: View {
             HStack { Text("Peak").font(HandyFont.body); Spacer(); Text("\(Int(m.peak)) dB").font(HandyFont.bodyStrong).monospacedDigit() }.cardStyle()
             Button { m.running ? m.stop() : m.start() } label: { Label(m.running ? "Stop" : "Start", systemImage: m.running ? "stop.fill" : "mic.fill").frame(maxWidth: .infinity) }
                 .primaryButton()
-            if m.denied { Text("Microphone access is off. Enable it in Settings › Oddbox.").font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+            if m.denied { Text("Microphone access is off. Enable it in Settings › Tenzy.").font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             LimitNote("Phone mics aren't calibrated lab gear; treat this as ±5 dB.")
         }
         .onDisappear { m.stop() }

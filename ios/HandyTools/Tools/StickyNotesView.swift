@@ -14,7 +14,7 @@ struct StickyNotesView: View {
                 .background(HandyColor.sticky, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
                 .rotationEffect(.degrees(-0.5))
                 .onChange(of: text) { _, t in NoteStore.text = t; WidgetCenter.shared.reloadTimelines(ofKind: "StickyWidget") }
-            LimitNote("Long-press your home screen › Edit › Add Widget › Oddbox.")
+            LimitNote("Long-press your home screen › Edit › Add Widget › Tenzy.")
         }
     }
 }

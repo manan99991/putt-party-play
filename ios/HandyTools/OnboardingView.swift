@@ -36,7 +36,7 @@ struct OnboardingView: View {
                     }
                 }
                 .padding(.bottom, HandySpacing.s16)
-                Button(page == 0 ? "Show me" : page == 1 ? "Next" : "Start using Oddbox") {
+                Button(page == 0 ? "Show me" : page == 1 ? "Next" : "Start using Tenzy") {
                     if page < 2 { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.24)) { page += 1 } } else { onDone() }
                 }
                 .buttonStyle(OnboardingButtonStyle(onBlue: onBlue))

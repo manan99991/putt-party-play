@@ -66,7 +66,7 @@ class ClipboardAccessibilityService : AccessibilityService() {
     fun pasteIntoFocused(text: String): Boolean {
         val cm = clipboard()
         ClipboardOverlay.lastPastedText = text
-        cm.setPrimaryClip(android.content.ClipData.newPlainText("Oddbox", text))
+        cm.setPrimaryClip(android.content.ClipData.newPlainText("Tenzy", text))
         val root = rootInActiveWindow ?: return false
         val focused = root.findFocus(android.view.accessibility.AccessibilityNodeInfo.FOCUS_INPUT) ?: return false
         return focused.performAction(android.view.accessibility.AccessibilityNodeInfo.ACTION_PASTE)
