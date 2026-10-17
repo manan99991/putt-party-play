@@ -120,14 +120,10 @@ platform :ios do
       )
     end
 
-    # Each TestFlight upload needs a build number higher than the last. Ask App Store Connect for
-    # the current highest and add 1 (fall back to the CI run number if the query fails).
-    build_num = begin
-      latest_testflight_build_number(api_key: key, app_identifier: "com.tenzy.toolkit", initial_build_number: 0) + 1
-    rescue => e
-      UI.important("Could not fetch latest build number (#{e}); using run number")
-      (ENV["GITHUB_RUN_NUMBER"] || "2").to_i + 1
-    end
+    # Each TestFlight upload needs a build number higher than the last. A Unix timestamp is always
+    # unique and monotonically increasing, so it never collides (the ASC "latest build" query can
+    # return 0 while a build is still processing, which is what caused the earlier '1' collision).
+    build_num = Time.now.to_i
     UI.message("Using build number #{build_num}")
 
     build_app(
