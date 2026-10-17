@@ -122,12 +122,20 @@ jobs:
             --api_key_path asc_key.json || echo "produce: app record likely already exists, continuing"
       - name: Archive
         run: |
+          set -o pipefail
           xcodebuild archive -project HandyTools.xcodeproj -scheme HandyTools \
             -destination 'generic/platform=iOS' -archivePath build/HandyTools.xcarchive \
             -allowProvisioningUpdates -allowProvisioningDeviceRegistration \
             -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8 \
             -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-            CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM="$TEAM_ID"
+            CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM="$TEAM_ID" 2>&1 | tee archive.log
+      - name: Publish archive log (always)
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "== archive.log (errors) =="; grep -iE "error:|Code Sign|provisioning|entitlement|App Groups|does not|No profiles|requires|❌|\*\* ARCHIVE" ios/archive.log 2>/dev/null | head -80; echo; echo "== tail =="; tail -60 ios/archive.log 2>/dev/null; } > ios-archive-err.log
+          bash .github/publish-log.sh ios-archive ios-archive-err.log
       - name: Export + upload
         run: |
           cat > ExportOptions.plist <<EOF
