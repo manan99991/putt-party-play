@@ -5,7 +5,7 @@ import Network
 /// A tiny localhost web server that serves ONE configuration profile with the right MIME type, so
 /// opening its URL makes iOS show the native "download a configuration profile" → Install flow —
 /// the only way an app can add a real home-screen icon, and far cleaner than a share sheet.
-final class ProfileServer {
+final class ProfileServer: @unchecked Sendable {
     private var listener: NWListener?
     private let payload: Data
     private let filename: String
@@ -17,12 +17,13 @@ final class ProfileServer {
         if listener == nil { return nil }
     }
 
-    func start(_ completion: @escaping (UInt16?) -> Void) {
+    /// Starts serving and, once the OS assigns a port, opens the localhost URL so iOS shows its
+    /// native profile installer. Self-contained so no non-Sendable SwiftUI state crosses threads.
+    func start() {
         listener?.stateUpdateHandler = { [weak self] state in
-            switch state {
-            case .ready: completion(self?.listener?.port?.rawValue)
-            case .failed, .cancelled: completion(nil)
-            default: break
+            guard case .ready = state, let self, let port = self.listener?.port?.rawValue else { return }
+            if let u = URL(string: "http://127.0.0.1:\(port)/\(self.filename)") {
+                Task { @MainActor in UIApplication.shared.open(u) }
             }
         }
         listener?.newConnectionHandler = { [weak self] conn in self?.serve(conn) }
@@ -154,14 +155,11 @@ struct WebClipView: View {
         guard let data = try? PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0) else { status = "err"; return }
 
         server?.stop()
-        let srv = ProfileServer(data: data, filename: "\(safeName).mobileconfig")
+        guard let srv = ProfileServer(data: data, filename: "\(safeName).mobileconfig") else { status = "err"; return }
         server = srv
-        srv?.start { port in
-            guard let port, let u = URL(string: "http://127.0.0.1:\(port)/\(safeName).mobileconfig") else { status = "err"; return }
-            status = "ready"; HandyHaptics.success()
-            UIApplication.shared.open(u)
-            Interstitials.shared.showIfReady()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30) { srv?.stop() }
-        }
+        status = "ready"; HandyHaptics.success()
+        srv.start()   // serves the profile and opens the native installer once ready
+        Interstitials.shared.showIfReady()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30) { [weak srv] in srv?.stop() }
     }
 }

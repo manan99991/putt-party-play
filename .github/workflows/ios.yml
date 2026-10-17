@@ -108,7 +108,9 @@ jobs:
             /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BN" "$p/Info.plist" 2>/dev/null \
               || /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $BN" "$p/Info.plist"
           done
-          echo "stamped build number $BN"
+          V=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" HandyTools/Info.plist)
+          echo "stamped build number: expected $BN, got $V"
+          [ "$V" = "$BN" ] || { echo "BUILD NUMBER STAMP FAILED"; exit 1; }
       - name: Write ASC key + export fastlane auth env
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
@@ -130,7 +132,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ios/cert-cache
-          key: tenzy-dist-cert-v1
+          key: tenzy-dist-cert-v2
       - name: Fastlane build + upload to TestFlight
         run: |
           set -o pipefail
@@ -140,7 +142,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ios/cert-cache
-          key: tenzy-dist-cert-v1
+          key: tenzy-dist-cert-v2
       - name: Publish fastlane log (always)
         if: always()
         working-directory: .
