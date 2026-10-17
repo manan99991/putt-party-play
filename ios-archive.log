@@ -1,197 +1,106 @@
 ===== fastlane.log errors =====
+  "errors" : [ {
+    "code" : "ENTITY_ERROR",
+    "detail" : "This certificate cannot be revoked because it is not in an &quot;issued&quot; state."
 (Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
-[22:23:06]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
-[22:23:06]: [33mCouldn't find an existing certificate... creating a new one[0m
-[22:23:06]: [32mSuccessfully generated M872LNTN5X which was imported to the local machine.[0m
-[22:23:06]: Verifying the certificate is properly installed locally...
-[22:23:06]: [32mSuccessfully installed certificate M872LNTN5X[0m
-[22:23:06]: [32mUse signing certificate 'M872LNTN5X' from now on![0m
-| include_all_certificates            | false             |
-| skip_certificate_verification       | false             |
-| fail_on_name_taken                  | false             |
-[22:23:07]: Provisioning Profile cert_id : '24QVV6RW8U' does not match given cert_id : 'M872LNTN5X', skipping this one...
-[22:23:07]: Provisioning Profile cert_id : 'D22S7J8SAL' does not match given cert_id : 'M872LNTN5X', skipping this one...
-[22:23:07]: Verifying certificates...
-[22:23:07]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[22:23:07]: [33mCreating new provisioning profile for 'com.tenzy.toolkit' with name 'com.tenzy.toolkit AppStore 1792275787' for 'ios' platform[0m
-[22:23:08]: [33mDownloading provisioning profile...[0m
-[22:23:08]: [32mSuccessfully downloaded provisioning profile...[0m
-[22:23:08]: Installing provisioning profile...
-[22:23:08]: Setting Provisioning Profile type to 'app-store'
-| include_all_certificates            | false                      |
-| skip_certificate_verification       | false                      |
-| fail_on_name_taken                  | false                      |
-[22:23:08]: Verifying certificates...
-[22:23:08]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[22:23:08]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.keyboard' with name 'com.tenzy.toolkit.keyboard AppStore' for 'ios' platform[0m
-[22:23:09]: [33mDownloading provisioning profile...[0m
-[22:23:09]: [32mSuccessfully downloaded provisioning profile...[0m
-[22:23:09]: Installing provisioning profile...
-[22:23:09]: Setting Provisioning Profile type to 'app-store'
-| include_all_certificates            | false                   |
-| skip_certificate_verification       | false                   |
-| fail_on_name_taken                  | false                   |
-[22:23:09]: Verifying certificates...
-[22:23:09]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[22:23:09]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.share' with name 'com.tenzy.toolkit.share AppStore' for 'ios' platform[0m
-[22:23:10]: [33mDownloading provisioning profile...[0m
-[22:23:10]: [32mSuccessfully downloaded provisioning profile...[0m
-[22:23:10]: Installing provisioning profile...
-[22:23:10]: Setting Provisioning Profile type to 'app-store'
-| include_all_certificates            | false                    |
-| skip_certificate_verification       | false                    |
-| fail_on_name_taken                  | false                    |
-[22:23:10]: Verifying certificates...
-[22:23:10]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
-[22:23:11]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.widget' with name 'com.tenzy.toolkit.widget AppStore' for 'ios' platform[0m
-[22:23:11]: [33mDownloading provisioning profile...[0m
-[22:23:11]: [32mSuccessfully downloaded provisioning profile...[0m
-[22:23:11]: Installing provisioning profile...
-[22:23:11]: Setting Provisioning Profile type to 'app-store'
-[22:23:11]: Provisioning profiles: {"com.tenzy.toolkit" => "com.tenzy.toolkit AppStore 1792275787", "com.tenzy.toolkit.keyboard" => "com.tenzy.toolkit.keyboard AppStore", "com.tenzy.toolkit.share" => "com.tenzy.toolkit.share AppStore", "com.tenzy.toolkit.widget" => "com.tenzy.toolkit.widget AppStore"}
-[22:23:11]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792275787 for target: HandyTools for build configuration: Debug[0m
-[22:23:11]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Debug[0m
-[22:23:11]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792275787 for target: HandyTools for build configuration: Release[0m
-[22:23:11]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Release[0m
-[22:23:11]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
-[22:23:11]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore for target: ClipboardKeyboard for build configuration: Debug[0m
-[22:23:11]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Debug[0m
-[22:23:11]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore for target: ClipboardKeyboard for build configuration: Release[0m
-[22:23:11]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Release[0m
-[22:23:11]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
-[22:23:11]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore for target: ShareExtension for build configuration: Debug[0m
-[22:23:11]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Debug[0m
-[22:23:11]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore for target: ShareExtension for build configuration: Release[0m
-[22:23:11]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Release[0m
-[22:23:11]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
-[22:23:11]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore for target: StickyWidget for build configuration: Debug[0m
-[22:23:11]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Debug[0m
-[22:23:11]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore for target: StickyWidget for build configuration: Release[0m
-[22:23:11]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Release[0m
-[22:23:11]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
-[22:23:31]: Detected provisioning profile mapping: {"com.tenzy.toolkit": "com.tenzy.toolkit AppStore 1792275787", "com.tenzy.toolkit.keyboard": "com.tenzy.toolkit.keyboard AppStore", "com.tenzy.toolkit.share": "com.tenzy.toolkit.share AppStore", "com.tenzy.toolkit.widget": "com.tenzy.toolkit.widget AppStore"}
-| export_options.provisioningProfiles.com.tenzy.toolkit          | com.tenzy.toolkit AppStore 1792275787                     |
-| export_options.provisioningProfiles.com.tenzy.toolkit.keyboard | com.tenzy.toolkit.keyboard AppStore                       |
-| export_options.provisioningProfiles.com.tenzy.toolkit.share    | com.tenzy.toolkit.share AppStore                          |
-| export_options.provisioningProfiles.com.tenzy.toolkit.widget   | com.tenzy.toolkit.widget AppStore                         |
-[22:23:31]: [36m$ set -o pipefail && xcodebuild -scheme HandyTools -project HandyTools.xcodeproj -configuration Release -destination generic/platform\=iOS -archivePath /Users/runner/Library/Developer/Xcode/Archives/2026-10-17/Tenzy\ 2026-10-17\ 22.23.31.xcarchive archive | tee /Users/runner/Library/Logs/gym/HandyTools-HandyTools.log | xcbeautify[0m
-[22:23:37]: ▸ [35m::error file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj::Provisioning profile "com.tenzy.toolkit AppStore 1792275787" doesn't support the group.com.tenzy.shared App Group. (in target 'HandyTools' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit AppStore 1792275787" doesn't match the entitlements file's value for the com.apple.security.application-groups entitlement. (in target 'HandyTools' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.widget AppStore" doesn't include the App Groups capability. (in target 'StickyWidget' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m::error file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj::Provisioning profile "com.tenzy.toolkit.widget AppStore" doesn't support the group.com.tenzy.shared App Group. (in target 'StickyWidget' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.widget AppStore" doesn't include the com.apple.security.application-groups entitlement. (in target 'StickyWidget' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.share AppStore" doesn't include the App Groups capability. (in target 'ShareExtension' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m::error file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj::Provisioning profile "com.tenzy.toolkit.share AppStore" doesn't support the group.com.tenzy.shared App Group. (in target 'ShareExtension' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.share AppStore" doesn't include the com.apple.security.application-groups entitlement. (in target 'ShareExtension' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't include the App Groups capability. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m** ARCHIVE FAILED **[0m
-[22:23:37]: ▸ [35mThe following build commands failed:[0m
-[22:23:37]: ▸ [35m(1 failure)[0m
-[22:23:37]: ▸ [35m::error file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj::Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't support the group.com.tenzy.shared App Group. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't include the com.apple.security.application-groups entitlement. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: [33mMaybe the error shown is caused by using the wrong version of Xcode[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.share AppStore" doesn't support the group.com.tenzy.shared App Group. (in target 'ShareExtension' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.share AppStore" doesn't include the com.apple.security.application-groups entitlement. (in target 'ShareExtension' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't include the App Groups capability. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't support the group.com.tenzy.shared App Group. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't include the com.apple.security.application-groups entitlement. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: [31m⬆️  Check out the few lines of raw `xcodebuild` output above for potential hints on how to solve this error[0m
-[22:23:37]: [33m📋  For the complete and more detailed error log, check the full log at:[0m
-[22:23:37]: [31mLooks like fastlane ran into a build/archive error with your project[0m
-[22:23:37]: [31mIt's hard to tell what's causing the error, so we wrote some guides on how[0m
-[22:23:37]: [31mMake sure to inspect the output above, as usually you'll find more error information there[0m
-| CERT_CERTIFICATE_ID       | M872LNTN5X                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-[22:23:37]: [31mfastlane finished with errors[0m
-[!] Error building the application - see the log above[0m
+[22:30:36]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
+[22:30:36]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
+[22:30:36]: [33mCouldn't find an existing certificate... creating a new one[0m
+[22:30:36]: [31mfastlane finished with errors[0m
+➡️  [33mStop creating new certificates.[0m
+➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
+and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
+[!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
 
 ===== fastlane.log tail =====
-[22:23:37]: - Manually update the path using
-[22:23:37]: ▸ [35msudo xcode-select -s /Applications/Xcode.app[0m
-[22:23:37]: 
+[22:30:33]: [32m-----------------------------[0m
+[22:30:33]: [36m$ security list-keychains -d user[0m
+[22:30:33]: ▸ [35m"/Users/runner/Library/Keychains/tenzyci-db"[0m
+[22:30:33]: [33mFound keychain '/Users/runner/Library/Keychains/tenzyci-db' in list-keychains, adding to search list skipped[0m
+[22:30:34]: [32m------------------[0m
+[22:30:34]: [32m--- Step: cert ---[0m
+[22:30:34]: [32m------------------[0m
+
++----------------------------------------------------------------------+
+|                       [32mSummary for cert 2.241.0[0m                       |
++-------------------------+--------------------------------------------+
+| api_key                 | API_KEY_REDACTED                           |
+| keychain_path           | /Users/runner/Library/Keychains/tenzyci-db |
+| keychain_password       | KEYCHAIN_PASSWORD_REDACTED                 |
+| development             | false                                      |
+| force                   | false                                      |
+| generate_apple_certs    | true                                       |
+| skip_set_partition_list | false                                      |
+| platform                | ios                                        |
++-------------------------+--------------------------------------------+
+
+[22:30:34]: Creating authorization token for App Store Connect API
+[22:30:36]: [31mThere are no local code signing identities found.
+You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
+This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
+(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
+[22:30:36]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+[22:30:36]: [31mThere are no local code signing identities found.
+You can run `security find-identity -v -p codesigning /Users/runner/Library/Keychains/tenzyci-db` to get this output.
+This Stack Overflow thread has more information: https://stackoverflow.com/q/35390072/774.
+(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
+[22:30:36]: [31mCertificate M872LNTN5X (Manan Shah) can't be found on your local computer[0m
+[22:30:36]: [33mCouldn't find an existing certificate... creating a new one[0m
++---------------------------------------------------------------------------------+
+|                                  [33mLane Context[0m                                   |
++---------------------------+-----------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                 |
+| PLATFORM_NAME             | ios                                                 |
+| LANE_NAME                 | ios beta                                            |
+| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                         |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db" |
++---------------------------+-----------------------------------------------------+
+[22:30:36]: [31mCalled from Fastfile at line 64[0m
+[22:30:36]: [31m```[0m
+[22:30:36]: [31m    62:	    keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")[0m
+[22:30:36]: [31m    63:	[0m
+[22:30:36]: [31m => 64:	    cert([0m
+[22:30:36]: [31m    65:	      api_key: key,[0m
+[22:30:36]: [31m    66:	      keychain_path: keychain_path,[0m
+[22:30:36]: [31m```[0m
 
 +------------------------------------------------+
-|               [32m[33mBuild environment[0m                |
-+---------------+--------------------------------+
-| xcode_path    | /Applications/Xcode_26.6.0.app |
-| gym_version   | 2.241.0                        |
-| export_method | app-store                      |
-| sdk           | iPhoneOS26.5.sdk               |
-+---------------+--------------------------------+
+|                [32mfastlane summary[0m                |
++------+---------------------------+-------------+
+| Step | Action                    | Time (in s) |
++------+---------------------------+-------------+
+| 1    | default_platform          | 0           |
+| 2    | app_store_connect_api_key | 0           |
+| 3    | create_keychain           | 0           |
+| 💥   | [31mcert[0m                      | 2           |
++------+---------------------------+-------------+
 
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.share AppStore" doesn't support the group.com.tenzy.shared App Group. (in target 'ShareExtension' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.share AppStore" doesn't include the com.apple.security.application-groups entitlement. (in target 'ShareExtension' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't include the App Groups capability. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't support the group.com.tenzy.shared App Group. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj: error: Provisioning profile "com.tenzy.toolkit.keyboard AppStore" doesn't include the com.apple.security.application-groups entitlement. (in target 'ClipboardKeyboard' from project 'HandyTools')[0m
-[22:23:37]: 
-[22:23:37]: [31m⬆️  Check out the few lines of raw `xcodebuild` output above for potential hints on how to solve this error[0m
-[22:23:37]: [33m📋  For the complete and more detailed error log, check the full log at:[0m
-[22:23:37]: [33m📋  /Users/runner/Library/Logs/gym/HandyTools-HandyTools.log[0m
-[22:23:37]: 
-[22:23:37]: [31mLooks like fastlane ran into a build/archive error with your project[0m
-[22:23:37]: [31mIt's hard to tell what's causing the error, so we wrote some guides on how[0m
-[22:23:37]: [31mto troubleshoot build and signing issues: https://docs.fastlane.tools/codesigning/getting-started/[0m
-[22:23:37]: [31mBefore submitting an issue on GitHub, please follow the guide above and make[0m
-[22:23:37]: [31msure your project is set up correctly.[0m
-[22:23:37]: [31mfastlane uses `xcodebuild` commands to generate your binary, you can see the[0m
-[22:23:37]: [31mthe full commands printed out in yellow in the above log.[0m
-[22:23:37]: [31mMake sure to inspect the output above, as usually you'll find more error information there[0m
-[22:23:37]: 
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|                                                                                                                                                                                                                                                            [33mLane Context[0m                                                                                                                                                                                                                                                            |
-+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| DEFAULT_PLATFORM          | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| PLATFORM_NAME             | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| LANE_NAME                 | ios beta                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db"                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| CERT_FILE_PATH            | /Users/runner/work/putt-party-play/putt-party-play/ios/build/certs/M872LNTN5X.cer                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| CERT_CERTIFICATE_ID       | M872LNTN5X                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| SIGH_PROFILE_PATH         | /Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision                                                                                                                                                                                                                                                                                                                                                                                |
-| SIGH_PROFILE_PATHS        | ["/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.keyboard.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.share.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision"] |
-| SIGH_UDID                 | 89935ef7-fde9-47c2-81ad-73fd24d175aa                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| SIGH_UUID                 | 89935ef7-fde9-47c2-81ad-73fd24d175aa                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| SIGH_NAME                 | com.tenzy.toolkit.widget AppStore                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| SIGH_PROFILE_TYPE         | app-store                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-[22:23:37]: [31mCalled from Fastfile at line 94[0m
-[22:23:37]: [31m```[0m
-[22:23:37]: [31m    92:	    end[0m
-[22:23:37]: [31m    93:	[0m
-[22:23:37]: [31m => 94:	    build_app([0m
-[22:23:37]: [31m    95:	      project: "HandyTools.xcodeproj",[0m
-[22:23:37]: [31m    96:	      scheme: "HandyTools",[0m
-[22:23:37]: [31m```[0m
+[22:30:36]: [31mfastlane finished with errors[0m
 
-+---------------------------------------------------+
-|                 [32mfastlane summary[0m                  |
-+------+------------------------------+-------------+
-| Step | Action                       | Time (in s) |
-+------+------------------------------+-------------+
-| 1    | default_platform             | 0           |
-| 2    | app_store_connect_api_key    | 0           |
-| 3    | create_keychain              | 0           |
-| 4    | cert                         | 1           |
-| 5    | sigh                         | 1           |
-| 6    | sigh                         | 1           |
-| 7    | sigh                         | 1           |
-| 8    | sigh                         | 1           |
-| 9    | update_code_signing_settings | 0           |
-| 10   | update_code_signing_settings | 0           |
-| 11   | update_code_signing_settings | 0           |
-| 12   | update_code_signing_settings | 0           |
-| 💥   | [31mbuild_app[0m                    | 25          |
-+------+------------------------------+-------------+
+Looking for related GitHub issues on fastlane/fastlane...
 
-[22:23:37]: [31mfastlane finished with errors[0m
+➡️  [33mStop creating new certificates.[0m
+    https://github.com/fastlane/fastlane/issues/19150 [[32mclosed[0m] 22 💬
+    12 Jul 2026
+
+➡️  [33mInaccurate error "Could not create another Distribution certificate"[0m
+    https://github.com/fastlane/fastlane/issues/19349 [[32mclosed[0m] 17 💬
+    07 Jan 2026
+
+➡️  [33mApple ID auth not working - 503 Service Temporarily Unavailable on various fastlane modules[0m
+    https://github.com/fastlane/fastlane/issues/26368 [[32mclosed[0m] 216 💬
+    27 Apr 2026
+
+and 31 more at: https://github.com/fastlane/fastlane/search?q=Could%20not%20create%20another%20Distribution%20certificate%2C%20reached%20the%20maximum%20number%20of%20available%20Distribution%20certificates.&type=Issues&utf8=✓
+
+🔗  You can ⌘ + double-click on links to open them directly in your browser.
 [31m
-[!] Error building the application - see the log above[0m
+[!] Could not create another Distribution certificate, reached the maximum number of available Distribution certificates.[0m
 
 #######################################################################
 # fastlane 2.241.1 is available. You are on 2.241.0.
 # You should use the latest version.
 # Please update using `gem install fastlane`.
 # To see what's new, open https://github.com/fastlane/fastlane/releases.
-#######################################################################
-# Run `gem cleanup` from time to time to speed up fastlane
 #######################################################################
