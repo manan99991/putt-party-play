@@ -32,12 +32,12 @@ fun PrivacyScreen() {
         Spacer(Modifier.height(HandyTokens.Space16))
         Text("Privacy", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(HandyTokens.Space4))
-        Text("Short version: everything you do in HandyTools stays on this phone.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+        Text("Short version: everything you do in Oddbox stays on this phone.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space24))
 
         Block("Stays on your phone", true, listOf(
             "Text you copy while Multi-Clipboard is on",
-            "Screenshots and screen text you capture (saved to Pictures/HandyTools)",
+            "Screenshots and screen text you capture (saved to Pictures/Oddbox)",
             "Alarms you set",
             "Notifications, for 7 days, while Notification Log is on",
             "Your scratchpad note",
@@ -47,7 +47,7 @@ fun PrivacyScreen() {
             "Your name, email, or any account — there isn't one",
             "Passwords (Accessibility is told to ignore password fields)",
             "Your location, contacts, photos, or files",
-            "Analytics or crash reports — HandyTools has none",
+            "Analytics or crash reports — Oddbox has none",
         ), null)
 
         Block("The one exception: ads", false, listOf(
@@ -64,7 +64,7 @@ fun PrivacyScreen() {
             "Notification access: Notification Log only.",
             "Draw over other apps: the floating buttons.",
         ), null)
-        Block("Children", false, listOf("HandyTools isn't for children under 13 and doesn't knowingly collect anything from them."), null)
+        Block("Children", false, listOf("Oddbox isn't for children under 13 and doesn't knowingly collect anything from them."), null)
         Text("Questions: $SUPPORT_EMAIL · Last updated October 15, 2026", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space32))
     }

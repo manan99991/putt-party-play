@@ -82,7 +82,7 @@ fun NotifHistoryScreen() {
             ToolHeader("Notification Log", "Everything from the last 7 days, including what you swiped away.")
             HTextButton("Clear") { scope.launch { withContext(Dispatchers.IO) { HandyApp.instance.db.notifs().clear() } } }
         }
-        PermissionCard("Notification access", "Lets HandyTools keep a copy of notifications so you can re-read them.", granted, Permissions.notifListenerIntent(), "Open settings", privacy = "Stored on your phone only. Nothing is uploaded.")
+        PermissionCard("Notification access", "Lets Oddbox keep a copy of notifications so you can re-read them.", granted, Permissions.notifListenerIntent(), "Open settings", privacy = "Stored on your phone only. Nothing is uploaded.")
         if (items.isEmpty()) {
             Column(Modifier.weight(1f)) { EmptyState(androidx.compose.material.icons.Icons.Outlined.Notifications, "Nothing logged yet.", "Notifications appear here as they arrive.") }
         } else {

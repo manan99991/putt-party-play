@@ -81,7 +81,7 @@ fun OnboardingScreen(startPage: Int = 0, onDone: () -> Unit, onSeePro: () -> Uni
                 }
             }
             Spacer(Modifier.height(HandyTokens.Space16))
-            val label = when (pager.currentPage) { 0 -> "Show me"; 1 -> "Next"; else -> "Start using HandyTools" }
+            val label = when (pager.currentPage) { 0 -> "Show me"; 1 -> "Next"; else -> "Start using Oddbox" }
             if (onBlue) {
                 androidx.compose.material3.Button(
                     onClick = { scope.launch { pager.animateScrollToPage(1) } },

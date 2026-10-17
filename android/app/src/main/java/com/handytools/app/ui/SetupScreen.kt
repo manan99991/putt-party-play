@@ -58,7 +58,7 @@ private data class Perm(
 private val PERMS = listOf(
     Perm(Icons.Outlined.Layers, "Draw over other apps", "Puts the floating buttons on top of whatever you're using.",
         "Multi-Clipboard · Screenshot+ · Grab Screen Text · Scratchpad", { Permissions.canOverlay(it) }, { Permissions.overlayIntent(it) }),
-    Perm(Icons.Outlined.Accessibility, "Accessibility", "How HandyTools sees what you copy in other apps and scrolls a page for a full-page capture. Never reads passwords; nothing leaves the phone.",
+    Perm(Icons.Outlined.Accessibility, "Accessibility", "How Oddbox sees what you copy in other apps and scrolls a page for a full-page capture. Never reads passwords; nothing leaves the phone.",
         "Multi-Clipboard · Screenshot+ full page", { Permissions.accessibilityEnabled(it, ClipboardAccessibilityService::class.java) }, { Permissions.accessibilityIntent() }),
     Perm(Icons.Outlined.Notifications, "Notification access", "Keeps a local copy of notifications so you can re-read the ones you swiped away.",
         "Notification Log", { Permissions.notifListenerEnabled(it) }, { Permissions.notifListenerIntent() }),
@@ -87,7 +87,7 @@ fun SetupScreen(onDone: () -> Unit) {
             Spacer(Modifier.height(HandyTokens.Space16))
             Text("Set up once", style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(HandyTokens.Space4))
-            Text("Five switches, one tap each. Android makes every app ask for these in Settings; after this page HandyTools won't ask again.",
+            Text("Five switches, one tap each. Android makes every app ask for these in Settings; after this page Oddbox won't ask again.",
                 style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space8))
             Text("$done of ${PERMS.size} done", style = MaterialTheme.typography.labelMedium, color = HandyColors.Accent)
@@ -103,7 +103,7 @@ fun SetupScreen(onDone: () -> Unit) {
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space16))
         }
-        HPrimaryButton(if (done == PERMS.size) "All set — open HandyTools" else "Done for now") { onDone() }
+        HPrimaryButton(if (done == PERMS.size) "All set — open Oddbox" else "Done for now") { onDone() }
         Spacer(Modifier.height(HandyTokens.Space16))
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HandyTools</string>
+    <string name="app_name">Oddbox</string>
     <string name="clipboard_service_label">HandyTools Multi-Clipboard</string>
     <string name="clipboard_service_desc">Lets HandyTools stack everything you copy (in any app) so you can paste any of them later. Nothing leaves your phone.</string>
     <string name="notif_service_label">HandyTools Notification History</string>

@@ -114,7 +114,7 @@ fun WebShortcutScreen(initialUrl: String? = null) {
                 color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 12.dp))
         }
         Spacer(Modifier.height(16.dp))
-        LimitNote("Tip: share any link to HandyTools from your browser and it lands here.")
+        LimitNote("Tip: share any link to Oddbox from your browser and it lands here.")
         Spacer(Modifier.weight(1f))
         BannerAd()
     }

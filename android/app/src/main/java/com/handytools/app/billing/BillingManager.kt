@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
  *
  * Play Console setup (one time):
  *   Monetize > Products > Subscriptions > Create
- *     Product ID:  handytools_pro_yearly        (must match SUB_ID)
+ *     Product ID:  oddbox_pro_yearly        (must match SUB_ID)
  *     Base plan:   yearly-p1y  (auto-renewing, P1Y)
  *     Offer:       optional 7-day free trial
  *
@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
 
     companion object {
-        const val SUB_ID = "handytools_pro_yearly"
+        const val SUB_ID = "oddbox_pro_yearly"
         private const val TAG = "Billing"
     }
 

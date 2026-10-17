@@ -18,7 +18,7 @@ struct ClipboardView: View {
 
             SetupCard(title: "Set up once (2 minutes)") {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    Label("Settings › General › Keyboard › Keyboards › Add “HandyTools Clips”, then Allow Full Access.", systemImage: "keyboard")
+                    Label("Settings › General › Keyboard › Keyboards › Add “Oddbox Clips”, then Allow Full Access.", systemImage: "keyboard")
                     Label("Share Sheet › “Save to Clips” works from any app (Safari, Notes, Messages).", systemImage: "square.and.arrow.up")
                     Label("In any text field, tap 🌐 to switch to the Clips keyboard and tap a clip to paste it.", systemImage: "hand.tap")
                 }

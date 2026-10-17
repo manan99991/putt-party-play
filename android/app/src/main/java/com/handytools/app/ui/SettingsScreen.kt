@@ -45,7 +45,7 @@ import com.handytools.app.HandyApp
 import com.handytools.app.ads.BannerAd
 
 const val PRIVACY_URL = "https://manan99991.github.io/putt-party-play/privacy.html"
-const val SUPPORT_EMAIL = "handytools.app@gmail.com"
+const val SUPPORT_EMAIL = "oddbox.app@gmail.com"
 
 @Composable
 fun SettingsScreen(onOpen: (String) -> Unit) {
@@ -66,7 +66,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
                     }
                     Spacer(Modifier.width(HandyTokens.Space12))
                     Column(Modifier.weight(1f)) {
-                        Text(if (premium) "HandyTools Pro" else "Go Pro", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
+                        Text(if (premium) "Oddbox Pro" else "Go Pro", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
                         Text(if (premium) "Ads off. Renews yearly at $9.99." else "$9.99 a year. Ads gone, unlimited clips and alarms.",
                             style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     }
@@ -75,7 +75,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             }
             if (premium) {
                 HTextButton("Manage subscription") {
-                    ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/account/subscriptions?sku=handytools_pro_yearly&package=${ctx.packageName}")))
+                    ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/account/subscriptions?sku=oddbox_pro_yearly&package=${ctx.packageName}")))
                 }
             }
 
@@ -87,9 +87,9 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             Spacer(Modifier.height(HandyTokens.Space24))
             SectionLabel("Help")
             SettingsRow(Icons.Outlined.Mail, "Send feedback", SUPPORT_EMAIL) {
-                ctx.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$SUPPORT_EMAIL?subject=HandyTools%20Android%20${BuildConfig.VERSION_NAME}")))
+                ctx.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$SUPPORT_EMAIL?subject=Oddbox%20Android%20${BuildConfig.VERSION_NAME}")))
             }
-            SettingsRow(Icons.Outlined.Star, "Rate HandyTools", "30 seconds, means a lot") {
+            SettingsRow(Icons.Outlined.Star, "Rate Oddbox", "30 seconds, means a lot") {
                 ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${ctx.packageName}")))
             }
             SettingsRow(Icons.Outlined.Info, "About", "Version ${BuildConfig.VERSION_NAME} · Made by one person in Illinois") { }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct HandyToolsApp: App {
+struct OddboxApp: App {
     @StateObject private var store = StoreManager.shared
 
     // AdMob init and the interstitial preload are deferred until after the first frame
@@ -102,7 +102,7 @@ struct HomeView: View {
                     VStack(alignment: .leading, spacing: HandySpacing.s4) {
                         HStack(alignment: .top) {
                             VStack(alignment: .leading, spacing: HandySpacing.s4) {
-                                Text("HandyTools").font(HandyFont.display)
+                                Text("Oddbox").font(HandyFont.display)
                                 Text(store.isPremium ? "Pro · no ads" : "10 tools your phone should've had")
                                     .font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
                             }
@@ -195,7 +195,7 @@ struct PaywallView: View {
                 Image(systemName: "crown.fill").font(.system(size: 28)).foregroundStyle(HandyColor.accent)
             }
             .padding(.top, HandySpacing.s24)
-            Text("HandyTools Pro").font(.system(size: 28, weight: .bold))
+            Text("Oddbox Pro").font(.system(size: 28, weight: .bold))
             Text("One yearly payment. Ads gone for good.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 ForEach(["No banner or full-screen ads", "Unlimited clipboard history (free: 20)", "Unlimited alarms (free: 3)", "Support one indie developer"], id: \.self) { line in

@@ -27,7 +27,7 @@ struct StickyWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "StickyWidget", provider: NoteProvider()) { StickyWidgetView(entry: $0) }
             .configurationDisplayName("Sticky Note")
-            .description("Your HandyTools note, always visible.")
+            .description("Your Oddbox note, always visible.")
             .supportedFamilies([.systemSmall, .systemMedium, .accessoryRectangular])
     }
 }

@@ -10,7 +10,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.handytools.app"
+        applicationId = "com.oddbox.app"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

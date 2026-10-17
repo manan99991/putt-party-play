@@ -57,7 +57,7 @@ object WebShortcut {
     private fun fetch(url: String, max: Int): ByteArray {
         val c = (URL(url).openConnection() as HttpURLConnection).apply {
             connectTimeout = 6000; readTimeout = 6000; instanceFollowRedirects = true
-            setRequestProperty("User-Agent", "Mozilla/5.0 (Android) HandyTools")
+            setRequestProperty("User-Agent", "Mozilla/5.0 (Android) Oddbox")
         }
         return c.inputStream.use { it.readNBytes(max) }
     }
