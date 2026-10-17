@@ -101,54 +101,47 @@ jobs:
         run: |
           sed -i '' "s/YOUR_TEAM_ID/$TEAM_ID/g" project.yml HandyTools/Resources/Products.storekit
           xcodegen generate
-      - name: Write ASC key
+      - name: Write ASC key + export fastlane auth env
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
-          echo "$ASC_KEY_P8_B64" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8
-      - name: Ensure App Store Connect app record exists
-        run: |
+          KP="$HOME/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8"
+          echo "$ASC_KEY_P8_B64" | base64 -d > "$KP"
+          echo "ASC_KEY_PATH=$KP" >> $GITHUB_ENV
+          # spaceship / produce pick these up for API-key auth
+          echo "APP_STORE_CONNECT_API_KEY_KEY_ID=$ASC_KEY_ID" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_API_KEY_ISSUER_ID=$ASC_ISSUER_ID" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_API_KEY_KEY_FILEPATH=$KP" >> $GITHUB_ENV
+          echo "FASTLANE_HIDE_CHANGELOG=1" >> $GITHUB_ENV
           python3 - <<'PY' > asc_key.json
           import json, os
           kid = os.environ["ASC_KEY_ID"]
           p8 = open(os.path.expanduser(f"~/.appstoreconnect/private_keys/AuthKey_{kid}.p8")).read()
           print(json.dumps({"key_id": kid, "issuer_id": os.environ["ASC_ISSUER_ID"], "key": p8, "in_house": False}))
           PY
-          fastlane produce create \
-            --app_identifier com.tenzy.toolkit \
-            --app_name "Tenzy: Handy Tools" \
-            --language en-US \
-            --sku tenzy_toolkit \
-            --team_id "$TEAM_ID" \
-            --api_key_path asc_key.json || echo "produce: app record likely already exists, continuing"
-      - name: Archive
+      - name: Register identifiers, app group, and capabilities
+        continue-on-error: true
+        run: |
+          set -x
+          AK="--api_key_path $(pwd)/asc_key.json"
+          # App record (main app) — harmless if it already exists
+          fastlane produce create $AK -a com.tenzy.toolkit -n "Tenzy: Handy Tools" --sku tenzy_toolkit --language en-US --team_id "$TEAM_ID" || true
+          # App group
+          fastlane produce group $AK -g group.com.tenzy.shared -n "Tenzy Shared" || true
+          # Extension App IDs (bundle identifiers only, no ASC app) + app-group capability + association
+          for bid in com.tenzy.toolkit com.tenzy.toolkit.keyboard com.tenzy.toolkit.share com.tenzy.toolkit.widget; do
+            fastlane produce create $AK -a "$bid" -n "Tenzy ${bid##*.}" --skip_itc --team_id "$TEAM_ID" || true
+            fastlane produce enable_services $AK -a "$bid" --app-group || true
+            fastlane produce associate_group $AK -a "$bid" group.com.tenzy.shared || true
+          done
+          echo "capability setup done"
+      - name: Fastlane build + upload to TestFlight
         run: |
           set -o pipefail
-          xcodebuild archive -project HandyTools.xcodeproj -scheme HandyTools \
-            -destination 'generic/platform=iOS' -archivePath build/HandyTools.xcarchive \
-            -allowProvisioningUpdates -allowProvisioningDeviceRegistration \
-            -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8 \
-            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
-            CODE_SIGN_STYLE=Automatic DEVELOPMENT_TEAM="$TEAM_ID" 2>&1 | tee archive.log
-      - name: Publish archive log (always)
+          fastlane beta 2>&1 | tee fastlane.log
+      - name: Publish fastlane log (always)
         if: always()
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { echo "== archive.log (errors) =="; grep -iE "error:|Code Sign|provisioning|entitlement|App Groups|does not|No profiles|requires|❌|\*\* ARCHIVE" ios/archive.log 2>/dev/null | head -80; echo; echo "== tail =="; tail -60 ios/archive.log 2>/dev/null; } > ios-archive-err.log
-          bash .github/publish-log.sh ios-archive ios-archive-err.log
-      - name: Export + upload
-        run: |
-          cat > ExportOptions.plist <<EOF
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0"><dict>
-            <key>method</key><string>app-store-connect</string>
-            <key>destination</key><string>upload</string>
-            <key>teamID</key><string>$TEAM_ID</string>
-            <key>signingStyle</key><string>automatic</string>
-          </dict></plist>
-          EOF
-          xcodebuild -exportArchive -archivePath build/HandyTools.xcarchive -exportOptionsPlist ExportOptions.plist \
-            -exportPath build/export -allowProvisioningUpdates \
-            -authenticationKeyPath ~/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8 \
-            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          { echo "== fastlane.log errors =="; grep -iE "error|fail|❌|could not|unable|invalid|no profiles|certificate|provisioning|entitlement|app group|Authentication|bundle id|\[!\]" ios/fastlane.log 2>/dev/null | head -120; echo; echo "== tail =="; tail -80 ios/fastlane.log 2>/dev/null; } > ios-fastlane-err.log
+          bash .github/publish-log.sh ios-archive ios-fastlane-err.log

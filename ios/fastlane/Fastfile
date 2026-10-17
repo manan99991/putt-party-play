@@ -1,0 +1,92 @@
+default_platform(:ios)
+
+# bundle id => Xcode target name
+TARGETS = {
+  "com.tenzy.toolkit"          => "HandyTools",
+  "com.tenzy.toolkit.keyboard" => "ClipboardKeyboard",
+  "com.tenzy.toolkit.share"    => "ShareExtension",
+  "com.tenzy.toolkit.widget"   => "StickyWidget",
+}.freeze
+BUNDLE_IDS = TARGETS.keys.freeze
+
+platform :ios do
+  # Build + sign + upload to TestFlight using an App Store Connect API key.
+  # Fastlane (spaceship) authenticates to the same API that already works for `produce`,
+  # so it creates the distribution cert + App Store profiles itself instead of relying on
+  # xcodebuild's cloud signing (which rejects the token).
+  lane :beta do
+    key = app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_PATH"],
+      in_house: false
+    )
+
+    # Dedicated keychain so cert import never blocks on the login keychain.
+    keychain_name = "tenzyci"
+    keychain_pw = "tenzyci-pw"
+    create_keychain(
+      name: keychain_name,
+      password: keychain_pw,
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: false
+    )
+    keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")
+
+    # Distribution certificate (created if the team has none).
+    cert(
+      api_key: key,
+      keychain_path: keychain_path,
+      keychain_password: keychain_pw,
+      output_path: "build/certs"
+    )
+
+    # One App Store provisioning profile per target.
+    profiles = {}
+    BUNDLE_IDS.each do |bid|
+      sigh(
+        api_key: key,
+        app_identifier: bid,
+        platform: "ios",
+        output_path: "build/profiles"
+      )
+      profiles[bid] = lane_context[SharedValues::SIGH_NAME]
+    end
+    UI.message("Provisioning profiles: #{profiles}")
+
+    # Switch each target to manual signing with its specific profile, so the archive doesn't
+    # fall back to xcodebuild cloud signing (the path that rejects the API token).
+    TARGETS.each do |bid, target|
+      update_code_signing_settings(
+        use_automatic_signing: false,
+        path: "HandyTools.xcodeproj",
+        team_id: ENV["TEAM_ID"],
+        targets: [target],
+        bundle_identifier: bid,
+        code_sign_identity: "Apple Distribution",
+        profile_name: profiles[bid]
+      )
+    end
+
+    build_app(
+      project: "HandyTools.xcodeproj",
+      scheme: "HandyTools",
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: "build",
+      output_name: "Tenzy.ipa",
+      export_options: {
+        teamID: ENV["TEAM_ID"],
+        signingStyle: "manual",
+        provisioningProfiles: profiles
+      }
+    )
+
+    upload_to_testflight(
+      api_key: key,
+      skip_waiting_for_build_processing: true
+    )
+  end
+end
