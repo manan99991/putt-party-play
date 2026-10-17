@@ -123,17 +123,20 @@ jobs:
         run: |
           set -x
           AK="--api_key_path $(pwd)/asc_key.json"
-          # App record (main app) — harmless if it already exists
-          fastlane produce create $AK -a com.tenzy.toolkit -n "Tenzy: Handy Tools" --sku tenzy_toolkit --language en-US --team_id "$TEAM_ID" || true
-          # App group
-          fastlane produce group $AK -g group.com.tenzy.shared -n "Tenzy Shared" || true
-          # Extension App IDs (bundle identifiers only, no ASC app) + app-group capability + association
-          for bid in com.tenzy.toolkit com.tenzy.toolkit.keyboard com.tenzy.toolkit.share com.tenzy.toolkit.widget; do
-            fastlane produce create $AK -a "$bid" -n "Tenzy ${bid##*.}" --skip_itc --team_id "$TEAM_ID" || true
-            fastlane produce enable_services $AK -a "$bid" --app-group || true
-            fastlane produce associate_group $AK -a "$bid" group.com.tenzy.shared || true
-          done
-          echo "capability setup done"
+          {
+            echo "### app group"
+            fastlane produce group $AK -g group.com.tenzy.shared -n "Tenzy Shared" --team_id "$TEAM_ID"
+            for bid in com.tenzy.toolkit.keyboard com.tenzy.toolkit.share com.tenzy.toolkit.widget; do
+              echo "### create App ID $bid"
+              fastlane produce create $AK -a "$bid" -n "Tenzy ${bid##*.}" --skip_itc --team_id "$TEAM_ID"
+            done
+            for bid in com.tenzy.toolkit com.tenzy.toolkit.keyboard com.tenzy.toolkit.share com.tenzy.toolkit.widget; do
+              echo "### enable+associate app group on $bid"
+              fastlane produce enable_services $AK -a "$bid" --app-group --team_id "$TEAM_ID"
+              fastlane produce associate_group $AK -a "$bid" group.com.tenzy.shared --team_id "$TEAM_ID"
+            done
+            echo "### capability setup done"
+          } 2>&1 | tee register.log
       - name: Fastlane build + upload to TestFlight
         run: |
           set -o pipefail
@@ -143,5 +146,5 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { echo "== fastlane.log errors =="; grep -iE "error|fail|❌|could not|unable|invalid|no profiles|certificate|provisioning|entitlement|app group|Authentication|bundle id|\[!\]" ios/fastlane.log 2>/dev/null | head -120; echo; echo "== tail =="; tail -80 ios/fastlane.log 2>/dev/null; } > ios-fastlane-err.log
+          { echo "===== register.log ====="; cat ios/register.log 2>/dev/null; echo; echo "===== fastlane.log errors ====="; grep -iE "error|fail|❌|could not|unable|invalid|no profiles|certificate|provisioning|entitlement|app group|Authentication|bundle id|\[!\]|Successfully|Uploaded|TestFlight" ios/fastlane.log 2>/dev/null | head -120; echo; echo "===== fastlane.log tail ====="; tail -80 ios/fastlane.log 2>/dev/null; } > ios-fastlane-err.log
           bash .github/publish-log.sh ios-archive ios-fastlane-err.log
