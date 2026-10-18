@@ -73,11 +73,11 @@ fun AiScreen(route: String) {
         working = true; output = ""
         val image = InputImage.fromBitmap(bmp, 0)
         if (s.kind == Kind.OCR) {
-            TextRecognition.getClient(TextRecognizerOptions.DEFAULT).process(image)
+            TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS).process(image)
                 .addOnSuccessListener { working = false; output = it.text.ifBlank { "No text found in that image." } }
                 .addOnFailureListener { working = false; output = "Couldn't read that image." }
         } else {
-            ImageLabeling.getClient(ImageLabelerOptions.DEFAULT).process(image)
+            ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS).process(image)
                 .addOnSuccessListener { labels ->
                     working = false
                     val top = labels.sortedByDescending { it.confidence }.take(5).map { it.text }
