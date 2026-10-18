@@ -16,7 +16,9 @@ enum Limits {
 }
 
 /// Per-day usage counters that reset at midnight, stored in UserDefaults. Pro is unlimited, so
-/// `allow` short-circuits to true for Pro and these are never touched.
+/// these short-circuit to true for Pro and are never touched. MainActor-isolated because they
+/// consult the (MainActor) StoreManager; every caller is a view action already on the main actor.
+@MainActor
 enum Usage {
     nonisolated(unsafe) private static let d = UserDefaults.standard
 
