@@ -33,6 +33,10 @@ Resolved source packages:
 
 resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
 == build.log (errors)
-2026-10-18 19:14:24.083377+0000 HandyTools[7890:30417] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-2026-10-18 19:14:24.129834+0000 HandyTools[7890:30417] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-** TEST SUCCEEDED **
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/QRWifiView.swift:29:5: error: property wrapper can only apply to a single variable
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/QRWifiView.swift:29:5: error: property wrapper can only apply to a single variable
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/QRWifiView.swift:29:5: error: property wrapper can only apply to a single variable
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/QRWifiView.swift:29:5: error: property wrapper can only apply to a single variable
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/QRWifiView.swift:30:5: error: property wrapper can only apply to a single variable
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/QRWifiView.swift:30:5: error: property wrapper can only apply to a single variable
+** TEST FAILED **
