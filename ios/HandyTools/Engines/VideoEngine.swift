@@ -2,6 +2,7 @@ import UIKit
 import AVFoundation
 import ImageIO
 import UniformTypeIdentifiers
+import CoreTransferable
 
 /// The video engine behind Video, Format Fixer and Share-Ready: trim, mute, extract audio, convert
 /// to MP4, make a GIF, thumbnail — plus a background-task wrapper so a long export survives the

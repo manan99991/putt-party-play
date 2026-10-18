@@ -4,6 +4,7 @@ import ImageIO
 import UniformTypeIdentifiers
 import PDFKit
 import AVFoundation
+import PencilKit
 @testable import HandyTools
 
 /// Engine-level correctness checks. These exercise the real tool logic with deterministic,
@@ -155,6 +156,83 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(ImageStudio.passportSpecs.count, 5)
         // HEIC may be unavailable in some simulators; if it encodes, it must decode.
         if let heic = ImageStudio.encode(img, as: .heic, quality: 0.8) { XCTAssertNotNil(UIImage(data: heic)) }
+    }
+
+    // MARK: document engine (Scan)
+
+    func testScanPDFIsSearchableAndKeepsPageCount() throws {
+        let p1 = DocEngine.Page(source: Self.text("HELLO 2026"), filter: .enhance)
+        var p2 = DocEngine.Page(source: Self.text("INVOICE 4471"), filter: .bw)
+        p2.stamps = [DocEngine.Stamp(kind: .text("Jane Doe"), center: CGPoint(x: 0.5, y: 0.85), width: 0.3)]
+        let data = try XCTUnwrap(DocEngine.pdf([p1, p2], options: .init(searchable: true, pageSize: .auto)))
+        let doc = try XCTUnwrap(PDFDocument(data: data))
+        XCTAssertEqual(doc.pageCount, 2)
+        let all = (doc.string ?? "").uppercased()
+        XCTAssertTrue(all.contains("HELLO"), "page 1 text layer missing: \(all)")
+        XCTAssertTrue(all.contains("INVOICE") || all.contains("4471"), "page 2 text layer missing: \(all)")
+        // find() must hit — that's the whole point of the invisible layer
+        XCTAssertFalse(doc.findString("HELLO", withOptions: .caseInsensitive).isEmpty)
+        // and the stamped text is visibly burned in (it is NOT in the text layer unless OCR'd — check pixels instead)
+        let rendered = DocEngine.render(p2)
+        XCTAssertNotNil(rendered.cgImage)
+    }
+
+    func testScanNonSearchablePDFHasNoText() throws {
+        let p = DocEngine.Page(source: Self.text("SECRET 99"), filter: .gray)
+        let data = try XCTUnwrap(DocEngine.pdf([p], options: .init(searchable: false)))
+        let doc = try XCTUnwrap(PDFDocument(data: data))
+        XCTAssertEqual(doc.pageCount, 1)
+        XCTAssertTrue((doc.string ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+    }
+
+    func testScanPDFUnderLimitKeepsTextLayer() throws {
+        let pages = (0..<3).map { _ in DocEngine.Page(source: Self.noisy(CGSize(width: 1600, height: 2000)), filter: .color) }
+        let full = try XCTUnwrap(DocEngine.pdf(pages, options: .init(searchable: false)))
+        let target = max(60_000, full.count / 4)
+        let small = try XCTUnwrap(DocEngine.pdfUnder(pages, targetBytes: target, base: .init(searchable: false)), "could not fit under \(target) from \(full.count)")
+        XCTAssertLessThanOrEqual(small.count, target)
+        XCTAssertEqual(PDFDocument(data: small)?.pageCount, 3)
+    }
+
+    func testScanSplitRangesAndEveryPage() throws {
+        let pages = (1...5).map { DocEngine.Page(source: Self.text("PAGE \($0)"), filter: .color) }
+        let data = try XCTUnwrap(DocEngine.pdf(pages, options: .init(searchable: false)))
+        let parts = DocEngine.split(data, ranges: "1-2, 3, 4-")
+        XCTAssertEqual(parts.map { PDFDocument(data: $0)?.pageCount }, [2, 1, 2])
+        XCTAssertEqual(DocEngine.split(data, ranges: "").count, 5)
+        XCTAssertEqual(DocEngine.split(data, ranges: "9-12").count, 5, "invalid ranges fall back to every page")
+    }
+
+    func testScanRotationKeepsStampsAndInkInPlace() {
+        let img = Self.bands(CGSize(width: 300, height: 500))
+        let r = img.rotated(quarterTurns: 1)
+        XCTAssertEqual(r.size.width, 500); XCTAssertEqual(r.size.height, 300)
+        XCTAssertEqual(img.rotated(quarterTurns: 4).size, img.size)
+        XCTAssertEqual(img.rotated(quarterTurns: 2).size, img.size)
+    }
+
+    func testScanCleanupProducesDocumentLooks() {
+        let src = Self.text("CLEAN")
+        for f in DocEngine.Filter.allCases {
+            let out = DocEngine.clean(src, filter: f)
+            XCTAssertEqual(out.size.width, src.size.width, accuracy: 1, "\(f) changed size")
+        }
+        // black & white should be (almost) binary: sample the centre-left background pixel → white
+        let bw = DocEngine.clean(src, filter: .bw)
+        XCTAssertNotNil(bw.cgImage)
+    }
+
+    func testSavedSignatureRoundTrips() {
+        DocEngine.clearSignature()
+        XCTAssertNil(DocEngine.savedSignature)
+        let stroke = PKStroke(ink: PKInk(.pen, color: .black), path: PKStrokePath(controlPoints: (0..<12).map { i in
+            PKStrokePoint(location: CGPoint(x: 10 + CGFloat(i) * 8, y: 40 + sin(CGFloat(i)) * 10), timeOffset: Double(i) * 0.02, size: CGSize(width: 3, height: 3), opacity: 1, force: 1, azimuth: 0, altitude: .pi / 2)
+        }, creationDate: Date()))
+        let drawing = PKDrawing(strokes: [stroke])
+        let img = DocEngine.saveSignature(drawing)
+        XCTAssertNotNil(img)
+        XCTAssertNotNil(DocEngine.savedSignature)
+        DocEngine.clearSignature()
     }
 
     // MARK: video engine

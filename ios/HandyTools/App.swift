@@ -124,7 +124,7 @@ struct ToolDestination: View {
         switch id {
         // ── Page 1 ──
         case "fitit": FitItView()
-        case "scan": DocScannerView()            // base — Scan super-tool lands on this
+        case "scan": ScanView()
         case "studio": StudioView()
         case "video": VideoView()
         case "formatfix": FormatFixView()

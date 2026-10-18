@@ -16,6 +16,7 @@ enum Limits {
     static let freeAudioPerDay = 3     // Audio → Text (recordings)
     static let freePdfOpsPerDay = 3    // PDF Toolkit (jobs)
     static let freeSignPerDay = 3      // Sign & Fill
+    static let freeScanPerDay = 5      // Scan (PDF exports)
     static let freeIdPhotoPerDay = 3   // ID / Passport Photo
     static let freeGifPerDay = 3       // GIF Maker
     static let freePhotoStudioPerDay = 4 // Photo Studio edits
