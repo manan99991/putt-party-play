@@ -1,28 +1,22 @@
-[05:54:47]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[05:54:47]: fastlane 2.241.0 (Ruby 3.4.11, gem)
-[05:54:48]: Sending anonymous analytics information
-[05:54:48]: Learn more at https://docs.fastlane.tools/#metrics
-[05:54:48]: No personal or sensitive data is sent.
-[05:54:48]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[05:54:48]: [32m------------------------------[0m
-[05:54:48]: [32m--- Step: default_platform ---[0m
-[05:54:48]: [32m------------------------------[0m
-[05:54:48]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-+--------------------------------------+
-|             [33mLane Context[0m             |
-+------------------+-------------------+
-| DEFAULT_PLATFORM | ios               |
-| PLATFORM_NAME    | ios               |
-| LANE_NAME        | ios subscriptions |
-+------------------+-------------------+
-[05:54:48]: [31mError in your Fastfile at line 153[0m
-[05:54:48]: [31m```[0m
-[05:54:48]: [31m    151:	[0m
-[05:54:48]: [31m    152:	    # 1) Subscription group "Tenzy Pro"[0m
-[05:54:48]: [31m => 153:	    groups = app.get_subscription_groups[0m
-[05:54:48]: [31m    154:	    group = groups.find { |g| g.reference_name == "Tenzy Pro" }[0m
-[05:54:48]: [31m    155:	    group ||= app.create_subscription_group(reference_name: "Tenzy Pro")[0m
-[05:54:48]: [31m```[0m
+[06:11:00]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[06:11:00]: fastlane 2.241.0 (Ruby 3.4.11, gem)
+[06:11:01]: Sending anonymous analytics information
+[06:11:01]: Learn more at https://docs.fastlane.tools/#metrics
+[06:11:01]: No personal or sensitive data is sent.
+[06:11:01]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[06:11:01]: [32m------------------------------[0m
+[06:11:01]: [32m--- Step: default_platform ---[0m
+[06:11:01]: [32m------------------------------[0m
+[06:11:01]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[06:11:01]: App 6824023361
+[06:11:02]: Created group (201)
+[06:11:04]: Create tenzy_pro_yearly -> 201
+[06:11:05]:   localization -> 201
+[06:11:05]: [32m  price -> 409 near $19.99 (19.99) {"errors" => [{"id" => "8902220d-b608-4ae7-ab39-06d31e8e0775", "status" => "409", "code" => "ENTITY_ERROR.RELATIONSHIP.UNSUPPORTED_TERRITORY", "title" => "There is a problem with the request entity", "detail" => "The provided territory is not supported for your subscription and planType. (Territory: USA)", "source" => {"pointer" => "/data/relationships/subscriptionPricePoint/id"}}]}[0m
+[06:11:07]: Create tenzy_pro_monthly -> 201
+[06:11:08]:   localization -> 201
+[06:11:08]: [32m  price -> 409 near $2.99 (2.99) {"errors" => [{"id" => "3b7e9efa-34f6-4b44-b8a9-38c8db546198", "status" => "409", "code" => "ENTITY_ERROR.RELATIONSHIP.UNSUPPORTED_TERRITORY", "title" => "There is a problem with the request entity", "detail" => "The provided territory is not supported for your subscription and planType. (Territory: USA)", "source" => {"pointer" => "/data/relationships/subscriptionPricePoint/id"}}]}[0m
+[06:11:08]: [32mSubscriptions reconciled.[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -32,13 +26,7 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[05:54:48]: [31mfastlane finished with errors[0m
-
-Looking for related GitHub issues on fastlane/fastlane...
-
-Found no similar issues. To create a new issue, please visit:
-https://github.com/fastlane/fastlane/issues/new
-Run `fastlane env` to append the fastlane environment to your issue
+[06:11:08]: [32mfastlane.tools finished successfully 🎉[0m
 
 #######################################################################
 # fastlane 2.241.1 is available. You are on 2.241.0.
@@ -46,43 +34,3 @@ Run `fastlane env` to append the fastlane environment to your issue
 # Please update using `gem install fastlane`.
 # To see what's new, open https://github.com/fastlane/fastlane/releases.
 #######################################################################
-Fastfile:153:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': [31m[!] undefined method 'get_subscription_groups' for an instance of Spaceship::ConnectAPI::App[0m (NoMethodError)
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Fastlane::Runner#execute'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane_manager.rb:46:in 'Fastlane::LaneManager.cruise_lane'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/command_line_handler.rb:34:in 'Fastlane::CommandLineHandler.handle'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:110:in 'block (2 levels) in Fastlane::CommandsGenerator#run'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:187:in 'Commander::Command#call'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:157:in 'Commander::Command#run'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in 'Commander::Runner#run_active_command'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in 'Commander::Runner#run!'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in 'Commander::Delegates#run!'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:363:in 'Fastlane::CommandsGenerator#run'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/bin/fastlane:25:in '<top (required)>'
-	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
-	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
-Fastfile:153:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': undefined method 'get_subscription_groups' for an instance of Spaceship::ConnectAPI::App (NoMethodError)
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Fastlane::Runner#execute'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane_manager.rb:46:in 'Fastlane::LaneManager.cruise_lane'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/command_line_handler.rb:34:in 'Fastlane::CommandLineHandler.handle'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:110:in 'block (2 levels) in Fastlane::CommandsGenerator#run'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:187:in 'Commander::Command#call'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:157:in 'Commander::Command#run'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in 'Commander::Runner#run_active_command'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in 'Commander::Runner#run!'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in 'Commander::Delegates#run!'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:363:in 'Fastlane::CommandsGenerator#run'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/bin/fastlane:25:in '<top (required)>'
-	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
-	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
