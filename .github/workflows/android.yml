@@ -9,6 +9,11 @@ on:
 permissions:
   contents: write
 
+# Serialize runs so they don't race on the ci-logs branch / GitHub Release.
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -43,6 +48,7 @@ jobs:
 
       - name: Publish APK + AAB to ci-logs branch
         if: success()
+        continue-on-error: true   # large binaries can fail to push; never block the GitHub Release below
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
@@ -58,9 +64,11 @@ jobs:
         with:
           tag_name: handytools-android-latest
           name: HandyTools Android (latest build)
-          body: "Debug build for testing. Install on Android: download, open, allow 'install unknown apps'."
+          body: "Latest build. APK = install on a phone to test (allow 'install unknown apps'). AAB = upload to Play Console."
           prerelease: true
-          files: out/HandyTools-debug.apk
+          files: |
+            out/HandyTools-debug.apk
+            out/HandyTools-release-unsigned.aab
 
   screenshots:
     needs: build
