@@ -54,6 +54,9 @@ targets:
         UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
         UIBackgroundModes: [audio]   # Rest keeps playing sleep sounds / listening for snoring with the screen off
+        CFBundleURLTypes:
+          - CFBundleURLName: com.tenzy.toolkit
+            CFBundleURLSchemes: [tenzy]
         # --- AdMob (live Tenzy app id) ---
         GADApplicationIdentifier: ca-app-pub-5414801919054534~3553659163
         SKAdNetworkItems:

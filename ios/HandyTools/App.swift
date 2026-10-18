@@ -26,6 +26,12 @@ struct TenzyApp: App {
             .onAppear {
                 if let r = Launch.route, r.hasPrefix("onboarding") { onboardingPage = Int(r.dropFirst("onboarding".count)).map { $0 - 1 } ?? 0; showOnboarding = true }
             }
+            .onOpenURL { url in
+                // tenzy://tool/<id> from the home-screen widget or Shortcuts
+                guard url.scheme == "tenzy", url.host == "tool", let id = url.pathComponents.dropFirst().first, TOOLS.contains(where: { $0.id == id }) else { return }
+                showOnboarding = false
+                NotificationCenter.default.post(name: .openTool, object: id)
+            }
             .task {
                 if !adsStarted {
                     await MainActor.run {
@@ -213,6 +219,7 @@ struct HomeView: View {
             .onChange(of: path) { _, p in if p.last == "paywall" { path.removeLast(); showPaywall = true } }
             .onAppear { if Launch.route == "paywall" { showPaywall = true } }
             .onReceive(NotificationCenter.default.publisher(for: .showPaywall)) { _ in showPaywall = true }
+            .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in if let id = n.object as? String { path = [id] } }
             .onReceive(NotificationCenter.default.publisher(for: .showSetup)) { _ in if !(Launch.route?.hasPrefix("onboarding") ?? false) { path = ["setup"] } }
             .sheet(isPresented: $showPaywall) {
                 PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible)
@@ -488,6 +495,7 @@ struct ToolPage<Content: View>: View {
 }
 
 extension Notification.Name {
+    static let openTool = Notification.Name("handytools.openTool")
     static let showPaywall = Notification.Name("handytools.showPaywall")
     static let showSetup = Notification.Name("handytools.showSetup")
 }
