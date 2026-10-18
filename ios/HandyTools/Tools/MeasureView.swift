@@ -128,7 +128,7 @@ final class SoundLevel: ObservableObject {
         guard let r = recorder else { return }
         r.updateMeters()
         // Map dBFS (-160…0) to a friendly ~30…120 dB SPL scale.
-        let power = r.averagePower(forChannel: 0)
+        let power = Double(r.averagePower(forChannel: 0))
         let normalized = max(0, (power + 60) / 60)   // 0…1 over the top 60 dBFS
         db = 30 + normalized * 90
     }
