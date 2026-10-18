@@ -300,6 +300,42 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(avg2?.y ?? -1, 0.6, accuracy: 0.03)
     }
 
+    // MARK: instruments + flashlight
+
+    func testSensorMathConversions() {
+        // EV100 for f/2, 1/60 s, ISO 100 = log2(4·60) ≈ 7.9 → ~600 lux (bright room)
+        let lux = SensorMath.lux(iso: 100, shutter: 1.0 / 60, aperture: 2)
+        XCTAssertEqual(lux, 600, accuracy: 30)
+        XCTAssertGreaterThan(SensorMath.lux(iso: 50, shutter: 1.0 / 1000, aperture: 1.8), 10_000, "sunlight exposure should read as daylight")
+        XCTAssertEqual(SensorMath.lux(iso: 0, shutter: 0, aperture: 0), 0)
+
+        XCTAssertEqual(SensorMath.cardinal(0), "N"); XCTAssertEqual(SensorMath.cardinal(90), "E")
+        XCTAssertEqual(SensorMath.cardinal(359), "N"); XCTAssertEqual(SensorMath.cardinal(22.5), "NNE"); XCTAssertEqual(SensorMath.cardinal(225), "SW")
+
+        let flat = SensorMath.tilt(gx: 0, gy: 0, gz: -1)
+        XCTAssertFalse(flat.upright); XCTAssertEqual(flat.angle, 0, accuracy: 0.01)
+        let tilted = SensorMath.tilt(gx: sin(10 * .pi / 180), gy: 0, gz: -cos(10 * .pi / 180))
+        XCTAssertEqual(tilted.angle, 10, accuracy: 0.05)
+        let upright = SensorMath.tilt(gx: 0, gy: -1, gz: 0)
+        XCTAssertTrue(upright.upright); XCTAssertEqual(upright.angle, 0, accuracy: 0.01)
+
+        XCTAssertEqual(SensorMath.dbSPL(fromPower: -50), 40, accuracy: 0.01)
+        XCTAssertEqual(SensorMath.dbSPL(fromPower: -50, offset: 5), 45, accuracy: 0.01)
+        XCTAssertEqual(SensorMath.dbSPL(fromPower: -160), 20)
+        XCTAssertEqual(SensorMath.altitudeDelta(fromKPa: 100.0, referenceKPa: 101.325), 110, accuracy: 5, "~110 m per 1.3 kPa near sea level")
+        XCTAssertEqual(SensorMath.field(x: 30, y: 40, z: 0, baseline: 50).magnitude, 50, accuracy: 0.001)
+        XCTAssertEqual(SensorMath.field(x: 300, y: 0, z: 0, baseline: 50).score, 0.8333, accuracy: 0.01)
+        // 460 ppi at 3× → 153.3 pt/in → 6.04 pt/mm; a bank card is ~517 pt wide
+        XCTAssertEqual(SensorMath.pointsPerMM(nativeScale: 3) * 85.6, 517, accuracy: 2)
+    }
+
+    @MainActor func testMorseEncoding() {
+        XCTAssertEqual(Torch.encodeMorse("SOS"), "... --- ...")
+        XCTAssertEqual(Torch.encodeMorse("hi there"), ".... .. / - .... . .-. .")
+        XCTAssertEqual(Torch.encodeMorse("a1"), ".- .----")
+        XCTAssertEqual(Torch.encodeMorse("$$"), "", "unknown characters are dropped, not crashed on")
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {

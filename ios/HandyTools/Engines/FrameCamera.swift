@@ -17,16 +17,18 @@ final class FrameCamera: NSObject, ObservableObject, AVCaptureVideoDataOutputSam
     private let queue = DispatchQueue(label: "tenzy.frames", qos: .userInteractive)
     nonisolated(unsafe) private var paused = false
     nonisolated(unsafe) private var rotation: CGFloat = 90
+    nonisolated(unsafe) private var mirrored = false
 
     var isAvailable: Bool { AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) != nil }
 
-    func start(preset: AVCaptureSession.Preset = .hd1280x720) {
+    func start(preset: AVCaptureSession.Preset = .hd1280x720, position: AVCaptureDevice.Position = .back) {
         nonisolated(unsafe) let s = session
         if !session.inputs.isEmpty { if !session.isRunning { DispatchQueue.global().async { s.startRunning() } }; return }
         AVCaptureDevice.requestAccess(for: .video) { ok in Task { @MainActor in self.authorized = ok } }
         session.beginConfiguration()
         session.sessionPreset = preset
-        guard let dev = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
+        mirrored = position == .front
+        guard let dev = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position),
               let input = try? AVCaptureDeviceInput(device: dev), session.canAddInput(input) else { session.commitConfiguration(); return }
         device = dev
         session.addInput(input)
@@ -34,7 +36,10 @@ final class FrameCamera: NSObject, ObservableObject, AVCaptureVideoDataOutputSam
         output.alwaysDiscardsLateVideoFrames = true
         output.setSampleBufferDelegate(self, queue: queue)
         if session.canAddOutput(output) { session.addOutput(output) }
-        if let c = output.connection(with: .video), c.isVideoRotationAngleSupported(90) { c.videoRotationAngle = 90; rotation = 0 }
+        if let c = output.connection(with: .video) {
+            if c.isVideoRotationAngleSupported(90) { c.videoRotationAngle = 90; rotation = 0 }
+            if position == .front, c.isVideoMirroringSupported { c.automaticallyAdjustsVideoMirroring = false; c.isVideoMirrored = true; mirrored = false }
+        }
         session.commitConfiguration()
         DispatchQueue.global().async { s.startRunning() }
     }
@@ -66,6 +71,7 @@ final class FrameCamera: NSObject, ObservableObject, AVCaptureVideoDataOutputSam
         guard !paused, let pb = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         var ci = CIImage(cvPixelBuffer: pb)
         if rotation != 0 { ci = ci.oriented(.right) }
+        if mirrored { ci = ci.oriented(.upMirrored) }
         nonisolated(unsafe) let frame = ci
         Task { @MainActor in self.latest = frame }
     }

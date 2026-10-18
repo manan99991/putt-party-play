@@ -134,7 +134,7 @@ struct ToolDestination: View {
         case "shareready": ShareReadyView()
         // ── Page 2 ──
         case "light": FlashlightView()
-        case "instruments": MeasureView()
+        case "instruments": InstrumentsView()
         case "magnify": MagnifierView()
         // ── Page 3 ──
         case "translate": TranslateView()
