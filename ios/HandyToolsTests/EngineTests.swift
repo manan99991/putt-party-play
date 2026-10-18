@@ -652,6 +652,34 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(TextTools.capitalizeSentences("hello there. how are you? fine"), "Hello there. How are you? Fine")
     }
 
+    // MARK: read aloud
+
+    @MainActor func testReadSourceExtractsArticleTextAndReaderSplits() {
+        let html = """
+        <html><head><title>T</title><style>p{color:red}</style><script>var x = "<p>not this</p>";</script></head>
+        <body><nav><a href="/">Home</a><a href="/x">Menu item that is long enough to look like text</a></nav>
+        <h1>Solar &amp; the Grid</h1>
+        <p>Rooftop panels now supply a tenth of daytime demand in some cities, and the share is rising every year.</p>
+        <p>Utilities are responding with time-of-use pricing &mdash; cheaper power at noon, dearer at dusk.</p>
+        <footer>© 2026 Example — all rights reserved and some more footer words here</footer></body></html>
+        """
+        let t = ReadSource.extract(html: html)
+        XCTAssertTrue(t.hasPrefix("Solar & the Grid"), t)
+        XCTAssertTrue(t.contains("time-of-use pricing — cheaper"), t)
+        XCTAssertFalse(t.contains("not this")); XCTAssertFalse(t.contains("Menu item")); XCTAssertFalse(t.contains("footer words"))
+        XCTAssertEqual(ReadSource.strip("a &lt;b&gt; &quot;c&quot; &#8217;"), "a <b> \"c\"")
+
+        let long = (0..<12).map { "clause number \($0) with some words" }.joined(separator: ", ") + "."
+        let parts = Reader.split(longSentence: long, max: 120)
+        XCTAssertGreaterThan(parts.count, 1)
+        XCTAssertTrue(parts.allSatisfy { $0.count <= 125 })
+        XCTAssertEqual(parts.joined(separator: ",").replacingOccurrences(of: ", ", with: ",").replacingOccurrences(of: ",", with: ""), long.replacingOccurrences(of: ", ", with: "").replacingOccurrences(of: ",", with: ""), "no words lost")
+        let r = Reader()
+        r.load("First sentence here. Second one! Third?")
+        XCTAssertEqual(r.sentences.count, 3); XCTAssertEqual(r.index, 0)
+        XCTAssertFalse(Reader.voices(for: "en").isEmpty)
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {
