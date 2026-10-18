@@ -78,6 +78,20 @@ dependencies {
     // Screen OCR
     implementation("com.google.mlkit:text-recognition:16.0.1")
 
+    // Tool ports: barcodes, translate, segmentation, doc scanner, video, exif, camera
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
+    implementation("com.google.mlkit:translate:17.0.3")
+    implementation("com.google.mlkit:segmentation-subject:16.0.0-beta1")
+    implementation("com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1")
+    implementation("androidx.media3:media3-transformer:1.5.1")
+    implementation("androidx.media3:media3-effect:1.5.1")
+    implementation("androidx.media3:media3-common:1.5.1")
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
+    implementation("androidx.camera:camera-camera2:1.4.1")
+    implementation("androidx.camera:camera-lifecycle:1.4.1")
+    implementation("androidx.camera:camera-view:1.4.1")
+
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0")
