@@ -132,17 +132,19 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ios/cert-cache
-          key: tenzy-dist-cert-v2
+          key: tenzy-dist-cert-v3
       - name: Fastlane build + upload to TestFlight
         run: |
           set -o pipefail
           fastlane beta 2>&1 | tee fastlane.log
-      - name: Save distribution cert (even if upload failed)
-        if: always()
+      # Only save when a real .p12 was produced, so an empty/failed run can never poison the key
+      # (cache keys are immutable — once saved, the content is fixed forever).
+      - name: Save distribution cert (only if a cert exists)
+        if: ${{ always() && hashFiles('ios/cert-cache/dist.p12') != '' }}
         uses: actions/cache/save@v4
         with:
           path: ios/cert-cache
-          key: tenzy-dist-cert-v2
+          key: tenzy-dist-cert-v3
       - name: Publish fastlane log (always)
         if: always()
         working-directory: .
