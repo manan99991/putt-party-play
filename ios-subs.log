@@ -1,22 +1,20 @@
-[06:34:33]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[06:34:33]: fastlane 2.241.0 (Ruby 3.4.11, gem)
-[06:34:34]: Sending anonymous analytics information
-[06:34:34]: Learn more at https://docs.fastlane.tools/#metrics
-[06:34:34]: No personal or sensitive data is sent.
-[06:34:34]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[06:34:34]: [32m------------------------------[0m
-[06:34:34]: [32m--- Step: default_platform ---[0m
-[06:34:34]: [32m------------------------------[0m
-[06:34:34]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[06:34:34]: App 6824023361
-[06:34:36]: Territories: 175
-[06:34:36]: tenzy_pro_yearly exists (6824154364)
-[06:34:39]:   availability -> 201
-[06:34:40]: [32m  price -> 201 near $19.99 (19.99)[0m
-[06:34:40]: tenzy_pro_monthly exists (6824154261)
-[06:34:43]:   availability -> 201
-[06:34:44]: [32m  price -> 201 near $2.99 (2.99)[0m
-[06:34:44]: [32mSubscriptions reconciled.[0m
+[13:35:56]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[13:35:56]: fastlane 2.241.0 (Ruby 3.4.11, gem)
+[13:35:56]: Sending anonymous analytics information
+[13:35:56]: Learn more at https://docs.fastlane.tools/#metrics
+[13:35:56]: No personal or sensitive data is sent.
+[13:35:56]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[13:35:56]: [32m------------------------------[0m
+[13:35:56]: [32m--- Step: default_platform ---[0m
+[13:35:56]: [32m------------------------------[0m
+[13:35:56]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[13:35:57]: App 6824023361
+[13:35:58]: Territories: 175
+[13:35:58]: tenzy_pro_yearly exists (6824154364)
+[13:35:59]: [32m  price -> 201 near $19.99 (19.99)[0m
+[13:35:59]: tenzy_pro_monthly exists (6824154261)
+[13:36:01]: [32m  price -> 201 near $2.99 (2.99)[0m
+[13:36:01]: [32mSubscriptions reconciled.[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -26,7 +24,7 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[06:34:44]: [32mfastlane.tools finished successfully 🎉[0m
+[13:36:01]: [32mfastlane.tools finished successfully 🎉[0m
 
 #######################################################################
 # fastlane 2.241.1 is available. You are on 2.241.0.
