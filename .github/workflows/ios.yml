@@ -135,6 +135,16 @@ jobs:
           p8 = open(os.path.expanduser(f"~/.appstoreconnect/private_keys/AuthKey_{kid}.p8")).read()
           print(json.dumps({"key_id": kid, "issuer_id": os.environ["ASC_ISSUER_ID"], "key": p8, "in_house": False}))
           PY
+      - name: Reconcile subscriptions + prices (idempotent)
+        continue-on-error: true   # never block the TestFlight upload if the ASC product API balks
+        run: |
+          set -o pipefail
+          fastlane subscriptions 2>&1 | tee subs.log || true
+      - name: Publish subscriptions log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh ios-subs ios/subs.log || true
       - name: Restore distribution cert (private Actions cache)
         uses: actions/cache/restore@v4
         with:
