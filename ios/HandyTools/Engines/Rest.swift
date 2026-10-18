@@ -75,6 +75,10 @@ struct SoundEventDetector {
     private(set) var events: [(start: Double, end: Double, peakDB: Double)] = []
     private var peak = 0.0
 
+    init(baselineDB: Double = 35, riseDB: Double = 12, armSeconds: Double = 0.4, holdSeconds: Double = 8, maxSeconds: Double = 60) {
+        self.baselineDB = baselineDB; self.riseDB = riseDB; self.armSeconds = armSeconds; self.holdSeconds = holdSeconds; self.maxSeconds = maxSeconds
+    }
+
     /// Feed a level at time `t` (seconds). Returns .start / .stop when the recording state changes.
     enum Change { case none, start, stop }
     mutating func feed(db: Double, at t: Double) -> Change {

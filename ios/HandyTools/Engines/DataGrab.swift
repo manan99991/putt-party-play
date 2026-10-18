@@ -87,7 +87,10 @@ enum DataGrab {
         let lines = text.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
         c.emails = matches(#"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}"#, in: text, options: .caseInsensitive)
         c.phones = phoneNumbers(in: text)
-        c.website = matches(#"(?:https?://)?(?:www\.)?[a-z0-9-]+\.(?:com|net|org|io|co|ai|app|dev|uk|ca|au|de|fr|in)(?:/\S*)?"#, in: text, options: .caseInsensitive).first { !$0.contains("@") } ?? ""
+        var noEmails = text
+        for e in c.emails { noEmails = noEmails.replacingOccurrences(of: e, with: " ") }
+        let sites = matches(#"(?:https?://)?(?:www\.)?[a-z0-9-]+\.(?:com|net|org|io|co|ai|app|dev|uk|ca|au|de|fr|in)(?:/\S*)?"#, in: noEmails, options: .caseInsensitive)
+        c.website = sites.first { $0.lowercased().hasPrefix("www.") || $0.lowercased().hasPrefix("http") } ?? sites.first ?? ""
         let titleWords = #"\b(ceo|cto|cfo|coo|vp|president|manager|director|head|lead|engineer|sales|consultant|founder|co-founder|partner|agent|realtor|designer|developer|attorney|lawyer|md|dds|phd|specialist|analyst|associate|officer|owner|principal)\b"#
         let used = Set(c.emails + c.phones + [c.website])
         let candidates = lines.filter { l in !used.contains(where: { !$0.isEmpty && l.contains($0) }) && l.range(of: #"^\+?[\d\s().-]{7,}$"#, options: .regularExpression) == nil }
