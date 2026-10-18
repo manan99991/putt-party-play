@@ -9,6 +9,13 @@ on:
 permissions:
   contents: write
 
+# Serialize iOS runs so they never race on the shared cert cache (a race makes several runs each
+# create a new distribution cert, which eventually forces a revoke → "certificate revoked" email).
+# Queue rather than cancel, so in-flight TestFlight uploads still finish.
+concurrency:
+  group: ios-release
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: macos-26
