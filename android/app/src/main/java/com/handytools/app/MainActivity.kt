@@ -30,8 +30,10 @@ import com.handytools.app.tools.scratchpad.ScratchpadScreen
 import com.handytools.app.tools.screenshot.ScreenshotScreen
 import com.handytools.app.tools.shortcut.WebShortcutScreen
 import com.handytools.app.tools.volume.VolumeMixerScreen
+import com.handytools.app.ui.ComingSoonScreen
 import com.handytools.app.ui.HandyTheme
 import com.handytools.app.ui.HomeScreen
+import com.handytools.app.ui.TOOLS
 import com.handytools.app.ui.Onboarding
 import com.handytools.app.ui.OnboardingScreen
 import com.handytools.app.ui.PrivacyScreen
@@ -89,6 +91,12 @@ class MainActivity : ComponentActivity() {
                     composable("notifs") { NotifHistoryScreen() }
                     composable("scratchpad") { ScratchpadScreen() }
                     composable("awake") { KeepAwakeScreen() }
+                    // New catalog tools not yet ported to Android show a placeholder (never shipped
+                    // to Play until real). Existing routes above keep their real screens.
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad")
+                    TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
+                        composable(r) { ComingSoonScreen(TOOLS.first { it.route == r }.name) }
+                    }
                     // CI screenshot route: static ring preview, no alarm or service involved.
                     composable("ring") { AlarmRingPreview() }
                 }
