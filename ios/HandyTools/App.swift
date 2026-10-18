@@ -202,7 +202,6 @@ struct HomeView: View {
                 case "settings": SettingsView().toolbarRole(.editor)
                 case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
                 case "privacy": PrivacyView().toolbarRole(.editor)
-                case "ring": AlarmRingPreviewView()
                 default: ToolDestination(id: id).toolbarRole(.editor)
                 }
             }

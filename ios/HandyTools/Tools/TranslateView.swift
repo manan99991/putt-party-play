@@ -46,13 +46,13 @@ struct TranslateView: View {
             if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeTranslatePerDay) free translations.") }
             Text("First use of a language pair downloads it (Settings › Translate › Downloaded Languages). After that it's fully offline.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .translationTask(config) { session in
+        .translationTask(config) { @MainActor session in
             guard let p = pending else { return }
             do {
                 let r = try await session.translate(p.text)
-                await MainActor.run { deliver(r.targetText, for: p) }
+                deliver(r.targetText, for: p)
             } catch {
-                await MainActor.run { busy = false; errorText = "Couldn't translate — if this is the first time, iOS is downloading the language. Try again in a moment." }
+                busy = false; errorText = "Couldn't translate — if this is the first time, iOS is downloading the language. Try again in a moment."
             }
         }
         .onChange(of: speech.running) { was, now in if was, !now, let side = talkingSide { heard(side) } }

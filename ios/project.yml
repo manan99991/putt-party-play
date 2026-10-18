@@ -39,7 +39,6 @@ targets:
       - target: ClipboardKeyboard
       - target: ShareExtension
       - target: StickyWidget
-      - sdk: AlarmKit.framework
       - sdk: VisionKit.framework
       - sdk: Vision.framework
     entitlements:
@@ -61,7 +60,6 @@ targets:
           - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
         NSUserTrackingUsageDescription: Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones.
         # --- Tool permissions ---
-        NSAlarmKitUsageDescription: Tenzy schedules the alarms you create so they ring even in silent mode and Focus.
         NSCameraUsageDescription: Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded.
         NSMicrophoneUsageDescription: Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded.
         NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude and the GPS dashboard. Your location stays on this phone.

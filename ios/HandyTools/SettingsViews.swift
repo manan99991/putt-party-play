@@ -1,7 +1,10 @@
 import SwiftUI
 import StoreKit
 import UserNotifications
-import AlarmKit
+import AVFoundation
+import Speech
+import CoreLocation
+import Photos
 
 let PRIVACY_URL = URL(string: "https://manan99991.github.io/tenzy/privacy.html")!
 let SUPPORT_EMAIL = "tenzy.app@gmail.com"
@@ -26,32 +29,46 @@ extension View {
 
 // MARK: - One-time setup
 
-/// iPhone needs far less than Android: notifications (for alarms), alarm permission, and the Clips keyboard.
-/// Each is one tap. Shown once after onboarding; reachable later from Settings › Permissions.
+/// The permissions the tools need, each explained and granted with one tap. Shown once after
+/// onboarding; reachable later from Settings › Permissions. Nothing is asked for that a tool doesn't use.
 struct SetupView: View {
     let onDone: () -> Void
-    @State private var notifs = false
-    @State private var alarms = false
-    @State private var tick = 0
+    @State private var camera = false
+    @State private var mic = false
+    @State private var speech = false
+    @State private var location = false
+    @State private var photos = false
     @Environment(\.scenePhase) private var phase
+    @StateObject private var loc = SetupLocation()
+
+    private var done: Int { [camera, mic, speech, location, photos].filter { $0 }.count }
 
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
                     Text("Set up once").font(HandyFont.display)
-                    Text("Three switches, one tap each. After this page Tenzy won't ask again.").font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
-                    Text("\([notifs, alarms].filter { $0 }.count) of 3 done").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
-                    SetupRow(icon: "bell.badge", title: "Notifications", why: "The alarm itself, and a quiet 'saved' confirmation now and then.", unlocks: "Alarm Pro", granted: notifs) {
-                        Task { _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]); await refresh() }
+                    Text("Grant what you'll use; skip the rest. Any tool will ask again the first time it needs something.").font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
+                    Text("\(done) of 5 granted").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
+                    SetupRow(icon: "camera", title: "Camera", why: "Scan, Capture, Color Vision, Magnifier+, Pro Camera, Measure and the light meter. Frames are processed on the phone.", unlocks: "Camera tools", granted: camera) {
+                        AVCaptureDevice.requestAccess(for: .video) { _ in Task { @MainActor in await refresh() } }
                     }
-                    SetupRow(icon: "alarm", title: "Alarms", why: "Lets Tenzy ring through Silent mode and Focus, like the Clock app.", unlocks: "Alarm Pro", granted: alarms) {
-                        Task { alarms = (try? await AlarmManager.shared.requestAuthorization()) == .authorized }
+                    SetupRow(icon: "mic", title: "Microphone", why: "Sound meter, tuner, Live Captions, Voice → Notes, Rest's night recorder. Levels and words are handled on the phone.", unlocks: "Audio tools", granted: mic) {
+                        AVAudioApplication.requestRecordPermission { _ in Task { @MainActor in await refresh() } }
                     }
-                    SetupRow(icon: "keyboard", title: "Clips keyboard", why: "Settings › General › Keyboard › Keyboards › Add New. Allow Full Access: it only reads the clipboard when you tap Grab.", unlocks: "Multi-Clipboard", granted: false, buttonLabel: "Open Settings") {
+                    SetupRow(icon: "waveform.and.mic", title: "Speech recognition", why: "Turns speech into text for Live Captions, Voice → Notes and Translate's Talk mode — on-device for supported languages.", unlocks: "Captions & notes", granted: speech) {
+                        SFSpeechRecognizer.requestAuthorization { _ in Task { @MainActor in await refresh() } }
+                    }
+                    SetupRow(icon: "location", title: "Location (while using)", why: "True-north compass, altitude, the GPS dashboard and where you parked. Never stored or sent.", unlocks: "Compass & GPS", granted: location) {
+                        loc.request()
+                    }
+                    SetupRow(icon: "photo.badge.plus", title: "Save to Photos", why: "Lets Pro Camera and long exposures save into your library. Picking photos never needs this.", unlocks: "Pro Camera", granted: photos) {
+                        Task { _ = await PHPhotoLibrary.requestAuthorization(for: .addOnly); await refresh() }
+                    }
+                    SetupRow(icon: "keyboard", title: "Clips keyboard", why: "Settings › General › Keyboard › Keyboards › Add New. Allow Full Access: it only reads the clipboard when you tap Grab.", unlocks: "Clipboard", granted: false, buttonLabel: "Open Settings") {
                         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                     }
-                    Text("Everything stays on your iPhone. No account, no cloud. Camera, microphone and photos are asked for by the tool that needs them, when you first use it.")
+                    Text("Everything stays on your iPhone. No account, no cloud, no analytics.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s16)
@@ -61,12 +78,27 @@ struct SetupView: View {
         .background(HandyColor.bg)
         .task { await refresh() }
         .onChange(of: phase) { _, p in if p == .active { Task { await refresh() } } }
+        .onChange(of: loc.granted) { _, g in location = g }
     }
 
     private func refresh() async {
-        let s = await UNUserNotificationCenter.current().notificationSettings()
-        notifs = s.authorizationStatus == .authorized
-        alarms = AlarmManager.shared.authorizationState == .authorized
+        camera = AVCaptureDevice.authorizationStatus(for: .video) == .authorized
+        mic = AVAudioApplication.shared.recordPermission == .granted
+        speech = SFSpeechRecognizer.authorizationStatus() == .authorized
+        location = loc.granted
+        let p = PHPhotoLibrary.authorizationStatus(for: .addOnly)
+        photos = p == .authorized || p == .limited
+    }
+}
+
+@MainActor private final class SetupLocation: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published var granted = false
+    private let m = CLLocationManager()
+    override init() { super.init(); m.delegate = self; granted = [.authorizedWhenInUse, .authorizedAlways].contains(m.authorizationStatus) }
+    func request() { m.requestWhenInUseAuthorization() }
+    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let ok = [.authorizedWhenInUse, .authorizedAlways].contains(manager.authorizationStatus)
+        Task { @MainActor in self.granted = ok }
     }
 }
 
@@ -134,7 +166,7 @@ struct SettingsView: View {
                     }
 
                     Section("App") {
-                        SettingsRow(icon: "slider.horizontal.3", title: "Permissions", sub: "Notifications, alarms, the Clips keyboard") { showSetup = true }
+                        SettingsRow(icon: "slider.horizontal.3", title: "Permissions", sub: "Camera, microphone, speech, location, Photos, the Clips keyboard") { showSetup = true }
                         SettingsRow(icon: "lock", title: "Privacy", sub: "What stays on your phone (everything)") { showPrivacy = true }
                     }
                     Section("Help") {
@@ -242,15 +274,15 @@ struct PrivacyView: View {
                     Text("Short version: everything you do in Tenzy stays on this iPhone.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                 }
                 Block("Stays on your phone", check: true, [
-                    "Clips you save (keyboard, Share Sheet, or Grab)",
-                    "Alarms you set",
-                    "Your sticky note (shared only with the widget on your own phone)",
+                    "Clips and snippets you save (keyboard, Share Sheet, or Grab)",
+                    "Vault items — encrypted with a key only your Face ID or passcode can release",
+                    "Voice notes, night-recorder clips and transcripts",
                     "Scans, extracted text, and cleaned photos — until you share them yourself",
                 ], note: "Stored in the app's private container. Deleting the app deletes all of it. We can't see it; there is no server.")
                 Block("Never collected", check: true, [
                     "Your name, email, or any account — there isn't one",
                     "Keystrokes — the Clips keyboard never logs what you type",
-                    "Your location, contacts, or photo library beyond the single photo you pick",
+                    "Your location (used live for the compass and GPS dashboard, never stored or sent), contacts, or photo library beyond what you pick",
                     "Analytics or crash reports — Tenzy has none",
                 ], note: nil)
                 Block("The one exception: ads", check: false, [

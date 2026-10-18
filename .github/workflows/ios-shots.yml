@@ -1,0 +1,70 @@
+name: iOS Screenshots (all tools)
+
+# Visual pass for staging branches: builds the simulator app and screenshots every tool page,
+# light + dark, publishing PNGs to the ci-logs branch under ios-shots-v2/. Triggered by touching
+# ios/.shots (so it never slows the normal compile+test check).
+on:
+  push:
+    branches-ignore: [handytools, ci-logs]
+    paths: ["ios/.shots", ".github/workflows/ios-shots.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ios-shots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shots:
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)" && xcodebuild -version
+      - name: Generate + build for simulator
+        run: |
+          set -o pipefail
+          brew install xcodegen && xcodegen generate
+          xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
+          xcodebuild build -project HandyTools.xcodeproj -scheme HandyTools -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|BUILD" || true
+          grep -q "BUILD SUCCEEDED" build.log
+      - name: Screenshot every route
+        run: |
+          APP=$(find build -name "HandyTools.app" -path "*iphonesimulator*" | head -1)
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
+          print(c[0]["udid"])')
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" "$APP"
+          xcrun simctl privacy "$UDID" grant all com.tenzy.toolkit || true
+          xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
+          xcrun simctl terminate "$UDID" com.tenzy.toolkit || true
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
+          mkdir -p shots
+          ROUTES="home onboarding setup settings paywall fitit scan studio video formatfix scrub capture qrwifi stitch shareready light instruments measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab clips vault"
+          for mode in light dark; do
+            xcrun simctl ui "$UDID" appearance $mode
+            for r in $ROUTES; do
+              xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
+              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -route $r
+              sleep 7
+              xcrun simctl io "$UDID" screenshot shots/$mode-$r.png
+            done
+          done
+          ls shots | wc -l
+      - name: Publish screenshots
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh ios-shots-v2 ios/shots

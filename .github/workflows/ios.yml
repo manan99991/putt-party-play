@@ -66,7 +66,7 @@ jobs:
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           for mode in light dark; do
             xcrun simctl ui "$UDID" appearance $mode
-            for r in onboarding onboarding2 onboarding3 setup settings privacy home alarm clips flash webclip sticky ocr scan db exif qr paywall ring homepro; do
+            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub capture qrwifi stitch shareready light instruments measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab clips vault; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
               xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -route $r
               sleep 9
