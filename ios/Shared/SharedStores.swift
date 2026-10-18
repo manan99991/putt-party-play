@@ -76,3 +76,26 @@ enum Premium {
         set { AppGroup.defaults.set(newValue, forKey: key) }
     }
 }
+
+// MARK: - Snippets (Clipboard tool + Clips keyboard)
+
+struct Snippet: Codable, Identifiable, Equatable {
+    var id = UUID()
+    var title: String
+    var text: String
+    var createdAt = Date()
+}
+
+enum SnippetStore {
+    private static let key = "snippets"
+    static func all() -> [Snippet] {
+        guard let data = AppGroup.defaults.data(forKey: key), let s = try? JSONDecoder().decode([Snippet].self, from: data) else { return [] }
+        return s
+    }
+    static func add(title: String, text: String) {
+        let t = text.trimmingCharacters(in: .whitespacesAndNewlines); guard !t.isEmpty else { return }
+        var s = all(); s.insert(Snippet(title: title.trimmingCharacters(in: .whitespaces), text: t), at: 0); save(s)
+    }
+    static func remove(_ id: UUID) { save(all().filter { $0.id != id }) }
+    private static func save(_ s: [Snippet]) { AppGroup.defaults.set(try? JSONEncoder().encode(s), forKey: key) }
+}

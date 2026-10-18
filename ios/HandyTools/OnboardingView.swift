@@ -69,8 +69,8 @@ private struct HeroPage: View {
             Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(.white).scaledToFit().frame(width: 240, height: 240)
                 .id(idx).transition(.opacity)
             Spacer()
-            Text("10 tools your phone forgot.").font(HandyFont.display).foregroundStyle(.white).multilineTextAlignment(.center)
-            Text("One tap each. Nothing leaves your phone.").font(HandyFont.body).foregroundStyle(.white.opacity(0.85)).multilineTextAlignment(.center)
+            Text("30 tools your phone forgot.").font(HandyFont.display).foregroundStyle(.white).multilineTextAlignment(.center)
+            Text("Each one does the job properly. Nothing leaves your phone.").font(HandyFont.body).foregroundStyle(.white.opacity(0.85)).multilineTextAlignment(.center)
             Spacer().frame(height: 140)
         }
         .padding(.horizontal, HandySpacing.s24)
@@ -80,7 +80,7 @@ private struct HeroPage: View {
 
 private struct GridPage: View {
     @State private var hi = 0
-    private let highlight = [1, 0, 5] // Multi-Clipboard, Alarm Pro, Text from Image (in TOOLS order)
+    private let highlight = [0, 1, 3] // Fit It, Scan, Video (in TOOLS order)
     var body: some View {
         VStack(spacing: HandySpacing.s12) {
             Spacer()
@@ -109,7 +109,7 @@ private struct GridPage: View {
 
 private struct ProPage: View {
     let onSeePro: () -> Void
-    private let rows: [(String, String, String)] = [("Ads", "Yes", "None"), ("Clipboard history", "20", "Unlimited"), ("Alarms", "3", "Unlimited"), ("Price", "Free", "$9.99 a year")]
+    private let rows: [(String, String, String)] = [("Ads", "Yes", "None"), ("Fits, scans, exports", "Daily limits", "Unlimited"), ("AI, video, voice jobs", "Daily limits", "Unlimited"), ("Price", "Free", "$19.99 a year")]
     var body: some View {
         VStack(spacing: HandySpacing.s12) {
             Spacer()

@@ -66,9 +66,9 @@ jobs:
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           for mode in light dark; do
             xcrun simctl ui "$UDID" appearance $mode
-            for r in onboarding onboarding2 onboarding3 setup settings privacy home alarm clips flash webclip sticky ocr scan db exif qr paywall ring homepro; do
+            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub capture qrwifi stitch shareready light instruments measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab clips vault; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
-              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -route $r
+              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
               sleep 9
               xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
             done
@@ -145,23 +145,19 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: bash .github/publish-log.sh ios-subs ios/subs.log || true
-      - name: Restore distribution cert (private Actions cache)
-        uses: actions/cache/restore@v4
-        with:
-          path: ios/cert-cache
-          key: tenzy-dist-cert-v3
+      - name: Write the shared distribution cert from secret
+        env:
+          IOS_DIST_P12_B64: ${{ secrets.IOS_DIST_P12_B64 }}
+        run: |
+          [ -n "$IOS_DIST_P12_B64" ] || { echo "IOS_DIST_P12_B64 secret is not set — add it in repo Settings → Secrets"; exit 1; }
+          echo "$IOS_DIST_P12_B64" | base64 -d > dist.p12
+          echo "wrote ios/dist.p12 ($(wc -c < dist.p12) bytes)"
       - name: Fastlane build + upload to TestFlight
+        env:
+          P12_PASSWORD: tenzyshared
         run: |
           set -o pipefail
           fastlane beta 2>&1 | tee fastlane.log
-      # Only save when a real .p12 was produced, so an empty/failed run can never poison the key
-      # (cache keys are immutable — once saved, the content is fixed forever).
-      - name: Save distribution cert (only if a cert exists)
-        if: ${{ always() && hashFiles('ios/cert-cache/dist.p12') != '' }}
-        uses: actions/cache/save@v4
-        with:
-          path: ios/cert-cache
-          key: tenzy-dist-cert-v3
       - name: Publish fastlane log (always)
         if: always()
         working-directory: .

@@ -41,9 +41,10 @@ platform :ios do
       Spaceship::ConnectAPI::BundleId.create(name: "Tenzy #{bid.split('.').last}", identifier: bid, platform: "IOS")
     end
 
-    # Free Tenzy's distribution-cert slot: revoke the cert our previous run created (id passed in
-    # via TENZY_PREV_CERT_ID) so we stay under Apple's 2-cert cap. Only ever Tenzy's own id — other
-    # apps' certs (e.g. Reckato) are never touched.
+    # Signing now uses ONE shared Apple Distribution certificate for the whole account (the same cert
+    # Reckato uses). It is supplied as a base64 secret (IOS_DIST_P12_B64), written to ios/dist.p12 by
+    # CI, and only ever IMPORTED here. This lane never creates or revokes a certificate — removing
+    # that is what ends the "certificate revoked" email storm between the two apps.
     keychain_name = "tenzyci"
     keychain_pw = "tenzyci-pw"
     create_keychain(
@@ -52,52 +53,15 @@ platform :ios do
     )
     keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")
 
-    # Reuse one distribution cert across runs. The .p12 lives in the repo's private Actions cache
-    # (ios/cert-cache). When present we just import it — no revoke, no new cert, so no "certificate
-    # revoked" emails. Only when the cache is empty do we fall back to creating one.
-    cached_p12 = File.expand_path("cert-cache/dist.p12")
-    p12_pw = "tenzyci-p12"
-    reused = false
-    if File.exist?(cached_p12)
-      begin
-        import_certificate(
-          certificate_path: cached_p12,
-          certificate_password: p12_pw,
-          keychain_name: keychain_name,
-          keychain_password: keychain_pw
-        )
-        UI.message("Reusing cached distribution certificate — no revoke, no new cert")
-        reused = true
-      rescue => e
-        UI.important("Cached cert import failed; creating a fresh one: #{e}")
-      end
-    end
-
-    unless reused
-      # First run (or cache miss): stay under Apple's 2-cert cap by revoking every distribution
-      # cert except the keep-list (Reckato's), then create a fresh one and cache it.
-      keep = (ENV["KEEP_CERT_IDS"] || "24QVV6RW8U").split(",").map(&:strip)
-      begin
-        Spaceship::ConnectAPI::Certificate.all.each do |c|
-          next unless c.certificate_type.to_s.include?("DISTRIBUTION")
-          next if keep.include?(c.id)
-          Spaceship::ConnectAPI.delete_certificate(certificate_id: c.id)
-          UI.message("Revoked distribution cert #{c.id}")
-        end
-      rescue => e
-        UI.important("Cert cleanup issue: #{e}")
-      end
-      cert(api_key: key, keychain_path: keychain_path, keychain_password: keychain_pw, output_path: "build/certs")
-      # Export the identity (cert + private key) into the cache for future runs to reuse.
-      begin
-        sh("mkdir -p cert-cache")
-        sh("security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k #{keychain_pw} #{keychain_path.shellescape} >/dev/null 2>&1 || true")
-        sh("security export -k #{keychain_path.shellescape} -t identities -f pkcs12 -P #{p12_pw} -o #{cached_p12.shellescape}")
-        UI.message("Cached distribution identity for reuse")
-      rescue => e
-        UI.important("Cert caching failed (non-fatal — will create again next run): #{e}")
-      end
-    end
+    p12_path = File.expand_path("dist.p12")
+    UI.user_error!("Shared cert missing: write ios/dist.p12 from the IOS_DIST_P12_B64 secret before this lane") unless File.exist?(p12_path)
+    import_certificate(
+      certificate_path: p12_path,
+      certificate_password: ENV["P12_PASSWORD"] || "tenzyshared",
+      keychain_name: keychain_name,
+      keychain_password: keychain_pw
+    )
+    UI.message("Imported shared distribution certificate — no create, no revoke")
 
     # One App Store provisioning profile per target.
     profiles = {}

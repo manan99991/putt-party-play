@@ -1,0 +1,57 @@
+name: iOS Build Check
+
+# Compile-only gate for staging branches. Never runs on `handytools` (that's the deploy branch,
+# handled by ios.yml) so this can verify the code builds without touching TestFlight.
+on:
+  push:
+    branches-ignore: [handytools, ci-logs]
+    paths: ["ios/**", ".github/workflows/ios-check.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ios-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          xcodebuild -version
+      - name: Install XcodeGen + generate + resolve
+        run: |
+          set -o pipefail
+          { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tee setup.log
+      - name: Test (engine unit + every-tool UI smoke)
+        run: |
+          set -o pipefail
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
+          echo "simulator=$UDID"
+          xcodebuild test \
+            -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination "id=$UDID" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true
+          # Surface compile errors + failing tests as check annotations (readable via the API even when log downloads are blocked).
+          grep -E "error:|Test Case .*failed|failed - " build.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
+          grep -q "TEST SUCCEEDED" build.log
+      - name: Publish build log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "== setup.log"; cat ios/setup.log 2>/dev/null; echo "== build.log (errors)"; grep -E "error:|warning:.*unused|BUILD|\*\*" ios/build.log 2>/dev/null | head -200; } > ios-check.log
+          bash .github/publish-log.sh ios-check ios-check.log || true

@@ -10,12 +10,20 @@ enum Limits {
     static let freeScanPages = 3       // Doc Scanner pages per PDF
     static let freeAiPerDay = 3        // Page-3 AI actions, shared across all AI tools
     static let freeWalletCards = 2     // Card Wallet
-    static let freeVideoPerDay = 2     // Video Compressor
+    static let freeVideoPerDay = 3     // Video (shrink/trim/convert/mute/audio/GIF jobs)
     static let freeBgRemovePerDay = 5  // Background Remover
     static let freeConvertPerDay = 3   // Image Converter (batches)
     static let freeAudioPerDay = 3     // Audio → Text (recordings)
     static let freePdfOpsPerDay = 3    // PDF Toolkit (jobs)
     static let freeSignPerDay = 3      // Sign & Fill
+    static let freeScanPerDay = 5      // Scan (PDF exports)
+    static let freeIdPhotoPerDay = 3   // ID / Passport Photo
+    static let freeGifPerDay = 3       // GIF Maker
+    static let freePhotoStudioPerDay = 4 // Photo Studio edits
+    static let freeFitPerDay = 5       // Fit It (exact-size fits)
+    static let freeStitchPerDay = 5    // Long Screenshot stitches
+    static let freeScrubPerDay = 5     // Privacy Scrubber clean copies
+    static let freeStudioPerDay = 6    // Studio edits
 }
 
 /// Per-day usage counters that reset at midnight, stored in UserDefaults. Pro is unlimited, so

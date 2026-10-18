@@ -12,7 +12,7 @@ settings:
   base:
     SWIFT_VERSION: "6.0"
     DEVELOPMENT_TEAM: "YOUR_TEAM_ID"      # <- Apple Developer team id
-    MARKETING_VERSION: "1.1.0"
+    MARKETING_VERSION: "1.2.0"
     CURRENT_PROJECT_VERSION: "1"
     TARGETED_DEVICE_FAMILY: "1"
     SWIFT_STRICT_CONCURRENCY: minimal
@@ -39,7 +39,6 @@ targets:
       - target: ClipboardKeyboard
       - target: ShareExtension
       - target: StickyWidget
-      - sdk: AlarmKit.framework
       - sdk: VisionKit.framework
       - sdk: Vision.framework
     entitlements:
@@ -49,24 +48,30 @@ targets:
     info:
       path: HandyTools/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleDisplayName: Tenzy
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
+        UIBackgroundModes: [audio]   # Rest keeps playing sleep sounds / listening for snoring with the screen off
+        CFBundleURLTypes:
+          - CFBundleURLName: com.tenzy.toolkit
+            CFBundleURLSchemes: [tenzy]
         # --- AdMob (live Tenzy app id) ---
         GADApplicationIdentifier: ca-app-pub-5414801919054534~3553659163
         SKAdNetworkItems:
           - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
         NSUserTrackingUsageDescription: Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones.
         # --- Tool permissions ---
-        NSAlarmKitUsageDescription: Tenzy schedules the alarms you create so they ring even in silent mode and Focus.
-        NSCameraUsageDescription: Needed for the document scanner, QR scanner, magnifier and flashlight.
-        NSMicrophoneUsageDescription: Needed for the decibel meter. Audio is measured, never recorded or saved.
-        NSLocationWhenInUseUsageDescription: Needed for the compass heading. Your location stays on this phone.
+        NSCameraUsageDescription: Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded.
+        NSMicrophoneUsageDescription: Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded.
+        NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude and the GPS dashboard. Your location stays on this phone.
+        NSMotionUsageDescription: Needed for the level, barometer/altimeter and metal detector readings.
         NSSpeechRecognitionUsageDescription: Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded.
         NSPhotoLibraryUsageDescription: Needed to read text from screenshots and to view or strip photo metadata.
         NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.
+        NSFaceIDUsageDescription: Used to unlock your Secure Vault so only you can open your private notes and photos.
         NSSupportsLiveActivities: true
 
   ClipboardKeyboard:
@@ -82,6 +87,7 @@ targets:
     info:
       path: ClipboardKeyboard/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleDisplayName: Tenzy Clips
         NSExtension:
           NSExtensionPointIdentifier: com.apple.keyboard-service
@@ -105,6 +111,7 @@ targets:
     info:
       path: ShareExtension/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleDisplayName: Save to Clips
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
@@ -127,6 +134,40 @@ targets:
     info:
       path: StickyWidget/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleDisplayName: Sticky Note
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
+
+  # In-build quality checker: engine unit tests + an every-tool UI smoke that opens all 30 tools.
+  HandyToolsTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [HandyToolsTests]
+    dependencies:
+      - target: HandyTools
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+  HandyToolsUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [HandyToolsUITests]
+    dependencies:
+      - target: HandyTools
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  HandyTools:
+    build:
+      targets:
+        HandyTools: all
+        HandyToolsTests: [test]
+        HandyToolsUITests: [test]
+    test:
+      targets:
+        - HandyToolsTests
+        - HandyToolsUITests
