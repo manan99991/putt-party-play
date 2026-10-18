@@ -6,6 +6,19 @@ import UIKit
 import FoundationModels
 #endif
 
+extension UIImage {
+    /// Redraws the image so its pixels are upright (orientation .up), fixing EXIF-rotated photos
+    /// before they go to Vision — otherwise portrait shots come out sideways.
+    func normalizedUp() -> UIImage {
+        if imageOrientation == .up { return self }
+        let fmt = UIGraphicsImageRendererFormat.default()
+        fmt.scale = scale
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
+}
+
 /// Wraps Apple's on-device Foundation Models (iOS 26+, Apple-silicon iPhones). Everything runs
 /// locally — no network, no server, no API bill, and nothing leaves the phone. When the model
 /// isn't present (older phone / OS), `isAvailable` is false and tools show a graceful fallback.
@@ -54,7 +67,7 @@ enum AIEngine {
 
     /// Pull all readable text out of an image (printed or handwritten).
     static func recognizeText(_ image: UIImage) async -> String {
-        guard let cg = image.cgImage else { return "" }
+        guard let cg = image.normalizedUp().cgImage else { return "" }
         nonisolated(unsafe) let cgSafe = cg
         return await withCheckedContinuation { cont in
             let req = VNRecognizeTextRequest { request, _ in
@@ -72,7 +85,7 @@ enum AIEngine {
 
     /// Best-guess labels for what's in a photo, most confident first.
     static func classify(_ image: UIImage, top: Int = 5) async -> [String] {
-        guard let cg = image.cgImage else { return [] }
+        guard let cg = image.normalizedUp().cgImage else { return [] }
         nonisolated(unsafe) let cgSafe = cg
         return await withCheckedContinuation { cont in
             let req = VNClassifyImageRequest { request, _ in

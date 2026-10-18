@@ -58,7 +58,7 @@ struct BackgroundRemoverView: View {
     }
 
     private func remove() {
-        guard let img = original, let cg = img.cgImage else { return }
+        guard let src = original, let cg = src.normalizedUp().cgImage else { return }
         guard Usage.use("bgremove", limit: Limits.freeBgRemovePerDay) else { return }
         working = true; errorText = nil
         Task { @MainActor in
