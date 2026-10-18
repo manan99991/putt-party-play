@@ -5,6 +5,8 @@ import UniformTypeIdentifiers
 import PDFKit
 import AVFoundation
 import PencilKit
+import CoreImage
+import simd
 @testable import HandyTools
 
 /// Engine-level correctness checks. These exercise the real tool logic with deterministic,
@@ -250,6 +252,54 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(found.first { $0.icon == "phone" }?.url.absoluteString.hasPrefix("tel:") ?? false)
     }
 
+    // MARK: color vision
+
+    func testColorVisionMatricesBehave() {
+        let I = ColorVision.correctionMatrix(.deutan, severity: 1, strength: 0)
+        for c in 0..<3 { for r in 0..<3 { XCTAssertEqual(I[c, r], c == r ? 1 : 0, accuracy: 1e-6) } }
+
+        // red-green confusion: simulated red and green land much closer together than the originals
+        let S = ColorVision.simulationMatrix(.deutan, severity: 1)
+        let red = ColorVision.transform([1, 0, 0], by: S), green = ColorVision.transform([0, 1, 0], by: S)
+        XCTAssertLessThan(simd_distance(red, green), 0.7, "deutan simulation should collapse red/green: \(red) vs \(green)")
+
+        // correction leaves the red channel alone and moves the lost red/green difference into blue,
+        // which a deutan eye sees — so the corrected scene actually looks different to that eye
+        let C = ColorVision.correctionMatrix(.deutan, severity: 1, strength: 1)
+        XCTAssertEqual(C[0, 0], 1, accuracy: 1e-6); XCTAssertEqual(C[1, 0], 0, accuracy: 1e-6); XCTAssertEqual(C[2, 0], 0, accuracy: 1e-6)
+        let cRed = simd_clamp(ColorVision.transform([1, 0, 0], by: C), SIMD3(repeating: 0), SIMD3(repeating: 1))
+        XCTAssertGreaterThan(cRed.z, 0.2, "red should gain blue: \(cRed)")
+        XCTAssertGreaterThan(simd_distance(ColorVision.transform(cRed, by: S), red), 0.1, "correction must be visible to the deutan eye")
+    }
+
+    func testColorVisionHighlightCubeKeepsTargetGreysRest() {
+        let size = 32
+        let cube = ColorVision.highlightCube(.red, size: size)
+        let floats = cube.withUnsafeBytes { Array($0.bindMemory(to: Float.self)) }
+        func at(_ r: Int, _ g: Int, _ b: Int) -> [Float] { let o = ((b * size + g) * size + r) * 4; return Array(floats[o..<o + 3]) }
+        let red = at(size - 1, 0, 0), green = at(0, size - 1, 0), grey = at(16, 16, 16)
+        XCTAssertGreaterThan(red[0] - red[1], 0.8, "red must stay red: \(red)")
+        XCTAssertEqual(green[0], green[1], accuracy: 1e-4); XCTAssertEqual(green[1], green[2], accuracy: 1e-4)
+        XCTAssertEqual(grey[0], grey[1], accuracy: 1e-4)
+    }
+
+    func testColorVisionNamesAndAverage() {
+        XCTAssertEqual(ColorVision.name(r: 1, g: 0, b: 0).name, "Red")
+        XCTAssertEqual(ColorVision.name(r: 0, g: 0, b: 0).name, "Black")
+        XCTAssertEqual(ColorVision.name(r: 1, g: 1, b: 1).name, "White")
+        XCTAssertEqual(ColorVision.name(r: 0.15, g: 0.35, b: 0.9).name, "Blue")
+        XCTAssertEqual(ColorVision.name(r: 1, g: 0.95, b: 0.15).hex, "#FFF226")
+
+        let ctx = CIContext()
+        let solid = CIImage(color: CIColor(red: 0.2, green: 0.6, blue: 0.9)).cropped(to: CGRect(x: 0, y: 0, width: 64, height: 64))
+        let avg = try? XCTUnwrap(ColorVision.averageColor(of: solid, region: CGRect(x: 0.25, y: 0.25, width: 0.5, height: 0.5), context: ctx))
+        XCTAssertEqual(avg?.x ?? -1, 0.2, accuracy: 0.03); XCTAssertEqual(avg?.y ?? -1, 0.6, accuracy: 0.03); XCTAssertEqual(avg?.z ?? -1, 0.9, accuracy: 0.03)
+        // identity matrix through the Core Image path leaves colour alone
+        let same = ColorVision.apply(matrix_identity_float3x3, to: solid)
+        let avg2 = ColorVision.averageColor(of: same, region: CGRect(x: 0.25, y: 0.25, width: 0.5, height: 0.5), context: ctx)
+        XCTAssertEqual(avg2?.y ?? -1, 0.6, accuracy: 0.03)
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {
@@ -375,7 +425,7 @@ final class EngineTests: XCTestCase {
                                 bytesPerRow: CVPixelBufferGetBytesPerRow(buf), space: CGColorSpaceCreateDeviceRGB(),
                                 bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
             if let ctx {
-                let img = noisy ? noisy(size) : bands(size)
+                let img = noisy ? Self.noisy(size) : Self.bands(size)
                 ctx.draw(img.cgImage!, in: CGRect(origin: .zero, size: size))
                 ctx.setFillColor(UIColor.white.cgColor)
                 ctx.fill(CGRect(x: CGFloat(i % Int(size.width - 40)), y: size.height / 2 - 20, width: 40, height: 40))

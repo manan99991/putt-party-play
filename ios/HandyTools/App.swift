@@ -143,6 +143,7 @@ struct ToolDestination: View {
         case "vault": SecureVaultView()
         // Everything else is being built — show an honest placeholder, never a blank screen.
         case "capture": CaptureView()
+        case "colorvision": ColorVisionView()
         default: ComingSoonView(id: id)
         }
     }
