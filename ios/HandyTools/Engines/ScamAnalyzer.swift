@@ -46,7 +46,7 @@ enum ScamAnalyzer {
         if !lottery.isEmpty { f.append(Finding(title: "Too good to be true", detail: "Prizes you didn't enter, guaranteed returns, and fees to release money are the oldest tricks in the book.", weight: 3)) }
 
         // 6. secrecy / isolation
-        let secrecy = hit([#"\bdon'?t tell (anyone|your family|the bank)\b"#, #"\bkeep (this|it) (confidential|secret|between us)\b"#, #"\bdo not (hang up|disconnect)\b"#, #"\bstay on the (line|phone)\b"#])
+        let secrecy = hit([#"\b(do not|don'?t) tell (anyone|anybody|your family|your (wife|husband|kids|son|daughter)|the bank)\b"#, #"\bkeep (this|it) (confidential|secret|between us)\b"#, #"\bdo not (hang up|disconnect)\b"#, #"\bstay on the (line|phone)\b"#])
         if !secrecy.isEmpty { f.append(Finding(title: "Tells you to keep it secret", detail: "Isolation keeps you from the one friend or family member who'd say \"that's a scam\".", weight: 4)) }
 
         // 7. wrong-number / relationship openers

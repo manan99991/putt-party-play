@@ -559,6 +559,73 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(ScamAnalyzer.advice(for: normal).count, 1)
     }
 
+    // MARK: data grabber
+
+    func testDataGrabReceiptCardEventTable() {
+        let receiptText = """
+        BLUE BOTTLE COFFEE
+        300 Webster St, Oakland CA
+        03/14/2026 8:41 AM
+        Cappuccino            4.75
+        Almond Croissant      5.25
+        Oat milk              0.75
+        Subtotal             10.75
+        Tax                   0.97
+        Tip                   2.00
+        Total                13.72
+        VISA ****4421        13.72
+        Thank you for visiting!
+        """
+        XCTAssertEqual(DataGrab.detect(receiptText), .receipt)
+        let r = DataGrab.receipt(receiptText)
+        XCTAssertEqual(r.merchant, "BLUE BOTTLE COFFEE")
+        XCTAssertEqual(r.items.count, 3, "\(r.items)")
+        XCTAssertEqual(r.items.first?.0, "Cappuccino"); XCTAssertEqual(r.items.first?.1 ?? 0, 4.75, accuracy: 0.001)
+        XCTAssertEqual(r.subtotal ?? 0, 10.75, accuracy: 0.001); XCTAssertEqual(r.tax ?? 0, 0.97, accuracy: 0.001); XCTAssertEqual(r.tip ?? 0, 2.0, accuracy: 0.001); XCTAssertEqual(r.total ?? 0, 13.72, accuracy: 0.001)
+        XCTAssertNotNil(r.date)
+        let csv = DataGrab.receiptCSV(r)
+        XCTAssertTrue(csv.hasPrefix("Item,Amount\nCappuccino,4.75")); XCTAssertTrue(csv.hasSuffix("Total,13.72"))
+        XCTAssertTrue(DataGrab.expenseRow(r).contains("2026-03-14,BLUE BOTTLE COFFEE,13.72,0.97"))
+
+        let cardText = """
+        Priya Natarajan
+        Senior Product Designer
+        Lumen Studio Inc.
+        +1 (415) 555-0142
+        priya@lumenstudio.com
+        www.lumenstudio.com
+        """
+        XCTAssertEqual(DataGrab.detect(cardText), .card)
+        let c = DataGrab.card(cardText)
+        XCTAssertEqual(c.name, "Priya Natarajan"); XCTAssertEqual(c.title, "Senior Product Designer"); XCTAssertEqual(c.company, "Lumen Studio Inc.")
+        XCTAssertEqual(c.emails, ["priya@lumenstudio.com"]); XCTAssertEqual(c.phones.count, 1); XCTAssertEqual(c.website, "www.lumenstudio.com")
+        let v = DataGrab.vcard(c)
+        XCTAssertTrue(v.contains("FN:Priya Natarajan")); XCTAssertTrue(v.contains("N:Natarajan;Priya;;;")); XCTAssertTrue(v.contains("ORG:Lumen Studio Inc.")); XCTAssertTrue(v.contains("EMAIL;TYPE=WORK:priya@lumenstudio.com"))
+
+        let eventText = """
+        Spring Book Fair
+        Join us Saturday, April 18, 2026 at 10:00 AM
+        Westside Community Hall
+        RSVP by April 10
+        """
+        XCTAssertEqual(DataGrab.detect(eventText), .event)
+        let e = DataGrab.event(eventText)
+        XCTAssertEqual(e.title, "Spring Book Fair")
+        XCTAssertNotNil(e.start)
+        if let s = e.start { let comps = Calendar.current.dateComponents([.month, .day, .hour], from: s); XCTAssertEqual(comps.month, 4); XCTAssertEqual(comps.day, 18); XCTAssertEqual(comps.hour, 10) }
+        XCTAssertTrue(DataGrab.ics(e).contains("SUMMARY:Spring Book Fair"))
+        XCTAssertTrue(DataGrab.ics(e).contains("DTSTART:2026"))
+
+        let tableText = """
+        Name        Qty   Price
+        Widget      2     3.50
+        Gadget, XL  1     12.00
+        """
+        XCTAssertEqual(DataGrab.detect(tableText), .table)
+        XCTAssertEqual(DataGrab.tableCSV(tableText), "Name,Qty,Price\nWidget,2,3.50\n\"Gadget, XL\",1,12.00")
+        XCTAssertEqual(DataGrab.detect("Hey, want to grab lunch tomorrow?"), .text)
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {

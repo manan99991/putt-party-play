@@ -27,3 +27,18 @@ struct VCardFile: Transferable {
     let data: Data
     static var transferRepresentation: some TransferRepresentation { DataRepresentation(exportedContentType: .vCard) { $0.data } }
 }
+
+struct CSVFile: Transferable {
+    let data: Data
+    static var transferRepresentation: some TransferRepresentation { DataRepresentation(exportedContentType: .commaSeparatedText) { $0.data } }
+}
+
+struct ICSFile: Transferable {
+    let data: Data
+    static var transferRepresentation: some TransferRepresentation { DataRepresentation(exportedContentType: .calendarEvent) { $0.data } }
+}
+
+struct TextFile: Transferable {
+    let data: Data
+    static var transferRepresentation: some TransferRepresentation { DataRepresentation(exportedContentType: .plainText) { $0.data } }
+}

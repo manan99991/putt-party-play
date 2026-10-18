@@ -151,6 +151,7 @@ struct ToolDestination: View {
         case "procam": ProCameraView()
         case "measure": MeasureARView()
         case "shield": ShieldView()
+        case "datagrab": DataGrabView()
         default: ComingSoonView(id: id)
         }
     }
