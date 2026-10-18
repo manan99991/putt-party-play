@@ -456,6 +456,27 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(d.events.count, 2)
     }
 
+    // MARK: scene describer
+
+    func testSceneComposerSpeaksConcretely() {
+        var p = SceneDescriber.Perception()
+        p.labels = [("indoor", 0.9), ("kitchen", 0.6), ("table", 0.4), ("people", 0.3)]
+        p.people = 2; p.animals = ["Cat"]; p.text = ["EXIT", "Pull"]
+        let s = SceneDescriber.compose(p)
+        XCTAssertTrue(s.hasPrefix("Looks like a kitchen."), s)
+        XCTAssertTrue(s.contains("2 people in view."), s)
+        XCTAssertTrue(s.contains("Also a Cat."), s)
+        XCTAssertTrue(s.contains("Nearby: table."), s)
+        XCTAssertTrue(s.contains("Text reads: EXIT, Pull."), s)
+        XCTAssertFalse(s.contains("%"), "no confidence numbers in speech")
+        XCTAssertTrue(SceneDescriber.compose(SceneDescriber.Perception()).contains("Nothing I can name"))
+        var one = SceneDescriber.Perception(); one.labels = [("orange", 0.8)]; one.people = 1
+        XCTAssertEqual(SceneDescriber.compose(one), "Looks like an orange. One person in view.")
+        // text is picked up by the perception pass on a plain rendered sign
+        let seen = SceneDescriber.perceive(Self.text("HELLO 2026"))
+        XCTAssertTrue(seen.text.joined(separator: " ").uppercased().contains("HELLO"), "\(seen.text)")
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {

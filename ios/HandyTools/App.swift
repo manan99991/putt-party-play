@@ -147,6 +147,7 @@ struct ToolDestination: View {
         case "gpsdash": GPSDashboardView()
         case "audiolab": AudioLabView()
         case "rest": RestView()
+        case "describe": SceneDescriberView()
         default: ComingSoonView(id: id)
         }
     }
