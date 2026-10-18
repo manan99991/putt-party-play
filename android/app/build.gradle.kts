@@ -75,8 +75,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.6.0")
     implementation("com.android.billingclient:billing-ktx:8.0.0")
 
-    // Screen OCR
+    // Screen OCR + image labeling (AI tools)
     implementation("com.google.mlkit:text-recognition:16.0.1")
+    implementation("com.google.mlkit:image-labeling:17.0.9")
 
     // Tool ports: barcodes, translate, segmentation, doc scanner, video, exif, camera
     implementation("com.google.zxing:core:3.5.3")
