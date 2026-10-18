@@ -33,6 +33,5 @@ Resolved source packages:
 
 resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:137:45: error: cannot find type 'TransferRepresentation' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:135:21: error: cannot find type 'Transferable' in scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/QRWifiView.swift:186:17: error: no exact matches in call to initializer 
 ** TEST FAILED **
