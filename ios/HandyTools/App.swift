@@ -155,6 +155,7 @@ struct ToolDestination: View {
         case "datagrab": DataGrabView()
         case "textstudio": TextStudioView()
         case "readaloud": ReadAloudView()
+        case "explain": ExplainerView()
         default: ComingSoonView(id: id)
         }
     }

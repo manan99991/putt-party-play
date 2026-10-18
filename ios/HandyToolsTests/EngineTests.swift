@@ -680,6 +680,23 @@ final class EngineTests: XCTestCase {
         XCTAssertFalse(Reader.voices(for: "en").isEmpty)
     }
 
+    // MARK: explainer glossary
+
+    func testGlossaryFindsTermsAndRedFlags() {
+        let lease = "Tenant shall indemnify and hold harmless the Landlord. This Agreement shall automatically renew for successive twelve-month terms unless either party gives 60 days' notice. All disputes are subject to binding arbitration. Tenants are jointly and severally liable. Late fee of $75 applies after a 5-day grace period."
+        let terms = Glossary.found(in: lease).map(\.term)
+        XCTAssertTrue(terms.contains("indemnify")); XCTAssertTrue(terms.contains("hold harmless")); XCTAssertTrue(terms.contains("arbitration")); XCTAssertTrue(terms.contains("grace period")); XCTAssertTrue(terms.contains("shall"))
+        XCTAssertFalse(terms.contains("lien"), "no false positives from substrings (e.g. 'client')")
+        XCTAssertEqual(Set(terms).count, terms.count, "each term once")
+        let flags = Glossary.redFlags(in: lease).map(\.0)
+        XCTAssertTrue(flags.contains("Auto-renewal")); XCTAssertTrue(flags.contains("Arbitration / class-action waiver")); XCTAssertTrue(flags.contains("Indemnity")); XCTAssertTrue(flags.contains("Personal liability")); XCTAssertTrue(flags.contains("Late fees"))
+        XCTAssertTrue(Glossary.found(in: "The client was happy. We went to the lake.").isEmpty)
+        let labs = "CBC within normal limits. LDL 160 mg/dL (high). TSH 2.1. Take 1 tab PO BID PRN pain."
+        let lt = Glossary.found(in: labs).map(\.term)
+        XCTAssertTrue(lt.contains("within normal limits")); XCTAssertTrue(lt.contains("ldl")); XCTAssertTrue(lt.contains("bid")); XCTAssertTrue(lt.contains("prn")); XCTAssertTrue(lt.contains("po"))
+        XCTAssertGreaterThan(Glossary.terms.count, 100)
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {
