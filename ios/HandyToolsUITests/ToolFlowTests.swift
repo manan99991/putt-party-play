@@ -69,8 +69,9 @@ final class ToolFlowTests: XCTestCase {
         launch("scrub")
         let go = button(containing: "clean copy"); expect(go, "scrub button", timeout: 30)
         // wait until face/text detection finishes (button enables)
-        let enabled = NSPredicate(format: "isEnabled == true")
-        expectation(for: enabled, evaluatedWith: go); waitForExpectations(timeout: 60)
+        let deadline = Date().addingTimeInterval(60)
+        while !go.isEnabled && Date() < deadline { sleep(1) }
+        XCTAssertTrue(go.isEnabled, "detection never finished")
         go.tap()
         expect(button(containing: "Save or share"), "clean copy", timeout: 60)
         alive("scrub")
