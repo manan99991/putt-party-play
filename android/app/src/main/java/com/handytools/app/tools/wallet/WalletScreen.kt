@@ -130,7 +130,7 @@ private fun CardDialog(c: Card, onDismiss: () -> Unit) {
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                 val bmp = remember(c.code, c.qr) { Barcodes.make(c.code, c.qr) }
                 bmp?.let {
-                    Box(Modifier.background(Color.White).padding(12.dp)) {
+                    Box(Modifier.background(androidx.compose.ui.graphics.Color.White).padding(12.dp)) {
                         Image(it.asImageBitmap(), null, Modifier.heightIn(max = if (c.qr) 240.dp else 140.dp))
                     }
                 }
