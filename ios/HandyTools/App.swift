@@ -142,6 +142,7 @@ struct ToolDestination: View {
         case "clips": ClipboardView()
         case "vault": SecureVaultView()
         // Everything else is being built — show an honest placeholder, never a blank screen.
+        case "capture": CaptureView()
         default: ComingSoonView(id: id)
         }
     }

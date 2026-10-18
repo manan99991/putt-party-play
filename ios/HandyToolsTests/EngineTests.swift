@@ -235,6 +235,21 @@ final class EngineTests: XCTestCase {
         DocEngine.clearSignature()
     }
 
+    // MARK: capture
+
+    func testCaptureFindsCodesInPhotosAndActionsInText() throws {
+        let qr = try XCTUnwrap(QRGen.make("https://tenzy.app/menu", scale: 8, correction: "M"))
+        XCTAssertEqual(CaptureView.barcode(in: qr), "https://tenzy.app/menu")
+        XCTAssertNil(CaptureView.barcode(in: Self.text("NO CODE HERE")))
+
+        let found = Detected.scan("Call us at (415) 555-0123 or visit https://example.com — open Tuesday at 7pm, 1 Infinite Loop, Cupertino CA 95014")
+        let icons = Set(found.map(\.icon))
+        XCTAssertTrue(icons.contains("phone"), "phone not detected: \(found.map(\.label))")
+        XCTAssertTrue(icons.contains("safari"), "link not detected: \(found.map(\.label))")
+        XCTAssertTrue(icons.contains("calendar"), "date not detected: \(found.map(\.label))")
+        XCTAssertTrue(found.first { $0.icon == "phone" }?.url.absoluteString.hasPrefix("tel:") ?? false)
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {

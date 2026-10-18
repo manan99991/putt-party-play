@@ -17,7 +17,6 @@ struct QRWifiView: View {
     @State private var showScanner = false
     @State private var photoItem: PhotosPickerItem?
     @State private var scanError: String?
-    @State private var revealPassword = false
 
     // make
     @State private var kind = 0        // 0 link/text, 1 wifi, 2 contact, 3 phone/sms, 4 batch
@@ -51,7 +50,7 @@ struct QRWifiView: View {
             default: wifiCardTab
             }
         }
-        .fullScreenCover(isPresented: $showScanner) { ScanSheet { scanned = $0; showScanner = false; revealPassword = false } }
+        .fullScreenCover(isPresented: $showScanner) { ScanSheet { scanned = $0; showScanner = false } }
         .onChange(of: photoItem) { _, item in scanPhoto(item) }
     }
 
@@ -69,8 +68,128 @@ struct QRWifiView: View {
         }
     }
 
-    @ViewBuilder private func resultCard(for s: String) -> some View {
-        let parsed = QRPayload.parse(s)
+    private func resultCard(for s: String) -> some View { QRResultCard(raw: s) }
+
+    private func scanPhoto(_ item: PhotosPickerItem?) {
+        guard let item else { return }
+        scanError = nil
+        Task {
+            guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d), let cg = img.normalizedUp().cgImage else { return }
+            let req = VNDetectBarcodesRequest()
+            try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
+            let found = (req.results ?? []).compactMap { $0.payloadStringValue }.first
+            await MainActor.run {
+                if let found { scanned = found; HandyHaptics.success() }
+                else { scanError = "No QR or barcode found in that image." }
+            }
+        }
+    }
+
+    // MARK: Make
+
+    private var makeTab: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: HandySpacing.s8) {
+                    ForEach(Array(["Link / text", "Wi‑Fi", "Contact", "Phone / SMS", "Batch"].enumerated()), id: \.offset) { i, name in
+                        HChip(text: name, selected: kind == i) { kind = i; qrImage = nil; batchImages = [] }
+                    }
+                }
+            }
+            switch kind {
+            case 0: field("https://… or any text", $text)
+            case 1:
+                field("Network name (SSID)", $ssid)
+                secureField("Password", $password)
+                Picker("Security", selection: $security) { Text("WPA/WPA2/3").tag(0); Text("WEP").tag(1); Text("Open").tag(2) }.pickerStyle(.segmented)
+                Toggle("Hidden network", isOn: $hidden).tint(HandyColor.accent).font(HandyFont.body)
+            case 2:
+                field("Full name", $cName); field("Phone", $cPhone); field("Email", $cEmail); field("Company (optional)", $cOrg)
+            case 3:
+                field("Phone number", $phone); field("Pre‑filled message (optional)", $sms)
+            default:
+                TextEditor(text: $batch).frame(minHeight: 120).padding(HandySpacing.s8).scrollContentBackground(.hidden)
+                    .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                    .overlay(alignment: .topLeading) { if batch.isEmpty { Text("One link or text per line — one QR each").foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
+            }
+            Picker("Size", selection: $sizeIdx) { Text("Small").tag(0); Text("Medium").tag(1); Text("Large").tag(2) }.pickerStyle(.segmented)
+
+            Button { generate() } label: { Label(kind == 4 ? "Make all" : "Make QR code", systemImage: "qrcode").frame(maxWidth: .infinity) }.primaryButton()
+
+            if let qrImage {
+                Image(uiImage: qrImage).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).frame(maxWidth: .infinity)
+                    .padding(HandySpacing.s24).background(.white, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+                if let png = qrImage.pngData() {
+                    ShareLink(item: PNGFile(data: png), preview: SharePreview("QR code")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                }
+            }
+            if !batchImages.isEmpty {
+                Text("\(batchImages.count) codes made").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: HandySpacing.s8) { ForEach(Array(batchImages.enumerated()), id: \.offset) { _, im in Image(uiImage: im).interpolation(.none).resizable().frame(width: 96, height: 96).background(.white) } }
+                }
+                ShareLink(items: batchImages.compactMap { $0.pngData() }.map { PNGFile(data: $0) }, preview: { _ in SharePreview("QR code") }) { Label("Share all", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+            }
+        }
+    }
+
+    private func field(_ ph: String, _ b: Binding<String>) -> some View {
+        TextField(ph, text: b).autocorrectionDisabled().textInputAutocapitalization(.never)
+            .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+    }
+    private func secureField(_ ph: String, _ b: Binding<String>) -> some View {
+        SecureField(ph, text: b)
+            .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+    }
+
+    private var scale: CGFloat { [8, 12, 18][sizeIdx] }
+
+    private func generate() {
+        qrImage = nil; batchImages = []
+        switch kind {
+        case 0: qrImage = QRGen.make(text, scale: scale)
+        case 1: qrImage = QRGen.make(QRPayload.wifi(ssid: ssid, password: password, security: ["WPA", "WEP", "nopass"][security], hidden: hidden), scale: scale)
+        case 2: qrImage = QRGen.make(QRPayload.vcard(name: cName, phone: cPhone, email: cEmail, org: cOrg), scale: scale)
+        case 3: qrImage = QRGen.make(sms.isEmpty ? "tel:\(phone)" : "SMSTO:\(phone):\(sms)", scale: scale)
+        default:
+            batchImages = batch.split(whereSeparator: \.isNewline).map { String($0).trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }.compactMap { QRGen.make($0, scale: 10) }
+        }
+        if qrImage != nil || !batchImages.isEmpty { HandyHaptics.success() }
+    }
+
+    // MARK: Wi‑Fi card
+
+    private var wifiCardTab: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            Text("A printable card for the fridge or guest room — people scan it and join, no typing.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            field("Network name (SSID)", $ssid)
+            secureField("Password", $password)
+            Picker("Security", selection: $security) { Text("WPA/WPA2/3").tag(0); Text("WEP").tag(1); Text("Open").tag(2) }.pickerStyle(.segmented)
+            Button { cardImage = QRGen.wifiCard(ssid: ssid, password: password, security: ["WPA", "WEP", "nopass"][security]) ; if cardImage != nil { HandyHaptics.success() } } label: {
+                Label("Make the card", systemImage: "wifi").frame(maxWidth: .infinity)
+            }.primaryButton().disabled(ssid.isEmpty)
+            if let cardImage, let png = cardImage.pngData() {
+                Image(uiImage: cardImage).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                ShareLink(item: PNGFile(data: png), preview: SharePreview("Wi‑Fi card")) { Label("Save, share or print", systemImage: "printer").frame(maxWidth: .infinity) }.secondaryButton()
+            }
+        }
+    }
+}
+
+// MARK: - Payload parsing / generation
+
+
+/// What a scanned code *is* and what you can do with it — shared by QR & Wi‑Fi and Capture.
+struct QRResultCard: View {
+    let raw: String
+    @State private var revealPassword = false
+
+    var body: some View {
+        let parsed = QRPayload.parse(raw)
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Label(parsed.title, systemImage: parsed.icon).font(HandyFont.bodyStrong)
             switch parsed {
@@ -123,118 +242,7 @@ struct QRWifiView: View {
     private func copyButton(_ s: String) -> some View {
         Button { UIPasteboard.general.string = s; ClipStore.add(s); HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
     }
-
-    private func scanPhoto(_ item: PhotosPickerItem?) {
-        guard let item else { return }
-        scanError = nil
-        Task {
-            guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d), let cg = img.normalizedUp().cgImage else { return }
-            let req = VNDetectBarcodesRequest()
-            try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
-            let found = (req.results ?? []).compactMap { $0.payloadStringValue }.first
-            await MainActor.run {
-                if let found { scanned = found; revealPassword = false; HandyHaptics.success() }
-                else { scanError = "No QR or barcode found in that image." }
-            }
-        }
-    }
-
-    // MARK: Make
-
-    private var makeTab: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(Array(["Link / text", "Wi‑Fi", "Contact", "Phone / SMS", "Batch"].enumerated()), id: \.offset) { i, name in
-                        HChip(text: name, selected: kind == i) { kind = i; qrImage = nil; batchImages = [] }
-                    }
-                }
-            }
-            switch kind {
-            case 0: field("https://… or any text", $text)
-            case 1:
-                field("Network name (SSID)", $ssid)
-                secureField("Password", $password)
-                Picker("Security", selection: $security) { Text("WPA/WPA2/3").tag(0); Text("WEP").tag(1); Text("Open").tag(2) }.pickerStyle(.segmented)
-                Toggle("Hidden network", isOn: $hidden).tint(HandyColor.accent).font(HandyFont.body)
-            case 2:
-                field("Full name", $cName); field("Phone", $cPhone); field("Email", $cEmail); field("Company (optional)", $cOrg)
-            case 3:
-                field("Phone number", $phone); field("Pre‑filled message (optional)", $sms)
-            default:
-                TextEditor(text: $batch).frame(minHeight: 120).padding(HandySpacing.s8).scrollContentBackground(.hidden)
-                    .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                    .overlay(alignment: .topLeading) { if batch.isEmpty { Text("One link or text per line — one QR each").foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
-            }
-            Picker("Size", selection: $sizeIdx) { Text("Small").tag(0); Text("Medium").tag(1); Text("Large").tag(2) }.pickerStyle(.segmented)
-
-            Button { generate() } label: { Label(kind == 4 ? "Make all" : "Make QR code", systemImage: "qrcode").frame(maxWidth: .infinity) }.primaryButton()
-
-            if let qrImage {
-                Image(uiImage: qrImage).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).frame(maxWidth: .infinity)
-                    .padding(HandySpacing.s24).background(.white, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
-                if let png = qrImage.pngData() {
-                    ShareLink(item: PNGFile(data: png), preview: SharePreview("QR code")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
-                }
-            }
-            if !batchImages.isEmpty {
-                Text("\(batchImages.count) codes made").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) { ForEach(Array(batchImages.enumerated()), id: \.offset) { _, im in Image(uiImage: im).interpolation(.none).resizable().frame(width: 96, height: 96).background(.white) } }
-                }
-                ShareLink(items: batchImages.compactMap { $0.pngData() }.map { PNGFile(data: $0) }) { Label("Share all", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
-            }
-        }
-    }
-
-    private func field(_ ph: String, _ b: Binding<String>) -> some View {
-        TextField(ph, text: b).autocorrectionDisabled().textInputAutocapitalization(.never)
-            .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-    }
-    private func secureField(_ ph: String, _ b: Binding<String>) -> some View {
-        SecureField(ph, text: b)
-            .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-    }
-
-    private var scale: CGFloat { [8, 12, 18][sizeIdx] }
-
-    private func generate() {
-        qrImage = nil; batchImages = []
-        switch kind {
-        case 0: qrImage = QRGen.make(text, scale: scale)
-        case 1: qrImage = QRGen.make(QRPayload.wifi(ssid: ssid, password: password, security: ["WPA", "WEP", "nopass"][security], hidden: hidden), scale: scale)
-        case 2: qrImage = QRGen.make(QRPayload.vcard(name: cName, phone: cPhone, email: cEmail, org: cOrg), scale: scale)
-        case 3: qrImage = QRGen.make(sms.isEmpty ? "tel:\(phone)" : "SMSTO:\(phone):\(sms)", scale: scale)
-        default:
-            batchImages = batch.split(whereSeparator: \.isNewline).map { String($0).trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }.compactMap { QRGen.make($0, scale: 10) }
-        }
-        if qrImage != nil || !batchImages.isEmpty { HandyHaptics.success() }
-    }
-
-    // MARK: Wi‑Fi card
-
-    private var wifiCardTab: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Text("A printable card for the fridge or guest room — people scan it and join, no typing.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            field("Network name (SSID)", $ssid)
-            secureField("Password", $password)
-            Picker("Security", selection: $security) { Text("WPA/WPA2/3").tag(0); Text("WEP").tag(1); Text("Open").tag(2) }.pickerStyle(.segmented)
-            Button { cardImage = QRGen.wifiCard(ssid: ssid, password: password, security: ["WPA", "WEP", "nopass"][security]) ; if cardImage != nil { HandyHaptics.success() } } label: {
-                Label("Make the card", systemImage: "wifi").frame(maxWidth: .infinity)
-            }.primaryButton().disabled(ssid.isEmpty)
-            if let cardImage, let png = cardImage.pngData() {
-                Image(uiImage: cardImage).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                ShareLink(item: PNGFile(data: png), preview: SharePreview("Wi‑Fi card")) { Label("Save, share or print", systemImage: "printer").frame(maxWidth: .infinity) }.secondaryButton()
-            }
-        }
-    }
 }
-
-// MARK: - Payload parsing / generation
 
 enum QRPayload {
     case wifi(ssid: String, password: String, security: String)
