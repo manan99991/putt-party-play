@@ -68,7 +68,7 @@ struct VaultView: View {
 
     private var unlockedBody: some View {
         VStack(spacing: HandySpacing.s12) {
-            HStack(spacing: HandySpacing.s8) {
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
                 addButton(.note, "Note", "square.and.pencil"); addButton(.secret, "Secret", "key.fill")
                 Button { showCamera = true } label: { VStack(spacing: 4) { Image(systemName: "camera.fill"); Text("Camera").font(HandyFont.micro) }.frame(maxWidth: .infinity, minHeight: 56) }.secondaryButton()
                 PhotosPicker(selection: $photoItem, matching: .images, photoLibrary: .shared()) { VStack(spacing: 4) { Image(systemName: "photo.badge.plus"); Text("Photo").font(HandyFont.micro) }.frame(maxWidth: .infinity, minHeight: 56) }.secondaryButton()

@@ -17,8 +17,10 @@ struct AudioLabView: View {
 
     var body: some View {
         ToolPage(title: "Audio Lab", subtitle: "Tune an instrument, generate any tone, test your speakers and earbuds, or shake water out of them.") {
-            HStack(spacing: HandySpacing.s8) {
-                ForEach(Kind.allCases, id: \.rawValue) { k in HChip(text: k.title, selected: kind == k) { switchTo(k) } }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: HandySpacing.s8) {
+                    ForEach(Kind.allCases, id: \.rawValue) { k in HChip(text: k.title, selected: kind == k) { switchTo(k) } }
+                }
             }
             switch kind {
             case .tuner: tunerPanel

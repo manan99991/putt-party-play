@@ -43,8 +43,8 @@ struct MeasureARView: View {
                 HStack(spacing: HandySpacing.s8) {
                     ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; ar.reset() } }
                     Spacer()
-                    Picker("Units", selection: $metric) { Text("ft/in").tag(false); Text("m/cm").tag(true) }.pickerStyle(.segmented).frame(width: 130)
                 }
+                Picker("Units", selection: $metric) { Text("ft/in").tag(false); Text("m/cm").tag(true) }.pickerStyle(.segmented).frame(width: 160)
                 HStack(spacing: HandySpacing.s8) {
                     Button { ar.place() } label: { Label("Add point", systemImage: "plus.circle.fill").frame(maxWidth: .infinity) }.primaryButton().disabled(!ar.hasSurface)
                     Button { ar.undo() } label: { Image(systemName: "arrow.uturn.backward").frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)

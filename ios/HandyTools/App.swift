@@ -403,7 +403,7 @@ struct PaywallView: View {
             Text("Every tool, unlimited. Ads gone for good.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
 
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                ForEach(["No banner or full-screen ads", "Unlimited clips, scans, PDFs & AI actions", "Unlimited alarms and wallet cards", "Support one indie developer"], id: \.self) { line in
+                ForEach(["No banner or full-screen ads", "Unlimited fits, scans, exports & AI actions", "Unlimited video, voice and translation jobs", "Support one indie developer"], id: \.self) { line in
                     HStack(spacing: HandySpacing.s12) {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent)
                         Text(line).font(HandyFont.body)

@@ -152,6 +152,7 @@ struct HChip: View {
     var body: some View {
         Button(action: action) {
             Text(text).font(.system(size: 14, weight: .medium))
+                .lineLimit(1).fixedSize(horizontal: true, vertical: false)
                 .foregroundStyle(selected ? HandyColor.accent : HandyColor.textPrimary)
                 .padding(.horizontal, HandySpacing.s16)
                 .frame(minHeight: HandySpacing.chipHeight)

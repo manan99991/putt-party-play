@@ -48,6 +48,7 @@ targets:
     info:
       path: HandyTools/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleDisplayName: Tenzy
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
@@ -86,6 +87,7 @@ targets:
     info:
       path: ClipboardKeyboard/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleDisplayName: Tenzy Clips
         NSExtension:
           NSExtensionPointIdentifier: com.apple.keyboard-service
@@ -109,6 +111,7 @@ targets:
     info:
       path: ShareExtension/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleDisplayName: Save to Clips
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
@@ -131,6 +134,7 @@ targets:
     info:
       path: StickyWidget/Info.plist
       properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleDisplayName: Sticky Note
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension

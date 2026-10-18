@@ -24,6 +24,7 @@ final class FrameCamera: NSObject, ObservableObject, AVCaptureVideoDataOutputSam
     func start(preset: AVCaptureSession.Preset = .hd1280x720, position: AVCaptureDevice.Position = .back) {
         nonisolated(unsafe) let s = session
         if !session.inputs.isEmpty { if !session.isRunning { DispatchQueue.global().async { s.startRunning() } }; return }
+        guard AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position) != nil else { return }   // simulator / no camera: nothing to ask for
         AVCaptureDevice.requestAccess(for: .video) { ok in Task { @MainActor in self.authorized = ok } }
         session.beginConfiguration()
         session.sessionPreset = preset

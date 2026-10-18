@@ -10,6 +10,11 @@ final class ToolFlowTests: XCTestCase {
     override func setUp() {
         continueAfterFailure = false
         app = XCUIApplication()
+        // Permission prompts can't all be pre-granted on the simulator; answer them like a user would.
+        addUIInterruptionMonitor(withDescription: "system alert") { alert in
+            for label in ["Allow", "OK", "Allow While Using App", "Allow Once"] where alert.buttons[label].exists { alert.buttons[label].tap(); return true }
+            return false
+        }
     }
 
     private func launch(_ id: String) {
@@ -92,6 +97,7 @@ final class ToolFlowTests: XCTestCase {
 
     func testVideoTrimsAndShrinksSampleClip() {
         launch("video")
+        XCTAssertTrue(app.buttons["Trim"].firstMatch.waitForExistence(timeout: 90), "sample clip never loaded")
         tapChip("Trim")
         // slide the start handle a little so a real trim happens
         let sliders = app.sliders

@@ -77,10 +77,10 @@ enum SampleAssets {
     }
 
     /// A 3-second silent H.264 movie with moving colour so compression tests mean something.
-    static func movie(seconds: Double = 3, size: CGSize = CGSize(width: 1280, height: 720)) async -> URL? {
+    static func movie(seconds: Double = 2.5, size: CGSize = CGSize(width: 640, height: 360)) async -> URL? {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("sample-\(UUID().uuidString.prefix(6)).mov")
         guard let writer = try? AVAssetWriter(outputURL: url, fileType: .mov) else { return nil }
-        let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: Int(size.width), AVVideoHeightKey: Int(size.height), AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: 8_000_000]])
+        let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: Int(size.width), AVVideoHeightKey: Int(size.height), AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: 6_000_000]])
         let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA, kCVPixelBufferWidthKey as String: Int(size.width), kCVPixelBufferHeightKey as String: Int(size.height)])
         writer.add(input)
         guard writer.startWriting() else { return nil }

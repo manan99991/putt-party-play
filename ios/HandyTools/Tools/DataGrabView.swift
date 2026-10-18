@@ -24,8 +24,10 @@ struct DataGrabView: View {
                 Button { if let s = UIPasteboard.general.string { text = s; run() } } label: { Label("Paste text instead", systemImage: "doc.on.clipboard").frame(maxWidth: .infinity) }.secondaryButton()
                 if busy { HStack { ProgressView(); Text("Reading…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
             } else {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach([DataGrab.Kind.receipt, .card, .event, .table], id: \.rawValue) { k in HChip(text: k.rawValue, selected: kind == k) { kind = k; run(detect: false) } }
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: HandySpacing.s8) {
+                        ForEach([DataGrab.Kind.receipt, .card, .event, .table], id: \.rawValue) { k in HChip(text: k.rawValue, selected: kind == k) { kind = k; run(detect: false) } }
+                    }
                 }
                 if kind != autoKind && autoKind != .text { Text("Detected as \(autoKind.rawValue.lowercased()) — you switched to \(kind.rawValue.lowercased()).").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 switch kind {

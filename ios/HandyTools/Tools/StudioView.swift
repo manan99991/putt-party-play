@@ -47,8 +47,10 @@ struct StudioView: View {
             }
 
             if let original {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; preview = nil; output = nil; errorText = nil } }
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: HandySpacing.s8) {
+                        ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; preview = nil; output = nil; errorText = nil } }
+                    }
                 }
 
                 ZStack {

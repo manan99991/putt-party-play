@@ -176,8 +176,10 @@ struct ScanView: View {
     }
 
     private var modeChips: some View {
-        HStack(spacing: HandySpacing.s8) {
-            ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: HandySpacing.s8) {
+                ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
+            }
         }
     }
 
