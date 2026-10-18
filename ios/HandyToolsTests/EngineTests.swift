@@ -8,6 +8,7 @@ import PencilKit
 import CoreImage
 import simd
 import CoreLocation
+import CryptoKit
 @testable import HandyTools
 
 /// Engine-level correctness checks. These exercise the real tool logic with deterministic,
@@ -496,13 +497,17 @@ final class EngineTests: XCTestCase {
         let pk = ProImage.peaking(card)
         XCTAssertEqual(pk.extent, card.extent)
         let edge = ColorVision.averageColor(of: pk, region: CGRect(x: 0.48, y: 0.2, width: 0.04, height: 0.6), context: ctx)   // the hard edge → red
-        XCTAssertGreaterThan((edge?.x ?? 0) - (edge?.y ?? 0), 0.3, "edge should be painted red: \(String(describing: edge))")
+        let flat = ColorVision.averageColor(of: pk, region: CGRect(x: 0.1, y: 0.2, width: 0.2, height: 0.6), context: ctx)   // flat white → untouched
+        XCTAssertGreaterThan((edge?.x ?? 0) - (edge?.y ?? 0), 0.05, "edge should be painted red: \(String(describing: edge))")
+        XCTAssertEqual((flat?.x ?? 0) - (flat?.y ?? 0), 0, accuracy: 0.02, "flat areas stay untouched")
         let h = ProImage.histogram(card, context: ctx, bins: 32)
         XCTAssertEqual(h.count, 32)
         XCTAssertGreaterThan(h.first ?? 0, 0.5, "half the pixels are black"); XCTAssertGreaterThan(h.last ?? 0, 0.5, "half the pixels are white")
         XCTAssertLessThan(h[16], 0.1)
+        // scale() works in linear light (right for averaging exposures): 0.5 linear reads back as ~0.735 in sRGB
         let half = ProImage.scale(white, by: 0.5)
-        XCTAssertEqual(ColorVision.averageColor(of: half, region: CGRect(x: 0.2, y: 0.2, width: 0.6, height: 0.6), context: ctx)?.x ?? 0, 0.5, accuracy: 0.05)
+        let v = ColorVision.averageColor(of: half, region: CGRect(x: 0.2, y: 0.2, width: 0.6, height: 0.6), context: ctx)?.x ?? 0
+        XCTAssertEqual(v, 0.735, accuracy: 0.03, "expected sRGB(0.5 linear)")
     }
 
     // MARK: AR measure math
@@ -708,6 +713,27 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(LinkCleaner.clean("https://example.com/a?x=1#:~:text=hello"), "https://example.com/a?x=1")
         XCTAssertEqual(LinkCleaner.clean("not a url"), "not a url")
         XCTAssertTrue(LinkCleaner.isURL("https://a.com/x")); XCTAssertFalse(LinkCleaner.isURL("hello https://a.com")); XCTAssertFalse(LinkCleaner.isURL("a.com"))
+    }
+
+    // MARK: vault crypto
+
+    func testVaultCryptoRoundTripsAndRejectsTampering() throws {
+        let key = SymmetricKey(size: .bits256)
+        let secret = Data("garage code 4471 · wifi: hunter2".utf8)
+        let sealed = try VaultCrypto.seal(secret, with: key)
+        XCTAssertNotEqual(sealed, secret)
+        XCTAssertGreaterThan(sealed.count, secret.count + 20, "nonce + tag present")
+        XCTAssertEqual(try VaultCrypto.open(sealed, with: key), secret)
+        var tampered = sealed; tampered[tampered.count / 2] ^= 0x55
+        XCTAssertThrowsError(try VaultCrypto.open(tampered, with: key))
+        XCTAssertThrowsError(try VaultCrypto.open(sealed, with: SymmetricKey(size: .bits256)), "a different key must not decrypt")
+        // two seals of the same plaintext never match (fresh nonce each time)
+        XCTAssertNotEqual(try VaultCrypto.seal(secret, with: key), sealed)
+        // shred removes the file
+        let tmp = FileManager.default.temporaryDirectory.appendingPathComponent("shred-test.bin")
+        try Data(repeating: 7, count: 4096).write(to: tmp)
+        VaultCrypto.shred(tmp)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: tmp.path))
     }
 
     // MARK: video engine

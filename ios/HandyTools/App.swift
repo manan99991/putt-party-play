@@ -141,7 +141,6 @@ struct ToolDestination: View {
         case "voicenotes": VoiceNotesView()
         case "livecaptions": LiveCaptionsView()
         case "clips": ClipboardView()
-        case "vault": SecureVaultView()
         // Everything else is being built — show an honest placeholder, never a blank screen.
         case "capture": CaptureView()
         case "colorvision": ColorVisionView()
@@ -156,6 +155,7 @@ struct ToolDestination: View {
         case "textstudio": TextStudioView()
         case "readaloud": ReadAloudView()
         case "explain": ExplainerView()
+        case "vault": VaultView()
         default: ComingSoonView(id: id)
         }
     }

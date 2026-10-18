@@ -130,10 +130,21 @@ struct CaptureView: View {
     }
 
     static func barcode(in image: UIImage) -> String? {
-        // Pad with a white quiet zone — screenshots and generated codes often have none, and the
-        // detector needs one. Also cap the size so detection stays fast.
-        let src = image.normalizedUp().resized(maxDimension: 1600)
-        let pad = max(24, src.size.width * 0.08)
+        // Normalise what the detector sees: upright, between ~800 and 1600 px (tiny screenshots and
+        // generated codes get enlarged crisply), with a white quiet zone — screenshots rarely have one.
+        var src = image.normalizedUp().resized(maxDimension: 1600)
+        let longest = max(src.size.width, src.size.height)
+        if longest < 800 {
+            let k = (800 / longest).rounded(.up)
+            let size = CGSize(width: src.size.width * k, height: src.size.height * k)
+            let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+            let base = src
+            src = UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+                c.cgContext.interpolationQuality = .none
+                base.draw(in: CGRect(origin: .zero, size: size))
+            }
+        }
+        let pad = max(32, src.size.width * 0.08)
         let size = CGSize(width: src.size.width + pad * 2, height: src.size.height + pad * 2)
         let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
         let padded = UIGraphicsImageRenderer(size: size, format: fmt).image { c in
@@ -141,9 +152,13 @@ struct CaptureView: View {
             src.draw(in: CGRect(x: pad, y: pad, width: src.size.width, height: src.size.height))
         }
         guard let cg = padded.cgImage else { return nil }
-        let req = VNDetectBarcodesRequest()
-        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
-        return req.results?.compactMap(\.payloadStringValue).first
+        for revision in [VNDetectBarcodesRequest.currentRevision, VNDetectBarcodesRequestRevision1] {
+            let req = VNDetectBarcodesRequest()
+            req.revision = revision
+            try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
+            if let v = req.results?.compactMap(\.payloadStringValue).first { return v }
+        }
+        return nil
     }
 
     private func ask(_ text: String) {
