@@ -24,6 +24,15 @@ import AVFoundation
     private var rollTimer: Task<Void, Never>?
     private var tapInstalled = false
 
+    /// "es" → es-MX on a Mexican phone, es-ES elsewhere; falls back to any region the recogniser offers.
+    static func bestLocale(forLanguage code: String) -> Locale {
+        let all = SFSpeechRecognizer.supportedLocales()
+        if let exact = all.first(where: { $0.identifier == code }) { return exact }
+        let region = Locale.current.region?.identifier ?? ""
+        let same = all.filter { $0.language.languageCode?.identifier == code }
+        return same.first { $0.region?.identifier == region } ?? same.first { $0.identifier.hasPrefix(code + "-" + code.uppercased()) } ?? same.first ?? Locale(identifier: code)
+    }
+
     static var supportedLocales: [Locale] { SFSpeechRecognizer.supportedLocales().sorted { ($0.localizedString(forIdentifier: $0.identifier) ?? "") < ($1.localizedString(forIdentifier: $1.identifier) ?? "") } }
 
     func start() {

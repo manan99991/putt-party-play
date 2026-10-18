@@ -78,6 +78,11 @@ enum SceneDescriber {
         let u = AVSpeechUtterance(string: s); u.rate = rate
         synth.speak(u); speaking = true
     }
+    func speak(_ u: AVSpeechUtterance) {
+        try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.duckOthers]); try? AVAudioSession.sharedInstance().setActive(true)
+        if synth.isSpeaking { synth.stopSpeaking(at: .immediate) }
+        synth.speak(u); speaking = true
+    }
     func stop() { synth.stopSpeaking(at: .immediate); speaking = false }
     nonisolated func speechSynthesizer(_ s: AVSpeechSynthesizer, didFinish u: AVSpeechUtterance) { Task { @MainActor in self.speaking = false } }
     nonisolated func speechSynthesizer(_ s: AVSpeechSynthesizer, didCancel u: AVSpeechUtterance) { Task { @MainActor in self.speaking = false } }
