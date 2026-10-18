@@ -138,7 +138,8 @@ struct ToolDestination: View {
         case "magnify": MagnifierView()
         // ── Page 3 ──
         case "translate": TranslateView()
-        case "voicenotes": AudioToTextView()
+        case "voicenotes": VoiceNotesView()
+        case "livecaptions": LiveCaptionsView()
         case "clips": ClipboardView()
         case "vault": SecureVaultView()
         // Everything else is being built — show an honest placeholder, never a blank screen.
