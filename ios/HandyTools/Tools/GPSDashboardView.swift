@@ -29,7 +29,7 @@ struct GPSDashboardView: View {
             Text("Speed comes from GPS, so it lags a second and reads low under trees or between tall buildings. Trip tracking pauses when you leave the app.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .onAppear { gps.start() }
+        .onAppear { if !Launch.uitest { gps.start() } }
         .onDisappear { gps.stop() }
         .fullScreenCover(isPresented: $hud) { HUDSheet(gps: gps, metric: metric) }
     }

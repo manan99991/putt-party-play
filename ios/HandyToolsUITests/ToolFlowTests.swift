@@ -36,7 +36,13 @@ final class ToolFlowTests: XCTestCase {
     private func tapChip(_ title: String) {
         let b = app.buttons[title].firstMatch
         XCTAssertTrue(b.waitForExistence(timeout: 10), "chip \(title) missing")
-        b.tap()
+        if b.isHittable { b.tap(); return }
+        // scrolled off a horizontal row — nudge it into view, then tap the frame's centre
+        for _ in 0..<4 {
+            app.swipeLeft()
+            if b.isHittable { b.tap(); return }
+        }
+        b.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
     }
     private func expect(_ e: XCUIElement, _ what: String, timeout: TimeInterval = 60) {
         XCTAssertTrue(e.waitForExistence(timeout: timeout), "\(what) never appeared")
@@ -148,7 +154,7 @@ final class ToolFlowTests: XCTestCase {
         button(containing: "Fi card").tap()
         let ssid = app.textFields.firstMatch; expect(ssid, "ssid field", timeout: 10); ssid.tap(); ssid.typeText("HomeNet")
         button(containing: "Make the card").tap()
-        expect(button(containing: "Save or share"), "wifi card", timeout: 30)
+        expect(button(containing: "Save, share or print"), "wifi card", timeout: 30)
         alive("qrwifi")
     }
 
@@ -189,6 +195,7 @@ final class ToolFlowTests: XCTestCase {
 
     func testAudioLabToneSpeakerAndTuner() {
         launch("audiolab")
+        if !app.buttons["Tone"].firstMatch.isHittable { app.tap() }
         tapChip("Tone"); button(containing: "Play tone").tap(); sleep(1); button(containing: "Stop").tap()
         tapChip("Speaker test"); app.buttons["Left"].firstMatch.tap(); sleep(2)
         tapChip("Eject water"); button(containing: "(12 s)").tap(); sleep(1); button(containing: "Stop").tap()
@@ -296,8 +303,11 @@ final class ToolFlowTests: XCTestCase {
         expect(button(containing: "Clean link"), "clean link action", timeout: 15)
         button(containing: "Clean link").tap()
         expect(text(containing: "tracking removed"), "clean link toast", timeout: 10)
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Snippets'")).firstMatch.tap()
-        button(containing: "New snippet").tap()
+        let snippetsTab = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Snippets'")).firstMatch
+        XCTAssertTrue(snippetsTab.waitForExistence(timeout: 10), "snippets tab")
+        snippetsTab.tap()
+        let newSnippet = button(containing: "New snippet")
+        XCTAssertTrue(newSnippet.waitForExistence(timeout: 10), "new snippet button"); newSnippet.tap()
         let title = app.textFields.firstMatch; expect(title, "snippet title", timeout: 10); title.tap(); title.typeText("Home")
         let editor = app.textViews.firstMatch; editor.tap(); editor.typeText("1 Infinite Loop")
         button(containing: "Save snippet").tap()

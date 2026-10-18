@@ -59,7 +59,7 @@ struct SceneDescriberView: View {
                                       : "Runs on the phone's vision engine; with Apple Intelligence the sentences get more natural. Best-effort — not a mobility or safety aid.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .onAppear { cam.start(preset: .hd1280x720); speaker.rate = Float(rate); if Launch.sample { Task { await describe(SampleAssets.photo(), speak: false) } } }
+        .onAppear { if !Launch.uitest { cam.start(preset: .hd1280x720) }; speaker.rate = Float(rate); if Launch.sample { Task { await describe(SampleAssets.photo(), speak: false) } } }
         .onDisappear { stopContinuous(); cam.stop(); speaker.stop() }
         .onChange(of: photoItem) { _, item in
             Task {

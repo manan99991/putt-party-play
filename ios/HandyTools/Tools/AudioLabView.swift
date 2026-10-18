@@ -29,7 +29,7 @@ struct AudioLabView: View {
             case .eject: ejectPanel
             }
         }
-        .onAppear { if kind == .tuner { tuner.start() } }
+        .onAppear { if kind == .tuner, !Launch.uitest { tuner.start() } }
         .onChange(of: a4) { _, v in tuner.a4 = v }
         .onDisappear { tuner.stop(); tone.stop() }
     }

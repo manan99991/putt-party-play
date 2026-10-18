@@ -9,7 +9,8 @@ enum LinkCleaner {
     static let wrappers: [(host: String, param: String)] = [("l.facebook.com", "u"), ("lm.facebook.com", "u"), ("l.instagram.com", "u"), ("www.google.com", "url"), ("google.com", "url"), ("out.reddit.com", "url"), ("href.li", ""), ("t.umblr.com", "z"), ("exit.sc", "url"), ("www.youtube.com", "q"), ("youtube.com", "q"), ("l.messenger.com", "u"), ("safelinks.protection.outlook.com", "url"), ("urldefense.com", "")]
 
     static func clean(_ raw: String) -> String {
-        guard var comps = URLComponents(string: raw.trimmingCharacters(in: .whitespacesAndNewlines)) else { return raw }
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard isURL(trimmed), var comps = URLComponents(string: trimmed) else { return raw }
         // unwrap redirectors
         if let host = comps.host?.lowercased(), let w = wrappers.first(where: { host == $0.host || host.hasSuffix("." + $0.host) }) {
             if !w.param.isEmpty, let inner = comps.queryItems?.first(where: { $0.name == w.param })?.value, let innerURL = URLComponents(string: inner), innerURL.host != nil {
