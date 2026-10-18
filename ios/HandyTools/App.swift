@@ -312,7 +312,6 @@ struct ToolGridPage: View {
     var body: some View {
         let items = tools(onPage: page)
         VStack(spacing: HandySpacing.s12) {
-            if page == 3 { aiNote }
             ForEach(0..<5, id: \.self) { row in
                 HStack(spacing: HandySpacing.s12) {
                     ForEach(0..<2, id: \.self) { col in
@@ -335,18 +334,6 @@ struct ToolGridPage: View {
         .padding(.bottom, HandySpacing.s12)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-
-    private var aiNote: some View {
-        HStack(spacing: HandySpacing.s8) {
-            Image(systemName: AIEngine.isAvailable ? "sparkles" : "sparkles.slash").foregroundStyle(HandyColor.accent)
-            Text(AIEngine.isAvailable ? "Runs free and private on your iPhone — nothing is uploaded."
-                                      : "AI needs a newer iPhone. Each tool explains what it does and offers what it can.")
-                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        }
-        .padding(HandySpacing.s12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(HandyColor.accentSoft.opacity(0.6), in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-    }
 }
 
 /// Home grid card. AI tools get a gradient icon + a sparkle to signal the premium, on-device page.
@@ -364,9 +351,10 @@ struct ToolCard: View {
                 }
             }
             Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.75)
-            Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+            Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2).minimumScaleFactor(0.8)
+            Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity, minHeight: 92, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .cardStyle(padding: HandySpacing.s12)
         .overlay(alignment: .topTrailing) {
             if tool.ai { Image(systemName: "sparkle").font(.system(size: 10)).foregroundStyle(HandyColor.accent).padding(8) }
