@@ -74,10 +74,8 @@ struct QRWifiView: View {
         guard let item else { return }
         scanError = nil
         Task {
-            guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d), let cg = img.normalizedUp().cgImage else { return }
-            let req = VNDetectBarcodesRequest()
-            try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
-            let found = (req.results ?? []).compactMap { $0.payloadStringValue }.first
+            guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) else { return }
+            let found = CaptureView.barcode(in: img)
             await MainActor.run {
                 if let found { scanned = found; HandyHaptics.success() }
                 else { scanError = "No QR or barcode found in that image." }
@@ -271,7 +269,7 @@ enum QRPayload {
         let up = t.uppercased()
         if up.hasPrefix("WIFI:") {
             var ssid = "", pass = "", sec = "Open"
-            for part in t.dropFirst(5).components(separatedBy: ";") {
+            for part in splitUnescaped(String(t.dropFirst(5)), on: ";") {
                 if part.hasPrefix("S:") { ssid = unescape(String(part.dropFirst(2))) }
                 else if part.hasPrefix("P:") { pass = unescape(String(part.dropFirst(2))) }
                 else if part.hasPrefix("T:") { let v = String(part.dropFirst(2)); sec = v.lowercased() == "nopass" ? "Open" : v }
@@ -311,6 +309,19 @@ enum QRPayload {
         if !org.isEmpty { l.append("ORG:\(org)") }
         l.append("END:VCARD")
         return l.joined(separator: "\n")
+    }
+    /// Split on `sep` while honouring backslash escapes (so an SSID like `Home\;Net` survives).
+    static func splitUnescaped(_ s: String, on sep: Character) -> [String] {
+        var out: [String] = [], cur = "", esc = false
+        for ch in s {
+            if esc { cur.append("\\"); cur.append(ch); esc = false }
+            else if ch == "\\" { esc = true }
+            else if ch == sep { out.append(cur); cur = "" }
+            else { cur.append(ch) }
+        }
+        if esc { cur.append("\\") }
+        if !cur.isEmpty { out.append(cur) }
+        return out
     }
     static func escape(_ s: String) -> String { s.replacingOccurrences(of: #"([\\;,":])"#, with: #"\\$1"#, options: .regularExpression) }
     static func unescape(_ s: String) -> String { s.replacingOccurrences(of: #"\\([\\;,":])"#, with: "$1", options: .regularExpression) }

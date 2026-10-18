@@ -415,6 +415,47 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Pitch.note(for: 440, a4: 442).cents, -7.85, accuracy: 0.1)
     }
 
+    // MARK: rest
+
+    func testNoiseSynthProducesBoundedColouredNoise() {
+        for k in NoiseSynth.Kind.allCases {
+            let x = NoiseSynth.render(k, samples: 44100)
+            let peak = x.map { abs($0) }.max() ?? 0
+            let rms = sqrt(x.reduce(0) { $0 + $1 * $1 } / Float(x.count))
+            XCTAssertLessThanOrEqual(peak, 1.0, "\(k) clips")
+            XCTAssertGreaterThan(rms, 0.02, "\(k) is near-silent (rms \(rms))")
+            XCTAssertLessThan(rms, 0.6, "\(k) is too hot (rms \(rms))")
+        }
+        // brown has far less high-frequency energy than white: successive-sample differences are much smaller
+        func roughness(_ x: [Float]) -> Float { zip(x.dropFirst(), x).map { abs($0 - $1) }.reduce(0, +) / Float(x.count) }
+        let white = NoiseSynth.render(.white, samples: 20000), brown = NoiseSynth.render(.brown, samples: 20000)
+        XCTAssertLessThan(roughness(brown), roughness(white) * 0.2)
+    }
+
+    func testSoundEventDetectorArmsHoldsAndStops() {
+        var d = SoundEventDetector(baselineDB: 35, riseDB: 12, armSeconds: 0.4, holdSeconds: 8, maxSeconds: 60)
+        var t = 0.0
+        var changes: [SoundEventDetector.Change] = []
+        func feed(_ db: Double, for seconds: Double) { var s = 0.0; while s < seconds { changes.append(d.feed(db: db, at: t)); t += 0.1; s += 0.1 } }
+        feed(36, for: 5)            // quiet room
+        feed(60, for: 0.2)          // a brief click: too short to arm
+        feed(36, for: 2)
+        XCTAssertFalse(changes.contains(.start), "a 0.2 s click should not start a clip")
+        feed(60, for: 3)            // snoring burst
+        XCTAssertEqual(changes.filter { $0 == .start }.count, 1)
+        XCTAssertTrue(d.recording)
+        feed(36, for: 5)            // quiet, but inside the hold window
+        XCTAssertTrue(d.recording)
+        feed(36, for: 4)            // hold expires
+        XCTAssertFalse(d.recording)
+        XCTAssertEqual(d.events.count, 1)
+        XCTAssertEqual(d.events[0].peakDB, 60)
+        XCTAssertEqual(d.events[0].end - d.events[0].start, 11, accuracy: 0.5)
+        // a very long noise gets cut at maxSeconds
+        feed(60, for: 70)
+        XCTAssertGreaterThanOrEqual(d.events.count, 2)
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {

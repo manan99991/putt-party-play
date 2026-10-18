@@ -130,7 +130,17 @@ struct CaptureView: View {
     }
 
     static func barcode(in image: UIImage) -> String? {
-        guard let cg = image.normalizedUp().cgImage else { return nil }
+        // Pad with a white quiet zone — screenshots and generated codes often have none, and the
+        // detector needs one. Also cap the size so detection stays fast.
+        let src = image.normalizedUp().resized(maxDimension: 1600)
+        let pad = max(24, src.size.width * 0.08)
+        let size = CGSize(width: src.size.width + pad * 2, height: src.size.height + pad * 2)
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+        let padded = UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(origin: .zero, size: size))
+            src.draw(in: CGRect(x: pad, y: pad, width: src.size.width, height: src.size.height))
+        }
+        guard let cg = padded.cgImage else { return nil }
         let req = VNDetectBarcodesRequest()
         try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
         return req.results?.compactMap(\.payloadStringValue).first
