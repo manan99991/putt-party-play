@@ -1,0 +1,86 @@
+import SwiftUI
+
+/// Free-tier limits, in one place. Free users get the full tool, with a ceiling that upsells to
+/// Pro — never a dead "Pro only" wall. Keep these honest and generous enough to be useful.
+enum Limits {
+    static let freeClips = 15          // Multi-Clipboard saved items
+    static let freeAlarms = 3          // Alarm Pro
+    static let freeOcrPerDay = 5       // Text from Image
+    static let freeTranslatePerDay = 8 // Translate
+    static let freeScanPages = 3       // Doc Scanner pages per PDF
+    static let freeAiPerDay = 3        // Page-3 AI actions, shared across all AI tools
+    static let freeWalletCards = 2     // Card Wallet
+    static let freeVideoPerDay = 2     // Video Compressor
+    static let freeImagePdfPerDay = 3  // Image → PDF
+    static let freeBgRemovePerDay = 5  // Background Remover
+}
+
+/// Per-day usage counters that reset at midnight, stored in UserDefaults. Pro is unlimited, so
+/// `allow` short-circuits to true for Pro and these are never touched.
+enum Usage {
+    private static let d = UserDefaults.standard
+
+    private static func today() -> String {
+        let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"; return f.string(from: Date())
+    }
+    private static func key(_ name: String) -> String { "usage.\(name).\(today())" }
+
+    static func count(_ name: String) -> Int { d.integer(forKey: key(name)) }
+
+    /// True if there's room left today (or the user is Pro). Does not consume.
+    static func hasRoom(_ name: String, limit: Int) -> Bool {
+        if StoreManager.shared.isPremium { return true }
+        return count(name) < limit
+    }
+
+    /// Consume one unit. Returns true if it was allowed.
+    @discardableResult
+    static func use(_ name: String, limit: Int) -> Bool {
+        if StoreManager.shared.isPremium { return true }
+        let c = count(name)
+        guard c < limit else { return false }
+        d.set(c + 1, forKey: key(name))
+        return true
+    }
+
+    static func remaining(_ name: String, limit: Int) -> Int {
+        if StoreManager.shared.isPremium { return .max }
+        return max(0, limit - count(name))
+    }
+}
+
+/// A small inline banner a free user sees when they hit a limit. Taps open the paywall.
+struct LimitReachedBanner: View {
+    let message: String
+    var body: some View {
+        Button { NotificationCenter.default.post(name: .showPaywall, object: nil) } label: {
+            HStack(spacing: HandySpacing.s12) {
+                Image(systemName: "crown.fill").foregroundStyle(HandyColor.accent)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary).multilineTextAlignment(.leading)
+                    Text("Tap to go Pro — unlimited").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+                }
+                Spacer()
+                Image(systemName: "chevron.right").font(.system(size: 12)).foregroundStyle(HandyColor.textSecondary)
+            }
+            .padding(HandySpacing.s12)
+            .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+/// A subtle "x left today" chip free users see on metered tools, so the limit never surprises them.
+struct QuotaChip: View {
+    @EnvironmentObject var store: StoreManager
+    let name: String
+    let limit: Int
+    var body: some View {
+        if !store.isPremium {
+            let left = Usage.remaining(name, limit: limit)
+            Text("\(left) of \(limit) left today")
+                .font(HandyFont.caption)
+                .foregroundStyle(left == 0 ? HandyColor.danger : HandyColor.textSecondary)
+        }
+    }
+}

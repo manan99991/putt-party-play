@@ -1,29 +1,34 @@
 import Foundation
 import StoreKit
 
-/// StoreKit 2. Yearly auto-renewing subscription only.
+/// StoreKit 2. Two auto-renewing subscriptions in one group — Monthly and Yearly —
+/// so a buyer can pick either and switch tiers without re-subscribing.
 ///
 /// App Store Connect setup (one time):
-///   App > Subscriptions > Create group "Tenzy Pro"
-///   Product ID: tenzy_pro_yearly   (must match `productID`)
-///   Duration: 1 year. Optional 1-week free trial as an introductory offer.
+///   App > Subscriptions > group "Tenzy Pro"
+///   • Product ID: tenzy_pro_yearly    Duration: 1 Year   Price: $19.99
+///   • Product ID: tenzy_pro_monthly   Duration: 1 Month  Price: $2.99
+///   (Product IDs must match the constants below.) Optional 1-week free trial on yearly.
 ///
 /// For local testing without ASC, use Tenzy/Resources/Products.storekit
 /// (Edit Scheme > Run > Options > StoreKit Configuration).
 @MainActor
 final class StoreManager: ObservableObject {
     static let shared = StoreManager()
-    static let productID = "tenzy_pro_yearly"
+    static let yearlyID = "tenzy_pro_yearly"
+    static let monthlyID = "tenzy_pro_monthly"
+    static var productIDs: [String] { [yearlyID, monthlyID] }
 
-    @Published private(set) var product: Product?
+    @Published private(set) var yearly: Product?
+    @Published private(set) var monthly: Product?
     @Published private(set) var isPremium: Bool = Premium.isActive
     @Published var purchaseError: String?
 
     private var updates: Task<Void, Never>?
 
-    // CI screenshot only: the `homepro` route renders Home in Pro state (no ad strip) for the
-    // store split slide. In-memory only; never written to Premium.isActive, and it makes
-    // refresh() a no-op so the real (empty) sim entitlement can't downgrade it back to free.
+    // CI screenshot only: the `homepro` route renders Home in Pro state (no ad strip). In-memory
+    // only; never written to Premium.isActive, and it makes refresh() a no-op so the real (empty)
+    // sim entitlement can't downgrade it back to free.
     private let previewPremium = CommandLine.arguments.contains("homepro")
 
     private init() {
@@ -32,22 +37,34 @@ final class StoreManager: ObservableObject {
         Task { await load(); await refresh() }
     }
 
-    var priceLabel: String { product.map { "\($0.displayPrice) / year" } ?? "…" }
+    // Shown on the paywall buttons. Fall back to our set prices if the store hasn't loaded yet.
+    var yearlyPrice: String { yearly?.displayPrice ?? "$19.99" }
+    var monthlyPrice: String { monthly?.displayPrice ?? "$2.99" }
+
+    /// Roughly what the yearly plan saves versus paying monthly for 12 months, as a %.
+    var yearlySavingsPercent: Int {
+        guard let y = yearly?.price, let m = monthly?.price, m > 0 else { return 44 }
+        let full = m * 12
+        let pct = (1 - (y / full)) * 100
+        return max(0, Int(pct.rounded()))
+    }
 
     func load() async {
-        product = try? await Product.products(for: [Self.productID]).first
+        let products = (try? await Product.products(for: Self.productIDs)) ?? []
+        yearly = products.first { $0.id == Self.yearlyID }
+        monthly = products.first { $0.id == Self.monthlyID }
     }
 
     func refresh() async {
         if previewPremium { return }
         var active = false
         for await result in Transaction.currentEntitlements {
-            if case .verified(let t) = result, t.productID == Self.productID, t.revocationDate == nil { active = true }
+            if case .verified(let t) = result, Self.productIDs.contains(t.productID), t.revocationDate == nil { active = true }
         }
         setPremium(active)
     }
 
-    func purchase() async {
+    func purchase(_ product: Product?) async {
         guard let product else { await load(); return }
         do {
             switch try await product.purchase() {
