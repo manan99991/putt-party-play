@@ -18,20 +18,25 @@ Fetching from https://github.com/googleads/swift-package-manager-google-mobile-a
 
 Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
 
-Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
-
-Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
-
 Creating working copy of package ‘swift-package-manager-google-mobile-ads’
 
 Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
 
+Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
+
+Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
+
 
 Resolved source packages:
-  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
   GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
+  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
 
-resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
+resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:436:35: error: argument passed to call that takes no arguments
+2026-10-18 20:19:01.839443+0000 HandyTools[4960:23066] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-10-18 20:19:01.839760+0000 HandyTools[4960:23066] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:245: error: -[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("https://tenzy.app/menu")")
+2026-10-18 20:19:27.862087+0000 HandyTools[4960:23073] [ProcessSuspension] 0x1211683c0 - ProcessAssertion::acquireSync Failed to acquire RBS assertion 'GPUProcess Background Assertion' for process with PID=0, error: (null)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:499: error: -[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram] : XCTAssertGreaterThan failed: ("0.09019607") is not greater than ("0.3") - edge should be painted red: Optional(SIMD3<Float>(0.7372549, 0.64705884, 0.64705884))
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:505: error: -[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram] : XCTAssertEqualWithAccuracy failed: ("0.7372549") is not equal to ("0.5") +/- ("0.05")
 ** TEST FAILED **
