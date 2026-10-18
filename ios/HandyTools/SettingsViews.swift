@@ -5,6 +5,7 @@ import AlarmKit
 
 let PRIVACY_URL = URL(string: "https://manan99991.github.io/tenzy/privacy.html")!
 let SUPPORT_EMAIL = "tenzy.app@gmail.com"
+let APP_STORE_ID = "6824023361"
 
 extension View {
     /// Floating close button for sheet-presented pages, so users aren't forced to swipe to dismiss.
@@ -100,6 +101,7 @@ struct SettingsView: View {
     @State private var showPaywall = false
     @State private var showSetup = false
     @State private var showPrivacy = false
+    @State private var showAbout = false
     private var version: String { Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0" }
 
     var body: some View {
@@ -140,9 +142,9 @@ struct SettingsView: View {
                             UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!)
                         }
                         SettingsRow(icon: "star", title: "Rate Tenzy", sub: "30 seconds, means a lot") {
-                            if let s = UIApplication.shared.connectedScenes.first as? UIWindowScene { AppStore.requestReview(in: s) }
+                            UIApplication.shared.open(URL(string: "https://apps.apple.com/app/id\(APP_STORE_ID)?action=write-review")!)
                         }
-                        SettingsRow(icon: "info.circle", title: "About", sub: "Version \(version) · Made by one person in Illinois") { }
+                        SettingsRow(icon: "info.circle", title: "About", sub: "Version \(version) · Made by one person in Illinois") { showAbout = true }
                     }
                 }
                 .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s8)
@@ -154,6 +156,7 @@ struct SettingsView: View {
         .sheet(isPresented: $showPaywall) { PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible).presentationBackground(HandyColor.surfaceRaised).sheetCloseButton { showPaywall = false } }
         .sheet(isPresented: $showSetup) { SetupView(onDone: { showSetup = false }).sheetCloseButton { showSetup = false } }
         .sheet(isPresented: $showPrivacy) { PrivacyView().sheetCloseButton { showPrivacy = false } }
+        .sheet(isPresented: $showAbout) { AboutView().sheetCloseButton { showAbout = false } }
     }
 
     @ViewBuilder private func Section(_ title: String, @ViewBuilder content: () -> some View) -> some View {
@@ -182,6 +185,49 @@ private struct SettingsRow: View {
             }
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - About
+
+struct AboutView: View {
+    private var version: String { Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0" }
+    private var storeURL: URL { URL(string: "https://apps.apple.com/app/id\(APP_STORE_ID)")! }
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: HandySpacing.s16) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .fill(LinearGradient(colors: [HandyColor.accent, HandyColor.accentPressed], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .frame(width: 92, height: 92)
+                    Image(systemName: "square.grid.2x2.fill").font(.system(size: 40)).foregroundStyle(.white)
+                }.padding(.top, HandySpacing.s32)
+
+                Text("Tenzy").font(.system(size: 30, weight: .bold))
+                Text("Version \(version)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+
+                Text("30 small tools your phone should've had — flashlight, clipboard, scanner, PDF, AI and more. Everything runs on your phone; nothing is uploaded.")
+                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                    .multilineTextAlignment(.center).padding(.horizontal, HandySpacing.s8)
+
+                VStack(spacing: HandySpacing.s12) {
+                    Button { UIApplication.shared.open(URL(string: "https://apps.apple.com/app/id\(APP_STORE_ID)?action=write-review")!) } label: {
+                        Label("Rate Tenzy", systemImage: "star.fill").frame(maxWidth: .infinity)
+                    }.primaryButton()
+                    ShareLink(item: storeURL) { Label("Share Tenzy", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.compactButton()
+                    Button { UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!) } label: {
+                        Label("Send feedback", systemImage: "envelope").frame(maxWidth: .infinity)
+                    }.compactButton()
+                }.padding(.top, HandySpacing.s8)
+
+                Text("Made by one person in Illinois.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s16)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, HandySpacing.gutter)
+            .padding(.bottom, HandySpacing.s48)
+        }
+        .background(HandyColor.bg)
     }
 }
 
