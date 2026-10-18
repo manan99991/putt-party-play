@@ -18,20 +18,21 @@ Fetching from https://github.com/googleads/swift-package-manager-google-mobile-a
 
 Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
 
-Creating working copy of package ‘swift-package-manager-google-mobile-ads’
-
-Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
-
 Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
 
 Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
+
+Creating working copy of package ‘swift-package-manager-google-mobile-ads’
+
+Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
 
 
 Resolved source packages:
   GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
   GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
 
-2026-10-18 18:21:17.298 xcodebuild[3142:13642] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
 resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-** BUILD SUCCEEDED **
+2026-10-18 18:32:13.907854+0000 HandyTools[5321:23839] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-10-18 18:32:13.909648+0000 HandyTools[5321:23839] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+** TEST SUCCEEDED **
