@@ -31,7 +31,7 @@ struct ColorVisionView: View {
 
     private var deficiency: ColorVision.Deficiency { ColorVision.Deficiency(rawValue: deficiencyRaw) ?? .deutan }
     private var source: CIImage? { photo ?? cam.latest }
-    private var cube: Data { ColorVision.highlightCube(highlight) }
+    private var cube: Data { ColorVision.cachedCube(highlight) }
 
     private var processed: CIImage? {
         guard let src = source else { return nil }

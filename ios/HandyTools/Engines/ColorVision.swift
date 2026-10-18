@@ -93,6 +93,13 @@ enum ColorVision {
         return data.withUnsafeBufferPointer { Data(buffer: $0) }
     }
 
+    @MainActor private static var cubeCache: [Int: Data] = [:]
+    /// Cubes are 128 KB and take a few ms to build — build each once.
+    @MainActor static func cachedCube(_ h: Highlight) -> Data {
+        if let c = cubeCache[h.rawValue] { return c }
+        let c = highlightCube(h); cubeCache[h.rawValue] = c; return c
+    }
+
     static func applyCube(_ cube: Data, size: Int = 32, to image: CIImage) -> CIImage {
         let f = CIFilter.colorCube()
         f.inputImage = image
