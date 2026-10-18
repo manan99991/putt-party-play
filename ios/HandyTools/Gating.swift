@@ -10,7 +10,7 @@ enum Limits {
     static let freeScanPages = 3       // Doc Scanner pages per PDF
     static let freeAiPerDay = 3        // Page-3 AI actions, shared across all AI tools
     static let freeWalletCards = 2     // Card Wallet
-    static let freeVideoPerDay = 2     // Video Compressor
+    static let freeVideoPerDay = 3     // Video (shrink/trim/convert/mute/audio/GIF jobs)
     static let freeBgRemovePerDay = 5  // Background Remover
     static let freeConvertPerDay = 3   // Image Converter (batches)
     static let freeAudioPerDay = 3     // Audio → Text (recordings)

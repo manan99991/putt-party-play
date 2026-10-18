@@ -45,6 +45,8 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee build.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true
+          # Surface compile errors + failing tests as check annotations (readable via the API even when log downloads are blocked).
+          grep -E "error:|Test Case .*failed|failed - " build.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
           grep -q "TEST SUCCEEDED" build.log
       - name: Publish build log
         if: always()

@@ -125,7 +125,7 @@ struct ShareReadyView: View {
                     } else { skipped.append(name) }
                 case .video(let src):
                     // MP4 first so it plays anywhere, then fit the size if it's still over.
-                    guard let mp4 = await FormatFixView.toMP4(src, index: i) else { skipped.append("video \(i + 1)"); continue }
+                    guard let mp4 = await VideoEngine.toMP4(src) else { skipped.append("video \(i + 1)"); continue }
                     if let fitted = await SizeTarget.video(url: mp4, targetBytes: r.videoBytes) { urls.append(fitted) }
                     else { skipped.append("video \(i + 1)") }
                 }

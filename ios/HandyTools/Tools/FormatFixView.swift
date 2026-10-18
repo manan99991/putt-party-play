@@ -94,25 +94,12 @@ struct FormatFixView: View {
                     let url = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy-\(i + 1)-\(UUID().uuidString.prefix(4)).\(ext)")
                     try? d.write(to: url); urls.append(url)
                 case .video:
-                    guard let src = entry.url, let out = await Self.toMP4(src, index: i) else { continue }
+                    guard let src = entry.url, let out = await VideoEngine.toMP4(src) else { continue }
                     urls.append(out)
                 }
             }
             outputs = urls; working = false; progress = ""
             if urls.isEmpty { errorText = "Nothing could be converted. Try a different batch." } else { HandyHaptics.success() }
         }
-    }
-
-    /// Re-wrap/re-encode any movie as an H.264/AAC MP4 the rest of the world can play.
-    static func toMP4(_ src: URL, index: Int) async -> URL? {
-        let asset = AVURLAsset(url: src)
-        guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
-        let out = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy-\(index + 1)-\(UUID().uuidString.prefix(4)).mp4")
-        session.outputURL = out
-        session.outputFileType = .mp4
-        session.shouldOptimizeForNetworkUse = true
-        session.metadata = []                       // drop metadata
-        await session.export()
-        return session.status == .completed ? out : nil
     }
 }

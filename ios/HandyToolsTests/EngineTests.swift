@@ -3,6 +3,7 @@ import UIKit
 import ImageIO
 import UniformTypeIdentifiers
 import PDFKit
+import AVFoundation
 @testable import HandyTools
 
 /// Engine-level correctness checks. These exercise the real tool logic with deterministic,
@@ -156,6 +157,54 @@ final class EngineTests: XCTestCase {
         if let heic = ImageStudio.encode(img, as: .heic, quality: 0.8) { XCTAssertNotNil(UIImage(data: heic)) }
     }
 
+    // MARK: video engine
+
+    func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {
+        let fixture = await Self.movie(seconds: 2.0)
+        let src = try XCTUnwrap(fixture, "fixture movie not written")
+        let dur = await VideoEngine.duration(src)
+        XCTAssertEqual(dur, 2.0, accuracy: 0.15)
+
+        let trimmedURL = await VideoEngine.trim(src, start: 0.5, end: 1.5)
+        let trimmed = try XCTUnwrap(trimmedURL, "trim failed")
+        let trimmedDur = await VideoEngine.duration(trimmed)
+        XCTAssertEqual(trimmedDur, 1.0, accuracy: 0.2)
+        XCTAssertEqual(trimmed.pathExtension, "mp4")
+
+        let mp4URL = await VideoEngine.toMP4(src)
+        let mp4 = try XCTUnwrap(mp4URL, "toMP4 failed")
+        XCTAssertGreaterThan(SizeTarget.fileSize(mp4) ?? 0, 0)
+
+        let mutedURL = await VideoEngine.mute(src)
+        let muted = try XCTUnwrap(mutedURL, "mute failed")
+        let audioTracks = try await AVURLAsset(url: muted).loadTracks(withMediaType: .audio)
+        XCTAssertTrue(audioTracks.isEmpty)
+
+        // A silent fixture has nothing to extract — the engine must say no, not crash.
+        let audio = await VideoEngine.extractAudio(src)
+        XCTAssertNil(audio)
+
+        let thumb = await VideoEngine.thumbnail(src, at: 1.0)
+        XCTAssertNotNil(thumb)
+
+        let gifURL = await tenzyGIFFromVideo(url: src, start: 0, duration: 1.0, fps: 8, speed: 1, maxDim: 160)
+        let gif = try XCTUnwrap(gifURL, "GIF from video failed")
+        let gifSrc = try XCTUnwrap(CGImageSourceCreateWithURL(gif as CFURL, nil))
+        let frames = CGImageSourceGetCount(gifSrc)
+        XCTAssertTrue((6...8).contains(frames), "expected ~8 GIF frames, got \(frames)")
+    }
+
+    func testSizeTargetVideoLandsUnderLimit() async throws {
+        let fixture = await Self.movie(seconds: 2.0, size: CGSize(width: 640, height: 480), noisy: true)
+        let src = try XCTUnwrap(fixture)
+        let original = SizeTarget.fileSize(src) ?? 0
+        XCTAssertGreaterThan(original, 200_000, "fixture too small to be a meaningful shrink test")
+        let target = original / 3
+        let outURL = await SizeTarget.video(url: src, targetBytes: target)
+        let out = try XCTUnwrap(outURL, "shrink failed")
+        XCTAssertLessThanOrEqual(SizeTarget.fileSize(out) ?? Int.max, target)
+    }
+
     // MARK: fixtures
 
     /// Distinct horizontal colour bands so every row is identifiable (no false overlap matches).
@@ -205,5 +254,44 @@ final class EngineTests: XCTestCase {
             (s as NSString).draw(at: CGPoint(x: 40, y: 64),
                                  withAttributes: [.font: UIFont.boldSystemFont(ofSize: 72), .foregroundColor: UIColor.black])
         }
+    }
+
+    /// Writes a short silent H.264 movie: moving coloured bars (or per-frame noise so it can't compress to nothing).
+    static func movie(seconds: Double, size: CGSize = CGSize(width: 320, height: 240), noisy: Bool = false, fps: Int32 = 24) async -> URL? {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("fixture-\(UUID().uuidString.prefix(6)).mov")
+        guard let writer = try? AVAssetWriter(outputURL: url, fileType: .mov) else { return nil }
+        let input = AVAssetWriterInput(mediaType: .video, outputSettings: [
+            AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: Int(size.width), AVVideoHeightKey: Int(size.height),
+            AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: noisy ? 6_000_000 : 800_000]])
+        let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,
+            kCVPixelBufferWidthKey as String: Int(size.width), kCVPixelBufferHeightKey as String: Int(size.height)])
+        writer.add(input)
+        guard writer.startWriting() else { return nil }
+        writer.startSession(atSourceTime: .zero)
+        let frames = Int(seconds * Double(fps))
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+        for i in 0..<frames {
+            while !input.isReadyForMoreMediaData { try? await Task.sleep(nanoseconds: 5_000_000) }
+            guard let pool = adaptor.pixelBufferPool else { return nil }
+            var pb: CVPixelBuffer?
+            CVPixelBufferPoolCreatePixelBuffer(nil, pool, &pb)
+            guard let buf = pb else { return nil }
+            CVPixelBufferLockBaseAddress(buf, [])
+            let ctx = CGContext(data: CVPixelBufferGetBaseAddress(buf), width: Int(size.width), height: Int(size.height), bitsPerComponent: 8,
+                                bytesPerRow: CVPixelBufferGetBytesPerRow(buf), space: CGColorSpaceCreateDeviceRGB(),
+                                bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
+            if let ctx {
+                let img = noisy ? noisy(size) : bands(size)
+                ctx.draw(img.cgImage!, in: CGRect(origin: .zero, size: size))
+                ctx.setFillColor(UIColor.white.cgColor)
+                ctx.fill(CGRect(x: CGFloat(i % Int(size.width - 40)), y: size.height / 2 - 20, width: 40, height: 40))
+            }
+            CVPixelBufferUnlockBaseAddress(buf, [])
+            adaptor.append(buf, withPresentationTime: CMTime(value: CMTimeValue(i), timescale: fps))
+        }
+        input.markAsFinished()
+        await writer.finishWriting()
+        return writer.status == .completed ? url : nil
     }
 }

@@ -126,7 +126,7 @@ struct ToolDestination: View {
         case "fitit": FitItView()
         case "scan": DocScannerView()            // base — Scan super-tool lands on this
         case "studio": StudioView()
-        case "video": VideoCompressorView()      // base — Video super-tool lands on this
+        case "video": VideoView()
         case "formatfix": FormatFixView()
         case "qrwifi": QRWifiView()
         case "stitch": StitchView()

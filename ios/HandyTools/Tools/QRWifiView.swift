@@ -26,8 +26,12 @@ struct QRWifiView: View {
     @State private var password = ""
     @State private var security = 0    // 0 WPA, 1 WEP, 2 none
     @State private var hidden = false
-    @State private var cName = "", cPhone = "", cEmail = "", cOrg = ""
-    @State private var phone = "", sms = ""
+    @State private var cName = ""
+    @State private var cPhone = ""
+    @State private var cEmail = ""
+    @State private var cOrg = ""
+    @State private var phone = ""
+    @State private var sms = ""
     @State private var batch = ""
     @State private var sizeIdx = 1
     @State private var qrImage: UIImage?
