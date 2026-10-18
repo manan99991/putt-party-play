@@ -131,6 +131,7 @@ struct ToolDestination: View {
         case "qrwifi": QRToolsView()             // base — Wi-Fi QR flow lands on this
         case "stitch": StitchView()
         case "scrub": ScrubView()
+        case "shareready": ShareReadyView()
         // ── Page 2 ──
         case "light": FlashlightView()
         case "instruments": MeasureView()
