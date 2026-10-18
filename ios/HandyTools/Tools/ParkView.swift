@@ -73,7 +73,7 @@ final class OneShotLocation: NSObject, ObservableObject, CLLocationManagerDelega
 
 /// Tiny persistence for the saved spot.
 enum ParkStore {
-    private static let d = UserDefaults.standard
+    nonisolated(unsafe) private static let d = UserDefaults.standard
     static func save(_ c: CLLocationCoordinate2D) { d.set(c.latitude, forKey: "park.lat"); d.set(c.longitude, forKey: "park.lng"); d.set(Date(), forKey: "park.at") }
     static func load() -> CLLocationCoordinate2D? {
         guard d.object(forKey: "park.lat") != nil else { return nil }

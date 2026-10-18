@@ -18,7 +18,7 @@ enum Limits {
 /// Per-day usage counters that reset at midnight, stored in UserDefaults. Pro is unlimited, so
 /// `allow` short-circuits to true for Pro and these are never touched.
 enum Usage {
-    private static let d = UserDefaults.standard
+    nonisolated(unsafe) private static let d = UserDefaults.standard
 
     private static func today() -> String {
         let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"; return f.string(from: Date())
