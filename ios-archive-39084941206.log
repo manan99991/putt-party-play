@@ -1,0 +1,233 @@
+===== fastlane.log errors =====
+(Check in Keychain Access for an expired WWDR certificate: https://stackoverflow.com/a/35409835/774 has more info.)[0m
+[01:01:50]: [31mCertificate 24QVV6RW8U (Manan Shah) can't be found on your local computer[0m
+[01:01:50]: [33mCouldn't find an existing certificate... creating a new one[0m
+[01:01:50]: [32mSuccessfully generated 2VYJP6ZRKR which was imported to the local machine.[0m
+[01:01:50]: Verifying the certificate is properly installed locally...
+[01:01:51]: [32mSuccessfully installed certificate 2VYJP6ZRKR[0m
+[01:01:51]: [32mUse signing certificate '2VYJP6ZRKR' from now on![0m
+| include_all_certificates            | false             |
+| skip_certificate_verification       | false             |
+| fail_on_name_taken                  | false             |
+[01:01:51]: Provisioning Profile cert_id : '8G6936WN9H' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'K9CG5X5LVS' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : '24QVV6RW8U' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'T8FA7835NR' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : '68879XH3BK' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'L4FQN3GH3F' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'FX2FCGD7GJ' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : '8V77V499MD' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'T268DM7359' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'D22S7J8SAL' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'DA4CG2YL69' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:51]: Verifying certificates...
+[01:01:51]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[01:01:52]: [33mCreating new provisioning profile for 'com.tenzy.toolkit' with name 'com.tenzy.toolkit AppStore 1792285312' for 'ios' platform[0m
+[01:01:53]: [33mDownloading provisioning profile...[0m
+[01:01:53]: [32mSuccessfully downloaded provisioning profile...[0m
+[01:01:53]: Installing provisioning profile...
+[01:01:53]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                      |
+| skip_certificate_verification       | false                      |
+| fail_on_name_taken                  | false                      |
+[01:01:54]: Provisioning Profile cert_id : 'FX2FCGD7GJ' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'DA4CG2YL69' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : '8G6936WN9H' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : '68879XH3BK' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : '8V77V499MD' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'T268DM7359' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'T8FA7835NR' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'L4FQN3GH3F' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Provisioning Profile cert_id : 'K9CG5X5LVS' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:54]: Verifying certificates...
+[01:01:54]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[01:01:55]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.keyboard' with name 'com.tenzy.toolkit.keyboard AppStore 1792285315' for 'ios' platform[0m
+[01:01:56]: [33mDownloading provisioning profile...[0m
+[01:01:56]: [32mSuccessfully downloaded provisioning profile...[0m
+[01:01:56]: Installing provisioning profile...
+[01:01:56]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                   |
+| skip_certificate_verification       | false                   |
+| fail_on_name_taken                  | false                   |
+[01:01:56]: Provisioning Profile cert_id : 'L4FQN3GH3F' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : '8V77V499MD' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'T8FA7835NR' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'DA4CG2YL69' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : '68879XH3BK' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'FX2FCGD7GJ' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'K9CG5X5LVS' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'T268DM7359' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Provisioning Profile cert_id : '8G6936WN9H' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:56]: Verifying certificates...
+[01:01:56]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[01:01:57]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.share' with name 'com.tenzy.toolkit.share AppStore 1792285317' for 'ios' platform[0m
+[01:01:58]: [33mDownloading provisioning profile...[0m
+[01:01:58]: [32mSuccessfully downloaded provisioning profile...[0m
+[01:01:58]: Installing provisioning profile...
+[01:01:58]: Setting Provisioning Profile type to 'app-store'
+| include_all_certificates            | false                    |
+| skip_certificate_verification       | false                    |
+| fail_on_name_taken                  | false                    |
+[01:01:59]: Provisioning Profile cert_id : 'C8G52LDDFV' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'AZ65UYH2XW' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'T268DM7359' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : '8V77V499MD' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : '68879XH3BK' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'DA4CG2YL69' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'K9CG5X5LVS' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'T8FA7835NR' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'FX2FCGD7GJ' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'XDKQ8X29HQ' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'A7FW5889J5' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'L4FQN3GH3F' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : '8G6936WN9H' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Provisioning Profile cert_id : 'M872LNTN5X' does not match given cert_id : '2VYJP6ZRKR', skipping this one...
+[01:01:59]: Verifying certificates...
+[01:01:59]: [33mNo existing profiles found, that match the certificates you have installed locally! Creating a new provisioning profile for you[0m
+[01:02:00]: [33mCreating new provisioning profile for 'com.tenzy.toolkit.widget' with name 'com.tenzy.toolkit.widget AppStore 1792285320' for 'ios' platform[0m
+[01:02:01]: [33mDownloading provisioning profile...[0m
+[01:02:01]: [32mSuccessfully downloaded provisioning profile...[0m
+[01:02:01]: Installing provisioning profile...
+[01:02:01]: Setting Provisioning Profile type to 'app-store'
+[01:02:01]: Provisioning profiles: {"com.tenzy.toolkit" => "com.tenzy.toolkit AppStore 1792285312", "com.tenzy.toolkit.keyboard" => "com.tenzy.toolkit.keyboard AppStore 1792285315", "com.tenzy.toolkit.share" => "com.tenzy.toolkit.share AppStore 1792285317", "com.tenzy.toolkit.widget" => "com.tenzy.toolkit.widget AppStore 1792285320"}
+[01:02:01]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792285312 for target: HandyTools for build configuration: Debug[0m
+[01:02:01]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Debug[0m
+[01:02:01]: [33mSet Provisioning Profile name to: com.tenzy.toolkit AppStore 1792285312 for target: HandyTools for build configuration: Release[0m
+[01:02:01]: [33mSet Bundle identifier to: com.tenzy.toolkit for target: HandyTools for build configuration: Release[0m
+[01:02:01]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[01:02:01]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792285315 for target: ClipboardKeyboard for build configuration: Debug[0m
+[01:02:01]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Debug[0m
+[01:02:01]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.keyboard AppStore 1792285315 for target: ClipboardKeyboard for build configuration: Release[0m
+[01:02:01]: [33mSet Bundle identifier to: com.tenzy.toolkit.keyboard for target: ClipboardKeyboard for build configuration: Release[0m
+[01:02:01]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[01:02:01]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792285317 for target: ShareExtension for build configuration: Debug[0m
+[01:02:01]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Debug[0m
+[01:02:01]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.share AppStore 1792285317 for target: ShareExtension for build configuration: Release[0m
+[01:02:01]: [33mSet Bundle identifier to: com.tenzy.toolkit.share for target: ShareExtension for build configuration: Release[0m
+[01:02:01]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[01:02:01]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792285320 for target: StickyWidget for build configuration: Debug[0m
+[01:02:01]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Debug[0m
+[01:02:01]: [33mSet Provisioning Profile name to: com.tenzy.toolkit.widget AppStore 1792285320 for target: StickyWidget for build configuration: Release[0m
+[01:02:01]: [33mSet Bundle identifier to: com.tenzy.toolkit.widget for target: StickyWidget for build configuration: Release[0m
+[01:02:01]: [32mSuccessfully updated project settings to use Code Sign Style = 'Manual'[0m
+[01:02:23]: Detected provisioning profile mapping: {"com.tenzy.toolkit": "com.tenzy.toolkit AppStore 1792285312", "com.tenzy.toolkit.keyboard": "com.tenzy.toolkit.keyboard AppStore 1792285315", "com.tenzy.toolkit.share": "com.tenzy.toolkit.share AppStore 1792285317", "com.tenzy.toolkit.widget": "com.tenzy.toolkit.widget AppStore 1792285320"}
+| export_options.provisioningProfiles.com.tenzy.toolkit          | com.tenzy.toolkit AppStore 1792285312                     |
+| export_options.provisioningProfiles.com.tenzy.toolkit.keyboard | com.tenzy.toolkit.keyboard AppStore 1792285315            |
+| export_options.provisioningProfiles.com.tenzy.toolkit.share    | com.tenzy.toolkit.share AppStore 1792285317               |
+| export_options.provisioningProfiles.com.tenzy.toolkit.widget   | com.tenzy.toolkit.widget AppStore 1792285320              |
+[01:02:23]: [36m$ set -o pipefail && xcodebuild -scheme HandyTools -project HandyTools.xcodeproj -configuration Release -destination generic/platform\=iOS -archivePath /Users/runner/Library/Developer/Xcode/Archives/2026-10-18/Tenzy\ 2026-10-18\ 01.02.23.xcarchive archive | tee /Users/runner/Library/Logs/gym/HandyTools-HandyTools.log | xcbeautify[0m
+[01:02:34]: ▸ [35m[[36mStickyWidget[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[01:02:34]: ▸ [35m[[36mShareExtension[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[01:02:34]: ▸ [35m[[36mClipboardKeyboard[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[01:02:34]: ▸ [35m[[36mHandyTools[0m] [1mWrite Auxiliary File[0m Entitlements.plist[0m
+[01:03:06]: ▸ [35m::warning file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Ads/Ads.swift,line=1,col=1::add '@preconcurrency' to treat 'Sendable'-related errors from module 'ObjectiveC' as warnings[0m
+[01:03:06]: ▸ [35m::error file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Gating.swift,line=32,col=32::main actor-isolated property 'isPremium' can not be referenced from a nonisolated context[0m
+[01:03:06]: ▸ [35m::error file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Gating.swift,line=32,col=25::main actor-isolated static property 'shared' can not be referenced from a nonisolated context[0m
+[01:03:06]: ▸ [35m::error file=/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Gating.swift,line=39,col=32::main actor-isolated property 'isPremium' can not be referenced from a nonisolated context[0m
+
+===== fastlane.log tail =====
+[01:03:06]: 
+
++------------------------------------------------+
+|               [32m[33mBuild environment[0m                |
++---------------+--------------------------------+
+| xcode_path    | /Applications/Xcode_26.6.0.app |
+| gym_version   | 2.241.0                        |
+| export_method | app-store                      |
+| sdk           | iPhoneOS26.5.sdk               |
++---------------+--------------------------------+
+
+[01:03:06]: ▸ [35m    cd /Users/runner/work/putt-party-play/putt-party-play/ios[0m
+[01:03:06]: ▸ [35m    builtin-linkAssetCatalog --thinned /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/HandyTools.build/Release-iphoneos/HandyTools.build/assetcatalog_output/thinned --thinned-dependencies /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/HandyTools.build/Release-iphoneos/HandyTools.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/HandyTools.build/Release-iphoneos/HandyTools.build/assetcatalog_generated_info.plist_thinned --unthinned /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/HandyTools.build/Release-iphoneos/HandyTools.build/assetcatalog_output/unthinned --unthinned-dependencies /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/HandyTools.build/Release-iphoneos/HandyTools.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/HandyTools.build/Release-iphoneos/HandyTools.build/assetcatalog_generated_info.plist_unthinned --output /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/InstallationBuildProductsLocation/Applications/HandyTools.app --plist-output /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/IntermediateBuildFilesPath/HandyTools.build/Release-iphoneos/HandyTools.build/assetcatalog_generated_info.plist[0m
+[01:03:06]: ▸ [35mnote: Emplaced /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/InstallationBuildProductsLocation/Applications/HandyTools.app/Assets.car (in target 'HandyTools' from project 'HandyTools')[0m
+[01:03:06]: ▸ [35mnote: Emplaced /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/InstallationBuildProductsLocation/Applications/HandyTools.app/AppIcon60x60@2x.png (in target 'HandyTools' from project 'HandyTools')[0m
+[01:03:06]: ▸ [35mnote: Emplaced /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/ArchiveIntermediates/HandyTools/InstallationBuildProductsLocation/Applications/HandyTools.app/AppIcon76x76@2x~ipad.png (in target 'HandyTools' from project 'HandyTools')[0m
+[01:03:06]: ▸ [35m/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/TimersView.swift:100:74: error: type 'HandyHaptics' has no member 'tap'[0m
+[01:03:06]: 
+[01:03:06]: [31m⬆️  Check out the few lines of raw `xcodebuild` output above for potential hints on how to solve this error[0m
+[01:03:06]: [33m📋  For the complete and more detailed error log, check the full log at:[0m
+[01:03:06]: [33m📋  /Users/runner/Library/Logs/gym/HandyTools-HandyTools.log[0m
+[01:03:06]: 
+[01:03:06]: [31mLooks like fastlane ran into a build/archive error with your project[0m
+[01:03:06]: [31mIt's hard to tell what's causing the error, so we wrote some guides on how[0m
+[01:03:06]: [31mto troubleshoot build and signing issues: https://docs.fastlane.tools/codesigning/getting-started/[0m
+[01:03:06]: [31mBefore submitting an issue on GitHub, please follow the guide above and make[0m
+[01:03:06]: [31msure your project is set up correctly.[0m
+[01:03:06]: [31mfastlane uses `xcodebuild` commands to generate your binary, you can see the[0m
+[01:03:06]: [31mthe full commands printed out in yellow in the above log.[0m
+[01:03:06]: [31mMake sure to inspect the output above, as usually you'll find more error information there[0m
+[01:03:06]: 
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                                                                                                                            [33mLane Context[0m                                                                                                                                                                                                                                                            |
++---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| PLATFORM_NAME             | ios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| LANE_NAME                 | ios beta                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db"                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| CERT_FILE_PATH            | /Users/runner/work/putt-party-play/putt-party-play/ios/build/certs/2VYJP6ZRKR.cer                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| CERT_CERTIFICATE_ID       | 2VYJP6ZRKR                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| SIGH_PROFILE_PATH         | /Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision                                                                                                                                                                                                                                                                                                                                                                                |
+| SIGH_PROFILE_PATHS        | ["/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.keyboard.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.share.mobileprovision", "/Users/runner/work/putt-party-play/putt-party-play/ios/build/profiles/AppStore_com.tenzy.toolkit.widget.mobileprovision"] |
+| SIGH_UDID                 | 0aa9051c-33fd-4315-9372-869d1caf1614                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| SIGH_UUID                 | 0aa9051c-33fd-4315-9372-869d1caf1614                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| SIGH_NAME                 | com.tenzy.toolkit.widget AppStore 1792285320                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| SIGH_PROFILE_TYPE         | app-store                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
++---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+[01:03:06]: [31mCalled from Fastfile at line 125[0m
+[01:03:06]: [31m```[0m
+[01:03:06]: [31m    123:	    # Build number (CFBundleVersion) is baked at project-generation time in CI as a Unix timestamp,[0m
+[01:03:06]: [31m    124:	    # so every upload is unique and ever-increasing.[0m
+[01:03:06]: [31m => 125:	    build_app([0m
+[01:03:06]: [31m    126:	      project: "HandyTools.xcodeproj",[0m
+[01:03:06]: [31m    127:	      scheme: "HandyTools",[0m
+[01:03:06]: [31m```[0m
+
++------------------------------------------------------------------------------------+
+|                                  [32mfastlane summary[0m                                  |
++------+---------------------------------------------------------------+-------------+
+| Step | Action                                                        | Time (in s) |
++------+---------------------------------------------------------------+-------------+
+| 1    | default_platform                                              | 0           |
+| 2    | app_store_connect_api_key                                     | 0           |
+| 3    | create_keychain                                               | 0           |
+| 4    | cert                                                          | 2           |
+| 5    | mkdir -p cert-cache                                           | 0           |
+| 6    | security set-key-partition-list -S apple-tool:,apple:,codesig | 0           |
+| 7    | security export -k /Users/runner/Library/Keychains/tenzyci-db | 0           |
+| 8    | sigh                                                          | 2           |
+| 9    | sigh                                                          | 2           |
+| 10   | sigh                                                          | 2           |
+| 11   | sigh                                                          | 2           |
+| 12   | update_code_signing_settings                                  | 0           |
+| 13   | update_code_signing_settings                                  | 0           |
+| 14   | update_code_signing_settings                                  | 0           |
+| 15   | update_code_signing_settings                                  | 0           |
+| 💥   | [31mbuild_app[0m                                                     | 64          |
++------+---------------------------------------------------------------+-------------+
+
+[01:03:06]: [31mfastlane finished with errors[0m
+[31m
+[!] Error building the application - see the log above[0m
+
+#######################################################################
+# fastlane 2.241.1 is available. You are on 2.241.0.
+# You should use the latest version.
+# Please update using `gem install fastlane`.
+# To see what's new, open https://github.com/fastlane/fastlane/releases.
+#######################################################################
