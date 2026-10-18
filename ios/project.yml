@@ -131,3 +131,36 @@ targets:
         CFBundleDisplayName: Sticky Note
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
+
+  # In-build quality checker: engine unit tests + an every-tool UI smoke that opens all 30 tools.
+  HandyToolsTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [HandyToolsTests]
+    dependencies:
+      - target: HandyTools
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+  HandyToolsUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [HandyToolsUITests]
+    dependencies:
+      - target: HandyTools
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  HandyTools:
+    build:
+      targets:
+        HandyTools: all
+        HandyToolsTests: [test]
+        HandyToolsUITests: [test]
+    test:
+      targets:
+        - HandyToolsTests
+        - HandyToolsUITests
