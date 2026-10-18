@@ -33,10 +33,5 @@ Resolved source packages:
 
 resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-2026-10-18 20:19:01.839443+0000 HandyTools[4960:23066] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-2026-10-18 20:19:01.839760+0000 HandyTools[4960:23066] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:245: error: -[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("https://tenzy.app/menu")")
-2026-10-18 20:19:27.862087+0000 HandyTools[4960:23073] [ProcessSuspension] 0x1211683c0 - ProcessAssertion::acquireSync Failed to acquire RBS assertion 'GPUProcess Background Assertion' for process with PID=0, error: (null)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:499: error: -[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram] : XCTAssertGreaterThan failed: ("0.09019607") is not greater than ("0.3") - edge should be painted red: Optional(SIMD3<Float>(0.7372549, 0.64705884, 0.64705884))
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:505: error: -[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram] : XCTAssertEqualWithAccuracy failed: ("0.7372549") is not equal to ("0.5") +/- ("0.05")
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/TranslateView.swift:52:43: error: sending 'session' risks causing data races
 ** TEST FAILED **
