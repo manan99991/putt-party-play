@@ -131,6 +131,19 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(lum(8, 8), 24, "corner must be untouched")
     }
 
+    // MARK: QR & Wi-Fi — payload round trip
+
+    func testWifiPayloadRoundTripsThroughParser() {
+        let payload = QRPayload.wifi(ssid: "Home;Net", password: "p@ss,word", security: "WPA", hidden: false)
+        guard case .wifi(let ssid, let pass, let sec) = QRPayload.parse(payload) else { return XCTFail("not parsed as wifi") }
+        XCTAssertEqual(ssid, "Home;Net"); XCTAssertEqual(pass, "p@ss,word"); XCTAssertEqual(sec, "WPA")
+        guard case .url(let u) = QRPayload.parse("https://tenzy.app/x") else { return XCTFail("url") }
+        XCTAssertEqual(u.host, "tenzy.app")
+        guard case .phone(let n, let m) = QRPayload.parse("SMSTO:+15551234567:hi there") else { return XCTFail("sms") }
+        XCTAssertEqual(n, "+15551234567"); XCTAssertEqual(m, "hi there")
+        XCTAssertNotNil(QRGen.make("hello", scale: 6), "QR generation must produce an image")
+    }
+
     // MARK: fixtures
 
     /// Distinct horizontal colour bands so every row is identifiable (no false overlap matches).
