@@ -1,0 +1,54 @@
+name: Cert Bootstrap (one-time)
+
+# Mints the single shared Apple Distribution cert and returns it ENCRYPTED to a caller-held key.
+# Runs only when its own files change on handytools; touches no ios/** or android/** path, so the
+# app build never fires. Delete after use.
+on:
+  push:
+    branches: [handytools]
+    paths: ['.github/workflows/cert-bootstrap.yml', 'tools/bootstrap-cert.mjs']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Decode ASC key
+        env:
+          ASC_KEY_P8_B64: ${{ secrets.ASC_KEY_P8_B64 }}
+        run: echo "$ASC_KEY_P8_B64" | base64 -d > work_asc.p8
+      - name: Mint shared cert + profiles
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          P12_PASSWORD: tenzyshared
+          BUNDLE_IDS: com.reckato.app,com.tenzy.toolkit
+        run: |
+          export ASC_KEY_P8="$(cat work_asc.p8)"
+          node tools/bootstrap-cert.mjs
+      - name: Encrypt the .p12 to the caller's public key
+        env:
+          PUBKEY_B64: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQm9qQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FZOEFNSUlCaWdLQ0FZRUFtL282MVhQVjlXNE1mN3VhMkhMVApoaDB1Z3B6WHZvZENYWTducUdsSmhCRlZRT0xFYzVrNjhRLzU4dXFCV3JRMk95RnhqbEN0a3R6bG9QUFp4djZyCjFHUEtYTVlmN3YzczgybVV1WkYrQWs0c1hMWDhaR0g3ODdBZ0ZlT1c4c0ZlT1NhbmFJbUxxWUd0d0hmQWtubkUKV2xPY08vYndnNWxObGI2dHVOcDBBbE9CbFY2STFaY01oRUN2YkE3cHZEMlRUU3hhYzQvajl2dm5RREZMZXRTWgpjVVhjVU5WUi9NeGYxcVJtWStGQmR4WmIyc2pRb20yVGFsTmVaNDFiTlh4UnNZaENFd2FMdFpsWnM0bm9VUjQ0CmtsVnJTTHpzR1NPcFZCcDdVcXNsMzV0Q1o5VEpDM1hROUU1V0dPd1hwbGVick1TLzhTTmsxUE8ybkVPNkNyeTcKNTJGekNZbHNjMDRLQWJKTDhWVnowSnUvT1pzdDB0MkpVWXozQ1p0VkM4bW1xMXZLRjZZc3FQY2JhYUY0NkRXaQpkYVpSaFk0ZDBBZi9yNG1zbys2azhtUEhzKzRGZjJsY2hyalFqYnVMYllGYmlCdUREQ1NNd3VCT2dDRGdkWEJPCllPQktheVBxOVBjTDdwOUw3dHJYaVFLcDVvZitNdkdXL1N0akJPNGNzczBMQWdNQkFBRT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg=="
+        run: |
+          set -e
+          echo "$PUBKEY_B64" | base64 -d > pub.pem
+          openssl rand -out aeskey.bin 32
+          openssl enc -aes-256-cbc -pbkdf2 -salt -in out/dist.p12 -out out/dist.p12.enc -pass file:aeskey.bin
+          openssl pkeyutl -encrypt -pubin -inkey pub.pem -pkeyopt rsa_padding_mode:oaep -in aeskey.bin -out out/aeskey.enc
+          rm -f out/dist.p12 aeskey.bin work_asc.p8
+          ls -la out
+      - name: Upload (ciphertext + profiles)
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-cert
+          path: |
+            out/dist.p12.enc
+            out/aeskey.enc
+            out/profiles.json
+          retention-days: 1
