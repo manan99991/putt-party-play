@@ -143,63 +143,84 @@ platform :ios do
   # App Store Connect API, so the monthly plan + both prices are set by the pipeline, not by hand.
   # Idempotent: safe to re-run. Run via the "iOS Subscriptions" workflow (workflow_dispatch).
   lane :subscriptions do
-    Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
+    require 'net/http'
+    require 'json'
+    token = Spaceship::ConnectAPI::Token.create(
       key_id: ENV["ASC_KEY_ID"], issuer_id: ENV["ASC_ISSUER_ID"], filepath: ENV["ASC_KEY_PATH"]
     )
-    app = Spaceship::ConnectAPI::App.find("com.tenzy.toolkit")
-    UI.user_error!("App com.tenzy.toolkit not found on App Store Connect") unless app
+    base = "https://api.appstoreconnect.apple.com"
+    http = Net::HTTP.new("api.appstoreconnect.apple.com", 443); http.use_ssl = true
+    req = lambda do |method, path, body = nil|
+      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method]
+      r = klass.new(URI(base + path))
+      r["Authorization"] = "Bearer #{token.text}"
+      r["Content-Type"] = "application/json"
+      r.body = body.to_json if body
+      res = http.request(r)
+      parsed = (JSON.parse(res.body) rescue res.body)
+      [res.code.to_i, parsed]
+    end
 
-    # 1) Subscription group "Tenzy Pro"
-    groups = app.get_subscription_groups
-    group = groups.find { |g| g.reference_name == "Tenzy Pro" }
-    group ||= app.create_subscription_group(reference_name: "Tenzy Pro")
-    UI.message("Subscription group: #{group.id} (#{group.reference_name})")
+    code, data = req.call(:get, "/v1/apps?filter%5BbundleId%5D=com.tenzy.toolkit&limit=1")
+    app_id = data.is_a?(Hash) ? data.dig("data", 0, "id") : nil
+    UI.user_error!("App not found (#{code}): #{data}") unless app_id
+    UI.message("App #{app_id}")
 
-    # 2) The two products we want, with their target USD base price.
+    code, data = req.call(:get, "/v1/apps/#{app_id}/subscriptionGroups?limit=50")
+    group = (data["data"] || []).find { |g| g.dig("attributes", "referenceName") == "Tenzy Pro" }
+    unless group
+      code, data = req.call(:post, "/v1/subscriptionGroups",
+        { data: { type: "subscriptionGroups", attributes: { referenceName: "Tenzy Pro" },
+                  relationships: { app: { data: { type: "apps", id: app_id } } } } })
+      group = data["data"]
+      UI.message("Created group (#{code})")
+    end
+    group_id = group["id"]
+
+    code, data = req.call(:get, "/v1/subscriptionGroups/#{group_id}/subscriptions?limit=50")
+    existing = data["data"] || []
+
     want = [
-      { product_id: "tenzy_pro_yearly",  name: "Tenzy Pro (Yearly)",  period: "ONE_YEAR",  usd: "19.99" },
-      { product_id: "tenzy_pro_monthly", name: "Tenzy Pro (Monthly)", period: "ONE_MONTH", usd: "2.99" },
+      { pid: "tenzy_pro_yearly",  name: "Tenzy Pro (Yearly)",  period: "ONE_YEAR",  usd: "19.99" },
+      { pid: "tenzy_pro_monthly", name: "Tenzy Pro (Monthly)", period: "ONE_MONTH", usd: "2.99" },
     ]
-    existing = group.get_subscriptions
     want.each do |w|
-      sub = existing.find { |s| s.product_id == w[:product_id] }
-      if sub.nil?
-        UI.message("Creating subscription #{w[:product_id]}")
-        sub = group.create_subscription(
-          name: w[:name], product_id: w[:product_id], subscription_period: w[:period],
-          family_sharable: false, review_note: "Removes ads and unlocks all tools in Tenzy."
-        )
+      sub = existing.find { |s| s.dig("attributes", "productId") == w[:pid] }
+      unless sub
+        code, data = req.call(:post, "/v1/subscriptions",
+          { data: { type: "subscriptions",
+                    attributes: { name: w[:name], productId: w[:pid], subscriptionPeriod: w[:period], familySharable: false },
+                    relationships: { group: { data: { type: "subscriptionGroups", id: group_id } } } } })
+        sub = data["data"]
+        UI.message("Create #{w[:pid]} -> #{code}#{code >= 400 ? " #{data}" : ""}")
       else
-        UI.message("Subscription #{w[:product_id]} already exists (#{sub.id})")
+        UI.message("#{w[:pid]} exists (#{sub['id']})")
+      end
+      next unless sub
+      sub_id = sub["id"]
+
+      code, locs = req.call(:get, "/v1/subscriptions/#{sub_id}/subscriptionLocalizations?limit=50")
+      unless (locs["data"] || []).any? { |l| l.dig("attributes", "locale") == "en-US" }
+        code, data = req.call(:post, "/v1/subscriptionLocalizations",
+          { data: { type: "subscriptionLocalizations",
+                    attributes: { locale: "en-US", name: w[:name], description: "Everything in Tenzy, unlimited. No ads." },
+                    relationships: { subscription: { data: { type: "subscriptions", id: sub_id } } } } })
+        UI.message("  localization -> #{code}")
       end
 
-      # Localization (display name + description) — required before it can be reviewed.
-      begin
-        locs = sub.get_subscription_localizations
-        unless locs.any? { |l| l.locale == "en-US" }
-          sub.create_subscription_localization(
-            locale: "en-US", name: w[:name], description: "Everything in Tenzy, unlimited. No ads."
-          )
-          UI.message("  added en-US localization")
-        end
-      rescue => e
-        UI.important("  localization step: #{e}")
-      end
-
-      # Price: pick the USD price point nearest our target and apply it (derives other territories).
-      begin
-        points = sub.get_subscription_available_price_points(filter: { territory: "USA" }, includes: "subscriptionPricePoint")
-        target = points.map { |p| p }.min_by { |p| (p.customer_price.to_f - w[:usd].to_f).abs }
-        if target
-          sub.create_subscription_price(subscription_price_point_id: target.id, start_date: nil, preserved: false)
-          UI.success("  price set near $#{w[:usd]} (point #{target.id}, customer_price #{target.customer_price})")
-        else
-          UI.important("  no USD price point found to set $#{w[:usd]}")
-        end
-      rescue => e
-        UI.important("  price step needs a manual tap: #{e}")
+      code, pp = req.call(:get, "/v1/subscriptions/#{sub_id}/pricePoints?filter%5Bterritory%5D=USA&limit=200")
+      points = pp["data"] || []
+      target = points.min_by { |p| (p.dig("attributes", "customerPrice").to_f - w[:usd].to_f).abs } if points.any?
+      if target
+        code, data = req.call(:post, "/v1/subscriptionPrices",
+          { data: { type: "subscriptionPrices", attributes: { preserveCurrentPrice: false },
+                    relationships: { subscription: { data: { type: "subscriptions", id: sub_id } },
+                                     subscriptionPricePoint: { data: { type: "subscriptionPricePoints", id: target["id"] } } } } })
+        UI.success("  price -> #{code} near $#{w[:usd]} (#{target.dig('attributes', 'customerPrice')})#{code >= 400 ? " #{data}" : ""}")
+      else
+        UI.important("  no USD price points returned (#{code})")
       end
     end
-    UI.success("Subscriptions reconciled. If a price or first-review submission still needs a tap, the log above says so.")
+    UI.success("Subscriptions reconciled.")
   end
 end
