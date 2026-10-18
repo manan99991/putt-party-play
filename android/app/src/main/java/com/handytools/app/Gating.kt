@@ -12,6 +12,7 @@ object Limits {
     const val FREE_ALARMS = 3
     const val FREE_OCR_PER_DAY = 5
     const val FREE_TRANSLATE_PER_DAY = 8
+    const val FREE_SCAN_PAGES = 3
     const val FREE_AI_PER_DAY = 3
     const val FREE_WALLET_CARDS = 2
     const val FREE_VIDEO_PER_DAY = 2

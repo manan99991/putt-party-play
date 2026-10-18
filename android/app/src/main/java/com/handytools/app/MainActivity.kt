@@ -30,6 +30,8 @@ import com.handytools.app.tools.imgconvert.ImageConverterScreen
 import com.handytools.app.tools.translate.TranslateScreen
 import com.handytools.app.tools.measure.MeasureScreen
 import com.handytools.app.tools.pdftools.PDFToolkitScreen
+import com.handytools.app.tools.scan.DocScannerScreen
+import com.handytools.app.tools.vidcompress.VideoCompressorScreen
 import com.handytools.app.tools.timers.TimersScreen
 import com.handytools.app.tools.wallet.WalletScreen
 import com.handytools.app.tools.notifhistory.NotifHistoryScreen
@@ -109,9 +111,11 @@ class MainActivity : ComponentActivity() {
                     composable("pdftools") { PDFToolkitScreen() }
                     composable("translate") { TranslateScreen() }
                     composable("exif") { ExifScreen() }
+                    composable("scan") { DocScannerScreen() }
+                    composable("vidcompress") { VideoCompressorScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) { ComingSoonScreen(TOOLS.first { it.route == r }.name) }
                     }
