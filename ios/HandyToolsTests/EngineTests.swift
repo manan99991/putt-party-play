@@ -84,7 +84,46 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(PDFDocument(data: out)?.pageCount, 3, "must keep every page")
     }
 
+    // MARK: Long Screenshot — stitcher
+
+    func testStitcherRemovesOverlapAndKeepsChromeOnce() throws {
+        // A tall "page" of distinct horizontal bands, viewed through two overlapping windows that
+        // each carry the same fixed header and footer — exactly what two scrolled screenshots look like.
+        let W: CGFloat = 400, pageH: CGFloat = 1600, winH: CGFloat = 900, chrome: CGFloat = 80
+        let page = Self.bands(CGSize(width: W, height: pageH))
+        func window(_ top: CGFloat) -> UIImage {
+            let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+            return UIGraphicsImageRenderer(size: CGSize(width: W, height: winH), format: f).image { ctx in
+                if let cg = page.cgImage?.cropping(to: CGRect(x: 0, y: top, width: W, height: winH)) {
+                    UIImage(cgImage: cg).draw(in: CGRect(x: 0, y: 0, width: W, height: winH))
+                }
+                UIColor.darkGray.setFill()
+                ctx.fill(CGRect(x: 0, y: 0, width: W, height: chrome))               // header
+                ctx.fill(CGRect(x: 0, y: winH - chrome, width: W, height: chrome))    // footer
+            }
+        }
+        let a = window(0), b = window(500)   // 400 rows of real overlap
+        let out = try XCTUnwrap(Stitcher.stitch([a, b]), "stitch failed")
+        XCTAssertEqual(out.size.width, W, accuracy: 1)
+        XCTAssertLessThan(out.size.height, a.size.height + b.size.height - 200, "overlap must be removed")
+        XCTAssertGreaterThan(out.size.height, winH + 200, "second shot must contribute new rows")
+    }
+
     // MARK: fixtures
+
+    /// Distinct horizontal colour bands so every row is identifiable (no false overlap matches).
+    static func bands(_ size: CGSize) -> UIImage {
+        let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+        return UIGraphicsImageRenderer(size: size, format: f).image { ctx in
+            var y: CGFloat = 0; var i = 0
+            while y < size.height {
+                let h: CGFloat = 20 + CGFloat(i % 5) * 9
+                UIColor(hue: CGFloat((i * 37) % 360) / 360, saturation: 0.75, brightness: 0.85 - CGFloat(i % 3) * 0.15, alpha: 1).setFill()
+                ctx.fill(CGRect(x: 0, y: y, width: size.width, height: h))
+                y += h; i += 1
+            }
+        }
+    }
 
     /// Random 8px colour cells — incompressible enough that size-targeting has real work to do.
     static func noisy(_ size: CGSize) -> UIImage {

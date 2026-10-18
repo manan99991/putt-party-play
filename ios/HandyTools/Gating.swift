@@ -20,6 +20,7 @@ enum Limits {
     static let freeGifPerDay = 3       // GIF Maker
     static let freePhotoStudioPerDay = 4 // Photo Studio edits
     static let freeFitPerDay = 5       // Fit It (exact-size fits)
+    static let freeStitchPerDay = 5    // Long Screenshot stitches
 }
 
 /// Per-day usage counters that reset at midnight, stored in UserDefaults. Pro is unlimited, so
