@@ -54,7 +54,8 @@ final class MagnifierCamera: NSObject, ObservableObject, AVCaptureVideoDataOutpu
     private var latest: CGImage?
 
     func start() {
-        guard session.inputs.isEmpty else { if !session.isRunning { DispatchQueue.global().async { [session] in session.startRunning() } }; return }
+        nonisolated(unsafe) let s = session
+        guard session.inputs.isEmpty else { if !session.isRunning { DispatchQueue.global().async { s.startRunning() } }; return }
         session.sessionPreset = .high
         guard let dev = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
               let input = try? AVCaptureDeviceInput(device: dev), session.canAddInput(input) else { return }
@@ -62,10 +63,14 @@ final class MagnifierCamera: NSObject, ObservableObject, AVCaptureVideoDataOutpu
         session.addInput(input)
         output.setSampleBufferDelegate(self, queue: DispatchQueue(label: "mag.frames"))
         if session.canAddOutput(output) { session.addOutput(output) }
-        DispatchQueue.global().async { [session] in session.startRunning() }
+        DispatchQueue.global().async { s.startRunning() }
     }
 
-    func stop() { if torchOn { toggleTorch() }; if session.isRunning { DispatchQueue.global().async { [session] in session.stopRunning() } } }
+    func stop() {
+        if torchOn { toggleTorch() }
+        nonisolated(unsafe) let s = session
+        if session.isRunning { DispatchQueue.global().async { s.stopRunning() } }
+    }
 
     func setZoom(_ z: CGFloat) {
         guard let d = device else { return }
@@ -93,7 +98,8 @@ final class MagnifierCamera: NSObject, ObservableObject, AVCaptureVideoDataOutpu
         let ci = CIImage(cvPixelBuffer: pb)
         let context = CIContext()
         guard let cg = context.createCGImage(ci, from: ci.extent) else { return }
-        Task { @MainActor in self.latest = cg }
+        nonisolated(unsafe) let c = cg
+        Task { @MainActor in self.latest = c }
     }
 }
 

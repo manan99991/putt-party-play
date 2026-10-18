@@ -55,6 +55,7 @@ enum AIEngine {
     /// Pull all readable text out of an image (printed or handwritten).
     static func recognizeText(_ image: UIImage) async -> String {
         guard let cg = image.cgImage else { return "" }
+        nonisolated(unsafe) let cgSafe = cg
         return await withCheckedContinuation { cont in
             let req = VNRecognizeTextRequest { request, _ in
                 let lines = (request.results as? [VNRecognizedTextObservation])?
@@ -63,14 +64,16 @@ enum AIEngine {
             }
             req.recognitionLevel = .accurate
             req.usesLanguageCorrection = true
-            let handler = VNImageRequestHandler(cgImage: cg, orientation: .up)
-            DispatchQueue.global(qos: .userInitiated).async { try? handler.perform([req]) }
+            nonisolated(unsafe) let handler = VNImageRequestHandler(cgImage: cgSafe, orientation: .up)
+            nonisolated(unsafe) let r = req
+            DispatchQueue.global(qos: .userInitiated).async { try? handler.perform([r]) }
         }
     }
 
     /// Best-guess labels for what's in a photo, most confident first.
     static func classify(_ image: UIImage, top: Int = 5) async -> [String] {
         guard let cg = image.cgImage else { return [] }
+        nonisolated(unsafe) let cgSafe = cg
         return await withCheckedContinuation { cont in
             let req = VNClassifyImageRequest { request, _ in
                 let labels = (request.results as? [VNClassificationObservation])?
@@ -79,8 +82,9 @@ enum AIEngine {
                     .map { $0.identifier.replacingOccurrences(of: "_", with: " ") } ?? []
                 cont.resume(returning: Array(labels))
             }
-            let handler = VNImageRequestHandler(cgImage: cg, orientation: .up)
-            DispatchQueue.global(qos: .userInitiated).async { try? handler.perform([req]) }
+            nonisolated(unsafe) let handler = VNImageRequestHandler(cgImage: cgSafe, orientation: .up)
+            nonisolated(unsafe) let r = req
+            DispatchQueue.global(qos: .userInitiated).async { try? handler.perform([r]) }
         }
     }
 }

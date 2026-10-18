@@ -61,19 +61,16 @@ struct BackgroundRemoverView: View {
         guard let img = original, let cg = img.cgImage else { return }
         guard Usage.use("bgremove", limit: Limits.freeBgRemovePerDay) else { return }
         working = true; errorText = nil
-        Task.detached {
-            let out = await Self.cutout(cg, orientation: img.imageOrientation)
-            await MainActor.run {
-                working = false
-                if let out { result = out; HandyHaptics.success() }
-                else { errorText = "Couldn't find a clear subject in that photo. Try one with a distinct foreground." }
-            }
+        Task { @MainActor in
+            let out = Self.cutout(cg)
+            working = false
+            if let out { result = out; HandyHaptics.success() }
+            else { errorText = "Couldn't find a clear subject in that photo. Try one with a distinct foreground." }
         }
     }
 
-    /// Vision foreground-instance mask (iOS 17+), applied as an alpha matte.
-    private static func cutout(_ cg: CGImage, orientation: UIImage.Orientation) async -> UIImage? {
-        guard #available(iOS 17.0, *) else { return nil }
+    /// Vision foreground-instance mask, applied as an alpha matte.
+    private static func cutout(_ cg: CGImage) -> UIImage? {
         let handler = VNImageRequestHandler(cgImage: cg)
         let request = VNGenerateForegroundInstanceMaskRequest()
         guard (try? handler.perform([request])) != nil, let res = request.results?.first else { return nil }

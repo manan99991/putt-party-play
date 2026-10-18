@@ -62,7 +62,8 @@ struct ImagePDFView: View {
         guard Usage.use("imgpdf", limit: Limits.freeImagePdfPerDay) else { return }
         working = true; pdfURL = nil
         let imgs = images
-        Task.detached {
+        // Rendering a handful of images is quick; keep it on the main actor to stay data-race-safe.
+        Task { @MainActor in
             let page = CGRect(x: 0, y: 0, width: 612, height: 792)   // US Letter @72dpi
             let url = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy-\(UUID().uuidString.prefix(6)).pdf")
             let renderer = UIGraphicsPDFRenderer(bounds: page)
@@ -73,7 +74,7 @@ struct ImagePDFView: View {
                     img.draw(in: fit)
                 }
             }
-            await MainActor.run { pdfURL = url; working = false; HandyHaptics.success() }
+            pdfURL = url; working = false; HandyHaptics.success()
         }
     }
 }

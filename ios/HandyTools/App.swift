@@ -47,6 +47,7 @@ struct Tool: Identifiable {
     let icon: String
     let page: Int
     var ai: Bool = false
+    var keywords: [String] = []   // synonyms that power search
 }
 
 /// The full catalog: 30 tools across 3 pages of 10.
@@ -55,39 +56,64 @@ struct Tool: Identifiable {
 ///   Page 3 — AI, running free and private on-device (with a graceful fallback on older phones).
 @MainActor let TOOLS: [Tool] = [
     // ── Page 1 · Everyday ────────────────────────────────────────────────
-    Tool(id: "flash",     name: "Flashlight",      blurb: "One-tap patterns, SOS, strobe",        icon: "flashlight.on.fill",                 page: 1),
-    Tool(id: "timer",     name: "Timers",          blurb: "Countdown + stopwatch",                icon: "timer",                              page: 1),
-    Tool(id: "clips",     name: "Multi-Clipboard", blurb: "Stack copies, paste from keyboard",    icon: "doc.on.clipboard.fill",              page: 1),
-    Tool(id: "qr",        name: "QR & Barcode",    blurb: "Scan, or make Wi-Fi / link codes",     icon: "qrcode.viewfinder",                  page: 1),
-    Tool(id: "sticky",    name: "Sticky Note",     blurb: "One note, home + lock widget",         icon: "note.text",                          page: 1),
-    Tool(id: "alarm",     name: "Alarm Pro",       blurb: "Your snooze, limits, sounds",          icon: "alarm.fill",                         page: 1),
-    Tool(id: "ocr",       name: "Text from Image", blurb: "Copy every word in a photo",           icon: "text.viewfinder",                    page: 1),
-    Tool(id: "translate", name: "Translate",       blurb: "Any language, offline, private",       icon: "character.bubble.fill",              page: 1),
-    Tool(id: "magnifier", name: "Magnifier",       blurb: "Zoom, light up, freeze the fine print",icon: "plus.magnifyingglass",               page: 1),
-    Tool(id: "scan",      name: "Doc Scanner",     blurb: "Scan pages, share as PDF",             icon: "doc.viewfinder.fill",                page: 1),
+    Tool(id: "flash",     name: "Flashlight",      blurb: "One-tap patterns, SOS, strobe",        icon: "flashlight.on.fill",                 page: 1, keywords: ["light","torch","flashlight","strobe","sos","lamp","dark","blink"]),
+    Tool(id: "timer",     name: "Timers",          blurb: "Countdown + stopwatch",                icon: "timer",                              page: 1, keywords: ["timer","stopwatch","countdown","pomodoro","clock","minutes","lap","interval"]),
+    Tool(id: "clips",     name: "Multi-Clipboard", blurb: "Stack copies, paste from keyboard",    icon: "doc.on.clipboard.fill",              page: 1, keywords: ["clipboard","copy","paste","history","clips","snippets","text"]),
+    Tool(id: "qr",        name: "QR & Barcode",    blurb: "Scan, or make Wi-Fi / link codes",     icon: "qrcode.viewfinder",                  page: 1, keywords: ["qr","barcode","scan","scanner","code","wifi","link","url"]),
+    Tool(id: "sticky",    name: "Sticky Note",     blurb: "One note, home + lock widget",         icon: "note.text",                          page: 1, keywords: ["note","notes","sticky","memo","reminder","widget","text","scratchpad"]),
+    Tool(id: "alarm",     name: "Alarm Pro",       blurb: "Your snooze, limits, sounds",          icon: "alarm.fill",                         page: 1, keywords: ["alarm","wake","clock","snooze","ring","morning","timer"]),
+    Tool(id: "ocr",       name: "Text from Image", blurb: "Copy every word in a photo",           icon: "text.viewfinder",                    page: 1, keywords: ["text","ocr","photo","image","screenshot","copy","read","scan","words","extract"]),
+    Tool(id: "translate", name: "Translate",       blurb: "Any language, offline, private",       icon: "character.bubble.fill",              page: 1, keywords: ["translate","translation","language","spanish","french","german","foreign","words"]),
+    Tool(id: "magnifier", name: "Magnifier",       blurb: "Zoom, light up, freeze the fine print",icon: "plus.magnifyingglass",               page: 1, keywords: ["magnifier","magnify","zoom","read","fine print","loupe","camera","photo","light","glasses"]),
+    Tool(id: "scan",      name: "Doc Scanner",     blurb: "Scan pages, share as PDF",             icon: "doc.viewfinder.fill",                page: 1, keywords: ["scan","scanner","document","pdf","doc","paper","camera","photo"]),
     // ── Page 2 · Handy ───────────────────────────────────────────────────
-    Tool(id: "level",     name: "Level",           blurb: "True level for shelves & frames",      icon: "ruler.fill",                         page: 2),
-    Tool(id: "compass",   name: "Compass",         blurb: "Which way am I facing?",               icon: "location.north.line.fill",           page: 2),
-    Tool(id: "webclip",   name: "Web → Home",      blurb: "Any link becomes an app icon",         icon: "square.and.arrow.down.on.square.fill",page: 2),
-    Tool(id: "exif",      name: "Photo Metadata",  blurb: "See it, strip it before sharing",      icon: "photo.badge.exclamationmark",        page: 2),
-    Tool(id: "imgpdf",    name: "Image → PDF",     blurb: "Photos into one clean PDF",            icon: "doc.richtext.fill",                  page: 2),
-    Tool(id: "vidcompress",name: "Video Compressor",blurb: "Shrink a clip to send",               icon: "film.stack.fill",                    page: 2),
-    Tool(id: "bgremove",  name: "Background Remover",blurb: "Cut the subject out, no watermark",  icon: "person.crop.rectangle.badge.plus",   page: 2),
-    Tool(id: "park",      name: "Where Did I Park",blurb: "Save the spot, walk back",             icon: "car.fill",                           page: 2),
-    Tool(id: "wallet",    name: "Card Wallet",     blurb: "Loyalty barcodes, ready to scan",      icon: "creditcard.fill",                    page: 2),
-    Tool(id: "db",        name: "Decibel Meter",   blurb: "How loud is it, really?",              icon: "waveform",                           page: 2),
+    Tool(id: "level",     name: "Level",           blurb: "True level for shelves & frames",      icon: "ruler.fill",                         page: 2, keywords: ["level","bubble","angle","tilt","horizontal","straight","ruler","measure","hang"]),
+    Tool(id: "compass",   name: "Compass",         blurb: "Which way am I facing?",               icon: "location.north.line.fill",           page: 2, keywords: ["compass","direction","north","heading","bearing","navigate","map"]),
+    Tool(id: "webclip",   name: "Web → Home",      blurb: "Any link becomes an app icon",         icon: "square.and.arrow.down.on.square.fill",page: 2, keywords: ["shortcut","home screen","icon","web","url","link","bookmark","app"]),
+    Tool(id: "exif",      name: "Photo Metadata",  blurb: "See it, strip it before sharing",      icon: "photo.badge.exclamationmark",        page: 2, keywords: ["photo","metadata","exif","location","gps","strip","privacy","camera","image"]),
+    Tool(id: "imgpdf",    name: "Image → PDF",     blurb: "Photos into one clean PDF",            icon: "doc.richtext.fill",                  page: 2, keywords: ["pdf","image","photo","picture","document","convert","scan"]),
+    Tool(id: "vidcompress",name: "Video Compressor",blurb: "Shrink a clip to send",               icon: "film.stack.fill",                    page: 2, keywords: ["video","compress","shrink","size","movie","clip","reduce","film","mp4"]),
+    Tool(id: "bgremove",  name: "Background Remover",blurb: "Cut the subject out, no watermark",  icon: "person.crop.rectangle.badge.plus",   page: 2, keywords: ["background","remove","cutout","photo","image","subject","transparent","sticker","erase"]),
+    Tool(id: "park",      name: "Where Did I Park",blurb: "Save the spot, walk back",             icon: "car.fill",                           page: 2, keywords: ["park","parking","car","location","find","map","remember","spot"]),
+    Tool(id: "wallet",    name: "Card Wallet",     blurb: "Loyalty barcodes, ready to scan",      icon: "creditcard.fill",                    page: 2, keywords: ["wallet","card","loyalty","barcode","membership","store","points","pass"]),
+    Tool(id: "db",        name: "Decibel Meter",   blurb: "How loud is it, really?",              icon: "waveform",                           page: 2, keywords: ["decibel","sound","noise","loud","volume","meter","audio","db"]),
     // ── Page 3 · AI (on-device) ──────────────────────────────────────────
-    Tool(id: "ai_summarize",  name: "Summarize",        blurb: "Long text in, the gist out",      icon: "text.append",                  page: 3, ai: true),
-    Tool(id: "ai_extract",    name: "Extract to Data",  blurb: "Receipt / card → clean fields",   icon: "tablecells.fill",              page: 3, ai: true),
-    Tool(id: "ai_rewrite",    name: "Rewrite & Tone",   blurb: "Say it clearer, shorter, nicer",  icon: "wand.and.stars",               page: 3, ai: true),
-    Tool(id: "ai_ask",        name: "Ask a Screenshot", blurb: "Confused by a screen? Ask it",    icon: "sparkle.magnifyingglass",      page: 3, ai: true),
-    Tool(id: "ai_proofread",  name: "Proofread",        blurb: "Catch typos before you send",     icon: "checkmark.bubble.fill",        page: 3, ai: true),
-    Tool(id: "ai_describe",   name: "Describe Image",   blurb: "Natural caption / alt-text",      icon: "eye.fill",                     page: 3, ai: true),
-    Tool(id: "ai_handwriting",name: "Handwriting → Text",blurb: "Notes photo into typed text",    icon: "hand.draw.fill",               page: 3, ai: true),
-    Tool(id: "ai_reply",      name: "Draft a Reply",    blurb: "Paste a message, get a reply",    icon: "arrowshape.turn.up.left.fill", page: 3, ai: true),
-    Tool(id: "ai_identify",   name: "Identify",         blurb: "Plant, object, or landmark",      icon: "viewfinder.circle.fill",       page: 3, ai: true),
-    Tool(id: "ai_sticker",    name: "Make a Sticker",   blurb: "Describe it, your phone draws it", icon: "face.smiling.inverse",         page: 3, ai: true),
+    Tool(id: "ai_summarize",  name: "Summarize",        blurb: "Long text in, the gist out",      icon: "text.append",                  page: 3, ai: true, keywords: ["summarize","summary","tldr","shorten","ai","text","article","notes"]),
+    Tool(id: "ai_extract",    name: "Extract to Data",  blurb: "Receipt / card → clean fields",   icon: "tablecells.fill",              page: 3, ai: true, keywords: ["extract","data","receipt","card","scan","ai","fields","invoice","photo"]),
+    Tool(id: "ai_rewrite",    name: "Rewrite & Tone",   blurb: "Say it clearer, shorter, nicer",  icon: "wand.and.stars",               page: 3, ai: true, keywords: ["rewrite","tone","grammar","improve","ai","text","edit","polish"]),
+    Tool(id: "ai_ask",        name: "Ask a Screenshot", blurb: "Confused by a screen? Ask it",    icon: "sparkle.magnifyingglass",      page: 3, ai: true, keywords: ["ask","screenshot","explain","help","ai","photo","understand","question"]),
+    Tool(id: "ai_proofread",  name: "Proofread",        blurb: "Catch typos before you send",     icon: "checkmark.bubble.fill",        page: 3, ai: true, keywords: ["proofread","grammar","spelling","typos","check","ai","text","edit"]),
+    Tool(id: "ai_describe",   name: "Describe Image",   blurb: "Natural caption / alt-text",      icon: "eye.fill",                     page: 3, ai: true, keywords: ["describe","caption","alt text","accessibility","ai","photo","image","vision"]),
+    Tool(id: "ai_handwriting",name: "Handwriting → Text",blurb: "Notes photo into typed text",    icon: "hand.draw.fill",               page: 3, ai: true, keywords: ["handwriting","notes","ocr","ai","text","photo","convert","scan"]),
+    Tool(id: "ai_reply",      name: "Draft a Reply",    blurb: "Paste a message, get a reply",    icon: "arrowshape.turn.up.left.fill", page: 3, ai: true, keywords: ["reply","draft","message","respond","ai","text","answer","email"]),
+    Tool(id: "ai_identify",   name: "Identify",         blurb: "Plant, object, or landmark",      icon: "viewfinder.circle.fill",       page: 3, ai: true, keywords: ["identify","what is","plant","object","landmark","ai","photo","recognize","vision"]),
+    Tool(id: "ai_sticker",    name: "Make a Sticker",   blurb: "Describe it, your phone draws it", icon: "face.smiling.inverse",         page: 3, ai: true, keywords: ["sticker","image","generate","draw","ai","emoji","create","art","playground"]),
 ]
+
+/// Google-style ranked search across all 30 tools: best matches first, then ok ones.
+@MainActor func searchTools(_ raw: String) -> [Tool] {
+    let query = raw.lowercased().trimmingCharacters(in: .whitespaces)
+    guard !query.isEmpty else { return [] }
+    let tokens = query.split(separator: " ").map(String.init)
+    func score(_ t: Tool) -> Int {
+        let name = t.name.lowercased(), blurb = t.blurb.lowercased(), keys = t.keywords.map { $0.lowercased() }
+        var s = 0
+        if name == query { s += 1000 }
+        if name.hasPrefix(query) { s += 500 }
+        if name.contains(query) { s += 250 }
+        if keys.contains(query) { s += 200 }
+        for tok in tokens where tok.count >= 2 {
+            if name.contains(tok) { s += 120 }
+            for k in keys {
+                if k == tok { s += 90 }
+                else if k.contains(tok) || tok.contains(k) { s += 45 }
+            }
+            if blurb.contains(tok) { s += 25 }
+        }
+        return s
+    }
+    return TOOLS.map { ($0, score($0)) }.filter { $0.1 > 0 }.sorted { $0.1 > $1.1 }.map { $0.0 }
+}
 
 @MainActor func tools(onPage p: Int) -> [Tool] { TOOLS.filter { $0.page == p } }
 
@@ -132,6 +158,8 @@ struct HomeView: View {
     @EnvironmentObject var store: StoreManager
     @State private var showPaywall = false
     @State private var page = 1
+    @State private var search = ""
+    @FocusState private var searching: Bool
     @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" || $0 == "home" || $0 == "homepro" ? nil : [$0] } ?? []
 
     private let captions = ["Everyday essentials", "Handy extras", "AI · on your phone"]
@@ -140,12 +168,19 @@ struct HomeView: View {
         NavigationStack(path: $path) {
             VStack(spacing: 0) {
                 header
-                TabView(selection: $page) {
-                    ForEach(1...3, id: \.self) { p in
-                        ToolGridPage(page: p).tag(p)
+                SearchField(text: $search, focused: $searching)
+                    .padding(.horizontal, HandySpacing.gutter)
+                    .padding(.bottom, HandySpacing.s8)
+                if search.trimmingCharacters(in: .whitespaces).isEmpty {
+                    TabView(selection: $page) {
+                        ForEach(1...3, id: \.self) { p in
+                            ToolGridPage(page: p).tag(p)
+                        }
                     }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                } else {
+                    SearchResults(query: search)
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
                 BannerAd()
             }
             .background(HandyColor.bg)
@@ -214,6 +249,52 @@ struct PageTabs: View {
                         .foregroundStyle(page == n ? Color.white : HandyColor.accent)
                 }
                 .accessibilityLabel("Page \(n)")
+            }
+        }
+    }
+}
+
+/// A rounded search field that filters all 30 tools as you type.
+struct SearchField: View {
+    @Binding var text: String
+    var focused: FocusState<Bool>.Binding
+    var body: some View {
+        HStack(spacing: HandySpacing.s8) {
+            Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
+            TextField("Search 30 tools…", text: $text)
+                .focused(focused)
+                .autocorrectionDisabled().textInputAutocapitalization(.never).submitLabel(.search)
+            if !text.isEmpty {
+                Button { text = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
+                    .accessibilityLabel("Clear search")
+            }
+        }
+        .padding(.horizontal, HandySpacing.s12).padding(.vertical, HandySpacing.s8)
+        .background(HandyColor.surface, in: Capsule())
+        .overlay(Capsule().stroke(HandyColor.border, lineWidth: 1))
+    }
+}
+
+/// Ranked results across every page, best match first.
+struct SearchResults: View {
+    let query: String
+    private let cols = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
+    var body: some View {
+        let results = searchTools(query)
+        ScrollView {
+            if results.isEmpty {
+                VStack(spacing: HandySpacing.s8) {
+                    Image(systemName: "magnifyingglass").font(.system(size: 36)).foregroundStyle(HandyColor.textSecondary)
+                    Text("No tools match “\(query)”").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                    Text("Try “photo”, “pdf”, “scan”, or “ai”.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }.frame(maxWidth: .infinity).padding(.top, HandySpacing.s48)
+            } else {
+                LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
+                    ForEach(Array(results.enumerated()), id: \.element.id) { _, t in
+                        NavigationLink(value: t.id) { ToolCard(tool: t) }.buttonStyle(ToolCardPress())
+                    }
+                }
+                .padding(.horizontal, HandySpacing.gutter).padding(.top, HandySpacing.s4).padding(.bottom, HandySpacing.s16)
             }
         }
     }
