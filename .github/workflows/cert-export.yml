@@ -1,14 +1,15 @@
 name: Cert Export (one-time)
 
-# One-time helper: pulls the distribution .p12 Tenzy already signs with out of the Actions cache
-# and hands it back ENCRYPTED (only ciphertext ever leaves CI, safe even on a public repo). Used to
-# move the cert into a durable secret shared by both apps, so nothing ever revokes/recreates again.
+# One-time helper: reads the distribution .p12 Tenzy already signs with out of the Actions cache and
+# returns it ENCRYPTED to a caller-held public key, so only useless ciphertext ever appears in logs
+# or artifacts (safe even on a public repo). Runs only when this file changes on handytools (so it
+# can reach that branch's cache); delete it afterwards. Touches no ios/** or android/** path, so it
+# never triggers the app build.
 on:
+  push:
+    branches: [handytools]
+    paths: ['.github/workflows/cert-export.yml']
   workflow_dispatch:
-    inputs:
-      passphrase:
-        description: Passphrase used to encrypt the exported .p12 (provided by the caller)
-        required: true
 
 permissions:
   contents: read
@@ -22,21 +23,21 @@ jobs:
         with:
           path: ios/cert-cache
           key: tenzy-dist-cert-v3
-      - name: Encrypt the .p12 for return
+      - name: Encrypt the .p12 to the caller's public key
         env:
-          PASS: ${{ inputs.passphrase }}
+          PUBKEY_B64: "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQm9qQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FZOEFNSUlCaWdLQ0FZRUFtL282MVhQVjlXNE1mN3VhMkhMVApoaDB1Z3B6WHZvZENYWTducUdsSmhCRlZRT0xFYzVrNjhRLzU4dXFCV3JRMk95RnhqbEN0a3R6bG9QUFp4djZyCjFHUEtYTVlmN3YzczgybVV1WkYrQWs0c1hMWDhaR0g3ODdBZ0ZlT1c4c0ZlT1NhbmFJbUxxWUd0d0hmQWtubkUKV2xPY08vYndnNWxObGI2dHVOcDBBbE9CbFY2STFaY01oRUN2YkE3cHZEMlRUU3hhYzQvajl2dm5RREZMZXRTWgpjVVhjVU5WUi9NeGYxcVJtWStGQmR4WmIyc2pRb20yVGFsTmVaNDFiTlh4UnNZaENFd2FMdFpsWnM0bm9VUjQ0CmtsVnJTTHpzR1NPcFZCcDdVcXNsMzV0Q1o5VEpDM1hROUU1V0dPd1hwbGVick1TLzhTTmsxUE8ybkVPNkNyeTcKNTJGekNZbHNjMDRLQWJKTDhWVnowSnUvT1pzdDB0MkpVWXozQ1p0VkM4bW1xMXZLRjZZc3FQY2JhYUY0NkRXaQpkYVpSaFk0ZDBBZi9yNG1zbys2azhtUEhzKzRGZjJsY2hyalFqYnVMYllGYmlCdUREQ1NNd3VCT2dDRGdkWEJPCllPQktheVBxOVBjTDdwOUw3dHJYaVFLcDVvZitNdkdXL1N0akJPNGNzczBMQWdNQkFBRT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg=="
         run: |
-          echo "::add-mask::$PASS"
-          if [ ! -f ios/cert-cache/dist.p12 ]; then
-            echo "NO_P12_IN_CACHE"
-            exit 1
-          fi
+          set -e
+          if [ ! -f ios/cert-cache/dist.p12 ]; then echo "NO_P12_IN_CACHE"; ls -la ios/cert-cache || true; exit 1; fi
           mkdir -p out
-          openssl enc -aes-256-cbc -pbkdf2 -salt -in ios/cert-cache/dist.p12 -out out/dist.p12.enc -pass env:PASS
-          echo "bytes: $(wc -c < ios/cert-cache/dist.p12)"
+          echo "$PUBKEY_B64" | base64 -d > pub.pem
+          openssl rand -out aeskey.bin 32
+          openssl enc -aes-256-cbc -pbkdf2 -salt -in ios/cert-cache/dist.p12 -out out/dist.p12.enc -pass file:aeskey.bin
+          openssl pkeyutl -encrypt -pubin -inkey pub.pem -pkeyopt rsa_padding_mode:oaep -in aeskey.bin -out out/aeskey.enc
+          echo "p12 bytes: $(wc -c < ios/cert-cache/dist.p12)"
       - name: Upload ciphertext only
         uses: actions/upload-artifact@v4
         with:
           name: dist-enc
-          path: out/dist.p12.enc
+          path: out/*.enc
           retention-days: 1
