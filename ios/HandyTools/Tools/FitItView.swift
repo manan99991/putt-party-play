@@ -1,0 +1,211 @@
+import SwiftUI
+import PhotosUI
+import UniformTypeIdentifiers
+import UIKit
+
+/// Fit It — hit an exact size limit. Photo, video, or PDF in; pick the limit the portal / email /
+/// form demands; get a copy that lands just under it. The one thing no stock share sheet can do.
+struct FitItView: View {
+    @EnvironmentObject var store: StoreManager
+
+    private enum Source { case image(UIImage), video(URL), pdf(Data) }
+    private enum Output { case data(Data, ext: String), file(URL) }
+
+    @State private var pickedItem: PhotosPickerItem?
+    @State private var showFiles = false
+    @State private var source: Source?
+    @State private var sourceName = ""
+    @State private var sourceBytes = 0
+    @State private var targetBytes = 2_000_000
+    @State private var customValue = ""
+    @State private var customUnitMB = true
+    @State private var output: Output?
+    @State private var outputBytes = 0
+    @State private var working = false
+    @State private var errorText: String?
+
+    private var overQuota: Bool { !Usage.hasRoom("fitit", limit: Limits.freeFitPerDay) }
+
+    var body: some View {
+        ToolPage(title: "Fit It", subtitle: "Shrink a photo, video, or PDF to land just under the size limit you need.") {
+            if source == nil {
+                PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
+                    Label("Choose a photo or video", systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
+                }.secondaryButton()
+                Button { showFiles = true } label: { Label("Choose a PDF", systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
+                Text("Typical limits: email 25 MB, most portals 2 MB, government photo uploads 50–200 KB.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            } else {
+                sourceCard
+                targetPicker
+
+                if !store.isPremium { QuotaChip(name: "fitit", limit: Limits.freeFitPerDay).environmentObject(store) }
+                if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeFitPerDay) free fits.") }
+
+                Button { run() } label: {
+                    HStack { if working { ProgressView().tint(.white) }; Text(working ? "Fitting…" : "Fit under \(SizeTarget.format(targetBytes))") }.frame(maxWidth: .infinity)
+                }.primaryButton().disabled(working || overQuota || targetBytes <= 0)
+
+                HStack {
+                    PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) { Label("Different photo/video", systemImage: "photo") }.textButton()
+                    Button { showFiles = true } label: { Label("Different PDF", systemImage: "doc") }.textButton()
+                    Spacer()
+                }
+            }
+
+            if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+
+            if output != nil { resultCard }
+        }
+        .onChange(of: pickedItem) { _, item in loadPhotoItem(item) }
+        .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf]) { res in
+            if case .success(let url) = res { loadPDF(url) }
+        }
+    }
+
+    // MARK: pieces
+
+    private var sourceCard: some View {
+        HStack(spacing: HandySpacing.s12) {
+            Image(systemName: sourceIcon).font(.system(size: 22)).foregroundStyle(HandyColor.accent).frame(width: 36)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(sourceName).font(HandyFont.bodyStrong).lineLimit(1)
+                Text("Now \(SizeTarget.format(sourceBytes))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            Spacer()
+        }
+        .cardStyle(padding: HandySpacing.s12)
+    }
+
+    private var sourceIcon: String {
+        switch source { case .image: return "photo"; case .video: return "film"; case .pdf: return "doc.fill"; case .none: return "questionmark" }
+    }
+
+    private var targetPicker: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text("Must be under").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: HandySpacing.s8) {
+                    ForEach(SizeTarget.presets, id: \.bytes) { p in
+                        HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = "" }
+                    }
+                }
+            }
+            HStack(spacing: HandySpacing.s8) {
+                TextField("Custom", text: $customValue)
+                    .keyboardType(.decimalPad)
+                    .padding(HandySpacing.s12)
+                    .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                    .onChange(of: customValue) { _, _ in applyCustom() }
+                Picker("Unit", selection: $customUnitMB) { Text("MB").tag(true); Text("KB").tag(false) }
+                    .pickerStyle(.segmented).frame(width: 120)
+                    .onChange(of: customUnitMB) { _, _ in applyCustom() }
+            }
+        }
+    }
+
+    private var resultCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HStack(spacing: HandySpacing.s12) {
+                Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.success).font(.system(size: 22))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Fits — \(SizeTarget.format(outputBytes))").font(HandyFont.bodyStrong)
+                    Text("Down from \(SizeTarget.format(sourceBytes)) · \(savingsText)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                Spacer()
+            }
+            if case .pdf = source {
+                Text("Pages are flattened to reach the size, so text won't be selectable in the copy.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            shareButton
+        }
+        .cardStyle(padding: HandySpacing.s16)
+    }
+
+    private var savingsText: String {
+        guard sourceBytes > 0 else { return "" }
+        let pct = Int((1 - Double(outputBytes) / Double(sourceBytes)) * 100)
+        return "\(max(0, pct))% smaller"
+    }
+
+    @ViewBuilder private var shareButton: some View {
+        switch output {
+        case .data(let d, let ext) where ext == "pdf":
+            ShareLink(item: PDFFile(data: d), preview: SharePreview("Fitted PDF")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+        case .data(let d, _):
+            ShareLink(item: JPEGFile(data: d), preview: SharePreview("Fitted photo")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+        case .file(let url):
+            ShareLink(item: url) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+        case .none:
+            EmptyView()
+        }
+    }
+
+    // MARK: loading
+
+    private func reset() { output = nil; outputBytes = 0; errorText = nil }
+
+    private func loadPhotoItem(_ item: PhotosPickerItem?) {
+        guard let item else { return }
+        reset()
+        Task {
+            if item.supportedContentTypes.contains(where: { $0.conforms(to: .movie) }) {
+                if let movie = try? await item.loadTransferable(type: MovieImport.self) {
+                    await MainActor.run {
+                        source = .video(movie.url); sourceName = "Video"; sourceBytes = SizeTarget.fileSize(movie.url) ?? 0
+                    }
+                }
+            } else if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) {
+                await MainActor.run { source = .image(img); sourceName = "Photo"; sourceBytes = d.count }
+            }
+        }
+    }
+
+    private func loadPDF(_ url: URL) {
+        reset()
+        let ok = url.startAccessingSecurityScopedResource()
+        defer { if ok { url.stopAccessingSecurityScopedResource() } }
+        guard let d = try? Data(contentsOf: url) else { errorText = "Couldn't read that PDF."; return }
+        source = .pdf(d); sourceName = url.lastPathComponent; sourceBytes = d.count
+    }
+
+    private func applyCustom() {
+        let cleaned = customValue.replacingOccurrences(of: ",", with: ".")
+        guard let v = Double(cleaned), v > 0 else { return }
+        targetBytes = Int(v * (customUnitMB ? 1_000_000 : 1_000))
+    }
+
+    // MARK: run
+
+    private func run() {
+        guard let source else { return }
+        guard Usage.use("fitit", limit: Limits.freeFitPerDay) else { return }
+        working = true; errorText = nil; output = nil
+        let target = targetBytes
+        Task { @MainActor in
+            switch source {
+            case .image(let img):
+                if let d = SizeTarget.image(img, targetBytes: target) { output = .data(d, ext: "jpg"); outputBytes = d.count }
+                else { errorText = "Couldn't get this photo under \(SizeTarget.format(target)) without ruining it. Try a slightly larger limit." }
+            case .pdf(let data):
+                if let d = SizeTarget.pdf(data, targetBytes: target) { output = .data(d, ext: "pdf"); outputBytes = d.count }
+                else { errorText = "Couldn't get this PDF under \(SizeTarget.format(target)). Try a larger limit or fewer pages." }
+            case .video(let url):
+                if let out = await SizeTarget.video(url: url, targetBytes: target) { output = .file(out); outputBytes = SizeTarget.fileSize(out) ?? 0 }
+                else { errorText = "Couldn't get this video under \(SizeTarget.format(target)). Try a larger limit or trim it first." }
+            }
+            working = false
+            if output != nil { HandyHaptics.success() }
+        }
+    }
+}
+
+/// Lets ShareLink hand off raw PDF data as a real file.
+struct PDFFile: Transferable {
+    let data: Data
+    static var transferRepresentation: some TransferRepresentation {
+        DataRepresentation(exportedContentType: .pdf) { $0.data }
+    }
+}

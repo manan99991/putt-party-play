@@ -2,6 +2,7 @@ import XCTest
 import UIKit
 import ImageIO
 import UniformTypeIdentifiers
+import PDFKit
 @testable import HandyTools
 
 /// Engine-level correctness checks. These exercise the real tool logic with deterministic,
@@ -26,8 +27,8 @@ final class EngineTests: XCTestCase {
     // MARK: search ranking
 
     @MainActor func testSearchRanksTheObviousToolFirst() {
-        XCTAssertEqual(searchTools("flashlight").first?.id, "flash")
-        XCTAssertEqual(searchTools("pdf").first?.id, "pdftools")
+        XCTAssertEqual(searchTools("flashlight").first?.id, "light")
+        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
         XCTAssertFalse(searchTools("translate").isEmpty)
         XCTAssertFalse(searchTools("photo").isEmpty)
         XCTAssertTrue(searchTools("zzxqzzq").isEmpty, "nonsense query returns nothing")
@@ -62,7 +63,45 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(read.uppercased().contains("HELLO"), "OCR missed the text, got: \(read)")
     }
 
+    // MARK: Fit It — exact-size engine
+
+    func testSizeTargetImageLandsUnderLimit() throws {
+        let big = Self.noisy(CGSize(width: 2400, height: 1800))
+        let target = 150_000
+        let d = try XCTUnwrap(SizeTarget.image(big, targetBytes: target), "image could not be fitted")
+        XCTAssertLessThanOrEqual(d.count, target, "must land under the limit")
+        XCTAssertNotNil(UIImage(data: d), "output must still decode")
+    }
+
+    func testSizeTargetPDFLandsUnderLimit() throws {
+        let page = CGRect(x: 0, y: 0, width: 612, height: 792)
+        let pdf = UIGraphicsPDFRenderer(bounds: page).pdfData { ctx in
+            for _ in 0..<3 { ctx.beginPage(); Self.noisy(CGSize(width: 1200, height: 1500)).draw(in: page) }
+        }
+        let target = min(pdf.count / 2, 400_000)
+        let out = try XCTUnwrap(SizeTarget.pdf(pdf, targetBytes: target), "pdf could not be fitted")
+        XCTAssertLessThanOrEqual(out.count, target)
+        XCTAssertEqual(PDFDocument(data: out)?.pageCount, 3, "must keep every page")
+    }
+
     // MARK: fixtures
+
+    /// Random 8px colour cells — incompressible enough that size-targeting has real work to do.
+    static func noisy(_ size: CGSize) -> UIImage {
+        let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+        return UIGraphicsImageRenderer(size: size, format: f).image { ctx in
+            let cell: CGFloat = 8
+            var y: CGFloat = 0
+            while y < size.height {
+                var x: CGFloat = 0
+                while x < size.width {
+                    UIColor(hue: CGFloat.random(in: 0...1), saturation: 0.8, brightness: 0.9, alpha: 1).setFill()
+                    ctx.fill(CGRect(x: x, y: y, width: cell, height: cell)); x += cell
+                }
+                y += cell
+            }
+        }
+    }
 
     static func solid(_ size: CGSize, hue: CGFloat = 0.55) -> UIImage {
         let f = UIGraphicsImageRendererFormat.default(); f.scale = 1

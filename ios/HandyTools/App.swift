@@ -55,39 +55,39 @@ struct Tool: Identifiable {
 ///   Page 2 — handy extras.
 ///   Page 3 — AI, running free and private on-device (with a graceful fallback on older phones).
 @MainActor let TOOLS: [Tool] = [
-    // ── Page 1 · Everyday ────────────────────────────────────────────────
-    Tool(id: "flash",     name: "Flashlight",      blurb: "One-tap patterns, SOS, strobe",        icon: "flashlight.on.fill",                 page: 1, keywords: ["light","torch","flashlight","strobe","sos","lamp","dark","blink"]),
-    Tool(id: "timer",     name: "Timers",          blurb: "Countdown + stopwatch",                icon: "timer",                              page: 1, keywords: ["timer","stopwatch","countdown","pomodoro","clock","minutes","lap","interval"]),
-    Tool(id: "clips",     name: "Multi-Clipboard", blurb: "Paste any past copy",    icon: "doc.on.clipboard.fill",              page: 1, keywords: ["clipboard","copy","paste","history","clips","snippets","text"]),
-    Tool(id: "qr",        name: "QR & Barcode",    blurb: "Scan & make codes",     icon: "qrcode.viewfinder",                  page: 1, keywords: ["qr","barcode","scan","scanner","code","wifi","link","url"]),
-    Tool(id: "pocket",    name: "Pocket",          blurb: "Magnifier, note, cards, alarm",        icon: "square.grid.2x2.fill",               page: 1, keywords: ["pocket","magnifier","magnify","zoom","loupe","note","sticky","memo","card","wallet","loyalty","alarm","clock"]),
-    Tool(id: "vault",     name: "Secure Vault",    blurb: "Lock notes & photos, Face ID",         icon: "lock.fill",                          page: 1, keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","password","safe","encrypt"]),
-    Tool(id: "ocr",       name: "Text from Image", blurb: "Copy every word in a photo",           icon: "text.viewfinder",                    page: 1, keywords: ["text","ocr","photo","image","screenshot","copy","read","scan","words","extract"]),
-    Tool(id: "translate", name: "Translate",       blurb: "Any language, offline, private",       icon: "character.bubble.fill",              page: 1, keywords: ["translate","translation","language","spanish","french","german","foreign","words"]),
-    Tool(id: "gif",       name: "GIF Maker",       blurb: "Video or photos → a GIF",              icon: "rectangle.stack.badge.play.fill",    page: 1, keywords: ["gif","animated","animation","video","clip","loop","meme","photos","moving"]),
-    Tool(id: "measure",   name: "Measure",         blurb: "Level, compass, sound",                icon: "ruler.fill",                         page: 1, keywords: ["measure","level","bubble","compass","north","heading","decibel","sound","noise","angle","ruler"]),
-    // ── Page 2 · Power ───────────────────────────────────────────────────
-    Tool(id: "scan",      name: "Doc Scanner",     blurb: "Scan pages to PDF",                    icon: "doc.viewfinder.fill",                page: 2, keywords: ["scan","scanner","document","pdf","doc","paper","camera","photo"]),
-    Tool(id: "pdftools",  name: "PDF Toolkit",     blurb: "Merge, compress, make PDFs",           icon: "doc.on.doc.fill",                    page: 2, keywords: ["pdf","merge","combine","split","compress","shrink","images","document","convert"]),
-    Tool(id: "imgconvert",name: "Image Converter", blurb: "HEIC → JPG, strip location",           icon: "photo.on.rectangle.angled",          page: 2, keywords: ["convert","heic","jpg","jpeg","png","resize","compress","image","photo","batch","format","metadata","exif","location","gps","strip","privacy"]),
-    Tool(id: "bgremove",  name: "Background Remover",blurb: "Cut out the subject",                 icon: "person.crop.rectangle.badge.plus",   page: 2, keywords: ["background","remove","cutout","photo","image","subject","transparent","sticker","erase"]),
-    Tool(id: "photostudio",name: "Photo Studio",   blurb: "Straighten, redact, color pop",        icon: "camera.filters",                     page: 2, keywords: ["photo","studio","straighten","perspective","deskew","redact","blur","face","censor","color pop","cleanup","remove object","retouch","edit"]),
-    Tool(id: "vidcompress",name: "Video Compressor",blurb: "Shrink a clip to send",               icon: "film.stack.fill",                    page: 2, keywords: ["video","compress","shrink","size","movie","clip","reduce","film","mp4"]),
-    Tool(id: "audiotext", name: "Audio → Text",    blurb: "Transcribe your voice",                icon: "waveform.badge.mic",                 page: 2, keywords: ["audio","text","transcribe","transcription","voice","speech","record","dictation","notes","meeting"]),
-    Tool(id: "signfill",  name: "Sign & Fill",     blurb: "Sign a doc, export PDF",               icon: "signature",                          page: 2, keywords: ["sign","signature","fill","document","pdf","form","initials","contract","markup"]),
-    Tool(id: "idphoto",   name: "ID Photo",        blurb: "Passport & visa, done right",          icon: "person.crop.rectangle.fill",         page: 2, keywords: ["id","passport","visa","photo","headshot","document","official","2x2","biometric","print"]),
-    Tool(id: "webclip",   name: "Web → Home",      blurb: "Link to an app icon",                  icon: "square.and.arrow.down.on.square.fill",page: 2, keywords: ["shortcut","home screen","icon","web","url","link","bookmark","app"]),
-    // ── Page 3 · AI (on-device) ──────────────────────────────────────────
-    Tool(id: "ai_summarize",  name: "Summarize",        blurb: "Long text in, the gist out",      icon: "text.append",                  page: 3, ai: true, keywords: ["summarize","summary","tldr","shorten","ai","text","article","notes"]),
-    Tool(id: "ai_extract",    name: "Extract to Data",  blurb: "Receipt to clean data",   icon: "tablecells.fill",              page: 3, ai: true, keywords: ["extract","data","receipt","card","scan","ai","fields","invoice","photo"]),
-    Tool(id: "ai_rewrite",    name: "Rewrite & Tone",   blurb: "Say it clearer, shorter, nicer",  icon: "wand.and.stars",               page: 3, ai: true, keywords: ["rewrite","tone","grammar","improve","ai","text","edit","polish"]),
-    Tool(id: "ai_ask",        name: "Ask a Screenshot", blurb: "Explain a screenshot",    icon: "sparkle.magnifyingglass",      page: 3, ai: true, keywords: ["ask","screenshot","explain","help","ai","photo","understand","question"]),
-    Tool(id: "ai_proofread",  name: "Proofread",        blurb: "Catch typos fast",     icon: "checkmark.bubble.fill",        page: 3, ai: true, keywords: ["proofread","grammar","spelling","typos","check","ai","text","edit"]),
-    Tool(id: "ai_describe",   name: "Describe Image",   blurb: "Natural caption / alt-text",      icon: "eye.fill",                     page: 3, ai: true, keywords: ["describe","caption","alt text","accessibility","ai","photo","image","vision"]),
-    Tool(id: "ai_handwriting",name: "Handwriting → Text",blurb: "Notes photo to text",    icon: "hand.draw.fill",               page: 3, ai: true, keywords: ["handwriting","notes","ocr","ai","text","photo","convert","scan"]),
-    Tool(id: "ai_reply",      name: "Draft a Reply",    blurb: "Draft a reply",    icon: "arrowshape.turn.up.left.fill", page: 3, ai: true, keywords: ["reply","draft","message","respond","ai","text","answer","email"]),
-    Tool(id: "ai_identify",   name: "Identify",         blurb: "Plant, object, or landmark",      icon: "viewfinder.circle.fill",       page: 3, ai: true, keywords: ["identify","what is","plant","object","landmark","ai","photo","recognize","vision"]),
-    Tool(id: "ai_sticker",    name: "Make a Sticker",   blurb: "Make a sticker, your words", icon: "face.smiling.inverse",         page: 3, ai: true, keywords: ["sticker","image","generate","draw","ai","emoji","create","art","playground"]),
+    // ── Page 1 · Files, docs & sharing ──────────────────────────────────
+    Tool(id: "fitit",      name: "Fit It",           blurb: "Shrink to an exact size limit",     icon: "square.resize.down",                  page: 1, keywords: ["compress","size","mb","kb","limit","upload","email","shrink","reduce","smaller","too big","pdf","photo","video","fit"]),
+    Tool(id: "scan",       name: "Scan",             blurb: "Scan, OCR, sign & flatten PDFs",    icon: "doc.viewfinder.fill",                 page: 1, keywords: ["scan","scanner","document","pdf","ocr","sign","signature","fill","form","flatten","merge","split","pages","business card","handwriting"]),
+    Tool(id: "studio",     name: "Studio",           blurb: "Cut out, passport, resize, convert", icon: "photo.on.rectangle.angled",           page: 1, keywords: ["photo","image","background","remove","cutout","passport","id photo","resize","convert","heic","jpg","png","crop"]),
+    Tool(id: "video",      name: "Video",            blurb: "Shrink, trim, convert, GIF",        icon: "film.stack.fill",                     page: 1, keywords: ["video","compress","shrink","trim","cut","convert","mp4","mov","mute","audio","extract","gif","clip"]),
+    Tool(id: "formatfix",  name: "Format Fixer",     blurb: "HEIC/MOV → JPG/MP4, in batch",      icon: "arrow.triangle.2.circlepath",         page: 1, keywords: ["heic","jpg","jpeg","png","mov","mp4","convert","format","batch","won't open","upload","share"]),
+    Tool(id: "scrub",      name: "Privacy Scrubber", blurb: "Strip location, redact for good",   icon: "eye.slash.fill",                      page: 1, keywords: ["privacy","metadata","exif","gps","location","strip","redact","blur","face","plate","hide","censor","share safe"]),
+    Tool(id: "capture",    name: "Capture",          blurb: "Point: text, codes, translate",     icon: "viewfinder",                          page: 1, keywords: ["camera","text","ocr","copy","qr","barcode","translate","sign","menu","what is this","identify","live text"]),
+    Tool(id: "qrwifi",     name: "QR & Wi‑Fi",       blurb: "Scan, make & share Wi‑Fi codes",    icon: "qrcode",                              page: 1, keywords: ["qr","code","barcode","wifi","wi-fi","password","share","guest","generate","make","scan"]),
+    Tool(id: "stitch",     name: "Long Screenshot",  blurb: "Stitch shots into one tall image",  icon: "rectangle.split.1x2.fill",            page: 1, keywords: ["screenshot","long","stitch","scroll","combine","merge","tall","chat","thread","full page"]),
+    Tool(id: "shareready", name: "Share‑Ready",      blurb: "One tap: convert, strip, shrink",   icon: "square.and.arrow.up.fill",            page: 1, keywords: ["share","upload","ready","convert","strip","metadata","shrink","recipe","one tap","portal","send"]),
+    // ── Page 2 · Camera, sensors & everyday ─────────────────────────────
+    Tool(id: "light",      name: "Flashlight+",      blurb: "Strobe, SOS, screen light, mirror", icon: "flashlight.on.fill",                  page: 2, keywords: ["flashlight","torch","light","strobe","sos","morse","screen light","mirror","selfie","dark","blink"]),
+    Tool(id: "instruments",name: "Instruments",      blurb: "Level, compass, dB, light, more",   icon: "gauge.with.dots.needle.33percent",    page: 2, keywords: ["level","bubble","angle","protractor","compass","north","decibel","sound","noise","light","lux","altimeter","barometer","magnet","metal","sensor"]),
+    Tool(id: "measure",    name: "Measure",          blurb: "AR tape: distance, height, area",   icon: "ruler.fill",                          page: 2, keywords: ["measure","tape","ruler","distance","height","area","room","ar","lidar","length","how tall","how far"]),
+    Tool(id: "magnify",    name: "Magnifier+",       blurb: "Zoom, freeze, high‑contrast",       icon: "plus.magnifyingglass",                page: 2, keywords: ["magnifier","magnify","zoom","fine print","read","small text","freeze","contrast","loupe","glasses"]),
+    Tool(id: "procam",     name: "Pro Camera",       blurb: "Manual ISO, shutter, RAW",          icon: "camera.aperture",                     page: 2, keywords: ["camera","manual","iso","shutter","exposure","raw","dng","focus","long exposure","night","timelapse","histogram"]),
+    Tool(id: "gpsdash",    name: "GPS Dashboard",    blurb: "Speed, heading, altitude, HUD",     icon: "speedometer",                         page: 2, keywords: ["speed","speedometer","gps","heading","altitude","hud","trip","drive","bike","mph","kph","dashboard"]),
+    Tool(id: "audiolab",   name: "Audio Lab",        blurb: "Tuner, tones, speaker test",        icon: "waveform",                            page: 2, keywords: ["tuner","guitar","pitch","tone","frequency","generator","speaker","test","earbuds","left right","water","eject","sound"]),
+    Tool(id: "rest",       name: "Rest",             blurb: "White noise + snore recorder",      icon: "moon.zzz.fill",                       page: 2, keywords: ["sleep","white noise","pink","brown","rain","fan","noise","timer","snore","record","night","relax","focus"]),
+    Tool(id: "colorvision",name: "Color Vision",     blurb: "Live color‑blind correction",       icon: "eyeglasses",                          page: 2, keywords: ["color","colour","blind","colorblind","daltonize","correct","name the color","what color","red green","accessibility","eyedropper","hex","paint"]),
+    Tool(id: "describe",   name: "Scene Describer",  blurb: "Hear what the camera sees",         icon: "eye.fill",                            page: 2, ai: true, keywords: ["describe","scene","blind","low vision","narrate","speak","what is in front","accessibility","camera","see"]),
+    // ── Page 3 · Words, AI & accessibility ──────────────────────────────
+    Tool(id: "textstudio", name: "Text Studio",      blurb: "Fix, rewrite, reply, summarize",    icon: "text.badge.checkmark",                page: 3, ai: true, keywords: ["text","grammar","proofread","rewrite","tone","reply","summarize","summary","edit","polish","email","message","ai"]),
+    Tool(id: "translate",  name: "Translate",        blurb: "Text, camera, voice — offline",     icon: "character.bubble.fill",               page: 3, keywords: ["translate","translation","language","offline","camera","voice","conversation","spanish","french","menu","sign"]),
+    Tool(id: "voicenotes", name: "Voice → Notes",    blurb: "Transcript, summary, to‑dos",       icon: "waveform.badge.mic",                  page: 3, ai: true, keywords: ["voice","record","transcribe","transcript","meeting","notes","summary","action items","dictation","audio","speech","ai"]),
+    Tool(id: "livecaptions",name: "Live Captions",   blurb: "Real‑time captions, private",       icon: "captions.bubble.fill",                page: 3, ai: true, keywords: ["captions","live","subtitles","hearing","deaf","hard of hearing","conversation","transcribe","accessibility","real time"]),
+    Tool(id: "shield",     name: "Message Shield",   blurb: "Spot scams, see why",               icon: "shield.lefthalf.filled",              page: 3, ai: true, keywords: ["scam","phishing","spam","fraud","suspicious","text","email","link","safe","check","is this real","mom","ai"]),
+    Tool(id: "readaloud",  name: "Read Aloud",       blurb: "Any page, spoken naturally",        icon: "speaker.wave.2.bubble.fill",          page: 3, keywords: ["read","aloud","speak","tts","voice","dyslexia","accessibility","page","book","ocr","listen","simplify"]),
+    Tool(id: "explain",    name: "Plain‑English Explainer", blurb: "Decode legal & medical jargon", icon: "text.book.closed.fill",             page: 3, ai: true, keywords: ["explain","plain english","simple","jargon","legal","contract","medical","lab results","terms","what does this mean","ai"]),
+    Tool(id: "datagrab",   name: "Data Grabber",     blurb: "Receipt → rows, contacts, dates",   icon: "tablecells.fill",                     page: 3, ai: true, keywords: ["receipt","table","data","extract","csv","spreadsheet","contact","business card","calendar","event","expense","ai"]),
+    Tool(id: "clips",      name: "Clipboard",        blurb: "Snippets & saved text",             icon: "doc.on.clipboard.fill",               page: 3, keywords: ["clipboard","copy","paste","history","snippets","saved","text","boilerplate","address"]),
+    Tool(id: "vault",      name: "Vault",            blurb: "Face ID locker",                    icon: "lock.fill",                           page: 3, keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","files","cards","safe"]),
 ]
 
 /// Google-style ranked search across all 30 tools: best matches first, then ok ones.
@@ -122,33 +122,24 @@ struct ToolDestination: View {
     let id: String
     var body: some View {
         switch id {
-        case "alarm": AlarmProView()
-        case "clips": ClipboardView()
-        case "flash": FlashlightView()
-        case "timer": TimersView()
-        case "qr": QRToolsView()
-        case "sticky": StickyNotesView()
-        case "ocr": TextFromImageView()
+        // ── Page 1 ──
+        case "fitit": FitItView()
+        case "scan": DocScannerView()            // base — Scan super-tool lands on this
+        case "studio": BackgroundRemoverView()   // base — Studio super-tool lands on this
+        case "video": VideoCompressorView()      // base — Video super-tool lands on this
+        case "formatfix": ImageConverterView()   // base — batch converter lands on this
+        case "qrwifi": QRToolsView()             // base — Wi-Fi QR flow lands on this
+        // ── Page 2 ──
+        case "light": FlashlightView()
+        case "instruments": MeasureView()
+        case "magnify": MagnifierView()
+        // ── Page 3 ──
         case "translate": TranslateView()
-        case "magnifier": MagnifierView()
-        case "scan": DocScannerView()
-        case "measure": MeasureView()
-        case "pdftools": PDFToolkitView()
-        case "imgconvert": ImageConverterView()
-        case "audiotext": AudioToTextView()
-        case "signfill": SignFillView()
-        case "webclip": WebClipView()
-        case "exif": ExifView()
-        case "vidcompress": VideoCompressorView()
-        case "bgremove": BackgroundRemoverView()
-        case "wallet": WalletView()
-        case "pocket": PocketView()
+        case "voicenotes": AudioToTextView()
+        case "clips": ClipboardView()
         case "vault": SecureVaultView()
-        case "gif": GIFMakerView()
-        case "photostudio": PhotoStudioView()
-        case "idphoto": IDPhotoView()
-        default:
-            if let spec = aiSpec(for: id) { AIToolView(spec: spec) } else { EmptyView() }
+        // Everything else is being built — show an honest placeholder, never a blank screen.
+        default: ComingSoonView(id: id)
         }
     }
 }

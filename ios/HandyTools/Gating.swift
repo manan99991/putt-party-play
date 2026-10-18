@@ -19,6 +19,7 @@ enum Limits {
     static let freeIdPhotoPerDay = 3   // ID / Passport Photo
     static let freeGifPerDay = 3       // GIF Maker
     static let freePhotoStudioPerDay = 4 // Photo Studio edits
+    static let freeFitPerDay = 5       // Fit It (exact-size fits)
 }
 
 /// Per-day usage counters that reset at midnight, stored in UserDefaults. Pro is unlimited, so
