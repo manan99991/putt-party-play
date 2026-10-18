@@ -1,0 +1,41 @@
+name: iOS Subscriptions
+
+# Creates/updates the Tenzy Pro subscriptions + prices via the App Store Connect API.
+# Run manually (Actions tab → iOS Subscriptions → Run), or via `gh workflow run`.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ios-release
+  cancel-in-progress: false
+
+jobs:
+  subscriptions:
+    if: ${{ vars.TESTFLIGHT_ENABLED == 'true' }}
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_B64: ${{ secrets.ASC_KEY_P8_B64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write ASC key
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          KP="$HOME/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8"
+          echo "$ASC_KEY_P8_B64" | base64 -d > "$KP"
+          echo "ASC_KEY_PATH=$KP" >> $GITHUB_ENV
+      - name: Reconcile subscriptions + prices
+        run: |
+          set -o pipefail
+          fastlane subscriptions 2>&1 | tee subs.log
+      - name: Publish log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh ios-subs ios/subs.log

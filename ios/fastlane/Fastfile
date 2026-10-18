@@ -138,4 +138,68 @@ platform :ios do
 
     upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)
   end
+
+  # Creates/updates the auto-renewing subscriptions and their prices directly through the
+  # App Store Connect API, so the monthly plan + both prices are set by the pipeline, not by hand.
+  # Idempotent: safe to re-run. Run via the "iOS Subscriptions" workflow (workflow_dispatch).
+  lane :subscriptions do
+    Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
+      key_id: ENV["ASC_KEY_ID"], issuer_id: ENV["ASC_ISSUER_ID"], filepath: ENV["ASC_KEY_PATH"]
+    )
+    app = Spaceship::ConnectAPI::App.find("com.tenzy.toolkit")
+    UI.user_error!("App com.tenzy.toolkit not found on App Store Connect") unless app
+
+    # 1) Subscription group "Tenzy Pro"
+    groups = app.get_subscription_groups
+    group = groups.find { |g| g.reference_name == "Tenzy Pro" }
+    group ||= app.create_subscription_group(reference_name: "Tenzy Pro")
+    UI.message("Subscription group: #{group.id} (#{group.reference_name})")
+
+    # 2) The two products we want, with their target USD base price.
+    want = [
+      { product_id: "tenzy_pro_yearly",  name: "Tenzy Pro (Yearly)",  period: "ONE_YEAR",  usd: "19.99" },
+      { product_id: "tenzy_pro_monthly", name: "Tenzy Pro (Monthly)", period: "ONE_MONTH", usd: "2.99" },
+    ]
+    existing = group.get_subscriptions
+    want.each do |w|
+      sub = existing.find { |s| s.product_id == w[:product_id] }
+      if sub.nil?
+        UI.message("Creating subscription #{w[:product_id]}")
+        sub = group.create_subscription(
+          name: w[:name], product_id: w[:product_id], subscription_period: w[:period],
+          family_sharable: false, review_note: "Removes ads and unlocks all tools in Tenzy."
+        )
+      else
+        UI.message("Subscription #{w[:product_id]} already exists (#{sub.id})")
+      end
+
+      # Localization (display name + description) — required before it can be reviewed.
+      begin
+        locs = sub.get_subscription_localizations
+        unless locs.any? { |l| l.locale == "en-US" }
+          sub.create_subscription_localization(
+            locale: "en-US", name: w[:name], description: "Everything in Tenzy, unlimited. No ads."
+          )
+          UI.message("  added en-US localization")
+        end
+      rescue => e
+        UI.important("  localization step: #{e}")
+      end
+
+      # Price: pick the USD price point nearest our target and apply it (derives other territories).
+      begin
+        points = sub.get_subscription_available_price_points(filter: { territory: "USA" }, includes: "subscriptionPricePoint")
+        target = points.map { |p| p }.min_by { |p| (p.customer_price.to_f - w[:usd].to_f).abs }
+        if target
+          sub.create_subscription_price(subscription_price_point_id: target.id, start_date: nil, preserved: false)
+          UI.success("  price set near $#{w[:usd]} (point #{target.id}, customer_price #{target.customer_price})")
+        else
+          UI.important("  no USD price point found to set $#{w[:usd]}")
+        end
+      rescue => e
+        UI.important("  price step needs a manual tap: #{e}")
+      end
+    end
+    UI.success("Subscriptions reconciled. If a price or first-review submission still needs a tap, the log above says so.")
+  end
 end
