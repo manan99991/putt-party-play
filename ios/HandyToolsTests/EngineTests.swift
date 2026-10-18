@@ -697,6 +697,19 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(Glossary.terms.count, 100)
     }
 
+    // MARK: clipboard link cleaner
+
+    func testLinkCleanerStripsTrackingAndUnwrapsRedirects() {
+        XCTAssertEqual(LinkCleaner.clean("https://example.com/post?id=42&utm_source=newsletter&utm_medium=email&fbclid=abc123"), "https://example.com/post?id=42")
+        XCTAssertEqual(LinkCleaner.clean("https://example.com/page?utm_campaign=x"), "https://example.com/page")
+        XCTAssertEqual(LinkCleaner.clean("https://www.amazon.com/Some-Long-Product-Name/dp/B08N5WRWNW/ref=sr_1_3?keywords=thing&qid=1699&sr=8-3&th=1"), "https://www.amazon.com/dp/B08N5WRWNW")
+        XCTAssertEqual(LinkCleaner.clean("https://l.facebook.com/l.php?u=https%3A%2F%2Fnews.example.org%2Fstory%3Fid%3D7%26utm_source%3Dfb&h=AT0"), "https://news.example.org/story?id=7")
+        XCTAssertEqual(LinkCleaner.clean("https://www.youtube.com/watch?v=dQw4w9WgXcQ&si=TRACK&feature=share&t=42"), "https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=42")
+        XCTAssertEqual(LinkCleaner.clean("https://example.com/a?x=1#:~:text=hello"), "https://example.com/a?x=1")
+        XCTAssertEqual(LinkCleaner.clean("not a url"), "not a url")
+        XCTAssertTrue(LinkCleaner.isURL("https://a.com/x")); XCTAssertFalse(LinkCleaner.isURL("hello https://a.com")); XCTAssertFalse(LinkCleaner.isURL("a.com"))
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {

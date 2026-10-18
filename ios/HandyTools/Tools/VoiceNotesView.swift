@@ -5,7 +5,7 @@ import SwiftUI
 struct VoiceNotesView: View {
     @EnvironmentObject var store: StoreManager
     @StateObject private var speech = SpeechStream()
-    @StateObject private var notes = NoteStore()
+    @StateObject private var notes = VoiceNoteStore()
     @State private var summary: [String] = []
     @State private var todos: [String] = []
     @State private var working = false
@@ -123,8 +123,8 @@ struct VoiceNote: Identifiable, Codable {
     var export: String { "\(title)\n\(date.formatted())\n\n\(text)" + (summary.isEmpty ? "" : "\n\nSummary:\n" + summary.map { "• " + $0 }.joined(separator: "\n")) + (todos.isEmpty ? "" : "\n\nTo-dos:\n" + todos.map { "☐ " + $0 }.joined(separator: "\n")) }
 }
 
-@MainActor final class NoteStore: ObservableObject {
-    @Published var items: [VoiceNote] = NoteStore.load()
+@MainActor final class VoiceNoteStore: ObservableObject {
+    @Published var items: [VoiceNote] = VoiceNoteStore.load()
     nonisolated private static var url: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("voice-notes.json") }
     nonisolated private static func load() -> [VoiceNote] { (try? JSONDecoder().decode([VoiceNote].self, from: Data(contentsOf: url))) ?? [] }
     private func persist() { try? JSONEncoder().encode(items).write(to: Self.url) }
