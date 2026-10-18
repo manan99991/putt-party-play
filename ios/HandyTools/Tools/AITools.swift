@@ -18,7 +18,8 @@ struct AISpec: Identifiable {
     let subtitle: String
     let instructions: String   // the model's role
     let kind: AIInputKind
-    let actionLabel: String
+    let actionLabel: String         // verb on the primary "do it" button (e.g. "Explain this screen")
+    var pickLabel: String = "Choose a photo"   // verb on the photo picker, image tools only
     var textPlaceholder: String = "Type or paste here…"
     var promptPrefix: String = ""   // prepended to the (text or OCR'd) content before the model sees it
 }
@@ -34,7 +35,7 @@ func aiSpec(for id: String) -> AISpec? {
     case "ai_extract":
         return AISpec(id: id, title: "Extract to Data", subtitle: "Receipt, business card, poster → clean fields.",
                       instructions: "You extract structured data from messy text. Identify what it is (receipt, business card, event, etc.) and return the key fields as a clean 'Label: value' list. Include totals, dates, names, phone, email, address when present. No commentary.",
-                      kind: .imageText, actionLabel: "Pick a photo")
+                      kind: .imageText, actionLabel: "Pull out the details", pickLabel: "Choose a photo")
     case "ai_rewrite":
         return AISpec(id: id, title: "Rewrite & Tone", subtitle: "Say it better — clearer, shorter, friendlier.",
                       instructions: "You rewrite the user's text to be clear, natural and well-structured while keeping their meaning and voice. Fix grammar and flow. Return only the rewritten text.",
@@ -42,7 +43,7 @@ func aiSpec(for id: String) -> AISpec? {
     case "ai_ask":
         return AISpec(id: id, title: "Ask a Screenshot", subtitle: "Confused by a screen? Get a plain answer.",
                       instructions: "You explain what's on a screen in plain language and tell the user what it means and what, if anything, they should do next. Be concise and practical.",
-                      kind: .imageText, actionLabel: "Pick a screenshot",
+                      kind: .imageText, actionLabel: "Explain this screen", pickLabel: "Choose a screenshot",
                       promptPrefix: "This is the text read from a screenshot. Explain what it means and what to do next:\n\n")
     case "ai_proofread":
         return AISpec(id: id, title: "Proofread", subtitle: "Catch typos and clunky grammar before you send.",
@@ -51,11 +52,11 @@ func aiSpec(for id: String) -> AISpec? {
     case "ai_describe":
         return AISpec(id: id, title: "Describe Image", subtitle: "A natural caption / alt-text for any photo.",
                       instructions: "You write a single natural, vivid sentence describing a photo for accessibility (alt-text), based on the detected labels. Don't list the labels; write real prose.",
-                      kind: .imageVision, actionLabel: "Pick a photo")
+                      kind: .imageVision, actionLabel: "Write the caption", pickLabel: "Choose a photo")
     case "ai_handwriting":
         return AISpec(id: id, title: "Handwriting → Text", subtitle: "Turn a photo of notes into typed text.",
                       instructions: "You clean up text that was read from handwriting. Fix obvious recognition errors and restore natural line breaks and punctuation. Return only the cleaned text.",
-                      kind: .imageText, actionLabel: "Pick a photo of notes")
+                      kind: .imageText, actionLabel: "Convert to text", pickLabel: "Choose a photo of notes")
     case "ai_reply":
         return AISpec(id: id, title: "Draft a Reply", subtitle: "Paste a message, get a ready-to-send reply.",
                       instructions: "You draft a friendly, appropriate reply to the message the user pastes. Match its formality. Keep it concise. Return only the reply.",
@@ -63,7 +64,7 @@ func aiSpec(for id: String) -> AISpec? {
     case "ai_identify":
         return AISpec(id: id, title: "Identify", subtitle: "Point it at a plant, object, or landmark.",
                       instructions: "You identify what something is from detected image labels and tell the user one or two genuinely useful facts about it. Be confident but note if you're unsure.",
-                      kind: .imageVision, actionLabel: "Pick a photo")
+                      kind: .imageVision, actionLabel: "Identify it", pickLabel: "Choose a photo")
     case "ai_sticker":
         return AISpec(id: id, title: "Make a Sticker", subtitle: "Describe it — your phone draws it.",
                       instructions: "", kind: .imageGen, actionLabel: "Describe your sticker",
@@ -106,23 +107,27 @@ struct AIToolView: View {
                     photoInput
                 }
 
-                if !store.isPremium {
-                    QuotaChip(name: "ai", limit: Limits.freeAiPerDay).environmentObject(store)
-                }
-                if quotaExhausted {
-                    LimitReachedBanner(message: "You've used today's \(Limits.freeAiPerDay) free AI actions.")
-                }
+                // The primary action appears once there's something to act on: text tools always,
+                // photo tools only after a photo is chosen. That keeps one clear next step per screen.
+                if spec.kind == .text || pickedImage != nil {
+                    if !store.isPremium {
+                        QuotaChip(name: "ai", limit: Limits.freeAiPerDay).environmentObject(store)
+                    }
+                    if quotaExhausted {
+                        LimitReachedBanner(message: "You've used today's \(Limits.freeAiPerDay) free AI actions.")
+                    }
 
-                Button {
-                    run()
-                } label: {
-                    HStack {
-                        if working { ProgressView().tint(.white) }
-                        Text(working ? "Working…" : spec.actionLabel)
-                    }.frame(maxWidth: .infinity)
+                    Button {
+                        run()
+                    } label: {
+                        HStack {
+                            if working { ProgressView().tint(.white) }
+                            Text(working ? "Working…" : spec.actionLabel)
+                        }.frame(maxWidth: .infinity)
+                    }
+                    .primaryButton()
+                    .disabled(working || quotaExhausted || !canRun)
                 }
-                .primaryButton()
-                .disabled(working || quotaExhausted || !canRun)
             }
 
             if let errorText {
@@ -160,24 +165,28 @@ struct AIToolView: View {
     }
 
     private var photoInput: some View {
-        VStack(spacing: HandySpacing.s8) {
-            PhotosPicker(selection: $pickedItem, matching: .images) {
-                HStack {
-                    Image(systemName: "photo.on.rectangle.angled")
-                    Text(pickedImage == nil ? spec.actionLabel : "Pick a different photo")
-                }.frame(maxWidth: .infinity)
-            }
-            .compactButton()
-            .onChange(of: pickedItem) { _, item in
-                Task {
-                    if let data = try? await item?.loadTransferable(type: Data.self), let img = UIImage(data: data) {
-                        pickedImage = img; output = ""; labels = []
-                    }
-                }
-            }
+        VStack(spacing: HandySpacing.s12) {
             if let img = pickedImage {
-                Image(uiImage: img).resizable().scaledToFit().frame(maxHeight: 220)
+                // Chosen: show it, with a quiet way to swap. The blue action button sits below.
+                Image(uiImage: img).resizable().scaledToFit().frame(maxHeight: 240)
                     .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                PhotosPicker(selection: $pickedItem, matching: .images) {
+                    Label("Choose a different photo", systemImage: "photo.on.rectangle.angled")
+                }
+                .textButton()
+            } else {
+                // Empty: a single prominent call to action — the one thing to do next.
+                PhotosPicker(selection: $pickedItem, matching: .images) {
+                    Label(spec.pickLabel, systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
+                }
+                .secondaryButton()
+            }
+        }
+        .onChange(of: pickedItem) { _, item in
+            Task {
+                if let data = try? await item?.loadTransferable(type: Data.self), let img = UIImage(data: data) {
+                    pickedImage = img; output = ""; labels = []
+                }
             }
         }
     }

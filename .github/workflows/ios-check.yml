@@ -1,0 +1,49 @@
+name: iOS Build Check
+
+# Compile-only gate for staging branches. Never runs on `handytools` (that's the deploy branch,
+# handled by ios.yml) so this can verify the code builds without touching TestFlight.
+on:
+  push:
+    branches-ignore: [handytools, ci-logs]
+    paths: ["ios/**", ".github/workflows/ios-check.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ios-check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          xcodebuild -version
+      - name: Install XcodeGen + generate + resolve
+        run: |
+          set -o pipefail
+          { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tee setup.log
+      - name: Build (simulator, unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|BUILD|\*\*" || true
+          grep -q "BUILD SUCCEEDED" build.log
+      - name: Publish build log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "== setup.log"; cat ios/setup.log 2>/dev/null; echo "== build.log (errors)"; grep -E "error:|warning:.*unused|BUILD|\*\*" ios/build.log 2>/dev/null | head -200; } > ios-check.log
+          bash .github/publish-log.sh ios-check ios-check.log || true

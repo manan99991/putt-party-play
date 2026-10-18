@@ -16,6 +16,9 @@ enum Limits {
     static let freeAudioPerDay = 3     // Audio → Text (recordings)
     static let freePdfOpsPerDay = 3    // PDF Toolkit (jobs)
     static let freeSignPerDay = 3      // Sign & Fill
+    static let freeIdPhotoPerDay = 3   // ID / Passport Photo
+    static let freeGifPerDay = 3       // GIF Maker
+    static let freePhotoStudioPerDay = 4 // Photo Studio edits
 }
 
 /// Per-day usage counters that reset at midnight, stored in UserDefaults. Pro is unlimited, so

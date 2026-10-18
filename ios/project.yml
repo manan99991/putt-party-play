@@ -67,6 +67,7 @@ targets:
         NSSpeechRecognitionUsageDescription: Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded.
         NSPhotoLibraryUsageDescription: Needed to read text from screenshots and to view or strip photo metadata.
         NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.
+        NSFaceIDUsageDescription: Used to unlock your Secure Vault so only you can open your private notes and photos.
         NSSupportsLiveActivities: true
 
   ClipboardKeyboard:
