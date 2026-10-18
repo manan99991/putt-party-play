@@ -180,6 +180,17 @@ platform :ios do
     code, data = req.call(:get, "/v1/subscriptionGroups/#{group_id}/subscriptions?limit=50")
     existing = data["data"] || []
 
+    # All App Store territories (needed to make a subscription available for pricing).
+    all_territories = []
+    nextp = "/v1/territories?limit=200"
+    while nextp
+      code, tdata = req.call(:get, nextp)
+      all_territories += (tdata["data"] || []).map { |t| { type: "territories", id: t["id"] } }
+      link = tdata.dig("links", "next")
+      nextp = link ? link.sub(base, "") : nil
+    end
+    UI.message("Territories: #{all_territories.size}")
+
     want = [
       { pid: "tenzy_pro_yearly",  name: "Tenzy Pro (Yearly)",  period: "ONE_YEAR",  usd: "19.99" },
       { pid: "tenzy_pro_monthly", name: "Tenzy Pro (Monthly)", period: "ONE_MONTH", usd: "2.99" },
@@ -206,6 +217,18 @@ platform :ios do
                     attributes: { locale: "en-US", name: w[:name], description: "Everything in Tenzy, unlimited. No ads." },
                     relationships: { subscription: { data: { type: "subscriptions", id: sub_id } } } } })
         UI.message("  localization -> #{code}")
+      end
+
+      # Availability: make it sellable in every territory (required before a price can be set).
+      code, avail = req.call(:get, "/v1/subscriptions/#{sub_id}/subscriptionAvailability")
+      has_avail = avail.is_a?(Hash) && avail["data"] && !avail["data"].nil?
+      unless has_avail
+        code, data = req.call(:post, "/v1/subscriptionAvailabilities",
+          { data: { type: "subscriptionAvailabilities",
+                    attributes: { availableInNewTerritories: true },
+                    relationships: { subscription: { data: { type: "subscriptions", id: sub_id } },
+                                     availableTerritories: { data: all_territories } } } })
+        UI.message("  availability -> #{code}#{code >= 400 ? " #{data}" : ""}")
       end
 
       code, pp = req.call(:get, "/v1/subscriptions/#{sub_id}/pricePoints?filter%5Bterritory%5D=USA&limit=200")
