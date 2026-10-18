@@ -25,6 +25,7 @@ import com.handytools.app.tools.awake.KeepAwakeScreen
 import com.handytools.app.tools.clipboard.ClipboardScreen
 import com.handytools.app.tools.flashlight.FlashlightScreen
 import com.handytools.app.tools.audiotext.AudioToTextScreen
+import com.handytools.app.tools.bgremove.BackgroundRemoverScreen
 import com.handytools.app.tools.exif.ExifScreen
 import com.handytools.app.tools.imgconvert.ImageConverterScreen
 import com.handytools.app.tools.magnifier.MagnifierScreen
@@ -117,9 +118,10 @@ class MainActivity : ComponentActivity() {
                     composable("vidcompress") { VideoCompressorScreen() }
                     composable("qr") { QRScreen() }
                     composable("magnifier") { MagnifierScreen() }
+                    composable("bgremove") { BackgroundRemoverScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) { ComingSoonScreen(TOOLS.first { it.route == r }.name) }
                     }
