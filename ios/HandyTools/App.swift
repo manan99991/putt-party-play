@@ -127,7 +127,7 @@ struct ToolDestination: View {
         case "scan": DocScannerView()            // base — Scan super-tool lands on this
         case "studio": BackgroundRemoverView()   // base — Studio super-tool lands on this
         case "video": VideoCompressorView()      // base — Video super-tool lands on this
-        case "formatfix": ImageConverterView()   // base — batch converter lands on this
+        case "formatfix": FormatFixView()
         case "qrwifi": QRToolsView()             // base — Wi-Fi QR flow lands on this
         case "stitch": StitchView()
         case "scrub": ScrubView()
