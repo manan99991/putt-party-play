@@ -9,6 +9,7 @@ final class ProfileServer: @unchecked Sendable {
     private var listener: NWListener?
     private let payload: Data
     private let filename: String
+    private var bgTask: UIBackgroundTaskIdentifier = .invalid
 
     init?(data: Data, filename: String) {
         self.payload = data
@@ -23,7 +24,12 @@ final class ProfileServer: @unchecked Sendable {
         listener?.stateUpdateHandler = { [weak self] state in
             guard case .ready = state, let self, let port = self.listener?.port?.rawValue else { return }
             if let u = URL(string: "http://127.0.0.1:\(port)/\(self.filename)") {
-                Task { @MainActor in UIApplication.shared.open(u) }
+                Task { @MainActor in
+                    // Keep serving for the few seconds Safari needs the profile, even though opening
+                    // Safari backgrounds us — otherwise iOS suspends us and Safari gets a blank page.
+                    self.bgTask = UIApplication.shared.beginBackgroundTask(withName: "tenzy.profile") { [weak self] in self?.stop() }
+                    UIApplication.shared.open(u)
+                }
             }
         }
         listener?.newConnectionHandler = { [weak self] conn in self?.serve(conn) }
@@ -44,7 +50,11 @@ final class ProfileServer: @unchecked Sendable {
         }
     }
 
-    func stop() { listener?.cancel(); listener = nil }
+    func stop() {
+        listener?.cancel(); listener = nil
+        let t = bgTask; bgTask = .invalid
+        if t != .invalid { Task { @MainActor in UIApplication.shared.endBackgroundTask(t) } }
+    }
 }
 
 /// iOS has no API to drop an icon on the home screen, but a Web Clip configuration profile can —
@@ -58,18 +68,27 @@ struct WebClipView: View {
     @State private var fullScreen = true
     @State private var status: String?
     @State private var server: ProfileServer?
-    @FocusState private var editingName: Bool
+    private enum Field { case url, name }
+    @FocusState private var focus: Field?
 
     var body: some View {
-        ToolPage(title: "Web → Home", subtitle: "Paste a link. Pick the name and icon. One tap installs it — opens full-screen like a real app, which Safari can't do.") {
-            TextField("https://…", text: $url)
+        ToolPage(title: "Web → Home", subtitle: "Paste a link, pick the name, tap once. It adds a real home-screen icon that opens full-screen.") {
+            TextField("example.com", text: $url)
+                .focused($focus, equals: .url)
+                .submitLabel(.go)
+                .onSubmit { focus = nil; Task { await fetch() } }
                 .padding(HandySpacing.s12)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 .keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
             HStack(spacing: HandySpacing.s12) {
-                Button("Paste") { if let s = UIPasteboard.general.string, let m = s.range(of: #"https?://\S+"#, options: .regularExpression) { url = String(s[m]); Task { await fetch() } } }
-                Button("Fetch") { Task { await fetch() } }.compactButton().disabled(url.isEmpty || loading)
+                Button("Paste") {
+                    if let s = UIPasteboard.general.string {
+                        if let m = s.range(of: #"https?://\S+"#, options: .regularExpression) { url = String(s[m]) } else { url = s.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    }
+                    focus = nil; Task { await fetch() }
+                }.compactButton()
+                Button("Fetch") { focus = nil; Task { await fetch() } }.compactButton().disabled(url.isEmpty || loading)
                 if loading { ProgressView() }
             }
 
@@ -84,15 +103,16 @@ struct WebClipView: View {
                 }.frame(maxWidth: .infinity)
 
                 TextField("Name", text: $name)
-                    .focused($editingName)
+                    .focused($focus, equals: .name)
+                    .submitLabel(.done)
+                    .onSubmit { focus = nil }
                     .padding(HandySpacing.s12)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                    .toolbar { ToolbarItemGroup(placement: .keyboard) { Spacer(); Button("Done") { editingName = false }.fontWeight(.semibold) } }
 
                 Toggle("Open full-screen (no Safari bars)", isOn: $fullScreen).tint(HandyColor.accent).font(HandyFont.body)
 
-                Button { installProfile() } label: { Label("Add to home screen", systemImage: "plus.app").frame(maxWidth: .infinity) }.primaryButton()
+                Button { focus = nil; installProfile() } label: { Label("Add to home screen", systemImage: "plus.app").frame(maxWidth: .infinity) }.primaryButton()
             }
 
             if let status {
@@ -109,6 +129,7 @@ struct WebClipView: View {
                     .textButton().font(HandyFont.caption)
             }
         }
+        .toolbar { ToolbarItemGroup(placement: .keyboard) { Spacer(); Button("Done") { focus = nil }.fontWeight(.semibold) } }
     }
 
     private var normalized: String { url.hasPrefix("http") ? url : "https://\(url)" }
