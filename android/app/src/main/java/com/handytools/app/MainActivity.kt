@@ -24,7 +24,10 @@ import com.handytools.app.tools.alarm.AlarmRingPreview
 import com.handytools.app.tools.awake.KeepAwakeScreen
 import com.handytools.app.tools.clipboard.ClipboardScreen
 import com.handytools.app.tools.flashlight.FlashlightScreen
+import com.handytools.app.tools.audiotext.AudioToTextScreen
+import com.handytools.app.tools.imgconvert.ImageConverterScreen
 import com.handytools.app.tools.measure.MeasureScreen
+import com.handytools.app.tools.pdftools.PDFToolkitScreen
 import com.handytools.app.tools.timers.TimersScreen
 import com.handytools.app.tools.wallet.WalletScreen
 import com.handytools.app.tools.notifhistory.NotifHistoryScreen
@@ -99,9 +102,12 @@ class MainActivity : ComponentActivity() {
                     composable("timer") { TimersScreen() }
                     composable("measure") { MeasureScreen() }
                     composable("wallet") { WalletScreen() }
+                    composable("imgconvert") { ImageConverterScreen() }
+                    composable("audiotext") { AudioToTextScreen() }
+                    composable("pdftools") { PDFToolkitScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) { ComingSoonScreen(TOOLS.first { it.route == r }.name) }
                     }
