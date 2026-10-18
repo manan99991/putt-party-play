@@ -15,13 +15,24 @@ struct VideoCompressorView: View {
     @State private var working = false
     @State private var resultURL: URL?
     @State private var resultBytes: Int64 = 0
+    @State private var alreadyOptimized = false
     @State private var errorText: String?
 
-    private let qualities: [(String, String, String)] = [
-        ("Small", "480p", AVAssetExportPreset640x480),
-        ("Medium", "720p", AVAssetExportPreset1280x720),
-        ("Large", "1080p", AVAssetExportPreset1920x1080),
+    private let qualities: [(String, String)] = [
+        ("Small", "max savings"),
+        ("Medium", "balanced"),
+        ("Large", "keep quality"),
     ]
+
+    /// Bitrate-oriented presets, most aggressive last. We try the chosen level, then fall back to
+    /// more aggressive ones until the result is actually smaller than the source.
+    private func ladder(_ q: Int) -> [String] {
+        switch q {
+        case 0:  return [AVAssetExportPresetLowQuality]
+        case 1:  return [AVAssetExportPresetMediumQuality, AVAssetExportPresetLowQuality]
+        default: return [AVAssetExportPreset1280x720, AVAssetExportPresetMediumQuality, AVAssetExportPresetLowQuality]
+        }
+    }
     private var overQuota: Bool { !Usage.hasRoom("video", limit: Limits.freeVideoPerDay) }
 
     var body: some View {
@@ -36,8 +47,9 @@ struct VideoCompressorView: View {
                 Text("Original: \(format(sourceBytes))").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
 
                 Picker("", selection: $quality) {
-                    ForEach(Array(qualities.enumerated()), id: \.offset) { i, q in Text("\(q.0) · \(q.1)").tag(i) }
+                    ForEach(Array(qualities.enumerated()), id: \.offset) { i, q in Text(q.0).tag(i) }
                 }.pickerStyle(.segmented)
+                Text(qualities[quality].1).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
                 if !store.isPremium { QuotaChip(name: "video", limit: Limits.freeVideoPerDay).environmentObject(store) }
                 if overQuota { LimitReachedBanner(message: "You've compressed today's \(Limits.freeVideoPerDay) free videos.") }
@@ -53,9 +65,15 @@ struct VideoCompressorView: View {
 
             if let resultURL, resultBytes > 0 {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    let saved = sourceBytes > 0 ? Int((1 - Double(resultBytes) / Double(sourceBytes)) * 100) : 0
-                    Text("New size: \(format(resultBytes))").font(HandyFont.bodyStrong)
-                    Text("\(max(0, saved))% smaller").font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                    if alreadyOptimized {
+                        Text("Already well-compressed").font(HandyFont.bodyStrong)
+                        Text("This video is about as small as it gets without hurting quality — keeping your original (\(format(sourceBytes))).")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    } else {
+                        let saved = sourceBytes > 0 ? Int((1 - Double(resultBytes) / Double(sourceBytes)) * 100) : 0
+                        Text("New size: \(format(resultBytes))").font(HandyFont.bodyStrong)
+                        Text("\(saved)% smaller").font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                    }
                     ShareLink(item: resultURL) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
                 }.cardStyle(padding: HandySpacing.s16)
             }
@@ -76,27 +94,39 @@ struct VideoCompressorView: View {
     private func compress() {
         guard let src = sourceURL else { return }
         guard Usage.use("video", limit: Limits.freeVideoPerDay) else { return }
-        working = true; errorText = nil; resultURL = nil
-        let preset = qualities[quality].2
+        working = true; errorText = nil; resultURL = nil; alreadyOptimized = false
+        let presets = ladder(quality)
         Task {
             let asset = AVURLAsset(url: src)
-            guard let session = AVAssetExportSession(asset: asset, presetName: preset) else {
-                errorText = "Couldn't set up the compressor for this video."; working = false; return
+            var best: (URL, Int64)?
+            for preset in presets {
+                guard let out = await exportOnce(asset, preset: preset) else { continue }
+                if best == nil || out.1 < best!.1 { best = out }
+                if out.1 < sourceBytes { break }   // got something smaller — stop
             }
-            let out = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-\(UUID().uuidString).mp4")
-            session.outputURL = out
-            session.outputFileType = .mp4
-            session.shouldOptimizeForNetworkUse = true
-            await session.export()
-            if session.status == .completed {
-                resultURL = out
-                resultBytes = (try? FileManager.default.attributesOfItem(atPath: out.path)[.size] as? Int64) ?? 0
-                HandyHaptics.success()
+            if let best, best.1 < sourceBytes {
+                resultURL = best.0; resultBytes = best.1; alreadyOptimized = false
             } else {
-                errorText = session.error?.localizedDescription ?? "Compression failed."
+                // Nothing beat the original (already-compressed source) — hand back the original, honestly.
+                resultURL = src; resultBytes = sourceBytes; alreadyOptimized = true
             }
+            if resultURL == nil { errorText = "Couldn't compress this video. Try a different one." }
             working = false
+            HandyHaptics.success()
         }
+    }
+
+    /// One export pass at a given preset. Returns (url, bytes) on success.
+    private func exportOnce(_ asset: AVURLAsset, preset: String) async -> (URL, Int64)? {
+        guard let session = AVAssetExportSession(asset: asset, presetName: preset) else { return nil }
+        let out = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-\(UUID().uuidString).mp4")
+        session.outputURL = out
+        session.outputFileType = .mp4
+        session.shouldOptimizeForNetworkUse = true
+        await session.export()
+        guard session.status == .completed else { return nil }
+        let bytes = ((try? FileManager.default.attributesOfItem(atPath: out.path)[.size]) as? Int64) ?? 0
+        return bytes > 0 ? (out, bytes) : nil
     }
 
     private func format(_ b: Int64) -> String {
