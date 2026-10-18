@@ -28,10 +28,10 @@ Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-pla
 
 
 Resolved source packages:
-  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
   GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
+  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
 
-resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
+resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
 == build.log (errors)
 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/TranslateView.swift:52:43: error: sending 'session' risks causing data races
 ** TEST FAILED **
