@@ -82,11 +82,11 @@ struct ReadAloudView: View {
             ProgressView(value: reader.progress).tint(HandyColor.accent)
             HStack { Text("\(reader.index + 1) / \(reader.sentences.count)").font(HandyFont.caption).monospacedDigit(); Spacer(); Text("~\(reader.remainingMinutes) min left").font(HandyFont.caption) }.foregroundStyle(HandyColor.textSecondary)
             HStack(spacing: HandySpacing.s16) {
-                Button { reader.previous() } label: { Image(systemName: "backward.fill").font(.system(size: 22)) }.buttonStyle(.plain)
+                Button { reader.previous() } label: { Image(systemName: "backward.fill").font(.system(size: 22)) }.buttonStyle(.plain).accessibilityLabel("Previous sentence")
                 Button { reader.playing ? reader.pause() : reader.play() } label: {
                     Image(systemName: reader.playing ? "pause.circle.fill" : "play.circle.fill").font(.system(size: 64)).foregroundStyle(HandyColor.accent)
-                }.buttonStyle(.plain)
-                Button { reader.next() } label: { Image(systemName: "forward.fill").font(.system(size: 22)) }.buttonStyle(.plain)
+                }.buttonStyle(.plain).accessibilityLabel(reader.playing ? "Pause" : "Play")
+                Button { reader.next() } label: { Image(systemName: "forward.fill").font(.system(size: 22)) }.buttonStyle(.plain).accessibilityLabel("Next sentence")
             }.foregroundStyle(HandyColor.textPrimary).frame(maxWidth: .infinity)
             HStack { Image(systemName: "tortoise"); Slider(value: $rate, in: 0.3...0.7).tint(HandyColor.accent).onChange(of: rate) { _, r in reader.rate = Float(r) }; Image(systemName: "hare"); Text(String(format: "%.1f×", rate / Double(AVSpeechUtteranceDefaultSpeechRate))).font(HandyFont.caption).monospacedDigit().frame(width: 40) }.foregroundStyle(HandyColor.textSecondary)
             HStack(spacing: HandySpacing.s8) {

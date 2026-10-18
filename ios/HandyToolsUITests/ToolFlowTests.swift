@@ -18,11 +18,12 @@ final class ToolFlowTests: XCTestCase {
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 25), "\(id) did not launch")
     }
 
+    /// Buttons and links (SwiftUI `Link` is exposed as a link element) by label.
     private func button(starting prefix: String) -> XCUIElement {
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch
+        app.descendants(matching: .any).matching(NSPredicate(format: "(elementType == %d OR elementType == %d) AND label BEGINSWITH %@", XCUIElement.ElementType.button.rawValue, XCUIElement.ElementType.link.rawValue, prefix)).firstMatch
     }
     private func button(containing s: String) -> XCUIElement {
-        app.buttons.matching(NSPredicate(format: "label CONTAINS[c] %@", s)).firstMatch
+        app.descendants(matching: .any).matching(NSPredicate(format: "(elementType == %d OR elementType == %d) AND label CONTAINS[c] %@", XCUIElement.ElementType.button.rawValue, XCUIElement.ElementType.link.rawValue, s)).firstMatch
     }
     private func text(containing s: String) -> XCUIElement {
         app.staticTexts.matching(NSPredicate(format: "label CONTAINS[c] %@", s)).firstMatch
@@ -175,7 +176,7 @@ final class ToolFlowTests: XCTestCase {
         app.buttons["km/h"].firstMatch.tap(); app.buttons["mph"].firstMatch.tap()
         button(containing: "HUD").tap()
         expect(text(containing: "Mirrored for the windshield"), "HUD", timeout: 10)
-        app.buttons.firstMatch.tap()   // close (x)
+        app.buttons["Close HUD"].firstMatch.tap()
         alive("gpsdash")
     }
 
@@ -266,7 +267,7 @@ final class ToolFlowTests: XCTestCase {
         launch("readaloud")
         button(containing: "Read this").tap()
         expect(text(containing: "1 / 3"), "sentence counter", timeout: 30)
-        app.buttons["forward.fill"].firstMatch.tap()
+        app.buttons["Next sentence"].firstMatch.tap()
         expect(text(containing: "2 / 3"), "advanced to sentence 2", timeout: 10)
         button(containing: "Voice").tap(); expect(app.staticTexts["Automatic (match the text)"], "voice picker", timeout: 10)
         app.buttons["Done"].firstMatch.tap()
@@ -275,7 +276,7 @@ final class ToolFlowTests: XCTestCase {
 
     func testTranslateModesAndSwap() {
         launch("translate")
-        app.buttons["arrow.left.arrow.right"].firstMatch.tap()
+        app.buttons["Swap languages"].firstMatch.tap()
         tapChip("Talk"); expect(button(containing: "speaks"), "talk buttons", timeout: 10)
         tapChip("Photo"); tapChip("Text")
         alive("translate")
@@ -303,9 +304,9 @@ final class ToolFlowTests: XCTestCase {
         app.terminate()
         launch("livecaptions")
         expect(button(containing: "Start captions"), "captions button", timeout: 15)
-        app.buttons["textformat.size"].firstMatch.tap(); app.buttons["Huge"].firstMatch.tap()
+        app.buttons["Text size"].firstMatch.tap(); app.buttons["Huge"].firstMatch.tap()
         let reply = app.textFields.firstMatch; expect(reply, "reply field", timeout: 10); reply.tap(); reply.typeText("Hello")
-        app.buttons["speaker.wave.2.fill"].firstMatch.tap()
+        app.buttons["Speak reply"].firstMatch.tap()
         alive("livecaptions")
     }
 

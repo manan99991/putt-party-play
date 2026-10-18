@@ -39,7 +39,7 @@ struct LiveCaptionsView: View {
                 Button { showLanguages = true } label: { Text(speech.locale.localizedString(forLanguageCode: speech.locale.language.languageCode?.identifier ?? "en") ?? "Language").lineLimit(1) }.compactButton()
                 Menu {
                     Button { fontSize = 22 } label: { Text("Normal") }; Button { fontSize = 28 } label: { Text("Large") }; Button { fontSize = 38 } label: { Text("Huge") }
-                } label: { Image(systemName: "textformat.size").frame(width: 36, height: 36) }.compactButton()
+                } label: { Image(systemName: "textformat.size").frame(width: 36, height: 36) }.compactButton().accessibilityLabel("Text size")
             }
 
             HStack(spacing: HandySpacing.s8) {
@@ -48,7 +48,7 @@ struct LiveCaptionsView: View {
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .submitLabel(.send).onSubmit { say() }
-                Button { say() } label: { Image(systemName: "speaker.wave.2.fill").frame(width: 36, height: 36) }.compactButton().disabled(reply.trimmingCharacters(in: .whitespaces).isEmpty)
+                Button { say() } label: { Image(systemName: "speaker.wave.2.fill").frame(width: 36, height: 36) }.compactButton().disabled(reply.trimmingCharacters(in: .whitespaces).isEmpty).accessibilityLabel("Speak reply")
             }
 
             HStack(spacing: HandySpacing.s8) {
