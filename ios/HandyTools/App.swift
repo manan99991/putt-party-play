@@ -165,6 +165,10 @@ enum Launch {
     static var args: [String] { ProcessInfo.processInfo.arguments }
     static var route: String? { args.firstIndex(of: "-route").flatMap { args.indices.contains($0 + 1) ? args[$0 + 1] : nil } }
     static var screenshots: Bool { args.contains("-screenshots") }
+    static var uitest: Bool { args.contains("-uitest") }
+    /// UI tests can't drive the system photo picker reliably, so with `-sample` each tool preloads
+    /// a generated sample (photo, screenshots, receipt, movie) and the flow runs like a user's would.
+    static var sample: Bool { args.contains("-sample") }
 }
 
 struct HomeView: View {

@@ -82,6 +82,7 @@ struct StudioView: View {
                 resultActions(output)
             }
         }
+        .onAppear { if Launch.sample, original == nil { original = SampleAssets.photo(); originalBytes = original?.jpegData(compressionQuality: 0.95)?.count ?? 0 } }
         .onChange(of: pickedItem) { _, item in
             Task {
                 if let d = try? await item?.loadTransferable(type: Data.self), let img = UIImage(data: d) {
@@ -146,7 +147,7 @@ struct StudioView: View {
     }
 
     private var actionLabel: String {
-        switch mode { case .cutout: return "Cut out subject"; case .passport: return "Make passport photo"; case .resize: return "Resize"; case .convert: return "Convert to \(format.rawValue)" }
+        switch mode { case .cutout: return "Cut out subject"; case .passport: return "Make passport photo"; case .resize: return "Resize photo"; case .convert: return "Convert to \(format.rawValue)" }
     }
 
     @ViewBuilder private func resultActions(_ out: Output) -> some View {

@@ -58,6 +58,7 @@ struct FitItView: View {
             if output != nil { resultCard }
         }
         .onChange(of: pickedItem) { _, item in loadPhotoItem(item) }
+        .onAppear { if Launch.sample, source == nil { let img = SampleAssets.photo(); source = .image(img); sourceName = "Sample photo"; sourceBytes = img.jpegData(compressionQuality: 0.95)?.count ?? 0; targetBytes = 200_000 } }
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf]) { res in
             if case .success(let url) = res { loadPDF(url) }
         }

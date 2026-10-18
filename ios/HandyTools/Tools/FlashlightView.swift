@@ -254,7 +254,7 @@ private struct ScreenLightSheet: View {
                 }
                 Slider(value: $brightness, in: 0.2...1).tint(.black.opacity(0.6)).padding(.horizontal)
                     .onChange(of: brightness) { _, b in UIScreen.main.brightness = CGFloat(b) }
-                Text("Tap anywhere to close").font(HandyFont.caption).foregroundStyle(.black.opacity(0.55))
+                Text("Tap anywhere to close").font(HandyFont.caption).foregroundStyle(.black.opacity(0.55)).onTapGesture { dismiss() }
             }
             .padding(HandySpacing.s24)
             .background(.white.opacity(0.35), in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))

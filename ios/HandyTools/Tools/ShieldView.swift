@@ -35,6 +35,7 @@ struct ShieldView: View {
             Text("Runs entirely on your phone; the message is never sent anywhere. A clean result isn't a guarantee — when money or codes are involved, verify through an official channel.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
+        .onAppear { if Launch.sample, text.isEmpty { text = "URGENT: Your account will be suspended within 24 hours. Verify your identity at http://paypal.secure-login.top/verify and pay the fee in Apple gift cards. Do not tell anyone."; analyze() } }
         .onChange(of: photoItem) { _, item in
             guard let item else { return }
             busy = true

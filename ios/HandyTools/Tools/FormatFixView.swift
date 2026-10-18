@@ -28,6 +28,7 @@ struct FormatFixView: View {
                 Label(loaded.isEmpty ? "Choose photos & videos" : "Choose a different batch", systemImage: "photo.stack").frame(maxWidth: .infinity)
             }
             .secondaryButton()
+            .onAppear { if Launch.sample, loaded.isEmpty { loaded = [(kind: .image, image: SampleAssets.photo(), url: nil)] } }
             .onChange(of: items) { _, new in load(new) }
 
             if !loaded.isEmpty {

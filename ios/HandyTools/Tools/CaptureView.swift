@@ -68,6 +68,7 @@ struct CaptureView: View {
             if let grab { result(grab) }
         }
         .onChange(of: photoItem) { _, item in readPhoto(item) }
+        .onAppear { if Launch.sample, grab == nil { show(text: "SAMPLE 2026\nCall 415-555-0123 or visit https://example.com tomorrow at 7pm", code: nil) } }
         .modifier(TranslateSheet(isPresented: $translating, text: grab?.text ?? ""))
     }
 

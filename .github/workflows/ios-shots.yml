@@ -57,7 +57,7 @@ jobs:
             xcrun simctl ui "$UDID" appearance $mode
             for r in $ROUTES; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
-              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -route $r
+              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
               sleep 7
               xcrun simctl io "$UDID" screenshot shots/$mode-$r.png
             done

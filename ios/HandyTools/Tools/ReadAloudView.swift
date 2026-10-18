@@ -57,7 +57,7 @@ struct ReadAloudView: View {
             busy = true
             Task { if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) { let t = await AIEngine.recognizeText(img); await MainActor.run { busy = false; load(t) } } else { await MainActor.run { busy = false } } }
         }
-        .onAppear { reader.rate = Float(rate); reader.voiceID = voiceID.isEmpty ? nil : voiceID }
+        .onAppear { reader.rate = Float(rate); reader.voiceID = voiceID.isEmpty ? nil : voiceID; if Launch.sample, text.isEmpty { text = "Rooftop panels now supply a tenth of daytime demand in some cities. Utilities are responding with time-of-use pricing. The share is rising every year." } }
         .onDisappear { reader.pause() }
         .sheet(isPresented: $voicePick) { VoicePicker(language: NLLanguageGuess.language(of: reader.sentences.prefix(5).joined(separator: " ")), selected: $voiceID).onDisappear { reader.voiceID = voiceID.isEmpty ? nil : voiceID } }
     }

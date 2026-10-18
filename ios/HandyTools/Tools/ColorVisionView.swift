@@ -100,7 +100,7 @@ struct ColorVisionView: View {
                  : "A helper, not a medical device. If you're not sure which type you are, try each — the one that makes traffic lights and ripe fruit 'pop' is yours.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .onAppear { cam.start() }
+        .onAppear { cam.start(); if Launch.sample, photo == nil, let cg = SampleAssets.photo().cgImage { photo = CIImage(cgImage: cg); cam.setPaused(true) } }
         .onDisappear { cam.stop() }
         .onChange(of: photoItem) { _, item in
             Task {

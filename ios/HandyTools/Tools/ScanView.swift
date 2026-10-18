@@ -68,6 +68,7 @@ struct ScanView: View {
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
+        .onAppear { if Launch.sample, pages.isEmpty { append([SampleAssets.document(), SampleAssets.receipt()]) } }
         .fullScreenCover(isPresented: $showScanner) {
             DocCameraSheet { images in showScanner = false; append(images) }.ignoresSafeArea()
         }

@@ -77,7 +77,7 @@ struct MagnifierView: View {
             Text("Tip: freeze first, then zoom — no shaky hands. Yellow-on-black and inverted are the looks low-vision readers find easiest.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .onAppear { cam.start(preset: .hd1920x1080); cam.setZoom(zoom) }
+        .onAppear { cam.start(preset: .hd1920x1080); cam.setZoom(zoom); if Launch.sample, let cg = SampleAssets.document().cgImage { frozenFrame = CIImage(cgImage: cg); frozen = true; cam.setPaused(true) } }
         .onDisappear { cam.stop() }
     }
 

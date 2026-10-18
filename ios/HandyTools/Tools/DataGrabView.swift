@@ -47,6 +47,7 @@ struct DataGrabView: View {
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
+        .onAppear { if Launch.sample, text.isEmpty { Task { let s = await AIEngine.recognizeText(SampleAssets.receipt()); await MainActor.run { if !s.isEmpty { text = s; run() } } } } }
         .onChange(of: photoItem) { _, item in
             guard let item else { return }
             busy = true; errorText = nil

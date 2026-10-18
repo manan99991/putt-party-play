@@ -20,6 +20,7 @@ struct StitchView: View {
                 Label(shots.isEmpty ? "Choose screenshots (top to bottom)" : "Choose different screenshots", systemImage: "rectangle.stack").frame(maxWidth: .infinity)
             }
             .secondaryButton()
+            .onAppear { if Launch.sample, shots.isEmpty { shots = SampleAssets.screenshots() } }
             .onChange(of: items) { _, new in load(new) }
 
             if shots.isEmpty && result == nil {

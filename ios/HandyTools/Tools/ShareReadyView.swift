@@ -59,6 +59,7 @@ struct ShareReadyView: View {
                 }.secondaryButton()
                 Button { showFiles = true } label: { Label("PDFs", systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
             }
+            .onAppear { if Launch.sample, queue.isEmpty { queue = [.image(SampleAssets.photo())] } }
             .onChange(of: photoItems) { _, new in loadPhotos(new) }
             .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf], allowsMultipleSelection: true) { res in
                 if case .success(let urls) = res { loadPDFs(urls) }

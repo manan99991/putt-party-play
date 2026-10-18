@@ -79,6 +79,7 @@ struct ExplainerView: View {
             Text("General information to help you read the document — not legal, medical or financial advice. For decisions that matter, ask a professional and bring these notes.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
+        .onAppear { if Launch.sample, text.isEmpty { text = "Tenant shall indemnify and hold harmless the Landlord. This Agreement shall automatically renew for successive twelve-month terms unless either party gives 60 days' notice. All disputes are subject to binding arbitration. Tenants are jointly and severally liable. Late fee of $75 applies after a 5-day grace period." } }
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf]) { res in
             if case .success(let url) = res { busy = true; Task.detached { let t = ReadSource.fromPDF(url); await MainActor.run { busy = false; text = String(t.prefix(12_000)) } } }
         }

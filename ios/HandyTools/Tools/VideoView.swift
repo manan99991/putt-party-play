@@ -90,6 +90,7 @@ struct VideoView: View {
             if let result { resultCard(result) }
         }
         .onChange(of: pickedItem) { _, item in loadVideo(item) }
+        .onAppear { if Launch.sample, source == nil { Task { if let url = await SampleAssets.movie() { let d = await VideoEngine.duration(url); let t = await VideoEngine.thumbnail(url, at: 0.5); await MainActor.run { source = url; sourceBytes = SizeTarget.fileSize(url) ?? 0; duration = d; thumb = t; trimStart = 0; trimEnd = d; gifLength = min(3, max(0.5, d)); targetBytes = 2_000_000; refreshTrimThumbs() } } } } }
         .onChange(of: gifPhotoItems) { _, items in loadGIFPhotos(items) }
         .onChange(of: trimStart) { _, v in refreshTrimThumbs() ; if trimEnd < v + 0.5 { trimEnd = min(duration, v + 0.5) } }
         .onChange(of: trimEnd) { _, v in refreshTrimThumbs(); if trimStart > v - 0.5 { trimStart = max(0, v - 0.5) } }

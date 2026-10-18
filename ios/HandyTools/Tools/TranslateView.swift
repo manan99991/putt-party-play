@@ -1,6 +1,6 @@
 import SwiftUI
 import PhotosUI
-import Translation
+@preconcurrency import Translation
 import AVFoundation
 
 /// Translate — type it, say it, or photograph it, in any pair of Apple's on-device languages. Talk
@@ -46,13 +46,13 @@ struct TranslateView: View {
             if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeTranslatePerDay) free translations.") }
             Text("First use of a language pair downloads it (Settings › Translate › Downloaded Languages). After that it's fully offline.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .translationTask(config) { @MainActor session in
+        .translationTask(config) { session in
             guard let p = pending else { return }
             do {
                 let r = try await session.translate(p.text)
-                deliver(r.targetText, for: p)
+                await MainActor.run { deliver(r.targetText, for: p) }
             } catch {
-                busy = false; errorText = "Couldn't translate — if this is the first time, iOS is downloading the language. Try again in a moment."
+                await MainActor.run { busy = false; errorText = "Couldn't translate — if this is the first time, iOS is downloading the language. Try again in a moment." }
             }
         }
         .onChange(of: speech.running) { was, now in if was, !now, let side = talkingSide { heard(side) } }
@@ -61,6 +61,7 @@ struct TranslateView: View {
             busy = true
             Task { if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) { let t = await AIEngine.recognizeText(img); await MainActor.run { photoText = t; busy = false; if t.isEmpty { errorText = "No text found in that photo." } else { translate(t, from: fromCode, to: toCode, speak: false) } } } else { await MainActor.run { busy = false } } }
         }
+        .onAppear { if Launch.sample, input.isEmpty { input = "Where is the nearest pharmacy? My son has a fever." } }
         .onDisappear { speech.stop(); speaker.stop() }
         .sheet(item: $showPicker) { which in
             LangList(selected: which == .from ? $fromCode : $toCode)

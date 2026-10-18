@@ -23,6 +23,7 @@ struct TextStudioView: View {
     private var overQuota: Bool { !Usage.hasRoom("ai", limit: Limits.freeAiPerDay) }
     private var stats: TextTools.Stats { TextTools.stats(text) }
 
+    private let sampleText = "teh meeting is tomorow at 3 , i think we shoud prepare the slides before then. also remember to send the invoice by friday."
     var body: some View {
         ToolPage(title: "Text Studio", subtitle: "Fix, rewrite, shorten, bullet, summarize, or draft a reply — then send it on.") {
             VStack(spacing: HandySpacing.s8) {
@@ -69,6 +70,7 @@ struct TextStudioView: View {
                 }.cardStyle()
             }
         }
+        .onAppear { if Launch.sample, text.isEmpty { text = sampleText } }
     }
 
     private var label: String {
@@ -78,7 +80,7 @@ struct TextStudioView: View {
         case .shorten: return "Make it shorter"
         case .expand: return "Expand it"
         case .bullets: return "Turn into bullet points"
-        case .summarize: return "Summarize"
+        case .summarize: return "Summarize this"
         case .reply: return "Draft a \(tone.lowercased()) reply"
         case .subject: return "Suggest subject lines"
         }

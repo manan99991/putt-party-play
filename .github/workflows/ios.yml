@@ -68,7 +68,7 @@ jobs:
             xcrun simctl ui "$UDID" appearance $mode
             for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub capture qrwifi stitch shareready light instruments measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab clips vault; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
-              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -route $r
+              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
               sleep 9
               xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
             done
