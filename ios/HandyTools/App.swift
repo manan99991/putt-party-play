@@ -148,6 +148,7 @@ struct ToolDestination: View {
         case "audiolab": AudioLabView()
         case "rest": RestView()
         case "describe": SceneDescriberView()
+        case "procam": ProCameraView()
         default: ComingSoonView(id: id)
         }
     }

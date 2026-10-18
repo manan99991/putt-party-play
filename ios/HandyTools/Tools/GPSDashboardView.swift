@@ -165,7 +165,9 @@ private struct HUDSheet: View {
 
 @MainActor
 final class GPSFeed: NSObject, ObservableObject, CLLocationManagerDelegate {
-    @Published var speed = 0.0, course = -1.0, accuracy = -1.0
+    @Published var speed = 0.0
+    @Published var course = -1.0
+    @Published var accuracy = -1.0
     @Published var altitude: Double? = nil
     @Published var coordinate: CLLocationCoordinate2D? = nil
     @Published var trip = TripTracker()

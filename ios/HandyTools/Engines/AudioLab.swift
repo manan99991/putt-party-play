@@ -165,7 +165,9 @@ enum Pitch {
 @MainActor final class Tuner: ObservableObject {
     @Published var hz: Double = 0
     @Published var clarity: Double = 0
-    @Published var note = "—", octave = 0, cents = 0.0
+    @Published var note = "—"
+    @Published var octave = 0
+    @Published var cents = 0.0
     @Published var denied = false
     @Published var a4 = 440.0
     private let engine = AVAudioEngine()

@@ -84,8 +84,13 @@ enum SensorMath {
 // MARK: - live sensors
 
 @MainActor final class MotionSensor: ObservableObject {
-    @Published var x = 0.0, y = 0.0, angle = 0.0, upright = false, level = false
-    @Published var field = 0.0, metalScore = 0.0
+    @Published var x = 0.0
+    @Published var y = 0.0
+    @Published var angle = 0.0
+    @Published var upright = false
+    @Published var level = false
+    @Published var field = 0.0
+    @Published var metalScore = 0.0
     private let mgr = CMMotionManager()
     private var zero = 0.0
     private var baseline = 50.0
@@ -119,8 +124,11 @@ enum SensorMath {
 }
 
 @MainActor final class HeadingSensor: NSObject, ObservableObject, CLLocationManagerDelegate {
-    @Published var magnetic = 0.0, trueHeading = 0.0, accuracy = 0.0
-    @Published var altitude: Double? = nil, altitudeAccuracy = 0.0
+    @Published var magnetic = 0.0
+    @Published var trueHeading = 0.0
+    @Published var accuracy = 0.0
+    @Published var altitude: Double? = nil
+    @Published var altitudeAccuracy = 0.0
     @Published var coordinate: CLLocationCoordinate2D? = nil
     @Published var available = true
     private let m = CLLocationManager()
@@ -143,7 +151,9 @@ enum SensorMath {
 }
 
 @MainActor final class SoundSensor: ObservableObject {
-    @Published var db = 0.0, peak = 0.0, average = 0.0
+    @Published var db = 0.0
+    @Published var peak = 0.0
+    @Published var average = 0.0
     @Published var history: [Double] = []
     @Published var denied = false
     private var recorder: AVAudioRecorder?

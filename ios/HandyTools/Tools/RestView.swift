@@ -167,8 +167,11 @@ struct RestView: View {
         var id = UUID(); var date: Date; var seconds: Double; var peakDB: Double; var file: String
         var url: URL { NightRecorder.dir.appendingPathComponent(file) }
     }
-    @Published var armed = false, capturing = false, denied = false
-    @Published var db = 0.0, baseline = 35.0
+    @Published var armed = false
+    @Published var capturing = false
+    @Published var denied = false
+    @Published var db = 0.0
+    @Published var baseline = 35.0
     @Published var events: [Event] = NightRecorder.loadEvents()
 
     nonisolated static let dir: URL = {
