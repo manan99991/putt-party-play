@@ -55,6 +55,8 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:25:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:48:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/exif/ExifScreen.kt:53:26 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/magnifier/MagnifierScreen.kt:47:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
 
 > Task :app:compileDebugJavaWithJavac
@@ -66,7 +68,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792293629478.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792294513571.json
 
-BUILD SUCCESSFUL in 4m 16s
+BUILD SUCCESSFUL in 3m 42s
 38 actionable tasks: 38 executed
