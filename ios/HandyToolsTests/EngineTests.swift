@@ -239,7 +239,7 @@ final class EngineTests: XCTestCase {
 
     // MARK: capture
 
-    func testCaptureFindsCodesInPhotosAndActionsInText() throws {
+    @MainActor func testCaptureFindsCodesInPhotosAndActionsInText() throws {
         let qr = try XCTUnwrap(QRGen.make("https://tenzy.app/menu", scale: 8, correction: "M"))
         XCTAssertEqual(CaptureView.barcode(in: qr), "https://tenzy.app/menu")
         XCTAssertNil(CaptureView.barcode(in: Self.text("NO CODE HERE")))
@@ -334,6 +334,25 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Torch.encodeMorse("hi there"), ".... .. / - .... . .-. .")
         XCTAssertEqual(Torch.encodeMorse("a1"), ".- .----")
         XCTAssertEqual(Torch.encodeMorse("$$"), "", "unknown characters are dropped, not crashed on")
+    }
+
+    // MARK: magnifier
+
+    @MainActor func testMagnifierPipelineKeepsExtentAndAppliesLooks() {
+        let ctx = CIContext()
+        let base = CIImage(color: CIColor(red: 0.9, green: 0.9, blue: 0.9)).cropped(to: CGRect(x: 0, y: 0, width: 200, height: 100))
+        let zoomed = MagnifierView.cropZoom(base, 2)
+        XCTAssertEqual(zoomed.extent.width, 200, accuracy: 0.5); XCTAssertEqual(zoomed.extent.height, 100, accuracy: 0.5)
+        XCTAssertEqual(MagnifierView.cropZoom(base, 1).extent, base.extent)
+
+        // yellow-on-black turns a light page yellow; inverted turns it dark
+        let region = CGRect(x: 0.25, y: 0.25, width: 0.5, height: 0.5)
+        let yb = ColorVision.averageColor(of: MagnifierView.style(base, look: .yellowBlack, sharpen: false, brightness: 0), region: region, context: ctx)
+        XCTAssertGreaterThan(yb?.x ?? 0, 0.6); XCTAssertLessThan(yb?.z ?? 1, 0.4)
+        let inv = ColorVision.averageColor(of: MagnifierView.style(base, look: .inverted, sharpen: false, brightness: 0), region: region, context: ctx)
+        XCTAssertLessThan(inv?.x ?? 1, 0.3)
+        let nat = ColorVision.averageColor(of: MagnifierView.style(base, look: .natural, sharpen: true, brightness: 0), region: region, context: ctx)
+        XCTAssertEqual(nat?.x ?? 0, 0.9, accuracy: 0.05)
     }
 
     // MARK: video engine
