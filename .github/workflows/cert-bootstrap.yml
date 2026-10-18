@@ -1,8 +1,8 @@
 name: Cert Bootstrap (one-time)
 
-# Mints the single shared Apple Distribution cert and returns it ENCRYPTED to a caller-held key.
-# Runs only when its own files change on handytools; touches no ios/** or android/** path, so the
-# app build never fires. Delete after use.
+# Mints the single shared Apple Distribution cert and publishes it ENCRYPTED to a caller-held key on
+# the cert-dropbox branch (useless ciphertext). Runs only when its own files change on handytools;
+# touches no ios/** or android/** path, so the app build never fires. Delete after use.
 on:
   push:
     branches: [handytools]
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   bootstrap:
@@ -41,14 +41,14 @@ jobs:
           openssl rand -out aeskey.bin 32
           openssl enc -aes-256-cbc -pbkdf2 -salt -in out/dist.p12 -out out/dist.p12.enc -pass file:aeskey.bin
           openssl pkeyutl -encrypt -pubin -inkey pub.pem -pkeyopt rsa_padding_mode:oaep -in aeskey.bin -out out/aeskey.enc
-          rm -f out/dist.p12 aeskey.bin work_asc.p8
-          ls -la out
-      - name: Upload (ciphertext + profiles)
-        uses: actions/upload-artifact@v4
-        with:
-          name: shared-cert
-          path: |
-            out/dist.p12.enc
-            out/aeskey.enc
-            out/profiles.json
-          retention-days: 1
+          rm -f out/dist.p12 aeskey.bin work_asc.p8 pub.pem
+      - name: Publish ciphertext to cert-dropbox branch
+        run: |
+          set -e
+          mkdir -p drop
+          cp out/dist.p12.enc out/aeskey.enc out/profiles.json drop/
+          git config user.email "ci@local"; git config user.name "cert-bootstrap"
+          git add -f drop
+          git commit -q -m "cert drop (encrypted to caller key)"
+          git push -f origin HEAD:cert-dropbox
+          echo "published to cert-dropbox"
