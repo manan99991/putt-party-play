@@ -522,6 +522,43 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(MeasureMath.area(1, metric: false), "10.8 sq ft")
     }
 
+    // MARK: message shield
+
+    func testScamAnalyzerCatchesClassicsAndClearsNormalText() {
+        let giftcard = ScamAnalyzer.analyze("URGENT: This is the IRS. Your account will be suspended within 24 hours unless you pay the balance in Apple gift cards. Do not tell anyone. Call immediately.")
+        XCTAssertEqual(giftcard.verdict, .likelyScam)
+        XCTAssertTrue(giftcard.findings.contains { $0.title.contains("untraceable") })
+        XCTAssertTrue(giftcard.findings.contains { $0.title.contains("Pressure") })
+        XCTAssertTrue(giftcard.findings.contains { $0.title.contains("secret") })
+        XCTAssertTrue(giftcard.findings.contains { $0.title.contains("well-known") })
+
+        let phish = ScamAnalyzer.analyze("Dear customer, we noticed unusual activity. Verify your account now at http://paypal.secure-login.top/verify or it will be locked.")
+        XCTAssertEqual(phish.verdict, .likelyScam)
+        XCTAssertEqual(phish.links.count, 1)
+        let issues = phish.links[0].issues.joined(separator: " ")
+        XCTAssertTrue(issues.contains("paypal"), issues)
+        XCTAssertTrue(issues.contains("Not encrypted"), issues)
+        XCTAssertTrue(issues.contains(".top"), issues)
+        XCTAssertTrue(phish.findings.contains { $0.title == "Generic greeting" })
+
+        let otp = ScamAnalyzer.analyze("Hi it's Amazon support, please read me the verification code we just texted you so I can cancel the order.")
+        XCTAssertTrue(otp.findings.contains { $0.title.contains("code, password") })
+        XCTAssertNotEqual(otp.verdict, .lowRisk)
+
+        let wrong = ScamAnalyzer.analyze("Hi, is this Jennifer?")
+        XCTAssertTrue(wrong.findings.contains { $0.title.contains("Wrong-number") })
+
+        let normal = ScamAnalyzer.analyze("Hey! Running 10 min late, can you grab us a table? Also mum says hi. See you soon x")
+        XCTAssertEqual(normal.verdict, .lowRisk)
+        XCTAssertTrue(normal.findings.isEmpty, "\(normal.findings.map(\.title))")
+        let realLink = ScamAnalyzer.analyze("Your order shipped! Track it at https://www.amazon.com/progress-tracker/package/ref=abc")
+        XCTAssertEqual(realLink.verdict, .lowRisk)
+        XCTAssertTrue(realLink.links[0].issues.isEmpty, "\(realLink.links[0].issues)")
+
+        XCTAssertFalse(ScamAnalyzer.advice(for: giftcard).isEmpty)
+        XCTAssertEqual(ScamAnalyzer.advice(for: normal).count, 1)
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {

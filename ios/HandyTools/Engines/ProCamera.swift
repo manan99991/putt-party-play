@@ -227,7 +227,11 @@ enum ProImage {
         guard let out = f.outputImage else { return [] }
         var px = [Float](repeating: 0, count: bins * 4)
         context.render(out, toBitmap: &px, rowBytes: bins * 16, bounds: CGRect(x: 0, y: 0, width: bins, height: 1), format: .RGBAf, colorSpace: nil)
-        var lum = (0..<bins).map { px[$0 * 4] * 0.2126 + px[$0 * 4 + 1] * 0.7152 + px[$0 * 4 + 2] * 0.0722 }
+        var lum = [Float](repeating: 0, count: bins)
+        for i in 0..<bins {
+            let r: Float = px[i * 4], g: Float = px[i * 4 + 1], b: Float = px[i * 4 + 2]
+            lum[i] = r * 0.2126 + g * 0.7152 + b * 0.0722
+        }
         let mx = lum.max() ?? 1
         if mx > 0 { lum = lum.map { $0 / mx } }
         return lum

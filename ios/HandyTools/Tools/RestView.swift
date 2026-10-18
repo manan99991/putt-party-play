@@ -255,7 +255,7 @@ struct RestView: View {
     func delete(_ e: Event) { try? FileManager.default.removeItem(at: e.url); events.removeAll { $0.id == e.id }; Self.saveEvents(events) }
     func clearAll() { for e in events { try? FileManager.default.removeItem(at: e.url) }; events = []; Self.saveEvents(events) }
 
-    private static var index: URL { dir.appendingPathComponent("events.json") }
+    nonisolated private static var index: URL { dir.appendingPathComponent("events.json") }
     nonisolated private static func loadEvents() -> [Event] { (try? JSONDecoder().decode([Event].self, from: Data(contentsOf: index))) ?? [] }
     private static func saveEvents(_ e: [Event]) { try? JSONEncoder().encode(e).write(to: index) }
 }
