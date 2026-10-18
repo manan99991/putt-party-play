@@ -2,9 +2,7 @@ import SwiftUI
 import PhotosUI
 import UIKit
 
-#if canImport(ImagePlayground)
 import ImagePlayground
-#endif
 
 /// How a Page-3 AI tool takes its input.
 enum AIInputKind {
@@ -192,14 +190,9 @@ struct AIToolView: View {
             }
             .primaryButton()
             .disabled(text.trimmingCharacters(in: .whitespaces).isEmpty)
-            #if canImport(ImagePlayground)
             .imagePlaygroundSheet(isPresented: $showPlayground, concept: text) { url in
                 if let data = try? Data(contentsOf: url), let img = UIImage(data: data) { genImage = img; HandyHaptics.success() }
             }
-            #else
-            Text("Image Playground needs iOS 18.2 or newer on a supported iPhone.")
-                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            #endif
             if let genImage, let png = genImage.pngData() {
                 Image(uiImage: genImage).resizable().scaledToFit().frame(maxHeight: 240)
                     .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
