@@ -109,6 +109,28 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(out.size.height, winH + 200, "second shot must contribute new rows")
     }
 
+    // MARK: Privacy Scrubber — irreversible redaction + metadata strip
+
+    func testScrubberBlocksPixelsAndDropsMetadata() throws {
+        let src = Self.noisy(CGSize(width: 400, height: 300))
+        let rect = CGRect(x: 0.25, y: 0.25, width: 0.5, height: 0.5)
+        let data = try XCTUnwrap(Scrubber.render(src, rects: [rect]))
+        // No GPS / EXIF survives a fresh encode.
+        XCTAssertFalse(Scrubber.metadata(in: data).hasGPS)
+        let props = try XCTUnwrap(CGImageSourceCreateWithData(data as CFData, nil).flatMap { CGImageSourceCopyPropertiesAtIndex($0, 0, nil) as? [String: Any] })
+        XCTAssertNil(props[kCGImagePropertyGPSDictionary as String], "GPS must be gone")
+        // The covered region is solid black in the output; outside it is not.
+        let out = try XCTUnwrap(UIImage(data: data)?.cgImage)
+        func lum(_ x: Int, _ y: Int) -> Int {
+            guard let d = out.dataProvider?.data, let p = CFDataGetBytePtr(d) else { return -1 }
+            let bpr = out.bytesPerRow, bpp = out.bitsPerPixel / 8
+            let o = y * bpr + x * bpp
+            return (Int(p[o]) + Int(p[o + 1]) + Int(p[o + 2])) / 3
+        }
+        XCTAssertLessThan(lum(out.width / 2, out.height / 2), 24, "centre must be blacked out")
+        XCTAssertGreaterThan(lum(8, 8), 24, "corner must be untouched")
+    }
+
     // MARK: fixtures
 
     /// Distinct horizontal colour bands so every row is identifiable (no false overlap matches).

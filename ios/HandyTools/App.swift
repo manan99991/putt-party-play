@@ -130,6 +130,7 @@ struct ToolDestination: View {
         case "formatfix": ImageConverterView()   // base — batch converter lands on this
         case "qrwifi": QRToolsView()             // base — Wi-Fi QR flow lands on this
         case "stitch": StitchView()
+        case "scrub": ScrubView()
         // ── Page 2 ──
         case "light": FlashlightView()
         case "instruments": MeasureView()
