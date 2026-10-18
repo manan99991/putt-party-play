@@ -1,0 +1,21 @@
+--------- beginning of crash
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: FATAL EXCEPTION: DefaultDispatcher-worker-3
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: Process: com.tenzy.toolkit, PID: 6945
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: java.lang.IllegalStateException: Cannot perform this operation because the connection pool has been closed.
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at android.database.sqlite.SQLiteConnectionPool.throwIfClosedLocked(SQLiteConnectionPool.java:1096)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at android.database.sqlite.SQLiteConnectionPool.waitForConnection(SQLiteConnectionPool.java:709)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at android.database.sqlite.SQLiteConnectionPool.acquireConnection(SQLiteConnectionPool.java:392)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at android.database.sqlite.SQLiteSession.acquireConnection(SQLiteSession.java:896)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at android.database.sqlite.SQLiteSession.executeForCursorWindow(SQLiteSession.java:836)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at android.database.sqlite.SQLiteQuery.fillWindow(SQLiteQuery.java:62)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at android.database.sqlite.SQLiteCursor.fillWindow(SQLiteCursor.java:145)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at android.database.sqlite.SQLiteCursor.getCount(SQLiteCursor.java:132)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at com.handytools.app.data.AlarmDao_Impl$6.call(AlarmDao_Impl.java:250)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at com.handytools.app.data.AlarmDao_Impl$6.call(AlarmDao_Impl.java:228)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at androidx.room.CoroutinesRoom$Companion$execute$4$job$1.invokeSuspend(CoroutinesRoom.kt:87)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	at java.lang.Thread.run(Thread.java:1012)
+10-18 02:49:21.541  6945  6980 E AndroidRuntime: 	Suppressed: kotlinx.coroutines.internal.DiagnosticCoroutineContextException: [StandaloneCoroutine{Cancelling}@aba452c, Dispatchers.IO]
