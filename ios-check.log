@@ -28,10 +28,21 @@ Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
 
 
 Resolved source packages:
-  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
   GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
+  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
 
-resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
+resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:72:55: error: sending value of non-Sendable type 'ToolFlowTests' risks causing data races
+2026-10-18 20:45:34.961072+0000 HandyTools[14994:46847] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-10-18 20:45:35.029976+0000 HandyTools[14994:46847] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:714: error: -[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects] : XCTAssertEqual failed: ("not%20a%20url") is not equal to ("not a url")
+<unknown>:0: error: -[HandyToolsUITests.ToolFlowTests testAudioLabToneSpeakerAndTuner] : Failed to tap "Tone" Button: Targeted element Button, {{97.5, 230.2}, {65.3, 37.0}}, label: 'Tone' is no longer valid after interruption handling. This can happen with UI that auto-dismisses when it loses first-responder status, which may occur as part of interruption handling. A retry-loop around the event may resolve the issue.
+<unknown>:0: error: -[HandyToolsUITests.ToolFlowTests testClipboardGrabsCleansLinkAndSavesSnippet] : Failed to tap Any (First Match): Timed out while evaluating UI query.
+<unknown>:0: error: -[HandyToolsUITests.ToolFlowTests testInstrumentsSwitchEveryGauge] : Failed to failed to compute hit point for Button, {{-88.2, 230.2}, {67.7, 37.0}}, label: 'Level': Activation point invalid and no suggested hit points based on element frame. (Underlying Error: Activation point invalid and no suggested hit points based on element frame)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:37: error: -[HandyToolsUITests.ToolFlowTests testQRMakesCodeAndWifiCard] : XCTAssertTrue failed - wifi card never appeared
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:37: error: -[HandyToolsUITests.ToolFlowTests testReadAloudPlaysSampleText] : XCTAssertTrue failed - advanced to sentence 2 never appeared
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:33: error: -[HandyToolsUITests.ToolFlowTests testRestPlaysSoundsSetsTimerAndShowsRecorder] : XCTAssertTrue failed - chip 15 min missing
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:37: error: -[HandyToolsUITests.ToolFlowTests testStudioCutsOutResizesAndConverts] : XCTAssertTrue failed - cut-out result never appeared
+<unknown>:0: error: -[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing] : Failed to get matching snapshots: Application com.tenzy.toolkit is not running
+<unknown>:0: error: -[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing] : com.tenzy.toolkit crashed in <external symbol>
 ** TEST FAILED **
