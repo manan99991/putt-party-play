@@ -149,6 +149,7 @@ struct ToolDestination: View {
         case "rest": RestView()
         case "describe": SceneDescriberView()
         case "procam": ProCameraView()
+        case "measure": MeasureARView()
         default: ComingSoonView(id: id)
         }
     }

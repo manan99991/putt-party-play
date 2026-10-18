@@ -505,6 +505,23 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(ColorVision.averageColor(of: half, region: CGRect(x: 0.2, y: 0.2, width: 0.6, height: 0.6), context: ctx)?.x ?? 0, 0.5, accuracy: 0.05)
     }
 
+    // MARK: AR measure math
+
+    func testMeasureMathLengthsAreasAndFormatting() {
+        let a = SIMD3<Float>(0, 0, 0), b = SIMD3<Float>(3, 0, 4)
+        XCTAssertEqual(MeasureMath.distance(a, b), 5)
+        XCTAssertEqual(MeasureMath.pathLength([a, b, SIMD3<Float>(3, 0, 0)]), 9, accuracy: 0.001)
+        // 2 m × 3 m rectangle on the floor (y up), slightly non-coplanar corner tolerated
+        let rect: [SIMD3<Float>] = [[0, 0, 0], [2, 0, 0], [2, 0.01, 3], [0, 0, 3]]
+        XCTAssertEqual(MeasureMath.polygonArea(rect), 6, accuracy: 0.05)
+        XCTAssertEqual(MeasureMath.polygonArea([a, b]), 0)
+        XCTAssertEqual(MeasureMath.height(from: [0, -1.2, 0], to: [0.3, 0.6, 0.1]), 1.8, accuracy: 0.0001)
+        XCTAssertEqual(MeasureMath.length(0.254, metric: false), "10.0 in")
+        XCTAssertEqual(MeasureMath.length(1.0, metric: false), "3′ 3.4″")
+        XCTAssertEqual(MeasureMath.length(0.42, metric: true), "42.0 cm"); XCTAssertEqual(MeasureMath.length(2.5, metric: true), "2.50 m")
+        XCTAssertEqual(MeasureMath.area(1, metric: false), "10.8 sq ft")
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {
