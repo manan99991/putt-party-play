@@ -7,6 +7,7 @@ import AVFoundation
 import PencilKit
 import CoreImage
 import simd
+import CoreLocation
 @testable import HandyTools
 
 /// Engine-level correctness checks. These exercise the real tool logic with deterministic,
@@ -353,6 +354,39 @@ final class EngineTests: XCTestCase {
         XCTAssertLessThan(inv?.x ?? 1, 0.3)
         let nat = ColorVision.averageColor(of: MagnifierView.style(base, look: .natural, sharpen: true, brightness: 0), region: region, context: ctx)
         XCTAssertEqual(nat?.x ?? 0, 0.9, accuracy: 0.05)
+    }
+
+    // MARK: gps dashboard
+
+    func testTripTrackerAccumulatesAndFiltersNoise() {
+        var t = TripTracker()
+        let t0 = Date()
+        // 10 fixes 100 m apart heading north at 10 s intervals ≈ 10 m/s
+        for i in 0..<10 {
+            t.add(coordinate: CLLocationCoordinate2D(latitude: 37.0 + Double(i) * 0.0009, longitude: -122.0), speed: 10, horizontalAccuracy: 5, timestamp: t0.addingTimeInterval(Double(i) * 10))
+        }
+        XCTAssertEqual(t.distance, 900, accuracy: 20)
+        XCTAssertEqual(t.movingSeconds, 90, accuracy: 0.01)
+        XCTAssertEqual(t.maxSpeed, 10)
+        XCTAssertEqual(t.averageSpeed, 10, accuracy: 0.3)
+        // a wild 500 m accuracy fix and a teleport must not count
+        t.add(coordinate: CLLocationCoordinate2D(latitude: 38, longitude: -122), speed: 10, horizontalAccuracy: 500, timestamp: t0.addingTimeInterval(100))
+        t.add(coordinate: CLLocationCoordinate2D(latitude: 39, longitude: -122), speed: 10, horizontalAccuracy: 5, timestamp: t0.addingTimeInterval(110))
+        XCTAssertEqual(t.distance, 900, accuracy: 20)
+        t.running = false
+        t.add(coordinate: CLLocationCoordinate2D(latitude: 39.001, longitude: -122), speed: 10, horizontalAccuracy: 5, timestamp: t0.addingTimeInterval(120))
+        XCTAssertEqual(t.distance, 900, accuracy: 20, "paused trips don't grow")
+        t.reset()
+        XCTAssertEqual(t.distance, 0); XCTAssertFalse(t.running)
+    }
+
+    func testGeoFormatting() {
+        XCTAssertEqual(GeoFormat.speed(10, metric: true), "36"); XCTAssertEqual(GeoFormat.speed(10, metric: false), "22")
+        XCTAssertEqual(GeoFormat.distance(1609.344, metric: false), "1.00 mi"); XCTAssertEqual(GeoFormat.distance(250, metric: true), "250 m")
+        XCTAssertEqual(GeoFormat.duration(3725), "1:02:05"); XCTAssertEqual(GeoFormat.duration(65), "1:05")
+        let c = CLLocationCoordinate2D(latitude: 37.774929, longitude: -122.419416)
+        XCTAssertEqual(GeoFormat.dms(c), "37°46'29.7\"N 122°25'09.9\"W")
+        XCTAssertTrue(GeoFormat.mapsLink(c).hasPrefix("https://maps.apple.com/?ll=37.77493,-122.41942"))
     }
 
     // MARK: video engine

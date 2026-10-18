@@ -144,6 +144,7 @@ struct ToolDestination: View {
         // Everything else is being built — show an honest placeholder, never a blank screen.
         case "capture": CaptureView()
         case "colorvision": ColorVisionView()
+        case "gpsdash": GPSDashboardView()
         default: ComingSoonView(id: id)
         }
     }
