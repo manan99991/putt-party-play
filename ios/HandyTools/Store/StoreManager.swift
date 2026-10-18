@@ -46,7 +46,7 @@ final class StoreManager: ObservableObject {
         guard let y = yearly?.price, let m = monthly?.price, m > 0 else { return 44 }
         let full = m * 12
         let pct = (1 - (y / full)) * 100
-        return max(0, Int(pct.rounded()))
+        return max(0, Int(NSDecimalNumber(decimal: pct).doubleValue.rounded()))
     }
 
     func load() async {

@@ -56,7 +56,7 @@ private struct CountdownView: View {
     }
 
     private func set(_ s: Int) { total = s; remaining = s }
-    private func start() { endDate = Date().addingTimeInterval(TimeInterval(remaining)); running = true; HandyHaptics.tap() }
+    private func start() { endDate = Date().addingTimeInterval(TimeInterval(remaining)); running = true; HandyHaptics.light() }
     private func pause() { running = false; endDate = nil }
     private func reset() { running = false; endDate = nil; remaining = total }
     private func clock(_ s: Int) -> String { String(format: "%02d:%02d", s / 60, s % 60) }
@@ -97,7 +97,7 @@ private struct StopwatchView: View {
         }
         .onReceive(tick) { _ in if running, let s = startDate { elapsed = base + Date().timeIntervalSince(s) } }
     }
-    private func go() { startDate = Date(); running = true; HandyHaptics.tap() }
+    private func go() { startDate = Date(); running = true; HandyHaptics.light() }
     private func stop() { base = elapsed; running = false }
     private func lap() { laps.append(elapsed) }
     private func clear() { elapsed = 0; base = 0; laps = [] }

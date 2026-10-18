@@ -89,7 +89,7 @@ final class MagnifierCamera: NSObject, ObservableObject, AVCaptureVideoDataOutpu
     }
 
     func toggleFreeze() {
-        if frozen == nil, let cg = latest { frozen = UIImage(cgImage: cg); HandyHaptics.tap() }
+        if frozen == nil, let cg = latest { frozen = UIImage(cgImage: cg); HandyHaptics.light() }
         else { frozen = nil }
     }
 
