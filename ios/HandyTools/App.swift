@@ -145,6 +145,7 @@ struct ToolDestination: View {
         case "capture": CaptureView()
         case "colorvision": ColorVisionView()
         case "gpsdash": GPSDashboardView()
+        case "audiolab": AudioLabView()
         default: ComingSoonView(id: id)
         }
     }

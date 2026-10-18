@@ -389,6 +389,32 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(GeoFormat.mapsLink(c).hasPrefix("https://maps.apple.com/?ll=37.77493,-122.41942"))
     }
 
+    // MARK: audio lab
+
+    func testPitchDetectionAndNoteMath() {
+        let rate = 44100.0
+        func tone(_ hz: Double, n: Int = 4096, square: Bool = false) -> [Float] {
+            (0..<n).map { i in let v = sin(2 * .pi * hz * Double(i) / rate); return Float(square ? (v >= 0 ? 0.5 : -0.5) : 0.5 * v) }
+        }
+        let a = try? XCTUnwrap(Pitch.detect(tone(440), sampleRate: rate))
+        XCTAssertEqual(a?.hz ?? 0, 440, accuracy: 1.5)
+        XCTAssertGreaterThan(a?.clarity ?? 0, 0.9)
+        let lowE = Pitch.detect(tone(82.41, n: 8192), sampleRate: rate)
+        XCTAssertEqual(lowE?.hz ?? 0, 82.41, accuracy: 1.0, "low E string")
+        let sq = Pitch.detect(tone(220, square: true), sampleRate: rate)
+        XCTAssertEqual(sq?.hz ?? 0, 220, accuracy: 2, "square wave fundamental, not a harmonic")
+        XCTAssertNil(Pitch.detect([Float](repeating: 0, count: 4096), sampleRate: rate), "silence is not a note")
+        XCTAssertNil(Pitch.detect((0..<4096).map { _ in Float.random(in: -0.5...0.5) }, sampleRate: rate), "noise is not a note")
+
+        let n = Pitch.note(for: 440)
+        XCTAssertEqual(n.name, "A"); XCTAssertEqual(n.octave, 4); XCTAssertEqual(n.cents, 0, accuracy: 0.01)
+        let sharp = Pitch.note(for: 446)
+        XCTAssertEqual(sharp.name, "A"); XCTAssertEqual(sharp.cents, 23.4, accuracy: 0.5)
+        XCTAssertEqual(Pitch.note(for: 261.63).name, "C"); XCTAssertEqual(Pitch.note(for: 261.63).octave, 4)
+        XCTAssertEqual(Pitch.frequency(midi: 69), 440); XCTAssertEqual(Pitch.frequency(midi: 40), 82.41, accuracy: 0.01)
+        XCTAssertEqual(Pitch.note(for: 440, a4: 442).cents, -7.85, accuracy: 0.1)
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {
