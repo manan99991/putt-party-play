@@ -33,30 +33,6 @@ Resolved source packages:
 
 resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/AudioLab.swift:168:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/AudioLab.swift:168:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/AudioLab.swift:168:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/GPSDashboardView.swift:168:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/GPSDashboardView.swift:168:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/GPSDashboardView.swift:168:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:87:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:87:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:87:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:87:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:87:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:88:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:88:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:122:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:122:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:122:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:123:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:123:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:146:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:146:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/Sensors.swift:146:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/RestView.swift:170:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/RestView.swift:170:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/RestView.swift:170:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/RestView.swift:171:5: error: property wrapper can only apply to a single variable
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/RestView.swift:171:5: error: property wrapper can only apply to a single variable
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/ProCamera.swift:230:19: error: the compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/RestView.swift:259:127: error: main actor-isolated static property 'index' can not be referenced from a nonisolated context
 ** TEST FAILED **
