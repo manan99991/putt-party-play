@@ -202,10 +202,3 @@ struct FitItView: View {
     }
 }
 
-/// Lets ShareLink hand off raw PDF data as a real file.
-struct PDFFile: Transferable {
-    let data: Data
-    static var transferRepresentation: some TransferRepresentation {
-        DataRepresentation(exportedContentType: .pdf) { $0.data }
-    }
-}

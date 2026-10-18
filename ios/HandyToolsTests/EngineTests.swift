@@ -144,6 +144,18 @@ final class EngineTests: XCTestCase {
         XCTAssertNotNil(QRGen.make("hello", scale: 6), "QR generation must produce an image")
     }
 
+    // MARK: Studio — encode formats
+
+    func testStudioEncodesEveryFormat() throws {
+        let img = Self.noisy(CGSize(width: 320, height: 240))
+        let jpg = try XCTUnwrap(ImageStudio.encode(img, as: .jpg, quality: 0.8))
+        let png = try XCTUnwrap(ImageStudio.encode(img, as: .png, quality: 1))
+        XCTAssertNotNil(UIImage(data: jpg)); XCTAssertNotNil(UIImage(data: png))
+        XCTAssertEqual(ImageStudio.passportSpecs.count, 5)
+        // HEIC may be unavailable in some simulators; if it encodes, it must decode.
+        if let heic = ImageStudio.encode(img, as: .heic, quality: 0.8) { XCTAssertNotNil(UIImage(data: heic)) }
+    }
+
     // MARK: fixtures
 
     /// Distinct horizontal colour bands so every row is identifiable (no false overlap matches).

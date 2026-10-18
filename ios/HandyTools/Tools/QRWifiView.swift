@@ -334,12 +334,6 @@ enum QRGen {
     }
 }
 
-struct VCardFile: Transferable {
-    let data: Data
-    static var transferRepresentation: some TransferRepresentation {
-        DataRepresentation(exportedContentType: .vCard) { $0.data }
-    }
-}
 
 // MARK: - Live scanner
 
