@@ -152,6 +152,7 @@ struct ToolDestination: View {
         case "measure": MeasureARView()
         case "shield": ShieldView()
         case "datagrab": DataGrabView()
+        case "textstudio": TextStudioView()
         default: ComingSoonView(id: id)
         }
     }

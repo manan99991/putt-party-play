@@ -626,6 +626,32 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(DataGrab.detect("Hey, want to grab lunch tomorrow?"), .text)
     }
 
+    // MARK: text tools
+
+    @MainActor func testTextToolsFixSummarizeActionsStats() {
+        let fixed = TextTools.fixSpelling("teh  meeting is tomorow , i think .so we should prepare")
+        XCTAssertTrue(fixed.text.hasPrefix("T"), fixed.text)
+        XCTAssertFalse(fixed.text.contains("  ")); XCTAssertFalse(fixed.text.contains(" ,")); XCTAssertTrue(fixed.text.contains(" I "), fixed.text)
+        XCTAssertTrue(fixed.text.contains(".So") || fixed.text.contains(". So"), fixed.text)
+
+        let article = "Solar panels on the roof cut the bill by a third. The cat likes the warm tiles. Solar output peaks at noon in summer. We had pasta for dinner. The installer said solar panels last twenty-five years. The bus was late again."
+        let top = TextTools.summarize(article, sentences: 2)
+        XCTAssertEqual(top.count, 2)
+        XCTAssertTrue(top.allSatisfy { $0.lowercased().contains("solar") }, "\(top)")
+        XCTAssertEqual(TextTools.summarize("One sentence only.", sentences: 3), ["One sentence only."])
+
+        let notes = "We need to send the invoice by Friday. The weather was lovely. Remember to call Sam about the venue. Everyone liked the cake."
+        let items = TextTools.actionItems(notes)
+        XCTAssertEqual(items.count, 2, "\(items)")
+        XCTAssertTrue(items[0].hasPrefix("We need to send"))
+
+        XCTAssertEqual(TextTools.bullets("First idea. Second idea!"), "• First idea.\n• Second idea!")
+        let st = TextTools.stats("The quick brown fox jumps over the lazy dog. It was fun.")
+        XCTAssertEqual(st.words, 12); XCTAssertEqual(st.sentences, 2); XCTAssertGreaterThan(st.readingSeconds, 0)
+        XCTAssertEqual(TextTools.syllables("table"), 2); XCTAssertEqual(TextTools.syllables("cake"), 1); XCTAssertEqual(TextTools.syllables("banana"), 3)
+        XCTAssertEqual(TextTools.capitalizeSentences("hello there. how are you? fine"), "Hello there. How are you? Fine")
+    }
+
     // MARK: video engine
 
     func testVideoEngineTrimsConvertsMutesAndMakesGIF() async throws {
