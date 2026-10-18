@@ -23,6 +23,8 @@ import com.handytools.app.tools.alarm.AlarmListScreen
 import com.handytools.app.tools.alarm.AlarmRingPreview
 import com.handytools.app.tools.awake.KeepAwakeScreen
 import com.handytools.app.tools.clipboard.ClipboardScreen
+import com.handytools.app.tools.flashlight.FlashlightScreen
+import com.handytools.app.tools.timers.TimersScreen
 import com.handytools.app.tools.notifhistory.NotifHistoryScreen
 import com.handytools.app.tools.ocr.ScreenTextScreen
 import com.handytools.app.tools.quick.QuickButtonsScreen
@@ -91,9 +93,11 @@ class MainActivity : ComponentActivity() {
                     composable("notifs") { NotifHistoryScreen() }
                     composable("scratchpad") { ScratchpadScreen() }
                     composable("awake") { KeepAwakeScreen() }
+                    composable("flash") { FlashlightScreen() }
+                    composable("timer") { TimersScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) { ComingSoonScreen(TOOLS.first { it.route == r }.name) }
                     }
