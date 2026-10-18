@@ -63,7 +63,8 @@ targets:
         NSAlarmKitUsageDescription: Tenzy schedules the alarms you create so they ring even in silent mode and Focus.
         NSCameraUsageDescription: Needed for the document scanner, QR scanner, magnifier and flashlight.
         NSMicrophoneUsageDescription: Needed for the decibel meter. Audio is measured, never recorded or saved.
-        NSLocationWhenInUseUsageDescription: Needed for the compass heading and to mark where you parked. Your location stays on this phone.
+        NSLocationWhenInUseUsageDescription: Needed for the compass heading. Your location stays on this phone.
+        NSSpeechRecognitionUsageDescription: Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded.
         NSPhotoLibraryUsageDescription: Needed to read text from screenshots and to view or strip photo metadata.
         NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.
         NSSupportsLiveActivities: true

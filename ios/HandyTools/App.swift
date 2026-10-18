@@ -65,18 +65,18 @@ struct Tool: Identifiable {
     Tool(id: "ocr",       name: "Text from Image", blurb: "Copy every word in a photo",           icon: "text.viewfinder",                    page: 1, keywords: ["text","ocr","photo","image","screenshot","copy","read","scan","words","extract"]),
     Tool(id: "translate", name: "Translate",       blurb: "Any language, offline, private",       icon: "character.bubble.fill",              page: 1, keywords: ["translate","translation","language","spanish","french","german","foreign","words"]),
     Tool(id: "magnifier", name: "Magnifier",       blurb: "Zoom in on fine print",icon: "plus.magnifyingglass",               page: 1, keywords: ["magnifier","magnify","zoom","read","fine print","loupe","camera","photo","light","glasses"]),
-    Tool(id: "scan",      name: "Doc Scanner",     blurb: "Scan pages, share as PDF",             icon: "doc.viewfinder.fill",                page: 1, keywords: ["scan","scanner","document","pdf","doc","paper","camera","photo"]),
-    // ── Page 2 · Handy ───────────────────────────────────────────────────
-    Tool(id: "level",     name: "Level",           blurb: "Hang things straight",      icon: "ruler.fill",                         page: 2, keywords: ["level","bubble","angle","tilt","horizontal","straight","ruler","measure","hang"]),
-    Tool(id: "compass",   name: "Compass",         blurb: "Which way am I facing?",               icon: "location.north.line.fill",           page: 2, keywords: ["compass","direction","north","heading","bearing","navigate","map"]),
-    Tool(id: "webclip",   name: "Web → Home",      blurb: "Link to an app icon",         icon: "square.and.arrow.down.on.square.fill",page: 2, keywords: ["shortcut","home screen","icon","web","url","link","bookmark","app"]),
-    Tool(id: "exif",      name: "Photo Metadata",  blurb: "Strip photo location",      icon: "photo.badge.exclamationmark",        page: 2, keywords: ["photo","metadata","exif","location","gps","strip","privacy","camera","image"]),
-    Tool(id: "imgpdf",    name: "Image → PDF",     blurb: "Photos into one clean PDF",            icon: "doc.richtext.fill",                  page: 2, keywords: ["pdf","image","photo","picture","document","convert","scan"]),
+    Tool(id: "measure",   name: "Measure",         blurb: "Level, compass, sound",                icon: "ruler.fill",                         page: 1, keywords: ["measure","level","bubble","compass","north","heading","decibel","sound","noise","angle","ruler"]),
+    // ── Page 2 · Power ───────────────────────────────────────────────────
+    Tool(id: "scan",      name: "Doc Scanner",     blurb: "Scan pages to PDF",                    icon: "doc.viewfinder.fill",                page: 2, keywords: ["scan","scanner","document","pdf","doc","paper","camera","photo"]),
+    Tool(id: "pdftools",  name: "PDF Toolkit",     blurb: "Merge, compress, make PDFs",           icon: "doc.on.doc.fill",                    page: 2, keywords: ["pdf","merge","combine","split","compress","shrink","images","document","convert"]),
+    Tool(id: "imgconvert",name: "Image Converter", blurb: "HEIC → JPG, resize, batch",            icon: "photo.on.rectangle.angled",          page: 2, keywords: ["convert","heic","jpg","jpeg","png","resize","compress","image","photo","batch","format"]),
+    Tool(id: "bgremove",  name: "Background Remover",blurb: "Cut out the subject",                 icon: "person.crop.rectangle.badge.plus",   page: 2, keywords: ["background","remove","cutout","photo","image","subject","transparent","sticker","erase"]),
     Tool(id: "vidcompress",name: "Video Compressor",blurb: "Shrink a clip to send",               icon: "film.stack.fill",                    page: 2, keywords: ["video","compress","shrink","size","movie","clip","reduce","film","mp4"]),
-    Tool(id: "bgremove",  name: "Background Remover",blurb: "Cut out the subject",  icon: "person.crop.rectangle.badge.plus",   page: 2, keywords: ["background","remove","cutout","photo","image","subject","transparent","sticker","erase"]),
-    Tool(id: "park",      name: "Where Did I Park",blurb: "Save the spot, walk back",             icon: "car.fill",                           page: 2, keywords: ["park","parking","car","location","find","map","remember","spot"]),
-    Tool(id: "wallet",    name: "Card Wallet",     blurb: "Loyalty barcodes",      icon: "creditcard.fill",                    page: 2, keywords: ["wallet","card","loyalty","barcode","membership","store","points","pass"]),
-    Tool(id: "db",        name: "Decibel Meter",   blurb: "How loud is it, really?",              icon: "waveform",                           page: 2, keywords: ["decibel","sound","noise","loud","volume","meter","audio","db"]),
+    Tool(id: "audiotext", name: "Audio → Text",    blurb: "Transcribe your voice",                icon: "waveform.badge.mic",                 page: 2, keywords: ["audio","text","transcribe","transcription","voice","speech","record","dictation","notes","meeting"]),
+    Tool(id: "signfill",  name: "Sign & Fill",     blurb: "Sign a doc, export PDF",               icon: "signature",                          page: 2, keywords: ["sign","signature","fill","document","pdf","form","initials","contract","markup"]),
+    Tool(id: "exif",      name: "Photo Metadata",  blurb: "Strip photo location",                 icon: "photo.badge.exclamationmark",        page: 2, keywords: ["photo","metadata","exif","location","gps","strip","privacy","camera","image"]),
+    Tool(id: "webclip",   name: "Web → Home",      blurb: "Link to an app icon",                  icon: "square.and.arrow.down.on.square.fill",page: 2, keywords: ["shortcut","home screen","icon","web","url","link","bookmark","app"]),
+    Tool(id: "wallet",    name: "Card Wallet",     blurb: "Loyalty barcodes",                     icon: "creditcard.fill",                    page: 2, keywords: ["wallet","card","loyalty","barcode","membership","store","points","pass"]),
     // ── Page 3 · AI (on-device) ──────────────────────────────────────────
     Tool(id: "ai_summarize",  name: "Summarize",        blurb: "Long text in, the gist out",      icon: "text.append",                  page: 3, ai: true, keywords: ["summarize","summary","tldr","shorten","ai","text","article","notes"]),
     Tool(id: "ai_extract",    name: "Extract to Data",  blurb: "Receipt to clean data",   icon: "tablecells.fill",              page: 3, ai: true, keywords: ["extract","data","receipt","card","scan","ai","fields","invoice","photo"]),
@@ -132,16 +132,16 @@ struct ToolDestination: View {
         case "translate": TranslateView()
         case "magnifier": MagnifierView()
         case "scan": DocScannerView()
-        case "level": LevelView()
-        case "compass": CompassView()
+        case "measure": MeasureView()
+        case "pdftools": PDFToolkitView()
+        case "imgconvert": ImageConverterView()
+        case "audiotext": AudioToTextView()
+        case "signfill": SignFillView()
         case "webclip": WebClipView()
         case "exif": ExifView()
-        case "imgpdf": ImagePDFView()
         case "vidcompress": VideoCompressorView()
         case "bgremove": BackgroundRemoverView()
-        case "park": ParkView()
         case "wallet": WalletView()
-        case "db": DecibelMeterView()
         default:
             if let spec = aiSpec(for: id) { AIToolView(spec: spec) } else { EmptyView() }
         }
@@ -162,7 +162,7 @@ struct HomeView: View {
     @FocusState private var searching: Bool
     @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" || $0 == "home" || $0 == "homepro" ? nil : [$0] } ?? []
 
-    private let captions = ["Everyday essentials", "Handy extras", "AI · on your phone"]
+    private let captions = ["Everyday essentials", "Power tools", "AI · on your phone"]
 
     var body: some View {
         NavigationStack(path: $path) {

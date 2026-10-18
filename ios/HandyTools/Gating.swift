@@ -11,8 +11,11 @@ enum Limits {
     static let freeAiPerDay = 3        // Page-3 AI actions, shared across all AI tools
     static let freeWalletCards = 2     // Card Wallet
     static let freeVideoPerDay = 2     // Video Compressor
-    static let freeImagePdfPerDay = 3  // Image → PDF
     static let freeBgRemovePerDay = 5  // Background Remover
+    static let freeConvertPerDay = 3   // Image Converter (batches)
+    static let freeAudioPerDay = 3     // Audio → Text (recordings)
+    static let freePdfOpsPerDay = 3    // PDF Toolkit (jobs)
+    static let freeSignPerDay = 3      // Sign & Fill
 }
 
 /// Per-day usage counters that reset at midnight, stored in UserDefaults. Pro is unlimited, so
