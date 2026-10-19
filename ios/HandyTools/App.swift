@@ -83,7 +83,7 @@ struct Tool: Identifiable {
     Tool(id: "video",      name: "Video",            blurb: "Shrink, trim, convert, GIF",        icon: "film.stack.fill",                     page: 1, asset: "tool_video", keywords: ["video","compress","shrink","trim","cut","convert","mp4","mov","mute","audio","extract","gif","clip"]),
     Tool(id: "formatfix",  name: "Format Fixer",     blurb: "HEIC/MOV → JPG/MP4, in batch",      icon: "arrow.triangle.2.circlepath",         page: 1, asset: "tool_formatfix", keywords: ["heic","jpg","jpeg","png","mov","mp4","convert","format","batch","won't open","upload","share"]),
     Tool(id: "scrub",      name: "Privacy Scrubber", blurb: "Strip location, redact for good",   icon: "eye.slash.fill",                      page: 1, asset: "tool_scrub", keywords: ["privacy","metadata","exif","gps","location","strip","redact","blur","face","plate","hide","censor","share safe"]),
-    Tool(id: "cleaner",    name: "Cleaner",          blurb: "Free space: dupes & big files",     icon: "sparkles",                            page: 1, asset: "tool_cleaner", keywords: ["clean","cleaner","storage","space","free up","duplicate","duplicates","screenshots","large","big","videos","delete","declutter","full"]),
+    Tool(id: "cleaner",    name: "Cleaner",          blurb: "Free space: dupes & big files",     icon: "sparkles",                            page: 1, asset: "tool_cleaner", keywords: ["clean","cleaner","storage","space","free up","duplicate","duplicates","screenshots","large","big","videos","photos","photo","images","image","pictures","delete","declutter","full"]),
     Tool(id: "qrwifi",     name: "QR & Wi‑Fi",       blurb: "Scan, make & share Wi‑Fi codes",    icon: "qrcode",                              page: 1, asset: "tool_qrwifi", keywords: ["qr","code","barcode","wifi","wi-fi","password","share","guest","generate","make","scan"]),
     Tool(id: "stitch",     name: "Long Screenshot",  blurb: "Stitch shots into one tall image",  icon: "rectangle.split.1x2.fill",            page: 1, asset: "tool_stitch", keywords: ["screenshot","long","stitch","scroll","combine","merge","tall","chat","thread","full page"]),
     Tool(id: "shareready", name: "Share‑Ready",      blurb: "One tap: convert, strip, shrink",   icon: "square.and.arrow.up.fill",            page: 1, asset: "tool_shareready", keywords: ["share","upload","ready","convert","strip","metadata","shrink","recipe","one tap","portal","send"]),
@@ -111,11 +111,58 @@ struct Tool: Identifiable {
     Tool(id: "vault",      name: "Vault",            blurb: "Face ID locker",                    icon: "lock.fill",                           page: 3, asset: "tool_vault", keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","files","cards","safe"]),
 ]
 
-/// Google-style ranked search across all 30 tools: best matches first, then ok ones.
+/// Words that mean the same thing to a user. A query token is expanded to its whole group before
+/// matching, so "image" finds photo/picture tools, "movie" finds Video, "declutter" finds Cleaner,
+/// and so on — the thing that makes the search feel smart rather than literal.
+enum SearchSynonyms {
+    static let groups: [[String]] = [
+        ["image", "images", "img", "photo", "photos", "picture", "pictures", "pic", "pics", "snapshot", "snap"],
+        ["video", "videos", "movie", "movies", "clip", "clips", "film", "footage", "recording", "reel"],
+        ["pdf", "document", "documents", "doc", "docs", "paper", "page", "pages", "form", "forms"],
+        ["compress", "compressed", "shrink", "reduce", "smaller", "size", "downsize", "fit", "mb", "kb", "too big"],
+        ["scan", "scanner", "scanning", "ocr", "recognize", "sign", "signature"],
+        ["qr", "barcode", "code", "codes"],
+        ["wifi", "wi-fi", "wireless", "network", "hotspot", "password"],
+        ["translate", "translation", "translator", "language", "languages", "spanish", "french"],
+        ["text", "words", "writing", "grammar", "rewrite", "proofread", "summarize", "reply"],
+        ["voice", "audio", "sound", "mic", "microphone", "record", "speech", "dictation", "transcribe", "transcript"],
+        ["clean", "cleaner", "cleanup", "clear", "storage", "space", "declutter", "free", "free up", "delete", "remove", "trash", "junk", "full"],
+        ["duplicate", "duplicates", "dupe", "dupes", "similar", "copy", "copies", "same", "look-alike", "lookalike"],
+        ["screenshot", "screenshots", "screen", "stitch", "long", "tall", "scroll"],
+        ["flashlight", "torch", "light", "lamp", "strobe", "sos", "mirror"],
+        ["measure", "measurement", "ruler", "tape", "distance", "length", "area", "height", "ar"],
+        ["magnify", "magnifier", "magnifying", "zoom", "enlarge", "loupe", "fine print", "read small"],
+        ["speed", "speedometer", "gps", "location", "heading", "altitude", "hud", "dashboard"],
+        ["color", "colour", "colors", "colours", "colorblind", "colourblind", "hex", "eyedropper"],
+        ["sleep", "rest", "noise", "white noise", "relax", "snore", "night", "focus", "calm"],
+        ["caption", "captions", "subtitle", "subtitles", "hearing", "deaf"],
+        ["scam", "spam", "phishing", "fraud", "suspicious", "shield", "safe"],
+        ["read", "aloud", "speak", "tts", "narrate", "listen", "spoken"],
+        ["metadata", "exif", "privacy", "strip", "redact", "scrub", "blur", "censor"],
+        ["vault", "lock", "secure", "private", "hidden", "safe", "face id", "passcode"],
+        ["enhance", "upscale", "sharpen", "denoise", "improve", "fix", "quality", "restore"],
+        ["cutout", "cut out", "background", "remove background", "passport", "id photo", "headshot"],
+        ["convert", "format", "heic", "jpg", "jpeg", "png", "mp4", "mov", "gif"],
+        ["receipt", "receipts", "table", "data", "extract", "spreadsheet", "csv", "contact", "contacts"],
+        ["level", "compass", "altimeter", "barometer", "magnet", "metal", "decibel", "db", "sensor", "instruments", "bubble"],
+        ["camera", "capture", "viewfinder", "describe", "scene", "iso", "shutter", "raw", "exposure"],
+        ["share", "upload", "send", "export", "ready"],
+    ]
+    /// All forms a token stands for (itself plus any group it belongs to).
+    static func expand(_ token: String) -> Set<String> {
+        var out: Set<String> = [token]
+        for g in groups where g.contains(token) { out.formUnion(g) }
+        return out
+    }
+}
+
+/// Google-style ranked search across all 30 tools: best matches first, then ok ones. Query tokens are
+/// expanded through SearchSynonyms, so related words ("image"→photo, "movie"→video) still find the tool.
 @MainActor func searchTools(_ raw: String) -> [Tool] {
     let query = raw.lowercased().trimmingCharacters(in: .whitespaces)
     guard !query.isEmpty else { return [] }
-    let tokens = query.split(separator: " ").map(String.init)
+    let tokens = query.split(separator: " ").map(String.init).filter { $0.count >= 2 }
+    let expanded = tokens.map { SearchSynonyms.expand($0) }
     func score(_ t: Tool) -> Int {
         let name = t.name.lowercased(), blurb = t.blurb.lowercased(), keys = t.keywords.map { $0.lowercased() }
         var s = 0
@@ -123,13 +170,18 @@ struct Tool: Identifiable {
         if name.hasPrefix(query) { s += 500 }
         if name.contains(query) { s += 250 }
         if keys.contains(query) { s += 200 }
-        for tok in tokens where tok.count >= 2 {
+        for (i, tok) in tokens.enumerated() {
+            let forms = expanded[i]
             if name.contains(tok) { s += 120 }
+            else if forms.contains(where: { name.contains($0) }) { s += 70 }
             for k in keys {
                 if k == tok { s += 90 }
+                else if forms.contains(k) { s += 70 }                               // synonym hits a keyword exactly
                 else if k.contains(tok) || tok.contains(k) { s += 45 }
+                else if forms.contains(where: { k.contains($0) || $0.contains(k) }) { s += 28 }
             }
             if blurb.contains(tok) { s += 25 }
+            else if forms.contains(where: { blurb.contains($0) }) { s += 15 }
         }
         return s
     }
@@ -226,6 +278,7 @@ struct HomeView: View {
                 }
                 BannerAd()
             }
+            .id(theme.current)   // force a full re-skin of the grid when the theme changes
             .background(HandyColor.bg)
             .navigationDestination(for: String.self) { id in
                 switch id {
@@ -236,7 +289,7 @@ struct HomeView: View {
                 }
             }
             .toolbar(.hidden, for: .navigationBar)
-            .onChange(of: path) { _, p in if p.last == "paywall" { path.removeLast(); showPaywall = true } }
+            .onChange(of: path) { _, p in searching = false; if p.last == "paywall" { path.removeLast(); showPaywall = true } }
             .onAppear { if Launch.route == "paywall" { showPaywall = true } }
             .onReceive(NotificationCenter.default.publisher(for: .showPaywall)) { _ in showPaywall = true }
             .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in if let id = n.object as? String { path = [id] } }
@@ -307,8 +360,15 @@ struct SearchField: View {
             TextField("Search 30 tools…", text: $text)
                 .focused(focused)
                 .autocorrectionDisabled().textInputAutocapitalization(.never).submitLabel(.search)
+                .onSubmit { focused.wrappedValue = false }
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("Done") { focused.wrappedValue = false }
+                    }
+                }
             if !text.isEmpty {
-                Button { text = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
+                Button { text = ""; focused.wrappedValue = false } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
                     .accessibilityLabel("Clear search")
             }
         }
@@ -340,6 +400,7 @@ struct SearchResults: View {
                 .padding(.horizontal, HandySpacing.gutter).padding(.top, HandySpacing.s4).padding(.bottom, HandySpacing.s16)
             }
         }
+        .scrollDismissesKeyboard(.immediately)
     }
 }
 

@@ -241,6 +241,7 @@ struct SettingsView: View {
             }
             BannerAd()
         }
+        .id(theme.current)   // force a full re-skin of Settings when the theme changes (no stale cards/links)
         .background(HandyColor.bg)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showPaywall) { PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible).presentationBackground(HandyColor.surfaceRaised).sheetCloseButton { showPaywall = false } }
