@@ -179,6 +179,10 @@ enum Launch {
     static var route: String? { args.firstIndex(of: "-route").flatMap { args.indices.contains($0 + 1) ? args[$0 + 1] : nil } }
     static var screenshots: Bool { args.contains("-screenshots") }
     static var uitest: Bool { args.contains("-uitest") }
+    static var live: Bool { args.contains("-live") }
+    /// Whether camera / mic / audio should auto-start: normally yes; in the `-live` UI test that
+    /// deliberately drives those paths yes; in the ordinary `-uitest` smoke run no.
+    static var startHardware: Bool { !uitest || live }
     /// UI tests can't drive the system photo picker reliably, so with `-sample` each tool preloads
     /// a generated sample (photo, screenshots, receipt, movie) and the flow runs like a user's would.
     static var sample: Bool { args.contains("-sample") }

@@ -118,7 +118,7 @@ jobs:
         run: |
           set -o pipefail
           { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tee setup.log
-      - name: Test (engine unit + every-tool smoke) — gates the deploy
+      - name: Test (engine unit + smoke + LIVE hardware) — gates the deploy
         run: |
           set -o pipefail
           UDID=$(xcrun simctl list devices available -j | python3 -c '
@@ -127,11 +127,19 @@ jobs:
           c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
           c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
           echo "simulator=$UDID"
+          # Boot the sim and PRE-AUTHORIZE the app, so the live test drives the real camera / mic /
+          # location permission + audio-callback paths (the ones the smoke run disables) with no
+          # prompt. This is the check that would have caught the Pro Camera / Audio Lab crashes.
+          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+          for p in camera microphone photos location; do
+            xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true
+          done
           xcodebuild test \
             -project HandyTools.xcodeproj -scheme HandyTools \
             -destination "id=$UDID" \
             -only-testing:HandyToolsTests \
             -only-testing:HandyToolsUITests/ToolSmokeTests \
+            -only-testing:HandyToolsUITests/LiveToolTests \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true

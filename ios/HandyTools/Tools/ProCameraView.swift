@@ -86,7 +86,7 @@ struct ProCameraView: View {
                                   : "This camera doesn't offer RAW capture to apps; HEIF at full quality is saved. Long exposures average frames — steady the phone.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .onAppear { if !Launch.uitest { cam.start() } }
+        .onAppear { if Launch.startHardware { cam.start() } }
         .onDisappear { cam.stop() }
         .onReceive(timer) { _ in if let l = cam.latest { histogram = ProImage.histogram(l, context: ctx) } }
         .onChange(of: cam.accumulating) { was, now in if was, !now, panel == .long { finishLong() } }

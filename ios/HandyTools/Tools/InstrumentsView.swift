@@ -38,7 +38,7 @@ struct InstrumentsView: View {
             case .ruler: rulerPanel
             }
         }
-        .onAppear { if !Launch.uitest { switchTo(kind, force: true) } }
+        .onAppear { if Launch.startHardware { switchTo(kind, force: true) } }
         .onDisappear { stopAll() }
     }
 
