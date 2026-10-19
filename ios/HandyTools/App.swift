@@ -99,7 +99,7 @@ struct Tool: Identifiable {
     Tool(id: "readaloud",  name: "Read Aloud",       blurb: "Any page, spoken naturally",        icon: "speaker.wave.2.bubble.fill",          page: 3, keywords: ["read","aloud","speak","tts","voice","dyslexia","accessibility","page","book","ocr","listen","simplify"]),
     Tool(id: "explain",    name: "Plain‑English Explainer", blurb: "Decode legal & medical jargon", icon: "text.book.closed.fill",             page: 3, ai: true, keywords: ["explain","plain english","simple","jargon","legal","contract","medical","lab results","terms","what does this mean","ai"]),
     Tool(id: "datagrab",   name: "Data Grabber",     blurb: "Receipt → rows, contacts, dates",   icon: "tablecells.fill",                     page: 3, ai: true, keywords: ["receipt","table","data","extract","csv","spreadsheet","contact","business card","calendar","event","expense","ai"]),
-    Tool(id: "clips",      name: "Clipboard",        blurb: "Snippets & saved text",             icon: "doc.on.clipboard.fill",               page: 3, keywords: ["clipboard","copy","paste","history","snippets","saved","text","boilerplate","address"]),
+    Tool(id: "cleaner",    name: "Cleaner",          blurb: "Free space: dupes & big files",     icon: "sparkles",                            page: 3, keywords: ["clean","cleaner","storage","space","free up","duplicate","duplicates","screenshots","large","big","videos","delete","declutter","full"]),
     Tool(id: "vault",      name: "Vault",            blurb: "Face ID locker",                    icon: "lock.fill",                           page: 3, keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","files","cards","safe"]),
 ]
 
@@ -153,7 +153,7 @@ struct ToolDestination: View {
         case "translate": TranslateView()
         case "voicenotes": VoiceNotesView()
         case "livecaptions": LiveCaptionsView()
-        case "clips": ClipboardView()
+        case "cleaner": CleanerView()
         // Everything else is being built — show an honest placeholder, never a blank screen.
         case "capture": CaptureView()
         case "colorvision": ColorVisionView()

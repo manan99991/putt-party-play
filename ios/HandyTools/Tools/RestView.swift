@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import MediaPlayer
 
 /// Rest — sleep sounds that never loop (synthesized live), a sleep timer that fades, and a night
 /// recorder that only keeps the moments something was loud: snoring, talking, the cat, the neighbour.
@@ -104,7 +105,7 @@ struct RestView: View {
 
 @MainActor final class NoisePlayer: ObservableObject {
     @Published var playing = false
-    @Published var kind: NoiseSynth.Kind = .brown { didSet { shared.kind = kind.rawValue } }
+    @Published var kind: NoiseSynth.Kind = .brown { didSet { shared.kind = kind.rawValue; if playing { updateNowPlaying() } } }
     @Published var volume: Double = 0.6 { didSet { shared.gain = Float(volume) } }
     @Published var timerMinutes = 0
     @Published var remaining: Double? = nil
@@ -118,7 +119,9 @@ struct RestView: View {
     func start() {
         if playing { return }
         let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+        // Take over "now playing" (no mixWithOthers) so the sound appears on the Lock Screen and
+        // Control Center with a stop control — otherwise you can't turn it off after walking away.
+        try? session.setCategory(.playback, mode: .default)
         try? session.setActive(true)
         let hwRate = engine.outputNode.outputFormat(forBus: 0).sampleRate
         let rate = hwRate > 0 ? hwRate : 44_100   // hardware can report 0 before the route is ready
@@ -136,6 +139,7 @@ struct RestView: View {
         engine.attach(n); engine.connect(n, to: engine.mainMixerNode, format: fmt); node = n
         try? engine.start()
         playing = engine.isRunning
+        if playing { wireRemoteCommands(); updateNowPlaying() }
         if timerMinutes > 0 { setTimer(minutes: timerMinutes) }
     }
 
@@ -143,6 +147,32 @@ struct RestView: View {
         timer?.cancel(); timer = nil; remaining = nil
         engine.stop(); if let n = node { engine.detach(n); node = nil }
         playing = false
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+    }
+
+    // MARK: Lock Screen / Control Center
+
+    private var commandsWired = false
+    private func wireRemoteCommands() {
+        guard !commandsWired else { return }
+        commandsWired = true
+        let c = MPRemoteCommandCenter.shared()
+        c.playCommand.addTarget { [weak self] _ in Task { @MainActor in self?.start() }; return .success }
+        c.pauseCommand.addTarget { [weak self] _ in Task { @MainActor in self?.stop() }; return .success }
+        c.stopCommand.addTarget { [weak self] _ in Task { @MainActor in self?.stop() }; return .success }
+        c.togglePlayPauseCommand.addTarget { [weak self] _ in
+            Task { @MainActor in guard let self else { return }; self.playing ? self.stop() : self.start() }
+            return .success
+        }
+    }
+
+    private func updateNowPlaying() {
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+            MPMediaItemPropertyTitle: kind.title,
+            MPMediaItemPropertyArtist: "Tenzy · Sleep sounds",
+            MPNowPlayingInfoPropertyPlaybackRate: playing ? 1.0 : 0.0,
+        ]
     }
 
     func setTimer(minutes: Int) {

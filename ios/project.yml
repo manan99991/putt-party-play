@@ -17,7 +17,7 @@ settings:
     # class of audio-callback crashes at once instead of annotating each callback individually.
     SWIFT_VERSION: "5.0"
     DEVELOPMENT_TEAM: "YOUR_TEAM_ID"      # <- Apple Developer team id
-    MARKETING_VERSION: "1.2.10"
+    MARKETING_VERSION: "1.2.11"
     CURRENT_PROJECT_VERSION: "1"
     TARGETED_DEVICE_FAMILY: "1"
     SWIFT_STRICT_CONCURRENCY: minimal
@@ -41,7 +41,6 @@ targets:
       - path: Shared
     dependencies:
       - package: GoogleMobileAds
-      - target: ClipboardKeyboard
       - target: ShareExtension
       - target: StickyWidget
       - sdk: VisionKit.framework
@@ -74,34 +73,10 @@ targets:
         NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude and the GPS dashboard. Your location stays on this phone.
         NSMotionUsageDescription: Needed for the level, barometer/altimeter and metal detector readings.
         NSSpeechRecognitionUsageDescription: Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded.
-        NSPhotoLibraryUsageDescription: Needed to read text from screenshots and to view or strip photo metadata.
+        NSPhotoLibraryUsageDescription: Needed to read text from screenshots, view or strip photo metadata, and find large or duplicate photos and videos you choose to remove. iOS always asks you to confirm a deletion.
         NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.
         NSFaceIDUsageDescription: Used to unlock your Secure Vault so only you can open your private notes and photos.
         NSSupportsLiveActivities: true
-
-  ClipboardKeyboard:
-    type: app-extension
-    platform: iOS
-    settings:
-      base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit.keyboard }
-    sources: [ClipboardKeyboard, Shared]
-    entitlements:
-      path: ClipboardKeyboard/ClipboardKeyboard.entitlements
-      properties:
-        com.apple.security.application-groups: [group.com.tenzy.toolkit]
-    info:
-      path: ClipboardKeyboard/Info.plist
-      properties:
-        CFBundleShortVersionString: $(MARKETING_VERSION)
-        CFBundleDisplayName: Tenzy Clips
-        NSExtension:
-          NSExtensionPointIdentifier: com.apple.keyboard-service
-          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
-          NSExtensionAttributes:
-            PrimaryLanguage: en-US
-            IsASCIICapable: false
-            RequestsOpenAccess: true
-            PrefersRightToLeft: false
 
   ShareExtension:
     type: app-extension

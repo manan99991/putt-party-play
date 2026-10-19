@@ -69,9 +69,6 @@ struct SetupView: View {
                     SetupRow(icon: "photo.badge.plus", title: "Save to Photos", why: "Lets Pro Camera and long exposures save into your library. Picking photos never needs this.", unlocks: "Pro Camera", granted: photos) {
                         Task { _ = await PHPhotoLibrary.requestAuthorization(for: .addOnly); await refresh() }
                     }
-                    SetupRow(icon: "keyboard", title: "Clips keyboard", why: "Settings › General › Keyboard › Keyboards › Add New. Allow Full Access: it only reads the clipboard when you tap Grab.", unlocks: "Clipboard", granted: false, buttonLabel: "Open Settings") {
-                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                    }
                     Text("Everything stays on your iPhone. No account, no cloud, no analytics.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
@@ -179,7 +176,7 @@ struct SettingsView: View {
                     }
 
                     Section("App") {
-                        SettingsRow(icon: "slider.horizontal.3", title: "Permissions", sub: "Camera, microphone, speech, location, Photos, the Clips keyboard") { showSetup = true }
+                        SettingsRow(icon: "slider.horizontal.3", title: "Permissions", sub: "Camera, microphone, speech, location, Photos") { showSetup = true }
                         SettingsRow(icon: "lock", title: "Privacy", sub: "What stays on your phone (everything)") { showPrivacy = true }
                     }
                     Section("Help") {
@@ -342,7 +339,6 @@ struct PrivacyView: View {
                 ], note: "Stored in the app's private container. Deleting the app deletes all of it. We can't see it; there is no server.")
                 Block("Never collected", check: true, [
                     "Your name, email, or any account — there isn't one",
-                    "Keystrokes — the Clips keyboard never logs what you type",
                     "Your location (used live for the compass and GPS dashboard, never stored or sent), contacts, or photo library beyond what you pick",
                     "Analytics or crash reports — Tenzy has none",
                 ], note: nil)

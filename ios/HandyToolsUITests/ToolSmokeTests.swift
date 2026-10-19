@@ -12,7 +12,7 @@ final class ToolSmokeTests: XCTestCase {
         // Page 2 · Camera, sensors & everyday
         "light", "instruments", "measure", "magnify", "procam", "gpsdash", "audiolab", "rest", "colorvision", "describe",
         // Page 3 · Words, AI & accessibility
-        "textstudio", "translate", "voicenotes", "livecaptions", "shield", "readaloud", "explain", "datagrab", "clips", "vault",
+        "textstudio", "translate", "voicenotes", "livecaptions", "shield", "readaloud", "explain", "datagrab", "cleaner", "vault",
     ]
 
     override func setUp() { continueAfterFailure = true }
