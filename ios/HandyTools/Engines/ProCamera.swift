@@ -52,12 +52,20 @@ import UniformTypeIdentifiers
         if let c = video.connection(with: .video), c.isVideoRotationAngleSupported(90) { c.videoRotationAngle = 90 }
         if let c = photo.connection(with: .video), c.isVideoRotationAngleSupported(90) { c.videoRotationAngle = 90 }
         session.commitConfiguration()
+        // Sanitize everything that feeds a Slider range or an Int(): a device can report 0/NaN
+        // durations or inverted bounds before streaming, and SwiftUI traps on an invalid range.
         let f = dev.activeFormat
-        ranges = Ranges(minISO: f.minISO, maxISO: f.maxISO,
-                        minShutter: max(1.0 / 8000, f.minExposureDuration.seconds), maxShutter: min(1.0 / 2, f.maxExposureDuration.seconds),
-                        minTemp: 2500, maxTemp: 8000)
+        let loISO = max(1, f.minISO)
+        let hiISO = max(loISO + 1, f.maxISO)
+        let minDur = f.minExposureDuration.seconds, maxDur = f.maxExposureDuration.seconds
+        let loSh = max(1.0 / 8000, minDur.isFinite && minDur > 0 ? minDur : 1.0 / 8000)
+        let hiSh = max(loSh * 2, min(1.0 / 2, maxDur.isFinite && maxDur > loSh ? maxDur : 1.0 / 2))
+        ranges = Ranges(minISO: loISO, maxISO: hiISO, minShutter: loSh, maxShutter: hiSh, minTemp: 2500, maxTemp: 8000)
         rawSupported = !photo.availableRawPhotoPixelFormatTypes.isEmpty
-        current.iso = max(f.minISO, min(dev.iso, f.maxISO)); current.shutter = dev.exposureDuration.seconds
+        let isoNow = dev.iso.isFinite ? dev.iso : loISO
+        current.iso = max(loISO, min(isoNow, hiISO))
+        let shNow = dev.exposureDuration.seconds
+        current.shutter = shNow.isFinite && shNow > 0 ? min(max(shNow, loSh), hiSh) : loSh
         DispatchQueue.global().async { s.startRunning() }
     }
 
@@ -238,5 +246,12 @@ enum ProImage {
         return lum
     }
 
-    static func shutterLabel(_ s: Double) -> String { s >= 1 ? String(format: "%.0f s", s) : s >= 0.1 ? String(format: "%.1f s", s) : "1/\(Int((1 / s).rounded()))" }
+    static func shutterLabel(_ s: Double) -> String {
+        // A camera reports an invalid/zero exposureDuration for the first instant after the session
+        // is built (before streaming), which made 1/s infinite and Int(infinity) trap. Guard it.
+        guard s.isFinite, s > 0 else { return "—" }
+        if s >= 1 { return String(format: "%.0f s", s) }
+        if s >= 0.1 { return String(format: "%.1f s", s) }
+        return "1/\(Int((1 / s).rounded()))"
+    }
 }

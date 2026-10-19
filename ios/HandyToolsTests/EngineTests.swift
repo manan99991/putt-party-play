@@ -112,6 +112,19 @@ final class EngineTests: XCTestCase {
         }
     }
 
+    // MARK: Pro Camera — readout (regression: Int(1/0) trapped on open, device-only)
+
+    func testShutterLabelNeverTrapsOnInvalidExposure() {
+        // A camera reports 0 / NaN / invalid exposureDuration for the first instant on open; the old
+        // label computed Int(1/0) = Int(infinity) and crashed Pro Camera on device.
+        for bad in [0.0, -1.0, .nan, .infinity, -.infinity] {
+            XCTAssertEqual(ProImage.shutterLabel(bad), "—", "shutterLabel(\(bad)) must not trap")
+        }
+        XCTAssertEqual(ProImage.shutterLabel(2), "2 s")
+        XCTAssertEqual(ProImage.shutterLabel(1.0 / 60.0), "1/60")
+        XCTAssertFalse(ProImage.shutterLabel(0.5).isEmpty)
+    }
+
     // MARK: Long Screenshot — stitcher
 
     func testStitcherRemovesOverlapAndKeepsChromeOnce() throws {

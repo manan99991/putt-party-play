@@ -94,7 +94,10 @@ struct ProCameraView: View {
 
     private var readout: String {
         let d = cam.device
-        let iso = Int(d?.iso ?? cam.current.iso), sh = ProImage.shutterLabel(d?.exposureDuration.seconds ?? cam.current.shutter)
+        let isoRaw = d?.iso ?? cam.current.iso
+        let iso = Int(isoRaw.isFinite ? isoRaw : cam.current.iso)
+        let shRaw = d?.exposureDuration.seconds ?? cam.current.shutter
+        let sh = ProImage.shutterLabel(shRaw.isFinite && shRaw > 0 ? shRaw : cam.current.shutter)
         return "ISO \(iso) · \(sh)" + (cam.current.autoExposure ? " · AUTO" : " · M")
     }
 
