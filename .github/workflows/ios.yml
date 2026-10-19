@@ -159,7 +159,9 @@ jobs:
   testflight:
     needs: test
     # Decoupled from `build` so signing can be iterated fast — `archive` compiles the code too.
-    if: ${{ vars.TESTFLIGHT_ENABLED == 'true' }}
+    # HOLD: build + test run on every push, but TestFlight upload happens ONLY when the commit
+    # message contains the marker [ ship ] (no spaces). Default pushes build-and-test, never deploy.
+    if: ${{ vars.TESTFLIGHT_ENABLED == 'true' && contains(github.event.head_commit.message, '[ship]') }}
     runs-on: macos-26
     defaults:
       run: { working-directory: ios }
