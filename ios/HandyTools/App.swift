@@ -10,6 +10,7 @@ struct TenzyApp: App {
 
     @State private var showOnboarding = !OnboardingFlag.seen && Launch.route == nil
     @State private var onboardingPage = 0
+    @State private var crashReport: String?
 
     init() { Diagnostics.shared.start() }
 
@@ -25,8 +26,12 @@ struct TenzyApp: App {
                         .transition(.opacity)
                 }
             }
+            .overlay(alignment: .top) {
+                if let r = crashReport { CrashBanner(summary: r) { crashReport = nil } }
+            }
             .onAppear {
                 if let r = Launch.route, r.hasPrefix("onboarding") { onboardingPage = Int(r.dropFirst("onboarding".count)).map { $0 - 1 } ?? 0; showOnboarding = true }
+                if crashReport == nil, !Launch.uitest { crashReport = Diagnostics.shared.takePendingCrash() }
             }
             .onOpenURL { url in
                 // tenzy://tool/<id> from the home-screen widget or Shortcuts
@@ -471,6 +476,34 @@ private struct PlanRow: View {
 }
 
 /// Shared chrome for every tool page.
+/// Shown once on the launch after a crash: tells the user what died and lets them send the captured
+/// report (stack + tool) in one tap, so I get the diagnosis without them hunting through a menu.
+struct CrashBanner: View {
+    let summary: String
+    let onDismiss: () -> Void
+    var body: some View {
+        HStack(spacing: HandySpacing.s12) {
+            Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.white)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Tenzy crashed last time").font(HandyFont.bodyStrong).foregroundStyle(.white)
+                Text(summary).font(HandyFont.micro).foregroundStyle(.white.opacity(0.9)).lineLimit(2)
+            }
+            Spacer(minLength: HandySpacing.s8)
+            ShareLink(item: Diagnostics.shared.reportFileURL()) {
+                Text("Send").font(HandyFont.caption).foregroundStyle(HandyColor.danger)
+                    .padding(.horizontal, 12).padding(.vertical, 6).background(.white, in: Capsule())
+            }
+            Button(action: onDismiss) { Image(systemName: "xmark").foregroundStyle(.white.opacity(0.9)) }.buttonStyle(.plain)
+        }
+        .padding(HandySpacing.s12)
+        .background(HandyColor.danger, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+        .padding(.horizontal, HandySpacing.gutter)
+        .padding(.top, HandySpacing.s8)
+        .shadow(color: .black.opacity(0.2), radius: 8, y: 2)
+        .transition(.move(edge: .top).combined(with: .opacity))
+    }
+}
+
 struct ToolPage<Content: View>: View {
     let title: String
     let subtitle: String

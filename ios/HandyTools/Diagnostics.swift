@@ -26,10 +26,25 @@ final class Diagnostics: @unchecked Sendable {
         set { lock.lock(); _currentTool = newValue; lock.unlock(); toolHint = newValue; log("open: \(newValue)") }
     }
 
+    /// Written the instant a crash/signal fires; read once on the next launch to proactively offer the
+    /// report. Its presence means "the previous session died."
+    private let flagURL: URL
+
     private init() {
         let dir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first ?? FileManager.default.temporaryDirectory
         fileURL = dir.appendingPathComponent("tenzy-diagnostics.log")
+        flagURL = dir.appendingPathComponent("tenzy-crash.flag")
     }
+
+    /// If the previous session ended in a crash, returns a one-line summary and clears the flag.
+    /// Called once at launch so the app can offer to send the report without the user hunting for it.
+    func takePendingCrash() -> String? {
+        guard let s = try? String(contentsOf: flagURL, encoding: .utf8), !s.isEmpty else { return nil }
+        try? FileManager.default.removeItem(at: flagURL)
+        return s.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private func raiseFlag(_ line: String) { try? line.data(using: .utf8)?.write(to: flagURL) }
 
     // MARK: lifecycle
 
@@ -120,6 +135,7 @@ final class Diagnostics: @unchecked Sendable {
         NSSetUncaughtExceptionHandler { ex in
             let frames = ex.callStackSymbols.prefix(14).joined(separator: " | ")
             Diagnostics.shared.log("💥 CRASH \(ex.name.rawValue): \(ex.reason ?? "")  ::  \(frames)")
+            Diagnostics.shared.raiseFlag("Crashed in \(Diagnostics.shared.toolHint) — \(ex.name.rawValue)")
         }
     }
 
@@ -136,6 +152,7 @@ final class Diagnostics: @unchecked Sendable {
                 // Lock-free: read the plain tool hint and append straight to the file.
                 let line = "\(Diagnostics.stamp())  💥 SIGNAL \(sig) (\(name)) — tool: \(Diagnostics.shared.toolHint)  ::  \(frames)"
                 Diagnostics.shared.append(line)
+                Diagnostics.shared.raiseFlag("Crashed in \(Diagnostics.shared.toolHint) — signal \(name)")
                 signal(sig, SIG_DFL)
                 raise(sig)
             }
