@@ -101,6 +101,17 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(PDFDocument(data: out)?.pageCount, 3, "must keep every page")
     }
 
+    // MARK: Rest — sleep-sound synthesis (regression: "Rain" crashed the app)
+
+    func testNoiseSynthEveryKindRendersFiniteAudio() {
+        for kind in NoiseSynth.Kind.allCases {
+            let samples = NoiseSynth.render(kind, samples: 4096, sampleRate: 48_000)
+            XCTAssertEqual(samples.count, 4096, "\(kind.title) wrong sample count")
+            XCTAssertFalse(samples.contains { !$0.isFinite }, "\(kind.title) produced NaN/Inf audio")
+            XCTAssertFalse(samples.contains { abs($0) > 1.5 }, "\(kind.title) clipped hard")
+        }
+    }
+
     // MARK: Long Screenshot — stitcher
 
     func testStitcherRemovesOverlapAndKeepsChromeOnce() throws {

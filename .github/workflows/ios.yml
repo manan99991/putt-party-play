@@ -103,9 +103,53 @@ jobs:
           { echo "== xcode"; ls /Applications | grep -i xcode; xcodebuild -version 2>&1; echo "== setup.log"; cat ios/setup.log 2>/dev/null; echo "== build.log"; cat ios/build.log 2>/dev/null; } > ios-full.log
           bash .github/publish-log.sh ios ios-full.log
 
+  # Full test gate. The deploy will NOT upload unless the engine unit tests and the every-tool
+  # smoke suite pass. Regression tests for every shipped crash fix live in HandyToolsTests, so a
+  # fixed crash cannot silently return in a later build. (ToolFlowTests are run by ios-check as
+  # informational — they're intentionally not in the gate, as their synthetic inputs are flaky.)
+  test:
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+      - name: Install XcodeGen + generate + resolve
+        run: |
+          set -o pipefail
+          { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tee setup.log
+      - name: Test (engine unit + every-tool smoke) — gates the deploy
+        run: |
+          set -o pipefail
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
+          echo "simulator=$UDID"
+          xcodebuild test \
+            -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination "id=$UDID" \
+            -only-testing:HandyToolsTests \
+            -only-testing:HandyToolsUITests/ToolSmokeTests \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true
+          grep -E "error:|Test Case .*failed|failed - " test.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
+          grep -q "TEST SUCCEEDED" test.log
+      - name: Publish test log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "== test.log (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -200; } > ios-test.log
+          bash .github/publish-log.sh ios-test ios-test.log || true
+
   # Runs only when App Store Connect secrets are present. Archives, signs with an
-  # ASC API key via automatic signing, and uploads to TestFlight.
+  # ASC API key via automatic signing, and uploads to TestFlight. Gated on `test`: a red
+  # suite blocks the upload.
   testflight:
+    needs: test
     # Decoupled from `build` so signing can be iterated fast — `archive` compiles the code too.
     if: ${{ vars.TESTFLIGHT_ENABLED == 'true' }}
     runs-on: macos-26
