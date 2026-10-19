@@ -63,6 +63,7 @@ struct Tool: Identifiable {
     let icon: String
     let page: Int
     var ai: Bool = false
+    var asset: String? = nil      // custom icon image in the asset catalog; nil → the SF Symbol `icon`
     var keywords: [String] = []   // synonyms that power search
 }
 
@@ -72,16 +73,16 @@ struct Tool: Identifiable {
 ///   Page 3 — AI, running free and private on-device (with a graceful fallback on older phones).
 @MainActor let TOOLS: [Tool] = [
     // ── Page 1 · Files, photos & docs ───────────────────────────────────
-    Tool(id: "fitit",      name: "Fit It",           blurb: "Shrink to an exact size limit",     icon: "square.resize.down",                  page: 1, keywords: ["compress","size","mb","kb","limit","upload","email","shrink","reduce","smaller","too big","pdf","photo","video","fit"]),
-    Tool(id: "scan",       name: "Scan",             blurb: "Scan, OCR, sign & fill PDFs",       icon: "doc.viewfinder.fill",                 page: 1, keywords: ["scan","scanner","document","pdf","ocr","sign","signature","fill","form","flatten","merge","split","pages","business card","handwriting"]),
-    Tool(id: "studio",     name: "Studio",           blurb: "Enhance, cut out, passport, resize", icon: "photo.on.rectangle.angled",           page: 1, keywords: ["photo","image","enhance","upscale","sharpen","denoise","auto","fix","background","remove","cutout","passport","id photo","resize","convert","heic","jpg","png","crop"]),
-    Tool(id: "video",      name: "Video",            blurb: "Shrink, trim, convert, GIF",        icon: "film.stack.fill",                     page: 1, keywords: ["video","compress","shrink","trim","cut","convert","mp4","mov","mute","audio","extract","gif","clip"]),
-    Tool(id: "formatfix",  name: "Format Fixer",     blurb: "HEIC/MOV → JPG/MP4, in batch",      icon: "arrow.triangle.2.circlepath",         page: 1, keywords: ["heic","jpg","jpeg","png","mov","mp4","convert","format","batch","won't open","upload","share"]),
-    Tool(id: "scrub",      name: "Privacy Scrubber", blurb: "Strip location, redact for good",   icon: "eye.slash.fill",                      page: 1, keywords: ["privacy","metadata","exif","gps","location","strip","redact","blur","face","plate","hide","censor","share safe"]),
-    Tool(id: "cleaner",    name: "Cleaner",          blurb: "Free space: dupes & big files",     icon: "sparkles",                            page: 1, keywords: ["clean","cleaner","storage","space","free up","duplicate","duplicates","screenshots","large","big","videos","delete","declutter","full"]),
-    Tool(id: "qrwifi",     name: "QR & Wi‑Fi",       blurb: "Scan, make & share Wi‑Fi codes",    icon: "qrcode",                              page: 1, keywords: ["qr","code","barcode","wifi","wi-fi","password","share","guest","generate","make","scan"]),
-    Tool(id: "stitch",     name: "Long Screenshot",  blurb: "Stitch shots into one tall image",  icon: "rectangle.split.1x2.fill",            page: 1, keywords: ["screenshot","long","stitch","scroll","combine","merge","tall","chat","thread","full page"]),
-    Tool(id: "shareready", name: "Share‑Ready",      blurb: "One tap: convert, strip, shrink",   icon: "square.and.arrow.up.fill",            page: 1, keywords: ["share","upload","ready","convert","strip","metadata","shrink","recipe","one tap","portal","send"]),
+    Tool(id: "fitit",      name: "Fit It",           blurb: "Shrink to an exact size limit",     icon: "square.resize.down",                  page: 1, asset: "tool_fitit", keywords: ["compress","size","mb","kb","limit","upload","email","shrink","reduce","smaller","too big","pdf","photo","video","fit"]),
+    Tool(id: "scan",       name: "Scan",             blurb: "Scan, OCR, sign & fill PDFs",       icon: "doc.viewfinder.fill",                 page: 1, asset: "tool_scan", keywords: ["scan","scanner","document","pdf","ocr","sign","signature","fill","form","flatten","merge","split","pages","business card","handwriting"]),
+    Tool(id: "studio",     name: "Studio",           blurb: "Enhance, cut out, passport, resize", icon: "photo.on.rectangle.angled",           page: 1, asset: "tool_studio", keywords: ["photo","image","enhance","upscale","sharpen","denoise","auto","fix","background","remove","cutout","passport","id photo","resize","convert","heic","jpg","png","crop"]),
+    Tool(id: "video",      name: "Video",            blurb: "Shrink, trim, convert, GIF",        icon: "film.stack.fill",                     page: 1, asset: "tool_video", keywords: ["video","compress","shrink","trim","cut","convert","mp4","mov","mute","audio","extract","gif","clip"]),
+    Tool(id: "formatfix",  name: "Format Fixer",     blurb: "HEIC/MOV → JPG/MP4, in batch",      icon: "arrow.triangle.2.circlepath",         page: 1, asset: "tool_formatfix", keywords: ["heic","jpg","jpeg","png","mov","mp4","convert","format","batch","won't open","upload","share"]),
+    Tool(id: "scrub",      name: "Privacy Scrubber", blurb: "Strip location, redact for good",   icon: "eye.slash.fill",                      page: 1, asset: "tool_scrub", keywords: ["privacy","metadata","exif","gps","location","strip","redact","blur","face","plate","hide","censor","share safe"]),
+    Tool(id: "cleaner",    name: "Cleaner",          blurb: "Free space: dupes & big files",     icon: "sparkles",                            page: 1, asset: "tool_cleaner", keywords: ["clean","cleaner","storage","space","free up","duplicate","duplicates","screenshots","large","big","videos","delete","declutter","full"]),
+    Tool(id: "qrwifi",     name: "QR & Wi‑Fi",       blurb: "Scan, make & share Wi‑Fi codes",    icon: "qrcode",                              page: 1, asset: "tool_qrwifi", keywords: ["qr","code","barcode","wifi","wi-fi","password","share","guest","generate","make","scan"]),
+    Tool(id: "stitch",     name: "Long Screenshot",  blurb: "Stitch shots into one tall image",  icon: "rectangle.split.1x2.fill",            page: 1, asset: "tool_stitch", keywords: ["screenshot","long","stitch","scroll","combine","merge","tall","chat","thread","full page"]),
+    Tool(id: "shareready", name: "Share‑Ready",      blurb: "One tap: convert, strip, shrink",   icon: "square.and.arrow.up.fill",            page: 1, asset: "tool_shareready", keywords: ["share","upload","ready","convert","strip","metadata","shrink","recipe","one tap","portal","send"]),
     // ── Page 2 · Camera, sensors & everyday ─────────────────────────────
     Tool(id: "light",      name: "Flashlight+",      blurb: "Strobe, SOS, screen light, mirror", icon: "flashlight.on.fill",                  page: 2, keywords: ["flashlight","torch","light","strobe","sos","morse","screen light","mirror","selfie","dark","blink"]),
     Tool(id: "instruments",name: "Instruments",      blurb: "Level, compass, dB, light, more",   icon: "gauge.with.dots.needle.33percent",    page: 2, keywords: ["level","bubble","angle","protractor","compass","north","decibel","sound","noise","light","lux","altimeter","barometer","magnet","metal","sensor"]),
@@ -374,7 +375,11 @@ struct ToolCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             ZStack {
-                if tool.ai {
+                if let asset = tool.asset {
+                    // Custom designed icon — a complete squircle tile, shown edge-to-edge.
+                    Image(asset).resizable().scaledToFill().frame(width: 34, height: 34)
+                        .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+                } else if tool.ai {
                     Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 34, height: 34)
                     Image(systemName: tool.icon).font(.system(size: 15, weight: .semibold)).foregroundStyle(.white)
                 } else {
