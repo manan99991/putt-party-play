@@ -23,6 +23,7 @@ struct VaultView: View {
     @State private var revealed: Set<UUID> = []
     @State private var toast: String?
     @State private var thumbs: [UUID: UIImage] = [:]
+    @State private var unlocking = false
 
     var body: some View {
         ToolPage(title: "Vault", subtitle: "Notes, secrets, photos and documents — encrypted, opened only by your face or passcode.") {
@@ -59,7 +60,13 @@ struct VaultView: View {
             Text("Locked").font(HandyFont.title)
             Text("Everything in here is encrypted with a key that lives only in this phone's Secure Enclave-protected keychain and is released by Face ID or your passcode.")
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            Button { vault.unlock() } label: { Label("Unlock", systemImage: "faceid").frame(maxWidth: .infinity) }.primaryButton()
+            Button {
+                guard !unlocking else { return }
+                unlocking = true
+                Task { await vault.unlock(); unlocking = false }
+            } label: {
+                HStack { if unlocking { ProgressView().tint(.white) }; Label("Unlock", systemImage: "faceid") }.frame(maxWidth: .infinity)
+            }.primaryButton().disabled(unlocking)
             if let e = vault.errorText { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger).multilineTextAlignment(.center) }
         }.frame(maxWidth: .infinity)
     }

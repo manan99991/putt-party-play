@@ -57,7 +57,11 @@ struct SetupView: View {
                         AVAudioApplication.requestRecordPermission { _ in Task { @MainActor in await refresh() } }
                     }
                     SetupRow(icon: "waveform.and.mic", title: "Speech recognition", why: "Turns speech into text for Live Captions, Voice → Notes and Translate's Talk mode — on-device for supported languages.", unlocks: "Captions & notes", granted: speech) {
-                        SFSpeechRecognizer.requestAuthorization { _ in Task { @MainActor in await refresh() } }
+                        Diagnostics.shared.log("requesting speech authorization")
+                        SFSpeechRecognizer.requestAuthorization { status in
+                            Diagnostics.shared.log("speech authorization result: \(status.rawValue)")
+                            Task { @MainActor in await refresh() }
+                        }
                     }
                     SetupRow(icon: "location", title: "Location (while using)", why: "True-north compass, altitude, the GPS dashboard and where you parked. Never stored or sent.", unlocks: "Compass & GPS", granted: location) {
                         loc.request()
@@ -77,6 +81,7 @@ struct SetupView: View {
         }
         .background(HandyColor.bg)
         .task { await refresh() }
+        .onAppear { Diagnostics.shared.currentTool = "Permissions" }
         .onChange(of: phase) { _, p in if p == .active { Task { await refresh() } } }
         .onChange(of: loc.granted) { _, g in location = g }
     }
@@ -134,6 +139,9 @@ struct SettingsView: View {
     @State private var showSetup = false
     @State private var showPrivacy = false
     @State private var showAbout = false
+    @State private var showDiagnostics = false
+    @State private var devTaps = 0
+    @AppStorage("tenzy.devUnlocked") private var devUnlocked = false
     private var version: String { Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0" }
 
     var body: some View {
@@ -141,6 +149,11 @@ struct SettingsView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text("Settings").font(HandyFont.display).padding(.bottom, HandySpacing.s8)
+                        .onTapGesture {
+                            guard !devUnlocked else { return }
+                            devTaps += 1
+                            if devTaps >= 7 { devUnlocked = true; HandyHaptics.success() }
+                        }
 
                     Button { if !store.isPremium { showPaywall = true } } label: {
                         HStack(spacing: HandySpacing.s12) {
@@ -176,7 +189,19 @@ struct SettingsView: View {
                         SettingsRow(icon: "star", title: "Rate Tenzy", sub: "30 seconds, means a lot") {
                             UIApplication.shared.open(URL(string: "https://apps.apple.com/app/id\(APP_STORE_ID)?action=write-review")!)
                         }
-                        SettingsRow(icon: "info.circle", title: "About", sub: "Version \(version) · Made by one person in Illinois") { showAbout = true }
+                        SettingsRow(icon: "info.circle", title: "About", sub: "Version \(version) · Made by a Dad") { showAbout = true }
+                    }
+                    if devUnlocked {
+                        Section("Developer") {
+                            Toggle(isOn: Binding(get: { store.isTesterPro }, set: { store.setTesterPro($0) })) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Unlock Pro (tester)").font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
+                                    Text("Ads off, every tool unlimited — for testing the paid experience.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                }
+                            }.tint(HandyColor.accent).padding(.vertical, HandySpacing.s8)
+                            SettingsRow(icon: "ladybug", title: "Diagnostics", sub: "View the on-device log and share it with me") { showDiagnostics = true }
+                            SettingsRow(icon: "eye.slash", title: "Hide developer tools", sub: "Tap the Settings title 7× to show again") { devUnlocked = false; devTaps = 0 }
+                        }
                     }
                 }
                 .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s8)
@@ -189,6 +214,7 @@ struct SettingsView: View {
         .sheet(isPresented: $showSetup) { SetupView(onDone: { showSetup = false }).sheetCloseButton { showSetup = false } }
         .sheet(isPresented: $showPrivacy) { PrivacyView().sheetCloseButton { showPrivacy = false } }
         .sheet(isPresented: $showAbout) { AboutView().sheetCloseButton { showAbout = false } }
+        .sheet(isPresented: $showDiagnostics) { DiagnosticsView().sheetCloseButton { showDiagnostics = false } }
     }
 
     @ViewBuilder private func Section(_ title: String, @ViewBuilder content: () -> some View) -> some View {
@@ -253,11 +279,46 @@ struct AboutView: View {
                     }.compactButton()
                 }.padding(.top, HandySpacing.s8)
 
-                Text("Made by one person in Illinois.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s16)
+                Text("Made by a Dad.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s16)
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, HandySpacing.gutter)
             .padding(.bottom, HandySpacing.s48)
+        }
+        .background(HandyColor.bg)
+    }
+}
+
+// MARK: - Diagnostics (developer / tester)
+
+/// Shows the on-device diagnostics log and lets the tester share it. Nothing is ever uploaded
+/// automatically — sharing is a deliberate tap.
+struct DiagnosticsView: View {
+    @State private var text = Diagnostics.shared.reportText()
+    @State private var fileURL = Diagnostics.shared.reportFileURL()
+
+    var body: some View {
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                    Text("Diagnostics").font(HandyFont.display).padding(.top, HandySpacing.s24)
+                    Text("A local record of what the app did — tools opened, how long actions took, UI freezes and crashes. Share it with me to debug a problem. It only leaves your phone when you send it.")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    HStack(spacing: HandySpacing.s8) {
+                        ShareLink(item: fileURL) { Label("Share log", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                        Button {
+                            Diagnostics.shared.clear(); text = Diagnostics.shared.reportText(); fileURL = Diagnostics.shared.reportFileURL()
+                        } label: { Label("Clear", systemImage: "trash").frame(maxWidth: .infinity) }.secondaryButton()
+                    }
+                    Text(text)
+                        .font(.system(size: 11, design: .monospaced))
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(HandySpacing.s8)
+                        .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                }
+                .padding(.horizontal, HandySpacing.gutter).padding(.bottom, HandySpacing.s32)
+            }
         }
         .background(HandyColor.bg)
     }

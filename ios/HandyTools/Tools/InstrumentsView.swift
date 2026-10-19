@@ -231,13 +231,18 @@ struct InstrumentsView: View {
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
             Picker("Units", selection: $rulerInches) { Text("cm").tag(false); Text("inches").tag(true) }.pickerStyle(.segmented).frame(width: 180)
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                Text("Calibrate: lay a bank card along the top edge and slide until its width reads 85.6 mm.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                Rectangle().fill(HandyColor.accentSoft).frame(width: 85.6 * SensorMath.pointsPerMM(nativeScale: UIScreen.main.nativeScale, calibration: rulerCal), height: 28)
-                    .overlay(Text("bank card width").font(HandyFont.micro).foregroundStyle(HandyColor.accent))
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text("Calibrate: lay a bank card along the ruler's top edge and slide until its width reads 85.6 mm.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                // A real bank card (85.6 mm) is wider than most phone screens, so keep this preview in a
+                // horizontal scroller — otherwise its fixed width would widen the whole page and clip it.
+                ScrollView(.horizontal, showsIndicators: false) {
+                    Rectangle().fill(HandyColor.accentSoft)
+                        .frame(width: 85.6 * SensorMath.pointsPerMM(nativeScale: UIScreen.main.nativeScale, calibration: rulerCal), height: 28)
+                        .overlay(Text("bank card width").font(HandyFont.micro).foregroundStyle(HandyColor.accent))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 Slider(value: $rulerCal, in: 0.85...1.15).tint(HandyColor.accent)
                 HStack { Button("Reset calibration") { rulerCal = 1 }.textButton(); Spacer() }
-            }.cardStyle(padding: HandySpacing.s12)
+            }.frame(maxWidth: .infinity).cardStyle(padding: HandySpacing.s12)
         }
     }
 

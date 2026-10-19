@@ -25,14 +25,34 @@ enum VaultCrypto {
 
     // MARK: key management
 
-    /// Fetches the vault key, prompting for biometrics/passcode; creates it on first use.
-    static func unlockKey(reason: String = "Unlock your vault") throws -> SymmetricKey {
+    /// Authenticate an LAContext exactly once, via a single Face ID / Touch ID / passcode prompt.
+    private static func authenticate(_ ctx: LAContext, reason: String) async throws {
+        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+            ctx.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { ok, error in
+                if ok { cont.resume() }
+                else if let e = error as? LAError, e.code == .userCancel || e.code == .appCancel || e.code == .systemCancel {
+                    cont.resume(throwing: VaultError.cancelled)
+                } else { cont.resume(throwing: VaultError.cancelled) }
+            }
+        }
+    }
+
+    /// Fetches the vault key, prompting for biometrics/passcode ONCE; creates it on first use.
+    /// The context is authenticated up front and reused for the keychain operation, so the user sees
+    /// a single prompt instead of one per keychain access.
+    static func unlockKey(reason: String = "Unlock your vault") async throws -> SymmetricKey {
         let ctx = LAContext()
         ctx.localizedReason = reason
+        ctx.touchIDAuthenticationAllowableReuseDuration = 10   // reuse this auth for quick follow-ups
         var err: NSError?
         guard ctx.canEvaluatePolicy(.deviceOwnerAuthentication, error: &err) else { throw VaultError.noPasscode }
+
+        // One prompt, here. The keychain read/write below reuses this authenticated context and does
+        // NOT pass kSecUseOperationPrompt, so iOS does not evaluate biometrics a second time.
+        try await authenticate(ctx, reason: reason)
+
         var q: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account,
-                                kSecReturnData as String: true, kSecUseAuthenticationContext as String: ctx, kSecUseOperationPrompt as String: reason]
+                                kSecReturnData as String: true, kSecUseAuthenticationContext as String: ctx]
         var out: CFTypeRef?
         let status = SecItemCopyMatching(q as CFDictionary, &out)
         switch status {
@@ -102,10 +122,10 @@ enum VaultCrypto {
     }()
     private var indexURL: URL { Self.dir.appendingPathComponent("index.enc") }
 
-    func unlock() {
+    func unlock() async {
         errorText = nil
         do {
-            let k = try VaultCrypto.unlockKey()
+            let k = try await VaultCrypto.unlockKey()
             key = k
             if let data = try? Data(contentsOf: indexURL) {
                 let plain = try VaultCrypto.open(data, with: k)

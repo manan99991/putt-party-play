@@ -71,21 +71,32 @@ final class EngineTests: XCTestCase {
 
     // MARK: Fit It — exact-size engine
 
-    func testSizeTargetImageLandsUnderLimit() throws {
+    func testSizeTargetImageLandsUnderLimit() async throws {
         let big = Self.noisy(CGSize(width: 2400, height: 1800))
         let target = 150_000
-        let d = try XCTUnwrap(SizeTarget.image(big, targetBytes: target), "image could not be fitted")
+        let d = try XCTUnwrap(await SizeTarget.image(big, targetBytes: target), "image could not be fitted")
         XCTAssertLessThanOrEqual(d.count, target, "must land under the limit")
         XCTAssertNotNil(UIImage(data: d), "output must still decode")
     }
 
-    func testSizeTargetPDFLandsUnderLimit() throws {
+    // A full-resolution phone photo (12 MP) must fit a tiny target quickly and WITHOUT blocking the
+    // main thread — this is the case that froze the app in the field.
+    func testSizeTargetImageIsFastAndOffMainForBigPhoto() async throws {
+        let big = Self.noisy(CGSize(width: 4032, height: 3024))   // ~12 MP, a real camera shot
+        let start = Date()
+        let d = try XCTUnwrap(await SizeTarget.image(big, targetBytes: 200_000), "12 MP photo could not be fitted to 200 KB")
+        XCTAssertLessThanOrEqual(d.count, 200_000)
+        XCTAssertNotNil(UIImage(data: d))
+        XCTAssertLessThan(Date().timeIntervalSince(start), 8.0, "fit took too long — would feel like a freeze")
+    }
+
+    func testSizeTargetPDFLandsUnderLimit() async throws {
         let page = CGRect(x: 0, y: 0, width: 612, height: 792)
         let pdf = UIGraphicsPDFRenderer(bounds: page).pdfData { ctx in
             for _ in 0..<3 { ctx.beginPage(); Self.noisy(CGSize(width: 1200, height: 1500)).draw(in: page) }
         }
         let target = min(pdf.count / 2, 400_000)
-        let out = try XCTUnwrap(SizeTarget.pdf(pdf, targetBytes: target), "pdf could not be fitted")
+        let out = try XCTUnwrap(await SizeTarget.pdf(pdf, targetBytes: target), "pdf could not be fitted")
         XCTAssertLessThanOrEqual(out.count, target)
         XCTAssertEqual(PDFDocument(data: out)?.pageCount, 3, "must keep every page")
     }

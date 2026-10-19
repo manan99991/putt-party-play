@@ -190,7 +190,7 @@ struct StudioView: View {
                 preview = img; if let d = img.jpegData(compressionQuality: 0.95) { output = .jpg(d) }
             case .resize:
                 if let sIdx {
-                    guard let d = SizeTarget.image(src, targetBytes: SizeTarget.presets[sIdx].bytes) else { errorText = "Couldn't get under that size without ruining it. Try a larger limit."; return }
+                    guard let d = await SizeTarget.image(src, targetBytes: SizeTarget.presets[sIdx].bytes) else { errorText = "Couldn't get under that size without ruining it. Try a larger limit."; return }
                     preview = UIImage(data: d); output = .jpg(d)
                 } else {
                     let img = src.resized(maxDimension: resizeOptions[rIdx].1)

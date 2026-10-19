@@ -188,10 +188,10 @@ struct FitItView: View {
         Task { @MainActor in
             switch source {
             case .image(let img):
-                if let d = SizeTarget.image(img, targetBytes: target) { output = .data(d, ext: "jpg"); outputBytes = d.count }
+                if let d = await SizeTarget.image(img, targetBytes: target) { output = .data(d, ext: "jpg"); outputBytes = d.count }
                 else { errorText = "Couldn't get this photo under \(SizeTarget.format(target)) without ruining it. Try a slightly larger limit." }
             case .pdf(let data):
-                if let d = SizeTarget.pdf(data, targetBytes: target) { output = .data(d, ext: "pdf"); outputBytes = d.count }
+                if let d = await SizeTarget.pdf(data, targetBytes: target) { output = .data(d, ext: "pdf"); outputBytes = d.count }
                 else { errorText = "Couldn't get this PDF under \(SizeTarget.format(target)). Try a larger limit or fewer pages." }
             case .video(let url):
                 if let out = await SizeTarget.video(url: url, targetBytes: target) { output = .file(out); outputBytes = SizeTarget.fileSize(out) ?? 0 }

@@ -117,11 +117,11 @@ struct ShareReadyView: View {
                 let tmp = FileManager.default.temporaryDirectory
                 switch item {
                 case .image(let img):
-                    if let d = SizeTarget.image(img, targetBytes: r.imageBytes) {
+                    if let d = await SizeTarget.image(img, targetBytes: r.imageBytes) {
                         let u = tmp.appendingPathComponent("Tenzy-\(i + 1).jpg"); try? d.write(to: u); urls.append(u)
                     } else { skipped.append("photo \(i + 1)") }
                 case .pdf(let d, let name):
-                    if let out = SizeTarget.pdf(d, targetBytes: r.pdfBytes) {
+                    if let out = await SizeTarget.pdf(d, targetBytes: r.pdfBytes) {
                         let u = tmp.appendingPathComponent("\(name)-ready.pdf"); try? out.write(to: u); urls.append(u)
                     } else { skipped.append(name) }
                 case .video(let src):

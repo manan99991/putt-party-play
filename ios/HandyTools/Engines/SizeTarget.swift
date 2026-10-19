@@ -19,25 +19,50 @@ enum SizeTarget {
         ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
     }
 
-    // MARK: Image — binary-search JPEG quality, then step the resolution down if quality alone can't get there.
+    /// Wraps a non-Sendable value so it can cross into a detached task. The value is only ever read
+    /// on one task at a time, so this is safe.
+    private struct Box<T>: @unchecked Sendable { let v: T }
 
-    static func image(_ img: UIImage, targetBytes: Int) -> Data? {
-        var cur = img.normalizedUp()
-        for _ in 0..<10 {
+    // MARK: Image — ALWAYS off the main thread (heavy re-encoding would otherwise freeze the UI).
+    // Pre-shrink a large photo toward a size the target can plausibly hold, then binary-search JPEG
+    // quality, stepping the resolution down only if quality alone can't get there.
+
+    static func image(_ img: UIImage, targetBytes: Int) async -> Data? {
+        let box = Box(v: img)
+        return await Task.detached(priority: .userInitiated) { imageSync(box.v, targetBytes: targetBytes) }.value
+    }
+
+    static func imageSync(_ img: UIImage, targetBytes: Int) -> Data? {
+        let upright = img.normalizedUp()
+        let original = max(upright.size.width, upright.size.height)
+        // Don't encode a 12-megapixel photo at full res when the target is small — start near the
+        // largest resolution the byte budget could hold, so the first encode is already cheap.
+        let cap = startDimension(for: targetBytes, original: original)
+        var cur = cap < original ? upright.resized(maxDimension: cap) : upright
+        for _ in 0..<9 {
             if let d = bestJPEG(cur, under: targetBytes) { return d }
             let longest = max(cur.size.width, cur.size.height)
-            if longest < 240 { break }
-            cur = cur.resized(maxDimension: longest * 0.8)
+            if longest < 200 { break }
+            cur = cur.resized(maxDimension: longest * 0.75)
         }
         return nil
+    }
+
+    /// Upper bound on the longest side for a given JPEG byte budget (~0.12 bytes/px with headroom),
+    /// clamped to the original. Keeps huge photos from being encoded at full resolution on the way down.
+    private static func startDimension(for targetBytes: Int, original: CGFloat) -> CGFloat {
+        let pixelBudget = Double(targetBytes) / 0.12
+        let side = min(Double(original), max(360.0, pixelBudget.squareRoot() * 1.3))
+        return CGFloat(side)
     }
 
     private static func bestJPEG(_ img: UIImage, under limit: Int) -> Data? {
         var lo: CGFloat = 0.02, hi: CGFloat = 0.95
         var best: Data?
-        for _ in 0..<9 {
+        for _ in 0..<8 {
             let q = (lo + hi) / 2
-            guard let d = img.jpegData(compressionQuality: q) else { break }
+            let d: Data? = autoreleasepool { img.jpegData(compressionQuality: q) }  // drain each encode
+            guard let d else { break }
             if d.count <= limit { best = d; lo = q } else { hi = q }
         }
         return best
@@ -45,7 +70,11 @@ enum SizeTarget {
 
     // MARK: PDF — re-render pages at a descending (scale, quality) ladder until it fits. Output is flattened.
 
-    static func pdf(_ data: Data, targetBytes: Int) -> Data? {
+    static func pdf(_ data: Data, targetBytes: Int) async -> Data? {
+        await Task.detached(priority: .userInitiated) { pdfSync(data, targetBytes: targetBytes) }.value
+    }
+
+    static func pdfSync(_ data: Data, targetBytes: Int) -> Data? {
         if data.count <= targetBytes { return data }
         guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return nil }
         let ladder: [(CGFloat, CGFloat)] = [(2.0, 0.8), (1.6, 0.7), (1.3, 0.6), (1.0, 0.55), (0.8, 0.5), (0.65, 0.45), (0.5, 0.4), (0.4, 0.35)]

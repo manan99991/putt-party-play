@@ -11,6 +11,8 @@ struct TenzyApp: App {
     @State private var showOnboarding = !OnboardingFlag.seen && Launch.route == nil
     @State private var onboardingPage = 0
 
+    init() { Diagnostics.shared.start() }
+
     var body: some Scene {
         WindowGroup {
             ZStack {

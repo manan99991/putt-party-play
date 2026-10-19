@@ -31,8 +31,19 @@ final class StoreManager: ObservableObject {
     // sim entitlement can't downgrade it back to free.
     private let previewPremium = CommandLine.arguments.contains("homepro")
 
+    // Tester unlock: lets the owner run the app with Pro on (ads off, no limits) without a purchase,
+    // for testing the paid experience. Persisted, and refresh() won't downgrade it. Not shown to
+    // normal users — reachable only from Settings › Developer (reveal by tapping the title 7×).
+    private let testerProKey = "tenzy.testerPro"
+    var isTesterPro: Bool { UserDefaults.standard.bool(forKey: testerProKey) }
+    func setTesterPro(_ on: Bool) {
+        UserDefaults.standard.set(on, forKey: testerProKey)
+        if on { isPremium = true } else { Task { await refresh() } }
+        Diagnostics.shared.log("tester Pro \(on ? "ON" : "OFF")")
+    }
+
     private init() {
-        if previewPremium { isPremium = true }
+        if previewPremium || isTesterPro { isPremium = true }
         updates = Task { await listenForTransactions() }
         Task { await load(); await refresh() }
     }
@@ -56,7 +67,7 @@ final class StoreManager: ObservableObject {
     }
 
     func refresh() async {
-        if previewPremium { return }
+        if previewPremium || isTesterPro { isPremium = true; return }
         var active = false
         for await result in Transaction.currentEntitlements {
             if case .verified(let t) = result, Self.productIDs.contains(t.productID), t.revocationDate == nil { active = true }
