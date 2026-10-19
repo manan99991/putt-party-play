@@ -217,6 +217,10 @@ struct CleanerView: View {
 }
 
 /// A photo-library thumbnail with a selection check and a size label.
+///
+/// The cell is a true square that fills its grid column (`Color.clear` + `aspectRatio`), the image is
+/// an overlay clipped to that square, and `contentShape(Rectangle())` pins the tap area to exactly the
+/// square — so a tap can never register on a neighbouring tile, whatever the photo's aspect ratio.
 private struct AssetThumb: View {
     let asset: PHAsset
     let selected: Bool
@@ -226,12 +230,12 @@ private struct AssetThumb: View {
 
     var body: some View {
         Button(action: tap) {
-            ZStack(alignment: .topTrailing) {
-                Group {
+            Color.clear
+                .aspectRatio(1, contentMode: .fit)
+                .overlay {
                     if let img { Image(uiImage: img).resizable().scaledToFill() }
                     else { Rectangle().fill(HandyColor.surface) }
                 }
-                .frame(width: 100, height: 100).clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(selected ? HandyColor.accent : Color.clear, lineWidth: 3))
                 .overlay(alignment: .bottomLeading) {
@@ -242,10 +246,12 @@ private struct AssetThumb: View {
                     .foregroundStyle(.white)
                     .padding(.horizontal, 5).padding(.vertical, 2).background(.black.opacity(0.55), in: Capsule()).padding(4)
                 }
-                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 20)).foregroundStyle(selected ? HandyColor.accent : .white)
-                    .padding(5).shadow(color: .black.opacity(0.4), radius: 1)
-            }
+                .overlay(alignment: .topTrailing) {
+                    Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                        .font(.system(size: 20)).foregroundStyle(selected ? HandyColor.accent : .white)
+                        .padding(5).shadow(color: .black.opacity(0.4), radius: 1)
+                }
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .task { load() }
@@ -253,7 +259,7 @@ private struct AssetThumb: View {
 
     private func load() {
         let o = PHImageRequestOptions(); o.deliveryMode = .opportunistic; o.resizeMode = .fast; o.isNetworkAccessAllowed = false
-        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 200, height: 200), contentMode: .aspectFill, options: o) { im, _ in
+        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: o) { im, _ in
             if let im { img = im }
         }
     }
