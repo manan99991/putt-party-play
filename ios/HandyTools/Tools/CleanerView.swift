@@ -97,8 +97,12 @@ struct CleanerView: View {
                 Text("\(all.count) item\(all.count == 1 ? "" : "s") · about \(PhotoCleaner.format(totalBytes))")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Spacer()
-                sortMenu
             }
+            Picker("Sort", selection: $sortBySize) {
+                Text("Largest first").tag(true)
+                Text("Most recent").tag(false)
+            }
+            .pickerStyle(.segmented)
             if cat == .duplicates {
                 ForEach(Array(sortedGroups.enumerated()), id: \.offset) { _, g in
                     Text("\(g.count) look-alikes · keep one").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
@@ -109,18 +113,6 @@ struct CleanerView: View {
             }
             Text("Deleting asks iOS to remove the items — you'll get the system confirmation, and they go to Recently Deleted for 30 days.")
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-        }
-    }
-
-    private var sortMenu: some View {
-        Menu {
-            Picker("Sort", selection: $sortBySize) {
-                Label("Largest first", systemImage: "arrow.down.to.line").tag(true)
-                Label("Most recent", systemImage: "clock").tag(false)
-            }
-        } label: {
-            Label(sortBySize ? "Largest" : "Recent", systemImage: "arrow.up.arrow.down")
-                .font(HandyFont.caption).foregroundStyle(HandyColor.accent)
         }
     }
 
