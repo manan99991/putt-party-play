@@ -17,7 +17,7 @@ enum Permission {
     static func camera(_ done: @escaping @Sendable (Bool) -> Void) {
         AVCaptureDevice.requestAccess(for: .video, completionHandler: done)
     }
-    static func speech(_ done: @escaping @Sendable (SFSpeechRecognizer.AuthorizationStatus) -> Void) {
+    static func speech(_ done: @escaping @Sendable (SFSpeechRecognizerAuthorizationStatus) -> Void) {
         SFSpeechRecognizer.requestAuthorization(done)
     }
 }
