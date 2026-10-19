@@ -1,0 +1,22 @@
+=== /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Products/Debug-iphonesimulator/HandyTools.app/Info.plist ===
+      "CFBundleURLSchemes" => [
+  "GADApplicationIdentifier" => "ca-app-pub-5414801919054534~3553659163"
+  "NSCameraUsageDescription" => "Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded."
+  "NSFaceIDUsageDescription" => "Used to unlock your Secure Vault so only you can open your private notes and photos."
+  "NSLocationWhenInUseUsageDescription" => "Needed for the compass (true north), altitude and the GPS dashboard. Your location stays on this phone."
+  "NSMicrophoneUsageDescription" => "Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded."
+  "NSMotionUsageDescription" => "Needed for the level, barometer/altimeter and metal detector readings."
+  "NSPhotoLibraryAddUsageDescription" => "Needed to save cleaned photos and scanned documents."
+  "NSPhotoLibraryUsageDescription" => "Needed to read text from screenshots and to view or strip photo metadata."
+  "NSSpeechRecognitionUsageDescription" => "Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded."
+  "NSUserTrackingUsageDescription" => "Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones."
+  "UIBackgroundModes" => [
+--- presence ---
+OK NSCameraUsageDescription
+OK NSMicrophoneUsageDescription
+OK NSSpeechRecognitionUsageDescription
+OK NSLocationWhenInUseUsageDescription
+OK NSMotionUsageDescription
+OK NSPhotoLibraryUsageDescription
+OK NSPhotoLibraryAddUsageDescription
+OK NSFaceIDUsageDescription
