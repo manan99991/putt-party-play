@@ -26,6 +26,13 @@ struct FitItView: View {
 
     private var overQuota: Bool { !Usage.hasRoom("fitit", limit: Limits.freeFitPerDay) }
 
+    /// Size targets to offer. A video can never reach the tiny photo-upload limits (50–500 KB), so
+    /// those are hidden when the source is a video — don't offer a target that always fails.
+    private var availablePresets: [(label: String, bytes: Int)] {
+        if case .video = source { return SizeTarget.presets.filter { $0.bytes >= 1_000_000 } }
+        return SizeTarget.presets
+    }
+
     var body: some View {
         ToolPage(title: "Fit It", subtitle: "Shrink a photo, video, or PDF to land just under the size limit you need.") {
             if source == nil {
@@ -87,7 +94,7 @@ struct FitItView: View {
             Text("Must be under").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: HandySpacing.s8) {
-                    ForEach(SizeTarget.presets, id: \.bytes) { p in
+                    ForEach(availablePresets, id: \.bytes) { p in
                         HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = "" }
                     }
                 }
@@ -156,6 +163,7 @@ struct FitItView: View {
                 if let movie = try? await item.loadTransferable(type: MovieImport.self) {
                     await MainActor.run {
                         source = .video(movie.url); sourceName = "Video"; sourceBytes = SizeTarget.fileSize(movie.url) ?? 0
+                        if targetBytes < 1_000_000 { targetBytes = 2_000_000 }   // a photo-size target can't fit a video
                     }
                 }
             } else if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) {

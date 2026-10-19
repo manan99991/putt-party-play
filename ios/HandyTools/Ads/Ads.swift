@@ -2,10 +2,28 @@ import SwiftUI
 import GoogleMobileAds
 import AppTrackingTransparency
 
-/// Live Tenzy AdMob ad unit ids.
+/// AdMob ad unit ids. The LIVE Tenzy units are used only in a build installed from the App Store.
+/// Every other build — TestFlight, dev — uses Google's reserved test units, which always fill and
+/// are safe to view and tap. That way testers see that the ad slot works without generating invalid
+/// traffic on the real account (viewing/tapping your own live ads violates AdMob policy).
 enum AdUnits {
-    static let banner = "ca-app-pub-5414801919054534/9681092972"
-    static let interstitial = "ca-app-pub-5414801919054534/5362574012"
+    private static let liveBanner = "ca-app-pub-5414801919054534/9681092972"
+    private static let liveInterstitial = "ca-app-pub-5414801919054534/5362574012"
+    private static let testBanner = "ca-app-pub-3940256099/2934735716"        // Google's iOS test banner
+    private static let testInterstitial = "ca-app-pub-3940256099/4411468910"  // Google's iOS test interstitial
+
+    /// True only for a build installed from the App Store. TestFlight and dev builds carry a
+    /// "sandboxReceipt"; a DEBUG build is never the store.
+    static var isAppStore: Bool {
+        #if DEBUG
+        return false
+        #else
+        return Bundle.main.appStoreReceiptURL?.lastPathComponent == "receipt"
+        #endif
+    }
+
+    static var banner: String { isAppStore ? liveBanner : testBanner }
+    static var interstitial: String { isAppStore ? liveInterstitial : testInterstitial }
 }
 
 @MainActor
