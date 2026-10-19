@@ -14,7 +14,7 @@ enum HandyColor {
     static let warningSoft = Color.adaptive(light: 0xFFF4E5, dark: 0x2A2214)
     static let sticky = Color.adaptive(light: 0xFFF6B3, dark: 0x3A3418)
 
-    private static var t: ThemeTokens { ThemeManager.shared.tokens }
+    private static var t: ThemeTokens { ActiveTheme.shared.tokens }
     static var accent: Color { t.accent }
     static var accentPressed: Color { t.accentPressed }
     static var accentSoft: Color { t.accentSoft }
@@ -93,24 +93,31 @@ struct ThemeTokens {
 
 /// Holds the active theme, persists it, and gates the Pro themes: a non-Pro user always renders as
 /// Daylight even if a Pro theme is stored (e.g. their subscription lapsed).
+/// Non-isolated snapshot the colour tokens read from — so HandyColor stays reachable from any context
+/// (it isn't tied to the main actor). ThemeManager writes `theme` on the main actor; the resolved
+/// tokens are cached so a colour read never rebuilds them.
+final class ActiveTheme {
+    static let shared = ActiveTheme()
+    var theme: TenzyTheme { didSet { tokens = theme.tokens } }
+    private(set) var tokens: ThemeTokens
+    private init() {
+        let t = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: "tenzyTheme") ?? "") ?? .daylight
+        theme = t; tokens = t.tokens
+    }
+}
+
+/// Holds the user's chosen theme, persists it, and is observed by the UI so a switch re-skins live.
+/// Pro themes are gated at selection time (the Settings picker checks Pro), so a free user can't pick
+/// one — no gating is needed in the render path.
 @MainActor final class ThemeManager: ObservableObject {
     static let shared = ThemeManager()
-    @Published var current: TenzyTheme { didSet { UserDefaults.standard.set(current.rawValue, forKey: Self.key); cachedFor = nil } }
     private static let key = "tenzyTheme"
+    @Published var current: TenzyTheme {
+        didSet { UserDefaults.standard.set(current.rawValue, forKey: Self.key); ActiveTheme.shared.theme = current }
+    }
     private init() {
         current = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: Self.key) ?? "") ?? .daylight
-    }
-    /// The theme actually used for rendering — Daylight unless the user is Pro.
-    var effective: TenzyTheme { (current.isPro && !StoreManager.shared.isPremium) ? .daylight : current }
-
-    // Cache the resolved tokens; HandyColor reads these many times per frame.
-    private var cachedFor: TenzyTheme?
-    private var cached: ThemeTokens?
-    var tokens: ThemeTokens {
-        let eff = effective
-        if cachedFor == eff, let c = cached { return c }
-        let t = eff.tokens; cachedFor = eff; cached = t
-        return t
+        ActiveTheme.shared.theme = current
     }
 }
 

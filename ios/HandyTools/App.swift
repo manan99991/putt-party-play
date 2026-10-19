@@ -54,7 +54,7 @@ struct TenzyApp: App {
             }
             .environmentObject(theme)
             // Daylight follows the system (keeps light/dark); a Pro theme pins its own look.
-            .preferredColorScheme(theme.effective == .daylight ? nil : (theme.effective.isDark ? .dark : .light))
+            .preferredColorScheme(theme.current == .daylight ? nil : (theme.current.isDark ? .dark : .light))
         }
     }
 }
