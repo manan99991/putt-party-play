@@ -150,8 +150,12 @@ jobs:
           IOS_DIST_P12_B64: ${{ secrets.IOS_DIST_P12_B64 }}
         run: |
           [ -n "$IOS_DIST_P12_B64" ] || { echo "IOS_DIST_P12_B64 secret is not set — add it in repo Settings → Secrets"; exit 1; }
-          echo "$IOS_DIST_P12_B64" | base64 -d > dist.p12
-          echo "wrote ios/dist.p12 ($(wc -c < dist.p12) bytes)"
+          P12="$GITHUB_WORKSPACE/ios/dist.p12"
+          echo "$IOS_DIST_P12_B64" | base64 -d > "$P12"
+          BYTES=$(wc -c < "$P12")
+          echo "wrote $P12 ($BYTES bytes)"
+          [ "$BYTES" -gt 0 ] || { echo "decoded cert is empty — check the IOS_DIST_P12_B64 secret value"; exit 1; }
+          echo "P12_PATH=$P12" >> "$GITHUB_ENV"
       - name: Fastlane build + upload to TestFlight
         env:
           P12_PASSWORD: tenzyshared

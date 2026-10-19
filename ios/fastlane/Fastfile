@@ -53,7 +53,10 @@ platform :ios do
     )
     keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")
 
-    p12_path = File.expand_path("dist.p12")
+    # Anchor to the Fastfile's own location (ios/fastlane) so the path is correct no matter what
+    # working directory fastlane evaluates from. CI also exports P12_PATH as an absolute override.
+    p12_path = ENV["P12_PATH"] || File.expand_path("../dist.p12", __dir__)
+    UI.message("Shared cert expected at #{p12_path} (pwd #{Dir.pwd})")
     UI.user_error!("Shared cert missing: write ios/dist.p12 from the IOS_DIST_P12_B64 secret before this lane") unless File.exist?(p12_path)
     import_certificate(
       certificate_path: p12_path,
