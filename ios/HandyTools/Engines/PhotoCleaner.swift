@@ -14,7 +14,21 @@ enum PhotoCleaner {
         let asset: PHAsset
         var id: String { asset.localIdentifier }
         let bytes: Int64
+        var fromCamera: Bool = true     // false = saved / downloaded / forwarded to this phone
         static func == (a: Item, b: Item) -> Bool { a.id == b.id }
+    }
+
+    /// True when a video looks like it was recorded by THIS phone's camera: a QuickTime .MOV whose
+    /// original resource is named IMG_… (how iOS names camera captures). Videos saved, downloaded or
+    /// forwarded in — from Messages, WhatsApp, the web — are almost always .mp4 with other names, so
+    /// they come back false. A heuristic, but it catches the common "someone sent me this" case.
+    static func isCameraOriginal(_ a: PHAsset) -> Bool {
+        let resources = PHAssetResource.assetResources(for: a)
+        guard let r = resources.first(where: { $0.type == .video }) ?? resources.first else { return true }
+        let name = r.originalFilename.uppercased()
+        let isMOV = r.uniformTypeIdentifier == "com.apple.quicktime-movie" || name.hasSuffix(".MOV")
+        let isCameraName = name.hasPrefix("IMG_") || name.hasPrefix("TRIM.")   // captures + in-Photos trims
+        return isMOV && isCameraName
     }
 
     // MARK: access
@@ -51,10 +65,24 @@ enum PhotoCleaner {
         return collect(PHAsset.fetchAssets(with: .image, options: o))
     }
 
-    static func largeVideos(minBytes: Int64 = 20_000_000) -> [Item] {
+    /// Videos worth clearing. `receivedOnly == false`: large videos (≥20 MB), any source — the big
+    /// files. `receivedOnly == true`: videos that didn't come from this phone's camera (saved,
+    /// downloaded or forwarded to you), any size down to ~1 MB, so you can clear what others sent.
+    static func videos(receivedOnly: Bool) -> [Item] {
         let o = PHFetchOptions()
         o.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]   // newest-first; the view re-sorts by size when asked
-        return collect(PHAsset.fetchAssets(with: .video, options: o)).filter { $0.bytes >= minBytes }
+        var out: [Item] = []
+        PHAsset.fetchAssets(with: .video, options: o).enumerateObjects { a, _, _ in
+            let bytes = estimatedBytes(of: a)
+            if receivedOnly {
+                guard !isCameraOriginal(a), bytes >= 1_000_000 else { return }
+                out.append(Item(asset: a, bytes: bytes, fromCamera: false))
+            } else {
+                guard bytes >= 20_000_000 else { return }
+                out.append(Item(asset: a, bytes: bytes, fromCamera: isCameraOriginal(a)))
+            }
+        }
+        return out
     }
 
     /// Group near-duplicate photos using Vision feature prints over the most recent `scanLimit` photos

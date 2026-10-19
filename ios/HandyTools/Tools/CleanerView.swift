@@ -16,6 +16,7 @@ struct CleanerView: View {
     @State private var selected: Set<String> = []
     @State private var localScanning = false
     @State private var sortBySize = true                   // largest first — what you want when freeing space
+    @State private var receivedOnly = false                // videos tab: only videos not recorded on this phone
     @State private var busy = false
     @State private var note: String?
 
@@ -51,6 +52,17 @@ struct CleanerView: View {
                 Picker("", selection: $cat) { ForEach(Cat.allCases, id: \.rawValue) { Text($0.title).tag($0) } }
                     .pickerStyle(.segmented)
                     .onChange(of: cat) { _, _ in refreshForCat() }
+
+                if cat == .videos {
+                    Picker("Source", selection: $receivedOnly) {
+                        Text("Large videos").tag(false)
+                        Text("Received").tag(true)
+                    }
+                    .pickerStyle(.segmented)
+                    .onChange(of: receivedOnly) { _, _ in selected = []; scanLocal() }
+                    Text("Received = saved, downloaded or forwarded to you — not recorded on this phone.")
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                }
 
                 if isScanning {
                     scanningView
@@ -91,7 +103,7 @@ struct CleanerView: View {
         if all.isEmpty {
             EmptyState(icon: "sparkles",
                        line: "Nothing to clean here",
-                       sub: cat == .duplicates ? "No look-alike photos or videos in your recent library." : cat == .videos ? "No large videos found." : "No screenshots found.")
+                       sub: cat == .duplicates ? "No look-alike photos or videos in your recent library." : cat == .videos ? (receivedOnly ? "No received or downloaded videos found." : "No large videos found.") : "No screenshots found.")
         } else {
             HStack {
                 Text("\(all.count) item\(all.count == 1 ? "" : "s") · about \(PhotoCleaner.format(totalBytes))")
@@ -170,8 +182,9 @@ struct CleanerView: View {
         localScanning = true; items = []
         let c = cat
         Task {
-            let found = await Task.detached(priority: .userInitiated) {
-                c == .videos ? PhotoCleaner.largeVideos() : PhotoCleaner.screenshots()
+            let recv = receivedOnly
+            let found = await Task.detached(priority: .userInitiated) { () -> [PhotoCleaner.Item] in
+                c == .videos ? PhotoCleaner.videos(receivedOnly: recv) : PhotoCleaner.screenshots()
             }.value
             await MainActor.run { if cat == c { items = found; localScanning = false } }
         }
