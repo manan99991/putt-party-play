@@ -37,11 +37,11 @@ import AVFoundation
 
     func start() {
         errorText = nil
-        SFSpeechRecognizer.requestAuthorization { [weak self] status in
+        Permission.speech { [weak self] status in
             Task { @MainActor in
                 guard let self else { return }
                 guard status == .authorized else { self.errorText = "Allow Speech Recognition in Settings."; return }
-                AVAudioApplication.requestRecordPermission { ok in
+                Permission.microphone { ok in
                     Task { @MainActor in
                         guard ok else { self.errorText = "Allow microphone access in Settings."; return }
                         self.begin()
@@ -62,7 +62,7 @@ import AVFoundation
             let input = engine.inputNode
             let format = input.outputFormat(forBus: 0)
             guard format.sampleRate > 0 else { errorText = "The microphone isn't ready yet. Try again in a moment."; return }
-            input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
+            input.installSendableTap(bufferSize: 1024, format: format) { [weak self] buffer, _ in
                 self?.sink?.append(buffer)
             }
             tapInstalled = true

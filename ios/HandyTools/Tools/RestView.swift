@@ -191,7 +191,7 @@ struct RestView: View {
     private let offset = UserDefaults.standard.double(forKey: "instruments.db.offset")
 
     func start() {
-        AVAudioApplication.requestRecordPermission { [weak self] ok in
+        Permission.microphone { [weak self] ok in
             Task { @MainActor in
                 guard let self else { return }
                 if !ok { self.denied = true; return }
@@ -208,7 +208,7 @@ struct RestView: View {
         guard fmt.sampleRate > 0 else { return }
         detector = SoundEventDetector()
         startTime = Date()
-        input.installTap(onBus: 0, bufferSize: 4096, format: fmt) { [weak self] buf, when in
+        input.installSendableTap(bufferSize: 4096, format: fmt) { [weak self] buf, when in
             guard let ch = buf.floatChannelData?[0] else { return }
             var sum: Float = 0
             let n = Int(buf.frameLength)

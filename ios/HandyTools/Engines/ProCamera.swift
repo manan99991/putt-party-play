@@ -37,7 +37,7 @@ import UniformTypeIdentifiers
         nonisolated(unsafe) let s = session
         if !session.inputs.isEmpty { if !session.isRunning { DispatchQueue.global().async { s.startRunning() } }; return }
         guard AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) != nil else { return }
-        AVCaptureDevice.requestAccess(for: .video) { ok in Task { @MainActor in self.authorized = ok } }
+        Permission.camera { [weak self] ok in Task { @MainActor in self?.authorized = ok } }
         session.beginConfiguration()
         session.sessionPreset = .photo
         guard let dev = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back), let input = try? AVCaptureDeviceInput(device: dev), session.canAddInput(input) else { session.commitConfiguration(); return }

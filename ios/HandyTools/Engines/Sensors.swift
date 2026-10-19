@@ -162,7 +162,7 @@ enum SensorMath {
     var offset: Double { UserDefaults.standard.double(forKey: "instruments.db.offset") }
 
     func start() {
-        AVAudioApplication.requestRecordPermission { [weak self] ok in
+        Permission.microphone { [weak self] ok in
             Task { @MainActor in
                 guard let self else { return }
                 if !ok { self.denied = true; return }

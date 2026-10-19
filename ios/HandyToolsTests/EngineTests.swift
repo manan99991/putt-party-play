@@ -74,7 +74,8 @@ final class EngineTests: XCTestCase {
     func testSizeTargetImageLandsUnderLimit() async throws {
         let big = Self.noisy(CGSize(width: 2400, height: 1800))
         let target = 150_000
-        let d = try XCTUnwrap(await SizeTarget.image(big, targetBytes: target), "image could not be fitted")
+        let out0 = await SizeTarget.image(big, targetBytes: target)
+        let d = try XCTUnwrap(out0, "image could not be fitted")
         XCTAssertLessThanOrEqual(d.count, target, "must land under the limit")
         XCTAssertNotNil(UIImage(data: d), "output must still decode")
     }
@@ -84,7 +85,8 @@ final class EngineTests: XCTestCase {
     func testSizeTargetImageIsFastAndOffMainForBigPhoto() async throws {
         let big = Self.noisy(CGSize(width: 4032, height: 3024))   // ~12 MP, a real camera shot
         let start = Date()
-        let d = try XCTUnwrap(await SizeTarget.image(big, targetBytes: 200_000), "12 MP photo could not be fitted to 200 KB")
+        let out0 = await SizeTarget.image(big, targetBytes: 200_000)
+        let d = try XCTUnwrap(out0, "12 MP photo could not be fitted to 200 KB")
         XCTAssertLessThanOrEqual(d.count, 200_000)
         XCTAssertNotNil(UIImage(data: d))
         XCTAssertLessThan(Date().timeIntervalSince(start), 8.0, "fit took too long — would feel like a freeze")
@@ -96,7 +98,8 @@ final class EngineTests: XCTestCase {
             for _ in 0..<3 { ctx.beginPage(); Self.noisy(CGSize(width: 1200, height: 1500)).draw(in: page) }
         }
         let target = min(pdf.count / 2, 400_000)
-        let out = try XCTUnwrap(await SizeTarget.pdf(pdf, targetBytes: target), "pdf could not be fitted")
+        let out1 = await SizeTarget.pdf(pdf, targetBytes: target)
+        let out = try XCTUnwrap(out1, "pdf could not be fitted")
         XCTAssertLessThanOrEqual(out.count, target)
         XCTAssertEqual(PDFDocument(data: out)?.pageCount, 3, "must keep every page")
     }

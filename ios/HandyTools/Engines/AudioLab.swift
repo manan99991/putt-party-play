@@ -175,7 +175,7 @@ enum Pitch {
     private var smooth = 0.0
 
     func start() {
-        AVAudioApplication.requestRecordPermission { [weak self] ok in
+        Permission.microphone { [weak self] ok in
             Task { @MainActor in
                 guard let self else { return }
                 if !ok { self.denied = true; return }
@@ -191,7 +191,7 @@ enum Pitch {
         let fmt = input.outputFormat(forBus: 0)
         guard fmt.sampleRate > 0 else { return }
         let rate = fmt.sampleRate
-        input.installTap(onBus: 0, bufferSize: 4096, format: fmt) { [weak self] buf, _ in
+        input.installSendableTap(bufferSize: 4096, format: fmt) { [weak self] buf, _ in
             guard let ch = buf.floatChannelData?[0] else { return }
             let samples = Array(UnsafeBufferPointer(start: ch, count: Int(buf.frameLength)))
             let r = Pitch.detect(samples, sampleRate: rate)

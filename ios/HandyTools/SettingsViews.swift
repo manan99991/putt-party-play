@@ -51,14 +51,14 @@ struct SetupView: View {
                     Text("Grant what you'll use; skip the rest. Any tool will ask again the first time it needs something.").font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
                     Text("\(done) of 5 granted").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                     SetupRow(icon: "camera", title: "Camera", why: "Scan, Capture, Color Vision, Magnifier+, Pro Camera, Measure and the light meter. Frames are processed on the phone.", unlocks: "Camera tools", granted: camera) {
-                        AVCaptureDevice.requestAccess(for: .video) { _ in Task { @MainActor in await refresh() } }
+                        Permission.camera { _ in Task { @MainActor in await refresh() } }
                     }
                     SetupRow(icon: "mic", title: "Microphone", why: "Sound meter, tuner, Live Captions, Voice → Notes, Rest's night recorder. Levels and words are handled on the phone.", unlocks: "Audio tools", granted: mic) {
-                        AVAudioApplication.requestRecordPermission { _ in Task { @MainActor in await refresh() } }
+                        Permission.microphone { _ in Task { @MainActor in await refresh() } }
                     }
                     SetupRow(icon: "waveform.and.mic", title: "Speech recognition", why: "Turns speech into text for Live Captions, Voice → Notes and Translate's Talk mode — on-device for supported languages.", unlocks: "Captions & notes", granted: speech) {
                         Diagnostics.shared.log("requesting speech authorization")
-                        SFSpeechRecognizer.requestAuthorization { status in
+                        Permission.speech { status in
                             Diagnostics.shared.log("speech authorization result: \(status.rawValue)")
                             Task { @MainActor in await refresh() }
                         }
