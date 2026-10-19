@@ -1,5 +1,3 @@
 == test.log (results)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:77:37: error: 'async' call in an autoclosure that does not support concurrency
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:87:37: error: 'async' call in an autoclosure that does not support concurrency
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:99:39: error: 'async' call in an autoclosure that does not support concurrency
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Permission.swift:20:72: error: 'AuthorizationStatus' is not a member type of class 'Speech.SFSpeechRecognizer'
 ** TEST FAILED **
