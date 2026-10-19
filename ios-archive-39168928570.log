@@ -1,0 +1,61 @@
+===== fastlane.log errors =====
+[01:52:01]: [31m => 57:	    UI.user_error!("Shared cert missing: write ios/dist.p12 from the IOS_DIST_P12_B64 secret before this lane") unless File.exist?(p12_path)[0m
+[01:52:01]: [31m    58:	    import_certificate([0m
+[01:52:01]: [31m    59:	      certificate_path: p12_path,[0m
+[01:52:01]: [31mfastlane finished with errors[0m
+[!] Shared cert missing: write ios/dist.p12 from the IOS_DIST_P12_B64 secret before this lane[0m
+
+===== fastlane.log tail =====
+[01:52:00]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[01:52:00]: fastlane 2.241.0 (Ruby 3.4.11, gem)
+[01:52:01]: [32m------------------------------[0m
+[01:52:01]: [32m--- Step: default_platform ---[0m
+[01:52:01]: [32m------------------------------[0m
+[01:52:01]: [32mDriving the lane 'ios beta' 🚀[0m
+[01:52:01]: [32m---------------------------------------[0m
+[01:52:01]: [32m--- Step: app_store_connect_api_key ---[0m
+[01:52:01]: [32m---------------------------------------[0m
+[01:52:01]: [32m-----------------------------[0m
+[01:52:01]: [32m--- Step: create_keychain ---[0m
+[01:52:01]: [32m-----------------------------[0m
+[01:52:01]: [36m$ security list-keychains -d user[0m
+[01:52:01]: ▸ [35m"/Users/runner/Library/Keychains/tenzyci-db"[0m
+[01:52:01]: [33mFound keychain '/Users/runner/Library/Keychains/tenzyci-db' in list-keychains, adding to search list skipped[0m
++---------------------------------------------------------------------------------+
+|                                  [33mLane Context[0m                                   |
++---------------------------+-----------------------------------------------------+
+| DEFAULT_PLATFORM          | ios                                                 |
+| PLATFORM_NAME             | ios                                                 |
+| LANE_NAME                 | ios beta                                            |
+| KEYCHAIN_PATH             | ~/Library/Keychains/tenzyci                         |
+| ORIGINAL_DEFAULT_KEYCHAIN | "/Users/runner/Library/Keychains/login.keychain-db" |
++---------------------------+-----------------------------------------------------+
+[01:52:01]: [31mCalled from Fastfile at line 57[0m
+[01:52:01]: [31m```[0m
+[01:52:01]: [31m    55:	[0m
+[01:52:01]: [31m    56:	    p12_path = File.expand_path("dist.p12")[0m
+[01:52:01]: [31m => 57:	    UI.user_error!("Shared cert missing: write ios/dist.p12 from the IOS_DIST_P12_B64 secret before this lane") unless File.exist?(p12_path)[0m
+[01:52:01]: [31m    58:	    import_certificate([0m
+[01:52:01]: [31m    59:	      certificate_path: p12_path,[0m
+[01:52:01]: [31m```[0m
+
++------------------------------------------------+
+|                [32mfastlane summary[0m                |
++------+---------------------------+-------------+
+| Step | Action                    | Time (in s) |
++------+---------------------------+-------------+
+| 1    | default_platform          | 0           |
+| 2    | app_store_connect_api_key | 0           |
+| 3    | create_keychain           | 0           |
++------+---------------------------+-------------+
+
+[01:52:01]: [31mfastlane finished with errors[0m
+[31m
+[!] Shared cert missing: write ios/dist.p12 from the IOS_DIST_P12_B64 secret before this lane[0m
+
+#######################################################################
+# fastlane 2.241.1 is available. You are on 2.241.0.
+# You should use the latest version.
+# Please update using `gem install fastlane`.
+# To see what's new, open https://github.com/fastlane/fastlane/releases.
+#######################################################################
