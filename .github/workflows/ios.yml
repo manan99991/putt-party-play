@@ -43,6 +43,22 @@ jobs:
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee build.log | grep -E "error:|warning: unre|BUILD|\*\*" || true
           grep -q "BUILD SUCCEEDED" build.log
+      - name: Report built Info.plist permission strings
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/HandyTools.app" -maxdepth 6 | head -1)
+          P="$APP/Info.plist"
+          echo "built app plist: $P"
+          { echo "=== $P ==="; plutil -p "$P" 2>&1 | grep -iE "Usage|GADApplication|CFBundleURLSchemes|UIBackgroundModes" || true; echo "--- presence ---"; } > plist-check.log
+          summary=""
+          for k in NSCameraUsageDescription NSMicrophoneUsageDescription NSSpeechRecognitionUsageDescription NSLocationWhenInUseUsageDescription NSMotionUsageDescription NSPhotoLibraryUsageDescription NSPhotoLibraryAddUsageDescription NSFaceIDUsageDescription; do
+            if plutil -extract "$k" raw "$P" >/dev/null 2>&1; then r=OK; else r=MISS; fi
+            echo "$r $k" >> plist-check.log; summary="$summary ${k#NS}=$r"
+          done
+          cat plist-check.log
+          echo "::warning title=plist::$summary"
+          bash .github/publish-log.sh ios-plist plist-check.log || true
       - name: Simulator screenshots of every tool
         run: |
           set -x

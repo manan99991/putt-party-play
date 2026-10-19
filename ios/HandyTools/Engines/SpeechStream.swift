@@ -61,6 +61,7 @@ import AVFoundation
         if !tapInstalled {
             let input = engine.inputNode
             let format = input.outputFormat(forBus: 0)
+            guard format.sampleRate > 0 else { errorText = "The microphone isn't ready yet. Try again in a moment."; return }
             input.installTap(onBus: 0, bufferSize: 1024, format: format) { [weak self] buffer, _ in
                 self?.sink?.append(buffer)
             }

@@ -120,8 +120,9 @@ struct RestView: View {
         let session = AVAudioSession.sharedInstance()
         try? session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
         try? session.setActive(true)
-        let rate = engine.outputNode.outputFormat(forBus: 0).sampleRate
-        let fmt = AVAudioFormat(standardFormatWithSampleRate: rate, channels: 2)!
+        let hwRate = engine.outputNode.outputFormat(forBus: 0).sampleRate
+        let rate = hwRate > 0 ? hwRate : 44_100   // hardware can report 0 before the route is ready
+        guard let fmt = AVAudioFormat(standardFormatWithSampleRate: rate, channels: 2) else { return }
         let sh = shared
         sh.fade = 1
         let n = AVAudioSourceNode(format: fmt) { _, _, frames, abl -> OSStatus in

@@ -96,9 +96,10 @@ enum Pitch {
         let session = AVAudioSession.sharedInstance()
         try? session.setCategory(.playback, options: [.mixWithOthers])
         try? session.setActive(true)
-        let rate = engine.outputNode.outputFormat(forBus: 0).sampleRate
+        let hwRate = engine.outputNode.outputFormat(forBus: 0).sampleRate
+        let rate = hwRate > 0 ? hwRate : 44_100   // hardware can report 0 before the route is ready
         let p = params
-        let fmt = AVAudioFormat(standardFormatWithSampleRate: rate, channels: 2)!
+        guard let fmt = AVAudioFormat(standardFormatWithSampleRate: rate, channels: 2) else { return }
         let n = AVAudioSourceNode(format: fmt) { _, _, frameCount, abl -> OSStatus in
             let buffers = UnsafeMutableAudioBufferListPointer(abl)
             guard buffers.count >= 2, let l = buffers[0].mData?.assumingMemoryBound(to: Float.self), let r = buffers[1].mData?.assumingMemoryBound(to: Float.self) else { return noErr }

@@ -493,6 +493,7 @@ struct ToolPage<Content: View>: View {
         }
         .background(HandyColor.bg)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear { Diagnostics.shared.currentTool = title }
     }
 }
 
