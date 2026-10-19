@@ -7,12 +7,12 @@ final class ToolSmokeTests: XCTestCase {
 
     /// Keep in lock-step with the catalog in App.swift. Adding a tool? Add its id here.
     static let toolIDs = [
-        // Page 1 · Files, docs & sharing
-        "fitit", "scan", "studio", "video", "formatfix", "scrub", "capture", "qrwifi", "stitch", "shareready",
+        // Page 1 · Files, photos & docs
+        "fitit", "scan", "studio", "video", "formatfix", "scrub", "cleaner", "qrwifi", "stitch", "shareready",
         // Page 2 · Camera, sensors & everyday
-        "light", "instruments", "measure", "magnify", "procam", "gpsdash", "audiolab", "rest", "colorvision", "describe",
+        "light", "instruments", "measure", "magnify", "procam", "gpsdash", "audiolab", "rest", "colorvision", "capture",
         // Page 3 · Words, AI & accessibility
-        "textstudio", "translate", "voicenotes", "livecaptions", "shield", "readaloud", "explain", "datagrab", "cleaner", "vault",
+        "textstudio", "translate", "voicenotes", "livecaptions", "shield", "readaloud", "explain", "datagrab", "describe", "vault",
     ]
 
     override func setUp() { continueAfterFailure = true }

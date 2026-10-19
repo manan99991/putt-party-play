@@ -215,6 +215,19 @@ final class EngineTests: XCTestCase {
         if let heic = ImageStudio.encode(img, as: .heic, quality: 0.8) { XCTAssertNotNil(UIImage(data: heic)) }
     }
 
+    func testEnhanceProducesAValidImageBothModes() throws {
+        let img = Self.noisy(CGSize(width: 320, height: 240))
+        // No upscale: same pixel dimensions, still a decodable image.
+        let plain = try XCTUnwrap(ImageStudio.enhance(img, upscale: false), "enhance must return an image")
+        XCTAssertEqual(plain.size.width, 320, accuracy: 1)
+        XCTAssertEqual(plain.size.height, 240, accuracy: 1)
+        XCTAssertNotNil(plain.jpegData(compressionQuality: 0.9), "enhanced image must encode")
+        // Upscale: strictly larger on the long side, capped below the 4096 ceiling.
+        let up = try XCTUnwrap(ImageStudio.enhance(img, upscale: true))
+        XCTAssertGreaterThan(up.size.width, 320)
+        XCTAssertLessThanOrEqual(max(up.size.width, up.size.height), 4096)
+    }
+
     // MARK: document engine (Scan)
 
     func testScanPDFIsSearchableAndKeepsPageCount() throws {

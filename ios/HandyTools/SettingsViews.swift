@@ -262,7 +262,7 @@ struct AboutView: View {
                 Text("Tenzy").font(.system(size: 30, weight: .bold))
                 Text("Version \(version)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
-                Text("30 small tools your phone should've had — flashlight, clipboard, scanner, PDF, AI and more. Everything runs on your phone; nothing is uploaded.")
+                Text("30 small tools your phone should've had — flashlight, cleaner, scanner, PDF, AI and more. Everything runs on your phone; nothing is uploaded.")
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                     .multilineTextAlignment(.center).padding(.horizontal, HandySpacing.s8)
 
@@ -352,7 +352,7 @@ struct PrivacyView: View {
                 Block("Permissions", check: false, [
                     "Microphone: Decibel Meter measures level only; audio is never recorded.",
                     "Camera: Doc Scanner, QR scanner, flashlight.",
-                    "Keyboard Full Access: reads the clipboard only when you tap Grab.",
+                    "Photos: Cleaner finds large or duplicate photos and videos to free space; iOS always confirms a delete.",
                 ], note: nil)
                 Block("Children", check: false, ["Tenzy isn't for children under 13 and doesn't knowingly collect anything from them."], note: nil)
                 Text("Questions: \(SUPPORT_EMAIL) · Last updated October 15, 2026").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.bottom, HandySpacing.s32)

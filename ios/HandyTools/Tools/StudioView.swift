@@ -8,8 +8,8 @@ import UIKit
 struct StudioView: View {
     @EnvironmentObject var store: StoreManager
 
-    private enum Mode: Int, CaseIterable { case cutout, passport, resize, convert
-        var title: String { ["Cut out", "Passport", "Resize", "Convert"][rawValue] } }
+    private enum Mode: Int, CaseIterable { case cutout, enhance, passport, resize, convert
+        var title: String { ["Cut out", "Enhance", "Passport", "Resize", "Convert"][rawValue] } }
     private enum Output { case png(Data), jpg(Data), heic(Data) }
 
     @State private var pickedItem: PhotosPickerItem?
@@ -21,6 +21,8 @@ struct StudioView: View {
     @State private var working = false
     @State private var errorText: String?
 
+    // enhance
+    @State private var enhanceUpscale = true
     // cut out
     @State private var bgIdx = 0
     private let backgrounds: [(String, UIColor?)] = [("Transparent", nil), ("White", .white), ("Black", .black), ("Light grey", UIColor(white: 0.9, alpha: 1)), ("Blue", UIColor(red: 0.84, green: 0.9, blue: 0.97, alpha: 1))]
@@ -65,6 +67,7 @@ struct StudioView: View {
 
                 switch mode {
                 case .cutout: cutoutControls
+                case .enhance: enhanceControls
                 case .passport: passportControls
                 case .resize: resizeControls
                 case .convert: convertControls
@@ -114,6 +117,13 @@ struct StudioView: View {
         }
     }
 
+    private var enhanceControls: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Toggle("Upscale 2× (sharper, larger file)", isOn: $enhanceUpscale).tint(HandyColor.accent).font(HandyFont.body)
+            Text("Auto-levels, gentle denoise and sharpening — good for dull or soft phone shots. Runs entirely on your phone.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        }
+    }
+
     private var passportControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Picker("Size", selection: $specIdx) { ForEach(0..<ImageStudio.passportSpecs.count, id: \.self) { Text(ImageStudio.passportSpecs[$0].name).tag($0) } }
@@ -149,7 +159,7 @@ struct StudioView: View {
     }
 
     private var actionLabel: String {
-        switch mode { case .cutout: return "Cut out subject"; case .passport: return "Make passport photo"; case .resize: return "Resize photo"; case .convert: return "Convert to \(format.rawValue)" }
+        switch mode { case .cutout: return "Cut out subject"; case .enhance: return "Enhance photo"; case .passport: return "Make passport photo"; case .resize: return "Resize photo"; case .convert: return "Convert to \(format.rawValue)" }
     }
 
     @ViewBuilder private func resultActions(_ out: Output) -> some View {
@@ -177,7 +187,7 @@ struct StudioView: View {
         guard Usage.use("studio", limit: Limits.freeStudioPerDay) else { return }
         working = true; errorText = nil; output = nil; sheet = nil
         let m = mode, bg = backgrounds[bgIdx].1, spec = ImageStudio.passportSpecs[specIdx], pbg = passportBG
-        let rIdx = resizeIdx, sIdx = sizeLimitIdx, fmt = format, q = CGFloat(quality)
+        let rIdx = resizeIdx, sIdx = sizeLimitIdx, fmt = format, q = CGFloat(quality), up = enhanceUpscale
         Task { @MainActor in
             defer { working = false }
             switch m {
@@ -185,6 +195,10 @@ struct StudioView: View {
                 guard let cut = ImageStudio.cutout(src) else { errorText = "Couldn't find a clear subject. Try a photo with a distinct foreground."; return }
                 if let bg { let img = ImageStudio.composite(cut, on: bg); preview = img; if let d = img.jpegData(compressionQuality: 0.92) { output = .jpg(d) } }
                 else { preview = cut; if let d = cut.pngData() { output = .png(d) } }
+            case .enhance:
+                let out = await Task.detached(priority: .userInitiated) { ImageStudio.enhance(src, upscale: up) }.value
+                guard let img = out else { errorText = "Couldn't enhance this photo. Try another image."; return }
+                preview = img; if let d = img.jpegData(compressionQuality: 0.95) { output = .jpg(d) }
             case .passport:
                 guard let img = ImageStudio.passport(src, spec: spec, background: pbg ? .white : nil) else { errorText = "Couldn't find a clear face. Use a straight-on portrait with the whole head visible."; return }
                 preview = img; if let d = img.jpegData(compressionQuality: 0.95) { output = .jpg(d) }

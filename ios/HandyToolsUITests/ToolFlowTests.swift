@@ -296,23 +296,15 @@ final class ToolFlowTests: XCTestCase {
         alive("translate")
     }
 
-    func testClipboardGrabsCleansLinkAndSavesSnippet() {
-        UIPasteboard.general.string = "https://example.com/post?id=42&utm_source=newsletter&fbclid=abc"
-        launch("clips")
-        button(containing: "Grab what").tap()
-        expect(button(containing: "Clean link"), "clean link action", timeout: 15)
-        button(containing: "Clean link").tap()
-        expect(text(containing: "tracking removed"), "clean link toast", timeout: 10)
-        let snippetsTab = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Snippets'")).firstMatch
-        XCTAssertTrue(snippetsTab.waitForExistence(timeout: 10), "snippets tab")
-        snippetsTab.tap()
-        let newSnippet = button(containing: "New snippet")
-        XCTAssertTrue(newSnippet.waitForExistence(timeout: 10), "new snippet button"); newSnippet.tap()
-        let title = app.textFields.firstMatch; expect(title, "snippet title", timeout: 10); title.tap(); title.typeText("Home")
-        let editor = app.textViews.firstMatch; editor.tap(); editor.typeText("1 Infinite Loop")
-        button(containing: "Save snippet").tap()
-        expect(text(containing: "1 Infinite Loop"), "saved snippet", timeout: 10)
-        alive("clips")
+    func testCleanerOpensAndOffersCategories() {
+        launch("cleaner")
+        // Either the permission gate (no photo access granted in this suite) or, if access is
+        // already granted, the category picker — both must render without crashing.
+        let gate = button(containing: "Allow photo access")
+        let categories = app.segmentedControls.firstMatch
+        XCTAssertTrue(gate.waitForExistence(timeout: 12) || categories.waitForExistence(timeout: 12),
+                      "Cleaner should show the access gate or the category picker")
+        alive("cleaner")
     }
 
     func testVoiceNotesAndLiveCaptionsRender() {

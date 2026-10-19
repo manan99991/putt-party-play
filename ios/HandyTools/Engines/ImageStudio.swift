@@ -95,6 +95,42 @@ enum ImageStudio {
         return img.jpegData(compressionQuality: 0.95)
     }
 
+    // MARK: enhance
+
+    /// One-tap cleanup for dull or soft phone shots: Apple's own auto-tone (exposure, contrast,
+    /// tone curve), a gentle denoise, light sharpening, and an optional 2× Lanczos upscale (capped
+    /// so we never blow past ~4096 px on the long side). All Core Image, on-device. This is heavy
+    /// for large photos, so callers run it off the main thread.
+    static func enhance(_ image: UIImage, upscale: Bool) -> UIImage? {
+        guard let cg0 = image.normalizedUp().cgImage else { return nil }
+        let ctx = CIContext()
+        var ci = CIImage(cgImage: cg0)
+
+        // Auto-tone: Apple's built-in auto adjustments (skip red-eye / face work).
+        for f in ci.autoAdjustmentFilters(options: [.enhance: true, .redEye: false]) {
+            f.setValue(ci, forKey: kCIInputImageKey)
+            if let out = f.outputImage { ci = out }
+        }
+        // Gentle denoise.
+        if let nr = CIFilter(name: "CINoiseReduction", parameters: [kCIInputImageKey: ci, "inputNoiseLevel": 0.015, "inputSharpness": 0.4]),
+           let out = nr.outputImage { ci = out }
+        // Light sharpening.
+        if let s = CIFilter(name: "CIUnsharpMask", parameters: [kCIInputImageKey: ci, kCIInputRadiusKey: 2.2, kCIInputIntensityKey: 0.5]),
+           let out = s.outputImage { ci = out }
+        // Optional upscale, capped at a sane maximum.
+        if upscale {
+            let longest = max(ci.extent.width, ci.extent.height)
+            let scale = min(2.0, max(1.0, 4096.0 / max(1, longest)))
+            if scale > 1.01,
+               let sc = CIFilter(name: "CILanczosScaleTransform", parameters: [kCIInputImageKey: ci, kCIInputScaleKey: scale, kCIInputAspectRatioKey: 1.0]),
+               let out = sc.outputImage { ci = out }
+        }
+
+        let rect = ci.extent.isInfinite ? CIImage(cgImage: cg0).extent : ci.extent
+        guard rect.width > 0, rect.height > 0, let cg = ctx.createCGImage(ci, from: rect) else { return nil }
+        return UIImage(cgImage: cg)
+    }
+
     // MARK: encode
 
     enum Format: String, CaseIterable { case jpg = "JPG", png = "PNG", heic = "HEIC" }
