@@ -132,6 +132,7 @@ private struct SetupRow: View {
 
 struct SettingsView: View {
     @EnvironmentObject var store: StoreManager
+    @ObservedObject private var theme = ThemeManager.shared
     @State private var showPaywall = false
     @State private var showSetup = false
     @State private var showPrivacy = false
@@ -173,6 +174,41 @@ struct SettingsView: View {
                         Button("Manage subscription") { UIApplication.shared.open(URL(string: "https://apps.apple.com/account/subscriptions")!) }.textButton()
                     } else {
                         Button("Restore purchases") { Task { await store.restore() } }.textButton()
+                    }
+
+                    Section("Theme") {
+                        VStack(spacing: HandySpacing.s8) {
+                            ForEach(TenzyTheme.allCases) { th in
+                                Button {
+                                    if th.isPro && !store.isPremium { showPaywall = true }
+                                    else { withAnimation(HandyMotion.crossfade) { theme.current = th } }
+                                } label: {
+                                    HStack(spacing: HandySpacing.s12) {
+                                        RoundedRectangle(cornerRadius: 9, style: .continuous)
+                                            .fill(LinearGradient(colors: th.swatch, startPoint: .topLeading, endPoint: .bottomTrailing))
+                                            .frame(width: 40, height: 40)
+                                            .overlay(RoundedRectangle(cornerRadius: 9, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            HStack(spacing: 6) {
+                                                Text(th.title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                                if th.isPro {
+                                                    Text("PRO").font(.system(size: 9, weight: .bold)).foregroundStyle(HandyColor.accent)
+                                                        .padding(.horizontal, 5).padding(.vertical, 1).background(HandyColor.accentSoft, in: Capsule())
+                                                }
+                                            }
+                                            Text(th.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                        }
+                                        Spacer()
+                                        if theme.current == th { Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent) }
+                                        else if th.isPro && !store.isPremium { Image(systemName: "lock.fill").foregroundStyle(HandyColor.textSecondary) }
+                                    }
+                                    .cardStyle(padding: HandySpacing.s12)
+                                }.buttonStyle(.plain)
+                            }
+                        }
+                        if !store.isPremium {
+                            Text("Daylight is free. The other four unlock with Pro.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        }
                     }
 
                     Section("App") {

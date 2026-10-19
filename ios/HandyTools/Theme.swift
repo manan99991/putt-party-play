@@ -4,22 +4,114 @@ import SwiftUI
 // Tokens. One accent, two modes. Views reference these — never a raw hex.
 // ---------------------------------------------------------------------------------------------
 
+/// Colour tokens now resolve through the active theme (see TenzyTheme / ThemeManager). Every view
+/// already reads `HandyColor.*`, so switching the theme re-skins the whole app with no call-site
+/// changes. Status colours (danger/success/amber) and the sticky-note/warning tints stay constant.
 enum HandyColor {
-    static let accent = Color(hex: 0x1F5EFF)
-    static let accentPressed = Color(hex: 0x1649D6)
     static let danger = Color(hex: 0xE53935)
     static let success = Color(hex: 0x2E7D32)
     static let amber = Color(hex: 0xB26A00)
-
-    static let accentSoft = Color.adaptive(light: 0xE8EEFF, dark: 0x16224A)
     static let warningSoft = Color.adaptive(light: 0xFFF4E5, dark: 0x2A2214)
     static let sticky = Color.adaptive(light: 0xFFF6B3, dark: 0x3A3418)
-    static let bg = Color.adaptive(light: 0xF6F7FB, dark: 0x0E0E12)
-    static let surface = Color.adaptive(light: 0xFFFFFF, dark: 0x16161C)
-    static let surfaceRaised = Color.adaptive(light: 0xFFFFFF, dark: 0x1C1C24)
-    static let textPrimary = Color.adaptive(light: 0x0E0E12, dark: 0xF2F2F5)
-    static let textSecondary = Color.adaptive(light: 0x5C5F6E, dark: 0xA3A6B5)
-    static let border = Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor.white.withAlphaComponent(0.10) : UIColor.black.withAlphaComponent(0.08) })
+
+    private static var t: ThemeTokens { ThemeManager.shared.tokens }
+    static var accent: Color { t.accent }
+    static var accentPressed: Color { t.accentPressed }
+    static var accentSoft: Color { t.accentSoft }
+    static var bg: Color { t.bg }
+    static var surface: Color { t.surface }
+    static var surfaceRaised: Color { t.surfaceRaised }
+    static var textPrimary: Color { t.textPrimary }
+    static var textSecondary: Color { t.textSecondary }
+    static var border: Color { t.border }
+}
+
+/// The five Tenzy looks. Daylight is free and keeps the app's existing light/dark behaviour; the
+/// other four are fixed-look Pro themes with the exact tokens from the design handoff.
+enum TenzyTheme: String, CaseIterable, Identifiable {
+    case daylight, midnight, warmPaper, neoPop, mono
+    var id: String { rawValue }
+    var isPro: Bool { self != .daylight }
+    var isDark: Bool { self == .midnight }
+    var title: String {
+        switch self {
+        case .daylight: return "Daylight"; case .midnight: return "Midnight"
+        case .warmPaper: return "Warm Paper"; case .neoPop: return "Neo Pop"; case .mono: return "Mono"
+        }
+    }
+    var blurb: String {
+        switch self {
+        case .daylight: return "Clean, bright — the default"
+        case .midnight: return "Dark glass, neon glow"
+        case .warmPaper: return "Editorial, warm, matte"
+        case .neoPop: return "Bold, playful, punchy"
+        case .mono: return "Minimal, stealth"
+        }
+    }
+    /// A small swatch gradient for the picker — the theme's tile gradient.
+    var swatch: [Color] {
+        switch self {
+        case .daylight: return [Color(hex: 0x1F5EFF), Color(hex: 0x1649D6)]
+        case .midnight: return [Color(hex: 0x1E3A8A), Color(hex: 0x3DE1FF)]
+        case .warmPaper: return [Color(hex: 0xC2502E), Color(hex: 0xE0795A)]
+        case .neoPop: return [Color(hex: 0xFF2D87), Color(hex: 0xFF8A00)]
+        case .mono: return [Color(hex: 0x1A1A1A), Color(hex: 0x000000)]
+        }
+    }
+    var tokens: ThemeTokens {
+        switch self {
+        case .daylight:
+            return ThemeTokens(
+                accent: Color(hex: 0x1F5EFF), accentPressed: Color(hex: 0x1649D6),
+                accentSoft: .adaptive(light: 0xE8EEFF, dark: 0x16224A),
+                bg: .adaptive(light: 0xF6F7FB, dark: 0x0E0E12),
+                surface: .adaptive(light: 0xFFFFFF, dark: 0x16161C),
+                surfaceRaised: .adaptive(light: 0xFFFFFF, dark: 0x1C1C24),
+                textPrimary: .adaptive(light: 0x0E0E12, dark: 0xF2F2F5),
+                textSecondary: .adaptive(light: 0x5C5F6E, dark: 0xA3A6B5),
+                border: Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor.white.withAlphaComponent(0.10) : UIColor.black.withAlphaComponent(0.08) }))
+        case .midnight:  return .fixed(accent: 0x3DE1FF, pressed: 0x16B6D6, bg: 0x0B0E14, surface: 0x141925, raised: 0x1C2230, text: 0xEAF2FF)
+        case .warmPaper: return .fixed(accent: 0xC2502E, pressed: 0x9E3F22, bg: 0xF6F1E7, surface: 0xEFE8D8, raised: 0xFFFFFF, text: 0x1C1A17)
+        case .neoPop:    return .fixed(accent: 0xFF2D87, pressed: 0xD81B6C, bg: 0xFBF7F2, surface: 0xFFFFFF, raised: 0xFFFFFF, text: 0x141414)
+        case .mono:      return .fixed(accent: 0xFF5A1F, pressed: 0xE04715, bg: 0xFFFFFF, surface: 0xF2F2F2, raised: 0xFFFFFF, text: 0x0A0A0A)
+        }
+    }
+}
+
+struct ThemeTokens {
+    let accent, accentPressed, accentSoft, bg, surface, surfaceRaised, textPrimary, textSecondary, border: Color
+    /// Fixed-look theme: derive the soft/secondary/border tints from the base tokens.
+    static func fixed(accent: UInt32, pressed: UInt32, bg: UInt32, surface: UInt32, raised: UInt32, text: UInt32) -> ThemeTokens {
+        let txt = Color(hex: text)
+        return ThemeTokens(
+            accent: Color(hex: accent), accentPressed: Color(hex: pressed),
+            accentSoft: Color(hex: accent).opacity(0.16),
+            bg: Color(hex: bg), surface: Color(hex: surface), surfaceRaised: Color(hex: raised),
+            textPrimary: txt, textSecondary: txt.opacity(0.62), border: txt.opacity(0.12))
+    }
+}
+
+/// Holds the active theme, persists it, and gates the Pro themes: a non-Pro user always renders as
+/// Daylight even if a Pro theme is stored (e.g. their subscription lapsed).
+@MainActor final class ThemeManager: ObservableObject {
+    static let shared = ThemeManager()
+    @Published var current: TenzyTheme { didSet { UserDefaults.standard.set(current.rawValue, forKey: Self.key); cachedFor = nil } }
+    private static let key = "tenzyTheme"
+    private init() {
+        current = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: Self.key) ?? "") ?? .daylight
+    }
+    /// The theme actually used for rendering — Daylight unless the user is Pro.
+    var effective: TenzyTheme { (current.isPro && !StoreManager.shared.isPremium) ? .daylight : current }
+
+    // Cache the resolved tokens; HandyColor reads these many times per frame.
+    private var cachedFor: TenzyTheme?
+    private var cached: ThemeTokens?
+    var tokens: ThemeTokens {
+        let eff = effective
+        if cachedFor == eff, let c = cached { return c }
+        let t = eff.tokens; cachedFor = eff; cached = t
+        return t
+    }
 }
 
 enum HandySpacing {

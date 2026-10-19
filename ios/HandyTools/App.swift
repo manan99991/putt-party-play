@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct TenzyApp: App {
     @StateObject private var store = StoreManager.shared
+    @StateObject private var theme = ThemeManager.shared
 
     // AdMob init and the interstitial preload are deferred until after the first frame
     // (prompt 1: cold-start work). They fire once, from a .task on the root view below.
@@ -51,6 +52,9 @@ struct TenzyApp: App {
                     }
                 }
             }
+            .environmentObject(theme)
+            // Daylight follows the system (keeps light/dark); a Pro theme pins its own look.
+            .preferredColorScheme(theme.effective == .daylight ? nil : (theme.effective.isDark ? .dark : .light))
         }
     }
 }
@@ -194,6 +198,7 @@ enum Launch {
 
 struct HomeView: View {
     @EnvironmentObject var store: StoreManager
+    @ObservedObject private var theme = ThemeManager.shared   // re-skin the home grid live on a theme change
     @State private var showPaywall = false
     @State private var page = 1
     @State private var search = ""
