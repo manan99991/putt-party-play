@@ -17,7 +17,7 @@ settings:
     # class of audio-callback crashes at once instead of annotating each callback individually.
     SWIFT_VERSION: "5.0"
     DEVELOPMENT_TEAM: "YOUR_TEAM_ID"      # <- Apple Developer team id
-    MARKETING_VERSION: "1.2.9"
+    MARKETING_VERSION: "1.2.10"
     CURRENT_PROJECT_VERSION: "1"
     TARGETED_DEVICE_FAMILY: "1"
     SWIFT_STRICT_CONCURRENCY: minimal

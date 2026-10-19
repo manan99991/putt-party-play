@@ -153,6 +153,21 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(out.size.height, winH + 200, "second shot must contribute new rows")
     }
 
+    func testStitcherOrdersShuffledScreenshots() throws {
+        // Slice a tall image into 3 overlapping strips, hand them over SHUFFLED — the stitcher must
+        // recover the true top-to-bottom order (new: Long Screenshot auto-orders any pick order).
+        let w = 300
+        let tall = Self.noisy(CGSize(width: CGFloat(w), height: 1200))
+        let cg = try XCTUnwrap(tall.cgImage)
+        func strip(_ y: Int, _ h: Int) throws -> Stitcher.Gray {
+            let c = try XCTUnwrap(cg.cropping(to: CGRect(x: 0, y: y, width: w, height: h)))
+            return Stitcher.grayscale(UIImage(cgImage: c), width: 160)
+        }
+        let a = try strip(0, 500), b = try strip(400, 500), c = try strip(800, 400)  // a→b→c overlap
+        let order = Stitcher.inferOrder([c, a, b])                                    // supplied out of order
+        XCTAssertEqual(order, [1, 2, 0], "expected a(idx1) → b(idx2) → c(idx0) top-to-bottom")
+    }
+
     // MARK: Privacy Scrubber — irreversible redaction + metadata strip
 
     func testScrubberBlocksPixelsAndDropsMetadata() throws {

@@ -19,9 +19,15 @@ enum Stitcher {
         // Normalise all to the narrowest pixel width so columns line up.
         let targetW = srcs.map { $0.size.width * $0.scale }.min() ?? 0
         guard targetW > 10 else { return nil }
-        let norm = srcs.map { normalize($0, pixelWidth: targetW) }
-        let small = norm.map { grayscale($0, width: 160) }
+        var norm = srcs.map { normalize($0, pixelWidth: targetW) }
+        var small = norm.map { grayscale($0, width: 160) }
         guard small.allSatisfy({ $0.rows > 20 }) else { return nil }
+
+        // The screenshots may have been picked in any order — infer the real top-to-bottom sequence
+        // (each image's bottom content flows into the next image's top) before stitching.
+        let order = inferOrder(small)
+        norm = order.map { norm[$0] }
+        small = order.map { small[$0] }
 
         // Fixed chrome from the first pair (clamped so a giant identical region can't eat the content).
         var header = 0, footer = 0
@@ -112,12 +118,13 @@ enum Stitcher {
         return n
     }
 
-    /// Overlap length (in rows) between A's bottom content and B's top content; 0 if none convincing.
-    static func bestOverlap(_ a: Gray, _ b: Gray, header: Int, footer: Int) -> Int {
+    /// Best vertical overlap of A's bottom content against B's top content: the overlap length in
+    /// rows and the average per-row error of that fit (err == Int.max when nothing is convincing).
+    static func overlapFit(_ a: Gray, _ b: Gray, header: Int, footer: Int) -> (len: Int, err: Int) {
         let aEnd = a.rows - footer           // exclusive end of A's content
         let bStart = header                  // start of B's content
         let maxL = min(aEnd - header, b.rows - footer - bStart) - 2
-        guard maxL >= 12 else { return 0 }
+        guard maxL >= 12 else { return (0, Int.max) }
         var bestL = 0, bestErr = Int.max
         var L = maxL
         while L >= 12 {
@@ -134,6 +141,46 @@ enum Stitcher {
             if avg < bestErr { bestErr = avg; bestL = L }
             L -= 1
         }
-        return bestErr < 10 ? bestL : 0
+        return (bestL, bestErr)
+    }
+
+    /// Overlap length (in rows) between A's bottom content and B's top content; 0 if none convincing.
+    static func bestOverlap(_ a: Gray, _ b: Gray, header: Int, footer: Int) -> Int {
+        let f = overlapFit(a, b, header: header, footer: footer)
+        return f.err < 10 ? f.len : 0
+    }
+
+    /// Infer the top-to-bottom order of screenshots supplied in ANY order. For a scroll sequence each
+    /// image's bottom content overlaps the next image's top, so we score every ordered pair "i sits
+    /// directly above j" and greedily chain from the image that nothing convincingly sits above.
+    static func inferOrder(_ small: [Gray]) -> [Int] {
+        let n = small.count
+        if n <= 1 { return Array(0..<n) }
+        let threshold = 10
+        // err[i][j] = how well i's bottom flows into j's top (lower is better; chrome left in, it's
+        // common to every shot so it only adds a constant and never flips the best pairing).
+        var err = Array(repeating: Array(repeating: Int.max, count: n), count: n)
+        for i in 0..<n { for j in 0..<n where i != j {
+            err[i][j] = overlapFit(small[i], small[j], header: 0, footer: 0).err
+        } }
+        // Start at the image least likely to have anything above it (worst best-incoming score).
+        var start = 0, worstIncoming = -1
+        for j in 0..<n {
+            var bestIn = Int.max
+            for i in 0..<n where i != j { bestIn = min(bestIn, err[i][j]) }
+            if bestIn > worstIncoming { worstIncoming = bestIn; start = j }
+        }
+        var used = [Bool](repeating: false, count: n)
+        var order = [start]; used[start] = true
+        var cur = start
+        while true {
+            var next = -1, bestE = threshold
+            for j in 0..<n where !used[j] { if err[cur][j] < bestE { bestE = err[cur][j]; next = j } }
+            if next == -1 { break }
+            order.append(next); used[next] = true; cur = next
+        }
+        // Anything with no convincing overlap (unrelated shots) keeps its original relative order.
+        for j in 0..<n where !used[j] { order.append(j) }
+        return order
     }
 }
