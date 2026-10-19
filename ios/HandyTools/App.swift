@@ -45,6 +45,9 @@ struct TenzyApp: App {
                         adsStarted = true
                         AdsBootstrap.start()
                         Interstitials.shared.preload()
+                        // Pre-scan photo duplicates in the background so Cleaner's Duplicates tab is
+                        // ready the moment it's opened, instead of making the user wait on a scan.
+                        if !Launch.uitest { CleanerIndex.shared.prewarm() }
                     }
                 }
             }
@@ -511,6 +514,8 @@ struct CrashBanner: View {
 struct ToolPage<Content: View>: View {
     let title: String
     let subtitle: String
+    /// Optional bar pinned at the bottom, above the ad — stays put while the content scrolls.
+    var footer: AnyView? = nil
     @ViewBuilder let content: () -> Content
     var body: some View {
         VStack(spacing: 0) {
@@ -525,6 +530,7 @@ struct ToolPage<Content: View>: View {
                 .padding(.bottom, HandySpacing.s48)
             }
             .scrollDismissesKeyboard(.interactively)
+            if let footer { footer }
             BannerAd()
                 .ignoresSafeArea(.keyboard, edges: .bottom)
         }
