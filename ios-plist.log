@@ -7,7 +7,7 @@
   "NSMicrophoneUsageDescription" => "Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded."
   "NSMotionUsageDescription" => "Needed for the level, barometer/altimeter and metal detector readings."
   "NSPhotoLibraryAddUsageDescription" => "Needed to save cleaned photos and scanned documents."
-  "NSPhotoLibraryUsageDescription" => "Needed to read text from screenshots and to view or strip photo metadata."
+  "NSPhotoLibraryUsageDescription" => "Needed to read text from screenshots, view or strip photo metadata, and find large or duplicate photos and videos you choose to remove. iOS always asks you to confirm a deletion."
   "NSSpeechRecognitionUsageDescription" => "Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded."
   "NSUserTrackingUsageDescription" => "Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones."
   "UIBackgroundModes" => [
