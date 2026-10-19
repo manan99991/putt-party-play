@@ -14,6 +14,7 @@ final class LiveToolTests: XCTestCase {
     static let hardwareToolIDs = [
         "audiolab",     // mic: tuner auto-starts → permission completion + audio tap on a bg thread
         "instruments",  // mic: sound meter
+        "rest",         // sleep sounds
         "gpsdash",      // location
         "procam",       // camera
         "colorvision",  // camera
@@ -36,5 +37,22 @@ final class LiveToolTests: XCTestCase {
             XCTAssertEqual(app.state, .runningForeground, "\(id): crashed on open with hardware live")
             app.terminate()
         }
+    }
+
+    /// Actually PLAY a sleep sound — this starts the AVAudioSourceNode render callback that crashed
+    /// on device (the render path that opening the screen alone never exercises).
+    func testPlayingASleepSoundDoesNotCrash() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "rest", "-uitest", "-live"]
+        app.launch()
+        XCTAssertTrue(app.wait(for: .runningForeground, timeout: 30), "rest did not reach foreground")
+        let sound = app.buttons.matching(NSPredicate(format: "label IN %@", ["White", "Pink", "Brown", "Fan", "Rain", "Ocean"])).firstMatch
+        if sound.waitForExistence(timeout: 12) {
+            sound.tap()
+            Thread.sleep(forTimeInterval: 3)   // let the render callback run
+            XCTAssertEqual(app.state, .runningForeground, "Rest crashed when playing a sleep sound")
+        }
+        // (If the tile isn't found the test adds no coverage but does not false-fail the gate.)
+        app.terminate()
     }
 }

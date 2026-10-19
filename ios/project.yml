@@ -10,9 +10,14 @@ options:
 
 settings:
   base:
-    SWIFT_VERSION: "6.0"
+    # Swift 5 language mode: the code is written for minimal concurrency and is thread-safe, but
+    # Swift 6 mode inserts runtime actor-isolation assertions that FALSELY crash when AVFoundation
+    # calls our audio render/tap callbacks on its own realtime thread (SIGNAL 5, dispatch_assert_queue).
+    # Swift 5 mode removes those false-positive runtime checks for the whole app, killing the entire
+    # class of audio-callback crashes at once instead of annotating each callback individually.
+    SWIFT_VERSION: "5.0"
     DEVELOPMENT_TEAM: "YOUR_TEAM_ID"      # <- Apple Developer team id
-    MARKETING_VERSION: "1.2.6"
+    MARKETING_VERSION: "1.2.8"
     CURRENT_PROJECT_VERSION: "1"
     TARGETED_DEVICE_FAMILY: "1"
     SWIFT_STRICT_CONCURRENCY: minimal
