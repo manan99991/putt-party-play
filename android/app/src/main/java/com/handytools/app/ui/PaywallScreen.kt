@@ -60,10 +60,8 @@ fun PaywallScreen(onBack: () -> Unit) {
 fun PaywallContent(onBack: () -> Unit) {
     val billing = HandyApp.instance.billing
     val premium by billing.isPremium.collectAsState()
-    billing.yearly.collectAsState()   // recompose when prices load
-    billing.monthly.collectAsState()
+    billing.yearly.collectAsState()   // recompose when the price loads
     val activity = LocalContext.current.findActivity()
-    var yearlySelected by remember { mutableStateOf(true) }
 
     Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Space24).padding(bottom = HandyTokens.Space24).navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally) {
@@ -92,12 +90,9 @@ fun PaywallContent(onBack: () -> Unit) {
                 Text("You're Pro. Thank you.", style = MaterialTheme.typography.titleMedium)
             }
         } else {
-            PlanRow("Yearly", billing.yearlyPrice ?: "$19.99", "Best value · save ~44%", "POPULAR", yearlySelected) { yearlySelected = true }
-            Spacer(Modifier.height(HandyTokens.Space8))
-            PlanRow("Monthly", billing.monthlyPrice ?: "$2.99", "Flexible, cancel anytime", null, !yearlySelected) { yearlySelected = false }
+            PlanRow("Yearly", billing.yearlyPrice ?: "$19.99", "One plan · 7-day free trial", "BEST VALUE", true) { }
             Spacer(Modifier.height(HandyTokens.Space16))
-            val label = if (yearlySelected) "Go Pro · ${billing.yearlyPrice ?: "$19.99"} / year" else "Go Pro · ${billing.monthlyPrice ?: "$2.99"} / month"
-            HPrimaryButton(label) { billing.launchPurchase(activity, yearlySelected) }
+            HPrimaryButton("Go Pro · ${billing.yearlyPrice ?: "$19.99"} / year") { billing.launchPurchase(activity) }
             Spacer(Modifier.height(HandyTokens.Space8))
             Text("Auto-renews until cancelled in Google Play. Price shown in your currency at checkout.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center)

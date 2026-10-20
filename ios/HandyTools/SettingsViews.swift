@@ -385,7 +385,7 @@ struct PrivacyView: View {
                     "Change it anytime in Settings › Privacy & Security › Tracking.",
                     "Pro removes the ads and the ad code doesn't run.",
                 ], note: nil)
-                Block("Payments", check: false, ["Pro is $9.99 a year, billed by Apple. We never see your card."], note: nil)
+                Block("Payments", check: false, ["Pro is $19.99 a year, billed by Apple. We never see your card."], note: nil)
                 Block("Permissions", check: false, [
                     "Microphone: Decibel Meter measures level only; audio is never recorded.",
                     "Camera: Doc Scanner, QR scanner, flashlight.",

@@ -24,13 +24,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
- * Google Play Billing, two auto-renewing subscriptions: Monthly and Yearly.
+ * Google Play Billing, a single auto-renewing subscription: Yearly (matches iOS).
  *
  * Play Console setup (one time):
  *   Monetize > Products > Subscriptions
  *     • Product ID: tenzy_pro_yearly    base plan yearly-p1y  (P1Y)  — $19.99
- *     • Product ID: tenzy_pro_monthly   base plan monthly-p1m (P1M)  — $2.99
- *   (Product IDs must match the constants below.) Optional 7-day free trial on yearly.
+ *   (Product ID must match the constant below.) Optional 7-day free trial on yearly.
  *
  * Premium = ads off + everything unlimited. Entitlement is cached in [isPremium] and re-verified
  * on every app start.
@@ -39,8 +38,7 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
 
     companion object {
         const val YEARLY_ID = "tenzy_pro_yearly"
-        const val MONTHLY_ID = "tenzy_pro_monthly"
-        private val PRODUCT_IDS = listOf(YEARLY_ID, MONTHLY_ID)
+        private val PRODUCT_IDS = listOf(YEARLY_ID)
         private const val TAG = "Billing"
     }
 
@@ -57,15 +55,12 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
 
     private val _yearly = MutableStateFlow<ProductDetails?>(null)
     val yearly: StateFlow<ProductDetails?> = _yearly
-    private val _monthly = MutableStateFlow<ProductDetails?>(null)
-    val monthly: StateFlow<ProductDetails?> = _monthly
 
     private fun priceOf(pd: ProductDetails?): String? =
         pd?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList?.lastOrNull()?.formattedPrice
 
     /** e.g. "$19.99" — null until Play responds. */
     val yearlyPrice: String? get() = priceOf(_yearly.value)
-    val monthlyPrice: String? get() = priceOf(_monthly.value)
 
     fun start() {
         if (client.isReady) return
@@ -89,7 +84,6 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
         val res = client.queryProductDetails(params)
         val list = res.productDetailsList ?: emptyList()
         _yearly.value = list.firstOrNull { it.productId == YEARLY_ID }
-        _monthly.value = list.firstOrNull { it.productId == MONTHLY_ID }
     }
 
     suspend fun refreshEntitlement() {
@@ -97,16 +91,15 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
             QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()
         )
         val active = res.purchasesList.any { p ->
-            (p.products.contains(YEARLY_ID) || p.products.contains(MONTHLY_ID)) &&
-                p.purchaseState == Purchase.PurchaseState.PURCHASED
+            p.products.contains(YEARLY_ID) && p.purchaseState == Purchase.PurchaseState.PURCHASED
         }
         res.purchasesList.forEach { ackIfNeeded(it) }
         setPremium(active)
     }
 
-    /** Launch the purchase flow for the chosen plan. */
-    fun launchPurchase(activity: Activity, yearly: Boolean) {
-        val pd = (if (yearly) _yearly.value else _monthly.value) ?: run { start(); return }
+    /** Launch the purchase flow for the yearly plan. */
+    fun launchPurchase(activity: Activity) {
+        val pd = _yearly.value ?: run { start(); return }
         val offerToken = pd.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: return
         val params = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(

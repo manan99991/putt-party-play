@@ -67,7 +67,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
                     Spacer(Modifier.width(HandyTokens.Space12))
                     Column(Modifier.weight(1f)) {
                         Text(if (premium) "Tenzy Pro" else "Go Pro", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
-                        Text(if (premium) "Ads off. Renews yearly at $9.99." else "$9.99 a year. Ads gone, unlimited clips and alarms.",
+                        Text(if (premium) "Ads off. Renews yearly at $19.99." else "$19.99 a year. Ads gone, unlimited clips and alarms.",
                             style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     }
                     if (!premium) Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)

@@ -160,7 +160,7 @@ private fun ProPage(onSeePro: () -> Unit) {
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(HandyTokens.Space16)) {
                 Row { Spacer(Modifier.weight(1.4f)); Cell("Free", true); Cell("Pro", true, accent = true) }
-                listOf("Ads" to ("Yes" to "None"), "Clipboard history" to ("20" to "Unlimited"), "Alarms" to ("3" to "Unlimited"), "Price" to ("Free" to "$9.99 a year")).forEach { (k, v) ->
+                listOf("Ads" to ("Yes" to "None"), "Clipboard history" to ("20" to "Unlimited"), "Alarms" to ("3" to "Unlimited"), "Price" to ("Free" to "$19.99 a year")).forEach { (k, v) ->
                     Box(Modifier.fillMaxWidth().height(1.dp).background(Handy.palette.border))
                     Row(Modifier.padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text(k, Modifier.weight(1.4f), style = MaterialTheme.typography.bodyLarge); Cell(v.first); Cell(v.second, accent = true)

@@ -106,8 +106,8 @@ platform :ios do
     upload_to_testflight(api_key: key, skip_waiting_for_build_processing: true)
   end
 
-  # Creates/updates the auto-renewing subscriptions and their prices directly through the
-  # App Store Connect API, so the monthly plan + both prices are set by the pipeline, not by hand.
+  # Creates/updates the single auto-renewing Yearly subscription and its price directly through the
+  # App Store Connect API, so the plan + price are set by the pipeline, not by hand.
   # Idempotent: safe to re-run. Run via the "iOS Subscriptions" workflow (workflow_dispatch).
   lane :subscriptions do
     require 'net/http'
@@ -160,7 +160,6 @@ platform :ios do
 
     want = [
       { pid: "tenzy_pro_yearly",  name: "Tenzy Pro (Yearly)",  period: "ONE_YEAR",  usd: "19.99" },
-      { pid: "tenzy_pro_monthly", name: "Tenzy Pro (Monthly)", period: "ONE_MONTH", usd: "2.99" },
     ]
     want.each do |w|
       sub = existing.find { |s| s.dig("attributes", "productId") == w[:pid] }

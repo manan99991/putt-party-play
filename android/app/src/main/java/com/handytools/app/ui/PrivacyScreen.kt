@@ -57,7 +57,7 @@ fun PrivacyScreen() {
             "Pro removes the ads and the ad code doesn't run.",
         ), null)
 
-        Block("Payments", false, listOf("Pro is $9.99 a year, billed by Google Play. We never see your card."), null)
+        Block("Payments", false, listOf("Pro is $19.99 a year, billed by Google Play. We never see your card."), null)
         Block("Permissions", false, listOf(
             "Each one is asked for by the tool that needs it, with the reason next to the switch.",
             "Draw over other apps: the floating buttons (clipboard, screenshot, scratchpad).",
