@@ -281,7 +281,8 @@ final class ToolFlowTests: XCTestCase {
     func testLensSimplifiesAndGists() {
         launch("lens")
         tapChip("Plain English")
-        button(containing: "plain English").tap()
+        // "Put it in plain English" — not "plain English" alone, which also matches the chip.
+        button(containing: "Put it in plain").tap()
         expect(text(containing: "Worth a second look"), "red flags", timeout: 60)
         expect(text(containing: "Auto-renewal"), "auto-renewal flag", timeout: 10)
         tapChip("Gist")
