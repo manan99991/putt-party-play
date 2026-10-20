@@ -1,5 +1,7 @@
 package com.handytools.app.ads
 
+import com.handytools.app.BuildConfig
+
 import android.app.Activity
 import android.content.Context
 import android.util.Log
@@ -38,12 +40,17 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.handytools.app.HandyApp
 
 /**
- * AdMob. These are Google's official TEST unit ids. Replace both before release
- * (AdMob console > Apps > Tenzy > Ad units) or you'll get your account flagged.
+ * AdMob ad units. LIVE units serve only in a production build (-PliveAds=true); every other build
+ * uses Google's reserved TEST units, which always fill and are safe to view and tap — so testing
+ * never generates invalid traffic on the real account.
  */
 object AdUnits {
-    const val BANNER = "ca-app-pub-5414801919054534/1045634061"
-    const val INTERSTITIAL = "ca-app-pub-5414801919054534/4808040249"
+    private const val TEST_BANNER = "ca-app-pub-3940256099942544/6300978111"        // Google's Android test banner
+    private const val TEST_INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712"  // Google's Android test interstitial
+    private const val LIVE_BANNER = "ca-app-pub-5414801919054534/1045634061"
+    private const val LIVE_INTERSTITIAL = "ca-app-pub-5414801919054534/4808040249"
+    val BANNER get() = if (BuildConfig.LIVE_ADS) LIVE_BANNER else TEST_BANNER
+    val INTERSTITIAL get() = if (BuildConfig.LIVE_ADS) LIVE_INTERSTITIAL else TEST_INTERSTITIAL
 }
 
 /** Provided by MainActivity so any screen's banner can open the paywall. */

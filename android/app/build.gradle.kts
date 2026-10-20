@@ -16,9 +16,14 @@ android {
         versionCode = 3
         versionName = "1.0.1"
 
-        // AdMob app ID. Replace with yours from https://apps.admob.com before release.
-        // This is Google's official TEST app id — safe to ship to internal testing.
+        // AdMob app ID (identifies the app; it doesn't serve ads itself).
         manifestPlaceholders["admobAppId"] = "ca-app-pub-5414801919054534~4620337988"
+
+        // Live ads only in a production build invoked with -PliveAds=true. Every other build —
+        // debug AND the internal-testing release — uses Google's reserved TEST ad units, which are
+        // always safe to view and tap. Viewing/tapping your own LIVE ads is an AdMob policy
+        // violation that can disable the account, so testing must never touch them.
+        buildConfigField("boolean", "LIVE_ADS", (project.findProperty("liveAds")?.toString() ?: "false"))
     }
 
     // Upload key. CI decodes ANDROID_KEYSTORE_B64 into android/upload.jks; locally, put your

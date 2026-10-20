@@ -9,8 +9,8 @@ import AppTrackingTransparency
 enum AdUnits {
     private static let liveBanner = "ca-app-pub-5414801919054534/9681092972"
     private static let liveInterstitial = "ca-app-pub-5414801919054534/5362574012"
-    private static let testBanner = "ca-app-pub-3940256099/2934735716"        // Google's iOS test banner
-    private static let testInterstitial = "ca-app-pub-3940256099/4411468910"  // Google's iOS test interstitial
+    private static let testBanner = "ca-app-pub-3940256099942544/2934735716"        // Google's iOS test banner
+    private static let testInterstitial = "ca-app-pub-3940256099942544/4411468910"  // Google's iOS test interstitial
 
     /// True only for a build installed from the App Store. TestFlight and dev builds carry a
     /// "sandboxReceipt"; a DEBUG build is never the store.
