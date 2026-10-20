@@ -458,7 +458,20 @@ struct ToolCard: View {
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .cardStyle(padding: HandySpacing.s12)
+        .padding(HandySpacing.s12)
+        .background {
+            // Surface + the tool's relevant motif, tinted by the theme accent at a whisper so text stays
+            // readable. Template-rendered, so one motif set re-skins across every theme.
+            ZStack {
+                HandyColor.surface
+                Image("bg_" + tool.id)
+                    .resizable().renderingMode(.template).scaledToFill()
+                    .foregroundStyle(HandyColor.accent).opacity(0.10)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+            .allowsHitTesting(false)
+        }
+        .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
         .overlay(alignment: .topTrailing) {
             if tool.ai { Image(systemName: "sparkle").font(.system(size: 10)).foregroundStyle(HandyColor.accent).padding(8) }
         }
