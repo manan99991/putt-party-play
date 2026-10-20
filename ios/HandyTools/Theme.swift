@@ -383,6 +383,44 @@ extension View {
     func compactButton() -> some View { buttonStyle(HandyCompactButtonStyle()) }
 }
 
+/// Collapsible "How to use" helper pinned at the top of a tool: a few plain steps so someone opening
+/// the tool for the first time knows exactly what to do. Expanded the first time, then remembers per
+/// tool (by `id`) whether the user collapsed it, so it never nags on repeat visits.
+struct HowTo: View {
+    let steps: [String]
+    @AppStorage private var open: Bool
+    init(_ id: String, _ steps: [String]) {
+        self.steps = steps
+        _open = AppStorage(wrappedValue: true, "howto.\(id)")
+    }
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Button { withAnimation(.easeInOut(duration: 0.2)) { open.toggle() } } label: {
+                HStack(spacing: HandySpacing.s8) {
+                    Image(systemName: "lightbulb.fill").font(.system(size: 13)).foregroundStyle(HandyColor.accent)
+                    Text("How to use").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                    Spacer()
+                    Image(systemName: open ? "chevron.up" : "chevron.down").font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textSecondary)
+                }.contentShape(Rectangle())
+            }.buttonStyle(.plain)
+            if open {
+                VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                    ForEach(Array(steps.enumerated()), id: \.offset) { i, s in
+                        HStack(alignment: .top, spacing: HandySpacing.s8) {
+                            Text("\(i + 1)").font(HandyFont.micro).monospacedDigit().foregroundStyle(.white)
+                                .frame(width: 18, height: 18).background(HandyColor.accent, in: Circle())
+                            Text(s).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(HandySpacing.s12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(HandyColor.accentSoft.opacity(0.6), in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+    }
+}
+
 extension Color {
     init(hex: UInt32) {
         self.init(.sRGB, red: Double((hex >> 16) & 0xFF) / 255, green: Double((hex >> 8) & 0xFF) / 255, blue: Double(hex & 0xFF) / 255, opacity: 1)

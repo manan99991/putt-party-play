@@ -42,6 +42,11 @@ struct StudioView: View {
 
     var body: some View {
         ToolPage(title: "Studio", subtitle: "Cut out the subject, make a passport photo, resize, or convert — one photo, one place.") {
+            HowTo("studio", [
+                "Choose a photo, then pick what to do: cut out, enhance, passport, resize or convert.",
+                "Set the options for that mode — background colour, passport country, pixel size or format.",
+                "Tap the action button, then Save or share the finished image.",
+            ])
             if original == nil {
                 PhotosPicker(selection: $pickedItem, matching: .images) {
                     Label("Choose a photo", systemImage: "photo").frame(maxWidth: .infinity)

@@ -23,6 +23,11 @@ struct InstrumentsView: View {
 
     var body: some View {
         ToolPage(title: "Instruments", subtitle: "Level, compass, sound, light, altitude, metal and a ruler — the sensors you already own, done properly.") {
+            HowTo("instruments", [
+                "Pick a gauge up top — level, compass, sound, light, altitude, metal detector or ruler.",
+                "Hold the phone the way the gauge needs: flat on a surface for the level, upright for the compass.",
+                "Tap a live reading to hold it. For exact sizes, calibrate the ruler against a bank card first.",
+            ])
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Kind.allCases, id: \.rawValue) { k in HChip(text: k.title, selected: kind == k) { switchTo(k) } }
             }
