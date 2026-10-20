@@ -40,12 +40,12 @@ struct TextStudioView: View {
                 }
             }
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) { ForEach(Action.allCases, id: \.rawValue) { a in HChip(text: a.title, selected: action == a) { action = a } } }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Action.allCases, id: \.rawValue) { a in HChip(text: a.title, selected: action == a) { action = a } }
             }
             if action == .rewrite || action == .reply {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) { ForEach(tones, id: \.self) { t in HChip(text: t, selected: tone == t) { tone = t } } }
+                HandyFlow(spacing: HandySpacing.s8) {
+                    ForEach(tones, id: \.self) { t in HChip(text: t, selected: tone == t) { tone = t } }
                 }
             }
             if action.needsAI && !AIEngine.isAvailable {

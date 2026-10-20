@@ -92,11 +92,9 @@ struct FitItView: View {
     private var targetPicker: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text("Must be under").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(availablePresets, id: \.bytes) { p in
-                        HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = "" }
-                    }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(availablePresets, id: \.bytes) { p in
+                    HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = "" }
                 }
             }
             HStack(spacing: HandySpacing.s8) {

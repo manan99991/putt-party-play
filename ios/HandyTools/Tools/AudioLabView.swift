@@ -17,10 +17,8 @@ struct AudioLabView: View {
 
     var body: some View {
         ToolPage(title: "Audio Lab", subtitle: "Tune an instrument, generate any tone, test your speakers and earbuds, or shake water out of them.") {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(Kind.allCases, id: \.rawValue) { k in HChip(text: k.title, selected: kind == k) { switchTo(k) } }
-                }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Kind.allCases, id: \.rawValue) { k in HChip(text: k.title, selected: kind == k) { switchTo(k) } }
             }
             switch kind {
             case .tuner: tunerPanel
@@ -45,8 +43,8 @@ struct AudioLabView: View {
 
     private var tunerPanel: some View {
         VStack(spacing: HandySpacing.s12) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) { ForEach(0..<presets.count, id: \.self) { i in HChip(text: presets[i].0, selected: preset == i) { preset = i } } }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(0..<presets.count, id: \.self) { i in HChip(text: presets[i].0, selected: preset == i) { preset = i } }
             }
             let inTune = abs(tuner.cents) < 5 && tuner.clarity > 0.85
             ZStack {

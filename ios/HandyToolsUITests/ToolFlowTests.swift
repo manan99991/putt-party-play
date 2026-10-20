@@ -281,6 +281,9 @@ final class ToolFlowTests: XCTestCase {
         launch("readaloud")
         button(containing: "Read this").tap()
         expect(text(containing: "1 / 3"), "sentence counter", timeout: 30)
+        // Pause before skipping so live playback's auto-advance can't race the manual skip — this
+        // isolates what we're testing: tapping "Next sentence" moves the counter forward by one.
+        app.buttons["Pause"].firstMatch.tap()
         app.buttons["Next sentence"].firstMatch.tap()
         expect(text(containing: "2 / 3"), "advanced to sentence 2", timeout: 10)
         button(containing: "Voice").tap(); expect(app.staticTexts["Automatic (match the text)"], "voice picker", timeout: 10)

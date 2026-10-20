@@ -113,10 +113,8 @@ struct VideoView: View {
     }
 
     private var modeChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: HandySpacing.s8) {
-                ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
-            }
+        HandyFlow(spacing: HandySpacing.s8) {
+            ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
         }
     }
 
@@ -125,11 +123,9 @@ struct VideoView: View {
     private var shrinkControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text("Must be under").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(videoPresets, id: \.bytes) { p in
-                        HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = "" }
-                    }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(videoPresets, id: \.bytes) { p in
+                    HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = "" }
                 }
             }
             HStack(spacing: HandySpacing.s8) {

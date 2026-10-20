@@ -61,8 +61,8 @@ struct ProCameraView: View {
                 shutterButton
             }
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) { ForEach(Panel.allCases, id: \.rawValue) { p in HChip(text: p.title, selected: panel == p) { panel = p } } }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Panel.allCases, id: \.rawValue) { p in HChip(text: p.title, selected: panel == p) { panel = p } }
             }
             switch panel {
             case .exposure: exposurePanel

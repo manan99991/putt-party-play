@@ -176,11 +176,9 @@ struct FlashlightView: View {
                     Text("\(Int(torch.level * 100))%").font(HandyFont.bodyStrong).monospacedDigit()
                 }
                 Slider(value: $torch.level, in: 0.05...1.0).tint(HandyColor.accent)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) {
-                        Text("Auto-off").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                        ForEach([0, 5, 15, 60], id: \.self) { m in HChip(text: m == 0 ? "Never" : "\(m) min", selected: torch.autoOffMinutes == m) { torch.autoOffMinutes = m } }
-                    }
+                HandyFlow(spacing: HandySpacing.s8) {
+                    Text("Auto-off").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    ForEach([0, 5, 15, 60], id: \.self) { m in HChip(text: m == 0 ? "Never" : "\(m) min", selected: torch.autoOffMinutes == m) { torch.autoOffMinutes = m } }
                 }
             }
             .cardStyle()

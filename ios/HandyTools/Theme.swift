@@ -323,6 +323,58 @@ struct LimitNote: View {
     var body: some View { Text(text).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
 }
 
+/// Lays its children out left-to-right and WRAPS to a new line when the next one wouldn't fit,
+/// instead of running off the right edge. This is the fix for the "controls are cut off / I have to
+/// scroll sideways to find a chip" class of bug: a row of mode chips becomes two or three short rows,
+/// every one visible on the same page. Drop-in replacement for `ScrollView(.horizontal){ HStack{…} }`
+/// around a set of chips — same spacing, no scrolling.
+struct HandyFlow: Layout {
+    var spacing: CGFloat = HandySpacing.s8
+    var lineSpacing: CGFloat = HandySpacing.s8
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let maxW = proposal.width ?? .infinity
+        let rows = layout(subviews, maxW: maxW)
+        let height = rows.last.map { $0.y + $0.height } ?? 0
+        let width = proposal.width ?? rows.map { $0.width }.max() ?? 0
+        return CGSize(width: width, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let rows = layout(subviews, maxW: bounds.width)
+        for row in rows {
+            var x = bounds.minX
+            for item in row.items {
+                let s = subviews[item.index].sizeThatFits(.unspecified)
+                subviews[item.index].place(at: CGPoint(x: x, y: bounds.minY + row.y), anchor: .topLeading, proposal: ProposedViewSize(s))
+                x += s.width + spacing
+            }
+        }
+    }
+
+    private struct Row { var items: [(index: Int, width: CGFloat)] = []; var y: CGFloat = 0; var width: CGFloat = 0; var height: CGFloat = 0 }
+
+    private func layout(_ subviews: Subviews, maxW: CGFloat) -> [Row] {
+        var rows: [Row] = []
+        var row = Row()
+        var x: CGFloat = 0
+        for (i, v) in subviews.enumerated() {
+            let s = v.sizeThatFits(.unspecified)
+            if !row.items.isEmpty, x + s.width > maxW {
+                rows.append(row)
+                let nextY = row.y + row.height + lineSpacing
+                row = Row(); row.y = nextY; x = 0
+            }
+            row.items.append((i, s.width))
+            x += s.width + spacing
+            row.width = max(row.width, x - spacing)
+            row.height = max(row.height, s.height)
+        }
+        if !row.items.isEmpty { rows.append(row) }
+        return rows
+    }
+}
+
 extension View {
     func cardStyle(padding: CGFloat = HandySpacing.s16) -> some View { modifier(HandyCardStyle(padding: padding)) }
     func primaryButton() -> some View { buttonStyle(HandyPrimaryButtonStyle()) }

@@ -176,10 +176,8 @@ struct ScanView: View {
     }
 
     private var modeChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: HandySpacing.s8) {
-                ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
-            }
+        HandyFlow(spacing: HandySpacing.s8) {
+            ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
         }
     }
 
@@ -187,11 +185,9 @@ struct ScanView: View {
 
     private var pageControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(DocEngine.Filter.allCases, id: \.rawValue) { f in
-                        HChip(text: f.title, selected: page?.filter == f) { update(selected) { $0.filter = f; $0.ocr = nil } }
-                    }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(DocEngine.Filter.allCases, id: \.rawValue) { f in
+                    HChip(text: f.title, selected: page?.filter == f) { update(selected) { $0.filter = f; $0.ocr = nil } }
                 }
             }
             HStack(spacing: HandySpacing.s8) {
@@ -277,13 +273,11 @@ struct ScanView: View {
                     Text("Adds an invisible text layer so Find, select and copy work in any reader.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
             }.tint(HandyColor.accent)
-            HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(DocEngine.PageSize.allCases, id: \.rawValue) { s in HChip(text: s.title, selected: pageSize == s) { pageSize = s } }
             }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(0..<limits.count, id: \.self) { i in HChip(text: limits[i].0, selected: (limitIdx ?? 0) == i) { limitIdx = i == 0 ? nil : i } }
-                }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(0..<limits.count, id: \.self) { i in HChip(text: limits[i].0, selected: (limitIdx ?? 0) == i) { limitIdx = i == 0 ? nil : i } }
             }
             HStack(spacing: HandySpacing.s8) {
                 Toggle("Split", isOn: $splitting).tint(HandyColor.accent).font(HandyFont.body).fixedSize()

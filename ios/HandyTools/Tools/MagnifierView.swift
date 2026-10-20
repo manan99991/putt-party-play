@@ -58,10 +58,8 @@ struct MagnifierView: View {
                 Text(String(format: "%.1f×", frozen ? zoom * frozenZoom : zoom)).font(HandyFont.caption).monospacedDigit().frame(width: 44)
             }.foregroundStyle(HandyColor.textSecondary)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(Look.allCases, id: \.rawValue) { l in HChip(text: l.title, selected: look == l) { look = l } }
-                }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Look.allCases, id: \.rawValue) { l in HChip(text: l.title, selected: look == l) { look = l } }
             }
             HStack(spacing: HandySpacing.s12) {
                 Toggle("Sharpen text", isOn: $sharpen).tint(HandyColor.accent).font(HandyFont.body).fixedSize()

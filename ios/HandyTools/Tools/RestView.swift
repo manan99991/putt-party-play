@@ -42,10 +42,8 @@ struct RestView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
                 HStack { Text("Sleep timer").font(HandyFont.bodyStrong); Spacer()
                     if let r = player.remaining { Text("fades out in \(GeoFormat.duration(r))").font(HandyFont.caption).monospacedDigit().foregroundStyle(HandyColor.accent) } }
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) {
-                        ForEach([0, 15, 30, 45, 60, 90], id: \.self) { m in HChip(text: m == 0 ? "Off" : "\(m) min", selected: player.timerMinutes == m) { player.setTimer(minutes: m) } }
-                    }
+                HandyFlow(spacing: HandySpacing.s8) {
+                    ForEach([0, 15, 30, 45, 60, 90], id: \.self) { m in HChip(text: m == 0 ? "Off" : "\(m) min", selected: player.timerMinutes == m) { player.setTimer(minutes: m) } }
                 }
             }.cardStyle(padding: HandySpacing.s12)
             Text("Keeps playing with the screen locked. Brown and Fan mask traffic and snoring best; Pink is the one studies use for deeper sleep.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

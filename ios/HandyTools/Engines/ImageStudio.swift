@@ -10,15 +10,36 @@ enum ImageStudio {
 
     // MARK: cutout
 
-    /// Subject lifted off the background (alpha PNG), via Vision's foreground-instance mask.
+    /// Subject lifted off the background (alpha PNG), via Vision's foreground-instance mask, with a
+    /// saliency fallback for subjects the instance model misses (flat graphics, low-texture photos).
     static func cutout(_ image: UIImage) -> UIImage? {
         guard let cg = image.normalizedUp().cgImage else { return nil }
         let handler = VNImageRequestHandler(cgImage: cg)
         let req = VNGenerateForegroundInstanceMaskRequest()
-        guard (try? handler.perform([req])) != nil, let res = req.results?.first,
-              let masked = try? res.generateMaskedImage(ofInstances: res.allInstances, from: handler, croppedToInstancesExtent: false) else { return nil }
-        let ci = CIImage(cvPixelBuffer: masked)
-        guard let out = CIContext().createCGImage(ci, from: ci.extent) else { return nil }
+        if (try? handler.perform([req])) != nil, let res = req.results?.first, !res.allInstances.isEmpty,
+           let masked = try? res.generateMaskedImage(ofInstances: res.allInstances, from: handler, croppedToInstancesExtent: false) {
+            let ci = CIImage(cvPixelBuffer: masked)
+            if let out = CIContext().createCGImage(ci, from: ci.extent) { return UIImage(cgImage: out) }
+        }
+        return saliencyCutout(cg)
+    }
+
+    /// When the instance model finds no subject, fall back to attention-based saliency: scale the
+    /// heatmap up to the image, sharpen it into an alpha mask, and blend the photo over transparency.
+    /// Rough at the edges, but it always returns *something* to lift rather than failing outright.
+    private static func saliencyCutout(_ cg: CGImage) -> UIImage? {
+        let handler = VNImageRequestHandler(cgImage: cg)
+        let req = VNGenerateAttentionBasedSaliencyImageRequest()
+        guard (try? handler.perform([req])) != nil,
+              let obs = req.results?.first as? VNSaliencyImageObservation else { return nil }
+        let full = CIImage(cgImage: cg)
+        let heat = CIImage(cvPixelBuffer: obs.pixelBuffer)
+        let sx = full.extent.width / heat.extent.width, sy = full.extent.height / heat.extent.height
+        let mask = heat.transformed(by: CGAffineTransform(scaleX: sx, y: sy))
+            .applyingFilter("CIColorControls", parameters: [kCIInputContrastKey: 2.2, kCIInputBrightnessKey: -0.15])
+            .applyingFilter("CIMaskToAlpha")
+        let masked = full.applyingFilter("CIBlendWithMask", parameters: [kCIInputMaskImageKey: mask])
+        guard let out = CIContext().createCGImage(masked, from: full.extent) else { return nil }
         return UIImage(cgImage: out)
     }
 

@@ -82,8 +82,8 @@ struct CaptureView: View {
                 Text(g.text).font(HandyFont.body).textSelection(.enabled).lineLimit(12)
                 let found = Detected.scan(g.text)
                 if !found.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: HandySpacing.s8) { ForEach(found) { d in Link(destination: d.url) { Label(d.label, systemImage: d.icon) }.compactButton() } }
+                    HandyFlow(spacing: HandySpacing.s8) {
+                        ForEach(found) { d in Link(destination: d.url) { Label(d.label, systemImage: d.icon) }.compactButton() }
                     }
                 }
                 HStack(spacing: HandySpacing.s8) {

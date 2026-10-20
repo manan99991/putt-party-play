@@ -82,10 +82,8 @@ struct ColorVisionView: View {
                 }.padding(HandySpacing.s12)
             }
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; snapshot = nil } }
-                }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; snapshot = nil } }
             }
 
             switch mode {
@@ -116,10 +114,8 @@ struct ColorVisionView: View {
 
     private var typeControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(ColorVision.Deficiency.allCases, id: \.rawValue) { d in HChip(text: d.short, selected: deficiency == d) { deficiencyRaw = d.rawValue } }
-                }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(ColorVision.Deficiency.allCases, id: \.rawValue) { d in HChip(text: d.short, selected: deficiency == d) { deficiencyRaw = d.rawValue } }
             }
             HStack { Text("How strong is it").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(width: 118, alignment: .leading); Slider(value: $severity, in: 0.2...1).tint(HandyColor.accent); Text("\(Int(severity * 100))%").font(HandyFont.caption).monospacedDigit().frame(width: 40) }
             if mode == .correct {

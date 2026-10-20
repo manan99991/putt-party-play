@@ -23,10 +23,8 @@ struct InstrumentsView: View {
 
     var body: some View {
         ToolPage(title: "Instruments", subtitle: "Level, compass, sound, light, altitude, metal and a ruler — the sensors you already own, done properly.") {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(Kind.allCases, id: \.rawValue) { k in HChip(text: k.title, selected: kind == k) { switchTo(k) } }
-                }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Kind.allCases, id: \.rawValue) { k in HChip(text: k.title, selected: kind == k) { switchTo(k) } }
             }
             switch kind {
             case .level: levelPanel

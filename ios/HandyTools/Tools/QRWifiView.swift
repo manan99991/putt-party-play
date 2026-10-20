@@ -87,12 +87,10 @@ struct QRWifiView: View {
 
     private var makeTab: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(Array(["Link / text", "Wi‑Fi", "Contact", "Phone / SMS", "Batch"].enumerated()), id: \.offset) { i, name in
                         HChip(text: name, selected: kind == i) { kind = i; qrImage = nil; batchImages = [] }
                     }
-                }
             }
             switch kind {
             case 0: field("https://… or any text", $text)

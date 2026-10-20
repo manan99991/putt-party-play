@@ -49,10 +49,8 @@ struct StudioView: View {
             }
 
             if let original {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: HandySpacing.s8) {
-                        ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; preview = nil; output = nil; errorText = nil } }
-                    }
+                HandyFlow(spacing: HandySpacing.s8) {
+                    ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; preview = nil; output = nil; errorText = nil } }
                 }
 
                 ZStack {
@@ -136,14 +134,12 @@ struct StudioView: View {
     private var resizeControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text("Longest side").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(0..<resizeOptions.count, id: \.self) { i in HChip(text: resizeOptions[i].0, selected: sizeLimitIdx == nil && resizeIdx == i) { resizeIdx = i; sizeLimitIdx = nil } }
             }
             Text("…or under a file size").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: HandySpacing.s8) {
-                    ForEach(Array(SizeTarget.presets.enumerated()), id: \.offset) { i, p in HChip(text: p.label, selected: sizeLimitIdx == i) { sizeLimitIdx = i } }
-                }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Array(SizeTarget.presets.enumerated()), id: \.offset) { i, p in HChip(text: p.label, selected: sizeLimitIdx == i) { sizeLimitIdx = i } }
             }
         }
     }
