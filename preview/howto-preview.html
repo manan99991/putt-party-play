@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How-to Preview</title>
+<style>
+  :root{
+    --accent:#1F5EFF; --accent-soft:#E8EEFF;
+    --bg:#F6F7FB; --surface:#FFFFFF; --text:#0E0E12; --text2:#5C5F6E; --border:#E4E6EE;
+    --chip:#FFFFFF; --chip-border:#E0E3EC;
+  }
+  :root:not([data-theme="light"]){ @media (prefers-color-scheme: dark){
+    :root{ --accent:#4D82FF; --accent-soft:#16224A; --bg:#0E0E12; --surface:#16161C; --text:#F2F2F5; --text2:#A3A6B5; --border:#2A2A34; --chip:#1C1C24; --chip-border:#2A2A34; }
+  }}
+  :root[data-theme="dark"]{ --accent:#4D82FF; --accent-soft:#16224A; --bg:#0E0E12; --surface:#16161C; --text:#F2F2F5; --text2:#A3A6B5; --border:#2A2A34; --chip:#1C1C24; --chip-border:#2A2A34; }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;padding:24px 16px 48px}
+  .wrap{max-width:430px;margin:0 auto}
+  .toolbar{display:flex;gap:8px;align-items:center;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+  .seg{display:inline-flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  .seg button{appearance:none;border:0;background:transparent;color:var(--text2);font-size:13px;font-weight:600;padding:7px 14px;cursor:pointer}
+  .seg button.on{background:var(--accent);color:#fff}
+  .hint{text-align:center;color:var(--text2);font-size:12px;margin:-8px 0 22px}
+
+  .phone{background:var(--bg);border:1px solid var(--border);border-radius:28px;padding:20px 16px 18px;margin-bottom:22px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px}
+  .sub{font-size:15px;color:var(--text2);margin:0 0 16px;line-height:1.35}
+
+  /* How-to card */
+  .howto{background:var(--accent-soft);border-radius:14px;padding:12px;margin-bottom:16px}
+  .howto-head{display:flex;align-items:center;gap:8px;cursor:pointer}
+  .howto-head .bulb{color:var(--accent);font-size:15px}
+  .howto-head .ttl{font-weight:700;font-size:15px;flex:1}
+  .howto-head .chev{color:var(--text2);font-size:12px}
+  .steps{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+  .step{display:flex;gap:8px;align-items:flex-start}
+  .num{flex:0 0 18px;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .step p{margin:0;font-size:13px;color:var(--text2);line-height:1.4}
+  .howto.collapsed .steps{display:none}
+
+  /* chips row (wrapping) */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+  .chip{font-size:14px;padding:8px 14px;border-radius:999px;background:var(--chip);border:1px solid var(--chip-border);color:var(--text)}
+  .chip.sel{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  .label{font-size:12px;color:var(--text2);margin:10px 0 14px 2px}
+  .btn{display:block;text-align:center;background:var(--accent);color:#fff;font-weight:700;font-size:16px;padding:13px;border-radius:14px;margin-top:4px}
+  .cap{font-size:11px;color:var(--text2);text-align:center;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="toolbar">
+    <div class="seg" id="theme">
+      <button data-t="light" class="on">Light</button>
+      <button data-t="dark">Dark</button>
+    </div>
+  </div>
+  <p class="hint">This is a mock-up of the in-app style — tap a “How to use” header to collapse it.</p>
+
+  <!-- Instruments -->
+  <div class="phone">
+    <h1 class="h1">Instruments</h1>
+    <p class="sub">Level, compass, sound, light, altitude, metal and a ruler — the sensors you already own, done properly.</p>
+    <div class="howto">
+      <div class="howto-head" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span class="bulb">💡</span><span class="ttl">How to use</span><span class="chev">▲</span>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><p>Pick a gauge up top — level, compass, sound, light, altitude, metal detector or ruler.</p></div>
+        <div class="step"><span class="num">2</span><p>Hold the phone the way the gauge needs: flat on a surface for the level, upright for the compass.</p></div>
+        <div class="step"><span class="num">3</span><p>Tap a live reading to hold it. For exact sizes, calibrate the ruler against a bank card first.</p></div>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip sel">Level</span><span class="chip">Compass</span><span class="chip">Sound</span>
+      <span class="chip">Light</span><span class="chip">Altitude</span><span class="chip">Metal</span><span class="chip">Ruler</span>
+    </div>
+  </div>
+
+  <!-- Studio -->
+  <div class="phone">
+    <h1 class="h1">Studio</h1>
+    <p class="sub">Cut out the subject, make a passport photo, resize, or convert — one photo, one place.</p>
+    <div class="howto">
+      <div class="howto-head" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span class="bulb">💡</span><span class="ttl">How to use</span><span class="chev">▲</span>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><p>Choose a photo, then pick what to do: cut out, enhance, passport, resize or convert.</p></div>
+        <div class="step"><span class="num">2</span><p>Set the options for that mode — background colour, passport country, pixel size or format.</p></div>
+        <div class="step"><span class="num">3</span><p>Tap the action button, then Save or share the finished image.</p></div>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip sel">Cut out</span><span class="chip">Enhance</span><span class="chip">Passport</span>
+      <span class="chip">Resize</span><span class="chip">Convert</span>
+    </div>
+    <a class="btn">Cut out subject</a>
+  </div>
+
+  <!-- Collapsed example -->
+  <div class="phone">
+    <h1 class="h1">Instruments</h1>
+    <p class="sub">After the first visit, if someone collapses it, it stays collapsed for that tool.</p>
+    <div class="howto collapsed">
+      <div class="howto-head" onclick="this.parentElement.classList.toggle('collapsed')">
+        <span class="bulb">💡</span><span class="ttl">How to use</span><span class="chev">▼</span>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><p>Pick a gauge up top — level, compass, sound, light, altitude, metal detector or ruler.</p></div>
+        <div class="step"><span class="num">2</span><p>Hold the phone the way the gauge needs.</p></div>
+        <div class="step"><span class="num">3</span><p>Tap a live reading to hold it.</p></div>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip sel">Level</span><span class="chip">Compass</span><span class="chip">Sound</span>
+      <span class="chip">Light</span><span class="chip">Altitude</span><span class="chip">Metal</span><span class="chip">Ruler</span>
+    </div>
+  </div>
+
+  <p class="cap">Collapsed state remembers per tool, so it never nags on repeat visits.</p>
+</div>
+
+<script>
+  document.getElementById('theme').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    document.documentElement.setAttribute('data-theme', b.dataset.t);
+    this.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b));
+  });
+</script>
+</body>
+</html>
