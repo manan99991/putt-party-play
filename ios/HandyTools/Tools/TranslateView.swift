@@ -187,7 +187,7 @@ struct TranslateView: View {
 
     private func say(_ s: String, lang: String) {
         try? AVAudioSession.sharedInstance().setCategory(.playback, options: [.duckOthers]); try? AVAudioSession.sharedInstance().setActive(true)
-        let u = AVSpeechUtterance(string: s); u.voice = AVSpeechSynthesisVoice(language: lang); u.rate = speaker.rate
+        let u = AVSpeechUtterance(string: s); u.voice = Reader.bestVoice(forLanguage: lang); u.rate = speaker.rate
         speaker.speak(u)
     }
     private func swap() { let f = fromCode; fromCode = toCode; toCode = f; if !output.isEmpty { input = output; output = "" } }

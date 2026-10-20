@@ -751,6 +751,29 @@ final class EngineTests: XCTestCase {
         XCTAssertFalse(Reader.voices(for: "en").isEmpty)
     }
 
+    @MainActor func testReadAloudPicksOneStableLanguageForMixedPages() {
+        // A page of US business-listing fragments used to make the voice flip languages line by line,
+        // because each short line (an address, a phone number, a lone word) was language-detected on
+        // its own. The document language must now resolve ONCE, to the device language, not a shaky
+        // foreign guess off a fragment like "TIPPERARY LN".
+        let listing = """
+        Postal Address Industry
+        12929 TIPPERARY LN
+        Technology
+        PLAINFIELD, IL 60585-2799
+        Primary Phone Business Owner(s)
+        (331) 333-2325
+        Secondary Phone Postal Address
+        13000 DEERFIELD PKWY STE 3100
+        """
+        XCTAssertTrue(NLLanguageGuess.documentLanguage(listing).hasPrefix("en"),
+                      "address-heavy page should read in the device language, got \(NLLanguageGuess.documentLanguage(listing))")
+        XCTAssertTrue(NLLanguageGuess.documentLanguage("12929 TIPPERARY LN").hasPrefix("en"),
+                      "a lone ambiguous line must not pull a foreign language")
+        // The default voice is a real, installed voice — never nil (which would read silently).
+        XCTAssertNotNil(Reader.bestVoice(forLanguage: "en-US"))
+    }
+
     // MARK: explainer glossary
 
     func testGlossaryFindsTermsAndRedFlags() {

@@ -23,10 +23,16 @@ import UIKit
         return Int((Double(words) / max(60, wpm)).rounded(.up))
     }
 
+    /// The language used for the WHOLE document's voice — decided once here, never per sentence.
+    /// (Guessing per sentence made the voice flip languages on short lines like an address or a
+    /// phone number, which a page of listings is full of.)
+    private var documentLanguage = Locale.preferredLanguages.first ?? "en-US"
+
     func load(_ text: String) {
         stop()
         sentences = TextTools.sentences(text).flatMap { Self.split(longSentence: $0) }
         index = 0
+        documentLanguage = NLLanguageGuess.documentLanguage(text)
     }
 
     /// Keep utterances under ~300 chars so the highlight moves and the engine never chokes.
@@ -63,9 +69,39 @@ import UIKit
     private func utterance(_ s: String) -> AVSpeechUtterance {
         let u = AVSpeechUtterance(string: s)
         u.rate = rate
+        // A hand-picked voice wins; otherwise the best natural voice for the ONE document language.
         if let id = voiceID, let v = AVSpeechSynthesisVoice(identifier: id) { u.voice = v }
-        else if let lang = NLLanguageGuess.language(of: s), let v = AVSpeechSynthesisVoice(language: lang) { u.voice = v }
+        else { u.voice = Reader.bestVoice(forLanguage: documentLanguage) }
         return u
+    }
+
+    /// The most natural installed voice for a language: enhanced/premium first (what people mean by
+    /// "not robotic"), preferring the device's own region, and only falling back to the system
+    /// default voice (Samantha etc.) — never a novelty voice like "Bubbles" — if none are downloaded.
+    static func bestVoice(forLanguage lang: String) -> AVSpeechSynthesisVoice? {
+        let base = String(lang.prefix(2))
+        let region = Locale.current.region?.identifier
+        let candidates = AVSpeechSynthesisVoice.speechVoices().filter { $0.language.hasPrefix(base) }
+        let natural = candidates
+            .filter { $0.quality == .enhanced || $0.quality == .premium }
+            .sorted { a, b in
+                if a.quality.rawValue != b.quality.rawValue { return a.quality.rawValue > b.quality.rawValue }
+                let ar = region.map { a.language.hasSuffix($0) } ?? false
+                let br = region.map { b.language.hasSuffix($0) } ?? false
+                if ar != br { return ar }
+                return a.name < b.name
+            }
+        if let best = natural.first { return best }
+        return AVSpeechSynthesisVoice(language: region.map { "\(base)-\($0)" } ?? lang) ?? AVSpeechSynthesisVoice(language: base)
+    }
+
+    /// True when at least one natural (enhanced/premium) voice is installed for the device language —
+    /// so the UI can nudge the user to download one when everything on the phone is still robotic.
+    static var hasNaturalVoice: Bool {
+        let base = String((Locale.preferredLanguages.first ?? "en").prefix(2))
+        return AVSpeechSynthesisVoice.speechVoices().contains {
+            $0.language.hasPrefix(base) && ($0.quality == .enhanced || $0.quality == .premium)
+        }
     }
 
     nonisolated func speechSynthesizer(_ s: AVSpeechSynthesizer, didFinish u: AVSpeechUtterance) {
@@ -172,6 +208,20 @@ enum NLLanguageGuess {
     static func language(of s: String) -> String? {
         let r = NLLanguageRecognizer(); r.processString(String(s.prefix(400)))
         guard let l = r.dominantLanguage, l != .undetermined else { return nil }
+        return l.rawValue
+    }
+
+    /// One stable language for a whole document. Samples a big chunk (not one line), and when the
+    /// guess is weak — short, numeric or address-like text, which fools the detector — trusts the
+    /// device's own language instead of switching to a foreign voice. Keeps the device's region
+    /// when the base language matches (en-US rather than a bare "en").
+    static func documentLanguage(_ text: String) -> String {
+        let device = Locale.preferredLanguages.first ?? "en-US"
+        let r = NLLanguageRecognizer(); r.processString(String(text.prefix(2000)))
+        guard let l = r.dominantLanguage, l != .undetermined else { return device }
+        let confidence = r.languageHypotheses(withMaximum: 1)[l] ?? 0
+        if confidence < 0.65 { return device }
+        if device.hasPrefix(l.rawValue) { return device }
         return l.rawValue
     }
 }

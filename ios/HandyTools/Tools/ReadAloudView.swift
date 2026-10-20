@@ -96,8 +96,13 @@ struct ReadAloudView: View {
                 Spacer()
                 Button { reader.stop(); reader.sentences = []; exported = nil } label: { Image(systemName: "xmark").frame(width: 36, height: 36) }.compactButton()
             }
-            Text("Keeps reading with the screen locked. Download Enhanced or Premium voices in Settings › Accessibility › Spoken Content for the most natural sound.")
-                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            if Reader.hasNaturalVoice {
+                Text("Keeps reading with the screen locked. Tap Voice to switch speaker.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            } else {
+                Text("Keeps reading with the screen locked. For a far more natural voice, open Settings › Accessibility › Spoken Content › Voices and download an English (Enhanced or Premium) voice — the app uses it automatically.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
         }
     }
 
