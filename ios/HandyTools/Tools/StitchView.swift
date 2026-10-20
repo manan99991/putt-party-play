@@ -16,6 +16,11 @@ struct StitchView: View {
 
     var body: some View {
         ToolPage(title: "Long Screenshot", subtitle: "Take screenshots as you scroll, pick them here, get one tall image.") {
+            HowTo("stitch", [
+                "Pick the overlapping screenshots, in order.",
+                "It lines them up and merges them into one tall image.",
+                "Save or share the stitched result.",
+            ])
             PhotosPicker(selection: $items, maxSelectionCount: 12, matching: .screenshots) {
                 Label(shots.isEmpty ? "Choose screenshots (top to bottom)" : "Choose different screenshots", systemImage: "rectangle.stack").frame(maxWidth: .infinity)
             }

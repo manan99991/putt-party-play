@@ -15,6 +15,11 @@ struct MeasureARView: View {
 
     var body: some View {
         ToolPage(title: "Measure", subtitle: "Tap to place points on real surfaces — distance, perimeter and area, or height from the floor.") {
+            HowTo("measure", [
+                "Move the phone slowly so it can map the surface.",
+                "Tap to drop a start point, move, then tap to drop the end.",
+                "Read the distance; add more points for an area or a running total.",
+            ])
             if ARWorldTrackingConfiguration.isSupported {
                 ZStack {
                     ARContainer(ar: ar)

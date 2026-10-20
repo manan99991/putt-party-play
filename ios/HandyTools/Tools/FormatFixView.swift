@@ -24,6 +24,11 @@ struct FormatFixView: View {
 
     var body: some View {
         ToolPage(title: "Format Fixer", subtitle: "HEIC → JPG, MOV → MP4 — a whole batch, so anything you share opens anywhere.") {
+            HowTo("formatfix", [
+                "Pick the photos whose format you want to change.",
+                "Choose the output — JPEG, PNG or HEIC — and the quality.",
+                "Convert, then save or share the results.",
+            ])
             PhotosPicker(selection: $items, maxSelectionCount: maxPick, matching: .any(of: [.images, .videos])) {
                 Label(loaded.isEmpty ? "Choose photos & videos" : "Choose a different batch", systemImage: "photo.stack").frame(maxWidth: .infinity)
             }

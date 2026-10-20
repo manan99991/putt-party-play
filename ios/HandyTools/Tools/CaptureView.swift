@@ -32,6 +32,11 @@ struct CaptureView: View {
 
     var body: some View {
         ToolPage(title: "Capture", subtitle: "Point at text or a code. Tap a line to grab it, or grab everything — then copy, translate, call, open, or ask.") {
+            HowTo("capture", [
+                "Point the camera at text, a sign or a screen — or pick a photo.",
+                "Tap the shutter to grab the text; it is read on your phone, never uploaded.",
+                "Copy it, translate it, or tap a detected link, number or address.",
+            ])
             if cameraOK {
                 ZStack(alignment: .bottom) {
                     LiveCapture(grabTrigger: $grabTrigger, paused: $paused,

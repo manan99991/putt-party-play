@@ -17,6 +17,11 @@ struct AudioLabView: View {
 
     var body: some View {
         ToolPage(title: "Audio Lab", subtitle: "Tune an instrument, generate any tone, test your speakers and earbuds, or shake water out of them.") {
+            HowTo("audiolab", [
+                "Choose Tuner, Tone, Speaker test or Eject water up top.",
+                "Tuner and the speaker test use the mic and speaker — allow access when asked.",
+                "Eject water plays a low tone that pushes water out of the speaker grille.",
+            ])
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Kind.allCases, id: \.rawValue) { k in HChip(text: k.title, selected: kind == k) { switchTo(k) } }
             }

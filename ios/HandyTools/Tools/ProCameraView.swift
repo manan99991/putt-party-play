@@ -31,6 +31,11 @@ struct ProCameraView: View {
 
     var body: some View {
         ToolPage(title: "Pro Camera", subtitle: "Manual ISO, shutter, focus and white balance; peaking, zebras, histogram; RAW and long exposures.") {
+            HowTo("procam", [
+                "Pick a panel — exposure, focus, white balance or long exposure.",
+                "Drag the sliders to set it by hand; the preview updates live.",
+                "Tap the shutter; long exposure needs the phone held still.",
+            ])
             ZStack {
                 ProcessedFrameView(image: processed, holder: holder)
                 if grid {

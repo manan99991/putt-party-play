@@ -13,6 +13,11 @@ struct RestView: View {
 
     var body: some View {
         ToolPage(title: "Rest", subtitle: "Sleep sounds with a fading timer, and a recorder that only keeps the noisy moments of the night.") {
+            HowTo("rest", [
+                "Pick a sound — brown, pink, fan and more — and set the volume.",
+                "Set a sleep timer so it fades out on its own.",
+                "It keeps playing with the screen locked.",
+            ])
             Picker("", selection: $tab) { Text("Sounds").tag(0); Text("Night recorder").tag(1) }.pickerStyle(.segmented)
             if tab == 0 { soundsPanel } else { recorderPanel }
         }

@@ -53,6 +53,11 @@ struct VideoView: View {
 
     var body: some View {
         ToolPage(title: "Video", subtitle: "Shrink to a size limit, trim, convert, mute, pull the audio, or make a GIF — one clip, one place.") {
+            HowTo("video", [
+                "Pick a clip and choose what to do — trim, convert, mute, shrink or make a GIF.",
+                "Set the options for that mode, like a size limit.",
+                "Export, then save or share.",
+            ])
             if source == nil {
                 PhotosPicker(selection: $pickedItem, matching: .videos) {
                     Label("Choose a video", systemImage: "film").frame(maxWidth: .infinity)

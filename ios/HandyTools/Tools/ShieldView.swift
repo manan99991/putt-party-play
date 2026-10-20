@@ -15,6 +15,11 @@ struct ShieldView: View {
 
     var body: some View {
         ToolPage(title: "Message Shield", subtitle: "Paste a message or drop in a screenshot. See exactly why it's a scam — or why it's fine.") {
+            HowTo("shield", [
+                "Paste a suspicious text, email or DM.",
+                "It flags scam signs — pressure, odd links, money asks — and explains them.",
+                "When in doubt, do not tap links; verify with the company directly.",
+            ])
             VStack(spacing: HandySpacing.s8) {
                 TextEditor(text: $text)
                     .frame(minHeight: 140).padding(HandySpacing.s8).scrollContentBackground(.hidden)

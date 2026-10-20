@@ -45,6 +45,11 @@ struct ColorVisionView: View {
 
     var body: some View {
         ToolPage(title: "Color Vision", subtitle: "Live correction for colour-blind eyes, one-colour highlight, and a colour namer — camera or photo.") {
+            HowTo("colorvision", [
+                "Choose a mode — simulate, correct, or name the colour.",
+                "Point the camera around, or freeze a frame to inspect it.",
+                "Set the deficiency type and strength to match your eyes.",
+            ])
             ZStack(alignment: .bottom) {
                 ProcessedFrameView(image: processed, holder: holder)
                     .frame(height: 380)

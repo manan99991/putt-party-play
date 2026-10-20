@@ -6,8 +6,21 @@ import NaturalLanguage
 /// bullet-ing, stats — used as the always-available layer under Text Studio, Voice → Notes and
 /// the Explainer. The on-device model improves on these when present.
 enum TextTools {
-    /// Fix misspellings using the system spell checker (keeps the author's words otherwise).
-    @MainActor static func fixSpelling(_ text: String, language: String = "en") -> (text: String, fixes: Int) {
+    /// Resolve a detected language hint (e.g. "es", "en-GB") to a language the system spell checker
+    /// actually supports, falling back to the closest base language, then English.
+    static func checkerLanguage(for hint: String) -> String {
+        let available = UITextChecker.availableLanguages
+        if available.contains(hint) { return hint }
+        let underscored = hint.replacingOccurrences(of: "-", with: "_")
+        if available.contains(underscored) { return underscored }
+        let base = String(hint.prefix(2))
+        return available.first { $0.hasPrefix(base) } ?? (available.contains("en") ? "en" : available.first ?? "en")
+    }
+
+    /// Fix misspellings using the system spell checker (keeps the author's words otherwise). The
+    /// language hint follows the text, so a Spanish note is checked in Spanish, not flagged wholesale.
+    @MainActor static func fixSpelling(_ text: String, language hint: String = "en") -> (text: String, fixes: Int) {
+        let language = checkerLanguage(for: hint)
         let checker = UITextChecker()
         var out = text as NSString
         var fixes = 0
@@ -26,7 +39,8 @@ enum TextTools {
         // basic mechanics: double spaces, space before punctuation, capital after sentence end, "i" → "I"
         s = s.replacingOccurrences(of: #" {2,}"#, with: " ", options: .regularExpression)
         s = s.replacingOccurrences(of: #" +([,.!?;:])"#, with: "$1", options: .regularExpression)
-        s = s.replacingOccurrences(of: #"\bi\b"#, with: "I", options: .regularExpression)
+        // "i" → "I" is English-only; in other languages a lone "i" is a real word, so leave it.
+        if language.hasPrefix("en") { s = s.replacingOccurrences(of: #"\bi\b"#, with: "I", options: .regularExpression) }
         s = capitalizeSentences(s)
         return (s, fixes)
     }

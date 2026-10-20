@@ -158,6 +158,11 @@ struct FlashlightView: View {
 
     var body: some View {
         ToolPage(title: "Flashlight+", subtitle: "Patterns, SOS and Morse on the LED; a full-screen light and a mirror when you need your face lit.") {
+            HowTo("light", [
+                "Tap the big button to turn the torch on or off.",
+                "Pick a pattern — steady, strobe or SOS — and set the brightness.",
+                "Set an auto-off timer so it will not drain your battery.",
+            ])
             if !torch.available { LimitNote("No flash on this device — the screen light and mirror still work.") }
 
             HStack(spacing: HandySpacing.s8) {

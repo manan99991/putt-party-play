@@ -39,6 +39,11 @@ struct QRWifiView: View {
 
     var body: some View {
         ToolPage(title: "QR & Wi‑Fi", subtitle: "Scan any code and act on it, make your own, or print a Wi‑Fi card for guests.") {
+            HowTo("qrwifi", [
+                "Scan reads any QR code with the camera.",
+                "Make builds a code — a link, your Wi-Fi, a contact, or a batch.",
+                "Save or share the code you make.",
+            ])
             HStack(spacing: HandySpacing.s8) {
                 HChip(text: "Scan", selected: tab == 0) { tab = 0 }
                 HChip(text: "Make", selected: tab == 1) { tab = 1 }

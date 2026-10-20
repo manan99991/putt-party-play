@@ -387,11 +387,14 @@ extension View {
 /// the tool for the first time knows exactly what to do. Expanded the first time, then remembers per
 /// tool (by `id`) whether the user collapsed it, so it never nags on repeat visits.
 struct HowTo: View {
+    let id: String
     let steps: [String]
-    @AppStorage private var open: Bool
+    @State private var open: Bool
+    // Expanded the first time this tool is ever opened, then collapsed on every visit after — the
+    // steps are there to find, but they don't take over the screen once you know the tool.
     init(_ id: String, _ steps: [String]) {
-        self.steps = steps
-        _open = AppStorage(wrappedValue: true, "howto.\(id)")
+        self.id = id; self.steps = steps
+        _open = State(initialValue: !UserDefaults.standard.bool(forKey: "howto.seen.\(id)"))
     }
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
@@ -418,6 +421,7 @@ struct HowTo: View {
         .padding(HandySpacing.s12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(HandyColor.accentSoft.opacity(0.6), in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+        .onAppear { UserDefaults.standard.set(true, forKey: "howto.seen.\(id)") }
     }
 }
 

@@ -28,6 +28,11 @@ struct ScrubView: View {
 
     var body: some View {
         ToolPage(title: "Privacy Scrubber", subtitle: "Strip hidden location data and black out faces or text — permanently.") {
+            HowTo("scrub", [
+                "Pick a photo to clean before you share it.",
+                "It strips location and camera data, and can blur faces or plates.",
+                "Save or share the scrubbed copy — your original stays untouched.",
+            ])
             if original == nil {
                 PhotosPicker(selection: $pickedItem, matching: .images) {
                     Label("Choose a photo", systemImage: "photo").frame(maxWidth: .infinity)

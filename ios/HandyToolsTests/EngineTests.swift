@@ -774,6 +774,19 @@ final class EngineTests: XCTestCase {
         XCTAssertNotNil(Reader.bestVoice(forLanguage: "en-US"))
     }
 
+    @MainActor func testSpellFixFollowsLanguage() {
+        // An odd hint resolves to a real supported language, never crashes.
+        XCTAssertTrue(UITextChecker.availableLanguages.contains(TextTools.checkerLanguage(for: "zz-ZZ")))
+        XCTAssertTrue(TextTools.checkerLanguage(for: "en-GB").hasPrefix("en"))
+        // English keeps the lone-"i" → "I" fix mid-sentence.
+        XCTAssertTrue(TextTools.fixSpelling("maybe i can", language: "en").text.contains("I can"))
+        // A non-English language must NOT force a lone "i" to "I" — it's a real word elsewhere.
+        if TextTools.checkerLanguage(for: "it").hasPrefix("it") {
+            XCTAssertTrue(TextTools.fixSpelling("tra i campi", language: "it").text.contains(" i "),
+                          "Italian lone 'i' should be left alone")
+        }
+    }
+
     // MARK: explainer glossary
 
     func testGlossaryFindsTermsAndRedFlags() {

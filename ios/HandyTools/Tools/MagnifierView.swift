@@ -26,6 +26,11 @@ struct MagnifierView: View {
 
     var body: some View {
         ToolPage(title: "Magnifier+", subtitle: "Zoom past the Camera app, freeze and zoom into the frame, and read in high contrast.") {
+            HowTo("magnify", [
+                "Point the camera at small print and pinch to zoom in.",
+                "Tap to freeze a sharp frame, then study it.",
+                "Pick a high-contrast look or turn on the light to read easier.",
+            ])
             ZStack(alignment: .bottom) {
                 ProcessedFrameView(image: processed, holder: holder)
                     .frame(height: 400)

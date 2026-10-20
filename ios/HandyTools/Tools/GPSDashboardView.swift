@@ -16,6 +16,11 @@ struct GPSDashboardView: View {
 
     var body: some View {
         ToolPage(title: "GPS Dashboard", subtitle: "Speed, heading, altitude and a trip computer — plus HUD mode, exact coordinates, and where you parked.") {
+            HowTo("gpsdash", [
+                "Allow location, then step outside for the best signal.",
+                "Watch speed, altitude, heading and coordinates update live.",
+                "Switch units or turn on the windshield HUD for driving.",
+            ])
             speedCard
             HStack(spacing: HandySpacing.s8) {
                 tile("Heading", gps.course >= 0 ? "\(Int(gps.course))° \(SensorMath.cardinal(gps.course))" : "—", "location.north")

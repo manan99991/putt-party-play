@@ -12,6 +12,11 @@ struct LiveCaptionsView: View {
 
     var body: some View {
         ToolPage(title: "Live Captions", subtitle: "Real-time captions of what's being said — private, on-device, as long as you need.") {
+            HowTo("livecaptions", [
+                "Pick the language, then tap Start — captions appear as people speak.",
+                "Everything is transcribed on your phone; nothing is uploaded.",
+                "Tap Stop to end; changing the language starts a fresh session.",
+            ])
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(alignment: .leading, spacing: HandySpacing.s8) {

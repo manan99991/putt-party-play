@@ -26,6 +26,11 @@ struct TextStudioView: View {
     private let sampleText = "teh meeting is tomorow at 3 , i think we shoud prepare the slides before then. also remember to send the invoice by friday."
     var body: some View {
         ToolPage(title: "Text Studio", subtitle: "Fix, rewrite, shorten, bullet, summarize, or draft a reply — then send it on.") {
+            HowTo("textstudio", [
+                "Paste your text and pick an action — Fix, Shorten, Bullets, Summarize or Rewrite.",
+                "Fix, Shorten, Bullets and Summarize work on every phone; Rewrite and Reply use Apple Intelligence.",
+                "Run it, then copy or share the result.",
+            ])
             VStack(spacing: HandySpacing.s8) {
                 TextEditor(text: $text).focused($focused)
                     .frame(minHeight: 150).padding(HandySpacing.s8).scrollContentBackground(.hidden)
@@ -103,7 +108,7 @@ struct TextStudioView: View {
     private func fallback(_ input: String, _ a: Action) {
         switch a {
         case .fix:
-            let r = TextTools.fixSpelling(input); output = r.text; note = r.fixes == 0 ? "No misspellings found; tidied spacing and capitals." : "Fixed \(r.fixes) misspelling\(r.fixes == 1 ? "" : "s") and tidied spacing and capitals."
+            let r = TextTools.fixSpelling(input, language: NLLanguageGuess.documentLanguage(input)); output = r.text; note = r.fixes == 0 ? "No misspellings found; tidied spacing and capitals." : "Fixed \(r.fixes) misspelling\(r.fixes == 1 ? "" : "s") and tidied spacing and capitals."
         case .shorten:
             let n = max(1, TextTools.sentences(input).count / 2); output = TextTools.summarize(input, sentences: n).joined(separator: " "); note = "Kept the \(n) most informative sentence\(n == 1 ? "" : "s")."
         case .bullets: output = TextTools.bullets(input)

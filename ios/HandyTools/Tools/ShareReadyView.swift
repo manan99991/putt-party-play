@@ -34,6 +34,11 @@ struct ShareReadyView: View {
 
     var body: some View {
         ToolPage(title: "Share‑Ready", subtitle: "Pick what you're sending and where. It converts, strips metadata, and fits the size — in one tap.") {
+            HowTo("shareready", [
+                "Pick the photos you want to post.",
+                "Choose a size or platform preset so they upload fast and look right.",
+                "Export the share-ready copies.",
+            ])
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
                 Text("Where is it going?").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 ForEach(Self.recipes) { r in

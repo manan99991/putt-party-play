@@ -46,6 +46,11 @@ struct CleanerView: View {
         return ToolPage(title: "Cleaner",
                         subtitle: "Screenshots, big videos and duplicate photos & videos — clear the ones you choose. iOS confirms every delete.",
                         footer: footer) {
+            HowTo("cleaner", [
+                "Switch between Large, Duplicates and Received across the top.",
+                "Tap items to select, or Select all; the bar shows how much space you will free.",
+                "Delete when ready — iOS always asks you to confirm before anything is removed.",
+            ])
             if !authorized {
                 authGate
             } else {

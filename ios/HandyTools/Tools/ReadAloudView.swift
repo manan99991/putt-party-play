@@ -21,6 +21,11 @@ struct ReadAloudView: View {
 
     var body: some View {
         ToolPage(title: "Read Aloud", subtitle: "Paste, open a PDF, snap a page, or drop in a link — then listen, with the sentence highlighted.") {
+            HowTo("readaloud", [
+                "Paste text, open a PDF, snap a page, or drop in a link.",
+                "Tap play; the sentence being read is highlighted as it goes.",
+                "Set the speed, pick a voice, or save the whole thing as audio.",
+            ])
             if reader.sentences.isEmpty {
                 VStack(spacing: HandySpacing.s8) {
                     TextEditor(text: $text).frame(minHeight: 120).padding(HandySpacing.s8).scrollContentBackground(.hidden)

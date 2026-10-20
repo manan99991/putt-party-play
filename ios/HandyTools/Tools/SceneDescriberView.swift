@@ -21,6 +21,11 @@ struct SceneDescriberView: View {
 
     var body: some View {
         ToolPage(title: "Scene Describer", subtitle: "Tap to hear what's in front of the camera, or let it narrate as the scene changes.") {
+            HowTo("describe", [
+                "Point the camera at what is in front of you and tap to describe it.",
+                "It speaks what it sees; tap Repeat to hear it again.",
+                "Set the speaking speed to taste.",
+            ])
             ZStack(alignment: .bottom) {
                 ProcessedFrameView(image: cam.latest, holder: holder)
                     .frame(height: 300)

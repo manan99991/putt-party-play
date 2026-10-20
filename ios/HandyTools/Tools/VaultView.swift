@@ -27,6 +27,11 @@ struct VaultView: View {
 
     var body: some View {
         ToolPage(title: "Vault", subtitle: "Notes, secrets, photos and documents — encrypted, opened only by your face or passcode.") {
+            HowTo("vault", [
+                "Set it up with Face ID so only you can open it.",
+                "Add private notes and photos; they are encrypted on your phone.",
+                "Lock it when you are done — nothing syncs off the device.",
+            ])
             if vault.unlocked { unlockedBody } else { lockedBody }
             if let toast { Text(toast).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
         }

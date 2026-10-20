@@ -35,6 +35,11 @@ struct FitItView: View {
 
     var body: some View {
         ToolPage(title: "Fit It", subtitle: "Shrink a photo, video, or PDF to land just under the size limit you need.") {
+            HowTo("fitit", [
+                "Pick a photo or PDF that is too big to send.",
+                "Choose the size it must come under, or type a custom limit.",
+                "Fit It shrinks it just under the limit and keeps it sharp — then share.",
+            ])
             if source == nil {
                 PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
                     Label("Choose a photo or video", systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)

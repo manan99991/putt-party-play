@@ -17,6 +17,11 @@ struct VoiceNotesView: View {
 
     var body: some View {
         ToolPage(title: "Voice → Notes", subtitle: "Talk it out. Get the transcript, a summary and the to-dos — kept on your phone.") {
+            HowTo("voicenotes", [
+                "Tap record and talk; your words are transcribed live on your phone.",
+                "Pausing does not lose anything — it keeps going when you resume.",
+                "Stop to save the note; edit or share the text after.",
+            ])
             VStack(spacing: HandySpacing.s8) {
                 ScrollView {
                     Text(speech.transcript.isEmpty ? (speech.running ? "Listening…" : "Tap record and start talking. Meetings, lectures, ideas on a walk.") : speech.transcript)

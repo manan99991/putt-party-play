@@ -21,6 +21,11 @@ struct ExplainerView: View {
 
     var body: some View {
         ToolPage(title: "Plain-English Explainer", subtitle: "Leases, contracts, insurance letters, lab reports — decoded into words you'd use.") {
+            HowTo("explain", [
+                "Paste the text, open a PDF, or snap a photo of the page.",
+                "You get a plain-English summary with the key terms and red flags marked.",
+                "Tap any flagged term to see why it matters.",
+            ])
             VStack(spacing: HandySpacing.s8) {
                 TextEditor(text: $text).frame(minHeight: 140).padding(HandySpacing.s8).scrollContentBackground(.hidden)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))

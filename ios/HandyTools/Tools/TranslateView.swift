@@ -32,6 +32,11 @@ struct TranslateView: View {
 
     var body: some View {
         ToolPage(title: "Translate", subtitle: "Type, talk, or photograph — on-device translation that works offline and stays private.") {
+            HowTo("translate", [
+                "Pick the languages, then type, paste, or tap the mic to speak.",
+                "The translation appears below; tap the speaker to hear it.",
+                "Swap the languages with the arrows for a two-way chat.",
+            ])
             HStack(spacing: HandySpacing.s8) {
                 ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
             }

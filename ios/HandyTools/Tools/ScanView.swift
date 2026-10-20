@@ -53,6 +53,11 @@ struct ScanView: View {
 
     var body: some View {
         ToolPage(title: "Scan", subtitle: "Scan or import pages, clean them up, sign and fill, then export a searchable PDF that fits.") {
+            HowTo("scan", [
+                "Add pages with the camera or from Photos.",
+                "Pick a mode — clean up, sign or fill — and a filter like black & white.",
+                "Export as a PDF; set a size limit or split pages if you need.",
+            ])
             if pages.isEmpty {
                 emptyState
             } else {

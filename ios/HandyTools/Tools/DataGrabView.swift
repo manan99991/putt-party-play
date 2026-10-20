@@ -19,6 +19,11 @@ struct DataGrabView: View {
 
     var body: some View {
         ToolPage(title: "Data Grabber", subtitle: "Receipt → rows, business card → contact, flyer → calendar event, printed table → CSV.") {
+            HowTo("datagrab", [
+                "Snap or pick a photo of a receipt, card, event or table.",
+                "The app pulls out the fields and lays them in a table.",
+                "Fix the type if it guessed wrong, then copy or export as CSV.",
+            ])
             if text.isEmpty {
                 PhotosPicker(selection: $photoItem, matching: .images) { Label("Choose a photo or screenshot", systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity) }.secondaryButton()
                 Button { if let s = UIPasteboard.general.string { text = s; run() } } label: { Label("Paste text instead", systemImage: "doc.on.clipboard").frame(maxWidth: .infinity) }.secondaryButton()
