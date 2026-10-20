@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.AppShortcut
 import androidx.compose.material.icons.outlined.EventNote
 import androidx.compose.material.icons.outlined.ImageSearch
+import androidx.compose.material.icons.outlined.Subject
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.AutoFixHigh
 import androidx.compose.material.icons.outlined.Close
@@ -90,6 +91,7 @@ val TOOLS = listOf(
     HTool("scratchpad", "Sticky Note", "Quick notes", Icons.Outlined.EditNote, 1, keywords = listOf("note","notes","sticky","memo","reminder","text")),
     HTool("alarm", "Alarm Pro", "Custom snooze & sounds", Icons.Outlined.Alarm, 1, keywords = listOf("alarm","wake","clock","snooze","ring","morning")),
     HTool("ocr", "Text from Image", "Copy text from photos", Icons.Outlined.TextFields, 1, keywords = listOf("text","ocr","photo","screenshot","copy","read","scan")),
+    HTool("lens", "Lens", "Read or listen to any text", Icons.Outlined.Subject, 1, keywords = listOf("lens","read","listen","aloud","tts","speak","ocr","text","copy","gist","summarize","scan")),
     HTool("translate", "Translate", "Offline, private", Icons.Outlined.Translate, 1, keywords = listOf("translate","language","spanish","french","foreign")),
     HTool("magnifier", "Magnifier", "Zoom in on small print", Icons.Outlined.ZoomIn, 1, keywords = listOf("magnifier","zoom","read","loupe","camera")),
     HTool("measure", "Measure", "Level, compass, sound", Icons.Outlined.Straighten, 1, keywords = listOf("measure","level","compass","north","decibel","sound","angle")),

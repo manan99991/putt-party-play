@@ -25,6 +25,7 @@ import com.handytools.app.tools.awake.KeepAwakeScreen
 import com.handytools.app.tools.clipboard.ClipboardScreen
 import com.handytools.app.tools.flashlight.FlashlightScreen
 import com.handytools.app.tools.ai.AiScreen
+import com.handytools.app.tools.lens.LensScreen
 import com.handytools.app.tools.memory.MemoryScreen
 import com.handytools.app.tools.sorted.SortedScreen
 import com.handytools.app.tools.audiotext.AudioToTextScreen
@@ -124,9 +125,10 @@ class MainActivity : ComponentActivity() {
                     composable("bgremove") { BackgroundRemoverScreen() }
                     composable("sorted") { SortedScreen() }
                     composable("memory") { MemoryScreen() }
+                    composable("lens") { LensScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)
