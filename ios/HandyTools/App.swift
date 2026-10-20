@@ -104,6 +104,7 @@ struct Tool: Identifiable {
     Tool(id: "livecaptions",name: "Live Captions",   blurb: "Real‑time captions, private",       icon: "captions.bubble.fill",                page: 3, ai: true, asset: "tool_livecaptions", keywords: ["captions","live","subtitles","hearing","deaf","hard of hearing","conversation","transcribe","accessibility","real time"]),
     Tool(id: "shield",     name: "Message Shield",   blurb: "Spot scams, see why",               icon: "shield.lefthalf.filled",              page: 3, ai: true, asset: "tool_shield", keywords: ["scam","phishing","spam","fraud","suspicious","text","email","link","safe","check","is this real","mom","ai"]),
     Tool(id: "lens",       name: "Lens",             blurb: "Read, simplify or hear any text",   icon: "text.viewfinder",                     page: 3, ai: true, keywords: ["lens","read","aloud","listen","tts","speak","ocr","camera","text","copy","scan","pdf","link","article","explain","plain english","simplify","jargon","legal","medical","summarize","gist","dyslexia","accessibility"]),
+    Tool(id: "memory",     name: "Memory",           blurb: "Ask your screenshots anything",     icon: "doc.text.magnifyingglass",            page: 3, ai: true, keywords: ["memory","find","search","photos","screenshot","screenshots","wifi","password","code","confirmation","parking","remember","where","receipt","ask","my photos","camera roll","saved"]),
     Tool(id: "datagrab",   name: "Data Grabber",     blurb: "Receipt → rows, contacts, dates",   icon: "tablecells.fill",                     page: 3, ai: true, asset: "tool_datagrab", keywords: ["receipt","table","data","extract","csv","spreadsheet","contact","business card","calendar","event","expense","ai"]),
     Tool(id: "describe",   name: "Scene Describer",  blurb: "Hear what the camera sees",         icon: "eye.fill",                            page: 3, ai: true, asset: "tool_describe", keywords: ["describe","scene","blind","low vision","narrate","speak","what is in front","accessibility","camera","see"]),
     Tool(id: "vault",      name: "Vault",            blurb: "Face ID locker",                    icon: "lock.fill",                           page: 3, asset: "tool_vault", keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","files","cards","safe"]),
@@ -214,6 +215,7 @@ struct ToolDestination: View {
         case "cleaner": CleanerView()
         // Everything else is being built — show an honest placeholder, never a blank screen.
         case "lens": LensView()
+        case "memory": MemoryView()
         case "colorvision": ColorVisionView()
         case "gpsdash": GPSDashboardView()
         case "audiolab": AudioLabView()
