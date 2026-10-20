@@ -82,7 +82,7 @@ jobs:
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           for mode in light dark; do
             xcrun simctl ui "$UDID" appearance $mode
-            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub capture qrwifi stitch shareready light instruments measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab clips vault; do
+            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub capture qrwifi stitch shareready light instruments measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab cleaner vault; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
               xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
               sleep 9
@@ -140,6 +140,8 @@ jobs:
             -only-testing:HandyToolsTests \
             -only-testing:HandyToolsUITests/ToolSmokeTests \
             -only-testing:HandyToolsUITests/LiveToolTests \
+            -only-testing:HandyToolsUITests/ToolFlowTests \
+            -only-testing:HandyToolsUITests/ToolControlsReachableTests \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true
