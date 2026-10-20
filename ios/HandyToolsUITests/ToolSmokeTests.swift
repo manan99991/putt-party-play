@@ -10,7 +10,7 @@ final class ToolSmokeTests: XCTestCase {
         // Page 1 · Files, photos & docs
         "fitit", "scan", "studio", "video", "formatfix", "scrub", "cleaner", "qrwifi", "stitch", "shareready",
         // Page 2 · Camera, sensors & everyday
-        "light", "instruments", "measure", "magnify", "procam", "gpsdash", "audiolab", "rest", "colorvision",
+        "light", "instruments", "measure", "magnify", "procam", "gpsdash", "audiolab", "rest", "colorvision", "sorted",
         // Page 3 · Words, AI & accessibility
         "lens", "memory", "textstudio", "translate", "voicenotes", "livecaptions", "shield", "datagrab", "describe", "vault",
     ]

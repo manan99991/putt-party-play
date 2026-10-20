@@ -97,6 +97,7 @@ struct Tool: Identifiable {
     Tool(id: "audiolab",   name: "Audio Lab",        blurb: "Tuner, tones, speaker test",        icon: "waveform",                            page: 2, asset: "tool_audiolab", keywords: ["tuner","guitar","pitch","tone","frequency","generator","speaker","test","earbuds","left right","water","eject","sound"]),
     Tool(id: "rest",       name: "Rest",             blurb: "White noise + snore recorder",      icon: "moon.zzz.fill",                       page: 2, asset: "tool_rest", keywords: ["sleep","white noise","pink","brown","rain","fan","noise","timer","snore","record","night","relax","focus"]),
     Tool(id: "colorvision",name: "Color Vision",     blurb: "Live color‑blind correction",       icon: "eyeglasses",                          page: 2, asset: "tool_colorvision", keywords: ["color","colour","blind","colorblind","daltonize","correct","name the color","what color","red green","accessibility","eyedropper","hex","paint"]),
+    Tool(id: "sorted",     name: "Sorted",           blurb: "Snap a bill → calendar it",         icon: "calendar.badge.plus",                 page: 2, ai: true, keywords: ["sorted","bill","letter","mail","document","appointment","form","notice","invoice","due","deadline","calendar","remind","reminder","scan","amount","pay","admin","paperwork"]),
     // ── Page 3 · Words, AI & accessibility ──────────────────────────────
     Tool(id: "textstudio", name: "Text Studio",      blurb: "Fix, rewrite, reply, summarize",    icon: "text.badge.checkmark",                page: 3, ai: true, asset: "tool_textstudio", keywords: ["text","grammar","proofread","rewrite","tone","reply","summarize","summary","edit","polish","email","message","ai"]),
     Tool(id: "translate",  name: "Translate",        blurb: "Text, camera, voice — offline",     icon: "character.bubble.fill",               page: 3, asset: "tool_translate", keywords: ["translate","translation","language","offline","camera","voice","conversation","spanish","french","menu","sign"]),
@@ -216,6 +217,7 @@ struct ToolDestination: View {
         // Everything else is being built — show an honest placeholder, never a blank screen.
         case "lens": LensView()
         case "memory": MemoryView()
+        case "sorted": SortedView()
         case "colorvision": ColorVisionView()
         case "gpsdash": GPSDashboardView()
         case "audiolab": AudioLabView()

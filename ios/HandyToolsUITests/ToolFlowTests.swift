@@ -136,6 +136,14 @@ final class ToolFlowTests: XCTestCase {
         alive("scan")
     }
 
+    func testSortedExtractsBillDetails() {
+        launch("sorted")
+        button(containing: "Make sense of it").tap()
+        expect(text(containing: "$84.20"), "amount extracted", timeout: 20)
+        expect(button(containing: "Add to Calendar"), "calendar action", timeout: 10)
+        alive("sorted")
+    }
+
     func testLensListensToSampleText() {
         launch("lens")
         button(containing: "Read it aloud").tap()
