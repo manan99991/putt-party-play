@@ -14,3 +14,4 @@ store-out/
 
 # iOS CI cert cache (never commit signing material)
 ios/cert-cache/
+preview/
