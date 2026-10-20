@@ -17,12 +17,15 @@ final class EngineTests: XCTestCase {
 
     // MARK: catalog integrity
 
-    @MainActor func testCatalogIsThirtyTenPerPage() {
-        XCTAssertEqual(TOOLS.count, 30, "catalog must be exactly 30 tools")
-        for p in 1...3 {
-            XCTAssertEqual(tools(onPage: p).count, 10, "page \(p) must have 10 tiles")
+    @MainActor func testCatalogIsConsistent() {
+        XCTAssertEqual(Set(TOOLS.map(\.id)).count, TOOLS.count, "tool ids must be unique")
+        let pages = Set(TOOLS.map(\.page)).sorted()
+        XCTAssertEqual(pages, Array(1...(pages.last ?? 1)), "pages must run contiguously from 1")
+        for p in pages {
+            let n = tools(onPage: p).count
+            XCTAssertGreaterThan(n, 0, "page \(p) is empty")
+            XCTAssertLessThanOrEqual(n, 10, "page \(p) has more than 10 tiles (\(n))")
         }
-        XCTAssertEqual(Set(TOOLS.map(\.id)).count, 30, "tool ids must be unique")
         for t in TOOLS {
             XCTAssertFalse(t.name.isEmpty, "\(t.id) has no name")
             XCTAssertFalse(t.blurb.isEmpty, "\(t.id) has no blurb")

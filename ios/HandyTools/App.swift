@@ -97,15 +97,13 @@ struct Tool: Identifiable {
     Tool(id: "audiolab",   name: "Audio Lab",        blurb: "Tuner, tones, speaker test",        icon: "waveform",                            page: 2, asset: "tool_audiolab", keywords: ["tuner","guitar","pitch","tone","frequency","generator","speaker","test","earbuds","left right","water","eject","sound"]),
     Tool(id: "rest",       name: "Rest",             blurb: "White noise + snore recorder",      icon: "moon.zzz.fill",                       page: 2, asset: "tool_rest", keywords: ["sleep","white noise","pink","brown","rain","fan","noise","timer","snore","record","night","relax","focus"]),
     Tool(id: "colorvision",name: "Color Vision",     blurb: "Live color‑blind correction",       icon: "eyeglasses",                          page: 2, asset: "tool_colorvision", keywords: ["color","colour","blind","colorblind","daltonize","correct","name the color","what color","red green","accessibility","eyedropper","hex","paint"]),
-    Tool(id: "capture",    name: "Capture",          blurb: "Point: text, codes, translate",     icon: "viewfinder",                          page: 2, asset: "tool_capture", keywords: ["camera","text","ocr","copy","qr","barcode","translate","sign","menu","what is this","identify","live text"]),
     // ── Page 3 · Words, AI & accessibility ──────────────────────────────
     Tool(id: "textstudio", name: "Text Studio",      blurb: "Fix, rewrite, reply, summarize",    icon: "text.badge.checkmark",                page: 3, ai: true, asset: "tool_textstudio", keywords: ["text","grammar","proofread","rewrite","tone","reply","summarize","summary","edit","polish","email","message","ai"]),
     Tool(id: "translate",  name: "Translate",        blurb: "Text, camera, voice — offline",     icon: "character.bubble.fill",               page: 3, asset: "tool_translate", keywords: ["translate","translation","language","offline","camera","voice","conversation","spanish","french","menu","sign"]),
     Tool(id: "voicenotes", name: "Voice → Notes",    blurb: "Transcript, summary, to‑dos",       icon: "waveform.badge.mic",                  page: 3, ai: true, asset: "tool_voicenotes", keywords: ["voice","record","transcribe","transcript","meeting","notes","summary","action items","dictation","audio","speech","ai"]),
     Tool(id: "livecaptions",name: "Live Captions",   blurb: "Real‑time captions, private",       icon: "captions.bubble.fill",                page: 3, ai: true, asset: "tool_livecaptions", keywords: ["captions","live","subtitles","hearing","deaf","hard of hearing","conversation","transcribe","accessibility","real time"]),
     Tool(id: "shield",     name: "Message Shield",   blurb: "Spot scams, see why",               icon: "shield.lefthalf.filled",              page: 3, ai: true, asset: "tool_shield", keywords: ["scam","phishing","spam","fraud","suspicious","text","email","link","safe","check","is this real","mom","ai"]),
-    Tool(id: "readaloud",  name: "Read Aloud",       blurb: "Any page, spoken naturally",        icon: "speaker.wave.2.bubble.fill",          page: 3, asset: "tool_readaloud", keywords: ["read","aloud","speak","tts","voice","dyslexia","accessibility","page","book","ocr","listen","simplify"]),
-    Tool(id: "explain",    name: "Plain‑English Explainer", blurb: "Decode legal & medical jargon", icon: "text.book.closed.fill",             page: 3, ai: true, asset: "tool_explain", keywords: ["explain","plain english","simple","jargon","legal","contract","medical","lab results","terms","what does this mean","ai"]),
+    Tool(id: "lens",       name: "Lens",             blurb: "Read, simplify or hear any text",   icon: "text.viewfinder",                     page: 3, ai: true, keywords: ["lens","read","aloud","listen","tts","speak","ocr","camera","text","copy","scan","pdf","link","article","explain","plain english","simplify","jargon","legal","medical","summarize","gist","dyslexia","accessibility"]),
     Tool(id: "datagrab",   name: "Data Grabber",     blurb: "Receipt → rows, contacts, dates",   icon: "tablecells.fill",                     page: 3, ai: true, asset: "tool_datagrab", keywords: ["receipt","table","data","extract","csv","spreadsheet","contact","business card","calendar","event","expense","ai"]),
     Tool(id: "describe",   name: "Scene Describer",  blurb: "Hear what the camera sees",         icon: "eye.fill",                            page: 3, ai: true, asset: "tool_describe", keywords: ["describe","scene","blind","low vision","narrate","speak","what is in front","accessibility","camera","see"]),
     Tool(id: "vault",      name: "Vault",            blurb: "Face ID locker",                    icon: "lock.fill",                           page: 3, asset: "tool_vault", keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","files","cards","safe"]),
@@ -215,7 +213,7 @@ struct ToolDestination: View {
         case "livecaptions": LiveCaptionsView()
         case "cleaner": CleanerView()
         // Everything else is being built — show an honest placeholder, never a blank screen.
-        case "capture": CaptureView()
+        case "lens": LensView()
         case "colorvision": ColorVisionView()
         case "gpsdash": GPSDashboardView()
         case "audiolab": AudioLabView()
@@ -226,8 +224,6 @@ struct ToolDestination: View {
         case "shield": ShieldView()
         case "datagrab": DataGrabView()
         case "textstudio": TextStudioView()
-        case "readaloud": ReadAloudView()
-        case "explain": ExplainerView()
         case "vault": VaultView()
         default: ComingSoonView(id: id)
         }

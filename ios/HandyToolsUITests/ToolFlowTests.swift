@@ -136,13 +136,15 @@ final class ToolFlowTests: XCTestCase {
         alive("scan")
     }
 
-    func testCaptureShowsActionsForGrabbedText() {
-        launch("capture")
-        expect(button(containing: "Copy"), "copy action", timeout: 20)
-        expect(button(starting: "Call"), "call action", timeout: 10)
-        expect(button(starting: "Open"), "open link action", timeout: 10)
-        button(containing: "Copy").tap()
-        alive("capture")
+    func testLensListensToSampleText() {
+        launch("lens")
+        button(containing: "Read it aloud").tap()
+        expect(text(containing: "1 / 4"), "sentence counter", timeout: 30)
+        // Pause before skipping so live-playback auto-advance can't race the manual skip.
+        app.buttons["Pause"].firstMatch.tap()
+        app.buttons["Next sentence"].firstMatch.tap()
+        expect(text(containing: "2 / 4"), "advanced to sentence 2", timeout: 10)
+        alive("lens")
     }
 
     func testQRMakesCodeAndWifiCard() {
@@ -268,27 +270,16 @@ final class ToolFlowTests: XCTestCase {
         alive("datagrab")
     }
 
-    func testExplainerShowsGlossaryAndRedFlags() {
-        launch("explain")
-        button(containing: "Explain it").tap()
-        expect(text(containing: "Clauses to look at twice"), "red flags", timeout: 60)
+    func testLensSimplifiesAndGists() {
+        launch("lens")
+        tapChip("Plain English")
+        button(containing: "plain English").tap()
+        expect(text(containing: "Worth a second look"), "red flags", timeout: 60)
         expect(text(containing: "Auto-renewal"), "auto-renewal flag", timeout: 10)
-        expect(text(containing: "Terms in this text"), "glossary", timeout: 10)
-        alive("explain")
-    }
-
-    func testReadAloudPlaysSampleText() {
-        launch("readaloud")
-        button(containing: "Read this").tap()
-        expect(text(containing: "1 / 3"), "sentence counter", timeout: 30)
-        // Pause before skipping so live playback's auto-advance can't race the manual skip — this
-        // isolates what we're testing: tapping "Next sentence" moves the counter forward by one.
-        app.buttons["Pause"].firstMatch.tap()
-        app.buttons["Next sentence"].firstMatch.tap()
-        expect(text(containing: "2 / 3"), "advanced to sentence 2", timeout: 10)
-        button(containing: "Voice").tap(); expect(app.staticTexts["Automatic (match the text)"], "voice picker", timeout: 10)
-        app.buttons["Done"].firstMatch.tap()
-        alive("readaloud")
+        tapChip("Gist")
+        button(containing: "Boil it down").tap()
+        expect(text(containing: "•"), "gist bullets", timeout: 20)
+        alive("lens")
     }
 
     func testTranslateModesAndSwap() {

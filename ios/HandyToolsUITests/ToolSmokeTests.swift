@@ -10,9 +10,9 @@ final class ToolSmokeTests: XCTestCase {
         // Page 1 · Files, photos & docs
         "fitit", "scan", "studio", "video", "formatfix", "scrub", "cleaner", "qrwifi", "stitch", "shareready",
         // Page 2 · Camera, sensors & everyday
-        "light", "instruments", "measure", "magnify", "procam", "gpsdash", "audiolab", "rest", "colorvision", "capture",
+        "light", "instruments", "measure", "magnify", "procam", "gpsdash", "audiolab", "rest", "colorvision",
         // Page 3 · Words, AI & accessibility
-        "textstudio", "translate", "voicenotes", "livecaptions", "shield", "readaloud", "explain", "datagrab", "describe", "vault",
+        "lens", "textstudio", "translate", "voicenotes", "livecaptions", "shield", "datagrab", "describe", "vault",
     ]
 
     override func setUp() { continueAfterFailure = true }
