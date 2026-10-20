@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.AppShortcut
 import androidx.compose.material.icons.outlined.EventNote
+import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.AutoFixHigh
 import androidx.compose.material.icons.outlined.Close
@@ -105,6 +106,7 @@ val TOOLS = listOf(
     HTool("wallet", "Card Wallet", "Loyalty barcodes", Icons.Outlined.CreditCard, 2, keywords = listOf("wallet","card","loyalty","barcode","membership","points")),
     HTool("sorted", "Sorted", "Snap a bill → calendar it", Icons.Outlined.EventNote, 2, true, listOf("bill","letter","document","appointment","form","notice","invoice","due","deadline","calendar","remind","scan","amount","pay","admin","paperwork")),
     // Page 3 · AI
+    HTool("memory", "Memory", "Ask your screenshots anything", Icons.Outlined.ImageSearch, 3, true, listOf("memory","find","search","photos","screenshot","wifi","password","code","confirmation","parking","remember","where","receipt","ask","saved")),
     HTool("ai_summarize", "Summarize", "Get the gist fast", Icons.Outlined.AutoAwesome, 3, true, listOf("summarize","summary","tldr","shorten","ai","text")),
     HTool("ai_extract", "Extract to Data", "Receipt to clean data", Icons.Outlined.AutoAwesome, 3, true, listOf("extract","data","receipt","card","ai","fields")),
     HTool("ai_rewrite", "Rewrite & Tone", "Clearer, nicer words", Icons.Outlined.AutoAwesome, 3, true, listOf("rewrite","tone","grammar","improve","ai","edit")),
