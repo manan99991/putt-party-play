@@ -161,7 +161,7 @@ struct SettingsView: View {
                             }
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(store.isPremium ? "Tenzy Pro" : "Go Pro").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                Text(store.isPremium ? "Ads off. Every tool unlimited." : "From \(store.monthlyPrice)/mo or \(store.yearlyPrice)/yr. Ads gone, everything unlimited.")
+                                Text(store.isPremium ? "Ads off. Every tool unlimited." : "\(store.yearlyPrice)/yr. Ads gone, everything unlimited.")
                                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.leading)
                             }
                             Spacer()

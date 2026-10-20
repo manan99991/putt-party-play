@@ -23,20 +23,6 @@
           "referenceName" : "Pro Yearly",
           "subscriptionGroupID" : "1",
           "type" : "RecurringSubscription"
-        },
-        {
-          "adHocOffers" : [],
-          "codeOffers" : [],
-          "displayPrice" : "2.99",
-          "familyShareable" : false,
-          "groupNumber" : 1,
-          "internalID" : "1003",
-          "localizations" : [ { "description" : "Everything in Tenzy, unlimited. No ads.", "displayName" : "Tenzy Pro (Monthly)", "locale" : "en_US" } ],
-          "productID" : "tenzy_pro_monthly",
-          "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Pro Monthly",
-          "subscriptionGroupID" : "1",
-          "type" : "RecurringSubscription"
         }
       ]
     }

@@ -489,7 +489,6 @@ struct ToolCardPress: ButtonStyle {
 struct PaywallView: View {
     @EnvironmentObject var store: StoreManager
     @Environment(\.dismiss) private var dismiss
-    @State private var yearlySelected = true
 
     var body: some View {
         VStack(spacing: HandySpacing.s16) {
@@ -514,13 +513,12 @@ struct PaywallView: View {
             if store.isPremium {
                 Label("You're Pro. Thank you.", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             } else {
-                PlanRow(selected: yearlySelected, title: "Yearly", price: store.yearlyPrice, caption: "Best value · save \(store.yearlySavingsPercent)%", badge: "POPULAR") { yearlySelected = true }
-                PlanRow(selected: !yearlySelected, title: "Monthly", price: store.monthlyPrice, caption: "Flexible, cancel anytime", badge: nil) { yearlySelected = false }
+                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: "Billed once a year · cancel anytime", badge: "BEST VALUE") { }
 
                 Button {
-                    Task { await store.purchase(yearlySelected ? store.yearly : store.monthly); if store.isPremium { dismiss() } }
+                    Task { await store.purchase(store.yearly); if store.isPremium { dismiss() } }
                 } label: {
-                    Text(yearlySelected ? "Go Pro · \(store.yearlyPrice) / year" : "Go Pro · \(store.monthlyPrice) / month").frame(maxWidth: .infinity)
+                    Text("Go Pro · \(store.yearlyPrice) / year").frame(maxWidth: .infinity)
                 }.primaryButton()
 
                 Text("Auto-renews until cancelled in Settings › Apple ID › Subscriptions. Price shown in your currency at checkout.")

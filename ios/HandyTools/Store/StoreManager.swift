@@ -1,14 +1,12 @@
 import Foundation
 import StoreKit
 
-/// StoreKit 2. Two auto-renewing subscriptions in one group — Monthly and Yearly —
-/// so a buyer can pick either and switch tiers without re-subscribing.
+/// StoreKit 2. One auto-renewing subscription — Tenzy Pro, billed yearly.
 ///
 /// App Store Connect setup (one time):
 ///   App > Subscriptions > group "Tenzy Pro"
 ///   • Product ID: tenzy_pro_yearly    Duration: 1 Year   Price: $19.99
-///   • Product ID: tenzy_pro_monthly   Duration: 1 Month  Price: $2.99
-///   (Product IDs must match the constants below.) Optional 1-week free trial on yearly.
+///   (Product ID must match the constant below.) Optional 1-week free trial.
 ///
 /// For local testing without ASC, use Tenzy/Resources/Products.storekit
 /// (Edit Scheme > Run > Options > StoreKit Configuration).
@@ -16,11 +14,9 @@ import StoreKit
 final class StoreManager: ObservableObject {
     static let shared = StoreManager()
     static let yearlyID = "tenzy_pro_yearly"
-    static let monthlyID = "tenzy_pro_monthly"
-    static var productIDs: [String] { [yearlyID, monthlyID] }
+    static var productIDs: [String] { [yearlyID] }
 
     @Published private(set) var yearly: Product?
-    @Published private(set) var monthly: Product?
     @Published private(set) var isPremium: Bool = Premium.isActive
     @Published var purchaseError: String?
 
@@ -48,22 +44,12 @@ final class StoreManager: ObservableObject {
         Task { await load(); await refresh() }
     }
 
-    // Shown on the paywall buttons. Fall back to our set prices if the store hasn't loaded yet.
+    // Shown on the paywall button. Falls back to our set price if the store hasn't loaded yet.
     var yearlyPrice: String { yearly?.displayPrice ?? "$19.99" }
-    var monthlyPrice: String { monthly?.displayPrice ?? "$2.99" }
-
-    /// Roughly what the yearly plan saves versus paying monthly for 12 months, as a %.
-    var yearlySavingsPercent: Int {
-        guard let y = yearly?.price, let m = monthly?.price, m > 0 else { return 44 }
-        let full = m * 12
-        let pct = (1 - (y / full)) * 100
-        return max(0, Int(NSDecimalNumber(decimal: pct).doubleValue.rounded()))
-    }
 
     func load() async {
         let products = (try? await Product.products(for: Self.productIDs)) ?? []
         yearly = products.first { $0.id == Self.yearlyID }
-        monthly = products.first { $0.id == Self.monthlyID }
     }
 
     func refresh() async {

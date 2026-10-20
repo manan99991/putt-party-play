@@ -12,7 +12,13 @@ import AVFoundation
     @Published var running = false
     @Published var errorText: String?
     @Published var onDevice = true
-    @Published var locale = Locale(identifier: Locale.preferredLanguages.first ?? "en-US") { didSet { if running { restart() } } }
+    // Changing the language ENDS the current session and returns to idle (Start), rather than
+    // silently restarting — a restart into a language that can't actually recognise (e.g. an
+    // off-device language on the server path) used to leave the Stop button up and "Listening…"
+    // showing while nothing was captured. Tap Start to caption in the newly chosen language.
+    @Published var locale = Locale(identifier: Locale.preferredLanguages.first ?? "en-US") {
+        didSet { if oldValue != locale, running { stop() } }
+    }
 
     var transcript: String { (committed + [live]).filter { !$0.isEmpty }.joined(separator: "\n") }
 
@@ -88,7 +94,10 @@ import AVFoundation
             Task { @MainActor in
                 guard let self else { return }
                 if let text, !text.isEmpty { self.live = text }
-                if final || failed { self.commitLive(); if self.running, failed { self.newSegment() } }
+                // A segment ends on a natural pause (final) or an error (failed). Commit what we have
+                // and, while still running, immediately roll a fresh segment so a pause never kills
+                // capture — the already-committed text is kept, we just continue after it.
+                if final || failed { self.commitLive(); if self.running { self.newSegment() } }
             }
         }
         rollTimer?.cancel()
@@ -97,6 +106,8 @@ import AVFoundation
             guard let self, !Task.isCancelled, self.running else { return }
             self.request?.endAudio()   // the task will deliver a final result, then we start a fresh segment
             try? await Task.sleep(for: .milliseconds(400))
+            // If the final callback already rolled a new segment (it resets this timer), don't double it.
+            guard !Task.isCancelled else { return }
             if self.running { self.commitLive(); self.newSegment() }
         }
     }
@@ -106,8 +117,6 @@ import AVFoundation
         if !t.isEmpty, committed.last != t { committed.append(t) }
         live = ""
     }
-
-    private func restart() { stop(keepText: true); start() }
 
     func stop(keepText: Bool = true) {
         rollTimer?.cancel(); rollTimer = nil
