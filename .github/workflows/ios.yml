@@ -163,7 +163,7 @@ jobs:
     # message contains the trailer line  Ship-Build: YES  — a distinctive token that is never written
     # in ordinary prose (so a commit that merely mentions shipping can't trigger a deploy by accident).
     # Default pushes build-and-test, never deploy.
-    if: ${{ vars.TESTFLIGHT_ENABLED == 'true' && contains(github.event.head_commit.message, 'Ship-Build: YES') }}
+    if: "${{ vars.TESTFLIGHT_ENABLED == 'true' && contains(github.event.head_commit.message, 'Ship-Build=YES') }}"
     runs-on: macos-26
     defaults:
       run: { working-directory: ios }
