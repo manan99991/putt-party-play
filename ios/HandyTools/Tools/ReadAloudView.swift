@@ -59,7 +59,7 @@ struct ReadAloudView: View {
         }
         .onAppear { reader.rate = Float(rate); reader.voiceID = voiceID.isEmpty ? nil : voiceID; if Launch.sample, text.isEmpty { text = "Rooftop panels now supply a tenth of daytime demand in some cities. Utilities are responding with time-of-use pricing. The share is rising every year." } }
         .onDisappear { reader.pause() }
-        .sheet(isPresented: $voicePick) { VoicePicker(language: NLLanguageGuess.language(of: reader.sentences.prefix(5).joined(separator: " ")), selected: $voiceID).onDisappear { reader.voiceID = voiceID.isEmpty ? nil : voiceID } }
+        .sheet(isPresented: $voicePick) { VoicePicker(language: reader.documentLanguage, selected: $voiceID).onDisappear { reader.voiceID = voiceID.isEmpty ? nil : voiceID } }
     }
 
     private var player: some View {

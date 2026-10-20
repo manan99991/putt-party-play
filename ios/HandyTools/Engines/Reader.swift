@@ -26,7 +26,7 @@ import UIKit
     /// The language used for the WHOLE document's voice — decided once here, never per sentence.
     /// (Guessing per sentence made the voice flip languages on short lines like an address or a
     /// phone number, which a page of listings is full of.)
-    private var documentLanguage = Locale.preferredLanguages.first ?? "en-US"
+    private(set) var documentLanguage = Locale.preferredLanguages.first ?? "en-US"
 
     func load(_ text: String) {
         stop()
