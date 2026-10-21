@@ -39,7 +39,7 @@ jobs:
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          if [ -n "$KEYSTORE_B64" ]; then echo "$KEYSTORE_B64" | base64 -d > upload.jks; fi
+          if [ -n "$KEYSTORE_B64" ]; then echo "$KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > upload.jks; fi
           echo "=== keystore sanity ===" | tee -a build.log
           if [ -f upload.jks ]; then
             echo "upload.jks bytes: $(wc -c < upload.jks) (expect ~2694)" | tee -a build.log
