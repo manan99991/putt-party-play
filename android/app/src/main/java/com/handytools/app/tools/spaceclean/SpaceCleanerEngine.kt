@@ -93,7 +93,7 @@ object SpaceCleanerEngine {
     private fun contentHash(ctx: Context, uri: Uri): String? = runCatching {
         ctx.contentResolver.openInputStream(uri)?.use { ins ->
             val md = MessageDigest.getInstance("MD5")
-            val buf = ByteArray(1 shl 16); var n: Int; var read = 0L
+            val buf = ByteArray(1 shl 16); var n = 0; var read = 0L
             while (read < (1L shl 20) && ins.read(buf).also { n = it } > 0) { md.update(buf, 0, n); read += n }
             md.digest().joinToString("") { "%02x".format(it) }
         }
