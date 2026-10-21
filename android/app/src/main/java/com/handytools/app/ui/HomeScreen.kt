@@ -46,6 +46,7 @@ import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Mic
 import androidx.compose.material.icons.outlined.Movie
+import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Search
@@ -93,8 +94,8 @@ val TOOLS = listOf(
     HTool("contacts", "Contacts Cleanup", "Merge duplicates, back up", Icons.Outlined.Contacts, 1, keywords = listOf("contacts","duplicate","duplicates","merge","vcard","backup","phone","cleanup","incomplete")),
     HTool("flash", "Flashlight", "Patterns, SOS, strobe", Icons.Outlined.FlashOn, 1, keywords = listOf("light","torch","strobe","sos","lamp","dark")),
     HTool("qr", "QR & Barcode", "Scan & make codes", Icons.Outlined.QrCode2, 1, keywords = listOf("qr","barcode","scan","code","wifi","link")),
-    HTool("alarm", "Alarm Pro", "Custom snooze & sounds", Icons.Outlined.Alarm, 1, keywords = listOf("alarm","wake","clock","snooze","ring","morning")),
-    HTool("ocr", "Text from Image", "Copy text from photos", Icons.Outlined.TextFields, 1, keywords = listOf("text","ocr","photo","screenshot","copy","read","scan")),
+    HTool("myphone", "My Phone", "Battery, storage, specs", Icons.Outlined.PhoneAndroid, 1, keywords = listOf("phone","device","battery","storage","ram","memory","specs","info","model","android","ip","network","screen","health","free","space")),
+    HTool("texttools", "Text Tools", "Clean up & fix text", Icons.Outlined.TextFields, 1, keywords = listOf("text","case","uppercase","lowercase","word","count","characters","clean","trim","spaces","reverse","format","remove","breaks")),
     HTool("lens", "Lens", "Read or listen to any text", Icons.Outlined.Subject, 1, keywords = listOf("lens","read","listen","aloud","tts","speak","ocr","text","copy","gist","summarize","scan")),
     HTool("translate", "Translate", "Offline, private", Icons.Outlined.Translate, 1, keywords = listOf("translate","language","spanish","french","foreign")),
     HTool("magnifier", "Magnifier", "Zoom in on small print", Icons.Outlined.ZoomIn, 1, keywords = listOf("magnifier","zoom","read","loupe","camera")),

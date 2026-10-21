@@ -28,7 +28,8 @@ class HandyApp : Application() {
         CoroutineScope(Dispatchers.IO).launch { db.openHelper.writableDatabase.close() }
         billing = BillingManager(this)
         createChannels()
-        CoroutineScope(Dispatchers.IO).launch { AlarmScheduler(this@HandyApp).rescheduleAll() }
+        // Alarm tool removed (its exact-alarm / full-screen-intent permissions are reserved for
+        // dedicated alarm-clock apps). No alarm rescheduling on launch.
         scheduleDeferredInit()
     }
 
