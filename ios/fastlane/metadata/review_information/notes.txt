@@ -1,0 +1,10 @@
+No login or account is required — all features are reachable from the home grid on first launch.
+
+Permission notes:
+- Microphone: used live by Audio Lab (decibel/tuner) and Voice to Notes / Live Captions. Audio is metered or transcribed on-device; recordings are saved only when the user taps record.
+- Camera: Scan, Studio, Measure, Pro Camera, Translate (camera mode), Lens, Scene Describer.
+- Photos: Cleaner, Studio, Privacy Scrubber and Memory read photos the user selects; Memory indexes screenshots on-device only.
+- Tracking (ATT): shown only to request personalized ads via AdMob. Declining does not limit any feature.
+- The on-device AI tools use Apple's Foundation Models framework on supported devices and fall back gracefully elsewhere.
+
+Tenzy Pro ($19.99/yr or $2.99/mo) is a single auto-renewing subscription that removes ads and unlocks unlimited use. No content is gated behind login.

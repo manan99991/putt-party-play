@@ -60,28 +60,34 @@ GREY = (110, 114, 126)         # placeholder ink
 BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 REG = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 
-CANVAS = {"ios": (1290, 2796), "android": (1080, 2400)}
+CANVAS = {"ios": (1290, 2796), "android": (1080, 1920)}  # Play caps phone ratio at 2:1; 1080x1920 = 16:9
 # device width/height ratios used for the drawn bezel
 BEZEL_RATIO = {"ios": 0.467, "android": 0.446}
 CAPTION_X = 96
 
 SLIDES = [
-    dict(n=1, caption="10 tools. One app.", support="The utilities your phone forgot.",
+    dict(n=1, caption={"ios": "30 tools. One app.", "android": "Your phone's toolbox."},
+         support="The utilities your phone forgot.",
          route="home", mode="light"),
-    dict(n=2, caption="Your snooze. Your rules.", support="Set the snooze length once.",
-         route="alarm", mode="light"),
-    dict(n=3, caption="Copy five. Paste any.", support="Clipboard history, stacked and ready.",
-         route={"android": "clipboard", "ios": "clips"}, mode="light"),
-    dict(n=4, caption="Grab the whole thing",
-         support={"android": "Full-page screenshots, stitched.",
-                  "ios": "Words lifted straight from the image."},
-         route={"android": "screenshot", "ios": "ocr"}, mode="dark"),
-    dict(n=5, caption="See what's hidden",
-         support={"android": "Every volume, one desk.",
-                  "ios": "Location and metadata, exposed."},
-         route={"android": "volume", "ios": "exif"}, mode="dark"),
-    dict(n=6, caption="Pro: ads gone. $9.99 a year.",
-         support="Free on the left. Pro on the right.", split=True),
+    dict(n=2, caption={"ios": "Scan anything to PDF.", "android": "Grab text from any photo."},
+         support={"ios": "Scan, OCR, sign and fill.",
+                  "android": "Copy text straight from an image."},
+         route={"ios": "scan", "android": "ocr"}, mode="light"),
+    dict(n=3, caption={"ios": "Read any language.", "android": "Paste anything you copied."},
+         support={"ios": "Text, camera and voice — offline.",
+                  "android": "Your clipboard, with a history."},
+         route={"ios": "translate", "android": "clipboard"}, mode="dark"),
+    dict(n=4, caption={"ios": "Fix, cut out, resize photos.", "android": "Alarms, your way."},
+         support={"ios": "Enhance, remove backgrounds, passport photos.",
+                  "android": "Custom snooze and sounds."},
+         route={"ios": "studio", "android": "alarm"}, mode="dark"),
+    dict(n=5, caption={"ios": "Spot a scam text.", "android": "Quick notes that stay put."},
+         support={"ios": "See why a message is flagged.",
+                  "android": "A sticky note, one tap away."},
+         route={"ios": "shield", "android": "scratchpad"}, mode="light"),
+    dict(n=6, caption="Pro: ads gone. $19.99 a year.",
+         support="Unlimited everything. Support one indie dev.",
+         route="paywall", mode="light"),
 ]
 
 
@@ -166,6 +172,7 @@ def draw_captions(canvas, slide, top_y):
 def frame_slide(platform, slide, captures, placeholder=False):
     """Build one framed slide. `captures` maps 'free'/'pro' or 'single' -> Image."""
     slide = dict(slide)
+    slide["caption"] = route_of(slide["caption"], platform)
     slide["support"] = route_of(slide["support"], platform)
     cw, ch = CANVAS[platform]
     bg = BLUE if slide["n"] % 2 == 1 else DARK

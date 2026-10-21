@@ -244,3 +244,42 @@ jobs:
           { echo "===== fastlane.log errors ====="; grep -iE "error|fail|❌|could not|unable|invalid|no profiles|certificate|provisioning|entitlement|app group|Authentication|bundle id|\[!\]|Successfully|Uploaded|TestFlight|App ID" ios/fastlane.log 2>/dev/null | head -140; echo; echo "===== fastlane.log tail ====="; tail -90 ios/fastlane.log 2>/dev/null; } > ios-fastlane-err.log
           bash .github/publish-log.sh ios-archive ios-fastlane-err.log
           bash .github/publish-log.sh "ios-archive-${GITHUB_RUN_ID}" ios-fastlane-err.log
+
+  # Public App Store submission (metadata + screenshots + submit for review). No binary is built
+  # here — it reuses the build already on TestFlight. Double-gated so it NEVER runs by accident:
+  #   - repo variable  STORE_SUBMIT_ENABLED = true
+  #   - commit message contains the trailer  Ship-Store=YES
+  # Release is held for a manual tap after approval (automatic_release: false in the Fastfile).
+  store:
+    needs: test
+    if: "${{ vars.STORE_SUBMIT_ENABLED == 'true' && contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_B64: ${{ secrets.ASC_KEY_P8_B64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write ASC key + export fastlane auth env
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          KP="$HOME/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8"
+          echo "$ASC_KEY_P8_B64" | base64 -d > "$KP"
+          echo "ASC_KEY_PATH=$KP" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_API_KEY_KEY_ID=$ASC_KEY_ID" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_API_KEY_ISSUER_ID=$ASC_ISSUER_ID" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_API_KEY_KEY_FILEPATH=$KP" >> $GITHUB_ENV
+          echo "FASTLANE_HIDE_CHANGELOG=1" >> $GITHUB_ENV
+      - name: Fastlane deliver (metadata + screenshots + submit for review)
+        run: |
+          set -o pipefail
+          fastlane release 2>&1 | tee deliver.log
+      - name: Publish deliver log (always)
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "===== deliver.log ====="; grep -iE "error|fail|❌|invalid|missing|too long|rejected|\[!\]|Successfully|submitted|Waiting For Review|screenshots|metadata" ios/deliver.log 2>/dev/null | head -160; echo; echo "===== tail ====="; tail -80 ios/deliver.log 2>/dev/null; } > ios-deliver.log
+          bash .github/publish-log.sh ios-deliver ios-deliver.log || true

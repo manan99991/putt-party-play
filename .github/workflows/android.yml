@@ -85,6 +85,24 @@ jobs:
           track: internal
           status: completed
 
+      # Push the store LISTING (title, descriptions, changelog, feature graphic, icon, screenshots)
+      # from android/fastlane/metadata via fastlane supply. Best-effort: runs only once the Play
+      # service-account secret is set, and never blocks the build. Play accepts this only after the
+      # app's one-time content declarations (data safety, content rating) are completed in console.
+      - name: Push Play store listing (metadata + graphics)
+        if: ${{ success() && env.PLAY_JSON != '' }}
+        continue-on-error: true
+        run: |
+          echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
+          export SUPPLY_JSON_KEY_PATH="$GITHUB_WORKSPACE/play-key.json"
+          gem install fastlane --no-document --quiet || sudo gem install fastlane --no-document --quiet
+          fastlane listing 2>&1 | tee supply.log || true
+      - name: Publish listing-push log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh android-supply android/supply.log || true
+
   screenshots:
     needs: build
     runs-on: ubuntu-latest

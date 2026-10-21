@@ -1,0 +1,22 @@
+default_platform(:android)
+
+# Tenzy Android lanes. The AAB upload to the Play "internal" track is handled in the GitHub
+# workflow (r0adkll/upload-google-play). These lanes cover the STORE LISTING — title, descriptions,
+# changelog and graphics — so the listing is pushed by the pipeline, not typed into the console by
+# hand. Metadata lives in fastlane/metadata/android/en-US.
+platform :android do
+  # Push listing text + graphics (feature graphic, icon, phone screenshots) to Play. No binary.
+  # Best-effort: the app must already exist in Play Console and have its one-time content
+  # declarations (data safety, content rating) completed before Play accepts a listing push.
+  lane :listing do
+    supply(
+      track: "internal",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+end

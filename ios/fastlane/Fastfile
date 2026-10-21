@@ -212,4 +212,46 @@ platform :ios do
     end
     UI.success("Subscriptions reconciled.")
   end
+
+  # Public App Store submission. Pushes listing metadata (ios/fastlane/metadata) and screenshots
+  # (ios/fastlane/screenshots) to the current editable version, attaches the latest TestFlight build,
+  # and submits for review. The binary is NOT re-uploaded here (the beta lane already put it on
+  # TestFlight) — this lane is metadata + submit only. Release is held for MANUAL release after
+  # approval, so nothing goes public without a final tap. Idempotent: safe to re-run.
+  #
+  # Gated in CI behind a "Ship-Store=YES" commit marker + STORE_SUBMIT_ENABLED variable, exactly like
+  # the TestFlight gate — so a normal push never submits for review.
+  lane :release do
+    key = app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"], issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_PATH"], in_house: false
+    )
+
+    deliver(
+      api_key: key,
+      app_identifier: "com.tenzy.toolkit",
+      metadata_path: File.expand_path("metadata", __dir__),
+      screenshots_path: File.expand_path("screenshots", __dir__),
+      skip_binary_upload: true,          # binary already on TestFlight via :beta
+      skip_app_version_update: false,
+      overwrite_screenshots: true,
+      submit_for_review: true,
+      automatic_release: false,          # hold for a manual "Release" tap after approval
+      force: true,                       # non-interactive (no HTML preview prompt)
+      precheck_include_in_app_purchases: false,
+      run_precheck_before_submit: false,
+      submission_information: {
+        # HTTPS/standard crypto only — exempt from export compliance docs.
+        export_compliance_uses_encryption: false,
+        # App serves ads via AdMob and therefore uses the advertising identifier.
+        add_id_info_uses_idfa: true,
+        add_id_info_serves_ads: true,
+        add_id_info_tracks_install: true,
+        add_id_info_tracks_action: false,
+        add_id_info_limits_tracking: true,
+        content_rights_contains_third_party_content: false
+      }
+    )
+    UI.success("Submitted Tenzy to App Store review (held for manual release).")
+  end
 end

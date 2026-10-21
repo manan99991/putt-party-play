@@ -1,0 +1,1 @@
+compress,pdf,scanner,ocr,translate,heic,convert,resize,measure,magnifier,qr,wifi,flashlight,toolbox

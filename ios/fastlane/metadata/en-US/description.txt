@@ -1,0 +1,47 @@
+Tenzy is 30 small tools in one app — the stuff your phone makes you dig for, download five separate apps for, or just can't do on its own.
+
+I built it because my home screen had become a graveyard of single-use utilities: one app to shrink a photo under an email limit, another to scan a PDF, another to read a sign in a different language, another to dig a Wi-Fi password out of a screenshot. Tenzy is all of them in one place — and most of it runs right on your phone. No account, no sign-up, nothing uploaded.
+
+EVERYDAY
+• Fit It — shrink a photo, PDF or video under an exact size limit (25 MB for email, whatever a portal demands)
+• Scan — scan documents, pull out the text, sign and fill PDFs
+• Studio — enhance, upscale, cut out backgrounds, make passport photos, resize
+• Video — shrink, trim, convert, make a GIF
+• Format Fixer — HEIC and MOV to JPG and MP4, in batch
+• Privacy Scrubber — strip GPS and metadata, redact faces and plates for good
+• Cleaner — find duplicates and big files and free up space
+• QR & Wi-Fi — scan, make and share Wi-Fi codes
+• Long Screenshot — stitch a scrolling chat into one tall image
+• Share-Ready — one tap to convert, strip and shrink before you send
+
+TOOLS & INSTRUMENTS
+• Flashlight+ — strobe, SOS, screen light, mirror
+• Instruments — level, compass, decibel meter, light meter and more
+• Measure — an AR tape for distance, height and area
+• Magnifier+ — zoom, freeze and boost contrast on fine print
+• Pro Camera — manual ISO, shutter and RAW
+• GPS Dashboard — speed, heading, altitude, HUD
+• Audio Lab — instrument tuner, test tones, speaker test
+• Rest — white noise and a snore recorder
+• Color Vision — live color-blind correction and color naming
+• Sorted — snap a bill or letter and it lands in your calendar
+
+ON-DEVICE AI
+• Text Studio — fix, rewrite, reply, summarize
+• Translate — text, camera and voice, offline
+• Voice to Notes — a transcript, a summary and your to-dos from any recording
+• Live Captions — real-time captions, private
+• Message Shield — spot a scam text and see why it's flagged
+• Lens — read, simplify or hear any text out loud
+• Memory — ask your screenshots anything ("what was that Wi-Fi password?")
+• Data Grabber — turn a receipt into rows, contacts or calendar dates
+• Scene Describer — hear what the camera is pointed at
+• Vault — a Face ID locker for private photos and notes
+
+The AI tools use the model built into your iPhone, so they work offline and nothing leaves the device.
+
+FREE, WITH AN OPTIONAL PRO
+Tenzy is free with ads. Tenzy Pro removes every ad and unlocks unlimited use of everything — $19.99/year or $2.99/month. One person builds and maintains this app; Pro is what keeps it going.
+
+PRIVACY
+Your files stay on your device. There's no account and no tracking of what you do inside the app. The only data collected is the standard advertising identifier used by the ad provider to show and count ads — and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/putt-party-play/privacy.html

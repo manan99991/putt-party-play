@@ -1,5 +1,10 @@
 # HandyTools — launch checklist
 
+> **Outdated (kept for history).** This predates the Tenzy rename, the 30-tool catalog, the $19.99
+> pricing, and the automated store pipeline. For the current rules see `docs/rulebook.md`; for the
+> live submission state see the store-submission summary in chat / `ios/fastlane` + `android/fastlane`.
+
+
 Both apps compile green on CI (branch `handytools`). This is what's left between "builds" and "in the stores", in order. Every step is a few minutes; nothing here needs code.
 
 ## Where things are

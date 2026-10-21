@@ -1,0 +1,37 @@
+Tenzy is a box of small, handy tools in one app — the stuff your phone makes you dig for, or download a separate app for every time.
+
+I built it because my home screen had filled up with single-use utilities: one app to grab text out of a photo, another to shrink a video small enough to send, another to scan a document to PDF. Tenzy puts them in one place, and most of them run right on your phone — no account, nothing uploaded.
+
+What's inside right now:
+
+EVERYDAY
+• Flashlight — patterns, SOS, strobe
+• Timers — countdown and stopwatch
+• Multi-Clipboard — paste anything you copied earlier
+• QR & Barcode — scan and make codes
+• Sticky Note — quick notes that stay put
+• Alarm Pro — custom snooze and sounds
+• Text from Image — copy text straight out of a photo
+• Lens — read any text, or have it read aloud
+• Translate — offline and private
+• Magnifier — zoom in on small print
+
+DOCUMENTS & MEDIA
+• Doc Scanner — scan pages to a clean PDF
+• PDF Toolkit — merge, split and compress PDFs
+• Image Converter — HEIC to JPG, resize, batch
+• Background Remover — cut out the subject
+• Video Compressor — shrink clips small enough to send
+• Audio to Text — transcribe a voice recording
+• Photo Metadata — strip location and EXIF before sharing
+• Card Wallet — keep loyalty barcodes handy
+• Web to Home — turn any link into a home-screen icon
+• Measure — level, compass and sound meter
+
+SMART
+• Sorted — snap a bill or letter and drop it into your calendar
+• Memory — search your screenshots by what's in them (that Wi-Fi password, a confirmation code)
+
+Free to use, with ads. Tenzy Pro removes every ad and unlocks unlimited use — $19.99/year or $2.99/month. One person builds and maintains this, and Pro is what keeps it going.
+
+Privacy: your files stay on your device. There's no account and no tracking of what you do in the app. The only data collected is the standard advertising ID the ad provider uses to show and count ads, and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/putt-party-play/privacy.html
