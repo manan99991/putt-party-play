@@ -1,0 +1,2 @@
+Store submit trigger. CI job `store` runs when this commit carries Ship-Store=YES
+and repo var STORE_SUBMIT_ENABLED=true. Uploaded: 2026-10-21T11:41Z
