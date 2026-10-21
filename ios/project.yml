@@ -36,6 +36,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1"   # iPhone-only, pinned on the app target (not just project-level)
     sources:
       - path: HandyTools
       - path: Shared

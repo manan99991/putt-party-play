@@ -227,6 +227,10 @@ jobs:
         run: |
           sed -i '' "s/YOUR_TEAM_ID/$TEAM_ID/g" project.yml HandyTools/Resources/Products.storekit
           xcodegen generate
+          # GUARD: never upload a universal build by accident — the app must be iPhone-only (family 1).
+          DF=$(xcodebuild -showBuildSettings -project HandyTools.xcodeproj -target HandyTools 2>/dev/null | awk -F'= ' '/ TARGETED_DEVICE_FAMILY /{print $2; exit}' | tr -d ' ')
+          echo "TARGETED_DEVICE_FAMILY=$DF"
+          [ "$DF" = "1" ] || { echo "::error::App is not iPhone-only (TARGETED_DEVICE_FAMILY=$DF) — refusing to archive/upload"; exit 1; }
           # Force a unique, ever-increasing CFBundleVersion directly into every generated Info.plist
           # (XcodeGen writes a literal "1", so a build-setting override alone doesn't take).
           BN=$(date +%s)
