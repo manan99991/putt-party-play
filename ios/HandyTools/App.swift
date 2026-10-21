@@ -521,12 +521,19 @@ struct PaywallView: View {
                     Text("Go Pro · \(store.yearlyPrice) / year").frame(maxWidth: .infinity)
                 }.primaryButton()
 
-                Text("Auto-renews until cancelled in Settings › Apple ID › Subscriptions. Price shown in your currency at checkout.")
+                Text("Payment is charged to your Apple ID at confirmation. Renews automatically at \(store.yearlyPrice)/year unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 HStack(spacing: HandySpacing.s24) {
                     Button("Restore purchases") { Task { await store.restore() } }.textButton()
                     Button("Not now") { dismiss() }.textButton()
                 }
+                // Guideline 3.1.2: functional Terms of Use (EULA) + Privacy Policy links at point of purchase.
+                HStack(spacing: HandySpacing.s8) {
+                    Link("Terms of Use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                    Text("·").foregroundStyle(HandyColor.textSecondary)
+                    Link("Privacy Policy", destination: URL(string: "https://manan99991.github.io/putt-party-play/privacy.html")!)
+                }
+                .font(HandyFont.caption).foregroundStyle(HandyColor.accent)
             }
             if let e = store.purchaseError { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
