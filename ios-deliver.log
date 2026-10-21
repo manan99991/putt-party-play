@@ -5,149 +5,120 @@
 | skip_screenshots                                                   | false                                                                      |
 | skip_metadata                                                      | false                                                                      |
 | sync_screenshots                                                   | false                                                                      |
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
-[15:10:57]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
-[15:10:58]: [33mWill begin uploading metadata for '1.0' on App Store Connect[0m
-[15:10:58]: Uploading metadata to App Store Connect for version
-[15:11:02]: Uploading metadata to App Store Connect for localized version 'en-US'
-[15:11:04]: [31mError fetching app store review detail - No data[0m
-[15:11:05]: Starting with the upload of screenshots...
-[15:11:05]: [33mNumber of screenshots not deleted: 0[0m
-[15:11:05]: Successfully deleted all screenshots
-[15:11:07]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/03-slide3.png'... (1.720764837 secs)
-[15:11:07]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/06-slide6.png'... (1.799758774 secs)
-[15:11:07]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/05-slide5.png'... (1.820530969 secs)
-[15:11:07]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/02-slide2.png'... (1.856170287 secs)
-[15:11:07]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/01-slide1.png'... (1.903971704 secs)
-[15:11:10]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/04-slide4.png'... (4.595596069 secs)
-[15:11:10]: Waiting for all the screenshots to finish being processed...
-[15:11:15]: Successfully uploaded all screenshots
-[15:11:15]: Sorting screenshots uploaded...
-[15:11:16]: [32mSuccessfully uploaded screenshots to App Store Connect[0m
-[15:11:19]: [32mSuccessfully finished processing the build 1.0 - 1792589259 for IOS[0m
-[15:11:21]: [32mSuccessfully selected build[0m
-[15:11:22]: [32mSuccessfully updated contents rights declaration on App Store Connect[0m
-[15:11:24]: [31mfastlane finished with errors[0m
-/opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/spaceship/lib/spaceship/connect_api/api_client.rb:223:in `handle_response': [31m[!] appStoreVersions with id '4f848ca1-8c36-4cbf-a42b-41b7514c4f7a' is not in valid state. - This resource cannot be reviewed, please check associated errors to see why. (Spaceship::UnexpectedResponse)
-The provided entity is missing a required attribute - You must provide a value for the attribute 'alcoholTobaccoOrDrugUseOrReferences' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'unrestrictedWebAccess' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'contests' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'gunsOrOtherWeapons' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'medicalOrTreatmentInformation' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'violenceRealistic' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'violenceCartoonOrFantasy' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'parentalControls' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'horrorOrFearThemes' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'gambling' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'healthOrWellnessTopics' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'sexualContentOrNudity' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'ageAssurance' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'messagingAndChat' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'profanityOrCrudeHumor' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'advertising' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'userGeneratedContent' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'sexualContentGraphicAndNudity' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'lootBox' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'gamblingSimulated' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'violenceRealisticProlongedGraphicOrSadistic' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'matureOrSuggestiveThemes' with this request
-App screenshot missing (IPAD_13_PROFILE). - A screenshot for one of the following types is required but was not provided: IPAD_13_PROFILE
-App is missing required pricing. - App is not eligible for submission until pricing has been set.[0m
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
+[15:42:00]: [33mWill begin uploading metadata for '1.0' on App Store Connect[0m
+[15:42:00]: Uploading metadata to App Store Connect for version
+[15:42:04]: Uploading metadata to App Store Connect for localized version 'en-US'
+[15:42:08]: Starting with the upload of screenshots...
+[15:42:09]: [33mNumber of screenshots not deleted: 0[0m
+[15:42:09]: Successfully deleted all screenshots
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/04-slide4.png'... (2.083438972 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/01-slide1.png'... (2.149993521 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/06-slide6.png'... (2.202483442 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/03-slide3.png'... (2.224071499 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_3.png'... (2.269156863 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/02-slide2.png'... (2.310655488 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_2.png'... (2.326750536 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_4.png'... (2.349532184 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_1.png'... (2.379912065 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/05-slide5.png'... (2.528777863 secs)
+[15:42:14]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_5.png'... (2.014072105 secs)
+[15:42:14]: Waiting for all the screenshots to finish being processed...
 
 ===== tail =====
-[15:11:24]: [31m    264:	[0m
-[15:11:24]: [31m => 265:	    deliver([0m
-[15:11:24]: [31m    266:	      api_key: key,[0m
-[15:11:24]: [31m    267:	      app_identifier: "com.tenzy.toolkit",[0m
-[15:11:24]: [31m```[0m
++-------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                             [32mdeliver 2.241.1 Summary[0m                                                             |
++--------------------------------------------------------------------+----------------------------------------------------------------------------+
+| api_key                                                            | API_KEY_REDACTED                                                           |
+| app_identifier                                                     | com.tenzy.toolkit                                                          |
+| metadata_path                                                      | /home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata    |
+| screenshots_path                                                   | /home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots |
+| skip_binary_upload                                                 | true                                                                       |
+| skip_app_version_update                                            | false                                                                      |
+| overwrite_screenshots                                              | true                                                                       |
+| submit_for_review                                                  | true                                                                       |
+| automatic_release                                                  | false                                                                      |
+| force                                                              | true                                                                       |
+| precheck_include_in_app_purchases                                  | false                                                                      |
+| run_precheck_before_submit                                         | false                                                                      |
+| submission_information.export_compliance_uses_encryption           | false                                                                      |
+| submission_information.add_id_info_uses_idfa                       | true                                                                       |
+| submission_information.add_id_info_serves_ads                      | true                                                                       |
+| submission_information.add_id_info_tracks_install                  | true                                                                       |
+| submission_information.add_id_info_tracks_action                   | false                                                                      |
+| submission_information.add_id_info_limits_tracking                 | true                                                                       |
+| submission_information.content_rights_contains_third_party_content | false                                                                      |
+| platform                                                           | ios                                                                        |
+| edit_live                                                          | false                                                                      |
+| use_live_version                                                   | false                                                                      |
+| preview_frame_time_code                                            | 00:00:05:00                                                                |
+| overwrite_preview_videos                                           | false                                                                      |
+| skip_screenshots                                                   | false                                                                      |
+| skip_metadata                                                      | false                                                                      |
+| screenshot_processing_timeout                                      | 3600                                                                       |
+| sync_screenshots                                                   | false                                                                      |
+| verify_only                                                        | false                                                                      |
+| reject_if_possible                                                 | false                                                                      |
+| version_check_wait_retry_limit                                     | 7                                                                          |
+| phased_release                                                     | false                                                                      |
+| reset_ratings                                                      | false                                                                      |
+| precheck_default_rule_level                                        | warn                                                                       |
+| ignore_language_directory_validation                               | false                                                                      |
++--------------------------------------------------------------------+----------------------------------------------------------------------------+
 
-+------------------------------------------------+
-|                [32mfastlane summary[0m                |
-+------+---------------------------+-------------+
-| Step | Action                    | Time (in s) |
-+------+---------------------------+-------------+
-| 1    | default_platform          | 0           |
-| 2    | app_store_connect_api_key | 0           |
-| 💥   | [31mdeliver[0m                   | 27          |
-+------+---------------------------+-------------+
-
-[15:11:24]: [31mfastlane finished with errors[0m
-
-Looking for related GitHub issues on fastlane/fastlane...
-
-/opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/spaceship/lib/spaceship/connect_api/api_client.rb:223:in `handle_response': [31m[!] appStoreVersions with id '4f848ca1-8c36-4cbf-a42b-41b7514c4f7a' is not in valid state. - This resource cannot be reviewed, please check associated errors to see why. (Spaceship::UnexpectedResponse)
-The provided entity is missing a required attribute - You must provide a value for the attribute 'alcoholTobaccoOrDrugUseOrReferences' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'unrestrictedWebAccess' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'contests' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'gunsOrOtherWeapons' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'medicalOrTreatmentInformation' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'violenceRealistic' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'violenceCartoonOrFantasy' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'parentalControls' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'horrorOrFearThemes' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'gambling' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'healthOrWellnessTopics' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'sexualContentOrNudity' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'ageAssurance' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'messagingAndChat' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'profanityOrCrudeHumor' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'advertising' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'userGeneratedContent' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'sexualContentGraphicAndNudity' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'lootBox' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'gamblingSimulated' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'violenceRealisticProlongedGraphicOrSadistic' with this request
-The provided entity is missing a required attribute - You must provide a value for the attribute 'matureOrSuggestiveThemes' with this request
-App screenshot missing (IPAD_13_PROFILE). - A screenshot for one of the following types is required but was not provided: IPAD_13_PROFILE
-App is missing required pricing. - App is not eligible for submission until pricing has been set.[0m
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/spaceship/lib/spaceship/connect_api/api_client.rb:125:in `post'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/spaceship/lib/spaceship/connect_api/tunes/tunes.rb:1271:in `post_review_submission_item'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/3.3.0/forwardable.rb:240:in `post_review_submission_item'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/spaceship/lib/spaceship/connect_api/models/review_submission.rb:69:in `add_app_store_version_to_review_items'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/deliver/lib/deliver/submit_for_review.rb:48:in `create_review_submission'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/deliver/lib/deliver/submit_for_review.rb:25:in `submit!'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/deliver/lib/deliver/runner.rb:282:in `submit_for_review'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/deliver/lib/deliver/runner.rb:75:in `run'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/actions/upload_to_app_store.rb:25:in `run'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:263:in `block (2 levels) in execute_action'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/actions/actions_helper.rb:69:in `execute_action'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:255:in `block in execute_action'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:229:in `chdir'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:229:in `execute_action'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:157:in `trigger_action_by_name'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'
-	from Fastfile:265:in `block (2 levels) in parsing_binding'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane.rb:41:in `call'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:49:in `block in execute'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in `chdir'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in `execute'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:187:in `call'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:157:in `run'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:363:in `run'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:43:in `start'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in `take_off'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/bin/fastlane:25:in `<top (required)>'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/bin/fastlane:25:in `load'
-	from /opt/hostedtoolcache/Ruby/3.3.12/x64/bin/fastlane:25:in `<main>'
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
+[15:41:58]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
+[15:42:00]: No changes to localized App Info detected. Skipping upload.
+[15:42:00]: [33mWill begin uploading metadata for '1.0' on App Store Connect[0m
+[15:42:00]: [31mSkipping 'release_notes'... this is the first version of the app[0m
+[15:42:00]: Uploading metadata to App Store Connect for version
+[15:42:04]: Uploading metadata to App Store Connect for localized version 'en-US'
+[15:42:06]: Uploading app review information to App Store Connect
+[15:42:08]: [33mWill begin uploading snapshots for '1.0' on App Store Connect[0m
+[15:42:08]: Starting with the upload of screenshots...
+[15:42:09]: Deleted 'en-US APP_IPHONE_67' -  (0.476615878 secs)
+[15:42:09]: [33mNumber of screenshots not deleted: 0[0m
+[15:42:09]: Successfully deleted all screenshots
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/04-slide4.png'... (2.083438972 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/01-slide1.png'... (2.149993521 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/06-slide6.png'... (2.202483442 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/03-slide3.png'... (2.224071499 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_3.png'... (2.269156863 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/02-slide2.png'... (2.310655488 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_2.png'... (2.326750536 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_4.png'... (2.349532184 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_1.png'... (2.379912065 secs)
+[15:42:12]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/05-slide5.png'... (2.528777863 secs)
+[15:42:14]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad_5.png'... (2.014072105 secs)
+[15:42:14]: Waiting for all the screenshots to finish being processed...
