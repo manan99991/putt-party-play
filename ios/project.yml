@@ -19,7 +19,7 @@ settings:
     DEVELOPMENT_TEAM: "YOUR_TEAM_ID"      # <- Apple Developer team id
     MARKETING_VERSION: "1.0"
     CURRENT_PROJECT_VERSION: "1"
-    TARGETED_DEVICE_FAMILY: "1"
+    TARGETED_DEVICE_FAMILY: "1,2"
     SWIFT_STRICT_CONCURRENCY: minimal
     OTHER_LDFLAGS: "-ObjC"                 # required by Google Mobile Ads
 
@@ -36,7 +36,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        TARGETED_DEVICE_FAMILY: "1"   # iPhone-only, pinned on the app target (not just project-level)
+        TARGETED_DEVICE_FAMILY: "1,2"   # universal: iPhone + iPad
     sources:
       - path: HandyTools
       - path: Shared
