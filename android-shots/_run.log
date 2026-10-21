@@ -23,14 +23,6 @@ yes: standard output: Broken pipe
 + for try in 1 2 3
 + /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install platform-tools emulator 'system-images;android-34;google_apis;x86_64'
 + tail -3
-Loading package information...                                                  Loading local repository...                                                     [                                       ] 3% Loading local repository...        [                                       ] 3% Fetch remote repository...         [=                                      ] 3% Fetch remote repository...         [=                                      ] 4% Fetch remote repository...         [=                                      ] 5% Fetch remote repository...         [==                                     ] 5% Fetch remote repository...         [==                                     ] 6% Fetch remote repository...         [==                                     ] 7% Fetch remote repository...         [==                                     ] 7% Computing updates...               [===                                    ] 8% Computing updates...               [===                                    ] 10% Computing updates...              [===                                    ] 10% Installing Android Emulator       [===                                    ] 10% Downloading emulator-linux_x64-164[====                                   ] 10% Downloading emulator-linux_x64-164[====                                   ] 11% Downloading emulator-linux_x64-164[====                                   ] 12% Downloading emulator-linux_x64-164[=====                                  ] 13% Downloading emulator-linux_x64-164[=====                                  ] 14% Downloading emulator-linux_x64-164[=====                                  ] 15% Downloading emulator-linux_x64-164[======                                 ] 15% Downloading emulator-linux_x64-164[========                               ] 21% Downloading emulator-linux_x64-164[========                               ] 21% Unzipping...                                                                                                      Warning: An error occurred while preparing SDK package Android Emulator: Error on ZipFile unknown archive.
-[========                               ] 21% Unzipping...                      + '[' -x /usr/local/lib/android/sdk/emulator/emulator ']'
-+ echo 'sdk install incomplete, retry 1'
-sdk install incomplete, retry 1
-+ sleep 10
-+ for try in 1 2 3
-+ /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --install platform-tools emulator 'system-images;android-34;google_apis;x86_64'
-+ tail -3
 Loading package information...                                                  Loading local repository...                                                     [                                       ] 3% Loading local repository...        [                                       ] 3% Fetch remote repository...         [=                                      ] 3% Fetch remote repository...         [=                                      ] 4% Fetch remote repository...         [=                                      ] 5% Fetch remote repository...         [==                                     ] 5% Fetch remote repository...         [==                                     ] 6% Fetch remote repository...         [==                                     ] 7% Fetch remote repository...         [==                                     ] 7% Computing updates...               [===                                    ] 8% Computing updates...               [===                                    ] 10% Computing updates...              [===                                    ] 10% Installing Android Emulator       [===                                    ] 10% Downloading emulator-linux_x64-164[====                                   ] 10% Downloading emulator-linux_x64-164[====                                   ] 11% Downloading emulator-linux_x64-164[====                                   ] 12% Downloading emulator-linux_x64-164[=====                                  ] 13% Downloading emulator-linux_x64-164[=====                                  ] 14% Downloading emulator-linux_x64-164[=====                                  ] 15% Downloading emulator-linux_x64-164[======                                 ] 15% Downloading emulator-linux_x64-164[======                                 ] 16% Downloading emulator-linux_x64-164[======                                 ] 17% Downloading emulator-linux_x64-164[=======                                ] 18% Downloading emulator-linux_x64-164[=======                                ] 19% Downloading emulator-linux_x64-164[=======                                ] 20% Downloading emulator-linux_x64-164[========                               ] 20% Downloading emulator-linux_x64-164[========                               ] 21% Downloading emulator-linux_x64-164[========                               ] 21% Unzipping...                      [========                               ] 21% Unzipping... emulator/            [========                               ] 21% Unzipping... emulator/resources/  [========                               ] 21% Unzipping... emulator/qsn         [========                               ] 21% Unzipping... emulator/emulator    [========                               ] 21% Unzipping... emulator/netsimd     [========                               ] 22% Unzipping... emulator/netsimd     [========                               ] 22% Unzipping... emulator/bin64/      [========                               ] 22% Unzipping... emulator/qemu/       [========                               ] 22% Unzipping... emulator/NOTICE.txt  [========                               ] 22% Unzipping... emulator/crashpad_han[========                               ] 22% Unzipping... emulator/source.prope[========                               ] 22% Unzipping... emulator/nimble_bridg[========                               ] 22% Unzipping... emulator/LICENSE     [========                               ] 22% Unzipping... emulator/lib/        [========                               ] 22% Unzipping... emulator/qemu-img    [========                               ] 22% Unzipping... emulator/include/    [========                               ] 22% Unzipping... emulator/NOTICE.csv  [========                               ] 22% Unzipping... emulator/lib64/      [========                               ] 22% Unzipping... emulator/emulator-che[========                               ] 22% Unzipping... emulator/crashreport [========                               ] 22% Unzipping... emulator/mksdcard    [========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/To[========                               ] 22% Unzipping... emulator/resources/ma[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/sk[========                               ] 22% Unzipping... emulator/resources/de[========                               ] 22% Unzipping... emulator/resources/ma[========                               ] 22% Unzipping... emulator/resources/po[========                               ] 22% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/resources/sk[=========                              ] 23% Unzipping... emulator/resources/ma[=========                              ] 23% Unzipping... emulator/bin64/e2fsck[=========                              ] 23% Unzipping... emulator/bin64/fsck.e[=========                              ] 23% Unzipping... emulator/bin64/tune2f[=========                              ] 23% Unzipping... emulator/bin64/resize[=========                              ] 23% Unzipping... emulator/bin64/mkfs.e[=========                              ] 23% Unzipping... emulator/qemu/linux-x[=========                              ] 24% Unzipping... emulator/qemu/linux-x[=========                              ] 25% Unzipping... emulator/qemu/linux-x[==========                             ] 25% Unzipping... emulator/qemu/linux-x[==========                             ] 25% Unzipping... emulator/lib/emulator[==========                             ] 25% Unzipping... emulator/lib/rtc_serv[==========                             ] 25% Unzipping... emulator/lib/advanced[==========                             ] 25% Unzipping... emulator/lib/cmake/  [==========                             ] 25% Unzipping... emulator/lib/emulator[==========                             ] 25% Unzipping... emulator/lib/control_[==========                             ] 25% Unzipping... emulator/lib/emulated[==========                             ] 25% Unzipping... emulator/lib/rtc_serv[==========                             ] 25% Unzipping... emulator/lib/emu-orig[==========                             ] 25% Unzipping... emulator/lib/hardware[==========                             ] 25% Unzipping... emulator/lib/pkgconfi[==========                             ] 25% Unzipping... emulator/lib/pc-bios/[==========                             ] 25% Unzipping... emulator/lib/snapshot[==========                             ] 25% Unzipping... emulator/lib/adb_serv[==========                             ] 25% Unzipping... emulator/lib/hostapd.[==========                             ] 25% Unzipping... emulator/lib/grpc_end[==========                             ] 25% Unzipping... emulator/lib/ca-bundl[==========                             ] 25% Unzipping... emulator/lib/ui_contr[==========                             ] 25% Unzipping... emulator/lib/snapshot[==========                             ] 25% Unzipping... emulator/lib/ice_conf[==========                             ] 25% Unzipping... emulator/lib/libflatb[==========                             ] 26% Unzipping... emulator/lib/libflatb[==========                             ] 26% Unzipping... emulator/lib/emulator[==========                             ] 26% Unzipping... emulator/lib/waterfal[==========                             ] 26% Unzipping... emulator/lib/emulated[==========                             ] 26% Unzipping... emulator/lib/cmake/fl[==========                             ] 26% Unzipping... emulator/lib/pkgconfi[==========                             ] 26% Unzipping... emulator/lib/pc-bios/[==========                             ] 26% Unzipping... emulator/include/flat[==========                             ] 26% Unzipping... emulator/lib64/libgli[==========                             ] 26% Unzipping... emulator/lib64/libpro[==========                             ] 26% Unzipping... emulator/lib64/qt/   [==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libgfx[==========                             ] 26% Unzipping... emulator/lib64/gles_l[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/vulkan[==========                             ] 26% Unzipping... emulator/lib64/gles_s[==========                             ] 26% Unzipping... emulator/lib64/libemu[==========                             ] 26% Unzipping... emulator/lib64/libpro[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libtcm[==========                             ] 26% Unzipping... emulator/lib64/libima[==========                             ] 26% Unzipping... emulator/lib64/libc++[==========                             ] 26% Unzipping... emulator/lib64/liband[==========                             ] 26% Unzipping... emulator/lib64/libabs[==========                             ] 26% Unzipping... emulator/lib64/gles_a[==========                             ] 26% Unzipping... emulator/lib64/libsha[==========                             ] 26% Unzipping... emulator/lib64/libc++[==========                             ] 26% Unzipping... emulator/lib64/qt/res[==========                             ] 26% Unzipping... emulator/lib64/qt/lib[==========                             ] 26% Unzipping... emulator/lib64/qt/tra[==========                             ] 26% Unzipping... emulator/lib64/qt/plu[==========                             ] 26% Unzipping... emulator/lib64/qt/res[==========                             ] 27% Unzipping... emulator/lib64/qt/res[==========                             ] 27% Unzipping... emulator/lib64/qt/lib[===========                            ] 28% Unzipping... emulator/lib64/qt/lib[===========                            ] 29% Unzipping... emulator/lib64/qt/lib[===========                            ] 30% Unzipping... emulator/lib64/qt/lib[============                           ] 30% Unzipping... emulator/lib64/qt/lib[============                           ] 30% Unzipping... emulator/lib64/qt/tra[============                           ] 30% Unzipping... emulator/lib64/qt/plu[============                           ] 30% Unzipping... emulator/lib64/gles_l[============                           ] 31% Unzipping... emulator/lib64/gles_l[============                           ] 31% Unzipping... emulator/lib64/vulkan[============                           ] 32% Unzipping... emulator/lib64/vulkan[============                           ] 32% Unzipping... emulator/lib64/gles_s[============                           ] 32% Unzipping... emulator/lib64/gles_a[=============                          ] 33% Unzipping... emulator/lib64/gles_a[=====================                  ] 55% Unzipping... emulator/lib64/gles_a[=====================                  ] 55% Installing Google APIs Intel x86_6[=====================                  ] 55% Downloading x86_64-34_r14.zip... e[======================                 ] 55% Downloading x86_64-34_r14.zip... e[======================                 ] 56% Downloading x86_64-34_r14.zip... e[======================                 ] 57% Downloading x86_64-34_r14.zip... e[=======================                ] 58% Downloading x86_64-34_r14.zip... e[=======================                ] 59% Downloading x86_64-34_r14.zip... e[=======================                ] 60% Downloading x86_64-34_r14.zip... e[========================               ] 60% Downloading x86_64-34_r14.zip... e[========================               ] 61% Downloading x86_64-34_r14.zip... e[========================               ] 62% Downloading x86_64-34_r14.zip... e[=========================              ] 63% Downloading x86_64-34_r14.zip... e[=========================              ] 64% Downloading x86_64-34_r14.zip... e[=========================              ] 65% Downloading x86_64-34_r14.zip... e[==========================             ] 65% Downloading x86_64-34_r14.zip... e[==========================             ] 66% Downloading x86_64-34_r14.zip... e[==========================             ] 66% Unzipping... emulator/lib64/gles_a[==========================             ] 66% Unzipping... x86_64/NOTICE.txt    [==========================             ] 66% Unzipping... x86_64/VerifiedBootPa[==========================             ] 66% Unzipping... x86_64/advancedFeatur[==========================             ] 66% Unzipping... x86_64/build.prop    [==========================             ] 66% Unzipping... x86_64/encryptionkey.[==========================             ] 66% Unzipping... x86_64/kernel-ranchu [==========================             ] 66% Unzipping... x86_64/ramdisk.img   [==========================             ] 66% Unzipping... x86_64/source.propert[==========================             ] 66% Unzipping... x86_64/system.img    [==========================             ] 67% Unzipping... x86_64/system.img    [===========================            ] 68% Unzipping... x86_64/system.img    [===========================            ] 69% Unzipping... x86_64/system.img    [===========================            ] 70% Unzipping... x86_64/system.img    [============================           ] 70% Unzipping... x86_64/system.img    [============================           ] 71% Unzipping... x86_64/system.img    [============================           ] 72% Unzipping... x86_64/system.img    [=============================          ] 73% Unzipping... x86_64/system.img    [=============================          ] 74% Unzipping... x86_64/system.img    [=============================          ] 75% Unzipping... x86_64/system.img    [==============================         ] 75% Unzipping... x86_64/system.img    [==============================         ] 76% Unzipping... x86_64/system.img    [==============================         ] 77% Unzipping... x86_64/system.img    [==============================         ] 77% Unzipping... x86_64/userdata.img  [==============================         ] 77% Unzipping... x86_64/vendor.img    [==============================         ] 77% Unzipping... x86_64/data/local.pro[==============================         ] 77% Unzipping... x86_64/data/misc/Gold[==============================         ] 77% Unzipping... x86_64/data/misc/apns[==============================         ] 77% Unzipping... x86_64/data/misc/emul[==============================         ] 77% Unzipping... x86_64/data/misc/gcec[==============================         ] 77% Unzipping... x86_64/data/misc/mode[==============================         ] 77% Unzipping... x86_64/data/misc/pixe[==============================         ] 78% Unzipping... x86_64/data/misc/pixe[=======================================] 100% Unzipping... x86_64/data/misc/pix
 
 + '[' -x /usr/local/lib/android/sdk/emulator/emulator ']'
@@ -47,15 +39,15 @@ Loading local repository...                                                     
 Auto-selecting single ABI x86_64
 + ls -la /home/runner/.android/avd
 total 16
-drwxr-xr-x 3 runner runner 4096 Oct 21 19:14 .
-drwxr-xr-x 3 runner runner 4096 Oct 21 19:14 ..
-drwxr-xr-x 2 runner runner 4096 Oct 21 19:14 shot.avd
--rw-r--r-- 1 runner runner   81 Oct 21 19:14 shot.ini
+drwxr-xr-x 3 runner runner 4096 Oct 21 19:43 .
+drwxr-xr-x 3 runner runner 4096 Oct 21 19:43 ..
+drwxr-xr-x 2 runner runner 4096 Oct 21 19:43 shot.avd
+-rw-r--r-- 1 runner runner   81 Oct 21 19:43 shot.ini
 + /usr/local/lib/android/sdk/emulator/emulator -list-avds
 shot
 + export PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 + PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-+ EMU=2718
++ EMU=2644
 + nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
 ++ seq 1 90
 + for i in $(seq 1 90)
@@ -63,7 +55,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2718
++ kill -0 2644
 + '[' 1 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -71,7 +63,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2718
++ kill -0 2644
 + '[' 2 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -79,7 +71,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2718
++ kill -0 2644
 + '[' 3 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -87,8 +79,16 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2718
++ kill -0 2644
 + '[' 4 -eq 0 ']'
++ sleep 10
++ for i in $(seq 1 90)
+++ adb shell getprop sys.boot_completed
+++ tr -d '\r'
++ b=
++ '[' '' = 1 ']'
++ kill -0 2644
++ '[' 5 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
 ++ adb shell getprop sys.boot_completed
@@ -111,23 +111,23 @@ INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2b
 INFO         |   androidboot.vbmeta.hash_alg=sha256
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f645c001000 as it is in the protected range from 0x7f63bc000000 to 0x7f645c200000
+WARNING: cannnot unmap ptr 0x7fe405601000 as it is in the protected range from 0x7fe365600000 to 0x7fe405800000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2718/jwks/813ce1d4-e320-4344-804e-de10bd42b15c/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2718/jwks/813ce1d4-e320-4344-804e-de10bd42b15c for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2644/jwks/b2c7f4ca-2e5d-449a-8ef9-8670385e108b/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2644/jwks/b2c7f4ca-2e5d-449a-8ef9-8670385e108b for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2718.ini
-INFO         | Successfully initialized netsim WiFi
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2644.ini
 INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 38142 ms
+INFO         | Boot completed in 41819 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
 + adb shell settings put global hide_error_dialogs 1
 + adb shell settings put global window_animation_scale 0
@@ -152,8 +152,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 8864
-WaitTime: 8917
+TotalTime: 8546
+WaitTime: 8603
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -164,8 +164,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 6502
-WaitTime: 6518
+TotalTime: 6187
+WaitTime: 6269
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -176,8 +176,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 4917
-WaitTime: 4995
+TotalTime: 6252
+WaitTime: 6278
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -188,8 +188,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2851
-WaitTime: 2855
+TotalTime: 3524
+WaitTime: 3596
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -200,8 +200,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 5286
-WaitTime: 5327
+TotalTime: 6403
+WaitTime: 6494
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -212,8 +212,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 4169
-WaitTime: 4191
+TotalTime: 6945
+WaitTime: 6950
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -224,8 +224,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 4638
-WaitTime: 4694
+TotalTime: 4127
+WaitTime: 4129
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -236,8 +236,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3144
-WaitTime: 3150
+TotalTime: 3324
+WaitTime: 3371
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -248,8 +248,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3417
-WaitTime: 3433
+TotalTime: 4309
+WaitTime: 4320
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -260,8 +260,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2873
-WaitTime: 2905
+TotalTime: 3025
+WaitTime: 3033
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -272,8 +272,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2509
-WaitTime: 2582
+TotalTime: 2704
+WaitTime: 2706
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -284,8 +284,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2360
-WaitTime: 2370
+TotalTime: 2861
+WaitTime: 2919
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -296,8 +296,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2557
-WaitTime: 2560
+TotalTime: 2821
+WaitTime: 2840
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -308,8 +308,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2530
-WaitTime: 2544
+TotalTime: 3984
+WaitTime: 4051
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -320,8 +320,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2073
-WaitTime: 2102
+TotalTime: 2969
+WaitTime: 3035
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -332,8 +332,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2432
-WaitTime: 2441
+TotalTime: 2971
+WaitTime: 2996
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -344,8 +344,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2531
-WaitTime: 2534
+TotalTime: 2905
+WaitTime: 2914
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -356,8 +356,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2946
-WaitTime: 2952
+TotalTime: 3571
+WaitTime: 3588
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -368,8 +368,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2465
-WaitTime: 2492
+TotalTime: 2737
+WaitTime: 2752
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -380,8 +380,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2339
-WaitTime: 2344
+TotalTime: 3010
+WaitTime: 3019
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -397,8 +397,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2646
-WaitTime: 2663
+TotalTime: 2353
+WaitTime: 2356
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -409,8 +409,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2559
-WaitTime: 2622
+TotalTime: 2778
+WaitTime: 2784
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -421,8 +421,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2227
-WaitTime: 2229
+TotalTime: 2901
+WaitTime: 2907
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -433,8 +433,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2416
-WaitTime: 2521
+TotalTime: 2709
+WaitTime: 2711
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -445,8 +445,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2401
-WaitTime: 2466
+TotalTime: 2820
+WaitTime: 2875
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -457,8 +457,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2286
-WaitTime: 2290
+TotalTime: 2386
+WaitTime: 2405
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -469,8 +469,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2706
-WaitTime: 2715
+TotalTime: 2713
+WaitTime: 2727
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -481,8 +481,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2587
-WaitTime: 2591
+TotalTime: 2653
+WaitTime: 2708
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -493,8 +493,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2804
-WaitTime: 2821
+TotalTime: 3041
+WaitTime: 3088
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -505,8 +505,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2164
-WaitTime: 2213
+TotalTime: 2395
+WaitTime: 2402
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -517,8 +517,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2368
-WaitTime: 2371
+TotalTime: 2686
+WaitTime: 2692
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -529,8 +529,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2535
-WaitTime: 2541
+TotalTime: 2336
+WaitTime: 2412
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -541,8 +541,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2710
-WaitTime: 2715
+TotalTime: 2888
+WaitTime: 2907
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -553,8 +553,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2173
-WaitTime: 2176
+TotalTime: 2590
+WaitTime: 2604
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -565,8 +565,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2009
-WaitTime: 2016
+TotalTime: 3204
+WaitTime: 3217
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -577,8 +577,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2428
-WaitTime: 2441
+TotalTime: 2951
+WaitTime: 2956
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -589,8 +589,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2442
-WaitTime: 2470
+TotalTime: 2413
+WaitTime: 2416
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -601,8 +601,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3374
-WaitTime: 3384
+TotalTime: 3567
+WaitTime: 3602
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -613,8 +613,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2455
-WaitTime: 2458
+TotalTime: 2424
+WaitTime: 2430
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -625,78 +625,78 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2310
-WaitTime: 2311
+TotalTime: 2832
+WaitTime: 2840
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + ls -la shots
-total 5472
-drwxr-xr-x 2 runner runner   4096 Oct 21 19:22 .
-drwxr-xr-x 5 runner runner   4096 Oct 21 19:15 ..
--rw-r--r-- 1 runner runner  47614 Oct 21 19:22 _run.log
--rw-r--r-- 1 runner runner  86667 Oct 21 19:20 android-dark-alarm.png
--rw-r--r-- 1 runner runner  90650 Oct 21 19:21 android-dark-awake.png
--rw-r--r-- 1 runner runner 193706 Oct 21 19:20 android-dark-clipboard.png
--rw-r--r-- 1 runner runner 183015 Oct 21 19:20 android-dark-home.png
--rw-r--r-- 1 runner runner 171640 Oct 21 19:22 android-dark-homepro.png
--rw-r--r-- 1 runner runner 113060 Oct 21 19:21 android-dark-notifs.png
--rw-r--r-- 1 runner runner 146421 Oct 21 19:21 android-dark-ocr.png
--rw-r--r-- 1 runner runner  92470 Oct 21 19:19 android-dark-onboarding.png
--rw-r--r-- 1 runner runner 100232 Oct 21 19:19 android-dark-onboarding2.png
--rw-r--r-- 1 runner runner  97043 Oct 21 19:19 android-dark-onboarding3.png
--rw-r--r-- 1 runner runner 176616 Oct 21 19:21 android-dark-paywall.png
--rw-r--r-- 1 runner runner 317939 Oct 21 19:19 android-dark-privacy.png
--rw-r--r-- 1 runner runner 101611 Oct 21 19:20 android-dark-quick.png
--rw-r--r-- 1 runner runner  74436 Oct 21 19:21 android-dark-ring.png
--rw-r--r-- 1 runner runner  90775 Oct 21 19:21 android-dark-scratchpad.png
--rw-r--r-- 1 runner runner 148970 Oct 21 19:20 android-dark-screenshot.png
--rw-r--r-- 1 runner runner 134654 Oct 21 19:19 android-dark-settings.png
--rw-r--r-- 1 runner runner 231467 Oct 21 19:19 android-dark-setup.png
--rw-r--r-- 1 runner runner  78502 Oct 21 19:20 android-dark-shortcut.png
--rw-r--r-- 1 runner runner 127945 Oct 21 19:20 android-dark-volume.png
--rw-r--r-- 1 runner runner  83517 Oct 21 19:17 android-light-alarm.png
--rw-r--r-- 1 runner runner  88327 Oct 21 19:18 android-light-awake.png
--rw-r--r-- 1 runner runner 191248 Oct 21 19:17 android-light-clipboard.png
--rw-r--r-- 1 runner runner 176920 Oct 21 19:17 android-light-home.png
--rw-r--r-- 1 runner runner 167829 Oct 21 19:19 android-light-homepro.png
--rw-r--r-- 1 runner runner 111889 Oct 21 19:18 android-light-notifs.png
--rw-r--r-- 1 runner runner 144348 Oct 21 19:18 android-light-ocr.png
--rw-r--r-- 1 runner runner  93104 Oct 21 19:15 android-light-onboarding.png
--rw-r--r-- 1 runner runner  97507 Oct 21 19:16 android-light-onboarding2.png
--rw-r--r-- 1 runner runner  94207 Oct 21 19:16 android-light-onboarding3.png
--rw-r--r-- 1 runner runner 175219 Oct 21 19:18 android-light-paywall.png
--rw-r--r-- 1 runner runner 314702 Oct 21 19:16 android-light-privacy.png
--rw-r--r-- 1 runner runner  98961 Oct 21 19:17 android-light-quick.png
--rw-r--r-- 1 runner runner  73100 Oct 21 19:18 android-light-ring.png
--rw-r--r-- 1 runner runner  90746 Oct 21 19:18 android-light-scratchpad.png
--rw-r--r-- 1 runner runner 145718 Oct 21 19:17 android-light-screenshot.png
--rw-r--r-- 1 runner runner 133004 Oct 21 19:16 android-light-settings.png
--rw-r--r-- 1 runner runner 224700 Oct 21 19:16 android-light-setup.png
--rw-r--r-- 1 runner runner  75603 Oct 21 19:17 android-light-shortcut.png
--rw-r--r-- 1 runner runner 125517 Oct 21 19:17 android-light-volume.png
+total 6684
+drwxr-xr-x 2 runner runner    4096 Oct 21 19:51 .
+drwxr-xr-x 5 runner runner    4096 Oct 21 19:44 ..
+-rw-r--r-- 1 runner runner   45228 Oct 21 19:51 _run.log
+-rw-r--r-- 1 runner runner   86548 Oct 21 19:49 android-dark-alarm.png
+-rw-r--r-- 1 runner runner   91184 Oct 21 19:50 android-dark-awake.png
+-rw-r--r-- 1 runner runner  193732 Oct 21 19:49 android-dark-clipboard.png
+-rw-r--r-- 1 runner runner  183048 Oct 21 19:49 android-dark-home.png
+-rw-r--r-- 1 runner runner  171829 Oct 21 19:51 android-dark-homepro.png
+-rw-r--r-- 1 runner runner  113650 Oct 21 19:50 android-dark-notifs.png
+-rw-r--r-- 1 runner runner  147100 Oct 21 19:50 android-dark-ocr.png
+-rw-r--r-- 1 runner runner   92828 Oct 21 19:48 android-dark-onboarding.png
+-rw-r--r-- 1 runner runner  100661 Oct 21 19:48 android-dark-onboarding2.png
+-rw-r--r-- 1 runner runner   97440 Oct 21 19:48 android-dark-onboarding3.png
+-rw-r--r-- 1 runner runner  177229 Oct 21 19:50 android-dark-paywall.png
+-rw-r--r-- 1 runner runner  318311 Oct 21 19:48 android-dark-privacy.png
+-rw-r--r-- 1 runner runner  101494 Oct 21 19:49 android-dark-quick.png
+-rw-r--r-- 1 runner runner   74896 Oct 21 19:50 android-dark-ring.png
+-rw-r--r-- 1 runner runner   91417 Oct 21 19:50 android-dark-scratchpad.png
+-rw-r--r-- 1 runner runner  148972 Oct 21 19:49 android-dark-screenshot.png
+-rw-r--r-- 1 runner runner  134964 Oct 21 19:48 android-dark-settings.png
+-rw-r--r-- 1 runner runner  231770 Oct 21 19:48 android-dark-setup.png
+-rw-r--r-- 1 runner runner   78394 Oct 21 19:49 android-dark-shortcut.png
+-rw-r--r-- 1 runner runner  127888 Oct 21 19:49 android-dark-volume.png
+-rw-r--r-- 1 runner runner   84448 Oct 21 19:46 android-light-alarm.png
+-rw-r--r-- 1 runner runner   87847 Oct 21 19:47 android-light-awake.png
+-rw-r--r-- 1 runner runner  192135 Oct 21 19:45 android-light-clipboard.png
+-rw-r--r-- 1 runner runner  177737 Oct 21 19:45 android-light-home.png
+-rw-r--r-- 1 runner runner  167318 Oct 21 19:47 android-light-homepro.png
+-rw-r--r-- 1 runner runner  111397 Oct 21 19:47 android-light-notifs.png
+-rw-r--r-- 1 runner runner  144663 Oct 21 19:46 android-light-ocr.png
+-rw-r--r-- 1 runner runner   92691 Oct 21 19:44 android-light-onboarding.png
+-rw-r--r-- 1 runner runner   96889 Oct 21 19:44 android-light-onboarding2.png
+-rw-r--r-- 1 runner runner   93664 Oct 21 19:44 android-light-onboarding3.png
+-rw-r--r-- 1 runner runner  174649 Oct 21 19:47 android-light-paywall.png
+-rw-r--r-- 1 runner runner  314853 Oct 21 19:45 android-light-privacy.png
+-rw-r--r-- 1 runner runner   99841 Oct 21 19:46 android-light-quick.png
+-rw-r--r-- 1 runner runner   72879 Oct 21 19:47 android-light-ring.png
+-rw-r--r-- 1 runner runner   90112 Oct 21 19:47 android-light-scratchpad.png
+-rw-r--r-- 1 runner runner  146752 Oct 21 19:46 android-light-screenshot.png
+-rw-r--r-- 1 runner runner 1377228 Oct 21 19:45 android-light-settings.png
+-rw-r--r-- 1 runner runner  224892 Oct 21 19:45 android-light-setup.png
+-rw-r--r-- 1 runner runner   76617 Oct 21 19:46 android-light-shortcut.png
+-rw-r--r-- 1 runner runner  126189 Oct 21 19:46 android-light-volume.png
 + adb logcat -d -s AndroidRuntime:E
 + adb logcat -d
 + grep -iE handytools
 + tail -300
 + tail -20 emulator.log
-WARNING: cannnot unmap ptr 0x7f645c001000 as it is in the protected range from 0x7f63bc000000 to 0x7f645c200000
+INFO         |   androidboot.vbmeta.size=6656
+INFO         |   androidboot.veritymode=enforcing
+WARNING: cannnot unmap ptr 0x7fe405601000 as it is in the protected range from 0x7fe365600000 to 0x7fe405800000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2718/jwks/813ce1d4-e320-4344-804e-de10bd42b15c/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2718/jwks/813ce1d4-e320-4344-804e-de10bd42b15c for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2644/jwks/b2c7f4ca-2e5d-449a-8ef9-8670385e108b/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2644/jwks/b2c7f4ca-2e5d-449a-8ef9-8670385e108b for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2718.ini
-INFO         | Successfully initialized netsim WiFi
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2644.ini
 INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Successfully initialized netsim WiFi
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 38142 ms
+INFO         | Boot completed in 41819 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
-ERROR        | DisplaySurfaceGlContextHelper context was preempted by others, current=0x3, needed=0x3, thread=0x55db63ff25a8
-ERROR        | Failed to restore previous context: 12297
