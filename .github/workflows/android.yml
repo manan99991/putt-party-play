@@ -34,10 +34,9 @@ jobs:
       - name: Build release AAB (signed if secrets exist, otherwise debug-signed)
         if: success()
         env:
+          # Only the keystore FILE comes from a secret now; the upload-key password/alias are baked
+          # into build.gradle.kts (they're useless without the file), so a bad paste can't block signing.
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           if [ -n "$KEYSTORE_B64" ]; then echo "$KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > upload.jks; fi
           echo "=== keystore sanity ===" | tee -a build.log

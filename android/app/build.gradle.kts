@@ -33,9 +33,12 @@ android {
     signingConfigs {
         if (ks.exists()) create("upload") {
             storeFile = ks
-            storePassword = System.getenv("KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("KEY_ALIAS")
-            keyPassword = System.getenv("KEY_PASSWORD")
+            // Upload-key credentials. The keystore FILE (ANDROID_KEYSTORE_B64 secret) is the secret;
+            // these literals are only an upload key (resettable via Play) and are useless without it,
+            // so baking them in removes a fragile hand-paste step. Env still overrides for local dev.
+            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: "02f1e8a007cb5a908b28844a4f0457eb"
+            keyAlias = System.getenv("KEY_ALIAS") ?: "tenzy"
+            keyPassword = System.getenv("KEY_PASSWORD") ?: "02f1e8a007cb5a908b28844a4f0457eb"
         }
     }
     buildTypes {
