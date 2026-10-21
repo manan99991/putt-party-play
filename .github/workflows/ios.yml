@@ -105,8 +105,8 @@ jobs:
 
   # Full test gate. The deploy will NOT upload unless the engine unit tests and the every-tool
   # smoke suite pass. Regression tests for every shipped crash fix live in HandyToolsTests, so a
-  # fixed crash cannot silently return in a later build. (ToolFlowTests are run by ios-check as
-  # informational — they're intentionally not in the gate, as their synthetic inputs are flaky.)
+  # fixed crash cannot silently return in a later build. (ToolFlowTests run in the separate
+  # `flowtests` job below — informational, never gating, because their synthetic inputs are flaky.)
   test:
     runs-on: macos-26
     defaults:
@@ -140,7 +140,6 @@ jobs:
             -only-testing:HandyToolsTests \
             -only-testing:HandyToolsUITests/ToolSmokeTests \
             -only-testing:HandyToolsUITests/LiveToolTests \
-            -only-testing:HandyToolsUITests/ToolFlowTests \
             -only-testing:HandyToolsUITests/ToolControlsReachableTests \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
@@ -154,6 +153,49 @@ jobs:
         run: |
           { echo "== test.log (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -200; } > ios-test.log
           bash .github/publish-log.sh ios-test ios-test.log || true
+
+  # Per-tool flow tests — informational only. Nothing `needs` this job and it is allowed to fail
+  # (continue-on-error), so a flaky synthetic-input flake here NEVER blocks TestFlight or the store
+  # submit. It still runs on every push for visibility (failures surface as annotations).
+  flowtests:
+    continue-on-error: true
+    runs-on: macos-26
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+      - name: Install XcodeGen + generate + resolve
+        run: |
+          set -o pipefail
+          { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tee setup.log
+      - name: ToolFlowTests (informational — never gates the deploy)
+        run: |
+          set -o pipefail
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
+          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+          for p in camera microphone photos location; do
+            xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true
+          done
+          xcodebuild test \
+            -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination "id=$UDID" \
+            -only-testing:HandyToolsUITests/ToolFlowTests \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee flow.log | grep -E "Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" || true
+          grep -E "Test Case .*failed|failed - " flow.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | sed 's/^/::warning::/' || true
+      - name: Publish flow-test log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "== flow.log (results)"; grep -E "Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/flow.log 2>/dev/null | head -200; } > ios-flow.log
+          bash .github/publish-log.sh ios-flow ios-flow.log || true
 
   # Runs only when App Store Connect secrets are present. Archives, signs with an
   # ASC API key via automatic signing, and uploads to TestFlight. Gated on `test`: a red
