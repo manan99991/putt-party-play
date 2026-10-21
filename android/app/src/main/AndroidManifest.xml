@@ -25,6 +25,8 @@
     <!-- URL shortcut: fetch page title -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Memory reads the text in your screenshots on-device. READ_MEDIA_IMAGES on API 33+, legacy read below. -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />

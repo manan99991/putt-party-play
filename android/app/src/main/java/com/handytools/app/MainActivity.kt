@@ -28,6 +28,8 @@ import com.handytools.app.tools.ai.AiScreen
 import com.handytools.app.tools.lens.LensScreen
 import com.handytools.app.tools.memory.MemoryScreen
 import com.handytools.app.tools.sorted.SortedScreen
+import com.handytools.app.tools.contacts.ContactsScreen
+import com.handytools.app.tools.spaceclean.SpaceCleanerScreen
 import com.handytools.app.tools.audiotext.AudioToTextScreen
 import com.handytools.app.tools.bgremove.BackgroundRemoverScreen
 import com.handytools.app.tools.exif.ExifScreen
@@ -126,9 +128,11 @@ class MainActivity : ComponentActivity() {
                     composable("sorted") { SortedScreen() }
                     composable("memory") { MemoryScreen() }
                     composable("lens") { LensScreen() }
+                    composable("contacts") { ContactsScreen() }
+                    composable("spaceclean") { SpaceCleanerScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)

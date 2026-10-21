@@ -32,6 +32,8 @@ import androidx.compose.material.icons.outlined.Subject
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.AutoFixHigh
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.CleaningServices
+import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.CreditCard
 import androidx.compose.material.icons.outlined.DocumentScanner
@@ -84,6 +86,8 @@ data class HTool(
 /** 30 tools across 3 pages, mirroring iOS. Existing Android screens reuse their routes. */
 val TOOLS = listOf(
     // Page 1 · Everyday
+    HTool("spaceclean", "Space Cleaner", "Free up photo space", Icons.Outlined.CleaningServices, 1, keywords = listOf("clean","storage","space","duplicate","duplicates","photos","screenshots","large","blurry","free up","delete","full")),
+    HTool("contacts", "Contacts Cleanup", "Merge duplicates, back up", Icons.Outlined.Contacts, 1, keywords = listOf("contacts","duplicate","duplicates","merge","vcard","backup","phone","cleanup","incomplete")),
     HTool("flash", "Flashlight", "Patterns, SOS, strobe", Icons.Outlined.FlashOn, 1, keywords = listOf("light","torch","strobe","sos","lamp","dark")),
     HTool("timer", "Timers", "Countdown + stopwatch", Icons.Outlined.Timer, 1, keywords = listOf("timer","stopwatch","countdown","pomodoro","clock","lap")),
     HTool("clipboard", "Multi-Clipboard", "Paste any past copy", Icons.Outlined.ContentPaste, 1, keywords = listOf("clipboard","copy","paste","history","clips","text")),
