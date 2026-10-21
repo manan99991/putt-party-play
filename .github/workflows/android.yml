@@ -105,7 +105,9 @@ jobs:
           echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
           export SUPPLY_JSON_KEY_PATH="$GITHUB_WORKSPACE/play-key.json"
           gem install fastlane --no-document --quiet || sudo gem install fastlane --no-document --quiet
-          fastlane listing 2>&1 | tee supply.log || true
+          # No '|| true': let this step's conclusion reflect whether the listing push actually
+          # succeeded (continue-on-error keeps a failure from blocking the AAB upload).
+          fastlane listing 2>&1 | tee supply.log; exit ${PIPESTATUS[0]}
       - name: Publish listing-push log
         if: always()
         working-directory: .

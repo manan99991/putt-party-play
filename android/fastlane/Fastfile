@@ -16,7 +16,10 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_changelogs: false,
       skip_upload_images: false,
-      skip_upload_screenshots: false
+      skip_upload_screenshots: false,
+      # The app isn't published yet, so commit the listing as pending changes
+      # instead of trying to send the whole app for review (which would fail).
+      changes_not_sent_for_review: true
     )
   end
 end
