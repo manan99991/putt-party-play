@@ -119,10 +119,11 @@ object SpaceCleanerEngine {
 
     private fun hamming(a: Long, b: Long): Int = java.lang.Long.bitCount(a xor b)
 
-    /** System delete request (user confirms the batch). Android 11+. */
-    fun deleteRequest(ctx: Context, uris: List<Uri>): IntentSender? {
+    /** Move to the system Trash — RECOVERABLE for ~30 days (not a hard delete). User confirms.
+     *  Directly answers the #1 user fear with these tools: accidental/false-positive deletion. */
+    fun trashRequest(ctx: Context, uris: List<Uri>): IntentSender? {
         if (uris.isEmpty() || Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return null
-        return MediaStore.createDeleteRequest(ctx.contentResolver, uris).intentSender
+        return MediaStore.createTrashRequest(ctx.contentResolver, uris, true).intentSender
     }
 
     /** Pre-Android-11 best-effort direct delete. */

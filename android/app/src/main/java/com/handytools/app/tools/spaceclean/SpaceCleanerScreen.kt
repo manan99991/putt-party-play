@@ -67,13 +67,13 @@ fun SpaceCleanerScreen() {
 
     fun clean(uris: List<Uri>) {
         if (uris.isEmpty()) return
-        val sender = SpaceCleanerEngine.deleteRequest(ctx, uris)
+        val sender = SpaceCleanerEngine.trashRequest(ctx, uris)
         if (sender != null) deleteLauncher.launch(IntentSenderRequest.Builder(sender).build())
         else { SpaceCleanerEngine.deleteLegacy(ctx, uris); scan() }
     }
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Space Cleaner", "Find duplicate and look-alike photos, the screenshot pile, and big files — then free up space. You confirm every delete.")
+        ToolHeader("Space Cleaner", "Find duplicate and look-alike photos, the screenshot pile, and big files. Everything goes to your Trash — recoverable for 30 days, never deleted outright. No paywall on cleanup.")
         Spacer(Modifier.size(16.dp))
 
         val r = report
