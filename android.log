@@ -15,15 +15,15 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
 > Task :app:generateDebugBuildConfig
-> Task :app:generateDebugResValues
 > Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
 > Task :app:mapDebugSourceSetPaths
 > Task :app:generateDebugResources
 > Task :app:packageDebugResources
-> Task :app:mergeDebugResources
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
 > Task :app:parseDebugLocalResources
+> Task :app:mergeDebugResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
 > Task :app:javaPreCompileDebug
@@ -31,23 +31,22 @@ Daemon will be stopped at the end of the build
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
-> Task :app:desugarDebugFileDependencies
-> Task :app:compressDebugAssets
-> Task :app:mergeDebugJniLibFolders
-> Task :app:checkDebugDuplicateClasses
-> Task :app:mergeDebugNativeLibs
 > Task :app:processDebugManifestForPackage
-> Task :app:mergeExtDexDebug
-> Task :app:mergeLibDexDebug
-
-> Task :app:stripDebugDebugSymbols
-Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
-
+> Task :app:desugarDebugFileDependencies
 > Task :app:processDebugResources
+> Task :app:compressDebugAssets
+> Task :app:checkDebugDuplicateClasses
+> Task :app:kspDebugKotlin
+> Task :app:mergeExtDexDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeLibDexDebug
+> Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
-> Task :app:kspDebugKotlin
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
 
 > Task :app:compileDebugKotlin
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/OverlayBubble.kt:139:84 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
@@ -59,8 +58,8 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shrink/ShrinkScreen.kt:126:17 Condition is always 'true'.
-w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:98:72 'val Icons.Outlined.Subject: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Subject.
-w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:110:75 'val Icons.Outlined.EventNote: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.EventNote.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:99:72 'val Icons.Outlined.Subject: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Subject.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:111:75 'val Icons.Outlined.EventNote: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.EventNote.
 
 > Task :app:compileDebugJavaWithJavac
 > Task :app:dexBuilderDebug
@@ -71,9 +70,9 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792608999817.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792610653721.json
 
-BUILD SUCCESSFUL in 4m 17s
+BUILD SUCCESSFUL in 5m 47s
 38 actionable tasks: 38 executed
 === keystore sanity ===
 upload.jks bytes: 2694 (expect ~2694)
@@ -100,27 +99,27 @@ Daemon will be stopped at the end of the build
 > Task :app:createReleaseCompatibleScreenManifests
 > Task :app:extractDeepLinksRelease
 > Task :app:parseReleaseLocalResources
-> Task :app:mergeReleaseResources
 > Task :app:processReleaseMainManifest
+> Task :app:mergeReleaseResources
 > Task :app:processReleaseManifest
 > Task :app:javaPreCompileRelease
-> Task :app:processReleaseManifestForPackage
 > Task :app:mergeReleaseArtProfile
 > Task :app:extractProguardFiles
 > Task :app:mergeReleaseStartupProfile
 > Task :app:mergeReleaseJniLibFolders
 > Task :app:writeReleaseAppMetadata
+> Task :app:mergeReleaseNativeLibs
 > Task :app:collectReleaseDependencies
 > Task :app:configureReleaseDependencies
 > Task :app:validateSigningRelease
-> Task :app:parseReleaseIntegrityConfig
-> Task :app:mergeReleaseNativeLibs
-> Task :app:processReleaseResources
+> Task :app:processReleaseManifestForPackage
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
 
+> Task :app:parseReleaseIntegrityConfig
 > Task :app:extractReleaseNativeSymbolTables
+> Task :app:processReleaseResources
 > Task :app:kspReleaseKotlin
 > Task :app:compileReleaseKotlin
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/OverlayBubble.kt:139:84 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
@@ -132,8 +131,8 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shrink/ShrinkScreen.kt:126:17 Condition is always 'true'.
-w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:98:72 'val Icons.Outlined.Subject: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Subject.
-w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:110:75 'val Icons.Outlined.EventNote: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.EventNote.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:99:72 'val Icons.Outlined.Subject: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Subject.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:111:75 'val Icons.Outlined.EventNote: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.EventNote.
 
 > Task :app:compileReleaseJavaWithJavac
 > Task :app:mergeReleaseGeneratedProguardFiles
@@ -152,7 +151,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792609255386.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792610999817.json
 
-BUILD SUCCESSFUL in 5m 6s
+BUILD SUCCESSFUL in 5m 16s
 50 actionable tasks: 50 executed
