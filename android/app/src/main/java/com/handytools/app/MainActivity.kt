@@ -30,6 +30,8 @@ import com.handytools.app.tools.memory.MemoryScreen
 import com.handytools.app.tools.sorted.SortedScreen
 import com.handytools.app.tools.contacts.ContactsScreen
 import com.handytools.app.tools.spaceclean.SpaceCleanerScreen
+import com.handytools.app.tools.shrink.ShrinkScreen
+import com.handytools.app.tools.storage.StorageScreen
 import com.handytools.app.tools.audiotext.AudioToTextScreen
 import com.handytools.app.tools.bgremove.BackgroundRemoverScreen
 import com.handytools.app.tools.exif.ExifScreen
@@ -71,7 +73,9 @@ class MainActivity : ComponentActivity() {
         sharedUrl = extractSharedUrl(intent)
         Interstitials.preload(this)
         val routeExtra = intent.getStringExtra("route")
-        if (routeExtra == "homepro") HandyApp.instance.billing.setPreviewPremium(true)
+        // Pro-preview unlock exists ONLY for the CI screenshot capture and is compiled out of
+        // release builds, so a crafted intent can never grant entitlement on a shipped app.
+        if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
         val startRoute = routeExtra ?: if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
 
         setContent {
@@ -130,9 +134,11 @@ class MainActivity : ComponentActivity() {
                     composable("lens") { LensScreen() }
                     composable("contacts") { ContactsScreen() }
                     composable("spaceclean") { SpaceCleanerScreen() }
+                    composable("shrink") { ShrinkScreen() }
+                    composable("storage") { StorageScreen(onOpen = { nav.navigate(it) }) }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)

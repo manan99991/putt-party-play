@@ -33,6 +33,8 @@ import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.AutoFixHigh
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.CleaningServices
+import androidx.compose.material.icons.outlined.Compress
+import androidx.compose.material.icons.outlined.PieChart
 import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.ContentPaste
 import androidx.compose.material.icons.outlined.CreditCard
@@ -83,16 +85,14 @@ data class HTool(
     val page: Int, val ai: Boolean = false, val keywords: List<String> = emptyList()
 )
 
-/** 30 tools across 3 pages, mirroring iOS. Existing Android screens reuse their routes. */
+/** Tools across 3 pages, mirroring iOS. Existing Android screens reuse their routes. */
 val TOOLS = listOf(
     // Page 1 · Everyday
     HTool("spaceclean", "Space Cleaner", "Free up photo space", Icons.Outlined.CleaningServices, 1, keywords = listOf("clean","storage","space","duplicate","duplicates","photos","screenshots","large","blurry","free up","delete","full")),
+    HTool("storage", "Storage Map", "See what's eating space", Icons.Outlined.PieChart, 1, keywords = listOf("storage","space","full","breakdown","map","what","using","photos","videos","downloads","audio","big","large","free up")),
     HTool("contacts", "Contacts Cleanup", "Merge duplicates, back up", Icons.Outlined.Contacts, 1, keywords = listOf("contacts","duplicate","duplicates","merge","vcard","backup","phone","cleanup","incomplete")),
     HTool("flash", "Flashlight", "Patterns, SOS, strobe", Icons.Outlined.FlashOn, 1, keywords = listOf("light","torch","strobe","sos","lamp","dark")),
-    HTool("timer", "Timers", "Countdown + stopwatch", Icons.Outlined.Timer, 1, keywords = listOf("timer","stopwatch","countdown","pomodoro","clock","lap")),
-    HTool("clipboard", "Multi-Clipboard", "Paste any past copy", Icons.Outlined.ContentPaste, 1, keywords = listOf("clipboard","copy","paste","history","clips","text")),
     HTool("qr", "QR & Barcode", "Scan & make codes", Icons.Outlined.QrCode2, 1, keywords = listOf("qr","barcode","scan","code","wifi","link")),
-    HTool("scratchpad", "Sticky Note", "Quick notes", Icons.Outlined.EditNote, 1, keywords = listOf("note","notes","sticky","memo","reminder","text")),
     HTool("alarm", "Alarm Pro", "Custom snooze & sounds", Icons.Outlined.Alarm, 1, keywords = listOf("alarm","wake","clock","snooze","ring","morning")),
     HTool("ocr", "Text from Image", "Copy text from photos", Icons.Outlined.TextFields, 1, keywords = listOf("text","ocr","photo","screenshot","copy","read","scan")),
     HTool("lens", "Lens", "Read or listen to any text", Icons.Outlined.Subject, 1, keywords = listOf("lens","read","listen","aloud","tts","speak","ocr","text","copy","gist","summarize","scan")),
@@ -102,14 +102,11 @@ val TOOLS = listOf(
     // Page 2 · Power
     HTool("scan", "Doc Scanner", "Scan pages to PDF", Icons.Outlined.DocumentScanner, 2, keywords = listOf("scan","scanner","document","pdf","paper","camera")),
     HTool("pdftools", "PDF Toolkit", "Merge, compress PDFs", Icons.Outlined.PictureAsPdf, 2, keywords = listOf("pdf","merge","combine","split","compress","images")),
-    HTool("imgconvert", "Image Converter", "HEIC to JPG, resize", Icons.Outlined.Image, 2, keywords = listOf("convert","heic","jpg","png","resize","compress","batch")),
+    HTool("shrink", "Shrink", "Make photos & videos smaller", Icons.Outlined.Compress, 2, keywords = listOf("shrink","compress","resize","smaller","reduce","photo","image","video","clip","size","mb","send","upload","email","heic","jpg")),
     HTool("bgremove", "Background Remover", "Cut out the subject", Icons.Outlined.AutoFixHigh, 2, keywords = listOf("background","remove","cutout","subject","transparent","sticker")),
-    HTool("vidcompress", "Video Compressor", "Shrink clips to send", Icons.Outlined.Movie, 2, keywords = listOf("video","compress","shrink","movie","clip","mp4")),
     HTool("audiotext", "Audio to Text", "Transcribe your voice", Icons.Outlined.Mic, 2, keywords = listOf("audio","text","transcribe","voice","speech","record","notes")),
     HTool("signfill", "Sign & Fill", "Sign a doc, export PDF", Icons.Outlined.Draw, 2, keywords = listOf("sign","signature","fill","document","pdf","form","contract")),
     HTool("exif", "Photo Metadata", "Strip photo location", Icons.Outlined.Info, 2, keywords = listOf("photo","metadata","exif","location","gps","strip","privacy")),
-    HTool("shortcut", "Web to Home", "Link to a home icon", Icons.Outlined.AppShortcut, 2, keywords = listOf("shortcut","home","icon","web","url","link","bookmark")),
-    HTool("wallet", "Card Wallet", "Loyalty barcodes", Icons.Outlined.CreditCard, 2, keywords = listOf("wallet","card","loyalty","barcode","membership","points")),
     HTool("sorted", "Sorted", "Snap a bill → calendar it", Icons.Outlined.EventNote, 2, true, listOf("bill","letter","document","appointment","form","notice","invoice","due","deadline","calendar","remind","scan","amount","pay","admin","paperwork")),
     // Page 3 · AI
     HTool("memory", "Memory", "Ask your screenshots anything", Icons.Outlined.ImageSearch, 3, true, listOf("memory","find","search","photos","screenshot","wifi","password","code","confirmation","parking","remember","where","receipt","ask","saved")),
