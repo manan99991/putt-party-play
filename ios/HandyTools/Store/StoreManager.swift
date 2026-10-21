@@ -39,7 +39,9 @@ final class StoreManager: ObservableObject {
     }
 
     private init() {
+        #if DEBUG
         if previewPremium || isTesterPro { isPremium = true }
+        #endif
         updates = Task { await listenForTransactions() }
         Task { await load(); await refresh() }
     }
@@ -53,7 +55,9 @@ final class StoreManager: ObservableObject {
     }
 
     func refresh() async {
+        #if DEBUG
         if previewPremium || isTesterPro { isPremium = true; return }
+        #endif
         var active = false
         for await result in Transaction.currentEntitlements {
             if case .verified(let t) = result, Self.productIDs.contains(t.productID), t.revocationDate == nil { active = true }

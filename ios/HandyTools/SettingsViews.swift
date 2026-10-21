@@ -224,6 +224,7 @@ struct SettingsView: View {
                         }
                         SettingsRow(icon: "info.circle", title: "About", sub: "Version \(version) · Made by a Dad") { showAbout = true }
                     }
+                    #if DEBUG
                     if devUnlocked {
                         Section("Developer") {
                             Toggle(isOn: Binding(get: { store.isTesterPro }, set: { store.setTesterPro($0) })) {
@@ -236,6 +237,7 @@ struct SettingsView: View {
                             SettingsRow(icon: "eye.slash", title: "Hide developer tools", sub: "Tap the Settings title 7× to show again") { devUnlocked = false; devTaps = 0 }
                         }
                     }
+                    #endif
                 }
                 .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s8)
             }
