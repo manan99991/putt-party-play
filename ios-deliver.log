@@ -1,0 +1,117 @@
+===== deliver.log =====
+| metadata_path                                                      | /Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata    |
+| screenshots_path                                                   | /Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots |
+| overwrite_screenshots                                              | true                                                                        |
+| skip_screenshots                                                   | false                                                                       |
+| skip_metadata                                                      | false                                                                       |
+| sync_screenshots                                                   | false                                                                       |
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
+[12:53:48]: Loading '/Users/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
+[12:53:50]: [33mWill begin uploading metadata for '1.0' on App Store Connect[0m
+[12:53:50]: Uploading metadata to App Store Connect for version
+[12:53:54]: Uploading metadata to App Store Connect for localized version 'en-US'
+[12:53:55]: Uploading metadata to App Store Connect for localized info 'en-US'
+[12:53:59]: [31mError fetching app store review detail - No data[0m
+[12:53:59]: [31mfastlane finished with errors[0m
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/spaceship/lib/spaceship/connect_api/api_client.rb:223:in 'Spaceship::ConnectAPI::APIClient#handle_response': [31m[!] The provided entity is missing a required attribute - You must provide a value for the attribute 'contactFirstName' with this request - /data/attributes/contactFirstName (Spaceship::UnexpectedResponse)
+The provided entity is missing a required attribute - You must provide a value for the attribute 'contactLastName' with this request - /data/attributes/contactLastName
+The provided entity is missing a required attribute - You must provide a value for the attribute 'contactPhone' with this request - /data/attributes/contactPhone
+An attribute value is invalid. - The phone number must be in a valid format. Preface the phone number with ‘+’ followed by the country code (for example, +44 844 209 0611) - /data/attributes/contactPhone[0m
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/deliver/lib/deliver/upload_metadata.rb:702:in 'Deliver::UploadMetadata#review_information'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/deliver/lib/deliver/upload_metadata.rb:357:in 'Deliver::UploadMetadata#upload'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/deliver/lib/deliver/runner.rb:162:in 'Deliver::Runner#upload_metadata'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/fast_file.rb:159:in 'Fastlane::FastFile#method_missing'
+
+===== tail =====
+[12:53:55]: Uploading metadata to App Store Connect for localized info 'en-US'
+[12:53:58]: Uploading app review information to App Store Connect
+[12:53:59]: [31mError fetching app store review detail - No data[0m
++--------------------------------+
+|          [33mLane Context[0m          |
++------------------+-------------+
+| DEFAULT_PLATFORM | ios         |
+| PLATFORM_NAME    | ios         |
+| LANE_NAME        | ios release |
++------------------+-------------+
+[12:53:59]: [31mCalled from Fastfile at line 265[0m
+[12:53:59]: [31m```[0m
+[12:53:59]: [31m    263:	    )[0m
+[12:53:59]: [31m    264:	[0m
+[12:53:59]: [31m => 265:	    deliver([0m
+[12:53:59]: [31m    266:	      api_key: key,[0m
+[12:53:59]: [31m    267:	      app_identifier: "com.tenzy.toolkit",[0m
+[12:53:59]: [31m```[0m
+
++------------------------------------------------+
+|                [32mfastlane summary[0m                |
++------+---------------------------+-------------+
+| Step | Action                    | Time (in s) |
++------+---------------------------+-------------+
+| 1    | default_platform          | 0           |
+| 2    | app_store_connect_api_key | 0           |
+| 💥   | [31mdeliver[0m                   | 11          |
++------+---------------------------+-------------+
+
+[12:53:59]: [31mfastlane finished with errors[0m
+
+Looking for related GitHub issues on fastlane/fastlane...
+
+
+#######################################################################
+# fastlane 2.241.1 is available. You are on 2.241.0.
+# You should use the latest version.
+# Please update using `gem install fastlane`.
+# To see what's new, open https://github.com/fastlane/fastlane/releases.
+#######################################################################
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/spaceship/lib/spaceship/connect_api/api_client.rb:223:in 'Spaceship::ConnectAPI::APIClient#handle_response': [31m[!] The provided entity is missing a required attribute - You must provide a value for the attribute 'contactFirstName' with this request - /data/attributes/contactFirstName (Spaceship::UnexpectedResponse)
+The provided entity is missing a required attribute - You must provide a value for the attribute 'contactLastName' with this request - /data/attributes/contactLastName
+The provided entity is missing a required attribute - You must provide a value for the attribute 'contactPhone' with this request - /data/attributes/contactPhone
+An attribute value is invalid. - The phone number must be in a valid format. Preface the phone number with ‘+’ followed by the country code (for example, +44 844 209 0611) - /data/attributes/contactPhone[0m
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/spaceship/lib/spaceship/connect_api/api_client.rb:125:in 'Spaceship::ConnectAPI::APIClient#post'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/spaceship/lib/spaceship/connect_api/tunes/tunes.rb:775:in 'Spaceship::ConnectAPI::Tunes::API#post_app_store_review_detail'
+	from /opt/homebrew/Cellar/ruby@3.4/3.4.11_1/lib/ruby/3.4.0/forwardable.rb:240:in 'Spaceship::ConnectAPI.post_app_store_review_detail'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/spaceship/lib/spaceship/connect_api/models/app_store_version.rb:179:in 'Spaceship::ConnectAPI::AppStoreVersion#create_app_store_review_detail'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/deliver/lib/deliver/upload_metadata.rb:702:in 'Deliver::UploadMetadata#review_information'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/deliver/lib/deliver/upload_metadata.rb:357:in 'Deliver::UploadMetadata#upload'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/deliver/lib/deliver/runner.rb:162:in 'Deliver::Runner#upload_metadata'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/deliver/lib/deliver/runner.rb:65:in 'Deliver::Runner#run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/actions/upload_to_app_store.rb:25:in 'Fastlane::Actions::UploadToAppStoreAction.run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:263:in 'block (2 levels) in Fastlane::Runner#execute_action'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/actions/actions_helper.rb:69:in 'Fastlane::Actions.execute_action'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:255:in 'block in Fastlane::Runner#execute_action'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:229:in 'Dir.chdir'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:229:in 'Fastlane::Runner#execute_action'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:157:in 'Fastlane::Runner#trigger_action_by_name'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/fast_file.rb:159:in 'Fastlane::FastFile#method_missing'
+	from Fastfile:265:in 'block (2 levels) in Fastlane::FastFile#parsing_binding'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Fastlane::Runner#execute'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane_manager.rb:46:in 'Fastlane::LaneManager.cruise_lane'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/command_line_handler.rb:34:in 'Fastlane::CommandLineHandler.handle'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:110:in 'block (2 levels) in Fastlane::CommandsGenerator#run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:187:in 'Commander::Command#call'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:157:in 'Commander::Command#run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in 'Commander::Runner#run_active_command'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in 'Commander::Runner#run!'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in 'Commander::Delegates#run!'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:363:in 'Fastlane::CommandsGenerator#run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/bin/fastlane:25:in '<top (required)>'
+	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
+	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
