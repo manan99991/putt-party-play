@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   build:
+    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
     runs-on: macos-26
     defaults:
       run: { working-directory: ios }
@@ -108,6 +109,7 @@ jobs:
   # fixed crash cannot silently return in a later build. (ToolFlowTests run in the separate
   # `flowtests` job below — informational, never gating, because their synthetic inputs are flaky.)
   test:
+    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
     runs-on: macos-26
     defaults:
       run: { working-directory: ios }
@@ -158,6 +160,7 @@ jobs:
   # (continue-on-error), so a flaky synthetic-input flake here NEVER blocks TestFlight or the store
   # submit. It still runs on every push for visibility (failures surface as annotations).
   flowtests:
+    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
     continue-on-error: true
     runs-on: macos-26
     defaults:
@@ -292,10 +295,13 @@ jobs:
   #   - repo variable  STORE_SUBMIT_ENABLED = true
   #   - commit message contains the trailer  Ship-Store=YES
   # Release is held for a manual tap after approval (automatic_release: false in the Fastfile).
+  # Metadata + screenshots + submit-for-review is a pure App Store Connect API call — no Xcode,
+  # no Mac needed. Runs on ubuntu (fast, abundant runners) and does NOT depend on the macOS build/
+  # test jobs, so a scarce/cancelled Mac runner can never block the submit. Gated on the Ship-Store
+  # marker in the commit subject.
   store:
-    needs: test
     if: "${{ contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
-    runs-on: macos-26
+    runs-on: ubuntu-latest
     defaults:
       run: { working-directory: ios }
     env:
@@ -304,6 +310,10 @@ jobs:
       ASC_KEY_P8_B64: ${{ secrets.ASC_KEY_P8_B64 }}
     steps:
       - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with: { ruby-version: "3.3" }
+      - name: Install fastlane
+        run: gem install fastlane --no-document
       - name: Write ASC key + export fastlane auth env
         run: |
           mkdir -p ~/.appstoreconnect/private_keys
