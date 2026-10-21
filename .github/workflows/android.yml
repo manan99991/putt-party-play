@@ -40,7 +40,16 @@ jobs:
           KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           if [ -n "$KEYSTORE_B64" ]; then echo "$KEYSTORE_B64" | base64 -d > upload.jks; fi
-          gradle --no-daemon bundleRelease --warning-mode none
+          echo "=== keystore sanity ===" | tee -a build.log
+          if [ -f upload.jks ]; then
+            echo "upload.jks bytes: $(wc -c < upload.jks) (expect ~2694)" | tee -a build.log
+            keytool -list -keystore upload.jks -storepass "$KEYSTORE_PASSWORD" -alias "$KEY_ALIAS" 2>&1 \
+              | grep -viE "Warning|proprietary" | tee -a build.log || echo "KEYTOOL CHECK FAILED (bad password/alias or corrupt keystore)" | tee -a build.log
+          else
+            echo "no upload.jks — KEYSTORE_B64 secret is empty" | tee -a build.log
+          fi
+          echo "=== bundleRelease ===" | tee -a build.log
+          gradle --no-daemon bundleRelease --stacktrace --warning-mode none 2>&1 | tee -a build.log; exit ${PIPESTATUS[0]}
 
       - name: Publish build log
         if: always()
