@@ -14,6 +14,7 @@ enum MemoryEngine {
         let date: Date
         let text: String        // OCR'd text
         var modified: Date      // for cache invalidation
+        var readOK: Bool? = nil // true once the image was actually read (nil = entries saved before this field)
     }
 
     private static var cacheURL: URL {
@@ -35,7 +36,9 @@ enum MemoryEngine {
     /// source screenshot can always be shown later even if photo access is later narrowed or the
     /// original has moved to iCloud. The image is fetched once here regardless, so the thumbnail is
     /// nearly free.
-    private static func text(for asset: PHAsset) async -> String {
+    /// Returns nil when the image itself could not be read (so the caller retries later); returns ""
+    /// when the image was read but contains no text.
+    private static func readText(for asset: PHAsset) async -> String? {
         let mgr = PHImageManager.default()
         let opt = PHImageRequestOptions()
         opt.deliveryMode = .highQualityFormat
@@ -49,7 +52,7 @@ enum MemoryEngine {
                 if !resumed { resumed = true; cont.resume(returning: im) }
             }
         }
-        guard let image else { return "" }
+        guard let image else { return nil }
         persistThumb(image, id: asset.localIdentifier)
         return await AIEngine.recognizeText(image)
     }
@@ -91,13 +94,16 @@ enum MemoryEngine {
         for (i, item) in shots.enumerated() {
             let a = item.asset
             let mod = a.modificationDate ?? a.creationDate ?? .distantPast
-            if let hit = cache[a.localIdentifier], hit.modified == mod {
+            if let hit = cache[a.localIdentifier], hit.modified == mod, hit.readOK ?? true {
                 out.append(hit)
-            } else {
-                let t = await text(for: a)
-                let e = Entry(id: a.localIdentifier, date: a.creationDate ?? .distantPast, text: t, modified: mod)
+            } else if let t = await readText(for: a) {
+                // Only cache a successful read. A failed image load (iCloud not downloaded yet, a
+                // transient error) must be retried on the next pass, not remembered as "no text".
+                let e = Entry(id: a.localIdentifier, date: a.creationDate ?? .distantPast, text: t, modified: mod, readOK: true)
                 cache[a.localIdentifier] = e
                 out.append(e)
+            } else if let stale = cache[a.localIdentifier] {
+                out.append(stale)   // keep whatever we had rather than dropping the screenshot
             }
             progress(Double(i + 1) / total)
         }

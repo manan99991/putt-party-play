@@ -232,6 +232,7 @@ private struct AssetThumb: View {
     let label: String
     let tap: () -> Void
     @State private var img: UIImage?
+    @State private var unavailable = false   // iCloud-only or unreadable: say so instead of a blank tile
 
     var body: some View {
         Button(action: tap) {
@@ -239,6 +240,12 @@ private struct AssetThumb: View {
                 .aspectRatio(1, contentMode: .fit)
                 .overlay {
                     if let img { Image(uiImage: img).resizable().scaledToFill() }
+                    else if unavailable {
+                        Rectangle().fill(HandyColor.surface).overlay(VStack(spacing: 4) {
+                            Image(systemName: "icloud.and.arrow.down").font(.system(size: 18))
+                            Text("In iCloud").font(HandyFont.micro)
+                        }.foregroundStyle(HandyColor.textSecondary))
+                    }
                     else { Rectangle().fill(HandyColor.surface) }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
@@ -264,8 +271,12 @@ private struct AssetThumb: View {
 
     private func load() {
         let o = PHImageRequestOptions(); o.deliveryMode = .opportunistic; o.resizeMode = .fast; o.isNetworkAccessAllowed = false
-        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: o) { im, _ in
-            if let im { img = im }
+        PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: o) { im, info in
+            if let im { img = im; unavailable = false }
+            else if (info?[PHImageErrorKey] != nil) || (info?[PHImageCancelledKey] as? Bool == true) || (info?[PHImageResultIsInCloudKey] as? Bool == true) {
+                // Network is off on purpose (grid stays fast), so an iCloud-only photo lands here.
+                unavailable = true
+            }
         }
     }
 }
