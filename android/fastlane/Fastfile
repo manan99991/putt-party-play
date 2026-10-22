@@ -22,4 +22,20 @@ platform :android do
       changes_not_sent_for_review: true
     )
   end
+
+  # Upload the signed AAB. The app is still a DRAFT app, so Play rejects "completed" releases
+  # (that is why the old r0adkll step with status:completed silently failed). Use a draft release
+  # so the bundle actually lands in the library and can be promoted to a testing track.
+  lane :upload do
+    supply(
+      track: "internal",
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      release_status: "draft",
+      changes_not_sent_for_review: true
+    )
+  end
 end

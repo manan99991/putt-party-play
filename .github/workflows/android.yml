@@ -81,18 +81,15 @@ jobs:
             out/HandyTools-debug.apk
             out/HandyTools-release-unsigned.aab
 
-      # Auto-publish the signed AAB to Play internal testing — runs only once the
-      # PLAY_SERVICE_ACCOUNT_JSON secret is set (the one-time credential). Until then it's skipped.
-      - name: Publish AAB to Play (internal testing)
+      # Upload the signed AAB via fastlane supply (same tool that successfully pushed the listing).
+      # NO continue-on-error: a failure here must surface, not be masked as success.
+      - name: Upload AAB to Play
         if: ${{ success() && env.PLAY_JSON != '' }}
-        continue-on-error: true
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: com.tenzy.toolkit
-          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
-          track: internal
-          status: completed
+        run: |
+          echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
+          export SUPPLY_JSON_KEY_PATH="$GITHUB_WORKSPACE/play-key.json"
+          gem install fastlane --no-document --quiet || sudo gem install fastlane --no-document --quiet
+          fastlane upload 2>&1 | tee upload.log; exit ${PIPESTATUS[0]}
 
       # Push the store LISTING (title, descriptions, changelog, feature graphic, icon, screenshots)
       # from android/fastlane/metadata via fastlane supply. Best-effort: runs only once the Play
