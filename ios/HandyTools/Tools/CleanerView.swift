@@ -121,6 +121,10 @@ struct CleanerView: View {
             }
             .pickerStyle(.segmented)
             if cat == .duplicates {
+                if index.skippedInCloud > 0 {
+                    Text("\(index.skippedInCloud) photo\(index.skippedInCloud == 1 ? "" : "s") in iCloud couldn't be checked for duplicates. Download them in Photos to include them.")
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+                }
                 ForEach(Array(sortedGroups.enumerated()), id: \.offset) { _, g in
                     Text("\(g.count) look-alikes · keep one").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                     grid(g)

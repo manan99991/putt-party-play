@@ -92,7 +92,7 @@ enum PhotoCleaner {
     /// videos are never grouped with each other, and video matches are held to a stricter look-alike
     /// threshold plus a similar-duration check so two unrelated clips that open on a dark frame don't
     /// get lumped in.
-    static func duplicates(scanLimit: Int = 500, progress: @escaping (Double) -> Void) async -> [[Item]] {
+    static func duplicates(scanLimit: Int = 500, progress: @escaping (Double) -> Void) async -> (groups: [[Item]], skipped: Int) {
         let o = PHFetchOptions()
         o.predicate = NSPredicate(format: "mediaType == %d OR mediaType == %d", PHAssetMediaType.image.rawValue, PHAssetMediaType.video.rawValue)
         o.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -107,11 +107,12 @@ enum PhotoCleaner {
         req.isSynchronous = true; req.deliveryMode = .fastFormat; req.resizeMode = .fast; req.isNetworkAccessAllowed = false
 
         var prints: [(PHAsset, VNFeaturePrintObservation)] = []
+        var skipped = 0   // iCloud-only or unreadable assets we couldn't fingerprint (network is off here)
         for (i, a) in assets.enumerated() {
             if i % 10 == 0 { progress(Double(i) / Double(assets.count)) }
             var image: UIImage?
             mgr.requestImage(for: a, targetSize: CGSize(width: 160, height: 160), contentMode: .aspectFit, options: req) { im, _ in image = im }
-            guard let cg = image?.cgImage else { continue }
+            guard let cg = image?.cgImage else { skipped += 1; continue }
             let r = VNGenerateImageFeaturePrintRequest()
             try? VNImageRequestHandler(cgImage: cg, options: [:]).perform([r])
             if let p = r.results?.first as? VNFeaturePrintObservation { prints.append((a, p)) }
@@ -135,7 +136,7 @@ enum PhotoCleaner {
             }
             if members.count > 1 { groups.append(members.map { Item(asset: prints[$0].0, bytes: estimatedBytes(of: prints[$0].0)) }) }
         }
-        return groups
+        return (groups, skipped)
     }
 
     // MARK: delete (iOS shows the confirmation and performs it)
@@ -165,6 +166,7 @@ enum PhotoCleaner {
     @Published private(set) var duplicates: [[PhotoCleaner.Item]]? = nil   // nil = never scanned yet
     @Published private(set) var scanning = false
     @Published private(set) var progress: Double = 0
+    @Published private(set) var skippedInCloud = 0   // couldn't be dup-checked (in iCloud, not downloaded)
 
     private var scannedAt: Date?
     private var task: Task<Void, Never>?
@@ -188,9 +190,10 @@ enum PhotoCleaner {
         scanning = true; progress = 0
         task?.cancel()
         task = Task { [weak self] in
-            let groups = await PhotoCleaner.duplicates(progress: { p in Task { @MainActor in self?.progress = p } })
+            let (groups, skipped) = await PhotoCleaner.duplicates(progress: { p in Task { @MainActor in self?.progress = p } })
             guard let self, !Task.isCancelled else { return }
             self.duplicates = groups
+            self.skippedInCloud = skipped
             self.scannedAt = Date()
             self.scanning = false
         }

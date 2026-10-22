@@ -70,16 +70,23 @@ enum AIEngine {
         guard let cg = image.normalizedUp().cgImage else { return "" }
         nonisolated(unsafe) let cgSafe = cg
         return await withCheckedContinuation { cont in
-            let req = VNRecognizeTextRequest { request, _ in
-                let lines = (request.results as? [VNRecognizedTextObservation])?
-                    .compactMap { $0.topCandidates(1).first?.string } ?? []
-                cont.resume(returning: lines.joined(separator: "\n"))
-            }
-            req.recognitionLevel = .accurate
-            req.usesLanguageCorrection = true
             nonisolated(unsafe) let handler = VNImageRequestHandler(cgImage: cgSafe, orientation: .up)
-            nonisolated(unsafe) let r = req
-            DispatchQueue.global(qos: .userInitiated).async { try? handler.perform([r]) }
+            DispatchQueue.global(qos: .userInitiated).async {
+                // Vision calls the completion handler synchronously inside perform(), on this thread.
+                // If perform() throws, it is NOT called — so resume once from here as a fallback,
+                // guarded so a successful run never double-resumes (which would crash).
+                var resumed = false
+                let req = VNRecognizeTextRequest { request, _ in
+                    let lines = (request.results as? [VNRecognizedTextObservation])?
+                        .compactMap { $0.topCandidates(1).first?.string } ?? []
+                    resumed = true
+                    cont.resume(returning: lines.joined(separator: "\n"))
+                }
+                req.recognitionLevel = .accurate
+                req.usesLanguageCorrection = true
+                do { try handler.perform([req]) } catch { }
+                if !resumed { cont.resume(returning: "") }
+            }
         }
     }
 
@@ -88,16 +95,20 @@ enum AIEngine {
         guard let cg = image.normalizedUp().cgImage else { return [] }
         nonisolated(unsafe) let cgSafe = cg
         return await withCheckedContinuation { cont in
-            let req = VNClassifyImageRequest { request, _ in
-                let labels = (request.results as? [VNClassificationObservation])?
-                    .filter { $0.confidence > 0.1 }
-                    .prefix(top)
-                    .map { $0.identifier.replacingOccurrences(of: "_", with: " ") } ?? []
-                cont.resume(returning: Array(labels))
-            }
             nonisolated(unsafe) let handler = VNImageRequestHandler(cgImage: cgSafe, orientation: .up)
-            nonisolated(unsafe) let r = req
-            DispatchQueue.global(qos: .userInitiated).async { try? handler.perform([r]) }
+            DispatchQueue.global(qos: .userInitiated).async {
+                var resumed = false
+                let req = VNClassifyImageRequest { request, _ in
+                    let labels = (request.results as? [VNClassificationObservation])?
+                        .filter { $0.confidence > 0.1 }
+                        .prefix(top)
+                        .map { $0.identifier.replacingOccurrences(of: "_", with: " ") } ?? []
+                    resumed = true
+                    cont.resume(returning: Array(labels))
+                }
+                do { try handler.perform([req]) } catch { }
+                if !resumed { cont.resume(returning: []) }
+            }
         }
     }
 }
