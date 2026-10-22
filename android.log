@@ -26,20 +26,20 @@ Daemon will be stopped at the end of the build
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
-> Task :app:processDebugManifestForPackage
 > Task :app:desugarDebugFileDependencies
-> Task :app:processDebugResources
 > Task :app:compressDebugAssets
+> Task :app:processDebugResources
 > Task :app:checkDebugDuplicateClasses
 > Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
-> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugJniLibFolders
+> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -53,7 +53,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingService.kt:107:14 'fun vibrate(p0: VibrationEffect!, p1: AudioAttributes!): Unit' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:25:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:48:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/exif/ExifScreen.kt:53:26 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/exif/ExifScreen.kt:57:30 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/magnifier/MagnifierScreen.kt:47:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
@@ -70,9 +70,9 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792635441514.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792713035721.json
 
-BUILD SUCCESSFUL in 3m 2s
+BUILD SUCCESSFUL in 3m 35s
 38 actionable tasks: 38 executed
 === keystore sanity ===
 upload.jks bytes: 2694 (expect ~2694)
@@ -103,23 +103,23 @@ Daemon will be stopped at the end of the build
 > Task :app:processReleaseMainManifest
 > Task :app:processReleaseManifest
 > Task :app:javaPreCompileRelease
-> Task :app:extractProguardFiles
 > Task :app:mergeReleaseArtProfile
+> Task :app:extractProguardFiles
 > Task :app:mergeReleaseStartupProfile
 > Task :app:mergeReleaseJniLibFolders
 > Task :app:writeReleaseAppMetadata
+> Task :app:processReleaseManifestForPackage
 > Task :app:collectReleaseDependencies
 > Task :app:configureReleaseDependencies
 > Task :app:parseReleaseIntegrityConfig
-> Task :app:processReleaseManifestForPackage
-> Task :app:mergeReleaseNativeLibs
 > Task :app:validateSigningRelease
+> Task :app:mergeReleaseNativeLibs
+> Task :app:processReleaseResources
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
 
 > Task :app:extractReleaseNativeSymbolTables
-> Task :app:processReleaseResources
 > Task :app:kspReleaseKotlin
 
 > Task :app:compileReleaseKotlin
@@ -127,7 +127,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingService.kt:107:14 'fun vibrate(p0: VibrationEffect!, p1: AudioAttributes!): Unit' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:25:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:48:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/exif/ExifScreen.kt:53:26 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/exif/ExifScreen.kt:57:30 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/magnifier/MagnifierScreen.kt:47:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
@@ -152,7 +152,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792635623173.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792713249082.json
 
-BUILD SUCCESSFUL in 2m 52s
+BUILD SUCCESSFUL in 3m 36s
 50 actionable tasks: 50 executed
