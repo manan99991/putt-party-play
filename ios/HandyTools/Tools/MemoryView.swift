@@ -14,6 +14,7 @@ struct MemoryView: View {
     @State private var aiAnswer: String?
     @State private var answering = false
     @State private var searched = false
+    @State private var viewing: MemoryEngine.Entry?
 
     var body: some View {
         ToolPage(title: "Memory", subtitle: "Ask your own screenshots anything — the Wi-Fi password, a confirmation number, where you parked. Read on your phone, never uploaded.") {
@@ -31,7 +32,10 @@ struct MemoryView: View {
                 else if index.entries.isEmpty { emptyIndexCard }
 
                 if answering { HStack { ProgressView(); Text("Looking through your screenshots…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
-                if let aiAnswer, !aiAnswer.isEmpty { answerCard(aiAnswer) }
+                if let aiAnswer, !aiAnswer.isEmpty {
+                    answerCard(aiAnswer)
+                    if !results.isEmpty { Text("Pulled from your screenshots below — tap any to open the original.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                }
                 if searched && results.isEmpty && !answering {
                     Text("Nothing matched that. Try the words that were actually on the screenshot, or re-index if it's recent.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
@@ -48,6 +52,7 @@ struct MemoryView: View {
             Text("Reads the text in your screenshots with on-device OCR. For a one-line answer in plain language, Apple Intelligence (iPhone 15 Pro or newer) extracts it; otherwise you get the best-matching screenshot.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .task { await checkAuth() }
+        .sheet(item: $viewing) { e in MemoryImageViewer(entry: e) }
     }
 
     // MARK: states
@@ -96,11 +101,16 @@ struct MemoryView: View {
 
     private func resultRow(_ e: MemoryEngine.Entry) -> some View {
         HStack(alignment: .top, spacing: HandySpacing.s12) {
-            MemoryThumb(id: e.id)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(MemoryEngine.bestLine(for: query, in: e)).font(HandyFont.body).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
-                Text(MemoryEngine.dateString(e.date)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-            }
+            Button { viewing = e } label: {
+                HStack(alignment: .top, spacing: HandySpacing.s12) {
+                    MemoryThumb(id: e.id)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(MemoryEngine.bestLine(for: query, in: e)).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
+                        Text(MemoryEngine.dateString(e.date)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
+                    Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+            }.buttonStyle(.plain)
             Button { UIPasteboard.general.string = MemoryEngine.bestLine(for: query, in: e); ClipStore.add(MemoryEngine.bestLine(for: query, in: e)); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
         }
         .padding(HandySpacing.s12)
@@ -148,5 +158,56 @@ private struct MemoryThumb: View {
         .frame(width: 54, height: 72)
         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
         .task(id: id) { image = await MemoryEngine.thumbnail(id: id) }
+    }
+}
+
+/// Full view of the source screenshot an answer came from: the image at the top (scaled to fit,
+/// scroll to pan a tall screenshot), the exact text that was read from it underneath, and a copy
+/// button. Loads the full-resolution original, or the cached thumbnail if it's no longer in the
+/// library.
+private struct MemoryImageViewer: View {
+    let entry: MemoryEngine.Entry
+    @Environment(\.dismiss) private var dismiss
+    @State private var image: UIImage?
+    @State private var loading = true
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: HandySpacing.s16) {
+                    if let image {
+                        Image(uiImage: image).resizable().scaledToFit()
+                            .frame(maxWidth: .infinity)
+                            .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                            .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                    } else if loading {
+                        ProgressView().frame(maxWidth: .infinity, minHeight: 240)
+                    } else {
+                        VStack(spacing: HandySpacing.s8) {
+                            Image(systemName: "photo.badge.exclamationmark").font(.system(size: 32)).foregroundStyle(HandyColor.textSecondary)
+                            Text("This screenshot isn't in your photo library anymore. The text it was read from is below.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                        }.frame(maxWidth: .infinity, minHeight: 200)
+                    }
+                    if !entry.text.isEmpty {
+                        Text("Text read from this screenshot").font(HandyFont.bodyStrong)
+                        Text(entry.text).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }.padding(HandySpacing.s16)
+            }
+            .background(HandyColor.bg)
+            .navigationTitle(MemoryEngine.dateString(entry.date))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } }
+                ToolbarItem(placement: .primaryAction) {
+                    Button { UIPasteboard.general.string = entry.text; ClipStore.add(entry.text); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc") }
+                        .disabled(entry.text.isEmpty)
+                }
+            }
+        }
+        .task {
+            image = await MemoryEngine.fullImage(id: entry.id)
+            loading = false
+        }
     }
 }

@@ -31,7 +31,10 @@ enum MemoryEngine {
         if let d = try? JSONEncoder().encode(entries) { try? d.write(to: cacheURL) }
     }
 
-    /// OCR one asset at a readable size.
+    /// OCR one asset at a readable size — and cache a compact thumbnail of it on the way past, so the
+    /// source screenshot can always be shown later even if photo access is later narrowed or the
+    /// original has moved to iCloud. The image is fetched once here regardless, so the thumbnail is
+    /// nearly free.
     private static func text(for asset: PHAsset) async -> String {
         let mgr = PHImageManager.default()
         let opt = PHImageRequestOptions()
@@ -39,14 +42,42 @@ enum MemoryEngine {
         opt.isNetworkAccessAllowed = true
         opt.resizeMode = .fast
         let image: UIImage? = await withCheckedContinuation { cont in
+            var resumed = false
             mgr.requestImage(for: asset, targetSize: CGSize(width: 1400, height: 1400), contentMode: .aspectFit, options: opt) { im, info in
                 // Avoid the low-res placeholder callback resuming the continuation twice.
                 if let degraded = info?[PHImageResultIsDegradedKey] as? Bool, degraded { return }
-                cont.resume(returning: im)
+                if !resumed { resumed = true; cont.resume(returning: im) }
             }
         }
         guard let image else { return "" }
+        persistThumb(image, id: asset.localIdentifier)
         return await AIEngine.recognizeText(image)
+    }
+
+    // MARK: cached source thumbnails — written at index time, shown without needing photo permission.
+
+    private static var thumbDir: URL {
+        let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("memory-thumbs", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir
+    }
+    private static func thumbURL(_ id: String) -> URL {
+        // A filesystem-safe, stable name derived from the asset's local identifier.
+        let safe = Data(id.utf8).base64EncodedString().replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "+", with: "-").replacingOccurrences(of: "=", with: "")
+        return thumbDir.appendingPathComponent(safe + ".jpg")
+    }
+    private static func persistThumb(_ image: UIImage, id: String) {
+        let target: CGFloat = 480
+        let longest = max(image.size.width, image.size.height)
+        let scale = longest > target ? target / longest : 1
+        let sz = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        let small = UIGraphicsImageRenderer(size: sz).image { _ in image.draw(in: CGRect(origin: .zero, size: sz)) }
+        if let d = small.jpegData(compressionQuality: 0.7) { try? d.write(to: thumbURL(id), options: .atomic) }
+    }
+    /// The thumbnail saved at index time — on disk, always available regardless of photo permission.
+    static func cachedThumbnail(id: String) -> UIImage? {
+        guard let d = try? Data(contentsOf: thumbURL(id)) else { return nil }
+        return UIImage(data: d)
     }
 
     /// Build or refresh the index over the phone's screenshots (newest first, bounded), reusing the
@@ -125,11 +156,13 @@ enum MemoryEngine {
         let f = DateFormatter(); f.dateStyle = .medium; return f.string(from: d)
     }
 
-    /// Load a thumbnail for a result row.
+    /// Load a thumbnail for a result row — the cached copy first (reliable, no permission needed),
+    /// then the live library as a fallback.
     static func thumbnail(id: String, size: CGFloat = 120) async -> UIImage? {
+        if let cached = cachedThumbnail(id: id) { return cached }
         guard let asset = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).firstObject else { return nil }
         let mgr = PHImageManager.default()
-        let opt = PHImageRequestOptions(); opt.deliveryMode = .opportunistic; opt.isNetworkAccessAllowed = true
+        let opt = PHImageRequestOptions(); opt.deliveryMode = .highQualityFormat; opt.isNetworkAccessAllowed = true
         return await withCheckedContinuation { cont in
             var resumed = false
             mgr.requestImage(for: asset, targetSize: CGSize(width: size, height: size), contentMode: .aspectFill, options: opt) { im, info in
@@ -137,6 +170,22 @@ enum MemoryEngine {
                 if !resumed { resumed = true; cont.resume(returning: im) }
             }
         }
+    }
+
+    /// The full-resolution source screenshot, for the viewer. Falls back to the cached thumbnail if
+    /// the original is no longer in the photo library.
+    static func fullImage(id: String) async -> UIImage? {
+        guard let asset = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).firstObject else { return cachedThumbnail(id: id) }
+        let mgr = PHImageManager.default()
+        let opt = PHImageRequestOptions(); opt.deliveryMode = .highQualityFormat; opt.isNetworkAccessAllowed = true
+        let img: UIImage? = await withCheckedContinuation { cont in
+            var resumed = false
+            mgr.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: opt) { im, info in
+                if let degraded = info?[PHImageResultIsDegradedKey] as? Bool, degraded { return }
+                if !resumed { resumed = true; cont.resume(returning: im) }
+            }
+        }
+        return img ?? cachedThumbnail(id: id)
     }
 }
 
