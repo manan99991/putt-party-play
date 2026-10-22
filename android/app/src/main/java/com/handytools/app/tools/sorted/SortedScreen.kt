@@ -52,14 +52,15 @@ fun SortedScreen() {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     var working by remember { mutableStateOf(false) }
     var parsed by remember { mutableStateOf<Parsed?>(null) }
+    var error by remember { mutableStateOf<String?>(null) }
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri == null) return@rememberLauncherForActivityResult
         val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } ?: return@rememberLauncherForActivityResult
-        working = true; parsed = null
+        working = true; parsed = null; error = null
         TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS).process(InputImage.fromBitmap(bmp, 0))
-            .addOnSuccessListener { working = false; text = TextFieldValue(it.text) }
-            .addOnFailureListener { working = false }
+            .addOnSuccessListener { working = false; text = TextFieldValue(it.text); if (it.text.isBlank()) error = "No readable text found in that image." }
+            .addOnFailureListener { working = false; error = "Couldn't read that document. Try another photo." }
     }
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
@@ -90,6 +91,7 @@ fun SortedScreen() {
             }
         }
         if (working) { Spacer(Modifier.size(12.dp)); Text("Reading it…", color = Handy.palette.textSecondary) }
+        error?.let { Spacer(Modifier.size(12.dp)); Text(it, color = com.handytools.app.ui.HandyColors.Danger, style = MaterialTheme.typography.bodySmall) }
 
         val p = parsed
         if (p != null) {

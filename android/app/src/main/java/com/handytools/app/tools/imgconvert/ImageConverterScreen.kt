@@ -58,6 +58,7 @@ fun ImageConverterScreen() {
     var sizeIdx by remember { mutableIntStateOf(0) }
     var quality by remember { mutableIntStateOf(80) }
     var working by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
     val sizes = listOf("Original" to 0, "Max 2048" to 2048, "Max 1024" to 1024)
     val overQuota = !Usage.hasRoom(ctx, "imgconvert", Limits.FREE_CONVERT_PER_DAY)
 
@@ -90,14 +91,17 @@ fun ImageConverterScreen() {
                 style = MaterialTheme.typography.bodySmall, color = HandyColors.Accent, modifier = Modifier.padding(top = 8.dp))
             Spacer(Modifier.size(12.dp))
             HPrimaryButton(if (working) "Converting…" else "Convert ${uris.size}", enabled = !working && !overQuota, modifier = Modifier.fillMaxWidth()) {
-                if (!Usage.use(ctx, "imgconvert", Limits.FREE_CONVERT_PER_DAY)) return@HPrimaryButton
-                working = true
+                working = true; error = null
                 scope.launch {
                     val files = withContext(Dispatchers.IO) { convert(ctx, uris, png, sizes[sizeIdx].second, quality) }
                     working = false
-                    if (files.isNotEmpty()) Share.files(ctx, files, if (png) "image/png" else "image/jpeg")
+                    if (files.isNotEmpty()) {
+                        Usage.use(ctx, "imgconvert", Limits.FREE_CONVERT_PER_DAY)   // only count a batch that actually produced files
+                        Share.files(ctx, files, if (png) "image/png" else "image/jpeg")
+                    } else error = "Couldn't convert those images. Try different files."
                 }
             }
+            error?.let { Text(it, color = HandyColors.Danger, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp)) }
         }
         Spacer(Modifier.weight(1f))
         BannerAd()

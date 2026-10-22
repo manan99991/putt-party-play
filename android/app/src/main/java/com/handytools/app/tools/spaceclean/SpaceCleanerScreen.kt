@@ -50,14 +50,15 @@ fun SpaceCleanerScreen() {
     var granted by remember { mutableStateOf(hasPerm()) }
     var scanning by remember { mutableStateOf(false) }
     var report by remember { mutableStateOf<CleanReport?>(null) }
+    var scanError by remember { mutableStateOf(false) }
 
     val permLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted = it }
 
     fun scan() {
-        scanning = true
+        scanning = true; scanError = false
         scope.launch {
             val r = runCatching { withContext(Dispatchers.IO) { SpaceCleanerEngine.scan(ctx) } }.getOrNull()
-            report = r; scanning = false
+            report = r; scanError = (r == null); scanning = false
         }
     }
 
@@ -90,7 +91,11 @@ fun SpaceCleanerScreen() {
                 Spacer(Modifier.weight(1f)); BannerAd()
             }
             r == null -> {
-                HPrimaryButton(if (scanning) "Scanning your photos…" else "Scan for space to free up", modifier = Modifier.fillMaxWidth()) {
+                if (scanError && !scanning) {
+                    Text("Couldn't scan your photos. Check photo access and try again.", color = Handy.palette.textSecondary)
+                    Spacer(Modifier.size(12.dp))
+                }
+                HPrimaryButton(if (scanning) "Scanning your photos…" else if (scanError) "Try again" else "Scan for space to free up", modifier = Modifier.fillMaxWidth()) {
                     if (!scanning) scan()
                 }
                 Spacer(Modifier.weight(1f)); BannerAd()
