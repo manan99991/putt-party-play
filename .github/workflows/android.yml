@@ -89,7 +89,18 @@ jobs:
           echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
           export SUPPLY_JSON_KEY_PATH="$GITHUB_WORKSPACE/play-key.json"
           gem install fastlane --no-document --quiet || sudo gem install fastlane --no-document --quiet
-          fastlane upload 2>&1 | tee upload.log; exit ${PIPESTATUS[0]}
+          set -o pipefail
+          fastlane upload 2>&1 | tee "$GITHUB_WORKSPACE/upload.log"
+
+      # Route the upload log out via the GitHub Release (the one retrieval channel that works here),
+      # so the real supply error is readable even when the CI log branch is stuck.
+      - name: Publish Play upload log (diagnosis)
+        if: always()
+        continue-on-error: true
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: handytools-android-latest
+          files: upload.log
 
       # Push the store LISTING (title, descriptions, changelog, feature graphic, icon, screenshots)
       # from android/fastlane/metadata via fastlane supply. Best-effort: runs only once the Play
