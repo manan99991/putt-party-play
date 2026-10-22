@@ -30,6 +30,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
 import com.handytools.app.ads.BannerAd
 import com.handytools.app.tools.Share
@@ -53,6 +62,7 @@ fun MemoryScreen() {
     var query by remember { mutableStateOf(TextFieldValue("")) }
     var results by remember { mutableStateOf<List<MemEntry>>(emptyList()) }
     var searched by remember { mutableStateOf(false) }
+    var viewing by remember { mutableStateOf<MemEntry?>(null) }
 
     val permLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted -> authorized = granted }
 
@@ -117,9 +127,11 @@ fun MemoryScreen() {
                     Text("Nothing matched that. Try the words that were on the screenshot, or re-index if it's recent.",
                         style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                 results.forEach { e ->
-                    HCard(Modifier.fillMaxWidth()) {
+                    HCard(Modifier.fillMaxWidth().clickable { viewing = e }) {
                         Column(Modifier.padding(14.dp)) {
                             Text(MemoryEngine.bestLine(query.text, e), style = MaterialTheme.typography.bodyLarge)
+                            Spacer(Modifier.size(6.dp))
+                            Text("Tap to open the screenshot", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                             Spacer(Modifier.size(6.dp))
                             HSecondaryButton("Share") { Share.text(ctx, MemoryEngine.bestLine(query.text, e)) }
                         }
@@ -136,4 +148,40 @@ fun MemoryScreen() {
             style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 8.dp))
         BannerAd()
     }
+
+    viewing?.let { e ->
+        Dialog(onDismissRequest = { viewing = null }) {
+            val bmp = remember(e.id) { loadScreenshot(ctx, e.id) }
+            HCard(Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(16.dp).verticalScroll(rememberScrollState())) {
+                    if (bmp != null) {
+                        Image(bitmap = bmp.asImageBitmap(), contentDescription = "Screenshot", modifier = Modifier.fillMaxWidth())
+                    } else {
+                        Text("This screenshot isn't on your phone anymore. The text read from it is below.",
+                            style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+                    }
+                    Spacer(Modifier.size(12.dp))
+                    if (e.text.isNotBlank()) {
+                        Text("Text read from this screenshot", style = MaterialTheme.typography.titleSmall)
+                        Spacer(Modifier.size(4.dp))
+                        Text(e.text, style = MaterialTheme.typography.bodyMedium)
+                        Spacer(Modifier.size(12.dp))
+                    }
+                    Row {
+                        if (e.text.isNotBlank()) {
+                            HSecondaryButton("Share text") { Share.text(ctx, e.text) }
+                            Spacer(Modifier.size(8.dp))
+                        }
+                        HPrimaryButton("Done") { viewing = null }
+                    }
+                }
+            }
+        }
+    }
 }
+
+/** Load the full screenshot bitmap from MediaStore by id, or null if it's no longer there. */
+private fun loadScreenshot(ctx: Context, id: Long): Bitmap? = runCatching {
+    val uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
+    ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) }
+}.getOrNull()
