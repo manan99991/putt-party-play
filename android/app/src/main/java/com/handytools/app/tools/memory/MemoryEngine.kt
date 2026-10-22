@@ -48,15 +48,22 @@ object MemoryEngine {
             val id = pair.first
             val date = pair.second
             val hit = cache[id]
-            if (hit != null && hit.date == date) {
+            if (hit != null && hit.date == date && hit.text.isNotEmpty()) {
                 out.add(hit)
             } else {
                 val uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
+                // getOrNull() distinguishes a real read failure (null) from a successful read with no
+                // text (""). Only a failure must be retried — caching "" as done makes a screenshot
+                // that failed OCR once permanently unsearchable, even on Re-index.
                 val text = runCatching {
                     val img = InputImage.fromFilePath(ctx, uri)
                     recognizer.process(img).await().text
-                }.getOrDefault("")
-                out.add(MemEntry(id, date, text))
+                }.getOrNull()
+                when {
+                    text != null -> out.add(MemEntry(id, date, text))   // read succeeded (text may be empty)
+                    hit != null  -> out.add(hit)                        // read failed — keep what we had, don't poison
+                    // else: skip entirely so it is retried on the next index pass
+                }
             }
             onProgress((i + 1).toFloat() / total)
         }

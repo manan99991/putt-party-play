@@ -63,12 +63,15 @@ object SortedEngine {
 
     fun guessKind(text: String): String {
         val t = text.lowercase()
+        // Whole-word match, so "sign" no longer fires on "design"/"assignment"/"signature" and
+        // "form" no longer fires on "information"/"platform".
+        fun has(vararg words: String) = words.any { w -> Regex("\\b${Regex.escape(w)}\\b").containsMatchIn(t) }
         return when {
-            listOf("appointment", "appt", "visit", "booking").any { t.contains(it) } -> "Appointment"
-            listOf("invoice", "amount due", "balance due", "payment due", "bill").any { t.contains(it) } -> "Bill"
-            listOf("receipt", "subtotal", "total").any { t.contains(it) } -> "Receipt"
-            listOf("renew", "expires", "notice").any { t.contains(it) } -> "Notice"
-            listOf("form", "application", "sign").any { t.contains(it) } -> "Form"
+            has("appointment", "appt", "visit", "booking") -> "Appointment"
+            has("invoice", "amount due", "balance due", "payment due", "bill") -> "Bill"
+            has("receipt", "subtotal", "total") -> "Receipt"
+            has("renew", "renewal", "expires", "expiry", "notice") -> "Notice"
+            has("form", "application", "signature", "please sign") -> "Form"
             else -> "Document"
         }
     }

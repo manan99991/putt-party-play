@@ -41,22 +41,29 @@ fun ExifScreen() {
     var uri by remember { mutableStateOf<Uri?>(null) }
     var rows by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
     var hasLocation by remember { mutableStateOf(false) }
+    var readFailed by remember { mutableStateOf(false) }
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { picked ->
         uri = picked
-        rows = emptyList(); hasLocation = false
+        rows = emptyList(); hasLocation = false; readFailed = false
         if (picked != null) {
-            ctx.contentResolver.openInputStream(picked)?.use { stream ->
-                val exif = ExifInterface(stream)
-                val list = mutableListOf<Pair<String, String>>()
-                val latLong = FloatArray(2)
-                if (exif.getLatLong(latLong)) { list.add("Location" to "%.5f, %.5f".format(latLong[0], latLong[1])); hasLocation = true }
-                exif.getAttribute(ExifInterface.TAG_DATETIME)?.let { list.add("Taken" to it) }
-                exif.getAttribute(ExifInterface.TAG_MAKE)?.let { mk -> list.add("Camera" to (mk + " " + (exif.getAttribute(ExifInterface.TAG_MODEL) ?: ""))) }
-                val w = exif.getAttribute(ExifInterface.TAG_IMAGE_WIDTH); val h = exif.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
-                if (w != null && h != null) list.add("Size" to "$w × $h")
-                rows = list
-            }
+            // A failed read must not look like a clean photo. Track whether we actually opened and
+            // parsed the file; only an empty result from a *successful* read means "clean".
+            val ok = runCatching {
+                ctx.contentResolver.openInputStream(picked)?.use { stream ->
+                    val exif = ExifInterface(stream)
+                    val list = mutableListOf<Pair<String, String>>()
+                    val latLong = FloatArray(2)
+                    if (exif.getLatLong(latLong)) { list.add("Location" to "%.5f, %.5f".format(latLong[0], latLong[1])); hasLocation = true }
+                    exif.getAttribute(ExifInterface.TAG_DATETIME)?.let { list.add("Taken" to it) }
+                    exif.getAttribute(ExifInterface.TAG_MAKE)?.let { mk -> list.add("Camera" to (mk + " " + (exif.getAttribute(ExifInterface.TAG_MODEL) ?: ""))) }
+                    val w = exif.getAttribute(ExifInterface.TAG_IMAGE_WIDTH); val h = exif.getAttribute(ExifInterface.TAG_IMAGE_LENGTH)
+                    if (w != null && h != null) list.add("Size" to "$w × $h")
+                    rows = list
+                    true
+                } ?: false
+            }.getOrDefault(false)
+            readFailed = !ok
         }
     }
 
@@ -68,7 +75,8 @@ fun ExifScreen() {
         }
         if (uri != null) {
             Spacer(Modifier.size(12.dp))
-            if (rows.isEmpty()) Text("No metadata found — this photo is already clean.", color = Handy.palette.textSecondary)
+            if (readFailed) Text("Couldn't read this photo's metadata. Try another photo, or pick it from a different album.", color = Handy.palette.textSecondary)
+            else if (rows.isEmpty()) Text("No metadata found — this photo is already clean.", color = Handy.palette.textSecondary)
             else rows.forEach { (k, v) ->
                 Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(k, color = Handy.palette.textSecondary)
