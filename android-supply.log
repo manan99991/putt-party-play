@@ -1,17 +1,17 @@
-[22:22:09]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[22:22:09]: fastlane 2.241.1 (Ruby 3.2.3, gem)
-[22:22:09]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
-[22:22:10]: Sending anonymous analytics information
-[22:22:10]: Learn more at https://docs.fastlane.tools/#metrics
-[22:22:10]: No personal or sensitive data is sent.
-[22:22:10]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[22:22:10]: [32m------------------------------[0m
-[22:22:10]: [32m--- Step: default_platform ---[0m
-[22:22:10]: [32m------------------------------[0m
-[22:22:10]: [32mDriving the lane 'android listing' 🚀[0m
-[22:22:10]: [32m--------------------[0m
-[22:22:10]: [32m--- Step: supply ---[0m
-[22:22:10]: [32m--------------------[0m
+[01:41:01]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[01:41:01]: fastlane 2.241.1 (Ruby 3.2.3, gem)
+[01:41:01]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[01:41:02]: Sending anonymous analytics information
+[01:41:02]: Learn more at https://docs.fastlane.tools/#metrics
+[01:41:02]: No personal or sensitive data is sent.
+[01:41:02]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[01:41:02]: [32m------------------------------[0m
+[01:41:02]: [32m--- Step: default_platform ---[0m
+[01:41:02]: [32m------------------------------[0m
+[01:41:02]: [32mDriving the lane 'android listing' 🚀[0m
+[01:41:02]: [32m--------------------[0m
+[01:41:02]: [32m--- Step: supply ---[0m
+[01:41:02]: [32m--------------------[0m
 
 +------------------------------------------------------------------------------------------------------+
 |                                      [32mSummary for supply 2.241.1[0m                                      |
@@ -38,15 +38,15 @@
 | ack_bundle_installation_warning    | false                                                           |
 +------------------------------------+-----------------------------------------------------------------+
 
-[22:22:11]: Preparing uploads for language 'en-US'...
-[22:22:11]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/featureGraphic.png...
-[22:22:14]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/icon.png...
-[22:22:16]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/01-slide1.png...
-[22:22:18]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/02-slide2.png...
-[22:22:21]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/03-slide3.png...
-[22:22:23]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/04-slide4.png...
-[22:22:25]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/05-slide5.png...
-[22:22:28]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/06-slide6.png...
+[01:41:03]: Preparing uploads for language 'en-US'...
+[01:41:03]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/featureGraphic.png...
+[01:41:06]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/icon.png...
+[01:41:08]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/01-slide1.png...
+[01:41:12]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/02-slide2.png...
+[01:41:16]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/03-slide3.png...
+[01:41:20]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/04-slide4.png...
+[01:41:23]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/05-slide5.png...
+[01:41:27]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/06-slide6.png...
 +------------------------------------+
 |            [33mLane Context[0m            |
 +------------------+-----------------+
@@ -61,10 +61,10 @@
 | Step | Action           | Time (in s) |
 +------+------------------+-------------+
 | 1    | default_platform | 0           |
-| 💥   | [31msupply[0m           | 19          |
+| 💥   | [31msupply[0m           | 28          |
 +------+------------------+-------------+
 
-[22:22:30]: [31mfastlane finished with errors[0m
+[01:41:30]: [31mfastlane finished with errors[0m
 [31m
 [!] en-US - Cannot find changelog because no version code given - please specify :version_code[0m
-[22:22:30]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[01:41:31]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
