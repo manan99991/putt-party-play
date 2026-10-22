@@ -115,7 +115,7 @@ struct ShieldView: View {
         Task { @MainActor in
             defer { aiBusy = false }
             do {
-                aiOpinion = try await AIEngine.run(instructions: "You help an ordinary person judge whether a message is a scam. In 2–4 plain sentences: your verdict, the single strongest reason, and what they should do. Never ask them for details. Never say it is definitely safe.", prompt: text)
+                aiOpinion = try await AIEngine.run(instructions: "You help an ordinary person judge whether a text message or email is a scam. Weigh it fairly: most everyday messages — appointment reminders, delivery updates, a one-time code that is simply sent to the person, notes from someone they know — are NOT scams, and you should say so plainly when that is the case. Only call something suspicious or a scam when it actually pressures the person, demands money, asks them to hand over a code, password or personal details, or pushes a link to 'verify' or 'confirm' an account. In 2–4 plain sentences give: your verdict (ordinary / suspicious / likely scam), the single strongest reason, and what to do. Never ask the person for more details. Never promise it is definitely safe.", prompt: text)
             } catch { errorText = error.localizedDescription }
         }
     }

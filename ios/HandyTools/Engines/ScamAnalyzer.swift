@@ -27,18 +27,39 @@ enum ScamAnalyzer {
         let urgency = hit([#"\bimmediately\b"#, #"\bwithin (24|48) hours\b"#, #"\bact now\b"#, #"\burgent"#, #"\bfinal (notice|warning)\b"#, #"\bsuspend(ed)?\b"#, #"\bwill be (closed|locked|terminated|deactivated)\b"#, #"\blast chance\b"#, #"\bexpires? (today|soon|in)\b"#, #"\blegal action\b"#, #"\barrest"#, #"\bwarrant\b"#])
         if !urgency.isEmpty { f.append(Finding(title: "Pressure to act fast", detail: "Scams manufacture urgency so you don't stop to check. Real companies give you time and a way to verify.", weight: urgency.count > 1 ? 3 : 2)) }
 
-        // 2. payment rails only criminals prefer
-        let rails = hit([#"gift ?cards?"#, #"\bitunes\b"#, #"\bgoogle play card"#, #"\bsteam card"#, #"\bbitcoin\b"#, #"\bcrypto"#, #"\bwire transfer\b"#, #"\bwestern union\b"#, #"\bmoneygram\b"#, #"\bzelle\b"#, #"\bcash ?app\b"#, #"\bvenmo\b"#, #"\bprepaid"#])
-        if !rails.isEmpty { f.append(Finding(title: "Asks for an untraceable payment", detail: "Gift cards, crypto, wire transfers and payment apps can't be reversed. No government agency, utility or tech company takes payment that way.", weight: 4)) }
+        // 1b. legal / authority threats — "arrest", "warrant", "SSN suspended". These words almost
+        // never appear in a legitimate text, so a threat on its own is worth flagging.
+        let threat = hit([#"\barrest"#, #"\bwarrant\b"#, #"\blegal action\b"#, #"\blawsuit\b"#, #"\bpolice\b"#, #"\bprosecut"#, #"\bcourt (date|case|summons|hearing)\b"#, #"\b(ssn|social security)\b(\s+\w+){0,5}\s+suspend"#, #"\bsuspend(\s+\w+){0,5}\s+(ssn|social security)\b"#, #"\bdeport"#, #"\bface (arrest|charges|prosecution|a fine)\b"#])
+        let callToAction = hit([#"\bcall (now|immediately|us|this number|back|the)\b"#, #"\bpress \d\b"#, #"\bpay\b"#, #"\bclick\b"#, #"\btap\b"#, #"\bverify\b"#, #"\bconfirm\b"#, #"\brespond\b"#, #"\breply\b"#, #"\bdo not ignore\b"#, #"\bact now\b"#, #"\bclaim\b"#])
+        // A threat only counts when it is paired with pressure or a demand to act — a passing
+        // mention ("jury duty packet arrived", "police charity drive") is not a scam.
+        if !threat.isEmpty && (!urgency.isEmpty || !callToAction.isEmpty) { f.append(Finding(title: "Threatens you with legal trouble", detail: "Real agencies send letters and never threaten arrest by text or demand you act on the spot. This is pure pressure.", weight: 3)) }
 
-        // 3. credentials / codes / personal data
-        let creds = hit([#"\b(verification|security|one[- ]?time|otp|2fa|auth(entication)?) code\b"#, #"\bcode (we|i) (sent|texted)\b"#, #"\bpassword\b"#, #"\bsocial security\b"#, #"\bssn\b"#, #"\bdate of birth\b"#, #"\bcard number\b"#, #"\bcvv\b"#, #"\bpin\b"#, #"\bconfirm your (account|identity|details|information)\b"#, #"\bverify your (account|identity|details|information)\b"#, #"\bupdate your (billing|payment)\b"#, #"\bre-?enter\b"#])
-        if !creds.isEmpty { f.append(Finding(title: "Wants a code, password or personal details", detail: "Nobody legitimate asks you to read back a one-time code or type your password into a link they sent. Codes are the keys to your accounts.", weight: 4)) }
+        // 2. payment rails — only alarming when a payment is actually being demanded.
+        // (A newsletter that mentions "bitcoin", or a friend naming "Venmo", is not a scam.)
+        let demand = hit([#"\b(pay|send|transfer|deposit|wire|load|reload|settle|owe|owed)\b"#, #"\bpayment\b"#, #"\b(processing |small |admin(istration)?|release |activation )?fee\b"#, #"\bbalance (due|outstanding)\b"#])
+        let hasDemand = !demand.isEmpty
+        let railHard = hit([#"gift ?cards?"#, #"\bitunes\b"#, #"\bgoogle play card"#, #"\bsteam card"#, #"\bwire transfer\b"#, #"\bwestern union\b"#, #"\bmoneygram\b"#])
+        let railSoft = hit([#"\bzelle\b"#, #"\bcash ?app\b"#, #"\bvenmo\b"#, #"\bprepaid\b"#, #"\bbitcoin\b"#, #"\bcrypto"#, #"\busdt\b"#, #"\bwallet address\b"#])
+        let railHit = !railHard.isEmpty || (!railSoft.isEmpty && hasDemand)
+        if railHit {
+            let w = (!railHard.isEmpty && (hasDemand || !urgency.isEmpty)) || (!railSoft.isEmpty && hasDemand) ? 4 : 2
+            f.append(Finding(title: "Asks for an untraceable payment", detail: "Gift cards, crypto, wire transfers and payment apps can't be reversed. No government agency, utility or tech company takes payment that way.", weight: w))
+        }
+
+        // 3. credentials / codes / personal data — the scam is SOLICITING these, not merely
+        // mentioning them. A one-time code that is simply sent to you ("your code is 1234") is an
+        // everyday message; being asked to hand a code back, or to "verify" via a message, is not.
+        let codeSolicit = hit([#"\b(send|share|read|tell|give|provide|confirm|enter|type|forward|repeat)\b(\s+\w+){0,4}\s+code\b"#, #"\b(sent|texted|emailed) (you )?(a|the|your) code\b"#, #"\bcode (we|i|they) (sent|texted|emailed)\b"#, #"\bcode\b(\s+\w+){0,3}\s+(back|to me|to us)\b"#, #"\bwhat('?s| is| was)?( the)? code\b"#, #"\bcode you (just )?(got|received)\b"#])
+        let credAsk = hit([#"\b(enter|confirm|verify|update|provide|re-?enter|submit|validate) your (password|pin|ssn|social security|card number|cvv|cvc|billing|payment|bank|account|identity|details|information|credentials)\b"#, #"\bverify your (account|identity)\b"#, #"\bconfirm your (account|identity)\b"#, #"\byour (password|account) (has|is|will)\b(\s+\w+){0,4}\s+(expired?|suspend(ed)?|lock(ed)?|disabled?|compromis(ed)?)"#, #"\bupdate your (billing|payment) (details|information|method)\b"#])
+        let creds = codeSolicit + credAsk
+        if !codeSolicit.isEmpty { f.append(Finding(title: "Wants a code, password or personal details", detail: "Nobody legitimate asks you to read back a one-time code or type your password into a link they sent. Codes are the keys to your accounts.", weight: 4)) }
+        else if !credAsk.isEmpty { f.append(Finding(title: "Pushes you to \"verify\" your account", detail: "Being told to confirm or verify your account through a message is how fake login pages get filled in. Open the app or type the site address yourself instead.", weight: 3)) }
 
         // 4. impersonation of institutions
         let brands = hit([#"\b(irs|hmrc|ato|cra|social security administration|medicare|dmv|usps|ups|fedex|dhl|royal mail|amazon|apple|microsoft|paypal|netflix|bank|chase|wells fargo|barclays|hsbc|coinbase|geek squad|norton|mcafee)\b"#])
         let genericGreeting = hit([#"^(dear (customer|user|member|account holder|sir|madam)|hello (customer|user|friend))"#, #"\bdear (customer|user|member|account holder)\b"#])
-        if !brands.isEmpty && (!urgency.isEmpty || !creds.isEmpty || !rails.isEmpty) { f.append(Finding(title: "Claims to be a well-known organisation", detail: "Impersonating a bank, delivery firm, tax office or tech company is the standard opener. Contact them through the number on your card or their official app — never the one in the message.", weight: 2)) }
+        if !brands.isEmpty && (!urgency.isEmpty || !creds.isEmpty || railHit) { f.append(Finding(title: "Claims to be a well-known organisation", detail: "Impersonating a bank, delivery firm, tax office or tech company is the standard opener. Contact them through the number on your card or their official app — never the one in the message.", weight: 2)) }
         if !genericGreeting.isEmpty { f.append(Finding(title: "Generic greeting", detail: "\"Dear customer\" means they don't know your name — a mass-sent message.", weight: 1)) }
 
         // 5. too good to be true / advance fee / romance / job
@@ -67,8 +88,14 @@ enum ScamAnalyzer {
         let caps = text.filter { $0.isUppercase }.count, letters = text.filter { $0.isLetter }.count
         if letters > 40, Double(caps) / Double(letters) > 0.45 { f.append(Finding(title: "Shouting", detail: "Lots of capitals and exclamation marks are a pressure tactic.", weight: 1)) }
 
-        let score = min(100, f.reduce(0) { $0 + $1.weight * 12 })
-        let verdict: Verdict = score >= 50 ? .likelyScam : score >= 24 ? .suspicious : .lowRisk
+        // Corroboration: real scams stack several signals. A lone, ordinary-sounding keyword
+        // should not raise an alarm — that is the main source of false "it's a scam" calls.
+        let strongTitles: Set<String> = ["Asks for an untraceable payment", "Tells you to keep it secret", "Wants remote access or an install", "Wants a code, password or personal details", "Link looks wrong", "Threatens you with legal trouble"]
+        let hasStrong = f.contains { strongTitles.contains($0.title) && $0.weight >= 3 }
+        var score = min(100, f.reduce(0) { $0 + $1.weight * 12 })
+        if f.count <= 1 && !hasStrong { score = min(score, 18) }                            // one lone soft signal → low-risk
+        else if !hasStrong && (f.map(\.weight).max() ?? 0) <= 2 { score = min(score, 32) }   // only mild signals → cap near the floor
+        let verdict: Verdict = score >= 55 ? .likelyScam : score >= 30 ? .suspicious : .lowRisk
         return Report(score: score, verdict: verdict, findings: f.sorted { $0.weight > $1.weight }, links: links)
     }
 
