@@ -30,16 +30,16 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:processDebugManifestForPackage
 > Task :app:mergeDebugAssets
+> Task :app:processDebugManifestForPackage
 > Task :app:desugarDebugFileDependencies
-> Task :app:compressDebugAssets
 > Task :app:processDebugResources
+> Task :app:compressDebugAssets
 > Task :app:checkDebugDuplicateClasses
 > Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
-> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -70,9 +70,9 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792634388581.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792635441514.json
 
-BUILD SUCCESSFUL in 4m 11s
+BUILD SUCCESSFUL in 3m 2s
 38 actionable tasks: 38 executed
 === keystore sanity ===
 upload.jks bytes: 2694 (expect ~2694)
@@ -102,24 +102,24 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeReleaseResources
 > Task :app:processReleaseMainManifest
 > Task :app:processReleaseManifest
-> Task :app:processReleaseManifestForPackage
 > Task :app:javaPreCompileRelease
-> Task :app:mergeReleaseArtProfile
 > Task :app:extractProguardFiles
+> Task :app:mergeReleaseArtProfile
 > Task :app:mergeReleaseStartupProfile
 > Task :app:mergeReleaseJniLibFolders
 > Task :app:writeReleaseAppMetadata
 > Task :app:collectReleaseDependencies
 > Task :app:configureReleaseDependencies
 > Task :app:parseReleaseIntegrityConfig
-> Task :app:validateSigningRelease
-> Task :app:processReleaseResources
+> Task :app:processReleaseManifestForPackage
 > Task :app:mergeReleaseNativeLibs
+> Task :app:validateSigningRelease
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
 
 > Task :app:extractReleaseNativeSymbolTables
+> Task :app:processReleaseResources
 > Task :app:kspReleaseKotlin
 
 > Task :app:compileReleaseKotlin
@@ -152,7 +152,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792634638108.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792635623173.json
 
-BUILD SUCCESSFUL in 4m 37s
+BUILD SUCCESSFUL in 2m 52s
 50 actionable tasks: 50 executed
