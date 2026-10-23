@@ -77,6 +77,7 @@ targets:
         NSPhotoLibraryUsageDescription: Needed to read text from screenshots, view or strip photo metadata, and find large or duplicate photos and videos you choose to remove. iOS always asks you to confirm a deletion.
         NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.
         NSFaceIDUsageDescription: Used to unlock your Secure Vault so only you can open your private notes and photos.
+        NSContactsUsageDescription: Needed to find duplicate contacts, merge them without losing a number, and back them up to a file. Your contacts stay on this phone and are never uploaded.
         NSSupportsLiveActivities: true
 
   ShareExtension:

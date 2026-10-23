@@ -12,6 +12,7 @@ struct MeasureARView: View {
     private enum Mode: Int, CaseIterable { case distance, area, height
         var title: String { ["Distance", "Area", "Height"][rawValue] } }
     @State private var mode: Mode = .distance
+    @State private var showSensors = false   // Level, compass and the other sensors, folded in here.
 
     var body: some View {
         ToolPage(title: "Measure", subtitle: "Tap to place points on real surfaces — distance, perimeter and area, or height from the floor.") {
@@ -59,11 +60,20 @@ struct MeasureARView: View {
             } else {
                 LimitNote("AR measuring needs a real iPhone with ARKit — it isn't available here.")
             }
+            Button { showSensors = true } label: {
+                Label("Level, compass & sensors", systemImage: "level").frame(maxWidth: .infinity)
+            }.secondaryButton()
             Text(ar.lidar ? "LiDAR detected — expect ±1 cm on flat surfaces." : "Accuracy is typically ±1–2 cm up to a few metres; move the phone slowly first so it learns the room.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .onAppear { ar.start() }
         .onDisappear { ar.stop() }
+        .sheet(isPresented: $showSensors) {
+            NavigationStack {
+                InstrumentsView()
+                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { showSensors = false } } }
+            }
+        }
     }
 
     private var statusLine: String {

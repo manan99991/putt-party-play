@@ -71,7 +71,7 @@ struct Tool: Identifiable {
     var keywords: [String] = []   // synonyms that power search
 
     /// The everyday basics stay free; everything else is a Pro tool. One place to tune the split.
-    static let freeIDs: Set<String> = ["light", "qrwifi", "magnify", "measure", "instruments", "translate", "livecaptions", "vault"]
+    static let freeIDs: Set<String> = ["light", "qrwifi", "magnify", "measure", "cleaner", "translate", "livecaptions", "vault"]
     var pro: Bool { !Tool.freeIDs.contains(id) }
 }
 
@@ -93,7 +93,7 @@ struct Tool: Identifiable {
     Tool(id: "shareready", name: "Share‑Ready",      blurb: "One tap: convert, strip, shrink",   icon: "square.and.arrow.up.fill",            page: 1, asset: "tool_shareready", keywords: ["share","upload","ready","convert","strip","metadata","shrink","recipe","one tap","portal","send"]),
     // ── Page 2 · Camera, sensors & everyday ─────────────────────────────
     Tool(id: "light",      name: "Flashlight+",      blurb: "Strobe, SOS, screen light, mirror", icon: "flashlight.on.fill",                  page: 2, asset: "tool_light", keywords: ["flashlight","torch","light","strobe","sos","morse","screen light","mirror","selfie","dark","blink"]),
-    Tool(id: "instruments",name: "Instruments",      blurb: "Level, compass, dB, light, more",   icon: "gauge.with.dots.needle.33percent",    page: 2, asset: "tool_instruments", keywords: ["level","bubble","angle","protractor","compass","north","decibel","sound","noise","light","lux","altimeter","barometer","magnet","metal","sensor"]),
+    Tool(id: "contacts",   name: "Contacts",         blurb: "Find duplicates, merge & back up",  icon: "person.2.fill",                       page: 2, keywords: ["contacts","duplicate","duplicates","merge","dedupe","de-dupe","backup","back up","vcf","vcard","export","phone","address book","clean up contacts"]),
     Tool(id: "measure",    name: "Measure",          blurb: "AR tape: distance, height, area",   icon: "ruler.fill",                          page: 2, asset: "tool_measure", keywords: ["measure","tape","ruler","distance","height","area","room","ar","lidar","length","how tall","how far"]),
     Tool(id: "magnify",    name: "Magnifier+",       blurb: "Zoom, freeze, high‑contrast",       icon: "plus.magnifyingglass",                page: 2, asset: "tool_magnify", keywords: ["magnifier","magnify","zoom","fine print","read","small text","freeze","contrast","loupe","glasses"]),
     Tool(id: "procam",     name: "Pro Camera",       blurb: "Manual ISO, shutter, RAW",          icon: "camera.aperture",                     page: 2, asset: "tool_procam", keywords: ["camera","manual","iso","shutter","exposure","raw","dng","focus","long exposure","night","timelapse","histogram"]),
@@ -222,7 +222,7 @@ struct ToolDestination: View {
         case "shareready": ShareReadyView()
         // ── Page 2 ──
         case "light": FlashlightView()
-        case "instruments": InstrumentsView()
+        case "contacts": ContactsView()
         case "magnify": MagnifierView()
         // ── Page 3 ──
         case "translate": TranslateView()

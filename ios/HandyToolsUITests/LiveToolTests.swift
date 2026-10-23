@@ -13,7 +13,6 @@ import XCTest
 final class LiveToolTests: XCTestCase {
     static let hardwareToolIDs = [
         "audiolab",     // mic: tuner auto-starts → permission completion + audio tap on a bg thread
-        "instruments",  // mic: sound meter
         "rest",         // sleep sounds
         "cleaner",      // photo library (duplicate / large-file scan)
         "gpsdash",      // location

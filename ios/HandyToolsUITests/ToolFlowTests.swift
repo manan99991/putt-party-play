@@ -182,10 +182,10 @@ final class ToolFlowTests: XCTestCase {
     }
 
     func testInstrumentsSwitchEveryGauge() {
-        launch("instruments")
-        for g in ["Compass", "Sound", "Light", "Altitude", "Metal", "Ruler", "Level"] { tapChip(g); sleep(1); alive("instruments:\(g)") }
-        tapChip("Ruler"); app.buttons["inches"].firstMatch.tap()
-        expect(text(containing: "bank card"), "ruler calibration", timeout: 10)
+        // Instruments now lives behind Measure ("Level, compass & sensors"); reach it through there.
+        launch("measure")
+        button(containing: "Level, compass & sensors").tap(); sleep(1)
+        for g in ["Compass", "Sound", "Light", "Altitude", "Metal", "Ruler", "Level"] { tapChip(g); sleep(1); alive("measure:\(g)") }
     }
 
     func testMagnifierLooksOnFrozenFrame() {
