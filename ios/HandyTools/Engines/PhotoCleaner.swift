@@ -106,7 +106,7 @@ enum PhotoCleaner {
         let req = PHImageRequestOptions()
         req.isSynchronous = true; req.deliveryMode = .fastFormat; req.resizeMode = .fast; req.isNetworkAccessAllowed = false
 
-        var prints: [(PHAsset, VNFeaturePrintObservation)] = []
+        var prints: [(PHAsset, VNFeaturePrintObservation, UInt64)] = []
         var skipped = 0   // iCloud-only or unreadable assets we couldn't fingerprint (network is off here)
         for (i, a) in assets.enumerated() {
             if i % 10 == 0 { progress(Double(i) / Double(assets.count)) }
@@ -115,7 +115,7 @@ enum PhotoCleaner {
             guard let cg = image?.cgImage else { skipped += 1; continue }
             let r = VNGenerateImageFeaturePrintRequest()
             try? VNImageRequestHandler(cgImage: cg, options: [:]).perform([r])
-            if let p = r.results?.first as? VNFeaturePrintObservation { prints.append((a, p)) }
+            if let p = r.results?.first as? VNFeaturePrintObservation { prints.append((a, p, aHash(cg))) }
         }
         progress(1)
 
@@ -131,13 +131,32 @@ enum PhotoCleaner {
                 try? prints[i].1.computeDistance(&dist, to: prints[j].1)
                 let nearIdentical = a.mediaType == .video
                     ? (dist < 0.22 && abs(a.duration - b.duration) < max(1.0, a.duration * 0.08))  // stricter + similar length
-                    : dist < 0.30
+                    // Photos: the perceptual feature-print lumps all text screenshots together, so
+                    // also require the 8x8 content hashes to be near-identical. Different documents
+                    // differ in many hash bits and are no longer grouped as duplicates.
+                    : (dist < 0.30 && hamming(prints[i].2, prints[j].2) <= 6)
                 if nearIdentical { members.append(j); used[j] = true }
             }
             if members.count > 1 { groups.append(members.map { Item(asset: prints[$0].0, bytes: estimatedBytes(of: prints[$0].0)) }) }
         }
         return (groups, skipped)
     }
+
+    /// Compact 8x8 average hash — a cheap, content-sensitive fingerprint. Two different documents
+    /// (even two pages of dense text) differ in many bits; true duplicates share it. Used as a
+    /// precision guard so Vision's perceptual feature-print can't lump unrelated screenshots together.
+    private static func aHash(_ cg: CGImage) -> UInt64 {
+        let n = 8
+        var px = [UInt8](repeating: 0, count: n * n)
+        guard let ctx = CGContext(data: &px, width: n, height: n, bitsPerComponent: 8, bytesPerRow: n,
+                                  space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return 0 }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: n, height: n))
+        let avg = px.reduce(0) { $0 + Int($1) } / (n * n)
+        var hash: UInt64 = 0
+        for (i, p) in px.enumerated() where Int(p) >= avg { hash |= (1 << UInt64(i)) }
+        return hash
+    }
+    private static func hamming(_ a: UInt64, _ b: UInt64) -> Int { (a ^ b).nonzeroBitCount }
 
     // MARK: delete (iOS shows the confirmation and performs it)
 
