@@ -14,6 +14,10 @@ struct CleanerView: View {
     @State private var authorized = PhotoCleaner.authorized
     @State private var items: [PhotoCleaner.Item] = []     // screenshots / large videos (cheap, on-demand)
     @State private var selected: Set<String> = []
+    // Drag-to-select (press and sweep across thumbnails, like Photos).
+    @State private var cellFrames: [String: CGRect] = [:]
+    @State private var dragMode: Bool? = nil          // nil until the first cell sets it: true = selecting, false = deselecting
+    @State private var dragPainted: Set<String> = []  // cells already handled in the current sweep
     @State private var localScanning = false
     @State private var sortBySize = true                   // largest first — what you want when freeing space
     @State private var receivedOnly = false                // videos tab: only videos not recorded on this phone
@@ -48,7 +52,7 @@ struct CleanerView: View {
                         footer: footer) {
             HowTo("cleaner", [
                 "Switch between Large, Duplicates and Received across the top.",
-                "Tap items to select, or Select all; the bar shows how much space you will free.",
+                "Tap to select, press and drag across photos to select many at once, or use Select all.",
                 "Delete when ready — iOS always asks you to confirm before anything is removed.",
             ])
             if !authorized {
@@ -120,18 +124,23 @@ struct CleanerView: View {
                 Text("Most recent").tag(false)
             }
             .pickerStyle(.segmented)
-            if cat == .duplicates {
-                if index.skippedInCloud > 0 {
-                    Text("\(index.skippedInCloud) photo\(index.skippedInCloud == 1 ? "" : "s") in iCloud couldn't be checked for duplicates. Download them in Photos to include them.")
-                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                if cat == .duplicates {
+                    if index.skippedInCloud > 0 {
+                        Text("\(index.skippedInCloud) photo\(index.skippedInCloud == 1 ? "" : "s") in iCloud couldn't be checked for duplicates. Download them in Photos to include them.")
+                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    ForEach(Array(sortedGroups.enumerated()), id: \.offset) { _, g in
+                        Text("\(g.count) look-alikes · keep one").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+                        grid(g)
+                    }
+                } else {
+                    grid(sortedItems)
                 }
-                ForEach(Array(sortedGroups.enumerated()), id: \.offset) { _, g in
-                    Text("\(g.count) look-alikes · keep one").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
-                    grid(g)
-                }
-            } else {
-                grid(sortedItems)
             }
+            .coordinateSpace(name: "cleanerGrid")
+            .onPreferenceChange(CellFrameKey.self) { cellFrames = $0 }
+            .gesture(paintSelect)
             Text("Deleting asks iOS to remove the items — you'll get the system confirmation, and they go to Recently Deleted for 30 days.")
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
@@ -167,8 +176,31 @@ struct CleanerView: View {
                 AssetThumb(asset: item.asset, selected: selected.contains(item.id), label: PhotoCleaner.format(item.bytes)) {
                     if selected.contains(item.id) { selected.remove(item.id) } else { selected.insert(item.id) }
                 }
+                .background(GeometryReader { p in
+                    Color.clear.preference(key: CellFrameKey.self, value: [item.id: p.frame(in: .named("cleanerGrid"))])
+                })
             }
         }
+    }
+
+    /// Press and hold, then drag across thumbnails to select a run of them (deselect if you start on
+    /// a selected one). Sequenced after a long-press so a normal swipe still scrolls the list.
+    private var paintSelect: some Gesture {
+        LongPressGesture(minimumDuration: 0.22)
+            .sequenced(before: DragGesture(minimumDistance: 0, coordinateSpace: .named("cleanerGrid")))
+            .onChanged { value in
+                if case .second(true, let drag?) = value { paint(at: drag.location) }
+            }
+            .onEnded { _ in dragMode = nil; dragPainted = [] }
+    }
+
+    private func paint(at loc: CGPoint) {
+        guard let id = cellFrames.first(where: { $0.value.contains(loc) })?.key else { return }
+        if dragMode == nil { dragMode = !selected.contains(id) }
+        guard !dragPainted.contains(id) else { return }
+        dragPainted.insert(id)
+        if dragMode == true { selected.insert(id) } else { selected.remove(id) }
+        HandyHaptics.light()
     }
 
     // MARK: scan flow
@@ -229,6 +261,15 @@ struct CleanerView: View {
 ///
 /// The cell is a true square that fills its grid column (`Color.clear` + `aspectRatio`), the image is
 /// an overlay clipped to that square, and `contentShape(Rectangle())` pins the tap area to exactly the
+/// Collects each thumbnail's frame (in the grid's coordinate space) so a drag can hit-test which
+/// cell the finger is over.
+private struct CellFrameKey: PreferenceKey {
+    static let defaultValue: [String: CGRect] = [:]
+    static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
+        value.merge(nextValue()) { _, new in new }
+    }
+}
+
 /// square — so a tap can never register on a neighbouring tile, whatever the photo's aspect ratio.
 private struct AssetThumb: View {
     let asset: PHAsset
