@@ -35,34 +35,51 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee build.log | grep -E "error:|BUILD" || true
           grep -q "BUILD SUCCEEDED" build.log
-      - name: Screenshot every route
+      - name: Screenshot every route (iPhone full set + real iPad store set)
         run: |
           APP=$(find build -name "HandyTools.app" -path "*iphonesimulator*" | head -1)
-          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          echo "app=$APP"
+          mkdir -p shots
+          # Capture `routes` (space-separated) on simulator `udid`, filenames "<pfx>-<mode>-<route>.png"
+          # so store-screenshots/frame_screenshots.py picks them up (ios- for iPhone, ipad- for iPad).
+          shoot() {
+            UDID="$1"; PFX="$2"; RT="$3"
+            xcrun simctl boot "$UDID" || true
+            xcrun simctl bootstatus "$UDID" -b
+            xcrun simctl install "$UDID" "$APP"
+            xcrun simctl privacy "$UDID" grant all com.tenzy.toolkit || true
+            xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
+            xcrun simctl terminate "$UDID" com.tenzy.toolkit || true
+            xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
+            for mode in light dark; do
+              xcrun simctl ui "$UDID" appearance $mode
+              for r in $RT; do
+                xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
+                xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
+                sleep 7
+                xcrun simctl io "$UDID" screenshot shots/$PFX-$mode-$r.png
+              done
+            done
+          }
+          IPHONE=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys
           d=json.load(sys.stdin)["devices"]
           c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
           c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
           print(c[0]["udid"])')
-          xcrun simctl boot "$UDID" || true
-          xcrun simctl bootstatus "$UDID" -b
-          xcrun simctl install "$UDID" "$APP"
-          xcrun simctl privacy "$UDID" grant all com.tenzy.toolkit || true
-          xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
-          xcrun simctl terminate "$UDID" com.tenzy.toolkit || true
-          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
-          mkdir -p shots
-          ROUTES="home onboarding setup settings paywall fitit scan studio video formatfix scrub capture qrwifi stitch shareready light instruments measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab clips vault"
-          for mode in light dark; do
-            xcrun simctl ui "$UDID" appearance $mode
-            for r in $ROUTES; do
-              xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
-              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
-              sleep 7
-              xcrun simctl io "$UDID" screenshot shots/$mode-$r.png
-            done
-          done
-          ls shots | wc -l
+          IPAD=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if "iPad" in x["name"]]
+          c.sort(key=lambda x:(not ("iPad Pro" in x["name"] and "13" in x["name"]), "iPad Pro" not in x["name"], x["name"]))
+          if not c: sys.exit("no iPad simulator available")
+          print(c[0]["udid"])')
+          echo "iphone=$IPHONE ipad=$IPAD"
+          FULL="home onboarding setup settings paywall fitit scan studio video formatfix scrub capture qrwifi stitch shareready light contacts measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab clips vault"
+          STORE="home scan studio translate shield paywall"
+          shoot "$IPHONE" ios "$FULL"
+          shoot "$IPAD" ipad "$STORE"
+          echo "captured $(ls shots | wc -l) frames"; ls shots | sed -n '1,8p'
       - name: Publish screenshots
         if: always()
         working-directory: .
