@@ -69,6 +69,10 @@ struct Tool: Identifiable {
     var ai: Bool = false
     var asset: String? = nil      // custom icon image in the asset catalog; nil → the SF Symbol `icon`
     var keywords: [String] = []   // synonyms that power search
+
+    /// The everyday basics stay free; everything else is a Pro tool. One place to tune the split.
+    static let freeIDs: Set<String> = ["light", "qrwifi", "magnify", "measure", "instruments", "translate", "livecaptions", "vault"]
+    var pro: Bool { !Tool.freeIDs.contains(id) }
 }
 
 /// The full catalog: 30 tools across 3 pages of 10.
@@ -193,7 +197,18 @@ enum SearchSynonyms {
 /// Tool routing without AnyView: this @ViewBuilder switch is the single destination map.
 struct ToolDestination: View {
     let id: String
+    @EnvironmentObject var store: StoreManager
     var body: some View {
+        // Pro tools show the unlock screen for free users. Test/screenshot builds bypass the gate so
+        // the every-tool smoke suite and the store-screenshot capture still reach the real tools.
+        if let tool = TOOLS.first(where: { $0.id == id }), tool.pro, !store.isPremium, !Launch.uitest, !Launch.screenshots {
+            ProLockView(tool: tool)
+        } else {
+            destination
+        }
+    }
+
+    @ViewBuilder private var destination: some View {
         switch id {
         // ── Page 1 ──
         case "fitit": FitItView()
@@ -437,6 +452,7 @@ struct ToolGridPage: View {
 
 /// Home grid card. AI tools get a gradient icon + a sparkle to signal the premium, on-device page.
 struct ToolCard: View {
+    @EnvironmentObject var store: StoreManager
     let tool: Tool
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s4) {
@@ -474,7 +490,34 @@ struct ToolCard: View {
         }
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
         .overlay(alignment: .topTrailing) {
-            if tool.ai { Image(systemName: "sparkle").font(.system(size: 10)).foregroundStyle(HandyColor.accent).padding(8) }
+            if tool.pro && !store.isPremium {
+                Image(systemName: "lock.fill").font(.system(size: 11)).foregroundStyle(HandyColor.textSecondary).padding(8)
+            } else if tool.ai {
+                Image(systemName: "sparkle").font(.system(size: 10)).foregroundStyle(HandyColor.accent).padding(8)
+            }
+        }
+    }
+}
+
+/// Shown in place of a Pro tool for free users: what the tool is, and a one-tap path to the trial.
+struct ProLockView: View {
+    @EnvironmentObject var store: StoreManager
+    let tool: Tool
+    var body: some View {
+        ToolPage(title: tool.name, subtitle: tool.blurb) {
+            VStack(spacing: HandySpacing.s16) {
+                ZStack {
+                    Circle().fill(HandyColor.accentSoft).frame(width: 72, height: 72)
+                    Image(systemName: "lock.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent)
+                }.padding(.top, HandySpacing.s32)
+                Text("A Pro tool").font(.system(size: 22, weight: .bold))
+                Text("\(tool.name) is part of Tenzy Pro. Start a 3-day free trial to unlock it and every other Pro tool — no ads, unlimited use.")
+                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                Button { NotificationCenter.default.post(name: .showPaywall, object: nil) } label: {
+                    Label("Start 3-day free trial", systemImage: "crown.fill").frame(maxWidth: .infinity)
+                }.primaryButton()
+                Text("Then \(store.yearlyPrice)/year · cancel anytime").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }.frame(maxWidth: .infinity).padding(.horizontal, HandySpacing.s8)
         }
     }
 }
@@ -514,15 +557,15 @@ struct PaywallView: View {
             if store.isPremium {
                 Label("You're Pro. Thank you.", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             } else {
-                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: "Billed once a year · cancel anytime", badge: "BEST VALUE") { }
+                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: "3-day free trial, then billed yearly · cancel anytime", badge: "BEST VALUE") { }
 
                 Button {
                     Task { await store.purchase(store.yearly); if store.isPremium { dismiss() } }
                 } label: {
-                    Text("Go Pro · \(store.yearlyPrice) / year").frame(maxWidth: .infinity)
+                    Text("Start 3-day free trial").frame(maxWidth: .infinity)
                 }.primaryButton()
 
-                Text("Payment is charged to your Apple ID at confirmation. Renews automatically at \(store.yearlyPrice)/year unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.")
+                Text("3 days free, then \(store.yearlyPrice)/year. Payment is charged to your Apple ID when the trial ends. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 HStack(spacing: HandySpacing.s24) {
                     Button("Restore purchases") { Task { await store.restore() } }.textButton()
