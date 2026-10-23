@@ -439,18 +439,18 @@ struct ToolGridPage: View {
 struct ToolCard: View {
     let tool: Tool
     var body: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+        VStack(alignment: .leading, spacing: HandySpacing.s4) {
             ZStack {
                 if let asset = tool.asset {
                     // Custom designed icon — a complete squircle tile, shown edge-to-edge.
-                    Image(asset).resizable().scaledToFill().frame(width: 34, height: 34)
-                        .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    Image(asset).resizable().scaledToFill().frame(width: 30, height: 30)
+                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                 } else if tool.ai {
-                    Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 34, height: 34)
-                    Image(systemName: tool.icon).font(.system(size: 15, weight: .semibold)).foregroundStyle(.white)
+                    Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 30, height: 30)
+                    Image(systemName: tool.icon).font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
                 } else {
-                    Circle().fill(HandyColor.accentSoft).frame(width: 34, height: 34)
-                    Image(systemName: tool.icon).font(.system(size: 16, weight: .medium)).foregroundStyle(HandyColor.accent)
+                    Circle().fill(HandyColor.accentSoft).frame(width: 30, height: 30)
+                    Image(systemName: tool.icon).font(.system(size: 15, weight: .medium)).foregroundStyle(HandyColor.accent)
                 }
             }
             Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.75)
@@ -458,7 +458,8 @@ struct ToolCard: View {
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(HandySpacing.s12)
+        .padding(.horizontal, HandySpacing.s12)
+        .padding(.vertical, HandySpacing.s8)
         .background {
             // Surface + the tool's relevant motif, tinted by the theme accent at a whisper so text stays
             // readable. Template-rendered, so one motif set re-skins across every theme.
