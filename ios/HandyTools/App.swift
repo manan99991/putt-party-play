@@ -201,7 +201,7 @@ struct ToolDestination: View {
     var body: some View {
         // Pro tools show the unlock screen for free users. Test/screenshot builds bypass the gate so
         // the every-tool smoke suite and the store-screenshot capture still reach the real tools.
-        if let tool = TOOLS.first(where: { $0.id == id }), tool.pro, !store.isPremium, !Launch.uitest, !Launch.screenshots {
+        if let tool = TOOLS.first(where: { $0.id == id }), tool.pro, !store.isPremium, !Launch.uitest, !Launch.screenshots, !AppEnv.isTestBuild {
             ProLockView(tool: tool)
         } else {
             destination
@@ -246,6 +246,19 @@ struct ToolDestination: View {
         case "vault": VaultView()
         default: ComingSoonView(id: id)
         }
+    }
+}
+
+enum AppEnv {
+    /// True in TestFlight and App Store review (both use a sandbox receipt) and in Debug builds — so
+    /// beta testers and reviewers can open every tool without paying. A real App Store install has a
+    /// production receipt, so the Pro gate stays on for paying users.
+    static var isTestBuild: Bool {
+        #if DEBUG
+        return true
+        #else
+        return Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt"
+        #endif
     }
 }
 

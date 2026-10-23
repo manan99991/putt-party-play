@@ -10,14 +10,14 @@ EVERYDAY
 • Format Fixer — HEIC and MOV to JPG and MP4, in batch
 • Privacy Scrubber — strip GPS and metadata, redact faces and plates for good
 • Cleaner — find duplicates and big files and free up space
+• Contacts — find duplicate contacts, merge them without losing a number, and back them up to a file
 • QR & Wi-Fi — scan, make and share Wi-Fi codes
 • Long Screenshot — stitch a scrolling chat into one tall image
 • Share-Ready — one tap to convert, strip and shrink before you send
 
 TOOLS & INSTRUMENTS
 • Flashlight+ — strobe, SOS, screen light, mirror
-• Instruments — level, compass, decibel meter, light meter and more
-• Measure — an AR tape for distance, height and area
+• Measure — an AR tape for distance, height and area, plus a level, compass, decibel meter and light meter
 • Magnifier+ — zoom, freeze and boost contrast on fine print
 • Pro Camera — manual ISO, shutter and RAW
 • GPS Dashboard — speed, heading, altitude, HUD
@@ -40,8 +40,8 @@ ON-DEVICE AI
 
 The AI tools use the model built into your iPhone, so they work offline and nothing leaves the device.
 
-FREE, WITH AN OPTIONAL PRO
-Tenzy is free with ads. Tenzy Pro removes every ad and unlocks unlimited use of everything — $19.99/year or $2.99/month. One person builds and maintains this app; Pro is what keeps it going.
+FREE TOOLS, WITH TENZY PRO FOR THE REST
+Eight everyday tools are free: Flashlight, QR & Wi-Fi, Magnifier, Measure, Cleaner, Translate, Live Captions and the Face ID Vault. The photo, video and PDF tools, the on-device AI tools and Contacts are Tenzy Pro — start with a 3-day free trial, then $19.99/year. One person builds and maintains this app; Pro is what keeps it going.
 
 PRIVACY
 Your files stay on your device. There's no account and no tracking of what you do inside the app. The only data collected is the standard advertising identifier used by the ad provider to show and count ads — and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/putt-party-play/privacy.html
