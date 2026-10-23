@@ -70,7 +70,13 @@ struct BannerAd: View {
                     Button("Remove ads") { NotificationCenter.default.post(name: .showPaywall, object: nil) }.font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                 }
                 .padding(.horizontal, HandySpacing.gutter).padding(.vertical, 2)
-                BannerViewRep().frame(height: HandySpacing.adReservedHeight)
+                // Store screenshots: keep the "Ads keep Tenzy free" strip but don't render a live
+                // (test) ad creative — a visible "Test mode" banner looks unfinished in the listing.
+                if ProcessInfo.processInfo.arguments.contains("-screenshots") {
+                    Color.clear.frame(height: HandySpacing.adReservedHeight)
+                } else {
+                    BannerViewRep().frame(height: HandySpacing.adReservedHeight)
+                }
             }
             .background(HandyColor.bg)
         }

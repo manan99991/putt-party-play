@@ -22,7 +22,12 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
 
 - No analytics, no crash SDK, no account. Files stay on device.
 - The only data collected is the advertising identifier used by AdMob to show/count ads; Pro disables
-  ads and the ad code. Pro is a single auto-renewing subscription ($19.99/yr or $2.99/mo).
+  ads and the ad code. Pro is a single auto-renewing subscription, **yearly only — $19.99/yr with a
+  3-day free trial**. There is no monthly plan (the old $2.99/mo plan was removed; do not reintroduce
+  it in copy or metadata).
+- The Contacts tool reads contacts on-device only to find duplicates, merge, and export a .vcf backup.
+  Nothing from Contacts is uploaded or collected; declare accordingly and keep the usage string,
+  reviewer notes and privacy policy aligned.
 - Apple App Privacy: declare "Identifiers → Device ID" used for Third-Party Advertising, not linked to
   identity, not used for tracking beyond the ATT prompt.
 - Play Data safety: no data collected or shared except the ad identifier; declare accordingly.
@@ -37,10 +42,17 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
     is a Coming-Soon placeholder. These are **excluded** from the Play listing copy and screenshots
     until they genuinely work. iOS ships all 30 as working tools.
 - "30 tools" is an iOS claim. The Android listing describes the real working subset without a count.
+- The listing must represent the **free/Pro split honestly**: eight tools are free (Flashlight, QR &
+  Wi-Fi, Magnifier, Measure, Cleaner, Translate, Live Captions, Vault) and the rest are Tenzy Pro.
+  Do not imply the whole app is free. The paywall screen must show price, the 3-day trial terms,
+  auto-renew disclosure, and working Terms (EULA) + Privacy links (Guideline 3.1.2).
 
 ## 4. Asset specs
 
-- iOS screenshots: 6.9" display, **1290×2796** (the one required size; Apple scales down).
+- iOS is a **universal** app (iPhone + iPad: `TARGETED_DEVICE_FAMILY=1,2`), so App Store Connect
+  requires BOTH screenshot sets — miss either and the version cannot be submitted:
+  - iPhone 6.9" display, **1290×2796** (portrait).
+  - iPad 13" display, **2064×2752** (portrait).
 - Play phone screenshots: each side 320–3840 px and ratio **≤ 2:1** → use **1080×1920** (1080×2400 is
   rejected). 2–8 images.
 - Play feature graphic: **1024×500**, no alpha. Play high-res icon: **512×512** PNG.
