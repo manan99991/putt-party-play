@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
  * Play Console setup (one time):
  *   Monetize > Products > Subscriptions
  *     • Product ID: tenzy_pro_yearly    base plan yearly-p1y  (P1Y)  — $19.99
- *   (Product ID must match the constant below.) Optional 7-day free trial on yearly.
+ *   (Product ID must match the constant below.) 3-day free trial on yearly.
  *
  * Premium = ads off + everything unlimited. Entitlement is cached in [isPremium] and re-verified
  * on every app start.

@@ -6,7 +6,7 @@ import StoreKit
 /// App Store Connect setup (one time):
 ///   App > Subscriptions > group "Tenzy Pro"
 ///   • Product ID: tenzy_pro_yearly    Duration: 1 Year   Price: $19.99
-///   (Product ID must match the constant below.) Optional 1-week free trial.
+///   (Product ID must match the constant below.) 3-day free trial (introductory offer).
 ///
 /// For local testing without ASC, use Tenzy/Resources/Products.storekit
 /// (Edit Scheme > Run > Options > StoreKit Configuration).
