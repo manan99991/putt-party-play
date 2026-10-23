@@ -100,7 +100,7 @@ enum PhotoCleaner {
         let fetch = PHAsset.fetchAssets(with: o)
         var assets: [PHAsset] = []
         fetch.enumerateObjects { a, _, _ in assets.append(a) }
-        guard assets.count > 1 else { progress(1); return [] }
+        guard assets.count > 1 else { progress(1); return ([], 0) }
 
         let mgr = PHImageManager.default()
         let req = PHImageRequestOptions()
