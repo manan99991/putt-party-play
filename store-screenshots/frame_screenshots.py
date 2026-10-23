@@ -60,9 +60,11 @@ GREY = (110, 114, 126)         # placeholder ink
 BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 REG = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 
-CANVAS = {"ios": (1290, 2796), "android": (1080, 1920)}  # Play caps phone ratio at 2:1; 1080x1920 = 16:9
+CANVAS = {"ios": (1290, 2796), "android": (1080, 1920), "ipad": (2064, 2752)}
+# ios = iPhone 6.9"; android = Play phone (2:1 cap); ipad = iPad 13" portrait — Apple REQUIRES
+# an iPad set for a universal app (TARGETED_DEVICE_FAMILY=1,2).
 # device width/height ratios used for the drawn bezel
-BEZEL_RATIO = {"ios": 0.467, "android": 0.446}
+BEZEL_RATIO = {"ios": 0.467, "android": 0.446, "ipad": 0.75}
 CAPTION_X = 96
 
 SLIDES = [
@@ -92,7 +94,9 @@ SLIDES = [
 
 
 def route_of(x, platform):
-    return x[platform] if isinstance(x, dict) else x
+    if isinstance(x, dict):
+        return x.get(platform) or x["ios"]  # iPad reuses the iOS copy / route
+    return x
 
 
 def load_capture(path):
@@ -122,10 +126,14 @@ def draw_device(platform, scale_w, bleed=60, capture=None, placeholder=False):
     dh = int(dw / BEZEL_RATIO[platform])
     dev = Image.new("RGB", (dw, dh), BEZEL_IOS if platform == "ios" else BEZEL)
     d = ImageDraw.Draw(dev)
-    d.rounded_rectangle([0, 0, dw - 1, dh - 1], radius=int(dw * 0.115), fill=BEZEL)
-    inset = max(4, int(dw * 0.028))
+    # iPad has squarer corners and a thinner, even bezel than a phone.
+    outer_r = 0.055 if platform == "ipad" else 0.115
+    inner_r = 0.04 if platform == "ipad" else 0.09
+    inset_f = 0.02 if platform == "ipad" else 0.028
+    d.rounded_rectangle([0, 0, dw - 1, dh - 1], radius=int(dw * outer_r), fill=BEZEL)
+    inset = max(4, int(dw * inset_f))
     d.rounded_rectangle([inset, inset, dw - 1 - inset, dh - 1 - inset],
-                        radius=int(dw * 0.09), fill=(0, 0, 0))
+                        radius=int(dw * inner_r), fill=(0, 0, 0))
     sw, sh = dw - 2 * inset, dh - 2 * inset
     if capture is not None:
         screen = cover_into(capture, (sw, sh))
@@ -146,6 +154,12 @@ def draw_device(platform, scale_w, bleed=60, capture=None, placeholder=False):
         d.rounded_rectangle([ix, inset + int(dw * 0.035), ix + iw,
                              inset + int(dw * 0.035) + ih], radius=ih // 2,
                             fill=(0, 0, 0))
+    elif platform == "ipad":
+        # small front camera dot, centered along the top bezel
+        r = max(4, int(dw * 0.008))
+        cx = dw // 2
+        cy = inset // 2
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=(40, 40, 46))
     else:
         # punch-hole camera
         r = max(3, int(dw * 0.018))
@@ -156,16 +170,21 @@ def draw_device(platform, scale_w, bleed=60, capture=None, placeholder=False):
 
 
 def draw_captions(canvas, slide, top_y):
-    """Main 72px bold white caption + 36px 80%-white support line."""
+    """Main bold white caption + 80%-white support line, scaled to canvas width
+    (72/36 px on the 1290-wide iPhone canvas; proportionally larger on iPad)."""
     d = ImageDraw.Draw(canvas)
-    fb = ImageFont.truetype(BOLD, 72)
-    fr = ImageFont.truetype(REG, 36)
+    cw = canvas.width
+    main_sz = max(48, int(cw / 17.9))   # 1290/72 = 17.9
+    sup_sz = max(24, int(cw / 35.8))    # 1290/36 = 35.8
+    cx = int(cw * 0.0744)               # 96 on the 1290 canvas
+    fb = ImageFont.truetype(BOLD, main_sz)
+    fr = ImageFont.truetype(REG, sup_sz)
     y = top_y
-    d.text((CAPTION_X, y), slide["caption"], font=fb, fill=WHITE)
-    bb = d.textbbox((CAPTION_X, y), slide["caption"], font=fb)
-    y = bb[3] + 22
-    d.text((CAPTION_X, y), slide["support"], font=fr, fill=WHITE80)
-    bb2 = d.textbbox((CAPTION_X, y), slide["support"], font=fr)
+    d.text((cx, y), slide["caption"], font=fb, fill=WHITE)
+    bb = d.textbbox((cx, y), slide["caption"], font=fb)
+    y = bb[3] + int(main_sz * 0.3)
+    d.text((cx, y), slide["support"], font=fr, fill=WHITE80)
+    bb2 = d.textbbox((cx, y), slide["support"], font=fr)
     return bb2[3]
 
 
@@ -210,8 +229,8 @@ def capture_name(platform, mode, route):
 
 
 def build(input_dir, output_dir, plates=False):
-    results = {"ios": [], "android": []}
-    for platform in ("ios", "android"):
+    results = {"ios": [], "android": [], "ipad": []}
+    for platform in ("ios", "android", "ipad"):
         cw, ch = CANVAS[platform]
         done = []
         for slide in SLIDES:

@@ -1,10 +1,21 @@
-No login or account is required — all features are reachable from the home grid on first launch.
+No account or login is required. This review build has full access to every tool, so you can evaluate all features directly from the home grid without making a purchase.
 
-Permission notes:
-- Microphone: used live by Audio Lab (decibel/tuner) and Voice to Notes / Live Captions. Audio is metered or transcribed on-device; recordings are saved only when the user taps record.
+HOW THE APP WORKS
+Tenzy is 30 on-device utility tools. Eight everyday tools are always free: Flashlight, QR & Wi-Fi, Magnifier, Measure, Cleaner, Translate, Live Captions, and the Face ID Vault. The remaining tools are part of Tenzy Pro.
+
+TENZY PRO (in-app subscription)
+- A single auto-renewing subscription: "Tenzy Pro", 1 year, US$19.99, with a 3-day free trial. There is no monthly plan.
+- It removes ads and, for end users, unlocks the Pro tools.
+- The purchase screen (Settings > Go Pro, or the unlock screen on any Pro tool) clearly shows the price, the 3-day free-trial terms, the auto-renewal disclosure, and functional links to the Terms of Use (EULA) and Privacy Policy, per Guideline 3.1.2.
+- The purchase can be completed in the sandbox from that screen. This review build additionally unlocks every Pro tool without a purchase so you can assess the full app.
+
+PERMISSIONS (all processed on-device; nothing is uploaded)
+- Contacts: the Contacts tool finds duplicate contacts, merges them without losing a number, and exports a .vcf backup. Requested only when the user opens that tool.
+- Microphone: Audio Lab (decibel meter / tuner), Voice to Notes, and Live Captions. Audio is metered or transcribed on-device; a recording is saved only when the user taps record.
 - Camera: Scan, Studio, Measure, Pro Camera, Translate (camera mode), Lens, Scene Describer.
-- Photos: Cleaner, Studio, Privacy Scrubber and Memory read photos the user selects; Memory indexes screenshots on-device only.
-- Tracking (ATT): shown only to request personalized ads via AdMob. Declining does not limit any feature.
-- The on-device AI tools use Apple's Foundation Models framework on supported devices and fall back gracefully elsewhere.
+- Photos: Cleaner, Studio, Privacy Scrubber, and Memory read photos the user selects; Memory indexes screenshots on-device only.
+- Motion: the level, compass and sensors inside Measure.
+- Face ID: unlocks the private Vault.
+- Tracking (ATT): shown only to request personalized ads via AdMob; declining does not limit any feature.
 
-Tenzy Pro ($19.99/yr or $2.99/mo) is a single auto-renewing subscription that removes ads and unlocks unlimited use. No content is gated behind login.
+The on-device AI tools use Apple's Foundation Models framework on supported devices and fall back gracefully elsewhere. No data is collected except the AdMob advertising identifier, and Tenzy Pro disables ads entirely.
