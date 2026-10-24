@@ -133,9 +133,12 @@ enum SizeTarget {
         let shrink: [CGFloat] = [1.0, 0.75, 0.55, 0.4]
         for i in 0..<4 {
             let cap = min(bitrateCeiling(videoBps), longest * shrink[i])
-            guard let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, progress: progress) else { return nil }
-            if let sz = fileSize(out), sz <= targetBytes { return out }
-            try? FileManager.default.removeItem(at: out)
+            // Don't give up if one attempt fails — keep going to the next (smaller, lower-bitrate)
+            // pass. A tighter frame is both more likely to encode and more likely to fit the budget.
+            if let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, progress: progress) {
+                if let sz = fileSize(out), sz <= targetBytes { return out }
+                try? FileManager.default.removeItem(at: out)
+            }
             videoBps = Int(Double(videoBps) * 0.78)
         }
         return nil

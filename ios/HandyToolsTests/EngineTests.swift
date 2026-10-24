@@ -928,6 +928,20 @@ final class EngineTests: XCTestCase {
         XCTAssertLessThanOrEqual(SizeTarget.fileSize(out) ?? Int.max, target)
     }
 
+    // DIAGNOSTIC: pinpoint whether VideoEngine.transcodeH264 fails at native resolution,
+    // at a scaled size, or everywhere. The assertion messages surface in CI annotations.
+    func testTranscodeH264Diagnostic() async throws {
+        let fixture = await Self.movie(seconds: 2.0, size: CGSize(width: 640, height: 480), noisy: true)
+        let src = try XCTUnwrap(fixture, "DIAG fixture nil")
+        let asset = AVURLAsset(url: src)
+        let nat = await VideoEngine.transcodeH264(asset, maxDimension: nil, videoBps: 1_900_000)
+        XCTAssertNotNil(nat, "DIAG transcodeH264 native(640x480) -> nil")
+        let s480 = await VideoEngine.transcodeH264(asset, maxDimension: 480, videoBps: 1_400_000)
+        XCTAssertNotNil(s480, "DIAG transcodeH264 scaled(480) -> nil")
+        let s256 = await VideoEngine.transcodeH264(asset, maxDimension: 256, videoBps: 700_000)
+        XCTAssertNotNil(s256, "DIAG transcodeH264 scaled(256) -> nil")
+    }
+
     // MARK: fixtures
 
     /// Distinct horizontal colour bands so every row is identifiable (no false overlap matches).
