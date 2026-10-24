@@ -23,6 +23,7 @@ struct VaultView: View {
     @State private var revealed: Set<UUID> = []
     @State private var toast: String?
     @State private var thumbs: [UUID: UIImage] = [:]
+    @State private var loadingThumbs: Set<UUID> = []
     @State private var unlocking = false
 
     var body: some View {
@@ -167,9 +168,20 @@ struct VaultView: View {
 
     private func thumb(_ item: VaultStore.Item) -> UIImage? {
         if let t = thumbs[item.id] { return t }
-        guard let d = vault.data(for: item), let img = UIImage(data: d)?.resized(maxDimension: 160) else { return nil }
-        DispatchQueue.main.async { thumbs[item.id] = img }
-        return img
+        // Decrypt + resize OFF the main thread — doing it inline during list layout re-decrypted every
+        // uncached photo on the main thread while scrolling. The Task defers all state changes past this
+        // render, so there's no "modifying state during update", and the row fills in when ready.
+        Task { @MainActor in
+            guard thumbs[item.id] == nil, !loadingThumbs.contains(item.id) else { return }
+            loadingThumbs.insert(item.id)
+            let img = await Task.detached(priority: .userInitiated) { () -> UIImage? in
+                guard let d = vault.data(for: item), let i = UIImage(data: d)?.resized(maxDimension: 160) else { return nil }
+                return i
+            }.value
+            if let img { thumbs[item.id] = img }
+            loadingThumbs.remove(item.id)
+        }
+        return nil
     }
 
     private func open(_ item: VaultStore.Item) {

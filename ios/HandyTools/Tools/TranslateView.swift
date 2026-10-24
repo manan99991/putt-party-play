@@ -52,7 +52,7 @@ struct TranslateView: View {
             Text("First use of a language pair downloads it (Settings › Translate › Downloaded Languages). After that it's fully offline.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .translationTask(config) { session in
-            guard let p = pending else { return }
+            guard let p = pending else { await MainActor.run { busy = false }; return }
             do {
                 let r = try await session.translate(p.text)
                 await MainActor.run { deliver(r.targetText, for: p) }

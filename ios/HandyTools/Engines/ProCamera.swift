@@ -135,6 +135,13 @@ import UniformTypeIdentifiers
         return await withCheckedContinuation { cont in
             continuation = cont
             photo.capturePhoto(with: settings, delegate: self)
+            // Safety timeout: if the capture delegate never fires (hardware/driver error), resume with
+            // nothing instead of leaving the shutter spinner stuck. Both this and the delegate clear
+            // `continuation` on the main actor, so it resumes exactly once.
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 15_000_000_000)
+                if let c = self.continuation { self.continuation = nil; c.resume(returning: (nil, nil)) }
+            }
         }
     }
 
