@@ -74,7 +74,11 @@ jobs:
           xcrun simctl boot "$UDID" || true
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl install "$UDID" "$APP"
-          xcrun simctl privacy "$UDID" grant all com.tenzy.toolkit || true
+          # Explicitly grant every permission a tool might ask for, so no system permission alert
+          # pops during capture and lingers over later screenshots (grant all alone left mic undetermined).
+          for p in all camera microphone photos location speech-recognition; do
+            xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true
+          done
           # Pre-answer the App Tracking Transparency prompt so it doesn't cover every screenshot
           xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
           xcrun simctl spawn "$UDID" defaults write com.apple.AppTrackingTransparency.plist 2>/dev/null || true
@@ -83,7 +87,7 @@ jobs:
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           for mode in light dark; do
             xcrun simctl ui "$UDID" appearance $mode
-            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub capture qrwifi stitch shareready light instruments measure magnify procam gpsdash audiolab rest colorvision describe textstudio translate voicenotes livecaptions shield readaloud explain datagrab cleaner vault; do
+            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub cleaner qrwifi stitch shareready light contacts measure magnify procam gpsdash audiolab rest colorvision sorted textstudio translate voicenotes livecaptions shield lens memory datagrab describe vault; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
               xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
               sleep 9
