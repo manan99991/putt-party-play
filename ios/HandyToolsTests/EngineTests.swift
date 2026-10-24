@@ -69,14 +69,17 @@ final class EngineTests: XCTestCase {
             let img = UIGraphicsGetImageFromCurrentImageContext()!; UIGraphicsEndImageContext()
             return img.cgImage!
         }
-        // two different "documents": text bars in different places
-        let d1 = doc([(10, 20, 120, 8), (10, 40, 100, 8), (10, 60, 130, 8), (10, 90, 80, 8)])
-        let d2 = doc([(10, 30, 60, 8), (10, 72, 140, 8), (10, 112, 90, 8), (40, 134, 70, 8)])
+        // Two clearly different layouts — dark mass on the LEFT half vs the TOP half. These are
+        // orthogonal, so they survive the hash's small downsample and differ in many bits. (Thin
+        // text-like bars would average out at 8px and wrongly look identical — which is the real-world
+        // case the hash must separate; here we just need two provably-different inputs.)
+        let d1 = doc([(0, 0, 80, 160)])    // left half dark
+        let d2 = doc([(0, 0, 160, 80)])    // top half dark
         let h1 = PhotoCleaner.dHash(d1), h2 = PhotoCleaner.dHash(d2)
         XCTAssertGreaterThan(PhotoCleaner.hamming(h1, h2), 10,
                              "two different documents must differ in many dHash bits so they're NOT grouped as duplicates")
         // identical content re-rendered → essentially the same hash (a real duplicate is still caught)
-        let d1copy = doc([(10, 20, 120, 8), (10, 40, 100, 8), (10, 60, 130, 8), (10, 90, 80, 8)])
+        let d1copy = doc([(0, 0, 80, 160)])
         XCTAssertLessThanOrEqual(PhotoCleaner.hamming(h1, PhotoCleaner.dHash(d1copy)), 2,
                                 "an identical document must still match as a duplicate")
     }

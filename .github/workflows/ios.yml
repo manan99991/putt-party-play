@@ -181,6 +181,7 @@ jobs:
         run: |
           { echo "== test.log (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -200; } > ios-test.log
           bash .github/publish-log.sh ios-test ios-test.log || true
+          bash .github/publish-log.sh "ios-test-${GITHUB_RUN_ID}" ios-test.log || true
 
   # Per-tool flow tests — informational only. Nothing `needs` this job and it is allowed to fail
   # (continue-on-error), so a flaky synthetic-input flake here NEVER blocks TestFlight or the store
