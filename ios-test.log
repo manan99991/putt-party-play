@@ -1,1 +1,3 @@
 == test.log (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/VaultView.swift:178:31: error: expression is 'async' but is not marked with 'await'
+** TEST FAILED **
