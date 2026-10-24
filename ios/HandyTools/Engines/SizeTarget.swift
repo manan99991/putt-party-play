@@ -119,11 +119,11 @@ enum SizeTarget {
         if let src = fileSize(url), src <= targetBytes { return url }
         // Longest source side, so we can shrink RELATIVE to it — an absolute cap bigger than the
         // source would never downscale, and very noisy content can't hit a small target at full res.
-        let longest: CGFloat = {
-            if let v = try? await asset.loadTracks(withMediaType: .video).first,
-               let n = try? await v.load(.naturalSize) { return max(n.width, n.height, 2) }
-            return 1920
-        }()
+        var longest: CGFloat = 1920
+        if let v = try? await asset.loadTracks(withMediaType: .video).first,
+           let n = try? await v.load(.naturalSize) {
+            longest = max(n.width, n.height, 2)
+        }
         let audioBps = 96_000
         var videoBps = max(120_000, Int(Double(targetBytes) * 8.0 / duration) - audioBps)
         // Each retry both lowers the bitrate AND shrinks the frame relative to the source, so the
