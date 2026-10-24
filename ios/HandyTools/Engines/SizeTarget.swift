@@ -117,13 +117,23 @@ enum SizeTarget {
         let asset = AVURLAsset(url: url)
         guard let duration = try? await asset.load(.duration).seconds, duration > 0 else { return nil }
         if let src = fileSize(url), src <= targetBytes { return url }
+        // Longest source side, so we can shrink RELATIVE to it — an absolute cap bigger than the
+        // source would never downscale, and very noisy content can't hit a small target at full res.
+        let longest: CGFloat = {
+            if let v = try? await asset.loadTracks(withMediaType: .video).first,
+               let n = try? await v.load(.naturalSize) { return max(n.width, n.height, 2) }
+            return 1920
+        }()
         let audioBps = 96_000
         var videoBps = max(120_000, Int(Double(targetBytes) * 8.0 / duration) - audioBps)
-        // Frame cap drops with bitrate — a 4K frame can't survive 300 kbps. Delegates to the one
-        // robust, bounded transcode in VideoEngine (handles any decodable source, never hangs).
-        func dimensionCap(_ bps: Int) -> CGFloat { bps < 1_200_000 ? 960 : (bps < 3_000_000 ? 1440 : 3840) }
-        for _ in 0..<4 {
-            guard let out = await VideoEngine.transcodeH264(asset, maxDimension: dimensionCap(videoBps), videoBps: videoBps, progress: progress) else { return nil }
+        // Each retry both lowers the bitrate AND shrinks the frame relative to the source, so the
+        // output always gets smaller (works for a 320p clip and a 4K clip alike). An absolute
+        // bitrate ceiling still caps huge frames. Delegates to the one robust, bounded transcode.
+        func bitrateCeiling(_ bps: Int) -> CGFloat { bps < 1_200_000 ? 960 : (bps < 3_000_000 ? 1440 : 3840) }
+        let shrink: [CGFloat] = [1.0, 0.75, 0.55, 0.4]
+        for i in 0..<4 {
+            let cap = min(bitrateCeiling(videoBps), longest * shrink[i])
+            guard let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, progress: progress) else { return nil }
             if let sz = fileSize(out), sz <= targetBytes { return out }
             try? FileManager.default.removeItem(at: out)
             videoBps = Int(Double(videoBps) * 0.78)
