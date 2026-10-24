@@ -26,10 +26,20 @@ final class EngineTests: XCTestCase {
             XCTAssertGreaterThan(n, 0, "page \(p) is empty")
             XCTAssertLessThanOrEqual(n, 10, "page \(p) has more than 10 tiles (\(n))")
         }
+        let appBundle = Bundle(for: StoreManager.self)
         for t in TOOLS {
             XCTAssertFalse(t.name.isEmpty, "\(t.id) has no name")
             XCTAssertFalse(t.blurb.isEmpty, "\(t.id) has no blurb")
             XCTAssertFalse(t.blurb.hasSuffix("…") || t.blurb.hasSuffix("..."), "\(t.id) blurb must not be truncated")
+            // Every tile must ship its gradient icon tile. A missing asset silently falls back to a
+            // flat SF-Symbol glyph that looks out of place on the grid — this is exactly what happened
+            // to Contacts. Require the asset to be named AND to actually load from the app bundle.
+            let asset = t.asset
+            XCTAssertNotNil(asset, "\(t.id) has no icon asset — it would render a flat fallback glyph")
+            if let a = asset {
+                XCTAssertNotNil(UIImage(named: a, in: appBundle, compatibleWith: nil),
+                                "icon asset \"\(a)\" for \(t.id) is missing from the asset catalog")
+            }
         }
     }
 

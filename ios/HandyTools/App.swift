@@ -93,7 +93,7 @@ struct Tool: Identifiable {
     Tool(id: "shareready", name: "Share‑Ready",      blurb: "One tap: convert, strip, shrink",   icon: "square.and.arrow.up.fill",            page: 1, asset: "tool_shareready", keywords: ["share","upload","ready","convert","strip","metadata","shrink","recipe","one tap","portal","send"]),
     // ── Page 2 · Camera, sensors & everyday ─────────────────────────────
     Tool(id: "light",      name: "Flashlight+",      blurb: "Strobe, SOS, screen light, mirror", icon: "flashlight.on.fill",                  page: 2, asset: "tool_light", keywords: ["flashlight","torch","light","strobe","sos","morse","screen light","mirror","selfie","dark","blink"]),
-    Tool(id: "contacts",   name: "Contacts",         blurb: "Find duplicates, merge & back up",  icon: "person.2.fill",                       page: 2, keywords: ["contacts","duplicate","duplicates","merge","dedupe","de-dupe","backup","back up","vcf","vcard","export","phone","address book","clean up contacts"]),
+    Tool(id: "contacts",   name: "Contacts",         blurb: "Find duplicates, merge & back up",  icon: "person.2.fill",                       page: 2, asset: "tool_contacts", keywords: ["contacts","duplicate","duplicates","merge","dedupe","de-dupe","backup","back up","vcf","vcard","export","phone","address book","clean up contacts"]),
     Tool(id: "measure",    name: "Measure",          blurb: "AR tape: distance, height, area",   icon: "ruler.fill",                          page: 2, asset: "tool_measure", keywords: ["measure","tape","ruler","distance","height","area","room","ar","lidar","length","how tall","how far"]),
     Tool(id: "magnify",    name: "Magnifier+",       blurb: "Zoom, freeze, high‑contrast",       icon: "plus.magnifyingglass",                page: 2, asset: "tool_magnify", keywords: ["magnifier","magnify","zoom","fine print","read","small text","freeze","contrast","loupe","glasses"]),
     Tool(id: "procam",     name: "Pro Camera",       blurb: "Manual ISO, shutter, RAW",          icon: "camera.aperture",                     page: 2, asset: "tool_procam", keywords: ["camera","manual","iso","shutter","exposure","raw","dng","focus","long exposure","night","timelapse","histogram"]),
@@ -287,6 +287,14 @@ struct HomeView: View {
 
     private let captions = ["Everyday essentials", "Power tools", "AI · on your phone"]
 
+    /// True while the search box has text — the grid is replaced by results that span every page.
+    private var hasSearch: Bool { !search.trimmingCharacters(in: .whitespaces).isEmpty }
+    /// Subtitle under the wordmark: a live result count while searching, else the page name.
+    private var headerCaption: String {
+        if hasSearch { let n = searchTools(search).count; return "\(n) result\(n == 1 ? "" : "s")" }
+        return store.isPremium ? "Pro · no ads" : captions[page - 1]
+    }
+
     var body: some View {
         NavigationStack(path: $path) {
             VStack(spacing: 0) {
@@ -294,7 +302,7 @@ struct HomeView: View {
                 SearchField(text: $search, focused: $searching)
                     .padding(.horizontal, HandySpacing.gutter)
                     .padding(.bottom, HandySpacing.s8)
-                if search.trimmingCharacters(in: .whitespaces).isEmpty {
+                if !hasSearch {
                     TabView(selection: $page) {
                         ForEach(1...3, id: \.self) { p in
                             ToolGridPage(page: p).tag(p)
@@ -334,9 +342,14 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s4) {
                 HStack(alignment: .firstTextBaseline, spacing: HandySpacing.s12) {
                     Text("Tenzy").font(HandyFont.display)
-                    PageTabs(page: $page)
+                    // Tapping a page tab always leaves search and shows that page — so the tabs are
+                    // never dead while a search is up (the "con" bug: tabs changed only the caption).
+                    PageTabs(page: $page, active: !hasSearch) { n in
+                        withAnimation(.easeOut(duration: HandyMotion.fast)) { page = n; search = "" }
+                        searching = false
+                    }
                 }
-                Text(store.isPremium ? "Pro · no ads" : captions[page - 1])
+                Text(headerCaption)
                     .font(.system(size: 14)).foregroundStyle(HandyColor.textSecondary)
                     .animation(.easeOut(duration: HandyMotion.fast), value: page)
             }
@@ -362,15 +375,19 @@ struct HomeView: View {
 /// The 1 · 2 · 3 page selector that sits beside the wordmark.
 struct PageTabs: View {
     @Binding var page: Int
+    /// While a search is showing, no tab reads as "selected" (you're not on a page).
+    var active: Bool = true
+    var onPick: (Int) -> Void
     var body: some View {
         HStack(spacing: HandySpacing.s4) {
             ForEach(1...3, id: \.self) { n in
-                Button { withAnimation(.easeOut(duration: HandyMotion.fast)) { page = n } } label: {
+                let on = active && page == n
+                Button { onPick(n) } label: {
                     Text("\(n)")
                         .font(.system(size: 15, weight: .semibold))
                         .frame(width: 28, height: 28)
-                        .background(page == n ? HandyColor.accent : HandyColor.accentSoft, in: Circle())
-                        .foregroundStyle(page == n ? Color.white : HandyColor.accent)
+                        .background(on ? HandyColor.accent : HandyColor.accentSoft, in: Circle())
+                        .foregroundStyle(on ? Color.white : HandyColor.accent)
                 }
                 .accessibilityLabel("Page \(n)")
             }
@@ -432,34 +449,26 @@ struct SearchResults: View {
     }
 }
 
-/// One page of ten tools — a static 2×5 grid that fills the page, so no page ever scrolls.
+/// One page of ten tools, 2 across. Cards size to their content (icon + title + 2-line blurb) inside a
+/// scroll view, so a longer blurb like "White noise + snore recorder" is never clipped. It fills the
+/// page without scrolling where there's room, and scrolls a little on shorter phones instead of cutting
+/// text off — the earlier fixed 2×5 "fill the screen" grid forced each row too short and clipped blurbs.
 struct ToolGridPage: View {
     @EnvironmentObject var store: StoreManager
     let page: Int
+    private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
     var body: some View {
-        let items = tools(onPage: page)
-        VStack(spacing: HandySpacing.s12) {
-            ForEach(0..<5, id: \.self) { row in
-                HStack(spacing: HandySpacing.s12) {
-                    ForEach(0..<2, id: \.self) { col in
-                        let idx = row * 2 + col
-                        if idx < items.count {
-                            let t = items[idx]
-                            NavigationLink(value: t.id) {
-                                ToolCard(tool: t).frame(maxWidth: .infinity, maxHeight: .infinity)
-                            }.buttonStyle(ToolCardPress())
-                        } else {
-                            Color.clear.frame(maxWidth: .infinity, maxHeight: .infinity)
-                        }
-                    }
+        ScrollView {
+            LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
+                ForEach(tools(onPage: page)) { t in
+                    NavigationLink(value: t.id) { ToolCard(tool: t) }.buttonStyle(ToolCardPress())
                 }
-                .frame(maxHeight: .infinity)
             }
+            .padding(.horizontal, HandySpacing.gutter)
+            .padding(.top, HandySpacing.s4)
+            .padding(.bottom, HandySpacing.s12)
         }
-        .padding(.horizontal, HandySpacing.gutter)
-        .padding(.top, HandySpacing.s4)
-        .padding(.bottom, HandySpacing.s12)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .scrollBounceBehavior(.basedOnSize)
     }
 }
 
