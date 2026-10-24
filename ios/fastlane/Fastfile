@@ -290,7 +290,7 @@ platform :ios do
       }
     )
     if ENV["STAGE_ONLY"] == "true"
-      UI.success("Staged Tenzy metadata + screenshots on version 1.0 (NOT submitted — final tap is manual).")
+      UI.success("Staged Tenzy metadata + screenshots on the editable version (NOT submitted — final tap is manual).")
     else
       UI.success("Submitted Tenzy to App Store review (held for manual release).")
     end
