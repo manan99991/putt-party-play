@@ -81,8 +81,22 @@ enum VideoEngine {
         session.shouldOptimizeForNetworkUse = true
         session.metadata = []
         if let range { session.timeRange = range }
-        await session.export()
-        return session.status == .completed ? out : nil
+        // Hard timeout: some device codecs can wedge an export (certain HDR / slow-mo / long clips), and
+        // an unbounded await would hang the spinner forever. Race the export against a timer; whichever
+        // finishes first wins, and on timeout we cancel the session so the tool fails cleanly (and the
+        // caller surfaces an error) instead of freezing.
+        let completed = await withTaskGroup(of: Bool.self) { group -> Bool in
+            group.addTask { await session.export(); return session.status == .completed }
+            group.addTask {
+                try? await Task.sleep(nanoseconds: 180 * 1_000_000_000)   // 3 min ceiling
+                session.cancelExport()
+                return false
+            }
+            let first = await group.next() ?? false
+            group.cancelAll()
+            return first
+        }
+        return completed ? out : nil
     }
     private static func export(_ src: URL, preset: String, type: AVFileType, ext: String, range: CMTimeRange? = nil) async -> URL? {
         await export(AVURLAsset(url: src), preset: preset, type: type, ext: ext, range: range)

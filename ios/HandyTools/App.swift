@@ -495,7 +495,10 @@ struct ToolCard: View {
             Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2).minimumScaleFactor(0.8)
             Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        // Every card is the same height — enough for the icon, title and a 2-line blurb — so the grid
+        // reads as a tidy, uniform set and a longer blurb is never clipped. The page scrolls if the
+        // uniform rows don't all fit, rather than squeezing rows shorter and cutting text off.
+        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104, alignment: .topLeading)
         .padding(.horizontal, HandySpacing.s12)
         .padding(.vertical, HandySpacing.s8)
         .background {

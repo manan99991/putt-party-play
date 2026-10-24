@@ -53,6 +53,34 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(searchTools("zzxqzzq").isEmpty, "nonsense query returns nothing")
     }
 
+    // MARK: duplicate detection precision
+
+    /// The Cleaner must not group two *different* white document screenshots as look-alikes (that was
+    /// the average-hash bug — brightness alone couldn't tell documents apart). The difference hash must
+    /// separate them, while a re-rendered identical image still matches as a true duplicate.
+    func testDuplicateHashSeparatesDifferentDocuments() {
+        func doc(_ bars: [(CGFloat, CGFloat, CGFloat, CGFloat)]) -> CGImage {
+            let size = CGSize(width: 160, height: 160)
+            UIGraphicsBeginImageContextWithOptions(size, true, 1)
+            let ctx = UIGraphicsGetCurrentContext()!
+            ctx.setFillColor(UIColor.white.cgColor); ctx.fill(CGRect(origin: .zero, size: size))
+            ctx.setFillColor(UIColor.black.cgColor)
+            for b in bars { ctx.fill(CGRect(x: b.0, y: b.1, width: b.2, height: b.3)) }
+            let img = UIGraphicsGetImageFromCurrentImageContext()!; UIGraphicsEndImageContext()
+            return img.cgImage!
+        }
+        // two different "documents": text bars in different places
+        let d1 = doc([(10, 20, 120, 8), (10, 40, 100, 8), (10, 60, 130, 8), (10, 90, 80, 8)])
+        let d2 = doc([(10, 30, 60, 8), (10, 72, 140, 8), (10, 112, 90, 8), (40, 134, 70, 8)])
+        let h1 = PhotoCleaner.dHash(d1), h2 = PhotoCleaner.dHash(d2)
+        XCTAssertGreaterThan(PhotoCleaner.hamming(h1, h2), 10,
+                             "two different documents must differ in many dHash bits so they're NOT grouped as duplicates")
+        // identical content re-rendered → essentially the same hash (a real duplicate is still caught)
+        let d1copy = doc([(10, 20, 120, 8), (10, 40, 100, 8), (10, 60, 130, 8), (10, 90, 80, 8)])
+        XCTAssertLessThanOrEqual(PhotoCleaner.hamming(h1, PhotoCleaner.dHash(d1copy)), 2,
+                                "an identical document must still match as a duplicate")
+    }
+
     // MARK: image resize
 
     func testResizeCapsLongestSideAndNeverUpscales() {
