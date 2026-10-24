@@ -60,9 +60,10 @@ GREY = (110, 114, 126)         # placeholder ink
 BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 REG = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 
-CANVAS = {"ios": (1290, 2796), "android": (1080, 1920), "ipad": (2064, 2752)}
-# ios = iPhone 6.9"; android = Play phone (2:1 cap); ipad = iPad 13" portrait — Apple REQUIRES
-# an iPad set for a universal app (TARGETED_DEVICE_FAMILY=1,2).
+CANVAS = {"ios": (1206, 2622), "android": (1080, 1920), "ipad": (2064, 2752)}
+# ios = iPhone Dynamic-Island medium display (the single required iPhone size in App Store
+# Connect now; it scales down to smaller iPhones); android = Play phone (2:1 cap);
+# ipad = iPad 13" portrait — Apple REQUIRES an iPad set for a universal app (device family 1,2).
 # device width/height ratios used for the drawn bezel
 BEZEL_RATIO = {"ios": 0.467, "android": 0.446, "ipad": 0.75}
 CAPTION_X = 96

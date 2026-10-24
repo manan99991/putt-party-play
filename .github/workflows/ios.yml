@@ -360,3 +360,47 @@ jobs:
         run: |
           { echo "===== deliver.log ====="; grep -iE "error|fail|❌|invalid|missing|too long|rejected|\[!\]|Successfully|submitted|Waiting For Review|screenshots|metadata" ios/deliver.log 2>/dev/null | head -160; echo; echo "===== tail ====="; tail -80 ios/deliver.log 2>/dev/null; } > ios-deliver.log
           bash .github/publish-log.sh ios-deliver ios-deliver.log || true
+
+  # STAGE: push metadata + screenshots to the editable version WITHOUT submitting (STAGE_ONLY=true),
+  # and reconcile the subscription (price, availability, App Review screenshot) so it is ready to be
+  # included in the review submission. Leaves the final "Add for Review" tap to Manan. Gated on the
+  # Ship-Stage=YES marker; pure ASC API (ubuntu, no Mac).
+  stage:
+    if: "${{ contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
+    runs-on: ubuntu-latest
+    defaults:
+      run: { working-directory: ios }
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_B64: ${{ secrets.ASC_KEY_P8_B64 }}
+      STAGE_ONLY: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with: { ruby-version: "3.3" }
+      - name: Install fastlane
+        run: gem install fastlane --no-document
+      - name: Write ASC key + export fastlane auth env
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          KP="$HOME/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8"
+          echo "$ASC_KEY_P8_B64" | base64 -d > "$KP"
+          echo "ASC_KEY_PATH=$KP" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_API_KEY_KEY_ID=$ASC_KEY_ID" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_API_KEY_ISSUER_ID=$ASC_ISSUER_ID" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_API_KEY_KEY_FILEPATH=$KP" >> $GITHUB_ENV
+          echo "FASTLANE_HIDE_CHANGELOG=1" >> $GITHUB_ENV
+      - name: Reconcile subscription (price, availability, review screenshot)
+        run: fastlane subscriptions 2>&1 | tee subs.log || true
+      - name: Fastlane deliver — STAGE (metadata + screenshots, NO submit)
+        run: |
+          set -o pipefail
+          fastlane release 2>&1 | tee deliver.log
+      - name: Publish stage log (always)
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "===== deliver.log ====="; grep -iE "error|fail|❌|invalid|missing|too long|rejected|\[!\]|Successfully|Staged|screenshots|metadata|review screenshot|upload" ios/deliver.log 2>/dev/null | head -160; echo; echo "===== subs ====="; tail -50 ios/subs.log 2>/dev/null; echo; echo "===== deliver tail ====="; tail -60 ios/deliver.log 2>/dev/null; } > ios-stage.log
+          bash .github/publish-log.sh ios-stage ios-stage.log || true
