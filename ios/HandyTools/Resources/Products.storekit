@@ -16,7 +16,7 @@
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "1001",
-          "introductoryOffer" : { "internalID" : "1002", "paymentMode" : "free", "subscriptionPeriod" : "P1W" },
+          "introductoryOffer" : { "internalID" : "1002", "paymentMode" : "free", "subscriptionPeriod" : "P3D" },
           "localizations" : [ { "description" : "Everything in Tenzy, unlimited. No ads.", "displayName" : "Tenzy Pro (Yearly)", "locale" : "en_US" } ],
           "productID" : "tenzy_pro_yearly",
           "recurringSubscriptionPeriod" : "P1Y",

@@ -49,6 +49,36 @@ final class StoreManager: ObservableObject {
     // Shown on the paywall button. Falls back to our set price if the store hasn't loaded yet.
     var yearlyPrice: String { yearly?.displayPrice ?? "$19.99" }
 
+    // CI screenshot capture: force the trial copy on so marketing shots show it even though the
+    // simulator has no real offer. Production never uses this path.
+    private let screenshotMode = CommandLine.arguments.contains("-screenshots")
+
+    /// True only when the yearly product actually has a live free-trial introductory offer (or during
+    /// screenshot capture). The paywall advertises the trial only when this is true, so copy never
+    /// promises a trial StoreKit won't grant — e.g. before the offer is approved in App Store Connect.
+    var showsFreeTrial: Bool {
+        if screenshotMode { return true }
+        guard let o = yearly?.subscription?.introductoryOffer else { return false }
+        return o.paymentMode == .freeTrial
+    }
+
+    /// Trial length as "3-day", read from the live offer (falls back to "3-day" for screenshots).
+    var trialLength: String {
+        guard !screenshotMode, let p = yearly?.subscription?.introductoryOffer?.period else { return "3-day" }
+        let unit: String
+        switch p.unit { case .day: unit = "day"; case .week: unit = "week"; case .month: unit = "month"; case .year: unit = "year"; @unknown default: unit = "day" }
+        return "\(p.value)-\(unit)"
+    }
+
+    /// Trial length in prose, e.g. "3 days".
+    var trialLengthWords: String {
+        guard !screenshotMode, let p = yearly?.subscription?.introductoryOffer?.period else { return "3 days" }
+        let plural = p.value != 1
+        let unit: String
+        switch p.unit { case .day: unit = plural ? "days" : "day"; case .week: unit = plural ? "weeks" : "week"; case .month: unit = plural ? "months" : "month"; case .year: unit = plural ? "years" : "year"; @unknown default: unit = "days" }
+        return "\(p.value) \(unit)"
+    }
+
     func load() async {
         let products = (try? await Product.products(for: Self.productIDs)) ?? []
         yearly = products.first { $0.id == Self.yearlyID }

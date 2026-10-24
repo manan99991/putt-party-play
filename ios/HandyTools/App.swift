@@ -524,12 +524,14 @@ struct ProLockView: View {
                     Image(systemName: "lock.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent)
                 }.padding(.top, HandySpacing.s32)
                 Text("A Pro tool").font(.system(size: 22, weight: .bold))
-                Text("\(tool.name) is part of Tenzy Pro. Start a 3-day free trial to unlock it and every other Pro tool — no ads, unlimited use.")
+                Text(store.showsFreeTrial
+                     ? "\(tool.name) is part of Tenzy Pro. Start a \(store.trialLength) free trial to unlock it and every other Pro tool — no ads, unlimited use."
+                     : "\(tool.name) is part of Tenzy Pro. Go Pro to unlock it and every other Pro tool — no ads, unlimited use.")
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 Button { NotificationCenter.default.post(name: .showPaywall, object: nil) } label: {
-                    Label("Start 3-day free trial", systemImage: "crown.fill").frame(maxWidth: .infinity)
+                    Label(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro — \(store.yearlyPrice)/year", systemImage: "crown.fill").frame(maxWidth: .infinity)
                 }.primaryButton()
-                Text("Then \(store.yearlyPrice)/year · cancel anytime").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(store.showsFreeTrial ? "Then \(store.yearlyPrice)/year · cancel anytime" : "\(store.yearlyPrice)/year · cancel anytime").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }.frame(maxWidth: .infinity).padding(.horizontal, HandySpacing.s8)
         }
     }
@@ -570,15 +572,17 @@ struct PaywallView: View {
             if store.isPremium {
                 Label("You're Pro. Thank you.", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             } else {
-                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: "3-day free trial, then billed yearly · cancel anytime", badge: "BEST VALUE") { }
+                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: store.showsFreeTrial ? "\(store.trialLength) free trial, then billed yearly · cancel anytime" : "Billed once a year · cancel anytime", badge: "BEST VALUE") { }
 
                 Button {
                     Task { await store.purchase(store.yearly); if store.isPremium { dismiss() } }
                 } label: {
-                    Text("Start 3-day free trial").frame(maxWidth: .infinity)
+                    Text(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro · \(store.yearlyPrice)/year").frame(maxWidth: .infinity)
                 }.primaryButton()
 
-                Text("3 days free, then \(store.yearlyPrice)/year. Payment is charged to your Apple ID when the trial ends. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.")
+                Text(store.showsFreeTrial
+                     ? "\(store.trialLengthWords) free, then \(store.yearlyPrice)/year. Payment is charged to your Apple ID when the trial ends. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions."
+                     : "\(store.yearlyPrice)/year. Payment is charged to your Apple ID. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 HStack(spacing: HandySpacing.s24) {
                     Button("Restore purchases") { Task { await store.restore() } }.textButton()
