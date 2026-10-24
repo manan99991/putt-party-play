@@ -9,6 +9,7 @@ struct StitchView: View {
     @State private var items: [PhotosPickerItem] = []
     @State private var shots: [UIImage] = []
     @State private var result: UIImage?
+    @State private var resultPNG: Data?        // encoded once off-main, not on every body render
     @State private var working = false
     @State private var errorText: String?
 
@@ -69,12 +70,12 @@ struct StitchView: View {
                 .frame(maxHeight: 420)
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 Text("\(Int(result.size.width)) × \(Int(result.size.height)) px").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                if let png = result.pngData() {
+                if let png = resultPNG {
                     ShareLink(item: PNGFile(data: png), preview: SharePreview("Long screenshot")) {
                         Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
                     }.primaryButton()
                 }
-                Button("Start over") { self.result = nil; shots = []; items = [] }.textButton()
+                Button("Start over") { self.result = nil; resultPNG = nil; shots = []; items = [] }.textButton()
             }
         }
     }
@@ -93,10 +94,18 @@ struct StitchView: View {
         working = true; errorText = nil
         let input = shots
         Task { @MainActor in
-            let out = Stitcher.stitch(input)
-            working = false
-            if let out { result = out; HandyHaptics.success() }
-            else { errorText = "Couldn't line those up. Make sure they're from the same screen and overlap a little." }
+            // Stitch (per-image re-render, overlap search, tall composite) and the PNG encode both run
+            // off the main thread — a 12-shot tall image would otherwise lock the UI for seconds.
+            let out = await Task.detached(priority: .userInitiated) { Stitcher.stitch(input) }.value
+            if let out {
+                result = out
+                resultPNG = await Task.detached(priority: .userInitiated) { out.pngData() }.value
+                working = false
+                HandyHaptics.success()
+            } else {
+                working = false
+                errorText = "Couldn't line those up. Make sure they're from the same screen and overlap a little."
+            }
         }
     }
 }

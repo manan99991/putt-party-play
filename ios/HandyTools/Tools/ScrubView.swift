@@ -20,6 +20,7 @@ struct ScrubView: View {
     @State private var detecting = false
     @State private var drawing: CGRect?
     @State private var result: Data?
+    @State private var working = false
     @State private var errorText: String?
 
     private var overQuota: Bool { !Usage.hasRoom("scrub", limit: Limits.freeScrubPerDay) }
@@ -141,8 +142,11 @@ struct ScrubView: View {
             if !store.isPremium { QuotaChip(name: "scrub", limit: Limits.freeScrubPerDay).environmentObject(store) }
             if overQuota { LimitReachedBanner(message: "You've scrubbed today's \(Limits.freeScrubPerDay) free photos.") }
             Button { make() } label: {
-                Label(boxes.contains { $0.on } ? "Redact & make clean copy" : "Make clean copy (strip data)", systemImage: "checkmark.shield").frame(maxWidth: .infinity)
-            }.primaryButton().disabled(overQuota || detecting)
+                HStack {
+                    if working { ProgressView().tint(.white) }
+                    Label(boxes.contains { $0.on } ? "Redact & make clean copy" : "Make clean copy (strip data)", systemImage: "checkmark.shield")
+                }.frame(maxWidth: .infinity)
+            }.primaryButton().disabled(overQuota || detecting || working)
         }
     }
 
@@ -187,7 +191,13 @@ struct ScrubView: View {
         guard let original else { return }
         guard Usage.use("scrub", limit: Limits.freeScrubPerDay) else { return }
         let rects = boxes.filter { $0.on }.map { $0.rect }
-        if let d = Scrubber.render(original, rects: rects) { result = d; HandyHaptics.success() }
-        else { errorText = "Couldn't make the clean copy. Try another photo." }
+        working = true; errorText = nil
+        Task { @MainActor in
+            // Full-size re-draw + JPEG encode runs off the main thread so a large photo can't freeze it.
+            let d = await Task.detached(priority: .userInitiated) { Scrubber.render(original, rects: rects) }.value
+            working = false
+            if let d { result = d; HandyHaptics.success() }
+            else { errorText = "Couldn't make the clean copy. Try another photo." }
+        }
     }
 }

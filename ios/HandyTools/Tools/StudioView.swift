@@ -189,30 +189,44 @@ struct StudioView: View {
         working = true; errorText = nil; output = nil; sheet = nil
         let m = mode, bg = backgrounds[bgIdx].1, spec = ImageStudio.passportSpecs[specIdx], pbg = passportBG
         let rIdx = resizeIdx, sIdx = sizeLimitIdx, fmt = format, q = CGFloat(quality), up = enhanceUpscale
+        // Every case runs its heavy work (Vision cut-out, face detect, full-res encode) via
+        // `await Task.detached`, so the main actor yields and the UI never freezes while it runs.
         Task { @MainActor in
             defer { working = false }
             switch m {
             case .cutout:
-                guard let cut = ImageStudio.cutout(src) else { errorText = "Couldn't find a clear subject. Try a photo with a distinct foreground."; return }
-                if let bg { let img = ImageStudio.composite(cut, on: bg); preview = img; if let d = img.jpegData(compressionQuality: 0.92) { output = .jpg(d) } }
-                else { preview = cut; if let d = cut.pngData() { output = .png(d) } }
+                guard let cut = await Task.detached(priority: .userInitiated) { ImageStudio.cutout(src) }.value else { errorText = "Couldn't find a clear subject. Try a photo with a distinct foreground."; return }
+                if let bg {
+                    let img = await Task.detached(priority: .userInitiated) { ImageStudio.composite(cut, on: bg) }.value
+                    preview = img
+                    if let d = await Task.detached(priority: .userInitiated) { img.jpegData(compressionQuality: 0.92) }.value { output = .jpg(d) }
+                } else {
+                    preview = cut
+                    if let d = await Task.detached(priority: .userInitiated) { cut.pngData() }.value { output = .png(d) }
+                }
             case .enhance:
                 let out = await Task.detached(priority: .userInitiated) { ImageStudio.enhance(src, upscale: up) }.value
                 guard let img = out else { errorText = "Couldn't enhance this photo. Try another image."; return }
-                preview = img; if let d = img.jpegData(compressionQuality: 0.95) { output = .jpg(d) }
+                preview = img
+                if let d = await Task.detached(priority: .userInitiated) { img.jpegData(compressionQuality: 0.95) }.value { output = .jpg(d) }
             case .passport:
-                guard let img = ImageStudio.passport(src, spec: spec, background: pbg ? .white : nil) else { errorText = "Couldn't find a clear face. Use a straight-on portrait with the whole head visible."; return }
-                preview = img; if let d = img.jpegData(compressionQuality: 0.95) { output = .jpg(d) }
+                let out = await Task.detached(priority: .userInitiated) { ImageStudio.passport(src, spec: spec, background: pbg ? .white : nil) }.value
+                guard let img = out else { errorText = "Couldn't find a clear face. Use a straight-on portrait with the whole head visible."; return }
+                preview = img
+                if let d = await Task.detached(priority: .userInitiated) { img.jpegData(compressionQuality: 0.95) }.value { output = .jpg(d) }
             case .resize:
                 if let sIdx {
                     guard let d = await SizeTarget.image(src, targetBytes: SizeTarget.presets[sIdx].bytes) else { errorText = "Couldn't get under that size without ruining it. Try a larger limit."; return }
                     preview = UIImage(data: d); output = .jpg(d)
                 } else {
-                    let img = src.resized(maxDimension: resizeOptions[rIdx].1)
-                    preview = img; if let d = img.jpegData(compressionQuality: 0.9) { output = .jpg(d) }
+                    let r = await Task.detached(priority: .userInitiated) { () -> (UIImage, Data?) in
+                        let img = src.resized(maxDimension: resizeOptions[rIdx].1)
+                        return (img, img.jpegData(compressionQuality: 0.9))
+                    }.value
+                    preview = r.0; if let d = r.1 { output = .jpg(d) }
                 }
             case .convert:
-                guard let d = ImageStudio.encode(src, as: fmt, quality: q) else { errorText = "This device can't write \(fmt.rawValue)."; return }
+                guard let d = await Task.detached(priority: .userInitiated) { ImageStudio.encode(src, as: fmt, quality: q) }.value else { errorText = "This device can't write \(fmt.rawValue)."; return }
                 preview = src
                 switch fmt { case .jpg: output = .jpg(d); case .png: output = .png(d); case .heic: output = .heic(d) }
             }

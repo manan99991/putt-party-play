@@ -87,25 +87,38 @@ struct FormatFixView: View {
         guard Usage.use("formatfix", limit: Limits.freeConvertPerDay) else { return }
         working = true; outputs = []; errorText = nil
         let batch = loaded, fmt = imageFormat
-        Task { @MainActor in
+        Task {
             var urls: [URL] = []
             for (i, entry) in batch.enumerated() {
-                progress = "\(i + 1)/\(batch.count)…"
+                await MainActor.run { progress = "\(i + 1)/\(batch.count)…" }
                 switch entry.kind {
                 case .image:
-                    guard let img = entry.image?.normalizedUp() else { continue }
-                    let data: Data?; let ext: String
-                    if fmt == 1 { data = img.pngData(); ext = "png" } else { data = img.jpegData(compressionQuality: 0.9); ext = "jpg" }
-                    guard let d = data else { continue }
-                    let url = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy-\(i + 1)-\(UUID().uuidString.prefix(4)).\(ext)")
-                    try? d.write(to: url); urls.append(url)
+                    guard let img = entry.image, let u = await Self.encodeImage(img, fmt: fmt, index: i) else { continue }
+                    urls.append(u)
                 case .video:
                     guard let src = entry.url, let out = await VideoEngine.toMP4(src) else { continue }
                     urls.append(out)
                 }
             }
-            outputs = urls; working = false; progress = ""
-            if urls.isEmpty { errorText = "Nothing could be converted. Try a different batch." } else { HandyHaptics.success() }
+            let done = urls
+            await MainActor.run {
+                outputs = done; working = false; progress = ""
+                if done.isEmpty { errorText = "Nothing could be converted. Try a different batch." } else { HandyHaptics.success() }
+            }
         }
+    }
+
+    /// Re-encode off the main thread — a full-res PNG/JPEG encode would otherwise lock the UI for the
+    /// whole image batch (and the "n/n…" progress couldn't even repaint).
+    private static func encodeImage(_ img: UIImage, fmt: Int, index: Int) async -> URL? {
+        nonisolated(unsafe) let src = img
+        return await Task.detached(priority: .userInitiated) {
+            let up = src.normalizedUp()
+            let data: Data?; let ext: String
+            if fmt == 1 { data = up.pngData(); ext = "png" } else { data = up.jpegData(compressionQuality: 0.9); ext = "jpg" }
+            guard let d = data else { return nil }
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy-\(index + 1)-\(UUID().uuidString.prefix(4)).\(ext)")
+            try? d.write(to: url); return url
+        }.value
     }
 }
