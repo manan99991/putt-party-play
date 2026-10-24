@@ -168,17 +168,17 @@ struct VaultView: View {
 
     private func thumb(_ item: VaultStore.Item) -> UIImage? {
         if let t = thumbs[item.id] { return t }
-        // Decrypt + resize OFF the main thread — doing it inline during list layout re-decrypted every
-        // uncached photo on the main thread while scrolling. The Task defers all state changes past this
-        // render, so there's no "modifying state during update", and the row fills in when ready.
+        // Load deferred, not inline during list layout (which re-decrypted every uncached photo while
+        // scrolling). Decryption is main-actor-bound (VaultStore), but we yield first so it doesn't
+        // block the layout pass, and the UIImage decode + resize runs off the main thread.
         Task { @MainActor in
             guard thumbs[item.id] == nil, !loadingThumbs.contains(item.id) else { return }
             loadingThumbs.insert(item.id)
-            let img = await Task.detached(priority: .userInitiated) { () -> UIImage? in
-                guard let d = vault.data(for: item), let i = UIImage(data: d)?.resized(maxDimension: 160) else { return nil }
-                return i
-            }.value
-            if let img { thumbs[item.id] = img }
+            await Task.yield()
+            if let d = vault.data(for: item) {
+                let img = await Task.detached(priority: .userInitiated) { UIImage(data: d)?.resized(maxDimension: 160) }.value
+                if let img { thumbs[item.id] = img }
+            }
             loadingThumbs.remove(item.id)
         }
         return nil

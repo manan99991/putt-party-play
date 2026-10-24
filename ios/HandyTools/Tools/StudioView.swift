@@ -219,8 +219,9 @@ struct StudioView: View {
                     guard let d = await SizeTarget.image(src, targetBytes: SizeTarget.presets[sIdx].bytes) else { errorText = "Couldn't get under that size without ruining it. Try a larger limit."; return }
                     preview = UIImage(data: d); output = .jpg(d)
                 } else {
+                    let dim = resizeOptions[rIdx].1
                     let r = await Task.detached(priority: .userInitiated) { () -> (UIImage, Data?) in
-                        let img = src.resized(maxDimension: resizeOptions[rIdx].1)
+                        let img = src.resized(maxDimension: dim)
                         return (img, img.jpegData(compressionQuality: 0.9))
                     }.value
                     preview = r.0; if let d = r.1 { output = .jpg(d) }

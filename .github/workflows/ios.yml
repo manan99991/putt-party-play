@@ -106,7 +106,8 @@ jobs:
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
           { echo "== xcode"; ls /Applications | grep -i xcode; xcodebuild -version 2>&1; echo "== setup.log"; cat ios/setup.log 2>/dev/null; echo "== build.log"; cat ios/build.log 2>/dev/null; } > ios-full.log
-          bash .github/publish-log.sh ios ios-full.log
+          bash .github/publish-log.sh ios ios-full.log || true
+          bash .github/publish-log.sh "ios-build-${GITHUB_RUN_ID}" ios-full.log || true
 
   # Full test gate. The deploy will NOT upload unless the engine unit tests and the every-tool
   # smoke suite pass. Regression tests for every shipped crash fix live in HandyToolsTests, so a
