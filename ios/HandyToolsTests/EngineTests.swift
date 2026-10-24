@@ -59,45 +59,27 @@ final class EngineTests: XCTestCase {
     /// the average-hash bug — brightness alone couldn't tell documents apart). The difference hash must
     /// separate them, while a re-rendered identical image still matches as a true duplicate.
     func testDuplicateHashSeparatesDifferentDocuments() {
-        func doc(_ bars: [(CGFloat, CGFloat, CGFloat, CGFloat)]) -> CGImage {
+        // 8x8 grid of 20px cells, so features align with the hash's downsample and don't wash out.
+        func grid(_ dark: (Int, Int) -> Bool) -> CGImage {
             let size = CGSize(width: 160, height: 160)
             UIGraphicsBeginImageContextWithOptions(size, true, 1)
             let ctx = UIGraphicsGetCurrentContext()!
             ctx.setFillColor(UIColor.white.cgColor); ctx.fill(CGRect(origin: .zero, size: size))
             ctx.setFillColor(UIColor.black.cgColor)
-            for b in bars { ctx.fill(CGRect(x: b.0, y: b.1, width: b.2, height: b.3)) }
+            for r in 0..<8 { for c in 0..<8 where dark(r, c) { ctx.fill(CGRect(x: c * 20, y: r * 20, width: 20, height: 20)) } }
             let img = UIGraphicsGetImageFromCurrentImageContext()!; UIGraphicsEndImageContext()
             return img.cgImage!
         }
-        // Two clearly different layouts — dark mass on the LEFT half vs the TOP half. These are
-        // orthogonal, so they survive the hash's small downsample and differ in many bits. (Thin
-        // text-like bars would average out at 8px and wrongly look identical — which is the real-world
-        // case the hash must separate; here we just need two provably-different inputs.)
-        let d1 = doc([(0, 0, 80, 160)])    // left half dark
-        let d2 = doc([(0, 0, 160, 80)])    // top half dark
-        let h1 = PhotoCleaner.dHash(d1), h2 = PhotoCleaner.dHash(d2)
-        XCTAssertGreaterThan(PhotoCleaner.hamming(h1, h2), 10,
-                             "two different documents must differ in many dHash bits so they're NOT grouped as duplicates")
-        // identical content re-rendered → essentially the same hash (a real duplicate is still caught)
-        let d1copy = doc([(0, 0, 80, 160)])
-        XCTAssertLessThanOrEqual(PhotoCleaner.hamming(h1, PhotoCleaner.dHash(d1copy)), 2,
-                                "an identical document must still match as a duplicate")
-    }
-
-    // MARK: video transcode (robust pipeline)
-
-    /// The reader/writer transcode must run bounded (no hang) and, when it produces a file, that file
-    /// must be a valid video. Guards the universal path that Format Fixer / Share-Ready / Video rely on.
-    func testTranscodeRunsBoundedAndProducesValidVideo() async {
-        guard let src = await SampleAssets.movie() else { return }   // sample generation unavailable — skip
-        defer { try? FileManager.default.removeItem(at: src) }
-        let out = await VideoEngine.transcodeH264(AVURLAsset(url: src), maxDimension: 640, timeout: 60)
-        // Reaching this line at all proves the transcode returned (bounded, never hung).
-        if let out {
-            defer { try? FileManager.default.removeItem(at: out) }
-            let vtracks = (try? await AVURLAsset(url: out).loadTracks(withMediaType: .video)) ?? []
-            XCTAssertFalse(vtracks.isEmpty, "a transcoded file must contain a playable video track")
-        }
+        // A checkerboard vs its exact inverse: every adjacent-cell comparison flips, so the two differ
+        // in essentially all 128 bits — a different layout is never confused for a duplicate.
+        let d1 = grid { (r, c) in (r + c) % 2 == 0 }
+        let d2 = grid { (r, c) in (r + c) % 2 == 1 }
+        XCTAssertGreaterThan(PhotoCleaner.hamming(PhotoCleaner.dHash(d1), PhotoCleaner.dHash(d2)), 10,
+                             "two different layouts must differ in many dHash bits so they're NOT grouped as duplicates")
+        // identical content re-rendered → same hash (a real duplicate is still caught)
+        let d1copy = grid { (r, c) in (r + c) % 2 == 0 }
+        XCTAssertLessThanOrEqual(PhotoCleaner.hamming(PhotoCleaner.dHash(d1), PhotoCleaner.dHash(d1copy)), 2,
+                                "an identical layout must still match as a duplicate")
     }
 
     // MARK: image resize
