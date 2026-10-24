@@ -212,36 +212,36 @@ platform :ios do
 
       # Subscription App Review screenshot — REQUIRED so the IAP leaves "Missing Metadata" and is
       # reviewed WITH the app (fixes Apple 2.1(b): a Pro-referencing binary whose IAP wasn't
-      # submitted). Idempotent: skipped if one already exists.
+      # submitted). Always refreshed to the current paywall so it never shows a stale offer.
       shot = File.expand_path("review/paywall.png", __dir__)
       if File.exist?(shot)
         code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")
         if cur.is_a?(Hash) && cur["data"]
-          UI.message("  review screenshot already set")
-        else
-          bytes = File.binread(shot)
-          code, resv = req.call(:post, "/v1/subscriptionAppStoreReviewScreenshots",
-            { data: { type: "subscriptionAppStoreReviewScreenshots",
-                      attributes: { fileName: "paywall.png", fileSize: bytes.bytesize },
-                      relationships: { subscription: { data: { type: "subscriptions", id: sub_id } } } } })
-          ss = resv.is_a?(Hash) ? resv["data"] : nil
-          if ss
-            (ss.dig("attributes", "uploadOperations") || []).each do |op|
-              uri = URI(op["url"])
-              h = Net::HTTP.new(uri.host, uri.port); h.use_ssl = (uri.scheme == "https")
-              pr = Net::HTTP::Put.new(uri.request_uri)
-              (op["requestHeaders"] || []).each { |hh| pr[hh["name"]] = hh["value"] }
-              pr.body = bytes[op["offset"], op["length"]]
-              h.request(pr)
-            end
-            require 'digest'
-            code, _ = req.call(:patch, "/v1/subscriptionAppStoreReviewScreenshots/#{ss['id']}",
-              { data: { type: "subscriptionAppStoreReviewScreenshots", id: ss["id"],
-                        attributes: { uploaded: true, sourceFileChecksum: Digest::MD5.hexdigest(bytes) } } })
-            UI.success("  uploaded subscription review screenshot (#{code})")
-          else
-            UI.important("  could not reserve review screenshot: #{resv}")
+          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")
+          UI.message("  removed stale review screenshot; re-uploading current paywall")
+        end
+        bytes = File.binread(shot)
+        code, resv = req.call(:post, "/v1/subscriptionAppStoreReviewScreenshots",
+          { data: { type: "subscriptionAppStoreReviewScreenshots",
+                    attributes: { fileName: "paywall.png", fileSize: bytes.bytesize },
+                    relationships: { subscription: { data: { type: "subscriptions", id: sub_id } } } } })
+        ss = resv.is_a?(Hash) ? resv["data"] : nil
+        if ss
+          (ss.dig("attributes", "uploadOperations") || []).each do |op|
+            uri = URI(op["url"])
+            h = Net::HTTP.new(uri.host, uri.port); h.use_ssl = (uri.scheme == "https")
+            pr = Net::HTTP::Put.new(uri.request_uri)
+            (op["requestHeaders"] || []).each { |hh| pr[hh["name"]] = hh["value"] }
+            pr.body = bytes[op["offset"], op["length"]]
+            h.request(pr)
           end
+          require 'digest'
+          code, _ = req.call(:patch, "/v1/subscriptionAppStoreReviewScreenshots/#{ss['id']}",
+            { data: { type: "subscriptionAppStoreReviewScreenshots", id: ss["id"],
+                      attributes: { uploaded: true, sourceFileChecksum: Digest::MD5.hexdigest(bytes) } } })
+          UI.success("  uploaded subscription review screenshot (#{code})")
+        else
+          UI.important("  could not reserve review screenshot: #{resv}")
         end
       end
     end
