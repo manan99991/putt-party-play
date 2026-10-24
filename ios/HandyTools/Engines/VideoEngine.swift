@@ -43,8 +43,134 @@ enum VideoEngine {
     // MARK: operations
 
     /// Re-wrap/re-encode as H.264/AAC MP4 (plays on Windows, Android, the web). Drops metadata.
-    static func toMP4(_ src: URL, preset: String = AVAssetExportPresetHighestQuality) async -> URL? {
-        await export(src, preset: preset, type: .mp4, ext: "mp4")
+    /// Robust by design — handles ANY source the device can decode and never hangs:
+    ///   1. already H.264 → a fast passthrough re-wrap to .mp4 (no re-encode);
+    ///   2. otherwise a bounded reader/writer transcode that decodes each frame (HEVC, HDR → SDR,
+    ///      unusual codecs) and re-encodes H.264 — this is what AVAssetExportSession can't reliably do.
+    /// Every path is time-bounded, so a wedged codec fails cleanly instead of freezing the UI.
+    static func toMP4(_ src: URL, progress: ((Double) -> Void)? = nil) async -> URL? {
+        let asset = AVURLAsset(url: src)
+        if await isH264(asset), let fast = await export(asset, preset: AVAssetExportPresetPassthrough, type: .mp4, ext: "mp4") {
+            progress?(1); return fast
+        }
+        return await transcodeH264(asset, progress: progress)
+    }
+
+    /// True when the first video track is already H.264 (so we can re-wrap instead of re-encoding).
+    static func isH264(_ asset: AVAsset) async -> Bool {
+        guard let t = try? await asset.loadTracks(withMediaType: .video).first,
+              let desc = (try? await t.load(.formatDescriptions))?.first else { return false }
+        return CMFormatDescriptionGetMediaSubType(desc) == kCMVideoCodecType_H264
+    }
+
+    /// Universal video → H.264/AAC MP4 transcode via AVAssetReader/Writer. Decodes to BGRA pixel
+    /// buffers (so any playable source works, HDR included — flattened to SDR) and re-encodes H.264.
+    /// ALWAYS returns: a hard timeout cancels the reader/writer and the continuation resumes on every
+    /// path, so it can never hang the UI. `maxDimension` caps the longest side; `videoBps` sets the
+    /// video bitrate (both derive sane defaults from the source when nil). `progress` is 0...1.
+    static func transcodeH264(_ asset: AVAsset, maxDimension: CGFloat? = nil, videoBps: Int? = nil,
+                              timeout: TimeInterval = 180, progress: ((Double) -> Void)? = nil) async -> URL? {
+        guard let vTrack = try? await asset.loadTracks(withMediaType: .video).first else { return nil }
+        let aTrack = try? await asset.loadTracks(withMediaType: .audio).first
+        let natural = (try? await vTrack.load(.naturalSize)) ?? CGSize(width: 1280, height: 720)
+        let transform = (try? await vTrack.load(.preferredTransform)) ?? .identity
+        let durationSec = (try? await asset.load(.duration))?.seconds ?? 0
+
+        let longest = max(natural.width, natural.height, 2)
+        let scale = maxDimension.map { min(1, $0 / longest) } ?? 1
+        let outW = max(2, Int(natural.width * scale / 2) * 2)
+        let outH = max(2, Int(natural.height * scale / 2) * 2)
+        // Default bitrate: ~pixels × fps heuristic, capped — good quality without being wasteful.
+        let bps = videoBps ?? min(16_000_000, max(1_500_000, outW * outH * 4))
+
+        let out = tempURL("mp4")
+        guard let reader = try? AVAssetReader(asset: asset),
+              let writer = try? AVAssetWriter(outputURL: out, fileType: .mp4) else { return nil }
+
+        let vOut = AVAssetReaderTrackOutput(track: vTrack, outputSettings: [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,
+            kCVPixelBufferWidthKey as String: outW,
+            kCVPixelBufferHeightKey as String: outH,
+        ])
+        vOut.alwaysCopiesSampleData = false
+        guard reader.canAdd(vOut) else { return nil }
+        reader.add(vOut)
+
+        let vIn = AVAssetWriterInput(mediaType: .video, outputSettings: [
+            AVVideoCodecKey: AVVideoCodecType.h264,
+            AVVideoWidthKey: outW, AVVideoHeightKey: outH,
+            AVVideoCompressionPropertiesKey: [
+                AVVideoAverageBitRateKey: bps,
+                AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel,
+            ],
+        ])
+        vIn.expectsMediaDataInRealTime = false
+        vIn.transform = transform
+        guard writer.canAdd(vIn) else { return nil }
+        writer.add(vIn)
+
+        var aOut: AVAssetReaderTrackOutput?
+        var aIn: AVAssetWriterInput?
+        if let aTrack {
+            let o = AVAssetReaderTrackOutput(track: aTrack, outputSettings: [AVFormatIDKey: kAudioFormatLinearPCM])
+            o.alwaysCopiesSampleData = false
+            let i = AVAssetWriterInput(mediaType: .audio, outputSettings: [
+                AVFormatIDKey: kAudioFormatMPEG4AAC, AVNumberOfChannelsKey: 2, AVSampleRateKey: 44_100, AVEncoderBitRateKey: 96_000,
+            ])
+            i.expectsMediaDataInRealTime = false
+            if reader.canAdd(o), writer.canAdd(i) { reader.add(o); writer.add(i); aOut = o; aIn = i }
+        }
+
+        guard reader.startReading(), writer.startWriting() else { return nil }
+        writer.startSession(atSourceTime: .zero)
+
+        let finished: Bool = await withTaskGroup(of: Bool.self) { group in
+            group.addTask {
+                await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+                    let dg = DispatchGroup()
+                    dg.enter()
+                    vIn.requestMediaDataWhenReady(on: DispatchQueue(label: "tenzy.tc.v")) {
+                        while vIn.isReadyForMoreMediaData {
+                            // Leave on end-of-stream, a failed append, OR a reader/writer error — so the
+                            // group always balances and the continuation always resumes (no dangling hang
+                            // if an append pushes the writer into a not-ready failed state).
+                            if writer.status == .failed || reader.status == .failed || reader.status == .cancelled {
+                                vIn.markAsFinished(); dg.leave(); break
+                            }
+                            guard let s = vOut.copyNextSampleBuffer(), vIn.append(s) else {
+                                vIn.markAsFinished(); dg.leave(); break
+                            }
+                        }
+                    }
+                    if let aIn, let aOut {
+                        dg.enter()
+                        aIn.requestMediaDataWhenReady(on: DispatchQueue(label: "tenzy.tc.a")) {
+                            while aIn.isReadyForMoreMediaData {
+                                if writer.status == .failed || reader.status == .failed || reader.status == .cancelled {
+                                    aIn.markAsFinished(); dg.leave(); break
+                                }
+                                guard let s = aOut.copyNextSampleBuffer(), aIn.append(s) else {
+                                    aIn.markAsFinished(); dg.leave(); break
+                                }
+                            }
+                        }
+                    }
+                    dg.notify(queue: .global(qos: .userInitiated)) { writer.finishWriting { cont.resume() } }
+                }
+                return writer.status == .completed
+            }
+            group.addTask {
+                try? await Task.sleep(nanoseconds: UInt64(timeout * 1_000_000_000))
+                reader.cancelReading(); writer.cancelWriting()
+                return false
+            }
+            let first = await group.next() ?? false
+            group.cancelAll()
+            return first
+        }
+        if finished { progress?(1); return out }
+        try? FileManager.default.removeItem(at: out)
+        return nil
     }
 
     /// Keep only [start, end].

@@ -27,10 +27,12 @@ enum AIEngine {
     enum AIError: LocalizedError {
         case unavailable
         case empty
+        case timeout
         var errorDescription: String? {
             switch self {
             case .unavailable: return "On-device AI isn't available on this iPhone."
             case .empty: return "There was nothing to work with."
+            case .timeout: return "On-device AI took too long and was stopped."
             }
         }
     }
@@ -49,15 +51,27 @@ enum AIEngine {
         isAvailable ? "" : "On-device AI needs an iPhone 15 Pro or newer with Apple Intelligence turned on. It's free, runs entirely on your phone, and nothing is uploaded."
     }
 
-    /// One-shot generation. `instructions` sets the role; `prompt` is the user content.
-    static func run(instructions: String, prompt: String) async throws -> String {
+    /// One-shot generation. `instructions` sets the role; `prompt` is the user content. Bounded by a
+    /// hard timeout so a wedged on-device model can never hang a tool's spinner — every AI tool falls
+    /// back to its built-in engine (or shows a clean error) instead of freezing.
+    static func run(instructions: String, prompt: String, timeout: TimeInterval = 60) async throws -> String {
         let trimmed = prompt.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { throw AIError.empty }
         #if canImport(FoundationModels)
         if #available(iOS 26, *), isAvailable {
-            let session = LanguageModelSession { instructions }
-            let response = try await session.respond(to: trimmed)
-            return response.content
+            return try await withThrowingTaskGroup(of: String.self) { group in
+                group.addTask {
+                    let session = LanguageModelSession { instructions }
+                    return try await session.respond(to: trimmed).content
+                }
+                group.addTask {
+                    try await Task.sleep(nanoseconds: UInt64(timeout * 1_000_000_000))
+                    throw AIError.timeout
+                }
+                defer { group.cancelAll() }
+                guard let result = try await group.next() else { throw AIError.timeout }
+                return result
+            }
         }
         #endif
         throw AIError.unavailable

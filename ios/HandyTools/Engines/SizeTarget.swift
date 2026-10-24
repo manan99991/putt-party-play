@@ -113,14 +113,17 @@ enum SizeTarget {
 
     // MARK: Video — derive a bitrate from the target and duration, transcode with AVAssetWriter, retry tighter if needed.
 
-    static func video(url: URL, targetBytes: Int) async -> URL? {
+    static func video(url: URL, targetBytes: Int, progress: ((Double) -> Void)? = nil) async -> URL? {
         let asset = AVURLAsset(url: url)
         guard let duration = try? await asset.load(.duration).seconds, duration > 0 else { return nil }
         if let src = fileSize(url), src <= targetBytes { return url }
         let audioBps = 96_000
         var videoBps = max(120_000, Int(Double(targetBytes) * 8.0 / duration) - audioBps)
+        // Frame cap drops with bitrate — a 4K frame can't survive 300 kbps. Delegates to the one
+        // robust, bounded transcode in VideoEngine (handles any decodable source, never hangs).
+        func dimensionCap(_ bps: Int) -> CGFloat { bps < 1_200_000 ? 960 : (bps < 3_000_000 ? 1440 : 3840) }
         for _ in 0..<4 {
-            guard let out = await transcode(asset: asset, videoBps: videoBps, audioBps: audioBps) else { return nil }
+            guard let out = await VideoEngine.transcodeH264(asset, maxDimension: dimensionCap(videoBps), videoBps: videoBps, progress: progress) else { return nil }
             if let sz = fileSize(out), sz <= targetBytes { return out }
             try? FileManager.default.removeItem(at: out)
             videoBps = Int(Double(videoBps) * 0.78)
@@ -130,82 +133,5 @@ enum SizeTarget {
 
     static func fileSize(_ url: URL) -> Int? {
         (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? nil
-    }
-
-    private static func transcode(asset: AVURLAsset, videoBps: Int, audioBps: Int) async -> URL? {
-        guard let vTrack = try? await asset.loadTracks(withMediaType: .video).first else { return nil }
-        let aTrack = try? await asset.loadTracks(withMediaType: .audio).first
-        let natural = (try? await vTrack.load(.naturalSize)) ?? CGSize(width: 1280, height: 720)
-        let transform = (try? await vTrack.load(.preferredTransform)) ?? .identity
-
-        // Lower bitrates get a smaller frame too — bitrate alone can't save a 4K frame at 300 kbps.
-        let scale: CGFloat = videoBps < 1_200_000 ? 0.5 : (videoBps < 3_000_000 ? 0.75 : 1.0)
-        let outW = max(2, Int(natural.width * scale / 2) * 2)
-        let outH = max(2, Int(natural.height * scale / 2) * 2)
-
-        let out = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy-fit-\(UUID().uuidString.prefix(6)).mp4")
-        guard let reader = try? AVAssetReader(asset: asset), let writer = try? AVAssetWriter(outputURL: out, fileType: .mp4) else { return nil }
-
-        // Ask the decoder for already-scaled frames so writer dimensions match exactly.
-        let vOut = AVAssetReaderTrackOutput(track: vTrack, outputSettings: [
-            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA,
-            kCVPixelBufferWidthKey as String: outW,
-            kCVPixelBufferHeightKey as String: outH,
-        ])
-        vOut.alwaysCopiesSampleData = false
-        guard reader.canAdd(vOut) else { return nil }
-        reader.add(vOut)
-
-        let vIn = AVAssetWriterInput(mediaType: .video, outputSettings: [
-            AVVideoCodecKey: AVVideoCodecType.h264,
-            AVVideoWidthKey: outW, AVVideoHeightKey: outH,
-            AVVideoCompressionPropertiesKey: [
-                AVVideoAverageBitRateKey: videoBps,
-                AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel,
-            ],
-        ])
-        vIn.expectsMediaDataInRealTime = false
-        vIn.transform = transform
-        guard writer.canAdd(vIn) else { return nil }
-        writer.add(vIn)
-
-        var aOut: AVAssetReaderTrackOutput?
-        var aIn: AVAssetWriterInput?
-        if let aTrack {
-            let o = AVAssetReaderTrackOutput(track: aTrack, outputSettings: [AVFormatIDKey: kAudioFormatLinearPCM])
-            o.alwaysCopiesSampleData = false
-            let i = AVAssetWriterInput(mediaType: .audio, outputSettings: [
-                AVFormatIDKey: kAudioFormatMPEG4AAC, AVNumberOfChannelsKey: 2, AVSampleRateKey: 44_100, AVEncoderBitRateKey: audioBps,
-            ])
-            i.expectsMediaDataInRealTime = false
-            if reader.canAdd(o), writer.canAdd(i) { reader.add(o); writer.add(i); aOut = o; aIn = i }
-        }
-
-        guard reader.startReading(), writer.startWriting() else { return nil }
-        writer.startSession(atSourceTime: .zero)
-
-        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
-            let group = DispatchGroup()
-            group.enter()
-            vIn.requestMediaDataWhenReady(on: DispatchQueue(label: "tenzy.fit.video")) {
-                while vIn.isReadyForMoreMediaData {
-                    if let s = vOut.copyNextSampleBuffer() { vIn.append(s) }
-                    else { vIn.markAsFinished(); group.leave(); break }
-                }
-            }
-            if let aIn, let aOut {
-                group.enter()
-                aIn.requestMediaDataWhenReady(on: DispatchQueue(label: "tenzy.fit.audio")) {
-                    while aIn.isReadyForMoreMediaData {
-                        if let s = aOut.copyNextSampleBuffer() { aIn.append(s) }
-                        else { aIn.markAsFinished(); group.leave(); break }
-                    }
-                }
-            }
-            group.notify(queue: .global(qos: .userInitiated)) {
-                writer.finishWriting { cont.resume() }
-            }
-        }
-        return writer.status == .completed ? out : nil
     }
 }

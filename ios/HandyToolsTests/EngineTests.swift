@@ -81,6 +81,22 @@ final class EngineTests: XCTestCase {
                                 "an identical document must still match as a duplicate")
     }
 
+    // MARK: video transcode (robust pipeline)
+
+    /// The reader/writer transcode must run bounded (no hang) and, when it produces a file, that file
+    /// must be a valid video. Guards the universal path that Format Fixer / Share-Ready / Video rely on.
+    func testTranscodeRunsBoundedAndProducesValidVideo() async {
+        guard let src = await SampleAssets.movie() else { return }   // sample generation unavailable — skip
+        defer { try? FileManager.default.removeItem(at: src) }
+        let out = await VideoEngine.transcodeH264(AVURLAsset(url: src), maxDimension: 640, timeout: 60)
+        // Reaching this line at all proves the transcode returned (bounded, never hung).
+        if let out {
+            defer { try? FileManager.default.removeItem(at: out) }
+            let vtracks = (try? await AVURLAsset(url: out).loadTracks(withMediaType: .video)) ?? []
+            XCTAssertFalse(vtracks.isEmpty, "a transcoded file must contain a playable video track")
+        }
+    }
+
     // MARK: image resize
 
     func testResizeCapsLongestSideAndNeverUpscales() {

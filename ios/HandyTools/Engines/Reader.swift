@@ -132,12 +132,17 @@ import UIKit
             let u = utterance(s)
             sink.resumed = false
             let ok: Bool = await withCheckedContinuation { cont in
+                // A serial gate makes resume exactly-once, and a timer guarantees we resume even if the
+                // synthesizer never delivers its terminal empty buffer — so "Export audio" can't hang.
+                let gate = DispatchQueue(label: "tenzy.tts.export")
+                func finish(_ v: Bool) { gate.async { if !sink.resumed { sink.resumed = true; cont.resume(returning: v) } } }
                 writer.write(u) { buffer in
                     guard let pcm = buffer as? AVAudioPCMBuffer else { return }
-                    if pcm.frameLength == 0 { if !sink.resumed { sink.resumed = true; cont.resume(returning: true) }; return }
+                    if pcm.frameLength == 0 { finish(true); return }
                     if sink.file == nil { sink.file = try? AVAudioFile(forWriting: sink.url, settings: pcm.format.settings, commonFormat: pcm.format.commonFormat, interleaved: pcm.format.isInterleaved) }
                     try? sink.file?.write(from: pcm)
                 }
+                gate.asyncAfter(deadline: .now() + 25) { finish(false) }
             }
             if !ok { break }
         }
