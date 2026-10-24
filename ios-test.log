@@ -1,70 +1,71 @@
 == test.log (results)
-2026-10-24 15:01:45.282183+0000 HandyTools[8321:31153] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-2026-10-24 15:01:45.289558+0000 HandyTools[8321:31153] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (1.847 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.016 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionMatricesBehave]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.099 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.041 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (0.814 seconds).
+2026-10-24 15:29:11.525680+0000 HandyTools[10066:37155] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-10-24 15:29:11.526213+0000 HandyTools[10066:37155] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (2.706 seconds).
+Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.019 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.021 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionMatricesBehave]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.156 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.038 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:79: error: -[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments] : XCTAssertGreaterThan failed: ("3") is not greater than ("10") - two different documents must differ in many dHash bits so they're NOT grouped as duplicates
+Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' failed (0.069 seconds).
+Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (1.568 seconds).
 Test Case '-[HandyToolsTests.EngineTests testGeoFormatting]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGifFromPhotosHasEveryFrame]' passed (0.030 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.037 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.085 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMorseEncoding]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.014 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (0.215 seconds).
-Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (1.493 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.248 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (2.259 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (0.029 seconds).
-Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.013 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.371 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.036 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (0.872 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.149 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (1.910 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (4.828 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanRotationKeepsStampsAndInkInPlace]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.030 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (1.400 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.043 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst]' passed (0.014 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGifFromPhotosHasEveryFrame]' passed (0.040 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.052 seconds).
+Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.137 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMorseEncoding]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.025 seconds).
+Test Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (0.245 seconds).
+Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (2.072 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.022 seconds).
+Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.344 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (0.303 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (0.051 seconds).
+Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.021 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.620 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.050 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (1.401 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.257 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (2.860 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (6.081 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanRotationKeepsStampsAndInkInPlace]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.060 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (1.656 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.057 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst]' passed (0.016 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testShutterLabelNeverTrapsOnInvalidExposure]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (6.427 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (2.101 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (2.888 seconds).
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:942: error: -[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit] : XCTUnwrap failed: expected non-nil value of type "URL" - shrink failed
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' failed (7.309 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.071 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (0.540 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (0.301 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.067 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (0.419 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscodeRunsBoundedAndProducesValidVideo]' passed (0.971 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVaultCryptoRoundTripsAndRejectsTampering]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (0.199 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWifiPayloadRoundTripsThroughParser]' passed (0.083 seconds).
-	 Executed 51 tests, with 1 failure (0 unexpected) in 38.328 (38.350) seconds
-	 Executed 51 tests, with 1 failure (0 unexpected) in 38.328 (38.352) seconds
-	 Executed 51 tests, with 1 failure (0 unexpected) in 38.328 (38.353) seconds
-Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (93.961 seconds).
-Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (15.225 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 109.186 (109.189) seconds
-Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (277.439 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 277.439 (277.441) seconds
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (164.689 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (10.432 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (12.447 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 187.567 (187.570) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 574.192 (574.203) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 574.192 (574.205) seconds
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (9.064 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (2.750 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (4.002 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:945: error: -[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit] : XCTUnwrap failed: expected non-nil value of type "URL" - shrink failed
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' failed (12.275 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.093 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (0.731 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (0.407 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.092 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (11.179 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTranscodeRunsBoundedAndProducesValidVideo]' passed (7.354 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVaultCryptoRoundTripsAndRejectsTampering]' passed (0.028 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (0.367 seconds).
+Test Case '-[HandyToolsTests.EngineTests testWifiPayloadRoundTripsThroughParser]' passed (0.162 seconds).
+	 Executed 51 tests, with 2 failures (0 unexpected) in 69.482 (69.518) seconds
+	 Executed 51 tests, with 2 failures (0 unexpected) in 69.482 (69.520) seconds
+	 Executed 51 tests, with 2 failures (0 unexpected) in 69.482 (69.543) seconds
+Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (119.929 seconds).
+Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (21.334 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 141.262 (141.269) seconds
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (474.766 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 474.766 (474.770) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (285.892 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (17.276 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (20.843 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 324.011 (324.015) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 940.039 (940.067) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 940.039 (940.070) seconds
 ** TEST FAILED **
