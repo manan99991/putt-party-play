@@ -7,13 +7,13 @@
 
 name: Mobile QA agent
 on:
+  push:
+    branches: [handytools]        # active branch (workflow_dispatch/schedule only fire from default)
   schedule:
     - cron: "23 7 * * 1"          # weekly deep run
   workflow_dispatch:
     inputs:
       steps: { description: exploration budget, default: "120" }
-  # Per-push is intentionally omitted until the agent is past emulator-noise tuning. To gate every
-  # commit once it's reliable, add:  push: { branches: [handytools] }   (that's the active branch).
 
 permissions: { contents: write, checks: write }
 
