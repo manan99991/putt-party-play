@@ -1,6 +1,7 @@
 import SwiftUI
 import GoogleMobileAds
 import AppTrackingTransparency
+import UserMessagingPlatform
 
 /// AdMob ad unit ids. The LIVE Tenzy units are used only in a build installed from the App Store.
 /// Every other build — TestFlight, dev — uses Google's reserved test units, which always fill and
@@ -29,6 +30,7 @@ enum AdUnits {
 @MainActor
 enum AdsBootstrap {
     private static var started = false
+    private static var adsStarted = false
 
     static func start() {
         guard !started else { return }
@@ -39,21 +41,43 @@ enum AdsBootstrap {
         // MEASURE: cold-start timing — CI measures with the xctrace 'App Launch' template.
         let testing = ProcessInfo.processInfo.arguments.contains("-screenshots") || ProcessInfo.processInfo.arguments.contains("-uitest")
         if testing {
-            if !ProcessInfo.processInfo.arguments.contains("-uitest") { MobileAds.shared.start() }
-        } else {
-            var token: NSObjectProtocol?
-            token = NotificationCenter.default.addObserver(
-                forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main
-            ) { _ in
-                if let token { NotificationCenter.default.removeObserver(token) }
-                MobileAds.shared.start()
-            }
+            // Tests/screenshots use Google's test units and skip consent entirely.
+            if !ProcessInfo.processInfo.arguments.contains("-uitest") { startAdsOnce() }
+            return
+        }
+        var token: NSObjectProtocol?
+        token = NotificationCenter.default.addObserver(
+            forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main
+        ) { _ in
+            if let token { NotificationCenter.default.removeObserver(token) }
+            gatherConsentThenStartAds()
         }
         // ATT prompt after a short delay so it doesn't collide with the first-launch UI.
-        if testing { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             ATTrackingManager.requestTrackingAuthorization { _ in }
         }
+    }
+
+    private static func startAdsOnce() {
+        guard !adsStarted else { return }
+        adsStarted = true
+        MobileAds.shared.start()
+    }
+
+    /// Gather EEA/UK/CH consent with the Google UMP SDK before any ad request. Where no form is
+    /// required (most of the world), `canRequestAds` is already true and ads start immediately;
+    /// where it is required, ads start only after the user answers. Nothing here blocks the UI.
+    private static func gatherConsentThenStartAds() {
+        let root = UIApplication.shared.connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController }.first
+        let params = RequestParameters()
+        ConsentInformation.shared.requestConsentInfoUpdate(with: params) { _ in
+            ConsentForm.loadAndPresentIfRequired(from: root) { _ in
+                if ConsentInformation.shared.canRequestAds { startAdsOnce() }
+            }
+        }
+        // Returning users who already consented can serve ads without waiting for the update.
+        if ConsentInformation.shared.canRequestAds { startAdsOnce() }
     }
 }
 

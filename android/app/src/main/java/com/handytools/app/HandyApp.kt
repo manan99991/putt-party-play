@@ -46,7 +46,9 @@ class HandyApp : Application() {
                         deferredInitDone = true
                         // MEASURE: cold-start timing ends here (first frame drawn). CI fills in
                         // Macrobenchmark StartupTimingMetric before/after numbers.
-                        MobileAds.initialize(this@HandyApp) {}
+                        // Gather EEA/UK consent (UMP) before initialising ads; outside those
+                        // regions this fires immediately. Billing is independent of consent.
+                        com.handytools.app.ads.Consent.gather(activity) { MobileAds.initialize(this@HandyApp) {} }
                         billing.start()
                     }
                 }
