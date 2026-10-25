@@ -1,13 +1,13 @@
-[16:23:16]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[16:23:16]: fastlane 2.241.1 (Ruby 3.2.3, gem)
-[16:23:16]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
-[16:23:17]: [32m------------------------------[0m
-[16:23:17]: [32m--- Step: default_platform ---[0m
-[16:23:17]: [32m------------------------------[0m
-[16:23:17]: [32mDriving the lane 'android listing' 🚀[0m
-[16:23:17]: [32m--------------------[0m
-[16:23:17]: [32m--- Step: supply ---[0m
-[16:23:17]: [32m--------------------[0m
+[18:27:19]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[18:27:19]: fastlane 2.241.1 (Ruby 3.2.3, gem)
+[18:27:19]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[18:27:19]: [32m------------------------------[0m
+[18:27:19]: [32m--- Step: default_platform ---[0m
+[18:27:19]: [32m------------------------------[0m
+[18:27:19]: [32mDriving the lane 'android listing' 🚀[0m
+[18:27:19]: [32m--------------------[0m
+[18:27:19]: [32m--- Step: supply ---[0m
+[18:27:19]: [32m--------------------[0m
 
 +------------------------------------------------------------------------------------------------------+
 |                                      [32mSummary for supply 2.241.1[0m                                      |
@@ -41,14 +41,14 @@
 | PLATFORM_NAME    | android         |
 | LANE_NAME        | android listing |
 +------------------+-----------------+
-[16:23:17]: [31mCalled from Fastfile at line 12[0m
-[16:23:17]: [31m```[0m
-[16:23:17]: [31m    10:	  # declarations (data safety, content rating) completed before Play accepts a listing push.[0m
-[16:23:17]: [31m    11:	  lane :listing do[0m
-[16:23:17]: [31m => 12:	    supply([0m
-[16:23:17]: [31m    13:	      track: "internal",[0m
-[16:23:17]: [31m    14:	      skip_upload_apk: true,[0m
-[16:23:17]: [31m```[0m
+[18:27:20]: [31mCalled from Fastfile at line 12[0m
+[18:27:20]: [31m```[0m
+[18:27:20]: [31m    10:	  # declarations (data safety, content rating) completed before Play accepts a listing push.[0m
+[18:27:20]: [31m    11:	  lane :listing do[0m
+[18:27:20]: [31m => 12:	    supply([0m
+[18:27:20]: [31m    13:	      track: "internal",[0m
+[18:27:20]: [31m    14:	      skip_upload_apk: true,[0m
+[18:27:20]: [31m```[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -59,7 +59,7 @@
 | 💥   | [31msupply[0m           | 0           |
 +------+------------------+-------------+
 
-[16:23:18]: [31mfastlane finished with errors[0m
+[18:27:20]: [31mfastlane finished with errors[0m
 [31m
 [!] More than one release found in this track. Please specify with the :version_code option to select a release.[0m
-[16:23:18]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[18:27:20]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
