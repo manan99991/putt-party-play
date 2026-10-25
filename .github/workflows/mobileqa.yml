@@ -34,13 +34,14 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: "8.11.1" }   # repo has no gradle-wrapper.jar, so use the gradle binary
 
-      # ---- NATIVE Android debug build (x86_64 only, for the emulator)
+      # ---- NATIVE Android debug build (for the emulator)
       - name: Build debug APK
         working-directory: android
         run: |
           set -o pipefail
-          ./gradlew :app:assembleDebug --no-daemon 2>&1 | tee ../build.log
+          gradle --no-daemon assembleDebug --stacktrace --warning-mode none 2>&1 | tee ../build.log
           cp app/build/outputs/apk/debug/app-debug.apk ../app-debug.apk && ls -la ../app-debug.apk
 
       - name: Install mobileqa + Appium
