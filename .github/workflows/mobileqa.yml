@@ -49,6 +49,25 @@ jobs:
           pip install "git+${MOBILEQA_REPO}"
           npm install -g appium && appium driver install uiautomator2
 
+      # Pick the brain: free Gemini Flash (vision) when GEMINI_API_KEY is set, else Anthropic, else
+      # the heuristic. The gemini model name is only exported when its key exists, so the fallbacks
+      # keep their own default model.
+      - name: Select LLM brain
+        run: |
+          if [ -n "${{ secrets.GEMINI_API_KEY }}" ]; then
+            {
+              echo "MOBILEQA_LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/"
+              echo "MOBILEQA_LLM_API_KEY=${{ secrets.GEMINI_API_KEY }}"
+              echo "MOBILEQA_MODEL=gemini-2.5-flash"
+              echo "MOBILEQA_VISION_MODEL=gemini-2.5-flash"
+            } >> "$GITHUB_ENV"
+            echo "Brain: FREE Gemini Flash (vision)"
+          elif [ -n "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+            echo "Brain: Anthropic (paid)"
+          else
+            echo "Brain: heuristic — set the free GEMINI_API_KEY secret for deep functional + UX/UI testing"
+          fi
+
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
