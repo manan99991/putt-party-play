@@ -115,7 +115,7 @@ jobs:
           nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status >/dev/null && break; sleep 2; done
           python -m mobileqa.cli doctor qa/app.android.yaml || true
-          timeout 42m python -m mobileqa.cli ci qa/app.android.yaml --steps ${{ github.event.inputs.steps || 120 }}
+          timeout 42m python -m mobileqa.cli ci qa/app.android.yaml --steps ${{ github.event.inputs.steps || 240 }}
 
       - name: Upload report
         if: always()
@@ -161,7 +161,7 @@ jobs:
         run: |
           nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status >/dev/null && break; sleep 2; done
-          python -m mobileqa.cli ci qa/app.ios.yaml --steps ${{ github.event.inputs.steps || 120 }}
+          python -m mobileqa.cli ci qa/app.ios.yaml --steps ${{ github.event.inputs.steps || 240 }}
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4

@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
@@ -68,6 +69,11 @@ import com.handytools.app.ui.PaywallScreen
 class MainActivity : ComponentActivity() {
 
     private var sharedUrl by mutableStateOf<String?>(null)
+    // A route delivered to an already-running activity (singleTop reuse → onNewIntent, e.g. a deep
+    // link while the app is open). onCreate handles the cold-start route via startDestination; this
+    // state carries a warm route into the composition so it actually navigates instead of being
+    // dropped. Observed by a LaunchedEffect inside setContent.
+    private var pendingRoute by mutableStateOf<String?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +90,11 @@ class MainActivity : ComponentActivity() {
             HandyTheme {
                 val nav = rememberNavController()
                 androidx.compose.runtime.CompositionLocalProvider(com.handytools.app.ads.LocalRemoveAds provides { nav.navigate("paywall") }) {
+                // A warm deep link (route delivered via onNewIntent) navigates here. launchSingleTop
+                // avoids stacking duplicates when the same route is re-opened.
+                LaunchedEffect(pendingRoute) {
+                    pendingRoute?.let { r -> nav.navigate(r) { launchSingleTop = true }; pendingRoute = null }
+                }
                 NavHost(
                     nav, startDestination = startRoute,
                     // Prompt 1 motion: push = slide-in ~24dp (6% of width) + fade over base
@@ -159,7 +170,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        setIntent(intent)
         sharedUrl = extractSharedUrl(intent)
+        // Honour a route delivered to the already-running activity (deep link / QA route-seeding),
+        // which singleTop would otherwise drop. Pro-preview stays debug-only, exactly as in onCreate.
+        val routeExtra = intent.getStringExtra("route")
+        if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
+        if (routeExtra != null) pendingRoute = routeExtra
+        else if (sharedUrl != null) pendingRoute = "shortcut"
     }
 
     private fun extractSharedUrl(i: Intent?): String? {

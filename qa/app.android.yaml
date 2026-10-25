@@ -36,37 +36,39 @@ app:
   # The non-nil route also skips onboarding, and Pro stays unlocked from the initial `-e route
   # homepro` launch (same process), so Pro tools open too. route_activity defaults to `activity`.
   route_extra: route
+  # The 30 tool routes exactly as HomeScreen's HTool grid opens them (onOpen(t.route)) — the real
+  # Android nav destinations, not the iOS/catalog ids. Three pages of the launcher grid.
   routes:
-    - fitit
-    - scan
-    - studio
-    - video
-    - formatfix
-    - scrub
-    - cleaner
-    - qrwifi
-    - stitch
-    - shareready
-    - light
+    - spaceclean
+    - storage
     - contacts
-    - measure
-    - magnify
-    - procam
-    - gpsdash
-    - audiolab
-    - rest
-    - colorvision
-    - sorted
-    - textstudio
-    - translate
-    - voicenotes
-    - livecaptions
-    - shield
+    - flash
+    - qr
+    - myphone
+    - texttools
     - lens
+    - translate
+    - magnifier
+    - measure
+    - scan
+    - pdftools
+    - shrink
+    - bgremove
+    - audiotext
+    - signfill
+    - exif
+    - sorted
     - memory
-    - datagrab
-    - describe
-    - vault
+    - ai_summarize
+    - ai_extract
+    - ai_rewrite
+    - ai_ask
+    - ai_proofread
+    - ai_describe
+    - ai_handwriting
+    - ai_reply
+    - ai_identify
+    - ai_sticker
 
 device:
   platform: android
