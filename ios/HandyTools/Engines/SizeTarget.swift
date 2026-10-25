@@ -113,10 +113,14 @@ enum SizeTarget {
 
     // MARK: Video — derive a bitrate from the target and duration, transcode with AVAssetWriter, retry tighter if needed.
 
-    static func video(url: URL, targetBytes: Int, progress: ((Double) -> Void)? = nil) async -> URL? {
+    /// Best-effort shrink. Returns the SMALLEST file it can make and whether it met the target —
+    /// nil only when the source can't be transcoded at all. A caller can hand the result back either
+    /// way: a 184 MB clip that only reaches 11 MB is still a real reduction, not a dead end. This is
+    /// what the shrink tools should use so they never promise, fail, and block.
+    static func videoBestEffort(url: URL, targetBytes: Int, progress: ((Double) -> Void)? = nil) async -> (url: URL, fits: Bool)? {
         let asset = AVURLAsset(url: url)
         guard let duration = try? await asset.load(.duration).seconds, duration > 0 else { return nil }
-        if let src = fileSize(url), src <= targetBytes { return url }
+        if let src = fileSize(url), src <= targetBytes { return (url, true) }
         // Longest source side, so we can shrink RELATIVE to it — an absolute cap bigger than the
         // source would never downscale, and very noisy content can't hit a small target at full res.
         var longest: CGFloat = 1920
@@ -137,16 +141,28 @@ enum SizeTarget {
         // small steps; a near-incompressible 1080p clip needs them to land under an aggressive target.
         func bitrateCeiling(_ bps: Int) -> CGFloat { bps < 1_200_000 ? 960 : (bps < 3_000_000 ? 1440 : 3840) }
         let shrink: [CGFloat] = [1.0, 0.7, 0.5, 0.35, 0.25, 0.18, 0.13]
+        var best: URL?; var bestSize = Int.max
         for s in shrink {
             let cap = max(192, min(bitrateCeiling(videoBps), longest * s))   // never below ~192px
-            // Don't give up if one attempt fails — keep going to the next (smaller, lower-bitrate)
-            // pass. A tighter frame is both more likely to encode and more likely to fit the budget.
             if let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, progress: progress) {
-                if let sz = fileSize(out), sz <= targetBytes { return out }
-                try? FileManager.default.removeItem(at: out)
+                let sz = fileSize(out) ?? Int.max
+                if sz <= targetBytes { if let b = best { try? FileManager.default.removeItem(at: b) }; return (out, true) }
+                // Keep the smallest attempt as the fallback; a tighter frame next pass may still fit.
+                if sz < bestSize { if let b = best { try? FileManager.default.removeItem(at: b) }; best = out; bestSize = sz }
+                else { try? FileManager.default.removeItem(at: out) }
             }
             videoBps = Int(Double(videoBps) * 0.8)
         }
+        if let best { return (best, false) }   // couldn't hit the target, but hand back the smallest we got
+        return nil
+    }
+
+    /// Strict: the result only if it lands at or under the target, else nil. Used by Share-Ready and
+    /// the size-target test, which need a hard "it fits" guarantee.
+    static func video(url: URL, targetBytes: Int, progress: ((Double) -> Void)? = nil) async -> URL? {
+        guard let r = await videoBestEffort(url: url, targetBytes: targetBytes, progress: progress) else { return nil }
+        if r.fits { return r.url }
+        try? FileManager.default.removeItem(at: r.url)
         return nil
     }
 

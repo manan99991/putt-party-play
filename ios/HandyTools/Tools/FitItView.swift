@@ -23,6 +23,7 @@ struct FitItView: View {
     @State private var outputBytes = 0
     @State private var working = false
     @State private var errorText: String?
+    @State private var fitNote: String?   // "smallest we could do" when a video can't reach the target
 
     private var overQuota: Bool { !Usage.hasRoom("fitit", limit: Limits.freeFitPerDay) }
 
@@ -99,7 +100,7 @@ struct FitItView: View {
             Text("Must be under").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(availablePresets, id: \.bytes) { p in
-                    HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = "" }
+                    HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = ""; errorText = nil }
                 }
             }
             HStack(spacing: HandySpacing.s8) {
@@ -119,10 +120,11 @@ struct FitItView: View {
     private var resultCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             HStack(spacing: HandySpacing.s12) {
-                Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.success).font(.system(size: 22))
+                Image(systemName: fitNote == nil ? "checkmark.circle.fill" : "exclamationmark.circle.fill").foregroundStyle(fitNote == nil ? HandyColor.success : HandyColor.accent).font(.system(size: 22))
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Fits — \(SizeTarget.format(outputBytes))").font(HandyFont.bodyStrong)
+                    Text(fitNote == nil ? "Fits — \(SizeTarget.format(outputBytes))" : "Smallest — \(SizeTarget.format(outputBytes))").font(HandyFont.bodyStrong)
                     Text("Down from \(SizeTarget.format(sourceBytes)) · \(savingsText)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    if let fitNote { Text(fitNote).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
                 }
                 Spacer()
             }
@@ -156,7 +158,7 @@ struct FitItView: View {
 
     // MARK: loading
 
-    private func reset() { output = nil; outputBytes = 0; errorText = nil }
+    private func reset() { output = nil; outputBytes = 0; errorText = nil; fitNote = nil }
 
     private func loadPhotoItem(_ item: PhotosPickerItem?) {
         guard let item else { return }
@@ -187,29 +189,33 @@ struct FitItView: View {
         let cleaned = customValue.replacingOccurrences(of: ",", with: ".")
         guard let v = Double(cleaned), v > 0 else { return }
         targetBytes = Int(v * (customUnitMB ? 1_000_000 : 1_000))
+        errorText = nil
     }
 
     // MARK: run
 
     private func run() {
         guard let source else { return }
-        guard Usage.use("fitit", limit: Limits.freeFitPerDay) else { return }
-        working = true; errorText = nil; output = nil
+        guard Usage.hasRoom("fitit", limit: Limits.freeFitPerDay) else { return }   // gate only — charge on success
+        working = true; errorText = nil; fitNote = nil; output = nil
         let target = targetBytes
         Task { @MainActor in
+            defer { working = false }
             switch source {
             case .image(let img):
-                if let d = await SizeTarget.image(img, targetBytes: target) { output = .data(d, ext: "jpg"); outputBytes = d.count }
-                else { errorText = "Couldn't get this photo under \(SizeTarget.format(target)) without ruining it. Try a slightly larger limit." }
+                guard let d = await SizeTarget.image(img, targetBytes: target) else { errorText = "Couldn't get this photo under \(SizeTarget.format(target)) without ruining it. Try a slightly larger limit."; return }
+                output = .data(d, ext: "jpg"); outputBytes = d.count
             case .pdf(let data):
-                if let d = await SizeTarget.pdf(data, targetBytes: target) { output = .data(d, ext: "pdf"); outputBytes = d.count }
-                else { errorText = "Couldn't get this PDF under \(SizeTarget.format(target)). Try a larger limit or fewer pages." }
+                guard let d = await SizeTarget.pdf(data, targetBytes: target) else { errorText = "Couldn't get this PDF under \(SizeTarget.format(target)). Try a larger limit or fewer pages."; return }
+                output = .data(d, ext: "pdf"); outputBytes = d.count
             case .video(let url):
-                if let out = await SizeTarget.video(url: url, targetBytes: target) { output = .file(out); outputBytes = SizeTarget.fileSize(out) ?? 0 }
-                else { errorText = "Couldn't get this video under \(SizeTarget.format(target)). Try a larger limit or trim it first." }
+                // Best-effort: always hand back the smallest we can make, and say so if it's still over.
+                guard let r = await SizeTarget.videoBestEffort(url: url, targetBytes: target) else { errorText = "Couldn't process this video — it may be DRM-protected or damaged."; return }
+                output = .file(r.url); outputBytes = SizeTarget.fileSize(r.url) ?? 0
+                if !r.fits { fitNote = "Smallest without wrecking it. To get under \(SizeTarget.format(target)), trim it shorter first." }
             }
-            working = false
-            if output != nil { HandyHaptics.success() }
+            _ = Usage.use("fitit", limit: Limits.freeFitPerDay)   // only now, on a real result
+            HandyHaptics.success()
         }
     }
 }

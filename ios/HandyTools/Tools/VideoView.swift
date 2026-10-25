@@ -25,6 +25,7 @@ struct VideoView: View {
     @State private var mode: Mode = .shrink
     @State private var working = false
     @State private var errorText: String?
+    @State private var resultNote: String?   // honest "smallest we could do" line when a shrink can't hit the target
     @State private var result: Output?
     @State private var player: AVPlayer?
 
@@ -130,7 +131,7 @@ struct VideoView: View {
             Text("Must be under").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(videoPresets, id: \.bytes) { p in
-                    HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = "" }
+                    HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = ""; errorText = nil }
                 }
             }
             HStack(spacing: HandySpacing.s8) {
@@ -228,12 +229,13 @@ struct VideoView: View {
     private func resultCard(_ r: Output) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             HStack(spacing: HandySpacing.s12) {
-                Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.success).font(.system(size: 22))
+                Image(systemName: resultNote == nil ? "checkmark.circle.fill" : "exclamationmark.circle.fill").foregroundStyle(resultNote == nil ? HandyColor.success : HandyColor.accent).font(.system(size: 22))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(resultTitle(r)).font(HandyFont.bodyStrong)
                     if sourceBytes > 0, r.kind == .video, r.bytes < sourceBytes {
                         Text("Down from \(SizeTarget.format(sourceBytes)) · \(Int((1 - Double(r.bytes) / Double(sourceBytes)) * 100))% smaller").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
+                    if let resultNote { Text(resultNote).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
                 }
                 Spacer()
             }
@@ -262,7 +264,7 @@ struct VideoView: View {
 
     private func loadVideo(_ item: PhotosPickerItem?) {
         guard let item else { return }
-        result = nil; errorText = nil; player?.pause(); player = nil
+        result = nil; errorText = nil; resultNote = nil; player?.pause(); player = nil
         Task {
             guard let movie = try? await item.loadTransferable(type: MovieImport.self) else { await MainActor.run { errorText = "Couldn't load that video." }; return }
             let d = await VideoEngine.duration(movie.url)
@@ -319,21 +321,34 @@ struct VideoView: View {
         let cleaned = customValue.replacingOccurrences(of: ",", with: ".")
         guard let v = Double(cleaned), v > 0 else { return }
         targetBytes = Int(v * (customUnitMB ? 1_000_000 : 1_000))
+        errorText = nil
     }
 
     // MARK: run
 
     private func run() {
         guard let src = source else { return }
-        guard Usage.use("video", limit: Limits.freeVideoPerDay) else { return }
-        working = true; errorText = nil; result = nil; player?.pause(); player = nil
+        guard Usage.hasRoom("video", limit: Limits.freeVideoPerDay) else { return }   // gate only — charge on success
+        working = true; errorText = nil; resultNote = nil; result = nil; player?.pause(); player = nil
         let m = mode, target = targetBytes, s = trimStart, e = trimEnd
         let gFrom = gifFrom, gLen = gifLength, gFPS = gifFPS, gSpeed = gifSpeed, gW = gifWidths[gifWidthIdx].1
         Task { @MainActor in
             defer { working = false }
+            // Shrink is best-effort: always hand back the smallest we can make, and say so plainly if
+            // it's still over the limit — never a dead end, and a failed attempt never costs a free job.
+            if m == .shrink {
+                let r = await VideoEngine.backgrounded("tenzy.video") { await SizeTarget.videoBestEffort(url: src, targetBytes: target) }
+                guard let r else { errorText = failureText(m); return }   // truly unreadable → no charge
+                _ = Usage.use("video", limit: Limits.freeVideoPerDay)
+                result = Output(url: r.url, bytes: SizeTarget.fileSize(r.url) ?? 0, kind: .video)
+                player = AVPlayer(url: r.url)
+                if !r.fits { resultNote = "This is the smallest I can make it without wrecking it. To get under \(SizeTarget.format(target)), trim it shorter first, then shrink." }
+                HandyHaptics.success()
+                return
+            }
             let out: URL? = await VideoEngine.backgrounded("tenzy.video") { () async -> URL? in
                 switch m {
-                case .shrink: return await SizeTarget.video(url: src, targetBytes: target)
+                case .shrink: return nil   // handled above
                 case .trim: return await VideoEngine.trim(src, start: s, end: e)
                 case .convert: return await VideoEngine.toMP4(src)
                 case .mute: return await VideoEngine.mute(src)
@@ -341,7 +356,8 @@ struct VideoView: View {
                 case .gif: return await tenzyGIFFromVideo(url: src, start: gFrom, duration: gLen, fps: gFPS, speed: gSpeed, maxDim: gW)
                 }
             }
-            guard let out else { errorText = failureText(m); return }
+            guard let out else { errorText = failureText(m); return }   // nothing produced → no charge
+            _ = Usage.use("video", limit: Limits.freeVideoPerDay)
             let kind: Output.Kind = m == .audio ? .audio : (m == .gif ? .gif : .video)
             result = Output(url: out, bytes: SizeTarget.fileSize(out) ?? 0, kind: kind)
             if kind == .video { player = AVPlayer(url: out) }
@@ -350,13 +366,13 @@ struct VideoView: View {
     }
 
     private func runPhotoGIF() {
-        guard !gifPhotos.isEmpty, Usage.use("video", limit: Limits.freeVideoPerDay) else { return }
-        working = true; errorText = nil; result = nil
+        guard !gifPhotos.isEmpty, Usage.hasRoom("video", limit: Limits.freeVideoPerDay) else { return }
+        working = true; errorText = nil; resultNote = nil; result = nil
         let datas = gifPhotos, delay = gifPhotoDelay, w = gifWidths[gifWidthIdx].1
         Task { @MainActor in
             let url = await Task.detached(priority: .userInitiated) { tenzyGIFFromImageData(datas, delay: delay, maxDim: w) }.value
             working = false
-            if let url { result = Output(url: url, bytes: SizeTarget.fileSize(url) ?? 0, kind: .gif); HandyHaptics.success() }
+            if let url { _ = Usage.use("video", limit: Limits.freeVideoPerDay); result = Output(url: url, bytes: SizeTarget.fileSize(url) ?? 0, kind: .gif); HandyHaptics.success() }
             else { errorText = "Couldn't build a GIF from those photos." }
         }
     }
