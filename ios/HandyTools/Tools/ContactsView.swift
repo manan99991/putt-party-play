@@ -11,6 +11,8 @@ struct ContactsView: View {
     @State private var error: String?
     @State private var backupURL: URL?
     @State private var pendingMerge: [ContactRec]?
+    @State private var pendingMergeAll: [[ContactRec]]?
+    @State private var mergeProgress: String?
 
     var body: some View {
         ToolPage(title: "Contacts", subtitle: "Find duplicates, merge them without losing a number, and back everything up — all on your phone.") {
@@ -39,6 +41,14 @@ struct ContactsView: View {
             Button("Cancel", role: .cancel) { pendingMerge = nil }
         } message: {
             Text("Every number and email is kept on one contact; the duplicates are removed. This can't be undone, so make sure you've backed up.")
+        }
+        .confirmationDialog("Merge all duplicate groups?",
+                            isPresented: Binding(get: { pendingMergeAll != nil }, set: { if !$0 { pendingMergeAll = nil } }),
+                            titleVisibility: .visible) {
+            Button("Merge all \(pendingMergeAll?.count ?? 0) groups", role: .destructive) { if let gs = pendingMergeAll { doMergeAll(gs) }; pendingMergeAll = nil }
+            Button("Cancel", role: .cancel) { pendingMergeAll = nil }
+        } message: {
+            Text("Each group collapses to one contact, keeping every number and email. This can't be undone, so make sure you've backed up.")
         }
     }
 
@@ -74,6 +84,16 @@ struct ContactsView: View {
 
         if r.duplicateGroups.isEmpty {
             Text("No duplicates found.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+        }
+
+        // Merge every duplicate group in one go — each group collapses to a single contact.
+        if r.duplicateGroups.count > 1 {
+            Button { pendingMergeAll = r.duplicateGroups } label: {
+                HStack {
+                    if busy { ProgressView().tint(.white) }
+                    Label(mergeProgress ?? "Merge all \(r.duplicateGroups.count) duplicate groups", systemImage: "arrow.triangle.merge")
+                }.frame(maxWidth: .infinity)
+            }.primaryButton().disabled(busy)
         }
 
         ForEach(Array(r.duplicateGroups.enumerated()), id: \.offset) { _, g in
@@ -132,6 +152,26 @@ struct ContactsView: View {
                 await MainActor.run { busy = false; HandyHaptics.success(); scan() }
             } catch {
                 await MainActor.run { self.error = "Couldn't merge those contacts."; busy = false }
+            }
+        }
+    }
+
+    /// Merge every duplicate group in turn. One failing group doesn't stop the rest; the count of any
+    /// that couldn't merge is surfaced at the end, and a rescan refreshes what's left.
+    private func doMergeAll(_ groups: [[ContactRec]]) {
+        busy = true; error = nil
+        Task {
+            var failed = 0
+            for (i, g) in groups.enumerated() {
+                await MainActor.run { mergeProgress = "Merging \(i + 1) of \(groups.count)…" }
+                do { try await Task.detached { try ContactsEngine.merge(g) }.value }
+                catch { failed += 1 }
+            }
+            await MainActor.run {
+                busy = false; mergeProgress = nil
+                if failed > 0 { self.error = "\(failed) group\(failed == 1 ? "" : "s") couldn't be merged. The rest were." }
+                else { HandyHaptics.success() }
+                scan()
             }
         }
     }
