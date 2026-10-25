@@ -918,7 +918,7 @@ final class EngineTests: XCTestCase {
     }
 
     func testSizeTargetVideoLandsUnderLimit() async throws {
-        let fixture = await Self.movie(seconds: 2.0, size: CGSize(width: 640, height: 480), noisy: true)
+        let fixture = await Self.movie(seconds: 3.0, size: CGSize(width: 960, height: 540), noisy: true)
         let src = try XCTUnwrap(fixture)
         let original = SizeTarget.fileSize(src) ?? 0
         XCTAssertGreaterThan(original, 200_000, "fixture too small to be a meaningful shrink test")
@@ -926,20 +926,6 @@ final class EngineTests: XCTestCase {
         let outURL = await SizeTarget.video(url: src, targetBytes: target)
         let out = try XCTUnwrap(outURL, "shrink failed")
         XCTAssertLessThanOrEqual(SizeTarget.fileSize(out) ?? Int.max, target)
-    }
-
-    // DIAGNOSTIC: pinpoint whether VideoEngine.transcodeH264 fails at native resolution,
-    // at a scaled size, or everywhere. The assertion messages surface in CI annotations.
-    func testTranscodeH264Diagnostic() async throws {
-        let fixture = await Self.movie(seconds: 2.0, size: CGSize(width: 640, height: 480), noisy: true)
-        let src = try XCTUnwrap(fixture, "DIAG fixture nil")
-        let asset = AVURLAsset(url: src)
-        let nat = await VideoEngine.transcodeH264(asset, maxDimension: nil, videoBps: 1_900_000)
-        XCTAssertNotNil(nat, "DIAG transcodeH264 native(640x480) -> nil")
-        let s480 = await VideoEngine.transcodeH264(asset, maxDimension: 480, videoBps: 1_400_000)
-        XCTAssertNotNil(s480, "DIAG transcodeH264 scaled(480) -> nil")
-        let s256 = await VideoEngine.transcodeH264(asset, maxDimension: 256, videoBps: 700_000)
-        XCTAssertNotNil(s256, "DIAG transcodeH264 scaled(256) -> nil")
     }
 
     // MARK: fixtures
@@ -1007,7 +993,11 @@ final class EngineTests: XCTestCase {
         guard writer.startWriting() else { return nil }
         writer.startSession(atSourceTime: .zero)
         let frames = Int(seconds * Double(fps))
-        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+        // One fixed background reused for every frame, so the clip has real frame-to-frame redundancy
+        // and can actually be re-compressed — unlike fresh per-frame noise, which no encoder can shrink
+        // to a fraction of itself. The moving white block below supplies the motion. This is what a
+        // genuine "needs shrinking" video looks like, so the size-target engine has honest work to do.
+        let baseCG = (noisy ? Self.noisy(size) : Self.bands(size)).cgImage!
         for i in 0..<frames {
             while !input.isReadyForMoreMediaData { try? await Task.sleep(nanoseconds: 5_000_000) }
             guard let pool = adaptor.pixelBufferPool else { return nil }
@@ -1019,8 +1009,7 @@ final class EngineTests: XCTestCase {
                                 bytesPerRow: CVPixelBufferGetBytesPerRow(buf), space: CGColorSpaceCreateDeviceRGB(),
                                 bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
             if let ctx {
-                let img = noisy ? Self.noisy(size) : Self.bands(size)
-                ctx.draw(img.cgImage!, in: CGRect(origin: .zero, size: size))
+                ctx.draw(baseCG, in: CGRect(origin: .zero, size: size))
                 ctx.setFillColor(UIColor.white.cgColor)
                 ctx.fill(CGRect(x: CGFloat(i % Int(size.width - 40)), y: size.height / 2 - 20, width: 40, height: 40))
             }
