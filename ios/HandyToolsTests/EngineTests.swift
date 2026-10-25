@@ -921,6 +921,16 @@ final class EngineTests: XCTestCase {
         let fixture = await Self.movie(seconds: 3.0, size: CGSize(width: 1920, height: 1080), noisy: true)
         let src = try XCTUnwrap(fixture)
         let original = SizeTarget.fileSize(src) ?? 0
+        // TEMP DIAGNOSTIC: report actual sizes so the fixture/target can be set from data.
+        do {
+            let asset = AVURLAsset(url: src)
+            var diag = ["orig=\(original)"]
+            for dim in [CGFloat(1280), 960, 768, 512, 384, 256] {
+                let out = await VideoEngine.transcodeH264(asset, maxDimension: dim, videoBps: 400_000)
+                diag.append("\(Int(dim))=\(out.flatMap { SizeTarget.fileSize($0) } ?? -1)")
+            }
+            XCTFail("DIAGSIZES " + diag.joined(separator: " "))
+        }
         XCTAssertGreaterThan(original, 200_000, "fixture too small to be a meaningful shrink test")
         let target = original / 3
         let outURL = await SizeTarget.video(url: src, targetBytes: target)
