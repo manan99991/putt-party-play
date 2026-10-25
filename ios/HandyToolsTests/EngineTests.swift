@@ -918,7 +918,7 @@ final class EngineTests: XCTestCase {
     }
 
     func testSizeTargetVideoLandsUnderLimit() async throws {
-        let fixture = await Self.movie(seconds: 3.0, size: CGSize(width: 960, height: 540), noisy: true)
+        let fixture = await Self.movie(seconds: 3.0, size: CGSize(width: 1920, height: 1080), noisy: true)
         let src = try XCTUnwrap(fixture)
         let original = SizeTarget.fileSize(src) ?? 0
         XCTAssertGreaterThan(original, 200_000, "fixture too small to be a meaningful shrink test")
