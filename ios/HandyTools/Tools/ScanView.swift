@@ -473,7 +473,7 @@ struct ScanView: View {
     }
 
     private func export() {
-        guard !pages.isEmpty, Usage.use("scan", limit: Limits.freeScanPerDay) else { return }
+        guard !pages.isEmpty, Usage.hasRoom("scan", limit: Limits.freeScanPerDay) else { return }
         commitInk(to: selected)
         working = true; errorText = nil; outputs = []; jpgOutputs = []
         let snapshot = pages, opts = DocEngine.PDFOptions(searchable: searchable, pageSize: pageSize)
@@ -493,7 +493,7 @@ struct ScanView: View {
             await MainActor.run {
                 working = false
                 if out.isEmpty { errorText = limit > 0 ? "Couldn't get it under that size. Try Black & white, fewer pages, or a larger limit." : "Couldn't build the PDF." }
-                else { outputs = out; outputBytes = total; HandyHaptics.success(); Interstitials.shared.showIfReady() }
+                else { _ = Usage.use("scan", limit: Limits.freeScanPerDay); outputs = out; outputBytes = total; HandyHaptics.success(); Interstitials.shared.showIfReady() }
             }
         }
     }

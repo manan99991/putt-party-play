@@ -189,14 +189,14 @@ struct ScrubView: View {
 
     private func make() {
         guard let original else { return }
-        guard Usage.use("scrub", limit: Limits.freeScrubPerDay) else { return }
+        guard Usage.hasRoom("scrub", limit: Limits.freeScrubPerDay) else { return }
         let rects = boxes.filter { $0.on }.map { $0.rect }
         working = true; errorText = nil
         Task { @MainActor in
             // Full-size re-draw + JPEG encode runs off the main thread so a large photo can't freeze it.
             let d = await Task.detached(priority: .userInitiated) { Scrubber.render(original, rects: rects) }.value
             working = false
-            if let d { result = d; HandyHaptics.success() }
+            if let d { _ = Usage.use("scrub", limit: Limits.freeScrubPerDay); result = d; HandyHaptics.success() }
             else { errorText = "Couldn't make the clean copy. Try another photo." }
         }
     }

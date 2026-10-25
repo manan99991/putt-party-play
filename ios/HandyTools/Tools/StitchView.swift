@@ -90,7 +90,7 @@ struct StitchView: View {
     }
 
     private func run() {
-        guard Usage.use("stitch", limit: Limits.freeStitchPerDay) else { return }
+        guard Usage.hasRoom("stitch", limit: Limits.freeStitchPerDay) else { return }
         working = true; errorText = nil
         let input = shots
         Task { @MainActor in
@@ -98,6 +98,7 @@ struct StitchView: View {
             // off the main thread — a 12-shot tall image would otherwise lock the UI for seconds.
             let out = await Task.detached(priority: .userInitiated) { Stitcher.stitch(input) }.value
             if let out {
+                _ = Usage.use("stitch", limit: Limits.freeStitchPerDay)
                 result = out
                 resultPNG = await Task.detached(priority: .userInitiated) { out.pngData() }.value
                 working = false

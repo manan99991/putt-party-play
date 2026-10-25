@@ -112,7 +112,7 @@ struct ShareReadyView: View {
     }
 
     private func run() {
-        guard Usage.use("shareready", limit: Limits.freeFitPerDay) else { return }
+        guard Usage.hasRoom("shareready", limit: Limits.freeFitPerDay) else { return }
         working = true; outputs = []; skipped = []
         let items = queue, r = recipe
         Task { @MainActor in
@@ -137,7 +137,7 @@ struct ShareReadyView: View {
                 }
             }
             outputs = urls; working = false; progress = ""
-            if !urls.isEmpty { HandyHaptics.success() }
+            if !urls.isEmpty { _ = Usage.use("shareready", limit: Limits.freeFitPerDay); HandyHaptics.success() }
         }
     }
 }

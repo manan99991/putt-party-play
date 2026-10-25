@@ -185,7 +185,7 @@ struct StudioView: View {
 
     private func run() {
         guard let src = original else { return }
-        guard Usage.use("studio", limit: Limits.freeStudioPerDay) else { return }
+        guard Usage.hasRoom("studio", limit: Limits.freeStudioPerDay) else { return }
         working = true; errorText = nil; output = nil; sheet = nil
         let m = mode, bg = backgrounds[bgIdx].1, spec = ImageStudio.passportSpecs[specIdx], pbg = passportBG
         let rIdx = resizeIdx, sIdx = sizeLimitIdx, fmt = format, q = CGFloat(quality), up = enhanceUpscale
@@ -231,7 +231,7 @@ struct StudioView: View {
                 preview = src
                 switch fmt { case .jpg: output = .jpg(d); case .png: output = .png(d); case .heic: output = .heic(d) }
             }
-            if output != nil { HandyHaptics.success() }
+            if output != nil { _ = Usage.use("studio", limit: Limits.freeStudioPerDay); HandyHaptics.success() }
         }
     }
 }

@@ -99,7 +99,8 @@ struct VoiceNotesView: View {
         let t = speech.transcript
         Task { @MainActor in
             defer { working = false }
-            if AIEngine.isAvailable, Usage.use("ai", limit: Limits.freeAiPerDay), let out = try? await AIEngine.run(instructions: "Read a spoken transcript. Return two sections exactly: 'SUMMARY:' with 3–5 short bullet lines, then 'TODOS:' with every task, commitment or follow-up as one bullet each (or 'none'). No other text.", prompt: t) {
+            if AIEngine.isAvailable, Usage.hasRoom("ai", limit: Limits.freeAiPerDay), let out = try? await AIEngine.run(instructions: "Read a spoken transcript. Return two sections exactly: 'SUMMARY:' with 3–5 short bullet lines, then 'TODOS:' with every task, commitment or follow-up as one bullet each (or 'none'). No other text.", prompt: t) {
+                _ = Usage.use("ai", limit: Limits.freeAiPerDay)
                 let parts = out.components(separatedBy: "TODOS:")
                 summary = Self.bullets(parts.first?.replacingOccurrences(of: "SUMMARY:", with: "") ?? "")
                 todos = Self.bullets(parts.count > 1 ? parts[1] : "").filter { $0.lowercased() != "none" }

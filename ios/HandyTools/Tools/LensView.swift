@@ -223,9 +223,10 @@ struct LensView: View {
         Task { @MainActor in
             defer { working = false }
             guard AIEngine.isAvailable else { HandyHaptics.success(); return }
-            guard Usage.use("ai", limit: Limits.freeAiPerDay) else { errorText = "Out of free AI actions today — the glossary and red-flag checks still ran."; return }
+            guard Usage.hasRoom("ai", limit: Limits.freeAiPerDay) else { errorText = "Out of free AI actions today — the glossary and red-flag checks still ran."; return }
             do {
                 explanation = try await AIEngine.run(instructions: "You translate legal, medical, insurance and financial documents into plain English for an ordinary adult. Use exactly these four headings on their own lines: 'WHAT IT SAYS:', 'WHAT IT MEANS FOR YOU:', 'WATCH OUT FOR:', 'QUESTIONS TO ASK:'. Short sentences, concrete, no jargon without explaining it, under 220 words total. Never give a diagnosis, legal conclusion or tell them what to decide; point out what to check and who to ask.", prompt: t)
+                _ = Usage.use("ai", limit: Limits.freeAiPerDay)
                 HandyHaptics.success()
             } catch { errorText = error.localizedDescription }
         }

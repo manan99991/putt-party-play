@@ -168,12 +168,13 @@ struct CaptureView: View {
     }
 
     private func ask(_ text: String) {
-        guard Usage.use("ai", limit: Limits.freeAiPerDay) else { errorText = "You've used today's \(Limits.freeAiPerDay) free AI answers."; return }
+        guard Usage.hasRoom("ai", limit: Limits.freeAiPerDay) else { errorText = "You've used today's \(Limits.freeAiPerDay) free AI answers."; return }
         aiBusy = true; aiAnswer = ""
         Task { @MainActor in
             defer { aiBusy = false }
             do {
                 aiAnswer = try await AIEngine.run(instructions: "You explain text a person just photographed — a sign, label, menu, form, notice, or message. In 2–4 short sentences say what it is and what matters for them. Plain words, no preamble.", prompt: text)
+                _ = Usage.use("ai", limit: Limits.freeAiPerDay)
             } catch { errorText = error.localizedDescription }
         }
     }

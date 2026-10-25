@@ -84,7 +84,7 @@ struct FormatFixView: View {
     }
 
     private func convert() {
-        guard Usage.use("formatfix", limit: Limits.freeConvertPerDay) else { return }
+        guard Usage.hasRoom("formatfix", limit: Limits.freeConvertPerDay) else { return }
         working = true; outputs = []; errorText = nil
         let batch = loaded, fmt = imageFormat
         Task {
@@ -103,7 +103,7 @@ struct FormatFixView: View {
             let done = urls
             await MainActor.run {
                 outputs = done; working = false; progress = ""
-                if done.isEmpty { errorText = "Nothing could be converted. Try a different batch." } else { HandyHaptics.success() }
+                if done.isEmpty { errorText = "Nothing could be converted. Try a different batch." } else { _ = Usage.use("formatfix", limit: Limits.freeConvertPerDay); HandyHaptics.success() }
             }
         }
     }

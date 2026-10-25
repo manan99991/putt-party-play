@@ -97,8 +97,8 @@ struct TextStudioView: View {
         Task { @MainActor in
             defer { working = false }
             if AIEngine.isAvailable {
-                guard Usage.use("ai", limit: Limits.freeAiPerDay) else { if a.needsAI { errorText = "Out of free AI actions for today." ; return }; fallback(input, a); return }
-                do { output = try await AIEngine.run(instructions: instructions(a, t), prompt: input).trimmingCharacters(in: .whitespacesAndNewlines); HandyHaptics.success(); return }
+                guard Usage.hasRoom("ai", limit: Limits.freeAiPerDay) else { if a.needsAI { errorText = "Out of free AI actions for today." ; return }; fallback(input, a); return }
+                do { output = try await AIEngine.run(instructions: instructions(a, t), prompt: input).trimmingCharacters(in: .whitespacesAndNewlines); _ = Usage.use("ai", limit: Limits.freeAiPerDay); HandyHaptics.success(); return }
                 catch { note = "On-device AI was busy — used the built-in engine instead." }
             }
             fallback(input, a)

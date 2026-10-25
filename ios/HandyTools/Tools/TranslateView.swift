@@ -176,7 +176,7 @@ struct TranslateView: View {
 
     private func translate(_ text: String, from: String, to: String, speak: Bool) {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines); guard !t.isEmpty else { return }
-        if mode != .talk { guard Usage.use("translate", limit: Limits.freeTranslatePerDay) else { return } }
+        if mode != .talk { guard Usage.hasRoom("translate", limit: Limits.freeTranslatePerDay) else { return } }
         busy = true; errorText = nil
         pending = (t, from, to, speak)
         let newConfig = TranslationSession.Configuration(source: Locale.Language(identifier: from), target: Locale.Language(identifier: to))
@@ -185,7 +185,7 @@ struct TranslateView: View {
 
     private func deliver(_ result: String, for p: (text: String, from: String, to: String, speak: Bool)) {
         busy = false; pending = nil
-        if mode == .talk, let side = talkingSide { exchanges.append((side, p.text, result)); talkingSide = nil } else { output = result }
+        if mode == .talk, let side = talkingSide { exchanges.append((side, p.text, result)); talkingSide = nil } else { output = result; _ = Usage.use("translate", limit: Limits.freeTranslatePerDay) }
         if p.speak { say(result, lang: p.to) }
         HandyHaptics.success()
     }

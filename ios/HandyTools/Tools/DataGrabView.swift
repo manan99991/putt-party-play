@@ -149,12 +149,13 @@ struct DataGrabView: View {
     private func money(_ v: Double) -> String { (receipt.currency.isEmpty ? "" : receipt.currency) + String(format: "%.2f", v) }
 
     private func refine() {
-        guard Usage.use("ai", limit: Limits.freeAiPerDay) else { errorText = "You've used today's \(Limits.freeAiPerDay) free AI actions."; return }
+        guard Usage.hasRoom("ai", limit: Limits.freeAiPerDay) else { errorText = "You've used today's \(Limits.freeAiPerDay) free AI actions."; return }
         aiBusy = true
         Task { @MainActor in
             defer { aiBusy = false }
             do {
                 aiText = try await AIEngine.run(instructions: "You extract structured data from OCR text of a \(kind.rawValue.lowercased()). Return only a clean 'Label: value' list (one per line). For receipts list each item with its price, then Subtotal, Tax, Tip, Total, Merchant, Date. Fix obvious OCR errors. No commentary.", prompt: text)
+                _ = Usage.use("ai", limit: Limits.freeAiPerDay)
             } catch { errorText = error.localizedDescription }
         }
     }
