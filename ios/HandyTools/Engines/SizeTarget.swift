@@ -129,17 +129,23 @@ enum SizeTarget {
         // Each retry both lowers the bitrate AND shrinks the frame relative to the source, so the
         // output always gets smaller (works for a 320p clip and a 4K clip alike). An absolute
         // bitrate ceiling still caps huge frames. Delegates to the one robust, bounded transcode.
+        //
+        // The ladder goes down to ~1/8 of the source's longest side on purpose: hard-to-compress
+        // footage (noise, grain, confetti, fast motion) makes the H.264 encoder blow past a low
+        // requested bitrate, so for those clips RESOLUTION is the only lever that actually shrinks
+        // the file. Compressible clips hit the target in the first pass or two and never reach the
+        // small steps; a near-incompressible 1080p clip needs them to land under an aggressive target.
         func bitrateCeiling(_ bps: Int) -> CGFloat { bps < 1_200_000 ? 960 : (bps < 3_000_000 ? 1440 : 3840) }
-        let shrink: [CGFloat] = [1.0, 0.75, 0.55, 0.4]
-        for i in 0..<4 {
-            let cap = min(bitrateCeiling(videoBps), longest * shrink[i])
+        let shrink: [CGFloat] = [1.0, 0.7, 0.5, 0.35, 0.25, 0.18, 0.13]
+        for s in shrink {
+            let cap = max(192, min(bitrateCeiling(videoBps), longest * s))   // never below ~192px
             // Don't give up if one attempt fails — keep going to the next (smaller, lower-bitrate)
             // pass. A tighter frame is both more likely to encode and more likely to fit the budget.
             if let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, progress: progress) {
                 if let sz = fileSize(out), sz <= targetBytes { return out }
                 try? FileManager.default.removeItem(at: out)
             }
-            videoBps = Int(Double(videoBps) * 0.78)
+            videoBps = Int(Double(videoBps) * 0.8)
         }
         return nil
     }
