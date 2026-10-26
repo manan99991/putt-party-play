@@ -5,6 +5,10 @@ on:
     branches: [handytools]
     paths: ["android/**", ".github/workflows/android.yml"]
   workflow_dispatch:
+    inputs:
+      ship:
+        description: "Set to 'yes' to upload the AAB + listing to Play (otherwise build-only)"
+        default: "no"
 
 permissions:
   contents: write
@@ -84,7 +88,7 @@ jobs:
       # Upload the signed AAB via fastlane supply (same tool that successfully pushed the listing).
       # NO continue-on-error: a failure here must surface, not be masked as success.
       - name: Upload AAB to Play
-        if: ${{ success() && env.PLAY_JSON != '' }}
+        if: ${{ success() && env.PLAY_JSON != '' && (contains(github.event.head_commit.message, 'Ship-Play=YES') || github.event.inputs.ship == 'yes') }}
         run: |
           echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
           export SUPPLY_JSON_KEY_PATH="$GITHUB_WORKSPACE/play-key.json"
@@ -107,7 +111,7 @@ jobs:
       # service-account secret is set, and never blocks the build. Play accepts this only after the
       # app's one-time content declarations (data safety, content rating) are completed in console.
       - name: Push Play store listing (metadata + graphics)
-        if: ${{ success() && env.PLAY_JSON != '' }}
+        if: ${{ success() && env.PLAY_JSON != '' && (contains(github.event.head_commit.message, 'Ship-Play=YES') || github.event.inputs.ship == 'yes') }}
         continue-on-error: true
         run: |
           echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
