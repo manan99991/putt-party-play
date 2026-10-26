@@ -25,6 +25,13 @@ import com.handytools.app.tools.alarm.AlarmRingPreview
 import com.handytools.app.tools.awake.KeepAwakeScreen
 import com.handytools.app.tools.clipboard.ClipboardScreen
 import com.handytools.app.tools.flashlight.FlashlightScreen
+import com.handytools.app.tools.studfinder.StudFinderScreen
+import com.handytools.app.tools.parked.ParkedScreen
+import com.handytools.app.tools.netscout.NetworkScoutScreen
+import com.handytools.app.tools.signfill.DocSignerScreen
+import com.handytools.app.tools.hearing.HearingBoostScreen
+import com.handytools.app.tools.heartrate.HeartRateScreen
+import com.handytools.app.tools.audiocut.AudioCutterScreen
 import com.handytools.app.tools.ai.AiScreen
 import com.handytools.app.tools.lens.LensScreen
 import com.handytools.app.tools.memory.MemoryScreen
@@ -129,6 +136,13 @@ class MainActivity : ComponentActivity() {
                     composable("scratchpad") { ScratchpadScreen() }
                     composable("awake") { KeepAwakeScreen() }
                     composable("flash") { FlashlightScreen() }
+                    composable("studfinder") { StudFinderScreen() }
+                    composable("parked") { ParkedScreen() }
+                    composable("netscout") { NetworkScoutScreen() }
+                    composable("signfill") { DocSignerScreen() }
+                    composable("hearing") { HearingBoostScreen() }
+                    composable("heartrate") { HeartRateScreen() }
+                    composable("audiocut") { AudioCutterScreen() }
                     composable("timer") { TimersScreen() }
                     composable("measure") { MeasureScreen() }
                     composable("wallet") { WalletScreen() }
@@ -153,7 +167,7 @@ class MainActivity : ComponentActivity() {
                     composable("texttools") { TextToolsScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "studfinder", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)

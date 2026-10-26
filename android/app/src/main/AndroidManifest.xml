@@ -19,6 +19,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Where'd I Park: drop a GPS pin at the car and measure the walk back (location stays on-device) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Ads -->
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <!-- Cleaned photos / scanned docs saved to Pictures via MediaStore (no storage perm needed on 29+) -->

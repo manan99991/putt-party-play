@@ -50,6 +50,12 @@ import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Sensors
+import androidx.compose.material.icons.outlined.LocalParking
+import androidx.compose.material.icons.outlined.NetworkCheck
+import androidx.compose.material.icons.outlined.Hearing
+import androidx.compose.material.icons.outlined.MonitorHeart
+import androidx.compose.material.icons.outlined.ContentCut
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.TextFields
@@ -109,23 +115,18 @@ val TOOLS = listOf(
     HTool("signfill", "Sign & Fill", "Sign a doc, export PDF", Icons.Outlined.Draw, 2, keywords = listOf("sign","signature","fill","document","pdf","form","contract")),
     HTool("exif", "Photo Metadata", "Strip photo location", Icons.Outlined.Info, 2, keywords = listOf("photo","metadata","exif","location","gps","strip","privacy")),
     HTool("sorted", "Sorted", "Snap a bill → calendar it", Icons.Outlined.EventNote, 2, true, listOf("bill","letter","document","appointment","form","notice","invoice","due","deadline","calendar","remind","scan","amount","pay","admin","paperwork")),
-    // Page 3 · AI
-    HTool("memory", "Memory", "Ask your screenshots anything", Icons.Outlined.ImageSearch, 3, true, listOf("memory","find","search","photos","screenshot","wifi","password","code","confirmation","parking","remember","where","receipt","ask","saved")),
-    HTool("ai_summarize", "Summarize", "Get the gist fast", Icons.Outlined.AutoAwesome, 3, true, listOf("summarize","summary","tldr","shorten","ai","text")),
-    HTool("ai_extract", "Extract to Data", "Receipt to clean data", Icons.Outlined.AutoAwesome, 3, true, listOf("extract","data","receipt","card","ai","fields")),
-    HTool("ai_rewrite", "Rewrite & Tone", "Clearer, nicer words", Icons.Outlined.AutoAwesome, 3, true, listOf("rewrite","tone","grammar","improve","ai","edit")),
-    HTool("ai_ask", "Ask a Screenshot", "Explain a screenshot", Icons.Outlined.AutoAwesome, 3, true, listOf("ask","screenshot","explain","help","ai","understand")),
-    HTool("ai_proofread", "Proofread", "Catch typos fast", Icons.Outlined.AutoAwesome, 3, true, listOf("proofread","grammar","spelling","typos","ai","check")),
-    HTool("ai_describe", "Describe Image", "Caption any photo", Icons.Outlined.AutoAwesome, 3, true, listOf("describe","caption","alt","ai","photo","vision")),
-    HTool("ai_handwriting", "Handwriting to Text", "Notes photo to text", Icons.Outlined.AutoAwesome, 3, true, listOf("handwriting","notes","ocr","ai","text","photo")),
-    HTool("ai_reply", "Draft a Reply", "Draft a reply", Icons.Outlined.AutoAwesome, 3, true, listOf("reply","draft","message","respond","ai","email")),
-    HTool("ai_identify", "Identify", "What is this?", Icons.Outlined.AutoAwesome, 3, true, listOf("identify","plant","object","landmark","ai","recognize")),
-    HTool("ai_sticker", "Make a Sticker", "Make a sticker", Icons.Outlined.AutoAwesome, 3, true, listOf("sticker","image","generate","draw","ai","emoji")),
+    // Page 3 · Everyday tools that work on every phone (no flagship-only AI needed)
+    HTool("studfinder", "Stud & Metal Finder", "Find studs, pipes & wiring", Icons.Outlined.Sensors, 3, keywords = listOf("stud","metal","finder","wall","pipe","wiring","nail","screw","magnet","detector","hang","drill","mount")),
+    HTool("parked", "Where'd I Park", "Pin the car, walk back", Icons.Outlined.LocalParking, 3, keywords = listOf("park","parking","car","find","lot","garage","pin","location","gps","remember","where","vehicle")),
+    HTool("netscout", "Network Scout", "See who's on your Wi-Fi", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","lan","scout","who","connected")),
+    HTool("hearing", "Hearing Boost", "Amplify sound to earbuds", Icons.Outlined.Hearing, 3, keywords = listOf("hearing","hear","amplify","boost","ear","loud","sound","assist","listen","volume","aid")),
+    HTool("heartrate", "Heart Rate", "Pulse from your fingertip", Icons.Outlined.MonitorHeart, 3, keywords = listOf("heart","rate","pulse","bpm","fingertip","camera","health","beats","measure")),
+    HTool("audiocut", "Ringtone & Audio Cutter", "Trim audio, make ringtones", Icons.Outlined.ContentCut, 3, keywords = listOf("ringtone","audio","cut","cutter","trim","music","mp3","song","clip","sound","edit","crop")),
 )
 
 fun toolsOnPage(p: Int) = TOOLS.filter { it.page == p }
 
-/** Google-style ranked search across all 30 tools. */
+/** Google-style ranked search across every tool. */
 fun searchTools(raw: String): List<HTool> {
     val query = raw.lowercase().trim()
     if (query.isEmpty()) return emptyList()
@@ -190,7 +191,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
         // Search field
         TextField(
             value = query, onValueChange = { query = it },
-            placeholder = { Text("Search 30 tools…") },
+            placeholder = { Text("Search ${TOOLS.size} tools…") },
             leadingIcon = { Icon(Icons.Outlined.Search, null, tint = Handy.palette.textSecondary) },
             trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, "Clear") } },
             singleLine = true,

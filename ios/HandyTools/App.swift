@@ -236,11 +236,15 @@ struct ToolDestination: View {
     var body: some View {
         // Pro tools show the unlock screen for free users. Test/screenshot builds bypass the gate so
         // the every-tool smoke suite and the store-screenshot capture still reach the real tools.
-        if let tool = TOOLS.first(where: { $0.id == id }), tool.pro, !store.isPremium, !Launch.uitest, !Launch.screenshots, !AppEnv.isTestBuild {
-            ProLockView(tool: tool)
-        } else {
-            destination
+        Group {
+            if let tool = TOOLS.first(where: { $0.id == id }), tool.pro, !store.isPremium, !Launch.uitest, !Launch.screenshots, !AppEnv.isTestBuild {
+                ProLockView(tool: tool)
+            } else {
+                destination
+            }
         }
+        // Carry the tool id down into the shared ToolPage scaffold so it can show the right page art.
+        .environment(\.toolID, id)
     }
 
     @ViewBuilder private var destination: some View {
@@ -512,42 +516,41 @@ struct ToolCard: View {
     @EnvironmentObject var store: StoreManager
     let tool: Tool
     var body: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s4) {
-            ZStack {
-                if let asset = tool.asset {
-                    // Custom designed icon — a complete squircle tile, shown edge-to-edge.
-                    Image(asset).resizable().scaledToFill().frame(width: 30, height: 30)
-                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                } else if tool.ai {
-                    Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 30, height: 30)
-                    Image(systemName: tool.icon).font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
-                } else {
-                    Circle().fill(HandyColor.accentSoft).frame(width: 30, height: 30)
-                    Image(systemName: tool.icon).font(.system(size: 15, weight: .medium)).foregroundStyle(HandyColor.accent)
+        VStack(spacing: 0) {
+            // Header band — solid surface, so the icon, title and blurb are always fully crisp.
+            VStack(alignment: .leading, spacing: HandySpacing.s4) {
+                ZStack {
+                    if let asset = tool.asset {
+                        // Custom designed icon — a complete squircle tile, shown edge-to-edge.
+                        Image(asset).resizable().scaledToFill().frame(width: 30, height: 30)
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    } else if tool.ai {
+                        Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 30, height: 30)
+                        Image(systemName: tool.icon).font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
+                    } else {
+                        Circle().fill(HandyColor.accentSoft).frame(width: 30, height: 30)
+                        Image(systemName: tool.icon).font(.system(size: 15, weight: .medium)).foregroundStyle(HandyColor.accent)
+                    }
                 }
+                Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.75)
+                Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.8)
             }
-            Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.75)
-            Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2).minimumScaleFactor(0.8)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .padding(.horizontal, HandySpacing.s12)
+            .padding(.top, HandySpacing.s8)
+            .padding(.bottom, HandySpacing.s4)
+
             Spacer(minLength: 0)
+
+            // Accent strip — the tool's themed hero illustration along the bottom, fading up into
+            // the header band. Re-skins automatically with the active theme + dark mode.
+            ToolCardStripArt(id: tool.id)
+                .frame(height: 34)
         }
-        // Every card is the same height — enough for the icon, title and a 2-line blurb — so the grid
-        // reads as a tidy, uniform set and a longer blurb is never clipped. The page scrolls if the
-        // uniform rows don't all fit, rather than squeezing rows shorter and cutting text off.
-        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104, alignment: .topLeading)
-        .padding(.horizontal, HandySpacing.s12)
-        .padding(.vertical, HandySpacing.s8)
-        .background {
-            // Surface + the tool's relevant motif, tinted by the theme accent at a whisper so text stays
-            // readable. Template-rendered, so one motif set re-skins across every theme.
-            ZStack {
-                HandyColor.surface
-                Image("bg_" + tool.id)
-                    .resizable().renderingMode(.template).scaledToFill()
-                    .foregroundStyle(HandyColor.accent).opacity(0.10)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
-            .allowsHitTesting(false)
-        }
+        // Every card is the same height so the grid reads as a tidy, uniform set.
+        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104, alignment: .top)
+        .background(HandyColor.surface)
+        .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
         .overlay(alignment: .topTrailing) {
             if tool.pro && !store.isPremium {
@@ -714,6 +717,7 @@ struct ToolPage<Content: View>: View {
     /// Optional bar pinned at the bottom, above the ad — stays put while the content scrolls.
     var footer: AnyView? = nil
     @ViewBuilder let content: () -> Content
+    @Environment(\.toolID) private var toolID
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
@@ -731,7 +735,7 @@ struct ToolPage<Content: View>: View {
             BannerAd()
                 .ignoresSafeArea(.keyboard, edges: .bottom)
         }
-        .background(HandyColor.bg)
+        .background { ToolPageArt(id: toolID) }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { Diagnostics.shared.currentTool = title }
     }
