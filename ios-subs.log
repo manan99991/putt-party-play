@@ -1,17 +1,17 @@
-[18:13:32]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[18:13:32]: fastlane 2.241.0 (Ruby 3.4.11, gem)
-[18:13:33]: Sending anonymous analytics information
-[18:13:33]: Learn more at https://docs.fastlane.tools/#metrics
-[18:13:33]: No personal or sensitive data is sent.
-[18:13:33]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[18:13:33]: [32m------------------------------[0m
-[18:13:33]: [32m--- Step: default_platform ---[0m
-[18:13:33]: [32m------------------------------[0m
-[18:13:33]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[18:13:33]: App 6824023361
-[18:13:34]: Territories: 175
-[18:13:34]: tenzy_pro_yearly exists (6824154364)
-[18:13:36]: [32m  price -> 201 near $19.99 (19.99)[0m
+[04:44:09]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[04:44:09]: fastlane 2.241.1 (Ruby 3.4.11, gem)
+[04:44:10]: Sending anonymous analytics information
+[04:44:10]: Learn more at https://docs.fastlane.tools/#metrics
+[04:44:10]: No personal or sensitive data is sent.
+[04:44:10]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[04:44:10]: [32m------------------------------[0m
+[04:44:10]: [32m--- Step: default_platform ---[0m
+[04:44:10]: [32m------------------------------[0m
+[04:44:10]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[04:44:11]: App 6824023361
+[04:44:11]: Territories: 175
+[04:44:11]: tenzy_pro_yearly exists (6824154364)
+[04:44:12]: [32m  price -> 201 near $19.99 (19.99)[0m
 +--------------------------------------+
 |             [33mLane Context[0m             |
 +------------------+-------------------+
@@ -19,22 +19,22 @@
 | PLATFORM_NAME    | ios               |
 | LANE_NAME        | ios subscriptions |
 +------------------+-------------------+
-[18:13:36]: [31mError in your Fastfile at line 122[0m
-[18:13:36]: [31m```[0m
-[18:13:36]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
-[18:13:36]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
-[18:13:36]: [31m => 122:	      r = klass.new(URI(base + path))[0m
-[18:13:36]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
-[18:13:36]: [31m    124:	      r["Content-Type"] = "application/json"[0m
-[18:13:36]: [31m```[0m
-[18:13:36]: [31mCalled from Fastfile at line 220[0m
-[18:13:36]: [31m```[0m
-[18:13:36]: [31m    218:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
-[18:13:36]: [31m    219:	        if cur.is_a?(Hash) && cur["data"][0m
-[18:13:36]: [31m => 220:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
-[18:13:36]: [31m    221:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
-[18:13:36]: [31m    222:	        end[0m
-[18:13:36]: [31m```[0m
+[04:44:12]: [31mError in your Fastfile at line 122[0m
+[04:44:12]: [31m```[0m
+[04:44:12]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
+[04:44:12]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
+[04:44:12]: [31m => 122:	      r = klass.new(URI(base + path))[0m
+[04:44:12]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
+[04:44:12]: [31m    124:	      r["Content-Type"] = "application/json"[0m
+[04:44:12]: [31m```[0m
+[04:44:12]: [31mCalled from Fastfile at line 220[0m
+[04:44:12]: [31m```[0m
+[04:44:12]: [31m    218:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
+[04:44:12]: [31m    219:	        if cur.is_a?(Hash) && cur["data"][0m
+[04:44:12]: [31m => 220:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
+[04:44:12]: [31m    221:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
+[04:44:12]: [31m    222:	        end[0m
+[04:44:12]: [31m```[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -44,7 +44,7 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[18:13:36]: [31mfastlane finished with errors[0m
+[04:44:12]: [31mfastlane finished with errors[0m
 
 Looking for related GitHub issues on fastlane/fastlane...
 
@@ -63,35 +63,26 @@ Looking for related GitHub issues on fastlane/fastlane...
 and 611 more at: https://github.com/fastlane/fastlane/search?q=undefined%20method%20%27new%27%20for%20nil&type=Issues&utf8=✓
 
 🔗  You can ⌘ + double-click on links to open them directly in your browser.
-
-#######################################################################
-# fastlane 2.241.1 is available. You are on 2.241.0.
-# You should use the latest version.
-# Please update using `gem install fastlane`.
-# To see what's new, open https://github.com/fastlane/fastlane/releases.
-#######################################################################
-# Run `gem cleanup` from time to time to speed up fastlane
-#######################################################################
 Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': [31m[!] undefined method 'new' for nil[0m (NoMethodError)
 	from Fastfile:220:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
 	from Fastfile:164:in 'Array#each'
 	from Fastfile:164:in 'block (2 levels) in Fastlane::FastFile#parsing_binding'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Fastlane::Runner#execute'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane_manager.rb:46:in 'Fastlane::LaneManager.cruise_lane'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/command_line_handler.rb:34:in 'Fastlane::CommandLineHandler.handle'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:110:in 'block (2 levels) in Fastlane::CommandsGenerator#run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in 'Fastlane::Runner#execute'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane_manager.rb:46:in 'Fastlane::LaneManager.cruise_lane'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/command_line_handler.rb:34:in 'Fastlane::CommandLineHandler.handle'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:110:in 'block (2 levels) in Fastlane::CommandsGenerator#run'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:187:in 'Commander::Command#call'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:157:in 'Commander::Command#run'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in 'Commander::Runner#run_active_command'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in 'Commander::Runner#run!'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in 'Commander::Runner#run!'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in 'Commander::Delegates#run!'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:363:in 'Fastlane::CommandsGenerator#run'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/bin/fastlane:25:in '<top (required)>'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:363:in 'Fastlane::CommandsGenerator#run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/bin/fastlane:25:in '<top (required)>'
 	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
 	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
@@ -99,22 +90,22 @@ Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': undefi
 	from Fastfile:220:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
 	from Fastfile:164:in 'Array#each'
 	from Fastfile:164:in 'block (2 levels) in Fastlane::FastFile#parsing_binding'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/runner.rb:45:in 'Fastlane::Runner#execute'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/lane_manager.rb:46:in 'Fastlane::LaneManager.cruise_lane'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/command_line_handler.rb:34:in 'Fastlane::CommandLineHandler.handle'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:110:in 'block (2 levels) in Fastlane::CommandsGenerator#run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in 'Fastlane::Runner#execute'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane_manager.rb:46:in 'Fastlane::LaneManager.cruise_lane'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/command_line_handler.rb:34:in 'Fastlane::CommandLineHandler.handle'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:110:in 'block (2 levels) in Fastlane::CommandsGenerator#run'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:187:in 'Commander::Command#call'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/command.rb:157:in 'Commander::Command#run'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in 'Commander::Runner#run_active_command'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in 'Commander::Runner#run!'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in 'Commander::Runner#run!'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in 'Commander::Delegates#run!'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:363:in 'Fastlane::CommandsGenerator#run'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
-	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.0/bin/fastlane:25:in '<top (required)>'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:363:in 'Fastlane::CommandsGenerator#run'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
+	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.1/bin/fastlane:25:in '<top (required)>'
 	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
 	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
