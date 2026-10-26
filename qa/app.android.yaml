@@ -81,7 +81,7 @@ device:
 
 run:
   max_steps: 400
-  max_minutes: 40
+  max_minutes: 85
   check_links: true
   check_values: true
   check_a11y: true

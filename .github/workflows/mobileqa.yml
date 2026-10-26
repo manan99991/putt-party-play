@@ -24,7 +24,7 @@ env:
 jobs:
   android:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 95
     steps:
       - uses: actions/checkout@v4
       - name: Free disk
@@ -115,7 +115,7 @@ jobs:
           nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status >/dev/null && break; sleep 2; done
           python -m mobileqa.cli doctor qa/app.android.yaml || true
-          timeout 42m python -m mobileqa.cli ci qa/app.android.yaml --steps ${{ github.event.inputs.steps || 240 }}
+          timeout 88m python -m mobileqa.cli ci qa/app.android.yaml --steps ${{ github.event.inputs.steps || 600 }}
 
       - name: Upload report
         if: always()
@@ -133,6 +133,34 @@ jobs:
             echo '```'; tail -n 90 mobileqa.log 2>/dev/null; echo '```'
             echo '```'; tail -n 30 emulator.log 2>/dev/null; echo '```'; } > c.md
           gh api repos/${{ github.repository }}/commits/${{ github.sha }}/comments -F body=@c.md >/dev/null || true
+      # Full findings dump so every bug (not just the gating ones) is reviewable without the artifact.
+      - name: Post full findings on the commit
+        if: always()
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          FJ=$(ls -t reports/*/findings.json 2>/dev/null | head -1)
+          [ -z "$FJ" ] && { echo "no findings.json"; exit 0; }
+          python3 - "$FJ" > findings.md <<'PY'
+          import json, sys
+          data = json.load(open(sys.argv[1]))
+          def n(s): return sum(1 for f in data if f.get("severity") == s)
+          print("### Tenzy QA — full findings: %d total (crit %d / high %d / med %d / low %d)"
+                % (len(data), n("critical"), n("high"), n("medium"), n("low")))
+          seen = set()
+          for sev in ("critical", "high", "medium"):
+              fs = [f for f in data if f.get("severity") == sev]
+              if not fs: continue
+              print("\n#### %s (%d)" % (sev.upper(), len(fs)))
+              for f in fs:
+                  d = (f.get("detail", "") or "").replace("\n", " ").strip()[:220]
+                  print("- **[%s]** %s/%s — %s%s" % (
+                      f.get("screen_name", "?"), f.get("category", "?"),
+                      f.get("step", "?"), f.get("title", "?"),
+                      (": " + d) if d else ""))
+          PY
+          # GitHub comment cap is 65535 chars — truncate defensively.
+          head -c 60000 findings.md > fc.md
+          gh api repos/${{ github.repository }}/commits/${{ github.sha }}/comments -F body=@fc.md >/dev/null && echo "posted full findings" || echo "post failed"
 
   # iOS already has a green pipeline in this repo — once it builds HandyTools.app for the simulator,
   # boot a simulator, start Appium (xcuitest driver), and run: python -m mobileqa.cli ci qa/app.ios.yaml.
