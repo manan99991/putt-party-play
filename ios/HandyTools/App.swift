@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 @main
 struct TenzyApp: App {
@@ -195,6 +196,40 @@ enum SearchSynonyms {
 @MainActor func tools(onPage p: Int) -> [Tool] { TOOLS.filter { $0.page == p } }
 
 /// Tool routing without AnyView: this @ViewBuilder switch is the single destination map.
+/// Turns OFF the NavigationStack edge swipe-back while a tool is on screen. Tools need horizontal
+/// drags of their own (Cleaner's drag-to-select, Scrub's redaction, crop/trim handles, sliders), and
+/// the system back-swipe was stealing those gestures — a drag would pop the tool and peek the home
+/// grid instead of doing the tool's job. The nav-bar Back button is always present, so back is never
+/// lost. The gesture is restored when the tool is dismissed.
+private struct NoSwipeBack: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController { Holder() }
+    func updateUIViewController(_ vc: UIViewController, context: Context) {}
+    final class Holder: UIViewController {
+        private func nav() -> UINavigationController? {
+            var p: UIViewController? = self
+            while let cur = p { if let n = cur as? UINavigationController { return n }; p = cur.parent }
+            return navigationController
+        }
+        override func didMove(toParent parent: UIViewController?) {
+            super.didMove(toParent: parent)
+            nav()?.interactivePopGestureRecognizer?.isEnabled = false
+        }
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            nav()?.interactivePopGestureRecognizer?.isEnabled = false
+        }
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            nav()?.interactivePopGestureRecognizer?.isEnabled = true
+        }
+    }
+}
+extension View {
+    func disablesSwipeBack() -> some View {
+        background(NoSwipeBack().frame(width: 0, height: 0).accessibilityHidden(true))
+    }
+}
+
 struct ToolDestination: View {
     let id: String
     @EnvironmentObject var store: StoreManager
@@ -321,7 +356,7 @@ struct HomeView: View {
                 case "settings": SettingsView().toolbarRole(.editor)
                 case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
                 case "privacy": PrivacyView().toolbarRole(.editor)
-                default: ToolDestination(id: id).toolbarRole(.editor)
+                default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
                 }
             }
             .toolbar(.hidden, for: .navigationBar)

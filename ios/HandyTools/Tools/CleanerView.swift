@@ -51,7 +51,7 @@ struct CleanerView: View {
                         footer: footer) {
             HowTo("cleaner", [
                 "Switch between Large, Duplicates and Received across the top.",
-                "Tap to select, press and drag across photos to select many at once, or use Select all.",
+                "Tap a photo to pick it. Tap Select, then drag across photos to grab a whole run at once — or use Select all.",
                 "Delete when ready — iOS always asks you to confirm before anything is removed.",
             ])
             if !authorized {
