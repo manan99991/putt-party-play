@@ -26,7 +26,6 @@ Daemon will be stopped at the end of the build
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
@@ -34,12 +33,12 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugAssets
 > Task :app:desugarDebugFileDependencies
 > Task :app:compressDebugAssets
-> Task :app:processDebugResources
+> Task :app:mergeDebugJniLibFolders
+> Task :app:processDebugManifestForPackage
 > Task :app:checkDebugDuplicateClasses
-> Task :app:kspDebugKotlin
+> Task :app:processDebugResources
 > Task :app:mergeExtDexDebug
 > Task :app:mergeLibDexDebug
-> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -47,6 +46,8 @@ Daemon will be stopped at the end of the build
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
+
+> Task :app:kspDebugKotlin
 
 > Task :app:compileDebugKotlin
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/OverlayBubble.kt:139:84 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
@@ -70,9 +71,9 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792989436405.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1793071498532.json
 
-BUILD SUCCESSFUL in 3m 9s
+BUILD SUCCESSFUL in 3m 58s
 38 actionable tasks: 38 executed
 === keystore sanity ===
 upload.jks bytes: 2694 (expect ~2694)
@@ -103,23 +104,23 @@ Daemon will be stopped at the end of the build
 > Task :app:processReleaseMainManifest
 > Task :app:processReleaseManifest
 > Task :app:javaPreCompileRelease
+> Task :app:processReleaseManifestForPackage
 > Task :app:mergeReleaseArtProfile
 > Task :app:extractProguardFiles
 > Task :app:mergeReleaseStartupProfile
 > Task :app:mergeReleaseJniLibFolders
 > Task :app:writeReleaseAppMetadata
-> Task :app:collectReleaseDependencies
-> Task :app:processReleaseManifestForPackage
 > Task :app:mergeReleaseNativeLibs
+> Task :app:collectReleaseDependencies
 > Task :app:configureReleaseDependencies
 > Task :app:validateSigningRelease
+> Task :app:processReleaseResources
+> Task :app:parseReleaseIntegrityConfig
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
 
-> Task :app:parseReleaseIntegrityConfig
 > Task :app:extractReleaseNativeSymbolTables
-> Task :app:processReleaseResources
 > Task :app:kspReleaseKotlin
 
 > Task :app:compileReleaseKotlin
@@ -152,7 +153,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1792989624322.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793071736393.json
 
-BUILD SUCCESSFUL in 3m 32s
+BUILD SUCCESSFUL in 3m 56s
 50 actionable tasks: 50 executed
