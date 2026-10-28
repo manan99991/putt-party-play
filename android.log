@@ -26,17 +26,21 @@ Daemon will be stopped at the end of the build
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
-> Task :app:desugarDebugFileDependencies
+> Task :app:processDebugManifestForPackage
 > Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
 > Task :app:processDebugResources
 > Task :app:checkDebugDuplicateClasses
+
 > Task :app:kspDebugKotlin
+e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
+    1. Kotlin compile daemon is ready
+
 > Task :app:mergeExtDexDebug
 > Task :app:mergeDebugJniLibFolders
 > Task :app:mergeLibDexDebug
@@ -69,9 +73,9 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1793213853564.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1793217060927.json
 
-BUILD SUCCESSFUL in 4m 37s
+BUILD SUCCESSFUL in 4m 45s
 38 actionable tasks: 38 executed
 === keystore sanity ===
 upload.jks bytes: 2694 (expect ~2694)
@@ -109,10 +113,10 @@ Daemon will be stopped at the end of the build
 > Task :app:writeReleaseAppMetadata
 > Task :app:collectReleaseDependencies
 > Task :app:configureReleaseDependencies
-> Task :app:mergeReleaseNativeLibs
-> Task :app:processReleaseManifestForPackage
 > Task :app:parseReleaseIntegrityConfig
 > Task :app:validateSigningRelease
+> Task :app:processReleaseManifestForPackage
+> Task :app:mergeReleaseNativeLibs
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
@@ -149,7 +153,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793214128812.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793217343055.json
 
-BUILD SUCCESSFUL in 5m 38s
+BUILD SUCCESSFUL in 5m 5s
 50 actionable tasks: 50 executed
