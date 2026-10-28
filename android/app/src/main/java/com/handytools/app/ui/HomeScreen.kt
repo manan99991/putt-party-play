@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -232,23 +234,26 @@ fun HomeScreen(onOpen: (String) -> Unit) {
 private fun ToolGridPage(page: Int, onOpen: (String) -> Unit) {
     val items = toolsOnPage(page)
     Column(
-        Modifier.fillMaxSize().padding(horizontal = HandyTokens.Gutter, vertical = HandyTokens.Space4),
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+            .padding(horizontal = HandyTokens.Gutter, vertical = HandyTokens.Space4),
         verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)
     ) {
         if (page == 3) AiNote()
-        for (row in 0 until 5) {
-            Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        val rows = (items.size + 1) / 2
+        for (row in 0 until rows) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
                 for (col in 0 until 2) {
                     val idx = row * 2 + col
                     if (idx < items.size) {
                         val t = items[idx]
-                        Box(Modifier.weight(1f).fillMaxSize()) { ToolCard(t.name, t.blurb, t.icon) { onOpen(t.route) } }
+                        Box(Modifier.weight(1f)) { ToolCard(t.name, t.blurb, t.icon) { onOpen(t.route) } }
                     } else {
                         Spacer(Modifier.weight(1f))
                     }
                 }
             }
         }
+        Spacer(Modifier.height(HandyTokens.Space8))
     }
 }
 

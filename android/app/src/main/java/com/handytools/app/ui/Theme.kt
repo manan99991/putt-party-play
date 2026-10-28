@@ -266,8 +266,8 @@ fun ToolCard(name: String, blurb: String, icon: ImageVector, onClick: () -> Unit
                 Icon(icon, null, Modifier.size(22.dp), tint = HandyColors.Accent)
             }
             Spacer(Modifier.weight(1f))
-            Text(name, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Text(blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(name, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            Text(blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
 }
@@ -356,7 +356,7 @@ fun HChip(text: String, selected: Boolean, onClick: () -> Unit) {
     val ctx: Context = LocalContext.current
     FilterChip(
         selected = selected, onClick = { HandyHaptics.light(ctx); onClick() },
-        label = { Text(text, style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp)) },
+        label = { Text(text, style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp), maxLines = 1, softWrap = false) },
         shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight),
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = Handy.palette.accentSoft, selectedLabelColor = HandyColors.Accent,
