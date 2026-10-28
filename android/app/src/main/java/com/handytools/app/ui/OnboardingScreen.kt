@@ -136,7 +136,7 @@ private fun GridPage() {
                         Box(Modifier.weight(1f).height(84.dp).background(if (lit) Handy.palette.accentSoft else MaterialTheme.colorScheme.surface, MaterialTheme.shapes.medium)
                             .padding(12.dp)) {
                             Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
-                                androidx.compose.material3.Icon(t.icon, null, Modifier.size(18.dp), tint = HandyColors.Accent)
+                                androidx.compose.foundation.Image(androidx.compose.ui.res.painterResource(t.iconRes), null, Modifier.size(24.dp))
                                 Text(t.name, style = MaterialTheme.typography.labelMedium, maxLines = 1)
                             }
                         }
