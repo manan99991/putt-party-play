@@ -103,7 +103,6 @@ val TOOLS = listOf(
     HTool("flash", "Flashlight", "Patterns, SOS, strobe", Icons.Outlined.FlashOn, 1, keywords = listOf("light","torch","strobe","sos","lamp","dark")),
     HTool("qr", "QR & Barcode", "Scan & make codes", Icons.Outlined.QrCode2, 1, keywords = listOf("qr","barcode","scan","code","wifi","link")),
     HTool("myphone", "My Phone", "Battery, storage, specs", Icons.Outlined.PhoneAndroid, 1, keywords = listOf("phone","device","battery","storage","ram","memory","specs","info","model","android","ip","network","screen","health","free","space")),
-    HTool("texttools", "Text Tools", "Clean up & fix text", Icons.Outlined.TextFields, 1, keywords = listOf("text","case","uppercase","lowercase","word","count","characters","clean","trim","spaces","reverse","format","remove","breaks")),
     HTool("lens", "Lens", "Read or listen to any text", Icons.Outlined.Subject, 1, keywords = listOf("lens","read","listen","aloud","tts","speak","ocr","text","copy","gist","summarize","scan")),
     HTool("translate", "Translate", "Offline, private", Icons.Outlined.Translate, 1, keywords = listOf("translate","language","spanish","french","foreign")),
     HTool("magnifier", "Magnifier", "Zoom in on small print", Icons.Outlined.ZoomIn, 1, keywords = listOf("magnifier","zoom","read","loupe","camera")),
@@ -113,7 +112,7 @@ val TOOLS = listOf(
     HTool("pdftools", "PDF Toolkit", "Merge, compress PDFs", Icons.Outlined.PictureAsPdf, 2, keywords = listOf("pdf","merge","combine","split","compress","images")),
     HTool("shrink", "Shrink", "Make photos & videos smaller", Icons.Outlined.Compress, 2, keywords = listOf("shrink","compress","resize","smaller","reduce","photo","image","video","clip","size","mb","send","upload","email","heic","jpg")),
     HTool("bgremove", "Background Remover", "Cut out the subject", Icons.Outlined.AutoFixHigh, 2, keywords = listOf("background","remove","cutout","subject","transparent","sticker")),
-    HTool("audiotext", "Audio to Text", "Transcribe your voice", Icons.Outlined.Mic, 2, keywords = listOf("audio","text","transcribe","voice","speech","record","notes")),
+    HTool("voicerec", "Voice Recorder", "Record, transcribe, trim", Icons.Outlined.Mic, 2, keywords = listOf("voice","recorder","record","audio","text","transcribe","speech","notes","dictate","trim","cut","ringtone","clip","memo","video","clean")),
     HTool("signfill", "Sign & Fill", "Sign a doc, export PDF", Icons.Outlined.Draw, 2, keywords = listOf("sign","signature","fill","document","pdf","form","contract")),
     HTool("exif", "Photo Metadata", "Strip photo location", Icons.Outlined.Info, 2, keywords = listOf("photo","metadata","exif","location","gps","strip","privacy")),
     HTool("sorted", "Sorted", "Snap a bill → calendar it", Icons.Outlined.EventNote, 2, true, listOf("bill","letter","document","appointment","form","notice","invoice","due","deadline","calendar","remind","scan","amount","pay","admin","paperwork")),
@@ -125,7 +124,6 @@ val TOOLS = listOf(
     HTool("netscout", "Network Scout", "See who's on your Wi-Fi", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","lan","scout","who","connected")),
     HTool("hearing", "Hearing Boost", "Amplify sound to earbuds", Icons.Outlined.Hearing, 3, keywords = listOf("hearing","hear","amplify","boost","ear","loud","sound","assist","listen","volume","aid")),
     HTool("heartrate", "Heart Rate", "Pulse from your fingertip", Icons.Outlined.MonitorHeart, 3, keywords = listOf("heart","rate","pulse","bpm","fingertip","camera","health","beats","measure")),
-    HTool("audiocut", "Ringtone & Audio Cutter", "Trim audio, make ringtones", Icons.Outlined.ContentCut, 3, keywords = listOf("ringtone","audio","cut","cutter","trim","music","mp3","song","clip","sound","edit","crop")),
 )
 
 fun toolsOnPage(p: Int) = TOOLS.filter { it.page == p }
