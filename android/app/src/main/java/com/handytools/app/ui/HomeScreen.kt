@@ -50,6 +50,19 @@ import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Shield
+import androidx.compose.material.icons.outlined.TableChart
+import androidx.compose.material.icons.outlined.ReceiptLong
+import androidx.compose.material.icons.outlined.Badge
+import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.outlined.Receipt
+import androidx.compose.material.icons.outlined.Gif
+import androidx.compose.material.icons.outlined.SendToMobile
+import androidx.compose.material.icons.outlined.LocalParking
+import androidx.compose.material.icons.outlined.NetworkCheck
+import androidx.compose.material.icons.outlined.Hearing
+import androidx.compose.material.icons.outlined.MonitorHeart
+import androidx.compose.material.icons.outlined.ContentCut
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Straighten
 import androidx.compose.material.icons.outlined.TextFields
@@ -95,7 +108,6 @@ val TOOLS = listOf(
     HTool("flash", "Flashlight", "Patterns, SOS, strobe", Icons.Outlined.FlashOn, 1, keywords = listOf("light","torch","strobe","sos","lamp","dark")),
     HTool("qr", "QR & Barcode", "Scan & make codes", Icons.Outlined.QrCode2, 1, keywords = listOf("qr","barcode","scan","code","wifi","link")),
     HTool("myphone", "My Phone", "Battery, storage, specs", Icons.Outlined.PhoneAndroid, 1, keywords = listOf("phone","device","battery","storage","ram","memory","specs","info","model","android","ip","network","screen","health","free","space")),
-    HTool("texttools", "Text Tools", "Clean up & fix text", Icons.Outlined.TextFields, 1, keywords = listOf("text","case","uppercase","lowercase","word","count","characters","clean","trim","spaces","reverse","format","remove","breaks")),
     HTool("lens", "Lens", "Read or listen to any text", Icons.Outlined.Subject, 1, keywords = listOf("lens","read","listen","aloud","tts","speak","ocr","text","copy","gist","summarize","scan")),
     HTool("translate", "Translate", "Offline, private", Icons.Outlined.Translate, 1, keywords = listOf("translate","language","spanish","french","foreign")),
     HTool("magnifier", "Magnifier", "Zoom in on small print", Icons.Outlined.ZoomIn, 1, keywords = listOf("magnifier","zoom","read","loupe","camera")),
@@ -105,27 +117,28 @@ val TOOLS = listOf(
     HTool("pdftools", "PDF Toolkit", "Merge, compress PDFs", Icons.Outlined.PictureAsPdf, 2, keywords = listOf("pdf","merge","combine","split","compress","images")),
     HTool("shrink", "Shrink", "Make photos & videos smaller", Icons.Outlined.Compress, 2, keywords = listOf("shrink","compress","resize","smaller","reduce","photo","image","video","clip","size","mb","send","upload","email","heic","jpg")),
     HTool("bgremove", "Background Remover", "Cut out the subject", Icons.Outlined.AutoFixHigh, 2, keywords = listOf("background","remove","cutout","subject","transparent","sticker")),
-    HTool("audiotext", "Audio to Text", "Transcribe your voice", Icons.Outlined.Mic, 2, keywords = listOf("audio","text","transcribe","voice","speech","record","notes")),
+    HTool("voicerec", "Voice Recorder", "Record, transcribe, trim", Icons.Outlined.Mic, 2, keywords = listOf("voice","recorder","record","audio","text","transcribe","speech","notes","dictate","trim","cut","ringtone","clip","memo","video","clean")),
     HTool("signfill", "Sign & Fill", "Sign a doc, export PDF", Icons.Outlined.Draw, 2, keywords = listOf("sign","signature","fill","document","pdf","form","contract")),
     HTool("exif", "Photo Metadata", "Strip photo location", Icons.Outlined.Info, 2, keywords = listOf("photo","metadata","exif","location","gps","strip","privacy")),
     HTool("sorted", "Sorted", "Snap a bill → calendar it", Icons.Outlined.EventNote, 2, true, listOf("bill","letter","document","appointment","form","notice","invoice","due","deadline","calendar","remind","scan","amount","pay","admin","paperwork")),
-    // Page 3 · AI
-    HTool("memory", "Memory", "Ask your screenshots anything", Icons.Outlined.ImageSearch, 3, true, listOf("memory","find","search","photos","screenshot","wifi","password","code","confirmation","parking","remember","where","receipt","ask","saved")),
-    HTool("ai_summarize", "Summarize", "Get the gist fast", Icons.Outlined.AutoAwesome, 3, true, listOf("summarize","summary","tldr","shorten","ai","text")),
-    HTool("ai_extract", "Extract to Data", "Receipt to clean data", Icons.Outlined.AutoAwesome, 3, true, listOf("extract","data","receipt","card","ai","fields")),
-    HTool("ai_rewrite", "Rewrite & Tone", "Clearer, nicer words", Icons.Outlined.AutoAwesome, 3, true, listOf("rewrite","tone","grammar","improve","ai","edit")),
-    HTool("ai_ask", "Ask a Screenshot", "Explain a screenshot", Icons.Outlined.AutoAwesome, 3, true, listOf("ask","screenshot","explain","help","ai","understand")),
-    HTool("ai_proofread", "Proofread", "Catch typos fast", Icons.Outlined.AutoAwesome, 3, true, listOf("proofread","grammar","spelling","typos","ai","check")),
-    HTool("ai_describe", "Describe Image", "Caption any photo", Icons.Outlined.AutoAwesome, 3, true, listOf("describe","caption","alt","ai","photo","vision")),
-    HTool("ai_handwriting", "Handwriting to Text", "Notes photo to text", Icons.Outlined.AutoAwesome, 3, true, listOf("handwriting","notes","ocr","ai","text","photo")),
-    HTool("ai_reply", "Draft a Reply", "Draft a reply", Icons.Outlined.AutoAwesome, 3, true, listOf("reply","draft","message","respond","ai","email")),
-    HTool("ai_identify", "Identify", "What is this?", Icons.Outlined.AutoAwesome, 3, true, listOf("identify","plant","object","landmark","ai","recognize")),
-    HTool("ai_sticker", "Make a Sticker", "Make a sticker", Icons.Outlined.AutoAwesome, 3, true, listOf("sticker","image","generate","draw","ai","emoji")),
+    // Page 3 · Everyday tools that work on every phone (no flagship-only AI needed)
+    HTool("shield", "Scam & Safety Check", "Spot scam texts & links", Icons.Outlined.Shield, 3, keywords = listOf("scam","safety","check","phishing","fraud","text","sms","email","link","suspicious","fake","spam","protect","verify","shield","message","dm")),
+    HTool("scancsv", "Scan to Table / CSV", "Photo → spreadsheet", Icons.Outlined.TableChart, 3, keywords = listOf("scan","table","csv","spreadsheet","ocr","receipt","list","rows","columns","excel","data","import","photo","extract")),
+    HTool("invoice", "Quick Invoice", "Make a PDF invoice", Icons.Outlined.ReceiptLong, 3, keywords = listOf("invoice","bill","pdf","receipt","quote","estimate","charge","payment","client","business","freelance","total","tax")),
+    HTool("idphoto", "Passport / ID Photo", "White-bg photo, right size", Icons.Outlined.Badge, 3, keywords = listOf("passport","id","photo","visa","headshot","white","background","2x2","35x45","print","identity","document","picture")),
+    HTool("redact", "Redact", "Hide private info in photos", Icons.Outlined.VisibilityOff, 3, keywords = listOf("redact","blur","black","hide","censor","private","screenshot","number","account","card","face","email","remove","cover","privacy")),
+    HTool("receipts", "Receipt & Warranty Keeper", "Save receipts, track warranties", Icons.Outlined.Receipt, 3, keywords = listOf("receipt","warranty","keeper","track","expiry","return","refund","proof","purchase","save","reminder","guarantee","store")),
+    HTool("gifmaker", "GIF Maker", "Video → looping GIF", Icons.Outlined.Gif, 3, keywords = listOf("gif","maker","video","animation","loop","meme","clip","convert","share","animated","mp4")),
+    HTool("sendany", "Send Anywhere", "Wi-Fi file transfer", Icons.Outlined.SendToMobile, 3, keywords = listOf("send","transfer","file","share","wifi","nearby","qr","download","device","computer","laptop","local","airdrop")),
+    HTool("parked", "Where'd I Park", "Pin the car, walk back", Icons.Outlined.LocalParking, 3, keywords = listOf("park","parking","car","find","lot","garage","pin","location","gps","remember","where","vehicle")),
+    HTool("netscout", "Network Scout", "Wi-Fi info, speed & devices", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","speedtest","speed test","mbps","download","latency","ping","lan","scout","who","connected")),
+    HTool("hearing", "Hearing Boost", "Amplify sound to earbuds", Icons.Outlined.Hearing, 3, keywords = listOf("hearing","hear","amplify","boost","ear","loud","sound","assist","listen","volume","aid")),
+    HTool("heartrate", "Heart Rate", "Pulse from your fingertip", Icons.Outlined.MonitorHeart, 3, keywords = listOf("heart","rate","pulse","bpm","fingertip","camera","health","beats","measure")),
 )
 
 fun toolsOnPage(p: Int) = TOOLS.filter { it.page == p }
 
-/** Google-style ranked search across all 30 tools. */
+/** Google-style ranked search across every tool. */
 fun searchTools(raw: String): List<HTool> {
     val query = raw.lowercase().trim()
     if (query.isEmpty()) return emptyList()
@@ -190,7 +203,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
         // Search field
         TextField(
             value = query, onValueChange = { query = it },
-            placeholder = { Text("Search 30 tools…") },
+            placeholder = { Text("Search ${TOOLS.size} tools…") },
             leadingIcon = { Icon(Icons.Outlined.Search, null, tint = Handy.palette.textSecondary) },
             trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, "Clear") } },
             singleLine = true,

@@ -66,6 +66,18 @@ enum ScamAnalyzer {
         let lottery = hit([#"\byou('ve| have) (won|been selected|been chosen)\b"#, #"\bcongratulations\b"#, #"\blottery\b"#, #"\bprize\b"#, #"\binheritance\b"#, #"\bclaim your\b"#, #"\bfree (iphone|gift|money|reward)\b"#, #"\bguaranteed (return|profit|income)\b"#, #"\bdouble your\b"#, #"\bearn \$?\d{3,}.{0,20}(day|week|hour)\b"#, #"\bwork from home\b.{0,40}\$"#, #"\bprocessing fee\b"#, #"\bsmall fee\b"#, #"\bunlock (the )?funds\b"#])
         if !lottery.isEmpty { f.append(Finding(title: "Too good to be true", detail: "Prizes you didn't enter, guaranteed returns, and fees to release money are the oldest tricks in the book.", weight: 3)) }
 
+        // 5b. employment / "task" scams — big daily/weekly/monthly pay, no experience, and "apply by
+        // texting a keyword to this number". These rarely trip the other signals, so a blatant job
+        // scam used to score 0 and read as "low-risk". Detect the combination directly.
+        let jobContext = hit([#"\b(hiring|now hiring|job offer|positions?|vacanc(y|ies)|recruit(ing|ment)?|employment|work from home|remote (job|work|position)|part[\s-]?time|full[\s-]?time|applicants?|apply now|openings?|daily pay|monthly income|side (job|gig|hustle)|training provided|no experience (needed|required|necessary)?)\b"#])
+        let hasBigPay = lower.range(of: #"\$\s?\d{3,}"#, options: .regularExpression) != nil || lower.range(of: #"\$\s?\d{1,3},\d{3}"#, options: .regularExpression) != nil
+        let payPeriod = !hit([#"\b(daily|/\s?day|per day|a day|weekly|per week|a week|hourly|per hour|an hour|monthly|per month|a month)\b"#]).isEmpty
+        let applyByText = lower.range(of: #"\b(text|txt|sms|message|whats\s?app|telegram|dm|reply|respond)\b[^.\n]{0,40}\bto\s+\+?\d[\d\s().\-]{5,}"#, options: .regularExpression) != nil
+        if !jobContext.isEmpty && ((hasBigPay && payPeriod) || applyByText) {
+            let strong = (hasBigPay && payPeriod) && applyByText
+            f.append(Finding(title: "Job offer that's too good to be true", detail: "Hundreds a day with no experience, and \"text a word to this number to apply\", is the signature of a job or task scam. Real employers interview you and never promise that kind of pay up front or hire over a text keyword.", weight: strong ? 4 : 3))
+        }
+
         // 6. secrecy / isolation
         let secrecy = hit([#"\b(do not|don'?t) tell (anyone|anybody|your family|your (wife|husband|kids|son|daughter)|the bank)\b"#, #"\bkeep (this|it) (confidential|secret|between us)\b"#, #"\bdo not (hang up|disconnect)\b"#, #"\bstay on the (line|phone)\b"#])
         if !secrecy.isEmpty { f.append(Finding(title: "Tells you to keep it secret", detail: "Isolation keeps you from the one friend or family member who'd say \"that's a scam\".", weight: 4)) }
@@ -90,7 +102,7 @@ enum ScamAnalyzer {
 
         // Corroboration: real scams stack several signals. A lone, ordinary-sounding keyword
         // should not raise an alarm — that is the main source of false "it's a scam" calls.
-        let strongTitles: Set<String> = ["Asks for an untraceable payment", "Tells you to keep it secret", "Wants remote access or an install", "Wants a code, password or personal details", "Link looks wrong", "Threatens you with legal trouble"]
+        let strongTitles: Set<String> = ["Asks for an untraceable payment", "Tells you to keep it secret", "Wants remote access or an install", "Wants a code, password or personal details", "Link looks wrong", "Threatens you with legal trouble", "Job offer that's too good to be true"]
         let hasStrong = f.contains { strongTitles.contains($0.title) && $0.weight >= 3 }
         var score = min(100, f.reduce(0) { $0 + $1.weight * 12 })
         if f.count <= 1 && !hasStrong { score = min(score, 18) }                            // one lone soft signal → low-risk
