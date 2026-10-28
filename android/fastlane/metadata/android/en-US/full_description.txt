@@ -1,35 +1,26 @@
-Tenzy is a box of small, handy tools in one app — the stuff your phone makes you dig for, or download a separate app for every time.
+Tenzy is ten powerful tools in one app — the jobs your phone usually makes you download a separate app for, with no sign-ups and no "upload to our servers." Everything runs right on your phone. No account, nothing uploaded.
 
-I built it because my home screen had filled up with single-use utilities: one app to free up photo space, another to shrink a video small enough to send, another to scan a document to PDF. Tenzy puts them in one place, and most of them run right on your phone — no account, nothing uploaded.
+THE TEN TOOLS
 
-What's inside right now:
+• Capture — point your camera at a receipt, bill, business card, flyer or document, and Tenzy does the next step for you: add the event to your calendar, save the contact, log the receipt and its warranty date, pull a table into a spreadsheet, translate it, or read it aloud.
 
-EVERYDAY
-• Space Cleaner — find duplicate and look-alike photos and clear the screenshot pile (everything goes to a recoverable trash, never deleted outright)
-• Storage Map — see exactly what's eating your space
-• Contacts Cleanup — merge duplicates and back up your contacts
-• My Phone — battery, storage, memory and network at a glance
-• Text Tools — tidy up pasted text, fix the case, flatten broken line breaks
-• Flashlight — patterns, SOS, strobe
-• QR & Barcode — scan and make codes
-• Lens — grab text from a photo, or have it read aloud
-• Translate — offline and private
-• Magnifier — zoom in on small print
-• Measure — level, compass and sound meter
+• Documents — scan pages to a clean PDF, sign and fill, merge, split and compress, and find a word or phrase across all your PDFs, Word, Excel and text files at once.
 
-DOCUMENTS & MEDIA
-• Doc Scanner — scan pages to a clean PDF
-• PDF Toolkit — merge, split and compress PDFs
-• Shrink — make photos and videos small enough to send
-• Background Remover — cut out the subject
-• Audio to Text — transcribe a voice recording
-• Sign & Fill — sign a document and export a PDF
-• Photo Metadata — strip location and EXIF before sharing
-• Sorted — snap a bill or letter and drop it into your calendar
+• Media Studio — get any photo or video ready to send, post or print: shrink it to size, remove or swap the background, redact faces and private details, strip location data, make a passport/ID photo, and convert HEIC.
 
-SMART (on-device)
-• Memory — search your screenshots by what's in them (that Wi-Fi password, a confirmation code)
-• Summarize, Rewrite, Proofread, Extract to data, Describe an image, Identify, Draft a reply, Handwriting to text, and Make a sticker
+• Clean Up — free real space: duplicate and look-alike photos, the screenshot pile, big videos and files — plus tidy up duplicate contacts. Everything goes to a recoverable trash, never deleted outright.
+
+• Voice Notes — record or import audio, get a transcript on your phone, tidy it up, trim a clip, and keep it in a searchable library.
+
+• Translate — text, camera and two-way conversation, offline once a language is downloaded.
+
+• Instruments — your phone's toolbox: level, compass, sound meter, light meter, altimeter, metal detector, ruler and magnifier.
+
+• Flashlight+ — brightness control, SOS and a Morse message flasher, a full-screen lamp, and a selfie mirror.
+
+• Safety — paste a suspicious text, link or number, or scan a QR code, and see whether it's a scam and exactly why.
+
+• Share & Connect — make and scan QR and Wi-Fi codes, and send a file to any nearby device over Wi-Fi — no cable, no cloud.
 
 Free to use, with ads. Tenzy Pro removes every ad and unlocks unlimited use — $19.99/year. One person builds and maintains this, and Pro is what keeps it going.
 
