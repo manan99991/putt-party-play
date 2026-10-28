@@ -55,8 +55,7 @@ fun TranslateScreen() {
     val overQuota = !Usage.hasRoom(ctx, "translate", Limits.FREE_TRANSLATE_PER_DAY)
 
     fun translate() {
-        if (input.isBlank()) return
-        if (!Usage.use(ctx, "translate", Limits.FREE_TRANSLATE_PER_DAY)) return
+        if (input.isBlank() || overQuota) return
         working = true; error = null; output = ""
         val src = if (enToX) "en" else other
         val tgt = if (enToX) other else "en"
@@ -68,7 +67,7 @@ fun TranslateScreen() {
         translator.downloadModelIfNeeded()
             .addOnSuccessListener {
                 translator.translate(input)
-                    .addOnSuccessListener { output = it; working = false; translator.close() }
+                    .addOnSuccessListener { output = it; working = false; translator.close(); Usage.use(ctx, "translate", Limits.FREE_TRANSLATE_PER_DAY) }
                     .addOnFailureListener { error = "Couldn't translate that."; working = false; translator.close() }
             }
             .addOnFailureListener { error = "Couldn't download the language pack. Check your connection."; working = false; translator.close() }
