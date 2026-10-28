@@ -1,17 +1,17 @@
-[04:44:09]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[04:44:09]: fastlane 2.241.1 (Ruby 3.4.11, gem)
-[04:44:10]: Sending anonymous analytics information
-[04:44:10]: Learn more at https://docs.fastlane.tools/#metrics
-[04:44:10]: No personal or sensitive data is sent.
-[04:44:10]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[04:44:10]: [32m------------------------------[0m
-[04:44:10]: [32m--- Step: default_platform ---[0m
-[04:44:10]: [32m------------------------------[0m
-[04:44:10]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[04:44:11]: App 6824023361
-[04:44:11]: Territories: 175
-[04:44:11]: tenzy_pro_yearly exists (6824154364)
-[04:44:12]: [32m  price -> 201 near $19.99 (19.99)[0m
+[20:10:32]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[20:10:32]: fastlane 2.241.1 (Ruby 3.4.11, gem)
+[20:10:33]: Sending anonymous analytics information
+[20:10:33]: Learn more at https://docs.fastlane.tools/#metrics
+[20:10:33]: No personal or sensitive data is sent.
+[20:10:33]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[20:10:33]: [32m------------------------------[0m
+[20:10:33]: [32m--- Step: default_platform ---[0m
+[20:10:33]: [32m------------------------------[0m
+[20:10:33]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[20:10:33]: App 6824023361
+[20:10:37]: Territories: 175
+[20:10:37]: tenzy_pro_yearly exists (6824154364)
+[20:10:38]: [32m  price -> 201 near $19.99 (19.99)[0m
 +--------------------------------------+
 |             [33mLane Context[0m             |
 +------------------+-------------------+
@@ -19,22 +19,22 @@
 | PLATFORM_NAME    | ios               |
 | LANE_NAME        | ios subscriptions |
 +------------------+-------------------+
-[04:44:12]: [31mError in your Fastfile at line 122[0m
-[04:44:12]: [31m```[0m
-[04:44:12]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
-[04:44:12]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
-[04:44:12]: [31m => 122:	      r = klass.new(URI(base + path))[0m
-[04:44:12]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
-[04:44:12]: [31m    124:	      r["Content-Type"] = "application/json"[0m
-[04:44:12]: [31m```[0m
-[04:44:12]: [31mCalled from Fastfile at line 220[0m
-[04:44:12]: [31m```[0m
-[04:44:12]: [31m    218:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
-[04:44:12]: [31m    219:	        if cur.is_a?(Hash) && cur["data"][0m
-[04:44:12]: [31m => 220:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
-[04:44:12]: [31m    221:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
-[04:44:12]: [31m    222:	        end[0m
-[04:44:12]: [31m```[0m
+[20:10:38]: [31mError in your Fastfile at line 122[0m
+[20:10:38]: [31m```[0m
+[20:10:38]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
+[20:10:38]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
+[20:10:38]: [31m => 122:	      r = klass.new(URI(base + path))[0m
+[20:10:38]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
+[20:10:38]: [31m    124:	      r["Content-Type"] = "application/json"[0m
+[20:10:38]: [31m```[0m
+[20:10:38]: [31mCalled from Fastfile at line 220[0m
+[20:10:38]: [31m```[0m
+[20:10:38]: [31m    218:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
+[20:10:38]: [31m    219:	        if cur.is_a?(Hash) && cur["data"][0m
+[20:10:38]: [31m => 220:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
+[20:10:38]: [31m    221:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
+[20:10:38]: [31m    222:	        end[0m
+[20:10:38]: [31m```[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -44,13 +44,9 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[04:44:12]: [31mfastlane finished with errors[0m
+[20:10:38]: [31mfastlane finished with errors[0m
 
 Looking for related GitHub issues on fastlane/fastlane...
-
-➡️  [33mFix undefined `class_name` in the no-run-method error message[0m
-    https://github.com/fastlane/fastlane/pull/30257 [[31mopen[0m] 0 💬
-    5 weeks ago
 
 ➡️  [33mundefined method `*' for nil:NilClass frameit[0m
     https://github.com/fastlane/fastlane/issues/21496 [[31mopen[0m] 5 💬
@@ -60,9 +56,20 @@ Looking for related GitHub issues on fastlane/fastlane...
     https://github.com/fastlane/fastlane/issues/20525 [[31mopen[0m] 15 💬
     16 Feb 2023
 
+➡️  [33m[pilot] Stop requesting betaTesterMetrics for testers[0m
+    https://github.com/fastlane/fastlane/pull/30471 [[31mopen[0m] 3 💬
+    4 days ago
+
 and 611 more at: https://github.com/fastlane/fastlane/search?q=undefined%20method%20%27new%27%20for%20nil&type=Issues&utf8=✓
 
 🔗  You can ⌘ + double-click on links to open them directly in your browser.
+
+#######################################################################
+# fastlane 2.241.2 is available. You are on 2.241.1.
+# You should use the latest version.
+# Please update using `gem install fastlane`.
+# To see what's new, open https://github.com/fastlane/fastlane/releases.
+#######################################################################
 Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': [31m[!] undefined method 'new' for nil[0m (NoMethodError)
 	from Fastfile:220:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
 	from Fastfile:164:in 'Array#each'
