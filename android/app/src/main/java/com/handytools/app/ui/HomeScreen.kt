@@ -56,6 +56,7 @@ import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.Badge
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material.icons.outlined.Receipt
+import androidx.compose.material.icons.outlined.Gif
 import androidx.compose.material.icons.outlined.LocalParking
 import androidx.compose.material.icons.outlined.NetworkCheck
 import androidx.compose.material.icons.outlined.Hearing
@@ -126,6 +127,7 @@ val TOOLS = listOf(
     HTool("idphoto", "Passport / ID Photo", "White-bg photo, right size", Icons.Outlined.Badge, 3, keywords = listOf("passport","id","photo","visa","headshot","white","background","2x2","35x45","print","identity","document","picture")),
     HTool("redact", "Redact", "Hide private info in photos", Icons.Outlined.VisibilityOff, 3, keywords = listOf("redact","blur","black","hide","censor","private","screenshot","number","account","card","face","email","remove","cover","privacy")),
     HTool("receipts", "Receipt & Warranty Keeper", "Save receipts, track warranties", Icons.Outlined.Receipt, 3, keywords = listOf("receipt","warranty","keeper","track","expiry","return","refund","proof","purchase","save","reminder","guarantee","store")),
+    HTool("gifmaker", "GIF Maker", "Video → looping GIF", Icons.Outlined.Gif, 3, keywords = listOf("gif","maker","video","animation","loop","meme","clip","convert","share","animated","mp4")),
     HTool("parked", "Where'd I Park", "Pin the car, walk back", Icons.Outlined.LocalParking, 3, keywords = listOf("park","parking","car","find","lot","garage","pin","location","gps","remember","where","vehicle")),
     HTool("netscout", "Network Scout", "See who's on your Wi-Fi", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","lan","scout","who","connected")),
     HTool("hearing", "Hearing Boost", "Amplify sound to earbuds", Icons.Outlined.Hearing, 3, keywords = listOf("hearing","hear","amplify","boost","ear","loud","sound","assist","listen","volume","aid")),
