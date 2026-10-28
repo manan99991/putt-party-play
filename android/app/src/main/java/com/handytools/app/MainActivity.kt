@@ -33,6 +33,7 @@ import com.handytools.app.tools.idphoto.PassportPhotoScreen
 import com.handytools.app.tools.redact.RedactScreen
 import com.handytools.app.tools.receipts.ReceiptKeeperScreen
 import com.handytools.app.tools.gifmaker.GifMakerScreen
+import com.handytools.app.tools.sendany.SendAnywhereScreen
 import com.handytools.app.tools.parked.ParkedScreen
 import com.handytools.app.tools.netscout.NetworkScoutScreen
 import com.handytools.app.tools.signfill.DocSignerScreen
@@ -151,6 +152,7 @@ class MainActivity : ComponentActivity() {
                     composable("redact") { RedactScreen() }
                     composable("receipts") { ReceiptKeeperScreen() }
                     composable("gifmaker") { GifMakerScreen() }
+                    composable("sendany") { SendAnywhereScreen() }
                     composable("parked") { ParkedScreen() }
                     composable("netscout") { NetworkScoutScreen() }
                     composable("signfill") { DocSignerScreen() }
@@ -181,7 +183,7 @@ class MainActivity : ComponentActivity() {
                     composable("texttools") { TextToolsScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)
