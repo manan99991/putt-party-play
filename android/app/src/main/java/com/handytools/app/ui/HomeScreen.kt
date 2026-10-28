@@ -50,7 +50,7 @@ import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Sensors
+import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.LocalParking
 import androidx.compose.material.icons.outlined.NetworkCheck
 import androidx.compose.material.icons.outlined.Hearing
@@ -116,7 +116,7 @@ val TOOLS = listOf(
     HTool("exif", "Photo Metadata", "Strip photo location", Icons.Outlined.Info, 2, keywords = listOf("photo","metadata","exif","location","gps","strip","privacy")),
     HTool("sorted", "Sorted", "Snap a bill → calendar it", Icons.Outlined.EventNote, 2, true, listOf("bill","letter","document","appointment","form","notice","invoice","due","deadline","calendar","remind","scan","amount","pay","admin","paperwork")),
     // Page 3 · Everyday tools that work on every phone (no flagship-only AI needed)
-    HTool("studfinder", "Stud & Metal Finder", "Find studs, pipes & wiring", Icons.Outlined.Sensors, 3, keywords = listOf("stud","metal","finder","wall","pipe","wiring","nail","screw","magnet","detector","hang","drill","mount")),
+    HTool("shield", "Scam & Safety Check", "Spot scam texts & links", Icons.Outlined.Shield, 3, keywords = listOf("scam","safety","check","phishing","fraud","text","sms","email","link","suspicious","fake","spam","protect","verify","shield","message","dm")),
     HTool("parked", "Where'd I Park", "Pin the car, walk back", Icons.Outlined.LocalParking, 3, keywords = listOf("park","parking","car","find","lot","garage","pin","location","gps","remember","where","vehicle")),
     HTool("netscout", "Network Scout", "See who's on your Wi-Fi", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","lan","scout","who","connected")),
     HTool("hearing", "Hearing Boost", "Amplify sound to earbuds", Icons.Outlined.Hearing, 3, keywords = listOf("hearing","hear","amplify","boost","ear","loud","sound","assist","listen","volume","aid")),
