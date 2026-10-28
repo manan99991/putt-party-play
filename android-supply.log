@@ -1,1 +1,65 @@
-(no log file produced)
+[02:31:07]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[02:31:07]: fastlane 2.241.2 (Ruby 3.2.3, gem)
+[02:31:07]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[02:31:08]: [32m------------------------------[0m
+[02:31:08]: [32m--- Step: default_platform ---[0m
+[02:31:08]: [32m------------------------------[0m
+[02:31:08]: [32mDriving the lane 'android listing' 🚀[0m
+[02:31:08]: [32m--------------------[0m
+[02:31:08]: [32m--- Step: supply ---[0m
+[02:31:08]: [32m--------------------[0m
+
++------------------------------------------------------------------------------------------------------+
+|                                      [32mSummary for supply 2.241.2[0m                                      |
++------------------------------------+-----------------------------------------------------------------+
+| track                              | internal                                                        |
+| skip_upload_apk                    | true                                                            |
+| skip_upload_aab                    | true                                                            |
+| skip_upload_metadata               | false                                                           |
+| skip_upload_changelogs             | false                                                           |
+| skip_upload_images                 | false                                                           |
+| skip_upload_screenshots            | false                                                           |
+| changes_not_sent_for_review        | true                                                            |
+| package_name                       | com.tenzy.toolkit                                               |
+| release_status                     | completed                                                       |
+| metadata_path                      | ./fastlane/metadata/android                                     |
+| json_key                           | /home/runner/work/putt-party-play/putt-party-play/play-key.json |
+| sync_image_upload                  | false                                                           |
+| track_promote_release_status       | completed                                                       |
+| validate_only                      | false                                                           |
+| check_superseded_tracks            | false                                                           |
+| timeout                            | 300                                                             |
+| deactivate_on_promote              | true                                                            |
+| rescue_changes_not_sent_for_review | true                                                            |
+| ack_bundle_installation_warning    | false                                                           |
++------------------------------------+-----------------------------------------------------------------+
+
++------------------------------------+
+|            [33mLane Context[0m            |
++------------------+-----------------+
+| DEFAULT_PLATFORM | android         |
+| PLATFORM_NAME    | android         |
+| LANE_NAME        | android listing |
++------------------+-----------------+
+[02:31:09]: [31mCalled from Fastfile at line 12[0m
+[02:31:09]: [31m```[0m
+[02:31:09]: [31m    10:	  # declarations (data safety, content rating) completed before Play accepts a listing push.[0m
+[02:31:09]: [31m    11:	  lane :listing do[0m
+[02:31:09]: [31m => 12:	    supply([0m
+[02:31:09]: [31m    13:	      track: "internal",[0m
+[02:31:09]: [31m    14:	      skip_upload_apk: true,[0m
+[02:31:09]: [31m```[0m
+
++---------------------------------------+
+|           [32mfastlane summary[0m            |
++------+------------------+-------------+
+| Step | Action           | Time (in s) |
++------+------------------+-------------+
+| 1    | default_platform | 0           |
+| 💥   | [31msupply[0m           | 0           |
++------+------------------+-------------+
+
+[02:31:09]: [31mfastlane finished with errors[0m
+[31m
+[!] More than one release found in this track. Please specify with the :version_code option to select a release.[0m
+[02:31:09]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
