@@ -52,6 +52,7 @@ import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.TableChart
+import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.LocalParking
 import androidx.compose.material.icons.outlined.NetworkCheck
 import androidx.compose.material.icons.outlined.Hearing
@@ -119,6 +120,7 @@ val TOOLS = listOf(
     // Page 3 · Everyday tools that work on every phone (no flagship-only AI needed)
     HTool("shield", "Scam & Safety Check", "Spot scam texts & links", Icons.Outlined.Shield, 3, keywords = listOf("scam","safety","check","phishing","fraud","text","sms","email","link","suspicious","fake","spam","protect","verify","shield","message","dm")),
     HTool("scancsv", "Scan to Table / CSV", "Photo → spreadsheet", Icons.Outlined.TableChart, 3, keywords = listOf("scan","table","csv","spreadsheet","ocr","receipt","list","rows","columns","excel","data","import","photo","extract")),
+    HTool("invoice", "Quick Invoice", "Make a PDF invoice", Icons.Outlined.ReceiptLong, 3, keywords = listOf("invoice","bill","pdf","receipt","quote","estimate","charge","payment","client","business","freelance","total","tax")),
     HTool("parked", "Where'd I Park", "Pin the car, walk back", Icons.Outlined.LocalParking, 3, keywords = listOf("park","parking","car","find","lot","garage","pin","location","gps","remember","where","vehicle")),
     HTool("netscout", "Network Scout", "See who's on your Wi-Fi", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","lan","scout","who","connected")),
     HTool("hearing", "Hearing Boost", "Amplify sound to earbuds", Icons.Outlined.Hearing, 3, keywords = listOf("hearing","hear","amplify","boost","ear","loud","sound","assist","listen","volume","aid")),
