@@ -131,7 +131,7 @@ val TOOLS = listOf(
     HTool("gifmaker", "GIF Maker", "Video → looping GIF", Icons.Outlined.Gif, 3, keywords = listOf("gif","maker","video","animation","loop","meme","clip","convert","share","animated","mp4")),
     HTool("sendany", "Send Anywhere", "Wi-Fi file transfer", Icons.Outlined.SendToMobile, 3, keywords = listOf("send","transfer","file","share","wifi","nearby","qr","download","device","computer","laptop","local","airdrop")),
     HTool("parked", "Where'd I Park", "Pin the car, walk back", Icons.Outlined.LocalParking, 3, keywords = listOf("park","parking","car","find","lot","garage","pin","location","gps","remember","where","vehicle")),
-    HTool("netscout", "Network Scout", "See who's on your Wi-Fi", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","lan","scout","who","connected")),
+    HTool("netscout", "Network Scout", "Wi-Fi info, speed & devices", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","speedtest","speed test","mbps","download","latency","ping","lan","scout","who","connected")),
     HTool("hearing", "Hearing Boost", "Amplify sound to earbuds", Icons.Outlined.Hearing, 3, keywords = listOf("hearing","hear","amplify","boost","ear","loud","sound","assist","listen","volume","aid")),
     HTool("heartrate", "Heart Rate", "Pulse from your fingertip", Icons.Outlined.MonitorHeart, 3, keywords = listOf("heart","rate","pulse","bpm","fingertip","camera","health","beats","measure")),
 )

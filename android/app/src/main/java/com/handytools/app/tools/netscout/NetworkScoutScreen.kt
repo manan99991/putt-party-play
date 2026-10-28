@@ -59,6 +59,8 @@ fun NetworkScoutScreen() {
     var scanning by remember { mutableStateOf(false) }
     var progress by remember { mutableStateOf(0) }
     val hosts = remember { mutableStateListOf<Host>() }
+    var speed by remember { mutableStateOf<String?>(null) }
+    var testing by remember { mutableStateOf(false) }
 
     fun ipString(ip: Int): String =
         "${ip and 0xFF}.${(ip shr 8) and 0xFF}.${(ip shr 16) and 0xFF}.${(ip shr 24) and 0xFF}"
@@ -122,8 +124,35 @@ fun NetworkScoutScreen() {
         }
     }
 
+    fun speedTest() {
+        if (testing) return
+        testing = true; speed = "Testing…"
+        scope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    val conn = java.net.URL("https://speed.cloudflare.com/__down?bytes=8000000").openConnection() as java.net.HttpURLConnection
+                    conn.connectTimeout = 8000; conn.readTimeout = 15000
+                    val start = System.nanoTime()
+                    var ttfb = 0L; var total = 0L
+                    conn.inputStream.use { ins ->
+                        val buf = ByteArray(16 * 1024)
+                        var n = ins.read(buf)
+                        if (n >= 0) ttfb = System.nanoTime() - start
+                        while (n >= 0) { total += n; n = ins.read(buf) }
+                    }
+                    conn.disconnect()
+                    val secs = (System.nanoTime() - start) / 1e9
+                    val mbps = if (secs > 0) total * 8 / secs / 1e6 else 0.0
+                    "%.1f Mbps  ·  %d ms".format(mbps, (ttfb / 1e6).toLong())
+                } catch (e: Exception) { null }
+            }
+            testing = false
+            speed = result ?: "Couldn't reach the test server. Check your connection."
+        }
+    }
+
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Network Scout", "See your Wi-Fi connection and who else is on the network. Scanning stays on your local network — nothing is uploaded.")
+        ToolHeader("Network Scout", "See your Wi-Fi connection, test your internet speed, and spot who else is on the network. Everything stays on your device — nothing is uploaded.")
         Spacer(Modifier.size(16.dp))
 
         info.forEach { (k, v) ->
@@ -132,8 +161,16 @@ fun NetworkScoutScreen() {
                 Text(v, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
             }
         }
+        speed?.let {
+            Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text("Internet speed", color = Handy.palette.textSecondary)
+                Text(it, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
+            }
+        }
 
         Spacer(Modifier.size(16.dp))
+        HPrimaryButton(if (testing) "Testing speed…" else "Test internet speed", enabled = !testing) { speedTest() }
+        Spacer(Modifier.size(10.dp))
         HPrimaryButton(if (scanning) "Scanning… $progress/254" else "Scan my network", enabled = !scanning) { scan() }
         Spacer(Modifier.size(12.dp))
 
