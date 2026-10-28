@@ -55,6 +55,7 @@ import androidx.compose.material.icons.outlined.TableChart
 import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.Badge
 import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.LocalParking
 import androidx.compose.material.icons.outlined.NetworkCheck
 import androidx.compose.material.icons.outlined.Hearing
@@ -124,6 +125,7 @@ val TOOLS = listOf(
     HTool("invoice", "Quick Invoice", "Make a PDF invoice", Icons.Outlined.ReceiptLong, 3, keywords = listOf("invoice","bill","pdf","receipt","quote","estimate","charge","payment","client","business","freelance","total","tax")),
     HTool("idphoto", "Passport / ID Photo", "White-bg photo, right size", Icons.Outlined.Badge, 3, keywords = listOf("passport","id","photo","visa","headshot","white","background","2x2","35x45","print","identity","document","picture")),
     HTool("redact", "Redact", "Hide private info in photos", Icons.Outlined.VisibilityOff, 3, keywords = listOf("redact","blur","black","hide","censor","private","screenshot","number","account","card","face","email","remove","cover","privacy")),
+    HTool("receipts", "Receipt & Warranty Keeper", "Save receipts, track warranties", Icons.Outlined.Receipt, 3, keywords = listOf("receipt","warranty","keeper","track","expiry","return","refund","proof","purchase","save","reminder","guarantee","store")),
     HTool("parked", "Where'd I Park", "Pin the car, walk back", Icons.Outlined.LocalParking, 3, keywords = listOf("park","parking","car","find","lot","garage","pin","location","gps","remember","where","vehicle")),
     HTool("netscout", "Network Scout", "See who's on your Wi-Fi", Icons.Outlined.NetworkCheck, 3, keywords = listOf("network","wifi","scan","devices","ip","router","signal","speed","lan","scout","who","connected")),
     HTool("hearing", "Hearing Boost", "Amplify sound to earbuds", Icons.Outlined.Hearing, 3, keywords = listOf("hearing","hear","amplify","boost","ear","loud","sound","assist","listen","volume","aid")),
