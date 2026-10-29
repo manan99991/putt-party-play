@@ -200,7 +200,7 @@ fun MediaToolScreen() {
     }
 
     /** One Transformer runner for shrink, remux and audio fallback. Progress polled on the main thread. */
-    fun runVideo(edited: EditedMediaItem, configure: (Transformer.Builder) -> Transformer.Builder, outName: String, mime: String, kind: MediaEngine.Kind, onError: (String) -> Unit) {
+    fun runVideo(edited: EditedMediaItem, configure: (Transformer.Builder) -> Transformer.Builder, outName: String, mime: String, kind: MediaEngine.Kind, onFail: (String) -> Unit) {
         val out = File(ctx.cacheDir, outName)
         working = true; progress = 0f; status = null; statusIsError = false; saved = null
         val t = configure(Transformer.Builder(ctx)).addListener(object : Transformer.Listener {
@@ -219,12 +219,12 @@ fun MediaToolScreen() {
             }
             override fun onError(composition: Composition, exportResult: ExportResult, exception: ExportException) {
                 transformer = null; working = false; progress = null
-                onError(exception.message?.take(90) ?: "the phone's video codec refused it")
+                onFail(exception.message?.take(90) ?: "the phone's video codec refused it")
             }
         }).build()
         transformer = t
         try { t.start(edited, out.absolutePath) } catch (e: Exception) {
-            transformer = null; working = false; progress = null; onError(e.message?.take(90) ?: "couldn't start"); return
+            transformer = null; working = false; progress = null; onFail(e.message?.take(90) ?: "couldn't start"); return
         }
         scope.launch {
             val holder = ProgressHolder()

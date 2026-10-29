@@ -182,8 +182,8 @@ fun CleanupToolScreen() {
         if (sender != null) { pending = items; trashLauncher.launch(IntentSenderRequest.Builder(sender).build()) }
         else scope.launch {
             val moved = withContext(Dispatchers.IO) { CleanupEngine.legacyTrash(ctx, items) }
-            val movedNames = moved.map { it.trashed }.toHashSet()
-            applyTrashed(items.filter { i -> moved.any { it.original.endsWith(i.name) || it.name == i.name } && movedNames.isNotEmpty() })
+            val movedNames = moved.map { it.name }.toHashSet()
+            applyTrashed(items.filter { it.name in movedNames })
             if (moved.isEmpty()) status = "Couldn't move those — storage permission may be missing."
         }
     }
