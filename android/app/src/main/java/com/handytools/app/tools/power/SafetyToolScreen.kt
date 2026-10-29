@@ -167,7 +167,7 @@ fun SafetyToolScreen() {
         }
     }
     val cameraPerm = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok: Boolean ->
-        if (ok) { scanning = true; qrImage = null; qrStatus = null } else cameraDenied = true
+        if (ok) { scanning = true; qrImage = null; qrStatus = null } else { cameraDenied = true }
     }
 
     PowerToolPage(route = "safety", tabs = SAFETY_TABS, selected = tab, onTab = { tab = it; if (it != 3) scanning = false }) {
@@ -210,9 +210,9 @@ fun SafetyToolScreen() {
                 Spacer(Modifier.height(HandyTokens.Space12))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                     HPrimaryButton(if (scanning) "Stop scanning" else "📷 Scan QR", modifier = Modifier.weight(1f), enabled = !qrBusy) {
-                        if (scanning) scanning = false
+                        if (scanning) { scanning = false }
                         else if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) { scanning = true; qrImage = null; qrStatus = null }
-                        else cameraPerm.launch(Manifest.permission.CAMERA)
+                        else { cameraPerm.launch(Manifest.permission.CAMERA) }
                     }
                     HSecondaryButton(if (qrBusy) "Reading…" else "🖼 From image", modifier = Modifier.weight(1f), enabled = !qrBusy) {
                         library.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
