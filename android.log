@@ -26,7 +26,6 @@ Daemon will be stopped at the end of the build
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
@@ -34,12 +33,12 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugAssets
 > Task :app:desugarDebugFileDependencies
 > Task :app:compressDebugAssets
-> Task :app:processDebugResources
+> Task :app:processDebugManifestForPackage
 > Task :app:checkDebugDuplicateClasses
-> Task :app:kspDebugKotlin
+> Task :app:processDebugResources
 > Task :app:mergeExtDexDebug
-> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJniLibFolders
 > Task :app:mergeDebugNativeLibs
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
@@ -48,25 +47,121 @@ Daemon will be stopped at the end of the build
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
 
-> Task :app:compileDebugKotlin FAILED
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/CaptureEngine.kt:57:123 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'kotlin.String?'.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/FlashlightEngine.kt:33:51 Argument type mismatch: actual type is 'kotlin.String?', but 'kotlin.String' was expected.
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/SettingsScreen.kt:83:13 Overload resolution ambiguity between candidates:
-fun SectionLabel(text: String): Unit
-fun SectionLabel(t: String): Unit
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/SettingsScreen.kt:88:13 Overload resolution ambiguity between candidates:
-fun SectionLabel(text: String): Unit
-fun SectionLabel(t: String): Unit
-e: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/SettingsScreen.kt:103:1 Conflicting overloads:
-fun SectionLabel(text: String): Unit
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1793298559641.json
+> Task :app:kspDebugKotlin
+> Task :app:compileDebugKotlin
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/OverlayBubble.kt:139:84 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingService.kt:107:14 'fun vibrate(p0: VibrationEffect!, p1: AudioAttributes!): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:25:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:48:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/exif/ExifScreen.kt:57:30 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/heartrate/HeartRateScreen.kt:54:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/magnifier/MagnifierScreen.kt:47:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/FlashlightToolScreen.kt:281:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/InstrumentsPanels.kt:369:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/MediaEngine.kt:133:32 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/SafetyToolScreen.kt:341:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ShareToolScreen.kt:489:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shrink/ShrinkScreen.kt:126:17 Condition is always 'true'.
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics
+> Task :app:processDebugJavaRes
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1793298996543.json
+
+BUILD SUCCESSFUL in 5m 19s
+38 actionable tasks: 38 executed
+=== keystore sanity ===
+upload.jks bytes: 2694 (expect ~2694)
+keytool error: java.io.IOException: keystore password was incorrect
+=== bundleRelease (INTERNAL_UNLOCK=true) ===
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateReleaseBuildConfig
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:processReleaseMainManifest
+> Task :app:parseReleaseLocalResources
+> Task :app:processReleaseManifest
+> Task :app:javaPreCompileRelease
+> Task :app:mergeReleaseResources
+> Task :app:processReleaseManifestForPackage
+> Task :app:mergeReleaseArtProfile
+> Task :app:extractProguardFiles
+> Task :app:mergeReleaseStartupProfile
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:writeReleaseAppMetadata
+> Task :app:collectReleaseDependencies
+> Task :app:configureReleaseDependencies
+> Task :app:parseReleaseIntegrityConfig
+> Task :app:validateSigningRelease
+> Task :app:processReleaseResources
+> Task :app:mergeReleaseNativeLibs
+
+> Task :app:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
+
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:kspReleaseKotlin
+> Task :app:compileReleaseKotlin
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/OverlayBubble.kt:139:84 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingService.kt:107:14 'fun vibrate(p0: VibrationEffect!, p1: AudioAttributes!): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:25:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:48:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/exif/ExifScreen.kt:57:30 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/heartrate/HeartRateScreen.kt:54:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/magnifier/MagnifierScreen.kt:47:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/FlashlightToolScreen.kt:281:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/InstrumentsPanels.kt:369:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/MediaEngine.kt:133:32 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/SafetyToolScreen.kt:341:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ShareToolScreen.kt:489:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shrink/ShrinkScreen.kt:126:17 Condition is always 'true'.
+
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:mergeReleaseGeneratedProguardFiles
+> Task :app:processReleaseJavaRes
+> Task :app:expandReleaseArtProfileWildcards
+> Task :app:mergeReleaseJavaResource
+> Task :app:generateReleaseLintVitalReportModel
+> Task :app:minifyReleaseWithR8
+> Task :app:lintVitalAnalyzeRelease
+
+> Task :app:minifyReleaseWithR8 FAILED
+ERROR: Missing classes detected while running R8. Please add the missing classes or apply additional keep rules that are generated in /home/runner/work/putt-party-play/putt-party-play/android/app/build/outputs/mapping/release/missing_rules.txt.
+ERROR: R8: Missing class com.gemalto.jp2.JP2Decoder (referenced from: android.graphics.Bitmap com.tom_roush.pdfbox.filter.JPXFilter.readJPX(java.io.InputStream, com.tom_roush.pdfbox.filter.DecodeOptions, com.tom_roush.pdfbox.filter.DecodeResult))
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793299313245.json
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':app:compileDebugKotlin'.
-> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
-   > Compilation error. See log for more details
+Execution failed for task ':app:minifyReleaseWithR8'.
+> A failure occurred while executing com.android.build.gradle.internal.tasks.R8Task$R8Runnable
+   > Compilation failed to complete
 
 * Try:
 > Run with --info or --debug option to get more log output.
@@ -74,7 +169,7 @@ Execution failed for task ':app:compileDebugKotlin'.
 > Get more help at https://help.gradle.org.
 
 * Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugKotlin'.
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:minifyReleaseWithR8'.
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
 	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
@@ -106,7 +201,7 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:com
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing com.android.build.gradle.internal.tasks.R8Task$R8Runnable
 	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:287)
 	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
 	at org.gradle.internal.Factories$1.create(Factories.java:31)
@@ -180,7 +275,7 @@ Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionExcept
 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
-	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:61)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:56)
 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
 	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
 	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
@@ -230,10 +325,17 @@ Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionExcept
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
-	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
-	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:119)
-	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
+Caused by: com.android.tools.r8.CompilationFailedException: Compilation failed to complete
+	at Version.fakeStackEntry(Version_8.9.32.java:0)
+	at com.android.tools.r8.S.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:5)
+	at com.android.tools.r8.internal.Nu.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:82)
+	at com.android.tools.r8.internal.Nu.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:32)
+	at com.android.tools.r8.internal.Nu.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:31)
+	at com.android.tools.r8.R8.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:22)
+	at com.android.tools.r8.R8.run(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:3)
+	at com.android.builder.dexing.R8Tool.runR8(r8Tool.kt:324)
+	at com.android.build.gradle.internal.tasks.R8Task$Companion.shrink(R8Task.kt:832)
+	at com.android.build.gradle.internal.tasks.R8Task$R8Runnable.execute(R8Task.kt:912)
 	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
 	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
 	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
@@ -261,7 +363,67 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
 	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
 	... 2 more
+Caused by: com.android.tools.r8.internal.g: Missing class com.gemalto.jp2.JP2Decoder (referenced from: android.graphics.Bitmap com.tom_roush.pdfbox.filter.JPXFilter.readJPX(java.io.InputStream, com.tom_roush.pdfbox.filter.DecodeOptions, com.tom_roush.pdfbox.filter.DecodeResult))
+	at com.android.tools.r8.internal.Me0.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:21)
+	at com.android.tools.r8.internal.Me0.error(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1)
+	at com.android.tools.r8.shaking.M.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1980)
+	at com.android.tools.r8.shaking.M.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1627)
+	at com.android.tools.r8.R8.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1510)
+	at com.android.tools.r8.R8.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:206)
+	at com.android.tools.r8.R8.c(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:8)
+	at com.android.tools.r8.R8.b(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1)
+	at com.android.tools.r8.internal.Nu.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:28)
+	... 33 more
+	Suppressed: java.lang.RuntimeException: com.android.tools.r8.internal.g: Missing class com.gemalto.jp2.JP2Decoder (referenced from: android.graphics.Bitmap com.tom_roush.pdfbox.filter.JPXFilter.readJPX(java.io.InputStream, com.tom_roush.pdfbox.filter.DecodeOptions, com.tom_roush.pdfbox.filter.DecodeResult))
+		at com.android.tools.r8.internal.Me0.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:27)
+		at com.android.tools.r8.shaking.M.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1982)
+		at com.android.tools.r8.shaking.M.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1627)
+		at com.android.tools.r8.R8.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1510)
+		at com.android.tools.r8.R8.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:206)
+		at com.android.tools.r8.R8.c(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:8)
+		at com.android.tools.r8.R8.b(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:1)
+		at com.android.tools.r8.internal.Nu.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:28)
+		at com.android.tools.r8.R8.a(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:22)
+		at com.android.tools.r8.R8.run(R8_8.9.32_b544fddaa3c5775749f5287a4ea253aa22d60a2ae31101691f9da7bdcc5515a9:3)
+		at com.android.builder.dexing.R8Tool.runR8(r8Tool.kt:324)
+		at com.android.build.gradle.internal.tasks.R8Task$Companion.shrink(R8Task.kt:832)
+		at com.android.build.gradle.internal.tasks.R8Task$R8Runnable.execute(R8Task.kt:912)
+		at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+		at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+		at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+		at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+		at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+		at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+		at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+		at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+		at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+		at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+		at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+		at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+		at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+		at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+		at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+		at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
+		at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
+		at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+		at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+		at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+		at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+		at org.gradle.internal.Factories$1.create(Factories.java:31)
+		at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+		at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+		at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:132)
+		at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+		at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+		at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+		at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+		at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+		at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+		at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+		at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+		at java.base/java.lang.Thread.run(Thread.java:840)
+	Caused by: [CIRCULAR REFERENCE: com.android.tools.r8.internal.g: Missing class com.gemalto.jp2.JP2Decoder (referenced from: android.graphics.Bitmap com.tom_roush.pdfbox.filter.JPXFilter.readJPX(java.io.InputStream, com.tom_roush.pdfbox.filter.DecodeOptions, com.tom_roush.pdfbox.filter.DecodeResult))]
 
 
-BUILD FAILED in 3m 24s
-30 actionable tasks: 30 executed
+BUILD FAILED in 2m 34s
+42 actionable tasks: 42 executed
