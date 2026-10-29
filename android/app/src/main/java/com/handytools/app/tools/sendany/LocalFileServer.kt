@@ -26,6 +26,11 @@ class LocalFileServer(
     @Volatile private var running = false
     var port: Int = 0; private set
 
+    /** Optional transfer callbacks, invoked on the server's background thread. */
+    @Volatile var onConnected: (() -> Unit)? = null
+    @Volatile var onProgress: ((sent: Long, total: Long) -> Unit)? = null
+    @Volatile var onDelivered: (() -> Unit)? = null
+
     private val safeName = fileName.replace("\"", "").replace("\n", " ").replace("\r", " ")
 
     fun start(): Int {
@@ -55,6 +60,7 @@ class LocalFileServer(
             val line = reader.readLine() ?: return
             val path = line.split(" ").getOrNull(1) ?: "/"
             val out = sock.getOutputStream()
+            if (!path.contains("favicon")) try { onConnected?.invoke() } catch (_: Exception) {}
             if (path.startsWith("/file")) {
                 val header = StringBuilder("HTTP/1.1 200 OK\r\n")
                 header.append("Content-Type: ").append(mime.ifBlank { "application/octet-stream" }).append("\r\n")
@@ -62,8 +68,19 @@ class LocalFileServer(
                 header.append("Content-Disposition: attachment; filename=\"").append(safeName).append("\"\r\n")
                 header.append("Connection: close\r\n\r\n")
                 out.write(header.toString().toByteArray())
-                resolver.openInputStream(fileUri)?.use { it.copyTo(out) }
+                var sent = 0L
+                resolver.openInputStream(fileUri)?.use { input ->
+                    val buf = ByteArray(64 * 1024)
+                    var n = input.read(buf)
+                    while (n >= 0) {
+                        out.write(buf, 0, n)
+                        sent += n
+                        try { onProgress?.invoke(sent, size) } catch (_: Exception) {}
+                        n = input.read(buf)
+                    }
+                }
                 out.flush()
+                try { onDelivered?.invoke() } catch (_: Exception) {}
             } else {
                 val body = """<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"></head>

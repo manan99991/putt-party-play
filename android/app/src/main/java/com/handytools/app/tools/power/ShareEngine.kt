@@ -197,20 +197,26 @@ internal object ShareEngine {
             return if (suggested) "Handed “${c.ssid}” to Android — pick it in the Wi-Fi panel if it doesn't connect by itself. Password copied."
             else "Pick “${c.ssid}” in the Wi-Fi panel and paste the password (it's copied)."
         }
-        @Suppress("DEPRECATION")
-        try {
-            val conf = android.net.wifi.WifiConfiguration()
-            conf.SSID = "\"${c.ssid}\""
-            if (c.password.isBlank()) conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE)
-            else if (c.security == "WEP") { conf.wepKeys[0] = "\"${c.password}\""; conf.wepTxKeyIndex = 0; conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE); conf.allowedGroupCiphers.set(android.net.wifi.WifiConfiguration.GroupCipher.WEP40) }
-            else conf.preSharedKey = "\"${c.password}\""
-            if (c.hidden) conf.hiddenSSID = true
-            val id = wifi.addNetwork(conf)
-            if (id >= 0) { wifi.disconnect(); wifi.enableNetwork(id, true); wifi.reconnect(); return "Joining “${c.ssid}”…" }
-        } catch (_: Exception) {}
+        if (legacyJoin(wifi, c)) return "Joining “${c.ssid}”…"
         try { ctx.startActivity(Intent(Settings.ACTION_WIFI_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } catch (_: Exception) {}
         return "Couldn't add it automatically — pick “${c.ssid}” in Wi-Fi settings and paste the password (it's copied)."
     }
+
+    /** Android 8–9: the old WifiConfiguration route. */
+    @Suppress("DEPRECATION")
+    private fun legacyJoin(wifi: WifiManager, c: WifiCreds): Boolean = try {
+        val conf = android.net.wifi.WifiConfiguration()
+        conf.SSID = "\"${c.ssid}\""
+        if (c.password.isBlank()) conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE)
+        else if (c.security == "WEP") {
+            conf.wepKeys[0] = "\"${c.password}\""; conf.wepTxKeyIndex = 0
+            conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE)
+            conf.allowedGroupCiphers.set(android.net.wifi.WifiConfiguration.GroupCipher.WEP40)
+        } else conf.preSharedKey = "\"${c.password}\""
+        if (c.hidden) conf.hiddenSSID = true
+        val id = wifi.addNetwork(conf)
+        if (id >= 0) { wifi.disconnect(); wifi.enableNetwork(id, true); wifi.reconnect(); true } else false
+    } catch (_: Exception) { false }
 
     // ------------------------------------------------------------------ network info
 

@@ -33,7 +33,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Contacts
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.Photo
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.Videocam
 import androidx.compose.material3.AlertDialog
@@ -319,13 +319,13 @@ private fun SpaceTab(
         if (scan != null) {
             Spacer(Modifier.height(8.dp))
             val cats = scan.categories
-            if (tick >= 0 && cats.all { it.items.isEmpty() }) EmptyState(Icons.Outlined.Image, "Nothing to clean — your photos are tidy.")
+            if (tick >= 0 && cats.all { it.items.isEmpty() }) EmptyState(Icons.Outlined.Photo, "Nothing to clean — your photos are tidy.")
             cats.forEach { c ->
                 if (c.items.isEmpty()) return@forEach
                 HCard(Modifier.fillMaxWidth().padding(top = 10.dp)) {
                     Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                         Box(Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)).background(Handy.palette.accentSoft), contentAlignment = Alignment.Center) {
-                            Icon(if (c.id == "videos") Icons.Outlined.Videocam else Icons.Outlined.Image, null, tint = HandyColors.Accent)
+                            Icon(if (c.id == "videos") Icons.Outlined.Videocam else Icons.Outlined.Photo, null, tint = HandyColors.Accent)
                         }
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
@@ -381,20 +381,20 @@ private fun Thumb(item: CleanItem, selected: Boolean, grouped: Boolean, modifier
     Box(if (onTap != null) base.clickable { onTap() } else base) {
         val b = bmp
         if (b != null) Image(b.asImageBitmap(), item.name, Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
-        else Icon(if (item.isVideo) Icons.Outlined.Videocam else Icons.Outlined.Image, null, Modifier.align(Alignment.Center).size(28.dp), tint = Handy.palette.textSecondary)
+        else Icon(if (item.isVideo) Icons.Outlined.Videocam else Icons.Outlined.Photo, null, Modifier.align(Alignment.Center).size(28.dp), tint = Handy.palette.textSecondary)
         if (onTap != null) {
             Box(Modifier.padding(6.dp).size(22.dp).clip(CircleShape).background(if (selected) HandyColors.Accent else Color(0x66000000)).align(Alignment.TopStart), contentAlignment = Alignment.Center) {
                 if (selected) Icon(Icons.Outlined.Check, null, Modifier.size(14.dp), tint = Color.White)
             }
         }
-        if (grouped && item.group >= 0) Badge("G${item.group + 1}", Modifier.align(Alignment.TopEnd))
-        item.why?.let { Badge(it, Modifier.align(Alignment.BottomStart)) }
-        Badge(CleanupEngine.human(item.size), Modifier.align(Alignment.BottomEnd))
+        if (grouped && item.group >= 0) ThumbTag("G${item.group + 1}", Modifier.align(Alignment.TopEnd))
+        item.why?.let { ThumbTag(it, Modifier.align(Alignment.BottomStart)) }
+        ThumbTag(CleanupEngine.human(item.size), Modifier.align(Alignment.BottomEnd))
     }
 }
 
 @Composable
-private fun Badge(text: String, modifier: Modifier) {
+private fun ThumbTag(text: String, modifier: Modifier) {
     Text(text, fontSize = 10.sp, color = Color.White, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis,
         modifier = modifier.padding(4.dp).clip(RoundedCornerShape(6.dp)).background(Color(0x99000000)).padding(horizontal = 5.dp, vertical = 2.dp))
 }
