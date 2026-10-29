@@ -80,12 +80,12 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             }
 
             Spacer(Modifier.height(HandyTokens.Space24))
-            SectionLabel("App")
+            SettingsSectionLabel("App")
             SettingsRow(Icons.Outlined.Tune, "Permissions", "See what's on, turn things on or off") { onOpen("setup") }
             SettingsRow(Icons.Outlined.Lock, "Privacy", "What stays on your phone (everything)") { onOpen("privacy") }
 
             Spacer(Modifier.height(HandyTokens.Space24))
-            SectionLabel("Help")
+            SettingsSectionLabel("Help")
             SettingsRow(Icons.Outlined.Mail, "Send feedback", SUPPORT_EMAIL) {
                 ctx.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$SUPPORT_EMAIL?subject=Tenzy%20Android%20${BuildConfig.VERSION_NAME}")))
             }
@@ -101,7 +101,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
 }
 
 @Composable
-private fun SectionLabel(t: String) {
+private fun SettingsSectionLabel(t: String) {
     Text(t.uppercase(), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(bottom = HandyTokens.Space8))
 }
 

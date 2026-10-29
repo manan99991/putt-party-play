@@ -30,7 +30,7 @@ internal class FlTorch(ctx: Context) {
 
     /** Number of torch strength steps (1 = on/off only). */
     val maxLevel: Int = if (Build.VERSION.SDK_INT >= 33 && id != null) {
-        runCatching { cm.getCameraCharacteristics(id).get(CameraCharacteristics.FLASH_INFO_STRENGTH_MAXIMUM_LEVEL) ?: 1 }.getOrDefault(1)
+        runCatching { cm.getCameraCharacteristics(id!!).get(CameraCharacteristics.FLASH_INFO_STRENGTH_MAXIMUM_LEVEL) ?: 1 }.getOrDefault(1)
     } else 1
 
     val hasLevels: Boolean get() = maxLevel > 1

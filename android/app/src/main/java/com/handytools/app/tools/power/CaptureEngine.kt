@@ -54,7 +54,7 @@ data class CaptureResult(
         CaptureKind.RECEIPT -> listOf(merchant, purchaseMs?.let { CaptureClassifier.dayFmt.format(Date(it)) }, total.takeIf { it.isNotBlank() }?.let { "total $it" })
             .filterNotNull().filter { it.isNotBlank() }.joinToString(", ").ifBlank { text }
         CaptureKind.CARD -> listOf(name, title, company).filter { it.isNotBlank() }.joinToString(", ").ifBlank { text }
-        CaptureKind.FLYER -> listOf(event, startMs?.let { CaptureClassifier.whenFmt.format(Date(it)) }, venue).filter { it.isNotBlank() }.joinToString(", ").ifBlank { text }
+        CaptureKind.FLYER -> listOf(event, startMs?.let { CaptureClassifier.whenFmt.format(Date(it)) }, venue).filterNotNull().filter { it.isNotBlank() }.joinToString(", ").ifBlank { text }
         CaptureKind.DOCUMENT, CaptureKind.SIGN -> text
     }
 }
