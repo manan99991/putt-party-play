@@ -50,23 +50,47 @@ jobs:
           pip install "git+${MOBILEQA_REPO}"
           npm install -g appium && appium driver install uiautomator2
 
-      # Pick the brain: free Gemini Flash (vision) when GEMINI_API_KEY is set, else Anthropic, else
-      # the heuristic. The gemini model name is only exported when its key exists, so the fallbacks
-      # keep their own default model.
+      # Pick the brain — same selection as Reckato (app-calculator): the agent talks to any
+      # OpenAI-compatible endpoint, configured by repo var MOBILEQA_LLM_BASE_URL + secret
+      # MOBILEQA_LLM_API_KEY (+ vars MOBILEQA_MODEL, MOBILEQA_VISION_MODEL, MOBILEQA_NO_VISION=1 for
+      # text-only models, MOBILEQA_REASONING_EFFORT). Default model = Groq gpt-oss-120b (card-free).
+      # Fallbacks: GEMINI_API_KEY (Gemini via its OpenAI endpoint; model from MOBILEQA_MODEL or
+      # gemini-2.5-flash) -> ANTHROPIC_API_KEY -> the free heuristic brain.
       - name: Select LLM brain
+        env:
+          EXPLICIT_KEY: ${{ secrets.MOBILEQA_LLM_API_KEY }}
+          EXPLICIT_BASE: ${{ vars.MOBILEQA_LLM_BASE_URL }}
+          CFG_MODEL: ${{ vars.MOBILEQA_MODEL }}
+          CFG_VISION: ${{ vars.MOBILEQA_VISION_MODEL }}
+          CFG_NO_VISION: ${{ vars.MOBILEQA_NO_VISION }}
+          CFG_EFFORT: ${{ vars.MOBILEQA_REASONING_EFFORT }}
+          GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          if [ -n "${{ secrets.GEMINI_API_KEY }}" ]; then
+          if [ -n "$EXPLICIT_KEY" ] && [ -n "$EXPLICIT_BASE" ]; then
+            MODEL="${CFG_MODEL:-openai/gpt-oss-120b}"
+            EXPLICIT_KEY=$(printf '%s' "$EXPLICIT_KEY" | tr -d '\r\n')
+            {
+              echo "MOBILEQA_LLM_BASE_URL=$EXPLICIT_BASE"
+              echo "MOBILEQA_LLM_API_KEY=$EXPLICIT_KEY"
+              echo "MOBILEQA_MODEL=$MODEL"
+            } >> "$GITHUB_ENV"
+            if [ -n "$CFG_EFFORT" ]; then echo "MOBILEQA_REASONING_EFFORT=$CFG_EFFORT" >> "$GITHUB_ENV"; fi
+            if [ -n "$CFG_NO_VISION" ]; then echo "MOBILEQA_NO_VISION=1" >> "$GITHUB_ENV"; VNOTE="text-only"
+            else echo "MOBILEQA_VISION_MODEL=${CFG_VISION:-$MODEL}" >> "$GITHUB_ENV"; VNOTE="vision on"; fi
+            echo "LLM brain: $MODEL via $EXPLICIT_BASE (configured provider, $VNOTE)"
+          elif [ -n "$GEMINI_KEY" ]; then
+            MODEL="${CFG_MODEL:-gemini-2.5-flash}"
             {
               echo "MOBILEQA_LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/"
-              echo "MOBILEQA_LLM_API_KEY=${{ secrets.GEMINI_API_KEY }}"
-              echo "MOBILEQA_MODEL=gemini-2.5-flash"
-              echo "MOBILEQA_VISION_MODEL=gemini-2.5-flash"
+              echo "MOBILEQA_LLM_API_KEY=$(printf '%s' "$GEMINI_KEY" | tr -d '\r\n')"
+              echo "MOBILEQA_MODEL=$MODEL"
+              echo "MOBILEQA_VISION_MODEL=${CFG_VISION:-$MODEL}"
             } >> "$GITHUB_ENV"
-            echo "Brain: FREE Gemini Flash (vision)"
+            echo "LLM brain: Gemini $MODEL (vision)"
           elif [ -n "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
-            echo "Brain: Anthropic (paid)"
+            echo "LLM brain: Anthropic"
           else
-            echo "Brain: heuristic — set the free GEMINI_API_KEY secret for deep functional + UX/UI testing"
+            echo "LLM brain: heuristic — set repo var MOBILEQA_LLM_BASE_URL + secret MOBILEQA_LLM_API_KEY (free Groq works) for deep functional + UX testing"
           fi
 
       - name: Enable KVM
