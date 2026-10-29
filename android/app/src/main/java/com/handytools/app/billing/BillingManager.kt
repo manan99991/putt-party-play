@@ -3,6 +3,7 @@ package com.handytools.app.billing
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import com.handytools.app.BuildConfig
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -50,7 +51,8 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
         )
         .build()
 
-    private val _isPremium = MutableStateFlow(PremiumCache.read(ctx))
+    // INTERNAL_UNLOCK (internal-testing builds only) forces Pro on; never persisted to the cache.
+    private val _isPremium = MutableStateFlow(BuildConfig.INTERNAL_UNLOCK || PremiumCache.read(ctx))
     val isPremium: StateFlow<Boolean> = _isPremium
 
     private val _yearly = MutableStateFlow<ProductDetails?>(null)
@@ -128,7 +130,7 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
     }
 
     private fun setPremium(v: Boolean) {
-        _isPremium.value = v
+        _isPremium.value = v || BuildConfig.INTERNAL_UNLOCK
         PremiumCache.write(ctx, v)
     }
 

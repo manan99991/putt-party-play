@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -129,7 +130,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                 Column {
                     Text("Tenzy", style = MaterialTheme.typography.headlineMedium)
                     Spacer(Modifier.height(HandyTokens.Space4))
-                    Text(if (premium) "Pro · no ads" else "10 power tools · on your phone",
+                    Text("10 power tools · on your phone",
                         style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
                 }
                 Row {
@@ -175,19 +176,31 @@ fun HomeScreen(onOpen: (String) -> Unit) {
     }
 }
 
+/** Approved card (HTML prototype v4): the kit's 1290×440 art has its glow + line-art on the
+ *  right third, so a 2-column card crops anchored to the RIGHT edge — never center — and a
+ *  bottom-only scrim keeps the art visible while the name stays crisp. */
 @Composable
 private fun PowerToolCard(tool: HTool, onClick: () -> Unit) {
     Box(
-        Modifier.fillMaxWidth().height(152.dp).clip(RoundedCornerShape(20.dp)).clickable(onClick = onClick)
+        Modifier.fillMaxWidth().aspectRatio(1f / 1.08f).clip(RoundedCornerShape(20.dp))
+            .background(Color(0xFF0D0D16)).clickable(onClick = onClick)
     ) {
-        Image(painterResource(tool.cardRes), null, modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
-        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0x33000000), Color(0xD9070710)))))
+        Image(
+            painterResource(tool.cardRes), null, modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop, alignment = Alignment.CenterEnd
+        )
+        Box(
+            Modifier.fillMaxSize().background(
+                Brush.verticalGradient(0.35f to Color.Transparent, 1f to Color(0xC7070710))
+            )
+        )
         Column(Modifier.fillMaxSize().padding(14.dp), verticalArrangement = Arrangement.SpaceBetween) {
-            Image(painterResource(tool.iconRes), null, modifier = Modifier.size(46.dp))
+            Image(painterResource(tool.iconRes), null, modifier = Modifier.size(60.dp))
             Column {
                 Text(tool.name, color = Color.White, style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis, lineHeight = 18.sp)
-                Text(tool.blurb, color = Color(0xB3FFFFFF), style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Spacer(Modifier.height(2.dp))
+                Text(tool.blurb, color = Color(0xB8FFFFFF), style = MaterialTheme.typography.bodySmall,
                     maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }

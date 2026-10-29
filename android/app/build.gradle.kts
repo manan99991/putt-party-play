@@ -26,6 +26,12 @@ android {
         // always safe to view and tap. Viewing/tapping your own LIVE ads is an AdMob policy
         // violation that can disable the account, so testing must never touch them.
         buildConfigField("boolean", "LIVE_ADS", (project.findProperty("liveAds")?.toString() ?: "false"))
+
+        // INTERNAL TESTING ONLY: -PinternalUnlock=true makes every install behave as Tenzy Pro —
+        // no ads, no quotas, no paywall — so testers exercise every tool at full. Defaults to
+        // false; CI sets it for the internal track. MUST be false for any production release
+        // (a Pro-unlock backdoor in production is a store-rejection risk).
+        buildConfigField("boolean", "INTERNAL_UNLOCK", (project.findProperty("internalUnlock")?.toString() ?: "false"))
     }
 
     // Upload key. CI decodes ANDROID_KEYSTORE_B64 into android/upload.jks; locally, put your

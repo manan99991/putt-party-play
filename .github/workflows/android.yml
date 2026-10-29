@@ -1,5 +1,13 @@
 name: Android
 
+# ┌─────────────────────────────────────────────────────────────────────────────┐
+# │ INTERNAL_UNLOCK: "true" = every install is Pro (no ads/quotas/paywall) so   │
+# │ internal testers get the full app. FLIP TO "false" BEFORE THE FIRST         │
+# │ PRODUCTION RELEASE — this is the paid gate.                                  │
+# └─────────────────────────────────────────────────────────────────────────────┘
+env:
+  INTERNAL_UNLOCK: "true"
+
 on:
   push:
     branches: [handytools]
@@ -52,8 +60,8 @@ jobs:
           else
             echo "no upload.jks — KEYSTORE_B64 secret is empty" | tee -a build.log
           fi
-          echo "=== bundleRelease ===" | tee -a build.log
-          gradle --no-daemon bundleRelease --stacktrace --warning-mode none 2>&1 | tee -a build.log; exit ${PIPESTATUS[0]}
+          echo "=== bundleRelease (INTERNAL_UNLOCK=$INTERNAL_UNLOCK) ===" | tee -a build.log
+          gradle --no-daemon bundleRelease -PinternalUnlock=$INTERNAL_UNLOCK --stacktrace --warning-mode none 2>&1 | tee -a build.log; exit ${PIPESTATUS[0]}
 
       - name: Publish build log
         if: always()
