@@ -67,25 +67,25 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
                     Spacer(Modifier.width(HandyTokens.Space12))
                     Column(Modifier.weight(1f)) {
                         Text(if (premium) "Tenzy Pro" else "Go Pro", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
-                        Text(if (premium) "Ads off. Renews yearly at $19.99." else "$19.99 a year. Ads gone, unlimited clips and alarms.",
+                        Text(if (com.handytools.app.BuildConfig.INTERNAL_UNLOCK) "Internal testing build — everything unlocked, no ads, no limits." else if (premium) "Ads off. Renews yearly at $19.99." else "$19.99 a year. Ads gone, unlimited use of every tool.",
                             style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     }
                     if (!premium) Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)
                 }
             }
-            if (premium) {
+            if (premium && !com.handytools.app.BuildConfig.INTERNAL_UNLOCK) {
                 HTextButton("Manage subscription") {
                     ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/account/subscriptions?sku=tenzy_pro_yearly&package=${ctx.packageName}")))
                 }
             }
 
             Spacer(Modifier.height(HandyTokens.Space24))
-            SectionLabel("App")
+            SettingsSectionLabel("App")
             SettingsRow(Icons.Outlined.Tune, "Permissions", "See what's on, turn things on or off") { onOpen("setup") }
             SettingsRow(Icons.Outlined.Lock, "Privacy", "What stays on your phone (everything)") { onOpen("privacy") }
 
             Spacer(Modifier.height(HandyTokens.Space24))
-            SectionLabel("Help")
+            SettingsSectionLabel("Help")
             SettingsRow(Icons.Outlined.Mail, "Send feedback", SUPPORT_EMAIL) {
                 ctx.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$SUPPORT_EMAIL?subject=Tenzy%20Android%20${BuildConfig.VERSION_NAME}")))
             }
@@ -101,7 +101,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
 }
 
 @Composable
-private fun SectionLabel(t: String) {
+private fun SettingsSectionLabel(t: String) {
     Text(t.uppercase(), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(bottom = HandyTokens.Space8))
 }
 

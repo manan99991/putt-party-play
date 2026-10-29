@@ -8,34 +8,45 @@ platform :android do
   # Push listing text + graphics (feature graphic, icon, phone screenshots) to Play. No binary.
   # Best-effort: the app must already exist in Play Console and have its one-time content
   # declarations (data safety, content rating) completed before Play accepts a listing push.
+  # Pushes listing text + graphics, and the changelog for THIS run's release (version_code =
+  # CI run number). Also rolls that release out to the internal testers (status completed); if
+  # Play refuses because the app is still a draft, the release stays draft and we say so.
   lane :listing do
-    supply(
+    vc = ENV["VERSION_CODE"].to_i
+    base = {
       track: "internal",
-      skip_upload_apk: true,
-      skip_upload_aab: true,
-      skip_upload_metadata: false,
-      skip_upload_changelogs: false,
-      skip_upload_images: false,
-      skip_upload_screenshots: false,
-      # The app isn't published yet, so commit the listing as pending changes
-      # instead of trying to send the whole app for review (which would fail).
+      skip_upload_apk: true, skip_upload_aab: true,
+      skip_upload_metadata: false, skip_upload_changelogs: false,
+      skip_upload_images: false, skip_upload_screenshots: false,
       changes_not_sent_for_review: true
-    )
+    }
+    base[:version_code] = vc if vc > 0
+    begin
+      supply(base.merge(release_status: "completed"))
+      UI.success("Listing pushed and release #{vc} rolled out to internal testers")
+    rescue => e
+      UI.important("Rollout as 'completed' refused (#{e.message[0, 160]}); pushing listing only, release stays as uploaded")
+      supply(base)
+    end
   end
 
   # Upload the signed AAB. The app is still a DRAFT app, so Play rejects "completed" releases
   # (that is why the old r0adkll step with status:completed silently failed). Use a draft release
   # so the bundle actually lands in the library and can be promoted to a testing track.
   lane :upload do
-    supply(
+    base = {
       track: "internal",
       aab: "app/build/outputs/bundle/release/app-release.aab",
-      skip_upload_metadata: true,
-      skip_upload_changelogs: true,
-      skip_upload_images: true,
-      skip_upload_screenshots: true,
-      release_status: "draft",
+      skip_upload_metadata: true, skip_upload_changelogs: true,
+      skip_upload_images: true, skip_upload_screenshots: true,
       changes_not_sent_for_review: true
-    )
+    }
+    begin
+      supply(base.merge(release_status: "completed"))
+      UI.success("AAB uploaded and rolled out to internal testers")
+    rescue => e
+      UI.important("Completed rollout refused (#{e.message[0, 160]}); uploading as a draft release instead")
+      supply(base.merge(release_status: "draft"))
+    end
   end
 end

@@ -11,7 +11,7 @@ app:
     - https://manan99991.github.io/tenzy/
     - https://manan99991.github.io/tenzy/privacy.html
   allow_destructive: false
-  forbidden_texts: ["Subscribe", "Start free trial", "Buy", "Restore purchases", "Rate", "Send feedback", "Delete"]
+  forbidden_texts: ["Subscribe", "Start free trial", "Buy", "Restore purchases", "Rate", "Send feedback", "Delete forever"]
   # Tenzy is built FOR automated testing: every tool is a deep-link route. The launch below unlocks Pro
   # and enables uitest mode (skips onboarding + paywall + crash dialog) so the agent reaches every tool.
   # The 30 tool route ids (drive each with: adb shell am start -n com.tenzy.toolkit/com.handytools.app.MainActivity -e route <id>):
@@ -19,16 +19,22 @@ app:
   #   procam gpsdash audiolab rest colorvision sorted textstudio translate voicenotes livecaptions shield lens
   #   memory datagrab describe vault
   goals:
-    - "Open every one of the 30 tools (fitit, scan, studio, video, formatfix, scrub, cleaner, qrwifi, stitch, shareready, light, contacts, measure, magnify, procam, gpsdash, audiolab, rest, colorvision, sorted, textstudio, translate, voicenotes, livecaptions, shield, lens, memory, datagrab, describe, vault) and exercise each with sensible input, checking the result is correct"
-    - "Free tier: the ~8 basic utilities work without Pro; AI and output tools show the Pro paywall, never a blank screen"
-    - "Paywall shows $19.99/year, 3-day free trial, auto-renew and cancel terms; 'free' never appears without 'optional Pro subscription'"
-    - "Every screen, modal and sub-screen has a visible Back or Done (store-review dead-end check)"
-    - "Ads: an ad slot never covers a control; the app still works if the ad fails to load"
+    - "Open every one of the 10 power tools (capture, documents, media, cleanup, voice, translate, instruments, flashlight, safety, share) and exercise EVERY tab and control in each with sensible input; the result must be correct and visible — report any control that does nothing, any blank/empty result, any crash, any spinner that never ends"
+    - "This is an internal build with everything unlocked: there must be NO ads, NO paywall, NO 'Go Pro' / quota / limit messages anywhere; report any that appear"
+    - "Every screen, tab, modal and sub-screen has a visible Back or Done and never dead-ends (store-review dead-end check)"
+    - "Preview-first: in each tool the thing being worked on (photo, page, transcript, result) is shown large above the controls; report any tool that is only buttons and text"
+    - "Text never clips or overflows: tool names, tab chips, card labels, buttons — in both light and dark mode (toggle dark mode via adb shell cmd uimode night yes/no between passes)"
+    - "Safety: paste the sample scam text, a normal text, a bad link and a 900 number; verdicts must differ sensibly and findings must be explained"
+    - "Documents: scan or pick a page, export a PDF, sign a page, merge two PDFs, search a word in Word Finder; each must produce a real result"
+    - "Media Studio: pick a photo, shrink to under 1 MB, redact a region, strip metadata; each must save and show before/after sizes"
+    - "Clean Up: scan, review a category grid with real thumbnails, move items to Trash, then Restore them"
+    - "Flashlight: strobe/SOS/Morse start and STOP cleanly when leaving the screen; Instruments level/compass readouts change when the device moves (emulator sensors may be static — note, don't fail)"
+    - "Rotate to landscape in two tools; nothing clipped; state kept. Background the app mid-tool and return: input preserved"
     - "Privacy policy and every external link open and are not 404"
-    - "Rotate to landscape in two tools; nothing clipped; state kept"
-    - "Background the app mid-tool and come back: input is preserved"
-    - "Flashlight strobe/SOS and any timer-based tool stop cleanly when leaving the screen"
-  known_issues: []
+  known_issues:
+    - "Safety's sample message deliberately contains a fake scam link (paypal.secure-login.top) — it is unreachable by design; do not report link failures for it"
+    - "Settings > Send feedback / Rate Tenzy / Manage subscription, and any 'Allow' permission button, open another app or system Settings by design — the app leaving the foreground there is not a crash"
+
   # Route-seeding (agent feature, on main): the explorer deep-links into each tool instead of
   # hoping it taps its way across the 30-tool grid. On Android a route is sent to the launch
   # activity as the `route` string-extra — equivalent to the CI smoke's
@@ -39,36 +45,16 @@ app:
   # The 30 tool routes exactly as HomeScreen's HTool grid opens them (onOpen(t.route)) — the real
   # Android nav destinations, not the iOS/catalog ids. Three pages of the launcher grid.
   routes:
-    - spaceclean
-    - storage
-    - contacts
-    - flash
-    - qr
-    - myphone
-    - texttools
-    - lens
+    - capture
+    - documents
+    - media
+    - cleanup
+    - voice
     - translate
-    - magnifier
-    - measure
-    - scan
-    - pdftools
-    - shrink
-    - bgremove
-    - audiotext
-    - signfill
-    - exif
-    - sorted
-    - memory
-    - ai_summarize
-    - ai_extract
-    - ai_rewrite
-    - ai_ask
-    - ai_proofread
-    - ai_describe
-    - ai_handwriting
-    - ai_reply
-    - ai_identify
-    - ai_sticker
+    - instruments
+    - flashlight
+    - safety
+    - share
 
 device:
   platform: android

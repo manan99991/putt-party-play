@@ -122,7 +122,7 @@ class MainActivity : ComponentActivity() {
                     composable("home") { HomeScreen(onOpen = { nav.navigate(it) }) }
                     // CI screenshot route: home in Pro state (no ad strip) for the store split slide.
                     composable("homepro") { HomeScreen(onOpen = { nav.navigate(it) }) }
-                    composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("setup") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
+                    composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("home") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
                     composable("setup") { SetupScreen(onDone = { nav.navigate("home") { popUpTo("setup") { inclusive = true } } }) }
                     composable("settings") { SettingsScreen(onOpen = { nav.navigate(it) }) }
                     composable("privacy") { PrivacyScreen() }
@@ -153,6 +153,18 @@ class MainActivity : ComponentActivity() {
                     composable("receipts") { ReceiptKeeperScreen() }
                     composable("gifmaker") { GifMakerScreen() }
                     composable("sendany") { SendAnywhereScreen() }
+                    // --- Rebuilt 10-power-tool catalog routes (interim targets reuse existing
+                    // screens until each merged tool is rebuilt; Capture is first in line). ---
+                    // The 10 power tools (rebuilt to the approved prototype)
+                    composable("capture") { com.handytools.app.tools.power.CaptureToolScreen() }
+                    composable("documents") { com.handytools.app.tools.power.DocumentsToolScreen() }
+                    composable("media") { com.handytools.app.tools.power.MediaToolScreen() }
+                    composable("cleanup") { com.handytools.app.tools.power.CleanupToolScreen() }
+                    composable("voice") { com.handytools.app.tools.power.VoiceToolScreen() }
+                    composable("instruments") { com.handytools.app.tools.power.InstrumentsToolScreen() }
+                    composable("flashlight") { com.handytools.app.tools.power.FlashlightToolScreen() }
+                    composable("safety") { com.handytools.app.tools.power.SafetyToolScreen() }
+                    composable("share") { com.handytools.app.tools.power.ShareToolScreen() }
                     composable("parked") { ParkedScreen() }
                     composable("netscout") { NetworkScoutScreen() }
                     composable("signfill") { DocSignerScreen() }
@@ -165,7 +177,7 @@ class MainActivity : ComponentActivity() {
                     composable("imgconvert") { ImageConverterScreen() }
                     composable("audiotext") { AudioToTextScreen() }
                     composable("pdftools") { PDFToolkitScreen() }
-                    composable("translate") { TranslateScreen() }
+                    composable("translate") { com.handytools.app.tools.power.TranslateToolScreen() }
                     composable("exif") { ExifScreen() }
                     composable("scan") { DocScannerScreen() }
                     composable("vidcompress") { VideoCompressorScreen() }
@@ -183,7 +195,7 @@ class MainActivity : ComponentActivity() {
                     composable("texttools") { TextToolsScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)

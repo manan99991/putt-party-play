@@ -1,5 +1,13 @@
 name: Android
 
+# ┌─────────────────────────────────────────────────────────────────────────────┐
+# │ INTERNAL_UNLOCK: "true" = every install is Pro (no ads/quotas/paywall) so   │
+# │ internal testers get the full app. FLIP TO "false" BEFORE THE FIRST         │
+# │ PRODUCTION RELEASE — this is the paid gate.                                  │
+# └─────────────────────────────────────────────────────────────────────────────┘
+env:
+  INTERNAL_UNLOCK: "true"
+
 on:
   push:
     branches: [handytools]
@@ -7,8 +15,11 @@ on:
   workflow_dispatch:
     inputs:
       ship:
-        description: "Set to 'yes' to upload the AAB + listing to Play (otherwise build-only)"
+        description: "'yes' = upload the AAB + listing to Play; 'listing' = push listing/changelog/rollout only (no new bundle); anything else = build-only"
         default: "no"
+      version_code:
+        description: "With ship=listing: the version code (run number) of the already-uploaded release to attach the changelog to / roll out"
+        default: ""
 
 permissions:
   contents: write
@@ -34,7 +45,7 @@ jobs:
         with: { gradle-version: "8.11.1" }
 
       - name: Build debug APK
-        run: gradle --no-daemon assembleDebug --stacktrace --warning-mode none 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
+        run: gradle --no-daemon assembleDebug -PinternalUnlock=$INTERNAL_UNLOCK --stacktrace --warning-mode none 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
 
       - name: Build release AAB (signed if secrets exist, otherwise debug-signed)
         if: success()
@@ -52,8 +63,8 @@ jobs:
           else
             echo "no upload.jks — KEYSTORE_B64 secret is empty" | tee -a build.log
           fi
-          echo "=== bundleRelease ===" | tee -a build.log
-          gradle --no-daemon bundleRelease --stacktrace --warning-mode none 2>&1 | tee -a build.log; exit ${PIPESTATUS[0]}
+          echo "=== bundleRelease (INTERNAL_UNLOCK=$INTERNAL_UNLOCK) ===" | tee -a build.log
+          gradle --no-daemon bundleRelease -PinternalUnlock=$INTERNAL_UNLOCK --stacktrace --warning-mode none 2>&1 | tee -a build.log; exit ${PIPESTATUS[0]}
 
       - name: Publish build log
         if: always()
@@ -71,6 +82,11 @@ jobs:
           cp android/app/build/outputs/bundle/release/app-release.aab out/HandyTools-release-unsigned.aab
           bash .github/publish-log.sh android-apk out/HandyTools-debug.apk
           bash .github/publish-log.sh android-aab out/HandyTools-release-unsigned.aab
+
+      - name: Hand the debug APK to the screenshot job
+        if: success()
+        uses: actions/upload-artifact@v4
+        with: { name: debug-apk, path: out/HandyTools-debug.apk, retention-days: 3 }
 
       - name: GitHub Release with the APK (direct download link for phones)
         if: success()
@@ -111,7 +127,7 @@ jobs:
       # service-account secret is set, and never blocks the build. Play accepts this only after the
       # app's one-time content declarations (data safety, content rating) are completed in console.
       - name: Push Play store listing (metadata + graphics)
-        if: ${{ success() && env.PLAY_JSON != '' && (contains(github.event.head_commit.message, 'Ship-Play=YES') || github.event.inputs.ship == 'yes') }}
+        if: ${{ success() && env.PLAY_JSON != '' && (contains(github.event.head_commit.message, 'Ship-Play=YES') || github.event.inputs.ship == 'yes' || github.event.inputs.ship == 'listing') }}
         continue-on-error: true
         run: |
           echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
@@ -119,6 +135,7 @@ jobs:
           gem install fastlane --no-document --quiet || sudo gem install fastlane --no-document --quiet
           # No '|| true': let this step's conclusion reflect whether the listing push actually
           # succeeded (continue-on-error keeps a failure from blocking the AAB upload).
+          if [ -n "${{ github.event.inputs.version_code }}" ]; then export VERSION_CODE="${{ github.event.inputs.version_code }}"; fi
           fastlane listing 2>&1 | tee supply.log; exit ${PIPESTATUS[0]}
       - name: Publish listing-push log
         if: always()
@@ -135,6 +152,9 @@ jobs:
         with: { ref: ci-logs, path: logs }
       - uses: actions/checkout@v4
         with: { path: src }
+      - name: Get the debug APK built by this run
+        uses: actions/download-artifact@v4
+        with: { name: debug-apk, path: apk }
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -176,14 +196,14 @@ jobs:
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
             adb shell input keyevent 82 || true
-            cp logs/android-apk.bin HandyTools.apk
+            cp apk/HandyTools-debug.apk HandyTools.apk
             adb install -r HandyTools.apk
             adb logcat -c
             sleep 3
             for mode in light dark; do
               if [ $mode = dark ]; then adb shell cmd uimode night yes; else adb shell cmd uimode night no; fi
               sleep 2
-              for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro; do
+              for r in home onboarding onboarding2 onboarding3 setup settings privacy capture documents media cleanup voice translate instruments flashlight safety share; do
                 adb shell am force-stop com.tenzy.toolkit || true
                 adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route $r || true
                 sleep 6
