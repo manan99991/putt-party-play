@@ -122,7 +122,8 @@ object VoiceText {
             while (i < words.size) {
                 val one = words[i]
                 val two = if (i + 1 < words.size) one + " " + words[i + 1] else one
-                val hit = TODO.containsMatchIn(one) || TODO.containsMatchIn(two)
+                val bare = one.trim { !it.isLetter() }
+                val hit = TODO.matches(bare) || TODO.matches(two) // "need to" / "follow up" span two words
                 if (hit && i - start >= 4) { out.add(words.subList(start, i).joinToString(" ")); start = i }
                 i++
             }
