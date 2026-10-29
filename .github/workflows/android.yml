@@ -15,8 +15,11 @@ on:
   workflow_dispatch:
     inputs:
       ship:
-        description: "Set to 'yes' to upload the AAB + listing to Play (otherwise build-only)"
+        description: "'yes' = upload the AAB + listing to Play; 'listing' = push listing/changelog/rollout only (no new bundle); anything else = build-only"
         default: "no"
+      version_code:
+        description: "With ship=listing: the version code (run number) of the already-uploaded release to attach the changelog to / roll out"
+        default: ""
 
 permissions:
   contents: write
@@ -124,7 +127,7 @@ jobs:
       # service-account secret is set, and never blocks the build. Play accepts this only after the
       # app's one-time content declarations (data safety, content rating) are completed in console.
       - name: Push Play store listing (metadata + graphics)
-        if: ${{ success() && env.PLAY_JSON != '' && (contains(github.event.head_commit.message, 'Ship-Play=YES') || github.event.inputs.ship == 'yes') }}
+        if: ${{ success() && env.PLAY_JSON != '' && (contains(github.event.head_commit.message, 'Ship-Play=YES') || github.event.inputs.ship == 'yes' || github.event.inputs.ship == 'listing') }}
         continue-on-error: true
         run: |
           echo "$PLAY_JSON" > "$GITHUB_WORKSPACE/play-key.json"
@@ -132,6 +135,7 @@ jobs:
           gem install fastlane --no-document --quiet || sudo gem install fastlane --no-document --quiet
           # No '|| true': let this step's conclusion reflect whether the listing push actually
           # succeeded (continue-on-error keeps a failure from blocking the AAB upload).
+          if [ -n "${{ github.event.inputs.version_code }}" ]; then export VERSION_CODE="${{ github.event.inputs.version_code }}"; fi
           fastlane listing 2>&1 | tee supply.log; exit ${PIPESTATUS[0]}
       - name: Publish listing-push log
         if: always()
