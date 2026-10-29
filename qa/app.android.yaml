@@ -31,7 +31,10 @@ app:
     - "Flashlight: strobe/SOS/Morse start and STOP cleanly when leaving the screen; Instruments level/compass readouts change when the device moves (emulator sensors may be static — note, don't fail)"
     - "Rotate to landscape in two tools; nothing clipped; state kept. Background the app mid-tool and return: input preserved"
     - "Privacy policy and every external link open and are not 404"
-  known_issues: []
+  known_issues:
+    - "Safety's sample message deliberately contains a fake scam link (paypal.secure-login.top) — it is unreachable by design; do not report link failures for it"
+    - "Settings > Send feedback / Rate Tenzy / Manage subscription, and any 'Allow' permission button, open another app or system Settings by design — the app leaving the foreground there is not a crash"
+
   # Route-seeding (agent feature, on main): the explorer deep-links into each tool instead of
   # hoping it taps its way across the 30-tool grid. On Android a route is sent to the launch
   # activity as the `route` string-extra — equivalent to the CI smoke's

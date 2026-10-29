@@ -50,6 +50,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -201,7 +203,7 @@ fun HPrimaryButton(text: String, modifier: Modifier = Modifier, enabled: Boolean
     val pressed by src.collectIsPressedAsState()
     Button(
         onClick = onClick, enabled = enabled, interactionSource = src,
-        modifier = modifier.fillMaxWidth().height(HandyTokens.PrimaryButtonHeight).scale(if (pressed) 0.98f else 1f),
+        modifier = modifier.fillMaxWidth().height(HandyTokens.PrimaryButtonHeight).scale(if (pressed) 0.98f else 1f).semantics { contentDescription = text },
         colors = ButtonDefaults.buttonColors(
             containerColor = if (pressed) HandyColors.AccentPressed else HandyColors.Accent,
             disabledContainerColor = Handy.palette.accentSoft, disabledContentColor = HandyColors.Accent.copy(alpha = 0.5f)
@@ -217,7 +219,7 @@ fun HPrimaryButton(text: String, modifier: Modifier = Modifier, enabled: Boolean
 fun HSecondaryButton(text: String, modifier: Modifier = Modifier, enabled: Boolean = true, onClick: () -> Unit) {
     OutlinedButton(
         onClick = onClick, enabled = enabled,
-        modifier = modifier.fillMaxWidth().height(HandyTokens.PrimaryButtonHeight),
+        modifier = modifier.fillMaxWidth().height(HandyTokens.PrimaryButtonHeight).semantics { contentDescription = text },
         border = BorderStroke(1.5.dp, Handy.palette.border),
         colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
     ) { Text(text, style = MaterialTheme.typography.labelLarge) }
@@ -226,13 +228,13 @@ fun HSecondaryButton(text: String, modifier: Modifier = Modifier, enabled: Boole
 /** Text: no chrome, accent label, 44dp. */
 @Composable
 fun HTextButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    TextButton(onClick = onClick, modifier = modifier.height(44.dp)) { Text(text, style = MaterialTheme.typography.labelLarge, color = HandyColors.Accent) }
+    TextButton(onClick = onClick, modifier = modifier.height(44.dp).semantics { contentDescription = text }) { Text(text, style = MaterialTheme.typography.labelLarge, color = HandyColors.Accent) }
 }
 
 /** Compact primary used inside cards (40dp). */
 @Composable
 fun HCompactButton(text: String, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.height(HandyTokens.CompactButtonHeight),
+    Button(onClick = onClick, modifier = Modifier.height(HandyTokens.CompactButtonHeight).semantics { contentDescription = text },
         contentPadding = ButtonDefaults.ButtonWithIconContentPadding) { Text(text, style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp)) }
 }
 
@@ -357,7 +359,7 @@ fun HChip(text: String, selected: Boolean, onClick: () -> Unit) {
     FilterChip(
         selected = selected, onClick = { HandyHaptics.light(ctx); onClick() },
         label = { Text(text, style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp), maxLines = 1, softWrap = false) },
-        shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight),
+        shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight).semantics { contentDescription = text },
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = Handy.palette.accentSoft, selectedLabelColor = HandyColors.Accent,
             containerColor = MaterialTheme.colorScheme.surface, labelColor = MaterialTheme.colorScheme.onSurface

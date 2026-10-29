@@ -143,7 +143,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
             // Search
             TextField(
                 value = query, onValueChange = { query = it },
-                placeholder = { Text("Search ${TOOLS.size} tools…") },
+                placeholder = { Text("Search ${TOOLS.size} tools") },
                 leadingIcon = { Icon(Icons.Outlined.Search, null, tint = Handy.palette.textSecondary) },
                 trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, "Clear") } },
                 singleLine = true, keyboardOptions = KeyboardOptions.Default, shape = RoundedCornerShape(50),
