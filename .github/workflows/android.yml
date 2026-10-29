@@ -42,7 +42,7 @@ jobs:
         with: { gradle-version: "8.11.1" }
 
       - name: Build debug APK
-        run: gradle --no-daemon assembleDebug --stacktrace --warning-mode none 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
+        run: gradle --no-daemon assembleDebug -PinternalUnlock=$INTERNAL_UNLOCK --stacktrace --warning-mode none 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
 
       - name: Build release AAB (signed if secrets exist, otherwise debug-signed)
         if: success()
@@ -191,7 +191,7 @@ jobs:
             for mode in light dark; do
               if [ $mode = dark ]; then adb shell cmd uimode night yes; else adb shell cmd uimode night no; fi
               sleep 2
-              for r in onboarding onboarding2 onboarding3 setup settings privacy home clipboard screenshot quick shortcut alarm volume ocr notifs scratchpad awake paywall ring homepro; do
+              for r in home onboarding onboarding2 onboarding3 setup settings privacy capture documents media cleanup voice translate instruments flashlight safety share; do
                 adb shell am force-stop com.tenzy.toolkit || true
                 adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route $r || true
                 sleep 6

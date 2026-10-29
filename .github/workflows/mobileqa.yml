@@ -41,7 +41,8 @@ jobs:
         working-directory: android
         run: |
           set -o pipefail
-          gradle --no-daemon assembleDebug --stacktrace --warning-mode none 2>&1 | tee ../build.log
+          # Same unlock as the internal-testing release (see android.yml INTERNAL_UNLOCK): no ads/paywall/quota.
+          gradle --no-daemon assembleDebug -PinternalUnlock=true --stacktrace --warning-mode none 2>&1 | tee ../build.log
           cp app/build/outputs/apk/debug/app-debug.apk ../app-debug.apk && ls -la ../app-debug.apk
 
       - name: Install mobileqa + Appium
