@@ -155,15 +155,16 @@ class MainActivity : ComponentActivity() {
                     composable("sendany") { SendAnywhereScreen() }
                     // --- Rebuilt 10-power-tool catalog routes (interim targets reuse existing
                     // screens until each merged tool is rebuilt; Capture is first in line). ---
-                    composable("capture") { LensScreen() }
-                    composable("documents") { DocScannerScreen() }
-                    composable("media") { ShrinkScreen() }
-                    composable("cleanup") { SpaceCleanerScreen() }
-                    composable("voice") { VoiceRecorderScreen() }
-                    composable("instruments") { MeasureScreen() }
-                    composable("flashlight") { FlashlightScreen() }
-                    composable("safety") { ShieldScreen() }
-                    composable("share") { QRScreen() }
+                    // The 10 power tools (rebuilt to the approved prototype)
+                    composable("capture") { com.handytools.app.tools.power.CaptureToolScreen() }
+                    composable("documents") { com.handytools.app.tools.power.DocumentsToolScreen() }
+                    composable("media") { com.handytools.app.tools.power.MediaToolScreen() }
+                    composable("cleanup") { com.handytools.app.tools.power.CleanupToolScreen() }
+                    composable("voice") { com.handytools.app.tools.power.VoiceToolScreen() }
+                    composable("instruments") { com.handytools.app.tools.power.InstrumentsToolScreen() }
+                    composable("flashlight") { com.handytools.app.tools.power.FlashlightToolScreen() }
+                    composable("safety") { com.handytools.app.tools.power.SafetyToolScreen() }
+                    composable("share") { com.handytools.app.tools.power.ShareToolScreen() }
                     composable("parked") { ParkedScreen() }
                     composable("netscout") { NetworkScoutScreen() }
                     composable("signfill") { DocSignerScreen() }
@@ -176,7 +177,7 @@ class MainActivity : ComponentActivity() {
                     composable("imgconvert") { ImageConverterScreen() }
                     composable("audiotext") { AudioToTextScreen() }
                     composable("pdftools") { PDFToolkitScreen() }
-                    composable("translate") { TranslateScreen() }
+                    composable("translate") { com.handytools.app.tools.power.TranslateToolScreen() }
                     composable("exif") { ExifScreen() }
                     composable("scan") { DocScannerScreen() }
                     composable("vidcompress") { VideoCompressorScreen() }
