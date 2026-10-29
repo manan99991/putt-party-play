@@ -80,6 +80,11 @@ jobs:
           bash .github/publish-log.sh android-apk out/HandyTools-debug.apk
           bash .github/publish-log.sh android-aab out/HandyTools-release-unsigned.aab
 
+      - name: Hand the debug APK to the screenshot job
+        if: success()
+        uses: actions/upload-artifact@v4
+        with: { name: debug-apk, path: out/HandyTools-debug.apk, retention-days: 3 }
+
       - name: GitHub Release with the APK (direct download link for phones)
         if: success()
         continue-on-error: true
@@ -143,6 +148,9 @@ jobs:
         with: { ref: ci-logs, path: logs }
       - uses: actions/checkout@v4
         with: { path: src }
+      - name: Get the debug APK built by this run
+        uses: actions/download-artifact@v4
+        with: { name: debug-apk, path: apk }
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -184,7 +192,7 @@ jobs:
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
             adb shell input keyevent 82 || true
-            cp logs/android-apk.bin HandyTools.apk
+            cp apk/HandyTools-debug.apk HandyTools.apk
             adb install -r HandyTools.apk
             adb logcat -c
             sleep 3
