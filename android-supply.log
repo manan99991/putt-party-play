@@ -1,17 +1,17 @@
-[21:32:39]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[21:32:39]: fastlane 2.241.2 (Ruby 3.2.3, gem)
-[21:32:39]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
-[21:32:40]: Sending anonymous analytics information
-[21:32:40]: Learn more at https://docs.fastlane.tools/#metrics
-[21:32:40]: No personal or sensitive data is sent.
-[21:32:40]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[21:32:40]: [32m------------------------------[0m
-[21:32:40]: [32m--- Step: default_platform ---[0m
-[21:32:40]: [32m------------------------------[0m
-[21:32:40]: [32mDriving the lane 'android listing' 🚀[0m
-[21:32:40]: [32m--------------------[0m
-[21:32:40]: [32m--- Step: supply ---[0m
-[21:32:40]: [32m--------------------[0m
+[22:03:04]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[22:03:04]: fastlane 2.241.2 (Ruby 3.2.3, gem)
+[22:03:04]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[22:03:05]: Sending anonymous analytics information
+[22:03:05]: Learn more at https://docs.fastlane.tools/#metrics
+[22:03:05]: No personal or sensitive data is sent.
+[22:03:05]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[22:03:05]: [32m------------------------------[0m
+[22:03:05]: [32m--- Step: default_platform ---[0m
+[22:03:05]: [32m------------------------------[0m
+[22:03:05]: [32mDriving the lane 'android listing' 🚀[0m
+[22:03:05]: [32m--------------------[0m
+[22:03:05]: [32m--- Step: supply ---[0m
+[22:03:05]: [32m--------------------[0m
 
 +------------------------------------------------------------------------------------------------------+
 |                                      [32mSummary for supply 2.241.2[0m                                      |
@@ -39,84 +39,22 @@
 | ack_bundle_installation_warning    | false                                                           |
 +------------------------------------+-----------------------------------------------------------------+
 
-[21:32:41]: Preparing uploads for language 'en-US'...
-[21:32:41]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/featureGraphic.png...
-[21:32:43]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/icon.png...
-[21:32:46]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/01-home.png...
-[21:32:50]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/02-capture.png...
-[21:32:53]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/03-documents.png...
-[21:32:57]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/04-media.png...
-[21:33:00]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/05-cleanup.png...
-[21:33:04]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/06-voice.png...
-[21:33:08]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/07-translate.png...
-[21:33:12]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/08-safety.png...
-[21:33:16]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/09-instruments.png...
-[21:33:19]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/10-share.png...
-[21:33:23]: Updating changelog for '91' and language 'en-US' to default changelog...
-[21:33:23]: Uploaded all items for language 'en-US'... (42.715259381 secs)
-[21:33:24]: Uploading all changes to Google Play...
-[21:33:26]: [33mRollout as 'completed' refused (Google Api Error: Invalid request - This app has more than 8 screenshots for language en-US.); pushing listing only, release stays as uploaded[0m
-[21:33:26]: [32m--------------------[0m
-[21:33:26]: [32m--- Step: supply ---[0m
-[21:33:26]: [32m--------------------[0m
-
-+------------------------------------------------------------------------------------------------------+
-|                                      [32mSummary for supply 2.241.2[0m                                      |
-+------------------------------------+-----------------------------------------------------------------+
-| track                              | internal                                                        |
-| skip_upload_apk                    | true                                                            |
-| skip_upload_aab                    | true                                                            |
-| skip_upload_metadata               | false                                                           |
-| skip_upload_changelogs             | false                                                           |
-| skip_upload_images                 | false                                                           |
-| skip_upload_screenshots            | false                                                           |
-| changes_not_sent_for_review        | true                                                            |
-| version_code                       | 91                                                              |
-| package_name                       | com.tenzy.toolkit                                               |
-| release_status                     | completed                                                       |
-| metadata_path                      | ./fastlane/metadata/android                                     |
-| json_key                           | /home/runner/work/putt-party-play/putt-party-play/play-key.json |
-| sync_image_upload                  | false                                                           |
-| track_promote_release_status       | completed                                                       |
-| validate_only                      | false                                                           |
-| check_superseded_tracks            | false                                                           |
-| timeout                            | 300                                                             |
-| deactivate_on_promote              | true                                                            |
-| rescue_changes_not_sent_for_review | true                                                            |
-| ack_bundle_installation_warning    | false                                                           |
-+------------------------------------+-----------------------------------------------------------------+
-
-[21:33:27]: Preparing uploads for language 'en-US'...
-[21:33:28]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/featureGraphic.png...
-[21:33:29]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/icon.png...
-[21:33:31]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/01-home.png...
-[21:33:34]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/02-capture.png...
-[21:33:36]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/03-documents.png...
-[21:33:38]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/04-media.png...
-[21:33:41]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/05-cleanup.png...
-[21:33:43]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/06-voice.png...
-[21:33:45]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/07-translate.png...
-[21:33:47]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/08-safety.png...
-[21:33:49]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/09-instruments.png...
-[21:33:51]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/10-share.png...
-[21:33:54]: Updating changelog for '91' and language 'en-US' to default changelog...
-[21:33:54]: Uploaded all items for language 'en-US'... (26.900125491 secs)
-[21:33:54]: Uploading all changes to Google Play...
-+------------------------------------+
-|            [33mLane Context[0m            |
-+------------------+-----------------+
-| DEFAULT_PLATFORM | android         |
-| PLATFORM_NAME    | android         |
-| LANE_NAME        | android listing |
-+------------------+-----------------+
-[21:33:56]: [31mCalled from Fastfile at line 29[0m
-[21:33:56]: [31m```[0m
-[21:33:56]: [31m    27:	    rescue => e[0m
-[21:33:56]: [31m    28:	      UI.important("Rollout as 'completed' refused (#{e.message[0, 160]}); pushing listing only, release stays as uploaded")[0m
-[21:33:56]: [31m => 29:	      supply(base)[0m
-[21:33:56]: [31m    30:	    end[0m
-[21:33:56]: [31m    31:	  end[0m
-[21:33:56]: [31m```[0m
+[22:03:06]: Preparing uploads for language 'en-US'...
+[22:03:06]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/featureGraphic.png...
+[22:03:09]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/icon.png...
+[22:03:11]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/01-home.png...
+[22:03:14]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/02-capture.png...
+[22:03:16]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/03-documents.png...
+[22:03:18]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/04-media.png...
+[22:03:21]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/05-cleanup.png...
+[22:03:23]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/06-voice.png...
+[22:03:26]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/07-translate.png...
+[22:03:28]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/08-safety.png...
+[22:03:31]: Updating changelog for '91' and language 'en-US' to default changelog...
+[22:03:31]: Uploaded all items for language 'en-US'... (25.249880565 secs)
+[22:03:32]: Uploading all changes to Google Play...
+[22:03:36]: [32mSuccessfully finished the upload to Google Play[0m
+[22:03:36]: [32mListing pushed and release 91 rolled out to internal testers[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -124,11 +62,8 @@
 | Step | Action           | Time (in s) |
 +------+------------------+-------------+
 | 1    | default_platform | 0           |
-| 💥   | [31msupply[0m           | 46          |
-| 💥   | [31msupply[0m           | 30          |
+| 2    | supply           | 30          |
 +------+------------------+-------------+
 
-[21:33:56]: [31mfastlane finished with errors[0m
-[31m
-[!] Google Api Error: Invalid request - This app has more than 8 screenshots for language en-US.[0m
-[21:33:57]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[22:03:36]: [32mfastlane.tools finished successfully 🎉[0m
+[22:03:36]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
