@@ -26,13 +26,13 @@ import java.io.File
 import java.io.FileOutputStream
 
 /** Page filters for the Scan tab, applied with a ColorMatrix on the bitmap. */
-internal enum class ScanFilter(val label: String) { COLOR("Color"), GRAY("Grayscale"), BW("B&W") }
+internal enum class DocScanFilter(val label: String) { COLOR("Color"), GRAY("Grayscale"), BW("B&W") }
 
 /** One scanned page: the source bitmap plus a rotation in degrees (0/90/180/270). */
-internal class ScanPage(val source: Bitmap, val rotation: Int = 0)
+internal class DocScanPage(val source: Bitmap, val rotation: Int = 0)
 
 /** Something placed on a page in Sign & fill. Coordinates are fractions of the page size. */
-internal data class Placed(
+internal data class SignPlaced(
     val id: Long,
     val isSignature: Boolean,
     val cx: Float,
@@ -43,7 +43,7 @@ internal data class Placed(
     val bitmap: Bitmap?,
 )
 
-internal data class PdfInfo(val uri: Uri, val name: String, val size: Long, val pages: Int)
+internal data class DocPdfInfo(val uri: Uri, val name: String, val size: Long, val pages: Int)
 
 /** On-device document helpers shared by the Documents tool. Nothing leaves the phone. */
 internal object DocEngine {
@@ -60,13 +60,13 @@ internal object DocEngine {
     // ------------------------------------------------------------------ bitmaps
 
     /** Decode an image URI honoring EXIF rotation, scaled so the long edge is at most [maxEdge]. */
-    fun loadBitmap(ctx: Context, uri: Uri, maxEdge: Int = 2000): Bitmap? {
+    fun loadBitmap(ctx: Context, uri: Uri, maxEdge: Int = 2000, lowMem: Boolean = false): Bitmap? {
         return try {
             val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
             ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) } ?: return null
             var sample = 1
             while (maxOf(bounds.outWidth, bounds.outHeight) / (sample * 2) >= maxEdge) sample *= 2
-            val opts = BitmapFactory.Options().apply { inSampleSize = sample }
+            val opts = BitmapFactory.Options().apply { inSampleSize = sample; if (lowMem) inPreferredConfig = Bitmap.Config.RGB_565 }
             var bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, opts) } ?: return null
             val rot = try {
                 ctx.contentResolver.openInputStream(uri)?.use { ExifInterface(it).rotationDegrees } ?: 0
@@ -82,18 +82,18 @@ internal object DocEngine {
     }
 
     /** Rotate + filter a page into a fresh bitmap (what the preview shows and the PDF gets). */
-    fun process(src: Bitmap, rotation: Int, filter: ScanFilter): Bitmap {
+    fun process(src: Bitmap, rotation: Int, filter: DocScanFilter, lowMem: Boolean = false): Bitmap {
         val swap = rotation % 180 != 0
         val w = if (swap) src.height else src.width
         val h = if (swap) src.width else src.height
-        val out = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val out = Bitmap.createBitmap(w, h, if (lowMem) Bitmap.Config.RGB_565 else Bitmap.Config.ARGB_8888)
         val c = Canvas(out)
         c.drawColor(Color.WHITE)
         val paint = Paint(Paint.FILTER_BITMAP_FLAG or Paint.ANTI_ALIAS_FLAG)
         when (filter) {
-            ScanFilter.COLOR -> {}
-            ScanFilter.GRAY -> paint.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
-            ScanFilter.BW -> {
+            DocScanFilter.COLOR -> {}
+            DocScanFilter.GRAY -> paint.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
+            DocScanFilter.BW -> {
                 val cm = ColorMatrix().apply { setSaturation(0f) }
                 val s = 1.8f; val t = (1f - s) * 128f + 14f
                 cm.postConcat(ColorMatrix(floatArrayOf(s, 0f, 0f, 0f, t, 0f, s, 0f, 0f, t, 0f, 0f, s, 0f, t, 0f, 0f, 0f, 1f, 0f)))
@@ -121,12 +121,15 @@ internal object DocEngine {
      * underneath the page image at the block positions so the PDF is searchable without the text
      * ever being visible. If OCR fails for a page we still export the image page — never fail.
      */
-    suspend fun exportSearchablePdf(ctx: Context, pages: List<Bitmap>): File? {
+    suspend fun exportSearchablePdf(ctx: Context, pages: List<DocScanPage>, filter: DocScanFilter): File? {
         if (pages.isEmpty()) return null
         val recognizer = try { TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS) } catch (_: Exception) { null }
         val doc = PdfDocument()
         try {
-            pages.forEachIndexed { i, bmp ->
+            pages.forEachIndexed { i, src ->
+                // NOTE: PdfDocument records pages and only rasterises at writeTo(), so every bitmap drawn
+                // must stay alive (never recycled) until the file is written. RGB_565 halves the cost.
+                val bmp = process(src.source, src.rotation, filter, lowMem = true)
                 val landscape = bmp.width > bmp.height
                 val pw = if (landscape) 842 else 595
                 val ph = if (landscape) 595 else 842
@@ -136,7 +139,14 @@ internal object DocEngine {
                 val scale = minOf(pw.toFloat() / bmp.width, ph.toFloat() / bmp.height)
                 val w = bmp.width * scale; val h = bmp.height * scale
                 val left = (pw - w) / 2f; val top = (ph - h) / 2f
-                val text = try { recognizer?.process(InputImage.fromBitmap(bmp, 0))?.await() } catch (_: Exception) { null }
+                val text = try {
+                    if (recognizer == null) null else {
+                        val ocrIn = if (bmp.config == Bitmap.Config.ARGB_8888) bmp else (bmp.copy(Bitmap.Config.ARGB_8888, false) ?: bmp)
+                        val t = recognizer.process(InputImage.fromBitmap(ocrIn, 0)).await()
+                        if (ocrIn !== bmp) ocrIn.recycle()
+                        t
+                    }
+                } catch (_: Exception) { null }
                 if (text != null) {
                     // Alpha 1 (not 0): the PDF backend drops fully transparent draws entirely.
                     val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.BLACK; alpha = 1 }
@@ -182,7 +192,7 @@ internal object DocEngine {
         return uri.lastPathSegment?.substringAfterLast('/') ?: "file"
     }
 
-    fun pdfInfo(ctx: Context, uri: Uri): PdfInfo {
+    fun pdfInfo(ctx: Context, uri: Uri): DocPdfInfo {
         var name = "document.pdf"; var size = -1L
         try {
             ctx.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE), null, null, null)?.use { c ->
@@ -192,7 +202,7 @@ internal object DocEngine {
                 }
             }
         } catch (_: Exception) {}
-        return PdfInfo(uri, name, size, pdfPageCount(ctx, uri))
+        return DocPdfInfo(uri, name, size, pdfPageCount(ctx, uri))
     }
 
     fun pdfPageCount(ctx: Context, uri: Uri): Int = try {
@@ -226,8 +236,11 @@ internal object DocEngine {
                         val bmp = Bitmap.createBitmap((p.width * scale).toInt().coerceAtLeast(1), (p.height * scale).toInt().coerceAtLeast(1), Bitmap.Config.ARGB_8888)
                         bmp.eraseColor(Color.WHITE)
                         p.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-                        block(bmp, i)
-                        bmp.recycle()
+                        // Keep the 565 copy (half the memory); bitmaps drawn into a PdfDocument must
+                        // outlive writeTo(), so the callback never recycles what it draws.
+                        val small = bmp.copy(Bitmap.Config.RGB_565, false) ?: bmp
+                        if (small !== bmp) bmp.recycle()
+                        block(small, i)
                     }
                 }
             }
@@ -237,7 +250,7 @@ internal object DocEngine {
     // ------------------------------------------------------------------ sign & fill export
 
     /** Draw [items] onto page bitmap [bmp] (same maths as the on-screen overlay). */
-    fun drawPlaced(c: Canvas, bmp: Bitmap, items: List<Placed>) {
+    fun drawPlaced(c: Canvas, bmp: Bitmap, items: List<SignPlaced>) {
         val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = 0xFF14148A.toInt() }
         val bmpPaint = Paint(Paint.FILTER_BITMAP_FLAG or Paint.ANTI_ALIAS_FLAG)
         items.forEach { it ->
@@ -256,7 +269,7 @@ internal object DocEngine {
     }
 
     /** Flatten every page (PDF) or the single image with its placed items into a new PDF. */
-    fun exportSigned(ctx: Context, uri: Uri, isPdf: Boolean, pageCount: Int, items: Map<Int, List<Placed>>): File? {
+    fun exportSigned(ctx: Context, uri: Uri, isPdf: Boolean, pageCount: Int, items: Map<Int, List<SignPlaced>>): File? {
         val doc = PdfDocument()
         try {
             var n = 0
@@ -352,7 +365,6 @@ internal object DocEngine {
                 val page = doc.startPage(PdfDocument.PageInfo.Builder(small.width, small.height, ++n).create())
                 page.canvas.drawBitmap(small, 0f, 0f, null)
                 doc.finishPage(page)
-                small.recycle()
             }
             if (n == 0) return null
             val f = outFile(ctx, "Tenzy-small")
@@ -370,7 +382,7 @@ internal object DocEngine {
                 val page = doc.startPage(PdfDocument.PageInfo.Builder(r.width, r.height, ++n).create())
                 page.canvas.drawBitmap(r, 0f, 0f, null)
                 doc.finishPage(page)
-                if (r !== bmp) r.recycle()
+                if (r !== bmp) bmp.recycle()
             }
             if (n == 0) return null
             val f = outFile(ctx, "Tenzy-rotated")
@@ -386,6 +398,7 @@ internal object DocEngine {
                 if (out.size < max) {
                     val f = File(ctx.cacheDir, "Tenzy-page-${i + 1}-${System.currentTimeMillis()}.jpg")
                     FileOutputStream(f).use { bmp.compress(Bitmap.CompressFormat.JPEG, 90, it) }
+                    bmp.recycle()
                     out += f
                 }
             }

@@ -171,8 +171,8 @@ internal object WordFinder {
         return when (ext) {
             "txt", "md", "csv", "log", "json" -> readText(ctx, uri) to false
             "docx" -> {
-                val xml = zipEntries(ctx, uri) { it == "word/document.xml" }["word/document.xml"] ?: ""
-                docxToText(xml) to false
+                val entries = zipEntries(ctx, uri) { it == "word/document.xml" }
+                docxToText(entries["word/document.xml"] ?: "") to false
             }
             "xlsx" -> xlsxToText(zipEntries(ctx, uri) { it == "xl/sharedStrings.xml" || (it.startsWith("xl/worksheets/sheet") && it.endsWith(".xml")) }) to false
             "pptx" -> {

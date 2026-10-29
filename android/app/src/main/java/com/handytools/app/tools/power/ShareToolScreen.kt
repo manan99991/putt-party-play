@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -84,7 +83,6 @@ import com.handytools.app.ui.NoteText
 import com.handytools.app.ui.Pill
 import com.handytools.app.ui.PowerToolPage
 import com.handytools.app.ui.PreviewBox
-import com.handytools.app.ui.SectionLabel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -94,7 +92,7 @@ import java.util.concurrent.Executors
 // Share & Connect — Send a file / Make QR / Scan / Wi-Fi. State is hoisted so tabs keep their work.
 // ------------------------------------------------------------------------------------------------
 
-internal class SendState {
+internal class ShareSendState {
     var uri by mutableStateOf<Uri?>(null)
     var name by mutableStateOf("")
     var size by mutableLongStateOf(-1L)
@@ -109,7 +107,7 @@ internal class SendState {
     val server = arrayOfNulls<LocalFileServer>(1)
 }
 
-internal class QrState {
+internal class ShareQrState {
     var kind by mutableIntStateOf(0)        // 0 text/link · 1 wifi · 2 contact
     var text by mutableStateOf("")
     var ssid by mutableStateOf("")
@@ -122,15 +120,15 @@ internal class QrState {
     var status by mutableStateOf<String?>(null)
 }
 
-internal class ScanState2 {
+internal class ShareScanState {
     var scanning by mutableStateOf(false)
-    var decoded by mutableStateOf<Decoded?>(null)
+    var decoded by mutableStateOf<QrDecoded?>(null)
     var status by mutableStateOf<String?>(null)
     var busy by mutableStateOf(false)
 }
 
-internal class WifiState {
-    var info by mutableStateOf<NetInfo?>(null)
+internal class ShareWifiState {
+    var info by mutableStateOf<WifiNetInfo?>(null)
     var speed by mutableStateOf<String?>(null)
     var testing by mutableStateOf(false)
 }
@@ -138,17 +136,17 @@ internal class WifiState {
 @Composable
 fun ShareToolScreen() {
     var tab by remember { mutableIntStateOf(0) }
-    val send = remember { SendState() }
-    val qr = remember { QrState() }
-    val scan = remember { ScanState2() }
-    val wifi = remember { WifiState() }
+    val send = remember { ShareSendState() }
+    val qr = remember { ShareQrState() }
+    val scan = remember { ShareScanState() }
+    val wifi = remember { ShareWifiState() }
     DisposableEffect(Unit) { onDispose { send.server[0]?.stop(); send.server[0] = null } }
     PowerToolPage("share", listOf("Send a file", "Make QR", "Scan", "Wi-Fi"), tab, { tab = it }) {
         when (tab) {
-            0 -> SendPanel(send)
-            1 -> QrPanel(qr)
-            2 -> ScanPanel2(scan)
-            else -> WifiPanel(wifi) { ssid -> qr.kind = 1; qr.ssid = ssid; qr.bitmap = null; tab = 1 }
+            0 -> ShareSendPanel(send)
+            1 -> ShareQrPanel(qr)
+            2 -> ShareScanPanel(scan)
+            else -> ShareWifiPanel(wifi) { ssid -> qr.kind = 1; qr.ssid = ssid; qr.bitmap = null; tab = 1 }
         }
     }
 }
@@ -158,7 +156,7 @@ fun ShareToolScreen() {
 // ------------------------------------------------------------------------------------------------
 
 @Composable
-private fun SendPanel(st: SendState) {
+private fun ShareSendPanel(st: ShareSendState) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -280,7 +278,7 @@ private fun SendPanel(st: SendState) {
 // ------------------------------------------------------------------------------------------------
 
 @Composable
-private fun QrPanel(st: QrState) {
+private fun ShareQrPanel(st: ShareQrState) {
     val ctx = LocalContext.current
 
     Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
@@ -353,7 +351,7 @@ private fun QrPanel(st: QrState) {
 // ------------------------------------------------------------------------------------------------
 
 @Composable
-private fun ScanPanel2(st: ScanState2) {
+private fun ShareScanPanel(st: ShareScanState) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var camGranted by remember { mutableStateOf(ContextCompat.checkSelfPermission(ctx, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) }
@@ -373,7 +371,7 @@ private fun ScanPanel2(st: ScanState2) {
 
     // Preview-first: the live camera, or the decoded result.
     if (st.scanning && camGranted) {
-        CameraScanner(onResult = { raw, isQr -> st.decoded = ShareEngine.classify(raw, isQr); st.scanning = false; st.status = null; HandyHaptics.medium(ctx) })
+        ShareCameraScanner(onResult = { raw, isQr -> st.decoded = ShareEngine.classify(raw, isQr); st.scanning = false; st.status = null; HandyHaptics.medium(ctx) })
     } else {
         PreviewBox(minHeight = 150.dp) {
             Text(
@@ -405,12 +403,12 @@ private fun ScanPanel2(st: ScanState2) {
     }
     st.status?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = HandyColors.Amber, modifier = Modifier.padding(top = 10.dp)) }
 
-    st.decoded?.let { d -> Spacer(Modifier.height(14.dp)); ScanResult(d) }
+    st.decoded?.let { d -> Spacer(Modifier.height(14.dp)); ShareScanResult(d) }
     NoteText("Codes are read on the phone. Links get checked against Tenzy's scam rules before you open them.")
 }
 
 @Composable
-private fun ScanResult(d: Decoded) {
+private fun ShareScanResult(d: QrDecoded) {
     val ctx = LocalContext.current
     var joinStatus by remember(d) { mutableStateOf<String?>(null) }
     HCard(Modifier.fillMaxWidth()) {
@@ -419,7 +417,7 @@ private fun ScanResult(d: Decoded) {
             SelectionContainer { Text(d.raw, style = MaterialTheme.typography.bodyMedium, maxLines = 8, overflow = TextOverflow.Ellipsis) }
             Spacer(Modifier.height(12.dp))
             when (d.kind) {
-                CodeKind.LINK -> {
+                QrKind.LINK -> {
                     val report = remember(d) { ScamAnalyzer.analyze(d.raw) }
                     val tint = when (report.verdict) {
                         ScamAnalyzer.Verdict.LIKELY_SCAM -> HandyColors.Danger
@@ -437,7 +435,7 @@ private fun ScanResult(d: Decoded) {
                         HSecondaryButton("Copy", Modifier.weight(1f)) { ShareEngine.copy(ctx, "Link", d.raw); Toast.makeText(ctx, "Copied", Toast.LENGTH_SHORT).show() }
                     }
                 }
-                CodeKind.WIFI -> {
+                QrKind.WIFI -> {
                     val creds = ShareEngine.parseWifi(d.raw)
                     if (creds == null) {
                         Text("Couldn't read the network details from this code.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(bottom = 10.dp))
@@ -453,7 +451,7 @@ private fun ScanResult(d: Decoded) {
                         joinStatus?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 8.dp)) }
                     }
                 }
-                CodeKind.CONTACT -> {
+                QrKind.CONTACT -> {
                     val c = ShareEngine.parseContact(d.raw)
                     Text(listOf(c.name, c.phone, c.email).filter { it.isNotBlank() }.joinToString("  ·  ").ifBlank { "Contact card" },
                         style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(bottom = 10.dp))
@@ -465,11 +463,11 @@ private fun ScanResult(d: Decoded) {
                         HSecondaryButton("Copy", Modifier.weight(1f)) { ShareEngine.copy(ctx, "Contact", d.raw); Toast.makeText(ctx, "Copied", Toast.LENGTH_SHORT).show() }
                     }
                 }
-                CodeKind.TEXT, CodeKind.BARCODE -> {
+                QrKind.TEXT, QrKind.BARCODE -> {
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         HPrimaryButton("Copy", Modifier.weight(1f)) { ShareEngine.copy(ctx, "Code", d.raw); Toast.makeText(ctx, "Copied", Toast.LENGTH_SHORT).show() }
-                        HSecondaryButton(if (d.kind == CodeKind.BARCODE) "Look it up" else "Share", Modifier.weight(1f)) {
-                            if (d.kind == CodeKind.BARCODE) openLink(ctx, "https://www.google.com/search?q=" + Uri.encode(d.raw)) else Share.text(ctx, d.raw)
+                        HSecondaryButton(if (d.kind == QrKind.BARCODE) "Look it up" else "Share", Modifier.weight(1f)) {
+                            if (d.kind == QrKind.BARCODE) openLink(ctx, "https://www.google.com/search?q=" + Uri.encode(d.raw)) else Share.text(ctx, d.raw)
                         }
                     }
                 }
@@ -487,7 +485,7 @@ private fun openLink(ctx: android.content.Context, url: String) {
 /** CameraX preview + ML Kit barcode analysis (same recipe as the QR tool). Unbinds when it leaves the screen. */
 @OptIn(ExperimentalGetImage::class)
 @Composable
-private fun CameraScanner(onResult: (String, Boolean) -> Unit) {
+private fun ShareCameraScanner(onResult: (String, Boolean) -> Unit) {
     val lifecycle = LocalLifecycleOwner.current
     val holder = remember { arrayOfNulls<ProcessCameraProvider>(1) }
     val done = remember { booleanArrayOf(false) }
@@ -530,7 +528,7 @@ private fun CameraScanner(onResult: (String, Boolean) -> Unit) {
 // ------------------------------------------------------------------------------------------------
 
 @Composable
-private fun WifiPanel(st: WifiState, onShareQr: (String) -> Unit) {
+private fun ShareWifiPanel(st: ShareWifiState, onShareQr: (String) -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var locGranted by remember { mutableStateOf(ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) }

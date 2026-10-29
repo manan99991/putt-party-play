@@ -24,14 +24,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DocumentScanner
-import androidx.compose.material.icons.outlined.Draw
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -62,6 +61,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -95,23 +96,23 @@ import kotlin.math.roundToInt
 // tabs never loses the pages, signature or picked files (the prototype keeps every panel alive).
 // ------------------------------------------------------------------------------------------------
 
-internal class ScanState {
-    val pages = mutableStateListOf<ScanPage>()
+internal class DocScanState {
+    val pages = mutableStateListOf<DocScanPage>()
     var current by mutableIntStateOf(-1)
-    var filter by mutableStateOf(ScanFilter.COLOR)
+    var filter by mutableStateOf(DocScanFilter.COLOR)
     var status by mutableStateOf<String?>(null)
     var working by mutableStateOf(false)
 }
 
-internal class SignState {
+internal class DocSignState {
     var uri by mutableStateOf<Uri?>(null)
     var isPdf by mutableStateOf(false)
     var pageCount by mutableIntStateOf(0)
     var pageIndex by mutableIntStateOf(0)
     var page by mutableStateOf<Bitmap?>(null)
-    val items = mutableStateMapOf<Int, List<Placed>>()
+    val items = mutableStateMapOf<Int, List<SignPlaced>>()
     val strokes = mutableStateListOf<List<Offset>>()
-    var pending by mutableStateOf<Placed?>(null)
+    var pending by mutableStateOf<SignPlaced?>(null)
     var name by mutableStateOf("")
     var status by mutableStateOf<String?>(null)
     var loading by mutableStateOf(false)
@@ -120,16 +121,16 @@ internal class SignState {
 @Composable
 fun DocumentsToolScreen() {
     var tab by remember { mutableIntStateOf(0) }
-    val scan = remember { ScanState() }
-    val sign = remember { SignState() }
-    val merge = remember { MergeState() }
-    val finder = remember { FinderState() }
+    val scan = remember { DocScanState() }
+    val sign = remember { DocSignState() }
+    val merge = remember { DocMergeState() }
+    val finder = remember { DocFinderState() }
     PowerToolPage("documents", listOf("Scan", "Sign & fill", "Merge & split", "Word Finder"), tab, { tab = it }) {
         when (tab) {
-            0 -> ScanPanel(scan)
-            1 -> SignPanel(sign)
-            2 -> MergePanel(merge)
-            else -> FinderPanel(finder)
+            0 -> DocScanPanel(scan)
+            1 -> DocSignPanel(sign)
+            2 -> DocMergePanel(merge)
+            else -> DocFinderPanel(finder)
         }
     }
 }
@@ -139,7 +140,7 @@ fun DocumentsToolScreen() {
 // ------------------------------------------------------------------------------------------------
 
 @Composable
-private fun ScanPanel(st: ScanState) {
+private fun DocScanPanel(st: DocScanState) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val hasRoom = Usage.hasRoom(ctx, "scan", Limits.FREE_SCAN_PAGES)
@@ -148,8 +149,8 @@ private fun ScanPanel(st: ScanState) {
         if (uris.isEmpty()) return
         st.working = true
         scope.launch {
-            val bitmaps = withContext(Dispatchers.IO) { uris.mapNotNull { DocEngine.loadBitmap(ctx, it) } }
-            bitmaps.forEach { st.pages += ScanPage(it) }
+            val bitmaps = withContext(Dispatchers.IO) { uris.mapNotNull { DocEngine.loadBitmap(ctx, it, 1600, lowMem = true) } }
+            bitmaps.forEach { st.pages += DocScanPage(it) }
             if (bitmaps.isNotEmpty()) st.current = st.pages.lastIndex
             st.status = if (bitmaps.isEmpty()) "Couldn't read that image — try another." else "Page ${st.pages.size} added"
             st.working = false
@@ -225,10 +226,10 @@ private fun ScanPanel(st: ScanState) {
 
     Spacer(Modifier.height(10.dp))
     Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-        ScanFilter.values().forEach { f -> HChip(f.label, st.filter == f) { st.filter = f } }
+        DocScanFilter.values().forEach { f -> HChip(f.label, st.filter == f) { st.filter = f } }
         HChip("↻ Rotate", false) {
             val i = st.current
-            if (i in st.pages.indices) { val p = st.pages[i]; st.pages[i] = ScanPage(p.source, (p.rotation + 90) % 360) }
+            if (i in st.pages.indices) { val p = st.pages[i]; st.pages[i] = DocScanPage(p.source, (p.rotation + 90) % 360) }
             else st.status = "Scan or pick a page first."
         }
         HChip("Remove page", false) {
@@ -246,10 +247,7 @@ private fun ScanPanel(st: ScanState) {
     ) {
         st.working = true; st.status = "Recognising text…"
         scope.launch {
-            val file = withContext(Dispatchers.Default) {
-                val bitmaps = st.pages.map { DocEngine.process(it.source, it.rotation, st.filter) }
-                DocEngine.exportSearchablePdf(ctx, bitmaps)
-            }
+            val file = withContext(Dispatchers.Default) { DocEngine.exportSearchablePdf(ctx, st.pages.toList(), st.filter) }
             st.working = false
             if (file != null) {
                 Usage.use(ctx, "scan", Limits.FREE_SCAN_PAGES)
@@ -270,10 +268,11 @@ private fun ScanPanel(st: ScanState) {
 // ------------------------------------------------------------------------------------------------
 
 @Composable
-private fun SignPanel(st: SignState) {
+private fun DocSignPanel(st: DocSignState) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
+    val measurer = rememberTextMeasurer()
     val ink = Color(0xFF14148A)
     val hasRoom = Usage.hasRoom(ctx, "sign", Limits.FREE_SIGN_PER_DAY)
 
@@ -305,7 +304,7 @@ private fun SignPanel(st: SignState) {
     var dragId by remember { mutableStateOf<Long?>(null) }
     val pageItems = st.items[st.pageIndex] ?: emptyList()
 
-    fun rectOf(p: Placed, w: Int, h: Int): FloatArray {
+    fun rectOf(p: SignPlaced, w: Int, h: Int): FloatArray {
         val sig = p.bitmap
         return if (p.isSignature && sig != null) {
             val pw = p.w * w; val ph = pw * sig.height / sig.width
@@ -368,11 +367,12 @@ private fun SignPanel(st: SignState) {
                     )
                 } else if (!p.isSignature) {
                     val fh = p.textFrac * bh
-                    Box(
-                        Modifier.offset { IntOffset((p.cx * bw).roundToInt() - 600, (p.cy * bh - fh * 0.75f).roundToInt()) }
-                            .width(with(density) { 1200.toDp() }).height(with(density) { (fh * 1.5f).toDp() }),
-                        contentAlignment = Alignment.Center
-                    ) { Text(p.text, color = ink, fontSize = with(density) { fh.toSp() }, maxLines = 1) }
+                    val style = TextStyle(fontSize = with(density) { fh.toSp() }, color = ink)
+                    val measured = measurer.measure(p.text, style, maxLines = 1, softWrap = false).size
+                    Text(
+                        p.text, style = style, maxLines = 1, softWrap = false,
+                        modifier = Modifier.offset { IntOffset((p.cx * bw - measured.width / 2f).roundToInt(), (p.cy * bh - measured.height / 2f).roundToInt()) }
+                    )
                 }
             }
         }
@@ -439,7 +439,7 @@ private fun SignPanel(st: SignState) {
             if (st.strokes.isEmpty()) { st.status = "Draw a signature first."; return@HPrimaryButton }
             val bmp = signatureBitmap(st.strokes.toList(), padSize.width, padSize.height, with(density) { 4.dp.toPx() })
             if (bmp == null) { st.status = "Draw a signature first."; return@HPrimaryButton }
-            st.pending = Placed(0L, true, 0.5f, 0.5f, 0.32f, 0f, "", bmp)
+            st.pending = SignPlaced(0L, true, 0.5f, 0.5f, 0.32f, 0f, "", bmp)
             st.status = null
         }
     }
@@ -451,7 +451,7 @@ private fun SignPanel(st: SignState) {
     Spacer(Modifier.height(8.dp))
     fun field(text: String) {
         if (page == null) { st.status = "Choose a document first."; return }
-        st.pending = Placed(0L, false, 0.5f, 0.5f, 0f, 0.022f, text, null); st.status = null
+        st.pending = SignPlaced(0L, false, 0.5f, 0.5f, 0f, 0.022f, text, null); st.status = null
     }
     val pendingText = st.pending?.takeIf { !it.isSignature }?.text
     Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
@@ -469,7 +469,7 @@ private fun SignPanel(st: SignState) {
 
     Spacer(Modifier.height(14.dp))
     val total = st.items.values.sumOf { it.size }
-    HPrimaryButton(if (st.loading) "Working…" else "Export signed PDF", enabled = page != null && !st.loading && hasRoom, icon = Icons.Outlined.Draw) {
+    HPrimaryButton(if (st.loading) "Working…" else "Export signed PDF", enabled = page != null && !st.loading && hasRoom, icon = Icons.Outlined.Edit) {
         val uri = st.uri ?: return@HPrimaryButton
         if (total == 0) { st.status = "Place a signature or a field first — then export."; return@HPrimaryButton }
         st.loading = true; st.status = "Flattening…"

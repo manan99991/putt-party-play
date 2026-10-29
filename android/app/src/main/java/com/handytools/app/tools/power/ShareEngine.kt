@@ -31,12 +31,12 @@ import java.net.HttpURLConnection
 import java.net.Inet4Address
 import java.net.URL
 
-internal enum class CodeKind(val label: String) { LINK("Link"), WIFI("Wi-Fi login"), TEXT("Text"), CONTACT("Contact"), BARCODE("Barcode") }
+internal enum class QrKind(val label: String) { LINK("Link"), WIFI("Wi-Fi login"), TEXT("Text"), CONTACT("Contact"), BARCODE("Barcode") }
 
-internal data class Decoded(val raw: String, val kind: CodeKind)
-internal data class WifiCreds(val ssid: String, val password: String, val security: String, val hidden: Boolean)
-internal data class ContactInfo(val name: String, val phone: String, val email: String)
-internal data class NetInfo(
+internal data class QrDecoded(val raw: String, val kind: QrKind)
+internal data class QrWifiCreds(val ssid: String, val password: String, val security: String, val hidden: Boolean)
+internal data class QrContact(val name: String, val phone: String, val email: String)
+internal data class WifiNetInfo(
     val connected: Boolean, val wifi: Boolean, val ssid: String?, val rssi: Int?, val linkSpeed: Int?,
     val ip: String?, val gateway: String?, val dns: String?,
 )
@@ -93,20 +93,20 @@ internal object ShareEngine {
 
     // ------------------------------------------------------------------ decoding
 
-    fun classify(raw: String, isQr: Boolean): Decoded {
+    fun classify(raw: String, isQr: Boolean): QrDecoded {
         val t = raw.trim()
         val kind = when {
-            t.startsWith("WIFI:", ignoreCase = true) -> CodeKind.WIFI
-            t.startsWith("BEGIN:VCARD", ignoreCase = true) || t.startsWith("MECARD:", ignoreCase = true) -> CodeKind.CONTACT
-            Regex("^(https?://|www\\.)", RegexOption.IGNORE_CASE).containsMatchIn(t) -> CodeKind.LINK
-            !isQr -> CodeKind.BARCODE
-            else -> CodeKind.TEXT
+            t.startsWith("WIFI:", ignoreCase = true) -> QrKind.WIFI
+            t.startsWith("BEGIN:VCARD", ignoreCase = true) || t.startsWith("MECARD:", ignoreCase = true) -> QrKind.CONTACT
+            Regex("^(https?://|www\\.)", RegexOption.IGNORE_CASE).containsMatchIn(t) -> QrKind.LINK
+            !isQr -> QrKind.BARCODE
+            else -> QrKind.TEXT
         }
-        return Decoded(t, kind)
+        return QrDecoded(t, kind)
     }
 
     /** ML Kit first (handles rotated/perspective codes), zxing as a fallback. */
-    suspend fun decodeImage(ctx: Context, uri: Uri): Decoded? {
+    suspend fun decodeImage(ctx: Context, uri: Uri): QrDecoded? {
         try {
             val img = InputImage.fromFilePath(ctx, uri)
             val scanner = BarcodeScanning.getClient()
@@ -125,7 +125,7 @@ internal object ShareEngine {
     }
 
     /** Parses WIFI:T:WPA;S:name;P:pass;H:true;; (handles \; \: \\ escapes). */
-    fun parseWifi(raw: String): WifiCreds? {
+    fun parseWifi(raw: String): QrWifiCreds? {
         val body = raw.trim().removePrefix("WIFI:").removePrefix("wifi:")
         val fields = HashMap<String, String>()
         val sb = StringBuilder(); var i = 0
@@ -142,10 +142,10 @@ internal object ShareEngine {
         val ssid = fields["S"] ?: return null
         if (ssid.isBlank()) return null
         val sec = (fields["T"] ?: "").uppercase().ifBlank { if ((fields["P"] ?: "").isBlank()) "NOPASS" else "WPA" }
-        return WifiCreds(ssid, fields["P"] ?: "", sec, (fields["H"] ?: "").equals("true", true))
+        return QrWifiCreds(ssid, fields["P"] ?: "", sec, (fields["H"] ?: "").equals("true", true))
     }
 
-    fun parseContact(raw: String): ContactInfo {
+    fun parseContact(raw: String): QrContact {
         var name = ""; var phone = ""; var email = ""
         if (raw.trim().startsWith("MECARD:", true)) {
             raw.trim().removePrefix("MECARD:").split(";").forEach { f ->
@@ -164,14 +164,14 @@ internal object ShareEngine {
                 }
             }
         }
-        return ContactInfo(name, phone, email)
+        return QrContact(name, phone, email)
     }
 
     fun copy(ctx: Context, label: String, text: String) {
         (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(label, text))
     }
 
-    fun insertContactIntent(c: ContactInfo): Intent {
+    fun insertContactIntent(c: QrContact): Intent {
         val i = Intent(android.provider.ContactsContract.Intents.Insert.ACTION).setType(android.provider.ContactsContract.RawContacts.CONTENT_TYPE)
         if (c.name.isNotBlank()) i.putExtra(android.provider.ContactsContract.Intents.Insert.NAME, c.name)
         if (c.phone.isNotBlank()) i.putExtra(android.provider.ContactsContract.Intents.Insert.PHONE, c.phone)
@@ -182,7 +182,7 @@ internal object ShareEngine {
     // ------------------------------------------------------------------ Wi-Fi join
 
     /** Best-effort join; returns a one-line status for the UI. The password is always copied too. */
-    fun joinWifi(ctx: Context, c: WifiCreds): String {
+    fun joinWifi(ctx: Context, c: QrWifiCreds): String {
         val wifi = ctx.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         if (c.password.isNotBlank()) copy(ctx, "Wi-Fi password", c.password)
         if (Build.VERSION.SDK_INT >= 29) {
@@ -204,7 +204,7 @@ internal object ShareEngine {
 
     /** Android 8–9: the old WifiConfiguration route. */
     @Suppress("DEPRECATION")
-    private fun legacyJoin(wifi: WifiManager, c: WifiCreds): Boolean = try {
+    private fun legacyJoin(wifi: WifiManager, c: QrWifiCreds): Boolean = try {
         val conf = android.net.wifi.WifiConfiguration()
         conf.SSID = "\"${c.ssid}\""
         if (c.password.isBlank()) conf.allowedKeyManagement.set(android.net.wifi.WifiConfiguration.KeyMgmt.NONE)
@@ -220,7 +220,7 @@ internal object ShareEngine {
 
     // ------------------------------------------------------------------ network info
 
-    fun netInfo(ctx: Context): NetInfo {
+    fun netInfo(ctx: Context): WifiNetInfo {
         val cm = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val net = cm.activeNetwork
         val caps = net?.let { cm.getNetworkCapabilities(it) }
@@ -243,7 +243,7 @@ internal object ShareEngine {
                 }
             } catch (_: Exception) {}
         }
-        return NetInfo(connected, wifi, ssid, rssi, link, ip, gateway, dns)
+        return WifiNetInfo(connected, wifi, ssid, rssi, link, ip, gateway, dns)
     }
 
     fun signalLabel(rssi: Int): String = when {

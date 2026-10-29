@@ -71,15 +71,15 @@ import java.io.File
 // Merge & split
 // ------------------------------------------------------------------------------------------------
 
-internal class MergeState {
-    val files = mutableStateListOf<PdfInfo>()
+internal class DocMergeState {
+    val files = mutableStateListOf<DocPdfInfo>()
     var working by mutableStateOf(false)
     var status by mutableStateOf<String?>(null)
     var range by mutableStateOf("")
 }
 
 @Composable
-internal fun MergePanel(st: MergeState) {
+internal fun DocMergePanel(st: DocMergeState) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val hasRoom = Usage.hasRoom(ctx, "pdftools", Limits.FREE_PDF_OPS_PER_DAY)
@@ -201,7 +201,7 @@ internal fun MergePanel(st: MergeState) {
 // Word Finder
 // ------------------------------------------------------------------------------------------------
 
-internal class FinderState {
+internal class DocFinderState {
     var query by mutableStateOf("")
     val sources = mutableStateListOf<FinderSource>()
     var docs by mutableStateOf<List<FinderDoc>>(emptyList())
@@ -215,7 +215,7 @@ internal class FinderState {
 }
 
 @Composable
-internal fun FinderPanel(st: FinderState) {
+internal fun DocFinderPanel(st: DocFinderState) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
 

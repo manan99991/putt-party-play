@@ -106,6 +106,8 @@ dependencies {
     implementation("androidx.media3:media3-effect:1.5.1")
     implementation("androidx.media3:media3-common:1.5.1")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
+    // Word Finder: PDF text extraction on-device
+    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
     implementation("androidx.camera:camera-camera2:1.4.1")
     implementation("androidx.camera:camera-lifecycle:1.4.1")
     implementation("androidx.camera:camera-view:1.4.1")
