@@ -122,7 +122,7 @@ class MainActivity : ComponentActivity() {
                     composable("home") { HomeScreen(onOpen = { nav.navigate(it) }) }
                     // CI screenshot route: home in Pro state (no ad strip) for the store split slide.
                     composable("homepro") { HomeScreen(onOpen = { nav.navigate(it) }) }
-                    composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("setup") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
+                    composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("home") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
                     composable("setup") { SetupScreen(onDone = { nav.navigate("home") { popUpTo("setup") { inclusive = true } } }) }
                     composable("settings") { SettingsScreen(onOpen = { nav.navigate(it) }) }
                     composable("privacy") { PrivacyScreen() }

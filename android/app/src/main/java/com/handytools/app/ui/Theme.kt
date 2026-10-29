@@ -368,8 +368,13 @@ fun HChip(text: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 fun ChipRow(content: @Composable RowScope.() -> Unit) {
-    Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8), content = content)
+    // Chips wrap onto new lines instead of clipping at the screen edge (FlowRowScope is a RowScope).
+    androidx.compose.foundation.layout.FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)
+    ) { content() }
 }
 
 /** Secondary text line under a control: the honest-limit note. */

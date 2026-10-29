@@ -128,14 +128,15 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text("Tenzy", style = MaterialTheme.typography.headlineMedium)
+                    // The backdrop art is always dark, so the header is always light — in both themes.
+                    Text("Tenzy", style = MaterialTheme.typography.headlineMedium, color = Color.White)
                     Spacer(Modifier.height(HandyTokens.Space4))
                     Text("10 power tools · on your phone",
-                        style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+                        style = MaterialTheme.typography.bodyMedium, color = Color(0xFFB8B8C8))
                 }
                 Row {
                     if (!premium) IconButton(onClick = { onOpen("paywall") }) { Icon(Icons.Outlined.WorkspacePremium, "Go Pro", tint = HandyColors.Accent) }
-                    IconButton(onClick = { onOpen("settings") }) { Icon(Icons.Outlined.Settings, "Settings", tint = Handy.palette.textSecondary) }
+                    IconButton(onClick = { onOpen("settings") }) { Icon(Icons.Outlined.Settings, "Settings", tint = Color(0xFFC9C9D6)) }
                 }
             }
 
@@ -158,7 +159,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     Spacer(Modifier.height(HandyTokens.Space48))
                     Icon(Icons.Outlined.Search, null, tint = Handy.palette.textSecondary, modifier = Modifier.size(36.dp))
                     Spacer(Modifier.height(HandyTokens.Space8))
-                    Text("No tools match \"$query\"", color = Handy.palette.textSecondary)
+                    Text("No tools match \"$query\"", color = Color(0xFFB8B8C8))
                 }
             } else {
                 LazyVerticalGrid(

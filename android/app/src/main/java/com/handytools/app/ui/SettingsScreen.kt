@@ -67,13 +67,13 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
                     Spacer(Modifier.width(HandyTokens.Space12))
                     Column(Modifier.weight(1f)) {
                         Text(if (premium) "Tenzy Pro" else "Go Pro", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
-                        Text(if (premium) "Ads off. Renews yearly at $19.99." else "$19.99 a year. Ads gone, unlimited clips and alarms.",
+                        Text(if (com.handytools.app.BuildConfig.INTERNAL_UNLOCK) "Internal testing build — everything unlocked, no ads, no limits." else if (premium) "Ads off. Renews yearly at $19.99." else "$19.99 a year. Ads gone, unlimited use of every tool.",
                             style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     }
                     if (!premium) Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)
                 }
             }
-            if (premium) {
+            if (premium && !com.handytools.app.BuildConfig.INTERNAL_UNLOCK) {
                 HTextButton("Manage subscription") {
                     ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/account/subscriptions?sku=tenzy_pro_yearly&package=${ctx.packageName}")))
                 }

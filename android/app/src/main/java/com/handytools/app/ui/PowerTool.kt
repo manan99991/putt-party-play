@@ -61,8 +61,10 @@ fun PowerToolPage(
                 Image(painterResource(tool.cardRes), null, Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
                 Box(
                     Modifier.fillMaxSize().background(
+                        // The card art is dark, so the hero stays dark in light mode too; the body
+                        // below uses the theme background like a normal header-image layout.
                         Brush.verticalGradient(
-                            0f to Color(0x26070710), 0.6f to Color(0x33070710), 1f to MaterialTheme.colorScheme.background
+                            0f to Color(0x26070710), 0.6f to Color(0x40070710), 1f to Color(0xF2070710)
                         )
                     )
                 )

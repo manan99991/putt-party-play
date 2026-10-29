@@ -248,7 +248,7 @@ fun CaptureToolScreen() {
 
         if (bitmap == null && !busy) {
             SectionLabel("Or try a sample")
-            Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            ChipRow {
                 CaptureSamples.all.forEach { s ->
                     HChip(s.chip, selected = false) {
                         bitmap = s.render(); reset()
