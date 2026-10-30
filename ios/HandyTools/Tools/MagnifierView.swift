@@ -35,6 +35,12 @@ struct MagnifierView: View {
                 ProcessedFrameView(image: processed, holder: holder)
                     .frame(height: 400)
                     .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .overlay {
+                        if !cam.authorized {
+                            PermissionOffCard(line: "Camera access is off", sub: "The magnifier needs the camera. Turn it on, then come back.")
+                                .background(HandyColor.surface.opacity(0.96), in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                        }
+                    }
                     .gesture(MagnifyGesture().onChanged { v in
                         if frozen { frozenZoom = min(6, max(1, frozenZoom * (1 + (v.magnification - 1) * 0.15))) }
                         else { zoom = min(12, max(1, zoom * (1 + (v.magnification - 1) * 0.15))); cam.setZoom(zoom) }

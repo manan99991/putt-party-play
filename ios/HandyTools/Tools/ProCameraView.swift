@@ -18,6 +18,7 @@ struct ProCameraView: View {
     @State private var longSeconds = 2
     @State private var histogram: [Float] = []
     @State private var longResult: UIImage?
+    @State private var shareData: Data?   // full-res JPEG of the last shot, so it's never lost if the Photos save is denied
     @State private var shooting = false
     private let ctx = CIContext()
     private let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
@@ -38,6 +39,12 @@ struct ProCameraView: View {
             ])
             ZStack {
                 ProcessedFrameView(image: processed, holder: holder)
+                    .overlay {
+                        if !cam.authorized {
+                            PermissionOffCard(line: "Camera access is off", sub: "Pro Camera needs the camera. Turn it on in Settings, then come back.")
+                                .background(HandyColor.surface.opacity(0.96))
+                        }
+                    }
                 if grid {
                     GeometryReader { g in
                         Path { p in
@@ -83,10 +90,12 @@ struct ProCameraView: View {
                     Spacer()
                     if let longResult, let d = longResult.jpegData(compressionQuality: 0.95) {
                         ShareLink(item: JPEGFile(data: d), preview: SharePreview("Long exposure")) { Image(systemName: "square.and.arrow.up") }.compactButton()
+                    } else if let shareData {
+                        // Always offer the full-res photo to save/share — so a denied Photos save never loses it.
+                        ShareLink(item: JPEGFile(data: shareData), preview: SharePreview("Photo")) { Image(systemName: "square.and.arrow.up") }.compactButton()
                     }
                 }.cardStyle(padding: HandySpacing.s12)
             }
-            if !cam.authorized { LimitNote("Camera access is off. Allow it in Settings.") }
             Text(cam.rawSupported ? "RAW saves a DNG alongside the HEIF — edit it in Photos, Lightroom or Darkroom. Long exposures average frames, so use a tripod or a steady ledge."
                                   : "This camera doesn't offer RAW capture to apps; HEIF at full quality is saved. Long exposures average frames — steady the phone.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -192,13 +201,13 @@ struct ProCameraView: View {
             cam.saving = true
             let ok = await cam.save(processed: processed, raw: rawData)
             cam.saving = false
-            if let p = processed, let img = UIImage(data: p) { cam.lastSaved = img.resized(maxDimension: 300) }
-            cam.lastMessage = ok ? (rawData != nil ? "Saved to Photos — HEIF + DNG" : "Saved to Photos") : "Couldn't save — allow Photos access in Settings."
+            if let p = processed, let img = UIImage(data: p) { cam.lastSaved = img.resized(maxDimension: 300); shareData = img.jpegData(compressionQuality: 0.95) }
+            cam.lastMessage = ok ? (rawData != nil ? "Saved to Photos — HEIF + DNG" : "Saved to Photos") : "Couldn't save to Photos — tap share to keep this shot, or allow Photos access in Settings."
             if ok { HandyHaptics.success() }
         }
     }
 
-    private func startLong() { longResult = nil; cam.lastSaved = nil; cam.beginLongExposure(frames: longSeconds * 30) }
+    private func startLong() { longResult = nil; cam.lastSaved = nil; shareData = nil; cam.beginLongExposure(frames: longSeconds * 30) }
 
     private func finishLong() {
         guard let img = cam.finishLongExposure() else { cam.lastMessage = "Long exposure failed."; return }

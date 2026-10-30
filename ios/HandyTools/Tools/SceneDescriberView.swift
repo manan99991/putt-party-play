@@ -30,6 +30,12 @@ struct SceneDescriberView: View {
                 ProcessedFrameView(image: cam.latest, holder: holder)
                     .frame(height: 300)
                     .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .overlay {
+                        if !cam.authorized {
+                            PermissionOffCard(line: "Camera access is off", sub: "Turn it on in Settings, or pick a photo with the photo button below.")
+                                .background(HandyColor.surface.opacity(0.96), in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                        }
+                    }
                     .onTapGesture { describeNow() }
                     .accessibilityLabel("Camera view. Double tap to describe.")
                 HStack(spacing: HandySpacing.s8) {

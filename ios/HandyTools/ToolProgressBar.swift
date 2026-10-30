@@ -28,3 +28,23 @@ struct ToolProgressBar: View {
         .animation(.easeInOut(duration: 0.25), value: value)
     }
 }
+
+/// Shown over a camera/sensor tool's preview when access was denied, so the user gets a clear reason
+/// and a one-tap route to Settings instead of a blank black box or a silently-dead control.
+/// `sub` can name the on-device fallback the tool still offers (e.g. "…or pick a photo below").
+struct PermissionOffCard: View {
+    var icon: String = "video.slash.fill"
+    var line: String
+    var sub: String? = nil
+    var body: some View {
+        VStack(spacing: HandySpacing.s8) {
+            Image(systemName: icon).font(.system(size: 28)).foregroundStyle(HandyColor.textSecondary)
+            Text(line).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).multilineTextAlignment(.center)
+            if let sub { Text(sub).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center) }
+            Button { Permission.openSettings() } label: {
+                Label("Open Settings", systemImage: "gearshape").frame(maxWidth: .infinity)
+            }.secondaryButton()
+        }
+        .padding(HandySpacing.s16)
+    }
+}

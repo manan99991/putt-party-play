@@ -28,6 +28,8 @@ struct TranslateView: View {
     @State private var showPicker: PickerSide? = nil
 
     private var overQuota: Bool { !Usage.hasRoom("translate", limit: Limits.freeTranslatePerDay) }
+    // Translating a language into itself is a no-op — block it (and never spend a free turn on it).
+    private var sameLang: Bool { fromCode == toCode }
     static let languages: [(code: String, name: String)] = ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar", "hi", "ru", "nl", "pl", "tr", "th", "vi", "id", "uk", "sv"].map { ($0, Locale.current.localizedString(forLanguageCode: $0) ?? $0) }
 
     var body: some View {
@@ -74,10 +76,15 @@ struct TranslateView: View {
     }
 
     private var languageBar: some View {
-        HStack(spacing: HandySpacing.s8) {
-            Button { showPicker = .from } label: { Text(name(fromCode)).frame(maxWidth: .infinity) }.secondaryButton()
-            Button { swap() } label: { Image(systemName: "arrow.left.arrow.right").frame(width: 36, height: 36) }.compactButton().accessibilityLabel("Swap languages")
-            Button { showPicker = .to } label: { Text(name(toCode)).frame(maxWidth: .infinity) }.secondaryButton()
+        VStack(spacing: HandySpacing.s8) {
+            HStack(spacing: HandySpacing.s8) {
+                Button { showPicker = .from } label: { Text(name(fromCode)).frame(maxWidth: .infinity) }.secondaryButton()
+                Button { swap() } label: { Image(systemName: "arrow.left.arrow.right").frame(width: 36, height: 36) }.compactButton().accessibilityLabel("Swap languages")
+                Button { showPicker = .to } label: { Text(name(toCode)).frame(maxWidth: .infinity) }.secondaryButton()
+            }
+            if sameLang {
+                Text("Pick two different languages to translate.").font(HandyFont.caption).foregroundStyle(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
     }
 
@@ -92,7 +99,7 @@ struct TranslateView: View {
             HStack(spacing: HandySpacing.s8) {
                 Button("Paste") { if let s = UIPasteboard.general.string { input = s } }.compactButton()
                 Button { translate(input, from: fromCode, to: toCode, speak: false) } label: { HStack { if busy { ProgressView().tint(.white) }; Label("Translate", systemImage: "character.bubble") }.frame(maxWidth: .infinity) }
-                    .primaryButton().disabled(input.trimmingCharacters(in: .whitespaces).isEmpty || busy || overQuota)
+                    .primaryButton().disabled(input.trimmingCharacters(in: .whitespaces).isEmpty || busy || overQuota || sameLang)
             }
             if !output.isEmpty { resultCard(output) }
         }
@@ -151,7 +158,7 @@ struct TranslateView: View {
                 .foregroundStyle(active ? .white : HandyColor.textPrimary)
                 .background(active ? HandyColor.danger : HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(active ? Color.clear : HandyColor.border, lineWidth: 1))
-        }.buttonStyle(.plain).disabled(overQuota && !active)
+        }.buttonStyle(.plain).disabled((overQuota || sameLang) && !active)
     }
 
     private func heard(_ side: Int) {
@@ -176,6 +183,7 @@ struct TranslateView: View {
 
     private func translate(_ text: String, from: String, to: String, speak: Bool) {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines); guard !t.isEmpty else { return }
+        guard from != to else { errorText = "Pick two different languages — the From and To are the same."; return }
         if mode != .talk { guard Usage.hasRoom("translate", limit: Limits.freeTranslatePerDay) else { return } }
         busy = true; errorText = nil
         pending = (t, from, to, speak)

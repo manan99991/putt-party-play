@@ -1,7 +1,9 @@
-Big one for testers: this build now unlocks the FULL paid experience — all five themes, no ads, no limits — automatically, so you can try everything. (If a theme or Pro tool still looks locked, force-quit and reopen once.)
+More fixes from a full pass over every tool:
 
-Also:
-• Share-Ready: the "ID / govt photo" option is photos-only now — feed it a video and it tells you why instead of making a wrong-sized file, and it won't use a free turn.
-• Share-Ready shows a real progress bar with a percentage while it works, instead of an endless spinner. (Rolling this out to every tool next.)
+• Translate: picking the same language on both sides is now blocked with a hint, instead of running a no-op and using a free turn.
+• Camera tools (Magnifier, Scene Describe, Pro Camera, Flashlight mirror): if camera access is off you now get a clear message and a one-tap "Open Settings" instead of a blank black screen.
+• Pro Camera: a normal photo is never lost if the Photos save is blocked — tap share to keep it.
 
-All 30 tools, most running on-device. One-person shop — tap Settings to send me a note if anything's off. Thanks for testing Tenzy.
+Earlier in this run of builds: TestFlight now unlocks the full paid experience (all themes, no limits), and Share-Ready's ID/photo fix + progress bar.
+
+Still rolling out: the progress bar to every processing tool, with live percentages for video. One-person shop — tap Settings to send a note. Thanks for testing Tenzy.

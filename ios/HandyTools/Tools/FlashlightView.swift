@@ -284,6 +284,13 @@ private struct MirrorSheet: View {
             ProcessedFrameView(image: cam.latest, holder: holder)
                 .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
                 .padding(lit ? 28 : 0)
+                .overlay {
+                    if !cam.authorized {
+                        PermissionOffCard(line: "Camera access is off", sub: "The mirror needs the front camera. Turn it on in Settings.")
+                            .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+                            .padding(HandySpacing.gutter)
+                    }
+                }
             VStack {
                 HStack {
                     Button { dismiss() } label: { Image(systemName: "xmark").font(.system(size: 16, weight: .bold)).padding(10).background(.ultraThinMaterial, in: Circle()) }
