@@ -1,10 +1,5 @@
-Lots in this one:
+New: before you save or share, you now see a preview of what a tool made — thumbnails of the converted photos, a frame of the converted video — so you can check it first. Added to Format Fixer and Share-Ready.
 
-• Home grid now fills the screen as equal blocks — no empty space, every theme.
-• Pro Camera (and other tools): rows of options no longer get cut off at the edges — they wrap.
-• Memory now searches ALL your photos, not just screenshots — find by what a photo shows ("me in red", "dog at the beach"), and each result tells you why it matched.
-• Progress bars everywhere: a real % for video/convert/fit jobs, an animated bar for the rest — no more lone spinner.
-• Video: a conversion now survives leaving the tool — come back and it's still going (or finished), not lost.
-• Translate blocks same-language; Format Fixer says when it skipped files.
+Plus everything from the last build: home grid fills the screen, Pro Camera option rows no longer cut off, Memory searches all your photos with visual search ("me in red") and tells you why each matched, real progress bars across tools, and a video conversion that survives leaving the tool.
 
-On-device as always. For a long video, keep Tenzy open while it finishes. Tap Settings to send a note — thanks for testing.
+On-device as always. Tap Settings to send a note — thanks for testing.
