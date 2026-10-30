@@ -541,7 +541,7 @@ struct ToolCard: View {
                 startPoint: .top, endPoint: .bottom
             )
         }
-        .frame(maxWidth: .infinity, height: 104)
+        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104)
         .overlay(alignment: .bottomLeading) {
             // Anchored to the bottom as an overlay (sized to its own content), so it can never
             // overflow or be clipped by the card the way a greedy VStack did.
