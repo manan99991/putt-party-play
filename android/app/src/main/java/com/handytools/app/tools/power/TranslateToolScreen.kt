@@ -165,6 +165,7 @@ fun TranslateToolScreen() {
     fun translateText() {
         val q = input.trim()
         if (q.isEmpty() || working) return
+        if (from == to) { textError = "Pick two different languages to translate."; return }
         if (!hasRoom()) { textError = quotaLine; return }
         working = true; textError = null; output = ""
         scope.launch {
@@ -198,6 +199,7 @@ fun TranslateToolScreen() {
             val bmp = withContext(Dispatchers.IO) { TranslateEngine.loadBitmap(ctx, uri) }
             if (bmp == null) { camBusy = false; camStatus = "Couldn't open that photo. Try another one."; return@launch }
             camBitmap = bmp
+            if (from == to) { camBusy = false; camStatus = "Pick two different languages to translate."; return@launch }
             if (!hasRoom()) { camBusy = false; camStatus = quotaLine; return@launch }
             try {
                 val (painted, lines) = TranslateEngine.translateImage(bmp, from, to) { downloading = true }
@@ -239,6 +241,7 @@ fun TranslateToolScreen() {
     fun finishTurn(text: String, who: String) {
         val src = if (who == "You") from else to
         val tgt = if (who == "You") to else from
+        if (src == tgt) return   // same language both sides — nothing to translate, never charge
         scope.launch {
             try {
                 val res = TranslateEngine.translate(src, tgt, text) { downloading = true }
@@ -328,7 +331,8 @@ fun TranslateToolScreen() {
                     QUICK.forEach { (label, phrase) -> HChip(label, input == phrase) { input = phrase; translateText() } }
                 }
                 Spacer(Modifier.height(10.dp))
-                HPrimaryButton(if (working) "Translating…" else "Translate", enabled = !working && input.isNotBlank()) { translateText() }
+                HPrimaryButton(if (working) "Translating…" else "Translate", enabled = !working && input.isNotBlank() && from != to) { translateText() }
+                if (from == to) { Text("Pick two different languages to translate.", color = HandyColors.Accent, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 6.dp)) }
                 textError?.let { Text(it, color = HandyColors.Accent, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp)) }
                 if (output.isNotEmpty()) {
                     Spacer(Modifier.height(10.dp))

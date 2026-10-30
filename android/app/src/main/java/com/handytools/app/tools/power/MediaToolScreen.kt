@@ -143,6 +143,10 @@ fun MediaToolScreen() {
     var bgSel by remember { mutableIntStateOf(0) }
     var bgColour by remember { mutableIntStateOf(0) }
     var modelMissing by remember { mutableStateOf(false) }
+
+    // Cancel and release the video transcoder if the user leaves the tool, so it can't leak or fire its
+    // completion onto a dead scope. (Full survive-and-resume needs a ViewModel — tracked separately.)
+    DisposableEffect(Unit) { onDispose { transformer?.cancel() } }
     val boxes = remember { mutableStateListOf<Rect>() }
     var passportSel by remember { mutableIntStateOf(0) }
     var passportResult by remember { mutableStateOf<Bitmap?>(null) }
