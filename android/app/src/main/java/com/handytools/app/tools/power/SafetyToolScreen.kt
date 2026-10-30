@@ -67,6 +67,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import com.handytools.app.tools.Share
 import com.handytools.app.tools.shield.ScamAnalyzer
 import com.handytools.app.ui.EmptyState
@@ -120,9 +122,11 @@ fun SafetyToolScreen() {
     val scope = rememberCoroutineScope()
     var tab by remember { mutableIntStateOf(0) }
 
-    var message by remember { mutableStateOf("URGENT: Your account will be suspended within 24 hours. Verify at http://paypal.secure-login.top/verify and pay the fee in Apple gift cards. Do not tell anyone.") }
-    var link by remember { mutableStateOf("http://chase-secure-verify.xyz/login") }
-    var phone by remember { mutableStateOf("+1 900 555 0123") }
+    // Start empty so the placeholder ("Paste a suspicious text…") shows — a pre-filled sample looked
+    // like a result already sitting there. The sample chips below still let you try an example.
+    var message by remember { mutableStateOf("") }
+    var link by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
 
     var current by remember { mutableStateOf<SafetyEngine.Check?>(null) }
     var label by remember { mutableStateOf<String?>(null) }
@@ -135,6 +139,8 @@ fun SafetyToolScreen() {
     var qrStatus by remember { mutableStateOf<String?>(null) }
     var qrBusy by remember { mutableStateOf(false) }
     var cameraDenied by remember { mutableStateOf(false) }
+    var msgBusy by remember { mutableStateOf(false) }
+    var msgNote by remember { mutableStateOf<String?>(null) }
 
     fun show(c: SafetyEngine.Check, lbl: String? = null) {
         current = c; label = lbl; blockHint = null
@@ -166,6 +172,21 @@ fun SafetyToolScreen() {
             else onQrPayload(code)
         }
     }
+    // Read a suspicious message straight out of a screenshot (OCR on-device), so you don't have to
+    // retype it — then check it automatically.
+    val msgPicker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        msgBusy = true; msgNote = null
+        scope.launch {
+            val text = withContext(Dispatchers.IO) {
+                val bmp = CaptureImages.load(ctx, uri, 1600) ?: return@withContext null
+                runCatching { TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS).process(InputImage.fromBitmap(bmp, 0)).await().text }.getOrNull()
+            }
+            msgBusy = false
+            if (text.isNullOrBlank()) msgNote = "Couldn't read any text in that screenshot. Try a clearer image, or paste the text."
+            else { message = text; show(SafetyEngine.checkMessage(text)) }
+        }
+    }
     val cameraPerm = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { ok: Boolean ->
         if (ok) { scanning = true; qrImage = null; qrStatus = null } else { cameraDenied = true }
     }
@@ -183,6 +204,11 @@ fun SafetyToolScreen() {
                 }
                 Spacer(Modifier.height(HandyTokens.Space12))
                 HPrimaryButton("Check it", enabled = message.isNotBlank()) { show(SafetyEngine.checkMessage(message)) }
+                Spacer(Modifier.height(HandyTokens.Space8))
+                HSecondaryButton(if (msgBusy) "Reading…" else "🖼 Scan a screenshot", modifier = Modifier.fillMaxWidth(), enabled = !msgBusy) {
+                    msgPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
+                msgNote?.let { Text(it, color = HandyColors.Amber, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 6.dp)) }
             }
             1 -> {
                 OutlinedTextField(value = link, onValueChange = { link = it }, modifier = Modifier.fillMaxWidth(), singleLine = true, placeholder = { Text("Paste a link…") })
