@@ -90,12 +90,14 @@ struct CleanerView: View {
             Text("Allow photo access to scan for space you can free. Nothing leaves your phone, and deleting always asks you first.")
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
             Button {
+                if Permission.photosDenied { Permission.openSettings(); return }
                 Task {
                     let s = await PhotoCleaner.authorize()
                     authorized = (s == .authorized || s == .limited)
                     if authorized { CleanerIndex.shared.prewarm(); refreshForCat() }
                 }
-            } label: { Label("Allow photo access", systemImage: "checkmark.shield").frame(maxWidth: .infinity) }.primaryButton()
+            } label: { Label(Permission.photosDenied ? "Open Settings to allow photos" : "Allow photo access",
+                             systemImage: Permission.photosDenied ? "gearshape" : "checkmark.shield").frame(maxWidth: .infinity) }.primaryButton()
         }.frame(maxWidth: .infinity)
     }
 

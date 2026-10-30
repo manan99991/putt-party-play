@@ -62,21 +62,47 @@ import AVFoundation
         guard let recognizer, recognizer.isAvailable else { errorText = "Speech recognition isn't available for this language right now."; return }
         onDevice = recognizer.supportsOnDeviceRecognition
         let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playAndRecord, mode: .measurement, options: [.duckOthers, .defaultToSpeaker, .allowBluetooth])
+        // Does another app already hold audio (a call, a recorder, music)? Captured before we activate
+        // so we can give an honest message if the mic never frees up.
+        let otherAudioBusy = session.isOtherAudioPlaying
+        // Coexist with other audio instead of fighting for the session: .mixWithOthers lets captions
+        // run alongside a call that's on speaker (and never cuts the other app off), and we don't duck
+        // it — ducking would quiet the very audio we're trying to caption.
+        try? session.setCategory(.playAndRecord, mode: .measurement, options: [.defaultToSpeaker, .allowBluetooth, .mixWithOthers])
         try? session.setActive(true, options: .notifyOthersOnDeactivation)
-        if !tapInstalled {
-            let input = engine.inputNode
-            let format = input.outputFormat(forBus: 0)
-            guard format.sampleRate > 0 else { errorText = "The microphone isn't ready yet. Try again in a moment."; return }
-            input.installSendableTap(bufferSize: 1024, format: format) { [weak self] buffer, _ in
-                self?.sink?.append(buffer)
+        // The input node reports a 0 Hz format for a moment right after activation, and keeps doing so
+        // while another app owns the mic (e.g. a Teams/phone call). Wait briefly for it to come up
+        // rather than dead-ending on the first check — a transient should never make the user retry by hand.
+        Task { @MainActor [weak self] in
+            guard let self, !self.running else { return }
+            let input = self.engine.inputNode
+            var format = input.outputFormat(forBus: 0)
+            var tries = 0
+            while format.sampleRate <= 0 && tries < 6 {
+                try? await Task.sleep(for: .milliseconds(120))
+                format = input.outputFormat(forBus: 0)
+                tries += 1
             }
-            tapInstalled = true
+            guard format.sampleRate > 0 else {
+                self.errorText = otherAudioBusy
+                    ? "Another app is using the microphone — likely a call. Live Captions listens through the mic, so it can't hear the other side of a call on a headset; put the call on speaker, then tap Start."
+                    : "The microphone didn't start. Close anything else that might be using it (a call or recorder), then tap Start again."
+                return
+            }
+            if !self.tapInstalled {
+                input.installSendableTap(bufferSize: 1024, format: format) { [weak self] buffer, _ in
+                    self?.sink?.append(buffer)
+                }
+                self.tapInstalled = true
+            }
+            self.engine.prepare()
+            do { try self.engine.start() } catch {
+                self.errorText = "Couldn't start the microphone. Close anything else using it, then tap Start again."
+                return
+            }
+            self.running = true
+            self.newSegment()
         }
-        engine.prepare()
-        do { try engine.start() } catch { errorText = "Couldn't start the microphone."; return }
-        running = true
-        newSegment()
     }
 
     private func newSegment() {

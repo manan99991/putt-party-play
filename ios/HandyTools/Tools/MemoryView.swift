@@ -60,7 +60,11 @@ struct MemoryView: View {
     private var permissionCard: some View {
         VStack(spacing: HandySpacing.s16) {
             EmptyState(icon: "photo.on.rectangle.angled", line: "Memory reads your screenshots", sub: "It needs access to your photos to find things in them. Nothing is uploaded — it all stays on your phone.")
-            Button { Task { await requestAccess() } } label: { Label("Allow photo access", systemImage: "lock.open").frame(maxWidth: .infinity) }.primaryButton()
+            Button {
+                if Permission.photosDenied { Permission.openSettings() }
+                else { Task { await requestAccess() } }
+            } label: { Label(Permission.photosDenied ? "Open Settings to allow photos" : "Allow photo access",
+                             systemImage: Permission.photosDenied ? "gearshape" : "lock.open").frame(maxWidth: .infinity) }.primaryButton()
         }
     }
 

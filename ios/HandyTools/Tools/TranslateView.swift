@@ -141,7 +141,7 @@ struct TranslateView: View {
         return Button {
             if active { speech.stop() }
             else {
-                guard Usage.use("translate", limit: Limits.freeTranslatePerDay) else { return }
+                guard Usage.hasRoom("translate", limit: Limits.freeTranslatePerDay) else { return }
                 speaker.stop(); speech.stop(); talkingSide = side
                 speech.locale = SpeechStream.bestLocale(forLanguage: side == 0 ? fromCode : toCode); speech.clear(); speech.start()
             }
@@ -185,7 +185,7 @@ struct TranslateView: View {
 
     private func deliver(_ result: String, for p: (text: String, from: String, to: String, speak: Bool)) {
         busy = false; pending = nil
-        if mode == .talk, let side = talkingSide { exchanges.append((side, p.text, result)); talkingSide = nil } else { output = result; _ = Usage.use("translate", limit: Limits.freeTranslatePerDay) }
+        if mode == .talk, let side = talkingSide { exchanges.append((side, p.text, result)); talkingSide = nil; _ = Usage.use("translate", limit: Limits.freeTranslatePerDay) } else { output = result; _ = Usage.use("translate", limit: Limits.freeTranslatePerDay) }
         if p.speak { say(result, lang: p.to) }
         HandyHaptics.success()
     }

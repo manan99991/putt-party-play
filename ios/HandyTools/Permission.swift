@@ -1,5 +1,8 @@
 import AVFoundation
 import Speech
+import Contacts
+import Photos
+import UIKit
 
 /// Permission and audio-callback plumbing with **@Sendable** closures.
 ///
@@ -19,6 +22,18 @@ enum Permission {
     }
     static func speech(_ done: @escaping @Sendable (SFSpeechRecognizerAuthorizationStatus) -> Void) {
         SFSpeechRecognizer.requestAuthorization(done)
+    }
+
+    // Whether a permission has been actively refused (or restricted). iOS only shows the system
+    // prompt while a permission is still "not determined"; once refused, requesting again silently
+    // does nothing — so a refused user must be sent to Settings instead of tapping a dead button.
+    static var contactsDenied: Bool { let s = CNContactStore.authorizationStatus(for: .contacts); return s == .denied || s == .restricted }
+    static var photosDenied: Bool { let s = PHPhotoLibrary.authorizationStatus(for: .readWrite); return s == .denied || s == .restricted }
+    static var cameraDenied: Bool { let s = AVCaptureDevice.authorizationStatus(for: .video); return s == .denied || s == .restricted }
+
+    /// Open this app's page in the system Settings so the user can grant a permission they refused.
+    @MainActor static func openSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
     }
 }
 

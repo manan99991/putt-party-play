@@ -90,8 +90,16 @@ struct VoiceNotesView: View {
     }
 
     private func toggle() {
-        if speech.running { speech.stop(); summary = []; todos = [] }
-        else { guard Usage.use("audio", limit: Limits.freeAudioPerDay) else { return }; speech.start() }
+        if speech.running {
+            speech.stop()
+            // Consume a unit only for a recording that actually captured something — a failed or
+            // silent start never costs the user a quota unit.
+            if !speech.transcript.isEmpty { _ = Usage.use("audio", limit: Limits.freeAudioPerDay) }
+            summary = []; todos = []
+        } else {
+            guard Usage.hasRoom("audio", limit: Limits.freeAudioPerDay) else { return }
+            speech.start()
+        }
     }
 
     private func digest() {

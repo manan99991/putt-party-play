@@ -56,8 +56,12 @@ struct ContactsView: View {
         VStack(spacing: HandySpacing.s16) {
             EmptyState(icon: "person.2.fill", line: "Contacts needs access",
                        sub: "To find duplicates and back up, it needs to read your contacts. Nothing is uploaded — it all stays on your phone.")
-            Button { Task { authorized = await ContactsEngine.requestAccess(); if authorized { scan() } } } label: {
-                Label("Allow contacts access", systemImage: "lock.open").frame(maxWidth: .infinity)
+            Button {
+                if Permission.contactsDenied { Permission.openSettings() }
+                else { Task { authorized = await ContactsEngine.requestAccess(); if authorized { scan() } } }
+            } label: {
+                Label(Permission.contactsDenied ? "Open Settings to allow contacts" : "Allow contacts access",
+                      systemImage: Permission.contactsDenied ? "gearshape" : "lock.open").frame(maxWidth: .infinity)
             }.primaryButton()
         }
     }
