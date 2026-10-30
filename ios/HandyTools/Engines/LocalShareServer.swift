@@ -52,7 +52,7 @@ final class LocalShareServer: ObservableObject {
             guard let self else { return }
             switch st {
             case .ready:
-                let p = listener.port?.rawValue ?? 0
+                let p = self.listener?.port?.rawValue ?? 0
                 DispatchQueue.main.async { self.port = p; self.state = .waiting }
             case .failed(let e): self.setState(.failed("Server stopped: \(e.localizedDescription)"))
             case .cancelled: break

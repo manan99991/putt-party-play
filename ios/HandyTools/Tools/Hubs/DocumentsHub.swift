@@ -76,9 +76,9 @@ struct DocumentsHub: View {
                                     Text("\(it.pages) page\(it.pages == 1 ? "" : "s") · \(PDFTools.format(it.bytes))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 }
                                 Spacer(minLength: 0)
-                                Button { items.swapAt(i, i - 1); outputs = [] } label: { Image(systemName: "chevron.up") }.textButton().disabled(i == 0).accessibilityLabel("Move \(it.name) up")
-                                Button { items.swapAt(i, i + 1); outputs = [] } label: { Image(systemName: "chevron.down") }.textButton().disabled(i >= items.count - 1).accessibilityLabel("Move \(it.name) down")
-                                Button(role: .destructive) { items.remove(at: i); outputs = [] } label: { Image(systemName: "xmark") }.textButton().accessibilityLabel("Remove \(it.name)")
+                                Button { if i > 0 { items.swapAt(i, i - 1); outputs = [] } } label: { Image(systemName: "chevron.up") }.textButton().disabled(i == 0).accessibilityLabel("Move \(it.name) up")
+                                Button { if i + 1 < items.count { items.swapAt(i, i + 1); outputs = [] } } label: { Image(systemName: "chevron.down") }.textButton().disabled(i >= items.count - 1).accessibilityLabel("Move \(it.name) down")
+                                Button(role: .destructive) { if items.indices.contains(i) { items.remove(at: i); outputs = [] } } label: { Image(systemName: "xmark") }.textButton().accessibilityLabel("Remove \(it.name)")
                             }
                             .padding(.horizontal, HandySpacing.s12).padding(.vertical, HandySpacing.s8)
                             if i < items.count - 1 { Divider().padding(.leading, 52) }
