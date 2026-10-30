@@ -56,8 +56,10 @@ fun PowerToolPage(
     val back = LocalOnBackPressedDispatcherOwner.current
     Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
-            // Hero
-            Box(Modifier.fillMaxWidth().aspectRatio(1290f / 480f)) {
+            // Hero — kept deliberately short (a slim banner, not a half-screen art block) so a tool's
+            // controls land on one screen without scrolling. verticalScroll stays as a safety net for
+            // the few tools with more controls than fit; it should rarely engage.
+            Box(Modifier.fillMaxWidth().aspectRatio(1290f / 300f)) {
                 Image(painterResource(tool.cardRes), null, Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
                 Box(
                     Modifier.fillMaxSize().background(
@@ -75,27 +77,27 @@ fun PowerToolPage(
                     ) { Icon(Icons.AutoMirrored.Outlined.ArrowBack, "Back", tint = Color.White) }
                 }
                 Row(
-                    Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 10.dp),
+                    Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 8.dp, end = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(painterResource(tool.iconRes), null, Modifier.size(50.dp))
-                    Spacer(Modifier.width(12.dp))
+                    Image(painterResource(tool.iconRes), null, Modifier.size(40.dp))
+                    Spacer(Modifier.width(10.dp))
                     Column {
-                        Text(tool.name, color = Color.White, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.ExtraBold)
-                        Text(tool.blurb, color = Color(0xFF9A9AB0), style = MaterialTheme.typography.bodySmall)
+                        Text(tool.name, color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
+                        Text(tool.blurb, color = Color(0xFF9A9AB0), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                     }
                 }
             }
             if (tabs.isNotEmpty()) {
                 Row(
                     Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
-                        .padding(horizontal = HandyTokens.Gutter, vertical = 10.dp),
+                        .padding(horizontal = HandyTokens.Gutter, vertical = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     tabs.forEachIndexed { i, t -> HChip(t, selected = i == selected) { onTab(i) } }
                 }
-            } else Spacer(Modifier.height(10.dp))
-            Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter).padding(bottom = 40.dp), content = content)
+            } else Spacer(Modifier.height(8.dp))
+            Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter).padding(bottom = 20.dp), content = content)
         }
         BannerAd()
     }

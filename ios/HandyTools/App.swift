@@ -735,14 +735,17 @@ struct ToolPage<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
-                VStack(alignment: .leading, spacing: HandySpacing.s16) {
-                    Text(title).font(HandyFont.display)
+                // Tighter than the app-wide s16: a tool's controls should land on one screen without
+                // scrolling, so the header + options stay compact (the ScrollView remains for the few
+                // tools whose controls genuinely exceed one screen).
+                VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                    Text(title).font(HandyFont.title)
                     Text(subtitle).font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary).padding(.top, -HandySpacing.s8)
                     content()
                 }
                 .padding(.horizontal, HandySpacing.gutter)
                 .padding(.vertical, HandySpacing.s8)
-                .padding(.bottom, HandySpacing.s48)
+                .padding(.bottom, HandySpacing.s24)
             }
             .scrollDismissesKeyboard(.interactively)
             if let footer { footer }
