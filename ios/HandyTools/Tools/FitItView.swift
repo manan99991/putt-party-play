@@ -22,6 +22,7 @@ struct FitItView: View {
     @State private var output: Output?
     @State private var outputBytes = 0
     @State private var working = false
+    @State private var progressValue = 0.0   // 0…1 for video fits; 0 means quick/unmeasured → animated bar
     @State private var errorText: String?
     @State private var fitNote: String?   // "smallest we could do" when a video can't reach the target
 
@@ -56,8 +57,9 @@ struct FitItView: View {
                 if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeFitPerDay) free fits.") }
 
                 Button { run() } label: {
-                    HStack { if working { ProgressView().tint(.white) }; Text(working ? "Fitting…" : "Fit under \(SizeTarget.format(targetBytes))") }.frame(maxWidth: .infinity)
+                    Text(working ? (progressValue > 0 ? "Fitting… \(Int(progressValue * 100))%" : "Fitting…") : "Fit under \(SizeTarget.format(targetBytes))").frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working || overQuota || targetBytes <= 0)
+                if working { ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: "Working…") }
 
                 HStack {
                     PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) { Label("Different photo/video", systemImage: "photo") }.textButton()
@@ -197,7 +199,7 @@ struct FitItView: View {
     private func run() {
         guard let source else { return }
         guard Usage.hasRoom("fitit", limit: Limits.freeFitPerDay) else { return }   // gate only — charge on success
-        working = true; errorText = nil; fitNote = nil; output = nil
+        working = true; progressValue = 0; errorText = nil; fitNote = nil; output = nil
         let target = targetBytes
         Task { @MainActor in
             defer { working = false }
@@ -210,7 +212,7 @@ struct FitItView: View {
                 output = .data(d, ext: "pdf"); outputBytes = d.count
             case .video(let url):
                 // Best-effort: always hand back the smallest we can make, and say so if it's still over.
-                guard let r = await SizeTarget.videoBestEffort(url: url, targetBytes: target) else { errorText = "Couldn't process this video — it may be DRM-protected or damaged."; return }
+                guard let r = await SizeTarget.videoBestEffort(url: url, targetBytes: target, progress: { f in Task { @MainActor in progressValue = f } }) else { errorText = "Couldn't process this video — it may be DRM-protected or damaged."; return }
                 output = .file(r.url); outputBytes = SizeTarget.fileSize(r.url) ?? 0
                 if !r.fits { fitNote = "Smallest without wrecking it. To get under \(SizeTarget.format(target)), trim it shorter first." }
             }

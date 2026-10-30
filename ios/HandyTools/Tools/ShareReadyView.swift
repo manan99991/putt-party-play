@@ -150,9 +150,11 @@ struct ShareReadyView: View {
                         progressValue = Double(i + 1) / Double(n); continue
                     }
                     progress = n == 1 ? "Converting and fitting the video…" : "Fitting video \(i + 1) of \(n)…"
-                    // MP4 first so it plays anywhere, then fit the size if it's still over.
-                    guard let mp4 = await VideoEngine.toMP4(src) else { skipped.append("video \(i + 1)"); progressValue = Double(i + 1) / Double(n); continue }
-                    if let fitted = await SizeTarget.video(url: mp4, targetBytes: r.videoBytes) { urls.append(fitted) }
+                    let base = Double(i), total = Double(n)
+                    // MP4 first so it plays anywhere, then fit the size if it's still over. Both report
+                    // real progress, mapped into this item's slice of the overall bar.
+                    guard let mp4 = await VideoEngine.toMP4(src, progress: { f in Task { @MainActor in progressValue = (base + 0.45 * f) / total } }) else { skipped.append("video \(i + 1)"); progressValue = Double(i + 1) / Double(n); continue }
+                    if let fitted = await SizeTarget.video(url: mp4, targetBytes: r.videoBytes, progress: { f in Task { @MainActor in progressValue = (base + 0.5 + 0.5 * f) / total } }) { urls.append(fitted) }
                     else { skipped.append("video \(i + 1)") }
                 }
                 progressValue = Double(i + 1) / Double(n)

@@ -24,6 +24,7 @@ struct VideoView: View {
     @State private var thumb: UIImage?
     @State private var mode: Mode = .shrink
     @State private var working = false
+    @State private var progressValue = 0.0   // 0…1 for shrink/convert; 0 means "no measurable progress, show an animated bar"
     @State private var errorText: String?
     @State private var resultNote: String?   // honest "smallest we could do" line when a shrink can't hit the target
     @State private var result: Output?
@@ -86,8 +87,11 @@ struct VideoView: View {
                 if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeVideoPerDay) free video jobs.") }
 
                 Button { run() } label: {
-                    HStack { if working { ProgressView().tint(.white) }; Text(working ? "Working… you can switch apps" : actionLabel) }.frame(maxWidth: .infinity)
+                    Text(working ? (progressValue > 0 ? "Working… \(Int(progressValue * 100))%" : "Working…") : actionLabel).frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working || overQuota || !canRun)
+                if working {
+                    ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: "You can switch apps — this keeps going.")
+                }
 
                 PhotosPicker(selection: $pickedItem, matching: .videos) { Label("Choose a different video", systemImage: "film") }.textButton()
             }
@@ -329,7 +333,7 @@ struct VideoView: View {
     private func run() {
         guard let src = source else { return }
         guard Usage.hasRoom("video", limit: Limits.freeVideoPerDay) else { return }   // gate only — charge on success
-        working = true; errorText = nil; resultNote = nil; result = nil; player?.pause(); player = nil
+        working = true; progressValue = 0; errorText = nil; resultNote = nil; result = nil; player?.pause(); player = nil
         let m = mode, target = targetBytes, s = trimStart, e = trimEnd
         let gFrom = gifFrom, gLen = gifLength, gFPS = gifFPS, gSpeed = gifSpeed, gW = gifWidths[gifWidthIdx].1
         Task { @MainActor in
@@ -337,7 +341,7 @@ struct VideoView: View {
             // Shrink is best-effort: always hand back the smallest we can make, and say so plainly if
             // it's still over the limit — never a dead end, and a failed attempt never costs a free job.
             if m == .shrink {
-                let r = await VideoEngine.backgrounded("tenzy.video") { await SizeTarget.videoBestEffort(url: src, targetBytes: target) }
+                let r = await VideoEngine.backgrounded("tenzy.video") { await SizeTarget.videoBestEffort(url: src, targetBytes: target, progress: { f in Task { @MainActor in progressValue = f } }) }
                 guard let r else { errorText = failureText(m); return }   // truly unreadable → no charge
                 _ = Usage.use("video", limit: Limits.freeVideoPerDay)
                 result = Output(url: r.url, bytes: SizeTarget.fileSize(r.url) ?? 0, kind: .video)
@@ -350,7 +354,7 @@ struct VideoView: View {
                 switch m {
                 case .shrink: return nil   // handled above
                 case .trim: return await VideoEngine.trim(src, start: s, end: e)
-                case .convert: return await VideoEngine.toMP4(src)
+                case .convert: return await VideoEngine.toMP4(src, progress: { f in Task { @MainActor in progressValue = f } })
                 case .mute: return await VideoEngine.mute(src)
                 case .audio: return await VideoEngine.extractAudio(src)
                 case .gif: return await tenzyGIFFromVideo(url: src, start: gFrom, duration: gLen, fps: gFPS, speed: gSpeed, maxDim: gW)

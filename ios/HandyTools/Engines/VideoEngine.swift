@@ -140,6 +140,12 @@ enum VideoEngine {
                             guard let s = vOut.copyNextSampleBuffer(), vIn.append(s) else {
                                 vIn.markAsFinished(); dg.leave(); break
                             }
+                            // Report real progress from how far through the timeline this frame sits, so
+                            // the UI can show a moving percentage instead of an endless spinner. (Capped
+                            // just under 1 — the final 1.0 is reported once writing actually completes.)
+                            if durationSec > 0, let p = progress {
+                                p(min(0.99, CMSampleBufferGetPresentationTimeStamp(s).seconds / durationSec))
+                            }
                         }
                     }
                     if let aIn, let aOut {
