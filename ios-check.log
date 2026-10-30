@@ -33,7 +33,5 @@ Resolved source packages:
 
 resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
 == build.log (errors)
-2026-10-30 13:28:15.580073+0000 HandyTools[16734:52036] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-2026-10-30 13:28:19.271709+0000 HandyTools[16734:52036] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolFlowTests.swift:48: error: -[HandyToolsUITests.ToolFlowTests testScanCleansSignsReadsAndExportsSearchablePDF] : XCTAssertTrue failed - searchable PDF never appeared
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:544:45: error: extra argument 'height' in call
 ** TEST FAILED **
