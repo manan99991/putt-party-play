@@ -1,0 +1,63 @@
+== xcode
+Xcode_26.0.1.app
+Xcode_26.0.app
+Xcode_26.1.1.app
+Xcode_26.1.app
+Xcode_26.2.0.app
+Xcode_26.2.app
+Xcode_26.3.0.app
+Xcode_26.3.app
+Xcode_26.4.1.app
+Xcode_26.4.app
+Xcode_26.5.0.app
+Xcode_26.5.app
+Xcode_26.6.0.app
+Xcode_26.6.app
+Xcode.app
+Xcode 26.6
+Build version 17F113
+== setup.log
+[32m==>[0m [1mDownloading bottle manifests[0m
+✔︎ Bottle Manifest xcodegen (2.46.0)
+[32m==>[0m [1mFetching downloads for: [32mxcodegen[39m[0m
+✔︎ Bottle xcodegen (2.46.0)
+[34m==>[0m [1mPouring xcodegen--2.46.0.arm64_tahoe.bottle.1.tar.gz[0m
+🍺  /opt/homebrew/Cellar/xcodegen/2.46.0: 38 files, 7.4MB
+⚙️  Generating plists...
+⚙️  Generating project...
+⚙️  Writing project...
+Created project at /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
+
+Resolve Package Graph
+
+Fetching from https://github.com/googleads/swift-package-manager-google-mobile-ads.git
+
+Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
+
+Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
+
+Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
+
+Creating working copy of package ‘swift-package-manager-google-mobile-ads’
+
+Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
+
+
+Resolved source packages:
+  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
+  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
+
+resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
+== build.log
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild build -project HandyTools.xcodeproj -scheme HandyTools -destination "generic/platform=iOS Simulator" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO "SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited)" INTERNAL_UNLOCK -skipPackagePluginValidation -skipMacroValidation
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+    CODE_SIGNING_REQUIRED = NO
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
+
+2026-10-30 02:38:45.889 xcodebuild[1835:9011] Writing error result bundle to /var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/ResultBundle_2026-30-10_02-38-0045.xcresult
+xcodebuild: error: Unknown build action 'INTERNAL_UNLOCK'.
