@@ -74,50 +74,49 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
 
-      # Robust emulator boot: the reactivecircus action handles AVD creation, HW accel, boot-wait and
-      # retries far more reliably than a hand-rolled emulator launch (which flaked on free runners). The
-      # post-boot smoke + Appium + agent run inside its `script`, with ADB already up.
       - name: Boot emulator + run agent
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          profile: pixel_6
-          cores: 2
-          ram-size: 4096M
-          force-avd-creation: true
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -netdelay none -netspeed full
-          disable-animations: true
-          script: |
-            set +e; exec > >(tee mobileqa.log) 2>&1
-            # Settle the emulator: a free runner's launcher/SystemUI ANRs for ~1 min after boot and would
-            # otherwise show up as bogus "isn't responding" findings.
-            adb shell settings put global hide_error_dialogs 1 || true
-            adb shell cmd package list packages >/dev/null 2>&1 || true
-            sleep 20
-            adb install -r -g app-debug.apk || true
-            adb shell monkey -p com.tenzy.toolkit -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1 || true
-            sleep 15
-            adb shell am force-stop com.tenzy.toolkit || true
-            # FREE 30-tool coverage gate: deep-link into every tool by its route and confirm each opens
-            # (app stays focused) without crashing. Screenshots land in the report artifact as proof.
-            mkdir -p reports/route-smoke
-            routes="fitit scan studio video formatfix scrub cleaner qrwifi stitch shareready light contacts measure magnify procam gpsdash audiolab rest colorvision sorted textstudio translate voicenotes livecaptions shield lens memory datagrab describe vault"
-            smokefail=0
-            echo "=== 30-route smoke ==="
-            for r in $routes; do
-              adb shell am start -n com.tenzy.toolkit/com.handytools.app.MainActivity -e route "$r" >/dev/null 2>&1
-              sleep 3
-              if adb shell dumpsys window 2>/dev/null | grep -q "mCurrentFocus.*com.tenzy.toolkit"; then echo "  $r: OK"; else echo "  $r: NOT FOREGROUND (crash/blank?)"; smokefail=$((smokefail+1)); fi
-              adb exec-out screencap -p > "reports/route-smoke/$r.png" 2>/dev/null || true
-              adb shell am force-stop com.tenzy.toolkit >/dev/null 2>&1
-            done
-            echo "=== route smoke: $smokefail of 30 tools failed to open ==="
-            nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
-            for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status >/dev/null && break; sleep 2; done
-            python -m mobileqa.cli doctor qa/app.android.yaml || true
-            timeout 70m python -m mobileqa.cli ci qa/app.android.yaml --steps ${{ github.event.inputs.steps || 600 }}
+        run: |
+          set +e; exec > >(tee mobileqa.log) 2>&1
+          export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+          export ANDROID_AVD_HOME="$HOME/.android/avd"; mkdir -p "$ANDROID_AVD_HOME"
+          yes | sdkmanager "system-images;android-30;google_apis;x86_64" >/dev/null 2>&1 && echo "image ok"
+          echo no | avdmanager --verbose create avd --force --name qa --package "system-images;android-30;google_apis;x86_64" --device pixel_6 2>&1 | tail -4
+          emulator -list-avds | grep -qx qa || { echo "AVD create failed"; exit 1; }
+          nohup emulator -avd qa -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -netdelay none -netspeed full > emulator.log 2>&1 &
+          timeout 180 adb wait-for-device
+          for i in $(seq 1 60); do [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ] && { echo booted; break; }; sleep 5; done
+          adb shell input keyevent 82 >/dev/null 2>&1 || true
+          # Settle the emulator (hard-won on Reckato): a free runner's launcher/SystemUI ANRs for ~1 min
+          # after boot and otherwise shows up as bogus critical/high "isn't responding" findings.
+          adb shell settings put global hide_error_dialogs 1 || true
+          adb shell settings put global window_animation_scale 0 || true
+          adb shell settings put global transition_animation_scale 0 || true
+          adb shell settings put global animator_duration_scale 0 || true
+          adb shell cmd package list packages >/dev/null 2>&1 || true
+          sleep 45
+          adb install -r -g app-debug.apk || true
+          adb shell monkey -p com.tenzy.toolkit -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1 || true
+          sleep 20
+          adb shell am force-stop com.tenzy.toolkit || true
+          # FREE 30-tool coverage gate: deep-link into every tool by its route and confirm each opens
+          # (app stays focused) without crashing. Screenshots land in the report artifact as proof.
+          mkdir -p reports/route-smoke
+          routes="fitit scan studio video formatfix scrub cleaner qrwifi stitch shareready light contacts measure magnify procam gpsdash audiolab rest colorvision sorted textstudio translate voicenotes livecaptions shield lens memory datagrab describe vault"
+          smokefail=0
+          echo "=== 30-route smoke ==="
+          for r in $routes; do
+            adb shell am start -n com.tenzy.toolkit/com.handytools.app.MainActivity -e route "$r" >/dev/null 2>&1
+            sleep 3
+            if adb shell dumpsys window 2>/dev/null | grep -q "mCurrentFocus.*com.tenzy.toolkit"; then echo "  $r: OK"; else echo "  $r: NOT FOREGROUND (crash/blank?)"; smokefail=$((smokefail+1)); fi
+            adb exec-out screencap -p > "reports/route-smoke/$r.png" 2>/dev/null || true
+            adb shell am force-stop com.tenzy.toolkit >/dev/null 2>&1
+          done
+          echo "=== route smoke: $smokefail of 30 tools failed to open ==="
+          nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status >/dev/null && break; sleep 2; done
+          python -m mobileqa.cli doctor qa/app.android.yaml || true
+          timeout 88m python -m mobileqa.cli ci qa/app.android.yaml --steps ${{ github.event.inputs.steps || 600 }}
 
       - name: Upload report
         if: always()
