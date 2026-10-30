@@ -344,7 +344,7 @@ private fun SpaceTab(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             HChip("Select all", false) { onSelect(items.map { it.uri }.toSet()) }
             HChip("Keep all", false) { onSelect(emptySet()) }
-            HChip("Keep best, select rest", false) {
+            HChip("Keep best", false) {
                 // Grouped: keep the largest (= sharpest) of each group. Flat lists: keep the biggest one.
                 val keep = if (cat.grouped) items.groupBy { it.group }.values.mapNotNull { g -> g.maxByOrNull { it.size }?.uri }.toSet()
                 else setOfNotNull(items.maxByOrNull { it.size }?.uri)
