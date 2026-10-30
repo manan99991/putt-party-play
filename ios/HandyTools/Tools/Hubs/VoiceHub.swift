@@ -76,7 +76,7 @@ struct VoiceHub: View {
     private var preview: some View {
         HubPreviewBox(minHeight: 170) {
             VStack(spacing: HandySpacing.s8) {
-                Waveform(values: speech.running || peaks.isEmpty ? levels : peaks, active: speech.running, keep: pane == 3 && hasResult ? trimA...trimB : nil)
+                Waveform(values: speech.running || peaks.isEmpty ? levels : peaks, active: speech.running, keep: (pane == 3 && hasResult) ? (trimA...trimB) : nil)
                     .frame(height: 64)
                 Text(timeLabel).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).monospacedDigit()
                 if speech.running {
@@ -133,7 +133,7 @@ struct VoiceHub: View {
                 .font(HandyFont.body).foregroundStyle(transcript.isEmpty ? HandyColor.textSecondary : HandyColor.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading).textSelection(.enabled)
         }
-        .frame(maxHeight: 260).padding(HandySpacing.s12)
+        .frame(height: 220).padding(HandySpacing.s12)
         .cardStyle(padding: 0)
     }
 
@@ -142,8 +142,12 @@ struct VoiceHub: View {
             if summary.isEmpty { Text("Nothing to summarise yet.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary) }
             ForEach(summary, id: \.self) { Text("• \($0)").font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading) }
             if !aiDone, !transcript.isEmpty {
-                Button { aiDigest() } label: { HStack { if working { ProgressView().tint(.white) }; Label(working ? "Reading…" : "Better summary", systemImage: "sparkles") } }.compactButton().disabled(working)
-                HubNote(AIEngine.isAvailable ? "Key sentences picked by the built-in engine — tap for an Apple Intelligence summary, on your phone." : "Key sentences picked by the built-in engine (Apple Intelligence would write a proper summary).")
+                if AIEngine.isAvailable {
+                    Button { aiDigest() } label: { HStack { if working { ProgressView().tint(.white) }; Label(working ? "Reading…" : "Better summary", systemImage: "sparkles") } }.compactButton().disabled(working || !Usage.hasRoom("ai", limit: Limits.freeAiPerDay))
+                    HubNote("Key sentences picked by the built-in engine — tap for an Apple Intelligence summary, written on your phone.")
+                } else {
+                    HubNote("Key sentences and task-like lines, picked by the built-in engine (Apple Intelligence would write a proper summary).")
+                }
             }
         }.cardStyle(padding: HandySpacing.s12)
     }
