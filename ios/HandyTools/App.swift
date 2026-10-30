@@ -319,20 +319,28 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            ZStack {
-                // The kit's home backdrop is always dark, so the header text is always light — in every theme.
-                Image("home_backdrop").resizable().scaledToFill().ignoresSafeArea()
-                VStack(spacing: 0) {
-                    header
-                    SearchField(text: $search, focused: $searching)
-                        .padding(.horizontal, HandySpacing.gutter)
-                        .padding(.bottom, HandySpacing.s8)
-                    if !hasSearch { PowerGrid(tools: TOOLS) } else { SearchResults(query: search) }
-                    BannerAd()
+            VStack(spacing: 0) {
+                header
+                SearchField(text: $search, focused: $searching)
+                    .padding(.horizontal, HandySpacing.gutter)
+                    .padding(.bottom, HandySpacing.s8)
+                if !hasSearch { PowerGrid(tools: TOOLS) } else { SearchResults(query: search) }
+                BannerAd()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // The kit's home backdrop is always dark, so the header text is always light — in every
+            // theme. Constrained + clipped so the image can never size the layout (on iPad an
+            // unclipped scaledToFill image pushed the header and search field above the window).
+            .background {
+                ZStack {
+                    HandyColor.bg
+                    Image("home_backdrop").resizable().scaledToFill()
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                        .clipped()
                 }
+                .ignoresSafeArea()
             }
             .id(theme.current)
-            .background(HandyColor.bg)
             .navigationDestination(for: String.self) { id in
                 switch id {
                 case "settings": SettingsView().toolbarRole(.editor)
