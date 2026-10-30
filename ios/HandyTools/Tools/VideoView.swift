@@ -23,8 +23,11 @@ struct VideoView: View {
     @State private var duration: Double = 0
     @State private var thumb: UIImage?
     @State private var mode: Mode = .shrink
-    @State private var working = false
-    @State private var progressValue = 0.0   // 0…1 for shrink/convert; 0 means "no measurable progress, show an animated bar"
+    @ObservedObject private var bus = JobBus.shared
+    private let jobKey = "video"
+    private var job: JobBus.State { bus.state(jobKey) }
+    private var working: Bool { job.working }
+    private var progressValue: Double { job.progress }
     @State private var errorText: String?
     @State private var resultNote: String?   // honest "smallest we could do" line when a shrink can't hit the target
     @State private var result: Output?
@@ -104,6 +107,8 @@ struct VideoView: View {
         .onChange(of: gifPhotoItems) { _, items in loadGIFPhotos(items) }
         .onChange(of: trimStart) { _, v in refreshTrimThumbs() ; if trimEnd < v + 0.5 { trimEnd = min(duration, v + 0.5) } }
         .onChange(of: trimEnd) { _, v in refreshTrimThumbs(); if trimStart > v - 0.5 { trimStart = max(0, v - 0.5) } }
+        .onChange(of: job.stamp) { _, _ in syncJob() }
+        .onAppear { syncJob() }
         .onDisappear { player?.pause() }
     }
 
@@ -268,7 +273,7 @@ struct VideoView: View {
 
     private func loadVideo(_ item: PhotosPickerItem?) {
         guard let item else { return }
-        result = nil; errorText = nil; resultNote = nil; player?.pause(); player = nil
+        bus.clear(jobKey); result = nil; errorText = nil; resultNote = nil; player?.pause(); player = nil
         Task {
             guard let movie = try? await item.loadTransferable(type: MovieImport.self) else { await MainActor.run { errorText = "Couldn't load that video." }; return }
             let d = await VideoEngine.duration(movie.url)
@@ -284,7 +289,7 @@ struct VideoView: View {
 
     private func adopt(_ r: Output) {
         guard r.kind == .video else { return }
-        player?.pause(); player = nil; result = nil
+        bus.clear(jobKey); player?.pause(); player = nil; result = nil
         Task {
             let d = await VideoEngine.duration(r.url)
             let t = await VideoEngine.thumbnail(r.url, at: min(0.5, d / 2))
@@ -333,51 +338,58 @@ struct VideoView: View {
     private func run() {
         guard let src = source else { return }
         guard Usage.hasRoom("video", limit: Limits.freeVideoPerDay) else { return }   // gate only — charge on success
-        working = true; progressValue = 0; errorText = nil; resultNote = nil; result = nil; player?.pause(); player = nil
+        result = nil; player?.pause(); player = nil; resultNote = nil; errorText = nil
         let m = mode, target = targetBytes, s = trimStart, e = trimEnd
         let gFrom = gifFrom, gLen = gifLength, gFPS = gifFPS, gSpeed = gifSpeed, gW = gifWidths[gifWidthIdx].1
-        Task { @MainActor in
-            defer { working = false }
-            // Shrink is best-effort: always hand back the smallest we can make, and say so plainly if
-            // it's still over the limit — never a dead end, and a failed attempt never costs a free job.
+        let failMsg = failureText(m)
+        let tooBigNote = "This is the smallest I can make it without wrecking it. To get under \(SizeTarget.format(target)), trim it shorter first, then shrink."
+        // Runs in JobBus so the job and its result survive leaving the tool; the charge + the on-screen
+        // result are built once in syncJob() when it finishes (a failed attempt never costs a free job).
+        bus.run(jobKey, label: "Processing video…") { report in
             if m == .shrink {
-                let r = await VideoEngine.backgrounded("tenzy.video") { await SizeTarget.videoBestEffort(url: src, targetBytes: target, progress: { f in Task { @MainActor in progressValue = f } }) }
-                guard let r else { errorText = failureText(m); return }   // truly unreadable → no charge
-                _ = Usage.use("video", limit: Limits.freeVideoPerDay)
-                result = Output(url: r.url, bytes: SizeTarget.fileSize(r.url) ?? 0, kind: .video)
-                player = AVPlayer(url: r.url)
-                if !r.fits { resultNote = "This is the smallest I can make it without wrecking it. To get under \(SizeTarget.format(target)), trim it shorter first, then shrink." }
-                HandyHaptics.success()
-                return
+                let r = await VideoEngine.backgrounded("tenzy.video") { await SizeTarget.videoBestEffort(url: src, targetBytes: target, progress: report) }
+                guard let r else { return ([], "", nil, failMsg) }
+                return ([r.url], "video", r.fits ? nil : tooBigNote, nil)
             }
             let out: URL? = await VideoEngine.backgrounded("tenzy.video") { () async -> URL? in
                 switch m {
-                case .shrink: return nil   // handled above
+                case .shrink: return nil
                 case .trim: return await VideoEngine.trim(src, start: s, end: e)
-                case .convert: return await VideoEngine.toMP4(src, progress: { f in Task { @MainActor in progressValue = f } })
+                case .convert: return await VideoEngine.toMP4(src, progress: report)
                 case .mute: return await VideoEngine.mute(src)
                 case .audio: return await VideoEngine.extractAudio(src)
                 case .gif: return await tenzyGIFFromVideo(url: src, start: gFrom, duration: gLen, fps: gFPS, speed: gSpeed, maxDim: gW)
                 }
             }
-            guard let out else { errorText = failureText(m); return }   // nothing produced → no charge
-            _ = Usage.use("video", limit: Limits.freeVideoPerDay)
-            let kind: Output.Kind = m == .audio ? .audio : (m == .gif ? .gif : .video)
-            result = Output(url: out, bytes: SizeTarget.fileSize(out) ?? 0, kind: kind)
-            if kind == .video { player = AVPlayer(url: out) }
-            HandyHaptics.success()
+            guard let out else { return ([], "", nil, failMsg) }
+            return ([out], m == .audio ? "audio" : (m == .gif ? "gif" : "video"), nil, nil)
         }
+    }
+
+    /// Turn a finished JobBus result into the view's display and charge quota, exactly once per job —
+    /// so returning to the tool after leaving shows the completed video instead of losing it.
+    private func syncJob() {
+        let j = bus.state(jobKey)
+        guard !j.working, j.stamp > 0, j.stamp != j.consumedStamp else { return }
+        bus.markConsumed(jobKey)
+        if let err = j.error { errorText = err; return }
+        guard let url = j.outputs.first else { return }
+        _ = Usage.use("video", limit: Limits.freeVideoPerDay)
+        let kind: Output.Kind = j.kind == "audio" ? .audio : (j.kind == "gif" ? .gif : .video)
+        result = Output(url: url, bytes: SizeTarget.fileSize(url) ?? 0, kind: kind)
+        resultNote = j.note
+        if kind == .video { player = AVPlayer(url: url) }
+        HandyHaptics.success()
     }
 
     private func runPhotoGIF() {
         guard !gifPhotos.isEmpty, Usage.hasRoom("video", limit: Limits.freeVideoPerDay) else { return }
-        working = true; errorText = nil; resultNote = nil; result = nil
+        result = nil; player?.pause(); player = nil; resultNote = nil; errorText = nil
         let datas = gifPhotos, delay = gifPhotoDelay, w = gifWidths[gifWidthIdx].1
-        Task { @MainActor in
+        bus.run(jobKey, label: "Making GIF…") { _ in
             let url = await Task.detached(priority: .userInitiated) { tenzyGIFFromImageData(datas, delay: delay, maxDim: w) }.value
-            working = false
-            if let url { _ = Usage.use("video", limit: Limits.freeVideoPerDay); result = Output(url: url, bytes: SizeTarget.fileSize(url) ?? 0, kind: .gif); HandyHaptics.success() }
-            else { errorText = "Couldn't build a GIF from those photos." }
+            guard let url else { return ([], "", nil, "Couldn't build a GIF from those photos.") }
+            return ([url], "gif", nil, nil)
         }
     }
 
