@@ -22,22 +22,10 @@ import AVFoundation
 
     var transcript: String { (committed + [live]).filter { !$0.isEmpty }.joined(separator: "\n") }
 
-    /// Mic level 0…1 (≈ −50 dB … 0 dB), published ~12× a second while running — drives the hub waveforms.
-    @Published var level: Float = 0
-    /// Set BEFORE start() to also write the raw mic audio to this file (CAF, float PCM) while recognising.
-    /// With a record target the session still starts when speech recognition is unavailable or denied —
-    /// you get the recording, and `errorText` explains why there's no transcript. Cleared by stop().
-    var recordURL: URL?
-    /// The file the last session wrote to, if any.
-    private(set) var recordedURL: URL?
-
     private let engine = AVAudioEngine()
     private var recognizer: SFSpeechRecognizer?
     private var request: SFSpeechAudioBufferRecognitionRequest? { didSet { sink = request } }
     nonisolated(unsafe) private var sink: SFSpeechAudioBufferRecognitionRequest?   // read by the realtime audio tap
-    nonisolated(unsafe) private var writer: AVAudioFile?                            // written by the realtime audio tap
-    nonisolated(unsafe) private var tapCount = 0
-    private var speechAuthorized = false
     private var task: SFSpeechRecognitionTask?
     private var rollTimer: Task<Void, Never>?
     private var tapInstalled = false
@@ -58,11 +46,7 @@ import AVFoundation
         Permission.speech { [weak self] status in
             Task { @MainActor in
                 guard let self else { return }
-                self.speechAuthorized = status == .authorized
-                if !self.speechAuthorized {
-                    self.errorText = self.recordURL == nil ? "Allow Speech Recognition in Settings." : "Allow Speech Recognition in Settings to get a transcript — the recording still works."
-                    if self.recordURL == nil { return }
-                }
+                guard status == .authorized else { self.errorText = "Allow Speech Recognition in Settings."; return }
                 Permission.microphone { ok in
                     Task { @MainActor in
                         guard ok else { self.errorText = "Allow microphone access in Settings."; return }
@@ -74,46 +58,25 @@ import AVFoundation
     }
 
     private func begin() {
-        recognizer = speechAuthorized ? SFSpeechRecognizer(locale: locale) : nil
-        let canRecognize = recognizer?.isAvailable ?? false
-        if !canRecognize {
-            if speechAuthorized { errorText = "Speech recognition isn't available for this language right now." }
-            if recordURL == nil { return }
-        }
-        onDevice = recognizer?.supportsOnDeviceRecognition ?? true
+        recognizer = SFSpeechRecognizer(locale: locale)
+        guard let recognizer, recognizer.isAvailable else { errorText = "Speech recognition isn't available for this language right now."; return }
+        onDevice = recognizer.supportsOnDeviceRecognition
         let session = AVAudioSession.sharedInstance()
         try? session.setCategory(.playAndRecord, mode: .measurement, options: [.duckOthers, .defaultToSpeaker, .allowBluetooth])
         try? session.setActive(true, options: .notifyOthersOnDeactivation)
-        let input = engine.inputNode
-        let format = input.outputFormat(forBus: 0)
-        guard format.sampleRate > 0 else { errorText = "The microphone isn't ready yet. Try again in a moment."; return }
-        recordedURL = nil
-        if let url = recordURL {
-            try? FileManager.default.removeItem(at: url)
-            writer = try? AVAudioFile(forWriting: url, settings: format.settings, commonFormat: format.commonFormat, interleaved: format.isInterleaved)
-            recordedURL = writer == nil ? nil : url
-        }
         if !tapInstalled {
+            let input = engine.inputNode
+            let format = input.outputFormat(forBus: 0)
+            guard format.sampleRate > 0 else { errorText = "The microphone isn't ready yet. Try again in a moment."; return }
             input.installSendableTap(bufferSize: 1024, format: format) { [weak self] buffer, _ in
-                guard let self else { return }
-                self.sink?.append(buffer)
-                if let w = self.writer { try? w.write(from: buffer) }
-                self.tapCount += 1
-                if self.tapCount % 4 == 0, let ch = buffer.floatChannelData?[0] {
-                    let n = Int(buffer.frameLength)
-                    var sum: Float = 0
-                    for i in 0..<n { sum += ch[i] * ch[i] }
-                    let rms = sqrt(sum / Float(max(1, n)))
-                    let v = min(1, max(0, (20 * log10(max(rms, 1e-5)) + 50) / 50))
-                    Task { @MainActor in self.level = v }
-                }
+                self?.sink?.append(buffer)
             }
             tapInstalled = true
         }
         engine.prepare()
-        do { try engine.start() } catch { writer = nil; errorText = "Couldn't start the microphone."; return }
+        do { try engine.start() } catch { errorText = "Couldn't start the microphone."; return }
         running = true
-        if canRecognize { newSegment() }
+        newSegment()
     }
 
     private func newSegment() {
@@ -160,10 +123,7 @@ import AVFoundation
         request?.endAudio(); task?.cancel(); task = nil; request = nil
         if engine.isRunning { engine.stop() }
         if tapInstalled { engine.inputNode.removeTap(onBus: 0); tapInstalled = false }
-        writer = nil   // closes the recording file
-        recordURL = nil
         running = false
-        level = 0
         commitLive()
         if !keepText { committed = [] }
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)

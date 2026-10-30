@@ -42,11 +42,6 @@ final class StoreManager: ObservableObject {
         #if DEBUG
         if previewPremium || isTesterPro { isPremium = true }
         #endif
-        #if INTERNAL_UNLOCK
-        // Internal-testing builds (fastlane beta with INTERNAL_UNLOCK=true): every install is Pro —
-        // no ads, no limits, every theme and tool. MUST be off for the production submission.
-        isPremium = true
-        #endif
         updates = Task { await listenForTransactions() }
         Task { await load(); await refresh() }
     }
@@ -92,9 +87,6 @@ final class StoreManager: ObservableObject {
     func refresh() async {
         #if DEBUG
         if previewPremium || isTesterPro { isPremium = true; return }
-        #endif
-        #if INTERNAL_UNLOCK
-        isPremium = true; return
         #endif
         var active = false
         for await result in Transaction.currentEntitlements {

@@ -1,3 +1,3 @@
-The ten power tools are here. Tenzy is rebuilt around ten tools that go deep: Capture, Documents (with Word Finder across all your files), Media Studio, Clean Up, Voice Notes, Translate, Instruments, Flashlight+, Safety and Share & Connect — with a new look and the same promise: everything on your phone, nothing uploaded.
+First release. 30 tools in one app, most of them running right on your phone — no account, nothing uploaded.
 
 I'm a one-person shop, so if something's off or you want a tool added, tap Settings and send me a note. Thanks for trying Tenzy.

@@ -1,7 +1,7 @@
 No account or login is required. This review build has full access to every tool, so you can evaluate all features directly from the home grid without making a purchase.
 
 HOW THE APP WORKS
-Tenzy is 10 on-device power tools, each a hub with tabs: Capture, Documents, Media Studio, Clean Up, Voice Notes, Translate, Instruments, Flashlight+, Safety, Share & Connect. Four are always free: Flashlight+, Instruments, Clean Up and Translate. The rest are part of Tenzy Pro.
+Tenzy is 30 on-device utility tools. Eight everyday tools are always free: Flashlight, QR & Wi-Fi, Magnifier, Measure, Cleaner, Translate, Live Captions, and the Face ID Vault. The remaining tools are part of Tenzy Pro.
 
 TENZY PRO (in-app subscription)
 - A single auto-renewing subscription: "Tenzy Pro", 1 year, US$19.99, with a 3-day free trial. There is no monthly plan.
@@ -10,13 +10,12 @@ TENZY PRO (in-app subscription)
 - The purchase can be completed in the sandbox from that screen. This review build additionally unlocks every Pro tool without a purchase so you can assess the full app.
 
 PERMISSIONS (all processed on-device; nothing is uploaded)
-- Contacts: Clean Up › Contacts finds duplicates, merges them without losing a number, exports a .vcf backup; Capture saves a scanned business card. Requested only when used.
-- Microphone: Voice Notes (record / live captions / transcription), Instruments › Sound meter, Translate › Conversation. Audio is metered or transcribed on-device; a recording is saved only when the user taps Record.
-- Camera: Capture, Documents › Scan, Media Studio, Instruments (magnifier, AR measure), Translate › Camera, Safety › QR, Share & Connect › Scan, Flashlight+ › Mirror.
-- Photos: Media Studio, Clean Up and Capture read photos the user selects; Clean Up moves what the user chooses to Recently Deleted.
-- Motion / Location: Instruments (level, compass, altitude, GPS dashboard).
-- Local network: Share & Connect › Send a file serves the chosen file to another device on the same Wi-Fi.
-- Face ID: unlocks the private Vault inside Safety.
+- Contacts: the Contacts tool finds duplicate contacts, merges them without losing a number, and exports a .vcf backup. Requested only when the user opens that tool.
+- Microphone: Audio Lab (decibel meter / tuner), Voice to Notes, and Live Captions. Audio is metered or transcribed on-device; a recording is saved only when the user taps record.
+- Camera: Scan, Studio, Measure, Pro Camera, Translate (camera mode), Lens, Scene Describer.
+- Photos: Cleaner, Studio, Privacy Scrubber, and Memory read photos the user selects; Memory indexes screenshots on-device only.
+- Motion: the level, compass and sensors inside Measure.
+- Face ID: unlocks the private Vault.
 - Tracking (ATT): shown only to request personalized ads via AdMob; declining does not limit any feature.
 
 The on-device AI tools use Apple's Foundation Models framework on supported devices and fall back gracefully elsewhere. No data is collected except the AdMob advertising identifier, and Tenzy Pro disables ads entirely.

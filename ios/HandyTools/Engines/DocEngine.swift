@@ -200,16 +200,11 @@ enum DocEngine {
     }
 
     /// Pages from an existing PDF, rendered crisp enough to re-OCR (capped width).
-    static func importPDF(_ url: URL, maxWidth: CGFloat = 1600, maxPages: Int = .max) -> [UIImage] {
+    static func importPDF(_ url: URL, maxWidth: CGFloat = 1600) -> [UIImage] {
         let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }
         guard let doc = PDFDocument(url: url) else { return [] }
-        return render(doc, maxWidth: maxWidth, maxPages: maxPages)
-    }
-
-    /// Page images from an open PDFDocument (capped width, optional page cap).
-    static func render(_ doc: PDFDocument, maxWidth: CGFloat = 1600, maxPages: Int = .max) -> [UIImage] {
         var out: [UIImage] = []
-        for i in 0..<min(doc.pageCount, maxPages) {
+        for i in 0..<doc.pageCount {
             guard let page = doc.page(at: i) else { continue }
             let b = page.bounds(for: .mediaBox)
             let scale = min(3, maxWidth / max(1, b.width))

@@ -12,15 +12,8 @@ import UniformTypeIdentifiers
 struct ScanView: View {
     @EnvironmentObject var store: StoreManager
 
-    enum Mode: Int, CaseIterable { case pages, sign, text, export
+    private enum Mode: Int, CaseIterable { case pages, sign, text, export
         var title: String { ["Clean up", "Sign & fill", "Text", "Export"][rawValue] } }
-
-    /// Mode to open in (a hub tab can start straight on Sign & fill); changing it later switches modes.
-    var initialMode: Mode = .pages
-    init(initialMode: Mode = .pages) {
-        self.initialMode = initialMode
-        _mode = State(initialValue: initialMode)
-    }
 
     @State private var pages: [DocEngine.Page] = []
     @State private var selected = 0
@@ -90,7 +83,6 @@ struct ScanView: View {
         .onChange(of: photoItems) { _, items in loadPhotos(items) }
         .onChange(of: selected) { old, new in commitInk(to: old); loadInk(from: new); selectedStamp = nil; ocrText = "" }
         .onChange(of: mode) { old, _ in if old == .sign { commitInk(to: selected); inking = false } }
-        .onChange(of: initialMode) { _, m in mode = m; errorText = nil }
         .sheet(isPresented: $showSignaturePad) { SignaturePadSheet { img in savedSignature = img } }
     }
 
