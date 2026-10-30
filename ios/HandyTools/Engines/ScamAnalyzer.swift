@@ -79,8 +79,13 @@ enum ScamAnalyzer {
         }
 
         // 6. secrecy / isolation
-        let secrecy = hit([#"\b(do not|don'?t) tell (anyone|anybody|your family|your (wife|husband|kids|son|daughter)|the bank)\b"#, #"\bkeep (this|it) (confidential|secret|between us)\b"#, #"\bdo not (hang up|disconnect)\b"#, #"\bstay on the (line|phone)\b"#])
+        let secrecy = hit([#"\b(do not|don'?t) tell (anyone|anybody|mom|mum|dad|grandma|grandpa|my (parents|family)|your family|your (wife|husband|kids|son|daughter|parents)|the bank)\b"#, #"\bkeep (this|it) (confidential|secret|between us)\b"#, #"\btell no one\b"#, #"\bdo not (hang up|disconnect)\b"#, #"\bstay on the (line|phone)\b"#])
         if !secrecy.isEmpty { f.append(Finding(title: "Tells you to keep it secret", detail: "Isolation keeps you from the one friend or family member who'd say \"that's a scam\".", weight: 4)) }
+
+        // 6b. family-emergency / "it's me" impersonation — a relative in trouble on a new number.
+        let family = hit([#"\b(grandma|grandpa|grandmother|grandfather|nana|mom|mum|dad|auntie|uncle)\b"#, #"\bit'?s me\b"#])
+        let trouble = hit([#"\bnew number\b"#, #"\blost my phone\b"#, #"\bin trouble\b"#, #"\bbail\b"#, #"\b(accident|arrested|hospital|jail)\b"#, #"\bdon'?t call (my|the) old\b"#])
+        if !family.isEmpty && !trouble.isEmpty { f.append(Finding(title: "Family emergency pattern", detail: "\"It's me, I'm in trouble, this is my new number\" is a classic impersonation script. Call the person on the number you already have before doing anything.", weight: 3)) }
 
         // 7. wrong-number / relationship openers
         let openers = hit([#"^(hi|hello|hey)[,!.]? (is this|are you) [a-z]+\??$"#, #"\bwrong number\b"#, #"\bsorry,? who is this\b"#, #"\blong time no see\b"#])
@@ -93,8 +98,11 @@ enum ScamAnalyzer {
         // 9. links
         let links = linkChecks(in: text)
         let linkIssues = links.flatMap(\.issues)
-        if !linkIssues.isEmpty { f.append(Finding(title: "Link looks wrong", detail: linkIssues.prefix(3).joined(separator: " "), weight: 3)) }
+        if !linkIssues.isEmpty { f.append(Finding(title: "Link looks wrong", detail: linkIssues.prefix(3).joined(separator: " "), weight: linkIssues.count >= 3 ? 4 : 3)) }
         else if !links.isEmpty, !creds.isEmpty || !urgency.isEmpty { f.append(Finding(title: "Link plus pressure", detail: "A link you didn't ask for, paired with urgency, is the phishing formula. Type the site address yourself instead.", weight: 2)) }
+
+        // 9b. premium-rate / one-ring numbers in the text
+        if let pf = phoneNumbers(in: text).lazy.compactMap({ premiumFinding($0) }).first { f.append(pf) }
 
         // 10. spelling / shouting (mild)
         let caps = text.filter { $0.isUppercase }.count, letters = text.filter { $0.isLetter }.count
@@ -102,11 +110,12 @@ enum ScamAnalyzer {
 
         // Corroboration: real scams stack several signals. A lone, ordinary-sounding keyword
         // should not raise an alarm — that is the main source of false "it's a scam" calls.
-        let strongTitles: Set<String> = ["Asks for an untraceable payment", "Tells you to keep it secret", "Wants remote access or an install", "Wants a code, password or personal details", "Link looks wrong", "Threatens you with legal trouble", "Job offer that's too good to be true"]
+        let strongTitles: Set<String> = ["Asks for an untraceable payment", "Tells you to keep it secret", "Wants remote access or an install", "Wants a code, password or personal details", "Link looks wrong", "Threatens you with legal trouble", "Job offer that's too good to be true", "Family emergency pattern", "Premium-rate number"]
         let hasStrong = f.contains { strongTitles.contains($0.title) && $0.weight >= 3 }
         var score = min(100, f.reduce(0) { $0 + $1.weight * 12 })
         if f.count <= 1 && !hasStrong { score = min(score, 18) }                            // one lone soft signal → low-risk
         else if !hasStrong && (f.map(\.weight).max() ?? 0) <= 2 { score = min(score, 32) }   // only mild signals → cap near the floor
+        if linkIssues.count >= 4 { score = max(score, 60) }                                 // a link with every trick in it is a scam on its own
         let verdict: Verdict = score >= 55 ? .likelyScam : score >= 30 ? .suspicious : .lowRisk
         return Report(score: score, verdict: verdict, findings: f.sorted { $0.weight > $1.weight }, links: links)
     }
@@ -122,7 +131,10 @@ enum ScamAnalyzer {
         for m in det.matches(in: text, range: NSRange(text.startIndex..., in: text)) {
             guard let u = m.url, let scheme = u.scheme?.lowercased(), scheme == "http" || scheme == "https", let host = u.host?.lowercased() else { continue }
             var issues: [String] = []
-            if scheme == "http" { issues.append("Not encrypted (http://).") }
+            // Only an explicit http:// counts — a bare "example.com" gets "http" filled in by the detector.
+            let raw = (text as NSString).substring(with: m.range).lowercased()
+            if raw.hasPrefix("http://") { issues.append("Not encrypted (http://).") }
+            if host.filter({ $0 == "-" }).count >= 2 { issues.append("Many hyphens in the address — typical of throwaway domains.") }
             if host.hasPrefix("xn--") || host.contains(".xn--") { issues.append("Uses look-alike (punycode) characters in the address.") }
             if shorteners.contains(host) { issues.append("A shortened link hides where it really goes.") }
             if host.range(of: #"^\d{1,3}(\.\d{1,3}){3}$"#, options: .regularExpression) != nil { issues.append("Points at a bare IP address, not a company domain.") }
@@ -133,7 +145,7 @@ enum ScamAnalyzer {
                 break
             }
             if labels.count >= 4 { issues.append("Unusually deep sub-domain — the real owner is \(registrable).") }
-            if let tld = labels.last, ["zip", "mov", "top", "xyz", "click", "link", "gq", "tk", "ml", "cf", "buzz"].contains(tld) { issues.append("Ends in .\(tld), a domain ending heavily used by scammers.") }
+            if let tld = labels.last, ["zip", "mov", "top", "xyz", "click", "link", "gq", "tk", "ml", "cf", "ga", "buzz", "icu"].contains(tld) { issues.append("Ends in .\(tld), a domain ending heavily used by scammers.") }
             if u.path.lowercased().range(of: #"(login|verify|secure|account|update|confirm|wallet)"#, options: .regularExpression) != nil, issues.isEmpty == false || !trustedBrands.contains(where: { registrable.hasPrefix($0 + ".") }) {
                 issues.append("Path says \"\(u.path.split(separator: "/").first.map(String.init) ?? "login")\" — pages like this are where credentials get stolen.")
             }
@@ -142,12 +154,46 @@ enum ScamAnalyzer {
         return out
     }
 
+    // MARK: phone numbers
+
+    static func phoneNumbers(in text: String) -> [String] {
+        guard let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue) else { return [] }
+        return det.matches(in: text, range: NSRange(text.startIndex..., in: text)).compactMap(\.phoneNumber)
+    }
+
+    /// Premium-rate and "one-ring" callback numbers, from the digits alone.
+    static func premiumFinding(_ number: String) -> Finding? {
+        let d = number.filter(\.isNumber)
+        let p = number.trimmingCharacters(in: .whitespaces)
+        if d.range(of: #"^1?(900|976)\d{7}$"#, options: .regularExpression) != nil { return Finding(title: "Premium-rate number", detail: "\(p) is a 900/976 number — calls are billed at high rates and the money goes to whoever set it up.", weight: 3) }
+        if d.range(of: #"^(44|0)(9\d|70)\d{7,8}$"#, options: .regularExpression) != nil { return Finding(title: "Premium-rate number", detail: "\(p) is a UK 09 / 070 number — these cost extra per minute and are common in scams.", weight: 3) }
+        if d.range(of: #"^1(242|246|264|268|284|345|441|473|649|664|721|758|767|784|809|829|849|868|869|876)\d{7}$"#, options: .regularExpression) != nil { return Finding(title: "One-ring callback number", detail: "\(p) is a +1 Caribbean number. A missed call from one is the \"one-ring\" scam — calling back is charged at international rates.", weight: 2) }
+        return nil
+    }
+
+    /// The Phone tab: judge a number on its own — premium-rate, one-ring, too short, spoof patterns.
+    static func phoneReport(_ raw: String) -> Report {
+        let d = raw.filter(\.isNumber)
+        var f: [Finding] = []
+        if let pf = premiumFinding(raw) { f.append(pf) }
+        if d.count < 7 && !d.isEmpty { f.append(Finding(title: "Too short to call back", detail: "5–6 digit short codes are how companies send texts. A real person can't be reached on one, so anything asking you to act came from a system, not a friend.", weight: 1)) }
+        if d.count > 15 { f.append(Finding(title: "Too long to be a phone number", detail: "No country has numbers this long — something else is being passed off as a number.", weight: 2)) }
+        if d.count >= 7, Set(d).count <= 2 { f.append(Finding(title: "Fake-looking number", detail: "Repeated digits like 000-000-0000 are typical of spoofed caller IDs.", weight: 3)) }
+        if d.count >= 7, "01234567890123456789".contains(d.suffix(7)) || "98765432109876543210".contains(d.suffix(7)) { f.append(Finding(title: "Sequential digits", detail: "1234567-style numbers are placeholders scammers spoof, not numbers anyone is assigned.", weight: 3)) }
+        if d.count >= 10, d.hasPrefix("1555") || d.hasPrefix("555") { f.append(Finding(title: "555 number", detail: "555 numbers are reserved for films and tests — nobody real calls from one.", weight: 2)) }
+        let score = min(100, f.reduce(0) { $0 + $1.weight * 12 })
+        let verdict: Verdict = score >= 55 ? .likelyScam : score >= 30 ? .suspicious : .lowRisk
+        return Report(score: score, verdict: verdict, findings: f.sorted { $0.weight > $1.weight }, links: [])
+    }
+
     /// What to do next, matched to the findings.
     static func advice(for r: Report) -> [String] {
         var a: [String] = []
         if r.findings.contains(where: { $0.title.contains("code, password") }) { a.append("Never read a code aloud or type it into a link. If you already did, change that password now and turn on two-factor.") }
         if r.findings.contains(where: { $0.title.contains("untraceable") }) { a.append("Stop before paying. If a payment was made, call the card issuer or app immediately — minutes matter.") }
         if r.findings.contains(where: { $0.title.contains("well-known") }) { a.append("Call the organisation using the number on your card, statement or official app — not from this message.") }
+        if r.findings.contains(where: { $0.title.contains("Family emergency") }) { a.append("Hang on. Call the relative on the number you already have for them — not this one — and ask.") }
+        if r.findings.contains(where: { $0.title.contains("Premium-rate") || $0.title.contains("One-ring") }) { a.append("Don't call or text back. If you already did, check your next bill and tell your carrier.") }
         if !r.links.isEmpty { a.append("Don't tap the link. Open the site by typing its address yourself.") }
         if r.verdict == .lowRisk { a.append("Nothing obviously wrong, but if it asks for money or details later, run it through here again.") }
         a.append("Reply nothing. Block and report the sender.")

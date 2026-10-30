@@ -126,14 +126,26 @@ struct VoiceNotesView: View {
 
 struct VoiceNote: Identifiable, Codable {
     var id = UUID(); var date = Date(); var title: String; var text: String; var summary: [String]; var todos: [String]
+    /// Audio file name inside `VoiceNoteStore.audioDir` and its length — set by the Voice hub, absent on older notes.
+    var audio: String? = nil
+    var duration: Double? = nil
     var export: String { "\(title)\n\(date.formatted())\n\n\(text)" + (summary.isEmpty ? "" : "\n\nSummary:\n" + summary.map { "• " + $0 }.joined(separator: "\n")) + (todos.isEmpty ? "" : "\n\nTo-dos:\n" + todos.map { "☐ " + $0 }.joined(separator: "\n")) }
+    var audioURL: URL? { audio.map { VoiceNoteStore.audioDir.appendingPathComponent($0) } }
 }
 
 @MainActor final class VoiceNoteStore: ObservableObject {
     @Published var items: [VoiceNote] = VoiceNoteStore.load()
     nonisolated private static var url: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("voice-notes.json") }
+    nonisolated static let audioDir: URL = {
+        let d = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("VoiceNotes", isDirectory: true)
+        try? FileManager.default.createDirectory(at: d, withIntermediateDirectories: true)
+        return d
+    }()
     nonisolated private static func load() -> [VoiceNote] { (try? JSONDecoder().decode([VoiceNote].self, from: Data(contentsOf: url))) ?? [] }
     private func persist() { try? JSONEncoder().encode(items).write(to: Self.url) }
     func add(_ n: VoiceNote) { items.insert(n, at: 0); persist() }
-    func delete(_ n: VoiceNote) { items.removeAll { $0.id == n.id }; persist() }
+    func delete(_ n: VoiceNote) {
+        if let u = n.audioURL { try? FileManager.default.removeItem(at: u) }
+        items.removeAll { $0.id == n.id }; persist()
+    }
 }
