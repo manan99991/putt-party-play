@@ -10,18 +10,18 @@ struct MemoryView: View {
     @State private var query = ""
     @State private var authorized = false
     @State private var checkedAuth = false
-    @State private var results: [MemoryEngine.Entry] = []
+    @State private var results: [MemoryEngine.Match] = []
     @State private var aiAnswer: String?
     @State private var answering = false
     @State private var searched = false
     @State private var viewing: MemoryEngine.Entry?
 
     var body: some View {
-        ToolPage(title: "Memory", subtitle: "Ask your own screenshots anything — the Wi-Fi password, a confirmation number, where you parked. Read on your phone, never uploaded.") {
+        ToolPage(title: "Memory", subtitle: "Ask your own photos anything — by what they say (a Wi-Fi password, a confirmation number, where you parked) or what they show (you in red, your dog at the beach). Read on your phone, never uploaded.") {
             HowTo("memory", [
-                "Tap Index to read your screenshots once — it stays on your phone.",
-                "Ask in plain words: \u{201C}the Wi-Fi password I saved\u{201D}, \u{201C}my parking spot\u{201D}.",
-                "You get the answer, plus the screenshot it came from.",
+                "Tap Index to read your photos once — it stays on your phone.",
+                "Ask in plain words: \u{201C}the Wi-Fi password I saved\u{201D}, \u{201C}me in red\u{201D}, \u{201C}my parking spot\u{201D}.",
+                "You get the answer or the matching photos, each with why it matched.",
             ])
 
             if !authorized {
@@ -31,25 +31,25 @@ struct MemoryView: View {
                 if index.indexing { indexingCard }
                 else if index.entries.isEmpty { emptyIndexCard }
 
-                if answering { HStack { ProgressView(); Text("Looking through your screenshots…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+                if answering { HStack { ProgressView(); Text("Looking through your photos…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
                 if let aiAnswer, !aiAnswer.isEmpty {
                     answerCard(aiAnswer)
-                    if !results.isEmpty { Text("Pulled from your screenshots below — tap any to open the original.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                    if !results.isEmpty { Text("Pulled from your photos below — tap any to open the original.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 }
                 if searched && results.isEmpty && !answering {
-                    Text("Nothing matched that. Try the words that were actually on the screenshot, or re-index if it's recent.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text("Nothing matched that. Try different words — what the photo shows (a colour, an object) or text that was on it — or re-index if it's recent.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
-                ForEach(results) { e in resultRow(e) }
+                ForEach(results) { m in resultRow(m) }
 
                 if !index.entries.isEmpty {
                     HStack {
-                        Text("\(index.entries.count) screenshots read\(index.indexedAt != nil ? "" : "")").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        Text("\(index.entries.count) photos read\(index.indexedAt != nil ? "" : "")").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                         Spacer()
                         Button { index.refresh() } label: { Label("Re-index", systemImage: "arrow.clockwise") }.textButton().disabled(index.indexing)
                     }
                 }
             }
-            Text("Reads the text in your screenshots with on-device OCR. For a one-line answer in plain language, Apple Intelligence (iPhone 15 Pro or newer) extracts it; otherwise you get the best-matching screenshot.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text("Reads the text and recognises what's in your photos — objects and colours — on device. For a one-line answer in plain language, Apple Intelligence (iPhone 15 Pro or newer) extracts it; otherwise you get the best-matching photos, each with why it matched.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .task { await checkAuth() }
         .sheet(item: $viewing) { e in MemoryImageViewer(entry: e) }
@@ -59,7 +59,7 @@ struct MemoryView: View {
 
     private var permissionCard: some View {
         VStack(spacing: HandySpacing.s16) {
-            EmptyState(icon: "photo.on.rectangle.angled", line: "Memory reads your screenshots", sub: "It needs access to your photos to find things in them. Nothing is uploaded — it all stays on your phone.")
+            EmptyState(icon: "photo.on.rectangle.angled", line: "Memory reads your photos", sub: "It needs access to your photos to find things in them. Nothing is uploaded — it all stays on your phone.")
             Button {
                 if Permission.photosDenied { Permission.openSettings() }
                 else { Task { await requestAccess() } }
@@ -71,7 +71,7 @@ struct MemoryView: View {
     private var searchBar: some View {
         HStack(spacing: HandySpacing.s8) {
             Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
-            TextField("Ask your screenshots…", text: $query).submitLabel(.search).onSubmit { runSearch() }
+            TextField("Ask your photos… (text or what they show)", text: $query).submitLabel(.search).onSubmit { runSearch() }
             if !query.isEmpty { Button { query = ""; results = []; aiAnswer = nil; searched = false } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }.buttonStyle(.plain) }
             Button { runSearch() } label: { Text("Ask").font(HandyFont.bodyStrong) }.disabled(query.trimmingCharacters(in: .whitespaces).isEmpty || index.entries.isEmpty)
         }
@@ -82,16 +82,16 @@ struct MemoryView: View {
 
     private var indexingCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            HStack { ProgressView(); Text("Reading your screenshots…").font(HandyFont.body) }
+            HStack { ProgressView(); Text("Reading your photos…").font(HandyFont.body) }
             ProgressView(value: index.progress).tint(HandyColor.accent)
-            Text("One-time per screenshot — after this it's instant.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text("One-time per photo — after this it's instant.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle()
     }
 
     private var emptyIndexCard: some View {
         VStack(spacing: HandySpacing.s12) {
-            Text("Read your screenshots once so you can search them. It happens on your phone and is cached, so it's only slow the first time.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
-            Button { index.refresh() } label: { Label("Index my screenshots", systemImage: "sparkles").frame(maxWidth: .infinity) }.primaryButton()
+            Text("Read your photos once so you can search them by text or by what they show. It happens on your phone and is cached, so it's only slow the first time.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+            Button { index.refresh() } label: { Label("Index my photos", systemImage: "sparkles").frame(maxWidth: .infinity) }.primaryButton()
         }.cardStyle()
     }
 
@@ -103,19 +103,32 @@ struct MemoryView: View {
         }.cardStyle()
     }
 
-    private func resultRow(_ e: MemoryEngine.Entry) -> some View {
-        HStack(alignment: .top, spacing: HandySpacing.s12) {
-            Button { viewing = e } label: {
-                HStack(alignment: .top, spacing: HandySpacing.s12) {
-                    MemoryThumb(id: e.id)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(MemoryEngine.bestLine(for: query, in: e)).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
-                        Text(MemoryEngine.dateString(e.date)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+    private func rowText(_ e: MemoryEngine.Entry) -> String {
+        let line = MemoryEngine.bestLine(for: query, in: e).trimmingCharacters(in: .whitespacesAndNewlines)
+        if !line.isEmpty { return line }
+        // Visual-only match (no text on the photo): describe what's in it.
+        let bits = ((e.colors ?? []) + (e.labels ?? [])).prefix(4)
+        return bits.isEmpty ? ((e.isScreenshot ?? false) ? "Screenshot" : "Photo") : "Shows " + bits.joined(separator: ", ")
+    }
+
+    private func resultRow(_ m: MemoryEngine.Match) -> some View {
+        let e = m.entry
+        return VStack(alignment: .leading, spacing: 6) {
+            // Why this photo surfaced — shown above it, so the match is never a mystery.
+            Label(m.reason, systemImage: "magnifyingglass").font(HandyFont.micro).foregroundStyle(HandyColor.accent).lineLimit(2).frame(maxWidth: .infinity, alignment: .leading)
+            HStack(alignment: .top, spacing: HandySpacing.s12) {
+                Button { viewing = e } label: {
+                    HStack(alignment: .top, spacing: HandySpacing.s12) {
+                        MemoryThumb(id: e.id)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(rowText(e)).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
+                            Text(MemoryEngine.dateString(e.date)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        }
+                        Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
-                    Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                }
-            }.buttonStyle(.plain)
-            Button { UIPasteboard.general.string = MemoryEngine.bestLine(for: query, in: e); ClipStore.add(MemoryEngine.bestLine(for: query, in: e)); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                }.buttonStyle(.plain)
+                Button { let line = MemoryEngine.bestLine(for: query, in: e); UIPasteboard.general.string = line; ClipStore.add(line); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+            }
         }
         .padding(HandySpacing.s12)
         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
@@ -143,8 +156,9 @@ struct MemoryView: View {
         results = MemoryEngine.search(q, in: index.entries)
         guard AIEngine.isAvailable, !results.isEmpty else { return }
         answering = true
+        let entries = results.map { $0.entry }
         Task { @MainActor in
-            aiAnswer = await MemoryEngine.answer(question: q, from: results)
+            aiAnswer = await MemoryEngine.answer(question: q, from: entries)
             answering = false
         }
     }
@@ -189,12 +203,18 @@ private struct MemoryImageViewer: View {
                     } else {
                         VStack(spacing: HandySpacing.s8) {
                             Image(systemName: "photo.badge.exclamationmark").font(.system(size: 32)).foregroundStyle(HandyColor.textSecondary)
-                            Text("This screenshot isn't in your photo library anymore. The text it was read from is below.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                            Text("This photo isn't in your library anymore. Anything read from it is below.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                         }.frame(maxWidth: .infinity, minHeight: 200)
                     }
                     if !entry.text.isEmpty {
-                        Text("Text read from this screenshot").font(HandyFont.bodyStrong)
+                        Text("Text read from this photo").font(HandyFont.bodyStrong)
                         Text(entry.text).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
+                    } else {
+                        let bits = (entry.colors ?? []) + (entry.labels ?? [])
+                        if !bits.isEmpty {
+                            Text("What's in this photo").font(HandyFont.bodyStrong)
+                            Text(bits.prefix(10).joined(separator: ", ")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+                        }
                     }
                 }.padding(HandySpacing.s16)
             }
