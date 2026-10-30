@@ -69,6 +69,8 @@ import androidx.media3.transformer.ExportException
 import androidx.media3.transformer.ExportResult
 import androidx.media3.transformer.ProgressHolder
 import androidx.media3.transformer.Transformer
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmentation
 import com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions
@@ -270,17 +272,35 @@ fun MediaToolScreen() {
         val p = photo ?: return
         working = true; status = null; saved = null; modelMissing = false
         scope.launch {
+            val seg = SubjectSegmentation.getClient(SubjectSegmenterOptions.Builder().enableForegroundBitmap().build())
+            // Ensure the on-device cut-out model (a Play-services optional module) is present —
+            // download it on demand the first time, with a "getting ready" note, instead of failing.
+            val ready = try {
+                val mi = ModuleInstall.getClient(ctx)
+                if (mi.areModulesAvailable(seg).await().areModulesAvailable()) true
+                else {
+                    info("Getting the cut-out model ready (one-time, needs a connection)…")
+                    mi.installModules(ModuleInstallRequest.newBuilder().addApi(seg).build()).await()
+                    true
+                }
+            } catch (e: Exception) { false }
+            if (!ready) {
+                working = false; seg.close()
+                modelMissing = true; fail("Couldn't fetch the cut-out model — it needs Google Play services and a connection. Try Shrink or Redact meanwhile.")
+                return@launch
+            }
+            status = null; statusIsError = false
             val fg: Bitmap? = try {
-                val seg = SubjectSegmentation.getClient(SubjectSegmenterOptions.Builder().enableForegroundBitmap().build())
-                try { seg.process(InputImage.fromBitmap(p.bitmap, 0)).await().foregroundBitmap } finally { seg.close() }
+                seg.process(InputImage.fromBitmap(p.bitmap, 0)).await().foregroundBitmap
             } catch (e: Exception) {
-                working = false
+                working = false; seg.close()
                 val m = (e.message ?: "").lowercase()
                 if (m.contains("model") || m.contains("download") || m.contains("module") || m.contains("unavailable")) {
-                    modelMissing = true; fail("The cut-out model isn't on this phone yet (it comes with Google Play services). Try Shrink or Redact meanwhile.")
+                    modelMissing = true; fail("The cut-out model is still downloading — give it a moment and try again, or use Shrink / Redact.")
                 } else fail("Couldn't process that photo. Try one with a clearer subject.")
                 return@launch
             }
+            seg.close()
             if (fg == null) { working = false; fail("Couldn't find a clear subject. Try a photo with a distinct foreground."); return@launch }
             val composed = withContext(Dispatchers.IO) {
                 when (bgSel) {
