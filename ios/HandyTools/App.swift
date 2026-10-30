@@ -524,57 +524,45 @@ struct ToolCard: View {
     let tool: Tool
     var body: some View {
         let artName = TenzyArt.name(id: tool.id, theme: theme.current, scheme: scheme, kind: .card)
-        ZStack(alignment: .topLeading) {
+        ZStack {
             HandyColor.surface
             Image(artName).resizable().scaledToFill()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .clipped()
                 .allowsHitTesting(false)
-            // Scrim: clear at the top (art shows), deepening to the surface colour at the bottom so
-            // the title/blurb read in any theme and in light or dark.
+            // Scrim: art shows through the top, deepening to the surface colour over the bottom third
+            // so the title + blurb read clearly in any theme, light or dark.
             LinearGradient(
                 stops: [
-                    .init(color: HandyColor.surface.opacity(0.0), location: 0.30),
-                    .init(color: HandyColor.surface.opacity(0.78), location: 0.72),
-                    .init(color: HandyColor.surface.opacity(0.96), location: 1.0)
+                    .init(color: HandyColor.surface.opacity(0.0), location: 0.35),
+                    .init(color: HandyColor.surface.opacity(0.70), location: 0.62),
+                    .init(color: HandyColor.surface.opacity(0.97), location: 1.0)
                 ],
                 startPoint: .top, endPoint: .bottom
             )
-            VStack(alignment: .leading, spacing: 0) {
-                cardIcon
-                Spacer(minLength: HandySpacing.s4)
+        }
+        .frame(maxWidth: .infinity, height: 104)
+        .overlay(alignment: .bottomLeading) {
+            // Anchored to the bottom as an overlay (sized to its own content), so it can never
+            // overflow or be clipped by the card the way a greedy VStack did.
+            VStack(alignment: .leading, spacing: 1) {
                 Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.7)
                 Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.8)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .padding(HandySpacing.s12)
+            .padding(.horizontal, HandySpacing.s12)
+            .padding(.bottom, HandySpacing.s8)
         }
-        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104)
         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
         .overlay(alignment: .topTrailing) {
             if tool.pro && !store.isPremium {
-                Image(systemName: "lock.fill").font(.system(size: 11)).foregroundStyle(HandyColor.textSecondary).padding(8)
+                Image(systemName: "lock.fill").font(.system(size: 12)).foregroundStyle(.white.opacity(0.9))
+                    .shadow(color: .black.opacity(0.5), radius: 3).padding(8)
             } else if tool.ai {
-                Image(systemName: "sparkle").font(.system(size: 10)).foregroundStyle(HandyColor.accent).padding(8)
+                Image(systemName: "sparkle").font(.system(size: 11)).foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.5), radius: 3).padding(8)
             }
         }
-    }
-
-    @ViewBuilder private var cardIcon: some View {
-        ZStack {
-            if let asset = tool.asset {
-                Image(asset).resizable().scaledToFill().frame(width: 32, height: 32)
-                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            } else if tool.ai {
-                Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 32, height: 32)
-                Image(systemName: tool.icon).font(.system(size: 15, weight: .semibold)).foregroundStyle(.white)
-            } else {
-                Circle().fill(HandyColor.accentSoft).frame(width: 32, height: 32)
-                Image(systemName: tool.icon).font(.system(size: 16, weight: .medium)).foregroundStyle(HandyColor.accent)
-            }
-        }
-        .shadow(color: .black.opacity(0.35), radius: 5, y: 2)
     }
 }
 
