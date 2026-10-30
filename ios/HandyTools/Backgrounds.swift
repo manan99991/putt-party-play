@@ -32,8 +32,16 @@ enum TenzyArt {
         }
     }
 
+    /// The 10 power-tool hubs reuse the themed art of the single tool they grew out of.
+    static let artAlias: [String: String] = [
+        "documents": "scan", "media": "studio", "cleanup": "cleaner", "voice": "voicenotes",
+        "safety": "shield", "share": "qrwifi", "flashlight": "light",
+        // capture, instruments, translate ship their own sets
+    ]
+
     static func name(id: String, theme: TenzyTheme, scheme: ColorScheme, kind: Kind) -> String {
-        "bg_\(id)_\(themeToken(theme))_\(variant(theme, scheme))_\(kind.rawValue)"
+        let art = artAlias[id] ?? id
+        return "bg_\(art)_\(themeToken(theme))_\(variant(theme, scheme))_\(kind.rawValue)"
     }
 }
 

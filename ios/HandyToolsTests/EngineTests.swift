@@ -46,8 +46,9 @@ final class EngineTests: XCTestCase {
     // MARK: search ranking
 
     @MainActor func testSearchRanksTheObviousToolFirst() {
-        XCTAssertEqual(searchTools("flashlight").first?.id, "light")
-        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
+        XCTAssertEqual(searchTools("flashlight").first?.id, "flashlight")
+        XCTAssertEqual(searchTools("pdf").first?.id, "documents")
+        XCTAssertEqual(searchTools("scam").first?.id, "safety")
         XCTAssertFalse(searchTools("translate").isEmpty)
         XCTAssertFalse(searchTools("photo").isEmpty)
         XCTAssertTrue(searchTools("zzxqzzq").isEmpty, "nonsense query returns nothing")

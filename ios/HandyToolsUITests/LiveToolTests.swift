@@ -12,14 +12,13 @@ import XCTest
 /// location permission/callback paths — the Swift-6 isolation class — do run, which is what this adds.
 final class LiveToolTests: XCTestCase {
     static let hardwareToolIDs = [
-        "audiolab",     // mic: tuner auto-starts → permission completion + audio tap on a bg thread
-        "rest",         // sleep sounds
-        "cleaner",      // photo library (duplicate / large-file scan)
-        "gpsdash",      // location
-        "procam",       // camera
-        "colorvision",  // camera
-        "magnify",      // camera
-        "describe",     // camera
+        "voice",        // mic: recorder + live transcript
+        "cleanup",      // photo library (duplicate / large-file scan)
+        "instruments",  // motion, location, mic, camera (magnifier)
+        "capture",      // camera (live text)
+        "flashlight",   // torch + front camera mirror
+        "share",        // camera (QR scan) + local network
+        "rest",         // legacy route: sleep sounds render callback
     ]
 
     override func setUp() { continueAfterFailure = true }
