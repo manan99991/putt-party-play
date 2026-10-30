@@ -33,14 +33,3 @@ Resolved source packages:
 
 resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:229:25: error: cannot find 'CaptureHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:230:27: error: cannot find 'DocumentsHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:231:23: error: cannot find 'MediaHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:232:25: error: cannot find 'CleanupHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:233:23: error: cannot find 'VoiceHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:234:27: error: cannot find 'TranslateHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:235:29: error: cannot find 'InstrumentsHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:236:28: error: cannot find 'FlashlightHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:237:24: error: cannot find 'SafetyHub' in scope
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:238:23: error: cannot find 'ShareHub' in scope
-** TEST FAILED **
