@@ -67,6 +67,7 @@ struct FormatFixView: View {
             if let skippedNote { Label(skippedNote, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
 
             if !outputs.isEmpty {
+                OutputPreviewStrip(urls: outputs)   // review the converted files before saving/sharing
                 ShareLink(items: outputs) { Label("Save or share (\(outputs.count))", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             }
         }

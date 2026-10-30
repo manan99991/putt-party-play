@@ -89,6 +89,7 @@ struct ShareReadyView: View {
 
             if !outputs.isEmpty {
                 Label("\(outputs.count) ready for \(recipe.name.lowercased())", systemImage: "checkmark.seal.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                OutputPreviewStrip(urls: outputs)   // review before sharing
                 ShareLink(items: outputs) { Label("Share them", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             }
             if !skipped.isEmpty {
