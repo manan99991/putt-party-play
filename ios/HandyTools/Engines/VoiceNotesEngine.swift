@@ -8,7 +8,7 @@ import Accelerate
 enum VoiceAudio {
     /// Transcribe an audio file with SFSpeechURLRecognitionRequest (on-device when the language
     /// supports it). `partial` fires on the main thread with the growing text while it works.
-    nonisolated static func transcribe(_ url: URL, locale: Locale, partial: @escaping @Sendable (String) -> Void) async -> (text: String, error: String?) {
+    static func transcribe(_ url: URL, locale: Locale, partial: @escaping @Sendable (String) -> Void) async -> (text: String, error: String?) {
         let status: SFSpeechRecognizerAuthorizationStatus = await withCheckedContinuation { c in Permission.speech { c.resume(returning: $0) } }
         guard status == .authorized else { return ("", "Allow Speech Recognition in Settings to transcribe files.") }
         guard let rec = SFSpeechRecognizer(locale: locale), rec.isAvailable else { return ("", "Speech recognition isn't available for this language right now.") }
@@ -34,7 +34,7 @@ enum VoiceAudio {
     }
 
     /// `bars` normalised RMS values (0…1) across the whole file — the static waveform under Trim.
-    nonisolated static func peaks(_ url: URL, bars: Int = 48) -> [Float] {
+    static func peaks(_ url: URL, bars: Int = 48) -> [Float] {
         guard let f = try? AVAudioFile(forReading: url), f.length > 0 else { return [] }
         let chunk = AVAudioFrameCount(max(1, Int(f.length) / bars))
         guard let buf = AVAudioPCMBuffer(pcmFormat: f.processingFormat, frameCapacity: chunk) else { return [] }
@@ -50,7 +50,7 @@ enum VoiceAudio {
         return mx > 0 ? out.map { $0 / mx } : out
     }
 
-    nonisolated static func duration(_ url: URL) -> Double {
+    static func duration(_ url: URL) -> Double {
         guard let f = try? AVAudioFile(forReading: url), f.fileFormat.sampleRate > 0 else { return 0 }
         return Double(f.length) / f.fileFormat.sampleRate
     }
@@ -76,7 +76,7 @@ enum VoiceAudio {
     }
 
     /// Copy a picked file into our temp folder (security-scoped URLs from the Files picker expire).
-    nonisolated static func importCopy(_ url: URL) -> URL? {
+    static func importCopy(_ url: URL) -> URL? {
         let access = url.startAccessingSecurityScopedResource(); defer { if access { url.stopAccessingSecurityScopedResource() } }
         let ext = url.pathExtension.isEmpty ? "m4a" : url.pathExtension
         let dst = VideoEngine.tempURL(ext)
@@ -117,8 +117,9 @@ enum VoiceAudio {
         p.play(); playing = true
         ticker?.cancel()
         ticker = Task { [weak self] in
-            while let self, self.playing, !Task.isCancelled {
+            while !Task.isCancelled {
                 try? await Task.sleep(for: .milliseconds(200))
+                guard let self, self.playing else { return }
                 self.time = self.player?.currentTime ?? 0
             }
         }

@@ -39,7 +39,7 @@ enum TranslateEngine {
     }
 
     /// Every line of text in the photo with where it sits (accurate recognition, on-device).
-    nonisolated static func blocks(_ image: UIImage) -> [TextBlock] {
+    static func blocks(_ image: UIImage) -> [TextBlock] {
         guard let cg = image.normalizedUp().cgImage else { return [] }
         let handler = VNImageRequestHandler(cgImage: cg, orientation: .up)
         let req = VNRecognizeTextRequest()
@@ -55,7 +55,7 @@ enum TranslateEngine {
 
     /// The photo with each translated line drawn over its original block: dark rounded box, white
     /// text shrunk to fit. JPEG data for sharing. Blocks without a translation are left as they are.
-    nonisolated static func render(_ image: UIImage, blocks: [TextBlock], translations: [String]) -> Data? {
+    static func render(_ image: UIImage, blocks: [TextBlock], translations: [String]) -> Data? {
         let base = image.normalizedUp()
         let size = CGSize(width: base.size.width * base.scale, height: base.size.height * base.scale)
         guard size.width > 0, size.height > 0 else { return nil }

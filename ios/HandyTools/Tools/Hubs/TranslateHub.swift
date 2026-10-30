@@ -201,7 +201,7 @@ struct TranslateHub: View {
                     ForEach(blocks.indices, id: \.self) { i in
                         VStack(alignment: .leading, spacing: 2) {
                             Text(blocks[i].text).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                            Text(i < lines.count && !lines[i].isEmpty ? lines[i] : "—").font(HandyFont.body)
+                            Text((i < lines.count && !lines[i].isEmpty) ? lines[i] : "—").font(HandyFont.body)
                         }.frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }.cardStyle(padding: HandySpacing.s12)
@@ -217,7 +217,7 @@ struct TranslateHub: View {
 
     /// Translated lines, falling back to the originals for any line that couldn't be translated.
     private var cameraText: String {
-        blocks.enumerated().map { i, b in i < lines.count && !lines[i].isEmpty ? lines[i] : b.text }.joined(separator: "\n")
+        blocks.enumerated().map { i, b in (i < lines.count && !lines[i].isEmpty) ? lines[i] : b.text }.joined(separator: "\n")
     }
 
     private func analyse(_ img: UIImage) {
