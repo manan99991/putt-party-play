@@ -1,8 +1,7 @@
-Reliability pass:
-• Live Captions no longer stalls on "microphone isn't ready" — it waits for the mic, and if another app (like a call) is using it, it tells you plainly and suggests putting the call on speaker.
-• Voice Notes and Translate no longer use up a free daily turn if a recording never actually starts.
-• Permission screens (Photos, Contacts) now send you straight to Settings if you'd previously declined, instead of a button that did nothing.
+Big one for testers: this build now unlocks the FULL paid experience — all five themes, no ads, no limits — automatically, so you can try everything. (If a theme or Pro tool still looks locked, force-quit and reopen once.)
 
-Plus the earlier refresh: new claymorphic icons, five themes, and a clean home grid. All 30 tools, most running on-device. This test build unlocks every Pro tool.
+Also:
+• Share-Ready: the "ID / govt photo" option is photos-only now — feed it a video and it tells you why instead of making a wrong-sized file, and it won't use a free turn.
+• Share-Ready shows a real progress bar with a percentage while it works, instead of an endless spinner. (Rolling this out to every tool next.)
 
-One-person shop here — tap Settings to send me a note if anything's off. Thanks for testing Tenzy.
+All 30 tools, most running on-device. One-person shop — tap Settings to send me a note if anything's off. Thanks for testing Tenzy.

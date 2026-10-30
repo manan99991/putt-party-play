@@ -39,9 +39,12 @@ final class StoreManager: ObservableObject {
     }
 
     private init() {
-        #if DEBUG
-        if previewPremium || isTesterPro { isPremium = true }
-        #endif
+        // Unlock Pro automatically in every non-production build — DEBUG and TestFlight (sandbox
+        // receipt) — so beta testers get the full paid experience (all themes, no ads, no limits)
+        // without a purchase. A real App Store build has a production receipt, so isTestBuild is
+        // false there and the Pro gate stays on for paying users. (previewPremium/isTesterPro remain
+        // for CI screenshots and the manual Developer toggle.)
+        if previewPremium || isTesterPro || AppEnv.isTestBuild { isPremium = true }
         updates = Task { await listenForTransactions() }
         Task { await load(); await refresh() }
     }
@@ -85,9 +88,9 @@ final class StoreManager: ObservableObject {
     }
 
     func refresh() async {
-        #if DEBUG
-        if previewPremium || isTesterPro { isPremium = true; return }
-        #endif
+        // Keep Pro on in non-production builds (see init) — the real (empty) sandbox entitlement
+        // must never downgrade a TestFlight tester back to free.
+        if previewPremium || isTesterPro || AppEnv.isTestBuild { isPremium = true; return }
         var active = false
         for await result in Transaction.currentEntitlements {
             if case .verified(let t) = result, Self.productIDs.contains(t.productID), t.revocationDate == nil { active = true }

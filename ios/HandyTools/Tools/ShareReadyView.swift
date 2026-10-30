@@ -11,12 +11,15 @@ struct ShareReadyView: View {
     struct Recipe: Identifiable, Hashable {
         let id: String; let name: String; let hint: String
         let imageBytes: Int; let pdfBytes: Int; let videoBytes: Int
+        // An ID / government-photo upload is a still image under 200 KB — a video can never satisfy
+        // it, so that destination doesn't accept videos (we say so instead of making a wrong file).
+        var acceptsVideo: Bool = true
     }
     static let recipes: [Recipe] = [
         Recipe(id: "portal",  name: "Web form / portal", hint: "JPG · PDF · MP4, each under 2 MB (video 25 MB)", imageBytes: 2_000_000, pdfBytes: 2_000_000, videoBytes: 25_000_000),
         Recipe(id: "email",   name: "Email attachment",  hint: "Everything under 20 MB",                      imageBytes: 20_000_000, pdfBytes: 20_000_000, videoBytes: 20_000_000),
         Recipe(id: "message", name: "Text / WhatsApp",   hint: "Photos 5 MB, videos 16 MB",                   imageBytes: 5_000_000, pdfBytes: 5_000_000, videoBytes: 16_000_000),
-        Recipe(id: "govphoto",name: "ID / govt photo",   hint: "JPG under 200 KB",                            imageBytes: 200_000, pdfBytes: 500_000, videoBytes: 10_000_000),
+        Recipe(id: "govphoto",name: "ID / govt photo",   hint: "JPG under 200 KB · photos only",              imageBytes: 200_000, pdfBytes: 500_000, videoBytes: 0, acceptsVideo: false),
     ]
 
     private enum Item { case image(UIImage), video(URL), pdf(Data, String) }
@@ -27,8 +30,10 @@ struct ShareReadyView: View {
     @State private var queue: [Item] = []
     @State private var outputs: [URL] = []
     @State private var skipped: [String] = []
+    @State private var notes: [String] = []
     @State private var working = false
     @State private var progress = ""
+    @State private var progressValue = 0.0   // 0…1 across the batch, for a real progress bar
 
     private var overQuota: Bool { !Usage.hasRoom("shareready", limit: Limits.freeFitPerDay) }
 
@@ -75,8 +80,11 @@ struct ShareReadyView: View {
                 if !store.isPremium { QuotaChip(name: "shareready", limit: Limits.freeFitPerDay).environmentObject(store) }
                 if overQuota { LimitReachedBanner(message: "You've prepared today's \(Limits.freeFitPerDay) free batches.") }
                 Button { run() } label: {
-                    HStack { if working { ProgressView().tint(.white) }; Text(working ? "Preparing \(progress)" : "Make share‑ready") }.frame(maxWidth: .infinity)
+                    Text(working ? "Preparing… \(Int(progressValue * 100))%" : "Make share‑ready").frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working || overQuota)
+                if working {
+                    ToolProgressBar(value: progressValue, label: progress)
+                }
             }
 
             if !outputs.isEmpty {
@@ -85,6 +93,9 @@ struct ShareReadyView: View {
             }
             if !skipped.isEmpty {
                 Text("Couldn't fit: \(skipped.joined(separator: ", ")). Try a looser recipe for those.").font(HandyFont.caption).foregroundStyle(HandyColor.danger)
+            }
+            ForEach(notes, id: \.self) { n in
+                Label(n, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
         }
     }
@@ -113,30 +124,41 @@ struct ShareReadyView: View {
 
     private func run() {
         guard Usage.hasRoom("shareready", limit: Limits.freeFitPerDay) else { return }
-        working = true; outputs = []; skipped = []
+        working = true; outputs = []; skipped = []; notes = []; progressValue = 0
         let items = queue, r = recipe
         Task { @MainActor in
             var urls: [URL] = []
             for (i, item) in items.enumerated() {
-                progress = "\(i + 1)/\(items.count)…"
                 let tmp = FileManager.default.temporaryDirectory
+                let n = items.count
                 switch item {
                 case .image(let img):
+                    progress = n == 1 ? "Fitting your photo…" : "Fitting photo \(i + 1) of \(n)…"
                     if let d = await SizeTarget.image(img, targetBytes: r.imageBytes) {
                         let u = tmp.appendingPathComponent("Tenzy-\(i + 1).jpg"); try? d.write(to: u); urls.append(u)
                     } else { skipped.append("photo \(i + 1)") }
                 case .pdf(let d, let name):
+                    progress = n == 1 ? "Shrinking the PDF…" : "Shrinking PDF \(i + 1) of \(n)…"
                     if let out = await SizeTarget.pdf(d, targetBytes: r.pdfBytes) {
                         let u = tmp.appendingPathComponent("\(name)-ready.pdf"); try? out.write(to: u); urls.append(u)
                     } else { skipped.append(name) }
                 case .video(let src):
+                    // A video can't satisfy an image-only destination (ID / govt photo). Say so plainly
+                    // and don't hand back a wrong-sized file — and it never costs the user a free batch.
+                    guard r.acceptsVideo else {
+                        notes.append("A video can't become a \(r.name) — that needs a still photo under \(SizeTarget.format(r.imageBytes)). Pick a photo for this, or choose another destination for the video.")
+                        progressValue = Double(i + 1) / Double(n); continue
+                    }
+                    progress = n == 1 ? "Converting and fitting the video…" : "Fitting video \(i + 1) of \(n)…"
                     // MP4 first so it plays anywhere, then fit the size if it's still over.
-                    guard let mp4 = await VideoEngine.toMP4(src) else { skipped.append("video \(i + 1)"); continue }
+                    guard let mp4 = await VideoEngine.toMP4(src) else { skipped.append("video \(i + 1)"); progressValue = Double(i + 1) / Double(n); continue }
                     if let fitted = await SizeTarget.video(url: mp4, targetBytes: r.videoBytes) { urls.append(fitted) }
                     else { skipped.append("video \(i + 1)") }
                 }
+                progressValue = Double(i + 1) / Double(n)
             }
             outputs = urls; working = false; progress = ""
+            // Charge only when a real share-ready file came out — an all-skipped run is free.
             if !urls.isEmpty { _ = Usage.use("shareready", limit: Limits.freeFitPerDay); HandyHaptics.success() }
         }
     }
