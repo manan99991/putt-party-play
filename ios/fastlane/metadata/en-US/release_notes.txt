@@ -1,5 +1,10 @@
-Video jobs now show a real, moving progress bar with a live percentage — in Share-Ready, Video, and Fit It — instead of a spinner that just circles with no idea how long is left. You can switch apps while it works.
+Lots in this one:
 
-Recent fixes in this run of builds: TestFlight unlocks the full paid experience (all themes, no limits); Translate blocks same-language no-ops; camera tools show "Open Settings" instead of a blank screen when access is off; Pro Camera never loses a shot; Share-Ready's ID/photo fix.
+• Home grid now fills the screen as equal blocks — no empty space, every theme.
+• Pro Camera (and other tools): rows of options no longer get cut off at the edges — they wrap.
+• Memory now searches ALL your photos, not just screenshots — find by what a photo shows ("me in red", "dog at the beach"), and each result tells you why it matched.
+• Progress bars everywhere: a real % for video/convert/fit jobs, an animated bar for the rest — no more lone spinner.
+• Video: a conversion now survives leaving the tool — come back and it's still going (or finished), not lost.
+• Translate blocks same-language; Format Fixer says when it skipped files.
 
-Still to come: the progress bar on the remaining batch tools. One-person shop — tap Settings to send a note. Thanks for testing Tenzy.
+On-device as always. For a long video, keep Tenzy open while it finishes. Tap Settings to send a note — thanks for testing.
