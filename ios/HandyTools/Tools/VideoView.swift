@@ -90,7 +90,7 @@ struct VideoView: View {
                     Text(working ? (progressValue > 0 ? "Working… \(Int(progressValue * 100))%" : "Working…") : actionLabel).frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working || overQuota || !canRun)
                 if working {
-                    ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: "You can switch apps — this keeps going.")
+                    ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: "Keep Tenzy open while this finishes.")
                 }
 
                 PhotosPicker(selection: $pickedItem, matching: .videos) { Label("Choose a different video", systemImage: "film") }.textButton()
