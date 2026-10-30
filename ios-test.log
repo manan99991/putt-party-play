@@ -1,198 +1,68 @@
 == test.log (results)
-2026-10-30 03:55:09.402833+0000 HandyTools[23779:69390] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (2.890 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.016 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionMatricesBehave]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.803 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.036 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (1.573 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGeoFormatting]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGifFromPhotosHasEveryFrame]' passed (0.025 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.068 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.181 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.002 seconds).
+2026-10-30 12:28:12.895225+0000 HandyTools[20664:62069] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-10-30 12:28:12.897173+0000 HandyTools[20664:62069] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (3.994 seconds).
+Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.018 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.017 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionMatricesBehave]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.184 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.060 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (1.846 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGeoFormatting]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGifFromPhotosHasEveryFrame]' passed (0.012 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.067 seconds).
+Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.215 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.EngineTests testMorseEncoding]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.021 seconds).
-2026-10-30 03:55:31.021224+0000 HandyTools[23779:69470] [e5rt] E5RT encountered an STL exception. msTest Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (0.273 seconds).
-Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (2.605 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.015 seconds).
-Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.556 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (3.722 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (1.672 seconds).
-Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.013 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.507 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.094 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerSafetyHubSignals]' passed (0.024 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (1.331 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.235 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (4.110 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (7.731 seconds).
+Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.027 seconds).
+Test Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (0.542 seconds).
+Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (2.517 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.020 seconds).
+Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.492 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (0.457 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (0.290 seconds).
+Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.020 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.888 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.091 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (2.096 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.439 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (3.208 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (8.010 seconds).
 Test Case '-[HandyToolsTests.EngineTests testScanRotationKeepsStampsAndInkInPlace]' passed (0.008 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.054 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (2.115 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.087 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst]' passed (0.009 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testShutterLabelNeverTrapsOnInvalidExposure]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (11.037 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (3.901 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (4.998 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' passed (22.394 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.224 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (0.813 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (0.505 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.135 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (0.792 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.081 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (2.338 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.094 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst]' passed (0.021 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testShutterLabelNeverTrapsOnInvalidExposure]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (10.441 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (3.394 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (4.611 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' passed (16.250 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.128 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (0.928 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (0.577 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.166 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (0.921 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.004 seconds).
 Test Case '-[HandyToolsTests.EngineTests testVaultCryptoRoundTripsAndRejectsTampering]' passed (0.035 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (0.559 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWifiPayloadRoundTripsThroughParser]' passed (0.257 seconds).
-	 Executed 51 tests, with 0 failures (0 unexpected) in 76.483 (83.168) seconds
-	 Executed 51 tests, with 0 failures (0 unexpected) in 76.483 (83.173) seconds
-	 Executed 51 tests, with 0 failures (0 unexpected) in 76.483 (83.177) seconds
-Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (87.367 seconds).
-Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (20.236 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 107.603 (107.609) seconds
-Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (212.902 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 212.902 (212.905) seconds
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (93.516 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (18.650 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (21.549 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 133.715 (133.718) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 454.220 (454.238) seconds
-	 Executed 6 tests, with 0 failures (0 unexpected) in 454.220 (454.241) seconds
+Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (2.043 seconds).
+Test Case '-[HandyToolsTests.EngineTests testWifiPayloadRoundTripsThroughParser]' passed (0.168 seconds).
+	 Executed 50 tests, with 0 failures (0 unexpected) in 67.745 (67.969) seconds
+	 Executed 50 tests, with 0 failures (0 unexpected) in 67.745 (67.971) seconds
+	 Executed 50 tests, with 0 failures (0 unexpected) in 67.745 (67.976) seconds
+Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (139.770 seconds).
+Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (32.291 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 172.061 (172.069) seconds
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (581.102 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 581.102 (581.107) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (329.069 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (23.318 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (33.850 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 386.238 (386.253) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 1139.401 (1139.436) seconds
+	 Executed 6 tests, with 0 failures (0 unexpected) in 1139.401 (1139.440) seconds
 ** TEST SUCCEEDED **
-== ipad.log (results)
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (227.374 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (67.683 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (35.789 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 330.846 (330.888) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 330.846 (330.891) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 330.846 (330.893) seconds
-** TEST SUCCEEDED **
-== ipad.log (tail)
-    t =   135.29s         Wait for com.tenzy.toolkit to idle
-    t =   139.40s Wait for com.tenzy.toolkit to become Running Foreground
-    t =   139.40s Get number of matches for: Descendants matching type Any
-    t =   144.69s Terminate com.tenzy.toolkit:55377
-    t =   147.72s Open com.tenzy.toolkit
-    t =   147.72s     Launch com.tenzy.toolkit
-2026-10-30 04:19:04.344 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
-2026-10-30 04:19:04.344 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: no debugger version
-    t =   150.62s         Setting up automation session
-    t =   152.86s         Wait for com.tenzy.toolkit to idle
-    t =   157.16s Wait for com.tenzy.toolkit to become Running Foreground
-    t =   157.16s Get number of matches for: Descendants matching type Any
-    t =   159.58s Terminate com.tenzy.toolkit:55449
-    t =   161.62s Open com.tenzy.toolkit
-    t =   161.62s     Launch com.tenzy.toolkit
-2026-10-30 04:19:18.070 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
-2026-10-30 04:19:18.119 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: no debugger version
-    t =   164.23s         Setting up automation session
-    t =   165.73s         Wait for com.tenzy.toolkit to idle
-    t =   169.26s Wait for com.tenzy.toolkit to become Running Foreground
-    t =   169.26s Get number of matches for: Descendants matching type Any
-    t =   172.58s Terminate com.tenzy.toolkit:55549
-    t =   174.64s Open com.tenzy.toolkit
-    t =   174.64s     Launch com.tenzy.toolkit
-2026-10-30 04:19:31.057 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
-2026-10-30 04:19:31.057 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: no debugger version
-    t =   176.70s         Setting up automation session
-    t =   178.77s         Wait for com.tenzy.toolkit to idle
-    t =   184.29s Wait for com.tenzy.toolkit to become Running Foreground
-    t =   184.29s Get number of matches for: Descendants matching type Any
-    t =   185.62s Terminate com.tenzy.toolkit:55631
-    t =   187.63s Open com.tenzy.toolkit
-    t =   187.64s     Launch com.tenzy.toolkit
-2026-10-30 04:19:44.025 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
-2026-10-30 04:19:44.025 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: no debugger version
-    t =   189.19s         Setting up automation session
-    t =   191.71s         Wait for com.tenzy.toolkit to idle
-    t =   195.08s Wait for com.tenzy.toolkit to become Running Foreground
-    t =   195.08s Get number of matches for: Descendants matching type Any
-    t =   196.65s Terminate com.tenzy.toolkit:55917
-    t =   198.71s Open com.tenzy.toolkit
-    t =   198.71s     Launch com.tenzy.toolkit
-2026-10-30 04:19:55.087 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
-2026-10-30 04:19:55.088 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: no debugger version
-    t =   202.42s         Setting up automation session
-    t =   203.05s         Wait for com.tenzy.toolkit to idle
-    t =   204.91s Wait for com.tenzy.toolkit to become Running Foreground
-    t =   204.91s Get number of matches for: Descendants matching type Any
-    t =   212.09s Terminate com.tenzy.toolkit:56098
-    t =   216.19s Tear Down
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (227.374 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' started.
-    t =     0.00s Start Test at 2026-10-30 04:20:23.781
-    t =     0.14s Set Up
-    t =     0.15s Open com.tenzy.toolkit
-    t =     0.15s     Launch com.tenzy.toolkit
-2026-10-30 04:20:37.431 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
-2026-10-30 04:20:37.435 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: no debugger version
-    t =    18.80s         Setting up automation session
-    t =    22.41s         Wait for com.tenzy.toolkit to idle
-    t =    28.58s Wait for com.tenzy.toolkit to become Running Foreground
-    t =    28.64s Waiting 10.0s for TextField (First Match) to exist
-    t =    29.68s     Checking `Expect predicate `existsNoRetry == 1` for object TextField (First Match)`
-    t =    29.68s         Checking existence of `TextField (First Match)`
-    t =    34.40s Tap TextField (First Match)
-    t =    34.41s     Wait for com.tenzy.toolkit to idle
-    t =    34.46s     Find the TextField (First Match)
-    t =    39.30s     Check for interrupting elements affecting "Search 10 tools" TextField
-    t =    39.93s         Wait for com.apple.springboard to idle
-    t =    40.41s     Synthesize event
-    t =    41.29s     Wait for com.tenzy.toolkit to idle
-    t =    44.41s Type 'pdf' into "Search 10 tools" TextField
-    t =    44.45s     Wait for com.tenzy.toolkit to idle
-    t =    45.71s     Find the "Search 10 tools" TextField
-    t =    55.76s     Check for interrupting elements affecting "Search 10 tools" TextField
-    t =    56.22s         Wait for com.apple.springboard to idle
-    t =    56.28s     Synthesize event
-    t =    56.85s     Wait for com.tenzy.toolkit to idle
-    t =    57.32s Terminate com.tenzy.toolkit:56555
-    t =    62.46s Tear Down
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (67.683 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' started.
-    t =     0.00s Start Test at 2026-10-30 04:21:31.465
-    t =     0.12s Set Up
-    t =     0.13s Open com.tenzy.toolkit
-    t =     0.13s     Launch com.tenzy.toolkit
-2026-10-30 04:21:32.678 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
-2026-10-30 04:21:32.678 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: no debugger version
-    t =     3.75s         Setting up automation session
-    t =     8.32s         Wait for com.tenzy.toolkit to idle
-    t =    14.53s Wait for com.tenzy.toolkit to become Running Foreground
-    t =    14.54s Get number of matches for: Descendants matching type Any
-    t =    15.85s Terminate com.tenzy.toolkit:56923
-    t =    17.86s Open com.tenzy.toolkit
-    t =    17.86s     Launch com.tenzy.toolkit
-2026-10-30 04:21:50.406 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
-2026-10-30 04:21:50.407 xcodebuild[39234:118502] [MT] IDELaunchParametersSnapshot: no debugger version
-    t =    25.04s         Setting up automation session
-    t =    26.02s         Wait for com.tenzy.toolkit to idle
-    t =    31.24s Wait for com.tenzy.toolkit to become Running Foreground
-    t =    31.24s Get number of matches for: Descendants matching type Any
-    t =    32.02s Terminate com.tenzy.toolkit:57169
-    t =    35.12s Tear Down
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (35.789 seconds).
-Test Suite 'ToolSmokeTests' passed at 2026-10-30 04:22:07.255.
-	 Executed 3 tests, with 0 failures (0 unexpected) in 330.846 (330.888) seconds
-Test Suite 'HandyToolsUITests.xctest' passed at 2026-10-30 04:22:07.258.
-	 Executed 3 tests, with 0 failures (0 unexpected) in 330.846 (330.891) seconds
-Test Suite 'Selected tests' passed at 2026-10-30 04:22:07.258.
-	 Executed 3 tests, with 0 failures (0 unexpected) in 330.846 (330.893) seconds
-2026-10-30 04:24:06.892 xcodebuild[39234:118502] [MT] IDETestOperationsObserverDebug: 740.008 elapsed -- Testing started completed.
-2026-10-30 04:24:06.892 xcodebuild[39234:118502] [MT] IDETestOperationsObserverDebug: 0.000 sec, +0.000 sec -- start
-2026-10-30 04:24:06.892 xcodebuild[39234:118502] [MT] IDETestOperationsObserverDebug: 740.009 sec, +740.009 sec -- end
-
-Test session results, code coverage, and logs:
-	/Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Logs/Test/Test-HandyTools-2026.10.30_04-10-24-+0000.xcresult
-
-** TEST SUCCEEDED **
-
-Testing started
