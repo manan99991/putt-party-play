@@ -511,45 +511,45 @@ struct ToolGridPage: View {
     }
 }
 
-/// Home grid card. AI tools get a gradient icon + a sparkle to signal the premium, on-device page.
+/// Home grid card. The tool's themed illustration fills the card as a background LAYER; a scrim
+/// fades it into the surface colour toward the bottom; the icon, name and blurb sit on top as the
+/// last ZStack layer, so they are always drawn over the art and can never be hidden by it. (The
+/// previous "solid header band + 34pt art strip" VStack collapsed on device — the greedy
+/// scaledToFill strip art expanded to the whole card and buried the text. A ZStack with the text on
+/// top is immune to that.)
 struct ToolCard: View {
     @EnvironmentObject var store: StoreManager
+    @EnvironmentObject var theme: ThemeManager
+    @Environment(\.colorScheme) private var scheme
     let tool: Tool
     var body: some View {
-        VStack(spacing: 0) {
-            // Header band — solid surface, so the icon, title and blurb are always fully crisp.
-            VStack(alignment: .leading, spacing: HandySpacing.s4) {
-                ZStack {
-                    if let asset = tool.asset {
-                        // Custom designed icon — a complete squircle tile, shown edge-to-edge.
-                        Image(asset).resizable().scaledToFill().frame(width: 30, height: 30)
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    } else if tool.ai {
-                        Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 30, height: 30)
-                        Image(systemName: tool.icon).font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
-                    } else {
-                        Circle().fill(HandyColor.accentSoft).frame(width: 30, height: 30)
-                        Image(systemName: tool.icon).font(.system(size: 15, weight: .medium)).foregroundStyle(HandyColor.accent)
-                    }
-                }
-                Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.75)
+        let artName = TenzyArt.name(id: tool.id, theme: theme.current, scheme: scheme, kind: .card)
+        ZStack(alignment: .topLeading) {
+            HandyColor.surface
+            Image(artName).resizable().scaledToFill()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .clipped()
+                .allowsHitTesting(false)
+            // Scrim: clear at the top (art shows), deepening to the surface colour at the bottom so
+            // the title/blurb read in any theme and in light or dark.
+            LinearGradient(
+                stops: [
+                    .init(color: HandyColor.surface.opacity(0.0), location: 0.30),
+                    .init(color: HandyColor.surface.opacity(0.78), location: 0.72),
+                    .init(color: HandyColor.surface.opacity(0.96), location: 1.0)
+                ],
+                startPoint: .top, endPoint: .bottom
+            )
+            VStack(alignment: .leading, spacing: 0) {
+                cardIcon
+                Spacer(minLength: HandySpacing.s4)
+                Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.7)
                 Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.8)
             }
-            .frame(maxWidth: .infinity, alignment: .topLeading)
-            .padding(.horizontal, HandySpacing.s12)
-            .padding(.top, HandySpacing.s8)
-            .padding(.bottom, HandySpacing.s4)
-
-            Spacer(minLength: 0)
-
-            // Accent strip — the tool's themed hero illustration along the bottom, fading up into
-            // the header band. Re-skins automatically with the active theme + dark mode.
-            ToolCardStripArt(id: tool.id)
-                .frame(height: 34)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .padding(HandySpacing.s12)
         }
-        // Every card is the same height so the grid reads as a tidy, uniform set.
-        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104, alignment: .top)
-        .background(HandyColor.surface)
+        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104)
         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
         .overlay(alignment: .topTrailing) {
@@ -559,6 +559,22 @@ struct ToolCard: View {
                 Image(systemName: "sparkle").font(.system(size: 10)).foregroundStyle(HandyColor.accent).padding(8)
             }
         }
+    }
+
+    @ViewBuilder private var cardIcon: some View {
+        ZStack {
+            if let asset = tool.asset {
+                Image(asset).resizable().scaledToFill().frame(width: 32, height: 32)
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            } else if tool.ai {
+                Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 32, height: 32)
+                Image(systemName: tool.icon).font(.system(size: 15, weight: .semibold)).foregroundStyle(.white)
+            } else {
+                Circle().fill(HandyColor.accentSoft).frame(width: 32, height: 32)
+                Image(systemName: tool.icon).font(.system(size: 16, weight: .medium)).foregroundStyle(HandyColor.accent)
+            }
+        }
+        .shadow(color: .black.opacity(0.35), radius: 5, y: 2)
     }
 }
 
