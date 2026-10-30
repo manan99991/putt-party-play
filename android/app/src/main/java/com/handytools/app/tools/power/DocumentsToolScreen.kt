@@ -166,18 +166,32 @@ private fun DocScanPanel(st: DocScanState) {
     fun scan() {
         val activity = DocEngine.findActivity(ctx)
         if (activity == null) { libraryPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)); return }
-        val options = GmsDocumentScannerOptions.Builder()
-            .setGalleryImportAllowed(true)
-            .setPageLimit(10)
-            .setResultFormats(GmsDocumentScannerOptions.RESULT_FORMAT_JPEG)
-            .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
-            .build()
-        GmsDocumentScanning.getClient(options).getStartScanIntent(activity)
-            .addOnSuccessListener { sender -> scanLauncher.launch(IntentSenderRequest.Builder(sender).build()) }
-            .addOnFailureListener {
-                st.status = "The camera scanner isn't available on this phone — pick a photo from Library instead."
-                libraryPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
+        // The Play-services scanner can throw synchronously (not just fail its task) on devices where
+        // the module is missing or stale — that escaped the failure listener and crashed the tool. Wrap
+        // the whole entry so any throw falls back to the Library picker instead of taking down the app.
+        try {
+            val options = GmsDocumentScannerOptions.Builder()
+                .setGalleryImportAllowed(true)
+                .setPageLimit(10)
+                .setResultFormats(GmsDocumentScannerOptions.RESULT_FORMAT_JPEG)
+                .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
+                .build()
+            GmsDocumentScanning.getClient(options).getStartScanIntent(activity)
+                .addOnSuccessListener { sender ->
+                    try { scanLauncher.launch(IntentSenderRequest.Builder(sender).build()) }
+                    catch (_: Throwable) {
+                        st.status = "The camera scanner isn't available on this phone — pick a photo from Library instead."
+                        libraryPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    }
+                }
+                .addOnFailureListener {
+                    st.status = "The camera scanner isn't available on this phone — pick a photo from Library instead."
+                    libraryPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
+        } catch (_: Throwable) {
+            st.status = "The camera scanner isn't available on this phone — pick a photo from Library instead."
+            libraryPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
     }
 
     val page = st.pages.getOrNull(st.current)
