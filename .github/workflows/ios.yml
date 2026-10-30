@@ -1,5 +1,13 @@
 name: iOS
 
+# ┌─────────────────────────────────────────────────────────────────────────────┐
+# │ INTERNAL_UNLOCK: "true" = TestFlight build is fully unlocked (Pro for every   │
+# │ install: no ads/limits, all themes + tools). FLIP TO "false" BEFORE THE        │
+# │ FIRST PRODUCTION SUBMISSION — this is the paid gate.                          │
+# └─────────────────────────────────────────────────────────────────────────────┘
+env:
+  INTERNAL_UNLOCK: "true"
+
 on:
   push:
     branches: [handytools]
