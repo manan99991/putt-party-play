@@ -36,20 +36,20 @@ Fetching from https://github.com/googleads/swift-package-manager-google-mobile-a
 
 Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
 
-Creating working copy of package ‘swift-package-manager-google-mobile-ads’
-
-Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
-
 Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
 
 Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
 
+Creating working copy of package ‘swift-package-manager-google-mobile-ads’
+
+Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
+
 
 Resolved source packages:
-  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
   GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
+  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
 
-resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
+resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
 == build.log
 Command line invocation:
     /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild build -project HandyTools.xcodeproj -scheme HandyTools -destination "generic/platform=iOS Simulator" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO "SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited)" INTERNAL_UNLOCK -skipPackagePluginValidation -skipMacroValidation
@@ -59,5 +59,5 @@ Build settings from command line:
     CODE_SIGNING_REQUIRED = NO
     SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
 
-2026-10-30 02:13:35.435 xcodebuild[7227:26203] Writing error result bundle to /var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/ResultBundle_2026-30-10_02-13-0035.xcresult
+2026-10-30 02:38:45.889 xcodebuild[1835:9011] Writing error result bundle to /var/folders/n6/hn37q6pj7sj_9dmqqc2113800000gn/T/ResultBundle_2026-30-10_02-38-0045.xcresult
 xcodebuild: error: Unknown build action 'INTERNAL_UNLOCK'.
