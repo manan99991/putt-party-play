@@ -39,7 +39,7 @@ struct TranslateView: View {
                 "The translation appears below; tap the speaker to hear it.",
                 "Swap the languages with the arrows for a two-way chat.",
             ])
-            HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; errorText = nil } }
             }
             languageBar

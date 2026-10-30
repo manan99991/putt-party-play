@@ -185,7 +185,7 @@ struct VideoView: View {
             HStack { Text("From \(Self.clock(gifFrom))").font(HandyFont.caption).monospacedDigit().frame(width: 90, alignment: .leading); Slider(value: $gifFrom, in: 0...max(0.5, duration - 0.5)).tint(HandyColor.accent) }
             HStack { Text("Length \(String(format: "%.1fs", gifLength))").font(HandyFont.caption).monospacedDigit().frame(width: 90, alignment: .leading); Slider(value: $gifLength, in: 0.5...max(0.6, min(10, duration))).tint(HandyColor.accent) }
             HStack { Text("Speed \(String(format: "%.1f×", gifSpeed))").font(HandyFont.caption).monospacedDigit().frame(width: 90, alignment: .leading); Slider(value: $gifSpeed, in: 0.5...3, step: 0.5).tint(HandyColor.accent) }
-            HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(0..<gifWidths.count, id: \.self) { i in HChip(text: gifWidths[i].0, selected: gifWidthIdx == i) { gifWidthIdx = i } }
             }
             HStack(spacing: HandySpacing.s8) {
@@ -199,7 +199,7 @@ struct VideoView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text("\(gifPhotos.count) photos → one looping GIF").font(HandyFont.bodyStrong)
             HStack { Text("Each frame \(String(format: "%.1fs", gifPhotoDelay))").font(HandyFont.caption).monospacedDigit().frame(width: 110, alignment: .leading); Slider(value: $gifPhotoDelay, in: 0.1...2, step: 0.1).tint(HandyColor.accent) }
-            HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(0..<gifWidths.count, id: \.self) { i in HChip(text: gifWidths[i].0, selected: gifWidthIdx == i) { gifWidthIdx = i } }
             }
             if !store.isPremium { QuotaChip(name: "video", limit: Limits.freeVideoPerDay).environmentObject(store) }

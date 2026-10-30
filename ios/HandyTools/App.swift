@@ -497,17 +497,26 @@ struct ToolGridPage: View {
     let page: Int
     private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
-                ForEach(tools(onPage: page)) { t in
-                    NavigationLink(value: t.id) { ToolCard(tool: t) }.buttonStyle(ToolCardPress())
+        GeometryReader { geo in
+            let items = tools(onPage: page)
+            let rows = max(1, Int(ceil(Double(items.count) / 2.0)))   // 2 columns
+            let vInsets = HandySpacing.s4 + HandySpacing.s12          // top + bottom padding below
+            let gaps = HandySpacing.s12 * CGFloat(rows - 1)
+            // Grow the rows to fill the page as equal blocks; never below the readable minimum (then it
+            // scrolls on a short phone instead of clipping). This removes the dead space at the bottom.
+            let rowH = max(104, (geo.size.height - vInsets - gaps) / CGFloat(rows))
+            ScrollView {
+                LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
+                    ForEach(items) { t in
+                        NavigationLink(value: t.id) { ToolCard(tool: t, height: rowH) }.buttonStyle(ToolCardPress())
+                    }
                 }
+                .padding(.horizontal, HandySpacing.gutter)
+                .padding(.top, HandySpacing.s4)
+                .padding(.bottom, HandySpacing.s12)
             }
-            .padding(.horizontal, HandySpacing.gutter)
-            .padding(.top, HandySpacing.s4)
-            .padding(.bottom, HandySpacing.s12)
+            .scrollBounceBehavior(.basedOnSize)
         }
-        .scrollBounceBehavior(.basedOnSize)
     }
 }
 
@@ -522,6 +531,7 @@ struct ToolCard: View {
     @EnvironmentObject var theme: ThemeManager
     @Environment(\.colorScheme) private var scheme
     let tool: Tool
+    var height: CGFloat = 104   // grid passes a taller value to fill the screen evenly; search keeps the default
     var body: some View {
         let artName = TenzyArt.name(id: tool.id, theme: theme.current, scheme: scheme, kind: .card)
         ZStack {
@@ -541,7 +551,7 @@ struct ToolCard: View {
                 startPoint: .top, endPoint: .bottom
             )
         }
-        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104)
+        .frame(maxWidth: .infinity, minHeight: height, maxHeight: height)
         .overlay(alignment: .bottomLeading) {
             // Anchored to the bottom as an overlay (sized to its own content), so it can never
             // overflow or be clipped by the card the way a greedy VStack did.

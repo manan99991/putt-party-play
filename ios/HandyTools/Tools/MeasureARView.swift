@@ -46,9 +46,8 @@ struct MeasureARView: View {
                         .padding(.bottom, HandySpacing.s12)
                     }.allowsHitTesting(false)
                 }
-                HStack(spacing: HandySpacing.s8) {
+                HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; ar.reset() } }
-                    Spacer()
                 }
                 Picker("Units", selection: $metric) { Text("ft/in").tag(false); Text("m/cm").tag(true) }.pickerStyle(.segmented).frame(width: 160)
                 HStack(spacing: HandySpacing.s8) {

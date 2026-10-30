@@ -14,6 +14,8 @@ struct FormatFixView: View {
     @State private var outputs: [URL] = []
     @State private var working = false
     @State private var progress = ""
+    @State private var progressValue = 0.0
+    @State private var skippedNote: String?
     @State private var errorText: String?
 
     private enum Kind { case image, video }
@@ -56,11 +58,13 @@ struct FormatFixView: View {
                 if !store.isPremium { Text("Free converts up to 10 at once. Pro: unlimited.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
 
                 Button { convert() } label: {
-                    HStack { if working { ProgressView().tint(.white) }; Text(working ? "Converting \(progress)" : "Convert \(loaded.count)") }.frame(maxWidth: .infinity)
+                    Text(working ? (progressValue > 0 ? "Converting… \(Int(progressValue * 100))%" : "Converting…") : "Convert \(loaded.count)").frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working || overQuota)
+                if working { ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: progress) }
             }
 
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+            if let skippedNote { Label(skippedNote, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
 
             if !outputs.isEmpty {
                 ShareLink(items: outputs) { Label("Save or share (\(outputs.count))", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
@@ -85,25 +89,31 @@ struct FormatFixView: View {
 
     private func convert() {
         guard Usage.hasRoom("formatfix", limit: Limits.freeConvertPerDay) else { return }
-        working = true; outputs = []; errorText = nil
+        working = true; progressValue = 0; outputs = []; errorText = nil; skippedNote = nil
         let batch = loaded, fmt = imageFormat
         Task {
             var urls: [URL] = []
+            let total = Double(batch.count)
             for (i, entry) in batch.enumerated() {
-                await MainActor.run { progress = "\(i + 1)/\(batch.count)…" }
+                let base = Double(i)
+                await MainActor.run { progress = batch.count == 1 ? "Converting your file…" : "Converting \(i + 1) of \(batch.count)…" }
                 switch entry.kind {
                 case .image:
-                    guard let img = entry.image, let u = await Self.encodeImage(img, fmt: fmt, index: i) else { continue }
-                    urls.append(u)
+                    if let img = entry.image, let u = await Self.encodeImage(img, fmt: fmt, index: i) { urls.append(u) }
                 case .video:
-                    guard let src = entry.url, let out = await VideoEngine.toMP4(src) else { continue }
-                    urls.append(out)
+                    if let src = entry.url, let out = await VideoEngine.toMP4(src, progress: { f in Task { @MainActor in progressValue = (base + f) / total } }) { urls.append(out) }
                 }
+                await MainActor.run { progressValue = (base + 1) / total }
             }
             let done = urls
             await MainActor.run {
                 outputs = done; working = false; progress = ""
-                if done.isEmpty { errorText = "Nothing could be converted. Try a different batch." } else { _ = Usage.use("formatfix", limit: Limits.freeConvertPerDay); HandyHaptics.success() }
+                if done.isEmpty { errorText = "Nothing could be converted. Try a different batch." }
+                else {
+                    _ = Usage.use("formatfix", limit: Limits.freeConvertPerDay); HandyHaptics.success()
+                    // Say plainly when some files couldn't be read, instead of silently dropping them.
+                    if done.count < batch.count { skippedNote = "Converted \(done.count) of \(batch.count). \(batch.count - done.count) couldn't be read and were skipped." }
+                }
             }
         }
     }
