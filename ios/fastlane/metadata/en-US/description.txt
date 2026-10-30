@@ -1,21 +1,47 @@
-Tenzy is ten powerful tools in one app — the jobs your phone usually makes you download a separate app for, with no sign-ups and no "upload to our servers." Everything runs right on your iPhone.
+Tenzy is 30 small tools in one app — the stuff your phone makes you dig for, download five separate apps for, or just can't do on its own.
 
-I built it because my home screen had become a graveyard of single-use utilities: one to shrink a photo under an email limit, one to scan a PDF, one to read a sign in another language, one to check whether a text was a scam. Tenzy is all of them in one place, built around ten tools that go deep instead of thirty that go thin.
+I built it because my home screen had become a graveyard of single-use utilities: one app to shrink a photo under an email limit, another to scan a PDF, another to read a sign in a different language, another to dig a Wi-Fi password out of a screenshot. Tenzy is all of them in one place — and most of it runs right on your phone. No account, no sign-up, nothing uploaded.
 
-THE TEN TOOLS
-• Capture — point the camera at a receipt, bill, business card, flyer or document and Tenzy does the next step: save the receipt and its total, add the event to your calendar, save the contact, pull a table into a spreadsheet, translate it, or read it aloud.
-• Documents — scan pages to a clean, searchable PDF, sign and fill, merge, split and compress — and Word Finder, which searches a word or phrase across all your PDFs, Word, Excel and text files at once.
-• Media Studio — get any photo or video ready to send, post or print: shrink to an exact size, remove or swap the background, redact faces and private details, strip location data, make a passport photo, convert HEIC and MOV.
-• Clean Up — free real space: duplicate and look-alike photos, the screenshot pile, big videos — plus tidy duplicate contacts. Everything goes to Recently Deleted first, never deleted outright.
-• Voice Notes — record or import, get a transcript on your phone, a summary and your to-dos, trim a clip, keep it in a searchable library. Live Captions for any conversation.
-• Translate — text, camera and two-way conversation, offline once a language is downloaded.
-• Instruments — your phone's toolbox: level, compass, sound and light meters, altimeter, metal detector, ruler, AR tape measure, magnifier and GPS dashboard.
-• Flashlight+ — brightness control, strobe, SOS and a Morse flasher, a full-screen lamp, a colour lamp and a selfie mirror.
-• Safety — paste a suspicious text, link or number, or scan a QR code, and see whether it's a scam and exactly why. Plus a Face ID vault for private photos and notes.
-• Share & Connect — make and scan QR and Wi-Fi codes, and send a file to any nearby device over Wi-Fi — no cable, no cloud.
+EVERYDAY
+• Fit It — shrink a photo, PDF or video under an exact size limit (25 MB for email, whatever a portal demands)
+• Scan — scan documents, pull out the text, sign and fill PDFs
+• Studio — enhance, upscale, cut out backgrounds, make passport photos, resize
+• Video — shrink, trim, convert, make a GIF
+• Format Fixer — HEIC and MOV to JPG and MP4, in batch
+• Privacy Scrubber — strip GPS and metadata, redact faces and plates for good
+• Cleaner — find duplicates and big files and free up space
+• Contacts — find duplicate contacts, merge them without losing a number, and back them up to a file
+• QR & Wi-Fi — scan, make and share Wi-Fi codes
+• Long Screenshot — stitch a scrolling chat into one tall image
+• Share-Ready — one tap to convert, strip and shrink before you send
+
+TOOLS & INSTRUMENTS
+• Flashlight+ — strobe, SOS, screen light, mirror
+• Measure — an AR tape for distance, height and area, plus a level, compass, decibel meter and light meter
+• Magnifier+ — zoom, freeze and boost contrast on fine print
+• Pro Camera — manual ISO, shutter and RAW
+• GPS Dashboard — speed, heading, altitude, HUD
+• Audio Lab — instrument tuner, test tones, speaker test
+• Rest — white noise and a snore recorder
+• Color Vision — live color-blind correction and color naming
+• Sorted — snap a bill or letter and it lands in your calendar
+
+ON-DEVICE AI
+• Text Studio — fix, rewrite, reply, summarize
+• Translate — text, camera and voice, offline
+• Voice to Notes — a transcript, a summary and your to-dos from any recording
+• Live Captions — real-time captions, private
+• Message Shield — spot a scam text and see why it's flagged
+• Lens — read, simplify or hear any text out loud
+• Memory — ask your screenshots anything ("what was that Wi-Fi password?")
+• Data Grabber — turn a receipt into rows, contacts or calendar dates
+• Scene Describer — hear what the camera is pointed at
+• Vault — a Face ID locker for private photos and notes
+
+The AI tools use the model built into your iPhone, so they work offline and nothing leaves the device.
 
 FREE TOOLS, WITH TENZY PRO FOR THE REST
-Flashlight+, Instruments, Clean Up and Translate are free. The rest are part of the optional Tenzy Pro subscription — start with a 3-day free trial, then $19.99/year, and it removes every ad. One person builds and maintains this app; Pro is what keeps it going.
+Eight everyday tools are free: Flashlight, QR & Wi-Fi, Magnifier, Measure, Cleaner, Translate, Live Captions and the Face ID Vault. The photo, video and PDF tools, the on-device AI tools and Contacts are Tenzy Pro — start with a 3-day free trial, then $19.99/year. One person builds and maintains this app; Pro is what keeps it going.
 
 PRIVACY
 Your files stay on your device. There's no account and no tracking of what you do inside the app. The only data collected is the standard advertising identifier used by the ad provider to show and count ads — and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/putt-party-play/privacy.html

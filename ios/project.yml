@@ -17,7 +17,7 @@ settings:
     # class of audio-callback crashes at once instead of annotating each callback individually.
     SWIFT_VERSION: "5.0"
     DEVELOPMENT_TEAM: "YOUR_TEAM_ID"      # <- Apple Developer team id
-    MARKETING_VERSION: "1.3.0"
+    MARKETING_VERSION: "1.2.37"
     CURRENT_PROJECT_VERSION: "1"
     TARGETED_DEVICE_FAMILY: "1,2"
     SWIFT_STRICT_CONCURRENCY: minimal
@@ -76,7 +76,6 @@ targets:
         NSSpeechRecognitionUsageDescription: Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded.
         NSPhotoLibraryUsageDescription: Needed to read text from screenshots, view or strip photo metadata, and find large or duplicate photos and videos you choose to remove. iOS always asks you to confirm a deletion.
         NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.
-        NSLocalNetworkUsageDescription: Needed to send a file to another device on your Wi-Fi. The file goes straight between the two devices and never leaves your network.
         NSFaceIDUsageDescription: Used to unlock your Secure Vault so only you can open your private notes and photos.
         NSContactsUsageDescription: Needed to find duplicate contacts, merge them without losing a number, and back them up to a file. Your contacts stay on this phone and are never uploaded.
         NSSupportsLiveActivities: true

@@ -33,12 +33,6 @@ final class Torch: ObservableObject {
     private var autoOff: Task<Void, Never>?
     @Published var autoOffMinutes = 0 { didSet { armAutoOff() } }
     @Published private(set) var morseText = ""
-    /// 0…1 through the current Morse message (drives the hub's progress bar).
-    @Published private(set) var morseProgress = 0.0
-    /// What the LED is doing right now, published so an on-screen lamp can mirror every blink — and
-    /// so the patterns still show on devices with no torch (simulator) instead of doing nothing.
-    @Published private(set) var lit = false
-    @Published private(set) var litLevel: Float = 0
     private var device: AVCaptureDevice? { AVCaptureDevice.default(for: .video) }
     var available: Bool { device?.hasTorch == true }
 
@@ -54,17 +48,14 @@ final class Torch: ObservableObject {
         text.uppercased().split(separator: " ").map { word in word.compactMap { morse[$0] }.joined(separator: " ") }.filter { !$0.isEmpty }.joined(separator: " / ")
     }
 
-    /// Blink a message in Morse (dot = 1 unit, dash = 3, gaps 1/3/7). Repeats until stopped by
-    /// default; `repeats: false` plays it once and turns the torch off at the end.
-    func flashMorse(_ text: String, unitMs: Int = 180, repeats: Bool = true) {
+    /// Blink a message in Morse (dot = 1 unit, dash = 3, gaps 1/3/7), repeating until stopped.
+    func flashMorse(_ text: String, unitMs: Int = 180) {
         let code = Self.encodeMorse(text)
         guard !code.isEmpty else { return }
-        morseText = text; mode = .steady; isOn = true; morseProgress = 0
+        morseText = text; mode = .steady; isOn = true
         task?.cancel()
-        let total = Double(code.reduce(0) { $0 + Self.morseUnits($1) })
         task = Task {
-            repeat {
-                var done = 0.0
+            while !Task.isCancelled {
                 for ch in code {
                     if Task.isCancelled { return }
                     switch ch {
@@ -74,20 +65,11 @@ final class Torch: ObservableObject {
                     case "/": try? await Task.sleep(for: .milliseconds(unitMs * 4))
                     default: break
                     }
-                    done += Double(Self.morseUnits(ch))
-                    morseProgress = total > 0 ? min(1, done / total) : 1
                 }
-                if !repeats { break }
                 try? await Task.sleep(for: .milliseconds(unitMs * 7))
-            } while !Task.isCancelled
-            if !repeats, !Task.isCancelled { stop() }
+            }
         }
         armAutoOff()
-    }
-
-    /// Time units a Morse symbol occupies, including its trailing gap (for the progress bar).
-    private static func morseUnits(_ ch: Character) -> Int {
-        switch ch { case ".": return 2; case "-": return 4; case " ": return 2; case "/": return 4; default: return 0 }
     }
 
     private func armAutoOff() {
@@ -99,19 +81,18 @@ final class Torch: ObservableObject {
 
     /// Tap a pattern: same one while on → off; otherwise switch to it and turn on.
     func select(_ m: Mode) {
-        morseText = ""; morseProgress = 0
+        morseText = ""
         if isOn && mode == m { stop() } else { mode = m; isOn = true; restart(); armAutoOff() }
     }
 
     func stop() {
-        isOn = false; morseText = ""; morseProgress = 0
+        isOn = false; morseText = ""
         task?.cancel(); task = nil
         autoOff?.cancel(); autoOff = nil
         set(false)
     }
 
     private func set(_ on: Bool, _ lvl: Float? = nil) {
-        lit = on; litLevel = on ? max(0.01, min(1, lvl ?? level)) : 0
         guard let d = device, d.hasTorch else { return }
         try? d.lockForConfiguration()
         if on { try? d.setTorchModeOn(level: max(0.01, min(1, lvl ?? level))) } else { d.torchMode = .off }
@@ -257,8 +238,7 @@ struct FlashlightView: View {
 }
 
 /// The whole screen as a lamp: pick a tone, slide the brightness, tap to dismiss. Keeps the screen awake.
-/// (Internal, not private: the Flashlight+ hub presents it too.)
-struct ScreenLightSheet: View {
+private struct ScreenLightSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var toneIdx = 0
     @State private var brightness: Double = 1
@@ -291,15 +271,13 @@ struct ScreenLightSheet: View {
 }
 
 /// Front camera as a mirror: zoom, freeze, and a bright white border to light your face.
-/// (Internal, not private: the Flashlight+ hub presents it too.)
-struct MirrorSheet: View {
+private struct MirrorSheet: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var cam = FrameCamera()
     @State private var holder = MetalViewHolder()
     @State private var zoom: CGFloat = 1
     @State private var frozen = false
     @State private var lit = true
-    @State private var savedBrightness: CGFloat = UIScreen.main.brightness
     var body: some View {
         ZStack {
             (lit ? Color.white : Color.black).ignoresSafeArea()
@@ -326,7 +304,7 @@ struct MirrorSheet: View {
             .foregroundStyle(lit ? .black : .white)
         }
         .statusBarHidden()
-        .onAppear { savedBrightness = UIScreen.main.brightness; cam.start(preset: .hd1280x720, position: .front); UIScreen.main.brightness = 1 }
-        .onDisappear { cam.stop(); UIScreen.main.brightness = savedBrightness }
+        .onAppear { cam.start(preset: .hd1280x720, position: .front); UIScreen.main.brightness = 1 }
+        .onDisappear { cam.stop() }
     }
 }

@@ -69,27 +69,51 @@ struct Tool: Identifiable {
     let page: Int
     var ai: Bool = false
     var asset: String? = nil      // custom icon image in the asset catalog; nil → the SF Symbol `icon`
-    var card: String? = nil       // home-card art (design kit, 1290×440, art on the right third)
     var keywords: [String] = []   // synonyms that power search
 
     /// The everyday basics stay free; everything else is a Pro tool. One place to tune the split.
-    static let freeIDs: Set<String> = ["flashlight", "instruments", "cleanup", "translate"]
+    static let freeIDs: Set<String> = ["light", "qrwifi", "magnify", "measure", "cleaner", "translate", "livecaptions", "vault"]
     var pro: Bool { !Tool.freeIDs.contains(id) }
 }
 
-/// The catalog: 10 power tools, one screen. Each merges several of the earlier single-purpose tools
-/// into one deep hub (see Tools/Hubs). `asset` is the claymorphic icon, `card` the home-card art.
+/// The full catalog: 30 tools across 3 pages of 10.
+///   Page 1 — the ones reached for daily.
+///   Page 2 — handy extras.
+///   Page 3 — AI, running free and private on-device (with a graceful fallback on older phones).
 @MainActor let TOOLS: [Tool] = [
-    Tool(id: "capture",     name: "Capture",         blurb: "Scan anything → act on it",   icon: "viewfinder",                page: 1, ai: true, asset: "ptool_capture",     card: "card_capture",     keywords: ["capture","scan","camera","ocr","receipt","business card","contact","calendar","flyer","read","aloud","translate","extract","csv","table","bill","lens","data","live text","code"]),
-    Tool(id: "documents",   name: "Documents",       blurb: "Scan, sign, merge, find",     icon: "doc.viewfinder.fill",       page: 1, asset: "ptool_documents",   card: "card_documents",   keywords: ["document","documents","scan","scanner","pdf","sign","signature","fill","form","merge","split","compress","ocr","searchable","word","find","search","finder","invoice","file","doc","excel","text","paper","pages"]),
-    Tool(id: "media",       name: "Media Studio",    blurb: "Shrink, cut out, redact",     icon: "photo.on.rectangle.angled", page: 1, asset: "ptool_media",       card: "card_media",       keywords: ["photo","image","video","shrink","compress","resize","smaller","size","mb","fit","background","remove","cutout","redact","blur","passport","id photo","convert","heic","jpg","mp4","mov","gif","trim","enhance","metadata","exif","strip","share ready","send","upload"]),
-    Tool(id: "cleanup",     name: "Clean Up",        blurb: "Free space & tidy contacts",  icon: "sparkles",                  page: 1, asset: "ptool_cleanup",     card: "card_cleanup",     keywords: ["clean","cleaner","space","storage","duplicate","duplicates","photos","screenshots","videos","large","big","free up","full","contacts","merge","dedupe","declutter","trash","backup","vcf"]),
-    Tool(id: "voice",       name: "Voice Notes",     blurb: "Record, transcribe, trim",    icon: "waveform.badge.mic",        page: 1, ai: true, asset: "ptool_voice",       card: "card_voice",       keywords: ["voice","record","recorder","transcribe","transcript","speech","notes","dictate","trim","audio","memo","meeting","summary","to-dos","captions","live captions","hearing"]),
-    Tool(id: "translate",   name: "Translate",       blurb: "Text, camera & voice",        icon: "character.bubble.fill",     page: 1, asset: "ptool_translate",   card: "card_translate",   keywords: ["translate","translation","language","camera","voice","conversation","offline","foreign","spanish","french","menu","sign"]),
-    Tool(id: "instruments", name: "Instruments",     blurb: "Level, compass, meters",      icon: "level",                     page: 1, asset: "ptool_instruments", card: "card_instruments", keywords: ["measure","level","compass","north","sound","decibel","db","light","lux","altitude","barometer","metal","detector","ruler","magnifier","magnify","zoom","sensor","tape","ar","distance","speed","gps","speedometer"]),
-    Tool(id: "flashlight",  name: "Flashlight+",     blurb: "Strobe, SOS, screen light",   icon: "flashlight.on.fill",        page: 1, asset: "ptool_flashlight",  card: "card_flashlight",  keywords: ["flashlight","torch","light","strobe","sos","morse","screen","mirror","selfie","brightness","lamp","dark","blink"]),
-    Tool(id: "safety",      name: "Safety",          blurb: "Spot scams & bad links",      icon: "shield.lefthalf.filled",    page: 1, ai: true, asset: "ptool_safety",      card: "card_safety",      keywords: ["scam","safety","phishing","fraud","link","text","sms","email","qr","suspicious","check","protect","shield","fake","spam","vault","lock","face id","private","secure"]),
-    Tool(id: "share",       name: "Share & Connect", blurb: "QR, Wi‑Fi & file transfer",   icon: "qrcode",                    page: 1, asset: "ptool_share",       card: "card_share",       keywords: ["share","send","transfer","file","qr","barcode","wifi","wi-fi","password","guest","nearby","network","connect","airdrop","code","speed test"]),
+    // ── Page 1 · Files, photos & docs ───────────────────────────────────
+    Tool(id: "fitit",      name: "Fit It",           blurb: "Shrink to an exact size limit",     icon: "square.resize.down",                  page: 1, asset: "tool_fitit", keywords: ["compress","size","mb","kb","limit","upload","email","shrink","reduce","smaller","too big","pdf","photo","video","fit"]),
+    Tool(id: "scan",       name: "Scan",             blurb: "Scan, OCR, sign & fill PDFs",       icon: "doc.viewfinder.fill",                 page: 1, asset: "tool_scan", keywords: ["scan","scanner","document","pdf","ocr","sign","signature","fill","form","flatten","merge","split","pages","business card","handwriting"]),
+    Tool(id: "studio",     name: "Studio",           blurb: "Enhance, cut out, passport, resize", icon: "photo.on.rectangle.angled",           page: 1, asset: "tool_studio", keywords: ["photo","image","enhance","upscale","sharpen","denoise","auto","fix","background","remove","cutout","passport","id photo","resize","convert","heic","jpg","png","crop"]),
+    Tool(id: "video",      name: "Video",            blurb: "Shrink, trim, convert, GIF",        icon: "film.stack.fill",                     page: 1, asset: "tool_video", keywords: ["video","compress","shrink","trim","cut","convert","mp4","mov","mute","audio","extract","gif","clip"]),
+    Tool(id: "formatfix",  name: "Format Fixer",     blurb: "HEIC/MOV → JPG/MP4, in batch",      icon: "arrow.triangle.2.circlepath",         page: 1, asset: "tool_formatfix", keywords: ["heic","jpg","jpeg","png","mov","mp4","convert","format","batch","won't open","upload","share"]),
+    Tool(id: "scrub",      name: "Privacy Scrubber", blurb: "Strip location, redact for good",   icon: "eye.slash.fill",                      page: 1, asset: "tool_scrub", keywords: ["privacy","metadata","exif","gps","location","strip","redact","blur","face","plate","hide","censor","share safe"]),
+    Tool(id: "cleaner",    name: "Cleaner",          blurb: "Free space: dupes & big files",     icon: "sparkles",                            page: 1, asset: "tool_cleaner", keywords: ["clean","cleaner","storage","space","free up","duplicate","duplicates","screenshots","large","big","videos","photos","photo","images","image","pictures","delete","declutter","full"]),
+    Tool(id: "qrwifi",     name: "QR & Wi‑Fi",       blurb: "Scan, make & share Wi‑Fi codes",    icon: "qrcode",                              page: 1, asset: "tool_qrwifi", keywords: ["qr","code","barcode","wifi","wi-fi","password","share","guest","generate","make","scan"]),
+    Tool(id: "stitch",     name: "Long Screenshot",  blurb: "Stitch shots into one tall image",  icon: "rectangle.split.1x2.fill",            page: 1, asset: "tool_stitch", keywords: ["screenshot","long","stitch","scroll","combine","merge","tall","chat","thread","full page"]),
+    Tool(id: "shareready", name: "Share‑Ready",      blurb: "One tap: convert, strip, shrink",   icon: "square.and.arrow.up.fill",            page: 1, asset: "tool_shareready", keywords: ["share","upload","ready","convert","strip","metadata","shrink","recipe","one tap","portal","send"]),
+    // ── Page 2 · Camera, sensors & everyday ─────────────────────────────
+    Tool(id: "light",      name: "Flashlight+",      blurb: "Strobe, SOS, screen light, mirror", icon: "flashlight.on.fill",                  page: 2, asset: "tool_light", keywords: ["flashlight","torch","light","strobe","sos","morse","screen light","mirror","selfie","dark","blink"]),
+    Tool(id: "contacts",   name: "Contacts",         blurb: "Find duplicates, merge & back up",  icon: "person.2.fill",                       page: 2, asset: "tool_contacts", keywords: ["contacts","duplicate","duplicates","merge","dedupe","de-dupe","backup","back up","vcf","vcard","export","phone","address book","clean up contacts"]),
+    Tool(id: "measure",    name: "Measure",          blurb: "AR tape: distance, height, area",   icon: "ruler.fill",                          page: 2, asset: "tool_measure", keywords: ["measure","tape","ruler","distance","height","area","room","ar","lidar","length","how tall","how far"]),
+    Tool(id: "magnify",    name: "Magnifier+",       blurb: "Zoom, freeze, high‑contrast",       icon: "plus.magnifyingglass",                page: 2, asset: "tool_magnify", keywords: ["magnifier","magnify","zoom","fine print","read","small text","freeze","contrast","loupe","glasses"]),
+    Tool(id: "procam",     name: "Pro Camera",       blurb: "Manual ISO, shutter, RAW",          icon: "camera.aperture",                     page: 2, asset: "tool_procam", keywords: ["camera","manual","iso","shutter","exposure","raw","dng","focus","long exposure","night","timelapse","histogram"]),
+    Tool(id: "gpsdash",    name: "GPS Dashboard",    blurb: "Speed, heading, altitude, HUD",     icon: "speedometer",                         page: 2, asset: "tool_gpsdash", keywords: ["speed","speedometer","gps","heading","altitude","hud","trip","drive","bike","mph","kph","dashboard"]),
+    Tool(id: "audiolab",   name: "Audio Lab",        blurb: "Tuner, tones, speaker test",        icon: "waveform",                            page: 2, asset: "tool_audiolab", keywords: ["tuner","guitar","pitch","tone","frequency","generator","speaker","test","earbuds","left right","water","eject","sound"]),
+    Tool(id: "rest",       name: "Rest",             blurb: "White noise + snore recorder",      icon: "moon.zzz.fill",                       page: 2, asset: "tool_rest", keywords: ["sleep","white noise","pink","brown","rain","fan","noise","timer","snore","record","night","relax","focus"]),
+    Tool(id: "colorvision",name: "Color Vision",     blurb: "Live color‑blind correction",       icon: "eyeglasses",                          page: 2, asset: "tool_colorvision", keywords: ["color","colour","blind","colorblind","daltonize","correct","name the color","what color","red green","accessibility","eyedropper","hex","paint"]),
+    Tool(id: "sorted",     name: "Sorted",           blurb: "Snap a bill → calendar it",         icon: "calendar.badge.plus",                 page: 2, ai: true, asset: "tool_sorted", keywords: ["sorted","bill","letter","mail","document","appointment","form","notice","invoice","due","deadline","calendar","remind","reminder","scan","amount","pay","admin","paperwork"]),
+    // ── Page 3 · Words, AI & accessibility ──────────────────────────────
+    Tool(id: "textstudio", name: "Text Studio",      blurb: "Fix, rewrite, reply, summarize",    icon: "text.badge.checkmark",                page: 3, ai: true, asset: "tool_textstudio", keywords: ["text","grammar","proofread","rewrite","tone","reply","summarize","summary","edit","polish","email","message","ai"]),
+    Tool(id: "translate",  name: "Translate",        blurb: "Text, camera, voice — offline",     icon: "character.bubble.fill",               page: 3, asset: "tool_translate", keywords: ["translate","translation","language","offline","camera","voice","conversation","spanish","french","menu","sign"]),
+    Tool(id: "voicenotes", name: "Voice → Notes",    blurb: "Transcript, summary, to‑dos",       icon: "waveform.badge.mic",                  page: 3, ai: true, asset: "tool_voicenotes", keywords: ["voice","record","transcribe","transcript","meeting","notes","summary","action items","dictation","audio","speech","ai"]),
+    Tool(id: "livecaptions",name: "Live Captions",   blurb: "Real‑time captions, private",       icon: "captions.bubble.fill",                page: 3, ai: true, asset: "tool_livecaptions", keywords: ["captions","live","subtitles","hearing","deaf","hard of hearing","conversation","transcribe","accessibility","real time"]),
+    Tool(id: "shield",     name: "Message Shield",   blurb: "Spot scams, see why",               icon: "shield.lefthalf.filled",              page: 3, ai: true, asset: "tool_shield", keywords: ["scam","phishing","spam","fraud","suspicious","text","email","link","safe","check","is this real","mom","ai"]),
+    Tool(id: "lens",       name: "Lens",             blurb: "Read, simplify or hear any text",   icon: "text.viewfinder",                     page: 3, ai: true, asset: "tool_lens", keywords: ["lens","read","aloud","listen","tts","speak","ocr","camera","text","copy","scan","pdf","link","article","explain","plain english","simplify","jargon","legal","medical","summarize","gist","dyslexia","accessibility"]),
+    Tool(id: "memory",     name: "Memory",           blurb: "Ask your screenshots anything",     icon: "doc.text.magnifyingglass",            page: 3, ai: true, asset: "tool_memory", keywords: ["memory","find","search","photos","screenshot","screenshots","wifi","password","code","confirmation","parking","remember","where","receipt","ask","my photos","camera roll","saved"]),
+    Tool(id: "datagrab",   name: "Data Grabber",     blurb: "Receipt → rows, contacts, dates",   icon: "tablecells.fill",                     page: 3, ai: true, asset: "tool_datagrab", keywords: ["receipt","table","data","extract","csv","spreadsheet","contact","business card","calendar","event","expense","ai"]),
+    Tool(id: "describe",   name: "Scene Describer",  blurb: "Hear what the camera sees",         icon: "eye.fill",                            page: 3, ai: true, asset: "tool_describe", keywords: ["describe","scene","blind","low vision","narrate","speak","what is in front","accessibility","camera","see"]),
+    Tool(id: "vault",      name: "Vault",            blurb: "Face ID locker",                    icon: "lock.fill",                           page: 3, asset: "tool_vault", keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","files","cards","safe"]),
 ]
 
 /// Words that mean the same thing to a user. A query token is expanded to its whole group before
@@ -137,7 +161,7 @@ enum SearchSynonyms {
     }
 }
 
-/// Google-style ranked search across all 10 tools: best matches first, then ok ones. Query tokens are
+/// Google-style ranked search across all 30 tools: best matches first, then ok ones. Query tokens are
 /// expanded through SearchSynonyms, so related words ("image"→photo, "movie"→video) still find the tool.
 @MainActor func searchTools(_ raw: String) -> [Tool] {
     let query = raw.lowercased().trimmingCharacters(in: .whitespaces)
@@ -225,18 +249,7 @@ struct ToolDestination: View {
 
     @ViewBuilder private var destination: some View {
         switch id {
-        // ── The 10 power tools (hubs in Tools/Hubs) ──
-        case "capture": CaptureHub()
-        case "documents": DocumentsHub()
-        case "media": MediaHub()
-        case "cleanup": CleanupHub()
-        case "voice": VoiceHub()
-        case "translate": TranslateHub()
-        case "instruments": InstrumentsHub()
-        case "flashlight": FlashlightHub()
-        case "safety": SafetyHub()
-        case "share": ShareHub()
-        // ── Legacy single-tool routes (still reachable by deep link) ──
+        // ── Page 1 ──
         case "fitit": FitItView()
         case "scan": ScanView()
         case "studio": StudioView()
@@ -304,17 +317,21 @@ enum Launch {
 
 struct HomeView: View {
     @EnvironmentObject var store: StoreManager
-    @ObservedObject private var theme = ThemeManager.shared   // re-skin live on a theme change
+    @ObservedObject private var theme = ThemeManager.shared   // re-skin the home grid live on a theme change
     @State private var showPaywall = false
+    @State private var page = 1
     @State private var search = ""
     @FocusState private var searching: Bool
     @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" || $0 == "home" || $0 == "homepro" ? nil : [$0] } ?? []
 
-    /// True while the search box has text — the grid is replaced by ranked results.
+    private let captions = ["Everyday essentials", "Power tools", "AI · on your phone"]
+
+    /// True while the search box has text — the grid is replaced by results that span every page.
     private var hasSearch: Bool { !search.trimmingCharacters(in: .whitespaces).isEmpty }
+    /// Subtitle under the wordmark: a live result count while searching, else the page name.
     private var headerCaption: String {
         if hasSearch { let n = searchTools(search).count; return "\(n) result\(n == 1 ? "" : "s")" }
-        return "10 power tools · on your phone"
+        return store.isPremium ? "Pro · no ads" : captions[page - 1]
     }
 
     var body: some View {
@@ -324,23 +341,20 @@ struct HomeView: View {
                 SearchField(text: $search, focused: $searching)
                     .padding(.horizontal, HandySpacing.gutter)
                     .padding(.bottom, HandySpacing.s8)
-                if !hasSearch { PowerGrid(tools: TOOLS) } else { SearchResults(query: search) }
+                if !hasSearch {
+                    TabView(selection: $page) {
+                        ForEach(1...3, id: \.self) { p in
+                            ToolGridPage(page: p).tag(p)
+                        }
+                    }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                } else {
+                    SearchResults(query: search)
+                }
                 BannerAd()
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            // The kit's home backdrop is always dark, so the header text is always light — in every
-            // theme. Constrained + clipped so the image can never size the layout (on iPad an
-            // unclipped scaledToFill image pushed the header and search field above the window).
-            .background {
-                ZStack {
-                    HandyColor.bg
-                    Image("home_backdrop").resizable().scaledToFill()
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                        .clipped()
-                }
-                .ignoresSafeArea()
-            }
-            .id(theme.current)
+            .id(theme.current)   // force a full re-skin of the grid when the theme changes
+            .background(HandyColor.bg)
             .navigationDestination(for: String.self) { id in
                 switch id {
                 case "settings": SettingsView().toolbarRole(.editor)
@@ -365,20 +379,29 @@ struct HomeView: View {
     private var header: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: HandySpacing.s4) {
-                Text("Tenzy").font(HandyFont.display).foregroundStyle(.white)
-                Text(headerCaption).font(.system(size: 14)).foregroundStyle(Color(white: 0.72))
+                HStack(alignment: .firstTextBaseline, spacing: HandySpacing.s12) {
+                    Text("Tenzy").font(HandyFont.display)
+                    // Tapping a page tab always leaves search and shows that page — so the tabs are
+                    // never dead while a search is up (the "con" bug: tabs changed only the caption).
+                    PageTabs(page: $page, active: !hasSearch) { n in
+                        withAnimation(.easeOut(duration: HandyMotion.fast)) { page = n; search = "" }
+                        searching = false
+                    }
+                }
+                Text(headerCaption)
+                    .font(.system(size: 14)).foregroundStyle(HandyColor.textSecondary)
+                    .animation(.easeOut(duration: HandyMotion.fast), value: page)
             }
             Spacer()
             HStack(spacing: HandySpacing.s8) {
                 if !store.isPremium {
                     Button { showPaywall = true } label: {
                         Image(systemName: "crown.fill").font(.system(size: 18)).foregroundStyle(HandyColor.accent)
-                            .frame(width: 40, height: 40).background(Color.white.opacity(0.08), in: Circle())
+                            .frame(width: 40, height: 40).background(HandyColor.accentSoft, in: Circle())
                     }.accessibilityLabel("Go Pro")
                 }
                 NavigationLink(value: "settings") {
-                    Image(systemName: "gearshape").font(.system(size: 18)).foregroundStyle(Color(white: 0.8)).frame(width: 40, height: 40)
-                        .background(Color.white.opacity(0.08), in: Circle())
+                    Image(systemName: "gearshape").font(.system(size: 18)).foregroundStyle(HandyColor.textSecondary).frame(width: 40, height: 40)
                 }.accessibilityLabel("Settings")
             }
         }
@@ -388,67 +411,37 @@ struct HomeView: View {
     }
 }
 
-/// The approved home (HTML prototype v5): 2 columns × 5 rows of PowerCards, one screen, no paging.
-struct PowerGrid: View {
-    let tools: [Tool]
-    private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
+/// The 1 · 2 · 3 page selector that sits beside the wordmark.
+struct PageTabs: View {
+    @Binding var page: Int
+    /// While a search is showing, no tab reads as "selected" (you're not on a page).
+    var active: Bool = true
+    var onPick: (Int) -> Void
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
-                ForEach(tools) { t in
-                    NavigationLink(value: t.id) { PowerCard(tool: t) }.buttonStyle(ToolCardPress())
+        HStack(spacing: HandySpacing.s4) {
+            ForEach(1...3, id: \.self) { n in
+                let on = active && page == n
+                Button { onPick(n) } label: {
+                    Text("\(n)")
+                        .font(.system(size: 15, weight: .semibold))
+                        .frame(width: 28, height: 28)
+                        .background(on ? HandyColor.accent : HandyColor.accentSoft, in: Circle())
+                        .foregroundStyle(on ? Color.white : HandyColor.accent)
                 }
+                .accessibilityLabel("Page \(n)")
             }
-            .padding(.horizontal, HandySpacing.gutter)
-            .padding(.top, HandySpacing.s4)
-            .padding(.bottom, HandySpacing.s16)
         }
-        .scrollBounceBehavior(.basedOnSize)
     }
 }
 
-/// Home card: the kit's card art cropped anchored to the RIGHT (the glow + line-art live on the right
-/// third of the 1290×440 image), a bottom-only scrim, the clay icon top-left, name + blurb bottom-left.
-struct PowerCard: View {
-    let tool: Tool
-    var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .topLeading) {
-                Color(red: 0.05, green: 0.05, blue: 0.09)
-                if let card = tool.card {
-                    Image(card).resizable().scaledToFill()
-                        .frame(width: geo.size.width, height: geo.size.height, alignment: .trailing)
-                        .clipped()
-                }
-                LinearGradient(stops: [.init(color: .clear, location: 0.35), .init(color: Color(red: 0.03, green: 0.03, blue: 0.06).opacity(0.8), location: 1)], startPoint: .top, endPoint: .bottom)
-                VStack(alignment: .leading, spacing: 0) {
-                    if let asset = tool.asset {
-                        Image(asset).resizable().scaledToFit().frame(width: 60, height: 60)
-                            .shadow(color: .black.opacity(0.55), radius: 8, y: 6)
-                    }
-                    Spacer(minLength: 0)
-                    Text(tool.name).font(.system(size: 17, weight: .bold)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.8)
-                    Text(tool.blurb).font(.system(size: 12.5)).foregroundStyle(.white.opacity(0.72)).lineLimit(1).minimumScaleFactor(0.8).padding(.top, 2)
-                }
-                .padding(14)
-            }
-        }
-        .aspectRatio(1 / 1.08, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Color.white.opacity(0.07), lineWidth: 1))
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(tool.name). \(tool.blurb)")
-    }
-}
-
-/// A rounded search field that filters all 10 tools as you type.
+/// A rounded search field that filters all 30 tools as you type.
 struct SearchField: View {
     @Binding var text: String
     var focused: FocusState<Bool>.Binding
     var body: some View {
         HStack(spacing: HandySpacing.s8) {
             Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
-            TextField("Search 10 tools", text: $text)
+            TextField("Search 30 tools…", text: $text)
                 .focused(focused)
                 .autocorrectionDisabled().textInputAutocapitalization(.never).submitLabel(.search)
                 .onSubmit { focused.wrappedValue = false }
@@ -480,12 +473,12 @@ struct SearchResults: View {
                 VStack(spacing: HandySpacing.s8) {
                     Image(systemName: "magnifyingglass").font(.system(size: 36)).foregroundStyle(HandyColor.textSecondary)
                     Text("No tools match “\(query)”").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
-                    Text("Try “photo”, “pdf”, “scan”, or “scam”.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text("Try “photo”, “pdf”, “scan”, or “ai”.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }.frame(maxWidth: .infinity).padding(.top, HandySpacing.s48)
             } else {
                 LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
                     ForEach(Array(results.enumerated()), id: \.element.id) { _, t in
-                        NavigationLink(value: t.id) { PowerCard(tool: t) }.buttonStyle(ToolCardPress())
+                        NavigationLink(value: t.id) { ToolCard(tool: t) }.buttonStyle(ToolCardPress())
                     }
                 }
                 .padding(.horizontal, HandySpacing.gutter).padding(.top, HandySpacing.s4).padding(.bottom, HandySpacing.s16)
@@ -495,52 +488,79 @@ struct SearchResults: View {
     }
 }
 
-/// Home grid card. AI tools get a gradient icon + a sparkle to signal the premium, on-device page.
+/// One page of ten tools, 2 across. Cards size to their content (icon + title + 2-line blurb) inside a
+/// scroll view, so a longer blurb like "White noise + snore recorder" is never clipped. It fills the
+/// page without scrolling where there's room, and scrolls a little on shorter phones instead of cutting
+/// text off — the earlier fixed 2×5 "fill the screen" grid forced each row too short and clipped blurbs.
+struct ToolGridPage: View {
+    @EnvironmentObject var store: StoreManager
+    let page: Int
+    private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
+    var body: some View {
+        ScrollView {
+            LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
+                ForEach(tools(onPage: page)) { t in
+                    NavigationLink(value: t.id) { ToolCard(tool: t) }.buttonStyle(ToolCardPress())
+                }
+            }
+            .padding(.horizontal, HandySpacing.gutter)
+            .padding(.top, HandySpacing.s4)
+            .padding(.bottom, HandySpacing.s12)
+        }
+        .scrollBounceBehavior(.basedOnSize)
+    }
+}
+
+/// Home grid card. The tool's themed illustration fills the card as a background LAYER; a scrim
+/// fades it into the surface colour toward the bottom; the icon, name and blurb sit on top as the
+/// last ZStack layer, so they are always drawn over the art and can never be hidden by it. (The
+/// previous "solid header band + 34pt art strip" VStack collapsed on device — the greedy
+/// scaledToFill strip art expanded to the whole card and buried the text. A ZStack with the text on
+/// top is immune to that.)
 struct ToolCard: View {
     @EnvironmentObject var store: StoreManager
+    @EnvironmentObject var theme: ThemeManager
+    @Environment(\.colorScheme) private var scheme
     let tool: Tool
     var body: some View {
-        VStack(spacing: 0) {
-            // Header band — solid surface, so the icon, title and blurb are always fully crisp.
-            VStack(alignment: .leading, spacing: HandySpacing.s4) {
-                ZStack {
-                    if let asset = tool.asset {
-                        // Custom designed icon — a complete squircle tile, shown edge-to-edge.
-                        Image(asset).resizable().scaledToFill().frame(width: 30, height: 30)
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    } else if tool.ai {
-                        Circle().fill(LinearGradient(colors: [HandyColor.accent, Color(red: 0.55, green: 0.35, blue: 0.95)], startPoint: .topLeading, endPoint: .bottomTrailing)).frame(width: 30, height: 30)
-                        Image(systemName: tool.icon).font(.system(size: 14, weight: .semibold)).foregroundStyle(.white)
-                    } else {
-                        Circle().fill(HandyColor.accentSoft).frame(width: 30, height: 30)
-                        Image(systemName: tool.icon).font(.system(size: 15, weight: .medium)).foregroundStyle(HandyColor.accent)
-                    }
-                }
-                Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.75)
+        let artName = TenzyArt.name(id: tool.id, theme: theme.current, scheme: scheme, kind: .card)
+        ZStack {
+            HandyColor.surface
+            Image(artName).resizable().scaledToFill()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .clipped()
+                .allowsHitTesting(false)
+            // Scrim: art shows through the top, deepening to the surface colour over the bottom third
+            // so the title + blurb read clearly in any theme, light or dark.
+            LinearGradient(
+                stops: [
+                    .init(color: HandyColor.surface.opacity(0.0), location: 0.35),
+                    .init(color: HandyColor.surface.opacity(0.70), location: 0.62),
+                    .init(color: HandyColor.surface.opacity(0.97), location: 1.0)
+                ],
+                startPoint: .top, endPoint: .bottom
+            )
+        }
+        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104)
+        .overlay(alignment: .bottomLeading) {
+            // Anchored to the bottom as an overlay (sized to its own content), so it can never
+            // overflow or be clipped by the card the way a greedy VStack did.
+            VStack(alignment: .leading, spacing: 1) {
+                Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.7)
                 Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.8)
             }
-            .frame(maxWidth: .infinity, alignment: .topLeading)
             .padding(.horizontal, HandySpacing.s12)
-            .padding(.top, HandySpacing.s8)
-            .padding(.bottom, HandySpacing.s4)
-
-            Spacer(minLength: 0)
-
-            // Accent strip — the tool's themed hero illustration along the bottom, fading up into
-            // the header band. Re-skins automatically with the active theme + dark mode.
-            ToolCardStripArt(id: tool.id)
-                .frame(height: 34)
+            .padding(.bottom, HandySpacing.s8)
         }
-        // Every card is the same height so the grid reads as a tidy, uniform set.
-        .frame(maxWidth: .infinity, minHeight: 104, maxHeight: 104, alignment: .top)
-        .background(HandyColor.surface)
         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
         .overlay(alignment: .topTrailing) {
             if tool.pro && !store.isPremium {
-                Image(systemName: "lock.fill").font(.system(size: 11)).foregroundStyle(HandyColor.textSecondary).padding(8)
+                Image(systemName: "lock.fill").font(.system(size: 12)).foregroundStyle(.white.opacity(0.9))
+                    .shadow(color: .black.opacity(0.5), radius: 3).padding(8)
             } else if tool.ai {
-                Image(systemName: "sparkle").font(.system(size: 10)).foregroundStyle(HandyColor.accent).padding(8)
+                Image(systemName: "sparkle").font(.system(size: 11)).foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.5), radius: 3).padding(8)
             }
         }
     }
@@ -695,16 +715,6 @@ struct CrashBanner: View {
     }
 }
 
-/// Set by a power-tool hub around a legacy tool view: ToolPage then renders only its content (no own
-/// scroll view, title, ad or background) so the view slots into the hub's page without doubling chrome.
-private struct EmbeddedInHubKey: EnvironmentKey { static let defaultValue = false }
-extension EnvironmentValues {
-    var embeddedInHub: Bool {
-        get { self[EmbeddedInHubKey.self] }
-        set { self[EmbeddedInHubKey.self] = newValue }
-    }
-}
-
 struct ToolPage<Content: View>: View {
     let title: String
     let subtitle: String
@@ -712,19 +722,7 @@ struct ToolPage<Content: View>: View {
     var footer: AnyView? = nil
     @ViewBuilder let content: () -> Content
     @Environment(\.toolID) private var toolID
-    @Environment(\.embeddedInHub) private var embedded
     var body: some View {
-        if embedded {
-            VStack(alignment: .leading, spacing: HandySpacing.s16) {
-                content()
-                if let footer { footer }
-            }
-            .onAppear { Diagnostics.shared.currentTool = title }
-        } else {
-            full
-        }
-    }
-    private var full: some View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s16) {

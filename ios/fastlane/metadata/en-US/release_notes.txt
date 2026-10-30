@@ -1,3 +1,5 @@
-The ten power tools are here. Tenzy is rebuilt around ten tools that go deep: Capture, Documents (with Word Finder across all your files), Media Studio, Clean Up, Voice Notes, Translate, Instruments, Flashlight+, Safety and Share & Connect — with a new look and the same promise: everything on your phone, nothing uploaded.
+Fresh look: new claymorphic tool icons and five themes (Daylight, Midnight, Warm Paper, Neo Pop, Mono Pro). The home grid now renders every tool cleanly — full artwork, clear names, no clipping.
+
+All 30 tools, most running right on your phone — no account, nothing uploaded. This test build unlocks every Pro tool so you can try the whole thing.
 
 I'm a one-person shop, so if something's off or you want a tool added, tap Settings and send me a note. Thanks for trying Tenzy.
