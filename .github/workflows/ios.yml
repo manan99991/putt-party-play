@@ -46,11 +46,11 @@ jobs:
         run: |
           set -o pipefail
           # Screenshots show what testers get: the same INTERNAL_UNLOCK flag as the TestFlight build.
-          UNLOCK_FLAG=""; [ "$INTERNAL_UNLOCK" = "true" ] && UNLOCK_FLAG="SWIFT_ACTIVE_COMPILATION_CONDITIONS=\$(inherited) INTERNAL_UNLOCK"
+          UNLOCK=(); [ "$INTERNAL_UNLOCK" = "true" ] && UNLOCK=('SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited) INTERNAL_UNLOCK')
           xcodebuild build \
             -project HandyTools.xcodeproj -scheme HandyTools \
             -destination 'generic/platform=iOS Simulator' \
-            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO $UNLOCK_FLAG \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO "${UNLOCK[@]}" \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee build.log | grep -E "error:|warning: unre|BUILD|\*\*" || true
           grep -q "BUILD SUCCEEDED" build.log
