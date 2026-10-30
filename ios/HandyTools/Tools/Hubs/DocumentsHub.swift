@@ -42,15 +42,6 @@ struct DocumentsHub: View {
                 }
             }
         }
-        .fileImporter(isPresented: $showPDFPicker, allowedContentTypes: [.pdf], allowsMultipleSelection: true) { res in
-            if case .success(let urls) = res { addPDFs(urls) }
-        }
-        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: WordFinder.importTypes, allowsMultipleSelection: true) { res in
-            if case .success(let urls) = res { finder.add(urls: urls, asFolder: false) }
-        }
-        .fileImporter(isPresented: $showFolderPicker, allowedContentTypes: [.folder], allowsMultipleSelection: false) { res in
-            if case .success(let urls) = res { finder.add(urls: urls, asFolder: true) }
-        }
         .sheet(item: $preview) { p in DocQuickLook(url: p.url).ignoresSafeArea().onDisappear { finder.releaseScopes() } }
         .onChange(of: query) { _, q in finder.search(q) }
         .onChange(of: finder.indexing) { _, busy in if !busy { finder.search(query) } }
@@ -111,10 +102,12 @@ struct DocumentsHub: View {
             .disabled(items.isEmpty || working || overQuota)
             .opacity(items.isEmpty ? 0.55 : 1)
 
-            if !store.isPremium { QuotaChip(name: "pdfops", limit: Limits.freePdfOpsPerDay).environmentObject(store) }
-            if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freePdfOpsPerDay) free PDF jobs.") }
-            if working { HStack(spacing: HandySpacing.s8) { ProgressView().tint(HandyColor.accent); Text(busyLabel).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
-            if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+            Group {
+                if !store.isPremium { QuotaChip(name: "pdfops", limit: Limits.freePdfOpsPerDay).environmentObject(store) }
+                if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freePdfOpsPerDay) free PDF jobs.") }
+                if working { HStack(spacing: HandySpacing.s8) { ProgressView().tint(HandyColor.accent); Text(busyLabel).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+                if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+            }
             if !outputs.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     HStack(spacing: HandySpacing.s8) {
@@ -125,6 +118,9 @@ struct DocumentsHub: View {
                 }.cardStyle(padding: HandySpacing.s12)
             }
             HubNote("Merge, split and rotate move pages losslessly. Compress re-renders pages smaller and keeps them searchable. Everything stays on this phone.")
+        }
+        .fileImporter(isPresented: $showPDFPicker, allowedContentTypes: [.pdf], allowsMultipleSelection: true) { res in
+            if case .success(let urls) = res { addPDFs(urls) }
         }
     }
 
@@ -236,6 +232,15 @@ struct DocumentsHub: View {
                         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     }
                 }
+            }
+        }
+        // Each picker lives on its own view so the two never fight over one presentation slot.
+        .fileImporter(isPresented: $showFilePicker, allowedContentTypes: WordFinder.importTypes, allowsMultipleSelection: true) { res in
+            if case .success(let urls) = res { finder.add(urls: urls, asFolder: false) }
+        }
+        .background {
+            Color.clear.fileImporter(isPresented: $showFolderPicker, allowedContentTypes: [.folder], allowsMultipleSelection: false) { res in
+                if case .success(let urls) = res { finder.add(urls: urls, asFolder: true) }
             }
         }
     }

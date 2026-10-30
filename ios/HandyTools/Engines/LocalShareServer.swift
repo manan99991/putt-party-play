@@ -110,8 +110,9 @@ final class LocalShareServer: ObservableObject {
             let html = landingPage()
             send(c, status: "200 OK", headers: ["Content-Type": "text/html; charset=utf-8", "Content-Length": "\(html.utf8.count)", "Connection": "close"], body: method == "HEAD" ? Data() : Data(html.utf8)) { c.cancel() }
         } else if path == "/" + fileName || path == "/download", let fileURL, let fh = try? FileHandle(forReadingFrom: fileURL) {
+            let safeName = fileName.replacingOccurrences(of: "\"", with: "")
             let headers = ["Content-Type": "application/octet-stream", "Content-Length": "\(fileSize)",
-                           "Content-Disposition": "attachment; filename=\"\(fileName.replacingOccurrences(of: "\"", with: ""))\"", "Connection": "close"]
+                           "Content-Disposition": "attachment; filename=\"\(safeName)\"", "Connection": "close"]
             if method == "HEAD" { send(c, status: "200 OK", headers: headers, body: Data()) { c.cancel() }; return }
             setState(.sending(0))
             send(c, status: "200 OK", headers: headers, body: Data()) { [weak self] in self?.stream(fh, to: c, sent: 0) }

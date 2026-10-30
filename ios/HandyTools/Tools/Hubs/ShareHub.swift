@@ -101,7 +101,7 @@ struct ShareHub: View {
                     }
                     HubNote("Both devices must be on the same Wi-Fi. The file streams straight from this phone — nothing is uploaded.")
                 } else {
-                    HubPill(onWifi ? "Setting up…" : "Needs Wi-Fi — both devices on the same network", tone: .native)
+                    HubPill(onWifi && server.state != .failed("Not on Wi-Fi") ? "Setting up…" : "Needs Wi-Fi — both devices on the same network", tone: .native)
                     if case .failed(let m) = server.state, m != "Not on Wi-Fi" { Text(m).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
                     ShareLink(item: f) { Label("Send another way (AirDrop, Messages…)", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
                     HStack(spacing: HandySpacing.s8) {

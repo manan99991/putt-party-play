@@ -31,8 +31,8 @@ enum MediaKit {
 
     /// "HEIC" / "PNG" / "JPG" / "GIF" / "Image" from the picked bytes.
     static func format(of data: Data) -> String {
-        guard let src = CGImageSourceCreateWithData(data as CFData, nil), let uti = CGImageSourceGetType(src) as String? else { return "Image" }
-        let u = uti.lowercased()
+        guard let src = CGImageSourceCreateWithData(data as CFData, nil), let uti = CGImageSourceGetType(src) else { return "Image" }
+        let u = (uti as String).lowercased()
         if u.contains("heic") || u.contains("heif") { return "HEIC" }
         if u.contains("png") { return "PNG" }
         if u.contains("jpeg") || u.contains("jpg") { return "JPG" }
@@ -116,7 +116,7 @@ struct RedactCanvas: View {
     let image: UIImage
     @Binding var boxes: [RedactBox]
     var busy = false
-    @State private var drawing: CGRect?
+    @State private var drawing: CGRect? = nil
 
     var body: some View {
         GeometryReader { geo in

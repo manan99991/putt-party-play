@@ -673,6 +673,37 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(ScamAnalyzer.advice(for: normal).count, 1)
     }
 
+    /// The Safety hub's prototype samples and the extra signals it added (family script, bare look-alike
+    /// domains without http://, hyphen-heavy hosts, premium-rate numbers).
+    func testScamAnalyzerSafetyHubSignals() {
+        let family = ScamAnalyzer.analyze("Hi grandma it's me, I lost my phone this is my new number. I'm in trouble and need $800 for bail, please don't tell mom.")
+        XCTAssertEqual(family.verdict, .likelyScam)
+        XCTAssertTrue(family.findings.contains { $0.title.contains("Family emergency") })
+        XCTAssertTrue(family.findings.contains { $0.title.contains("secret") })
+
+        let package = ScamAnalyzer.analyze("USPS: your package is held. Confirm your details to reschedule delivery: usps-redelivery.info/track")
+        XCTAssertNotEqual(package.verdict, .lowRisk)
+        if let l = package.links.first {   // the data detector decides whether a bare domain is a link
+            let pkgIssues = l.issues.joined(separator: " ")
+            XCTAssertTrue(pkgIssues.contains("usps"), pkgIssues)
+            XCTAssertFalse(pkgIssues.contains("Not encrypted"), "a bare domain must not be reported as http://: \(pkgIssues)")
+        }
+
+        let link = ScamAnalyzer.analyze("http://chase-secure-verify.xyz/login")
+        XCTAssertEqual(link.verdict, .likelyScam)
+        let linkIssues = link.links[0].issues.joined(separator: " ")
+        XCTAssertTrue(linkIssues.contains("hyphens"), linkIssues)
+        XCTAssertTrue(linkIssues.contains("chase"), linkIssues)
+
+        XCTAssertEqual(ScamAnalyzer.analyze("Hey, running 10 min late, order me a flat white? Thanks!").verdict, .lowRisk)
+
+        let premium = ScamAnalyzer.phoneReport("+1 900 555 0123")
+        XCTAssertTrue(premium.findings.contains { $0.title.contains("Premium-rate") })
+        XCTAssertNotEqual(premium.verdict, .lowRisk)
+        XCTAssertEqual(ScamAnalyzer.phoneReport("+1 (312) 555-0148").verdict, .lowRisk)
+        XCTAssertEqual(ScamAnalyzer.phoneReport("000 000 0000").verdict, .suspicious)
+    }
+
     // MARK: data grabber
 
     func testDataGrabReceiptCardEventTable() {

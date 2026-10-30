@@ -83,9 +83,12 @@ enum ScamAnalyzer {
         if !secrecy.isEmpty { f.append(Finding(title: "Tells you to keep it secret", detail: "Isolation keeps you from the one friend or family member who'd say \"that's a scam\".", weight: 4)) }
 
         // 6b. family-emergency / "it's me" impersonation — a relative in trouble on a new number.
-        let family = hit([#"\b(grandma|grandpa|grandmother|grandfather|nana|mom|mum|dad|auntie|uncle)\b"#, #"\bit'?s me\b"#])
-        let trouble = hit([#"\bnew number\b"#, #"\blost my phone\b"#, #"\bin trouble\b"#, #"\bbail\b"#, #"\b(accident|arrested|hospital|jail)\b"#, #"\bdon'?t call (my|the) old\b"#])
-        if !family.isEmpty && !trouble.isEmpty { f.append(Finding(title: "Family emergency pattern", detail: "\"It's me, I'm in trouble, this is my new number\" is a classic impersonation script. Call the person on the number you already have before doing anything.", weight: 3)) }
+        // Flags the script (new number / lost phone / "it's me"), not a relative merely being mentioned.
+        let family = hit([#"\b(grandma|grandpa|grandmother|grandfather|nana|mom|mum|dad|auntie|uncle)\b"#])
+        let script = hit([#"\bit'?s me\b"#, #"\bnew number\b"#, #"\blost my phone\b"#, #"\bdon'?t call (my|the) old\b"#, #"\b(this is|using) (a )?(friend'?s|borrowed|temporary) (phone|number)\b"#])
+        let crisis = hit([#"\bin trouble\b"#, #"\bbail\b"#, #"\b(accident|arrested|hospital|jail)\b"#])
+        let moneyAsk = lower.range(of: #"(\$\s?\d|\b(money|cash|send|need|wire|transfer)\b)"#, options: .regularExpression) != nil
+        if (!script.isEmpty && (!family.isEmpty || !crisis.isEmpty)) || (!family.isEmpty && !crisis.isEmpty && moneyAsk) { f.append(Finding(title: "Family emergency pattern", detail: "\"It's me, I'm in trouble, this is my new number\" is a classic impersonation script. Call the person on the number you already have before doing anything.", weight: 3)) }
 
         // 7. wrong-number / relationship openers
         let openers = hit([#"^(hi|hello|hey)[,!.]? (is this|are you) [a-z]+\??$"#, #"\bwrong number\b"#, #"\bsorry,? who is this\b"#, #"\blong time no see\b"#])
@@ -102,7 +105,7 @@ enum ScamAnalyzer {
         else if !links.isEmpty, !creds.isEmpty || !urgency.isEmpty { f.append(Finding(title: "Link plus pressure", detail: "A link you didn't ask for, paired with urgency, is the phishing formula. Type the site address yourself instead.", weight: 2)) }
 
         // 9b. premium-rate / one-ring numbers in the text
-        if let pf = phoneNumbers(in: text).lazy.compactMap({ premiumFinding($0) }).first { f.append(pf) }
+        for p in phoneNumbers(in: text) { if let pf = premiumFinding(p) { f.append(pf); break } }
 
         // 10. spelling / shouting (mild)
         let caps = text.filter { $0.isUppercase }.count, letters = text.filter { $0.isLetter }.count

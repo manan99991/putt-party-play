@@ -13,13 +13,14 @@ struct TextBlock: Identifiable {
 /// photo text blocks with positions (Vision), and the "translated text drawn over the original"
 /// composite for sharing. All on the phone.
 enum TranslateEngine {
-    /// Quick-phrase chips from the prototype: (chip label, full phrase).
-    static let phrases: [(label: String, text: String)] = [
-        ("Pharmacy", "Where is the nearest pharmacy?"),
-        ("How much…", "How much does this cost?"),
-        ("Reservation", "I have a reservation."),
-        ("Help", "Can you help me?"),
-        ("Thanks", "Thank you very much."),
+    /// Quick-phrase chips from the prototype: chip label + the full phrase.
+    struct Phrase: Identifiable { let label: String; let text: String; var id: String { text } }
+    static let phrases: [Phrase] = [
+        Phrase(label: "Pharmacy", text: "Where is the nearest pharmacy?"),
+        Phrase(label: "How much…", text: "How much does this cost?"),
+        Phrase(label: "Reservation", text: "I have a reservation."),
+        Phrase(label: "Help", text: "Can you help me?"),
+        Phrase(label: "Thanks", text: "Thank you very much."),
     ]
 
     static func name(_ code: String) -> String { Locale.current.localizedString(forLanguageCode: code) ?? code }

@@ -372,7 +372,7 @@ private struct CleanupThumb: View {
     let selected: Bool
     let label: String
     let tap: () -> Void
-    @State private var img: UIImage?
+    @State private var img: UIImage? = nil
     @State private var unavailable = false
 
     var body: some View {
