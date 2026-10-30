@@ -58,6 +58,7 @@ struct StitchView: View {
                 Button { run() } label: {
                     HStack { if working { ProgressView().tint(.white) }; Text(working ? "Stitching…" : "Stitch into one image") }.frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working || overQuota || shots.count < 2)
+                if working { ToolProgressBar(label: "Stitching your screenshots into one tall image…") }
             }
 
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }

@@ -301,6 +301,7 @@ struct ScanView: View {
             Button { export() } label: {
                 HStack { if working { ProgressView().tint(.white) }; Text(working ? "Building PDF…" : exportLabel) }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(working || overQuota)
+            if working { ToolProgressBar(label: "Building your PDF…") }
 
             if !outputs.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {

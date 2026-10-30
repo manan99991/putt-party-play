@@ -82,6 +82,7 @@ struct StudioView: View {
                 Button { run() } label: {
                     HStack { if working { ProgressView().tint(.white) }; Text(working ? "Working…" : actionLabel) }.frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working || overQuota)
+                if working { ToolProgressBar(label: "Working on your photo…") }
             }
 
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
