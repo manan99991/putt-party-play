@@ -1,5 +1,13 @@
 name: iOS
 
+# ┌─────────────────────────────────────────────────────────────────────────────┐
+# │ INTERNAL_UNLOCK: "true" = TestFlight build is fully unlocked (Pro for every   │
+# │ install: no ads/limits, all themes + tools). FLIP TO "false" BEFORE THE        │
+# │ FIRST PRODUCTION SUBMISSION — this is the paid gate.                          │
+# └─────────────────────────────────────────────────────────────────────────────┘
+env:
+  INTERNAL_UNLOCK: "true"
+
 on:
   push:
     branches: [handytools]
@@ -37,10 +45,12 @@ jobs:
       - name: Build (simulator, unsigned)
         run: |
           set -o pipefail
+          # Screenshots show what testers get: the same INTERNAL_UNLOCK flag as the TestFlight build.
+          UNLOCK=(); [ "$INTERNAL_UNLOCK" = "true" ] && UNLOCK=('SWIFT_ACTIVE_COMPILATION_CONDITIONS=$(inherited) INTERNAL_UNLOCK')
           xcodebuild build \
             -project HandyTools.xcodeproj -scheme HandyTools \
             -destination 'generic/platform=iOS Simulator' \
-            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO "${UNLOCK[@]}" \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee build.log | grep -E "error:|warning: unre|BUILD|\*\*" || true
           grep -q "BUILD SUCCEEDED" build.log
@@ -87,7 +97,7 @@ jobs:
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           for mode in light dark; do
             xcrun simctl ui "$UDID" appearance $mode
-            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub cleaner qrwifi stitch shareready light contacts measure magnify procam gpsdash audiolab rest colorvision sorted textstudio translate voicenotes livecaptions shield lens memory datagrab describe vault; do
+            for r in home onboarding onboarding2 onboarding3 setup settings privacy paywall capture documents media cleanup voice translate instruments flashlight safety share; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
               xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
               sleep 9
@@ -179,7 +189,9 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { echo "== test.log (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -200; } > ios-test.log
+          { echo "== test.log (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -200;
+            echo "== ipad.log (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|XCTAssert|failed - |Assertion" ios/ipad.log 2>/dev/null | head -200;
+            echo "== ipad.log (tail)"; tail -120 ios/ipad.log 2>/dev/null; } > ios-test.log
           bash .github/publish-log.sh ios-test ios-test.log || true
           bash .github/publish-log.sh "ios-test-${GITHUB_RUN_ID}" ios-test.log || true
 

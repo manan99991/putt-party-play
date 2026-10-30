@@ -1,1 +1,1 @@
-compress,pdf,scanner,ocr,translate,heic,convert,resize,measure,magnifier,qr,wifi,flashlight,contacts
+scanner,pdf,sign,compress,heic,translate,scam,flashlight,qr,wifi,cleaner,duplicate,voice,transcribe,level

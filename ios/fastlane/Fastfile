@@ -89,11 +89,16 @@ platform :ios do
 
     # Build number (CFBundleVersion) is baked at project-generation time in CI as a Unix timestamp,
     # so every upload is unique and ever-increasing.
+    # INTERNAL_UNLOCK=true (set at the top of .github/workflows/ios.yml) compiles the app so every
+    # install is Pro — internal testers get the full app. Flip to false before the production build.
+    unlock = ENV["INTERNAL_UNLOCK"].to_s == "true"
+    UI.important(unlock ? "INTERNAL_UNLOCK: building fully unlocked internal-testing app" : "Production gating ON")
     build_app(
       project: "HandyTools.xcodeproj",
       scheme: "HandyTools",
       configuration: "Release",
       export_method: "app-store",
+      xcargs: (unlock ? "SWIFT_ACTIVE_COMPILATION_CONDITIONS='$(inherited) INTERNAL_UNLOCK'" : ""),
       output_directory: "build",
       output_name: "Tenzy.ipa",
       export_options: {

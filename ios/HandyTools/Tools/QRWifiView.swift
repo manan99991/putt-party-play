@@ -363,7 +363,8 @@ enum QRGen {
 
 // MARK: - Live scanner
 
-private struct ScanSheet: View {
+/// Full-screen live QR/barcode scanner (shared with the Share & Connect hub).
+struct ScanSheet: View {
     let onResult: (String) -> Void
     @Environment(\.dismiss) private var dismiss
     var body: some View {
