@@ -4,6 +4,7 @@
   "NSCameraUsageDescription" => "Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded."
   "NSContactsUsageDescription" => "Needed to find duplicate contacts, merge them without losing a number, and back them up to a file. Your contacts stay on this phone and are never uploaded."
   "NSFaceIDUsageDescription" => "Used to unlock your Secure Vault so only you can open your private notes and photos."
+  "NSLocalNetworkUsageDescription" => "Needed to send a file to another device on your Wi-Fi. The file goes straight between the two devices and never leaves your network."
   "NSLocationWhenInUseUsageDescription" => "Needed for the compass (true north), altitude and the GPS dashboard. Your location stays on this phone."
   "NSMicrophoneUsageDescription" => "Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded."
   "NSMotionUsageDescription" => "Needed for the level, barometer/altimeter and metal detector readings."
