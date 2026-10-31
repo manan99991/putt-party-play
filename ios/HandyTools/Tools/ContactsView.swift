@@ -16,7 +16,7 @@ struct ContactsView: View {
     @State private var pendingMergeAll: [[ContactRec]]?
     @State private var mergeProgress: String?
     @State private var tidy: TidyGroup?
-    @StateObject private var backup = ContactsBackup()
+    @StateObject private var autoBackup = ContactsBackup()
     @State private var backupNote: String?
     @State private var showMail = false
 
@@ -44,7 +44,7 @@ struct ContactsView: View {
         }
         .task { if authorized && report == nil { scan() }; await autoBackupIfDue() }
         .sheet(isPresented: $showMail) {
-            if let url = backup.lastBackupURL {
+            if let url = autoBackup.lastBackupURL {
                 MailComposer(subject: "My contacts backup", body: "Attached is a backup of my contacts (.vcf). Keep it somewhere safe.", attachment: url)
             }
         }
@@ -189,7 +189,7 @@ struct ContactsView: View {
                 let url = try await Task.detached { try ContactsEngine.exportVCard() }.value
                 await MainActor.run { backupURL = url; busy = false; HandyHaptics.success() }
             } catch {
-                await MainActor.run { self.error = "Couldn't create the backup. Try again."; busy = false }
+                await MainActor.run { self.error = "Couldn't create the autoBackup. Try again."; busy = false }
             }
         }
     }
@@ -201,15 +201,15 @@ struct ContactsView: View {
             HStack {
                 Label("Automatic backup", systemImage: "clock.arrow.circlepath").font(HandyFont.bodyStrong)
                 Spacer()
-                Text(backup.lastBackup.map { "Last: " + $0.formatted(date: .abbreviated, time: .omitted) } ?? "Never")
+                Text(autoBackup.lastBackup.map { "Last: " + $0.formatted(date: .abbreviated, time: .omitted) } ?? "Never")
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
             Text("Saves a dated copy to the Files app (and iCloud Drive if it's on) on the schedule you pick, so a lost phone never means lost contacts.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(BackupFrequency.allCases, id: \.rawValue) { f in
-                    HChip(text: f.title, selected: backup.frequency == f) {
-                        backup.frequency = f
+                    HChip(text: f.title, selected: autoBackup.frequency == f) {
+                        autoBackup.frequency = f
                         if f != .off { runBackupNow() }
                     }
                 }
@@ -217,9 +217,9 @@ struct ContactsView: View {
             if let backupNote { Text(backupNote).font(HandyFont.micro).foregroundStyle(HandyColor.accent) }
             HStack(spacing: HandySpacing.s8) {
                 Button { runBackupNow() } label: { Label("Back up now", systemImage: "arrow.down.doc") }.compactButton().disabled(busy)
-                if backup.lastBackupURL != nil {
+                if autoBackup.lastBackupURL != nil {
                     if MailComposer.canSend { Button { showMail = true } label: { Label("Email a copy", systemImage: "envelope") }.compactButton() }
-                    if let u = backup.lastBackupURL { ShareLink(item: u) { Image(systemName: "square.and.arrow.up").frame(width: 36, height: 36) }.compactButton() }
+                    if let u = autoBackup.lastBackupURL { ShareLink(item: u) { Image(systemName: "square.and.arrow.up").frame(width: 36, height: 36) }.compactButton() }
                 }
             }
         }.cardStyle(padding: HandySpacing.s12)
@@ -228,15 +228,15 @@ struct ContactsView: View {
     private func runBackupNow() {
         busy = true; error = nil
         Task {
-            do { let url = try await backup.runBackup(); backupNote = "Backed up \(url.lastPathComponent) to Files"; HandyHaptics.success() }
+            do { let url = try await autoBackup.runBackup(); backupNote = "Backed up \(url.lastPathComponent) to Files"; HandyHaptics.success() }
             catch { self.error = "Couldn't back up your contacts. Try again." }
             busy = false
         }
     }
 
     private func autoBackupIfDue() async {
-        guard authorized, backup.isDue() else { return }
-        do { let url = try await backup.runBackup(); backupNote = "Auto-backed up \(url.lastPathComponent) to Files" }
+        guard authorized, autoBackup.isDue() else { return }
+        do { let url = try await autoBackup.runBackup(); backupNote = "Auto-backed up \(url.lastPathComponent) to Files" }
         catch { /* silent — the manual button and reminder still cover the user */ }
     }
 
@@ -371,7 +371,7 @@ private struct ContactEditor: UIViewControllerRepresentable {
     }
 }
 
-/// One-tap "email me a copy" of the backup. iOS can't send mail silently, so this opens the system
+/// One-tap "email me a copy" of the autoBackup. iOS can't send mail silently, so this opens the system
 /// composer with the .vcf already attached; the user hits send. `canSend` is false on a device with no
 /// Mail account, so the button is hidden rather than dead.
 struct MailComposer: UIViewControllerRepresentable {
