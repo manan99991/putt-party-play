@@ -2,6 +2,8 @@ import UIKit
 import Vision
 import ImageIO
 import MapKit
+import AVFoundation
+import CoreImage
 
 /// Privacy Scrubber engine. Two jobs most apps get wrong:
 ///  1. Strip EXIF/GPS — a fresh encode carries none of the original metadata.
@@ -91,6 +93,48 @@ enum Scrubber {
         return out.jpegData(compressionQuality: quality)
     }
 
+    /// Face + personal-text rectangles (normalized, top-left origin) for one frame — the video path,
+    /// where everything personal is blacked out automatically (no manual boxes).
+    static func detectRects(_ ci: CIImage) -> [CGRect] {
+        let handler = VNImageRequestHandler(ciImage: ci, orientation: .up)
+        let fr = VNDetectFaceRectanglesRequest()
+        let tr = VNRecognizeTextRequest(); tr.recognitionLevel = .fast; tr.usesLanguageCorrection = false
+        try? handler.perform([fr, tr])
+        var rects = (fr.results ?? []).map { flip($0.boundingBox).insetBy(dx: -$0.boundingBox.width * 0.12, dy: -$0.boundingBox.height * 0.14) }
+        rects += (tr.results as? [VNRecognizedTextObservation] ?? []).compactMap {
+            looksPersonal($0.topCandidates(1).first?.string ?? "") ? flip($0.boundingBox) : nil
+        }
+        return rects
+    }
+
+    /// Best-effort video scrub: black out faces and personal text across the whole clip and re-encode
+    /// with no metadata. Detection is throttled (a few times a second, reused in between) so it stays
+    /// feasible on a phone; blocks are padded to cover motion between detections. Returns nil if the
+    /// device can't process the video (caller surfaces an error — quota is never spent on nil).
+    static func scrubVideo(_ url: URL, progress: ((Double) -> Void)? = nil) async -> URL? {
+        let asset = AVURLAsset(url: url)
+        guard (try? await asset.loadTracks(withMediaType: .video))?.isEmpty == false else { return nil }
+        let redactor = VideoRedactor()
+        let comp = AVMutableVideoComposition(asset: asset) { request in
+            let src = request.sourceImage
+            let ext = src.extent
+            var out = src
+            for r in redactor.rects(for: src, at: request.compositionTime.seconds) {
+                let rc = CGRect(x: r.minX * ext.width, y: (1 - r.maxY) * ext.height, width: r.width * ext.width, height: r.height * ext.height)
+                    .insetBy(dx: -ext.width * 0.012, dy: -ext.height * 0.012).intersection(ext)
+                if !rc.isNull, !rc.isEmpty { out = CIImage(color: .black).cropped(to: rc).composited(over: out) }
+            }
+            request.finish(with: out, context: nil)
+        }
+        guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
+        let outURL = VideoEngine.tempURL("mp4")
+        session.outputURL = outURL; session.outputFileType = .mp4; session.videoComposition = comp; session.metadata = []
+        let poll = Task { while !Task.isCancelled { progress?(Double(session.progress)); try? await Task.sleep(nanoseconds: 300_000_000) } }
+        await session.export()
+        poll.cancel()
+        return session.status == .completed ? outURL : nil
+    }
+
     /// Small static map with a pin — the "oh, it knows where I live" moment that makes people strip it.
     static func mapSnapshot(_ c: CLLocationCoordinate2D) async -> UIImage? {
         let opts = MKMapSnapshotter.Options()
@@ -108,4 +152,19 @@ enum Scrubber {
     }
 
     private static func flip(_ b: CGRect) -> CGRect { CGRect(x: b.minX, y: 1 - b.maxY, width: b.width, height: b.height) }
+}
+
+/// Throttled per-frame redaction rects for video — detect a few times a second, reuse in between so a
+/// whole clip doesn't run Vision on every single frame.
+private final class VideoRedactor {
+    private var lastRects: [CGRect] = []
+    private var lastT = -1.0
+    private let interval = 0.3
+    func rects(for ci: CIImage, at t: Double) -> [CGRect] {
+        if lastT < 0 || abs(t - lastT) >= interval {
+            lastRects = Scrubber.detectRects(ci)
+            lastT = t
+        }
+        return lastRects
+    }
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 import PhotosUI
 import UIKit
+import UniformTypeIdentifiers
 
 /// Privacy Scrubber — see what a photo gives away, strip it, and black out faces / text / anything
 /// you draw a box around. Redactions are permanent by design: solid blocks + a fresh encode, never a
@@ -22,32 +23,38 @@ struct ScrubView: View {
     @State private var result: Data?
     @State private var working = false
     @State private var errorText: String?
+    @State private var videoInURL: URL?
+    @State private var videoOutURL: URL?
+    @State private var videoWorking = false
+    @State private var videoProgress = 0.0
 
     private var overQuota: Bool { !Usage.hasRoom("scrub", limit: Limits.freeScrubPerDay) }
     private var faceCount: Int { boxes.filter { $0.kind == .face }.count }
     private var textCount: Int { boxes.filter { $0.kind == .text }.count }
 
     var body: some View {
-        ToolPage(title: "Privacy Scrubber", subtitle: "Strip hidden location data and black out faces or text — permanently.") {
+        ToolPage(title: "Privacy Scrubber", subtitle: "Strip hidden location data and black out faces or text — in a photo or a video, permanently.") {
             HowTo("scrub", [
-                "Pick a photo to clean before you share it.",
+                "Pick a photo or video to clean before you share it.",
                 "It strips location and camera data and auto-selects faces plus personal text — plates, phone numbers, emails, IDs.",
                 "Save or share the scrubbed copy — your original stays untouched.",
             ])
-            if original == nil {
-                PhotosPicker(selection: $pickedItem, matching: .images) {
-                    Label("Choose a photo", systemImage: "photo").frame(maxWidth: .infinity)
+            if original == nil && videoInURL == nil {
+                PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
+                    Label("Choose a photo or video", systemImage: "photo").frame(maxWidth: .infinity)
                 }.secondaryButton()
                 Text("Blur can be undone. Our blocks can't — the pixels underneath are gone in the copy.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
 
+            if let vurl = videoInURL { videoPanel(vurl) }
+
             if let original {
                 metadataCard
                 canvas(original)
                 controls
-                PhotosPicker(selection: $pickedItem, matching: .images) {
-                    Label("Choose a different photo", systemImage: "photo.on.rectangle.angled")
+                PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
+                    Label("Choose a different photo or video", systemImage: "photo.on.rectangle.angled")
                 }.textButton()
             }
 
@@ -150,6 +157,32 @@ struct ScrubView: View {
         }
     }
 
+    @ViewBuilder private func videoPanel(_ url: URL) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label("Faces and personal text (plates, phone numbers, emails) are found and blacked out automatically across the whole clip, and location/metadata is stripped. Best-effort — check the result before you share.",
+                  systemImage: "video.fill")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            ResultPreview(kind: .videoURL(videoOutURL ?? url))
+            if !store.isPremium { QuotaChip(name: "scrub", limit: Limits.freeScrubPerDay).environmentObject(store) }
+            if overQuota { LimitReachedBanner(message: "You've scrubbed today's \(Limits.freeScrubPerDay) free files.") }
+            if let out = videoOutURL {
+                Label("Clean video ready — faces & personal text hidden, metadata stripped.", systemImage: "checkmark.shield.fill")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                ShareLink(item: out) { Label("Save or share the clean video", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            } else {
+                Button { scrubVideo(url) } label: {
+                    HStack {
+                        if videoWorking { ProgressView().tint(.white) }
+                        Label(videoWorking ? "Scrubbing… \(Int(videoProgress * 100))%" : "Black out faces & personal info", systemImage: "checkmark.shield")
+                    }.frame(maxWidth: .infinity)
+                }.primaryButton().disabled(overQuota || videoWorking)
+            }
+            PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
+                Label("Choose a different photo or video", systemImage: "photo.on.rectangle.angled")
+            }.textButton()
+        }
+    }
+
     // MARK: geometry
 
     private func fitRect(image: CGSize, in c: CGSize) -> CGRect {
@@ -173,10 +206,17 @@ struct ScrubView: View {
 
     private func load(_ item: PhotosPickerItem?) {
         guard let item else { return }
-        result = nil; errorText = nil; boxes = []
+        result = nil; errorText = nil; boxes = []; videoOutURL = nil
         Task {
+            // Video → the automatic whole-clip scrub flow; photo → the box editor.
+            if item.supportedContentTypes.contains(where: { $0.conforms(to: .movie) }) {
+                let m = try? await item.loadTransferable(type: MovieImport.self)
+                await MainActor.run { original = nil; originalData = nil; meta = Scrubber.Metadata(); mapImage = nil; videoInURL = m?.url }
+                return
+            }
             guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) else { return }
             await MainActor.run {
+                videoInURL = nil
                 originalData = d; original = img.normalizedUp(); meta = Scrubber.metadata(in: d); detecting = true
             }
             let found = Scrubber.detect(img)
@@ -184,6 +224,17 @@ struct ScrubView: View {
                 boxes = found.faces.map { Box(rect: $0, kind: .face, on: true) } + found.text.map { Box(rect: $0.rect, kind: .text, on: $0.personal) }
                 detecting = false
             }
+        }
+    }
+
+    private func scrubVideo(_ url: URL) {
+        guard Usage.hasRoom("scrub", limit: Limits.freeScrubPerDay) else { return }
+        videoWorking = true; videoProgress = 0; errorText = nil
+        Task { @MainActor in
+            let out = await Scrubber.scrubVideo(url, progress: { f in Task { @MainActor in videoProgress = f } })
+            videoWorking = false
+            if let out { _ = Usage.use("scrub", limit: Limits.freeScrubPerDay); videoOutURL = out; HandyHaptics.success() }
+            else { errorText = "Couldn't scrub that video — it may be protected or in an unusual format." }
         }
     }
 
