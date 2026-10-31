@@ -24,8 +24,17 @@ struct MagnifierView: View {
     private var source: CIImage? { frozen ? frozenFrame : cam.latest }
     private var processed: CIImage? { source.map { Self.style(Self.cropZoom($0, frozen ? frozenZoom : 1), look: look, sharpen: sharpen, brightness: Float(brightness)) } }
 
+    var embedded = false
     var body: some View {
-        ToolPage(title: "Magnifier+", subtitle: "Zoom past the Camera app, freeze and zoom into the frame, and read in high contrast.") {
+        content
+        .onAppear { if Launch.startHardware { cam.start(preset: .hd1920x1080); cam.setZoom(zoom) }; if Launch.sample, let cg = SampleAssets.document().cgImage { frozenFrame = CIImage(cgImage: cg); frozen = true; cam.setPaused(true) } }
+        .onDisappear { cam.stop() }
+    }
+    @ViewBuilder private var content: some View {
+        if embedded { VStack(alignment: .leading, spacing: HandySpacing.s12) { panel } }
+        else { ToolPage(title: "Magnifier+", subtitle: "Zoom past the Camera app, freeze and zoom into the frame, and read in high contrast.") { panel } }
+    }
+    @ViewBuilder private var panel: some View {
             HowTo("magnify", [
                 "Point the camera at small print and pinch to zoom in.",
                 "Tap to freeze a sharp frame, then study it.",
@@ -85,9 +94,6 @@ struct MagnifierView: View {
             }
             Text("Tip: freeze first, then zoom — no shaky hands. Yellow-on-black and inverted are the looks low-vision readers find easiest.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        }
-        .onAppear { if Launch.startHardware { cam.start(preset: .hd1920x1080); cam.setZoom(zoom) }; if Launch.sample, let cg = SampleAssets.document().cgImage { frozenFrame = CIImage(cgImage: cg); frozen = true; cam.setPaused(true) } }
-        .onDisappear { cam.stop() }
     }
 
     private func toggleFreeze() {

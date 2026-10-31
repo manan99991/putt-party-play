@@ -19,8 +19,22 @@ struct SceneDescriberView: View {
     @AppStorage("describe.rate") private var rate = Double(AVSpeechUtteranceDefaultSpeechRate)
     private let ctx = CIContext()
 
+    var embedded = false
     var body: some View {
-        ToolPage(title: "Scene Describer", subtitle: "Tap to hear what's in front of the camera, or let it narrate as the scene changes.") {
+        content
+        .onAppear { if Launch.startHardware { cam.start(preset: .hd1280x720) }; speaker.rate = Float(rate); if Launch.sample { Task { await describe(SampleAssets.photo(), speak: false) } } }
+        .onDisappear { stopContinuous(); cam.stop(); speaker.stop() }
+        .onChange(of: photoItem) { _, item in
+            Task {
+                if let d = try? await item?.loadTransferable(type: Data.self), let ui = UIImage(data: d) { await describe(ui, speak: true) }
+            }
+        }
+    }
+    @ViewBuilder private var content: some View {
+        if embedded { VStack(alignment: .leading, spacing: HandySpacing.s12) { panel } }
+        else { ToolPage(title: "Scene Describer", subtitle: "Tap to hear what's in front of the camera, or let it narrate as the scene changes.") { panel } }
+    }
+    @ViewBuilder private var panel: some View {
             HowTo("describe", [
                 "Point the camera at what is in front of you and tap to describe it.",
                 "It speaks what it sees; tap Repeat to hear it again.",
@@ -69,14 +83,6 @@ struct SceneDescriberView: View {
             Text(AIEngine.isAvailable ? "Uses the camera and on-device Apple Intelligence; nothing leaves the phone. Descriptions are best-effort — not a mobility or safety aid."
                                       : "Runs on the phone's vision engine; with Apple Intelligence the sentences get more natural. Best-effort — not a mobility or safety aid.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        }
-        .onAppear { if Launch.startHardware { cam.start(preset: .hd1280x720) }; speaker.rate = Float(rate); if Launch.sample { Task { await describe(SampleAssets.photo(), speak: false) } } }
-        .onDisappear { stopContinuous(); cam.stop(); speaker.stop() }
-        .onChange(of: photoItem) { _, item in
-            Task {
-                if let d = try? await item?.loadTransferable(type: Data.self), let ui = UIImage(data: d) { await describe(ui, speak: true) }
-            }
-        }
     }
 
     private func currentImage() -> UIImage? {

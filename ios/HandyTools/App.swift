@@ -288,6 +288,7 @@ struct ToolDestination: View {
         case "warranty": WarrantyView()
         case "pricecheck": PriceCheckView()
         case "identify": IdentifyView()
+        case "seeread": SeeReadView()
         default: ComingSoonView(id: id)
         }
     }

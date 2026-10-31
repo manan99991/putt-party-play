@@ -37,8 +37,25 @@ struct LensView: View {
     private var overQuota: Bool { !Usage.hasRoom("ai", limit: Limits.freeAiPerDay) }
     private var hasText: Bool { text.trimmingCharacters(in: .whitespacesAndNewlines).count >= 2 }
 
+    var embedded = false
     var body: some View {
-        ToolPage(title: "Lens", subtitle: "Grab text from the camera, a photo, a PDF or a link — then listen to it, simplify it, or get the gist.") {
+        content
+        .onAppear { reader.rate = Float(rate); if Launch.sample, text.isEmpty { text = "Tenant shall indemnify and hold harmless the Landlord. This Agreement shall automatically renew for successive twelve-month terms unless either party gives 60 days' notice. All disputes are subject to binding arbitration. Late fee of $75 applies after a 5-day grace period." } }
+        .onDisappear { reader.pause() }
+        .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf]) { res in
+            if case .success(let url) = res { busy = true; Task.detached { let t = ReadSource.fromPDF(url); await MainActor.run { busy = false; setText(String(t.prefix(12_000))) } } }
+        }
+        .onChange(of: photoItem) { _, item in
+            guard let item else { return }
+            busy = true
+            Task { if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) { let t = await AIEngine.recognizeText(img); await MainActor.run { busy = false; setText(t) } } else { await MainActor.run { busy = false } } }
+        }
+    }
+    @ViewBuilder private var content: some View {
+        if embedded { VStack(alignment: .leading, spacing: HandySpacing.s12) { panel } }
+        else { ToolPage(title: "Lens", subtitle: "Grab text from the camera, a photo, a PDF or a link — then listen to it, simplify it, or get the gist.") { panel } }
+    }
+    @ViewBuilder private var panel: some View {
             HowTo("lens", [
                 "Bring text in: paste it, snap a photo, open a PDF, or drop in a link.",
                 "Pick what to do — Listen reads it aloud, Plain English rewrites it simply, Gist boils it down.",
@@ -61,17 +78,6 @@ struct LensView: View {
                 }
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
-        }
-        .onAppear { reader.rate = Float(rate); if Launch.sample, text.isEmpty { text = "Tenant shall indemnify and hold harmless the Landlord. This Agreement shall automatically renew for successive twelve-month terms unless either party gives 60 days' notice. All disputes are subject to binding arbitration. Late fee of $75 applies after a 5-day grace period." } }
-        .onDisappear { reader.pause() }
-        .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf]) { res in
-            if case .success(let url) = res { busy = true; Task.detached { let t = ReadSource.fromPDF(url); await MainActor.run { busy = false; setText(String(t.prefix(12_000))) } } }
-        }
-        .onChange(of: photoItem) { _, item in
-            guard let item else { return }
-            busy = true
-            Task { if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) { let t = await AIEngine.recognizeText(img); await MainActor.run { busy = false; setText(t) } } else { await MainActor.run { busy = false } } }
-        }
     }
 
     // MARK: input
