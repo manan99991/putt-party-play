@@ -1159,6 +1159,46 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(PriceBrain.rank([oz, g]).first { $0.bestValue }?.entry.name, "Metric")
     }
 
+    func testTroyOunceForPreciousMetals() {
+        // A plain "oz" is a standard ounce unless troy is requested; "ozt" is always troy.
+        XCTAssertEqual(PriceBrain.parseSize("1 oz")?.qty ?? 0, 28.3495, accuracy: 0.01)
+        XCTAssertEqual(PriceBrain.parseSize("1 oz", troyOunce: true)?.qty ?? 0, 31.1035, accuracy: 0.01)
+        XCTAssertEqual(PriceBrain.parseSize("1 ozt")?.qty ?? 0, 31.1035, accuracy: 0.01)
+
+        // Precious-metal names are detected so the Best-deal screen defaults troy on.
+        XCTAssertTrue(PriceBrain.looksPrecious(["1 oz Sunshine Minting Gold Bar", "50 gram Gold Bar"]))
+        XCTAssertFalse(PriceBrain.looksPrecious(["Peanut butter", "Olive oil"]))
+
+        // The exact screenshot case: 1 oz gold bar $4,039.99 vs 50 g $6,469.99.
+        let bar1oz = PriceBrain.Entry(name: "1 oz Sunshine Gold Bar", price: 4039.99, sizeText: "1 oz")
+        let bar50g = PriceBrain.Entry(name: "50 gram Gold Bar", price: 6469.99, sizeText: "50 g")
+        // With troy ounces the two are within ~0.5% per gram — the 50 g is the (marginally) better deal.
+        let troyRanked = PriceBrain.rank([bar1oz, bar50g], troyOunce: true)
+        XCTAssertEqual(troyRanked.first { $0.bestValue }?.entry.name, "50 gram Gold Bar")
+        XCTAssertEqual(troyRanked.first { $0.bestValue }?.savingsPct.map { Int($0) }, 0, "per-gram gap should round to 0% with troy oz")
+        // The standard ounce would wrongly inflate that gap to ~9% — proving the fix matters.
+        let avoirRanked = PriceBrain.rank([bar1oz, bar50g], troyOunce: false)
+        XCTAssertGreaterThan(avoirRanked.first { $0.bestValue }?.savingsPct ?? 0, 5)
+    }
+
+    func testPriceExtractionFromListingText() {
+        // Mimics the OCR of a store listing: name+size on one line, price a line or two below.
+        let text = """
+        1 oz Sunshine Minting Breakaway Gold Bar (New in Assay)
+        Online Price
+        $4,039.99
+        50 gram Gold Bar Argor-Heraeus Lunar Year of the Goat (New in Assay)
+        Online Price
+        $6,469.99
+        """
+        let found = PriceBrain.extract(from: text)
+        XCTAssertEqual(found.count, 2)
+        XCTAssertTrue(found[0].size.lowercased().contains("oz"))
+        XCTAssertTrue(found[0].price.contains("4,039"))
+        XCTAssertTrue(found[1].size.lowercased().contains("gram") || found[1].size.contains("50"))
+        XCTAssertTrue(found[1].price.contains("6,469"))
+    }
+
     func testSizeParserHandlesMultipacksAndJunk() {
         XCTAssertEqual(PriceBrain.parseSize("2 x 200ml"), PriceBrain.Size(qty: 400, base: .volume))
         XCTAssertEqual(PriceBrain.parseSize("1.5 L"), PriceBrain.Size(qty: 1500, base: .volume))

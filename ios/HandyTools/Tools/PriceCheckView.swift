@@ -12,7 +12,7 @@ struct PriceCheckView: View {
     var body: some View {
         ToolPage(title: "Price Check", subtitle: "Spot the real bargain, keep the cart under budget, and decode any label — right in the aisle.") {
             HowTo("pricecheck", [
-                "Best deal: enter a couple of prices and sizes — it shows the true cost per unit.",
+                "Best deal: snap a photo of the shelf/screen or type in a couple of prices and sizes — it shows the true cost per unit.",
                 "Cart vs budget: tap items in as you shop and watch what's left.",
                 "Decode label: snap an ingredients or nutrition label for a plain-language read.",
             ])
@@ -34,13 +34,36 @@ private struct CompareRow: Identifiable, Equatable { var id = UUID(); var name =
 
 private struct ComparePanel: View {
     @State private var rows: [CompareRow] = [CompareRow(), CompareRow()]
+    @State private var photoItem: PhotosPickerItem?
+    @State private var busy = false
+    @State private var scanNote: String?
+    @State private var troyManual: Bool? = nil
+
+    private var troyAuto: Bool { PriceBrain.looksPrecious(rows.map(\.name)) }
+    private var troy: Bool { troyManual ?? troyAuto }
+    private var usesOz: Bool { rows.contains { $0.size.lowercased().contains("oz") } }
 
     private var ranked: [PriceBrain.Ranked] {
-        PriceBrain.rank(rows.map { PriceBrain.Entry(id: $0.id, name: $0.name, price: Double($0.price) ?? 0, sizeText: $0.size) })
+        PriceBrain.rank(rows.map { PriceBrain.Entry(id: $0.id, name: $0.name, price: Double($0.price) ?? 0, sizeText: $0.size) }, troyOunce: troy)
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            PhotosPicker(selection: $photoItem, matching: .images) {
+                Label("Scan a photo or screenshot", systemImage: "camera.viewfinder").frame(maxWidth: .infinity)
+            }.secondaryButton()
+            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text("Reading prices…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if let scanNote { Text(scanNote).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+
+            if usesOz {
+                Toggle(isOn: Binding(get: { troy }, set: { troyManual = $0 })) {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("Precious metal (troy ounce)").font(HandyFont.body)
+                        Text(troy ? "“oz” = 31.1 g — gold, silver, platinum" : "“oz” = 28.35 g — food & household").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
+                }.tint(HandyColor.accent)
+            }
+
             ForEach($rows) { $row in
                 VStack(spacing: HandySpacing.s8) {
                     TextField("Name (optional) — e.g. Store brand", text: $row.name).priceField()
@@ -68,6 +91,27 @@ private struct ComparePanel: View {
             }
             Text("Tip: works across units — compare a 16 oz jar against a 500 g one and it still tells you which is cheaper per 100 g.")
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+        }
+        .onChange(of: photoItem) { _, item in
+            guard let item else { return }
+            busy = true; scanNote = nil
+            Task {
+                let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
+                photoItem = nil
+                guard let img else { await MainActor.run { busy = false }; return }
+                let text = await AIEngine.recognizeText(img)
+                let found = PriceBrain.extract(from: text)
+                await MainActor.run {
+                    busy = false
+                    if found.isEmpty {
+                        scanNote = "Couldn't read a price and size from that. Try a clearer shot, or type them in below."
+                    } else {
+                        rows = found.map { CompareRow(name: $0.name, price: $0.price.filter { $0.isNumber || $0 == "." }, size: $0.size) }
+                        troyManual = nil   // let auto-detect re-run on the new names
+                        scanNote = "Found \(found.count) item\(found.count == 1 ? "" : "s"). Check the numbers below."
+                    }
+                }
+            }
         }
     }
 }

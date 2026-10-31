@@ -13,14 +13,20 @@ enum PriceBrain {
     /// pieces for count. "1.5 L" → 1500 ml; "16 oz" → 453.6 g; "2 x 200 ml" → 400 ml.
     struct Size: Equatable { let qty: Double; let base: Base }
 
-    private static let massToG: [String: Double] = ["g": 1, "gram": 1, "grams": 1, "kg": 1000, "kilo": 1000, "kilogram": 1000, "kgs": 1000, "oz": 28.3495, "ounce": 28.3495, "ounces": 28.3495, "lb": 453.592, "lbs": 453.592, "pound": 453.592, "pounds": 453.592]
+    // Ounces are handled separately (troy vs avoirdupois), so they're deliberately not in this table.
+    private static let massToG: [String: Double] = ["g": 1, "gram": 1, "grams": 1, "kg": 1000, "kilo": 1000, "kilogram": 1000, "kgs": 1000, "lb": 453.592, "lbs": 453.592, "pound": 453.592, "pounds": 453.592]
+    private static let avoirOunceG = 28.3495   // standard (food, household) ounce
+    private static let troyOunceG = 31.1035    // precious-metal ounce (gold, silver, platinum)
     private static let volToMl: [String: Double] = ["ml": 1, "milliliter": 1, "millilitre": 1, "l": 1000, "liter": 1000, "litre": 1000, "cl": 10, "floz": 29.5735, "floz.": 29.5735, "pt": 473.176, "pint": 473.176, "qt": 946.353, "quart": 946.353, "gal": 3785.41, "gallon": 3785.41, "cup": 236.588, "cups": 236.588]
     private static let countWords: Set<String> = ["ct", "count", "pk", "pack", "packs", "pc", "pcs", "piece", "pieces", "ea", "each", "rolls", "roll", "sheets", "bars", "bar", "tabs", "capsules", "caps"]
 
     /// Parse a human size string into a canonical quantity. Handles a leading multipack ("3 x 330ml"),
-    /// decimals, and "fl oz" vs "oz". Returns nil if there's no recognisable quantity+unit.
-    static func parseSize(_ raw: String) -> Size? {
+    /// decimals, and "fl oz" vs "oz". For a plain "oz", `troyOunce` picks the precious-metal ounce
+    /// (31.1 g) over the standard one (28.35 g); "ozt"/"toz" or the word "troy" force troy regardless.
+    /// Returns nil if there's no recognisable quantity+unit.
+    static func parseSize(_ raw: String, troyOunce: Bool = false) -> Size? {
         let s = raw.lowercased().replacingOccurrences(of: "fl oz", with: "floz").replacingOccurrences(of: "fluid ounce", with: "floz")
+        let wantsTroy = troyOunce || s.contains("troy")
         // Optional multipack prefix: "2 x 200ml" or "2x200ml".
         var multiplier = 1.0
         var rest = s
@@ -35,6 +41,10 @@ enum PriceBrain {
               let n = Double(rest[nr]) else { return nil }
         let unit = String(rest[ur]).trimmingCharacters(in: CharacterSet(charactersIn: "."))
         let value = n * multiplier
+        if ["oz", "ozt", "toz", "ounce", "ounces"].contains(unit) {
+            let troy = wantsTroy || unit == "ozt" || unit == "toz"
+            return Size(qty: value * (troy ? troyOunceG : avoirOunceG), base: .mass)
+        }
         if let g = massToG[unit] { return Size(qty: value * g, base: .mass) }
         if let ml = volToMl[unit] { return Size(qty: value * ml, base: .volume) }
         if countWords.contains(unit) { return Size(qty: value, base: .count) }
@@ -47,9 +57,9 @@ enum PriceBrain {
 
     /// Rank entries by true unit price. Only entries sharing the most common base are compared head to
     /// head; the cheapest per unit is flagged best, with the percentage it saves against the priciest.
-    static func rank(_ entries: [Entry]) -> [Ranked] {
+    static func rank(_ entries: [Entry], troyOunce: Bool = false) -> [Ranked] {
         // Compute per-base unit price where the size parses.
-        let parsed = entries.map { e -> (Entry, Size?) in (e, parseSize(e.sizeText)) }
+        let parsed = entries.map { e -> (Entry, Size?) in (e, parseSize(e.sizeText, troyOunce: troyOunce)) }
         // The base we compare on = the most frequent parseable base.
         let counts = Dictionary(grouping: parsed.compactMap { $0.1?.base }, by: { $0 }).mapValues(\.count)
         let compareBase = counts.max { $0.value < $1.value }?.key
@@ -74,6 +84,44 @@ enum PriceBrain {
             let savings = (isBest && (worst ?? 0) > 0 && best != worst) ? ((worst! - best!) / worst! * 100) : nil
             return Ranked(entry: e, perBase: pb, label: pb != nil ? unitLabel(compareBase) : "add a size to compare", bestValue: isBest, savingsPct: savings)
         }
+    }
+
+    /// Do these item names look like precious metals? If so the "oz" on them is a troy ounce — the
+    /// Best-deal screen uses this to default the troy toggle on, so bullion compares correctly.
+    static func looksPrecious(_ names: [String]) -> Bool {
+        let kws = ["gold", "silver", "platinum", "palladium", "bullion"]
+        return names.contains { n in let l = n.lowercased(); return kws.contains { l.contains($0) } }
+    }
+
+    /// Pull (name, price, size) rows out of OCR'd text from a photo or screenshot of a listing, so
+    /// Best-deal can be filled by snapping rather than typing. A price is paired with the most recent
+    /// size seen at or above it (store listings put the name+size on one line, the price on another).
+    static func extract(from text: String) -> [(name: String, price: String, size: String)] {
+        let sizePattern = #"\d+(?:\.\d+)?\s*(?:kg|kilograms?|grams?|g|ozt|oz t|oz|ounces?|lbs?|pounds?|ml|liters?|litres?|l|cl|floz|fl oz|pt|qt|gal|cups?|ct|count|packs?|pk|pcs?|pieces?|rolls?|sheets?|bars?|tabs?|capsules?|caps)\b"#
+        let pricePattern = #"[$€£]\s?\d{1,3}(?:,\d{3})*(?:\.\d{2})?|\d{1,3}(?:,\d{3})*\.\d{2}"#
+        var out: [(name: String, price: String, size: String)] = []
+        var pendingName = "", pendingSize = ""
+        for raw in text.split(separator: "\n") {
+            let line = String(raw)
+            if let size = firstMatch(sizePattern, in: line) {
+                pendingSize = size.trimmingCharacters(in: .whitespaces)
+                var name = line.replacingOccurrences(of: size, with: "")
+                if let p = firstMatch(pricePattern, in: name) { name = name.replacingOccurrences(of: p, with: "") }
+                name = name.trimmingCharacters(in: CharacterSet(charactersIn: " -•·\t|"))
+                pendingName = name.filter(\.isLetter).count >= 2 ? name : ""
+            }
+            if let price = firstMatch(pricePattern, in: line), !pendingSize.isEmpty {
+                out.append((pendingName, price.trimmingCharacters(in: .whitespaces), pendingSize))
+                pendingName = ""; pendingSize = ""
+            }
+        }
+        return out
+    }
+    private static func firstMatch(_ pattern: String, in s: String) -> String? {
+        guard let re = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]),
+              let m = re.firstMatch(in: s, range: NSRange(s.startIndex..., in: s)),
+              let r = Range(m.range, in: s) else { return nil }
+        return String(s[r])
     }
 
     static func money(_ v: Double) -> String {
