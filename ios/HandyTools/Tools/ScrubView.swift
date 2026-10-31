@@ -31,7 +31,7 @@ struct ScrubView: View {
         ToolPage(title: "Privacy Scrubber", subtitle: "Strip hidden location data and black out faces or text — permanently.") {
             HowTo("scrub", [
                 "Pick a photo to clean before you share it.",
-                "It strips location and camera data, and can blur faces or plates.",
+                "It strips location and camera data and auto-selects faces plus personal text — plates, phone numbers, emails, IDs.",
                 "Save or share the scrubbed copy — your original stays untouched.",
             ])
             if original == nil {
@@ -63,7 +63,7 @@ struct ScrubView: View {
                 }
             }
         }
-        .onAppear { if Launch.sample, original == nil, let d = SampleAssets.photo().jpegData(compressionQuality: 0.9) { originalData = d; original = UIImage(data: d); meta = Scrubber.metadata(in: d); if let img = original { let f = Scrubber.detect(img); boxes = f.faces.map { Box(rect: $0, kind: .face, on: true) } + f.text.map { Box(rect: $0, kind: .text, on: false) } } } }
+        .onAppear { if Launch.sample, original == nil, let d = SampleAssets.photo().jpegData(compressionQuality: 0.9) { originalData = d; original = UIImage(data: d); meta = Scrubber.metadata(in: d); if let img = original { let f = Scrubber.detect(img); boxes = f.faces.map { Box(rect: $0, kind: .face, on: true) } + f.text.map { Box(rect: $0.rect, kind: .text, on: $0.personal) } } } }
         .onChange(of: pickedItem) { _, item in load(item) }
         .task(id: meta.coordinate?.latitude) {
             guard let c = meta.coordinate else { mapImage = nil; return }
@@ -181,7 +181,7 @@ struct ScrubView: View {
             }
             let found = Scrubber.detect(img)
             await MainActor.run {
-                boxes = found.faces.map { Box(rect: $0, kind: .face, on: true) } + found.text.map { Box(rect: $0, kind: .text, on: false) }
+                boxes = found.faces.map { Box(rect: $0, kind: .face, on: true) } + found.text.map { Box(rect: $0.rect, kind: .text, on: $0.personal) }
                 detecting = false
             }
         }

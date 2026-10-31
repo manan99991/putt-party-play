@@ -217,6 +217,18 @@ final class EngineTests: XCTestCase {
 
     // MARK: Privacy Scrubber — irreversible redaction + metadata strip
 
+    func testScrubberClassifiesPersonalTextForAutoHiding() {
+        // Personal → hidden by default: plates, phone/card/ID numbers, emails, DOBs.
+        for s in ["7XYZ123", "ABC 1234", "(312) 555-0148", "3125550148", "4111 1111 1111 1111",
+                  "priya@northwind.io", "DOB 09/14/1986", "SSN 078-05-1120"] {
+            XCTAssertTrue(Scrubber.looksPersonal(s), "\(s) should auto-hide")
+        }
+        // Ordinary prose → left off so a document isn't blacked out wholesale.
+        for s in ["Whole Foods Market", "Total", "Agreement", "Summer Block Party", "the", "Receipt"] {
+            XCTAssertFalse(Scrubber.looksPersonal(s), "\(s) should NOT auto-hide")
+        }
+    }
+
     func testScrubberBlocksPixelsAndDropsMetadata() throws {
         let src = Self.noisy(CGSize(width: 400, height: 300))
         let rect = CGRect(x: 0.25, y: 0.25, width: 0.5, height: 0.5)

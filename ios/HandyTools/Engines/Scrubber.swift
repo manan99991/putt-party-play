@@ -35,16 +35,42 @@ enum Scrubber {
         return m
     }
 
-    /// Faces and text regions as normalized UIKit rects (origin top-left, 0…1).
-    static func detect(_ image: UIImage) -> (faces: [CGRect], text: [CGRect]) {
+    /// A detected text region plus whether it reads like something personal (a plate, phone, email,
+    /// card/account/ID number) that should be hidden by default — as opposed to ordinary prose.
+    struct TextHit { let rect: CGRect; let personal: Bool }
+
+    /// Faces and text regions as normalized UIKit rects (origin top-left, 0…1). Text hits are
+    /// classified so the view can switch personal ones (plates, numbers) ON automatically.
+    static func detect(_ image: UIImage) -> (faces: [CGRect], text: [TextHit]) {
         guard let cg = image.normalizedUp().cgImage else { return ([], []) }
         let handler = VNImageRequestHandler(cgImage: cg, orientation: .up)
         let fr = VNDetectFaceRectanglesRequest()
-        let tr = VNRecognizeTextRequest(); tr.recognitionLevel = .fast
+        // Accurate (not fast) + no language correction: we need the real characters to tell a plate /
+        // number from prose, and autocorrect would mangle plates like "7XYZ123".
+        let tr = VNRecognizeTextRequest(); tr.recognitionLevel = .accurate; tr.usesLanguageCorrection = false
         try? handler.perform([fr, tr])
         let faces = (fr.results ?? []).map { flip($0.boundingBox).insetBy(dx: -$0.boundingBox.width * 0.1, dy: -$0.boundingBox.height * 0.12) }
-        let text = (tr.results as? [VNRecognizedTextObservation] ?? []).map { flip($0.boundingBox) }
+        let text: [TextHit] = (tr.results as? [VNRecognizedTextObservation] ?? []).map {
+            TextHit(rect: flip($0.boundingBox), personal: looksPersonal($0.topCandidates(1).first?.string ?? ""))
+        }
         return (faces, text)
+    }
+
+    /// Heuristic: does this recognised string look like something a person would want hidden —
+    /// a licence plate, phone number, email, or a card / account / ID number? Ordinary words do not,
+    /// so a photo of a document isn't blacked out wholesale.
+    static func looksPersonal(_ raw: String) -> Bool {
+        let s = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard s.count >= 3 else { return false }
+        if s.contains("@"), s.contains(".") { return true }                     // email
+        let digits = s.filter(\.isNumber).count
+        let letters = s.filter(\.isLetter).count
+        if digits >= 7 { return true }                                          // phone / card / account / ID / DOB
+        // licence-plate-like: short, almost all alphanumeric, mixing letters and digits.
+        let compact = s.filter { $0.isLetter || $0.isNumber }
+        if (5...8).contains(compact.count), digits >= 1, letters >= 1,
+           Double(compact.count) / Double(max(1, s.count)) > 0.7 { return true }
+        return false
     }
 
     /// Paint opaque blocks over `rects` (normalized, top-left origin) and return a FRESH JPEG with no
