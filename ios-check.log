@@ -28,14 +28,12 @@ Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-pla
 
 
 Resolved source packages:
-  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
   GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
+  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
 
-resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
+resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1192:38: error: call to main actor-isolated static method 'isDue(last:frequency:now:)' in a synchronous nonisolated context
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1194:39: error: call to main actor-isolated static method 'isDue(last:frequency:now:)' in a synchronous nonisolated context
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1196:38: error: call to main actor-isolated static method 'isDue(last:frequency:now:)' in a synchronous nonisolated context
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1198:39: error: call to main actor-isolated static method 'isDue(last:frequency:now:)' in a synchronous nonisolated context
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1200:39: error: call to main actor-isolated static method 'isDue(last:frequency:now:)' in a synchronous nonisolated context
-** TEST FAILED **
+2026-10-31 18:26:43.056674+0000 HandyTools[7521:28625] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-10-31 18:26:43.061321+0000 HandyTools[7521:28625] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1118: error: -[HandyToolsTests.EngineTests testReceiptFuzzySearchFindsTypoAndVagueWords] : XCTAssertEqual failed: ("nil") is not equal to ("Optional("Home Depot")")
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:50: error: -[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst] : XCTAssertEqual failed: ("Optional("fileviewer")") is not equal to ("Optional("scan")")
