@@ -24,6 +24,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -113,6 +114,15 @@ private fun copy(ctx: Context, text: String, msg: String = "Copied") {
  */
 @Composable
 fun CaptureToolScreen() {
+    PowerToolPage(route = "capture") { CapturePanel() }
+}
+
+/**
+ * Capture's body as a reusable Column-scope panel, so it can sit as a tab beside the Documents
+ * panels. Behaviour is identical to the former standalone screen — only the wrapper changed.
+ */
+@Composable
+fun ColumnScope.CapturePanel() {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -218,9 +228,8 @@ fun CaptureToolScreen() {
         }
     }
 
-    PowerToolPage(route = "capture") {
-        // Preview — the photo, big, at the top.
-        val bmp = bitmap
+    // Preview — the photo, big, at the top.
+    val bmp = bitmap
         if (bmp == null) {
             PreviewBox(minHeight = 190.dp) {
                 Column(Modifier.padding(HandyTokens.Space24), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -279,7 +288,6 @@ fun CaptureToolScreen() {
         }
 
         NoteText("Text recognition runs on the phone (ML Kit). Nothing is uploaded.")
-    }
 }
 
 // ---------------------------------------------------------------------------------------------

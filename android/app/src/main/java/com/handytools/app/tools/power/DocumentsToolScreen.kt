@@ -140,7 +140,7 @@ fun DocumentsToolScreen() {
 // ------------------------------------------------------------------------------------------------
 
 @Composable
-private fun DocScanPanel(st: DocScanState) {
+internal fun DocScanPanel(st: DocScanState) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val hasRoom = Usage.hasRoom(ctx, "scan", Limits.FREE_SCAN_PAGES)
@@ -282,7 +282,7 @@ private fun DocScanPanel(st: DocScanState) {
 // ------------------------------------------------------------------------------------------------
 
 @Composable
-private fun DocSignPanel(st: DocSignState) {
+internal fun DocSignPanel(st: DocSignState) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current

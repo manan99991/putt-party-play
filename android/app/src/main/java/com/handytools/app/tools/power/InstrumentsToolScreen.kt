@@ -71,7 +71,7 @@ import kotlin.math.sqrt
  */
 @Composable
 fun InstrumentsToolScreen() {
-    val tabs = listOf("Level", "Compass", "Sound", "Light", "Altitude", "Metal", "Ruler", "Magnifier")
+    val tabs = listOf("Level", "Compass", "Sound", "Light", "Altitude", "Metal", "Ruler", "Magnifier", "Torch")
     var tab by remember { mutableIntStateOf(0) }
     PowerToolPage("instruments", tabs, tab, { tab = it }) {
         when (tab) {
@@ -82,8 +82,26 @@ fun InstrumentsToolScreen() {
             4 -> AltitudePanel()
             5 -> MetalPanel()
             6 -> RulerPanel()
-            else -> MagnifierPanel()
+            7 -> MagnifierPanel()
+            else -> TorchPanel()
         }
+    }
+}
+
+/** Flashlight folded into Instruments: the full flashlight screen stays intact; this opens it. */
+@Composable
+private fun TorchPanel() {
+    val open = com.handytools.app.LocalOpenTool.current
+    Column(Modifier.fillMaxWidth()) {
+        Text("Flashlight", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+        Spacer(Modifier.height(8.dp))
+        Text(
+            "Torch, strobe, SOS & Morse, beacon, screen light and mirror — the full flashlight.",
+            style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary
+        )
+        Spacer(Modifier.height(16.dp))
+        HPrimaryButton("Open Flashlight") { open?.invoke("flashlight") }
+        NoteText("Flashlight lives here now — same features, one less tile on the home screen.")
     }
 }
 

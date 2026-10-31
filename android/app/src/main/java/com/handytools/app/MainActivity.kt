@@ -81,6 +81,10 @@ import com.handytools.app.ui.SettingsScreen
 import com.handytools.app.ui.SetupScreen
 import com.handytools.app.ui.PaywallScreen
 
+/** Lets a tool open another tool's route (e.g. Instruments → the folded-in Flashlight). Mirrors
+ *  LocalRemoveAds; null when no navigator is in scope. */
+val LocalOpenTool = androidx.compose.runtime.staticCompositionLocalOf<((String) -> Unit)?> { null }
+
 class MainActivity : ComponentActivity() {
 
     private var sharedUrl by mutableStateOf<String?>(null)
@@ -107,7 +111,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             HandyTheme {
                 val nav = rememberNavController()
-                androidx.compose.runtime.CompositionLocalProvider(com.handytools.app.ads.LocalRemoveAds provides { nav.navigate("paywall") }) {
+                androidx.compose.runtime.CompositionLocalProvider(
+                    com.handytools.app.ads.LocalRemoveAds provides { nav.navigate("paywall") },
+                    LocalOpenTool provides { r: String -> nav.navigate(r) }
+                ) {
                 // A warm deep link (route delivered via onNewIntent) navigates here. launchSingleTop
                 // avoids stacking duplicates when the same route is re-opened.
                 LaunchedEffect(pendingRoute) {
