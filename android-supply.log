@@ -1,1 +1,65 @@
-(no log file produced)
+[09:15:17]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[09:15:17]: fastlane 2.241.2 (Ruby 3.2.3, gem)
+[09:15:17]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[09:15:18]: [32m------------------------------[0m
+[09:15:18]: [32m--- Step: default_platform ---[0m
+[09:15:18]: [32m------------------------------[0m
+[09:15:18]: [32mDriving the lane 'android listing' 🚀[0m
+[09:15:18]: [32m--------------------[0m
+[09:15:18]: [32m--- Step: supply ---[0m
+[09:15:18]: [32m--------------------[0m
+
++------------------------------------------------------------------------------------------------------+
+|                                      [32mSummary for supply 2.241.2[0m                                      |
++------------------------------------+-----------------------------------------------------------------+
+| track                              | internal                                                        |
+| skip_upload_apk                    | true                                                            |
+| skip_upload_aab                    | true                                                            |
+| skip_upload_metadata               | false                                                           |
+| skip_upload_changelogs             | false                                                           |
+| skip_upload_images                 | false                                                           |
+| skip_upload_screenshots            | false                                                           |
+| changes_not_sent_for_review        | true                                                            |
+| version_code                       | 109                                                             |
+| release_status                     | completed                                                       |
+| package_name                       | com.tenzy.toolkit                                               |
+| metadata_path                      | ./fastlane/metadata/android                                     |
+| json_key                           | /home/runner/work/putt-party-play/putt-party-play/play-key.json |
+| sync_image_upload                  | false                                                           |
+| track_promote_release_status       | completed                                                       |
+| validate_only                      | false                                                           |
+| check_superseded_tracks            | false                                                           |
+| timeout                            | 300                                                             |
+| deactivate_on_promote              | true                                                            |
+| rescue_changes_not_sent_for_review | true                                                            |
+| ack_bundle_installation_warning    | false                                                           |
++------------------------------------+-----------------------------------------------------------------+
+
+[09:15:18]: Preparing uploads for language 'en-US'...
+[09:15:19]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/featureGraphic.png...
+[09:15:20]: ⬆️ Uploading image file ./fastlane/metadata/android/en-US/images/icon.png...
+[09:15:22]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/01_fileviewer.png...
+[09:15:25]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/02_docs.png...
+[09:15:28]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/03_converter.png...
+[09:15:31]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/04_scrubber.png...
+[09:15:33]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/05_media.png...
+[09:15:35]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/06_cleanup.png...
+[09:15:37]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/07_instruments.png...
+[09:15:40]: ⬆️  Uploading screenshot ./fastlane/metadata/android/en-US/images/phoneScreenshots/08_safety.png...
+[09:15:42]: Updating changelog for '109' and language 'en-US' to default changelog...
+[09:15:42]: Uploaded all items for language 'en-US'... (23.286354682 secs)
+[09:15:42]: Uploading all changes to Google Play...
+[09:15:44]: [32mSuccessfully finished the upload to Google Play[0m
+[09:15:44]: [32mListing pushed and release 109 rolled out to internal testers[0m
+
++---------------------------------------+
+|           [32mfastlane summary[0m            |
++------+------------------+-------------+
+| Step | Action           | Time (in s) |
++------+------------------+-------------+
+| 1    | default_platform | 0           |
+| 2    | supply           | 26          |
++------+------------------+-------------+
+
+[09:15:44]: [32mfastlane.tools finished successfully 🎉[0m
+[09:15:44]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
