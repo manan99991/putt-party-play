@@ -27,6 +27,9 @@ struct ScrubView: View {
     @State private var videoOutURL: URL?
     @State private var videoWorking = false
     @State private var videoProgress = 0.0
+    @State private var style: Scrubber.RedactStyle = .block
+    @State private var emoji = "😎"
+    private let emojiChoices = ["😎", "🙂", "🐵", "⭐️", "❤️", "🌸"]
 
     private var overQuota: Bool { !Usage.hasRoom("scrub", limit: Limits.freeScrubPerDay) }
     private var faceCount: Int { boxes.filter { $0.kind == .face }.count }
@@ -146,6 +149,23 @@ struct ScrubView: View {
                 }
                 Spacer()
             }
+            Picker("Style", selection: $style) {
+                ForEach(Scrubber.RedactStyle.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+            }.pickerStyle(.segmented)
+            if style == .emoji {
+                HStack(spacing: HandySpacing.s8) {
+                    ForEach(emojiChoices, id: \.self) { e in
+                        Text(e).font(.system(size: 24)).padding(6)
+                            .background(emoji == e ? HandyColor.accentSoft : HandyColor.surface, in: Circle())
+                            .overlay(Circle().stroke(emoji == e ? HandyColor.accent : HandyColor.border, lineWidth: 1))
+                            .onTapGesture { emoji = e }
+                    }
+                    Spacer()
+                }
+            }
+            Text(style == .block ? "Block is the most private — the pixels are gone." : style == .pixelate ? "Pixelate keeps the shape but removes the detail." : "A sticker over each face — fun, and the face underneath is gone.")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+
             if !store.isPremium { QuotaChip(name: "scrub", limit: Limits.freeScrubPerDay).environmentObject(store) }
             if overQuota { LimitReachedBanner(message: "You've scrubbed today's \(Limits.freeScrubPerDay) free photos.") }
             Button { make() } label: {
@@ -242,10 +262,11 @@ struct ScrubView: View {
         guard let original else { return }
         guard Usage.hasRoom("scrub", limit: Limits.freeScrubPerDay) else { return }
         let rects = boxes.filter { $0.on }.map { $0.rect }
+        let st = style, em = emoji
         working = true; errorText = nil
         Task { @MainActor in
             // Full-size re-draw + JPEG encode runs off the main thread so a large photo can't freeze it.
-            let d = await Task.detached(priority: .userInitiated) { Scrubber.render(original, rects: rects) }.value
+            let d = await Task.detached(priority: .userInitiated) { Scrubber.render(original, rects: rects, style: st, emoji: em) }.value
             working = false
             if let d { _ = Usage.use("scrub", limit: Limits.freeScrubPerDay); result = d; HandyHaptics.success() }
             else { errorText = "Couldn't make the clean copy. Try another photo." }

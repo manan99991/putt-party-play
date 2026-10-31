@@ -75,19 +75,44 @@ enum Scrubber {
         return false
     }
 
-    /// Paint opaque blocks over `rects` (normalized, top-left origin) and return a FRESH JPEG with no
-    /// metadata. The output never contains the covered pixels.
-    static func render(_ image: UIImage, rects: [CGRect], quality: CGFloat = 0.92) -> Data? {
+    /// How a region is hidden. All three REMOVE the pixels underneath (a fresh encode, no reversible
+    /// blur): Block is a solid bar, Pixelate is a coarse mosaic drawn over a filled block, Emoji drops
+    /// a sticker over a filled block — fun for faces, still fully private.
+    enum RedactStyle: String, CaseIterable { case block = "Block", pixelate = "Pixelate", emoji = "Emoji" }
+
+    /// Hide `rects` (normalized, top-left origin) in the chosen style and return a FRESH JPEG with no
+    /// metadata. The output never contains the covered pixels, whatever the style.
+    static func render(_ image: UIImage, rects: [CGRect], style: RedactStyle = .block, emoji: String = "😎", quality: CGFloat = 0.92) -> Data? {
         let base = image.normalizedUp()
         let size = CGSize(width: base.size.width * base.scale, height: base.size.height * base.scale)
         let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
         let out = UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
             base.draw(in: CGRect(origin: .zero, size: size))
-            UIColor.black.setFill()
             for r in rects {
                 let px = CGRect(x: r.minX * size.width, y: r.minY * size.height, width: r.width * size.width, height: r.height * size.height)
                     .insetBy(dx: -2, dy: -2).intersection(CGRect(origin: .zero, size: size))
-                if !px.isNull { ctx.fill(px) }
+                guard !px.isNull, px.width > 1, px.height > 1 else { continue }
+                switch style {
+                case .block:
+                    UIColor.black.setFill(); ctx.fill(px)
+                case .pixelate:
+                    if let sub = base.cgImage?.cropping(to: px) {
+                        let region = UIImage(cgImage: sub)
+                        let cols = 12, rows = max(1, Int((CGFloat(12) * px.height / px.width).rounded()))
+                        let small = UIGraphicsImageRenderer(size: CGSize(width: cols, height: rows)).image { _ in
+                            region.draw(in: CGRect(x: 0, y: 0, width: cols, height: rows))
+                        }
+                        ctx.cgContext.interpolationQuality = .none
+                        small.draw(in: px)
+                        ctx.cgContext.interpolationQuality = .default
+                    } else { UIColor.black.setFill(); ctx.fill(px) }
+                case .emoji:
+                    UIColor.black.setFill(); ctx.fill(px)   // the pixels underneath are gone either way
+                    let s = emoji as NSString
+                    let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: min(px.width, px.height) * 1.2)]
+                    let sz = s.size(withAttributes: attrs)
+                    s.draw(at: CGPoint(x: px.midX - sz.width / 2, y: px.midY - sz.height / 2), withAttributes: attrs)
+                }
             }
         }
         return out.jpegData(compressionQuality: quality)
