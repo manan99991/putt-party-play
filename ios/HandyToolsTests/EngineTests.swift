@@ -193,6 +193,11 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(out.size.width, W, accuracy: 1)
         XCTAssertLessThan(out.size.height, a.size.height + b.size.height - 200, "overlap must be removed")
         XCTAssertGreaterThan(out.size.height, winH + 200, "second shot must contribute new rows")
+        // Regression guard for the "one long white image" bug: the composite must actually contain the
+        // pages, not come back blank. (A GPU-backed renderer silently blanked very tall stitches.)
+        let ctx = CIContext()
+        let avg = try XCTUnwrap(ColorVision.averageColor(of: out, region: CGRect(x: 0, y: 0, width: 1, height: 1), context: ctx))
+        XCTAssertLessThan((avg.x + avg.y + avg.z) / 3, 0.95, "stitched output must contain the pages, not be a blank white image")
     }
 
     func testStitcherOrdersShuffledScreenshots() throws {

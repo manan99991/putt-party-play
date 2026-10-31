@@ -58,14 +58,60 @@ enum Stitcher {
         }
         guard totalH > 0 else { return nil }
 
-        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
-        return UIGraphicsImageRenderer(size: CGSize(width: targetW, height: totalH), format: fmt).image { _ in
+        return compose(pieces: pieces, width: targetW, height: totalH)
+    }
+
+    // MARK: compose
+
+    /// Paint the computed pieces into one tall image. A long stitch can be 10–30k px tall, and
+    /// UIGraphicsImageRenderer (GPU-backed) silently returns a BLANK image past ~10k px on many
+    /// devices — the "one long white image" bug. We composite into a CPU CGBitmapContext instead,
+    /// which is limited only by memory (up to 32,767 px/side), on an opaque white background so any
+    /// gap is white rather than transparent. Falls back to a bounded renderer only for extreme sizes.
+    static func compose(pieces: [(UIImage, CGRect)], width: CGFloat, height: CGFloat) -> UIImage? {
+        guard width > 0, height > 0, !pieces.isEmpty else { return nil }
+        let maxSide: CGFloat = 32_000
+        guard width <= maxSide, height <= maxSide else { return composeBounded(pieces: pieces, width: width, height: height) }
+        let w = Int(width.rounded()), h = Int(height.rounded())
+        guard w > 0, h > 0,
+              let ctx = CGContext(data: nil, width: w, height: h, bitsPerComponent: 8, bytesPerRow: 0,
+                                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)
+        else { return composeBounded(pieces: pieces, width: width, height: height) }
+        ctx.setFillColor(red: 1, green: 1, blue: 1, alpha: 1)
+        ctx.fill(CGRect(x: 0, y: 0, width: CGFloat(w), height: CGFloat(h)))
+        // CGContext is bottom-left; flip once so screenshots stack top-to-bottom and draw upright.
+        ctx.translateBy(x: 0, y: CGFloat(h)); ctx.scaleBy(x: 1, y: -1)
+        var y: CGFloat = 0
+        for (img, src) in pieces {
+            if let cg = img.cgImage?.cropping(to: src) {
+                ctx.draw(cg, in: CGRect(x: 0, y: y, width: width, height: src.height))
+            }
+            y += src.height
+        }
+        guard let cg = ctx.makeImage() else { return composeBounded(pieces: pieces, width: width, height: height) }
+        return UIImage(cgImage: cg)
+    }
+
+    /// Last-resort path for a composite taller than a bitmap context allows: scale the whole thing down
+    /// to a safe budget and render it. Still legible, and never blank.
+    private static func composeBounded(pieces: [(UIImage, CGRect)], width: CGFloat, height: CGFloat) -> UIImage? {
+        guard width > 0, height > 0 else { return nil }
+        let budget: CGFloat = 24_000_000
+        var scale = min(1, (budget / (width * height)).squareRoot())
+        let cap: CGFloat = 16_000
+        if height * scale > cap { scale = cap / height }
+        if width * scale > cap { scale = min(scale, cap / width) }
+        let outW = max(1, (width * scale).rounded()), outH = max(1, (height * scale).rounded())
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: CGSize(width: outW, height: outH), format: fmt).image { rctx in
+            UIColor.white.setFill(); rctx.fill(CGRect(x: 0, y: 0, width: outW, height: outH))
             var y: CGFloat = 0
             for (img, src) in pieces {
+                let dh = src.height * scale
                 if let cg = img.cgImage?.cropping(to: src) {
-                    UIImage(cgImage: cg).draw(in: CGRect(x: 0, y: y, width: src.width, height: src.height))
+                    UIImage(cgImage: cg).draw(in: CGRect(x: 0, y: y, width: outW, height: dh))
                 }
-                y += src.height
+                y += dh
             }
         }
     }

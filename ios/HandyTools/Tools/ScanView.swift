@@ -226,7 +226,7 @@ struct ScanView: View {
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .submitLabel(.done).onSubmit { addText() }
-                Button { addText() } label: { Text("Add") }.compactButton().disabled(newText.trimmingCharacters(in: .whitespaces).isEmpty || inking)
+                Button { addText() } label: { Text("Add") }.compactButton().disabled(newText.trimmingCharacters(in: .whitespaces).isEmpty)
             }
             if let sid = selectedStamp, let st = page?.stamps.first(where: { $0.id == sid }) {
                 HStack(spacing: HandySpacing.s8) {
@@ -435,6 +435,9 @@ struct ScanView: View {
     private func addText() {
         let t = newText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !t.isEmpty else { return }
+        // If a drawing is in progress, keep it (burn it into the page) and leave draw mode, so typing a
+        // name and tapping Add always lands the text instead of silently doing nothing.
+        if inking { commitInk(to: selected); inking = false }
         place(.text(t)); newText = ""
     }
 

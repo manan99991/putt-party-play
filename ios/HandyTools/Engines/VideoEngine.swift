@@ -205,6 +205,15 @@ enum VideoEngine {
         return await export(asset, preset: AVAssetExportPresetAppleM4A, type: .m4a, ext: "m4a")
     }
 
+    /// Re-container a video into MOV or M4V (H.264/AAC). Tries a fast passthrough when the source codec
+    /// already fits the container; otherwise re-encodes at high quality. Metadata is dropped. Returns
+    /// nil only if the device can't produce that container for this source (caller skips + reports it).
+    static func convertContainer(_ src: URL, type: AVFileType, ext: String) async -> URL? {
+        let asset = AVURLAsset(url: src)
+        if let fast = await export(asset, preset: AVAssetExportPresetPassthrough, type: type, ext: ext) { return fast }
+        return await export(asset, preset: AVAssetExportPresetHighestQuality, type: type, ext: ext)
+    }
+
     private static func export(_ asset: AVAsset, preset: String, type: AVFileType, ext: String, range: CMTimeRange? = nil) async -> URL? {
         guard let session = AVAssetExportSession(asset: asset, presetName: preset) else { return nil }
         let out = tempURL(ext)
