@@ -18,13 +18,13 @@ Fetching from https://github.com/googleads/swift-package-manager-google-mobile-a
 
 Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
 
-Creating working copy of package ‘swift-package-manager-google-mobile-ads’
-
-Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
-
 Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
 
 Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
+
+Creating working copy of package ‘swift-package-manager-google-mobile-ads’
+
+Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
 
 
 Resolved source packages:
@@ -33,5 +33,5 @@ Resolved source packages:
 
 resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/PriceBrain.swift:46:12: error: type 'PriceBrain.Ranked' does not conform to protocol 'Identifiable'
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/ContactsView.swift:185:18: error: invalid redeclaration of 'backup()'
 ** TEST FAILED **
