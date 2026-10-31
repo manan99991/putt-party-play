@@ -32,8 +32,20 @@ enum TenzyArt {
         }
     }
 
+    /// New tools reuse the claymorphic art of the tools they replaced, so the set stays visually
+    /// consistent with no new imagesets: See & Read inherits Magnifier's art, Identify the Scene
+    /// Describer's, File Opener the Lens's, Warranty the Share-Ready's, Price Check the Live Captions'.
+    private static let artAlias: [String: String] = [
+        "seeread": "magnify",
+        "identify": "describe",
+        "fileviewer": "lens",
+        "warranty": "shareready",
+        "pricecheck": "livecaptions",
+    ]
+
     static func name(id: String, theme: TenzyTheme, scheme: ColorScheme, kind: Kind) -> String {
-        "bg_\(id)_\(themeToken(theme))_\(variant(theme, scheme))_\(kind.rawValue)"
+        let art = artAlias[id] ?? id
+        return "bg_\(art)_\(themeToken(theme))_\(variant(theme, scheme))_\(kind.rawValue)"
     }
 }
 
