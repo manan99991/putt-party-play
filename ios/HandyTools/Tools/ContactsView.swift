@@ -1,6 +1,7 @@
 import SwiftUI
 import Contacts
 import ContactsUI
+import MessageUI
 
 /// Contacts cleanup — back up to a .vcf, find duplicates, and merge them without losing a number.
 /// Everything runs on-device. A merge is permanent (iOS has no contacts trash), so backup comes first.
@@ -15,6 +16,9 @@ struct ContactsView: View {
     @State private var pendingMergeAll: [[ContactRec]]?
     @State private var mergeProgress: String?
     @State private var tidy: TidyGroup?
+    @StateObject private var backup = ContactsBackup()
+    @State private var backupNote: String?
+    @State private var showMail = false
 
     struct TidyGroup: Identifiable { let id = UUID(); let title: String; let icon: String; let recs: [ContactRec]; let deletable: Bool }
 
@@ -30,6 +34,7 @@ struct ContactsView: View {
                 permissionCard
             } else {
                 backupBar
+                autoBackupCard
                 if scanning { HStack { ProgressView(); Text("Reading your contacts…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
                 if let r = report { reportBody(r) }
                 if let error { Text(error).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -37,7 +42,12 @@ struct ContactsView: View {
             Text("Everything runs on your phone; nothing is uploaded. A merge is permanent — iOS has no contacts trash — so back up before you merge.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .task { if authorized && report == nil { scan() } }
+        .task { if authorized && report == nil { scan() }; await autoBackupIfDue() }
+        .sheet(isPresented: $showMail) {
+            if let url = backup.lastBackupURL {
+                MailComposer(subject: "My contacts backup", body: "Attached is a backup of my contacts (.vcf). Keep it somewhere safe.", attachment: url)
+            }
+        }
         .confirmationDialog("Merge these contacts?",
                             isPresented: Binding(get: { pendingMerge != nil }, set: { if !$0 { pendingMerge = nil } }),
                             titleVisibility: .visible) {
@@ -184,6 +194,52 @@ struct ContactsView: View {
         }
     }
 
+    // MARK: automatic backup
+
+    private var autoBackupCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack {
+                Label("Automatic backup", systemImage: "clock.arrow.circlepath").font(HandyFont.bodyStrong)
+                Spacer()
+                Text(backup.lastBackup.map { "Last: " + $0.formatted(date: .abbreviated, time: .omitted) } ?? "Never")
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
+            Text("Saves a dated copy to the Files app (and iCloud Drive if it's on) on the schedule you pick, so a lost phone never means lost contacts.")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(BackupFrequency.allCases, id: \.rawValue) { f in
+                    HChip(text: f.title, selected: backup.frequency == f) {
+                        backup.frequency = f
+                        if f != .off { runBackupNow() }
+                    }
+                }
+            }
+            if let backupNote { Text(backupNote).font(HandyFont.micro).foregroundStyle(HandyColor.accent) }
+            HStack(spacing: HandySpacing.s8) {
+                Button { runBackupNow() } label: { Label("Back up now", systemImage: "arrow.down.doc") }.compactButton().disabled(busy)
+                if backup.lastBackupURL != nil {
+                    if MailComposer.canSend { Button { showMail = true } label: { Label("Email a copy", systemImage: "envelope") }.compactButton() }
+                    if let u = backup.lastBackupURL { ShareLink(item: u) { Image(systemName: "square.and.arrow.up").frame(width: 36, height: 36) }.compactButton() }
+                }
+            }
+        }.cardStyle(padding: HandySpacing.s12)
+    }
+
+    private func runBackupNow() {
+        busy = true; error = nil
+        Task {
+            do { let url = try await backup.runBackup(); backupNote = "Backed up \(url.lastPathComponent) to Files"; HandyHaptics.success() }
+            catch { self.error = "Couldn't back up your contacts. Try again." }
+            busy = false
+        }
+    }
+
+    private func autoBackupIfDue() async {
+        guard authorized, backup.isDue() else { return }
+        do { let url = try await backup.runBackup(); backupNote = "Auto-backed up \(url.lastPathComponent) to Files" }
+        catch { /* silent — the manual button and reminder still cover the user */ }
+    }
+
     private func doMerge(_ g: [ContactRec]) {
         busy = true; error = nil
         Task {
@@ -312,5 +368,34 @@ private struct ContactEditor: UIViewControllerRepresentable {
         let onDone: () -> Void
         init(onDone: @escaping () -> Void) { self.onDone = onDone }
         func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) { onDone() }
+    }
+}
+
+/// One-tap "email me a copy" of the backup. iOS can't send mail silently, so this opens the system
+/// composer with the .vcf already attached; the user hits send. `canSend` is false on a device with no
+/// Mail account, so the button is hidden rather than dead.
+struct MailComposer: UIViewControllerRepresentable {
+    static var canSend: Bool { MFMailComposeViewController.canSendMail() }
+    let subject: String
+    let body: String
+    let attachment: URL
+    @Environment(\.dismiss) private var dismiss
+
+    func makeCoordinator() -> Coordinator { Coordinator(dismiss: { dismiss() }) }
+    func makeUIViewController(context: Context) -> MFMailComposeViewController {
+        let vc = MFMailComposeViewController()
+        vc.mailComposeDelegate = context.coordinator
+        vc.setSubject(subject)
+        vc.setMessageBody(body, isHTML: false)
+        if let data = try? Data(contentsOf: attachment) {
+            vc.addAttachmentData(data, mimeType: "text/vcard", fileName: attachment.lastPathComponent)
+        }
+        return vc
+    }
+    func updateUIViewController(_ vc: MFMailComposeViewController, context: Context) {}
+    final class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+        let dismiss: () -> Void
+        init(dismiss: @escaping () -> Void) { self.dismiss = dismiss }
+        func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) { dismiss() }
     }
 }

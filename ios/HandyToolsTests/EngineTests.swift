@@ -1182,4 +1182,21 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Identifier.cleanLabel("espresso"), "Espresso")
         XCTAssertEqual(Identifier.cleanLabel("coffee_mug"), "Coffee Mug")
     }
+
+    // MARK: Contacts auto-backup
+
+    func testContactsBackupDueLogic() {
+        let now = Date()
+        let fortyDaysAgo = now.addingTimeInterval(-40 * 86_400)
+        // Never backed up → due (for any live cadence).
+        XCTAssertTrue(ContactsBackup.isDue(last: nil, frequency: .monthly, now: now))
+        // Just backed up → not due.
+        XCTAssertFalse(ContactsBackup.isDue(last: now, frequency: .monthly, now: now))
+        // 40 days on a monthly (30-day) cadence → due.
+        XCTAssertTrue(ContactsBackup.isDue(last: fortyDaysAgo, frequency: .monthly, now: now))
+        // 40 days on a quarterly cadence → not yet.
+        XCTAssertFalse(ContactsBackup.isDue(last: fortyDaysAgo, frequency: .quarterly, now: now))
+        // Off → never due, even if never backed up.
+        XCTAssertFalse(ContactsBackup.isDue(last: nil, frequency: .off, now: now))
+    }
 }
