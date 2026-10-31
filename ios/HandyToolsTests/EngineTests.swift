@@ -196,7 +196,8 @@ final class EngineTests: XCTestCase {
         // Regression guard for the "one long white image" bug: the composite must actually contain the
         // pages, not come back blank. (A GPU-backed renderer silently blanked very tall stitches.)
         let ctx = CIContext()
-        let avg = try XCTUnwrap(ColorVision.averageColor(of: out, region: CGRect(x: 0, y: 0, width: 1, height: 1), context: ctx))
+        let ci = CIImage(cgImage: try XCTUnwrap(out.cgImage))
+        let avg = try XCTUnwrap(ColorVision.averageColor(of: ci, region: CGRect(x: 0, y: 0, width: 1, height: 1), context: ctx))
         XCTAssertLessThan((avg.x + avg.y + avg.z) / 3, 0.95, "stitched output must contain the pages, not be a blank white image")
     }
 
