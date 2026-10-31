@@ -1174,4 +1174,12 @@ final class EngineTests: XCTestCase {
         XCTAssertNotNil(r.servingNote)
         XCTAssertTrue(r.servingNote?.contains("900") ?? false)               // 6 × 150
     }
+
+    // MARK: Identify
+
+    func testIdentifierCleansLabels() {
+        XCTAssertEqual(Identifier.cleanLabel("golden_retriever"), "Golden Retriever")
+        XCTAssertEqual(Identifier.cleanLabel("espresso"), "Espresso")
+        XCTAssertEqual(Identifier.cleanLabel("coffee_mug"), "Coffee Mug")
+    }
 }
