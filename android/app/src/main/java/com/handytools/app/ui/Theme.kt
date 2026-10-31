@@ -52,7 +52,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -365,7 +364,7 @@ fun HChip(text: String, selected: Boolean, onClick: () -> Unit) {
         // clearAndSetSemantics collapses the chip to one node that actually carries the name + selected
         // state in the accessibility tree (a child-level contentDescription wasn't surfacing, so screen
         // readers — and the QA a11y check — saw an unlabeled checkable control).
-        shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight).clearAndSetSemantics { contentDescription = text; selected = selected },
+        shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight).clearAndSetSemantics { contentDescription = if (selected) "$text, selected" else text },
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = Handy.palette.accentSoft, selectedLabelColor = HandyColors.Accent,
             containerColor = MaterialTheme.colorScheme.surface, labelColor = MaterialTheme.colorScheme.onSurface
