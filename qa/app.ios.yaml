@@ -65,8 +65,8 @@ app:
 device:
   platform: ios
   name: iPhone 15
-  os_version: "17.5"
-  udid: ""                        # workflow sets this to the booted simulator
+  os_version: ""                  # don't pin a runtime — the udid below selects the exact booted sim
+  udid: "${SIM_UDID:-}"           # the workflow exports SIM_UDID for the booted simulator
   appium_url: ${APPIUM_URL:-http://127.0.0.1:4723}
   extra_caps:
     # uitest mode: skip onboarding/paywall/crash-dialog, preload a sample input.
