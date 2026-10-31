@@ -64,8 +64,10 @@ data class HTool(
     val keywords: List<String> = emptyList(),
 )
 
-/** Ten merged power tools — the rebuilt Android catalog. */
+/** The rebuilt Android catalog — flagship first. */
 val TOOLS = listOf(
+    HTool("fileviewer", "File Viewer", "Open & read any file type", R.drawable.ic_fileviewer, R.drawable.card_fileviewer,
+        listOf("file","files","viewer","reader","open","any","unknown","pdf","zip","archive","apk","sqlite","db","database","hex","json","csv","xml","code","text","raw","epub","book","image","binary","inspect","extension","type")),
     HTool("capture", "Capture", "Scan anything → act on it", R.drawable.tool_capture, R.drawable.card_capture,
         listOf("capture","scan","camera","ocr","receipt","card","contact","translate","extract","read","lens","calendar","csv","table","bill","sorted","photo")),
     HTool("documents", "Documents", "Scan, sign, merge, find", R.drawable.tool_documents, R.drawable.card_documents,
@@ -131,7 +133,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     // The backdrop art is always dark, so the header is always light — in both themes.
                     Text("Tenzy", style = MaterialTheme.typography.headlineMedium, color = Color.White)
                     Spacer(Modifier.height(HandyTokens.Space4))
-                    Text("10 power tools · on your phone",
+                    Text("11 power tools · on your phone",
                         style = MaterialTheme.typography.bodyMedium, color = Color(0xFFB8B8C8))
                 }
                 Row {

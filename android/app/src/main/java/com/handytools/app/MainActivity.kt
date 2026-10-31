@@ -84,6 +84,8 @@ import com.handytools.app.ui.PaywallScreen
 class MainActivity : ComponentActivity() {
 
     private var sharedUrl by mutableStateOf<String?>(null)
+    // A file handed to us by another app ("Open with" / share) → opened in the universal File Viewer.
+    private var sharedFileUri by mutableStateOf<android.net.Uri?>(null)
     // A route delivered to an already-running activity (singleTop reuse → onNewIntent, e.g. a deep
     // link while the app is open). onCreate handles the cold-start route via startDestination; this
     // state carries a warm route into the composition so it actually navigates instead of being
@@ -94,12 +96,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         sharedUrl = extractSharedUrl(intent)
+        sharedFileUri = extractFileUri(intent)
         Interstitials.preload(this)
         val routeExtra = intent.getStringExtra("route")
         // Pro-preview unlock exists ONLY for the CI screenshot capture and is compiled out of
         // release builds, so a crafted intent can never grant entitlement on a shipped app.
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
-        val startRoute = routeExtra ?: if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
+        val startRoute = routeExtra ?: if (sharedFileUri != null) "fileviewer" else if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
 
         setContent {
             HandyTheme {
@@ -156,6 +159,7 @@ class MainActivity : ComponentActivity() {
                     // --- Rebuilt 10-power-tool catalog routes (interim targets reuse existing
                     // screens until each merged tool is rebuilt; Capture is first in line). ---
                     // The 10 power tools (rebuilt to the approved prototype)
+                    composable("fileviewer") { com.handytools.app.tools.power.FileViewerToolScreen(initialUri = sharedFileUri) }
                     composable("capture") { com.handytools.app.tools.power.CaptureToolScreen() }
                     composable("documents") { com.handytools.app.tools.power.DocumentsToolScreen() }
                     composable("media") { com.handytools.app.tools.power.MediaToolScreen() }
@@ -195,7 +199,7 @@ class MainActivity : ComponentActivity() {
                     composable("texttools") { TextToolsScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)
@@ -214,11 +218,13 @@ class MainActivity : ComponentActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         sharedUrl = extractSharedUrl(intent)
+        sharedFileUri = extractFileUri(intent)
         // Honour a route delivered to the already-running activity (deep link / QA route-seeding),
         // which singleTop would otherwise drop. Pro-preview stays debug-only, exactly as in onCreate.
         val routeExtra = intent.getStringExtra("route")
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
         if (routeExtra != null) pendingRoute = routeExtra
+        else if (sharedFileUri != null) pendingRoute = "fileviewer"
         else if (sharedUrl != null) pendingRoute = "shortcut"
     }
 
@@ -226,5 +232,17 @@ class MainActivity : ComponentActivity() {
         if (i?.action != Intent.ACTION_SEND) return null
         val text = i.getStringExtra(Intent.EXTRA_TEXT) ?: return null
         return Regex("https?://\\S+").find(text)?.value
+    }
+
+    /** A real file handed to us to open: ACTION_VIEW's data, or a single ACTION_SEND stream. */
+    private fun extractFileUri(i: Intent?): android.net.Uri? {
+        if (i == null) return null
+        return when (i.action) {
+            Intent.ACTION_VIEW -> i.data?.takeIf { it.scheme == "content" || it.scheme == "file" }
+            Intent.ACTION_SEND -> if (i.getStringExtra(Intent.EXTRA_TEXT) == null) {
+                @Suppress("DEPRECATION") (i.getParcelableExtra(Intent.EXTRA_STREAM) as? android.net.Uri)
+            } else null
+            else -> null
+        }
     }
 }
