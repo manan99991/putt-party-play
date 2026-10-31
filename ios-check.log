@@ -28,10 +28,11 @@ Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-pla
 
 
 Resolved source packages:
-  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
   GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
+  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
 
-resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
+resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:199:62: error: cannot convert value of type 'UIImage' to expected argument type 'CIImage'
-** TEST FAILED **
+2026-10-31 15:51:37.403999+0000 HandyTools[5894:24417] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-10-31 15:51:37.406098+0000 HandyTools[5894:24417] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+** TEST SUCCEEDED **
