@@ -47,7 +47,7 @@ struct WarrantyView: View {
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading).padding(.top, 4)
                 } else {
                     ForEach(results) { r in
-                        Button { open = r } label: { ReceiptRow(receipt: r, thumb: store.image(r)) }.buttonStyle(.plain)
+                        Button { open = r } label: { ReceiptRow(receipt: r, thumb: store.thumbnail(r)) }.buttonStyle(.plain)
                     }
                 }
             }

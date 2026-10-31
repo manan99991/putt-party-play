@@ -1,6 +1,7 @@
 import SwiftUI
 import Vision
 import UIKit
+import ImageIO
 import UserNotifications
 
 /// One stored receipt. The image is kept as a file; everything else is extracted once by OCR and
@@ -173,8 +174,28 @@ enum ReceiptSearch {
     nonisolated private static func load() -> [Receipt] { (try? JSONDecoder().decode([Receipt].self, from: Data(contentsOf: dbURL))) ?? [] }
     private func persist() { try? JSONEncoder().encode(receipts).write(to: Self.dbURL) }
 
+    private var thumbs: [UUID: UIImage] = [:]
+
     func imageURL(_ r: Receipt) -> URL { Self.dir.appendingPathComponent(r.imageFile) }
+    /// Full-resolution image — for the detail view and sharing.
     func image(_ r: Receipt) -> UIImage? { UIImage(contentsOfFile: imageURL(r).path) }
+
+    /// A small, cached thumbnail for list rows, so a long list doesn't re-decode full JPEGs every
+    /// scroll. Downsampled with ImageIO (never loads the full bitmap into memory).
+    func thumbnail(_ r: Receipt) -> UIImage? {
+        if let t = thumbs[r.id] { return t }
+        let url = imageURL(r) as CFURL
+        guard let src = CGImageSourceCreateWithURL(url, nil) else { return nil }
+        let opts: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: 160,
+        ]
+        guard let cg = CGImageSourceCreateThumbnailAtIndex(src, 0, opts as CFDictionary) else { return nil }
+        let img = UIImage(cgImage: cg)
+        thumbs[r.id] = img
+        return img
+    }
 
     func add(image: UIImage, scan: ReceiptScan.Result, warrantyMonths: Int?) -> Receipt {
         let name = "\(UUID().uuidString).jpg"
@@ -194,7 +215,7 @@ enum ReceiptSearch {
 
     func delete(_ r: Receipt) {
         try? FileManager.default.removeItem(at: imageURL(r))
-        receipts.removeAll { $0.id == r.id }; persist()
+        receipts.removeAll { $0.id == r.id }; thumbs[r.id] = nil; persist()
         WarrantyReminders.cancel(r)
     }
 
