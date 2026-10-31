@@ -68,26 +68,24 @@ data class HTool(
 val TOOLS = listOf(
     HTool("fileviewer", "File Viewer", "Open & read any file type", R.drawable.ic_fileviewer, R.drawable.card_fileviewer,
         listOf("file","files","viewer","reader","open","any","unknown","pdf","zip","archive","apk","sqlite","db","database","hex","json","csv","xml","code","text","raw","epub","book","image","binary","inspect","extension","type")),
-    HTool("capture", "Capture", "Scan anything → act on it", R.drawable.tool_capture, R.drawable.card_capture,
-        listOf("capture","scan","camera","ocr","receipt","card","contact","translate","extract","read","lens","calendar","csv","table","bill","sorted","photo")),
-    HTool("documents", "Documents", "Scan, sign, merge, find", R.drawable.tool_documents, R.drawable.card_documents,
-        listOf("document","documents","scan","pdf","sign","fill","merge","split","compress","ocr","searchable","word","find","search","invoice","file","doc","excel","text","paper")),
+    HTool("docs", "Docs & Capture", "Scan, OCR, sign, merge & extract", R.drawable.tool_documents, R.drawable.card_documents,
+        listOf("document","documents","capture","scan","camera","ocr","receipt","card","contact","pdf","sign","fill","merge","split","compress","word","find","search","invoice","doc","excel","text","paper","extract","table","photo")),
     HTool("media", "Media Studio", "Shrink, cut out, redact", R.drawable.tool_media, R.drawable.card_media,
         listOf("photo","video","shrink","compress","resize","smaller","background","remove","cutout","redact","passport","id","convert","heic","jpg","gif","metadata","exif","send","upload")),
     HTool("cleanup", "Clean Up", "Free space & tidy contacts", R.drawable.tool_cleanup, R.drawable.card_cleanup,
         listOf("clean","cleaner","space","storage","duplicate","duplicates","photos","screenshots","videos","large","big","free up","full","contacts","merge","declutter")),
-    HTool("voice", "Voice Notes", "Record, transcribe, trim", R.drawable.tool_voice, R.drawable.card_voice,
-        listOf("voice","record","recorder","transcribe","speech","notes","dictate","trim","audio","memo","text","meeting")),
-    HTool("translate", "Translate", "Text, camera & voice", R.drawable.tool_translate, R.drawable.card_translate,
-        listOf("translate","language","camera","voice","conversation","offline","foreign","spanish","french")),
-    HTool("instruments", "Instruments", "Level, compass, meters", R.drawable.tool_instruments, R.drawable.card_instruments,
-        listOf("measure","level","compass","north","sound","decibel","light","altitude","metal","detector","ruler","magnifier","zoom","sensor")),
-    HTool("flashlight", "Flashlight+", "Strobe, SOS, screen light", R.drawable.tool_flashlight, R.drawable.card_flashlight,
-        listOf("flashlight","torch","light","strobe","sos","morse","screen","mirror","brightness","lamp","dark","blink")),
+    HTool("converter", "Converter", "Convert any file — image, PDF, audio, video", R.drawable.ic_converter, R.drawable.card_converter,
+        listOf("convert","converter","change","format","image","png","jpg","jpeg","webp","heic","pdf","audio","video","transcode","compress","mp4","m4a","aac")),
+    HTool("instruments", "Instruments", "Level, compass, meters, torch", R.drawable.tool_instruments, R.drawable.card_instruments,
+        listOf("measure","level","compass","north","sound","decibel","light","altitude","metal","detector","ruler","magnifier","zoom","sensor","flashlight","torch","strobe","sos","morse","screen","mirror")),
     HTool("safety", "Safety", "Spot scams & bad links", R.drawable.tool_safety, R.drawable.card_safety,
         listOf("scam","safety","phishing","fraud","link","text","sms","email","qr","suspicious","check","protect","shield","fake","spam")),
     HTool("share", "Share & Connect", "QR, Wi-Fi & file transfer", R.drawable.tool_share, R.drawable.card_share,
-        listOf("share","send","transfer","file","qr","barcode","wifi","nearby","network","speed","connect","airdrop","code")),
+        listOf("share","send","transfer","file","wifi","nearby","network","speed","connect","airdrop")),
+    HTool("codes", "Codes", "Scan & make QR, barcodes, NFC", R.drawable.ic_codes, R.drawable.card_codes,
+        listOf("qr","barcode","code","scan","generate","create","nfc","tag","wifi","vcard","contact","url","link","payload")),
+    HTool("scrubber", "Scrubber", "Blur faces, plates & strip metadata", R.drawable.ic_scrubber, R.drawable.card_scrubber,
+        listOf("scrub","scrubber","blur","hide","face","faces","plate","licence","license","redact","anonymize","privacy","metadata","exif","gps","location","strip","personal")),
 )
 
 /** Google-style ranked search across every tool. */
@@ -133,7 +131,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     // The backdrop art is always dark, so the header is always light — in both themes.
                     Text("Tenzy", style = MaterialTheme.typography.headlineMedium, color = Color.White)
                     Spacer(Modifier.height(HandyTokens.Space4))
-                    Text("11 power tools · on your phone",
+                    Text("10 power tools · on your phone",
                         style = MaterialTheme.typography.bodyMedium, color = Color(0xFFB8B8C8))
                 }
                 Row {

@@ -72,6 +72,10 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   (`ios/fastlane/metadata/review_information/notes.txt`; Play app-content declarations).
 - Adding a tool that needs a new permission = update the usage string, the reviewer notes, the privacy
   policy, and this rulebook in the same change.
+- NFC (`android.permission.NFC`, normal/install-time) is declared for the Codes tool, which reads NFC
+  tags **on-device only** to show their contents — nothing uploaded or collected, so Data safety /
+  App Privacy answers are unchanged. `android.hardware.nfc` is `required="false"` so non-NFC phones
+  still install. Normal permissions need no Play declaration and carry no review/rejection risk.
 
 ## 7. Release gating (nothing ships by accident)
 

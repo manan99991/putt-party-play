@@ -167,6 +167,10 @@ class MainActivity : ComponentActivity() {
                     // screens until each merged tool is rebuilt; Capture is first in line). ---
                     // The 10 power tools (rebuilt to the approved prototype)
                     composable("fileviewer") { com.handytools.app.tools.power.FileViewerToolScreen(initialUri = sharedFileUri) }
+                    composable("docs") { com.handytools.app.tools.power.DocsCaptureToolScreen() }
+                    composable("converter") { com.handytools.app.tools.power.ConverterToolScreen() }
+                    composable("codes") { com.handytools.app.tools.power.CodesToolScreen() }
+                    composable("scrubber") { com.handytools.app.tools.power.ScrubberToolScreen() }
                     composable("capture") { com.handytools.app.tools.power.CaptureToolScreen() }
                     composable("documents") { com.handytools.app.tools.power.DocumentsToolScreen() }
                     composable("media") { com.handytools.app.tools.power.MediaToolScreen() }
@@ -206,7 +210,7 @@ class MainActivity : ComponentActivity() {
                     composable("texttools") { TextToolsScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)

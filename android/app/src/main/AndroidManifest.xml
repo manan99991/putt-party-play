@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <!-- Quick buttons / camera tools -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- NFC: normal, install-time permission (no runtime prompt, no Play declaration/review) — lets the
+         Codes tool read NFC tags on-device. Not required, so non-NFC phones still install. -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="false" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.INTERNET" />
