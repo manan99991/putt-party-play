@@ -215,6 +215,21 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(order, [1, 2, 0], "expected a(idx1) → b(idx2) → c(idx0) top-to-bottom")
     }
 
+    // MARK: Memory — visual + text search
+
+    func testMemorySynonymAndColorSearch() {
+        let red = MemoryEngine.Entry(id: "1", date: Date(), text: "", modified: Date(), readOK: true,
+                                     labels: ["clothing", "person"], colors: ["red", "black"], isScreenshot: false, isVideo: false)
+        let plain = MemoryEngine.Entry(id: "2", date: Date(), text: "Wi-Fi password hunter2", modified: Date(), readOK: true,
+                                       labels: ["document"], colors: ["white"], isScreenshot: true, isVideo: false)
+        // "red dress" → colour red + 'dress' expands to clothing/person labels.
+        XCTAssertEqual(MemoryEngine.search("red dress", in: [red, plain]).first?.id, "1")
+        // text search still works.
+        XCTAssertEqual(MemoryEngine.search("wifi password", in: [red, plain]).first?.id, "2")
+        // no false positive for something absent.
+        XCTAssertTrue(MemoryEngine.search("blue car", in: [red, plain]).isEmpty)
+    }
+
     // MARK: Privacy Scrubber — irreversible redaction + metadata strip
 
     func testScrubberClassifiesPersonalTextForAutoHiding() {

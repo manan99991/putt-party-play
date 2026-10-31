@@ -20,6 +20,7 @@ enum MemoryEngine {
         var labels: [String]? = nil      // Vision scene/object labels, lowercased
         var colors: [String]? = nil      // dominant colour names, e.g. ["red","black"]
         var isScreenshot: Bool? = nil     // so we can still say "screenshot" vs "photo"
+        var isVideo: Bool? = nil          // indexed from a video's poster frame
     }
 
     /// A search result with the reason it surfaced, shown above the thumbnail.
@@ -79,7 +80,7 @@ enum MemoryEngine {
         let handler = VNImageRequestHandler(cgImage: cg, options: [:])
         try? handler.perform([req])
         if let obs = req.results {
-            labels = obs.filter { $0.confidence > 0.25 }.prefix(12)
+            labels = obs.filter { $0.confidence > 0.20 }.prefix(16)
                 .map { $0.identifier.lowercased().replacingOccurrences(of: "_", with: " ") }
         }
         return (labels, dominantColors(cg))
@@ -159,7 +160,17 @@ enum MemoryEngine {
     /// never-built index). A cheap count check used to continue indexing in the background so the first
     /// build is the only slow one and later opens just pick up what's new.
     static func hasUnindexed() -> Bool {
-        PHAsset.fetchAssets(with: .image, options: PHFetchOptions()).count > loadCache().count
+        PHAsset.fetchAssets(with: mediaFetch()).count > loadCache().count
+    }
+
+    /// Photos AND videos, newest first. Videos are indexed from their poster frame (objects, colours,
+    /// any on-screen text), so "my dog at the beach" or a clip with a code in it is findable too.
+    private static func mediaFetch() -> PHFetchOptions {
+        let f = PHFetchOptions()
+        f.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        f.predicate = NSPredicate(format: "mediaType == %d OR mediaType == %d",
+                                  PHAssetMediaType.image.rawValue, PHAssetMediaType.video.rawValue)
+        return f
     }
 
     /// Build or continue the index over the WHOLE photo library (newest first — no cap), reusing the
@@ -169,9 +180,7 @@ enum MemoryEngine {
     static func index(onBatch: @escaping ([Entry]) -> Void,
                       onProgress: @escaping (_ done: Int, _ total: Int) -> Void) async -> [Entry] {
         var cache = Dictionary(uniqueKeysWithValues: loadCache().map { ($0.id, $0) })
-        let fetch = PHFetchOptions()
-        fetch.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        let assets = PHAsset.fetchAssets(with: .image, options: fetch)   // no fetchLimit — the whole library
+        let assets = PHAsset.fetchAssets(with: mediaFetch())   // whole library, photos + videos, no cap
         let total = assets.count
         guard total > 0 else { onProgress(0, 0); onBatch([]); return [] }
         var out: [Entry] = []; out.reserveCapacity(total)
@@ -180,13 +189,14 @@ enum MemoryEngine {
             let a = assets.object(at: i)
             let mod = a.modificationDate ?? a.creationDate ?? .distantPast
             let shot = a.mediaSubtypes.contains(.photoScreenshot)
+            let vid = a.mediaType == .video
             // Reuse the cache only if it was read AND already carries the visual analysis (labels key
             // present) — older text-only entries are re-read once so visual search works on them too.
             if let hit = cache[a.localIdentifier], hit.modified == mod, hit.readOK ?? true, hit.labels != nil {
                 out.append(hit)
             } else if let r = await readAsset(a) {
                 let e = Entry(id: a.localIdentifier, date: a.creationDate ?? .distantPast, text: r.text,
-                              modified: mod, readOK: true, labels: r.labels, colors: r.colors, isScreenshot: shot)
+                              modified: mod, readOK: true, labels: r.labels, colors: r.colors, isScreenshot: shot, isVideo: vid)
                 cache[a.localIdentifier] = e
                 out.append(e)
                 sinceSave += 1
@@ -212,6 +222,32 @@ enum MemoryEngine {
     private static let colorWords: Set<String> = ["red","orange","yellow","green","blue","teal","purple","pink","brown","black","white","gray","grey"]
     private static func normColor(_ t: String) -> String { t == "grey" ? "gray" : t }
 
+    /// Everyday words → the broader labels Apple's on-device classifier actually emits, so a specific
+    /// query ("red dress", "my dog at the beach") still matches the general labels on the photo.
+    private static let labelSynonyms: [String: [String]] = [
+        "dress": ["clothing","apparel","gown","outfit","skirt","frock","woman","person"],
+        "shirt": ["clothing","apparel","top","tshirt","jersey","person"],
+        "clothes": ["clothing","apparel","outfit","dress","shirt","jacket","coat"],
+        "outfit": ["clothing","apparel","dress","fashion","person"],
+        "suit": ["clothing","apparel","formal","blazer","tuxedo"],
+        "car": ["vehicle","automobile","truck","suv","sedan","van"],
+        "bike": ["bicycle","cycle","motorcycle","vehicle"],
+        "dog": ["pet","puppy","canine","animal"],
+        "cat": ["pet","kitten","feline","animal"],
+        "pet": ["dog","cat","animal","puppy","kitten"],
+        "beach": ["sea","ocean","sand","shore","coast","seaside"],
+        "food": ["meal","dish","plate","cuisine","restaurant","snack"],
+        "drink": ["beverage","cocktail","coffee","tea","cup","glass"],
+        "flower": ["flowers","plant","bloom","blossom","floral"],
+        "mountain": ["mountains","hill","peak","landscape"],
+        "building": ["house","architecture","tower","skyscraper","city"],
+        "receipt": ["bill","invoice","document","paper","text"],
+        "baby": ["infant","child","toddler","newborn","person"],
+        "selfie": ["person","face","portrait","people"],
+        "sunset": ["sunrise","sky","dusk","horizon"],
+        "snow": ["winter","ice","snowy","landscape"],
+    ]
+
     static func search(_ query: String, in entries: [Entry], top: Int = 8) -> [Match] {
         let terms = tokens(query)
         guard !terms.isEmpty else { return [] }
@@ -224,7 +260,11 @@ enum MemoryEngine {
             var reasons: [String] = []
             for t in terms {
                 if text.contains(t) { score += 2 + Double(t.count) / 12; reasons.append("“\(t)” in the text") }
-                if let lbl = labels.first(where: { $0.contains(t) || t.contains($0) }) { score += 3; reasons.append("shows \(lbl)") }
+                // Match the word itself AND the broader labels it implies (dress → clothing/person…).
+                let expanded = [t] + (labelSynonyms[t] ?? [])
+                if let lbl = labels.first(where: { lbl in expanded.contains { lbl.contains($0) || $0.contains(lbl) } }) {
+                    score += 3; reasons.append("shows \(lbl)")
+                }
                 if colorWords.contains(t), colors.contains(normColor(t)) { score += 2.5; reasons.append("\(t) in the picture") }
             }
             guard score > 0 else { return nil }
