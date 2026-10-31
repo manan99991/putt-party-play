@@ -39,23 +39,23 @@ Loading local repository...                                                     
 Auto-selecting single ABI x86_64
 + ls -la /home/runner/.android/avd
 total 16
-drwxr-xr-x 3 runner runner 4096 Oct 31 08:43 .
-drwxr-xr-x 3 runner runner 4096 Oct 31 08:43 ..
-drwxr-xr-x 2 runner runner 4096 Oct 31 08:43 shot.avd
--rw-r--r-- 1 runner runner   81 Oct 31 08:43 shot.ini
+drwxr-xr-x 3 runner runner 4096 Oct 31 09:17 .
+drwxr-xr-x 3 runner runner 4096 Oct 31 09:17 ..
+drwxr-xr-x 2 runner runner 4096 Oct 31 09:17 shot.avd
+-rw-r--r-- 1 runner runner   81 Oct 31 09:17 shot.ini
 + /usr/local/lib/android/sdk/emulator/emulator -list-avds
 shot
 + export PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 + PATH=/usr/local/lib/android/sdk/emulator:/usr/local/lib/android/sdk/platform-tools:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-+ EMU=2449
-+ nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
++ EMU=2678
 ++ seq 1 90
++ nohup emulator -avd shot -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -accel on
 + for i in $(seq 1 90)
 ++ adb shell getprop sys.boot_completed
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2449
++ kill -0 2678
 + '[' 1 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -63,7 +63,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2449
++ kill -0 2678
 + '[' 2 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -71,7 +71,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2449
++ kill -0 2678
 + '[' 3 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -79,7 +79,7 @@ shot
 ++ tr -d '\r'
 + b=
 + '[' '' = 1 ']'
-+ kill -0 2449
++ kill -0 2678
 + '[' 4 -eq 0 ']'
 + sleep 10
 + for i in $(seq 1 90)
@@ -103,23 +103,23 @@ INFO         |   androidboot.vbmeta.digest=451e57ed688ff746d2c636d52169ade253e2b
 INFO         |   androidboot.vbmeta.hash_alg=sha256
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f6171e01000 as it is in the protected range from 0x7f60d1e00000 to 0x7f6172000000
+WARNING: cannnot unmap ptr 0x7fe093001000 as it is in the protected range from 0x7fdff3000000 to 0x7fe093200000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2449/jwks/ae5d5edb-e61b-416c-869a-28c304f18c41/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2449/jwks/ae5d5edb-e61b-416c-869a-28c304f18c41 for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2678/jwks/83555acf-eaba-43a6-a4b1-a083005328ae/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2678/jwks/83555acf-eaba-43a6-a4b1-a083005328ae for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2449.ini
-INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2678.ini
 INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for bluetooth emulation
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 33333 ms
+INFO         | Boot completed in 37921 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
 + adb shell settings put global hide_error_dialogs 1
 + adb shell settings put global window_animation_scale 0
@@ -144,8 +144,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 5960
-WaitTime: 6059
+TotalTime: 6563
+WaitTime: 6569
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -156,8 +156,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3027
-WaitTime: 3061
+TotalTime: 5959
+WaitTime: 6012
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -168,8 +168,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3977
-WaitTime: 4062
+TotalTime: 3880
+WaitTime: 3896
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -180,8 +180,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3622
-WaitTime: 3629
+TotalTime: 4650
+WaitTime: 4658
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -192,8 +192,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2696
-WaitTime: 2704
+TotalTime: 4646
+WaitTime: 4690
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -204,8 +204,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3284
-WaitTime: 3295
+TotalTime: 4512
+WaitTime: 4566
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -216,8 +216,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2560
-WaitTime: 2636
+TotalTime: 2443
+WaitTime: 2501
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -228,8 +228,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2560
-WaitTime: 2562
+TotalTime: 3710
+WaitTime: 3741
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -240,8 +240,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2476
-WaitTime: 2481
+TotalTime: 2710
+WaitTime: 2732
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -252,8 +252,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2457
-WaitTime: 2485
+TotalTime: 2526
+WaitTime: 2536
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -264,8 +264,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 3038
-WaitTime: 3043
+TotalTime: 2286
+WaitTime: 2288
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -276,8 +276,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 1809
-WaitTime: 1851
+TotalTime: 3412
+WaitTime: 3416
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -288,8 +288,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2491
-WaitTime: 2495
+TotalTime: 2438
+WaitTime: 2442
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -300,8 +300,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2593
-WaitTime: 2633
+TotalTime: 2456
+WaitTime: 2462
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -312,8 +312,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2562
-WaitTime: 2579
+TotalTime: 3015
+WaitTime: 3020
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -324,8 +324,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2014
-WaitTime: 2055
+TotalTime: 2527
+WaitTime: 2554
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -336,8 +336,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2292
-WaitTime: 2333
+TotalTime: 2328
+WaitTime: 2336
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -353,8 +353,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2431
-WaitTime: 2438
+TotalTime: 3102
+WaitTime: 3103
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -365,8 +365,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 1912
-WaitTime: 1937
+TotalTime: 2137
+WaitTime: 2150
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -377,8 +377,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 1709
-WaitTime: 1716
+TotalTime: 2400
+WaitTime: 2423
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -389,8 +389,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 1928
-WaitTime: 1969
+TotalTime: 2037
+WaitTime: 2053
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -401,8 +401,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2010
-WaitTime: 2011
+TotalTime: 2081
+WaitTime: 2088
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -413,8 +413,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 1982
-WaitTime: 1991
+TotalTime: 2109
+WaitTime: 2113
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -425,8 +425,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2017
-WaitTime: 2046
+TotalTime: 2254
+WaitTime: 2284
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -437,8 +437,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2257
-WaitTime: 2284
+TotalTime: 2581
+WaitTime: 2605
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -449,8 +449,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2413
-WaitTime: 2421
+TotalTime: 2597
+WaitTime: 2599
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -461,8 +461,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2140
-WaitTime: 2162
+TotalTime: 2775
+WaitTime: 2781
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -473,8 +473,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2309
-WaitTime: 2374
+TotalTime: 2497
+WaitTime: 2498
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -485,8 +485,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 1765
-WaitTime: 1768
+TotalTime: 2477
+WaitTime: 2489
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -497,8 +497,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2101
-WaitTime: 2105
+TotalTime: 2801
+WaitTime: 2827
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -509,8 +509,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2113
-WaitTime: 2149
+TotalTime: 2593
+WaitTime: 2596
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -521,8 +521,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2318
-WaitTime: 2319
+TotalTime: 2805
+WaitTime: 2847
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -533,8 +533,8 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 1949
-WaitTime: 1952
+TotalTime: 2281
+WaitTime: 2283
 Complete
 + sleep 6
 + adb exec-out screencap -p
@@ -545,50 +545,50 @@ Starting: Intent { cmp=com.tenzy.toolkit/com.handytools.app.MainActivity (has ex
 Status: ok
 LaunchState: COLD
 Activity: com.tenzy.toolkit/com.handytools.app.MainActivity
-TotalTime: 2121
-WaitTime: 2137
+TotalTime: 2421
+WaitTime: 2434
 Complete
 + sleep 6
 + adb exec-out screencap -p
 + ls -la shots
-total 12800
-drwxr-xr-x 2 runner runner    4096 Oct 31 08:49 .
-drwxr-xr-x 6 runner runner    4096 Oct 31 08:44 ..
--rw-r--r-- 1 runner runner   41231 Oct 31 08:49 _run.log
--rw-r--r-- 1 runner runner  349883 Oct 31 08:48 android-dark-capture.png
--rw-r--r-- 1 runner runner  339642 Oct 31 08:48 android-dark-cleanup.png
--rw-r--r-- 1 runner runner  364860 Oct 31 08:48 android-dark-documents.png
--rw-r--r-- 1 runner runner  376477 Oct 31 08:49 android-dark-flashlight.png
--rw-r--r-- 1 runner runner 1528538 Oct 31 08:47 android-dark-home.png
--rw-r--r-- 1 runner runner  288340 Oct 31 08:49 android-dark-instruments.png
--rw-r--r-- 1 runner runner  262551 Oct 31 08:48 android-dark-media.png
--rw-r--r-- 1 runner runner   92926 Oct 31 08:47 android-dark-onboarding.png
--rw-r--r-- 1 runner runner  118242 Oct 31 08:47 android-dark-onboarding2.png
--rw-r--r-- 1 runner runner   97586 Oct 31 08:47 android-dark-onboarding3.png
--rw-r--r-- 1 runner runner  317911 Oct 31 08:48 android-dark-privacy.png
--rw-r--r-- 1 runner runner  314236 Oct 31 08:49 android-dark-safety.png
--rw-r--r-- 1 runner runner  143385 Oct 31 08:48 android-dark-settings.png
--rw-r--r-- 1 runner runner  237978 Oct 31 08:47 android-dark-setup.png
--rw-r--r-- 1 runner runner  358280 Oct 31 08:49 android-dark-share.png
--rw-r--r-- 1 runner runner  364901 Oct 31 08:49 android-dark-translate.png
--rw-r--r-- 1 runner runner  320812 Oct 31 08:48 android-dark-voice.png
--rw-r--r-- 1 runner runner  346411 Oct 31 08:45 android-light-capture.png
--rw-r--r-- 1 runner runner  336696 Oct 31 08:46 android-light-cleanup.png
--rw-r--r-- 1 runner runner  358799 Oct 31 08:45 android-light-documents.png
--rw-r--r-- 1 runner runner  372851 Oct 31 08:46 android-light-flashlight.png
--rw-r--r-- 1 runner runner 1527873 Oct 31 08:44 android-light-home.png
--rw-r--r-- 1 runner runner  282164 Oct 31 08:46 android-light-instruments.png
--rw-r--r-- 1 runner runner  257639 Oct 31 08:46 android-light-media.png
--rw-r--r-- 1 runner runner   93263 Oct 31 08:44 android-light-onboarding.png
--rw-r--r-- 1 runner runner  115920 Oct 31 08:44 android-light-onboarding2.png
--rw-r--r-- 1 runner runner 1377001 Oct 31 08:45 android-light-onboarding3.png
--rw-r--r-- 1 runner runner  315482 Oct 31 08:45 android-light-privacy.png
--rw-r--r-- 1 runner runner  308824 Oct 31 08:47 android-light-safety.png
--rw-r--r-- 1 runner runner  142467 Oct 31 08:45 android-light-settings.png
--rw-r--r-- 1 runner runner  230179 Oct 31 08:45 android-light-setup.png
--rw-r--r-- 1 runner runner  353415 Oct 31 08:47 android-light-share.png
--rw-r--r-- 1 runner runner  359351 Oct 31 08:46 android-light-translate.png
--rw-r--r-- 1 runner runner  318120 Oct 31 08:46 android-light-voice.png
+total 12660
+drwxr-xr-x 2 runner runner    4096 Oct 31 09:23 .
+drwxr-xr-x 6 runner runner    4096 Oct 31 09:18 ..
+-rw-r--r-- 1 runner runner   41231 Oct 31 09:23 _run.log
+-rw-r--r-- 1 runner runner  349674 Oct 31 09:22 android-dark-capture.png
+-rw-r--r-- 1 runner runner  339805 Oct 31 09:23 android-dark-cleanup.png
+-rw-r--r-- 1 runner runner  364628 Oct 31 09:22 android-dark-documents.png
+-rw-r--r-- 1 runner runner  376539 Oct 31 09:23 android-dark-flashlight.png
+-rw-r--r-- 1 runner runner 1528265 Oct 31 09:21 android-dark-home.png
+-rw-r--r-- 1 runner runner  288796 Oct 31 09:23 android-dark-instruments.png
+-rw-r--r-- 1 runner runner  262530 Oct 31 09:22 android-dark-media.png
+-rw-r--r-- 1 runner runner   92641 Oct 31 09:21 android-dark-onboarding.png
+-rw-r--r-- 1 runner runner  118034 Oct 31 09:21 android-dark-onboarding2.png
+-rw-r--r-- 1 runner runner   97360 Oct 31 09:21 android-dark-onboarding3.png
+-rw-r--r-- 1 runner runner  318057 Oct 31 09:22 android-dark-privacy.png
+-rw-r--r-- 1 runner runner  314125 Oct 31 09:23 android-dark-safety.png
+-rw-r--r-- 1 runner runner  143492 Oct 31 09:22 android-dark-settings.png
+-rw-r--r-- 1 runner runner  237726 Oct 31 09:22 android-dark-setup.png
+-rw-r--r-- 1 runner runner  357696 Oct 31 09:23 android-dark-share.png
+-rw-r--r-- 1 runner runner  365176 Oct 31 09:23 android-dark-translate.png
+-rw-r--r-- 1 runner runner  320965 Oct 31 09:23 android-dark-voice.png
+-rw-r--r-- 1 runner runner  346281 Oct 31 09:19 android-light-capture.png
+-rw-r--r-- 1 runner runner  336797 Oct 31 09:20 android-light-cleanup.png
+-rw-r--r-- 1 runner runner  358834 Oct 31 09:20 android-light-documents.png
+-rw-r--r-- 1 runner runner  372764 Oct 31 09:21 android-light-flashlight.png
+-rw-r--r-- 1 runner runner 1527893 Oct 31 09:18 android-light-home.png
+-rw-r--r-- 1 runner runner  282268 Oct 31 09:20 android-light-instruments.png
+-rw-r--r-- 1 runner runner  257469 Oct 31 09:20 android-light-media.png
+-rw-r--r-- 1 runner runner   93785 Oct 31 09:18 android-light-onboarding.png
+-rw-r--r-- 1 runner runner  115588 Oct 31 09:19 android-light-onboarding2.png
+-rw-r--r-- 1 runner runner   93915 Oct 31 09:19 android-light-onboarding3.png
+-rw-r--r-- 1 runner runner  314308 Oct 31 09:19 android-light-privacy.png
+-rw-r--r-- 1 runner runner  308808 Oct 31 09:21 android-light-safety.png
+-rw-r--r-- 1 runner runner  141491 Oct 31 09:19 android-light-settings.png
+-rw-r--r-- 1 runner runner 1376431 Oct 31 09:19 android-light-setup.png
+-rw-r--r-- 1 runner runner  353362 Oct 31 09:21 android-light-share.png
+-rw-r--r-- 1 runner runner  359328 Oct 31 09:20 android-light-translate.png
+-rw-r--r-- 1 runner runner  318096 Oct 31 09:20 android-light-voice.png
 + adb logcat -d -s AndroidRuntime:E
 + adb logcat -d
 + grep -iE handytools
@@ -596,21 +596,21 @@ drwxr-xr-x 6 runner runner    4096 Oct 31 08:44 ..
 + tail -20 emulator.log
 INFO         |   androidboot.vbmeta.size=6656
 INFO         |   androidboot.veritymode=enforcing
-WARNING: cannnot unmap ptr 0x7f6171e01000 as it is in the protected range from 0x7f60d1e00000 to 0x7f6172000000
+WARNING: cannnot unmap ptr 0x7fe093001000 as it is in the protected range from 0x7fdff3000000 to 0x7fe093200000
 INFO         | Monitoring duration of emulator setup.
 WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
 INFO         | Using security allow list from: /usr/local/lib/android/sdk/emulator/lib/emulator_access.json
-INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2449/jwks/ae5d5edb-e61b-416c-869a-28c304f18c41/active.jwk
-INFO         | Scanning /run/user/1001/avd/running/2449/jwks/ae5d5edb-e61b-416c-869a-28c304f18c41 for jwk keys.
+INFO         | The active JSON Web Key Sets can be found here: /run/user/1001/avd/running/2678/jwks/83555acf-eaba-43a6-a4b1-a083005328ae/active.jwk
+INFO         | Scanning /run/user/1001/avd/running/2678/jwks/83555acf-eaba-43a6-a4b1-a083005328ae for jwk keys.
 INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
-INFO         | Advertising in: /run/user/1001/avd/running/pid_2449.ini
-INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Advertising in: /run/user/1001/avd/running/pid_2678.ini
 INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for bluetooth emulation
 INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
 INFO         | setDisplayActiveConfig: id:0, 1080x2400
 INFO         | emulatorSetupEnvironment: Environment scene is not required
 USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
 WARNING      | Failed to process .ini file /home/runner/.android/emu-update-last-check.ini for reading.
-INFO         | Boot completed in 33333 ms
+INFO         | Boot completed in 37921 ms
 INFO         | Increasing screen off timeout, logcat buffer size to 2M.
