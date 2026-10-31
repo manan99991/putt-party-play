@@ -130,6 +130,7 @@ struct FitItView: View {
                 }
                 Spacer()
             }
+            if let previewKind { ResultPreview(kind: previewKind) }   // show the fitted result, don't just describe it
             if case .pdf = source {
                 Text("Pages are flattened to reach the size, so text won't be selectable in the copy.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -137,6 +138,15 @@ struct FitItView: View {
             shareButton
         }
         .cardStyle(padding: HandySpacing.s16)
+    }
+
+    private var previewKind: ResultPreview.Kind? {
+        switch output {
+        case .data(let d, let ext) where ext == "pdf": return .pdfData(d)
+        case .data(let d, _):                          return .imageData(d)
+        case .file(let url):                           return .videoURL(url)
+        case .none:                                    return nil
+        }
     }
 
     private var savingsText: String {
