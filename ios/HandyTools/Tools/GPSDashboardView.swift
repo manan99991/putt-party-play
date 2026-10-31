@@ -15,12 +15,23 @@ struct GPSDashboardView: View {
     @State private var copied = false
 
     var body: some View {
-        ToolPage(title: "GPS Dashboard", subtitle: "Speed, heading, altitude and a trip computer — plus HUD mode, exact coordinates, and where you parked.") {
+        ToolPage(title: "GPS Dashboard", subtitle: "Find your parked car, grab your exact location to share, and get a full driving dashboard — all from GPS.") {
             HowTo("gpsdash", [
                 "Allow location, then step outside for the best signal.",
-                "Watch speed, altitude, heading and coordinates update live.",
-                "Switch units or turn on the windshield HUD for driving.",
+                "Tap “Park here” when you leave the car — walk back to it any time.",
+                "Driving? Watch speed and your trip, or flip on the windshield HUD.",
             ])
+
+            // 1) The everyday job most people open this for: find the car again.
+            sectionHeader("Find my car", "Drop a pin where you parked, then get walking directions back to it.")
+            parkCard
+
+            // 2) Your exact spot, to copy or send to someone.
+            sectionHeader("My location", "Your exact coordinates — copy them or text them to someone meeting you.")
+            locationCard
+
+            // 3) The live driving instruments.
+            sectionHeader("Driving dashboard", "Live speed, heading, altitude and a trip computer. Tap HUD to reflect speed in your windshield at night.")
             speedCard
             HStack(spacing: HandySpacing.s8) {
                 tile("Heading", gps.course >= 0 ? "\(Int(gps.course))° \(SensorMath.cardinal(gps.course))" : "—", "location.north")
@@ -28,9 +39,8 @@ struct GPSDashboardView: View {
                 tile("GPS ±", gps.accuracy >= 0 ? (metric ? "\(Int(gps.accuracy)) m" : "\(Int(gps.accuracy * 3.28)) ft") : "—", "scope")
             }
             tripCard
-            locationCard
-            parkCard
-            if gps.denied { LimitNote("Location access is off. Allow it in Settings for speed, trip and parking.") }
+
+            if gps.denied { LimitNote("Location access is off. Allow it in Settings for parking, your location and speed.") }
             Text("Speed comes from GPS, so it lags a second and reads low under trees or between tall buildings. Trip tracking pauses when you leave the app.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
@@ -70,9 +80,17 @@ struct GPSDashboardView: View {
         }.cardStyle()
     }
 
+    private func sectionHeader(_ title: String, _ subtitle: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title).font(HandyFont.cardTitle)
+            Text(subtitle).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.top, HandySpacing.s8)
+    }
+
     private var locationCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text("Where I am").font(HandyFont.bodyStrong)
             if let c = gps.coordinate {
                 Text(GeoFormat.decimal(c)).font(.system(.body, design: .monospaced)).textSelection(.enabled)
                 Text(GeoFormat.dms(c)).font(HandyFont.caption).monospaced().foregroundStyle(HandyColor.textSecondary)
@@ -89,13 +107,15 @@ struct GPSDashboardView: View {
 
     private var parkCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            HStack { Text("Parked car").font(HandyFont.bodyStrong); Spacer()
-                if let p = parked, let here = gps.coordinate {
-                    let d = CLLocation(latitude: p.latitude, longitude: p.longitude).distance(from: CLLocation(latitude: here.latitude, longitude: here.longitude))
-                    Text("\(GeoFormat.distance(d, metric: metric)) away").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                }
-            }
             if let p = parked {
+                if let here = gps.coordinate {
+                    let d = CLLocation(latitude: p.latitude, longitude: p.longitude).distance(from: CLLocation(latitude: here.latitude, longitude: here.longitude))
+                    HStack(spacing: 6) {
+                        Image(systemName: "car.fill").font(.system(size: 13)).foregroundStyle(HandyColor.accent)
+                        Text("Your car is \(GeoFormat.distance(d, metric: metric)) away").font(HandyFont.bodyStrong)
+                        Spacer()
+                    }
+                }
                 Map(initialPosition: .region(MKCoordinateRegion(center: p, latitudinalMeters: 250, longitudinalMeters: 250))) {
                     Marker("Your car", systemImage: "car.fill", coordinate: p).tint(HandyColor.accent)
                     UserAnnotation()
@@ -105,10 +125,12 @@ struct GPSDashboardView: View {
                 TextField("Note (Level 3, near the lift…)", text: $parkNote).textFieldStyle(.roundedBorder).onChange(of: parkNote) { _, n in ParkStore.setNote(n) }
                 HStack(spacing: HandySpacing.s8) {
                     Button { walkBack(p) } label: { Label("Walk me back", systemImage: "figure.walk").frame(maxWidth: .infinity) }.primaryButton()
-                    Button { park() } label: { Label("Re-save", systemImage: "mappin.and.ellipse") }.compactButton()
+                    Button { park() } label: { Label("Move pin here", systemImage: "mappin.and.ellipse") }.compactButton()
                 }
             } else {
-                Button { park() } label: { Label("Park here — remember this spot", systemImage: "mappin.and.ellipse").frame(maxWidth: .infinity) }.secondaryButton().disabled(gps.coordinate == nil)
+                Button { park() } label: { Label("Park here — remember this spot", systemImage: "mappin.and.ellipse").frame(maxWidth: .infinity) }.primaryButton().disabled(gps.coordinate == nil)
+                Text(gps.coordinate == nil ? "Waiting for a GPS fix — step outside for a clearer signal." : "Saves the spot on your phone. Nothing is uploaded.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }.cardStyle()
     }
