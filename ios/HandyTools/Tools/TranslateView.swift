@@ -8,7 +8,7 @@ import AVFoundation
 /// Works offline once the languages are downloaded; nothing is sent to us.
 struct TranslateView: View {
     @EnvironmentObject var store: StoreManager
-    private enum Mode: Int, CaseIterable { case text, talk, photo; var title: String { ["Text", "Talk", "Photo"][rawValue] } }
+    private enum Mode: Int, CaseIterable { case text, talk, photo, travel; var title: String { ["Text", "Talk", "Photo", "Travel"][rawValue] } }
     @State private var mode: Mode = .text
     @AppStorage("translate.from") private var fromCode = "en"
     @AppStorage("translate.to") private var toCode = "es"
@@ -26,6 +26,9 @@ struct TranslateView: View {
     @State private var photoText = ""
     private enum PickerSide: Int, Identifiable { case from, to; var id: Int { rawValue } }
     @State private var showPicker: PickerSide? = nil
+    @State private var travelCat = 0
+    @AppStorage("translate.favs") private var favsRaw = ""
+    private var favs: Set<String> { Set(favsRaw.split(separator: "\n").map(String.init)) }
 
     private var overQuota: Bool { !Usage.hasRoom("translate", limit: Limits.freeTranslatePerDay) }
     // Translating a language into itself is a no-op — block it (and never spend a free turn on it).
@@ -47,6 +50,7 @@ struct TranslateView: View {
             case .text: textPanel
             case .talk: talkPanel
             case .photo: photoPanel
+            case .travel: travelPanel
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if !store.isPremium { QuotaChip(name: "translate", limit: Limits.freeTranslatePerDay).environmentObject(store) }
@@ -205,6 +209,58 @@ struct TranslateView: View {
     }
     private func swap() { let f = fromCode; fromCode = toCode; toCode = f; if !output.isEmpty { input = output; output = "" } }
     private func name(_ code: String) -> String { Locale.current.localizedString(forLanguageCode: code) ?? code }
+
+    // MARK: travel phrasebook
+
+    private var currentPhrases: [String] {
+        travelCat == -1 ? Phrasebook.categories.flatMap(\.phrases).filter { favs.contains($0) } : Phrasebook.categories[travelCat].phrases
+    }
+    private func toggleFav(_ p: String) {
+        var s = favs; if s.contains(p) { s.remove(p) } else { s.insert(p) }
+        favsRaw = s.sorted().joined(separator: "\n"); HandyHaptics.light()
+    }
+
+    private var travelPanel: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(toCode == "en" ? "Pick a destination language above, then tap a phrase to hear it."
+                                : "Tap any phrase to see and hear it in \(name(toCode)). Star the ones you'll need — the phrasebook is fully offline.")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow(spacing: HandySpacing.s8) {
+                HChip(text: "★ Saved", selected: travelCat == -1) { travelCat = -1 }
+                ForEach(Array(Phrasebook.categories.enumerated()), id: \.offset) { i, c in HChip(text: c.name, selected: travelCat == i) { travelCat = i } }
+            }
+            if !output.isEmpty { resultCard(output) }
+            if currentPhrases.isEmpty {
+                Text(travelCat == -1 ? "No saved phrases yet — tap the star on the ones you want to keep handy." : "")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            VStack(spacing: 0) {
+                ForEach(currentPhrases, id: \.self) { phrase in
+                    HStack(spacing: HandySpacing.s8) {
+                        Text(phrase).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading)
+                        Button { toggleFav(phrase) } label: { Image(systemName: favs.contains(phrase) ? "star.fill" : "star") }
+                            .buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityLabel(favs.contains(phrase) ? "Unstar" : "Star")
+                        Button { translate(phrase, from: "en", to: toCode, speak: true) } label: { Image(systemName: "character.bubble.fill") }
+                            .buttonStyle(.plain).foregroundStyle(HandyColor.accent).disabled(toCode == "en" || overQuota)
+                    }.padding(.vertical, 10)
+                    if phrase != currentPhrases.last { Divider() }
+                }
+            }
+        }
+    }
+}
+
+/// A compact, travel-tested phrasebook (source phrases in English; translated on tap into the chosen
+/// language). The point of a travel translator over a generic one: the thing you need is already here.
+private struct Phrasebook {
+    static let categories: [(name: String, icon: String, phrases: [String])] = [
+        ("Essentials", "hand.wave", ["Hello", "Thank you", "Yes", "No", "Please", "Excuse me", "Do you speak English?", "I don't understand", "Can you help me?"]),
+        ("Directions", "map", ["Where is the bathroom?", "How do I get to the train station?", "Is it far?", "Can you show me on the map?", "Go left", "Go right", "Straight ahead"]),
+        ("Dining", "fork.knife", ["A table for two, please", "The menu, please", "I'm allergic to nuts", "Water, please", "The check, please", "Is this vegetarian?", "It was delicious"]),
+        ("Shopping", "bag", ["How much is this?", "That's too expensive", "Do you take cards?", "I'm just looking", "Can I have a receipt?", "Do you have a smaller size?"]),
+        ("Emergency", "cross.case", ["Help!", "Call the police", "I need a doctor", "Where is the hospital?", "I lost my passport", "It's an emergency", "I don't feel well"]),
+        ("Getting around", "tram", ["One ticket, please", "What time does it leave?", "Does this go to the airport?", "Please take me to this address", "Stop here, please", "How much is the fare?"]),
+    ]
 }
 
 private struct LangList: View {
