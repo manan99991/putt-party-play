@@ -284,6 +284,7 @@ struct ToolDestination: View {
         case "datagrab": DataGrabView()
         case "textstudio": TextStudioView()
         case "vault": VaultView()
+        case "fileviewer": FileViewerView()
         default: ComingSoonView(id: id)
         }
     }

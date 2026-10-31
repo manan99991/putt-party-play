@@ -1074,4 +1074,29 @@ final class EngineTests: XCTestCase {
         await writer.finishWriting()
         return writer.status == .completed ? url : nil
     }
+
+    // MARK: File Opener
+
+    /// The file-kind classifier drives the icon, label and text-peek decision, so it must sort the
+    /// everyday extensions correctly, stay case-insensitive, and never crash on a blank/odd extension.
+    func testFileKindClassifier() {
+        XCTAssertEqual(FileKind.of(ext: "pdf"), .document)
+        XCTAssertEqual(FileKind.of(ext: "DOCX"), .document)      // case-insensitive
+        XCTAssertEqual(FileKind.of(ext: "pages"), .document)
+        XCTAssertEqual(FileKind.of(ext: "HEIC"), .image)
+        XCTAssertEqual(FileKind.of(ext: "mov"), .video)
+        XCTAssertEqual(FileKind.of(ext: "m4a"), .audio)
+        XCTAssertEqual(FileKind.of(ext: "zip"), .archive)
+        XCTAssertEqual(FileKind.of(ext: "swift"), .code)
+        XCTAssertEqual(FileKind.of(ext: "json"), .code)
+        XCTAssertEqual(FileKind.of(ext: "txt"), .text)
+        XCTAssertEqual(FileKind.of(ext: "csv"), .text)
+        XCTAssertEqual(FileKind.of(ext: "sqlite"), .data)
+        XCTAssertEqual(FileKind.of(ext: ""), .other)            // no extension — never crashes
+        XCTAssertEqual(FileKind.of(ext: "wat"), .other)         // unknown — falls through
+        // Every kind must map to a non-empty SF Symbol so the info card never shows a blank icon.
+        for k in [FileKind.document, .image, .video, .audio, .archive, .code, .text, .data, .other] {
+            XCTAssertFalse(k.icon.isEmpty)
+        }
+    }
 }
