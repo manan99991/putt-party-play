@@ -1099,4 +1099,46 @@ final class EngineTests: XCTestCase {
             XCTAssertFalse(k.icon.isEmpty)
         }
     }
+
+    // MARK: Warranty & Receipts
+
+    private func receipt(store: String, items: [String], raw: String = "", months: Int? = nil, purchased: Date? = nil) -> Receipt {
+        Receipt(imageFile: "x.jpg", store: store, purchaseDate: purchased, total: "", rawText: raw.isEmpty ? (store + " " + items.joined(separator: " ")) : raw, items: items, warrantyMonths: months)
+    }
+
+    /// The promise of this tool is forgiving search: a misspelt store and a loose word still find it.
+    func testReceiptFuzzySearchFindsTypoAndVagueWords() {
+        let costco = receipt(store: "Costco Wholesale", items: ["Samsung 55\" TV", "Rotisserie Chicken"])
+        let depot = receipt(store: "Home Depot", items: ["DeWalt Cordless Drill", "Screws"])
+        let all = [costco, depot]
+
+        // Misspelt store + loose item word.
+        XCTAssertEqual(ReceiptSearch.rank(all, query: "cosco tv").first?.store, "Costco Wholesale")
+        // Vague item recall, no store named.
+        XCTAssertEqual(ReceiptSearch.rank(all, query: "the drill").first?.store, "Home Depot")
+        // Unrelated query returns nothing rather than a false match.
+        XCTAssertTrue(ReceiptSearch.rank(all, query: "airplane ticket").isEmpty)
+        // Empty query lists everything (most recent first), never filters to zero.
+        XCTAssertEqual(ReceiptSearch.rank(all, query: "   ").count, 2)
+    }
+
+    func testReceiptSimilarityIsBoundedAndSane() {
+        XCTAssertEqual(ReceiptSearch.sim("tv", "tv"), 1, accuracy: 0.0001)
+        XCTAssertGreaterThan(ReceiptSearch.sim("cosco", "costco"), 0.6)   // one edit
+        XCTAssertEqual(ReceiptSearch.sim("cat", "elephant"), 0)           // nothing in common → zeroed
+    }
+
+    /// Warranty countdown must be correct — it's what the reminder and the "expiring soon" list rely on.
+    func testWarrantyCountdown() {
+        let cal = Calendar.current
+        let elevenMonthsAgo = cal.date(byAdding: .month, value: -11, to: Date())!
+        let r = receipt(store: "Best Buy", items: ["Laptop"], months: 12, purchased: elevenMonthsAgo)
+        XCTAssertNotNil(r.warrantyEnds)
+        let days = r.daysLeftOnWarranty ?? -999
+        XCTAssertTrue((20...40).contains(days), "expected ~1 month left, got \(days)")
+        // No warranty tracked → no end date, no countdown.
+        let none = receipt(store: "Cafe", items: ["Coffee"])
+        XCTAssertNil(none.warrantyEnds)
+        XCTAssertNil(none.daysLeftOnWarranty)
+    }
 }
