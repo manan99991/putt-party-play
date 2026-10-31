@@ -182,10 +182,26 @@ jobs:
           echo "APP_PATH=$(find build -name HandyTools.app -path '*Debug-iphonesimulator*' | head -1)" >> $GITHUB_ENV
       - name: Install mobileqa + Appium + sim
         run: |
+          set -euo pipefail
           pip install "git+${MOBILEQA_REPO}"
           npm install -g appium && appium driver install xcuitest
-          echo "SIM_UDID=$(xcrun simctl create qa 'iPhone 15' | tail -1)" >> $GITHUB_ENV
-          xcrun simctl boot "$SIM_UDID"
+          # Device type + runtime names drift with the runner's Xcode, and a hard-coded 'iPhone 15'
+          # fails outright when that model isn't installed. Pick the newest available iPhone device
+          # type and the newest available iOS runtime instead.
+          DEV=$(xcrun simctl list devicetypes -j | python3 -c "import sys,json; d=[x for x in json.load(sys.stdin)['devicetypes'] if 'iPhone' in x['name']]; print(d[-1]['identifier'])")
+          RT=$(xcrun simctl list runtimes -j | python3 -c "import sys,json; r=[x for x in json.load(sys.stdin)['runtimes'] if x.get('isAvailable') and x.get('name','').startswith('iOS')]; print(r[-1]['identifier'])")
+          echo "Creating simulator: device=$DEV runtime=$RT"
+          UDID=$(xcrun simctl create qa "$DEV" "$RT")
+          echo "SIM_UDID=$UDID" >> "$GITHUB_ENV"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          # Install the simulator .app the build step produced (APP_PATH is set in $GITHUB_ENV there, so
+          # it's available in this later step). Mirror the Android job, which adb-installs before the agent.
+          if [ -n "${APP_PATH:-}" ] && [ -d "${APP_PATH}" ]; then
+            xcrun simctl install "$UDID" "$APP_PATH" && echo "installed $APP_PATH"
+          else
+            echo "WARNING: APP_PATH missing ('${APP_PATH:-}') — the build step did not produce HandyTools.app"; exit 1
+          fi
       - name: Run agent
         run: |
           nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
