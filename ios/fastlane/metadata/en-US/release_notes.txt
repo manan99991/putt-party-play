@@ -1,5 +1,3 @@
-New: before you save or share, you now see a preview of what a tool made — thumbnails of the converted photos, a frame of the converted video — so you can check it first. Added to Format Fixer and Share-Ready.
-
-Plus everything from the last build: home grid fills the screen, Pro Camera option rows no longer cut off, Memory searches all your photos with visual search ("me in red") and tells you why each matched, real progress bars across tools, and a video conversion that survives leaving the tool.
+Tool screens are tighter now — the controls you need fit on one screen, so there's less scrolling and no empty space at the bottom. Same tools, cleaner layout.
 
 On-device as always. Tap Settings to send a note — thanks for testing.
