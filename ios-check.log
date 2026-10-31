@@ -18,20 +18,18 @@ Fetching from https://github.com/googleads/swift-package-manager-google-mobile-a
 
 Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
 
-Creating working copy of package ‘swift-package-manager-google-mobile-ads’
-
-Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
-
 Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
 
 Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
 
+Creating working copy of package ‘swift-package-manager-google-mobile-ads’
+
+Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
+
 
 Resolved source packages:
-  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
   GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
+  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
 
-resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
+resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/ReceiptVault.swift:102:16: error: the compiler is unable to type-check this expression in reasonable time; try breaking up the expression into distinct sub-expressions
-** TEST FAILED **
