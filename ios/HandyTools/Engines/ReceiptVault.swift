@@ -113,8 +113,11 @@ enum ReceiptSearch {
 
     /// 0…1 match of `query` against a receipt. Each query word scores its best fuzzy hit among the
     /// receipt's words, weighted up when it matches the store name or an item rather than buried text.
+    /// Little words that shouldn't count toward a match ("the drill" is really just "drill").
+    private static let stopwords: Set<String> = ["the", "a", "an", "of", "for", "my", "to", "and", "is", "it", "that", "this", "with", "in", "on"]
+
     static func score(query: String, store: String, items: [String], rawText: String) -> Double {
-        let qTokens = tokens(query)
+        let qTokens = tokens(query).filter { !stopwords.contains($0) }
         guard !qTokens.isEmpty else { return 0 }
         let storeT = Set(tokens(store))
         let itemsT = Set(items.flatMap(tokens))
