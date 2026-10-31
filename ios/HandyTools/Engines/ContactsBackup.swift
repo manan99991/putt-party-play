@@ -40,8 +40,9 @@ enum BackupFrequency: String, CaseIterable, Codable {
         return d
     }
 
-    /// Pure, testable: is a backup due now given the last run and the chosen cadence?
-    static func isDue(last: Date?, frequency: BackupFrequency, now: Date = Date()) -> Bool {
+    /// Pure, testable: is a backup due now given the last run and the chosen cadence? Nonisolated so
+    /// it can be called off the main actor (and from synchronous tests) — it touches no instance state.
+    nonisolated static func isDue(last: Date?, frequency: BackupFrequency, now: Date = Date()) -> Bool {
         guard let days = frequency.days else { return false }   // .off
         guard let last else { return true }                      // never backed up → due
         return now.timeIntervalSince(last) >= Double(days) * 86_400
