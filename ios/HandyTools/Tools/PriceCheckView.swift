@@ -83,6 +83,10 @@ private struct CartPanel: View {
     private var total: Double { lines.reduce(0) { $0 + (Double($1.price) ?? 0) } }
     private var budgetValue: Double? { Double(budget) }
     private var remaining: Double? { budgetValue.map { $0 - total } }
+    private var progress: Double {
+        guard let b = budgetValue, b > 0 else { return 0 }
+        return min(max(total / b, 0), 1)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
@@ -100,7 +104,7 @@ private struct CartPanel: View {
                         Spacer()
                         Text(PriceBrain.money(abs(remaining))).font(HandyFont.body).foregroundStyle(remaining < 0 ? HandyColor.danger : HandyColor.accent)
                     }
-                    ProgressView(value: min(max(budgetValue ?? 0 > 0 ? total / (budgetValue ?? 1) : 0, 0), 1))
+                    ProgressView(value: progress)
                         .tint(remaining < 0 ? HandyColor.danger : HandyColor.accent)
                 }
             }.cardStyle(padding: HandySpacing.s12)
