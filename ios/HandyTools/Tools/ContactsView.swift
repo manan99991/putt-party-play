@@ -1,5 +1,6 @@
 import SwiftUI
 import Contacts
+import ContactsUI
 
 /// Contacts cleanup — back up to a .vcf, find duplicates, and merge them without losing a number.
 /// Everything runs on-device. A merge is permanent (iOS has no contacts trash), so backup comes first.
@@ -13,6 +14,9 @@ struct ContactsView: View {
     @State private var pendingMerge: [ContactRec]?
     @State private var pendingMergeAll: [[ContactRec]]?
     @State private var mergeProgress: String?
+    @State private var tidy: TidyGroup?
+
+    struct TidyGroup: Identifiable { let id = UUID(); let title: String; let icon: String; let recs: [ContactRec]; let deletable: Bool }
 
     var body: some View {
         ToolPage(title: "Contacts", subtitle: "Find duplicates, merge them without losing a number, and back everything up — all on your phone.") {
@@ -49,6 +53,13 @@ struct ContactsView: View {
             Button("Cancel", role: .cancel) { pendingMergeAll = nil }
         } message: {
             Text("Each group collapses to one contact, keeping every number and email. This can't be undone, so make sure you've backed up.")
+        }
+        .sheet(item: $tidy) { g in
+            NavigationStack {
+                ContactsTidySheet(group: g, onChanged: { scan() })
+                    .navigationTitle(g.title).navigationBarTitleDisplayMode(.inline)
+                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { tidy = nil } } }
+            }
         }
     }
 
@@ -114,13 +125,38 @@ struct ContactsView: View {
             }.cardStyle()
         }
 
-        if !r.incomplete.isEmpty {
-            Text("Incomplete (\(r.incomplete.count))").font(HandyFont.bodyStrong)
-            ForEach(r.incomplete.prefix(20)) { rec in
-                HStack {
-                    Text(rec.hasName ? rec.name : (rec.numbers.first ?? "(empty)")).font(HandyFont.body).lineLimit(1)
-                    Spacer()
-                    Text(rec.whyIncomplete).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        // Tidy up — health buckets, each opening a list with one-tap fixes.
+        let buckets: [TidyGroup] = [
+            TidyGroup(title: "No phone number", icon: "phone.badge.plus", recs: r.noPhone, deletable: false),
+            TidyGroup(title: "Only an email", icon: "envelope", recs: r.emailOnly, deletable: false),
+            TidyGroup(title: "No name", icon: "person.fill.questionmark", recs: r.noName, deletable: false),
+            TidyGroup(title: "Empty — nothing saved", icon: "person.crop.circle.badge.xmark", recs: r.empty, deletable: true),
+        ].filter { !$0.recs.isEmpty }
+        if !buckets.isEmpty {
+            Text("Tidy up").font(HandyFont.bodyStrong)
+            ForEach(buckets) { b in
+                Button { tidy = b } label: {
+                    HStack(spacing: HandySpacing.s12) {
+                        Image(systemName: b.icon).foregroundStyle(HandyColor.accent).frame(width: 24)
+                        Text(b.title).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
+                        Spacer()
+                        Text("\(b.recs.count)").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textSecondary)
+                        Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    }.padding(HandySpacing.s12)
+                    .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                }.buttonStyle(.plain)
+            }
+        } else {
+            Text("Every contact has a name and a number. ✓").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        }
+
+        if !r.sources.isEmpty {
+            Text("Where they're saved").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(r.sources) { s in
+                    Text("\(s.name) · \(s.count)").font(HandyFont.micro).padding(.horizontal, 10).padding(.vertical, 5)
+                        .background(HandyColor.surface, in: Capsule()).overlay(Capsule().stroke(HandyColor.border, lineWidth: 1))
                 }
             }
         }
@@ -178,5 +214,103 @@ struct ContactsView: View {
                 scan()
             }
         }
+    }
+}
+
+/// A tidy-up bucket: list the contacts, fix one by tapping it open in the system editor, export the
+/// set as a .vcf, or — for the "empty" bucket — delete them in one go after a confirm.
+private struct ContactsTidySheet: View {
+    let group: ContactsView.TidyGroup
+    let onChanged: () -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var editing: EditTarget?
+    @State private var shareURL: URL?
+    @State private var confirmDelete = false
+    @State private var busy = false
+
+    private struct EditTarget: Identifiable { let id: String }
+
+    var body: some View {
+        List {
+            Section {
+                ForEach(group.recs) { rec in
+                    Button { editing = EditTarget(id: rec.id) } label: {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(rec.hasName ? rec.name : "(no name)").font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
+                                if !rec.subtitle.isEmpty { Text(rec.subtitle).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                            }
+                            Spacer()
+                            Image(systemName: "pencil").foregroundStyle(HandyColor.accent)
+                        }
+                    }
+                }
+            } footer: {
+                Text(group.deletable ? "These have no name and no number — usually safe to delete. Back up first."
+                                     : "Tap one to add what's missing in the contact editor.")
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            HStack(spacing: HandySpacing.s8) {
+                if let url = shareURL {
+                    ShareLink(item: url) { Label("Share .vcf", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                } else {
+                    Button { exportGroup() } label: {
+                        HStack { if busy { ProgressView() }; Label("Export (.vcf)", systemImage: "square.and.arrow.up") }.frame(maxWidth: .infinity)
+                    }.secondaryButton().disabled(busy)
+                }
+                if group.deletable {
+                    Button(role: .destructive) { confirmDelete = true } label: { Label("Delete \(group.recs.count)", systemImage: "trash").frame(maxWidth: .infinity) }.primaryButton().disabled(busy)
+                }
+            }.padding(HandySpacing.s12).background(.ultraThinMaterial)
+        }
+        .sheet(item: $editing) { t in
+            ContactEditor(id: t.id) { editing = nil; onChanged() }.ignoresSafeArea()
+        }
+        .confirmationDialog("Delete \(group.recs.count) empty contacts?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Delete \(group.recs.count)", role: .destructive) { deleteAll() }
+            Button("Cancel", role: .cancel) {}
+        } message: { Text("They have no name and no number. This can't be undone.") }
+    }
+
+    private func exportGroup() {
+        busy = true
+        let ids = group.recs.map(\.id); let label = group.title
+        Task {
+            let url = try? await Task.detached { try ContactsEngine.exportVCard(ids: ids, label: label) }.value
+            await MainActor.run { busy = false; shareURL = url }
+        }
+    }
+    private func deleteAll() {
+        busy = true
+        let ids = group.recs.map(\.id)
+        Task {
+            try? await Task.detached { try ContactsEngine.delete(ids: ids) }.value
+            await MainActor.run { busy = false; HandyHaptics.success(); onChanged(); dismiss() }
+        }
+    }
+}
+
+/// Wraps the system contact editor so a missing name/number can be fixed in one tap, in the familiar UI.
+private struct ContactEditor: UIViewControllerRepresentable {
+    let id: String
+    let onDone: () -> Void
+    func makeCoordinator() -> Coordinator { Coordinator(onDone: onDone) }
+    func makeUIViewController(context: Context) -> UINavigationController {
+        let store = CNContactStore()
+        let keys = [CNContactViewController.descriptorForRequiredKeys()]
+        let vc: CNContactViewController
+        if let c = try? store.unifiedContact(withIdentifier: id, keysToFetch: keys) { vc = CNContactViewController(for: c) }
+        else { vc = CNContactViewController(forNewContact: nil) }
+        vc.allowsEditing = true
+        vc.allowsActions = true
+        vc.delegate = context.coordinator
+        return UINavigationController(rootViewController: vc)
+    }
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {}
+    final class Coordinator: NSObject, CNContactViewControllerDelegate {
+        let onDone: () -> Void
+        init(onDone: @escaping () -> Void) { self.onDone = onDone }
+        func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) { onDone() }
     }
 }

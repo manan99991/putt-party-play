@@ -215,6 +215,27 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(order, [1, 2, 0], "expected a(idx1) → b(idx2) → c(idx0) top-to-bottom")
     }
 
+    // MARK: Contacts — health categorisation
+
+    func testContactsCategorize() {
+        func rec(_ id: String, _ name: String, nums: [String] = [], mails: [String] = []) -> ContactRec {
+            ContactRec(id: id, name: name, numbers: nums, emails: mails)
+        }
+        let recs = [
+            rec("a", "Alice", nums: ["5551234567"]),   // complete
+            rec("b", "Bob", mails: ["bob@x.com"]),      // named, email only, no number
+            rec("c", "Carla"),                          // named, no number, no email
+            rec("d", "", nums: ["5559999999"]),         // no name, has number
+            rec("e", "", mails: ["x@y.com"]),           // no name, email only
+            rec("f", ""),                               // empty
+        ]
+        let r = ContactsReport.categorize(total: recs.count, recs: recs, groups: [], sources: [])
+        XCTAssertEqual(Set(r.noPhone.map(\.id)), ["b", "c"])
+        XCTAssertEqual(Set(r.emailOnly.map(\.id)), ["b", "e"])
+        XCTAssertEqual(Set(r.noName.map(\.id)), ["d", "e"])
+        XCTAssertEqual(r.empty.map(\.id), ["f"])
+    }
+
     // MARK: Memory — visual + text search
 
     func testMemorySynonymAndColorSearch() {

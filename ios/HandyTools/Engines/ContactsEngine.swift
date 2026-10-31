@@ -16,11 +16,31 @@ struct ContactRec: Identifiable {
     var subtitle: String { [numbers.first, emails.first].compactMap { $0 }.joined(separator: " · ") }
 }
 
+struct ContactSource: Identifiable { let id = UUID(); let name: String; let count: Int }
+
 struct ContactsReport {
     let total: Int
     let duplicateGroups: [[ContactRec]]
     let incomplete: [ContactRec]
+    // Health buckets, each a tidy-up list with simple fixes.
+    let noPhone: [ContactRec]       // has a name, but no number
+    let emailOnly: [ContactRec]     // no number, only an email
+    let noName: [ContactRec]        // a number/email with no name
+    let empty: [ContactRec]         // neither name nor number — usually safe to delete
+    let sources: [ContactSource]    // where they came from (iCloud / Exchange / On My iPhone…)
     var duplicateCount: Int { duplicateGroups.reduce(0) { $0 + $1.count - 1 } }
+
+    /// Categorise a flat list — pure, so it's unit-testable without the contact store.
+    static func categorize(total: Int, recs: [ContactRec], groups: [[ContactRec]], sources: [ContactSource]) -> ContactsReport {
+        ContactsReport(total: total,
+                       duplicateGroups: groups,
+                       incomplete: recs.filter { !$0.hasName || !$0.hasNumber },
+                       noPhone: recs.filter { $0.hasName && !$0.hasNumber },
+                       emailOnly: recs.filter { !$0.hasNumber && !$0.emails.isEmpty },
+                       noName: recs.filter { !$0.hasName && ($0.hasNumber || !$0.emails.isEmpty) },
+                       empty: recs.filter { !$0.hasName && !$0.hasNumber && $0.emails.isEmpty },
+                       sources: sources)
+    }
 }
 
 /// Contacts cleanup on iOS: find duplicates + incomplete entries, merge without losing data, and
@@ -75,8 +95,49 @@ enum ContactsEngine {
             }
         }
 
-        let incomplete = recs.filter { !$0.hasName || !$0.hasNumber }
-        return ContactsReport(total: recs.count, duplicateGroups: groups, incomplete: incomplete)
+        return ContactsReport.categorize(total: recs.count, recs: recs, groups: groups, sources: sources(store: store))
+    }
+
+    /// Where contacts live (iCloud / an account / On My iPhone), as counts for the tidy-up summary.
+    private static func sources(store: CNContactStore) -> [ContactSource] {
+        guard let containers = try? store.containers(matching: nil) else { return [] }
+        var out: [ContactSource] = []
+        for c in containers {
+            let pred = CNContact.predicateForContactsInContainer(withIdentifier: c.identifier)
+            let n = (try? store.unifiedContacts(matching: pred, keysToFetch: [CNContactIdentifierKey as CNKeyDescriptor]).count) ?? 0
+            if n > 0 { out.append(ContactSource(name: sourceName(c), count: n)) }
+        }
+        return out.sorted { $0.count > $1.count }
+    }
+    private static func sourceName(_ c: CNContainer) -> String {
+        if !c.name.isEmpty { return c.name }
+        switch c.type {
+        case .local:    return "On My iPhone"
+        case .exchange: return "Exchange"
+        case .cardDAV:  return "iCloud / account"
+        default:        return "Other"
+        }
+    }
+
+    /// Permanently delete contacts by id (used for the "empty" tidy-up bucket). Caller confirms + backs up.
+    static func delete(ids: [String]) throws {
+        let store = CNContactStore(); let save = CNSaveRequest()
+        for id in ids {
+            if let c = try? store.unifiedContact(withIdentifier: id, keysToFetch: [CNContactIdentifierKey as CNKeyDescriptor]),
+               let m = c.mutableCopy() as? CNMutableContact { save.delete(m) }
+        }
+        try store.execute(save)
+    }
+
+    /// Export a specific set of contacts to a .vcf (a single tidy-up bucket, or a saved-search backup).
+    static func exportVCard(ids: [String], label: String) throws -> URL {
+        let store = CNContactStore()
+        let keys = [CNContactVCardSerialization.descriptorForRequiredKeys()]
+        let contacts = ids.compactMap { try? store.unifiedContact(withIdentifier: $0, keysToFetch: keys) }
+        let data = try CNContactVCardSerialization.data(with: contacts)
+        let safe = label.replacingOccurrences(of: " ", with: "-")
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("Contacts-\(safe)-\(Int(Date().timeIntervalSince1970)).vcf")
+        try data.write(to: url); return url
     }
 
     /// Merge a duplicate group: build one contact with the union of names/numbers/emails, then remove
