@@ -155,18 +155,28 @@ enum MemoryEngine {
         return UIImage(data: d)
     }
 
-    /// Build or refresh the index over the phone's photos (newest first, bounded), reusing the cache
-    /// for assets we've already read. `progress` is 0…1; returns the full, sorted index.
-    static func index(limit: Int = 400, progress: @escaping (Double) -> Void) async -> [Entry] {
+    /// True when the library has photos not yet in the saved index (new shots since last time, or a
+    /// never-built index). A cheap count check used to continue indexing in the background so the first
+    /// build is the only slow one and later opens just pick up what's new.
+    static func hasUnindexed() -> Bool {
+        PHAsset.fetchAssets(with: .image, options: PHFetchOptions()).count > loadCache().count
+    }
+
+    /// Build or continue the index over the WHOLE photo library (newest first — no cap), reusing the
+    /// cache for photos already read so only new/changed ones are analysed. The index is saved after
+    /// every batch, so it's resumable and searchable *as it builds*: `onBatch` hands back the sorted
+    /// index so far, `onProgress` reports (done, total). Returns the final sorted index.
+    static func index(onBatch: @escaping ([Entry]) -> Void,
+                      onProgress: @escaping (_ done: Int, _ total: Int) -> Void) async -> [Entry] {
         var cache = Dictionary(uniqueKeysWithValues: loadCache().map { ($0.id, $0) })
         let fetch = PHFetchOptions()
         fetch.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        fetch.fetchLimit = limit
-        let assets = PHAsset.fetchAssets(with: .image, options: fetch)
-        guard assets.count > 0 else { progress(1); return [] }
-        var out: [Entry] = []
-        let total = Double(assets.count)
-        for i in 0..<assets.count {
+        let assets = PHAsset.fetchAssets(with: .image, options: fetch)   // no fetchLimit — the whole library
+        let total = assets.count
+        guard total > 0 else { onProgress(0, 0); onBatch([]); return [] }
+        var out: [Entry] = []; out.reserveCapacity(total)
+        var sinceSave = 0
+        for i in 0..<total {
             let a = assets.object(at: i)
             let mod = a.modificationDate ?? a.creationDate ?? .distantPast
             let shot = a.mediaSubtypes.contains(.photoScreenshot)
@@ -179,14 +189,21 @@ enum MemoryEngine {
                               modified: mod, readOK: true, labels: r.labels, colors: r.colors, isScreenshot: shot)
                 cache[a.localIdentifier] = e
                 out.append(e)
+                sinceSave += 1
             } else if let stale = cache[a.localIdentifier] {
                 out.append(stale)   // keep whatever we had rather than dropping the photo
             }
-            progress(Double(i + 1) / total)
+            onProgress(i + 1, total)
+            // Persist + publish a searchable snapshot every 40 freshly-read photos, and at the very end,
+            // so a 10,000-photo library fills in gradually and survives the app being closed mid-build.
+            if sinceSave >= 40 || i == total - 1 {
+                let snapshot = out.sorted { $0.date > $1.date }
+                saveCache(snapshot)
+                onBatch(snapshot)
+                sinceSave = 0
+            }
         }
-        out.sort { $0.date > $1.date }
-        saveCache(out)
-        return out
+        return out.sorted { $0.date > $1.date }
     }
 
     // MARK: search — text + visual labels + colour, each result carrying why it matched.
@@ -293,16 +310,28 @@ enum MemoryEngine {
     @Published private(set) var entries: [MemoryEngine.Entry] = MemoryEngine.loadCache()
     @Published private(set) var indexing = false
     @Published private(set) var progress: Double = 0
+    @Published private(set) var done = 0
+    @Published private(set) var total = 0
     @Published private(set) var indexedAt: Date? = nil
 
     func refresh() {
         guard !indexing else { return }
-        indexing = true; progress = 0
+        indexing = true; progress = 0; done = 0; total = 0
         Task {
-            let result = await MemoryEngine.index { p in Task { @MainActor in self.progress = p } }
-            self.entries = result
-            self.indexedAt = Date()
-            self.indexing = false
+            let result = await MemoryEngine.index(
+                onBatch: { snap in Task { @MainActor in self.entries = snap } },
+                onProgress: { d, t in Task { @MainActor in self.done = d; self.total = t; self.progress = t > 0 ? Double(d) / Double(t) : 0 } }
+            )
+            await MainActor.run { self.entries = result; self.indexedAt = Date(); self.indexing = false }
+        }
+    }
+
+    /// After an index already exists, quietly pick up photos taken since last time so later opens are
+    /// instant and self-maintaining. No-op while already building or if nothing is new.
+    func catchUpIfNeeded() {
+        guard !indexing, !entries.isEmpty else { return }
+        Task.detached {
+            if MemoryEngine.hasUnindexed() { await MainActor.run { self.refresh() } }
         }
     }
 }

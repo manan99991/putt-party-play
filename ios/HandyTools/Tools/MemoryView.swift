@@ -19,8 +19,8 @@ struct MemoryView: View {
     var body: some View {
         ToolPage(title: "Memory", subtitle: "Ask your own photos anything — by what they say (a Wi-Fi password, a confirmation number, where you parked) or what they show (you in red, your dog at the beach). Read on your phone, never uploaded.") {
             HowTo("memory", [
-                "Tap Index to read your photos once — it stays on your phone.",
-                "Ask in plain words: \u{201C}the Wi-Fi password I saved\u{201D}, \u{201C}me in red\u{201D}, \u{201C}my parking spot\u{201D}.",
+                "Build the index once — it reads your phone's own photos on-device; a big library fills in as you watch.",
+                "Ask in plain words: \u{201C}the Wi-Fi password I saved\u{201D}, \u{201C}me in a red dress\u{201D}, \u{201C}my parking spot\u{201D}.",
                 "You get the answer or the matching photos, each with why it matched.",
             ])
 
@@ -43,7 +43,8 @@ struct MemoryView: View {
 
                 if !index.entries.isEmpty {
                     HStack {
-                        Text("\(index.entries.count) photos read\(index.indexedAt != nil ? "" : "")").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        Text(index.indexing ? "Indexing \(index.done) of \(index.total)… you can search what's ready" : "\(index.entries.count) photos indexed")
+                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                         Spacer()
                         Button { index.refresh() } label: { Label("Re-index", systemImage: "arrow.clockwise") }.textButton().disabled(index.indexing)
                     }
@@ -82,16 +83,16 @@ struct MemoryView: View {
 
     private var indexingCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            HStack { ProgressView(); Text("Reading your photos…").font(HandyFont.body) }
+            HStack { ProgressView(); Text(index.total > 0 ? "Building your photo index — \(index.done) of \(index.total)" : "Building your photo index…").font(HandyFont.body) }
             ProgressView(value: index.progress).tint(HandyColor.accent)
-            Text("One-time per photo — after this it's instant.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text("One-time, on your phone. You can search what's ready now — next time it's instant.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle()
     }
 
     private var emptyIndexCard: some View {
         VStack(spacing: HandySpacing.s12) {
-            Text("Read your photos once so you can search them by text or by what they show. It happens on your phone and is cached, so it's only slow the first time.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
-            Button { index.refresh() } label: { Label("Index my photos", systemImage: "sparkles").frame(maxWidth: .infinity) }.primaryButton()
+            Text("Build a private index of your whole photo library — it reads each photo once, on your phone, so you can ask anything. A big library fills in gradually and you can search as it goes; after that it's instant and keeps itself up to date.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+            Button { index.refresh() } label: { Label("Build my photo index", systemImage: "sparkles").frame(maxWidth: .infinity) }.primaryButton()
         }.cardStyle()
     }
 
@@ -141,7 +142,9 @@ struct MemoryView: View {
         let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
         authorized = (status == .authorized || status == .limited)
         checkedAuth = true
-        if authorized, index.entries.isEmpty, !index.indexing, Launch.sample == false { /* wait for explicit Index tap */ }
+        // First time: wait for the explicit "Build index" tap (consent). If an index already exists,
+        // quietly catch up any photos taken since last time so this open is instant and self-maintaining.
+        if authorized, !index.entries.isEmpty, Launch.sample == false { index.catchUpIfNeeded() }
     }
 
     private func requestAccess() async {
