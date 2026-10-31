@@ -86,7 +86,7 @@ enum ReceiptScan {
         lines.filter { l in
             let low = l.lowercased()
             guard l.filter(\.isLetter).count >= 3 else { return false }
-            if ["total", "subtotal", "tax", "change", "cash", "visa", "mastercard", "balance", "receipt", "thank"].contains(where: low.contains) { return false }
+            if ["total", "subtotal", "tax", "change", "cash", "visa", "mastercard", "balance", "receipt", "thank"].contains(where: { low.contains($0) }) { return false }
             return true
         }.prefix(8).map { String($0) }
     }
@@ -100,11 +100,15 @@ enum ReceiptSearch {
     static func rank(_ receipts: [Receipt], query: String) -> [Receipt] {
         let q = normalize(query)
         guard !q.isEmpty else { return receipts.sorted { $0.addedAt > $1.addedAt } }
-        return receipts
-            .map { (r: $0, s: score(query: query, store: $0.store, items: $0.items, rawText: $0.rawText)) }
-            .filter { $0.s >= 0.5 }
-            .sorted { $0.s != $1.s ? $0.s > $1.s : $0.r.addedAt > $1.r.addedAt }
-            .map(\.r)
+        // Built imperatively with explicit types — a single map→filter→sorted→map chain over tuples
+        // blows up Swift's type-checker.
+        var scored: [(receipt: Receipt, s: Double)] = []
+        for r in receipts {
+            let s = score(query: query, store: r.store, items: r.items, rawText: r.rawText)
+            if s >= 0.5 { scored.append((r, s)) }
+        }
+        scored.sort { $0.s != $1.s ? $0.s > $1.s : $0.receipt.addedAt > $1.receipt.addedAt }
+        return scored.map(\.receipt)
     }
 
     /// 0…1 match of `query` against a receipt. Each query word scores its best fuzzy hit among the

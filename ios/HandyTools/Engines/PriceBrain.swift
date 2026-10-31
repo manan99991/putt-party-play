@@ -61,8 +61,8 @@ enum PriceBrain {
             case .count: return e.price / size.qty                 // each
             }
         }
-        let withUnit = parsed.map { ($0.0, perBase($0.0, $0.1), $0.1?.base) }
-        let comparable = withUnit.compactMap { $0.1 }
+        let withUnit: [(entry: Entry, perBase: Double?, base: Base?)] = parsed.map { (entry: $0.0, perBase: perBase($0.0, $0.1), base: $0.1?.base) }
+        let comparable = withUnit.compactMap(\.perBase)
         let best = comparable.min()
         let worst = comparable.max()
 
