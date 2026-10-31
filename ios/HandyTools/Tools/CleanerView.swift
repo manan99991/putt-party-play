@@ -47,16 +47,17 @@ struct CleanerView: View {
     var body: some View {
         let footer: AnyView? = (authorized && !all.isEmpty && !isScanning) ? AnyView(actionBar) : nil
         return ToolPage(title: "Cleaner",
-                        subtitle: "Screenshots, big videos and duplicate photos & videos — clear the ones you choose. iOS confirms every delete.",
+                        subtitle: "See how much space you can free — duplicate copies cleared in one tap (keeping one of each), plus screenshots and big videos to review. iOS confirms every delete.",
                         footer: footer) {
             HowTo("cleaner", [
-                "Switch between Large, Duplicates and Received across the top.",
-                "Tap a photo to pick it. Tap Select, then drag across photos to grab a whole run at once — or use Select all.",
-                "Delete when ready — iOS always asks you to confirm before anything is removed.",
+                "Open it and it finds the safe wins for you — duplicate copies you can clear in one tap.",
+                "Below that, review screenshots and big videos; tap to pick, or Select + drag across a run.",
+                "Delete when ready — iOS always asks you to confirm, and items go to Recently Deleted for 30 days.",
             ])
             if !authorized {
                 authGate
             } else {
+                cleanupHero
                 Picker("", selection: $cat) { ForEach(Cat.allCases, id: \.rawValue) { Text($0.title).tag($0) } }
                     .pickerStyle(.segmented)
                     .onChange(of: cat) { _, _ in refreshForCat() }
@@ -80,8 +81,53 @@ struct CleanerView: View {
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
             }
         }
-        .onAppear { if authorized { refreshForCat() } }
+        .onAppear { if authorized { CleanerIndex.shared.prewarm(); refreshForCat() } }
         .onChange(of: index.duplicates) { _, _ in if cat == .duplicates { preselectDuplicateExtras() } }
+    }
+
+    // MARK: hero — the safe win, done for you
+
+    /// Duplicate copies that are safe to clear automatically: every look-alike except the one we keep.
+    private var safeDupExtras: [PhotoCleaner.Item] { (index.duplicates ?? []).flatMap { $0.dropFirst() } }
+    private var safeReclaim: Int64 { safeDupExtras.reduce(Int64(0)) { $0 + $1.bytes } }
+
+    @ViewBuilder private var cleanupHero: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            if index.scanning && safeDupExtras.isEmpty {
+                HStack { ProgressView(); Text("Finding space you can free…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            } else if safeDupExtras.isEmpty {
+                Label("No duplicate copies to clear — your library's already tidy.", systemImage: "checkmark.seal.fill")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.success)
+            } else {
+                Text("Free up about \(PhotoCleaner.format(safeReclaim))")
+                    .font(.system(size: 26, weight: .bold, design: .rounded))
+                Text("\(safeDupExtras.count) duplicate cop\(safeDupExtras.count == 1 ? "y" : "ies") — I'll keep the best one of each.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Button { cleanSafeDuplicates() } label: {
+                    HStack { if busy { ProgressView().tint(.white) }
+                        Label("Clean \(safeDupExtras.count) duplicate cop\(safeDupExtras.count == 1 ? "y" : "ies")", systemImage: "sparkles") }.frame(maxWidth: .infinity)
+                }.primaryButton().disabled(busy)
+            }
+        }.cardStyle()
+    }
+
+    private func cleanSafeDuplicates() {
+        let extras = safeDupExtras
+        guard !extras.isEmpty else { return }
+        let ids = Set(extras.map { $0.id })
+        let freed = extras.reduce(Int64(0)) { $0 + $1.bytes }
+        busy = true
+        Task {
+            let ok = await PhotoCleaner.delete(extras.map { $0.asset })
+            await MainActor.run {
+                busy = false
+                guard ok else { note = "Nothing was deleted."; return }
+                CleanerIndex.shared.remove(ids: ids)
+                selected.subtract(ids)
+                note = "Cleaned — kept one of each. Freed about \(PhotoCleaner.format(freed))."
+                HandyHaptics.success()
+            }
+        }
     }
 
     private var authGate: some View {
