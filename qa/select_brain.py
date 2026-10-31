@@ -78,10 +78,20 @@ def main():
         if not model:
             models = list_models(base, key)
             if isinstance(models, tuple):
-                rows.append((name, "?", f"/models failed: {type(models[1]).__name__}: {str(models[1])[:120]}")); continue
-            model = pick(models, prefs)
-            if not model:
-                rows.append((name, "?", f"/models returned {len(models)} models, none usable")); continue
+                # /models unreachable — fall back to a known stable model where we know one, instead of
+                # silently giving up (this is how Gemini used to drop to the heuristic brain).
+                fallback = {"gemini": "gemini-2.5-flash", "groq": "openai/gpt-oss-120b", "cerebras": "gpt-oss-120b"}.get(name)
+                if not fallback:
+                    rows.append((name, "?", f"/models failed: {type(models[1]).__name__}: {str(models[1])[:120]}")); continue
+                model = fallback
+            else:
+                model = pick(models, prefs)
+                if not model:
+                    rows.append((name, "?", f"/models returned {len(models)} models, none usable")); continue
+        # Gemini's /models lists ids as "models/gemini-2.5-flash", but its OpenAI-compatible
+        # /chat/completions wants the bare id — stripping this prefix is the old 404 fix.
+        if model.startswith("models/"):
+            model = model.split("/", 1)[1]
         ok, why = probe(name, base, key, model)
         rows.append((name, model, ("OK " if ok else "FAIL ") + why))
         if ok:
