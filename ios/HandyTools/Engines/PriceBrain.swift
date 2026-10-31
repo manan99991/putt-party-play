@@ -43,7 +43,7 @@ enum PriceBrain {
 
     struct Entry: Identifiable, Equatable { var id = UUID(); var name: String; var price: Double; var sizeText: String }
 
-    struct Ranked: Identifiable { let entry: Entry; let perBase: Double?; let label: String; let bestValue: Bool; let savingsPct: Double? }
+    struct Ranked: Identifiable { var id: UUID { entry.id }; let entry: Entry; let perBase: Double?; let label: String; let bestValue: Bool; let savingsPct: Double? }
 
     /// Rank entries by true unit price. Only entries sharing the most common base are compared head to
     /// head; the cheapest per unit is flagged best, with the percentage it saves against the priciest.
