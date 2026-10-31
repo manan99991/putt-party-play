@@ -18,6 +18,7 @@ struct ProCameraView: View {
     @State private var longSeconds = 2
     @State private var histogram: [Float] = []
     @State private var longResult: UIImage?
+    @State private var preset: Preset = .auto
     @State private var shareData: Data?   // full-res JPEG of the last shot, so it's never lost if the Photos save is denied
     @State private var shooting = false
     private let ctx = CIContext()
@@ -72,6 +73,8 @@ struct ProCameraView: View {
                 Spacer()
                 shutterButton
             }
+
+            presetRow
 
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Panel.allCases, id: \.rawValue) { p in HChip(text: p.title, selected: panel == p) { panel = p } }
@@ -188,6 +191,64 @@ struct ProCameraView: View {
             HandyFlow(spacing: HandySpacing.s8) { ForEach([1, 2, 4, 8, 15], id: \.self) { s in HChip(text: "\(s) s", selected: longSeconds == s) { longSeconds = s } } }
             Text("Averages ~30 frames per second into one image: silky water, light trails, crowds that vanish. Brace the phone and press the blue button.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
+    }
+
+    // MARK: creative presets
+
+    /// One-tap looks — each dials in the manual controls for a common scene, so the payoff of a pro
+    /// camera needs no fiddling. Still fully adjustable afterwards.
+    enum Preset: String, CaseIterable {
+        case auto = "Auto", night = "Night", action = "Freeze", silky = "Silky water", golden = "Golden hour", astro = "Astro", portrait = "Portrait"
+        var icon: String {
+            switch self {
+            case .auto: return "a.circle"; case .night: return "moon.stars"; case .action: return "figure.run"
+            case .silky: return "drop"; case .golden: return "sun.horizon"; case .astro: return "sparkles"; case .portrait: return "person.crop.square"
+            }
+        }
+    }
+
+    private var presetRow: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Looks").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Preset.allCases, id: \.rawValue) { p in
+                    Button { preset = p; apply(p) } label: {
+                        Label(p.rawValue, systemImage: p.icon).font(.system(size: 13, weight: .medium))
+                            .padding(.horizontal, HandySpacing.s12).frame(minHeight: HandySpacing.chipHeight)
+                            .background(preset == p ? HandyColor.accentSoft : HandyColor.surface, in: Capsule())
+                            .overlay(Capsule().stroke(preset == p ? HandyColor.accent : HandyColor.border, lineWidth: preset == p ? 1.5 : 1))
+                            .foregroundStyle(preset == p ? HandyColor.accent : HandyColor.textPrimary)
+                    }.buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    private func apply(_ p: Preset) {
+        let r = cam.ranges
+        func iso(_ v: Float) -> Float { min(max(v, r.minISO), r.maxISO) }
+        func sh(_ v: Double) -> Double { min(max(v, r.minShutter), r.maxShutter) }
+        switch p {
+        case .auto:
+            cam.current.autoExposure = true; cam.current.autoFocus = true; cam.current.autoWB = true; cam.current.ev = 0
+            panel = .exposure
+        case .night:   // low ISO, slow shutter — clean night shots on a steady surface
+            cam.current.autoExposure = false; cam.current.iso = iso(200); cam.current.shutter = sh(1.0 / 4); panel = .exposure
+        case .action:  // fast shutter freezes motion, ISO lifts to compensate
+            cam.current.autoExposure = false; cam.current.iso = iso(400); cam.current.shutter = sh(1.0 / 1000); panel = .exposure
+        case .silky:   // long-exposure averaging for silky water / light trails
+            panel = .long; longSeconds = 4
+        case .golden:  // warm white balance + a touch brighter for sunset tones
+            cam.current.autoWB = false; cam.current.temp = min(max(6000, r.minTemp), r.maxTemp)
+            cam.current.autoExposure = true; cam.current.ev = 0.3; panel = .wb
+        case .astro:   // longest shutter, lifted ISO, focus to infinity for stars
+            cam.current.autoExposure = false; cam.current.iso = iso(1600); cam.current.shutter = sh(r.maxShutter)
+            cam.current.autoFocus = false; cam.current.lens = 1.0; panel = .exposure
+        case .portrait: // lock focus close for a crisp subject
+            cam.current.autoFocus = false; cam.current.lens = 0.35; panel = .focus
+        }
+        cam.applyExposure(); cam.applyFocus(); cam.applyWhiteBalance()
+        HandyHaptics.light()
     }
 
     // MARK: actions
