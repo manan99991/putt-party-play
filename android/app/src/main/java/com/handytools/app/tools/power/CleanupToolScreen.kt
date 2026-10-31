@@ -56,6 +56,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
@@ -378,7 +380,10 @@ private fun Thumb(item: CleanItem, selected: Boolean, grouped: Boolean, modifier
     val bmp by produceState<Bitmap?>(null, item.uri) { value = withContext(Dispatchers.IO) { CleanupEngine.thumbnail(ctx, item.uri, item.isVideo) } }
     val base = modifier.aspectRatio(1f).clip(RoundedCornerShape(10.dp)).background(MaterialTheme.colorScheme.surface)
         .border(if (selected) 2.dp else 1.dp, if (selected) HandyColors.Accent else Handy.palette.border, RoundedCornerShape(10.dp))
-    Box(if (onTap != null) base.clickable { onTap() } else base) {
+    // Name the tappable thumbnail on the Box itself: in the loading/failed state its only child is a
+    // decorative icon, so without this the selectable tile reads as an unlabeled control.
+    val tapMod = if (onTap != null) base.clickable { onTap() }.semantics { contentDescription = item.name + if (selected) ", selected" else "" } else base
+    Box(tapMod) {
         val b = bmp
         if (b != null) Image(b.asImageBitmap(), item.name, Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
         else Icon(if (item.isVideo) Icons.Outlined.Videocam else Icons.Outlined.Photo, null, Modifier.align(Alignment.Center).size(28.dp), tint = Handy.palette.textSecondary)

@@ -50,7 +50,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -334,6 +336,7 @@ fun BigToggle(label: String, on: Boolean, onToggle: (Boolean) -> Unit) {
         ) {
             Text(label, style = MaterialTheme.typography.bodyLarge)
             Switch(checked = on, onCheckedChange = { v -> HandyHaptics.light(ctx); onToggle(v) },
+                modifier = Modifier.semantics { contentDescription = label },
                 colors = SwitchDefaults.colors(checkedTrackColor = HandyColors.Accent, checkedThumbColor = Color.White))
         }
         Box(Modifier.fillMaxWidth().height(1.dp).background(Handy.palette.border))
@@ -359,7 +362,10 @@ fun HChip(text: String, selected: Boolean, onClick: () -> Unit) {
     FilterChip(
         selected = selected, onClick = { HandyHaptics.light(ctx); onClick() },
         label = { Text(text, style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp), maxLines = 1, softWrap = false) },
-        shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight).semantics { contentDescription = text },
+        // clearAndSetSemantics collapses the chip to one node that actually carries the name + selected
+        // state in the accessibility tree (a child-level contentDescription wasn't surfacing, so screen
+        // readers — and the QA a11y check — saw an unlabeled checkable control).
+        shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight).clearAndSetSemantics { contentDescription = text; selected = selected },
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = Handy.palette.accentSoft, selectedLabelColor = HandyColors.Accent,
             containerColor = MaterialTheme.colorScheme.surface, labelColor = MaterialTheme.colorScheme.onSurface

@@ -58,6 +58,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -477,7 +479,10 @@ fun VoiceToolScreen() {
                     todos.forEachIndexed { i, t ->
                         HCard(Modifier.fillMaxWidth(), onClick = { if (checked.contains(i)) checked.remove(i) else checked.add(i) }) {
                             Row(Modifier.padding(horizontal = 6.dp, vertical = 2.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Checkbox(checked = checked.contains(i), onCheckedChange = { if (it) checked.add(i) else checked.remove(i) })
+                                // The whole card already toggles this item, so the checkbox is a visual
+                                // indicator — not a second unlabeled interactive control. onCheckedChange=null
+                                // delegates taps to the card; the item text names it for screen readers.
+                                Checkbox(checked = checked.contains(i), onCheckedChange = null, modifier = Modifier.semantics { contentDescription = t })
                                 Text(t, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f).padding(end = 8.dp),
                                     color = if (checked.contains(i)) Handy.palette.textSecondary else MaterialTheme.colorScheme.onSurface)
                             }

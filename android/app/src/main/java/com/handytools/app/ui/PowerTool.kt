@@ -35,6 +35,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.handytools.app.ads.BannerAd
@@ -73,7 +75,10 @@ fun PowerToolPage(
                 Row(Modifier.statusBarsPadding().padding(start = 8.dp, top = 4.dp)) {
                     IconButton(
                         onClick = { back?.onBackPressedDispatcher?.onBackPressed() },
+                        // Name on the button node itself — uiautomator/TalkBack weren't picking up the
+                        // child Icon's description, so the back control read as an unlabeled Button.
                         modifier = Modifier.size(40.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xCC14141F))
+                            .semantics { contentDescription = "Back" }
                     ) { Icon(Icons.AutoMirrored.Outlined.ArrowBack, "Back", tint = Color.White) }
                 }
                 Row(

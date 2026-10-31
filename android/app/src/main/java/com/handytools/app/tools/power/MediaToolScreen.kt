@@ -44,6 +44,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -507,7 +509,9 @@ fun MediaToolScreen() {
                         BG_COLOURS.forEachIndexed { i, c ->
                             Box(Modifier.size(32.dp).clip(CircleShape).background(Color(c))
                                 .border(if (bgColour == i) 3.dp else 1.dp, if (bgColour == i) HandyColors.Accent else Handy.palette.border, CircleShape)
-                                .clickable { bgColour = i })
+                                .clickable { bgColour = i }
+                                // Colour swatches are icon-less interactive nodes — name each one and its state.
+                                .semantics { contentDescription = "Background colour ${i + 1}" + if (bgColour == i) ", selected" else "" })
                         }
                     }
                 }

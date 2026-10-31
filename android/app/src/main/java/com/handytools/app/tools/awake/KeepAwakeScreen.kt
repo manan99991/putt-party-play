@@ -29,6 +29,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -84,7 +86,10 @@ private fun KeepAwakeDial(on: Boolean, minutes: Int, onToggle: () -> Unit) {
     val src = remember { MutableInteractionSource() }
     Box(
         Modifier.size(160.dp).clip(CircleShape)
-            .clickable(interactionSource = src, indication = ripple(bounded = true), onClick = onToggle),
+            .clickable(interactionSource = src, indication = ripple(bounded = true), onClick = onToggle)
+            // The ring's only child is a decorative icon (and the minutes text shows only when set), so
+            // name the toggle itself and announce its state for screen readers.
+            .semantics { contentDescription = if (on) "Keep screen awake, on" else "Keep screen awake, off" },
         contentAlignment = Alignment.Center
     ) {
         val track = Handy.palette.border

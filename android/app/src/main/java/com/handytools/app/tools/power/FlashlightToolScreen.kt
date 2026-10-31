@@ -47,6 +47,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -326,7 +328,8 @@ private fun ScreenLightOverlay(alpha: Float, brightness: Float, onBrightness: (F
     Box(Modifier.fillMaxSize().background(Color.Black)) {
         Box(Modifier.fillMaxSize().background(Color.White.copy(alpha = alpha.coerceIn(0.05f, 1f))))
         Column(Modifier.fillMaxSize()) {
-            Box(Modifier.weight(1f).fillMaxWidth().clickable(onClick = onClose))
+            // Tap-anywhere-to-close scrim: an empty interactive region needs a name for screen readers.
+            Box(Modifier.weight(1f).fillMaxWidth().clickable(onClick = onClose).semantics { contentDescription = "Close screen light" })
             Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp).navigationBarsPadding().padding(bottom = 20.dp)) {
                 Slider(
                     value = brightness, onValueChange = onBrightness, valueRange = 0.1f..1f,
