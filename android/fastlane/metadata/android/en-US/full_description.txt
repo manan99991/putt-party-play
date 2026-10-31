@@ -1,27 +1,27 @@
-Tenzy is ten powerful tools in one app — the jobs your phone usually makes you download a separate app for, with no sign-ups and no "upload to our servers." Everything runs right on your phone. No account, nothing uploaded.
+Tenzy is a toolkit of powerful utilities in one app — the jobs your phone usually makes you download a separate app for. No sign-ups, no "upload to our servers." Everything runs on your phone. No account, nothing uploaded.
 
-THE TEN TOOLS
+WHAT'S INSIDE
 
-• Capture — point your camera at a receipt, bill, business card, flyer or document, and Tenzy does the next step for you: add the event to your calendar, save the contact, log the receipt and its warranty date, pull a table into a spreadsheet, translate it, or read it aloud.
+• File Viewer — open and read almost any file: PDFs, images, archives (and look inside a zip), APKs, SQLite databases, code, JSON and CSV, even RAW camera photos and EPUB books. For anything unusual it still shows the real details, text and checksums instead of "no app can open this."
 
-• Documents — scan pages to a clean PDF, sign and fill, merge, split and compress, and find a word or phrase across all your PDFs, Word, Excel and text files at once.
+• Docs & Capture — point your camera at a receipt, card, flyer or document and pull out the text, table or contact; scan pages to a clean PDF; sign and fill; merge, split and compress; and find a word across all your PDFs, Word, Excel and text files at once.
 
-• Media Studio — get any photo or video ready to send, post or print: shrink it to size, remove or swap the background, redact faces and private details, strip location data, make a passport/ID photo, and convert HEIC.
+• Converter — turn any file into a format that works: convert between image types, HEIC to JPG, images into a PDF and back, and transcode audio and video.
 
-• Clean Up — free real space: duplicate and look-alike photos, the screenshot pile, big videos and files — plus tidy up duplicate contacts. Everything goes to a recoverable trash, never deleted outright.
+• Media Studio — get a photo or video ready to send, post or print: shrink to size, remove or swap the background, redact, make an ID photo, convert HEIC, and strip location data.
 
-• Voice Notes — record or import audio, get a transcript on your phone, tidy it up, trim a clip, and keep it in a searchable library.
+• Scrubber — hide personal details automatically. It finds faces and any visible text — licence plates, names, addresses, numbers — and blurs them, strips the photo's location and metadata, and lets you brush over anything else. Photos, plus a best-effort pass for short videos.
 
-• Translate — text, camera and two-way conversation, offline once a language is downloaded.
+• Clean Up — free real space: duplicate and look-alike photos, the screenshot pile, big videos and files, plus tidy duplicate contacts. Everything goes to a recoverable trash.
 
-• Instruments — your phone's toolbox: level, compass, sound meter, light meter, altimeter, metal detector, ruler and magnifier.
+• Codes — scan any QR or barcode and act on it, make your own QR for a link, Wi-Fi network, contact or text, and read NFC tags.
 
-• Flashlight+ — brightness control, SOS and a Morse message flasher, a full-screen lamp, and a selfie mirror.
+• Instruments — your phone's toolbox: level, compass, sound and light meters, altimeter, metal detector, ruler, magnifier, and a full flashlight (strobe, SOS and Morse, screen light and mirror).
 
 • Safety — paste a suspicious text, link or number, or scan a QR code, and see whether it's a scam and exactly why.
 
-• Share & Connect — make and scan QR and Wi-Fi codes, and send a file to any nearby device over Wi-Fi — no cable, no cloud.
+• Share & Connect — make and scan QR and Wi-Fi codes, and send a file to a nearby device over Wi-Fi — no cable, no cloud.
 
-Free to use, with ads. Tenzy Pro removes every ad and unlocks unlimited use — $19.99/year. One person builds and maintains this, and Pro is what keeps it going.
+Tenzy Pro removes every ad and unlocks unlimited use — $19.99/year with a 3-day free trial.
 
 Privacy: your files stay on your device. There's no account and no tracking of what you do in the app. The only data collected is the standard advertising ID the ad provider uses to show and count ads, and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/putt-party-play/privacy.html
