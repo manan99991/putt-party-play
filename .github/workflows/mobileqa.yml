@@ -167,19 +167,34 @@ jobs:
   # boot a simulator, start Appium (xcuitest driver), and run: python -m mobileqa.cli ci qa/app.ios.yaml.
   # Kept manual-only here because macOS runners bill 10x; enable when you want it in the gate.
   ios:
-    runs-on: macos-15
+    # macos-26 with the newest Xcode: this app targets iOS 26, so an older runner's Xcode can't build
+    # it. Mirror the repo's working ios.yml build exactly (that pipeline is green).
+    runs-on: macos-26
     if: github.event_name == 'workflow_dispatch'
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - name: Build HandyTools.app (simulator) — mirror this repo's working iOS CI
+      - name: Select newest Xcode
         run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+          xcodebuild -version
+      - name: Build HandyTools.app (simulator) — mirror ios.yml
+        working-directory: ios
+        run: |
+          set -o pipefail
           brew install xcodegen || true
-          xcodegen || true
-          xcodebuild -scheme HandyTools -sdk iphonesimulator -configuration Debug -derivedDataPath build 2>&1 | tail -30
-          echo "APP_PATH=$(find build -name HandyTools.app -path '*Debug-iphonesimulator*' | head -1)" >> $GITHUB_ENV
+          xcodegen generate
+          xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools 2>&1 | tail -5
+          xcodebuild build -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|BUILD|\*\*" || true
+          grep -q "BUILD SUCCEEDED" build.log
+          APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/HandyTools.app" -maxdepth 6 | head -1)
+          echo "APP_PATH=$APP" >> "$GITHUB_ENV"
       - name: Sim setup + run agent
         run: |
           # No set -e: run every command, log each outcome to ios-qa.log, and let the final agent exit
@@ -192,16 +207,19 @@ jobs:
           pip install "git+${MOBILEQA_REPO}" || { echo "FATAL: pip install mobileqa"; exit 1; }
           npm install -g appium || { echo "FATAL: npm install appium"; exit 1; }
           appium driver install xcuitest || { echo "FATAL: appium xcuitest driver"; exit 1; }
-          # Device type + runtime names drift with the runner's Xcode; a hard-coded 'iPhone 15' fails
-          # when that model isn't installed. Pick the newest available iPhone device type + iOS runtime.
-          DEV=$(xcrun simctl list devicetypes -j | python3 -c "import sys,json; d=[x for x in json.load(sys.stdin)['devicetypes'] if 'iPhone' in x['name']]; print(d[-1]['identifier'])")
-          RT=$(xcrun simctl list runtimes -j | python3 -c "import sys,json; r=[x for x in json.load(sys.stdin)['runtimes'] if x.get('isAvailable') and x.get('name','').startswith('iOS')]; print(r[-1]['identifier'])")
-          echo "device=$DEV runtime=$RT"
-          [ -z "$DEV" ] || [ -z "$RT" ] && { echo "FATAL: no iPhone device type / iOS runtime on this runner"; xcrun simctl list runtimes; exit 1; }
-          UDID=$(xcrun simctl create qa "$DEV" "$RT") || { echo "FATAL: simctl create"; exit 1; }
+          # Use an existing available iPhone simulator the runner already provides (robust), like ios.yml.
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
+          print(c[0]["udid"] if c else "")')
           echo "UDID=$UDID"
-          xcrun simctl boot "$UDID"; xcrun simctl bootstatus "$UDID" -b
+          [ -z "$UDID" ] && { echo "FATAL: no available iPhone simulator"; xcrun simctl list devices available; exit 1; }
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
           xcrun simctl install "$UDID" "$APP_PATH" || { echo "FATAL: simctl install"; exit 1; }
+          for p in all camera microphone photos location speech-recognition; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status >/dev/null && break; sleep 2; done
           python -m mobileqa.cli doctor qa/app.ios.yaml || true
@@ -212,6 +230,7 @@ jobs:
         with: { name: tenzy-ios-report, path: reports/, retention-days: 30 }
       - name: Post iOS QA log on the commit
         if: ${{ !success() }}
+        continue-on-error: true
         env: { GH_TOKEN: "${{ github.token }}" }
         run: |
           { echo "### Tenzy QA (iOS) ${{ job.status }}"
