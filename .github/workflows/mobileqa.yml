@@ -223,7 +223,10 @@ jobs:
           nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status >/dev/null && break; sleep 2; done
           python -m mobileqa.cli doctor qa/app.ios.yaml || true
-          TENZY_APP="$APP_PATH" SIM_UDID="$UDID" timeout 40m python -m mobileqa.cli ci qa/app.ios.yaml --steps ${{ github.event.inputs.steps || 240 }}
+          # macOS runners have no GNU `timeout` (that broke the agent step); the job-level timeout-minutes
+          # plus --steps already bound the run. Use gtimeout only if coreutils happens to provide it.
+          TO=""; command -v gtimeout >/dev/null 2>&1 && TO="gtimeout 60m"
+          TENZY_APP="$APP_PATH" SIM_UDID="$UDID" $TO python -m mobileqa.cli ci qa/app.ios.yaml --steps ${{ github.event.inputs.steps || 240 }}
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4
