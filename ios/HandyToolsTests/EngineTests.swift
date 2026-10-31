@@ -1141,4 +1141,37 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(none.warrantyEnds)
         XCTAssertNil(none.daysLeftOnWarranty)
     }
+
+    // MARK: Price Check
+
+    func testUnitPriceComparesAcrossDifferentUnits() {
+        // $3 for 500 g = $0.60/100g; $5 for 1 kg = $0.50/100g → the kilo is the better deal.
+        let a = PriceBrain.Entry(name: "Jar", price: 3.00, sizeText: "500 g")
+        let b = PriceBrain.Entry(name: "Tub", price: 5.00, sizeText: "1 kg")
+        let ranked = PriceBrain.rank([a, b])
+        let best = ranked.first { $0.bestValue }
+        XCTAssertEqual(best?.entry.name, "Tub")
+        XCTAssertEqual(best?.savingsPct.map { Int($0) }, 16)   // (0.60-0.50)/0.60
+
+        // Mixed system: 16 oz (=453.6 g) vs 500 g at the same price → the 500 g wins per 100 g.
+        let oz = PriceBrain.Entry(name: "US", price: 4.00, sizeText: "16 oz")
+        let g = PriceBrain.Entry(name: "Metric", price: 4.00, sizeText: "500 g")
+        XCTAssertEqual(PriceBrain.rank([oz, g]).first { $0.bestValue }?.entry.name, "Metric")
+    }
+
+    func testSizeParserHandlesMultipacksAndJunk() {
+        XCTAssertEqual(PriceBrain.parseSize("2 x 200ml"), PriceBrain.Size(qty: 400, base: .volume))
+        XCTAssertEqual(PriceBrain.parseSize("1.5 L"), PriceBrain.Size(qty: 1500, base: .volume))
+        XCTAssertEqual(PriceBrain.parseSize("12 ct"), PriceBrain.Size(qty: 12, base: .count))
+        XCTAssertEqual(PriceBrain.parseSize("1 kg"), PriceBrain.Size(qty: 1000, base: .mass))
+        XCTAssertNil(PriceBrain.parseSize("family size"))
+    }
+
+    func testLabelDecodeFlagsAndServingMath() {
+        let r = LabelDecode.decode("Ingredients: water, high fructose corn syrup, red 40. 6 servings per container. 150 calories per serving.")
+        XCTAssertTrue(r.flags.contains { $0.note.contains("sugar") })        // HFCS flagged
+        XCTAssertTrue(r.flags.contains { $0.term.contains("red 40") })        // dye flagged
+        XCTAssertNotNil(r.servingNote)
+        XCTAssertTrue(r.servingNote?.contains("900") ?? false)               // 6 × 150
+    }
 }

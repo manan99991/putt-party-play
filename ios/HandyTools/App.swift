@@ -286,6 +286,7 @@ struct ToolDestination: View {
         case "vault": VaultView()
         case "fileviewer": FileViewerView()
         case "warranty": WarrantyView()
+        case "pricecheck": PriceCheckView()
         default: ComingSoonView(id: id)
         }
     }
