@@ -209,7 +209,7 @@ jobs:
             for mode in light dark; do
               if [ $mode = dark ]; then adb shell cmd uimode night yes; else adb shell cmd uimode night no; fi
               sleep 2
-              for r in home settings privacy onboarding onboarding2 onboarding3 fileviewer docs converter codes scrubber media cleanup instruments safety share flashlight; do
+              for r in home settings privacy onboarding fileviewer docs media cleanup converter instruments safety share network codes scrubber voice translate memory sorted receipts flashlight; do
                 adb shell am force-stop com.tenzy.toolkit || true
                 adb shell am start -W -n com.tenzy.toolkit/com.handytools.app.MainActivity --es route $r || true
                 sleep 6
