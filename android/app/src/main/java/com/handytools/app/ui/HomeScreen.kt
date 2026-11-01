@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -71,7 +72,7 @@ val TOOLS = listOf(
     HTool("fileviewer", "File Viewer", "Open & read any file type", R.drawable.ic_fileviewer, R.drawable.card_fileviewer,
         listOf("file","files","viewer","reader","open","any","unknown","pdf","zip","archive","apk","sqlite","db","database","hex","json","csv","xml","code","text","raw","epub","book","image","binary","inspect","extension","type"),
         about = "Open almost any file right on your phone — PDFs, Office and iWork docs, images, archives, databases, APKs, code, even files with no extension. Nothing is uploaded, and Tenzy shows up in other apps' “Open with” list."),
-    HTool("docs", "Docs & Capture", "Scan, OCR, sign, merge & extract", R.drawable.tool_documents, R.drawable.card_documents,
+    HTool("docs", "Docs & Capture", "Scan, OCR, sign & merge", R.drawable.tool_documents, R.drawable.card_documents,
         listOf("document","documents","capture","scan","camera","ocr","receipt","card","contact","pdf","sign","fill","merge","split","compress","word","find","search","invoice","doc","excel","text","paper","extract","table","photo"),
         about = "A full document workflow in one place: scan paper to clean PDFs, pull out text and tables with OCR, sign and fill forms, then merge, split or compress."),
     HTool("media", "Media Studio", "Shrink, cut out, redact", R.drawable.tool_media, R.drawable.card_media,
@@ -80,10 +81,10 @@ val TOOLS = listOf(
     HTool("cleanup", "Clean Up", "Free space & tidy contacts", R.drawable.tool_cleanup, R.drawable.card_cleanup,
         listOf("clean","cleaner","space","storage","duplicate","duplicates","photos","screenshots","videos","large","big","free up","full","contacts","merge","declutter"),
         about = "Find genuine duplicate and look-alike photos, big files and old screenshots to free up space, and tidy duplicate contacts — with a recoverable trash so nothing is lost by accident."),
-    HTool("converter", "Converter", "Convert any file — image, PDF, audio, video", R.drawable.ic_converter, R.drawable.card_converter,
+    HTool("converter", "Converter", "Convert images, PDF & A/V", R.drawable.ic_converter, R.drawable.card_converter,
         listOf("convert","converter","change","format","image","png","jpg","jpeg","webp","heic","pdf","audio","video","transcode","compress","mp4","m4a","aac"),
         about = "Convert images, PDFs, audio and video between formats. Pick one file or several at once, choose the output format, and it all runs on-device."),
-    HTool("instruments", "Instruments", "Level, compass, meters, torch", R.drawable.tool_instruments, R.drawable.card_instruments,
+    HTool("instruments", "Instruments", "Level, compass & meters", R.drawable.tool_instruments, R.drawable.card_instruments,
         listOf("measure","level","compass","north","sound","decibel","light","altitude","metal","detector","ruler","magnifier","zoom","sensor","flashlight","torch","strobe","sos","morse","screen","mirror"),
         about = "Your phone's sensors as a toolbox — spirit level, compass, sound and light meters, a metal detector, ruler, magnifier and torch."),
     HTool("safety", "Safety", "Spot scams & bad links", R.drawable.tool_safety, R.drawable.card_safety,
@@ -92,10 +93,10 @@ val TOOLS = listOf(
     HTool("share", "Share & Connect", "QR, Wi-Fi & file transfer", R.drawable.tool_share, R.drawable.card_share,
         listOf("share","send","transfer","file","wifi","nearby","network","speed","connect","airdrop"),
         about = "Make QR and Wi-Fi codes, and send files to a nearby device over your local network — no account, no cloud."),
-    HTool("codes", "Codes", "Scan & make QR, barcodes, NFC", R.drawable.ic_codes, R.drawable.card_codes,
+    HTool("codes", "Codes", "Scan & make QR, barcodes", R.drawable.ic_codes, R.drawable.card_codes,
         listOf("qr","barcode","code","scan","generate","create","nfc","tag","wifi","vcard","contact","url","link","payload"),
         about = "Scan any QR or barcode, or create your own for text, links, Wi-Fi, contacts and more — generated right on your phone."),
-    HTool("scrubber", "Scrubber", "Blur faces, plates & strip metadata", R.drawable.ic_scrubber, R.drawable.card_scrubber,
+    HTool("scrubber", "Scrubber", "Blur faces, strip metadata", R.drawable.ic_scrubber, R.drawable.card_scrubber,
         listOf("scrub","scrubber","blur","hide","face","faces","plate","licence","license","redact","anonymize","privacy","metadata","exif","gps","location","strip","personal"),
         about = "Blur faces and licence plates and strip hidden location and metadata from a photo before you post it — the covered pixels are gone for good."),
 )
@@ -174,14 +175,26 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     Text("No tools match \"$query\"", color = Color(0xFFB8B8C8))
                 }
             } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(HandyTokens.Gutter),
-                    horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space12),
-                    verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)
-                ) {
-                    items(results, key = { it.route }) { t -> PowerToolCard(t) { onOpen(t.route) } }
+                // Fit every tool on one page: size each card so all rows land inside the viewport (no
+                // scroll for the full 10), and only fall back to scrolling if there are ever more rows
+                // than fit. Cards keep a sensible min height so they never collapse to a sliver.
+                BoxWithConstraints(Modifier.weight(1f)) {
+                    val rows = (results.size + 1) / 2
+                    val pad = HandyTokens.Gutter
+                    val gap = HandyTokens.Space12
+                    val fitH = (maxHeight - pad * 2 - gap * (rows - 1).coerceAtLeast(0)) / rows.coerceAtLeast(1)
+                    val cardH = fitH.coerceIn(96.dp, 168.dp)
+                    val scroll = cardH * rows + gap * (rows - 1).coerceAtLeast(0) + pad * 2 > maxHeight
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier.fillMaxSize(),
+                        userScrollEnabled = scroll,
+                        contentPadding = PaddingValues(pad),
+                        horizontalArrangement = Arrangement.spacedBy(gap),
+                        verticalArrangement = Arrangement.spacedBy(gap)
+                    ) {
+                        items(results, key = { it.route }) { t -> PowerToolCard(t, cardH) { onOpen(t.route) } }
+                    }
                 }
             }
             BannerAd()
@@ -193,9 +206,11 @@ fun HomeScreen(onOpen: (String) -> Unit) {
  *  right third, so a 2-column card crops anchored to the RIGHT edge — never center — and a
  *  bottom-only scrim keeps the art visible while the name stays crisp. */
 @Composable
-private fun PowerToolCard(tool: HTool, onClick: () -> Unit) {
+private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onClick: () -> Unit) {
+    // Icon scales a little with the card so a shorter (fit-to-page) card still looks balanced.
+    val iconSize = (height.value * 0.34f).coerceIn(36f, 56f).dp
     Box(
-        Modifier.fillMaxWidth().aspectRatio(1f / 1.08f).clip(RoundedCornerShape(20.dp))
+        Modifier.fillMaxWidth().height(height).clip(RoundedCornerShape(20.dp))
             .background(Color(0xFF0D0D16)).clickable(onClick = onClick)
     ) {
         Image(
@@ -204,17 +219,18 @@ private fun PowerToolCard(tool: HTool, onClick: () -> Unit) {
         )
         Box(
             Modifier.fillMaxSize().background(
-                Brush.verticalGradient(0.35f to Color.Transparent, 1f to Color(0xC7070710))
+                Brush.verticalGradient(0.30f to Color.Transparent, 1f to Color(0xD6060610))
             )
         )
         Column(Modifier.fillMaxSize().padding(14.dp), verticalArrangement = Arrangement.SpaceBetween) {
-            Image(painterResource(tool.iconRes), null, modifier = Modifier.size(60.dp))
+            Image(painterResource(tool.iconRes), null, modifier = Modifier.size(iconSize))
             Column {
                 Text(tool.name, color = Color.White, style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Spacer(Modifier.height(2.dp))
-                Text(tool.blurb, color = Color(0xB8FFFFFF), style = MaterialTheme.typography.bodySmall,
-                    maxLines = 1, overflow = TextOverflow.Ellipsis)
+                // Two lines + wrap so the description is shown in full and never chops off.
+                Text(tool.blurb, color = Color(0xCCFFFFFF), style = MaterialTheme.typography.bodySmall,
+                    maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
         }
     }

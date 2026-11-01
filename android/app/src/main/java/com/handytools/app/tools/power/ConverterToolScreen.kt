@@ -1,8 +1,13 @@
 package com.handytools.app.tools.power
 
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,14 +16,21 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.InsertDriveFile
 import androidx.compose.material.icons.outlined.PhotoLibrary
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -76,6 +88,7 @@ fun ConverterToolScreen() {
 
     var single by remember { mutableStateOf<ConverterEngine.Src?>(null) }
     var batch by remember { mutableStateOf<List<Uri>?>(null) }
+    var skipped by remember { mutableIntStateOf(0) }   // non-image files dropped from a multi-pick
     var inspecting by remember { mutableStateOf(false) }
 
     var imgTarget by remember { mutableIntStateOf(1) }    // default JPEG
@@ -94,11 +107,22 @@ fun ConverterToolScreen() {
 
     fun reset() { results = null; resultSummary = null; error = null; savedNote = null }
 
-    val pickOne = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { picked ->
-        if (picked != null) { batch = null; single = null; reset(); single = ConverterEngine.Src(picked, "", ConverterEngine.Category.OTHER, "") }
-    }
-    val pickImages = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { picked ->
-        if (!picked.isNullOrEmpty()) { single = null; reset(); batch = picked }
+    // One picker that takes any file — one or many. A single pick keeps full per-type support
+    // (image/PDF/audio/video); a multi-pick is the batch-image path (the only kind that can run as a
+    // batch), so non-image files in a multi-pick are dropped with an honest count rather than failing.
+    val pickFiles = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { picked ->
+        if (picked.isNullOrEmpty()) return@rememberLauncherForActivityResult
+        reset(); batch = null; single = null; skipped = 0
+        if (picked.size == 1) {
+            single = ConverterEngine.Src(picked[0], "", ConverterEngine.Category.OTHER, "")
+        } else {
+            val imgs = picked.filter { ctx.contentResolver.getType(it)?.startsWith("image/") == true }
+            when {
+                imgs.size == picked.size -> batch = picked
+                imgs.isNotEmpty() -> { batch = imgs; skipped = picked.size - imgs.size }
+                else -> { single = ConverterEngine.Src(picked[0], "", ConverterEngine.Category.OTHER, ""); skipped = picked.size - 1 }
+            }
+        }
     }
 
     // Identify a single pick off the main thread, then settle its real metadata.
@@ -119,6 +143,29 @@ fun ConverterToolScreen() {
                     runCatching { ctx.contentResolver.openOutputStream(dest)?.use { out -> file.inputStream().use { it.copyTo(out) } } }.isSuccess
                 }
                 savedNote = if (ok) "Saved to the location you chose." else "Couldn't write there — try Share instead."
+            }
+        }
+    }
+
+    // Save ALL converted files into a folder the user picks (SAF tree). Works API 26+, no extra deps.
+    val saveTree = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { tree ->
+        val files = results
+        if (tree != null && files != null) {
+            scope.launch {
+                val n = withContext(Dispatchers.IO) {
+                    runCatching {
+                        val cr = ctx.contentResolver
+                        val dirId = android.provider.DocumentsContract.getTreeDocumentId(tree)
+                        val dir = android.provider.DocumentsContract.buildDocumentUriUsingTree(tree, dirId)
+                        files.count { f ->
+                            val doc = android.provider.DocumentsContract.createDocument(cr, dir, resultMime, f.name)
+                            doc != null && cr.openOutputStream(doc)?.use { out -> f.inputStream().use { it.copyTo(out) } } != null
+                        }
+                    }.getOrDefault(0)
+                }
+                savedNote = if (n == files.size) "Saved all $n files to the folder you chose."
+                    else if (n > 0) "Saved $n of ${files.size} — try Share for the rest."
+                    else "Couldn't write there — try Share instead."
             }
         }
     }
@@ -205,10 +252,8 @@ fun ConverterToolScreen() {
     }
 
     PowerToolPage("converter") {
-        HPrimaryButton("Choose a file", icon = Icons.Outlined.InsertDriveFile) { pickOne.launch(arrayOf("*/*")) }
-        Spacer(Modifier.height(HandyTokens.Space8))
-        HSecondaryButton("Choose images (batch or combine to PDF)") { pickImages.launch(arrayOf("image/*")) }
-        NoteText("Images (PNG/JPEG/WEBP, HEIC in), images ↔ PDF, and audio/video transcode. It all runs on your phone and costs nothing.")
+        HPrimaryButton("Choose file (or several)", icon = Icons.Outlined.InsertDriveFile) { pickFiles.launch(arrayOf("*/*")) }
+        NoteText("Pick one file — image, PDF, audio or video — or select several images to batch-convert or combine into one PDF. Everything runs on your phone and costs nothing.")
 
         if (inspecting) {
             Spacer(Modifier.height(HandyTokens.Space16))
@@ -221,7 +266,9 @@ fun ConverterToolScreen() {
         // ---- picked summary ----
         if (b != null) {
             Spacer(Modifier.height(HandyTokens.Space12))
-            PickedCard("${b.size} image${if (b.size == 1) "" else "s"} selected", "Convert each, or combine into one PDF")
+            val sub = "Convert each, or combine into one PDF" +
+                if (skipped > 0) " · $skipped non-image file${if (skipped == 1) "" else "s"} skipped — convert those one at a time" else ""
+            PickedCard("${b.size} image${if (b.size == 1) "" else "s"} selected", sub)
         } else if (s != null && s.typeLabel.isNotEmpty()) {
             Spacer(Modifier.height(HandyTokens.Space12))
             PickedCard(s.name, s.typeLabel)
@@ -308,22 +355,96 @@ fun ConverterToolScreen() {
                             resultSummary?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }
                         }
                     }
+                    // Preview the actual output before saving/sharing — a thumbnail of the first result.
                     Spacer(Modifier.height(HandyTokens.Space12))
-                    HPrimaryButton(if (out.size == 1) "Save" else "Save first file", icon = Icons.Outlined.Download) {
-                        val f = out.first()
-                        saver.launch(f.name)
+                    ConvertedPreview(out.first(), resultMime, extra = out.size - 1)
+                    Spacer(Modifier.height(HandyTokens.Space12))
+                    if (out.size == 1) {
+                        HPrimaryButton("Save", icon = Icons.Outlined.Download) { saver.launch(out.first().name) }
+                    } else {
+                        HPrimaryButton("Save all ${out.size}", icon = Icons.Outlined.Download) { saveTree.launch(null) }
                     }
                     Spacer(Modifier.height(HandyTokens.Space8))
                     HSecondaryButton(if (out.size == 1) "Share" else "Share all ${out.size}") {
                         if (out.size == 1) Share.file(ctx, out.first(), resultMime) else Share.files(ctx, out, resultMime)
                     }
-                    if (out.size > 1) NoteText("Share hands over all ${out.size} files at once; Save stores the first.")
+                    if (out.size > 1) NoteText("“Save all” writes every file to a folder you pick; Share hands them all over at once.")
                     savedNote?.let { NoteText(it) }
                 }
             }
         }
     }
 }
+
+/** Preview of the converted output — an image/PDF-page/video-frame thumbnail, so the user sees the
+ *  real result before saving or sharing. Falls back to a labelled tile for audio / unpreviewable types. */
+@Composable
+private fun ConvertedPreview(file: File, mime: String, extra: Int) {
+    val ctx = LocalContext.current
+    var bmp by remember(file.path, mime) { mutableStateOf<android.graphics.Bitmap?>(null) }
+    var loading by remember(file.path, mime) { mutableStateOf(true) }
+    LaunchedEffect(file.path, mime) {
+        bmp = withContext(Dispatchers.IO) { loadPreviewBitmap(file, mime) }
+        loading = false
+    }
+    Box(
+        Modifier.fillMaxWidth().height(200.dp).clip(RoundedCornerShape(12.dp))
+            .background(if (Handy.palette.isDark) Color(0xFF101014) else Color(0xFFEFF0F6)),
+        contentAlignment = Alignment.Center
+    ) {
+        val b = bmp
+        when {
+            loading -> CircularProgressIndicator(color = HandyColors.Accent)
+            b != null -> Image(b.asImageBitmap(), "Converted preview", Modifier.fillMaxWidth().height(200.dp), contentScale = ContentScale.Fit)
+            mime.startsWith("audio/") -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(Icons.Outlined.GraphicEq, null, Modifier.size(40.dp), tint = HandyColors.Accent)
+                Spacer(Modifier.height(HandyTokens.Space8))
+                Text("Audio ready — tap Share to play", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+            }
+            else -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(Icons.Outlined.InsertDriveFile, null, Modifier.size(40.dp), tint = HandyColors.Accent)
+                Spacer(Modifier.height(HandyTokens.Space8))
+                Text("Ready to save", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            }
+        }
+        if (extra > 0) {
+            Box(
+                Modifier.align(Alignment.BottomEnd).padding(HandyTokens.Space8)
+                    .clip(RoundedCornerShape(50)).background(Color(0xCC000000)).padding(horizontal = 10.dp, vertical = 4.dp)
+            ) { Text("+$extra more", style = MaterialTheme.typography.labelSmall, color = Color.White) }
+        }
+    }
+}
+
+/** Decode a small preview bitmap for the converted output, off the main thread. */
+private fun loadPreviewBitmap(file: File, mime: String): android.graphics.Bitmap? = runCatching {
+    when {
+        mime.startsWith("image/") -> {
+            val o = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            BitmapFactory.decodeFile(file.path, o)
+            val sample = (maxOf(o.outWidth, o.outHeight) / 1200).coerceAtLeast(1)
+            BitmapFactory.decodeFile(file.path, BitmapFactory.Options().apply { inSampleSize = sample })
+        }
+        mime == "application/pdf" -> {
+            android.os.ParcelFileDescriptor.open(file, android.os.ParcelFileDescriptor.MODE_READ_ONLY).use { pfd ->
+                android.graphics.pdf.PdfRenderer(pfd).use { r ->
+                    if (r.pageCount == 0) null else r.openPage(0).use { pg ->
+                        val w = 1240; val h = (w * pg.height.toFloat() / pg.width.coerceAtLeast(1)).toInt().coerceAtLeast(1)
+                        val out = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+                        out.eraseColor(android.graphics.Color.WHITE)
+                        pg.render(out, null, null, android.graphics.pdf.PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
+                        out
+                    }
+                }
+            }
+        }
+        mime.startsWith("video/") -> {
+            val mr = android.media.MediaMetadataRetriever()
+            try { mr.setDataSource(file.path); mr.getFrameAtTime(0) } finally { mr.release() }
+        }
+        else -> null
+    }
+}.getOrNull()
 
 @Composable
 private fun PickedCard(title: String, subtitle: String) {

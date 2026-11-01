@@ -3,6 +3,7 @@ package com.handytools.app.ui
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Lock
@@ -35,6 +37,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -80,6 +83,15 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             }
 
             Spacer(Modifier.height(HandyTokens.Space24))
+            SettingsSectionLabel("Appearance")
+            Text("Theme", style = MaterialTheme.typography.bodyLarge)
+            Spacer(Modifier.height(HandyTokens.Space4))
+            Text(if (premium) "Tap to switch — applies instantly." else "Daylight is free; the rest come with Pro.",
+                style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Spacer(Modifier.height(HandyTokens.Space12))
+            ThemePicker(premium) { onOpen("paywall") }
+
+            Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("App")
             SettingsRow(Icons.Outlined.Tune, "Permissions", "Manage camera, photos, contacts & more in Android Settings") {
                 ctx.startActivity(
@@ -102,6 +114,48 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             Spacer(Modifier.height(HandyTokens.Space24))
         }
         BannerAd()
+    }
+}
+
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+private fun ThemePicker(premium: Boolean, onLockedTap: () -> Unit) {
+    val ctx = LocalContext.current
+    val current = ThemeStore.selected.value ?: ThemeStore.load(ctx)
+    androidx.compose.foundation.layout.FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space12),
+        verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)
+    ) {
+        TenzyTheme.entries.forEach { th ->
+            val selected = th == current
+            val locked = th.isPro && !premium
+            Column(Modifier.width(100.dp)) {
+                Box(
+                    Modifier.fillMaxWidth().height(58.dp)
+                        .clip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                        .background(androidx.compose.ui.graphics.Brush.linearGradient(th.swatch))
+                        .border(
+                            if (selected) 2.5.dp else 1.dp,
+                            if (selected) HandyColors.Accent else Handy.palette.border,
+                            androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                        )
+                        .clickable { if (locked) onLockedTap() else ThemeStore.set(ctx, th) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    when {
+                        selected -> Icon(Icons.Outlined.Check, "Selected", tint = Color.White)
+                        locked -> Icon(Icons.Outlined.Lock, "Pro", tint = Color.White.copy(alpha = 0.9f), modifier = Modifier.size(18.dp))
+                        else -> {}
+                    }
+                }
+                Spacer(Modifier.height(HandyTokens.Space4))
+                Text(th.title, style = MaterialTheme.typography.labelMedium, maxLines = 1,
+                    color = if (selected) HandyColors.Accent else MaterialTheme.colorScheme.onSurface)
+                Text(if (th.isPro && !premium) "Pro" else th.blurb, style = MaterialTheme.typography.labelSmall,
+                    color = Handy.palette.textSecondary, maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+            }
+        }
     }
 }
 

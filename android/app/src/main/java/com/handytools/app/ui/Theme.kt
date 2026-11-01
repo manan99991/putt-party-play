@@ -45,7 +45,10 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
@@ -67,8 +70,12 @@ import androidx.compose.ui.unit.sp
 // ---------------------------------------------------------------------------------------------
 
 object HandyColors {
-    val Accent = Color(0xFF1F5EFF)
-    val AccentPressed = Color(0xFF1649D6)
+    // Accent is driven by the active theme (see TenzyTheme / HandyTheme). It's a var so the ~150
+    // existing `HandyColors.Accent` references — icon tints, Canvas draw code, gradients — all re-skin
+    // when the theme changes, without touching each call site; HandyTheme sets it then rebuilds the
+    // tree under key(theme) so every reader re-reads the fresh value. Default = Daylight.
+    var Accent = Color(0xFF1F5EFF)
+    var AccentPressed = Color(0xFF1649D6)
     // Single source of truth for the brand accent in non-Compose contexts (overlays,
     // launcher-icon bitmaps) that can't read a Compose Color. Same value as Accent.
     const val AccentArgb: Int = 0xFF1F5EFF.toInt()
@@ -112,12 +119,14 @@ object HandyTokens {
 
 /** Mode-dependent colors that Material's scheme doesn't have slots for. */
 data class HandyPalette(
+    val accent: Color, val accentPressed: Color,
     val accentSoft: Color, val warningSoft: Color, val sticky: Color, val border: Color,
     val surfaceRaised: Color, val textSecondary: Color, val isDark: Boolean
 )
 
 val LocalHandy = staticCompositionLocalOf {
-    HandyPalette(HandyColors.AccentSoftLight, HandyColors.WarningSoftLight, HandyColors.StickyLight,
+    HandyPalette(Color(0xFF1F5EFF), Color(0xFF1649D6),
+        HandyColors.AccentSoftLight, HandyColors.WarningSoftLight, HandyColors.StickyLight,
         HandyColors.BorderLight, HandyColors.SurfaceLight, HandyColors.TextSecondaryLight, false)
 }
 
@@ -179,16 +188,118 @@ private val HandyTypography = Typography(
     labelSmall = base.labelSmall.copy(fontSize = 12.sp, lineHeight = 16.sp, fontWeight = FontWeight.Medium, letterSpacing = 0.6.sp)
 )
 
+// ---------------------------------------------------------------------------------------------
+// Themes. Five looks, matching iOS (Daylight is free + adaptive to system light/dark; the rest are
+// Pro and fixed). A theme resolves to a token set; HandyTheme applies it to Material's scheme, the
+// HandyPalette, and the HandyColors.Accent var, then rebuilds the tree so every surface re-skins.
+// ---------------------------------------------------------------------------------------------
+
+/** The resolved colour tokens a theme renders with, for the current light/dark state. */
+data class ResolvedTokens(
+    val accent: Color, val accentPressed: Color, val accentSoft: Color,
+    val bg: Color, val surface: Color, val surfaceRaised: Color,
+    val textPrimary: Color, val textSecondary: Color, val border: Color, val isDark: Boolean
+)
+
+enum class TenzyTheme(val title: String, val blurb: String, val isPro: Boolean, val swatch: List<Color>) {
+    DAYLIGHT("Daylight", "Clean, bright — the default", false, listOf(Color(0xFF1F5EFF), Color(0xFF1649D6))),
+    MIDNIGHT("Midnight", "Dark glass, neon glow", true, listOf(Color(0xFF1E3A8A), Color(0xFF3DE1FF))),
+    WARM_PAPER("Warm Paper", "Editorial, warm, matte", true, listOf(Color(0xFFC2502E), Color(0xFFE0795A))),
+    NEO_POP("Neo Pop", "Bold, playful, punchy", true, listOf(Color(0xFFFF2D87), Color(0xFFFF8A00))),
+    MONO("Mono", "Minimal, stealth", true, listOf(Color(0xFF1A1A1A), Color(0xFF000000)));
+
+    fun tokens(systemDark: Boolean): ResolvedTokens = when (this) {
+        DAYLIGHT -> if (systemDark) ResolvedTokens(
+            Color(0xFF1F5EFF), Color(0xFF1649D6), HandyColors.AccentSoftDark,
+            HandyColors.BackgroundDark, HandyColors.SurfaceDark, HandyColors.SurfaceRaisedDark,
+            HandyColors.TextPrimaryDark, HandyColors.TextSecondaryDark, HandyColors.BorderDark, true)
+        else ResolvedTokens(
+            Color(0xFF1F5EFF), Color(0xFF1649D6), HandyColors.AccentSoftLight,
+            HandyColors.BackgroundLight, HandyColors.SurfaceLight, HandyColors.SurfaceLight,
+            HandyColors.TextPrimaryLight, HandyColors.TextSecondaryLight, HandyColors.BorderLight, false)
+        MIDNIGHT -> fixed(0xFF3DE1FF, 0xFF16B6D6, 0xFF0B0E14, 0xFF141925, 0xFF1C2230, 0xFFEAF2FF, true)
+        WARM_PAPER -> fixed(0xFFC2502E, 0xFF9E3F22, 0xFFF6F1E7, 0xFFEFE8D8, 0xFFFFFFFF, 0xFF1C1A17, false)
+        NEO_POP -> fixed(0xFFFF2D87, 0xFFD81B6C, 0xFFFBF7F2, 0xFFFFFFFF, 0xFFFFFFFF, 0xFF141414, false)
+        MONO -> fixed(0xFFFF5A1F, 0xFFE04715, 0xFFFFFFFF, 0xFFF2F2F2, 0xFFFFFFFF, 0xFF0A0A0A, false)
+    }
+
+    /** Fixed-look theme: derive the soft/secondary/border tints from the base tokens (as iOS does). */
+    private fun fixed(accent: Long, pressed: Long, bg: Long, surface: Long, raised: Long, text: Long, dark: Boolean): ResolvedTokens {
+        val txt = Color(text)
+        return ResolvedTokens(
+            Color(accent), Color(pressed), Color(accent).copy(alpha = 0.16f),
+            Color(bg), Color(surface), Color(raised),
+            txt, txt.copy(alpha = 0.62f), txt.copy(alpha = 0.12f), dark)
+    }
+
+    companion object { fun from(name: String?): TenzyTheme = entries.firstOrNull { it.name == name } ?: DAYLIGHT }
+}
+
+/** Holds the chosen theme (Compose state so a switch re-skins live) and persists it. */
+object ThemeStore {
+    private const val PREF = "tenzy_theme_prefs"
+    private const val KEY = "theme"
+    val selected = mutableStateOf<TenzyTheme?>(null)   // null until first loaded from prefs
+
+    fun load(ctx: Context): TenzyTheme {
+        selected.value?.let { return it }
+        val t = TenzyTheme.from(ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE).getString(KEY, null))
+        selected.value = t
+        return t
+    }
+
+    fun set(ctx: Context, t: TenzyTheme) {
+        selected.value = t
+        ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE).edit().putString(KEY, t.name).apply()
+    }
+}
+
+private fun schemeFor(t: ResolvedTokens) =
+    (if (t.isDark) darkColorScheme() else lightColorScheme()).copy(
+        primary = t.accent, onPrimary = Color.White,
+        primaryContainer = t.accentSoft, onPrimaryContainer = t.accent,
+        secondary = t.accent, onSecondary = Color.White,
+        secondaryContainer = t.accentSoft, onSecondaryContainer = t.accent,
+        background = t.bg, onBackground = t.textPrimary,
+        surface = t.surface, onSurface = t.textPrimary,
+        surfaceVariant = t.surfaceRaised, onSurfaceVariant = t.textSecondary,
+        surfaceContainer = t.surface, surfaceContainerHigh = t.surfaceRaised,
+        surfaceContainerLow = t.surface, surfaceContainerHighest = t.surfaceRaised,
+        error = HandyColors.Danger, onError = Color.White,
+        errorContainer = if (t.isDark) HandyColors.WarningSoftDark else HandyColors.WarningSoftLight,
+        onErrorContainer = t.textPrimary,
+        outline = t.border, outlineVariant = t.border
+    )
+
 @Composable
 fun HandyTheme(content: @Composable () -> Unit) {
-    val dark = isSystemInDarkTheme()
-    val palette = if (dark) HandyPalette(HandyColors.AccentSoftDark, HandyColors.WarningSoftDark, HandyColors.StickyDark,
-        HandyColors.BorderDark, HandyColors.SurfaceRaisedDark, HandyColors.TextSecondaryDark, true)
-    else HandyPalette(HandyColors.AccentSoftLight, HandyColors.WarningSoftLight, HandyColors.StickyLight,
-        HandyColors.BorderLight, HandyColors.SurfaceLight, HandyColors.TextSecondaryLight, false)
-    CompositionLocalProvider(LocalHandy provides palette) {
-        MaterialTheme(colorScheme = if (dark) DarkColors else LightColors, typography = HandyTypography, shapes = HandyShapes) {
-            androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background, contentColor = MaterialTheme.colorScheme.onBackground) { content() }
+    val ctx = LocalContext.current
+    val premium by com.handytools.app.HandyApp.instance.billing.isPremium.collectAsState()
+    val stored = ThemeStore.selected.value ?: ThemeStore.load(ctx)
+    // A free user (or a lapsed subscription) always renders Daylight even if a Pro theme is stored.
+    val active = if (!premium && stored.isPro) TenzyTheme.DAYLIGHT else stored
+    val systemDark = isSystemInDarkTheme()
+    val t = active.tokens(systemDark)
+
+    // Drive the global accent var so every `HandyColors.Accent` reference (icon tints, Canvas draws,
+    // gradients) re-skins. Set before the keyed subtree builds, so children read the fresh value.
+    HandyColors.Accent = t.accent
+    HandyColors.AccentPressed = t.accentPressed
+
+    val palette = HandyPalette(
+        accent = t.accent, accentPressed = t.accentPressed, accentSoft = t.accentSoft,
+        warningSoft = if (t.isDark) HandyColors.WarningSoftDark else HandyColors.WarningSoftLight,
+        sticky = if (t.isDark) HandyColors.StickyDark else HandyColors.StickyLight,
+        border = t.border, surfaceRaised = t.surfaceRaised, textSecondary = t.textSecondary, isDark = t.isDark
+    )
+
+    // key() tears down + rebuilds the whole tree on a theme (or system-dark) change, so composables
+    // that read the HandyColors.Accent var — not just CompositionLocals — re-skin too.
+    key(active, systemDark) {
+        CompositionLocalProvider(LocalHandy provides palette) {
+            MaterialTheme(colorScheme = schemeFor(t), typography = HandyTypography, shapes = HandyShapes) {
+                androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background, contentColor = MaterialTheme.colorScheme.onBackground) { content() }
+            }
         }
     }
 }
