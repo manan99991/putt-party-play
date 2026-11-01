@@ -302,21 +302,25 @@ internal fun RulerPanel() {
             Modifier.fillMaxWidth().height(120.dp).onSizeChanged { widthPx = it.width }
                 .clip(RoundedCornerShape(12.dp)).background(MaterialTheme.colorScheme.surface)
         ) {
-            val ppu = if (unit == 0) pxPerCm else pxPerCm * 2.54f
+            // Guard against a bad density/factor producing a non-positive step (which would spin the
+            // loop forever) and never let a draw-time error take down the whole app.
+            val ppu = (if (unit == 0) pxPerCm else pxPerCm * 2.54f).let { if (it.isFinite() && it > 1f) it else 1f }
             val sub = if (unit == 0) 10 else 16
-            var u = 0
-            while (u * ppu < size.width) {
-                for (s in 0 until sub) {
-                    val x = u * ppu + s * ppu / sub
-                    if (x > size.width) break
-                    val big = s == 0
-                    val mid = if (unit == 0) s == 5 else s % 4 == 0
-                    val h = if (big) 40.dp.toPx() else if (mid) 24.dp.toPx() else 12.dp.toPx()
-                    drawLine(if (big) tickColor else minorColor, Offset(x, size.height), Offset(x, size.height - h), if (big) 2f else 1f)
-                    if (big) drawText(measurer, "$u", topLeft = Offset(x + 4.dp.toPx(), size.height - 62.dp.toPx()), style = labelStyle)
+            try {
+                var u = 0
+                while (u * ppu < size.width) {
+                    for (s in 0 until sub) {
+                        val x = u * ppu + s * ppu / sub
+                        if (x > size.width) break
+                        val big = s == 0
+                        val mid = if (unit == 0) s == 5 else s % 4 == 0
+                        val h = if (big) 40.dp.toPx() else if (mid) 24.dp.toPx() else 12.dp.toPx()
+                        drawLine(if (big) tickColor else minorColor, Offset(x, size.height), Offset(x, size.height - h), if (big) 2f else 1f)
+                        if (big) drawText(measurer, "$u", topLeft = Offset(x + 4.dp.toPx(), size.height - 62.dp.toPx()), style = labelStyle)
+                    }
+                    u++
                 }
-                u++
-            }
+            } catch (_: Throwable) { /* drawing is best-effort; a bad frame must not crash the tool */ }
         }
         if (calibrating) {
             // Drag the card outline until it matches a real credit card (85.6 mm wide).

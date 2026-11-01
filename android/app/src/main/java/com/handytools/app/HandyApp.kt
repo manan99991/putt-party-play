@@ -23,6 +23,9 @@ class HandyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        // First thing: capture any uncaught exception to a local report so crashes become readable
+        // stack traces instead of a bare "the app has a bug" dialog.
+        CrashReporter.install(this)
         db = AppDb.get(this)
         // Pre-warm Room off the main thread so the first DB read never blocks UI.
         CoroutineScope(Dispatchers.IO).launch { db.openHelper.writableDatabase.close() }

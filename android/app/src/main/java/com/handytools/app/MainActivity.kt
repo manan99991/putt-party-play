@@ -222,6 +222,8 @@ class MainActivity : ComponentActivity() {
                     // CI screenshot route: static ring preview, no alarm or service involved.
                     composable("ring") { AlarmRingPreview() }
                 }
+                // Offer to send a crash report saved from a previous run (overlays the start screen).
+                com.handytools.app.ui.CrashReportPrompt()
                 }
             }
         }
