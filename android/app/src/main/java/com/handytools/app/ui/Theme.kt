@@ -465,19 +465,23 @@ fun SliderRow(label: String, valueText: String, value: Float, onChange: (Float) 
     }
 }
 
-/** Pill chip, 36dp. Selected = accentSoft fill + accent text + accent border. Light haptic on select. */
+/** Pill chip, 36dp. Selected = accentSoft fill + accent text + accent border. Light haptic on select.
+ *  An optional [leading] glyph sits before the label so a strip of chips can be scanned by icon. */
 @Composable
-fun HChip(text: String, selected: Boolean, onClick: () -> Unit) {
+fun HChip(text: String, selected: Boolean, leading: ImageVector? = null, onClick: () -> Unit) {
     val ctx: Context = LocalContext.current
     FilterChip(
         selected = selected, onClick = { HandyHaptics.light(ctx); onClick() },
         label = { Text(text, style = MaterialTheme.typography.labelMedium.copy(fontSize = 14.sp), maxLines = 1, softWrap = false) },
+        leadingIcon = leading?.let { { Icon(it, null, Modifier.size(17.dp)) } },
         // clearAndSetSemantics collapses the chip to one node that actually carries the name + selected
         // state in the accessibility tree (a child-level contentDescription wasn't surfacing, so screen
-        // readers — and the QA a11y check — saw an unlabeled checkable control).
+        // readers — and the QA a11y check — saw an unlabeled checkable control). The icon is decorative,
+        // so the label still fully describes the chip.
         shape = CircleShape, modifier = Modifier.height(HandyTokens.ChipHeight).clearAndSetSemantics { contentDescription = if (selected) "$text, selected" else text },
         colors = FilterChipDefaults.filterChipColors(
             selectedContainerColor = Handy.palette.accentSoft, selectedLabelColor = HandyColors.Accent,
+            selectedLeadingIconColor = HandyColors.Accent, iconColor = MaterialTheme.colorScheme.onSurface,
             containerColor = MaterialTheme.colorScheme.surface, labelColor = MaterialTheme.colorScheme.onSurface
         ),
         border = FilterChipDefaults.filterChipBorder(enabled = true, selected = selected,

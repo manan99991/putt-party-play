@@ -58,6 +58,7 @@ fun PowerToolPage(
     tabs: List<String> = emptyList(),
     selected: Int = 0,
     onTab: (Int) -> Unit = {},
+    tabIcons: List<androidx.compose.ui.graphics.vector.ImageVector>? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     // Resolve this screen's own metadata. Fall back to a route-named header (no icon/art) rather than
@@ -129,7 +130,7 @@ fun PowerToolPage(
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        tabs.forEachIndexed { i, t -> HChip(t, selected = i == selected) { onTab(i) } }
+                        tabs.forEachIndexed { i, t -> HChip(t, selected = i == selected, leading = tabIcons?.getOrNull(i)) { onTab(i) } }
                     }
                 }
                 Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter).padding(bottom = 20.dp), content = content)

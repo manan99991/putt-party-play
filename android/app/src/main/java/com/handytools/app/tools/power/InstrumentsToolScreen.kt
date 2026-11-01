@@ -58,6 +58,16 @@ import com.handytools.app.ui.HandyHaptics
 import com.handytools.app.ui.NoteText
 import com.handytools.app.ui.PermissionCard
 import com.handytools.app.ui.Pill
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Balance
+import androidx.compose.material.icons.outlined.Explore
+import androidx.compose.material.icons.outlined.FlashlightOn
+import androidx.compose.material.icons.outlined.GraphicEq
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Sensors
+import androidx.compose.material.icons.outlined.Straighten
+import androidx.compose.material.icons.outlined.Terrain
+import androidx.compose.material.icons.outlined.ZoomIn
 import com.handytools.app.ui.PowerToolPage
 import kotlin.math.abs
 import kotlin.math.atan2
@@ -72,8 +82,20 @@ import kotlin.math.sqrt
 @Composable
 fun InstrumentsToolScreen() {
     val tabs = listOf("Level", "Compass", "Sound", "Light", "Altitude", "Metal", "Ruler", "Magnifier", "Torch")
+    // One glyph per instrument so the strip reads at a glance (order matches `tabs`).
+    val tabIcons = listOf(
+        Icons.Outlined.Balance,       // Level  — balance / spirit level
+        Icons.Outlined.Explore,       // Compass
+        Icons.Outlined.GraphicEq,     // Sound meter
+        Icons.Outlined.LightMode,     // Light meter
+        Icons.Outlined.Terrain,       // Altitude
+        Icons.Outlined.Sensors,       // Metal detector (magnetometer)
+        Icons.Outlined.Straighten,    // Ruler
+        Icons.Outlined.ZoomIn,        // Magnifier
+        Icons.Outlined.FlashlightOn,  // Torch
+    )
     var tab by remember { mutableIntStateOf(0) }
-    PowerToolPage("instruments", tabs, tab, { tab = it }) {
+    PowerToolPage("instruments", tabs, tab, { tab = it }, tabIcons = tabIcons) {
         when (tab) {
             0 -> LevelPanel()
             1 -> CompassPanel()
