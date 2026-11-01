@@ -39,6 +39,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -139,7 +141,11 @@ private fun ThemePicker(premium: Boolean, onLockedTap: () -> Unit) {
                             if (selected) HandyColors.Accent else Handy.palette.border,
                             androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
                         )
-                        .clickable { if (locked) onLockedTap() else ThemeStore.set(ctx, th) },
+                        .clickable { HandyHaptics.light(ctx); if (locked) onLockedTap() else ThemeStore.set(ctx, th) }
+                        .semantics {
+                            contentDescription = th.title + " theme" +
+                                if (selected) ", selected" else if (locked) ", Pro — tap to unlock" else ", tap to apply"
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     when {
