@@ -15,7 +15,7 @@ Candidates, in order (each only if its key is present):
   6. ANTHROPIC  ANTHROPIC_API_KEY       handled natively by the agent (no base URL)
 No winner -> nothing exported -> the agent runs its free heuristic brain.
 """
-import json, os, sys, urllib.request, urllib.error
+import json, os, sys, time, urllib.request, urllib.error
 
 TIMEOUT = 45   # cold first calls to Gemini's OpenAI endpoint can take >20s
 
@@ -42,19 +42,31 @@ def pick(models, prefs):
                 return m
     return models[0] if models else None
 
+def pick_all(models, prefs):
+    """Ordered, de-duped list of models matching the prefs — so if the first choice is overloaded or
+    retired, we fall through to the next real candidate instead of giving up on the provider."""
+    ordered = []
+    for p in prefs:
+        for m in models:
+            if p in m.lower() and m not in ordered:
+                ordered.append(m)
+    return ordered
+
 def probe(name, base, key, model):
     last = ""
-    for attempt in range(2):   # one retry: a cold Gemini call often times out, then warms up
+    for attempt in range(3):   # retry transient errors (cold-start timeout, 429/503 capacity spikes)
         try:
             st, data = http("POST", base.rstrip("/") + "/chat/completions", key,
                             {"model": model, "messages": [{"role": "user", "content": "Reply with the single word OK."}], "max_tokens": 5})
             txt = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
-            return True, f"{st} → {txt.strip()[:20]!r}" + (" (warmed up on retry)" if attempt else "")
+            return True, f"{st} → {txt.strip()[:20]!r}" + (f" (after {attempt} retr{'y' if attempt == 1 else 'ies'})" if attempt else "")
         except urllib.error.HTTPError as e:
-            body = e.read().decode(errors="replace")[:160].replace("\n", " ")
-            return False, f"HTTP {e.code}: {body}"   # deterministic — don't retry
+            body = e.read().decode(errors="replace")[:140].replace("\n", " ")
+            if e.code in (429, 500, 502, 503, 529) and attempt < 2:
+                last = f"HTTP {e.code}: {body}"; time.sleep(4 * (attempt + 1)); continue   # transient — back off + retry
+            return False, f"HTTP {e.code}: {body}"   # 4xx (bad model/key) — deterministic, don't retry
         except Exception as e:
-            last = f"{type(e).__name__}: {e}"        # timeout / connection — retry once
+            last = f"{type(e).__name__}: {e}"; time.sleep(2); continue   # timeout / connection — retry
     return False, last
 
 def clean(v):
@@ -80,27 +92,31 @@ def main():
     for name, base, key, model, prefs in cands:
         if winner:
             rows.append((name, "-", "skipped (already have a brain)")); continue
-        if not model:
+        if model:
+            candidates = [model]
+        else:
             models = list_models(base, key)
             if isinstance(models, tuple):
-                # /models unreachable — fall back to a known stable model where we know one, instead of
-                # silently giving up (this is how Gemini used to drop to the heuristic brain).
-                fallback = {"gemini": "gemini-2.5-flash", "groq": "openai/gpt-oss-120b", "cerebras": "gpt-oss-120b"}.get(name)
-                if not fallback:
+                # /models unreachable — fall back to a known-current model, instead of giving up
+                # (this is how Gemini used to drop silently to the heuristic brain).
+                fb = {"gemini": "gemini-flash-latest", "groq": "openai/gpt-oss-120b", "cerebras": "gpt-oss-120b"}.get(name)
+                if not fb:
                     rows.append((name, "?", f"/models failed: {type(models[1]).__name__}: {str(models[1])[:120]}")); continue
-                model = fallback
+                candidates = [fb]
             else:
-                model = pick(models, prefs)
-                if not model:
+                candidates = pick_all(models, prefs)[:5]   # try up to 5 real models before giving up
+                if not candidates:
                     rows.append((name, "?", f"/models returned {len(models)} models, none usable")); continue
-        # Gemini's /models lists ids as "models/gemini-2.5-flash", but its OpenAI-compatible
-        # /chat/completions wants the bare id — stripping this prefix is the old 404 fix.
-        if model.startswith("models/"):
-            model = model.split("/", 1)[1]
-        ok, why = probe(name, base, key, model)
-        rows.append((name, model, ("OK " if ok else "FAIL ") + why))
-        if ok:
-            winner = (name, base, key, model)
+        chosen = None
+        for cand in candidates:
+            # Gemini's /models lists "models/gemini-…"; its OpenAI endpoint wants the bare id (old 404 fix).
+            cand = cand.split("/", 1)[1] if cand.startswith("models/") else cand
+            ok, why = probe(name, base, key, cand)
+            rows.append((name, cand, ("OK " if ok else "FAIL ") + why))
+            if ok:
+                chosen = cand; break
+        if chosen:
+            winner = (name, base, key, chosen)
 
     print("\n=== LLM brain selection ===")
     print(f"{'provider':<11} {'model':<34} result")
