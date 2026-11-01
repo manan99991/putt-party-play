@@ -22,7 +22,7 @@ import java.util.zip.ZipInputStream
  */
 object FileViewer {
 
-    enum class Kind { IMAGE, PDF, TEXT, JSON, XML, CSV, ARCHIVE, SQLITE, APK, AUDIO, VIDEO, EBOOK, BINARY }
+    enum class Kind { IMAGE, PDF, TEXT, JSON, XML, CSV, ARCHIVE, SQLITE, APK, AUDIO, VIDEO, EBOOK, DOC, BINARY }
 
     data class Meta(
         val name: String,
@@ -165,6 +165,15 @@ object FileViewer {
             else -> "ZIP archive"
         }
         if (ext == "apk") return Meta(name, size, "application/vnd.android.package-archive", Kind.APK, label, null)
+        // An EPUB is a ZIP, but it's a BOOK — route it to the reader, not the archive lister. Detect by
+        // extension or by the EPUB "mimetype" entry whose CONTENT is application/epub+zip (an ODF file
+        // also carries a "mimetype" entry, so presence alone isn't enough — we check what's in it).
+        if (ext == "epub" || isEpub(ctx, uri))
+            return Meta(name, size, "application/epub+zip", Kind.EBOOK, "EPUB book", null)
+        // Office / OpenDocument files are ZIPs too, but people open them to READ them — pull the text out
+        // and show it inline instead of listing the XML parts inside the container.
+        if (ext in OFFICE_EXT)
+            return Meta(name, size, OFFICE_MIME[ext] ?: "application/octet-stream", Kind.DOC, label, officeDetail(ctx, uri, ext))
         val count = try { zipEntries(ctx, uri).size } catch (_: Exception) { 0 }
         return Meta(name, size, "application/zip", Kind.ARCHIVE, label, if (count > 0) "$count item${if (count == 1) "" else "s"}" else null)
     }
@@ -541,6 +550,64 @@ object FileViewer {
             .replace(Regex("[ \\t]+"), " ").replace(Regex("\\n{3,}"), "\n\n")
     }
 
+    /** True only for a real EPUB: its "mimetype" entry must contain application/epub+zip (ODF files also
+     *  have a "mimetype" entry, so we never classify them as books by presence alone). */
+    private fun isEpub(ctx: Context, uri: Uri): Boolean = runCatching {
+        val b = zipEntryBytes(ctx, uri, "mimetype", 128) ?: return false
+        String(b, Charsets.UTF_8).trim().startsWith("application/epub+zip")
+    }.getOrDefault(false)
+
+    private fun officeDetail(ctx: Context, uri: Uri, ext: String): String? = runCatching {
+        if (ext == "pptx") {
+            val n = zipEntries(ctx, uri).count {
+                it.name.startsWith("ppt/slides/slide", true) && it.name.endsWith(".xml", true)
+            }
+            if (n > 0) "$n slide${if (n == 1) "" else "s"}" else null
+        } else null
+    }.getOrNull()
+
+    /** Word / PowerPoint / Excel / OpenDocument: pull the readable text out of the right XML parts and
+     *  return it in reading order. Keeps the File Viewer's promise — read the content, don't just list it. */
+    fun officeText(ctx: Context, uri: Uri): String {
+        return try {
+            val ext = displayName(ctx, uri).substringAfterLast('.', "").lowercase()
+            val names = zipEntries(ctx, uri).filter { !it.isDir }.map { it.name }
+            val parts: List<String> = when (ext) {
+                "docx" -> names.filter { it.equals("word/document.xml", true) }
+                "pptx" -> names.filter { it.startsWith("ppt/slides/slide", true) && it.endsWith(".xml", true) }
+                    .sortedBy { slideNum(it) }
+                "xlsx" -> names.filter { it.equals("xl/sharedStrings.xml", true) }
+                "odt", "ods", "odp" -> names.filter { it.equals("content.xml", true) }
+                else -> names.filter { it.endsWith(".xml", true) && (it.contains("document", true) || it.contains("content", true) || it.startsWith("ppt/slides/", true)) }
+            }
+            if (parts.isEmpty()) return "(no readable text found in this document — try “Open with” an office app)"
+            val sb = StringBuilder()
+            for ((idx, n) in parts.withIndex()) {
+                val bytes = zipEntryBytes(ctx, uri, n, 4_000_000) ?: continue
+                if (ext == "pptx" && parts.size > 1) sb.append("— Slide ${idx + 1} —\n")
+                sb.append(stripOfficeXml(String(bytes, Charsets.UTF_8))).append("\n\n")
+                if (sb.length > 2_000_000) break
+            }
+            sb.toString().trim().ifEmpty { "(this document had no extractable text)" }
+        } catch (_: Exception) { "(couldn't read this document)" }
+    }
+
+    private fun slideNum(path: String): Int =
+        Regex("slide(\\d+)\\.xml", RegexOption.IGNORE_CASE).find(path)?.groupValues?.get(1)?.toIntOrNull() ?: 0
+
+    /** Strip OOXML/ODF tags to plain text, turning paragraph / line / string boundaries into whitespace so
+     *  the extracted text keeps its shape (<w:t>, <a:t>, <t> hold the words; the rest is structure). */
+    private fun stripOfficeXml(xml: String): String {
+        val withBreaks = xml
+            .replace(Regex("(?is)</(w:p|a:p|text:p|text:h|si)>"), "\n")
+            .replace(Regex("(?is)<(w:br|a:br|text:line-break)[^>]*/?>"), "\n")
+            .replace(Regex("(?is)<(w:tab|text:tab)[^>]*/?>"), "\t")
+        val text = withBreaks.replace(Regex("(?s)<[^>]+>"), "")
+        return text.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+            .replace("&apos;", "'").replace("&quot;", "\"").replace("&#39;", "'")
+            .replace(Regex("[ \\t]+"), " ").replace(Regex("\\n{3,}"), "\n\n")
+    }
+
     private val IMAGE_EXT = setOf("png", "jpg", "jpeg", "gif", "webp", "bmp", "heic", "heif", "avif", "avifs",
         "ico", "jp2", "wbmp", "dds", "tga", "targa", "pbm", "pgm", "ppm", "pcx", "ras", "sgi", "xbm", "xpm", "jng", "mng")
     private val RAW_EXT = setOf("3fr", "arw", "bay", "cr2", "cr3", "crw", "dcr", "dng", "erf", "kdc", "mos",
@@ -548,6 +615,14 @@ object FileViewer {
     private val EBOOK_EXT = setOf("epub", "mobi", "azw", "azw3", "pdb", "kf8")
     private val EBOOK_LABEL = mapOf("epub" to "EPUB book", "mobi" to "Mobipocket book", "azw" to "Kindle book",
         "azw3" to "Kindle KF8 book", "pdb" to "Palm book", "kf8" to "Kindle KF8 book")
+    private val OFFICE_EXT = setOf("docx", "pptx", "xlsx", "odt", "ods", "odp")
+    private val OFFICE_MIME = mapOf(
+        "docx" to "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "pptx" to "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "xlsx" to "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "odt" to "application/vnd.oasis.opendocument.text",
+        "ods" to "application/vnd.oasis.opendocument.spreadsheet",
+        "odp" to "application/vnd.oasis.opendocument.presentation")
     private val CSV_EXT = setOf("csv", "tsv", "psv", "ssv")
     private val AUDIO_EXT = setOf("mp3", "wav", "ogg", "oga", "m4a", "flac", "aac", "opus", "amr", "mid", "midi", "mka", "3ga", "ota", "imy")
     private val VIDEO_EXT = setOf("mp4", "mkv", "webm", "avi", "mov", "3gp", "m4v", "ts")

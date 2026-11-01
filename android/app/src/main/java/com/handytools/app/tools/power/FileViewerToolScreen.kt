@@ -33,7 +33,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Article
 import androidx.compose.material.icons.outlined.Dataset
 import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.InsertDriveFile
+import androidx.compose.material.icons.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Memory
 import androidx.compose.material.icons.outlined.OpenInNew
 import androidx.compose.material.icons.outlined.PlayArrow
@@ -102,7 +104,7 @@ fun FileViewerToolScreen(initialUri: Uri? = null) {
 
     PowerToolPage("fileviewer") {
         HPrimaryButton("Open a file", icon = Icons.Outlined.Folder) { picker.launch(arrayOf("*/*")) }
-        NoteText("Any file type — PDF, image, archive, database, APK, code, or something with no extension at all. It's read on your phone; nothing is uploaded. Tenzy also shows up in other apps' “Open with” list.")
+        NoteText("Everything is read on your phone — nothing is uploaded. Tenzy also appears in other apps' “Open with” list, so you can send a file straight here.")
 
         val u = uri
         val m = meta
@@ -123,6 +125,7 @@ fun FileViewerToolScreen(initialUri: Uri? = null) {
                 FileViewer.Kind.AUDIO -> AudioRenderer(u, m)
                 FileViewer.Kind.VIDEO -> VideoRenderer(u, m)
                 FileViewer.Kind.EBOOK -> EbookRenderer(u)
+                FileViewer.Kind.DOC -> DocRenderer(u)
                 FileViewer.Kind.BINARY -> BinaryRenderer(u)
             }
         }
@@ -161,6 +164,8 @@ private fun kindIcon(k: FileViewer.Kind) = when (k) {
     FileViewer.Kind.SQLITE -> Icons.Outlined.Dataset
     FileViewer.Kind.APK -> Icons.Outlined.Memory
     FileViewer.Kind.TEXT, FileViewer.Kind.JSON, FileViewer.Kind.XML, FileViewer.Kind.CSV -> Icons.Outlined.Article
+    FileViewer.Kind.EBOOK -> Icons.Outlined.MenuBook
+    FileViewer.Kind.DOC -> Icons.Outlined.Description
     else -> Icons.Outlined.InsertDriveFile
 }
 
@@ -495,6 +500,23 @@ private fun EbookRenderer(uri: Uri) {
         Text(t, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.padding(16.dp), lineHeight = 22.sp)
     }
     NoteText("Reading the book's text on-device. Tap “Open with” for a full e-reader.")
+}
+
+@Composable
+private fun DocRenderer(uri: Uri) {
+    val ctx = LocalContext.current
+    var text by remember(uri) { mutableStateOf<String?>(null) }
+    LaunchedEffect(uri) { text = withContext(Dispatchers.IO) { FileViewer.officeText(ctx, uri) } }
+    val t = text
+    if (t == null) { CircularProgressIndicator(color = HandyColors.Accent); return }
+    Box(
+        Modifier.fillMaxWidth().heightIn(max = 520.dp).clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surface).border(1.dp, Handy.palette.border, RoundedCornerShape(12.dp))
+            .verticalScroll(rememberScrollState())
+    ) {
+        Text(t, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.padding(16.dp), lineHeight = 22.sp)
+    }
+    NoteText("Reading the document's text on-device. Tap “Open with” to open it in an office app with full formatting.")
 }
 
 @Composable
