@@ -131,7 +131,16 @@ private fun ThemePicker(premium: Boolean, onLockedTap: () -> Unit) {
         TenzyTheme.entries.forEach { th ->
             val selected = th == current
             val locked = th.isPro && !premium
-            Column(Modifier.width(100.dp)) {
+            // The whole tile (swatch + its name/blurb) is one tap target, so tapping the label works too.
+            Column(
+                Modifier.width(100.dp)
+                    .clip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                    .clickable { HandyHaptics.light(ctx); if (locked) onLockedTap() else ThemeStore.set(ctx, th) }
+                    .semantics(mergeDescendants = true) {
+                        contentDescription = th.title + " theme" +
+                            if (selected) ", selected" else if (locked) ", Pro — tap to unlock" else ", tap to apply"
+                    }
+            ) {
                 Box(
                     Modifier.fillMaxWidth().height(58.dp)
                         .clip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
@@ -140,12 +149,7 @@ private fun ThemePicker(premium: Boolean, onLockedTap: () -> Unit) {
                             if (selected) 2.5.dp else 1.dp,
                             if (selected) HandyColors.Accent else Handy.palette.border,
                             androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
-                        )
-                        .clickable { HandyHaptics.light(ctx); if (locked) onLockedTap() else ThemeStore.set(ctx, th) }
-                        .semantics {
-                            contentDescription = th.title + " theme" +
-                                if (selected) ", selected" else if (locked) ", Pro — tap to unlock" else ", tap to apply"
-                        },
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     when {
