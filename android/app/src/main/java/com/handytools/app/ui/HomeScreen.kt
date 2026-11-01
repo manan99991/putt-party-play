@@ -117,6 +117,12 @@ val TOOLS = listOf(
     HTool("receipts", "Receipts", "Warranties & receipts", R.drawable.ic_receipts, R.drawable.card_receipts,
         listOf("receipt","receipts","warranty","warranties","proof of purchase","vault","store","expiry","expires","return","refund","appliance","guarantee"),
         about = "File receipts and never miss a warranty — snap the receipt, Tenzy keeps it and reminds you before the warranty or return window runs out."),
+    HTool("scancsv", "Data Grabber", "Photo → table / CSV", R.drawable.ic_scancsv, R.drawable.card_scancsv,
+        listOf("data","table","csv","spreadsheet","receipt","list","rows","columns","scan","extract","grab","ocr","excel"),
+        about = "Photograph a receipt, list or simple table and turn it into a spreadsheet-ready CSV you can fix and share — read entirely on your phone."),
+    HTool("lens", "See & Read", "Read aloud & gist", R.drawable.ic_lens, R.drawable.card_lens,
+        listOf("read","see","lens","ocr","text","photo","listen","read aloud","tts","speak","gist","summarize","summary","accessibility","magnify"),
+        about = "Grab text from a photo or paste it, then listen to it read aloud or boil it down to the gist — all on your phone."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from

@@ -167,6 +167,8 @@ fun toolTint(route: String): Color = when (route) {
     "memory" -> Color(0xFFD97706)       // amber
     "sorted" -> Color(0xFF0EA5E9)       // sky
     "receipts" -> Color(0xFFEA580C)     // orange
+    "scancsv" -> Color(0xFF4F46E5)      // indigo
+    "lens" -> Color(0xFF0D9488)         // teal
     else -> HandyColors.Accent
 }
 

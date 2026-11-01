@@ -33,7 +33,8 @@ import com.handytools.app.ui.Handy
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.HandyHaptics
-import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.NoteText
+import com.handytools.app.ui.PowerToolPage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -81,12 +82,7 @@ fun ScanCsvScreen() {
         HandyHaptics.light(ctx)
     }
 
-    Column(
-        Modifier.fillMaxWidth().statusBarsPadding().padding(20.dp).verticalScroll(rememberScrollState())
-    ) {
-        ToolHeader("Scan to Table / CSV", "Photograph a receipt, list or table and turn it into a spreadsheet-ready CSV you can edit and share.")
-        Spacer(Modifier.size(16.dp))
-
+    PowerToolPage("scancsv") {
         HPrimaryButton(if (busy) "Reading…" else "Choose a photo", modifier = Modifier.fillMaxWidth(), enabled = !busy) {
             picker.launch("image/*")
         }
@@ -106,13 +102,7 @@ fun ScanCsvScreen() {
             HSecondaryButton("Save & share .csv", modifier = Modifier.fillMaxWidth()) { export() }
         }
 
-        Spacer(Modifier.size(16.dp))
-        Text(
-            "Reads text on your phone — the photo is never uploaded. OCR isn't perfect, so check the values before you rely on them.",
-            color = Handy.palette.textSecondary, fontSize = 12.sp,
-        )
-        Spacer(Modifier.size(16.dp))
-        BannerAd()
+        NoteText("Reads text on your phone — the photo is never uploaded. OCR isn't perfect, so check the values before you rely on them.")
     }
 }
 

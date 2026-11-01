@@ -38,7 +38,8 @@ import com.handytools.app.ui.HCard
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
-import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.NoteText
+import com.handytools.app.ui.PowerToolPage
 import java.util.Locale
 
 /** Lens — grab text from a photo or paste it, then listen to it read aloud or boil it down to the
@@ -77,10 +78,7 @@ fun LensScreen() {
 
     val hasText = text.text.trim().length >= 2
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Lens", "Grab text from a photo or paste it — then listen to it, or boil it down to the gist.")
-        Spacer(Modifier.size(16.dp))
-
+    PowerToolPage("lens") {
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp)) {
                 BasicTextField(value = text, onValueChange = { text = it }, modifier = Modifier.fillMaxWidth(),
@@ -111,7 +109,7 @@ fun LensScreen() {
             }
             if (gist.isNotEmpty()) {
                 Spacer(Modifier.size(12.dp))
-                Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState())) {
+                Column(Modifier.fillMaxWidth()) {
                     HCard(Modifier.fillMaxWidth()) {
                         Column(Modifier.padding(16.dp)) {
                             Text(gist, style = MaterialTheme.typography.bodyLarge)
@@ -120,14 +118,8 @@ fun LensScreen() {
                         }
                     }
                 }
-            } else {
-                Spacer(Modifier.weight(1f))
             }
-        } else {
-            Spacer(Modifier.weight(1f))
         }
-        Text("Plain-English rewriting needs on-device Gemini Nano (Pixel 9, Galaxy S24+). Listen and Gist work on every phone.",
-            style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 8.dp))
-        BannerAd()
+        NoteText("Plain-English rewriting needs on-device Gemini Nano (Pixel 9, Galaxy S24+). Listen and Gist work on every phone.")
     }
 }
