@@ -68,7 +68,9 @@ def main():
     if clean(env.get("GROQ_API_KEY")):
         cands.append(("groq", "https://api.groq.com/openai/v1", clean(env["GROQ_API_KEY"]), None, ["openai/gpt-oss-120b", "gpt-oss-120b", "llama-3.3-70b-versatile", "llama-4", "llama"]))
     if clean(env.get("GEMINI_API_KEY")):
-        cands.append(("gemini", "https://generativelanguage.googleapis.com/v1beta/openai/", clean(env["GEMINI_API_KEY"]), None, ["2.5-flash", "flash-latest", "2.0-flash", "flash", "pro"]))
+        # Prefer the rolling "flash-latest" alias — it always points at a current flash model. Pinned
+        # versions like gemini-2.5-flash get retired for new API keys and 404. Avoid "-lite"/"pro".
+        cands.append(("gemini", "https://generativelanguage.googleapis.com/v1beta/openai/", clean(env["GEMINI_API_KEY"]), None, ["flash-latest", "3.5-flash", "3-flash", "2.0-flash", "flash", "pro"]))
     if clean(env.get("OPENROUTER_API_KEY")):
         cands.append(("openrouter", "https://openrouter.ai/api/v1", clean(env["OPENROUTER_API_KEY"]), clean(env.get("OPENROUTER_MODEL")) or None, [":free"]))
     if clean(env.get("CEREBRAS_API_KEY")):
