@@ -349,7 +349,7 @@ fun ScrubberToolScreen() {
             }
             Spacer(Modifier.height(HandyTokens.Space8))
             Text(
-                "Heavy job — best for short clips. The detector samples frames and burns fixed boxes over the faces and text it finds, then re-encodes the clip so all metadata (including location) is dropped.",
+                "Heavy job — best for short clips. The detector samples frames and burns fixed boxes over the faces and text it finds, then re-encodes the clip so all metadata (including location) is dropped. One thing to know: the boxes don't track movement, so if a face or plate moves across the frame, size the box to cover its whole path — or redact a photo for pixel-exact control.",
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary,
             )
             if (videoWorking) {
