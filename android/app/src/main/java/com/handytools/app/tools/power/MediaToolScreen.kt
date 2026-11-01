@@ -65,12 +65,14 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.effect.Presentation
 import androidx.media3.transformer.Composition
+import androidx.media3.transformer.DefaultEncoderFactory
 import androidx.media3.transformer.EditedMediaItem
 import androidx.media3.transformer.Effects
 import androidx.media3.transformer.ExportException
 import androidx.media3.transformer.ExportResult
 import androidx.media3.transformer.ProgressHolder
 import androidx.media3.transformer.Transformer
+import androidx.media3.transformer.VideoEncoderSettings
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
 import com.google.mlkit.vision.common.InputImage
@@ -104,7 +106,19 @@ private val TABS = listOf("Shrink", "Remove bg", "Redact", "Passport", "Strip lo
 private val SHRINK_TARGETS = listOf("Under 500 KB", "Under 1 MB", "Under 2 MB", "Under 5 MB", "1080p", "720p")
 private val SHRINK_KB = listOf(500L, 1024L, 2048L, 5120L, 0L, 0L)
 private val SHRINK_PX = listOf(0, 0, 0, 0, 1080, 720)
-private val VIDEO_TARGETS = listOf("1080p" to 1080, "720p" to 720, "480p" to 480)
+// Video shrink targets. Like iOS: offer true file-size budgets (we hit them by computing a
+// bitrate from the clip's duration) as well as plain resolution caps. Triple = (label, max height
+// in px, byte budget — 0 means "resolution only, keep quality"). The 480p entry stays LAST so the
+// "Try 480p" fallback can point at it by index.
+private val VIDEO_TARGETS = listOf(
+    Triple("Under 10 MB", 1080, 10L * 1024 * 1024),
+    Triple("Under 25 MB", 1080, 25L * 1024 * 1024),
+    Triple("Under 50 MB", 1080, 50L * 1024 * 1024),
+    Triple("1080p", 1080, 0L),
+    Triple("720p", 720, 0L),
+    Triple("480p", 480, 0L),
+)
+private const val VID_480P_INDEX = 5
 private val BG_MODES = listOf("Transparent", "White", "Blur", "Colour")
 private val BG_COLOURS = listOf(0xFF1F5EFF, 0xFFE53935, 0xFF2E7D32, 0xFFFFC107, 0xFF8E24AA, 0xFF111111)
 private data class PassportSpec(val label: String, val w: Int, val h: Int, val dims: String)
@@ -261,10 +275,33 @@ fun MediaToolScreen() {
         }
         val v = video
         if (v != null) {
-            val h = VIDEO_TARGETS[vidSel].second
+            val target = VIDEO_TARGETS[vidSel]
+            val h = target.second
+            val budget = target.third
             val presentation: Effect = Presentation.createForHeight(h)
             val edited = EditedMediaItem.Builder(MediaItem.fromUri(v)).setEffects(Effects(emptyList(), listOf(presentation))).build()
-            runVideo(edited, { it.setVideoMimeType(MimeTypes.VIDEO_H264) }, "Tenzy-${h}p-${System.currentTimeMillis()}.mp4", "video/mp4", MediaEngine.Kind.VIDEO) { why ->
+            // For a file-size target, aim the encoder at a bitrate that lands under the budget:
+            // bits = budget × 8, kept to ~88% so the container + audio track still fit, divided by the
+            // clip's length in seconds. Clamp so a very short clip doesn't balloon and a long one stays
+            // watchable. A resolution-only target (budget 0) keeps the encoder's own quality.
+            val configure: (Transformer.Builder) -> Transformer.Builder = { b ->
+                b.setVideoMimeType(MimeTypes.VIDEO_H264)
+                if (budget > 0L) {
+                    val durMs = MediaEngine.videoDurationMs(ctx, v)
+                    if (durMs > 0L) {
+                        val bits = (budget.toDouble() * 8.0 * 0.88) / (durMs / 1000.0)
+                        val bps = bits.toInt().coerceIn(200_000, 12_000_000)
+                        b.setEncoderFactory(
+                            DefaultEncoderFactory.Builder(ctx)
+                                .setRequestedVideoEncoderSettings(VideoEncoderSettings.Builder().setBitrate(bps).build())
+                                .build()
+                        )
+                    }
+                }
+                b
+            }
+            val tag = if (budget > 0L) "${budget / (1024 * 1024)}MB" else "${h}p"
+            runVideo(edited, configure, "Tenzy-$tag-${System.currentTimeMillis()}.mp4", "video/mp4", MediaEngine.Kind.VIDEO) { why ->
                 fail("Couldn't shrink this video ($why).")
             }
         }
@@ -466,9 +503,16 @@ fun MediaToolScreen() {
             }
         }
         Spacer(Modifier.height(10.dp))
+        // The button for the media type you've actually loaded is the highlighted (primary) one, so
+        // with a video open "Video" is emphasised — not "Choose photo".
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            HPrimaryButton("Choose photo", Modifier.weight(1.2f), enabled = !working) { photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
-            HSecondaryButton("Video", Modifier.weight(0.8f), enabled = !working) { videoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)) }
+            if (video != null) {
+                HSecondaryButton("Choose photo", Modifier.weight(1.2f), enabled = !working) { photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
+                HPrimaryButton("Video", Modifier.weight(0.8f), enabled = !working) { videoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)) }
+            } else {
+                HPrimaryButton("Choose photo", Modifier.weight(1.2f), enabled = !working) { photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
+                HSecondaryButton("Video", Modifier.weight(0.8f), enabled = !working) { videoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)) }
+            }
         }
         if (photo != null || vid != null) {
             Spacer(Modifier.height(10.dp))
@@ -484,7 +528,7 @@ fun MediaToolScreen() {
         when (tab) {
             0 -> {
                 SectionLabel("Target")
-                if (hasVideo) ChipRowScroll { VIDEO_TARGETS.forEachIndexed { i, (l, _) -> HChip(l, vidSel == i) { vidSel = i } } }
+                if (hasVideo) ChipRowScroll { VIDEO_TARGETS.forEachIndexed { i, t -> HChip(t.first, vidSel == i) { vidSel = i } } }
                 else ChipRowScroll { SHRINK_TARGETS.forEachIndexed { i, l -> HChip(l, shrinkSel == i) { shrinkSel = i } } }
                 val room = if (hasVideo) vidRoom else imgRoom
                 QuotaNote(room, if (hasVideo) "videos" else "photos")
@@ -494,9 +538,9 @@ fun MediaToolScreen() {
                     Text("Transcoding on the phone… ${((progress ?: 0f) * 100).toInt()}%", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp, bottom = 10.dp))
                 }
                 HPrimaryButton(if (working) "Shrinking…" else "Shrink", enabled = (hasPhoto || hasVideo) && !working && room) { shrink() }
-                if (statusIsError && hasVideo && vidSel != 2) {
+                if (statusIsError && hasVideo && vidSel != VID_480P_INDEX) {
                     Spacer(Modifier.height(8.dp))
-                    HSecondaryButton("Try 480p", enabled = !working) { vidSel = 2; shrink() }
+                    HSecondaryButton("Try 480p", enabled = !working) { vidSel = VID_480P_INDEX; shrink() }
                 }
             }
             1 -> {

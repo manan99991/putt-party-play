@@ -397,6 +397,16 @@ internal object MediaEngine {
         } catch (e: Exception) { null } finally { try { mmr.release() } catch (_: Exception) {} }
     }
 
+    /** Clip length in milliseconds, or 0 if it can't be read — used to turn a file-size budget into a
+     *  target bitrate when shrinking video. */
+    fun videoDurationMs(ctx: Context, uri: Uri): Long {
+        val mmr = MediaMetadataRetriever()
+        return try {
+            mmr.setDataSource(ctx, uri)
+            mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0L
+        } catch (e: Exception) { 0L } finally { try { mmr.release() } catch (_: Exception) {} }
+    }
+
     // ------------------------------------------------------------------ saving
 
     /**
