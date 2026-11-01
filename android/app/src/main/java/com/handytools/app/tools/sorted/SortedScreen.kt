@@ -38,7 +38,7 @@ import com.handytools.app.ui.HCard
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
-import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.PowerToolPage
 import java.text.DateFormat
 import java.util.Calendar
 import java.util.Date
@@ -63,10 +63,7 @@ fun SortedScreen() {
             .addOnFailureListener { working = false; error = "Couldn't read that document. Try another photo." }
     }
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Sorted", "Snap a bill, appointment or notice — get what it is, what you owe and the deadline, then add it to your calendar.")
-        Spacer(Modifier.size(16.dp))
-
+    PowerToolPage("sorted") {
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp)) {
                 BasicTextField(value = text, onValueChange = { text = it }, modifier = Modifier.fillMaxWidth(),
@@ -96,7 +93,7 @@ fun SortedScreen() {
         val p = parsed
         if (p != null) {
             Spacer(Modifier.size(12.dp))
-            Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState())) {
+            Column(Modifier.fillMaxWidth()) {
                 HCard(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
                         Text(p.kind.uppercase(), style = MaterialTheme.typography.labelSmall, color = com.handytools.app.ui.HandyColors.Accent)
@@ -127,10 +124,7 @@ fun SortedScreen() {
                 Text("A reading aid, not official advice — always check the original for the exact terms and deadline.",
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 10.dp))
             }
-        } else {
-            Spacer(Modifier.weight(1f))
         }
-        BannerAd()
     }
 }
 

@@ -46,7 +46,8 @@ import com.handytools.app.ui.HCard
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
-import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.NoteText
+import com.handytools.app.ui.PowerToolPage
 import kotlinx.coroutines.launch
 
 /** Memory — ask your own screenshots anything. Reads them once on-device, then finds by plain words. */
@@ -75,10 +76,7 @@ fun MemoryScreen() {
         }
     }
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Memory", "Ask your own screenshots — the Wi-Fi password, a confirmation number, where you parked. Read on your phone, never uploaded.")
-        Spacer(Modifier.size(16.dp))
-
+    PowerToolPage("memory") {
         if (!authorized) {
             HCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp)) {
@@ -90,7 +88,6 @@ fun MemoryScreen() {
             }
             Spacer(Modifier.size(8.dp))
             HPrimaryButton("Allow photo access", modifier = Modifier.fillMaxWidth()) { permLauncher.launch(perm) }
-            Spacer(Modifier.weight(1f))
         } else {
             HCard(Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -122,7 +119,7 @@ fun MemoryScreen() {
             }
 
             Spacer(Modifier.size(12.dp))
-            Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState())) {
+            Column(Modifier.fillMaxWidth()) {
                 if (searched && results.isEmpty() && !indexing)
                     Text("Nothing matched that. Try the words that were on the screenshot, or re-index if it's recent.",
                         style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
@@ -144,9 +141,7 @@ fun MemoryScreen() {
                 }
             }
         }
-        Text("A one-line AI answer needs on-device Gemini Nano (Pixel 9, Galaxy S24+ and newer). Otherwise you get the best-matching screenshot.",
-            style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 8.dp))
-        BannerAd()
+        NoteText("A one-line AI answer needs on-device Gemini Nano (Pixel 9, Galaxy S24+ and newer). Otherwise you get the best-matching screenshot.")
     }
 
     viewing?.let { e ->

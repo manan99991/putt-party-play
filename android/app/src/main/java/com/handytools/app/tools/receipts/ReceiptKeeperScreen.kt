@@ -50,7 +50,8 @@ import com.handytools.app.ui.Handy
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.HandyHaptics
-import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.NoteText
+import com.handytools.app.ui.PowerToolPage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -135,12 +136,7 @@ fun ReceiptKeeperScreen() {
         receipts.remove(r); persist()
     }
 
-    Column(
-        Modifier.fillMaxWidth().statusBarsPadding().padding(20.dp).verticalScroll(rememberScrollState())
-    ) {
-        ToolHeader("Receipt & Warranty Keeper", "Snap a receipt, set the warranty, and never miss the window to return or claim.")
-        Spacer(Modifier.size(16.dp))
-
+    PowerToolPage("receipts") {
         if (draftImage == null) {
             HPrimaryButton(if (busy) "Reading…" else "Add a receipt", modifier = Modifier.fillMaxWidth(), enabled = !busy) {
                 picker.launch("image/*")
@@ -192,13 +188,7 @@ fun ReceiptKeeperScreen() {
             }
         }
 
-        Spacer(Modifier.size(16.dp))
-        Text(
-            "Read and stored on your phone only. “Remind” drops an event into your calendar app for you to confirm — no background alarms, no special permissions.",
-            color = Handy.palette.textSecondary, fontSize = 12.sp,
-        )
-        Spacer(Modifier.size(16.dp))
-        BannerAd()
+        NoteText("Read and stored on your phone only. “Remind” drops an event into your calendar app for you to confirm — no background alarms, no special permissions.")
     }
 }
 
