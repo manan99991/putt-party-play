@@ -24,42 +24,21 @@ import com.handytools.app.tools.alarm.AlarmListScreen
 import com.handytools.app.tools.alarm.AlarmRingPreview
 import com.handytools.app.tools.awake.KeepAwakeScreen
 import com.handytools.app.tools.clipboard.ClipboardScreen
-import com.handytools.app.tools.flashlight.FlashlightScreen
-import com.handytools.app.tools.shield.ShieldScreen
 import com.handytools.app.tools.scancsv.ScanCsvScreen
 import com.handytools.app.tools.invoice.QuickInvoiceScreen
-import com.handytools.app.tools.voicerec.VoiceRecorderScreen
-import com.handytools.app.tools.idphoto.PassportPhotoScreen
-import com.handytools.app.tools.redact.RedactScreen
 import com.handytools.app.tools.receipts.ReceiptKeeperScreen
 import com.handytools.app.tools.gifmaker.GifMakerScreen
-import com.handytools.app.tools.sendany.SendAnywhereScreen
 import com.handytools.app.tools.parked.ParkedScreen
-import com.handytools.app.tools.signfill.DocSignerScreen
 import com.handytools.app.tools.hearing.HearingBoostScreen
 import com.handytools.app.tools.heartrate.HeartRateScreen
-import com.handytools.app.tools.audiocut.AudioCutterScreen
 import com.handytools.app.tools.ai.AiScreen
 import com.handytools.app.tools.lens.LensScreen
 import com.handytools.app.tools.memory.MemoryScreen
 import com.handytools.app.tools.sorted.SortedScreen
-import com.handytools.app.tools.contacts.ContactsScreen
-import com.handytools.app.tools.spaceclean.SpaceCleanerScreen
-import com.handytools.app.tools.shrink.ShrinkScreen
 import com.handytools.app.tools.storage.StorageScreen
 import com.handytools.app.tools.myphone.MyPhoneScreen
 import com.handytools.app.tools.texttools.TextToolsScreen
-import com.handytools.app.tools.audiotext.AudioToTextScreen
-import com.handytools.app.tools.bgremove.BackgroundRemoverScreen
-import com.handytools.app.tools.exif.ExifScreen
-import com.handytools.app.tools.imgconvert.ImageConverterScreen
-import com.handytools.app.tools.magnifier.MagnifierScreen
-import com.handytools.app.tools.qr.QRScreen
 import com.handytools.app.tools.translate.TranslateScreen
-import com.handytools.app.tools.measure.MeasureScreen
-import com.handytools.app.tools.pdftools.PDFToolkitScreen
-import com.handytools.app.tools.scan.DocScannerScreen
-import com.handytools.app.tools.vidcompress.VideoCompressorScreen
 import com.handytools.app.tools.timers.TimersScreen
 import com.handytools.app.tools.wallet.WalletScreen
 import com.handytools.app.tools.notifhistory.NotifHistoryScreen
@@ -154,16 +133,10 @@ class MainActivity : ComponentActivity() {
                     composable("notifs") { NotifHistoryScreen() }
                     composable("scratchpad") { ScratchpadScreen() }
                     composable("awake") { KeepAwakeScreen() }
-                    composable("flash") { FlashlightScreen() }
-                    composable("shield") { ShieldScreen() }
                     composable("scancsv") { ScanCsvScreen() }
                     composable("invoice") { QuickInvoiceScreen() }
-                    composable("voicerec") { VoiceRecorderScreen() }
-                    composable("idphoto") { PassportPhotoScreen() }
-                    composable("redact") { RedactScreen() }
                     composable("receipts") { ReceiptKeeperScreen() }
                     composable("gifmaker") { GifMakerScreen() }
-                    composable("sendany") { SendAnywhereScreen() }
                     // --- Rebuilt 10-power-tool catalog routes (interim targets reuse existing
                     // screens until each merged tool is rebuilt; Capture is first in line). ---
                     // The 10 power tools (rebuilt to the approved prototype)
@@ -172,8 +145,6 @@ class MainActivity : ComponentActivity() {
                     composable("converter") { com.handytools.app.tools.power.ConverterToolScreen() }
                     composable("codes") { com.handytools.app.tools.power.CodesToolScreen() }
                     composable("scrubber") { com.handytools.app.tools.power.ScrubberToolScreen() }
-                    composable("capture") { com.handytools.app.tools.power.CaptureToolScreen() }
-                    composable("documents") { com.handytools.app.tools.power.DocumentsToolScreen() }
                     composable("media") { com.handytools.app.tools.power.MediaToolScreen() }
                     composable("cleanup") { com.handytools.app.tools.power.CleanupToolScreen() }
                     composable("voice") { com.handytools.app.tools.power.VoiceToolScreen() }
@@ -183,31 +154,14 @@ class MainActivity : ComponentActivity() {
                     composable("share") { com.handytools.app.tools.power.ShareToolScreen() }
                     composable("parked") { ParkedScreen() }
                     composable("network") { com.handytools.app.tools.power.NetworkToolScreen() }
-                    // Legacy route kept for any existing deep links — now the promoted Network tool.
-                    composable("netscout") { com.handytools.app.tools.power.NetworkToolScreen() }
-                    composable("signfill") { DocSignerScreen() }
                     composable("hearing") { HearingBoostScreen() }
                     composable("heartrate") { HeartRateScreen() }
-                    composable("audiocut") { AudioCutterScreen() }
                     composable("timer") { TimersScreen() }
-                    composable("measure") { MeasureScreen() }
                     composable("wallet") { WalletScreen() }
-                    composable("imgconvert") { ImageConverterScreen() }
-                    composable("audiotext") { AudioToTextScreen() }
-                    composable("pdftools") { PDFToolkitScreen() }
                     composable("translate") { com.handytools.app.tools.power.TranslateToolScreen() }
-                    composable("exif") { ExifScreen() }
-                    composable("scan") { DocScannerScreen() }
-                    composable("vidcompress") { VideoCompressorScreen() }
-                    composable("qr") { QRScreen() }
-                    composable("magnifier") { MagnifierScreen() }
-                    composable("bgremove") { BackgroundRemoverScreen() }
                     composable("sorted") { SortedScreen() }
                     composable("memory") { MemoryScreen() }
                     composable("lens") { LensScreen() }
-                    composable("contacts") { ContactsScreen() }
-                    composable("spaceclean") { SpaceCleanerScreen() }
-                    composable("shrink") { ShrinkScreen() }
                     composable("storage") { StorageScreen(onOpen = { nav.navigate(it) }) }
                     composable("myphone") { MyPhoneScreen() }
                     composable("texttools") { TextToolsScreen() }

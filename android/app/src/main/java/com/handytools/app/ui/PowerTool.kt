@@ -162,6 +162,8 @@ fun toolTint(route: String): Color = when (route) {
     "scrubber" -> Color(0xFF14B8A6)     // teal
     "flashlight" -> Color(0xFFF59E0B)   // amber
     "network" -> Color(0xFF0891B2)      // cyan
+    "voice" -> Color(0xFFEF4444)        // red
+    "translate" -> Color(0xFF8B5CF6)    // violet
     else -> HandyColors.Accent
 }
 

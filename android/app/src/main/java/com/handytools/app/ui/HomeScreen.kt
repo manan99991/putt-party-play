@@ -102,6 +102,12 @@ val TOOLS = listOf(
     HTool("scrubber", "Scrubber", "Blur & strip data", R.drawable.ic_scrubber, R.drawable.card_scrubber,
         listOf("scrub","scrubber","blur","hide","face","faces","plate","licence","license","redact","anonymize","privacy","metadata","exif","gps","location","strip","personal"),
         about = "Blur faces and licence plates and strip hidden location and metadata from a photo before you post it — the covered pixels are gone for good."),
+    HTool("voice", "Voice", "Record, transcribe & trim", R.drawable.tool_voice, R.drawable.card_voice,
+        listOf("voice","record","recorder","transcribe","transcript","speech","text","dictate","dictation","audio","trim","cut","memo","note","speak"),
+        about = "Record speech and get an instant transcript you can tidy and share, or trim an audio clip down — all on your phone, no account."),
+    HTool("translate", "Translate", "Text, camera & conversation", R.drawable.tool_translate, R.drawable.card_translate,
+        listOf("translate","translation","language","languages","text","camera","photo","conversation","speak","interpret","foreign","phrase"),
+        about = "Translate typed text, text in a photo, or a live back-and-forth conversation between two languages — on your phone."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
