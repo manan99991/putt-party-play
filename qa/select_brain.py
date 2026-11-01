@@ -17,7 +17,7 @@ No winner -> nothing exported -> the agent runs its free heuristic brain.
 """
 import json, os, sys, urllib.request, urllib.error
 
-TIMEOUT = 20
+TIMEOUT = 45   # cold first calls to Gemini's OpenAI endpoint can take >20s
 
 def http(method, url, key, body=None):
     req = urllib.request.Request(url, method=method, data=(json.dumps(body).encode() if body else None))
@@ -43,16 +43,19 @@ def pick(models, prefs):
     return models[0] if models else None
 
 def probe(name, base, key, model):
-    try:
-        st, data = http("POST", base.rstrip("/") + "/chat/completions", key,
-                        {"model": model, "messages": [{"role": "user", "content": "Reply with the single word OK."}], "max_tokens": 5})
-        txt = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
-        return True, f"{st} → {txt.strip()[:20]!r}"
-    except urllib.error.HTTPError as e:
-        body = e.read().decode(errors="replace")[:160].replace("\n", " ")
-        return False, f"HTTP {e.code}: {body}"
-    except Exception as e:
-        return False, f"{type(e).__name__}: {e}"
+    last = ""
+    for attempt in range(2):   # one retry: a cold Gemini call often times out, then warms up
+        try:
+            st, data = http("POST", base.rstrip("/") + "/chat/completions", key,
+                            {"model": model, "messages": [{"role": "user", "content": "Reply with the single word OK."}], "max_tokens": 5})
+            txt = (data.get("choices") or [{}])[0].get("message", {}).get("content", "")
+            return True, f"{st} → {txt.strip()[:20]!r}" + (" (warmed up on retry)" if attempt else "")
+        except urllib.error.HTTPError as e:
+            body = e.read().decode(errors="replace")[:160].replace("\n", " ")
+            return False, f"HTTP {e.code}: {body}"   # deterministic — don't retry
+        except Exception as e:
+            last = f"{type(e).__name__}: {e}"        # timeout / connection — retry once
+    return False, last
 
 def clean(v):
     return (v or "").strip().replace("\r", "").replace("\n", "")
@@ -65,7 +68,7 @@ def main():
     if clean(env.get("GROQ_API_KEY")):
         cands.append(("groq", "https://api.groq.com/openai/v1", clean(env["GROQ_API_KEY"]), None, ["openai/gpt-oss-120b", "gpt-oss-120b", "llama-3.3-70b-versatile", "llama-4", "llama"]))
     if clean(env.get("GEMINI_API_KEY")):
-        cands.append(("gemini", "https://generativelanguage.googleapis.com/v1beta/openai/", clean(env["GEMINI_API_KEY"]), None, ["flash-latest", "2.5-flash", "3-flash", "flash", "pro"]))
+        cands.append(("gemini", "https://generativelanguage.googleapis.com/v1beta/openai/", clean(env["GEMINI_API_KEY"]), None, ["2.5-flash", "flash-latest", "2.0-flash", "flash", "pro"]))
     if clean(env.get("OPENROUTER_API_KEY")):
         cands.append(("openrouter", "https://openrouter.ai/api/v1", clean(env["OPENROUTER_API_KEY"]), clean(env.get("OPENROUTER_MODEL")) or None, [":free"]))
     if clean(env.get("CEREBRAS_API_KEY")):
