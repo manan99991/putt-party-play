@@ -108,8 +108,12 @@ class MainActivity : ComponentActivity() {
         val startRoute = routeExtra ?: if (sharedFileUri != null) "fileviewer" else if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
 
         setContent {
+            // The nav controller is created OUTSIDE HandyTheme so it survives a theme switch: HandyTheme
+            // rebuilds its content under key(theme) to re-skin every surface, and if the controller lived
+            // inside that block a theme change would recreate it and bounce you back to home (which made
+            // theme switches look like they did nothing). Hoisted here, the back stack is preserved.
+            val nav = rememberNavController()
             HandyTheme {
-                val nav = rememberNavController()
                 androidx.compose.runtime.CompositionLocalProvider(
                     com.handytools.app.ads.LocalRemoveAds provides { nav.navigate("paywall") },
                     LocalOpenTool provides { r: String -> nav.navigate(r) }

@@ -59,7 +59,10 @@ fun PowerToolPage(
     onTab: (Int) -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    val tool = TOOLS.firstOrNull { it.route == route } ?: TOOLS.first()
+    // Resolve this screen's own metadata. Fall back to a route-named header (no icon/art) rather than
+    // the first grid tool, so a folded-in route never borrows another tool's title/icon/about.
+    val tool = ALL_TOOLS.firstOrNull { it.route == route }
+        ?: HTool(route, route.replaceFirstChar { it.uppercase() }, "", 0, 0)
     val back = LocalOnBackPressedDispatcherOwner.current
     Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         // Top bar: a clear, always-tappable back arrow, then the tool's icon and name on one line.
@@ -73,8 +76,10 @@ fun PowerToolPage(
                 onClick = { back?.onBackPressedDispatcher?.onBackPressed() },
                 modifier = Modifier.size(44.dp).semantics { contentDescription = "Back" }
             ) { Icon(Icons.AutoMirrored.Outlined.ArrowBack, "Back", tint = MaterialTheme.colorScheme.onBackground) }
-            Image(painterResource(tool.iconRes), null, Modifier.size(30.dp))
-            Spacer(Modifier.width(10.dp))
+            if (tool.iconRes != 0) {
+                Image(painterResource(tool.iconRes), null, Modifier.size(30.dp))
+                Spacer(Modifier.width(10.dp))
+            }
             Text(
                 tool.name, color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, maxLines = 1
@@ -83,7 +88,7 @@ fun PowerToolPage(
         Box(Modifier.weight(1f)) {
             // Soft faded backdrop — a faint wash of the tool's card art at the top that melts into the
             // page background, so every tool has a gentle themed page instead of flat black.
-            Image(
+            if (tool.cardRes != 0) Image(
                 painterResource(tool.cardRes), null,
                 Modifier.fillMaxWidth().aspectRatio(1290f / 820f).align(Alignment.TopCenter),
                 contentScale = ContentScale.Crop, alpha = 0.12f

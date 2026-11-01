@@ -101,6 +101,17 @@ val TOOLS = listOf(
         about = "Blur faces and licence plates and strip hidden location and metadata from a photo before you post it — the covered pixels are gone for good."),
 )
 
+/** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
+ *  another tool). They need scaffold metadata so the shared page shows THEIR header, not the first
+ *  grid tool's. Looked up alongside TOOLS by PowerToolPage. */
+val EXTRA_TOOLS = listOf(
+    HTool("flashlight", "Flashlight", "Torch, patterns, Morse & more", R.drawable.tool_flashlight, R.drawable.card_flashlight,
+        about = "The real camera torch: tap on, pick a light pattern (steady, strobe, SOS, beacon, pulse), set the brightness, flash a Morse message, turn the whole screen into a light, or use the front camera as a mirror."),
+)
+
+/** Every tool's scaffold metadata, grid + folded-in, for PowerToolPage lookup. */
+val ALL_TOOLS = TOOLS + EXTRA_TOOLS
+
 /** Google-style ranked search across every tool. */
 fun searchTools(raw: String): List<HTool> {
     val query = raw.lowercase().trim()
