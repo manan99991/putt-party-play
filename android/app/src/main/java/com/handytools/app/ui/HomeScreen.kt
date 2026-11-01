@@ -108,6 +108,15 @@ val TOOLS = listOf(
     HTool("translate", "Translate", "Text, camera & conversation", R.drawable.tool_translate, R.drawable.card_translate,
         listOf("translate","translation","language","languages","text","camera","photo","conversation","speak","interpret","foreign","phrase"),
         about = "Translate typed text, text in a photo, or a live back-and-forth conversation between two languages — on your phone."),
+    HTool("memory", "Memory", "Ask your screenshots", R.drawable.ic_memory, R.drawable.card_memory,
+        listOf("memory","find","search","screenshot","screenshots","photos","wifi","password","code","confirmation","parking","where","receipt","remember","ask"),
+        about = "Ask your own screenshots anything — the Wi-Fi password, a confirmation number, where you parked. Read on your phone, never uploaded."),
+    HTool("sorted", "Sorted", "Snap a bill → calendar", R.drawable.ic_sorted, R.drawable.card_sorted,
+        listOf("sorted","bill","letter","mail","appointment","notice","invoice","due","deadline","calendar","remind","reminder","scan","amount","pay","admin","paperwork"),
+        about = "Snap a bill, letter or appointment and Sorted pulls out the due date and amount and drops a reminder on your calendar."),
+    HTool("receipts", "Receipts", "Warranties & receipts", R.drawable.ic_receipts, R.drawable.card_receipts,
+        listOf("receipt","receipts","warranty","warranties","proof of purchase","vault","store","expiry","expires","return","refund","appliance","guarantee"),
+        about = "File receipts and never miss a warranty — snap the receipt, Tenzy keeps it and reminds you before the warranty or return window runs out."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
