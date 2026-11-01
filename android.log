@@ -26,7 +26,6 @@ Daemon will be stopped at the end of the build
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
@@ -34,20 +33,21 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugAssets
 > Task :app:desugarDebugFileDependencies
 > Task :app:compressDebugAssets
-> Task :app:processDebugResources
-> Task :app:checkDebugDuplicateClasses
-> Task :app:kspDebugKotlin
-> Task :app:mergeExtDexDebug
 > Task :app:mergeDebugJniLibFolders
-> Task :app:mergeLibDexDebug
+> Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugNativeLibs
-> Task :app:validateSigningDebug
-> Task :app:writeDebugAppMetadata
-> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeExtDexDebug
+> Task :app:mergeLibDexDebug
 
 > Task :app:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libface_detector_v2_jni.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
 
+> Task :app:processDebugResources
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:kspDebugKotlin
 > Task :app:compileDebugKotlin
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/OverlayBubble.kt:139:84 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingService.kt:107:14 'fun vibrate(p0: VibrationEffect!, p1: AudioAttributes!): Unit' is deprecated. Deprecated in Java.
@@ -69,7 +69,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/MediaEngine.kt:133:32 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/SafetyToolScreen.kt:367:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ScrubberToolScreen.kt:99:1 Annotation 'androidx.media3.common.util.UnstableApi' is not annotated with '@RequiresOptIn'. '@OptIn' has no effect.
-w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ShareToolScreen.kt:489:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ShareToolScreen.kt:501:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shrink/ShrinkScreen.kt:126:17 Condition is always 'true'.
@@ -83,9 +83,9 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793554851138.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793556029888.json
 
-BUILD SUCCESSFUL in 5m 6s
+BUILD SUCCESSFUL in 5m 25s
 38 actionable tasks: 38 executed
 === keystore sanity ===
 upload.jks bytes: 2694 (expect ~2694)
@@ -115,8 +115,8 @@ Daemon will be stopped at the end of the build
 > Task :app:processReleaseMainManifest
 > Task :app:processReleaseManifest
 > Task :app:processReleaseManifestForPackage
-> Task :app:javaPreCompileRelease
 > Task :app:mergeReleaseResources
+> Task :app:javaPreCompileRelease
 > Task :app:mergeReleaseArtProfile
 > Task :app:extractProguardFiles
 > Task :app:mergeReleaseStartupProfile
@@ -124,10 +124,10 @@ Daemon will be stopped at the end of the build
 > Task :app:writeReleaseAppMetadata
 > Task :app:collectReleaseDependencies
 > Task :app:configureReleaseDependencies
-> Task :app:validateSigningRelease
 > Task :app:parseReleaseIntegrityConfig
-> Task :app:mergeReleaseNativeLibs
+> Task :app:validateSigningRelease
 > Task :app:processReleaseResources
+> Task :app:mergeReleaseNativeLibs
 
 > Task :app:stripReleaseDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libface_detector_v2_jni.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
@@ -155,7 +155,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/MediaEngine.kt:133:32 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/SafetyToolScreen.kt:367:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ScrubberToolScreen.kt:99:1 Annotation 'androidx.media3.common.util.UnstableApi' is not annotated with '@RequiresOptIn'. '@OptIn' has no effect.
-w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ShareToolScreen.kt:489:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ShareToolScreen.kt:501:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/qr/QRScreen.kt:80:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/shrink/ShrinkScreen.kt:126:17 Condition is always 'true'.
@@ -177,7 +177,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793555155237.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793556354161.json
 
-BUILD SUCCESSFUL in 6m 18s
+BUILD SUCCESSFUL in 6m 31s
 50 actionable tasks: 50 executed
