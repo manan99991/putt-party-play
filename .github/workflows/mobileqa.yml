@@ -36,6 +36,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: "8.11.1" }   # repo has no gradle-wrapper.jar, so use the gradle binary
 
+      # Fast off-device logic gate (same as android.yml): every File Viewer file type must classify to
+      # its expected Kind and readable types must extract text, before we spend time on the emulator.
+      - name: File Viewer type-matrix gate
+        run: python3 android/qa/fileviewer/verify_types.py
+
       # ---- NATIVE Android debug build (for the emulator)
       - name: Build debug APK
         working-directory: android
@@ -116,6 +121,45 @@ jobs:
             adb shell am force-stop com.tenzy.toolkit >/dev/null 2>&1
           done
           echo "=== route smoke: $smokefail of $total tools failed to open ==="
+
+          # ── FILE-TYPE smoke: the File Viewer's whole promise is "open ANY file and READ it". Push a
+          #    corpus of every type, deep-link each straight into the viewer via an ACTION_VIEW intent
+          #    (MainActivity routes file/content VIEW → fileviewer), and verify on-screen: no crash, the
+          #    right type label rendered, and readable containers (epub/office/odf) show their CONTENT —
+          #    never the archive file-listing that the EPUB bug produced. Screenshots prove each one.
+          mkdir -p reports/filetype
+          python3 android/qa/fileviewer/verify_types.py --emit /tmp/ftcorpus || echo "corpus emit failed"
+          adb shell mkdir -p /sdcard/Download/tenzyqa >/dev/null 2>&1
+          adb push /tmp/ftcorpus/. /sdcard/Download/tenzyqa/ >/dev/null 2>&1
+          for f in $(ls /tmp/ftcorpus | grep -v '^manifest.json$'); do
+            adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file:///sdcard/Download/tenzyqa/$f" >/dev/null 2>&1
+          done
+          ftfail=0; fttotal=0
+          echo "=== File Viewer file-type smoke ==="
+          while IFS=$'\t' read -r name kind mime header reader; do
+            [ -z "$name" ] && continue
+            fttotal=$((fttotal+1))
+            adb shell am force-stop com.tenzy.toolkit >/dev/null 2>&1
+            adb shell am start -a android.intent.action.VIEW -d "file:///sdcard/Download/tenzyqa/$name" -t "$mime" \
+              -n com.tenzy.toolkit/com.handytools.app.MainActivity --grant-read-uri-permission >/dev/null 2>&1
+            sleep 4
+            ok=1; why=""
+            adb shell dumpsys window 2>/dev/null | grep -q "mCurrentFocus.*com.tenzy.toolkit" || { ok=0; why="not-foreground(crash?)"; }
+            adb shell uiautomator dump /sdcard/ft.xml >/dev/null 2>&1
+            ui=$(adb shell cat /sdcard/ft.xml 2>/dev/null)
+            [ -n "$header" ] && ! printf '%s' "$ui" | grep -qF "$header" && { ok=0; why="$why no-type-label[$header]"; }
+            [ -n "$reader" ] && ! printf '%s' "$ui" | grep -qF "$reader" && { ok=0; why="$why not-reading[$reader]"; }
+            adb exec-out screencap -p > "reports/filetype/$name.png" 2>/dev/null || true
+            if [ $ok -eq 1 ]; then echo "  $name [$kind]: OK"; else echo "  $name [$kind]: FAIL -$why"; ftfail=$((ftfail+1)); fi
+          done < <(python3 - <<'PY'
+          import json
+          for e in json.load(open("/tmp/ftcorpus/manifest.json")):
+              print("\t".join([e["name"], e["kind"], e["mime"], e["header_anchor"], e["reader_anchor"]]))
+          PY
+          )
+          echo "=== file-type smoke: $ftfail of $fttotal file types failed to render as expected ==="
+          adb shell am force-stop com.tenzy.toolkit >/dev/null 2>&1
+
           nohup appium --relaxed-security --log appium.log >/dev/null 2>&1 &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:4723/status >/dev/null && break; sleep 2; done
           python -m mobileqa.cli doctor qa/app.android.yaml || true
@@ -125,6 +169,10 @@ jobs:
         if: always()
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: bash .github/publish-log.sh route-smoke reports/route-smoke || echo "publish skipped"
+      - name: Publish file-type smoke screenshots to ci-logs
+        if: always()
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh filetype-smoke reports/filetype || echo "publish skipped"
       - name: Upload report
         if: always()
         uses: actions/upload-artifact@v4
