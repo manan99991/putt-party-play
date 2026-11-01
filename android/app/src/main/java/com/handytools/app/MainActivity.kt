@@ -35,7 +35,6 @@ import com.handytools.app.tools.receipts.ReceiptKeeperScreen
 import com.handytools.app.tools.gifmaker.GifMakerScreen
 import com.handytools.app.tools.sendany.SendAnywhereScreen
 import com.handytools.app.tools.parked.ParkedScreen
-import com.handytools.app.tools.netscout.NetworkScoutScreen
 import com.handytools.app.tools.signfill.DocSignerScreen
 import com.handytools.app.tools.hearing.HearingBoostScreen
 import com.handytools.app.tools.heartrate.HeartRateScreen
@@ -183,7 +182,9 @@ class MainActivity : ComponentActivity() {
                     composable("safety") { com.handytools.app.tools.power.SafetyToolScreen() }
                     composable("share") { com.handytools.app.tools.power.ShareToolScreen() }
                     composable("parked") { ParkedScreen() }
-                    composable("netscout") { NetworkScoutScreen() }
+                    composable("network") { com.handytools.app.tools.power.NetworkToolScreen() }
+                    // Legacy route kept for any existing deep links — now the promoted Network tool.
+                    composable("netscout") { com.handytools.app.tools.power.NetworkToolScreen() }
                     composable("signfill") { DocSignerScreen() }
                     composable("hearing") { HearingBoostScreen() }
                     composable("heartrate") { HeartRateScreen() }
@@ -212,7 +213,7 @@ class MainActivity : ComponentActivity() {
                     composable("texttools") { TextToolsScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "network", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)
