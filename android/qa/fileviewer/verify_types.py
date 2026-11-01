@@ -304,18 +304,19 @@ MIME = {
 }
 
 def emit(out_dir):
-    """Write every corpus file plus manifest.json (for the emulator file-type smoke)."""
+    """Write every corpus file, manifest.json, and a flat TSV (name\tkind\tmime\theader\treader) that
+    a shell `while read` loop can iterate robustly (no JSON/heredoc parsing in the CI smoke)."""
     import json
     os.makedirs(out_dir, exist_ok=True)
-    manifest = []
+    manifest, tsv = [], []
     for name, expected, data, _needle in CORPUS:
         with open(os.path.join(out_dir, name), "wb") as f: f.write(data)
-        manifest.append({
-            "name": name, "kind": expected, "mime": MIME.get(name, "*/*"),
-            "header_anchor": HEADER_LABEL.get(name, ""), "reader_anchor": READER_ANCHOR.get(name, ""),
-        })
+        mime = MIME.get(name, "*/*"); hdr = HEADER_LABEL.get(name, ""); rdr = READER_ANCHOR.get(name, "")
+        manifest.append({"name": name, "kind": expected, "mime": mime, "header_anchor": hdr, "reader_anchor": rdr})
+        tsv.append("\t".join([name, expected, mime, hdr, rdr]))
     with open(os.path.join(out_dir, "manifest.json"), "w") as f: json.dump(manifest, f, indent=2)
-    print(f"wrote {len(manifest)} corpus files + manifest.json to {out_dir}")
+    with open(os.path.join(out_dir, "manifest.tsv"), "w") as f: f.write("\n".join(tsv) + "\n")
+    print(f"wrote {len(manifest)} corpus files + manifest.json + manifest.tsv to {out_dir}")
 
 def main():
     if len(sys.argv) >= 3 and sys.argv[1] == "--emit":

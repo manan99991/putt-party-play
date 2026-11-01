@@ -129,19 +129,23 @@ jobs:
           #    never the archive file-listing that the EPUB bug produced. Screenshots prove each one.
           mkdir -p reports/filetype
           python3 android/qa/fileviewer/verify_types.py --emit /tmp/ftcorpus || echo "corpus emit failed"
-          adb shell mkdir -p /sdcard/Download/tenzyqa >/dev/null 2>&1
-          adb push /tmp/ftcorpus/. /sdcard/Download/tenzyqa/ >/dev/null 2>&1
-          for f in $(ls /tmp/ftcorpus | grep -v '^manifest.json$'); do
-            adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file:///sdcard/Download/tenzyqa/$f" >/dev/null 2>&1
+          # Push the corpus into the APP'S OWN external files dir: the app can read its own files via a
+          # file:// VIEW intent without hitting API-30 scoped-storage limits (a raw /sdcard/Download path
+          # is NOT readable for non-media files, which made an earlier attempt fail to open anything).
+          APPDIR=/sdcard/Android/data/com.tenzy.toolkit/files/ftqa
+          adb shell mkdir -p "$APPDIR" >/dev/null 2>&1
+          for f in $(ls /tmp/ftcorpus | grep -vE '^manifest\.(json|tsv)$'); do
+            adb push "/tmp/ftcorpus/$f" "$APPDIR/$f" >/dev/null 2>&1
           done
           ftfail=0; fttotal=0
           echo "=== File Viewer file-type smoke ==="
+          # Iterate the flat TSV (robust: no JSON/heredoc parsing in the shell).
           while IFS=$'\t' read -r name kind mime header reader; do
             [ -z "$name" ] && continue
             fttotal=$((fttotal+1))
             adb shell am force-stop com.tenzy.toolkit >/dev/null 2>&1
-            adb shell am start -a android.intent.action.VIEW -d "file:///sdcard/Download/tenzyqa/$name" -t "$mime" \
-              -n com.tenzy.toolkit/com.handytools.app.MainActivity --grant-read-uri-permission >/dev/null 2>&1
+            adb shell am start -a android.intent.action.VIEW -d "file://$APPDIR/$name" -t "$mime" \
+              -n com.tenzy.toolkit/com.handytools.app.MainActivity >/dev/null 2>&1
             sleep 4
             ok=1; why=""
             adb shell dumpsys window 2>/dev/null | grep -q "mCurrentFocus.*com.tenzy.toolkit" || { ok=0; why="not-foreground(crash?)"; }
@@ -151,12 +155,7 @@ jobs:
             [ -n "$reader" ] && ! printf '%s' "$ui" | grep -qF "$reader" && { ok=0; why="$why not-reading[$reader]"; }
             adb exec-out screencap -p > "reports/filetype/$name.png" 2>/dev/null || true
             if [ $ok -eq 1 ]; then echo "  $name [$kind]: OK"; else echo "  $name [$kind]: FAIL -$why"; ftfail=$((ftfail+1)); fi
-          done < <(python3 - <<'PY'
-          import json
-          for e in json.load(open("/tmp/ftcorpus/manifest.json")):
-              print("\t".join([e["name"], e["kind"], e["mime"], e["header_anchor"], e["reader_anchor"]]))
-          PY
-          )
+          done < /tmp/ftcorpus/manifest.tsv
           echo "=== file-type smoke: $ftfail of $fttotal file types failed to render as expected ==="
           adb shell am force-stop com.tenzy.toolkit >/dev/null 2>&1
 
