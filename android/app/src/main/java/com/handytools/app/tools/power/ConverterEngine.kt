@@ -189,10 +189,10 @@ object ConverterEngine {
      * resolution). Returns the running [Transformer] — same threading note as [startAudioExport].
      */
     @UnstableApi
-    fun startVideoExport(ctx: Context, uri: Uri, height: Int?, out: File, listener: Transformer.Listener): Transformer {
+    fun startVideoExport(ctx: Context, uri: Uri, height: Int?, out: File, listener: Transformer.Listener, removeAudio: Boolean = false): Transformer {
         val effects = if (height != null && height > 0) Effects(emptyList(), listOf(Presentation.createForHeight(height)))
         else Effects(emptyList(), emptyList())
-        val edited = EditedMediaItem.Builder(MediaItem.fromUri(uri)).setEffects(effects).build()
+        val edited = EditedMediaItem.Builder(MediaItem.fromUri(uri)).setEffects(effects).setRemoveAudio(removeAudio).build()
         val transformer = Transformer.Builder(ctx).setVideoMimeType(MimeTypes.VIDEO_H264).addListener(listener).build()
         transformer.start(edited, out.absolutePath)
         return transformer

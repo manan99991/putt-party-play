@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -94,6 +95,8 @@ fun ConverterToolScreen() {
     var imgTarget by remember { mutableIntStateOf(1) }    // default JPEG
     var pdfTarget by remember { mutableIntStateOf(0) }    // 0 = PNG, 1 = JPEG
     var vidTarget by remember { mutableIntStateOf(1) }    // default 720p
+    var vidMode by remember { mutableIntStateOf(0) }      // 0 = MP4, 1 = audio only (M4A), 2 = muted MP4
+    var srcSizeText by remember { mutableStateOf<String?>(null) }
     var quality by remember { mutableFloatStateOf(90f) }
 
     var working by remember { mutableStateOf(false) }
@@ -107,21 +110,19 @@ fun ConverterToolScreen() {
 
     fun reset() { results = null; resultSummary = null; error = null; savedNote = null }
 
-    // One picker that takes any file — one or many. A single pick keeps full per-type support
-    // (image/PDF/audio/video); a multi-pick is the batch-image path (the only kind that can run as a
-    // batch), so non-image files in a multi-pick are dropped with an honest count rather than failing.
-    val pickFiles = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { picked ->
-        if (picked.isNullOrEmpty()) return@rememberLauncherForActivityResult
-        reset(); batch = null; single = null; skipped = 0
-        if (picked.size == 1) {
-            single = ConverterEngine.Src(picked[0], "", ConverterEngine.Category.OTHER, "")
-        } else {
-            val imgs = picked.filter { ctx.contentResolver.getType(it)?.startsWith("image/") == true }
-            when {
-                imgs.size == picked.size -> batch = picked
-                imgs.isNotEmpty() -> { batch = imgs; skipped = picked.size - imgs.size }
-                else -> { single = ConverterEngine.Src(picked[0], "", ConverterEngine.Category.OTHER, ""); skipped = picked.size - 1 }
-            }
+    // One file of ANY type (image / PDF / audio / video) — full per-type conversion options.
+    val pickOne = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { picked ->
+        if (picked != null) { reset(); batch = null; skipped = 0; single = ConverterEngine.Src(picked, "", ConverterEngine.Category.OTHER, "") }
+    }
+    // Several photos at once via the Android photo picker — reliable multi-select (checkboxes), unlike
+    // the document picker which needed a long-press selection mode and often picked just one.
+    val pickPhotos = rememberLauncherForActivityResult(
+        ActivityResultContracts.PickMultipleVisualMedia(30)
+    ) { picked ->
+        if (!picked.isNullOrEmpty()) {
+            reset(); single = null; skipped = 0
+            if (picked.size == 1) single = ConverterEngine.Src(picked[0], "", ConverterEngine.Category.OTHER, "")
+            else batch = picked
         }
     }
 
@@ -131,6 +132,7 @@ fun ConverterToolScreen() {
         if (single?.typeLabel?.isNotEmpty() == true) return@LaunchedEffect
         inspecting = true
         val s = withContext(Dispatchers.IO) { ConverterEngine.inspect(ctx, u) }
+        srcSizeText = withContext(Dispatchers.IO) { ConverterEngine.humanSize(com.handytools.app.tools.power.FileViewer.sizeOf(ctx, u)) }
         single = s; inspecting = false
         imgTarget = if (s.category == ConverterEngine.Category.IMAGE) 1 else imgTarget
     }
@@ -244,16 +246,26 @@ fun ConverterToolScreen() {
                 runMedia(out, "audio/mp4") { l -> ConverterEngine.startAudioExport(ctx, s.uri, out, l) }
             }
             s != null && s.category == ConverterEngine.Category.VIDEO -> {
-                val h = VIDEO_TARGETS[vidTarget].second
-                val out = File(ctx.cacheDir, "${ConverterEngine.baseName(s.name)}-${if (h > 0) "${h}p" else "mp4"}-${System.currentTimeMillis()}.mp4")
-                runMedia(out, "video/mp4") { l -> ConverterEngine.startVideoExport(ctx, s.uri, if (h > 0) h else null, out, l) }
+                if (vidMode == 1) {
+                    val out = File(ctx.cacheDir, "${ConverterEngine.baseName(s.name)}-audio-${System.currentTimeMillis()}.m4a")
+                    runMedia(out, "audio/mp4") { l -> ConverterEngine.startAudioExport(ctx, s.uri, out, l) }
+                } else {
+                    val h = VIDEO_TARGETS[vidTarget].second
+                    val tag = if (vidMode == 2) "muted" else if (h > 0) "${h}p" else "mp4"
+                    val out = File(ctx.cacheDir, "${ConverterEngine.baseName(s.name)}-$tag-${System.currentTimeMillis()}.mp4")
+                    runMedia(out, "video/mp4") { l -> ConverterEngine.startVideoExport(ctx, s.uri, if (h > 0) h else null, out, l, removeAudio = vidMode == 2) }
+                }
             }
         }
     }
 
     PowerToolPage("converter") {
-        HPrimaryButton("Choose file (or several)", icon = Icons.Outlined.InsertDriveFile) { pickFiles.launch(arrayOf("*/*")) }
-        NoteText("Pick one file — image, PDF, audio or video — or select several images to batch-convert or combine into one PDF. Everything runs on your phone and costs nothing.")
+        HPrimaryButton("Choose a file", icon = Icons.Outlined.InsertDriveFile) { pickOne.launch(arrayOf("*/*")) }
+        Spacer(Modifier.height(HandyTokens.Space8))
+        HSecondaryButton("Choose several photos (batch)") {
+            pickPhotos.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+        NoteText("One file — image, PDF, audio or video — for the full conversion options, or several photos at once to batch-convert or combine into one PDF. Everything runs on your phone and costs nothing.")
 
         if (inspecting) {
             Spacer(Modifier.height(HandyTokens.Space16))
@@ -271,7 +283,7 @@ fun ConverterToolScreen() {
             PickedCard("${b.size} image${if (b.size == 1) "" else "s"} selected", sub)
         } else if (s != null && s.typeLabel.isNotEmpty()) {
             Spacer(Modifier.height(HandyTokens.Space12))
-            PickedCard(s.name, s.typeLabel)
+            PickedCard(s.name, s.typeLabel + (srcSizeText?.let { " · $it" } ?: ""))
         }
 
         // ---- target chooser ----
@@ -307,9 +319,17 @@ fun ConverterToolScreen() {
                 }
             }
             ConverterEngine.Category.VIDEO -> {
-                SectionLabel("MP4 (H.264) · size")
+                SectionLabel("Convert to")
                 ChipRow {
-                    VIDEO_TARGETS.forEachIndexed { i, (label, _) -> HChip(label, vidTarget == i) { vidTarget = i; reset() } }
+                    HChip("MP4 video", vidMode == 0) { vidMode = 0; reset() }
+                    HChip("Muted MP4", vidMode == 2) { vidMode = 2; reset() }
+                    HChip("Audio only · M4A", vidMode == 1) { vidMode = 1; reset() }
+                }
+                if (vidMode != 1) {
+                    SectionLabel("Resolution (H.264)")
+                    ChipRow {
+                        VIDEO_TARGETS.forEachIndexed { i, (label, _) -> HChip(label, vidTarget == i) { vidTarget = i; reset() } }
+                    }
                 }
             }
             ConverterEngine.Category.OTHER -> {
