@@ -4,10 +4,12 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.graphics.Paint
 import android.graphics.Rect
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import android.os.Build
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
@@ -35,8 +37,33 @@ internal object ScrubberEngine {
     /** Everything detected (and manually added) for one image, in that image's own pixel coords. */
     data class Detection(val faces: List<Rect>, val text: List<Rect>)
 
-    // Reuse the shared loader in this package (honours EXIF rotation, scales big images down).
-    fun loadBitmap(ctx: Context, uri: Uri, maxEdge: Int = 2400): Bitmap? = DocEngine.loadBitmap(ctx, uri, maxEdge)
+    /**
+     * Robust image load. ImageDecoder (API 28+) decodes HEIC/HEIF and the usual formats, applies EXIF
+     * rotation itself, and — crucially — downsamples to [maxEdge] DURING decode, so a big camera photo
+     * never blows up to a full-resolution bitmap first (that OOM'd the old BitmapFactory path and made
+     * every pick fail with "couldn't open those images"). Mutable + software so ML Kit and the canvas
+     * can both use it. Falls back to the shared BitmapFactory loader on older phones / any failure.
+     */
+    fun loadBitmap(ctx: Context, uri: Uri, maxEdge: Int = 2400): Bitmap? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            runCatching {
+                val src = ImageDecoder.createSource(ctx.contentResolver, uri)
+                return ImageDecoder.decodeBitmap(src) { decoder, info, _ ->
+                    decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
+                    decoder.isMutableRequired = true
+                    val longest = maxOf(info.size.width, info.size.height)
+                    if (longest > maxEdge) {
+                        val scale = maxEdge.toFloat() / longest
+                        decoder.setTargetSize(
+                            (info.size.width * scale).toInt().coerceAtLeast(1),
+                            (info.size.height * scale).toInt().coerceAtLeast(1)
+                        )
+                    }
+                }
+            }
+        }
+        return DocEngine.loadBitmap(ctx, uri, maxEdge)
+    }
 
     private val faceOptions = FaceDetectorOptions.Builder()
         .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
