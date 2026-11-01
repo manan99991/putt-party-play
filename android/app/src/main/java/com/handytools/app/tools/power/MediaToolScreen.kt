@@ -477,7 +477,15 @@ fun MediaToolScreen() {
     }
 
     // ----------------------------------------------------------------------------------------- UI
-    PowerToolPage("media", tabs = TABS, selected = tab, onTab = { tab = it }) {
+    val tabTints = listOf(
+        Color(0xFF8B5CF6), // Shrink
+        Color(0xFFEC4899), // Remove bg
+        Color(0xFF64748B), // Redact
+        Color(0xFF3B82F6), // Passport
+        Color(0xFF10B981), // Strip location
+        Color(0xFF06B6D4), // Convert
+    )
+    PowerToolPage("media", tabs = TABS, selected = tab, onTab = { tab = it }, accent = tabTints.getOrNull(tab)) {
         val shown = result ?: photo?.bitmap
         val vid = video
         if (shown != null) {

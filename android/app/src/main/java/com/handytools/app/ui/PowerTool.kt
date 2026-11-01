@@ -32,7 +32,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,6 +62,9 @@ fun PowerToolPage(
     selected: Int = 0,
     onTab: (Int) -> Unit = {},
     tabIcons: List<androidx.compose.ui.graphics.vector.ImageVector>? = null,
+    // When a tool passes a per-mode colour, the page backdrop eases to it — so the background visibly
+    // "syncs" with whatever sub-tool is open. Null keeps the tool's single signature tint.
+    accent: Color? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     // Resolve this screen's own metadata. Fall back to a route-named header (no icon/art) rather than
@@ -91,7 +97,8 @@ fun PowerToolPage(
             // Soft half-gradient in the tool's own signature colour — a professional wash over the top of
             // the page that melts into the background by mid-screen, so every tool's page clearly belongs
             // to THAT tool without a busy photo. Two soft glows (one top-centre, one offset) give it depth.
-            val tint = toolTint(route)
+            // A per-mode accent eases in over 450ms so the backdrop tracks the active sub-tool.
+            val tint by animateColorAsState(accent ?: toolTint(route), animationSpec = tween(450), label = "toolTint")
             Box(
                 Modifier.fillMaxWidth().fillMaxHeight(0.52f).align(Alignment.TopCenter)
                     .background(

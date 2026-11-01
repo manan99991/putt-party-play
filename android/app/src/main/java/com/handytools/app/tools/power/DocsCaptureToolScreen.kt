@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import com.handytools.app.ui.PowerToolPage
 
 /**
@@ -20,7 +21,14 @@ fun DocsCaptureToolScreen() {
     val sign = remember { DocSignState() }
     val merge = remember { DocMergeState() }
     val finder = remember { DocFinderState() }
-    PowerToolPage("docs", listOf("Capture", "Scan", "Sign & fill", "Merge & split", "Word Finder"), tab, { tab = it }) {
+    val tabTints = listOf(
+        Color(0xFF3B82F6), // Capture
+        Color(0xFF6366F1), // Scan
+        Color(0xFF8B5CF6), // Sign & fill
+        Color(0xFF06B6D4), // Merge & split
+        Color(0xFFF59E0B), // Word Finder
+    )
+    PowerToolPage("docs", listOf("Capture", "Scan", "Sign & fill", "Merge & split", "Word Finder"), tab, { tab = it }, accent = tabTints.getOrNull(tab)) {
         when (tab) {
             0 -> CapturePanel()
             1 -> DocScanPanel(scan)

@@ -94,8 +94,20 @@ fun InstrumentsToolScreen() {
         Icons.Outlined.ZoomIn,        // Magnifier
         Icons.Outlined.FlashlightOn,  // Torch
     )
+    // Each instrument carries its own accent so the page backdrop shifts as you switch modes.
+    val tabTints = listOf(
+        Color(0xFF2B68FF), // Level
+        Color(0xFFF43F5E), // Compass
+        Color(0xFF8B5CF6), // Sound
+        Color(0xFFF59E0B), // Light
+        Color(0xFF10B981), // Altitude
+        Color(0xFF06B6D4), // Metal
+        Color(0xFF6366F1), // Ruler
+        Color(0xFF14B8A6), // Magnifier
+        Color(0xFFFB923C), // Torch
+    )
     var tab by remember { mutableIntStateOf(0) }
-    PowerToolPage("instruments", tabs, tab, { tab = it }, tabIcons = tabIcons) {
+    PowerToolPage("instruments", tabs, tab, { tab = it }, tabIcons = tabIcons, accent = tabTints.getOrNull(tab)) {
         when (tab) {
             0 -> LevelPanel()
             1 -> CompassPanel()
