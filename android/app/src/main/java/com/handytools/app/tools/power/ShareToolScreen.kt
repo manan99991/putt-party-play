@@ -1,6 +1,7 @@
 package com.handytools.app.tools.power
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -259,18 +260,29 @@ private fun ShareSendPanel(st: ShareSendState) {
             )
         }
         Spacer(Modifier.height(12.dp))
+        HSecondaryButton("Send another way (AirDrop, Nearby Share…)") { shareSheet(ctx, uri, st.mime) }
+        Spacer(Modifier.height(8.dp))
         HSecondaryButton("Stop sharing") { stop() }
     } else if (uri != null && !st.busy) {
         Spacer(Modifier.height(10.dp))
-        HSecondaryButton("Send another way (share sheet)") {
-            try {
-                val i = Intent(Intent.ACTION_SEND).setType(st.mime).putExtra(Intent.EXTRA_STREAM, uri).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                ctx.startActivity(Intent.createChooser(i, "Send").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            } catch (_: Exception) { Toast.makeText(ctx, "Nothing on this phone can take that file.", Toast.LENGTH_SHORT).show() }
-        }
+        HSecondaryButton("Send another way (share sheet)") { shareSheet(ctx, uri, st.mime) }
     }
     st.status?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = HandyColors.Amber, modifier = Modifier.padding(top = 10.dp)) }
-    NoteText("The file is served straight from your phone and the mini server stops when you leave this screen or tap Stop. Some guest or public networks block device-to-device connections.")
+    if (st.phase in 1..4) {
+        NoteText("Both phones must be on the SAME Wi-Fi. On an iPhone, Safari may warn the link “isn't private/secure” — that's normal for a direct phone-to-phone link, not an error: tap “Show IP Address” if offered, then “Continue”, then “Download file”. Nothing is uploaded.")
+    }
+    NoteText("The file is served straight from your phone and the mini server stops when you leave or tap Stop. Guest/public Wi-Fi often blocks phone-to-phone connections — if it won't connect, use “Send another way” for AirDrop, Nearby Share or a messaging app instead.")
+}
+
+/** Hand the file to the OS share sheet (AirDrop, Nearby Share, messaging, email…) — the reliable
+ *  cross-platform fallback when the direct Wi-Fi link is blocked or the other phone is an iPhone. */
+private fun shareSheet(ctx: Context, uri: Uri?, mime: String) {
+    if (uri == null) return
+    try {
+        val i = Intent(Intent.ACTION_SEND).setType(mime.ifBlank { "*/*" })
+            .putExtra(Intent.EXTRA_STREAM, uri).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        ctx.startActivity(Intent.createChooser(i, "Send").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    } catch (_: Exception) { Toast.makeText(ctx, "Nothing on this phone can take that file.", Toast.LENGTH_SHORT).show() }
 }
 
 // ------------------------------------------------------------------------------------------------

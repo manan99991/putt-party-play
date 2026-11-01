@@ -58,7 +58,9 @@ class LocalFileServer(
         try {
             val reader = BufferedReader(InputStreamReader(sock.getInputStream()))
             val line = reader.readLine() ?: return
-            val path = line.split(" ").getOrNull(1) ?: "/"
+            val parts = line.split(" ")
+            val method = parts.getOrNull(0)?.uppercase() ?: "GET"
+            val path = parts.getOrNull(1) ?: "/"
             val out = sock.getOutputStream()
             if (!path.contains("favicon")) try { onConnected?.invoke() } catch (_: Exception) {}
             if (path.startsWith("/file")) {
@@ -66,8 +68,10 @@ class LocalFileServer(
                 header.append("Content-Type: ").append(mime.ifBlank { "application/octet-stream" }).append("\r\n")
                 if (size > 0) header.append("Content-Length: ").append(size).append("\r\n")
                 header.append("Content-Disposition: attachment; filename=\"").append(safeName).append("\"\r\n")
-                header.append("Connection: close\r\n\r\n")
+                header.append("Accept-Ranges: none\r\nConnection: close\r\n\r\n")
                 out.write(header.toString().toByteArray())
+                // A HEAD request (some browsers probe first) gets the headers only — no body.
+                if (method == "HEAD") { out.flush(); return }
                 var sent = 0L
                 resolver.openInputStream(fileUri)?.use { input ->
                     val buf = ByteArray(64 * 1024)
@@ -84,11 +88,14 @@ class LocalFileServer(
             } else {
                 val body = """<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="font-family:system-ui,sans-serif;text-align:center;padding:48px 24px;background:#f6f7f9;color:#111">
-<h2 style="margin:0 0 6px">$safeName</h2>
-<p style="color:#667">${prettySize(size)}</p>
-<a href="/file" download style="display:inline-block;margin-top:18px;padding:14px 24px;background:#1F5EFF;color:#fff;border-radius:12px;text-decoration:none;font-weight:600">Download</a>
-<p style="color:#99a;margin-top:28px;font-size:13px">Shared from Tenzy over your local Wi-Fi.</p>
+<body style="font-family:system-ui,sans-serif;text-align:center;padding:40px 24px;background:#f6f7f9;color:#111">
+<div style="font-size:40px">📄</div>
+<h2 style="margin:8px 0 4px;word-break:break-all">$safeName</h2>
+<p style="color:#667;margin:0">${prettySize(size)}</p>
+<a href="/file" download style="display:inline-block;margin-top:22px;padding:15px 30px;background:#1F5EFF;color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:17px">Download file</a>
+<p style="color:#8a93a6;margin-top:30px;font-size:13px;line-height:1.5;max-width:320px;margin-left:auto;margin-right:auto">
+This is a direct transfer from the other phone over your Wi-Fi — nothing is uploaded to the internet.
+If your browser warned that the connection "isn't private/secure", that's expected for a local link; it's safe to continue.</p>
 </body></html>"""
                 val bytes = body.toByteArray()
                 val header = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: ${bytes.size}\r\nConnection: close\r\n\r\n"
@@ -103,17 +110,31 @@ class LocalFileServer(
     }
 
     companion object {
-        /** First site-local IPv4 of an up, non-loopback interface (the Wi-Fi address other devices use). */
+        /** Site-local IPv4 that the OTHER phone can reach — the Wi-Fi address. Prefer the Wi-Fi interface
+         *  (wlan/ap) and never advertise the cellular interface (rmnet/ccmni/pdp/radio): a carrier 10.x
+         *  address is reachable from the mobile data network, not from the other phone's Wi-Fi, so
+         *  advertising it makes the link look up but fail to connect. Returns null when only cellular is
+         *  up, so the UI can tell the user to join Wi-Fi. */
         fun localIpv4(): String? {
+            var wifi: String? = null
+            var other: String? = null
             try {
                 for (ni in NetworkInterface.getNetworkInterfaces()) {
                     if (!ni.isUp || ni.isLoopback) continue
+                    val name = ni.name.lowercase()
+                    val cellular = name.startsWith("rmnet") || name.startsWith("ccmni") || name.contains("pdp") || name.startsWith("radio") || name.startsWith("clat")
                     for (addr in ni.inetAddresses) {
-                        if (addr is Inet4Address && !addr.isLoopbackAddress && addr.isSiteLocalAddress) return addr.hostAddress
+                        if (addr is Inet4Address && !addr.isLoopbackAddress && addr.isSiteLocalAddress) {
+                            val ip = addr.hostAddress ?: continue
+                            when {
+                                name.startsWith("wlan") || name.startsWith("ap") || name.contains("wifi") -> if (wifi == null) wifi = ip
+                                !cellular && other == null -> other = ip
+                            }
+                        }
                     }
                 }
             } catch (_: Exception) {}
-            return null
+            return wifi ?: other
         }
 
         fun prettySize(bytes: Long): String {
