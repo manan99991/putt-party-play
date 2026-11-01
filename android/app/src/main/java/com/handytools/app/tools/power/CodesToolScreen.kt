@@ -60,6 +60,7 @@ import androidx.core.content.ContextCompat
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.handytools.app.tools.Share
+import com.handytools.app.ui.ChipRow
 import com.handytools.app.ui.HCard
 import com.handytools.app.ui.HChip
 import com.handytools.app.ui.HPrimaryButton
@@ -273,7 +274,7 @@ private fun NfcSection() {
 
 /* ------------------------------------------------------------------ CREATE ------------------------------------------------------------------ */
 
-private enum class MakeType(val label: String) { TEXT("Text"), URL("Link"), WIFI("Wi-Fi"), PHONE("Phone"), EMAIL("Email"), CONTACT("Contact") }
+private enum class MakeType(val label: String) { TEXT("Text"), URL("Link"), WIFI("Wi-Fi"), PHONE("Phone"), SMS("SMS"), EMAIL("Email"), CONTACT("Contact"), GEO("Location") }
 
 @Composable
 private fun CreateTab() {
@@ -288,7 +289,7 @@ private fun CreateTab() {
 
     Spacer(Modifier.height(HandyTokens.Space12))
     SectionLabel("What to encode")
-    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    ChipRow {
         MakeType.values().forEach { t -> HChip(t.label, type == t) { type = t; a = ""; b = ""; c = "" } }
     }
     Spacer(Modifier.height(HandyTokens.Space12))
@@ -307,6 +308,16 @@ private fun CreateTab() {
             }
         }
         MakeType.PHONE -> OutField(a, { a = it }, "Phone number")
+        MakeType.SMS -> {
+            OutField(a, { a = it }, "Phone number")
+            Spacer(Modifier.height(HandyTokens.Space8))
+            OutField(b, { b = it }, "Message (optional)")
+        }
+        MakeType.GEO -> {
+            OutField(a, { a = it }, "Latitude (e.g. 41.8781)")
+            Spacer(Modifier.height(HandyTokens.Space8))
+            OutField(b, { b = it }, "Longitude (e.g. -87.6298)")
+        }
         MakeType.EMAIL -> {
             OutField(a, { a = it }, "Email address")
             Spacer(Modifier.height(HandyTokens.Space8))
@@ -328,8 +339,10 @@ private fun CreateTab() {
             MakeType.TEXT, MakeType.URL -> a.trim()
             MakeType.WIFI -> if (a.isBlank()) "" else CodesEngine.wifiPayload(a.trim(), b, if (secWpa) "WPA" else "WEP", false)
             MakeType.PHONE -> if (a.isBlank()) "" else CodesEngine.telPayload(a)
+            MakeType.SMS -> if (a.isBlank()) "" else CodesEngine.smsPayload(a, b)
             MakeType.EMAIL -> if (a.isBlank()) "" else CodesEngine.mailtoPayload(a, b, c)
             MakeType.CONTACT -> if (a.isBlank() && b.isBlank() && c.isBlank()) "" else CodesEngine.vcardPayload(a, b, c, "")
+            MakeType.GEO -> if (a.isBlank() || b.isBlank()) "" else CodesEngine.geoPayload(a.trim(), b.trim())
         }
     }
     val bmp = remember(payload) { if (payload.isBlank()) null else CodesEngine.qr(payload) }

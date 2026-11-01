@@ -88,6 +88,11 @@ object CodesEngine {
 
     fun telPayload(phone: String): String = "tel:" + phone.trim()
 
+    fun smsPayload(phone: String, message: String): String =
+        "smsto:" + phone.trim() + (if (message.isNotBlank()) ":" + message else "")
+
+    fun geoPayload(lat: String, lng: String): String = "geo:$lat,$lng"
+
     fun mailtoPayload(email: String, subject: String, body: String): String {
         val q = ArrayList<String>()
         if (subject.isNotBlank()) q.add("subject=" + Uri.encode(subject.trim()))
