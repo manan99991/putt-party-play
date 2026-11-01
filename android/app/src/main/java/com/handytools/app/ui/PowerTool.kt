@@ -3,6 +3,7 @@ package com.handytools.app.ui
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -152,7 +153,9 @@ fun Pill(text: String, tint: Color = HandyColors.Accent) {
 @Composable
 fun PreviewBox(modifier: Modifier = Modifier, minHeight: androidx.compose.ui.unit.Dp = 170.dp, content: @Composable () -> Unit) {
     Box(
-        modifier.fillMaxWidth().height(minHeight).clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surface),
+        modifier.fillMaxWidth().height(minHeight).clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, Handy.palette.border, RoundedCornerShape(16.dp)),
         contentAlignment = Alignment.Center
     ) { content() }
 }
