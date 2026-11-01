@@ -109,7 +109,7 @@ jobs:
           mkdir -p reports/route-smoke
           # The REAL Android catalog routes (the 10 home tiles + the folded-in flashlight), not the
           # iOS tool ids — deep-link each, confirm it stays foregrounded (no crash), and screenshot it.
-          routes="fileviewer docs converter codes scrubber media cleanup instruments safety share flashlight"
+          routes="home settings fileviewer docs converter codes scrubber media cleanup instruments safety share flashlight"
           smokefail=0; total=0
           echo "=== Android route smoke ==="
           for r in $routes; do
