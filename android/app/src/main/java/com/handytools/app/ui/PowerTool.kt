@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -46,6 +49,7 @@ import com.handytools.app.ads.BannerAd
  * claymorphic icon + name + blurb over it, an optional scrolling tab strip, then a scrolling body.
  * Every one of the 10 tools uses this so they look identical.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PowerToolPage(
     route: String,
@@ -57,52 +61,64 @@ fun PowerToolPage(
     val tool = TOOLS.firstOrNull { it.route == route } ?: TOOLS.first()
     val back = LocalOnBackPressedDispatcherOwner.current
     Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
-            // Hero — kept deliberately short (a slim banner, not a half-screen art block) so a tool's
-            // controls land on one screen without scrolling. verticalScroll stays as a safety net for
-            // the few tools with more controls than fit; it should rarely engage.
-            Box(Modifier.fillMaxWidth().aspectRatio(1290f / 300f)) {
-                Image(painterResource(tool.cardRes), null, Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
-                Box(
-                    Modifier.fillMaxSize().background(
-                        // The card art is dark, so the hero stays dark in light mode too; the body
-                        // below uses the theme background like a normal header-image layout.
-                        Brush.verticalGradient(
-                            0f to Color(0x26070710), 0.6f to Color(0x40070710), 1f to Color(0xF2070710)
-                        )
+        // Top bar: a clear, always-tappable back arrow, then the tool's icon and name on one line.
+        // Kept on its own row so the back control and the title can never overlap or merge.
+        Row(
+            Modifier.fillMaxWidth().statusBarsPadding()
+                .padding(start = 4.dp, end = HandyTokens.Gutter, top = 4.dp, bottom = 2.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = { back?.onBackPressedDispatcher?.onBackPressed() },
+                modifier = Modifier.size(44.dp).semantics { contentDescription = "Back" }
+            ) { Icon(Icons.AutoMirrored.Outlined.ArrowBack, "Back", tint = MaterialTheme.colorScheme.onBackground) }
+            Image(painterResource(tool.iconRes), null, Modifier.size(30.dp))
+            Spacer(Modifier.width(10.dp))
+            Text(
+                tool.name, color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, maxLines = 1
+            )
+        }
+        Box(Modifier.weight(1f)) {
+            // Soft faded backdrop — a faint wash of the tool's card art at the top that melts into the
+            // page background, so every tool has a gentle themed page instead of flat black.
+            Image(
+                painterResource(tool.cardRes), null,
+                Modifier.fillMaxWidth().aspectRatio(1290f / 820f).align(Alignment.TopCenter),
+                contentScale = ContentScale.Crop, alpha = 0.12f
+            )
+            Box(
+                Modifier.fillMaxSize().background(
+                    Brush.verticalGradient(
+                        0f to MaterialTheme.colorScheme.background.copy(alpha = 0.35f),
+                        0.45f to MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
+                        1f to MaterialTheme.colorScheme.background
                     )
                 )
-                Row(Modifier.statusBarsPadding().padding(start = 8.dp, top = 4.dp)) {
-                    IconButton(
-                        onClick = { back?.onBackPressedDispatcher?.onBackPressed() },
-                        // Name on the button node itself — uiautomator/TalkBack weren't picking up the
-                        // child Icon's description, so the back control read as an unlabeled Button.
-                        modifier = Modifier.size(40.dp).clip(RoundedCornerShape(12.dp)).background(Color(0xCC14141F))
-                            .semantics { contentDescription = "Back" }
-                    ) { Icon(Icons.AutoMirrored.Outlined.ArrowBack, "Back", tint = Color.White) }
+            )
+            // imePadding keeps the focused field above the keyboard; verticalScroll brings any lower
+            // control into view so the keyboard never covers where you're typing.
+            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).imePadding()) {
+                // What the tool does — full text, never chopped.
+                if (tool.about.isNotEmpty()) {
+                    Text(
+                        tool.about, style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary,
+                        modifier = Modifier.padding(horizontal = HandyTokens.Gutter).padding(top = 2.dp, bottom = 12.dp)
+                    )
                 }
-                Row(
-                    Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 8.dp, end = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(painterResource(tool.iconRes), null, Modifier.size(40.dp))
-                    Spacer(Modifier.width(10.dp))
-                    Column {
-                        Text(tool.name, color = Color.White, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
-                        Text(tool.blurb, color = Color(0xFF9A9AB0), style = MaterialTheme.typography.bodySmall, maxLines = 1)
+                if (tabs.isNotEmpty()) {
+                    // FlowRow wraps the option chips onto as many lines as needed — every option is on
+                    // the page at once, no horizontal scrolling to discover hidden tabs.
+                    FlowRow(
+                        Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter).padding(bottom = 10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        tabs.forEachIndexed { i, t -> HChip(t, selected = i == selected) { onTab(i) } }
                     }
                 }
+                Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter).padding(bottom = 20.dp), content = content)
             }
-            if (tabs.isNotEmpty()) {
-                Row(
-                    Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
-                        .padding(horizontal = HandyTokens.Gutter, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    tabs.forEachIndexed { i, t -> HChip(t, selected = i == selected) { onTab(i) } }
-                }
-            } else Spacer(Modifier.height(8.dp))
-            Column(Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter).padding(bottom = 20.dp), content = content)
         }
         BannerAd()
     }

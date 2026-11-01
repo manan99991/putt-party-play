@@ -78,7 +78,6 @@ import com.handytools.app.ui.Onboarding
 import com.handytools.app.ui.OnboardingScreen
 import com.handytools.app.ui.PrivacyScreen
 import com.handytools.app.ui.SettingsScreen
-import com.handytools.app.ui.SetupScreen
 import com.handytools.app.ui.PaywallScreen
 
 /** Lets a tool open another tool's route (e.g. Instruments → the folded-in Flashlight). Mirrors
@@ -133,7 +132,6 @@ class MainActivity : ComponentActivity() {
                     // CI screenshot route: home in Pro state (no ad strip) for the store split slide.
                     composable("homepro") { HomeScreen(onOpen = { nav.navigate(it) }) }
                     composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("home") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
-                    composable("setup") { SetupScreen(onDone = { nav.navigate("home") { popUpTo("setup") { inclusive = true } } }) }
                     composable("settings") { SettingsScreen(onOpen = { nav.navigate(it) }) }
                     composable("privacy") { PrivacyScreen() }
                     composable("onboarding2") { OnboardingScreen(startPage = 1, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }

@@ -81,7 +81,12 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
 
             Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("App")
-            SettingsRow(Icons.Outlined.Tune, "Permissions", "See what's on, turn things on or off") { onOpen("setup") }
+            SettingsRow(Icons.Outlined.Tune, "Permissions", "Manage camera, photos, contacts & more in Android Settings") {
+                ctx.startActivity(
+                    Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${ctx.packageName}"))
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                )
+            }
             SettingsRow(Icons.Outlined.Lock, "Privacy", "What stays on your phone (everything)") { onOpen("privacy") }
 
             Spacer(Modifier.height(HandyTokens.Space24))

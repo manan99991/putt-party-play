@@ -64,19 +64,28 @@ object SpaceCleanerEngine {
         }
         val exactUris = exact.flatMap { it.items }.map { it.uri }.toHashSet()
 
-        // Look-alikes via difference-hash (dHash), excluding exact dupes already found.
+        // Look-alikes via difference-hash (dHash), excluding exact dupes already found. Three guards
+        // kill the false positives that made unrelated photos cluster together:
+        //  • skip the Screenshots bucket — flat UI shots have low-detail hashes that collide, and they
+        //    already have their own pile below;
+        //  • skip near-uniform hashes (mostly one tone) that would match almost anything;
+        //  • require a matching aspect ratio AND a tight hamming distance (≤ 4 of 64 bits).
         val similar = mutableListOf<CleanGroup>()
-        val hashed = images.asSequence().filter { it.uri !in exactUris }.take(SIMILAR_CAP)
-            .mapNotNull { m -> dHash(ctx, m.uri)?.let { it to m } }.toList()
+        val hashed = images.asSequence()
+            .filter { it.uri !in exactUris && !it.bucket.equals("Screenshots", true) }
+            .take(SIMILAR_CAP)
+            .mapNotNull { m -> dHash(ctx, m.uri)?.let { fp -> if (fp.detail in 10..54) fp to m else null } }
+            .toList()
         val used = hashSetOf<Uri>()
         for (i in hashed.indices) {
-            val (h1, m1) = hashed[i]
+            val (f1, m1) = hashed[i]
             if (m1.uri in used) continue
             val cluster = mutableListOf(m1)
             for (j in i + 1 until hashed.size) {
-                val (h2, m2) = hashed[j]
+                val (f2, m2) = hashed[j]
                 if (m2.uri in used) continue
-                if (hamming(h1, h2) <= 6) { cluster.add(m2); used.add(m2.uri) }
+                val sameShape = kotlin.math.abs(f1.aspect - f2.aspect) <= 0.08f * maxOf(f1.aspect, f2.aspect)
+                if (sameShape && hamming(f1.hash, f2.hash) <= 4) { cluster.add(m2); used.add(m2.uri) }
             }
             if (cluster.size > 1) { used.add(m1.uri); similar.add(CleanGroup("${cluster.size} look-alikes", cluster, cluster.drop(1).sumOf { it.size })) }
         }
@@ -99,9 +108,14 @@ object SpaceCleanerEngine {
         }
     }.getOrNull()
 
-    private fun dHash(ctx: Context, uri: Uri): Long? = runCatching {
+    /** A perceptual fingerprint: the dHash bits, the source aspect ratio, and how many bits are set
+     *  (its "detail" — a near-uniform image sets very few/many bits and is unreliable to match on). */
+    private data class Fingerprint(val hash: Long, val aspect: Float, val detail: Int)
+
+    private fun dHash(ctx: Context, uri: Uri): Fingerprint? = runCatching {
         val opts = BitmapFactory.Options().apply { inSampleSize = 8 }
         val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, opts) } ?: return null
+        val aspect = bmp.width.toFloat() / bmp.height.coerceAtLeast(1)
         val small = Bitmap.createScaledBitmap(bmp, 9, 8, true)
         var hash = 0L; var bit = 0
         for (y in 0 until 8) for (x in 0 until 8) {
@@ -109,7 +123,7 @@ object SpaceCleanerEngine {
             bit++
         }
         bmp.recycle(); small.recycle()
-        hash
+        Fingerprint(hash, aspect, java.lang.Long.bitCount(hash))
     }.getOrNull()
 
     private fun gray(p: Int): Int {
