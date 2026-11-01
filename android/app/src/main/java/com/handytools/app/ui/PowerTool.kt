@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -86,23 +87,29 @@ fun PowerToolPage(
             )
         }
         Box(Modifier.weight(1f)) {
-            // Themed backdrop — a hero band of the tool's own card art at the top that fades down into
-            // the page background, so each tool's page clearly belongs to THAT tool. Kept strong enough
-            // to read at the top, fully faded by the time it reaches the controls so text stays crisp.
-            if (tool.cardRes != 0) Image(
-                painterResource(tool.cardRes), null,
-                Modifier.fillMaxWidth().aspectRatio(1290f / 760f).align(Alignment.TopCenter),
-                contentScale = ContentScale.Crop, alpha = 0.55f
+            // Soft half-gradient in the tool's own signature colour — a professional wash over the top of
+            // the page that melts into the background by mid-screen, so every tool's page clearly belongs
+            // to THAT tool without a busy photo. Two soft glows (one top-centre, one offset) give it depth.
+            val tint = toolTint(route)
+            Box(
+                Modifier.fillMaxWidth().fillMaxHeight(0.52f).align(Alignment.TopCenter)
+                    .background(
+                        Brush.verticalGradient(
+                            0f to tint.copy(alpha = 0.20f),
+                            0.45f to tint.copy(alpha = 0.07f),
+                            1f to Color.Transparent
+                        )
+                    )
             )
             Box(
-                Modifier.fillMaxSize().background(
-                    Brush.verticalGradient(
-                        0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
-                        0.28f to MaterialTheme.colorScheme.background.copy(alpha = 0.55f),
-                        0.5f to MaterialTheme.colorScheme.background.copy(alpha = 0.92f),
-                        0.62f to MaterialTheme.colorScheme.background
+                Modifier.fillMaxWidth().fillMaxHeight(0.4f).align(Alignment.TopCenter)
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(tint.copy(alpha = 0.14f), Color.Transparent),
+                            center = androidx.compose.ui.geometry.Offset(Float.POSITIVE_INFINITY, 0f),
+                            radius = 700f
+                        )
                     )
-                )
             )
             // imePadding keeps the focused field above the keyboard; verticalScroll brings any lower
             // control into view so the keyboard never covers where you're typing.
@@ -130,6 +137,23 @@ fun PowerToolPage(
         }
         BannerAd()
     }
+}
+
+/** Each tool's signature colour, used for the soft page backdrop so every tool's page has its own
+ *  professional tint. Drawn from the tool's card art / identity. */
+fun toolTint(route: String): Color = when (route) {
+    "fileviewer" -> Color(0xFF2B68FF)   // blue
+    "docs" -> Color(0xFF3B82F6)         // blue
+    "media" -> Color(0xFF8B5CF6)        // violet
+    "cleanup" -> Color(0xFF10B981)      // emerald
+    "converter" -> Color(0xFF06B6D4)    // cyan
+    "instruments" -> Color(0xFFF43F5E)  // rose
+    "safety" -> Color(0xFF22C55E)       // green
+    "share" -> Color(0xFF3B82F6)        // blue
+    "codes" -> Color(0xFF6366F1)        // indigo
+    "scrubber" -> Color(0xFF14B8A6)     // teal
+    "flashlight" -> Color(0xFFF59E0B)   // amber
+    else -> HandyColors.Accent
 }
 
 /** Small uppercase section label, like the prototype's .lbl */
