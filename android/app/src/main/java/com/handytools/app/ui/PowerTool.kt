@@ -86,19 +86,21 @@ fun PowerToolPage(
             )
         }
         Box(Modifier.weight(1f)) {
-            // Soft faded backdrop — a faint wash of the tool's card art at the top that melts into the
-            // page background, so every tool has a gentle themed page instead of flat black.
+            // Themed backdrop — a hero band of the tool's own card art at the top that fades down into
+            // the page background, so each tool's page clearly belongs to THAT tool. Kept strong enough
+            // to read at the top, fully faded by the time it reaches the controls so text stays crisp.
             if (tool.cardRes != 0) Image(
                 painterResource(tool.cardRes), null,
-                Modifier.fillMaxWidth().aspectRatio(1290f / 820f).align(Alignment.TopCenter),
-                contentScale = ContentScale.Crop, alpha = 0.12f
+                Modifier.fillMaxWidth().aspectRatio(1290f / 760f).align(Alignment.TopCenter),
+                contentScale = ContentScale.Crop, alpha = 0.55f
             )
             Box(
                 Modifier.fillMaxSize().background(
                     Brush.verticalGradient(
-                        0f to MaterialTheme.colorScheme.background.copy(alpha = 0.35f),
-                        0.45f to MaterialTheme.colorScheme.background.copy(alpha = 0.9f),
-                        1f to MaterialTheme.colorScheme.background
+                        0f to MaterialTheme.colorScheme.background.copy(alpha = 0.0f),
+                        0.28f to MaterialTheme.colorScheme.background.copy(alpha = 0.55f),
+                        0.5f to MaterialTheme.colorScheme.background.copy(alpha = 0.92f),
+                        0.62f to MaterialTheme.colorScheme.background
                     )
                 )
             )
