@@ -61,7 +61,7 @@ fun ScanCsvScreen() {
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 try {
-                    val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) }
+                    val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri)
                         ?: return@withContext null
                     buildCsv(recognizer.process(InputImage.fromBitmap(bmp, 0)).await())
                 } catch (e: Exception) { null }

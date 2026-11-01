@@ -111,6 +111,9 @@ private fun RecordPane(ctx: Context) {
 
     fun start() {
         val rec = recognizer ?: return
+        // Count the recording only now that it's actually starting — never when the mic permission
+        // was just denied or recognition isn't available.
+        Usage.use(ctx, "audiotext", Limits.FREE_AUDIO_PER_DAY)
         error = null; partial = ""
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -163,7 +166,7 @@ private fun RecordPane(ctx: Context) {
     HPrimaryButton(if (listening) "Stop" else "Record", enabled = recognizer != null && (!overQuota || listening), icon = if (listening) Icons.Outlined.Stop else Icons.Outlined.Mic, modifier = Modifier.fillMaxWidth()) {
         if (listening) stop()
         else {
-            if (!Usage.use(ctx, "audiotext", Limits.FREE_AUDIO_PER_DAY)) return@HPrimaryButton
+            if (!Usage.hasRoom(ctx, "audiotext", Limits.FREE_AUDIO_PER_DAY)) return@HPrimaryButton
             if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) start()
             else permLauncher.launch(Manifest.permission.RECORD_AUDIO)
         }

@@ -68,17 +68,20 @@ fun AiScreen(route: String) {
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri == null) return@rememberLauncherForActivityResult
-        if (!Usage.use(ctx, "ai", Limits.FREE_AI_PER_DAY)) return@rememberLauncherForActivityResult
-        val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } ?: return@rememberLauncherForActivityResult
+        // Gate here, but only spend a unit once ML Kit actually returns a result (below) — a failed
+        // read or an unreadable image must not burn the user's daily allowance.
+        if (!Usage.hasRoom(ctx, "ai", Limits.FREE_AI_PER_DAY)) return@rememberLauncherForActivityResult
+        val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri) ?: run { output = "Couldn't read that image."; return@rememberLauncherForActivityResult }
         working = true; output = ""
         val image = InputImage.fromBitmap(bmp, 0)
         if (s.kind == Kind.OCR) {
             TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS).process(image)
-                .addOnSuccessListener { working = false; output = it.text.ifBlank { "No text found in that image." } }
+                .addOnSuccessListener { Usage.use(ctx, "ai", Limits.FREE_AI_PER_DAY); working = false; output = it.text.ifBlank { "No text found in that image." } }
                 .addOnFailureListener { working = false; output = "Couldn't read that image." }
         } else {
             ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS).process(image)
                 .addOnSuccessListener { labels ->
+                    Usage.use(ctx, "ai", Limits.FREE_AI_PER_DAY)
                     working = false
                     val top = labels.sortedByDescending { it.confidence }.take(5).map { it.text }
                     output = if (top.isEmpty()) "Couldn't recognize what's in that image."

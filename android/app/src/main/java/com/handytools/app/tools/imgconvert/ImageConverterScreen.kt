@@ -111,17 +111,20 @@ fun ImageConverterScreen() {
 private fun convert(ctx: Context, uris: List<Uri>, png: Boolean, maxDim: Int, quality: Int): List<File> {
     val out = mutableListOf<File>()
     uris.forEachIndexed { i, uri ->
-        val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } ?: return@forEachIndexed
-        val scaled = if (maxDim > 0 && max(bmp.width, bmp.height) > maxDim) {
-            val s = maxDim.toFloat() / max(bmp.width, bmp.height)
-            Bitmap.createScaledBitmap(bmp, (bmp.width * s).toInt(), (bmp.height * s).toInt(), true)
-        } else bmp
-        val ext = if (png) "png" else "jpg"
-        val file = File(ctx.cacheDir, "Tenzy-${i + 1}-${System.currentTimeMillis()}.$ext")
-        FileOutputStream(file).use {
-            scaled.compress(if (png) Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG, if (png) 100 else quality, it)
-        }
-        out.add(file)
+        // One bad or oversized image must never abort the whole batch — skip it and keep going.
+        try {
+            val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri) ?: return@forEachIndexed
+            val scaled = if (maxDim > 0 && max(bmp.width, bmp.height) > maxDim) {
+                val s = maxDim.toFloat() / max(bmp.width, bmp.height)
+                Bitmap.createScaledBitmap(bmp, (bmp.width * s).toInt(), (bmp.height * s).toInt(), true)
+            } else bmp
+            val ext = if (png) "png" else "jpg"
+            val file = File(ctx.cacheDir, "Tenzy-${i + 1}-${System.currentTimeMillis()}.$ext")
+            FileOutputStream(file).use {
+                scaled.compress(if (png) Bitmap.CompressFormat.PNG else Bitmap.CompressFormat.JPEG, if (png) 100 else quality, it)
+            }
+            out.add(file)
+        } catch (_: Throwable) { /* skip this image */ }
     }
     return out
 }

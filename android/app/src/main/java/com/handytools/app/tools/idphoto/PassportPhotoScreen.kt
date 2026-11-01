@@ -80,7 +80,7 @@ fun PassportPhotoScreen() {
         scope.launch {
             val out = withContext(Dispatchers.IO) {
                 try {
-                    val src = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) }
+                    val src = com.handytools.app.SafeBitmap.decode(ctx, uri)
                         ?: return@withContext null
                     val segmenter = SubjectSegmentation.getClient(
                         SubjectSegmenterOptions.Builder().enableForegroundBitmap().build()

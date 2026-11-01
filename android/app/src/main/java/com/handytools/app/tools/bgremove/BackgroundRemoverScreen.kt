@@ -51,12 +51,12 @@ fun BackgroundRemoverScreen() {
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         result = null; error = null
-        if (uri != null) source = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) }
+        if (uri != null) source = com.handytools.app.SafeBitmap.decode(ctx, uri)
     }
 
     fun remove() {
         val bmp = source ?: return
-        if (!Usage.use(ctx, "bgremove", Limits.FREE_BG_REMOVE_PER_DAY)) return
+        if (!Usage.hasRoom(ctx, "bgremove", Limits.FREE_BG_REMOVE_PER_DAY)) return
         working = true; error = null
         val segmenter = SubjectSegmentation.getClient(
             SubjectSegmenterOptions.Builder().enableForegroundBitmap().build()
@@ -65,7 +65,8 @@ fun BackgroundRemoverScreen() {
             .addOnSuccessListener { res ->
                 working = false
                 val fg = res.foregroundBitmap
-                if (fg != null) result = fg else error = "Couldn't find a clear subject. Try a photo with a distinct foreground."
+                if (fg != null) { Usage.use(ctx, "bgremove", Limits.FREE_BG_REMOVE_PER_DAY); result = fg }
+                else error = "Couldn't find a clear subject. Try a photo with a distinct foreground."
                 segmenter.close()
             }
             .addOnFailureListener { working = false; error = "Couldn't process that photo."; segmenter.close() }

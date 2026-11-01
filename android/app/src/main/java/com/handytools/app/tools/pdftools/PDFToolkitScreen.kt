@@ -90,7 +90,7 @@ fun PDFToolkitScreen() {
         Spacer(Modifier.size(12.dp))
         HPrimaryButton(if (working) "Working…" else listOf("Make PDF", "Merge PDFs", "Compress PDF")[mode],
             enabled = !working && !overQuota && canRun, modifier = Modifier.fillMaxWidth()) {
-            if (!Usage.use(ctx, "pdftools", Limits.FREE_PDF_OPS_PER_DAY)) return@HPrimaryButton
+            if (!Usage.hasRoom(ctx, "pdftools", Limits.FREE_PDF_OPS_PER_DAY)) return@HPrimaryButton
             working = true; status = null
             scope.launch {
                 val file = withContext(Dispatchers.IO) {
@@ -101,7 +101,7 @@ fun PDFToolkitScreen() {
                     }
                 }
                 working = false
-                if (file != null) { status = "Done · ${file.length() / 1024} KB"; Share.file(ctx, file, "application/pdf") }
+                if (file != null) { Usage.use(ctx, "pdftools", Limits.FREE_PDF_OPS_PER_DAY); status = "Done · ${file.length() / 1024} KB"; Share.file(ctx, file, "application/pdf") }
                 else status = "Couldn't complete that. Check the files and try again."
             }
         }
@@ -117,7 +117,7 @@ private fun imagesToPdf(ctx: Context, uris: List<Uri>): File? {
     if (uris.isEmpty()) return null
     val doc = PdfDocument()
     uris.forEachIndexed { i, uri ->
-        val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } ?: return@forEachIndexed
+        val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri) ?: return@forEachIndexed
         val page = doc.startPage(PdfDocument.PageInfo.Builder(612, 792, i + 1).create())
         val c = page.canvas
         c.drawColor(Color.WHITE)
@@ -170,7 +170,8 @@ private fun compress(ctx: Context, uri: Uri): File? {
     eachPage(ctx, uri, 1.3f) { bmp, _ ->
         // JPEG round-trip shrinks image-heavy pages.
         val jpeg = java.io.ByteArrayOutputStream().also { bmp.compress(Bitmap.CompressFormat.JPEG, 50, it) }.toByteArray()
-        val small = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.size)
+        // If the round-trip fails to decode, fall back to the original page bitmap rather than crashing.
+        val small = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.size) ?: bmp
         val page = doc.startPage(PdfDocument.PageInfo.Builder(small.width, small.height, ++n).create())
         page.canvas.drawBitmap(small, 0f, 0f, null)
         doc.finishPage(page)

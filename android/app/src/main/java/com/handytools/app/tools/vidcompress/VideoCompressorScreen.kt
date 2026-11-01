@@ -59,7 +59,7 @@ fun VideoCompressorScreen() {
 
     fun compress() {
         val u = uri ?: return
-        if (!Usage.use(ctx, "video", Limits.FREE_VIDEO_PER_DAY)) return
+        if (!Usage.hasRoom(ctx, "video", Limits.FREE_VIDEO_PER_DAY)) return
         working = true; status = null
         val out = File(ctx.cacheDir, "Tenzy-${System.currentTimeMillis()}.mp4")
         val presentation: Effect = Presentation.createForHeight(heights[quality].second)
@@ -68,13 +68,17 @@ fun VideoCompressorScreen() {
         val transformer = Transformer.Builder(ctx)
             .addListener(object : Transformer.Listener {
                 override fun onCompleted(composition: Composition, result: ExportResult) {
-                    working = false; status = "Done · ${out.length() / 1024 / 1024} MB"; Share.file(ctx, out, "video/mp4")
+                    working = false; Usage.use(ctx, "video", Limits.FREE_VIDEO_PER_DAY)
+                    status = "Done · ${out.length() / 1024 / 1024} MB"; Share.file(ctx, out, "video/mp4")
                 }
                 override fun onError(composition: Composition, result: ExportResult, exception: ExportException) {
                     working = false; status = "Couldn't compress this video."
                 }
             }).build()
-        transformer.start(edited, out.absolutePath)
+        // A corrupt/unsupported video can throw synchronously from start() — don't crash, and never
+        // leave the UI stuck on "working".
+        try { transformer.start(edited, out.absolutePath) }
+        catch (e: Exception) { working = false; status = "Couldn't compress this video." }
     }
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {

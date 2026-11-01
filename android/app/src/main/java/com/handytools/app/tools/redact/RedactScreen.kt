@@ -86,7 +86,7 @@ fun RedactScreen() {
         scope.launch {
             val loaded = withContext(Dispatchers.IO) {
                 try {
-                    val b = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) }
+                    val b = com.handytools.app.SafeBitmap.decode(ctx, uri)
                         ?: return@withContext null
                     val found = ArrayList<Rect>()
                     val vt = recognizer.process(InputImage.fromBitmap(b, 0)).await()

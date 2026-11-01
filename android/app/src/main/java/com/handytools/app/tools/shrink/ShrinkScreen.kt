@@ -94,7 +94,7 @@ fun ShrinkScreen() {
 
     fun shrinkVideo() {
         val u = videoUri ?: return
-        if (!Usage.use(ctx, "shrink_vid", Limits.FREE_VIDEO_PER_DAY)) return
+        if (!Usage.hasRoom(ctx, "shrink_vid", Limits.FREE_VIDEO_PER_DAY)) return
         working = true; result = null; error = null
         val before = sizeOf(ctx, u)
         val out = File(ctx.cacheDir, "Tenzy-${System.currentTimeMillis()}.mp4")
@@ -105,6 +105,7 @@ fun ShrinkScreen() {
             .addListener(object : Transformer.Listener {
                 override fun onCompleted(composition: Composition, exportResult: ExportResult) {
                     working = false
+                    Usage.use(ctx, "shrink_vid", Limits.FREE_VIDEO_PER_DAY)
                     result = ShrinkResult(1, before, out.length())
                     Share.file(ctx, out, "video/mp4")
                 }
@@ -118,12 +119,13 @@ fun ShrinkScreen() {
 
     fun shrinkPhotos() {
         if (photoUris.isEmpty()) return
-        if (!Usage.use(ctx, "shrink_img", Limits.FREE_CONVERT_PER_DAY)) return
+        if (!Usage.hasRoom(ctx, "shrink_img", Limits.FREE_CONVERT_PER_DAY)) return
         working = true; result = null; error = null
         scope.launch {
             val r = withContext(Dispatchers.IO) { shrinkImages(ctx, photoUris, photoSizes[photoLevel].second) }
             working = false
             if (r != null && r.files.isNotEmpty()) {
+                Usage.use(ctx, "shrink_img", Limits.FREE_CONVERT_PER_DAY)
                 result = ShrinkResult(r.files.size, r.before, r.after)
                 Share.files(ctx, r.files, "image/jpeg")
             } else error = "Couldn't read those photos."

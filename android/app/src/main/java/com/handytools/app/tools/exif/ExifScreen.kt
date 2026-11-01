@@ -86,7 +86,7 @@ fun ExifScreen() {
             Spacer(Modifier.size(12.dp))
             HSecondaryButton("Strip & share a clean copy", modifier = Modifier.fillMaxWidth()) {
                 val u = uri ?: return@HSecondaryButton
-                val bmp = ctx.contentResolver.openInputStream(u)?.use { BitmapFactory.decodeStream(it) } ?: return@HSecondaryButton
+                val bmp = com.handytools.app.SafeBitmap.decode(ctx, u) ?: return@HSecondaryButton
                 val f = File(ctx.cacheDir, "Tenzy-clean-${System.currentTimeMillis()}.jpg")
                 FileOutputStream(f).use { bmp.compress(android.graphics.Bitmap.CompressFormat.JPEG, 95, it) }
                 Share.file(ctx, f, "image/jpeg")

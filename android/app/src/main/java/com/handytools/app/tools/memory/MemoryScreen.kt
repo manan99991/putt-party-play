@@ -183,5 +183,5 @@ fun MemoryScreen() {
 /** Load the full screenshot bitmap from MediaStore by id, or null if it's no longer there. */
 private fun loadScreenshot(ctx: Context, id: Long): Bitmap? = runCatching {
     val uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
-    ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) }
+    com.handytools.app.SafeBitmap.decode(ctx, uri)
 }.getOrNull()

@@ -61,7 +61,7 @@ fun LensScreen() {
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         if (uri == null) return@rememberLauncherForActivityResult
-        val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } ?: return@rememberLauncherForActivityResult
+        val bmp = com.handytools.app.SafeBitmap.decode(ctx, uri) ?: return@rememberLauncherForActivityResult
         working = true; gist = ""; error = null
         TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS).process(InputImage.fromBitmap(bmp, 0))
             .addOnSuccessListener { working = false; text = TextFieldValue(it.text); if (it.text.isBlank()) error = "No readable text found in that image." }

@@ -58,12 +58,15 @@ fun DocScannerScreen() {
             val f = File(ctx.cacheDir, "Tenzy-scan-${System.currentTimeMillis()}.pdf")
             ctx.contentResolver.openInputStream(pdfUri)?.use { input -> FileOutputStream(f).use { input.copyTo(it) } }
             status = "Scanned ${result.pdf?.pageCount ?: 0} page(s)"
+            // Only now — a PDF was actually produced — does this count against the daily limit.
+            Usage.use(ctx, "scan", Limits.FREE_SCAN_PAGES)
             Share.file(ctx, f, "application/pdf")
         }
     }
 
     fun scan() {
-        if (!Usage.use(ctx, "scan", Limits.FREE_SCAN_PAGES)) return
+        // Gate on remaining room, but don't spend it until a scan actually comes back (see launcher).
+        if (!Usage.hasRoom(ctx, "scan", Limits.FREE_SCAN_PAGES)) { status = "You've used today's free scans."; return }
         val options = GmsDocumentScannerOptions.Builder()
             .setGalleryImportAllowed(true)
             .setPageLimit(if (com.handytools.app.HandyApp.instance.billing.isPremium.value) 30 else 5)
