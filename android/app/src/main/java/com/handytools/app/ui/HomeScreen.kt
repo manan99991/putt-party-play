@@ -173,7 +173,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     // The backdrop art is always dark, so the header is always light — in both themes.
                     Text("Tenzy", style = MaterialTheme.typography.headlineMedium, color = Color.White)
                     Spacer(Modifier.height(HandyTokens.Space4))
-                    Text("10 power tools · on your phone",
+                    Text("${TOOLS.size} tools · on your phone",
                         style = MaterialTheme.typography.bodyMedium, color = Color(0xFFB8B8C8))
                 }
                 Row {

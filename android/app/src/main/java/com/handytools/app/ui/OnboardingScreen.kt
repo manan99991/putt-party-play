@@ -110,7 +110,7 @@ private fun HeroPage() {
             Image(painterResource(ILLOS[i]), null, Modifier.size(240.dp))
         }
         Spacer(Modifier.weight(0.5f))
-        Text("10 tools your phone forgot.", color = Color.White, fontSize = 34.sp, lineHeight = 40.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp,
+        Text("${TOOLS.size} tools your phone forgot.", color = Color.White, fontSize = 34.sp, lineHeight = 40.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(HandyTokens.Space12))
         Text("One tap each. Nothing leaves your phone.", color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.bodyLarge,

@@ -52,7 +52,7 @@ import com.handytools.app.ads.BannerAd
 /**
  * The approved power-tool page (HTML prototype v5): a hero band with the tool's card art, the
  * claymorphic icon + name + blurb over it, an optional scrolling tab strip, then a scrolling body.
- * Every one of the 10 tools uses this so they look identical.
+ * Every tool page uses this so they all look identical.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
