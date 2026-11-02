@@ -129,6 +129,9 @@ val TOOLS = listOf(
     HTool("gpsdash", "GPS Dashboard", "Speed, heading & altitude", R.drawable.ic_gpsdash, R.drawable.card_gpsdash,
         listOf("gps","speed","speedometer","heading","bearing","altitude","elevation","hud","trip","drive","bike","hike","mph","kph","km/h","dashboard","location"),
         about = "A live read-out of your speed, heading, altitude and GPS fix quality for a drive, ride or hike — straight from the phone's GNSS, nothing uploaded."),
+    HTool("rest", "Rest", "Sleep sounds & timer", R.drawable.ic_rest, R.drawable.card_rest,
+        listOf("sleep","rest","white noise","pink noise","brown noise","noise","sound","focus","relax","calm","timer","night","baby","tinnitus"),
+        about = "Soft, steady sleep and focus sound — white, pink or brown noise generated on your phone so it never loops, with a sleep timer that stops it for you."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from

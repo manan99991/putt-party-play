@@ -171,6 +171,7 @@ fun toolTint(route: String): Color = when (route) {
     "lens" -> Color(0xFF0D9488)         // teal
     "identify" -> Color(0xFF9333EA)     // purple
     "gpsdash" -> Color(0xFF0284C7)      // sky blue
+    "rest" -> Color(0xFF5B21B6)         // deep violet
     else -> HandyColors.Accent
 }
 
