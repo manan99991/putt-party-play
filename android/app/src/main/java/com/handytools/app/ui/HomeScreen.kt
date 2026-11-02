@@ -123,6 +123,9 @@ val TOOLS = listOf(
     HTool("lens", "See & Read", "Read aloud & gist", R.drawable.ic_lens, R.drawable.card_lens,
         listOf("read","see","lens","ocr","text","photo","listen","read aloud","tts","speak","gist","summarize","summary","accessibility","magnify"),
         about = "Grab text from a photo or paste it, then listen to it read aloud or boil it down to the gist — all on your phone."),
+    HTool("identify", "Identify", "What is this?", R.drawable.ic_identify, R.drawable.card_identify,
+        listOf("identify","what is this","recognize","plant","flower","tree","animal","dog","breed","bug","insect","object","landmark","barcode","product","scan","camera","lookup"),
+        about = "Point a photo at something and know what it is — everyday objects, plants, animals and products, recognised on your phone, with a one-tap web lookup."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
