@@ -176,7 +176,6 @@ fun toolTint(route: String): Color = when (route) {
     "stitch" -> Color(0xFFDB2777)       // pink
     "colorvision" -> Color(0xFF7C3AED)  // violet
     "procam" -> Color(0xFF0F766E)       // teal
-    "vault" -> Color(0xFF475569)        // slate
     else -> HandyColors.Accent
 }
 

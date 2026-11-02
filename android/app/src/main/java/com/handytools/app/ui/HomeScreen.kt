@@ -161,7 +161,7 @@ val TOOLS = listOf(
         about = "The things you reach for in a hurry on big one-tap buttons — flashlight, brightness, camera, selfie, video and hotspot.",
         tint = Color(0xFF7C3AED), vicon = Icons.Outlined.GridView),
     HTool("more", "Everything else", "The rest of the toolbox", 0, 0,
-        listOf("more","everything","else","other","extra","vault","pro camera","color vision","long screenshot","price check","rest","gps","identify","see and read","lens"),
+        listOf("more","everything","else","other","extra","pro camera","color vision","long screenshot","price check","rest","gps","identify","see and read","lens"),
         about = "A handful of more specialised tools, kept together here so the main grid stays tidy — tap in to find them.",
         tint = Color(0xFF64748B), vicon = Icons.Outlined.Apps),
 )
@@ -173,7 +173,7 @@ val SCANSORT_TOOLS = listOf(
         listOf("data","table","csv","spreadsheet","receipt","list","rows","columns","scan","extract","grab","ocr","excel"),
         about = "Photograph a receipt, list or simple table and turn it into a spreadsheet-ready CSV you can fix and share — read entirely on your phone."),
     HTool("receipts", "Receipts", "Warranties & receipts", R.drawable.ic_receipts, R.drawable.card_receipts,
-        listOf("receipt","receipts","warranty","warranties","proof of purchase","vault","store","expiry","expires","return","refund","appliance","guarantee"),
+        listOf("receipt","receipts","warranty","warranties","proof of purchase","store","expiry","expires","return","refund","appliance","guarantee"),
         about = "File receipts and never miss a warranty — snap the receipt, Tenzy keeps it and reminds you before the warranty or return window runs out."),
     HTool("sorted", "Sorted", "Snap a bill → calendar", R.drawable.ic_sorted, R.drawable.card_sorted,
         listOf("sorted","bill","letter","mail","appointment","notice","invoice","due","deadline","calendar","remind","reminder","scan","amount","pay","admin","paperwork"),
@@ -209,9 +209,6 @@ val MORE_TOOLS = listOf(
     HTool("procam", "Pro Camera", "Manual ISO & shutter", R.drawable.ic_procam, R.drawable.card_procam,
         listOf("camera","pro","manual","iso","shutter","exposure","raw","long exposure","night","photography","sensor","aperture"),
         about = "Manual control of the camera sensor — ISO and shutter speed with a live preview — on phones that allow it, falling back to auto elsewhere. Photos save to your gallery."),
-    HTool("vault", "Vault", "Fingerprint-locked files", R.drawable.ic_vault, R.drawable.card_vault,
-        listOf("vault","lock","locker","private","secure","hidden","encrypt","password","face id","fingerprint","biometric","safe","files","photos"),
-        about = "A private locker behind your fingerprint or face. Files are encrypted with an AES-256 key held in the phone's secure hardware — unreadable without this device. Nothing is uploaded."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
