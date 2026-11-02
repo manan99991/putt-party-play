@@ -15,14 +15,14 @@ Daemon will be stopped at the end of the build
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
 > Task :app:generateDebugBuildConfig
-> Task :app:checkDebugAarMetadata
 > Task :app:generateDebugResValues
+> Task :app:checkDebugAarMetadata
 > Task :app:mapDebugSourceSetPaths
 > Task :app:generateDebugResources
 > Task :app:packageDebugResources
-> Task :app:mergeDebugResources
 > Task :app:createDebugCompatibleScreenManifests
 > Task :app:extractDeepLinksDebug
+> Task :app:mergeDebugResources
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
@@ -33,8 +33,8 @@ Daemon will be stopped at the end of the build
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
 > Task :app:desugarDebugFileDependencies
-> Task :app:processDebugResources
 > Task :app:compressDebugAssets
+> Task :app:processDebugResources
 > Task :app:checkDebugDuplicateClasses
 > Task :app:kspDebugKotlin
 > Task :app:mergeExtDexDebug
@@ -81,7 +81,99 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793660858581.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793661257907.json
 
-BUILD SUCCESSFUL in 5m 31s
+BUILD SUCCESSFUL in 5m 7s
 38 actionable tasks: 38 executed
+=== keystore sanity ===
+upload.jks bytes: 2694 (expect ~2694)
+keytool error: java.io.IOException: keystore password was incorrect
+=== bundleRelease (INTERNAL_UNLOCK=true) ===
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateReleaseBuildConfig
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:parseReleaseLocalResources
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:mergeReleaseResources
+> Task :app:processReleaseManifestForPackage
+> Task :app:javaPreCompileRelease
+> Task :app:mergeReleaseArtProfile
+> Task :app:extractProguardFiles
+> Task :app:mergeReleaseStartupProfile
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:writeReleaseAppMetadata
+> Task :app:collectReleaseDependencies
+> Task :app:processReleaseResources
+> Task :app:configureReleaseDependencies
+> Task :app:mergeReleaseNativeLibs
+> Task :app:validateSigningRelease
+> Task :app:parseReleaseIntegrityConfig
+
+> Task :app:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libbarhopper_v3.so, libdatastore_shared_counter.so, libface_detector_v2_jni.so, libimage_processing_util_jni.so, libmlkit_google_ocr_pipeline.so, libmlkitcommonpipeline.so, libsurface_util_jni.so, libtranslate_jni.so.
+
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:kspReleaseKotlin
+> Task :app:compileReleaseKotlin
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/OverlayBubble.kt:139:84 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/alarm/AlarmRingService.kt:107:14 'fun vibrate(p0: VibrationEffect!, p1: AudioAttributes!): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:25:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/clipboard/SaveClipActivity.kt:48:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/CodesToolScreen.kt:99:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ConverterToolScreen.kt:263:63 'val Icons.Outlined.InsertDriveFile: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.InsertDriveFile.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ConverterToolScreen.kt:425:37 'val Icons.Outlined.InsertDriveFile: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.InsertDriveFile.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ConverterToolScreen.kt:474:37 'val Icons.Outlined.InsertDriveFile: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.InsertDriveFile.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/FileViewerToolScreen.kt:166:108 'val Icons.Outlined.Article: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Article.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/FileViewerToolScreen.kt:167:45 'val Icons.Outlined.MenuBook: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.MenuBook.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/FileViewerToolScreen.kt:169:28 'val Icons.Outlined.InsertDriveFile: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.InsertDriveFile.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/FileViewerToolScreen.kt:481:56 'val Icons.Outlined.OpenInNew: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.OpenInNew.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/FlashlightToolScreen.kt:296:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/InstrumentsPanels.kt:373:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/MediaEngine.kt:133:32 'fun getLatLong(p0: FloatArray!): Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ProCameraToolScreen.kt:70:1 Annotation 'androidx.camera.camera2.interop.ExperimentalCamera2Interop' is not annotated with '@RequiresOptIn'. '@OptIn' has no effect.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ProCameraToolScreen.kt:74:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/SafetyToolScreen.kt:367:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ScrubberToolScreen.kt:99:1 Annotation 'androidx.media3.common.util.UnstableApi' is not annotated with '@RequiresOptIn'. '@OptIn' has no effect.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/power/ShareToolScreen.kt:501:21 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/tools/screenshot/ScreenCaptureService.kt:72:44 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main/java/com/handytools/app/ui/HomeScreen.kt:138:58 'val Icons.Outlined.ReceiptLong: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.ReceiptLong.
+
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:mergeReleaseGeneratedProguardFiles
+> Task :app:processReleaseJavaRes
+> Task :app:expandReleaseArtProfileWildcards
+> Task :app:mergeReleaseJavaResource
+> Task :app:generateReleaseLintVitalReportModel
+> Task :app:minifyReleaseWithR8
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:buildReleasePreBundle
+> Task :app:compileReleaseArtProfile
+> Task :app:packageReleaseBundle
+> Task :app:signReleaseBundle
+> Task :app:produceReleaseBundleIdeListingFile
+> Task :app:createReleaseBundleListingFileRedirect
+> Task :app:bundleRelease
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793661564005.json
+
+BUILD SUCCESSFUL in 6m 15s
+50 actionable tasks: 50 executed
