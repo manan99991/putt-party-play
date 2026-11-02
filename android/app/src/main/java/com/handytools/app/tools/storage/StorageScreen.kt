@@ -136,7 +136,7 @@ fun StorageScreen(onOpen: (String) -> Unit = {}) {
                     }
                 }
 
-                HPrimaryButton("Free up photo space", modifier = Modifier.fillMaxWidth()) { onOpen("spaceclean") }
+                HPrimaryButton("Free up photo space", modifier = Modifier.fillMaxWidth()) { onOpen("cleanup") }
                 Spacer(Modifier.size(8.dp))
                 HSecondaryButton(if (scanning) "Measuring…" else "Rescan", modifier = Modifier.fillMaxWidth()) { if (!scanning) scan() }
                 BannerAd()

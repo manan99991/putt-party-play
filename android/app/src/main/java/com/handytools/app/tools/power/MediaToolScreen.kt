@@ -660,9 +660,16 @@ fun MediaToolScreen() {
 
 // ---------------------------------------------------------------------------------------- pieces
 
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 private fun ChipRowScroll(content: @Composable () -> Unit) {
-    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) { content() }
+    // Wrap onto as many rows as needed so every option is visible — no horizontal scroll hiding chips
+    // (the TARGET sizes used to run off the right edge).
+    androidx.compose.foundation.layout.FlowRow(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) { content() }
 }
 
 @Composable

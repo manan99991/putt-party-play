@@ -50,7 +50,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.InetAddress
 
-private data class NetHost(val ip: String, val name: String)
+private data class NetHost(val ip: String, val name: String, val sub: String? = null)
+
+/** Best-effort MAC for an IP from the kernel ARP table. Often empty on Android 10+ (the OS restricts
+ *  it), so this only ever adds detail — it never blocks or fails the scan. */
+private fun macOf(ip: String): String? = runCatching {
+    java.io.File("/proc/net/arp").readLines().drop(1)
+        .map { it.trim().split(Regex("\\s+")) }
+        .firstOrNull { it.size >= 4 && it[0] == ip && it[3].contains(':') && it[3] != "00:00:00:00:00:00" }
+        ?.get(3)
+}.getOrNull()
 
 /**
  * Network — the phone's connection as a proper tool. Three jobs, one per tab: measure your real
@@ -148,8 +157,11 @@ fun NetworkToolScreen() {
         hosts.clear(); progress = 0; scanning = true
         scope.launch {
             @Suppress("DEPRECATION")
-            val myIp = wifi.dhcpInfo?.ipAddress ?: 0
+            val dhcp = wifi.dhcpInfo
+            val myIp = dhcp?.ipAddress ?: 0
             if (myIp == 0) { scanning = false; return@launch }
+            val myIpStr = ipString(myIp)
+            val gatewayStr = if (dhcp != null && dhcp.gateway != 0) ipString(dhcp.gateway) else null
             val prefix = "${myIp and 0xFF}.${(myIp shr 8) and 0xFF}.${(myIp shr 16) and 0xFF}."
             withContext(Dispatchers.IO) {
                 (1..254).chunked(32).forEach { chunk ->
@@ -158,9 +170,24 @@ fun NetworkToolScreen() {
                             val addr = "$prefix$n"
                             try {
                                 val ia = InetAddress.getByName(addr)
+                                val t0 = System.nanoTime()
                                 if (ia.isReachable(400)) {
+                                    val ms = ((System.nanoTime() - t0) / 1_000_000L).coerceAtLeast(1)
                                     val host = ia.canonicalHostName
-                                    NetHost(addr, if (host == addr) "Device" else host)
+                                    val mac = macOf(addr)
+                                    // A real label instead of a flat "Device": your own phone, the router,
+                                    // a hostname when the device publishes one, else just "Device".
+                                    val name = when {
+                                        addr == myIpStr -> "This phone"
+                                        addr == gatewayStr -> "Router / gateway"
+                                        host != addr && host.isNotBlank() -> host.substringBefore('.')
+                                        else -> "Device"
+                                    }
+                                    val sub = buildString {
+                                        append("$addr · $ms ms")
+                                        if (mac != null) append(" · $mac")
+                                    }
+                                    NetHost(addr, name, sub)
                                 } else null
                             } catch (_: Exception) { null }
                         }
@@ -225,9 +252,9 @@ fun NetworkToolScreen() {
                 if (hosts.isNotEmpty()) {
                     SectionLabel("${hosts.size} device${if (hosts.size == 1) "" else "s"} found")
                     hosts.forEach { h ->
-                        Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text(h.ip, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
-                            Text(h.name, color = Handy.palette.textSecondary)
+                        Column(Modifier.fillMaxWidth().padding(vertical = 7.dp)) {
+                            Text(h.name, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
+                            if (h.sub != null) Text(h.sub, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                         }
                     }
                 } else if (!scanning) {

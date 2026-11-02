@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,9 +25,20 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.DirectionsCar
+import androidx.compose.material.icons.outlined.DocumentScanner
+import androidx.compose.material.icons.outlined.Gif
+import androidx.compose.material.icons.outlined.GridView
+import androidx.compose.material.icons.outlined.Hearing
+import androidx.compose.material.icons.outlined.PhoneAndroid
+import androidx.compose.material.icons.outlined.PieChart
+import androidx.compose.material.icons.outlined.ReceiptLong
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.WorkspacePremium
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -65,6 +77,10 @@ data class HTool(
     val keywords: List<String> = emptyList(),
     /** A clear, plain-language line on what the tool does — shown at the top of its page. */
     val about: String = "",
+    /** Fallback tile styling for tools without bespoke card art (new + brought-back ones): when
+     *  cardRes/iconRes are 0 the card paints a soft gradient from [tint] with [vicon] on top. */
+    val tint: Color = Color.Unspecified,
+    val vicon: androidx.compose.ui.graphics.vector.ImageVector? = null,
 )
 
 /** The rebuilt Android catalog — flagship first. */
@@ -75,6 +91,10 @@ val TOOLS = listOf(
     HTool("docs", "Docs & Capture", "Scan, OCR, sign & merge", R.drawable.tool_documents, R.drawable.card_documents,
         listOf("document","documents","capture","scan","camera","ocr","receipt","card","contact","pdf","sign","fill","merge","split","compress","word","find","search","invoice","doc","excel","text","paper","extract","table","photo"),
         about = "A full document workflow in one place: scan paper to clean PDFs, pull out text and tables with OCR, sign and fill forms, then merge, split or compress."),
+    HTool("scansort", "Scan & Sort", "Paper → table, bills & more", 0, 0,
+        listOf("scan","sort","receipt","receipts","bill","bills","table","csv","spreadsheet","translate","translation","sorted","data","grab","invoice","paper","document","extract","ocr","calendar","due","warranty"),
+        about = "Point your camera at paper and get something useful back — turn a receipt or table into a spreadsheet, file a receipt with its warranty, drop a bill's due date on your calendar, or translate text in a photo. All on your phone.",
+        tint = Color(0xFF4F46E5), vicon = Icons.Outlined.DocumentScanner),
     HTool("media", "Media Studio", "Shrink, cut out, redact", R.drawable.tool_media, R.drawable.card_media,
         listOf("photo","video","shrink","compress","resize","smaller","background","remove","cutout","redact","passport","id","convert","heic","jpg","gif","metadata","exif","send","upload"),
         about = "Shrink photos and videos to a target size, cut out backgrounds, make passport photos, and strip location and metadata — all before you share."),
@@ -105,21 +125,66 @@ val TOOLS = listOf(
     HTool("voice", "Voice", "Record, transcribe & trim", R.drawable.tool_voice, R.drawable.card_voice,
         listOf("voice","record","recorder","transcribe","transcript","speech","text","dictate","dictation","audio","trim","cut","memo","note","speak"),
         about = "Record speech and get an instant transcript you can tidy and share, or trim an audio clip down — all on your phone, no account."),
-    HTool("translate", "Translate", "Text, camera & conversation", R.drawable.tool_translate, R.drawable.card_translate,
-        listOf("translate","translation","language","languages","text","camera","photo","conversation","speak","interpret","foreign","phrase"),
-        about = "Translate typed text, text in a photo, or a live back-and-forth conversation between two languages — on your phone."),
     HTool("memory", "Memory", "Ask your screenshots", R.drawable.ic_memory, R.drawable.card_memory,
         listOf("memory","find","search","screenshot","screenshots","photos","wifi","password","code","confirmation","parking","where","receipt","remember","ask"),
         about = "Ask your own screenshots anything — the Wi-Fi password, a confirmation number, where you parked. Read on your phone, never uploaded."),
-    HTool("sorted", "Sorted", "Snap a bill → calendar", R.drawable.ic_sorted, R.drawable.card_sorted,
-        listOf("sorted","bill","letter","mail","appointment","notice","invoice","due","deadline","calendar","remind","reminder","scan","amount","pay","admin","paperwork"),
-        about = "Snap a bill, letter or appointment and Sorted pulls out the due date and amount and drops a reminder on your calendar."),
-    HTool("receipts", "Receipts", "Warranties & receipts", R.drawable.ic_receipts, R.drawable.card_receipts,
-        listOf("receipt","receipts","warranty","warranties","proof of purchase","vault","store","expiry","expires","return","refund","appliance","guarantee"),
-        about = "File receipts and never miss a warranty — snap the receipt, Tenzy keeps it and reminds you before the warranty or return window runs out."),
+    HTool("parked", "Where I Parked", "Save & find your car", 0, 0,
+        listOf("park","parked","car","find","where","garage","lot","vehicle","location","walk back","pin"),
+        about = "Drop a pin where you parked, then get the distance and a compass arrow back to your car later. Saved on your phone.",
+        tint = Color(0xFF0284C7), vicon = Icons.Outlined.DirectionsCar),
+    HTool("invoice", "Invoice", "Quick invoices to send", 0, 0,
+        listOf("invoice","bill","client","charge","quote","pdf","payment","freelance","receipt","line item"),
+        about = "Fill in who it's for and a few line items, and Tenzy builds a clean PDF invoice you can share — made entirely on your phone.",
+        tint = Color(0xFFEA580C), vicon = Icons.Outlined.ReceiptLong),
+    HTool("storage", "Storage", "See what's filling your phone", 0, 0,
+        listOf("storage","space","full","breakdown","disk","gb","files","photos","videos","folders","largest","clean"),
+        about = "A clear map of what's using your space — photos, videos, the biggest folders and largest files — so you know what to clear.",
+        tint = Color(0xFF10B981), vicon = Icons.Outlined.PieChart),
+    HTool("gifmaker", "GIF Maker", "Video → looping GIF", 0, 0,
+        listOf("gif","video","animation","loop","convert","share","clip","meme"),
+        about = "Pick a short video and Tenzy turns it into a smooth looping GIF, made on your phone.",
+        tint = Color(0xFFDB2777), vicon = Icons.Outlined.Gif),
+    HTool("texttools", "Text Tools", "Clean & change text", 0, 0,
+        listOf("text","case","uppercase","lowercase","title case","trim","spaces","line breaks","reverse","word count","character count","clean","format"),
+        about = "Paste text and fix it fast — change the case, strip extra spaces and line breaks, reverse it, or just count the words and characters.",
+        tint = Color(0xFF0D9488), vicon = Icons.Outlined.TextFields),
+    HTool("myphone", "My Phone", "Device info at a glance", 0, 0,
+        listOf("phone","device","info","specs","battery","storage","ram","memory","model","android","screen","hardware","about"),
+        about = "A clear read-out of your phone — battery, storage, RAM, screen, model and network — with a one-tap copy for support.",
+        tint = Color(0xFF475569), vicon = Icons.Outlined.PhoneAndroid),
+    HTool("hearing", "Hearing Boost", "Amplify what's around you", 0, 0,
+        listOf("hearing","boost","amplify","sound","listen","ear","loud","hard of hearing","assist","mic"),
+        about = "Turns your phone and earbuds into a live listening aid — it picks up the sound around you and plays it back louder, at a level you control. Best with wired or low-latency earbuds.",
+        tint = Color(0xFF0891B2), vicon = Icons.Outlined.Hearing),
+    HTool("quick", "Quick Buttons", "One-tap handy actions", 0, 0,
+        listOf("quick","buttons","easy","flashlight","torch","brightness","camera","selfie","video","hotspot","shortcut","toggle"),
+        about = "The things you reach for in a hurry on big one-tap buttons — flashlight, brightness, camera, selfie, video and hotspot.",
+        tint = Color(0xFF7C3AED), vicon = Icons.Outlined.GridView),
+    HTool("more", "Everything else", "The rest of the toolbox", 0, 0,
+        listOf("more","everything","else","other","extra","vault","pro camera","color vision","long screenshot","price check","rest","gps","identify","see and read","lens"),
+        about = "A handful of more specialised tools, kept together here so the main grid stays tidy — tap in to find them.",
+        tint = Color(0xFF64748B), vicon = Icons.Outlined.Apps),
+)
+
+/** The tools folded into the "Scan & Sort" tile — snap paper, get data/actions back. Off the main
+ *  grid but reached from Scan & Sort and by search; kept here for PowerToolPage + group rendering. */
+val SCANSORT_TOOLS = listOf(
     HTool("scancsv", "Data Grabber", "Photo → table / CSV", R.drawable.ic_scancsv, R.drawable.card_scancsv,
         listOf("data","table","csv","spreadsheet","receipt","list","rows","columns","scan","extract","grab","ocr","excel"),
         about = "Photograph a receipt, list or simple table and turn it into a spreadsheet-ready CSV you can fix and share — read entirely on your phone."),
+    HTool("receipts", "Receipts", "Warranties & receipts", R.drawable.ic_receipts, R.drawable.card_receipts,
+        listOf("receipt","receipts","warranty","warranties","proof of purchase","vault","store","expiry","expires","return","refund","appliance","guarantee"),
+        about = "File receipts and never miss a warranty — snap the receipt, Tenzy keeps it and reminds you before the warranty or return window runs out."),
+    HTool("sorted", "Sorted", "Snap a bill → calendar", R.drawable.ic_sorted, R.drawable.card_sorted,
+        listOf("sorted","bill","letter","mail","appointment","notice","invoice","due","deadline","calendar","remind","reminder","scan","amount","pay","admin","paperwork"),
+        about = "Snap a bill, letter or appointment and Sorted pulls out the due date and amount and drops a reminder on your calendar."),
+    HTool("translate", "Translate", "Text, camera & conversation", R.drawable.tool_translate, R.drawable.card_translate,
+        listOf("translate","translation","language","languages","text","camera","photo","conversation","speak","interpret","foreign","phrase"),
+        about = "Translate typed text, text in a photo, or a live back-and-forth conversation between two languages — on your phone."),
+)
+
+/** The tools folded into the "Everything else" tile. Reached from that tile and by search. */
+val MORE_TOOLS = listOf(
     HTool("lens", "See & Read", "Read aloud & gist", R.drawable.ic_lens, R.drawable.card_lens,
         listOf("read","see","lens","ocr","text","photo","listen","read aloud","tts","speak","gist","summarize","summary","accessibility","magnify"),
         about = "Grab text from a photo or paste it, then listen to it read aloud or boil it down to the gist — all on your phone."),
@@ -130,8 +195,8 @@ val TOOLS = listOf(
         listOf("gps","speed","speedometer","heading","bearing","altitude","elevation","hud","trip","drive","bike","hike","mph","kph","km/h","dashboard","location"),
         about = "A live read-out of your speed, heading, altitude and GPS fix quality for a drive, ride or hike — straight from the phone's GNSS, nothing uploaded."),
     HTool("rest", "Rest", "Sleep sounds & timer", R.drawable.ic_rest, R.drawable.card_rest,
-        listOf("sleep","rest","white noise","pink noise","brown noise","noise","sound","focus","relax","calm","timer","night","baby","tinnitus"),
-        about = "Soft, steady sleep and focus sound — white, pink or brown noise generated on your phone so it never loops, with a sleep timer that stops it for you."),
+        listOf("sleep","rest","white noise","pink noise","brown noise","noise","rain","ocean","waves","fan","sound","focus","relax","calm","timer","night","baby","tinnitus"),
+        about = "Soft, steady sleep and focus sound — noise (white, pink, brown) plus rain, ocean and a fan, generated on your phone so it never loops, with a sleep timer that stops it for you."),
     HTool("pricecheck", "Price Check", "Best value per unit", R.drawable.ic_pricecheck, R.drawable.card_pricecheck,
         listOf("price","unit price","compare","deal","cheaper","per 100g","per litre","per unit","budget","shopping","grocery","value","cost","bulk"),
         about = "Enter the price and size of two or more products and Tenzy works out the real cost per 100 g, per litre or per unit — so the bigger pack can't trick you."),
@@ -158,7 +223,14 @@ val EXTRA_TOOLS = listOf(
 )
 
 /** Every tool's scaffold metadata, grid + folded-in, for PowerToolPage lookup. */
-val ALL_TOOLS = TOOLS + EXTRA_TOOLS
+val ALL_TOOLS = TOOLS + SCANSORT_TOOLS + MORE_TOOLS + EXTRA_TOOLS
+
+/** Everything a user can search for and open directly — grid tiles plus the tools folded into the
+ *  Scan & Sort and Everything-else groups. */
+val SEARCHABLE = TOOLS + SCANSORT_TOOLS + MORE_TOOLS
+
+/** Count of real, usable tools (excludes the two group-launcher tiles, which aren't themselves tools). */
+val TENZY_TOOL_COUNT = SEARCHABLE.count { it.route != "scansort" && it.route != "more" }
 
 /** Google-style ranked search across every tool. */
 fun searchTools(raw: String): List<HTool> {
@@ -179,7 +251,7 @@ fun searchTools(raw: String): List<HTool> {
         }
         return s
     }
-    return TOOLS.map { it to score(it) }.filter { it.second > 0 }.sortedByDescending { it.second }.map { it.first }
+    return SEARCHABLE.map { it to score(it) }.filter { it.second > 0 }.sortedByDescending { it.second }.map { it.first }
 }
 
 @Composable
@@ -188,10 +260,17 @@ fun HomeScreen(onOpen: (String) -> Unit) {
     var query by remember { mutableStateOf("") }
     val results = if (query.trim().isEmpty()) TOOLS else searchTools(query)
 
-    Box(Modifier.fillMaxSize()) {
-        Image(
-            painterResource(R.drawable.home_backdrop), null,
-            modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop
+    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+        // A soft wash in the current theme's primary colour so the home page has some life AND follows
+        // the selected theme. It used to paint a fixed dark image, which is why themes never reached it.
+        Box(
+            Modifier.fillMaxWidth().fillMaxHeight(0.42f).align(Alignment.TopCenter)
+                .background(
+                    Brush.verticalGradient(
+                        0f to MaterialTheme.colorScheme.primary.copy(alpha = 0.16f),
+                        1f to Color.Transparent
+                    )
+                )
         )
         Column(Modifier.fillMaxSize().statusBarsPadding()) {
             // Header
@@ -200,22 +279,22 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    // The backdrop art is always dark, so the header is always light — in both themes.
-                    Text("Tenzy", style = MaterialTheme.typography.headlineMedium, color = Color.White)
+                    // Theme-aware so every theme (light or dark) reads correctly on the home page.
+                    Text("Tenzy", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
                     Spacer(Modifier.height(HandyTokens.Space4))
-                    Text("${TOOLS.size} tools · on your phone",
-                        style = MaterialTheme.typography.bodyMedium, color = Color(0xFFB8B8C8))
+                    Text("$TENZY_TOOL_COUNT tools · on your phone",
+                        style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
                 }
                 Row {
                     if (!premium) IconButton(onClick = { onOpen("paywall") }) { Icon(Icons.Outlined.WorkspacePremium, "Go Pro", tint = HandyColors.Accent) }
-                    IconButton(onClick = { onOpen("settings") }) { Icon(Icons.Outlined.Settings, "Settings", tint = Color(0xFFC9C9D6)) }
+                    IconButton(onClick = { onOpen("settings") }) { Icon(Icons.Outlined.Settings, "Settings", tint = MaterialTheme.colorScheme.onBackground) }
                 }
             }
 
             // Search
             TextField(
                 value = query, onValueChange = { query = it },
-                placeholder = { Text("Search ${TOOLS.size} tools") },
+                placeholder = { Text("Search $TENZY_TOOL_COUNT tools") },
                 leadingIcon = { Icon(Icons.Outlined.Search, null, tint = Handy.palette.textSecondary) },
                 trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Outlined.Close, "Clear") } },
                 singleLine = true, keyboardOptions = KeyboardOptions.Default, shape = RoundedCornerShape(50),
@@ -231,7 +310,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     Spacer(Modifier.height(HandyTokens.Space48))
                     Icon(Icons.Outlined.Search, null, tint = Handy.palette.textSecondary, modifier = Modifier.size(36.dp))
                     Spacer(Modifier.height(HandyTokens.Space8))
-                    Text("No tools match \"$query\"", color = Color(0xFFB8B8C8))
+                    Text("No tools match \"$query\"", color = Handy.palette.textSecondary)
                 }
             } else {
                 // Fit every tool on one page: size each card so all rows land inside the viewport (no
@@ -274,21 +353,40 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
         Modifier.fillMaxWidth().height(height).clip(RoundedCornerShape(20.dp))
             .background(Color(0xFF0D0D16)).clickable(onClick = onClick)
     ) {
-        Image(
-            painterResource(tool.cardRes), null, modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop, alignment = Alignment.CenterEnd
-        )
+        if (tool.cardRes != 0) {
+            Image(
+                painterResource(tool.cardRes), null, modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop, alignment = Alignment.CenterEnd
+            )
+        } else {
+            // No bespoke card art (new + brought-back tools): a soft diagonal gradient in the tool's
+            // tint so the tile still reads as designed rather than a flat black box.
+            val base = if (tool.tint != Color.Unspecified) tool.tint else HandyColors.Accent
+            Box(
+                Modifier.fillMaxSize().background(
+                    Brush.linearGradient(listOf(base.copy(alpha = 0.95f), base.copy(alpha = 0.5f)))
+                )
+            )
+        }
         Box(
             Modifier.fillMaxSize().background(
                 Brush.verticalGradient(0.30f to Color.Transparent, 1f to Color(0xD6060610))
             )
         )
         // Icon pinned to the top-left. Kept in its own aligned node (not a SpaceBetween column) so it
-        // can never push the text past the bottom edge.
-        Image(
-            painterResource(tool.iconRes), null,
-            modifier = Modifier.align(Alignment.TopStart).padding(14.dp).size(iconSize)
-        )
+        // can never push the text past the bottom edge. Drawable art when present, else the Material
+        // fallback icon for tiles without bespoke art.
+        if (tool.iconRes != 0) {
+            Image(
+                painterResource(tool.iconRes), null,
+                modifier = Modifier.align(Alignment.TopStart).padding(14.dp).size(iconSize)
+            )
+        } else if (tool.vicon != null) {
+            Icon(
+                tool.vicon, null, tint = Color.White,
+                modifier = Modifier.align(Alignment.TopStart).padding(14.dp).size(iconSize)
+            )
+        }
         // Title + blurb pinned to the bottom. Anchoring here guarantees the full two-line description
         // always sits inside the card — if space is ever tight it's the gap above that shrinks, never
         // the words that get clipped.
@@ -298,6 +396,34 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
             Spacer(Modifier.height(2.dp))
             Text(tool.blurb, color = Color(0xCCFFFFFF), style = MaterialTheme.typography.bodySmall,
                 maxLines = 2, overflow = TextOverflow.Ellipsis)
+        }
+    }
+}
+
+/** Launcher page for a group tile (Scan & Sort, Everything else): lists the group's tools as tappable
+ *  rows that open the real tool. The sub-tools keep their own screens and routes — this just gathers
+ *  them under one grid tile. Uses PowerToolPage so it shares the standard header + themed backdrop. */
+@Composable
+fun GroupScreen(route: String, entries: List<HTool>, onOpen: (String) -> Unit) {
+    PowerToolPage(route) {
+        entries.forEach { t ->
+            HCard(Modifier.fillMaxWidth().clickable { onOpen(t.route) }) {
+                Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                    if (t.iconRes != 0) {
+                        Image(painterResource(t.iconRes), null, Modifier.size(40.dp))
+                    } else if (t.vicon != null) {
+                        Icon(t.vicon, null, tint = HandyColors.Accent, modifier = Modifier.size(30.dp))
+                    }
+                    Spacer(Modifier.width(HandyTokens.Space12))
+                    Column(Modifier.weight(1f)) {
+                        Text(t.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface)
+                        Text(t.blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    }
+                    Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)
+                }
+            }
+            Spacer(Modifier.height(HandyTokens.Space8))
         }
     }
 }

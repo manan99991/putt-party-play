@@ -156,7 +156,16 @@ fun CleanupToolScreen() {
     fun applyTrashed(items: List<CleanItem>) {
         if (items.isEmpty()) return
         val uris = items.map { it.uri }.toHashSet()
-        scan?.categories?.forEach { c -> c.items = c.items.filter { it.uri !in uris } }
+        scan?.categories?.forEach { c ->
+            var kept = c.items.filter { it.uri !in uris }
+            // In grouped categories (duplicates / look-alikes) a group left with only one photo is no
+            // longer a duplicate of anything — drop the leftover so it doesn't linger as a false match.
+            if (c.grouped) {
+                val counts = kept.groupingBy { it.group }.eachCount()
+                kept = kept.filter { (counts[it.group] ?: 0) >= 2 }
+            }
+            c.items = kept
+        }
         sessionTrash.addAll(items)
         selected = selected - uris
         status = "${items.size} moved to Trash · ${CleanupEngine.human(items.sumOf { it.size })} freed"

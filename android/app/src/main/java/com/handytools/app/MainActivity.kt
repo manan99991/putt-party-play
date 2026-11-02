@@ -22,7 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import com.handytools.app.ads.Interstitials
 import com.handytools.app.tools.alarm.AlarmListScreen
 import com.handytools.app.tools.alarm.AlarmRingPreview
-import com.handytools.app.tools.awake.KeepAwakeScreen
 import com.handytools.app.tools.clipboard.ClipboardScreen
 import com.handytools.app.tools.scancsv.ScanCsvScreen
 import com.handytools.app.tools.invoice.QuickInvoiceScreen
@@ -30,7 +29,6 @@ import com.handytools.app.tools.receipts.ReceiptKeeperScreen
 import com.handytools.app.tools.gifmaker.GifMakerScreen
 import com.handytools.app.tools.parked.ParkedScreen
 import com.handytools.app.tools.hearing.HearingBoostScreen
-import com.handytools.app.tools.heartrate.HeartRateScreen
 import com.handytools.app.tools.ai.AiScreen
 import com.handytools.app.tools.lens.LensScreen
 import com.handytools.app.tools.memory.MemoryScreen
@@ -44,13 +42,14 @@ import com.handytools.app.tools.wallet.WalletScreen
 import com.handytools.app.tools.notifhistory.NotifHistoryScreen
 import com.handytools.app.tools.ocr.ScreenTextScreen
 import com.handytools.app.tools.quick.QuickButtonsScreen
-import com.handytools.app.tools.scratchpad.ScratchpadScreen
 import com.handytools.app.tools.screenshot.ScreenshotScreen
 import com.handytools.app.tools.shortcut.WebShortcutScreen
-import com.handytools.app.tools.volume.VolumeMixerScreen
 import com.handytools.app.ui.ComingSoonScreen
 import com.handytools.app.ui.HandyTheme
 import com.handytools.app.ui.HomeScreen
+import com.handytools.app.ui.GroupScreen
+import com.handytools.app.ui.SCANSORT_TOOLS
+import com.handytools.app.ui.MORE_TOOLS
 import com.handytools.app.ui.TOOLS
 import com.handytools.app.ui.Onboarding
 import com.handytools.app.ui.OnboardingScreen
@@ -128,11 +127,8 @@ class MainActivity : ComponentActivity() {
                     composable("quick") { QuickButtonsScreen() }
                     composable("shortcut") { WebShortcutScreen(initialUrl = sharedUrl) }
                     composable("alarm") { AlarmListScreen(onUpgrade = { nav.navigate("paywall") }) }
-                    composable("volume") { VolumeMixerScreen() }
                     composable("ocr") { ScreenTextScreen() }
                     composable("notifs") { NotifHistoryScreen() }
-                    composable("scratchpad") { ScratchpadScreen() }
-                    composable("awake") { KeepAwakeScreen() }
                     composable("scancsv") { ScanCsvScreen() }
                     composable("invoice") { QuickInvoiceScreen() }
                     composable("receipts") { ReceiptKeeperScreen() }
@@ -163,7 +159,6 @@ class MainActivity : ComponentActivity() {
                     composable("procam") { com.handytools.app.tools.power.ProCameraToolScreen() }
                     composable("vault") { com.handytools.app.tools.power.VaultToolScreen() }
                     composable("hearing") { HearingBoostScreen() }
-                    composable("heartrate") { HeartRateScreen() }
                     composable("timer") { TimersScreen() }
                     composable("wallet") { WalletScreen() }
                     composable("translate") { com.handytools.app.tools.power.TranslateToolScreen() }
@@ -171,11 +166,14 @@ class MainActivity : ComponentActivity() {
                     composable("memory") { MemoryScreen() }
                     composable("lens") { LensScreen() }
                     composable("storage") { StorageScreen(onOpen = { nav.navigate(it) }) }
+                    // Group launchers: one tile that opens a list of its folded-in tools.
+                    composable("scansort") { GroupScreen("scansort", SCANSORT_TOOLS) { nav.navigate(it) } }
+                    composable("more") { GroupScreen("more", MORE_TOOLS) { nav.navigate(it) } }
                     composable("myphone") { MyPhoneScreen() }
                     composable("texttools") { TextToolsScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "network", "identify", "gpsdash", "rest", "pricecheck", "stitch", "colorvision", "procam", "vault", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
+                    val ported = setOf("scansort", "more", "quick", "clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "network", "identify", "gpsdash", "rest", "pricecheck", "stitch", "colorvision", "procam", "vault", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)

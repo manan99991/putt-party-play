@@ -35,7 +35,8 @@ import com.handytools.app.ui.PreviewBox
 import com.handytools.app.ui.SectionLabel
 import kotlinx.coroutines.delay
 
-private val SOUNDS = listOf("White" to 0, "Pink" to 1, "Brown" to 2)
+// Index is the NoisePlayer type: 0 white, 1 pink, 2 brown, 3 rain, 4 ocean, 5 fan.
+private val SOUNDS = listOf("White", "Pink", "Brown", "Rain", "Ocean", "Fan")
 private val TIMERS = listOf("Off" to 0, "15 min" to 15, "30 min" to 30, "1 hr" to 60, "2 hr" to 120)
 
 /**
@@ -72,7 +73,7 @@ fun RestToolScreen() {
     PowerToolPage("rest") {
         PreviewBox(minHeight = 150.dp) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(if (playing) SOUNDS[sound].first + " noise" else "Ready", style = MaterialTheme.typography.titleMedium, color = if (playing) HandyColors.Accent else Handy.palette.textSecondary, fontWeight = FontWeight.Bold)
+                Text(if (playing) SOUNDS[sound] + (if (sound <= 2) " noise" else "") else "Ready", style = MaterialTheme.typography.titleMedium, color = if (playing) HandyColors.Accent else Handy.palette.textSecondary, fontWeight = FontWeight.Bold)
                 if (remaining != null) {
                     Spacer(Modifier.height(6.dp))
                     val m = remaining!! / 60; val s = remaining!! % 60
@@ -85,7 +86,7 @@ fun RestToolScreen() {
         }
 
         SectionLabel("Sound")
-        ChipRow { SOUNDS.forEachIndexed { i, (label, _) -> HChip(label, sound == i) { sound = i; if (playing) player.setType(i) } } }
+        ChipRow { SOUNDS.forEachIndexed { i, label -> HChip(label, sound == i) { sound = i; if (playing) player.setType(i) } } }
 
         Spacer(Modifier.height(12.dp))
         SectionLabel("Volume")

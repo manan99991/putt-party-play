@@ -74,7 +74,9 @@ object SpaceCleanerEngine {
         val hashed = images.asSequence()
             .filter { it.uri !in exactUris && !it.bucket.equals("Screenshots", true) }
             .take(SIMILAR_CAP)
-            .mapNotNull { m -> dHash(ctx, m.uri)?.let { fp -> if (fp.detail in 10..54) fp to m else null } }
+            // Require real information content: mostly-dark or mostly-bright shots (an almost all-0 or
+            // all-1 dHash) match nearly anything, which grouped unrelated dark photos/UI as "look-alikes".
+            .mapNotNull { m -> dHash(ctx, m.uri)?.let { fp -> if (fp.detail in 20..44) fp to m else null } }
             .toList()
         val used = hashSetOf<Uri>()
         for (i in hashed.indices) {
@@ -85,7 +87,10 @@ object SpaceCleanerEngine {
                 val (f2, m2) = hashed[j]
                 if (m2.uri in used) continue
                 val sameShape = kotlin.math.abs(f1.aspect - f2.aspect) <= 0.08f * maxOf(f1.aspect, f2.aspect)
-                if (sameShape && hamming(f1.hash, f2.hash) <= 4) { cluster.add(m2); used.add(m2.uri) }
+                // Two genuine look-alikes have comparable complexity AND a very tight hash distance.
+                // Tightened from ≤4 to ≤3 and added the complexity guard to stop false matches.
+                val sameComplexity = kotlin.math.abs(f1.detail - f2.detail) <= 6
+                if (sameShape && sameComplexity && hamming(f1.hash, f2.hash) <= 3) { cluster.add(m2); used.add(m2.uri) }
             }
             if (cluster.size > 1) { used.add(m1.uri); similar.add(CleanGroup("${cluster.size} look-alikes", cluster, cluster.drop(1).sumOf { it.size })) }
         }
