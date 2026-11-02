@@ -7,8 +7,8 @@
 
 name: Mobile QA agent
 on:
-  push:
-    branches: [handytools]        # active branch (workflow_dispatch/schedule only fire from default)
+  # Auto-run-on-push removed to conserve Actions minutes: this ~95-minute job was firing on every
+  # push to handytools. It now runs only on the weekly schedule or an explicit manual dispatch.
   schedule:
     - cron: "23 7 * * 1"          # weekly deep run
   workflow_dispatch:

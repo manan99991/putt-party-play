@@ -20,6 +20,9 @@ on:
       version_code:
         description: "With ship=listing: the version code (run number) of the already-uploaded release to attach the changelog to / roll out"
         default: ""
+      shots:
+        description: "'yes' = also run the ~10-15 min emulator screenshot job (off by default to conserve Actions minutes)"
+        default: "no"
 
 permissions:
   contents: write
@@ -151,6 +154,9 @@ jobs:
 
   screenshots:
     needs: build
+    # Off by default — the emulator screenshot job costs ~10-15 Actions minutes and its images don't
+    # reach the dev environment anyway. Run it only on an explicit dispatch with shots=yes.
+    if: ${{ github.event.inputs.shots == 'yes' }}
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
