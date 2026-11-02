@@ -138,6 +138,9 @@ val TOOLS = listOf(
     HTool("stitch", "Long Screenshot", "Stitch shots into one", R.drawable.ic_stitch, R.drawable.card_stitch,
         listOf("long screenshot","stitch","scroll","combine","merge","tall","chat","thread","conversation","full page","screenshots","join"),
         about = "Stitch a set of scrolling screenshots into one tall image — Tenzy finds the overlap between each shot and joins them seamlessly, so a chat or page reads as one picture."),
+    HTool("colorvision", "Color Vision", "Tell colours apart", R.drawable.ic_colorvision, R.drawable.card_colorvision,
+        listOf("color","colour","blind","colorblind","colourblind","daltonize","correct","vision","red green","protan","deutan","tritan","accessibility"),
+        about = "Shifts the colours a given type of colour blindness confuses into differences the eye can still tell apart — pick a photo, pick your type, and compare. All on your phone."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
