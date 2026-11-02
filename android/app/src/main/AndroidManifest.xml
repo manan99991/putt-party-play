@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Vault: without this, BiometricPrompt.authenticate() throws SecurityException even when a
+         fingerprint/face is enrolled, which looked like "biometrics not set up". -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <!-- Volume mixer: DND stream changes need notification policy access on some devices -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <!-- Quick buttons / camera tools -->

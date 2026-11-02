@@ -113,6 +113,7 @@ fun VaultToolScreen() {
 
     fun unlock() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) { error = "The vault needs Android 9 or newer."; return }
+        error = null
         try {
             val prompt = BiometricPrompt.Builder(ctx)
                 .setTitle("Unlock Vault")
@@ -124,11 +125,18 @@ fun VaultToolScreen() {
                     unlocked = true; loadItems()
                 }
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    error = errString.toString()
+                    // Dismissing the sheet isn't an error worth shouting about. The system supplies an
+                    // accurate message for the rest (e.g. "no biometrics enrolled", lockout).
+                    val dismissed = errorCode == BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED ||
+                        errorCode == BiometricPrompt.BIOMETRIC_ERROR_CANCELED ||
+                        errorCode == BiometricPrompt.BIOMETRIC_ERROR_NEGATIVE_BUTTON
+                    if (!dismissed) error = errString.toString()
                 }
             })
         } catch (e: Throwable) {
-            error = "Biometric unlock isn't set up on this phone. Add a fingerprint or face in Settings first."
+            // The prompt couldn't even start — don't claim biometrics are missing; they may well be
+            // enrolled (the real cause here was a missing USE_BIOMETRIC permission).
+            error = "Couldn't start biometric unlock on this phone."
         }
     }
 
