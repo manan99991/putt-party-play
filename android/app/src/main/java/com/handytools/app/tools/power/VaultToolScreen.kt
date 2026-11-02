@@ -125,11 +125,11 @@ fun VaultToolScreen() {
                     unlocked = true; loadItems()
                 }
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    // Dismissing the sheet isn't an error worth shouting about. The system supplies an
-                    // accurate message for the rest (e.g. "no biometrics enrolled", lockout).
+                    // Dismissing the sheet isn't an error worth shouting about (the Cancel button fires
+                    // its own listener, not this callback). The system supplies an accurate message for
+                    // the rest (e.g. "no biometrics enrolled", lockout).
                     val dismissed = errorCode == BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED ||
-                        errorCode == BiometricPrompt.BIOMETRIC_ERROR_CANCELED ||
-                        errorCode == BiometricPrompt.BIOMETRIC_ERROR_NEGATIVE_BUTTON
+                        errorCode == BiometricPrompt.BIOMETRIC_ERROR_CANCELED
                     if (!dismissed) error = errString.toString()
                 }
             })
