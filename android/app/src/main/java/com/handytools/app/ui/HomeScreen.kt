@@ -126,6 +126,9 @@ val TOOLS = listOf(
     HTool("identify", "Identify", "What is this?", R.drawable.ic_identify, R.drawable.card_identify,
         listOf("identify","what is this","recognize","plant","flower","tree","animal","dog","breed","bug","insect","object","landmark","barcode","product","scan","camera","lookup"),
         about = "Point a photo at something and know what it is — everyday objects, plants, animals and products, recognised on your phone, with a one-tap web lookup."),
+    HTool("gpsdash", "GPS Dashboard", "Speed, heading & altitude", R.drawable.ic_gpsdash, R.drawable.card_gpsdash,
+        listOf("gps","speed","speedometer","heading","bearing","altitude","elevation","hud","trip","drive","bike","hike","mph","kph","km/h","dashboard","location"),
+        about = "A live read-out of your speed, heading, altitude and GPS fix quality for a drive, ride or hike — straight from the phone's GNSS, nothing uploaded."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
