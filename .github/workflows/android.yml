@@ -77,13 +77,17 @@ jobs:
 
       - name: Publish build log
         if: always()
+        continue-on-error: true
+        timeout-minutes: 2        # the ci-logs push is egress-blocked here; cap it so a hang can't stall the run
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: bash .github/publish-log.sh android android/build.log
 
       - name: Publish APK + AAB to ci-logs branch
         if: success()
-        continue-on-error: true   # large binaries can fail to push; never block the GitHub Release below
+        continue-on-error: true   # large binaries can fail to push; never block the Play upload below
+        timeout-minutes: 3        # cp into out/ runs first (fast); if the ci-logs push hangs it's killed here,
+                                  # out/ is already populated, and the deploy continues
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
@@ -148,6 +152,8 @@ jobs:
           fastlane listing 2>&1 | tee supply.log; exit ${PIPESTATUS[0]}
       - name: Publish listing-push log
         if: always()
+        continue-on-error: true
+        timeout-minutes: 2
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: bash .github/publish-log.sh android-supply android/supply.log || true
