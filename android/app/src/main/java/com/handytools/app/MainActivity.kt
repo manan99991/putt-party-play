@@ -157,6 +157,7 @@ class MainActivity : ComponentActivity() {
                     composable("identify") { com.handytools.app.tools.power.IdentifyToolScreen() }
                     composable("gpsdash") { com.handytools.app.tools.power.GpsDashboardToolScreen() }
                     composable("rest") { com.handytools.app.tools.power.RestToolScreen() }
+                    composable("pricecheck") { com.handytools.app.tools.power.PriceCheckToolScreen() }
                     composable("hearing") { HearingBoostScreen() }
                     composable("heartrate") { HeartRateScreen() }
                     composable("timer") { TimersScreen() }
@@ -170,7 +171,7 @@ class MainActivity : ComponentActivity() {
                     composable("texttools") { TextToolsScreen() }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
-                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "network", "identify", "gpsdash", "rest", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
+                    val ported = setOf("clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "network", "identify", "gpsdash", "rest", "pricecheck", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
                     TOOLS.map { it.route }.filter { it !in ported }.distinct().forEach { r ->
                         composable(r) {
                             if (r.startsWith("ai_")) AiScreen(r)

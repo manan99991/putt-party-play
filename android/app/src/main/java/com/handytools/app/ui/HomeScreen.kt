@@ -132,6 +132,9 @@ val TOOLS = listOf(
     HTool("rest", "Rest", "Sleep sounds & timer", R.drawable.ic_rest, R.drawable.card_rest,
         listOf("sleep","rest","white noise","pink noise","brown noise","noise","sound","focus","relax","calm","timer","night","baby","tinnitus"),
         about = "Soft, steady sleep and focus sound — white, pink or brown noise generated on your phone so it never loops, with a sleep timer that stops it for you."),
+    HTool("pricecheck", "Price Check", "Best value per unit", R.drawable.ic_pricecheck, R.drawable.card_pricecheck,
+        listOf("price","unit price","compare","deal","cheaper","per 100g","per litre","per unit","budget","shopping","grocery","value","cost","bulk"),
+        about = "Enter the price and size of two or more products and Tenzy works out the real cost per 100 g, per litre or per unit — so the bigger pack can't trick you."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
