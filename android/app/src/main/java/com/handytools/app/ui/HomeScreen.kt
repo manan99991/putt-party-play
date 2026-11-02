@@ -242,7 +242,9 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     val pad = HandyTokens.Gutter
                     val gap = HandyTokens.Space12
                     val fitH = (maxHeight - pad * 2 - gap * (rows - 1).coerceAtLeast(0)) / rows.coerceAtLeast(1)
-                    val cardH = fitH.coerceIn(96.dp, 168.dp)
+                    // Floor is set so the icon, title and a full two-line blurb always fit — below this
+                    // the blurb would be clipped, so we scroll instead of cramming.
+                    val cardH = fitH.coerceIn(120.dp, 168.dp)
                     val scroll = cardH * rows + gap * (rows - 1).coerceAtLeast(0) + pad * 2 > maxHeight
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
@@ -267,7 +269,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
 @Composable
 private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onClick: () -> Unit) {
     // Icon scales a little with the card so a shorter (fit-to-page) card still looks balanced.
-    val iconSize = (height.value * 0.34f).coerceIn(36f, 56f).dp
+    val iconSize = (height.value * 0.32f).coerceIn(34f, 54f).dp
     Box(
         Modifier.fillMaxWidth().height(height).clip(RoundedCornerShape(20.dp))
             .background(Color(0xFF0D0D16)).clickable(onClick = onClick)
@@ -281,16 +283,21 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
                 Brush.verticalGradient(0.30f to Color.Transparent, 1f to Color(0xD6060610))
             )
         )
-        Column(Modifier.fillMaxSize().padding(14.dp), verticalArrangement = Arrangement.SpaceBetween) {
-            Image(painterResource(tool.iconRes), null, modifier = Modifier.size(iconSize))
-            Column {
-                Text(tool.name, color = Color.White, style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                Spacer(Modifier.height(2.dp))
-                // Two lines + wrap so the description is shown in full and never chops off.
-                Text(tool.blurb, color = Color(0xCCFFFFFF), style = MaterialTheme.typography.bodySmall,
-                    maxLines = 2, overflow = TextOverflow.Ellipsis)
-            }
+        // Icon pinned to the top-left. Kept in its own aligned node (not a SpaceBetween column) so it
+        // can never push the text past the bottom edge.
+        Image(
+            painterResource(tool.iconRes), null,
+            modifier = Modifier.align(Alignment.TopStart).padding(14.dp).size(iconSize)
+        )
+        // Title + blurb pinned to the bottom. Anchoring here guarantees the full two-line description
+        // always sits inside the card — if space is ever tight it's the gap above that shrinks, never
+        // the words that get clipped.
+        Column(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(14.dp)) {
+            Text(tool.name, color = Color.White, style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Spacer(Modifier.height(2.dp))
+            Text(tool.blurb, color = Color(0xCCFFFFFF), style = MaterialTheme.typography.bodySmall,
+                maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
     }
 }

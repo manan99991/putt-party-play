@@ -1,7 +1,12 @@
 package com.handytools.app.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,12 +34,17 @@ import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.WorkspacePremium
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +66,9 @@ const val SUPPORT_EMAIL = "tenzy.app@gmail.com"
 fun SettingsScreen(onOpen: (String) -> Unit) {
     val ctx = LocalContext.current
     val premium by HandyApp.instance.billing.isPremium.collectAsState()
+    var showAbout by remember { mutableStateOf(false) }
+
+    if (showAbout) AboutDialog(onDismiss = { showAbout = false })
 
     Column(Modifier.fillMaxSize().statusBarsPadding()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter)) {
@@ -111,12 +124,44 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             SettingsRow(Icons.Outlined.Star, "Rate Tenzy", "30 seconds, means a lot") {
                 ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${ctx.packageName}")))
             }
-            SettingsRow(Icons.Outlined.Info, "About", "Version ${BuildConfig.VERSION_NAME} · Made by one person in Illinois") { }
+            SettingsRow(Icons.Outlined.Info, "About", "Version ${BuildConfig.VERSION_NAME} · Made by one person in Illinois") { showAbout = true }
 
             Spacer(Modifier.height(HandyTokens.Space24))
         }
         BannerAd()
     }
+}
+
+@Composable
+private fun AboutDialog(onDismiss: () -> Unit) {
+    val ctx = LocalContext.current
+    // Build number is the surest way to confirm which build you're actually running.
+    val version = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+    val details = "Tenzy $version\n${Build.MANUFACTURER} ${Build.MODEL} · Android ${Build.VERSION.RELEASE}"
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Outlined.Info, null, tint = HandyColors.Accent) },
+        title = { Text("Tenzy") },
+        text = {
+            Column {
+                Text("Version $version", style = MaterialTheme.typography.bodyLarge)
+                Spacer(Modifier.height(HandyTokens.Space4))
+                Text("${Build.MANUFACTURER.replaceFirstChar { it.uppercase() }} ${Build.MODEL} · Android ${Build.VERSION.RELEASE}",
+                    style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                Spacer(Modifier.height(HandyTokens.Space12))
+                Text("Made by one person in Illinois. Every tool runs on your phone — nothing is uploaded.",
+                    style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+            }
+        },
+        confirmButton = { TextButton(onClick = onDismiss) { Text("Close") } },
+        dismissButton = {
+            TextButton(onClick = {
+                val cb = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                cb?.setPrimaryClip(ClipData.newPlainText("Tenzy", details))
+                Toast.makeText(ctx, "Copied — paste it into your feedback email", Toast.LENGTH_SHORT).show()
+            }) { Text("Copy details") }
+        }
+    )
 }
 
 @OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
