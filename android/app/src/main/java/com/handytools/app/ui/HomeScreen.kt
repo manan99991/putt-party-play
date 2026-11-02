@@ -135,6 +135,9 @@ val TOOLS = listOf(
     HTool("pricecheck", "Price Check", "Best value per unit", R.drawable.ic_pricecheck, R.drawable.card_pricecheck,
         listOf("price","unit price","compare","deal","cheaper","per 100g","per litre","per unit","budget","shopping","grocery","value","cost","bulk"),
         about = "Enter the price and size of two or more products and Tenzy works out the real cost per 100 g, per litre or per unit — so the bigger pack can't trick you."),
+    HTool("stitch", "Long Screenshot", "Stitch shots into one", R.drawable.ic_stitch, R.drawable.card_stitch,
+        listOf("long screenshot","stitch","scroll","combine","merge","tall","chat","thread","conversation","full page","screenshots","join"),
+        about = "Stitch a set of scrolling screenshots into one tall image — Tenzy finds the overlap between each shot and joins them seamlessly, so a chat or page reads as one picture."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
