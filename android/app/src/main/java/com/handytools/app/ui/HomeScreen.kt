@@ -141,6 +141,12 @@ val TOOLS = listOf(
     HTool("colorvision", "Color Vision", "Tell colours apart", R.drawable.ic_colorvision, R.drawable.card_colorvision,
         listOf("color","colour","blind","colorblind","colourblind","daltonize","correct","vision","red green","protan","deutan","tritan","accessibility"),
         about = "Shifts the colours a given type of colour blindness confuses into differences the eye can still tell apart — pick a photo, pick your type, and compare. All on your phone."),
+    HTool("procam", "Pro Camera", "Manual ISO & shutter", R.drawable.ic_procam, R.drawable.card_procam,
+        listOf("camera","pro","manual","iso","shutter","exposure","raw","long exposure","night","photography","sensor","aperture"),
+        about = "Manual control of the camera sensor — ISO and shutter speed with a live preview — on phones that allow it, falling back to auto elsewhere. Photos save to your gallery."),
+    HTool("vault", "Vault", "Fingerprint-locked files", R.drawable.ic_vault, R.drawable.card_vault,
+        listOf("vault","lock","locker","private","secure","hidden","encrypt","password","face id","fingerprint","biometric","safe","files","photos"),
+        about = "A private locker behind your fingerprint or face. Files are encrypted with an AES-256 key held in the phone's secure hardware — unreadable without this device. Nothing is uploaded."),
 )
 
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
