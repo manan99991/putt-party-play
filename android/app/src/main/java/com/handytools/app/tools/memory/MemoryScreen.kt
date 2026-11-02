@@ -43,6 +43,7 @@ import androidx.core.content.ContextCompat
 import com.handytools.app.ads.BannerAd
 import com.handytools.app.tools.Share
 import com.handytools.app.ui.HCard
+import com.handytools.app.ui.HCompactButton
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
@@ -92,14 +93,22 @@ fun MemoryScreen() {
             HCard(Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
                     Box(Modifier.weight(1f)) {
+                        // singleLine keeps the field one row tall no matter how narrow it gets, so it can
+                        // never balloon vertically.
                         BasicTextField(value = query, onValueChange = { query = it }, modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
                             textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                             decorationBox = { inner ->
                                 if (query.text.isBlank()) Text("Ask your screenshots…", color = Handy.palette.textSecondary)
                                 inner()
                             })
                     }
-                    HSecondaryButton("Ask") { searched = true; results = MemoryEngine.search(query.text, entries) }
+                    Spacer(Modifier.size(10.dp))
+                    // Content-width button so the input keeps its space (HPrimary/HSecondary force
+                    // fillMaxWidth, which would swallow the whole row).
+                    HCompactButton("Ask") {
+                        if (query.text.isNotBlank()) { searched = true; results = MemoryEngine.search(query.text, entries) }
+                    }
                 }
             }
 

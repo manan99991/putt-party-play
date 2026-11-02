@@ -178,10 +178,12 @@ fun ReceiptKeeperScreen() {
                         }
                         Text(if (r.total.isNotBlank()) "${r.total} · $when_" else when_, color = if (days in 0..30) HandyWarn else Handy.palette.textSecondary, fontSize = 12.sp)
                         Spacer(Modifier.size(6.dp))
+                        // Weights so the three full-width buttons share the row evenly instead of each
+                        // demanding the whole width (which stacked them on top of each other).
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            HSecondaryButton("Remind") { remind(r) }
-                            HSecondaryButton("Share") { Share.file(ctx, File(r.imagePath), "image/jpeg") }
-                            HSecondaryButton("Delete") { delete(r) }
+                            HSecondaryButton("Remind", Modifier.weight(1f)) { remind(r) }
+                            HSecondaryButton("Share", Modifier.weight(1f)) { Share.file(ctx, File(r.imagePath), "image/jpeg") }
+                            HSecondaryButton("Delete", Modifier.weight(1f)) { delete(r) }
                         }
                     }
                 }
