@@ -6,152 +6,151 @@
 | skip_screenshots                                                   | false                                                                      |
 | skip_metadata                                                      | false                                                                      |
 | sync_screenshots                                                   | false                                                                      |
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
-[00:28:21]: No changes to localized App Info detected. Skipping upload.
-[00:28:21]: [33mWill begin uploading metadata for '1.0' on App Store Connect[0m
-[00:28:21]: Uploading metadata to App Store Connect for version
-[00:28:25]: Uploading metadata to App Store Connect for localized version 'en-US'
-[00:28:26]: Uploading app review information to App Store Connect
-[00:28:28]: [33mWill begin uploading snapshots for '1.0' on App Store Connect[0m
-[00:28:28]: Starting with the upload of screenshots...
-[00:28:30]: [33mNumber of screenshots not deleted: 0[0m
-[00:28:30]: Successfully deleted all screenshots
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-04.png'... (1.684334792 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-05.png'... (1.689020531 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-01.png'... (1.757161585 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-03.png'... (1.784868967 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-02.png'... (1.800142881 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-02.png'... (1.801630551 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-03.png'... (1.814921169 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-04.png'... (1.846065724 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-06.png'... (1.858545045 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-01.png'... (1.880575797 secs)
-[00:28:33]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-05.png'... (1.646273874 secs)
-[00:28:33]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-06.png'... (1.781652911 secs)
-[00:28:33]: Waiting for all the screenshots to finish being processed...
-[00:28:39]: Successfully uploaded all screenshots
-[00:28:39]: Sorting screenshots uploaded...
-[00:28:39]: [32mSuccessfully uploaded screenshots to App Store Connect[0m
-[00:28:39]: [32mStaged Tenzy metadata + screenshots on version 1.0 (NOT submitted — final tap is manual).[0m
-[00:28:39]: [32mfastlane.tools finished successfully 🎉[0m
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
+[04:21:50]: [33mWill begin uploading metadata for '1.2.34' on App Store Connect[0m
+[04:21:50]: Uploading metadata to App Store Connect for version
+[04:21:54]: Uploading metadata to App Store Connect for localized version 'en-US'
+[04:21:54]: Uploading metadata to App Store Connect for localized info 'en-US'
+[04:21:57]: Uploading app review information to App Store Connect
+[04:21:59]: [33mWill begin uploading snapshots for '1.2.34' on App Store Connect[0m
+[04:21:59]: Starting with the upload of screenshots...
+[04:22:02]: [33mNumber of screenshots not deleted: 0[0m
+[04:22:02]: Successfully deleted all screenshots
+[04:22:04]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-05.png'... (2.084761858 secs)
+[04:22:04]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-03.png'... (2.098243596 secs)
+[04:22:04]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-02.png'... (2.116652668 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-04.png'... (2.17285358 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-04.png'... (2.182708852 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-01.png'... (2.192277832 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-06.png'... (2.20496623 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-01.png'... (2.269195676 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-02.png'... (2.313096417 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-03.png'... (2.48167744 secs)
+[04:22:06]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-06.png'... (2.002213982 secs)
+[04:22:07]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-05.png'... (2.207958722 secs)
+[04:22:07]: Waiting for all the screenshots to finish being processed...
+[04:32:22]: Successfully uploaded all screenshots
+[04:32:22]: Sorting screenshots uploaded...
+[04:32:23]: [32mSuccessfully uploaded screenshots to App Store Connect[0m
+[04:32:23]: [32mStaged Tenzy metadata + screenshots on the editable version (NOT submitted — final tap is manual).[0m
 
 ===== subs =====
-➡️  [33mfastlane match nuke development . undefined method `downcase' for nil:NilClass (NoMethodError)[0m
-    https://github.com/fastlane/fastlane/issues/20525 [[31mopen[0m] 15 💬
-    16 Feb 2023
+➡️  [33mCan't upload build to Test Flight; [!] undefined method `refresh!'[0m
+    https://github.com/fastlane/fastlane/issues/21974 [[31mopen[0m] 6 💬
+    23 Jul 2024
 
 and 611 more at: https://github.com/fastlane/fastlane/search?q=undefined%20method%20%60new%27%20for%20nil&type=Issues&utf8=✓
 
 Fastfile:122:in `block (3 levels) in parsing_binding': [31m[!] undefined method `new' for nil[0m (NoMethodError)
-	from Fastfile:220:in `block (3 levels) in parsing_binding'
+	from Fastfile:237:in `block (3 levels) in parsing_binding'
 	from Fastfile:164:in `each'
 	from Fastfile:164:in `block (2 levels) in parsing_binding'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane.rb:41:in `call'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:49:in `block in execute'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in `chdir'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in `execute'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane.rb:41:in `call'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:49:in `block in execute'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:45:in `chdir'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:45:in `execute'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:187:in `call'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:157:in `run'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:363:in `run'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:43:in `start'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in `take_off'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/bin/fastlane:25:in `<top (required)>'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/commands_generator.rb:369:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/commands_generator.rb:43:in `start'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in `take_off'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/bin/fastlane:25:in `<top (required)>'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/bin/fastlane:25:in `load'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/bin/fastlane:25:in `<main>'
 Fastfile:122:in `block (3 levels) in parsing_binding': undefined method `new' for nil (NoMethodError)
-	from Fastfile:220:in `block (3 levels) in parsing_binding'
+	from Fastfile:237:in `block (3 levels) in parsing_binding'
 	from Fastfile:164:in `each'
 	from Fastfile:164:in `block (2 levels) in parsing_binding'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane.rb:41:in `call'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:49:in `block in execute'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in `chdir'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/runner.rb:45:in `execute'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane.rb:41:in `call'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:49:in `block in execute'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:45:in `chdir'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:45:in `execute'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:187:in `call'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:157:in `run'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:124:in `run!'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:363:in `run'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/commands_generator.rb:43:in `start'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in `take_off'
-	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.1/bin/fastlane:25:in `<top (required)>'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/commands_generator.rb:369:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/commands_generator.rb:43:in `start'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in `take_off'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.241.2/bin/fastlane:25:in `<top (required)>'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/bin/fastlane:25:in `load'
 	from /opt/hostedtoolcache/Ruby/3.3.13/x64/bin/fastlane:25:in `<main>'
 
 ===== deliver tail =====
 +--------------------------------------------------------------------+----------------------------------------------------------------------------+
 
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
-[00:28:20]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
-[00:28:21]: No changes to localized App Info detected. Skipping upload.
-[00:28:21]: [33mWill begin uploading metadata for '1.0' on App Store Connect[0m
-[00:28:21]: [31mSkipping 'release_notes'... this is the first version of the app[0m
-[00:28:21]: Uploading metadata to App Store Connect for version
-[00:28:25]: Uploading metadata to App Store Connect for localized version 'en-US'
-[00:28:26]: Uploading app review information to App Store Connect
-[00:28:28]: [33mWill begin uploading snapshots for '1.0' on App Store Connect[0m
-[00:28:28]: Starting with the upload of screenshots...
-[00:28:28]: Deleted 'en-US APP_IPHONE_61' -  (0.402242573 secs)
-[00:28:29]: Deleted 'en-US APP_IPAD_PRO_3GEN_129' -  (1.625387687 secs)
-[00:28:30]: [33mNumber of screenshots not deleted: 0[0m
-[00:28:30]: Successfully deleted all screenshots
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-04.png'... (1.684334792 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-05.png'... (1.689020531 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-01.png'... (1.757161585 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-03.png'... (1.784868967 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-02.png'... (1.800142881 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-02.png'... (1.801630551 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-03.png'... (1.814921169 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-04.png'... (1.846065724 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-06.png'... (1.858545045 secs)
-[00:28:32]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-01.png'... (1.880575797 secs)
-[00:28:33]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-05.png'... (1.646273874 secs)
-[00:28:33]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-06.png'... (1.781652911 secs)
-[00:28:33]: Waiting for all the screenshots to finish being processed...
-[00:28:39]: Successfully uploaded all screenshots
-[00:28:39]: Sorting screenshots uploaded...
-[00:28:39]: [32mSuccessfully uploaded screenshots to App Store Connect[0m
-[00:28:39]: [32mStaged Tenzy metadata + screenshots on version 1.0 (NOT submitted — final tap is manual).[0m
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
+[04:21:47]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
+[04:21:50]: [33mWill begin uploading metadata for '1.2.34' on App Store Connect[0m
+[04:21:50]: [31mSkipping 'release_notes'... this is the first version of the app[0m
+[04:21:50]: Uploading metadata to App Store Connect for version
+[04:21:54]: Uploading metadata to App Store Connect for localized version 'en-US'
+[04:21:54]: Uploading metadata to App Store Connect for localized info 'en-US'
+[04:21:57]: Uploading app review information to App Store Connect
+[04:21:59]: [33mWill begin uploading snapshots for '1.2.34' on App Store Connect[0m
+[04:21:59]: Starting with the upload of screenshots...
+[04:22:00]: Deleted 'en-US APP_IPAD_PRO_3GEN_129' -  (0.635999517 secs)
+[04:22:01]: Deleted 'en-US APP_IPHONE_61' -  (2.038813252 secs)
+[04:22:02]: [33mNumber of screenshots not deleted: 0[0m
+[04:22:02]: Successfully deleted all screenshots
+[04:22:04]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-05.png'... (2.084761858 secs)
+[04:22:04]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-03.png'... (2.098243596 secs)
+[04:22:04]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-02.png'... (2.116652668 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-04.png'... (2.17285358 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-04.png'... (2.182708852 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-01.png'... (2.192277832 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-06.png'... (2.20496623 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-01.png'... (2.269195676 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-02.png'... (2.313096417 secs)
+[04:22:05]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-03.png'... (2.48167744 secs)
+[04:22:06]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-06.png'... (2.002213982 secs)
+[04:22:07]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-05.png'... (2.207958722 secs)
+[04:22:07]: Waiting for all the screenshots to finish being processed...
+[04:32:22]: Successfully uploaded all screenshots
+[04:32:22]: Sorting screenshots uploaded...
+[04:32:23]: [32mSuccessfully uploaded screenshots to App Store Connect[0m
+[04:32:23]: [32mStaged Tenzy metadata + screenshots on the editable version (NOT submitted — final tap is manual).[0m
 
 +------------------------------------------------+
 |                [32mfastlane summary[0m                |
@@ -160,7 +159,7 @@ Fastfile:122:in `block (3 levels) in parsing_binding': undefined method `new' fo
 +------+---------------------------+-------------+
 | 1    | default_platform          | 0           |
 | 2    | app_store_connect_api_key | 0           |
-| 3    | deliver                   | 19          |
+| 3    | deliver                   | 635         |
 +------+---------------------------+-------------+
 
-[00:28:39]: [32mfastlane.tools finished successfully 🎉[0m
+[04:32:23]: [32mfastlane.tools just saved you 11 minutes! 🎉[0m
