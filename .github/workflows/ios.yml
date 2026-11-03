@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
+    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
     runs-on: macos-26
     defaults:
       run: { working-directory: ios }
@@ -114,7 +114,7 @@ jobs:
   # fixed crash cannot silently return in a later build. (ToolFlowTests run in the separate
   # `flowtests` job below — informational, never gating, because their synthetic inputs are flaky.)
   test:
-    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
+    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
     runs-on: macos-26
     defaults:
       run: { working-directory: ios }
@@ -187,7 +187,7 @@ jobs:
   # (continue-on-error), so a flaky synthetic-input flake here NEVER blocks TestFlight or the store
   # submit. It still runs on every push for visibility (failures surface as annotations).
   flowtests:
-    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
+    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
     continue-on-error: true
     runs-on: macos-26
     defaults:

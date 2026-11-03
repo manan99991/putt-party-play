@@ -215,17 +215,22 @@ platform :ios do
       # "3-day free trial" copy in the listing/notes/privacy policy would be a false claim (2.3.2 /
       # 3.1.2). Idempotent; created once for all available territories. Non-fatal if it already exists
       # or the API declines (logged, never blocks the lane).
-      code, offers = req.call(:get, "/v1/subscriptions/#{sub_id}/introductoryOffers?limit=20")
-      has_trial = (offers["data"] || []).any? { |o| o.dig("attributes", "offerMode") == "FREE_TRIAL" }
-      if has_trial
-        UI.message("  free-trial intro offer already present")
-      else
+      # The ASC API requires ONE introductory offer per territory, so create the 3-day free trial for
+      # every territory the subscription is available in. Idempotent: territories that already have the
+      # offer are skipped, and a duplicate POST returns 409 (tolerated). Non-fatal.
+      code, offers = req.call(:get, "/v1/subscriptions/#{sub_id}/introductoryOffers?include=territory&limit=200")
+      have = (offers["data"] || []).map { |o| o.dig("relationships", "territory", "data", "id") }.compact
+      made = 0; exist = have.size; failed = 0
+      all_territories.each do |terr|
+        next if have.include?(terr[:id])
         code, data = req.call(:post, "/v1/subscriptionIntroductoryOffers",
           { data: { type: "subscriptionIntroductoryOffers",
                     attributes: { duration: "THREE_DAYS", numberOfPeriods: 1, offerMode: "FREE_TRIAL" },
-                    relationships: { subscription: { data: { type: "subscriptions", id: sub_id } } } } })
-        UI.success("  intro offer: 3-day free trial -> #{code}#{code >= 400 ? " #{data}" : ""}")
+                    relationships: { subscription: { data: { type: "subscriptions", id: sub_id } },
+                                     territory: { data: { type: "territories", id: terr[:id] } } } } })
+        if code < 300 then made += 1 elsif code == 409 then exist += 1 else failed += 1; (UI.important("  intro #{terr[:id]} -> #{code} #{data}") if failed <= 2) end
       end
+      UI.success("  intro offer 3-day free trial: created #{made}, already present #{exist}, failed #{failed} (of #{all_territories.size} territories)")
 
       # Subscription App Review screenshot — REQUIRED so the IAP leaves "Missing Metadata" and is
       # reviewed WITH the app (fixes Apple 2.1(b): a Pro-referencing binary whose IAP wasn't
