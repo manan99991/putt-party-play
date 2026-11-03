@@ -139,6 +139,15 @@ So the app looks "universally better," the theme drives all of these — most fr
 
 ---
 
+## 7b. Pre-flight gate — every exported file MUST pass all four (the v1 sample failed 1–3)
+
+1. **Transparent background — no baked square.** Fully transparent PNG; only the clay object + its own glow/shadow. `alphaMin` must be ~0, not 255. No white box, **no black box** (Midnight is not "object on black" — it's a neon object on transparency that reads on the app's dark surface).
+2. **512×512, square.** Every icon exactly 512×512 (+ @2x/@3x optional). No landscape/card aspect ratios in an icon slot.
+3. **RGBA**, not RGB.
+4. **Named** `ic_<id>_<theme>.png` with ids/themes from §8.
+
+Backgrounds (`card_*`, `bg_*`) are the only landscape assets and keep their own sizes (§8).
+
 ## 8. Deliverables checklist (what to send back)
 
 For each tool in §5, for **each of the 5 themes** (daylight, midnight, warmpaper, neopop, mono):
