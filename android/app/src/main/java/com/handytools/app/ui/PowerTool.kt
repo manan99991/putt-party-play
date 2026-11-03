@@ -84,8 +84,9 @@ fun PowerToolPage(
                 onClick = { back?.onBackPressedDispatcher?.onBackPressed() },
                 modifier = Modifier.size(44.dp).semantics { contentDescription = "Back" }
             ) { Icon(Icons.AutoMirrored.Outlined.ArrowBack, "Back", tint = MaterialTheme.colorScheme.onBackground) }
-            if (tool.iconRes != 0) {
-                Image(painterResource(tool.iconRes), null, Modifier.size(30.dp))
+            val headerIcon = themedIconRes(route).let { if (it != 0) it else tool.iconRes }
+            if (headerIcon != 0) {
+                Image(painterResource(headerIcon), null, Modifier.size(30.dp))
                 Spacer(Modifier.width(10.dp))
             }
             Text(

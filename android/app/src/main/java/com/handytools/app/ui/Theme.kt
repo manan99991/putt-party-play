@@ -134,6 +134,14 @@ object Handy {
     val palette: HandyPalette @Composable get() = LocalHandy.current
 }
 
+/** The active TenzyTheme (Pro themes resolve to Daylight for free users). Themed art lookups read
+ *  this to pick the per-theme icon/card variant, so the whole grid re-skins on a theme switch. */
+val LocalTenzyTheme = staticCompositionLocalOf { TenzyTheme.DAYLIGHT }
+
+/** Asset-name key for the active theme (daylight/midnight/warmpaper/neopop/mono). */
+@Composable
+fun activeThemeKey(): String = LocalTenzyTheme.current.assetKey
+
 private val LightColors = lightColorScheme(
     primary = HandyColors.Accent, onPrimary = Color.White,
     primaryContainer = HandyColors.AccentSoftLight, onPrimaryContainer = HandyColors.Accent,
@@ -201,12 +209,12 @@ data class ResolvedTokens(
     val textPrimary: Color, val textSecondary: Color, val border: Color, val isDark: Boolean
 )
 
-enum class TenzyTheme(val title: String, val blurb: String, val isPro: Boolean, val swatch: List<Color>) {
-    DAYLIGHT("Daylight", "Clean, bright — the default", false, listOf(Color(0xFF1F5EFF), Color(0xFF1649D6))),
-    MIDNIGHT("Midnight", "Dark glass, neon glow", true, listOf(Color(0xFF1E3A8A), Color(0xFF3DE1FF))),
-    WARM_PAPER("Warm Paper", "Editorial, warm, matte", true, listOf(Color(0xFFC2502E), Color(0xFFE0795A))),
-    NEO_POP("Neo Pop", "Bold, playful, punchy", true, listOf(Color(0xFFFF2D87), Color(0xFFFF8A00))),
-    MONO("Mono", "Minimal, stealth", true, listOf(Color(0xFF1A1A1A), Color(0xFF000000)));
+enum class TenzyTheme(val title: String, val blurb: String, val isPro: Boolean, val swatch: List<Color>, val assetKey: String) {
+    DAYLIGHT("Daylight", "Clean, bright — the default", false, listOf(Color(0xFF1F5EFF), Color(0xFF1649D6)), "daylight"),
+    MIDNIGHT("Midnight", "Dark glass, neon glow", true, listOf(Color(0xFF1E3A8A), Color(0xFF3DE1FF)), "midnight"),
+    WARM_PAPER("Warm Paper", "Editorial, warm, matte", true, listOf(Color(0xFFC2502E), Color(0xFFE0795A)), "warmpaper"),
+    NEO_POP("Neo Pop", "Bold, playful, punchy", true, listOf(Color(0xFFFF2D87), Color(0xFFFF8A00)), "neopop"),
+    MONO("Mono", "Minimal, stealth", true, listOf(Color(0xFF1A1A1A), Color(0xFF000000)), "mono");
 
     fun tokens(systemDark: Boolean): ResolvedTokens = when (this) {
         DAYLIGHT -> if (systemDark) ResolvedTokens(
@@ -296,7 +304,7 @@ fun HandyTheme(content: @Composable () -> Unit) {
     // key() tears down + rebuilds the whole tree on a theme (or system-dark) change, so composables
     // that read the HandyColors.Accent var — not just CompositionLocals — re-skin too.
     key(active, systemDark) {
-        CompositionLocalProvider(LocalHandy provides palette) {
+        CompositionLocalProvider(LocalHandy provides palette, LocalTenzyTheme provides active) {
             MaterialTheme(colorScheme = schemeFor(t), typography = HandyTypography, shapes = HandyShapes) {
                 androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background, contentColor = MaterialTheme.colorScheme.onBackground) { content() }
             }

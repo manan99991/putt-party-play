@@ -350,9 +350,10 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
         Modifier.fillMaxWidth().height(height).clip(RoundedCornerShape(20.dp))
             .background(Color(0xFF0D0D16)).clickable(onClick = onClick)
     ) {
-        if (tool.cardRes != 0) {
+        val cardRes = themedCardRes(tool.route).let { if (it != 0) it else tool.cardRes }
+        if (cardRes != 0) {
             Image(
-                painterResource(tool.cardRes), null, modifier = Modifier.fillMaxSize(),
+                painterResource(cardRes), null, modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop, alignment = Alignment.CenterEnd
             )
         } else {
@@ -373,9 +374,10 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
         // Icon pinned to the top-left. Kept in its own aligned node (not a SpaceBetween column) so it
         // can never push the text past the bottom edge. Drawable art when present, else the Material
         // fallback icon for tiles without bespoke art.
-        if (tool.iconRes != 0) {
+        val iconRes = themedIconRes(tool.route).let { if (it != 0) it else tool.iconRes }
+        if (iconRes != 0) {
             Image(
-                painterResource(tool.iconRes), null,
+                painterResource(iconRes), null,
                 modifier = Modifier.align(Alignment.TopStart).padding(14.dp).size(iconSize)
             )
         } else if (tool.vicon != null) {
@@ -406,8 +408,9 @@ fun GroupScreen(route: String, entries: List<HTool>, onOpen: (String) -> Unit) {
         entries.forEach { t ->
             HCard(Modifier.fillMaxWidth().clickable { onOpen(t.route) }) {
                 Row(Modifier.fillMaxWidth().padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                    if (t.iconRes != 0) {
-                        Image(painterResource(t.iconRes), null, Modifier.size(40.dp))
+                    val rowIcon = themedIconRes(t.route).let { if (it != 0) it else t.iconRes }
+                    if (rowIcon != 0) {
+                        Image(painterResource(rowIcon), null, Modifier.size(40.dp))
                     } else if (t.vicon != null) {
                         Icon(t.vicon, null, tint = HandyColors.Accent, modifier = Modifier.size(30.dp))
                     }
