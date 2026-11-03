@@ -36,6 +36,7 @@ import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
 import com.handytools.app.ui.HandyHaptics
+import com.handytools.app.ui.PowerToolPage
 import com.handytools.app.ui.ToolHeader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -110,12 +111,7 @@ fun GifMakerScreen() {
         if (u != null) build(u)
     }
 
-    Column(
-        Modifier.fillMaxWidth().statusBarsPadding().padding(20.dp).verticalScroll(rememberScrollState())
-    ) {
-        ToolHeader("GIF Maker", "Turn a short video into a looping GIF you can share anywhere.")
-        Spacer(Modifier.size(16.dp))
-
+    PowerToolPage("gifmaker") {
         Text("Size", color = Handy.palette.textSecondary, fontSize = 13.sp)
         Spacer(Modifier.size(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -144,7 +140,5 @@ fun GifMakerScreen() {
             "Encoded on your phone — nothing is uploaded. The preview shows the first frame; the saved file loops. Shorter clips make smaller, smoother GIFs.",
             color = Handy.palette.textSecondary, fontSize = 12.sp,
         )
-        Spacer(Modifier.size(16.dp))
-        BannerAd()
     }
 }

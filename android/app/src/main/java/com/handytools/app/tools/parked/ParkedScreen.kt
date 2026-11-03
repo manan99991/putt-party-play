@@ -48,6 +48,7 @@ import com.handytools.app.ui.HandyColors
 import com.handytools.app.ui.HandyHaptics
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.PowerToolPage
 import com.handytools.app.ui.ToolHeader
 import kotlin.math.roundToInt
 
@@ -122,10 +123,7 @@ fun ParkedScreen() {
         onDispose { if (listener != null) sm.unregisterListener(listener) }
     }
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Where'd I Park", "Drop a pin at the car, then follow the arrow back. The pin stays on your phone.")
-        Spacer(Modifier.size(20.dp))
-
+    PowerToolPage("parked") {
         if (!granted) {
             Text(
                 "Turn on location to drop and find your parking pin. Your location is used only on this phone to measure the distance back — it's never uploaded.",
@@ -211,9 +209,6 @@ fun ParkedScreen() {
                 }
             }
         }
-
-        Spacer(Modifier.weight(1f))
-        BannerAd()
     }
 }
 

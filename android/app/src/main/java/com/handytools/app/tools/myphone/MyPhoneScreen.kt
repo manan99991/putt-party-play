@@ -37,6 +37,7 @@ import com.handytools.app.tools.Share
 import com.handytools.app.ui.HCard
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
+import com.handytools.app.ui.PowerToolPage
 import com.handytools.app.ui.ToolHeader
 import java.net.NetworkInterface
 
@@ -47,11 +48,8 @@ fun MyPhoneScreen() {
     val ctx = LocalContext.current
     var sections by remember { mutableStateOf(collect(ctx)) }
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("My Phone", "Everything about this phone at a glance — battery, storage, memory, screen and network. All read on-device.")
-        Spacer(Modifier.size(16.dp))
-
-        Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState())) {
+    PowerToolPage("myphone") {
+        Column(Modifier.fillMaxWidth()) {
             sections.forEach { s ->
                 HCard(Modifier.fillMaxWidth().padding(bottom = 10.dp)) {
                     Column(Modifier.padding(16.dp)) {
@@ -75,7 +73,6 @@ fun MyPhoneScreen() {
         HSecondaryButton("Copy summary", modifier = Modifier.fillMaxWidth()) {
             Share.text(ctx, sections.joinToString("\n\n") { s -> s.title + "\n" + s.rows.joinToString("\n") { "${it.first}: ${it.second}" } })
         }
-        BannerAd()
     }
 }
 

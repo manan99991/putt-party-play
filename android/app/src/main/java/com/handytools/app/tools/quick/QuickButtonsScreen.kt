@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import com.handytools.app.ads.BannerAd
 import com.handytools.app.ads.Interstitials
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.ui.PowerToolPage
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.HTextButton
@@ -58,14 +60,20 @@ fun QuickButtonsScreen() {
     val maxLevel = remember { QuickActions.flashlightMaxLevel(ctx) }
     var level by remember { mutableFloatStateOf(maxLevel.toFloat()) }
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Easy Buttons", "One tap. Add the Flashlight tile to your quick settings too.")
-        LazyVerticalGrid(GridCells.Fixed(2), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            item { Big(if (torch) "Light ON" else "Flashlight", Icons.Default.FlashlightOn, torch) { torch = QuickActions.toggleFlashlight(ctx) } }
-            item { Big("Hotspot", Icons.Default.WifiTethering) { QuickActions.openHotspot(ctx) } }
-            item { Big("Camera", Icons.Default.PhotoCamera) { QuickActions.openCamera(ctx); Interstitials.showIfReady(ctx as Activity) } }
-            item { Big("Video", Icons.Default.Videocam) { QuickActions.openVideo(ctx) } }
-            item { Big("Selfie", Icons.Default.Cameraswitch) { QuickActions.openSelfie(ctx) } }
+    PowerToolPage("quick") {
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Big(if (torch) "Light ON" else "Flashlight", Icons.Default.FlashlightOn, torch, Modifier.weight(1f)) { torch = QuickActions.toggleFlashlight(ctx) }
+            Big("Hotspot", Icons.Default.WifiTethering, modifier = Modifier.weight(1f)) { QuickActions.openHotspot(ctx) }
+        }
+        Spacer(Modifier.height(12.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Big("Camera", Icons.Default.PhotoCamera, modifier = Modifier.weight(1f)) { QuickActions.openCamera(ctx); Interstitials.showIfReady(ctx as Activity) }
+            Big("Video", Icons.Default.Videocam, modifier = Modifier.weight(1f)) { QuickActions.openVideo(ctx) }
+        }
+        Spacer(Modifier.height(12.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Big("Selfie", Icons.Default.Cameraswitch, modifier = Modifier.weight(1f)) { QuickActions.openSelfie(ctx) }
+            Spacer(Modifier.weight(1f))
         }
         if (maxLevel > 1) {
             Spacer(Modifier.height(12.dp))
@@ -74,15 +82,13 @@ fun QuickButtonsScreen() {
             }
         }
         LimitNote("Hotspot: Android doesn't let apps flip it directly anymore, so this jumps straight to the toggle.")
-        Spacer(Modifier.weight(1f))
-        BannerAd()
     }
 }
 
 @Composable
-private fun Big(label: String, icon: ImageVector, active: Boolean = false, onClick: () -> Unit) {
+private fun Big(label: String, icon: ImageVector, active: Boolean = false, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Card(
-        Modifier.fillMaxWidth().height(120.dp).clickable(onClick = onClick),
+        modifier.fillMaxWidth().height(120.dp).clickable(onClick = onClick),
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = if (active) HandyColors.Accent else MaterialTheme.colorScheme.surface),
         border = if (active) null else androidx.compose.foundation.BorderStroke(1.dp, Handy.palette.border),

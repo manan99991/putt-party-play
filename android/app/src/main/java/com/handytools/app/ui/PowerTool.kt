@@ -176,6 +176,14 @@ fun toolTint(route: String): Color = when (route) {
     "stitch" -> Color(0xFFDB2777)       // pink
     "colorvision" -> Color(0xFF7C3AED)  // violet
     "procam" -> Color(0xFF0F766E)       // teal
+    "hearing" -> Color(0xFF0EA5E9)      // sky
+    "quick" -> Color(0xFFF59E0B)        // amber
+    "texttools" -> Color(0xFF6366F1)    // indigo
+    "myphone" -> Color(0xFF2563EB)      // blue
+    "storage" -> Color(0xFF059669)      // emerald
+    "parked" -> Color(0xFF16A34A)       // green
+    "gifmaker" -> Color(0xFFA855F7)     // purple
+    "invoice" -> Color(0xFF4338CA)      // indigo
     else -> HandyColors.Accent
 }
 

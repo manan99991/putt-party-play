@@ -38,6 +38,7 @@ import com.handytools.app.ui.HCard
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
+import com.handytools.app.ui.PowerToolPage
 import com.handytools.app.ui.ToolHeader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,10 +70,7 @@ fun StorageScreen(onOpen: (String) -> Unit = {}) {
         }
     }
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Storage Map", "See exactly what's filling your phone — photos, videos, and your biggest folders and files.")
-        Spacer(Modifier.size(16.dp))
-
+    PowerToolPage("storage") {
         val r = report
         when {
             !granted -> {
@@ -84,14 +82,12 @@ fun StorageScreen(onOpen: (String) -> Unit = {}) {
                         HPrimaryButton("Allow access", modifier = Modifier.fillMaxWidth()) { permLauncher.launch(perms) }
                     }
                 }
-                Spacer(Modifier.weight(1f)); BannerAd()
             }
             r == null -> {
                 HPrimaryButton(if (scanning) "Measuring…" else "Scan my storage", modifier = Modifier.fillMaxWidth()) { if (!scanning) scan() }
-                Spacer(Modifier.weight(1f)); BannerAd()
             }
             else -> {
-                Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState())) {
+                Column(Modifier.fillMaxWidth()) {
                     // Device usage bar
                     HCard(Modifier.fillMaxWidth()) {
                         Column(Modifier.padding(16.dp)) {
@@ -139,7 +135,6 @@ fun StorageScreen(onOpen: (String) -> Unit = {}) {
                 HPrimaryButton("Free up photo space", modifier = Modifier.fillMaxWidth()) { onOpen("cleanup") }
                 Spacer(Modifier.size(8.dp))
                 HSecondaryButton(if (scanning) "Measuring…" else "Rescan", modifier = Modifier.fillMaxWidth()) { if (!scanning) scan() }
-                BannerAd()
             }
         }
     }

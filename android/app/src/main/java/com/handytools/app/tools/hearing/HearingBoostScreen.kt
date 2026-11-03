@@ -47,6 +47,7 @@ import com.handytools.app.ui.Handy
 import com.handytools.app.ui.HandyColors
 import com.handytools.app.ui.HPrimaryButton
 import com.handytools.app.ui.HSecondaryButton
+import com.handytools.app.ui.PowerToolPage
 import com.handytools.app.ui.ToolHeader
 import kotlin.math.min
 import kotlin.math.sqrt
@@ -78,9 +79,10 @@ fun HearingBoostScreen() {
     // Keep the live gain in sync with the slider.
     engine.gain = gain
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
-        ToolHeader("Hearing Boost", "Turn up the world into your earbuds. Pop your earbuds in first — on the speaker it will whistle with feedback.")
-        Spacer(Modifier.size(20.dp))
+    PowerToolPage("hearing") {
+        Text("Pop your earbuds in first — on the speaker it will whistle with feedback.",
+            color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodySmall)
+        Spacer(Modifier.size(16.dp))
 
         if (!granted) {
             Text("Microphone access is needed to pick up and amplify sound around you. It's processed live on your phone and never recorded.", color = Handy.palette.textSecondary)
@@ -112,9 +114,6 @@ fun HearingBoostScreen() {
                 Text("Keep earbuds in to avoid feedback.", color = Handy.palette.textSecondary, fontSize = 13.sp)
             }
         }
-
-        Spacer(Modifier.weight(1f))
-        BannerAd()
     }
 }
 

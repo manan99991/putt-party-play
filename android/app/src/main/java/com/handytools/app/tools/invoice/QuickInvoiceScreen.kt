@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.handytools.app.ads.BannerAd
+import com.handytools.app.ui.PowerToolPage
 import com.handytools.app.tools.Share
 import com.handytools.app.ui.Handy
 import com.handytools.app.ui.HPrimaryButton
@@ -88,12 +89,7 @@ fun QuickInvoiceScreen() {
         HandyHaptics.success(ctx)
     }
 
-    Column(
-        Modifier.fillMaxWidth().statusBarsPadding().padding(20.dp).verticalScroll(rememberScrollState())
-    ) {
-        ToolHeader("Quick Invoice", "Fill in the details and export a clean PDF invoice to email or print.")
-        Spacer(Modifier.size(16.dp))
-
+    PowerToolPage("invoice") {
         OutlinedTextField(from, { from = it }, modifier = Modifier.fillMaxWidth(), label = { Text("From (your name or business)") })
         Spacer(Modifier.size(10.dp))
         OutlinedTextField(billTo, { billTo = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Bill to") })
@@ -141,9 +137,6 @@ fun QuickInvoiceScreen() {
 
         Spacer(Modifier.size(16.dp))
         HPrimaryButton("Export PDF invoice", modifier = Modifier.fillMaxWidth(), enabled = canExport) { export() }
-
-        Spacer(Modifier.size(16.dp))
-        BannerAd()
     }
 }
 
