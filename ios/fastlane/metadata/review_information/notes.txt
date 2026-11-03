@@ -1,7 +1,7 @@
 No account or login is required. This review build has full access to every tool, so you can evaluate all features directly from the home grid without making a purchase.
 
 HOW THE APP WORKS
-Tenzy is 30 on-device utility tools. Eight everyday tools are always free: Flashlight, QR & Wi-Fi, Magnifier, Measure, Cleaner, Translate, Live Captions, and the Face ID Vault. The remaining tools are part of Tenzy Pro.
+Tenzy is 30 on-device utility tools. Seven everyday tools are always free: Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, and the Face ID Vault. The remaining tools are part of Tenzy Pro.
 
 TENZY PRO (in-app subscription)
 - A single auto-renewing subscription: "Tenzy Pro", 1 year, US$19.99, with a 3-day free trial. There is no monthly plan.
@@ -11,8 +11,8 @@ TENZY PRO (in-app subscription)
 
 PERMISSIONS (all processed on-device; nothing is uploaded)
 - Contacts: the Contacts tool finds duplicate contacts, merges them without losing a number, and exports a .vcf backup. Requested only when the user opens that tool.
-- Microphone: Audio Lab (decibel meter / tuner), Voice to Notes, and Live Captions. Audio is metered or transcribed on-device; a recording is saved only when the user taps record.
-- Camera: Scan, Studio, Measure, Pro Camera, Translate (camera mode), Lens, Scene Describer.
+- Microphone: Audio Lab (decibel meter / tuner), Voice to Notes, and Translate's voice mode. Audio is metered or transcribed on-device; a recording is saved only when the user taps record.
+- Camera: Scan, Studio, Measure, Pro Camera, Identify, Translate (camera mode), and See & Read.
 - Photos: Cleaner, Studio, Privacy Scrubber, and Memory read photos the user selects; Memory indexes screenshots on-device only.
 - Motion: the level, compass and sensors inside Measure.
 - Face ID: unlocks the private Vault.
