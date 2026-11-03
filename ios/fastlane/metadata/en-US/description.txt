@@ -44,4 +44,4 @@ FREE TOOLS, WITH TENZY PRO FOR THE REST
 Eight everyday tools are free: Flashlight, QR & Wi-Fi, Magnifier, Measure, Cleaner, Translate, Live Captions and the Face ID Vault. The photo, video and PDF tools, the on-device AI tools and Contacts are Tenzy Pro — start with a 3-day free trial, then $19.99/year. One person builds and maintains this app; Pro is what keeps it going.
 
 PRIVACY
-Your files stay on your device. There's no account and no tracking of what you do inside the app. The only data collected is the standard advertising identifier used by the ad provider to show and count ads — and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/putt-party-play/privacy.html
+Your files stay on your device. There's no account and no tracking of what you do inside the app. The only data collected is the standard advertising identifier used by the ad provider to show and count ads — and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/tenzy/privacy.html

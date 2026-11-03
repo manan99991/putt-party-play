@@ -24,4 +24,4 @@ WHAT'S INSIDE
 
 Tenzy Pro removes every ad and unlocks unlimited use — $19.99/year with a 3-day free trial.
 
-Privacy: your files stay on your device. There's no account and no tracking of what you do in the app. The only data collected is the standard advertising ID the ad provider uses to show and count ads, and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/putt-party-play/privacy.html
+Privacy: your files stay on your device. There's no account and no tracking of what you do in the app. The only data collected is the standard advertising ID the ad provider uses to show and count ads, and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/tenzy/privacy.html

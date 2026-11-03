@@ -662,7 +662,7 @@ struct PaywallView: View {
                 HStack(spacing: HandySpacing.s8) {
                     Link("Terms of Use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                     Text("·").foregroundStyle(HandyColor.textSecondary)
-                    Link("Privacy Policy", destination: URL(string: "https://manan99991.github.io/putt-party-play/privacy.html")!)
+                    Link("Privacy Policy", destination: URL(string: "https://manan99991.github.io/tenzy/privacy.html")!)
                 }
                 .font(HandyFont.caption).foregroundStyle(HandyColor.accent)
             }
