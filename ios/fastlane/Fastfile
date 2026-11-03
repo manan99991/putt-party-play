@@ -210,6 +210,23 @@ platform :ios do
         UI.important("  no USD price points returned (#{code})")
       end
 
+      # 3-day free-trial introductory offer — the trial the paywall AND the App Store listing both
+      # advertise. Without it `introductoryOffer` is nil, the paywall hides the trial, and the
+      # "3-day free trial" copy in the listing/notes/privacy policy would be a false claim (2.3.2 /
+      # 3.1.2). Idempotent; created once for all available territories. Non-fatal if it already exists
+      # or the API declines (logged, never blocks the lane).
+      code, offers = req.call(:get, "/v1/subscriptions/#{sub_id}/introductoryOffers?limit=20")
+      has_trial = (offers["data"] || []).any? { |o| o.dig("attributes", "offerMode") == "FREE_TRIAL" }
+      if has_trial
+        UI.message("  free-trial intro offer already present")
+      else
+        code, data = req.call(:post, "/v1/subscriptionIntroductoryOffers",
+          { data: { type: "subscriptionIntroductoryOffers",
+                    attributes: { duration: "THREE_DAYS", numberOfPeriods: 1, offerMode: "FREE_TRIAL" },
+                    relationships: { subscription: { data: { type: "subscriptions", id: sub_id } } } } })
+        UI.success("  intro offer: 3-day free trial -> #{code}#{code >= 400 ? " #{data}" : ""}")
+      end
+
       # Subscription App Review screenshot — REQUIRED so the IAP leaves "Missing Metadata" and is
       # reviewed WITH the app (fixes Apple 2.1(b): a Pro-referencing binary whose IAP wasn't
       # submitted). Always refreshed to the current paywall so it never shows a stale offer.
