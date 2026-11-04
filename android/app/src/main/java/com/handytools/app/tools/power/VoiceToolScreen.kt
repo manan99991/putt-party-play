@@ -283,20 +283,35 @@ fun VoiceToolScreen() {
         val dur = session.stop()
         recording = false
         val f = session.file
-        val text = (finalText + " " + partial).trim()
+        val liveText = (finalText + " " + partial).trim()
         partial = ""
         if (dur < 0L || f == null || !f.exists() || f.length() < 1000L) {
             status = "That was too short — hold Record a little longer."; return
         }
         Usage.use(ctx, USAGE_KEY, Limits.FREE_AUDIO_PER_DAY) // success path only
         val real = VoiceAudio.durationMs(f).takeIf { it > 0L } ?: dur
-        val note = when {
-            !session.canTranscribe -> "Live transcription isn't available on this device — the recording still saves."
-            text.isEmpty() -> "No speech recognised — try speaking a little closer to the phone."
-            else -> null
+        val amps = VoiceAudio.downsample(history, BARS)
+        // Live recognition worked (device let it share the mic): use it as-is.
+        if (liveText.isNotEmpty()) {
+            openTake(f, real, liveText, null, amps, null)
+            HandyHaptics.success(ctx); return
         }
-        openTake(f, real, text, note, VoiceAudio.downsample(history, BARS), null)
+        // It didn't (e.g. the recorder held the mic on Samsung). Transcribe the saved file off the mic.
+        if (!FileTranscriber.isSupported(ctx)) {
+            val note = if (!session.canTranscribe) "Live transcription isn't available on this device — the recording still saves."
+                       else "No speech recognised — try speaking a little closer to the phone."
+            openTake(f, real, "", note, amps, null)
+            HandyHaptics.success(ctx); return
+        }
+        openTake(f, real, "", "Transcribing…", amps, null)
         HandyHaptics.success(ctx)
+        scope.launch {
+            val txt = FileTranscriber.transcribe(ctx, f, real)
+            if (current == f) {  // still the open take (user hasn't moved on)
+                transcript = txt?.trim().orEmpty()
+                transcriptNote = if (transcript.isNotEmpty()) null else "No speech recognised in this recording."
+            }
+        }
     }
 
     val permLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -320,7 +335,16 @@ fun VoiceToolScreen() {
             }
             busy = false
             if (result == null) { status = "Couldn't open that file. Try an MP3, M4A or a voice recording."; return@launch }
-            openTake(result.first, result.second, "", "Transcription of imported files isn't available on this device yet — recording live is.", List(BARS) { 0.12f }, null)
+            val f = result.first; val d = result.second
+            val supported = FileTranscriber.isSupported(ctx)
+            openTake(f, d, "", if (supported) "Transcribing…" else "Transcription isn't available on this device — playback and trim still work.", List(BARS) { 0.12f }, null)
+            if (supported) {
+                val txt = FileTranscriber.transcribe(ctx, f, d)
+                if (current == f) {
+                    transcript = txt?.trim().orEmpty()
+                    transcriptNote = if (transcript.isNotEmpty()) null else "No speech recognised in this file."
+                }
+            }
         }
     }
 
