@@ -23,8 +23,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Shield
+import androidx.compose.foundation.layout.offset
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -437,10 +441,22 @@ fun PermissionCard(title: String, why: String, granted: Boolean, intent: Intent,
 @Composable
 fun ToolHeader(title: String, subtitle: String) {
     Column(Modifier.padding(bottom = HandyTokens.Space16)) {
+        BackArrow(Modifier.offset(x = (-12).dp))
         Text(title, style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(HandyTokens.Space4))
         Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
     }
+}
+
+/** The one back control used across the app — a 44dp arrow that pops the nav back stack. Put it at
+ *  the top of any screen that isn't the home grid so no screen is ever a dead end. */
+@Composable
+fun BackArrow(modifier: Modifier = Modifier) {
+    val back = LocalOnBackPressedDispatcherOwner.current
+    IconButton(
+        onClick = { back?.onBackPressedDispatcher?.onBackPressed() },
+        modifier = modifier.size(44.dp).semantics { contentDescription = "Back" }
+    ) { Icon(Icons.AutoMirrored.Outlined.ArrowBack, "Back", tint = MaterialTheme.colorScheme.onBackground) }
 }
 
 /** 56dp toggle row with a hairline below. Light haptic on toggle. */

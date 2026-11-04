@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -29,7 +30,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PrivacyScreen() {
     Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).navigationBarsPadding().padding(horizontal = HandyTokens.Gutter)) {
-        Spacer(Modifier.height(HandyTokens.Space16))
+        Spacer(Modifier.height(HandyTokens.Space8))
+        BackArrow(Modifier.offset(x = (-12).dp))
         Text("Privacy", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(HandyTokens.Space4))
         Text("Short version: everything you do in Tenzy stays on this phone.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)

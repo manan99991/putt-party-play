@@ -74,10 +74,13 @@ class NoisePlayer {
                     b5 = -0.7616f * b5 - white * 0.0168980f
                     val pink = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362f) * 0.11f
                     b6 = white * 0.115926f
-                    brown = (brown + white * 0.02f).coerceIn(-1f, 1f)
+                    // Brown (red) noise as a LEAKY integrator: the 0.998 leak pulls it back toward zero
+                    // so it never drifts to the ±1 rails and sticks (which clipped as harsh distortion).
+                    // It settles at ~0.3 RMS, so it's output directly — no ×3 that slammed into the clamp.
+                    brown = brown * 0.998f + white * 0.034f
                     val sample = when (ty) {
                         0 -> white * 0.6f                                   // white
-                        2 -> brown * 3.0f                                   // brown
+                        2 -> brown                                          // brown
                         3 -> {                                              // rain: steady high hiss over pink
                             val hiss = white - prevWhite; prevWhite = white
                             pink * 0.65f + hiss * 0.4f
@@ -86,13 +89,13 @@ class NoisePlayer {
                             oceanPhase += tau * 0.08f / rate
                             if (oceanPhase > tau) oceanPhase -= tau
                             val swell = 0.4f + 0.6f * ((kotlin.math.sin(oceanPhase) + 1f) * 0.5f)
-                            (brown * 3.0f * 0.7f + pink * 0.3f) * swell
+                            (brown * 0.9f + pink * 0.3f) * swell
                         }
                         5 -> {                                              // fan: brown rumble, gentle blade
                             fanPhase += tau * 6f / rate
                             if (fanPhase > tau) fanPhase -= tau
                             val blade = 0.88f + 0.12f * kotlin.math.sin(fanPhase)
-                            (brown * 3.0f * 0.75f + pink * 0.25f) * blade
+                            (brown * 0.95f + pink * 0.25f) * blade
                         }
                         else -> pink                                        // 1 pink
                     }

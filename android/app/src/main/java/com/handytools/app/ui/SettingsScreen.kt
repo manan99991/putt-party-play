@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -72,7 +73,8 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
 
     Column(Modifier.fillMaxSize().statusBarsPadding()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter)) {
-            Spacer(Modifier.height(HandyTokens.Space16))
+            Spacer(Modifier.height(HandyTokens.Space8))
+            BackArrow(Modifier.offset(x = (-12).dp))
             Text("Settings", style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(HandyTokens.Space16))
 
