@@ -111,6 +111,7 @@ private val SHRINK_PX = listOf(0, 0, 0, 0, 1080, 720)
 // in px, byte budget — 0 means "resolution only, keep quality"). The 480p entry stays LAST so the
 // "Try 480p" fallback can point at it by index.
 private val VIDEO_TARGETS = listOf(
+    Triple("Keep 4K / original", 0, 0L),   // height 0 = no downscale, keep full resolution
     Triple("Under 10 MB", 1080, 10L * 1024 * 1024),
     Triple("Under 25 MB", 1080, 25L * 1024 * 1024),
     Triple("Under 50 MB", 1080, 50L * 1024 * 1024),
@@ -118,7 +119,7 @@ private val VIDEO_TARGETS = listOf(
     Triple("720p", 720, 0L),
     Triple("480p", 480, 0L),
 )
-private const val VID_480P_INDEX = 5
+private val VID_480P_INDEX = VIDEO_TARGETS.indexOfFirst { it.second == 480 }
 private val BG_MODES = listOf("Transparent", "White", "Blur", "Colour")
 private val BG_COLOURS = listOf(0xFF1F5EFF, 0xFFE53935, 0xFF2E7D32, 0xFFFFC107, 0xFF8E24AA, 0xFF111111)
 private data class PassportSpec(val label: String, val w: Int, val h: Int, val dims: String)
@@ -158,7 +159,7 @@ fun MediaToolScreen() {
     var transformer by remember { mutableStateOf<Transformer?>(null) }
 
     var shrinkSel by remember { mutableIntStateOf(1) }
-    var vidSel by remember { mutableIntStateOf(1) }
+    var vidSel by remember { mutableIntStateOf(2) }
     var bgSel by remember { mutableIntStateOf(0) }
     var bgColour by remember { mutableIntStateOf(0) }
     var modelMissing by remember { mutableStateOf(false) }
@@ -276,10 +277,14 @@ fun MediaToolScreen() {
         val v = video
         if (v != null) {
             val target = VIDEO_TARGETS[vidSel]
-            val h = target.second
+            val targetH = target.second
             val budget = target.third
-            val presentation: Effect = Presentation.createForHeight(h)
-            val edited = EditedMediaItem.Builder(MediaItem.fromUri(v)).setEffects(Effects(emptyList(), listOf(presentation))).build()
+            // Only downscale when a cap is set AND the source is genuinely taller — never upscale, and
+            // keep full resolution (incl. 4K) when "Keep 4K / original" (targetH 0) is chosen.
+            val srcH = MediaEngine.videoHeightPx(ctx, v)
+            val videoEffects: List<Effect> =
+                if (targetH > 0 && (srcH == 0 || srcH > targetH)) listOf(Presentation.createForHeight(targetH)) else emptyList()
+            val edited = EditedMediaItem.Builder(MediaItem.fromUri(v)).setEffects(Effects(emptyList(), videoEffects)).build()
             // For a file-size target, aim the encoder at a bitrate that lands under the budget:
             // bits = budget × 8, kept to ~88% so the container + audio track still fit, divided by the
             // clip's length in seconds. Clamp so a very short clip doesn't balloon and a long one stays
@@ -300,7 +305,7 @@ fun MediaToolScreen() {
                 }
                 b
             }
-            val tag = if (budget > 0L) "${budget / (1024 * 1024)}MB" else "${h}p"
+            val tag = if (budget > 0L) "${budget / (1024 * 1024)}MB" else if (targetH > 0) "${targetH}p" else "4K"
             runVideo(edited, configure, "Tenzy-$tag-${System.currentTimeMillis()}.mp4", "video/mp4", MediaEngine.Kind.VIDEO) { why ->
                 fail("Couldn't shrink this video ($why).")
             }

@@ -387,6 +387,15 @@ internal object MediaEngine {
         } catch (e: Exception) { null } finally { try { mmr.release() } catch (_: Exception) {} }
     }
 
+    /** Source video height in px, or 0 if unreadable — used so "Keep original" never upscales. */
+    fun videoHeightPx(ctx: Context, uri: Uri): Int {
+        val mmr = MediaMetadataRetriever()
+        return try {
+            mmr.setDataSource(ctx, uri)
+            mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)?.toIntOrNull() ?: 0
+        } catch (e: Exception) { 0 } finally { try { mmr.release() } catch (_: Exception) {} }
+    }
+
     fun videoDims(ctx: Context, uri: Uri): String? {
         val mmr = MediaMetadataRetriever()
         return try {
