@@ -69,7 +69,11 @@ internal object MediaEngine {
     fun baseName(name: String): String = name.substringBeforeLast('.').ifBlank { "photo" }
 
     /** Decode a photo (HEIC included on Android 9+), honour EXIF orientation, cap the longest side. */
-    fun loadImage(ctx: Context, uri: Uri, maxDim: Int = 2560): LoadedImage? {
+    fun loadImage(ctx: Context, uri: Uri, maxDim: Int = 4096): LoadedImage? =
+        // Full-size phone photos (12-16 MP) fit under 4096; if the device runs out of memory, retry smaller.
+        try { loadImageAt(ctx, uri, maxDim) } catch (_: OutOfMemoryError) { runCatching { loadImageAt(ctx, uri, 2560) }.getOrNull() }
+
+    private fun loadImageAt(ctx: Context, uri: Uri, maxDim: Int): LoadedImage? {
         val bytes = sizeOf(ctx, uri)
         val name = displayName(ctx, uri)
         val mime = mimeOf(ctx, uri)

@@ -158,6 +158,12 @@ fun MediaToolScreen() {
     var saved by remember { mutableStateOf<SavedOut?>(null) }
     var transformer by remember { mutableStateOf<Transformer?>(null) }
 
+    // Batch queue: pick several videos, shrink them one after another with the same target.
+    val queue = remember { mutableStateListOf<Uri>() }
+    var batchRun by remember { mutableStateOf(false) }
+    var batchIdx by remember { mutableIntStateOf(1) }
+    var batchTotal by remember { mutableIntStateOf(1) }
+    val nextHook = remember { arrayOfNulls<() -> Unit>(1) }
     var shrinkSel by remember { mutableIntStateOf(1) }
     var vidSel by remember { mutableIntStateOf(2) }
     var bgSel by remember { mutableIntStateOf(0) }
@@ -185,7 +191,7 @@ fun MediaToolScreen() {
     fun fail(msg: String) { status = msg; statusIsError = true; HandyHaptics.light(ctx) }
 
     fun loadPhoto(uri: Uri) {
-        working = true; clearResult(); boxes.clear(); stripped = false; exif = null; video = null; videoDims = null
+        working = true; clearResult(); boxes.clear(); stripped = false; exif = null; video = null; videoDims = null; queue.clear(); batchRun = false
         scope.launch {
             val loaded = withContext(Dispatchers.IO) { MediaEngine.loadImage(ctx, uri) }
             val rows = withContext(Dispatchers.IO) { MediaEngine.readExif(ctx, uri) }
@@ -206,7 +212,12 @@ fun MediaToolScreen() {
     }
 
     val photoPicker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { u -> if (u != null) loadPhoto(u) }
-    val videoPicker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { u -> if (u != null) loadVideo(u) }
+    val videoPicker = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(10)) { list ->
+        if (list.isNotEmpty()) {
+            loadVideo(list.first())
+            queue.clear(); queue.addAll(list.drop(1)); batchRun = false; batchIdx = 1; batchTotal = list.size
+        }
+    }
 
     /** Common tail for every photo export: cache copy, gallery save, stats, quota (only now), share hook. */
     suspend fun finishImage(bytes: ByteArray, name: String, mime: String, preview: Bitmap, dims: String, transparent: Boolean, usage: String, limit: Int) {
@@ -239,9 +250,17 @@ fun MediaToolScreen() {
                     Usage.use(ctx, "media_vid", Limits.FREE_VIDEO_PER_DAY)
                     info("Done · ${MediaEngine.human(out.length())}")
                     HandyHaptics.success(ctx)
+                    if (batchRun && kind == MediaEngine.Kind.VIDEO) {
+                        if (queue.isNotEmpty() && Usage.hasRoom(ctx, "media_vid", Limits.FREE_VIDEO_PER_DAY)) nextHook[0]?.invoke()
+                        else {
+                            batchRun = false
+                            info(if (queue.isEmpty()) "All $batchTotal videos shrunk · saved to Movies/Tenzy" else "Shrunk $batchIdx of $batchTotal — today's free video limit is used up. Pro has no limit.")
+                        }
+                    }
                 }
             }
             override fun onError(composition: Composition, exportResult: ExportResult, exception: ExportException) {
+                batchRun = false
                 transformer = null; working = false; progress = null
                 onFail(exception.message?.take(90) ?: "the phone's video codec refused it")
             }
@@ -309,6 +328,15 @@ fun MediaToolScreen() {
             runVideo(edited, configure, "Tenzy-$tag-${System.currentTimeMillis()}.mp4", "video/mp4", MediaEngine.Kind.VIDEO) { why ->
                 fail("Couldn't shrink this video ($why).")
             }
+        }
+    }
+
+    nextHook[0] = {
+        if (queue.isNotEmpty()) {
+            val nx = queue.removeAt(0)
+            batchIdx += 1
+            loadVideo(nx)
+            shrink()
         }
     }
 
@@ -550,7 +578,11 @@ fun MediaToolScreen() {
                     LinearProgressIndicator(progress = { progress ?: 0f }, modifier = Modifier.fillMaxWidth())
                     Text("Transcoding on the phone… ${((progress ?: 0f) * 100).toInt()}%", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp, bottom = 10.dp))
                 }
-                HPrimaryButton(if (working) "Shrinking…" else "Shrink", enabled = (hasPhoto || hasVideo) && !working && room) { shrink() }
+                if (hasVideo && (queue.isNotEmpty() || batchRun)) {
+                    Text(if (working) "Video $batchIdx of $batchTotal" else "${queue.size + 1} videos queued — they'll be shrunk one after another with the target above.",
+                        style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(bottom = 8.dp))
+                }
+                HPrimaryButton(if (working) "Shrinking…" else if (queue.isNotEmpty()) "Shrink ${queue.size + 1} videos" else "Shrink", enabled = (hasPhoto || hasVideo) && !working && room) { batchRun = queue.isNotEmpty(); batchIdx = 1; shrink() }
                 if (statusIsError && hasVideo && vidSel != VID_480P_INDEX) {
                     Spacer(Modifier.height(8.dp))
                     HSecondaryButton("Try 480p", enabled = !working) { vidSel = VID_480P_INDEX; shrink() }

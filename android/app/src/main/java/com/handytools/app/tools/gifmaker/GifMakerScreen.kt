@@ -44,10 +44,16 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 private data class Size(val label: String, val width: Int)
-private val SIZES = listOf(Size("Small", 180), Size("Medium", 240), Size("Large", 320))
+private val SIZES = listOf(Size("Small", 180), Size("Medium", 240), Size("Large", 320), Size("HD", 480))
+private data class Len(val label: String, val ms: Long)
+private val LENGTHS = listOf(Len("4 s", 4000L), Len("8 s", 8000L), Len("15 s", 15000L))
+private data class Smooth(val label: String, val fps: Int)
+private val SMOOTHS = listOf(Smooth("8 fps", 8), Smooth("12 fps", 12), Smooth("15 fps", 15))
+private data class From(val label: String, val where: Int)   // 0 start, 1 middle, 2 end
+private val FROMS = listOf(From("From start", 0), From("From middle", 1), From("Last part", 2))
 
 /**
- * GIF Maker. Pick a short video; up to ~20 frames from its first few seconds are sampled, scaled and
+ * GIF Maker. Pick a short video; frames from the part you choose (up to 15 s) are sampled, scaled and
  * encoded into a looping GIF you can share. Encoding runs entirely on the phone — no upload, no
  * watermark. Keep clips short for a smaller file.
  */
@@ -56,6 +62,9 @@ fun GifMakerScreen() {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var sizeSel by remember { mutableStateOf(SIZES[1]) }
+    var lenSel by remember { mutableStateOf(LENGTHS[0]) }
+    var smoothSel by remember { mutableStateOf(SMOOTHS[1]) }
+    var fromSel by remember { mutableStateOf(FROMS[0]) }
     var busy by remember { mutableStateOf(false) }
     var status by remember { mutableStateOf<String?>(null) }
     var gif by remember { mutableStateOf<File?>(null) }
@@ -70,19 +79,23 @@ fun GifMakerScreen() {
                     mmr.setDataSource(ctx, uri)
                     val durMs = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0L
                     if (durMs <= 0L) return@withContext null
-                    val spanMs = minOf(durMs, 4000L)
-                    val count = 20
-                    val stepMs = (spanMs / count).coerceAtLeast(60L)
+                    val spanMs = minOf(durMs, lenSel.ms)
+                    val startMs = when (fromSel.where) { 1 -> ((durMs - spanMs) / 2).coerceAtLeast(0L); 2 -> (durMs - spanMs).coerceAtLeast(0L); else -> 0L }
                     val targetW = sizeSel.width
+                    val stepMs = (1000L / smoothSel.fps).coerceAtLeast(40L)
                     val frames = ArrayList<Bitmap>()
-                    var t = 0L
                     var tw = 0; var th = 0
-                    while (t < spanMs && frames.size < count) {
-                        val raw = mmr.getFrameAtTime(t * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+                    var maxFrames = 150
+                    var t = 0L
+                    while (t < spanMs && frames.size < maxFrames) {
+                        // Exact-frame seek: the sync-frame shortcut repeats the same keyframe for ~1s at a time.
+                        val raw = mmr.getFrameAtTime((startMs + t) * 1000, MediaMetadataRetriever.OPTION_CLOSEST)
                         if (raw != null) {
                             if (tw == 0) {
                                 tw = (targetW / 2) * 2
                                 th = (targetW.toFloat() / raw.width * raw.height).toInt().let { (it / 2) * 2 }.coerceAtLeast(2)
+                                // Keep every frame in memory at once under ~72 MB so long/HD GIFs can't crash low-RAM phones.
+                                maxFrames = (72_000_000L / (tw.toLong() * th * 4)).toInt().coerceIn(20, 150)
                             }
                             val scaled = Bitmap.createScaledBitmap(raw, tw, th, true)
                             if (scaled != raw) raw.recycle()
@@ -92,7 +105,9 @@ fun GifMakerScreen() {
                     }
                     if (frames.isEmpty()) return@withContext null
                     val delayCs = (stepMs / 10).toInt().coerceIn(4, 25)
-                    val bytes = GifEncoder.encode(frames, delayCs)
+                    // If memory capped the frame count, stretch the delay so the GIF still covers the chosen length.
+                    val realDelay = if (frames.size > 1 && frames.size * stepMs < spanMs) ((spanMs / frames.size) / 10).toInt().coerceIn(4, 50) else delayCs
+                    val bytes = GifEncoder.encode(frames, realDelay)
                     val first = frames.first()
                     val previewBmp = first.copy(first.config ?: Bitmap.Config.ARGB_8888, false)
                     frames.forEach { it.recycle() }
@@ -118,6 +133,25 @@ fun GifMakerScreen() {
             SIZES.forEach { s -> HChip(s.label, s == sizeSel) { sizeSel = s; gif = null; preview = null } }
         }
 
+        Spacer(Modifier.size(14.dp))
+        Text("Length", color = Handy.palette.textSecondary, fontSize = 13.sp)
+        Spacer(Modifier.size(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            LENGTHS.forEach { l -> HChip(l.label, l == lenSel) { lenSel = l; gif = null; preview = null } }
+        }
+        Spacer(Modifier.size(14.dp))
+        Text("Smoothness", color = Handy.palette.textSecondary, fontSize = 13.sp)
+        Spacer(Modifier.size(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            SMOOTHS.forEach { m -> HChip(m.label, m == smoothSel) { smoothSel = m; gif = null; preview = null } }
+        }
+        Spacer(Modifier.size(14.dp))
+        Text("Which part", color = Handy.palette.textSecondary, fontSize = 13.sp)
+        Spacer(Modifier.size(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FROMS.forEach { f -> HChip(f.label, f == fromSel) { fromSel = f; gif = null; preview = null } }
+        }
+
         Spacer(Modifier.size(16.dp))
         HPrimaryButton(if (busy) "Building GIF…" else "Choose a video", modifier = Modifier.fillMaxWidth(), enabled = !busy) {
             picker.launch("video/*")
@@ -137,7 +171,7 @@ fun GifMakerScreen() {
 
         Spacer(Modifier.size(16.dp))
         Text(
-            "Encoded on your phone — nothing is uploaded. The preview shows the first frame; the saved file loops. Shorter clips make smaller, smoother GIFs.",
+            "Encoded on your phone — nothing is uploaded. The preview shows the first frame; the saved file loops. Longer, smoother and bigger GIFs make larger files — if memory runs short the frame rate is lowered automatically.",
             color = Handy.palette.textSecondary, fontSize = 12.sp,
         )
     }

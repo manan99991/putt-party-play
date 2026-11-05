@@ -129,7 +129,7 @@ object ConverterEngine {
         return try {
             for (u in uris) {
                 val raw = decodeBitmap(ctx, u) ?: continue
-                val bmp = flattenIfNeeded(scaleDown(raw, 2200), ImageFormat.JPEG)
+                val bmp = flattenIfNeeded(scaleDown(raw, 3508), ImageFormat.JPEG)
                 val page = PDPage(PDRectangle(bmp.width.toFloat(), bmp.height.toFloat()))
                 doc.addPage(page)
                 val img = JPEGFactory.createFromImage(doc, bmp, jpegQuality.coerceIn(1, 100) / 100f)
@@ -161,6 +161,7 @@ object ConverterEngine {
                             page.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                             val f = File(ctx.cacheDir, "Page-${i + 1}-${System.currentTimeMillis()}.${fmt.ext}")
                             f.outputStream().use { bmp.compress(compressFormat(fmt), quality.coerceIn(1, 100), it) }
+                            bmp.recycle()
                             out.add(f)
                         }
                     }
@@ -177,9 +178,16 @@ object ConverterEngine {
      * call this on a thread with a Looper (the main thread) and poll `getProgress` from there.
      */
     @UnstableApi
-    fun startAudioExport(ctx: Context, uri: Uri, out: File, listener: Transformer.Listener): Transformer {
+    fun startAudioExport(ctx: Context, uri: Uri, out: File, listener: Transformer.Listener, bitrate: Int = 0): Transformer {
         val edited = EditedMediaItem.Builder(MediaItem.fromUri(uri)).setRemoveVideo(true).build()
-        val transformer = Transformer.Builder(ctx).setAudioMimeType(MimeTypes.AUDIO_AAC).addListener(listener).build()
+        val b = Transformer.Builder(ctx).setAudioMimeType(MimeTypes.AUDIO_AAC).addListener(listener)
+        // 0 = the encoder's own default; otherwise ask for a specific AAC bitrate (bits per second).
+        if (bitrate > 0) b.setEncoderFactory(
+            androidx.media3.transformer.DefaultEncoderFactory.Builder(ctx)
+                .setRequestedAudioEncoderSettings(androidx.media3.transformer.AudioEncoderSettings.Builder().setBitrate(bitrate).build())
+                .build()
+        )
+        val transformer = b.build()
         transformer.start(edited, out.absolutePath)
         return transformer
     }

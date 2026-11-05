@@ -82,6 +82,8 @@ private val VIDEO_TARGETS = listOf("480p" to 480, "720p" to 720, "1080p" to 1080
  * and nothing here touches a quota.
  */
 @androidx.annotation.OptIn(UnstableApi::class)
+private val AUDIO_BITRATES = listOf("Small · 64 kbps" to 64_000, "Standard · 128 kbps" to 128_000, "High · 256 kbps" to 256_000, "Max · 320 kbps" to 320_000)
+
 @Composable
 fun ConverterToolScreen() {
     val ctx = LocalContext.current
@@ -98,6 +100,8 @@ fun ConverterToolScreen() {
     var vidMode by remember { mutableIntStateOf(0) }      // 0 = MP4, 1 = audio only (M4A), 2 = muted MP4
     var srcSizeText by remember { mutableStateOf<String?>(null) }
     var quality by remember { mutableFloatStateOf(90f) }
+    var audioSel by remember { mutableStateOf(1) }
+    var pdfSharp by remember { mutableStateOf(1) }   // 0 = 150 dpi, 1 = 200 dpi, 2 = 300 dpi
 
     var working by remember { mutableStateOf(false) }
     var progress by remember { mutableStateOf<Float?>(null) } // null while working = indeterminate
@@ -204,7 +208,7 @@ fun ConverterToolScreen() {
         working = true; progress = null; reset()
         val fmt = if (pdfTarget == 1) ConverterEngine.ImageFormat.JPEG else ConverterEngine.ImageFormat.PNG
         scope.launch {
-            val files = withContext(Dispatchers.IO) { ConverterEngine.pdfToImages(ctx, src.uri, fmt, quality.toInt()) }
+            val files = withContext(Dispatchers.IO) { ConverterEngine.pdfToImages(ctx, src.uri, fmt, quality.toInt(), when (pdfSharp) { 0 -> 1240; 2 -> 2480; else -> 1654 }) }
             showImages(files, fmt.mime)
         }
     }
@@ -243,12 +247,12 @@ fun ConverterToolScreen() {
             s != null && s.category == ConverterEngine.Category.PDF -> convertPdf(s)
             s != null && s.category == ConverterEngine.Category.AUDIO -> {
                 val out = File(ctx.cacheDir, "${ConverterEngine.baseName(s.name)}-audio-${System.currentTimeMillis()}.m4a")
-                runMedia(out, "audio/mp4") { l -> ConverterEngine.startAudioExport(ctx, s.uri, out, l) }
+                runMedia(out, "audio/mp4") { l -> ConverterEngine.startAudioExport(ctx, s.uri, out, l, AUDIO_BITRATES[audioSel].second) }
             }
             s != null && s.category == ConverterEngine.Category.VIDEO -> {
                 if (vidMode == 1) {
                     val out = File(ctx.cacheDir, "${ConverterEngine.baseName(s.name)}-audio-${System.currentTimeMillis()}.m4a")
-                    runMedia(out, "audio/mp4") { l -> ConverterEngine.startAudioExport(ctx, s.uri, out, l) }
+                    runMedia(out, "audio/mp4") { l -> ConverterEngine.startAudioExport(ctx, s.uri, out, l, AUDIO_BITRATES[audioSel].second) }
                 } else {
                     val h = VIDEO_TARGETS[vidTarget].second
                     val tag = if (vidMode == 2) "muted" else if (h > 0) "${h}p" else "mp4"
@@ -310,12 +314,22 @@ fun ConverterToolScreen() {
                     HChip("PNG", pdfTarget == 0) { pdfTarget = 0; reset() }
                     HChip("JPEG", pdfTarget == 1) { pdfTarget = 1; reset() }
                 }
+                SectionLabel("Sharpness")
+                ChipRow {
+                    HChip("Standard · 150 dpi", pdfSharp == 0) { pdfSharp = 0; reset() }
+                    HChip("Sharp · 200 dpi", pdfSharp == 1) { pdfSharp = 1; reset() }
+                    HChip("Print · 300 dpi", pdfSharp == 2) { pdfSharp = 2; reset() }
+                }
                 if (pdfTarget == 1) SliderRow("Quality", "${quality.toInt()}", quality, { quality = it }, 20f..100f)
             }
             ConverterEngine.Category.AUDIO -> {
                 SectionLabel("Convert to")
                 ChipRow {
                     HChip("M4A (AAC)", true) { }
+                }
+                SectionLabel("Quality")
+                ChipRow {
+                    AUDIO_BITRATES.forEachIndexed { i, (label, _) -> HChip(label, audioSel == i) { audioSel = i; reset() } }
                 }
             }
             ConverterEngine.Category.VIDEO -> {
@@ -330,6 +344,9 @@ fun ConverterToolScreen() {
                     ChipRow {
                         VIDEO_TARGETS.forEachIndexed { i, (label, _) -> HChip(label, vidTarget == i) { vidTarget = i; reset() } }
                     }
+                } else {
+                    SectionLabel("Audio quality")
+                    ChipRow { AUDIO_BITRATES.forEachIndexed { i, (label, _) -> HChip(label, audioSel == i) { audioSel = i; reset() } } }
                 }
             }
             ConverterEngine.Category.OTHER -> {

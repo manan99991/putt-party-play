@@ -315,7 +315,7 @@ object CaptureClassifier {
 
 /** Bitmap in/out for Capture: decode with EXIF rotation, scale for OCR, and save as PDF / JPEG. */
 object CaptureImages {
-    fun load(ctx: Context, uri: Uri, maxDim: Int = 2200): Bitmap? = runCatching {
+    fun load(ctx: Context, uri: Uri, maxDim: Int = 3200): Bitmap? = runCatching {
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
         var sample = 1
