@@ -64,6 +64,19 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
     /** e.g. "$19.99" — null until Play responds. */
     val yearlyPrice: String? get() = priceOf(_yearly.value)
 
+    /** "3-day free trial" only when Play's live offer really has a free phase; otherwise null. */
+    val trialLabel: String? get() {
+        val ph = _yearly.value?.subscriptionOfferDetails?.firstOrNull()?.pricingPhases?.pricingPhaseList
+            ?.firstOrNull { it.priceAmountMicros == 0L } ?: return null
+        val m = Regex("P(\\d+)([DWM])").matchEntire(ph.billingPeriod) ?: return null
+        val n = m.groupValues[1].toInt()
+        return when (m.groupValues[2]) {
+            "D" -> "$n-day free trial"
+            "W" -> "${n * 7}-day free trial"
+            else -> "$n-month free trial"
+        }
+    }
+
     fun start() {
         if (client.isReady) return
         client.startConnection(object : BillingClientStateListener {
@@ -101,7 +114,11 @@ class BillingManager(private val ctx: Context) : PurchasesUpdatedListener {
 
     /** Launch the purchase flow for the yearly plan. */
     fun launchPurchase(activity: Activity) {
-        val pd = _yearly.value ?: run { start(); return }
+        val pd = _yearly.value ?: run {
+            start()
+            android.widget.Toast.makeText(ctx, "Couldn't reach Google Play. Check your connection and tap again.", android.widget.Toast.LENGTH_LONG).show()
+            return
+        }
         val offerToken = pd.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: return
         val params = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(

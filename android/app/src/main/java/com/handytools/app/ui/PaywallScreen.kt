@@ -90,7 +90,7 @@ fun PaywallContent(onBack: () -> Unit) {
                 Text("You're Pro. Thank you.", style = MaterialTheme.typography.titleMedium)
             }
         } else {
-            PlanRow("Yearly", billing.yearlyPrice ?: "$19.99", "One plan · 3-day free trial", null, true) { }
+            PlanRow("Yearly", billing.yearlyPrice ?: "$19.99", if (billing.trialLabel != null) "One plan · ${billing.trialLabel}" else "One plan · renews yearly", null, true) { }
             Spacer(Modifier.height(HandyTokens.Space16))
             HPrimaryButton("Go Pro · ${billing.yearlyPrice ?: "$19.99"} / year") { billing.launchPurchase(activity) }
             Spacer(Modifier.height(HandyTokens.Space8))
