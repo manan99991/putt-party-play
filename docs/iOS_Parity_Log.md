@@ -25,3 +25,17 @@ Audit date: 2026-11-05. Source: ios/HandyTools (read only).
 
 ## Next
 1. Wait for Apple review. 2. Fix the items above in one branch. 3. Build and test, then ship via Ship-Build, Ship-Stage and Ship-Store.
+
+## Update 2026-11-05 (iOS work started, user approved full plan "A")
+Done on branch handytools-fixes-pending (not yet shipped, nothing touched in App Store Connect):
+- Per-theme tool icons: 150 imagesets ic_<id>_<theme> (256px), shown on every home card and every tool page header, SF Symbol fallback.
+- Capture tool image cap 1600 -> 2400 px.
+- File Viewer text preview 20,000 -> 60,000 characters.
+
+Checked, no change needed:
+- Video shrink already allows 3840 px (4K), it never forced 1080p, so "Keep 4K" is already covered.
+- iOS has no PDF-to-image export, so the Android sharpness choice has no iOS equivalent.
+
+Not ported (separate, bigger changes): batch queue in Video shrink (Format Fixer already batches), audio bitrate choice.
+
+Open check: App Store Connect shows the version in review as 1.2.34 but ios/project.yml says 1.2.43. Confirm the digits before resubmitting.
