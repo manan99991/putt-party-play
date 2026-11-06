@@ -15,9 +15,12 @@ import UIKit
 /// thread. Each handler hops to the main actor itself when it needs to touch published state.
 enum Permission {
     static func microphone(_ done: @escaping @Sendable (Bool) -> Void) {
+        // Store-screenshot runs must never show a system permission alert over the capture.
+        if CommandLine.arguments.contains("-screenshots") { done(false); return }
         AVAudioApplication.requestRecordPermission(completionHandler: done)
     }
     static func camera(_ done: @escaping @Sendable (Bool) -> Void) {
+        if CommandLine.arguments.contains("-screenshots") { done(false); return }
         AVCaptureDevice.requestAccess(for: .video, completionHandler: done)
     }
     static func speech(_ done: @escaping @Sendable (SFSpeechRecognizerAuthorizationStatus) -> Void) {

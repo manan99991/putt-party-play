@@ -88,8 +88,8 @@ SLIDES = [
          support={"ios": "See why a message is flagged.",
                   "android": "A sticky note, one tap away."},
          route={"ios": "shield", "android": "scratchpad"}, mode="light"),
-    dict(n=6, caption="Pro: ads gone. $19.99 a year.",
-         support="Unlimited everything. Support one indie dev.",
+    dict(n=6, caption="Tenzy Pro: $19.99/year.",
+         support="No ads, no daily limits. Cancel anytime.",
          route="paywall", mode="light"),
 ]
 
