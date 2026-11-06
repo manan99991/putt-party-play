@@ -1,0 +1,27 @@
+# iOS parity log (read-only audit, nothing deployed to iOS)
+
+Rule: every enhancement made to an existing Android tool also goes into iOS. Nothing is changed or shipped on iOS until the first App Store review clears. Then bundle into one update.
+
+Audit date: 2026-11-05. Source: ios/HandyTools (read only).
+
+## Android enhancements to port (builds 159-161)
+| Android change | iOS status | Work for iOS |
+|---|---|---|
+| Keep 4K / original in video shrink | VideoEngine.transcodeH264 has maxDimension nil = original, but no visible 4K choice found in Video shrink options | Confirm the shrink UI offers an original-resolution choice; add if missing |
+| Photos kept up to 4096 px | Studio resize already offers 4096 px, 2048, 1280, 800 | Nothing |
+| GIF length, smoothness, start point, size | Already richer than Android (start, length, fps 8/10/15, speed, width) | Nothing. Check max length is above 3 s |
+| Scan resolution up from 2200 px | ScanView loads at 2400 px; Capture loads at 1600 px | Raise Capture 1600 to ~3200 for sharper text |
+| PDF export sharpness (150/200/300 dpi) | FormatFix renders PDF previews at 240 px; check the real PDF to image export path | Find the export path and add a dpi choice |
+| Batch video queue | FormatFix already batches 10 free / unlimited Pro. Video shrink is one at a time | Add multi-select queue to Video shrink |
+| Audio quality choice (64-320 kbps) | Audio uses AVAssetExportPresetAppleM4A, no bitrate choice | Add a bitrate choice (AVAssetWriter AAC settings) |
+| Rest: smooth brown, ocean, fan | iOS uses AudioLab; not checked | Listen-check brown noise for clipping |
+| Back arrow on every screen | iOS: dead-end sweep was done before submit | Re-check Settings and Privacy |
+| Voice file transcription | iOS uses SFSpeechRecognizer; not affected by the Samsung mic clash | Nothing |
+
+## iOS-only findings (not Android issues)
+- File Viewer text preview cut at 20,000 characters (Android 60,000). Raise or load on scroll.
+- CaptureView downscales to 1600 px, the lowest cap found on either platform.
+- ScanView page thumbnails 1400 px are fine; source 2400 px could go higher.
+
+## Next
+1. Wait for Apple review. 2. Fix the items above in one branch. 3. Build and test, then ship via Ship-Build, Ship-Stage and Ship-Store.
