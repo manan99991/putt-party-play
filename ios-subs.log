@@ -1,17 +1,18 @@
-[04:09:58]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[04:09:58]: fastlane 2.241.2 (Ruby 3.4.12, gem)
-[04:09:59]: Sending anonymous analytics information
-[04:09:59]: Learn more at https://docs.fastlane.tools/#metrics
-[04:09:59]: No personal or sensitive data is sent.
-[04:09:59]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[04:09:59]: [32m------------------------------[0m
-[04:09:59]: [32m--- Step: default_platform ---[0m
-[04:09:59]: [32m------------------------------[0m
-[04:09:59]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[04:09:59]: App 6824023361
-[04:10:00]: Territories: 175
-[04:10:00]: tenzy_pro_yearly exists (6824154364)
-[04:10:01]: [32m  price -> 201 near $19.99 (19.99)[0m
+[04:47:57]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[04:47:57]: fastlane 2.241.2 (Ruby 3.4.12, gem)
+[04:47:58]: Sending anonymous analytics information
+[04:47:58]: Learn more at https://docs.fastlane.tools/#metrics
+[04:47:58]: No personal or sensitive data is sent.
+[04:47:58]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[04:47:58]: [32m------------------------------[0m
+[04:47:58]: [32m--- Step: default_platform ---[0m
+[04:47:58]: [32m------------------------------[0m
+[04:47:58]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[04:47:58]: App 6824023361
+[04:47:59]: Territories: 175
+[04:47:59]: tenzy_pro_yearly exists (6824154364)
+[04:48:01]: [32m  price -> 201 near $19.99 (19.99)[0m
+[04:48:01]: [32m  intro offer 3-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
 +--------------------------------------+
 |             [33mLane Context[0m             |
 +------------------+-------------------+
@@ -19,22 +20,22 @@
 | PLATFORM_NAME    | ios               |
 | LANE_NAME        | ios subscriptions |
 +------------------+-------------------+
-[04:10:01]: [31mError in your Fastfile at line 122[0m
-[04:10:01]: [31m```[0m
-[04:10:01]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
-[04:10:01]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
-[04:10:01]: [31m => 122:	      r = klass.new(URI(base + path))[0m
-[04:10:01]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
-[04:10:01]: [31m    124:	      r["Content-Type"] = "application/json"[0m
-[04:10:01]: [31m```[0m
-[04:10:01]: [31mCalled from Fastfile at line 220[0m
-[04:10:01]: [31m```[0m
-[04:10:01]: [31m    218:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
-[04:10:01]: [31m    219:	        if cur.is_a?(Hash) && cur["data"][0m
-[04:10:01]: [31m => 220:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
-[04:10:01]: [31m    221:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
-[04:10:01]: [31m    222:	        end[0m
-[04:10:01]: [31m```[0m
+[04:48:02]: [31mError in your Fastfile at line 122[0m
+[04:48:02]: [31m```[0m
+[04:48:02]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
+[04:48:02]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
+[04:48:02]: [31m => 122:	      r = klass.new(URI(base + path))[0m
+[04:48:02]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
+[04:48:02]: [31m    124:	      r["Content-Type"] = "application/json"[0m
+[04:48:02]: [31m```[0m
+[04:48:02]: [31mCalled from Fastfile at line 242[0m
+[04:48:02]: [31m```[0m
+[04:48:02]: [31m    240:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
+[04:48:02]: [31m    241:	        if cur.is_a?(Hash) && cur["data"][0m
+[04:48:02]: [31m => 242:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
+[04:48:02]: [31m    243:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
+[04:48:02]: [31m    244:	        end[0m
+[04:48:02]: [31m```[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -44,7 +45,7 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[04:10:01]: [31mfastlane finished with errors[0m
+[04:48:02]: [31mfastlane finished with errors[0m
 
 Looking for related GitHub issues on fastlane/fastlane...
 
@@ -64,7 +65,7 @@ and 611 more at: https://github.com/fastlane/fastlane/search?q=undefined%20metho
 
 🔗  You can ⌘ + double-click on links to open them directly in your browser.
 Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': [31m[!] undefined method 'new' for nil[0m (NoMethodError)
-	from Fastfile:220:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
+	from Fastfile:242:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
 	from Fastfile:164:in 'Array#each'
 	from Fastfile:164:in 'block (2 levels) in Fastlane::FastFile#parsing_binding'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
@@ -87,7 +88,7 @@ Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': [31m[
 	from /opt/homebrew/Cellar/ruby@3.4/3.4.12/lib/ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
 Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': undefined method 'new' for nil (NoMethodError)
-	from Fastfile:220:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
+	from Fastfile:242:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
 	from Fastfile:164:in 'Array#each'
 	from Fastfile:164:in 'block (2 levels) in Fastlane::FastFile#parsing_binding'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
