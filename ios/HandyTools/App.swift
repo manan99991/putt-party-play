@@ -649,11 +649,11 @@ struct PaywallView: View {
             if store.isPremium && !AppEnv.isTestBuild {
                 Label("You're Pro. Thank you.", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             } else {
-                if store.isPremium {
+                if store.isPremium && !Launch.screenshots {
                     Text("Test build: every tool is already unlocked. You can still try the purchase below with a sandbox account.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 }
-                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: store.showsFreeTrial ? "\(store.trialLength) free trial, then billed yearly · cancel anytime" : "Renews yearly · cancel anytime", badge: nil) { }
+                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: store.showsFreeTrial ? "\(store.trialLength) free trial, then yearly" : "Renews yearly · cancel anytime", badge: nil) { }
 
                 Button {
                     Task { let was = store.isPremium; await store.purchase(store.yearly); if store.isPremium && !was { dismiss() } }
