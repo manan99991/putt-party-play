@@ -113,6 +113,9 @@ fun HearingBoostScreen() {
                 Spacer(Modifier.size(8.dp))
                 Text("Keep earbuds in to avoid feedback.", color = Handy.palette.textSecondary, fontSize = 13.sp)
             }
+            Spacer(Modifier.size(12.dp))
+            Text("A casual sound amplifier, not a hearing aid or medical device. Keep the volume comfortable to protect your ears, and see a hearing professional if you have trouble hearing.",
+                color = Handy.palette.textSecondary, fontSize = 12.sp)
         }
     }
 }
