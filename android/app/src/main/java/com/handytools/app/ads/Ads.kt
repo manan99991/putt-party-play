@@ -68,7 +68,7 @@ fun BannerAd(modifier: Modifier = Modifier, onRemoveAds: (() -> Unit)? = LocalRe
             Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter, vertical = 2.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Ads keep Tenzy free", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+            Text("Ads support Tenzy", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
             Text("Remove ads", style = MaterialTheme.typography.labelSmall, color = HandyColors.Accent,
                 modifier = Modifier.clickable { onRemoveAds?.invoke() })
         }

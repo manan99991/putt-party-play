@@ -74,7 +74,7 @@ fun PaywallContent(onBack: () -> Unit) {
         Text("Every tool, unlimited. Ads gone for good.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space24))
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
-            listOf("No banner or full-screen ads", "Unlimited clips, scans, PDFs & AI actions", "Unlimited alarms and wallet cards", "Support one indie developer").forEach {
+            listOf("No banner or full-screen ads", "No daily limits on scans, conversions, PDF tools and video", "Unlimited translation, voice and background removal", "Every theme unlocked").forEach {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Outlined.CheckCircle, null, Modifier.size(22.dp), tint = HandyColors.Accent)
                     Spacer(Modifier.width(HandyTokens.Space12))
@@ -90,7 +90,7 @@ fun PaywallContent(onBack: () -> Unit) {
                 Text("You're Pro. Thank you.", style = MaterialTheme.typography.titleMedium)
             }
         } else {
-            PlanRow("Yearly", billing.yearlyPrice ?: "$19.99", "One plan · 3-day free trial", "BEST VALUE", true) { }
+            PlanRow("Yearly", billing.yearlyPrice ?: "$19.99", "One plan · 3-day free trial", null, true) { }
             Spacer(Modifier.height(HandyTokens.Space16))
             HPrimaryButton("Go Pro · ${billing.yearlyPrice ?: "$19.99"} / year") { billing.launchPurchase(activity) }
             Spacer(Modifier.height(HandyTokens.Space8))

@@ -89,12 +89,12 @@ struct BannerAd: View {
             VStack(spacing: 0) {
                 Rectangle().fill(HandyColor.border).frame(height: 1)
                 HStack {
-                    Text("Ads keep Tenzy free").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    Text("Ads support Tenzy").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     Spacer()
                     Button("Remove ads") { NotificationCenter.default.post(name: .showPaywall, object: nil) }.font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                 }
                 .padding(.horizontal, HandySpacing.gutter).padding(.vertical, 2)
-                // Store screenshots: keep the "Ads keep Tenzy free" strip but don't render a live
+                // Store screenshots: keep the "Ads support Tenzy" strip but don't render a live
                 // (test) ad creative — a visible "Test mode" banner looks unfinished in the listing.
                 if ProcessInfo.processInfo.arguments.contains("-screenshots") {
                     Color.clear.frame(height: HandySpacing.adReservedHeight)

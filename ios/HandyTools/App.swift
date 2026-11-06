@@ -618,7 +618,7 @@ struct ToolCardPress: ButtonStyle {
     }
 }
 
-/// Paywall sheet. Two honest plans, yearly preselected as best value. No timers, no fake discounts.
+/// Paywall sheet. Two honest plans, yearly preselected. No timers, no fake discounts.
 struct PaywallView: View {
     @EnvironmentObject var store: StoreManager
     @Environment(\.dismiss) private var dismiss
@@ -653,7 +653,7 @@ struct PaywallView: View {
                     Text("Test build: every tool is already unlocked. You can still try the purchase below with a sandbox account.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 }
-                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: store.showsFreeTrial ? "\(store.trialLength) free trial, then billed yearly · cancel anytime" : "Billed once a year · cancel anytime", badge: "BEST VALUE") { }
+                PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: store.showsFreeTrial ? "\(store.trialLength) free trial, then billed yearly · cancel anytime" : "Renews yearly · cancel anytime", badge: nil) { }
 
                 Button {
                     Task { let was = store.isPremium; await store.purchase(store.yearly); if store.isPremium && !was { dismiss() } }
