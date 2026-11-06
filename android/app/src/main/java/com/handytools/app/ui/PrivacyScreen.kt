@@ -38,18 +38,18 @@ fun PrivacyScreen() {
         Spacer(Modifier.height(HandyTokens.Space24))
 
         Block("Stays on your phone", true, listOf(
-            "Clips you save (via Share, the tile, or the button) — only the ones you choose",
-            "Screenshots and screen text you capture (saved to Pictures/Tenzy)",
-            "Alarms you set",
+            "Photos, videos, PDFs and files you open in a tool, and the results, until you save or share them yourself",
+            "Scans, extracted text, receipts, warranties and invoices you make",
+            "Voice recordings and transcripts, only when you tap record",
+            "Screenshots Memory indexes (the index is built and kept on your phone)",
+            "Alarms, clips, notes and your settings",
             "Notifications, for 7 days, while Notification Log is on",
-            "Your scratchpad note",
         ), "Stored in the app's private storage. Deleting the app deletes all of it. We can't see it; there is no server.")
 
         Block("Never collected", true, listOf(
             "Your name, email, or any account — there isn't one",
-            "What you copy in other apps — Tenzy only ever sees a clip when you hand it one",
-            "Your location, contacts, photos, or files",
-            "Analytics or crash reports — Tenzy has none",
+            "Analytics, tracking of what you do inside the app, or crash reports — Tenzy has none",
+            "Your contacts, location, photos or recordings: they are used on your phone to do the job you asked for and are never sent to us",
         ), null)
 
         Block("The one exception: ads", false, listOf(
@@ -62,12 +62,20 @@ fun PrivacyScreen() {
         Block("Payments", false, listOf("Pro is $19.99 a year, billed by Google Play. We never see your card."), null)
         Block("Permissions", false, listOf(
             "Each one is asked for by the tool that needs it, with the reason next to the switch.",
-            "Draw over other apps: the floating buttons (clipboard, screenshot, scratchpad).",
-            "Notification access: Notification Log only.",
+            "Camera: scanning, codes, Pro Camera, Identify, Color Vision. Microphone: Voice, Hearing Boost, Rest, sound meter.",
+            "Contacts: Clean Up tidies duplicate contacts, only when you open it. Location: compass, GPS Dashboard, Where I Parked and Wi-Fi tools. It stays on your phone.",
+            "Photos and videos: the tools you pick media in. NFC: reading tags in Codes.",
+            "Draw over other apps: the floating buttons (clipboard, screenshot, scratchpad). Notification access: Notification Log only.",
             "Tenzy uses no Accessibility service.",
         ), null)
+        Block("Network use", false, listOf(
+            "See & Read downloads a web page only when you paste its link.",
+            "The speed test downloads a test file from Cloudflare (speed.cloudflare.com) only when you tap start, so Cloudflare sees your IP address like any website you visit.",
+            "Network device scans stay on your own Wi-Fi.",
+            "Ads and purchases, as described above.",
+        ), null)
         Block("Children", false, listOf("Tenzy isn't for children under 13 and doesn't knowingly collect anything from them."), null)
-        Text("Questions: $SUPPORT_EMAIL · Last updated October 15, 2026", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        Text("Questions: $SUPPORT_EMAIL · Last updated November 5, 2026", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space32))
     }
 }
