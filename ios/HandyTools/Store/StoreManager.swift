@@ -99,7 +99,12 @@ final class StoreManager: ObservableObject {
     }
 
     func purchase(_ product: Product?) async {
-        guard let product else { await load(); return }
+        guard let product else {
+            await load()
+            if yearly == nil { purchaseError = "Couldn't reach the App Store. Check your connection and tap again." }
+            return
+        }
+        purchaseError = nil
         do {
             switch try await product.purchase() {
             case .success(let verification):

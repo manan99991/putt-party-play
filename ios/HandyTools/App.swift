@@ -643,13 +643,20 @@ struct PaywallView: View {
 
             Spacer()
 
-            if store.isPremium {
+            // In TestFlight / App Review (sandbox receipt) every tool is already unlocked, but the
+            // purchase screen must still show the real price, trial terms and Buy button so a
+            // reviewer can find and complete the subscription (Guidelines 2.1(b), 3.1.2).
+            if store.isPremium && !AppEnv.isTestBuild {
                 Label("You're Pro. Thank you.", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             } else {
+                if store.isPremium {
+                    Text("Test build: every tool is already unlocked. You can still try the purchase below with a sandbox account.")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                }
                 PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: store.showsFreeTrial ? "\(store.trialLength) free trial, then billed yearly · cancel anytime" : "Billed once a year · cancel anytime", badge: "BEST VALUE") { }
 
                 Button {
-                    Task { await store.purchase(store.yearly); if store.isPremium { dismiss() } }
+                    Task { let was = store.isPremium; await store.purchase(store.yearly); if store.isPremium && !was { dismiss() } }
                 } label: {
                     Text(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro · \(store.yearlyPrice)/year").frame(maxWidth: .infinity)
                 }.primaryButton()

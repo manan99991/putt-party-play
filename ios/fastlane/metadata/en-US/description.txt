@@ -40,10 +40,12 @@ ON-DEVICE AI
 • Memory — ask your screenshots anything ("what was that Wi-Fi password?")
 • Message Shield — spot a scam text and see why it's flagged
 
-The AI tools use the model built into your iPhone, so they work offline and nothing leaves the device.
+On supported iPhones the AI tools use the model built into your device, so they work offline and nothing leaves the device.
 
 FREE TOOLS, WITH TENZY PRO FOR THE REST
 Seven everyday tools are free: Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate and the Face ID Vault. The photo, video and PDF tools, the on-device AI tools and Contacts are Tenzy Pro — start with a 3-day free trial, then $19.99/year. One person builds and maintains this app; Pro is what keeps it going.
 
 PRIVACY
 Your files stay on your device. There's no account and no tracking of what you do inside the app. The only data collected is the standard advertising identifier used by the ad provider to show and count ads — and Pro turns the ads off entirely. Full policy: https://manan99991.github.io/tenzy/privacy.html
+Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Subscription: Tenzy Pro renews automatically each year unless cancelled at least 24 hours before the period ends. Manage or cancel in your Apple ID settings.
