@@ -81,7 +81,7 @@ struct FileViewerView: View {
                         size: ByteCountFormatter.string(fromByteCount: size, countStyle: .file), url: url)
         errorText = nil
         // For text-like files, surface the content too (QuickLook shows it, but this makes it copyable).
-        textPeek = (kind == .code || kind == .text) ? (try? String(contentsOf: url, encoding: .utf8)).map { String($0.prefix(20_000)) } : nil
+        textPeek = (kind == .code || kind == .text) ? (try? String(contentsOf: url, encoding: .utf8)).map { String($0.prefix(60_000)) } : nil
     }
 }
 

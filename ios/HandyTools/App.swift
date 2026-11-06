@@ -570,6 +570,10 @@ struct ToolCard: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+        .overlay(alignment: .topLeading) {
+            ToolIconBadge(id: tool.id, symbol: tool.icon, size: 40)
+                .padding(.leading, HandySpacing.s8).padding(.top, HandySpacing.s8)
+        }
         .overlay(alignment: .topTrailing) {
             if tool.pro && !store.isPremium {
                 Image(systemName: "lock.fill").font(.system(size: 12)).foregroundStyle(.white.opacity(0.9))
@@ -745,8 +749,13 @@ struct ToolPage<Content: View>: View {
                 // scrolling, so the header + options stay compact (the ScrollView remains for the few
                 // tools whose controls genuinely exceed one screen).
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                    Text(title).font(HandyFont.title)
-                    Text(subtitle).font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary).padding(.top, -HandySpacing.s8)
+                    HStack(spacing: HandySpacing.s12) {
+                        if !toolID.isEmpty { ToolIconBadge(id: toolID, symbol: "square.grid.2x2", size: 44) }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(title).font(HandyFont.title)
+                            Text(subtitle).font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
+                        }
+                    }
                     content()
                 }
                 .padding(.horizontal, HandySpacing.gutter)

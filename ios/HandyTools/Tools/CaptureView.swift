@@ -138,7 +138,7 @@ struct CaptureView: View {
     static func barcode(in image: UIImage) -> String? {
         // Normalise what the detector sees: upright, between ~800 and 1600 px (tiny screenshots and
         // generated codes get enlarged crisply), with a white quiet zone — screenshots rarely have one.
-        var src = image.normalizedUp().resized(maxDimension: 1600)
+        var src = image.normalizedUp().resized(maxDimension: 2400)
         let longest = max(src.size.width, src.size.height)
         if longest < 800 {
             let k = (800 / longest).rounded(.up)

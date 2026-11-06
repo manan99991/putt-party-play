@@ -49,6 +49,32 @@ enum TenzyArt {
     }
 }
 
+extension TenzyArt {
+    /// Per-theme tool icon (imageset `ic_<id>_<theme>`). Falls back to nil when a themed icon is
+    /// missing so callers can show the SF Symbol instead — nothing ever renders blank.
+    static func iconName(id: String, theme: TenzyTheme) -> String? {
+        let n = "ic_\(id)_\(themeToken(theme))"
+        return UIImage(named: n) != nil ? n : nil
+    }
+}
+
+/// The tool's themed icon at a given size (transparent art, re-skinned per theme), with the tool's
+/// SF Symbol as the fallback.
+struct ToolIconBadge: View {
+    let id: String
+    var symbol: String = "square.grid.2x2"
+    var size: CGFloat = 36
+    @EnvironmentObject var theme: ThemeManager
+    var body: some View {
+        if let n = TenzyArt.iconName(id: id, theme: theme.current) {
+            Image(n).resizable().scaledToFit().frame(width: size, height: size).accessibilityHidden(true)
+        } else {
+            Image(systemName: symbol).font(.system(size: size * 0.6)).foregroundStyle(HandyColor.accent)
+                .frame(width: size, height: size).accessibilityHidden(true)
+        }
+    }
+}
+
 // Active tool id, threaded from ToolDestination down into the shared ToolPage scaffold.
 private struct ToolIDKey: EnvironmentKey { static let defaultValue: String = "" }
 extension EnvironmentValues {
