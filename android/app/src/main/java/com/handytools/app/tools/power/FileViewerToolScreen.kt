@@ -242,28 +242,52 @@ private fun PdfView(uri: Uri) {
     var page by remember(uri) { mutableStateOf(0) }
     var count by remember(uri) { mutableStateOf(0) }
     var bmp by remember(uri) { mutableStateOf<Bitmap?>(null) }
+    var problem by remember(uri, page) { mutableStateOf<String?>(null) }
+    // Some providers hand over a pipe that PdfRenderer can't seek in. Fall back to a private cache copy.
+    val localCopy = remember(uri) { arrayOfNulls<java.io.File>(1) }
+    fun openRenderer(): PdfRenderer? {
+        runCatching { ctx.contentResolver.openFileDescriptor(uri, "r")?.let { return PdfRenderer(it) } }
+        return runCatching {
+            val f = localCopy[0] ?: java.io.File(ctx.cacheDir, "viewer-${System.nanoTime()}.pdf").also { out ->
+                ctx.contentResolver.openInputStream(uri)?.use { i -> out.outputStream().use { o -> i.copyTo(o) } }
+                localCopy[0] = out
+            }
+            PdfRenderer(android.os.ParcelFileDescriptor.open(f, android.os.ParcelFileDescriptor.MODE_READ_ONLY))
+        }.getOrNull()
+    }
     LaunchedEffect(uri, page) {
+        problem = null
         bmp = withContext(Dispatchers.IO) {
-            runCatching {
-                ctx.contentResolver.openFileDescriptor(uri, "r")?.use { pfd ->
-                    PdfRenderer(pfd).use { r ->
-                        count = r.pageCount
-                        if (page !in 0 until r.pageCount) return@use null
+            val r = openRenderer()
+            if (r == null) { problem = "This PDF can't be opened on this phone's viewer."; return@withContext null }
+            try {
+                count = r.pageCount
+                if (page !in 0 until r.pageCount) return@withContext null
+                // Try a sharp render first, then smaller ones: a huge scanned page can run the phone out of memory.
+                for (w in intArrayOf(1400, 1000, 700, 450)) {
+                    val out = runCatching {
                         r.openPage(page).use { p ->
-                            val w = 1400; val h = (w.toFloat() / p.width * p.height).toInt().coerceAtLeast(1)
+                            val h = (w.toFloat() / p.width * p.height).toInt().coerceAtLeast(1)
                             val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
                             bitmap.eraseColor(android.graphics.Color.WHITE)
                             p.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                             bitmap
                         }
-                    }
+                    }.getOrNull()
+                    if (out != null) return@withContext out
                 }
-            }.getOrNull()
+                problem = "Page ${page + 1} couldn't be drawn here. Use Next to skip it."
+                null
+            } catch (_: Throwable) {
+                problem = "Page ${page + 1} couldn't be drawn here. Use Next to skip it."
+                null
+            } finally { runCatching { r.close() } }
         }
     }
     val b = bmp
     Box(Modifier.fillMaxWidth().heightIn(min = 240.dp, max = 560.dp).clip(RoundedCornerShape(12.dp)).background(HandyColors.SurfaceDark), contentAlignment = Alignment.Center) {
         if (b != null) Image(b.asImageBitmap(), "PDF page ${page + 1}", Modifier.fillMaxWidth().verticalScroll(rememberScrollState()))
+        else if (problem != null) Text(problem ?: "", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(16.dp))
         else CircularProgressIndicator(color = HandyColors.Accent)
     }
     if (count > 0) {
