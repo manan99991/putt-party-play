@@ -1,12 +1,13 @@
 name: Android
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │ INTERNAL_UNLOCK: "true" = every install is Pro (no ads/quotas/paywall) so   │
+# │ INTERNAL_UNLOCK: "true" = every install is Pro (no ads/quotas/paywall).    │
+# │ Now "false": production gate is ON (free tier + ads + Pro paywall).         │
 # │ internal testers get the full app. FLIP TO "false" BEFORE THE FIRST         │
 # │ PRODUCTION RELEASE — this is the paid gate.                                  │
 # └─────────────────────────────────────────────────────────────────────────────┘
 env:
-  INTERNAL_UNLOCK: "true"
+  INTERNAL_UNLOCK: "false"
 
 on:
   push:
