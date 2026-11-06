@@ -85,10 +85,19 @@ struct ResultPreview: View {
 /// A plain player sheet that autoplays a clip so the user can check a result before saving/sharing.
 struct MediaPlayerSheet: View {
     let url: URL
+    @Environment(\.dismiss) private var dismiss
     @State private var player = AVPlayer()
     var body: some View {
         VideoPlayer(player: player)
             .ignoresSafeArea()
+            // A visible way out (Apple 2.1: no dead-end screens), not just a swipe-down.
+            .overlay(alignment: .topTrailing) {
+                Button("Done") { dismiss() }
+                    .font(.system(size: 16, weight: .semibold)).foregroundStyle(.white)
+                    .padding(.horizontal, 14).padding(.vertical, 8)
+                    .background(.black.opacity(0.55), in: Capsule())
+                    .padding(16)
+            }
             .onAppear { player.replaceCurrentItem(with: AVPlayerItem(url: url)); player.play() }
             .onDisappear { player.pause() }
     }
