@@ -39,3 +39,5 @@ Checked, no change needed:
 Not ported (separate, bigger changes): batch queue in Video shrink (Format Fixer already batches), audio bitrate choice.
 
 Open check: App Store Connect shows the version in review as 1.2.34 but ios/project.yml says 1.2.43. Confirm the digits before resubmitting.
+
+- Flashlight+ (iOS): screen now stays awake while the torch is on, and the torch relights when the app returns to the foreground. Fixes the torch dying when auto-lock kicked in. Android keeps the torch on through screen-off already (CameraManager), so no change there.

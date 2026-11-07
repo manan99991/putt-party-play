@@ -85,6 +85,12 @@ final class Torch: ObservableObject {
         if isOn && mode == m { stop() } else { mode = m; isOn = true; restart(); armAutoOff() }
     }
 
+    /// Coming back to the app (e.g. after a lock or a call): if the torch was meant to be on, relight it.
+    func resumeIfNeeded() {
+        guard isOn, morseText.isEmpty else { return }
+        restart()
+    }
+
     func stop() {
         isOn = false; morseText = ""
         task?.cancel(); task = nil
@@ -151,6 +157,7 @@ final class Torch: ObservableObject {
 
 struct FlashlightView: View {
     @StateObject private var torch = Torch()
+    @Environment(\.scenePhase) private var scenePhase
     @State private var morse = ""
     @State private var screenLight = false
     @State private var mirror = false
@@ -231,7 +238,11 @@ struct FlashlightView: View {
                 .frame(maxWidth: .infinity)
                 .animation(.easeOut(duration: HandyMotion.base), value: torch.isOn)
         }
-        .onDisappear { torch.stop() }
+        // Keep the phone awake while the LED is lit: iOS drops the torch the moment the screen
+        // locks or the app leaves the foreground, so an auto-lock would silently kill it.
+        .onChange(of: torch.isOn) { _, on in UIApplication.shared.isIdleTimerDisabled = on }
+        .onChange(of: scenePhase) { _, phase in if phase == .active { torch.resumeIfNeeded() } }
+        .onDisappear { torch.stop(); UIApplication.shared.isIdleTimerDisabled = false }
         .fullScreenCover(isPresented: $screenLight) { ScreenLightSheet() }
         .fullScreenCover(isPresented: $mirror) { MirrorSheet() }
     }
