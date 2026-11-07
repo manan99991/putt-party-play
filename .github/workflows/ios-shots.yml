@@ -76,7 +76,7 @@ jobs:
             xcrun simctl launch "$IPAD" com.tenzy.toolkit -screenshots; sleep 4
             xcrun simctl terminate "$IPAD" com.tenzy.toolkit || true
             xcrun simctl status_bar "$IPAD" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
-            for pair in light:home light:scan dark:translate dark:studio light:shield light:paywall; do
+            for pair in light:fitit light:scan dark:translate light:qrwifi dark:scrub light:studio dark:home light:paywall; do
               mode=${pair%%:*}; r=${pair##*:}
               xcrun simctl ui "$IPAD" appearance $mode
               xcrun simctl terminate "$IPAD" com.tenzy.toolkit 2>/dev/null || true
