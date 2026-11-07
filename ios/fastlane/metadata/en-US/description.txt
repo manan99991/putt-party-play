@@ -1,3 +1,7 @@
+Shrink a photo under any upload limit.
+Turn paper into a PDF.
+Read a sign or menu in any language, even offline.
+
 Tenzy is 30 small tools in one app — the stuff your phone makes you dig for, download five separate apps for, or just can't do on its own.
 
 I built it because my home screen had become a graveyard of single-use utilities: one app to shrink a photo under an email limit, another to scan a PDF, another to read a sign in a different language, another to dig a Wi-Fi password out of a screenshot. Tenzy is all of them in one place — and most of it runs right on your phone. No account, no sign-up, nothing uploaded.

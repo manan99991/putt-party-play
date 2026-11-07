@@ -1,4 +1,4 @@
-Tenzy is 33 small tools in one app: the jobs your phone usually makes you download a separate app for. No account, no sign-up, and most of it runs right on your phone.
+Tenzy is one app for the jobs your phone usually makes you download a separate app for. No account, no sign-up, and most of it runs right on your phone.
 
 PHOTO, VIDEO & FILES
 • Media Studio: shrink a photo or video to a size limit, remove or swap the background, redact, make an ID photo, convert HEIC, strip location data. Keeps full resolution, including 4K video

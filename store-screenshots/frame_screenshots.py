@@ -69,27 +69,30 @@ BEZEL_RATIO = {"ios": 0.467, "android": 0.446, "ipad": 0.75}
 CAPTION_X = 96
 
 SLIDES = [
-    dict(n=1, caption={"ios": "30 tools. One app.", "android": "Your phone's toolbox."},
-         support="The utilities your phone forgot.",
-         route="home", mode="light"),
-    dict(n=2, caption={"ios": "Scan anything to PDF.", "android": "Grab text from any photo."},
-         support={"ios": "Scan, OCR, sign and fill.",
-                  "android": "Copy text straight from an image."},
+    dict(n=1, caption={"ios": "Shrink any photo.", "android": "Shrink any photo."},
+         support="Under the exact size limit you need.",
+         route="fitit", mode="light"),
+    dict(n=2, caption={"ios": "Paper to PDF.", "android": "Paper to PDF."},
+         support={"ios": "Scan, pull out the text, sign and fill.",
+                  "android": "Scan pages into a clean PDF."},
          route={"ios": "scan", "android": "ocr"}, mode="light"),
-    dict(n=3, caption={"ios": "Read any language.", "android": "Paste anything you copied."},
-         support={"ios": "Text, camera and voice — offline.",
-                  "android": "Your clipboard, with a history."},
-         route={"ios": "translate", "android": "clipboard"}, mode="dark"),
-    dict(n=4, caption={"ios": "Fix, cut out, resize photos.", "android": "Alarms, your way."},
-         support={"ios": "Enhance, remove backgrounds, passport photos.",
-                  "android": "Custom snooze and sounds."},
-         route={"ios": "studio", "android": "alarm"}, mode="dark"),
-    dict(n=5, caption={"ios": "Spot a scam text.", "android": "Quick notes that stay put."},
-         support={"ios": "See why a message is flagged.",
-                  "android": "A sticky note, one tap away."},
-         route={"ios": "shield", "android": "scratchpad"}, mode="light"),
-    dict(n=6, caption="Tenzy Pro: $19.99/year.",
-         support="No ads, no daily limits. Cancel anytime.",
+    dict(n=3, caption={"ios": "Read any sign.", "android": "Read any sign."},
+         support="Text, camera and voice, even offline.",
+         route="translate", mode="dark"),
+    dict(n=4, caption={"ios": "Join Wi-Fi from a screenshot.", "android": "Join Wi-Fi from a code."},
+         support="No typing. Just scan.",
+         route="qrwifi", mode="light"),
+    dict(n=5, caption={"ios": "Strip location before sharing.", "android": "Strip location before sharing."},
+         support="GPS and metadata gone in one tap.",
+         route="scrub", mode="dark"),
+    dict(n=6, caption={"ios": "Cut out. Resize. Passport.", "android": "Cut out. Resize. Done."},
+         support="One photo tool that finishes the job.",
+         route="studio", mode="light"),
+    dict(n=7, caption="Nothing leaves your phone.",
+         support="No account. No uploads. No analytics.",
+         route="home", mode="dark"),
+    dict(n=8, caption="Free tools. Pro for more.",
+         support="$19.99/year, 3-day free trial, cancel anytime.",
          route="paywall", mode="light"),
 ]
 
@@ -275,14 +278,14 @@ def build(input_dir, output_dir, plates=False):
             print(f"[{platform}] slide {n} -> {dest}")
             done.append(dest)
         results[platform] = done
-        if len(done) == 6 and not plates:
+        if len(done) == len(SLIDES) and not plates:
             zipp = os.path.join(output_dir, f"{platform}.zip")
             with zipfile.ZipFile(zipp, "w", zipfile.ZIP_DEFLATED) as z:
                 for f in done:
                     z.write(f, os.path.basename(f))
-            print(f"[{platform}] zip -> {zipp} (6 slides)")
+            print(f"[{platform}] zip -> {zipp} ({len(SLIDES)} slides)")
         elif not plates:
-            print(f"[{platform}] no zip: only {len(done)}/6 slides complete")
+            print(f"[{platform}] no zip: only {len(done)}/{len(SLIDES)} slides complete")
     return results
 
 
