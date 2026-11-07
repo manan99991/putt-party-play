@@ -8,7 +8,10 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Size
 import java.security.MessageDigest
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
 
 data class MediaItem(val uri: Uri, val name: String, val size: Long, val bucket: String)
 
@@ -28,6 +31,13 @@ data class CleanReport(
 
 /** On-device photo/storage cleanup: exact dupes, look-alikes, the screenshot pile, and large images. */
 object SpaceCleanerEngine {
+    /** Run [f] over [items] on all cores (the work is I/O + image decode, so this is ~N× faster). */
+    private fun <T, R> parallelMap(items: List<T>, f: (T) -> R): List<R> {
+        if (items.size < 8) return items.map(f)
+        val pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors().coerceIn(2, 6))
+        return try { pool.invokeAll(items.map { x -> Callable { f(x) } }).map { it.get() } } finally { pool.shutdown() }
+    }
+
     private const val LARGE = 20L * 1024 * 1024 // 20 MB
     private const val SIMILAR_CAP = 1500        // cap perceptual hashing for responsiveness
 
@@ -55,9 +65,11 @@ object SpaceCleanerEngine {
 
         // Exact duplicates: same size, confirmed by a content hash (first 1 MB).
         val exact = mutableListOf<CleanGroup>()
-        images.groupBy { it.size }.values.filter { it.size > 1 }.forEach { sameSize ->
+        val candidates = images.groupBy { it.size }.values.filter { it.size > 1 }
+        val hashedBySize = parallelMap(candidates.flatten()) { m -> m to contentHash(ctx, m.uri) }.toMap()
+        candidates.forEach { sameSize ->
             val byHash = hashMapOf<String, MutableList<MediaItem>>()
-            sameSize.forEach { m -> contentHash(ctx, m.uri)?.let { h -> byHash.getOrPut(h) { mutableListOf() }.add(m) } }
+            sameSize.forEach { m -> hashedBySize[m]?.let { h -> byHash.getOrPut(h) { mutableListOf() }.add(m) } }
             byHash.values.filter { it.size > 1 }.forEach { g ->
                 exact.add(CleanGroup("${g.size} identical copies", g, g.drop(1).sumOf { it.size }))
             }
@@ -71,13 +83,12 @@ object SpaceCleanerEngine {
         //  • skip near-uniform hashes (mostly one tone) that would match almost anything;
         //  • require a matching aspect ratio AND a tight hamming distance (≤ 4 of 64 bits).
         val similar = mutableListOf<CleanGroup>()
-        val hashed = images.asSequence()
-            .filter { it.uri !in exactUris && !it.bucket.equals("Screenshots", true) }
+        val toHash = images.filter { it.uri !in exactUris && !it.bucket.equals("Screenshots", true) }
             .take(SIMILAR_CAP)
-            // Require real information content: mostly-dark or mostly-bright shots (an almost all-0 or
-            // all-1 dHash) match nearly anything, which grouped unrelated dark photos/UI as "look-alikes".
-            .mapNotNull { m -> dHash(ctx, m.uri)?.let { fp -> if (fp.detail in 20..44) fp to m else null } }
-            .toList()
+        // Require real information content: mostly-dark or mostly-bright shots (an almost all-0 or
+        // all-1 dHash) match nearly anything, which grouped unrelated dark photos/UI as "look-alikes".
+        val hashed = parallelMap(toHash) { m -> dHash(ctx, m.uri)?.let { fp -> if (fp.detail in 20..44) fp to m else null } }
+            .filterNotNull()
         val used = hashSetOf<Uri>()
         for (i in hashed.indices) {
             val (f1, m1) = hashed[i]
@@ -118,8 +129,7 @@ object SpaceCleanerEngine {
     private data class Fingerprint(val hash: Long, val aspect: Float, val detail: Int)
 
     private fun dHash(ctx: Context, uri: Uri): Fingerprint? = runCatching {
-        val opts = BitmapFactory.Options().apply { inSampleSize = 8 }
-        val bmp = ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, opts) } ?: return null
+        val bmp = thumb(ctx, uri) ?: return null
         val aspect = bmp.width.toFloat() / bmp.height.coerceAtLeast(1)
         val small = Bitmap.createScaledBitmap(bmp, 9, 8, true)
         var hash = 0L; var bit = 0
@@ -130,6 +140,20 @@ object SpaceCleanerEngine {
         bmp.recycle(); small.recycle()
         Fingerprint(hash, aspect, java.lang.Long.bitCount(hash))
     }.getOrNull()
+
+    /** A small bitmap for fingerprinting. Uses the system's cached thumbnail where available (fast),
+     *  otherwise a bounds-first decode sampled down to ~64 px so we never decode a full 12 MP photo. */
+    private fun thumb(ctx: Context, uri: Uri): Bitmap? {
+        if (Build.VERSION.SDK_INT >= 29) {
+            runCatching { return ctx.contentResolver.loadThumbnail(uri, Size(96, 96), null) }
+        }
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
+        var sample = 1
+        while (bounds.outWidth / (sample * 2) >= 64 && bounds.outHeight / (sample * 2) >= 64) sample *= 2
+        val opts = BitmapFactory.Options().apply { inSampleSize = sample }
+        return ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, opts) }
+    }
 
     private fun gray(p: Int): Int {
         val r = (p shr 16) and 0xff; val g = (p shr 8) and 0xff; val b = p and 0xff
