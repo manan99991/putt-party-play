@@ -284,9 +284,14 @@ platform :ios do
       key_filepath: ENV["ASC_KEY_PATH"], in_house: false
     )
 
+    # Version string from project.yml. deliver creates this App Store version when no editable one
+    # exists (the previous release went live), instead of failing with "could not find an editable version".
+    marketing = File.read(File.expand_path("../project.yml", __dir__))[/MARKETING_VERSION:\s*"([^"]+)"/, 1]
+
     deliver(
       api_key: key,
       app_identifier: "com.tenzy.toolkit",
+      app_version: marketing,
       metadata_path: File.expand_path("metadata", __dir__),
       screenshots_path: File.expand_path("screenshots", __dir__),
       skip_binary_upload: true,          # binary already on TestFlight via :beta
