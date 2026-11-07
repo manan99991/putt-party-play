@@ -123,15 +123,20 @@ import UniformTypeIdentifiers
     /// Take a photo. Returns (processed HEIF/JPEG data, RAW DNG data if requested and available).
     func capture(raw: Bool) async -> (Data?, Data?) {
         let settings: AVCapturePhotoSettings
+        var isRAW = false
         if raw, let rawType = photo.availableRawPhotoPixelFormatTypes.first {
             let processed = photo.availablePhotoCodecTypes.contains(.hevc) ? [AVVideoCodecKey: AVVideoCodecType.hevc] : [AVVideoCodecKey: AVVideoCodecType.jpeg]
             settings = AVCapturePhotoSettings(rawPixelFormatType: rawType, processedFormat: processed)
+            isRAW = true
         } else if photo.availablePhotoCodecTypes.contains(.hevc) {
             settings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.hevc])
         } else {
             settings = AVCapturePhotoSettings()
         }
-        settings.photoQualityPrioritization = .quality
+        // RAW capture only supports .speed; asking for more throws an NSInvalidArgumentException (crash).
+        // Clamp to what the output supports so no combination can crash.
+        let want: AVCapturePhotoOutput.QualityPrioritization = isRAW ? .speed : .quality
+        settings.photoQualityPrioritization = want.rawValue <= photo.maxPhotoQualityPrioritization.rawValue ? want : photo.maxPhotoQualityPrioritization
         return await withCheckedContinuation { cont in
             continuation = cont
             photo.capturePhoto(with: settings, delegate: self)
