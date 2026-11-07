@@ -1,3 +1,3 @@
-Every tool now wears your theme: icons re-skin with all five themes, light and dark. Sharper document capture, longer text previews in File Opener, and a clearer Pro purchase screen.
+Fixes: Pro Camera no longer closes when you shoot in RAW, and Flashlight+ now stays on when your screen locks.
 
 On-device as always. Tap Settings to send a note.
