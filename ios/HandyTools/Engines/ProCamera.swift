@@ -38,6 +38,8 @@ import UniformTypeIdentifiers
     nonisolated(unsafe) private let accCtx = CIContext()
     nonisolated(unsafe) private var accBuffers: [CVPixelBuffer] = []
     nonisolated(unsafe) private var accIndex = 0
+    private var angle: CGFloat = 90          // rotation currently applied to the frames (for tap-to-focus mapping)
+    private var subjectObs: NSObjectProtocol?
     private var rotation: AVCaptureDevice.RotationCoordinator?
     private var rotationObs: NSKeyValueObservation?
 
@@ -82,12 +84,18 @@ import UniformTypeIdentifiers
         current.iso = max(loISO, min(isoNow, hiISO))
         let shNow = dev.exposureDuration.seconds
         current.shutter = shNow.isFinite && shNow > 0 ? min(max(shNow, loSh), hiSh) : loSh
+        // Always start fully automatic: continuous focus, exposure and white balance.
+        resetToAuto()
+        subjectObs = NotificationCenter.default.addObserver(forName: AVCaptureDevice.subjectAreaDidChangeNotification, object: dev, queue: .main) { [weak self] _ in
+            Task { @MainActor in self?.refocusIfAuto() }
+        }
         DispatchQueue.global().async { s.startRunning() }
     }
 
     /// Rotate the live frames and the photo output to match the phone. Held still during a long exposure.
     private func applyRotation(_ angle: CGFloat) {
         guard !accumulating else { return }
+        self.angle = angle
         if let c = video.connection(with: .video), c.isVideoRotationAngleSupported(angle) { c.videoRotationAngle = angle }
         if let c = photo.connection(with: .video), c.isVideoRotationAngleSupported(angle) { c.videoRotationAngle = angle }
     }
@@ -98,6 +106,66 @@ import UniformTypeIdentifiers
     }
 
     // MARK: manual controls
+
+    /// Back to fully automatic: continuous focus / exposure / white balance on the centre of the frame,
+    /// the full shutter range, and the camera's own low-light boost. Every "best for…" look starts here,
+    /// so a previous look can never leave the lens locked on the wrong distance (the blurry-preview bug).
+    func resetToAuto() {
+        current.autoExposure = true; current.autoFocus = true; current.autoWB = true; current.ev = 0
+        guard let d = device else { return }
+        try? d.lockForConfiguration()
+        if d.isFocusPointOfInterestSupported { d.focusPointOfInterest = CGPoint(x: 0.5, y: 0.5) }
+        if d.isFocusModeSupported(.continuousAutoFocus) { d.focusMode = .continuousAutoFocus }
+        if d.isExposurePointOfInterestSupported { d.exposurePointOfInterest = CGPoint(x: 0.5, y: 0.5) }
+        if d.isExposureModeSupported(.continuousAutoExposure) { d.exposureMode = .continuousAutoExposure }
+        if d.isWhiteBalanceModeSupported(.continuousAutoWhiteBalance) { d.whiteBalanceMode = .continuousAutoWhiteBalance }
+        d.setExposureTargetBias(0)
+        d.activeMaxExposureDuration = d.activeFormat.maxExposureDuration
+        if d.isLowLightBoostSupported { d.automaticallyEnablesLowLightBoostWhenAvailable = true }
+        d.isSubjectAreaChangeMonitoringEnabled = true
+        d.unlockForConfiguration()
+    }
+
+    /// Cap the auto-exposure shutter (e.g. 1/500 s to freeze motion) while keeping everything else automatic.
+    func limitShutter(_ seconds: Double) {
+        guard let d = device else { return }
+        let f = d.activeFormat
+        let lo = f.minExposureDuration.seconds, hi = f.maxExposureDuration.seconds
+        guard lo.isFinite, hi.isFinite, hi > lo else { return }
+        try? d.lockForConfiguration()
+        d.activeMaxExposureDuration = CMTime(seconds: min(max(seconds, lo), hi), preferredTimescale: 1_000_000)
+        d.unlockForConfiguration()
+    }
+
+    /// Tap-to-focus: `p` is a point in the displayed (already rotated) frame, 0…1 from the top-left.
+    /// Focus and exposure follow that point, continuously, so the subject stays sharp.
+    func focus(atFrame p: CGPoint) {
+        guard let d = device, (0...1).contains(p.x), (0...1).contains(p.y) else { return }
+        // The sensor's own coordinates are the un-rotated landscape frame; undo the rotation we applied.
+        let q: CGPoint
+        switch Int(angle.rounded()) % 360 {
+        case 90:  q = CGPoint(x: p.y, y: 1 - p.x)
+        case 180: q = CGPoint(x: 1 - p.x, y: 1 - p.y)
+        case 270: q = CGPoint(x: 1 - p.y, y: p.x)
+        default:  q = p
+        }
+        try? d.lockForConfiguration()
+        if d.isFocusPointOfInterestSupported, d.isFocusModeSupported(.continuousAutoFocus) { d.focusPointOfInterest = q; d.focusMode = .continuousAutoFocus }
+        if current.autoExposure, d.isExposurePointOfInterestSupported, d.isExposureModeSupported(.continuousAutoExposure) { d.exposurePointOfInterest = q; d.exposureMode = .continuousAutoExposure }
+        d.unlockForConfiguration()
+        current.autoFocus = true
+    }
+
+    /// When the scene changes and we're automatic, go back to centre-weighted continuous focus.
+    private func refocusIfAuto() {
+        guard current.autoFocus, current.autoExposure, !accumulating, let d = device else { return }
+        try? d.lockForConfiguration()
+        if d.isFocusPointOfInterestSupported { d.focusPointOfInterest = CGPoint(x: 0.5, y: 0.5) }
+        if d.isFocusModeSupported(.continuousAutoFocus) { d.focusMode = .continuousAutoFocus }
+        if d.isExposurePointOfInterestSupported { d.exposurePointOfInterest = CGPoint(x: 0.5, y: 0.5) }
+        if d.isExposureModeSupported(.continuousAutoExposure) { d.exposureMode = .continuousAutoExposure }
+        d.unlockForConfiguration()
+    }
 
     func applyExposure() {
         guard let d = device else { return }

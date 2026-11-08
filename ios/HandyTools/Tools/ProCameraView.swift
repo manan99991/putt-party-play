@@ -21,6 +21,8 @@ struct ProCameraView: View {
     @State private var preset: Preset = .auto
     @State private var shareData: Data?   // full-res JPEG of the last shot, so it's never lost if the Photos save is denied
     @State private var shooting = false
+    @State private var showPro = false
+    @State private var ring: CGPoint?   // tap-to-focus ring
     private let ctx = CIContext()
     private let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
 
@@ -63,28 +65,22 @@ struct ProCameraView: View {
                     Spacer()
                     if cam.accumulating { Text("Exposing… \(cam.accumulated)/\(longSeconds * 30) frames").font(HandyFont.caption).foregroundStyle(.white).padding(6).background(.black.opacity(0.5), in: Capsule()) }
                 }.padding(HandySpacing.s8)
+                GeometryReader { g in
+                    Color.clear.contentShape(Rectangle())
+                        .onTapGesture(count: 1, coordinateSpace: .local) { loc in tapFocus(loc, in: g.size) }
+                    if let r = ring {
+                        Circle().stroke(Color.yellow, lineWidth: 2).frame(width: 64, height: 64).position(r).allowsHitTesting(false)
+                    }
+                }
             }
             .frame(height: 420)
             .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
 
-            HStack(spacing: HandySpacing.s8) {
-                toggle("Peaking", $peaking, "scope"); toggle("Zebras", $zebras, "sun.max.trianglebadge.exclamationmark"); toggle("Grid", $grid, "grid")
-                if cam.rawSupported { toggle("RAW", $raw, "r.square") }
-                Spacer()
-                shutterButton
-            }
+            Text("Tap the picture to focus. Every button below starts from the camera's own best auto settings.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
             presetRow
 
-            HandyFlow(spacing: HandySpacing.s8) {
-                ForEach(Panel.allCases, id: \.rawValue) { p in HChip(text: p.title, selected: panel == p) { panel = p } }
-            }
-            switch panel {
-            case .exposure: exposurePanel
-            case .focus: focusPanel
-            case .wb: wbPanel
-            case .long: longPanel
-            }
+            bestButton
 
             if let img = cam.lastSaved ?? longResult {
                 HStack(spacing: HandySpacing.s12) {
@@ -99,6 +95,27 @@ struct ProCameraView: View {
                     }
                 }.cardStyle(padding: HandySpacing.s12)
             }
+            DisclosureGroup(isExpanded: $showPro) {
+                VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HStack(spacing: HandySpacing.s8) {
+                toggle("Peaking", $peaking, "scope"); toggle("Zebras", $zebras, "sun.max.trianglebadge.exclamationmark"); toggle("Grid", $grid, "grid")
+                if cam.rawSupported { toggle("RAW", $raw, "r.square") }
+                Spacer()
+            }
+
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Panel.allCases, id: \.rawValue) { p in HChip(text: p.title, selected: panel == p) { panel = p } }
+            }
+            switch panel {
+            case .exposure: exposurePanel
+            case .focus: focusPanel
+            case .wb: wbPanel
+            case .long: longPanel
+            }
+                }.padding(.top, HandySpacing.s8)
+            } label: { Text("Pro controls").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textPrimary) }
+            .tint(HandyColor.accent)
+
             Text(cam.rawSupported ? "RAW saves a DNG alongside the HEIF — edit it in Photos, Lightroom or Darkroom. Long exposures average frames, so use a tripod or a steady ledge."
                                   : "This camera doesn't offer RAW capture to apps; HEIF at full quality is saved. Long exposures average frames — steady the phone.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -198,18 +215,42 @@ struct ProCameraView: View {
     /// One-tap looks — each dials in the manual controls for a common scene, so the payoff of a pro
     /// camera needs no fiddling. Still fully adjustable afterwards.
     enum Preset: String, CaseIterable {
-        case auto = "Auto", night = "Night", action = "Freeze", silky = "Silky water", golden = "Golden hour", astro = "Astro", portrait = "Portrait"
+        case auto = "Best", portrait = "Portrait", scenic = "Landscape", action = "Action", night = "Low light", golden = "Sunset", silky = "Silky water", astro = "Stars"
         var icon: String {
             switch self {
-            case .auto: return "a.circle"; case .night: return "moon.stars"; case .action: return "figure.run"
-            case .silky: return "drop"; case .golden: return "sun.horizon"; case .astro: return "sparkles"; case .portrait: return "person.crop.square"
+            case .auto: return "wand.and.stars"; case .portrait: return "person.crop.square"; case .scenic: return "mountain.2"
+            case .action: return "figure.run"; case .night: return "moon.stars"; case .golden: return "sun.horizon"
+            case .silky: return "drop"; case .astro: return "sparkles"
+            }
+        }
+        var bestLabel: String {
+            switch self {
+            case .auto: return "Take best photo"; case .portrait: return "Best portrait"; case .scenic: return "Best landscape"
+            case .action: return "Best action shot"; case .night: return "Best low-light photo"; case .golden: return "Best sunset photo"
+            case .silky: return "Start silky water shot"; case .astro: return "Best star photo"
             }
         }
     }
 
+    private var bestLabel: String { cam.accumulating ? "Exposing…" : (panel == .long ? "Start long exposure" : preset.bestLabel) }
+
+    private var bestButton: some View {
+        Button { panel == .long ? startLong() : shoot() } label: {
+            HStack(spacing: 10) {
+                if shooting || cam.saving { ProgressView().tint(.white) } else { Image(systemName: panel == .long ? "drop.fill" : "camera.aperture") }
+                Text(bestLabel).font(.system(size: 17, weight: .semibold))
+            }
+            .frame(maxWidth: .infinity, minHeight: 56)
+            .foregroundStyle(.white)
+            .background(HandyColor.accent, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        }
+        .buttonStyle(.plain).disabled(shooting || cam.saving || cam.accumulating || cam.latest == nil)
+        .accessibilityLabel(bestLabel)
+    }
+
     private var presetRow: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Looks").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text("Best for…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Preset.allCases, id: \.rawValue) { p in
                     Button { preset = p; apply(p) } label: {
@@ -226,29 +267,42 @@ struct ProCameraView: View {
 
     private func apply(_ p: Preset) {
         let r = cam.ranges
-        func iso(_ v: Float) -> Float { min(max(v, r.minISO), r.maxISO) }
-        func sh(_ v: Double) -> Double { min(max(v, r.minShutter), r.maxShutter) }
+        // Every look starts from fully automatic (continuous focus, exposure, white balance) so one look
+        // can never leave the lens locked on the wrong distance for the next. Then it nudges, never locks.
+        cam.resetToAuto()
+        panel = .exposure
         switch p {
-        case .auto:
-            cam.current.autoExposure = true; cam.current.autoFocus = true; cam.current.autoWB = true; cam.current.ev = 0
-            panel = .exposure
-        case .night:   // low ISO, slow shutter — clean night shots on a steady surface
-            cam.current.autoExposure = false; cam.current.iso = iso(200); cam.current.shutter = sh(1.0 / 4); panel = .exposure
-        case .action:  // fast shutter freezes motion, ISO lifts to compensate
-            cam.current.autoExposure = false; cam.current.iso = iso(400); cam.current.shutter = sh(1.0 / 1000); panel = .exposure
-        case .silky:   // long-exposure averaging for silky water / light trails
-            panel = .long; longSeconds = 4
-        case .golden:  // warm white balance + a touch brighter for sunset tones
-            cam.current.autoWB = false; cam.current.temp = min(max(6000, r.minTemp), r.maxTemp)
-            cam.current.autoExposure = true; cam.current.ev = 0.3; panel = .wb
-        case .astro:   // longest shutter, lifted ISO, focus to infinity for stars
-            cam.current.autoExposure = false; cam.current.iso = iso(1600); cam.current.shutter = sh(r.maxShutter)
-            cam.current.autoFocus = false; cam.current.lens = 1.0; panel = .exposure
-        case .portrait: // lock focus close for a crisp subject
-            cam.current.autoFocus = false; cam.current.lens = 0.35; panel = .focus
+        case .auto: break                                       // the camera's own best: Deep Fusion / Smart HDR / Night mode at full quality
+        case .portrait: cam.current.ev = 0                      // continuous focus on the subject — tap the face to pin it
+        case .scenic: cam.current.ev = -0.3                     // protect sky highlights
+        case .action: cam.limitShutter(1.0 / 500)               // auto exposure, but never slower than 1/500 s → frozen motion
+        case .night: cam.current.ev = 0.3                       // lift shadows; the system's night processing does the stacking — hold steady
+        case .golden:                                           // warm tone, protect the glow
+            cam.current.autoWB = false; cam.current.temp = min(max(6000, r.minTemp), r.maxTemp); cam.current.ev = -0.3
+        case .silky: panel = .long; longSeconds = 4             // frame-averaged long exposure for water and light trails
+        case .astro:                                            // the only look that locks: focus at infinity, longest shutter
+            cam.current.autoExposure = false; cam.current.iso = min(max(1600, r.minISO), r.maxISO); cam.current.shutter = r.maxShutter
+            cam.current.autoFocus = false; cam.current.lens = 1.0
         }
         cam.applyExposure(); cam.applyFocus(); cam.applyWhiteBalance()
         HandyHaptics.light()
+    }
+
+    private func tapFocus(_ loc: CGPoint, in size: CGSize) {
+        guard let img = cam.latest else { return }
+        let e = img.extent
+        guard e.width > 0, e.height > 0, size.width > 0, size.height > 0 else { return }
+        let s = min(size.width / e.width, size.height / e.height)       // the preview is letterboxed (fit)
+        let dw = e.width * s, dh = e.height * s
+        let p = CGPoint(x: (loc.x - (size.width - dw) / 2) / dw, y: (loc.y - (size.height - dh) / 2) / dh)
+        guard (0...1).contains(p.x), (0...1).contains(p.y) else { return }
+        cam.focus(atFrame: p)
+        withAnimation(.easeOut(duration: 0.15)) { ring = loc }
+        HandyHaptics.light()
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 1_200_000_000)
+            withAnimation(.easeIn(duration: 0.2)) { ring = nil }
+        }
     }
 
     // MARK: actions
