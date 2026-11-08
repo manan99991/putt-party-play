@@ -39,7 +39,7 @@ struct ProCameraView: View {
                 "Tap the shutter; long exposure needs the phone held still.",
             ])
             ZStack {
-                ProcessedFrameView(image: processed, holder: holder)
+                ProcessedFrameView(image: processed, holder: holder, fit: true)
                     .overlay {
                         if !cam.authorized {
                             PermissionOffCard(line: "Camera access is off", sub: "Pro Camera needs the camera. Turn it on in Settings, then come back.")

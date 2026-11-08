@@ -83,6 +83,8 @@ final class MetalImageView: MTKView, MTKViewDelegate {
     private var ciContext: CIContext?
     private var queue: MTLCommandQueue?
     var image: CIImage? { didSet { setNeedsDisplay() } }
+    /// Fit the whole frame inside the view (letterboxed) instead of filling and cropping it.
+    var fit = false
 
     init() {
         let dev = MTLCreateSystemDefaultDevice()
@@ -103,9 +105,10 @@ final class MetalImageView: MTKView, MTKViewDelegate {
         guard let img = image, let ctx = ciContext, let q = queue, let drawable = currentDrawable, let cb = q.makeCommandBuffer() else { return }
         let bounds = CGRect(origin: .zero, size: drawableSize)
         guard img.extent.width > 0, img.extent.height > 0, bounds.width > 0 else { return }
-        let scale = max(bounds.width / img.extent.width, bounds.height / img.extent.height)
+        let scale = fit ? min(bounds.width / img.extent.width, bounds.height / img.extent.height) : max(bounds.width / img.extent.width, bounds.height / img.extent.height)
         var out = img.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
         out = out.transformed(by: CGAffineTransform(translationX: (bounds.width - out.extent.width) / 2 - out.extent.minX, y: (bounds.height - out.extent.height) / 2 - out.extent.minY))
+        if fit { out = out.composited(over: CIImage(color: .black).cropped(to: bounds)) }   // letterbox bars
         ctx.render(out, to: drawable.texture, commandBuffer: cb, bounds: bounds, colorSpace: CGColorSpaceCreateDeviceRGB())
         cb.present(drawable)
         cb.commit()
@@ -122,8 +125,9 @@ final class MetalImageView: MTKView, MTKViewDelegate {
 struct ProcessedFrameView: UIViewRepresentable {
     let image: CIImage?
     let holder: MetalViewHolder
-    func makeUIView(context: Context) -> MetalImageView { let v = MetalImageView(); holder.view = v; return v }
-    func updateUIView(_ v: MetalImageView, context: Context) { v.image = image }
+    var fit = false
+    func makeUIView(context: Context) -> MetalImageView { let v = MetalImageView(); v.fit = fit; holder.view = v; return v }
+    func updateUIView(_ v: MetalImageView, context: Context) { v.fit = fit; v.image = image }
 }
 
 /// Lets SwiftUI code reach the Metal view (for snapshots) without owning it.

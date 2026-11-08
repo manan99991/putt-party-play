@@ -32,6 +32,14 @@ import UniformTypeIdentifiers
     nonisolated(unsafe) private var accCount = 0
     nonisolated(unsafe) private var accTarget = 0
     private let ctx = CIContext()
+    // Long-exposure accumulation lives in two ping-pong half-float buffers we own. Keeping a lazy CIImage
+    // chain instead pinned every camera frame buffer, the pool ran dry after ~6 frames and the camera
+    // stopped delivering (the "frozen at 6/120" bug), and the chain nested one level per frame.
+    nonisolated(unsafe) private let accCtx = CIContext()
+    nonisolated(unsafe) private var accBuffers: [CVPixelBuffer] = []
+    nonisolated(unsafe) private var accIndex = 0
+    private var rotation: AVCaptureDevice.RotationCoordinator?
+    private var rotationObs: NSKeyValueObservation?
 
     func start() {
         nonisolated(unsafe) let s = session
@@ -52,6 +60,14 @@ import UniformTypeIdentifiers
         if let c = video.connection(with: .video), c.isVideoRotationAngleSupported(90) { c.videoRotationAngle = 90 }
         if let c = photo.connection(with: .video), c.isVideoRotationAngleSupported(90) { c.videoRotationAngle = 90 }
         session.commitConfiguration()
+        // Follow how the phone is actually held: landscape in -> landscape preview and landscape photos out.
+        let rc = AVCaptureDevice.RotationCoordinator(device: dev, previewLayer: nil)
+        rotation = rc
+        applyRotation(rc.videoRotationAngleForHorizonLevelCapture)
+        rotationObs = rc.observe(\.videoRotationAngleForHorizonLevelCapture, options: [.new]) { [weak self] _, change in
+            guard let a = change.newValue else { return }
+            Task { @MainActor in self?.applyRotation(a) }
+        }
         // Sanitize everything that feeds a Slider range or an Int(): a device can report 0/NaN
         // durations or inverted bounds before streaming, and SwiftUI traps on an invalid range.
         let f = dev.activeFormat
@@ -67,6 +83,13 @@ import UniformTypeIdentifiers
         let shNow = dev.exposureDuration.seconds
         current.shutter = shNow.isFinite && shNow > 0 ? min(max(shNow, loSh), hiSh) : loSh
         DispatchQueue.global().async { s.startRunning() }
+    }
+
+    /// Rotate the live frames and the photo output to match the phone. Held still during a long exposure.
+    private func applyRotation(_ angle: CGFloat) {
+        guard !accumulating else { return }
+        if let c = video.connection(with: .video), c.isVideoRotationAngleSupported(angle) { c.videoRotationAngle = angle }
+        if let c = photo.connection(with: .video), c.isVideoRotationAngleSupported(angle) { c.videoRotationAngle = angle }
     }
 
     func stop() {
@@ -178,14 +201,34 @@ import UniformTypeIdentifiers
 
     // MARK: long exposure (frame averaging)
 
-    func beginLongExposure(frames: Int) { accumulator = nil; accCount = 0; accTarget = frames; accumulating = true; accumulated = 0 }
+    func beginLongExposure(frames: Int) { accTarget = 0; accumulator = nil; accBuffers = []; accIndex = 0; accCount = 0; accumulated = 0; accumulating = true; accTarget = frames }
 
     /// Average of the accumulated frames, rendered to a UIImage.
     func finishLongExposure() -> UIImage? {
         accumulating = false
-        guard let acc = accumulator, let cg = ctx.createCGImage(acc, from: acc.extent) else { return nil }
-        accumulator = nil
+        guard let acc = accumulator, let cg = ctx.createCGImage(acc, from: acc.extent, format: .RGBA8, colorSpace: CGColorSpace(name: CGColorSpace.sRGB)) else { return nil }
+        accumulator = nil; accBuffers = []
         return UIImage(cgImage: cg)
+    }
+
+    nonisolated private func flatten(_ img: CIImage, size: CGSize) -> CIImage? {
+        let w = Int(size.width.rounded(.up)), h = Int(size.height.rounded(.up))
+        guard w > 0, h > 0 else { return nil }
+        if accBuffers.count < 2 || CVPixelBufferGetWidth(accBuffers[0]) != w || CVPixelBufferGetHeight(accBuffers[0]) != h {
+            var made: [CVPixelBuffer] = []
+            for _ in 0..<2 {
+                var pb: CVPixelBuffer?
+                CVPixelBufferCreate(nil, w, h, kCVPixelFormatType_64RGBAHalf, [kCVPixelBufferIOSurfacePropertiesKey as String: [String: Any]()] as CFDictionary, &pb)
+                if let pb { made.append(pb) }
+            }
+            guard made.count == 2 else { return nil }
+            accBuffers = made; accIndex = 0
+        }
+        let space = CGColorSpace(name: CGColorSpace.extendedLinearSRGB)!
+        accIndex = (accIndex + 1) % 2
+        let buf = accBuffers[accIndex]
+        accCtx.render(img, to: buf, bounds: CGRect(x: 0, y: 0, width: w, height: h), colorSpace: space)
+        return CIImage(cvPixelBuffer: buf, options: [.colorSpace: space])
     }
 
     nonisolated func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
@@ -196,14 +239,20 @@ import UniformTypeIdentifiers
             // running mean: acc = acc·(n/(n+1)) + frame·(1/(n+1)); rendered small to keep it real-time
             let small = ci.transformed(by: CGAffineTransform(scaleX: 0.5, y: 0.5))
             let n = Double(accCount)
+            var next = small
             if let acc = accumulator {
                 let a = ProImage.scale(acc, by: n / (n + 1)), b = ProImage.scale(small, by: 1 / (n + 1))
                 let f = CIFilter.additionCompositing(); f.inputImage = a; f.backgroundImage = b
-                accumulator = f.outputImage?.cropped(to: small.extent)
-            } else { accumulator = small }
+                next = f.outputImage?.cropped(to: small.extent) ?? small
+            }
+            // Flatten into our own buffer right now so the camera's frame buffer is released immediately.
+            accumulator = flatten(next, size: small.extent.size)
             accCount += 1
             let c = accCount, done = accCount >= accTarget
-            Task { @MainActor in self.accumulated = c; if done { self.accTarget = 0 } }
+            Task { @MainActor in
+                self.accumulated = c
+                if done { self.accTarget = 0; self.accumulating = false }   // ends the exposure → the view saves it
+            }
         }
         Task { @MainActor in self.latest = frame }
     }
