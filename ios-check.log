@@ -18,13 +18,13 @@ Fetching from https://github.com/googleads/swift-package-manager-google-mobile-a
 
 Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
 
-Creating working copy of package ‘swift-package-manager-google-mobile-ads’
-
-Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
-
 Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
 
 Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
+
+Creating working copy of package ‘swift-package-manager-google-mobile-ads’
+
+Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
 
 
 Resolved source packages:
@@ -33,6 +33,7 @@ Resolved source packages:
 
 resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
 == build.log (errors)
-2026-11-10 04:27:06.806792+0000 HandyTools[7461:28141] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-2026-11-10 04:27:06.808577+0000 HandyTools[7461:28141] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-** TEST SUCCEEDED **
+2026-11-10 16:13:02.795186+0000 HandyTools[5307:22224] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-11-10 16:13:02.839429+0000 HandyTools[5307:22224] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/ChainRunnerTests.swift:64: error: -[HandyToolsTests.ChainRunnerTests testFullReceiptChainOnSampleImage] : failed - chain failed: failure(HandyTools.ChainRunner.Failure.nothingFound(HandyTools.Block.pullReceipt))
+** TEST FAILED **
