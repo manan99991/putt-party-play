@@ -18,6 +18,7 @@ enum ChainKind: String, Codable { case image, text, file }
 
 enum Block: String, Codable, CaseIterable, Identifiable {
     case readText, pullReceipt, summarize, shrinkImage, stripLocation, cutout, enhance, convertImage
+    case businessCard, calendarEvent, actionItems, hideSensitive, passportPhoto
 
     var id: String { rawValue }
     var title: String {
@@ -30,19 +31,24 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .cutout: return "Cut out subject"
         case .enhance: return "Enhance"
         case .convertImage: return "Convert format"
+        case .businessCard: return "Make a contact"
+        case .calendarEvent: return "Make a calendar event"
+        case .actionItems: return "Find tasks"
+        case .hideSensitive: return "Hide faces and numbers"
+        case .passportPhoto: return "Passport photo"
         }
     }
     var takes: ChainKind {
         switch self {
-        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage: return .image
-        case .pullReceipt, .summarize: return .text
+        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto: return .image
+        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems: return .text
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
     var gives: ChainKind {
         switch self {
-        case .readText, .pullReceipt, .summarize: return .text
-        case .shrinkImage, .stripLocation, .convertImage: return .file
+        case .readText, .pullReceipt, .summarize, .actionItems: return .text
+        case .shrinkImage, .stripLocation, .convertImage, .businessCard, .calendarEvent, .hideSensitive, .passportPhoto: return .file
         case .cutout, .enhance: return .image
         }
     }
@@ -127,6 +133,32 @@ enum ChainRunner {
             guard let data = ImageStudio.encode(img, as: fmt, quality: 0.9) else { return .failure(.failed(b)) }
             return .success(.file(data, ext: fmt.rawValue.lowercased()))
 
+        case (.businessCard, .text(let t)):
+            let c = DataGrab.card(t)
+            guard !c.name.isEmpty || !c.phones.isEmpty || !c.emails.isEmpty, let d = DataGrab.vcard(c).data(using: .utf8) else { return .failure(.nothingFound(b)) }
+            return .success(.file(d, ext: "vcf"))
+
+        case (.calendarEvent, .text(let t)):
+            let e = DataGrab.event(t)
+            guard e.start != nil, let d = DataGrab.ics(e).data(using: .utf8) else { return .failure(.nothingFound(b)) }
+            return .success(.file(d, ext: "ics"))
+
+        case (.actionItems, .text(let t)):
+            let items = TextTools.actionItems(t)
+            return items.isEmpty ? .failure(.nothingFound(b)) : .success(.text(items.map { "• " + $0 }.joined(separator: "\n")))
+
+        case (.hideSensitive, .image(let img)):
+            let hits = Scrubber.detect(img)
+            let rects = hits.faces + hits.text.filter(\.personal).map(\.rect)
+            // Nothing to hide is still a good result: hand back a clean copy rather than an error.
+            guard let d = Scrubber.render(img, rects: rects, style: .block) else { return .failure(.failed(b)) }
+            return .success(.file(d, ext: "jpg"))
+
+        case (.passportPhoto, .image(let img)):
+            let spec = ImageStudio.passportSpecs.first { $0.id == (step.settings["country"] ?? "us") } ?? ImageStudio.passportSpecs[0]
+            guard let out = ImageStudio.passport(img, spec: spec, background: .white), let d = out.jpegData(compressionQuality: 0.95) else { return .failure(.nothingFound(b)) }
+            return .success(.file(d, ext: "jpg"))
+
         default:
             return .failure(.wrongInput(b))
         }
@@ -158,5 +190,28 @@ enum ChainTemplates {
             ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
         Chain(id: "safe-to-share", name: "Safe-to-share photo", steps: [
             ChainStep(block: .stripLocation), ]),
+        Chain(id: "card-to-contact", name: "Business card to contact", steps: [ChainStep(block: .readText), ChainStep(block: .businessCard)]),
+        Chain(id: "poster-to-event", name: "Poster to calendar event", steps: [ChainStep(block: .readText), ChainStep(block: .calendarEvent)]),
+        Chain(id: "whiteboard-to-tasks", name: "Whiteboard to task list", steps: [ChainStep(block: .readText), ChainStep(block: .actionItems)]),
+        Chain(id: "passport-photo", name: "Passport photo", steps: [ChainStep(block: .passportPhoto, settings: ["country": "us"])]),
+        Chain(id: "hide-sensitive", name: "Hide faces and numbers", steps: [ChainStep(block: .hideSensitive)]),
+        Chain(id: "short-summary", name: "Long text to 3 sentences", steps: [ChainStep(block: .summarize, settings: ["sentences": "3"])]),
+        Chain(id: "sticker", name: "Cut out a subject", steps: [ChainStep(block: .cutout)]),
     ]
+}
+
+/// Chains travel as small text: copy one, paste it in another Tenzy. Checked before it is accepted.
+extension Chain {
+    static let prefix = "tenzy-tool:"
+    var shareText: String {
+        (try? JSONEncoder().encode(self)).flatMap { String(data: $0, encoding: .utf8) }.map { Chain.prefix + $0 } ?? ""
+    }
+    static func imported(from text: String) -> Chain? {
+        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard t.hasPrefix(prefix), let d = String(t.dropFirst(prefix.count)).data(using: .utf8),
+              var c = try? JSONDecoder().decode(Chain.self, from: d), c.steps.count <= 12,
+              let first = c.steps.first, c.problem(starting: first.block.takes) == nil else { return nil }
+        c.id = UUID().uuidString
+        return c
+    }
 }

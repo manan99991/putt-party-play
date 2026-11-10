@@ -81,3 +81,26 @@ final class ChainRowTests: XCTestCase {
         XCTAssertEqual(DataGrab.receipt(out.joined(separator: "\n")).total, 13.72)
     }
 }
+
+final class ChainTemplateTests: XCTestCase {
+    func testTenTemplatesAllValid() {
+        XCTAssertEqual(ChainTemplates.all.count, 10)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 10)
+    }
+    func testShareRoundTripAndRejectsJunk() throws {
+        let t = ChainTemplates.all[0]
+        let back = try XCTUnwrap(Chain.imported(from: t.shareText))
+        XCTAssertEqual(back.steps, t.steps)
+        XCTAssertNotEqual(back.id, t.id, "an imported tool gets its own id")
+        XCTAssertNil(Chain.imported(from: "hello"))
+        XCTAssertNil(Chain.imported(from: "tenzy-tool:{\"id\":\"a\",\"name\":\"b\",\"steps\":[{\"block\":\"nope\",\"settings\":{}}]}"))
+    }
+    func testCardAndTaskBlocks() async {
+        let card = await ChainRunner.apply(ChainStep(block: .businessCard), to: .text("Jane Doe\nDesigner\nAcme Inc\njane@acme.com\n+1 312 555 0100"))
+        guard case .success(.file(let d, let ext)) = card else { return XCTFail("no vcard") }
+        XCTAssertEqual(ext, "vcf"); XCTAssertTrue(String(decoding: d, as: UTF8.self).contains("jane@acme.com"))
+        let tasks = await ChainRunner.apply(ChainStep(block: .actionItems), to: .text("We need to book the venue. Remember to email Sam by Friday. Weather was nice."))
+        guard case .success(.text(let t)) = tasks else { return XCTFail("no tasks") }
+        XCTAssertTrue(t.contains("venue") || t.contains("Sam"))
+    }
+}

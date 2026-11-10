@@ -18,12 +18,19 @@ struct BuilderView: View {
     @State private var mine: [Chain] = ChainStore.load()
     @State private var editing: Chain?
     @State private var running: Chain?
+    @State private var note: String?
 
     var body: some View {
         ToolPage(title: "Build your own", subtitle: "Snap small steps together into a tool that does exactly what you need. Runs on your phone.") {
             Button { editing = Chain(id: UUID().uuidString, name: "My tool", steps: []) } label: {
                 Label("Build a new tool", systemImage: "plus").frame(maxWidth: .infinity)
             }.primaryButton()
+
+            Button {
+                if let c = Chain.imported(from: UIPasteboard.general.string ?? "") { mine.append(c); ChainStore.save(mine); note = "Added \(c.name)." }
+                else { note = "Copy a tool from another Tenzy first, then tap this." }
+            } label: { Label("Paste a shared tool", systemImage: "doc.on.clipboard").frame(maxWidth: .infinity) }.secondaryButton()
+            if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
 
             if !mine.isEmpty {
                 Text("My tools").font(HandyFont.bodyStrong)
@@ -56,6 +63,7 @@ struct BuilderView: View {
                     if !isMine { k.id = UUID().uuidString; k.name += " (mine)" }
                     editing = k
                 }
+                Button("Copy to share") { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
                 if isMine { Button("Delete", role: .destructive) { mine.removeAll { $0.id == c.id }; ChainStore.save(mine) } }
             } label: { Image(systemName: "ellipsis.circle").font(.system(size: 20)) }
             Button("Run") { running = c }.secondaryButton()
@@ -108,7 +116,7 @@ private struct ChainEditor: View {
     }
 
     private func defaults(_ b: Block) -> [String: String] {
-        switch b { case .shrinkImage: return ["mb": "2"]; case .summarize: return ["sentences": "3"]; case .convertImage: return ["format": "JPG"]; default: return [:] }
+        switch b { case .shrinkImage: return ["mb": "2"]; case .summarize: return ["sentences": "3"]; case .convertImage: return ["format": "JPG"]; case .passportPhoto: return ["country": "us"]; default: return [:] }
     }
 
     @ViewBuilder private func settings(_ i: Int) -> some View {
@@ -123,6 +131,10 @@ private struct ChainEditor: View {
             Picker("Format", selection: Binding(get: { chain.steps[i].settings["format"] ?? "JPG" }, set: { chain.steps[i].settings["format"] = $0 })) {
                 ForEach(ImageStudio.Format.allCases, id: \.rawValue) { Text($0.rawValue).tag($0.rawValue) }
             }.pickerStyle(.segmented)
+        case .passportPhoto:
+            Picker("Country", selection: Binding(get: { chain.steps[i].settings["country"] ?? "us" }, set: { chain.steps[i].settings["country"] = $0 })) {
+                ForEach(ImageStudio.passportSpecs) { Text($0.name).tag($0.id) }
+            }.font(HandyFont.caption)
         default: EmptyView()
         }
     }
