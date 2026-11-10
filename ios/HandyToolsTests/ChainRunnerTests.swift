@@ -69,3 +69,15 @@ final class ChainRunnerTests: XCTestCase {
 private extension Result {
     var failureValue: Failure? { if case .failure(let f) = self { return f }; return nil }
 }
+
+final class ChainRowTests: XCTestCase {
+    func testSplitPiecesOnOneRowAreRejoined() {
+        let l = [DocEngine.OCRLine(text: "13.72", box: CGRect(x: 0.7, y: 0.50, width: 0.1, height: 0.03)),
+                 DocEngine.OCRLine(text: "Total", box: CGRect(x: 0.1, y: 0.505, width: 0.1, height: 0.03)),
+                 DocEngine.OCRLine(text: "Tax", box: CGRect(x: 0.1, y: 0.40, width: 0.1, height: 0.03)),
+                 DocEngine.OCRLine(text: "0.97", box: CGRect(x: 0.7, y: 0.40, width: 0.1, height: 0.03))]
+        let out = ChainRunner.rows(l).split(separator: "\n").map(String.init)
+        XCTAssertEqual(out, ["Tax  0.97", "Total  13.72"])
+        XCTAssertEqual(DataGrab.receipt(out.joined(separator: "\n")).total, 13.72)
+    }
+}

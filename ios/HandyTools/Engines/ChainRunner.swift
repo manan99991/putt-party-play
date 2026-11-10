@@ -91,7 +91,7 @@ enum ChainRunner {
         let b = step.block
         switch (b, input) {
         case (.readText, .image(let img)):
-            let text = DocEngine.text(DocEngine.recognize(img)).trimmingCharacters(in: .whitespacesAndNewlines)
+            let text = rows(DocEngine.recognize(img)).trimmingCharacters(in: .whitespacesAndNewlines)
             return text.isEmpty ? .failure(.nothingFound(b)) : .success(.text(text))
 
         case (.pullReceipt, .text(let t)):
@@ -130,6 +130,22 @@ enum ChainRunner {
         default:
             return .failure(.wrongInput(b))
         }
+    }
+}
+
+extension ChainRunner {
+    /// Text that sits on the same visual row is rejoined left to right. Vision often returns "Total" and
+    /// "13.72" as separate pieces when a receipt leaves a wide gap between them, and the field parser needs
+    /// the label and its amount on one line.
+    static func rows(_ lines: [DocEngine.OCRLine]) -> String {
+        let sorted = lines.sorted { $0.box.midY < $1.box.midY }
+        var groups: [[DocEngine.OCRLine]] = []
+        for l in sorted {
+            if var last = groups.last, let ref = last.first, abs(l.box.midY - ref.box.midY) < max(ref.box.height, l.box.height) * 0.6 {
+                last.append(l); groups[groups.count - 1] = last
+            } else { groups.append([l]) }
+        }
+        return groups.map { $0.sorted { $0.box.minX < $1.box.minX }.map(\.text).joined(separator: "  ") }.joined(separator: "\n")
     }
 }
 
