@@ -1,0 +1,69 @@
+[
+ {
+  "round": "w1",
+  "world": 1,
+  "name": "Sunny Meadow",
+  "holes": [
+   {
+    "id": "meadow-1",
+    "n": 1,
+    "name": "First Green",
+    "par": 2
+   },
+   {
+    "id": "meadow-2",
+    "n": 2,
+    "name": "The Elbow",
+    "par": 3
+   },
+   {
+    "id": "meadow-3",
+    "n": 3,
+    "name": "Orchard Green",
+    "par": 3
+   },
+   {
+    "id": "meadow-4",
+    "n": 4,
+    "name": "Pond Carry",
+    "par": 3
+   },
+   {
+    "id": "meadow-5",
+    "n": 5,
+    "name": "The Kicker",
+    "par": 3
+   },
+   {
+    "id": "meadow-6",
+    "n": 6,
+    "name": "Double-Bank Alley",
+    "par": 4
+   },
+   {
+    "id": "meadow-7",
+    "n": 7,
+    "name": "Millstream Split",
+    "par": 4
+   },
+   {
+    "id": "meadow-8",
+    "n": 8,
+    "name": "Windmill Pass",
+    "par": 4
+   },
+   {
+    "id": "meadow-9",
+    "n": 9,
+    "name": "Shepherd's Coil",
+    "par": 5
+   },
+   {
+    "id": "meadow-10",
+    "n": 10,
+    "name": "The Meadow Gauntlet",
+    "par": 5
+   }
+  ]
+ }
+]

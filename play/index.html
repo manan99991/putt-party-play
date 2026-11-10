@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Putt Party</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0e1a0c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Putt Party">
+<link rel="apple-touch-icon" href="../icon-180.png">
+<style>
+:root{--bg:#0d140b;--card:#16220f;--fg:#eef4e8;--muted:#9fb092;--accent:#45c35a;--accent2:#2f8f3e;--line:#263520;--gold:#ffd36b}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font:600 16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-user-select:none;user-select:none}
+.wrap{max-width:680px;margin:0 auto;min-height:100vh;padding:calc(18px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-left)) calc(24px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-right));display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:13px;background:linear-gradient(145deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 6px 16px rgba(0,0,0,.4)}
+h1{font-size:26px;margin:0;letter-spacing:-.02em}
+.tag{color:var(--muted);font-size:13px;margin:-14px 0 0 58px}
+.sec{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:4px 2px -6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.world{display:flex;flex-direction:column}
+.scene{height:118px;position:relative;display:flex;align-items:flex-end;padding:12px 14px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.55)}
+.scene .nm{font-size:20px;font-weight:800}
+.scene .cnt{position:absolute;top:12px;right:14px;font-size:12px;font-weight:800;background:rgba(0,0,0,.4);padding:5px 10px;border-radius:999px;backdrop-filter:blur(4px)}
+.wbody{display:flex;gap:10px;align-items:center;padding:12px 14px}
+.bar{flex:1;height:8px;border-radius:999px;background:#223018;overflow:hidden}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+button{appearance:none;border:0;cursor:pointer;font-family:inherit}
+.play{background:linear-gradient(180deg,var(--accent),var(--accent2));color:#07230d;font-weight:800;font-size:15px;padding:12px 20px;border-radius:13px;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.play:active{transform:scale(.97)}
+.play[disabled]{background:#2a3a22;color:var(--muted);box-shadow:none}
+.foot{color:var(--muted);font-size:12px;text-align:center;margin-top:auto}
+/* scorecard */
+.sc{display:flex;flex-direction:column;gap:12px}
+.sctop{text-align:center;padding:10px 0}
+.sctop .big{font-size:40px;font-weight:800;color:var(--gold);letter-spacing:4px}
+.sctot{display:flex;gap:10px;justify-content:center;margin-top:6px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 14px;font-weight:800;font-size:14px}
+.chip small{display:block;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.05em}
+.row{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:10px 13px}
+.row .n{width:26px;height:26px;border-radius:8px;background:#223018;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--muted)}
+.row .nm{flex:1;font-weight:700}
+.row .st{color:var(--gold);letter-spacing:2px;font-size:14px}
+.row .sh{color:var(--muted);font-size:13px;font-weight:700;width:58px;text-align:right}
+.btns{display:flex;gap:10px}
+.btns button{flex:1;padding:14px;border-radius:14px;font-weight:800;font-size:15px}
+.again{background:linear-gradient(180deg,var(--accent),var(--accent2));color:#07230d}
+.home{background:#20301a;color:var(--fg);border:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const SCENES={1:"linear-gradient(160deg,#f6c15a,#8fbf5a 60%,#4e8a3a)",2:"linear-gradient(160deg,#9fc7d6,#5f93a8 60%,#3a6274)",3:"linear-gradient(160deg,#e3a06a,#bc6038 60%,#7a3a24)",4:"linear-gradient(160deg,#7fd7bf,#2f9f88 60%,#1f6f5c)",5:"linear-gradient(160deg,#f6c6d4,#e49db1 60%,#b56a86)"};
+const app=document.getElementById("app");
+const q=new URLSearchParams(location.search);
+function rget(){try{return JSON.parse(localStorage.getItem("pp_round")||"null");}catch(e){return null;}}
+function rset(r){try{localStorage.setItem("pp_round",JSON.stringify(r));}catch(e){}}
+function stars(n){return '★'.repeat(n)+'<span style="color:rgba(255,255,255,.24)">'+'☆'.repeat(3-n)+'</span>';}
+async function load(){let rounds=[];try{rounds=await (await fetch("rounds.json?cb="+Date.now())).json();}catch(e){}
+  if(q.get("done")) return scorecard(rounds);
+  home(rounds);}
+function home(rounds){
+  app.innerHTML=`<div class="brand"><div class="logo">⛳</div><h1>Putt Party</h1></div><p class="tag">Pick a world and play the round.</p><div class="sec">Worlds</div>`+
+   rounds.map(r=>{const n=r.holes.length,pct=Math.round(n/10*100);return `<div class="card world"><div class="scene" style="background:${SCENES[r.world]||SCENES[1]}"><span class="cnt">${n}/10 holes</span><span class="nm">${r.name}</span></div><div class="wbody"><div class="bar"><i style="width:${pct}%"></i></div><button class="play" ${n?"":"disabled"} data-r="${r.round}">${n?"Play":"Soon"}</button></div></div>`;}).join("")+
+   `<p class="foot">Add to Home Screen to play like an app.</p>`;
+  app.querySelectorAll(".play[data-r]").forEach(b=>b.onclick=()=>{const r=rounds.find(x=>x.round===b.dataset.r);if(!r||!r.holes.length)return;
+    rset({round:r.round,name:r.name,holes:r.holes.map(h=>h.id),meta:r.holes,i:0,results:[]});
+    location.href="../"+r.holes[0].id+"/?round="+r.round;});
+}
+function scorecard(rounds){const r=rget();if(!r||!r.results){home(rounds);return;}
+  const res=r.meta.map((h,i)=>({...h,...(r.results[i]||{})}));
+  const done=res.filter(x=>x.shots!=null);
+  const totSh=done.reduce((a,x)=>a+(x.shots||0),0),totPar=done.reduce((a,x)=>a+(x.par||0),0),totSt=done.reduce((a,x)=>a+(x.stars||0),0),maxSt=done.length*3;
+  const diff=totSh-totPar,dtxt=diff===0?"Even par":(diff>0?"+"+diff:diff)+" vs par";
+  app.innerHTML=`<div class="brand"><div class="logo">⛳</div><h1>${r.name}</h1></div><div class="sc"><div class="sctop"><div class="big">${totSt}/${maxSt}★</div><div class="sctot"><div class="chip">${totSh}<small>SHOTS</small></div><div class="chip">${dtxt}<small>${done.length} holes</small></div></div></div>`+
+   res.map((h,i)=>`<div class="row"><div class="n">${i+1}</div><div class="nm">${h.name}</div>`+(h.shots!=null?`<div class="st">${stars(h.stars||0)}</div><div class="sh">${h.shots} / par ${h.par}</div>`:`<div class="sh" style="width:auto;color:var(--muted)">not played</div>`)+`</div>`).join("")+
+   `<div class="btns"><button class="again" id="again">Play again</button><button class="home" id="gohome">Worlds</button></div></div>`;
+  document.getElementById("again").onclick=()=>{rset({round:r.round,name:r.name,holes:r.holes,meta:r.meta,i:0,results:[]});location.href="../"+r.holes[0]+"/?round="+r.round;};
+  document.getElementById("gohome").onclick=()=>{location.href="./";};
+}
+load();
+if("serviceWorker" in navigator){/* no SW yet; add-to-home-screen still works via manifest */}
+</script>
+</body>
+</html>
