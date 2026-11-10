@@ -348,6 +348,11 @@ struct HomeView: View {
                     .padding(.horizontal, HandySpacing.gutter)
                     .padding(.bottom, HandySpacing.s8)
                 if !hasSearch {
+                    Button { path.append("builder") } label: {
+                        Label("Build your own tool", systemImage: "square.stack.3d.up.fill").font(HandyFont.bodyStrong).frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .accessibilityIdentifier("builder-entry")
+                    .padding(.horizontal, HandySpacing.gutter).padding(.bottom, HandySpacing.s8)
                     TabView(selection: $page) {
                         ForEach(1...3, id: \.self) { p in
                             ToolGridPage(page: p).tag(p)
@@ -366,6 +371,7 @@ struct HomeView: View {
                 case "settings": SettingsView().toolbarRole(.editor)
                 case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
                 case "privacy": PrivacyView().toolbarRole(.editor)
+                case "builder": BuilderView().toolbarRole(.editor)
                 default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
                 }
             }
