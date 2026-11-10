@@ -240,6 +240,11 @@ final class ToolFlowTests: XCTestCase {
 
     func testProCameraAndMeasureRenderControls() {
         launch("procam")
+        // The one-tap "Best photo" button and the "Best for…" looks are on the main screen.
+        expect(button(containing: "best photo"), "best photo button", timeout: 20)
+        for look in ["Landscape", "Action", "Low light", "Best"] { tapChip(look); alive("procam:\(look)") }
+        // Manual controls live behind "Pro controls".
+        let pro = button(containing: "Pro controls"); expect(pro, "Pro controls", timeout: 20); pro.tap()
         for p in ["Focus", "White balance", "Long exposure", "Exposure"] { tapChip(p); alive("procam:\(p)") }
         app.buttons["Manual"].firstMatch.tap(); alive("procam:manual")
         app.terminate()
