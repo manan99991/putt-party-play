@@ -83,9 +83,9 @@ final class ChainRowTests: XCTestCase {
 }
 
 final class ChainTemplateTests: XCTestCase {
-    func testTenTemplatesAllValid() {
-        XCTAssertEqual(ChainTemplates.all.count, 10)
-        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 10)
+    func testThirteenTemplatesAllValidAndUnique() {
+        XCTAssertEqual(ChainTemplates.all.count, 13)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 13)
     }
     func testShareRoundTripAndRejectsJunk() throws {
         let t = ChainTemplates.all[0]
