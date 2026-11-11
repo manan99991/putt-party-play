@@ -18,18 +18,23 @@ Fetching from https://github.com/googleads/swift-package-manager-google-mobile-a
 
 Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
 
-Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
-
-Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
-
 Creating working copy of package ‘swift-package-manager-google-mobile-ads’
 
 Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
 
+Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
+
+Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
+
 
 Resolved source packages:
-  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
   GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
+  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
 
-resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
+resolved source packages: GoogleUserMessagingPlatform, GoogleMobileAds
 == build.log (errors)
+2026-11-11 03:08:17.825008+0000 HandyTools[10141:35904] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-11-11 03:08:20.072865+0000 HandyTools[10141:35904] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/ChainRunnerTests.swift:122: error: -[HandyToolsTests.ContactsTransferTests testPlanSkipsPeopleAlreadyThereAndDuplicatesInsideTheBatch] : XCTAssertEqual failed: ("["1", "3"]") is not equal to ("["1"]")
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolControlsReachableTests.swift:26: error: -[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge] : failed - scrub: control “Block” is cut off at the right edge (x 20–146 of 140)
+** TEST FAILED **
