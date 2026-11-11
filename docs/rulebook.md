@@ -25,7 +25,7 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   ads and the ad code. Pro is a single auto-renewing subscription, **yearly only — $19.99/yr with a
   3-day free trial**. There is no monthly plan (the old $2.99/mo plan was removed; do not reintroduce
   it in copy or metadata).
-- The Contacts tool reads contacts on-device only to find duplicates, merge, and export a .vcf backup.
+- The Contacts tool reads and writes contacts on-device only: find duplicates, merge, export a .vcf backup, and copy or move them between the user's own accounts (Gmail/iCloud/phone). Android already declares READ/WRITE_CONTACTS; iOS uses the same Contacts permission. A move always saves a backup first.
   Nothing from Contacts is uploaded or collected; declare accordingly and keep the usage string,
   reviewer notes and privacy policy aligned.
 - Apple App Privacy: declare "Identifiers → Device ID" used for Third-Party Advertising, not linked to

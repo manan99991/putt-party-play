@@ -10,7 +10,7 @@ TENZY PRO (in-app subscription)
 - The purchase can be completed in the sandbox from that screen: it shows the price, the 3-day free trial, the Start button and the terms even though the review build already has every Pro tool unlocked (so you can assess the full app without paying). A real App Store install keeps the Pro tools locked until purchase.
 
 PERMISSIONS (all processed on-device; nothing is uploaded)
-- Contacts: the Contacts tool finds duplicate contacts, merges them without losing a number, and exports a .vcf backup. Requested only when the user opens that tool.
+- Contacts: the Contacts tool finds duplicate contacts, merges them without losing a number, exports a .vcf backup, and copies or moves contacts between the user's own accounts on the device (for example Gmail to iCloud). Requested only when the user opens that tool; nothing is uploaded.
 - Microphone: Audio Lab (decibel meter / tuner), Voice to Notes, and Translate's voice mode. Audio is metered or transcribed on-device; a recording is saved only when the user taps record.
 - Camera: Scan, Studio, Measure, Pro Camera, Identify, Translate (camera mode), and See & Read.
 - Photos: Cleaner, Studio, Privacy Scrubber, and Memory read photos the user selects; Memory indexes screenshots on-device only.

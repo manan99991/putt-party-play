@@ -448,6 +448,14 @@ private fun ContactsTab(
         return
     }
     Spacer(Modifier.height(8.dp))
+    var transferOpen by remember { mutableStateOf(false) }
+    HCard(Modifier.fillMaxWidth().padding(bottom = 10.dp), onClick = { transferOpen = true }) {
+        Column(Modifier.padding(14.dp)) {
+            Text("Move contacts between accounts", style = MaterialTheme.typography.titleMedium)
+            Text("Google, your phone, Exchange: copy or move in three taps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+    }
+    if (transferOpen) com.handytools.app.tools.contacts.ContactsTransferDialog(onDismiss = { transferOpen = false }, onChanged = onRescan)
     if (report == null) {
         if (busy) { LinearProgressIndicator(modifier = Modifier.fillMaxWidth()); Text("Reading contacts…", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 8.dp)) }
         else HPrimaryButton("Scan my contacts") { onRescan() }
