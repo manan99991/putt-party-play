@@ -21,9 +21,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -238,7 +240,27 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
         DropdownMenu(addMenu, { addMenu = false }) {
             options.forEach { b -> DropdownMenuItem(text = { Text(b.title) }, onClick = { addMenu = false; chain = chain.copy(steps = chain.steps + Step(b, defaults(b))) }) }
         }
-        chain.end?.let { Text("You get ${it.label}. Then copy it, save it or share it.", style = MaterialTheme.typography.titleSmall) }
+        chain.end?.let {
+            Text("You get ${it.label}. Then:", style = MaterialTheme.typography.titleSmall)
+            val fin = chain.finish ?: Finish()
+            Finish.KINDS.chunked(2).forEach { pair ->
+                Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                    pair.forEach { k ->
+                        if (k == fin.kind) Button({}, Modifier.weight(1f)) { Text(Finish.title(k)) }
+                        else OutlinedButton({ chain = chain.copy(finish = fin.copy(kind = k)) }, Modifier.weight(1f)) { Text(Finish.title(k)) }
+                    }
+                }
+            }
+            if (fin.kind == "mail" || fin.kind == "message") {
+                OutlinedTextField(fin.to, { v -> chain = chain.copy(finish = fin.copy(to = v)) }, Modifier.fillMaxWidth(), singleLine = true,
+                    label = { Text(if (fin.kind == "mail") "Email address (optional)" else "Phone number (optional)") })
+            }
+            if (fin.kind != "share") Text(
+                when (fin.kind) { "mail" -> "When the tool finishes, an email opens with the result attached. You tap Send."
+                    "message" -> "When the tool finishes, a message opens with the result attached. You tap Send."
+                    else -> "When the tool finishes, WhatsApp opens with the result attached. You pick the chat and tap Send." },
+                style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
         if (problem != null && chain.steps.isNotEmpty()) Text(problem, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
         HPrimaryButton("Save", enabled = problem == null && chain.name.isNotBlank()) { onSave(chain) }
         HSecondaryButton("Cancel") { onCancel() }
@@ -396,6 +418,10 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
             }
             is Payload.Pic -> {
                 Image(r.bmp.asImageBitmap(), null, Modifier.heightIn(max = 320.dp))
+                HPrimaryButton("Save or share") {
+                    val f = File(ctx.cacheDir, "Tenzy-result.jpg").also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) }
+                    Share.file(ctx, f, "image/jpeg")
+                }
             }
             is Payload.Doc -> {
                 Text("${r.bytes.size / 1024} KB · ${r.ext.uppercase()}", style = MaterialTheme.typography.bodySmall)
@@ -405,6 +431,26 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
                 }
             }
             null -> {}
+        }
+        // The tool's own ending: open email, messages or WhatsApp already filled in. If that app isn't on this phone,
+        // fall back to the share menu so the result always has somewhere to go.
+        val fin = chain.finish
+        val okItems = batch.filter { it.note == null }
+        if (fin != null && fin.kind != "share" && (result != null || okItems.isNotEmpty())) {
+            HPrimaryButton(fin.label) {
+                val files = ArrayList<File>(); var text: String? = null
+                when (val r = result) {
+                    is Payload.Words -> text = r.text
+                    is Payload.Pic -> files.add(File(ctx.cacheDir, "Tenzy-result.jpg").also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) })
+                    is Payload.Doc -> files.add(File(ctx.cacheDir, "Tenzy-result.${r.ext}").also { it.writeBytes(r.bytes) })
+                    null -> { files.addAll(okItems.mapNotNull { it.file }); text = okItems.mapNotNull { it.text }.joinToString("\n\n").ifEmpty { null } }
+                }
+                val mime = files.map { it.extension }.distinct().singleOrNull()?.let { mimeFor(it) } ?: "*/*"
+                if (!Share.sendTo(ctx, fin.kind, fin.recipients, chain.name, text, files, mime)) {
+                    message = "${Finish.title(fin.kind)} isn't available on this phone, so here is the share menu instead."
+                    if (files.isNotEmpty()) Share.files(ctx, files, mime) else if (text != null) Share.text(ctx, text)
+                }
+            }
         }
         if (batch.isNotEmpty()) {
             val ok = batch.filter { it.note == null }

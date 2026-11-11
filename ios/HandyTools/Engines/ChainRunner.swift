@@ -75,10 +75,43 @@ struct ChainStep: Codable, Equatable {
     var settings: [String: String] = [:]
 }
 
+/// Where a tool's result goes when it finishes. Optional on a chain, so tools saved before this existed still load
+/// (they simply offer Share). No app can send an email or a message by itself, so "mail" and "message" open the
+/// system composer already filled in, with the result attached; the person taps Send.
+struct ChainFinish: Codable, Equatable {
+    enum Kind: String, Codable, CaseIterable { case share, mail, message }
+    var kind: Kind = .share
+    /// Email addresses or phone numbers, separated by commas. May be empty: the composer then opens with no recipient.
+    var to: String = ""
+
+    var recipients: [String] {
+        to.split(whereSeparator: { $0 == "," || $0 == ";" || $0 == "\n" }).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+    }
+    var label: String {
+        let who = recipients.isEmpty ? "" : " to " + (recipients.count == 1 ? recipients[0] : "\(recipients.count) people")
+        switch kind {
+        case .share: return "Save or share"
+        case .mail: return "Email it" + who
+        case .message: return "Message it" + who
+        }
+    }
+}
+
+extension ChainFinish {
+    /// A tool made on Android can end in a way an iPhone doesn't have (opening WhatsApp directly). It still loads here
+    /// and simply ends with Save or share.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        kind = Kind(rawValue: (try? c.decode(String.self, forKey: .kind)) ?? "") ?? .share
+        to = (try? c.decode(String.self, forKey: .to)) ?? ""
+    }
+}
+
 struct Chain: Codable, Equatable, Identifiable {
     var id: String
     var name: String
     var steps: [ChainStep]
+    var finish: ChainFinish?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -243,7 +276,10 @@ enum ChainTemplates {
 extension Chain {
     static let prefix = "tenzy-tool:"
     var shareText: String {
-        (try? JSONEncoder().encode(self)).flatMap { String(data: $0, encoding: .utf8) }.map { Chain.prefix + $0 } ?? ""
+        // A shared tool never carries the owner's recipients (someone's email or phone number).
+        var copy = self
+        copy.finish?.to = ""
+        return (try? JSONEncoder().encode(copy)).flatMap { String(data: $0, encoding: .utf8) }.map { Chain.prefix + $0 } ?? ""
     }
     static func imported(from text: String) -> Chain? {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)

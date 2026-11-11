@@ -86,4 +86,16 @@ class BuilderLogicTest {
         // Name-only text must not become a contact; the runner stops before building a vCard (checked in ChainRunner).
         assertTrue(TextTidy.details("New Year\nParty at the hall").let { it.emails.isEmpty() && it.phones.isEmpty() })
     }
+
+    // Finish: where the result goes
+    @Test fun finishSplitsRecipientsAndLabels() {
+        val f = Finish("mail", "priya@studio.example, sam@studio.example ;")
+        assertEquals(listOf("priya@studio.example", "sam@studio.example"), f.recipients)
+        assertEquals("Email it to 2 people", f.label)
+        assertEquals("Message it to 312 555 0147", Finish("message", "312 555 0147").label)
+        assertEquals("Email it", Finish("mail", " ").label)
+        assertEquals("Save or share", Finish().label)
+        assertEquals("Send on WhatsApp", Finish("whatsapp").label)
+    }
+    @Test fun toolWithoutFinishStillBuilds() = assertNull(Chain("a", "Old", listOf(Step(Block.STRIP_LOCATION))).finish)
 }

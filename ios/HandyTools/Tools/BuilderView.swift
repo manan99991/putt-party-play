@@ -134,6 +134,7 @@ private struct ChainEditor: View {
                     connector
                     node(icon: "checkmark.circle.fill", title: "You get \(end.label)", sub: "Then copy it, save it or share it.", tint: HandyColor.success)
                 }
+                if endKind != nil { finishCard.padding(.top, HandySpacing.s12) }
                 if let p = chain.problem(starting: startKind), !chain.steps.isEmpty {
                     Text(p).font(HandyFont.caption).foregroundStyle(HandyColor.danger).padding(.top, HandySpacing.s12)
                 }
@@ -146,6 +147,35 @@ private struct ChainEditor: View {
             ToolbarItem(placement: .confirmationAction) { Button("Save") { onSave(chain) }.disabled(!valid) }
         }
         .task(id: chain.steps) { await refreshPreviews() }
+    }
+
+    /// "Then": where the result goes. Email and Message open already filled in, so sending is one tap.
+    private var finishCard: some View {
+        let kind = Binding<ChainFinish.Kind>(
+            get: { chain.finish?.kind ?? .share },
+            set: { k in var f = chain.finish ?? ChainFinish(); f.kind = k; chain.finish = f })
+        let to = Binding<String>(
+            get: { chain.finish?.to ?? "" },
+            set: { t in var f = chain.finish ?? ChainFinish(); f.to = t; chain.finish = f })
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text("Then").font(HandyFont.bodyStrong)
+            Picker("Then", selection: kind) {
+                Text("Share").tag(ChainFinish.Kind.share)
+                Text("Email").tag(ChainFinish.Kind.mail)
+                Text("Message").tag(ChainFinish.Kind.message)
+            }.pickerStyle(.segmented).accessibilityIdentifier("finish-kind")
+            if kind.wrappedValue != .share {
+                TextField(kind.wrappedValue == .mail ? "Email address (optional)" : "Phone number (optional)", text: to)
+                    .textInputAutocapitalization(.never).autocorrectionDisabled()
+                    .keyboardType(kind.wrappedValue == .mail ? .emailAddress : .phonePad)
+                    .padding(HandySpacing.s12).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 10))
+                    .accessibilityIdentifier("finish-to")
+                Text(kind.wrappedValue == .mail
+                     ? "When the tool finishes, an email opens with the result attached. You tap Send."
+                     : "When the tool finishes, a message opens with the result attached. You tap Send.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+        }.cardStyle(padding: HandySpacing.s12)
     }
 
     private var connector: some View {
@@ -303,6 +333,8 @@ private struct ChainRunView: View {
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
     @State private var progress = ""
+    @State private var outbox: Outbox?
+    @State private var sending = false
     @State private var text = ""
     @State private var busy = false
     @State private var result: ChainPayload?
@@ -326,10 +358,14 @@ private struct ChainRunView: View {
                 if let message { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let result { output(result) }
                 if !batch.isEmpty { batchView }
+                sendOn
             }.padding(HandySpacing.gutter)
         }
         .background(HandyColor.bg)
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+        .sheet(isPresented: $sending) {
+            if let f = chain.finish, let box = outbox { SendSheet(finish: f, subject: chain.name, box: box).ignoresSafeArea() }
+        }
         .onChange(of: picks) { _, items in
             guard !items.isEmpty else { return }
             picks = []
@@ -344,7 +380,7 @@ private struct ChainRunView: View {
 
     /// One result per photo. A photo that can't be processed never stops the others; it just gets its own note.
     private func runBatch(_ items: [PhotosPickerItem]) {
-        busy = true; result = nil; message = nil; batch = []
+        busy = true; result = nil; message = nil; batch = []; outbox = nil
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-batch-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         Task {
@@ -359,8 +395,32 @@ private struct ChainRunView: View {
                 case .failure(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
                 }
             }
-            await MainActor.run { batch = out; busy = false; progress = "" }
+            await MainActor.run {
+                batch = out; busy = false; progress = ""
+                let ok = out.filter { $0.note == nil }
+                finished(ok.isEmpty ? nil : Outbox(text: ok.compactMap(\.text).isEmpty ? nil : ok.compactMap(\.text).joined(separator: "\n\n"), files: ok.compactMap(\.url)))
+            }
         }
+    }
+
+    /// The tool's own ending: "Email it to..." or "Message it to...". If this phone can't do that, say so and leave
+    /// Save or share above as the way out, never a dead button.
+    @ViewBuilder private var sendOn: some View {
+        if let f = chain.finish, f.kind != .share, outbox != nil {
+            if SendSheet.canSend(f.kind) {
+                Button { sending = true } label: { Label(f.label, systemImage: f.kind == .mail ? "envelope" : "message").frame(maxWidth: .infinity) }
+                    .primaryButton().accessibilityIdentifier("send-on")
+            } else {
+                Text(f.kind == .mail ? "This phone has no Mail account set up, so use Save or share." : "This device can't send messages, so use Save or share.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+        }
+    }
+
+    /// Called when a run finishes: get the result ready to send and, if the tool ends in an email or a message, open it.
+    private func finished(_ box: Outbox?) {
+        outbox = box
+        if let f = chain.finish, f.kind != .share, box != nil, SendSheet.canSend(f.kind) { sending = true }
     }
 
     @ViewBuilder private var batchView: some View {
@@ -406,13 +466,13 @@ private struct ChainRunView: View {
     }
 
     private func go(_ input: ChainPayload) {
-        busy = true; result = nil; message = nil; batch = []; progress = ""
+        busy = true; result = nil; message = nil; batch = []; progress = ""; outbox = nil
         Task {
             let r = await ChainRunner.run(chain, input: input)
             await MainActor.run {
                 busy = false
                 switch r {
-                case .success(let p): result = p
+                case .success(let p): result = p; finished(Outbox.make(p))
                 case .failure(let f): message = ChainRunView.words(f)
                 }
             }

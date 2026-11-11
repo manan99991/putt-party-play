@@ -63,3 +63,11 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Android: a photo shared to Tenzy now opens "Run a tool on this photo" (pick a tool, it runs at once, result has Share). "Just open the photo" keeps the old File Opener path; other file types still open in File Opener.
 - Both: "Make a contact" stops with a plain reason when there is no phone or email (a name-only contact can't be sent by WhatsApp or Messages).
 - Not yet on Android: sharing several photos at once, or text, into a tool.
+
+### "Then": send a result to a set person — iOS and Android
+- A tool can now end with Share (default), Email or Message, with an optional recipient. When the run finishes the system composer opens already filled in (recipient, subject = tool name, result attached or pasted); the person taps Send. No app may send by itself on either platform.
+- Android also has "WhatsApp" (opens WhatsApp with the result attached; the person picks the chat). iOS has no way to open WhatsApp with a file, so a tool made on Android that ends in WhatsApp loads on iPhone and ends with Save or share.
+- If the phone can't do it (no Mail account, no SMS, WhatsApp not installed) the tool says so and falls back to the share menu; never a dead button.
+- A copied/shared tool never carries the recipient address.
+- Android: image results now have a "Save or share" button (there was none).
+- Not yet: the share-sheet extension on iOS still ends with Share only.

@@ -256,3 +256,45 @@ final class ShareOffersTests: XCTestCase {
         XCTAssertEqual(ChainStore.offers(for: .image, mine: [mine], last: "no-such-tool").first?.id, "mine-1")
     }
 }
+
+/// A tool's "Then" step: share, or open an email or message already filled in.
+final class ChainFinishTests: XCTestCase {
+    func testToolsSavedBeforeFinishExistedStillLoad() throws {
+        let old = #"{"id":"a","name":"Old tool","steps":[{"block":"stripLocation","settings":{}}]}"#
+        let c = try JSONDecoder().decode(Chain.self, from: Data(old.utf8))
+        XCTAssertNil(c.finish)
+        XCTAssertEqual(c.steps.map(\.block), [.stripLocation])
+    }
+    func testFinishRoundTripsAndSplitsRecipients() throws {
+        var c = Chain(id: "a", name: "Clean and email", steps: [ChainStep(block: .stripLocation)])
+        c.finish = ChainFinish(kind: .mail, to: "priya@studio.example, sam@studio.example ;")
+        let back = try JSONDecoder().decode(Chain.self, from: JSONEncoder().encode(c))
+        XCTAssertEqual(back, c)
+        XCTAssertEqual(back.finish?.recipients, ["priya@studio.example", "sam@studio.example"])
+        XCTAssertEqual(back.finish?.label, "Email it to 2 people")
+    }
+    func testLabels() {
+        XCTAssertEqual(ChainFinish(kind: .message, to: "312 555 0147").label, "Message it to 312 555 0147")
+        XCTAssertEqual(ChainFinish(kind: .mail, to: " ").label, "Email it")
+        XCTAssertEqual(ChainFinish().label, "Save or share")
+    }
+    func testSharedToolNeverCarriesRecipients() throws {
+        var c = Chain(id: "a", name: "Clean and email", steps: [ChainStep(block: .stripLocation)])
+        c.finish = ChainFinish(kind: .mail, to: "priya@studio.example")
+        XCTAssertFalse(c.shareText.contains("priya@studio.example"))
+        let back = try XCTUnwrap(Chain.imported(from: c.shareText))
+        XCTAssertEqual(back.finish, ChainFinish(kind: .mail, to: ""), "the kind travels, the address does not")
+    }
+    func testOutboxFromTextAndFile() throws {
+        XCTAssertEqual(Outbox.make(.text("hello")), Outbox(text: "hello"))
+        let box = try XCTUnwrap(Outbox.make(.file(Data("a,b".utf8), ext: "csv")))
+        XCTAssertNil(box.text)
+        XCTAssertEqual(box.files.first?.pathExtension, "csv")
+        XCTAssertEqual(Outbox.mime(box.files[0]), "text/csv")
+    }
+    func testUnknownFinishKindFromAnotherPhoneFallsBackToShare() throws {
+        let json = #"{"id":"a","name":"From Android","steps":[{"block":"stripLocation","settings":{}}],"finish":{"kind":"whatsapp","to":""}}"#
+        let c = try JSONDecoder().decode(Chain.self, from: Data(json.utf8))
+        XCTAssertEqual(c.finish?.kind, .share)
+    }
+}

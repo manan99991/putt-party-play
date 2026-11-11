@@ -35,7 +35,24 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
 
 data class Step(val block: Block, val settings: Map<String, String> = emptyMap())
 
-data class Chain(val id: String, val name: String, val steps: List<Step>) {
+/**
+ * Where a tool's result goes when it finishes. "share" (the default) opens the share menu; "mail", "message" and
+ * "whatsapp" open that app already filled in with the result attached, so sending is one tap. No app is allowed to
+ * send by itself.
+ */
+data class Finish(val kind: String = "share", val to: String = "") {
+    val recipients: List<String> get() = to.split(',', ';', '\n').map { it.trim() }.filter { it.isNotEmpty() }
+    val label: String get() {
+        val who = when (recipients.size) { 0 -> ""; 1 -> " to ${recipients[0]}"; else -> " to ${recipients.size} people" }
+        return when (kind) { "mail" -> "Email it$who"; "message" -> "Message it$who"; "whatsapp" -> "Send on WhatsApp"; else -> "Save or share" }
+    }
+    companion object {
+        val KINDS = listOf("share", "mail", "message", "whatsapp")
+        fun title(kind: String) = when (kind) { "mail" -> "Email"; "message" -> "Message"; "whatsapp" -> "WhatsApp"; else -> "Share" }
+    }
+}
+
+data class Chain(val id: String, val name: String, val steps: List<Step>, val finish: Finish? = null) {
     val start: Kind get() = steps.firstOrNull()?.block?.takes ?: Kind.IMAGE
     val end: Kind? get() = steps.lastOrNull()?.block?.gives
 
@@ -50,11 +67,12 @@ data class Chain(val id: String, val name: String, val steps: List<Step>) {
         return null
     }
 
-    fun toJson(): JSONObject = JSONObject().put("id", id).put("name", name).put("steps", JSONArray().also { a ->
+    /** @param forSharing a shared tool never carries the owner's recipients (someone's email or phone number). */
+    fun toJson(forSharing: Boolean = false): JSONObject = JSONObject().put("id", id).put("name", name).put("steps", JSONArray().also { a ->
         steps.forEach { s -> a.put(JSONObject().put("block", s.block.id).put("settings", JSONObject(s.settings))) }
-    })
+    }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) } }
 
-    val shareText: String get() = PREFIX + toJson().toString()
+    val shareText: String get() = PREFIX + toJson(forSharing = true).toString()
 
     companion object {
         const val PREFIX = "tenzy-tool:"
@@ -69,7 +87,8 @@ data class Chain(val id: String, val name: String, val steps: List<Step>) {
                 st?.keys()?.forEach { k -> map[k] = st.optString(k) }
                 Step(b, map)
             }
-            Chain(o.optString("id", UUID.randomUUID().toString()), o.optString("name", "My tool"), steps)
+            val fin = o.optJSONObject("finish")?.let { f -> Finish(f.optString("kind", "share").takeIf { it in Finish.KINDS } ?: "share", f.optString("to", "")) }
+            Chain(o.optString("id", UUID.randomUUID().toString()), o.optString("name", "My tool"), steps, fin)
         } catch (_: Exception) { null }
 
         /** Accepts a copied tool only if it is well formed and its steps fit together. */
