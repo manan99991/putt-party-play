@@ -119,7 +119,7 @@ final class ContactsTransferTests: XCTestCase {
         let source = [c("1", "Jane", ["3125550100"]), c("2", "Raj", ["3125550111"]), c("3", "Raj", ["3125550111"])]
         let existing = [c("9", "Jane", ["312 555 0100"])]
         let p = ContactsTransfer.plan(source: source, existing: existing)
-        XCTAssertEqual(p.present.map(\.id), ["1"])
-        XCTAssertEqual(p.copy.map(\.id), ["2"], "the second Raj is a repeat of the first, so only one is added")
+        XCTAssertEqual(p.present.map(\.id), ["1", "3"], "Jane is already there; the second Raj repeats the first")
+        XCTAssertEqual(p.copy.map(\.id), ["2"])
     }
 }
