@@ -228,4 +228,10 @@ final class TextBlockTests: XCTestCase {
         for t in ChainTemplates.all { XCTAssertNil(t.problem(starting: t.steps.first?.block.takes ?? .image), t.name) }
         XCTAssertGreaterThanOrEqual(ChainTemplates.all.count, 13)
     }
+
+    /// A name-only "contact" (e.g. the words "New Year" from a poster) can't be sent by WhatsApp or Messages, so the block must stop with a reason.
+    func testContactNeedsPhoneOrEmail() async {
+        let r = await ChainRunner.apply(ChainStep(block: .businessCard), to: .text("New Year\nParty at the hall"))
+        XCTAssertEqual(r.failureValue, .nothingFound(.businessCard))
+    }
 }

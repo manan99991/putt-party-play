@@ -434,6 +434,7 @@ private struct ChainRunView: View {
         switch f {
         case .invalid(let s): return s
         case .wrongInput(let b): return "\(b.title) can't use that input."
+        case .nothingFound(.businessCard): return "Make a contact needs a phone number or an email, and didn't find one. Try a business card or a signature."
         case .nothingFound(let b): return b.takes == .text ? "\(b.title) didn't find anything in that text." : "\(b.title) didn't find anything in it. Try a clearer or closer picture."
         case .failed(let b): return "\(b.title) couldn't finish. Try again."
         }

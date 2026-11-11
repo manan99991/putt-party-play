@@ -157,7 +157,8 @@ enum ChainRunner {
 
         case (.businessCard, .text(let t)):
             let c = DataGrab.card(t)
-            guard !c.name.isEmpty || !c.phones.isEmpty || !c.emails.isEmpty, let d = DataGrab.vcard(c).data(using: .utf8) else { return .failure(.nothingFound(b)) }
+            // A contact with only a name can't be saved or sent by most apps (WhatsApp, Messages), so it needs a way to reach the person.
+            guard !c.phones.isEmpty || !c.emails.isEmpty, let d = DataGrab.vcard(c).data(using: .utf8) else { return .failure(.nothingFound(b)) }
             return .success(.file(d, ext: "vcf"))
 
         case (.calendarEvent, .text(let t)):

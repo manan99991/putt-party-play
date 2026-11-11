@@ -101,7 +101,8 @@ object ChainRunner {
                 }
                 b == Block.BUSINESS_CARD && input is Payload.Words -> {
                     val c = CaptureClassifier.classify(input.text)
-                    if (c.name.isBlank() && c.phone.isBlank() && c.email.isBlank()) none()
+                    // A contact with only a name can't be saved or sent by most apps, so it needs a way to reach the person.
+                    if (c.phone.isBlank() && c.email.isBlank()) Outcome.Stopped("Make a contact needs a phone number or an email, and didn't find one. Try a business card or a signature.")
                     else Outcome.Done(Payload.Doc(vcard(c.name, c.title, c.company, c.phone, c.email).toByteArray(), "vcf"))
                 }
                 b == Block.CALENDAR_EVENT && input is Payload.Words -> {
