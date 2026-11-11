@@ -1,5 +1,8 @@
 package com.handytools.app.tools.contacts
 
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -59,6 +62,14 @@ fun ContactsTransferDialog(onDismiss: () -> Unit, onChanged: () -> Unit) {
     var backup by remember { mutableStateOf<File?>(null) }
     var confirm by remember { mutableStateOf(false) }
 
+    // A .vcf file (for example Google's "Export as vCard") is handed to the system importer, which asks which account to save into.
+    val vcfPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) runCatching {
+            ctx.startActivity(Intent(Intent.ACTION_VIEW).setDataAndType(uri, "text/x-vcard")
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK))
+        }
+    }
+
     fun reload() { scope.launch { accounts = withContext(Dispatchers.IO) { ContactsTransfer.accounts(ctx) } } }
     LaunchedEffect(Unit) { reload() }
 
@@ -112,6 +123,8 @@ fun ContactsTransferDialog(onDismiss: () -> Unit, onChanged: () -> Unit) {
                     enabled = ready
                 ) { if (move) confirm = true else run() }
                 if (busy) { Spacer(Modifier.height(8.dp)); LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth()) }
+
+                TextButton(onClick = { vcfPicker.launch(arrayOf("text/x-vcard", "text/vcard", "text/directory", "*/*")) }) { Text("Or add contacts from a .vcf file") }
 
                 outcome?.let { o ->
                     Spacer(Modifier.height(12.dp))
