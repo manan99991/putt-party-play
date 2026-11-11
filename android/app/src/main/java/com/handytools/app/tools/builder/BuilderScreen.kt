@@ -480,7 +480,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
 private const val MAX_BATCH = 20
 
 internal fun mimeFor(ext: String): String = when (ext) {
-    "jpg", "jpeg" -> "image/jpeg"; "png" -> "image/png"; "vcf" -> "text/x-vcard"; "ics" -> "text/calendar"; "csv" -> "text/csv"; else -> "*/*"
+    "jpg", "jpeg" -> "image/jpeg"; "png" -> "image/png"; "vcf" -> "text/x-vcard"; "ics" -> "text/calendar"; "csv" -> "text/csv"; "pdf" -> "application/pdf"; else -> "*/*"
 }
 
 /** One photo's outcome in a batch run. Results are written to a cache folder straight away so twenty full-size

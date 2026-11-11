@@ -98,6 +98,11 @@ targets:
       - HandyTools/Engines/SizeTarget.swift
       - HandyTools/Engines/ImageStudio.swift
       - HandyTools/Engines/Scrubber.swift
+      - HandyTools/Engines/ScamAnalyzer.swift
+      - HandyTools/Engines/LinkCleaner.swift
+      - HandyTools/Engines/PriceBrain.swift
+      - HandyTools/Engines/Identifier.swift
+      - HandyTools/Engines/SceneDescriber.swift
     entitlements:
       path: ShareExtension/ShareExtension.entitlements
       properties:

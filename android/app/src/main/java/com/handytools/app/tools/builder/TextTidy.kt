@@ -74,4 +74,36 @@ object TextTidy {
         val width = rows.maxOfOrNull { it.size } ?: 0
         return rows.joinToString("\n") { r -> (r + List(maxOf(0, width - r.size)) { "" }).joinToString(",") { csv(it) } }
     }
+
+    // MARK: links without tracking (the same junk list as the iOS LinkCleaner)
+
+    private val JUNK = setOf("fbclid", "gclid", "gclsrc", "dclid", "msclkid", "mc_cid", "mc_eid", "igshid", "yclid", "twclid", "ttclid", "_hsenc", "_hsmi",
+        "mkt_tok", "ref", "ref_", "ref_src", "ref_url", "spm", "si", "feature", "trk", "_ga", "_gl", "s_kwcid", "ncid", "cmpid", "linkid", "ascsubtag")
+    private val JUNK_PREFIX = listOf("utm_", "pk_", "piwik_", "matomo_", "mtm_", "ga_", "hsa_", "oly_", "vero_", "at_")
+
+    /** One link with its tracking parameters removed. Anything that isn't a plain http(s) link comes back unchanged. */
+    fun cleanLink(raw: String): String {
+        val url = if (raw.startsWith("http", ignoreCase = true)) raw else "https://$raw"
+        val hash = url.indexOf('#').let { if (it < 0) url.length else it }
+        val q = url.indexOf('?')
+        if (q < 0 || q > hash) return url
+        val kept = url.substring(q + 1, hash).split('&').filter { part ->
+            val n = part.substringBefore('=').lowercase()
+            part.isNotEmpty() && n !in JUNK && JUNK_PREFIX.none { n.startsWith(it) }
+        }
+        return url.substring(0, q) + (if (kept.isEmpty()) "" else "?" + kept.joinToString("&")) + url.substring(hash)
+    }
+
+    /** Every web link in the text with its tracking removed. Null when the text has no links. */
+    fun cleanLinks(text: String): String? {
+        val links = details(text).links
+        if (links.isEmpty()) return null
+        var out = text
+        for (l in links) out = out.replace(l, cleanLink(l))
+        return out.trim().takeIf { links.size > 1 || it != links[0] } ?: cleanLink(links[0])
+    }
+
+    /** The scam checker's verdict as a few plain lines: the verdict, the main reasons, and one thing to do. */
+    fun scamReport(verdict: String, reasons: List<String>, linkNotes: List<String>, advice: String?): String =
+        (listOf("$verdict.") + reasons.take(4).map { "• $it" } + linkNotes.map { "• $it" } + (advice?.let { listOf("", it) } ?: emptyList())).joinToString("\n")
 }

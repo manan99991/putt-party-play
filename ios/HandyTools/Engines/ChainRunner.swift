@@ -31,6 +31,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case readText, pullReceipt, summarize, shrinkImage, stripLocation, cutout, enhance, convertImage
     case businessCard, calendarEvent, actionItems, hideSensitive, passportPhoto
     case cleanText, pullDetails, makeTable
+    case scamCheck, cleanLinks, priceCompare, makeQr, describe, identify, photoPdf
 
     var id: String { rawValue }
     var title: String {
@@ -51,21 +52,28 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .cleanText: return "Tidy text"
         case .pullDetails: return "Find links, emails, phones"
         case .makeTable: return "Text to spreadsheet"
+        case .scamCheck: return "Check for scams"
+        case .cleanLinks: return "Clean tracking from links"
+        case .priceCompare: return "Find the best deal"
+        case .makeQr: return "Make a QR code"
+        case .describe: return "Describe the photo"
+        case .identify: return "Identify it"
+        case .photoPdf: return "Make a PDF"
         }
     }
     var takes: ChainKind {
         switch self {
-        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto: return .image
-        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable: return .text
+        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf: return .image
+        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr: return .text
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
     var gives: ChainKind {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails: return .text
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
-        case .businessCard, .calendarEvent, .makeTable: return .file
-        case .cutout, .enhance: return .image
+        case .businessCard, .calendarEvent, .makeTable, .photoPdf: return .file
+        case .cutout, .enhance, .makeQr: return .image
         }
     }
 }
@@ -216,6 +224,39 @@ enum ChainRunner {
             guard !csv.isEmpty, let d = csv.data(using: .utf8) else { return .failure(.nothingFound(b)) }
             return .success(.file(d, ext: "csv"))
 
+        case (.scamCheck, .text(let t)):
+            guard !t.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return .failure(.nothingFound(b)) }
+            return .success(.text(ChainText.scamReport(ScamAnalyzer.analyze(t))))
+
+        case (.cleanLinks, .text(let t)):
+            guard let out = ChainText.cleanLinks(in: t) else { return .failure(.nothingFound(b)) }
+            return .success(.text(out))
+
+        case (.priceCompare, .text(let t)):
+            guard let out = ChainText.bestDeal(in: t) else { return .failure(.nothingFound(b)) }
+            return .success(.text(out))
+
+        case (.makeQr, .text(let t)):
+            let msg = t.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !msg.isEmpty else { return .failure(.nothingFound(b)) }
+            guard let img = ChainText.qr(msg) else { return .failure(.failed(b)) }   // too long for one code
+            return .success(.image(img))
+
+        case (.describe, .image(let img)):
+            let p = SceneDescriber.perceive(img)
+            let text = await SceneDescriber.polish(p, fallback: SceneDescriber.compose(p)).trimmingCharacters(in: .whitespacesAndNewlines)
+            return text.isEmpty ? .failure(.nothingFound(b)) : .success(.text(text))
+
+        case (.identify, .image(let img)):
+            let o = await Identifier.identify(img)
+            var lines = o.guesses.prefix(3).map { "\($0.label) (\(Int(($0.confidence * 100).rounded()))% sure)" }
+            if let code = o.barcode { lines.insert("Barcode \(code)" + (o.symbology.map { " (\($0))" } ?? ""), at: 0) }
+            return lines.isEmpty ? .failure(.nothingFound(b)) : .success(.text(lines.joined(separator: "\n")))
+
+        case (.photoPdf, .image(let img)):
+            guard let d = DocEngine.pdf(images: [img], ocr: [DocEngine.recognize(img)], options: DocEngine.PDFOptions()) else { return .failure(.failed(b)) }
+            return .success(.file(d, ext: "pdf"))
+
         case (.hideSensitive, .image(let img)):
             let hits = Scrubber.detect(img)
             let rects = hits.faces + hits.text.filter(\.personal).map(\.rect)
@@ -269,6 +310,12 @@ enum ChainTemplates {
         Chain(id: "table-to-sheet", name: "Photo of a table to spreadsheet", steps: [ChainStep(block: .readText), ChainStep(block: .makeTable)]),
         Chain(id: "links-and-numbers", name: "Pull links, emails and phones", steps: [ChainStep(block: .pullDetails)]),
         Chain(id: "tidy-text", name: "Tidy pasted text", steps: [ChainStep(block: .cleanText)]),
+        Chain(id: "scam-check", name: "Is this message a scam?", steps: [ChainStep(block: .scamCheck)]),
+        Chain(id: "clean-link", name: "Link without the tracking", steps: [ChainStep(block: .cleanLinks)]),
+        Chain(id: "shelf-best-deal", name: "Shelf photo to best deal", steps: [ChainStep(block: .readText), ChainStep(block: .priceCompare)]),
+        Chain(id: "photo-to-pdf", name: "Photo to searchable PDF", steps: [ChainStep(block: .photoPdf)]),
+        Chain(id: "text-to-qr", name: "Text or link to QR code", steps: [ChainStep(block: .makeQr)]),
+        Chain(id: "what-is-this", name: "What is this?", steps: [ChainStep(block: .identify)]),
     ]
 }
 
@@ -318,5 +365,50 @@ enum ChainStore {
         var all = (mine + ChainTemplates.all).filter { $0.problem(starting: kind) == nil }
         if let last, let i = all.firstIndex(where: { $0.id == last }) { all.insert(all.remove(at: i), at: 0) }
         return all
+    }
+}
+
+/// Plain-text results for the blocks that wrap the scam, link and price engines. Pure, so they are unit-tested.
+enum ChainText {
+    static func scamReport(_ r: ScamAnalyzer.Report) -> String {
+        var out = [r.verdict.rawValue + "."]
+        out += r.findings.sorted { $0.weight > $1.weight }.prefix(4).map { "• \($0.title)" }
+        for l in r.links where !l.issues.isEmpty { out.append("• Link \(l.host): \(l.issues.joined(separator: "; "))") }
+        if let first = ScamAnalyzer.advice(for: r).first { out.append(""); out.append(first) }
+        return out.joined(separator: "\n")
+    }
+
+    /// Every web link in the text with its tracking removed. nil when the text has no links.
+    static func cleanLinks(in text: String) -> String? {
+        let links = TextTidy.details(text).links
+        guard !links.isEmpty else { return nil }
+        if links.count == 1, text.trimmingCharacters(in: .whitespacesAndNewlines) == links[0] { return LinkCleaner.clean(full(links[0])) }
+        var out = text
+        for l in links { out = out.replacingOccurrences(of: l, with: LinkCleaner.clean(full(l))) }
+        return out
+    }
+    private static func full(_ link: String) -> String { link.lowercased().hasPrefix("http") ? link : "https://" + link }
+
+    /// Ranks the priced, sized items found in the text by true unit price. nil when fewer than two can be compared.
+    static func bestDeal(in text: String) -> String? {
+        let entries = PriceBrain.extract(from: text).compactMap { row -> PriceBrain.Entry? in
+            let digits = row.price.filter { $0.isNumber || $0 == "." }
+            guard let price = Double(digits) else { return nil }
+            return PriceBrain.Entry(name: row.name.isEmpty ? row.size : row.name, price: price, sizeText: row.size)
+        }
+        let ranked = PriceBrain.rank(entries).filter { $0.perBase != nil }.sorted { ($0.perBase ?? .infinity) < ($1.perBase ?? .infinity) }
+        guard ranked.count >= 2, let best = ranked.first else { return nil }
+        var out = ["Best deal: \(best.entry.name), \(PriceBrain.perUnitString(best))"]
+        out += ranked.dropFirst().map { "\($0.entry.name), \(PriceBrain.perUnitString($0))" }
+        return out.joined(separator: "\n")
+    }
+
+    static func qr(_ message: String) -> UIImage? {
+        guard let f = CIFilter(name: "CIQRCodeGenerator") else { return nil }
+        f.setValue(Data(message.utf8), forKey: "inputMessage")
+        f.setValue("M", forKey: "inputCorrectionLevel")
+        guard let ci = f.outputImage?.transformed(by: CGAffineTransform(scaleX: 12, y: 12)),
+              let cg = CIContext().createCGImage(ci, from: ci.extent) else { return nil }
+        return UIImage(cgImage: cg)
     }
 }

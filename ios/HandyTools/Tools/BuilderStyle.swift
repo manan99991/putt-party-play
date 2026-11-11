@@ -20,15 +20,22 @@ extension Block {
         case .cleanText: return "text.badge.checkmark"
         case .pullDetails: return "link"
         case .makeTable: return "tablecells"
+        case .scamCheck: return "shield.lefthalf.filled"
+        case .cleanLinks: return "link.badge.plus"
+        case .priceCompare: return "tag"
+        case .makeQr: return "qrcode"
+        case .describe: return "text.below.photo"
+        case .identify: return "viewfinder"
+        case .photoPdf: return "doc.richtext"
         }
     }
     var tint: Color {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails: return Color(hex: 0x3B82F6)
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .cleanLinks, .priceCompare, .describe, .identify: return Color(hex: 0x3B82F6)
         case .shrinkImage, .convertImage, .stripLocation: return Color(hex: 0x10B981)
         case .cutout, .enhance, .passportPhoto: return Color(hex: 0xA855F7)
-        case .hideSensitive: return Color(hex: 0xF97316)
-        case .businessCard, .calendarEvent, .makeTable: return Color(hex: 0xEC4899)
+        case .hideSensitive, .scamCheck: return Color(hex: 0xF97316)
+        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr: return Color(hex: 0xEC4899)
         }
     }
     var blurb: String {
@@ -49,6 +56,13 @@ extension Block {
         case .cleanText: return "Removes extra spaces, blank gaps and repeated lines."
         case .pullDetails: return "Lists every web link, email address and phone number."
         case .makeTable: return "Turns rows of text into a spreadsheet (CSV) file."
+        case .scamCheck: return "Says if a message looks like a scam, and why."
+        case .cleanLinks: return "Strips the tracking off web links."
+        case .priceCompare: return "Compares unit prices and names the best deal."
+        case .makeQr: return "Turns text or a link into a QR code."
+        case .describe: return "Says what the photo shows."
+        case .identify: return "Names the plant, animal, object or barcode."
+        case .photoPdf: return "Turns the photo into a searchable PDF."
         }
     }
 }

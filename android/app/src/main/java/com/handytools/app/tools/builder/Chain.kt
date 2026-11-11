@@ -28,7 +28,11 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     HIDE_SENSITIVE("hideSensitive", "Hide faces and numbers", Kind.IMAGE, Kind.PHOTO_FILE, "Covers faces and personal numbers."),
     CLEAN_TEXT("cleanText", "Tidy text", Kind.TEXT, Kind.TEXT, "Removes extra spaces, blank gaps and repeated lines."),
     PULL_DETAILS("pullDetails", "Find links, emails, phones", Kind.TEXT, Kind.TEXT, "Lists every web link, email address and phone number."),
-    MAKE_TABLE("makeTable", "Text to spreadsheet", Kind.TEXT, Kind.FILE, "Turns rows of text into a spreadsheet (CSV) file.");
+    MAKE_TABLE("makeTable", "Text to spreadsheet", Kind.TEXT, Kind.FILE, "Turns rows of text into a spreadsheet (CSV) file."),
+    SCAM_CHECK("scamCheck", "Check for scams", Kind.TEXT, Kind.TEXT, "Says if a message looks like a scam, and why."),
+    CLEAN_LINKS("cleanLinks", "Clean tracking from links", Kind.TEXT, Kind.TEXT, "Strips the tracking off web links."),
+    MAKE_QR("makeQr", "Make a QR code", Kind.TEXT, Kind.IMAGE, "Turns text or a link into a QR code."),
+    PHOTO_PDF("photoPdf", "Make a PDF", Kind.IMAGE, Kind.FILE, "Turns the photo into a PDF.");
 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
 }
@@ -127,6 +131,10 @@ object ChainTemplates {
         Chain("table-to-sheet", "Photo of a table to spreadsheet", listOf(Step(Block.READ_TEXT), Step(Block.MAKE_TABLE))),
         Chain("links-and-numbers", "Pull links, emails and phones", listOf(Step(Block.PULL_DETAILS))),
         Chain("tidy-text", "Tidy pasted text", listOf(Step(Block.CLEAN_TEXT))),
+        Chain("scam-check", "Is this message a scam?", listOf(Step(Block.SCAM_CHECK))),
+        Chain("clean-link", "Link without the tracking", listOf(Step(Block.CLEAN_LINKS))),
+        Chain("photo-to-pdf", "Photo to PDF", listOf(Step(Block.PHOTO_PDF))),
+        Chain("text-to-qr", "Text or link to QR code", listOf(Step(Block.MAKE_QR))),
     )
 }
 
@@ -141,6 +149,9 @@ object ChainPlanner {
         val textish = has("text", "notes", "words", "list", "lines", "pasted", "paste")
         val wantsClean = has("tidy", "clean up", "clean the", "dedupe", "de-dupe", "duplicate line", "remove duplicates", "extra spaces", "blank lines") && (!wantsPhoto || textish)
         val job: Block? = when {
+            has("scam", "phishing", "fraud", "is this real", "suspicious") -> Block.SCAM_CHECK
+            has("tracking", "clean link", "clean the link", "clean my link", "utm") -> Block.CLEAN_LINKS
+            has("qr") -> Block.MAKE_QR
             has("receipt", "expense", "invoice") -> Block.PULL_RECEIPT
             has("business card", "contact", "vcard") -> Block.BUSINESS_CARD
             has("calendar", "event", "poster", "flyer", "invite", "appointment") -> Block.CALENDAR_EVENT

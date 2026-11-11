@@ -43,6 +43,10 @@ enum ChainPlanner {
         let textish = has(["text", "notes", "words", "list", "lines", "pasted", "paste"])
         let wantsClean = has(["tidy", "clean up", "clean the", "dedupe", "de-dupe", "duplicate line", "remove duplicates", "extra spaces", "blank lines"]) && (!wantsPhotoInput || textish)
         let textJob: Block? =
+            has(["scam", "phishing", "fraud", "is this real", "suspicious"]) ? .scamCheck :
+            has(["best deal", "cheapest", "cheaper", "unit price", "per unit", "better value"]) ? .priceCompare :
+            has(["tracking", "clean link", "clean the link", "clean my link", "utm"]) ? .cleanLinks :
+            has(["qr"]) ? .makeQr :
             has(["receipt", "expense", "invoice"]) ? .pullReceipt :
             has(["business card", "contact", "vcard"]) ? .businessCard :
             has(["calendar", "event", "poster", "flyer", "invite", "appointment"]) ? .calendarEvent :
@@ -64,6 +68,10 @@ enum ChainPlanner {
             return build(ask, steps)
         }
 
+        // Questions about a picture: the answer is words, so nothing else follows.
+        if has(["identify", "what is this", "what's this", "what plant", "what bug", "what breed", "what kind of"]) { return build(ask, [ChainStep(block: .identify)]) }
+        if has(["describe", "what's in", "what is in", "what does it show"]) { return build(ask, [ChainStep(block: .describe)]) }
+
         // Picture jobs, in the order that gives the best result.
         if has(["cut out", "cutout", "remove background", "remove the background", "background", "sticker", "isolate"]) { steps.append(ChainStep(block: .cutout)) }
         if has(["enhance", "sharpen", "improve", "fix the photo", "better quality", "clearer", "brighten"]) { steps.append(ChainStep(block: .enhance)) }
@@ -78,6 +86,8 @@ enum ChainPlanner {
             let mb = number(near: ["mb", "megabyte"], in: s, before: true) ?? 2
             steps.append(ChainStep(block: .shrinkImage, settings: ["mb": String(mb)]))
         }
+        // A PDF comes last: it takes whatever the photo has become.
+        if has(["pdf"]) { steps.append(ChainStep(block: .photoPdf)) }
         return build(ask, steps)
     }
 

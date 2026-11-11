@@ -98,4 +98,29 @@ class BuilderLogicTest {
         assertEquals("Send on WhatsApp", Finish("whatsapp").label)
     }
     @Test fun toolWithoutFinishStillBuilds() = assertNull(Chain("a", "Old", listOf(Step(Block.STRIP_LOCATION))).finish)
+
+    // Links, scam report, new blocks
+    @Test fun cleanLinkStripsTrackingAndKeepsTheRest() {
+        assertEquals("https://shop.example/item?id=7", TextTidy.cleanLink("https://shop.example/item?id=7&utm_source=mail&fbclid=abc"))
+        assertEquals("https://shop.example/item", TextTidy.cleanLink("https://shop.example/item?utm_source=mail"))
+        assertEquals("https://shop.example/item?id=7#reviews", TextTidy.cleanLink("https://shop.example/item?id=7&gclid=x#reviews"))
+        assertEquals("https://shop.example/plain", TextTidy.cleanLink("https://shop.example/plain"))
+    }
+    @Test fun cleanLinksInsideText() {
+        assertEquals("Look: https://shop.example/item?id=7 thanks", TextTidy.cleanLinks("Look: https://shop.example/item?id=7&utm_source=mail thanks"))
+        assertEquals("https://shop.example/item?id=7", TextTidy.cleanLinks("https://shop.example/item?id=7&utm_source=mail"))
+        assertNull(TextTidy.cleanLinks("no link here"))
+    }
+    @Test fun scamReportReadsAsVerdictReasonsAdvice() =
+        assertEquals("Likely a scam.\n• Asks for gift cards\n• Link pay.example: looks like a login page\n\nStop before paying.",
+            TextTidy.scamReport("Likely a scam", listOf("Asks for gift cards"), listOf("Link pay.example: looks like a login page"), "Stop before paying."))
+    @Test fun newBlocksChain() {
+        assertNull(Chain("x", "x", listOf(Step(Block.STRIP_LOCATION), Step(Block.PHOTO_PDF))).problem(Kind.IMAGE))
+        assertNotNull(Chain("x", "x", listOf(Step(Block.PHOTO_PDF), Step(Block.SHRINK))).problem(Kind.IMAGE))
+        assertNull(Chain("x", "x", listOf(Step(Block.MAKE_QR), Step(Block.CONVERT))).problem(Kind.TEXT))
+    }
+    @Test fun plannerScamAndQr() {
+        assertEquals(listOf(Block.SCAM_CHECK), ChainPlanner.plan("is this message a scam")!!.steps.map { it.block })
+        assertEquals(listOf(Block.MAKE_QR), ChainPlanner.plan("turn a link into a qr code")!!.steps.map { it.block })
+    }
 }

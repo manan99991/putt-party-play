@@ -83,9 +83,9 @@ final class ChainRowTests: XCTestCase {
 }
 
 final class ChainTemplateTests: XCTestCase {
-    func testThirteenTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 13)
-        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 13)
+    func testNineteenTemplatesAllValidAndUnique() {
+        XCTAssertEqual(ChainTemplates.all.count, 19)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 19)
     }
     func testShareRoundTripAndRejectsJunk() throws {
         let t = ChainTemplates.all[0]
@@ -296,5 +296,62 @@ final class ChainFinishTests: XCTestCase {
         let json = #"{"id":"a","name":"From Android","steps":[{"block":"stripLocation","settings":{}}],"finish":{"kind":"whatsapp","to":""}}"#
         let c = try JSONDecoder().decode(Chain.self, from: Data(json.utf8))
         XCTAssertEqual(c.finish?.kind, .share)
+    }
+}
+
+/// Scam check, link cleaning, best deal, QR, PDF and the picture questions.
+final class MoreBlocksTests: XCTestCase {
+    func testScamBlockNamesTheVerdictAndWhy() async {
+        let msg = "URGENT: This is the IRS. Your account will be suspended within 24 hours unless you pay the balance in Apple gift cards. Do not tell anyone. Call immediately."
+        let r = await ChainRunner.apply(ChainStep(block: .scamCheck), to: .text(msg))
+        guard case .success(.text(let out)) = r else { return XCTFail("no report") }
+        XCTAssertTrue(out.hasPrefix("Likely a scam."), out)
+        XCTAssertTrue(out.contains("•"), "it must say why")
+    }
+    func testScamBlockOnNormalTextIsLowRisk() async {
+        let r = await ChainRunner.apply(ChainStep(block: .scamCheck), to: .text("Running ten minutes late, see you at the cafe."))
+        guard case .success(.text(let out)) = r else { return XCTFail("no report") }
+        XCTAssertTrue(out.hasPrefix("Looks low-risk."), out)
+    }
+    func testCleanLinksStripsTrackingAndKeepsTheRest() {
+        XCTAssertEqual(ChainText.cleanLinks(in: "https://shop.example/item?id=7&utm_source=mail&fbclid=abc"), "https://shop.example/item?id=7")
+        let mixed = ChainText.cleanLinks(in: "Look: https://shop.example/item?id=7&utm_source=mail thanks")
+        XCTAssertEqual(mixed, "Look: https://shop.example/item?id=7 thanks")
+        XCTAssertNil(ChainText.cleanLinks(in: "no link here"))
+    }
+    func testBestDealRanksByUnitPrice() throws {
+        let out = try XCTUnwrap(ChainText.bestDeal(in: "Oats 500 g\n$3.20\nOats 1 kg\n$5.00"))
+        XCTAssertTrue(out.hasPrefix("Best deal: Oats"), out)
+        XCTAssertTrue(out.components(separatedBy: "\n").first?.contains("per 100 g") == true, out)
+        XCTAssertEqual(out.components(separatedBy: "\n").count, 2)
+        XCTAssertNil(ChainText.bestDeal(in: "Just one thing 500 g\n$3.20"), "nothing to compare with")
+    }
+    func testQrBlockGivesAnImageAndRefusesEmptyText() async {
+        let ok = await ChainRunner.apply(ChainStep(block: .makeQr), to: .text("https://tenzy.app"))
+        guard case .success(.image(let img)) = ok else { return XCTFail("no QR") }
+        XCTAssertGreaterThan(img.size.width, 100)
+        let empty = await ChainRunner.apply(ChainStep(block: .makeQr), to: .text("   "))
+        XCTAssertEqual(empty.failureValue, .nothingFound(.makeQr))
+    }
+    func testPhotoToPdfGivesAPdfFile() async {
+        let img = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 200)).image { c in UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 300, height: 200)) }
+        let r = await ChainRunner.apply(ChainStep(block: .photoPdf), to: .image(img))
+        guard case .success(.file(let d, let ext)) = r else { return XCTFail("no PDF") }
+        XCTAssertEqual(ext, "pdf")
+        XCTAssertEqual(String(decoding: d.prefix(4), as: UTF8.self), "%PDF")
+    }
+    func testNewBlocksChainCorrectly() {
+        XCTAssertNil(Chain(id: "x", name: "x", steps: [ChainStep(block: .readText), ChainStep(block: .priceCompare)]).problem(starting: .image))
+        XCTAssertNil(Chain(id: "x", name: "x", steps: [ChainStep(block: .stripLocation), ChainStep(block: .photoPdf)]).problem(starting: .image), "a saved photo can still become a PDF")
+        XCTAssertNotNil(Chain(id: "x", name: "x", steps: [ChainStep(block: .photoPdf), ChainStep(block: .shrinkImage)]).problem(starting: .image), "a PDF is not a photo")
+        XCTAssertNil(Chain(id: "x", name: "x", steps: [ChainStep(block: .makeQr), ChainStep(block: .convertImage)]).problem(starting: .text))
+    }
+    func testPlannerUnderstandsTheNewJobs() {
+        XCTAssertEqual(ChainPlanner.keywordPlan("is this message a scam")?.steps.map(\.block), [.scamCheck])
+        XCTAssertEqual(ChainPlanner.keywordPlan("which is the best deal in this photo of a shelf")?.steps.map(\.block), [.readText, .priceCompare])
+        XCTAssertEqual(ChainPlanner.keywordPlan("turn a link into a qr code")?.steps.map(\.block), [.makeQr])
+        XCTAssertEqual(ChainPlanner.keywordPlan("strip the location and make a pdf")?.steps.map(\.block), [.stripLocation, .photoPdf])
+        XCTAssertEqual(ChainPlanner.keywordPlan("what plant is this")?.steps.map(\.block), [.identify])
+        XCTAssertEqual(ChainPlanner.keywordPlan("describe this photo for me")?.steps.map(\.block), [.describe])
     }
 }

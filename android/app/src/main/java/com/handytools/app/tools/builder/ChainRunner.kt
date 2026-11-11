@@ -78,6 +78,30 @@ object ChainRunner {
                     val items = VoiceText.sentences(input.text).filter { VoiceText.TODO.containsMatchIn(it) }
                     if (items.isEmpty()) none() else Outcome.Done(Payload.Words(items.joinToString("\n") { "• $it" }))
                 }
+                b == Block.SCAM_CHECK && input is Payload.Words ->
+                    if (input.text.isBlank()) none() else {
+                        val r = com.handytools.app.tools.shield.ScamAnalyzer.analyze(input.text)
+                        Outcome.Done(Payload.Words(TextTidy.scamReport(r.verdict.label, r.findings.sortedByDescending { it.weight }.map { it.title },
+                            r.links.filter { it.issues.isNotEmpty() }.map { "Link ${it.host}: ${it.issues.joinToString("; ")}" },
+                            com.handytools.app.tools.shield.ScamAnalyzer.advice(r).firstOrNull())))
+                    }
+                b == Block.CLEAN_LINKS && input is Payload.Words ->
+                    TextTidy.cleanLinks(input.text)?.let { Outcome.Done(Payload.Words(it)) } ?: none()
+                b == Block.MAKE_QR && input is Payload.Words ->
+                    if (input.text.isBlank()) none()
+                    else com.handytools.app.tools.power.CodesEngine.qr(input.text.trim())?.let { Outcome.Done(Payload.Pic(it)) }
+                        ?: Outcome.Stopped("Make a QR code couldn't fit that much text into one code. Try something shorter.")
+                b == Block.PHOTO_PDF && input is Payload.Pic -> {
+                    // One page the shape of the photo (long side 842 pt, like A4), drawn edge to edge.
+                    val scale = 842f / maxOf(input.bmp.width, input.bmp.height)
+                    val w = (input.bmp.width * scale).toInt().coerceAtLeast(1); val h = (input.bmp.height * scale).toInt().coerceAtLeast(1)
+                    val doc = android.graphics.pdf.PdfDocument()
+                    val page = doc.startPage(android.graphics.pdf.PdfDocument.PageInfo.Builder(w, h, 1).create())
+                    page.canvas.drawBitmap(input.bmp, null, android.graphics.Rect(0, 0, w, h), android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG))
+                    doc.finishPage(page)
+                    val out = java.io.ByteArrayOutputStream(); doc.writeTo(out); doc.close()
+                    Outcome.Done(Payload.Doc(out.toByteArray(), "pdf"))
+                }
                 b == Block.CLEAN_TEXT && input is Payload.Words ->
                     TextTidy.clean(input.text).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Words(it)) }
                 b == Block.PULL_DETAILS && input is Payload.Words ->

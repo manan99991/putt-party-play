@@ -71,3 +71,10 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - A copied/shared tool never carries the recipient address.
 - Android: image results now have a "Save or share" button (there was none).
 - Not yet: the share-sheet extension on iOS still ends with Share only.
+
+### More blocks (tranche 1) — iOS and Android
+- Both: `scamCheck` (verdict, top reasons, one thing to do), `cleanLinks` (strip tracking from every link in the text), `makeQr` (text or link to a QR image), `photoPdf` (photo to PDF; searchable on iOS, plain on Android).
+- iOS only for now: `priceCompare` (best deal by unit price), `describe` (what the photo shows), `identify` (plant, animal, object or barcode). Android has no matching engine wired yet, so a tool using these can't be imported on Android.
+- iOS: these also run in the share sheet (their engines are compiled into the extension; the on-device model polish and speech are stubbed there).
+- Describe it understands: scam, best deal, tracking/clean link, QR, PDF, identify, describe (the last three and best deal on iOS only).
+- New starters: "Is this message a scam?", "Link without the tracking", "Photo to PDF", "Text or link to QR code" (both); "Shelf photo to best deal", "What is this?" (iOS).

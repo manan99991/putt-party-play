@@ -22,3 +22,14 @@ extension UIImage {
         return UIGraphicsImageRenderer(size: size, format: fmt).image { _ in draw(in: CGRect(origin: .zero, size: size)) }
     }
 }
+
+// The scene describer can polish its sentence with the on-device model and can speak. Neither happens in the share
+// sheet: it uses the plain sentence, so these two stand-ins only need to exist.
+enum AIEngine {
+    static var isAvailable: Bool { false }
+    static func run(instructions: String, prompt: String, timeout: TimeInterval = 60) async throws -> String { "" }
+}
+
+enum Reader {
+    static func bestVoice(forLanguage lang: String) -> AVSpeechSynthesisVoice? { AVSpeechSynthesisVoice(language: lang) }
+}
