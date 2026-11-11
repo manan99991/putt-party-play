@@ -9,12 +9,23 @@ enum ChainPayload {
     case file(Data, ext: String)
 
     var kind: ChainKind {
-        switch self { case .image: return .image; case .text: return .text; case .file: return .file }
+        switch self {
+        case .image: return .image
+        case .text: return .text
+        case .file(_, let ext): return ChainPayload.isPhoto(ext) ? .photoFile : .file
+        }
     }
+    static func isPhoto(_ ext: String) -> Bool { ["jpg", "jpeg", "png", "heic"].contains(ext.lowercased()) }
 }
 
 /// What flows between blocks. The builder only offers a block whose `takes` matches the step above it.
-enum ChainKind: String, Codable { case image, text, file }
+enum ChainKind: String, Codable {
+    case image, text, file
+    /// A photo saved as bytes (the result of shrink, convert, strip...). Any block that takes a picture accepts it.
+    case photoFile
+    var label: String { switch self { case .image, .photoFile: return "a photo"; case .text: return "text"; case .file: return "a file" } }
+    func feeds(_ need: ChainKind) -> Bool { self == need || (need == .image && self == .photoFile) }
+}
 
 enum Block: String, Codable, CaseIterable, Identifiable {
     case readText, pullReceipt, summarize, shrinkImage, stripLocation, cutout, enhance, convertImage
@@ -48,7 +59,8 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     var gives: ChainKind {
         switch self {
         case .readText, .pullReceipt, .summarize, .actionItems: return .text
-        case .shrinkImage, .stripLocation, .convertImage, .businessCard, .calendarEvent, .hideSensitive, .passportPhoto: return .file
+        case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
+        case .businessCard, .calendarEvent: return .file
         case .cutout, .enhance: return .image
         }
     }
@@ -69,7 +81,7 @@ struct Chain: Codable, Equatable, Identifiable {
         if steps.isEmpty { return "Add at least one step." }
         var kind = with
         for (i, s) in steps.enumerated() {
-            if s.block.takes != kind { return "Step \(i + 1), \(s.block.title), needs \(s.block.takes.rawValue) but gets \(kind.rawValue)." }
+            if !kind.feeds(s.block.takes) { return "Step \(i + 1), \(s.block.title), needs \(s.block.takes.label) but gets \(kind.label)." }
             kind = s.block.gives
         }
         return nil
@@ -93,8 +105,14 @@ enum ChainRunner {
         return .success(value)
     }
 
-    static func apply(_ step: ChainStep, to input: ChainPayload) async -> Result<ChainPayload, Failure> {
+    static func apply(_ step: ChainStep, to rawInput: ChainPayload) async -> Result<ChainPayload, Failure> {
         let b = step.block
+        var input = rawInput
+        // A photo that was saved as bytes by an earlier step (shrink, convert...) is opened again for the next one.
+        if b.takes == .image, case .file(let d, let ext) = rawInput, ChainPayload.isPhoto(ext) {
+            guard let img = UIImage(data: d) else { return .failure(.failed(b)) }
+            input = .image(img)
+        }
         switch (b, input) {
         case (.readText, .image(let img)):
             let text = rows(DocEngine.recognize(img)).trimmingCharacters(in: .whitespacesAndNewlines)

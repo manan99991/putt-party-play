@@ -123,3 +123,32 @@ final class ContactsTransferTests: XCTestCase {
         XCTAssertEqual(p.copy.map(\.id), ["2"])
     }
 }
+
+final class ChainPlannerTests: XCTestCase {
+    func testShrinkAndStrip() throws {
+        let c = try XCTUnwrap(ChainPlanner.keywordPlan("shrink a photo under 3 mb and remove its location"))
+        XCTAssertEqual(c.steps.map(\.block), [.stripLocation, .shrinkImage])
+        XCTAssertEqual(c.steps.last?.settings["mb"], "3")
+        XCTAssertNil(c.problem(starting: .image))
+    }
+    func testReceiptReadsThenPulls() throws {
+        let c = try XCTUnwrap(ChainPlanner.keywordPlan("turn my receipt photo into an expense row"))
+        XCTAssertEqual(c.steps.map(\.block), [.readText, .pullReceipt])
+    }
+    func testSummarizeText() throws {
+        let c = try XCTUnwrap(ChainPlanner.keywordPlan("summarize long text in 2 sentences"))
+        XCTAssertEqual(c.steps.map(\.block), [.summarize])
+        XCTAssertEqual(c.steps[0].settings["sentences"], "2")
+    }
+    func testNonsenseGivesNothing() { XCTAssertNil(ChainPlanner.keywordPlan("make me a sandwich")) }
+    func testPhotoFileFeedsImageBlocks() {
+        let c = Chain(id: "x", name: "x", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .shrinkImage, settings: ["mb": "1"])])
+        XCTAssertNil(c.problem(starting: .image))
+    }
+    func testHideThenShrinkRuns() async {
+        let c = Chain(id: "x", name: "x", steps: [ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "1"])])
+        let r = await ChainRunner.run(c, input: .image(SampleAssets.photo()))
+        guard case .success(.file(let d, _)) = r else { return XCTFail("chain failed") }
+        XCTAssertLessThan(d.count, 1_100_000)
+    }
+}
