@@ -1,18 +1,18 @@
-[21:48:57]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[21:48:57]: fastlane 2.241.2 (Ruby 3.4.12, gem)
-[21:48:58]: Sending anonymous analytics information
-[21:48:58]: Learn more at https://docs.fastlane.tools/#metrics
-[21:48:58]: No personal or sensitive data is sent.
-[21:48:58]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[21:48:58]: [32m------------------------------[0m
-[21:48:58]: [32m--- Step: default_platform ---[0m
-[21:48:58]: [32m------------------------------[0m
-[21:48:58]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[21:48:58]: App 6824023361
-[21:48:59]: Territories: 175
-[21:48:59]: tenzy_pro_yearly exists (6824154364)
-[21:49:01]: [32m  price -> 409 near $19.99 (19.99) {"errors" => [{"id" => "ce54ff38-f08e-4c1c-97d6-02960b5dce27", "status" => "409", "code" => "STATE_ERROR", "title" => "The request cannot be fulfilled because of the state of another resource.", "detail" => "Initial price cannot be created again after subscription is approved."}]}[0m
-[21:49:01]: [32m  intro offer 3-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
+[23:15:33]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[23:15:33]: fastlane 2.241.2 (Ruby 3.4.12, gem)
+[23:15:34]: Sending anonymous analytics information
+[23:15:34]: Learn more at https://docs.fastlane.tools/#metrics
+[23:15:34]: No personal or sensitive data is sent.
+[23:15:34]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[23:15:34]: [32m------------------------------[0m
+[23:15:34]: [32m--- Step: default_platform ---[0m
+[23:15:34]: [32m------------------------------[0m
+[23:15:34]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[23:15:35]: App 6824023361
+[23:15:36]: Territories: 175
+[23:15:36]: tenzy_pro_yearly exists (6824154364)
+[23:15:37]: [32m  price -> 409 near $19.99 (19.99) {"errors" => [{"id" => "ed669ca7-7ebf-41ed-8b4b-6e1cb2fbd1bc", "status" => "409", "code" => "STATE_ERROR", "title" => "The request cannot be fulfilled because of the state of another resource.", "detail" => "Initial price cannot be created again after subscription is approved."}]}[0m
+[23:15:37]: [32m  intro offer 3-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
 +--------------------------------------+
 |             [33mLane Context[0m             |
 +------------------+-------------------+
@@ -20,22 +20,22 @@
 | PLATFORM_NAME    | ios               |
 | LANE_NAME        | ios subscriptions |
 +------------------+-------------------+
-[21:49:01]: [31mError in your Fastfile at line 122[0m
-[21:49:01]: [31m```[0m
-[21:49:01]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
-[21:49:01]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
-[21:49:01]: [31m => 122:	      r = klass.new(URI(base + path))[0m
-[21:49:01]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
-[21:49:01]: [31m    124:	      r["Content-Type"] = "application/json"[0m
-[21:49:01]: [31m```[0m
-[21:49:01]: [31mCalled from Fastfile at line 242[0m
-[21:49:01]: [31m```[0m
-[21:49:01]: [31m    240:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
-[21:49:01]: [31m    241:	        if cur.is_a?(Hash) && cur["data"][0m
-[21:49:01]: [31m => 242:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
-[21:49:01]: [31m    243:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
-[21:49:01]: [31m    244:	        end[0m
-[21:49:01]: [31m```[0m
+[23:15:38]: [31mError in your Fastfile at line 122[0m
+[23:15:38]: [31m```[0m
+[23:15:38]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
+[23:15:38]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
+[23:15:38]: [31m => 122:	      r = klass.new(URI(base + path))[0m
+[23:15:38]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
+[23:15:38]: [31m    124:	      r["Content-Type"] = "application/json"[0m
+[23:15:38]: [31m```[0m
+[23:15:38]: [31mCalled from Fastfile at line 242[0m
+[23:15:38]: [31m```[0m
+[23:15:38]: [31m    240:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
+[23:15:38]: [31m    241:	        if cur.is_a?(Hash) && cur["data"][0m
+[23:15:38]: [31m => 242:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
+[23:15:38]: [31m    243:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
+[23:15:38]: [31m    244:	        end[0m
+[23:15:38]: [31m```[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -45,7 +45,7 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[21:49:01]: [31mfastlane finished with errors[0m
+[23:15:38]: [31mfastlane finished with errors[0m
 
 Looking for related GitHub issues on fastlane/fastlane...
 
