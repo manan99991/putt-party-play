@@ -68,4 +68,22 @@ class BuilderLogicTest {
     }
     @Test fun plannerTidyPhotoIsNotTextTidying() = assertTrue(ChainPlanner.plan("tidy up this photo and make it clearer")?.steps?.none { it.block == Block.CLEAN_TEXT } ?: true)
     @Test fun plannerNonsenseGivesNothing() = assertNull(ChainPlanner.plan("make me a sandwich"))
+
+    // Share to Tenzy
+    @Test fun photoShareOffersOnlyPhotoTools() {
+        val offers = ChainOffers.forKind(Kind.IMAGE, emptyList(), null)
+        assertTrue(offers.any { it.id == "safe-to-share" })
+        assertTrue(offers.none { it.id == "short-summary" })
+        for (c in offers) assertNull(c.name, c.problem(Kind.IMAGE))
+    }
+    @Test fun ownToolsFirstAndLastUsedOnTop() {
+        val mine = Chain("mine-1", "My clean send", listOf(Step(Block.STRIP_LOCATION), Step(Block.SHRINK, mapOf("mb" to "1"))))
+        assertEquals("mine-1", ChainOffers.forKind(Kind.IMAGE, listOf(mine), null).first().id)
+        assertEquals("photo-under-2mb", ChainOffers.forKind(Kind.IMAGE, listOf(mine), "photo-under-2mb").first().id)
+        assertEquals("mine-1", ChainOffers.forKind(Kind.IMAGE, listOf(mine), "no-such-tool").first().id)
+    }
+    @Test fun contactNeedsAWayToReachThePerson() {
+        // Name-only text must not become a contact; the runner stops before building a vCard (checked in ChainRunner).
+        assertTrue(TextTidy.details("New Year\nParty at the hall").let { it.emails.isEmpty() && it.phones.isEmpty() })
+    }
 }

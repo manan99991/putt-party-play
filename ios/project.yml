@@ -85,7 +85,18 @@ targets:
     platform: iOS
     settings:
       base: { PRODUCT_BUNDLE_IDENTIFIER: com.tenzy.toolkit.share }
-    sources: [ShareExtension, Shared]
+    sources:
+      - ShareExtension
+      - Shared
+      # The chain runner and the engines it calls, so a saved tool runs right inside the share sheet.
+      - HandyTools/Engines/ChainRunner.swift
+      - HandyTools/Engines/DocEngine.swift
+      - HandyTools/Engines/DataGrab.swift
+      - HandyTools/Engines/TextTools.swift
+      - HandyTools/Engines/TextTidy.swift
+      - HandyTools/Engines/SizeTarget.swift
+      - HandyTools/Engines/ImageStudio.swift
+      - HandyTools/Engines/Scrubber.swift
     entitlements:
       path: ShareExtension/ShareExtension.entitlements
       properties:
@@ -94,7 +105,7 @@ targets:
       path: ShareExtension/Info.plist
       properties:
         CFBundleShortVersionString: $(MARKETING_VERSION)
-        CFBundleDisplayName: Save to Clips
+        CFBundleDisplayName: Tenzy
         NSExtension:
           NSExtensionPointIdentifier: com.apple.share-services
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
@@ -102,6 +113,7 @@ targets:
             NSExtensionActivationRule:
               NSExtensionActivationSupportsText: true
               NSExtensionActivationSupportsWebURLWithMaxCount: 1
+              NSExtensionActivationSupportsImageWithMaxCount: 20
 
   StickyWidget:
     type: app-extension

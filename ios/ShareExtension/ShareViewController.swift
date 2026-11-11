@@ -1,35 +1,35 @@
 import UIKit
-import UniformTypeIdentifiers
+import SwiftUI
 
-/// "Save to Clips" in the Share Sheet. Grabs shared text or a URL, saves it, shows a checkmark, closes.
+/// "Tenzy" in the Share Sheet. Share photos or text from any app, pick one of your tools, and it runs right here;
+/// the result can go straight on to Messages, WhatsApp, Mail or anywhere else.
 final class ShareViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .clear
-        let label = UILabel()
-        label.text = "✓ Saved to Clips"; label.font = .boldSystemFont(ofSize: 20); label.textAlignment = .center
-        label.backgroundColor = .systemBackground; label.layer.cornerRadius = 16; label.clipsToBounds = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            label.widthAnchor.constraint(equalToConstant: 220), label.heightAnchor.constraint(equalToConstant: 64),
-        ])
-        Task { await save(); try? await Task.sleep(for: .milliseconds(700)); extensionContext?.completeRequest(returningItems: nil) }
-    }
-
-    private func save() async {
-        guard let items = extensionContext?.inputItems as? [NSExtensionItem] else { return }
-        for item in items {
-            for p in item.attachments ?? [] {
-                if p.hasItemConformingToTypeIdentifier(UTType.plainText.identifier),
-                   let s = try? await p.loadItem(forTypeIdentifier: UTType.plainText.identifier) as? String { ClipStore.add(s); return }
-                if p.hasItemConformingToTypeIdentifier(UTType.url.identifier),
-                   let u = try? await p.loadItem(forTypeIdentifier: UTType.url.identifier) as? URL { ClipStore.add(u.absoluteString); return }
-            }
-            if let s = item.attributedContentText?.string { ClipStore.add(s); return }
+        let model = ShareModel()
+        model.finish = { [weak self] in self?.extensionContext?.completeRequest(returningItems: nil) }
+        model.shareOn = { [weak self] items in
+            guard let self else { return }
+            let vc = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            vc.popoverPresentationController?.sourceView = self.view
+            vc.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.maxY - 80, width: 1, height: 1)
+            // Once it has been sent on, there is nothing left to do here.
+            vc.completionWithItemsHandler = { _, completed, _, _ in if completed { model.finish() } }
+            self.present(vc, animated: true)
         }
+        let host = UIHostingController(rootView: ShareRunView(model: model))
+        addChild(host)
+        host.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(host.view)
+        NSLayoutConstraint.activate([
+            host.view.topAnchor.constraint(equalTo: view.topAnchor), host.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            host.view.leadingAnchor.constraint(equalTo: view.leadingAnchor), host.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+        host.didMove(toParent: self)
+
+        let items = extensionContext?.inputItems as? [NSExtensionItem] ?? []
+        let providers = items.flatMap { $0.attachments ?? [] }
+        let typed = items.compactMap { $0.attributedContentText?.string }.first
+        Task { await model.load(providers, typedText: typed) }
     }
 }

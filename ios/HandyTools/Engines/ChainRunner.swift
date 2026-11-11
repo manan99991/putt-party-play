@@ -254,3 +254,33 @@ extension Chain {
         return c
     }
 }
+
+/// Saved tools live in the App Group so the share sheet ("Tenzy" in any app's Share menu) can run them too.
+enum ChainStore {
+    private static let key = "builder.chains"
+    private static let lastKey = "builder.lastShared"
+
+    static func load() -> [Chain] {
+        let g = AppGroup.defaults
+        // One-time move from the app's own defaults (where tools were kept before the share sheet could run them).
+        if g.data(forKey: key) == nil, let old = UserDefaults.standard.data(forKey: key) { g.set(old, forKey: key) }
+        guard let d = g.data(forKey: key), let c = try? JSONDecoder().decode([Chain].self, from: d) else { return [] }
+        return c
+    }
+    static func save(_ chains: [Chain]) {
+        if let d = try? JSONEncoder().encode(chains) { AppGroup.defaults.set(d, forKey: key) }
+    }
+
+    /// The tool last run from the share sheet, offered first next time.
+    static var lastShared: String? {
+        get { AppGroup.defaults.string(forKey: lastKey) }
+        set { AppGroup.defaults.set(newValue, forKey: lastKey) }
+    }
+
+    /// Every tool that can start from what was shared: the user's own first, then the starters, with the last-used one on top.
+    static func offers(for kind: ChainKind, mine: [Chain], last: String?) -> [Chain] {
+        var all = (mine + ChainTemplates.all).filter { $0.problem(starting: kind) == nil }
+        if let last, let i = all.firstIndex(where: { $0.id == last }) { all.insert(all.remove(at: i), at: 0) }
+        return all
+    }
+}

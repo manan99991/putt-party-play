@@ -235,3 +235,24 @@ final class TextBlockTests: XCTestCase {
         XCTAssertEqual(r.failureValue, .nothingFound(.businessCard))
     }
 }
+
+/// What the share sheet offers for a shared photo or text.
+final class ShareOffersTests: XCTestCase {
+    func testPhotoShareOffersOnlyToolsThatStartFromAPhoto() {
+        let offers = ChainStore.offers(for: .image, mine: [], last: nil)
+        XCTAssertTrue(offers.contains { $0.id == "safe-to-share" })
+        XCTAssertFalse(offers.contains { $0.id == "short-summary" }, "a text tool can't start from a photo")
+        for c in offers { XCTAssertNil(c.problem(starting: .image), c.name) }
+    }
+    func testTextShareOffersTextTools() {
+        let ids = ChainStore.offers(for: .text, mine: [], last: nil).map(\.id)
+        XCTAssertTrue(ids.contains("short-summary")); XCTAssertTrue(ids.contains("links-and-numbers"))
+        XCTAssertFalse(ids.contains("safe-to-share"))
+    }
+    func testOwnToolsComeFirstAndLastUsedGoesOnTop() {
+        let mine = Chain(id: "mine-1", name: "My clean send", steps: [ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "1"])])
+        XCTAssertEqual(ChainStore.offers(for: .image, mine: [mine], last: nil).first?.id, "mine-1")
+        XCTAssertEqual(ChainStore.offers(for: .image, mine: [mine], last: "photo-under-2mb").first?.id, "photo-under-2mb")
+        XCTAssertEqual(ChainStore.offers(for: .image, mine: [mine], last: "no-such-tool").first?.id, "mine-1")
+    }
+}

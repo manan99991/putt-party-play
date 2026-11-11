@@ -3,17 +3,6 @@ import PhotosUI
 
 /// Tenzy Builder (M2): run a starter or saved tool, or build your own by stacking blocks.
 /// Everything here is data over built-in blocks (see ChainRunner), nothing is downloaded or generated as code.
-enum ChainStore {
-    private static let key = "builder.chains"
-    static func load() -> [Chain] {
-        guard let d = UserDefaults.standard.data(forKey: key), let c = try? JSONDecoder().decode([Chain].self, from: d) else { return [] }
-        return c
-    }
-    static func save(_ chains: [Chain]) {
-        if let d = try? JSONEncoder().encode(chains) { UserDefaults.standard.set(d, forKey: key) }
-    }
-}
-
 struct BuilderView: View {
     @State private var mine: [Chain] = ChainStore.load()
     @State private var editing: Chain?

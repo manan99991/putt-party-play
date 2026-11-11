@@ -65,6 +65,37 @@ object ChainStore {
     fun save(ctx: Context, chains: List<Chain>) {
         runCatching { File(ctx.filesDir, FILE).writeText(JSONArray().also { a -> chains.forEach { a.put(it.toJson()) } }.toString()) }
     }
+
+    /** The tool last run on something shared to Tenzy, offered first next time. */
+    fun lastShared(ctx: Context): String? = ctx.getSharedPreferences("builder", Context.MODE_PRIVATE).getString("lastShared", null)
+    fun setLastShared(ctx: Context, id: String) { ctx.getSharedPreferences("builder", Context.MODE_PRIVATE).edit().putString("lastShared", id).apply() }
+}
+
+/**
+ * "Share to Tenzy": a photo shared from Gallery, Photos or any other app lands here. Pick a tool and it runs on that
+ * photo straight away; the result screen has Share, so it can go on to WhatsApp, email or anywhere else.
+ */
+@Composable
+fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
+    val ctx = LocalContext.current
+    val tools = remember { ChainOffers.forKind(Kind.IMAGE, ChainStore.load(ctx), ChainStore.lastShared(ctx)) }
+    var running by remember { mutableStateOf<Chain?>(null) }
+    running?.let { c -> ChainRunScreen(c, initial = uri) { running = null }; return }
+    Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+        ToolHeader("Run a tool on this photo", "Pick one. It runs right away, and the result is ready to share on.")
+        tools.forEach { c ->
+            HCard(Modifier.fillMaxWidth()) {
+                Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(c.name, style = MaterialTheme.typography.titleSmall)
+                        Text(c.steps.joinToString("  ›  ") { it.block.title }, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    }
+                    TextButton({ ChainStore.setLastShared(ctx, c.id); running = c }) { Text("Run") }
+                }
+            }
+        }
+        HSecondaryButton("Just open the photo") { onOpenInstead() }
+    }
 }
 
 private fun defaults(b: Block): Map<String, String> = when (b) {
@@ -293,7 +324,7 @@ private fun sampleReceipt(): Bitmap = Bitmap.createBitmap(900, 1100, Bitmap.Conf
 
 /** Give it a photo or some text, see the result, share it. */
 @Composable
-private fun ChainRunScreen(chain: Chain, onDone: () -> Unit) {
+private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var text by remember { mutableStateOf("") }
@@ -311,6 +342,13 @@ private fun ChainRunScreen(chain: Chain, onDone: () -> Unit) {
                 is Outcome.Stopped -> message = r.why
             }
             busy = false
+        }
+    }
+    // Opened from "Share to Tenzy": the shared photo runs straight away, no picking needed.
+    LaunchedEffect(initial) {
+        if (initial != null) {
+            val bmp = withContext(Dispatchers.IO) { runCatching { ctx.contentResolver.openInputStream(initial)?.use { BitmapFactory.decodeStream(it) } }.getOrNull() }
+            if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
         }
     }
     /** One result per photo. A photo that can't be processed never stops the others; it just gets its own note. */

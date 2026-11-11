@@ -82,7 +82,7 @@ class MainActivity : ComponentActivity() {
         // Pro-preview unlock exists ONLY for the CI screenshot capture and is compiled out of
         // release builds, so a crafted intent can never grant entitlement on a shipped app.
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
-        val startRoute = routeExtra ?: if (sharedFileUri != null) "fileviewer" else if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
+        val startRoute = routeExtra ?: if (sharedFileUri != null) sharedFileRoute(intent) else if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
 
         setContent {
             // The nav controller is created OUTSIDE HandyTheme so it survives a theme switch: HandyTheme
@@ -171,6 +171,7 @@ class MainActivity : ComponentActivity() {
                     composable("myphone") { MyPhoneScreen() }
                     composable("texttools") { TextToolsScreen() }
                     composable("builder") { com.handytools.app.tools.builder.BuilderScreen() }
+                    composable("sharetool") { com.handytools.app.tools.builder.ShareToToolScreen(uri = sharedFileUri, onOpenInstead = { nav.navigate("fileviewer") }) }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
                     val ported = setOf("scansort", "more", "quick", "clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "network", "identify", "gpsdash", "rest", "pricecheck", "stitch", "colorvision", "procam", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
@@ -200,9 +201,13 @@ class MainActivity : ComponentActivity() {
         val routeExtra = intent.getStringExtra("route")
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
         if (routeExtra != null) pendingRoute = routeExtra
-        else if (sharedFileUri != null) pendingRoute = "fileviewer"
+        else if (sharedFileUri != null) pendingRoute = sharedFileRoute(intent)
         else if (sharedUrl != null) pendingRoute = "shortcut"
     }
+
+    /** A photo shared to Tenzy goes to "pick a tool to run on it"; any other file opens in File Opener as before. */
+    private fun sharedFileRoute(i: Intent?): String =
+        if (i?.action == Intent.ACTION_SEND && i.type?.startsWith("image/") == true) "sharetool" else "fileviewer"
 
     private fun extractSharedUrl(i: Intent?): String? {
         if (i?.action != Intent.ACTION_SEND) return null

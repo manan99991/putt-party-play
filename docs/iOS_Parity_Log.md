@@ -56,3 +56,10 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Duplicate on saved tools; text previews for CSV, contact and calendar files while building; clearer "found nothing" wording for text blocks.
 - Still iOS-only blocks: cutout, enhance, passportPhoto (an Android phone can't import tools that use them).
 - No new permission, no new data; Privacy policy and rulebook unchanged.
+
+### Share to Tenzy (run a tool on what you share) — iOS and Android
+- iOS: the share-sheet entry is now "Tenzy" (was "Save to Clips", text and links only). It accepts up to 20 photos, text and links, lists the user's tools that fit (own tools first, last-used on top), runs the tool inside the share sheet, then offers Share (onward to WhatsApp, Mail, Messages...), Copy and Done. "Save to Clips" is still the first row for text. Photos are opened at sharing size (3000 px long side) so a 48 MP photo stays inside the share sheet's memory limit.
+- iOS: saved tools moved to the App Group (one-time copy from the app's own defaults) so the share sheet sees them. The chain runner and its engines are compiled into the extension; video helpers are stubbed there because video tools are not offered in the share sheet.
+- Android: a photo shared to Tenzy now opens "Run a tool on this photo" (pick a tool, it runs at once, result has Share). "Just open the photo" keeps the old File Opener path; other file types still open in File Opener.
+- Both: "Make a contact" stops with a plain reason when there is no phone or email (a name-only contact can't be sent by WhatsApp or Messages).
+- Not yet on Android: sharing several photos at once, or text, into a tool.

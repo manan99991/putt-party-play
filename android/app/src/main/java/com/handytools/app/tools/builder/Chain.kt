@@ -85,6 +85,16 @@ data class Chain(val id: String, val name: String, val steps: List<Step>) {
     }
 }
 
+/** What "Share to Tenzy" offers for a shared photo or text: the user's own tools first, then the starters, last-used on top. */
+object ChainOffers {
+    fun forKind(kind: Kind, mine: List<Chain>, last: String?): List<Chain> {
+        val all = (mine + ChainTemplates.all).filter { it.steps.isNotEmpty() && it.steps.first().block.takes == kind && it.problem(kind) == null }.toMutableList()
+        val i = all.indexOfFirst { it.id == last }
+        if (i > 0) all.add(0, all.removeAt(i))
+        return all
+    }
+}
+
 object ChainTemplates {
     val all: List<Chain> = listOf(
         Chain("receipt-to-row", "Receipt to expense row", listOf(Step(Block.READ_TEXT), Step(Block.PULL_RECEIPT))),
