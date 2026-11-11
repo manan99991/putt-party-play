@@ -104,3 +104,22 @@ final class ChainTemplateTests: XCTestCase {
         XCTAssertTrue(t.contains("venue") || t.contains("Sam"))
     }
 }
+
+final class ContactsTransferTests: XCTestCase {
+    private func c(_ id: String, _ name: String, _ n: [String] = [], _ e: [String] = []) -> ContactsTransfer.Item { .init(id: id, name: name, numbers: n, emails: e) }
+
+    func testSamePersonAcrossAccountsIsRecognised() {
+        XCTAssertTrue(ContactsTransfer.same(c("1", "Jane Doe", ["+1 (312) 555-0100"]), c("2", "jane  doe", ["312-555-0100"])))
+        XCTAssertTrue(ContactsTransfer.same(c("1", "Sam", [], ["Sam@x.com"]), c("2", "Sam", [], ["sam@x.com"])))
+        XCTAssertFalse(ContactsTransfer.same(c("1", "Sam", ["3125550100"]), c("2", "Sam", ["3125550199"])), "two different Sams must both be kept")
+        XCTAssertFalse(ContactsTransfer.same(c("1", "Ann", ["3125550100"]), c("2", "Bob", ["3125550100"])))
+    }
+
+    func testPlanSkipsPeopleAlreadyThereAndDuplicatesInsideTheBatch() {
+        let source = [c("1", "Jane", ["3125550100"]), c("2", "Raj", ["3125550111"]), c("3", "Raj", ["3125550111"])]
+        let existing = [c("9", "Jane", ["312 555 0100"])]
+        let p = ContactsTransfer.plan(source: source, existing: existing)
+        XCTAssertEqual(p.present.map(\.id), ["1"])
+        XCTAssertEqual(p.copy.map(\.id), ["2"], "the second Raj is a repeat of the first, so only one is added")
+    }
+}

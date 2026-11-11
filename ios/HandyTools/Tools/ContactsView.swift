@@ -19,6 +19,7 @@ struct ContactsView: View {
     @StateObject private var autoBackup = ContactsBackup()
     @State private var backupNote: String?
     @State private var showMail = false
+    @State private var showTransfer = false
 
     struct TidyGroup: Identifiable { let id = UUID(); let title: String; let icon: String; let recs: [ContactRec]; let deletable: Bool }
 
@@ -35,6 +36,16 @@ struct ContactsView: View {
             } else {
                 backupBar
                 autoBackupCard
+                Button { showTransfer = true } label: {
+                    HStack {
+                        Image(systemName: "arrow.left.arrow.right.circle.fill").font(.system(size: 26)).foregroundStyle(HandyColor.accent)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Move contacts between accounts").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                            Text("Gmail, iCloud, your phone: copy or move in three taps.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        }
+                        Spacer(); Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+                    }.cardStyle(padding: HandySpacing.s12)
+                }.buttonStyle(.plain).accessibilityIdentifier("move-contacts")
                 if scanning { HStack { ProgressView(); Text("Reading your contacts…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
                 if let r = report { reportBody(r) }
                 if let error { Text(error).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -64,6 +75,7 @@ struct ContactsView: View {
         } message: {
             Text("Each group collapses to one contact, keeping every number and email. This can't be undone, so make sure you've backed up.")
         }
+        .sheet(isPresented: $showTransfer) { NavigationStack { ContactsTransferView(onChanged: { scan() }) } }
         .sheet(item: $tidy) { g in
             NavigationStack {
                 ContactsTidySheet(group: g, onChanged: { scan() })
