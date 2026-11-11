@@ -89,6 +89,7 @@ targets:
       - ShareExtension
       - Shared
       # The chain runner and the engines it calls, so a saved tool runs right inside the share sheet.
+      # (Video tools are not offered there; see ShareExtension/EngineShims.swift.)
       - HandyTools/Engines/ChainRunner.swift
       - HandyTools/Engines/DocEngine.swift
       - HandyTools/Engines/DataGrab.swift
