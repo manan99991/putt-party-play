@@ -46,7 +46,10 @@ import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
 import com.handytools.app.ui.HandyTokens
 import com.handytools.app.ui.ToolHeader
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
+import com.handytools.app.tools.power.MediaEngine
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import java.io.File
@@ -107,7 +110,8 @@ fun BuilderScreen() {
         if (mine.isNotEmpty()) {
             Text("My tools", style = MaterialTheme.typography.titleMedium)
             mine.toList().forEach { c ->
-                ChainRow(c, onRun = { running = c }, onEdit = { editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() })
+                ChainRow(c, onRun = { running = c }, onEdit = { editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
+                    onDuplicate = { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy"); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." })
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -133,7 +137,7 @@ private fun paste(ctx: Context): String =
     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).primaryClip?.getItemAt(0)?.coerceToText(ctx)?.toString().orEmpty()
 
 @Composable
-private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: () -> Unit, onDelete: (() -> Unit)?) {
+private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: () -> Unit, onDelete: (() -> Unit)?, onDuplicate: (() -> Unit)? = null) {
     var menu by remember { mutableStateOf(false) }
     HCard(Modifier.fillMaxWidth()) {
         Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -145,6 +149,7 @@ private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: ()
             TextButton({ menu = true }) { Text("More") }
             DropdownMenu(menu, { menu = false }) {
                 DropdownMenuItem(text = { Text(if (onDelete == null) "Edit a copy" else "Edit") }, onClick = { menu = false; onEdit() })
+                if (onDuplicate != null) DropdownMenuItem(text = { Text("Duplicate") }, onClick = { menu = false; onDuplicate() })
                 DropdownMenuItem(text = { Text("Copy to share") }, onClick = { menu = false; onCopy() })
                 if (onDelete != null) DropdownMenuItem(text = { Text("Delete") }, onClick = { menu = false; onDelete() })
             }
@@ -246,8 +251,10 @@ sealed class Preview {
         fun of(p: Payload): Preview = when (p) {
             is Payload.Words -> Words(p.text)
             is Payload.Pic -> Pic(p.bmp)
-            is Payload.Doc -> BitmapFactory.decodeByteArray(p.bytes, 0, p.bytes.size)?.takeIf { p.kind == Kind.PHOTO_FILE }?.let { Pic(it) }
-                ?: Doc("${p.ext.uppercase()} file · ${p.bytes.size / 1024} KB")
+            is Payload.Doc ->
+                if (p.ext in listOf("csv", "vcf", "ics")) Words(String(p.bytes))
+                else BitmapFactory.decodeByteArray(p.bytes, 0, p.bytes.size)?.takeIf { p.kind == Kind.PHOTO_FILE }?.let { Pic(it) }
+                    ?: Doc("${p.ext.uppercase()} file · ${p.bytes.size / 1024} KB")
         }
     }
 }
@@ -293,9 +300,11 @@ private fun ChainRunScreen(chain: Chain, onDone: () -> Unit) {
     var busy by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
     var result by remember { mutableStateOf<Payload?>(null) }
+    var batch by remember { mutableStateOf<List<BatchItem>>(emptyList()) }
+    var progress by remember { mutableStateOf("") }
 
     fun go(input: Payload) {
-        busy = true; result = null; message = null
+        busy = true; result = null; message = null; batch = emptyList()
         scope.launch {
             when (val r = ChainRunner.run(chain, input)) {
                 is Outcome.Done -> result = r.value
@@ -304,10 +313,31 @@ private fun ChainRunScreen(chain: Chain, onDone: () -> Unit) {
             busy = false
         }
     }
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri == null) return@rememberLauncherForActivityResult
-        val bmp = runCatching { ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } }.getOrNull()
-        if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
+    /** One result per photo. A photo that can't be processed never stops the others; it just gets its own note. */
+    fun runBatch(uris: List<Uri>) {
+        val picked = uris.take(MAX_BATCH)
+        busy = true; result = null; message = null; batch = emptyList()
+        scope.launch {
+            val dir = File(ctx.cacheDir, "batch-${System.currentTimeMillis()}").also { it.mkdirs() }
+            val out = ArrayList<BatchItem>()
+            picked.forEachIndexed { i, uri ->
+                progress = "Working… ${i + 1} of ${picked.size}"
+                val bmp = withContext(Dispatchers.IO) { runCatching { ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } }.getOrNull() }
+                if (bmp == null) { out.add(BatchItem(i + 1, note = "Couldn't open this photo.")); return@forEachIndexed }
+                when (val r = ChainRunner.run(chain, Payload.Pic(bmp))) {
+                    is Outcome.Done -> out.add(BatchItem.of(i + 1, r.value, dir))
+                    is Outcome.Stopped -> out.add(BatchItem(i + 1, note = r.why))
+                }
+            }
+            batch = out; busy = false; progress = ""
+        }
+    }
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
+        if (uris.isEmpty()) return@rememberLauncherForActivityResult
+        if (uris.size == 1) {
+            val bmp = runCatching { ctx.contentResolver.openInputStream(uris[0])?.use { BitmapFactory.decodeStream(it) } }.getOrNull()
+            if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
+        } else runBatch(uris)
     }
 
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
@@ -315,8 +345,11 @@ private fun ChainRunScreen(chain: Chain, onDone: () -> Unit) {
         if (chain.start == Kind.TEXT) {
             OutlinedTextField(text, { text = it }, Modifier.fillMaxWidth().heightIn(min = 140.dp), label = { Text("Your text") })
             HPrimaryButton("Run", enabled = text.isNotBlank() && !busy) { go(Payload.Words(text)) }
-        } else HPrimaryButton("Choose a photo", enabled = !busy) { picker.launch("image/*") }
-        if (busy) Text("Working…", color = Handy.palette.textSecondary)
+        } else {
+            HPrimaryButton("Choose photos", enabled = !busy) { picker.launch("image/*") }
+            Text("Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        if (busy) Text(progress.ifEmpty { "Working…" }, color = Handy.palette.textSecondary)
         message?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }
         when (val r = result) {
             is Payload.Words -> {
@@ -330,11 +363,52 @@ private fun ChainRunScreen(chain: Chain, onDone: () -> Unit) {
                 Text("${r.bytes.size / 1024} KB · ${r.ext.uppercase()}", style = MaterialTheme.typography.bodySmall)
                 HPrimaryButton("Save or share") {
                     val f = File(ctx.cacheDir, "Tenzy-result.${r.ext}").also { it.writeBytes(r.bytes) }
-                    Share.file(ctx, f, when (r.ext) { "jpg" -> "image/jpeg"; "png" -> "image/png"; "vcf" -> "text/x-vcard"; "ics" -> "text/calendar"; else -> "*/*" })
+                    Share.file(ctx, f, mimeFor(r.ext))
                 }
             }
             null -> {}
         }
+        if (batch.isNotEmpty()) {
+            val ok = batch.filter { it.note == null }
+            Text("${ok.size} of ${batch.size} done", style = MaterialTheme.typography.titleMedium)
+            batch.forEach { b ->
+                HCard(Modifier.fillMaxWidth()) {
+                    Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                        Text("Photo ${b.n}", style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                        Text(b.note ?: b.summary, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    }
+                }
+            }
+            val files = ok.mapNotNull { it.file }
+            if (files.isNotEmpty()) {
+                val mime = files.map { it.extension }.distinct().singleOrNull()?.let { mimeFor(it) } ?: "*/*"
+                HPrimaryButton("Save or share all (${files.size})") { Share.files(ctx, files, mime) }
+            }
+            val texts = ok.mapNotNull { b -> b.text?.let { "Photo ${b.n}\n$it" } }
+            if (texts.isNotEmpty()) HSecondaryButton("Copy all text") {
+                (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", texts.joinToString("\n\n")))
+            }
+        }
         HSecondaryButton("Done") { onDone() }
+    }
+}
+
+private const val MAX_BATCH = 20
+
+internal fun mimeFor(ext: String): String = when (ext) {
+    "jpg", "jpeg" -> "image/jpeg"; "png" -> "image/png"; "vcf" -> "text/x-vcard"; "ics" -> "text/calendar"; "csv" -> "text/csv"; else -> "*/*"
+}
+
+/** One photo's outcome in a batch run. Results are written to a cache folder straight away so twenty full-size
+ *  results never sit in memory together. */
+internal class BatchItem(val n: Int, val file: File? = null, val text: String? = null, val summary: String = "", val note: String? = null) {
+    companion object {
+        fun of(n: Int, p: Payload, dir: File): BatchItem = try {
+            when (p) {
+                is Payload.Words -> BatchItem(n, text = p.text, summary = "${p.text.length} characters")
+                is Payload.Pic -> File(dir, "Tenzy-$n.jpg").also { it.writeBytes(MediaEngine.jpeg(p.bmp, 92)) }.let { BatchItem(n, file = it, summary = "${it.length() / 1024} KB · JPG") }
+                is Payload.Doc -> File(dir, "Tenzy-$n.${p.ext}").also { it.writeBytes(p.bytes) }.let { BatchItem(n, file = it, summary = "${p.bytes.size / 1024} KB · ${p.ext.uppercase()}") }
+            }
+        } catch (_: Exception) { BatchItem(n, note = "Couldn't save this result.") }
     }
 }

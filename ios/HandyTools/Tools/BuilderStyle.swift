@@ -17,15 +17,18 @@ extension Block {
         case .actionItems: return "checklist"
         case .hideSensitive: return "eye.slash"
         case .passportPhoto: return "person.crop.square"
+        case .cleanText: return "text.badge.checkmark"
+        case .pullDetails: return "link"
+        case .makeTable: return "tablecells"
         }
     }
     var tint: Color {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems: return Color(hex: 0x3B82F6)
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails: return Color(hex: 0x3B82F6)
         case .shrinkImage, .convertImage, .stripLocation: return Color(hex: 0x10B981)
         case .cutout, .enhance, .passportPhoto: return Color(hex: 0xA855F7)
         case .hideSensitive: return Color(hex: 0xF97316)
-        case .businessCard, .calendarEvent: return Color(hex: 0xEC4899)
+        case .businessCard, .calendarEvent, .makeTable: return Color(hex: 0xEC4899)
         }
     }
     var blurb: String {
@@ -43,6 +46,9 @@ extension Block {
         case .actionItems: return "Pulls out the things someone has to do."
         case .hideSensitive: return "Covers faces and personal numbers."
         case .passportPhoto: return "Crops to a passport or ID photo size."
+        case .cleanText: return "Removes extra spaces, blank gaps and repeated lines."
+        case .pullDetails: return "Lists every web link, email address and phone number."
+        case .makeTable: return "Turns rows of text into a spreadsheet (CSV) file."
         }
     }
 }

@@ -30,6 +30,7 @@ enum ChainKind: String, Codable {
 enum Block: String, Codable, CaseIterable, Identifiable {
     case readText, pullReceipt, summarize, shrinkImage, stripLocation, cutout, enhance, convertImage
     case businessCard, calendarEvent, actionItems, hideSensitive, passportPhoto
+    case cleanText, pullDetails, makeTable
 
     var id: String { rawValue }
     var title: String {
@@ -47,20 +48,23 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .actionItems: return "Find tasks"
         case .hideSensitive: return "Hide faces and numbers"
         case .passportPhoto: return "Passport photo"
+        case .cleanText: return "Tidy text"
+        case .pullDetails: return "Find links, emails, phones"
+        case .makeTable: return "Text to spreadsheet"
         }
     }
     var takes: ChainKind {
         switch self {
         case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto: return .image
-        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems: return .text
+        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable: return .text
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
     var gives: ChainKind {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems: return .text
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
-        case .businessCard, .calendarEvent: return .file
+        case .businessCard, .calendarEvent, .makeTable: return .file
         case .cutout, .enhance: return .image
         }
     }
@@ -165,6 +169,19 @@ enum ChainRunner {
             let items = TextTools.actionItems(t)
             return items.isEmpty ? .failure(.nothingFound(b)) : .success(.text(items.map { "• " + $0 }.joined(separator: "\n")))
 
+        case (.cleanText, .text(let t)):
+            let out = TextTidy.clean(t)
+            return out.isEmpty ? .failure(.nothingFound(b)) : .success(.text(out))
+
+        case (.pullDetails, .text(let t)):
+            let d = TextTidy.details(t)
+            return d.isEmpty ? .failure(.nothingFound(b)) : .success(.text(d.text))
+
+        case (.makeTable, .text(let t)):
+            let csv = DataGrab.tableCSV(t)
+            guard !csv.isEmpty, let d = csv.data(using: .utf8) else { return .failure(.nothingFound(b)) }
+            return .success(.file(d, ext: "csv"))
+
         case (.hideSensitive, .image(let img)):
             let hits = Scrubber.detect(img)
             let rects = hits.faces + hits.text.filter(\.personal).map(\.rect)
@@ -215,6 +232,9 @@ enum ChainTemplates {
         Chain(id: "hide-sensitive", name: "Hide faces and numbers", steps: [ChainStep(block: .hideSensitive)]),
         Chain(id: "short-summary", name: "Long text to 3 sentences", steps: [ChainStep(block: .summarize, settings: ["sentences": "3"])]),
         Chain(id: "sticker", name: "Cut out a subject", steps: [ChainStep(block: .cutout)]),
+        Chain(id: "table-to-sheet", name: "Photo of a table to spreadsheet", steps: [ChainStep(block: .readText), ChainStep(block: .makeTable)]),
+        Chain(id: "links-and-numbers", name: "Pull links, emails and phones", steps: [ChainStep(block: .pullDetails)]),
+        Chain(id: "tidy-text", name: "Tidy pasted text", steps: [ChainStep(block: .cleanText)]),
     ]
 }
 

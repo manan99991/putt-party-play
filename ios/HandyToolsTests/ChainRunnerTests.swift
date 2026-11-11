@@ -152,3 +152,80 @@ final class ChainPlannerTests: XCTestCase {
         XCTAssertLessThan(d.count, 1_100_000)
     }
 }
+
+/// The text blocks added with batch mode: tidy, find details, spreadsheet. Same rules as the Android twin.
+final class TextBlockTests: XCTestCase {
+    func testTidyCollapsesSpacesGapsAndRepeats() {
+        let raw = "\n\n  Milk   2 \nmilk 2\n\n\n\nEggs\t12  \nEggs 12\n"
+        XCTAssertEqual(TextTidy.clean(raw), "Milk 2\n\nEggs 12")
+    }
+    func testTidyOfBlankIsEmpty() { XCTAssertEqual(TextTidy.clean("  \n \n"), "") }
+
+    func testDetailsFindsLinksEmailsPhonesOnce() {
+        let t = "Visit https://tenzy.app/help, or www.tenzy.app. Mail Priya@Studio.example or priya@studio.example. Call (312) 555-0147 or 312-555-0147."
+        let d = TextTidy.details(t)
+        XCTAssertEqual(d.links, ["https://tenzy.app/help", "www.tenzy.app"], "trailing punctuation is not part of a link")
+        XCTAssertEqual(d.emails, ["Priya@Studio.example"], "the same address in another case counts once")
+        XCTAssertEqual(d.phones.count, 2)
+    }
+    func testLongDigitRunIsNotAPhone() {
+        XCTAssertTrue(TextTidy.details("Card 4111111111111111 expires soon").phones.isEmpty)
+    }
+
+    func testTidyBlockStopsOnBlank() async {
+        let r = await ChainRunner.apply(ChainStep(block: .cleanText), to: .text("   \n  "))
+        XCTAssertEqual(r.failureValue, .nothingFound(.cleanText))
+    }
+    func testDetailsBlockOutputsSections() async {
+        let r = await ChainRunner.apply(ChainStep(block: .pullDetails), to: .text("Write to a@b.co or call 312 555 0147"))
+        guard case .success(.text(let out)) = r else { return XCTFail("no text") }
+        XCTAssertTrue(out.contains("Emails\na@b.co"))
+        XCTAssertTrue(out.contains("Phones\n312 555 0147"))
+        XCTAssertFalse(out.contains("Links"))
+    }
+    func testDetailsBlockNothingFound() async {
+        let r = await ChainRunner.apply(ChainStep(block: .pullDetails), to: .text("no details here"))
+        XCTAssertEqual(r.failureValue, .nothingFound(.pullDetails))
+    }
+    func testSpreadsheetBlockGivesCSVFile() async {
+        let r = await ChainRunner.apply(ChainStep(block: .makeTable), to: .text("Latte  4.50\nMuffin  3.25"))
+        guard case .success(.file(let d, let ext)) = r else { return XCTFail("no file") }
+        XCTAssertEqual(ext, "csv")
+        XCTAssertEqual(String(data: d, encoding: .utf8), "Latte,4.50\nMuffin,3.25")
+    }
+    func testTidyThenDetailsChainValid() async {
+        let c = Chain(id: "x", name: "x", steps: [ChainStep(block: .cleanText), ChainStep(block: .pullDetails)])
+        XCTAssertNil(c.problem(starting: .text))
+        let r = await ChainRunner.run(c, input: .text("a@b.co\n\n\na@b.co  "))
+        guard case .success(.text(let out)) = r else { return XCTFail("chain failed") }
+        XCTAssertEqual(out, "Emails\na@b.co")
+    }
+    func testNewBlocksSurviveShareImport() throws {
+        let c = Chain(id: "x", name: "Links", steps: [ChainStep(block: .cleanText), ChainStep(block: .pullDetails)])
+        let back = try XCTUnwrap(Chain.imported(from: c.shareText))
+        XCTAssertEqual(back.steps.map(\.block), [.cleanText, .pullDetails])
+    }
+
+    // Describe it
+    func testPlannerFindsDetails() throws {
+        let c = try XCTUnwrap(ChainPlanner.keywordPlan("pull all the links and phone numbers out of some text"))
+        XCTAssertEqual(c.steps.map(\.block), [.pullDetails])
+    }
+    func testPlannerPhotoOfTableToSpreadsheet() throws {
+        let c = try XCTUnwrap(ChainPlanner.keywordPlan("turn a photo of a table into a spreadsheet"))
+        XCTAssertEqual(c.steps.map(\.block), [.readText, .makeTable])
+    }
+    func testPlannerTidyThenSummarize() throws {
+        let c = try XCTUnwrap(ChainPlanner.keywordPlan("tidy up my notes then summarize in 2 sentences"))
+        XCTAssertEqual(c.steps.map(\.block), [.cleanText, .summarize])
+        XCTAssertEqual(c.steps[1].settings["sentences"], "2")
+    }
+    func testTidyUpPhotoIsNotTextTidying() {
+        let c = ChainPlanner.keywordPlan("tidy up this photo and make it clearer")
+        XCTAssertEqual(c?.steps.map(\.block), [.enhance])
+    }
+    func testTemplatesStillValidWithNewBlocks() {
+        for t in ChainTemplates.all { XCTAssertNil(t.problem(starting: t.steps.first?.block.takes ?? .image), t.name) }
+        XCTAssertGreaterThanOrEqual(ChainTemplates.all.count, 13)
+    }
+}

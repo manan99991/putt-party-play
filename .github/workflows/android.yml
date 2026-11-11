@@ -54,6 +54,10 @@ jobs:
       - name: File Viewer type-matrix gate
         run: python3 qa/fileviewer/verify_types.py
 
+      # Off-device gate for the Builder: chain rules, Describe it and the text blocks (no emulator needed).
+      - name: Builder logic unit tests
+        run: gradle --no-daemon testDebugUnitTest --tests '*BuilderLogicTest*' --warning-mode none
+
       - name: Build debug APK
         run: gradle --no-daemon assembleDebug -PinternalUnlock=$INTERNAL_UNLOCK --stacktrace --warning-mode none 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
 

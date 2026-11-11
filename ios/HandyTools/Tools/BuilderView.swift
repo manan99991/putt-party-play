@@ -101,6 +101,10 @@ struct BuilderView: View {
             Spacer()
             Menu {
                 Button("Edit") { editing = c }
+                Button("Duplicate") {
+                    var k = c; k.id = UUID().uuidString; k.name += " copy"
+                    mine.append(k); ChainStore.save(mine); note = "Duplicated as \(k.name)."
+                }
                 Button("Copy to share") { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
                 Button("Delete", role: .destructive) { mine.removeAll { $0.id == c.id }; ChainStore.save(mine) }
             } label: { Image(systemName: "ellipsis.circle").font(.system(size: 20)).frame(width: 44, height: 44) }
@@ -249,6 +253,7 @@ private struct ChainEditor: View {
         case .image(let i): return .image(i)
         case .file(let d, let ext):
             if ChainPayload.isPhoto(ext), let i = UIImage(data: d) { return .image(i) }
+            if ["csv", "vcf", "ics"].contains(ext), let t = String(data: d, encoding: .utf8) { return .text(t) }
             return .file("\(ext.uppercased()) file · \(SizeTarget.format(d.count))")
         }
     }
@@ -278,10 +283,37 @@ private struct ChainEditor: View {
     }
 }
 
+/// One photo's outcome in a batch run. Files and pictures are written to a temporary folder straight away,
+/// so twenty full-size results never sit in memory together.
+struct BatchItem: Identifiable {
+    let id = UUID()
+    let n: Int
+    var url: URL?
+    var text: String?
+    var summary = ""
+    var note: String?
+
+    static func make(n: Int, payload: ChainPayload, in dir: URL) -> BatchItem {
+        var b = BatchItem(n: n)
+        func write(_ d: Data, _ ext: String) {
+            let u = dir.appendingPathComponent("Tenzy-\(n).\(ext)")
+            if (try? d.write(to: u)) != nil { b.url = u; b.summary = "\(SizeTarget.format(d.count)) · \(ext.uppercased())" } else { b.note = "Couldn't save this result." }
+        }
+        switch payload {
+        case .text(let t): b.text = t; b.summary = "\(t.count) characters"
+        case .image(let i): if let d = i.jpegData(compressionQuality: 0.92) { write(d, "jpg") } else { b.note = "Couldn't save this result." }
+        case .file(let d, let ext): write(d, ext)
+        }
+        return b
+    }
+}
+
 /// Give it a photo or some text, see the result, copy or share it.
 private struct ChainRunView: View {
     let chain: Chain
-    @State private var pick: PhotosPickerItem?
+    @State private var picks: [PhotosPickerItem] = []
+    @State private var batch: [BatchItem] = []
+    @State private var progress = ""
     @State private var text = ""
     @State private var busy = false
     @State private var result: ChainPayload?
@@ -295,25 +327,71 @@ private struct ChainRunView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 Text(chain.name).font(HandyFont.title)
                 if start != .text {
-                    PhotosPicker(selection: $pick, matching: .images) { Label("Choose a photo", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
+                    PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label("Choose photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
+                    Text("Pick one, or up to 20 at once. Each one gets the same steps.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
                     TextEditor(text: $text).frame(minHeight: 140).cardStyle(padding: HandySpacing.s8)
                     Button("Run") { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
-                if busy { ProgressView("Working…") }
+                if busy { ProgressView(progress.isEmpty ? "Working…" : progress) }
                 if let message { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let result { output(result) }
+                if !batch.isEmpty { batchView }
             }.padding(HandySpacing.gutter)
         }
         .background(HandyColor.bg)
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
-        .onChange(of: pick) { _, item in
-            guard let item else { return }
-            Task {
-                let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
-                pick = nil
-                if let img { go(.image(img)) } else { message = "That photo couldn't be opened. Try another." }
+        .onChange(of: picks) { _, items in
+            guard !items.isEmpty else { return }
+            picks = []
+            if items.count == 1, let item = items.first {
+                Task {
+                    let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
+                    if let img { go(.image(img)) } else { message = "That photo couldn't be opened. Try another." }
+                }
+            } else { runBatch(items) }
+        }
+    }
+
+    /// One result per photo. A photo that can't be processed never stops the others; it just gets its own note.
+    private func runBatch(_ items: [PhotosPickerItem]) {
+        busy = true; result = nil; message = nil; batch = []
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-batch-\(UUID().uuidString)")
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        Task {
+            var out: [BatchItem] = []
+            for (i, item) in items.enumerated() {
+                await MainActor.run { progress = "Working… \(i + 1) of \(items.count)" }
+                guard let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) else {
+                    out.append(BatchItem(n: i + 1, note: "Couldn't open this photo.")); continue
+                }
+                switch await ChainRunner.run(chain, input: .image(img)) {
+                case .success(let p): out.append(BatchItem.make(n: i + 1, payload: p, in: dir))
+                case .failure(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
+                }
             }
+            await MainActor.run { batch = out; busy = false; progress = "" }
+        }
+    }
+
+    @ViewBuilder private var batchView: some View {
+        let ok = batch.filter { $0.note == nil }
+        let urls = ok.compactMap(\.url)
+        let texts = ok.compactMap { b in b.text.map { "Photo \(b.n)\n\($0)" } }
+        Text("\(ok.count) of \(batch.count) done").font(HandyFont.cardTitle)
+        ForEach(batch) { b in
+            HStack {
+                Image(systemName: b.note == nil ? "checkmark.circle.fill" : "exclamationmark.circle").foregroundStyle(b.note == nil ? Color.green : HandyColor.textSecondary)
+                Text("Photo \(b.n)").font(HandyFont.bodyStrong)
+                Spacer()
+                Text(b.note ?? b.summary).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.trailing)
+            }.cardStyle(padding: HandySpacing.s12)
+        }
+        if !urls.isEmpty {
+            ShareLink(items: urls) { Label("Save or share all (\(urls.count))", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+        }
+        if !texts.isEmpty {
+            Button { UIPasteboard.general.string = texts.joined(separator: "\n\n") } label: { Label("Copy all text", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
         }
     }
 
@@ -339,7 +417,7 @@ private struct ChainRunView: View {
     }
 
     private func go(_ input: ChainPayload) {
-        busy = true; result = nil; message = nil
+        busy = true; result = nil; message = nil; batch = []; progress = ""
         Task {
             let r = await ChainRunner.run(chain, input: input)
             await MainActor.run {
@@ -356,7 +434,7 @@ private struct ChainRunView: View {
         switch f {
         case .invalid(let s): return s
         case .wrongInput(let b): return "\(b.title) can't use that input."
-        case .nothingFound(let b): return "\(b.title) didn't find anything in it. Try a clearer or closer picture."
+        case .nothingFound(let b): return b.takes == .text ? "\(b.title) didn't find anything in that text." : "\(b.title) didn't find anything in it. Try a clearer or closer picture."
         case .failed(let b): return "\(b.title) couldn't finish. Try again."
         }
     }

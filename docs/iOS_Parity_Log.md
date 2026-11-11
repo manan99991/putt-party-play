@@ -48,3 +48,11 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Shared format: `tenzy-tool:{json}` with the same block ids. Android has 10 of the 13 blocks; cutout, enhance and passportPhoto are iOS-only for now, so a tool using them pastes on Android with a plain "can't be added" note.
 - Describe it: both platforms have the keyword planner. iOS also uses the on-device language model where the phone has one (Apple Foundation Models). Android has no equivalent bundled, so it is keyword-only.
 - Live per-step preview runs on a sample in both editors (receipt sample for read-text chains, sample text for text chains, sample photo otherwise).
+
+### Builder v2 (batch + text blocks) — iOS and Android
+- New blocks, same ids on both: `cleanText` (Tidy text), `pullDetails` (links, emails, phones), `makeTable` (text to CSV). Pure logic in `TextTidy.swift` / `TextTidy.kt`, same rules and same regexes; unit-tested on both (`TextBlockTests`, `BuilderLogicTest`).
+- Batch run: any photo-first tool takes up to 20 photos at once; each result is written to a temp folder as it finishes, a failed photo gets its own note and never stops the rest; one "Save or share all" and "Copy all text".
+- Describe it: understands the new blocks and chains tidy → next step ("tidy my notes then summarize in 2 sentences"). "Tidy up this photo" stays a picture job.
+- Duplicate on saved tools; text previews for CSV, contact and calendar files while building; clearer "found nothing" wording for text blocks.
+- Still iOS-only blocks: cutout, enhance, passportPhoto (an Android phone can't import tools that use them).
+- No new permission, no new data; Privacy policy and rulebook unchanged.

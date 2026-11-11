@@ -38,21 +38,29 @@ enum ChainPlanner {
         var steps: [ChainStep] = []
         let wantsPhotoInput = has(["photo", "picture", "image", "scan", "screenshot", "snap", "camera", "receipt", "card", "poster", "flyer", "whiteboard", "sign "])
 
-        // Text-making jobs: they start from a picture of the thing, so read it first.
+        // Text-making jobs: they start from a picture of the thing, or from pasted text, so read it first when a picture is meant.
+        // "Tidy up this photo" is about the picture, so tidying only means text when text is what is being talked about.
+        let textish = has(["text", "notes", "words", "list", "lines", "pasted", "paste"])
+        let wantsClean = has(["tidy", "clean up", "clean the", "dedupe", "de-dupe", "duplicate line", "remove duplicates", "extra spaces", "blank lines"]) && (!wantsPhotoInput || textish)
         let textJob: Block? =
             has(["receipt", "expense", "invoice"]) ? .pullReceipt :
             has(["business card", "contact", "vcard"]) ? .businessCard :
             has(["calendar", "event", "poster", "flyer", "invite", "appointment"]) ? .calendarEvent :
+            has(["spreadsheet", "csv", "excel", "table", "columns"]) ? .makeTable :
+            has(["links", "urls", "web address", "email address", "phone number"]) ? .pullDetails :
             has(["task", "to-do", "todo", "whiteboard", "action item", "checklist"]) ? .actionItems :
             has(["summar", "tl;dr", "tldr", "shorten", "gist", "key points"]) ? .summarize : nil
 
-        if let job = textJob {
-            if wantsPhotoInput || job == .pullReceipt || job == .businessCard || job == .calendarEvent || job == .actionItems && wantsPhotoInput {
-                steps.append(ChainStep(block: .readText))
+        if textJob != nil || wantsClean {
+            let needsPhoto = wantsPhotoInput || textJob == .pullReceipt || textJob == .businessCard || textJob == .calendarEvent
+            if needsPhoto { steps.append(ChainStep(block: .readText)) }
+            // Tidying goes first so the next step sees clean text.
+            if wantsClean { steps.append(ChainStep(block: .cleanText)) }
+            if let job = textJob {
+                var st = ChainStep(block: job)
+                if job == .summarize { st.settings["sentences"] = number(near: ["sentence", "line", "point"], in: s).map(String.init) ?? "3" }
+                steps.append(st)
             }
-            var st = ChainStep(block: job)
-            if job == .summarize { st.settings["sentences"] = number(near: ["sentence", "line", "point"], in: s).map(String.init) ?? "3" }
-            steps.append(st)
             return build(ask, steps)
         }
 

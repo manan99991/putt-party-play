@@ -49,7 +49,8 @@ object ChainRunner {
 
     suspend fun apply(step: Step, raw: Payload): Outcome = withContext(Dispatchers.Default) {
         val b = step.block
-        fun none() = Outcome.Stopped("${b.title} didn't find anything in it. Try a clearer or closer picture.")
+        fun none() = Outcome.Stopped(
+            if (b.takes == Kind.TEXT) "${b.title} didn't find anything in that text." else "${b.title} didn't find anything in it. Try a clearer or closer picture.")
         fun fail() = Outcome.Stopped("${b.title} couldn't finish. Try again.")
 
         // A photo saved as bytes by an earlier step is opened again for the next one.
@@ -77,6 +78,12 @@ object ChainRunner {
                     val items = VoiceText.sentences(input.text).filter { VoiceText.TODO.containsMatchIn(it) }
                     if (items.isEmpty()) none() else Outcome.Done(Payload.Words(items.joinToString("\n") { "• $it" }))
                 }
+                b == Block.CLEAN_TEXT && input is Payload.Words ->
+                    TextTidy.clean(input.text).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Words(it)) }
+                b == Block.PULL_DETAILS && input is Payload.Words ->
+                    TextTidy.details(input.text).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Words(it.text)) }
+                b == Block.MAKE_TABLE && input is Payload.Words ->
+                    TextTidy.tableCsv(input.text).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Doc(it.toByteArray(), "csv")) }
                 b == Block.SHRINK && input is Payload.Pic -> {
                     val mb = step.settings["mb"]?.toDoubleOrNull() ?: 2.0
                     val e = MediaEngine.shrinkToBytes(input.bmp, (mb.coerceAtLeast(0.05) * 1_048_576).toLong())

@@ -25,7 +25,10 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     BUSINESS_CARD("businessCard", "Make a contact", Kind.TEXT, Kind.FILE, "Turns card text into a contact file."),
     CALENDAR_EVENT("calendarEvent", "Make a calendar event", Kind.TEXT, Kind.FILE, "Turns event text into a calendar file."),
     ACTION_ITEMS("actionItems", "Find tasks", Kind.TEXT, Kind.TEXT, "Pulls out the things someone has to do."),
-    HIDE_SENSITIVE("hideSensitive", "Hide faces and numbers", Kind.IMAGE, Kind.PHOTO_FILE, "Covers faces and personal numbers.");
+    HIDE_SENSITIVE("hideSensitive", "Hide faces and numbers", Kind.IMAGE, Kind.PHOTO_FILE, "Covers faces and personal numbers."),
+    CLEAN_TEXT("cleanText", "Tidy text", Kind.TEXT, Kind.TEXT, "Removes extra spaces, blank gaps and repeated lines."),
+    PULL_DETAILS("pullDetails", "Find links, emails, phones", Kind.TEXT, Kind.TEXT, "Lists every web link, email address and phone number."),
+    MAKE_TABLE("makeTable", "Text to spreadsheet", Kind.TEXT, Kind.FILE, "Turns rows of text into a spreadsheet (CSV) file.");
 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
 }
@@ -92,6 +95,9 @@ object ChainTemplates {
         Chain("whiteboard-to-tasks", "Whiteboard to task list", listOf(Step(Block.READ_TEXT), Step(Block.ACTION_ITEMS))),
         Chain("hide-sensitive", "Hide faces and numbers", listOf(Step(Block.HIDE_SENSITIVE))),
         Chain("short-summary", "Long text to 3 sentences", listOf(Step(Block.SUMMARIZE, mapOf("sentences" to "3")))),
+        Chain("table-to-sheet", "Photo of a table to spreadsheet", listOf(Step(Block.READ_TEXT), Step(Block.MAKE_TABLE))),
+        Chain("links-and-numbers", "Pull links, emails and phones", listOf(Step(Block.PULL_DETAILS))),
+        Chain("tidy-text", "Tidy pasted text", listOf(Step(Block.CLEAN_TEXT))),
     )
 }
 
@@ -102,18 +108,26 @@ object ChainPlanner {
         fun has(vararg w: String) = w.any { s.contains(it) }
         val wantsPhoto = has("photo", "picture", "image", "scan", "screenshot", "snap", "camera", "receipt", "card", "poster", "flyer", "whiteboard")
 
+        // "Tidy up this photo" is about the picture, so tidying only means text when text is what is being talked about.
+        val textish = has("text", "notes", "words", "list", "lines", "pasted", "paste")
+        val wantsClean = has("tidy", "clean up", "clean the", "dedupe", "de-dupe", "duplicate line", "remove duplicates", "extra spaces", "blank lines") && (!wantsPhoto || textish)
         val job: Block? = when {
             has("receipt", "expense", "invoice") -> Block.PULL_RECEIPT
             has("business card", "contact", "vcard") -> Block.BUSINESS_CARD
             has("calendar", "event", "poster", "flyer", "invite", "appointment") -> Block.CALENDAR_EVENT
+            has("spreadsheet", "csv", "excel", "table", "columns") -> Block.MAKE_TABLE
+            has("links", "urls", "web address", "email address", "phone number") -> Block.PULL_DETAILS
             has("task", "to-do", "todo", "whiteboard", "action item", "checklist") -> Block.ACTION_ITEMS
             has("summar", "tl;dr", "tldr", "shorten", "gist", "key points") -> Block.SUMMARIZE
             else -> null
         }
         val steps = ArrayList<Step>()
-        if (job != null) {
-            if (wantsPhoto || job == Block.PULL_RECEIPT || job == Block.BUSINESS_CARD || job == Block.CALENDAR_EVENT) steps.add(Step(Block.READ_TEXT))
-            steps.add(if (job == Block.SUMMARIZE) Step(job, mapOf("sentences" to (number(s, "sentence", "line", "point") ?: 3).toString())) else Step(job))
+        if (job != null || wantsClean) {
+            val needsPhoto = wantsPhoto || job == Block.PULL_RECEIPT || job == Block.BUSINESS_CARD || job == Block.CALENDAR_EVENT
+            if (needsPhoto) steps.add(Step(Block.READ_TEXT))
+            // Tidying goes first so the next step sees clean text.
+            if (wantsClean) steps.add(Step(Block.CLEAN_TEXT))
+            if (job != null) steps.add(if (job == Block.SUMMARIZE) Step(job, mapOf("sentences" to (number(s, "sentence", "line", "point") ?: 3).toString())) else Step(job))
             return finish(ask, steps)
         }
         if (has("blur", "hide", "redact", "private", "faces", "face ", "anonym", "censor")) steps.add(Step(Block.HIDE_SENSITIVE))
