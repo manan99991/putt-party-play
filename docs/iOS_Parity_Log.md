@@ -41,3 +41,10 @@ Not ported (separate, bigger changes): batch queue in Video shrink (Format Fixer
 Open check: App Store Connect shows the version in review as 1.2.34 but ios/project.yml says 1.2.43. Confirm the digits before resubmitting.
 
 - Flashlight+ (iOS): screen now stays awake while the torch is on, and the torch relights when the app returns to the foreground. Fixes the torch dying when auto-lock kicked in. Android keeps the torch on through screen-off already (CameraManager), so no change there.
+
+## Builder (chain tools) — iOS and Android
+- iOS: `Engines/ChainRunner.swift`, `ChainPlanner.swift`, `Tools/BuilderView.swift`, `BuilderStyle.swift`.
+- Android: `tools/builder/Chain.kt`, `ChainRunner.kt`, `BuilderScreen.kt`; entry row on Home, route `builder`.
+- Shared format: `tenzy-tool:{json}` with the same block ids. Android has 10 of the 13 blocks; cutout, enhance and passportPhoto are iOS-only for now, so a tool using them pastes on Android with a plain "can't be added" note.
+- Describe it: both platforms have the keyword planner. iOS also uses the on-device language model where the phone has one (Apple Foundation Models). Android has no equivalent bundled, so it is keyword-only.
+- Live per-step preview runs on a sample in both editors (receipt sample for read-text chains, sample text for text chains, sample photo otherwise).

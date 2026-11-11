@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Apps
+import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.DirectionsCar
@@ -302,6 +303,21 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                 modifier = Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter).padding(bottom = HandyTokens.Space8)
             )
 
+            if (query.isBlank()) {
+                Row(
+                    Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter).padding(bottom = HandyTokens.Space8)
+                        .clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.primary.copy(alpha = 0.14f))
+                        .clickable { onOpen("builder") }.padding(HandyTokens.Space12),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(Icons.Outlined.Bolt, null, tint = MaterialTheme.colorScheme.primary)
+                    Spacer(Modifier.width(HandyTokens.Space8))
+                    Column(Modifier.weight(1f)) {
+                        Text("Build your own tool", style = MaterialTheme.typography.titleSmall)
+                        Text("Describe it or snap steps together", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                    }
+                }
+            }
             if (results.isEmpty()) {
                 Column(Modifier.fillMaxSize().padding(HandyTokens.Space24), horizontalAlignment = Alignment.CenterHorizontally) {
                     Spacer(Modifier.height(HandyTokens.Space48))
