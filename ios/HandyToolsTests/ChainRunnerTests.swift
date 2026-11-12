@@ -691,3 +691,34 @@ final class ShortcutActionTests: XCTestCase {
         XCTAssertEqual(f.filename, "Tenzy-result.txt")
     }
 }
+
+final class SheetsTests: XCTestCase {
+    func testRowCountIgnoresTheHeaderAndBlankLines() {
+        XCTAssertEqual(RunningList.rowCount(""), 0)
+        XCTAssertEqual(RunningList.rowCount("Date,Merchant,Total"), 0)
+        XCTAssertEqual(RunningList.rowCount("Date,Merchant,Total\n2026-11-01,Cafe,4.50\n\n2026-11-02,Fuel,40\n"), 2)
+    }
+    func testSheetsCanBeListedRenamedTrimmedAndDeleted() {
+        let file = "Unit test sheet \(UUID().uuidString).csv"
+        XCTAssertTrue(RunningList.write(file, "Date,Merchant,Total\n2026-11-01,Cafe,4.50\n2026-11-02,Fuel,40"))
+        XCTAssertEqual(RunningList.all().first { $0.file == file }?.rows, 2)
+        XCTAssertTrue(RunningList.removeLastRow(file))
+        XCTAssertEqual(RunningList.read(file), "Date,Merchant,Total\n2026-11-01,Cafe,4.50")
+        XCTAssertTrue(RunningList.removeLastRow(file)); XCTAssertFalse(RunningList.removeLastRow(file))     // the header always stays
+        XCTAssertNil(RunningList.rename(file, to: "  "))
+        let other = "Renamed \(UUID().uuidString)"
+        let moved = RunningList.rename(file, to: other)
+        XCTAssertEqual(moved, other + ".csv")
+        XCTAssertNil(RunningList.all().first { $0.file == file })
+        XCTAssertEqual(RunningList.all().first { $0.file == other + ".csv" }?.name, other)
+        RunningList.delete(other + ".csv")
+        XCTAssertNil(RunningList.all().first { $0.file == other + ".csv" })
+    }
+    func testSummaryReadsPlainly() {
+        let cal = Calendar(identifier: .gregorian)
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        XCTAssertEqual(SheetsView.summary(rows: 0, changed: now, now: now, calendar: cal), "No entries yet · changed today")
+        XCTAssertEqual(SheetsView.summary(rows: 1, changed: now.addingTimeInterval(-86_400), now: now, calendar: cal), "1 entry · changed yesterday")
+        XCTAssertEqual(SheetsView.summary(rows: 12, changed: now.addingTimeInterval(-5 * 86_400), now: now, calendar: cal), "12 entries · changed 5 days ago")
+    }
+}

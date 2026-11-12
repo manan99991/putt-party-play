@@ -262,4 +262,13 @@ class BuilderLogicTest {
         assertFalse(AutoRun.wants(AutoRun.OFF, "DCIM/Camera/", "IMG_0001.jpg"))
         assertEquals("Off", AutoRun.title(AutoRun.OFF)); assertEquals("", AutoRun.label(AutoRun.OFF))
     }
+    @Test fun sheetCountsAndUndo() {
+        assertEquals(0, TextTidy.sheetRows("")); assertEquals(0, TextTidy.sheetRows("Date,Merchant,Total"))
+        assertEquals(2, TextTidy.sheetRows("Date,Merchant,Total\n2026-11-01,Cafe,4.50\n\n2026-11-02,Fuel,40\n"))
+        assertEquals("Date,Merchant,Total\n2026-11-01,Cafe,4.50", TextTidy.withoutLastRow("Date,Merchant,Total\n2026-11-01,Cafe,4.50\n2026-11-02,Fuel,40"))
+        assertNull(TextTidy.withoutLastRow("Date,Merchant,Total")); assertNull(TextTidy.withoutLastRow(""))
+        assertEquals("No entries yet · changed today", TextTidy.sheetSummary(0, 0))
+        assertEquals("1 entry · changed yesterday", TextTidy.sheetSummary(1, 1))
+        assertEquals("12 entries · changed 5 days ago", TextTidy.sheetSummary(12, 5))
+    }
 }

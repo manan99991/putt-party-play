@@ -11,6 +11,8 @@ struct BuilderView: View {
     @State private var note: String?
     @State private var ask = ""
     @State private var planning = false
+    @State private var sheets: [RunningList.Sheet] = RunningList.all()
+    @State private var showSheets = false
 
     var body: some View {
         ToolPage(title: "Build your own", subtitle: "Snap small steps together into a tool that does exactly what you need. Runs on your phone.") {
@@ -18,6 +20,19 @@ struct BuilderView: View {
             if !mine.isEmpty {
                 Text("My tools").font(HandyFont.cardTitle)
                 ForEach(mine) { c in row(c, mine: true) }
+            }
+            if !sheets.isEmpty {
+                Button { showSheets = true } label: {
+                    HStack(spacing: HandySpacing.s12) {
+                        Image(systemName: "tablecells").font(.system(size: 18, weight: .semibold)).foregroundStyle(HandyColor.accent).frame(width: 38, height: 38).background(HandyColor.accent.opacity(0.14), in: Circle())
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("My sheets").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                            Text(sheets.count == 1 ? "1 sheet your tools add to" : "\(sheets.count) sheets your tools add to").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+                    }.cardStyle(padding: HandySpacing.s12)
+                }.buttonStyle(.plain).accessibilityIdentifier("open-sheets")
             }
             HStack {
                 Text("Start from a template").font(HandyFont.cardTitle)
@@ -42,6 +57,8 @@ struct BuilderView: View {
             }
         }
         .sheet(item: $running) { c in NavigationStack { ChainRunView(chain: c) } }
+        .sheet(isPresented: $showSheets, onDismiss: { sheets = RunningList.all() }) { NavigationStack { SheetsView() } }
+        .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all() } }   // a run may have added to a sheet
         .onAppear { openReminded() }
         .onReceive(NotificationCenter.default.publisher(for: .openTool)) { _ in openReminded() }
     }

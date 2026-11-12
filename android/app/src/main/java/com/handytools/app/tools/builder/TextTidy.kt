@@ -157,6 +157,22 @@ object TextTidy {
         return (old + new).joinToString("\n")
     }
 
+    /** Entries below the header line. A sheet with only a header has none. */
+    fun sheetRows(text: String): Int = maxOf(0, text.split(NEWLINE).count { it.isNotBlank() } - 1)
+
+    /** The sheet without its last entry (the row added by mistake). Null when there is no entry to remove. */
+    fun withoutLastRow(text: String): String? {
+        val lines = text.split(NEWLINE).filter { it.isNotBlank() }
+        return if (lines.size > 1) lines.dropLast(1).joinToString("\n") else null
+    }
+
+    /** "12 entries · changed today". */
+    fun sheetSummary(rows: Int, daysAgo: Int): String {
+        val count = when (rows) { 0 -> "No entries yet"; 1 -> "1 entry"; else -> "$rows entries" }
+        val whenText = when { daysAgo <= 0 -> "changed today"; daysAgo == 1 -> "changed yesterday"; else -> "changed $daysAgo days ago" }
+        return "$count · $whenText"
+    }
+
     /** One row for an expense sheet from what the receipt reader found. */
     fun expenseRow(dateMs: Long?, merchant: String, total: String): String {
         val date = dateMs?.let { java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(java.util.Date(it)) } ?: ""

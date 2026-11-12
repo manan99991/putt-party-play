@@ -845,4 +845,46 @@ enum RunningList {
         (try? text.write(to: folder.appendingPathComponent(fileName), atomically: true, encoding: .utf8)) != nil
     }
     static func delete(_ fileName: String) { try? FileManager.default.removeItem(at: folder.appendingPathComponent(fileName)) }
+
+    /// One saved sheet, as the Sheets screen lists it.
+    struct Sheet: Identifiable, Equatable {
+        let file: String
+        let rows: Int
+        let changed: Date
+        var id: String { file }
+        /// The name without ".csv".
+        var name: String { (file as NSString).deletingPathExtension }
+    }
+
+    /// Entries below the header line. A sheet with only a header has none.
+    static func rowCount(_ text: String) -> Int {
+        max(0, text.components(separatedBy: .newlines).filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }.count - 1)
+    }
+
+    static func url(_ fileName: String) -> URL { folder.appendingPathComponent(fileName) }
+
+    /// Every sheet on this phone, most recently changed first.
+    static func all() -> [Sheet] {
+        let files = (try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: [.contentModificationDateKey])) ?? []
+        return files.filter { $0.pathExtension.lowercased() == "csv" }.map { u in
+            Sheet(file: u.lastPathComponent, rows: rowCount((try? String(contentsOf: u, encoding: .utf8)) ?? ""),
+                  changed: (try? u.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate ?? .distantPast)
+        }.sorted { $0.changed > $1.changed }
+    }
+
+    /// Gives a sheet a new name. Returns the new file name, or nil if the name is empty, unchanged or already taken.
+    @discardableResult static func rename(_ fileName: String, to newName: String) -> String? {
+        let target = ChainName.file(pattern: newName, tool: "List", ext: "csv")
+        guard !newName.trimmingCharacters(in: .whitespaces).isEmpty, target != fileName, target != "Tenzy-result.csv",
+              !FileManager.default.fileExists(atPath: url(target).path) else { return nil }
+        return (try? FileManager.default.moveItem(at: url(fileName), to: url(target))) != nil ? target : nil
+    }
+
+    /// Removes the last entry (the row added by mistake). Returns false when there is no entry to remove.
+    @discardableResult static func removeLastRow(_ fileName: String) -> Bool {
+        var lines = read(fileName).components(separatedBy: .newlines).filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+        guard lines.count > 1 else { return false }
+        lines.removeLast()
+        return write(fileName, lines.joined(separator: "\n"))
+    }
 }

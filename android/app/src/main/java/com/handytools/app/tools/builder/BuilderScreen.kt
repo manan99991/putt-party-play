@@ -117,6 +117,7 @@ fun BuilderScreen() {
     var ask by remember { mutableStateOf("") }
 
     fun saveAll() { ChainStore.save(ctx, mine.toList()); ToolReminders.sync(ctx, mine.toList()); PhotoWatch.arm(ctx) }
+    var showSheets by remember { mutableStateOf(false) }
     var runOn by remember { mutableStateOf<Uri?>(null) }      // the new photo a tapped "run this tool" notification came with
 
     // A tapped reminder lands here: open that tool ready to run.
@@ -137,6 +138,7 @@ fun BuilderScreen() {
         return
     }
     running?.let { c -> ChainRunScreen(c, initial = runOn) { running = null; runOn = null }; return }
+    if (showSheets) { SheetsScreen { showSheets = false }; return }
 
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader("Build your own", "Snap small steps together into a tool that does exactly what you need. Runs on your phone.")
@@ -158,6 +160,13 @@ fun BuilderScreen() {
             mine.toList().forEach { c ->
                 ChainRow(c, onRun = { running = c }, onEdit = { editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
                     onDuplicate = { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null, auto = AutoRun.OFF); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." })
+            }
+        }
+        val sheetCount = remember { SheetStore.all(ctx).size }
+        if (sheetCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showSheets = true }) {
+            Column(Modifier.padding(HandyTokens.Space12)) {
+                Text("My sheets", style = MaterialTheme.typography.titleSmall)
+                Text(if (sheetCount == 1) "1 sheet your tools add to" else "$sheetCount sheets your tools add to", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
