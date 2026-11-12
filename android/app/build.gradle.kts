@@ -16,7 +16,7 @@ android {
         // Auto-incrementing versionCode from the CI run number so every uploaded bundle is unique
         // and strictly increasing (Play rejects reused codes; a stale code leaves old bundles active).
         versionCode = (System.getenv("VERSION_CODE")?.toIntOrNull() ?: 3)
-        versionName = "1.0.13"
+        versionName = "1.0.14"
 
         // AdMob app ID (identifies the app; it doesn't serve ads itself).
         manifestPlaceholders["admobAppId"] = "ca-app-pub-5414801919054534~4620337988"

@@ -1409,8 +1409,8 @@ enum RunningList {
 /// A tool as a link or a QR code. The whole tool rides in the part of the link after "#", which a browser never
 /// sends to the website, so the page that opens it learns nothing about the tool.
 enum ToolLink {
-    /// Off until the page below is published. While off, the app offers no link or QR sharing (it still opens one it is given).
-    static let live = false
+    /// The page below is published (12 Nov 2026), so link and QR sharing are offered. Set this to false to hide them again.
+    static let live = true
     static let page = "https://manan99991.github.io/tenzy/t.html"
 
     /// The link for a tool. It never carries recipients, reminder times or a PDF password (see `Chain.shareText`).

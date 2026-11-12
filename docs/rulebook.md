@@ -119,8 +119,9 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   signed form, a face), so never read, upload or show them outside that screen. Data safety / App Privacy answers are unchanged.
 - Build your own, tool links: `docs/t.html` is our own page on the website. The tool rides after "#" in the link, which a browser never sends
   to a server, and the page has no scripts, fonts or images from anywhere else and no analytics: keep it that way. A link never carries
-  recipients, reminder times or a PDF password. **Publishing the page is a public change and needs Manan's yes**; until then `ToolLink.live`
-  (iOS) and `ToolLink.LIVE` (Android) stay false and the apps offer no link or QR sharing. Android declares a `tenzy://import` link filter; an
+  recipients, reminder times or a PDF password. Manan approved publishing it on 12 Nov 2026 and it is live at `manan99991.github.io/tenzy/t.html` (the `tenzy` website repo holds
+  the published copy; keep the two files the same). Any later change to the page is a public change and needs his yes again. `ToolLink.live`
+  (iOS) and `ToolLink.LIVE` (Android) switch link and QR sharing on or off. Android declares a `tenzy://import` link filter; an
   imported tool is only saved to My tools, never run by itself.
 - "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
 - Listing changes for Build your own are drafted in `docs/listing-draft.md`. That file is not pushed by the pipeline; copy

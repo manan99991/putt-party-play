@@ -677,7 +677,7 @@ class BuilderLogicTest {
     @Test fun onlyAToolLinkIsReadAsATool() {
         // (Making a link uses org.json, which plain unit tests can't run; the iOS twin covers the round trip.)
         assertNull(ToolLink.chain("https://example.com/t.html#abc")); assertNull(ToolLink.chain("")); assertNull(ToolLink.chain("tenzy://run/abc"))
-        assertNull(ToolLink.chain(ToolLink.PAGE + "#***")); assertFalse(ToolLink.LIVE)
+        assertNull(ToolLink.chain(ToolLink.PAGE + "#***"))
     }
     @Test fun describeItUnderstandsTheNewestRequests() {
         assertEquals("sketch", ChainPlanner.plan("pencil sketch of my photo")?.steps?.first()?.settings?.get("style"))

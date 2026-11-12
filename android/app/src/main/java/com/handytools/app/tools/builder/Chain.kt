@@ -776,8 +776,8 @@ object PlannerWords {
  * to the website, so the page that opens it learns nothing about the tool.
  */
 object ToolLink {
-    /** Off until the page below is published. While off, the app offers no link or QR sharing (it still opens one it is given). */
-    const val LIVE = false
+    /** The page below is published (12 Nov 2026), so link and QR sharing are offered. Set this to false to hide them again. */
+    const val LIVE = true
     const val PAGE = "https://manan99991.github.io/tenzy/t.html"
 
     /** The link for a tool. It never carries recipients, reminder times or a PDF password (see [Chain.shareText]). */

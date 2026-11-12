@@ -257,7 +257,7 @@ Asked for after the first phone pass: "let them name the tool", "make Describe i
 - `voiceChange` plays the recording faster or slower, so the pitch and the length change together. It gives a .wav. At most the first ten minutes.
 - A new option on a photo tool, `versus`: the first and last photo side by side with BEFORE and AFTER on them. Only one of one-PDF, collage, GIF and before/after can be on.
 - Recent results: the last 20 results are kept in the app's own folder and listed under "Recent results" on Build your own, with Save or share, Copy, Remove and Clear. A result over 150 MB is not kept.
-- Tool links: a tool can travel as `https://manan99991.github.io/tenzy/t.html#<tool>` or a QR code of it. Both apps open `tenzy://import?d=<tool>` and paste a link with the Paste button. **Sharing is switched off** (`ToolLink.live` / `ToolLink.LIVE` are false) until `docs/t.html` is published to the website, which needs Manan's yes.
+- Tool links: a tool can travel as `https://manan99991.github.io/tenzy/t.html#<tool>` or a QR code of it. Both apps open `tenzy://import?d=<tool>` and paste a link with the Paste button. Sharing was switched off until the page was published; Manan approved it on 12 Nov 2026, the page is live, and `ToolLink.live` / `ToolLink.LIVE` are now true (iOS 1.2.57, Android 1.0.14).
 - Differences that are on purpose: iPhone shows the QR sheet as a sheet, Android as a dialog. On iPhone a batch run is kept as one entry with all its files; the same on Android.
 - The local Android check now refuses org.json the way Android's plain unit tests do, after a test that used it passed locally and failed in CI.
 - Not checked on a real phone yet: all of it.
