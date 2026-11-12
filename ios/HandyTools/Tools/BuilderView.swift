@@ -175,6 +175,13 @@ private struct ChainEditor: View {
             if startKind == .image, endKind != .text {
                 Toggle("Put all pages or photos into one PDF", isOn: onePdf).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
             }
+            if endKind != .text {
+                TextField("File name (optional), e.g. Signed form {date}", text: Binding(get: { chain.fileName ?? "" }, set: { chain.fileName = $0.isEmpty ? nil : $0 }))
+                    .font(HandyFont.caption).autocorrectionDisabled()
+                    .padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+                    .accessibilityIdentifier("finish-file-name")
+                Text("Write {date} where today's date should go.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
             Text("Then").font(HandyFont.bodyStrong)
             Picker("Then", selection: kind) {
                 Text("Share").tag(ChainFinish.Kind.share)
@@ -282,6 +289,13 @@ private struct ChainEditor: View {
     }
 
     /// Runs the chain on a sample one step at a time, keeping every step's result for the strips above.
+    /// The sample page as it looks just before step `i`, for placing stamps on.
+    private func pageBefore(_ i: Int) -> UIImage? {
+        if i == 0 { return SampleAssets.receipt() }
+        if i - 1 < previews.count, case .image(let img)? = previews[i - 1] { return img }
+        return nil
+    }
+
     private func refreshPreviews() async {
         let steps = chain.steps
         previews = Array(repeating: nil, count: steps.count)
@@ -290,7 +304,7 @@ private struct ChainEditor: View {
         if Task.isCancelled { return }
         var value: ChainPayload
         switch first.block {
-        case .readText: value = .image(SampleAssets.receipt())
+        case .readText, .stamp, .photoPdf: value = .image(SampleAssets.receipt())   // paperwork steps preview on a document
         case _ where first.block.takes == .text: value = .text(Self.sampleText)
         default: value = .image(SampleAssets.photo())
         }
@@ -324,7 +338,8 @@ private struct ChainEditor: View {
 
     private func defaults(_ b: Block) -> [String: String] {
         switch b { case .shrinkImage: return ["mb": "2"]; case .summarize: return ["sentences": "3"]; case .convertImage: return ["format": "JPG"]; case .passportPhoto: return ["country": "us"]
-        case .watermark: return ["text": "For verification only"]; case .resizePhoto: return ["size": "413x531"]; default: return [:] }
+        case .watermark: return ["text": "For verification only"]; case .resizePhoto: return ["size": "413x531"]
+        case .stamp: return ["marks": StampPlan.standard.text]; default: return [:] }
     }
 
     @ViewBuilder private func settings(_ i: Int) -> some View {
@@ -335,6 +350,8 @@ private struct ChainEditor: View {
             Picker("Size limit", selection: Binding(get: { mb }, set: { chain.steps[i].settings["mb"] = String($0) })) {
                 ForEach((ChainImage.limits.contains(mb) ? ChainImage.limits : (ChainImage.limits + [mb]).sorted()), id: \.self) { v in Text("Under " + ChainImage.limitLabel(v)).tag(v) }
             }.pickerStyle(.menu).font(HandyFont.caption)
+        case .stamp:
+            StampEditor(marks: Binding(get: { chain.steps[i].settings["marks"] ?? StampPlan.standard.text }, set: { chain.steps[i].settings["marks"] = $0 }), page: pageBefore(i))
         case .watermark:
             TextField("Words to write across it", text: Binding(get: { chain.steps[i].settings["text"] ?? "" }, set: { chain.steps[i].settings["text"] = $0 }))
                 .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
@@ -369,10 +386,10 @@ struct BatchItem: Identifiable {
     var summary = ""
     var note: String?
 
-    static func make(n: Int, payload: ChainPayload, in dir: URL) -> BatchItem {
+    static func make(n: Int, payload: ChainPayload, in dir: URL, named: String? = nil, tool: String = "") -> BatchItem {
         var b = BatchItem(n: n)
         func write(_ d: Data, _ ext: String) {
-            let u = dir.appendingPathComponent("Tenzy-\(n).\(ext)")
+            let u = dir.appendingPathComponent(ChainName.file(pattern: named, tool: tool, index: n, ext: ext))
             if (try? d.write(to: u)) != nil { b.url = u; b.summary = "\(SizeTarget.format(d.count)) · \(ext.uppercased())" } else { b.note = "Couldn't save this result." }
         }
         switch payload {
@@ -393,6 +410,11 @@ private struct ChainRunView: View {
     @State private var outbox: Outbox?
     @State private var sending = false
     @State private var scanning = false
+    @State private var signing = false
+    @State private var hasSignature = DocEngine.savedSignature != nil
+    @State private var myName = StampBook.name
+    /// Decided once when the screen opens, so the field doesn't vanish while the name is being typed.
+    @State private var askName = StampBook.name.trimmingCharacters(in: .whitespaces).isEmpty
     @State private var text = ""
     @State private var busy = false
     @State private var result: ChainPayload?
@@ -405,6 +427,7 @@ private struct ChainRunView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 Text(chain.name).font(HandyFont.title)
+                stampSetup
                 if start != .text {
                     PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label("Choose photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
                     if VNDocumentCameraViewController.isSupported {
@@ -439,6 +462,7 @@ private struct ChainRunView: View {
                 }
             } else { runBatch(count: items.count) { i in (try? await items[i].loadTransferable(type: Data.self)).flatMap(UIImage.init) } }
         }
+        .sheet(isPresented: $signing) { SignaturePadSheet { _ in hasSignature = true } }
         .fullScreenCover(isPresented: $scanning) {
             // Apple's document camera: finds the page edges, straightens it, and takes several pages in one go.
             DocCameraSheet { pages in
@@ -465,7 +489,7 @@ private struct ChainRunView: View {
                 switch await ChainRunner.run(chain, input: .image(img)) {
                 case .success(let p):
                     if combine { kept.append(p) }
-                    out.append(BatchItem.make(n: i + 1, payload: p, in: dir))
+                    out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name))
                 case .failure(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
                 }
             }
@@ -475,7 +499,7 @@ private struct ChainRunView: View {
                 await MainActor.run {
                     busy = false; progress = ""; result = one
                     if skipped > 0 { message = "\(skipped) of \(count) couldn't be used and were left out." }
-                    finished(Outbox.make(one))
+                    finished(Outbox.make(one, named: chain.fileName, tool: chain.name))
                 }
                 return
             }
@@ -484,6 +508,24 @@ private struct ChainRunView: View {
                 let ok = out.filter { $0.note == nil }
                 finished(ok.isEmpty ? nil : Outbox(text: ok.compactMap(\.text).isEmpty ? nil : ok.compactMap(\.text).joined(separator: "\n\n"), files: ok.compactMap(\.url)))
             }
+        }
+    }
+
+    /// A tool that signs needs your signature (and one that stamps your name needs the name). Ask for them right
+    /// here, once, instead of failing after the scan.
+    @ViewBuilder private var stampSetup: some View {
+        let plans = chain.steps.filter { $0.block == .stamp }.map { StampPlan($0.settings["marks"] ?? StampPlan.standard.text) }
+        if plans.contains(where: { $0.has(.signature) }), !hasSignature {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                Text("This tool signs for you. Draw your signature once; it stays on this phone.").font(HandyFont.caption)
+                Button { signing = true } label: { Label("Draw my signature", systemImage: "signature").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("run-draw-signature")
+            }.cardStyle(padding: HandySpacing.s12)
+        }
+        if plans.contains(where: { $0.has(.name) }), askName {
+            TextField("Your name as it should appear", text: $myName)
+                .padding(HandySpacing.s12).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 10))
+                .onChange(of: myName) { _, v in StampBook.name = v }
         }
     }
 
@@ -545,7 +587,7 @@ private struct ChainRunView: View {
     }
 
     private func tempURL(_ d: Data, _ ext: String) -> URL? {
-        let u = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy-result.\(ext)")
+        let u = FileManager.default.temporaryDirectory.appendingPathComponent(ChainName.file(pattern: chain.fileName, tool: chain.name, ext: ext))
         return (try? d.write(to: u)) != nil ? u : nil
     }
 
@@ -556,7 +598,7 @@ private struct ChainRunView: View {
             await MainActor.run {
                 busy = false
                 switch r {
-                case .success(let p): result = p; finished(Outbox.make(p))
+                case .success(let p): result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
                 case .failure(let f): message = ChainRunView.words(f)
                 }
             }

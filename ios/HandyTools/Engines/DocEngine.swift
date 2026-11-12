@@ -245,17 +245,23 @@ enum DocEngine {
 
     private static let sigKey = "tenzy.scan.signature.png"
     static var savedSignature: UIImage? {
-        get { UserDefaults.standard.data(forKey: sigKey).flatMap(UIImage.init(data:)) }
+        get {
+            // Kept in the App Group so a tool run from the share sheet can sign too. A signature saved before
+            // that move is copied across the first time it is read.
+            let g = AppGroup.defaults
+            if g.data(forKey: sigKey) == nil, let old = UserDefaults.standard.data(forKey: sigKey) { g.set(old, forKey: sigKey) }
+            return g.data(forKey: sigKey).flatMap(UIImage.init(data:))
+        }
     }
     /// Trim a PencilKit drawing to its ink and keep it as a transparent PNG.
     static func saveSignature(_ drawing: PKDrawing) -> UIImage? {
         let b = drawing.bounds.insetBy(dx: -8, dy: -8)
         guard !b.isEmpty else { return nil }
         let img = drawing.image(from: b, scale: 3)
-        UserDefaults.standard.set(img.pngData(), forKey: sigKey)
+        AppGroup.defaults.set(img.pngData(), forKey: sigKey)
         return img
     }
-    static func clearSignature() { UserDefaults.standard.removeObject(forKey: sigKey) }
+    static func clearSignature() { UserDefaults.standard.removeObject(forKey: sigKey); AppGroup.defaults.removeObject(forKey: sigKey) }
 }
 
 extension UIImage {

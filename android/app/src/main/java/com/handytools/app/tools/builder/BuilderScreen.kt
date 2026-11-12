@@ -276,6 +276,10 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
                 OutlinedTextField(fin.to, { v -> chain = chain.copy(finish = fin.copy(to = v)) }, Modifier.fillMaxWidth(), singleLine = true,
                     label = { Text(if (fin.kind == "mail") "Email address (optional)" else "Phone number (optional)") })
             }
+            if (it != Kind.TEXT) {
+                OutlinedTextField(chain.fileName, { v -> chain = chain.copy(fileName = v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("File name (optional), e.g. Signed form {date}") })
+                Text("Write {date} where today's date should go.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            }
             if (chain.start == Kind.IMAGE && it != Kind.TEXT) {
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on) })
@@ -498,14 +502,14 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
             is Payload.Pic -> {
                 Image(r.bmp.asImageBitmap(), null, Modifier.heightIn(max = 320.dp))
                 HPrimaryButton("Save or share") {
-                    val f = File(ctx.cacheDir, "Tenzy-result.jpg").also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) }
+                    val f = File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = "jpg")).also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) }
                     Share.file(ctx, f, "image/jpeg")
                 }
             }
             is Payload.Doc -> {
                 Text("${r.bytes.size / 1024} KB · ${r.ext.uppercase()}", style = MaterialTheme.typography.bodySmall)
                 HPrimaryButton("Save or share") {
-                    val f = File(ctx.cacheDir, "Tenzy-result.${r.ext}").also { it.writeBytes(r.bytes) }
+                    val f = File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = r.ext)).also { it.writeBytes(r.bytes) }
                     Share.file(ctx, f, mimeFor(r.ext))
                 }
             }
@@ -520,8 +524,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
                 val files = ArrayList<File>(); var text: String? = null
                 when (val r = result) {
                     is Payload.Words -> text = r.text
-                    is Payload.Pic -> files.add(File(ctx.cacheDir, "Tenzy-result.jpg").also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) })
-                    is Payload.Doc -> files.add(File(ctx.cacheDir, "Tenzy-result.${r.ext}").also { it.writeBytes(r.bytes) })
+                    is Payload.Pic -> files.add(File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = "jpg")).also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) })
+                    is Payload.Doc -> files.add(File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = r.ext)).also { it.writeBytes(r.bytes) })
                     null -> { files.addAll(okItems.mapNotNull { it.file }); text = okItems.mapNotNull { it.text }.joinToString("\n\n").ifEmpty { null } }
                 }
                 val mime = files.map { it.extension }.distinct().singleOrNull()?.let { mimeFor(it) } ?: "*/*"

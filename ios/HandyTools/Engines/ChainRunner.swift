@@ -34,6 +34,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case cleanText, pullDetails, makeTable
     case scamCheck, cleanLinks, priceCompare, makeQr, describe, identify, photoPdf
     case watermark, resizePhoto
+    case stamp
 
     var id: String { rawValue }
     var title: String {
@@ -63,11 +64,12 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .photoPdf: return "Make a PDF"
         case .watermark: return "Add a watermark"
         case .resizePhoto: return "Exact pixel size"
+        case .stamp: return "Sign and stamp"
         }
     }
     var takes: ChainKind {
         switch self {
-        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto: return .image
+        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp: return .image
         case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr: return .text
         }
     }
@@ -77,7 +79,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
         case .businessCard, .calendarEvent, .makeTable, .photoPdf: return .file
-        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto: return .image
+        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp: return .image
         }
     }
 }
@@ -91,13 +93,14 @@ extension Block {
         case .stripLocation, .hideSensitive, .watermark: return "Keep it private"
         case .enhance, .cutout: return "Make it look better"
         case .readText, .describe, .identify: return "Read what's in it"
-        case .passportPhoto, .photoPdf, .makeTable, .businessCard, .calendarEvent, .makeQr: return "Turn it into something"
+        case .stamp, .photoPdf: return "Paperwork"
+        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr: return "Turn it into something"
         case .summarize, .actionItems, .scamCheck: return "Understand it"
         case .cleanText, .cleanLinks, .pullDetails: return "Clean it up"
         case .pullReceipt, .priceCompare: return "Money"
         }
     }
-    static let goalOrder = ["Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money"]
+    static let goalOrder = ["Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money"]
 
     /// The given steps under their goals, goals in a fixed order, empty goals left out.
     static func grouped(_ blocks: [Block]) -> [(goal: String, blocks: [Block])] {
@@ -155,6 +158,8 @@ struct Chain: Codable, Equatable, Identifiable {
     /// When several pages or photos go in at once, put every result into one PDF instead of one file each.
     /// Optional so tools saved before this existed still load.
     var combine: Bool?
+    /// What the result file is called, e.g. "Signed form {date}". Empty or nil keeps the plain default.
+    var fileName: String?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -292,6 +297,30 @@ enum ChainRunner {
             guard let d = DocEngine.pdf(images: [img], ocr: [DocEngine.recognize(img)], options: DocEngine.PDFOptions()) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "pdf"))
 
+        case (.stamp, .image(let img)):
+            let plan = StampPlan(step.settings["marks"] ?? StampPlan.standard.text)
+            guard !plan.spots.isEmpty else { return .failure(.invalid("Sign and stamp has nothing to place. Turn on the signature, your name or the date.")) }
+            var stamps: [DocEngine.Stamp] = []
+            for s in plan.spots {
+                let at = CGPoint(x: s.x, y: s.y)
+                switch s.mark {
+                case .signature:
+                    guard let sig = DocEngine.savedSignature else { return .failure(.invalid("Sign and stamp needs your signature. Edit the tool and tap Draw my signature.")) }
+                    stamps.append(DocEngine.Stamp(kind: .signature(sig), center: at, width: CGFloat(s.w)))
+                case .name:
+                    let n = StampBook.name.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !n.isEmpty else { return .failure(.invalid("Sign and stamp needs your name. Edit the tool and type it in.")) }
+                    stamps.append(DocEngine.Stamp(kind: .text(n), center: at, width: CGFloat(s.w)))
+                case .date:
+                    stamps.append(DocEngine.Stamp(kind: .text(StampPlan.dateText(Date())), center: at, width: CGFloat(s.w)))
+                }
+            }
+            // Burned into the picture, so the signature can't be lifted off the page afterwards.
+            var page = DocEngine.Page(source: img)
+            page.filter = .color
+            page.stamps = stamps
+            return .success(.image(DocEngine.render(page)))
+
         case (.watermark, .image(let img)):
             // The date is stamped at run time, so a copy made today can't be passed off later.
             let words = (step.settings["text"] ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
@@ -361,6 +390,8 @@ enum ChainTemplates {
         Chain(id: "text-to-qr", name: "Text or link to QR code", steps: [ChainStep(block: .makeQr)]),
         Chain(id: "what-is-this", name: "What is this?", steps: [ChainStep(block: .identify)]),
         Chain(id: "scan-to-pdf", name: "Scan pages into one PDF", steps: [ChainStep(block: .photoPdf)], combine: true),
+        Chain(id: "sign-and-send", name: "Sign a form and send it", steps: [ChainStep(block: .stamp, settings: ["marks": StampPlan.standard.text]), ChainStep(block: .photoPdf)],
+              finish: ChainFinish(kind: .mail, to: ""), combine: true, fileName: "Signed form {date}"),
         Chain(id: "share-shield", name: "Privacy share shield", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
         Chain(id: "id-copy-watermarked", name: "ID copy with a safety watermark", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"]), ChainStep(block: .stripLocation)]),
         Chain(id: "portal-photo", name: "Portal photo: 35x45 mm under 50 KB", steps: [ChainStep(block: .resizePhoto, settings: ["size": "413x531"]), ChainStep(block: .shrinkImage, settings: ["mb": "0.05"])]),
@@ -557,5 +588,84 @@ enum ChainCombine {
                 .map { .file($0, ext: "pdf") }
         }
         return nil
+    }
+}
+
+/// Your reusable details for paperwork. The signature lives with the scanner (`DocEngine.savedSignature`); the name is here.
+/// Both stay on this phone, in the App Group so the share sheet can use them.
+enum StampBook {
+    private static let nameKey = "stamps.name"
+    static var name: String {
+        get { AppGroup.defaults.string(forKey: nameKey) ?? "" }
+        set { AppGroup.defaults.set(newValue, forKey: nameKey) }
+    }
+}
+
+/// Where a tool puts your signature, your name and the date on a page. Positions are fractions of the page, so one
+/// plan fits every scan of the same form: place them once, and the tool does it by itself from then on.
+struct StampPlan: Equatable {
+    enum Mark: String, CaseIterable {
+        case signature = "sig", name, date
+        var title: String { switch self { case .signature: return "My signature"; case .name: return "My name"; case .date: return "Today's date" } }
+        var short: String { switch self { case .signature: return "Signature"; case .name: return "Name"; case .date: return "Date" } }
+        /// Where it starts before the person moves it: signature bottom right, date bottom left, name above the date.
+        var home: Spot {
+            switch self {
+            case .signature: return Spot(mark: self, x: 0.72, y: 0.88, w: 0.30)
+            case .date: return Spot(mark: self, x: 0.25, y: 0.88, w: 0.22)
+            case .name: return Spot(mark: self, x: 0.25, y: 0.82, w: 0.30)
+            }
+        }
+    }
+    struct Spot: Equatable { var mark: Mark; var x: Double; var y: Double; var w: Double }
+
+    var spots: [Spot]
+    static let standard = StampPlan(spots: [Mark.signature.home, Mark.date.home])
+
+    init(spots: [Spot]) { self.spots = spots }
+
+    /// Reads "sig@0.720,0.880,0.300;date@0.250,0.880,0.220". Anything malformed is skipped, values are kept on the
+    /// page, and a mark listed twice counts once.
+    init(_ text: String) {
+        var out: [Spot] = []
+        for part in text.split(separator: ";") {
+            let bits = part.split(separator: "@")
+            guard bits.count == 2, let mark = Mark(rawValue: String(bits[0]).trimmingCharacters(in: .whitespaces)) else { continue }
+            let n = bits[1].split(separator: ",").compactMap { Double($0.trimmingCharacters(in: .whitespaces)) }
+            guard n.count == 3, !out.contains(where: { $0.mark == mark }) else { continue }
+            out.append(Spot(mark: mark, x: min(1, max(0, n[0])), y: min(1, max(0, n[1])), w: min(0.9, max(0.08, n[2]))))
+        }
+        spots = out
+    }
+
+    var text: String {
+        spots.map { "\($0.mark.rawValue)@" + [$0.x, $0.y, $0.w].map { String(format: "%.3f", $0) }.joined(separator: ",") }.joined(separator: ";")
+    }
+    func has(_ m: Mark) -> Bool { spots.contains { $0.mark == m } }
+    mutating func set(_ m: Mark, on: Bool) {
+        if on, !has(m) { spots.append(m.home) } else if !on { spots.removeAll { $0.mark == m } }
+    }
+    mutating func move(_ m: Mark, x: Double, y: Double) {
+        guard let i = spots.firstIndex(where: { $0.mark == m }) else { return }
+        spots[i].x = min(1, max(0, x)); spots[i].y = min(1, max(0, y))
+    }
+
+    static func dateText(_ day: Date, locale: Locale = .current) -> String {
+        let f = DateFormatter(); f.locale = locale; f.dateStyle = .medium; f.timeStyle = .none
+        return f.string(from: day)
+    }
+}
+
+/// File names for results. "{date}" becomes today's date and "{tool}" the tool's name; characters a file name
+/// can't hold are dropped; several results from one run get -1, -2...
+enum ChainName {
+    static func file(pattern: String?, tool: String, day: Date = Date(), index: Int? = nil, ext: String) -> String {
+        let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"
+        var base = (pattern ?? "").replacingOccurrences(of: "{date}", with: f.string(from: day)).replacingOccurrences(of: "{tool}", with: tool)
+        base = String(base.unicodeScalars.filter { !"/\\:*?\"<>|".unicodeScalars.contains($0) && !CharacterSet.newlines.contains($0) && !CharacterSet.controlCharacters.contains($0) })
+            .trimmingCharacters(in: CharacterSet.whitespaces.union(CharacterSet(charactersIn: ".")))
+        if base.count > 80 { base = String(base.prefix(80)).trimmingCharacters(in: .whitespaces) }
+        if base.isEmpty { base = index == nil ? "Tenzy-result" : "Tenzy" }
+        return base + (index.map { "-\($0)" } ?? "") + "." + ext
     }
 }

@@ -84,9 +84,9 @@ final class ChainRowTests: XCTestCase {
 }
 
 final class ChainTemplateTests: XCTestCase {
-    func testTwentyThreeTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 23)
-        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 23)
+    func testTwentyFourTemplatesAllValidAndUnique() {
+        XCTAssertEqual(ChainTemplates.all.count, 24)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 24)
     }
     func testShareRoundTripAndRejectsJunk() throws {
         let t = ChainTemplates.all[0]
@@ -366,7 +366,8 @@ final class BlockGoalTests: XCTestCase {
         let photo = Block.starting(with: .image)
         XCTAssertTrue(photo.contains(.stripLocation)); XCTAssertFalse(photo.contains(.summarize))
         let groups = Block.grouped(photo)
-        XCTAssertEqual(groups.first?.goal, "Make it easy to send")
+        XCTAssertEqual(groups.first?.goal, "Paperwork")
+        XCTAssertEqual(groups.first?.blocks, [.photoPdf, .stamp])
         XCTAssertEqual(groups.flatMap(\.blocks).count, photo.count, "no step is lost or shown twice")
         XCTAssertFalse(groups.contains { $0.goal == "Understand it" }, "text-only goals stay out of a photo's list")
     }
@@ -464,5 +465,61 @@ final class CombineTests: XCTestCase {
         XCTAssertEqual(try JSONDecoder().decode(Chain.self, from: JSONEncoder().encode(c)).combine, true)
         let old = #"{"id":"a","name":"Old","steps":[{"block":"photoPdf","settings":{}}]}"#
         XCTAssertNil(try JSONDecoder().decode(Chain.self, from: Data(old.utf8)).combine)
+    }
+}
+
+/// Sign and stamp: where the marks go, and what the files are called.
+final class StampAndNameTests: XCTestCase {
+    func testPlanRoundTripsAndStandardIsSignaturePlusDate() {
+        let p = StampPlan.standard
+        XCTAssertEqual(p.spots.map(\.mark), [.signature, .date])
+        XCTAssertEqual(p.text, "sig@0.720,0.880,0.300;date@0.250,0.880,0.220")
+        XCTAssertEqual(StampPlan(p.text), p)
+    }
+    func testPlanSkipsRubbishClampsToThePageAndCountsAMarkOnce() {
+        let p = StampPlan("sig@1.4,-0.2,5;bogus@0.1,0.1,0.1;date@0.5,0.5;sig@0.1,0.1,0.2; name @ 0.3, 0.4 ,0.25")
+        XCTAssertEqual(p.spots.map(\.mark), [.signature, .name])
+        XCTAssertEqual(p.spots[0], StampPlan.Spot(mark: .signature, x: 1, y: 0, w: 0.9))
+        XCTAssertEqual(p.spots[1], StampPlan.Spot(mark: .name, x: 0.3, y: 0.4, w: 0.25))
+        XCTAssertTrue(StampPlan("").spots.isEmpty)
+    }
+    func testTurningMarksOnAndOffAndMoving() {
+        var p = StampPlan.standard
+        p.set(.name, on: true); p.set(.name, on: true)
+        XCTAssertEqual(p.spots.map(\.mark), [.signature, .date, .name], "turning on twice adds once")
+        p.set(.date, on: false)
+        XCTAssertFalse(p.has(.date))
+        p.move(.signature, x: 0.4, y: 1.7)
+        XCTAssertEqual(p.spots[0].x, 0.4); XCTAssertEqual(p.spots[0].y, 1, "kept on the page")
+    }
+    func testDateOnlyStampChangesThePageAndKeepsItsSize() async {
+        let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+        let page = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 520), format: f).image { c in UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 520)) }
+        let r = await ChainRunner.apply(ChainStep(block: .stamp, settings: ["marks": "date@0.5,0.5,0.4"]), to: .image(page))
+        guard case .success(.image(let out)) = r else { return XCTFail("no image") }
+        XCTAssertEqual(out.size.width * out.scale, 400); XCTAssertEqual(out.size.height * out.scale, 520)
+        XCTAssertNotEqual(out.pngData(), page.pngData(), "the date must be drawn on the page")
+    }
+    func testStampWithNothingTurnedOnSaysSo() async {
+        let r = await ChainRunner.apply(ChainStep(block: .stamp, settings: ["marks": ""]), to: .image(UIImage()))
+        guard case .failure(.invalid(let why)) = r else { return XCTFail("should stop") }
+        XCTAssertTrue(why.contains("nothing to place"))
+    }
+    func testFileNames() {
+        let day = Date(timeIntervalSince1970: 1_794_484_800)   // 12 Nov 2026, midday UTC
+        let ymd: String = { let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"; return f.string(from: day) }()
+        XCTAssertEqual(ChainName.file(pattern: "Signed form {date}", tool: "x", day: day, ext: "pdf"), "Signed form \(ymd).pdf")
+        XCTAssertEqual(ChainName.file(pattern: "{tool} {date}", tool: "Rent receipt", day: day, index: 2, ext: "jpg"), "Rent receipt \(ymd)-2.jpg")
+        XCTAssertEqual(ChainName.file(pattern: nil, tool: "x", ext: "pdf"), "Tenzy-result.pdf")
+        XCTAssertEqual(ChainName.file(pattern: "  ", tool: "x", index: 3, ext: "jpg"), "Tenzy-3.jpg")
+        XCTAssertEqual(ChainName.file(pattern: "a/b\\c:d*e?f\"g<h>i|j", tool: "x", ext: "pdf"), "abcdefghij.pdf", "characters a file name can't hold are dropped")
+        XCTAssertEqual(ChainName.file(pattern: "..hidden.", tool: "x", ext: "pdf"), "hidden.pdf")
+        XCTAssertEqual(ChainName.file(pattern: String(repeating: "n", count: 200), tool: "x", ext: "pdf").count, 84)
+    }
+    func testSignAndSendStarterIsWiredForPaperwork() throws {
+        let c = try XCTUnwrap(ChainTemplates.all.first { $0.id == "sign-and-send" })
+        XCTAssertEqual(c.steps.map(\.block), [.stamp, .photoPdf])
+        XCTAssertEqual(c.combine, true); XCTAssertEqual(c.finish?.kind, .mail); XCTAssertEqual(c.fileName, "Signed form {date}")
+        XCTAssertNil(c.problem(starting: .image))
     }
 }

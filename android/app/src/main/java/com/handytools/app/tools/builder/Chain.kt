@@ -44,14 +44,15 @@ val Block.goal: String get() = when (this) {
     Block.SHRINK, Block.CONVERT, Block.RESIZE_PHOTO -> "Make it easy to send"
     Block.STRIP_LOCATION, Block.HIDE_SENSITIVE, Block.WATERMARK -> "Keep it private"
     Block.READ_TEXT -> "Read what's in it"
-    Block.PHOTO_PDF, Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR -> "Turn it into something"
+    Block.PHOTO_PDF -> "Paperwork"
+    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR -> "Turn it into something"
     Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
     Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
     Block.PULL_RECEIPT -> "Money"
 }
 
 object BlockGoals {
-    val ORDER = listOf("Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money")
+    val ORDER = listOf("Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money")
     /** The given steps under their goals, goals in a fixed order, empty goals left out. */
     fun grouped(blocks: List<Block>): List<Pair<String, List<Block>>> =
         ORDER.mapNotNull { g -> blocks.filter { it.goal == g }.takeIf { it.isNotEmpty() }?.let { g to it } }
@@ -79,7 +80,9 @@ data class Finish(val kind: String = "share", val to: String = "") {
 }
 
 /** @param combine when several pages or photos go in at once, put every result into one PDF instead of one file each. */
-data class Chain(val id: String, val name: String, val steps: List<Step>, val finish: Finish? = null, val combine: Boolean = false) {
+data class Chain(val id: String, val name: String, val steps: List<Step>, val finish: Finish? = null, val combine: Boolean = false,
+                 /** What the result file is called, e.g. "Signed form {date}". Empty keeps the plain default. */
+                 val fileName: String = "") {
     val start: Kind get() = steps.firstOrNull()?.block?.takes ?: Kind.IMAGE
     val end: Kind? get() = steps.lastOrNull()?.block?.gives
 
@@ -97,7 +100,7 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
     /** @param forSharing a shared tool never carries the owner's recipients (someone's email or phone number). */
     fun toJson(forSharing: Boolean = false): JSONObject = JSONObject().put("id", id).put("name", name).put("steps", JSONArray().also { a ->
         steps.forEach { s -> a.put(JSONObject().put("block", s.block.id).put("settings", JSONObject(s.settings))) }
-    }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true) }
+    }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true); if (fileName.isNotBlank()) o.put("fileName", fileName) }
 
     /** For a one-PDF run each page keeps its picture: the steps without a trailing "Make a PDF", which the join replaces. */
     val stepsPerPage: List<Step> get() = if (combine && steps.lastOrNull()?.block == Block.PHOTO_PDF) steps.dropLast(1) else steps
@@ -118,7 +121,7 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                 Step(b, map)
             }
             val fin = o.optJSONObject("finish")?.let { f -> Finish(f.optString("kind", "share").takeIf { it in Finish.KINDS } ?: "share", f.optString("to", "")) }
-            Chain(o.optString("id", UUID.randomUUID().toString()), o.optString("name", "My tool"), steps, fin, o.optBoolean("combine", false))
+            Chain(o.optString("id", UUID.randomUUID().toString()), o.optString("name", "My tool"), steps, fin, o.optBoolean("combine", false), o.optString("fileName", ""))
         } catch (_: Exception) { null }
 
         /** Accepts a copied tool only if it is well formed and its steps fit together. */

@@ -130,4 +130,17 @@ object TextTidy {
     /** The watermark line: the tool's words (or a safe default) plus the day it was made. */
     fun watermarkLine(words: String, day: java.util.Date): String =
         (words.trim().ifEmpty { "For verification only" }) + " · " + java.text.SimpleDateFormat("d MMM yyyy", java.util.Locale.US).format(day)
+
+    // MARK: file names for results (same rules as iOS ChainName)
+
+    /** "{date}" becomes today's date and "{tool}" the tool's name; characters a file name can't hold are dropped; several results get -1, -2... */
+    fun fileName(pattern: String?, tool: String, day: java.util.Date = java.util.Date(), index: Int? = null, ext: String): String {
+        val ymd = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(day)
+        var base = (pattern ?: "").replace("{date}", ymd).replace("{tool}", tool)
+            .filter { it !in "/\\:*?\"<>|" && !it.isISOControl() }
+            .trim { it.isWhitespace() || it == '.' }
+        if (base.length > 80) base = base.take(80).trim()
+        if (base.isEmpty()) base = if (index == null) "Tenzy-result" else "Tenzy"
+        return base + (index?.let { "-$it" } ?: "") + "." + ext
+    }
 }

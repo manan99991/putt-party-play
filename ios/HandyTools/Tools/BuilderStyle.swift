@@ -27,8 +27,9 @@ extension Block {
         case .describe: return "text.below.photo"
         case .identify: return "viewfinder"
         case .photoPdf: return "doc.richtext"
-        case .watermark: return "signature"
+        case .watermark: return "character.textbox"
         case .resizePhoto: return "aspectratio"
+        case .stamp: return "signature"
         }
     }
     var tint: Color {
@@ -37,7 +38,7 @@ extension Block {
         case .shrinkImage, .convertImage, .stripLocation, .resizePhoto: return Color(hex: 0x10B981)
         case .cutout, .enhance, .passportPhoto: return Color(hex: 0xA855F7)
         case .hideSensitive, .scamCheck, .watermark: return Color(hex: 0xF97316)
-        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr: return Color(hex: 0xEC4899)
+        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr, .stamp: return Color(hex: 0xEC4899)
         }
     }
     var blurb: String {
@@ -67,6 +68,7 @@ extension Block {
         case .photoPdf: return "Turns the photo into a searchable PDF."
         case .watermark: return "Writes your words and today's date across it, so a copy can't be misused."
         case .resizePhoto: return "Fits an exact size in pixels, for ID photos and upload forms."
+        case .stamp: return "Puts your saved signature, your name and today's date where you placed them."
         }
     }
 }

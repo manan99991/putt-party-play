@@ -7,9 +7,10 @@ struct Outbox: Equatable {
     var text: String?
     var files: [URL] = []
 
-    static func make(_ p: ChainPayload, dir: URL = FileManager.default.temporaryDirectory) -> Outbox? {
+    /// - Parameters named/tool: the tool's file-name pattern and its name, so the file leaves with a clear name.
+    static func make(_ p: ChainPayload, named: String? = nil, tool: String = "", dir: URL = FileManager.default.temporaryDirectory) -> Outbox? {
         func file(_ d: Data, _ ext: String) -> Outbox? {
-            let u = dir.appendingPathComponent("Tenzy-result.\(ext)")
+            let u = dir.appendingPathComponent(ChainName.file(pattern: named, tool: tool, ext: ext))
             return (try? d.write(to: u)) != nil ? Outbox(files: [u]) : nil
         }
         switch p {

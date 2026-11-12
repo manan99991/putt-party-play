@@ -94,3 +94,11 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Tool option "Put all pages or photos into one PDF" (`combine`). iOS joins whatever the pages became (PDFs page after page, pictures a page each). Android keeps each page as a picture and builds the PDF at the end, so a trailing "Make a PDF" step is skipped per page. Text or mixed results stay separate on both.
 - New starter on both: "Scan pages into one PDF".
 - Not yet: saved stamps (signature, name, date), the stamp step, the naming step.
+
+### Paperwork, part 2: sign and stamp, file names — iOS (stamp), both (names)
+- iOS `stamp` ("Sign and stamp"): puts the saved signature, your name and today's date on the page at remembered places (fractions of the page, `StampPlan`), burned in. Editor: toggles, draw-once signature, drag chips on a sample page. Run screen asks for the signature or name up front if the tool needs them and they aren't saved. The signature moved to the App Group (one-time copy) so the share sheet can sign.
+- Both: a tool can name its result file (`fileName`, "{date}" and "{tool}" tokens, unsafe characters dropped, -1, -2 for several). Same rules in `ChainName` (iOS) and `TextTidy.fileName` (Android).
+- Both: new goal heading "Paperwork" (first in the list) holding Make a PDF, and Sign and stamp on iOS.
+- iOS starter: "Sign a form and send it" (stamp, PDF, one PDF for all pages, email, named "Signed form {date}").
+- NOT on Android yet: the stamp step. Android has no saved signature (the Documents tool draws one per session), so it needs a saved-signature store and a placement screen first. A tool using `stamp` can't be imported on Android until then.
+- UNBUILT: everything in this section was written while CI builds were paused for cost, so it has not been compiled or run.

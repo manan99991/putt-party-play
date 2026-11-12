@@ -557,7 +557,7 @@ private struct InkCanvas: UIViewRepresentable {
 }
 
 /// Draw once, keep forever: a white pad that saves a trimmed transparent signature.
-private struct SignaturePadSheet: View {
+struct SignaturePadSheet: View {
     let saved: (UIImage) -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var pad = PKCanvasView()

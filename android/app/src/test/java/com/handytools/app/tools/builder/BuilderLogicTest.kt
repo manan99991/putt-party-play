@@ -130,7 +130,7 @@ class BuilderLogicTest {
         val photo = BlockGoals.starting(Kind.IMAGE)
         assertTrue(Block.STRIP_LOCATION in photo); assertFalse(Block.SUMMARIZE in photo)
         val groups = BlockGoals.grouped(photo)
-        assertEquals("Make it easy to send", groups.first().first)
+        assertEquals("Paperwork", groups.first().first)
         assertEquals(photo.size, groups.sumOf { it.second.size })
         assertTrue(groups.none { it.first == "Understand it" })
     }
@@ -163,5 +163,18 @@ class BuilderLogicTest {
         val longer = Chain("x", "x", listOf(Step(Block.STRIP_LOCATION), Step(Block.PHOTO_PDF)), combine = true)
         assertEquals(listOf(Block.STRIP_LOCATION), longer.stepsPerPage.map { it.block })
         assertEquals(2, longer.copy(combine = false).stepsPerPage.size)
+    }
+
+    // File names
+    @Test fun fileNames() {
+        val day = java.util.Date(1_794_484_800_000L)
+        val ymd = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(day)
+        assertEquals("Signed form $ymd.pdf", TextTidy.fileName("Signed form {date}", "x", day, ext = "pdf"))
+        assertEquals("Rent receipt $ymd-2.jpg", TextTidy.fileName("{tool} {date}", "Rent receipt", day, 2, "jpg"))
+        assertEquals("Tenzy-result.pdf", TextTidy.fileName(null, "x", ext = "pdf"))
+        assertEquals("Tenzy-3.jpg", TextTidy.fileName("  ", "x", index = 3, ext = "jpg"))
+        assertEquals("abcdefghij.pdf", TextTidy.fileName("a/b\\c:d*e?f\"g<h>i|j", "x", ext = "pdf"))
+        assertEquals("hidden.pdf", TextTidy.fileName("..hidden.", "x", ext = "pdf"))
+        assertEquals(84, TextTidy.fileName("n".repeat(200), "x", ext = "pdf").length)
     }
 }
