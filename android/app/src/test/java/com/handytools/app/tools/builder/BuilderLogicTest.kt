@@ -136,4 +136,23 @@ class BuilderLogicTest {
     }
     @Test fun textStartGoalsInOrder() =
         assertEquals(listOf("Understand it", "Clean it up", "Turn it into something", "Money"), BlockGoals.grouped(BlockGoals.starting(Kind.TEXT)).map { it.first })
+
+    // Watermark, exact pixel size, small size limits
+    @Test fun pixelsParsesAndRejects() {
+        assertEquals(413 to 531, TextTidy.pixels("413x531")); assertEquals(600 to 600, TextTidy.pixels("600 × 600"))
+        assertNull(TextTidy.pixels("big")); assertNull(TextTidy.pixels("0x100")); assertNull(TextTidy.pixels("99999x10"))
+    }
+    @Test fun limitLabels() {
+        assertEquals("50 KB", TextTidy.limitLabel(0.05)); assertEquals("20 KB", TextTidy.limitLabel(0.02)); assertEquals("2 MB", TextTidy.limitLabel(2.0))
+    }
+    @Test fun watermarkLineHasWordsAndDay() {
+        val day = java.util.Date(1_794_441_600_000L)
+        assertTrue(TextTidy.watermarkLine("For Acme Bank only", day).startsWith("For Acme Bank only · "))
+        assertTrue(TextTidy.watermarkLine(" ", day).startsWith("For verification only · "))
+        assertTrue(TextTidy.watermarkLine("", day).endsWith("2026"))
+    }
+    @Test fun portalTemplateIsValidAndUsesFiftyKb() {
+        val c = ChainTemplates.all.first { it.id == "portal-photo" }
+        assertNull(c.problem(Kind.IMAGE)); assertEquals("0.05", c.steps.last().settings["mb"])
+    }
 }

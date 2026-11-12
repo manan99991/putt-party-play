@@ -32,6 +32,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case businessCard, calendarEvent, actionItems, hideSensitive, passportPhoto
     case cleanText, pullDetails, makeTable
     case scamCheck, cleanLinks, priceCompare, makeQr, describe, identify, photoPdf
+    case watermark, resizePhoto
 
     var id: String { rawValue }
     var title: String {
@@ -59,11 +60,13 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .describe: return "Describe the photo"
         case .identify: return "Identify it"
         case .photoPdf: return "Make a PDF"
+        case .watermark: return "Add a watermark"
+        case .resizePhoto: return "Exact pixel size"
         }
     }
     var takes: ChainKind {
         switch self {
-        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf: return .image
+        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto: return .image
         case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr: return .text
         }
     }
@@ -73,7 +76,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
         case .businessCard, .calendarEvent, .makeTable, .photoPdf: return .file
-        case .cutout, .enhance, .makeQr: return .image
+        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto: return .image
         }
     }
 }
@@ -83,8 +86,8 @@ extension Block {
     /// "what do you want to do with it?" rather than a flat list of tools.
     var goal: String {
         switch self {
-        case .shrinkImage, .convertImage: return "Make it easy to send"
-        case .stripLocation, .hideSensitive: return "Keep it private"
+        case .shrinkImage, .convertImage, .resizePhoto: return "Make it easy to send"
+        case .stripLocation, .hideSensitive, .watermark: return "Keep it private"
         case .enhance, .cutout: return "Make it look better"
         case .readText, .describe, .identify: return "Read what's in it"
         case .passportPhoto, .photoPdf, .makeTable, .businessCard, .calendarEvent, .makeQr: return "Turn it into something"
@@ -203,7 +206,7 @@ enum ChainRunner {
 
         case (.shrinkImage, .image(let img)):
             let mb = Double(step.settings["mb"] ?? "") ?? 2
-            guard let data = await SizeTarget.image(img, targetBytes: Int(max(0.05, mb) * 1_048_576)) else { return .failure(.failed(b)) }
+            guard let data = await SizeTarget.image(img, targetBytes: Int(max(0.01, mb) * 1_048_576)) else { return .failure(.failed(b)) }
             return .success(.file(data, ext: "jpg"))
 
         case (.stripLocation, .image(let img)):
@@ -285,6 +288,15 @@ enum ChainRunner {
             guard let d = DocEngine.pdf(images: [img], ocr: [DocEngine.recognize(img)], options: DocEngine.PDFOptions()) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "pdf"))
 
+        case (.watermark, .image(let img)):
+            // The date is stamped at run time, so a copy made today can't be passed off later.
+            let words = (step.settings["text"] ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            return .success(.image(ChainImage.watermark(img, text: ChainImage.watermarkLine(words, on: Date()))))
+
+        case (.resizePhoto, .image(let img)):
+            guard let px = ChainImage.pixels(step.settings["size"] ?? "") else { return .failure(.invalid("Exact pixel size needs a size like 600x600.")) }
+            return .success(.image(ChainImage.fill(img, to: px)))
+
         case (.hideSensitive, .image(let img)):
             let hits = Scrubber.detect(img)
             let rects = hits.faces + hits.text.filter(\.personal).map(\.rect)
@@ -344,6 +356,9 @@ enum ChainTemplates {
         Chain(id: "photo-to-pdf", name: "Photo to searchable PDF", steps: [ChainStep(block: .photoPdf)]),
         Chain(id: "text-to-qr", name: "Text or link to QR code", steps: [ChainStep(block: .makeQr)]),
         Chain(id: "what-is-this", name: "What is this?", steps: [ChainStep(block: .identify)]),
+        Chain(id: "share-shield", name: "Privacy share shield", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
+        Chain(id: "id-copy-watermarked", name: "ID copy with a safety watermark", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"]), ChainStep(block: .stripLocation)]),
+        Chain(id: "portal-photo", name: "Portal photo: 35x45 mm under 50 KB", steps: [ChainStep(block: .resizePhoto, settings: ["size": "413x531"]), ChainStep(block: .shrinkImage, settings: ["mb": "0.05"])]),
     ]
 }
 
@@ -438,5 +453,69 @@ enum ChainText {
         guard let ci = f.outputImage?.transformed(by: CGAffineTransform(scaleX: 12, y: 12)),
               let cg = CIContext().createCGImage(ci, from: ci.extent) else { return nil }
         return UIImage(cgImage: cg)
+    }
+}
+
+/// Picture helpers for the watermark, exact-size and size-limit steps. The text parts are pure and unit-tested.
+enum ChainImage {
+    /// Size limits a tool can pick, in megabytes. The small ones exist because government, bank and visa
+    /// portals often demand a photo or signature under 20, 50 or 100 KB.
+    static let limits: [Double] = [0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10]
+    static func limitLabel(_ mb: Double) -> String {
+        mb < 1 ? "\(Int((mb * 1000).rounded())) KB" : "\(mb.formatted()) MB"
+    }
+
+    /// Pixel sizes offered by "Exact pixel size". 413x531 is a 35x45 mm passport photo at 300 dpi.
+    static let sizes: [(label: String, value: String)] = [
+        ("35x45 mm photo (413x531)", "413x531"), ("2x2 inch photo (600x600)", "600x600"), ("Square 1080", "1080x1080"),
+        ("Portrait 4:5 (1080x1350)", "1080x1350"), ("Wide 16:9 (1920x1080)", "1920x1080"),
+    ]
+    /// "413x531" (also "413 x 531" or "413×531") as a size; nil if it isn't two sensible numbers.
+    static func pixels(_ s: String) -> CGSize? {
+        let parts = s.lowercased().replacingOccurrences(of: "×", with: "x").split(separator: "x").map { $0.trimmingCharacters(in: .whitespaces) }
+        guard parts.count == 2, let w = Int(parts[0]), let h = Int(parts[1]), (16...8000).contains(w), (16...8000).contains(h) else { return nil }
+        return CGSize(width: w, height: h)
+    }
+
+    /// The watermark line: the tool's words (or a safe default) plus the day it was made.
+    static func watermarkLine(_ words: String, on day: Date) -> String {
+        let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "d MMM yyyy"
+        return (words.isEmpty ? "For verification only" : words) + " · " + f.string(from: day)
+    }
+
+    /// Fills the exact pixel size: scales the photo to cover it and trims the overflow evenly, so nothing is stretched.
+    static func fill(_ img: UIImage, to px: CGSize) -> UIImage {
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: px, format: fmt).image { _ in
+            let s = max(px.width / img.size.width, px.height / img.size.height)
+            let w = img.size.width * s, h = img.size.height * s
+            img.draw(in: CGRect(x: (px.width - w) / 2, y: (px.height - h) / 2, width: w, height: h))
+        }
+    }
+
+    /// Repeats the line diagonally across the whole picture, see-through, so it can't be cropped away.
+    static func watermark(_ img: UIImage, text: String) -> UIImage {
+        let size = CGSize(width: img.size.width * img.scale, height: img.size.height * img.scale)
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            img.draw(in: CGRect(origin: .zero, size: size))
+            let fontSize = max(14, min(size.width, size.height) / 20)
+            let line = NSAttributedString(string: text, attributes: [
+                .font: UIFont.boldSystemFont(ofSize: fontSize),
+                .foregroundColor: UIColor.white.withAlphaComponent(0.45),
+                .strokeColor: UIColor.black.withAlphaComponent(0.45), .strokeWidth: -2.0,
+            ])
+            let ts = line.size()
+            let cg = ctx.cgContext
+            cg.translateBy(x: size.width / 2, y: size.height / 2)
+            cg.rotate(by: -.pi / 6)
+            let reach = hypot(size.width, size.height) / 2
+            var y = -reach, row = 0
+            while y < reach {
+                var x = -reach - (row % 2 == 0 ? 0 : ts.width / 2)
+                while x < reach { line.draw(at: CGPoint(x: x, y: y)); x += ts.width + fontSize * 2 }
+                y += ts.height * 3; row += 1
+            }
+        }
     }
 }

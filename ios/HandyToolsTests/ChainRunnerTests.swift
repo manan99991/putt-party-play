@@ -83,9 +83,9 @@ final class ChainRowTests: XCTestCase {
 }
 
 final class ChainTemplateTests: XCTestCase {
-    func testNineteenTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 19)
-        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 19)
+    func testTwentyTwoTemplatesAllValidAndUnique() {
+        XCTAssertEqual(ChainTemplates.all.count, 22)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 22)
     }
     func testShareRoundTripAndRejectsJunk() throws {
         let t = ChainTemplates.all[0]
@@ -373,5 +373,56 @@ final class BlockGoalTests: XCTestCase {
         let text = Block.starting(with: .text)
         XCTAssertTrue(text.contains(.scamCheck)); XCTAssertFalse(text.contains(.shrinkImage))
         XCTAssertEqual(Block.grouped(text).map(\.goal), ["Understand it", "Clean it up", "Turn it into something", "Money"])
+    }
+}
+
+/// Watermark, exact pixel size and the small size limits that upload forms ask for.
+final class PortalBlocksTests: XCTestCase {
+    private func photo(_ w: CGFloat, _ h: CGFloat) -> UIImage {
+        let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+        return UIGraphicsImageRenderer(size: CGSize(width: w, height: h), format: f).image { c in UIColor.systemTeal.setFill(); c.fill(CGRect(x: 0, y: 0, width: w, height: h)) }
+    }
+    func testPixelsParsesCommonSpellingsAndRejectsNonsense() {
+        XCTAssertEqual(ChainImage.pixels("413x531"), CGSize(width: 413, height: 531))
+        XCTAssertEqual(ChainImage.pixels("600 × 600"), CGSize(width: 600, height: 600))
+        XCTAssertNil(ChainImage.pixels("big")); XCTAssertNil(ChainImage.pixels("0x100")); XCTAssertNil(ChainImage.pixels("99999x10"))
+    }
+    func testExactSizeBlockGivesExactlyThatManyPixels() async {
+        let r = await ChainRunner.apply(ChainStep(block: .resizePhoto, settings: ["size": "413x531"]), to: .image(photo(1200, 900)))
+        guard case .success(.image(let out)) = r else { return XCTFail("no image") }
+        XCTAssertEqual(out.size.width * out.scale, 413); XCTAssertEqual(out.size.height * out.scale, 531)
+    }
+    func testExactSizeBlockExplainsABadSize() async {
+        let r = await ChainRunner.apply(ChainStep(block: .resizePhoto, settings: ["size": "huge"]), to: .image(photo(100, 100)))
+        guard case .failure(.invalid(let why)) = r else { return XCTFail("should stop") }
+        XCTAssertTrue(why.contains("600x600"))
+    }
+    func testWatermarkLineHasWordsAndTheDay() {
+        let day = Date(timeIntervalSince1970: 1_794_441_600)   // 12 Nov 2026 UTC
+        XCTAssertTrue(ChainImage.watermarkLine("For Acme Bank only", on: day).hasPrefix("For Acme Bank only · "))
+        XCTAssertTrue(ChainImage.watermarkLine("", on: day).hasPrefix("For verification only · "))
+        XCTAssertTrue(ChainImage.watermarkLine("", on: day).hasSuffix("2026"))
+    }
+    func testWatermarkKeepsTheSizeAndChangesThePicture() async {
+        let src = photo(400, 300)
+        let r = await ChainRunner.apply(ChainStep(block: .watermark, settings: ["text": "Copy"]), to: .image(src))
+        guard case .success(.image(let out)) = r else { return XCTFail("no image") }
+        XCTAssertEqual(out.size, src.size)
+        XCTAssertNotEqual(out.pngData(), src.pngData(), "the words must actually be drawn")
+    }
+    func testLimitLabels() {
+        XCTAssertEqual(ChainImage.limitLabel(0.05), "50 KB"); XCTAssertEqual(ChainImage.limitLabel(0.02), "20 KB"); XCTAssertEqual(ChainImage.limitLabel(2), "2 MB")
+    }
+    func testPortalPhotoTemplateLandsUnderFiftyKilobytesAtExactSize() async throws {
+        let c = try XCTUnwrap(ChainTemplates.all.first { $0.id == "portal-photo" })
+        let r = await ChainRunner.run(c, input: .image(photo(3000, 2000)))
+        guard case .success(.file(let d, let ext)) = r else { return XCTFail("no file") }
+        XCTAssertEqual(ext, "jpg")
+        XCTAssertLessThanOrEqual(d.count, 50 * 1024)
+    }
+    func testPlannerUnderstandsKilobytesAndWatermark() {
+        let kb = ChainPlanner.keywordPlan("shrink my photo under 50 kb for the visa upload")
+        XCTAssertEqual(kb?.steps.map(\.block), [.shrinkImage]); XCTAssertEqual(kb?.steps.first?.settings["mb"], "0.05")
+        XCTAssertEqual(ChainPlanner.keywordPlan("add a watermark to my licence copy and strip the location")?.steps.map(\.block), [.watermark, .stripLocation])
     }
 }

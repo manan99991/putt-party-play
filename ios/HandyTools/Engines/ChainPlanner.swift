@@ -77,14 +77,21 @@ enum ChainPlanner {
         if has(["enhance", "sharpen", "improve", "fix the photo", "better quality", "clearer", "brighten"]) { steps.append(ChainStep(block: .enhance)) }
         if has(["blur", "hide", "redact", "private", "faces", "face ", "anonym", "censor"]) { steps.append(ChainStep(block: .hideSensitive)) }
         if has(["passport", "id photo", "visa photo", "headshot size"]) { steps.append(ChainStep(block: .passportPhoto, settings: ["country": "us"])) }
+        if has(["watermark"]) { steps.append(ChainStep(block: .watermark, settings: ["text": "For verification only"])) }
         if has(["location", "gps", "exif", "metadata", "safe to share", "safe-to-share", "strip"]) { steps.append(ChainStep(block: .stripLocation)) }
+        if has(["35x45", "35 x 45", "pixels", "pixel size", " px"]) { steps.append(ChainStep(block: .resizePhoto, settings: ["size": has(["35x45", "35 x 45"]) ? "413x531" : "600x600"])) }
         if has(["png", "heic", "jpg", "jpeg", "convert", "format"]) {
             let f = s.contains("png") ? "PNG" : s.contains("heic") ? "HEIC" : "JPG"
             steps.append(ChainStep(block: .convertImage, settings: ["format": f]))
         }
-        if has(["shrink", "smaller", "compress", "reduce", "under ", " mb", "email", "upload", "size"]) {
-            let mb = number(near: ["mb", "megabyte"], in: s, before: true) ?? 2
-            steps.append(ChainStep(block: .shrinkImage, settings: ["mb": String(mb)]))
+        if has(["shrink", "smaller", "compress", "reduce", "under ", " mb", " kb", "email", "upload", "size"]) {
+            // "under 50 kb" is common for upload forms; a kilobyte figure wins over the megabyte default.
+            if let kb = number(near: ["kb", "kilobyte"], in: s, before: true) {
+                steps.append(ChainStep(block: .shrinkImage, settings: ["mb": String(Double(kb) / 1000)]))
+            } else {
+                let mb = number(near: ["mb", "megabyte"], in: s, before: true) ?? 2
+                steps.append(ChainStep(block: .shrinkImage, settings: ["mb": String(mb)]))
+            }
         }
         // A PDF comes last: it takes whatever the photo has become.
         if has(["pdf"]) { steps.append(ChainStep(block: .photoPdf)) }

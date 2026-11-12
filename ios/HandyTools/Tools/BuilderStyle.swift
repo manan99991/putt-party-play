@@ -27,14 +27,16 @@ extension Block {
         case .describe: return "text.below.photo"
         case .identify: return "viewfinder"
         case .photoPdf: return "doc.richtext"
+        case .watermark: return "signature"
+        case .resizePhoto: return "aspectratio"
         }
     }
     var tint: Color {
         switch self {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .cleanLinks, .priceCompare, .describe, .identify: return Color(hex: 0x3B82F6)
-        case .shrinkImage, .convertImage, .stripLocation: return Color(hex: 0x10B981)
+        case .shrinkImage, .convertImage, .stripLocation, .resizePhoto: return Color(hex: 0x10B981)
         case .cutout, .enhance, .passportPhoto: return Color(hex: 0xA855F7)
-        case .hideSensitive, .scamCheck: return Color(hex: 0xF97316)
+        case .hideSensitive, .scamCheck, .watermark: return Color(hex: 0xF97316)
         case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr: return Color(hex: 0xEC4899)
         }
     }
@@ -63,6 +65,8 @@ extension Block {
         case .describe: return "Says what the photo shows."
         case .identify: return "Names the plant, animal, object or barcode."
         case .photoPdf: return "Turns the photo into a searchable PDF."
+        case .watermark: return "Writes your words and today's date across it, so a copy can't be misused."
+        case .resizePhoto: return "Fits an exact size in pixels, for ID photos and upload forms."
         }
     }
 }

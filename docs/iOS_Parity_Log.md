@@ -82,3 +82,9 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 ### Builder: start from what you have, steps grouped by goal — iOS and Android
 - A new tool first asks "What do you start with?" (A photo / Text). After that the add-step list shows only steps that fit, under goal headings: Make it easy to send, Keep it private, Make it look better, Read what's in it, Understand it, Clean it up, Turn it into something, Money. Same goal wording on both platforms (`Block.goal`).
 - Video, voice, contacts and files are named as coming next; they are not start options yet.
+
+### Upload-form and ID blocks — iOS and Android
+- `watermark`: repeats your words plus the day it ran diagonally across the photo (default "For verification only"). `resizePhoto`: exact pixel size by cover-and-trim (35x45 mm = 413x531, 600x600, 1080 square, 4:5, 16:9).
+- Shrink to size now picks from a list of limits down to 20 KB (was 0.25 MB minimum) for portals that demand 20-100 KB.
+- New starters on both: "Privacy share shield" (hide faces and numbers, strip location, under 2 MB), "ID copy with a safety watermark", "Portal photo: 35x45 mm under 50 KB".
+- Describe it (iOS): understands "watermark", "under 50 kb", "35x45" / "pixels". Android planner not yet.

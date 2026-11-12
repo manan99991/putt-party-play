@@ -110,8 +110,38 @@ object ChainRunner {
                     TextTidy.tableCsv(input.text).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Doc(it.toByteArray(), "csv")) }
                 b == Block.SHRINK && input is Payload.Pic -> {
                     val mb = step.settings["mb"]?.toDoubleOrNull() ?: 2.0
-                    val e = MediaEngine.shrinkToBytes(input.bmp, (mb.coerceAtLeast(0.05) * 1_048_576).toLong())
+                    val e = MediaEngine.shrinkToBytes(input.bmp, (mb.coerceAtLeast(0.01) * 1_048_576).toLong())
                     Outcome.Done(Payload.Doc(e.bytes, "jpg"))
+                }
+                b == Block.WATERMARK && input is Payload.Pic -> {
+                    // Repeats the line diagonally across the whole picture, see-through, so it can't be cropped away.
+                    // The date is stamped at run time, so a copy made today can't be passed off later.
+                    val line = TextTidy.watermarkLine(step.settings["text"] ?: "", java.util.Date())
+                    val out = input.bmp.copy(android.graphics.Bitmap.Config.ARGB_8888, true)
+                    val c = android.graphics.Canvas(out)
+                    val size = maxOf(14f, minOf(out.width, out.height) / 20f)
+                    val fill = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = android.graphics.Color.argb(115, 255, 255, 255); textSize = size; isFakeBoldText = true }
+                    val edge = android.graphics.Paint(fill).apply { color = android.graphics.Color.argb(115, 0, 0, 0); style = android.graphics.Paint.Style.STROKE; strokeWidth = size / 14f }
+                    val tw = fill.measureText(line)
+                    val reach = Math.hypot(out.width.toDouble(), out.height.toDouble()).toFloat() / 2f
+                    c.translate(out.width / 2f, out.height / 2f); c.rotate(-30f)
+                    var y = -reach; var row = 0
+                    while (y < reach) {
+                        var x = -reach - if (row % 2 == 0) 0f else tw / 2f
+                        while (x < reach) { c.drawText(line, x, y, edge); c.drawText(line, x, y, fill); x += tw + size * 2 }
+                        y += size * 3.6f; row++
+                    }
+                    Outcome.Done(Payload.Pic(out))
+                }
+                b == Block.RESIZE_PHOTO && input is Payload.Pic -> {
+                    val px = TextTidy.pixels(step.settings["size"] ?: "") ?: return@withContext Outcome.Stopped("Exact pixel size needs a size like 600x600.")
+                    // Scale to cover the exact size and trim the overflow evenly, so nothing is stretched.
+                    val (w, h) = px
+                    val s = maxOf(w.toFloat() / input.bmp.width, h.toFloat() / input.bmp.height)
+                    val sw = input.bmp.width * s; val sh = input.bmp.height * s
+                    val out = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+                    android.graphics.Canvas(out).drawBitmap(input.bmp, null, android.graphics.RectF((w - sw) / 2f, (h - sh) / 2f, (w + sw) / 2f, (h + sh) / 2f), android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG))
+                    Outcome.Done(Payload.Pic(out))
                 }
                 b == Block.STRIP_LOCATION && input is Payload.Pic -> Outcome.Done(Payload.Doc(MediaEngine.jpeg(input.bmp, 92), "jpg"))
                 b == Block.CONVERT && input is Payload.Pic ->

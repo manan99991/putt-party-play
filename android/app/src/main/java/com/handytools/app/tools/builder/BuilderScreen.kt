@@ -101,7 +101,8 @@ fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
 }
 
 private fun defaults(b: Block): Map<String, String> = when (b) {
-    Block.SHRINK -> mapOf("mb" to "2"); Block.SUMMARIZE -> mapOf("sentences" to "3"); Block.CONVERT -> mapOf("format" to "JPG"); else -> emptyMap()
+    Block.SHRINK -> mapOf("mb" to "2"); Block.SUMMARIZE -> mapOf("sentences" to "3"); Block.CONVERT -> mapOf("format" to "JPG")
+    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531"); else -> emptyMap()
 }
 
 @Composable
@@ -293,11 +294,22 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
     fun set(k: String, v: String) = onChange(s.copy(settings = s.settings + (k to v)))
     when (s.block) {
         Block.SHRINK -> {
+            // Steps through a short list of limits, down to the 20-50 KB that government and bank upload forms ask for.
             val mb = s.settings["mb"]?.toDoubleOrNull() ?: 2.0
+            val i = TextTidy.LIMITS.indexOfFirst { it >= mb }.let { if (it < 0) TextTidy.LIMITS.lastIndex else it }
             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                TextButton({ set("mb", (mb - 0.25).coerceAtLeast(0.25).toString()) }) { Text("−") }
-                Text("Under ${"%.2f".format(mb).trimEnd('0').trimEnd('.')} MB", style = MaterialTheme.typography.bodyMedium)
-                TextButton({ set("mb", (mb + 0.25).coerceAtMost(20.0).toString()) }) { Text("+") }
+                TextButton({ set("mb", TextTidy.LIMITS[(i - 1).coerceAtLeast(0)].toString()) }) { Text("−") }
+                Text("Under ${TextTidy.limitLabel(mb)}", style = MaterialTheme.typography.bodyMedium)
+                TextButton({ set("mb", TextTidy.LIMITS[(i + 1).coerceAtMost(TextTidy.LIMITS.lastIndex)].toString()) }) { Text("+") }
+            }
+        }
+        Block.WATERMARK -> {
+            OutlinedTextField(s.settings["text"] ?: "", { v -> set("text", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Words to write across it") })
+            Text("Today's date is added each time it runs.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        Block.RESIZE_PHOTO -> Column {
+            TextTidy.SIZES.forEach { (label, value) ->
+                TextButton({ set("size", value) }) { Text(if ((s.settings["size"] ?: "413x531") == value) "● $label" else label) }
             }
         }
         Block.SUMMARIZE -> {

@@ -106,4 +106,28 @@ object TextTidy {
     /** The scam checker's verdict as a few plain lines: the verdict, the main reasons, and one thing to do. */
     fun scamReport(verdict: String, reasons: List<String>, linkNotes: List<String>, advice: String?): String =
         (listOf("$verdict.") + reasons.take(4).map { "• $it" } + linkNotes.map { "• $it" } + (advice?.let { listOf("", it) } ?: emptyList())).joinToString("\n")
+
+    // MARK: size limits, pixel sizes and the watermark line (same values and wording as iOS ChainImage)
+
+    /** Size limits a tool can pick, in megabytes. The small ones are for upload forms that demand 20, 50 or 100 KB. */
+    val LIMITS = listOf(0.02, 0.05, 0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0)
+    fun limitLabel(mb: Double): String =
+        if (mb < 1) "${Math.round(mb * 1000)} KB" else "${if (mb == Math.floor(mb)) mb.toLong().toString() else mb.toString()} MB"
+
+    /** Pixel sizes offered by "Exact pixel size". 413x531 is a 35x45 mm passport photo at 300 dpi. */
+    val SIZES = listOf("35x45 mm photo (413x531)" to "413x531", "2x2 inch photo (600x600)" to "600x600", "Square 1080" to "1080x1080",
+        "Portrait 4:5 (1080x1350)" to "1080x1350", "Wide 16:9 (1920x1080)" to "1920x1080")
+
+    /** "413x531" (also "413 x 531" or "413×531") as width and height; null if it isn't two sensible numbers. */
+    fun pixels(s: String): Pair<Int, Int>? {
+        val parts = s.lowercase().replace("×", "x").split('x').map { it.trim() }
+        if (parts.size != 2) return null
+        val w = parts[0].toIntOrNull() ?: return null
+        val h = parts[1].toIntOrNull() ?: return null
+        return if (w in 16..8000 && h in 16..8000) w to h else null
+    }
+
+    /** The watermark line: the tool's words (or a safe default) plus the day it was made. */
+    fun watermarkLine(words: String, day: java.util.Date): String =
+        (words.trim().ifEmpty { "For verification only" }) + " · " + java.text.SimpleDateFormat("d MMM yyyy", java.util.Locale.US).format(day)
 }

@@ -318,14 +318,26 @@ private struct ChainEditor: View {
     }
 
     private func defaults(_ b: Block) -> [String: String] {
-        switch b { case .shrinkImage: return ["mb": "2"]; case .summarize: return ["sentences": "3"]; case .convertImage: return ["format": "JPG"]; case .passportPhoto: return ["country": "us"]; default: return [:] }
+        switch b { case .shrinkImage: return ["mb": "2"]; case .summarize: return ["sentences": "3"]; case .convertImage: return ["format": "JPG"]; case .passportPhoto: return ["country": "us"]
+        case .watermark: return ["text": "For verification only"]; case .resizePhoto: return ["size": "413x531"]; default: return [:] }
     }
 
     @ViewBuilder private func settings(_ i: Int) -> some View {
         switch chain.steps[i].block {
         case .shrinkImage:
+            // A short list of limits, down to the 20-50 KB that government and bank upload forms ask for.
             let mb = Double(chain.steps[i].settings["mb"] ?? "2") ?? 2
-            Stepper("Under \(mb.formatted()) MB", value: Binding(get: { mb }, set: { chain.steps[i].settings["mb"] = String($0) }), in: 0.25...20, step: 0.25).font(HandyFont.caption)
+            Picker("Size limit", selection: Binding(get: { mb }, set: { chain.steps[i].settings["mb"] = String($0) })) {
+                ForEach((ChainImage.limits.contains(mb) ? ChainImage.limits : (ChainImage.limits + [mb]).sorted()), id: \.self) { v in Text("Under " + ChainImage.limitLabel(v)).tag(v) }
+            }.pickerStyle(.menu).font(HandyFont.caption)
+        case .watermark:
+            TextField("Words to write across it", text: Binding(get: { chain.steps[i].settings["text"] ?? "" }, set: { chain.steps[i].settings["text"] = $0 }))
+                .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+            Text("Today's date is added each time it runs.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        case .resizePhoto:
+            Picker("Size", selection: Binding(get: { chain.steps[i].settings["size"] ?? "413x531" }, set: { chain.steps[i].settings["size"] = $0 })) {
+                ForEach(ChainImage.sizes, id: \.value) { s in Text(s.label).tag(s.value) }
+            }.pickerStyle(.menu).font(HandyFont.caption)
         case .summarize:
             let n = Int(chain.steps[i].settings["sentences"] ?? "3") ?? 3
             Stepper("\(n) sentences", value: Binding(get: { n }, set: { chain.steps[i].settings["sentences"] = String($0) }), in: 1...8).font(HandyFont.caption)
