@@ -31,7 +31,7 @@ over into a single tool: pick what you start with (a photo, a scan, a PDF, some 
 stack the steps, choose how it ends. Describe it in your own words and Tenzy lines up the steps for you.
 
 BUILD YOUR OWN
-• Start from 30 ready-made tools or build from nothing
+• Start from a ready-made tool or build from nothing
 • Paperwork: scan pages into one PDF, sign and date in the same place every time, name the file
 • Upload forms: exact pixel size, under 20 KB to 10 MB, both sides of an ID on one page, a safety watermark
 • Privacy: hide numbers and faces, strip location, clean tracking out of links
