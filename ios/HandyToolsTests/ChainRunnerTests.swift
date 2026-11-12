@@ -1,4 +1,5 @@
 import XCTest
+import AppIntents
 import UIKit
 import PDFKit
 @testable import HandyTools
@@ -665,5 +666,28 @@ final class ScheduleTests: XCTestCase {
         XCTAssertEqual(p[1].when.weekday, 4)
         let many = (0..<20).map { i -> Chain in var c = a; c.id = "t\(i)"; c.schedule = ChainSchedule(hour: 9, minute: 0, days: [1, 2, 3, 4, 5, 6]); return c }
         XCTAssertEqual(ToolSchedules.plan(for: many).count, ToolSchedules.limit)
+    }
+}
+
+final class ShortcutActionTests: XCTestCase {
+    func testResultsLeaveAsNamedFiles() throws {
+        var c = Chain(id: "x", name: "Clean up", steps: [ChainStep(block: .cleanText)])
+        let t = try XCTUnwrap(ToolIntentSupport.file(.text("hello"), chain: c))
+        XCTAssertEqual(t.name, "Tenzy-result.txt"); XCTAssertEqual(String(decoding: t.data, as: UTF8.self), "hello")
+        c.fileName = "Notes {tool}"
+        XCTAssertEqual(ToolIntentSupport.file(.file(Data([1, 2]), ext: "pdf"), chain: c)?.name, "Notes Clean up.pdf")
+    }
+    func testEveryStarterIsOfferedAndFailuresAreOneSentence() {
+        let ids = ToolIntentSupport.all().map(\.id)
+        XCTAssertEqual(Set(ids).count, ids.count)
+        XCTAssertTrue(ChainTemplates.all.allSatisfy { ids.contains($0.id) })
+        XCTAssertEqual(ToolIntentSupport.words(.nothingFound(.readText)), "\(Block.readText.title) didn't find anything to work with.")
+        XCTAssertThrowsError(try ToolIntentSupport.chain("no-such-tool"))
+    }
+    func testAToolRunsStartToFinishForShortcuts() async throws {
+        let c = Chain(id: "x", name: "Tidy", steps: [ChainStep(block: .cleanText)])
+        let f = try await ToolIntentSupport.run(c, on: .text("a   b\n\n\n\na   b\nc"))
+        XCTAssertEqual(String(decoding: f.data, as: UTF8.self), "a b\n\nc")
+        XCTAssertEqual(f.filename, "Tenzy-result.txt")
     }
 }

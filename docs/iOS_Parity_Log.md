@@ -124,3 +124,9 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Android: ordinary inexact alarms (`ToolReminders`, no exact-alarm permission, can be a few minutes late), re-armed after each one, on app start and after a restart (new normal permission RECEIVE_BOOT_COMPLETED). Asks for notification permission when the switch is turned on.
 - Editor: "Remind me to run this" switch, time, day chips (Mon first). The tool row shows the reminder.
 - UNBUILT in CI (builds paused for cost).
+
+### Shortcuts actions: tools that run by themselves — iOS only
+- Three actions in the Shortcuts app: "Run a Tool on a Photo", "Run a Tool on Text" (both run in the background and hand the result back as a file; text results are a .txt Shortcuts reads as text) and "Open a Tool". Saved tools and starters are both offered.
+- This is the iPhone route to real automation: a Shortcuts automation (time of day, arriving somewhere, Action button, Back Tap, opening an app) can take a photo or the clipboard, run a Tenzy tool, and send the result on.
+- Android has no Shortcuts app. Its equivalent (a tool that runs when a new photo or screenshot appears) is not built yet.
+- UNBUILT in CI (builds paused for cost). App Intents code is the least certain of the unbuilt work: expect compile fixes on the first build.
