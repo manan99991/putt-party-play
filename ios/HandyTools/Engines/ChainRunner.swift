@@ -157,6 +157,59 @@ extension ChainFinish {
     }
 }
 
+/// When a tool should come back to you: a time of day, and the days it applies. A phone won't let an app start a tool
+/// by itself in the background, so this is a reminder: tap it and the tool opens ready to run.
+/// Optional on a chain, so tools saved before this existed still load.
+struct ChainSchedule: Codable, Equatable {
+    var hour: Int = 9
+    var minute: Int = 0
+    /// Weekdays numbered as the calendar does: 1 = Sunday ... 7 = Saturday. Empty means every day.
+    var days: [Int] = []
+
+    /// Sorted, no repeats, only real weekdays. All seven is the same as every day, so it comes back empty.
+    var cleanDays: [Int] {
+        let d = Array(Set(days.filter { (1...7).contains($0) })).sorted()
+        return d.count == 7 ? [] : d
+    }
+
+    /// One per reminder the phone has to hold: a single daily one, or one for each chosen weekday.
+    var triggers: [DateComponents] {
+        let h = min(max(hour, 0), 23), m = min(max(minute, 0), 59)
+        let d = cleanDays
+        if d.isEmpty { return [DateComponents(hour: h, minute: m)] }
+        return d.map { DateComponents(hour: h, minute: m, weekday: $0) }
+    }
+
+    static func clock(hour: Int, minute: Int, uses24h: Bool) -> String {
+        let h = min(max(hour, 0), 23), m = min(max(minute, 0), 59)
+        let mm = m < 10 ? "0\(m)" : "\(m)"
+        if uses24h { return "\(h):\(mm)" }
+        return "\(h % 12 == 0 ? 12 : h % 12):\(mm) \(h < 12 ? "AM" : "PM")"
+    }
+
+    /// "Every day at 9:00 AM", "Weekdays at 6:30 PM", "Mon, Thu at 8:00 AM".
+    func label(uses24h: Bool = false) -> String {
+        let d = cleanDays
+        let names = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        let who: String
+        if d.isEmpty { who = "Every day" }
+        else if d == [2, 3, 4, 5, 6] { who = "Weekdays" }
+        else if d == [1, 7] { who = "Weekends" }
+        else { who = (d.filter { $0 != 1 } + d.filter { $0 == 1 }).map { names[$0 - 1] }.joined(separator: ", ") }   // week reads Mon first
+        return who + " at " + ChainSchedule.clock(hour: hour, minute: minute, uses24h: uses24h)
+    }
+}
+
+extension ChainSchedule {
+    /// Missing pieces fall back to 9:00 every day rather than failing the whole tool.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        hour = (try? c.decode(Int.self, forKey: .hour)) ?? 9
+        minute = (try? c.decode(Int.self, forKey: .minute)) ?? 0
+        days = (try? c.decode([Int].self, forKey: .days)) ?? []
+    }
+}
+
 struct Chain: Codable, Equatable, Identifiable {
     var id: String
     var name: String
@@ -169,6 +222,8 @@ struct Chain: Codable, Equatable, Identifiable {
     var fileName: String?
     /// With `combine`: lay every photo out on a single page (both sides of an ID card) instead of a page each.
     var onePage: Bool?
+    /// A reminder to run this tool at a set time. nil: no reminder.
+    var schedule: ChainSchedule?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -444,6 +499,7 @@ extension Chain {
         // A shared tool never carries the owner's recipients (someone's email or phone number).
         var copy = self
         copy.finish?.to = ""
+        copy.schedule = nil        // nor their reminder times
         return (try? JSONEncoder().encode(copy)).flatMap { String(data: $0, encoding: .utf8) }.map { Chain.prefix + $0 } ?? ""
     }
     static func imported(from text: String) -> Chain? {
@@ -452,6 +508,7 @@ extension Chain {
               var c = try? JSONDecoder().decode(Chain.self, from: d), c.steps.count <= 12,
               let first = c.steps.first, c.problem(starting: first.block.takes) == nil else { return nil }
         c.id = UUID().uuidString
+        c.schedule = nil           // a pasted tool never arrives with reminders already switched on
         return c
     }
 }

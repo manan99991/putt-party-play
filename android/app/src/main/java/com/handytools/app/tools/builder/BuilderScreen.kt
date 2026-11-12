@@ -116,7 +116,16 @@ fun BuilderScreen() {
     var note by remember { mutableStateOf<String?>(null) }
     var ask by remember { mutableStateOf("") }
 
-    fun saveAll() = ChainStore.save(ctx, mine.toList())
+    fun saveAll() { ChainStore.save(ctx, mine.toList()); ToolReminders.sync(ctx, mine.toList()) }
+
+    // A tapped reminder lands here: open that tool ready to run.
+    val reminded = ToolReminders.pending
+    LaunchedEffect(reminded) {
+        if (reminded != null) {
+            mine.firstOrNull { it.id == reminded }?.let { editing = null; running = it }
+            ToolReminders.pending = null
+        }
+    }
 
     editing?.let { c ->
         ChainEditor(c, onCancel = { editing = null }) { saved ->
@@ -147,7 +156,7 @@ fun BuilderScreen() {
             Text("My tools", style = MaterialTheme.typography.titleMedium)
             mine.toList().forEach { c ->
                 ChainRow(c, onRun = { running = c }, onEdit = { editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
-                    onDuplicate = { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy"); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." })
+                    onDuplicate = { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." })
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -180,6 +189,7 @@ private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: ()
             Column(Modifier.weight(1f)) {
                 Text(c.name, style = MaterialTheme.typography.titleSmall)
                 Text(c.steps.joinToString("  ›  ") { it.block.title }, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                c.schedule?.let { w -> Text("Reminder: " + w.label(android.text.format.DateFormat.is24HourFormat(LocalContext.current)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary) }
             }
             TextButton(onRun) { Text("Run") }
             TextButton({ menu = true }) { Text("More") }
@@ -300,6 +310,7 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
                     else -> "When the tool finishes, WhatsApp opens with the result attached. You pick the chat and tap Send." },
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
+        if (chain.end != null) ScheduleCard(chain.schedule) { w -> chain = chain.copy(schedule = w) }
         if (problem != null && chain.steps.isNotEmpty()) Text(problem, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
         HPrimaryButton("Save", enabled = problem == null && chain.name.isNotBlank()) { onSave(chain) }
         HSecondaryButton("Cancel") { onCancel() }

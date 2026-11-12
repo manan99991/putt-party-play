@@ -14,7 +14,10 @@ struct TenzyApp: App {
     @State private var onboardingPage = 0
     @State private var crashReport: String?
 
-    init() { Diagnostics.shared.start() }
+    init() {
+        Diagnostics.shared.start()
+        ToolNotifications.shared.install()   // so a tapped tool reminder opens that tool
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -377,7 +380,10 @@ struct HomeView: View {
             }
             .toolbar(.hidden, for: .navigationBar)
             .onChange(of: path) { _, p in searching = false; if p.last == "paywall" { path.removeLast(); showPaywall = true } }
-            .onAppear { if Launch.route == "paywall" { showPaywall = true } }
+            .onAppear {
+                if Launch.route == "paywall" { showPaywall = true }
+                if ToolSchedules.hasPending { path = ["builder"] }   // launched by tapping a tool reminder
+            }
             .onReceive(NotificationCenter.default.publisher(for: .showPaywall)) { _ in showPaywall = true }
             .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in if let id = n.object as? String { path = [id] } }
             .onReceive(NotificationCenter.default.publisher(for: .showSetup)) { _ in if !(Launch.route?.hasPrefix("onboarding") ?? false) { path = ["setup"] } }

@@ -116,3 +116,11 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - With "one PDF": "All on a single page" lays every photo on one A4-shaped sheet. Starter: "Both sides of an ID on one page" (watermarked).
 - Same rules both platforms (`ChainText.chatLink` / `TextTidy.chatLink`, `slots`). iOS opens the link automatically when the run finishes; Android shows an "Open it" button.
 - UNBUILT in CI (builds paused for cost).
+
+### Reminders: run a tool at a set time — iOS and Android
+- A tool can carry a reminder (`schedule`: hour, minute, days with 1 = Sunday ... 7 = Saturday, empty = every day). Same JSON on both; never included in "Copy to share", and a pasted tool arrives without one. Same label wording ("Weekdays at 6:30 PM").
+- It is a reminder, not a silent background run: the phone shows a notification at that time and tapping it opens the tool ready to run. The editor says so.
+- iOS: repeating local notifications (`ToolSchedules`, one per chosen weekday, capped at 56 for the 64-per-app limit); `ToolNotifications` routes the tap to Build your own, which opens the tool.
+- Android: ordinary inexact alarms (`ToolReminders`, no exact-alarm permission, can be a few minutes late), re-armed after each one, on app start and after a restart (new normal permission RECEIVE_BOOT_COMPLETED). Asks for notification permission when the switch is turned on.
+- Editor: "Remind me to run this" switch, time, day chips (Mon first). The tool row shows the reminder.
+- UNBUILT in CI (builds paused for cost).

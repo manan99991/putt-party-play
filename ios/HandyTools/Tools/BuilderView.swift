@@ -24,7 +24,7 @@ struct BuilderView: View {
                 Spacer()
                 Button { editing = Chain(id: UUID().uuidString, name: "My tool", steps: []) } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
                 Button {
-                    if let c = Chain.imported(from: UIPasteboard.general.string ?? "") { mine.append(c); ChainStore.save(mine); note = "Added \(c.name)." }
+                    if let c = Chain.imported(from: UIPasteboard.general.string ?? "") { mine.append(c); persist(); note = "Added \(c.name)." }
                     else { note = "Copy a tool from another Tenzy first, then tap Paste." }
                 } label: { Label("Paste", systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
             }
@@ -37,11 +37,22 @@ struct BuilderView: View {
             NavigationStack {
                 ChainEditor(chain: c) { saved in
                     if let i = mine.firstIndex(where: { $0.id == saved.id }) { mine[i] = saved } else { mine.append(saved) }
-                    ChainStore.save(mine); editing = nil
+                    persist(); editing = nil
                 }
             }
         }
         .sheet(item: $running) { c in NavigationStack { ChainRunView(chain: c) } }
+        .onAppear { openReminded() }
+        .onReceive(NotificationCenter.default.publisher(for: .openTool)) { _ in openReminded() }
+    }
+
+    /// Saves the tools and keeps the phone's reminders in step with them.
+    private func persist() { ChainStore.save(mine); ToolSchedules.sync(mine) }
+
+    /// A tapped reminder lands here: open that tool ready to run.
+    private func openReminded() {
+        guard let id = ToolSchedules.takePending(), let c = mine.first(where: { $0.id == id }) else { return }
+        editing = nil; running = c
     }
 
     private var hero: some View {
@@ -87,16 +98,19 @@ struct BuilderView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(c.name).font(HandyFont.bodyStrong)
                 Text(c.steps.map(\.block.title).joined(separator: "  ›  ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+                if let when = c.schedule {
+                    Label(when.label(uses24h: ToolSchedules.uses24h), systemImage: "bell").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+                }
             }
             Spacer()
             Menu {
                 Button("Edit") { editing = c }
                 Button("Duplicate") {
-                    var k = c; k.id = UUID().uuidString; k.name += " copy"
-                    mine.append(k); ChainStore.save(mine); note = "Duplicated as \(k.name)."
+                    var k = c; k.id = UUID().uuidString; k.name += " copy"; k.schedule = nil
+                    mine.append(k); persist(); note = "Duplicated as \(k.name)."
                 }
                 Button("Copy to share") { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
-                Button("Delete", role: .destructive) { mine.removeAll { $0.id == c.id }; ChainStore.save(mine) }
+                Button("Delete", role: .destructive) { mine.removeAll { $0.id == c.id }; persist() }
             } label: { Image(systemName: "ellipsis.circle").font(.system(size: 20)).frame(width: 44, height: 44) }
             Button("Run") { running = c }.secondaryButton().fixedSize()
         }.cardStyle(padding: HandySpacing.s12)
@@ -148,6 +162,7 @@ private struct ChainEditor: View {
                     node(icon: "checkmark.circle.fill", title: "You get \(end.label)", sub: "Then copy it, save it or share it.", tint: HandyColor.success)
                 }
                 if endKind != nil { finishCard.padding(.top, HandySpacing.s12) }
+                if endKind != nil { ScheduleCard(schedule: $chain.schedule).padding(.top, HandySpacing.s12) }
                 if let p = chain.problem(starting: startKind), !chain.steps.isEmpty {
                     Text(p).font(HandyFont.caption).foregroundStyle(HandyColor.danger).padding(.top, HandySpacing.s12)
                 }

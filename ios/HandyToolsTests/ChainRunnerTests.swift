@@ -625,3 +625,45 @@ final class PeopleAndIdTests: XCTestCase {
         XCTAssertEqual(c.combine, true); XCTAssertEqual(c.onePage, true); XCTAssertNil(c.problem(starting: .image))
     }
 }
+
+final class ScheduleTests: XCTestCase {
+    func testLabelsReadLikeAPersonWouldSayThem() {
+        XCTAssertEqual(ChainSchedule().label(), "Every day at 9:00 AM")
+        XCTAssertEqual(ChainSchedule(hour: 18, minute: 30, days: [2, 3, 4, 5, 6]).label(), "Weekdays at 6:30 PM")
+        XCTAssertEqual(ChainSchedule(hour: 18, minute: 30, days: [2, 3, 4, 5, 6]).label(uses24h: true), "Weekdays at 18:30")
+        XCTAssertEqual(ChainSchedule(hour: 0, minute: 5, days: [7, 1]).label(), "Weekends at 12:05 AM")
+        XCTAssertEqual(ChainSchedule(hour: 12, minute: 0, days: [1, 5, 2]).label(), "Mon, Thu, Sun at 12:00 PM")
+        XCTAssertEqual(ChainSchedule(hour: 8, minute: 0, days: [1, 2, 3, 4, 5, 6, 7]).label(), "Every day at 8:00 AM")
+    }
+    func testOneReminderADayOrOnePerChosenDay() {
+        XCTAssertEqual(ChainSchedule(hour: 7, minute: 15, days: []).triggers, [DateComponents(hour: 7, minute: 15)])
+        let t = ChainSchedule(hour: 7, minute: 15, days: [6, 2, 2, 9]).triggers
+        XCTAssertEqual(t, [DateComponents(hour: 7, minute: 15, weekday: 2), DateComponents(hour: 7, minute: 15, weekday: 6)])
+        XCTAssertEqual(ChainSchedule(hour: 40, minute: -3, days: []).triggers, [DateComponents(hour: 23, minute: 0)])
+    }
+    func testOldToolsLoadAndAScheduleSurvivesSaving() throws {
+        let old = try JSONDecoder().decode(Chain.self, from: Data(#"{"id":"a","name":"Old","steps":[]}"#.utf8))
+        XCTAssertNil(old.schedule)
+        var c = Chain(id: "b", name: "Friday receipts", steps: [ChainStep(block: .readText)])
+        c.schedule = ChainSchedule(hour: 18, minute: 0, days: [6])
+        let back = try JSONDecoder().decode(Chain.self, from: JSONEncoder().encode(c))
+        XCTAssertEqual(back, c)
+        let loose = try JSONDecoder().decode(Chain.self, from: Data(#"{"id":"a","name":"Loose","steps":[],"schedule":{"hour":7}}"#.utf8))
+        XCTAssertEqual(loose.schedule, ChainSchedule(hour: 7, minute: 0, days: []))
+    }
+    func testASharedToolDoesNotCarryItsReminder() throws {
+        var c = Chain(id: "b", name: "Friday receipts", steps: [ChainStep(block: .readText)])
+        c.schedule = ChainSchedule(hour: 18, minute: 0, days: [6])
+        XCTAssertFalse(c.shareText.contains("schedule"))
+        XCTAssertNil(try XCTUnwrap(Chain.imported(from: c.shareText)).schedule)
+    }
+    func testReminderPlanNamesEachOneAndStaysUnderThePhoneLimit() {
+        var a = Chain(id: "a", name: "A", steps: [ChainStep(block: .readText)]); a.schedule = ChainSchedule(hour: 9, minute: 0, days: [2, 4])
+        let b = Chain(id: "b", name: "B", steps: [ChainStep(block: .readText)])
+        let p = ToolSchedules.plan(for: [a, b])
+        XCTAssertEqual(p.map(\.id), ["tool-a-0", "tool-a-1"])
+        XCTAssertEqual(p[1].when.weekday, 4)
+        let many = (0..<20).map { i -> Chain in var c = a; c.id = "t\(i)"; c.schedule = ChainSchedule(hour: 9, minute: 0, days: [1, 2, 3, 4, 5, 6]); return c }
+        XCTAssertEqual(ToolSchedules.plan(for: many).count, ToolSchedules.limit)
+    }
+}

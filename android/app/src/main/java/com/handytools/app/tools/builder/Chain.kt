@@ -83,12 +83,60 @@ data class Finish(val kind: String = "share", val to: String = "") {
     }
 }
 
+/**
+ * When a tool should come back to you: a time of day, and the days it applies. It is a reminder: tap it and the tool
+ * opens ready to run. Days are numbered as on iOS and in java.util.Calendar: 1 = Sunday ... 7 = Saturday; empty = every day.
+ */
+data class Schedule(val hour: Int = 9, val minute: Int = 0, val days: List<Int> = emptyList()) {
+    /** Sorted, no repeats, only real weekdays. All seven is the same as every day, so it comes back empty. */
+    val cleanDays: List<Int> get() = days.filter { it in 1..7 }.distinct().sorted().let { if (it.size == 7) emptyList() else it }
+
+    /** "Every day at 9:00 AM", "Weekdays at 6:30 PM", "Mon, Thu at 8:00 AM". */
+    fun label(uses24h: Boolean = false): String {
+        val d = cleanDays
+        val names = listOf("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+        val who = when {
+            d.isEmpty() -> "Every day"
+            d == listOf(2, 3, 4, 5, 6) -> "Weekdays"
+            d == listOf(1, 7) -> "Weekends"
+            else -> (d.filter { it != 1 } + d.filter { it == 1 }).joinToString(", ") { names[it - 1] }   // week reads Mon first
+        }
+        return who + " at " + clock(hour, minute, uses24h)
+    }
+
+    /** The next moment this reminder is due, strictly after [from]. */
+    fun next(from: Long, zone: java.util.TimeZone = java.util.TimeZone.getDefault()): Long {
+        val d = cleanDays
+        val c = java.util.Calendar.getInstance(zone).apply {
+            timeInMillis = from
+            set(java.util.Calendar.HOUR_OF_DAY, hour.coerceIn(0, 23)); set(java.util.Calendar.MINUTE, minute.coerceIn(0, 59))
+            set(java.util.Calendar.SECOND, 0); set(java.util.Calendar.MILLISECOND, 0)
+        }
+        if (c.timeInMillis <= from) c.add(java.util.Calendar.DAY_OF_YEAR, 1)
+        if (d.isEmpty()) return c.timeInMillis
+        repeat(7) {
+            if (c.get(java.util.Calendar.DAY_OF_WEEK) in d) return c.timeInMillis
+            c.add(java.util.Calendar.DAY_OF_YEAR, 1)
+        }
+        return c.timeInMillis
+    }
+
+    companion object {
+        fun clock(hour: Int, minute: Int, uses24h: Boolean): String {
+            val h = hour.coerceIn(0, 23); val mm = minute.coerceIn(0, 59).toString().padStart(2, '0')
+            return if (uses24h) "$h:$mm" else "${if (h % 12 == 0) 12 else h % 12}:$mm ${if (h < 12) "AM" else "PM"}"
+        }
+    }
+}
+
 /** @param combine when several pages or photos go in at once, put every result into one PDF instead of one file each. */
 data class Chain(val id: String, val name: String, val steps: List<Step>, val finish: Finish? = null, val combine: Boolean = false,
                  /** What the result file is called, e.g. "Signed form {date}". Empty keeps the plain default. */
                  val fileName: String = "",
                  /** With [combine]: lay every photo out on a single page (both sides of an ID card) instead of a page each. */
-                 val onePage: Boolean = false) {
+                 val onePage: Boolean = false,
+                 /** A reminder to run this tool at a set time. null: no reminder. */
+                 val schedule: Schedule? = null) {
     val start: Kind get() = steps.firstOrNull()?.block?.takes ?: Kind.IMAGE
     val end: Kind? get() = steps.lastOrNull()?.block?.gives
 
@@ -106,7 +154,9 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
     /** @param forSharing a shared tool never carries the owner's recipients (someone's email or phone number). */
     fun toJson(forSharing: Boolean = false): JSONObject = JSONObject().put("id", id).put("name", name).put("steps", JSONArray().also { a ->
         steps.forEach { s -> a.put(JSONObject().put("block", s.block.id).put("settings", JSONObject(s.settings))) }
-    }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true); if (fileName.isNotBlank()) o.put("fileName", fileName); if (onePage) o.put("onePage", true) }
+    }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true); if (fileName.isNotBlank()) o.put("fileName", fileName); if (onePage) o.put("onePage", true)
+        // A shared tool never carries the owner's reminder times.
+        if (!forSharing) schedule?.let { w -> o.put("schedule", JSONObject().put("hour", w.hour).put("minute", w.minute).put("days", JSONArray(w.cleanDays))) } }
 
     /** For a one-PDF run each page keeps its picture: the steps without a trailing "Make a PDF", which the join replaces. */
     val stepsPerPage: List<Step> get() = if (combine && steps.lastOrNull()?.block == Block.PHOTO_PDF) steps.dropLast(1) else steps
@@ -127,7 +177,11 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                 Step(b, map)
             }
             val fin = o.optJSONObject("finish")?.let { f -> Finish(f.optString("kind", "share").takeIf { it in Finish.KINDS } ?: "share", f.optString("to", "")) }
-            Chain(o.optString("id", UUID.randomUUID().toString()), o.optString("name", "My tool"), steps, fin, o.optBoolean("combine", false), o.optString("fileName", ""), o.optBoolean("onePage", false))
+            Chain(o.optString("id", UUID.randomUUID().toString()), o.optString("name", "My tool"), steps, fin, o.optBoolean("combine", false), o.optString("fileName", ""), o.optBoolean("onePage", false),
+                o.optJSONObject("schedule")?.let { w ->
+                    val a = w.optJSONArray("days")
+                    Schedule(w.optInt("hour", 9), w.optInt("minute", 0), if (a == null) emptyList() else (0 until a.length()).map { a.optInt(it) })
+                })
         } catch (_: Exception) { null }
 
         /** Accepts a copied tool only if it is well formed and its steps fit together. */
@@ -136,7 +190,7 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
             if (!t.startsWith(PREFIX)) return null
             val c = try { fromJson(JSONObject(t.removePrefix(PREFIX))) } catch (_: Exception) { null } ?: return null
             if (c.steps.size > 12 || c.problem() != null) return null
-            return c.copy(id = UUID.randomUUID().toString())
+            return c.copy(id = UUID.randomUUID().toString(), schedule = null)   // a pasted tool never arrives with reminders switched on
         }
 
         fun blank() = Chain(UUID.randomUUID().toString(), "My tool", emptyList())

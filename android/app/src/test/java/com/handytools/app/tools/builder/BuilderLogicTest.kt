@@ -226,4 +226,29 @@ class BuilderLogicTest {
         assertTrue(id.combine && id.onePage); assertNull(id.problem(Kind.IMAGE))
         assertNull(ChainTemplates.all.first { it.id == "contact-qr" }.problem(Kind.TEXT))
     }
+    @Test fun reminderLabels() {
+        assertEquals("Every day at 9:00 AM", Schedule().label())
+        assertEquals("Weekdays at 6:30 PM", Schedule(18, 30, listOf(2, 3, 4, 5, 6)).label())
+        assertEquals("Weekdays at 18:30", Schedule(18, 30, listOf(2, 3, 4, 5, 6)).label(uses24h = true))
+        assertEquals("Weekends at 12:05 AM", Schedule(0, 5, listOf(7, 1)).label())
+        assertEquals("Mon, Thu, Sun at 12:00 PM", Schedule(12, 0, listOf(1, 5, 2)).label())
+        assertEquals("Every day at 8:00 AM", Schedule(8, 0, listOf(1, 2, 3, 4, 5, 6, 7)).label())
+        assertEquals(listOf(2, 6), Schedule(7, 15, listOf(6, 2, 2, 9)).cleanDays)
+    }
+    @Test fun nextReminderIsAlwaysLaterAndOnAChosenDay() {
+        val utc = java.util.TimeZone.getTimeZone("UTC")
+        fun at(y: Int, mo: Int, d: Int, h: Int, mi: Int) = java.util.Calendar.getInstance(utc).apply { clear(); set(y, mo - 1, d, h, mi) }.timeInMillis
+        val thu = at(2026, 11, 12, 10, 0)                                   // Thursday 12 Nov 2026, 10:00
+        assertEquals(at(2026, 11, 12, 18, 0), Schedule(18, 0).next(thu, utc))          // later today
+        assertEquals(at(2026, 11, 13, 9, 0), Schedule(9, 0).next(thu, utc))            // already passed: tomorrow
+        assertEquals(at(2026, 11, 13, 10, 0), Schedule(10, 0).next(thu, utc))          // exactly now is not "next"
+        assertEquals(at(2026, 11, 16, 9, 0), Schedule(9, 0, listOf(2)).next(thu, utc)) // Mondays only
+        assertEquals(at(2026, 11, 19, 9, 0), Schedule(9, 0, listOf(5)).next(thu, utc)) // Thursdays, 9:00 has passed: next week
+        assertEquals(at(2026, 11, 14, 8, 0), Schedule(8, 0, listOf(1, 7)).next(thu, utc))
+    }
+    @Test fun aCopiedToolKeepsNoReminder() {
+        val c = Chain("a", "Friday receipts", listOf(Step(Block.READ_TEXT, emptyMap())), schedule = Schedule(18, 0, listOf(6)))
+        assertEquals(Schedule(18, 0, listOf(6)), c.schedule)
+        assertNull(c.copy(schedule = null).schedule)
+    }
 }
