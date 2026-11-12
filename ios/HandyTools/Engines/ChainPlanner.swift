@@ -55,6 +55,13 @@ enum ChainPlanner {
             has(["task", "to-do", "todo", "whiteboard", "action item", "checklist"]) ? .actionItems :
             has(["summar", "tl;dr", "tldr", "shorten", "gist", "key points"]) ? .summarize : nil
 
+        // A running sheet: each receipt becomes one row added to the same list.
+        if has(["expense sheet", "expense log", "ledger", "running list", "running sheet", "monthly sheet"]) {
+            if wantsPhotoInput || has(["receipt"]) { steps.append(ChainStep(block: .readText)) }
+            steps.append(ChainStep(block: .expenseRow))
+            steps.append(ChainStep(block: .addToList, settings: ["list": RunningList.defaultName]))
+            return build(ask, steps)
+        }
         if textJob != nil || wantsClean {
             let needsPhoto = wantsPhotoInput || textJob == .pullReceipt || textJob == .businessCard || textJob == .calendarEvent
             if needsPhoto { steps.append(ChainStep(block: .readText)) }

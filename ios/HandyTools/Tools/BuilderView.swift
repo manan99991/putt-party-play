@@ -311,7 +311,7 @@ private struct ChainEditor: View {
         for (i, step) in steps.enumerated() {
             if Task.isCancelled { return }
             if !value.kind.feeds(step.block.takes) { previews[i] = .failed("Needs \(step.block.takes.label) from the step above."); continue }
-            switch await ChainRunner.apply(step, to: value) {
+            switch await ChainRunner.apply(step, to: value, dryRun: true) {   // a preview never saves anything
             case .success(let next):
                 value = next
                 if Task.isCancelled { return }
@@ -339,7 +339,7 @@ private struct ChainEditor: View {
     private func defaults(_ b: Block) -> [String: String] {
         switch b { case .shrinkImage: return ["mb": "2"]; case .summarize: return ["sentences": "3"]; case .convertImage: return ["format": "JPG"]; case .passportPhoto: return ["country": "us"]
         case .watermark: return ["text": "For verification only"]; case .resizePhoto: return ["size": "413x531"]
-        case .stamp: return ["marks": StampPlan.standard.text]; default: return [:] }
+        case .stamp: return ["marks": StampPlan.standard.text]; case .addToList: return ["list": RunningList.defaultName]; default: return [:] }
     }
 
     @ViewBuilder private func settings(_ i: Int) -> some View {
@@ -350,6 +350,10 @@ private struct ChainEditor: View {
             Picker("Size limit", selection: Binding(get: { mb }, set: { chain.steps[i].settings["mb"] = String($0) })) {
                 ForEach((ChainImage.limits.contains(mb) ? ChainImage.limits : (ChainImage.limits + [mb]).sorted()), id: \.self) { v in Text("Under " + ChainImage.limitLabel(v)).tag(v) }
             }.pickerStyle(.menu).font(HandyFont.caption)
+        case .addToList:
+            TextField("Sheet name", text: Binding(get: { chain.steps[i].settings["list"] ?? RunningList.defaultName }, set: { chain.steps[i].settings["list"] = $0 }))
+                .font(HandyFont.caption).autocorrectionDisabled().padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+            Text("Write {month} to start a fresh sheet each month. The sample shown here is not saved.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .stamp:
             StampEditor(marks: Binding(get: { chain.steps[i].settings["marks"] ?? StampPlan.standard.text }, set: { chain.steps[i].settings["marks"] = $0 }), page: pageBefore(i))
         case .watermark:

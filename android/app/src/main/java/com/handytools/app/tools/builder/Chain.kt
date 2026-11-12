@@ -34,7 +34,9 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     MAKE_QR("makeQr", "Make a QR code", Kind.TEXT, Kind.IMAGE, "Turns text or a link into a QR code."),
     PHOTO_PDF("photoPdf", "Make a PDF", Kind.IMAGE, Kind.FILE, "Turns the photo into a PDF."),
     WATERMARK("watermark", "Add a watermark", Kind.IMAGE, Kind.IMAGE, "Writes your words and today's date across it, so a copy can't be misused."),
-    RESIZE_PHOTO("resizePhoto", "Exact pixel size", Kind.IMAGE, Kind.IMAGE, "Fits an exact size in pixels, for ID photos and upload forms.");
+    RESIZE_PHOTO("resizePhoto", "Exact pixel size", Kind.IMAGE, Kind.IMAGE, "Fits an exact size in pixels, for ID photos and upload forms."),
+    EXPENSE_ROW("expenseRow", "Receipt to one expense row", Kind.TEXT, Kind.TEXT, "Date, store and total as one row."),
+    ADD_TO_LIST("addToList", "Add to a running list", Kind.TEXT, Kind.FILE, "Adds the rows to the same sheet every time, one sheet a month.");
 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
 }
@@ -48,7 +50,7 @@ val Block.goal: String get() = when (this) {
     Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR -> "Turn it into something"
     Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
     Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
-    Block.PULL_RECEIPT -> "Money"
+    Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST -> "Money"
 }
 
 object BlockGoals {
@@ -165,6 +167,7 @@ object ChainTemplates {
         Chain("photo-to-pdf", "Photo to PDF", listOf(Step(Block.PHOTO_PDF))),
         Chain("text-to-qr", "Text or link to QR code", listOf(Step(Block.MAKE_QR))),
         Chain("scan-to-pdf", "Scan pages into one PDF", listOf(Step(Block.PHOTO_PDF)), combine = true),
+        Chain("receipt-run", "Receipt into this month's expense sheet", listOf(Step(Block.READ_TEXT), Step(Block.EXPENSE_ROW), Step(Block.ADD_TO_LIST, mapOf("list" to TextTidy.DEFAULT_LIST)))),
         Chain("share-shield", "Privacy share shield", listOf(Step(Block.HIDE_SENSITIVE), Step(Block.STRIP_LOCATION), Step(Block.SHRINK, mapOf("mb" to "2")))),
         Chain("id-copy-watermarked", "ID copy with a safety watermark", listOf(Step(Block.WATERMARK, mapOf("text" to "For verification only")), Step(Block.STRIP_LOCATION))),
         Chain("portal-photo", "Portal photo: 35x45 mm under 50 KB", listOf(Step(Block.RESIZE_PHOTO, mapOf("size" to "413x531")), Step(Block.SHRINK, mapOf("mb" to "0.05")))),
@@ -195,6 +198,12 @@ object ChainPlanner {
             else -> null
         }
         val steps = ArrayList<Step>()
+        // A running sheet: each receipt becomes one row added to the same list.
+        if (has("expense sheet", "expense log", "ledger", "running list", "running sheet", "monthly sheet")) {
+            if (wantsPhoto || has("receipt")) steps.add(Step(Block.READ_TEXT))
+            steps.add(Step(Block.EXPENSE_ROW)); steps.add(Step(Block.ADD_TO_LIST, mapOf("list" to TextTidy.DEFAULT_LIST)))
+            return finish(ask, steps)
+        }
         if (job != null || wantsClean) {
             val needsPhoto = wantsPhoto || job == Block.PULL_RECEIPT || job == Block.BUSINESS_CARD || job == Block.CALENDAR_EVENT
             if (needsPhoto) steps.add(Step(Block.READ_TEXT))

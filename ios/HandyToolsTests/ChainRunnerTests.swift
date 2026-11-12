@@ -84,9 +84,9 @@ final class ChainRowTests: XCTestCase {
 }
 
 final class ChainTemplateTests: XCTestCase {
-    func testTwentyFourTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 24)
-        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 24)
+    func testTwentyFiveTemplatesAllValidAndUnique() {
+        XCTAssertEqual(ChainTemplates.all.count, 25)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 25)
     }
     func testShareRoundTripAndRejectsJunk() throws {
         let t = ChainTemplates.all[0]
@@ -521,5 +521,54 @@ final class StampAndNameTests: XCTestCase {
         XCTAssertEqual(c.steps.map(\.block), [.stamp, .photoPdf])
         XCTAssertEqual(c.combine, true); XCTAssertEqual(c.finish?.kind, .mail); XCTAssertEqual(c.fileName, "Signed form {date}")
         XCTAssertNil(c.problem(starting: .image))
+    }
+}
+
+/// The running expense sheet: one row per receipt, added to the same list.
+final class RunningListTests: XCTestCase {
+    func testFirstRowsKeepTheirHeaderLaterRowsDontRepeatIt() {
+        let first = RunningList.merged(existing: "", incoming: "Date,Merchant,Total\n2026-11-10,Blue Door Cafe,7.75")
+        XCTAssertEqual(first, "Date,Merchant,Total\n2026-11-10,Blue Door Cafe,7.75")
+        let second = RunningList.merged(existing: first, incoming: "Date,Merchant,Total\n2026-11-11,Hardware Hut,23.10\n")
+        XCTAssertEqual(second, "Date,Merchant,Total\n2026-11-10,Blue Door Cafe,7.75\n2026-11-11,Hardware Hut,23.10")
+    }
+    func testTwoIdenticalPurchasesAreBothKept() {
+        let once = RunningList.merged(existing: "H\na,1", incoming: "H\na,1")
+        XCTAssertEqual(once, "H\na,1\na,1")
+    }
+    func testBlankLinesAndEmptyInputs() {
+        XCTAssertEqual(RunningList.merged(existing: "H\n\n a,1 \n", incoming: "\n\nb,2"), "H\na,1\nb,2")
+        XCTAssertEqual(RunningList.merged(existing: "H\na,1", incoming: "  "), "H\na,1")
+        XCTAssertEqual(RunningList.merged(existing: "", incoming: ""), "")
+    }
+    func testPreviewNeverSavesButARealRunDoes() async {
+        let list = "Test list \(UUID().uuidString)"
+        let file = ChainName.file(pattern: list, tool: "List", ext: "csv")
+        defer { RunningList.delete(file) }
+        let step = ChainStep(block: .addToList, settings: ["list": list])
+        _ = await ChainRunner.apply(step, to: .text("H\na,1"), dryRun: true)
+        XCTAssertEqual(RunningList.read(file), "", "a preview must not write")
+        _ = await ChainRunner.apply(step, to: .text("H\na,1"))
+        let r = await ChainRunner.apply(step, to: .text("H\nb,2"))
+        guard case .success(.file(let d, let ext)) = r else { return XCTFail("no sheet") }
+        XCTAssertEqual(ext, "csv")
+        XCTAssertEqual(String(decoding: d, as: UTF8.self), "H\na,1\nb,2")
+        XCTAssertEqual(RunningList.read(file), "H\na,1\nb,2")
+    }
+    func testMonthTokenInSheetName() {
+        let day = Date(timeIntervalSince1970: 1_794_484_800)
+        let ym: String = { let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM"; return f.string(from: day) }()
+        XCTAssertEqual(ChainName.file(pattern: "Expenses {month}", tool: "List", day: day, ext: "csv"), "Expenses \(ym).csv")
+    }
+    func testReceiptRunStarterChainsAndPlannerFindsIt() throws {
+        let c = try XCTUnwrap(ChainTemplates.all.first { $0.id == "receipt-run" })
+        XCTAssertEqual(c.steps.map(\.block), [.readText, .expenseRow, .addToList]); XCTAssertNil(c.problem(starting: .image))
+        XCTAssertEqual(ChainPlanner.keywordPlan("add every receipt to my expense sheet")?.steps.map(\.block), [.readText, .expenseRow, .addToList])
+    }
+    func testExpenseRowIsHeaderPlusOneRow() async {
+        let r = await ChainRunner.apply(ChainStep(block: .expenseRow), to: .text("Blue Door Cafe\nLatte 4.50\nMuffin 3.25\nTotal 7.75"))
+        guard case .success(.text(let out)) = r else { return XCTFail("no row") }
+        let lines = out.components(separatedBy: "\n")
+        XCTAssertEqual(lines.count, 2); XCTAssertEqual(lines[0], "Date,Merchant,Total,Tax,Currency"); XCTAssertTrue(lines[1].contains("7.75"))
     }
 }

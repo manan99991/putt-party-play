@@ -136,11 +136,30 @@ object TextTidy {
     /** "{date}" becomes today's date and "{tool}" the tool's name; characters a file name can't hold are dropped; several results get -1, -2... */
     fun fileName(pattern: String?, tool: String, day: java.util.Date = java.util.Date(), index: Int? = null, ext: String): String {
         val ymd = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(day)
-        var base = (pattern ?: "").replace("{date}", ymd).replace("{tool}", tool)
+        var base = (pattern ?: "").replace("{date}", ymd).replace("{tool}", tool).replace("{month}", ymd.take(7))
             .filter { it !in "/\\:*?\"<>|" && !it.isISOControl() }
             .trim { it.isWhitespace() || it == '.' }
         if (base.length > 80) base = base.take(80).trim()
         if (base.isEmpty()) base = if (index == null) "Tenzy-result" else "Tenzy"
         return base + (index?.let { "-$it" } ?: "") + "." + ext
+    }
+
+    // MARK: a sheet that grows (same rules as iOS RunningList)
+
+    const val DEFAULT_LIST = "Expenses {month}"
+
+    /** The old sheet plus the new rows. If the new rows start with the sheet's own header line it is not repeated. Blank lines are dropped. */
+    fun mergedList(existing: String, incoming: String): String {
+        fun rows(s: String) = s.split(NEWLINE).map { it.trim() }.filter { it.isNotEmpty() }
+        val old = rows(existing)
+        var new = rows(incoming)
+        if (old.isNotEmpty() && new.firstOrNull() == old.first()) new = new.drop(1)
+        return (old + new).joinToString("\n")
+    }
+
+    /** One row for an expense sheet from what the receipt reader found. */
+    fun expenseRow(dateMs: Long?, merchant: String, total: String): String {
+        val date = dateMs?.let { java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(java.util.Date(it)) } ?: ""
+        return "Date,Merchant,Total,Tax,Currency\n$date,${csv(merchant.trim())},${total.filter { it.isDigit() || it == '.' }},,"
     }
 }

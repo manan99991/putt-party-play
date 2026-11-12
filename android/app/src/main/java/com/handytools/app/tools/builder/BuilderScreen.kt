@@ -102,7 +102,8 @@ fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
 
 private fun defaults(b: Block): Map<String, String> = when (b) {
     Block.SHRINK -> mapOf("mb" to "2"); Block.SUMMARIZE -> mapOf("sentences" to "3"); Block.CONVERT -> mapOf("format" to "JPG")
-    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531"); else -> emptyMap()
+    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
+    Block.ADD_TO_LIST -> mapOf("list" to TextTidy.DEFAULT_LIST); else -> emptyMap()
 }
 
 @Composable
@@ -213,7 +214,7 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
         }
         for ((i, s) in chain.steps.withIndex()) {
             if (!v.kind.feeds(s.block.takes)) { previews[i] = Preview.Bad("Needs ${s.block.takes.label} from the step above."); continue }
-            when (val r = ChainRunner.apply(s, v)) {
+            when (val r = ChainRunner.apply(s, v, dryRun = true)) {   // a preview never saves anything
                 is Outcome.Done -> { v = r.value; previews[i] = Preview.of(r.value) }
                 is Outcome.Stopped -> { previews[i] = Preview.Bad(r.why); return@LaunchedEffect }
             }
@@ -312,6 +313,10 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 Text("Under ${TextTidy.limitLabel(mb)}", style = MaterialTheme.typography.bodyMedium)
                 TextButton({ set("mb", TextTidy.LIMITS[(i + 1).coerceAtMost(TextTidy.LIMITS.lastIndex)].toString()) }) { Text("+") }
             }
+        }
+        Block.ADD_TO_LIST -> {
+            OutlinedTextField(s.settings["list"] ?: TextTidy.DEFAULT_LIST, { v -> set("list", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Sheet name") })
+            Text("Write {month} to start a fresh sheet each month. The sample shown here is not saved.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.WATERMARK -> {
             OutlinedTextField(s.settings["text"] ?: "", { v -> set("text", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Words to write across it") })

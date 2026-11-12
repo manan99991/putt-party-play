@@ -177,4 +177,25 @@ class BuilderLogicTest {
         assertEquals("hidden.pdf", TextTidy.fileName("..hidden.", "x", ext = "pdf"))
         assertEquals(84, TextTidy.fileName("n".repeat(200), "x", ext = "pdf").length)
     }
+
+    // Running expense sheet
+    @Test fun listKeepsHeaderOnceAndBothIdenticalRows() {
+        val first = TextTidy.mergedList("", "Date,Merchant,Total\n2026-11-10,Blue Door Cafe,7.75")
+        assertEquals("Date,Merchant,Total\n2026-11-10,Blue Door Cafe,7.75", first)
+        assertEquals("Date,Merchant,Total\n2026-11-10,Blue Door Cafe,7.75\n2026-11-11,Hardware Hut,23.10", TextTidy.mergedList(first, "Date,Merchant,Total\n2026-11-11,Hardware Hut,23.10\n"))
+        assertEquals("H\na,1\na,1", TextTidy.mergedList("H\na,1", "H\na,1"))
+        assertEquals("H\na,1\nb,2", TextTidy.mergedList("H\n\n a,1 \n", "\n\nb,2"))
+        assertEquals("", TextTidy.mergedList("", ""))
+    }
+    @Test fun expenseRowAndMonthToken() {
+        assertEquals("Date,Merchant,Total,Tax,Currency\n,\"Cafe, The\",7.75,,", TextTidy.expenseRow(null, "Cafe, The", "$7.75"))
+        val day = java.util.Date(1_794_484_800_000L)
+        val ym = java.text.SimpleDateFormat("yyyy-MM", java.util.Locale.US).format(day)
+        assertEquals("Expenses $ym.csv", TextTidy.fileName("Expenses {month}", "List", day, ext = "csv"))
+    }
+    @Test fun receiptRunStarterAndPlanner() {
+        val c = ChainTemplates.all.first { it.id == "receipt-run" }
+        assertEquals(listOf(Block.READ_TEXT, Block.EXPENSE_ROW, Block.ADD_TO_LIST), c.steps.map { it.block }); assertNull(c.problem(Kind.IMAGE))
+        assertEquals(listOf(Block.READ_TEXT, Block.EXPENSE_ROW, Block.ADD_TO_LIST), ChainPlanner.plan("add every receipt to my expense sheet")!!.steps.map { it.block })
+    }
 }

@@ -102,3 +102,10 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - iOS starter: "Sign a form and send it" (stamp, PDF, one PDF for all pages, email, named "Signed form {date}").
 - NOT on Android yet: the stamp step. Android has no saved signature (the Documents tool draws one per session), so it needs a saved-signature store and a placement screen first. A tool using `stamp` can't be imported on Android until then.
 - UNBUILT: everything in this section was written while CI builds were paused for cost, so it has not been compiled or run.
+
+### Receipts: one expense row, and a running sheet — iOS and Android
+- `expenseRow`: a receipt's text as one row (Date, Merchant, Total, Tax, Currency; Android fills date, merchant and total only). `addToList`: adds the rows to the same CSV every run and hands back the whole sheet; the sheet name takes "{month}" so a new one starts each month (default "Expenses {month}"). The header is never repeated; two identical purchases are both kept.
+- Builder previews run as a dry run on both platforms, so trying a tool on the sample never writes to a real sheet.
+- Starter on both: "Receipt into this month's expense sheet". Describe it: "expense sheet", "ledger", "running list".
+- Sheets live on the phone (iOS App Group "Lists" folder; Android files/lists). Not yet: a screen to see, rename or clear sheets; return and warranty reminders.
+- UNBUILT in CI (builds paused for cost).

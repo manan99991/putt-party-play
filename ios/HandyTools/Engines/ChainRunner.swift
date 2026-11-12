@@ -35,6 +35,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case scamCheck, cleanLinks, priceCompare, makeQr, describe, identify, photoPdf
     case watermark, resizePhoto
     case stamp
+    case expenseRow, addToList
 
     var id: String { rawValue }
     var title: String {
@@ -65,20 +66,22 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .watermark: return "Add a watermark"
         case .resizePhoto: return "Exact pixel size"
         case .stamp: return "Sign and stamp"
+        case .expenseRow: return "Receipt to one expense row"
+        case .addToList: return "Add to a running list"
         }
     }
     var takes: ChainKind {
         switch self {
         case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp: return .image
-        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr: return .text
+        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList: return .text
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
     var gives: ChainKind {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify: return .text
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
-        case .businessCard, .calendarEvent, .makeTable, .photoPdf: return .file
+        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .addToList: return .file
         case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp: return .image
         }
     }
@@ -97,7 +100,7 @@ extension Block {
         case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr: return "Turn it into something"
         case .summarize, .actionItems, .scamCheck: return "Understand it"
         case .cleanText, .cleanLinks, .pullDetails: return "Clean it up"
-        case .pullReceipt, .priceCompare: return "Money"
+        case .pullReceipt, .priceCompare, .expenseRow, .addToList: return "Money"
         }
     }
     static let goalOrder = ["Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money"]
@@ -178,11 +181,13 @@ enum ChainRunner {
 
     /// Runs every step in order. Each step does its best with what it is given; a step that cannot
     /// produce anything stops the chain with a reason naming it (never a silent empty result).
-    static func run(_ chain: Chain, input: ChainPayload) async -> Result<ChainPayload, Failure> {
+    /// - Parameter dryRun: true while the builder previews a tool on sample data, so steps that keep something
+    ///   (adding a row to a running list) show what they would do without saving it.
+    static func run(_ chain: Chain, input: ChainPayload, dryRun: Bool = false) async -> Result<ChainPayload, Failure> {
         if let p = chain.problem(starting: input.kind) { return .failure(.invalid(p)) }
         var value = input
         for step in chain.steps {
-            switch await apply(step, to: value) {
+            switch await apply(step, to: value, dryRun: dryRun) {
             case .success(let next): value = next
             case .failure(let f): return .failure(f)
             }
@@ -190,7 +195,7 @@ enum ChainRunner {
         return .success(value)
     }
 
-    static func apply(_ step: ChainStep, to rawInput: ChainPayload) async -> Result<ChainPayload, Failure> {
+    static func apply(_ step: ChainStep, to rawInput: ChainPayload, dryRun: Bool = false) async -> Result<ChainPayload, Failure> {
         let b = step.block
         var input = rawInput
         // A photo that was saved as bytes by an earlier step (shrink, convert...) is opened again for the next one.
@@ -297,6 +302,19 @@ enum ChainRunner {
             guard let d = DocEngine.pdf(images: [img], ocr: [DocEngine.recognize(img)], options: DocEngine.PDFOptions()) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "pdf"))
 
+        case (.expenseRow, .text(let t)):
+            let r = DataGrab.receipt(t)
+            guard r.total != nil || !r.items.isEmpty else { return .failure(.nothingFound(b)) }
+            return .success(.text(DataGrab.expenseRow(r)))
+
+        case (.addToList, .text(let t)):
+            // Every run adds to the same sheet (one per month by default) and hands back the whole sheet.
+            let name = ChainName.file(pattern: step.settings["list"] ?? RunningList.defaultName, tool: "List", ext: "csv")
+            let merged = RunningList.merged(existing: dryRun ? "" : RunningList.read(name), incoming: t)
+            guard !merged.isEmpty, let d = merged.data(using: .utf8) else { return .failure(.nothingFound(b)) }
+            if !dryRun, !RunningList.write(name, merged) { return .failure(.failed(b)) }
+            return .success(.file(d, ext: "csv"))
+
         case (.stamp, .image(let img)):
             let plan = StampPlan(step.settings["marks"] ?? StampPlan.standard.text)
             guard !plan.spots.isEmpty else { return .failure(.invalid("Sign and stamp has nothing to place. Turn on the signature, your name or the date.")) }
@@ -392,6 +410,7 @@ enum ChainTemplates {
         Chain(id: "scan-to-pdf", name: "Scan pages into one PDF", steps: [ChainStep(block: .photoPdf)], combine: true),
         Chain(id: "sign-and-send", name: "Sign a form and send it", steps: [ChainStep(block: .stamp, settings: ["marks": StampPlan.standard.text]), ChainStep(block: .photoPdf)],
               finish: ChainFinish(kind: .mail, to: ""), combine: true, fileName: "Signed form {date}"),
+        Chain(id: "receipt-run", name: "Receipt into this month's expense sheet", steps: [ChainStep(block: .readText), ChainStep(block: .expenseRow), ChainStep(block: .addToList, settings: ["list": RunningList.defaultName])]),
         Chain(id: "share-shield", name: "Privacy share shield", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
         Chain(id: "id-copy-watermarked", name: "ID copy with a safety watermark", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"]), ChainStep(block: .stripLocation)]),
         Chain(id: "portal-photo", name: "Portal photo: 35x45 mm under 50 KB", steps: [ChainStep(block: .resizePhoto, settings: ["size": "413x531"]), ChainStep(block: .shrinkImage, settings: ["mb": "0.05"])]),
@@ -662,10 +681,43 @@ enum ChainName {
     static func file(pattern: String?, tool: String, day: Date = Date(), index: Int? = nil, ext: String) -> String {
         let f = DateFormatter(); f.locale = Locale(identifier: "en_US_POSIX"); f.dateFormat = "yyyy-MM-dd"
         var base = (pattern ?? "").replacingOccurrences(of: "{date}", with: f.string(from: day)).replacingOccurrences(of: "{tool}", with: tool)
+            .replacingOccurrences(of: "{month}", with: String(f.string(from: day).prefix(7)))
         base = String(base.unicodeScalars.filter { !"/\\:*?\"<>|".unicodeScalars.contains($0) && !CharacterSet.newlines.contains($0) && !CharacterSet.controlCharacters.contains($0) })
             .trimmingCharacters(in: CharacterSet.whitespaces.union(CharacterSet(charactersIn: ".")))
         if base.count > 80 { base = String(base.prefix(80)).trimmingCharacters(in: .whitespaces) }
         if base.isEmpty { base = index == nil ? "Tenzy-result" : "Tenzy" }
         return base + (index.map { "-\($0)" } ?? "") + "." + ext
     }
+}
+
+/// A sheet that grows: each run adds rows to the same CSV instead of making a new file. Kept on this phone.
+enum RunningList {
+    static let defaultName = "Expenses {month}"
+
+    /// The old sheet plus the new rows. If the new rows start with the sheet's own header line, that line is not
+    /// repeated. Blank lines are dropped. Pure, so it is unit-tested.
+    static func merged(existing: String, incoming: String) -> String {
+        func rows(_ s: String) -> [String] {
+            s.components(separatedBy: .newlines).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+        }
+        let old = rows(existing)
+        var new = rows(incoming)
+        if let header = old.first, new.first == header { new.removeFirst() }
+        return (old + new).joined(separator: "\n")
+    }
+
+    private static var folder: URL {
+        let base = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id)
+            ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let dir = base.appendingPathComponent("Lists", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir
+    }
+    static func read(_ fileName: String) -> String {
+        (try? String(contentsOf: folder.appendingPathComponent(fileName), encoding: .utf8)) ?? ""
+    }
+    @discardableResult static func write(_ fileName: String, _ text: String) -> Bool {
+        (try? text.write(to: folder.appendingPathComponent(fileName), atomically: true, encoding: .utf8)) != nil
+    }
+    static func delete(_ fileName: String) { try? FileManager.default.removeItem(at: folder.appendingPathComponent(fileName)) }
 }

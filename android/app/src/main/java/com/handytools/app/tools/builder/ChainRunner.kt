@@ -51,17 +51,18 @@ object ChainRunner {
     }
 
     /** Runs every step in order; a step that cannot produce anything stops the chain and names itself. */
-    suspend fun run(chain: Chain, input: Payload): Outcome {
+    /** @param dryRun true while the builder previews on sample data, so a step that keeps something (a running list) doesn't save it. */
+    suspend fun run(chain: Chain, input: Payload, dryRun: Boolean = false): Outcome {
         chain.problem(input.kind)?.let { return Outcome.Stopped(it) }
         var v = input
-        for (s in chain.steps) when (val r = apply(s, v)) {
+        for (s in chain.steps) when (val r = apply(s, v, dryRun)) {
             is Outcome.Done -> v = r.value
             is Outcome.Stopped -> return r
         }
         return Outcome.Done(v)
     }
 
-    suspend fun apply(step: Step, raw: Payload): Outcome = withContext(Dispatchers.Default) {
+    suspend fun apply(step: Step, raw: Payload, dryRun: Boolean = false): Outcome = withContext(Dispatchers.Default) {
         val b = step.block
         fun none() = Outcome.Stopped(
             if (b.takes == Kind.TEXT) "${b.title} didn't find anything in that text." else "${b.title} didn't find anything in it. Try a clearer or closer picture.")
@@ -82,6 +83,20 @@ object ChainRunner {
                 b == Block.PULL_RECEIPT && input is Payload.Words -> {
                     val r = CaptureClassifier.classify(input.text)
                     if (r.total.isBlank() && r.items.isEmpty()) none() else Outcome.Done(Payload.Words(CaptureClassifier.csv(r)))
+                }
+                b == Block.EXPENSE_ROW && input is Payload.Words -> {
+                    val r = CaptureClassifier.classify(input.text)
+                    if (r.total.isBlank() && r.items.isEmpty()) none() else Outcome.Done(Payload.Words(TextTidy.expenseRow(r.purchaseMs, r.merchant, r.total)))
+                }
+                b == Block.ADD_TO_LIST && input is Payload.Words -> {
+                    // Every run adds to the same sheet (one per month by default) and hands back the whole sheet.
+                    val name = TextTidy.fileName(step.settings["list"] ?: TextTidy.DEFAULT_LIST, "List", ext = "csv")
+                    val file = runCatching { java.io.File(java.io.File(com.handytools.app.HandyApp.instance.filesDir, "lists").also { it.mkdirs() }, name) }.getOrNull()
+                    val old = if (dryRun) "" else runCatching { file?.takeIf { it.exists() }?.readText() ?: "" }.getOrDefault("")
+                    val merged = TextTidy.mergedList(old, input.text)
+                    if (merged.isEmpty()) none()
+                    else if (!dryRun && (file == null || runCatching { file.writeText(merged) }.isFailure)) fail()
+                    else Outcome.Done(Payload.Doc(merged.toByteArray(), "csv"))
                 }
                 b == Block.SUMMARIZE && input is Payload.Words -> {
                     val n = (step.settings["sentences"]?.toIntOrNull() ?: 3).coerceAtLeast(1)
