@@ -102,6 +102,47 @@ object ChainRunner {
                 }
                 b == Block.CHAT_LINK && input is Payload.Words ->
                     TextTidy.chatLink(input.text, step.settings["cc"] ?: TextTidy.callingCode(java.util.Locale.getDefault().country))?.let { Outcome.Done(Payload.Words(it)) } ?: none()
+                b == Block.PRICE_COMPARE && input is Payload.Words ->
+                    PriceDeal.bestDeal(input.text)?.let { Outcome.Done(Payload.Words(it)) } ?: none()
+                b == Block.DESCRIBE && input is Payload.Pic -> {
+                    // Built from what the phone can detect on its own: the things in it, the people, the words.
+                    val image = InputImage.fromBitmap(input.bmp, 0)
+                    val labels = try {
+                        com.google.mlkit.vision.label.ImageLabeling.getClient(com.google.mlkit.vision.label.defaults.ImageLabelerOptions.DEFAULT_OPTIONS)
+                            .process(image).await().sortedByDescending { it.confidence }.filter { it.confidence >= 0.6f }.map { it.text }
+                    } catch (_: Throwable) { emptyList() }
+                    val faces = try { ScrubberEngine.detectFaces(input.bmp).size } catch (_: Throwable) { 0 }
+                    val words = try {
+                        val r = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                        try { r.process(image).await().text.trim() } finally { r.close() }
+                    } catch (_: Throwable) { "" }
+                    val line = PriceDeal.describe(labels, faces, words)
+                    if (line.isEmpty()) none() else Outcome.Done(Payload.Words(line))
+                }
+                b == Block.ENHANCE && input is Payload.Pic -> {
+                    // Stretches the tones between the darkest and brightest real parts of the photo, and lifts colour a little.
+                    val src = input.bmp
+                    val small = if (maxOf(src.width, src.height) > 256) android.graphics.Bitmap.createScaledBitmap(src, maxOf(1, src.width * 256 / maxOf(src.width, src.height)), maxOf(1, src.height * 256 / maxOf(src.width, src.height)), true) else src
+                    val px = IntArray(small.width * small.height); small.getPixels(px, 0, small.width, 0, 0, small.width, small.height)
+                    val hist = IntArray(256)
+                    for (p in px) hist[((p shr 16 and 0xFF) * 299 + (p shr 8 and 0xFF) * 587 + (p and 0xFF) * 114) / 1000]++
+                    val (lo, hi) = PriceDeal.levels(hist)
+                    val scale = 255f / (hi - lo).coerceAtLeast(1)
+                    val m = android.graphics.ColorMatrix().apply { setSaturation(1.12f) }
+                    m.postConcat(android.graphics.ColorMatrix(floatArrayOf(scale, 0f, 0f, 0f, -lo * scale, 0f, scale, 0f, 0f, -lo * scale, 0f, 0f, scale, 0f, -lo * scale, 0f, 0f, 0f, 1f, 0f)))
+                    val out = android.graphics.Bitmap.createBitmap(src.width, src.height, android.graphics.Bitmap.Config.ARGB_8888)
+                    android.graphics.Canvas(out).drawBitmap(src, 0f, 0f, android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG).apply { colorFilter = android.graphics.ColorMatrixColorFilter(m) })
+                    Outcome.Done(Payload.Pic(out))
+                }
+                b == Block.PASSPORT_PHOTO && input is Payload.Pic -> {
+                    // Cut the person out and centre them on white at the official size. Without the cut-out model, crop instead: still a usable photo.
+                    val (w, h) = PriceDeal.passportSize(step.settings["country"])
+                    val seg = com.google.mlkit.vision.segmentation.subject.SubjectSegmentation.getClient(
+                        com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions.Builder().enableForegroundBitmap().build())
+                    val fg = try { seg.process(InputImage.fromBitmap(input.bmp, 0)).await().foregroundBitmap } catch (_: Throwable) { null } finally { runCatching { seg.close() } }
+                    val photo = if (fg != null) MediaEngine.composeIdPhoto(fg, w, h) else MediaEngine.centreCrop(input.bmp, w, h)
+                    Outcome.Done(Payload.Doc(MediaEngine.jpeg(photo, 95), "jpg"))
+                }
                 b == Block.IDENTIFY && input is Payload.Pic -> {
                     val image = InputImage.fromBitmap(input.bmp, 0)
                     val barcode = try { com.google.mlkit.vision.barcode.BarcodeScanning.getClient().process(image).await().firstOrNull()?.rawValue } catch (_: Throwable) { null }

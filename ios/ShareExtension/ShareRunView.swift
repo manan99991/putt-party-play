@@ -117,6 +117,7 @@ final class ShareModel: ObservableObject {
         case .text(let t): return ShareResult(n: n, text: t)
         case .image(let i): return i.jpegData(compressionQuality: 0.92).map { file($0, "jpg") } ?? ShareResult(n: n, note: "Couldn't save this result.")
         case .file(let d, let ext): return file(d, ext)
+        case .video(let u): return ShareResult(n: n, url: u)
         }
     }
 

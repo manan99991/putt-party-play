@@ -68,6 +68,7 @@ enum ToolIntentSupport {
         case .text(let t): return (Data(t.utf8), ChainName.file(pattern: chain.fileName, tool: chain.name, ext: "txt"))
         case .image(let i): return i.jpegData(compressionQuality: 0.92).map { ($0, ChainName.file(pattern: chain.fileName, tool: chain.name, ext: "jpg")) }
         case .file(let d, let ext): return (d, ChainName.file(pattern: chain.fileName, tool: chain.name, ext: ext))
+        case .video(let u): return (try? Data(contentsOf: u)).map { ($0, ChainName.file(pattern: chain.fileName, tool: chain.name, ext: u.pathExtension.isEmpty ? "mp4" : u.pathExtension.lowercased())) }
         }
     }
 

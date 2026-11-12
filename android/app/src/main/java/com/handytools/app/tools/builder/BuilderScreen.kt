@@ -381,6 +381,11 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             OutlinedTextField(s.settings["text"] ?: "", { v -> set("text", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Words to write across it") })
             Text("Today's date is added each time it runs.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
+        Block.PASSPORT_PHOTO -> Column {
+            PriceDeal.PASSPORT.forEach { (id, label, _) ->
+                TextButton({ set("country", id) }) { Text(if ((s.settings["country"] ?: "us") == id) "● $label" else label) }
+            }
+        }
         Block.RETURN_BY -> Row {
             val days = TextTidy.returnDays(s.settings["days"])
             TextTidy.RETURN_WINDOWS.forEach { d -> TextButton({ set("days", d.toString()) }) { Text(if (d == days) "● $d days" else "$d days") } }

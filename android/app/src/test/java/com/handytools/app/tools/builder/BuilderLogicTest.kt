@@ -332,4 +332,41 @@ class BuilderLogicTest {
         assertEquals(365, TextTidy.returnDays("9999")); assertEquals(30, TextTidy.returnDays("soon"))
         assertNull(ChainTemplates.all.first { it.id == "return-by" }.problem(Kind.IMAGE)); assertEquals("Money", Block.RETURN_BY.goal)
     }
+    @Test fun bestDealRanksByUnitPrice() {
+        val us = java.util.Locale.US
+        val out = PriceDeal.bestDeal("Oats 500 g\n\$3.20\nOats 1 kg\n\$5.00", us)!!
+        assertEquals("Best deal: Oats, \$0.50 per 100 g\nOats, \$0.64 per 100 g", out)
+        assertNull(PriceDeal.bestDeal("Just one thing 500 g\n\$3.20", us))
+        assertNull(PriceDeal.bestDeal("no prices here", us))
+        val each = PriceDeal.bestDeal("Soap 3 pack \$6.00\nSoap 8 ct \$12.00", us)!!
+        assertEquals("Best deal: Soap, \$1.50 each\nSoap, \$2.00 each", each)
+    }
+    @Test fun sizesReduceToOneUnit() {
+        assertEquals(PriceDeal.Size(1500.0, PriceDeal.Base.VOLUME), PriceDeal.parseSize("1.5 L"))
+        assertEquals(PriceDeal.Size(400.0, PriceDeal.Base.VOLUME), PriceDeal.parseSize("2 x 200 ml"))
+        assertEquals(453.592, PriceDeal.parseSize("16 oz")!!.qty, 0.01)
+        assertEquals(PriceDeal.Base.VOLUME, PriceDeal.parseSize("12 fl oz")!!.base)
+        assertEquals(PriceDeal.Size(24.0, PriceDeal.Base.COUNT), PriceDeal.parseSize("24 ct"))
+        assertNull(PriceDeal.parseSize("large"))
+    }
+    @Test fun describingAPhotoFromWhatWasDetected() {
+        assertEquals("This looks like dog, grass and ball. There is one person in it.", PriceDeal.describe(listOf("Dog", "Grass", "dog", "Ball"), 1, ""))
+        assertEquals("This looks like poster. It has writing that starts: \"Summer fair Saturday 2 pm\"", PriceDeal.describe(listOf("Poster"), 0, "Summer fair\nSaturday  2 pm"))
+        assertEquals("There are 3 people in it.", PriceDeal.describe(emptyList(), 3, ""))
+        assertEquals("", PriceDeal.describe(emptyList(), 0, "  "))
+    }
+    @Test fun levelsFindTheRealRangeOfAFlatPhoto() {
+        val flat = IntArray(256); for (i in 60..180) flat[i] = 100; flat[0] = 3; flat[255] = 2
+        assertEquals(61 to 179, PriceDeal.levels(flat))   // the outer 1% at each end is ignored
+        assertEquals(0 to 255, PriceDeal.levels(IntArray(256)))
+        val blank = IntArray(256); blank[250] = 5000
+        assertEquals(0 to 255, PriceDeal.levels(blank))
+        assertEquals(600 to 600, PriceDeal.passportSize(null)); assertEquals(413 to 531, PriceDeal.passportSize("in")); assertEquals(591 to 827, PriceDeal.passportSize("ca"))
+    }
+    @Test fun androidNowHasEveryStepTheIphoneHas() {
+        val ios = listOf("readText", "pullReceipt", "summarize", "shrinkImage", "stripLocation", "cutout", "enhance", "convertImage", "businessCard", "calendarEvent", "actionItems",
+            "hideSensitive", "passportPhoto", "cleanText", "pullDetails", "makeTable", "scamCheck", "cleanLinks", "priceCompare", "makeQr", "describe", "identify", "photoPdf",
+            "watermark", "resizePhoto", "stamp", "expenseRow", "addToList", "chatLink", "contactQr", "wifiQr", "returnBy")
+        assertEquals(emptyList<String>(), ios.filter { Block.byId(it) == null })
+    }
 }

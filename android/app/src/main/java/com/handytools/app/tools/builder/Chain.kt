@@ -39,6 +39,10 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     ADD_TO_LIST("addToList", "Add to a running list", Kind.TEXT, Kind.FILE, "Adds the rows to the same sheet every time, one sheet a month."),
     CHAT_LINK("chatLink", "WhatsApp link for a number", Kind.TEXT, Kind.TEXT, "Opens a WhatsApp chat with a number without saving it as a contact."),
     CONTACT_QR("contactQr", "Contact as a QR code", Kind.TEXT, Kind.IMAGE, "A code another phone scans to save the contact. Only what you typed is included."),
+    PRICE_COMPARE("priceCompare", "Find the best deal", Kind.TEXT, Kind.TEXT, "Ranks priced, sized items by what they really cost per unit."),
+    DESCRIBE("describe", "Describe the photo", Kind.IMAGE, Kind.TEXT, "Says what the photo shows."),
+    ENHANCE("enhance", "Enhance", Kind.IMAGE, Kind.IMAGE, "Balances a flat or dull photo."),
+    PASSPORT_PHOTO("passportPhoto", "Passport photo", Kind.IMAGE, Kind.PHOTO_FILE, "Crops to an official ID size on a white background."),
     IDENTIFY("identify", "Identify it", Kind.IMAGE, Kind.TEXT, "Names the object or reads the barcode."),
     CUTOUT("cutout", "Cut out subject", Kind.IMAGE, Kind.IMAGE, "Lifts the main subject off its background."),
     RETURN_BY("returnBy", "Return-by reminder", Kind.TEXT, Kind.FILE, "Puts the last day to return it in your calendar, counted from the receipt's date."),
@@ -52,13 +56,13 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
 val Block.goal: String get() = when (this) {
     Block.SHRINK, Block.CONVERT, Block.RESIZE_PHOTO -> "Make it easy to send"
     Block.STRIP_LOCATION, Block.HIDE_SENSITIVE, Block.WATERMARK -> "Keep it private"
-    Block.READ_TEXT, Block.IDENTIFY -> "Read what's in it"
-    Block.CUTOUT -> "Make it look better"
+    Block.READ_TEXT, Block.IDENTIFY, Block.DESCRIBE -> "Read what's in it"
+    Block.CUTOUT, Block.ENHANCE -> "Make it look better"
     Block.PHOTO_PDF, Block.STAMP -> "Paperwork"
-    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR, Block.WIFI_QR -> "Turn it into something"
+    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR, Block.WIFI_QR, Block.PASSPORT_PHOTO -> "Turn it into something"
     Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
     Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
-    Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST, Block.RETURN_BY -> "Money"
+    Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST, Block.RETURN_BY, Block.PRICE_COMPARE -> "Money"
 }
 
 object BlockGoals {
@@ -331,6 +335,8 @@ object ChainTemplates {
         Chain("return-by", "Receipt to a return-by reminder", listOf(Step(Block.READ_TEXT), Step(Block.RETURN_BY, mapOf("days" to "30")))),
         Chain("wifi-sign", "Wi-Fi sign to a code guests scan", listOf(Step(Block.READ_TEXT), Step(Block.WIFI_QR))),
         Chain("what-is-this", "What is this?", listOf(Step(Block.IDENTIFY))),
+        Chain("passport-photo", "Passport photo", listOf(Step(Block.PASSPORT_PHOTO, mapOf("country" to "us")))),
+        Chain("shelf-best-deal", "Shelf photo to best deal", listOf(Step(Block.READ_TEXT), Step(Block.PRICE_COMPARE))),
         Chain("sticker", "Cut out a subject", listOf(Step(Block.CUTOUT))),
         Chain("id-both-sides", "Both sides of an ID on one page", listOf(Step(Block.WATERMARK, mapOf("text" to "For verification only"))), combine = true, onePage = true),
         Chain("share-shield", "Privacy share shield", listOf(Step(Block.HIDE_SENSITIVE), Step(Block.STRIP_LOCATION), Step(Block.SHRINK, mapOf("mb" to "2")))),
@@ -351,6 +357,7 @@ object ChainPlanner {
         val wantsClean = has("tidy", "clean up", "clean the", "dedupe", "de-dupe", "duplicate line", "remove duplicates", "extra spaces", "blank lines") && (!wantsPhoto || textish)
         val job: Block? = when {
             has("scam", "phishing", "fraud", "is this real", "suspicious") -> Block.SCAM_CHECK
+            has("best deal", "cheapest", "cheaper", "unit price", "per unit", "better value") -> Block.PRICE_COMPARE
             has("tracking", "clean link", "clean the link", "clean my link", "utm") -> Block.CLEAN_LINKS
             has("wifi", "wi-fi") -> Block.WIFI_QR
             has("qr") -> Block.MAKE_QR

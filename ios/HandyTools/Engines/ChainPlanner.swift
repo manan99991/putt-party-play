@@ -35,6 +35,19 @@ enum ChainPlanner {
         let s = " " + ask.lowercased() + " "
         func has(_ words: [String]) -> Bool { words.contains { s.contains($0) } }
 
+        // Video jobs come first: a video takes its own steps, never the photo ones.
+        if has(["video", " clip", "movie", "footage"]) {
+            if has(["still", "frame", "thumbnail"]) { return build(ask, [ChainStep(block: .videoStill)]) }
+            if has(["audio only", "just the audio", "only the sound", "just the sound", "extract audio", "extract the audio", "as audio", "mp3"]) { return build(ask, [ChainStep(block: .videoAudio)]) }
+            var v: [ChainStep] = []
+            if has(["mute", "no sound", "without sound", "without its sound", "remove the sound", "remove sound", "silent"]) { v.append(ChainStep(block: .videoMute)) }
+            if v.isEmpty || has(["shrink", "smaller", "compress", "reduce", "under ", " mb", "email", "whatsapp", "send", "size"]) {
+                let mb = number(near: ["mb", "megabyte"], in: s, before: true) ?? (has(["whatsapp", "chat"]) ? 16 : 25)
+                v.append(ChainStep(block: .videoShrink, settings: ["mb": String(mb)]))
+            }
+            return build(ask, v)
+        }
+
         var steps: [ChainStep] = []
         let wantsPhotoInput = has(["photo", "picture", "image", "scan", "screenshot", "snap", "camera", "receipt", "card", "poster", "flyer", "whiteboard", "sign "])
 

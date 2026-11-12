@@ -86,8 +86,8 @@ final class ChainRowTests: XCTestCase {
 
 final class ChainTemplateTests: XCTestCase {
     func testTwentyEightTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 30)
-        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 28)
+        XCTAssertEqual(ChainTemplates.all.count, 34)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, ChainTemplates.all.count)
     }
     func testShareRoundTripAndRejectsJunk() throws {
         let t = ChainTemplates.all[0]
@@ -762,11 +762,13 @@ final class IntroTests: XCTestCase {
         XCTAssertFalse(photo.isEmpty); XCTAssertFalse(text.isEmpty)
         XCTAssertTrue(photo.allSatisfy { $0.steps.first?.block.takes == .image })
         XCTAssertTrue(text.allSatisfy { $0.steps.first?.block.takes == .text })
-        XCTAssertEqual(photo.count + text.count, ChainTemplates.all.count)
+        let video = BuilderIntro.starters(for: .video)
+        XCTAssertFalse(video.isEmpty); XCTAssertTrue(video.allSatisfy { $0.steps.first?.block.takes == .video })
+        XCTAssertEqual(photo.count + text.count + video.count, ChainTemplates.all.count)
         XCTAssertEqual(BuilderIntro.starters(for: nil), ChainTemplates.all)
     }
     func testTheDemoStarterExistsAndTheIntroIsThreeIdeas() {
-        XCTAssertNotNull(ChainTemplates.all.first { $0.id == BuilderIntro.demoID })
+        XCTAssertNotNil(ChainTemplates.all.first { $0.id == BuilderIntro.demoID })
         XCTAssertEqual(BuilderIntro.pages.count, 3)
     }
 }
@@ -824,5 +826,50 @@ final class ReturnByTests: XCTestCase {
         XCTAssertEqual(ext, "ics")
         XCTAssertTrue(String(decoding: d, as: UTF8.self).contains("SUMMARY:Last day to return"))
         XCTAssertNil(try XCTUnwrap(ChainTemplates.all.first { $0.id == "return-by" }).problem(starting: .image))
+    }
+}
+
+final class VideoTests: XCTestCase {
+    func testVideoStepsOnlyFitAVideoAndSayWhatTheyGive() {
+        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio]
+        XCTAssertTrue(v.allSatisfy { $0.takes == .video })
+        XCTAssertEqual(Block.starting(with: .video), v)
+        XCTAssertFalse(Block.starting(with: .image).contains(.videoShrink)); XCTAssertFalse(Block.starting(with: .text).contains(.videoStill))
+        XCTAssertEqual(Block.videoShrink.gives, .video); XCTAssertEqual(Block.videoMute.gives, .video)
+        XCTAssertEqual(Block.videoStill.gives, .image); XCTAssertEqual(Block.videoAudio.gives, .file)
+        XCTAssertEqual(ChainKind.video.label, "a video")
+    }
+    func testStepsChainOnlyWhereTheKindsMeet() {
+        let quietThenSmall = Chain(id: "a", name: "A", steps: [ChainStep(block: .videoMute), ChainStep(block: .videoShrink)])
+        XCTAssertNil(quietThenSmall.problem(starting: .video))
+        XCTAssertNotNil(quietThenSmall.problem(starting: .image))
+        let stillThenRead = Chain(id: "b", name: "B", steps: [ChainStep(block: .videoStill), ChainStep(block: .readText), ChainStep(block: .summarize)])
+        XCTAssertNil(stillThenRead.problem(starting: .video))
+        let wrong = Chain(id: "c", name: "C", steps: [ChainStep(block: .videoAudio), ChainStep(block: .videoShrink)])
+        XCTAssertNotNil(wrong.problem(starting: .video))
+    }
+    func testVideoStartersAreValidAndSurviveCopying() throws {
+        for id in ["video-email", "video-chat", "video-still", "video-quiet"] {
+            let c = try XCTUnwrap(ChainTemplates.all.first { $0.id == id }, id)
+            XCTAssertNil(c.problem(starting: .video), id)
+            XCTAssertEqual(try XCTUnwrap(Chain.imported(from: c.shareText)).steps, c.steps)
+        }
+        XCTAssertEqual(ChainTemplates.all.first { $0.id == "video-email" }?.finish?.kind, .mail)
+    }
+    func testSizeLimitSetting() {
+        XCTAssertEqual(ChainText.videoLimit(nil), 25); XCTAssertEqual(ChainText.videoLimit("16"), 16); XCTAssertEqual(ChainText.videoLimit("16.0"), 16)
+        XCTAssertEqual(ChainText.videoLimit("0"), 1); XCTAssertEqual(ChainText.videoLimit("junk"), 25)
+        XCTAssertTrue(ChainText.videoLimits.contains(25))
+    }
+    func testDescribeItUnderstandsVideoJobs() {
+        func blocks(_ ask: String) -> [Block] { ChainPlanner.keywordPlan(ask)?.steps.map(\.block) ?? [] }
+        XCTAssertEqual(blocks("make this video small enough to email"), [.videoShrink])
+        XCTAssertEqual(ChainPlanner.keywordPlan("shrink a video for whatsapp")?.steps.first?.settings["mb"], "16")
+        XCTAssertEqual(ChainPlanner.keywordPlan("get my video under 50 mb")?.steps.first?.settings["mb"], "50")
+        XCTAssertEqual(blocks("video without sound"), [.videoMute])
+        XCTAssertEqual(blocks("mute the video and shrink it"), [.videoMute, .videoShrink])
+        XCTAssertEqual(blocks("grab a still from a video"), [.videoStill])
+        XCTAssertEqual(blocks("just the audio from this video"), [.videoAudio])
+        XCTAssertEqual(blocks("shrink a photo under 1 mb"), [.shrinkImage])
     }
 }

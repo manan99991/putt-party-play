@@ -57,9 +57,10 @@ struct BuilderView: View {
             }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             Picker("What do you have?", selection: $have) {
-                Text("Everything").tag(ChainKind?.none)
-                Text("A photo or scan").tag(ChainKind?.some(.image))
+                Text("All").tag(ChainKind?.none)
+                Text("Photo").tag(ChainKind?.some(.image))
                 Text("Text").tag(ChainKind?.some(.text))
+                Text("Video").tag(ChainKind?.some(.video))
             }.pickerStyle(.segmented).accessibilityIdentifier("starter-filter")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
                 ForEach(BuilderIntro.starters(for: have)) { c in templateCard(c) }
@@ -181,7 +182,7 @@ private struct ChainEditor: View {
                     startPicker
                 } else {
                     let k = chain.steps.isEmpty ? (startChoice ?? .image) : startKind
-                    node(icon: k == .text ? "text.alignleft" : "photo", title: "You give it \(k.label)", sub: chain.steps.isEmpty ? "Now add a first step. You only see steps that work with \(k.label)." : "Preview uses a sample so you can see each step work.")
+                    node(icon: k == .text ? "text.alignleft" : k == .video ? "film" : "photo", title: "You give it \(k.label)", sub: chain.steps.isEmpty ? "Now add a first step. You only see steps that work with \(k.label)." : "Preview uses a sample so you can see each step work.")
                     if chain.steps.isEmpty {
                         Button("Start with something else") { startChoice = nil }.font(HandyFont.caption).padding(.top, HandySpacing.s8)
                     }
@@ -298,14 +299,9 @@ private struct ChainEditor: View {
             HStack(spacing: HandySpacing.s12) {
                 startButton(.image, "A photo", "photo")
                 startButton(.text, "Text", "text.alignleft")
+                startButton(.video, "A video", "film")
             }
-            Text("A photo tool also takes scans and PDF pages. A text tool also takes what you say, a contact, or the words in a PDF.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            // Video isn't a builder step yet. Send people to the tool that already shrinks one under a limit.
-            Button {
-                dismiss()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { NotificationCenter.default.post(name: .openTool, object: "fitit") }
-            } label: { Label("Have a video? Fit It shrinks one under a size limit", systemImage: "film").font(HandyFont.caption) }
-                .frame(minHeight: 44).accessibilityIdentifier("start-video")
+            Text("A photo tool also takes scans and PDF pages. A text tool also takes what you say, a contact, or the words in a PDF. A video tool shrinks, quiets or pulls a picture out of a video.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
     private func startButton(_ kind: ChainKind, _ title: String, _ icon: String) -> some View {
@@ -317,7 +313,7 @@ private struct ChainEditor: View {
             .frame(maxWidth: .infinity, minHeight: 84)
             .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
         }
-        .accessibilityIdentifier(kind == .text ? "start-text" : "start-photo")
+        .accessibilityIdentifier(kind == .text ? "start-text" : kind == .video ? "start-video" : "start-photo")
     }
 
     private func stepCard(_ i: Int, _ s: ChainStep) -> some View {
@@ -366,6 +362,11 @@ private struct ChainEditor: View {
         let steps = chain.steps
         previews = Array(repeating: nil, count: steps.count)
         guard let first = steps.first else { return }
+        if first.block.takes == .video {
+            // There is no sample video to try steps on, so say what each one will do instead of showing a result.
+            previews = steps.map { StepPreview.file($0.block.blurb) }
+            return
+        }
         try? await Task.sleep(nanoseconds: 250_000_000)   // let a stepper settle before re-running
         if Task.isCancelled { return }
         var value: ChainPayload
@@ -399,6 +400,7 @@ private struct ChainEditor: View {
             if ChainPayload.isPhoto(ext), let i = UIImage(data: d) { return .image(i) }
             if ["csv", "vcf", "ics"].contains(ext), let t = String(data: d, encoding: .utf8) { return .text(t) }
             return .file("\(ext.uppercased()) file · \(SizeTarget.format(d.count))")
+        case .video(let u): return .file("Video · " + (SizeTarget.fileSize(u).map(SizeTarget.format) ?? "ready"))
         }
     }
 
@@ -442,6 +444,10 @@ private struct ChainEditor: View {
         case .summarize:
             let n = Int(chain.steps[i].settings["sentences"] ?? "3") ?? 3
             Stepper("\(n) sentences", value: Binding(get: { n }, set: { chain.steps[i].settings["sentences"] = String($0) }), in: 1...8).font(HandyFont.caption)
+        case .videoShrink:
+            Picker("Size limit", selection: Binding(get: { ChainText.videoLimit(chain.steps[i].settings["mb"]) }, set: { chain.steps[i].settings["mb"] = String($0) })) {
+                ForEach(ChainText.videoLimits, id: \.self) { Text("\($0) MB").tag($0) }
+            }.pickerStyle(.segmented)
         case .returnBy:
             Picker("Return window", selection: Binding(get: { ChainText.returnDays(chain.steps[i].settings["days"]) }, set: { chain.steps[i].settings["days"] = String($0) })) {
                 ForEach(ChainText.returnWindows, id: \.self) { Text("\($0) days").tag($0) }
@@ -479,6 +485,7 @@ struct BatchItem: Identifiable {
         case .text(let t): b.text = t; b.summary = "\(t.count) characters"
         case .image(let i): if let d = i.jpegData(compressionQuality: 0.92) { write(d, "jpg") } else { b.note = "Couldn't save this result." }
         case .file(let d, let ext): write(d, ext)
+        case .video(let u): b.url = u; b.summary = (SizeTarget.fileSize(u).map(SizeTarget.format) ?? "") + " · VIDEO"
         }
         return b
     }
@@ -502,6 +509,7 @@ private struct ChainRunView: View {
     @StateObject private var speech = SpeechStream()
     @State private var pickingContact = false
     @State private var pickingPDF = false
+    @State private var videoPick: PhotosPickerItem?
     @State private var busy = false
     @State private var result: ChainPayload?
     @State private var message: String?
@@ -514,7 +522,11 @@ private struct ChainRunView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 Text(chain.name).font(HandyFont.title)
                 stampSetup
-                if start != .text {
+                if start == .video {
+                    PhotosPicker(selection: $videoPick, matching: .videos) { Label("Choose a video", systemImage: "film").frame(maxWidth: .infinity) }
+                        .primaryButton().accessibilityIdentifier("run-video")
+                    Text("Long videos take a little while. Keep Tenzy open until it finishes.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                } else if start != .text {
                     PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label("Choose photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
                     if VNDocumentCameraViewController.isSupported {
                         Button { scanning = true } label: { Label("Scan a document", systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
@@ -583,6 +595,17 @@ private struct ChainRunView: View {
             }
         }
         .onDisappear { if speech.running { speech.stop() } }
+        .onChange(of: videoPick) { _, item in
+            guard let item else { return }
+            videoPick = nil
+            busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the video ready…"
+            Task {
+                let movie = try? await item.loadTransferable(type: MovieImport.self)
+                await MainActor.run {
+                    if let movie { go(.video(movie.url)) } else { busy = false; progress = ""; message = "That video couldn't be opened. Try another." }
+                }
+            }
+        }
         .fullScreenCover(isPresented: $scanning) {
             // Apple's document camera: finds the page edges, straightens it, and takes several pages in one go.
             DocCameraSheet { pages in
@@ -736,6 +759,9 @@ private struct ChainRunView: View {
                 Text("\(SizeTarget.format(d.count)) · \(ext.uppercased())").font(HandyFont.caption)
                 ShareLink(item: u) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             }
+        case .video(let u):
+            Label("Your video is ready" + (SizeTarget.fileSize(u).map { " · " + SizeTarget.format($0) } ?? ""), systemImage: "film").font(HandyFont.bodyStrong)
+            ShareLink(item: u) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         }
     }
 

@@ -17,6 +17,11 @@ struct Outbox: Equatable {
         case .text(let t): return Outbox(text: t)
         case .image(let i): return i.jpegData(compressionQuality: 0.92).flatMap { file($0, "jpg") }
         case .file(let d, let ext): return file(d, ext)
+        case .video(let u):
+            // Hand the video on under the tool's file name when it can be copied, otherwise as it is.
+            let dest = dir.appendingPathComponent(ChainName.file(pattern: named, tool: tool, ext: u.pathExtension.isEmpty ? "mp4" : u.pathExtension.lowercased()))
+            if dest != u { try? FileManager.default.removeItem(at: dest) }
+            return Outbox(files: [dest == u || (try? FileManager.default.copyItem(at: u, to: dest)) == nil ? u : dest])
         }
     }
 

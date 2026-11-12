@@ -8,11 +8,14 @@ enum ChainPayload {
     case image(UIImage)
     case text(String)
     case file(Data, ext: String)
+    /// A video stays a file on disk (it is far too big to hold in memory); steps hand its location along.
+    case video(URL)
 
     var kind: ChainKind {
         switch self {
         case .image: return .image
         case .text: return .text
+        case .video: return .video
         case .file(_, let ext): return ChainPayload.isPhoto(ext) ? .photoFile : .file
         }
     }
@@ -24,7 +27,8 @@ enum ChainKind: String, Codable {
     case image, text, file
     /// A photo saved as bytes (the result of shrink, convert, strip...). Any block that takes a picture accepts it.
     case photoFile
-    var label: String { switch self { case .image, .photoFile: return "a photo"; case .text: return "text"; case .file: return "a file" } }
+    case video
+    var label: String { switch self { case .image, .photoFile: return "a photo"; case .text: return "text"; case .file: return "a file"; case .video: return "a video" } }
     func feeds(_ need: ChainKind) -> Bool { self == need || (need == .image && self == .photoFile) }
 }
 
@@ -39,6 +43,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case chatLink, contactQr
     case wifiQr
     case returnBy
+    case videoShrink, videoStill, videoMute, videoAudio
 
     var id: String { rawValue }
     var title: String {
@@ -75,12 +80,17 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .contactQr: return "Contact as a QR code"
         case .wifiQr: return "Wi-Fi join code"
         case .returnBy: return "Return-by reminder"
+        case .videoShrink: return "Shrink video to size"
+        case .videoStill: return "Grab a still"
+        case .videoMute: return "Remove the sound"
+        case .videoAudio: return "Keep only the sound"
         }
     }
     var takes: ChainKind {
         switch self {
         case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp: return .image
         case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr, .returnBy: return .text
+        case .videoShrink, .videoStill, .videoMute, .videoAudio: return .video
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
@@ -88,8 +98,9 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
-        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .addToList, .returnBy: return .file
-        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr: return .image
+        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .addToList, .returnBy, .videoAudio: return .file
+        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr, .videoStill: return .image
+        case .videoShrink, .videoMute: return .video
         }
     }
 }
@@ -99,12 +110,12 @@ extension Block {
     /// "what do you want to do with it?" rather than a flat list of tools.
     var goal: String {
         switch self {
-        case .shrinkImage, .convertImage, .resizePhoto: return "Make it easy to send"
-        case .stripLocation, .hideSensitive, .watermark: return "Keep it private"
+        case .shrinkImage, .convertImage, .resizePhoto, .videoShrink: return "Make it easy to send"
+        case .stripLocation, .hideSensitive, .watermark, .videoMute: return "Keep it private"
         case .enhance, .cutout: return "Make it look better"
         case .readText, .describe, .identify: return "Read what's in it"
         case .stamp, .photoPdf: return "Paperwork"
-        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr, .chatLink, .contactQr, .wifiQr: return "Turn it into something"
+        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr, .chatLink, .contactQr, .wifiQr, .videoStill, .videoAudio: return "Turn it into something"
         case .summarize, .actionItems, .scamCheck: return "Understand it"
         case .cleanText, .cleanLinks, .pullDetails: return "Clean it up"
         case .pullReceipt, .priceCompare, .expenseRow, .addToList, .returnBy: return "Money"
@@ -389,6 +400,24 @@ enum ChainRunner {
             guard r.total != nil || !r.items.isEmpty else { return .failure(.nothingFound(b)) }
             return .success(.text(DataGrab.expenseRow(r)))
 
+        case (.videoShrink, .video(let url)):
+            // Re-encoded to fit the limit. The new file carries no location or camera details from the original.
+            let mb = ChainText.videoLimit(step.settings["mb"])
+            guard let out = await SizeTarget.videoBestEffort(url: url, targetBytes: mb * 1_048_576) else { return .failure(.failed(b)) }
+            return .success(.video(out.url))
+
+        case (.videoStill, .video(let url)):
+            guard let img = await VideoEngine.thumbnail(url, at: 0.5, maxDim: 1920) else { return .failure(.failed(b)) }
+            return .success(.image(img))
+
+        case (.videoMute, .video(let url)):
+            guard let out = await VideoEngine.mute(url) else { return .failure(.failed(b)) }
+            return .success(.video(out))
+
+        case (.videoAudio, .video(let url)):
+            guard let out = await VideoEngine.extractAudio(url), let d = try? Data(contentsOf: out) else { return .failure(.nothingFound(b)) }
+            return .success(.file(d, ext: out.pathExtension.isEmpty ? "m4a" : out.pathExtension.lowercased()))
+
         case (.returnBy, .text(let t)):
             // The last day to take it back, counted from the date on the receipt (today if it shows none), as a calendar entry.
             let r = DataGrab.receipt(t)
@@ -506,6 +535,10 @@ enum ChainTemplates {
         Chain(id: "receipt-run", name: "Receipt into this month's expense sheet", steps: [ChainStep(block: .readText), ChainStep(block: .expenseRow), ChainStep(block: .addToList, settings: ["list": RunningList.defaultName])]),
         Chain(id: "whatsapp-no-save", name: "WhatsApp a number without saving it", steps: [ChainStep(block: .chatLink)], finish: ChainFinish(kind: .open, to: "")),
         Chain(id: "contact-qr", name: "My contact as a QR code", steps: [ChainStep(block: .contactQr)]),
+        Chain(id: "video-email", name: "Video under 25 MB for email", steps: [ChainStep(block: .videoShrink, settings: ["mb": "25"])], finish: ChainFinish(kind: .mail, to: "")),
+        Chain(id: "video-chat", name: "Video small enough for chat (16 MB)", steps: [ChainStep(block: .videoShrink, settings: ["mb": "16"])]),
+        Chain(id: "video-still", name: "Grab a still from a video", steps: [ChainStep(block: .videoStill)]),
+        Chain(id: "video-quiet", name: "Video without its sound", steps: [ChainStep(block: .videoMute)]),
         Chain(id: "return-by", name: "Receipt to a return-by reminder", steps: [ChainStep(block: .readText), ChainStep(block: .returnBy, settings: ["days": "30"])]),
         Chain(id: "wifi-sign", name: "Wi-Fi sign to a code guests scan", steps: [ChainStep(block: .readText), ChainStep(block: .wifiQr)]),
         Chain(id: "id-both-sides", name: "Both sides of an ID on one page", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"])], combine: true, onePage: true),
@@ -623,6 +656,12 @@ enum ChainText {
         out += ranked.dropFirst().map { "\($0.entry.name), \(PriceBrain.perUnitString($0))" }
         return out.joined(separator: "\n")
     }
+
+    // MARK: video size limits
+
+    /// Size limits a video tool can pick, in megabytes: chat apps, email, and upload forms.
+    static let videoLimits = [10, 16, 25, 50, 100]
+    static func videoLimit(_ setting: String?) -> Int { min(2000, max(1, Int(Double(setting ?? "") ?? 25))) }
 
     // MARK: return windows
 
