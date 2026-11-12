@@ -61,9 +61,12 @@ struct BuilderView: View {
                 Text("Photo").tag(ChainKind?.some(.image))
                 Text("Text").tag(ChainKind?.some(.text))
                 Text("Video").tag(ChainKind?.some(.video))
+                Text("Sound").tag(ChainKind?.some(.audio))
+                Text("PDF").tag(ChainKind?.some(.pdf))
             }.pickerStyle(.segmented).accessibilityIdentifier("starter-filter")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
-                ForEach(BuilderIntro.starters(for: have)) { c in templateCard(c) }
+                // Only starters this phone can run. One that needs something it lacks is simply not offered.
+                ForEach(BuilderIntro.starters(for: have).filter { $0.unavailable == nil }) { c in templateCard(c) }
             }
             if introSeen {
                 Button("How does this work?") { withAnimation { introSeen = false } }.font(HandyFont.caption).frame(minHeight: 44)
@@ -139,6 +142,9 @@ struct BuilderView: View {
                 if let when = c.schedule {
                     Label(when.label(uses24h: ToolSchedules.uses24h), systemImage: "bell").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
                 }
+                if c.unavailable != nil {
+                    Label("Has a step this phone can't run", systemImage: "exclamationmark.triangle").font(HandyFont.caption).foregroundStyle(HandyColor.amber)
+                }
             }
             Spacer()
             Menu {
@@ -168,9 +174,19 @@ private struct ChainEditor: View {
     private var endKind: ChainKind? { chain.steps.last?.block.gives }
     /// What the person said they start with, before there is a first step to tell us.
     @State private var startChoice: ChainKind?
-    private var options: [Block] {
+    private var fitting: [Block] {
         guard let end = endKind else { return startChoice.map(Block.starting(with:)) ?? [] }
         return Block.allCases.filter { end.feeds($0.takes) }
+    }
+    /// Steps that fit here and that this phone can run, and the ones that fit but it can't.
+    private var options: [Block] { fitting.filter { $0.unavailable == nil } }
+    private var missing: [Block] { fitting.filter { $0.unavailable != nil } }
+
+    static func icon(for k: ChainKind) -> String {
+        switch k {
+        case .text: return "text.alignleft"; case .video: return "film"; case .audio: return "waveform"; case .pdf: return "doc.richtext"
+        case .image, .photoFile, .file: return "photo"
+        }
     }
     private var valid: Bool { chain.problem(starting: startKind) == nil && !chain.name.trimmingCharacters(in: .whitespaces).isEmpty }
 
@@ -182,7 +198,7 @@ private struct ChainEditor: View {
                     startPicker
                 } else {
                     let k = chain.steps.isEmpty ? (startChoice ?? .image) : startKind
-                    node(icon: k == .text ? "text.alignleft" : k == .video ? "film" : "photo", title: "You give it \(k.label)", sub: chain.steps.isEmpty ? "Now add a first step. You only see steps that work with \(k.label)." : "Preview uses a sample so you can see each step work.")
+                    node(icon: Self.icon(for: k), title: "You give it \(k.label)", sub: chain.steps.isEmpty ? "Now add a first step. You only see steps that work with \(k.label)." : "Preview uses a sample so you can see each step work.")
                     if chain.steps.isEmpty {
                         Button("Start with something else") { startChoice = nil }.font(HandyFont.caption).padding(.top, HandySpacing.s8)
                     }
@@ -194,6 +210,10 @@ private struct ChainEditor: View {
                 if !(chain.steps.isEmpty && startChoice == nil) {
                     connector
                     addMenu
+                    if let first = missing.first, let why = first.unavailable {
+                        Text(missing.count == 1 ? "\(first.title) is greyed out on this phone. \(why)" : "\(missing.count) steps are greyed out because this phone can't run them. Everything else works.")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s8)
+                    }
                 }
                 if let end = endKind {
                     connector
@@ -225,12 +245,19 @@ private struct ChainEditor: View {
             set: { t in var f = chain.finish ?? ChainFinish(); f.to = t; chain.finish = f })
         let onePdf = Binding<Bool>(get: { chain.combine == true }, set: { chain.combine = $0 ? true : nil; if !$0 { chain.onePage = nil } })
         let onePage = Binding<Bool>(get: { chain.onePage == true }, set: { chain.onePage = $0 ? true : nil })
+        let collage = Binding<Bool>(get: { chain.collage == true }, set: { chain.collage = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil } })
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
             if startKind == .image, endKind != .text {
-                Toggle("Put all pages or photos into one PDF", isOn: onePdf).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
+                Toggle("Put all pages or photos into one PDF", isOn: Binding(get: { onePdf.wrappedValue }, set: { onePdf.wrappedValue = $0; if $0 { chain.collage = nil } })).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
                 if chain.combine == true {
                     Toggle("All on a single page (both sides of an ID)", isOn: onePage).font(HandyFont.caption).accessibilityIdentifier("finish-one-page")
                 }
+                if endKind == .image || endKind == .photoFile {
+                    Toggle("Put all photos into one picture (a collage)", isOn: collage).font(HandyFont.caption).accessibilityIdentifier("finish-collage")
+                }
+            }
+            if startKind == .pdf, endKind == .pdf {
+                Toggle("Join several PDFs into one", isOn: onePdf).font(HandyFont.caption).accessibilityIdentifier("finish-join-pdf")
             }
             if endKind != .text {
                 TextField("File name (optional), e.g. Signed form {date}", text: Binding(get: { chain.fileName ?? "" }, set: { chain.fileName = $0.isEmpty ? nil : $0 }))
@@ -286,6 +313,11 @@ private struct ChainEditor: View {
                     ForEach(g.blocks) { b in Button { chain.steps.append(ChainStep(block: b, settings: defaults(b))) } label: { Label(b.title, systemImage: b.icon) } }
                 }
             }
+            if !missing.isEmpty {
+                Section("Not on this phone") {
+                    ForEach(missing) { b in Button {} label: { Label(b.title, systemImage: b.icon) }.disabled(true) }
+                }
+            }
         } label: {
             Label(chain.steps.isEmpty ? "Add the first step" : "Add a step", systemImage: "plus.circle.fill").font(HandyFont.bodyStrong).frame(maxWidth: .infinity, minHeight: 48)
                 .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
@@ -298,22 +330,26 @@ private struct ChainEditor: View {
             Text("What do you start with?").font(HandyFont.cardTitle)
             HStack(spacing: HandySpacing.s12) {
                 startButton(.image, "A photo", "photo")
-                startButton(.text, "Text", "text.alignleft")
+                startButton(.text, "Text or a link", "text.alignleft")
                 startButton(.video, "A video", "film")
             }
-            Text("A photo tool also takes scans and PDF pages. A text tool also takes what you say, a contact, or the words in a PDF. A video tool shrinks, quiets or pulls a picture out of a video.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HStack(spacing: HandySpacing.s12) {
+                startButton(.audio, "A recording", "waveform")
+                startButton(.pdf, "A PDF", "doc.richtext")
+            }
+            Text("A photo tool also takes scans, PDF pages and QR codes. A text tool also takes a link, what you say, a contact, where you are, or the words in a PDF. A recording tool writes out what was said.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
     private func startButton(_ kind: ChainKind, _ title: String, _ icon: String) -> some View {
         Button { startChoice = kind } label: {
             VStack(spacing: HandySpacing.s8) {
                 Image(systemName: icon).font(.title2)
-                Text(title).font(HandyFont.bodyStrong)
+                Text(title).font(HandyFont.bodyStrong).multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity, minHeight: 84)
             .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
         }
-        .accessibilityIdentifier(kind == .text ? "start-text" : kind == .video ? "start-video" : "start-photo")
+        .accessibilityIdentifier(kind == .text ? "start-text" : kind == .video ? "start-video" : kind == .audio ? "start-audio" : kind == .pdf ? "start-pdf" : "start-photo")
     }
 
     private func stepCard(_ i: Int, _ s: ChainStep) -> some View {
@@ -362,9 +398,9 @@ private struct ChainEditor: View {
         let steps = chain.steps
         previews = Array(repeating: nil, count: steps.count)
         guard let first = steps.first else { return }
-        if first.block.takes == .video {
-            // There is no sample video to try steps on, so say what each one will do instead of showing a result.
-            previews = steps.map { StepPreview.file($0.block.blurb) }
+        if [.video, .audio, .pdf].contains(first.block.takes) {
+            // There is no sample video, recording or PDF to try steps on, so say what each one will do instead of showing a result.
+            previews = steps.map { s in s.block.unavailable.map { StepPreview.failed($0) } ?? StepPreview.file(s.block.blurb) }
             return
         }
         try? await Task.sleep(nanoseconds: 250_000_000)   // let a stepper settle before re-running
@@ -372,12 +408,22 @@ private struct ChainEditor: View {
         var value: ChainPayload
         switch first.block {
         case .readText, .stamp, .photoPdf: value = .image(SampleAssets.receipt())   // paperwork steps preview on a document
+        case .readCode: value = ChainText.qr("https://example.com/sale?utm_source=poster").map { .image($0) } ?? .image(SampleAssets.photo())
+        case .pageText: value = .text("https://example.com/article")
         case _ where first.block.takes == .text: value = .text(Self.sampleText)
         default: value = .image(SampleAssets.photo())
         }
         for (i, step) in steps.enumerated() {
             if Task.isCancelled { return }
             if !value.kind.feeds(step.block.takes) { previews[i] = .failed("Needs \(step.block.takes.label) from the step above."); continue }
+            if let why = step.block.unavailable { previews[i] = .failed("Not available on this phone. " + why); return }
+            if ChainExtras.noPreview.contains(step.block), step.block != .pageText {
+                // These need a voice, a translator or the writing model, so the sample isn't run through them.
+                previews[i] = .file(step.block.blurb)
+                if step.block.gives == .text { continue }      // the steps below still preview, on the text as it was
+                for j in (i + 1)..<steps.count { previews[j] = .file(steps[j].block.blurb) }
+                return
+            }
             switch await ChainRunner.apply(step, to: value, dryRun: true) {   // a preview never saves anything
             case .success(let next):
                 value = next
@@ -408,7 +454,11 @@ private struct ChainEditor: View {
         switch b { case .shrinkImage: return ["mb": "2"]; case .summarize: return ["sentences": "3"]; case .convertImage: return ["format": "JPG"]; case .passportPhoto: return ["country": "us"]
         case .watermark: return ["text": "For verification only"]; case .resizePhoto: return ["size": "413x531"]
         case .stamp: return ["marks": StampPlan.standard.text]; case .addToList: return ["list": RunningList.defaultName]
-        case .chatLink: return ["cc": ChainText.callingCode(region: Locale.current.region?.identifier)]; default: return [:] }
+        case .chatLink: return ["cc": ChainText.callingCode(region: Locale.current.region?.identifier)]
+        case .videoTrim: return ["side": "first", "secs": "30"]; case .videoRotate: return ["turn": "right"]; case .videoShrink: return ["mb": "25"]
+        case .translate: return ["to": "en"]; case .rewrite: return ["style": "clear"]
+        case .pdfShrink: return ["mb": "5"]; case .pdfLock: return ["password": ""]; case .pdfPages: return ["pages": ""]
+        default: return [:] }
     }
 
     @ViewBuilder private func settings(_ i: Int) -> some View {
@@ -452,6 +502,41 @@ private struct ChainEditor: View {
             Picker("Return window", selection: Binding(get: { ChainText.returnDays(chain.steps[i].settings["days"]) }, set: { chain.steps[i].settings["days"] = String($0) })) {
                 ForEach(ChainText.returnWindows, id: \.self) { Text("\($0) days").tag($0) }
             }.pickerStyle(.segmented)
+        case .videoTrim:
+            Picker("Which part", selection: Binding(get: { chain.steps[i].settings["side"] == "last" ? "last" : "first" }, set: { chain.steps[i].settings["side"] = $0 })) {
+                Text("The start").tag("first"); Text("The end").tag("last")
+            }.pickerStyle(.segmented)
+            let secs = Int(chain.steps[i].settings["secs"] ?? "") ?? 30
+            Picker("How long", selection: Binding(get: { secs }, set: { chain.steps[i].settings["secs"] = String($0) })) {
+                ForEach(ChainText.trimLengths.contains(secs) ? ChainText.trimLengths : (ChainText.trimLengths + [secs]).sorted(), id: \.self) { Text("\($0) sec").tag($0) }
+            }.pickerStyle(.segmented)
+        case .videoRotate:
+            Picker("Turn", selection: Binding(get: { chain.steps[i].settings["turn"] ?? "right" }, set: { chain.steps[i].settings["turn"] = $0 })) {
+                Text("Right").tag("right"); Text("Left").tag("left"); Text("Upside down").tag("flip")
+            }.pickerStyle(.segmented)
+        case .translate:
+            Picker("Into", selection: Binding(get: { ChainText.languageCode(chain.steps[i].settings["to"]) }, set: { chain.steps[i].settings["to"] = $0 })) {
+                ForEach(ChainText.languages, id: \.code) { Text($0.name).tag($0.code) }
+            }.pickerStyle(.menu).font(HandyFont.caption)
+            Text("The first time you use a language, the phone may ask to download it.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        case .rewrite:
+            Picker("Make it", selection: Binding(get: { ChainText.rewriteStyle(chain.steps[i].settings["style"]) }, set: { chain.steps[i].settings["style"] = $0 })) {
+                ForEach(ChainText.rewriteStyles, id: \.id) { Text($0.name).tag($0.id) }
+            }.pickerStyle(.menu).font(HandyFont.caption)
+        case .pdfShrink:
+            let limit = ChainText.pdfLimit(chain.steps[i].settings["mb"])
+            Picker("Size limit", selection: Binding(get: { limit }, set: { chain.steps[i].settings["mb"] = String($0) })) {
+                ForEach(ChainText.pdfLimits.contains(limit) ? ChainText.pdfLimits : (ChainText.pdfLimits + [limit]).sorted(), id: \.self) { Text("\($0) MB").tag($0) }
+            }.pickerStyle(.segmented)
+        case .pdfLock:
+            SecureField("Password", text: Binding(get: { chain.steps[i].settings["password"] ?? "" }, set: { chain.steps[i].settings["password"] = $0 }))
+                .textInputAutocapitalization(.never).autocorrectionDisabled()
+                .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+            Text("Kept on this phone with the tool. It is left out when you copy the tool to share.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        case .pdfPages:
+            TextField("Pages, e.g. 1-3, 5 (empty keeps all)", text: Binding(get: { chain.steps[i].settings["pages"] ?? "" }, set: { chain.steps[i].settings["pages"] = $0 }))
+                .keyboardType(.numbersAndPunctuation).autocorrectionDisabled()
+                .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
         case .convertImage:
             Picker("Format", selection: Binding(get: { chain.steps[i].settings["format"] ?? "JPG" }, set: { chain.steps[i].settings["format"] = $0 })) {
                 ForEach(ImageStudio.Format.allCases, id: \.rawValue) { Text($0.rawValue).tag($0.rawValue) }
@@ -510,6 +595,10 @@ private struct ChainRunView: View {
     @State private var pickingContact = false
     @State private var pickingPDF = false
     @State private var videoPick: PhotosPickerItem?
+    @StateObject private var here = WhereAmI()
+    @StateObject private var recorder = QuickRecorder()
+    /// What each result of a many-at-once run is called in the list: a photo, or a file.
+    @State private var noun = "Photo"
     @State private var busy = false
     @State private var result: ChainPayload?
     @State private var message: String?
@@ -522,7 +611,14 @@ private struct ChainRunView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 Text(chain.name).font(HandyFont.title)
                 stampSetup
-                if start == .video {
+                if let why = chain.unavailable {
+                    Label(why, systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber).cardStyle(padding: HandySpacing.s12)
+                }
+                if start == .audio {
+                    audioInputs
+                } else if start == .pdf {
+                    pdfInputs
+                } else if start == .video {
                     PhotosPicker(selection: $videoPick, matching: .videos) { Label("Choose a video", systemImage: "film").frame(maxWidth: .infinity) }
                         .primaryButton().accessibilityIdentifier("run-video")
                     Text("Long videos take a little while. Keep Tenzy open until it finishes.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -534,7 +630,7 @@ private struct ChainRunView: View {
                     }
                     Button { pickingPDF = true } label: { Label("Choose a PDF", systemImage: "doc.richtext").frame(maxWidth: .infinity) }
                         .secondaryButton().accessibilityIdentifier("run-pdf")
-                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : "Pick one, or up to 20 at once. Each one gets the same steps.")
+                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : "Pick one, or up to 20 at once. Each one gets the same steps.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
                     // Four ways to get the words in without typing them.
@@ -545,6 +641,7 @@ private struct ChainRunView: View {
                         fill(speech.running ? "Stop" : "Speak", speech.running ? "stop.circle.fill" : "mic", id: "in-speak") { toggleSpeech() }
                         fill("Contact", "person.crop.circle", id: "in-contact") { pickingContact = true }
                         fill("PDF", "doc.richtext", id: "in-pdf") { pickingPDF = true }
+                        fill(here.looking ? "Finding…" : "Location", "location", id: "in-location") { addLocation() }
                     }
                     if speech.running { Text(speech.live.isEmpty ? "Listening… tap Stop when you're done." : speech.live).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
                     if let e = speech.errorText { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -580,9 +677,19 @@ private struct ChainRunView: View {
                 if let picked { text = InputText.joined(text, picked) }
             }.ignoresSafeArea()
         }
-        .fileImporter(isPresented: $pickingPDF, allowedContentTypes: [.pdf]) { r in
-            guard case .success(let url) = r else { return }
-            if start == .text {
+        .fileImporter(isPresented: $pickingPDF, allowedContentTypes: start == .audio ? [.audio] : [.pdf], allowsMultipleSelection: start == .pdf) { r in
+            guard case .success(let urls) = r, let url = urls.first else { return }
+            if start == .audio {
+                if let d = Self.read(url) { go(.file(d, ext: url.pathExtension.isEmpty ? "m4a" : url.pathExtension.lowercased())) }
+                else { message = "That recording couldn't be opened. Try another." }
+            } else if start == .pdf {
+                // One PDF runs straight away; several each get the tool's steps (and are joined if the tool says so).
+                if urls.count == 1 {
+                    if let d = Self.read(url) { go(.file(d, ext: "pdf")) } else { message = "That PDF couldn't be opened. Try another." }
+                } else {
+                    runMany(count: urls.count, noun: "File") { i in Self.read(urls[i]).map { ChainPayload.file($0, ext: "pdf") } }
+                }
+            } else if start == .text {
                 // The words in the PDF become the text the tool works on.
                 if let words = PDFInput.text(from: url), !words.isEmpty { text = InputText.joined(text, words); message = nil }
                 else { message = "That PDF has no words Tenzy can read (it may be a scan). Use a photo tool with Read text, and choose the PDF there." }
@@ -594,7 +701,7 @@ private struct ChainRunView: View {
                 else { runBatch(count: pages.count) { i in pages[i] } }
             }
         }
-        .onDisappear { if speech.running { speech.stop() } }
+        .onDisappear { if speech.running { speech.stop() }; if recorder.running { _ = recorder.stop() } }
         .onChange(of: videoPick) { _, item in
             guard let item else { return }
             videoPick = nil
@@ -615,12 +722,56 @@ private struct ChainRunView: View {
         }
     }
 
+    /// A tool that starts with a recording: make one here, or pick one.
+    @ViewBuilder private var audioInputs: some View {
+            Button { toggleRecording() } label: { Label(recorder.running ? "Stop and run" : "Record", systemImage: recorder.running ? "stop.circle.fill" : "mic").frame(maxWidth: .infinity) }
+                .primaryButton().accessibilityIdentifier("run-record")
+            Button { pickingPDF = true } label: { Label("Choose a recording", systemImage: "waveform").frame(maxWidth: .infinity) }
+                .secondaryButton().disabled(recorder.running).accessibilityIdentifier("run-audio")
+            Text(recorder.running ? "Recording… tap Stop when you're done." : "Record now, or pick a voice memo or any sound file. It never leaves this phone.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+    }
+
+    /// A tool that starts with a PDF.
+    @ViewBuilder private var pdfInputs: some View {
+            Button { pickingPDF = true } label: { Label(chain.combine == true ? "Choose PDFs" : "Choose a PDF", systemImage: "doc.richtext").frame(maxWidth: .infinity) }
+                .primaryButton().accessibilityIdentifier("run-pdf-file")
+            Text(chain.combine == true ? "Pick them in the order you want. They are joined into one PDF." : "Pick one, or several at once. Each one gets the same steps.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+    }
+
     private func fill(_ title: String, _ icon: String, id: String, _ act: @escaping () -> Void) -> some View {
         Button(action: act) {
-            VStack(spacing: 4) { Image(systemName: icon).font(.system(size: 18, weight: .semibold)); Text(title).font(HandyFont.micro) }
+            VStack(spacing: 4) { Image(systemName: icon).font(.system(size: 18, weight: .semibold)); Text(title).font(HandyFont.micro).lineLimit(1).minimumScaleFactor(0.7) }
                 .frame(maxWidth: .infinity, minHeight: 52)
                 .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         }.buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityIdentifier(id)
+    }
+
+    /// A picked file's bytes. Files chosen from the Files app need their access opened first.
+    private static func read(_ url: URL) -> Data? {
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+        return try? Data(contentsOf: url)
+    }
+
+    /// Record: starts a recording, and on Stop runs the tool on it.
+    private func toggleRecording() {
+        if recorder.running {
+            if let url = recorder.stop(), let d = try? Data(contentsOf: url), !d.isEmpty { go(.file(d, ext: "m4a")) }
+            else { message = "Nothing was recorded. Try again." }
+        } else {
+            message = nil; result = nil
+            recorder.start { message = "Tenzy needs the microphone to record. Allow it in Settings, or choose a recording instead." }
+        }
+    }
+
+    /// Location: adds where the phone is (an address and a map link) to the text box.
+    private func addLocation() {
+        guard !here.looking else { return }
+        message = nil
+        here.find { found in
+            if let found { text = InputText.joined(text, found) }
+            else { message = "Tenzy couldn't find where you are. Check that Location is allowed for Tenzy in Settings, or type the place in." }
+        }
     }
 
     /// Speak: starts listening, and on Stop adds what was said to the text box.
@@ -636,8 +787,14 @@ private struct ChainRunView: View {
 
     /// One result per photo. A photo that can't be processed never stops the others; it just gets its own note.
     private func runBatch(count: Int, load: @escaping (Int) async -> UIImage?) {
-        busy = true; result = nil; message = nil; batch = []; outbox = nil
+        runMany(count: count, noun: "Photo") { i in await load(i).map { ChainPayload.image($0) } }
+    }
+
+    /// The same for anything a tool can start with: photos, pages, or several PDFs.
+    private func runMany(count: Int, noun name: String, load: @escaping (Int) async -> ChainPayload?) {
+        busy = true; result = nil; message = nil; batch = []; outbox = nil; noun = name
         let combine = chain.combine == true
+        let collage = chain.collage == true
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-batch-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         Task {
@@ -645,18 +802,18 @@ private struct ChainRunView: View {
             var kept: [ChainPayload] = []      // only held when everything is going into one PDF
             for i in 0..<count {
                 await MainActor.run { progress = "Working… \(i + 1) of \(count)" }
-                guard let img = await load(i) else {
-                    out.append(BatchItem(n: i + 1, note: "Couldn't open this photo.")); continue
+                guard let item = await load(i) else {
+                    out.append(BatchItem(n: i + 1, note: "Couldn't open this \(name.lowercased()).")); continue
                 }
-                switch await ChainRunner.run(chain, input: .image(img)) {
+                switch await ChainRunner.run(chain, input: item) {
                 case .success(let p):
-                    if combine { kept.append(p) }
+                    if combine || collage { kept.append(p) }
                     out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name))
                 case .failure(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
                 }
             }
             // One PDF for everything, when the tool asks for it and the results can be joined.
-            if combine, let one = ChainCombine.onePDF(kept, onePage: chain.onePage == true) {
+            if let one = collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true) : nil {
                 let skipped = out.filter { $0.note != nil }.count
                 await MainActor.run {
                     busy = false; progress = ""; result = one
@@ -728,12 +885,12 @@ private struct ChainRunView: View {
     @ViewBuilder private var batchView: some View {
         let ok = batch.filter { $0.note == nil }
         let urls = ok.compactMap(\.url)
-        let texts = ok.compactMap { b in b.text.map { "Photo \(b.n)\n\($0)" } }
+        let texts = ok.compactMap { b in b.text.map { "\(noun) \(b.n)\n\($0)" } }
         Text("\(ok.count) of \(batch.count) done").font(HandyFont.cardTitle)
         ForEach(batch) { b in
             HStack {
                 Image(systemName: b.note == nil ? "checkmark.circle.fill" : "exclamationmark.circle").foregroundStyle(b.note == nil ? Color.green : HandyColor.textSecondary)
-                Text("Photo \(b.n)").font(HandyFont.bodyStrong)
+                Text("\(noun) \(b.n)").font(HandyFont.bodyStrong)
                 Spacer()
                 Text(b.note ?? b.summary).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.trailing)
             }.cardStyle(padding: HandySpacing.s12)

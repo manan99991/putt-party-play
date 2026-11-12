@@ -16,10 +16,15 @@ enum ChainPayload {
         case .image: return .image
         case .text: return .text
         case .video: return .video
-        case .file(_, let ext): return ChainPayload.isPhoto(ext) ? .photoFile : .file
+        case .file(_, let ext):
+            if ChainPayload.isPhoto(ext) { return .photoFile }
+            if ext.lowercased() == "pdf" { return .pdf }
+            return ChainPayload.isAudio(ext) ? .audio : .file
         }
     }
     static func isPhoto(_ ext: String) -> Bool { ["jpg", "jpeg", "png", "heic"].contains(ext.lowercased()) }
+    /// A recording or any other sound file.
+    static func isAudio(_ ext: String) -> Bool { ["m4a", "mp3", "wav", "aac", "caf", "ogg", "flac"].contains(ext.lowercased()) }
 }
 
 /// What flows between blocks. The builder only offers a block whose `takes` matches the step above it.
@@ -28,7 +33,14 @@ enum ChainKind: String, Codable {
     /// A photo saved as bytes (the result of shrink, convert, strip...). Any block that takes a picture accepts it.
     case photoFile
     case video
-    var label: String { switch self { case .image, .photoFile: return "a photo"; case .text: return "text"; case .file: return "a file"; case .video: return "a video" } }
+    /// A recording or other sound file, and a PDF. Both travel as file bytes; the kind says which steps fit.
+    case audio, pdf
+    var label: String {
+        switch self {
+        case .image, .photoFile: return "a photo"; case .text: return "text"; case .file: return "a file"; case .video: return "a video"
+        case .audio: return "a recording"; case .pdf: return "a PDF"
+        }
+    }
     func feeds(_ need: ChainKind) -> Bool { self == need || (need == .image && self == .photoFile) }
 }
 
@@ -44,6 +56,10 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case wifiQr
     case returnBy
     case videoShrink, videoStill, videoMute, videoAudio
+    case videoTrim, videoGif, videoRotate, videoVertical, videoCaptions
+    case speechText, readAloud, translate, rewrite
+    case readCode, pageText, textPdf
+    case pdfShrink, pdfLock, pdfPages, pdfText
 
     var id: String { rawValue }
     var title: String {
@@ -84,23 +100,43 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .videoStill: return "Grab a still"
         case .videoMute: return "Remove the sound"
         case .videoAudio: return "Keep only the sound"
+        case .videoTrim: return "Keep the start or the end"
+        case .videoGif: return "Make a GIF"
+        case .videoRotate: return "Turn it"
+        case .videoVertical: return "Crop to tall (9:16)"
+        case .videoCaptions: return "Add captions"
+        case .speechText: return "Write out what is said"
+        case .readAloud: return "Read it aloud"
+        case .translate: return "Translate"
+        case .rewrite: return "Rewrite it"
+        case .readCode: return "Read a QR or barcode"
+        case .pageText: return "Read the page at a link"
+        case .textPdf: return "Text to PDF"
+        case .pdfShrink: return "Shrink the PDF"
+        case .pdfLock: return "Lock with a password"
+        case .pdfPages: return "Keep some pages"
+        case .pdfText: return "Read the PDF's words"
         }
     }
     var takes: ChainKind {
         switch self {
-        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp: return .image
-        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr, .returnBy: return .text
-        case .videoShrink, .videoStill, .videoMute, .videoAudio: return .video
+        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp, .readCode: return .image
+        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr, .returnBy, .readAloud, .translate, .rewrite, .pageText, .textPdf: return .text
+        case .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions: return .video
+        case .speechText: return .audio
+        case .pdfShrink, .pdfLock, .pdfPages, .pdfText: return .pdf
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
     var gives: ChainKind {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink: return .text
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink, .speechText, .translate, .rewrite, .readCode, .pageText, .pdfText: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
-        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .addToList, .returnBy, .videoAudio: return .file
+        case .businessCard, .calendarEvent, .makeTable, .addToList, .returnBy, .videoGif: return .file
         case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr, .videoStill: return .image
-        case .videoShrink, .videoMute: return .video
+        case .videoShrink, .videoMute, .videoTrim, .videoRotate, .videoVertical, .videoCaptions: return .video
+        case .videoAudio, .readAloud: return .audio
+        case .photoPdf, .textPdf, .pdfShrink, .pdfLock, .pdfPages: return .pdf
         }
     }
 }
@@ -110,14 +146,14 @@ extension Block {
     /// "what do you want to do with it?" rather than a flat list of tools.
     var goal: String {
         switch self {
-        case .shrinkImage, .convertImage, .resizePhoto, .videoShrink: return "Make it easy to send"
-        case .stripLocation, .hideSensitive, .watermark, .videoMute: return "Keep it private"
-        case .enhance, .cutout: return "Make it look better"
-        case .readText, .describe, .identify: return "Read what's in it"
-        case .stamp, .photoPdf: return "Paperwork"
-        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr, .chatLink, .contactQr, .wifiQr, .videoStill, .videoAudio: return "Turn it into something"
-        case .summarize, .actionItems, .scamCheck: return "Understand it"
-        case .cleanText, .cleanLinks, .pullDetails: return "Clean it up"
+        case .shrinkImage, .convertImage, .resizePhoto, .videoShrink, .videoTrim, .pdfShrink: return "Make it easy to send"
+        case .stripLocation, .hideSensitive, .watermark, .videoMute, .pdfLock: return "Keep it private"
+        case .enhance, .cutout, .videoRotate, .videoVertical, .videoCaptions: return "Make it look better"
+        case .readText, .describe, .identify, .readCode, .speechText, .pageText, .pdfText: return "Read what's in it"
+        case .stamp, .photoPdf, .textPdf, .pdfPages: return "Paperwork"
+        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr, .chatLink, .contactQr, .wifiQr, .videoStill, .videoAudio, .videoGif, .readAloud: return "Turn it into something"
+        case .summarize, .actionItems, .scamCheck, .translate: return "Understand it"
+        case .cleanText, .cleanLinks, .pullDetails, .rewrite: return "Clean it up"
         case .pullReceipt, .priceCompare, .expenseRow, .addToList, .returnBy: return "Money"
         }
     }
@@ -248,6 +284,8 @@ struct Chain: Codable, Equatable, Identifiable {
     var onePage: Bool?
     /// A reminder to run this tool at a set time. nil: no reminder.
     var schedule: ChainSchedule?
+    /// When several photos go in at once, lay the results out as one picture (a collage) instead of one file each.
+    var collage: Bool?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -282,6 +320,8 @@ enum ChainRunner {
 
     static func apply(_ step: ChainStep, to rawInput: ChainPayload, dryRun: Bool = false) async -> Result<ChainPayload, Failure> {
         let b = step.block
+        // A step this phone can't do says so plainly instead of failing halfway.
+        if let why = b.unavailable { return .failure(.invalid("\(b.title) isn't available on this phone. \(why)")) }
         var input = rawInput
         // A photo that was saved as bytes by an earlier step (shrink, convert...) is opened again for the next one.
         if b.takes == .image, case .file(let d, let ext) = rawInput, ChainPayload.isPhoto(ext) {
@@ -492,7 +532,8 @@ enum ChainRunner {
             return .success(.file(d, ext: "jpg"))
 
         default:
-            return .failure(.wrongInput(b))
+            // The newer steps (recordings, PDFs, links, codes, translating, more video) live in ChainExtras.
+            return await ChainExtras.apply(step, to: input, dryRun: dryRun) ?? .failure(.wrongInput(b))
         }
     }
 }
@@ -554,6 +595,21 @@ enum ChainTemplates {
         Chain(id: "share-shield", name: "Privacy share shield", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
         Chain(id: "id-copy-watermarked", name: "ID copy with a safety watermark", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"]), ChainStep(block: .stripLocation)]),
         Chain(id: "portal-photo", name: "Portal photo: 35x45 mm under 50 KB", steps: [ChainStep(block: .resizePhoto, settings: ["size": "413x531"]), ChainStep(block: .shrinkImage, settings: ["mb": "0.05"])]),
+        Chain(id: "memo-to-notes", name: "Voice memo to written notes", steps: [ChainStep(block: .speechText), ChainStep(block: .cleanText)]),
+        Chain(id: "memo-to-tasks", name: "Meeting recording to task list", steps: [ChainStep(block: .speechText), ChainStep(block: .actionItems)]),
+        Chain(id: "qr-safe", name: "Is this QR code safe?", steps: [ChainStep(block: .readCode), ChainStep(block: .scamCheck)]),
+        Chain(id: "sign-to-english", name: "Sign or menu photo to English", steps: [ChainStep(block: .readText), ChainStep(block: .translate, settings: ["to": "en"])]),
+        Chain(id: "page-to-pdf", name: "Web page to a clean PDF", steps: [ChainStep(block: .pageText), ChainStep(block: .textPdf)]),
+        Chain(id: "page-summary", name: "Web page to 3 sentences", steps: [ChainStep(block: .pageText), ChainStep(block: .summarize, settings: ["sentences": "3"])]),
+        Chain(id: "listen-later", name: "Text to an audio file", steps: [ChainStep(block: .readAloud)]),
+        Chain(id: "pdf-email", name: "PDF under 5 MB for email", steps: [ChainStep(block: .pdfShrink, settings: ["mb": "5"])], finish: ChainFinish(kind: .mail, to: "")),
+        Chain(id: "pdf-join", name: "Join PDFs into one", steps: [ChainStep(block: .pdfPages, settings: ["pages": ""])], combine: true),
+        Chain(id: "pdf-first-page", name: "Just the first page of a PDF", steps: [ChainStep(block: .pdfPages, settings: ["pages": "1"])]),
+        Chain(id: "video-story", name: "First 30 seconds, cropped tall", steps: [ChainStep(block: .videoTrim, settings: ["side": "first", "secs": "30"]), ChainStep(block: .videoVertical)]),
+        Chain(id: "video-gif", name: "Video to a GIF", steps: [ChainStep(block: .videoGif)]),
+        Chain(id: "video-words", name: "What was said in a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .speechText)]),
+        Chain(id: "photo-collage", name: "Photos into one collage", steps: [ChainStep(block: .stripLocation)], collage: true),
+        Chain(id: "where-i-am", name: "Send where I am", steps: [ChainStep(block: .cleanText)], finish: ChainFinish(kind: .message, to: "")),
     ]
 }
 
@@ -565,6 +621,7 @@ extension Chain {
         var copy = self
         copy.finish?.to = ""
         copy.schedule = nil        // nor their reminder times
+        for i in copy.steps.indices { copy.steps[i].settings["password"] = nil }   // nor a PDF password
         return (try? JSONEncoder().encode(copy)).flatMap { String(data: $0, encoding: .utf8) }.map { Chain.prefix + $0 } ?? ""
     }
     static func imported(from text: String) -> Chain? {
@@ -602,7 +659,7 @@ enum ChainStore {
 
     /// Every tool that can start from what was shared: the user's own first, then the starters, with the last-used one on top.
     static func offers(for kind: ChainKind, mine: [Chain], last: String?) -> [Chain] {
-        var all = (mine + ChainTemplates.all).filter { $0.problem(starting: kind) == nil }
+        var all = (mine + ChainTemplates.all).filter { $0.problem(starting: kind) == nil && $0.unavailable == nil }
         if let last, let i = all.firstIndex(where: { $0.id == last }) { all.insert(all.remove(at: i), at: 0) }
         return all
     }
@@ -671,6 +728,148 @@ enum ChainText {
     /// Size limits a video tool can pick, in megabytes: chat apps, email, and upload forms.
     static let videoLimits = [10, 16, 25, 50, 100]
     static func videoLimit(_ setting: String?) -> Int { min(2000, max(1, Int(Double(setting ?? "") ?? 25))) }
+
+    // MARK: trimming a video
+
+    /// Lengths "Keep the start or the end" can pick, in seconds: story and status limits.
+    static let trimLengths = [15, 30, 60, 90]
+    /// The part of a video to keep, in seconds. `side` is "first" or "last"; a video shorter than the length is kept whole.
+    static func trimWindow(side: String?, secs: String?, duration: Double) -> (start: Double, end: Double) {
+        let want = Double(min(600, max(1, Int(secs ?? "") ?? 30)))
+        let d = max(0, duration)
+        if d <= want { return (0, d) }
+        return side == "last" ? (d - want, d) : (0, want)
+    }
+    /// Quarter turns "Turn it" can make: to the right, to the left, or upside down. Anything else turns right.
+    static func turnDegrees(_ setting: String?) -> Int { setting == "left" ? 270 : setting == "flip" ? 180 : 90 }
+
+    // MARK: pages of a PDF
+
+    /// Size limits a PDF tool can pick, in megabytes.
+    static let pdfLimits = [1, 2, 5, 10, 20]
+    static func pdfLimit(_ setting: String?) -> Int { min(200, max(1, Int(Double(setting ?? "") ?? 5))) }
+    /// "1-3, 5" as page positions counted from zero, in the order written, without repeats, only pages that exist.
+    /// Empty or unreadable means every page.
+    static func pageList(_ setting: String, count: Int) -> [Int] {
+        var out: [Int] = []
+        for raw in setting.replacingOccurrences(of: "–", with: "-").components(separatedBy: CharacterSet(charactersIn: ",; ")) {
+            let part = raw.trimmingCharacters(in: .whitespaces)
+            if part.isEmpty { continue }
+            let ends = part.split(separator: "-").map { Int($0.trimmingCharacters(in: .whitespaces)) }
+            if ends.count == 2, let a = ends[0], let b = ends[1] {
+                let lo = max(1, min(a, b)), hi = min(count, max(a, b))
+                if lo <= hi { for p in lo...hi where !out.contains(p - 1) { out.append(p - 1) } }
+            } else if ends.count == 1, let p = ends[0], p >= 1, p <= count, !out.contains(p - 1) { out.append(p - 1) }
+        }
+        return out.isEmpty ? Array(0..<max(0, count)) : out
+    }
+
+    // MARK: languages
+
+    /// Languages "Translate" offers: the ones both iPhone and Android can translate on the phone.
+    static let languages: [(code: String, name: String)] = [
+        ("en", "English"), ("es", "Spanish"), ("fr", "French"), ("de", "German"), ("it", "Italian"), ("pt", "Portuguese"), ("hi", "Hindi"),
+        ("ar", "Arabic"), ("zh", "Chinese"), ("ja", "Japanese"), ("ko", "Korean"), ("ru", "Russian"), ("tr", "Turkish"), ("nl", "Dutch"),
+        ("pl", "Polish"), ("id", "Indonesian"), ("vi", "Vietnamese"), ("th", "Thai"), ("uk", "Ukrainian"),
+    ]
+    static func languageName(_ code: String?) -> String { languages.first { $0.code == code }?.name ?? "English" }
+    static func languageCode(_ setting: String?) -> String { languages.contains { $0.code == setting } ? (setting ?? "en") : "en" }
+
+    // MARK: rewriting
+
+    static let rewriteStyles: [(id: String, name: String)] = [("clear", "Clearer"), ("short", "Shorter"), ("friendly", "Friendlier"), ("formal", "More formal")]
+    static func rewriteStyle(_ setting: String?) -> String { rewriteStyles.contains { $0.id == setting } ? (setting ?? "clear") : "clear" }
+    static func rewriteAsk(_ style: String) -> String {
+        let how: String
+        switch style {
+        case "short": how = "Make it about half as long. Keep every fact, name, number and date."
+        case "friendly": how = "Make it warm and friendly, in plain everyday words."
+        case "formal": how = "Make it polite and professional."
+        default: how = "Make it clear and easy to read, in plain words and short sentences."
+        }
+        return "Rewrite the text the person gives you. " + how + " Keep the meaning and the language it is written in. Reply with the rewritten text only."
+    }
+
+    // MARK: captions
+
+    /// Spoken words grouped into caption lines: a new line starts when the line is full or the speaker pauses.
+    /// Each line stays up until the next one starts, but never longer than 4 seconds after its last word.
+    static func captionLines(_ words: [(text: String, start: Double, end: Double)], maxChars: Int = 32, pause: Double = 0.8) -> [(text: String, start: Double, end: Double)] {
+        var out: [(text: String, start: Double, end: Double)] = []
+        for w in words {
+            let t = w.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if t.isEmpty { continue }
+            if let last = out.last, last.text.count + 1 + t.count <= maxChars, w.start - last.end <= pause {
+                out[out.count - 1] = (last.text + " " + t, last.start, max(last.end, w.end))
+            } else {
+                out.append((t, w.start, max(w.end, w.start)))
+            }
+        }
+        for i in out.indices {
+            let hold = out[i].end + 4
+            let next = i + 1 < out.count ? out[i + 1].start : hold
+            out[i].end = max(out[i].end, min(hold, next))
+        }
+        return out
+    }
+
+    // MARK: a web page as plain reading text
+
+    /// The link a "Read the page" step should open: the first web link in the text, with https added if it has none.
+    static func pageLink(in text: String) -> String? {
+        guard let l = TextTidy.details(text).links.first else { return nil }
+        return full(l)
+    }
+
+    /// The readable words of a web page: its title, then its headings and paragraphs. Menus, scripts, forms and
+    /// footers are dropped. Empty when the page has no readable text. Pure, and the same rules as Android.
+    static func article(html: String) -> String {
+        func sub(_ s: String, _ pattern: String, _ with: String) -> String {
+            s.replacingOccurrences(of: pattern, with: with, options: [.regularExpression, .caseInsensitive])
+        }
+        func first(_ s: String, _ pattern: String) -> String? {
+            guard let r = s.range(of: pattern, options: [.regularExpression, .caseInsensitive]) else { return nil }
+            return String(s[r])
+        }
+        func plain(_ s: String) -> String {
+            var t = sub(s, "<[^>]+>", " ")
+            for (a, b) in [("&nbsp;", " "), ("&amp;", "&"), ("&lt;", "<"), ("&gt;", ">"), ("&quot;", "\""), ("&#39;", "'"), ("&apos;", "'"), ("&rsquo;", "'"), ("&lsquo;", "'"),
+                           ("&ldquo;", "\""), ("&rdquo;", "\""), ("&mdash;", "-"), ("&ndash;", "-"), ("&hellip;", "...")] { t = t.replacingOccurrences(of: a, with: b) }
+            t = sub(t, "&#?[a-z0-9]+;", " ")
+            return sub(t, "[ \\t\u{00A0}]+", " ").trimmingCharacters(in: .whitespaces)
+        }
+        let title = first(html, "(?s)<title[^>]*>.*?</title>").map(plain) ?? ""
+        var h = html
+        for tag in ["script", "style", "nav", "footer", "header", "aside", "noscript", "svg", "form", "iframe", "button", "head", "title"] {
+            h = sub(h, "(?s)<\(tag)\\b[^>]*>.*?</\(tag)>", " ")
+        }
+        h = sub(h, "(?s)<!--.*?-->", " ")
+        if let a = first(h, "(?s)<article\\b[^>]*>.*?</article>") { h = a } else if let m = first(h, "(?s)<main\\b[^>]*>.*?</main>") { h = m }
+        h = sub(h, "\\s+", " ")          // line breaks in the page's source mean nothing; only its tags do
+        h = sub(h, "<li\\b[^>]*>", "\n• ")
+        h = sub(h, "<br\\s*/?>|</p>|</h[1-6]>|</li>|</div>|</tr>|</blockquote>|</section>", "\n")
+        var lines = h.components(separatedBy: "\n").map(plain).filter { !$0.isEmpty && $0 != "•" }
+        if !title.isEmpty, lines.first != title { lines.insert(title, at: 0) }
+        return lines.joined(separator: "\n")
+    }
+
+    // MARK: collage
+
+    /// How many columns and rows a collage of `count` pictures gets: as square as it can be.
+    static func collageGrid(_ count: Int) -> (cols: Int, rows: Int) {
+        guard count > 0 else { return (0, 0) }
+        let cols = Int(Double(count).squareRoot().rounded(.up))
+        return (cols, Int((Double(count) / Double(cols)).rounded(.up)))
+    }
+
+    // MARK: where I am
+
+    /// What "Where I am" puts in the text box: the address when the phone knows it, and a map link anyone can open.
+    static func locationText(latitude: Double, longitude: Double, address: String) -> String {
+        let link = "https://maps.google.com/?q=" + String(format: "%.5f", latitude) + "," + String(format: "%.5f", longitude)
+        let a = address.trimmingCharacters(in: .whitespacesAndNewlines)
+        return (a.isEmpty ? "I'm here:" : "I'm here: " + a) + "\n" + link
+    }
 
     // MARK: return windows
 
@@ -780,6 +979,26 @@ enum ChainImage {
             }
         }
     }
+    /// Every picture as one image, in a grid of square tiles with thin white gaps. Each picture fills its tile.
+    static func collage(_ images: [UIImage], tile: CGFloat = 900, gap: CGFloat = 12) -> UIImage? {
+        guard !images.isEmpty else { return nil }
+        let g = ChainText.collageGrid(images.count)
+        let size = CGSize(width: CGFloat(g.cols) * tile + CGFloat(g.cols + 1) * gap, height: CGFloat(g.rows) * tile + CGFloat(g.rows + 1) * gap)
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+            for (i, img) in images.enumerated() {
+                let r = CGRect(x: gap + CGFloat(i % g.cols) * (tile + gap), y: gap + CGFloat(i / g.cols) * (tile + gap), width: tile, height: tile)
+                ctx.cgContext.saveGState()
+                ctx.cgContext.clip(to: r)
+                let s = max(tile / max(1, img.size.width), tile / max(1, img.size.height))
+                let w = img.size.width * s, h = img.size.height * s
+                img.draw(in: CGRect(x: r.midX - w / 2, y: r.midY - h / 2, width: w, height: h))
+                ctx.cgContext.restoreGState()
+            }
+        }
+    }
+
     /// Equal slots down the sheet, one per picture, separated by the margin.
     static func slots(count: Int, in size: CGSize, margin: CGFloat) -> [CGRect] {
         guard count > 0 else { return [] }
@@ -860,6 +1079,23 @@ enum ChainCombine {
                 .map { .file($0, ext: "pdf") }
         }
         return nil
+    }
+}
+
+extension ChainCombine {
+    /// "One picture for everything": the results of a multi-photo run as a single collage. nil when a result isn't a picture.
+    static func onePicture(_ results: [ChainPayload]) -> ChainPayload? {
+        var images: [UIImage] = []
+        for r in results {
+            switch r {
+            case .image(let i): images.append(i)
+            case .file(let d, let ext) where ChainPayload.isPhoto(ext):
+                guard let i = UIImage(data: d) else { return nil }
+                images.append(i)
+            default: return nil
+            }
+        }
+        return ChainImage.collage(images).map { ChainPayload.image($0) }
     }
 }
 

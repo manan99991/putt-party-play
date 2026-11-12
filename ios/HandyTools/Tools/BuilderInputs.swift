@@ -1,6 +1,8 @@
 import SwiftUI
 import ContactsUI
 import PDFKit
+import CoreLocation
+import AVFoundation
 
 /// More ways to hand something to a tool besides typing or picking a photo: what you say, a contact, a PDF.
 
@@ -88,5 +90,100 @@ struct ContactPickerSheet: UIViewControllerRepresentable {
                                      emails: contact.emailAddresses.map { $0.value as String }))
         }
         func contactPickerDidCancel(_ picker: CNContactPickerViewController) { onDone(nil) }
+    }
+}
+
+/// "Location": where the phone is right now, as an address and a map link, for a tool that sends or saves it.
+/// Asked for once, only when the button is tapped. Nothing is sent anywhere unless the person sends the result.
+@MainActor final class WhereAmI: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published var looking = false
+    private let manager = CLLocationManager()
+    private var done: ((String?) -> Void)?
+    private var asked = false
+
+    /// Calls back with the text to put in the box, or nil when the phone can't or may not say where it is.
+    func find(_ done: @escaping (String?) -> Void) {
+        self.done = done
+        looking = true; asked = false
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        switch manager.authorizationStatus {
+        case .notDetermined: manager.requestWhenInUseAuthorization()
+        case .denied, .restricted: finish(nil)
+        default: ask()
+        }
+        // A phone indoors with no signal must not leave the button spinning.
+        Task { @MainActor [weak self] in
+            try? await Task.sleep(nanoseconds: 20_000_000_000)
+            self?.finish(nil)
+        }
+    }
+
+    private func ask() {
+        guard !asked, done != nil else { return }
+        asked = true
+        manager.requestLocation()
+    }
+
+    private func finish(_ text: String?) {
+        guard let d = done else { return }
+        done = nil; looking = false
+        d(text)
+    }
+
+    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let s = manager.authorizationStatus
+        Task { @MainActor in
+            if s == .authorizedWhenInUse || s == .authorizedAlways { self.ask() } else if s == .denied || s == .restricted { self.finish(nil) }
+        }
+    }
+    nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let c = locations.last?.coordinate else { return }
+        let lat = c.latitude, lon = c.longitude
+        Task { @MainActor in
+            guard self.done != nil else { return }
+            // The address is a nicety; with no connection the map link alone is still enough.
+            let marks = try? await CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: lat, longitude: lon))
+            let p = marks?.first
+            let address = [p?.name, p?.locality, p?.administrativeArea].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: ", ")
+            self.finish(ChainText.locationText(latitude: lat, longitude: lon, address: address))
+        }
+    }
+    nonisolated func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        Task { @MainActor in self.finish(nil) }
+    }
+}
+
+/// "Record": a quick recording made right on the run screen, for a tool that starts with a recording.
+@MainActor final class QuickRecorder: ObservableObject {
+    @Published var running = false
+    private var recorder: AVAudioRecorder?
+    private var file: URL?
+
+    /// Starts recording once the microphone is allowed. `refused` is called when it isn't.
+    func start(refused: @escaping () -> Void) {
+        Permission.microphone { ok in
+            Task { @MainActor in
+                guard ok, self.begin() else { refused(); return }
+            }
+        }
+    }
+
+    private func begin() -> Bool {
+        let session = AVAudioSession.sharedInstance()
+        try? session.setCategory(.playAndRecord, options: [.defaultToSpeaker])
+        try? session.setActive(true)
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-recording-\(UUID().uuidString).m4a")
+        let settings: [String: Any] = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC), AVSampleRateKey: 44100, AVNumberOfChannelsKey: 1, AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
+        guard let r = try? AVAudioRecorder(url: url, settings: settings), r.record() else { return false }
+        recorder = r; file = url; running = true
+        return true
+    }
+
+    /// Stops and hands back the recording.
+    func stop() -> URL? {
+        recorder?.stop(); recorder = nil; running = false
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        return file
     }
 }

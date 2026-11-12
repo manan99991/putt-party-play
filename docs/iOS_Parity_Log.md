@@ -194,3 +194,26 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 ### Free logic check
 - `tools/logic-check/run.sh` compiles the plain logic of both platforms on Linux and runs the unit tests that need no phone (66 Android, 67 iOS at the time of writing). It caught a wrong assertion name and two stale counts before any paid build.
 - UNBUILT in CI as of this entry: everything from "Paperwork, part 2" down still needs its first real build.
+
+### New starts and steps, with a check for what the phone can do — iOS and Android
+Asked for as "build them all, with a graceful error when the phone doesn't support it; they can build whatever tools are available".
+
+- **Two new things a tool can start with**: a recording (`audio`) and a PDF (`pdf`). Both travel as file bytes; the kind comes from the file ending (pdf, or m4a/mp3/wav/aac/caf/ogg/flac). `photoPdf` now gives a PDF and `videoAudio` gives a recording, so "photo, make a PDF, lock it" and "video, keep the sound, write out what is said" chain.
+- **16 new steps, same ids on both phones**: `speechText`, `readAloud`, `translate`, `rewrite`, `readCode`, `pageText`, `textPdf`, `pdfShrink`, `pdfLock`, `pdfPages`, `pdfText`, `videoTrim`, `videoGif`, `videoRotate`, `videoVertical`, `videoCaptions`. 52 steps in all. The Android test now fails if the two lists differ in either direction.
+- **What a phone can't do is said, not hidden**: `Block.unavailable` (iOS) / `ExtraSteps.unavailable` (Android) gives one sentence or nothing. A step the phone can't run is listed greyed out under "Not on this phone" with the reason; a starter that needs one is not offered; a saved or pasted tool that has one shows a warning and, if run, stops with the same sentence. Every other step keeps working.
+  - `speechText`, `videoCaptions`: only where speech is recognised on the phone itself (iPhone: on-device recognition for the phone's language; Android: version 13 or newer with a recogniser). A recording is never sent away.
+  - `rewrite`: iPhone needs the on-device writing model. **Android has no writing model, so it is always unavailable there.**
+  - `videoCaptions`: **iPhone only for now.** Android says so and points to "Keep only the sound" then "Write out what is said".
+- **Several photos into one picture**: a tool can end as a collage (`collage` on the chain, same grid maths both sides). Several PDFs can be joined into one (`combine` on a PDF tool).
+- **More ways in**: Location (address and a map link into the text box) on both; Record on the run screen on iPhone (Android picks a recording made in the phone's recorder).
+- **15 new starters** (49 in all), same ids both sides: voice memo to notes, meeting recording to tasks, is this QR code safe, sign or menu to English, web page to a clean PDF, web page to 3 sentences, text to an audio file, PDF under 5 MB for email, join PDFs, first page of a PDF, first 30 seconds cropped tall, video to a GIF, what was said in a video, photos into one collage, send where I am.
+- Real differences that remain:
+  - `translate`: iPhone uses the system translator (it asks before downloading a language, and only works while Tenzy is open on screen); Android uses the same on-device packs as its Translate tool and a new small on-device language detector.
+  - `pdfShrink`: iPhone works down to the size picked; Android makes one smaller copy and never hands back a bigger one. `pdfPages` and `pdfLock` keep the PDF's real text on both (PDFKit / pdfbox).
+  - `readAloud`: iPhone gives an .m4a, Android a .wav and reads the first 3,900 characters (the system voice's limit).
+  - `videoGif`: the first 6 seconds on iPhone, the first 4 on Android (its GIF Maker recipe).
+  - iPhone share sheet: runs the code, link, text-to-PDF and PDF steps; steps that need a voice, the translator, speech or the video encoder are app only, so tools using them aren't offered there.
+- A PDF password typed into "Lock with a password" is kept with the tool on the phone and is left out when the tool is copied to share (unit-tested on iOS).
+- "Describe it" understands the new jobs on both (same keyword rules, same tests).
+- Local logic check: 75 Android and 80 iOS tests. The check now deletes the old build first, after it once reported a stale result.
+- NOT YET RUN ON A PHONE by anyone: everything in this entry.

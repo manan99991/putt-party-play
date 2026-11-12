@@ -97,3 +97,15 @@ watermark, exact pixel size, size limits down to 20 KB, the Share menu, email an
 3. A finished run with the email ready to send
 4. The Share menu showing Tenzy
 5. My sheets
+
+## Added with the new starts and steps (not live, needs Manan's yes)
+
+Lines that become true once the recording, PDF, link, code, translate and extra video steps ship. Check each against the platform before using it.
+
+- Both stores: "Start with a photo, a video, a recording, a PDF, a link or plain text." "Turn a voice memo into notes." (Android: only say this
+  with "on Android 13 and newer".) "Join, shrink, trim or password-lock a PDF." "Check a QR code before you open it." "Save a web page as a
+  clean PDF." "Translate a sign or a menu from a photo." "Trim a video, crop it tall, or make a GIF."
+- iPhone only: "Add captions to a video." "Rewrite text clearer or more formal" (say "on phones with Apple Intelligence").
+- Do not put captions or rewriting in the Play listing at all.
+- Reviewer notes to add (iPhone): Location is read only when the person taps Location in a tool; "Read the page at a link" fetches the single
+  page the person entered; speech is recognised on the device.

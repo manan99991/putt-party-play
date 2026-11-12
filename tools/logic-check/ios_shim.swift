@@ -15,7 +15,7 @@ func XCTAssertEqual<T: Equatable>(_ a: @autoclosure () throws -> T, _ b: @autocl
     guard let x = try? a(), let y = try? b() else { return note("threw", line) }
     if x != y { note("expected <\(y)> got <\(x)> \(m)", line) }
 }
-func XCTAssertEqual<T: FloatingPoint>(_ a: @autoclosure () throws -> T, _ b: @autoclosure () throws -> T, accuracy: T, line: UInt = #line) {
+func XCTAssertEqual<T: FloatingPoint>(_ a: @autoclosure () throws -> T, _ b: @autoclosure () throws -> T, accuracy: T, _ m: String = "", line: UInt = #line) {
     guard let x = try? a(), let y = try? b() else { return note("threw", line) }
     if abs(x - y) > accuracy { note("expected <\(y)> got <\(x)>", line) }
 }

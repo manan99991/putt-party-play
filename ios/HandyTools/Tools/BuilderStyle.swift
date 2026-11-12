@@ -40,15 +40,31 @@ extension Block {
         case .chatLink: return "bubble.left.and.text.bubble.right"
         case .contactQr: return "person.crop.square.filled.and.at.rectangle"
         case .wifiQr: return "wifi"
+        case .videoTrim: return "scissors"
+        case .videoGif: return "square.stack.3d.forward.dottedline"
+        case .videoRotate: return "rotate.right"
+        case .videoVertical: return "rectangle.portrait"
+        case .videoCaptions: return "captions.bubble"
+        case .speechText: return "waveform.badge.mic"
+        case .readAloud: return "speaker.wave.2"
+        case .translate: return "globe"
+        case .rewrite: return "pencil.and.outline"
+        case .readCode: return "qrcode.viewfinder"
+        case .pageText: return "safari"
+        case .textPdf: return "doc.text"
+        case .pdfShrink: return "arrow.down.doc"
+        case .pdfLock: return "lock.doc"
+        case .pdfPages: return "doc.on.doc"
+        case .pdfText: return "doc.text.magnifyingglass"
         }
     }
     var tint: Color {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink: return Color(hex: 0x3B82F6)
-        case .shrinkImage, .convertImage, .stripLocation, .resizePhoto, .videoShrink, .videoStill, .videoMute, .videoAudio: return Color(hex: 0x10B981)
-        case .cutout, .enhance, .passportPhoto: return Color(hex: 0xA855F7)
-        case .hideSensitive, .scamCheck, .watermark: return Color(hex: 0xF97316)
-        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr, .stamp, .addToList, .contactQr, .wifiQr, .returnBy: return Color(hex: 0xEC4899)
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink, .speechText, .translate, .rewrite, .readCode, .pageText, .pdfText: return Color(hex: 0x3B82F6)
+        case .shrinkImage, .convertImage, .stripLocation, .resizePhoto, .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .pdfShrink: return Color(hex: 0x10B981)
+        case .cutout, .enhance, .passportPhoto, .videoRotate, .videoVertical, .videoCaptions: return Color(hex: 0xA855F7)
+        case .hideSensitive, .scamCheck, .watermark, .pdfLock: return Color(hex: 0xF97316)
+        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr, .stamp, .addToList, .contactQr, .wifiQr, .returnBy, .readAloud, .textPdf, .pdfPages: return Color(hex: 0xEC4899)
         }
     }
     var blurb: String {
@@ -89,6 +105,22 @@ extension Block {
         case .chatLink: return "Opens a WhatsApp chat with a number without saving it as a contact."
         case .contactQr: return "A code another phone scans to save the contact. Only what you typed is included."
         case .wifiQr: return "Finds the network name and password and makes a code guests scan to join. No typing."
+        case .videoTrim: return "Keeps the first or last part, for stories and status posts with a time limit."
+        case .videoGif: return "Turns the first six seconds into a GIF that plays anywhere."
+        case .videoRotate: return "Turns a sideways or upside-down video the right way up."
+        case .videoVertical: return "Crops the middle to the tall shape phones and stories use."
+        case .videoCaptions: return "Listens to the video and writes what is said along the bottom."
+        case .speechText: return "Turns a voice memo or any recording into text. The recording stays on this phone."
+        case .readAloud: return "Reads the text into an audio file you can listen to later."
+        case .translate: return "Puts the text into the language you pick. Works out the original language itself."
+        case .rewrite: return "Rewrites the text clearer, shorter, friendlier or more formal."
+        case .readCode: return "Reads what a QR code or barcode says, without opening it."
+        case .pageText: return "Opens the link and keeps only the words: no menus, ads or pop-ups."
+        case .textPdf: return "Lays the text out as a clean PDF."
+        case .pdfShrink: return "Makes a PDF fit under a size you pick."
+        case .pdfLock: return "Asks for a password before the PDF opens."
+        case .pdfPages: return "Keeps only the pages you list. Leave it empty to keep them all."
+        case .pdfText: return "Pulls the words out of a PDF, even a scanned one."
         }
     }
 }

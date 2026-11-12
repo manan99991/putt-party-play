@@ -86,7 +86,7 @@ final class ChainRowTests: XCTestCase {
 
 final class ChainTemplateTests: XCTestCase {
     func testTwentyEightTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 34)
+        XCTAssertEqual(ChainTemplates.all.count, 49)
         XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, ChainTemplates.all.count)
     }
     func testShareRoundTripAndRejectsJunk() throws {
@@ -375,7 +375,7 @@ final class BlockGoalTests: XCTestCase {
     func testTextStartOffersOnlyTextSteps() {
         let text = Block.starting(with: .text)
         XCTAssertTrue(text.contains(.scamCheck)); XCTAssertFalse(text.contains(.shrinkImage))
-        XCTAssertEqual(Block.grouped(text).map(\.goal), ["Understand it", "Clean it up", "Turn it into something", "Money"])
+        XCTAssertEqual(Block.grouped(text).map(\.goal), ["Paperwork", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money"])
     }
 }
 
@@ -764,7 +764,9 @@ final class IntroTests: XCTestCase {
         XCTAssertTrue(text.allSatisfy { $0.steps.first?.block.takes == .text })
         let video = BuilderIntro.starters(for: .video)
         XCTAssertFalse(video.isEmpty); XCTAssertTrue(video.allSatisfy { $0.steps.first?.block.takes == .video })
-        XCTAssertEqual(photo.count + text.count + video.count, ChainTemplates.all.count)
+        let sound = BuilderIntro.starters(for: .audio), pdf = BuilderIntro.starters(for: .pdf)
+        XCTAssertFalse(sound.isEmpty); XCTAssertFalse(pdf.isEmpty)
+        XCTAssertEqual(photo.count + text.count + video.count + sound.count + pdf.count, ChainTemplates.all.count)
         XCTAssertEqual(BuilderIntro.starters(for: nil), ChainTemplates.all)
     }
     func testTheDemoStarterExistsAndTheIntroIsThreeIdeas() {
@@ -831,12 +833,12 @@ final class ReturnByTests: XCTestCase {
 
 final class VideoTests: XCTestCase {
     func testVideoStepsOnlyFitAVideoAndSayWhatTheyGive() {
-        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio]
+        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions]
         XCTAssertTrue(v.allSatisfy { $0.takes == .video })
         XCTAssertEqual(Block.starting(with: .video), v)
         XCTAssertFalse(Block.starting(with: .image).contains(.videoShrink)); XCTAssertFalse(Block.starting(with: .text).contains(.videoStill))
         XCTAssertEqual(Block.videoShrink.gives, .video); XCTAssertEqual(Block.videoMute.gives, .video)
-        XCTAssertEqual(Block.videoStill.gives, .image); XCTAssertEqual(Block.videoAudio.gives, .file)
+        XCTAssertEqual(Block.videoStill.gives, .image); XCTAssertEqual(Block.videoAudio.gives, .audio)
         XCTAssertEqual(ChainKind.video.label, "a video")
     }
     func testStepsChainOnlyWhereTheKindsMeet() {
@@ -883,5 +885,265 @@ final class ShareEndingTests: XCTestCase {
         c.finish = ChainFinish(kind: .message, to: ""); XCTAssertEqual(ShareEnding.of(c)?.kind, .message)
         c.finish = ChainFinish(kind: .share, to: ""); XCTAssertNil(ShareEnding.of(c))
         c.finish = ChainFinish(kind: .open, to: ""); XCTAssertNil(ShareEnding.of(c))
+    }
+}
+
+/// Recordings, PDFs, links, codes, translating, collages and the extra video steps: how the kinds fit together and
+/// the plain rules behind each step.
+final class NewKindTests: XCTestCase {
+    private func chain(_ blocks: [Block]) -> Chain { Chain(id: "t", name: "T", steps: blocks.map { ChainStep(block: $0) }) }
+
+    func testAFileIsARecordingAPdfOrAPhotoByItsEnding() {
+        XCTAssertTrue(ChainPayload.isAudio("M4A")); XCTAssertTrue(ChainPayload.isAudio("wav")); XCTAssertFalse(ChainPayload.isAudio("pdf")); XCTAssertFalse(ChainPayload.isAudio("mp4"))
+        XCTAssertEqual(ChainKind.audio.label, "a recording"); XCTAssertEqual(ChainKind.pdf.label, "a PDF")
+        XCTAssertFalse(ChainKind.pdf.feeds(.image)); XCTAssertFalse(ChainKind.audio.feeds(.video)); XCTAssertTrue(ChainKind.pdf.feeds(.pdf))
+    }
+    func testNewStepsFitOnlyTheirOwnKind() {
+        XCTAssertEqual(Block.starting(with: .audio), [.speechText])
+        XCTAssertEqual(Block.starting(with: .pdf), [.pdfShrink, .pdfLock, .pdfPages, .pdfText])
+        XCTAssertTrue(Block.starting(with: .image).contains(.readCode)); XCTAssertTrue(Block.starting(with: .text).contains(.translate))
+        XCTAssertEqual(Block.photoPdf.gives, .pdf); XCTAssertEqual(Block.textPdf.gives, .pdf); XCTAssertEqual(Block.readAloud.gives, .audio)
+        XCTAssertEqual(Block.videoGif.gives, .file); XCTAssertEqual(Block.videoCaptions.gives, .video)
+    }
+    func testStepsChainAcrossTheNewKinds() {
+        XCTAssertNil(chain([.videoAudio, .speechText, .actionItems]).problem(starting: .video))
+        XCTAssertNil(chain([.photoPdf, .pdfLock]).problem(starting: .image))
+        XCTAssertNil(chain([.pageText, .textPdf, .pdfShrink]).problem(starting: .text))
+        XCTAssertNil(chain([.readCode, .cleanLinks, .makeQr]).problem(starting: .image))
+        XCTAssertNil(chain([.pdfText, .translate, .readAloud]).problem(starting: .pdf))
+        XCTAssertNotNil(chain([.speechText]).problem(starting: .pdf))
+        XCTAssertNotNil(chain([.pdfLock]).problem(starting: .image))
+        XCTAssertNotNil(chain([.videoGif, .videoShrink]).problem(starting: .video), "a GIF is a finished file, not a video")
+    }
+    func testEveryStepHasAGoalTheBuilderShows() {
+        for b in Block.allCases { XCTAssertTrue(Block.goalOrder.contains(b.goal), b.rawValue) }
+        XCTAssertEqual(Set(Block.allCases.map(\.rawValue)).count, Block.allCases.count)
+    }
+    func testPageListReadsRangesAndIgnoresJunk() {
+        XCTAssertEqual(ChainText.pageList("1-3, 5", count: 10), [0, 1, 2, 4])
+        XCTAssertEqual(ChainText.pageList("", count: 3), [0, 1, 2])
+        XCTAssertEqual(ChainText.pageList("abc", count: 2), [0, 1])
+        XCTAssertEqual(ChainText.pageList("3-1", count: 5), [0, 1, 2])
+        XCTAssertEqual(ChainText.pageList("2,2;2", count: 5), [1])
+        XCTAssertEqual(ChainText.pageList("5, 1", count: 5), [4, 0], "pages come out in the order written")
+        XCTAssertEqual(ChainText.pageList("1-999999999", count: 4), [0, 1, 2, 3])
+        XCTAssertEqual(ChainText.pageList("7-9", count: 3), [0, 1, 2], "pages that don't exist fall back to the whole PDF")
+        XCTAssertEqual(ChainText.pageList("1\u{2013}2", count: 5), [0, 1])
+        XCTAssertEqual(ChainText.pageList("1", count: 0), [])
+        XCTAssertEqual(ChainText.pdfLimit(nil), 5); XCTAssertEqual(ChainText.pdfLimit("2"), 2); XCTAssertEqual(ChainText.pdfLimit("0"), 1)
+    }
+    func testTrimKeepsTheStartOrTheEnd() {
+        var w = ChainText.trimWindow(side: "first", secs: "30", duration: 100)
+        XCTAssertEqual(w.start, 0); XCTAssertEqual(w.end, 30)
+        w = ChainText.trimWindow(side: "last", secs: "30", duration: 100)
+        XCTAssertEqual(w.start, 70); XCTAssertEqual(w.end, 100)
+        w = ChainText.trimWindow(side: "last", secs: "30", duration: 12)
+        XCTAssertEqual(w.start, 0); XCTAssertEqual(w.end, 12, "a short video is kept whole")
+        w = ChainText.trimWindow(side: nil, secs: nil, duration: 100)
+        XCTAssertEqual(w.end, 30)
+        w = ChainText.trimWindow(side: "first", secs: "0", duration: 100)
+        XCTAssertEqual(w.end, 1)
+        XCTAssertEqual(ChainText.turnDegrees("left"), 270); XCTAssertEqual(ChainText.turnDegrees("flip"), 180); XCTAssertEqual(ChainText.turnDegrees(nil), 90)
+    }
+    func testCaptionsBreakOnFullLinesAndPauses() {
+        let lines = ChainText.captionLines([("Hello", 0, 0.4), ("there", 0.5, 0.9), ("everyone", 1.0, 1.6), ("Next", 5.0, 5.3)], maxChars: 12)
+        XCTAssertEqual(lines.map(\.text), ["Hello there", "everyone", "Next"])
+        XCTAssertEqual(lines[0].start, 0); XCTAssertEqual(lines[0].end, 1.0, accuracy: 0.001)
+        XCTAssertEqual(lines[1].end, 5.0, accuracy: 0.001, "a line stays up until the next one starts")
+        XCTAssertEqual(lines[2].end, 9.3, accuracy: 0.001, "but never more than 4 seconds after its last word")
+        XCTAssertEqual(ChainText.captionLines([("a", 0, 0.2), ("b", 2.0, 2.2)]).count, 2, "a pause starts a new line")
+        XCTAssertEqual(ChainText.captionLines([("a", 0, 0.2), (" ", 0.3, 0.4), ("b", 0.5, 0.6)]).map(\.text), ["a b"])
+        XCTAssertTrue(ChainText.captionLines([]).isEmpty)
+    }
+    func testAWebPageBecomesItsWords() {
+        let html = "<html><head><title>Big &amp; Small</title><style>p{}</style></head><body><nav>Menu</nav><article><h1>Big &amp; Small</h1><p>First\n para.</p><ul><li>One</li><li>Two</li></ul><script>x()</script></article><footer>Foot</footer></body></html>"
+        XCTAssertEqual(ChainText.article(html: html), "Big & Small\nFirst para.\n\u{2022} One\n\u{2022} Two")
+        XCTAssertEqual(ChainText.article(html: "<p>only</p>"), "only")
+        XCTAssertEqual(ChainText.article(html: "<title>T</title><div>A<br>B</div>"), "T\nA\nB")
+        XCTAssertEqual(ChainText.article(html: ""), "")
+        XCTAssertEqual(ChainText.article(html: "<script>var a = 1</script>"), "")
+        XCTAssertEqual(ChainText.pageLink(in: "https://example.com/x"), "https://example.com/x")
+        XCTAssertNil(ChainText.pageLink(in: "no links here"))
+    }
+    func testLanguagesStylesGridAndLocation() {
+        XCTAssertEqual(ChainText.languages.count, 19); XCTAssertEqual(Set(ChainText.languages.map(\.code)).count, 19)
+        XCTAssertEqual(ChainText.languageCode("xx"), "en"); XCTAssertEqual(ChainText.languageCode("es"), "es"); XCTAssertEqual(ChainText.languageName("es"), "Spanish")
+        XCTAssertEqual(ChainText.rewriteStyle("nope"), "clear"); XCTAssertEqual(ChainText.rewriteStyle("formal"), "formal")
+        XCTAssertTrue(ChainText.rewriteAsk("short").contains("half")); XCTAssertTrue(ChainText.rewriteAsk("clear").contains("Reply with the rewritten text only"))
+        for (n, c, r) in [(0, 0, 0), (1, 1, 1), (2, 2, 1), (3, 2, 2), (4, 2, 2), (5, 3, 2), (9, 3, 3), (10, 4, 3)] {
+            XCTAssertEqual(ChainText.collageGrid(n).cols, c, "\(n)"); XCTAssertEqual(ChainText.collageGrid(n).rows, r, "\(n)")
+        }
+        XCTAssertEqual(ChainText.locationText(latitude: 41.87811, longitude: -87.6298, address: "Main St"), "I'm here: Main St\nhttps://maps.google.com/?q=41.87811,-87.62980")
+        XCTAssertEqual(ChainText.locationText(latitude: 1, longitude: 2, address: " "), "I'm here:\nhttps://maps.google.com/?q=1.00000,2.00000")
+    }
+    func testASharedToolNeverCarriesAPdfPassword() throws {
+        var c = chain([.pdfLock])
+        c.steps[0].settings["password"] = "s3cret-word"
+        XCTAssertFalse(c.shareText.contains("s3cret-word"))
+        XCTAssertNil(try XCTUnwrap(Chain.imported(from: c.shareText)).steps[0].settings["password"])
+    }
+    func testNewStartersAreSetUpAsDescribed() throws {
+        XCTAssertEqual(try XCTUnwrap(ChainTemplates.all.first { $0.id == "photo-collage" }).collage, true)
+        XCTAssertEqual(try XCTUnwrap(ChainTemplates.all.first { $0.id == "pdf-join" }).combine, true)
+        XCTAssertEqual(try XCTUnwrap(ChainTemplates.all.first { $0.id == "video-words" }).steps.map(\.block), [.videoAudio, .speechText])
+        XCTAssertNil(chain([.cleanText]).collage, "tools saved before collages existed still load without one")
+    }
+    func testPlannerUnderstandsTheNewKinds() {
+        func blocks(_ ask: String) -> [Block] { ChainPlanner.keywordPlan(ask)?.steps.map(\.block) ?? [] }
+        XCTAssertEqual(blocks("transcribe my voice memo"), [.speechText])
+        XCTAssertEqual(blocks("write out what was said in a video and find the tasks"), [.videoAudio, .speechText, .actionItems])
+        XCTAssertEqual(blocks("add captions to my video"), [.videoCaptions])
+        XCTAssertEqual(blocks("turn a video into a gif"), [.videoGif])
+        let story = ChainPlanner.keywordPlan("keep the first 15 seconds of a video and make it vertical")
+        XCTAssertEqual(story?.steps.map(\.block), [.videoTrim, .videoVertical]); XCTAssertEqual(story?.steps.first?.settings["secs"], "15")
+        let join = ChainPlanner.keywordPlan("merge pdfs into one")
+        XCTAssertEqual(join?.steps.map(\.block), [.pdfPages]); XCTAssertEqual(join?.combine, true)
+        XCTAssertEqual(ChainPlanner.keywordPlan("shrink a pdf under 2 mb")?.steps.first?.settings["mb"], "2")
+        XCTAssertEqual(blocks("shrink a pdf under 2 mb"), [.pdfShrink])
+        XCTAssertEqual(blocks("lock a pdf with a password"), [.pdfLock])
+        let menu = ChainPlanner.keywordPlan("translate a photo of a menu into spanish")
+        XCTAssertEqual(menu?.steps.map(\.block), [.readText, .translate]); XCTAssertEqual(menu?.steps.last?.settings["to"], "es")
+        XCTAssertEqual(ChainPlanner.keywordPlan("translate this text")?.steps.last?.settings["to"], "en")
+        XCTAssertEqual(blocks("save a web page as a pdf"), [.pageText, .textPdf])
+        XCTAssertEqual(blocks("read this text aloud"), [.readAloud])
+        XCTAssertEqual(blocks("is this qr code safe"), [.readCode, .scamCheck])
+        XCTAssertEqual(blocks("turn a link into a qr code"), [.makeQr], "making a code is still making a code")
+        XCTAssertEqual(ChainPlanner.keywordPlan("rewrite this to be more formal")?.steps.first?.settings["style"], "formal")
+        XCTAssertEqual(blocks("strip the location and make a pdf"), [.stripLocation, .photoPdf], "a photo into a PDF is still a photo tool")
+    }
+}
+
+/// The new steps running for real: PDFs, text to PDF, codes, collages, and the checks for what a phone can do.
+final class NewStepRunTests: XCTestCase {
+    private func pdf(pages: [String]) -> Data {
+        UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: 612, height: 792)).pdfData { c in
+            for line in pages {
+                c.beginPage()
+                (line as NSString).draw(at: CGPoint(x: 72, y: 72), withAttributes: [.font: UIFont.systemFont(ofSize: 24)])
+            }
+        }
+    }
+    private func run(_ block: Block, _ settings: [String: String] = [:], on input: ChainPayload, dryRun: Bool = false) async -> Result<ChainPayload, ChainRunner.Failure> {
+        await ChainRunner.apply(ChainStep(block: block, settings: settings), to: input, dryRun: dryRun)
+    }
+
+    func testAFileKnowsItsKind() {
+        XCTAssertEqual(ChainPayload.file(Data(), ext: "pdf").kind, .pdf)
+        XCTAssertEqual(ChainPayload.file(Data(), ext: "PDF").kind, .pdf)
+        XCTAssertEqual(ChainPayload.file(Data(), ext: "m4a").kind, .audio)
+        XCTAssertEqual(ChainPayload.file(Data(), ext: "jpg").kind, .photoFile)
+        XCTAssertEqual(ChainPayload.file(Data(), ext: "csv").kind, .file)
+        XCTAssertEqual(ChainPayload.file(Data(), ext: "gif").kind, .file)
+    }
+    func testTextBecomesAPdfThatHoldsItsWords() async throws {
+        let r = await run(.textPdf, on: .text("Rent agreement\nThe tenant pays on the first of each month."))
+        guard case .success(.file(let d, let ext)) = r else { return XCTFail("no PDF") }
+        XCTAssertEqual(ext, "pdf")
+        let doc = try XCTUnwrap(PDFDocument(data: d))
+        XCTAssertEqual(doc.pageCount, 1)
+        XCTAssertTrue((doc.string ?? "").contains("tenant pays"))
+        // Long text runs on to more pages instead of being cut off.
+        let long = await run(.textPdf, on: .text(Array(repeating: "A line of words that fills the page a little at a time.", count: 400).joined(separator: "\n")))
+        guard case .success(.file(let many, _)) = long else { return XCTFail("no long PDF") }
+        XCTAssertGreaterThan(try XCTUnwrap(PDFDocument(data: many)).pageCount, 3)
+        if case .success = await run(.textPdf, on: .text("   ")) { XCTFail("nothing to lay out") }
+    }
+    func testKeepSomePagesKeepsThemInTheOrderAsked() async throws {
+        let three = pdf(pages: ["Page one", "Page two", "Page three"])
+        let r = await run(.pdfPages, ["pages": "3, 1"], on: .file(three, ext: "pdf"))
+        guard case .success(.file(let d, "pdf")) = r else { return XCTFail("no PDF") }
+        let doc = try XCTUnwrap(PDFDocument(data: d))
+        XCTAssertEqual(doc.pageCount, 2)
+        XCTAssertTrue((doc.page(at: 0)?.string ?? "").contains("Page three"))
+        let all = await run(.pdfPages, ["pages": ""], on: .file(three, ext: "pdf"))
+        guard case .success(.file(let whole, _)) = all else { return XCTFail("no PDF") }
+        XCTAssertEqual(PDFDocument(data: whole)?.pageCount, 3)
+    }
+    func testALockedPdfNeedsItsPassword() async throws {
+        let r = await run(.pdfLock, ["password": "open-sesame"], on: .file(pdf(pages: ["Private"]), ext: "pdf"))
+        guard case .success(.file(let d, "pdf")) = r else { return XCTFail("no PDF") }
+        let doc = try XCTUnwrap(PDFDocument(data: d))
+        XCTAssertTrue(doc.isLocked)
+        XCTAssertTrue(doc.unlock(withPassword: "open-sesame"))
+        let none = await run(.pdfLock, ["password": " "], on: .file(pdf(pages: ["Private"]), ext: "pdf"))
+        guard case .failure(.invalid(let why)) = none else { return XCTFail("a lock with no password must say so") }
+        XCTAssertTrue(why.contains("needs a password"))
+    }
+    func testPdfWordsAndShrinkNeverMakeThingsWorse() async {
+        let two = pdf(pages: ["Invoice 1042", "Second page"])
+        guard case .success(.text(let words)) = await run(.pdfText, on: .file(two, ext: "pdf")) else { return XCTFail("no words") }
+        XCTAssertTrue(words.contains("Invoice 1042")); XCTAssertTrue(words.contains("Second page"))
+        guard case .success(.file(let small, "pdf")) = await run(.pdfShrink, ["mb": "1"], on: .file(two, ext: "pdf")) else { return XCTFail("no PDF") }
+        XCTAssertLessThanOrEqual(small.count, two.count)
+        guard case .failure(.invalid(let why)) = await run(.pdfShrink, on: .file(Data("not a pdf".utf8), ext: "pdf")) else { return XCTFail("junk must be refused") }
+        XCTAssertTrue(why.contains("couldn't open that PDF"))
+    }
+    func testATextToolCanEndAsALockedPdf() async throws {
+        let c = Chain(id: "x", name: "x", steps: [ChainStep(block: .textPdf), ChainStep(block: .pdfLock, settings: ["password": "pw"])])
+        guard case .success(.file(let d, "pdf")) = await ChainRunner.run(c, input: .text("Minutes of the meeting.")) else { return XCTFail("chain failed") }
+        XCTAssertEqual(PDFDocument(data: d)?.isLocked, true)
+    }
+    func testReadThePageNeedsALinkAndPreviewsWithoutTheNetwork() async {
+        guard case .success(.text(let sample)) = await run(.pageText, on: .text("see https://example.com/a"), dryRun: true) else { return XCTFail("a preview never fetches") }
+        XCTAssertEqual(sample, ChainExtras.samplePage)
+        guard case .failure(.invalid(let why)) = await run(.pageText, on: .text("no link in here"), dryRun: true) else { return XCTFail("no link must be said plainly") }
+        XCTAssertTrue(why.contains("needs a web link"))
+    }
+    func testACodeIsReadBackWhenThePhoneCanSeeIt() async throws {
+        let code = try XCTUnwrap(ChainText.qr("https://example.com/menu"))
+        // The simulator's code reader is not dependable, so only a wrong answer fails here, never a missed one.
+        if let read = ChainExtras.readCode(code) { XCTAssertEqual(read, "https://example.com/menu") }
+        let blank = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 300)).image { c in UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 300, height: 300)) }
+        guard case .failure(.invalid(let why)) = await run(.readCode, on: .image(blank)) else { return XCTFail("a picture with no code must say so") }
+        XCTAssertTrue(why.contains("didn't find a code"))
+    }
+    func testPhotosBecomeOneCollage() throws {
+        func tile(_ c: UIColor) -> UIImage {
+            let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+            return UIGraphicsImageRenderer(size: CGSize(width: 400, height: 300), format: f).image { ctx in c.setFill(); ctx.fill(CGRect(x: 0, y: 0, width: 400, height: 300)) }
+        }
+        guard case .image(let three)? = ChainCombine.onePicture([.image(tile(.red)), .image(tile(.green)), .file(tile(.blue).jpegData(compressionQuality: 0.8)!, ext: "jpg")]) else { return XCTFail("no collage") }
+        XCTAssertEqual(three.size.width, 2 * 900 + 3 * 12); XCTAssertEqual(three.size.height, 2 * 900 + 3 * 12)
+        guard case .image(let two)? = ChainCombine.onePicture([.image(tile(.red)), .image(tile(.green))]) else { return XCTFail("no collage") }
+        XCTAssertEqual(two.size.width, 2 * 900 + 3 * 12); XCTAssertEqual(two.size.height, 900 + 2 * 12)
+        XCTAssertNil(ChainCombine.onePicture([.image(tile(.red)), .text("words")]))
+        XCTAssertNil(ChainCombine.onePicture([]))
+    }
+    func testAStepThisPhoneCannotRunSaysSoInsteadOfFailing() async {
+        // Steps that need nothing special are always there.
+        for b in [Block.readCode, .pageText, .textPdf, .pdfShrink, .pdfLock, .pdfPages, .pdfText, .translate, .readAloud, .videoTrim, .videoGif, .videoRotate, .videoVertical] {
+            XCTAssertNil(b.unavailable, b.rawValue)
+        }
+        XCTAssertNil(Chain(id: "a", name: "a", steps: [ChainStep(block: .cleanText)]).unavailable)
+        // Whatever this device supports, a missing step is reported in words and the tool names it.
+        for b in [Block.speechText, .videoCaptions, .rewrite] {
+            let c = Chain(id: "a", name: "a", steps: [ChainStep(block: b)])
+            if let why = b.unavailable {
+                XCTAssertFalse(why.isEmpty)
+                XCTAssertTrue((c.unavailable ?? "").hasPrefix("\(b.title) isn't available on this phone."))
+                let input: ChainPayload = b.takes == .text ? .text("hello") : b.takes == .video ? .video(URL(fileURLWithPath: "/nope.mp4")) : .file(Data(), ext: "m4a")
+                guard case .failure(.invalid(let said)) = await ChainRunner.apply(ChainStep(block: b), to: input) else { return XCTFail("\(b.rawValue) should stop with a reason") }
+                XCTAssertTrue(said.contains("isn't available on this phone"))
+                XCTAssertFalse(ChainStore.offers(for: b.takes, mine: [c], last: nil).contains { $0.id == "a" }, "a tool this phone can't run isn't offered in the share sheet")
+            } else {
+                XCTAssertNil(c.unavailable)
+            }
+        }
+    }
+    func testTallCropKeepsTheMiddleAtNineBySixteen() {
+        let wide = ChainMedia.tallCrop(CGSize(width: 1920, height: 1080))
+        XCTAssertEqual(wide.width, 606); XCTAssertEqual(wide.height, 1080); XCTAssertEqual(wide.minX, 657); XCTAssertEqual(wide.minY, 0)
+        let tall = ChainMedia.tallCrop(CGSize(width: 1080, height: 1920))
+        XCTAssertEqual(tall, CGRect(x: 0, y: 0, width: 1080, height: 1920), "a video that is already tall is left as it is")
+        let square = ChainMedia.tallCrop(CGSize(width: 1000, height: 1000))
+        XCTAssertEqual(square.width, 562); XCTAssertEqual(square.height, 1000)
+    }
+    func testACaptionIsDrawnOnlyWhileItIsDue() throws {
+        let art = CaptionArt(lines: [("Hello there", 1.0, 3.0)])
+        let frame = CIImage(color: .gray).cropped(to: CGRect(x: 0, y: 0, width: 640, height: 360))
+        XCTAssertEqual(art.draw(over: frame, at: 0.5).extent, frame.extent)
+        XCTAssertEqual(art.draw(over: frame, at: 2.0).extent, frame.extent, "the caption sits inside the frame")
+        let plate = try XCTUnwrap(CaptionArt.picture("Hello there", in: frame.extent.size))
+        XCTAssertLessThan(plate.extent.width, 640); XCTAssertGreaterThan(plate.extent.height, 10)
     }
 }

@@ -81,6 +81,32 @@ object VideoSteps {
         return if (ok && out.length() > 0L) out else { out.delete(); null }
     }
 
+    /** Only the part between [startMs] and [endMs]. */
+    suspend fun trim(ctx: Context, uri: Uri, startMs: Long, endMs: Long): File? {
+        val out = outFile(ctx, "mp4")
+        val clip = MediaItem.Builder().setUri(uri)
+            .setClippingConfiguration(MediaItem.ClippingConfiguration.Builder().setStartPositionMs(startMs).setEndPositionMs(endMs).build()).build()
+        val ok = export(ctx, EditedMediaItem.Builder(clip).build(), out, null)
+        return if (ok && out.length() > 0L) out else { out.delete(); null }
+    }
+
+    /** The video turned by a quarter or half turn. [clockwise] is 90, 180 or 270. */
+    suspend fun rotate(ctx: Context, uri: Uri, clockwise: Int): File? {
+        val out = outFile(ctx, "mp4")
+        // The effect counts turns the other way round (anticlockwise), so a turn to the right is a negative angle.
+        val turn = androidx.media3.effect.ScaleAndRotateTransformation.Builder().setRotationDegrees(-clockwise.toFloat()).build()
+        val ok = export(ctx, EditedMediaItem.Builder(MediaItem.fromUri(uri)).setEffects(Effects(emptyList(), listOf(turn))).build(), out, null)
+        return if (ok && out.length() > 0L) out else { out.delete(); null }
+    }
+
+    /** The middle of the frame at 9:16 (a phone held upright). */
+    suspend fun vertical(ctx: Context, uri: Uri): File? {
+        val out = outFile(ctx, "mp4")
+        val tall = Presentation.createForAspectRatio(9f / 16f, Presentation.LAYOUT_SCALE_TO_FIT_WITH_CROP)
+        val ok = export(ctx, EditedMediaItem.Builder(MediaItem.fromUri(uri)).setEffects(Effects(emptyList(), listOf(tall))).build(), out, null)
+        return if (ok && out.length() > 0L) out else { out.delete(); null }
+    }
+
     /** Just the sound, as the bytes of an .m4a file. Null when the video has no sound. */
     suspend fun audio(ctx: Context, uri: Uri): ByteArray? = withContext(Dispatchers.IO) {
         val out = outFile(ctx, "m4a")

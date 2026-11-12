@@ -71,7 +71,7 @@ targets:
         # --- Tool permissions ---
         NSCameraUsageDescription: Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded.
         NSMicrophoneUsageDescription: Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded.
-        NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude and the GPS dashboard. Your location stays on this phone.
+        NSLocationWhenInUseUsageDescription: Needed for the compass (true north), altitude, the GPS dashboard, and to put where you are into a tool when you tap Location. It is only shared if you send it.
         NSMotionUsageDescription: Needed for the level, barometer/altimeter and metal detector readings.
         NSSpeechRecognitionUsageDescription: Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded.
         NSPhotoLibraryUsageDescription: Needed to read text from screenshots, view or strip photo metadata, and find large or duplicate photos and videos you choose to remove. iOS always asks you to confirm a deletion.
@@ -91,6 +91,7 @@ targets:
       # The chain runner and the engines it calls, so a saved tool runs right inside the share sheet.
       # (Video tools are not offered there; see ShareExtension/EngineShims.swift.)
       - HandyTools/Engines/ChainRunner.swift
+      - HandyTools/Engines/ChainExtras.swift
       - HandyTools/Engines/DocEngine.swift
       - HandyTools/Engines/DataGrab.swift
       - HandyTools/Engines/TextTools.swift

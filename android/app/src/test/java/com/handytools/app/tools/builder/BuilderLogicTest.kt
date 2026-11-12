@@ -135,7 +135,7 @@ class BuilderLogicTest {
         assertTrue(groups.none { it.first == "Understand it" })
     }
     @Test fun textStartGoalsInOrder() =
-        assertEquals(listOf("Understand it", "Clean it up", "Turn it into something", "Money"), BlockGoals.grouped(BlockGoals.starting(Kind.TEXT)).map { it.first })
+        assertEquals(listOf("Paperwork", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money"), BlockGoals.grouped(BlockGoals.starting(Kind.TEXT)).map { it.first })
 
     // Watermark, exact pixel size, small size limits
     @Test fun pixelsParsesAndRejects() {
@@ -302,7 +302,9 @@ class BuilderLogicTest {
         assertTrue(photo.all { it.start == Kind.IMAGE }); assertTrue(text.all { it.start == Kind.TEXT })
         val video = BuilderIntro.starters(Kind.VIDEO)
         assertTrue(video.isNotEmpty() && video.all { it.start == Kind.VIDEO })
-        assertEquals(ChainTemplates.all.size, photo.size + text.size + video.size)
+        val sound = BuilderIntro.starters(Kind.AUDIO); val pdf = BuilderIntro.starters(Kind.PDF)
+        assertTrue(sound.isNotEmpty() && pdf.isNotEmpty())
+        assertEquals(ChainTemplates.all.size, photo.size + text.size + video.size + sound.size + pdf.size)
         assertEquals(ChainTemplates.all, BuilderIntro.starters(null))
         assertNotNull(ChainTemplates.all.firstOrNull { it.id == BuilderIntro.DEMO_ID })
         assertEquals(3, BuilderIntro.PAGES.size)
@@ -368,11 +370,14 @@ class BuilderLogicTest {
     @Test fun androidNowHasEveryStepTheIphoneHas() {
         val ios = listOf("readText", "pullReceipt", "summarize", "shrinkImage", "stripLocation", "cutout", "enhance", "convertImage", "businessCard", "calendarEvent", "actionItems",
             "hideSensitive", "passportPhoto", "cleanText", "pullDetails", "makeTable", "scamCheck", "cleanLinks", "priceCompare", "makeQr", "describe", "identify", "photoPdf",
-            "watermark", "resizePhoto", "stamp", "expenseRow", "addToList", "chatLink", "contactQr", "wifiQr", "returnBy", "videoShrink", "videoStill", "videoMute", "videoAudio")
+            "watermark", "resizePhoto", "stamp", "expenseRow", "addToList", "chatLink", "contactQr", "wifiQr", "returnBy", "videoShrink", "videoStill", "videoMute", "videoAudio",
+            "videoTrim", "videoGif", "videoRotate", "videoVertical", "videoCaptions", "speechText", "readAloud", "translate", "rewrite", "readCode", "pageText", "textPdf",
+            "pdfShrink", "pdfLock", "pdfPages", "pdfText")
         assertEquals(emptyList<String>(), ios.filter { Block.byId(it) == null })
+        assertEquals("both phones have exactly the same steps", ios.size, Block.values().size)
     }
     @Test fun videoStepsOnlyFitAVideo() {
-        val v = listOf(Block.VIDEO_SHRINK, Block.VIDEO_STILL, Block.VIDEO_MUTE, Block.VIDEO_AUDIO)
+        val v = listOf(Block.VIDEO_SHRINK, Block.VIDEO_STILL, Block.VIDEO_MUTE, Block.VIDEO_AUDIO, Block.VIDEO_TRIM, Block.VIDEO_GIF, Block.VIDEO_ROTATE, Block.VIDEO_VERTICAL, Block.VIDEO_CAPTIONS)
         assertTrue(v.all { it.takes == Kind.VIDEO })
         assertEquals(v.toSet(), BlockGoals.starting(Kind.VIDEO).toSet())
         assertFalse(Block.VIDEO_SHRINK in BlockGoals.starting(Kind.IMAGE)); assertFalse(Block.VIDEO_STILL in BlockGoals.starting(Kind.TEXT))
@@ -407,5 +412,108 @@ class BuilderLogicTest {
         assertEquals(listOf(Block.VIDEO_STILL), blocks("grab a still from a video"))
         assertEquals(listOf(Block.VIDEO_AUDIO), blocks("just the audio from this video"))
         assertEquals(Block.SHRINK, blocks("shrink a photo under 1 mb").last())
+    }
+
+    // Recordings, PDFs, links, codes, translating, collages and the extra video steps
+    private fun chain(vararg b: Block) = Chain("t", "T", b.map { Step(it) })
+
+    @Test fun newKindsHaveTheirOwnSteps() {
+        assertEquals(listOf(Block.SPEECH_TEXT), BlockGoals.starting(Kind.AUDIO))
+        assertEquals(setOf(Block.PDF_SHRINK, Block.PDF_LOCK, Block.PDF_PAGES, Block.PDF_TEXT), BlockGoals.starting(Kind.PDF).toSet())
+        assertTrue(Block.READ_CODE in BlockGoals.starting(Kind.IMAGE)); assertTrue(Block.TRANSLATE in BlockGoals.starting(Kind.TEXT))
+        assertEquals(Kind.PDF, Block.PHOTO_PDF.gives); assertEquals(Kind.PDF, Block.TEXT_PDF.gives); assertEquals(Kind.AUDIO, Block.READ_ALOUD.gives)
+        assertEquals(Kind.AUDIO, Block.VIDEO_AUDIO.gives); assertEquals(Kind.FILE, Block.VIDEO_GIF.gives)
+        assertEquals("a recording", Kind.AUDIO.label); assertEquals("a PDF", Kind.PDF.label)
+        assertFalse(Kind.PDF.feeds(Kind.IMAGE)); assertFalse(Kind.AUDIO.feeds(Kind.VIDEO))
+        assertTrue(TextTidy.isAudio("M4A")); assertTrue(TextTidy.isAudio("wav")); assertFalse(TextTidy.isAudio("pdf")); assertFalse(TextTidy.isAudio("mp4"))
+    }
+    @Test fun stepsChainAcrossTheNewKinds() {
+        assertNull(chain(Block.VIDEO_AUDIO, Block.SPEECH_TEXT, Block.ACTION_ITEMS).problem(Kind.VIDEO))
+        assertNull(chain(Block.PHOTO_PDF, Block.PDF_LOCK).problem(Kind.IMAGE))
+        assertNull(chain(Block.PAGE_TEXT, Block.TEXT_PDF, Block.PDF_SHRINK).problem(Kind.TEXT))
+        assertNull(chain(Block.READ_CODE, Block.CLEAN_LINKS, Block.MAKE_QR).problem(Kind.IMAGE))
+        assertNull(chain(Block.PDF_TEXT, Block.TRANSLATE, Block.READ_ALOUD).problem(Kind.PDF))
+        assertNotNull(chain(Block.SPEECH_TEXT).problem(Kind.PDF))
+        assertNotNull(chain(Block.PDF_LOCK).problem(Kind.IMAGE))
+        assertNotNull(chain(Block.VIDEO_GIF, Block.VIDEO_SHRINK).problem(Kind.VIDEO))   // a GIF is a finished file, not a video
+    }
+    @Test fun pageListReadsRangesAndIgnoresJunk() {
+        assertEquals(listOf(0, 1, 2, 4), TextTidy.pageList("1-3, 5", 10))
+        assertEquals(listOf(0, 1, 2), TextTidy.pageList("", 3))
+        assertEquals(listOf(0, 1), TextTidy.pageList("abc", 2))
+        assertEquals(listOf(0, 1, 2), TextTidy.pageList("3-1", 5))
+        assertEquals(listOf(1), TextTidy.pageList("2,2;2", 5))
+        assertEquals(listOf(4, 0), TextTidy.pageList("5, 1", 5))
+        assertEquals(listOf(0, 1, 2, 3), TextTidy.pageList("1-999999999", 4))
+        assertEquals(listOf(0, 1, 2), TextTidy.pageList("7-9", 3))
+        assertEquals(listOf(0, 1), TextTidy.pageList("1\u20132", 5))
+        assertEquals(emptyList<Int>(), TextTidy.pageList("1", 0))
+        assertEquals(5, TextTidy.pdfLimit(null)); assertEquals(2, TextTidy.pdfLimit("2")); assertEquals(1, TextTidy.pdfLimit("0"))
+    }
+    @Test fun trimKeepsTheStartOrTheEnd() {
+        assertEquals(0L to 30_000L, TextTidy.trimWindow("first", "30", 100_000L))
+        assertEquals(70_000L to 100_000L, TextTidy.trimWindow("last", "30", 100_000L))
+        assertEquals(0L to 12_000L, TextTidy.trimWindow("last", "30", 12_000L))      // a short video is kept whole
+        assertEquals(0L to 30_000L, TextTidy.trimWindow(null, null, 100_000L))
+        assertEquals(0L to 1_000L, TextTidy.trimWindow("first", "0", 100_000L))
+        assertEquals(270, TextTidy.turnDegrees("left")); assertEquals(180, TextTidy.turnDegrees("flip")); assertEquals(90, TextTidy.turnDegrees(null))
+    }
+    @Test fun aWebPageBecomesItsWords() {
+        val html = "<html><head><title>Big &amp; Small</title><style>p{}</style></head><body><nav>Menu</nav><article><h1>Big &amp; Small</h1><p>First\n para.</p><ul><li>One</li><li>Two</li></ul><script>x()</script></article><footer>Foot</footer></body></html>"
+        assertEquals("Big & Small\nFirst para.\n\u2022 One\n\u2022 Two", TextTidy.article(html))
+        assertEquals("only", TextTidy.article("<p>only</p>"))
+        assertEquals("T\nA\nB", TextTidy.article("<title>T</title><div>A<br>B</div>"))
+        assertEquals("", TextTidy.article(""))
+        assertEquals("", TextTidy.article("<script>var a = 1</script>"))
+        assertEquals("https://example.com/x", TextTidy.pageLink("https://example.com/x"))
+        assertEquals("https://www.example.com/a", TextTidy.pageLink("read www.example.com/a tonight"))
+        assertNull(TextTidy.pageLink("no links here"))
+    }
+    @Test fun languagesStylesGridAndLocation() {
+        assertEquals(19, TextTidy.LANGUAGES.size); assertEquals(19, TextTidy.LANGUAGES.map { it.first }.toSet().size)
+        assertEquals("en", TextTidy.languageCode("xx")); assertEquals("es", TextTidy.languageCode("es")); assertEquals("Spanish", TextTidy.languageName("es"))
+        assertEquals("clear", TextTidy.rewriteStyle("nope")); assertEquals("formal", TextTidy.rewriteStyle("formal"))
+        for ((n, c, r) in listOf(Triple(0, 0, 0), Triple(1, 1, 1), Triple(2, 2, 1), Triple(3, 2, 2), Triple(4, 2, 2), Triple(5, 3, 2), Triple(9, 3, 3), Triple(10, 4, 3))) {
+            assertEquals("$n", c to r, TextTidy.collageGrid(n))
+        }
+        assertEquals("I'm here: Main St\nhttps://maps.google.com/?q=41.87811,-87.62980", TextTidy.locationText(41.87811, -87.6298, "Main St"))
+        assertEquals("I'm here:\nhttps://maps.google.com/?q=1.00000,2.00000", TextTidy.locationText(1.0, 2.0, " "))
+    }
+    @Test fun aStepThisPhoneCannotRunSaysWhy() {
+        // An older phone, or one with no speech recogniser, can't write out a recording; a newer one can.
+        assertNotNull(TextTidy.unavailable(Block.SPEECH_TEXT, 30, true)); assertNotNull(TextTidy.unavailable(Block.SPEECH_TEXT, 34, false))
+        assertNull(TextTidy.unavailable(Block.SPEECH_TEXT, 33, true))
+        assertNotNull(TextTidy.unavailable(Block.VIDEO_CAPTIONS, 35, true)); assertNotNull(TextTidy.unavailable(Block.REWRITE, 35, true))
+        // Everything else is always there, whatever the phone.
+        val gated = setOf(Block.SPEECH_TEXT, Block.VIDEO_CAPTIONS, Block.REWRITE)
+        for (b in Block.values()) if (b !in gated) assertNull(b.id, TextTidy.unavailable(b, 26, false))
+    }
+    @Test fun newStartersAreSetUpAsDescribed() {
+        assertTrue(ChainTemplates.all.first { it.id == "photo-collage" }.collage)
+        assertTrue(ChainTemplates.all.first { it.id == "pdf-join" }.combine)
+        assertEquals(listOf(Block.VIDEO_AUDIO, Block.SPEECH_TEXT), ChainTemplates.all.first { it.id == "video-words" }.steps.map { it.block })
+        assertFalse(chain(Block.CLEAN_TEXT).collage)
+        assertEquals(49, ChainTemplates.all.size); assertEquals(49, ChainTemplates.all.map { it.id }.toSet().size)
+    }
+    @Test fun describeItUnderstandsTheNewKinds() {
+        fun blocks(ask: String) = ChainPlanner.plan(ask)?.steps?.map { it.block } ?: emptyList()
+        assertEquals(listOf(Block.SPEECH_TEXT), blocks("transcribe my voice memo"))
+        assertEquals(listOf(Block.VIDEO_AUDIO, Block.SPEECH_TEXT, Block.ACTION_ITEMS), blocks("write out what was said in a video and find the tasks"))
+        assertEquals(listOf(Block.VIDEO_CAPTIONS), blocks("add captions to my video"))
+        assertEquals(listOf(Block.VIDEO_GIF), blocks("turn a video into a gif"))
+        val story = ChainPlanner.plan("keep the first 15 seconds of a video and make it vertical")
+        assertEquals(listOf(Block.VIDEO_TRIM, Block.VIDEO_VERTICAL), story?.steps?.map { it.block }); assertEquals("15", story?.steps?.first()?.settings?.get("secs"))
+        val join = ChainPlanner.plan("merge pdfs into one")
+        assertEquals(listOf(Block.PDF_PAGES), join?.steps?.map { it.block }); assertEquals(true, join?.combine)
+        assertEquals(listOf(Block.PDF_SHRINK), blocks("shrink a pdf under 2 mb")); assertEquals("2", ChainPlanner.plan("shrink a pdf under 2 mb")?.steps?.first()?.settings?.get("mb"))
+        assertEquals(listOf(Block.PDF_LOCK), blocks("lock a pdf with a password"))
+        val menu = ChainPlanner.plan("translate a photo of a menu into spanish")
+        assertEquals(listOf(Block.READ_TEXT, Block.TRANSLATE), menu?.steps?.map { it.block }); assertEquals("es", menu?.steps?.last()?.settings?.get("to"))
+        assertEquals("en", ChainPlanner.plan("translate this text")?.steps?.last()?.settings?.get("to"))
+        assertEquals(listOf(Block.PAGE_TEXT, Block.TEXT_PDF), blocks("save a web page as a pdf"))
+        assertEquals(listOf(Block.READ_ALOUD), blocks("read this text aloud"))
+        assertEquals(listOf(Block.READ_CODE, Block.SCAM_CHECK), blocks("is this qr code safe"))
+        assertEquals(listOf(Block.MAKE_QR), blocks("turn a link into a qr code"))      // making a code is still making a code
+        assertEquals("formal", ChainPlanner.plan("rewrite this to be more formal")?.steps?.first()?.settings?.get("style"))
     }
 }

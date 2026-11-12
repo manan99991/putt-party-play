@@ -298,4 +298,118 @@ object TextTidy {
         val h = (height - margin * (count + 1)) / count
         return (0 until count).map { floatArrayOf(margin, margin + it * (h + margin), width - margin, margin + it * (h + margin) + h) }
     }
+
+    // -------------------------------------------------------------- recordings, PDFs, links, video parts (same rules as iOS)
+
+    /** A recording or any other sound file, by its ending. */
+    fun isAudio(ext: String) = ext.lowercase() in listOf("m4a", "mp3", "wav", "aac", "caf", "ogg", "flac")
+
+    /** Lengths "Keep the start or the end" can pick, in seconds: story and status limits. */
+    val TRIM_LENGTHS = listOf(15, 30, 60, 90)
+    /** The part of a video to keep, in milliseconds. [side] is "first" or "last"; a video shorter than the length is kept whole. */
+    fun trimWindow(side: String?, secs: String?, durationMs: Long): Pair<Long, Long> {
+        val want = (secs?.toIntOrNull() ?: 30).coerceIn(1, 600) * 1000L
+        val d = durationMs.coerceAtLeast(0L)
+        return if (d <= want) 0L to d else if (side == "last") (d - want) to d else 0L to want
+    }
+    /** Quarter turns "Turn it" can make, clockwise: to the right, to the left, or upside down. Anything else turns right. */
+    fun turnDegrees(setting: String?): Int = when (setting) { "left" -> 270; "flip" -> 180; else -> 90 }
+
+    /** Size limits a PDF tool can pick, in megabytes. */
+    val PDF_LIMITS = listOf(1, 2, 5, 10, 20)
+    fun pdfLimit(setting: String?): Int = (setting?.toDoubleOrNull()?.toInt() ?: 5).coerceIn(1, 200)
+
+    /**
+     * "1-3, 5" as page positions counted from zero, in the order written, without repeats, only pages that exist.
+     * Empty or unreadable means every page.
+     */
+    fun pageList(setting: String, count: Int): List<Int> {
+        val out = ArrayList<Int>()
+        for (raw in setting.replace('–', '-').split(',', ';', ' ')) {
+            val part = raw.trim()
+            if (part.isEmpty()) continue
+            val ends = part.split('-').map { it.trim().toIntOrNull() }
+            if (ends.size == 2 && ends[0] != null && ends[1] != null) {
+                val lo = maxOf(1, minOf(ends[0]!!, ends[1]!!)); val hi = minOf(count, maxOf(ends[0]!!, ends[1]!!))
+                var p = lo
+                while (p <= hi) { if (p - 1 !in out) out.add(p - 1); p++ }
+            } else if (ends.size == 1) {
+                val p = ends[0]
+                if (p != null && p in 1..count && p - 1 !in out) out.add(p - 1)
+            }
+        }
+        return if (out.isEmpty()) (0 until maxOf(0, count)).toList() else out
+    }
+
+    /** Languages "Translate" offers: the ones both iPhone and Android can translate on the phone. */
+    val LANGUAGES = listOf("en" to "English", "es" to "Spanish", "fr" to "French", "de" to "German", "it" to "Italian", "pt" to "Portuguese", "hi" to "Hindi",
+        "ar" to "Arabic", "zh" to "Chinese", "ja" to "Japanese", "ko" to "Korean", "ru" to "Russian", "tr" to "Turkish", "nl" to "Dutch",
+        "pl" to "Polish", "id" to "Indonesian", "vi" to "Vietnamese", "th" to "Thai", "uk" to "Ukrainian")
+    fun languageName(code: String?): String = LANGUAGES.firstOrNull { it.first == code }?.second ?: "English"
+    fun languageCode(setting: String?): String = LANGUAGES.firstOrNull { it.first == setting }?.first ?: "en"
+
+    val REWRITE_STYLES = listOf("clear" to "Clearer", "short" to "Shorter", "friendly" to "Friendlier", "formal" to "More formal")
+    fun rewriteStyle(setting: String?): String = REWRITE_STYLES.firstOrNull { it.first == setting }?.first ?: "clear"
+
+    /** The link a "Read the page" step should open: the first web link in the text, with https added if it has none. */
+    fun pageLink(text: String): String? = details(text).links.firstOrNull()?.let { if (it.startsWith("http", ignoreCase = true)) it else "https://$it" }
+
+    private val I = setOf(RegexOption.IGNORE_CASE)
+    private val IS = setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
+    private val TAG = Regex("<[^>]+>")
+    private val ENTITY = Regex("&#?[a-z0-9]+;", I)
+    private val BLANKS = Regex("[ \\t\u00A0]+")
+    private val ENTITIES = listOf("&nbsp;" to " ", "&amp;" to "&", "&lt;" to "<", "&gt;" to ">", "&quot;" to "\"", "&#39;" to "'", "&apos;" to "'", "&rsquo;" to "'", "&lsquo;" to "'",
+        "&ldquo;" to "\"", "&rdquo;" to "\"", "&mdash;" to "-", "&ndash;" to "-", "&hellip;" to "...")
+
+    private fun plain(html: String): String {
+        var t = html.replace(TAG, " ")
+        for ((a, b) in ENTITIES) t = t.replace(a, b)
+        return t.replace(ENTITY, " ").replace(BLANKS, " ").trim(' ')
+    }
+
+    /**
+     * The readable words of a web page: its title, then its headings and paragraphs. Menus, scripts, forms and footers
+     * are dropped. Empty when the page has no readable text.
+     */
+    fun article(html: String): String {
+        val title = Regex("<title[^>]*>.*?</title>", IS).find(html)?.value?.let { plain(it) } ?: ""
+        var h = html
+        for (tag in listOf("script", "style", "nav", "footer", "header", "aside", "noscript", "svg", "form", "iframe", "button", "head", "title")) {
+            h = h.replace(Regex("<$tag\\b[^>]*>.*?</$tag>", IS), " ")
+        }
+        h = h.replace(Regex("<!--.*?-->", IS), " ")
+        h = Regex("<article\\b[^>]*>.*?</article>", IS).find(h)?.value ?: Regex("<main\\b[^>]*>.*?</main>", IS).find(h)?.value ?: h
+        h = h.replace(Regex("\\s+"), " ")          // line breaks in the page's source mean nothing; only its tags do
+        h = h.replace(Regex("<li\\b[^>]*>", I), "\n• ")
+        h = h.replace(Regex("<br\\s*/?>|</p>|</h[1-6]>|</li>|</div>|</tr>|</blockquote>|</section>", I), "\n")
+        val lines = h.split('\n').map { plain(it) }.filter { it.isNotEmpty() && it != "•" }.toMutableList()
+        if (title.isNotEmpty() && lines.firstOrNull() != title) lines.add(0, title)
+        return lines.joinToString("\n")
+    }
+
+    /** How many columns and rows a collage of [count] pictures gets: as square as it can be. */
+    fun collageGrid(count: Int): Pair<Int, Int> {
+        if (count <= 0) return 0 to 0
+        val cols = Math.ceil(Math.sqrt(count.toDouble())).toInt()
+        return cols to Math.ceil(count.toDouble() / cols).toInt()
+    }
+
+    /** What "Location" puts in the text box: the address when the phone knows it, and a map link anyone can open. */
+    fun locationText(latitude: Double, longitude: Double, address: String): String {
+        val link = "https://maps.google.com/?q=" + String.format(java.util.Locale.US, "%.5f,%.5f", latitude, longitude)
+        val a = address.trim()
+        return (if (a.isEmpty()) "I'm here:" else "I'm here: $a") + "\n" + link
+    }
+
+    /**
+     * Why this phone can't run a step, or null when it can. [sdk] is the Android version and [speech] whether the phone
+     * has a speech recogniser. The builder greys the step out and says this; every other step stays usable.
+     */
+    fun unavailable(block: Block, sdk: Int, speech: Boolean): String? = when (block) {
+        Block.SPEECH_TEXT -> if (sdk >= 33 && speech) null else "It can't turn a recording into text by itself (that needs Android 13 or newer with speech recognition), and Tenzy never sends a recording away to do it."
+        Block.VIDEO_CAPTIONS -> "Burned-in captions are on iPhone for now. On Android, use Keep only the sound and then Write out what is said to get the words."
+        Block.REWRITE -> "Rewriting needs a writing model on the phone, and this one doesn't have one."
+        else -> null
+    }
 }

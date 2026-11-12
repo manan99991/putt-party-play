@@ -7,9 +7,9 @@ enum BuilderIntro {
 
     static let pages = [
         Page(icon: "square.and.arrow.down.on.square", title: "1. Start with what you have",
-             body: "A photo, a scan, a PDF, some text, something you say, or a contact."),
+             body: "A photo, a scan, a PDF, a video, a recording, a link, some text, something you say, or a contact."),
         Page(icon: "square.stack.3d.up", title: "2. Stack small steps",
-             body: "Hide private details, strip the location, shrink it, read it, sign it. You only see steps that fit."),
+             body: "Hide private details, shrink it, read it, translate it, sign it. You only see steps that fit, and that your phone can run."),
         Page(icon: "paperplane", title: "3. Choose how it ends",
              body: "Share it, open an email ready to send, add a row to a sheet. Add a reminder and it comes back on schedule."),
     ]

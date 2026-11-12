@@ -29,7 +29,12 @@ sealed class Payload {
         is Pic -> Kind.IMAGE
         is Words -> Kind.TEXT
         is Clip -> Kind.VIDEO
-        is Doc -> if (ext in listOf("jpg", "jpeg", "png")) Kind.PHOTO_FILE else Kind.FILE
+        is Doc -> when {
+            ext.lowercase() in listOf("jpg", "jpeg", "png") -> Kind.PHOTO_FILE
+            ext.equals("pdf", ignoreCase = true) -> Kind.PDF
+            TextTidy.isAudio(ext) -> Kind.AUDIO
+            else -> Kind.FILE
+        }
     }
 }
 
@@ -69,6 +74,26 @@ object ChainRunner {
         return out.toByteArray()
     }
 
+    /** Every picture as one image, in a grid of square tiles with thin white gaps. Each picture fills its tile. */
+    fun collage(pictures: List<Bitmap>, tile: Int = 900, gap: Int = 12): Bitmap? {
+        if (pictures.isEmpty()) return null
+        val (cols, rows) = TextTidy.collageGrid(pictures.size)
+        val out = Bitmap.createBitmap(cols * tile + (cols + 1) * gap, rows * tile + (rows + 1) * gap, Bitmap.Config.ARGB_8888)
+        val c = android.graphics.Canvas(out)
+        c.drawColor(android.graphics.Color.WHITE)
+        val paint = android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG)
+        pictures.forEachIndexed { i, bmp ->
+            val left = gap + (i % cols) * (tile + gap); val top = gap + (i / cols) * (tile + gap)
+            val k = maxOf(tile.toFloat() / bmp.width, tile.toFloat() / bmp.height)
+            val w = bmp.width * k; val h = bmp.height * k
+            c.save()
+            c.clipRect(left, top, left + tile, top + tile)
+            c.drawBitmap(bmp, null, android.graphics.RectF(left + (tile - w) / 2f, top + (tile - h) / 2f, left + (tile + w) / 2f, top + (tile + h) / 2f), paint)
+            c.restore()
+        }
+        return out
+    }
+
     /** Runs every step in order; a step that cannot produce anything stops the chain and names itself. */
     /** @param dryRun true while the builder previews on sample data, so a step that keeps something (a running list) doesn't save it. */
     suspend fun run(chain: Chain, input: Payload, dryRun: Boolean = false): Outcome {
@@ -86,6 +111,9 @@ object ChainRunner {
         fun none() = Outcome.Stopped(
             if (b.takes == Kind.TEXT) "${b.title} didn't find anything in that text." else "${b.title} didn't find anything in it. Try a clearer or closer picture.")
         fun fail() = Outcome.Stopped("${b.title} couldn't finish. Try again.")
+
+        // A step this phone can't do says so plainly instead of failing halfway.
+        ExtraSteps.unavailable(com.handytools.app.HandyApp.instance, b)?.let { return@withContext Outcome.Stopped("${b.title} isn't available on this phone. $it") }
 
         // A photo saved as bytes by an earlier step is opened again for the next one.
         val input = if (b.takes == Kind.IMAGE && raw is Payload.Doc && raw.kind == Kind.PHOTO_FILE)
@@ -314,7 +342,8 @@ object ChainRunner {
                     if (start == null) none()
                     else Outcome.Done(Payload.Doc(ics(c.event.ifBlank { "Event" }, start, c.endMs, c.venue).toByteArray(), "ics"))
                 }
-                else -> Outcome.Stopped("${b.title} can't use that input.")
+                // The newer steps (recordings, PDFs, links, codes, translating, more video) live in ExtraSteps.
+                else -> ExtraSteps.apply(step, input, dryRun) ?: Outcome.Stopped("${b.title} can't use that input.")
             }
         } catch (_: Exception) { fail() }
     }

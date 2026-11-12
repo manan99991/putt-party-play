@@ -81,7 +81,7 @@ object ChainStore {
 @Composable
 fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
     val ctx = LocalContext.current
-    val tools = remember { ChainOffers.forKind(Kind.IMAGE, ChainStore.load(ctx), ChainStore.lastShared(ctx)) }
+    val tools = remember { ChainOffers.forKind(Kind.IMAGE, ChainStore.load(ctx), ChainStore.lastShared(ctx)).filter { ExtraSteps.unavailable(ctx, it) == null } }
     var running by remember { mutableStateOf<Chain?>(null) }
     running?.let { c -> ChainRunScreen(c, initial = uri) { running = null }; return }
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
@@ -105,7 +105,11 @@ private fun defaults(b: Block): Map<String, String> = when (b) {
     Block.SHRINK -> mapOf("mb" to "2"); Block.SUMMARIZE -> mapOf("sentences" to "3"); Block.CONVERT -> mapOf("format" to "JPG")
     Block.WATERMARK -> mapOf("text" to "For verification only"); Block.STAMP -> mapOf("marks" to StampPlan.STANDARD); Block.RETURN_BY -> mapOf("days" to "30"); Block.VIDEO_SHRINK -> mapOf("mb" to "25"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
     Block.ADD_TO_LIST -> mapOf("list" to TextTidy.DEFAULT_LIST)
-    Block.CHAT_LINK -> mapOf("cc" to TextTidy.callingCode(java.util.Locale.getDefault().country)); else -> emptyMap()
+    Block.CHAT_LINK -> mapOf("cc" to TextTidy.callingCode(java.util.Locale.getDefault().country))
+    Block.VIDEO_TRIM -> mapOf("side" to "first", "secs" to "30"); Block.VIDEO_ROTATE -> mapOf("turn" to "right")
+    Block.TRANSLATE -> mapOf("to" to "en"); Block.REWRITE -> mapOf("style" to "clear")
+    Block.PDF_SHRINK -> mapOf("mb" to "5"); Block.PDF_LOCK -> mapOf("password" to ""); Block.PDF_PAGES -> mapOf("pages" to "")
+    else -> emptyMap()
 }
 
 @Composable
@@ -198,11 +202,12 @@ fun BuilderScreen() {
             }
         }
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-            listOf<Pair<String, Kind?>>("All" to null, "Photo" to Kind.IMAGE, "Text" to Kind.TEXT, "Video" to Kind.VIDEO).forEach { (label, k) ->
+            listOf<Pair<String, Kind?>>("All" to null, "Photo" to Kind.IMAGE, "Text" to Kind.TEXT, "Video" to Kind.VIDEO, "Sound" to Kind.AUDIO, "PDF" to Kind.PDF).forEach { (label, k) ->
                 if (have == k) Button({ have = k }) { Text(label) } else OutlinedButton({ have = k }) { Text(label) }
             }
         }
-        BuilderIntro.starters(have).forEach { c ->
+        // Only starters this phone can run. One that needs something it lacks is simply not offered.
+        BuilderIntro.starters(have).filter { ExtraSteps.unavailable(ctx, it) == null }.forEach { c ->
             ChainRow(c, onRun = { running = c }, onEdit = { editing = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " (mine)") }, onCopy = { copy(ctx, c); note = "Copied." }, onDelete = null)
         }
         if (introSeen) TextButton({ setIntro(false) }) { Text("How does this work?") }
@@ -223,6 +228,7 @@ private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: ()
             Column(Modifier.weight(1f)) {
                 Text(c.name, style = MaterialTheme.typography.titleSmall)
                 Text(c.steps.joinToString("  ›  ") { it.block.title }, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                if (ExtraSteps.unavailable(LocalContext.current, c) != null) Text("Has a step this phone can't run", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 if (c.auto.isNotEmpty()) Text(AutoRun.label(c.auto), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                 c.schedule?.let { w -> Text("Reminder: " + w.label(android.text.format.DateFormat.is24HourFormat(LocalContext.current)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary) }
             }
@@ -246,25 +252,40 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
     val previews = remember { mutableStateListOf<Preview?>() }
     // What the person said they start with, before there is a first step to tell us.
     var startChoice by remember { mutableStateOf<Kind?>(null) }
-    val options = chain.end?.let { e -> Block.values().filter { e.feeds(it.takes) } } ?: startChoice?.let { BlockGoals.starting(it) } ?: emptyList()
+    val ctx = LocalContext.current
+    val fitting = chain.end?.let { e -> Block.values().filter { e.feeds(it.takes) } } ?: startChoice?.let { BlockGoals.starting(it) } ?: emptyList()
+    // Steps that fit here and that this phone can run, and the ones that fit but it can't.
+    val options = fitting.filter { ExtraSteps.unavailable(ctx, it) == null }
+    val missing = fitting.filter { ExtraSteps.unavailable(ctx, it) != null }
     val problem = chain.problem()
 
     LaunchedEffect(chain.steps) {
         previews.clear(); chain.steps.forEach { previews.add(null) }
         val first = chain.steps.firstOrNull() ?: return@LaunchedEffect
-        if (first.block.takes == Kind.VIDEO) {
-            // There is no sample video to try steps on, so say what each one will do instead of showing a result.
-            chain.steps.forEachIndexed { i, s -> previews[i] = Preview.Doc(s.block.blurb) }
+        if (first.block.takes == Kind.VIDEO || first.block.takes == Kind.AUDIO || first.block.takes == Kind.PDF) {
+            // There is no sample video, recording or PDF to try steps on, so say what each one will do instead of showing a result.
+            chain.steps.forEachIndexed { i, s -> previews[i] = ExtraSteps.unavailable(ctx, s.block)?.let { Preview.Bad("Not available on this phone. $it") } ?: Preview.Doc(s.block.blurb) }
             return@LaunchedEffect
         }
         delay(250)
         var v: Payload = when {
             first.block == Block.READ_TEXT -> Payload.Pic(sampleReceipt())
+            first.block == Block.READ_CODE -> Payload.Pic(com.handytools.app.tools.power.CodesEngine.qr("https://example.com/sale?utm_source=poster") ?: samplePhoto())
+            first.block == Block.PAGE_TEXT -> Payload.Words("https://example.com/article")
             first.block.takes == Kind.TEXT -> Payload.Words(SAMPLE_TEXT)
             else -> Payload.Pic(samplePhoto())
         }
         for ((i, s) in chain.steps.withIndex()) {
             if (!v.kind.feeds(s.block.takes)) { previews[i] = Preview.Bad("Needs ${s.block.takes.label} from the step above."); continue }
+            val why = ExtraSteps.unavailable(ctx, s.block)
+            if (why != null) { previews[i] = Preview.Bad("Not available on this phone. $why"); return@LaunchedEffect }
+            if (s.block in ExtraSteps.NO_PREVIEW) {
+                // These need a voice, a translator or a download, so the sample isn't run through them.
+                previews[i] = Preview.Doc(s.block.blurb)
+                if (s.block.gives == Kind.TEXT) continue          // the steps below still preview, on the text as it was
+                for (j in i + 1 until chain.steps.size) previews[j] = Preview.Doc(chain.steps[j].block.blurb)
+                return@LaunchedEffect
+            }
             when (val r = ChainRunner.apply(s, v, dryRun = true)) {   // a preview never saves anything
                 is Outcome.Done -> { v = r.value; previews[i] = Preview.of(r.value) }
                 is Outcome.Stopped -> { previews[i] = Preview.Bad(r.why); return@LaunchedEffect }
@@ -275,7 +296,7 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
         ToolHeader("Build a tool", "Each step is tried on a sample so you can see it work.")
         OutlinedTextField(chain.name, { chain = chain.copy(name = it) }, Modifier.fillMaxWidth(), label = { Text("Name your tool") }, singleLine = true)
-        Text(if (chain.steps.isEmpty()) "You give it a photo, text or a video. The first step decides which." else "You give it ${chain.start.label}", style = MaterialTheme.typography.titleSmall)
+        Text(if (chain.steps.isEmpty()) "You give it a photo, text, a video, a recording or a PDF. The first step decides which." else "You give it ${chain.start.label}", style = MaterialTheme.typography.titleSmall)
         chain.steps.forEachIndexed { i, s ->
             HCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
@@ -299,7 +320,11 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
                 Button({ startChoice = Kind.TEXT }, Modifier.weight(1f)) { Text("Text") }
                 Button({ startChoice = Kind.VIDEO }, Modifier.weight(1f)) { Text("A video") }
             }
-            Text("A photo tool also takes scans and PDF pages. A text tool also takes what you say, a contact, or the words in a PDF. A video tool shrinks, quiets or pulls a picture out of a video.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                Button({ startChoice = Kind.AUDIO }, Modifier.weight(1f)) { Text("A recording") }
+                Button({ startChoice = Kind.PDF }, Modifier.weight(1f)) { Text("A PDF") }
+            }
+            Text("A photo tool also takes scans, PDF pages and QR codes. A text tool also takes a link, what you say, a contact, where you are, or the words in a PDF. A recording tool writes out what was said.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         } else {
             if (chain.steps.isEmpty()) {
                 Text("You start with ${startChoice?.label}. You only see steps that work with it.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
@@ -312,6 +337,14 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
                     Text(goal, style = MaterialTheme.typography.labelMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = HandyTokens.Space12, vertical = HandyTokens.Space4))
                     blocks.forEach { b -> DropdownMenuItem(text = { Text(b.title) }, onClick = { addMenu = false; chain = chain.copy(steps = chain.steps + Step(b, defaults(b))) }) }
                 }
+                if (missing.isNotEmpty()) {
+                    Text("Not on this phone", style = MaterialTheme.typography.labelMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = HandyTokens.Space12, vertical = HandyTokens.Space4))
+                    missing.forEach { b -> DropdownMenuItem(text = { Text(b.title) }, onClick = {}, enabled = false) }
+                }
+            }
+            missing.firstOrNull()?.let { first ->
+                Text(if (missing.size == 1) "${first.title} is greyed out on this phone. ${ExtraSteps.unavailable(ctx, first)}" else "${missing.size} steps are greyed out because this phone can't run them. Everything else works.",
+                    style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             }
         }
         chain.end?.let {
@@ -336,13 +369,21 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
             }
             if (chain.start == Kind.IMAGE && it != Kind.TEXT) {
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on, onePage = on && chain.onePage) })
+                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on, onePage = on && chain.onePage, collage = if (on) false else chain.collage) })
                     Text("  Put all pages or photos into one PDF", style = MaterialTheme.typography.bodyMedium)
                 }
                 if (chain.combine) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     androidx.compose.material3.Switch(chain.onePage, { on -> chain = chain.copy(onePage = on) })
                     Text("  All on a single page (both sides of an ID)", style = MaterialTheme.typography.bodyMedium)
                 }
+                if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    androidx.compose.material3.Switch(chain.collage, { on -> chain = if (on) chain.copy(collage = true, combine = false, onePage = false) else chain.copy(collage = false) })
+                    Text("  Put all photos into one picture (a collage)", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+            if (chain.start == Kind.PDF && it == Kind.PDF) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on) })
+                Text("  Join several PDFs into one", style = MaterialTheme.typography.bodyMedium)
             }
             if (fin.kind != "share") Text(
                 when (fin.kind) { "mail" -> "When the tool finishes, an email opens with the result attached. You tap Send."
@@ -413,6 +454,46 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 TextButton({ set("sentences", (n + 1).coerceAtMost(8).toString()) }) { Text("+") }
             }
         }
+        Block.VIDEO_TRIM -> {
+            Row {
+                listOf("first" to "The start", "last" to "The end").forEach { (id, label) ->
+                    TextButton({ set("side", id) }) { Text(if ((if (s.settings["side"] == "last") "last" else "first") == id) "● $label" else label) }
+                }
+            }
+            Row(Modifier.horizontalScroll(rememberScrollState())) {
+                val secs = s.settings["secs"]?.toIntOrNull() ?: 30
+                TextTidy.TRIM_LENGTHS.forEach { n -> TextButton({ set("secs", n.toString()) }) { Text(if (n == secs) "● $n sec" else "$n sec") } }
+            }
+        }
+        Block.VIDEO_ROTATE -> Row {
+            listOf("right" to "Right", "left" to "Left", "flip" to "Upside down").forEach { (id, label) ->
+                TextButton({ set("turn", id) }) { Text(if ((s.settings["turn"] ?: "right") == id) "● $label" else label) }
+            }
+        }
+        Block.TRANSLATE -> {
+            var open by remember { mutableStateOf(false) }
+            val to = TextTidy.languageCode(s.settings["to"])
+            OutlinedButton({ open = true }) { Text("Into ${TextTidy.languageName(to)}") }
+            DropdownMenu(open, { open = false }) {
+                TextTidy.LANGUAGES.forEach { (code, name) -> DropdownMenuItem(text = { Text(name) }, onClick = { open = false; set("to", code) }) }
+            }
+            Text("The first time you use a language, the phone downloads it and needs a connection.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        Block.REWRITE -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val style = TextTidy.rewriteStyle(s.settings["style"])
+            TextTidy.REWRITE_STYLES.forEach { (id, label) -> TextButton({ set("style", id) }) { Text(if (id == style) "● $label" else label) } }
+        }
+        Block.PDF_SHRINK -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val mb = TextTidy.pdfLimit(s.settings["mb"])
+            TextTidy.PDF_LIMITS.forEach { m -> TextButton({ set("mb", m.toString()) }) { Text(if (m == mb) "● $m MB" else "$m MB") } }
+        }
+        Block.PDF_LOCK -> {
+            OutlinedTextField(s.settings["password"] ?: "", { v -> set("password", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Password") },
+                visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
+            Text("Kept on this phone with the tool. It is left out when you copy the tool to share.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        Block.PDF_PAGES ->
+            OutlinedTextField(s.settings["pages"] ?: "", { v -> set("pages", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Pages, e.g. 1-3, 5 (empty keeps all)") })
         Block.CONVERT -> Row {
             listOf("JPG", "PNG").forEach { f -> TextButton({ set("format", f) }) { Text(if ((s.settings["format"] ?: "JPG") == f) "● $f" else f) } }
         }
@@ -481,6 +562,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
     var result by remember { mutableStateOf<Payload?>(null) }
     var batch by remember { mutableStateOf<List<BatchItem>>(emptyList()) }
     var progress by remember { mutableStateOf("") }
+    // What each result of a many-at-once run is called in the list: a photo, or a file.
+    var noun by remember { mutableStateOf("Photo") }
 
     fun go(input: Payload) {
         busy = true; result = null; message = null; batch = emptyList()
@@ -509,7 +592,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
             // For "one PDF for everything" each page keeps its picture and the pictures are joined at the end.
             val perPage = chain.copy(steps = chain.stepsPerPage)
             val pages = ArrayList<android.graphics.Bitmap>()
-            var joinable = chain.combine
+            var joinable = chain.combine || chain.collage
+            noun = "Photo"
             picked.forEachIndexed { i, uri ->
                 progress = "Working… ${i + 1} of ${picked.size}"
                 val bmp = withContext(Dispatchers.IO) { runCatching { ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } }.getOrNull() }
@@ -517,7 +601,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
                 val r = if (perPage.steps.isEmpty()) Outcome.Done(Payload.Pic(bmp)) else ChainRunner.run(perPage, Payload.Pic(bmp))
                 when (r) {
                     is Outcome.Done -> {
-                        if (chain.combine) when (val v = r.value) {
+                        if (chain.combine || chain.collage) when (val v = r.value) {
                             is Payload.Pic -> pages.add(v.bmp)
                             is Payload.Doc -> BitmapFactory.decodeByteArray(v.bytes, 0, v.bytes.size)?.takeIf { v.kind == Kind.PHOTO_FILE }?.let { pages.add(it) } ?: run { joinable = false }
                             else -> joinable = false
@@ -525,6 +609,17 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
                         out.add(BatchItem.of(i + 1, r.value, dir))
                     }
                     is Outcome.Stopped -> out.add(BatchItem(i + 1, note = r.why))
+                }
+            }
+            if (chain.collage && joinable && pages.isNotEmpty()) {
+                // One picture for everything: the results laid out as a collage.
+                val skipped = out.count { it.note != null }
+                val one = withContext(Dispatchers.Default) { ChainRunner.collage(pages) }
+                if (one != null) {
+                    result = Payload.Pic(one)
+                    if (skipped > 0) message = "$skipped of ${picked.size} couldn't be used and were left out."
+                    busy = false; progress = ""
+                    return@launch
                 }
             }
             if (chain.combine && joinable && pages.isNotEmpty()) {
@@ -545,7 +640,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
     }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
         if (uris.isEmpty()) return@rememberLauncherForActivityResult
-        if (uris.size == 1 && !chain.combine) {
+        if (uris.size == 1 && !chain.combine && !chain.collage) {
             val bmp = runCatching { ctx.contentResolver.openInputStream(uris[0])?.use { BitmapFactory.decodeStream(it) } }.getOrNull()
             if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
         } else runBatch(uris)
@@ -579,6 +674,61 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
 
     val videoPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? -> if (uri != null) go(Payload.Clip(uri)) }
 
+    // A recording, or one or more PDFs, for the tools that start with those.
+    val audioPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        busy = true; message = null
+        scope.launch {
+            val bytes = withContext(Dispatchers.IO) { BuilderInputs.bytes(ctx, uri) }
+            if (bytes == null) { busy = false; message = "That recording couldn't be opened. Try another." }
+            else go(Payload.Doc(bytes, BuilderInputs.audioExt(ctx, uri)))
+        }
+    }
+    val pdfFiles = rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
+        val picked = uris.take(MAX_BATCH)
+        if (picked.isEmpty()) return@rememberLauncherForActivityResult
+        busy = true; result = null; message = null; batch = emptyList()
+        scope.launch {
+            val dir = File(ctx.cacheDir, "batch-${System.currentTimeMillis()}").also { it.mkdirs() }
+            val out = ArrayList<BatchItem>()
+            val joined = ArrayList<ByteArray>()
+            var last: Payload? = null
+            picked.forEachIndexed { i, uri ->
+                progress = "Working… ${i + 1} of ${picked.size}"
+                val bytes = withContext(Dispatchers.IO) { BuilderInputs.bytes(ctx, uri) }
+                if (bytes == null) { out.add(BatchItem(i + 1, note = "Couldn't open this file.")); return@forEachIndexed }
+                when (val r = ChainRunner.run(chain, Payload.Doc(bytes, "pdf"))) {
+                    is Outcome.Done -> {
+                        last = r.value
+                        (r.value as? Payload.Doc)?.takeIf { it.kind == Kind.PDF }?.let { joined.add(it.bytes) }
+                        out.add(BatchItem.of(i + 1, r.value, dir))
+                    }
+                    is Outcome.Stopped -> out.add(BatchItem(i + 1, note = r.why))
+                }
+            }
+            progress = ""
+            val ok = out.count { it.note == null }
+            // One PDF for everything, when the tool asks for it and every result is a PDF.
+            val one = if (chain.combine && joined.size == ok && joined.size > 1) withContext(Dispatchers.IO) { BuilderInputs.joinPdfs(ctx, joined) } else null
+            when {
+                one != null -> { result = Payload.Doc(one, "pdf"); if (ok < picked.size) message = "${picked.size - ok} of ${picked.size} couldn't be used and were left out." }
+                picked.size == 1 && ok == 1 -> result = last
+                picked.size == 1 -> message = out.first().note
+                else -> { noun = "File"; batch = out }
+            }
+            busy = false
+        }
+    }
+    val locationAsk = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { granted ->
+        if (granted.values.none { it }) { message = "Tenzy needs the location permission to add where you are. Allow it in Settings, or type the place in."; return@rememberLauncherForActivityResult }
+        busy = true; message = null
+        scope.launch {
+            val here = BuilderInputs.whereAmI(ctx)
+            busy = false
+            if (here == null) message = "Tenzy couldn't find where you are. Check that Location is switched on, or type the place in." else text = TextTidy.joined(text, here)
+        }
+    }
+
     fun scan() {
         val noScanner = { message = "The camera scanner isn't available on this phone, so choose photos instead."; picker.launch("image/*") }
         val activity = com.handytools.app.tools.power.DocEngine.findActivity(ctx) ?: return noScanner()
@@ -596,8 +746,15 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
     }
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader(chain.name, chain.steps.joinToString("  ›  ") { it.block.title })
-        if (chain.start == Kind.TEXT) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        ExtraSteps.unavailable(ctx, chain)?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
+        if (chain.start == Kind.AUDIO) {
+            HPrimaryButton("Choose a recording", enabled = !busy) { audioPicker.launch("audio/*") }
+            Text("Pick a voice recording or any sound file. It never leaves this phone.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        } else if (chain.start == Kind.PDF) {
+            HPrimaryButton(if (chain.combine) "Choose PDFs" else "Choose a PDF", enabled = !busy) { pdfFiles.launch("application/pdf") }
+            Text(if (chain.combine) "Pick the PDFs to join. They go into one PDF in the order the phone lists them." else "Pick one, or several at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        } else if (chain.start == Kind.TEXT) {
+            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.SpaceBetween) {
                 TextButton({
                     val c = paste(ctx)
                     if (c.isBlank()) message = "There is nothing copied to paste." else text = TextTidy.joined(text, c)
@@ -613,6 +770,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
                     catch (_: Throwable) { message = "This phone has no contacts app to pick from." }
                 }) { Text("Contact") }
                 TextButton({ pdf.launch("application/pdf") }) { Text("PDF") }
+                TextButton({ locationAsk.launch(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION)) }) { Text("Location") }
             }
             OutlinedTextField(text, { text = it }, Modifier.fillMaxWidth().heightIn(min = 140.dp), label = { Text("Your text") })
             HPrimaryButton("Run", enabled = text.isNotBlank() && !busy) { go(Payload.Words(text)) }
@@ -623,7 +781,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
             HPrimaryButton("Choose photos", enabled = !busy) { picker.launch("image/*") }
             HSecondaryButton("Scan a document") { scan() }
             HSecondaryButton("Choose a PDF") { pdf.launch("application/pdf") }
-            Text(if (chain.combine) "Pick or scan as many pages as you need. They all go into one PDF." else "Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(if (chain.combine) "Pick or scan as many pages as you need. They all go into one PDF." else if (chain.collage) "Pick up to $MAX_BATCH photos. They are laid out as one picture." else "Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         if (busy) Text(progress.ifEmpty { "Working…" }, color = Handy.palette.textSecondary)
         message?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }
@@ -691,7 +849,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
             batch.forEach { b ->
                 HCard(Modifier.fillMaxWidth()) {
                     Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                        Text("Photo ${b.n}", style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                        Text("$noun ${b.n}", style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
                         Text(b.note ?: b.summary, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     }
                 }
@@ -701,7 +859,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
                 val mime = files.map { it.extension }.distinct().singleOrNull()?.let { mimeFor(it) } ?: "*/*"
                 HPrimaryButton("Save or share all (${files.size})") { Share.files(ctx, files, mime) }
             }
-            val texts = ok.mapNotNull { b -> b.text?.let { "Photo ${b.n}\n$it" } }
+            val texts = ok.mapNotNull { b -> b.text?.let { "$noun ${b.n}\n$it" } }
             if (texts.isNotEmpty()) HSecondaryButton("Copy all text") {
                 (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", texts.joinToString("\n\n")))
             }
@@ -713,7 +871,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
 private const val MAX_BATCH = 20
 
 internal fun mimeFor(ext: String): String = when (ext) {
-    "jpg", "jpeg" -> "image/jpeg"; "png" -> "image/png"; "mp4" -> "video/mp4"; "m4a" -> "audio/mp4"; "vcf" -> "text/x-vcard"; "ics" -> "text/calendar"; "csv" -> "text/csv"; "pdf" -> "application/pdf"; else -> "*/*"
+    "jpg", "jpeg" -> "image/jpeg"; "png" -> "image/png"; "mp4" -> "video/mp4"; "m4a" -> "audio/mp4"; "wav" -> "audio/wav"; "mp3" -> "audio/mpeg"; "gif" -> "image/gif"; "vcf" -> "text/x-vcard"; "ics" -> "text/calendar"; "csv" -> "text/csv"; "pdf" -> "application/pdf"; else -> "*/*"
 }
 
 /** One photo's outcome in a batch run. Results are written to a cache folder straight away so twenty full-size

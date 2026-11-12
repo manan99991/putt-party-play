@@ -101,6 +101,8 @@ dependencies {
     implementation("com.google.zxing:core:3.5.3")
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
     implementation("com.google.mlkit:translate:17.0.3")
+    // Works out which language some text is in, so the Translate step needs no "from" setting. On-device.
+    implementation("com.google.mlkit:language-id:17.0.6")
     implementation("com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1")
     implementation("com.google.android.gms:play-services-mlkit-subject-segmentation:16.0.0-beta1")
     implementation("com.google.mlkit:face-detection:16.1.7")

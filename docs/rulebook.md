@@ -89,6 +89,21 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   and the phone's own voice typing on Android.
 - Shortcuts actions (iOS) run tools on the device and return the result to the shortcut. No new data leaves the phone.
 - Shortcuts action titles, descriptions and phrases must never contain "iPhone", "iPad", "Apple" or "Siri": App Store Connect rejects the upload (ITMS-90626) after the build has already passed. Say "your device".
+- Build your own, steps that can be missing on a phone: `speechText` and `videoCaptions` need on-device speech recognition, `rewrite` needs an
+  on-device writing model (never on Android today), `videoCaptions` is iPhone only. The app greys these out and says why. **Never list one
+  of them in a store's copy or screenshots for a platform where it is unavailable** (section 3). Speech is recognised on the phone only
+  (`requiresOnDeviceRecognition` on iOS, the on-device recogniser on Android); do not add a server fallback.
+- Build your own, "Read the page at a link": fetches the one web page the person gave, over https, and keeps its words. Nothing about the
+  person is sent besides the request itself, and nothing is collected, so Data safety / App Privacy answers are unchanged. Say this in the
+  reviewer notes before a production release.
+- Build your own, "Location" input: only when the button is tapped. iOS reuses `NSLocationWhenInUseUsageDescription`, whose wording now names
+  this use; Android reuses the already-declared location permissions and asks at the tap. The location is put in the text box and goes
+  nowhere unless the person sends the result. Add a reviewer note (iOS) before production.
+- Build your own, "Record" (iOS) uses the existing microphone string; recordings stay in the app's temporary folder.
+- Build your own, "Translate": iOS uses the system translator, which downloads languages from Apple with the person's consent. Android uses
+  ML Kit's on-device translate packs (already used by the Translate tool) plus `com.google.mlkit:language-id` to detect the language on the
+  phone. No text is sent to a server by Tenzy.
+- A PDF password set in "Lock with a password" is stored with the tool on the device and stripped from shared tools. Do not log it.
 - Listing changes for Build your own are drafted in `docs/listing-draft.md`. That file is not pushed by the pipeline; copy
   from it into the metadata folders only after the features ship and Manan approves.
 

@@ -10,7 +10,9 @@ import java.util.UUID
  * anything that isn't already in the app. The JSON matches iOS, so tools copy between the two.
  */
 enum class Kind(val label: String) {
-    IMAGE("a photo"), TEXT("text"), FILE("a file"), PHOTO_FILE("a photo"), VIDEO("a video");
+    IMAGE("a photo"), TEXT("text"), FILE("a file"), PHOTO_FILE("a photo"), VIDEO("a video"),
+    /** A recording or other sound file, and a PDF. Both travel as file bytes; the kind says which steps fit. */
+    AUDIO("a recording"), PDF("a PDF");
 
     fun feeds(need: Kind) = this == need || (need == IMAGE && this == PHOTO_FILE)
 }
@@ -32,7 +34,7 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     SCAM_CHECK("scamCheck", "Check for scams", Kind.TEXT, Kind.TEXT, "Says if a message looks like a scam, and why."),
     CLEAN_LINKS("cleanLinks", "Clean tracking from links", Kind.TEXT, Kind.TEXT, "Strips the tracking off web links."),
     MAKE_QR("makeQr", "Make a QR code", Kind.TEXT, Kind.IMAGE, "Turns text or a link into a QR code."),
-    PHOTO_PDF("photoPdf", "Make a PDF", Kind.IMAGE, Kind.FILE, "Turns the photo into a PDF."),
+    PHOTO_PDF("photoPdf", "Make a PDF", Kind.IMAGE, Kind.PDF, "Turns the photo into a PDF."),
     WATERMARK("watermark", "Add a watermark", Kind.IMAGE, Kind.IMAGE, "Writes your words and today's date across it, so a copy can't be misused."),
     RESIZE_PHOTO("resizePhoto", "Exact pixel size", Kind.IMAGE, Kind.IMAGE, "Fits an exact size in pixels, for ID photos and upload forms."),
     EXPENSE_ROW("expenseRow", "Receipt to one expense row", Kind.TEXT, Kind.TEXT, "Date, store and total as one row."),
@@ -50,22 +52,38 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     VIDEO_SHRINK("videoShrink", "Shrink video to size", Kind.VIDEO, Kind.VIDEO, "Makes a video fit under a size you pick, and leaves its location behind."),
     VIDEO_STILL("videoStill", "Grab a still", Kind.VIDEO, Kind.IMAGE, "Takes one picture out of the video."),
     VIDEO_MUTE("videoMute", "Remove the sound", Kind.VIDEO, Kind.VIDEO, "The same video with no sound."),
-    VIDEO_AUDIO("videoAudio", "Keep only the sound", Kind.VIDEO, Kind.FILE, "Just the sound, as an audio file."),
-    STAMP("stamp", "Sign and stamp", Kind.IMAGE, Kind.IMAGE, "Puts your saved signature, your name and today's date where you placed them.");
+    VIDEO_AUDIO("videoAudio", "Keep only the sound", Kind.VIDEO, Kind.AUDIO, "Just the sound, as an audio file."),
+    STAMP("stamp", "Sign and stamp", Kind.IMAGE, Kind.IMAGE, "Puts your saved signature, your name and today's date where you placed them."),
+    VIDEO_TRIM("videoTrim", "Keep the start or the end", Kind.VIDEO, Kind.VIDEO, "Keeps the first or last part, for stories and status posts with a time limit."),
+    VIDEO_GIF("videoGif", "Make a GIF", Kind.VIDEO, Kind.FILE, "Turns the first few seconds into a GIF that plays anywhere."),
+    VIDEO_ROTATE("videoRotate", "Turn it", Kind.VIDEO, Kind.VIDEO, "Turns a sideways or upside-down video the right way up."),
+    VIDEO_VERTICAL("videoVertical", "Crop to tall (9:16)", Kind.VIDEO, Kind.VIDEO, "Crops the middle to the tall shape phones and stories use."),
+    VIDEO_CAPTIONS("videoCaptions", "Add captions", Kind.VIDEO, Kind.VIDEO, "Listens to the video and writes what is said along the bottom."),
+    SPEECH_TEXT("speechText", "Write out what is said", Kind.AUDIO, Kind.TEXT, "Turns a voice memo or any recording into text. The recording stays on this phone."),
+    READ_ALOUD("readAloud", "Read it aloud", Kind.TEXT, Kind.AUDIO, "Reads the text into an audio file you can listen to later."),
+    TRANSLATE("translate", "Translate", Kind.TEXT, Kind.TEXT, "Puts the text into the language you pick. Works out the original language itself."),
+    REWRITE("rewrite", "Rewrite it", Kind.TEXT, Kind.TEXT, "Rewrites the text clearer, shorter, friendlier or more formal."),
+    READ_CODE("readCode", "Read a QR or barcode", Kind.IMAGE, Kind.TEXT, "Reads what a QR code or barcode says, without opening it."),
+    PAGE_TEXT("pageText", "Read the page at a link", Kind.TEXT, Kind.TEXT, "Opens the link and keeps only the words: no menus, ads or pop-ups."),
+    TEXT_PDF("textPdf", "Text to PDF", Kind.TEXT, Kind.PDF, "Lays the text out as a clean PDF."),
+    PDF_SHRINK("pdfShrink", "Shrink the PDF", Kind.PDF, Kind.PDF, "Makes a PDF smaller, so it fits in an email or an upload form."),
+    PDF_LOCK("pdfLock", "Lock with a password", Kind.PDF, Kind.PDF, "Asks for a password before the PDF opens."),
+    PDF_PAGES("pdfPages", "Keep some pages", Kind.PDF, Kind.PDF, "Keeps only the pages you list. Leave it empty to keep them all."),
+    PDF_TEXT("pdfText", "Read the PDF's words", Kind.PDF, Kind.TEXT, "Pulls the words out of a PDF.");
 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
 }
 
 /** What the person is trying to get done. The builder groups steps under these goals. Same wording as iOS. */
 val Block.goal: String get() = when (this) {
-    Block.SHRINK, Block.CONVERT, Block.RESIZE_PHOTO, Block.VIDEO_SHRINK -> "Make it easy to send"
-    Block.STRIP_LOCATION, Block.HIDE_SENSITIVE, Block.WATERMARK, Block.VIDEO_MUTE -> "Keep it private"
-    Block.READ_TEXT, Block.IDENTIFY, Block.DESCRIBE -> "Read what's in it"
-    Block.CUTOUT, Block.ENHANCE -> "Make it look better"
-    Block.PHOTO_PDF, Block.STAMP -> "Paperwork"
-    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR, Block.WIFI_QR, Block.PASSPORT_PHOTO, Block.VIDEO_STILL, Block.VIDEO_AUDIO -> "Turn it into something"
-    Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
-    Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
+    Block.SHRINK, Block.CONVERT, Block.RESIZE_PHOTO, Block.VIDEO_SHRINK, Block.VIDEO_TRIM, Block.PDF_SHRINK -> "Make it easy to send"
+    Block.STRIP_LOCATION, Block.HIDE_SENSITIVE, Block.WATERMARK, Block.VIDEO_MUTE, Block.PDF_LOCK -> "Keep it private"
+    Block.READ_TEXT, Block.IDENTIFY, Block.DESCRIBE, Block.READ_CODE, Block.SPEECH_TEXT, Block.PAGE_TEXT, Block.PDF_TEXT -> "Read what's in it"
+    Block.CUTOUT, Block.ENHANCE, Block.VIDEO_ROTATE, Block.VIDEO_VERTICAL, Block.VIDEO_CAPTIONS -> "Make it look better"
+    Block.PHOTO_PDF, Block.STAMP, Block.TEXT_PDF, Block.PDF_PAGES -> "Paperwork"
+    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR, Block.WIFI_QR, Block.PASSPORT_PHOTO, Block.VIDEO_STILL, Block.VIDEO_AUDIO, Block.VIDEO_GIF, Block.READ_ALOUD -> "Turn it into something"
+    Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK, Block.TRANSLATE -> "Understand it"
+    Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS, Block.REWRITE -> "Clean it up"
     Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST, Block.RETURN_BY, Block.PRICE_COMPARE -> "Money"
 }
 
@@ -83,8 +101,8 @@ data class Step(val block: Block, val settings: Map<String, String> = emptyMap()
 /** The short "how this works" at the top of Build your own. Same three ideas and wording as iOS. */
 object BuilderIntro {
     val PAGES = listOf(
-        "1. Start with what you have" to "A photo, a scan, a PDF, some text, something you say, or a contact.",
-        "2. Stack small steps" to "Hide private details, strip the location, shrink it, read it, sign it. You only see steps that fit.",
+        "1. Start with what you have" to "A photo, a scan, a PDF, a video, a recording, a link, some text, something you say, or a contact.",
+        "2. Stack small steps" to "Hide private details, shrink it, read it, translate it, sign it. You only see steps that fit, and that your phone can run.",
         "3. Choose how it ends" to "Share it, open an email or WhatsApp ready to send, add a row to a sheet. Add a reminder and it comes back on schedule.",
     )
     const val DEMO_ID = "share-shield"
@@ -240,7 +258,9 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                  /** A reminder to run this tool at a set time. null: no reminder. */
                  val schedule: Schedule? = null,
                  /** One of [AutoRun.ALL]: offer this tool when a new photo or screenshot appears. */
-                 val auto: String = AutoRun.OFF) {
+                 val auto: String = AutoRun.OFF,
+                 /** When several photos go in at once, lay the results out as one picture (a collage) instead of one file each. */
+                 val collage: Boolean = false) {
     val start: Kind get() = steps.firstOrNull()?.block?.takes ?: Kind.IMAGE
     val end: Kind? get() = steps.lastOrNull()?.block?.gives
 
@@ -257,8 +277,9 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
 
     /** @param forSharing a shared tool never carries the owner's recipients (someone's email or phone number). */
     fun toJson(forSharing: Boolean = false): JSONObject = JSONObject().put("id", id).put("name", name).put("steps", JSONArray().also { a ->
-        steps.forEach { s -> a.put(JSONObject().put("block", s.block.id).put("settings", JSONObject(s.settings))) }
-    }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true); if (fileName.isNotBlank()) o.put("fileName", fileName); if (onePage) o.put("onePage", true)
+        // A shared tool never carries a PDF password either.
+        steps.forEach { s -> a.put(JSONObject().put("block", s.block.id).put("settings", JSONObject(if (forSharing) s.settings - "password" else s.settings))) }
+    }).also { o -> if (collage) o.put("collage", true); finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true); if (fileName.isNotBlank()) o.put("fileName", fileName); if (onePage) o.put("onePage", true)
         // A shared tool never carries the owner's reminder times.
         if (!forSharing) schedule?.let { w -> o.put("schedule", JSONObject().put("hour", w.hour).put("minute", w.minute).put("days", JSONArray(w.cleanDays))) }
         if (!forSharing && auto.isNotEmpty()) o.put("auto", auto) }
@@ -287,7 +308,8 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                     val a = w.optJSONArray("days")
                     Schedule(w.optInt("hour", 9), w.optInt("minute", 0), if (a == null) emptyList() else (0 until a.length()).map { a.optInt(it) })
                 },
-                o.optString("auto", "").takeIf { it in AutoRun.ALL } ?: AutoRun.OFF)
+                o.optString("auto", "").takeIf { it in AutoRun.ALL } ?: AutoRun.OFF,
+                o.optBoolean("collage", false))
         } catch (_: Exception) { null }
 
         /** Accepts a copied tool only if it is well formed and its steps fit together. */
@@ -350,6 +372,21 @@ object ChainTemplates {
         Chain("share-shield", "Privacy share shield", listOf(Step(Block.HIDE_SENSITIVE), Step(Block.STRIP_LOCATION), Step(Block.SHRINK, mapOf("mb" to "2")))),
         Chain("id-copy-watermarked", "ID copy with a safety watermark", listOf(Step(Block.WATERMARK, mapOf("text" to "For verification only")), Step(Block.STRIP_LOCATION))),
         Chain("portal-photo", "Portal photo: 35x45 mm under 50 KB", listOf(Step(Block.RESIZE_PHOTO, mapOf("size" to "413x531")), Step(Block.SHRINK, mapOf("mb" to "0.05")))),
+        Chain("memo-to-notes", "Voice memo to written notes", listOf(Step(Block.SPEECH_TEXT), Step(Block.CLEAN_TEXT))),
+        Chain("memo-to-tasks", "Meeting recording to task list", listOf(Step(Block.SPEECH_TEXT), Step(Block.ACTION_ITEMS))),
+        Chain("qr-safe", "Is this QR code safe?", listOf(Step(Block.READ_CODE), Step(Block.SCAM_CHECK))),
+        Chain("sign-to-english", "Sign or menu photo to English", listOf(Step(Block.READ_TEXT), Step(Block.TRANSLATE, mapOf("to" to "en")))),
+        Chain("page-to-pdf", "Web page to a clean PDF", listOf(Step(Block.PAGE_TEXT), Step(Block.TEXT_PDF))),
+        Chain("page-summary", "Web page to 3 sentences", listOf(Step(Block.PAGE_TEXT), Step(Block.SUMMARIZE, mapOf("sentences" to "3")))),
+        Chain("listen-later", "Text to an audio file", listOf(Step(Block.READ_ALOUD))),
+        Chain("pdf-email", "PDF under 5 MB for email", listOf(Step(Block.PDF_SHRINK, mapOf("mb" to "5"))), finish = Finish("mail", "")),
+        Chain("pdf-join", "Join PDFs into one", listOf(Step(Block.PDF_PAGES, mapOf("pages" to ""))), combine = true),
+        Chain("pdf-first-page", "Just the first page of a PDF", listOf(Step(Block.PDF_PAGES, mapOf("pages" to "1")))),
+        Chain("video-story", "First 30 seconds, cropped tall", listOf(Step(Block.VIDEO_TRIM, mapOf("side" to "first", "secs" to "30")), Step(Block.VIDEO_VERTICAL))),
+        Chain("video-gif", "Video to a GIF", listOf(Step(Block.VIDEO_GIF))),
+        Chain("video-words", "What was said in a video", listOf(Step(Block.VIDEO_AUDIO), Step(Block.SPEECH_TEXT))),
+        Chain("photo-collage", "Photos into one collage", listOf(Step(Block.STRIP_LOCATION)), collage = true),
+        Chain("where-i-am", "Send where I am", listOf(Step(Block.CLEAN_TEXT)), finish = Finish("message", "")),
     )
 }
 
@@ -358,13 +395,36 @@ object ChainPlanner {
     fun plan(ask: String): Chain? {
         val s = " " + ask.lowercase() + " "
         fun has(vararg w: String) = w.any { s.contains(it) }
+        val name = ask.trim().replace("\n", " ").replaceFirstChar { it.uppercase() }.let { if (it.length > 34) it.take(32) + "…" else it }
+        fun made(steps: List<Step>, combine: Boolean = false): Chain? =
+            Chain(UUID.randomUUID().toString(), name, steps.take(8), combine = combine).takeIf { steps.isNotEmpty() && it.problem() == null }
+
+        // A recording: write out what was said, then whatever else was asked for.
+        if (has("voice memo", "recording", "transcribe", "transcript", "what was said", "speech to text", "audio to text")) {
+            val a = ArrayList<Step>()
+            if (has("video", " clip", "movie", "footage")) a.add(Step(Block.VIDEO_AUDIO))
+            a.add(Step(Block.SPEECH_TEXT))
+            if (has("task", "to-do", "todo", "action item")) a.add(Step(Block.ACTION_ITEMS))
+            else if (has("summar", "key points", "gist")) a.add(Step(Block.SUMMARIZE, mapOf("sentences" to "3")))
+            return made(a)
+        }
+
         // Video jobs come first: a video takes its own steps, never the photo ones.
         if (has("video", " clip", "movie", "footage")) {
             val v = ArrayList<Step>()
             when {
+                has("caption", "subtitle") -> v.add(Step(Block.VIDEO_CAPTIONS))
+                has(" gif") -> v.add(Step(Block.VIDEO_GIF))
                 has("still", "frame", "thumbnail") -> v.add(Step(Block.VIDEO_STILL))
                 has("audio only", "just the audio", "only the sound", "just the sound", "extract audio", "extract the audio", "as audio", "mp3") -> v.add(Step(Block.VIDEO_AUDIO))
                 else -> {
+                    if (has("trim", "seconds", " secs", "first part", "last part", "cut the")) {
+                        v.add(Step(Block.VIDEO_TRIM, mapOf("side" to if (has("last ", "the end")) "last" else "first", "secs" to (number(s, "second", "sec") ?: 30).toString())))
+                    }
+                    if (has("rotate", "sideways", "upside down", "right way up")) {
+                        v.add(Step(Block.VIDEO_ROTATE, mapOf("turn" to if (has("upside down")) "flip" else if (has(" left")) "left" else "right")))
+                    }
+                    if (has("vertical", "portrait", "9:16", " tall", "story", "stories", "reel", "tiktok")) v.add(Step(Block.VIDEO_VERTICAL))
                     if (has("mute", "no sound", "without sound", "without its sound", "remove the sound", "remove sound", "silent")) v.add(Step(Block.VIDEO_MUTE))
                     if (v.isEmpty() || has("shrink", "smaller", "compress", "reduce", "under ", " mb", "email", "whatsapp", "send", "size")) {
                         val mb = Regex("""(\d+)\s*(?:mb|megabyte)""").find(s)?.groupValues?.get(1)?.toIntOrNull()?.takeIf { it > 0 } ?: if (has("whatsapp", "chat")) 16 else 25
@@ -375,7 +435,43 @@ object ChainPlanner {
             val t = ask.trim().replace("\n", " ").replaceFirstChar { it.uppercase() }
             return Chain(UUID.randomUUID().toString(), if (t.length > 34) t.take(32) + "…" else t, v)
         }
-        val wantsPhoto = has("photo", "picture", "image", "scan", "screenshot", "snap", "camera", "receipt", "card", "poster", "flyer", "whiteboard")
+        // Jobs that start from a PDF (a photo turned into a PDF is handled further down).
+        if (has("pdf") && !has("photo", "picture", "image", "scan", "screenshot", "receipt", "web page", "webpage", "article", "link", "text to", "form")) {
+            if (has("words", "text from", "text out", "copy the text", "read the pdf")) return made(listOf(Step(Block.PDF_TEXT)))
+            val p = ArrayList<Step>()
+            val join = has("merge", "join", "combine", "into one")
+            if (join || has("page ", "pages", "split", "extract")) p.add(Step(Block.PDF_PAGES, mapOf("pages" to if (!join && has("first page")) "1" else "")))
+            if (has("shrink", "smaller", "compress", "reduce", "under ", " mb", "email")) p.add(Step(Block.PDF_SHRINK, mapOf("mb" to (number(s, "mb", "megabyte") ?: 5).toString())))
+            if (has("password", "lock", "protect", "encrypt")) p.add(Step(Block.PDF_LOCK, mapOf("password" to "")))
+            if (p.isNotEmpty()) return made(p, combine = join)
+        }
+
+        val wantsPhoto = has("photo", "picture", "image", "scan", "screenshot", "snap", "camera", "receipt", "card", "poster", "flyer", "whiteboard", "sign ")
+
+        // Translating: read the words first when a picture is meant.
+        if (has("translat")) {
+            val to = TextTidy.LANGUAGES.firstOrNull { (_, n) -> s.contains(" " + n.lowercase()) && !s.contains("from " + n.lowercase()) }?.first ?: "en"
+            return made((if (wantsPhoto || has("menu")) listOf(Step(Block.READ_TEXT)) else emptyList()) + Step(Block.TRANSLATE, mapOf("to" to to)))
+        }
+        // A web page: keep its words, then make a PDF, a summary or an audio file of them.
+        if (has("web page", "webpage", "article", "website")) {
+            val w = arrayListOf(Step(Block.PAGE_TEXT))
+            if (has("pdf")) w.add(Step(Block.TEXT_PDF))
+            else if (has("summar", "gist", "key points", "shorten")) w.add(Step(Block.SUMMARIZE, mapOf("sentences" to "3")))
+            else if (has("read aloud", "listen", "audio")) w.add(Step(Block.READ_ALOUD))
+            return made(w)
+        }
+        if (has("read aloud", " aloud", "read out", "listen to", "text to speech", "audio file")) {
+            return made((if (wantsPhoto) listOf(Step(Block.READ_TEXT)) else emptyList()) + Step(Block.READ_ALOUD))
+        }
+        // Reading a code (making one is handled below).
+        if (has("qr", "barcode") && has("read ", "scan ", "what does", "safe", "decode") && !has("wifi", "wi-fi", "make ", "create", "turn ", "into a qr", "to qr", "to a qr")) {
+            return made(listOf(Step(Block.READ_CODE)) + (if (has("safe", "scam")) listOf(Step(Block.SCAM_CHECK)) else emptyList()))
+        }
+        if (has("rewrite", "reword", "rephrase", "more formal", "friendlier", "more polite")) {
+            val style = if (has("formal", "polite", "professional")) "formal" else if (has("friendl", "warm")) "friendly" else if (has("short", "brief")) "short" else "clear"
+            return made(listOf(Step(Block.REWRITE, mapOf("style" to style))))
+        }
 
         // "Tidy up this photo" is about the picture, so tidying only means text when text is what is being talked about.
         val textish = has("text", "notes", "words", "list", "lines", "pasted", "paste")

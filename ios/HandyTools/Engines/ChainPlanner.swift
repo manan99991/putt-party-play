@@ -35,11 +35,30 @@ enum ChainPlanner {
         let s = " " + ask.lowercased() + " "
         func has(_ words: [String]) -> Bool { words.contains { s.contains($0) } }
 
+        // A recording: write out what was said, then whatever else was asked for.
+        if has(["voice memo", "recording", "transcribe", "transcript", "what was said", "speech to text", "audio to text"]) {
+            var a: [ChainStep] = has(["video", " clip", "movie", "footage"]) ? [ChainStep(block: .videoAudio)] : []
+            a.append(ChainStep(block: .speechText))
+            if has(["task", "to-do", "todo", "action item"]) { a.append(ChainStep(block: .actionItems)) }
+            else if has(["summar", "key points", "gist"]) { a.append(ChainStep(block: .summarize, settings: ["sentences": "3"])) }
+            return build(ask, a)
+        }
+
         // Video jobs come first: a video takes its own steps, never the photo ones.
         if has(["video", " clip", "movie", "footage"]) {
+            if has(["caption", "subtitle"]) { return build(ask, [ChainStep(block: .videoCaptions)]) }
+            if has([" gif"]) { return build(ask, [ChainStep(block: .videoGif)]) }
             if has(["still", "frame", "thumbnail"]) { return build(ask, [ChainStep(block: .videoStill)]) }
             if has(["audio only", "just the audio", "only the sound", "just the sound", "extract audio", "extract the audio", "as audio", "mp3"]) { return build(ask, [ChainStep(block: .videoAudio)]) }
             var v: [ChainStep] = []
+            if has(["trim", "seconds", " secs", "first part", "last part", "cut the"]) {
+                let secs = number(near: ["second", "sec"], in: s, before: true) ?? 30
+                v.append(ChainStep(block: .videoTrim, settings: ["side": has(["last ", "the end"]) ? "last" : "first", "secs": String(secs)]))
+            }
+            if has(["rotate", "sideways", "upside down", "right way up"]) {
+                v.append(ChainStep(block: .videoRotate, settings: ["turn": has(["upside down"]) ? "flip" : has([" left"]) ? "left" : "right"]))
+            }
+            if has(["vertical", "portrait", "9:16", " tall", "story", "stories", "reel", "tiktok"]) { v.append(ChainStep(block: .videoVertical)) }
             if has(["mute", "no sound", "without sound", "without its sound", "remove the sound", "remove sound", "silent"]) { v.append(ChainStep(block: .videoMute)) }
             if v.isEmpty || has(["shrink", "smaller", "compress", "reduce", "under ", " mb", "email", "whatsapp", "send", "size"]) {
                 let mb = number(near: ["mb", "megabyte"], in: s, before: true) ?? (has(["whatsapp", "chat"]) ? 16 : 25)
@@ -48,8 +67,50 @@ enum ChainPlanner {
             return build(ask, v)
         }
 
+        // Jobs that start from a PDF (a photo turned into a PDF is handled further down).
+        if has(["pdf"]), !has(["photo", "picture", "image", "scan", "screenshot", "receipt", "web page", "webpage", "article", "link", "text to", "form"]) {
+            if has(["words", "text from", "text out", "copy the text", "read the pdf"]) { return build(ask, [ChainStep(block: .pdfText)]) }
+            var p: [ChainStep] = []
+            let join = has(["merge", "join", "combine", "into one"])
+            if join || has(["page ", "pages", "split", "extract"]) { p.append(ChainStep(block: .pdfPages, settings: ["pages": !join && has(["first page"]) ? "1" : ""])) }
+            if has(["shrink", "smaller", "compress", "reduce", "under ", " mb", "email"]) {
+                p.append(ChainStep(block: .pdfShrink, settings: ["mb": String(number(near: ["mb", "megabyte"], in: s, before: true) ?? 5)]))
+            }
+            if has(["password", "lock", "protect", "encrypt"]) { p.append(ChainStep(block: .pdfLock, settings: ["password": ""])) }
+            if !p.isEmpty {
+                var c = build(ask, p)
+                if join { c?.combine = true }
+                return c
+            }
+        }
+
         var steps: [ChainStep] = []
         let wantsPhotoInput = has(["photo", "picture", "image", "scan", "screenshot", "snap", "camera", "receipt", "card", "poster", "flyer", "whiteboard", "sign "])
+
+        // Translating: read the words first when a picture is meant.
+        if has(["translat"]) {
+            let to = ChainText.languages.first { s.contains(" " + $0.name.lowercased()) && !s.contains("from " + $0.name.lowercased()) }?.code ?? "en"
+            return build(ask, (wantsPhotoInput || has(["menu"]) ? [ChainStep(block: .readText)] : []) + [ChainStep(block: .translate, settings: ["to": to])])
+        }
+        // A web page: keep its words, then make a PDF, a summary or an audio file of them.
+        if has(["web page", "webpage", "article", "website"]) {
+            var w = [ChainStep(block: .pageText)]
+            if has(["pdf"]) { w.append(ChainStep(block: .textPdf)) }
+            else if has(["summar", "gist", "key points", "shorten"]) { w.append(ChainStep(block: .summarize, settings: ["sentences": "3"])) }
+            else if has(["read aloud", "listen", "audio"]) { w.append(ChainStep(block: .readAloud)) }
+            return build(ask, w)
+        }
+        if has(["read aloud", " aloud", "read out", "listen to", "text to speech", "audio file"]) {
+            return build(ask, (wantsPhotoInput ? [ChainStep(block: .readText)] : []) + [ChainStep(block: .readAloud)])
+        }
+        // Reading a code (making one is handled below).
+        if has(["qr", "barcode"]), has(["read ", "scan ", "what does", "safe", "decode"]), !has(["wifi", "wi-fi", "make ", "create", "turn ", "into a qr", "to qr", "to a qr"]) {
+            return build(ask, [ChainStep(block: .readCode)] + (has(["safe", "scam"]) ? [ChainStep(block: .scamCheck)] : []))
+        }
+        if has(["rewrite", "reword", "rephrase", "more formal", "friendlier", "more polite"]) {
+            let style = has(["formal", "polite", "professional"]) ? "formal" : has(["friendl", "warm"]) ? "friendly" : has(["short", "brief"]) ? "short" : "clear"
+            return build(ask, [ChainStep(block: .rewrite, settings: ["style": style])])
+        }
 
         // Text-making jobs: they start from a picture of the thing, or from pasted text, so read it first when a picture is meant.
         // "Tidy up this photo" is about the picture, so tidying only means text when text is what is being talked about.
