@@ -198,4 +198,32 @@ class BuilderLogicTest {
         assertEquals(listOf(Block.READ_TEXT, Block.EXPENSE_ROW, Block.ADD_TO_LIST), c.steps.map { it.block }); assertNull(c.problem(Kind.IMAGE))
         assertEquals(listOf(Block.READ_TEXT, Block.EXPENSE_ROW, Block.ADD_TO_LIST), ChainPlanner.plan("add every receipt to my expense sheet")!!.steps.map { it.block })
     }
+
+    // WhatsApp without saving, contact QR, ID on one page
+    @Test fun chatLinkAddsCountryCodeOnlyWhenMissing() {
+        assertEquals("https://wa.me/13125550147", TextTidy.chatLink("(312) 555-0147", "1"))
+        assertEquals("https://wa.me/442079460958", TextTidy.chatLink("+44 20 7946 0958", "1"))
+        assertEquals("https://wa.me/442079460958", TextTidy.chatLink("0044 20 7946 0958", "1"))
+        assertEquals("https://wa.me/447911123456", TextTidy.chatLink("07911 123456", "44"))
+        assertEquals("https://wa.me/919876543210", TextTidy.chatLink("919876543210", "1"))
+        assertEquals("https://wa.me/13125550147", TextTidy.chatLink("Courier: call 312 555 0147 at the gate", "+1"))
+        assertEquals("https://wa.me/919876543210", TextTidy.chatLink("98765 43210", "91"))
+        assertNull(TextTidy.chatLink("call me later", "1")); assertNull(TextTidy.chatLink("12345", "1"))
+    }
+    @Test fun callingCodes() {
+        assertEquals("91", TextTidy.callingCode("IN")); assertEquals("1", TextTidy.callingCode("us")); assertEquals("1", TextTidy.callingCode(null)); assertEquals("1", TextTidy.callingCode("ZZ"))
+    }
+    @Test fun slotsStackDownThePage() {
+        val s = TextTidy.slots(2, 1000f, 1400f, 100f)
+        assertEquals(2, s.size)
+        assertTrue(s[0].contentEquals(floatArrayOf(100f, 100f, 900f, 650f))); assertTrue(s[1].contentEquals(floatArrayOf(100f, 750f, 900f, 1300f)))
+        assertTrue(TextTidy.slots(0, 10f, 10f, 1f).isEmpty())
+    }
+    @Test fun startersForPeopleAndId() {
+        val w = ChainTemplates.all.first { it.id == "whatsapp-no-save" }
+        assertEquals("open", w.finish?.kind); assertEquals("Open it", w.finish?.label); assertNull(w.problem(Kind.TEXT))
+        val id = ChainTemplates.all.first { it.id == "id-both-sides" }
+        assertTrue(id.combine && id.onePage); assertNull(id.problem(Kind.IMAGE))
+        assertNull(ChainTemplates.all.first { it.id == "contact-qr" }.problem(Kind.TEXT))
+    }
 }

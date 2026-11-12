@@ -35,7 +35,7 @@ struct SendSheet: UIViewControllerRepresentable {
 
     static func canSend(_ kind: ChainFinish.Kind) -> Bool {
         switch kind {
-        case .share: return true
+        case .share, .open: return true
         case .mail: return MFMailComposeViewController.canSendMail()
         case .message: return MFMessageComposeViewController.canSendText()
         }

@@ -32,15 +32,17 @@ extension Block {
         case .stamp: return "signature"
         case .expenseRow: return "dollarsign.circle"
         case .addToList: return "text.badge.plus"
+        case .chatLink: return "bubble.left.and.text.bubble.right"
+        case .contactQr: return "person.crop.square.filled.and.at.rectangle"
         }
     }
     var tint: Color {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow: return Color(hex: 0x3B82F6)
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink: return Color(hex: 0x3B82F6)
         case .shrinkImage, .convertImage, .stripLocation, .resizePhoto: return Color(hex: 0x10B981)
         case .cutout, .enhance, .passportPhoto: return Color(hex: 0xA855F7)
         case .hideSensitive, .scamCheck, .watermark: return Color(hex: 0xF97316)
-        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr, .stamp, .addToList: return Color(hex: 0xEC4899)
+        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr, .stamp, .addToList, .contactQr: return Color(hex: 0xEC4899)
         }
     }
     var blurb: String {
@@ -73,6 +75,8 @@ extension Block {
         case .stamp: return "Puts your saved signature, your name and today's date where you placed them."
         case .expenseRow: return "Date, store, total and tax as one row."
         case .addToList: return "Adds the rows to the same sheet every time, one sheet a month."
+        case .chatLink: return "Opens a WhatsApp chat with a number without saving it as a contact."
+        case .contactQr: return "A code another phone scans to save the contact. Only what you typed is included."
         }
     }
 }

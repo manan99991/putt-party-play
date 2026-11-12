@@ -162,4 +162,33 @@ object TextTidy {
         val date = dateMs?.let { java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US).format(java.util.Date(it)) } ?: ""
         return "Date,Merchant,Total,Tax,Currency\n$date,${csv(merchant.trim())},${total.filter { it.isDigit() || it == '.' }},,"
     }
+
+    // MARK: WhatsApp without saving a number (same rules as iOS ChainText.chatLink)
+
+    /** A wa.me link for the number in the text. A number written without a country code gets [countryCode]. Null when there is no usable number. */
+    fun chatLink(text: String, countryCode: String): String? {
+        val raw = (details(text).phones.firstOrNull() ?: text).trim()
+        var digits = raw.filter { it in '0'..'9' }
+        if (digits.length !in 7..15) return null
+        if (!raw.startsWith("+")) {
+            if (digits.startsWith("00")) digits = digits.drop(2)
+            else {
+                if (digits.startsWith("0")) digits = digits.drop(1)
+                if (digits.length <= 10) digits = countryCode.filter { it in '0'..'9' } + digits   // longer: it already has its country code
+            }
+        }
+        return "https://wa.me/$digits"
+    }
+
+    /** Country calling code for a region ("US" -> "1"). Unknown regions fall back to "1"; the step lets it be changed. */
+    fun callingCode(region: String?): String = mapOf("US" to "1", "CA" to "1", "IN" to "91", "GB" to "44", "AU" to "61", "DE" to "49", "FR" to "33", "ES" to "34",
+        "IT" to "39", "NL" to "31", "BR" to "55", "MX" to "52", "AE" to "971", "SA" to "966", "SG" to "65", "PK" to "92", "BD" to "880", "ID" to "62", "PH" to "63",
+        "NG" to "234", "ZA" to "27", "KE" to "254", "JP" to "81", "KR" to "82", "TR" to "90", "EG" to "20")[(region ?: "").uppercase()] ?: "1"
+
+    /** Equal slots down a sheet, one per picture, separated by the margin: left, top, right, bottom. */
+    fun slots(count: Int, width: Float, height: Float, margin: Float): List<FloatArray> {
+        if (count <= 0) return emptyList()
+        val h = (height - margin * (count + 1)) / count
+        return (0 until count).map { floatArrayOf(margin, margin + it * (h + margin), width - margin, margin + it * (h + margin) + h) }
+    }
 }

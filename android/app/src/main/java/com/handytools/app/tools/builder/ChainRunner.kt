@@ -37,8 +37,24 @@ sealed class Outcome {
 
 object ChainRunner {
     /** One PDF with a page per picture, each page the shape of its picture (long side 842 pt, like A4). */
-    fun onePdf(pages: List<android.graphics.Bitmap>): ByteArray {
+    fun onePdf(pages: List<android.graphics.Bitmap>, onePage: Boolean = false): ByteArray {
         val doc = android.graphics.pdf.PdfDocument()
+        if (onePage && pages.size > 1) {
+            // Every picture on one A4-shaped sheet, stacked top to bottom, each as large as fits (both sides of an ID).
+            val w = 595; val h = 842
+            val page = doc.startPage(android.graphics.pdf.PdfDocument.PageInfo.Builder(w, h, 1).create())
+            val paint = android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG)
+            TextTidy.slots(pages.size, w.toFloat(), h.toFloat(), 34f).forEachIndexed { i, s ->
+                val bmp = pages[i]
+                val k = minOf((s[2] - s[0]) / bmp.width, (s[3] - s[1]) / bmp.height)
+                val bw = bmp.width * k; val bh = bmp.height * k
+                val cx = (s[0] + s[2]) / 2f; val cy = (s[1] + s[3]) / 2f
+                page.canvas.drawBitmap(bmp, null, android.graphics.RectF(cx - bw / 2f, cy - bh / 2f, cx + bw / 2f, cy + bh / 2f), paint)
+            }
+            doc.finishPage(page)
+            val out = java.io.ByteArrayOutputStream(); doc.writeTo(out); doc.close()
+            return out.toByteArray()
+        }
         pages.forEachIndexed { i, bmp ->
             val scale = 842f / maxOf(bmp.width, bmp.height)
             val w = (bmp.width * scale).toInt().coerceAtLeast(1); val h = (bmp.height * scale).toInt().coerceAtLeast(1)
@@ -83,6 +99,14 @@ object ChainRunner {
                 b == Block.PULL_RECEIPT && input is Payload.Words -> {
                     val r = CaptureClassifier.classify(input.text)
                     if (r.total.isBlank() && r.items.isEmpty()) none() else Outcome.Done(Payload.Words(CaptureClassifier.csv(r)))
+                }
+                b == Block.CHAT_LINK && input is Payload.Words ->
+                    TextTidy.chatLink(input.text, step.settings["cc"] ?: TextTidy.callingCode(java.util.Locale.getDefault().country))?.let { Outcome.Done(Payload.Words(it)) } ?: none()
+                b == Block.CONTACT_QR && input is Payload.Words -> {
+                    // Only what is in the text goes into the code, so you choose what the other person gets.
+                    val c = CaptureClassifier.classify(input.text)
+                    if (c.phone.isBlank() && c.email.isBlank()) Outcome.Stopped("Contact as a QR code needs a phone number or an email, and didn't find one.")
+                    else com.handytools.app.tools.power.CodesEngine.qr(vcard(c.name, c.title, c.company, c.phone, c.email))?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
                 }
                 b == Block.EXPENSE_ROW && input is Payload.Words -> {
                     val r = CaptureClassifier.classify(input.text)

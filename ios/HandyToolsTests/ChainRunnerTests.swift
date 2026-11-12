@@ -84,9 +84,9 @@ final class ChainRowTests: XCTestCase {
 }
 
 final class ChainTemplateTests: XCTestCase {
-    func testTwentyFiveTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 25)
-        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 25)
+    func testTwentyEightTemplatesAllValidAndUnique() {
+        XCTAssertEqual(ChainTemplates.all.count, 28)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 28)
     }
     func testShareRoundTripAndRejectsJunk() throws {
         let t = ChainTemplates.all[0]
@@ -570,5 +570,58 @@ final class RunningListTests: XCTestCase {
         guard case .success(.text(let out)) = r else { return XCTFail("no row") }
         let lines = out.components(separatedBy: "\n")
         XCTAssertEqual(lines.count, 2); XCTAssertEqual(lines[0], "Date,Merchant,Total,Tax,Currency"); XCTAssertTrue(lines[1].contains("7.75"))
+    }
+}
+
+/// WhatsApp without saving a number, a contact as a QR code, and both sides of an ID on one page.
+final class PeopleAndIdTests: XCTestCase {
+    func testChatLinkAddsTheCountryCodeOnlyWhenItIsMissing() {
+        XCTAssertEqual(ChainText.chatLink("(312) 555-0147", countryCode: "1"), "https://wa.me/13125550147")
+        XCTAssertEqual(ChainText.chatLink("+44 20 7946 0958", countryCode: "1"), "https://wa.me/442079460958")
+        XCTAssertEqual(ChainText.chatLink("0044 20 7946 0958", countryCode: "1"), "https://wa.me/442079460958")
+        XCTAssertEqual(ChainText.chatLink("07911 123456", countryCode: "44"), "https://wa.me/447911123456")
+        XCTAssertEqual(ChainText.chatLink("919876543210", countryCode: "1"), "https://wa.me/919876543210", "already has its country code")
+        XCTAssertEqual(ChainText.chatLink("Courier: call 312 555 0147 at the gate", countryCode: "+1"), "https://wa.me/13125550147")
+    }
+    func testChatLinkWithNoNumberIsNil() {
+        XCTAssertNil(ChainText.chatLink("call me later", countryCode: "1"))
+        XCTAssertNil(ChainText.chatLink("12345", countryCode: "1"))
+    }
+    func testCallingCodes() {
+        XCTAssertEqual(ChainText.callingCode(region: "IN"), "91"); XCTAssertEqual(ChainText.callingCode(region: "us"), "1")
+        XCTAssertEqual(ChainText.callingCode(region: nil), "1"); XCTAssertEqual(ChainText.callingCode(region: "ZZ"), "1")
+    }
+    func testChatLinkBlockAndItsStarterEndByOpening() async throws {
+        let r = await ChainRunner.apply(ChainStep(block: .chatLink, settings: ["cc": "91"]), to: .text("98765 43210"))
+        guard case .success(.text(let link)) = r else { return XCTFail("no link") }
+        XCTAssertEqual(link, "https://wa.me/919876543210")
+        let c = try XCTUnwrap(ChainTemplates.all.first { $0.id == "whatsapp-no-save" })
+        XCTAssertEqual(c.finish?.kind, .open); XCTAssertEqual(c.finish?.label, "Open it")
+    }
+    func testContactQrNeedsAWayToReachThePerson() async {
+        let ok = await ChainRunner.apply(ChainStep(block: .contactQr), to: .text("Priya Shah\npriya@studio.example"))
+        guard case .success(.image(let img)) = ok else { return XCTFail("no code") }
+        XCTAssertGreaterThan(img.size.width, 100)
+        let none = await ChainRunner.apply(ChainStep(block: .contactQr), to: .text("Just a name"))
+        XCTAssertEqual(none.failureValue, .nothingFound(.businessCard))
+    }
+    func testSlotsStackDownThePageInsideTheMargins() {
+        let s = ChainImage.slots(count: 2, in: CGSize(width: 1000, height: 1400), margin: 100)
+        XCTAssertEqual(s.count, 2)
+        XCTAssertEqual(s[0], CGRect(x: 100, y: 100, width: 800, height: 550))
+        XCTAssertEqual(s[1], CGRect(x: 100, y: 750, width: 800, height: 550))
+        XCTAssertTrue(ChainImage.slots(count: 0, in: CGSize(width: 10, height: 10), margin: 1).isEmpty)
+    }
+    func testBothSidesOfAnIdBecomeOnePageNotTwo() {
+        let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+        let card = UIGraphicsImageRenderer(size: CGSize(width: 856, height: 540), format: f).image { c in UIColor.gray.setFill(); c.fill(CGRect(x: 0, y: 0, width: 856, height: 540)) }
+        func pages(_ p: ChainPayload?) -> Int? { if case .file(let d, _)? = p { return PDFDocument(data: d)?.pageCount }; return nil }
+        XCTAssertEqual(pages(ChainCombine.onePDF([.image(card), .image(card)], onePage: true)), 1)
+        XCTAssertEqual(pages(ChainCombine.onePDF([.image(card), .image(card)])), 2)
+        XCTAssertEqual(ChainImage.sheet([card, card]).size, CGSize(width: 1240, height: 1754))
+    }
+    func testIdStarterIsWired() throws {
+        let c = try XCTUnwrap(ChainTemplates.all.first { $0.id == "id-both-sides" })
+        XCTAssertEqual(c.combine, true); XCTAssertEqual(c.onePage, true); XCTAssertNil(c.problem(starting: .image))
     }
 }

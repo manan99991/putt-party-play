@@ -103,7 +103,8 @@ fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
 private fun defaults(b: Block): Map<String, String> = when (b) {
     Block.SHRINK -> mapOf("mb" to "2"); Block.SUMMARIZE -> mapOf("sentences" to "3"); Block.CONVERT -> mapOf("format" to "JPG")
     Block.WATERMARK -> mapOf("text" to "For verification only"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
-    Block.ADD_TO_LIST -> mapOf("list" to TextTidy.DEFAULT_LIST); else -> emptyMap()
+    Block.ADD_TO_LIST -> mapOf("list" to TextTidy.DEFAULT_LIST)
+    Block.CHAT_LINK -> mapOf("cc" to TextTidy.callingCode(java.util.Locale.getDefault().country)); else -> emptyMap()
 }
 
 @Composable
@@ -265,7 +266,8 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
         chain.end?.let {
             Text("You get ${it.label}. Then:", style = MaterialTheme.typography.titleSmall)
             val fin = chain.finish ?: Finish()
-            Finish.KINDS.chunked(2).forEach { pair ->
+            // "Open" only makes sense when the tool ends with text (a link).
+            Finish.KINDS.filter { k -> k != "open" || it == Kind.TEXT }.chunked(2).forEach { pair ->
                 Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                     pair.forEach { k ->
                         if (k == fin.kind) Button({}, Modifier.weight(1f)) { Text(Finish.title(k)) }
@@ -283,13 +285,18 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
             }
             if (chain.start == Kind.IMAGE && it != Kind.TEXT) {
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on) })
+                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on, onePage = on && chain.onePage) })
                     Text("  Put all pages or photos into one PDF", style = MaterialTheme.typography.bodyMedium)
+                }
+                if (chain.combine) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    androidx.compose.material3.Switch(chain.onePage, { on -> chain = chain.copy(onePage = on) })
+                    Text("  All on a single page (both sides of an ID)", style = MaterialTheme.typography.bodyMedium)
                 }
             }
             if (fin.kind != "share") Text(
                 when (fin.kind) { "mail" -> "When the tool finishes, an email opens with the result attached. You tap Send."
                     "message" -> "When the tool finishes, a message opens with the result attached. You tap Send."
+                    "open" -> "When the tool finishes, the link it made opens."
                     else -> "When the tool finishes, WhatsApp opens with the result attached. You pick the chat and tap Send." },
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
@@ -313,6 +320,10 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 Text("Under ${TextTidy.limitLabel(mb)}", style = MaterialTheme.typography.bodyMedium)
                 TextButton({ set("mb", TextTidy.LIMITS[(i + 1).coerceAtMost(TextTidy.LIMITS.lastIndex)].toString()) }) { Text("+") }
             }
+        }
+        Block.CHAT_LINK -> {
+            OutlinedTextField(s.settings["cc"] ?: "1", { v -> set("cc", v.filter { it.isDigit() }) }, singleLine = true, label = { Text("Country code (without +)") })
+            Text("Used when the number is written without one.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.ADD_TO_LIST -> {
             OutlinedTextField(s.settings["list"] ?: TextTidy.DEFAULT_LIST, { v -> set("list", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Sheet name") })
@@ -450,7 +461,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
             }
             if (chain.combine && joinable && pages.isNotEmpty()) {
                 val skipped = out.count { it.note != null }
-                result = Payload.Doc(withContext(Dispatchers.Default) { ChainRunner.onePdf(pages) }, "pdf")
+                result = Payload.Doc(withContext(Dispatchers.Default) { ChainRunner.onePdf(pages, chain.onePage) }, "pdf")
                 if (skipped > 0) message = "$skipped of ${picked.size} couldn't be used and were left out."
                 busy = false; progress = ""
                 return@launch
@@ -526,6 +537,17 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
         val okItems = batch.filter { it.note == null }
         if (fin != null && fin.kind != "share" && (result != null || okItems.isNotEmpty())) {
             HPrimaryButton(fin.label) {
+                if (fin.kind == "open") {
+                    // "Open it": follow the link the tool made (a WhatsApp chat, a cleaned link). No link: say so; the result stays on screen.
+                    val t = (result as? Payload.Words)?.text ?: ""
+                    val found = TextTidy.details(t).links.firstOrNull() ?: t.trim()
+                    val url = if (found.startsWith("http", ignoreCase = true)) found else "https://$found"
+                    val opened = found.isNotEmpty() && !found.contains(' ') && runCatching {
+                        ctx.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url)).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
+                    }.isSuccess
+                    if (!opened) message = "There was no link to open. The result is shown above to copy."
+                    return@HPrimaryButton
+                }
                 val files = ArrayList<File>(); var text: String? = null
                 when (val r = result) {
                     is Payload.Words -> text = r.text

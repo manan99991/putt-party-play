@@ -109,3 +109,10 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Starter on both: "Receipt into this month's expense sheet". Describe it: "expense sheet", "ledger", "running list".
 - Sheets live on the phone (iOS App Group "Lists" folder; Android files/lists). Not yet: a screen to see, rename or clear sheets; return and warranty reminders.
 - UNBUILT in CI (builds paused for cost).
+
+### People and ID jobs — iOS and Android
+- `chatLink`: a wa.me link for the number in the text (country code added only when missing; per-step default from the phone's region). New ending "Open" follows the link the tool made. Starter: "WhatsApp a number without saving it".
+- `contactQr`: the contact details in the text as a QR code another phone can scan (needs a phone or email). Starter: "My contact as a QR code".
+- With "one PDF": "All on a single page" lays every photo on one A4-shaped sheet. Starter: "Both sides of an ID on one page" (watermarked).
+- Same rules both platforms (`ChainText.chatLink` / `TextTidy.chatLink`, `slots`). iOS opens the link automatically when the run finishes; Android shows an "Open it" button.
+- UNBUILT in CI (builds paused for cost).

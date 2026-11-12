@@ -170,10 +170,14 @@ private struct ChainEditor: View {
         let to = Binding<String>(
             get: { chain.finish?.to ?? "" },
             set: { t in var f = chain.finish ?? ChainFinish(); f.to = t; chain.finish = f })
-        let onePdf = Binding<Bool>(get: { chain.combine == true }, set: { chain.combine = $0 ? true : nil })
+        let onePdf = Binding<Bool>(get: { chain.combine == true }, set: { chain.combine = $0 ? true : nil; if !$0 { chain.onePage = nil } })
+        let onePage = Binding<Bool>(get: { chain.onePage == true }, set: { chain.onePage = $0 ? true : nil })
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
             if startKind == .image, endKind != .text {
                 Toggle("Put all pages or photos into one PDF", isOn: onePdf).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
+                if chain.combine == true {
+                    Toggle("All on a single page (both sides of an ID)", isOn: onePage).font(HandyFont.caption).accessibilityIdentifier("finish-one-page")
+                }
             }
             if endKind != .text {
                 TextField("File name (optional), e.g. Signed form {date}", text: Binding(get: { chain.fileName ?? "" }, set: { chain.fileName = $0.isEmpty ? nil : $0 }))
@@ -187,8 +191,12 @@ private struct ChainEditor: View {
                 Text("Share").tag(ChainFinish.Kind.share)
                 Text("Email").tag(ChainFinish.Kind.mail)
                 Text("Message").tag(ChainFinish.Kind.message)
+                if endKind == .text { Text("Open").tag(ChainFinish.Kind.open) }
             }.pickerStyle(.segmented).accessibilityIdentifier("finish-kind")
-            if kind.wrappedValue != .share {
+            if kind.wrappedValue == .open {
+                Text("When the tool finishes, the link it made opens.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            if kind.wrappedValue == .mail || kind.wrappedValue == .message {
                 TextField(kind.wrappedValue == .mail ? "Email address (optional)" : "Phone number (optional)", text: to)
                     .textInputAutocapitalization(.never).autocorrectionDisabled()
                     .keyboardType(kind.wrappedValue == .mail ? .emailAddress : .phonePad)
@@ -339,7 +347,8 @@ private struct ChainEditor: View {
     private func defaults(_ b: Block) -> [String: String] {
         switch b { case .shrinkImage: return ["mb": "2"]; case .summarize: return ["sentences": "3"]; case .convertImage: return ["format": "JPG"]; case .passportPhoto: return ["country": "us"]
         case .watermark: return ["text": "For verification only"]; case .resizePhoto: return ["size": "413x531"]
-        case .stamp: return ["marks": StampPlan.standard.text]; case .addToList: return ["list": RunningList.defaultName]; default: return [:] }
+        case .stamp: return ["marks": StampPlan.standard.text]; case .addToList: return ["list": RunningList.defaultName]
+        case .chatLink: return ["cc": ChainText.callingCode(region: Locale.current.region?.identifier)]; default: return [:] }
     }
 
     @ViewBuilder private func settings(_ i: Int) -> some View {
@@ -350,6 +359,14 @@ private struct ChainEditor: View {
             Picker("Size limit", selection: Binding(get: { mb }, set: { chain.steps[i].settings["mb"] = String($0) })) {
                 ForEach((ChainImage.limits.contains(mb) ? ChainImage.limits : (ChainImage.limits + [mb]).sorted()), id: \.self) { v in Text("Under " + ChainImage.limitLabel(v)).tag(v) }
             }.pickerStyle(.menu).font(HandyFont.caption)
+        case .chatLink:
+            HStack {
+                Text("Country code  +").font(HandyFont.caption)
+                TextField("1", text: Binding(get: { chain.steps[i].settings["cc"] ?? "1" }, set: { chain.steps[i].settings["cc"] = $0.filter(\.isNumber) }))
+                    .keyboardType(.numberPad).font(HandyFont.caption).frame(width: 60)
+                    .padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+            }
+            Text("Used when the number is written without one.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .addToList:
             TextField("Sheet name", text: Binding(get: { chain.steps[i].settings["list"] ?? RunningList.defaultName }, set: { chain.steps[i].settings["list"] = $0 }))
                 .font(HandyFont.caption).autocorrectionDisabled().padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
@@ -498,7 +515,7 @@ private struct ChainRunView: View {
                 }
             }
             // One PDF for everything, when the tool asks for it and the results can be joined.
-            if combine, let one = ChainCombine.onePDF(kept) {
+            if combine, let one = ChainCombine.onePDF(kept, onePage: chain.onePage == true) {
                 let skipped = out.filter { $0.note != nil }.count
                 await MainActor.run {
                     busy = false; progress = ""; result = one
@@ -536,7 +553,10 @@ private struct ChainRunView: View {
     /// The tool's own ending: "Email it to..." or "Message it to...". If this phone can't do that, say so and leave
     /// Save or share above as the way out, never a dead button.
     @ViewBuilder private var sendOn: some View {
-        if let f = chain.finish, f.kind != .share, outbox != nil {
+        if let f = chain.finish, f.kind == .open, outbox != nil {
+            Button { openLink() } label: { Label(f.label, systemImage: "arrow.up.forward.app").frame(maxWidth: .infinity) }
+                .primaryButton().accessibilityIdentifier("open-link")
+        } else if let f = chain.finish, f.kind != .share, outbox != nil {
             if SendSheet.canSend(f.kind) {
                 Button { sending = true } label: { Label(f.label, systemImage: f.kind == .mail ? "envelope" : "message").frame(maxWidth: .infinity) }
                     .primaryButton().accessibilityIdentifier("send-on")
@@ -547,10 +567,21 @@ private struct ChainRunView: View {
         }
     }
 
+    /// "Open it": follows the link the tool made (a WhatsApp chat, a cleaned link). If the result holds no link, say
+    /// so; the result is still on screen to copy.
+    private func openLink(_ box: Outbox? = nil) {
+        let text = (box ?? outbox)?.text ?? ""
+        let found = TextTidy.details(text).links.first ?? text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let full = found.lowercased().hasPrefix("http") ? found : "https://" + found
+        guard !found.isEmpty, !found.contains(" "), let url = URL(string: full) else { message = "There was no link to open. The result is shown below to copy."; return }
+        UIApplication.shared.open(url)
+    }
+
     /// Called when a run finishes: get the result ready to send and, if the tool ends in an email or a message, open it.
     private func finished(_ box: Outbox?) {
         outbox = box
-        if let f = chain.finish, f.kind != .share, box != nil, SendSheet.canSend(f.kind) { sending = true }
+        if let f = chain.finish, f.kind == .open, box != nil { openLink(box) }
+        else if let f = chain.finish, f.kind == .mail || f.kind == .message, box != nil, SendSheet.canSend(f.kind) { sending = true }
     }
 
     @ViewBuilder private var batchView: some View {

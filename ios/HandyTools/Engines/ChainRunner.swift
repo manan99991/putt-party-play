@@ -36,6 +36,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case watermark, resizePhoto
     case stamp
     case expenseRow, addToList
+    case chatLink, contactQr
 
     var id: String { rawValue }
     var title: String {
@@ -68,21 +69,23 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .stamp: return "Sign and stamp"
         case .expenseRow: return "Receipt to one expense row"
         case .addToList: return "Add to a running list"
+        case .chatLink: return "WhatsApp link for a number"
+        case .contactQr: return "Contact as a QR code"
         }
     }
     var takes: ChainKind {
         switch self {
         case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp: return .image
-        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList: return .text
+        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr: return .text
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
     var gives: ChainKind {
         switch self {
-        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow: return .text
+        case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
         case .businessCard, .calendarEvent, .makeTable, .photoPdf, .addToList: return .file
-        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp: return .image
+        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr: return .image
         }
     }
 }
@@ -97,7 +100,7 @@ extension Block {
         case .enhance, .cutout: return "Make it look better"
         case .readText, .describe, .identify: return "Read what's in it"
         case .stamp, .photoPdf: return "Paperwork"
-        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr: return "Turn it into something"
+        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr, .chatLink, .contactQr: return "Turn it into something"
         case .summarize, .actionItems, .scamCheck: return "Understand it"
         case .cleanText, .cleanLinks, .pullDetails: return "Clean it up"
         case .pullReceipt, .priceCompare, .expenseRow, .addToList: return "Money"
@@ -125,7 +128,7 @@ struct ChainStep: Codable, Equatable {
 /// (they simply offer Share). No app can send an email or a message by itself, so "mail" and "message" open the
 /// system composer already filled in, with the result attached; the person taps Send.
 struct ChainFinish: Codable, Equatable {
-    enum Kind: String, Codable, CaseIterable { case share, mail, message }
+    enum Kind: String, Codable, CaseIterable { case share, mail, message, open }
     var kind: Kind = .share
     /// Email addresses or phone numbers, separated by commas. May be empty: the composer then opens with no recipient.
     var to: String = ""
@@ -139,6 +142,7 @@ struct ChainFinish: Codable, Equatable {
         case .share: return "Save or share"
         case .mail: return "Email it" + who
         case .message: return "Message it" + who
+        case .open: return "Open it"
         }
     }
 }
@@ -163,6 +167,8 @@ struct Chain: Codable, Equatable, Identifiable {
     var combine: Bool?
     /// What the result file is called, e.g. "Signed form {date}". Empty or nil keeps the plain default.
     var fileName: String?
+    /// With `combine`: lay every photo out on a single page (both sides of an ID card) instead of a page each.
+    var onePage: Bool?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -302,6 +308,17 @@ enum ChainRunner {
             guard let d = DocEngine.pdf(images: [img], ocr: [DocEngine.recognize(img)], options: DocEngine.PDFOptions()) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "pdf"))
 
+        case (.chatLink, .text(let t)):
+            guard let link = ChainText.chatLink(t, countryCode: step.settings["cc"] ?? ChainText.callingCode(region: Locale.current.region?.identifier)) else { return .failure(.nothingFound(b)) }
+            return .success(.text(link))
+
+        case (.contactQr, .text(let t)):
+            // Only what is in the text goes into the code, so you choose what the other person gets.
+            let c = DataGrab.card(t)
+            guard !c.phones.isEmpty || !c.emails.isEmpty else { return .failure(.nothingFound(.businessCard)) }
+            guard let img = ChainText.qr(DataGrab.vcard(c)) else { return .failure(.failed(b)) }
+            return .success(.image(img))
+
         case (.expenseRow, .text(let t)):
             let r = DataGrab.receipt(t)
             guard r.total != nil || !r.items.isEmpty else { return .failure(.nothingFound(b)) }
@@ -411,6 +428,9 @@ enum ChainTemplates {
         Chain(id: "sign-and-send", name: "Sign a form and send it", steps: [ChainStep(block: .stamp, settings: ["marks": StampPlan.standard.text]), ChainStep(block: .photoPdf)],
               finish: ChainFinish(kind: .mail, to: ""), combine: true, fileName: "Signed form {date}"),
         Chain(id: "receipt-run", name: "Receipt into this month's expense sheet", steps: [ChainStep(block: .readText), ChainStep(block: .expenseRow), ChainStep(block: .addToList, settings: ["list": RunningList.defaultName])]),
+        Chain(id: "whatsapp-no-save", name: "WhatsApp a number without saving it", steps: [ChainStep(block: .chatLink)], finish: ChainFinish(kind: .open, to: "")),
+        Chain(id: "contact-qr", name: "My contact as a QR code", steps: [ChainStep(block: .contactQr)]),
+        Chain(id: "id-both-sides", name: "Both sides of an ID on one page", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"])], combine: true, onePage: true),
         Chain(id: "share-shield", name: "Privacy share shield", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
         Chain(id: "id-copy-watermarked", name: "ID copy with a safety watermark", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"]), ChainStep(block: .stripLocation)]),
         Chain(id: "portal-photo", name: "Portal photo: 35x45 mm under 50 KB", steps: [ChainStep(block: .resizePhoto, settings: ["size": "413x531"]), ChainStep(block: .shrinkImage, settings: ["mb": "0.05"])]),
@@ -476,6 +496,29 @@ enum ChainText {
         return out.joined(separator: "\n")
     }
 
+    /// A wa.me link that opens a WhatsApp chat with the number in the text, so it never has to be saved as a contact.
+    /// A number written without a country code gets `countryCode`. nil when the text holds no usable number.
+    static func chatLink(_ text: String, countryCode: String) -> String? {
+        let raw = (TextTidy.details(text).phones.first ?? text).trimmingCharacters(in: .whitespacesAndNewlines)
+        var digits = String(raw.unicodeScalars.filter { ("0"..."9").contains($0) })
+        guard (7...15).contains(digits.count) else { return nil }
+        if !raw.hasPrefix("+") {
+            if digits.hasPrefix("00") { digits.removeFirst(2) }
+            else {
+                if digits.hasPrefix("0") { digits.removeFirst() }
+                let cc = String(countryCode.unicodeScalars.filter { ("0"..."9").contains($0) })
+                if digits.count <= 10 { digits = cc + digits }      // longer than a national number: it already has its country code
+            }
+        }
+        return "https://wa.me/" + digits
+    }
+    /// Country calling code for a region ("US" -> "1"). Unknown regions fall back to "1"; the step lets it be changed.
+    static func callingCode(region: String?) -> String {
+        let codes = ["US": "1", "CA": "1", "IN": "91", "GB": "44", "AU": "61", "DE": "49", "FR": "33", "ES": "34", "IT": "39", "NL": "31", "BR": "55", "MX": "52",
+                     "AE": "971", "SA": "966", "SG": "65", "PK": "92", "BD": "880", "ID": "62", "PH": "63", "NG": "234", "ZA": "27", "KE": "254", "JP": "81", "KR": "82", "TR": "90", "EG": "20"]
+        return codes[(region ?? "").uppercased()] ?? "1"
+    }
+
     /// Every web link in the text with its tracking removed. nil when the text has no links.
     static func cleanLinks(in text: String) -> String? {
         let links = TextTidy.details(text).links
@@ -538,6 +581,27 @@ enum ChainImage {
         return (words.isEmpty ? "For verification only" : words) + " · " + f.string(from: day)
     }
 
+    /// Every picture on one A4-shaped sheet, stacked top to bottom, each as large as fits, with white margins.
+    /// Used for both sides of an ID card on a single page.
+    static func sheet(_ images: [UIImage], size: CGSize = CGSize(width: 1240, height: 1754), margin: CGFloat = 70) -> UIImage {
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+            for (i, r) in slots(count: images.count, in: size, margin: margin).enumerated() {
+                let img = images[i]
+                let s = min(r.width / max(1, img.size.width), r.height / max(1, img.size.height))
+                let w = img.size.width * s, h = img.size.height * s
+                img.draw(in: CGRect(x: r.midX - w / 2, y: r.midY - h / 2, width: w, height: h))
+            }
+        }
+    }
+    /// Equal slots down the sheet, one per picture, separated by the margin.
+    static func slots(count: Int, in size: CGSize, margin: CGFloat) -> [CGRect] {
+        guard count > 0 else { return [] }
+        let h = (size.height - margin * CGFloat(count + 1)) / CGFloat(count)
+        return (0..<count).map { CGRect(x: margin, y: margin + CGFloat($0) * (h + margin), width: size.width - margin * 2, height: h) }
+    }
+
     /// Fills the exact pixel size: scales the photo to cover it and trims the overflow evenly, so nothing is stretched.
     static func fill(_ img: UIImage, to px: CGSize) -> UIImage {
         let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
@@ -579,7 +643,8 @@ enum ChainImage {
 enum ChainCombine {
     /// PDFs are joined page after page; pictures become a page each. Text, other files or a mix can't be
     /// combined, and the caller then keeps the separate results (nil).
-    static func onePDF(_ results: [ChainPayload]) -> ChainPayload? {
+    /// - Parameter onePage: put every picture on a single sheet (both sides of an ID) instead of a page each.
+    static func onePDF(_ results: [ChainPayload], onePage: Bool = false) -> ChainPayload? {
         guard !results.isEmpty else { return nil }
         var pdfs: [Data] = [], images: [UIImage] = []
         for r in results {
@@ -603,6 +668,9 @@ enum ChainCombine {
             return out.dataRepresentation().map { .file($0, ext: "pdf") }
         }
         if !images.isEmpty, pdfs.isEmpty {
+            if onePage, images.count > 1 {
+                return DocEngine.pdf(images: [ChainImage.sheet(images)], ocr: [nil], options: DocEngine.PDFOptions(searchable: false)).map { .file($0, ext: "pdf") }
+            }
             return DocEngine.pdf(images: images, ocr: images.map { _ -> [DocEngine.OCRLine]? in nil }, options: DocEngine.PDFOptions(searchable: false))
                 .map { .file($0, ext: "pdf") }
         }
