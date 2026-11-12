@@ -32,6 +32,10 @@ enum ChainFun {
             }
             return .success(.image(meme(img.normalizedUp(), top: top, bottom: bottom)))
 
+        case (.artFilter, .image(let img)):
+            guard let out = art(img.normalizedUp(), style: PixelArt.style(step.settings["style"])) else { return .failure(.failed(b)) }
+            return .success(.image(out))
+
         case (.emojiMosaic, .image(let img)):
             guard let out = mosaic(img.normalizedUp()) else { return .failure(.failed(b)) }
             return .success(.image(out))
@@ -148,6 +152,34 @@ enum ChainFun {
         let style = NSMutableParagraphStyle(); style.alignment = .center; style.lineBreakMode = .byWordWrapping
         let font = UIFont(name: "HelveticaNeue-CondensedBlack", size: points) ?? UIFont.systemFont(ofSize: points, weight: .black)
         return NSAttributedString(string: words, attributes: [.font: font, .foregroundColor: UIColor.white, .strokeColor: UIColor.black, .strokeWidth: -4.5, .paragraphStyle: style])
+    }
+
+    // MARK: sketch, comic, pop art
+
+    /// The photo redrawn in a style. Worked out at up to 1600 pixels on the long side, which is plenty to share.
+    static func art(_ image: UIImage, style: String, long: CGFloat = 1600) -> UIImage? {
+        guard let cg = image.cgImage else { return nil }
+        let k = min(1, long / CGFloat(max(cg.width, cg.height, 1)))
+        let w = max(1, Int(CGFloat(cg.width) * k)), h = max(1, Int(CGFloat(cg.height) * k))
+        guard let ctx = CGContext(data: nil, width: w, height: h, bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(),
+                                  bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else { return nil }
+        ctx.setFillColor(UIColor.white.cgColor); ctx.fill(CGRect(x: 0, y: 0, width: w, height: h))
+        ctx.interpolationQuality = .high
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        guard let raw = ctx.data else { return nil }
+        let row = ctx.bytesPerRow
+        let bytes = raw.bindMemory(to: UInt8.self, capacity: row * h)
+        var px = [Int](repeating: 0, count: w * h)
+        for y in 0..<h { for x in 0..<w {
+            let at = y * row + x * 4
+            px[y * w + x] = Int(bytes[at]) << 16 | Int(bytes[at + 1]) << 8 | Int(bytes[at + 2])
+        } }
+        let out = PixelArt.apply(px, width: w, height: h, style: style)
+        for y in 0..<h { for x in 0..<w {
+            let at = y * row + x * 4, v = out[y * w + x]
+            bytes[at] = UInt8(v >> 16 & 0xFF); bytes[at + 1] = UInt8(v >> 8 & 0xFF); bytes[at + 2] = UInt8(v & 0xFF)
+        } }
+        return ctx.makeImage().map { UIImage(cgImage: $0) }
     }
 
     // MARK: emoji mosaic

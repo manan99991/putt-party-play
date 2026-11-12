@@ -46,6 +46,14 @@ struct TenzyApp: App {
                     NotificationCenter.default.post(name: .openTool, object: "builder")
                     return
                 }
+                // tenzy://import?d=... from a shared tool link: save the tool, then open Build your own, where it shows as added.
+                if url.scheme == "tenzy", url.host == "import" {
+                    guard let tool = ToolLink.chain(from: url.absoluteString) else { return }
+                    ChainStore.save(ChainStore.load() + [tool])
+                    showOnboarding = false
+                    NotificationCenter.default.post(name: .openTool, object: "builder")
+                    return
+                }
                 // tenzy://tool/<id> from the home-screen widget or Shortcuts
                 guard url.scheme == "tenzy", url.host == "tool", let id = url.pathComponents.dropFirst().first, TOOLS.contains(where: { $0.id == id }) else { return }
                 showOnboarding = false

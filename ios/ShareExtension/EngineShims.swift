@@ -40,7 +40,7 @@ enum Reader {
 // The newer steps that need the speech engine, a voice, the translator, the writing model or the video encoder run in
 // the app only. Here they report themselves as not available, so the share sheet never offers a tool that uses one.
 enum ChainMedia {
-    static let appOnly: Set<Block> = [.speechText, .readAloud, .translate, .rewrite, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop]
+    static let appOnly: Set<Block> = [.speechText, .readAloud, .translate, .rewrite, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop, .voiceChange]
     static func unavailable(_ b: Block) -> String? { appOnly.contains(b) ? "Open Tenzy to run this tool." : nil }
     static func apply(_ step: ChainStep, to input: ChainPayload, dryRun: Bool) async -> ChainExtras.Outcome? { nil }
 }

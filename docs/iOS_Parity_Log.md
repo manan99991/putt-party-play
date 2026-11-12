@@ -250,3 +250,14 @@ Asked for after the first phone pass: "let them name the tool", "make Describe i
   - Boomerang GIF: iPhone 400 px and 25 frames, Android 360 px and 20 frames (Android's GIF writer is slower).
   - Speed change drops the sound on both.
 - Not checked on a real phone yet: every drawing step here. The unit tests cover the logic and, on iPhone, the drawing sizes.
+
+### Sketch and comic, voice changer, before and after, recent results, tool links — iOS and Android
+- Two new steps with the same ids on both phones (60 each): `artFilter` (pencil sketch, comic, black and white, pop art) and `voiceChange` (chipmunk, deep, giant). Six new starters (63 each).
+- `artFilter` is the same arithmetic on both phones (`PixelArt`, plain numbers, unit-tested on both), worked out at up to 1600 px on the long side.
+- `voiceChange` plays the recording faster or slower, so the pitch and the length change together. It gives a .wav. At most the first ten minutes.
+- A new option on a photo tool, `versus`: the first and last photo side by side with BEFORE and AFTER on them. Only one of one-PDF, collage, GIF and before/after can be on.
+- Recent results: the last 20 results are kept in the app's own folder and listed under "Recent results" on Build your own, with Save or share, Copy, Remove and Clear. A result over 150 MB is not kept.
+- Tool links: a tool can travel as `https://manan99991.github.io/tenzy/t.html#<tool>` or a QR code of it. Both apps open `tenzy://import?d=<tool>` and paste a link with the Paste button. **Sharing is switched off** (`ToolLink.live` / `ToolLink.LIVE` are false) until `docs/t.html` is published to the website, which needs Manan's yes.
+- Differences that are on purpose: iPhone shows the QR sheet as a sheet, Android as a dialog. On iPhone a batch run is kept as one entry with all its files; the same on Android.
+- The local Android check now refuses org.json the way Android's plain unit tests do, after a test that used it passed locally and failed in CI.
+- Not checked on a real phone yet: all of it.

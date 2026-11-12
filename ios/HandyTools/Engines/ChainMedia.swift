@@ -79,6 +79,15 @@ enum ChainMedia {
                   let d = try? Data(contentsOf: gif) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "gif"))
 
+        case (.voiceChange, .file(let d, let ext)):
+            let url = VideoEngine.tempURL(ext.isEmpty ? "m4a" : ext.lowercased())
+            guard (try? d.write(to: url)) != nil else { return .failure(.failed(b)) }
+            defer { try? FileManager.default.removeItem(at: url) }
+            guard let wav = revoice(url, rate: ChainText.voiceRate(step.settings["voice"])) else {
+                return .failure(.invalid("Change the voice couldn't read that recording. Try another one."))
+            }
+            return .success(.file(wav, ext: "wav"))
+
         case (.videoSpeed, .video(let url)):
             guard let out = await respeed(url, rate: ChainText.speedRate(step.settings["speed"])) else { return .failure(.failed(b)) }
             return .success(.video(out))
@@ -132,6 +141,29 @@ enum ChainMedia {
         let reader = Reader()
         reader.load(text)
         return await reader.exportAudio()
+    }
+
+    /// The recording played faster (higher, like a chipmunk) or slower (deeper), as a .wav file. At most the first ten minutes.
+    static func revoice(_ url: URL, rate: Double) -> Data? {
+        guard rate > 0, let file = try? AVAudioFile(forReading: url) else { return nil }
+        let format = file.processingFormat
+        let limit = Int(min(file.length, Int64(format.sampleRate * 600)))
+        let lanes = max(1, Int(format.channelCount))
+        guard limit > 0, let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 65_536) else { return nil }
+        var pcm: [UInt8] = []
+        pcm.reserveCapacity(limit * 2)
+        // Read a piece at a time, so a long recording never sits in memory twice over.
+        while pcm.count < limit * 2 {
+            guard (try? file.read(into: buffer, frameCount: 65_536)) != nil, buffer.frameLength > 0, let sound = buffer.floatChannelData else { break }
+            for i in 0..<Int(buffer.frameLength) {
+                var sum: Float = 0
+                for c in 0..<lanes { sum += sound[c][i] }
+                let v = Int16(max(-1, min(1, sum / Float(lanes))) * 32767)
+                pcm.append(UInt8(truncatingIfNeeded: v)); pcm.append(UInt8(truncatingIfNeeded: v >> 8))
+            }
+        }
+        guard !pcm.isEmpty else { return nil }
+        return Data(ChainText.wavHeader(sampleRate: Int((format.sampleRate * rate).rounded()), channels: 1, dataBytes: pcm.count)) + Data(pcm)
     }
 
     /// The same video played slower or faster. It comes out without sound, since sound at another speed is only noise.

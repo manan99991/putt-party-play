@@ -116,3 +116,9 @@ Lines that become true once the recording, PDF, link, code, translate and extra 
   motion and fast-forward." "Play your photos as one GIF."
 - iPhone only: "Start a video tool from a Live Photo." Never mention Live Photos in the Play listing.
 - Do not call any of this "AI". Nothing here uses a model beyond the phone's own face finder and cut-out.
+
+## Added with sketch, voices, before/after and recent results (not live, needs Manan's yes)
+
+- Both stores: "Turn a photo into a pencil sketch, a comic or pop art." "Chipmunk and deep voices for any recording." "Before and after, side by
+  side." "Your last 20 results are kept on your phone."
+- Tool links and QR codes: say nothing until the link page is published and sharing is switched on.

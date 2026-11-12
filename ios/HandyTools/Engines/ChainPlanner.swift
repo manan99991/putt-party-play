@@ -98,6 +98,18 @@ enum ChainPlanner {
         if has(["sticker"]) { return build(ask, [ChainStep(block: .sticker)]) }
         if has(["mosaic"]) || (has(["emoji"]) && has(["made of", "out of", "made from", "rebuild", " art "])) { return build(ask, [ChainStep(block: .emojiMosaic)]) }
         if has(["emoji", "smiley"]) { return build(ask, [ChainStep(block: .emojiFaces, settings: ["emoji": ChainText.faceEmojis[0]])]) }
+        if has(["before and after", "before/after", "before after", "side by side"]) {
+            var c = build(ask, [ChainStep(block: .stripLocation)])
+            c?.versus = true
+            return c
+        }
+        if has(["chipmunk", "helium", "voice changer", "funny voice", "deep voice", "change my voice", "change the voice"]) {
+            return build(ask, (film ? [ChainStep(block: .videoAudio)] : []) + [ChainStep(block: .voiceChange, settings: ["voice": has(["deep", "giant", "low voice"]) ? "deep" : "chipmunk"])])
+        }
+        if has(["sketch", "pencil", "drawing", "cartoon", "comic", "pop art", "black and white", "noir"]) {
+            let style = has(["cartoon", "comic"]) ? "comic" : has(["pop art"]) ? "pop" : has(["black and white", "noir"]) ? "noir" : "sketch"
+            return build(ask, [ChainStep(block: .artFilter, settings: ["style": style])])
+        }
         if has([" gif", "slideshow", "slide show"]), !has(["video", " clip", "movie", "footage"]) {
             // A Live Photo carries a short video; several photos play one after another.
             if has(["live photo"]) { return build(ask, [ChainStep(block: .videoGif)]) }
@@ -343,11 +355,11 @@ enum PlannerWords {
     collage personal sensitive confidential identity details data date information post posting social instagram facebook online share remove delete signature \
     sign stamp text notes message messages list pasted paste sheet ledger running monthly return plant breed menu document documents file files kilobyte megabyte \
     sentence sentences letter paragraph essay record quiet crop tall wide turn first last start keep english spanish french german italian portuguese hindi arabic \
-    chinese japanese korean russian turkish dutch polish indonesian vietnamese thai ukrainian boomerang reverse backwards motion slowmo speed faster timelapse meme memes stickers emoji emojis mosaic slideshow funny
+    chinese japanese korean russian turkish dutch polish indonesian vietnamese thai ukrainian boomerang reverse backwards motion slowmo speed faster timelapse meme memes stickers emoji emojis mosaic slideshow funny sketch pencil drawing cartoon comic chipmunk helium comparison black white
     """).split(separator: " ").map(String.init))
 
     /// Ordinary words that sit one letter away from a word above and must never be "corrected" into it.
-    static let real: Set<String> = Set("spend fasten notion store phone strap plane plate price point their there where which about would could should these those other after before every later thing things something anything everything people person month today tomorrow title state place right light night great small large please thanks really always never maybe while without within between through because again being doing going having making taking getting using wants wanted needs needed friend friends family client clients office house school second flame world paper print".split(separator: " ").map(String.init))
+    static let real: Set<String> = Set("carton cosmic spend fasten notion store phone strap plane plate price point their there where which about would could should these those other after before every later thing things something anything everything people person month today tomorrow title state place right light night great small large please thanks really always never maybe while without within between through because again being doing going having making taking getting using wants wanted needs needed friend friends family client clients office house school second flame world paper print".split(separator: " ").map(String.init))
 
     /// Words too general to tell one starter from another.
     static let plain: Set<String> = Set("photo photos picture pictures image images text video videos into from with that this your mine make turn want need have please some them then just only also file files thing something anything notes words page pages link links code list sheet".split(separator: " ").map(String.init))

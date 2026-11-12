@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>A Tenzy tool</title>
+<style>
+  :root { --bg: #f6f5fb; --card: #ffffff; --ink: #14121f; --dim: #5d5a70; --accent: #5b3df5; --line: #e4e1f0; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0e0c18; --card: #191628; --ink: #f3f1fb; --dim: #a9a5bd; --accent: #9d8bff; --line: #2a2640; } }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 440px; margin: 0 auto; padding: 32px 20px 48px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+  .over { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 0 0 6px; }
+  h1 { font-size: 26px; line-height: 1.2; margin: 0 0 14px; text-wrap: balance; }
+  ol { margin: 0 0 18px; padding-left: 22px; color: var(--dim); }
+  a.go { display: block; text-align: center; background: var(--accent); color: #fff; font-weight: 700; text-decoration: none; padding: 15px; border-radius: 14px; }
+  p.small { font-size: 13px; color: var(--dim); margin: 16px 0 0; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <p class="over">A tool made in Tenzy</p>
+    <h1 id="name">Open this tool in Tenzy</h1>
+    <ol id="steps"></ol>
+    <a class="go" id="open" href="#">Open in Tenzy</a>
+    <p class="small" id="help">Nothing happens when you tap? This link needs the Tenzy app on this phone. Ask the person who sent it how to get Tenzy.</p>
+    <p class="small">The tool is carried inside this link. It was not uploaded anywhere, and this page does not send it anywhere.</p>
+  </div>
+</main>
+<script>
+  // The tool is the part of the address after "#". Browsers never send that part to a website.
+  (function () {
+    var packed = location.hash.replace(/^#/, "");
+    var open = document.getElementById("open");
+    if (!packed) { document.getElementById("name").textContent = "This link has no tool in it"; open.style.display = "none"; return; }
+    open.href = "tenzy://import?d=" + packed;
+    try {
+      var b64 = packed.replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4) b64 += "=";
+      var bytes = Uint8Array.from(atob(b64), function (c) { return c.charCodeAt(0); });
+      var tool = JSON.parse(new TextDecoder().decode(bytes));
+      if (tool && typeof tool.name === "string" && tool.name) document.getElementById("name").textContent = tool.name;
+      var list = document.getElementById("steps");
+      (tool.steps || []).slice(0, 12).forEach(function (s) {
+        var li = document.createElement("li");
+        li.textContent = String(s.block || "").replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
+        list.appendChild(li);
+      });
+    } catch (e) { /* An unreadable link still gets the Open button; the app checks it properly. */ }
+  })();
+</script>
+</body>
+</html>

@@ -372,7 +372,7 @@ class BuilderLogicTest {
             "hideSensitive", "passportPhoto", "cleanText", "pullDetails", "makeTable", "scamCheck", "cleanLinks", "priceCompare", "makeQr", "describe", "identify", "photoPdf",
             "watermark", "resizePhoto", "stamp", "expenseRow", "addToList", "chatLink", "contactQr", "wifiQr", "returnBy", "videoShrink", "videoStill", "videoMute", "videoAudio",
             "videoTrim", "videoGif", "videoRotate", "videoVertical", "videoCaptions", "speechText", "readAloud", "translate", "rewrite", "readCode", "pageText", "textPdf",
-            "pdfShrink", "pdfLock", "pdfPages", "pdfText", "sticker", "emojiFaces", "meme", "emojiMosaic", "videoSpeed", "videoLoop")
+            "pdfShrink", "pdfLock", "pdfPages", "pdfText", "sticker", "emojiFaces", "meme", "emojiMosaic", "videoSpeed", "videoLoop", "artFilter", "voiceChange")
         assertEquals(emptyList<String>(), ios.filter { Block.byId(it) == null })
         assertEquals("both phones have exactly the same steps", ios.size, Block.values().size)
     }
@@ -418,7 +418,7 @@ class BuilderLogicTest {
     private fun chain(vararg b: Block) = Chain("t", "T", b.map { Step(it) })
 
     @Test fun newKindsHaveTheirOwnSteps() {
-        assertEquals(listOf(Block.SPEECH_TEXT), BlockGoals.starting(Kind.AUDIO))
+        assertEquals(listOf(Block.SPEECH_TEXT, Block.VOICE_CHANGE), BlockGoals.starting(Kind.AUDIO))
         assertEquals(setOf(Block.PDF_SHRINK, Block.PDF_LOCK, Block.PDF_PAGES, Block.PDF_TEXT), BlockGoals.starting(Kind.PDF).toSet())
         assertTrue(Block.READ_CODE in BlockGoals.starting(Kind.IMAGE)); assertTrue(Block.TRANSLATE in BlockGoals.starting(Kind.TEXT))
         assertEquals(Kind.PDF, Block.PHOTO_PDF.gives); assertEquals(Kind.PDF, Block.TEXT_PDF.gives); assertEquals(Kind.AUDIO, Block.READ_ALOUD.gives)
@@ -493,7 +493,7 @@ class BuilderLogicTest {
         assertTrue(ChainTemplates.all.first { it.id == "pdf-join" }.combine)
         assertEquals(listOf(Block.VIDEO_AUDIO, Block.SPEECH_TEXT), ChainTemplates.all.first { it.id == "video-words" }.steps.map { it.block })
         assertFalse(chain(Block.CLEAN_TEXT).collage)
-        assertEquals(57, ChainTemplates.all.size); assertEquals(57, ChainTemplates.all.map { it.id }.toSet().size)
+        assertEquals(63, ChainTemplates.all.size); assertEquals(63, ChainTemplates.all.map { it.id }.toSet().size)
     }
     @Test fun describeItUnderstandsTheNewKinds() {
         fun blocks(ask: String) = ChainPlanner.plan(ask)?.steps?.map { it.block } ?: emptyList()
@@ -643,5 +643,51 @@ class BuilderLogicTest {
         assertTrue(t.gif); assertFalse(t.collage)
         assertFalse(chain(Block.CLEAN_TEXT).gif)       // (copy and paste uses org.json, which plain unit tests can't run; the iOS twin covers the round trip)
         assertEquals("Photo to a sticker", ChainPlanner.autoName(Chain("x", "", listOf(Step(Block.STICKER)))))
+    }
+
+    @Test fun picturesAreRedrawnInEachStyle() {
+        // A 6 by 4 picture: left half black, right half white.
+        val w = 6; val h = 4
+        val px = IntArray(w * h) { if (it % w < 3) 0x000000 else 0xFFFFFF }
+        assertEquals(listOf(0, 255), PixelArt.gray(px).toList().distinct())
+        val flat = IntArray(w * h) { 100 }
+        assertTrue(PixelArt.blur(flat, w, h, 2).all { it == 100 })
+        assertEquals(flat.toList(), PixelArt.blur(flat, w, h, 0).toList())
+        val soft = PixelArt.blur(PixelArt.gray(px), w, h, 1)
+        assertTrue(soft[2] in 1..254); assertEquals(0, soft[0]); assertEquals(255, soft[5])
+        val noir = PixelArt.apply(px, w, h, "noir"); assertEquals(0x000000, noir[0]); assertEquals(0xFFFFFF, noir[5])
+        val pop = PixelArt.apply(px, w, h, "pop"); assertEquals(2, pop.toList().distinct().size); assertEquals(0x1B1464, pop[0]); assertEquals(0xFFF8E7, pop[5])
+        val sketch = PixelArt.apply(IntArray(w * h) { 0x808080 }, w, h, "sketch")
+        assertTrue("an even grey wall is blank paper", sketch.all { it == 0xFFFFFF })
+        assertEquals(sketch.toList(), PixelArt.apply(IntArray(w * h) { 0x808080 }, w, h, "nonsense").toList())
+        val comic = PixelArt.apply(IntArray(w * h) { 0x2060E0 }, w, h, "comic")
+        assertTrue(comic.all { it == 0x4080FF })
+        assertEquals(px.toList(), PixelArt.apply(px, 5, 5, "noir").toList())
+        assertEquals("sketch", PixelArt.style(null)); assertEquals("comic", PixelArt.style("comic")); assertEquals("sketch", PixelArt.style("x"))
+    }
+    @Test fun voicesAndWavFiles() {
+        assertEquals(1.5, TextTidy.voiceRate("chipmunk"), 0.0); assertEquals(0.75, TextTidy.voiceRate("deep"), 0.0); assertEquals(1.5, TextTidy.voiceRate(null), 0.0)
+        val head = TextTidy.wavHeader(44100, 1, 1000)
+        assertEquals(44, head.size); assertEquals("RIFF", String(head, 0, 4)); assertEquals("WAVEfmt ", String(head, 8, 8)); assertEquals("data", String(head, 36, 4))
+        fun int(at: Int) = (head[at].toInt() and 0xFF) or ((head[at + 1].toInt() and 0xFF) shl 8) or ((head[at + 2].toInt() and 0xFF) shl 16) or ((head[at + 3].toInt() and 0xFF) shl 24)
+        assertEquals(1036, int(4)); assertEquals(44100, int(24)); assertEquals(88200, int(28)); assertEquals(1000, int(40))
+        assertEquals(Kind.AUDIO, Block.VOICE_CHANGE.takes); assertEquals(Kind.AUDIO, Block.VOICE_CHANGE.gives)
+        assertNull(chain(Block.VIDEO_AUDIO, Block.VOICE_CHANGE).problem(Kind.VIDEO)); assertNull(chain(Block.VOICE_CHANGE, Block.SPEECH_TEXT).problem(Kind.AUDIO))
+    }
+    @Test fun onlyAToolLinkIsReadAsATool() {
+        // (Making a link uses org.json, which plain unit tests can't run; the iOS twin covers the round trip.)
+        assertNull(ToolLink.chain("https://example.com/t.html#abc")); assertNull(ToolLink.chain("")); assertNull(ToolLink.chain("tenzy://run/abc"))
+        assertNull(ToolLink.chain(ToolLink.PAGE + "#***")); assertFalse(ToolLink.LIVE)
+    }
+    @Test fun describeItUnderstandsTheNewestRequests() {
+        assertEquals("sketch", ChainPlanner.plan("pencil sketch of my photo")?.steps?.first()?.settings?.get("style"))
+        assertEquals("comic", ChainPlanner.plan("turn me into a cartoon")?.steps?.first()?.settings?.get("style"))
+        assertEquals("pop", ChainPlanner.plan("pop art selfie")?.steps?.first()?.settings?.get("style"))
+        assertEquals("noir", ChainPlanner.plan("make it black and white")?.steps?.first()?.settings?.get("style"))
+        assertEquals(listOf(Block.VOICE_CHANGE), planned("chipmunk voice")); assertEquals("deep", ChainPlanner.plan("give me a deep voice")?.steps?.first()?.settings?.get("voice"))
+        assertEquals(listOf(Block.VIDEO_AUDIO, Block.VOICE_CHANGE), planned("funny voice from my video"))
+        assertEquals(true, ChainPlanner.plan("before and after photo of my kitchen")?.versus); assertEquals(false, ChainPlanner.plan("shrink a photo")?.versus)
+        assertTrue(ChainTemplates.all.first { it.id == "before-after" }.versus)
+        assertEquals(listOf(Block.PRICE_COMPARE), planned("which is the cheapest per unit").takeLast(1))
     }
 }

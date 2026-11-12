@@ -12,6 +12,8 @@ private class P(val s: String) { var i = 0
 private fun q(v: Any?): String = when (v) { null -> "null"; is String -> "\"" + v.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n") + "\""; else -> v.toString() }
 class JSONObject() {
     val m = LinkedHashMap<String, Any?>()
+    // Android's plain unit tests can't run org.json either: failing here keeps this check honest about what CI will do.
+    init { if (true) throw RuntimeException("org.json is not available in plain unit tests") }
     constructor(src: String) : this() { try { m.putAll(P(src).obj().m) } catch (e: Exception) { throw JSONException("bad json") } }
     constructor(map: Map<*, *>) : this() { map.forEach { (k, v) -> m[k.toString()] = v } }
     fun put(k: String, v: Any?): JSONObject { m[k] = v; return this }
@@ -31,6 +33,8 @@ class JSONObject() {
 }
 class JSONArray() {
     val l = ArrayList<Any?>()
+    // Android's plain unit tests can't run org.json either: failing here keeps this check honest about what CI will do.
+    init { if (true) throw RuntimeException("org.json is not available in plain unit tests") }
     constructor(c: Collection<*>) : this() { l.addAll(c) }
     constructor(src: String) : this() { l.addAll(P(src).arr().l) }
     fun put(v: Any?): JSONArray { l.add(v); return this }

@@ -85,6 +85,13 @@
                 <data android:scheme="file" />
                 <data android:mimeType="*/*" />
             </intent-filter>
+            <!-- A shared tool link: the link page hands the tool to the app as tenzy://import?d=... -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tenzy" android:host="import" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

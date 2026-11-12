@@ -115,6 +115,7 @@ private fun defaults(b: Block): Map<String, String> = when (b) {
     Block.PDF_SHRINK -> mapOf("mb" to "5"); Block.PDF_LOCK -> mapOf("password" to ""); Block.PDF_PAGES -> mapOf("pages" to "")
     Block.EMOJI_FACES -> mapOf("emoji" to TextTidy.FACE_EMOJIS[0]); Block.MEME -> mapOf("top" to "", "bottom" to "")
     Block.VIDEO_SPEED -> mapOf("speed" to "slow"); Block.VIDEO_LOOP -> mapOf("style" to "boomerang")
+    Block.ART_FILTER -> mapOf("style" to "sketch"); Block.VOICE_CHANGE -> mapOf("voice" to "chipmunk")
     else -> emptyMap()
 }
 
@@ -129,6 +130,8 @@ fun BuilderScreen() {
 
     fun saveAll() { ChainStore.save(ctx, mine.toList()); ToolReminders.sync(ctx, mine.toList()); PhotoWatch.arm(ctx) }
     var showSheets by remember { mutableStateOf(false) }
+    var showHistory by remember { mutableStateOf(false) }
+    var linking by remember { mutableStateOf<Chain?>(null) }
     val prefs = remember { ctx.getSharedPreferences("builder", Context.MODE_PRIVATE) }
     var introSeen by remember { mutableStateOf(prefs.getBoolean("introSeen", false)) }
     fun setIntro(seen: Boolean) { introSeen = seen; prefs.edit().putBoolean("introSeen", seen).apply() }
@@ -185,6 +188,8 @@ fun BuilderScreen() {
     }
     running?.let { c -> ChainRunScreen(c, initial = runOn) { running = null; runOn = null }; return }
     if (showSheets) { SheetsScreen { showSheets = false }; return }
+    if (showHistory) { HistoryScreen { showHistory = false }; return }
+    linking?.let { c -> ToolLinkDialog(c) { linking = null } }
 
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader("Build your own", "Snap small steps together into a tool that does exactly what you need. Runs on your phone.")
@@ -235,7 +240,7 @@ fun BuilderScreen() {
         if (mine.isNotEmpty()) {
             Text("My tools", style = MaterialTheme.typography.titleMedium)
             mine.toList().forEach { c ->
-                ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
+                ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onLink = { linking = c }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
                     onRename = { newName = c.name; renaming = c },
                     onTop = if (mine.firstOrNull()?.id == c.id) null else ({ mine.removeAll { it.id == c.id }; mine.add(0, c); saveAll(); note = "${c.name} is now first." }),
                     onPin = { note = if (pinToHome(ctx, c)) "Follow the phone's prompt to put ${c.name} on your Home screen." else "This phone's Home screen doesn't take shortcuts from apps." },
@@ -249,12 +254,19 @@ fun BuilderScreen() {
                 Text(if (sheetCount == 1) "1 sheet your tools add to" else "$sheetCount sheets your tools add to", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             }
         }
+        val historyCount = remember { RunHistory.all(ctx).size }
+        if (historyCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showHistory = true }) {
+            Column(Modifier.padding(HandyTokens.Space12)) {
+                Text("Recent results", style = MaterialTheme.typography.titleSmall)
+                Text(if (historyCount == 1) "The last thing a tool made" else "The last $historyCount things your tools made", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            }
+        }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Start from a template", style = MaterialTheme.typography.titleMedium)
             Row {
                 TextButton({ editHint = null; editing = Chain.blank() }) { Text("Blank") }
                 TextButton({
-                    val c = Chain.imported(paste(ctx))
+                    val c = ToolLink.chain(paste(ctx))
                     if (c != null) { mine.add(c); saveAll(); note = "Added ${c.name}." } else note = "Copy a tool from another Tenzy first, then tap Paste. Tools that use steps this phone doesn't have can't be added."
                 }) { Text("Paste") }
             }
@@ -270,6 +282,31 @@ fun BuilderScreen() {
         }
         if (introSeen) TextButton({ setIntro(false) }) { Text("How does this work?") }
     }
+}
+
+/** A tool as a QR code and a link, to hand to someone else. Shown only once the link page is live ([ToolLink.LIVE]). */
+@Composable
+private fun ToolLinkDialog(c: Chain, onDone: () -> Unit) {
+    val ctx = LocalContext.current
+    val link = remember(c.id) { runCatching { ToolLink.link(c) }.getOrNull() }
+    val code = remember(link) { link?.let { com.handytools.app.tools.power.CodesEngine.qr(it) } }
+    androidx.compose.material3.AlertDialog(
+        onDismissRequest = onDone,
+        title = { Text(c.name) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                if (code != null) Image(code.asImageBitmap(), "QR code for this tool", Modifier.fillMaxWidth())
+                Text(if (code != null) "Point another phone's camera at this, or send the link. It opens the tool in Tenzy." else "This tool is too big to fit in a QR code. Send the link instead.", style = MaterialTheme.typography.bodySmall)
+                Text("The link never carries your email addresses, phone numbers, reminders or a PDF password.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            }
+        },
+        confirmButton = {
+            TextButton({
+                link?.let { l -> runCatching { ctx.startActivity(android.content.Intent.createChooser(android.content.Intent(android.content.Intent.ACTION_SEND).setType("text/plain").putExtra(android.content.Intent.EXTRA_TEXT, l), "Send the link")) } }
+            }) { Text("Send the link") }
+        },
+        dismissButton = { TextButton(onDone) { Text("Done") } },
+    )
 }
 
 private fun copy(ctx: Context, c: Chain) {
@@ -294,7 +331,7 @@ private fun paste(ctx: Context): String =
 
 @Composable
 private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: () -> Unit, onDelete: (() -> Unit)?, onDuplicate: (() -> Unit)? = null,
-                     onRename: (() -> Unit)? = null, onTop: (() -> Unit)? = null, onPin: (() -> Unit)? = null) {
+                     onRename: (() -> Unit)? = null, onTop: (() -> Unit)? = null, onPin: (() -> Unit)? = null, onLink: (() -> Unit)? = null) {
     var menu by remember { mutableStateOf(false) }
     HCard(Modifier.fillMaxWidth()) {
         Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -314,6 +351,7 @@ private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: ()
                 if (onTop != null) DropdownMenuItem(text = { Text("Move to top") }, onClick = { menu = false; onTop() })
                 if (onDuplicate != null) DropdownMenuItem(text = { Text("Duplicate") }, onClick = { menu = false; onDuplicate() })
                 DropdownMenuItem(text = { Text("Copy to share") }, onClick = { menu = false; onCopy() })
+                if (onLink != null && ToolLink.LIVE) DropdownMenuItem(text = { Text("Share as a link or QR code") }, onClick = { menu = false; onLink() })
                 if (onDelete != null) DropdownMenuItem(text = { Text("Delete") }, onClick = { menu = false; onDelete() })
             }
         }
@@ -448,7 +486,7 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
             }
             if (chain.start == Kind.IMAGE && it != Kind.TEXT) {
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on, onePage = on && chain.onePage, collage = if (on) false else chain.collage, gif = if (on) false else chain.gif) })
+                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on, onePage = on && chain.onePage, collage = if (on) false else chain.collage, gif = if (on) false else chain.gif, versus = if (on) false else chain.versus) })
                     Text("  Put all pages or photos into one PDF", style = MaterialTheme.typography.bodyMedium)
                 }
                 if (chain.combine) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -456,12 +494,16 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
                     Text("  All on a single page (both sides of an ID)", style = MaterialTheme.typography.bodyMedium)
                 }
                 if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    androidx.compose.material3.Switch(chain.collage, { on -> chain = if (on) chain.copy(collage = true, combine = false, onePage = false, gif = false) else chain.copy(collage = false) })
+                    androidx.compose.material3.Switch(chain.collage, { on -> chain = if (on) chain.copy(collage = true, combine = false, onePage = false, gif = false, versus = false) else chain.copy(collage = false) })
                     Text("  Put all photos into one picture (a collage)", style = MaterialTheme.typography.bodyMedium)
                 }
                 if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    androidx.compose.material3.Switch(chain.gif, { on -> chain = if (on) chain.copy(gif = true, collage = false, combine = false, onePage = false) else chain.copy(gif = false) })
+                    androidx.compose.material3.Switch(chain.gif, { on -> chain = if (on) chain.copy(gif = true, collage = false, combine = false, onePage = false, versus = false) else chain.copy(gif = false) })
                     Text("  Play all photos as one GIF", style = MaterialTheme.typography.bodyMedium)
+                }
+                if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    androidx.compose.material3.Switch(chain.versus, { on -> chain = if (on) chain.copy(versus = true, gif = false, collage = false, combine = false, onePage = false) else chain.copy(versus = false) })
+                    Text("  Before and after: two photos side by side", style = MaterialTheme.typography.bodyMedium)
                 }
             }
             if (chain.start == Kind.PDF && it == Kind.PDF) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -591,6 +633,14 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             val now = TextTidy.SPEEDS.firstOrNull { it.first == s.settings["speed"] }?.first ?: "slow"
             TextTidy.SPEEDS.forEach { (id, label, _) -> TextButton({ set("speed", id) }) { Text(if (id == now) "● $label" else label) } }
         }
+        Block.ART_FILTER -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val now = PixelArt.style(s.settings["style"])
+            PixelArt.STYLES.forEach { (id, label) -> TextButton({ set("style", id) }) { Text(if (id == now) "● $label" else label) } }
+        }
+        Block.VOICE_CHANGE -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val now = TextTidy.VOICES.firstOrNull { it.first == s.settings["voice"] }?.first ?: "chipmunk"
+            TextTidy.VOICES.forEach { (id, label, _) -> TextButton({ set("voice", id) }) { Text(if (id == now) "● $label" else label) } }
+        }
         Block.VIDEO_LOOP -> Row {
             listOf("boomerang" to "Forwards and back", "reverse" to "Backwards").forEach { (id, label) ->
                 TextButton({ set("style", id) }) { Text(if ((if (s.settings["style"] == "reverse") "reverse" else "boomerang") == id) "● $label" else label) }
@@ -674,11 +724,14 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     fun live(): Chain = if (memeStep == null) chain else chain.copy(steps = chain.steps.map { s ->
         if (s.block == Block.MEME) s.copy(settings = s.settings + mapOf("top" to memeTop, "bottom" to memeBottom)) else s })
 
+    /** So the result is still there after this screen is closed. */
+    fun keep(made: Payload) { scope.launch(Dispatchers.IO) { RunHistory.add(ctx, chain.name, TextTidy.fileName(chain.fileName, chain.name, ext = "").trimEnd('.'), made) } }
+
     fun go(input: Payload) {
         busy = true; result = null; message = null; batch = emptyList()
         scope.launch {
             when (val r = ChainRunner.run(live(), input)) {
-                is Outcome.Done -> result = r.value
+                is Outcome.Done -> { result = r.value; keep(r.value) }
                 is Outcome.Stopped -> message = r.why
             }
             busy = false
@@ -711,7 +764,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             // For "one PDF for everything" each page keeps its picture and the pictures are joined at the end.
             val perPage = live().let { it.copy(steps = it.stepsPerPage) }
             val pages = ArrayList<android.graphics.Bitmap>()
-            var joinable = chain.combine || chain.collage || chain.gif
+            var joinable = chain.combine || chain.collage || chain.gif || chain.versus
             noun = "Photo"
             picked.forEachIndexed { i, uri ->
                 progress = "Working… ${i + 1} of ${picked.size}"
@@ -720,7 +773,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 val r = if (perPage.steps.isEmpty()) Outcome.Done(Payload.Pic(bmp)) else ChainRunner.run(perPage, Payload.Pic(bmp))
                 when (r) {
                     is Outcome.Done -> {
-                        if (chain.combine || chain.collage || chain.gif) when (val v = r.value) {
+                        if (chain.combine || chain.collage || chain.gif || chain.versus) when (val v = r.value) {
                             is Payload.Pic -> pages.add(v.bmp)
                             is Payload.Doc -> BitmapFactory.decodeByteArray(v.bytes, 0, v.bytes.size)?.takeIf { v.kind == Kind.PHOTO_FILE }?.let { pages.add(it) } ?: run { joinable = false }
                             else -> joinable = false
@@ -730,12 +783,21 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                     is Outcome.Stopped -> out.add(BatchItem(i + 1, note = r.why))
                 }
             }
+            if (chain.versus) {
+                // Before and after: the first and the last result side by side.
+                if (joinable && pages.size >= 2) {
+                    val one = withContext(Dispatchers.Default) { FunSteps.beforeAfter(pages.first(), pages.last()) }
+                    result = Payload.Pic(one); keep(Payload.Pic(one))
+                } else message = "Before and after needs two photos: pick the before and the after together."
+                busy = false; progress = ""
+                return@launch
+            }
             if (chain.gif && joinable && pages.isNotEmpty()) {
                 // One GIF for everything: the results played one after another.
                 val skipped = out.count { it.note != null }
                 val one = withContext(Dispatchers.Default) { FunSteps.photosGif(pages) }
                 if (one != null) {
-                    result = Payload.Doc(one, "gif")
+                    result = Payload.Doc(one, "gif"); keep(Payload.Doc(one, "gif"))
                     if (skipped > 0) message = "$skipped of ${picked.size} couldn't be used and were left out."
                     busy = false; progress = ""
                     return@launch
@@ -760,6 +822,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 return@launch
             }
             batch = out; busy = false; progress = ""
+            withContext(Dispatchers.IO) { RunHistory.add(ctx, chain.name, out.filter { it.note == null }.mapNotNull { it.file }, out.filter { it.note == null }.mapNotNull { it.text }.joinToString("\n\n").ifEmpty { null }) }
         }
     }
     // Google's document scanner: finds the page edges, straightens it, takes several pages. It can be missing or stale
@@ -770,7 +833,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
         if (uris.isEmpty()) return@rememberLauncherForActivityResult
-        if (uris.size == 1 && !chain.combine && !chain.collage && !chain.gif) {
+        if (uris.size == 1 && !chain.combine && !chain.collage && !chain.gif && !chain.versus) {
             val bmp = runCatching { ctx.contentResolver.openInputStream(uris[0])?.use { BitmapFactory.decodeStream(it) } }.getOrNull()
             if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
         } else runBatch(uris)
@@ -915,7 +978,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             HPrimaryButton("Choose photos", enabled = !busy) { picker.launch("image/*") }
             HSecondaryButton("Scan a document") { scan() }
             HSecondaryButton("Choose a PDF") { pdf.launch("application/pdf") }
-            Text(if (chain.combine) "Pick or scan as many pages as you need. They all go into one PDF." else if (chain.collage) "Pick up to $MAX_BATCH photos. They are laid out as one picture." else if (chain.gif) "Pick up to $MAX_BATCH photos. They play one after another as a GIF." else "Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(if (chain.combine) "Pick or scan as many pages as you need. They all go into one PDF." else if (chain.collage) "Pick up to $MAX_BATCH photos. They are laid out as one picture." else if (chain.gif) "Pick up to $MAX_BATCH photos. They play one after another as a GIF." else if (chain.versus) "Pick two photos: the before, then the after." else "Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         if (busy) Text(progress.ifEmpty { "Working…" }, color = Handy.palette.textSecondary)
         message?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }

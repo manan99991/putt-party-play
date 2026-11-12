@@ -62,6 +62,8 @@ extension Block {
         case .emojiMosaic: return "square.grid.3x3.fill"
         case .videoSpeed: return "gauge.with.dots.needle.67percent"
         case .videoLoop: return "arrow.left.arrow.right"
+        case .artFilter: return "paintbrush.pointed"
+        case .voiceChange: return "music.mic"
         }
     }
     var tint: Color {
@@ -69,7 +71,7 @@ extension Block {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink, .speechText, .translate, .rewrite, .readCode, .pageText, .pdfText: return Color(hex: 0x3B82F6)
         case .shrinkImage, .convertImage, .stripLocation, .resizePhoto, .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .pdfShrink: return Color(hex: 0x10B981)
         case .cutout, .enhance, .passportPhoto, .videoRotate, .videoVertical, .videoCaptions: return Color(hex: 0xA855F7)
-        case .sticker, .emojiFaces, .meme, .emojiMosaic, .videoSpeed, .videoLoop: return Color(hex: 0xEAB308)
+        case .sticker, .emojiFaces, .meme, .emojiMosaic, .videoSpeed, .videoLoop, .artFilter, .voiceChange: return Color(hex: 0xEAB308)
         case .hideSensitive, .scamCheck, .watermark, .pdfLock: return Color(hex: 0xF97316)
         case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr, .stamp, .addToList, .contactQr, .wifiQr, .returnBy, .readAloud, .textPdf, .pdfPages: return Color(hex: 0xEC4899)
         }
@@ -134,6 +136,8 @@ extension Block {
         case .emojiMosaic: return "Rebuilds the photo out of hundreds of emojis. Zoom in to see them."
         case .videoSpeed: return "Slow motion, or two or four times faster. Comes out without sound."
         case .videoLoop: return "The first couple of seconds played forwards and back, as a GIF that loops for ever."
+        case .artFilter: return "Redraws the photo as a pencil sketch, a comic, black and white or pop art."
+        case .voiceChange: return "Plays the recording as a chipmunk, a deep voice or a giant."
         }
     }
 }

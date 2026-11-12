@@ -8,7 +8,7 @@ status=0
 if [ "$which" = android ] || [ "$which" = both ]; then
   K="${KOTLINC:-kotlinc}"; A="$ROOT/android/app/src"; D="$A/main/java/com/handytools/app/tools/builder"
   rm -f "$WORK/android.jar"
-  JAVA_TOOL_OPTIONS= "$K" "$HERE"/android_stubs/*.kt "$D/Chain.kt" "$D/TextTidy.kt" "$D/PriceDeal.kt" \
+  JAVA_TOOL_OPTIONS= "$K" "$HERE"/android_stubs/*.kt "$D/Chain.kt" "$D/TextTidy.kt" "$D/PriceDeal.kt" "$D/PixelArt.kt" \
     "$A/test/java/com/handytools/app/tools/builder/BuilderLogicTest.kt" -include-runtime -d "$WORK/android.jar" 2>&1 | grep -v "^warning\|JAVA_TOOL" | head -40
   out=$(JAVA_TOOL_OPTIONS= java -cp "$WORK/android.jar" RunKt 2>&1 | grep -v JAVA_TOOL); echo "android: $out"
   echo "$out" | grep -q "failed 0" || status=1

@@ -61,6 +61,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case readCode, pageText, textPdf
     case pdfShrink, pdfLock, pdfPages, pdfText
     case sticker, emojiFaces, meme, emojiMosaic, videoSpeed, videoLoop
+    case artFilter, voiceChange
 
     var id: String { rawValue }
     var title: String {
@@ -123,14 +124,16 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .emojiMosaic: return "Rebuild it from emojis"
         case .videoSpeed: return "Slow it down or speed it up"
         case .videoLoop: return "Boomerang GIF"
+        case .artFilter: return "Sketch, comic or pop art"
+        case .voiceChange: return "Change the voice"
         }
     }
     var takes: ChainKind {
         switch self {
-        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp, .readCode, .sticker, .emojiFaces, .meme, .emojiMosaic: return .image
+        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp, .readCode, .sticker, .emojiFaces, .meme, .emojiMosaic, .artFilter: return .image
         case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr, .returnBy, .readAloud, .translate, .rewrite, .pageText, .textPdf: return .text
         case .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop: return .video
-        case .speechText: return .audio
+        case .speechText, .voiceChange: return .audio
         case .pdfShrink, .pdfLock, .pdfPages, .pdfText: return .pdf
         }
     }
@@ -140,9 +143,9 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink, .speechText, .translate, .rewrite, .readCode, .pageText, .pdfText: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto, .sticker: return .photoFile
         case .businessCard, .calendarEvent, .makeTable, .addToList, .returnBy, .videoGif, .videoLoop: return .file
-        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr, .videoStill, .emojiFaces, .meme, .emojiMosaic: return .image
+        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr, .videoStill, .emojiFaces, .meme, .emojiMosaic, .artFilter: return .image
         case .videoShrink, .videoMute, .videoTrim, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed: return .video
-        case .videoAudio, .readAloud: return .audio
+        case .videoAudio, .readAloud, .voiceChange: return .audio
         case .photoPdf, .textPdf, .pdfShrink, .pdfLock, .pdfPages: return .pdf
         }
     }
@@ -162,7 +165,7 @@ extension Block {
         case .summarize, .actionItems, .scamCheck, .translate: return "Understand it"
         case .cleanText, .cleanLinks, .pullDetails, .rewrite: return "Clean it up"
         case .pullReceipt, .priceCompare, .expenseRow, .addToList, .returnBy: return "Money"
-        case .sticker, .emojiFaces, .meme, .emojiMosaic, .videoSpeed, .videoLoop: return "Just for fun"
+        case .sticker, .emojiFaces, .meme, .emojiMosaic, .videoSpeed, .videoLoop, .artFilter, .voiceChange: return "Just for fun"
         }
     }
     static let goalOrder = ["Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Just for fun", "Money"]
@@ -296,6 +299,8 @@ struct Chain: Codable, Equatable, Identifiable {
     var collage: Bool?
     /// When several photos go in at once, play the results one after another as a single looping GIF.
     var gif: Bool?
+    /// Before and after: the first and last of the photos side by side, each with its label.
+    var versus: Bool?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -628,6 +633,12 @@ enum ChainTemplates {
         Chain(id: "video-boomerang", name: "Boomerang GIF from a video", steps: [ChainStep(block: .videoLoop, settings: ["style": "boomerang"])]),
         Chain(id: "video-slowmo", name: "Slow-motion video", steps: [ChainStep(block: .videoSpeed, settings: ["speed": "slow"])]),
         Chain(id: "video-fast", name: "Speed a video up", steps: [ChainStep(block: .videoSpeed, settings: ["speed": "fast"])]),
+        Chain(id: "photo-sketch", name: "Photo to a pencil sketch", steps: [ChainStep(block: .artFilter, settings: ["style": "sketch"])]),
+        Chain(id: "photo-comic", name: "Photo to a comic", steps: [ChainStep(block: .artFilter, settings: ["style": "comic"])]),
+        Chain(id: "voice-chipmunk", name: "Chipmunk voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
+        Chain(id: "voice-deep", name: "Deep voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "deep"])]),
+        Chain(id: "video-voice", name: "Funny voice from a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
+        Chain(id: "before-after", name: "Before and after, side by side", steps: [ChainStep(block: .stripLocation)], versus: true),
     ]
 }
 
@@ -947,6 +958,20 @@ enum ChainText {
         return best
     }
 
+    // MARK: voices
+
+    /// Voices "Change the voice" offers, and how much faster (and so higher) each plays the recording.
+    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6)]
+    static func voiceRate(_ setting: String?) -> Double { voices.first { $0.id == setting }?.rate ?? 1.5 }
+
+    /// The 44 bytes that start a .wav file of plain 16-bit sound.
+    static func wavHeader(sampleRate: Int, channels: Int, dataBytes: Int) -> [UInt8] {
+        func le(_ v: Int, _ n: Int) -> [UInt8] { (0..<n).map { UInt8((v >> (8 * $0)) & 0xFF) } }
+        let ch = max(1, channels), rate = max(1, sampleRate)
+        return Array("RIFF".utf8) + le(36 + dataBytes, 4) + Array("WAVEfmt ".utf8) + le(16, 4) + le(1, 2) + le(ch, 2) + le(rate, 4) + le(rate * ch * 2, 4) + le(ch * 2, 2) + le(16, 2)
+            + Array("data".utf8) + le(dataBytes, 4)
+    }
+
     // MARK: where I am
 
     /// What "Where I am" puts in the text box: the address when the phone knows it, and a map link anyone can open.
@@ -1167,7 +1192,50 @@ enum ChainCombine {
     }
 }
 
+extension ChainImage {
+    /// Two pictures side by side, each filling a tall tile, with BEFORE and AFTER written on them.
+    static func beforeAfter(_ before: UIImage, _ after: UIImage, tile: CGSize = CGSize(width: 900, height: 1200), gap: CGFloat = 12) -> UIImage {
+        let size = CGSize(width: tile.width * 2 + gap * 3, height: tile.height + gap * 2)
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            UIColor.white.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+            for (i, pair) in [(before, "BEFORE"), (after, "AFTER")].enumerated() {
+                let (img, label) = pair
+                let r = CGRect(x: gap + CGFloat(i) * (tile.width + gap), y: gap, width: tile.width, height: tile.height)
+                ctx.cgContext.saveGState()
+                ctx.cgContext.clip(to: r)
+                let s = max(tile.width / max(1, img.size.width), tile.height / max(1, img.size.height))
+                let w = img.size.width * s, h = img.size.height * s
+                img.draw(in: CGRect(x: r.midX - w / 2, y: r.midY - h / 2, width: w, height: h))
+                ctx.cgContext.restoreGState()
+                let words = NSAttributedString(string: label, attributes: [.font: UIFont.systemFont(ofSize: 44, weight: .heavy), .foregroundColor: UIColor.white, .kern: 2.0])
+                let ws = words.size()
+                let plate = CGRect(x: r.minX + 28, y: r.minY + 28, width: ws.width + 44, height: ws.height + 24)
+                UIColor.black.withAlphaComponent(0.62).setFill()
+                UIBezierPath(roundedRect: plate, cornerRadius: plate.height / 2).fill()
+                words.draw(at: CGPoint(x: plate.minX + 22, y: plate.minY + 12))
+            }
+        }
+    }
+}
+
 extension ChainCombine {
+    /// "Before and after": the first and the last result side by side. nil with fewer than two pictures.
+    static func beforeAfter(_ results: [ChainPayload]) -> ChainPayload? {
+        var images: [UIImage] = []
+        for r in results {
+            switch r {
+            case .image(let i): images.append(i)
+            case .file(let d, let ext) where ChainPayload.isPhoto(ext):
+                guard let i = UIImage(data: d) else { return nil }
+                images.append(i)
+            default: return nil
+            }
+        }
+        guard images.count >= 2, let first = images.first, let last = images.last else { return nil }
+        return .image(ChainImage.beforeAfter(first, last))
+    }
+
     /// "One picture for everything": the results of a multi-photo run as a single collage. nil when a result isn't a picture.
     static func onePicture(_ results: [ChainPayload]) -> ChainPayload? {
         var images: [UIImage] = []
@@ -1335,5 +1403,37 @@ enum RunningList {
         guard lines.count > 1 else { return false }
         lines.removeLast()
         return write(fileName, lines.joined(separator: "\n"))
+    }
+}
+
+/// A tool as a link or a QR code. The whole tool rides in the part of the link after "#", which a browser never
+/// sends to the website, so the page that opens it learns nothing about the tool.
+enum ToolLink {
+    /// Off until the page below is published. While off, the app offers no link or QR sharing (it still opens one it is given).
+    static let live = false
+    static let page = "https://manan99991.github.io/tenzy/t.html"
+
+    /// The link for a tool. It never carries recipients, reminder times or a PDF password (see `Chain.shareText`).
+    static func link(for chain: Chain) -> String? {
+        let text = chain.shareText
+        guard text.hasPrefix(Chain.prefix), let d = String(text.dropFirst(Chain.prefix.count)).data(using: .utf8) else { return nil }
+        let packed = d.base64EncodedString().replacingOccurrences(of: "+", with: "-").replacingOccurrences(of: "/", with: "_").replacingOccurrences(of: "=", with: "")
+        return page + "#" + packed
+    }
+
+    /// The tool in a link from `link(for:)`, in the "tenzy://import?d=..." form the page hands to the app, or in copied
+    /// tool text. nil for anything else, or for a tool whose steps don't fit together.
+    static func chain(from link: String) -> Chain? {
+        let t = link.trimmingCharacters(in: .whitespacesAndNewlines)
+        if t.hasPrefix(Chain.prefix) { return Chain.imported(from: t) }
+        var packed: Substring
+        if t.hasPrefix(page), let i = t.firstIndex(of: "#") { packed = t[t.index(after: i)...] }
+        else if t.hasPrefix("tenzy://import"), let r = t.range(of: "d=") { packed = t[r.upperBound...] }
+        else { return nil }
+        if let end = packed.firstIndex(of: "&") { packed = packed[..<end] }
+        var b64 = packed.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
+        while b64.count % 4 != 0 { b64 += "=" }
+        guard let d = Data(base64Encoded: b64), let json = String(data: d, encoding: .utf8) else { return nil }
+        return Chain.imported(from: Chain.prefix + json)
     }
 }

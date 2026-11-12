@@ -54,6 +54,9 @@ object FileTranscriber {
 
     private data class Pcm(val file: File, val sampleRate: Int)
 
+    /** Any supported sound file as plain 16-bit mono sound in a temporary file, with its sample rate. Null when it can't be read. The caller deletes the file. */
+    fun monoPcm(src: File): Pair<File, Int>? = try { decodeToPcm(src)?.let { it.file to it.sampleRate } } catch (_: Throwable) { null }
+
     /** Decodes any supported audio file to signed 16-bit little-endian mono PCM in a temp file. */
     private fun decodeToPcm(src: File): Pcm? {
         val extractor = MediaExtractor()

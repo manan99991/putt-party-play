@@ -119,6 +119,7 @@ class MainActivity : ComponentActivity() {
             com.handytools.app.tools.builder.ToolReminders.pendingPhoto = intent.getStringExtra("photo")?.let { android.net.Uri.parse(it) }?.takeIf { it.scheme == "content" }
             com.handytools.app.tools.builder.ToolReminders.pending = id
         }
+        importTool(intent)
         val routeExtra = intent.getStringExtra("route")
         // Pro-preview unlock exists ONLY for the CI screenshot capture and is compiled out of
         // release builds, so a crafted intent can never grant entitlement on a shipped app.
@@ -237,6 +238,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /** A tool that arrived as a link (tenzy://import?d=...): save it and open Build your own, where it is listed with the person's own tools. */
+    private fun importTool(i: Intent?) {
+        val link = i?.data?.takeIf { i.action == Intent.ACTION_VIEW && it.scheme == "tenzy" && it.host == "import" } ?: return
+        val tool = runCatching { com.handytools.app.tools.builder.ToolLink.chain(link.toString()) }.getOrNull() ?: return
+        com.handytools.app.tools.builder.ChainStore.save(this, com.handytools.app.tools.builder.ChainStore.load(this) + tool)
+        i.putExtra("route", "builder")
+        i.data = null                 // so the same link is never read twice if the screen is rebuilt
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
@@ -250,6 +260,7 @@ class MainActivity : ComponentActivity() {
             com.handytools.app.tools.builder.ToolReminders.pendingPhoto = intent.getStringExtra("photo")?.let { android.net.Uri.parse(it) }?.takeIf { it.scheme == "content" }
             com.handytools.app.tools.builder.ToolReminders.pending = id
         }
+        importTool(intent)
         val routeExtra = intent.getStringExtra("route")
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
         if (routeExtra != null) pendingRoute = routeExtra

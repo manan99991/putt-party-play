@@ -86,7 +86,7 @@ final class ChainRowTests: XCTestCase {
 
 final class ChainTemplateTests: XCTestCase {
     func testTwentyEightTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 57)
+        XCTAssertEqual(ChainTemplates.all.count, 63)
         XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, ChainTemplates.all.count)
     }
     func testShareRoundTripAndRejectsJunk() throws {
@@ -899,7 +899,7 @@ final class NewKindTests: XCTestCase {
         XCTAssertFalse(ChainKind.pdf.feeds(.image)); XCTAssertFalse(ChainKind.audio.feeds(.video)); XCTAssertTrue(ChainKind.pdf.feeds(.pdf))
     }
     func testNewStepsFitOnlyTheirOwnKind() {
-        XCTAssertEqual(Block.starting(with: .audio), [.speechText])
+        XCTAssertEqual(Block.starting(with: .audio), [.speechText, .voiceChange])
         XCTAssertEqual(Block.starting(with: .pdf), [.pdfShrink, .pdfLock, .pdfPages, .pdfText])
         XCTAssertTrue(Block.starting(with: .image).contains(.readCode)); XCTAssertTrue(Block.starting(with: .text).contains(.translate))
         XCTAssertEqual(Block.photoPdf.gives, .pdf); XCTAssertEqual(Block.textPdf.gives, .pdf); XCTAssertEqual(Block.readAloud.gives, .audio)
@@ -1341,5 +1341,106 @@ final class FunStepTests: XCTestCase {
         guard case .file(let d, let ext)? = made else { return XCTFail("no GIF") }
         XCTAssertEqual(ext, "gif"); XCTAssertEqual(String(data: d.prefix(3), encoding: .ascii), "GIF")
         XCTAssertNil(ChainCombine.oneGif([.text("words")])); XCTAssertNil(ChainCombine.oneGif([]))
+    }
+}
+
+final class NewestStepTests: XCTestCase {
+    private func chain(_ blocks: [Block]) -> Chain { Chain(id: "t", name: "t", steps: blocks.map { ChainStep(block: $0) }) }
+    private func planned(_ ask: String) -> [Block] { ChainPlanner.keywordPlan(ask)?.steps.map(\.block) ?? [] }
+
+    func testPicturesAreRedrawnInEachStyle() {
+        // A 6 by 4 picture: left half black, right half white.
+        let w = 6, h = 4
+        let px = (0..<(w * h)).map { $0 % w < 3 ? 0x000000 : 0xFFFFFF }
+        XCTAssertEqual(Set(PixelArt.gray(px)), [0, 255])
+        let flat = [Int](repeating: 100, count: w * h)
+        XCTAssertTrue(PixelArt.blur(flat, width: w, height: h, radius: 2).allSatisfy { $0 == 100 })
+        XCTAssertEqual(PixelArt.blur(flat, width: w, height: h, radius: 0), flat)
+        let soft = PixelArt.blur(PixelArt.gray(px), width: w, height: h, radius: 1)
+        XCTAssertTrue((1...254).contains(soft[2])); XCTAssertEqual(soft[0], 0); XCTAssertEqual(soft[5], 255)
+        let noir = PixelArt.apply(px, width: w, height: h, style: "noir"); XCTAssertEqual(noir[0], 0x000000); XCTAssertEqual(noir[5], 0xFFFFFF)
+        let pop = PixelArt.apply(px, width: w, height: h, style: "pop"); XCTAssertEqual(Set(pop).count, 2); XCTAssertEqual(pop[0], 0x1B1464); XCTAssertEqual(pop[5], 0xFFF8E7)
+        let wall = [Int](repeating: 0x808080, count: w * h)
+        let sketch = PixelArt.apply(wall, width: w, height: h, style: "sketch")
+        XCTAssertTrue(sketch.allSatisfy { $0 == 0xFFFFFF }, "an even grey wall is blank paper")
+        XCTAssertEqual(PixelArt.apply(wall, width: w, height: h, style: "nonsense"), sketch)
+        XCTAssertTrue(PixelArt.apply([Int](repeating: 0x2060E0, count: w * h), width: w, height: h, style: "comic").allSatisfy { $0 == 0x4080FF })
+        XCTAssertEqual(PixelArt.apply(px, width: 5, height: 5, style: "noir"), px)
+        XCTAssertEqual(PixelArt.style(nil), "sketch"); XCTAssertEqual(PixelArt.style("comic"), "comic"); XCTAssertEqual(PixelArt.style("x"), "sketch")
+    }
+    func testVoicesAndWavFiles() {
+        XCTAssertEqual(ChainText.voiceRate("chipmunk"), 1.5); XCTAssertEqual(ChainText.voiceRate("deep"), 0.75); XCTAssertEqual(ChainText.voiceRate(nil), 1.5)
+        let head = ChainText.wavHeader(sampleRate: 44100, channels: 1, dataBytes: 1000)
+        XCTAssertEqual(head.count, 44)
+        XCTAssertEqual(String(bytes: head[0..<4], encoding: .ascii), "RIFF"); XCTAssertEqual(String(bytes: head[8..<16], encoding: .ascii), "WAVEfmt "); XCTAssertEqual(String(bytes: head[36..<40], encoding: .ascii), "data")
+        func int(_ at: Int) -> Int { Int(head[at]) | Int(head[at + 1]) << 8 | Int(head[at + 2]) << 16 | Int(head[at + 3]) << 24 }
+        XCTAssertEqual(int(4), 1036); XCTAssertEqual(int(24), 44100); XCTAssertEqual(int(28), 88200); XCTAssertEqual(int(40), 1000)
+        XCTAssertEqual(Block.voiceChange.takes, .audio); XCTAssertEqual(Block.voiceChange.gives, .audio)
+        XCTAssertNil(chain([.videoAudio, .voiceChange]).problem(starting: .video)); XCTAssertNil(chain([.voiceChange, .speechText]).problem(starting: .audio))
+    }
+    func testAToolTravelsAsALink() throws {
+        var tool = Chain(id: "x", name: "Menu helper é", steps: [ChainStep(block: .readText), ChainStep(block: .translate, settings: ["to": "es"])])
+        tool.finish = ChainFinish(kind: .mail, to: "me@example.com")
+        let link = try XCTUnwrap(ToolLink.link(for: tool))
+        XCTAssertTrue(link.hasPrefix(ToolLink.page + "#")); XCTAssertFalse(link.contains("example.com"))
+        let packed = String(link[link.index(after: try XCTUnwrap(link.firstIndex(of: "#")))...])
+        XCTAssertFalse(packed.contains("="))
+        let back = ToolLink.chain(from: link)
+        XCTAssertEqual(back?.name, "Menu helper é"); XCTAssertEqual(back?.steps, tool.steps); XCTAssertEqual(back?.finish?.to, "")
+        XCTAssertEqual(ToolLink.chain(from: "tenzy://import?d=" + packed)?.steps, tool.steps)
+        XCTAssertEqual(ToolLink.chain(from: tool.shareText)?.steps, tool.steps)
+        XCTAssertNil(ToolLink.chain(from: "https://example.com/t.html#abc")); XCTAssertNil(ToolLink.chain(from: ToolLink.page + "#not-a-tool")); XCTAssertNil(ToolLink.chain(from: ""))
+    }
+    func testDescribeItUnderstandsTheNewestRequests() {
+        XCTAssertEqual(ChainPlanner.keywordPlan("pencil sketch of my photo")?.steps.first?.settings["style"], "sketch")
+        XCTAssertEqual(ChainPlanner.keywordPlan("turn me into a cartoon")?.steps.first?.settings["style"], "comic")
+        XCTAssertEqual(ChainPlanner.keywordPlan("pop art selfie")?.steps.first?.settings["style"], "pop")
+        XCTAssertEqual(ChainPlanner.keywordPlan("make it black and white")?.steps.first?.settings["style"], "noir")
+        XCTAssertEqual(planned("chipmunk voice"), [.voiceChange]); XCTAssertEqual(ChainPlanner.keywordPlan("give me a deep voice")?.steps.first?.settings["voice"], "deep")
+        XCTAssertEqual(planned("funny voice from my video"), [.videoAudio, .voiceChange])
+        XCTAssertEqual(ChainPlanner.keywordPlan("before and after photo of my kitchen")?.versus, true); XCTAssertNil(ChainPlanner.keywordPlan("shrink a photo")?.versus)
+        let starter = ChainTemplates.all.first { $0.id == "before-after" }
+        XCTAssertEqual(starter?.versus, true); XCTAssertEqual(Chain.imported(from: starter?.shareText ?? "")?.versus, true)
+        XCTAssertEqual(planned("which is the cheapest per unit").last, .priceCompare)
+    }
+}
+
+final class NewestDrawingTests: XCTestCase {
+    private func picture(_ size: CGSize, _ color: UIColor) -> UIImage {
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { c in color.setFill(); c.fill(CGRect(origin: .zero, size: size)) }
+    }
+    func testArtKeepsTheShapeAndShrinksBigPhotos() async {
+        let small = await ChainRunner.apply(ChainStep(block: .artFilter, settings: ["style": "comic"]), to: .image(picture(CGSize(width: 400, height: 300), .systemBlue)))
+        guard case .success(.image(let out)) = small else { return XCTFail("no picture") }
+        XCTAssertEqual(out.size, CGSize(width: 400, height: 300))
+        let big = ChainFun.art(picture(CGSize(width: 3200, height: 1600), .systemRed), style: "sketch")
+        XCTAssertEqual(big?.size, CGSize(width: 1600, height: 800))
+    }
+    func testBeforeAndAfterNeedsTwoPictures() {
+        let a = picture(CGSize(width: 300, height: 400), .systemGreen), b = picture(CGSize(width: 800, height: 300), .systemOrange)
+        guard case .image(let out)? = ChainCombine.beforeAfter([.image(a), .image(b)]) else { return XCTFail("no picture") }
+        XCTAssertEqual(out.size, CGSize(width: 900 * 2 + 36, height: 1200 + 24))
+        XCTAssertNil(ChainCombine.beforeAfter([.image(a)])); XCTAssertNil(ChainCombine.beforeAfter([.image(a), .text("words")]))
+    }
+    func testAChangedVoiceIsAWavAtTheNewSpeed() throws {
+        // One second of a plain tone, written as a .wav, then played as a chipmunk.
+        let rate = 16000
+        var pcm = [UInt8]()
+        for i in 0..<rate { let v = Int16(sin(Double(i) * 2 * .pi * 440 / Double(rate)) * 12000); pcm.append(UInt8(truncatingIfNeeded: v)); pcm.append(UInt8(truncatingIfNeeded: v >> 8)) }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".wav")
+        try (Data(ChainText.wavHeader(sampleRate: rate, channels: 1, dataBytes: pcm.count)) + Data(pcm)).write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let made = try XCTUnwrap(ChainMedia.revoice(url, rate: 1.5))
+        XCTAssertEqual(String(data: made.prefix(4), encoding: .ascii), "RIFF")
+        XCTAssertEqual(Int(made[24]) | Int(made[25]) << 8 | Int(made[26]) << 16, 24000)
+        XCTAssertLessThan(abs(made.count - (44 + rate * 2)), 64)
+        XCTAssertNil(ChainMedia.revoice(FileManager.default.temporaryDirectory.appendingPathComponent("missing.wav"), rate: 1.5))
+    }
+    func testOnlyTheNewestResultsAreKept() {
+        let items = (0..<25).map { HistoryItem(id: "\($0)", tool: "T", when: Date(timeIntervalSince1970: Double($0)), text: "x") }
+        let kept = RunHistory.kept(items)
+        XCTAssertEqual(kept.count, 20); XCTAssertEqual(kept.first?.id, "24"); XCTAssertEqual(kept.last?.id, "5")
+        XCTAssertEqual(RunHistory.kept(items, limit: 0), [])
     }
 }

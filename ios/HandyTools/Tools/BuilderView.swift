@@ -55,6 +55,10 @@ struct BuilderView: View {
     @State private var planning = false
     @State private var sheets: [RunningList.Sheet] = RunningList.all()
     @State private var showSheets = false
+    @State private var history = RunHistory.all()
+    @State private var showHistory = false
+    /// The tool being handed on as a link and a QR code.
+    @State private var linking: Chain?
     /// The how-it-works card, until Got it. Never shown to automated runs, which expect the plain screen.
     @AppStorage("builder.introSeen") private var introSeen = false
     /// "What do you have?": narrows the starters to ones that begin with it. nil shows all.
@@ -97,12 +101,25 @@ struct BuilderView: View {
                     }.cardStyle(padding: HandySpacing.s12)
                 }.buttonStyle(.plain).accessibilityIdentifier("open-sheets")
             }
+            if !history.isEmpty {
+                Button { showHistory = true } label: {
+                    HStack(spacing: HandySpacing.s12) {
+                        Image(systemName: "clock.arrow.circlepath").font(.system(size: 18, weight: .semibold)).foregroundStyle(HandyColor.accent).frame(width: 38, height: 38).background(HandyColor.accent.opacity(0.14), in: Circle())
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Recent results").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                            Text(history.count == 1 ? "The last thing a tool made" : "The last \(history.count) things your tools made").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+                    }.cardStyle(padding: HandySpacing.s12)
+                }.buttonStyle(.plain).accessibilityIdentifier("open-history")
+            }
             HStack {
                 Text("Start from a template").font(HandyFont.cardTitle)
                 Spacer()
                 Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []) } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
                 Button {
-                    if let c = Chain.imported(from: UIPasteboard.general.string ?? "") { mine.append(c); persist(); note = "Added \(c.name)." }
+                    if let c = ToolLink.chain(from: UIPasteboard.general.string ?? "") { mine.append(c); persist(); note = "Added \(c.name)." }
                     else { note = "Copy a tool from another Tenzy first, then tap Paste." }
                 } label: { Label("Paste", systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
             }
@@ -163,9 +180,17 @@ struct BuilderView: View {
             }
         }
         .sheet(isPresented: $showSheets, onDismiss: { sheets = RunningList.all() }) { NavigationStack { SheetsView() } }
-        .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all() } }   // a run may have added to a sheet
+        .sheet(isPresented: $showHistory, onDismiss: { history = RunHistory.all() }) { NavigationStack { HistoryView() } }
+        .sheet(item: $linking) { c in NavigationStack { ToolLinkSheet(chain: c) } }
+        .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all(); history = RunHistory.all() } }   // a run may have added to a sheet, and to the recent results
+        .onChange(of: given?.id) { _, now in if now == nil { history = RunHistory.all() } }
         .onAppear { openReminded() }
-        .onReceive(NotificationCenter.default.publisher(for: .openTool)) { _ in openReminded() }
+        .onReceive(NotificationCenter.default.publisher(for: .openTool)) { _ in
+            // A tool opened from a link was saved before this arrived, so pick it up.
+            let saved = ChainStore.load()
+            if saved.count > mine.count, let added = saved.last { mine = saved; note = "Added \(added.name)." }
+            openReminded()
+        }
     }
 
     /// Saves the tools and keeps the phone's reminders and the home-screen widget in step with them.
@@ -269,6 +294,7 @@ struct BuilderView: View {
                     mine.append(k); persist(); note = "Duplicated as \(k.name)."
                 }
                 Button("Copy to share") { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
+                if ToolLink.live { Button("Share as a link or QR code") { linking = c } }
                 Button("Delete", role: .destructive) { mine.removeAll { $0.id == c.id }; persist() }
             } label: { Image(systemName: "ellipsis.circle").font(.system(size: 20)).frame(width: 44, height: 44) }
             // A compact button with room around its word, so it never looks squeezed beside a long name.
@@ -374,17 +400,19 @@ private struct ChainEditor: View {
             set: { t in var f = chain.finish ?? ChainFinish(); f.to = t; chain.finish = f })
         let onePdf = Binding<Bool>(get: { chain.combine == true }, set: { chain.combine = $0 ? true : nil; if !$0 { chain.onePage = nil } })
         let onePage = Binding<Bool>(get: { chain.onePage == true }, set: { chain.onePage = $0 ? true : nil })
-        let collage = Binding<Bool>(get: { chain.collage == true }, set: { chain.collage = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil; chain.gif = nil } })
-        let oneGif = Binding<Bool>(get: { chain.gif == true }, set: { chain.gif = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil; chain.collage = nil } })
+        let collage = Binding<Bool>(get: { chain.collage == true }, set: { chain.collage = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil; chain.gif = nil; chain.versus = nil } })
+        let oneGif = Binding<Bool>(get: { chain.gif == true }, set: { chain.gif = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil; chain.collage = nil; chain.versus = nil } })
+        let versus = Binding<Bool>(get: { chain.versus == true }, set: { chain.versus = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil; chain.collage = nil; chain.gif = nil } })
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
             if startKind == .image, endKind != .text {
-                Toggle("Put all pages or photos into one PDF", isOn: Binding(get: { onePdf.wrappedValue }, set: { onePdf.wrappedValue = $0; if $0 { chain.collage = nil; chain.gif = nil } })).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
+                Toggle("Put all pages or photos into one PDF", isOn: Binding(get: { onePdf.wrappedValue }, set: { onePdf.wrappedValue = $0; if $0 { chain.collage = nil; chain.gif = nil; chain.versus = nil } })).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
                 if chain.combine == true {
                     Toggle("All on a single page (both sides of an ID)", isOn: onePage).font(HandyFont.caption).accessibilityIdentifier("finish-one-page")
                 }
                 if endKind == .image || endKind == .photoFile {
                     Toggle("Put all photos into one picture (a collage)", isOn: collage).font(HandyFont.caption).accessibilityIdentifier("finish-collage")
                     Toggle("Play all photos as one GIF", isOn: oneGif).font(HandyFont.caption).accessibilityIdentifier("finish-gif")
+                    Toggle("Before and after: two photos side by side", isOn: versus).font(HandyFont.caption).accessibilityIdentifier("finish-versus")
                 }
             }
             if startKind == .pdf, endKind == .pdf {
@@ -591,6 +619,7 @@ private struct ChainEditor: View {
         case .pdfShrink: return ["mb": "5"]; case .pdfLock: return ["password": ""]; case .pdfPages: return ["pages": ""]
         case .emojiFaces: return ["emoji": ChainText.faceEmojis[0]]; case .meme: return ["top": "", "bottom": ""]
         case .videoSpeed: return ["speed": "slow"]; case .videoLoop: return ["style": "boomerang"]
+        case .artFilter: return ["style": "sketch"]; case .voiceChange: return ["voice": "chipmunk"]
         default: return [:] }
     }
 
@@ -683,6 +712,14 @@ private struct ChainEditor: View {
         case .videoSpeed:
             Picker("Speed", selection: Binding(get: { ChainText.speeds.first { $0.id == chain.steps[i].settings["speed"] }?.id ?? "slow" }, set: { chain.steps[i].settings["speed"] = $0 })) {
                 ForEach(ChainText.speeds, id: \.id) { Text($0.name).tag($0.id) }
+            }.pickerStyle(.segmented)
+        case .artFilter:
+            Picker("Style", selection: Binding(get: { PixelArt.style(chain.steps[i].settings["style"]) }, set: { chain.steps[i].settings["style"] = $0 })) {
+                ForEach(PixelArt.styles, id: \.id) { Text($0.name).tag($0.id) }
+            }.pickerStyle(.menu).font(HandyFont.caption)
+        case .voiceChange:
+            Picker("Voice", selection: Binding(get: { ChainText.voices.first { $0.id == chain.steps[i].settings["voice"] }?.id ?? "chipmunk" }, set: { chain.steps[i].settings["voice"] = $0 })) {
+                ForEach(ChainText.voices, id: \.id) { Text($0.name).tag($0.id) }
             }.pickerStyle(.segmented)
         case .videoLoop:
             Picker("Plays", selection: Binding(get: { chain.steps[i].settings["style"] == "reverse" ? "reverse" : "boomerang" }, set: { chain.steps[i].settings["style"] = $0 })) {
@@ -806,7 +843,7 @@ private struct ChainRunView: View {
                     }
                     Button { pickingPDF = true } label: { Label("Choose a PDF", systemImage: "doc.richtext").frame(maxWidth: .infinity) }
                         .secondaryButton().accessibilityIdentifier("run-pdf")
-                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : "Pick one, or up to 20 at once. Each one gets the same steps.")
+                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : chain.versus == true ? "Pick two photos: the before, then the after." : "Pick one, or up to 20 at once. Each one gets the same steps.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
                     // Four ways to get the words in without typing them.
@@ -839,7 +876,7 @@ private struct ChainRunView: View {
         .onChange(of: picks) { _, items in
             guard !items.isEmpty else { return }
             picks = []
-            if items.count == 1, chain.gif != true, let item = items.first {
+            if items.count == 1, chain.gif != true, chain.versus != true, let item = items.first {
                 Task {
                     let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
                     if let img { go(.image(img)) } else { message = "That photo couldn't be opened. Try another." }
@@ -993,6 +1030,7 @@ private struct ChainRunView: View {
         let combine = chain.combine == true
         let collage = chain.collage == true
         let gif = chain.gif == true
+        let versus = chain.versus == true
         let tool = runChain
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-batch-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
@@ -1006,13 +1044,17 @@ private struct ChainRunView: View {
                 }
                 switch await ChainRunner.run(tool, input: item) {
                 case .success(let p):
-                    if combine || collage || gif { kept.append(p) }
+                    if combine || collage || gif || versus { kept.append(p) }
                     out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name))
                 case .failure(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
                 }
             }
             // One PDF for everything, when the tool asks for it and the results can be joined.
-            if let one = gif ? ChainCombine.oneGif(kept) : collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true) : nil {
+            if versus, kept.count < 2 {
+                await MainActor.run { busy = false; progress = ""; message = "Before and after needs two photos: pick the before and the after together." }
+                return
+            }
+            if let one = versus ? ChainCombine.beforeAfter(kept) : gif ? ChainCombine.oneGif(kept) : collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true) : nil {
                 let skipped = out.filter { $0.note != nil }.count
                 await MainActor.run {
                     busy = false; progress = ""; result = one
@@ -1077,6 +1119,8 @@ private struct ChainRunView: View {
     /// Called when a run finishes: get the result ready to send and, if the tool ends in an email or a message, open it.
     private func finished(_ box: Outbox?) {
         outbox = box
+        // Kept so the result is still there after this screen is closed. Copied off the main thread: a video can be large.
+        if let box { let name = chain.name; Task.detached(priority: .utility) { RunHistory.add(box, tool: name) } }
         if let f = chain.finish, f.kind == .open, box != nil { openLink(box) }
         else if let f = chain.finish, f.kind == .mail || f.kind == .message, box != nil, SendSheet.canSend(f.kind) { sending = true }
     }

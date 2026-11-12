@@ -66,6 +66,16 @@ object FunSteps {
                 else Outcome.Done(Payload.Pic(meme(input.bmp, top, bottom)))
             }
 
+            b == Block.ART_FILTER && input is Payload.Pic -> Outcome.Done(Payload.Pic(art(input.bmp, PixelArt.style(step.settings["style"]))))
+
+            b == Block.VOICE_CHANGE && input is Payload.Doc -> {
+                val src = java.io.File(java.io.File(ctx.cacheDir, "extra-steps").also { it.mkdirs() }, "voice-${System.nanoTime()}.${input.ext.lowercase().ifEmpty { "m4a" }}").also { it.writeBytes(input.bytes) }
+                try {
+                    val wav = withContext(Dispatchers.IO) { revoice(src, TextTidy.voiceRate(step.settings["voice"])) }
+                    if (wav == null) stop("Change the voice couldn't read that recording. Try another one.") else Outcome.Done(Payload.Doc(wav, "wav"))
+                } finally { src.delete() }
+            }
+
             b == Block.EMOJI_MOSAIC && input is Payload.Pic -> mosaic(input.bmp)?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
 
             b == Block.VIDEO_SPEED && input is Payload.Clip ->
@@ -158,6 +168,61 @@ object FunSteps {
             c.translate((out.width - width) / 2f, if (atTop) gap else out.height - edge.height - gap)
             edge.draw(c); fill.draw(c)
             c.restore()
+        }
+        return out
+    }
+
+    // ------------------------------------------------------------------ sketch, comic, pop art
+
+    /** The photo redrawn in a style. Worked out at up to 1600 pixels on the long side, which is plenty to share. */
+    fun art(src: Bitmap, style: String, long: Int = 1600): Bitmap {
+        val k = minOf(1f, long.toFloat() / maxOf(src.width, src.height, 1))
+        val w = maxOf(1, (src.width * k).toInt()); val h = maxOf(1, (src.height * k).toInt())
+        val small = if (w != src.width || h != src.height) Bitmap.createScaledBitmap(src, w, h, true) else src
+        val px = IntArray(w * h); small.getPixels(px, 0, w, 0, 0, w, h)
+        val made = PixelArt.apply(px, w, h, style)
+        for (i in made.indices) made[i] = made[i] or (0xFF shl 24)
+        return Bitmap.createBitmap(made, w, h, Bitmap.Config.ARGB_8888)
+    }
+
+    // ------------------------------------------------------------------ voices
+
+    /** The recording played faster (higher, like a chipmunk) or slower (deeper), as the bytes of a .wav file. At most the first ten minutes. */
+    fun revoice(src: java.io.File, rate: Double): ByteArray? {
+        if (rate <= 0.0) return null
+        val (pcm, sampleRate) = com.handytools.app.tools.power.FileTranscriber.monoPcm(src) ?: return null
+        return try {
+            val keep = minOf(pcm.length(), sampleRate.toLong() * 2L * 600L).toInt() / 2 * 2
+            if (keep <= 0) null else {
+                val sound = ByteArray(keep)
+                pcm.inputStream().use { ins -> var at = 0; while (at < keep) { val n = ins.read(sound, at, keep - at); if (n < 0) break; at += n } }
+                TextTidy.wavHeader(Math.round(sampleRate * rate).toInt(), 1, keep) + sound
+            }
+        } catch (_: Throwable) { null } finally { pcm.delete() }
+    }
+
+    // ------------------------------------------------------------------ before and after
+
+    /** Two pictures side by side, each filling a tall tile, with BEFORE and AFTER written on them. */
+    fun beforeAfter(before: Bitmap, after: Bitmap, tileW: Int = 900, tileH: Int = 1200, gap: Int = 12): Bitmap {
+        val out = Bitmap.createBitmap(tileW * 2 + gap * 3, tileH + gap * 2, Bitmap.Config.ARGB_8888)
+        val c = Canvas(out)
+        c.drawColor(Color.WHITE)
+        val paint = Paint(Paint.FILTER_BITMAP_FLAG)
+        val words = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE; textSize = 44f; typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD); letterSpacing = 0.05f }
+        val plate = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.argb(158, 0, 0, 0) }
+        listOf(before to "BEFORE", after to "AFTER").forEachIndexed { i, (bmp, label) ->
+            val left = gap + i * (tileW + gap); val top = gap
+            val s = maxOf(tileW.toFloat() / bmp.width, tileH.toFloat() / bmp.height)
+            val bw = bmp.width * s; val bh = bmp.height * s
+            c.save()
+            c.clipRect(left, top, left + tileW, top + tileH)
+            c.drawBitmap(bmp, null, RectF(left + (tileW - bw) / 2f, top + (tileH - bh) / 2f, left + (tileW + bw) / 2f, top + (tileH + bh) / 2f), paint)
+            c.restore()
+            val m = words.fontMetrics
+            val box = RectF(left + 28f, top + 28f, left + 28f + words.measureText(label) + 44f, top + 28f + (m.descent - m.ascent) + 24f)
+            c.drawRoundRect(box, box.height() / 2f, box.height() / 2f, plate)
+            c.drawText(label, box.left + 22f, box.top + 12f - m.ascent, words)
         }
         return out
     }

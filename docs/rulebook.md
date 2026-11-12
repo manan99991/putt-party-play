@@ -114,6 +114,15 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   faces with the phone's own detector (Vision on iOS, ML Kit on Android, both already in the app). Starting a video tool from a Live Photo is
   iPhone only and uses the system photo picker (no photo-library permission): **never mention Live Photos in the Play listing.** Do not describe
   any of these as a "face animator", "deepfake" or "AI" feature: nothing animates or alters a face, and the stores review those claims harder.
+- Build your own, "Recent results": the last 20 results are copied into the app's own folder so they survive closing the screen. They never
+  leave the phone, are not backed up by Tenzy anywhere, and the person can remove one or clear them all. Results can hold personal things (a
+  signed form, a face), so never read, upload or show them outside that screen. Data safety / App Privacy answers are unchanged.
+- Build your own, tool links: `docs/t.html` is our own page on the website. The tool rides after "#" in the link, which a browser never sends
+  to a server, and the page has no scripts, fonts or images from anywhere else and no analytics: keep it that way. A link never carries
+  recipients, reminder times or a PDF password. **Publishing the page is a public change and needs Manan's yes**; until then `ToolLink.live`
+  (iOS) and `ToolLink.LIVE` (Android) stay false and the apps offer no link or QR sharing. Android declares a `tenzy://import` link filter; an
+  imported tool is only saved to My tools, never run by itself.
+- "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
 - Listing changes for Build your own are drafted in `docs/listing-draft.md`. That file is not pushed by the pipeline; copy
   from it into the metadata folders only after the features ship and Manan approves.
 

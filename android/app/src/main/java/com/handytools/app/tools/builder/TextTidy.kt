@@ -425,6 +425,20 @@ object TextTidy {
         else -> (0 until count).toList() + (if (count > 2) (1 until count - 1).reversed().toList() else emptyList())
     }
 
+    /** Voices "Change the voice" offers, and how much faster (and so higher) each plays the recording. */
+    val VOICES = listOf(Triple("chipmunk", "Chipmunk", 1.5), Triple("deep", "Deep", 0.75), Triple("giant", "Giant", 0.6))
+    fun voiceRate(setting: String?): Double = VOICES.firstOrNull { it.first == setting }?.third ?: 1.5
+
+    /** The 44 bytes that start a .wav file of plain 16-bit sound. */
+    fun wavHeader(sampleRate: Int, channels: Int, dataBytes: Int): ByteArray {
+        val ch = maxOf(1, channels); val rate = maxOf(1, sampleRate)
+        val b = java.nio.ByteBuffer.allocate(44).order(java.nio.ByteOrder.LITTLE_ENDIAN)
+        b.put("RIFF".toByteArray(Charsets.US_ASCII)); b.putInt(36 + dataBytes); b.put("WAVEfmt ".toByteArray(Charsets.US_ASCII))
+        b.putInt(16); b.putShort(1); b.putShort(ch.toShort()); b.putInt(rate); b.putInt(rate * ch * 2); b.putShort((ch * 2).toShort()); b.putShort(16)
+        b.put("data".toByteArray(Charsets.US_ASCII)); b.putInt(dataBytes)
+        return b.array()
+    }
+
     /** How many emojis across and down a mosaic gets: 56 along the picture's long side, the other side in proportion. */
     fun mosaicGrid(width: Double, height: Double, long: Int = 56): Pair<Int, Int> = when {
         width <= 0 || height <= 0 -> 0 to 0
