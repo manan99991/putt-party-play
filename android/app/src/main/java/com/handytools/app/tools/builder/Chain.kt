@@ -67,6 +67,19 @@ object BlockGoals {
 
 data class Step(val block: Block, val settings: Map<String, String> = emptyMap())
 
+/** The short "how this works" at the top of Build your own. Same three ideas and wording as iOS. */
+object BuilderIntro {
+    val PAGES = listOf(
+        "1. Start with what you have" to "A photo, a scan, a PDF, some text, something you say, or a contact.",
+        "2. Stack small steps" to "Hide private details, strip the location, shrink it, read it, sign it. You only see steps that fit.",
+        "3. Choose how it ends" to "Share it, open an email or WhatsApp ready to send, add a row to a sheet. Add a reminder and it comes back on schedule.",
+    )
+    const val DEMO_ID = "share-shield"
+
+    /** Starters for what the person has in hand. null shows all of them. */
+    fun starters(kind: Kind?, all: List<Chain> = ChainTemplates.all): List<Chain> = if (kind == null) all else all.filter { it.start == kind }
+}
+
 /** One thing "Sign and stamp" puts on a page. [x], [y] are the centre and [w] the width, all as fractions of the page. */
 data class StampSpot(val mark: String, val x: Double, val y: Double, val w: Double)
 

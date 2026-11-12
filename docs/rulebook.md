@@ -77,6 +77,20 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   App Privacy answers are unchanged. `android.hardware.nfc` is `required="false"` so non-NFC phones
   still install. Normal permissions need no Play declaration and carry no review/rejection risk.
 
+- Build your own, reminders: a tool can carry a reminder the person sets. iOS uses local notifications (asked for when
+  the switch is turned on; no usage string exists for notifications, add a reviewer note). Android uses ordinary inexact
+  alarms and `RECEIVE_BOOT_COMPLETED` (normal, install-time, no Play declaration) to put reminders back after a restart.
+  Never use exact alarms or full-screen intents here: those are reserved for alarm-clock apps and got the Alarm tool removed.
+- Build your own, "offer on a new photo or screenshot" (Android only): a system job woken by photo-library changes shows
+  a notification; nothing runs until the person taps it. It relies on the already-declared `READ_MEDIA_IMAGES`. The Play
+  photo and video permissions declaration must describe this use too before it ships. On-device only, nothing uploaded.
+- Build your own inputs: the contact pickers (iOS `CNContactPickerViewController`, Android `ACTION_PICK` on a phone row)
+  hand over only the contact the person taps and need no permission. Speech uses the existing microphone and speech strings on iOS
+  and the phone's own voice typing on Android.
+- Shortcuts actions (iOS) run tools on the device and return the result to the shortcut. No new data leaves the phone.
+- Listing changes for Build your own are drafted in `docs/listing-draft.md`. That file is not pushed by the pipeline; copy
+  from it into the metadata folders only after the features ship and Manan approves.
+
 ## 7. Release gating (nothing ships by accident)
 
 - iOS TestFlight: `TESTFLIGHT_ENABLED=true` + commit trailer `Ship-Build=YES`.

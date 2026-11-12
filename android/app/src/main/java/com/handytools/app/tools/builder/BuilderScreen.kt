@@ -12,6 +12,7 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -118,6 +119,10 @@ fun BuilderScreen() {
 
     fun saveAll() { ChainStore.save(ctx, mine.toList()); ToolReminders.sync(ctx, mine.toList()); PhotoWatch.arm(ctx) }
     var showSheets by remember { mutableStateOf(false) }
+    val prefs = remember { ctx.getSharedPreferences("builder", Context.MODE_PRIVATE) }
+    var introSeen by remember { mutableStateOf(prefs.getBoolean("introSeen", false)) }
+    fun setIntro(seen: Boolean) { introSeen = seen; prefs.edit().putBoolean("introSeen", seen).apply() }
+    var have by remember { mutableStateOf<Kind?>(null) }     // "What do you have?": narrows the starters
     var runOn by remember { mutableStateOf<Uri?>(null) }      // the new photo a tapped "run this tool" notification came with
 
     // A tapped reminder lands here: open that tool ready to run.
@@ -142,6 +147,19 @@ fun BuilderScreen() {
 
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader("Build your own", "Snap small steps together into a tool that does exactly what you need. Runs on your phone.")
+        if (!introSeen) HCard(Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                Text("Make a tool that does the whole job", style = MaterialTheme.typography.titleMedium)
+                BuilderIntro.PAGES.forEach { (title, body) ->
+                    Text(title, style = MaterialTheme.typography.titleSmall)
+                    Text(body, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                }
+                HPrimaryButton("Show me one") {
+                    ChainTemplates.all.firstOrNull { it.id == BuilderIntro.DEMO_ID }?.let { editing = it.copy(id = java.util.UUID.randomUUID().toString(), name = it.name + " (mine)") }
+                }
+                TextButton({ setIntro(true) }) { Text("Got it") }
+            }
+        }
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 Text("Describe it", style = MaterialTheme.typography.titleMedium)
@@ -179,9 +197,15 @@ fun BuilderScreen() {
                 }) { Text("Paste") }
             }
         }
-        ChainTemplates.all.forEach { c ->
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            listOf<Pair<String, Kind?>>("Everything" to null, "A photo or scan" to Kind.IMAGE, "Text" to Kind.TEXT).forEach { (label, k) ->
+                if (have == k) Button({ have = k }) { Text(label) } else OutlinedButton({ have = k }) { Text(label) }
+            }
+        }
+        BuilderIntro.starters(have).forEach { c ->
             ChainRow(c, onRun = { running = c }, onEdit = { editing = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " (mine)") }, onCopy = { copy(ctx, c); note = "Copied." }, onDelete = null)
         }
+        if (introSeen) TextButton({ setIntro(false) }) { Text("How does this work?") }
     }
 }
 

@@ -155,3 +155,8 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - No new permissions: both contact pickers hand over only the tapped contact; iOS speech and microphone strings already existed.
 - Not done: video as a starting point (needs a new kind of result that isn't held in memory).
 - UNBUILT in CI (builds paused for cost).
+
+### How-it-works card and "What do you have?" — iOS and Android
+- A three-idea card at the top of Build your own until "Got it" (start with what you have, stack steps, choose how it ends), with "Show me one" opening the Privacy share shield starter in the builder so its previews run on the sample. "How does this work?" brings it back. Hidden from automated iOS runs.
+- Starters can be narrowed to "A photo or scan" or "Text". Same wording both sides (`BuilderIntro`).
+- UNBUILT in CI (builds paused for cost).

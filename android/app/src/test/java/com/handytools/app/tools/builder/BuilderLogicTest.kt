@@ -296,4 +296,13 @@ class BuilderLogicTest {
         assertEquals("Priya Shah\n+1 415 555 0134\npriya@studio.example", t)
         assertEquals("https://wa.me/14155550134", TextTidy.chatLink(t, "1"))
     }
+    @Test fun startersCanBeNarrowedToWhatYouHave() {
+        val photo = BuilderIntro.starters(Kind.IMAGE); val text = BuilderIntro.starters(Kind.TEXT)
+        assertTrue(photo.isNotEmpty() && text.isNotEmpty())
+        assertTrue(photo.all { it.start == Kind.IMAGE }); assertTrue(text.all { it.start == Kind.TEXT })
+        assertEquals(ChainTemplates.all.size, photo.size + text.size)
+        assertEquals(ChainTemplates.all, BuilderIntro.starters(null))
+        assertNotNull(ChainTemplates.all.firstOrNull { it.id == BuilderIntro.DEMO_ID })
+        assertEquals(3, BuilderIntro.PAGES.size)
+    }
 }

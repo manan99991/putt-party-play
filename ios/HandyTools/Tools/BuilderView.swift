@@ -14,9 +14,20 @@ struct BuilderView: View {
     @State private var planning = false
     @State private var sheets: [RunningList.Sheet] = RunningList.all()
     @State private var showSheets = false
+    /// The how-it-works card, until Got it. Never shown to automated runs, which expect the plain screen.
+    @AppStorage("builder.introSeen") private var introSeen = false
+    /// "What do you have?": narrows the starters to ones that begin with it. nil shows all.
+    @State private var have: ChainKind?
 
     var body: some View {
         ToolPage(title: "Build your own", subtitle: "Snap small steps together into a tool that does exactly what you need. Runs on your phone.") {
+            if !introSeen, !Launch.uitest, !Launch.screenshots {
+                BuilderIntroCard(onShow: {
+                    if var demo = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) {
+                        demo.id = UUID().uuidString; demo.name += " (mine)"; editing = demo
+                    }
+                }, onDone: { withAnimation { introSeen = true } })
+            }
             hero
             if !mine.isEmpty {
                 Text("My tools").font(HandyFont.cardTitle)
@@ -45,8 +56,16 @@ struct BuilderView: View {
                 } label: { Label("Paste", systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
             }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            Picker("What do you have?", selection: $have) {
+                Text("Everything").tag(ChainKind?.none)
+                Text("A photo or scan").tag(ChainKind?.some(.image))
+                Text("Text").tag(ChainKind?.some(.text))
+            }.pickerStyle(.segmented).accessibilityIdentifier("starter-filter")
             LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
-                ForEach(ChainTemplates.all) { c in templateCard(c) }
+                ForEach(BuilderIntro.starters(for: have)) { c in templateCard(c) }
+            }
+            if introSeen {
+                Button("How does this work?") { withAnimation { introSeen = false } }.font(HandyFont.caption).frame(minHeight: 44)
             }
         }
         .sheet(item: $editing) { c in

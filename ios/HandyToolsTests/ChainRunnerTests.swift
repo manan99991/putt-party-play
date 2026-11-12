@@ -755,3 +755,18 @@ final class InputTests: XCTestCase {
         XCTAssertNil(PDFInput.text(from: FileManager.default.temporaryDirectory.appendingPathComponent("missing-\(UUID().uuidString).pdf")))
     }
 }
+
+final class IntroTests: XCTestCase {
+    func testStartersCanBeNarrowedToWhatYouHave() {
+        let photo = BuilderIntro.starters(for: .image), text = BuilderIntro.starters(for: .text)
+        XCTAssertFalse(photo.isEmpty); XCTAssertFalse(text.isEmpty)
+        XCTAssertTrue(photo.allSatisfy { $0.steps.first?.block.takes == .image })
+        XCTAssertTrue(text.allSatisfy { $0.steps.first?.block.takes == .text })
+        XCTAssertEqual(photo.count + text.count, ChainTemplates.all.count)
+        XCTAssertEqual(BuilderIntro.starters(for: nil), ChainTemplates.all)
+    }
+    func testTheDemoStarterExistsAndTheIntroIsThreeIdeas() {
+        XCTAssertNotNull(ChainTemplates.all.first { $0.id == BuilderIntro.demoID })
+        XCTAssertEqual(BuilderIntro.pages.count, 3)
+    }
+}
