@@ -113,8 +113,10 @@ private struct ChainEditor: View {
 
     private var startKind: ChainKind { chain.steps.first?.block.takes ?? .image }
     private var endKind: ChainKind? { chain.steps.last?.block.gives }
+    /// What the person said they start with, before there is a first step to tell us.
+    @State private var startChoice: ChainKind?
     private var options: [Block] {
-        guard let end = endKind else { return Block.allCases }
+        guard let end = endKind else { return startChoice.map(Block.starting(with:)) ?? [] }
         return Block.allCases.filter { end.feeds($0.takes) }
     }
     private var valid: Bool { chain.problem(starting: startKind) == nil && !chain.name.trimmingCharacters(in: .whitespaces).isEmpty }
@@ -123,13 +125,23 @@ private struct ChainEditor: View {
         ScrollView {
             VStack(spacing: 0) {
                 TextField("Name your tool", text: $chain.name).font(HandyFont.title).padding(.bottom, HandySpacing.s16)
-                node(icon: startKind == .text ? "text.alignleft" : "photo", title: chain.steps.isEmpty ? "You give it…" : "You give it \(startKind.label)", sub: chain.steps.isEmpty ? "Add a first step. It decides whether you start with a photo or text." : "Preview uses a sample so you can see each step work.")
+                if chain.steps.isEmpty, startChoice == nil {
+                    startPicker
+                } else {
+                    let k = chain.steps.isEmpty ? (startChoice ?? .image) : startKind
+                    node(icon: k == .text ? "text.alignleft" : "photo", title: "You give it \(k.label)", sub: chain.steps.isEmpty ? "Now add a first step. You only see steps that work with \(k.label)." : "Preview uses a sample so you can see each step work.")
+                    if chain.steps.isEmpty {
+                        Button("Start with something else") { startChoice = nil }.font(HandyFont.caption).padding(.top, HandySpacing.s8)
+                    }
+                }
                 ForEach(Array(chain.steps.enumerated()), id: \.offset) { i, s in
                     connector
                     stepCard(i, s)
                 }
-                connector
-                addMenu
+                if !(chain.steps.isEmpty && startChoice == nil) {
+                    connector
+                    addMenu
+                }
                 if let end = endKind {
                     connector
                     node(icon: "checkmark.circle.fill", title: "You get \(end.label)", sub: "Then copy it, save it or share it.", tint: HandyColor.success)
@@ -195,11 +207,39 @@ private struct ChainEditor: View {
 
     private var addMenu: some View {
         Menu {
-            ForEach(options) { b in Button { chain.steps.append(ChainStep(block: b, settings: defaults(b))) } label: { Label(b.title, systemImage: b.icon) } }
+            // Grouped by what you want to get done, and only steps that fit what the tool has at this point.
+            ForEach(Block.grouped(options), id: \.goal) { g in
+                Section(g.goal) {
+                    ForEach(g.blocks) { b in Button { chain.steps.append(ChainStep(block: b, settings: defaults(b))) } label: { Label(b.title, systemImage: b.icon) } }
+                }
+            }
         } label: {
             Label(chain.steps.isEmpty ? "Add the first step" : "Add a step", systemImage: "plus.circle.fill").font(HandyFont.bodyStrong).frame(maxWidth: .infinity, minHeight: 48)
                 .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
         }.accessibilityIdentifier("add-step")
+    }
+
+    /// First question of a new tool: what do you have? Everything offered after this fits the answer.
+    private var startPicker: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            Text("What do you start with?").font(HandyFont.cardTitle)
+            HStack(spacing: HandySpacing.s12) {
+                startButton(.image, "A photo", "photo")
+                startButton(.text, "Text", "text.alignleft")
+            }
+            Text("Video, voice, contacts and files are coming next.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        }.frame(maxWidth: .infinity, alignment: .leading)
+    }
+    private func startButton(_ kind: ChainKind, _ title: String, _ icon: String) -> some View {
+        Button { startChoice = kind } label: {
+            VStack(spacing: HandySpacing.s8) {
+                Image(systemName: icon).font(.title2)
+                Text(title).font(HandyFont.bodyStrong)
+            }
+            .frame(maxWidth: .infinity, minHeight: 84)
+            .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+        }
+        .accessibilityIdentifier(kind == .text ? "start-text" : "start-photo")
     }
 
     private func stepCard(_ i: Int, _ s: ChainStep) -> some View {

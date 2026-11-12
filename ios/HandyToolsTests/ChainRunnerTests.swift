@@ -355,3 +355,23 @@ final class MoreBlocksTests: XCTestCase {
         XCTAssertEqual(ChainPlanner.keywordPlan("describe this photo for me")?.steps.map(\.block), [.describe])
     }
 }
+
+/// The builder's step list: start from what you have, then steps grouped by what you want.
+final class BlockGoalTests: XCTestCase {
+    func testEveryBlockHasAKnownGoal() {
+        for b in Block.allCases { XCTAssertTrue(Block.goalOrder.contains(b.goal), "\(b.rawValue) has goal \(b.goal)") }
+    }
+    func testPhotoStartOffersOnlyPhotoStepsGrouped() {
+        let photo = Block.starting(with: .image)
+        XCTAssertTrue(photo.contains(.stripLocation)); XCTAssertFalse(photo.contains(.summarize))
+        let groups = Block.grouped(photo)
+        XCTAssertEqual(groups.first?.goal, "Make it easy to send")
+        XCTAssertEqual(groups.flatMap(\.blocks).count, photo.count, "no step is lost or shown twice")
+        XCTAssertFalse(groups.contains { $0.goal == "Understand it" }, "text-only goals stay out of a photo's list")
+    }
+    func testTextStartOffersOnlyTextSteps() {
+        let text = Block.starting(with: .text)
+        XCTAssertTrue(text.contains(.scamCheck)); XCTAssertFalse(text.contains(.shrinkImage))
+        XCTAssertEqual(Block.grouped(text).map(\.goal), ["Understand it", "Clean it up", "Turn it into something", "Money"])
+    }
+}

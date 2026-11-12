@@ -78,6 +78,34 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+extension Block {
+    /// What the person is trying to get done. The builder groups steps under these, so the list reads as
+    /// "what do you want to do with it?" rather than a flat list of tools.
+    var goal: String {
+        switch self {
+        case .shrinkImage, .convertImage: return "Make it easy to send"
+        case .stripLocation, .hideSensitive: return "Keep it private"
+        case .enhance, .cutout: return "Make it look better"
+        case .readText, .describe, .identify: return "Read what's in it"
+        case .passportPhoto, .photoPdf, .makeTable, .businessCard, .calendarEvent, .makeQr: return "Turn it into something"
+        case .summarize, .actionItems, .scamCheck: return "Understand it"
+        case .cleanText, .cleanLinks, .pullDetails: return "Clean it up"
+        case .pullReceipt, .priceCompare: return "Money"
+        }
+    }
+    static let goalOrder = ["Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money"]
+
+    /// The given steps under their goals, goals in a fixed order, empty goals left out.
+    static func grouped(_ blocks: [Block]) -> [(goal: String, blocks: [Block])] {
+        goalOrder.compactMap { g in
+            let b = blocks.filter { $0.goal == g }
+            return b.isEmpty ? nil : (g, b)
+        }
+    }
+    /// Steps that can come first when a tool starts with a photo, or with text.
+    static func starting(with kind: ChainKind) -> [Block] { allCases.filter { kind.feeds($0.takes) } }
+}
+
 struct ChainStep: Codable, Equatable {
     var block: Block
     var settings: [String: String] = [:]

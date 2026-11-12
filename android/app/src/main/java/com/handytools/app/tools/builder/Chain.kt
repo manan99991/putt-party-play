@@ -37,6 +37,26 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
 }
 
+/** What the person is trying to get done. The builder groups steps under these goals. Same wording as iOS. */
+val Block.goal: String get() = when (this) {
+    Block.SHRINK, Block.CONVERT -> "Make it easy to send"
+    Block.STRIP_LOCATION, Block.HIDE_SENSITIVE -> "Keep it private"
+    Block.READ_TEXT -> "Read what's in it"
+    Block.PHOTO_PDF, Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR -> "Turn it into something"
+    Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
+    Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
+    Block.PULL_RECEIPT -> "Money"
+}
+
+object BlockGoals {
+    val ORDER = listOf("Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money")
+    /** The given steps under their goals, goals in a fixed order, empty goals left out. */
+    fun grouped(blocks: List<Block>): List<Pair<String, List<Block>>> =
+        ORDER.mapNotNull { g -> blocks.filter { it.goal == g }.takeIf { it.isNotEmpty() }?.let { g to it } }
+    /** Steps that can come first when a tool starts with a photo, or with text. */
+    fun starting(kind: Kind): List<Block> = Block.values().filter { kind.feeds(it.takes) }
+}
+
 data class Step(val block: Block, val settings: Map<String, String> = emptyMap())
 
 /**

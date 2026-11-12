@@ -196,7 +196,9 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
     var chain by remember { mutableStateOf(start) }
     var addMenu by remember { mutableStateOf(false) }
     val previews = remember { mutableStateListOf<Preview?>() }
-    val options = chain.end?.let { e -> Block.values().filter { e.feeds(it.takes) } } ?: Block.values().toList()
+    // What the person said they start with, before there is a first step to tell us.
+    var startChoice by remember { mutableStateOf<Kind?>(null) }
+    val options = chain.end?.let { e -> Block.values().filter { e.feeds(it.takes) } } ?: startChoice?.let { BlockGoals.starting(it) } ?: emptyList()
     val problem = chain.problem()
 
     LaunchedEffect(chain.steps) {
@@ -236,9 +238,27 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
                 }
             }
         }
-        HSecondaryButton(if (chain.steps.isEmpty()) "Add the first step" else "Add a step") { addMenu = true }
-        DropdownMenu(addMenu, { addMenu = false }) {
-            options.forEach { b -> DropdownMenuItem(text = { Text(b.title) }, onClick = { addMenu = false; chain = chain.copy(steps = chain.steps + Step(b, defaults(b))) }) }
+        if (chain.steps.isEmpty() && startChoice == null) {
+            // First question of a new tool: what do you have? Everything offered after this fits the answer.
+            Text("What do you start with?", style = MaterialTheme.typography.titleMedium)
+            Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                Button({ startChoice = Kind.IMAGE }, Modifier.weight(1f)) { Text("A photo") }
+                Button({ startChoice = Kind.TEXT }, Modifier.weight(1f)) { Text("Text") }
+            }
+            Text("Video, voice, contacts and files are coming next.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        } else {
+            if (chain.steps.isEmpty()) {
+                Text("You start with ${startChoice?.label}. You only see steps that work with it.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                TextButton({ startChoice = null }) { Text("Start with something else") }
+            }
+            HSecondaryButton(if (chain.steps.isEmpty()) "Add the first step" else "Add a step") { addMenu = true }
+            DropdownMenu(addMenu, { addMenu = false }) {
+                // Grouped by what you want to get done; only steps that fit what the tool has at this point.
+                BlockGoals.grouped(options).forEach { (goal, blocks) ->
+                    Text(goal, style = MaterialTheme.typography.labelMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = HandyTokens.Space12, vertical = HandyTokens.Space4))
+                    blocks.forEach { b -> DropdownMenuItem(text = { Text(b.title) }, onClick = { addMenu = false; chain = chain.copy(steps = chain.steps + Step(b, defaults(b))) }) }
+                }
+            }
         }
         chain.end?.let {
             Text("You get ${it.label}. Then:", style = MaterialTheme.typography.titleSmall)

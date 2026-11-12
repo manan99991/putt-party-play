@@ -123,4 +123,17 @@ class BuilderLogicTest {
         assertEquals(listOf(Block.SCAM_CHECK), ChainPlanner.plan("is this message a scam")!!.steps.map { it.block })
         assertEquals(listOf(Block.MAKE_QR), ChainPlanner.plan("turn a link into a qr code")!!.steps.map { it.block })
     }
+
+    // Start from what you have, then steps grouped by what you want
+    @Test fun everyBlockHasAKnownGoal() { for (b in Block.values()) assertTrue(b.id, b.goal in BlockGoals.ORDER) }
+    @Test fun photoStartOffersOnlyPhotoStepsGrouped() {
+        val photo = BlockGoals.starting(Kind.IMAGE)
+        assertTrue(Block.STRIP_LOCATION in photo); assertFalse(Block.SUMMARIZE in photo)
+        val groups = BlockGoals.grouped(photo)
+        assertEquals("Make it easy to send", groups.first().first)
+        assertEquals(photo.size, groups.sumOf { it.second.size })
+        assertTrue(groups.none { it.first == "Understand it" })
+    }
+    @Test fun textStartGoalsInOrder() =
+        assertEquals(listOf("Understand it", "Clean it up", "Turn it into something", "Money"), BlockGoals.grouped(BlockGoals.starting(Kind.TEXT)).map { it.first })
 }

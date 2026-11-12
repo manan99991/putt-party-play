@@ -78,3 +78,7 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - iOS: these also run in the share sheet (their engines are compiled into the extension; the on-device model polish and speech are stubbed there).
 - Describe it understands: scam, best deal, tracking/clean link, QR, PDF, identify, describe (the last three and best deal on iOS only).
 - New starters: "Is this message a scam?", "Link without the tracking", "Photo to PDF", "Text or link to QR code" (both); "Shelf photo to best deal", "What is this?" (iOS).
+
+### Builder: start from what you have, steps grouped by goal — iOS and Android
+- A new tool first asks "What do you start with?" (A photo / Text). After that the add-step list shows only steps that fit, under goal headings: Make it easy to send, Keep it private, Make it look better, Read what's in it, Understand it, Clean it up, Turn it into something, Money. Same goal wording on both platforms (`Block.goal`).
+- Video, voice, contacts and files are named as coming next; they are not start options yet.
