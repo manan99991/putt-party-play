@@ -38,7 +38,8 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     EXPENSE_ROW("expenseRow", "Receipt to one expense row", Kind.TEXT, Kind.TEXT, "Date, store and total as one row."),
     ADD_TO_LIST("addToList", "Add to a running list", Kind.TEXT, Kind.FILE, "Adds the rows to the same sheet every time, one sheet a month."),
     CHAT_LINK("chatLink", "WhatsApp link for a number", Kind.TEXT, Kind.TEXT, "Opens a WhatsApp chat with a number without saving it as a contact."),
-    CONTACT_QR("contactQr", "Contact as a QR code", Kind.TEXT, Kind.IMAGE, "A code another phone scans to save the contact. Only what you typed is included.");
+    CONTACT_QR("contactQr", "Contact as a QR code", Kind.TEXT, Kind.IMAGE, "A code another phone scans to save the contact. Only what you typed is included."),
+    STAMP("stamp", "Sign and stamp", Kind.IMAGE, Kind.IMAGE, "Puts your saved signature, your name and today's date where you placed them.");
 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
 }
@@ -48,7 +49,7 @@ val Block.goal: String get() = when (this) {
     Block.SHRINK, Block.CONVERT, Block.RESIZE_PHOTO -> "Make it easy to send"
     Block.STRIP_LOCATION, Block.HIDE_SENSITIVE, Block.WATERMARK -> "Keep it private"
     Block.READ_TEXT -> "Read what's in it"
-    Block.PHOTO_PDF -> "Paperwork"
+    Block.PHOTO_PDF, Block.STAMP -> "Paperwork"
     Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR -> "Turn it into something"
     Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
     Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
@@ -65,6 +66,57 @@ object BlockGoals {
 }
 
 data class Step(val block: Block, val settings: Map<String, String> = emptyMap())
+
+/** One thing "Sign and stamp" puts on a page. [x], [y] are the centre and [w] the width, all as fractions of the page. */
+data class StampSpot(val mark: String, val x: Double, val y: Double, val w: Double)
+
+/**
+ * Where a tool puts your signature, your name and the date. Positions are fractions of the page, so one plan fits every
+ * scan of the same form. Same text form as iOS: "sig@0.720,0.880,0.300;date@0.250,0.880,0.220".
+ */
+object StampPlan {
+    const val SIG = "sig"; const val NAME = "name"; const val DATE = "date"
+    val MARKS = listOf(SIG, NAME, DATE)
+    const val STANDARD = "sig@0.720,0.880,0.300;date@0.250,0.880,0.220"
+
+    fun title(mark: String) = when (mark) { SIG -> "My signature"; NAME -> "My name"; else -> "Today's date" }
+    fun short(mark: String) = when (mark) { SIG -> "Signature"; NAME -> "Name"; else -> "Date" }
+
+    /** Where a mark starts before it is moved: signature bottom right, date bottom left, name above the date. */
+    fun home(mark: String) = when (mark) {
+        SIG -> StampSpot(SIG, 0.72, 0.88, 0.30)
+        NAME -> StampSpot(NAME, 0.25, 0.82, 0.30)
+        else -> StampSpot(DATE, 0.25, 0.88, 0.22)
+    }
+
+    /** Anything malformed is skipped, values are kept on the page, and a mark listed twice counts once. */
+    fun parse(text: String): List<StampSpot> {
+        val out = ArrayList<StampSpot>()
+        for (part in text.split(';')) {
+            val bits = part.split('@')
+            if (bits.size != 2) continue
+            val mark = bits[0].trim()
+            if (mark !in MARKS || out.any { it.mark == mark }) continue
+            val n = bits[1].split(',').mapNotNull { it.trim().toDoubleOrNull() }
+            if (n.size != 3) continue
+            out.add(StampSpot(mark, n[0].coerceIn(0.0, 1.0), n[1].coerceIn(0.0, 1.0), n[2].coerceIn(0.08, 0.9)))
+        }
+        return out
+    }
+
+    fun text(spots: List<StampSpot>): String =
+        spots.joinToString(";") { "${it.mark}@" + listOf(it.x, it.y, it.w).joinToString(",") { v -> String.format(java.util.Locale.US, "%.3f", v) } }
+
+    fun set(spots: List<StampSpot>, mark: String, on: Boolean): List<StampSpot> = when {
+        on && spots.none { it.mark == mark } -> spots + home(mark)
+        !on -> spots.filter { it.mark != mark }
+        else -> spots
+    }
+
+    /** The same plan with one mark moved by a fraction of the page, kept on the page. */
+    fun moved(spots: List<StampSpot>, mark: String, dx: Double, dy: Double): List<StampSpot> =
+        spots.map { if (it.mark == mark) it.copy(x = (it.x + dx).coerceIn(0.0, 1.0), y = (it.y + dy).coerceIn(0.0, 1.0)) else it }
+}
 
 /**
  * Where a tool's result goes when it finishes. "share" (the default) opens the share menu; "mail", "message" and
@@ -253,6 +305,8 @@ object ChainTemplates {
         Chain("photo-to-pdf", "Photo to PDF", listOf(Step(Block.PHOTO_PDF))),
         Chain("text-to-qr", "Text or link to QR code", listOf(Step(Block.MAKE_QR))),
         Chain("scan-to-pdf", "Scan pages into one PDF", listOf(Step(Block.PHOTO_PDF)), combine = true),
+        Chain("sign-and-send", "Sign a form and send it", listOf(Step(Block.STAMP, mapOf("marks" to StampPlan.STANDARD)), Step(Block.PHOTO_PDF)),
+            finish = Finish("mail", ""), combine = true, fileName = "Signed form {date}"),
         Chain("receipt-run", "Receipt into this month's expense sheet", listOf(Step(Block.READ_TEXT), Step(Block.EXPENSE_ROW), Step(Block.ADD_TO_LIST, mapOf("list" to TextTidy.DEFAULT_LIST)))),
         Chain("whatsapp-no-save", "WhatsApp a number without saving it", listOf(Step(Block.CHAT_LINK)), finish = Finish("open")),
         Chain("contact-qr", "My contact as a QR code", listOf(Step(Block.CONTACT_QR))),

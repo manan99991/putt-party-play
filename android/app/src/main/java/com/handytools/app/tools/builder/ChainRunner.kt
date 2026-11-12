@@ -158,6 +158,19 @@ object ChainRunner {
                     val e = MediaEngine.shrinkToBytes(input.bmp, (mb.coerceAtLeast(0.01) * 1_048_576).toLong())
                     Outcome.Done(Payload.Doc(e.bytes, "jpg"))
                 }
+                b == Block.STAMP && input is Payload.Pic -> {
+                    // Burned into the picture, so the signature can't be lifted off the page afterwards.
+                    val spots = StampPlan.parse(step.settings["marks"] ?: StampPlan.STANDARD)
+                    val ctx = com.handytools.app.HandyApp.instance
+                    val sig = if (spots.any { it.mark == StampPlan.SIG }) StampBook.signature(ctx) else null
+                    val name = StampBook.name(ctx).trim()
+                    when {
+                        spots.isEmpty() -> Outcome.Stopped("Sign and stamp has nothing to place. Turn on the signature, your name or the date.")
+                        spots.any { it.mark == StampPlan.SIG } && sig == null -> Outcome.Stopped("Sign and stamp needs your signature. Edit the tool and draw it.")
+                        spots.any { it.mark == StampPlan.NAME } && name.isEmpty() -> Outcome.Stopped("Sign and stamp needs your name. Edit the tool and type it in.")
+                        else -> Outcome.Done(Payload.Pic(StampBook.render(input.bmp, spots, sig, name, java.util.Date())))
+                    }
+                }
                 b == Block.WATERMARK && input is Payload.Pic -> {
                     // Repeats the line diagonally across the whole picture, see-through, so it can't be cropped away.
                     // The date is stamped at run time, so a copy made today can't be passed off later.

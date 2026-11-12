@@ -271,4 +271,21 @@ class BuilderLogicTest {
         assertEquals("1 entry · changed yesterday", TextTidy.sheetSummary(1, 1))
         assertEquals("12 entries · changed 5 days ago", TextTidy.sheetSummary(12, 5))
     }
+    @Test fun stampPlanReadsWritesAndStaysOnThePage() {
+        val p = StampPlan.parse(StampPlan.STANDARD)
+        assertEquals(listOf(StampPlan.SIG, StampPlan.DATE), p.map { it.mark })
+        assertEquals(StampPlan.STANDARD, StampPlan.text(p))
+        val odd = StampPlan.parse("sig@2,-1,5; junk@1,1,1; date@0.5,0.5; sig@0.1,0.1,0.1; name@0.25,0.82,0.3")
+        assertEquals(listOf(StampSpot("sig", 1.0, 0.0, 0.9), StampSpot("name", 0.25, 0.82, 0.3)), odd)
+        assertTrue(StampPlan.parse("").isEmpty())
+        val withName = StampPlan.set(p, StampPlan.NAME, true)
+        assertEquals(3, withName.size); assertEquals(withName, StampPlan.set(withName, StampPlan.NAME, true))
+        assertEquals(listOf(StampPlan.DATE), StampPlan.set(p, StampPlan.SIG, false).map { it.mark })
+        val m = StampPlan.moved(p, StampPlan.SIG, 0.5, -0.08).first()
+        assertEquals(1.0, m.x, 1e-9); assertEquals(0.80, m.y, 1e-9)
+    }
+    @Test fun signStarterIsWired() {
+        val c = ChainTemplates.all.first { it.id == "sign-and-send" }
+        assertNull(c.problem(Kind.IMAGE)); assertTrue(c.combine); assertEquals("mail", c.finish?.kind); assertEquals("Paperwork", Block.STAMP.goal)
+    }
 }

@@ -102,7 +102,7 @@ fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
 
 private fun defaults(b: Block): Map<String, String> = when (b) {
     Block.SHRINK -> mapOf("mb" to "2"); Block.SUMMARIZE -> mapOf("sentences" to "3"); Block.CONVERT -> mapOf("format" to "JPG")
-    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
+    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.STAMP -> mapOf("marks" to StampPlan.STANDARD); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
     Block.ADD_TO_LIST -> mapOf("list" to TextTidy.DEFAULT_LIST)
     Block.CHAT_LINK -> mapOf("cc" to TextTidy.callingCode(java.util.Locale.getDefault().country)); else -> emptyMap()
 }
@@ -352,6 +352,7 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             OutlinedTextField(s.settings["list"] ?: TextTidy.DEFAULT_LIST, { v -> set("list", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Sheet name") })
             Text("Write {month} to start a fresh sheet each month. The sample shown here is not saved.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
+        Block.STAMP -> StampSettings(s.settings["marks"] ?: StampPlan.STANDARD) { v -> set("marks", v) }
         Block.WATERMARK -> {
             OutlinedTextField(s.settings["text"] ?: "", { v -> set("text", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Words to write across it") })
             Text("Today's date is added each time it runs.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)

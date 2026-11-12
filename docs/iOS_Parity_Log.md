@@ -100,7 +100,7 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Both: a tool can name its result file (`fileName`, "{date}" and "{tool}" tokens, unsafe characters dropped, -1, -2 for several). Same rules in `ChainName` (iOS) and `TextTidy.fileName` (Android).
 - Both: new goal heading "Paperwork" (first in the list) holding Make a PDF, and Sign and stamp on iOS.
 - iOS starter: "Sign a form and send it" (stamp, PDF, one PDF for all pages, email, named "Signed form {date}").
-- NOT on Android yet: the stamp step. Android has no saved signature (the Documents tool draws one per session), so it needs a saved-signature store and a placement screen first. A tool using `stamp` can't be imported on Android until then.
+- Android got the stamp step later (see "Sign and stamp on Android" below).
 - UNBUILT: everything in this section was written while CI builds were paused for cost, so it has not been compiled or run.
 
 ### Receipts: one expense row, and a running sheet — iOS and Android
@@ -135,4 +135,15 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - A tool that starts with a photo can be set to "New photo" or "New screenshot" (`auto`, kept on the phone, never shared). When one appears, Tenzy shows a notification; tapping it runs the tool on that picture and the tool's ending (WhatsApp, email, share) follows. Nothing runs until the tap.
 - How: a system job woken by photo-library changes (`PhotoWatch`, no running service), re-armed after each firing, on app start and after a restart. Skips pictures older than two minutes and Tenzy's own saved results. Needs "all photos" access and notifications.
 - iOS cannot notice a new photo. The iPhone route is the Shortcuts actions above.
+- UNBUILT in CI (builds paused for cost).
+
+### My sheets — iOS and Android
+- A screen listing the sheets tools add to: entries and last change, tap to see the rows, Send (the .csv file), Rename, Undo last (removes the newest entry, the header always stays), Delete with a confirm. Shown in Build your own once a sheet exists.
+- Same wording and rules both sides (`RunningList` / `SheetStore` + `TextTidy.sheetRows`, `withoutLastRow`, `sheetSummary`).
+- UNBUILT in CI (builds paused for cost).
+
+### Sign and stamp on Android
+- `stamp` now exists on Android with the same plan text as iOS (`StampPlan`), so a tool using it copies between phones. Signature is drawn once and kept in the app's files (`StampBook`), name is typed once; both stay on the phone.
+- Editor: three switches, draw-once pad, name field, and a small page where each label is dragged into place. Starter "Sign a form and send it" added on Android.
+- Difference: Android sizes the text to its width with a cap of 5% of page height; iOS uses its own font-fit. Close, not pixel-identical.
 - UNBUILT in CI (builds paused for cost).
