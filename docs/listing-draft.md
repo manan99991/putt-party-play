@@ -36,6 +36,7 @@ BUILD YOUR OWN
 • Upload forms: exact pixel size, under 20 KB to 10 MB, both sides of an ID on one page, a safety watermark
 • Privacy: hide numbers and faces, strip location, clean tracking out of links
 • Money: a receipt becomes one row in a sheet that grows all month
+• Video: fit one under 25 MB for email or 16 MB for chat, pull out a still, remove the sound
 • Run it from the Share menu in any app, from a reminder, or from the Shortcuts app
 • Everything runs on your iPhone. Nothing is uploaded.
 ```
@@ -61,12 +62,13 @@ BUILD YOUR OWN
 • Snap a receipt and it becomes a row in this month's expense sheet
 • Exact pixel size and size limits down to 20 KB for upload forms; both sides of an ID on one page
 • A tool can offer itself when you take a photo or a screenshot, or remind you at a set time
+• Video: fit one under a size limit, pull out a still, remove the sound
 • Share a photo to Tenzy from any app and pick the tool to run
 • Runs on your phone. Nothing is uploaded.
 ```
 
-Android does not have these steps yet, so the Play text must not mention them: cut out the background, enhance,
-passport photo, best deal, describe, identify (rulebook section 3: only what works on the platform).
+Android now has every step the iPhone has, but three are plainer there (describe, enhance, identify): do not promise
+"names any plant or breed" or "AI description" on Play (rulebook section 3: only what works on the platform).
 
 ## Lines that are only true after the unbuilt work ships
 

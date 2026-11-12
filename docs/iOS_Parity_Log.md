@@ -153,7 +153,7 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Photo tools: "Choose a PDF" turns each page into a picture (long side about 2000 px, up to 20) and runs the steps on every page, like scanned pages.
 - A PDF with no text layer gets a plain message pointing to a photo tool with Read text.
 - No new permissions: both contact pickers hand over only the tapped contact; iOS speech and microphone strings already existed.
-- Not done: video as a starting point (needs a new kind of result that isn't held in memory).
+- Video became a starting point later (see "Video tools" below).
 - UNBUILT in CI (builds paused for cost).
 
 ### How-it-works card and "What do you have?" — iOS and Android
@@ -164,7 +164,7 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 ### Wi-Fi join code, and two more steps on Android
 - `wifiQr` (both): finds the network name and password in text (labels followed by ":" or "="; or exactly two single words) and makes a Wi-Fi QR code a guest's camera joins from. Open networks are marked open; awkward characters are escaped. Starter "Wi-Fi sign to a code guests scan" (Read text, then Wi-Fi join code). Describe it: "wifi".
 - Android gained `identify` (top three guesses with how sure, barcode first) and `cutout` (Google's on-device cut-out; if its one-time model isn't on the phone the step says how to get it). Starters "What is this?" and "Cut out a subject" added on Android.
-- Android still lacks: enhance, passportPhoto, priceCompare, describe. Tools using those can't be pasted into Android.
+- Android gained the remaining four steps later (see "Every step on both phones" below).
 - iOS: the start picker has a line sending video to Fit It, since video is not a builder step.
 - UNBUILT in CI (builds paused for cost).
 
@@ -172,3 +172,25 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - `returnBy`: a receipt's text becomes a calendar entry "Last day to return: <store>" at 9:00, so many days after the receipt's date (today if it shows none). Window is 14, 30, 60 or 90 days (default 30). A window that has already ended says so instead of making a stale entry.
 - Starter on both: "Receipt to a return-by reminder" (Read text, then Return-by reminder). Same rules both sides (`ChainText.returnDeadline` / `TextTidy.returnDeadline`).
 - UNBUILT in CI (builds paused for cost).
+
+### Every step on both phones
+- Android gained `priceCompare` (a faithful port of the iPhone unit-price rules, `PriceDeal`), `describe`, `enhance` and `passportPhoto`. A unit test lists every iPhone step id and fails if Android is missing one, so a tool always pastes across.
+- Real differences that remain:
+  - `describe`: iPhone uses its scene describer (and the on-device model where available); Android builds one or two sentences from detected things, people and the first words. Plainer, same job.
+  - `enhance`: iPhone uses its photo enhancer; Android stretches tones between the real darkest and brightest parts and lifts colour slightly.
+  - `passportPhoto`: Android cuts the person out and centres them on white at the official size; without the cut-out model it crops instead. iPhone places by face position.
+  - `identify` on Android names objects and reads barcodes; it does not name plants or breeds the way the iPhone one can.
+
+### Video tools — iOS and Android
+- A tool can start with a video. Steps: `videoShrink` (10, 16, 25, 50 or 100 MB; best effort, re-saved so the location is left behind), `videoStill`, `videoMute`, `videoAudio`. A still can go on into the photo steps (still, read text, summarize).
+- A video stays a file on disk and steps pass its location along (`ChainPayload.video(URL)` / `Payload.Clip`). Starters: email under 25 MB, chat under 16 MB, grab a still, without its sound. Describe it understands "video".
+- iPhone uses the same engine as Fit It and Video. Android runs its own exports (`VideoSteps`, Media3), one retry smaller if the first lands over the limit.
+- Not in the share sheet (it takes photos and text only). The editor shows what each video step will do rather than a sample result.
+
+### Share sheet finishes the job — iOS
+- When a tool run from the Share menu ends with "Email it" or "Message it", the result screen offers that first: the composer opens filled in with the result attached. "Open it" endings are not possible from inside another app's share sheet, so those fall back to Share.
+- Results from the share sheet now take the tool's file name when it has one.
+
+### Free logic check
+- `tools/logic-check/run.sh` compiles the plain logic of both platforms on Linux and runs the unit tests that need no phone (66 Android, 67 iOS at the time of writing). It caught a wrong assertion name and two stale counts before any paid build.
+- UNBUILT in CI as of this entry: everything from "Paperwork, part 2" down still needs its first real build.

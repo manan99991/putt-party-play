@@ -88,7 +88,7 @@ struct RunToolOnPhotoIntent: AppIntent {
     static let description: IntentDescription? = IntentDescription("Runs one of your Tenzy tools on a photo and gives back the result, without opening Tenzy. Everything happens on this iPhone.")
 
     @Parameter(title: "Tool") var tool: ToolEntity
-    @Parameter(title: "Photo", supportedContentTypes: [.image]) var photo: IntentFile
+    @Parameter(title: "Photo", supportedTypeIdentifiers: ["public.image"]) var photo: IntentFile
 
     static var parameterSummary: some ParameterSummary { Summary("Run \(\.$tool) on \(\.$photo)") }
 
