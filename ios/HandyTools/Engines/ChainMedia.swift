@@ -79,6 +79,18 @@ enum ChainMedia {
                   let d = try? Data(contentsOf: gif) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "gif"))
 
+        case (.videoSpeed, .video(let url)):
+            guard let out = await respeed(url, rate: ChainText.speedRate(step.settings["speed"])) else { return .failure(.failed(b)) }
+            return .success(.video(out))
+
+        case (.videoLoop, .video(let url)):
+            // The first two and a half seconds, played forwards then backwards (or just backwards), for ever.
+            let length = await VideoEngine.duration(url)
+            let style = step.settings["style"]
+            guard let gif = await tenzyGIFFromVideo(url: url, start: 0, duration: min(max(length, 0.2), 2.5), fps: 10, speed: 1, maxDim: 400, order: { ChainText.loopOrder($0, style: style) }),
+                  let d = try? Data(contentsOf: gif) else { return .failure(.failed(b)) }
+            return .success(.file(d, ext: "gif"))
+
         case (.videoRotate, .video(let url)):
             let turn = ChainText.turnDegrees(step.settings["turn"])
             let side: CGImagePropertyOrientation = turn == 270 ? .left : turn == 180 ? .down : .right
@@ -122,6 +134,24 @@ enum ChainMedia {
         return await reader.exportAudio()
     }
 
+    /// The same video played slower or faster. It comes out without sound, since sound at another speed is only noise.
+    private static func respeed(_ url: URL, rate: Double) async -> URL? {
+        let asset = AVURLAsset(url: url)
+        guard rate > 0, let track = (try? await asset.loadTracks(withMediaType: .video))?.first,
+              let length = try? await asset.load(.duration), length.seconds > 0 else { return nil }
+        let film = AVMutableComposition()
+        guard let lane = film.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
+        let whole = CMTimeRange(start: .zero, duration: length)
+        guard (try? lane.insertTimeRange(whole, of: track, at: .zero)) != nil else { return nil }
+        lane.preferredTransform = (try? await track.load(.preferredTransform)) ?? .identity
+        lane.scaleTimeRange(whole, toDuration: CMTimeMultiplyByFloat64(length, multiplier: 1 / rate))
+        guard let session = AVAssetExportSession(asset: film, presetName: AVAssetExportPresetHighestQuality) else { return nil }
+        let out = VideoEngine.tempURL("mp4")
+        session.outputURL = out; session.outputFileType = .mp4; session.metadata = []
+        await session.export()
+        return session.status == .completed ? out : nil
+    }
+
     /// The middle of the frame at 9:16 (a phone held upright), with even pixel sizes as video encoders need.
     static func tallCrop(_ s: CGSize) -> CGRect {
         func even(_ v: CGFloat) -> CGFloat { max(2, (v / 2).rounded(.down) * 2) }
@@ -144,6 +174,37 @@ enum ChainMedia {
         session.outputURL = out; session.outputFileType = .mp4; session.videoComposition = comp; session.metadata = []
         await session.export()
         return session.status == .completed ? out : nil
+    }
+}
+
+extension ChainCombine {
+    /// "One GIF for everything": the results of a multi-photo run played one after another, for ever. Every picture
+    /// fills the shape of the first one. nil when a result isn't a picture.
+    static func oneGif(_ results: [ChainPayload], long: CGFloat = 600, hold: Double = 0.6) -> ChainPayload? {
+        var images: [UIImage] = []
+        for r in results {
+            switch r {
+            case .image(let i): images.append(i)
+            case .file(let d, let ext) where ChainPayload.isPhoto(ext):
+                guard let i = UIImage(data: d) else { return nil }
+                images.append(i)
+            default: return nil
+            }
+        }
+        guard let first = images.first, first.size.width > 0, first.size.height > 0 else { return nil }
+        let k = long / max(first.size.width, first.size.height)
+        let size = CGSize(width: max(2, (first.size.width * k).rounded()), height: max(2, (first.size.height * k).rounded()))
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        let frames: [CGImage] = images.compactMap { img in
+            UIGraphicsImageRenderer(size: size, format: fmt).image { _ in
+                let s = max(size.width / max(1, img.size.width), size.height / max(1, img.size.height))
+                let w = img.size.width * s, h = img.size.height * s
+                img.draw(in: CGRect(x: (size.width - w) / 2, y: (size.height - h) / 2, width: w, height: h))
+            }.cgImage
+        }
+        guard !frames.isEmpty, let url = tenzyWriteGIF(frames: frames, delay: hold), let d = try? Data(contentsOf: url) else { return nil }
+        try? FileManager.default.removeItem(at: url)
+        return .file(d, ext: "gif")
     }
 }
 

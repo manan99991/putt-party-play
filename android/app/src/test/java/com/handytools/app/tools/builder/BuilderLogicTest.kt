@@ -372,12 +372,12 @@ class BuilderLogicTest {
             "hideSensitive", "passportPhoto", "cleanText", "pullDetails", "makeTable", "scamCheck", "cleanLinks", "priceCompare", "makeQr", "describe", "identify", "photoPdf",
             "watermark", "resizePhoto", "stamp", "expenseRow", "addToList", "chatLink", "contactQr", "wifiQr", "returnBy", "videoShrink", "videoStill", "videoMute", "videoAudio",
             "videoTrim", "videoGif", "videoRotate", "videoVertical", "videoCaptions", "speechText", "readAloud", "translate", "rewrite", "readCode", "pageText", "textPdf",
-            "pdfShrink", "pdfLock", "pdfPages", "pdfText")
+            "pdfShrink", "pdfLock", "pdfPages", "pdfText", "sticker", "emojiFaces", "meme", "emojiMosaic", "videoSpeed", "videoLoop")
         assertEquals(emptyList<String>(), ios.filter { Block.byId(it) == null })
         assertEquals("both phones have exactly the same steps", ios.size, Block.values().size)
     }
     @Test fun videoStepsOnlyFitAVideo() {
-        val v = listOf(Block.VIDEO_SHRINK, Block.VIDEO_STILL, Block.VIDEO_MUTE, Block.VIDEO_AUDIO, Block.VIDEO_TRIM, Block.VIDEO_GIF, Block.VIDEO_ROTATE, Block.VIDEO_VERTICAL, Block.VIDEO_CAPTIONS)
+        val v = listOf(Block.VIDEO_SHRINK, Block.VIDEO_STILL, Block.VIDEO_MUTE, Block.VIDEO_AUDIO, Block.VIDEO_TRIM, Block.VIDEO_GIF, Block.VIDEO_ROTATE, Block.VIDEO_VERTICAL, Block.VIDEO_CAPTIONS, Block.VIDEO_SPEED, Block.VIDEO_LOOP)
         assertTrue(v.all { it.takes == Kind.VIDEO })
         assertEquals(v.toSet(), BlockGoals.starting(Kind.VIDEO).toSet())
         assertFalse(Block.VIDEO_SHRINK in BlockGoals.starting(Kind.IMAGE)); assertFalse(Block.VIDEO_STILL in BlockGoals.starting(Kind.TEXT))
@@ -493,7 +493,7 @@ class BuilderLogicTest {
         assertTrue(ChainTemplates.all.first { it.id == "pdf-join" }.combine)
         assertEquals(listOf(Block.VIDEO_AUDIO, Block.SPEECH_TEXT), ChainTemplates.all.first { it.id == "video-words" }.steps.map { it.block })
         assertFalse(chain(Block.CLEAN_TEXT).collage)
-        assertEquals(49, ChainTemplates.all.size); assertEquals(49, ChainTemplates.all.map { it.id }.toSet().size)
+        assertEquals(57, ChainTemplates.all.size); assertEquals(57, ChainTemplates.all.map { it.id }.toSet().size)
     }
     @Test fun describeItUnderstandsTheNewKinds() {
         fun blocks(ask: String) = ChainPlanner.plan(ask)?.steps?.map { it.block } ?: emptyList()
@@ -596,5 +596,53 @@ class BuilderLogicTest {
         assertNull(kindOf("application/zip", false)); assertNull(kindOf(null, false))
         // Every kind something can arrive as has at least one starter ready for it.
         for (k in listOf(Kind.IMAGE, Kind.VIDEO, Kind.AUDIO, Kind.PDF, Kind.TEXT)) assertTrue(k.label, ChainOffers.forKind(k, emptyList(), null).isNotEmpty())
+    }
+
+    @Test fun funStepsFitWhereTheyShould() {
+        for (b in listOf(Block.STICKER, Block.EMOJI_FACES, Block.MEME, Block.EMOJI_MOSAIC)) { assertEquals(b.id, Kind.IMAGE, b.takes); assertEquals("Just for fun", b.goal) }
+        for (b in listOf(Block.VIDEO_SPEED, Block.VIDEO_LOOP)) { assertEquals(b.id, Kind.VIDEO, b.takes); assertEquals("Just for fun", b.goal) }
+        assertTrue("Just for fun" in BlockGoals.ORDER)
+        assertNull(chain(Block.EMOJI_FACES, Block.MEME, Block.STRIP_LOCATION).problem(Kind.IMAGE))
+        assertNull(chain(Block.STICKER, Block.SHRINK).problem(Kind.IMAGE))
+        assertNull(chain(Block.VIDEO_TRIM, Block.VIDEO_SPEED, Block.VIDEO_SHRINK).problem(Kind.VIDEO))
+        assertNotNull(chain(Block.VIDEO_LOOP, Block.VIDEO_SHRINK).problem(Kind.VIDEO))
+        assertNotNull(chain(Block.MEME).problem(Kind.TEXT))
+    }
+    @Test fun funHelpersDoWhatTheySay() {
+        assertEquals(TextTidy.FACE_EMOJIS[0], TextTidy.faceEmoji(null)); assertEquals(TextTidy.FACE_EMOJIS[0], TextTidy.faceEmoji("x")); assertEquals("🤖", TextTidy.faceEmoji("🤖"))
+        assertEquals("WHEN IT WORKS FIRST TIME", TextTidy.memeText("  when it\nworks   first time "))
+        assertEquals("", TextTidy.memeText("   ")); assertEquals(120, TextTidy.memeText("ab ".repeat(100)).length)
+        assertEquals(0.5, TextTidy.speedRate("slow"), 0.0); assertEquals(2.0, TextTidy.speedRate("fast"), 0.0); assertEquals(4.0, TextTidy.speedRate("faster"), 0.0); assertEquals(0.5, TextTidy.speedRate(null), 0.0)
+        assertEquals(listOf(0, 1, 2, 3, 2, 1), TextTidy.loopOrder(4, "boomerang")); assertEquals(listOf(0, 1, 2, 3, 2, 1), TextTidy.loopOrder(4, null))
+        assertEquals(listOf(3, 2, 1, 0), TextTidy.loopOrder(4, "reverse"))
+        assertEquals(listOf(0, 1), TextTidy.loopOrder(2, "boomerang")); assertEquals(listOf(0), TextTidy.loopOrder(1, "boomerang")); assertEquals(emptyList<Int>(), TextTidy.loopOrder(0, "reverse"))
+        assertEquals(56 to 42, TextTidy.mosaicGrid(4000.0, 3000.0)); assertEquals(42 to 56, TextTidy.mosaicGrid(3000.0, 4000.0)); assertEquals(56 to 56, TextTidy.mosaicGrid(10.0, 10.0))
+        assertEquals(56 to 1, TextTidy.mosaicGrid(5000.0, 10.0)); assertEquals(0 to 0, TextTidy.mosaicGrid(0.0, 10.0))
+        val palette = listOf(intArrayOf(255, 0, 0), intArrayOf(0, 255, 0), intArrayOf(250, 250, 250))
+        assertEquals(0, TextTidy.nearestColor(200, 30, 20, palette)); assertEquals(2, TextTidy.nearestColor(255, 255, 255, palette)); assertEquals(-1, TextTidy.nearestColor(1, 2, 3, emptyList()))
+        assertEquals(TextTidy.MOSAIC_EMOJIS.size, TextTidy.MOSAIC_EMOJIS.toSet().size); assertTrue(TextTidy.MOSAIC_EMOJIS.size >= 48)
+    }
+    @Test fun describeItUnderstandsTheFunRequests() {
+        assertEquals(listOf(Block.MEME), planned("make a meme")); assertEquals(listOf(Block.MEME), planned("make a meme from my foto"))
+        assertEquals(listOf(Block.STICKER), planned("turn my dog into a sticker")); assertEquals(listOf(Block.STICKER), planned("whatsapp stikcer of my cat"))
+        assertEquals(listOf(Block.CUTOUT), planned("remove the background"))
+        assertEquals(listOf(Block.EMOJI_FACES), planned("put an emoji on my kids faces")); assertEquals(listOf(Block.EMOJI_FACES), planned("hide faces with emojis"))
+        assertEquals(listOf(Block.EMOJI_MOSAIC), planned("emoji mosaic of my selfie")); assertEquals(listOf(Block.EMOJI_MOSAIC), planned("photo made of emojis"))
+        assertEquals(listOf(Block.VIDEO_LOOP), planned("boomerang")); assertEquals("boomerang", ChainPlanner.plan("bomerang of my video")?.steps?.first()?.settings?.get("style"))
+        assertEquals("reverse", ChainPlanner.plan("play my video backwards")?.steps?.first()?.settings?.get("style"))
+        assertEquals("slow", ChainPlanner.plan("slow motion video")?.steps?.first()?.settings?.get("speed")); assertEquals(listOf(Block.VIDEO_SPEED), planned("slow mo"))
+        assertEquals("fast", ChainPlanner.plan("speed up my video")?.steps?.first()?.settings?.get("speed")); assertEquals("faster", ChainPlanner.plan("make a timelapse")?.steps?.first()?.settings?.get("speed"))
+        val gif = ChainPlanner.plan("make a gif from my photos")
+        assertEquals(true, gif?.gif); assertEquals(Kind.IMAGE, gif?.start)
+        assertEquals(listOf(Block.VIDEO_GIF), planned("turn my video into a gif")); assertEquals(false, ChainPlanner.plan("turn my video into a gif")?.gif)
+        assertEquals(listOf(Block.VIDEO_SHRINK), planned("shrink video for whatsapp"))
+        assertNull(ChainPlanner.plan("what I spend on a faster phone")?.steps?.firstOrNull { it.block == Block.VIDEO_SPEED })
+    }
+    @Test fun theGifOptionTravelsWithTheTool() {
+        val t = ChainTemplates.all.first { it.id == "photos-gif" }
+        assertTrue(t.gif); assertFalse(t.collage)
+        assertEquals(true, Chain.imported(t.shareText)?.gif)
+        assertFalse(Chain.imported(chain(Block.CLEAN_TEXT).shareText)!!.gif)
+        assertEquals("Photo to a sticker", ChainPlanner.autoName(Chain("x", "", listOf(Step(Block.STICKER)))))
     }
 }

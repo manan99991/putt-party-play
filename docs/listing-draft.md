@@ -109,3 +109,10 @@ Lines that become true once the recording, PDF, link, code, translate and extra 
 - Do not put captions or rewriting in the Play listing at all.
 - Reviewer notes to add (iPhone): Location is read only when the person taps Location in a tool; "Read the page at a link" fetches the single
   page the person entered; speech is recognised on the device.
+
+## Added with the fun steps (not live, needs Manan's yes)
+
+- Both stores: "Turn a photo into a sticker." "Put an emoji over every face." "Make a meme." "Rebuild a photo from emojis." "Boomerang GIFs, slow
+  motion and fast-forward." "Play your photos as one GIF."
+- iPhone only: "Start a video tool from a Live Photo." Never mention Live Photos in the Play listing.
+- Do not call any of this "AI". Nothing here uses a model beyond the phone's own face finder and cut-out.

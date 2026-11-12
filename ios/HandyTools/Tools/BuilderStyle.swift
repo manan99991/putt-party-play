@@ -56,6 +56,12 @@ extension Block {
         case .pdfLock: return "lock.doc"
         case .pdfPages: return "doc.on.doc"
         case .pdfText: return "doc.text.magnifyingglass"
+        case .sticker: return "seal"
+        case .emojiFaces: return "face.smiling"
+        case .meme: return "textformat.size"
+        case .emojiMosaic: return "square.grid.3x3.fill"
+        case .videoSpeed: return "gauge.with.dots.needle.67percent"
+        case .videoLoop: return "arrow.left.arrow.right"
         }
     }
     var tint: Color {
@@ -63,6 +69,7 @@ extension Block {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink, .speechText, .translate, .rewrite, .readCode, .pageText, .pdfText: return Color(hex: 0x3B82F6)
         case .shrinkImage, .convertImage, .stripLocation, .resizePhoto, .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .pdfShrink: return Color(hex: 0x10B981)
         case .cutout, .enhance, .passportPhoto, .videoRotate, .videoVertical, .videoCaptions: return Color(hex: 0xA855F7)
+        case .sticker, .emojiFaces, .meme, .emojiMosaic, .videoSpeed, .videoLoop: return Color(hex: 0xEAB308)
         case .hideSensitive, .scamCheck, .watermark, .pdfLock: return Color(hex: 0xF97316)
         case .businessCard, .calendarEvent, .makeTable, .photoPdf, .makeQr, .stamp, .addToList, .contactQr, .wifiQr, .returnBy, .readAloud, .textPdf, .pdfPages: return Color(hex: 0xEC4899)
         }
@@ -121,6 +128,12 @@ extension Block {
         case .pdfLock: return "Asks for a password before the PDF opens."
         case .pdfPages: return "Keeps only the pages you list. Leave it empty to keep them all."
         case .pdfText: return "Pulls the words out of a PDF, even a scanned one."
+        case .sticker: return "Cuts out the person, pet or object and gives it a white edge, ready for WhatsApp or Messages."
+        case .emojiFaces: return "Puts an emoji over every face. Handy for posting a photo without showing who is in it."
+        case .meme: return "Big white words across the top and bottom of the photo."
+        case .emojiMosaic: return "Rebuilds the photo out of hundreds of emojis. Zoom in to see them."
+        case .videoSpeed: return "Slow motion, or two or four times faster. Comes out without sound."
+        case .videoLoop: return "The first couple of seconds played forwards and back, as a GIF that loops for ever."
         }
     }
 }

@@ -374,15 +374,17 @@ private struct ChainEditor: View {
             set: { t in var f = chain.finish ?? ChainFinish(); f.to = t; chain.finish = f })
         let onePdf = Binding<Bool>(get: { chain.combine == true }, set: { chain.combine = $0 ? true : nil; if !$0 { chain.onePage = nil } })
         let onePage = Binding<Bool>(get: { chain.onePage == true }, set: { chain.onePage = $0 ? true : nil })
-        let collage = Binding<Bool>(get: { chain.collage == true }, set: { chain.collage = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil } })
+        let collage = Binding<Bool>(get: { chain.collage == true }, set: { chain.collage = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil; chain.gif = nil } })
+        let oneGif = Binding<Bool>(get: { chain.gif == true }, set: { chain.gif = $0 ? true : nil; if $0 { chain.combine = nil; chain.onePage = nil; chain.collage = nil } })
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
             if startKind == .image, endKind != .text {
-                Toggle("Put all pages or photos into one PDF", isOn: Binding(get: { onePdf.wrappedValue }, set: { onePdf.wrappedValue = $0; if $0 { chain.collage = nil } })).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
+                Toggle("Put all pages or photos into one PDF", isOn: Binding(get: { onePdf.wrappedValue }, set: { onePdf.wrappedValue = $0; if $0 { chain.collage = nil; chain.gif = nil } })).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
                 if chain.combine == true {
                     Toggle("All on a single page (both sides of an ID)", isOn: onePage).font(HandyFont.caption).accessibilityIdentifier("finish-one-page")
                 }
                 if endKind == .image || endKind == .photoFile {
                     Toggle("Put all photos into one picture (a collage)", isOn: collage).font(HandyFont.caption).accessibilityIdentifier("finish-collage")
+                    Toggle("Play all photos as one GIF", isOn: oneGif).font(HandyFont.caption).accessibilityIdentifier("finish-gif")
                 }
             }
             if startKind == .pdf, endKind == .pdf {
@@ -587,6 +589,8 @@ private struct ChainEditor: View {
         case .videoTrim: return ["side": "first", "secs": "30"]; case .videoRotate: return ["turn": "right"]; case .videoShrink: return ["mb": "25"]
         case .translate: return ["to": "en"]; case .rewrite: return ["style": "clear"]
         case .pdfShrink: return ["mb": "5"]; case .pdfLock: return ["password": ""]; case .pdfPages: return ["pages": ""]
+        case .emojiFaces: return ["emoji": ChainText.faceEmojis[0]]; case .meme: return ["top": "", "bottom": ""]
+        case .videoSpeed: return ["speed": "slow"]; case .videoLoop: return ["style": "boomerang"]
         default: return [:] }
     }
 
@@ -666,6 +670,24 @@ private struct ChainEditor: View {
             TextField("Pages, e.g. 1-3, 5 (empty keeps all)", text: Binding(get: { chain.steps[i].settings["pages"] ?? "" }, set: { chain.steps[i].settings["pages"] = $0 }))
                 .keyboardType(.numbersAndPunctuation).autocorrectionDisabled()
                 .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+        case .emojiFaces:
+            Picker("Emoji", selection: Binding(get: { ChainText.faceEmoji(chain.steps[i].settings["emoji"]) }, set: { chain.steps[i].settings["emoji"] = $0 })) {
+                ForEach(ChainText.faceEmojis, id: \.self) { Text($0).tag($0) }
+            }.pickerStyle(.segmented)
+        case .meme:
+            TextField("Top line", text: Binding(get: { chain.steps[i].settings["top"] ?? "" }, set: { chain.steps[i].settings["top"] = $0 }))
+                .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8)).accessibilityIdentifier("meme-top")
+            TextField("Bottom line", text: Binding(get: { chain.steps[i].settings["bottom"] ?? "" }, set: { chain.steps[i].settings["bottom"] = $0 }))
+                .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8)).accessibilityIdentifier("meme-bottom")
+            Text("Leave them empty to type new words every time you run the tool.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        case .videoSpeed:
+            Picker("Speed", selection: Binding(get: { ChainText.speeds.first { $0.id == chain.steps[i].settings["speed"] }?.id ?? "slow" }, set: { chain.steps[i].settings["speed"] = $0 })) {
+                ForEach(ChainText.speeds, id: \.id) { Text($0.name).tag($0.id) }
+            }.pickerStyle(.segmented)
+        case .videoLoop:
+            Picker("Plays", selection: Binding(get: { chain.steps[i].settings["style"] == "reverse" ? "reverse" : "boomerang" }, set: { chain.steps[i].settings["style"] = $0 })) {
+                Text("Forwards and back").tag("boomerang"); Text("Backwards").tag("reverse")
+            }.pickerStyle(.segmented)
         case .convertImage:
             Picker("Format", selection: Binding(get: { chain.steps[i].settings["format"] ?? "JPG" }, set: { chain.steps[i].settings["format"] = $0 })) {
                 ForEach(ImageStudio.Format.allCases, id: \.rawValue) { Text($0.rawValue).tag($0.rawValue) }
@@ -727,6 +749,11 @@ private struct ChainRunView: View {
     @State private var pickingContact = false
     @State private var pickingPDF = false
     @State private var videoPick: PhotosPickerItem?
+    @State private var livePick: PhotosPickerItem?
+    /// A meme's words can be typed fresh for each run.
+    @State private var memeTop = ""
+    @State private var memeBottom = ""
+    @State private var memeLoaded = false
     @StateObject private var here = WhereAmI()
     @StateObject private var recorder = QuickRecorder()
     /// What each result of a many-at-once run is called in the list: a photo, or a file.
@@ -737,12 +764,27 @@ private struct ChainRunView: View {
     @Environment(\.dismiss) private var dismiss
 
     private var start: ChainKind { chain.steps.first?.block.takes ?? .image }
+    private var hasMeme: Bool { chain.steps.contains { $0.block == .meme } }
+
+    /// The tool as it runs this time: a meme step takes the words typed on this screen.
+    private var runChain: Chain {
+        guard hasMeme else { return chain }
+        var c = chain
+        for i in c.steps.indices where c.steps[i].block == .meme {
+            c.steps[i].settings["top"] = memeTop; c.steps[i].settings["bottom"] = memeBottom
+        }
+        return c
+    }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 Text(chain.name).font(HandyFont.title)
                 stampSetup
+                if hasMeme {
+                    TextField("Top line", text: $memeTop).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12)).accessibilityIdentifier("run-meme-top")
+                    TextField("Bottom line", text: $memeBottom).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12)).accessibilityIdentifier("run-meme-bottom")
+                }
                 if let why = chain.unavailable {
                     Label(why, systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber).cardStyle(padding: HandySpacing.s12)
                 }
@@ -753,7 +795,9 @@ private struct ChainRunView: View {
                 } else if start == .video {
                     PhotosPicker(selection: $videoPick, matching: .videos) { Label("Choose a video", systemImage: "film").frame(maxWidth: .infinity) }
                         .primaryButton().accessibilityIdentifier("run-video")
-                    Text("Long videos take a little while. Keep Tenzy open until it finishes.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    PhotosPicker(selection: $livePick, matching: .livePhotos) { Label("Choose a Live Photo", systemImage: "livephoto").frame(maxWidth: .infinity) }
+                        .secondaryButton().accessibilityIdentifier("run-live-photo")
+                    Text("Long videos take a little while. Keep Tenzy open until it finishes. A Live Photo is used as its short video.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else if start != .text {
                     PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label("Choose photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
                     if VNDocumentCameraViewController.isSupported {
@@ -762,7 +806,7 @@ private struct ChainRunView: View {
                     }
                     Button { pickingPDF = true } label: { Label("Choose a PDF", systemImage: "doc.richtext").frame(maxWidth: .infinity) }
                         .secondaryButton().accessibilityIdentifier("run-pdf")
-                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : "Pick one, or up to 20 at once. Each one gets the same steps.")
+                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : "Pick one, or up to 20 at once. Each one gets the same steps.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
                     // Four ways to get the words in without typing them.
@@ -795,7 +839,7 @@ private struct ChainRunView: View {
         .onChange(of: picks) { _, items in
             guard !items.isEmpty else { return }
             picks = []
-            if items.count == 1, let item = items.first {
+            if items.count == 1, chain.gif != true, let item = items.first {
                 Task {
                     let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
                     if let img { go(.image(img)) } else { message = "That photo couldn't be opened. Try another." }
@@ -835,6 +879,10 @@ private struct ChainRunView: View {
         }
         .onDisappear { if speech.running { speech.stop() }; if recorder.running { _ = recorder.stop() } }
         .onAppear {
+            if !memeLoaded, let words = chain.steps.first(where: { $0.block == .meme })?.settings {
+                memeLoaded = true
+                memeTop = words["top"] ?? ""; memeBottom = words["bottom"] ?? ""
+            }
             guard let initial, !started else { return }
             started = true
             if case .text(let t) = initial { text = t }
@@ -848,6 +896,17 @@ private struct ChainRunView: View {
                 let movie = try? await item.loadTransferable(type: MovieImport.self)
                 await MainActor.run {
                     if let movie { go(.video(movie.url)) } else { busy = false; progress = ""; message = "That video couldn't be opened. Try another." }
+                }
+            }
+        }
+        .onChange(of: livePick) { _, item in
+            guard let item else { return }
+            livePick = nil
+            busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the Live Photo ready…"
+            Task {
+                let movie = await LivePhotoVideo.movie(from: item)
+                await MainActor.run {
+                    if let movie { go(.video(movie)) } else { busy = false; progress = ""; message = "That Live Photo couldn't be opened. Try another, or choose a video." }
                 }
             }
         }
@@ -933,6 +992,8 @@ private struct ChainRunView: View {
         busy = true; result = nil; message = nil; batch = []; outbox = nil; noun = name
         let combine = chain.combine == true
         let collage = chain.collage == true
+        let gif = chain.gif == true
+        let tool = runChain
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-batch-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         Task {
@@ -943,15 +1004,15 @@ private struct ChainRunView: View {
                 guard let item = await load(i) else {
                     out.append(BatchItem(n: i + 1, note: "Couldn't open this \(name.lowercased()).")); continue
                 }
-                switch await ChainRunner.run(chain, input: item) {
+                switch await ChainRunner.run(tool, input: item) {
                 case .success(let p):
-                    if combine || collage { kept.append(p) }
+                    if combine || collage || gif { kept.append(p) }
                     out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name))
                 case .failure(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
                 }
             }
             // One PDF for everything, when the tool asks for it and the results can be joined.
-            if let one = collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true) : nil {
+            if let one = gif ? ChainCombine.oneGif(kept) : collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true) : nil {
                 let skipped = out.filter { $0.note != nil }.count
                 await MainActor.run {
                     busy = false; progress = ""; result = one
@@ -1067,8 +1128,9 @@ private struct ChainRunView: View {
 
     private func go(_ input: ChainPayload) {
         busy = true; result = nil; message = nil; batch = []; progress = ""; outbox = nil
+        let tool = runChain
         Task {
-            let r = await ChainRunner.run(chain, input: input)
+            let r = await ChainRunner.run(tool, input: input)
             await MainActor.run {
                 busy = false
                 switch r {

@@ -402,6 +402,50 @@ object TextTidy {
         return (if (a.isEmpty()) "I'm here:" else "I'm here: $a") + "\n" + link
     }
 
+    // ------------------------------------------------------------------ just for fun
+
+    /** Emojis "Emoji over faces" offers. The first is the default. */
+    val FACE_EMOJIS = listOf("😀", "😎", "🤡", "🐶", "🐱", "👽", "🤖", "🎃")
+    fun faceEmoji(setting: String?): String = if (setting in FACE_EMOJIS) setting!! else FACE_EMOJIS[0]
+
+    /** A line of meme text as it is drawn: capitals, one line's worth of spaces, at most 120 characters. */
+    fun memeText(raw: String): String = raw.uppercase().split(Regex("\\s+")).filter { it.isNotEmpty() }.joinToString(" ").take(120)
+
+    /** Speeds "Slow it down or speed it up" offers: id, label, and how many times faster it plays. */
+    val SPEEDS = listOf(Triple("slow", "Slow motion", 0.5), Triple("fast", "2x faster", 2.0), Triple("faster", "4x faster", 4.0))
+    fun speedRate(setting: String?): Double = SPEEDS.firstOrNull { it.first == setting }?.third ?: 0.5
+
+    /**
+     * The order a loop plays its frames in. "reverse" plays them backwards; anything else is a boomerang: forwards,
+     * then back again without repeating the two end frames, so the loop has no stutter.
+     */
+    fun loopOrder(count: Int, style: String?): List<Int> = when {
+        count <= 0 -> emptyList()
+        style == "reverse" -> (0 until count).reversed().toList()
+        else -> (0 until count).toList() + (if (count > 2) (1 until count - 1).reversed().toList() else emptyList())
+    }
+
+    /** How many emojis across and down a mosaic gets: 56 along the picture's long side, the other side in proportion. */
+    fun mosaicGrid(width: Double, height: Double, long: Int = 56): Pair<Int, Int> = when {
+        width <= 0 || height <= 0 -> 0 to 0
+        width >= height -> long to maxOf(1, Math.round(long * height / width).toInt())
+        else -> maxOf(1, Math.round(long * width / height).toInt()) to long
+    }
+
+    /** Emojis a mosaic is built from: a spread of every colour, so any part of a photo has a close match. */
+    val MOSAIC_EMOJIS = listOf("🍎", "🌹", "🍓", "🔴", "🍅", "🍊", "🦊", "🏀", "🥕", "🟠", "🌟", "🍋", "🌻", "🟡", "🧀", "🍌", "🍏", "🌲", "🐸", "🥦", "🟢", "🍀", "🥝", "💙", "🌊", "🐳", "🔵", "🧊", "🫐", "💜", "🍇", "🔮", "🟣", "🌸", "🐷", "💗", "🍑", "🐻", "🍫", "🟤", "🥔", "🌰", "🍞", "🥜", "🧇", "🍪", "⚫", "🎱", "🖤", "🎩", "⚪", "☁️", "🥚", "🤍", "🐑", "🐘", "🪨", "🐭", "🥈", "🔘")
+
+    /** Which colour in [palette] (each r, g, b from 0 to 255) is closest to the one given. -1 for an empty palette. */
+    fun nearestColor(r: Int, g: Int, b: Int, palette: List<IntArray>): Int {
+        var best = -1; var bestD = Int.MAX_VALUE
+        palette.forEachIndexed { i, p ->
+            val d = (p[0] - r) * (p[0] - r) + (p[1] - g) * (p[1] - g) + (p[2] - b) * (p[2] - b)
+            if (d < bestD) { best = i; bestD = d }
+        }
+        return best
+    }
+
+
     /**
      * Why this phone can't run a step, or null when it can. [sdk] is the Android version and [speech] whether the phone
      * has a speech recogniser. The builder greys the step out and says this; every other step stays usable.

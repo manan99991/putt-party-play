@@ -86,7 +86,7 @@ final class ChainRowTests: XCTestCase {
 
 final class ChainTemplateTests: XCTestCase {
     func testTwentyEightTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 49)
+        XCTAssertEqual(ChainTemplates.all.count, 57)
         XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, ChainTemplates.all.count)
     }
     func testShareRoundTripAndRejectsJunk() throws {
@@ -833,7 +833,7 @@ final class ReturnByTests: XCTestCase {
 
 final class VideoTests: XCTestCase {
     func testVideoStepsOnlyFitAVideoAndSayWhatTheyGive() {
-        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions]
+        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop]
         XCTAssertTrue(v.allSatisfy { $0.takes == .video })
         XCTAssertEqual(Block.starting(with: .video), v)
         XCTAssertFalse(Block.starting(with: .image).contains(.videoShrink)); XCTAssertFalse(Block.starting(with: .text).contains(.videoStill))
@@ -1241,5 +1241,105 @@ final class GivenTests: XCTestCase {
     }
     func testEveryKindHasAToolWaiting() {
         for k in [ChainKind.image, .text, .video, .pdf] { XCTAssertFalse(ChainStore.offers(for: k, mine: [], last: nil).isEmpty, k.rawValue) }
+    }
+}
+
+final class FunStepTests: XCTestCase {
+    private func chain(_ blocks: [Block]) -> Chain { Chain(id: "t", name: "t", steps: blocks.map { ChainStep(block: $0) }) }
+    private func planned(_ ask: String) -> [Block] { ChainPlanner.keywordPlan(ask)?.steps.map(\.block) ?? [] }
+
+    func testFunStepsFitWhereTheyShould() {
+        for b in [Block.sticker, .emojiFaces, .meme, .emojiMosaic] { XCTAssertEqual(b.takes, .image, b.rawValue); XCTAssertEqual(b.goal, "Just for fun") }
+        for b in [Block.videoSpeed, .videoLoop] { XCTAssertEqual(b.takes, .video, b.rawValue); XCTAssertEqual(b.goal, "Just for fun") }
+        XCTAssertTrue(Block.goalOrder.contains("Just for fun"))
+        XCTAssertNil(chain([.emojiFaces, .meme, .stripLocation]).problem(starting: .image))
+        XCTAssertNil(chain([.sticker, .shrinkImage]).problem(starting: .image))
+        XCTAssertNil(chain([.videoTrim, .videoSpeed, .videoShrink]).problem(starting: .video))
+        XCTAssertNotNil(chain([.videoLoop, .videoShrink]).problem(starting: .video), "a boomerang is a finished GIF, not a video")
+        XCTAssertNotNil(chain([.meme]).problem(starting: .text))
+    }
+    func testFunHelpersDoWhatTheySay() {
+        XCTAssertEqual(ChainText.faceEmoji(nil), ChainText.faceEmojis[0]); XCTAssertEqual(ChainText.faceEmoji("x"), ChainText.faceEmojis[0]); XCTAssertEqual(ChainText.faceEmoji("🤖"), "🤖")
+        XCTAssertEqual(ChainText.memeText("  when it\nworks   first time "), "WHEN IT WORKS FIRST TIME")
+        XCTAssertEqual(ChainText.memeText("   "), ""); XCTAssertEqual(ChainText.memeText(String(repeating: "ab ", count: 100)).count, 120)
+        XCTAssertEqual(ChainText.speedRate("slow"), 0.5); XCTAssertEqual(ChainText.speedRate("fast"), 2); XCTAssertEqual(ChainText.speedRate("faster"), 4); XCTAssertEqual(ChainText.speedRate(nil), 0.5)
+        XCTAssertEqual(ChainText.loopOrder(4, style: "boomerang"), [0, 1, 2, 3, 2, 1]); XCTAssertEqual(ChainText.loopOrder(4, style: nil), [0, 1, 2, 3, 2, 1])
+        XCTAssertEqual(ChainText.loopOrder(4, style: "reverse"), [3, 2, 1, 0])
+        XCTAssertEqual(ChainText.loopOrder(2, style: "boomerang"), [0, 1]); XCTAssertEqual(ChainText.loopOrder(1, style: "boomerang"), [0]); XCTAssertEqual(ChainText.loopOrder(0, style: "reverse"), [])
+        XCTAssertTrue(ChainText.mosaicGrid(width: 4000, height: 3000) == (56, 42)); XCTAssertTrue(ChainText.mosaicGrid(width: 3000, height: 4000) == (42, 56))
+        XCTAssertTrue(ChainText.mosaicGrid(width: 5000, height: 10) == (56, 1)); XCTAssertTrue(ChainText.mosaicGrid(width: 0, height: 10) == (0, 0))
+        let palette: [(r: Int, g: Int, b: Int)] = [(255, 0, 0), (0, 255, 0), (250, 250, 250)]
+        XCTAssertEqual(ChainText.nearestColor(r: 200, g: 30, b: 20, in: palette), 0); XCTAssertEqual(ChainText.nearestColor(r: 255, g: 255, b: 255, in: palette), 2)
+        XCTAssertEqual(ChainText.nearestColor(r: 1, g: 2, b: 3, in: []), -1)
+        XCTAssertEqual(Set(ChainText.mosaicEmojis).count, ChainText.mosaicEmojis.count); XCTAssertGreaterThanOrEqual(ChainText.mosaicEmojis.count, 48)
+    }
+    func testDescribeItUnderstandsTheFunRequests() {
+        XCTAssertEqual(planned("make a meme"), [.meme])
+        XCTAssertEqual(planned("turn my dog into a sticker"), [.sticker]); XCTAssertEqual(planned("whatsapp stikcer of my cat"), [.sticker])
+        XCTAssertEqual(planned("remove the background"), [.cutout])
+        XCTAssertEqual(planned("put an emoji on my kids faces"), [.emojiFaces]); XCTAssertEqual(planned("hide faces with emojis"), [.emojiFaces])
+        XCTAssertEqual(planned("emoji mosaic of my selfie"), [.emojiMosaic]); XCTAssertEqual(planned("photo made of emojis"), [.emojiMosaic])
+        XCTAssertEqual(planned("boomerang"), [.videoLoop]); XCTAssertEqual(ChainPlanner.keywordPlan("bomerang of my video")?.steps.first?.settings["style"], "boomerang")
+        XCTAssertEqual(ChainPlanner.keywordPlan("play my video backwards")?.steps.first?.settings["style"], "reverse")
+        XCTAssertEqual(ChainPlanner.keywordPlan("slow motion video")?.steps.first?.settings["speed"], "slow"); XCTAssertEqual(planned("slow mo"), [.videoSpeed])
+        XCTAssertEqual(ChainPlanner.keywordPlan("speed up my video")?.steps.first?.settings["speed"], "fast"); XCTAssertEqual(ChainPlanner.keywordPlan("make a timelapse")?.steps.first?.settings["speed"], "faster")
+        let gif = ChainPlanner.keywordPlan("make a gif from my photos")
+        XCTAssertEqual(gif?.gif, true); XCTAssertEqual(gif?.steps.first?.block.takes, .image)
+        XCTAssertEqual(planned("turn my video into a gif"), [.videoGif]); XCTAssertNil(ChainPlanner.keywordPlan("turn my video into a gif")?.gif)
+        XCTAssertEqual(planned("live photo to a gif"), [.videoGif])
+        XCTAssertEqual(planned("shrink video for whatsapp"), [.videoShrink])
+        XCTAssertFalse(planned("what I spend on a faster phone").contains(.videoSpeed))
+    }
+    func testTheGifOptionTravelsWithTheTool() throws {
+        let t = try XCTUnwrap(ChainTemplates.all.first { $0.id == "photos-gif" })
+        XCTAssertEqual(t.gif, true); XCTAssertNil(t.collage)
+        XCTAssertEqual(Chain.imported(from: t.shareText)?.gif, true)
+        XCTAssertNil(Chain.imported(from: chain([.cleanText]).shareText)?.gif)
+        XCTAssertEqual(ChainText.autoName(chain([.sticker])), "Photo to a sticker")
+    }
+
+    // The drawing itself, on a real phone.
+    private func picture(_ size: CGSize = CGSize(width: 400, height: 300), _ color: UIColor = .systemBlue) -> UIImage {
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { c in color.setFill(); c.fill(CGRect(origin: .zero, size: size)) }
+    }
+    func testMemeTextKeepsThePhotoSizeAndNeedsWords() async {
+        let src = picture()
+        let made = await ChainRunner.apply(ChainStep(block: .meme, settings: ["top": "one does not simply", "bottom": "ship without testing"]), to: .image(src))
+        guard case .success(.image(let out)) = made else { return XCTFail("no meme") }
+        XCTAssertEqual(out.size, src.size)
+        XCTAssertNotEqual(out.pngData(), src.pngData())
+        let empty = await ChainRunner.apply(ChainStep(block: .meme, settings: ["top": " ", "bottom": ""]), to: .image(src))
+        guard case .failure(.invalid(let why)) = empty else { return XCTFail("empty words should be refused") }
+        XCTAssertTrue(why.contains("needs some words"))
+    }
+    func testEmojiMosaicIsBuiltFromTheGrid() async {
+        let made = await ChainRunner.apply(ChainStep(block: .emojiMosaic), to: .image(picture(CGSize(width: 400, height: 300))))
+        guard case .success(.image(let out)) = made else { return XCTFail("no mosaic") }
+        XCTAssertEqual(out.size, CGSize(width: 56 * 28, height: 42 * 28))
+    }
+    func testEmojiFacesSaysSoWhenThereIsNoFace() async {
+        let made = await ChainRunner.apply(ChainStep(block: .emojiFaces), to: .image(picture()))
+        guard case .failure(.invalid(let why)) = made else { return XCTFail("a plain picture has no face") }
+        XCTAssertTrue(why.contains("didn't find a face"))
+    }
+    func testStickerTrimsToTheSubjectAndAddsAnEdge() throws {
+        // A red disc on a see-through square: the sticker is the disc plus its white edge, nothing more.
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = false
+        let cut = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 400), format: fmt).image { c in
+            UIColor.red.setFill(); c.cgContext.fillEllipse(in: CGRect(x: 150, y: 100, width: 100, height: 100))
+        }
+        let box = try XCTUnwrap(ChainFun.solidBounds(try XCTUnwrap(cut.cgImage)))
+        XCTAssertEqual(box.midX, 200, accuracy: 4); XCTAssertEqual(box.midY, 150, accuracy: 4); XCTAssertEqual(box.width, 100, accuracy: 8)
+        let made = try XCTUnwrap(ChainFun.sticker(cut))
+        XCTAssertEqual(made.size.width, made.size.height, accuracy: 2)
+        XCTAssertGreaterThan(made.size.width, 200)       // enlarged to a useful sticker size, with room for the edge
+        XCTAssertNil(ChainFun.sticker(UIGraphicsImageRenderer(size: CGSize(width: 50, height: 50), format: fmt).image { _ in }))
+    }
+    func testPhotosBecomeOneGif() {
+        let made = ChainCombine.oneGif([.image(picture()), .image(picture(CGSize(width: 300, height: 500), .systemRed))])
+        guard case .file(let d, let ext)? = made else { return XCTFail("no GIF") }
+        XCTAssertEqual(ext, "gif"); XCTAssertEqual(String(data: d.prefix(3), encoding: .ascii), "GIF")
+        XCTAssertNil(ChainCombine.oneGif([.text("words")])); XCTAssertNil(ChainCombine.oneGif([]))
     }
 }

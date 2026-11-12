@@ -247,7 +247,8 @@ enum VideoEngine {
 // MARK: - GIF
 
 /// Extract frames across a trim range and write them as a looping GIF.
-func tenzyGIFFromVideo(url: URL, start: Double, duration: Double, fps: Double, speed: Double, maxDim: CGFloat) async -> URL? {
+/// - Parameter order: the order to play the frames in, given how many there are (a boomerang or a reversed loop). nil plays them as filmed.
+func tenzyGIFFromVideo(url: URL, start: Double, duration: Double, fps: Double, speed: Double, maxDim: CGFloat, order: ((Int) -> [Int])? = nil) async -> URL? {
     let asset = AVURLAsset(url: url)
     let gen = AVAssetImageGenerator(asset: asset)
     gen.appliesPreferredTrackTransform = true
@@ -263,6 +264,11 @@ func tenzyGIFFromVideo(url: URL, start: Double, duration: Double, fps: Double, s
         if let cg = try? gen.copyCGImage(at: CMTime(seconds: t, preferredTimescale: 600), actualTime: nil) { frames.append(cg) }
     }
     guard !frames.isEmpty else { return nil }
+    if let order {
+        let shot = frames
+        frames = order(shot.count).compactMap { shot.indices.contains($0) ? shot[$0] : nil }
+        guard !frames.isEmpty else { return nil }
+    }
     return tenzyWriteGIF(frames: frames, delay: (1.0 / fps) / speed)
 }
 
@@ -278,7 +284,7 @@ func tenzyGIFFromImageData(_ datas: [Data], delay: Double, maxDim: CGFloat) -> U
     return tenzyWriteGIF(frames: frames, delay: delay)
 }
 
-private func tenzyWriteGIF(frames: [CGImage], delay: Double) -> URL? {
+func tenzyWriteGIF(frames: [CGImage], delay: Double) -> URL? {
     let url = VideoEngine.tempURL("gif")
     guard let dest = CGImageDestinationCreateWithURL(url as CFURL, UTType.gif.identifier as CFString, frames.count, nil) else { return nil }
     CGImageDestinationSetProperties(dest, [kCGImagePropertyGIFDictionary as String: [kCGImagePropertyGIFLoopCount as String: 0]] as CFDictionary)

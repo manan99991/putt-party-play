@@ -3,6 +3,8 @@ import ContactsUI
 import PDFKit
 import CoreLocation
 import AVFoundation
+import Photos
+import PhotosUI
 
 /// More ways to hand something to a tool besides typing or picking a photo: what you say, a contact, a PDF.
 
@@ -185,5 +187,18 @@ struct ContactPickerSheet: UIViewControllerRepresentable {
         recorder?.stop(); recorder = nil; running = false
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         return file
+    }
+}
+
+/// A Live Photo is a still plus a short video. Video tools can start from that video.
+enum LivePhotoVideo {
+    /// The short video inside a picked Live Photo, copied to a temporary file. nil when the pick isn't a Live Photo.
+    static func movie(from item: PhotosPickerItem) async -> URL? {
+        guard let live = try? await item.loadTransferable(type: PHLivePhoto.self),
+              let film = PHAssetResource.assetResources(for: live).first(where: { $0.type == .pairedVideo }) else { return nil }
+        let url = VideoEngine.tempURL("mov")
+        let done = Once<Bool>()
+        PHAssetResourceManager.default().writeData(for: film, toFile: url, options: nil) { error in done.finish(error == nil) }
+        return await withCheckedContinuation({ done.wait($0) }) ? url : nil
     }
 }

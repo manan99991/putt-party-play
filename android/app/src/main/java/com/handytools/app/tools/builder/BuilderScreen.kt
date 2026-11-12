@@ -113,6 +113,8 @@ private fun defaults(b: Block): Map<String, String> = when (b) {
     Block.VIDEO_TRIM -> mapOf("side" to "first", "secs" to "30"); Block.VIDEO_ROTATE -> mapOf("turn" to "right")
     Block.TRANSLATE -> mapOf("to" to "en"); Block.REWRITE -> mapOf("style" to "clear")
     Block.PDF_SHRINK -> mapOf("mb" to "5"); Block.PDF_LOCK -> mapOf("password" to ""); Block.PDF_PAGES -> mapOf("pages" to "")
+    Block.EMOJI_FACES -> mapOf("emoji" to TextTidy.FACE_EMOJIS[0]); Block.MEME -> mapOf("top" to "", "bottom" to "")
+    Block.VIDEO_SPEED -> mapOf("speed" to "slow"); Block.VIDEO_LOOP -> mapOf("style" to "boomerang")
     else -> emptyMap()
 }
 
@@ -446,7 +448,7 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
             }
             if (chain.start == Kind.IMAGE && it != Kind.TEXT) {
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on, onePage = on && chain.onePage, collage = if (on) false else chain.collage) })
+                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on, onePage = on && chain.onePage, collage = if (on) false else chain.collage, gif = if (on) false else chain.gif) })
                     Text("  Put all pages or photos into one PDF", style = MaterialTheme.typography.bodyMedium)
                 }
                 if (chain.combine) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -454,8 +456,12 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
                     Text("  All on a single page (both sides of an ID)", style = MaterialTheme.typography.bodyMedium)
                 }
                 if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                    androidx.compose.material3.Switch(chain.collage, { on -> chain = if (on) chain.copy(collage = true, combine = false, onePage = false) else chain.copy(collage = false) })
+                    androidx.compose.material3.Switch(chain.collage, { on -> chain = if (on) chain.copy(collage = true, combine = false, onePage = false, gif = false) else chain.copy(collage = false) })
                     Text("  Put all photos into one picture (a collage)", style = MaterialTheme.typography.bodyMedium)
+                }
+                if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    androidx.compose.material3.Switch(chain.gif, { on -> chain = if (on) chain.copy(gif = true, collage = false, combine = false, onePage = false) else chain.copy(gif = false) })
+                    Text("  Play all photos as one GIF", style = MaterialTheme.typography.bodyMedium)
                 }
             }
             if (chain.start == Kind.PDF && it == Kind.PDF) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -572,6 +578,24 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
         }
         Block.PDF_PAGES ->
             OutlinedTextField(s.settings["pages"] ?: "", { v -> set("pages", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Pages, e.g. 1-3, 5 (empty keeps all)") })
+        Block.EMOJI_FACES -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val now = TextTidy.faceEmoji(s.settings["emoji"])
+            TextTidy.FACE_EMOJIS.forEach { e -> TextButton({ set("emoji", e) }) { Text(if (e == now) "● $e" else e) } }
+        }
+        Block.MEME -> {
+            OutlinedTextField(s.settings["top"] ?: "", { v -> set("top", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Top line") })
+            OutlinedTextField(s.settings["bottom"] ?: "", { v -> set("bottom", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Bottom line") })
+            Text("Leave them empty to type new words every time you run the tool.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        Block.VIDEO_SPEED -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val now = TextTidy.SPEEDS.firstOrNull { it.first == s.settings["speed"] }?.first ?: "slow"
+            TextTidy.SPEEDS.forEach { (id, label, _) -> TextButton({ set("speed", id) }) { Text(if (id == now) "● $label" else label) } }
+        }
+        Block.VIDEO_LOOP -> Row {
+            listOf("boomerang" to "Forwards and back", "reverse" to "Backwards").forEach { (id, label) ->
+                TextButton({ set("style", id) }) { Text(if ((if (s.settings["style"] == "reverse") "reverse" else "boomerang") == id) "● $label" else label) }
+            }
+        }
         Block.CONVERT -> Row {
             listOf("JPG", "PNG").forEach { f -> TextButton({ set("format", f) }) { Text(if ((s.settings["format"] ?: "JPG") == f) "● $f" else f) } }
         }
@@ -642,11 +666,18 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     var progress by remember { mutableStateOf("") }
     // What each result of a many-at-once run is called in the list: a photo, or a file.
     var noun by remember { mutableStateOf("Photo") }
+    // A meme's words can be typed fresh for each run.
+    val memeStep = remember(chain) { chain.steps.firstOrNull { it.block == Block.MEME } }
+    var memeTop by remember { mutableStateOf(memeStep?.settings?.get("top").orEmpty()) }
+    var memeBottom by remember { mutableStateOf(memeStep?.settings?.get("bottom").orEmpty()) }
+    /** The tool as it runs this time: a meme step takes the words typed on this screen. */
+    fun live(): Chain = if (memeStep == null) chain else chain.copy(steps = chain.steps.map { s ->
+        if (s.block == Block.MEME) s.copy(settings = s.settings + mapOf("top" to memeTop, "bottom" to memeBottom)) else s })
 
     fun go(input: Payload) {
         busy = true; result = null; message = null; batch = emptyList()
         scope.launch {
-            when (val r = ChainRunner.run(chain, input)) {
+            when (val r = ChainRunner.run(live(), input)) {
                 is Outcome.Done -> result = r.value
                 is Outcome.Stopped -> message = r.why
             }
@@ -678,9 +709,9 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             val dir = File(ctx.cacheDir, "batch-${System.currentTimeMillis()}").also { it.mkdirs() }
             val out = ArrayList<BatchItem>()
             // For "one PDF for everything" each page keeps its picture and the pictures are joined at the end.
-            val perPage = chain.copy(steps = chain.stepsPerPage)
+            val perPage = live().let { it.copy(steps = it.stepsPerPage) }
             val pages = ArrayList<android.graphics.Bitmap>()
-            var joinable = chain.combine || chain.collage
+            var joinable = chain.combine || chain.collage || chain.gif
             noun = "Photo"
             picked.forEachIndexed { i, uri ->
                 progress = "Working… ${i + 1} of ${picked.size}"
@@ -689,7 +720,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 val r = if (perPage.steps.isEmpty()) Outcome.Done(Payload.Pic(bmp)) else ChainRunner.run(perPage, Payload.Pic(bmp))
                 when (r) {
                     is Outcome.Done -> {
-                        if (chain.combine || chain.collage) when (val v = r.value) {
+                        if (chain.combine || chain.collage || chain.gif) when (val v = r.value) {
                             is Payload.Pic -> pages.add(v.bmp)
                             is Payload.Doc -> BitmapFactory.decodeByteArray(v.bytes, 0, v.bytes.size)?.takeIf { v.kind == Kind.PHOTO_FILE }?.let { pages.add(it) } ?: run { joinable = false }
                             else -> joinable = false
@@ -697,6 +728,17 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                         out.add(BatchItem.of(i + 1, r.value, dir))
                     }
                     is Outcome.Stopped -> out.add(BatchItem(i + 1, note = r.why))
+                }
+            }
+            if (chain.gif && joinable && pages.isNotEmpty()) {
+                // One GIF for everything: the results played one after another.
+                val skipped = out.count { it.note != null }
+                val one = withContext(Dispatchers.Default) { FunSteps.photosGif(pages) }
+                if (one != null) {
+                    result = Payload.Doc(one, "gif")
+                    if (skipped > 0) message = "$skipped of ${picked.size} couldn't be used and were left out."
+                    busy = false; progress = ""
+                    return@launch
                 }
             }
             if (chain.collage && joinable && pages.isNotEmpty()) {
@@ -728,7 +770,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
         if (uris.isEmpty()) return@rememberLauncherForActivityResult
-        if (uris.size == 1 && !chain.combine && !chain.collage) {
+        if (uris.size == 1 && !chain.combine && !chain.collage && !chain.gif) {
             val bmp = runCatching { ctx.contentResolver.openInputStream(uris[0])?.use { BitmapFactory.decodeStream(it) } }.getOrNull()
             if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
         } else runBatch(uris)
@@ -835,6 +877,10 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader(chain.name, chain.steps.joinToString("  ›  ") { it.block.title })
         ExtraSteps.unavailable(ctx, chain)?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
+        if (memeStep != null) {
+            OutlinedTextField(memeTop, { memeTop = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Top line") })
+            OutlinedTextField(memeBottom, { memeBottom = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Bottom line") })
+        }
         if (chain.start == Kind.AUDIO) {
             HPrimaryButton("Choose a recording", enabled = !busy) { audioPicker.launch("audio/*") }
             Text("Pick a voice recording or any sound file. It never leaves this phone.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
@@ -869,7 +915,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             HPrimaryButton("Choose photos", enabled = !busy) { picker.launch("image/*") }
             HSecondaryButton("Scan a document") { scan() }
             HSecondaryButton("Choose a PDF") { pdf.launch("application/pdf") }
-            Text(if (chain.combine) "Pick or scan as many pages as you need. They all go into one PDF." else if (chain.collage) "Pick up to $MAX_BATCH photos. They are laid out as one picture." else "Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(if (chain.combine) "Pick or scan as many pages as you need. They all go into one PDF." else if (chain.collage) "Pick up to $MAX_BATCH photos. They are laid out as one picture." else if (chain.gif) "Pick up to $MAX_BATCH photos. They play one after another as a GIF." else "Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         if (busy) Text(progress.ifEmpty { "Working…" }, color = Handy.palette.textSecondary)
         message?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }

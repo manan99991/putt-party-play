@@ -60,6 +60,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case speechText, readAloud, translate, rewrite
     case readCode, pageText, textPdf
     case pdfShrink, pdfLock, pdfPages, pdfText
+    case sticker, emojiFaces, meme, emojiMosaic, videoSpeed, videoLoop
 
     var id: String { rawValue }
     var title: String {
@@ -116,13 +117,19 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .pdfLock: return "Lock with a password"
         case .pdfPages: return "Keep some pages"
         case .pdfText: return "Read the PDF's words"
+        case .sticker: return "Make a sticker"
+        case .emojiFaces: return "Emoji over faces"
+        case .meme: return "Add meme text"
+        case .emojiMosaic: return "Rebuild it from emojis"
+        case .videoSpeed: return "Slow it down or speed it up"
+        case .videoLoop: return "Boomerang GIF"
         }
     }
     var takes: ChainKind {
         switch self {
-        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp, .readCode: return .image
+        case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp, .readCode, .sticker, .emojiFaces, .meme, .emojiMosaic: return .image
         case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr, .returnBy, .readAloud, .translate, .rewrite, .pageText, .textPdf: return .text
-        case .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions: return .video
+        case .videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop: return .video
         case .speechText: return .audio
         case .pdfShrink, .pdfLock, .pdfPages, .pdfText: return .pdf
         }
@@ -131,10 +138,10 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     var gives: ChainKind {
         switch self {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink, .speechText, .translate, .rewrite, .readCode, .pageText, .pdfText: return .text
-        case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
-        case .businessCard, .calendarEvent, .makeTable, .addToList, .returnBy, .videoGif: return .file
-        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr, .videoStill: return .image
-        case .videoShrink, .videoMute, .videoTrim, .videoRotate, .videoVertical, .videoCaptions: return .video
+        case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto, .sticker: return .photoFile
+        case .businessCard, .calendarEvent, .makeTable, .addToList, .returnBy, .videoGif, .videoLoop: return .file
+        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr, .videoStill, .emojiFaces, .meme, .emojiMosaic: return .image
+        case .videoShrink, .videoMute, .videoTrim, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed: return .video
         case .videoAudio, .readAloud: return .audio
         case .photoPdf, .textPdf, .pdfShrink, .pdfLock, .pdfPages: return .pdf
         }
@@ -155,9 +162,10 @@ extension Block {
         case .summarize, .actionItems, .scamCheck, .translate: return "Understand it"
         case .cleanText, .cleanLinks, .pullDetails, .rewrite: return "Clean it up"
         case .pullReceipt, .priceCompare, .expenseRow, .addToList, .returnBy: return "Money"
+        case .sticker, .emojiFaces, .meme, .emojiMosaic, .videoSpeed, .videoLoop: return "Just for fun"
         }
     }
-    static let goalOrder = ["Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money"]
+    static let goalOrder = ["Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Just for fun", "Money"]
 
     /// The given steps under their goals, goals in a fixed order, empty goals left out.
     static func grouped(_ blocks: [Block]) -> [(goal: String, blocks: [Block])] {
@@ -286,6 +294,8 @@ struct Chain: Codable, Equatable, Identifiable {
     var schedule: ChainSchedule?
     /// When several photos go in at once, lay the results out as one picture (a collage) instead of one file each.
     var collage: Bool?
+    /// When several photos go in at once, play the results one after another as a single looping GIF.
+    var gif: Bool?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -610,6 +620,14 @@ enum ChainTemplates {
         Chain(id: "video-words", name: "What was said in a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .speechText)]),
         Chain(id: "photo-collage", name: "Photos into one collage", steps: [ChainStep(block: .stripLocation)], collage: true),
         Chain(id: "where-i-am", name: "Send where I am", steps: [ChainStep(block: .cleanText)], finish: ChainFinish(kind: .message, to: "")),
+        Chain(id: "photos-gif", name: "Photos into a GIF", steps: [ChainStep(block: .stripLocation)], gif: true),
+        Chain(id: "sticker-maker", name: "Photo to a sticker", steps: [ChainStep(block: .sticker)]),
+        Chain(id: "emoji-faces", name: "Emoji over every face", steps: [ChainStep(block: .emojiFaces, settings: ["emoji": ChainText.faceEmojis[0]])]),
+        Chain(id: "meme", name: "Make a meme", steps: [ChainStep(block: .meme, settings: ["top": "", "bottom": ""])]),
+        Chain(id: "emoji-mosaic", name: "Photo made of emojis", steps: [ChainStep(block: .emojiMosaic)]),
+        Chain(id: "video-boomerang", name: "Boomerang GIF from a video", steps: [ChainStep(block: .videoLoop, settings: ["style": "boomerang"])]),
+        Chain(id: "video-slowmo", name: "Slow-motion video", steps: [ChainStep(block: .videoSpeed, settings: ["speed": "slow"])]),
+        Chain(id: "video-fast", name: "Speed a video up", steps: [ChainStep(block: .videoSpeed, settings: ["speed": "fast"])]),
     ]
 }
 
@@ -883,6 +901,50 @@ enum ChainText {
         guard count > 0 else { return (0, 0) }
         let cols = Int(Double(count).squareRoot().rounded(.up))
         return (cols, Int((Double(count) / Double(cols)).rounded(.up)))
+    }
+
+    // MARK: just for fun
+
+    /// Emojis "Emoji over faces" offers. The first is the default.
+    static let faceEmojis = ["😀", "😎", "🤡", "🐶", "🐱", "👽", "🤖", "🎃"]
+    static func faceEmoji(_ setting: String?) -> String { faceEmojis.contains(setting ?? "") ? (setting ?? faceEmojis[0]) : faceEmojis[0] }
+
+    /// A line of meme text as it is drawn: capitals, one line's worth of spaces, at most 120 characters.
+    static func memeText(_ raw: String) -> String {
+        let words = raw.uppercased().components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }
+        return String(words.joined(separator: " ").prefix(120))
+    }
+
+    /// Speeds "Slow it down or speed it up" offers.
+    static let speeds: [(id: String, name: String, rate: Double)] = [("slow", "Slow motion", 0.5), ("fast", "2x faster", 2), ("faster", "4x faster", 4)]
+    static func speedRate(_ setting: String?) -> Double { speeds.first { $0.id == setting }?.rate ?? 0.5 }
+
+    /// The order a loop plays its frames in. "reverse" plays them backwards; anything else is a boomerang: forwards,
+    /// then back again without repeating the two end frames, so the loop has no stutter.
+    static func loopOrder(_ count: Int, style: String?) -> [Int] {
+        guard count > 0 else { return [] }
+        if style == "reverse" { return Array((0..<count).reversed()) }
+        return Array(0..<count) + (count > 2 ? Array((1..<(count - 1)).reversed()) : [])
+    }
+
+    /// How many emojis across and down a mosaic gets: 56 along the picture's long side, the other side in proportion.
+    static func mosaicGrid(width: Double, height: Double, long: Int = 56) -> (cols: Int, rows: Int) {
+        guard width > 0, height > 0 else { return (0, 0) }
+        if width >= height { return (long, max(1, Int((Double(long) * height / width).rounded()))) }
+        return (max(1, Int((Double(long) * width / height).rounded())), long)
+    }
+
+    /// Emojis a mosaic is built from: a spread of every colour, so any part of a photo has a close match.
+    static let mosaicEmojis = ["🍎", "🌹", "🍓", "🔴", "🍅", "🍊", "🦊", "🏀", "🥕", "🟠", "🌟", "🍋", "🌻", "🟡", "🧀", "🍌", "🍏", "🌲", "🐸", "🥦", "🟢", "🍀", "🥝", "💙", "🌊", "🐳", "🔵", "🧊", "🫐", "💜", "🍇", "🔮", "🟣", "🌸", "🐷", "💗", "🍑", "🐻", "🍫", "🟤", "🥔", "🌰", "🍞", "🥜", "🧇", "🍪", "⚫", "🎱", "🖤", "🎩", "⚪", "☁️", "🥚", "🤍", "🐑", "🐘", "🪨", "🐭", "🥈", "🔘"]
+
+    /// Which colour in `palette` is closest to the one given (all 0...255). -1 for an empty palette.
+    static func nearestColor(r: Int, g: Int, b: Int, in palette: [(r: Int, g: Int, b: Int)]) -> Int {
+        var best = -1, bestD = Int.max
+        for (i, p) in palette.enumerated() {
+            let d = (p.r - r) * (p.r - r) + (p.g - g) * (p.g - g) + (p.b - b) * (p.b - b)
+            if d < bestD { best = i; bestD = d }
+        }
+        return best
     }
 
     // MARK: where I am

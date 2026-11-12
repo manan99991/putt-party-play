@@ -25,7 +25,7 @@ out.append('enum ChainRunner { enum Failure: Error, Equatable { case invalid(Str
 for m in ['enum ChainTemplates {','extension Chain {\n    static let prefix','struct StampPlan: Equatable','enum ChainName {','enum RunningList {','enum StampBook {']:
     out.append(decl(cr,m))
 ct='enum ChainText {\n'
-for f in ['static func scamReport(','static func cleanLinks(','private static func full(','static func chatLink(','static func callingCode(','static let returnWindows','static let videoLimits','static func videoLimit(','static func returnDays(','static func returnDeadline(','static func returnTitle(','static func wifi(in','static func wifiCode(','static let trimLengths','static func trimWindow(','static func turnDegrees(','static let pdfLimits','static func pdfLimit(','static func pageList(','static let languages','static func languageName(','static func languageCode(','static let rewriteStyles','static func rewriteStyle(','static func rewriteAsk(','static func captionLines(','static func pageLink(','static func article(','static func collageGrid(','static func autoName(','static func toolName(','static func savedName(','static func locationText(']:
+for f in ['static func scamReport(','static func cleanLinks(','private static func full(','static func chatLink(','static func callingCode(','static let returnWindows','static let videoLimits','static func videoLimit(','static func returnDays(','static func returnDeadline(','static func returnTitle(','static func wifi(in','static func wifiCode(','static let trimLengths','static func trimWindow(','static func turnDegrees(','static let pdfLimits','static func pdfLimit(','static func pageList(','static let languages','static func languageName(','static func languageCode(','static let rewriteStyles','static func rewriteStyle(','static func rewriteAsk(','static func captionLines(','static func pageLink(','static func article(','static func collageGrid(','static func autoName(','static func toolName(','static func savedName(','static func locationText(','static let faceEmojis','static func faceEmoji(','static func memeText(','static let speeds','static func speedRate(','static func loopOrder(','static func mosaicGrid(','static let mosaicEmojis','static func nearestColor(']:
     if f.startswith('static let'):
         i=cr.index(f); e=cr.index('\n',i)
         if cr[i:e].rstrip().endswith('['): e=cr.index('\n    ]',e)+6      # a list written over several lines
@@ -52,7 +52,7 @@ src=src.replace('FileManager.default.containerURL(forSecurityApplicationGroupIde
 open(os.path.join(W,'app.swift'),'w').write(src)
 
 t=open(I+'HandyToolsTests/ChainRunnerTests.swift').read()
-bad=['ChainRunner.apply','ChainRunner.run','await','ChainImage','ChainCombine','UIGraphics','PDFDocument','DocEngine','ToolIntentSupport','PDFInput','ChainPlanner.plan(','ChainStore','ContactsTransfer','UIColor','CGRect','Outbox','BatchItem','ChainText.best','ChainText.qr','PriceBrain','BlockStyle','.icon','.tint','.blurb','SendSheet','failureValue','Given.']
+bad=['ChainRunner.apply','ChainRunner.run','await','ChainImage','ChainCombine','UIGraphics','PDFDocument','DocEngine','ToolIntentSupport','PDFInput','ChainPlanner.plan(','ChainStore','ContactsTransfer','UIColor','CGRect','Outbox','BatchItem','ChainText.best','ChainText.qr','PriceBrain','BlockStyle','.icon','.tint','.blurb','SendSheet','failureValue','Given.','ChainFun']
 tests=[]; runner=[]; skipped=[]
 for cm in re.finditer(r'^final class (\w+): XCTestCase \{', t, re.M):
     body=decl(t, cm.group(0)); name=cm.group(1); kept=[]; names=[]

@@ -86,6 +86,26 @@ enum ChainPlanner {
         let s = " " + ask.lowercased() + " "
         func has(_ words: [String]) -> Bool { words.contains { s.contains($0) } }
 
+        // Just for fun. These requests name exactly what they want, so they are read before anything else.
+        let film = has(["video", " clip", "movie", "footage", "live photo"])
+        if has(["boomerang"]) { return build(ask, [ChainStep(block: .videoLoop, settings: ["style": "boomerang"])]) }
+        if has(["reverse", "backwards", "backward"]), film || has([" gif"]) { return build(ask, [ChainStep(block: .videoLoop, settings: ["style": "reverse"])]) }
+        if has(["slow mo", "slow-mo", "slowmo", "slow motion", "slow it down", "slow down", "half speed"]) { return build(ask, [ChainStep(block: .videoSpeed, settings: ["speed": "slow"])]) }
+        if has(["speed up", "speed it up", "sped up", "timelapse", "time lapse", "time-lapse", "fast forward", "double speed", " 2x", " 4x"]) || (film && has(["faster"])) {
+            return build(ask, [ChainStep(block: .videoSpeed, settings: ["speed": has([" 4x", "four times", "timelapse", "time lapse", "time-lapse"]) ? "faster" : "fast"])])
+        }
+        if has(["meme"]) { return build(ask, [ChainStep(block: .meme, settings: ["top": "", "bottom": ""])]) }
+        if has(["sticker"]) { return build(ask, [ChainStep(block: .sticker)]) }
+        if has(["mosaic"]) || (has(["emoji"]) && has(["made of", "out of", "made from", "rebuild", " art "])) { return build(ask, [ChainStep(block: .emojiMosaic)]) }
+        if has(["emoji", "smiley"]) { return build(ask, [ChainStep(block: .emojiFaces, settings: ["emoji": ChainText.faceEmojis[0]])]) }
+        if has([" gif", "slideshow", "slide show"]), !has(["video", " clip", "movie", "footage"]) {
+            // A Live Photo carries a short video; several photos play one after another.
+            if has(["live photo"]) { return build(ask, [ChainStep(block: .videoGif)]) }
+            var c = build(ask, [ChainStep(block: .stripLocation)])
+            c?.gif = true
+            return c
+        }
+
         // A recording: write out what was said, then whatever else was asked for.
         if has(["voice memo", "recording", "transcribe", "transcript", "what was said", "speech to text", "audio to text"]) {
             var a: [ChainStep] = has(["video", " clip", "movie", "footage"]) ? [ChainStep(block: .videoAudio)] : []
@@ -206,7 +226,7 @@ enum ChainPlanner {
         if has(["describe", "what's in", "what is in", "what does it show"]) { return build(ask, [ChainStep(block: .describe)]) }
 
         // Picture jobs, in the order that gives the best result.
-        if has(["cut out", "cutout", "remove background", "remove the background", "background", "sticker", "isolate"]) { steps.append(ChainStep(block: .cutout)) }
+        if has(["cut out", "cutout", "remove background", "remove the background", "background", "isolate"]) { steps.append(ChainStep(block: .cutout)) }
         if has(["enhance", "sharpen", "improve", "fix the photo", "better quality", "clearer", "brighten"]) { steps.append(ChainStep(block: .enhance)) }
         if has(["blur", "hide", "redact", "private", "faces", "face ", "anonym", "censor", "personal", "sensitive", "confidential", "identity"]) { steps.append(ChainStep(block: .hideSensitive)) }
         if has(["passport", "id photo", "visa photo", "headshot size"]) { steps.append(ChainStep(block: .passportPhoto, settings: ["country": "us"])) }
@@ -323,11 +343,11 @@ enum PlannerWords {
     collage personal sensitive confidential identity details data date information post posting social instagram facebook online share remove delete signature \
     sign stamp text notes message messages list pasted paste sheet ledger running monthly return plant breed menu document documents file files kilobyte megabyte \
     sentence sentences letter paragraph essay record quiet crop tall wide turn first last start keep english spanish french german italian portuguese hindi arabic \
-    chinese japanese korean russian turkish dutch polish indonesian vietnamese thai ukrainian
+    chinese japanese korean russian turkish dutch polish indonesian vietnamese thai ukrainian boomerang reverse backwards motion slowmo speed faster timelapse meme memes stickers emoji emojis mosaic slideshow funny
     """).split(separator: " ").map(String.init))
 
     /// Ordinary words that sit one letter away from a word above and must never be "corrected" into it.
-    static let real: Set<String> = Set("store phone strap plane plate price point their there where which about would could should these those other after before every later thing things something anything everything people person month today tomorrow title state place right light night great small large please thanks really always never maybe while without within between through because again being doing going having making taking getting using wants wanted needs needed friend friends family client clients office house school second flame world paper print".split(separator: " ").map(String.init))
+    static let real: Set<String> = Set("spend fasten notion store phone strap plane plate price point their there where which about would could should these those other after before every later thing things something anything everything people person month today tomorrow title state place right light night great small large please thanks really always never maybe while without within between through because again being doing going having making taking getting using wants wanted needs needed friend friends family client clients office house school second flame world paper print".split(separator: " ").map(String.init))
 
     /// Words too general to tell one starter from another.
     static let plain: Set<String> = Set("photo photos picture pictures image images text video videos into from with that this your mine make turn want need have please some them then just only also file files thing something anything notes words page pages link links code list sheet".split(separator: " ").map(String.init))

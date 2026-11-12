@@ -107,6 +107,15 @@ object VideoSteps {
         return if (ok && out.length() > 0L) out else { out.delete(); null }
     }
 
+    /** The same video played [rate] times as fast (0.5 is slow motion). It comes out without sound, since sound at another speed is only noise. */
+    suspend fun speed(ctx: Context, uri: Uri, rate: Double): File? {
+        if (rate <= 0.0) return null
+        val out = outFile(ctx, "mp4")
+        val pace = androidx.media3.effect.SpeedChangeEffect(rate.toFloat())
+        val ok = export(ctx, EditedMediaItem.Builder(MediaItem.fromUri(uri)).setRemoveAudio(true).setEffects(Effects(emptyList(), listOf(pace))).build(), out, null)
+        return if (ok && out.length() > 0L) out else { out.delete(); null }
+    }
+
     /** Just the sound, as the bytes of an .m4a file. Null when the video has no sound. */
     suspend fun audio(ctx: Context, uri: Uri): ByteArray? = withContext(Dispatchers.IO) {
         val out = outFile(ctx, "m4a")

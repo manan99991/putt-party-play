@@ -69,7 +69,13 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     PDF_SHRINK("pdfShrink", "Shrink the PDF", Kind.PDF, Kind.PDF, "Makes a PDF smaller, so it fits in an email or an upload form."),
     PDF_LOCK("pdfLock", "Lock with a password", Kind.PDF, Kind.PDF, "Asks for a password before the PDF opens."),
     PDF_PAGES("pdfPages", "Keep some pages", Kind.PDF, Kind.PDF, "Keeps only the pages you list. Leave it empty to keep them all."),
-    PDF_TEXT("pdfText", "Read the PDF's words", Kind.PDF, Kind.TEXT, "Pulls the words out of a PDF.");
+    PDF_TEXT("pdfText", "Read the PDF's words", Kind.PDF, Kind.TEXT, "Pulls the words out of a PDF."),
+    STICKER("sticker", "Make a sticker", Kind.IMAGE, Kind.PHOTO_FILE, "Cuts out the person, pet or object and gives it a white edge, ready for WhatsApp or Messages."),
+    EMOJI_FACES("emojiFaces", "Emoji over faces", Kind.IMAGE, Kind.IMAGE, "Puts an emoji over every face. Handy for posting a photo without showing who is in it."),
+    MEME("meme", "Add meme text", Kind.IMAGE, Kind.IMAGE, "Big white words across the top and bottom of the photo."),
+    EMOJI_MOSAIC("emojiMosaic", "Rebuild it from emojis", Kind.IMAGE, Kind.IMAGE, "Rebuilds the photo out of hundreds of emojis. Zoom in to see them."),
+    VIDEO_SPEED("videoSpeed", "Slow it down or speed it up", Kind.VIDEO, Kind.VIDEO, "Slow motion, or two or four times faster. Comes out without sound."),
+    VIDEO_LOOP("videoLoop", "Boomerang GIF", Kind.VIDEO, Kind.FILE, "The first couple of seconds played forwards and back, as a GIF that loops for ever.");
 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
 }
@@ -85,10 +91,11 @@ val Block.goal: String get() = when (this) {
     Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK, Block.TRANSLATE -> "Understand it"
     Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS, Block.REWRITE -> "Clean it up"
     Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST, Block.RETURN_BY, Block.PRICE_COMPARE -> "Money"
+    Block.STICKER, Block.EMOJI_FACES, Block.MEME, Block.EMOJI_MOSAIC, Block.VIDEO_SPEED, Block.VIDEO_LOOP -> "Just for fun"
 }
 
 object BlockGoals {
-    val ORDER = listOf("Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money")
+    val ORDER = listOf("Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Just for fun", "Money")
     /** The given steps under their goals, goals in a fixed order, empty goals left out. */
     fun grouped(blocks: List<Block>): List<Pair<String, List<Block>>> =
         ORDER.mapNotNull { g -> blocks.filter { it.goal == g }.takeIf { it.isNotEmpty() }?.let { g to it } }
@@ -260,7 +267,9 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                  /** One of [AutoRun.ALL]: offer this tool when a new photo or screenshot appears. */
                  val auto: String = AutoRun.OFF,
                  /** When several photos go in at once, lay the results out as one picture (a collage) instead of one file each. */
-                 val collage: Boolean = false) {
+                 val collage: Boolean = false,
+                 /** When several photos go in at once, play the results one after another as a single looping GIF. */
+                 val gif: Boolean = false) {
     val start: Kind get() = steps.firstOrNull()?.block?.takes ?: Kind.IMAGE
     val end: Kind? get() = steps.lastOrNull()?.block?.gives
 
@@ -279,7 +288,7 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
     fun toJson(forSharing: Boolean = false): JSONObject = JSONObject().put("id", id).put("name", name).put("steps", JSONArray().also { a ->
         // A shared tool never carries a PDF password either.
         steps.forEach { s -> a.put(JSONObject().put("block", s.block.id).put("settings", JSONObject(if (forSharing) s.settings - "password" else s.settings))) }
-    }).also { o -> if (collage) o.put("collage", true); finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true); if (fileName.isNotBlank()) o.put("fileName", fileName); if (onePage) o.put("onePage", true)
+    }).also { o -> if (collage) o.put("collage", true); if (gif) o.put("gif", true); finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true); if (fileName.isNotBlank()) o.put("fileName", fileName); if (onePage) o.put("onePage", true)
         // A shared tool never carries the owner's reminder times.
         if (!forSharing) schedule?.let { w -> o.put("schedule", JSONObject().put("hour", w.hour).put("minute", w.minute).put("days", JSONArray(w.cleanDays))) }
         if (!forSharing && auto.isNotEmpty()) o.put("auto", auto) }
@@ -309,7 +318,7 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                     Schedule(w.optInt("hour", 9), w.optInt("minute", 0), if (a == null) emptyList() else (0 until a.length()).map { a.optInt(it) })
                 },
                 o.optString("auto", "").takeIf { it in AutoRun.ALL } ?: AutoRun.OFF,
-                o.optBoolean("collage", false))
+                o.optBoolean("collage", false), o.optBoolean("gif", false))
         } catch (_: Exception) { null }
 
         /** Accepts a copied tool only if it is well formed and its steps fit together. */
@@ -398,6 +407,14 @@ object ChainTemplates {
         Chain("video-words", "What was said in a video", listOf(Step(Block.VIDEO_AUDIO), Step(Block.SPEECH_TEXT))),
         Chain("photo-collage", "Photos into one collage", listOf(Step(Block.STRIP_LOCATION)), collage = true),
         Chain("where-i-am", "Send where I am", listOf(Step(Block.CLEAN_TEXT)), finish = Finish("message", "")),
+        Chain("photos-gif", "Photos into a GIF", listOf(Step(Block.STRIP_LOCATION)), gif = true),
+        Chain("sticker-maker", "Photo to a sticker", listOf(Step(Block.STICKER))),
+        Chain("emoji-faces", "Emoji over every face", listOf(Step(Block.EMOJI_FACES, mapOf("emoji" to TextTidy.FACE_EMOJIS[0])))),
+        Chain("meme", "Make a meme", listOf(Step(Block.MEME, mapOf("top" to "", "bottom" to "")))),
+        Chain("emoji-mosaic", "Photo made of emojis", listOf(Step(Block.EMOJI_MOSAIC))),
+        Chain("video-boomerang", "Boomerang GIF from a video", listOf(Step(Block.VIDEO_LOOP, mapOf("style" to "boomerang")))),
+        Chain("video-slowmo", "Slow-motion video", listOf(Step(Block.VIDEO_SPEED, mapOf("speed" to "slow")))),
+        Chain("video-fast", "Speed a video up", listOf(Step(Block.VIDEO_SPEED, mapOf("speed" to "fast")))),
     )
 }
 
@@ -474,6 +491,24 @@ object ChainPlanner {
         val name = ask.trim().replace("\n", " ").replaceFirstChar { it.uppercase() }.let { if (it.length > 34) it.take(32) + "…" else it }
         fun made(steps: List<Step>, combine: Boolean = false): Chain? =
             Chain(UUID.randomUUID().toString(), name, steps.take(8), combine = combine).takeIf { steps.isNotEmpty() && it.problem() == null }
+
+        // Just for fun. These requests name exactly what they want, so they are read before anything else.
+        val film = has("video", " clip", "movie", "footage", "live photo")
+        if (has("boomerang")) return made(listOf(Step(Block.VIDEO_LOOP, mapOf("style" to "boomerang"))))
+        if (has("reverse", "backwards", "backward") && (film || has(" gif"))) return made(listOf(Step(Block.VIDEO_LOOP, mapOf("style" to "reverse"))))
+        if (has("slow mo", "slow-mo", "slowmo", "slow motion", "slow it down", "slow down", "half speed")) return made(listOf(Step(Block.VIDEO_SPEED, mapOf("speed" to "slow"))))
+        if (has("speed up", "speed it up", "sped up", "timelapse", "time lapse", "time-lapse", "fast forward", "double speed", " 2x", " 4x") || (film && has("faster"))) {
+            return made(listOf(Step(Block.VIDEO_SPEED, mapOf("speed" to if (has(" 4x", "four times", "timelapse", "time lapse", "time-lapse")) "faster" else "fast"))))
+        }
+        if (has("meme")) return made(listOf(Step(Block.MEME, mapOf("top" to "", "bottom" to ""))))
+        if (has("sticker")) return made(listOf(Step(Block.STICKER)))
+        if (has("mosaic") || (has("emoji") && has("made of", "out of", "made from", "rebuild", " art "))) return made(listOf(Step(Block.EMOJI_MOSAIC)))
+        if (has("emoji", "smiley")) return made(listOf(Step(Block.EMOJI_FACES, mapOf("emoji" to TextTidy.FACE_EMOJIS[0]))))
+        if (has(" gif", "slideshow", "slide show") && !has("video", " clip", "movie", "footage")) {
+            // A Live Photo carries a short video; several photos play one after another.
+            if (has("live photo")) return made(listOf(Step(Block.VIDEO_GIF)))
+            return made(listOf(Step(Block.STRIP_LOCATION)))?.copy(gif = true)
+        }
 
         // A recording: write out what was said, then whatever else was asked for.
         if (has("voice memo", "recording", "transcribe", "transcript", "what was said", "speech to text", "audio to text")) {
@@ -587,7 +622,7 @@ object ChainPlanner {
         if (has("describe", "what's in", "what is in", "what does it show")) return finish(ask, listOf(Step(Block.DESCRIBE)))
 
         // Picture jobs, in the order that gives the best result.
-        if (has("cut out", "cutout", "remove background", "remove the background", "background", "sticker", "isolate")) steps.add(Step(Block.CUTOUT))
+        if (has("cut out", "cutout", "remove background", "remove the background", "background", "isolate")) steps.add(Step(Block.CUTOUT))
         if (has("enhance", "sharpen", "improve", "fix the photo", "better quality", "clearer", "brighten")) steps.add(Step(Block.ENHANCE))
         if (has("blur", "hide", "redact", "private", "faces", "face ", "anonym", "censor", "personal", "sensitive", "confidential", "identity")) steps.add(Step(Block.HIDE_SENSITIVE))
         if (has("passport", "id photo", "visa photo", "headshot size")) steps.add(Step(Block.PASSPORT_PHOTO, mapOf("country" to "us")))
@@ -649,10 +684,10 @@ object PlannerWords {
         "collage personal sensitive confidential identity details data date information post posting social instagram facebook online share remove delete signature " +
         "sign stamp text notes message messages list pasted paste sheet ledger running monthly return plant breed menu document documents file files kilobyte megabyte " +
         "sentence sentences letter paragraph essay record quiet crop tall wide turn first last start keep english spanish french german italian portuguese hindi arabic " +
-        "chinese japanese korean russian turkish dutch polish indonesian vietnamese thai ukrainian").split(" ").toSet()
+        "chinese japanese korean russian turkish dutch polish indonesian vietnamese thai ukrainian boomerang reverse backwards motion slowmo speed faster timelapse meme memes stickers emoji emojis mosaic slideshow funny").split(" ").toSet()
 
     /** Ordinary words that sit one letter away from a word above and must never be "corrected" into it. */
-    val REAL: Set<String> = ("store phone strap plane plate price point their there where which about would could should these those other after before every later thing things something anything everything people person month today tomorrow title state place right light night great small large please thanks really always never maybe while without within between through because again being doing going having making taking getting using wants wanted needs needed friend friends family client clients office house school second flame world paper print").split(" ").toSet()
+    val REAL: Set<String> = ("spend fasten notion store phone strap plane plate price point their there where which about would could should these those other after before every later thing things something anything everything people person month today tomorrow title state place right light night great small large please thanks really always never maybe while without within between through because again being doing going having making taking getting using wants wanted needs needed friend friends family client clients office house school second flame world paper print").split(" ").toSet()
 
     /** Words too general to tell one starter from another. */
     val PLAIN: Set<String> = ("photo photos picture pictures image images text video videos into from with that this your mine make turn want need have please some them then just only also file files thing something anything notes words page pages link links code list sheet").split(" ").toSet()

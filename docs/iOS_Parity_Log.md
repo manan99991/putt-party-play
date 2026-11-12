@@ -237,3 +237,16 @@ Asked for after the first phone pass: "let them name the tool", "make Describe i
 ### Updates that ask for themselves — Android
 - Internal testers were staying on old builds because Play's background auto-update can take days. The app now asks Play for a newer build on each cold open and shows Play's full-screen update step. iPhone: TestFlight has its own Automatic Updates switch per tester; an app cannot trigger a TestFlight update.
 - It takes effect from the build after the one that carries it, so testers need one manual update first.
+
+### Just for fun: stickers, emoji faces, memes, mosaics, boomerangs and speed — iOS and Android
+- Six new steps with the same ids on both phones, under a new goal "Just for fun": `sticker`, `emojiFaces`, `meme`, `emojiMosaic`, `videoSpeed`, `videoLoop`. 58 steps on each phone.
+- A new option on a photo tool, `gif`: several photos play one after another as one GIF (next to "one PDF" and "collage"; only one of the three can be on).
+- Eight new starters with the same ids (57 on each phone): photos-gif, sticker-maker, emoji-faces, meme, emoji-mosaic, video-boomerang, video-slowmo, video-fast.
+- Describe it reads the fun requests first ("make a meme", "boomerang", "slow mo", "sticker of my dog", "gif from my photos"). "sticker" now makes a sticker; "remove the background" still cuts out.
+- A meme's words can be typed on the run screen each time; the step's own words are only the starting text. With no words yet, the builder preview shows TOP LINE / BOTTOM LINE.
+- Differences that are on purpose:
+  - iPhone: any video tool can also start from a Live Photo (its short video). Android has no Live Photos, so there is no such button.
+  - Sticker cut-out: iPhone uses the system's subject lift; Android uses Google's on-device cut-out, which needs its one-time download (the step says so).
+  - Boomerang GIF: iPhone 400 px and 25 frames, Android 360 px and 20 frames (Android's GIF writer is slower).
+  - Speed change drops the sound on both.
+- Not checked on a real phone yet: every drawing step here. The unit tests cover the logic and, on iPhone, the drawing sizes.

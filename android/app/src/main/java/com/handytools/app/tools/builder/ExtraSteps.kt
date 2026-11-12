@@ -53,7 +53,7 @@ object ExtraSteps {
     const val SAMPLE_PAGE = "Example article\nThe words of the page appear here, without its menus, ads or buttons."
 
     /** Steps the builder can't try on a sample (they need a voice, a translator or a download), so it says what each does instead. */
-    val NO_PREVIEW = setOf(Block.TRANSLATE, Block.REWRITE, Block.READ_ALOUD)
+    val NO_PREVIEW = setOf(Block.TRANSLATE, Block.REWRITE, Block.READ_ALOUD, Block.STICKER, Block.EMOJI_FACES)
 
     @Volatile private var speechKnown: Boolean? = null
     private fun speech(ctx: Context): Boolean =
@@ -223,7 +223,8 @@ object ExtraSteps {
                     }
                 }
 
-                else -> null
+                // The playful steps: stickers, emojis, meme text, boomerangs and speed.
+                else -> FunSteps.apply(step, input, dryRun)
             }
         } catch (_: Throwable) { fail() }
     }

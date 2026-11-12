@@ -109,6 +109,11 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   audio sharing on iPhone in any listing.
 - Android home-screen shortcuts for tools use the launcher's own pin prompt (`ShortcutManagerCompat.requestPinShortcut`): no permission, the
   person confirms each one. The iPhone My Tools widget reads only tool names from the app group.
+- Build your own, the "Just for fun" steps (sticker, emoji over faces, meme text, emoji mosaic, boomerang GIF, speed change, photos as a GIF): all
+  drawn on the device, no new permission, nothing sent anywhere, so Data safety / App Privacy answers are unchanged. "Emoji over faces" finds
+  faces with the phone's own detector (Vision on iOS, ML Kit on Android, both already in the app). Starting a video tool from a Live Photo is
+  iPhone only and uses the system photo picker (no photo-library permission): **never mention Live Photos in the Play listing.** Do not describe
+  any of these as a "face animator", "deepfake" or "AI" feature: nothing animates or alters a face, and the stores review those claims harder.
 - Listing changes for Build your own are drafted in `docs/listing-draft.md`. That file is not pushed by the pipeline; copy
   from it into the metadata folders only after the features ship and Manan approves.
 

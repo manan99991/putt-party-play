@@ -23,9 +23,9 @@ extension Chain {
 enum ChainExtras {
     typealias Outcome = Result<ChainPayload, ChainRunner.Failure>
 
-    /// Steps the builder can't try on a sample (they need the network, a voice or a model), so it shows what each
-    /// one does instead.
-    static let noPreview: Set<Block> = [.pageText, .translate, .rewrite, .readAloud]
+    /// Steps the builder can't try on a sample (they need the network, a voice or a model, or a face or a clear
+    /// subject the sample picture doesn't have), so it shows what each one does instead.
+    static let noPreview: Set<Block> = [.pageText, .translate, .rewrite, .readAloud, .sticker, .emojiFaces]
 
     /// What "Read the page at a link" shows while a tool is being built, so no page is fetched for a preview.
     static let samplePage = "Example article\nThe words of the page appear here, without its menus, ads or buttons."
@@ -93,6 +93,8 @@ enum ChainExtras {
             return words.isEmpty ? .failure(.invalid("Read the PDF's words found no words in that PDF.")) : .success(.text(words))
 
         default:
+            // The playful picture steps run anywhere; the rest need parts only the app has.
+            if let fun = ChainFun.apply(step, to: input, dryRun: dryRun) { return fun }
             return await ChainMedia.apply(step, to: input, dryRun: dryRun)
         }
     }
