@@ -78,7 +78,10 @@ class MainActivity : ComponentActivity() {
         sharedUrl = extractSharedUrl(intent)
         sharedFileUri = extractFileUri(intent)
         Interstitials.preload(this)
-        intent.getStringExtra("tool")?.let { com.handytools.app.tools.builder.ToolReminders.pending = it }   // a tapped tool reminder
+        intent.getStringExtra("tool")?.let { id ->                                   // a tapped tool reminder or "run on this new photo"
+            com.handytools.app.tools.builder.ToolReminders.pendingPhoto = intent.getStringExtra("photo")?.let { android.net.Uri.parse(it) }?.takeIf { it.scheme == "content" }
+            com.handytools.app.tools.builder.ToolReminders.pending = id
+        }
         val routeExtra = intent.getStringExtra("route")
         // Pro-preview unlock exists ONLY for the CI screenshot capture and is compiled out of
         // release builds, so a crafted intent can never grant entitlement on a shipped app.
@@ -199,7 +202,10 @@ class MainActivity : ComponentActivity() {
         sharedFileUri = extractFileUri(intent)
         // Honour a route delivered to the already-running activity (deep link / QA route-seeding),
         // which singleTop would otherwise drop. Pro-preview stays debug-only, exactly as in onCreate.
-        intent.getStringExtra("tool")?.let { com.handytools.app.tools.builder.ToolReminders.pending = it }   // a tapped tool reminder
+        intent.getStringExtra("tool")?.let { id ->                                   // a tapped tool reminder or "run on this new photo"
+            com.handytools.app.tools.builder.ToolReminders.pendingPhoto = intent.getStringExtra("photo")?.let { android.net.Uri.parse(it) }?.takeIf { it.scheme == "content" }
+            com.handytools.app.tools.builder.ToolReminders.pending = id
+        }
         val routeExtra = intent.getStringExtra("route")
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
         if (routeExtra != null) pendingRoute = routeExtra

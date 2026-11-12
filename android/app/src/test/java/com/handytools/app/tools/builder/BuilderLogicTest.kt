@@ -251,4 +251,15 @@ class BuilderLogicTest {
         assertEquals(Schedule(18, 0, listOf(6)), c.schedule)
         assertNull(c.copy(schedule = null).schedule)
     }
+    @Test fun newPhotoAndScreenshotToolsNeverCrossOver() {
+        assertTrue(AutoRun.isScreenshot("Pictures/Screenshots/", "Screenshot_20261112-101500.png"))
+        assertTrue(AutoRun.isScreenshot("DCIM/", "screenshot_1.jpg"))
+        assertFalse(AutoRun.isScreenshot("DCIM/Camera/", "PXL_20261112_101500.jpg"))
+        assertTrue(AutoRun.wants(AutoRun.PHOTO, "DCIM/Camera/", "IMG_0001.jpg"))
+        assertFalse(AutoRun.wants(AutoRun.PHOTO, "Pictures/Screenshots/", "Screenshot_1.png"))
+        assertTrue(AutoRun.wants(AutoRun.SCREENSHOT, "Pictures/Screenshots/", "Screenshot_1.png"))
+        assertFalse(AutoRun.wants(AutoRun.SCREENSHOT, "DCIM/Camera/", "IMG_0001.jpg"))
+        assertFalse(AutoRun.wants(AutoRun.OFF, "DCIM/Camera/", "IMG_0001.jpg"))
+        assertEquals("Off", AutoRun.title(AutoRun.OFF)); assertEquals("", AutoRun.label(AutoRun.OFF))
+    }
 }

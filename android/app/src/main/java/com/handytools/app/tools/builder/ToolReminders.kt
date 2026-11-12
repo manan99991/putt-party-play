@@ -60,6 +60,8 @@ object ToolReminders {
 
     /** Set when a reminder is tapped; the builder screen opens that tool and clears it. */
     var pending by mutableStateOf<String?>(null)
+    /** With [pending]: the new photo to run that tool on, when the tap came from a "new photo" notification. */
+    var pendingPhoto: android.net.Uri? = null
 
     /** Replace every armed reminder with what the saved tools now ask for. */
     fun sync(ctx: Context, chains: List<Chain>) {
@@ -81,22 +83,26 @@ object ToolReminders {
     /** Show the reminder for one tool. Does nothing if the tool is gone or notifications are off. */
     fun show(ctx: Context, id: String) {
         val c = ChainStore.load(ctx).firstOrNull { it.id == id && it.schedule != null } ?: return
+        post(ctx, id.hashCode(), c.name, "Time to run this tool. Tap to open it.", id, null)
+    }
+
+    /** One notification that opens [toolId] in the builder, on [photo] when there is one. */
+    fun post(ctx: Context, key: Int, title: String, text: String, toolId: String, photo: android.net.Uri?) {
         if (!Permissions.canPostNotifications(ctx)) return
         val nm = ctx.getSystemService(NotificationManager::class.java) ?: return
         nm.createNotificationChannel(NotificationChannel(CHANNEL, "Tool reminders", NotificationManager.IMPORTANCE_DEFAULT))
-        val open = PendingIntent.getActivity(
-            ctx, id.hashCode(),
-            Intent(ctx, MainActivity::class.java).putExtra("route", "builder").putExtra("tool", id)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP),
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val intent = Intent(ctx, MainActivity::class.java).putExtra("route", "builder").putExtra("tool", toolId)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        if (photo != null) intent.putExtra("photo", photo.toString())
+        val open = PendingIntent.getActivity(ctx, key, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val n = NotificationCompat.Builder(ctx, CHANNEL)
             .setSmallIcon(R.drawable.ic_notif)
-            .setContentTitle(c.name)
-            .setContentText("Time to run this tool. Tap to open it.")
+            .setContentTitle(title)
+            .setContentText(text)
             .setContentIntent(open)
             .setAutoCancel(true)
             .build()
-        runCatching { nm.notify(id.hashCode(), n) }
+        runCatching { nm.notify(key, n) }
     }
 }
 
@@ -106,6 +112,7 @@ class ToolReminderReceiver : BroadcastReceiver() {
         runCatching {
             intent.getStringExtra("tool")?.let { ToolReminders.show(ctx, it) }
             ToolReminders.resync(ctx)
+            PhotoWatch.arm(ctx)
         }
     }
 }
@@ -155,6 +162,43 @@ fun ScheduleCard(schedule: Schedule?, onChange: (Schedule?) -> Unit) {
                     else "Notifications are off for Tenzy. Turn them on in Settings to get this reminder.",
                     style = MaterialTheme.typography.bodySmall, color = if (allowed) Handy.palette.textSecondary else MaterialTheme.colorScheme.error)
             }
+        }
+    }
+}
+
+/** "Offer this tool when...": off, a new photo, or a new screenshot. Only for tools that start with a photo. */
+@Composable
+fun AutoRunCard(auto: String, onChange: (String) -> Unit) {
+    val ctx = LocalContext.current
+    val perm = if (Build.VERSION.SDK_INT >= 33) Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+    fun granted() = androidx.core.content.ContextCompat.checkSelfPermission(ctx, perm) == android.content.pm.PackageManager.PERMISSION_GRANTED
+    var photosOk by remember { mutableStateOf(granted()) }
+    var notifOk by remember { mutableStateOf(Permissions.canPostNotifications(ctx)) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { photosOk = granted(); notifOk = Permissions.canPostNotifications(ctx) }
+    HCard(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            Text("Offer this tool by itself", style = MaterialTheme.typography.titleSmall)
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                AutoRun.ALL.forEach { a ->
+                    val picked = a == auto
+                    Box(
+                        Modifier.weight(1f).heightIn(min = 44.dp).clip(RoundedCornerShape(10.dp))
+                            .background(if (picked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
+                            .clickable {
+                                onChange(a)
+                                if (a.isNotEmpty() && (!photosOk || !notifOk)) {
+                                    ask.launch(if (Build.VERSION.SDK_INT >= 33) arrayOf(perm, Manifest.permission.POST_NOTIFICATIONS) else arrayOf(perm))
+                                }
+                            }
+                            .semantics { selected = picked },
+                        contentAlignment = Alignment.Center,
+                    ) { Text(AutoRun.title(a), style = MaterialTheme.typography.bodySmall, color = if (picked) MaterialTheme.colorScheme.onPrimary else Handy.palette.textSecondary) }
+                }
+            }
+            if (auto.isNotEmpty()) Text(
+                if (photosOk && notifOk) (if (auto == AutoRun.SCREENSHOT) "When you take a screenshot" else "When you take a photo") + ", Tenzy shows a notification. Tap it and this tool runs on that picture. Nothing runs until you tap."
+                else "Tenzy needs to see all your photos and to send notifications for this. Allow both in Settings, then save this tool again.",
+                style = MaterialTheme.typography.bodySmall, color = if (photosOk && notifOk) Handy.palette.textSecondary else MaterialTheme.colorScheme.error)
         }
     }
 }

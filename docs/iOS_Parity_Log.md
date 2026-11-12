@@ -130,3 +130,9 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - This is the iPhone route to real automation: a Shortcuts automation (time of day, arriving somewhere, Action button, Back Tap, opening an app) can take a photo or the clipboard, run a Tenzy tool, and send the result on.
 - Android has no Shortcuts app. Its equivalent (a tool that runs when a new photo or screenshot appears) is not built yet.
 - UNBUILT in CI (builds paused for cost). App Intents code is the least certain of the unbuilt work: expect compile fixes on the first build.
+
+### A tool that offers itself on a new photo or screenshot — Android only
+- A tool that starts with a photo can be set to "New photo" or "New screenshot" (`auto`, kept on the phone, never shared). When one appears, Tenzy shows a notification; tapping it runs the tool on that picture and the tool's ending (WhatsApp, email, share) follows. Nothing runs until the tap.
+- How: a system job woken by photo-library changes (`PhotoWatch`, no running service), re-armed after each firing, on app start and after a restart. Skips pictures older than two minutes and Tenzy's own saved results. Needs "all photos" access and notifications.
+- iOS cannot notice a new photo. The iPhone route is the Shortcuts actions above.
+- UNBUILT in CI (builds paused for cost).

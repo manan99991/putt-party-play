@@ -32,7 +32,7 @@ class HandyApp : Application() {
         billing = BillingManager(this)
         createChannels()
         // Tool reminders are lost when the app is updated or force-stopped; put them back (cheap: reads one small file).
-        CoroutineScope(Dispatchers.IO).launch { runCatching { com.handytools.app.tools.builder.ToolReminders.resync(this@HandyApp) } }
+        CoroutineScope(Dispatchers.IO).launch { runCatching { com.handytools.app.tools.builder.ToolReminders.resync(this@HandyApp); com.handytools.app.tools.builder.PhotoWatch.arm(this@HandyApp) } }
         // Alarm tool removed (its exact-alarm / full-screen-intent permissions are reserved for
         // dedicated alarm-clock apps). No alarm rescheduling on launch.
         scheduleDeferredInit()

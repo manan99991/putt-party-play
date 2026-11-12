@@ -116,14 +116,15 @@ fun BuilderScreen() {
     var note by remember { mutableStateOf<String?>(null) }
     var ask by remember { mutableStateOf("") }
 
-    fun saveAll() { ChainStore.save(ctx, mine.toList()); ToolReminders.sync(ctx, mine.toList()) }
+    fun saveAll() { ChainStore.save(ctx, mine.toList()); ToolReminders.sync(ctx, mine.toList()); PhotoWatch.arm(ctx) }
+    var runOn by remember { mutableStateOf<Uri?>(null) }      // the new photo a tapped "run this tool" notification came with
 
     // A tapped reminder lands here: open that tool ready to run.
     val reminded = ToolReminders.pending
     LaunchedEffect(reminded) {
         if (reminded != null) {
-            mine.firstOrNull { it.id == reminded }?.let { editing = null; running = it }
-            ToolReminders.pending = null
+            mine.firstOrNull { it.id == reminded }?.let { editing = null; runOn = ToolReminders.pendingPhoto; running = it }
+            ToolReminders.pending = null; ToolReminders.pendingPhoto = null
         }
     }
 
@@ -135,7 +136,7 @@ fun BuilderScreen() {
         }
         return
     }
-    running?.let { c -> ChainRunScreen(c) { running = null }; return }
+    running?.let { c -> ChainRunScreen(c, initial = runOn) { running = null; runOn = null }; return }
 
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader("Build your own", "Snap small steps together into a tool that does exactly what you need. Runs on your phone.")
@@ -156,7 +157,7 @@ fun BuilderScreen() {
             Text("My tools", style = MaterialTheme.typography.titleMedium)
             mine.toList().forEach { c ->
                 ChainRow(c, onRun = { running = c }, onEdit = { editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
-                    onDuplicate = { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." })
+                    onDuplicate = { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null, auto = AutoRun.OFF); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." })
             }
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -189,6 +190,7 @@ private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: ()
             Column(Modifier.weight(1f)) {
                 Text(c.name, style = MaterialTheme.typography.titleSmall)
                 Text(c.steps.joinToString("  ›  ") { it.block.title }, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                if (c.auto.isNotEmpty()) Text(AutoRun.label(c.auto), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                 c.schedule?.let { w -> Text("Reminder: " + w.label(android.text.format.DateFormat.is24HourFormat(LocalContext.current)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary) }
             }
             TextButton(onRun) { Text("Run") }
@@ -311,6 +313,7 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         if (chain.end != null) ScheduleCard(chain.schedule) { w -> chain = chain.copy(schedule = w) }
+        if (chain.end != null && chain.start == Kind.IMAGE) AutoRunCard(chain.auto) { a -> chain = chain.copy(auto = a) }
         if (problem != null && chain.steps.isNotEmpty()) Text(problem, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
         HPrimaryButton("Save", enabled = problem == null && chain.name.isNotBlank()) { onSave(chain) }
         HSecondaryButton("Cancel") { onCancel() }

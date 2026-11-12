@@ -129,6 +129,30 @@ data class Schedule(val hour: Int = 9, val minute: Int = 0, val days: List<Int> 
     }
 }
 
+/**
+ * A tool can offer itself when something new lands on the phone: a photo you just took, or a screenshot. Tenzy shows a
+ * notification; one tap runs the tool on that picture. (Android only: an iPhone has no way to notice a new photo.)
+ */
+object AutoRun {
+    const val OFF = ""
+    const val PHOTO = "photo"
+    const val SCREENSHOT = "screenshot"
+    val ALL = listOf(OFF, PHOTO, SCREENSHOT)
+
+    fun title(auto: String) = when (auto) { PHOTO -> "New photo"; SCREENSHOT -> "New screenshot"; else -> "Off" }
+    fun label(auto: String) = when (auto) { PHOTO -> "Offers itself when you take a photo"; SCREENSHOT -> "Offers itself when you take a screenshot"; else -> "" }
+
+    /** Phones keep screenshots in a Screenshots folder and name them Screenshot_...; either is enough. */
+    fun isScreenshot(folder: String, name: String) = folder.contains("screenshot", ignoreCase = true) || name.startsWith("screenshot", ignoreCase = true)
+
+    /** Should a tool set to [auto] offer itself for this new picture? Screenshots and camera photos never cross over. */
+    fun wants(auto: String, folder: String, name: String): Boolean = when (auto) {
+        PHOTO -> !isScreenshot(folder, name)
+        SCREENSHOT -> isScreenshot(folder, name)
+        else -> false
+    }
+}
+
 /** @param combine when several pages or photos go in at once, put every result into one PDF instead of one file each. */
 data class Chain(val id: String, val name: String, val steps: List<Step>, val finish: Finish? = null, val combine: Boolean = false,
                  /** What the result file is called, e.g. "Signed form {date}". Empty keeps the plain default. */
@@ -136,7 +160,9 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                  /** With [combine]: lay every photo out on a single page (both sides of an ID card) instead of a page each. */
                  val onePage: Boolean = false,
                  /** A reminder to run this tool at a set time. null: no reminder. */
-                 val schedule: Schedule? = null) {
+                 val schedule: Schedule? = null,
+                 /** One of [AutoRun.ALL]: offer this tool when a new photo or screenshot appears. */
+                 val auto: String = AutoRun.OFF) {
     val start: Kind get() = steps.firstOrNull()?.block?.takes ?: Kind.IMAGE
     val end: Kind? get() = steps.lastOrNull()?.block?.gives
 
@@ -156,7 +182,8 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
         steps.forEach { s -> a.put(JSONObject().put("block", s.block.id).put("settings", JSONObject(s.settings))) }
     }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true); if (fileName.isNotBlank()) o.put("fileName", fileName); if (onePage) o.put("onePage", true)
         // A shared tool never carries the owner's reminder times.
-        if (!forSharing) schedule?.let { w -> o.put("schedule", JSONObject().put("hour", w.hour).put("minute", w.minute).put("days", JSONArray(w.cleanDays))) } }
+        if (!forSharing) schedule?.let { w -> o.put("schedule", JSONObject().put("hour", w.hour).put("minute", w.minute).put("days", JSONArray(w.cleanDays))) }
+        if (!forSharing && auto.isNotEmpty()) o.put("auto", auto) }
 
     /** For a one-PDF run each page keeps its picture: the steps without a trailing "Make a PDF", which the join replaces. */
     val stepsPerPage: List<Step> get() = if (combine && steps.lastOrNull()?.block == Block.PHOTO_PDF) steps.dropLast(1) else steps
@@ -181,7 +208,8 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                 o.optJSONObject("schedule")?.let { w ->
                     val a = w.optJSONArray("days")
                     Schedule(w.optInt("hour", 9), w.optInt("minute", 0), if (a == null) emptyList() else (0 until a.length()).map { a.optInt(it) })
-                })
+                },
+                o.optString("auto", "").takeIf { it in AutoRun.ALL } ?: AutoRun.OFF)
         } catch (_: Exception) { null }
 
         /** Accepts a copied tool only if it is well formed and its steps fit together. */
@@ -190,7 +218,7 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
             if (!t.startsWith(PREFIX)) return null
             val c = try { fromJson(JSONObject(t.removePrefix(PREFIX))) } catch (_: Exception) { null } ?: return null
             if (c.steps.size > 12 || c.problem() != null) return null
-            return c.copy(id = UUID.randomUUID().toString(), schedule = null)   // a pasted tool never arrives with reminders switched on
+            return c.copy(id = UUID.randomUUID().toString(), schedule = null, auto = AutoRun.OFF)   // a pasted tool never arrives with reminders or auto-offers switched on
         }
 
         fun blank() = Chain(UUID.randomUUID().toString(), "My tool", emptyList())

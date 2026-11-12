@@ -101,6 +101,12 @@
             </intent-filter>
         </receiver>
 
+        <!-- Notices a new photo or screenshot so a tool can offer itself (only armed while a tool asks for it). -->
+        <service
+            android:name=".tools.builder.PhotoWatchJob"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <!-- Flashlight quick-settings tile (flashlight is a standard, unrestricted tool). -->
         <service
             android:name=".tools.quick.FlashlightTileService"
