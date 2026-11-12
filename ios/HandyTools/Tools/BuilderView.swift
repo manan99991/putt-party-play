@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import VisionKit
 
 /// Tenzy Builder (M2): run a starter or saved tool, or build your own by stacking blocks.
 /// Everything here is data over built-in blocks (see ChainRunner), nothing is downloaded or generated as code.
@@ -169,7 +170,11 @@ private struct ChainEditor: View {
         let to = Binding<String>(
             get: { chain.finish?.to ?? "" },
             set: { t in var f = chain.finish ?? ChainFinish(); f.to = t; chain.finish = f })
+        let onePdf = Binding<Bool>(get: { chain.combine == true }, set: { chain.combine = $0 ? true : nil })
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            if startKind == .image, endKind != .text {
+                Toggle("Put all pages or photos into one PDF", isOn: onePdf).font(HandyFont.caption).accessibilityIdentifier("finish-one-pdf")
+            }
             Text("Then").font(HandyFont.bodyStrong)
             Picker("Then", selection: kind) {
                 Text("Share").tag(ChainFinish.Kind.share)
@@ -387,6 +392,7 @@ private struct ChainRunView: View {
     @State private var progress = ""
     @State private var outbox: Outbox?
     @State private var sending = false
+    @State private var scanning = false
     @State private var text = ""
     @State private var busy = false
     @State private var result: ChainPayload?
@@ -401,7 +407,12 @@ private struct ChainRunView: View {
                 Text(chain.name).font(HandyFont.title)
                 if start != .text {
                     PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label("Choose photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
-                    Text("Pick one, or up to 20 at once. Each one gets the same steps.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    if VNDocumentCameraViewController.isSupported {
+                        Button { scanning = true } label: { Label("Scan a document", systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
+                            .secondaryButton().accessibilityIdentifier("run-scan")
+                    }
+                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : "Pick one, or up to 20 at once. Each one gets the same steps.")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
                     TextEditor(text: $text).frame(minHeight: 140).cardStyle(padding: HandySpacing.s8)
                     Button("Run") { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
@@ -426,26 +437,47 @@ private struct ChainRunView: View {
                     let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
                     if let img { go(.image(img)) } else { message = "That photo couldn't be opened. Try another." }
                 }
-            } else { runBatch(items) }
+            } else { runBatch(count: items.count) { i in (try? await items[i].loadTransferable(type: Data.self)).flatMap(UIImage.init) } }
+        }
+        .fullScreenCover(isPresented: $scanning) {
+            // Apple's document camera: finds the page edges, straightens it, and takes several pages in one go.
+            DocCameraSheet { pages in
+                scanning = false
+                if pages.count == 1 { go(.image(pages[0])) } else if pages.count > 1 { runBatch(count: pages.count) { i in pages[i] } }
+            }.ignoresSafeArea()
         }
     }
 
     /// One result per photo. A photo that can't be processed never stops the others; it just gets its own note.
-    private func runBatch(_ items: [PhotosPickerItem]) {
+    private func runBatch(count: Int, load: @escaping (Int) async -> UIImage?) {
         busy = true; result = nil; message = nil; batch = []; outbox = nil
+        let combine = chain.combine == true
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-batch-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         Task {
             var out: [BatchItem] = []
-            for (i, item) in items.enumerated() {
-                await MainActor.run { progress = "Working… \(i + 1) of \(items.count)" }
-                guard let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) else {
+            var kept: [ChainPayload] = []      // only held when everything is going into one PDF
+            for i in 0..<count {
+                await MainActor.run { progress = "Working… \(i + 1) of \(count)" }
+                guard let img = await load(i) else {
                     out.append(BatchItem(n: i + 1, note: "Couldn't open this photo.")); continue
                 }
                 switch await ChainRunner.run(chain, input: .image(img)) {
-                case .success(let p): out.append(BatchItem.make(n: i + 1, payload: p, in: dir))
+                case .success(let p):
+                    if combine { kept.append(p) }
+                    out.append(BatchItem.make(n: i + 1, payload: p, in: dir))
                 case .failure(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
                 }
+            }
+            // One PDF for everything, when the tool asks for it and the results can be joined.
+            if combine, let one = ChainCombine.onePDF(kept) {
+                let skipped = out.filter { $0.note != nil }.count
+                await MainActor.run {
+                    busy = false; progress = ""; result = one
+                    if skipped > 0 { message = "\(skipped) of \(count) couldn't be used and were left out." }
+                    finished(Outbox.make(one))
+                }
+                return
             }
             await MainActor.run {
                 batch = out; busy = false; progress = ""

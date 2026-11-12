@@ -276,6 +276,12 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
                 OutlinedTextField(fin.to, { v -> chain = chain.copy(finish = fin.copy(to = v)) }, Modifier.fillMaxWidth(), singleLine = true,
                     label = { Text(if (fin.kind == "mail") "Email address (optional)" else "Phone number (optional)") })
             }
+            if (chain.start == Kind.IMAGE && it != Kind.TEXT) {
+                Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                    androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on) })
+                    Text("  Put all pages or photos into one PDF", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
             if (fin.kind != "share") Text(
                 when (fin.kind) { "mail" -> "When the tool finishes, an email opens with the result attached. You tap Send."
                     "message" -> "When the tool finishes, a message opens with the result attached. You tap Send."
@@ -412,26 +418,66 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
         scope.launch {
             val dir = File(ctx.cacheDir, "batch-${System.currentTimeMillis()}").also { it.mkdirs() }
             val out = ArrayList<BatchItem>()
+            // For "one PDF for everything" each page keeps its picture and the pictures are joined at the end.
+            val perPage = chain.copy(steps = chain.stepsPerPage)
+            val pages = ArrayList<android.graphics.Bitmap>()
+            var joinable = chain.combine
             picked.forEachIndexed { i, uri ->
                 progress = "Working… ${i + 1} of ${picked.size}"
                 val bmp = withContext(Dispatchers.IO) { runCatching { ctx.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it) } }.getOrNull() }
                 if (bmp == null) { out.add(BatchItem(i + 1, note = "Couldn't open this photo.")); return@forEachIndexed }
-                when (val r = ChainRunner.run(chain, Payload.Pic(bmp))) {
-                    is Outcome.Done -> out.add(BatchItem.of(i + 1, r.value, dir))
+                val r = if (perPage.steps.isEmpty()) Outcome.Done(Payload.Pic(bmp)) else ChainRunner.run(perPage, Payload.Pic(bmp))
+                when (r) {
+                    is Outcome.Done -> {
+                        if (chain.combine) when (val v = r.value) {
+                            is Payload.Pic -> pages.add(v.bmp)
+                            is Payload.Doc -> BitmapFactory.decodeByteArray(v.bytes, 0, v.bytes.size)?.takeIf { v.kind == Kind.PHOTO_FILE }?.let { pages.add(it) } ?: run { joinable = false }
+                            else -> joinable = false
+                        }
+                        out.add(BatchItem.of(i + 1, r.value, dir))
+                    }
                     is Outcome.Stopped -> out.add(BatchItem(i + 1, note = r.why))
                 }
+            }
+            if (chain.combine && joinable && pages.isNotEmpty()) {
+                val skipped = out.count { it.note != null }
+                result = Payload.Doc(withContext(Dispatchers.Default) { ChainRunner.onePdf(pages) }, "pdf")
+                if (skipped > 0) message = "$skipped of ${picked.size} couldn't be used and were left out."
+                busy = false; progress = ""
+                return@launch
             }
             batch = out; busy = false; progress = ""
         }
     }
+    // Google's document scanner: finds the page edges, straightens it, takes several pages. It can be missing or stale
+    // on some phones and can throw as well as fail, so every path falls back to choosing photos.
+    val scanLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { res ->
+        val uris = com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult.fromActivityResultIntent(res.data)?.pages?.map { it.imageUri } ?: emptyList()
+        if (uris.isNotEmpty()) runBatch(uris)
+    }
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris: List<Uri> ->
         if (uris.isEmpty()) return@rememberLauncherForActivityResult
-        if (uris.size == 1) {
+        if (uris.size == 1 && !chain.combine) {
             val bmp = runCatching { ctx.contentResolver.openInputStream(uris[0])?.use { BitmapFactory.decodeStream(it) } }.getOrNull()
             if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
         } else runBatch(uris)
     }
 
+    fun scan() {
+        val noScanner = { message = "The camera scanner isn't available on this phone, so choose photos instead."; picker.launch("image/*") }
+        val activity = com.handytools.app.tools.power.DocEngine.findActivity(ctx) ?: return noScanner()
+        try {
+            val options = com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.Builder()
+                .setGalleryImportAllowed(true).setPageLimit(MAX_BATCH)
+                .setResultFormats(com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.RESULT_FORMAT_JPEG)
+                .setScannerMode(com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.SCANNER_MODE_FULL).build()
+            com.google.mlkit.vision.documentscanner.GmsDocumentScanning.getClient(options).getStartScanIntent(activity)
+                .addOnSuccessListener { sender ->
+                    try { scanLauncher.launch(androidx.activity.result.IntentSenderRequest.Builder(sender).build()) } catch (_: Throwable) { noScanner() }
+                }
+                .addOnFailureListener { noScanner() }
+        } catch (_: Throwable) { noScanner() }
+    }
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader(chain.name, chain.steps.joinToString("  ›  ") { it.block.title })
         if (chain.start == Kind.TEXT) {
@@ -439,7 +485,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
             HPrimaryButton("Run", enabled = text.isNotBlank() && !busy) { go(Payload.Words(text)) }
         } else {
             HPrimaryButton("Choose photos", enabled = !busy) { picker.launch("image/*") }
-            Text("Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            HSecondaryButton("Scan a document") { scan() }
+            Text(if (chain.combine) "Pick or scan as many pages as you need. They all go into one PDF." else "Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         if (busy) Text(progress.ifEmpty { "Working…" }, color = Handy.palette.textSecondary)
         message?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }

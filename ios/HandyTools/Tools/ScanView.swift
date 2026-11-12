@@ -529,7 +529,7 @@ struct ScanView: View {
 }
 
 /// Apple's edge-detecting document camera (multi-page, auto-crop, perspective fix).
-private struct DocCameraSheet: UIViewControllerRepresentable {
+struct DocCameraSheet: UIViewControllerRepresentable {
     let done: ([UIImage]) -> Void
     func makeUIViewController(context: Context) -> VNDocumentCameraViewController { let v = VNDocumentCameraViewController(); v.delegate = context.coordinator; return v }
     func updateUIViewController(_ vc: VNDocumentCameraViewController, context: Context) {}

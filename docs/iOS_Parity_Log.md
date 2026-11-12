@@ -88,3 +88,9 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Shrink to size now picks from a list of limits down to 20 KB (was 0.25 MB minimum) for portals that demand 20-100 KB.
 - New starters on both: "Privacy share shield" (hide faces and numbers, strip location, under 2 MB), "ID copy with a safety watermark", "Portal photo: 35x45 mm under 50 KB".
 - Describe it (iOS): understands "watermark", "under 50 kb", "35x45" / "pixels". Android planner not yet.
+
+### Paperwork, part 1: scan to start, and one PDF for all pages — iOS and Android
+- Run screen of any photo-first tool has "Scan a document" next to "Choose photos" (iOS: Apple's document camera; Android: Google's document scanner, falling back to choosing photos where it is missing). Several pages run as a batch.
+- Tool option "Put all pages or photos into one PDF" (`combine`). iOS joins whatever the pages became (PDFs page after page, pictures a page each). Android keeps each page as a picture and builds the PDF at the end, so a trailing "Make a PDF" step is skipped per page. Text or mixed results stay separate on both.
+- New starter on both: "Scan pages into one PDF".
+- Not yet: saved stamps (signature, name, date), the stamp step, the naming step.

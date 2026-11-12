@@ -78,7 +78,8 @@ data class Finish(val kind: String = "share", val to: String = "") {
     }
 }
 
-data class Chain(val id: String, val name: String, val steps: List<Step>, val finish: Finish? = null) {
+/** @param combine when several pages or photos go in at once, put every result into one PDF instead of one file each. */
+data class Chain(val id: String, val name: String, val steps: List<Step>, val finish: Finish? = null, val combine: Boolean = false) {
     val start: Kind get() = steps.firstOrNull()?.block?.takes ?: Kind.IMAGE
     val end: Kind? get() = steps.lastOrNull()?.block?.gives
 
@@ -96,7 +97,10 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
     /** @param forSharing a shared tool never carries the owner's recipients (someone's email or phone number). */
     fun toJson(forSharing: Boolean = false): JSONObject = JSONObject().put("id", id).put("name", name).put("steps", JSONArray().also { a ->
         steps.forEach { s -> a.put(JSONObject().put("block", s.block.id).put("settings", JSONObject(s.settings))) }
-    }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) } }
+    }).also { o -> finish?.let { f -> o.put("finish", JSONObject().put("kind", f.kind).put("to", if (forSharing) "" else f.to)) }; if (combine) o.put("combine", true) }
+
+    /** For a one-PDF run each page keeps its picture: the steps without a trailing "Make a PDF", which the join replaces. */
+    val stepsPerPage: List<Step> get() = if (combine && steps.lastOrNull()?.block == Block.PHOTO_PDF) steps.dropLast(1) else steps
 
     val shareText: String get() = PREFIX + toJson(forSharing = true).toString()
 
@@ -114,7 +118,7 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
                 Step(b, map)
             }
             val fin = o.optJSONObject("finish")?.let { f -> Finish(f.optString("kind", "share").takeIf { it in Finish.KINDS } ?: "share", f.optString("to", "")) }
-            Chain(o.optString("id", UUID.randomUUID().toString()), o.optString("name", "My tool"), steps, fin)
+            Chain(o.optString("id", UUID.randomUUID().toString()), o.optString("name", "My tool"), steps, fin, o.optBoolean("combine", false))
         } catch (_: Exception) { null }
 
         /** Accepts a copied tool only if it is well formed and its steps fit together. */
@@ -157,6 +161,7 @@ object ChainTemplates {
         Chain("clean-link", "Link without the tracking", listOf(Step(Block.CLEAN_LINKS))),
         Chain("photo-to-pdf", "Photo to PDF", listOf(Step(Block.PHOTO_PDF))),
         Chain("text-to-qr", "Text or link to QR code", listOf(Step(Block.MAKE_QR))),
+        Chain("scan-to-pdf", "Scan pages into one PDF", listOf(Step(Block.PHOTO_PDF)), combine = true),
         Chain("share-shield", "Privacy share shield", listOf(Step(Block.HIDE_SENSITIVE), Step(Block.STRIP_LOCATION), Step(Block.SHRINK, mapOf("mb" to "2")))),
         Chain("id-copy-watermarked", "ID copy with a safety watermark", listOf(Step(Block.WATERMARK, mapOf("text" to "For verification only")), Step(Block.STRIP_LOCATION))),
         Chain("portal-photo", "Portal photo: 35x45 mm under 50 KB", listOf(Step(Block.RESIZE_PHOTO, mapOf("size" to "413x531")), Step(Block.SHRINK, mapOf("mb" to "0.05")))),

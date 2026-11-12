@@ -155,4 +155,13 @@ class BuilderLogicTest {
         val c = ChainTemplates.all.first { it.id == "portal-photo" }
         assertNull(c.problem(Kind.IMAGE)); assertEquals("0.05", c.steps.last().settings["mb"])
     }
+
+    // One PDF for all pages
+    @Test fun onePdfToolKeepsPicturesPerPageAndJoinsAtTheEnd() {
+        val c = ChainTemplates.all.first { it.id == "scan-to-pdf" }
+        assertTrue(c.combine); assertTrue(c.stepsPerPage.isEmpty())
+        val longer = Chain("x", "x", listOf(Step(Block.STRIP_LOCATION), Step(Block.PHOTO_PDF)), combine = true)
+        assertEquals(listOf(Block.STRIP_LOCATION), longer.stepsPerPage.map { it.block })
+        assertEquals(2, longer.copy(combine = false).stepsPerPage.size)
+    }
 }

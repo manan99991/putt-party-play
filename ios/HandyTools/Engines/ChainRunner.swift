@@ -1,4 +1,5 @@
 import UIKit
+import PDFKit
 
 /// Tenzy Builder, Milestone 1: a chain is plain data (a list of built-in blocks with settings) that this
 /// runner executes by calling the engines the app already ships. No downloaded or generated code ever runs,
@@ -151,6 +152,9 @@ struct Chain: Codable, Equatable, Identifiable {
     var name: String
     var steps: [ChainStep]
     var finish: ChainFinish?
+    /// When several pages or photos go in at once, put every result into one PDF instead of one file each.
+    /// Optional so tools saved before this existed still load.
+    var combine: Bool?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -356,6 +360,7 @@ enum ChainTemplates {
         Chain(id: "photo-to-pdf", name: "Photo to searchable PDF", steps: [ChainStep(block: .photoPdf)]),
         Chain(id: "text-to-qr", name: "Text or link to QR code", steps: [ChainStep(block: .makeQr)]),
         Chain(id: "what-is-this", name: "What is this?", steps: [ChainStep(block: .identify)]),
+        Chain(id: "scan-to-pdf", name: "Scan pages into one PDF", steps: [ChainStep(block: .photoPdf)], combine: true),
         Chain(id: "share-shield", name: "Privacy share shield", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
         Chain(id: "id-copy-watermarked", name: "ID copy with a safety watermark", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"]), ChainStep(block: .stripLocation)]),
         Chain(id: "portal-photo", name: "Portal photo: 35x45 mm under 50 KB", steps: [ChainStep(block: .resizePhoto, settings: ["size": "413x531"]), ChainStep(block: .shrinkImage, settings: ["mb": "0.05"])]),
@@ -517,5 +522,40 @@ enum ChainImage {
                 y += ts.height * 3; row += 1
             }
         }
+    }
+}
+
+/// "One PDF for everything": joins the results of a multi-page or multi-photo run.
+enum ChainCombine {
+    /// PDFs are joined page after page; pictures become a page each. Text, other files or a mix can't be
+    /// combined, and the caller then keeps the separate results (nil).
+    static func onePDF(_ results: [ChainPayload]) -> ChainPayload? {
+        guard !results.isEmpty else { return nil }
+        var pdfs: [Data] = [], images: [UIImage] = []
+        for r in results {
+            switch r {
+            case .file(let d, let ext) where ext.lowercased() == "pdf": pdfs.append(d)
+            case .file(let d, let ext) where ChainPayload.isPhoto(ext):
+                guard let i = UIImage(data: d) else { return nil }
+                images.append(i)
+            case .image(let i): images.append(i)
+            default: return nil
+            }
+        }
+        if !pdfs.isEmpty, images.isEmpty {
+            let out = PDFDocument()
+            for d in pdfs {
+                guard let doc = PDFDocument(data: d) else { return nil }
+                for i in 0..<doc.pageCount {
+                    if let p = doc.page(at: i) { out.insert((p.copy() as? PDFPage) ?? p, at: out.pageCount) }
+                }
+            }
+            return out.dataRepresentation().map { .file($0, ext: "pdf") }
+        }
+        if !images.isEmpty, pdfs.isEmpty {
+            return DocEngine.pdf(images: images, ocr: images.map { _ -> [DocEngine.OCRLine]? in nil }, options: DocEngine.PDFOptions(searchable: false))
+                .map { .file($0, ext: "pdf") }
+        }
+        return nil
     }
 }

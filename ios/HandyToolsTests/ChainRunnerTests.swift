@@ -1,5 +1,6 @@
 import XCTest
 import UIKit
+import PDFKit
 @testable import HandyTools
 
 /// Builder M1: chains are validated and run by the same engines the tools use.
@@ -83,9 +84,9 @@ final class ChainRowTests: XCTestCase {
 }
 
 final class ChainTemplateTests: XCTestCase {
-    func testTwentyTwoTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 22)
-        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 22)
+    func testTwentyThreeTemplatesAllValidAndUnique() {
+        XCTAssertEqual(ChainTemplates.all.count, 23)
+        XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 23)
     }
     func testShareRoundTripAndRejectsJunk() throws {
         let t = ChainTemplates.all[0]
@@ -424,5 +425,44 @@ final class PortalBlocksTests: XCTestCase {
         let kb = ChainPlanner.keywordPlan("shrink my photo under 50 kb for the visa upload")
         XCTAssertEqual(kb?.steps.map(\.block), [.shrinkImage]); XCTAssertEqual(kb?.steps.first?.settings["mb"], "0.05")
         XCTAssertEqual(ChainPlanner.keywordPlan("add a watermark to my licence copy and strip the location")?.steps.map(\.block), [.watermark, .stripLocation])
+    }
+}
+
+/// Many pages or photos into one PDF.
+final class CombineTests: XCTestCase {
+    private func page(_ c: UIColor) -> UIImage {
+        let f = UIGraphicsImageRendererFormat.default(); f.scale = 1
+        return UIGraphicsImageRenderer(size: CGSize(width: 200, height: 280), format: f).image { ctx in c.setFill(); ctx.fill(CGRect(x: 0, y: 0, width: 200, height: 280)) }
+    }
+    private func pageCount(_ p: ChainPayload?) -> Int? {
+        guard case .file(let d, let ext)? = p, ext == "pdf" else { return nil }
+        return PDFDocument(data: d)?.pageCount
+    }
+    func testPicturesBecomeOnePdfWithAPageEach() {
+        XCTAssertEqual(pageCount(ChainCombine.onePDF([.image(page(.white)), .image(page(.gray)), .image(page(.black))])), 3)
+    }
+    func testSeparatePdfsAreJoinedInOrder() async {
+        var parts: [ChainPayload] = []
+        for c in [UIColor.white, UIColor.gray] {
+            if case .success(let p) = await ChainRunner.apply(ChainStep(block: .photoPdf), to: .image(page(c))) { parts.append(p) }
+        }
+        XCTAssertEqual(parts.count, 2)
+        XCTAssertEqual(pageCount(ChainCombine.onePDF(parts)), 2)
+    }
+    func testSavedPhotosCombineToo() {
+        let jpg = page(.white).jpegData(compressionQuality: 0.8)!
+        XCTAssertEqual(pageCount(ChainCombine.onePDF([.file(jpg, ext: "jpg"), .file(jpg, ext: "jpg")])), 2)
+    }
+    func testTextOrMixedResultsAreLeftSeparate() {
+        XCTAssertNil(ChainCombine.onePDF([.text("a"), .text("b")]))
+        XCTAssertNil(ChainCombine.onePDF([.image(page(.white)), .text("b")]))
+        XCTAssertNil(ChainCombine.onePDF([]))
+    }
+    func testCombineFlagSurvivesSavingAndOldToolsLoadWithoutIt() throws {
+        let c = try XCTUnwrap(ChainTemplates.all.first { $0.id == "scan-to-pdf" })
+        XCTAssertEqual(c.combine, true)
+        XCTAssertEqual(try JSONDecoder().decode(Chain.self, from: JSONEncoder().encode(c)).combine, true)
+        let old = #"{"id":"a","name":"Old","steps":[{"block":"photoPdf","settings":{}}]}"#
+        XCTAssertNil(try JSONDecoder().decode(Chain.self, from: Data(old.utf8)).combine)
     }
 }
