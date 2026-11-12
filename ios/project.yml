@@ -123,6 +123,8 @@ targets:
               NSExtensionActivationSupportsText: true
               NSExtensionActivationSupportsWebURLWithMaxCount: 1
               NSExtensionActivationSupportsImageWithMaxCount: 20
+              # PDFs (and other files, which the sheet politely turns away) so a PDF tool runs from any app's Share menu.
+              NSExtensionActivationSupportsFileWithMaxCount: 10
 
   StickyWidget:
     type: app-extension

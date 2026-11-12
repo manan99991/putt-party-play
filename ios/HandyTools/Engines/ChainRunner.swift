@@ -853,6 +853,29 @@ enum ChainText {
         return lines.joined(separator: "\n")
     }
 
+    // MARK: naming a tool
+
+    /// A short name for a tool nobody has named: a starter's name when the steps are a starter's, otherwise the steps themselves.
+    static func autoName(_ chain: Chain) -> String {
+        let blocks = chain.steps.map(\.block)
+        if blocks.isEmpty { return "My tool" }
+        if let t = ChainTemplates.all.first(where: { $0.steps.map(\.block) == blocks }) { return t.name }
+        if blocks.count == 1 { return blocks[0].title }
+        if blocks.count == 2 { return blocks[0].title + " + " + blocks[1].title }
+        return blocks[0].title + " + \(blocks.count - 1) more"
+    }
+    /// The name "Describe it" gives a tool: the request itself when it is short enough to read as a name, otherwise `autoName`.
+    static func toolName(ask: String, chain: Chain) -> String {
+        let t = ask.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\n", with: " ")
+        guard !t.isEmpty, t.count <= 28 else { return autoName(chain) }
+        return t.prefix(1).uppercased() + t.dropFirst()
+    }
+    /// What a tool is saved as: the name typed, or `autoName` when it was left empty or as "My tool".
+    static func savedName(_ chain: Chain) -> String {
+        let n = chain.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        return n.isEmpty || n == "My tool" ? autoName(chain) : n
+    }
+
     // MARK: collage
 
     /// How many columns and rows a collage of `count` pictures gets: as square as it can be.

@@ -66,6 +66,9 @@ class MainActivity : ComponentActivity() {
     private var sharedUrl by mutableStateOf<String?>(null)
     // A file handed to us by another app ("Open with" / share) → opened in the universal File Viewer.
     private var sharedFileUri by mutableStateOf<android.net.Uri?>(null)
+    // Text or a link shared to Tenzy, and the type of a shared file: both go to "pick a tool to run on it".
+    private var sharedText by mutableStateOf<String?>(null)
+    private var sharedMime by mutableStateOf<String?>(null)
     // A route delivered to an already-running activity (singleTop reuse → onNewIntent, e.g. a deep
     // link while the app is open). onCreate handles the cold-start route via startDestination; this
     // state carries a warm route into the composition so it actually navigates instead of being
@@ -77,6 +80,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         sharedUrl = extractSharedUrl(intent)
         sharedFileUri = extractFileUri(intent)
+        sharedText = extractSharedText(intent)
+        sharedMime = sharedType(intent)
         Interstitials.preload(this)
         intent.getStringExtra("tool")?.let { id ->                                   // a tapped tool reminder or "run on this new photo"
             com.handytools.app.tools.builder.ToolReminders.pendingPhoto = intent.getStringExtra("photo")?.let { android.net.Uri.parse(it) }?.takeIf { it.scheme == "content" }
@@ -86,7 +91,7 @@ class MainActivity : ComponentActivity() {
         // Pro-preview unlock exists ONLY for the CI screenshot capture and is compiled out of
         // release builds, so a crafted intent can never grant entitlement on a shipped app.
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
-        val startRoute = routeExtra ?: if (sharedFileUri != null) sharedFileRoute(intent) else if (sharedUrl != null) "shortcut" else if (!Onboarding.seen(this)) "onboarding" else "home"
+        val startRoute = routeExtra ?: if (sharedFileUri != null) sharedFileRoute(intent) else if (sharedText != null) "sharetool" else if (!Onboarding.seen(this)) "onboarding" else "home"
 
         setContent {
             // The nav controller is created OUTSIDE HandyTheme so it survives a theme switch: HandyTheme
@@ -175,7 +180,12 @@ class MainActivity : ComponentActivity() {
                     composable("myphone") { MyPhoneScreen() }
                     composable("texttools") { TextToolsScreen() }
                     composable("builder") { com.handytools.app.tools.builder.BuilderScreen() }
-                    composable("sharetool") { com.handytools.app.tools.builder.ShareToToolScreen(uri = sharedFileUri, onOpenInstead = { nav.navigate("fileviewer") }) }
+                    composable("sharetool") {
+                        // A shared file can still just be opened; a shared link can still become a home-screen shortcut, as before.
+                        if (sharedFileUri != null) com.handytools.app.tools.builder.ShareToToolScreen(uri = sharedFileUri, mime = sharedMime, onOpenInstead = { nav.navigate("fileviewer") })
+                        else com.handytools.app.tools.builder.ShareToToolScreen(uri = null, text = sharedText, otherWay = if (sharedUrl != null) "Make a home-screen shortcut for this link" else "Go to Tenzy",
+                            onOpenInstead = { nav.navigate(if (sharedUrl != null) "shortcut" else "home") })
+                    }
                     // New catalog tools not yet ported to Android show a placeholder (never shipped
                     // to Play until real). Existing routes above keep their real screens.
                     val ported = setOf("scansort", "more", "quick", "clipboard", "ocr", "shortcut", "alarm", "scratchpad", "flash", "timer", "measure", "wallet", "imgconvert", "audiotext", "pdftools", "translate", "exif", "scan", "vidcompress", "qr", "magnifier", "bgremove", "sorted", "memory", "lens", "contacts", "spaceclean", "shrink", "storage", "myphone", "texttools", "shield", "scancsv", "invoice", "voicerec", "idphoto", "redact", "receipts", "gifmaker", "sendany", "parked", "netscout", "network", "identify", "gpsdash", "rest", "pricecheck", "stitch", "colorvision", "procam", "signfill", "hearing", "heartrate", "audiocut", "capture", "documents", "media", "cleanup", "voice", "instruments", "flashlight", "safety", "share", "fileviewer", "docs", "converter", "codes", "scrubber")
@@ -200,6 +210,8 @@ class MainActivity : ComponentActivity() {
         setIntent(intent)
         sharedUrl = extractSharedUrl(intent)
         sharedFileUri = extractFileUri(intent)
+        sharedText = extractSharedText(intent)
+        sharedMime = sharedType(intent)
         // Honour a route delivered to the already-running activity (deep link / QA route-seeding),
         // which singleTop would otherwise drop. Pro-preview stays debug-only, exactly as in onCreate.
         intent.getStringExtra("tool")?.let { id ->                                   // a tapped tool reminder or "run on this new photo"
@@ -210,12 +222,27 @@ class MainActivity : ComponentActivity() {
         if (routeExtra == "homepro" && com.handytools.app.BuildConfig.DEBUG) HandyApp.instance.billing.setPreviewPremium(true)
         if (routeExtra != null) pendingRoute = routeExtra
         else if (sharedFileUri != null) pendingRoute = sharedFileRoute(intent)
-        else if (sharedUrl != null) pendingRoute = "shortcut"
+        else if (sharedText != null) pendingRoute = "sharetool"
     }
 
-    /** A photo shared to Tenzy goes to "pick a tool to run on it"; any other file opens in File Opener as before. */
-    private fun sharedFileRoute(i: Intent?): String =
-        if (i?.action == Intent.ACTION_SEND && i.type?.startsWith("image/") == true) "sharetool" else "fileviewer"
+    /** A photo, video, recording or PDF shared to Tenzy goes to "pick a tool to run on it"; any other file opens in File Opener as before. */
+    private fun sharedFileRoute(i: Intent?): String {
+        val kind = com.handytools.app.tools.builder.kindOf(sharedType(i), false)
+        return if (i?.action == Intent.ACTION_SEND && kind != null && kind != com.handytools.app.tools.builder.Kind.TEXT) "sharetool" else "fileviewer"
+    }
+
+    /** The type of a shared file: what the sending app said, or what the phone knows about the file. */
+    private fun sharedType(i: Intent?): String? {
+        if (i?.action != Intent.ACTION_SEND) return null
+        val said = i.type?.takeIf { !it.endsWith("/*") && it != "*/*" }
+        return said ?: extractFileUri(i)?.let { runCatching { contentResolver.getType(it) }.getOrNull() } ?: i.type
+    }
+
+    /** Text or a link shared to Tenzy (not a file). */
+    private fun extractSharedText(i: Intent?): String? {
+        if (i?.action != Intent.ACTION_SEND) return null
+        return i.getStringExtra(Intent.EXTRA_TEXT)?.trim()?.takeIf { it.isNotEmpty() }
+    }
 
     private fun extractSharedUrl(i: Intent?): String? {
         if (i?.action != Intent.ACTION_SEND) return null

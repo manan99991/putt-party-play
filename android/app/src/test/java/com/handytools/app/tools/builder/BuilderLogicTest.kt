@@ -516,4 +516,85 @@ class BuilderLogicTest {
         assertEquals(listOf(Block.MAKE_QR), blocks("turn a link into a qr code"))      // making a code is still making a code
         assertEquals("formal", ChainPlanner.plan("rewrite this to be more formal")?.steps?.first()?.settings?.get("style"))
     }
+
+    // "Describe it" reading what people actually type: misspelt, cut short, or only half said
+    private fun planned(ask: String) = ChainPlanner.plan(ask)?.steps?.map { it.block } ?: emptyList()
+
+    @Test fun misspeltWordsAreReadAsMeant() {
+        assertEquals("shrink my photo and remove the location", PlannerWords.tidy("Shrnk my foto and remve the loction"))
+        assertEquals("video", PlannerWords.tidy("vidoe"))
+        assertEquals("compress a receipt", PlannerWords.tidy("comprssing a recipt"))
+        assertEquals("translate to spanish", PlannerWords.tidy("trnslate to spansh"))
+        assertEquals("watermark password summarize", PlannerWords.tidy("watermak pasword sumarize"))
+    }
+    @Test fun whatIsAlreadyRightIsLeftAlone() {
+        assertEquals("under 50 kb, 9:16 & to-do, tl;dr", PlannerWords.tidy("under 50 kb, 9:16 & to-do, tl;dr"))
+        assertEquals("the store phone price", PlannerWords.tidy("the store phone price"))
+        assertEquals("make it clear and formal", PlannerWords.tidy("make it clear and formal"))
+        assertEquals("xyzzy qwrtp", PlannerWords.tidy("xyzzy qwrtp"))
+        assertEquals("", PlannerWords.tidy(""))
+        assertEquals(1, PlannerWords.distance("photo", "phto", 2)); assertEquals(1, PlannerWords.distance("video", "vidoe", 2))
+        assertEquals(3, PlannerWords.distance("photo", "banana", 2))
+    }
+    @Test fun typosStillBuildTheRightTool() {
+        assertEquals(listOf(Block.STRIP_LOCATION, Block.SHRINK), planned("shrnk my foto and remve the loction"))
+        assertEquals(listOf(Block.VIDEO_SHRINK), planned("compres my vidoe for watsapp"))
+        assertEquals("16", ChainPlanner.plan("compres my vidoe for watsapp")?.steps?.first()?.settings?.get("mb"))
+        assertEquals(listOf(Block.READ_TEXT, Block.TRANSLATE), planned("trnslate a pic of a menu to spansh"))
+        assertEquals("es", ChainPlanner.plan("trnslate a pic of a menu to spansh")?.steps?.last()?.settings?.get("to"))
+        assertEquals(listOf(Block.SPEECH_TEXT), planned("voice memmo to notes"))
+        assertEquals(listOf(Block.PAGE_TEXT, Block.SUMMARIZE), planned("sumarize this artcle"))
+        assertEquals(listOf(Block.SCAM_CHECK), planned("is this mesage a scm"))
+        assertEquals(listOf(Block.SCAM_CHECK), planned("is this mesage a scam"))
+    }
+    @Test fun halfARequestStillGetsTheWholeJob() {
+        assertEquals(listOf(Block.HIDE_SENSITIVE, Block.STRIP_LOCATION, Block.SHRINK), planned("I want to post a photo online stripping all the personal data"))
+        assertEquals(listOf(Block.HIDE_SENSITIVE, Block.STRIP_LOCATION), planned("remove personal info from my picture"))
+        assertEquals(listOf(Block.STRIP_LOCATION, Block.SHRINK), planned("post this pic on instagram"))
+        assertEquals(listOf(Block.STRIP_LOCATION, Block.SHRINK), planned("my photo"))
+        assertEquals(listOf(Block.CLEAN_TEXT), planned("some notes"))
+        assertEquals(listOf(Block.STRIP_LOCATION), planned("collage")); assertEquals(true, ChainPlanner.plan("collage")?.collage)
+        assertEquals("Photos into one collage", ChainPlanner.plan("colage")?.name)
+        assertEquals(listOf(Block.PASSPORT_PHOTO), planned("pasport"))
+        assertNull(ChainPlanner.plan("make me a sandwich")); assertNull(ChainPlanner.plan("   "))
+    }
+    @Test fun itSaysWhenItIsOnlyAGuess() {
+        assertEquals(true, ChainPlanner.guess("shrink a photo under 1 mb")?.second)
+        assertEquals(false, ChainPlanner.guess("my photo")?.second)
+        assertEquals(false, ChainPlanner.guess("collage")?.second)
+        assertFalse(ChainPlanner.guess("collage")?.first?.id == "photo-collage")
+    }
+    @Test fun theEndingIsReadFromTheRequest() {
+        assertEquals("mail", ChainPlanner.plan("shrink a photo and email it")?.finish?.kind)
+        assertEquals("message", ChainPlanner.plan("scan a receipt and text it to my accountant")?.finish?.kind)
+        assertNull(ChainPlanner.plan("find the email address in some text")?.finish)
+        assertNull(ChainPlanner.plan("shrink a photo under 1 mb")?.finish)
+    }
+    @Test fun toolsGetNamesPeopleCanRead() {
+        assertEquals("Shrink video for whatsapp", ChainPlanner.plan("shrink video for whatsapp")?.name)
+        assertEquals("Privacy share shield", ChainPlanner.plan("I want to post a photo online stripping all the personal data")?.name)
+        val c = Chain("x", "My tool", listOf(Step(Block.READ_TEXT), Step(Block.TRANSLATE), Step(Block.READ_ALOUD)))
+        assertEquals("Read text + 2 more", ChainPlanner.autoName(c))
+        assertEquals("Enhance + Add a watermark", ChainPlanner.autoName(Chain("x", "", listOf(Step(Block.ENHANCE), Step(Block.WATERMARK)))))
+        assertEquals("Make a calendar event", ChainPlanner.autoName(Chain("x", "", listOf(Step(Block.CALENDAR_EVENT)))))
+        assertEquals("My tool", ChainPlanner.autoName(Chain("x", "", emptyList())))
+        assertEquals("Read text + 2 more", ChainPlanner.savedName(c))
+        assertEquals("Menu helper", ChainPlanner.savedName(c.copy(name = "  Menu helper ")))
+    }
+    @Test fun androidDescribeItKnowsThePhotoJobsTheIphoneDoes() {
+        assertEquals(listOf(Block.IDENTIFY), planned("what plant is this"))
+        assertEquals(listOf(Block.DESCRIBE), planned("describe this photo for me"))
+        assertEquals(listOf(Block.WATERMARK, Block.STRIP_LOCATION), planned("add a watermark to my licence copy and strip the location"))
+        assertEquals("0.05", ChainPlanner.plan("shrink my photo under 50 kb for the visa upload")?.steps?.last()?.settings?.get("mb"))
+        assertEquals(listOf(Block.STRIP_LOCATION, Block.PHOTO_PDF), planned("strip the location and make a pdf"))
+    }
+
+    @Test fun aSharedThingIsSortedByItsType() {
+        assertEquals(Kind.IMAGE, kindOf("image/jpeg", false)); assertEquals(Kind.VIDEO, kindOf("video/mp4", false))
+        assertEquals(Kind.AUDIO, kindOf("audio/mpeg", false)); assertEquals(Kind.PDF, kindOf("application/pdf", false))
+        assertEquals(Kind.TEXT, kindOf(null, true)); assertEquals(Kind.TEXT, kindOf("text/plain", true))
+        assertNull(kindOf("application/zip", false)); assertNull(kindOf(null, false))
+        // Every kind something can arrive as has at least one starter ready for it.
+        for (k in listOf(Kind.IMAGE, Kind.VIDEO, Kind.AUDIO, Kind.PDF, Kind.TEXT)) assertTrue(k.label, ChainOffers.forKind(k, emptyList(), null).isNotEmpty())
+    }
 }

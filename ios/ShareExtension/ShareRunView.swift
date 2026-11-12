@@ -25,6 +25,8 @@ final class ShareModel: ObservableObject {
 
     /// Shared photos are copied to a private folder and opened one at a time, so a batch never sits in memory together.
     private(set) var photos: [URL] = []
+    /// Shared PDFs, copied the same way. A share is photos, or PDFs, or text; never a mix.
+    private(set) var pdfs: [URL] = []
     private(set) var text: String?
     var finish: () -> Void = {}
     var shareOn: ([Any]) -> Void = { _ in }
@@ -35,9 +37,12 @@ final class ShareModel: ObservableObject {
         return d
     }()
 
-    var isText: Bool { photos.isEmpty }
+    var isText: Bool { photos.isEmpty && pdfs.isEmpty }
+    /// What each result is called in the list.
+    var noun: String { pdfs.isEmpty ? "Photo" : "PDF" }
     var summary: String {
         if !photos.isEmpty { return photos.count == 1 ? "1 photo" : "\(photos.count) photos" }
+        if !pdfs.isEmpty { return pdfs.count == 1 ? "1 PDF" : "\(pdfs.count) PDFs" }
         return text ?? ""
     }
 
@@ -48,16 +53,22 @@ final class ShareModel: ObservableObject {
             if let u = await ShareModel.copyImage(p, to: dir, n: n) { photos.append(u) }
         }
         if photos.isEmpty {
+            for p in providers where p.hasItemConformingToTypeIdentifier(UTType.pdf.identifier) {
+                n += 1
+                if let u = await ShareModel.copyFile(p, type: UTType.pdf, to: dir, name: "in-\(n).pdf") { pdfs.append(u) }
+            }
+        }
+        if photos.isEmpty && pdfs.isEmpty {
             for p in providers {
                 if p.hasItemConformingToTypeIdentifier(UTType.plainText.identifier),
                    let s = try? await p.loadItem(forTypeIdentifier: UTType.plainText.identifier) as? String { text = s; break }
                 if p.hasItemConformingToTypeIdentifier(UTType.url.identifier),
-                   let u = try? await p.loadItem(forTypeIdentifier: UTType.url.identifier) as? URL { text = u.absoluteString; break }
+                   let u = try? await p.loadItem(forTypeIdentifier: UTType.url.identifier) as? URL, !u.isFileURL { text = u.absoluteString; break }   // a file's own address is not a link
             }
             if text == nil { text = typedText }
         }
-        if photos.isEmpty && (text ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { phase = .nothing; return }
-        tools = ChainStore.offers(for: isText ? .text : .image, mine: ChainStore.load(), last: ChainStore.lastShared)
+        if isText && (text ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { phase = .nothing; return }
+        tools = ChainStore.offers(for: isText ? .text : pdfs.isEmpty ? .image : .pdf, mine: ChainStore.load(), last: ChainStore.lastShared)
         phase = .pick
     }
 
@@ -78,6 +89,12 @@ final class ShareModel: ObservableObject {
             if isText {
                 phase = .running("Working…")
                 out.append(await one(chain, input: .text(text ?? ""), n: 1))
+            } else if !pdfs.isEmpty {
+                for (i, u) in pdfs.enumerated() {
+                    phase = .running(pdfs.count == 1 ? "Working…" : "Working… \(i + 1) of \(pdfs.count)")
+                    guard let d = try? Data(contentsOf: u) else { out.append(ShareResult(n: i + 1, note: "Couldn't open this PDF.")); continue }
+                    out.append(await one(chain, input: .file(d, ext: "pdf"), n: i + 1))
+                }
             } else {
                 for (i, u) in photos.enumerated() {
                     phase = .running(photos.count == 1 ? "Working…" : "Working… \(i + 1) of \(photos.count)")
@@ -92,7 +109,7 @@ final class ShareModel: ObservableObject {
 
     private func one(_ chain: Chain, input: ChainPayload, n: Int) async -> ShareResult {
         switch await ChainRunner.run(chain, input: input) {
-        case .success(let p): return ShareModel.write(p, n: n, dir: dir, named: chain.fileName, tool: chain.name, many: photos.count > 1)
+        case .success(let p): return ShareModel.write(p, n: n, dir: dir, named: chain.fileName, tool: chain.name, many: photos.count + pdfs.count > 1)
         case .failure(let f): return ShareResult(n: n, note: ShareModel.words(f))
         }
     }
@@ -153,6 +170,20 @@ final class ShareModel: ObservableObject {
         return UIImage(cgImage: cg)
     }
 
+    /// A shared file of one kind (a PDF), copied into the private folder under `name`.
+    static func copyFile(_ p: NSItemProvider, type: UTType, to dir: URL, name: String) async -> URL? {
+        await withCheckedContinuation { (cont: CheckedContinuation<URL?, Never>) in
+            _ = p.loadFileRepresentation(forTypeIdentifier: type.identifier) { url, _ in
+                let dst = dir.appendingPathComponent(name)
+                if let url, (try? FileManager.default.copyItem(at: url, to: dst)) != nil { cont.resume(returning: dst); return }
+                // Some apps hand the file over as data instead.
+                _ = p.loadDataRepresentation(forTypeIdentifier: type.identifier) { data, _ in
+                    if let data, (try? data.write(to: dst)) != nil { cont.resume(returning: dst) } else { cont.resume(returning: nil) }
+                }
+            }
+        }
+    }
+
     static func copyImage(_ p: NSItemProvider, to dir: URL, n: Int) async -> URL? {
         await withCheckedContinuation { (cont: CheckedContinuation<URL?, Never>) in
             _ = p.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { url, _ in
@@ -198,7 +229,7 @@ struct ShareRunView: View {
             Label("Saved to Clips", systemImage: "checkmark.circle.fill").font(.title3.bold()).frame(maxWidth: .infinity, maxHeight: .infinity)
         case .nothing:
             VStack(spacing: 12) {
-                Text("Tenzy can run your tools on photos and text.").multilineTextAlignment(.center)
+                Text("Tenzy can run your tools on photos, PDFs, links and text from here. For a video or a recording, open Tenzy and tap Start with what you have.").multilineTextAlignment(.center)
                 Button("Close") { model.finish() }.buttonStyle(.borderedProminent)
             }.padding().frame(maxWidth: .infinity, maxHeight: .infinity)
         case .pick: picker
@@ -227,7 +258,7 @@ struct ShareRunView: View {
                     .accessibilityIdentifier("share-tool-\(c.id)")
                 }
             } header: { Text("Run a tool") } footer: {
-                Text(model.isText ? "Make more in Tenzy, under Build your own." : "Photos are sized for sharing (up to 3000 px on the long side). Make more tools in Tenzy, under Build your own.")
+                Text(model.isText || !model.pdfs.isEmpty ? "Make more in Tenzy, under Build your own." : "Photos are sized for sharing (up to 3000 px on the long side). Make more tools in Tenzy, under Build your own.")
             }
         }
     }
@@ -238,11 +269,11 @@ struct ShareRunView: View {
                 if model.results.count > 1 { Text("\(model.okCount) of \(model.results.count) done").font(.headline) }
                 ForEach(model.results) { r in
                     if let note = r.note {
-                        Label(model.results.count > 1 ? "Photo \(r.n): \(note)" : note, systemImage: "exclamationmark.circle").foregroundStyle(.secondary)
+                        Label(model.results.count > 1 ? "\(model.noun) \(r.n): \(note)" : note, systemImage: "exclamationmark.circle").foregroundStyle(.secondary)
                     } else if let t = r.text {
                         Text(t).textSelection(.enabled)
                     } else if let u = r.url {
-                        Label(model.results.count > 1 ? "Photo \(r.n) is ready" : "Ready: \(u.pathExtension.uppercased()) file", systemImage: "checkmark.circle.fill")
+                        Label(model.results.count > 1 ? "\(model.noun) \(r.n) is ready" : "Ready: \(u.pathExtension.uppercased()) file", systemImage: "checkmark.circle.fill")
                     }
                 }
             }

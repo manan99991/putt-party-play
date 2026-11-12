@@ -61,7 +61,7 @@ struct QuickToolsView: View {
     }
 }
 
-@main
+// (The widget bundle that lists this and the My Tools widget is in ToolsWidget.swift.)
 struct StickyWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "StickyWidget", provider: QuickProvider()) { QuickToolsView(entry: $0) }

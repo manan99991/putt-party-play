@@ -2,6 +2,47 @@ import SwiftUI
 import PhotosUI
 import VisionKit
 import UniformTypeIdentifiers
+import WidgetKit
+
+/// Something handed over before a tool was chosen: "here is what I have, what can you do with it?"
+struct Given: Identifiable {
+    let id = UUID()
+    let payload: ChainPayload
+    /// A few words for the top of the list: "A photo", "A PDF · 2 pages"...
+    let label: String
+
+    /// What a file from the Files app is, by its name. nil for a kind of file no tool takes.
+    static func from(file url: URL) -> Given? {
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+        let ext = url.pathExtension.lowercased()
+        let type = UTType(filenameExtension: ext)
+        if ext == "pdf" || type?.conforms(to: .pdf) == true {
+            return (try? Data(contentsOf: url)).map { Given(payload: .file($0, ext: "pdf"), label: "A PDF") }
+        }
+        if ChainPayload.isAudio(ext) || type?.conforms(to: .audio) == true {
+            return (try? Data(contentsOf: url)).map { Given(payload: .file($0, ext: ChainPayload.isAudio(ext) ? ext : "m4a"), label: "A recording") }
+        }
+        if type?.conforms(to: .movie) == true {
+            // A video stays a file: copy it somewhere it can still be read after the picker closes.
+            let copy = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-given-\(UUID().uuidString).\(ext.isEmpty ? "mov" : ext)")
+            return (try? FileManager.default.copyItem(at: url, to: copy)) != nil ? Given(payload: .video(copy), label: "A video") : nil
+        }
+        if type?.conforms(to: .image) == true {
+            return (try? Data(contentsOf: url)).flatMap(UIImage.init).map { Given(payload: .image($0), label: "A photo") }
+        }
+        if type?.conforms(to: .text) == true, let words = try? String(contentsOf: url, encoding: .utf8), !words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return Given(payload: .text(words), label: "Some text")
+        }
+        return nil
+    }
+
+    static func from(text: String) -> Given? {
+        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !t.isEmpty else { return nil }
+        return Given(payload: .text(t), label: TextTidy.details(t).links.isEmpty ? "Some text" : "A link")
+    }
+}
 
 /// Tenzy Builder (M2): run a starter or saved tool, or build your own by stacking blocks.
 /// Everything here is data over built-in blocks (see ChainRunner), nothing is downloaded or generated as code.
@@ -18,6 +59,15 @@ struct BuilderView: View {
     @AppStorage("builder.introSeen") private var introSeen = false
     /// "What do you have?": narrows the starters to ones that begin with it. nil shows all.
     @State private var have: ChainKind?
+    /// Shown at the top of the editor after Describe it, when the request was only half said.
+    @State private var editHint: String?
+    @State private var renaming: Chain?
+    @State private var newName = ""
+    /// "Start with what you have": the thing picked, waiting for a tool to be chosen for it.
+    @State private var given: Given?
+    @State private var anyPick: PhotosPickerItem?
+    @State private var pickingAny = false
+    @State private var gettingReady = false
 
     var body: some View {
         ToolPage(title: "Build your own", subtitle: "Snap small steps together into a tool that does exactly what you need. Runs on your phone.") {
@@ -29,6 +79,7 @@ struct BuilderView: View {
                 }, onDone: { withAnimation { introSeen = true } })
             }
             hero
+            anything
             if !mine.isEmpty {
                 Text("My tools").font(HandyFont.cardTitle)
                 ForEach(mine) { c in row(c, mine: true) }
@@ -49,7 +100,7 @@ struct BuilderView: View {
             HStack {
                 Text("Start from a template").font(HandyFont.cardTitle)
                 Spacer()
-                Button { editing = Chain(id: UUID().uuidString, name: "My tool", steps: []) } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
+                Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []) } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
                 Button {
                     if let c = Chain.imported(from: UIPasteboard.general.string ?? "") { mine.append(c); persist(); note = "Added \(c.name)." }
                     else { note = "Copy a tool from another Tenzy first, then tap Paste." }
@@ -74,21 +125,75 @@ struct BuilderView: View {
         }
         .sheet(item: $editing) { c in
             NavigationStack {
-                ChainEditor(chain: c) { saved in
+                ChainEditor(chain: c, hint: editHint) { saved in
                     if let i = mine.firstIndex(where: { $0.id == saved.id }) { mine[i] = saved } else { mine.append(saved) }
-                    persist(); editing = nil
+                    persist(); editing = nil; editHint = nil
                 }
             }
         }
         .sheet(item: $running) { c in NavigationStack { ChainRunView(chain: c) } }
+        .sheet(item: $given) { g in NavigationStack { ToolPickView(given: g, mine: mine) } }
+        .alert("Name this tool", isPresented: Binding(get: { renaming != nil }, set: { if !$0 { renaming = nil } })) {
+            TextField("Name", text: $newName)
+            Button("Save") {
+                let name = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+                if let r = renaming, !name.isEmpty, let i = mine.firstIndex(where: { $0.id == r.id }) { mine[i].name = name; persist() }
+                renaming = nil
+            }
+            Button("Cancel", role: .cancel) { renaming = nil }
+        }
+        .fileImporter(isPresented: $pickingAny, allowedContentTypes: [.pdf, .audio, .movie, .image, .plainText]) { r in
+            guard case .success(let url) = r else { return }
+            if let g = Given.from(file: url) { note = nil; given = g } else { note = "Tenzy couldn't open that file, or has no tool for that kind of file yet." }
+        }
+        .onChange(of: anyPick) { _, item in
+            guard let item else { return }
+            anyPick = nil; gettingReady = true; note = nil
+            Task {
+                var g: Given?
+                if item.supportedContentTypes.contains(where: { $0.conforms(to: .movie) }) {
+                    if let movie = try? await item.loadTransferable(type: MovieImport.self) { g = Given(payload: .video(movie.url), label: "A video") }
+                } else if let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) {
+                    g = Given(payload: .image(img), label: "A photo")
+                }
+                await MainActor.run {
+                    gettingReady = false
+                    if let g { given = g } else { note = "That couldn't be opened. Try another." }
+                }
+            }
+        }
         .sheet(isPresented: $showSheets, onDismiss: { sheets = RunningList.all() }) { NavigationStack { SheetsView() } }
         .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all() } }   // a run may have added to a sheet
         .onAppear { openReminded() }
         .onReceive(NotificationCenter.default.publisher(for: .openTool)) { _ in openReminded() }
     }
 
-    /// Saves the tools and keeps the phone's reminders in step with them.
-    private func persist() { ChainStore.save(mine); ToolSchedules.sync(mine) }
+    /// Saves the tools and keeps the phone's reminders and the home-screen widget in step with them.
+    private func persist() { ChainStore.save(mine); ToolSchedules.sync(mine); WidgetCenter.shared.reloadTimelines(ofKind: "ToolsWidget") }
+
+    /// "Start with what you have": pick the thing first, and Tenzy lists the tools that fit it.
+    private var anything: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            Label("Start with what you have", systemImage: "tray.and.arrow.down").font(HandyFont.cardTitle)
+            Text(gettingReady ? "Getting it ready…" : "Pick it, and Tenzy shows the tools that fit. No need to know which one you want.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HStack(spacing: HandySpacing.s8) {
+                PhotosPicker(selection: $anyPick, matching: .any(of: [.images, .videos])) { haveTile("Photo or video", "photo.on.rectangle") }
+                    .accessibilityIdentifier("have-photo")
+                Button { pickingAny = true } label: { haveTile("File", "doc") }.accessibilityIdentifier("have-file")
+                Button {
+                    if let g = Given.from(text: UIPasteboard.general.string ?? "") { note = nil; given = g }
+                    else if let img = UIPasteboard.general.image { note = nil; given = Given(payload: .image(img), label: "A photo") }
+                    else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
+                } label: { haveTile("Paste", "doc.on.clipboard") }.accessibilityIdentifier("have-paste")
+            }
+        }.cardStyle()
+    }
+    private func haveTile(_ title: String, _ icon: String) -> some View {
+        VStack(spacing: 4) { Image(systemName: icon).font(.system(size: 18, weight: .semibold)); Text(title).font(HandyFont.micro).lineLimit(1).minimumScaleFactor(0.7) }
+            .frame(maxWidth: .infinity, minHeight: 56)
+            .foregroundStyle(HandyColor.accent)
+            .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
 
     /// A tapped reminder lands here: open that tool ready to run.
     private func openReminded() {
@@ -99,7 +204,7 @@ struct BuilderView: View {
     private var hero: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Label("Describe it", systemImage: "sparkles").font(HandyFont.cardTitle)
-            Text("Say what you want in your own words. Tenzy lines up the steps and shows you before anything runs.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text("Say what you want in your own words. Spelling doesn't matter, and half a sentence is enough. Tenzy lines up the steps and shows you before anything runs.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             TextField("e.g. shrink a photo under 1 MB and remove its location", text: $ask, axis: .vertical)
                 .lineLimit(1...3).textFieldStyle(.roundedBorder).accessibilityIdentifier("describe-field")
             Button {
@@ -108,8 +213,11 @@ struct BuilderView: View {
                     let p = await ChainPlanner.plan(ask)
                     await MainActor.run {
                         planning = false
-                        if let p { editing = p.chain; note = nil }
-                        else { note = "I couldn't turn that into steps yet. Try a template below, or mention what you start with (a photo, a receipt, some text) and what you want out." }
+                        if let p {
+                            editHint = p.guessed ? "That wasn't much to go on, so this is my best guess. Change, add or remove any step before you save." : nil
+                            editing = p.chain; note = nil
+                        }
+                        else { note = "I couldn't tell what you'd like done. Say what you have (a photo, a PDF, a video, a recording, a link or some text) and what should happen to it." }
                     }
                 }
             } label: { Label(planning ? "Working…" : "Build it for me", systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
@@ -127,7 +235,7 @@ struct BuilderView: View {
             HStack {
                 Button("Use") { running = c }.font(HandyFont.micro)
                 Spacer()
-                Button("Edit copy") { var k = c; k.id = UUID().uuidString; k.name += " (mine)"; editing = k }.font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                Button("Edit copy") { var k = c; k.id = UUID().uuidString; k.name += " (mine)"; editHint = nil; editing = k }.font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
         }
         .frame(maxWidth: .infinity, minHeight: 112, alignment: .leading).cardStyle(padding: HandySpacing.s12)
@@ -137,7 +245,7 @@ struct BuilderView: View {
         HStack(spacing: HandySpacing.s12) {
             if let f = c.steps.first { BlockBadge(block: f.block) }
             VStack(alignment: .leading, spacing: 2) {
-                Text(c.name).font(HandyFont.bodyStrong)
+                Text(c.name).font(HandyFont.bodyStrong).lineLimit(2)
                 Text(c.steps.map(\.block.title).joined(separator: "  ›  ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
                 if let when = c.schedule {
                     Label(when.label(uses24h: ToolSchedules.uses24h), systemImage: "bell").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
@@ -146,9 +254,16 @@ struct BuilderView: View {
                     Label("Has a step this phone can't run", systemImage: "exclamationmark.triangle").font(HandyFont.caption).foregroundStyle(HandyColor.amber)
                 }
             }
-            Spacer()
+            Spacer(minLength: 0)
             Menu {
-                Button("Edit") { editing = c }
+                Button("Edit") { editHint = nil; editing = c }
+                Button("Rename") { newName = c.name; renaming = c }
+                if mine.first?.id != c.id {
+                    Button("Move to top") { mine.removeAll { $0.id == c.id }; mine.insert(c, at: 0); persist(); note = "\(c.name) is now first, here and on the My Tools widget." }
+                }
+                Button("Put on Home Screen") {
+                    note = "Add the My Tools widget: touch and hold the Home Screen, tap Edit, then Add Widget, choose Tenzy, then My Tools. Your first tools appear on it, one tap each. Use Move to top to choose which."
+                }
                 Button("Duplicate") {
                     var k = c; k.id = UUID().uuidString; k.name += " copy"; k.schedule = nil
                     mine.append(k); persist(); note = "Duplicated as \(k.name)."
@@ -156,7 +271,12 @@ struct BuilderView: View {
                 Button("Copy to share") { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
                 Button("Delete", role: .destructive) { mine.removeAll { $0.id == c.id }; persist() }
             } label: { Image(systemName: "ellipsis.circle").font(.system(size: 20)).frame(width: 44, height: 44) }
-            Button("Run") { running = c }.secondaryButton().fixedSize()
+            // A compact button with room around its word, so it never looks squeezed beside a long name.
+            Button { running = c } label: {
+                Text("Run").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+                    .padding(.horizontal, HandySpacing.s16).frame(minHeight: 44)
+                    .background(HandyColor.accentSoft, in: Capsule())
+            }.buttonStyle(.plain).fixedSize().accessibilityLabel("Run \(c.name)")
         }.cardStyle(padding: HandySpacing.s12)
     }
 }
@@ -165,6 +285,8 @@ struct BuilderView: View {
 /// does to a sample while you build, so you see the tool working before you save it.
 private struct ChainEditor: View {
     @State var chain: Chain
+    /// A line from Describe it shown above the steps, e.g. that the tool is a best guess.
+    var hint: String? = nil
     var onSave: (Chain) -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var previews: [StepPreview?] = []
@@ -188,12 +310,19 @@ private struct ChainEditor: View {
         case .image, .photoFile, .file: return "photo"
         }
     }
-    private var valid: Bool { chain.problem(starting: startKind) == nil && !chain.name.trimmingCharacters(in: .whitespaces).isEmpty }
+    /// A name is optional: a tool saved without one is named for what it does.
+    private var valid: Bool { chain.problem(starting: startKind) == nil }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                TextField("Name your tool", text: $chain.name).font(HandyFont.title).padding(.bottom, HandySpacing.s16)
+                TextField("Name your tool", text: $chain.name).font(HandyFont.title).accessibilityIdentifier("tool-name")
+                Text(chain.name.trimmingCharacters(in: .whitespaces).isEmpty && !chain.steps.isEmpty ? "No name yet. It will be saved as \u{201C}\(ChainText.autoName(chain))\u{201D}." : "Tap the name to change it.")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading).padding(.bottom, HandySpacing.s16)
+                if let hint {
+                    Label(hint, systemImage: "sparkles").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+                        .frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12).padding(.bottom, HandySpacing.s12)
+                }
                 if chain.steps.isEmpty, startChoice == nil {
                     startPicker
                 } else {
@@ -230,7 +359,7 @@ private struct ChainEditor: View {
         .navigationTitle("Build a tool").navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-            ToolbarItem(placement: .confirmationAction) { Button("Save") { onSave(chain) }.disabled(!valid) }
+            ToolbarItem(placement: .confirmationAction) { Button("Save") { var c = chain; c.name = ChainText.savedName(c); onSave(c) }.disabled(!valid) }
         }
         .task(id: chain.steps) { await refreshPreviews() }
     }
@@ -579,6 +708,9 @@ struct BatchItem: Identifiable {
 /// Give it a photo or some text, see the result, copy or share it.
 private struct ChainRunView: View {
     let chain: Chain
+    /// Handed over already ("Start with what you have"): the tool runs on it straight away.
+    var initial: ChainPayload? = nil
+    @State private var started = false
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
     @State private var progress = ""
@@ -702,6 +834,12 @@ private struct ChainRunView: View {
             }
         }
         .onDisappear { if speech.running { speech.stop() }; if recorder.running { _ = recorder.stop() } }
+        .onAppear {
+            guard let initial, !started else { return }
+            started = true
+            if case .text(let t) = initial { text = t }
+            go(initial)
+        }
         .onChange(of: videoPick) { _, item in
             guard let item else { return }
             videoPick = nil
@@ -949,5 +1087,47 @@ private struct ChainRunView: View {
         case .nothingFound(let b): return b.takes == .text ? "\(b.title) didn't find anything in that text." : "\(b.title) didn't find anything in it. Try a clearer or closer picture."
         case .failed(let b): return "\(b.title) couldn't finish. Try again."
         }
+    }
+}
+
+/// "Start with what you have", step two: the tools that fit the thing that was picked. The person's own first.
+private struct ToolPickView: View {
+    let given: Given
+    let mine: [Chain]
+    @Environment(\.dismiss) private var dismiss
+
+    private var tools: [Chain] {
+        let kind = given.payload.kind == .photoFile ? ChainKind.image : given.payload.kind
+        return ChainStore.offers(for: kind, mine: mine, last: nil)
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                Text(given.label).font(HandyFont.title)
+                if case .text(let t) = given.payload { Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3) }
+                if tools.isEmpty {
+                    Text("No tool takes this yet. Close this, tap Blank, and build one that starts with \(given.payload.kind.label).").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                } else {
+                    Text("Pick what to do with it. It runs straight away.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                ForEach(tools) { c in
+                    NavigationLink { ChainRunView(chain: c, initial: given.payload) } label: {
+                        HStack(spacing: HandySpacing.s12) {
+                            if let f = c.steps.first { BlockBadge(block: f.block) }
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(c.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).lineLimit(2).multilineTextAlignment(.leading)
+                                Text(c.steps.map(\.block.title).joined(separator: "  ›  ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2).multilineTextAlignment(.leading)
+                            }
+                            Spacer(minLength: 0)
+                            Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+                        }.cardStyle(padding: HandySpacing.s12)
+                    }.buttonStyle(.plain).accessibilityIdentifier("pick-tool-\(c.id)")
+                }
+            }.padding(HandySpacing.gutter)
+        }
+        .background(HandyColor.bg)
+        .navigationTitle("What to do with it").navigationBarTitleDisplayMode(.inline)
+        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
     }
 }

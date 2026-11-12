@@ -321,8 +321,19 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
             return c.copy(id = UUID.randomUUID().toString(), schedule = null, auto = AutoRun.OFF)   // a pasted tool never arrives with reminders or auto-offers switched on
         }
 
-        fun blank() = Chain(UUID.randomUUID().toString(), "My tool", emptyList())
+        fun blank() = Chain(UUID.randomUUID().toString(), "", emptyList())
     }
+}
+
+/** What a shared or picked thing is, from its type: a photo, a video, a recording, a PDF, or (with no file) text. Null for a file no tool takes. */
+fun kindOf(mime: String?, hasText: Boolean): Kind? = when {
+    mime == null -> if (hasText) Kind.TEXT else null
+    mime.startsWith("image/") -> Kind.IMAGE
+    mime.startsWith("video/") -> Kind.VIDEO
+    mime.startsWith("audio/") -> Kind.AUDIO
+    mime == "application/pdf" -> Kind.PDF
+    mime.startsWith("text/") && hasText -> Kind.TEXT
+    else -> if (hasText) Kind.TEXT else null
 }
 
 /** What "Share to Tenzy" offers for a shared photo or text: the user's own tools first, then the starters, last-used on top. */
@@ -392,7 +403,72 @@ object ChainTemplates {
 
 /** "Describe it": a sentence in, a list of existing blocks out, checked before anyone sees it. */
 object ChainPlanner {
-    fun plan(ask: String): Chain? {
+    /** The tool a sentence asks for, whatever its spelling. Null when it names nothing Tenzy works with. */
+    fun plan(ask: String): Chain? = guess(ask)?.first
+
+    /**
+     * The tool for a sentence, and whether the sentence said enough to be sure of it. When it is not sure, the tool
+     * is the closest sensible one: a starter that shares a word with the request, or the most useful tool for the
+     * kind of thing mentioned.
+     */
+    fun guess(ask: String): Pair<Chain, Boolean>? {
+        val clean = PlannerWords.tidy(ask)
+        val ruled = rules(clean)
+        var c = ruled ?: fallback(clean) ?: return null
+        val sure = ruled != null
+        if (c.finish == null) c = c.copy(finish = ending(clean))
+        // A short request is its own best name; a long one gets a name from what the tool does. A starter keeps its name.
+        if (sure || c.name.isEmpty()) c = c.copy(name = toolName(ask, c))
+        return c to sure
+    }
+
+    /** "…and email it" / "…then text it": how the tool should end, when the sentence says. Null leaves it at Save or share. */
+    fun ending(clean: String): Finish? {
+        val s = " $clean "
+        fun has(vararg w: String) = w.any { s.contains(it) }
+        if (has("email") && !has("email address", "emails", "email and phone", "find the email")) return Finish("mail", "")
+        if (has("text it", "message it", "imessage", " sms", "by text", "as a message", "send a message")) return Finish("message", "")
+        return null
+    }
+
+    /** When no rule fits. Null only when the request names nothing Tenzy works with. */
+    fun fallback(clean: String): Chain? {
+        val s = " $clean "
+        fun has(vararg w: String) = w.any { s.contains(it) }
+        val words = PlannerWords.words(clean).filter { it.length >= 4 && it !in PlannerWords.PLAIN }
+        var best: Chain? = null; var bestScore = 0
+        for (t in ChainTemplates.all) {
+            val name = PlannerWords.words(t.name.lowercase())
+            val score = words.count { w -> name.any { n -> n == w || (n.length >= 5 && w.length >= 5 && PlannerWords.distance(n, w, 1) <= 1) } }
+            if (score > bestScore) { best = t; bestScore = score }
+        }
+        best?.let { return it.copy(id = UUID.randomUUID().toString()) }
+        val steps = when {
+            has("photo", "picture", "image", "screenshot", "selfie") -> listOf(Step(Block.STRIP_LOCATION), Step(Block.SHRINK, mapOf("mb" to "2")))
+            has("http", "www.", "link", " url") -> listOf(Step(Block.CLEAN_LINKS))
+            has("text", "notes", "words", "message", "paragraph", "essay", "letter") -> listOf(Step(Block.CLEAN_TEXT))
+            else -> return null
+        }
+        return Chain(UUID.randomUUID().toString(), "", steps)
+    }
+
+    /** A short name for a tool nobody has named: a starter's name when the steps are a starter's, otherwise the steps themselves. */
+    fun autoName(chain: Chain): String {
+        val blocks = chain.steps.map { it.block }
+        if (blocks.isEmpty()) return "My tool"
+        ChainTemplates.all.firstOrNull { t -> t.steps.map { it.block } == blocks }?.let { return it.name }
+        return when (blocks.size) { 1 -> blocks[0].title; 2 -> blocks[0].title + " + " + blocks[1].title; else -> blocks[0].title + " + ${blocks.size - 1} more" }
+    }
+    /** The name "Describe it" gives a tool: the request itself when it is short enough to read as a name, otherwise [autoName]. */
+    fun toolName(ask: String, chain: Chain): String {
+        val t = ask.trim().replace("\n", " ")
+        return if (t.isEmpty() || t.length > 28) autoName(chain) else t.take(1).uppercase() + t.drop(1)
+    }
+    /** What a tool is saved as: the name typed, or [autoName] when it was left empty or as "My tool". */
+    fun savedName(chain: Chain): String = chain.name.trim().let { if (it.isEmpty() || it == "My tool") autoName(chain) else it }
+
+    /** The rules themselves, read from a sentence whose spelling has already been tidied. */
+    fun rules(ask: String): Chain? {
         val s = " " + ask.lowercase() + " "
         fun has(vararg w: String) = w.any { s.contains(it) }
         val name = ask.trim().replace("\n", " ").replaceFirstChar { it.uppercase() }.let { if (it.length > 34) it.take(32) + "…" else it }
@@ -506,12 +582,28 @@ object ChainPlanner {
             if (job != null) steps.add(if (job == Block.SUMMARIZE) Step(job, mapOf("sentences" to (number(s, "sentence", "line", "point") ?: 3).toString())) else Step(job))
             return finish(ask, steps)
         }
-        if (has("blur", "hide", "redact", "private", "faces", "face ", "anonym", "censor")) steps.add(Step(Block.HIDE_SENSITIVE))
-        if (has("location", "gps", "exif", "metadata", "safe to share", "safe-to-share", "strip")) steps.add(Step(Block.STRIP_LOCATION))
+        // Questions about a picture: the answer is words, so nothing else follows.
+        if (has("identify", "what is this", "what's this", "what plant", "what bug", "what breed", "what kind of")) return finish(ask, listOf(Step(Block.IDENTIFY)))
+        if (has("describe", "what's in", "what is in", "what does it show")) return finish(ask, listOf(Step(Block.DESCRIBE)))
+
+        // Picture jobs, in the order that gives the best result.
+        if (has("cut out", "cutout", "remove background", "remove the background", "background", "sticker", "isolate")) steps.add(Step(Block.CUTOUT))
+        if (has("enhance", "sharpen", "improve", "fix the photo", "better quality", "clearer", "brighten")) steps.add(Step(Block.ENHANCE))
+        if (has("blur", "hide", "redact", "private", "faces", "face ", "anonym", "censor", "personal", "sensitive", "confidential", "identity")) steps.add(Step(Block.HIDE_SENSITIVE))
+        if (has("passport", "id photo", "visa photo", "headshot size")) steps.add(Step(Block.PASSPORT_PHOTO, mapOf("country" to "us")))
+        if (has("watermark")) steps.add(Step(Block.WATERMARK, mapOf("text" to "For verification only")))
+        // Posting a photo, or taking the personal details out of it, also means leaving behind where it was taken.
+        val posting = has(" post", "social", "instagram", "facebook", "online", "publicly")
+        if (posting || has("location", "gps", "exif", "metadata", "safe to share", "safe-to-share", "strip", "personal", "sensitive", "confidential")) steps.add(Step(Block.STRIP_LOCATION))
+        if (has("35x45", "35 x 45", "pixels", "pixel size", " px")) steps.add(Step(Block.RESIZE_PHOTO, mapOf("size" to if (has("35x45", "35 x 45")) "413x531" else "600x600")))
         if (has("png", "jpg", "jpeg", "convert", "format")) steps.add(Step(Block.CONVERT, mapOf("format" to if (s.contains("png")) "PNG" else "JPG")))
-        if (has("shrink", "smaller", "compress", "reduce", "under ", " mb", "email", "upload", "size")) {
-            steps.add(Step(Block.SHRINK, mapOf("mb" to (number(s, "mb", "megabyte") ?: 2).toString())))
+        if (posting || has("shrink", "smaller", "compress", "reduce", "under ", " mb", " kb", "email", "upload", "size")) {
+            // "under 50 kb" is common for upload forms; a kilobyte figure wins over the megabyte default.
+            val kb = number(s, "kb", "kilobyte")
+            steps.add(Step(Block.SHRINK, mapOf("mb" to if (kb != null) (kb / 1000.0).toString() else (number(s, "mb", "megabyte") ?: 2).toString())))
         }
+        // A PDF comes last: it takes whatever the photo has become.
+        if (has("pdf")) steps.add(Step(Block.PHOTO_PDF))
         return finish(ask, steps)
     }
 
@@ -534,5 +626,94 @@ object ChainPlanner {
             digits.toIntOrNull()?.takeIf { it > 0 }?.let { return it }
         }
         return null
+    }
+}
+
+/**
+ * Makes sense of what was typed before the rules read it: fixes misspelt words it knows and expands short forms, so
+ * "shrnk my foto" reads as "shrink my photo". Everything else (numbers, punctuation, words it doesn't know) is left
+ * exactly as written. Pure, and the same lists and rules as iOS.
+ */
+object PlannerWords {
+    val SHORT = mapOf("pic" to "photo", "pics" to "photos", "img" to "image", "foto" to "photo", "fotos" to "photos", "vid" to "video", "vids" to "videos", "msg" to "message", "pwd" to "password")
+
+    /** Words the rules look for. A typed word close to exactly one of these is taken to be it. */
+    val VOCAB: Set<String> = ("photo photos picture pictures image images scan screenshot camera receipt receipts card poster flyer whiteboard video videos clip movie footage still frame " +
+        "thumbnail audio sound mute silent shrink smaller compress reduce under email whatsapp send size caption captions subtitle subtitles trim seconds rotate sideways " +
+        "upside vertical portrait story stories reel tiktok merge join combine pages page split extract password lock protect encrypt words translate translation webpage " +
+        "article website link links aloud listen speech barcode read safe decode rewrite reword rephrase formal friendlier polite professional scam phishing fraud " +
+        "suspicious deal cheapest cheaper tracking wifi expense expenses invoice business contact contacts vcard calendar event invite appointment spreadsheet excel " +
+        "table columns urls address number numbers task tasks todo checklist action summarize summarise summary shorten gist points tidy clean clear dedupe duplicate " +
+        "duplicates spaces blank lines identify describe cutout background sticker isolate enhance sharpen improve quality clearer brighten blur hide redact private " +
+        "faces anonymous censor passport visa headshot watermark location metadata strip pixels pixel convert format upload voice memo recording transcribe transcript " +
+        "collage personal sensitive confidential identity details data date information post posting social instagram facebook online share remove delete signature " +
+        "sign stamp text notes message messages list pasted paste sheet ledger running monthly return plant breed menu document documents file files kilobyte megabyte " +
+        "sentence sentences letter paragraph essay record quiet crop tall wide turn first last start keep english spanish french german italian portuguese hindi arabic " +
+        "chinese japanese korean russian turkish dutch polish indonesian vietnamese thai ukrainian").split(" ").toSet()
+
+    /** Ordinary words that sit one letter away from a word above and must never be "corrected" into it. */
+    val REAL: Set<String> = ("store phone strap plane plate price point their there where which about would could should these those other after before every later thing things something anything everything people person month today tomorrow title state place right light night great small large please thanks really always never maybe while without within between through because again being doing going having making taking getting using wants wanted needs needed friend friends family client clients office house school second flame world paper print").split(" ").toSet()
+
+    /** Words too general to tell one starter from another. */
+    val PLAIN: Set<String> = ("photo photos picture pictures image images text video videos into from with that this your mine make turn want need have please some them then just only also file files thing something anything notes words page pages link links code list sheet").split(" ").toSet()
+
+    /** The sentence in lower case with each misspelt word it recognises put right. Nothing else changes. */
+    fun tidy(ask: String): String {
+        val out = StringBuilder(); val word = StringBuilder()
+        for (ch in ask.lowercase()) {
+            if (ch in 'a'..'z') word.append(ch) else { out.append(fix(word.toString())); word.setLength(0); out.append(ch) }
+        }
+        return out.append(fix(word.toString())).toString()
+    }
+
+    /** The words of a sentence: runs of letters, lower case. */
+    fun words(text: String): List<String> = text.lowercase().split(Regex("[^a-z]+")).filter { it.isNotEmpty() }
+
+    /**
+     * One word put right: a short form spelt out, or a word of five letters or more that is one slip (two for long
+     * words) away from exactly one known word starting with the same letter. An "-ing", "-ed" or "-s" ending is tried
+     * without it too. Anything else comes back unchanged.
+     */
+    fun fix(w: String): String {
+        SHORT[w]?.let { return it }
+        if (w.length < 5 || w in VOCAB || w in REAL) return w
+        nearest(w)?.let { return it }
+        for (ending in listOf("ing", "ed", "es", "s")) {
+            if (!w.endsWith(ending) || w.length - ending.length < 5) continue
+            val stem = w.dropLast(ending.length)
+            if (stem in VOCAB) return w
+            nearest(stem)?.let { return it }
+        }
+        return w
+    }
+
+    private fun nearest(w: String): String? {
+        val reach = if (w.length >= 8) 2 else 1
+        var best: String? = null; var bestD = reach + 1; var tie = false
+        for (v in VOCAB) {
+            if (v[0] != w[0] || Math.abs(v.length - w.length) > reach) continue
+            val d = distance(w, v, reach)
+            if (d < bestD) { best = v; bestD = d; tie = false } else if (d == bestD && d <= reach) tie = true
+        }
+        return if (tie) null else best
+    }
+
+    /**
+     * How many slips apart two words are: a wrong, missing or extra letter, or two neighbours swapped, each count one.
+     * Anything over [limit] comes back as limit + 1.
+     */
+    fun distance(a: String, b: String, limit: Int): Int {
+        if (Math.abs(a.length - b.length) > limit) return limit + 1
+        if (a.isEmpty()) return minOf(b.length, limit + 1)
+        if (b.isEmpty()) return minOf(a.length, limit + 1)
+        val d = Array(a.length + 1) { IntArray(b.length + 1) }
+        for (i in 0..a.length) d[i][0] = i
+        for (j in 0..b.length) d[0][j] = j
+        for (i in 1..a.length) for (j in 1..b.length) {
+            val cost = if (a[i - 1] == b[j - 1]) 0 else 1
+            d[i][j] = minOf(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost)
+            if (i > 1 && j > 1 && a[i - 1] == b[j - 2] && a[i - 2] == b[j - 1]) d[i][j] = minOf(d[i][j], d[i - 2][j - 2] + 1)
+        }
+        return minOf(d[a.length][b.length], limit + 1)
     }
 }

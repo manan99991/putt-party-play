@@ -1147,3 +1147,99 @@ final class NewStepRunTests: XCTestCase {
         XCTAssertLessThan(plate.extent.width, 640); XCTAssertGreaterThan(plate.extent.height, 10)
     }
 }
+
+/// "Describe it" reading what people actually type: misspelt, cut short, or only half said.
+final class SmartDescribeTests: XCTestCase {
+    private func blocks(_ ask: String) -> [Block] { ChainPlanner.keywordPlan(ask)?.steps.map(\.block) ?? [] }
+
+    func testMisspeltWordsAreReadAsMeant() {
+        XCTAssertEqual(PlannerWords.tidy("Shrnk my foto and remve the loction"), "shrink my photo and remove the location")
+        XCTAssertEqual(PlannerWords.tidy("vidoe"), "video", "two letters swapped is one slip")
+        XCTAssertEqual(PlannerWords.tidy("comprssing a recipt"), "compress a receipt")
+        XCTAssertEqual(PlannerWords.tidy("trnslate to spansh"), "translate to spanish")
+        XCTAssertEqual(PlannerWords.tidy("watermak pasword sumarize"), "watermark password summarize")
+    }
+    func testWhatIsAlreadyRightIsLeftAlone() {
+        XCTAssertEqual(PlannerWords.tidy("under 50 kb, 9:16 & to-do, tl;dr"), "under 50 kb, 9:16 & to-do, tl;dr")
+        XCTAssertEqual(PlannerWords.tidy("the store phone price"), "the store phone price", "real words near a known one are not changed")
+        XCTAssertEqual(PlannerWords.tidy("make it clear and formal"), "make it clear and formal")
+        XCTAssertEqual(PlannerWords.tidy("xyzzy qwrtp"), "xyzzy qwrtp", "words it doesn't know stay as typed")
+        XCTAssertEqual(PlannerWords.tidy(""), "")
+        XCTAssertEqual(PlannerWords.distance("photo", "phto", limit: 2), 1); XCTAssertEqual(PlannerWords.distance("video", "vidoe", limit: 2), 1)
+        XCTAssertEqual(PlannerWords.distance("photo", "banana", limit: 2), 3, "anything further than the limit is just 'too far'")
+    }
+    func testTyposStillBuildTheRightTool() {
+        XCTAssertEqual(blocks("shrnk my foto and remve the loction"), [.stripLocation, .shrinkImage])
+        XCTAssertEqual(blocks("compres my vidoe for watsapp"), [.videoShrink])
+        XCTAssertEqual(ChainPlanner.keywordPlan("compres my vidoe for watsapp")?.steps.first?.settings["mb"], "16")
+        XCTAssertEqual(blocks("trnslate a pic of a menu to spansh"), [.readText, .translate])
+        XCTAssertEqual(ChainPlanner.keywordPlan("trnslate a pic of a menu to spansh")?.steps.last?.settings["to"], "es")
+        XCTAssertEqual(blocks("voice memmo to notes"), [.speechText])
+        XCTAssertEqual(blocks("sumarize this artcle"), [.pageText, .summarize])
+        XCTAssertEqual(blocks("is this mesage a scm"), [.scamCheck], "'scm' is too short to correct, but the rest still points at the right starter")
+        XCTAssertEqual(blocks("is this mesage a scam"), [.scamCheck])
+    }
+    func testHalfARequestStillGetsTheWholeJob() {
+        // Posting a photo without personal details: cover them, drop the location, make it small enough to post.
+        XCTAssertEqual(blocks("I want to post a photo online stripping all the personal data"), [.hideSensitive, .stripLocation, .shrinkImage])
+        XCTAssertEqual(blocks("remove personal info from my picture"), [.hideSensitive, .stripLocation])
+        XCTAssertEqual(blocks("post this pic on instagram"), [.stripLocation, .shrinkImage])
+        XCTAssertEqual(blocks("my photo"), [.stripLocation, .shrinkImage], "only the kind of thing was said, so it gets the most useful tool for it")
+        XCTAssertEqual(blocks("some notes"), [.cleanText])
+        XCTAssertEqual(blocks("collage"), [.stripLocation]); XCTAssertEqual(ChainPlanner.keywordPlan("collage")?.collage, true)
+        XCTAssertEqual(ChainPlanner.keywordPlan("colage")?.name, "Photos into one collage", "one word, misspelt, still finds its starter")
+        XCTAssertEqual(blocks("pasport"), [.passportPhoto])
+        XCTAssertNil(ChainPlanner.keywordPlan("make me a sandwich"))
+        XCTAssertNil(ChainPlanner.keywordPlan("   "))
+    }
+    func testItSaysWhenItIsOnlyAGuess() {
+        XCTAssertEqual(ChainPlanner.guess("shrink a photo under 1 mb")?.sure, true)
+        XCTAssertEqual(ChainPlanner.guess("my photo")?.sure, false)
+        XCTAssertEqual(ChainPlanner.guess("collage")?.sure, false)
+        XCTAssertNotEqual(ChainPlanner.guess("collage")?.chain.id, "photo-collage", "a guessed starter is a copy with its own id")
+    }
+    func testTheEndingIsReadFromTheRequest() {
+        XCTAssertEqual(ChainPlanner.keywordPlan("shrink a photo and email it")?.finish?.kind, .mail)
+        XCTAssertEqual(ChainPlanner.keywordPlan("scan a receipt and text it to my accountant")?.finish?.kind, .message)
+        XCTAssertNil(ChainPlanner.keywordPlan("find the email address in some text")?.finish)
+        XCTAssertNil(ChainPlanner.keywordPlan("shrink a photo under 1 mb")?.finish)
+    }
+    func testToolsGetNamesPeopleCanRead() {
+        XCTAssertEqual(ChainPlanner.keywordPlan("shrink video for whatsapp")?.name, "Shrink video for whatsapp", "a short request is its own name")
+        let long = ChainPlanner.keywordPlan("I want to post a photo online stripping all the personal data")
+        XCTAssertEqual(long?.name, "Privacy share shield", "a long request is named for what the tool does")
+        let c = Chain(id: "x", name: "My tool", steps: [ChainStep(block: .readText), ChainStep(block: .translate), ChainStep(block: .readAloud)])
+        XCTAssertEqual(ChainText.autoName(c), "Read text + 2 more")
+        XCTAssertEqual(ChainText.autoName(Chain(id: "x", name: "", steps: [ChainStep(block: .enhance), ChainStep(block: .watermark)])), "Enhance + Add a watermark")
+        XCTAssertEqual(ChainText.autoName(Chain(id: "x", name: "", steps: [ChainStep(block: .calendarEvent)])), "Make a calendar event")
+        XCTAssertEqual(ChainText.autoName(Chain(id: "x", name: "", steps: [])), "My tool")
+        XCTAssertEqual(ChainText.savedName(c), "Read text + 2 more", "a tool left as My tool is named for its steps when saved")
+        var named = c; named.name = "  Menu helper "
+        XCTAssertEqual(ChainText.savedName(named), "Menu helper")
+    }
+}
+
+/// "Start with what you have": the thing is sorted by what it is, and every kind has a tool waiting.
+final class GivenTests: XCTestCase {
+    func testPastedWordsAreTextOrALink() {
+        XCTAssertEqual(Given.from(text: "  call me at 5  ")?.label, "Some text")
+        XCTAssertEqual(Given.from(text: "https://example.com/page")?.label, "A link")
+        XCTAssertNil(Given.from(text: "   "))
+        if case .text(let t)? = Given.from(text: " hello ")?.payload { XCTAssertEqual(t, "hello") } else { XCTFail("text expected") }
+    }
+    func testAFileIsSortedByItsName() throws {
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("given-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: dir) }
+        func file(_ name: String, _ data: Data) throws -> URL { let u = dir.appendingPathComponent(name); try data.write(to: u); return u }
+        XCTAssertEqual(Given.from(file: try file("a.pdf", Data("%PDF".utf8)))?.payload.kind, .pdf)
+        XCTAssertEqual(Given.from(file: try file("memo.m4a", Data([1, 2, 3])))?.payload.kind, .audio)
+        XCTAssertEqual(Given.from(file: try file("clip.mov", Data([1, 2, 3])))?.payload.kind, .video)
+        XCTAssertEqual(Given.from(file: try file("note.txt", Data("hello there".utf8)))?.payload.kind, .text)
+        XCTAssertNil(Given.from(file: try file("archive.zip", Data([1, 2, 3]))), "a kind of file no tool takes is turned away, not guessed at")
+        XCTAssertNil(Given.from(file: try file("empty.txt", Data())))
+    }
+    func testEveryKindHasAToolWaiting() {
+        for k in [ChainKind.image, .text, .video, .pdf] { XCTAssertFalse(ChainStore.offers(for: k, mine: [], last: nil).isEmpty, k.rawValue) }
+    }
+}

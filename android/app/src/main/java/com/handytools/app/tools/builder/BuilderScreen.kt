@@ -75,17 +75,21 @@ object ChainStore {
 }
 
 /**
- * "Share to Tenzy": a photo shared from Gallery, Photos or any other app lands here. Pick a tool and it runs on that
- * photo straight away; the result screen has Share, so it can go on to WhatsApp, email or anywhere else.
+ * "Share to Tenzy" and "Start with what you have": a photo, video, recording, PDF, link or text is already in hand.
+ * Pick a tool and it runs on it straight away; the result screen has Share, so it can go on to WhatsApp, email or
+ * anywhere else. The person's own tools come first, and only tools this phone can run are listed.
  */
 @Composable
-fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
+fun ShareToToolScreen(uri: Uri?, mime: String? = "image/*", text: String? = null, otherWay: String = "Just open the file", onOpenInstead: () -> Unit) {
     val ctx = LocalContext.current
-    val tools = remember { ChainOffers.forKind(Kind.IMAGE, ChainStore.load(ctx), ChainStore.lastShared(ctx)).filter { ExtraSteps.unavailable(ctx, it) == null } }
+    val kind = kindOf(if (uri != null) mime else null, !text.isNullOrBlank()) ?: Kind.IMAGE
+    val tools = remember(kind) { ChainOffers.forKind(kind, ChainStore.load(ctx), ChainStore.lastShared(ctx)).filter { ExtraSteps.unavailable(ctx, it) == null } }
     var running by remember { mutableStateOf<Chain?>(null) }
-    running?.let { c -> ChainRunScreen(c, initial = uri) { running = null }; return }
+    running?.let { c -> ChainRunScreen(c, initial = uri, initialKind = kind, initialText = if (kind == Kind.TEXT) text else null) { running = null }; return }
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
-        ToolHeader("Run a tool on this photo", "Pick one. It runs right away, and the result is ready to share on.")
+        ToolHeader("What to do with ${if (kind == Kind.TEXT) "this" else "this " + kind.label.removePrefix("a ")}", "Pick one. It runs right away, and the result is ready to share on.")
+        if (kind == Kind.TEXT && text != null) Text(text.take(200), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, maxLines = 3)
+        if (tools.isEmpty()) Text("No tool takes this yet. Open Build your own, tap Blank, and build one that starts with ${kind.label}.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         tools.forEach { c ->
             HCard(Modifier.fillMaxWidth()) {
                 Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -97,7 +101,7 @@ fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
                 }
             }
         }
-        HSecondaryButton("Just open the photo") { onOpenInstead() }
+        HSecondaryButton(otherWay) { onOpenInstead() }
     }
 }
 
@@ -128,6 +132,20 @@ fun BuilderScreen() {
     fun setIntro(seen: Boolean) { introSeen = seen; prefs.edit().putBoolean("introSeen", seen).apply() }
     var have by remember { mutableStateOf<Kind?>(null) }     // "What do you have?": narrows the starters
     var runOn by remember { mutableStateOf<Uri?>(null) }      // the new photo a tapped "run this tool" notification came with
+    var editHint by remember { mutableStateOf<String?>(null) }   // shown above the steps after Describe it, when the request was only half said
+    var renaming by remember { mutableStateOf<Chain?>(null) }
+    var newName by remember { mutableStateOf("") }
+    // "Start with what you have": the thing picked (a file with its type, or text), waiting for a tool to be chosen.
+    var givenUri by remember { mutableStateOf<Uri?>(null) }
+    var givenMime by remember { mutableStateOf<String?>(null) }
+    var givenText by remember { mutableStateOf<String?>(null) }
+    fun give(uri: Uri?) {
+        if (uri == null) return
+        val mime = ctx.contentResolver.getType(uri)
+        if (kindOf(mime, false) == null) note = "Tenzy has no tool for that kind of file yet." else { note = null; givenMime = mime; givenUri = uri }
+    }
+    val havePhoto = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? -> give(uri) }
+    val haveFile = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? -> give(uri) }
 
     // A tapped reminder lands here: open that tool ready to run.
     val reminded = ToolReminders.pending
@@ -139,12 +157,29 @@ fun BuilderScreen() {
     }
 
     editing?.let { c ->
-        ChainEditor(c, onCancel = { editing = null }) { saved ->
+        ChainEditor(c, hint = editHint, onCancel = { editing = null; editHint = null }) { saved ->
             val i = mine.indexOfFirst { it.id == saved.id }
             if (i >= 0) mine[i] = saved else mine.add(saved)
-            saveAll(); editing = null
+            saveAll(); editing = null; editHint = null
         }
         return
+    }
+    if (givenUri != null || givenText != null) {
+        ShareToToolScreen(givenUri, givenMime, givenText, otherWay = "Back") { givenUri = null; givenMime = null; givenText = null }
+        return
+    }
+    renaming?.let { r ->
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = { renaming = null },
+            title = { Text("Name this tool") },
+            text = { OutlinedTextField(newName, { newName = it }, singleLine = true, label = { Text("Name") }) },
+            confirmButton = { TextButton({
+                val name = newName.trim()
+                val i = mine.indexOfFirst { it.id == r.id }
+                if (name.isNotEmpty() && i >= 0) { mine[i] = mine[i].copy(name = name); saveAll() }
+                renaming = null
+            }) { Text("Save") } },
+            dismissButton = { TextButton({ renaming = null }) { Text("Cancel") } })
     }
     running?.let { c -> ChainRunScreen(c, initial = runOn) { running = null; runOn = null }; return }
     if (showSheets) { SheetsScreen { showSheets = false }; return }
@@ -167,12 +202,30 @@ fun BuilderScreen() {
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 Text("Describe it", style = MaterialTheme.typography.titleMedium)
-                Text("Say what you want in your own words. Tenzy lines up the steps and shows you before anything runs.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                Text("Say what you want in your own words. Spelling doesn't matter, and half a sentence is enough. Tenzy lines up the steps and shows you before anything runs.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                 OutlinedTextField(ask, { ask = it }, Modifier.fillMaxWidth(), placeholder = { Text("e.g. shrink a photo under 1 MB and remove its location") }, minLines = 1, maxLines = 3)
                 HPrimaryButton("Build it for me", enabled = ask.isNotBlank()) {
-                    val p = ChainPlanner.plan(ask)
-                    if (p != null) { editing = p; note = null }
-                    else note = "I couldn't turn that into steps yet. Try a template below, or say what you start with (a photo, a receipt, some text) and what you want out."
+                    val g = ChainPlanner.guess(ask)
+                    if (g != null) {
+                        editHint = if (g.second) null else "That wasn't much to go on, so this is my best guess. Change, add or remove any step before you save."
+                        editing = g.first; note = null
+                    }
+                    else note = "I couldn't tell what you'd like done. Say what you have (a photo, a PDF, a video, a recording, a link or some text) and what should happen to it."
+                }
+            }
+        }
+        HCard(Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                Text("Start with what you have", style = MaterialTheme.typography.titleMedium)
+                Text("Pick it, and Tenzy shows the tools that fit. No need to know which one you want.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                    OutlinedButton({ havePhoto.launch("image/*") }) { Text("Photo") }
+                    OutlinedButton({ havePhoto.launch("video/*") }) { Text("Video") }
+                    OutlinedButton({ haveFile.launch(arrayOf("application/pdf", "audio/*")) }) { Text("PDF or recording") }
+                    OutlinedButton({
+                        val c = paste(ctx)
+                        if (c.isBlank()) note = "There is nothing copied to paste. Copy some text or a link first." else { note = null; givenText = c }
+                    }) { Text("Paste") }
                 }
             }
         }
@@ -180,7 +233,10 @@ fun BuilderScreen() {
         if (mine.isNotEmpty()) {
             Text("My tools", style = MaterialTheme.typography.titleMedium)
             mine.toList().forEach { c ->
-                ChainRow(c, onRun = { running = c }, onEdit = { editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
+                ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
+                    onRename = { newName = c.name; renaming = c },
+                    onTop = if (mine.firstOrNull()?.id == c.id) null else ({ mine.removeAll { it.id == c.id }; mine.add(0, c); saveAll(); note = "${c.name} is now first." }),
+                    onPin = { note = if (pinToHome(ctx, c)) "Follow the phone's prompt to put ${c.name} on your Home screen." else "This phone's Home screen doesn't take shortcuts from apps." },
                     onDuplicate = { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null, auto = AutoRun.OFF); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." })
             }
         }
@@ -194,7 +250,7 @@ fun BuilderScreen() {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Start from a template", style = MaterialTheme.typography.titleMedium)
             Row {
-                TextButton({ editing = Chain.blank() }) { Text("Blank") }
+                TextButton({ editHint = null; editing = Chain.blank() }) { Text("Blank") }
                 TextButton({
                     val c = Chain.imported(paste(ctx))
                     if (c != null) { mine.add(c); saveAll(); note = "Added ${c.name}." } else note = "Copy a tool from another Tenzy first, then tap Paste. Tools that use steps this phone doesn't have can't be added."
@@ -208,7 +264,7 @@ fun BuilderScreen() {
         }
         // Only starters this phone can run. One that needs something it lacks is simply not offered.
         BuilderIntro.starters(have).filter { ExtraSteps.unavailable(ctx, it) == null }.forEach { c ->
-            ChainRow(c, onRun = { running = c }, onEdit = { editing = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " (mine)") }, onCopy = { copy(ctx, c); note = "Copied." }, onDelete = null)
+            ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " (mine)") }, onCopy = { copy(ctx, c); note = "Copied." }, onDelete = null)
         }
         if (introSeen) TextButton({ setIntro(false) }) { Text("How does this work?") }
     }
@@ -217,11 +273,26 @@ fun BuilderScreen() {
 private fun copy(ctx: Context, c: Chain) {
     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy tool", c.shareText))
 }
+/** Puts a tool on the Home screen as its own icon: one tap opens Tenzy with that tool ready to run. False if the launcher can't. */
+private fun pinToHome(ctx: Context, c: Chain): Boolean = try {
+    if (!androidx.core.content.pm.ShortcutManagerCompat.isRequestPinShortcutSupported(ctx)) false else {
+        val open = android.content.Intent(ctx, com.handytools.app.MainActivity::class.java).setAction(android.content.Intent.ACTION_VIEW)
+            .putExtra("route", "builder").putExtra("tool", c.id)
+            .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val info = androidx.core.content.pm.ShortcutInfoCompat.Builder(ctx, "tool-${c.id}")
+            .setShortLabel(c.name.take(24).ifBlank { "Tenzy tool" }).setLongLabel(c.name.ifBlank { "Tenzy tool" })
+            .setIcon(androidx.core.graphics.drawable.IconCompat.createWithResource(ctx, com.handytools.app.R.mipmap.ic_launcher))
+            .setIntent(open).build()
+        androidx.core.content.pm.ShortcutManagerCompat.requestPinShortcut(ctx, info, null)
+    }
+} catch (_: Throwable) { false }
+
 private fun paste(ctx: Context): String =
     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).primaryClip?.getItemAt(0)?.coerceToText(ctx)?.toString().orEmpty()
 
 @Composable
-private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: () -> Unit, onDelete: (() -> Unit)?, onDuplicate: (() -> Unit)? = null) {
+private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: () -> Unit, onDelete: (() -> Unit)?, onDuplicate: (() -> Unit)? = null,
+                     onRename: (() -> Unit)? = null, onTop: (() -> Unit)? = null, onPin: (() -> Unit)? = null) {
     var menu by remember { mutableStateOf(false) }
     HCard(Modifier.fillMaxWidth()) {
         Row(Modifier.padding(HandyTokens.Space12), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
@@ -236,6 +307,9 @@ private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: ()
             TextButton({ menu = true }) { Text("More") }
             DropdownMenu(menu, { menu = false }) {
                 DropdownMenuItem(text = { Text(if (onDelete == null) "Edit a copy" else "Edit") }, onClick = { menu = false; onEdit() })
+                if (onRename != null) DropdownMenuItem(text = { Text("Rename") }, onClick = { menu = false; onRename() })
+                if (onPin != null) DropdownMenuItem(text = { Text("Add to Home screen") }, onClick = { menu = false; onPin() })
+                if (onTop != null) DropdownMenuItem(text = { Text("Move to top") }, onClick = { menu = false; onTop() })
                 if (onDuplicate != null) DropdownMenuItem(text = { Text("Duplicate") }, onClick = { menu = false; onDuplicate() })
                 DropdownMenuItem(text = { Text("Copy to share") }, onClick = { menu = false; onCopy() })
                 if (onDelete != null) DropdownMenuItem(text = { Text("Delete") }, onClick = { menu = false; onDelete() })
@@ -246,7 +320,7 @@ private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: ()
 
 /** A flow from what you give, through each step, to what you get, with each step tried on a sample as you build. */
 @Composable
-private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> Unit) {
+private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit, onSave: (Chain) -> Unit) {
     var chain by remember { mutableStateOf(start) }
     var addMenu by remember { mutableStateOf(false) }
     val previews = remember { mutableStateListOf<Preview?>() }
@@ -296,6 +370,9 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
         ToolHeader("Build a tool", "Each step is tried on a sample so you can see it work.")
         OutlinedTextField(chain.name, { chain = chain.copy(name = it) }, Modifier.fillMaxWidth(), label = { Text("Name your tool") }, singleLine = true)
+        if ((chain.name.isBlank() || chain.name.trim() == "My tool") && chain.steps.isNotEmpty())
+            Text("No name yet. It will be saved as \u201C${ChainPlanner.autoName(chain)}\u201D.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        hint?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary) }
         Text(if (chain.steps.isEmpty()) "You give it a photo, text, a video, a recording or a PDF. The first step decides which." else "You give it ${chain.start.label}", style = MaterialTheme.typography.titleSmall)
         chain.steps.forEachIndexed { i, s ->
             HCard(Modifier.fillMaxWidth()) {
@@ -395,7 +472,8 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
         if (chain.end != null) ScheduleCard(chain.schedule) { w -> chain = chain.copy(schedule = w) }
         if (chain.end != null && chain.start == Kind.IMAGE) AutoRunCard(chain.auto) { a -> chain = chain.copy(auto = a) }
         if (problem != null && chain.steps.isNotEmpty()) Text(problem, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-        HPrimaryButton("Save", enabled = problem == null && chain.name.isNotBlank()) { onSave(chain) }
+        // A name is optional: a tool saved without one is named for what it does.
+        HPrimaryButton("Save", enabled = problem == null) { onSave(chain.copy(name = ChainPlanner.savedName(chain))) }
         HSecondaryButton("Cancel") { onCancel() }
         Spacer(Modifier.heightIn(min = 24.dp))
     }
@@ -553,7 +631,7 @@ private fun sampleReceipt(): Bitmap = Bitmap.createBitmap(900, 1100, Bitmap.Conf
 
 /** Give it a photo or some text, see the result, share it. */
 @Composable
-private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Unit) {
+private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind = Kind.IMAGE, initialText: String? = null, onDone: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var text by remember { mutableStateOf("") }
@@ -576,10 +654,20 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
         }
     }
     // Opened from "Share to Tenzy": the shared photo runs straight away, no picking needed.
-    LaunchedEffect(initial) {
-        if (initial != null) {
-            val bmp = withContext(Dispatchers.IO) { runCatching { ctx.contentResolver.openInputStream(initial)?.use { BitmapFactory.decodeStream(it) } }.getOrNull() }
-            if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
+    // The same for anything handed over before the tool was chosen: a video, a recording, a PDF, or text.
+    LaunchedEffect(initial, initialText) {
+        if (initialText != null) { text = initialText; go(Payload.Words(initialText)) }
+        else if (initial != null) when (initialKind) {
+            Kind.VIDEO -> go(Payload.Clip(initial))
+            Kind.AUDIO, Kind.PDF -> {
+                val bytes = withContext(Dispatchers.IO) { BuilderInputs.bytes(ctx, initial) }
+                if (bytes == null) message = "That file couldn't be opened. Try another."
+                else go(Payload.Doc(bytes, if (initialKind == Kind.PDF) "pdf" else BuilderInputs.audioExt(ctx, initial)))
+            }
+            else -> {
+                val bmp = withContext(Dispatchers.IO) { runCatching { ctx.contentResolver.openInputStream(initial)?.use { BitmapFactory.decodeStream(it) } }.getOrNull() }
+                if (bmp != null) go(Payload.Pic(bmp)) else message = "That photo couldn't be opened. Try another."
+            }
         }
     }
     /** One result per photo. A photo that can't be processed never stops the others; it just gets its own note. */

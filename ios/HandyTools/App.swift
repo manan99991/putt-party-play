@@ -39,6 +39,13 @@ struct TenzyApp: App {
                 if crashReport == nil, !Launch.uitest { crashReport = Diagnostics.shared.takePendingCrash() }
             }
             .onOpenURL { url in
+                // tenzy://run/<id> from the My Tools widget: open that Build-your-own tool ready to run.
+                if url.scheme == "tenzy", url.host == "run", let id = url.pathComponents.dropFirst().first {
+                    showOnboarding = false
+                    ToolSchedules.setPending(id)
+                    NotificationCenter.default.post(name: .openTool, object: "builder")
+                    return
+                }
                 // tenzy://tool/<id> from the home-screen widget or Shortcuts
                 guard url.scheme == "tenzy", url.host == "tool", let id = url.pathComponents.dropFirst().first, TOOLS.contains(where: { $0.id == id }) else { return }
                 showOnboarding = false

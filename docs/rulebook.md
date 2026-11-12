@@ -104,6 +104,11 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   ML Kit's on-device translate packs (already used by the Translate tool) plus `com.google.mlkit:language-id` to detect the language on the
   phone. No text is sent to a server by Tenzy.
 - A PDF password set in "Lock with a password" is stored with the tool on the device and stripped from shared tools. Do not log it.
+- The iPhone share sheet declares `NSExtensionActivationSupportsFileWithMaxCount` so PDFs can be shared to Tenzy. It therefore also appears
+  for other files; those get a plain "Tenzy can run your tools on photos, PDFs, links and text from here" screen. Do not claim video or
+  audio sharing on iPhone in any listing.
+- Android home-screen shortcuts for tools use the launcher's own pin prompt (`ShortcutManagerCompat.requestPinShortcut`): no permission, the
+  person confirms each one. The iPhone My Tools widget reads only tool names from the app group.
 - Listing changes for Build your own are drafted in `docs/listing-draft.md`. That file is not pushed by the pipeline; copy
   from it into the metadata folders only after the features ship and Manan approves.
 

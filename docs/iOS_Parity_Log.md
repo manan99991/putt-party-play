@@ -217,3 +217,19 @@ Asked for as "build them all, with a graceful error when the phone doesn't suppo
 - "Describe it" understands the new jobs on both (same keyword rules, same tests).
 - Local logic check: 75 Android and 80 iOS tests. The check now deletes the old build first, after it once reported a stale result.
 - NOT YET RUN ON A PHONE by anyone: everything in this entry.
+
+### Names, a smarter Describe it, and three faster ways in — iOS and Android
+Asked for after the first phone pass: "let them name the tool", "make Describe it much smarter, even with spelling mistakes or half the information", plus the three ideas agreed before it.
+
+- **Names**: Rename in a tool's menu on both. A tool saved with no name (or left as "My tool") is named for what it does: a starter's name when the steps match one, otherwise "First step + Second step" or "First step + 2 more". Describe it uses the request as the name only when it is 28 characters or fewer; a long sentence no longer becomes the name. The editor says what the name will be. Fixed the My tools row on iPhone, where a long name squeezed the Run button.
+- **Describe it reads what people actually type** (`PlannerWords`, same lists and rules both sides, same tests):
+  - Spelling: a word of five letters or more that is one slip away (two for long words) from exactly one word the rules know, with the same first letter, is read as that word. "shrnk my foto and remve the loction" works. Swapped letters count as one slip. Short forms (pic, vid, msg) are spelt out. Words it doesn't know, numbers and punctuation are untouched, and a list of ordinary words (store, phone, price...) is never "corrected".
+  - Meaning: "personal data / sensitive / confidential" means cover faces and numbers and drop the location; posting a photo online or to a social app means drop the location and shrink it. "...and email it" or "...text it" sets how the tool ends.
+  - Half a request: if no rule fits, the starter whose name shares a word with the request is used (so "colage" opens the collage starter); failing that, the most useful tool for the kind of thing mentioned (a photo: safe to share and small). The editor then says it is a best guess. Only a request that names nothing Tenzy works with gets "I couldn't tell".
+  - iPhone: the rules now go first and the on-device model is only asked when the rules are unsure. Before, the model went first and could ignore half the sentence.
+  - Android's Describe it gained the photo jobs it was missing (identify, describe, cut out, enhance, passport, watermark, exact size, kilobyte limits, PDF last).
+- **Start with what you have**: a card at the top of Build your own. Pick a photo, video, file (PDF, recording) or paste text or a link, and the tools that fit are listed, yours first; tap one and it runs on it.
+- **Share from any app**: Android now offers tools for a shared video, recording, PDF, link or text (before: photos only; a shared link went straight to the web-shortcut tool, which is still one tap away from the list). iPhone's Share menu now takes PDFs as well as photos, links and text. Videos and recordings can't run inside the iPhone share sheet (its memory limit, and no speech or video engine there), and it says so.
+- **One tap from the Home screen**: Android: "Add to Home screen" in a tool's menu pins it as its own icon. iPhone: a second widget, **My Tools**, shows the first four tools (small size: the first one); "Move to top" chooses which. iPhone has no way for an app to add its own Home Screen icon, so the menu item explains how to add the widget.
+- Local logic check: 84 Android and 87 iOS tests.
+- NOT YET RUN ON A PHONE by anyone: everything in this entry.
