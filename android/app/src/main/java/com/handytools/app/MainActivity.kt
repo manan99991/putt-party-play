@@ -75,6 +75,38 @@ class MainActivity : ComponentActivity() {
     // dropped. Observed by a LaunchedEffect inside setContent.
     private var pendingRoute by mutableStateOf<String?>(null)
 
+    // Google Play's update step. It is asked for once each time the app is opened from cold; a person who backs out of
+    // it can still use the app (a failed download must never lock anyone out) and is asked again next time.
+    private val updateStep = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult()) { }
+    private var updateAsked = false
+
+    /**
+     * If Play has a newer build, show its full-screen update step. Also picks an update back up if the app was left
+     * while one was downloading. Does nothing when the app didn't come from Play (a test install, a screenshot run).
+     */
+    private fun checkForUpdate() {
+        try {
+            val manager = com.google.android.play.core.appupdate.AppUpdateManagerFactory.create(this)
+            val options = com.google.android.play.core.appupdate.AppUpdateOptions.newBuilder(com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE).build()
+            manager.appUpdateInfo.addOnSuccessListener { info ->
+                val state = info.updateAvailability()
+                val underway = state == com.google.android.play.core.install.model.UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+                val fresh = state == com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAILABLE &&
+                    info.isUpdateTypeAllowed(com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE) && !updateAsked
+                if (underway || fresh) {
+                    updateAsked = true
+                    runCatching { manager.startUpdateFlowForResult(info, updateStep, options) }
+                }
+            }
+        } catch (_: Throwable) { }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Never over a CI screenshot or QA route: those runs must show the app's own screens.
+        if (intent?.getStringExtra("route") == null) checkForUpdate()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

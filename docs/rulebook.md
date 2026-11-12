@@ -120,3 +120,7 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
 - Android: builds every push; auto-publishes to the Play **internal** track once
   `PLAY_SERVICE_ACCOUNT_JSON` is set; listing pushed by `fastlane listing` (best-effort).
 - A plain push builds and tests only — it never deploys or submits.
+- Android asks Google Play for a newer build each time the app is opened from cold and shows Play's own full-screen update step
+  (`MainActivity.checkForUpdate`, `com.google.android.play:app-update`). It can be backed out of, by design: a failed download must never
+  lock anyone out. This applies to every track, production included; revisit before a production release if asking on every open is too much
+  for the public (Play's update priority can limit it to important releases).

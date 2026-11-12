@@ -92,6 +92,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.6.0")
     implementation("com.google.android.ump:user-messaging-platform:3.1.0")
     implementation("com.android.billingclient:billing-ktx:8.0.0")
+    // Google Play's own "a newer version is ready" step, shown when the app opens. Keeps testers and users on the latest build.
+    implementation("com.google.android.play:app-update:2.1.0")
 
     // Screen OCR + image labeling (AI tools)
     implementation("com.google.mlkit:text-recognition:16.0.1")

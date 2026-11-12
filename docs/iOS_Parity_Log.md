@@ -233,3 +233,7 @@ Asked for after the first phone pass: "let them name the tool", "make Describe i
 - **One tap from the Home screen**: Android: "Add to Home screen" in a tool's menu pins it as its own icon. iPhone: a second widget, **My Tools**, shows the first four tools (small size: the first one); "Move to top" chooses which. iPhone has no way for an app to add its own Home Screen icon, so the menu item explains how to add the widget.
 - Local logic check: 84 Android and 87 iOS tests.
 - NOT YET RUN ON A PHONE by anyone: everything in this entry.
+
+### Updates that ask for themselves — Android
+- Internal testers were staying on old builds because Play's background auto-update can take days. The app now asks Play for a newer build on each cold open and shows Play's full-screen update step. iPhone: TestFlight has its own Automatic Updates switch per tester; an app cannot trigger a TestFlight update.
+- It takes effect from the build after the one that carries it, so testers need one manual update first.
