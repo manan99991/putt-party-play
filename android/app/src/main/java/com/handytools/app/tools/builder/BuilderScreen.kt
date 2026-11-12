@@ -103,7 +103,7 @@ fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
 
 private fun defaults(b: Block): Map<String, String> = when (b) {
     Block.SHRINK -> mapOf("mb" to "2"); Block.SUMMARIZE -> mapOf("sentences" to "3"); Block.CONVERT -> mapOf("format" to "JPG")
-    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.STAMP -> mapOf("marks" to StampPlan.STANDARD); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
+    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.STAMP -> mapOf("marks" to StampPlan.STANDARD); Block.RETURN_BY -> mapOf("days" to "30"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
     Block.ADD_TO_LIST -> mapOf("list" to TextTidy.DEFAULT_LIST)
     Block.CHAT_LINK -> mapOf("cc" to TextTidy.callingCode(java.util.Locale.getDefault().country)); else -> emptyMap()
 }
@@ -380,6 +380,10 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
         Block.WATERMARK -> {
             OutlinedTextField(s.settings["text"] ?: "", { v -> set("text", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Words to write across it") })
             Text("Today's date is added each time it runs.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        Block.RETURN_BY -> Row {
+            val days = TextTidy.returnDays(s.settings["days"])
+            TextTidy.RETURN_WINDOWS.forEach { d -> TextButton({ set("days", d.toString()) }) { Text(if (d == days) "● $d days" else "$d days") } }
         }
         Block.RESIZE_PHOTO -> Column {
             TextTidy.SIZES.forEach { (label, value) ->

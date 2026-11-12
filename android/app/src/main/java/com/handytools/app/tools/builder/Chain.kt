@@ -41,6 +41,7 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     CONTACT_QR("contactQr", "Contact as a QR code", Kind.TEXT, Kind.IMAGE, "A code another phone scans to save the contact. Only what you typed is included."),
     IDENTIFY("identify", "Identify it", Kind.IMAGE, Kind.TEXT, "Names the object or reads the barcode."),
     CUTOUT("cutout", "Cut out subject", Kind.IMAGE, Kind.IMAGE, "Lifts the main subject off its background."),
+    RETURN_BY("returnBy", "Return-by reminder", Kind.TEXT, Kind.FILE, "Puts the last day to return it in your calendar, counted from the receipt's date."),
     WIFI_QR("wifiQr", "Wi-Fi join code", Kind.TEXT, Kind.IMAGE, "Finds the network name and password and makes a code guests scan to join. No typing."),
     STAMP("stamp", "Sign and stamp", Kind.IMAGE, Kind.IMAGE, "Puts your saved signature, your name and today's date where you placed them.");
 
@@ -57,7 +58,7 @@ val Block.goal: String get() = when (this) {
     Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR, Block.WIFI_QR -> "Turn it into something"
     Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
     Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
-    Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST -> "Money"
+    Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST, Block.RETURN_BY -> "Money"
 }
 
 object BlockGoals {
@@ -327,6 +328,7 @@ object ChainTemplates {
         Chain("receipt-run", "Receipt into this month's expense sheet", listOf(Step(Block.READ_TEXT), Step(Block.EXPENSE_ROW), Step(Block.ADD_TO_LIST, mapOf("list" to TextTidy.DEFAULT_LIST)))),
         Chain("whatsapp-no-save", "WhatsApp a number without saving it", listOf(Step(Block.CHAT_LINK)), finish = Finish("open")),
         Chain("contact-qr", "My contact as a QR code", listOf(Step(Block.CONTACT_QR))),
+        Chain("return-by", "Receipt to a return-by reminder", listOf(Step(Block.READ_TEXT), Step(Block.RETURN_BY, mapOf("days" to "30")))),
         Chain("wifi-sign", "Wi-Fi sign to a code guests scan", listOf(Step(Block.READ_TEXT), Step(Block.WIFI_QR))),
         Chain("what-is-this", "What is this?", listOf(Step(Block.IDENTIFY))),
         Chain("sticker", "Cut out a subject", listOf(Step(Block.CUTOUT))),

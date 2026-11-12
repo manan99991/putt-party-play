@@ -167,3 +167,8 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Android still lacks: enhance, passportPhoto, priceCompare, describe. Tools using those can't be pasted into Android.
 - iOS: the start picker has a line sending video to Fit It, since video is not a builder step.
 - UNBUILT in CI (builds paused for cost).
+
+### Return-by reminder — iOS and Android
+- `returnBy`: a receipt's text becomes a calendar entry "Last day to return: <store>" at 9:00, so many days after the receipt's date (today if it shows none). Window is 14, 30, 60 or 90 days (default 30). A window that has already ended says so instead of making a stale entry.
+- Starter on both: "Receipt to a return-by reminder" (Read text, then Return-by reminder). Same rules both sides (`ChainText.returnDeadline` / `TextTidy.returnDeadline`).
+- UNBUILT in CI (builds paused for cost).

@@ -123,6 +123,17 @@ object ChainRunner {
                         Outcome.Stopped("Cut out subject needs a one-time download that isn't on this phone yet. Open Media Studio, remove a background once while online, then run this again.")
                     } finally { runCatching { seg.close() } }
                 }
+                b == Block.RETURN_BY && input is Payload.Words -> {
+                    // The last day to take it back, counted from the date on the receipt (today if it shows none), as a calendar entry.
+                    val r = CaptureClassifier.classify(input.text)
+                    val days = TextTidy.returnDays(step.settings["days"])
+                    val due = TextTidy.returnDeadline(r.purchaseMs, days, System.currentTimeMillis())
+                    when {
+                        r.total.isBlank() && r.items.isEmpty() && r.purchaseMs == null -> none()
+                        due <= System.currentTimeMillis() -> Outcome.Stopped("The $days-day return window for this receipt has already ended.")
+                        else -> Outcome.Done(Payload.Doc(ics(TextTidy.returnTitle(r.merchant), due, due + 1_800_000L, "").toByteArray(), "ics"))
+                    }
+                }
                 b == Block.WIFI_QR && input is Payload.Words -> {
                     // The network name and password from a router label or a cafe sign, as a code a guest's camera joins from.
                     val code = TextTidy.wifiCode(input.text)

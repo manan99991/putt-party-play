@@ -86,7 +86,7 @@ final class ChainRowTests: XCTestCase {
 
 final class ChainTemplateTests: XCTestCase {
     func testTwentyEightTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 29)
+        XCTAssertEqual(ChainTemplates.all.count, 30)
         XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 28)
     }
     func testShareRoundTripAndRejectsJunk() throws {
@@ -797,5 +797,32 @@ final class WifiTests: XCTestCase {
         let none = await ChainRunner.apply(ChainStep(block: .wifiQr), to: .text("nothing useful here at all"))
         XCTAssertEqual(none.failureValue, .nothingFound(.wifiQr))
         XCTAssertNil(try XCTUnwrap(ChainTemplates.all.first { $0.id == "wifi-sign" }).problem(starting: .image))
+    }
+}
+
+final class ReturnByTests: XCTestCase {
+    func testDeadlineIsNineInTheMorningSoManyDaysAfterTheReceipt() {
+        var cal = Calendar(identifier: .gregorian); cal.timeZone = TimeZone(identifier: "UTC")!
+        let bought = cal.date(from: DateComponents(year: 2026, month: 11, day: 12, hour: 17, minute: 40))!
+        let due = ChainText.returnDeadline(purchased: bought, days: 30, calendar: cal)
+        XCTAssertEqual(cal.dateComponents([.year, .month, .day, .hour, .minute], from: due), DateComponents(year: 2026, month: 12, day: 12, hour: 9, minute: 0))
+        let now = cal.date(from: DateComponents(year: 2026, month: 1, day: 31, hour: 8))!
+        let noDate = ChainText.returnDeadline(purchased: nil, days: 14, now: now, calendar: cal)
+        XCTAssertEqual(cal.dateComponents([.month, .day, .hour], from: noDate), DateComponents(month: 2, day: 14, hour: 9))
+    }
+    func testWordingAndSettings() {
+        XCTAssertEqual(ChainText.returnTitle(" Corner Hardware "), "Last day to return: Corner Hardware")
+        XCTAssertEqual(ChainText.returnTitle(""), "Last day to return")
+        XCTAssertEqual(ChainText.returnDays(nil), 30); XCTAssertEqual(ChainText.returnDays("60"), 60)
+        XCTAssertEqual(ChainText.returnDays("0"), 1); XCTAssertEqual(ChainText.returnDays("9999"), 365); XCTAssertEqual(ChainText.returnDays("soon"), 30)
+    }
+    func testStepNeedsAReceiptAndTheStarterIsWired() async throws {
+        let none = await ChainRunner.apply(ChainStep(block: .returnBy), to: .text("hello there"))
+        XCTAssertEqual(none.failureValue, .nothingFound(.returnBy))
+        let ok = await ChainRunner.apply(ChainStep(block: .returnBy, settings: ["days": "90"]), to: .text("Corner Hardware\nHammer 12.99\nTotal 12.99"))
+        guard case .success(.file(let d, let ext)) = ok else { return XCTFail("no calendar entry") }
+        XCTAssertEqual(ext, "ics")
+        XCTAssertTrue(String(decoding: d, as: UTF8.self).contains("SUMMARY:Last day to return"))
+        XCTAssertNil(try XCTUnwrap(ChainTemplates.all.first { $0.id == "return-by" }).problem(starting: .image))
     }
 }

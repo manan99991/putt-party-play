@@ -322,4 +322,14 @@ class BuilderLogicTest {
         assertEquals("", TextTidy.identifyLines(null, emptyList()))
         assertEquals("Read what's in it", Block.IDENTIFY.goal); assertEquals("Make it look better", Block.CUTOUT.goal)
     }
+    @Test fun returnByDeadline() {
+        val utc = java.util.TimeZone.getTimeZone("UTC")
+        fun at(y: Int, mo: Int, d: Int, h: Int, mi: Int) = java.util.Calendar.getInstance(utc).apply { clear(); set(y, mo - 1, d, h, mi) }.timeInMillis
+        assertEquals(at(2026, 12, 12, 9, 0), TextTidy.returnDeadline(at(2026, 11, 12, 17, 40), 30, 0L, utc))
+        assertEquals(at(2026, 2, 14, 9, 0), TextTidy.returnDeadline(null, 14, at(2026, 1, 31, 8, 0), utc))
+        assertEquals("Last day to return: Corner Hardware", TextTidy.returnTitle(" Corner Hardware ")); assertEquals("Last day to return", TextTidy.returnTitle(""))
+        assertEquals(30, TextTidy.returnDays(null)); assertEquals(60, TextTidy.returnDays("60")); assertEquals(1, TextTidy.returnDays("0"))
+        assertEquals(365, TextTidy.returnDays("9999")); assertEquals(30, TextTidy.returnDays("soon"))
+        assertNull(ChainTemplates.all.first { it.id == "return-by" }.problem(Kind.IMAGE)); assertEquals("Money", Block.RETURN_BY.goal)
+    }
 }

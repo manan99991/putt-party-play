@@ -38,6 +38,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case expenseRow, addToList
     case chatLink, contactQr
     case wifiQr
+    case returnBy
 
     var id: String { rawValue }
     var title: String {
@@ -73,12 +74,13 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .chatLink: return "WhatsApp link for a number"
         case .contactQr: return "Contact as a QR code"
         case .wifiQr: return "Wi-Fi join code"
+        case .returnBy: return "Return-by reminder"
         }
     }
     var takes: ChainKind {
         switch self {
         case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp: return .image
-        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr: return .text
+        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr, .returnBy: return .text
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
@@ -86,7 +88,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         switch self {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
-        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .addToList: return .file
+        case .businessCard, .calendarEvent, .makeTable, .photoPdf, .addToList, .returnBy: return .file
         case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr: return .image
         }
     }
@@ -105,7 +107,7 @@ extension Block {
         case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr, .chatLink, .contactQr, .wifiQr: return "Turn it into something"
         case .summarize, .actionItems, .scamCheck: return "Understand it"
         case .cleanText, .cleanLinks, .pullDetails: return "Clean it up"
-        case .pullReceipt, .priceCompare, .expenseRow, .addToList: return "Money"
+        case .pullReceipt, .priceCompare, .expenseRow, .addToList, .returnBy: return "Money"
         }
     }
     static let goalOrder = ["Paperwork", "Make it easy to send", "Keep it private", "Make it look better", "Read what's in it", "Understand it", "Clean it up", "Turn it into something", "Money"]
@@ -387,6 +389,17 @@ enum ChainRunner {
             guard r.total != nil || !r.items.isEmpty else { return .failure(.nothingFound(b)) }
             return .success(.text(DataGrab.expenseRow(r)))
 
+        case (.returnBy, .text(let t)):
+            // The last day to take it back, counted from the date on the receipt (today if it shows none), as a calendar entry.
+            let r = DataGrab.receipt(t)
+            guard r.total != nil || !r.items.isEmpty || r.date != nil else { return .failure(.nothingFound(b)) }
+            let days = ChainText.returnDays(step.settings["days"])
+            let due = ChainText.returnDeadline(purchased: r.date, days: days)
+            guard due > Date() else { return .failure(.invalid("The \(days)-day return window for this receipt has already ended.")) }
+            let e = DataGrab.Event(title: ChainText.returnTitle(r.merchant), start: due, end: due.addingTimeInterval(1800), location: "")
+            guard let d = DataGrab.ics(e).data(using: .utf8) else { return .failure(.failed(b)) }
+            return .success(.file(d, ext: "ics"))
+
         case (.addToList, .text(let t)):
             // Every run adds to the same sheet (one per month by default) and hands back the whole sheet.
             let name = ChainName.file(pattern: step.settings["list"] ?? RunningList.defaultName, tool: "List", ext: "csv")
@@ -493,6 +506,7 @@ enum ChainTemplates {
         Chain(id: "receipt-run", name: "Receipt into this month's expense sheet", steps: [ChainStep(block: .readText), ChainStep(block: .expenseRow), ChainStep(block: .addToList, settings: ["list": RunningList.defaultName])]),
         Chain(id: "whatsapp-no-save", name: "WhatsApp a number without saving it", steps: [ChainStep(block: .chatLink)], finish: ChainFinish(kind: .open, to: "")),
         Chain(id: "contact-qr", name: "My contact as a QR code", steps: [ChainStep(block: .contactQr)]),
+        Chain(id: "return-by", name: "Receipt to a return-by reminder", steps: [ChainStep(block: .readText), ChainStep(block: .returnBy, settings: ["days": "30"])]),
         Chain(id: "wifi-sign", name: "Wi-Fi sign to a code guests scan", steps: [ChainStep(block: .readText), ChainStep(block: .wifiQr)]),
         Chain(id: "id-both-sides", name: "Both sides of an ID on one page", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"])], combine: true, onePage: true),
         Chain(id: "share-shield", name: "Privacy share shield", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
@@ -608,6 +622,22 @@ enum ChainText {
         var out = ["Best deal: \(best.entry.name), \(PriceBrain.perUnitString(best))"]
         out += ranked.dropFirst().map { "\($0.entry.name), \(PriceBrain.perUnitString($0))" }
         return out.joined(separator: "\n")
+    }
+
+    // MARK: return windows
+
+    /// Return windows a tool can pick, in days.
+    static let returnWindows = [14, 30, 60, 90]
+    static func returnDays(_ setting: String?) -> Int { min(365, max(1, Int(setting ?? "") ?? 30)) }
+    /// 9:00 in the morning, `days` after the day it was bought (today when the receipt shows no date).
+    static func returnDeadline(purchased: Date?, days: Int, now: Date = Date(), calendar: Calendar = .current) -> Date {
+        let day = calendar.startOfDay(for: purchased ?? now)
+        let due = calendar.date(byAdding: .day, value: days, to: day) ?? day
+        return calendar.date(bySettingHour: 9, minute: 0, second: 0, of: due) ?? due
+    }
+    static func returnTitle(_ merchant: String) -> String {
+        let m = merchant.trimmingCharacters(in: .whitespacesAndNewlines)
+        return m.isEmpty ? "Last day to return" : "Last day to return: \(m)"
     }
 
     // MARK: Wi-Fi details in text

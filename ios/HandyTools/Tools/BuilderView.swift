@@ -442,6 +442,10 @@ private struct ChainEditor: View {
         case .summarize:
             let n = Int(chain.steps[i].settings["sentences"] ?? "3") ?? 3
             Stepper("\(n) sentences", value: Binding(get: { n }, set: { chain.steps[i].settings["sentences"] = String($0) }), in: 1...8).font(HandyFont.caption)
+        case .returnBy:
+            Picker("Return window", selection: Binding(get: { ChainText.returnDays(chain.steps[i].settings["days"]) }, set: { chain.steps[i].settings["days"] = String($0) })) {
+                ForEach(ChainText.returnWindows, id: \.self) { Text("\($0) days").tag($0) }
+            }.pickerStyle(.segmented)
         case .convertImage:
             Picker("Format", selection: Binding(get: { chain.steps[i].settings["format"] ?? "JPG" }, set: { chain.steps[i].settings["format"] = $0 })) {
                 ForEach(ImageStudio.Format.allCases, id: \.rawValue) { Text($0.rawValue).tag($0.rawValue) }

@@ -218,6 +218,21 @@ object TextTidy {
         (listOfNotNull(barcode?.takeIf { it.isNotBlank() }?.let { "Barcode $it" }) +
             labels.map { (name, sure) -> "$name (${Math.round(sure * 100)}% sure)" }).joinToString("\n")
 
+    // MARK: return windows (same rules as iOS ChainText)
+
+    val RETURN_WINDOWS = listOf(14, 30, 60, 90)
+    fun returnDays(setting: String?): Int = (setting?.toIntOrNull() ?: 30).coerceIn(1, 365)
+
+    /** 9:00 in the morning, [days] after the day it was bought (today when the receipt shows no date). */
+    fun returnDeadline(purchasedMs: Long?, days: Int, now: Long, zone: java.util.TimeZone = java.util.TimeZone.getDefault()): Long =
+        java.util.Calendar.getInstance(zone).apply {
+            timeInMillis = purchasedMs ?: now
+            add(java.util.Calendar.DAY_OF_YEAR, days)
+            set(java.util.Calendar.HOUR_OF_DAY, 9); set(java.util.Calendar.MINUTE, 0); set(java.util.Calendar.SECOND, 0); set(java.util.Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+    fun returnTitle(merchant: String): String = merchant.trim().let { if (it.isEmpty()) "Last day to return" else "Last day to return: $it" }
+
     // MARK: Wi-Fi details in text (same rules as iOS ChainText.wifi)
 
     private val WIFI_NAME_KEYS = listOf("network name", "wifi name", "wi-fi name", "ssid", "network", "wi-fi", "wifi")
