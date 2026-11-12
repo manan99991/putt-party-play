@@ -103,7 +103,7 @@ fun ShareToToolScreen(uri: Uri?, onOpenInstead: () -> Unit) {
 
 private fun defaults(b: Block): Map<String, String> = when (b) {
     Block.SHRINK -> mapOf("mb" to "2"); Block.SUMMARIZE -> mapOf("sentences" to "3"); Block.CONVERT -> mapOf("format" to "JPG")
-    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.STAMP -> mapOf("marks" to StampPlan.STANDARD); Block.RETURN_BY -> mapOf("days" to "30"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
+    Block.WATERMARK -> mapOf("text" to "For verification only"); Block.STAMP -> mapOf("marks" to StampPlan.STANDARD); Block.RETURN_BY -> mapOf("days" to "30"); Block.VIDEO_SHRINK -> mapOf("mb" to "25"); Block.RESIZE_PHOTO -> mapOf("size" to "413x531")
     Block.ADD_TO_LIST -> mapOf("list" to TextTidy.DEFAULT_LIST)
     Block.CHAT_LINK -> mapOf("cc" to TextTidy.callingCode(java.util.Locale.getDefault().country)); else -> emptyMap()
 }
@@ -198,7 +198,7 @@ fun BuilderScreen() {
             }
         }
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-            listOf<Pair<String, Kind?>>("Everything" to null, "A photo or scan" to Kind.IMAGE, "Text" to Kind.TEXT).forEach { (label, k) ->
+            listOf<Pair<String, Kind?>>("All" to null, "Photo" to Kind.IMAGE, "Text" to Kind.TEXT, "Video" to Kind.VIDEO).forEach { (label, k) ->
                 if (have == k) Button({ have = k }) { Text(label) } else OutlinedButton({ have = k }) { Text(label) }
             }
         }
@@ -252,6 +252,11 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
     LaunchedEffect(chain.steps) {
         previews.clear(); chain.steps.forEach { previews.add(null) }
         val first = chain.steps.firstOrNull() ?: return@LaunchedEffect
+        if (first.block.takes == Kind.VIDEO) {
+            // There is no sample video to try steps on, so say what each one will do instead of showing a result.
+            chain.steps.forEachIndexed { i, s -> previews[i] = Preview.Doc(s.block.blurb) }
+            return@LaunchedEffect
+        }
         delay(250)
         var v: Payload = when {
             first.block == Block.READ_TEXT -> Payload.Pic(sampleReceipt())
@@ -270,7 +275,7 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
         ToolHeader("Build a tool", "Each step is tried on a sample so you can see it work.")
         OutlinedTextField(chain.name, { chain = chain.copy(name = it) }, Modifier.fillMaxWidth(), label = { Text("Name your tool") }, singleLine = true)
-        Text(if (chain.steps.isEmpty()) "You give it a photo or text. The first step decides which." else "You give it ${chain.start.label}", style = MaterialTheme.typography.titleSmall)
+        Text(if (chain.steps.isEmpty()) "You give it a photo, text or a video. The first step decides which." else "You give it ${chain.start.label}", style = MaterialTheme.typography.titleSmall)
         chain.steps.forEachIndexed { i, s ->
             HCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
@@ -292,8 +297,9 @@ private fun ChainEditor(start: Chain, onCancel: () -> Unit, onSave: (Chain) -> U
             Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 Button({ startChoice = Kind.IMAGE }, Modifier.weight(1f)) { Text("A photo") }
                 Button({ startChoice = Kind.TEXT }, Modifier.weight(1f)) { Text("Text") }
+                Button({ startChoice = Kind.VIDEO }, Modifier.weight(1f)) { Text("A video") }
             }
-            Text("Video, voice, contacts and files are coming next.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text("A photo tool also takes scans and PDF pages. A text tool also takes what you say, a contact, or the words in a PDF. A video tool shrinks, quiets or pulls a picture out of a video.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         } else {
             if (chain.steps.isEmpty()) {
                 Text("You start with ${startChoice?.label}. You only see steps that work with it.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
@@ -386,6 +392,10 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 TextButton({ set("country", id) }) { Text(if ((s.settings["country"] ?: "us") == id) "● $label" else label) }
             }
         }
+        Block.VIDEO_SHRINK -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val mb = TextTidy.videoLimit(s.settings["mb"])
+            TextTidy.VIDEO_LIMITS.forEach { m -> TextButton({ set("mb", m.toString()) }) { Text(if (m == mb) "● $m MB" else "$m MB") } }
+        }
         Block.RETURN_BY -> Row {
             val days = TextTidy.returnDays(s.settings["days"])
             TextTidy.RETURN_WINDOWS.forEach { d -> TextButton({ set("days", d.toString()) }) { Text(if (d == days) "● $d days" else "$d days") } }
@@ -419,6 +429,7 @@ sealed class Preview {
         fun of(p: Payload): Preview = when (p) {
             is Payload.Words -> Words(p.text)
             is Payload.Pic -> Pic(p.bmp)
+            is Payload.Clip -> Doc("Video")
             is Payload.Doc ->
                 if (p.ext in listOf("csv", "vcf", "ics")) Words(String(p.bytes))
                 else BitmapFactory.decodeByteArray(p.bytes, 0, p.bytes.size)?.takeIf { p.kind == Kind.PHOTO_FILE }?.let { Pic(it) }
@@ -566,6 +577,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
         }
     }
 
+    val videoPicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? -> if (uri != null) go(Payload.Clip(uri)) }
+
     fun scan() {
         val noScanner = { message = "The camera scanner isn't available on this phone, so choose photos instead."; picker.launch("image/*") }
         val activity = com.handytools.app.tools.power.DocEngine.findActivity(ctx) ?: return noScanner()
@@ -603,6 +616,9 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
             }
             OutlinedTextField(text, { text = it }, Modifier.fillMaxWidth().heightIn(min = 140.dp), label = { Text("Your text") })
             HPrimaryButton("Run", enabled = text.isNotBlank() && !busy) { go(Payload.Words(text)) }
+        } else if (chain.start == Kind.VIDEO) {
+            HPrimaryButton("Choose a video", enabled = !busy) { videoPicker.launch("video/*") }
+            Text("Long videos take a little while. Keep Tenzy open until it finishes.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         } else {
             HPrimaryButton("Choose photos", enabled = !busy) { picker.launch("image/*") }
             HSecondaryButton("Scan a document") { scan() }
@@ -622,6 +638,11 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
                     val f = File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = "jpg")).also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) }
                     Share.file(ctx, f, "image/jpeg")
                 }
+            }
+            is Payload.Clip -> {
+                val f = r.uri.path?.let { File(it) }
+                Text("Your video is ready" + (f?.takeIf { it.exists() }?.let { " · ${MediaEngine.human(it.length())}" } ?: ""), style = MaterialTheme.typography.titleSmall)
+                HPrimaryButton("Save or share") { if (f != null && f.exists()) Share.file(ctx, f, "video/mp4") else message = "The video couldn't be found to share. Run the tool again." }
             }
             is Payload.Doc -> {
                 Text("${r.bytes.size / 1024} KB · ${r.ext.uppercase()}", style = MaterialTheme.typography.bodySmall)
@@ -654,6 +675,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
                     is Payload.Words -> text = r.text
                     is Payload.Pic -> files.add(File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = "jpg")).also { it.writeBytes(MediaEngine.jpeg(r.bmp, 92)) })
                     is Payload.Doc -> files.add(File(ctx.cacheDir, TextTidy.fileName(chain.fileName, chain.name, ext = r.ext)).also { it.writeBytes(r.bytes) })
+                    is Payload.Clip -> r.uri.path?.let { File(it) }?.takeIf { it.exists() }?.let { files.add(it) }
                     null -> { files.addAll(okItems.mapNotNull { it.file }); text = okItems.mapNotNull { it.text }.joinToString("\n\n").ifEmpty { null } }
                 }
                 val mime = files.map { it.extension }.distinct().singleOrNull()?.let { mimeFor(it) } ?: "*/*"
@@ -691,7 +713,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
 private const val MAX_BATCH = 20
 
 internal fun mimeFor(ext: String): String = when (ext) {
-    "jpg", "jpeg" -> "image/jpeg"; "png" -> "image/png"; "vcf" -> "text/x-vcard"; "ics" -> "text/calendar"; "csv" -> "text/csv"; "pdf" -> "application/pdf"; else -> "*/*"
+    "jpg", "jpeg" -> "image/jpeg"; "png" -> "image/png"; "mp4" -> "video/mp4"; "m4a" -> "audio/mp4"; "vcf" -> "text/x-vcard"; "ics" -> "text/calendar"; "csv" -> "text/csv"; "pdf" -> "application/pdf"; else -> "*/*"
 }
 
 /** One photo's outcome in a batch run. Results are written to a cache folder straight away so twenty full-size
@@ -702,6 +724,7 @@ internal class BatchItem(val n: Int, val file: File? = null, val text: String? =
             when (p) {
                 is Payload.Words -> BatchItem(n, text = p.text, summary = "${p.text.length} characters")
                 is Payload.Pic -> File(dir, "Tenzy-$n.jpg").also { it.writeBytes(MediaEngine.jpeg(p.bmp, 92)) }.let { BatchItem(n, file = it, summary = "${it.length() / 1024} KB · JPG") }
+                is Payload.Clip -> p.uri.path?.let { File(it) }?.takeIf { it.exists() }?.let { BatchItem(n, file = it, summary = "${it.length() / 1024} KB · VIDEO") } ?: BatchItem(n, note = "Couldn't save this result.")
                 is Payload.Doc -> File(dir, "Tenzy-$n.${p.ext}").also { it.writeBytes(p.bytes) }.let { BatchItem(n, file = it, summary = "${p.bytes.size / 1024} KB · ${p.ext.uppercase()}") }
             }
         } catch (_: Exception) { BatchItem(n, note = "Couldn't save this result.") }

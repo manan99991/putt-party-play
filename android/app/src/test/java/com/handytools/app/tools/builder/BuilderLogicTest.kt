@@ -300,7 +300,9 @@ class BuilderLogicTest {
         val photo = BuilderIntro.starters(Kind.IMAGE); val text = BuilderIntro.starters(Kind.TEXT)
         assertTrue(photo.isNotEmpty() && text.isNotEmpty())
         assertTrue(photo.all { it.start == Kind.IMAGE }); assertTrue(text.all { it.start == Kind.TEXT })
-        assertEquals(ChainTemplates.all.size, photo.size + text.size)
+        val video = BuilderIntro.starters(Kind.VIDEO)
+        assertTrue(video.isNotEmpty() && video.all { it.start == Kind.VIDEO })
+        assertEquals(ChainTemplates.all.size, photo.size + text.size + video.size)
         assertEquals(ChainTemplates.all, BuilderIntro.starters(null))
         assertNotNull(ChainTemplates.all.firstOrNull { it.id == BuilderIntro.DEMO_ID })
         assertEquals(3, BuilderIntro.PAGES.size)
@@ -366,7 +368,44 @@ class BuilderLogicTest {
     @Test fun androidNowHasEveryStepTheIphoneHas() {
         val ios = listOf("readText", "pullReceipt", "summarize", "shrinkImage", "stripLocation", "cutout", "enhance", "convertImage", "businessCard", "calendarEvent", "actionItems",
             "hideSensitive", "passportPhoto", "cleanText", "pullDetails", "makeTable", "scamCheck", "cleanLinks", "priceCompare", "makeQr", "describe", "identify", "photoPdf",
-            "watermark", "resizePhoto", "stamp", "expenseRow", "addToList", "chatLink", "contactQr", "wifiQr", "returnBy")
+            "watermark", "resizePhoto", "stamp", "expenseRow", "addToList", "chatLink", "contactQr", "wifiQr", "returnBy", "videoShrink", "videoStill", "videoMute", "videoAudio")
         assertEquals(emptyList<String>(), ios.filter { Block.byId(it) == null })
+    }
+    @Test fun videoStepsOnlyFitAVideo() {
+        val v = listOf(Block.VIDEO_SHRINK, Block.VIDEO_STILL, Block.VIDEO_MUTE, Block.VIDEO_AUDIO)
+        assertTrue(v.all { it.takes == Kind.VIDEO })
+        assertEquals(v.toSet(), BlockGoals.starting(Kind.VIDEO).toSet())
+        assertFalse(Block.VIDEO_SHRINK in BlockGoals.starting(Kind.IMAGE)); assertFalse(Block.VIDEO_STILL in BlockGoals.starting(Kind.TEXT))
+        assertNull(Chain("a", "A", listOf(Step(Block.VIDEO_MUTE), Step(Block.VIDEO_SHRINK))).problem(Kind.VIDEO))
+        assertNotNull(Chain("a", "A", listOf(Step(Block.VIDEO_MUTE), Step(Block.VIDEO_SHRINK))).problem(Kind.IMAGE))
+        assertNull(Chain("b", "B", listOf(Step(Block.VIDEO_STILL), Step(Block.READ_TEXT), Step(Block.SUMMARIZE))).problem(Kind.VIDEO))
+        assertNotNull(Chain("c", "C", listOf(Step(Block.VIDEO_AUDIO), Step(Block.VIDEO_SHRINK))).problem(Kind.VIDEO))
+        for (id in listOf("video-email", "video-chat", "video-still", "video-quiet")) {
+            val c = ChainTemplates.all.first { it.id == id }
+            assertNull(id, c.problem(Kind.VIDEO)); assertEquals(c.steps, Chain.imported(c.shareText)!!.steps)
+        }
+        assertEquals("mail", ChainTemplates.all.first { it.id == "video-email" }.finish?.kind)
+    }
+    @Test fun videoSizeMaths() {
+        assertEquals(25, TextTidy.videoLimit(null)); assertEquals(16, TextTidy.videoLimit("16")); assertEquals(16, TextTidy.videoLimit("16.0"))
+        assertEquals(1, TextTidy.videoLimit("0")); assertEquals(25, TextTidy.videoLimit("junk"))
+        // One minute into 25 MB: about 2.9 million bits a second for the picture once sound and overhead are set aside.
+        assertEquals(2_947_822, TextTidy.videoBitrate(25L * 1_048_576L, 60_000L))
+        assertEquals(200_000, TextTidy.videoBitrate(10L * 1_048_576L, 3_600_000L))          // an hour into 10 MB: the floor
+        assertEquals(12_000_000, TextTidy.videoBitrate(100L * 1_048_576L, 5_000L))          // five seconds: the ceiling
+        assertEquals(2_000_000, TextTidy.videoBitrate(25L * 1_048_576L, 0L))                // unknown length
+        assertEquals(360, TextTidy.videoHeight(500_000)); assertEquals(480, TextTidy.videoHeight(1_000_000))
+        assertEquals(720, TextTidy.videoHeight(2_947_822)); assertEquals(1080, TextTidy.videoHeight(8_000_000))
+    }
+    @Test fun describeItUnderstandsVideoJobs() {
+        fun blocks(ask: String) = ChainPlanner.plan(ask)?.steps?.map { it.block } ?: emptyList()
+        assertEquals(listOf(Block.VIDEO_SHRINK), blocks("make this video small enough to email"))
+        assertEquals("16", ChainPlanner.plan("shrink a video for whatsapp")?.steps?.first()?.settings?.get("mb"))
+        assertEquals("50", ChainPlanner.plan("get my video under 50 mb")?.steps?.first()?.settings?.get("mb"))
+        assertEquals(listOf(Block.VIDEO_MUTE), blocks("video without sound"))
+        assertEquals(listOf(Block.VIDEO_MUTE, Block.VIDEO_SHRINK), blocks("mute the video and shrink it"))
+        assertEquals(listOf(Block.VIDEO_STILL), blocks("grab a still from a video"))
+        assertEquals(listOf(Block.VIDEO_AUDIO), blocks("just the audio from this video"))
+        assertEquals(Block.SHRINK, blocks("shrink a photo under 1 mb").last())
     }
 }

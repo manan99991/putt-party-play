@@ -22,10 +22,13 @@ sealed class Payload {
     class Pic(val bmp: Bitmap) : Payload()
     class Words(val text: String) : Payload()
     class Doc(val bytes: ByteArray, val ext: String) : Payload()
+    /** A video stays a file (it is far too big to hold in memory); steps hand its location along. */
+    class Clip(val uri: android.net.Uri) : Payload()
 
     val kind: Kind get() = when (this) {
         is Pic -> Kind.IMAGE
         is Words -> Kind.TEXT
+        is Clip -> Kind.VIDEO
         is Doc -> if (ext in listOf("jpg", "jpeg", "png")) Kind.PHOTO_FILE else Kind.FILE
     }
 }
@@ -102,6 +105,16 @@ object ChainRunner {
                 }
                 b == Block.CHAT_LINK && input is Payload.Words ->
                     TextTidy.chatLink(input.text, step.settings["cc"] ?: TextTidy.callingCode(java.util.Locale.getDefault().country))?.let { Outcome.Done(Payload.Words(it)) } ?: none()
+                b == Block.VIDEO_SHRINK && input is Payload.Clip ->
+                    // Re-encoded to fit the limit. The new file carries no location or camera details from the original.
+                    VideoSteps.shrink(com.handytools.app.HandyApp.instance, input.uri, TextTidy.videoLimit(step.settings["mb"]))?.let { Outcome.Done(Payload.Clip(android.net.Uri.fromFile(it))) } ?: fail()
+                b == Block.VIDEO_MUTE && input is Payload.Clip ->
+                    VideoSteps.mute(com.handytools.app.HandyApp.instance, input.uri)?.let { Outcome.Done(Payload.Clip(android.net.Uri.fromFile(it))) } ?: fail()
+                b == Block.VIDEO_STILL && input is Payload.Clip ->
+                    MediaEngine.videoFrame(com.handytools.app.HandyApp.instance, input.uri)?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
+                b == Block.VIDEO_AUDIO && input is Payload.Clip ->
+                    VideoSteps.audio(com.handytools.app.HandyApp.instance, input.uri)?.let { Outcome.Done(Payload.Doc(it, "m4a")) }
+                        ?: Outcome.Stopped("Keep only the sound didn't find any sound in that video.")
                 b == Block.PRICE_COMPARE && input is Payload.Words ->
                     PriceDeal.bestDeal(input.text)?.let { Outcome.Done(Payload.Words(it)) } ?: none()
                 b == Block.DESCRIBE && input is Payload.Pic -> {

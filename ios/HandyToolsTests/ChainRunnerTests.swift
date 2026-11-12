@@ -873,3 +873,15 @@ final class VideoTests: XCTestCase {
         XCTAssertEqual(blocks("shrink a photo under 1 mb"), [.shrinkImage])
     }
 }
+
+final class ShareEndingTests: XCTestCase {
+    func testOnlyEmailAndMessageEndingsAreOfferedInTheShareSheet() {
+        var c = Chain(id: "a", name: "A", steps: [ChainStep(block: .stripLocation)])
+        XCTAssertNil(ShareEnding.of(c)); XCTAssertNil(ShareEnding.of(nil))
+        c.finish = ChainFinish(kind: .mail, to: "me@example.com")
+        XCTAssertEqual(ShareEnding.of(c)?.label, "Email it to me@example.com")
+        c.finish = ChainFinish(kind: .message, to: ""); XCTAssertEqual(ShareEnding.of(c)?.kind, .message)
+        c.finish = ChainFinish(kind: .share, to: ""); XCTAssertNil(ShareEnding.of(c))
+        c.finish = ChainFinish(kind: .open, to: ""); XCTAssertNil(ShareEnding.of(c))
+    }
+}

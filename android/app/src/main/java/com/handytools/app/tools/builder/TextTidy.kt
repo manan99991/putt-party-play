@@ -218,6 +218,19 @@ object TextTidy {
         (listOfNotNull(barcode?.takeIf { it.isNotBlank() }?.let { "Barcode $it" }) +
             labels.map { (name, sure) -> "$name (${Math.round(sure * 100)}% sure)" }).joinToString("\n")
 
+    // MARK: video size limits (same values as iOS ChainText)
+
+    /** Size limits a video tool can pick, in megabytes: chat apps, email, and upload forms. */
+    val VIDEO_LIMITS = listOf(10, 16, 25, 50, 100)
+    fun videoLimit(setting: String?): Int = (setting?.toDoubleOrNull()?.toInt() ?: 25).coerceIn(1, 2000)
+
+    /** The video bitrate that lands a clip of this length under the limit, leaving room for sound and the file's own overhead. */
+    fun videoBitrate(targetBytes: Long, durationMs: Long): Int =
+        if (durationMs <= 0L) 2_000_000 else ((targetBytes.toDouble() * 8.0 * 0.88) / (durationMs / 1000.0) - 128_000.0).toInt().coerceIn(200_000, 12_000_000)
+
+    /** The tallest picture that still looks good at that bitrate. The caller never goes above the video's own height. */
+    fun videoHeight(bitrate: Int): Int = when { bitrate < 900_000 -> 360; bitrate < 1_800_000 -> 480; bitrate < 4_000_000 -> 720; else -> 1080 }
+
     // MARK: return windows (same rules as iOS ChainText)
 
     val RETURN_WINDOWS = listOf(14, 30, 60, 90)

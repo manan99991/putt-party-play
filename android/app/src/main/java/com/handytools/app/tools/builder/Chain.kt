@@ -10,7 +10,7 @@ import java.util.UUID
  * anything that isn't already in the app. The JSON matches iOS, so tools copy between the two.
  */
 enum class Kind(val label: String) {
-    IMAGE("a photo"), TEXT("text"), FILE("a file"), PHOTO_FILE("a photo");
+    IMAGE("a photo"), TEXT("text"), FILE("a file"), PHOTO_FILE("a photo"), VIDEO("a video");
 
     fun feeds(need: Kind) = this == need || (need == IMAGE && this == PHOTO_FILE)
 }
@@ -47,6 +47,10 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     CUTOUT("cutout", "Cut out subject", Kind.IMAGE, Kind.IMAGE, "Lifts the main subject off its background."),
     RETURN_BY("returnBy", "Return-by reminder", Kind.TEXT, Kind.FILE, "Puts the last day to return it in your calendar, counted from the receipt's date."),
     WIFI_QR("wifiQr", "Wi-Fi join code", Kind.TEXT, Kind.IMAGE, "Finds the network name and password and makes a code guests scan to join. No typing."),
+    VIDEO_SHRINK("videoShrink", "Shrink video to size", Kind.VIDEO, Kind.VIDEO, "Makes a video fit under a size you pick, and leaves its location behind."),
+    VIDEO_STILL("videoStill", "Grab a still", Kind.VIDEO, Kind.IMAGE, "Takes one picture out of the video."),
+    VIDEO_MUTE("videoMute", "Remove the sound", Kind.VIDEO, Kind.VIDEO, "The same video with no sound."),
+    VIDEO_AUDIO("videoAudio", "Keep only the sound", Kind.VIDEO, Kind.FILE, "Just the sound, as an audio file."),
     STAMP("stamp", "Sign and stamp", Kind.IMAGE, Kind.IMAGE, "Puts your saved signature, your name and today's date where you placed them.");
 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
@@ -54,12 +58,12 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
 
 /** What the person is trying to get done. The builder groups steps under these goals. Same wording as iOS. */
 val Block.goal: String get() = when (this) {
-    Block.SHRINK, Block.CONVERT, Block.RESIZE_PHOTO -> "Make it easy to send"
-    Block.STRIP_LOCATION, Block.HIDE_SENSITIVE, Block.WATERMARK -> "Keep it private"
+    Block.SHRINK, Block.CONVERT, Block.RESIZE_PHOTO, Block.VIDEO_SHRINK -> "Make it easy to send"
+    Block.STRIP_LOCATION, Block.HIDE_SENSITIVE, Block.WATERMARK, Block.VIDEO_MUTE -> "Keep it private"
     Block.READ_TEXT, Block.IDENTIFY, Block.DESCRIBE -> "Read what's in it"
     Block.CUTOUT, Block.ENHANCE -> "Make it look better"
     Block.PHOTO_PDF, Block.STAMP -> "Paperwork"
-    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR, Block.WIFI_QR, Block.PASSPORT_PHOTO -> "Turn it into something"
+    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR, Block.WIFI_QR, Block.PASSPORT_PHOTO, Block.VIDEO_STILL, Block.VIDEO_AUDIO -> "Turn it into something"
     Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
     Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
     Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST, Block.RETURN_BY, Block.PRICE_COMPARE -> "Money"
@@ -332,6 +336,10 @@ object ChainTemplates {
         Chain("receipt-run", "Receipt into this month's expense sheet", listOf(Step(Block.READ_TEXT), Step(Block.EXPENSE_ROW), Step(Block.ADD_TO_LIST, mapOf("list" to TextTidy.DEFAULT_LIST)))),
         Chain("whatsapp-no-save", "WhatsApp a number without saving it", listOf(Step(Block.CHAT_LINK)), finish = Finish("open")),
         Chain("contact-qr", "My contact as a QR code", listOf(Step(Block.CONTACT_QR))),
+        Chain("video-email", "Video under 25 MB for email", listOf(Step(Block.VIDEO_SHRINK, mapOf("mb" to "25"))), finish = Finish("mail", "")),
+        Chain("video-chat", "Video small enough for chat (16 MB)", listOf(Step(Block.VIDEO_SHRINK, mapOf("mb" to "16")))),
+        Chain("video-still", "Grab a still from a video", listOf(Step(Block.VIDEO_STILL))),
+        Chain("video-quiet", "Video without its sound", listOf(Step(Block.VIDEO_MUTE))),
         Chain("return-by", "Receipt to a return-by reminder", listOf(Step(Block.READ_TEXT), Step(Block.RETURN_BY, mapOf("days" to "30")))),
         Chain("wifi-sign", "Wi-Fi sign to a code guests scan", listOf(Step(Block.READ_TEXT), Step(Block.WIFI_QR))),
         Chain("what-is-this", "What is this?", listOf(Step(Block.IDENTIFY))),
@@ -350,6 +358,23 @@ object ChainPlanner {
     fun plan(ask: String): Chain? {
         val s = " " + ask.lowercase() + " "
         fun has(vararg w: String) = w.any { s.contains(it) }
+        // Video jobs come first: a video takes its own steps, never the photo ones.
+        if (has("video", " clip", "movie", "footage")) {
+            val v = ArrayList<Step>()
+            when {
+                has("still", "frame", "thumbnail") -> v.add(Step(Block.VIDEO_STILL))
+                has("audio only", "just the audio", "only the sound", "just the sound", "extract audio", "extract the audio", "as audio", "mp3") -> v.add(Step(Block.VIDEO_AUDIO))
+                else -> {
+                    if (has("mute", "no sound", "without sound", "without its sound", "remove the sound", "remove sound", "silent")) v.add(Step(Block.VIDEO_MUTE))
+                    if (v.isEmpty() || has("shrink", "smaller", "compress", "reduce", "under ", " mb", "email", "whatsapp", "send", "size")) {
+                        val mb = Regex("""(\d+)\s*(?:mb|megabyte)""").find(s)?.groupValues?.get(1)?.toIntOrNull()?.takeIf { it > 0 } ?: if (has("whatsapp", "chat")) 16 else 25
+                        v.add(Step(Block.VIDEO_SHRINK, mapOf("mb" to mb.toString())))
+                    }
+                }
+            }
+            val t = ask.trim().replace("\n", " ").replaceFirstChar { it.uppercase() }
+            return Chain(UUID.randomUUID().toString(), if (t.length > 34) t.take(32) + "…" else t, v)
+        }
         val wantsPhoto = has("photo", "picture", "image", "scan", "screenshot", "snap", "camera", "receipt", "card", "poster", "flyer", "whiteboard")
 
         // "Tidy up this photo" is about the picture, so tidying only means text when text is what is being talked about.

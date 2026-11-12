@@ -172,6 +172,15 @@ extension ChainFinish {
     }
 }
 
+/// The tool's own ending, when it is one the share sheet can do: an email or a message already filled in.
+/// (Opening a link is not possible from inside another app's share sheet.)
+enum ShareEnding {
+    static func of(_ chain: Chain?) -> ChainFinish? {
+        guard let f = chain?.finish, f.kind == .mail || f.kind == .message else { return nil }
+        return f
+    }
+}
+
 /// When a tool should come back to you: a time of day, and the days it applies. A phone won't let an app start a tool
 /// by itself in the background, so this is a reminder: tap it and the tool opens ready to run.
 /// Optional on a chain, so tools saved before this existed still load.

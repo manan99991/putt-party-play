@@ -20,6 +20,8 @@ final class ShareModel: ObservableObject {
     @Published var tools: [Chain] = []
     @Published var results: [ShareResult] = []
     @Published var copied = false
+    /// The tool that was run, so its own ending (email it, message it) can be offered on the result screen.
+    @Published private(set) var ran: Chain?
 
     /// Shared photos are copied to a private folder and opened one at a time, so a batch never sits in memory together.
     private(set) var photos: [URL] = []
@@ -69,6 +71,7 @@ final class ShareModel: ObservableObject {
     /// Runs the tool on everything that was shared. One item failing never stops the others; it gets its own note.
     func run(_ chain: Chain) {
         ChainStore.lastShared = chain.id
+        ran = chain
         results = []
         Task {
             var out: [ShareResult] = []
@@ -89,7 +92,7 @@ final class ShareModel: ObservableObject {
 
     private func one(_ chain: Chain, input: ChainPayload, n: Int) async -> ShareResult {
         switch await ChainRunner.run(chain, input: input) {
-        case .success(let p): return ShareModel.write(p, n: n, dir: dir)
+        case .success(let p): return ShareModel.write(p, n: n, dir: dir, named: chain.fileName, tool: chain.name, many: photos.count > 1)
         case .failure(let f): return ShareResult(n: n, note: ShareModel.words(f))
         }
     }
@@ -101,6 +104,9 @@ final class ShareModel: ObservableObject {
     func shareResults() {
         if !files.isEmpty { shareOn(files) } else if !texts.isEmpty { shareOn([texts.joined(separator: "\n\n")]) }
     }
+    var ending: ChainFinish? { (files.isEmpty && texts.isEmpty) ? nil : ShareEnding.of(ran) }
+    var outbox: Outbox { Outbox(text: texts.isEmpty ? nil : texts.joined(separator: "\n\n"), files: files) }
+
     func copyText() {
         UIPasteboard.general.string = texts.joined(separator: "\n\n")
         copied = true
@@ -108,9 +114,11 @@ final class ShareModel: ObservableObject {
 
     // MARK: helpers (static so they are easy to reason about)
 
-    static func write(_ p: ChainPayload, n: Int, dir: URL) -> ShareResult {
+    /// - Parameters named/tool/many: the tool's own file name, when it has one, wins over the plain "Tenzy-1".
+    static func write(_ p: ChainPayload, n: Int, dir: URL, named: String? = nil, tool: String = "", many: Bool = true) -> ShareResult {
         func file(_ d: Data, _ ext: String) -> ShareResult {
-            let u = dir.appendingPathComponent("Tenzy-\(n).\(ext)")
+            let name = (named ?? "").trimmingCharacters(in: .whitespaces).isEmpty ? "Tenzy-\(n).\(ext)" : ChainName.file(pattern: named, tool: tool, index: many ? n : nil, ext: ext)
+            let u = dir.appendingPathComponent(name)
             return (try? d.write(to: u)) != nil ? ShareResult(n: n, url: u) : ShareResult(n: n, note: "Couldn't save this result.")
         }
         switch p {
@@ -165,6 +173,7 @@ final class ShareModel: ObservableObject {
 
 struct ShareRunView: View {
     @ObservedObject var model: ShareModel
+    @State private var sending = false
 
     var body: some View {
         NavigationStack {
@@ -238,6 +247,11 @@ struct ShareRunView: View {
                 }
             }
             Section {
+                // The tool's own ending first: the email or message opens filled in, and the person taps Send.
+                if let f = model.ending, SendSheet.canSend(f.kind) {
+                    Button { sending = true } label: { Label(f.label, systemImage: f.kind == .mail ? "envelope" : "message") }
+                        .accessibilityIdentifier("share-finish")
+                }
                 if !model.files.isEmpty || !model.texts.isEmpty {
                     Button { model.shareResults() } label: { Label(model.files.count > 1 ? "Share all \(model.files.count)" : "Share", systemImage: "square.and.arrow.up") }
                         .accessibilityIdentifier("share-on")
@@ -247,6 +261,9 @@ struct ShareRunView: View {
                 }
                 Button("Done") { model.finish() }
             }
+        }
+        .sheet(isPresented: $sending) {
+            if let f = model.ending { SendSheet(finish: f, subject: model.ran?.name ?? "Tenzy", box: model.outbox).ignoresSafeArea() }
         }
     }
 }
