@@ -86,7 +86,7 @@ final class ChainRowTests: XCTestCase {
 
 final class ChainTemplateTests: XCTestCase {
     func testTwentyEightTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 28)
+        XCTAssertEqual(ChainTemplates.all.count, 29)
         XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, 28)
     }
     func testShareRoundTripAndRejectsJunk() throws {
@@ -768,5 +768,34 @@ final class IntroTests: XCTestCase {
     func testTheDemoStarterExistsAndTheIntroIsThreeIdeas() {
         XCTAssertNotNull(ChainTemplates.all.first { $0.id == BuilderIntro.demoID })
         XCTAssertEqual(BuilderIntro.pages.count, 3)
+    }
+}
+
+final class WifiTests: XCTestCase {
+    func testFindsTheNetworkAndPasswordHoweverTheSignWritesThem() {
+        var w = ChainText.wifi(in: "Welcome!\nNetwork: CafeGuest\nPassword: latte1234\nEnjoy")
+        XCTAssertEqual(w?.name, "CafeGuest"); XCTAssertEqual(w?.password, "latte1234")
+        w = ChainText.wifi(in: "WiFi = Home 5G / PW: p@ss:word;1")
+        XCTAssertEqual(w?.name, "Home 5G"); XCTAssertEqual(w?.password, "p@ss:word;1")
+        w = ChainText.wifi(in: "SSID: Lobby")
+        XCTAssertEqual(w?.name, "Lobby"); XCTAssertEqual(w?.password, "")
+        w = ChainText.wifi(in: "MyNet\nsecret99")
+        XCTAssertEqual(w?.name, "MyNet"); XCTAssertEqual(w?.password, "secret99")
+        XCTAssertNil(ChainText.wifi(in: "Password: only"))
+        XCTAssertNil(ChainText.wifi(in: "Network problems today, sorry"))
+        XCTAssertNil(ChainText.wifi(in: ""))
+    }
+    func testTheCodeEscapesAwkwardCharactersAndMarksOpenNetworks() {
+        XCTAssertEqual(ChainText.wifiCode("Network: CafeGuest\nPassword: latte1234"), "WIFI:T:WPA;S:CafeGuest;P:latte1234;;")
+        XCTAssertEqual(ChainText.wifiCode("WiFi = Home 5G / PW: p@ss:word;1"), "WIFI:T:WPA;S:Home 5G;P:p@ss\\:word\\;1;;")
+        XCTAssertEqual(ChainText.wifiCode("SSID: Lobby"), "WIFI:T:nopass;S:Lobby;;")
+    }
+    func testTheStepMakesACodeAndTheStarterIsWired() async throws {
+        let r = await ChainRunner.apply(ChainStep(block: .wifiQr), to: .text("Network: CafeGuest\nPassword: latte1234"))
+        guard case .success(.image(let img)) = r else { return XCTFail("no code") }
+        XCTAssertGreaterThan(img.size.width, 100)
+        let none = await ChainRunner.apply(ChainStep(block: .wifiQr), to: .text("nothing useful here at all"))
+        XCTAssertEqual(none.failureValue, .nothingFound(.wifiQr))
+        XCTAssertNil(try XCTUnwrap(ChainTemplates.all.first { $0.id == "wifi-sign" }).problem(starting: .image))
     }
 }

@@ -160,3 +160,10 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - A three-idea card at the top of Build your own until "Got it" (start with what you have, stack steps, choose how it ends), with "Show me one" opening the Privacy share shield starter in the builder so its previews run on the sample. "How does this work?" brings it back. Hidden from automated iOS runs.
 - Starters can be narrowed to "A photo or scan" or "Text". Same wording both sides (`BuilderIntro`).
 - UNBUILT in CI (builds paused for cost).
+
+### Wi-Fi join code, and two more steps on Android
+- `wifiQr` (both): finds the network name and password in text (labels followed by ":" or "="; or exactly two single words) and makes a Wi-Fi QR code a guest's camera joins from. Open networks are marked open; awkward characters are escaped. Starter "Wi-Fi sign to a code guests scan" (Read text, then Wi-Fi join code). Describe it: "wifi".
+- Android gained `identify` (top three guesses with how sure, barcode first) and `cutout` (Google's on-device cut-out; if its one-time model isn't on the phone the step says how to get it). Starters "What is this?" and "Cut out a subject" added on Android.
+- Android still lacks: enhance, passportPhoto, priceCompare, describe. Tools using those can't be pasted into Android.
+- iOS: the start picker has a line sending video to Fit It, since video is not a builder step.
+- UNBUILT in CI (builds paused for cost).

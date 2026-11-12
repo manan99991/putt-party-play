@@ -213,6 +213,57 @@ object TextTidy {
         "IT" to "39", "NL" to "31", "BR" to "55", "MX" to "52", "AE" to "971", "SA" to "966", "SG" to "65", "PK" to "92", "BD" to "880", "ID" to "62", "PH" to "63",
         "NG" to "234", "ZA" to "27", "KE" to "254", "JP" to "81", "KR" to "82", "TR" to "90", "EG" to "20")[(region ?: "").uppercase()] ?: "1"
 
+    /** What "Identify it" says: the barcode first if there is one, then each guess with how sure it is. Same wording as iOS. */
+    fun identifyLines(barcode: String?, labels: List<Pair<String, Float>>): String =
+        (listOfNotNull(barcode?.takeIf { it.isNotBlank() }?.let { "Barcode $it" }) +
+            labels.map { (name, sure) -> "$name (${Math.round(sure * 100)}% sure)" }).joinToString("\n")
+
+    // MARK: Wi-Fi details in text (same rules as iOS ChainText.wifi)
+
+    private val WIFI_NAME_KEYS = listOf("network name", "wifi name", "wi-fi name", "ssid", "network", "wi-fi", "wifi")
+    private val WIFI_PASS_KEYS = listOf("password", "passphrase", "passcode", "pass", "pwd", "pw", "key")
+
+    private fun labelled(line: String, keys: List<String>): String? {
+        val lower = line.lowercase()
+        for (k in keys) {
+            if (!lower.startsWith(k)) continue
+            val rest = line.drop(k.length).trimStart(' ')
+            if (rest.isEmpty() || (rest[0] != ':' && rest[0] != '=')) continue
+            return rest.drop(1).trim()
+        }
+        return null
+    }
+
+    /**
+     * The network name and password written in some text, or null when no name is there. Labels must be followed by
+     * ":" or "=". With no labels at all, exactly two lines are read as name then password.
+     */
+    fun wifi(text: String): Pair<String, String>? {
+        val parts = ArrayList<String>()
+        for (line in text.split(NEWLINE)) {
+            var pieces = listOf(line)
+            for (sep in listOf(" / ", " | ", ",", "  ")) pieces = pieces.flatMap { it.split(sep) }
+            parts.addAll(pieces.map { it.trim() }.filter { it.isNotEmpty() })
+        }
+        var name: String? = null; var pass: String? = null
+        for (p in parts) {
+            val n = labelled(p, WIFI_NAME_KEYS)
+            if (n != null) { if (name == null && n.isNotEmpty()) name = n; continue }
+            val w = labelled(p, WIFI_PASS_KEYS)
+            if (w != null && pass == null) pass = w
+        }
+        // No labels at all: two single words are a name and a password. Anything wordier is just a sentence.
+        if (name == null && pass == null && parts.size == 2 && ' ' !in parts[0] && ' ' !in parts[1]) return parts[0] to parts[1]
+        return name?.let { it to (pass ?: "") }
+    }
+
+    /** The text a Wi-Fi QR code holds. A network with no password is marked open. */
+    fun wifiCode(text: String): String? {
+        val w = wifi(text) ?: return null
+        fun esc(s: String) = buildString { s.forEach { if (it in "\\;,:\"") append('\\'); append(it) } }
+        return if (w.second.isEmpty()) "WIFI:T:nopass;S:${esc(w.first)};;" else "WIFI:T:WPA;S:${esc(w.first)};P:${esc(w.second)};;"
+    }
+
     /** Equal slots down a sheet, one per picture, separated by the margin: left, top, right, bottom. */
     fun slots(count: Int, width: Float, height: Float, margin: Float): List<FloatArray> {
         if (count <= 0) return emptyList()

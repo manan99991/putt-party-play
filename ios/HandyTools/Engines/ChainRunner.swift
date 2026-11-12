@@ -37,6 +37,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
     case stamp
     case expenseRow, addToList
     case chatLink, contactQr
+    case wifiQr
 
     var id: String { rawValue }
     var title: String {
@@ -71,12 +72,13 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .addToList: return "Add to a running list"
         case .chatLink: return "WhatsApp link for a number"
         case .contactQr: return "Contact as a QR code"
+        case .wifiQr: return "Wi-Fi join code"
         }
     }
     var takes: ChainKind {
         switch self {
         case .readText, .shrinkImage, .stripLocation, .cutout, .enhance, .convertImage, .hideSensitive, .passportPhoto, .describe, .identify, .photoPdf, .watermark, .resizePhoto, .stamp: return .image
-        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr: return .text
+        case .pullReceipt, .summarize, .businessCard, .calendarEvent, .actionItems, .cleanText, .pullDetails, .makeTable, .scamCheck, .cleanLinks, .priceCompare, .makeQr, .expenseRow, .addToList, .chatLink, .contactQr, .wifiQr: return .text
         }
     }
     /// Kind produced, given the settings (convert/shrink/strip give a file, the rest as listed).
@@ -85,7 +87,7 @@ enum Block: String, Codable, CaseIterable, Identifiable {
         case .readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .scamCheck, .cleanLinks, .priceCompare, .describe, .identify, .expenseRow, .chatLink: return .text
         case .shrinkImage, .stripLocation, .convertImage, .hideSensitive, .passportPhoto: return .photoFile
         case .businessCard, .calendarEvent, .makeTable, .photoPdf, .addToList: return .file
-        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr: return .image
+        case .cutout, .enhance, .makeQr, .watermark, .resizePhoto, .stamp, .contactQr, .wifiQr: return .image
         }
     }
 }
@@ -100,7 +102,7 @@ extension Block {
         case .enhance, .cutout: return "Make it look better"
         case .readText, .describe, .identify: return "Read what's in it"
         case .stamp, .photoPdf: return "Paperwork"
-        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr, .chatLink, .contactQr: return "Turn it into something"
+        case .passportPhoto, .makeTable, .businessCard, .calendarEvent, .makeQr, .chatLink, .contactQr, .wifiQr: return "Turn it into something"
         case .summarize, .actionItems, .scamCheck: return "Understand it"
         case .cleanText, .cleanLinks, .pullDetails: return "Clean it up"
         case .pullReceipt, .priceCompare, .expenseRow, .addToList: return "Money"
@@ -367,6 +369,12 @@ enum ChainRunner {
             guard let link = ChainText.chatLink(t, countryCode: step.settings["cc"] ?? ChainText.callingCode(region: Locale.current.region?.identifier)) else { return .failure(.nothingFound(b)) }
             return .success(.text(link))
 
+        case (.wifiQr, .text(let t)):
+            // The network name and password from a router label or a cafe sign, as a code a guest's camera joins from.
+            guard let code = ChainText.wifiCode(t) else { return .failure(.nothingFound(b)) }
+            guard let img = ChainText.qr(code) else { return .failure(.failed(b)) }
+            return .success(.image(img))
+
         case (.contactQr, .text(let t)):
             // Only what is in the text goes into the code, so you choose what the other person gets.
             let c = DataGrab.card(t)
@@ -485,6 +493,7 @@ enum ChainTemplates {
         Chain(id: "receipt-run", name: "Receipt into this month's expense sheet", steps: [ChainStep(block: .readText), ChainStep(block: .expenseRow), ChainStep(block: .addToList, settings: ["list": RunningList.defaultName])]),
         Chain(id: "whatsapp-no-save", name: "WhatsApp a number without saving it", steps: [ChainStep(block: .chatLink)], finish: ChainFinish(kind: .open, to: "")),
         Chain(id: "contact-qr", name: "My contact as a QR code", steps: [ChainStep(block: .contactQr)]),
+        Chain(id: "wifi-sign", name: "Wi-Fi sign to a code guests scan", steps: [ChainStep(block: .readText), ChainStep(block: .wifiQr)]),
         Chain(id: "id-both-sides", name: "Both sides of an ID on one page", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"])], combine: true, onePage: true),
         Chain(id: "share-shield", name: "Privacy share shield", steps: [ChainStep(block: .hideSensitive), ChainStep(block: .stripLocation), ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),
         Chain(id: "id-copy-watermarked", name: "ID copy with a safety watermark", steps: [ChainStep(block: .watermark, settings: ["text": "For verification only"]), ChainStep(block: .stripLocation)]),
@@ -599,6 +608,47 @@ enum ChainText {
         var out = ["Best deal: \(best.entry.name), \(PriceBrain.perUnitString(best))"]
         out += ranked.dropFirst().map { "\($0.entry.name), \(PriceBrain.perUnitString($0))" }
         return out.joined(separator: "\n")
+    }
+
+    // MARK: Wi-Fi details in text
+
+    /// The network name and password written in some text ("Network: CafeGuest", "Password: latte1234"), or nil when
+    /// no name is there. Labels must be followed by ":" or "=". With no labels at all, exactly two single
+    /// words are read as name then password. Pure, and the same rules as Android.
+    static func wifi(in text: String) -> (name: String, password: String)? {
+        let nameKeys = ["network name", "wifi name", "wi-fi name", "ssid", "network", "wi-fi", "wifi"]
+        let passKeys = ["password", "passphrase", "passcode", "pass", "pwd", "pw", "key"]
+        func labelled(_ line: String, _ keys: [String]) -> String? {
+            let lower = line.lowercased()
+            for k in keys where lower.hasPrefix(k) {
+                let rest = line.dropFirst(k.count).drop(while: { $0 == " " })
+                guard let sep = rest.first, sep == ":" || sep == "=" else { continue }
+                return rest.dropFirst().trimmingCharacters(in: .whitespaces)
+            }
+            return nil
+        }
+        var parts: [String] = []
+        for line in text.components(separatedBy: .newlines) {
+            var pieces = [line]
+            for sep in [" / ", " | ", ",", "  "] { pieces = pieces.flatMap { $0.components(separatedBy: sep) } }
+            parts += pieces.map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+        }
+        var name: String?, pass: String?
+        for p in parts {
+            if let v = labelled(p, nameKeys) { if name == nil, !v.isEmpty { name = v } }
+            else if let v = labelled(p, passKeys), pass == nil { pass = v }
+        }
+        // No labels at all: two single words are a name and a password. Anything wordier is just a sentence.
+        if name == nil, pass == nil, parts.count == 2, !parts[0].contains(" "), !parts[1].contains(" ") { return (parts[0], parts[1]) }
+        guard let n = name else { return nil }
+        return (n, pass ?? "")
+    }
+
+    /// The text a Wi-Fi QR code holds. A network with no password is marked open.
+    static func wifiCode(_ text: String) -> String? {
+        guard let w = wifi(in: text) else { return nil }
+        func esc(_ s: String) -> String { String(s.flatMap { "\\;,:\"".contains($0) ? ["\\", $0] : [$0] }) }
+        return w.password.isEmpty ? "WIFI:T:nopass;S:\(esc(w.name));;" : "WIFI:T:WPA;S:\(esc(w.name));P:\(esc(w.password));;"
     }
 
     static func qr(_ message: String) -> UIImage? {

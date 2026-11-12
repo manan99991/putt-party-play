@@ -102,6 +102,32 @@ object ChainRunner {
                 }
                 b == Block.CHAT_LINK && input is Payload.Words ->
                     TextTidy.chatLink(input.text, step.settings["cc"] ?: TextTidy.callingCode(java.util.Locale.getDefault().country))?.let { Outcome.Done(Payload.Words(it)) } ?: none()
+                b == Block.IDENTIFY && input is Payload.Pic -> {
+                    val image = InputImage.fromBitmap(input.bmp, 0)
+                    val barcode = try { com.google.mlkit.vision.barcode.BarcodeScanning.getClient().process(image).await().firstOrNull()?.rawValue } catch (_: Throwable) { null }
+                    val labels = try {
+                        com.google.mlkit.vision.label.ImageLabeling.getClient(com.google.mlkit.vision.label.defaults.ImageLabelerOptions.DEFAULT_OPTIONS)
+                            .process(image).await().sortedByDescending { it.confidence }.take(3).map { it.text to it.confidence }
+                    } catch (_: Throwable) { emptyList() }
+                    val lines = TextTidy.identifyLines(barcode, labels)
+                    if (lines.isEmpty()) none() else Outcome.Done(Payload.Words(lines))
+                }
+                b == Block.CUTOUT && input is Payload.Pic -> {
+                    // Google's on-device cut-out. Its model is a one-time download; without it the step says so plainly.
+                    val seg = com.google.mlkit.vision.segmentation.subject.SubjectSegmentation.getClient(
+                        com.google.mlkit.vision.segmentation.subject.SubjectSegmenterOptions.Builder().enableForegroundBitmap().build())
+                    try {
+                        val fg = seg.process(InputImage.fromBitmap(input.bmp, 0)).await().foregroundBitmap
+                        if (fg == null) none() else Outcome.Done(Payload.Pic(fg))
+                    } catch (_: Throwable) {
+                        Outcome.Stopped("Cut out subject needs a one-time download that isn't on this phone yet. Open Media Studio, remove a background once while online, then run this again.")
+                    } finally { runCatching { seg.close() } }
+                }
+                b == Block.WIFI_QR && input is Payload.Words -> {
+                    // The network name and password from a router label or a cafe sign, as a code a guest's camera joins from.
+                    val code = TextTidy.wifiCode(input.text)
+                    if (code == null) none() else com.handytools.app.tools.power.CodesEngine.qr(code)?.let { Outcome.Done(Payload.Pic(it)) } ?: fail()
+                }
                 b == Block.CONTACT_QR && input is Payload.Words -> {
                     // Only what is in the text goes into the code, so you choose what the other person gets.
                     val c = CaptureClassifier.classify(input.text)

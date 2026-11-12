@@ -305,4 +305,21 @@ class BuilderLogicTest {
         assertNotNull(ChainTemplates.all.firstOrNull { it.id == BuilderIntro.DEMO_ID })
         assertEquals(3, BuilderIntro.PAGES.size)
     }
+    @Test fun wifiDetailsAndCode() {
+        assertEquals("CafeGuest" to "latte1234", TextTidy.wifi("Welcome!\nNetwork: CafeGuest\nPassword: latte1234\nEnjoy"))
+        assertEquals("Home 5G" to "p@ss:word;1", TextTidy.wifi("WiFi = Home 5G / PW: p@ss:word;1"))
+        assertEquals("Lobby" to "", TextTidy.wifi("SSID: Lobby"))
+        assertEquals("MyNet" to "secret99", TextTidy.wifi("MyNet\nsecret99"))
+        assertNull(TextTidy.wifi("Password: only")); assertNull(TextTidy.wifi("Network problems today, sorry")); assertNull(TextTidy.wifi(""))
+        assertEquals("WIFI:T:WPA;S:CafeGuest;P:latte1234;;", TextTidy.wifiCode("Network: CafeGuest\nPassword: latte1234"))
+        assertEquals("WIFI:T:WPA;S:Home 5G;P:p@ss\\:word\\;1;;", TextTidy.wifiCode("WiFi = Home 5G / PW: p@ss:word;1"))
+        assertEquals("WIFI:T:nopass;S:Lobby;;", TextTidy.wifiCode("SSID: Lobby"))
+        assertNull(ChainTemplates.all.first { it.id == "wifi-sign" }.problem(Kind.IMAGE))
+    }
+    @Test fun identifyWording() {
+        assertEquals("Barcode 0123456789012\nMug (87% sure)\nCup (61% sure)", TextTidy.identifyLines("0123456789012", listOf("Mug" to 0.87f, "Cup" to 0.612f)))
+        assertEquals("Plant (50% sure)", TextTidy.identifyLines(" ", listOf("Plant" to 0.5f)))
+        assertEquals("", TextTidy.identifyLines(null, emptyList()))
+        assertEquals("Read what's in it", Block.IDENTIFY.goal); assertEquals("Make it look better", Block.CUTOUT.goal)
+    }
 }

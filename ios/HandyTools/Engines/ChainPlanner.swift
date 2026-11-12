@@ -46,6 +46,7 @@ enum ChainPlanner {
             has(["scam", "phishing", "fraud", "is this real", "suspicious"]) ? .scamCheck :
             has(["best deal", "cheapest", "cheaper", "unit price", "per unit", "better value"]) ? .priceCompare :
             has(["tracking", "clean link", "clean the link", "clean my link", "utm"]) ? .cleanLinks :
+            has(["wifi", "wi-fi"]) ? .wifiQr :
             has(["qr"]) ? .makeQr :
             has(["receipt", "expense", "invoice"]) ? .pullReceipt :
             has(["business card", "contact", "vcard"]) ? .businessCard :

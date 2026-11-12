@@ -300,6 +300,12 @@ private struct ChainEditor: View {
                 startButton(.text, "Text", "text.alignleft")
             }
             Text("A photo tool also takes scans and PDF pages. A text tool also takes what you say, a contact, or the words in a PDF.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            // Video isn't a builder step yet. Send people to the tool that already shrinks one under a limit.
+            Button {
+                dismiss()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { NotificationCenter.default.post(name: .openTool, object: "fitit") }
+            } label: { Label("Have a video? Fit It shrinks one under a size limit", systemImage: "film").font(HandyFont.caption) }
+                .frame(minHeight: 44).accessibilityIdentifier("start-video")
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
     private func startButton(_ kind: ChainKind, _ title: String, _ icon: String) -> some View {

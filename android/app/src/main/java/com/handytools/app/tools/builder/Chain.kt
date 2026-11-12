@@ -39,6 +39,9 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     ADD_TO_LIST("addToList", "Add to a running list", Kind.TEXT, Kind.FILE, "Adds the rows to the same sheet every time, one sheet a month."),
     CHAT_LINK("chatLink", "WhatsApp link for a number", Kind.TEXT, Kind.TEXT, "Opens a WhatsApp chat with a number without saving it as a contact."),
     CONTACT_QR("contactQr", "Contact as a QR code", Kind.TEXT, Kind.IMAGE, "A code another phone scans to save the contact. Only what you typed is included."),
+    IDENTIFY("identify", "Identify it", Kind.IMAGE, Kind.TEXT, "Names the object or reads the barcode."),
+    CUTOUT("cutout", "Cut out subject", Kind.IMAGE, Kind.IMAGE, "Lifts the main subject off its background."),
+    WIFI_QR("wifiQr", "Wi-Fi join code", Kind.TEXT, Kind.IMAGE, "Finds the network name and password and makes a code guests scan to join. No typing."),
     STAMP("stamp", "Sign and stamp", Kind.IMAGE, Kind.IMAGE, "Puts your saved signature, your name and today's date where you placed them.");
 
     companion object { fun byId(id: String) = values().firstOrNull { it.id == id } }
@@ -48,9 +51,10 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
 val Block.goal: String get() = when (this) {
     Block.SHRINK, Block.CONVERT, Block.RESIZE_PHOTO -> "Make it easy to send"
     Block.STRIP_LOCATION, Block.HIDE_SENSITIVE, Block.WATERMARK -> "Keep it private"
-    Block.READ_TEXT -> "Read what's in it"
+    Block.READ_TEXT, Block.IDENTIFY -> "Read what's in it"
+    Block.CUTOUT -> "Make it look better"
     Block.PHOTO_PDF, Block.STAMP -> "Paperwork"
-    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR -> "Turn it into something"
+    Block.MAKE_TABLE, Block.BUSINESS_CARD, Block.CALENDAR_EVENT, Block.MAKE_QR, Block.CHAT_LINK, Block.CONTACT_QR, Block.WIFI_QR -> "Turn it into something"
     Block.SUMMARIZE, Block.ACTION_ITEMS, Block.SCAM_CHECK -> "Understand it"
     Block.CLEAN_TEXT, Block.CLEAN_LINKS, Block.PULL_DETAILS -> "Clean it up"
     Block.PULL_RECEIPT, Block.EXPENSE_ROW, Block.ADD_TO_LIST -> "Money"
@@ -323,6 +327,9 @@ object ChainTemplates {
         Chain("receipt-run", "Receipt into this month's expense sheet", listOf(Step(Block.READ_TEXT), Step(Block.EXPENSE_ROW), Step(Block.ADD_TO_LIST, mapOf("list" to TextTidy.DEFAULT_LIST)))),
         Chain("whatsapp-no-save", "WhatsApp a number without saving it", listOf(Step(Block.CHAT_LINK)), finish = Finish("open")),
         Chain("contact-qr", "My contact as a QR code", listOf(Step(Block.CONTACT_QR))),
+        Chain("wifi-sign", "Wi-Fi sign to a code guests scan", listOf(Step(Block.READ_TEXT), Step(Block.WIFI_QR))),
+        Chain("what-is-this", "What is this?", listOf(Step(Block.IDENTIFY))),
+        Chain("sticker", "Cut out a subject", listOf(Step(Block.CUTOUT))),
         Chain("id-both-sides", "Both sides of an ID on one page", listOf(Step(Block.WATERMARK, mapOf("text" to "For verification only"))), combine = true, onePage = true),
         Chain("share-shield", "Privacy share shield", listOf(Step(Block.HIDE_SENSITIVE), Step(Block.STRIP_LOCATION), Step(Block.SHRINK, mapOf("mb" to "2")))),
         Chain("id-copy-watermarked", "ID copy with a safety watermark", listOf(Step(Block.WATERMARK, mapOf("text" to "For verification only")), Step(Block.STRIP_LOCATION))),
@@ -343,6 +350,7 @@ object ChainPlanner {
         val job: Block? = when {
             has("scam", "phishing", "fraud", "is this real", "suspicious") -> Block.SCAM_CHECK
             has("tracking", "clean link", "clean the link", "clean my link", "utm") -> Block.CLEAN_LINKS
+            has("wifi", "wi-fi") -> Block.WIFI_QR
             has("qr") -> Block.MAKE_QR
             has("receipt", "expense", "invoice") -> Block.PULL_RECEIPT
             has("business card", "contact", "vcard") -> Block.BUSINESS_CARD
