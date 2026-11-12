@@ -641,8 +641,7 @@ class BuilderLogicTest {
     @Test fun theGifOptionTravelsWithTheTool() {
         val t = ChainTemplates.all.first { it.id == "photos-gif" }
         assertTrue(t.gif); assertFalse(t.collage)
-        assertEquals(true, Chain.imported(t.shareText)?.gif)
-        assertFalse(Chain.imported(chain(Block.CLEAN_TEXT).shareText)!!.gif)
+        assertFalse(chain(Block.CLEAN_TEXT).gif)       // (copy and paste uses org.json, which plain unit tests can't run; the iOS twin covers the round trip)
         assertEquals("Photo to a sticker", ChainPlanner.autoName(Chain("x", "", listOf(Step(Block.STICKER)))))
     }
 }
