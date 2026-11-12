@@ -147,3 +147,11 @@ Open check: App Store Connect shows the version in review as 1.2.34 but ios/proj
 - Editor: three switches, draw-once pad, name field, and a small page where each label is dragged into place. Starter "Sign a form and send it" added on Android.
 - Difference: Android sizes the text to its width with a cap of 5% of page height; iOS uses its own font-fit. Close, not pixel-identical.
 - UNBUILT in CI (builds paused for cost).
+
+### More ways in: speak, a contact, a PDF — iOS and Android
+- Text tools: four buttons above the text box. Paste; Speak (iOS: on-device live dictation via `SpeechStream`; Android: the phone's own voice typing screen); Contact (the one contact tapped, as name / phone / email lines; iOS gives all phones and emails, Android gives the name and the tapped number); PDF (its words).
+- Photo tools: "Choose a PDF" turns each page into a picture (long side about 2000 px, up to 20) and runs the steps on every page, like scanned pages.
+- A PDF with no text layer gets a plain message pointing to a photo tool with Read text.
+- No new permissions: both contact pickers hand over only the tapped contact; iOS speech and microphone strings already existed.
+- Not done: video as a starting point (needs a new kind of result that isn't held in memory).
+- UNBUILT in CI (builds paused for cost).

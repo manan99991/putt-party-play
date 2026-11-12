@@ -722,3 +722,36 @@ final class SheetsTests: XCTestCase {
         XCTAssertEqual(SheetsView.summary(rows: 12, changed: now.addingTimeInterval(-5 * 86_400), now: now, calendar: cal), "12 entries · changed 5 days ago")
     }
 }
+
+final class InputTests: XCTestCase {
+    func testNewWordsGoUnderWhatIsThere() {
+        XCTAssertEqual(InputText.joined("", " hello \n"), "hello")
+        XCTAssertEqual(InputText.joined("one\n\n", "\ntwo"), "one\ntwo")
+        XCTAssertEqual(InputText.joined("one", "  "), "one")
+    }
+    func testAContactBecomesLinesTheTextStepsCanRead() async {
+        let t = InputText.contact(name: "Priya Shah", company: "", phones: ["+1 415 555 0134"], emails: ["priya@studio.example"])
+        XCTAssertEqual(t, "Priya Shah\n+1 415 555 0134\npriya@studio.example")
+        let r = await ChainRunner.apply(ChainStep(block: .contactQr), to: .text(t))
+        guard case .success(.image) = r else { return XCTFail("a picked contact should make a QR code") }
+    }
+    func testAPdfGivesItsWordsAndItsPages() throws {
+        let page = CGRect(x: 0, y: 0, width: 612, height: 792)
+        let data = UIGraphicsPDFRenderer(bounds: page).pdfData { c in
+            for line in ["Invoice 1042", "Second page"] {
+                c.beginPage()
+                (line as NSString).draw(at: CGPoint(x: 72, y: 72), withAttributes: [.font: UIFont.systemFont(ofSize: 24)])
+            }
+        }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("input-test-\(UUID().uuidString).pdf")
+        try data.write(to: url); defer { try? FileManager.default.removeItem(at: url) }
+        let words = try XCTUnwrap(PDFInput.text(from: url))
+        XCTAssertTrue(words.contains("Invoice 1042")); XCTAssertTrue(words.contains("Second page"))
+        let pages = PDFInput.pages(from: url)
+        XCTAssertEqual(pages.count, 2)
+        XCTAssertEqual(pages[0].size.width / pages[0].size.height, 612.0 / 792.0, accuracy: 0.01)
+        XCTAssertEqual(max(pages[0].size.width, pages[0].size.height), 2000, accuracy: 2)
+        XCTAssertEqual(PDFInput.pages(from: url, limit: 1).count, 1)
+        XCTAssertNil(PDFInput.text(from: FileManager.default.temporaryDirectory.appendingPathComponent("missing-\(UUID().uuidString).pdf")))
+    }
+}

@@ -1,6 +1,7 @@
 import SwiftUI
 import PhotosUI
 import VisionKit
+import UniformTypeIdentifiers
 
 /// Tenzy Builder (M2): run a starter or saved tool, or build your own by stacking blocks.
 /// Everything here is data over built-in blocks (see ChainRunner), nothing is downloaded or generated as code.
@@ -279,7 +280,7 @@ private struct ChainEditor: View {
                 startButton(.image, "A photo", "photo")
                 startButton(.text, "Text", "text.alignleft")
             }
-            Text("Video, voice, contacts and files are coming next.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text("A photo tool also takes scans and PDF pages. A text tool also takes what you say, a contact, or the words in a PDF.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
     private func startButton(_ kind: ChainKind, _ title: String, _ icon: String) -> some View {
@@ -469,6 +470,9 @@ private struct ChainRunView: View {
     /// Decided once when the screen opens, so the field doesn't vanish while the name is being typed.
     @State private var askName = StampBook.name.trimmingCharacters(in: .whitespaces).isEmpty
     @State private var text = ""
+    @StateObject private var speech = SpeechStream()
+    @State private var pickingContact = false
+    @State private var pickingPDF = false
     @State private var busy = false
     @State private var result: ChainPayload?
     @State private var message: String?
@@ -487,9 +491,22 @@ private struct ChainRunView: View {
                         Button { scanning = true } label: { Label("Scan a document", systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
                             .secondaryButton().accessibilityIdentifier("run-scan")
                     }
+                    Button { pickingPDF = true } label: { Label("Choose a PDF", systemImage: "doc.richtext").frame(maxWidth: .infinity) }
+                        .secondaryButton().accessibilityIdentifier("run-pdf")
                     Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : "Pick one, or up to 20 at once. Each one gets the same steps.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
+                    // Four ways to get the words in without typing them.
+                    HStack(spacing: HandySpacing.s8) {
+                        fill("Paste", "doc.on.clipboard", id: "in-paste") {
+                            if let s = UIPasteboard.general.string, !s.isEmpty { text = InputText.joined(text, s) } else { message = "There is nothing copied to paste." }
+                        }
+                        fill(speech.running ? "Stop" : "Speak", speech.running ? "stop.circle.fill" : "mic", id: "in-speak") { toggleSpeech() }
+                        fill("Contact", "person.crop.circle", id: "in-contact") { pickingContact = true }
+                        fill("PDF", "doc.richtext", id: "in-pdf") { pickingPDF = true }
+                    }
+                    if speech.running { Text(speech.live.isEmpty ? "Listening… tap Stop when you're done." : speech.live).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
+                    if let e = speech.errorText { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
                     TextEditor(text: $text).frame(minHeight: 140).cardStyle(padding: HandySpacing.s8)
                     Button("Run") { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
@@ -516,12 +533,52 @@ private struct ChainRunView: View {
             } else { runBatch(count: items.count) { i in (try? await items[i].loadTransferable(type: Data.self)).flatMap(UIImage.init) } }
         }
         .sheet(isPresented: $signing) { SignaturePadSheet { _ in hasSignature = true } }
+        .sheet(isPresented: $pickingContact) {
+            ContactPickerSheet { picked in
+                pickingContact = false
+                if let picked { text = InputText.joined(text, picked) }
+            }.ignoresSafeArea()
+        }
+        .fileImporter(isPresented: $pickingPDF, allowedContentTypes: [.pdf]) { r in
+            guard case .success(let url) = r else { return }
+            if start == .text {
+                // The words in the PDF become the text the tool works on.
+                if let words = PDFInput.text(from: url), !words.isEmpty { text = InputText.joined(text, words); message = nil }
+                else { message = "That PDF has no words Tenzy can read (it may be a scan). Use a photo tool with Read text, and choose the PDF there." }
+            } else {
+                // Each page becomes a picture and gets the tool's steps, like scanned pages.
+                let pages = PDFInput.pages(from: url)
+                if pages.isEmpty { message = "That PDF couldn't be opened. Try another." }
+                else if pages.count == 1 { go(.image(pages[0])) }
+                else { runBatch(count: pages.count) { i in pages[i] } }
+            }
+        }
+        .onDisappear { if speech.running { speech.stop() } }
         .fullScreenCover(isPresented: $scanning) {
             // Apple's document camera: finds the page edges, straightens it, and takes several pages in one go.
             DocCameraSheet { pages in
                 scanning = false
                 if pages.count == 1 { go(.image(pages[0])) } else if pages.count > 1 { runBatch(count: pages.count) { i in pages[i] } }
             }.ignoresSafeArea()
+        }
+    }
+
+    private func fill(_ title: String, _ icon: String, id: String, _ act: @escaping () -> Void) -> some View {
+        Button(action: act) {
+            VStack(spacing: 4) { Image(systemName: icon).font(.system(size: 18, weight: .semibold)); Text(title).font(HandyFont.micro) }
+                .frame(maxWidth: .infinity, minHeight: 52)
+                .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }.buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityIdentifier(id)
+    }
+
+    /// Speak: starts listening, and on Stop adds what was said to the text box.
+    private func toggleSpeech() {
+        if speech.running {
+            speech.stop()
+            text = InputText.joined(text, speech.committed.joined(separator: " "))
+            speech.clear()
+        } else {
+            message = nil; speech.clear(); speech.start()
         }
     }
 

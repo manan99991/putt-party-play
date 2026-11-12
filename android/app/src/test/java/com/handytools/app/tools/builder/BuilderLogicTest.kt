@@ -288,4 +288,12 @@ class BuilderLogicTest {
         val c = ChainTemplates.all.first { it.id == "sign-and-send" }
         assertNull(c.problem(Kind.IMAGE)); assertTrue(c.combine); assertEquals("mail", c.finish?.kind); assertEquals("Paperwork", Block.STAMP.goal)
     }
+    @Test fun otherWaysIn() {
+        assertEquals("hello", TextTidy.joined("", " hello \n"))
+        assertEquals("one\ntwo", TextTidy.joined("one\n\n", "\ntwo"))
+        assertEquals("one", TextTidy.joined("one", "  "))
+        val t = TextTidy.contactLines("Priya Shah", "", listOf("+1 415 555 0134"), listOf("priya@studio.example"))
+        assertEquals("Priya Shah\n+1 415 555 0134\npriya@studio.example", t)
+        assertEquals("https://wa.me/14155550134", TextTidy.chatLink(t, "1"))
+    }
 }

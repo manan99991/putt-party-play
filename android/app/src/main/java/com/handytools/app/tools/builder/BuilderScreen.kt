@@ -507,6 +507,32 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
         } else runBatch(uris)
     }
 
+    // More ways in: what you say, one contact, a PDF (its words for a text tool, its pages for a photo tool).
+    val speak = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        val said = res.data?.getStringArrayListExtra(android.speech.RecognizerIntent.EXTRA_RESULTS)?.firstOrNull().orEmpty()
+        if (said.isNotBlank()) text = TextTidy.joined(text, said)
+    }
+    val contact = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+        val picked = res.data?.data?.let { BuilderInputs.contact(ctx, it) }.orEmpty()
+        if (picked.isNotBlank()) text = TextTidy.joined(text, picked)
+    }
+    val pdf = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        busy = true; message = null
+        scope.launch {
+            if (chain.start == Kind.TEXT) {
+                val words = withContext(Dispatchers.IO) { BuilderInputs.pdfText(ctx, uri) }
+                busy = false
+                if (words.isNullOrBlank()) message = "That PDF has no words Tenzy can read (it may be a scan). Use a photo tool with Read text, and choose the PDF there."
+                else text = TextTidy.joined(text, words)
+            } else {
+                val pages = withContext(Dispatchers.IO) { BuilderInputs.pdfPages(ctx, uri, MAX_BATCH) }
+                busy = false
+                if (pages.isEmpty()) message = "That PDF couldn't be opened. Try another." else runBatch(pages)
+            }
+        }
+    }
+
     fun scan() {
         val noScanner = { message = "The camera scanner isn't available on this phone, so choose photos instead."; picker.launch("image/*") }
         val activity = com.handytools.app.tools.power.DocEngine.findActivity(ctx) ?: return noScanner()
@@ -525,11 +551,29 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, onDone: () -> Uni
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader(chain.name, chain.steps.joinToString("  ›  ") { it.block.title })
         if (chain.start == Kind.TEXT) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                TextButton({
+                    val c = paste(ctx)
+                    if (c.isBlank()) message = "There is nothing copied to paste." else text = TextTidy.joined(text, c)
+                }) { Text("Paste") }
+                TextButton({
+                    try {
+                        speak.launch(android.content.Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+                            .putExtra(android.speech.RecognizerIntent.EXTRA_LANGUAGE_MODEL, android.speech.RecognizerIntent.LANGUAGE_MODEL_FREE_FORM))
+                    } catch (_: Throwable) { message = "This phone has no voice typing set up. Type or paste instead." }
+                }) { Text("Speak") }
+                TextButton({
+                    try { contact.launch(android.content.Intent(android.content.Intent.ACTION_PICK, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI)) }
+                    catch (_: Throwable) { message = "This phone has no contacts app to pick from." }
+                }) { Text("Contact") }
+                TextButton({ pdf.launch("application/pdf") }) { Text("PDF") }
+            }
             OutlinedTextField(text, { text = it }, Modifier.fillMaxWidth().heightIn(min = 140.dp), label = { Text("Your text") })
             HPrimaryButton("Run", enabled = text.isNotBlank() && !busy) { go(Payload.Words(text)) }
         } else {
             HPrimaryButton("Choose photos", enabled = !busy) { picker.launch("image/*") }
             HSecondaryButton("Scan a document") { scan() }
+            HSecondaryButton("Choose a PDF") { pdf.launch("application/pdf") }
             Text(if (chain.combine) "Pick or scan as many pages as you need. They all go into one PDF." else "Pick one, or up to $MAX_BATCH at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         if (busy) Text(progress.ifEmpty { "Working…" }, color = Handy.palette.textSecondary)

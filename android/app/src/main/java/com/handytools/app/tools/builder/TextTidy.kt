@@ -157,6 +157,18 @@ object TextTidy {
         return (old + new).joinToString("\n")
     }
 
+    // MARK: other ways in (same rules as iOS InputText)
+
+    /** Adds new words under what is already in the box, without piling up blank lines. */
+    fun joined(existing: String, adding: String): String {
+        val a = existing.trim(); val b = adding.trim()
+        return when { a.isEmpty() -> b; b.isEmpty() -> a; else -> a + "\n" + b }
+    }
+
+    /** A contact as plain lines (name, company, each phone, each email), which is what the text steps read. */
+    fun contactLines(name: String, company: String, phones: List<String>, emails: List<String>): String =
+        (listOf(name, company) + phones + emails).map { it.trim() }.filter { it.isNotEmpty() }.joinToString("\n")
+
     /** Entries below the header line. A sheet with only a header has none. */
     fun sheetRows(text: String): Int = maxOf(0, text.split(NEWLINE).count { it.isNotBlank() } - 1)
 
