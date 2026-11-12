@@ -88,6 +88,7 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   hand over only the contact the person taps and need no permission. Speech uses the existing microphone and speech strings on iOS
   and the phone's own voice typing on Android.
 - Shortcuts actions (iOS) run tools on the device and return the result to the shortcut. No new data leaves the phone.
+- Shortcuts action titles, descriptions and phrases must never contain "iPhone", "iPad", "Apple" or "Siri": App Store Connect rejects the upload (ITMS-90626) after the build has already passed. Say "your device".
 - Listing changes for Build your own are drafted in `docs/listing-draft.md`. That file is not pushed by the pipeline; copy
   from it into the metadata folders only after the features ship and Manan approves.
 

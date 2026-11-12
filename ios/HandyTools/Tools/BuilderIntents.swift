@@ -85,7 +85,7 @@ enum ToolIntentSupport {
 /// "Run [tool] on [photo]": works in the background, gives the result back to the shortcut.
 struct RunToolOnPhotoIntent: AppIntent {
     static let title: LocalizedStringResource = "Run a Tool on a Photo"
-    static let description: IntentDescription? = IntentDescription("Runs one of your Tenzy tools on a photo and gives back the result, without opening Tenzy. Everything happens on this iPhone.")
+    static let description: IntentDescription? = IntentDescription("Runs one of your Tenzy tools on a photo and gives back the result, without opening Tenzy. Everything stays on your device.")
 
     @Parameter(title: "Tool") var tool: ToolEntity
     @Parameter(title: "Photo", supportedTypeIdentifiers: ["public.image"]) var photo: IntentFile
