@@ -122,3 +122,57 @@ Lines that become true once the recording, PDF, link, code, translate and extra 
 - Both stores: "Turn a photo into a pencil sketch, a comic or pop art." "Chipmunk and deep voices for any recording." "Before and after, side by
   side." "Your last 20 results are kept on your phone."
 - Tool links and QR codes: say nothing until the link page is published and sharing is switched on.
+
+---
+
+## CONSOLIDATED UPDATE (ready for Manan's review — reflects the Nov 2026 build)
+
+Everything below folds the fun tools, sharing, recent results and the new free/Pro model into the draft above.
+Still DRAFT — the live metadata folders are untouched and go live only on Manan's yes, after the build ships and
+screenshots are re-captured.
+
+### Free vs Pro paragraph (both stores — the honest split)
+
+```
+Free: seven everyday tools (Flashlight, QR & Wi-Fi, Magnifier, Measure, Cleaner, Translate, Vault), plus Build your
+own with the basic steps and up to two saved tools of your own. Ads keep the free app going.
+
+Tenzy Pro unlocks all 30 tools, every Build-your-own step, unlimited saved tools, removes the ads, and lifts the
+daily limits. $19.99/year with a 3-day free trial. Everything still runs on your phone — no account, nothing uploaded.
+```
+(Play: say "all the tools" instead of "all 30", per section 3 of the rulebook — Android ships a subset.)
+
+### New description bullets to add under BUILD YOUR OWN
+
+```
+• Fun & creative: turn a photo into a sticker, put an emoji over every face, make a meme, rebuild a photo from
+  emojis, pencil-sketch / comic / pop-art, before-and-after side by side, and photos into a GIF
+• Video for real life: slow motion or speed-up, boomerang GIF, trim, crop tall, turn, captions*
+• A funny voice: chipmunk, deep or giant on any recording*
+• Share a tool: hand a tool to a friend as a link or a QR code — it opens in their Tenzy, and never carries your
+  details
+• Recent results: your last 20 results stay on your phone until you clear them
+```
+*iPhone only / Android-13-and-up for speech; **leave captions, rewrite, the voice changer and Live-Photo start OUT of
+the Play listing** (they're unavailable or limited on Android — rulebook section 3).
+
+### Release notes / "What's new" (draft, both stores)
+
+```
+Build your own just got a lot more fun.
+• Make stickers, memes, emoji faces and emoji mosaics
+• Pencil-sketch, comic and pop-art filters
+• Slow-mo, speed-up and boomerang GIFs
+• A chipmunk / deep voice changer for recordings
+• Before-and-after, side by side
+• Share any tool you build as a link or QR code
+• Your recent results are kept on your phone
+• A bold new look
+Everything still runs on your phone. No account, nothing uploaded.
+```
+(Play "What's new" drops the voice changer and captions lines.)
+
+### Note on the new look
+
+Describe it as "a bold new look," never by the internal theme name. Re-capture every screenshot from the shipped
+build before any listing goes live (rulebook section 3) — the app now defaults to the dark Aurora look.

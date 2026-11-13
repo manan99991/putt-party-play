@@ -261,3 +261,9 @@ Asked for after the first phone pass: "let them name the tool", "make Describe i
 - Differences that are on purpose: iPhone shows the QR sheet as a sheet, Android as a dialog. On iPhone a batch run is kept as one entry with all its files; the same on Android.
 - The local Android check now refuses org.json the way Android's plain unit tests do, after a test that used it passed locally and failed in CI.
 - Not checked on a real phone yet: all of it.
+
+### Monetization model + Aurora default — iOS and Android
+- Free tier now: keep up to 2 saved tools (`BuilderLimits.canSave`), built only from the 10 basic free steps. Every other step is a Pro step (`Block.isProStep`); `Chain.needsPro`/`proSteps` are shared, pure and unit-tested on both phones (Android 95, iOS 98).
+- Gating UI mirrored on both: the add-step picker marks Pro steps "Pro" and routes a free tap to the paywall; Save and the run screen block a free user on a tool that uses a Pro step, with a lock card / upgrade. The in-builder "the basics are free; the rest are Pro" note shows for free users.
+- Paywall copy updated on both (unlock all tools, every builder step, unlimited saved tools, no ads, no daily limits); builder intro mentions the free/Pro split. No live store metadata touched — marketing lives in `docs/listing-draft.md` (consolidated update section) until Manan approves.
+- Look: Aurora (Direction C) is the free default theme on iOS — dark ground, lime accent (with an `onAccent` token so bright accents keep dark button text), flat per-tool gradient Home tiles. **Android theme parity is the one remaining build task.**

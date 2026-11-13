@@ -111,7 +111,7 @@ data class Step(val block: Block, val settings: Map<String, String> = emptyMap()
 object BuilderIntro {
     val PAGES = listOf(
         "1. Start with what you have" to "A photo, a scan, a PDF, a video, a recording, a link, some text, something you say, or a contact.",
-        "2. Stack small steps" to "Hide private details, shrink it, read it, translate it, sign it. You only see steps that fit, and that your phone can run.",
+        "2. Stack small steps" to "Hide private details, shrink it, read it, translate it, sign it. The basic steps are free; the rest unlock with Tenzy Pro. You only see steps that fit, and that your phone can run.",
         "3. Choose how it ends" to "Share it, open an email or WhatsApp ready to send, add a row to a sheet. Add a reminder and it comes back on schedule.",
     )
     const val DEMO_ID = "share-shield"

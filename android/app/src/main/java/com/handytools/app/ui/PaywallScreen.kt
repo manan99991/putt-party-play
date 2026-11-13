@@ -71,10 +71,10 @@ fun PaywallContent(onBack: () -> Unit) {
         Spacer(Modifier.height(HandyTokens.Space16))
         Text("Tenzy Pro", style = MaterialTheme.typography.headlineSmall.copy(fontSize = 28.sp))
         Spacer(Modifier.height(HandyTokens.Space4))
-        Text("Every tool, unlimited. Ads gone for good.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+        Text("Every tool and every builder step. No ads, no limits.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space24))
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
-            listOf("No banner or full-screen ads", "No daily limits on scans, conversions, PDF tools and video", "Unlimited translation, voice and background removal", "Every theme unlocked").forEach {
+            listOf("Unlock every tool", "Every Build-your-own step, unlimited saved tools", "No banner or full-screen ads", "No daily limits — build and run freely").forEach {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Outlined.CheckCircle, null, Modifier.size(22.dp), tint = HandyColors.Accent)
                     Spacer(Modifier.width(HandyTokens.Space12))

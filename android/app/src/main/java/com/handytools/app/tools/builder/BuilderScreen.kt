@@ -367,6 +367,8 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
     // What the person said they start with, before there is a first step to tell us.
     var startChoice by remember { mutableStateOf<Kind?>(null) }
     val ctx = LocalContext.current
+    val premium by HandyApp.instance.billing.isPremium.collectAsState()
+    val openPaywall = com.handytools.app.ads.LocalRemoveAds.current
     val fitting = chain.end?.let { e -> Block.values().filter { e.feeds(it.takes) } } ?: startChoice?.let { BlockGoals.starting(it) } ?: emptyList()
     // Steps that fit here and that this phone can run, and the ones that fit but it can't.
     val options = fitting.filter { ExtraSteps.unavailable(ctx, it) == null }
@@ -417,7 +419,7 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
         chain.steps.forEachIndexed { i, s ->
             HCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-                    Text("${i + 1}. ${s.block.title}", style = MaterialTheme.typography.titleSmall)
+                    Text("${i + 1}. ${s.block.title}" + if (s.block.isProStep && !premium) "   · PRO" else "", style = MaterialTheme.typography.titleSmall)
                     Text(s.block.blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     StepSettings(s) { ns -> chain = chain.copy(steps = chain.steps.toMutableList().also { it[i] = ns }) }
                     PreviewStrip(previews.getOrNull(i))
@@ -452,13 +454,17 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
                 // Grouped by what you want to get done; only steps that fit what the tool has at this point.
                 BlockGoals.grouped(options).forEach { (goal, blocks) ->
                     Text(goal, style = MaterialTheme.typography.labelMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = HandyTokens.Space12, vertical = HandyTokens.Space4))
-                    blocks.forEach { b -> DropdownMenuItem(text = { Text(b.title) }, onClick = { addMenu = false; chain = chain.copy(steps = chain.steps + Step(b, defaults(b))) }) }
+                    blocks.forEach { b ->
+                        if (b.isProStep && !premium) DropdownMenuItem(text = { Text("${b.title} — Pro") }, onClick = { addMenu = false; openPaywall?.invoke() })
+                        else DropdownMenuItem(text = { Text(b.title) }, onClick = { addMenu = false; chain = chain.copy(steps = chain.steps + Step(b, defaults(b))) })
+                    }
                 }
                 if (missing.isNotEmpty()) {
                     Text("Not on this phone", style = MaterialTheme.typography.labelMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = HandyTokens.Space12, vertical = HandyTokens.Space4))
                     missing.forEach { b -> DropdownMenuItem(text = { Text(b.title) }, onClick = {}, enabled = false) }
                 }
             }
+            if (!premium) Text("Free tools use the basic steps. The ones marked Pro unlock with Tenzy Pro.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             missing.firstOrNull()?.let { first ->
                 Text(if (missing.size == 1) "${first.title} is greyed out on this phone. ${ExtraSteps.unavailable(ctx, first)}" else "${missing.size} steps are greyed out because this phone can't run them. Everything else works.",
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
@@ -521,7 +527,7 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
         if (chain.end != null && chain.start == Kind.IMAGE) AutoRunCard(chain.auto) { a -> chain = chain.copy(auto = a) }
         if (problem != null && chain.steps.isNotEmpty()) Text(problem, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
         // A name is optional: a tool saved without one is named for what it does.
-        HPrimaryButton("Save", enabled = problem == null) { onSave(chain.copy(name = ChainPlanner.savedName(chain))) }
+        HPrimaryButton("Save", enabled = problem == null) { if (!premium && chain.needsPro) openPaywall?.invoke() else onSave(chain.copy(name = ChainPlanner.savedName(chain))) }
         HSecondaryButton("Cancel") { onCancel() }
         Spacer(Modifier.heightIn(min = 24.dp))
     }
@@ -716,6 +722,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
     var progress by remember { mutableStateOf("") }
     // What each result of a many-at-once run is called in the list: a photo, or a file.
     var noun by remember { mutableStateOf("Photo") }
+    val premium by HandyApp.instance.billing.isPremium.collectAsState()
+    val openPaywall = com.handytools.app.ads.LocalRemoveAds.current
     // A meme's words can be typed fresh for each run.
     val memeStep = remember(chain) { chain.steps.firstOrNull { it.block == Block.MEME } }
     var memeTop by remember { mutableStateOf(memeStep?.settings?.get("top").orEmpty()) }
@@ -936,6 +944,18 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 }
                 .addOnFailureListener { noScanner() }
         } catch (_: Throwable) { noScanner() }
+    }
+    // A free user can't run a tool that uses a Pro step; they see the lock card instead of the inputs.
+    if (!premium && chain.needsPro) {
+        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+            ToolHeader(chain.name, "A Pro tool")
+            val pro = chain.proSteps.joinToString(", ") { it.title }
+            Text("This tool uses ${if (chain.proSteps.size == 1) "a Pro step" else "Pro steps"} ($pro). Go Pro to run it — plus every Pro step, all the built-in tools, and no ads.",
+                style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+            HPrimaryButton("Go Pro") { openPaywall?.invoke() }
+            HSecondaryButton("Back") { onDone() }
+        }
+        return
     }
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader(chain.name, chain.steps.joinToString("  ›  ") { it.block.title })

@@ -325,6 +325,8 @@ private struct ChainEditor: View {
     var hint: String? = nil
     var onSave: (Chain) -> Void
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var store = StoreManager.shared
+    @State private var showPro = false
     @State private var previews: [StepPreview?] = []
     @State private var inputPreview: StepPreview?
 
@@ -375,6 +377,10 @@ private struct ChainEditor: View {
                 if !(chain.steps.isEmpty && startChoice == nil) {
                     connector
                     addMenu
+                    if !store.isPremium {
+                        Text("Free tools use the basic steps. The ones marked Pro unlock with Tenzy Pro — tap one to see what you get.")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s8)
+                    }
                     if let first = missing.first, let why = first.unavailable {
                         Text(missing.count == 1 ? "\(first.title) is greyed out on this phone. \(why)" : "\(missing.count) steps are greyed out because this phone can't run them. Everything else works.")
                             .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s8)
@@ -395,9 +401,10 @@ private struct ChainEditor: View {
         .navigationTitle("Build a tool").navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-            ToolbarItem(placement: .confirmationAction) { Button("Save") { var c = chain; c.name = ChainText.savedName(c); onSave(c) }.disabled(!valid) }
+            ToolbarItem(placement: .confirmationAction) { Button("Save") { if !store.isPremium && chain.needsPro { showPro = true } else { var c = chain; c.name = ChainText.savedName(c); onSave(c) } }.disabled(!valid) }
         }
         .task(id: chain.steps) { await refreshPreviews() }
+        .sheet(isPresented: $showPro) { PaywallView().environmentObject(StoreManager.shared) }
     }
 
     /// "Then": where the result goes. Email and Message open already filled in, so sending is one tap.
@@ -479,7 +486,13 @@ private struct ChainEditor: View {
             // Grouped by what you want to get done, and only steps that fit what the tool has at this point.
             ForEach(Block.grouped(options), id: \.goal) { g in
                 Section(g.goal) {
-                    ForEach(g.blocks) { b in Button { chain.steps.append(ChainStep(block: b, settings: defaults(b))) } label: { Label(b.title, systemImage: b.icon) } }
+                    ForEach(g.blocks) { b in
+                        if b.isProStep, !store.isPremium {
+                            Button { showPro = true } label: { Label("\(b.title) — Pro", systemImage: "lock.fill") }
+                        } else {
+                            Button { chain.steps.append(ChainStep(block: b, settings: defaults(b))) } label: { Label(b.title, systemImage: b.icon) }
+                        }
+                    }
                 }
             }
             if !missing.isEmpty {
@@ -526,7 +539,10 @@ private struct ChainEditor: View {
             HStack(spacing: HandySpacing.s12) {
                 BlockBadge(block: s.block)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(i + 1). \(s.block.title)").font(HandyFont.bodyStrong)
+                    HStack(spacing: HandySpacing.s8) {
+                        Text("\(i + 1). \(s.block.title)").font(HandyFont.bodyStrong)
+                        if s.block.isProStep, !store.isPremium { ProTag() }
+                    }
                     Text(s.block.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 Spacer(minLength: 0)
@@ -808,10 +824,14 @@ private struct ChainRunView: View {
     @State private var busy = false
     @State private var result: ChainPayload?
     @State private var message: String?
+    @ObservedObject private var store = StoreManager.shared
+    @State private var showPro = false
     @Environment(\.dismiss) private var dismiss
 
     private var start: ChainKind { chain.steps.first?.block.takes ?? .image }
     private var hasMeme: Bool { chain.steps.contains { $0.block == .meme } }
+    /// A free user can't run a tool that uses a Pro step; they see the lock card instead of the inputs.
+    private var locked: Bool { !store.isPremium && chain.needsPro }
 
     /// The tool as it runs this time: a meme step takes the words typed on this screen.
     private var runChain: Chain {
@@ -824,6 +844,29 @@ private struct ChainRunView: View {
     }
 
     var body: some View {
+        if locked { lockCard } else { runBody }
+    }
+
+    /// Shown when a free user opens a tool that uses a Pro step: what it needs, and a one-tap path to Pro.
+    private var lockCard: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s16) {
+                Text(chain.name).font(HandyFont.title)
+                VStack(spacing: HandySpacing.s12) {
+                    ZStack { Circle().fill(HandyColor.accentSoft).frame(width: 72, height: 72); Image(systemName: "lock.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent) }
+                    Text("A Pro tool").font(.system(size: 22, weight: .bold))
+                    Text("This tool uses \(chain.proSteps.count == 1 ? "a Pro step" : "Pro steps") (\(chain.proSteps.map(\.title).joined(separator: ", "))). Go Pro to run it — plus every Pro step, all \(TOOLS.count) tools, and no ads.")
+                        .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                    Button { showPro = true } label: { Label(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro — \(store.yearlyPrice)/year", systemImage: "crown.fill").frame(maxWidth: .infinity) }.primaryButton()
+                }.frame(maxWidth: .infinity).padding(.top, HandySpacing.s24)
+            }.padding(HandySpacing.gutter)
+        }
+        .background(HandyColor.bg)
+        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+        .sheet(isPresented: $showPro) { PaywallView().environmentObject(StoreManager.shared) }
+    }
+
+    private var runBody: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 Text(chain.name).font(HandyFont.title)
@@ -1245,5 +1288,15 @@ private struct ToolPickView: View {
         .background(HandyColor.bg)
         .navigationTitle("What to do with it").navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
+    }
+}
+
+/// A small "PRO" badge for a premium step a free user can see but not use yet.
+struct ProTag: View {
+    var body: some View {
+        Text("PRO").font(.system(size: 10, weight: .heavy)).foregroundStyle(HandyColor.onAccent)
+            .padding(.horizontal, 6).padding(.vertical, 2)
+            .background(HandyColor.accent, in: Capsule())
+            .accessibilityLabel("Pro step")
     }
 }

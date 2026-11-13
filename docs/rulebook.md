@@ -124,6 +124,12 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   (iOS) and `ToolLink.LIVE` (Android) switch link and QR sharing on or off. Android declares a `tenzy://import` link filter; an
   imported tool is only saved to My tools, never run by itself.
 - "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
+- Build your own, Pro steps: only the 10 basic steps are free (`Block.freeStepIDs` / `FREE_STEP_IDS`, matched on both
+  phones): Read text, Tidy text, Summarize, Find links/emails/phones, Clean tracking, Make a QR code, Wi-Fi join code,
+  Contact as a QR code, WhatsApp link, Translate. Every other step is a Pro step (`isProStep`). A free user can see the
+  Pro steps (marked "Pro"/locked in the picker) but can't add, save or run a tool that uses one — `Chain.needsPro` gates
+  the add-step menu, Save, and the run screen, all pointing at the paywall. Keep this set, the paywall copy, and the
+  listing's free/Pro paragraph in step. The 10 free steps align with the 7 free built-in tools; don't quietly widen it.
 - Build your own, free vs Pro: building and running tools is **unlimited for everyone** (free included), and so is receiving a tool from a
   shared link. The free tier **keeps `BuilderLimits.freeSaved` (2) of your own saved tools**; saving a 3rd from the editor, Duplicate, or the
   in-app Paste opens the paywall instead (the built tool is not lost — the editor stays open, and Save works once the person is Pro). Pro lifts

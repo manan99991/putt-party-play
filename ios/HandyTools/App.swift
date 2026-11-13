@@ -677,10 +677,10 @@ struct PaywallView: View {
                 Image(systemName: "crown.fill").font(.system(size: 28)).foregroundStyle(HandyColor.accent)
             }.padding(.top, HandySpacing.s24)
             Text("Tenzy Pro").font(.system(size: 28, weight: .bold))
-            Text("Every tool, unlimited. Ads gone for good.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+            Text("Every tool and every builder step. No ads, no limits.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
 
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                ForEach(["No banner or full-screen ads", "Unlimited fits, scans, exports & AI actions", "Unlimited video, voice and translation jobs", "Support one indie developer"], id: \.self) { line in
+                ForEach(["Unlock all \(TOOLS.count) tools", "Every Build-your-own step, unlimited saved tools", "No banner or full-screen ads", "No daily limits — build and run freely"], id: \.self) { line in
                     HStack(spacing: HandySpacing.s12) {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent)
                         Text(line).font(HandyFont.body)
