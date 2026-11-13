@@ -1,0 +1,105 @@
+# Fastbot crash-hunter — free, no-LLM, model-based UI fuzzer (ByteDance Fastbot).
+# Complements the mobileqa agent: the agent tests tools deliberately; Fastbot hammers the app with
+# thousands of randomised-but-model-guided events to shake out crashes/ANRs the structured run misses.
+# Standalone on purpose — a fuzzing hang here can never stall the agent's release gate.
+#
+# Reckato (or any app): copy this file, change the two `env` values below and nothing else.
+name: Fastbot crash hunt
+on:
+  schedule:
+    - cron: "41 7 * * 1"          # weekly, offset from the agent's 23/17 crons
+  workflow_dispatch:
+    inputs:
+      minutes: { description: fuzzing minutes, default: "10" }
+
+permissions: { contents: read }
+
+env:
+  APP_PACKAGE: com.tenzy.toolkit          # <-- the app's applicationId
+  APP_DIR: android                        # <-- gradle project dir (holds the app module)
+
+jobs:
+  fastbot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL; df -h /
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - uses: gradle/actions/setup-gradle@v4
+        with: { gradle-version: "8.11.1" }   # repo has no gradle-wrapper.jar
+
+      - name: Build debug APK
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          set -o pipefail
+          gradle --no-daemon assembleDebug --stacktrace --warning-mode none 2>&1 | tee ../build.log
+          cp app/build/outputs/apk/debug/app-debug.apk ../app-debug.apk && ls -la ../app-debug.apk
+
+      - name: Fetch Fastbot
+        run: |
+          git clone --depth=1 https://github.com/bytedance/Fastbot_Android fastbot
+          ls -la fastbot/*.jar
+          # native .so live under fastbot/libs/<abi>/ ; the CI emulator is x86_64
+          find fastbot/libs -name '*.so' | sed 's#^#  #'
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+
+      - name: Boot emulator + run Fastbot
+        run: |
+          set +e; exec > >(tee fastbot.log) 2>&1
+          export ANDROID_HOME="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+          export ANDROID_AVD_HOME="$HOME/.android/avd"; mkdir -p "$ANDROID_AVD_HOME"
+          yes | sdkmanager "system-images;android-30;google_apis;x86_64" >/dev/null 2>&1 && echo "image ok"
+          echo no | avdmanager --verbose create avd --force --name qa --package "system-images;android-30;google_apis;x86_64" --device pixel_6 2>&1 | tail -4
+          nohup emulator -avd qa -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -no-snapshot -netdelay none -netspeed full > emulator.log 2>&1 &
+          timeout 180 adb wait-for-device
+          for i in $(seq 1 60); do [ "$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = "1" ] && { echo booted; break; }; sleep 5; done
+          # Same settle the agent uses: a free runner's launcher/SystemUI ANRs for ~1 min after boot.
+          adb shell settings put global hide_error_dialogs 1 || true
+          adb shell settings put global window_animation_scale 0 || true
+          adb shell settings put global transition_animation_scale 0 || true
+          adb shell settings put global animator_duration_scale 0 || true
+          sleep 45
+          adb install -r -g app-debug.apk || { echo "install failed"; exit 1; }
+
+          # ---- Fastbot: push jars to /sdcard, the x86_64 native libs to /data/local/tmp
+          adb push fastbot/monkeyq.jar fastbot/framework.jar fastbot/fastbot-thirdpart.jar /sdcard/
+          if adb push fastbot/libs/x86_64/. /data/local/tmp/ 2>/dev/null; then echo "pushed x86_64 libs"; \
+          else find fastbot/libs -name '*.so' -exec adb push {} /data/local/tmp/ \; ; fi
+
+          MIN="${{ github.event.inputs.minutes || 10 }}"
+          echo "=== Fastbot fuzzing $APP_PACKAGE for ${MIN}m ==="
+          # --agent reuseq = Fastbot's model-based agent; --throttle 500ms between events; -v -v verbose.
+          timeout $((MIN*60 + 120)) adb shell CLASSPATH=/sdcard/monkeyq.jar:/sdcard/framework.jar:/sdcard/fastbot-thirdpart.jar \
+            exec app_process /system/bin com.android.commands.monkey.Monkey \
+            -p "$APP_PACKAGE" --agent reuseq --running-minutes "$MIN" --throttle 500 -v -v 2>&1 | tee monkey.log
+
+          # ---- collect crash/ANR evidence
+          mkdir -p reports/fastbot
+          adb pull /sdcard/crash-dump.log reports/fastbot/ 2>/dev/null || true
+          adb pull /sdcard/oom-traces.log reports/fastbot/ 2>/dev/null || true
+          adb pull /sdcard/fastbot_"$APP_PACKAGE" reports/fastbot/ 2>/dev/null || true
+          cp monkey.log reports/fastbot/ 2>/dev/null || true
+          # a crash names our own package; emulator-noise packages are ignored (same rule as the agent)
+          CR=$(grep -aciE "CRASH|NOT RESPONDING|FATAL EXCEPTION|// CRASH" monkey.log 2>/dev/null)
+          APPCR=$(grep -aiE "CRASH|FATAL EXCEPTION|NOT RESPONDING" monkey.log 2>/dev/null | grep -ic "$APP_PACKAGE")
+          echo "=== Fastbot done: $CR crash/ANR markers in log, $APPCR naming $APP_PACKAGE ==="
+          echo "APPCR=$APPCR" >> "$GITHUB_ENV"
+
+      - name: Upload Fastbot report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: tenzy-fastbot-report, path: reports/, retention-days: 30 }
+
+      - name: Fail on an app crash
+        if: ${{ env.APPCR != '0' && env.APPCR != '' }}
+        run: |
+          echo "Fastbot found $APPCR crash/ANR(s) in $APP_PACKAGE — see the tenzy-fastbot-report artifact (crash-dump.log / monkey.log)."
+          exit 1
