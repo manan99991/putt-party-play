@@ -21,13 +21,14 @@ enum TenzyArt {
         case .warmPaper: return "warmpaper"
         case .neoPop: return "neopop"
         case .mono: return "mono"
+        case .aurora: return "midnight"   // Aurora reuses Midnight's dark per-tool art (no new imagesets)
         }
     }
 
     static func variant(_ t: TenzyTheme, _ scheme: ColorScheme) -> String {
         switch t {
         case .daylight: return scheme == .dark ? "dark" : "light"
-        case .midnight: return "dark"
+        case .midnight, .aurora: return "dark"
         default: return "light"
         }
     }

@@ -16,6 +16,8 @@ enum HandyColor {
 
     private static var t: ThemeTokens { ActiveTheme.shared.tokens }
     static var accent: Color { t.accent }
+    /// Text/icon colour that sits on an accent-filled button; white on most themes, dark on bright ones (Aurora).
+    static var onAccent: Color { t.onAccent }
     static var accentPressed: Color { t.accentPressed }
     static var accentSoft: Color { t.accentSoft }
     static var bg: Color { t.bg }
@@ -29,14 +31,15 @@ enum HandyColor {
 /// The five Tenzy looks. Daylight is free and keeps the app's existing light/dark behaviour; the
 /// other four are fixed-look Pro themes with the exact tokens from the design handoff.
 enum TenzyTheme: String, CaseIterable, Identifiable {
-    case daylight, midnight, warmPaper, neoPop, mono
+    case daylight, midnight, warmPaper, neoPop, mono, aurora
     var id: String { rawValue }
     var isPro: Bool { self != .daylight }
-    var isDark: Bool { self == .midnight }
+    var isDark: Bool { self == .midnight || self == .aurora }
     var title: String {
         switch self {
         case .daylight: return "Daylight"; case .midnight: return "Midnight"
         case .warmPaper: return "Warm Paper"; case .neoPop: return "Neo Pop"; case .mono: return "Mono"
+        case .aurora: return "Aurora"
         }
     }
     var blurb: String {
@@ -46,6 +49,7 @@ enum TenzyTheme: String, CaseIterable, Identifiable {
         case .warmPaper: return "Editorial, warm, matte"
         case .neoPop: return "Bold, playful, punchy"
         case .mono: return "Minimal, stealth"
+        case .aurora: return "Bold gradients on dark"
         }
     }
     /// A small swatch gradient for the picker — the theme's tile gradient.
@@ -56,6 +60,7 @@ enum TenzyTheme: String, CaseIterable, Identifiable {
         case .warmPaper: return [Color(hex: 0xC2502E), Color(hex: 0xE0795A)]
         case .neoPop: return [Color(hex: 0xFF2D87), Color(hex: 0xFF8A00)]
         case .mono: return [Color(hex: 0x1A1A1A), Color(hex: 0x000000)]
+        case .aurora: return [Color(hex: 0x7B5CFF), Color(hex: 0xFF4FA3)]
         }
     }
     var tokens: ThemeTokens {
@@ -69,25 +74,28 @@ enum TenzyTheme: String, CaseIterable, Identifiable {
                 surfaceRaised: .adaptive(light: 0xFFFFFF, dark: 0x1C1C24),
                 textPrimary: .adaptive(light: 0x0E0E12, dark: 0xF2F2F5),
                 textSecondary: .adaptive(light: 0x5C5F6E, dark: 0xA3A6B5),
-                border: Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor.white.withAlphaComponent(0.10) : UIColor.black.withAlphaComponent(0.08) }))
+                border: Color(UIColor { $0.userInterfaceStyle == .dark ? UIColor.white.withAlphaComponent(0.10) : UIColor.black.withAlphaComponent(0.08) }),
+                onAccent: .white)
         case .midnight:  return .fixed(accent: 0x3DE1FF, pressed: 0x16B6D6, bg: 0x0B0E14, surface: 0x141925, raised: 0x1C2230, text: 0xEAF2FF)
         case .warmPaper: return .fixed(accent: 0xC2502E, pressed: 0x9E3F22, bg: 0xF6F1E7, surface: 0xEFE8D8, raised: 0xFFFFFF, text: 0x1C1A17)
         case .neoPop:    return .fixed(accent: 0xFF2D87, pressed: 0xD81B6C, bg: 0xFBF7F2, surface: 0xFFFFFF, raised: 0xFFFFFF, text: 0x141414)
         case .mono:      return .fixed(accent: 0xFF5A1F, pressed: 0xE04715, bg: 0xFFFFFF, surface: 0xF2F2F2, raised: 0xFFFFFF, text: 0x0A0A0A)
+        // Direction C: dark aurora ground, lime action colour with dark text on it.
+        case .aurora:    return .fixed(accent: 0xD2FF3A, pressed: 0xB4E22A, bg: 0x05040C, surface: 0x141127, raised: 0x1C1836, text: 0xF3F1FB, onAccent: 0x0A0912)
         }
     }
 }
 
 struct ThemeTokens {
-    let accent, accentPressed, accentSoft, bg, surface, surfaceRaised, textPrimary, textSecondary, border: Color
+    let accent, accentPressed, accentSoft, bg, surface, surfaceRaised, textPrimary, textSecondary, border, onAccent: Color
     /// Fixed-look theme: derive the soft/secondary/border tints from the base tokens.
-    static func fixed(accent: UInt32, pressed: UInt32, bg: UInt32, surface: UInt32, raised: UInt32, text: UInt32) -> ThemeTokens {
+    static func fixed(accent: UInt32, pressed: UInt32, bg: UInt32, surface: UInt32, raised: UInt32, text: UInt32, onAccent: UInt32 = 0xFFFFFF) -> ThemeTokens {
         let txt = Color(hex: text)
         return ThemeTokens(
             accent: Color(hex: accent), accentPressed: Color(hex: pressed),
             accentSoft: Color(hex: accent).opacity(0.16),
             bg: Color(hex: bg), surface: Color(hex: surface), surfaceRaised: Color(hex: raised),
-            textPrimary: txt, textSecondary: txt.opacity(0.62), border: txt.opacity(0.12))
+            textPrimary: txt, textSecondary: txt.opacity(0.62), border: txt.opacity(0.12), onAccent: Color(hex: onAccent))
     }
 }
 
@@ -116,7 +124,12 @@ final class ActiveTheme {
         didSet { UserDefaults.standard.set(current.rawValue, forKey: Self.key); ActiveTheme.shared.theme = current }
     }
     private init() {
-        current = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: Self.key) ?? "") ?? .daylight
+        // The visual pass (and UI tests) can pin a look with "-theme <name>", so a run can be captured in any theme.
+        if (Launch.screenshots || Launch.uitest), let i = Launch.args.firstIndex(of: "-theme"), i + 1 < Launch.args.count, let forced = TenzyTheme(rawValue: Launch.args[i + 1]) {
+            current = forced
+        } else {
+            current = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: Self.key) ?? "") ?? .daylight
+        }
         ActiveTheme.shared.theme = current
     }
 }
@@ -197,7 +210,7 @@ struct HandyPrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(HandyFont.bodyStrong)
-            .foregroundStyle(isEnabled ? Color.white : HandyColor.accent.opacity(0.5))
+            .foregroundStyle(isEnabled ? HandyColor.onAccent : HandyColor.accent.opacity(0.5))
             .frame(maxWidth: .infinity, minHeight: HandySpacing.primaryButtonHeight)
             .background(isEnabled ? (configuration.isPressed ? HandyColor.accentPressed : HandyColor.accent) : HandyColor.accentSoft, in: Capsule())
             .scaleEffect(configuration.isPressed ? HandyMotion.pressScale : 1)
@@ -234,7 +247,7 @@ struct HandyCompactButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 14, weight: .semibold))
-            .foregroundStyle(.white)
+            .foregroundStyle(HandyColor.onAccent)
             .lineLimit(1)
             .fixedSize(horizontal: true, vertical: false)
             .padding(.horizontal, HandySpacing.s16)
