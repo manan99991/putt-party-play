@@ -238,9 +238,9 @@ struct TranslateView: View {
                 ForEach(currentPhrases, id: \.self) { phrase in
                     HStack(spacing: HandySpacing.s8) {
                         Text(phrase).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading)
-                        Button { toggleFav(phrase) } label: { Image(systemName: favs.contains(phrase) ? "star.fill" : "star") }
+                        Button { toggleFav(phrase) } label: { Image(systemName: favs.contains(phrase) ? "star.fill" : "star").accessibilityLabel("Favourite") }
                             .buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityLabel(favs.contains(phrase) ? "Unstar" : "Star")
-                        Button { translate(phrase, from: "en", to: toCode, speak: true) } label: { Image(systemName: "character.bubble.fill") }
+                        Button { translate(phrase, from: "en", to: toCode, speak: true) } label: { Image(systemName: "character.bubble.fill").accessibilityLabel("Speak") }
                             .buttonStyle(.plain).foregroundStyle(HandyColor.accent).disabled(toCode == "en" || overQuota)
                     }.padding(.vertical, 10)
                     if phrase != currentPhrases.last { Divider() }

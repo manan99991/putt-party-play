@@ -150,14 +150,14 @@ struct VaultView: View {
             }
             Spacer()
             if item.kind == .secret {
-                Button { if revealed.contains(item.id) { revealed.remove(item.id) } else { revealed.insert(item.id) } } label: { Image(systemName: revealed.contains(item.id) ? "eye.slash" : "eye") }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
-                Button { copySecret(item.text) } label: { Image(systemName: "doc.on.doc") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                Button { if revealed.contains(item.id) { revealed.remove(item.id) } else { revealed.insert(item.id) } } label: { Image(systemName: revealed.contains(item.id) ? "eye.slash" : "eye").accessibilityLabel("Show or hide") }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
+                Button { copySecret(item.text) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
             }
             Menu {
                 if item.kind == .note { Button { UIPasteboard.general.string = item.text; toast = "Copied" } label: { Label("Copy", systemImage: "doc.on.doc") } }
                 if item.kind == .document || item.kind == .photo, let d = vault.data(for: item) { ShareLink(item: TextFileOrData(data: d, ext: item.fileExt ?? "jpg"), preview: SharePreview(item.title)) { Label("Export", systemImage: "square.and.arrow.up") } }
                 Button(role: .destructive) { vault.delete(item); thumbs[item.id] = nil; HandyHaptics.light() } label: { Label("Delete (shred)", systemImage: "trash") }
-            } label: { Image(systemName: "ellipsis.circle").font(.system(size: 20)).foregroundStyle(HandyColor.textSecondary) }
+            } label: { Image(systemName: "ellipsis.circle").accessibilityLabel("More").font(.system(size: 20)).foregroundStyle(HandyColor.textSecondary) }
         }
         .padding(HandySpacing.s12)
         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))

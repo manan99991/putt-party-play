@@ -57,10 +57,10 @@ struct MeasureARView: View {
                 HStack(spacing: HandySpacing.s8) {
                     Button { ar.place() } label: { Label(primaryActionLabel, systemImage: "plus.circle.fill").frame(maxWidth: .infinity) }.primaryButton().disabled(!ar.hasSurface)
                     if mode == .area && ar.points.count >= 3 {
-                        Button { ar.closeLoop() } label: { Image(systemName: "checkmark.circle.fill").frame(width: 36, height: 36) }.compactButton()
+                        Button { ar.closeLoop() } label: { Image(systemName: "checkmark.circle.fill").accessibilityLabel("Close shape").frame(width: 36, height: 36) }.compactButton()
                     }
-                    Button { ar.undo() } label: { Image(systemName: "arrow.uturn.backward").frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
-                    Button { ar.reset() } label: { Image(systemName: "trash").frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
+                    Button { ar.undo() } label: { Image(systemName: "arrow.uturn.backward").accessibilityLabel("Undo").frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
+                    Button { ar.reset() } label: { Image(systemName: "trash").accessibilityLabel("Clear").frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
                 }
                 results
             } else {

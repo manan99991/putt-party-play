@@ -82,7 +82,7 @@ struct ColorVisionView: View {
                         Button { frozen.toggle(); cam.setPaused(frozen) } label: { Label(frozen ? "Live" : "Freeze", systemImage: frozen ? "play.fill" : "pause.fill") }.compactButton()
                     }
                     Spacer()
-                    Button { save() } label: { Image(systemName: "square.and.arrow.down").frame(width: 36, height: 36) }.compactButton().disabled(processed == nil)
+                    Button { save() } label: { Image(systemName: "square.and.arrow.down").accessibilityLabel("Save").frame(width: 36, height: 36) }.compactButton().disabled(processed == nil)
                     PhotosPicker(selection: $photoItem, matching: .images) { Image(systemName: "photo").frame(width: 36, height: 36) }.compactButton()
                 }.padding(HandySpacing.s12)
             }

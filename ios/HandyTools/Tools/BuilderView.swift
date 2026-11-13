@@ -306,7 +306,7 @@ struct BuilderView: View {
                 Button("Copy to share") { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
                 if ToolLink.live { Button("Share as a link or QR code") { linking = c } }
                 Button("Delete", role: .destructive) { mine.removeAll { $0.id == c.id }; persist() }
-            } label: { Image(systemName: "ellipsis.circle").font(.system(size: 20)).frame(width: 44, height: 44) }
+            } label: { Image(systemName: "ellipsis.circle").accessibilityLabel("More").font(.system(size: 20)).frame(width: 44, height: 44) }
             // A compact button with room around its word, so it never looks squeezed beside a long name.
             Button { running = c } label: {
                 Text("Run").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
@@ -550,7 +550,7 @@ private struct ChainEditor: View {
                     if i > 0 { Button { chain.steps.swapAt(i, i - 1) } label: { Label("Move up", systemImage: "arrow.up") } }
                     if i < chain.steps.count - 1 { Button { chain.steps.swapAt(i, i + 1) } label: { Label("Move down", systemImage: "arrow.down") } }
                     Button(role: .destructive) { chain.steps.remove(at: i) } label: { Label("Remove step", systemImage: "trash") }
-                } label: { Image(systemName: "ellipsis").frame(width: 44, height: 44) }
+                } label: { Image(systemName: "ellipsis").accessibilityLabel("More").frame(width: 44, height: 44) }
             }
             settings(i)
             previewView(i < previews.count ? previews[i] : nil)

@@ -60,9 +60,9 @@ struct MagnifierView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
                 HStack(spacing: HandySpacing.s8) {
-                    Button { cam.setTorch(!cam.torchOn) } label: { Image(systemName: cam.torchOn ? "flashlight.on.fill" : "flashlight.off.fill").frame(width: 36, height: 36) }.compactButton()
+                    Button { cam.setTorch(!cam.torchOn) } label: { Image(systemName: cam.torchOn ? "flashlight.on.fill" : "flashlight.off.fill").accessibilityLabel("Torch").frame(width: 36, height: 36) }.compactButton()
                     Spacer()
-                    Button { save() } label: { Image(systemName: "square.and.arrow.down").frame(width: 36, height: 36) }.compactButton().disabled(processed == nil)
+                    Button { save() } label: { Image(systemName: "square.and.arrow.down").accessibilityLabel("Save").frame(width: 36, height: 36) }.compactButton().disabled(processed == nil)
                     Button { toggleFreeze() } label: { Label(frozen ? "Live" : "Freeze", systemImage: frozen ? "play.fill" : "pause.fill") }.primaryButton()
                 }.padding(HandySpacing.s12)
             }

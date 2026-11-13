@@ -304,16 +304,16 @@ private struct MirrorSheet: View {
                 }
             VStack {
                 HStack {
-                    Button { dismiss() } label: { Image(systemName: "xmark").font(.system(size: 16, weight: .bold)).padding(10).background(.ultraThinMaterial, in: Circle()) }
+                    Button { dismiss() } label: { Image(systemName: "xmark").accessibilityLabel("Close").font(.system(size: 16, weight: .bold)).padding(10).background(.ultraThinMaterial, in: Circle()) }
                     Spacer()
-                    Button { lit.toggle() } label: { Image(systemName: lit ? "sun.max.fill" : "sun.max").font(.system(size: 16, weight: .bold)).padding(10).background(.ultraThinMaterial, in: Circle()) }
+                    Button { lit.toggle() } label: { Image(systemName: lit ? "sun.max.fill" : "sun.max").accessibilityLabel("Brightness").font(.system(size: 16, weight: .bold)).padding(10).background(.ultraThinMaterial, in: Circle()) }
                 }
                 Spacer()
                 HStack(spacing: HandySpacing.s12) {
                     Image(systemName: "minus.magnifyingglass")
                     Slider(value: $zoom, in: 1...4).onChange(of: zoom) { _, z in cam.setZoom(z) }
                     Image(systemName: "plus.magnifyingglass")
-                    Button { frozen.toggle(); cam.setPaused(frozen) } label: { Image(systemName: frozen ? "play.fill" : "pause.fill").font(.system(size: 16, weight: .bold)).padding(10).background(.ultraThinMaterial, in: Circle()) }
+                    Button { frozen.toggle(); cam.setPaused(frozen) } label: { Image(systemName: frozen ? "play.fill" : "pause.fill").accessibilityLabel("Freeze").font(.system(size: 16, weight: .bold)).padding(10).background(.ultraThinMaterial, in: Circle()) }
                 }
                 .padding(.horizontal, HandySpacing.s16).padding(.vertical, HandySpacing.s12)
                 .background(.ultraThinMaterial, in: Capsule())

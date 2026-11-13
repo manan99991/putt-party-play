@@ -369,7 +369,7 @@ private struct ScanSheet: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             LiveScanner(onResult: onResult).ignoresSafeArea()
-            Button { dismiss() } label: { Image(systemName: "xmark.circle.fill").font(.largeTitle).foregroundStyle(.white).padding() }
+            Button { dismiss() } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel("Close").font(.largeTitle).foregroundStyle(.white).padding() }
                 .accessibilityLabel("Close scanner")
         }
     }

@@ -485,7 +485,7 @@ struct SearchField: View {
                     }
                 }
             if !text.isEmpty {
-                Button { text = ""; focused.wrappedValue = false } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }
+                Button { text = ""; focused.wrappedValue = false } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel("Clear").foregroundStyle(HandyColor.textSecondary) }
                     .accessibilityLabel("Clear search")
             }
         }

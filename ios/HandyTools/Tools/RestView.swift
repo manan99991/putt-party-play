@@ -83,14 +83,14 @@ struct RestView: View {
                 }
                 ForEach(recorder.events.reversed()) { e in
                     HStack(spacing: HandySpacing.s12) {
-                        Button { toggle(e) } label: { Image(systemName: playingClip == e.url ? "stop.circle.fill" : "play.circle.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent) }.buttonStyle(.plain)
+                        Button { toggle(e) } label: { Image(systemName: playingClip == e.url ? "stop.circle.fill" : "play.circle.fill").accessibilityLabel("Play").font(.system(size: 30)).foregroundStyle(HandyColor.accent) }.buttonStyle(.plain)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(e.date.formatted(date: .abbreviated, time: .shortened)).font(HandyFont.bodyStrong)
                             Text("\(GeoFormat.duration(e.seconds)) · peak \(Int(e.peakDB)) dB").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
                         Spacer()
                         ShareLink(item: e.url) { Image(systemName: "square.and.arrow.up") }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
-                        Button(role: .destructive) { recorder.delete(e) } label: { Image(systemName: "trash") }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
+                        Button(role: .destructive) { recorder.delete(e) } label: { Image(systemName: "trash").accessibilityLabel("Delete") }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
                     }.cardStyle(padding: HandySpacing.s12)
                 }
             }

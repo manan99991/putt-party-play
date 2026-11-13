@@ -73,7 +73,7 @@ struct MemoryView: View {
         HStack(spacing: HandySpacing.s8) {
             Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
             TextField("Ask your photos… (text or what they show)", text: $query).submitLabel(.search).onSubmit { runSearch() }
-            if !query.isEmpty { Button { query = ""; results = []; aiAnswer = nil; searched = false } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(HandyColor.textSecondary) }.buttonStyle(.plain) }
+            if !query.isEmpty { Button { query = ""; results = []; aiAnswer = nil; searched = false } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel("Clear").foregroundStyle(HandyColor.textSecondary) }.buttonStyle(.plain) }
             Button { runSearch() } label: { Text("Ask").font(HandyFont.bodyStrong) }.disabled(query.trimmingCharacters(in: .whitespaces).isEmpty || index.entries.isEmpty)
         }
         .padding(HandySpacing.s12)
@@ -128,7 +128,7 @@ struct MemoryView: View {
                         Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
                 }.buttonStyle(.plain)
-                Button { let line = MemoryEngine.bestLine(for: query, in: e); UIPasteboard.general.string = line; ClipStore.add(line); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                Button { let line = MemoryEngine.bestLine(for: query, in: e); UIPasteboard.general.string = line; ClipStore.add(line); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
             }
         }
         .padding(HandySpacing.s12)
@@ -227,7 +227,7 @@ private struct MemoryImageViewer: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } }
                 ToolbarItem(placement: .primaryAction) {
-                    Button { UIPasteboard.general.string = entry.text; ClipStore.add(entry.text); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc") }
+                    Button { UIPasteboard.general.string = entry.text; ClipStore.add(entry.text); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }
                         .disabled(entry.text.isEmpty)
                 }
             }

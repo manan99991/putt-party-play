@@ -197,9 +197,9 @@ struct ScanView: View {
             }
             HStack(spacing: HandySpacing.s8) {
                 Button { rotate() } label: { Label("Rotate", systemImage: "rotate.right") }.compactButton()
-                Button { move(-1) } label: { Image(systemName: "arrow.left") }.compactButton().disabled(selected == 0)
-                Button { move(1) } label: { Image(systemName: "arrow.right") }.compactButton().disabled(selected >= pages.count - 1)
-                Button(role: .destructive) { remove() } label: { Image(systemName: "trash") }.compactButton()
+                Button { move(-1) } label: { Image(systemName: "arrow.left") }.compactButton().disabled(selected == 0).accessibilityLabel("Move page left")
+                Button { move(1) } label: { Image(systemName: "arrow.right") }.compactButton().disabled(selected >= pages.count - 1).accessibilityLabel("Move page right")
+                Button(role: .destructive) { remove() } label: { Image(systemName: "trash") }.compactButton().accessibilityLabel("Delete page")
             }
             Button { applyFilterToAll() } label: { Label("Apply this look to every page", systemImage: "square.on.square") }.textButton()
             Text("Page \(selected + 1) of \(pages.count). Enhance fixes shadows and uneven lighting; Black & white makes the smallest, crispest forms.")
@@ -232,7 +232,7 @@ struct ScanView: View {
                 HStack(spacing: HandySpacing.s8) {
                     Text("Size").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     Slider(value: Binding(get: { st.width }, set: { w in update(sid) { $0.width = w } }), in: 0.06...0.9).tint(HandyColor.accent)
-                    Button(role: .destructive) { update(selected) { $0.stamps.removeAll { $0.id == sid } }; selectedStamp = nil } label: { Image(systemName: "trash") }.compactButton()
+                    Button(role: .destructive) { update(selected) { $0.stamps.removeAll { $0.id == sid } }; selectedStamp = nil } label: { Image(systemName: "trash") }.compactButton().accessibilityLabel("Remove stamp")
                 }
             }
             HStack {

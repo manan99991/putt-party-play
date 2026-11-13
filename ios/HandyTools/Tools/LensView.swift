@@ -99,7 +99,7 @@ struct LensView: View {
                     .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .onSubmit { loadWeb() }
-                Button { loadWeb() } label: { Image(systemName: "arrow.down.doc").frame(width: 36, height: 36) }.compactButton().disabled(URL(string: urlText)?.host == nil)
+                Button { loadWeb() } label: { Image(systemName: "arrow.down.doc").accessibilityLabel("Load page").frame(width: 36, height: 36) }.compactButton().disabled(URL(string: urlText)?.host == nil)
             }
         }
     }
@@ -125,7 +125,7 @@ struct LensView: View {
                     Button { export() } label: { HStack { if reader.exporting { ProgressView() }; Label("Save as audio", systemImage: "waveform.badge.plus") } }.compactButton().disabled(reader.exporting)
                     if let exported { ShareLink(item: exported) { Label("Share audio", systemImage: "square.and.arrow.up") }.compactButton() }
                     Spacer()
-                    Button { reader.stop(); reader.sentences = []; exported = nil } label: { Image(systemName: "xmark").frame(width: 36, height: 36) }.compactButton()
+                    Button { reader.stop(); reader.sentences = []; exported = nil } label: { Image(systemName: "xmark").accessibilityLabel("Close").frame(width: 36, height: 36) }.compactButton()
                 }
             }
             Text("Keeps reading with the screen locked. For a more natural voice, add an Enhanced voice in Settings › Accessibility › Spoken Content.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
