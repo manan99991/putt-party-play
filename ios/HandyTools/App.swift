@@ -553,6 +553,16 @@ struct ToolGridPage: View {
     }
 }
 
+extension Tool {
+    /// A stable, colourful gradient for the Aurora look — each tool keeps the same pair, spread across C's palette.
+    var auroraGradient: [Color] {
+        let sets: [[UInt32]] = [[0x7B5CFF, 0xFF4FA3], [0xFF4FA3, 0xFF9A3D], [0x2FD9FF, 0x7B5CFF], [0xD2FF3A, 0x2FD9FF], [0xFFD93D, 0xFF9A3D], [0xFF4FA3, 0x7B5CFF], [0x2FD9FF, 0xD2FF3A]]
+        var h = 5381; for b in id.utf8 { h = (h &* 33) &+ Int(b) }
+        let s = sets[abs(h) % sets.count]
+        return [Color(hex: s[0]), Color(hex: s[1])]
+    }
+}
+
 /// Home grid card. The tool's themed illustration fills the card as a background LAYER; a scrim
 /// fades it into the surface colour toward the bottom; the icon, name and blurb sit on top as the
 /// last ZStack layer, so they are always drawn over the art and can never be hidden by it. (The
@@ -566,31 +576,41 @@ struct ToolCard: View {
     let tool: Tool
     var height: CGFloat = 104   // grid passes a taller value to fill the screen evenly; search keeps the default
     var body: some View {
+        let aurora = theme.current == .aurora
         let artName = TenzyArt.name(id: tool.id, theme: theme.current, scheme: scheme, kind: .card)
         ZStack {
-            HandyColor.surface
-            Image(artName).resizable().scaledToFill()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .clipped()
-                .allowsHitTesting(false)
-            // Scrim: art shows through the top, deepening to the surface colour over the bottom third
-            // so the title + blurb read clearly in any theme, light or dark.
-            LinearGradient(
-                stops: [
-                    .init(color: HandyColor.surface.opacity(0.0), location: 0.35),
-                    .init(color: HandyColor.surface.opacity(0.70), location: 0.62),
-                    .init(color: HandyColor.surface.opacity(0.97), location: 1.0)
-                ],
-                startPoint: .top, endPoint: .bottom
-            )
+            if aurora {
+                // Direction C: a flat colourful gradient instead of the per-tool art, with a soft dark foot so the text reads.
+                LinearGradient(colors: tool.auroraGradient, startPoint: .topLeading, endPoint: .bottomTrailing)
+                LinearGradient(stops: [
+                    .init(color: .black.opacity(0.0), location: 0.42),
+                    .init(color: .black.opacity(0.50), location: 1.0)
+                ], startPoint: .top, endPoint: .bottom)
+            } else {
+                HandyColor.surface
+                Image(artName).resizable().scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+                    .allowsHitTesting(false)
+                // Scrim: art shows through the top, deepening to the surface colour over the bottom third
+                // so the title + blurb read clearly in any theme, light or dark.
+                LinearGradient(
+                    stops: [
+                        .init(color: HandyColor.surface.opacity(0.0), location: 0.35),
+                        .init(color: HandyColor.surface.opacity(0.70), location: 0.62),
+                        .init(color: HandyColor.surface.opacity(0.97), location: 1.0)
+                    ],
+                    startPoint: .top, endPoint: .bottom
+                )
+            }
         }
         .frame(maxWidth: .infinity, minHeight: height, maxHeight: height)
         .overlay(alignment: .bottomLeading) {
             // Anchored to the bottom as an overlay (sized to its own content), so it can never
             // overflow or be clipped by the card the way a greedy VStack did.
             VStack(alignment: .leading, spacing: 1) {
-                Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.7)
-                Text(tool.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.8)
+                Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(aurora ? Color.white : HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.7)
+                Text(tool.blurb).font(HandyFont.caption).foregroundStyle(aurora ? Color.white.opacity(0.85) : HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.8)
             }
             .padding(.horizontal, HandySpacing.s12)
             .padding(.bottom, HandySpacing.s8)

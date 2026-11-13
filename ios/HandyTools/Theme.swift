@@ -33,7 +33,7 @@ enum HandyColor {
 enum TenzyTheme: String, CaseIterable, Identifiable {
     case daylight, midnight, warmPaper, neoPop, mono, aurora
     var id: String { rawValue }
-    var isPro: Bool { self != .daylight }
+    var isPro: Bool { self != .daylight && self != .aurora }   // Aurora is the free default look
     var isDark: Bool { self == .midnight || self == .aurora }
     var title: String {
         switch self {
@@ -109,7 +109,7 @@ final class ActiveTheme {
     var theme: TenzyTheme { didSet { tokens = theme.tokens } }
     private(set) var tokens: ThemeTokens
     private init() {
-        let t = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: "tenzyTheme") ?? "") ?? .daylight
+        let t = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: "tenzyTheme") ?? "") ?? .aurora
         theme = t; tokens = t.tokens
     }
 }
@@ -128,7 +128,7 @@ final class ActiveTheme {
         if (Launch.screenshots || Launch.uitest), let i = Launch.args.firstIndex(of: "-theme"), i + 1 < Launch.args.count, let forced = TenzyTheme(rawValue: Launch.args[i + 1]) {
             current = forced
         } else {
-            current = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: Self.key) ?? "") ?? .daylight
+            current = TenzyTheme(rawValue: UserDefaults.standard.string(forKey: Self.key) ?? "") ?? .aurora
         }
         ActiveTheme.shared.theme = current
     }
