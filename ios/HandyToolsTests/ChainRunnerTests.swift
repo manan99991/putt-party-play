@@ -1444,3 +1444,13 @@ final class NewestDrawingTests: XCTestCase {
         XCTAssertEqual(RunHistory.kept(items, limit: 0), [])
     }
 }
+
+final class SaveLimitTests: XCTestCase {
+    func testFreeTierKeepsAHandfulOfToolsProLiftsIt() {
+        XCTAssertEqual(BuilderLimits.freeSaved, 2)
+        XCTAssertTrue(BuilderLimits.canSave(savedCount: 0, isPremium: false)); XCTAssertTrue(BuilderLimits.canSave(savedCount: 1, isPremium: false))
+        XCTAssertFalse(BuilderLimits.canSave(savedCount: 2, isPremium: false), "a free user at the cap can't save another")
+        XCTAssertFalse(BuilderLimits.canSave(savedCount: 9, isPremium: false))
+        XCTAssertTrue(BuilderLimits.canSave(savedCount: 2, isPremium: true), "Pro has no cap"); XCTAssertTrue(BuilderLimits.canSave(savedCount: 99, isPremium: true))
+    }
+}

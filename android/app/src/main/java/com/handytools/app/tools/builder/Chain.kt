@@ -338,6 +338,16 @@ data class Chain(val id: String, val name: String, val steps: List<Step>, val fi
     }
 }
 
+/**
+ * How many of your own tools the free tier keeps. Building and running are always unlimited; Pro lifts the cap on
+ * how many you can save. Pure, so it matches iOS and is unit-tested.
+ */
+object BuilderLimits {
+    const val FREE_SAVED = 2
+    /** Can a tool be saved, given how many are already kept and whether the person has Pro? */
+    fun canSave(savedCount: Int, isPremium: Boolean): Boolean = isPremium || savedCount < FREE_SAVED
+}
+
 /** What a shared or picked thing is, from its type: a photo, a video, a recording, a PDF, or (with no file) text. Null for a file no tool takes. */
 fun kindOf(mime: String?, hasText: Boolean): Kind? = when {
     mime == null -> if (hasText) Kind.TEXT else null

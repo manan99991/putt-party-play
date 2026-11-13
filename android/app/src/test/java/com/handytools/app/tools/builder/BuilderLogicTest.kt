@@ -690,4 +690,12 @@ class BuilderLogicTest {
         assertTrue(ChainTemplates.all.first { it.id == "before-after" }.versus)
         assertEquals(listOf(Block.PRICE_COMPARE), planned("which is the cheapest per unit").takeLast(1))
     }
+
+    @Test fun freeTierKeepsAHandfulOfToolsProLiftsIt() {
+        assertEquals(2, BuilderLimits.FREE_SAVED)
+        assertTrue(BuilderLimits.canSave(0, false)); assertTrue(BuilderLimits.canSave(1, false))
+        assertFalse(BuilderLimits.canSave(2, false))
+        assertFalse(BuilderLimits.canSave(9, false))
+        assertTrue(BuilderLimits.canSave(2, true)); assertTrue(BuilderLimits.canSave(99, true))
+    }
 }

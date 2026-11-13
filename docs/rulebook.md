@@ -124,6 +124,11 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   (iOS) and `ToolLink.LIVE` (Android) switch link and QR sharing on or off. Android declares a `tenzy://import` link filter; an
   imported tool is only saved to My tools, never run by itself.
 - "Change the voice" only changes speed and pitch. Do not describe it as voice cloning or as sounding like a real person.
+- Build your own, free vs Pro: building and running tools is **unlimited for everyone** (free included), and so is receiving a tool from a
+  shared link. The free tier **keeps `BuilderLimits.freeSaved` (2) of your own saved tools**; saving a 3rd from the editor, Duplicate, or the
+  in-app Paste opens the paywall instead (the built tool is not lost — the editor stays open, and Save works once the person is Pro). Pro lifts
+  the cap. The number lives in `BuilderLimits` on both phones (one source, unit-tested); keep the paywall copy ("Build unlimited tools") and this
+  rule in step. A tool opened from a shared link at launch is not gated, so the sharing growth loop stays open even past the cap.
 - Listing changes for Build your own are drafted in `docs/listing-draft.md`. That file is not pushed by the pipeline; copy
   from it into the metadata folders only after the features ship and Manan approves.
 

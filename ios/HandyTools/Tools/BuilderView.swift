@@ -119,8 +119,10 @@ struct BuilderView: View {
                 Spacer()
                 Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []) } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
                 Button {
-                    if let c = ToolLink.chain(from: UIPasteboard.general.string ?? "") { mine.append(c); persist(); note = "Added \(c.name)." }
-                    else { note = "Copy a tool from another Tenzy first, then tap Paste." }
+                    if let c = ToolLink.chain(from: UIPasteboard.general.string ?? "") {
+                        if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) { mine.append(c); persist(); note = "Added \(c.name)." }
+                        else { proForSave() }
+                    } else { note = "Copy a tool from another Tenzy first, then tap Paste." }
                 } label: { Label("Paste", systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
             }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
@@ -143,8 +145,9 @@ struct BuilderView: View {
         .sheet(item: $editing) { c in
             NavigationStack {
                 ChainEditor(chain: c, hint: editHint) { saved in
-                    if let i = mine.firstIndex(where: { $0.id == saved.id }) { mine[i] = saved } else { mine.append(saved) }
-                    persist(); editing = nil; editHint = nil
+                    if let i = mine.firstIndex(where: { $0.id == saved.id }) { mine[i] = saved; persist(); editing = nil; editHint = nil }
+                    else if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) { mine.append(saved); persist(); editing = nil; editHint = nil }
+                    else { proForSave() }   // keep the editor open so the built tool isn't lost; Save works again after upgrading
                 }
             }
         }
@@ -195,6 +198,12 @@ struct BuilderView: View {
 
     /// Saves the tools and keeps the phone's reminders and the home-screen widget in step with them.
     private func persist() { ChainStore.save(mine); ToolSchedules.sync(mine); WidgetCenter.shared.reloadTimelines(ofKind: "ToolsWidget") }
+
+    /// Free keeps a couple of your own tools; Pro lifts the cap. Shown when a free user tries to save past it.
+    private func proForSave() {
+        note = "Free keeps \(BuilderLimits.freeSaved) of your own tools. Go Pro to save as many as you like."
+        NotificationCenter.default.post(name: .showPaywall, object: nil)
+    }
 
     /// "Start with what you have": pick the thing first, and Tenzy lists the tools that fit it.
     private var anything: some View {
@@ -290,6 +299,7 @@ struct BuilderView: View {
                     note = "Add the My Tools widget: touch and hold the Home Screen, tap Edit, then Add Widget, choose Tenzy, then My Tools. Your first tools appear on it, one tap each. Use Move to top to choose which."
                 }
                 Button("Duplicate") {
+                    guard BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) else { proForSave(); return }
                     var k = c; k.id = UUID().uuidString; k.name += " copy"; k.schedule = nil
                     mine.append(k); persist(); note = "Duplicated as \(k.name)."
                 }

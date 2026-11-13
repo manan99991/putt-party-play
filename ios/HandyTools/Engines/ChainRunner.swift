@@ -664,6 +664,14 @@ extension Chain {
     }
 }
 
+/// How many of your own tools the free tier keeps. Building and running are always unlimited; Pro lifts the cap on
+/// how many you can save. Pure, so it is the same on both phones and unit-tested.
+enum BuilderLimits {
+    static let freeSaved = 2
+    /// Can a tool be saved, given how many are already kept and whether the person has Pro?
+    static func canSave(savedCount: Int, isPremium: Bool) -> Bool { isPremium || savedCount < freeSaved }
+}
+
 /// Saved tools live in the App Group so the share sheet ("Tenzy" in any app's Share menu) can run them too.
 enum ChainStore {
     private static let key = "builder.chains"

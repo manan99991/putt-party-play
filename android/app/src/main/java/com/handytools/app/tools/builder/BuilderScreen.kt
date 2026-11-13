@@ -267,7 +267,7 @@ fun BuilderScreen() {
                 TextButton({ editHint = null; editing = Chain.blank() }) { Text("Blank") }
                 TextButton({
                     val c = ToolLink.chain(paste(ctx))
-                    if (c != null) { mine.add(c); saveAll(); note = "Added ${c.name}." } else note = "Copy a tool from another Tenzy first, then tap Paste. Tools that use steps this phone doesn't have can't be added."
+                    if (c != null) { if (BuilderLimits.canSave(mine.size, premium)) { mine.add(c); saveAll(); note = "Added ${c.name}." } else proForSave() } else note = "Copy a tool from another Tenzy first, then tap Paste. Tools that use steps this phone doesn't have can't be added."
                 }) { Text("Paste") }
             }
         }
