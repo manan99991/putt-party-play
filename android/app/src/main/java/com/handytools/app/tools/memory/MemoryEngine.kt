@@ -41,35 +41,42 @@ object MemoryEngine {
     suspend fun index(ctx: Context, limit: Int = 400, onProgress: (Float) -> Unit): List<MemEntry> = withContext(Dispatchers.IO) {
         val cache = loadCache(ctx).associateBy { it.id }
         val shots = screenshots(ctx, limit)
+        val liveIds = shots.mapTo(HashSet()) { it.first }
+        // Only OCR the shots that still need it — brand-new ones, or ones changed since we read them.
+        // Anything already cached and current is left untouched and never re-read.
+        val todo = shots.filter { (id, date) ->
+            val hit = cache[id]; !(hit != null && hit.date == date && hit.text.isNotEmpty())
+        }
+        // Forget screenshots that no longer exist so counts and search stay honest.
+        val merged = HashMap(cache.filterKeys { liveIds.contains(it) })
+
+        // Nothing new since last time — the common path on every open after the first build. Do no
+        // OCR work: hand back the saved index instantly.
+        if (todo.isEmpty()) {
+            val snap = merged.values.sortedByDescending { it.date }
+            onProgress(1f); saveCache(ctx, snap)
+            return@withContext snap
+        }
+
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-        val out = ArrayList<MemEntry>()
-        val total = shots.size.coerceAtLeast(1)
-        shots.forEachIndexed { i, pair ->
+        val total = todo.size
+        todo.forEachIndexed { i, pair ->
             val id = pair.first
             val date = pair.second
-            val hit = cache[id]
-            if (hit != null && hit.date == date && hit.text.isNotEmpty()) {
-                out.add(hit)
-            } else {
-                val uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
-                // getOrNull() distinguishes a real read failure (null) from a successful read with no
-                // text (""). Only a failure must be retried — caching "" as done makes a screenshot
-                // that failed OCR once permanently unsearchable, even on Re-index.
-                val text = runCatching {
-                    val img = InputImage.fromFilePath(ctx, uri)
-                    recognizer.process(img).await().text
-                }.getOrNull()
-                when {
-                    text != null -> out.add(MemEntry(id, date, text))   // read succeeded (text may be empty)
-                    hit != null  -> out.add(hit)                        // read failed — keep what we had, don't poison
-                    // else: skip entirely so it is retried on the next index pass
-                }
-            }
+            val uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
+            // getOrNull() distinguishes a real read failure (null) from a successful read with no
+            // text (""). Only a failure must be retried — caching "" as done makes a screenshot
+            // that failed OCR once permanently unsearchable, even on Re-index.
+            val text = runCatching {
+                val img = InputImage.fromFilePath(ctx, uri)
+                recognizer.process(img).await().text
+            }.getOrNull()
+            if (text != null) merged[id] = MemEntry(id, date, text)   // success (text may be empty); failure keeps any existing entry and is retried later
             onProgress((i + 1).toFloat() / total)
         }
-        out.sortByDescending { it.date }
-        saveCache(ctx, out)
-        out
+        val snap = merged.values.sortedByDescending { it.date }
+        saveCache(ctx, snap)
+        snap
     }
 
     private fun screenshots(ctx: Context, limit: Int): List<Pair<Long, Long>> {

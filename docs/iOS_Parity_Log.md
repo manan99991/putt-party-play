@@ -276,3 +276,10 @@ Asked for after the first phone pass: "let them name the tool", "make Describe i
 - Other agent flags assessed as false positives: home "Page 1/Page 2" are swipeable pages not buttons; Codes black camera = emulator has no camera; Message Shield / See & Read "unreachable link" = intentional sample scam URLs; many "no a11y label" = Compose/uiautomator semantics read quirk, controls are labelled.
 - Fixes committed on handytools-fixes-pending (2cbb3af). NOT released — awaiting Manan's go + Play production-access grant.
 - Fastbot workflow fixed: native lib now pushed to /data/local/tmp/<abi>/ (was bare path → engine failed to load). Fix on handytools-fixes-pending and synced to main so the weekly scheduled run works.
+
+### Memory photo index — incremental, one-time first build — 2026-11-13
+- Problem: Memory re-walked the WHOLE library on every open (progress "347 of 9,345"), and a single new photo triggered a full-library pass + full cache re-save. Killed performance on big libraries.
+- Fix (both platforms): index() now does one cheap metadata pass to collect only NEW or CHANGED assets, reads only those, skips entirely (no "building" progress) when nothing changed, and prunes deleted assets from the cache. Progress is over the delta, not the whole library — so the slow build happens once.
+  - iOS: MemoryEngine.swift index() + hasUnindexed() (now a real id-membership check, not a count compare).
+  - Android: memory/MemoryEngine.kt index() (screenshot-scoped, limit 400) mirrors the same skip-when-nothing-new + prune-deleted logic.
+- Existing users keep their cache (entries with labels/text are reused, not re-read), so the update does not re-index everything.

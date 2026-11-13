@@ -160,7 +160,13 @@ enum MemoryEngine {
     /// never-built index). A cheap count check used to continue indexing in the background so the first
     /// build is the only slow one and later opens just pick up what's new.
     static func hasUnindexed() -> Bool {
-        PHAsset.fetchAssets(with: mediaFetch()).count > loadCache().count
+        let cached = Set(loadCache().map { $0.id })
+        let assets = PHAsset.fetchAssets(with: mediaFetch())
+        var found = false
+        assets.enumerateObjects { a, _, stop in
+            if !cached.contains(a.localIdentifier) { found = true; stop.pointee = true }
+        }
+        return found
     }
 
     /// Photos AND videos, newest first. Videos are indexed from their poster frame (objects, colours,
@@ -181,39 +187,63 @@ enum MemoryEngine {
                       onProgress: @escaping (_ done: Int, _ total: Int) -> Void) async -> [Entry] {
         var cache = Dictionary(uniqueKeysWithValues: loadCache().map { ($0.id, $0) })
         let assets = PHAsset.fetchAssets(with: mediaFetch())   // whole library, photos + videos, no cap
-        let total = assets.count
-        guard total > 0 else { onProgress(0, 0); onBatch([]); return [] }
-        var out: [Entry] = []; out.reserveCapacity(total)
-        var sinceSave = 0
-        for i in 0..<total {
+        let n = assets.count
+        guard n > 0 else { onProgress(0, 0); onBatch([]); saveCache([]); return [] }
+
+        // One cheap metadata pass (no image loads): collect only the photos that still need reading —
+        // brand-new ones, or ones edited since we read them — and note which ids still exist so deleted
+        // photos drop out. Everything already in the cache is left untouched and never re-analysed.
+        var todo: [PHAsset] = []
+        var liveIds = Set<String>(); liveIds.reserveCapacity(n)
+        for i in 0..<n {
             let a = assets.object(at: i)
+            liveIds.insert(a.localIdentifier)
             let mod = a.modificationDate ?? a.creationDate ?? .distantPast
-            let shot = a.mediaSubtypes.contains(.photoScreenshot)
-            let vid = a.mediaType == .video
             // Reuse the cache only if it was read AND already carries the visual analysis (labels key
             // present) — older text-only entries are re-read once so visual search works on them too.
             if let hit = cache[a.localIdentifier], hit.modified == mod, hit.readOK ?? true, hit.labels != nil {
-                out.append(hit)
-            } else if let r = await readAsset(a) {
-                let e = Entry(id: a.localIdentifier, date: a.creationDate ?? .distantPast, text: r.text,
-                              modified: mod, readOK: true, labels: r.labels, colors: r.colors, isScreenshot: shot, isVideo: vid)
-                cache[a.localIdentifier] = e
-                out.append(e)
-                sinceSave += 1
-            } else if let stale = cache[a.localIdentifier] {
-                out.append(stale)   // keep whatever we had rather than dropping the photo
+                continue
             }
-            onProgress(i + 1, total)
+            todo.append(a)
+        }
+        // Forget photos that no longer exist, so counts and search stay honest.
+        if cache.count != liveIds.count || !cache.keys.allSatisfy(liveIds.contains) {
+            cache = cache.filter { liveIds.contains($0.key) }
+        }
+
+        // Nothing new since last time — the common path on every open after the first build. Do no
+        // heavy work: hand back the saved index instantly, no "building" progress.
+        if todo.isEmpty {
+            let snapshot = cache.values.sorted { $0.date > $1.date }
+            onProgress(0, 0); onBatch(snapshot); saveCache(snapshot)
+            return snapshot
+        }
+
+        // Read ONLY the new/changed photos. Progress is over this delta (e.g. "12"), never the whole
+        // library, so the slow first build is the only slow pass — later opens just pick up what's new.
+        let total = todo.count
+        var done = 0, sinceSave = 0
+        for a in todo {
+            let mod = a.modificationDate ?? a.creationDate ?? .distantPast
+            let shot = a.mediaSubtypes.contains(.photoScreenshot)
+            let vid = a.mediaType == .video
+            if let r = await readAsset(a) {
+                cache[a.localIdentifier] = Entry(id: a.localIdentifier, date: a.creationDate ?? .distantPast, text: r.text,
+                                                 modified: mod, readOK: true, labels: r.labels, colors: r.colors, isScreenshot: shot, isVideo: vid)
+                sinceSave += 1
+            }   // a failed read keeps any existing entry and is retried on a later open
+            done += 1
+            onProgress(done, total)
             // Persist + publish a searchable snapshot every 40 freshly-read photos, and at the very end,
-            // so a 10,000-photo library fills in gradually and survives the app being closed mid-build.
-            if sinceSave >= 40 || i == total - 1 {
-                let snapshot = out.sorted { $0.date > $1.date }
+            // so a big first build fills in gradually and survives the app being closed mid-build.
+            if sinceSave >= 40 || done == total {
+                let snapshot = cache.values.sorted { $0.date > $1.date }
                 saveCache(snapshot)
                 onBatch(snapshot)
                 sinceSave = 0
             }
         }
-        return out.sorted { $0.date > $1.date }
+        return cache.values.sorted { $0.date > $1.date }
     }
 
     // MARK: search — text + visual labels + colour, each result carrying why it matched.
