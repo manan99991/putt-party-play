@@ -80,6 +80,9 @@ object HandyColors {
     // tree under key(theme) so every reader re-reads the fresh value. Default = Daylight.
     var Accent = Color(0xFF1F5EFF)
     var AccentPressed = Color(0xFF1649D6)
+    // Text/icon colour that sits ON the accent (button labels). White for most themes; a near-black
+    // for bright accents like Aurora's lime, where white would be unreadable. Set by HandyTheme.
+    var OnAccent = Color.White
     // Single source of truth for the brand accent in non-Compose contexts (overlays,
     // launcher-icon bitmaps) that can't read a Compose Color. Same value as Accent.
     const val AccentArgb: Int = 0xFF1F5EFF.toInt()
@@ -140,7 +143,7 @@ object Handy {
 
 /** The active TenzyTheme (Pro themes resolve to Daylight for free users). Themed art lookups read
  *  this to pick the per-theme icon/card variant, so the whole grid re-skins on a theme switch. */
-val LocalTenzyTheme = staticCompositionLocalOf { TenzyTheme.DAYLIGHT }
+val LocalTenzyTheme = staticCompositionLocalOf { TenzyTheme.AURORA }
 
 /** Asset-name key for the active theme (daylight/midnight/warmpaper/neopop/mono). */
 @Composable
@@ -210,17 +213,21 @@ private val HandyTypography = Typography(
 data class ResolvedTokens(
     val accent: Color, val accentPressed: Color, val accentSoft: Color,
     val bg: Color, val surface: Color, val surfaceRaised: Color,
-    val textPrimary: Color, val textSecondary: Color, val border: Color, val isDark: Boolean
+    val textPrimary: Color, val textSecondary: Color, val border: Color, val isDark: Boolean,
+    val onAccent: Color = Color.White
 )
 
 enum class TenzyTheme(val title: String, val blurb: String, val isPro: Boolean, val swatch: List<Color>, val assetKey: String) {
-    DAYLIGHT("Daylight", "Clean, bright — the default", false, listOf(Color(0xFF1F5EFF), Color(0xFF1649D6)), "daylight"),
+    AURORA("Aurora", "Deep space, lime spark", false, listOf(Color(0xFF7B5CFF), Color(0xFFFF4FA3)), "midnight"),
+    DAYLIGHT("Daylight", "Clean, bright", false, listOf(Color(0xFF1F5EFF), Color(0xFF1649D6)), "daylight"),
     MIDNIGHT("Midnight", "Dark glass, neon glow", true, listOf(Color(0xFF1E3A8A), Color(0xFF3DE1FF)), "midnight"),
     WARM_PAPER("Warm Paper", "Editorial, warm, matte", true, listOf(Color(0xFFC2502E), Color(0xFFE0795A)), "warmpaper"),
     NEO_POP("Neo Pop", "Bold, playful, punchy", true, listOf(Color(0xFFFF2D87), Color(0xFFFF8A00)), "neopop"),
     MONO("Mono", "Minimal, stealth", true, listOf(Color(0xFF1A1A1A), Color(0xFF000000)), "mono");
 
     fun tokens(systemDark: Boolean): ResolvedTokens = when (this) {
+        // Aurora: near-black ground, lime accent — the one bright accent, so its button text is dark.
+        AURORA -> fixed(0xFFD2FF3A, 0xFFB4E22A, 0xFF05040C, 0xFF141127, 0xFF1C1836, 0xFFF3F1FB, true, 0xFF0A0912)
         DAYLIGHT -> if (systemDark) ResolvedTokens(
             Color(0xFF1F5EFF), Color(0xFF1649D6), HandyColors.AccentSoftDark,
             HandyColors.BackgroundDark, HandyColors.SurfaceDark, HandyColors.SurfaceRaisedDark,
@@ -236,15 +243,15 @@ enum class TenzyTheme(val title: String, val blurb: String, val isPro: Boolean, 
     }
 
     /** Fixed-look theme: derive the soft/secondary/border tints from the base tokens (as iOS does). */
-    private fun fixed(accent: Long, pressed: Long, bg: Long, surface: Long, raised: Long, text: Long, dark: Boolean): ResolvedTokens {
+    private fun fixed(accent: Long, pressed: Long, bg: Long, surface: Long, raised: Long, text: Long, dark: Boolean, onAccent: Long = 0xFFFFFFFF): ResolvedTokens {
         val txt = Color(text)
         return ResolvedTokens(
             Color(accent), Color(pressed), Color(accent).copy(alpha = 0.16f),
             Color(bg), Color(surface), Color(raised),
-            txt, txt.copy(alpha = 0.62f), txt.copy(alpha = 0.12f), dark)
+            txt, txt.copy(alpha = 0.62f), txt.copy(alpha = 0.12f), dark, Color(onAccent))
     }
 
-    companion object { fun from(name: String?): TenzyTheme = entries.firstOrNull { it.name == name } ?: DAYLIGHT }
+    companion object { fun from(name: String?): TenzyTheme = entries.firstOrNull { it.name == name } ?: AURORA }
 }
 
 /** Holds the chosen theme (Compose state so a switch re-skins live) and persists it. */
@@ -268,9 +275,9 @@ object ThemeStore {
 
 private fun schemeFor(t: ResolvedTokens) =
     (if (t.isDark) darkColorScheme() else lightColorScheme()).copy(
-        primary = t.accent, onPrimary = Color.White,
+        primary = t.accent, onPrimary = t.onAccent,
         primaryContainer = t.accentSoft, onPrimaryContainer = t.accent,
-        secondary = t.accent, onSecondary = Color.White,
+        secondary = t.accent, onSecondary = t.onAccent,
         secondaryContainer = t.accentSoft, onSecondaryContainer = t.accent,
         background = t.bg, onBackground = t.textPrimary,
         surface = t.surface, onSurface = t.textPrimary,
@@ -288,8 +295,8 @@ fun HandyTheme(content: @Composable () -> Unit) {
     val ctx = LocalContext.current
     val premium by com.handytools.app.HandyApp.instance.billing.isPremium.collectAsState()
     val stored = ThemeStore.selected.value ?: ThemeStore.load(ctx)
-    // A free user (or a lapsed subscription) always renders Daylight even if a Pro theme is stored.
-    val active = if (!premium && stored.isPro) TenzyTheme.DAYLIGHT else stored
+    // A free user (or a lapsed subscription) falls back to the free default (Aurora) if a Pro theme is stored.
+    val active = if (!premium && stored.isPro) TenzyTheme.AURORA else stored
     val systemDark = isSystemInDarkTheme()
     val t = active.tokens(systemDark)
 
@@ -297,6 +304,7 @@ fun HandyTheme(content: @Composable () -> Unit) {
     // gradients) re-skins. Set before the keyed subtree builds, so children read the fresh value.
     HandyColors.Accent = t.accent
     HandyColors.AccentPressed = t.accentPressed
+    HandyColors.OnAccent = t.onAccent
 
     val palette = HandyPalette(
         accent = t.accent, accentPressed = t.accentPressed, accentSoft = t.accentSoft,
@@ -329,7 +337,7 @@ fun HPrimaryButton(text: String, modifier: Modifier = Modifier, enabled: Boolean
         onClick = onClick, enabled = enabled, interactionSource = src,
         modifier = modifier.fillMaxWidth().height(HandyTokens.PrimaryButtonHeight).scale(if (pressed) 0.98f else 1f).semantics { contentDescription = text },
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (pressed) HandyColors.AccentPressed else HandyColors.Accent,
+            containerColor = if (pressed) HandyColors.AccentPressed else HandyColors.Accent, contentColor = HandyColors.OnAccent,
             disabledContainerColor = Handy.palette.accentSoft, disabledContentColor = HandyColors.Accent.copy(alpha = 0.5f)
         )
     ) {

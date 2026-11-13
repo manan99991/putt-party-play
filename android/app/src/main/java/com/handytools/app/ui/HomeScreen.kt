@@ -358,6 +358,17 @@ fun HomeScreen(onOpen: (String) -> Unit) {
 /** Approved card (HTML prototype v4): the kit's 1290×440 art has its glow + line-art on the
  *  right third, so a 2-column card crops anchored to the RIGHT edge — never center — and a
  *  bottom-only scrim keeps the art visible while the name stays crisp. */
+// Aurora tile duotones — each tool keeps the same pair (stable by route), spread across Aurora's
+// palette, so the home grid reads as one colourful set on the near-black ground. Matches iOS.
+private val AURORA_TILES = listOf(
+    listOf(Color(0xFF7B5CFF), Color(0xFF4F2BD6)), listOf(Color(0xFFFF4FA3), Color(0xFFB5247A)),
+    listOf(Color(0xFF2BD4FF), Color(0xFF1C7FC2)), listOf(Color(0xFFBFE645), Color(0xFF7FA015)),
+    listOf(Color(0xFFFF8A5C), Color(0xFFD64F2B)), listOf(Color(0xFF5CFFC2), Color(0xFF1CB98A)),
+    listOf(Color(0xFFB15CFF), Color(0xFF7A24D6))
+)
+private fun auroraTile(route: String): List<Color> =
+    AURORA_TILES[((route.hashCode() % AURORA_TILES.size) + AURORA_TILES.size) % AURORA_TILES.size]
+
 @Composable
 private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onClick: () -> Unit) {
     // Icon scales a little with the card so a shorter (fit-to-page) card still looks balanced.
@@ -366,21 +377,24 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
         Modifier.fillMaxWidth().height(height).clip(RoundedCornerShape(20.dp))
             .background(Color(0xFF0D0D16)).clickable(onClick = onClick)
     ) {
-        val cardRes = themedCardRes(tool.route).let { if (it != 0) it else tool.cardRes }
+        // Aurora shows flat per-tool gradient tiles (its signature look, matching iOS) instead of the
+        // photographic card art, so skip the art and go straight to the gradient when it's active.
+        val aurora = LocalTenzyTheme.current == TenzyTheme.AURORA
+        val cardRes = if (aurora) 0 else themedCardRes(tool.route).let { if (it != 0) it else tool.cardRes }
         if (cardRes != 0) {
             Image(
                 painterResource(cardRes), null, modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop, alignment = Alignment.CenterEnd
             )
         } else {
-            // No bespoke card art (new + brought-back tools): a soft diagonal gradient in the tool's
-            // tint so the tile still reads as designed rather than a flat black box.
-            val base = if (tool.tint != Color.Unspecified) tool.tint else HandyColors.Accent
-            Box(
-                Modifier.fillMaxSize().background(
-                    Brush.linearGradient(listOf(base.copy(alpha = 0.95f), base.copy(alpha = 0.5f)))
-                )
-            )
+            // No bespoke card art (Aurora, or new + brought-back tools): a soft diagonal gradient — an
+            // Aurora duotone when that theme is on, else the tool's own tint — so the tile still reads
+            // as designed rather than a flat black box.
+            val g = if (aurora) auroraTile(tool.route) else {
+                val base = if (tool.tint != Color.Unspecified) tool.tint else HandyColors.Accent
+                listOf(base.copy(alpha = 0.95f), base.copy(alpha = 0.5f))
+            }
+            Box(Modifier.fillMaxSize().background(Brush.linearGradient(g)))
         }
         Box(
             Modifier.fillMaxSize().background(

@@ -283,3 +283,7 @@ Asked for after the first phone pass: "let them name the tool", "make Describe i
   - iOS: MemoryEngine.swift index() + hasUnindexed() (now a real id-membership check, not a count compare).
   - Android: memory/MemoryEngine.kt index() (screenshot-scoped, limit 400) mirrors the same skip-when-nothing-new + prune-deleted logic.
 - Existing users keep their cache (entries with labels/text are reused, not re-read), so the update does not re-index everything.
+
+### Android Aurora theme — built to match iOS — 2026-11-13
+- Gap found: Aurora (the new Direction-C look) existed only on iOS; Android had NO Aurora at all. This is why internal testers didn't see the new theme on Play.
+- Added on Android (ui/Theme.kt + ui/HomeScreen.kt): AURORA enum (free), lime-on-near-black tokens (#D2FF3A on #05040C), a new onAccent token so the bright lime buttons get dark text (white was unreadable) wired through HandyColors.OnAccent + the Material scheme onPrimary/onSecondary + HPrimaryButton, per-tool flat gradient home tiles (auroraTile, 7 duotones by stable route hash, matching iOS auroraGradient), reusing Midnight's dark themed icons (assetKey "midnight"). Aurora is now the default (from()/LocalTenzyTheme/free-fallback), matching iOS Direction C.
