@@ -672,6 +672,20 @@ enum BuilderLimits {
     static func canSave(savedCount: Int, isPremium: Bool) -> Bool { isPremium || savedCount < freeSaved }
 }
 
+extension Block {
+    /// The basic steps a free tool may use. Everything else is a Pro step, so a free tool stays simple and the
+    /// yearly subscription unlocks the real power. Pure, the same on both phones, and unit-tested.
+    static let freeStepIDs: Set<String> = ["readText", "cleanText", "translate", "summarize", "pullDetails", "makeQr", "wifiQr", "contactQr", "chatLink", "cleanLinks"]
+    var isProStep: Bool { !Block.freeStepIDs.contains(rawValue) }
+}
+
+extension Chain {
+    /// The Pro steps in this tool, in order (empty when every step is free).
+    var proSteps: [Block] { steps.map(\.block).filter(\.isProStep) }
+    /// True when running or saving this tool needs Pro (it uses at least one Pro step).
+    var needsPro: Bool { !proSteps.isEmpty }
+}
+
 /// Saved tools live in the App Group so the share sheet ("Tenzy" in any app's Share menu) can run them too.
 enum ChainStore {
     private static let key = "builder.chains"

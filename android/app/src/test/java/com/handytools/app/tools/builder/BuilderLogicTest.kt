@@ -698,4 +698,19 @@ class BuilderLogicTest {
         assertFalse(BuilderLimits.canSave(9, false))
         assertTrue(BuilderLimits.canSave(2, true)); assertTrue(BuilderLimits.canSave(99, true))
     }
+
+    @Test fun basicStepsAreFreeAndTheRestArePro() {
+        for (b in listOf(Block.READ_TEXT, Block.CLEAN_TEXT, Block.TRANSLATE, Block.SUMMARIZE, Block.PULL_DETAILS, Block.MAKE_QR, Block.WIFI_QR, Block.CONTACT_QR, Block.CHAT_LINK, Block.CLEAN_LINKS))
+            assertFalse(b.isProStep)
+        for (b in listOf(Block.SHRINK, Block.HIDE_SENSITIVE, Block.VIDEO_GIF, Block.VOICE_CHANGE, Block.STICKER, Block.MEME, Block.ART_FILTER, Block.PDF_LOCK, Block.STAMP, Block.SPEECH_TEXT, Block.READ_ALOUD, Block.REWRITE, Block.PHOTO_PDF, Block.SCAM_CHECK))
+            assertTrue(b.isProStep)
+        assertEquals(10, BuilderLimits.FREE_STEP_IDS.size)
+    }
+    @Test fun aToolNeedsProOnlyIfItUsesAProStep() {
+        assertFalse(chain(Block.READ_TEXT, Block.TRANSLATE).needsPro)
+        assertFalse(chain(Block.READ_TEXT, Block.CLEAN_TEXT, Block.MAKE_QR).needsPro)
+        val t = chain(Block.READ_TEXT, Block.HIDE_SENSITIVE, Block.TRANSLATE)
+        assertTrue(t.needsPro); assertEquals(listOf(Block.HIDE_SENSITIVE), t.proSteps)
+        assertEquals(2, chain(Block.STICKER, Block.SHRINK).proSteps.size)
+    }
 }

@@ -346,7 +346,17 @@ object BuilderLimits {
     const val FREE_SAVED = 2
     /** Can a tool be saved, given how many are already kept and whether the person has Pro? */
     fun canSave(savedCount: Int, isPremium: Boolean): Boolean = isPremium || savedCount < FREE_SAVED
+
+    /** The basic steps a free tool may use. Everything else is a Pro step. Matches iOS; unit-tested. */
+    val FREE_STEP_IDS: Set<String> = setOf("readText", "cleanText", "translate", "summarize", "pullDetails", "makeQr", "wifiQr", "contactQr", "chatLink", "cleanLinks")
 }
+
+/** A Pro step needs the subscription; the basic free steps don't. */
+val Block.isProStep: Boolean get() = id !in BuilderLimits.FREE_STEP_IDS
+/** The Pro steps in this tool, in order (empty when every step is free). */
+val Chain.proSteps: List<Block> get() = steps.map { it.block }.filter { it.isProStep }
+/** True when running or saving this tool needs Pro. */
+val Chain.needsPro: Boolean get() = proSteps.isNotEmpty()
 
 /** What a shared or picked thing is, from its type: a photo, a video, a recording, a PDF, or (with no file) text. Null for a file no tool takes. */
 fun kindOf(mime: String?, hasText: Boolean): Kind? = when {

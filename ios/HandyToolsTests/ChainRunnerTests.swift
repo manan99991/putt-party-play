@@ -1454,3 +1454,23 @@ final class SaveLimitTests: XCTestCase {
         XCTAssertTrue(BuilderLimits.canSave(savedCount: 2, isPremium: true), "Pro has no cap"); XCTAssertTrue(BuilderLimits.canSave(savedCount: 99, isPremium: true))
     }
 }
+
+final class ProStepTests: XCTestCase {
+    private func chain(_ b: [Block]) -> Chain { Chain(id: "t", name: "t", steps: b.map { ChainStep(block: $0) }) }
+    func testBasicStepsAreFreeAndTheRestArePro() {
+        for b in [Block.readText, .cleanText, .translate, .summarize, .pullDetails, .makeQr, .wifiQr, .contactQr, .chatLink, .cleanLinks] {
+            XCTAssertFalse(b.isProStep, "\(b.rawValue) should be free")
+        }
+        for b in [Block.shrinkImage, .hideSensitive, .videoGif, .voiceChange, .sticker, .meme, .artFilter, .pdfLock, .stamp, .speechText, .readAloud, .rewrite, .photoPdf, .scamCheck] {
+            XCTAssertTrue(b.isProStep, "\(b.rawValue) should be Pro")
+        }
+        XCTAssertEqual(Block.freeStepIDs.count, 10)
+    }
+    func testAToolNeedsProOnlyIfItUsesAProStep() {
+        XCTAssertFalse(chain([.readText, .translate]).needsPro)
+        XCTAssertFalse(chain([.readText, .cleanText, .makeQr]).needsPro)
+        let t = chain([.readText, .hideSensitive, .translate])
+        XCTAssertTrue(t.needsPro); XCTAssertEqual(t.proSteps, [.hideSensitive])
+        XCTAssertEqual(chain([.sticker, .shrinkImage]).proSteps.count, 2)
+    }
+}
