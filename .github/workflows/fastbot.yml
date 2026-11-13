@@ -69,10 +69,15 @@ jobs:
           sleep 45
           adb install -r -g app-debug.apk || { echo "install failed"; exit 1; }
 
-          # ---- Fastbot: push jars to /sdcard, the x86_64 native libs to /data/local/tmp
+          # ---- Fastbot: push jars to /sdcard; native lib must land at /data/local/tmp/<abi>/libfastbot_native.so
+          # (the loader looks for the ABI subfolder — a bare /data/local/tmp/libfastbot_native.so is NOT found).
           adb push fastbot/monkeyq.jar fastbot/framework.jar fastbot/fastbot-thirdpart.jar /sdcard/
-          if adb push fastbot/libs/x86_64/. /data/local/tmp/ 2>/dev/null; then echo "pushed x86_64 libs"; \
-          else find fastbot/libs -name '*.so' -exec adb push {} /data/local/tmp/ \; ; fi
+          adb shell mkdir -p /data/local/tmp/x86_64
+          adb push fastbot/libs/x86_64/libfastbot_native.so /data/local/tmp/x86_64/ && echo "pushed x86_64 native lib to ABI subfolder" \
+            || { echo "x86_64 .so push failed; pushing every abi tree"; adb push fastbot/libs/. /data/local/tmp/; }
+          # belt-and-braces: also drop a bare copy for any build that probes the flat path
+          adb push fastbot/libs/x86_64/libfastbot_native.so /data/local/tmp/ 2>/dev/null || true
+          adb shell ls -l /data/local/tmp/x86_64/libfastbot_native.so || true
 
           MIN="${{ github.event.inputs.minutes || 10 }}"
           echo "=== Fastbot fuzzing $APP_PACKAGE for ${MIN}m ==="
