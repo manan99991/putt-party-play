@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +50,7 @@ import com.handytools.app.ui.HSecondaryButton
 import com.handytools.app.ui.Handy
 import com.handytools.app.ui.HandyTokens
 import com.handytools.app.ui.ToolHeader
+import com.handytools.app.HandyApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -122,6 +124,8 @@ private fun defaults(b: Block): Map<String, String> = when (b) {
 @Composable
 fun BuilderScreen() {
     val ctx = LocalContext.current
+    val premium by HandyApp.instance.billing.isPremium.collectAsState()
+    val openPaywall = com.handytools.app.ads.LocalRemoveAds.current
     val mine = remember { mutableStateListOf<Chain>().also { it.addAll(ChainStore.load(ctx)) } }
     var editing by remember { mutableStateOf<Chain?>(null) }
     var running by remember { mutableStateOf<Chain?>(null) }
@@ -129,6 +133,7 @@ fun BuilderScreen() {
     var ask by remember { mutableStateOf("") }
 
     fun saveAll() { ChainStore.save(ctx, mine.toList()); ToolReminders.sync(ctx, mine.toList()); PhotoWatch.arm(ctx) }
+    fun proForSave() { note = "Free covers 2 saved tools. Go Pro for unlimited."; openPaywall?.invoke() }
     var showSheets by remember { mutableStateOf(false) }
     var showHistory by remember { mutableStateOf(false) }
     var linking by remember { mutableStateOf<Chain?>(null) }
@@ -164,8 +169,9 @@ fun BuilderScreen() {
     editing?.let { c ->
         ChainEditor(c, hint = editHint, onCancel = { editing = null; editHint = null }) { saved ->
             val i = mine.indexOfFirst { it.id == saved.id }
-            if (i >= 0) mine[i] = saved else mine.add(saved)
-            saveAll(); editing = null; editHint = null
+            if (i >= 0) { mine[i] = saved; saveAll(); editing = null; editHint = null }
+            else if (BuilderLimits.canSave(mine.size, premium)) { mine.add(saved); saveAll(); editing = null; editHint = null }
+            else { editing = null; editHint = null; proForSave() }
         }
         return
     }
@@ -244,7 +250,7 @@ fun BuilderScreen() {
                     onRename = { newName = c.name; renaming = c },
                     onTop = if (mine.firstOrNull()?.id == c.id) null else ({ mine.removeAll { it.id == c.id }; mine.add(0, c); saveAll(); note = "${c.name} is now first." }),
                     onPin = { note = if (pinToHome(ctx, c)) "Follow the phone's prompt to put ${c.name} on your Home screen." else "This phone's Home screen doesn't take shortcuts from apps." },
-                    onDuplicate = { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null, auto = AutoRun.OFF); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." })
+                    onDuplicate = { if (BuilderLimits.canSave(mine.size, premium)) { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null, auto = AutoRun.OFF); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." } else proForSave() })
             }
         }
         val sheetCount = remember { SheetStore.all(ctx).size }
