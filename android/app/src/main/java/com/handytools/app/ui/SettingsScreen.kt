@@ -112,7 +112,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             Text("Every tool in one place — tap any to open it. It all runs on your phone.",
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space8))
-            TOOLS.forEach { t -> MapRow(t.name, t.blurb) { onOpen(t.route) } }
+            TOOLS.forEach { t -> MapRow(t.name, t.blurb, pro = ToolGate.isPro(t.route) && !premium) { onOpen(t.route) } }
 
             Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("App")
@@ -142,7 +142,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
 
 /** One line in the "What Tenzy does" map: the tool's name and what it's for, tappable to open it. */
 @Composable
-private fun MapRow(name: String, blurb: String, onClick: () -> Unit) {
+private fun MapRow(name: String, blurb: String, pro: Boolean = false, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().clip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
             .clickable { onClick() }.padding(vertical = HandyTokens.Space12),
@@ -151,6 +151,13 @@ private fun MapRow(name: String, blurb: String, onClick: () -> Unit) {
         Column(Modifier.weight(1f)) {
             Text(name, style = MaterialTheme.typography.bodyLarge)
             Text(blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        if (pro) {
+            Text("PRO", color = HandyColors.OnAccent, style = MaterialTheme.typography.labelSmall,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                modifier = Modifier.padding(end = HandyTokens.Space8)
+                    .background(HandyColors.Accent, androidx.compose.foundation.shape.RoundedCornerShape(50))
+                    .padding(horizontal = HandyTokens.Space8, vertical = 2.dp))
         }
         Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)
     }

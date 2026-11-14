@@ -213,6 +213,18 @@ val MORE_TOOLS = listOf(
         about = "Manual control of the camera sensor — ISO and shutter speed with a live preview — on phones that allow it, falling back to auto elsewhere. Photos save to your gallery."),
 )
 
+/** The payment wall, iPhone-style: a few basic tools are free, the rest need Pro. The Builder's
+ *  first two custom tools stay free too (see [com.handytools.app.tools.builder.BuilderLimits]).
+ *  One place to tune the split — change [FREE] and both the badges and the gate follow. */
+object ToolGate {
+    val FREE: Set<String> = setOf("fileviewer", "codes", "instruments", "cleanup", "myphone")
+    private val CATALOG: Set<String> by lazy { (TOOLS + SCANSORT_TOOLS + MORE_TOOLS).map { it.route }.toSet() }
+    /** A catalog tool that isn't in the free set — shows a lock for non-Pro users. */
+    fun isPro(route: String): Boolean = route in CATALOG && route !in FREE
+    /** True when this route should show the unlock screen instead of the tool right now. */
+    fun locked(route: String): Boolean = isPro(route) && !HandyApp.instance.billing.isPremium.value
+}
+
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
  *  another tool). They need scaffold metadata so the shared page shows THEIR header, not the first
  *  grid tool's. Looked up alongside TOOLS by PowerToolPage. */
@@ -398,6 +410,7 @@ private fun auroraTile(route: String): List<Color> =
 private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onClick: () -> Unit) {
     // Icon scales a little with the card so a shorter (fit-to-page) card still looks balanced.
     val iconSize = (height.value * 0.32f).coerceIn(34f, 54f).dp
+    val premium by HandyApp.instance.billing.isPremium.collectAsState()
     Box(
         Modifier.fillMaxWidth().height(height).clip(RoundedCornerShape(20.dp))
             .background(Color(0xFF0D0D16)).clickable(onClick = onClick)
@@ -450,6 +463,16 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
             Spacer(Modifier.height(2.dp))
             Text(tool.blurb, color = Color(0xCCFFFFFF), style = MaterialTheme.typography.bodySmall,
                 maxLines = 2, overflow = TextOverflow.Ellipsis)
+        }
+        // Pro badge, top-right — a free user sees at a glance which tools need Pro before tapping.
+        if (ToolGate.isPro(tool.route) && !premium) {
+            Text(
+                "PRO", color = HandyColors.OnAccent, style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.TopEnd).padding(12.dp)
+                    .background(HandyColors.Accent, RoundedCornerShape(50))
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
+            )
         }
     }
 }
