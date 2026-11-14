@@ -211,6 +211,23 @@ struct SettingsView: View {
                         }
                     }
 
+                    Section("What Tenzy does") {
+                        Text("Every tool in one place — tap any to open it. It all runs on your phone.")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        ForEach(TOOLS) { t in
+                            Button { NotificationCenter.default.post(name: .openTool, object: t.id) } label: {
+                                HStack(spacing: HandySpacing.s12) {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(t.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                        Text(t.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                    }
+                                    Spacer()
+                                    Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+                                }.contentShape(Rectangle())
+                            }.buttonStyle(.plain)
+                        }
+                    }
+
                     Section("App") {
                         SettingsRow(icon: "slider.horizontal.3", title: "Permissions", sub: "Camera, microphone, speech, location, Photos") { showSetup = true }
                         SettingsRow(icon: "lock", title: "Privacy", sub: "What stays on your phone (everything)") { showPrivacy = true }
