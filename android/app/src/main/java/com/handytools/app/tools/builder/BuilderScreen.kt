@@ -304,9 +304,10 @@ fun BuilderScreen() {
         Spacer(Modifier.weight(1f))
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-            OutlinedButton({ showMine = true }, Modifier.weight(1f)) { Text(if (mine.isEmpty()) "My tools" else "My tools · ${mine.size}") }
-            OutlinedButton({ showTemplates = true }, Modifier.weight(1f)) { Text("Templates") }
-            OutlinedButton({ showGuide = true }, Modifier.weight(1f)) { Text("How it works") }
+            val footPad = androidx.compose.foundation.layout.PaddingValues(horizontal = HandyTokens.Space8, vertical = HandyTokens.Space12)
+            OutlinedButton({ showMine = true }, Modifier.weight(1f), contentPadding = footPad) { Text(if (mine.isEmpty()) "My tools" else "My tools · ${mine.size}", maxLines = 1, style = MaterialTheme.typography.labelLarge) }
+            OutlinedButton({ showTemplates = true }, Modifier.weight(1f), contentPadding = footPad) { Text("Templates", maxLines = 1, style = MaterialTheme.typography.labelLarge) }
+            OutlinedButton({ showGuide = true }, Modifier.weight(1f), contentPadding = footPad) { Text("Guide", maxLines = 1, style = MaterialTheme.typography.labelLarge) }
         }
     }
 }

@@ -277,7 +277,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
           // the map + themes + plan. One screen each, no horizontal rails — the whole app from one bar.
           Box(Modifier.weight(1f).fillMaxWidth()) {
             when (tab) {
-                0 -> com.handytools.app.tools.builder.BuilderScreen()
+                0 -> Box(Modifier.fillMaxSize().statusBarsPadding()) { com.handytools.app.tools.builder.BuilderScreen() }
                 2 -> SettingsScreen(onOpen = onOpen)
                 else -> Column(Modifier.fillMaxSize().statusBarsPadding()) {
             // Search

@@ -207,7 +207,7 @@ struct SettingsView: View {
                             }
                         }
                         if !store.isPremium {
-                            Text("Daylight is free. The other four unlock with Pro.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            Text("Aurora is free. The rest unlock with Pro.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
                     }
 
