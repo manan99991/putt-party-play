@@ -339,11 +339,59 @@ enum Launch {
     static var sample: Bool { args.contains("-sample") }
 }
 
+/// The three home destinations of the rebuilt interface. Build is the front door (make a tool),
+/// Search is the powerful way into any single tool, Settings holds the map, themes and Pro.
+enum RootTab { case build, search, settings }
+
+/// The bottom tab bar for the three home destinations.
+private struct TenzyTabBar: View {
+    @Binding var selection: RootTab
+    var body: some View {
+        HStack(spacing: 0) {
+            item(.build, "square.stack.3d.up.fill", "Build")
+            item(.search, "magnifyingglass", "Search")
+            item(.settings, "gearshape.fill", "Settings")
+        }
+        .padding(.top, 8)
+        .padding(.bottom, 4)
+        .background(HandyColor.surface)
+        .overlay(Rectangle().frame(height: 0.5).foregroundStyle(HandyColor.border), alignment: .top)
+    }
+    @ViewBuilder private func item(_ t: RootTab, _ icon: String, _ label: String) -> some View {
+        Button { selection = t } label: {
+            VStack(spacing: 3) {
+                Image(systemName: icon).font(.system(size: 18, weight: .semibold))
+                Text(label).font(.system(size: 10, weight: .semibold))
+            }
+            .frame(maxWidth: .infinity)
+            .foregroundStyle(selection == t ? HandyColor.accent : HandyColor.textSecondary)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(t == .build ? "builder-entry" : label.lowercased() + "-tab")
+    }
+}
+
+/// Empty state for the Search tab before anything is typed.
+private struct SearchPrompt: View {
+    var body: some View {
+        VStack(spacing: 10) {
+            Image(systemName: "magnifyingglass").font(.system(size: 34)).foregroundStyle(HandyColor.textSecondary)
+            Text("Search every tool").font(HandyFont.cardTitle)
+            Text("Type what you want to do — shrink a photo, scan a receipt, make a QR code.")
+                .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                .multilineTextAlignment(.center).padding(.horizontal, 32)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
 struct HomeView: View {
     @EnvironmentObject var store: StoreManager
     @ObservedObject private var theme = ThemeManager.shared   // re-skin the home grid live on a theme change
     @State private var showPaywall = false
     @State private var page = 1
+    @State private var tab: RootTab = .build
     @State private var search = ""
     @FocusState private var searching: Bool
     @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" || $0 == "home" || $0 == "homepro" ? nil : [$0] } ?? []
@@ -361,26 +409,27 @@ struct HomeView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack(spacing: 0) {
-                header
-                SearchField(text: $search, focused: $searching)
-                    .padding(.horizontal, HandySpacing.gutter)
-                    .padding(.bottom, HandySpacing.s8)
-                if !hasSearch {
-                    Button { path.append("builder") } label: {
-                        Label("Build your own tool", systemImage: "square.stack.3d.up.fill").font(HandyFont.bodyStrong).frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .accessibilityIdentifier("builder-entry")
-                    .padding(.horizontal, HandySpacing.gutter).padding(.bottom, HandySpacing.s8)
-                    TabView(selection: $page) {
-                        ForEach(1...3, id: \.self) { p in
-                            ToolGridPage(page: p).tag(p)
+                Group {
+                    switch tab {
+                    case .build:
+                        // The front door: the Builder's own start screen (Describe it · Start with
+                        // what you have · Ready-made) is the home now.
+                        BuilderView()
+                    case .search:
+                        VStack(spacing: 0) {
+                            SearchField(text: $search, focused: $searching)
+                                .padding(.horizontal, HandySpacing.gutter)
+                                .padding(.vertical, HandySpacing.s8)
+                                .accessibilityIdentifier("tool-search")
+                            if hasSearch { SearchResults(query: search) } else { SearchPrompt() }
                         }
+                    case .settings:
+                        SettingsView()
                     }
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                } else {
-                    SearchResults(query: search)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 BannerAd()
+                TenzyTabBar(selection: $tab)
             }
             .id(theme.current)   // force a full re-skin of the grid when the theme changes
             .background(HandyColor.bg)
