@@ -136,6 +136,9 @@ fun BuilderScreen() {
     fun proForSave() { note = "Free covers 2 saved tools. Go Pro for unlimited."; openPaywall?.invoke() }
     var showSheets by remember { mutableStateOf(false) }
     var showHistory by remember { mutableStateOf(false) }
+    var showMine by remember { mutableStateOf(false) }
+    var showTemplates by remember { mutableStateOf(false) }
+    var showGuide by remember { mutableStateOf(false) }
     var linking by remember { mutableStateOf<Chain?>(null) }
     val prefs = remember { ctx.getSharedPreferences("builder", Context.MODE_PRIVATE) }
     var introSeen by remember { mutableStateOf(prefs.getBoolean("introSeen", false)) }
@@ -195,28 +198,78 @@ fun BuilderScreen() {
     running?.let { c -> ChainRunScreen(c, initial = runOn) { running = null; runOn = null }; return }
     if (showSheets) { SheetsScreen { showSheets = false }; return }
     if (showHistory) { HistoryScreen { showHistory = false }; return }
-    linking?.let { c -> ToolLinkDialog(c) { linking = null } }
-
-    Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
-        ToolHeader("Build your own", "Snap small steps together into a tool that does exactly what you need. Runs on your phone.")
-        if (!introSeen) HCard(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-                Text("Make a tool that does the whole job", style = MaterialTheme.typography.titleMedium)
-                BuilderIntro.PAGES.forEach { (title, body) ->
-                    Text(title, style = MaterialTheme.typography.titleSmall)
-                    Text(body, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+    if (showMine) {
+        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+            TextButton({ showMine = false }) { Text("‹ Back") }
+            Text("My tools", style = MaterialTheme.typography.headlineSmall)
+            if (mine.isEmpty()) Text("Nothing saved yet. Build one from the start screen and it lands here.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            mine.toList().forEach { c ->
+                ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onLink = { linking = c }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
+                    onRename = { newName = c.name; renaming = c },
+                    onTop = if (mine.firstOrNull()?.id == c.id) null else ({ mine.removeAll { it.id == c.id }; mine.add(0, c); saveAll(); note = "${c.name} is now first." }),
+                    onPin = { note = if (pinToHome(ctx, c)) "Follow the phone's prompt to put ${c.name} on your Home screen." else "This phone's Home screen doesn't take shortcuts from apps." },
+                    onDuplicate = { if (BuilderLimits.canSave(mine.size, premium)) { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null, auto = AutoRun.OFF); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." } else proForSave() })
+            }
+            val sheetCount = SheetStore.all(ctx).size
+            if (sheetCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showSheets = true }) { Column(Modifier.padding(HandyTokens.Space12)) { Text("My sheets", style = MaterialTheme.typography.titleSmall); Text(if (sheetCount == 1) "1 sheet your tools add to" else "$sheetCount sheets your tools add to", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) } }
+            val historyCount = RunHistory.all(ctx).size
+            if (historyCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showHistory = true }) { Column(Modifier.padding(HandyTokens.Space12)) { Text("Recent results", style = MaterialTheme.typography.titleSmall); Text(if (historyCount == 1) "The last thing a tool made" else "The last $historyCount things your tools made", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) } }
+        }
+        return
+    }
+    if (showTemplates) {
+        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                TextButton({ showTemplates = false }) { Text("‹ Back") }
+                Row {
+                    TextButton({ editHint = null; editing = Chain.blank() }) { Text("Blank") }
+                    TextButton({
+                        val c = ToolLink.chain(paste(ctx))
+                        if (c != null) { if (BuilderLimits.canSave(mine.size, premium)) { mine.add(c); saveAll(); note = "Added ${c.name}."; showTemplates = false } else proForSave() } else note = "Copy a tool from another Tenzy first, then tap Paste. Tools that use steps this phone doesn't have can't be added."
+                    }) { Text("Paste a tool") }
                 }
-                HPrimaryButton("Show me one") {
-                    ChainTemplates.all.firstOrNull { it.id == BuilderIntro.DEMO_ID }?.let { editing = it.copy(id = java.util.UUID.randomUUID().toString(), name = it.name + " (mine)") }
+            }
+            Text("Start from a template", style = MaterialTheme.typography.headlineSmall)
+            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                listOf<Pair<String, Kind?>>("All" to null, "Photo" to Kind.IMAGE, "Text" to Kind.TEXT, "Video" to Kind.VIDEO, "Sound" to Kind.AUDIO, "PDF" to Kind.PDF).forEach { (label, k) ->
+                    if (have == k) Button({ have = k }) { Text(label) } else OutlinedButton({ have = k }) { Text(label) }
                 }
-                TextButton({ setIntro(true) }) { Text("Got it") }
+            }
+            BuilderIntro.starters(have).filter { ExtraSteps.unavailable(ctx, it) == null }.forEach { c ->
+                ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " (mine)") }, onCopy = { copy(ctx, c); note = "Copied." }, onDelete = null)
             }
         }
+        return
+    }
+    if (showGuide) {
+        Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
+            TextButton({ showGuide = false }) { Text("‹ Back") }
+            Text("How building works", style = MaterialTheme.typography.headlineSmall)
+            BuilderIntro.PAGES.forEach { (title, body) ->
+                HCard(Modifier.fillMaxWidth()) { Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space4)) {
+                    Text(title, style = MaterialTheme.typography.titleSmall)
+                    Text(body, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                } }
+            }
+            HPrimaryButton("Show me one") {
+                showGuide = false
+                ChainTemplates.all.firstOrNull { it.id == BuilderIntro.DEMO_ID }?.let { editing = it.copy(id = java.util.UUID.randomUUID().toString(), name = it.name + " (mine)") }
+            }
+        }
+        return
+    }
+    linking?.let { c -> ToolLinkDialog(c) { linking = null } }
+
+    // The start screen: one clear, non-scrolling page. Two ways in — say it, or hand it what you
+    // have — then everything else (your tools, templates, the guide) is one tap away at the foot.
+    Column(Modifier.fillMaxSize().padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space16)) {
+        Text("Build your own", style = MaterialTheme.typography.headlineMedium)
+        Text("Make a tool that does the whole job — it runs on your phone.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 Text("Describe it", style = MaterialTheme.typography.titleMedium)
-                Text("Say what you want in your own words. Spelling doesn't matter, and half a sentence is enough. Tenzy lines up the steps and shows you before anything runs.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
-                OutlinedTextField(ask, { ask = it }, Modifier.fillMaxWidth(), placeholder = { Text("e.g. shrink a photo under 1 MB and remove its location") }, minLines = 1, maxLines = 3)
+                OutlinedTextField(ask, { ask = it }, Modifier.fillMaxWidth(), placeholder = { Text("e.g. shrink a photo under 1 MB and hide where it was taken") }, minLines = 1, maxLines = 2)
                 HPrimaryButton("Build it for me", enabled = ask.isNotBlank()) {
                     val g = ChainPlanner.guess(ask)
                     if (g != null) {
@@ -227,66 +280,44 @@ fun BuilderScreen() {
                 }
             }
         }
-        HCard(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-                Text("Start with what you have", style = MaterialTheme.typography.titleMedium)
-                Text("Pick it, and Tenzy shows the tools that fit. No need to know which one you want.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
-                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-                    OutlinedButton({ havePhoto.launch("image/*") }) { Text("Photo") }
-                    OutlinedButton({ havePhoto.launch("video/*") }) { Text("Video") }
-                    OutlinedButton({ haveFile.launch(arrayOf("application/pdf", "audio/*")) }) { Text("PDF or recording") }
-                    OutlinedButton({
-                        val c = paste(ctx)
-                        if (c.isBlank()) note = "There is nothing copied to paste. Copy some text or a link first." else { note = null; givenText = c }
-                    }) { Text("Paste") }
+
+        Text("…or start with what you have", style = MaterialTheme.typography.titleSmall, color = Handy.palette.textSecondary)
+        Column(verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                BuildObjectTile("Photo", Modifier.weight(1f)) { havePhoto.launch("image/*") }
+                BuildObjectTile("Video", Modifier.weight(1f)) { havePhoto.launch("video/*") }
+                BuildObjectTile("Audio", Modifier.weight(1f)) { haveFile.launch(arrayOf("audio/*")) }
+            }
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+                BuildObjectTile("PDF", Modifier.weight(1f)) { haveFile.launch(arrayOf("application/pdf")) }
+                BuildObjectTile("File", Modifier.weight(1f)) { haveFile.launch(arrayOf("*/*")) }
+                BuildObjectTile("Paste", Modifier.weight(1f)) {
+                    val c = paste(ctx)
+                    if (c.isBlank()) note = "There is nothing copied to paste. Copy some text or a link first." else { note = null; givenText = c }
                 }
             }
         }
+
         note?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }
-        if (mine.isNotEmpty()) {
-            Text("My tools", style = MaterialTheme.typography.titleMedium)
-            mine.toList().forEach { c ->
-                ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onLink = { linking = c }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
-                    onRename = { newName = c.name; renaming = c },
-                    onTop = if (mine.firstOrNull()?.id == c.id) null else ({ mine.removeAll { it.id == c.id }; mine.add(0, c); saveAll(); note = "${c.name} is now first." }),
-                    onPin = { note = if (pinToHome(ctx, c)) "Follow the phone's prompt to put ${c.name} on your Home screen." else "This phone's Home screen doesn't take shortcuts from apps." },
-                    onDuplicate = { if (BuilderLimits.canSave(mine.size, premium)) { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null, auto = AutoRun.OFF); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." } else proForSave() })
-            }
+
+        Spacer(Modifier.weight(1f))
+
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
+            OutlinedButton({ showMine = true }, Modifier.weight(1f)) { Text(if (mine.isEmpty()) "My tools" else "My tools · ${mine.size}") }
+            OutlinedButton({ showTemplates = true }, Modifier.weight(1f)) { Text("Templates") }
+            OutlinedButton({ showGuide = true }, Modifier.weight(1f)) { Text("How it works") }
         }
-        val sheetCount = remember { SheetStore.all(ctx).size }
-        if (sheetCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showSheets = true }) {
-            Column(Modifier.padding(HandyTokens.Space12)) {
-                Text("My sheets", style = MaterialTheme.typography.titleSmall)
-                Text(if (sheetCount == 1) "1 sheet your tools add to" else "$sheetCount sheets your tools add to", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
-            }
+    }
+}
+
+/** One object you can start from — a tappable card with a clear label. Six of these sit on the
+ *  start screen so the whole "what do you have?" choice is on one page, nothing to scroll. */
+@Composable
+private fun BuildObjectTile(label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    HCard(modifier, onClick = onClick) {
+        Column(Modifier.fillMaxWidth().padding(vertical = HandyTokens.Space16), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
+            Text(label, style = MaterialTheme.typography.titleSmall)
         }
-        val historyCount = remember { RunHistory.all(ctx).size }
-        if (historyCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showHistory = true }) {
-            Column(Modifier.padding(HandyTokens.Space12)) {
-                Text("Recent results", style = MaterialTheme.typography.titleSmall)
-                Text(if (historyCount == 1) "The last thing a tool made" else "The last $historyCount things your tools made", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
-            }
-        }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text("Start from a template", style = MaterialTheme.typography.titleMedium)
-            Row {
-                TextButton({ editHint = null; editing = Chain.blank() }) { Text("Blank") }
-                TextButton({
-                    val c = ToolLink.chain(paste(ctx))
-                    if (c != null) { if (BuilderLimits.canSave(mine.size, premium)) { mine.add(c); saveAll(); note = "Added ${c.name}." } else proForSave() } else note = "Copy a tool from another Tenzy first, then tap Paste. Tools that use steps this phone doesn't have can't be added."
-                }) { Text("Paste") }
-            }
-        }
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-            listOf<Pair<String, Kind?>>("All" to null, "Photo" to Kind.IMAGE, "Text" to Kind.TEXT, "Video" to Kind.VIDEO, "Sound" to Kind.AUDIO, "PDF" to Kind.PDF).forEach { (label, k) ->
-                if (have == k) Button({ have = k }) { Text(label) } else OutlinedButton({ have = k }) { Text(label) }
-            }
-        }
-        // Only starters this phone can run. One that needs something it lacks is simply not offered.
-        BuilderIntro.starters(have).filter { ExtraSteps.unavailable(ctx, it) == null }.forEach { c ->
-            ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " (mine)") }, onCopy = { copy(ctx, c); note = "Copied." }, onDelete = null)
-        }
-        if (introSeen) TextButton({ setIntro(false) }) { Text("How does this work?") }
     }
 }
 

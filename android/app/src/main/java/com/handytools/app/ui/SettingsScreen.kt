@@ -74,7 +74,6 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
     Column(Modifier.fillMaxSize().statusBarsPadding()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter)) {
             Spacer(Modifier.height(HandyTokens.Space8))
-            BackArrow(Modifier.offset(x = (-12).dp))
             Text("Settings", style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(HandyTokens.Space16))
 
@@ -103,7 +102,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             SettingsSectionLabel("Appearance")
             Text("Theme", style = MaterialTheme.typography.bodyLarge)
             Spacer(Modifier.height(HandyTokens.Space4))
-            Text(if (premium) "Tap to switch — applies instantly." else "Daylight is free; the rest come with Pro.",
+            Text(if (premium) "Tap to switch — applies instantly." else "Aurora is free; the rest come with Pro.",
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space12))
             ThemePicker(premium) { onOpen("paywall") }

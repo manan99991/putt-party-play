@@ -219,7 +219,7 @@ data class ResolvedTokens(
 
 enum class TenzyTheme(val title: String, val blurb: String, val isPro: Boolean, val swatch: List<Color>, val assetKey: String) {
     AURORA("Aurora", "Deep space, lime spark", false, listOf(Color(0xFF7B5CFF), Color(0xFFFF4FA3)), "midnight"),
-    DAYLIGHT("Daylight", "Clean, bright", false, listOf(Color(0xFF1F5EFF), Color(0xFF1649D6)), "daylight"),
+    DAYLIGHT("Daylight", "Clean, bright", true, listOf(Color(0xFF1F5EFF), Color(0xFF1649D6)), "daylight"),
     MIDNIGHT("Midnight", "Dark glass, neon glow", true, listOf(Color(0xFF1E3A8A), Color(0xFF3DE1FF)), "midnight"),
     WARM_PAPER("Warm Paper", "Editorial, warm, matte", true, listOf(Color(0xFFC2502E), Color(0xFFE0795A)), "warmpaper"),
     NEO_POP("Neo Pop", "Bold, playful, punchy", true, listOf(Color(0xFFFF2D87), Color(0xFFFF8A00)), "neopop"),
