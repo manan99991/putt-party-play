@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -212,6 +213,18 @@ val MORE_TOOLS = listOf(
         about = "Manual control of the camera sensor — ISO and shutter speed with a live preview — on phones that allow it, falling back to auto elsewhere. Photos save to your gallery."),
 )
 
+/** The payment wall, iPhone-style: a few basic tools are free, the rest need Pro. The Builder's
+ *  first two custom tools stay free too (see [com.handytools.app.tools.builder.BuilderLimits]).
+ *  One place to tune the split — change [FREE] and both the badges and the gate follow. */
+object ToolGate {
+    val FREE: Set<String> = setOf("fileviewer", "codes", "instruments", "cleanup", "myphone")
+    private val CATALOG: Set<String> by lazy { (TOOLS + SCANSORT_TOOLS + MORE_TOOLS).map { it.route }.toSet() }
+    /** A catalog tool that isn't in the free set — shows a lock for non-Pro users. */
+    fun isPro(route: String): Boolean = route in CATALOG && route !in FREE
+    /** True when this route should show the unlock screen instead of the tool right now. */
+    fun locked(route: String): Boolean = isPro(route) && !HandyApp.instance.billing.isPremium.value
+}
+
 /** Tools that aren't on the home grid but still render through PowerToolPage (e.g. opened from
  *  another tool). They need scaffold metadata so the shared page shows THEIR header, not the first
  *  grid tool's. Looked up alongside TOOLS by PowerToolPage. */
@@ -257,6 +270,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
     val premium by HandyApp.instance.billing.isPremium.collectAsState()
     var query by remember { mutableStateOf("") }
     val results = if (query.trim().isEmpty()) TOOLS else searchTools(query)
+    var tab by remember { mutableStateOf(0) }   // 0 Build · 1 Search · 2 Settings
 
     Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         // A soft wash in the current theme's primary colour so the home page has some life AND follows
@@ -270,25 +284,14 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     )
                 )
         )
-        Column(Modifier.fillMaxSize().statusBarsPadding()) {
-            // Header
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter, vertical = HandyTokens.Space12),
-                horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    // Theme-aware so every theme (light or dark) reads correctly on the home page.
-                    Text("Tenzy", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
-                    Spacer(Modifier.height(HandyTokens.Space4))
-                    Text("$TENZY_TOOL_COUNT tools · on your phone",
-                        style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
-                }
-                Row {
-                    if (!premium) IconButton(onClick = { onOpen("paywall") }) { Icon(Icons.Outlined.WorkspacePremium, "Go Pro", tint = HandyColors.Accent) }
-                    IconButton(onClick = { onOpen("settings") }) { Icon(Icons.Outlined.Settings, "Settings", tint = MaterialTheme.colorScheme.onBackground) }
-                }
-            }
-
+        Column(Modifier.fillMaxSize()) {
+          // Build-first shell: Build (the maker) is home, Search finds standalone tools, Settings holds
+          // the map + themes + plan. One screen each, no horizontal rails — the whole app from one bar.
+          Box(Modifier.weight(1f).fillMaxWidth()) {
+            when (tab) {
+                0 -> Box(Modifier.fillMaxSize().statusBarsPadding()) { com.handytools.app.tools.builder.BuilderScreen() }
+                2 -> SettingsScreen(onOpen = onOpen)
+                else -> Column(Modifier.fillMaxSize().statusBarsPadding()) {
             // Search
             TextField(
                 value = query, onValueChange = { query = it },
@@ -350,7 +353,41 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     }
                 }
             }
-            BannerAd()
+                }
+            }
+          }
+          BannerAd()
+          TenzyTabBar(tab) { tab = it }
+        }
+    }
+}
+
+/** The one bar the whole app runs from: Build (the maker, home), Search (standalone tools),
+ *  Settings (map + themes + plan). Matches the iPhone tab bar so both phones feel the same. */
+@Composable
+private fun TenzyTabBar(selected: Int, onSelect: (Int) -> Unit) {
+    val items = listOf(
+        Triple(0, Icons.Outlined.Bolt, "Build"),
+        Triple(1, Icons.Outlined.Search, "Search"),
+        Triple(2, Icons.Outlined.Settings, "Settings")
+    )
+    Row(
+        Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface)
+            .navigationBarsPadding().padding(top = 8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        items.forEach { (i, icon, label) ->
+            val on = i == selected
+            val tint = if (on) MaterialTheme.colorScheme.primary else Handy.palette.textSecondary
+            Column(
+                Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).clickable { onSelect(i) }
+                    .padding(vertical = HandyTokens.Space8),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(icon, label, tint = tint)
+                Spacer(Modifier.height(2.dp))
+                Text(label, style = MaterialTheme.typography.labelSmall, color = tint)
+            }
         }
     }
 }
@@ -358,29 +395,44 @@ fun HomeScreen(onOpen: (String) -> Unit) {
 /** Approved card (HTML prototype v4): the kit's 1290×440 art has its glow + line-art on the
  *  right third, so a 2-column card crops anchored to the RIGHT edge — never center — and a
  *  bottom-only scrim keeps the art visible while the name stays crisp. */
+// Aurora tile duotones — each tool keeps the same pair (stable by route), spread across Aurora's
+// palette, so the home grid reads as one colourful set on the near-black ground. Matches iOS.
+private val AURORA_TILES = listOf(
+    listOf(Color(0xFF7B5CFF), Color(0xFF4F2BD6)), listOf(Color(0xFFFF4FA3), Color(0xFFB5247A)),
+    listOf(Color(0xFF2BD4FF), Color(0xFF1C7FC2)), listOf(Color(0xFFBFE645), Color(0xFF7FA015)),
+    listOf(Color(0xFFFF8A5C), Color(0xFFD64F2B)), listOf(Color(0xFF5CFFC2), Color(0xFF1CB98A)),
+    listOf(Color(0xFFB15CFF), Color(0xFF7A24D6))
+)
+private fun auroraTile(route: String): List<Color> =
+    AURORA_TILES[((route.hashCode() % AURORA_TILES.size) + AURORA_TILES.size) % AURORA_TILES.size]
+
 @Composable
 private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onClick: () -> Unit) {
     // Icon scales a little with the card so a shorter (fit-to-page) card still looks balanced.
     val iconSize = (height.value * 0.32f).coerceIn(34f, 54f).dp
+    val premium by HandyApp.instance.billing.isPremium.collectAsState()
     Box(
         Modifier.fillMaxWidth().height(height).clip(RoundedCornerShape(20.dp))
             .background(Color(0xFF0D0D16)).clickable(onClick = onClick)
     ) {
-        val cardRes = themedCardRes(tool.route).let { if (it != 0) it else tool.cardRes }
+        // Aurora shows flat per-tool gradient tiles (its signature look, matching iOS) instead of the
+        // photographic card art, so skip the art and go straight to the gradient when it's active.
+        val aurora = LocalTenzyTheme.current == TenzyTheme.AURORA
+        val cardRes = if (aurora) 0 else themedCardRes(tool.route).let { if (it != 0) it else tool.cardRes }
         if (cardRes != 0) {
             Image(
                 painterResource(cardRes), null, modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop, alignment = Alignment.CenterEnd
             )
         } else {
-            // No bespoke card art (new + brought-back tools): a soft diagonal gradient in the tool's
-            // tint so the tile still reads as designed rather than a flat black box.
-            val base = if (tool.tint != Color.Unspecified) tool.tint else HandyColors.Accent
-            Box(
-                Modifier.fillMaxSize().background(
-                    Brush.linearGradient(listOf(base.copy(alpha = 0.95f), base.copy(alpha = 0.5f)))
-                )
-            )
+            // No bespoke card art (Aurora, or new + brought-back tools): a soft diagonal gradient — an
+            // Aurora duotone when that theme is on, else the tool's own tint — so the tile still reads
+            // as designed rather than a flat black box.
+            val g = if (aurora) auroraTile(tool.route) else {
+                val base = if (tool.tint != Color.Unspecified) tool.tint else HandyColors.Accent
+                listOf(base.copy(alpha = 0.95f), base.copy(alpha = 0.5f))
+            }
+            Box(Modifier.fillMaxSize().background(Brush.linearGradient(g)))
         }
         Box(
             Modifier.fillMaxSize().background(
@@ -411,6 +463,16 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
             Spacer(Modifier.height(2.dp))
             Text(tool.blurb, color = Color(0xCCFFFFFF), style = MaterialTheme.typography.bodySmall,
                 maxLines = 2, overflow = TextOverflow.Ellipsis)
+        }
+        // Pro badge, top-right — a free user sees at a glance which tools need Pro before tapping.
+        if (ToolGate.isPro(tool.route) && !premium) {
+            Text(
+                "PRO", color = HandyColors.OnAccent, style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.TopEnd).padding(12.dp)
+                    .background(HandyColors.Accent, RoundedCornerShape(50))
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
+            )
         }
     }
 }

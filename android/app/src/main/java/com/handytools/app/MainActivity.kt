@@ -132,15 +132,25 @@ class MainActivity : ComponentActivity() {
             // inside that block a theme change would recreate it and bounce you back to home (which made
             // theme switches look like they did nothing). Hoisted here, the back stack is preserved.
             val nav = rememberNavController()
+            // iPhone-style payment wall: a Pro tool opened by a free user goes to its unlock screen
+            // instead of the tool. One choke point so every path — grid, search, the Settings map,
+            // group tiles and warm deep links — is covered.
+            val openTool: (String) -> Unit = { r ->
+                if (com.handytools.app.ui.ToolGate.locked(r)) nav.navigate("lock/$r") else nav.navigate(r)
+            }
             HandyTheme {
                 androidx.compose.runtime.CompositionLocalProvider(
                     com.handytools.app.ads.LocalRemoveAds provides { nav.navigate("paywall") },
-                    LocalOpenTool provides { r: String -> nav.navigate(r) }
+                    LocalOpenTool provides { r: String -> openTool(r) }
                 ) {
                 // A warm deep link (route delivered via onNewIntent) navigates here. launchSingleTop
                 // avoids stacking duplicates when the same route is re-opened.
                 LaunchedEffect(pendingRoute) {
-                    pendingRoute?.let { r -> nav.navigate(r) { launchSingleTop = true }; pendingRoute = null }
+                    pendingRoute?.let { r ->
+                        if (com.handytools.app.ui.ToolGate.locked(r)) nav.navigate("lock/$r")
+                        else nav.navigate(r) { launchSingleTop = true }
+                        pendingRoute = null
+                    }
                 }
                 NavHost(
                     nav, startDestination = startRoute,
@@ -151,17 +161,28 @@ class MainActivity : ComponentActivity() {
                     popEnterTransition = { fadeIn(animationSpec = tween(200, easing = EaseOut)) },
                     popExitTransition = { slideOutHorizontally(animationSpec = tween(200, easing = EaseIn)) { (it * 0.06f).toInt() } + fadeOut(animationSpec = tween(200, easing = EaseIn)) }
                 ) {
-                    composable("home") { HomeScreen(onOpen = { nav.navigate(it) }) }
+                    composable("home") { HomeScreen(onOpen = { openTool(it) }) }
                     // CI screenshot route: home in Pro state (no ad strip) for the store split slide.
-                    composable("homepro") { HomeScreen(onOpen = { nav.navigate(it) }) }
+                    composable("homepro") { HomeScreen(onOpen = { openTool(it) }) }
+                    composable(
+                        "lock/{route}",
+                        arguments = listOf(androidx.navigation.navArgument("route") { type = androidx.navigation.NavType.StringType })
+                    ) { entry ->
+                        val r = entry.arguments?.getString("route") ?: ""
+                        com.handytools.app.ui.ProLockScreen(
+                            route = r,
+                            onBack = { if (!nav.popBackStack()) nav.navigate("home") },
+                            onPro = { nav.navigate("paywall") }
+                        )
+                    }
                     composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("home") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
-                    composable("settings") { SettingsScreen(onOpen = { nav.navigate(it) }) }
+                    composable("settings") { SettingsScreen(onOpen = { openTool(it) }) }
                     composable("privacy") { PrivacyScreen() }
                     composable("onboarding2") { OnboardingScreen(startPage = 1, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }
                     composable("onboarding3") { OnboardingScreen(startPage = 2, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }
                     composable("paywall") {
                         // Sheet over the home grid; dismissing pops back.
-                        HomeScreen(onOpen = { nav.navigate(it) })
+                        HomeScreen(onOpen = { openTool(it) })
                         PaywallScreen(onBack = { if (!nav.popBackStack()) nav.navigate("home") })
                     }
                     composable("clipboard") { ClipboardScreen() }
@@ -206,10 +227,10 @@ class MainActivity : ComponentActivity() {
                     composable("sorted") { SortedScreen() }
                     composable("memory") { MemoryScreen() }
                     composable("lens") { LensScreen() }
-                    composable("storage") { StorageScreen(onOpen = { nav.navigate(it) }) }
+                    composable("storage") { StorageScreen(onOpen = { openTool(it) }) }
                     // Group launchers: one tile that opens a list of its folded-in tools.
-                    composable("scansort") { GroupScreen("scansort", SCANSORT_TOOLS) { nav.navigate(it) } }
-                    composable("more") { GroupScreen("more", MORE_TOOLS) { nav.navigate(it) } }
+                    composable("scansort") { GroupScreen("scansort", SCANSORT_TOOLS) { openTool(it) } }
+                    composable("more") { GroupScreen("more", MORE_TOOLS) { openTool(it) } }
                     composable("myphone") { MyPhoneScreen() }
                     composable("texttools") { TextToolsScreen() }
                     composable("builder") { com.handytools.app.tools.builder.BuilderScreen() }

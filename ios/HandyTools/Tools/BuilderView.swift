@@ -71,77 +71,31 @@ struct BuilderView: View {
     @State private var given: Given?
     @State private var anyPick: PhotosPickerItem?
     @State private var pickingAny = false
+    @State private var pickTypes: [UTType] = [.item]
     @State private var gettingReady = false
+    // Everything past the two front-door actions lives one tap away, so the start stays one clean page.
+    @State private var showMine = false
+    @State private var showTemplates = false
+    @State private var showGuide = false
 
     var body: some View {
-        ToolPage(title: "Build your own", subtitle: "Snap small steps together into a tool that does exactly what you need. Runs on your phone.") {
-            if !introSeen, !Launch.uitest, !Launch.screenshots {
-                BuilderIntroCard(onShow: {
-                    if var demo = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) {
-                        demo.id = UUID().uuidString; demo.name += " (mine)"; editing = demo
-                    }
-                }, onDone: { withAnimation { introSeen = true } })
-            }
+        VStack(alignment: .leading, spacing: HandySpacing.s16) {
+            Text("Build your own").font(HandyFont.display).frame(maxWidth: .infinity, alignment: .leading)
+            Text("Make a tool that does the whole job — it runs on your phone.")
+                .font(.system(size: 14)).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
             hero
-            anything
-            if !mine.isEmpty {
-                Text("My tools").font(HandyFont.cardTitle)
-                ForEach(mine) { c in row(c, mine: true) }
-            }
-            if !sheets.isEmpty {
-                Button { showSheets = true } label: {
-                    HStack(spacing: HandySpacing.s12) {
-                        Image(systemName: "tablecells").font(.system(size: 18, weight: .semibold)).foregroundStyle(HandyColor.accent).frame(width: 38, height: 38).background(HandyColor.accent.opacity(0.14), in: Circle())
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("My sheets").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                            Text(sheets.count == 1 ? "1 sheet your tools add to" : "\(sheets.count) sheets your tools add to").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                        }
-                        Spacer()
-                        Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
-                    }.cardStyle(padding: HandySpacing.s12)
-                }.buttonStyle(.plain).accessibilityIdentifier("open-sheets")
-            }
-            if !history.isEmpty {
-                Button { showHistory = true } label: {
-                    HStack(spacing: HandySpacing.s12) {
-                        Image(systemName: "clock.arrow.circlepath").font(.system(size: 18, weight: .semibold)).foregroundStyle(HandyColor.accent).frame(width: 38, height: 38).background(HandyColor.accent.opacity(0.14), in: Circle())
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Recent results").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                            Text(history.count == 1 ? "The last thing a tool made" : "The last \(history.count) things your tools made").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                        }
-                        Spacer()
-                        Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
-                    }.cardStyle(padding: HandySpacing.s12)
-                }.buttonStyle(.plain).accessibilityIdentifier("open-history")
-            }
-            HStack {
-                Text("Start from a template").font(HandyFont.cardTitle)
-                Spacer()
-                Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []) } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
-                Button {
-                    if let c = ToolLink.chain(from: UIPasteboard.general.string ?? "") {
-                        if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) { mine.append(c); persist(); note = "Added \(c.name)." }
-                        else { proForSave() }
-                    } else { note = "Copy a tool from another Tenzy first, then tap Paste." }
-                } label: { Label("Paste", systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
-            }
+            anythingTiles
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-            Picker("What do you have?", selection: $have) {
-                Text("All").tag(ChainKind?.none)
-                Text("Photo").tag(ChainKind?.some(.image))
-                Text("Text").tag(ChainKind?.some(.text))
-                Text("Video").tag(ChainKind?.some(.video))
-                Text("Sound").tag(ChainKind?.some(.audio))
-                Text("PDF").tag(ChainKind?.some(.pdf))
-            }.pickerStyle(.segmented).accessibilityIdentifier("starter-filter")
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
-                // Only starters this phone can run. One that needs something it lacks is simply not offered.
-                ForEach(BuilderIntro.starters(for: have).filter { $0.unavailable == nil }) { c in templateCard(c) }
-            }
-            if introSeen {
-                Button("How does this work?") { withAnimation { introSeen = false } }.font(HandyFont.caption).frame(minHeight: 44)
+            Spacer(minLength: 0)
+            HStack(spacing: HandySpacing.s8) {
+                footBtn(mine.isEmpty ? "My tools" : "My tools · \(mine.count)") { showMine = true }
+                footBtn("Templates") { showTemplates = true }
+                footBtn("Guide") { showGuide = true }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .padding(.horizontal, HandySpacing.gutter)
+        .padding(.vertical, HandySpacing.s8)
         .sheet(item: $editing) { c in
             NavigationStack {
                 ChainEditor(chain: c, hint: editHint) { saved in
@@ -162,7 +116,7 @@ struct BuilderView: View {
             }
             Button("Cancel", role: .cancel) { renaming = nil }
         }
-        .fileImporter(isPresented: $pickingAny, allowedContentTypes: [.pdf, .audio, .movie, .image, .plainText]) { r in
+        .fileImporter(isPresented: $pickingAny, allowedContentTypes: pickTypes) { r in
             guard case .success(let url) = r else { return }
             if let g = Given.from(file: url) { note = nil; given = g } else { note = "Tenzy couldn't open that file, or has no tool for that kind of file yet." }
         }
@@ -185,6 +139,72 @@ struct BuilderView: View {
         .sheet(isPresented: $showSheets, onDismiss: { sheets = RunningList.all() }) { NavigationStack { SheetsView() } }
         .sheet(isPresented: $showHistory, onDismiss: { history = RunHistory.all() }) { NavigationStack { HistoryView() } }
         .sheet(item: $linking) { c in NavigationStack { ToolLinkSheet(chain: c) } }
+        .sheet(isPresented: $showMine) {
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                        if mine.isEmpty {
+                            Text("Nothing saved yet. Build one from the start screen and it lands here.")
+                                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        }
+                        ForEach(mine) { c in row(c, mine: true) }
+                        if !sheets.isEmpty {
+                            NavigationLink { SheetsView() } label: { subLinkRow("My sheets", sheets.count == 1 ? "1 sheet your tools add to" : "\(sheets.count) sheets your tools add to", "tablecells") }.buttonStyle(.plain)
+                        }
+                        if !history.isEmpty {
+                            NavigationLink { HistoryView() } label: { subLinkRow("Recent results", history.count == 1 ? "The last thing a tool made" : "The last \(history.count) things your tools made", "clock.arrow.circlepath") }.buttonStyle(.plain)
+                        }
+                    }.padding(HandySpacing.gutter)
+                }
+                .navigationTitle("My tools").navigationBarTitleDisplayMode(.inline)
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showMine = false } } }
+            }
+        }
+        .sheet(isPresented: $showTemplates) {
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                        HStack {
+                            Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []); showTemplates = false } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
+                            Spacer()
+                            Button {
+                                if let c = ToolLink.chain(from: UIPasteboard.general.string ?? "") {
+                                    if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) { mine.append(c); persist(); note = "Added \(c.name)."; showTemplates = false }
+                                    else { proForSave() }
+                                } else { note = "Copy a tool from another Tenzy first, then tap Paste." }
+                            } label: { Label("Paste a tool", systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
+                        }
+                        Picker("What do you have?", selection: $have) {
+                            Text("All").tag(ChainKind?.none)
+                            Text("Photo").tag(ChainKind?.some(.image))
+                            Text("Text").tag(ChainKind?.some(.text))
+                            Text("Video").tag(ChainKind?.some(.video))
+                            Text("Sound").tag(ChainKind?.some(.audio))
+                            Text("PDF").tag(ChainKind?.some(.pdf))
+                        }.pickerStyle(.segmented).accessibilityIdentifier("starter-filter")
+                        LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
+                            ForEach(BuilderIntro.starters(for: have).filter { $0.unavailable == nil }) { c in templateCard(c) }
+                        }
+                    }.padding(HandySpacing.gutter)
+                }
+                .navigationTitle("Templates").navigationBarTitleDisplayMode(.inline)
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showTemplates = false } } }
+            }
+        }
+        .sheet(isPresented: $showGuide) {
+            NavigationStack {
+                ScrollView {
+                    BuilderIntroCard(onShow: {
+                        if var demo = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) {
+                            demo.id = UUID().uuidString; demo.name += " (mine)"; editing = demo; showGuide = false
+                        }
+                    }, onDone: { showGuide = false })
+                    .padding(HandySpacing.gutter)
+                }
+                .navigationTitle("How building works").navigationBarTitleDisplayMode(.inline)
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showGuide = false } } }
+            }
+        }
         .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all(); history = RunHistory.all() } }   // a run may have added to a sheet, and to the recent results
         .onChange(of: given?.id) { _, now in if now == nil { history = RunHistory.all() } }
         .onAppear { openReminded() }
@@ -205,28 +225,49 @@ struct BuilderView: View {
         NotificationCenter.default.post(name: .showPaywall, object: nil)
     }
 
-    /// "Start with what you have": pick the thing first, and Tenzy lists the tools that fit it.
-    private var anything: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Label("Start with what you have", systemImage: "tray.and.arrow.down").font(HandyFont.cardTitle)
-            Text(gettingReady ? "Getting it ready…" : "Pick it, and Tenzy shows the tools that fit. No need to know which one you want.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+    /// "Start with what you have": six objects on one page, nothing to scroll — pick the thing and
+    /// Tenzy lists the tools that fit it.
+    private var anythingTiles: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text("…or start with what you have").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: HandySpacing.s8) {
-                PhotosPicker(selection: $anyPick, matching: .any(of: [.images, .videos])) { haveTile("Photo or video", "photo.on.rectangle") }
-                    .accessibilityIdentifier("have-photo")
-                Button { pickingAny = true } label: { haveTile("File", "doc") }.accessibilityIdentifier("have-file")
+                PhotosPicker(selection: $anyPick, matching: .images) { objTile("Photo") }.accessibilityIdentifier("have-photo")
+                PhotosPicker(selection: $anyPick, matching: .videos) { objTile("Video") }.accessibilityIdentifier("have-video")
+                Button { pickTypes = [.audio]; pickingAny = true } label: { objTile("Audio") }.accessibilityIdentifier("have-audio")
+            }
+            HStack(spacing: HandySpacing.s8) {
+                Button { pickTypes = [.pdf]; pickingAny = true } label: { objTile("PDF") }.accessibilityIdentifier("have-pdf")
+                Button { pickTypes = [.item]; pickingAny = true } label: { objTile("File") }.accessibilityIdentifier("have-file")
                 Button {
                     if let g = Given.from(text: UIPasteboard.general.string ?? "") { note = nil; given = g }
                     else if let img = UIPasteboard.general.image { note = nil; given = Given(payload: .image(img), label: "A photo") }
                     else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
-                } label: { haveTile("Paste", "doc.on.clipboard") }.accessibilityIdentifier("have-paste")
+                } label: { objTile("Paste") }.accessibilityIdentifier("have-paste")
             }
-        }.cardStyle()
+            if gettingReady { Text("Getting it ready…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+        }
     }
-    private func haveTile(_ title: String, _ icon: String) -> some View {
-        VStack(spacing: 4) { Image(systemName: icon).font(.system(size: 18, weight: .semibold)); Text(title).font(HandyFont.micro).lineLimit(1).minimumScaleFactor(0.7) }
+    private func objTile(_ title: String) -> some View {
+        Text(title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
             .frame(maxWidth: .infinity, minHeight: 56)
-            .foregroundStyle(HandyColor.accent)
-            .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .cardStyle(padding: HandySpacing.s12)
+    }
+    private func footBtn(_ label: String, _ action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(label).font(HandyFont.caption).lineLimit(1).frame(maxWidth: .infinity, minHeight: 44)
+        }.buttonStyle(.bordered).tint(HandyColor.accent)
+    }
+    private func subLinkRow(_ title: String, _ sub: String, _ icon: String) -> some View {
+        HStack(spacing: HandySpacing.s12) {
+            Image(systemName: icon).font(.system(size: 18, weight: .semibold)).foregroundStyle(HandyColor.accent).frame(width: 38, height: 38).background(HandyColor.accent.opacity(0.14), in: Circle())
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                Text(sub).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            Spacer()
+            Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+        }.cardStyle(padding: HandySpacing.s12)
     }
 
     /// A tapped reminder lands here: open that tool ready to run.
@@ -238,8 +279,7 @@ struct BuilderView: View {
     private var hero: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Label("Describe it", systemImage: "sparkles").font(HandyFont.cardTitle)
-            Text("Say what you want in your own words. Spelling doesn't matter, and half a sentence is enough. Tenzy lines up the steps and shows you before anything runs.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            TextField("e.g. shrink a photo under 1 MB and remove its location", text: $ask, axis: .vertical)
+            TextField("e.g. shrink a photo under 1 MB and hide where it was taken", text: $ask, axis: .vertical)
                 .lineLimit(1...3).textFieldStyle(.roundedBorder).accessibilityIdentifier("describe-field")
             Button {
                 planning = true

@@ -77,8 +77,10 @@ jobs:
           else
             echo "no upload.jks — KEYSTORE_B64 secret is empty" | tee -a build.log
           fi
-          echo "=== bundleRelease (INTERNAL_UNLOCK=$INTERNAL_UNLOCK) ===" | tee -a build.log
-          gradle --no-daemon bundleRelease -PinternalUnlock=$INTERNAL_UNLOCK --stacktrace --warning-mode none 2>&1 | tee -a build.log; exit ${PIPESTATUS[0]}
+          echo "=== bundleRelease (INTERNAL_UNLOCK=$INTERNAL_UNLOCK, liveAds=true) ===" | tee -a build.log
+          # Production AAB serves real AdMob units, never Google's test ads (test ads in production
+          # breach AdMob policy). Real ads fill once the AdMob account finishes verifying.
+          gradle --no-daemon bundleRelease -PinternalUnlock=$INTERNAL_UNLOCK -PliveAds=true --stacktrace --warning-mode none 2>&1 | tee -a build.log; exit ${PIPESTATUS[0]}
 
       - name: Publish build log
         if: always()

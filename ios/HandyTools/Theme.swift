@@ -33,7 +33,7 @@ enum HandyColor {
 enum TenzyTheme: String, CaseIterable, Identifiable {
     case daylight, midnight, warmPaper, neoPop, mono, aurora
     var id: String { rawValue }
-    var isPro: Bool { self != .daylight && self != .aurora }   // Aurora is the free default look
+    var isPro: Bool { self != .aurora }   // exactly one free theme — Aurora, the default look
     var isDark: Bool { self == .midnight || self == .aurora }
     var title: String {
         switch self {

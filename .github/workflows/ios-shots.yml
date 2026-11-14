@@ -94,3 +94,13 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: bash .github/publish-log.sh ios-shots-v2 ios/shots
+      # Also upload as a downloadable artifact — the ci-logs push above is egress-limited and
+      # often doesn't land, so this is the reliable way to retrieve the PNGs.
+      - name: Upload screenshots artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-shots
+          path: ios/shots
+          retention-days: 5
+          if-no-files-found: warn

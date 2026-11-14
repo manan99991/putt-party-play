@@ -74,7 +74,6 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
     Column(Modifier.fillMaxSize().statusBarsPadding()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter)) {
             Spacer(Modifier.height(HandyTokens.Space8))
-            BackArrow(Modifier.offset(x = (-12).dp))
             Text("Settings", style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(HandyTokens.Space16))
 
@@ -103,10 +102,17 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             SettingsSectionLabel("Appearance")
             Text("Theme", style = MaterialTheme.typography.bodyLarge)
             Spacer(Modifier.height(HandyTokens.Space4))
-            Text(if (premium) "Tap to switch — applies instantly." else "Daylight is free; the rest come with Pro.",
+            Text(if (premium) "Tap to switch — applies instantly." else "Aurora is free; the rest come with Pro.",
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space12))
             ThemePicker(premium) { onOpen("paywall") }
+
+            Spacer(Modifier.height(HandyTokens.Space24))
+            SettingsSectionLabel("What Tenzy does")
+            Text("Every tool in one place — tap any to open it. It all runs on your phone.",
+                style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Spacer(Modifier.height(HandyTokens.Space8))
+            TOOLS.forEach { t -> MapRow(t.name, t.blurb, pro = ToolGate.isPro(t.route) && !premium) { onOpen(t.route) } }
 
             Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("App")
@@ -131,6 +137,29 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             Spacer(Modifier.height(HandyTokens.Space24))
         }
         BannerAd()
+    }
+}
+
+/** One line in the "What Tenzy does" map: the tool's name and what it's for, tappable to open it. */
+@Composable
+private fun MapRow(name: String, blurb: String, pro: Boolean = false, onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+            .clickable { onClick() }.padding(vertical = HandyTokens.Space12),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(name, style = MaterialTheme.typography.bodyLarge)
+            Text(blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        if (pro) {
+            Text("PRO", color = HandyColors.OnAccent, style = MaterialTheme.typography.labelSmall,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                modifier = Modifier.padding(end = HandyTokens.Space8)
+                    .background(HandyColors.Accent, androidx.compose.foundation.shape.RoundedCornerShape(50))
+                    .padding(horizontal = HandyTokens.Space8, vertical = 2.dp))
+        }
+        Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)
     }
 }
 

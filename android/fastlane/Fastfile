@@ -34,8 +34,11 @@ platform :android do
   # (that is why the old r0adkll step with status:completed silently failed). Use a draft release
   # so the bundle actually lands in the library and can be promoted to a testing track.
   lane :upload do
+    # Production access is granted, so the release candidate ships to the PRODUCTION track.
+    # SUPPLY_TRACK can override (e.g. "internal") for a staged test upload.
+    track = ENV["SUPPLY_TRACK"].to_s.empty? ? "production" : ENV["SUPPLY_TRACK"]
     base = {
-      track: "internal",
+      track: track,
       aab: "app/build/outputs/bundle/release/app-release.aab",
       skip_upload_metadata: true, skip_upload_changelogs: true,
       skip_upload_images: true, skip_upload_screenshots: true,
@@ -43,9 +46,9 @@ platform :android do
     }
     begin
       supply(base.merge(release_status: "completed"))
-      UI.success("AAB uploaded and rolled out to internal testers")
+      UI.success("AAB uploaded and rolled out on the #{track} track")
     rescue => e
-      UI.important("Completed rollout refused (#{e.message[0, 160]}); uploading as a draft release instead")
+      UI.important("Completed rollout on #{track} refused (#{e.message[0, 200]}); uploading as a draft release instead")
       supply(base.merge(release_status: "draft"))
     end
   end

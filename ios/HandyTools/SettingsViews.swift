@@ -207,7 +207,24 @@ struct SettingsView: View {
                             }
                         }
                         if !store.isPremium {
-                            Text("Daylight is free. The other four unlock with Pro.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            Text("Aurora is free. The rest unlock with Pro.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        }
+                    }
+
+                    Section("What Tenzy does") {
+                        Text("Every tool in one place — tap any to open it. It all runs on your phone.")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        ForEach(TOOLS) { t in
+                            Button { NotificationCenter.default.post(name: .openTool, object: t.id) } label: {
+                                HStack(spacing: HandySpacing.s12) {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(t.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                        Text(t.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                    }
+                                    Spacer()
+                                    Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+                                }.contentShape(Rectangle())
+                            }.buttonStyle(.plain)
                         }
                     }
 
