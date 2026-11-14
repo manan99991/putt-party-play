@@ -1,3 +1,1 @@
-Fixes: Pro Camera no longer closes when you shoot in RAW, and Flashlight+ now stays on when your screen locks.
-
-On-device as always. Tap Settings to send a note.
+A fresh, simpler Tenzy. Start on Build to make your own tool in a few taps, find any tool from Search, and see everything the app does in Settings. New Aurora theme. Everything still runs on your phone.
