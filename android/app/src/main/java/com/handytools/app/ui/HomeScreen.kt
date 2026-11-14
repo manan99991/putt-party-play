@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -257,6 +258,7 @@ fun HomeScreen(onOpen: (String) -> Unit) {
     val premium by HandyApp.instance.billing.isPremium.collectAsState()
     var query by remember { mutableStateOf("") }
     val results = if (query.trim().isEmpty()) TOOLS else searchTools(query)
+    var tab by remember { mutableStateOf(0) }   // 0 Build · 1 Search · 2 Settings
 
     Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         // A soft wash in the current theme's primary colour so the home page has some life AND follows
@@ -270,25 +272,14 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     )
                 )
         )
-        Column(Modifier.fillMaxSize().statusBarsPadding()) {
-            // Header
-            Row(
-                Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter, vertical = HandyTokens.Space12),
-                horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    // Theme-aware so every theme (light or dark) reads correctly on the home page.
-                    Text("Tenzy", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground)
-                    Spacer(Modifier.height(HandyTokens.Space4))
-                    Text("$TENZY_TOOL_COUNT tools · on your phone",
-                        style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
-                }
-                Row {
-                    if (!premium) IconButton(onClick = { onOpen("paywall") }) { Icon(Icons.Outlined.WorkspacePremium, "Go Pro", tint = HandyColors.Accent) }
-                    IconButton(onClick = { onOpen("settings") }) { Icon(Icons.Outlined.Settings, "Settings", tint = MaterialTheme.colorScheme.onBackground) }
-                }
-            }
-
+        Column(Modifier.fillMaxSize()) {
+          // Build-first shell: Build (the maker) is home, Search finds standalone tools, Settings holds
+          // the map + themes + plan. One screen each, no horizontal rails — the whole app from one bar.
+          Box(Modifier.weight(1f).fillMaxWidth()) {
+            when (tab) {
+                0 -> com.handytools.app.tools.builder.BuilderScreen()
+                2 -> SettingsScreen(onOpen = onOpen)
+                else -> Column(Modifier.fillMaxSize().statusBarsPadding()) {
             // Search
             TextField(
                 value = query, onValueChange = { query = it },
@@ -350,7 +341,41 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     }
                 }
             }
-            BannerAd()
+                }
+            }
+          }
+          BannerAd()
+          TenzyTabBar(tab) { tab = it }
+        }
+    }
+}
+
+/** The one bar the whole app runs from: Build (the maker, home), Search (standalone tools),
+ *  Settings (map + themes + plan). Matches the iPhone tab bar so both phones feel the same. */
+@Composable
+private fun TenzyTabBar(selected: Int, onSelect: (Int) -> Unit) {
+    val items = listOf(
+        Triple(0, Icons.Outlined.Bolt, "Build"),
+        Triple(1, Icons.Outlined.Search, "Search"),
+        Triple(2, Icons.Outlined.Settings, "Settings")
+    )
+    Row(
+        Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.surface)
+            .navigationBarsPadding().padding(top = 8.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        items.forEach { (i, icon, label) ->
+            val on = i == selected
+            val tint = if (on) MaterialTheme.colorScheme.primary else Handy.palette.textSecondary
+            Column(
+                Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).clickable { onSelect(i) }
+                    .padding(vertical = HandyTokens.Space8),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Icon(icon, label, tint = tint)
+                Spacer(Modifier.height(2.dp))
+                Text(label, style = MaterialTheme.typography.labelSmall, color = tint)
+            }
         }
     }
 }
