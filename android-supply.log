@@ -1,1 +1,98 @@
-(no log file produced)
+[22:12:16]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[22:12:16]: fastlane 2.241.2 (Ruby 3.2.3, gem)
+[22:12:16]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
+[22:12:17]: [32m------------------------------[0m
+[22:12:17]: [32m--- Step: default_platform ---[0m
+[22:12:17]: [32m------------------------------[0m
+[22:12:17]: [32mDriving the lane 'android listing' 🚀[0m
+[22:12:17]: [32m--------------------[0m
+[22:12:17]: [32m--- Step: supply ---[0m
+[22:12:17]: [32m--------------------[0m
+
++------------------------------------------------------------------------------------------------------+
+|                                      [32mSummary for supply 2.241.2[0m                                      |
++------------------------------------+-----------------------------------------------------------------+
+| track                              | internal                                                        |
+| skip_upload_apk                    | true                                                            |
+| skip_upload_aab                    | true                                                            |
+| skip_upload_metadata               | false                                                           |
+| skip_upload_changelogs             | false                                                           |
+| skip_upload_images                 | false                                                           |
+| skip_upload_screenshots            | false                                                           |
+| changes_not_sent_for_review        | true                                                            |
+| version_code                       | 211                                                             |
+| release_status                     | completed                                                       |
+| package_name                       | com.tenzy.toolkit                                               |
+| metadata_path                      | ./fastlane/metadata/android                                     |
+| json_key                           | /home/runner/work/putt-party-play/putt-party-play/play-key.json |
+| sync_image_upload                  | false                                                           |
+| track_promote_release_status       | completed                                                       |
+| validate_only                      | false                                                           |
+| check_superseded_tracks            | false                                                           |
+| timeout                            | 300                                                             |
+| deactivate_on_promote              | true                                                            |
+| rescue_changes_not_sent_for_review | true                                                            |
+| ack_bundle_installation_warning    | false                                                           |
++------------------------------------+-----------------------------------------------------------------+
+
+[22:12:17]: [33mRollout as 'completed' refused (Could not find release for version code '211' to update changelog); pushing listing only, release stays as uploaded[0m
+[22:12:17]: [32m--------------------[0m
+[22:12:17]: [32m--- Step: supply ---[0m
+[22:12:17]: [32m--------------------[0m
+
++------------------------------------------------------------------------------------------------------+
+|                                      [32mSummary for supply 2.241.2[0m                                      |
++------------------------------------+-----------------------------------------------------------------+
+| track                              | internal                                                        |
+| skip_upload_apk                    | true                                                            |
+| skip_upload_aab                    | true                                                            |
+| skip_upload_metadata               | false                                                           |
+| skip_upload_changelogs             | false                                                           |
+| skip_upload_images                 | false                                                           |
+| skip_upload_screenshots            | false                                                           |
+| changes_not_sent_for_review        | true                                                            |
+| version_code                       | 211                                                             |
+| package_name                       | com.tenzy.toolkit                                               |
+| release_status                     | completed                                                       |
+| metadata_path                      | ./fastlane/metadata/android                                     |
+| json_key                           | /home/runner/work/putt-party-play/putt-party-play/play-key.json |
+| sync_image_upload                  | false                                                           |
+| track_promote_release_status       | completed                                                       |
+| validate_only                      | false                                                           |
+| check_superseded_tracks            | false                                                           |
+| timeout                            | 300                                                             |
+| deactivate_on_promote              | true                                                            |
+| rescue_changes_not_sent_for_review | true                                                            |
+| ack_bundle_installation_warning    | false                                                           |
++------------------------------------+-----------------------------------------------------------------+
+
++------------------------------------+
+|            [33mLane Context[0m            |
++------------------+-----------------+
+| DEFAULT_PLATFORM | android         |
+| PLATFORM_NAME    | android         |
+| LANE_NAME        | android listing |
++------------------+-----------------+
+[22:12:18]: [31mCalled from Fastfile at line 29[0m
+[22:12:18]: [31m```[0m
+[22:12:18]: [31m    27:	    rescue => e[0m
+[22:12:18]: [31m    28:	      UI.important("Rollout as 'completed' refused (#{e.message[0, 160]}); pushing listing only, release stays as uploaded")[0m
+[22:12:18]: [31m => 29:	      supply(base)[0m
+[22:12:18]: [31m    30:	    end[0m
+[22:12:18]: [31m    31:	  end[0m
+[22:12:18]: [31m```[0m
+
++---------------------------------------+
+|           [32mfastlane summary[0m            |
++------+------------------+-------------+
+| Step | Action           | Time (in s) |
++------+------------------+-------------+
+| 1    | default_platform | 0           |
+| 💥   | [31msupply[0m           | 0           |
+| 💥   | [31msupply[0m           | 0           |
++------+------------------+-------------+
+
+[22:12:18]: [31mfastlane finished with errors[0m
+[31m
+[!] Could not find release for version code '211' to update changelog[0m
+[22:12:18]: [33mWARNING: Support for your Ruby version (3.2.3) is going away. fastlane will soon require Ruby 3.3.0 or newer.[0m
