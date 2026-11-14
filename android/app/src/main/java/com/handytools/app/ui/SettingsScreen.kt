@@ -108,6 +108,13 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             ThemePicker(premium) { onOpen("paywall") }
 
             Spacer(Modifier.height(HandyTokens.Space24))
+            SettingsSectionLabel("What Tenzy does")
+            Text("Every tool in one place — tap any to open it. It all runs on your phone.",
+                style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Spacer(Modifier.height(HandyTokens.Space8))
+            TOOLS.forEach { t -> MapRow(t.name, t.blurb) { onOpen(t.route) } }
+
+            Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("App")
             SettingsRow(Icons.Outlined.Tune, "Permissions", "Manage camera, photos, contacts & more in Android Settings") {
                 ctx.startActivity(
@@ -130,6 +137,22 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             Spacer(Modifier.height(HandyTokens.Space24))
         }
         BannerAd()
+    }
+}
+
+/** One line in the "What Tenzy does" map: the tool's name and what it's for, tappable to open it. */
+@Composable
+private fun MapRow(name: String, blurb: String, onClick: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clip(androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+            .clickable { onClick() }.padding(vertical = HandyTokens.Space12),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(name, style = MaterialTheme.typography.bodyLarge)
+            Text(blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
+        Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)
     }
 }
 
