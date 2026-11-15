@@ -38,21 +38,26 @@ enum RoutePlan {
     /// noun right after "to/at/from". Returns nil when nothing is clear — we never guess.
     static func destination(in line: String) -> String? {
         let lower = line.lowercased()
+        // Try the fuller "to/at/from (the) <Capitalised words>" phrase FIRST, so a named place keeps its
+        // whole name — "to the Oak Street Clinic" → "Oak Street Clinic", not the bare "Clinic". It only
+        // fires when the phrase actually names a place type (Clinic, Mall, Street…), never a bare proper
+        // noun — "send it to Ana" must NOT become a map search.
+        let pattern = "\\b(?:to|at|from)\\s+(?:the\\s+)?([A-Z][\\w'&.-]+(?:\\s+[A-Z][\\w'&.-]+){0,3})"
+        if let re = try? NSRegularExpression(pattern: pattern),
+           let m = re.firstMatch(in: line, range: NSRange(line.startIndex..., in: line)),
+           m.numberOfRanges > 1, let r = Range(m.range(at: 1), in: line) {
+            let cand = String(line[r]).trimmingCharacters(in: .whitespaces)
+            let words = cand.lowercased().split(separator: " ").map(String.init)
+            if !(words.count == 1 && stopWords.contains(words[0])),
+               words.contains(where: { placeIndicators.contains($0) }) {
+                return cand
+            }
+        }
+        // Fall back to a known everyday place matched as a whole word — "Pick up milk from Costco" → "Costco".
         if let hit = knownPlaces.first(where: { containsWord($0, in: lower) }) {
             return hit.split(separator: " ").map { $0.capitalized }.joined(separator: " ")   // "walmart" → "Walmart"
         }
-        // "to/at/from (the) <Capitalised words>" — e.g. "to the Oak Street Clinic", "from Riverside Mall".
-        let pattern = "\\b(?:to|at|from)\\s+(?:the\\s+)?([A-Z][\\w'&.-]+(?:\\s+[A-Z][\\w'&.-]+){0,3})"
-        guard let re = try? NSRegularExpression(pattern: pattern),
-              let m = re.firstMatch(in: line, range: NSRange(line.startIndex..., in: line)),
-              m.numberOfRanges > 1, let r = Range(m.range(at: 1), in: line) else { return nil }
-        let cand = String(line[r]).trimmingCharacters(in: .whitespaces)
-        let words = cand.lowercased().split(separator: " ").map(String.init)
-        if words.count == 1, stopWords.contains(words[0]) { return nil }
-        // Only accept an open "to/at/from X" destination when the phrase actually names a place type
-        // (Clinic, Mall, Street…), never a bare proper noun — "send it to Ana" must NOT become a map search.
-        guard words.contains(where: { placeIndicators.contains($0) }) else { return nil }
-        return cand
+        return nil
     }
 
     /// Apple Maps directions link to a place (opens the Maps app; it shows the live route + ETA).

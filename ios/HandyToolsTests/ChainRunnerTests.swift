@@ -1560,7 +1560,8 @@ final class ProStepTests: XCTestCase {
     /// a positive result can't be produced from a CI fixture. (Negative/empty input is still swept here.)
     private static let ciUndeliverableBlocks: Set<Block> =
         deviceOnlyBlocks.union([.cutout, .passportPhoto, .hideSensitive, .sticker, .emojiFaces, .meme, .emojiMosaic, .artFilter,
-                                .readCode, .contactQr, .wifiQr])   // need a QR/Wi-Fi image or the device's own contact
+                                .readCode, .contactQr, .wifiQr,   // need a QR/Wi-Fi image or the device's own contact
+                                .stamp])   // needs the user's drawn signature (DocEngine.savedSignature), which only exists on-device
 
     private func blankImage(_ side: CGFloat = 1) -> UIImage {
         UIGraphicsImageRenderer(size: CGSize(width: side, height: side)).image { ctx in
