@@ -453,11 +453,13 @@ enum ChainRunner {
             let isLast = i == chain.steps.count - 1
             switch await apply(step, to: value) {
             case .success(let next): value = next; best = next
-            case .failure(.nothingFound) where !isLast:
-                // An optional "find/extract" step (find links, find tasks…) had nothing to pull out of
-                // what the step above handed it. That's not a reason to dead-end the whole flow — pass
-                // the text straight through so every remaining step still runs. (Only the FINAL step, or
-                // a real processing failure, stops a flow.)
+            case .failure(.nothingFound) where !isLast && step.block.takes == step.block.gives:
+                // An optional same-type "find/extract" step (find links, find tasks, tidy… text→text) had
+                // nothing to pull out of what the step above handed it. That's not a reason to dead-end the
+                // whole flow — pass the input straight through so every remaining step still runs. Only
+                // applies when the step returns the same type it took, so the next step still gets valid
+                // input; a step that changes type (read a QR → text) can't be skipped this way. The final
+                // step, or any real processing failure, still stops a flow.
                 continue
             case .failure(let f):
                 return best.map { .partial($0, f) } ?? .failed(f)

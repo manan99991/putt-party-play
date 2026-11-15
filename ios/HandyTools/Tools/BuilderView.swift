@@ -678,10 +678,10 @@ private struct ChainEditor: View {
                 previews[i] = Self.preview(next)
             case .failure(let f):
                 let isLast = i == steps.count - 1
-                if case .nothingFound = f, !isLast {
-                    // An optional find/extract step found nothing in the sample. At run time it's skipped,
-                    // not an error — show that and keep previewing the rest on the text as-is, instead of
-                    // stopping and leaving every step below spinning on "Trying it on a sample…" forever.
+                if case .nothingFound = f, !isLast, step.block.takes == step.block.gives {
+                    // An optional same-type find/extract step found nothing in the sample. At run time it's
+                    // skipped, not an error — show that and keep previewing the rest on the text as-is,
+                    // instead of stopping and leaving the steps below spinning on "Trying it…" forever.
                     previews[i] = .file("Nothing to pull from the sample — skipped when there's none; the steps below still run.")
                     continue
                 }

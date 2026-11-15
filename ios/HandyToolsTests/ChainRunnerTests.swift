@@ -1548,4 +1548,75 @@ final class ProStepTests: XCTestCase {
         guard case .done(let out) = r else { return XCTFail("flow dead-ended on the empty middle step: \(r)") }
         guard case .text(let t) = out, !t.trimmingCharacters(in: .whitespaces).isEmpty else { return XCTFail("flow finished but delivered nothing") }
     }
+
+    // MARK: positive AND negative flows, for every block and every flow
+    //
+    // The bugs that shipped were negative-path: a tool handed input it couldn't use crashed, hung, or
+    // dead-ended. These three sweeps cover every deterministic block and every pre-built flow in BOTH
+    // directions — good input must deliver, bad/empty input must stay graceful (no trap, no hang, a real
+    // message, never a dead-end). ML/camera blocks are asserted on the mobileqa device gate instead.
+
+    /// Blocks whose delivery needs a real photo with a subject/face, a device model or the network — so
+    /// a positive result can't be produced from a CI fixture. (Negative/empty input is still swept here.)
+    private static let ciUndeliverableBlocks: Set<Block> =
+        deviceOnlyBlocks.union([.cutout, .passportPhoto, .hideSensitive, .sticker, .emojiFaces, .meme, .emojiMosaic, .artFilter,
+                                .readCode, .contactQr, .wifiQr])   // need a QR/Wi-Fi image or the device's own contact
+
+    private func blankImage(_ side: CGFloat = 1) -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: side, height: side)).image { ctx in
+            UIColor.white.setFill(); ctx.fill(CGRect(x: 0, y: 0, width: side, height: side))
+        }
+    }
+
+    /// Empty/degenerate input of a kind — the negative fixture: blank image, empty string, blank PDF.
+    private func emptyInput(for kind: ChainKind) -> ChainPayload? {
+        switch kind {
+        case .image, .photoFile, .file: return .image(blankImage())
+        case .text: return .text("")
+        case .pdf:
+            let doc = PDFDocument()
+            if let page = PDFPage(image: blankImage(200)) { doc.insert(page, at: 0) }
+            return doc.dataRepresentation().map { .file($0, ext: "pdf") }
+        case .video, .audio: return nil   // no safe empty fixture in CI; device-only anyway
+        }
+    }
+
+    // NEGATIVE, block level: every block fed empty input of its type stays graceful — it returns without
+    // trapping or hanging, and any failure carries a real message the person can act on.
+    func testEveryBlockHandlesEmptyInputGracefully() async {
+        for block in Block.allCases where !Self.deviceOnlyBlocks.contains(block) {
+            guard let input = emptyInput(for: block.takes) else { continue }
+            let r = await ChainRunner.apply(ChainStep(block: block), to: input)
+            if case .failure(let f) = r {
+                XCTAssertFalse(ChainRunView.words(f).isEmpty, "\(block.rawValue): empty input produced no actionable message")
+            }
+            // Either outcome is fine — reaching here proves it didn't crash or hang on empty input.
+        }
+    }
+
+    // NEGATIVE, flow level: every pre-built flow run on empty input stays graceful — no trap, no hang,
+    // and a flat failure still explains itself.
+    func testEveryTemplateIsGracefulOnEmptyInput() async {
+        for t in ChainTemplates.all where !t.steps.contains(where: { Self.deviceOnlyBlocks.contains($0.block) }) {
+            let start = t.steps.first?.block.takes ?? .text
+            guard let input = emptyInput(for: start) else { continue }
+            if case .failed(let f) = await ChainRunner.runKeepingBest(t, input: input) {
+                XCTAssertFalse(ChainRunView.words(f).isEmpty, "\(t.id): empty input failed with no message")
+            }
+        }
+    }
+
+    // POSITIVE, flow level: every pre-built flow whose input CI can satisfy must DELIVER on good input —
+    // fully (done) or best-effort (partial). A flat failure or crash on good input is the dead-end we
+    // are preventing. (Subject/face/ML flows deliver only on a real device — asserted by mobileqa.)
+    func testEveryTemplateDeliversOnGoodInput() async {
+        for t in ChainTemplates.all where !t.steps.contains(where: { Self.ciUndeliverableBlocks.contains($0.block) }) {
+            let start = t.steps.first?.block.takes ?? .text
+            guard let input = await sampleInput(for: start) else { continue }
+            switch await ChainRunner.runKeepingBest(t, input: input) {
+            case .done, .partial: break   // delivered, or best-effort delivered — both pass
+            case .failed(let f): XCTFail("\(t.id): dead-ended on good input — \(ChainRunView.words(f))")
+            }
+        }
+    }
 }
