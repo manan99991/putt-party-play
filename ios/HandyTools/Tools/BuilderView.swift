@@ -90,6 +90,35 @@ private struct VideoResultPreview: View {
     }
 }
 
+/// Play button for an audio result — so a transcribed-to-voice / funny-voice / extracted-audio clip
+/// can be heard in the app before Save or share, instead of a bare "2.8 MB · WAV".
+private struct AudioResultPreview: View {
+    let url: URL
+    @State private var player: AVPlayer?
+    @State private var playing = false
+    var body: some View {
+        Button {
+            if player == nil { player = AVPlayer(url: url) }
+            if playing { player?.pause() } else { player?.seek(to: .zero); player?.play() }
+            playing.toggle()
+        } label: {
+            HStack(spacing: HandySpacing.s12) {
+                Image(systemName: playing ? "pause.circle.fill" : "play.circle.fill").font(.system(size: 34)).foregroundStyle(HandyColor.accent)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(playing ? "Playing…" : "Play the result").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                    Text("Hear it before you save").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                Spacer()
+                Image(systemName: "waveform").foregroundStyle(HandyColor.textSecondary)
+            }
+            .cardStyle(padding: HandySpacing.s12)
+        }
+        .buttonStyle(.plain)
+        .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { _ in playing = false }
+        .onDisappear { player?.pause() }
+    }
+}
+
 /// Tenzy Builder (M2): run a starter or saved tool, or build your own by stacking blocks.
 /// Everything here is data over built-in blocks (see ChainRunner), nothing is downloaded or generated as code.
 struct BuilderView: View {
@@ -1417,6 +1446,8 @@ private struct ChainRunView: View {
                 // or an .ics is read in the app before saving, not handed over as an opaque "77 bytes".
                 ScrollView { Text(s).font(.system(.caption, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading) }
                     .frame(maxHeight: 260).cardStyle(padding: HandySpacing.s12)
+            } else if ChainPayload.isAudio(ext), let au = tempURL(d, ext) {
+                AudioResultPreview(url: au)   // hear an audio result before saving
             }
             if let u = tempURL(d, ext) {
                 Text("\(SizeTarget.format(d.count)) · \(ext.uppercased())").font(HandyFont.caption)
