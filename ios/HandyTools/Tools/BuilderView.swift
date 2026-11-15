@@ -1096,7 +1096,25 @@ private struct ChainRunView: View {
                     // Four ways to get the words in without typing them.
                     HStack(spacing: HandySpacing.s8) {
                         fill("Paste", "doc.on.clipboard", id: "in-paste") {
-                            if let s = UIPasteboard.general.string, !s.isEmpty { text = InputText.joined(text, s) } else { message = "There is nothing copied to paste." }
+                            if let s = UIPasteboard.general.string, !s.isEmpty {
+                                text = InputText.joined(text, s)
+                            } else if let img = UIPasteboard.general.image {
+                                // You copied a picture (a screenshot) — read the words out of it instead of
+                                // a dead "nothing to paste", since this tool works on text.
+                                message = "Reading the words from your image…"
+                                Task.detached(priority: .userInitiated) {
+                                    let words = DocEngine.text(DocEngine.recognize(img.normalizedUp()))
+                                    await MainActor.run {
+                                        if words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                            message = "That image has no readable text. Copy some text, or use a photo tool to work on the picture itself."
+                                        } else {
+                                            text = InputText.joined(text, words); message = nil
+                                        }
+                                    }
+                                }
+                            } else {
+                                message = "Nothing's copied yet. Copy some text or a screenshot first, then tap Paste."
+                            }
                         }
                         fill(speech.running ? "Stop" : "Speak", speech.running ? "stop.circle.fill" : "mic", id: "in-speak") { toggleSpeech() }
                         fill("Contact", "person.crop.circle", id: "in-contact") { pickingContact = true }
