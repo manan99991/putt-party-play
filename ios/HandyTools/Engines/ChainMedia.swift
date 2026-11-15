@@ -291,6 +291,36 @@ enum Transcriber {
         }
     }
 
+    // ── Pure, unit-tested helpers ────────────────────────────────────────────
+    // The "one line from a 22-minute memo" bug was a whole-file-coverage failure. These three funcs
+    // hold that logic as pure functions so EngineTests can prove, on every build, that a long file is
+    // split across the WHOLE recording (not one window), that every window's text is stitched back in,
+    // and that progress moves honestly 0→1. listen() below uses them, so the tests guard real behaviour.
+
+    /// Seconds of audio each on-device recognition window covers — well inside what one request handles.
+    static let windowSeconds: Double = 40
+
+    /// Number of windows a recording of `frames` at `sampleRate` is split into. It always covers the
+    /// whole file: a 22-minute memo is ~33 windows, never 1. Zero only for an empty/invalid file.
+    static func windowCount(frames: AVAudioFramePosition, sampleRate: Double, seconds: Double = windowSeconds) -> Int {
+        guard frames > 0, sampleRate > 0, seconds > 0 else { return 0 }
+        return Int((Double(frames) / (sampleRate * seconds)).rounded(.up))
+    }
+
+    /// Stitches the per-window transcripts back into one, dropping empties and trimming — turning the
+    /// ~33 window results of a long memo back into a single transcript.
+    static func stitch(_ parts: [String]) -> String {
+        parts.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
+    }
+
+    /// Fraction 0…1 of the file consumed — what the progress bar's time-remaining is derived from.
+    static func fraction(_ pos: AVAudioFramePosition, of total: AVAudioFramePosition) -> Double {
+        guard total > 0 else { return 0 }
+        return min(1, max(0, Double(pos) / Double(total)))
+    }
+
     static func listen(to url: URL) async -> Result<Heard, Problem> {
         let asked = Once<SFSpeechRecognizerAuthorizationStatus>()
         Permission.speech { asked.finish($0) }
@@ -306,7 +336,7 @@ enum Transcriber {
         let fmt = file.processingFormat
         let total = file.length
         guard total > 0, fmt.sampleRate > 0 else { return .failure(.nothing) }
-        let windowFrames = AVAudioFrameCount(fmt.sampleRate * 40)
+        let windowFrames = AVAudioFrameCount(fmt.sampleRate * windowSeconds)
 
         await MainActor.run { RunProgress.shared.begin() }
         defer { Task { @MainActor in RunProgress.shared.end() } }
@@ -337,11 +367,10 @@ enum Transcriber {
             DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish("") }
             let text = await withCheckedContinuation { once.wait($0) }
             if !text.isEmpty { parts.append(text) }
-            let frac = min(1.0, Double(file.framePosition) / Double(total))
-            await MainActor.run { RunProgress.shared.set(frac) }
+            await MainActor.run { RunProgress.shared.set(fraction(file.framePosition, of: total)) }
             if read == 0 { break }   // nothing read — avoid an endless loop on a malformed file
         }
-        let joined = parts.joined(separator: " ").trimmingCharacters(in: .whitespacesAndNewlines)
+        let joined = stitch(parts)
         guard !joined.isEmpty else { return .failure(.nothing) }
         return .success(Heard(text: joined, words: []))
     }

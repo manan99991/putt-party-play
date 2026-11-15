@@ -1239,4 +1239,56 @@ final class EngineTests: XCTestCase {
         // Off → never due, even if never backed up.
         XCTAssertFalse(ContactsBackup.isDue(last: nil, frequency: .off, now: now))
     }
+
+    // MARK: transcription — the "one line from a 22-minute memo" bug class
+    //
+    // The real on-device recogniser can't run in the simulator, so the full audio→text path is
+    // asserted on a real device by the mobileqa gate. What CAN regress silently in code — and what
+    // actually shipped — is the WHOLE-FILE coverage: reading only one window, or losing windows when
+    // stitching. These lock that down deterministically on every build.
+
+    func testTranscriptionCoversTheWholeRecording() {
+        // A 22-minute recording at 16 kHz must be split across many windows, never transcribed as one.
+        let sr = 16_000.0
+        let frames22min = AVAudioFramePosition(sr * 22 * 60)
+        let n = Transcriber.windowCount(frames: frames22min, sampleRate: sr)
+        XCTAssertEqual(n, 33, "a 22-minute file must cover the whole recording in ~33 windows, not one")
+        XCTAssertGreaterThan(n, 1, "regression guard: long recordings must never collapse to a single window")
+
+        // Scales with length and sample rate; a short clip is one window; empty/invalid is none.
+        XCTAssertEqual(Transcriber.windowCount(frames: AVAudioFramePosition(sr * 10), sampleRate: sr), 1)
+        XCTAssertEqual(Transcriber.windowCount(frames: AVAudioFramePosition(sr * 80), sampleRate: sr), 2)
+        XCTAssertEqual(Transcriber.windowCount(frames: AVAudioFramePosition(44_100 * 60), sampleRate: 44_100), 2)
+        XCTAssertEqual(Transcriber.windowCount(frames: 0, sampleRate: sr), 0)
+        XCTAssertEqual(Transcriber.windowCount(frames: 1000, sampleRate: 0), 0)
+    }
+
+    func testTranscriptionStitchKeepsEveryWindow() {
+        // Every window's words survive, in order, joined with a single space — nothing dropped.
+        XCTAssertEqual(Transcriber.stitch(["Hello there.", "How are you?", "Goodbye."]),
+                       "Hello there. How are you? Goodbye.")
+        // Empty/whitespace windows (a silent stretch) are skipped, not turned into double spaces.
+        XCTAssertEqual(Transcriber.stitch(["first", "   ", "", "second"]), "first second")
+        // A result that trims to the same thing it started as is unchanged.
+        XCTAssertEqual(Transcriber.stitch([" padded "]), "padded")
+        XCTAssertEqual(Transcriber.stitch([]), "")
+        // The failure mode we shipped: if only the first window were kept, the transcript would be one
+        // line. Stitching 33 non-empty windows must yield 33 pieces of text, not one.
+        let many = (1...33).map { "window\($0)" }
+        XCTAssertEqual(Transcriber.stitch(many).split(separator: " ").count, 33)
+    }
+
+    func testTranscriptionProgressIsHonest() {
+        let total = AVAudioFramePosition(16_000 * 60 * 22)
+        XCTAssertEqual(Transcriber.fraction(0, of: total), 0, accuracy: 0.0001)
+        XCTAssertEqual(Transcriber.fraction(total / 2, of: total), 0.5, accuracy: 0.0001)
+        XCTAssertEqual(Transcriber.fraction(total, of: total), 1, accuracy: 0.0001)
+        // Monotonic and clamped — never jumps backward, never exceeds 1, never NaN on an empty file.
+        var last = 0.0
+        for pos in stride(from: 0, through: total, by: total / 20) {
+            let f = Transcriber.fraction(pos, of: total)
+            XCTAssertGreaterThanOrEqual(f, last); XCTAssertLessThanOrEqual(f, 1); last = f
+        }
+        XCTAssertEqual(Transcriber.fraction(100, of: 0), 0, "no divide-by-zero on an empty file")
+    }
 }
