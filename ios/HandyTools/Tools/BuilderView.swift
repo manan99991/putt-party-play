@@ -67,6 +67,19 @@ struct Given: Identifiable {
         guard !t.isEmpty else { return nil }
         return Given(payload: .text(t), label: TextTidy.details(t).links.isEmpty ? "Some text" : "A link")
     }
+
+    /// Archive endings — a ZIP (or similar) holds other files; Tenzy works on what's inside, not the box.
+    private static let archiveExts: Set<String> = ["zip", "rar", "7z", "tar", "gz", "tgz", "bz2", "xz", "zipx", "iso"]
+
+    /// A specific, non-dead-end message when a file can't be opened — so a ZIP isn't a vague "couldn't open"
+    /// (the app handles files, but an archive is a container of files, not a file to work on).
+    static func unsupportedNote(for url: URL) -> String {
+        let ext = url.pathExtension.lowercased()
+        if archiveExts.contains(ext) {
+            return "That's a \(ext.uppercased()) archive — a bundle of other files. Tenzy works on the files inside it, not the box. Open it in the Files app to unzip, then share one of the files from it back here."
+        }
+        return "Tenzy couldn't open that file, or has no tool for that kind of file yet."
+    }
 }
 
 /// Inline player for a video result — so a sped-up / trimmed / converted clip is watched in the app
@@ -199,7 +212,7 @@ struct BuilderView: View {
         }
         .fileImporter(isPresented: $pickingAny, allowedContentTypes: pickTypes) { r in
             guard case .success(let url) = r else { return }
-            if let g = Given.from(file: url) { note = nil; given = g } else { note = "Tenzy couldn't open that file, or has no tool for that kind of file yet." }
+            if let g = Given.from(file: url) { note = nil; given = g } else { note = Given.unsupportedNote(for: url) }
         }
         .onChange(of: anyPick) { _, item in
             guard let item else { return }
@@ -1095,29 +1108,17 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : chain.versus == true ? "Pick two photos: the before, then the after." : "Pick one, or up to 20 at once. Each one gets the same steps.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
-                    // Four ways to get the words in without typing them.
+                    // Ways to get the words in without typing them.
+                    // System paste control: one tap, no recurring "Allow Paste" prompt. The old custom
+                    // button read UIPasteboard directly, so iOS asked for permission on every single paste.
+                    PasteButton(supportedContentTypes: [.plainText, .image]) { providers in pasteInto(providers) }
+                        .labelStyle(.titleAndIcon)
+                        .buttonBorderShape(.roundedRectangle(radius: 12))
+                        .tint(HandyColor.accentSoft)
+                        .foregroundStyle(HandyColor.accent)
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .accessibilityIdentifier("in-paste")
                     HStack(spacing: HandySpacing.s8) {
-                        fill("Paste", "doc.on.clipboard", id: "in-paste") {
-                            if let s = UIPasteboard.general.string, !s.isEmpty {
-                                text = InputText.joined(text, s)
-                            } else if let img = UIPasteboard.general.image {
-                                // You copied a picture (a screenshot) — read the words out of it instead of
-                                // a dead "nothing to paste", since this tool works on text.
-                                message = "Reading the words from your image…"
-                                Task.detached(priority: .userInitiated) {
-                                    let words = DocEngine.text(DocEngine.recognize(img.normalizedUp()))
-                                    await MainActor.run {
-                                        if words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                                            message = "That image has no readable text. Copy some text, or use a photo tool to work on the picture itself."
-                                        } else {
-                                            text = InputText.joined(text, words); message = nil
-                                        }
-                                    }
-                                }
-                            } else {
-                                message = "Nothing's copied yet. Copy some text or a screenshot first, then tap Paste."
-                            }
-                        }
                         fill(speech.running ? "Stop" : "Speak", speech.running ? "stop.circle.fill" : "mic", id: "in-speak") { toggleSpeech() }
                         fill("Contact", "person.crop.circle", id: "in-contact") { pickingContact = true }
                         fill("PDF", "doc.richtext", id: "in-pdf") { pickingPDF = true }
@@ -1257,6 +1258,37 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 .frame(maxWidth: .infinity, minHeight: 52)
                 .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         }.buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityIdentifier(id)
+    }
+
+    /// Handle what the system paste control handed over: text first (joined in), otherwise an image, whose
+    /// words are read out with OCR so a pasted screenshot isn't a dead end. No clipboard prompt is involved.
+    private func pasteInto(_ providers: [NSItemProvider]) {
+        if let p = providers.first(where: { $0.canLoadObject(ofClass: String.self) }) {
+            _ = p.loadObject(ofClass: String.self) { obj, _ in
+                guard let s = obj as? String, !s.isEmpty else { return }
+                DispatchQueue.main.async { text = InputText.joined(text, s) }
+            }
+            return
+        }
+        if let p = providers.first(where: { $0.canLoadObject(ofClass: UIImage.self) }) {
+            DispatchQueue.main.async { message = "Reading the words from your image…" }
+            _ = p.loadObject(ofClass: UIImage.self) { obj, _ in
+                guard let img = obj as? UIImage else {
+                    DispatchQueue.main.async { message = "Couldn't read that paste. Copy some text or a screenshot and try again." }
+                    return
+                }
+                let words = DocEngine.text(DocEngine.recognize(img.normalizedUp()))
+                DispatchQueue.main.async {
+                    if words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        message = "That image has no readable text. Copy some text, or use a photo tool to work on the picture itself."
+                    } else {
+                        text = InputText.joined(text, words); message = nil
+                    }
+                }
+            }
+            return
+        }
+        DispatchQueue.main.async { message = "Nothing's copied yet. Copy some text or a screenshot first, then tap Paste." }
     }
 
     /// A picked file's bytes. Files chosen from the Files app need their access opened first.

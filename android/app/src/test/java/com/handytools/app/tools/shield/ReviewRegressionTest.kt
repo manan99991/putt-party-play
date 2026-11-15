@@ -94,5 +94,17 @@ class ReviewRegressionTest {
     @Test fun qrPlainTextIsNotALink() =
         assertEquals(CodesEngine.Kind.TEXT, CodesEngine.classify("just some notes to myself", true).kind)
 
+    // A ZIP (or other archive) gets a specific, honest next step — not a vague "no tool for that file".
+    @Test fun zipArchiveGetsASpecificMessage() {
+        val note = com.handytools.app.tools.builder.unsupportedNote("application/zip", "photos.zip")
+        assertTrueMsg("a zip must be named as an archive", note.contains("ZIP"))
+        assertTrueMsg("the message must point at the files inside", note.lowercase().contains("inside"))
+    }
+
+    @Test fun unknownFileStillGetsTheGenericMessage() {
+        val note = com.handytools.app.tools.builder.unsupportedNote("application/acad", "drawing.dwg")
+        assertFalse("a non-archive must not be mislabelled an archive", note.contains("archive"))
+    }
+
     private fun assertTrueMsg(msg: String, cond: Boolean) = org.junit.Assert.assertTrue(msg, cond)
 }

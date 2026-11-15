@@ -77,6 +77,19 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(Given.readable("Just some words.", ext: "txt"), "Just some words.")
     }
 
+    // MARK: - ZIP / unsupported file gives an honest, specific next step (not a vague dead-end)
+
+    func testZipArchiveGetsASpecificMessage() {
+        let note = Given.unsupportedNote(for: URL(fileURLWithPath: "/tmp/photos.zip"))
+        XCTAssertTrue(note.contains("ZIP"), "a zip must be named as an archive")
+        XCTAssertTrue(note.lowercased().contains("inside"), "the message must point at the files inside, the real next step")
+    }
+
+    func testUnknownFileStillGetsTheGenericMessage() {
+        let note = Given.unsupportedNote(for: URL(fileURLWithPath: "/tmp/drawing.dwg"))
+        XCTAssertFalse(note.contains("archive"), "a non-archive must not be mislabelled an archive")
+    }
+
     // MARK: - QR long-press preview classification
 
     func testQRWifiParsed() {

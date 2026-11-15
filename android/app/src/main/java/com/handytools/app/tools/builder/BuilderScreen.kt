@@ -156,7 +156,10 @@ fun BuilderScreen() {
     fun give(uri: Uri?) {
         if (uri == null) return
         val mime = ctx.contentResolver.getType(uri)
-        if (kindOf(mime, false) == null) note = "Tenzy has no tool for that kind of file yet." else { note = null; givenMime = mime; givenUri = uri }
+        if (kindOf(mime, false) == null) {
+            val name = runCatching { com.handytools.app.tools.power.MediaEngine.displayName(ctx, uri) }.getOrNull()
+            note = unsupportedNote(mime, name)
+        } else { note = null; givenMime = mime; givenUri = uri }
     }
     val havePhoto = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? -> give(uri) }
     val haveFile = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? -> give(uri) }

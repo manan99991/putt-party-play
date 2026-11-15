@@ -369,6 +369,23 @@ fun kindOf(mime: String?, hasText: Boolean): Kind? = when {
     else -> if (hasText) Kind.TEXT else null
 }
 
+private val ARCHIVE_MIMES = setOf(
+    "application/zip", "application/x-zip-compressed", "application/x-rar-compressed", "application/vnd.rar",
+    "application/x-7z-compressed", "application/x-tar", "application/gzip", "application/x-gzip", "application/x-bzip2",
+)
+private val ARCHIVE_EXTS = setOf("zip", "rar", "7z", "tar", "gz", "tgz", "bz2", "xz", "zipx", "iso")
+
+/** A specific, non-dead-end message when a file can't be opened — a ZIP is a box of files, not a file to
+ * work on, so it gets its own helpful next step instead of a vague "no tool for that kind of file". */
+fun unsupportedNote(mime: String?, name: String?): String {
+    val ext = name?.substringAfterLast('.', "")?.lowercase().orEmpty()
+    val isArchive = mime in ARCHIVE_MIMES || ext in ARCHIVE_EXTS
+    return if (isArchive) {
+        val label = if (ext.isNotEmpty()) ext.uppercase() else "ZIP"
+        "That's a $label archive — a bundle of other files. Tenzy works on the files inside it, not the box. Open it in the Files app to unzip, then share one of the files from it back here."
+    } else "Tenzy has no tool for that kind of file yet."
+}
+
 /** What "Share to Tenzy" offers for a shared photo or text: the user's own tools first, then the starters, last-used on top. */
 object ChainOffers {
     fun forKind(kind: Kind, mine: List<Chain>, last: String?): List<Chain> {
