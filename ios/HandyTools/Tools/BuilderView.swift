@@ -971,7 +971,7 @@ struct BatchItem: Identifiable {
 }
 
 /// Give it a photo or some text, see the result, copy or share it.
-private struct ChainRunView: View {
+struct ChainRunView: View {   // internal (not private) so the test target can reach ChainRunView.words(_:)
     let chain: Chain
     /// Handed over already ("Start with what you have"): the tool runs on it straight away.
     var initial: ChainPayload? = nil
