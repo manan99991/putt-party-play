@@ -1273,25 +1273,18 @@ private struct ChainRunView: View {
             progress = "Transcribing on your phone… about as long as the recording. It never leaves your phone."
         } else { progress = "" }
         let tool = runChain
+        let name = chain.name
         Task {
-            // Ask iOS for time to keep running if the user switches away mid-job, so a short tool can
-            // still finish in the background instead of being frozen the moment the app isn't on screen.
-            // The expiration handler ends the task cleanly so a long job can never get the app killed.
-            let bg = await MainActor.run { () -> UIBackgroundTaskIdentifier in
-                var id: UIBackgroundTaskIdentifier = .invalid
-                id = UIApplication.shared.beginBackgroundTask(withName: "tenzy-tool") {
-                    if id != .invalid { UIApplication.shared.endBackgroundTask(id); id = .invalid }
-                }
-                return id
+            // Completion keeps the job alive if the user switches away and notifies them when it's done.
+            let r = await Completion.run(name, ok: { if case .success = $0 { return true } else { return false } }) {
+                await ChainRunner.run(tool, input: input)
             }
-            let r = await ChainRunner.run(tool, input: input)
             await MainActor.run {
                 busy = false
                 switch r {
                 case .success(let p): result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
                 case .failure(let f): message = ChainRunView.words(f)
                 }
-                if bg != .invalid { UIApplication.shared.endBackgroundTask(bg) }
             }
         }
     }
