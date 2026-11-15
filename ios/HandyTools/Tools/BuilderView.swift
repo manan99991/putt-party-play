@@ -1302,7 +1302,14 @@ private struct ChainRunView: View {
     @ViewBuilder private func output(_ r: ChainPayload) -> some View {
         switch r {
         case .text(let t):
-            Text(t).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+            // A planned task list carries tappable Maps links as markdown; render those so the links work.
+            // Everything else stays plain monospaced so no stray character gets misread as formatting.
+            if (t.contains("maps.apple.com") || t.contains("google.com/maps") || t.contains("mailto:") || t.contains("tel:")),
+               let md = try? AttributedString(markdown: t, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)) {
+                Text(md).font(.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+            } else {
+                Text(t).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+            }
             CopyButton(text: t)
         case .image(let i):
             Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)

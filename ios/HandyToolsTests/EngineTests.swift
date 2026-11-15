@@ -1291,4 +1291,48 @@ final class EngineTests: XCTestCase {
         }
         XCTAssertEqual(Transcriber.fraction(100, of: 0), 0, "no divide-by-zero on an empty file")
     }
+
+    // MARK: Route planner (Phase 1) — places → one-tap map links + order, offline
+    func testRoutePlanLinksPlacesAndOrders() {
+        let tasks = ["Get the food from Walmart first", "Drop food at the cats and dogs shelter", "Take Dion to the temple"]
+        let plan = RoutePlan.plan(from: tasks)
+        XCTAssertTrue(plan.contains("maps.apple.com"), "a task with a place must get an Apple Maps link")
+        XCTAssertTrue(plan.contains("google.com/maps"), "…and a Google Maps link")
+        XCTAssertTrue(plan.hasPrefix("1. Get the food from Walmart first"), "a 'first' task leads the plan")
+        for t in ["Walmart", "shelter", "temple"] { XCTAssertTrue(plan.contains(t), "lost task mentioning '\(t)'") }
+    }
+
+    func testRoutePlanNeverGuessesANameAndStaysGraceful() {
+        // A person's name is never turned into a map search; a task with no destination gets no link.
+        XCTAssertNil(RoutePlan.destination(in: "Email Ana the budget by Thursday"))
+        XCTAssertNil(RoutePlan.destination(in: "Call the vendor about the invoice"))
+        XCTAssertNil(RoutePlan.destination(in: "Finish it before I leave"))
+        XCTAssertNil(RoutePlan.destination(in: "Send the budget to Ana by Thursday"), "'to Ana' is a person, not a place")
+        XCTAssertEqual(RoutePlan.destination(in: "Pick up milk from Costco"), "Costco")
+        XCTAssertEqual(RoutePlan.destination(in: "Drive to the Oak Street Clinic"), "Oak Street Clinic", "a real place type is kept")
+        // A list with no places is a clean numbered list — no links, no crash.
+        let plain = RoutePlan.plan(from: ["Call the vendor", "Review the checklist"])
+        XCTAssertFalse(plain.contains("maps"), "no place → no link")
+        XCTAssertTrue(plain.hasPrefix("1. Call the vendor"))
+        // Empty in → empty out.
+        XCTAssertEqual(RoutePlan.plan(from: []), "")
+    }
+
+    func testRoutePlanRoutesEmailAndCallTasksToTheRightApp() {
+        // "Email … about X" → a Mail draft with the subject; a call with a number → a tel link.
+        let mail = RoutePlan.emailDraft(for: "Email Ana about the Q3 budget")
+        XCTAssertNotNil(mail)
+        XCTAssertTrue(mail!.absoluteString.hasPrefix("mailto:?subject="))
+        XCTAssertTrue(mail!.absoluteString.contains("Q3"), "the subject should carry what it's about")
+        XCTAssertNil(RoutePlan.emailDraft(for: "Buy milk and eggs"), "a non-email task gets no draft")
+
+        XCTAssertEqual(RoutePlan.callLink(for: "Call the vendor on (312) 555-0147")?.absoluteString, "tel:3125550147")
+        XCTAssertNil(RoutePlan.callLink(for: "Call the vendor about the invoice"), "no number → no call link, not a wrong one")
+
+        // A mixed day plans each task to its own action.
+        let plan = RoutePlan.plan(from: ["Take the dog out", "Buy water from Costco", "Email the landlord about the lease", "Call mom at 555-123-4567"])
+        XCTAssertTrue(plan.contains("google.com/maps"))   // Costco → directions
+        XCTAssertTrue(plan.contains("mailto:"))           // landlord → draft email
+        XCTAssertTrue(plan.contains("tel:5551234567"))    // mom → call
+    }
 }

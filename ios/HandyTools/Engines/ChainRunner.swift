@@ -566,7 +566,11 @@ enum ChainRunner {
 
         case (.actionItems, .text(let t)):
             let items = TextTools.actionItems(t)
-            return items.isEmpty ? .failure(.nothingFound(b)) : .success(.text(items.map { "• " + $0 }.joined(separator: "\n")))
+            guard !items.isEmpty else { return .failure(.nothingFound(b)) }
+            // Smart task list: any task that means "go somewhere" gets a one-tap Maps directions link, and
+            // obvious first/last tasks are ordered. Tasks with no place are listed plainly, so it never
+            // gets in the way. (Phase 2 adds real in-app drive-time ETAs and a timed itinerary.)
+            return .success(.text(RoutePlan.plan(from: items)))
 
         case (.cleanText, .text(let t)):
             let out = TextTidy.clean(t)
