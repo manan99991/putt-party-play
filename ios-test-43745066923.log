@@ -1,0 +1,6 @@
+== test.log (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1288:56: error: cannot convert value of type 'AVAudioFramePosition' (aka 'Int64') to expected argument type 'Int'
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/ChainRunnerTests.swift:1591:32: error: cannot find 'ChainRunView' in scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/ChainRunnerTests.swift:1604:32: error: cannot find 'ChainRunView' in scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/ChainRunnerTests.swift:1618:83: error: cannot find 'ChainRunView' in scope
+** TEST FAILED **
