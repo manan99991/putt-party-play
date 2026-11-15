@@ -36,7 +36,7 @@ struct TranslateView: View {
     static let languages: [(code: String, name: String)] = ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ko", "ar", "hi", "ru", "nl", "pl", "tr", "th", "vi", "id", "uk", "sv"].map { ($0, Locale.current.localizedString(forLanguageCode: $0) ?? $0) }
 
     var body: some View {
-        ToolPage(title: "Translate", subtitle: "Type, talk, or photograph — on-device translation that works offline and stays private.") {
+        ToolPage(title: "Translate", subtitle: "Type, talk, or photograph — on-device translation that works offline and stays private.", working: busy) {
             HowTo("translate", [
                 "Pick the languages, then type, paste, or tap the mic to speak.",
                 "The translation appears below; tap the speaker to hear it.",

@@ -31,7 +31,7 @@ struct CaptureView: View {
     private var cameraOK: Bool { DataScannerViewController.isSupported && DataScannerViewController.isAvailable }
 
     var body: some View {
-        ToolPage(title: "Capture", subtitle: "Point at text or a code. Tap a line to grab it, or grab everything — then copy, translate, call, open, or ask.") {
+        ToolPage(title: "Capture", subtitle: "Point at text or a code. Tap a line to grab it, or grab everything — then copy, translate, call, open, or ask.", working: busy) {
             HowTo("capture", [
                 "Point the camera at text, a sign or a screen — or pick a photo.",
                 "Tap the shutter to grab the text; it is read on your phone, never uploaded.",

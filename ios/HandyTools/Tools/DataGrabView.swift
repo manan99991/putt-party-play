@@ -18,7 +18,7 @@ struct DataGrabView: View {
     @State private var aiBusy = false
 
     var body: some View {
-        ToolPage(title: "Data Grabber", subtitle: "Receipt → rows, business card → contact, flyer → calendar event, printed table → CSV.") {
+        ToolPage(title: "Data Grabber", subtitle: "Receipt → rows, business card → contact, flyer → calendar event, printed table → CSV.", working: busy) {
             HowTo("datagrab", [
                 "Snap or pick a photo of a receipt, card, event or table.",
                 "The app pulls out the fields and lays them in a table.",

@@ -52,7 +52,7 @@ struct ScanView: View {
     private var page: DocEngine.Page? { pages.indices.contains(selected) ? pages[selected] : nil }
 
     var body: some View {
-        ToolPage(title: "Scan", subtitle: "Scan or import pages, clean them up, sign and fill, then export a searchable PDF that fits.") {
+        ToolPage(title: "Scan", subtitle: "Scan or import pages, clean them up, sign and fill, then export a searchable PDF that fits.", working: working) {
             HowTo("scan", [
                 "Add pages with the camera or from Photos.",
                 "Pick a mode — clean up, sign or fill — and a filter like black & white.",

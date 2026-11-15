@@ -53,7 +53,7 @@ struct LensView: View {
     }
     @ViewBuilder private var content: some View {
         if embedded { VStack(alignment: .leading, spacing: HandySpacing.s12) { panel } }
-        else { ToolPage(title: "Lens", subtitle: "Grab text from the camera, a photo, a PDF or a link — then listen to it, simplify it, or get the gist.") { panel } }
+        else { ToolPage(title: "Lens", subtitle: "Grab text from the camera, a photo, a PDF or a link — then listen to it, simplify it, or get the gist.", working: busy) { panel } }
     }
     @ViewBuilder private var panel: some View {
             HowTo("lens", [

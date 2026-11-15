@@ -25,7 +25,7 @@ struct TextStudioView: View {
 
     private let sampleText = "teh meeting is tomorow at 3 , i think we shoud prepare the slides before then. also remember to send the invoice by friday."
     var body: some View {
-        ToolPage(title: "Text Studio", subtitle: "Fix, rewrite, shorten, bullet, summarize, or draft a reply — then send it on.") {
+        ToolPage(title: "Text Studio", subtitle: "Fix, rewrite, shorten, bullet, summarize, or draft a reply — then send it on.", working: working) {
             HowTo("textstudio", [
                 "Paste your text and pick an action — Fix, Shorten, Bullets, Summarize or Rewrite.",
                 "Fix, Shorten, Bullets and Summarize work on every phone; Rewrite and Reply use Apple Intelligence.",

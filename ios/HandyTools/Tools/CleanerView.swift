@@ -48,7 +48,7 @@ struct CleanerView: View {
         let footer: AnyView? = (authorized && !all.isEmpty && !isScanning) ? AnyView(actionBar) : nil
         return ToolPage(title: "Cleaner",
                         subtitle: "See how much space you can free — duplicate copies cleared in one tap (keeping one of each), plus screenshots and big videos to review. iOS confirms every delete.",
-                        footer: footer) {
+                        footer: footer, working: busy) {
             HowTo("cleaner", [
                 "Open it and it finds the safe wins for you — duplicate copies you can clear in one tap.",
                 "Below that, review screenshots and big videos; tap to pick, or Select + drag across a run.",

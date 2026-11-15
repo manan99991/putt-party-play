@@ -843,6 +843,9 @@ struct ToolPage<Content: View>: View {
     let subtitle: String
     /// Optional bar pinned at the bottom, above the ad — stays put while the content scrolls.
     var footer: AnyView? = nil
+    /// True while the tool is doing async work. Keeps the job alive if the app is backgrounded and
+    /// notifies the user when it finishes off-screen — one place, every tool that passes it.
+    var working: Bool = false
     @ViewBuilder let content: () -> Content
     @Environment(\.toolID) private var toolID
     var body: some View {
@@ -873,6 +876,7 @@ struct ToolPage<Content: View>: View {
         .background { ToolPageArt(id: toolID) }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { Diagnostics.shared.currentTool = title }
+        .finishes(working, tool: title)
     }
 }
 

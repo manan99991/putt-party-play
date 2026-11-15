@@ -36,7 +36,7 @@ struct ScrubView: View {
     private var textCount: Int { boxes.filter { $0.kind == .text }.count }
 
     var body: some View {
-        ToolPage(title: "Privacy Scrubber", subtitle: "Strip hidden location data and black out faces or text — in a photo or a video, permanently.") {
+        ToolPage(title: "Privacy Scrubber", subtitle: "Strip hidden location data and black out faces or text — in a photo or a video, permanently.", working: working) {
             HowTo("scrub", [
                 "Pick a photo or video to clean before you share it.",
                 "It strips location and camera data and auto-selects faces plus personal text — plates, phone numbers, emails, IDs.",

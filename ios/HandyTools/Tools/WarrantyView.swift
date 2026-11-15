@@ -18,7 +18,7 @@ struct WarrantyView: View {
     private var expiring: [Receipt] { store.expiring(within: 45) }
 
     var body: some View {
-        ToolPage(title: "Warranty & Receipts", subtitle: "Snap a receipt, find it later by typing roughly what you remember, and never miss a warranty.") {
+        ToolPage(title: "Warranty & Receipts", subtitle: "Snap a receipt, find it later by typing roughly what you remember, and never miss a warranty.", working: busy) {
             HowTo("warranty", [
                 "Add a receipt — photograph it or pick a photo. The store, date and total are read for you.",
                 "Search loosely: “cosco tv”, “the drill”, a rough amount — close enough still finds it.",

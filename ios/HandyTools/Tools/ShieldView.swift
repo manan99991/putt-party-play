@@ -15,7 +15,7 @@ struct ShieldView: View {
     @State private var errorText: String?
 
     var body: some View {
-        ToolPage(title: "Message Shield", subtitle: "Paste a message or drop in a screenshot. See exactly why it's a scam — or why it's fine.") {
+        ToolPage(title: "Message Shield", subtitle: "Paste a message or drop in a screenshot. See exactly why it's a scam — or why it's fine.", working: busy) {
             HowTo("shield", [
                 "Paste a suspicious text, email or DM.",
                 "It flags scam signs — pressure, odd links, money asks — and explains them.",

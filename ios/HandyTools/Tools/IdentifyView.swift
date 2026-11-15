@@ -15,7 +15,7 @@ struct IdentifyView: View {
     private var best: Identifier.Guess? { outcome?.guesses.first }
 
     var body: some View {
-        ToolPage(title: "Identify", subtitle: "Point, snap, know. A best guess at what you're looking at — on-device — with a one-tap way to be sure.") {
+        ToolPage(title: "Identify", subtitle: "Point, snap, know. A best guess at what you're looking at — on-device — with a one-tap way to be sure.", working: busy) {
             HowTo("identify", [
                 "Photograph the thing — a plant, an animal, an object, a barcode.",
                 "See the best guesses, most likely first, with how confident each is.",

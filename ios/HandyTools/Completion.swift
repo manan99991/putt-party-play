@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 import UserNotifications
 
@@ -51,4 +52,34 @@ enum Completion {
         c.sound = .default
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "done-\(UUID().uuidString)", content: c, trigger: nil))
     }
+}
+
+/// One-line adoption for any tool: `.finishes(working, tool: "Fit It")`. While `working` is true it
+/// holds a background task so the job can finish off-screen; when the job ends while the app isn't
+/// frontmost, it posts the completion notification. Pairs with ToolProgressBar for the on-screen bar.
+private struct FinishesModifier: ViewModifier {
+    let working: Bool
+    let tool: String
+    @Environment(\.scenePhase) private var phase
+    @State private var bgId: UIBackgroundTaskIdentifier = .invalid
+
+    func body(content: Content) -> some View {
+        content.onChange(of: working) { _, now in
+            if now {
+                if bgId == .invalid {
+                    bgId = UIApplication.shared.beginBackgroundTask(withName: "tenzy-tool") {
+                        if bgId != .invalid { UIApplication.shared.endBackgroundTask(bgId); bgId = .invalid }
+                    }
+                }
+            } else {
+                if bgId != .invalid { UIApplication.shared.endBackgroundTask(bgId); bgId = .invalid }
+                if phase != .active { Completion.notifyDone(tool) }
+            }
+        }
+    }
+}
+
+extension View {
+    /// Keeps a tool's in-flight work alive in the background and tells the user when it finishes.
+    func finishes(_ working: Bool, tool: String) -> some View { modifier(FinishesModifier(working: working, tool: tool)) }
 }

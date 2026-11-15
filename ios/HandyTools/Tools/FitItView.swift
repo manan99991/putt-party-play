@@ -36,7 +36,7 @@ struct FitItView: View {
     }
 
     var body: some View {
-        ToolPage(title: "Fit It", subtitle: "Shrink a photo, video, or PDF to land just under the size limit you need.") {
+        ToolPage(title: "Fit It", subtitle: "Shrink a photo, video, or PDF to land just under the size limit you need.", working: working) {
             HowTo("fitit", [
                 "Pick a photo or PDF that is too big to send.",
                 "Choose the size it must come under, or type a custom limit.",

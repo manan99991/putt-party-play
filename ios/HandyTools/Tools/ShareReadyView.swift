@@ -38,7 +38,7 @@ struct ShareReadyView: View {
     private var overQuota: Bool { !Usage.hasRoom("shareready", limit: Limits.freeFitPerDay) }
 
     var body: some View {
-        ToolPage(title: "Share‑Ready", subtitle: "Pick what you're sending and where. It converts, strips metadata, and fits the size — in one tap.") {
+        ToolPage(title: "Share‑Ready", subtitle: "Pick what you're sending and where. It converts, strips metadata, and fits the size — in one tap.", working: working) {
             HowTo("shareready", [
                 "Pick the photos you want to post.",
                 "Choose a size or platform preset so they upload fast and look right.",

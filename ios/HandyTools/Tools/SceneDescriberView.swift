@@ -32,7 +32,7 @@ struct SceneDescriberView: View {
     }
     @ViewBuilder private var content: some View {
         if embedded { VStack(alignment: .leading, spacing: HandySpacing.s12) { panel } }
-        else { ToolPage(title: "Scene Describer", subtitle: "Tap to hear what's in front of the camera, or let it narrate as the scene changes.") { panel } }
+        else { ToolPage(title: "Scene Describer", subtitle: "Tap to hear what's in front of the camera, or let it narrate as the scene changes.", working: busy) { panel } }
     }
     @ViewBuilder private var panel: some View {
             HowTo("describe", [

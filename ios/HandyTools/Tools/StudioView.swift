@@ -41,7 +41,7 @@ struct StudioView: View {
     private var overQuota: Bool { !Usage.hasRoom("studio", limit: Limits.freeStudioPerDay) }
 
     var body: some View {
-        ToolPage(title: "Studio", subtitle: "Cut out the subject, make a passport photo, resize, or convert — one photo, one place.") {
+        ToolPage(title: "Studio", subtitle: "Cut out the subject, make a passport photo, resize, or convert — one photo, one place.", working: working) {
             HowTo("studio", [
                 "Choose a photo, then pick what to do: cut out, enhance, passport, resize or convert.",
                 "Set the options for that mode — background colour, passport country, pixel size or format.",

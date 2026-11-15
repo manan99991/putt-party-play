@@ -24,7 +24,7 @@ struct ContactsView: View {
     struct TidyGroup: Identifiable { let id = UUID(); let title: String; let icon: String; let recs: [ContactRec]; let deletable: Bool }
 
     var body: some View {
-        ToolPage(title: "Contacts", subtitle: "Find duplicates, merge them without losing a number, and back everything up — all on your phone.") {
+        ToolPage(title: "Contacts", subtitle: "Find duplicates, merge them without losing a number, and back everything up — all on your phone.", working: busy) {
             HowTo("contacts", [
                 "Back up to a .vcf first — one tap, keep it somewhere safe.",
                 "Review the duplicate groups and merge the ones that match.",

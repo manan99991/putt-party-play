@@ -17,7 +17,7 @@ struct SortedView: View {
     private var hasText: Bool { text.trimmingCharacters(in: .whitespacesAndNewlines).count >= 4 }
 
     var body: some View {
-        ToolPage(title: "Sorted", subtitle: "Snap a bill, appointment card, form or notice — get what it is, what you owe and the deadline, then add it to your calendar.") {
+        ToolPage(title: "Sorted", subtitle: "Snap a bill, appointment card, form or notice — get what it is, what you owe and the deadline, then add it to your calendar.", working: busy) {
             HowTo("sorted", [
                 "Snap a photo of the letter, bill or card (or paste its text).",
                 "Tap Make sense of it — you get what it is, the amount, and the date.",

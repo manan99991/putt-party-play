@@ -67,7 +67,7 @@ struct FormatFixView: View {
     private struct PlayerItem: Identifiable { let id = UUID(); let url: URL }
 
     var body: some View {
-        ToolPage(title: "Format Fixer", subtitle: "Convert photos and videos to the format you need — a whole batch at once, so anything you share opens anywhere.") {
+        ToolPage(title: "Format Fixer", subtitle: "Convert photos and videos to the format you need — a whole batch at once, so anything you share opens anywhere.", working: working) {
             HowTo("formatfix", [
                 "Pick the photos and videos whose format you want to change.",
                 "Choose a target format for each type — photos and videos are set separately.",

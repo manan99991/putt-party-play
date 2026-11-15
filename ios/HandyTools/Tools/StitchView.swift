@@ -16,7 +16,7 @@ struct StitchView: View {
     private var overQuota: Bool { !Usage.hasRoom("stitch", limit: Limits.freeStitchPerDay) }
 
     var body: some View {
-        ToolPage(title: "Long Screenshot", subtitle: "Take screenshots as you scroll, pick them here, get one tall image.") {
+        ToolPage(title: "Long Screenshot", subtitle: "Take screenshots as you scroll, pick them here, get one tall image.", working: working) {
             HowTo("stitch", [
                 "Pick the overlapping screenshots, in order.",
                 "It lines them up and merges them into one tall image.",

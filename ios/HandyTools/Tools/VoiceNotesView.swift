@@ -16,7 +16,7 @@ struct VoiceNotesView: View {
     private var overQuota: Bool { !Usage.hasRoom("audio", limit: Limits.freeAudioPerDay) }
 
     var body: some View {
-        ToolPage(title: "Voice → Notes", subtitle: "Talk it out. Get the transcript, a summary and the to-dos — kept on your phone.") {
+        ToolPage(title: "Voice → Notes", subtitle: "Talk it out. Get the transcript, a summary and the to-dos — kept on your phone.", working: working) {
             HowTo("voicenotes", [
                 "Tap record and talk; your words are transcribed live on your phone.",
                 "Pausing does not lose anything — it keeps going when you resume.",
