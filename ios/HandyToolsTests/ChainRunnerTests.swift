@@ -1473,4 +1473,67 @@ final class ProStepTests: XCTestCase {
         XCTAssertTrue(t.needsPro); XCTAssertEqual(t.proSteps, [.hideSensitive])
         XCTAssertEqual(chain([.sticker, .shrinkImage]).proSteps.count, 2)
     }
+
+    // MARK: every block delivers — flow handoffs never dead-end or crash
+    //
+    // A flow is just blocks chained by payload type: step N's output feeds step N+1. The thing that
+    // shipped broken — a tool that runs but hands back nothing — is exactly what no test caught. This
+    // drives EVERY deterministic block with a valid input of the type it takes and asserts it returns
+    // without trapping and never delivers an empty result, so no handoff in any flow (template or
+    // custom) can dead-end. Content correctness per tool stays covered by the tests above; blocks
+    // whose output needs a real device or the network (on-device AI, speech, translation, web fetch)
+    // are listed below and asserted on a real device by the mobileqa gate. A NEW block is driven here
+    // automatically — if it can't run headless, it must be added to the device set on purpose.
+
+    /// Blocks whose real output needs a device/network and so can't be proven in a headless simulator.
+    private static let deviceOnlyBlocks: Set<Block> = [
+        .speechText, .voiceChange, .describe, .identify, .pageText, .translate, .readAloud,
+        .priceCompare, .rewrite, .videoCaptions,
+    ]
+
+    private func sampleInput(for kind: ChainKind) async -> ChainPayload? {
+        switch kind {
+        case .image, .photoFile, .file: return .image(SampleAssets.receipt())
+        case .text:
+            return .text("""
+            Corner Cafe  12/03/2025
+            Latte 4.50
+            Muffin 3.25
+            Total 8.37
+            Meet Sam on 5 March at 10am. Email sam@acme.com or open https://tenzy.app/x?utm_source=ad. Call 312-555-0147.
+            """)
+        case .pdf:
+            let doc = PDFDocument()
+            if let page = PDFPage(image: SampleAssets.document()) { doc.insert(page, at: 0) }
+            guard let data = doc.dataRepresentation() else { return nil }
+            return .file(data, ext: "pdf")
+        case .video:
+            guard let url = await SampleAssets.movie() else { return nil }
+            return .video(url)
+        case .audio:
+            return nil   // every audio block is device-only; no CI fixture needed
+        }
+    }
+
+    private func isEmptyDelivery(_ p: ChainPayload) -> Bool {
+        switch p {
+        case .text(let s): return s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        case .file(let d, _): return d.isEmpty
+        case .image(let img): return img.size.width == 0 || img.size.height == 0
+        case .video(let url): return !FileManager.default.fileExists(atPath: url.path)
+        }
+    }
+
+    func testEveryBlockDeliversOrFailsGracefullyNeverDeadEnds() async {
+        for block in Block.allCases where !Self.deviceOnlyBlocks.contains(block) {
+            guard let input = await sampleInput(for: block.takes) else { continue }   // fixture unavailable in CI
+            // Reaching the result at all proves the block didn't trap or hang on valid input. On
+            // success it must hand back something real (not an empty payload a next step would choke
+            // on); a graceful typed failure is allowed — that's honest best-effort, not a dead-end.
+            let r = await ChainRunner.apply(ChainStep(block: block), to: input)
+            if case .success(let out) = r {
+                XCTAssertFalse(isEmptyDelivery(out), "\(block.rawValue): delivered an EMPTY result on valid input")
+            }
+        }
+    }
 }
