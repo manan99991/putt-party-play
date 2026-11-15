@@ -1536,4 +1536,16 @@ final class ProStepTests: XCTestCase {
             }
         }
     }
+
+    // A real user flow: "Find tasks, then Find links, then Summarize" on a brain-dump that has tasks but
+    // NO links. The middle step finds nothing — it must be skipped, not dead-end the whole flow (which is
+    // what shipped: one empty step stopped everything and the tasks that WERE found were thrown away).
+    func testOptionalMiddleStepDoesNotDeadEndTheFlow() async {
+        let c = Chain(id: "thoughts", name: "Thoughts to tasks", steps: [
+            ChainStep(block: .actionItems), ChainStep(block: .pullDetails), ChainStep(block: .summarize, settings: ["sentences": "3"])])
+        let thoughts = "Please send the budget to Ana by Thursday. Call the vendor about the invoice. Review the launch checklist before noon."
+        let r = await ChainRunner.runKeepingBest(c, input: .text(thoughts))
+        guard case .done(let out) = r else { return XCTFail("flow dead-ended on the empty middle step: \(r)") }
+        guard case .text(let t) = out, !t.trimmingCharacters(in: .whitespaces).isEmpty else { return XCTFail("flow finished but delivered nothing") }
+    }
 }

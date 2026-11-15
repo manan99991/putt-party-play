@@ -449,10 +449,18 @@ enum ChainRunner {
         if let p = chain.problem(starting: input.kind) { return .failed(.invalid(p)) }
         var value = input
         var best: ChainPayload? = nil   // the furthest useful result past the raw input
-        for step in chain.steps {
+        for (i, step) in chain.steps.enumerated() {
+            let isLast = i == chain.steps.count - 1
             switch await apply(step, to: value) {
             case .success(let next): value = next; best = next
-            case .failure(let f): return best.map { .partial($0, f) } ?? .failed(f)
+            case .failure(.nothingFound) where !isLast:
+                // An optional "find/extract" step (find links, find tasks…) had nothing to pull out of
+                // what the step above handed it. That's not a reason to dead-end the whole flow — pass
+                // the text straight through so every remaining step still runs. (Only the FINAL step, or
+                // a real processing failure, stops a flow.)
+                continue
+            case .failure(let f):
+                return best.map { .partial($0, f) } ?? .failed(f)
             }
         }
         return .done(value)

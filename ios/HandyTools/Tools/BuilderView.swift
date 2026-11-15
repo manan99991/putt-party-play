@@ -677,7 +677,16 @@ private struct ChainEditor: View {
                 if Task.isCancelled { return }
                 previews[i] = Self.preview(next)
             case .failure(let f):
+                let isLast = i == steps.count - 1
+                if case .nothingFound = f, !isLast {
+                    // An optional find/extract step found nothing in the sample. At run time it's skipped,
+                    // not an error — show that and keep previewing the rest on the text as-is, instead of
+                    // stopping and leaving every step below spinning on "Trying it on a sample…" forever.
+                    previews[i] = .file("Nothing to pull from the sample — skipped when there's none; the steps below still run.")
+                    continue
+                }
                 previews[i] = .failed(ChainRunView.words(f))
+                for j in (i + 1)..<steps.count { previews[j] = .file(steps[j].block.blurb) }   // never leave a perpetual spinner
                 return
             }
         }
