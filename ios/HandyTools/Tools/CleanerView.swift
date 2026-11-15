@@ -94,7 +94,7 @@ struct CleanerView: View {
     @ViewBuilder private var cleanupHero: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             if index.scanning && safeDupExtras.isEmpty {
-                HStack { ProgressView(); Text("Finding space you can free…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                ToolProgressBar(label: "Finding space you can free…")
             } else if safeDupExtras.isEmpty {
                 Label("No duplicate copies to clear — your library's already tidy.", systemImage: "checkmark.seal.fill")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.success)

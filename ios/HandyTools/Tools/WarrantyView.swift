@@ -29,7 +29,7 @@ struct WarrantyView: View {
                 Button { showCamera = true } label: { Label("Photograph", systemImage: "camera.fill").frame(maxWidth: .infinity) }.primaryButton()
                 PhotosPicker(selection: $pickerItem, matching: .images) { Label("From Photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
             }
-            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text("Reading the receipt…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { ToolProgressBar(label: "Reading the receipt…") }
 
             if store.receipts.isEmpty && !busy {
                 emptyState

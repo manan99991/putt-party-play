@@ -25,7 +25,7 @@ struct SortedView: View {
             ])
 
             inputCard
-            if busy { HStack { ProgressView(); Text("Reading it…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { ToolProgressBar(label: "Reading it…") }
 
             if hasText {
                 Button { run() } label: { HStack { if working { ProgressView().tint(.white) }; Label(working ? "Thinking…" : "Make sense of it", systemImage: "wand.and.stars") }.frame(maxWidth: .infinity) }

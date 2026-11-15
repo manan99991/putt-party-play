@@ -176,7 +176,7 @@ struct TranslateView: View {
     private var photoPanel: some View {
         VStack(spacing: HandySpacing.s8) {
             PhotosPicker(selection: $photoItem, matching: .images) { Label("Choose a photo of a sign, menu, or page", systemImage: "camera.viewfinder").frame(maxWidth: .infinity) }.secondaryButton().disabled(overQuota)
-            if busy { HStack { ProgressView(); Text("Reading…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { ToolProgressBar(label: "Reading…") }
             if !photoText.isEmpty { DisclosureGroup("Original text") { Text(photoText).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).textSelection(.enabled) }.font(HandyFont.caption) }
             if !output.isEmpty && mode == .photo { resultCard(output) }
             Text("For live camera translation, use Capture — tap a line there and choose Translate.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
