@@ -5,6 +5,8 @@ import VisionKit
 import UniformTypeIdentifiers
 import WidgetKit
 import PDFKit
+import AVKit
+import AVFoundation
 
 /// Something handed over before a tool was chosen: "here is what I have, what can you do with it?"
 struct Given: Identifiable {
@@ -64,6 +66,27 @@ struct Given: Identifiable {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !t.isEmpty else { return nil }
         return Given(payload: .text(t), label: TextTidy.details(t).links.isEmpty ? "Some text" : "A link")
+    }
+}
+
+/// Inline player for a video result — so a sped-up / trimmed / converted clip is watched in the app
+/// before Save or share, the same way photos and PDFs already preview. The player is built once.
+private struct VideoResultPreview: View {
+    let url: URL
+    @State private var player: AVPlayer?
+    var body: some View {
+        Group {
+            if let player {
+                VideoPlayer(player: player)
+                    .frame(maxWidth: .infinity).frame(height: 240)
+                    .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            } else {
+                Color.clear.frame(height: 1)
+            }
+        }
+        .onAppear { if player == nil { player = AVPlayer(url: url) } }
+        .onDisappear { player?.pause() }
     }
 }
 
@@ -1401,6 +1424,7 @@ private struct ChainRunView: View {
             }
         case .video(let u):
             Label("Your video is ready" + (SizeTarget.fileSize(u).map { " · " + SizeTarget.format($0) } ?? ""), systemImage: "film").font(HandyFont.bodyStrong)
+            VideoResultPreview(url: u)   // watch it before saving, like photos and PDFs
             ShareLink(item: u) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         }
     }
