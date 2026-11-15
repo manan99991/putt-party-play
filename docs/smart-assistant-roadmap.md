@@ -34,9 +34,9 @@ The planner orders tasks, estimates time, and hands each one a one-tap action.
 | Email someone | "remind me to email the landlord about the lease" | **Mail draft** with subject prefilled (mailto) → (Phase 2) draft the body too | **BATCH** (draft) / PLANNED (body) |
 | Call someone | "call mom at 555-123-4567" | one-tap **tel:** call | **BATCH** |
 | Message someone | "text Sam I'm running late" | iMessage/WhatsApp deep link + drafted text | PLANNED |
-| Buy things / groceries | "make a grocery list and get them" | **checklist** (Reminders / Notes / an Excel-or-Numbers file with tick-off checkboxes) | PLANNED |
+| Buy things / groceries | "make a grocery list and get them from Walmart" | **grocery checklist** (tick-off) + **Directions** to the named/nearest store + at the shelf, **Price Check** unit-price compare for best value | PLANNED |
 | Remind me / appointment | "on Monday I go to X" | real **Reminder + Calendar event** (EventKit) the system triggers | PLANNED |
-| Look something up | "find the best price for X" | web search / price compare | PLANNED / see HARD below |
+| Look something up | "find the best value for X" | **Price Check** unit-price compare (on a photo) + web search; no live cross-store prices (see §1 decision) | PLANNED |
 | Monitor a condition | "if screenshots > 100, remind me" | background check → notification → deep link (see §3) | PLANNED |
 
 **Ordering & time:** obvious "first/finally" tasks are ordered now (BATCH). Phase 2 geocodes each
@@ -48,10 +48,15 @@ orders stops for the shortest trip, and builds a timeline with "leave by" times 
 stays a plain task); the open "to/at/from X" path only fires on a real place type.
 
 ### HARD / honest limits
-- **"Cheapest Walmart" / live competitive prices across stores** — there is no reliable, free,
-  legal data source to build this on. We will NOT fake it. The honest, strong version is
-  unit-price comparison on what the user photographs (Price Check already does this), plus a
-  Maps link to the nearest store. If a paid pricing API is ever acceptable, revisit.
+- **"Cheapest Walmart" / live competitive prices across stores** — DECISION (Manan, 15 Nov):
+  **skip the live cross-store price lookup** (no reliable free/legal data source; we don't fake it).
+  Replace it with the **best feasible shopping assistant**, built to be genuinely useful:
+  1. Parse the items into a **grocery checklist** the user ticks off (Reminders / Notes / an
+     Excel-or-Numbers file with checkboxes).
+  2. One-tap **Directions** to the store they named, or the nearest one.
+  3. At the shelf, **Price Check** compares unit prices on a photo so they still get the best value
+     per item.
+  Revisit only if a paid pricing API ever becomes acceptable.
 - **Deep "what is this?" identification** — on-device vision returns a short label, not a
   paragraph. Options: enrich the on-device output (label + category + attributes + a useful line),
   or route "What is this?" through a cloud vision model for a real, detailed answer. Decision pending.
