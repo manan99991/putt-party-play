@@ -102,11 +102,11 @@ enum ChainFun {
 
     /// Every face in the picture, in its own pixels, counted from the top-left corner.
     static func faceRects(_ image: UIImage) -> [CGRect] {
-        guard let cg = image.cgImage else { return [] }
-        let request = VNDetectFaceRectanglesRequest()
-        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([request])
-        let w = CGFloat(cg.width), h = CGFloat(cg.height)
-        return (request.results ?? []).map { CGRect(x: $0.boundingBox.minX * w, y: (1 - $0.boundingBox.maxY) * h, width: $0.boundingBox.width * w, height: $0.boundingBox.height * h) }
+        // Shares the Privacy Scrubber's stronger detector (latest face model + a body-detection safety
+        // net), so Emoji covers the same faces a privacy scrub does — no one left showing. Normalized
+        // top-left rects are scaled to pixels for drawing.
+        let px = pixels(image)
+        return Scrubber.faces(in: image).map { CGRect(x: $0.minX * px.width, y: $0.minY * px.height, width: $0.width * px.width, height: $0.height * px.height) }
     }
 
     /// The emoji drawn over each face, a little bigger than the face so none of it shows round the edge.

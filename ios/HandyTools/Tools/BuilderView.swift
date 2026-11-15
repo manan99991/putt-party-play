@@ -4,6 +4,7 @@ import PhotosUI
 import VisionKit
 import UniformTypeIdentifiers
 import WidgetKit
+import PDFKit
 
 /// Something handed over before a tool was chosen: "here is what I have, what can you do with it?"
 struct Given: Identifiable {
@@ -1278,6 +1279,8 @@ private struct ChainRunView: View {
         let urls = ok.compactMap(\.url)
         let texts = ok.compactMap { b in b.text.map { "\(noun) \(b.n)\n\($0)" } }
         Text("\(ok.count) of \(batch.count) done").font(HandyFont.cardTitle)
+        // Thumbnails of every result, so a batch is checked at a glance before saving or sharing.
+        OutputPreviewStrip(urls: urls)
         ForEach(batch) { b in
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
@@ -1315,6 +1318,16 @@ private struct ChainRunView: View {
             Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)
             ShareLink(item: Image(uiImage: i), preview: SharePreview("Result")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .file(let d, let ext):
+            // Always show the result before Save or share — a photo, or a PDF's first page — so the person
+            // can check it (faces covered, the right pages) and never shares something they haven't seen.
+            if ChainPayload.isPhoto(ext), let img = UIImage(data: d) {
+                Image(uiImage: img).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
+                    .cardStyle(padding: HandySpacing.s8)
+            } else if ext.lowercased() == "pdf", let page = PDFDocument(data: d)?.page(at: 0) {
+                Image(uiImage: page.thumbnail(of: CGSize(width: 360, height: 480), for: .cropBox))
+                    .resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
+                    .cardStyle(padding: HandySpacing.s8)
+            }
             if let u = tempURL(d, ext) {
                 Text("\(SizeTarget.format(d.count)) · \(ext.uppercased())").font(HandyFont.caption)
                 ShareLink(item: u) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()

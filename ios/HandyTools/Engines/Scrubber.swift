@@ -45,17 +45,36 @@ enum Scrubber {
     /// classified so the view can switch personal ones (plates, numbers) ON automatically.
     static func detect(_ image: UIImage) -> (faces: [CGRect], text: [TextHit]) {
         guard let cg = image.normalizedUp().cgImage else { return ([], []) }
-        let handler = VNImageRequestHandler(cgImage: cg, orientation: .up)
-        let fr = VNDetectFaceRectanglesRequest()
         // Accurate (not fast) + no language correction: we need the real characters to tell a plate /
         // number from prose, and autocorrect would mangle plates like "7XYZ123".
         let tr = VNRecognizeTextRequest(); tr.recognitionLevel = .accurate; tr.usesLanguageCorrection = false
-        try? handler.perform([fr, tr])
-        let faces = (fr.results ?? []).map { flip($0.boundingBox).insetBy(dx: -$0.boundingBox.width * 0.1, dy: -$0.boundingBox.height * 0.12) }
+        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([tr])
         let text: [TextHit] = (tr.results as? [VNRecognizedTextObservation] ?? []).map {
             TextHit(rect: flip($0.boundingBox), personal: looksPersonal($0.topCandidates(1).first?.string ?? ""))
         }
-        return (faces, text)
+        return (faces(in: image), text)
+    }
+
+    /// Every face we can find, as padded normalized top-left rects — INCLUDING a head box over any person
+    /// the face detector missed (a turned, tilted or partly-hidden face). The plain face detector misses
+    /// those, which is exactly how a privacy scrub left people showing; the body detector catches the
+    /// person and we cover their head. It over-covers rather than under-covers, on purpose.
+    static func faces(in image: UIImage) -> [CGRect] {
+        guard let cg = image.normalizedUp().cgImage else { return [] }
+        let fr = VNDetectFaceRectanglesRequest(); fr.revision = VNDetectFaceRectanglesRequestRevision3
+        let hr = VNDetectHumanRectanglesRequest(); hr.upperBodyOnly = true
+        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([fr, hr])
+        var rects = (fr.results ?? []).map { flip($0.boundingBox).insetBy(dx: -$0.boundingBox.width * 0.12, dy: -$0.boundingBox.height * 0.14) }
+        // Safety net: a face the detector missed is still a person the body detector found — cover the
+        // head region (the top of the upper body) so nobody is left showing.
+        for h in (hr.results ?? []) {
+            let body = flip(h.boundingBox)
+            let head = CGRect(x: body.minX, y: body.minY, width: body.width, height: body.height * 0.46)
+                .insetBy(dx: -body.width * 0.04, dy: -body.height * 0.02)
+            if !rects.contains(where: { $0.intersects(head) }) { rects.append(head) }
+        }
+        let unit = CGRect(x: 0, y: 0, width: 1, height: 1)
+        return rects.map { $0.intersection(unit) }.filter { !$0.isNull && $0.width > 0.001 && $0.height > 0.001 }
     }
 
     /// Heuristic: does this recognised string look like something a person would want hidden —
@@ -122,10 +141,16 @@ enum Scrubber {
     /// where everything personal is blacked out automatically (no manual boxes).
     static func detectRects(_ ci: CIImage) -> [CGRect] {
         let handler = VNImageRequestHandler(ciImage: ci, orientation: .up)
-        let fr = VNDetectFaceRectanglesRequest()
+        let fr = VNDetectFaceRectanglesRequest(); fr.revision = VNDetectFaceRectanglesRequestRevision3
+        let hr = VNDetectHumanRectanglesRequest(); hr.upperBodyOnly = true
         let tr = VNRecognizeTextRequest(); tr.recognitionLevel = .fast; tr.usesLanguageCorrection = false
-        try? handler.perform([fr, tr])
+        try? handler.perform([fr, hr, tr])
         var rects = (fr.results ?? []).map { flip($0.boundingBox).insetBy(dx: -$0.boundingBox.width * 0.12, dy: -$0.boundingBox.height * 0.14) }
+        for h in (hr.results ?? []) {   // same body-detection safety net as the photo path
+            let body = flip(h.boundingBox)
+            let head = CGRect(x: body.minX, y: body.minY, width: body.width, height: body.height * 0.46)
+            if !rects.contains(where: { $0.intersects(head) }) { rects.append(head) }
+        }
         rects += (tr.results as? [VNRecognizedTextObservation] ?? []).compactMap {
             looksPersonal($0.topCandidates(1).first?.string ?? "") ? flip($0.boundingBox) : nil
         }
