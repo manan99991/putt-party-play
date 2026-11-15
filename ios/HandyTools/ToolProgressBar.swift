@@ -12,7 +12,13 @@ import AVFoundation
 struct ToolProgressBar: View {
     let value: Double?
     let label: String
-    init(value: Double? = nil, label: String = "") { self.value = value; self.label = label }
+    var showsTime: Bool
+    init(value: Double? = nil, label: String = "", showsTime: Bool = true) {
+        self.value = value; self.label = label; self.showsTime = showsTime
+    }
+    // When the bar first appears, work has just begun — anchor elapsed/ETA to now. @State survives the
+    // re-renders that update `value`, so the clock keeps running from the true start.
+    @State private var startedAt = Date()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -25,9 +31,36 @@ struct ToolProgressBar: View {
                 Text(label).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            if showsTime {
+                // A line that ticks every second so the tool always reads as moving: a percentage and
+                // an honest "time left" when the work is measurable, otherwise the elapsed time — never
+                // a frozen spinner. It keeps counting from the real start even after backgrounding.
+                TimelineView(.periodic(from: startedAt, by: 1)) { ctx in
+                    Text(status(at: ctx.date))
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).monospacedDigit()
+                }
+            }
         }
         .padding(.vertical, 2)
         .animation(.easeInOut(duration: 0.25), value: value)
+    }
+
+    private func status(at now: Date) -> String {
+        let elapsed = max(0, now.timeIntervalSince(startedAt))
+        if let v = value, v > 0.02 {
+            let pct = Int((min(max(v, 0), 1)) * 100)
+            if v >= 0.999 { return "100% · finishing up" }
+            if elapsed > 2 {   // wait for enough signal before estimating, so the number doesn't jump around
+                let remaining = elapsed * (1 - v) / v
+                return "\(pct)% · \(remaining < 3 ? "almost done" : "about \(clock(remaining)) left")"
+            }
+            return "\(pct)%"
+        }
+        return "\(clock(elapsed)) elapsed"
+    }
+    private func clock(_ s: TimeInterval) -> String {
+        let t = Int(s.rounded())
+        return t >= 60 ? String(format: "%d:%02d", t / 60, t % 60) : "\(t)s"
     }
 }
 

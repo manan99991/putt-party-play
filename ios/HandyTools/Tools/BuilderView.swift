@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import PhotosUI
 import VisionKit
 import UniformTypeIdentifiers
@@ -839,6 +840,7 @@ private struct ChainRunView: View {
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
     @State private var progress = ""
+    @State private var progressValue: Double = 0   // 0 = indeterminate (shows a live elapsed clock)
     @State private var outbox: Outbox?
     @State private var sending = false
     @State private var scanning = false
@@ -954,7 +956,7 @@ private struct ChainRunView: View {
                     TextEditor(text: $text).frame(minHeight: 140).cardStyle(padding: HandySpacing.s8)
                     Button("Run") { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
-                if busy { ProgressView(progress.isEmpty ? "Working…" : progress) }
+                if busy { ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: progress.isEmpty ? "Working…" : progress) }
                 if let message { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let result { output(result) }
                 if !batch.isEmpty { batchView }
@@ -1021,7 +1023,7 @@ private struct ChainRunView: View {
         .onChange(of: videoPick) { _, item in
             guard let item else { return }
             videoPick = nil
-            busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the video ready…"
+            busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the video ready…"; progressValue = 0
             Task {
                 let movie = try? await item.loadTransferable(type: MovieImport.self)
                 await MainActor.run {
@@ -1032,7 +1034,7 @@ private struct ChainRunView: View {
         .onChange(of: livePick) { _, item in
             guard let item else { return }
             livePick = nil
-            busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the Live Photo ready…"
+            busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the Live Photo ready…"; progressValue = 0
             Task {
                 let movie = await LivePhotoVideo.movie(from: item)
                 await MainActor.run {
@@ -1119,7 +1121,7 @@ private struct ChainRunView: View {
 
     /// The same for anything a tool can start with: photos, pages, or several PDFs.
     private func runMany(count: Int, noun name: String, load: @escaping (Int) async -> ChainPayload?) {
-        busy = true; result = nil; message = nil; batch = []; outbox = nil; noun = name
+        busy = true; result = nil; message = nil; batch = []; outbox = nil; noun = name; progressValue = 0
         let combine = chain.combine == true
         let collage = chain.collage == true
         let gif = chain.gif == true
@@ -1131,7 +1133,7 @@ private struct ChainRunView: View {
             var out: [BatchItem] = []
             var kept: [ChainPayload] = []      // only held when everything is going into one PDF
             for i in 0..<count {
-                await MainActor.run { progress = "Working… \(i + 1) of \(count)" }
+                await MainActor.run { progress = "Working… \(i + 1) of \(count)"; progressValue = Double(i) / Double(count) }
                 guard let item = await load(i) else {
                     out.append(BatchItem(n: i + 1, note: "Couldn't open this \(name.lowercased()).")); continue
                 }
@@ -1264,7 +1266,7 @@ private struct ChainRunView: View {
     }
 
     private func go(_ input: ChainPayload) {
-        busy = true; result = nil; message = nil; batch = []; outbox = nil
+        busy = true; result = nil; message = nil; batch = []; outbox = nil; progressValue = 0
         // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
         // say what's happening rather than showing a bare spinner on a long meeting recording.
         if case let .file(_, ext) = input, ["m4a", "mp3", "wav", "aiff", "aifc", "caf", "aac", "m4b", "flac", "ogg"].contains(ext.lowercased()) {
@@ -1272,6 +1274,16 @@ private struct ChainRunView: View {
         } else { progress = "" }
         let tool = runChain
         Task {
+            // Ask iOS for time to keep running if the user switches away mid-job, so a short tool can
+            // still finish in the background instead of being frozen the moment the app isn't on screen.
+            // The expiration handler ends the task cleanly so a long job can never get the app killed.
+            let bg = await MainActor.run { () -> UIBackgroundTaskIdentifier in
+                var id: UIBackgroundTaskIdentifier = .invalid
+                id = UIApplication.shared.beginBackgroundTask(withName: "tenzy-tool") {
+                    if id != .invalid { UIApplication.shared.endBackgroundTask(id); id = .invalid }
+                }
+                return id
+            }
             let r = await ChainRunner.run(tool, input: input)
             await MainActor.run {
                 busy = false
@@ -1279,6 +1291,7 @@ private struct ChainRunView: View {
                 case .success(let p): result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
                 case .failure(let f): message = ChainRunView.words(f)
                 }
+                if bg != .invalid { UIApplication.shared.endBackgroundTask(bg) }
             }
         }
     }
