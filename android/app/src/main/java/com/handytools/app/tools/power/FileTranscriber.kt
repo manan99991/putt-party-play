@@ -44,8 +44,11 @@ object FileTranscriber {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || !SpeechRecognizer.isRecognitionAvailable(ctx)) return null
         val pcm = try { withContext(Dispatchers.IO) { decodeToPcm(file) } } catch (_: Exception) { null } ?: return null
         try {
-            // Give the recogniser headroom: at least 20s, up to ~2.5x the clip, capped at 3 min.
-            val budget = (durationMs * 5 / 2).coerceIn(20_000L, 180_000L)
+            // Give the recogniser headroom: at least 20s, ~2.5x the clip, capped at 15 min. The old
+            // 3-min cap silently dropped the WHOLE transcript of a long recording (e.g. a 22-minute
+            // memo) when on-device recognition ran past it; a segmented session normally finishes on
+            // its own (onEndOfSegmentedSession), so this ceiling only bites a genuinely stuck run.
+            val budget = (durationMs * 5 / 2).coerceIn(20_000L, 900_000L)
             return withTimeoutOrNull(budget) { recognise(ctx, pcm.file, pcm.sampleRate) }
         } finally {
             try { pcm.file.delete() } catch (_: Exception) {}

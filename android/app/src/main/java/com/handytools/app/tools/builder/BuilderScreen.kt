@@ -1044,7 +1044,10 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
         when (val r = result) {
             is Payload.Words -> {
                 Text(r.text, style = MaterialTheme.typography.bodyMedium)
-                HSecondaryButton("Copy") { (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", r.text)) }
+                HSecondaryButton("Copy") {
+                    (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", r.text))
+                    if (android.os.Build.VERSION.SDK_INT < 33) android.widget.Toast.makeText(ctx, "Copied", android.widget.Toast.LENGTH_SHORT).show()
+                }
             }
             is Payload.Pic -> {
                 Image(r.bmp.asImageBitmap(), null, Modifier.heightIn(max = 320.dp))
@@ -1118,6 +1121,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             val texts = ok.mapNotNull { b -> b.text?.let { "$noun ${b.n}\n$it" } }
             if (texts.isNotEmpty()) HSecondaryButton("Copy all text") {
                 (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", texts.joinToString("\n\n")))
+                if (android.os.Build.VERSION.SDK_INT < 33) android.widget.Toast.makeText(ctx, "Copied", android.widget.Toast.LENGTH_SHORT).show()
             }
         }
         HSecondaryButton("Done") { onDone() }

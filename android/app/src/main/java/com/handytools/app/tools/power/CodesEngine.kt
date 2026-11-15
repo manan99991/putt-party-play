@@ -195,6 +195,8 @@ object CodesEngine {
 
     fun copy(ctx: Context, label: String, text: String) {
         (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(label, text))
+        // Android 13+ shows its own "Copied" chip; below that, confirm the copy ourselves so it's never silent.
+        if (Build.VERSION.SDK_INT < 33) android.widget.Toast.makeText(ctx, "Copied", android.widget.Toast.LENGTH_SHORT).show()
     }
 
     /** Save a PNG into the gallery (Pictures/Tenzy on API 29+). */
