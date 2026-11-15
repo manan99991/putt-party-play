@@ -468,6 +468,43 @@ enum ChainRunner {
         return .done(value)
     }
 
+    /// A per-step record of a run, so the UI can show the person exactly what went through: which steps
+    /// ran, which were skipped because there was nothing to find, and which couldn't finish and why.
+    struct RunReport {
+        enum Mark: Equatable { case ran, skipped, stopped(Failure) }
+        struct Line: Identifiable { let id = UUID(); let block: Block; let mark: Mark }
+        var lines: [Line]
+        var result: ChainPayload?      // the furthest useful payload (the final one if it completed)
+        var completed: Bool            // reached the end (some steps may have been skipped)
+        var stopper: Failure?          // the failure that stopped it, if it didn't complete
+    }
+
+    /// Runs the flow and records every step's outcome. Same best-effort rules as runKeepingBest — an
+    /// optional same-type find step that finds nothing is marked skipped, not failed — but it hands the
+    /// UI the whole step-by-step story so the person always knows what happened end to end.
+    static func runReport(_ chain: Chain, input: ChainPayload) async -> RunReport {
+        if let p = chain.problem(starting: input.kind) {
+            return RunReport(lines: [], result: nil, completed: false, stopper: .invalid(p))
+        }
+        var value = input
+        var best: ChainPayload? = nil
+        var lines: [RunReport.Line] = []
+        for (i, step) in chain.steps.enumerated() {
+            let isLast = i == chain.steps.count - 1
+            switch await apply(step, to: value) {
+            case .success(let next):
+                value = next; best = next
+                lines.append(.init(block: step.block, mark: .ran))
+            case .failure(.nothingFound) where !isLast && step.block.takes == step.block.gives:
+                lines.append(.init(block: step.block, mark: .skipped))
+            case .failure(let f):
+                lines.append(.init(block: step.block, mark: .stopped(f)))
+                return RunReport(lines: lines, result: best, completed: false, stopper: f)
+            }
+        }
+        return RunReport(lines: lines, result: best ?? value, completed: true, stopper: nil)
+    }
+
     static func apply(_ step: ChainStep, to rawInput: ChainPayload, dryRun: Bool = false) async -> Result<ChainPayload, Failure> {
         let b = step.block
         // A step this phone can't do says so plainly instead of failing halfway.

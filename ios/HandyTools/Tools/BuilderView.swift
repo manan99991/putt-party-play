@@ -901,6 +901,7 @@ private struct ChainRunView: View {
     @State private var busy = false
     @State private var result: ChainPayload?
     @State private var message: String?
+    @State private var report: ChainRunner.RunReport?   // the per-step "what went through" story, for multi-step flows
     @ObservedObject private var store = StoreManager.shared
     @State private var showPro = false
     @Environment(\.dismiss) private var dismiss
@@ -1003,6 +1004,7 @@ private struct ChainRunView: View {
                     Button("Run") { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
                 if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? "Working…" : progress) }
+                if let report { stepLog(report) }
                 if let message { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let result { output(result) }
                 if !batch.isEmpty { batchView }
@@ -1322,30 +1324,61 @@ private struct ChainRunView: View {
     }
 
     private func go(_ input: ChainPayload) {
-        busy = true; result = nil; message = nil; batch = []; outbox = nil; progressValue = 0
+        busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0
         // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
         // say what's happening rather than showing a bare spinner on a long meeting recording.
         if case let .file(_, ext) = input, ["m4a", "mp3", "wav", "aiff", "aifc", "caf", "aac", "m4b", "flac", "ogg"].contains(ext.lowercased()) {
             progress = "Transcribing on your phone… about as long as the recording. It never leaves your phone."
         } else { progress = "" }
         let tool = runChain
+        let multiStep = tool.steps.count > 1
         let name = chain.name
         Task {
             // Completion keeps the job alive if the user switches away and notifies them when it's done.
-            let r = await Completion.run(name, ok: { if case .failed = $0 { return false } else { return true } }) {
-                await ChainRunner.runKeepingBest(tool, input: input)
+            let rep = await Completion.run(name, ok: { $0.completed || $0.result != nil }) {
+                await ChainRunner.runReport(tool, input: input)
             }
             await MainActor.run {
                 busy = false
-                switch r {
-                case .done(let p): message = nil; result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
-                case .partial(let p, let f):
-                    // Best-effort: show how far it got (the text it read) plus what the last step needs.
-                    message = ChainRunView.bestEffortNote(f); result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
-                case .failed(let f): message = ChainRunView.words(f)
+                // Show the step-by-step story for a multi-step flow, so the person sees exactly what ran,
+                // what was skipped and why, and what (if anything) couldn't finish.
+                report = multiStep ? rep : nil
+                if let p = rep.result {
+                    result = p
+                    message = rep.stopper.map(ChainRunView.bestEffortNote)   // best-effort note if a step couldn't finish
+                    finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
+                } else if let f = rep.stopper {
+                    message = ChainRunView.words(f)
                 }
             }
         }
+    }
+
+    /// The end-to-end confirmation: every step with a tick (ran), a dash (nothing to find, skipped) or a
+    /// warning (couldn't finish, with what it needs). So the person always knows exactly what went through.
+    @ViewBuilder private func stepLog(_ r: ChainRunner.RunReport) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(r.completed ? "Here's what it did" : "Here's how far it got", systemImage: "checklist")
+                .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+            ForEach(r.lines) { line in
+                HStack(alignment: .top, spacing: HandySpacing.s8) {
+                    switch line.mark {
+                    case .ran: Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.success)
+                    case .skipped: Image(systemName: "minus.circle.fill").foregroundStyle(HandyColor.textSecondary)
+                    case .stopped: Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(HandyColor.amber)
+                    }
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text("\(line.block.title) — \(line.block.does)").font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
+                        switch line.mark {
+                        case .ran: EmptyView()
+                        case .skipped: Text("Found nothing here, so it was skipped — the next steps still ran.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        case .stopped(let f): Text(ChainRunView.words(f)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    Spacer(minLength: 0)
+                }
+            }
+        }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
     }
 
     static func words(_ f: ChainRunner.Failure) -> String {

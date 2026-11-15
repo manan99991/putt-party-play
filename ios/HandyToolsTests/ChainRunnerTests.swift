@@ -1619,4 +1619,18 @@ final class ProStepTests: XCTestCase {
             }
         }
     }
+
+    // The confirmation the person sees: a per-step story of exactly what went through — ran, skipped
+    // (nothing to find), or stopped — so a result is never a mystery.
+    func testRunReportTellsTheWholeStory() async {
+        let c = Chain(id: "story", name: "Thoughts", steps: [
+            ChainStep(block: .actionItems), ChainStep(block: .pullDetails), ChainStep(block: .summarize, settings: ["sentences": "3"])])
+        let rep = await ChainRunner.runReport(c, input: .text("Please send the budget to Ana by Thursday. Call the vendor about the invoice. Review the launch checklist before noon."))
+        XCTAssertTrue(rep.completed, "an empty optional middle step must not stop the flow")
+        XCTAssertEqual(rep.lines.count, 3)
+        XCTAssertEqual(rep.lines[0].mark, .ran)       // Find tasks ran
+        XCTAssertEqual(rep.lines[1].mark, .skipped)   // Find links found nothing → skipped, not a dead-end
+        XCTAssertEqual(rep.lines[2].mark, .ran)       // Summarize ran
+        XCTAssertNotNil(rep.result, "it completed, so it must carry a result")
+    }
 }
