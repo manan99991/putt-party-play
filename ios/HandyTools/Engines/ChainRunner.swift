@@ -179,6 +179,109 @@ extension Block {
     }
     /// Steps that can come first when a tool starts with a photo, or with text.
     static func starting(with kind: ChainKind) -> [Block] { allCases.filter { kind.feeds($0.takes) } }
+
+    /// A plain, present-tense phrase for what this step does, lowercase so steps read as one sentence:
+    /// "reads the text in your photo, then finds the best-value option." Used to explain a tool up front.
+    var does: String {
+        switch self {
+        case .readText: return "reads the printed text"
+        case .pullReceipt: return "pulls the items and total off a receipt"
+        case .summarize: return "shortens it to a few sentences"
+        case .shrinkImage: return "shrinks it under a size you choose"
+        case .stripLocation: return "removes the hidden location and camera data"
+        case .cutout: return "cuts the subject out from the background"
+        case .enhance: return "sharpens and cleans it up"
+        case .convertImage: return "converts it to an everyday format"
+        case .businessCard: return "turns a card into a saveable contact"
+        case .calendarEvent: return "turns a date into a calendar event"
+        case .actionItems: return "pulls out the to-dos"
+        case .hideSensitive: return "blurs faces and numbers"
+        case .passportPhoto: return "makes a passport/ID photo to spec"
+        case .cleanText: return "tidies the spacing and line breaks"
+        case .pullDetails: return "finds the links, emails and phone numbers"
+        case .makeTable: return "turns a list into a spreadsheet"
+        case .scamCheck: return "checks it for scam warning signs"
+        case .cleanLinks: return "strips the tracking from a link"
+        case .priceCompare: return "finds the best-value option"
+        case .makeQr: return "makes a QR code"
+        case .describe: return "describes what's in the picture"
+        case .identify: return "identifies what it is"
+        case .photoPdf: return "makes a searchable PDF"
+        case .watermark: return "stamps a watermark across it"
+        case .resizePhoto: return "resizes it to exact pixels"
+        case .stamp: return "adds your signature and marks"
+        case .expenseRow: return "makes one expense row"
+        case .addToList: return "adds it to a running list"
+        case .chatLink: return "makes a WhatsApp link for a number"
+        case .contactQr: return "makes a QR code of your contact"
+        case .wifiQr: return "makes a Wi-Fi join code"
+        case .returnBy: return "sets a return-by reminder"
+        case .videoShrink: return "shrinks the video under a size"
+        case .videoStill: return "grabs a still frame"
+        case .videoMute: return "removes the sound"
+        case .videoAudio: return "keeps only the sound"
+        case .videoTrim: return "keeps the part you choose"
+        case .videoGif: return "makes a GIF"
+        case .videoRotate: return "turns it the right way up"
+        case .videoVertical: return "crops it to tall 9:16"
+        case .videoCaptions: return "adds spoken captions"
+        case .speechText: return "writes out what is said"
+        case .readAloud: return "reads it aloud"
+        case .translate: return "translates it"
+        case .rewrite: return "rewrites it in a clearer tone"
+        case .readCode: return "reads a QR or barcode"
+        case .pageText: return "reads the page at a link"
+        case .textPdf: return "turns text into a PDF"
+        case .pdfShrink: return "shrinks the PDF"
+        case .pdfLock: return "locks it with a password"
+        case .pdfPages: return "keeps the pages you choose"
+        case .pdfText: return "reads the PDF's words"
+        case .sticker: return "makes a cut-out sticker"
+        case .emojiFaces: return "covers faces with emoji"
+        case .meme: return "adds a top and bottom caption"
+        case .emojiMosaic: return "rebuilds it out of emoji"
+        case .videoSpeed: return "speeds it up or slows it down"
+        case .videoLoop: return "makes it loop"
+        case .artFilter: return "applies an art style"
+        case .voiceChange: return "changes the voice"
+        }
+    }
+
+    /// A friendly description of what GOOD input looks like — shown up front as a hint and reused in the
+    /// "couldn't find anything" message so a failure always tells the person exactly how to get a result.
+    var needs: String {
+        switch self {
+        case .priceCompare: return "a photo showing at least two options with their price and size, like a supermarket shelf"
+        case .pullReceipt, .expenseRow: return "a photo of a receipt showing the items and the total"
+        case .businessCard: return "a business card or signature with a phone number or email"
+        case .calendarEvent, .returnBy: return "something that mentions a date (a poster, a bill, a letter)"
+        case .makeTable: return "a list or table — rows of items, like a menu or a receipt"
+        case .scamCheck: return "the message, email or link you want checked"
+        case .wifiQr: return "a photo or text showing the Wi-Fi name and password"
+        case .chatLink: return "a phone number in the text"
+        case .pullDetails: return "text that contains a link, email or phone number"
+        case .actionItems: return "notes or a transcript with things to do in them"
+        case .readCode: return "a photo with a QR code or barcode in it"
+        case .identify, .describe: return "a clear, close photo of the thing"
+        case .readText, .pdfText, .pageText, .speechText: return "something with readable words in it"
+        default: return takes == .text ? "some text to work with" : takes == .image ? "a clear, close photo" : takes == .video ? "a video" : takes == .pdf ? "a PDF" : "a recording"
+        }
+    }
+}
+
+extension Chain {
+    /// One plain sentence describing what the whole flow does, built from its steps — so a tool explains
+    /// itself the moment it opens instead of showing a bare title and three file buttons.
+    var about: String {
+        let parts = steps.map { $0.block.does }
+        guard let first = parts.first else { return "" }
+        let body: String
+        if parts.count == 1 { body = first }
+        else { body = parts.dropLast().joined(separator: ", ") + ", then " + parts.last! }
+        return body.prefix(1).uppercased() + body.dropFirst() + "."
+    }
+    /// What good input looks like, from the first step — the hint shown under the description.
+    var wants: String? { steps.first?.block.needs }
 }
 
 struct ChainStep: Codable, Equatable {
@@ -331,6 +434,28 @@ enum ChainRunner {
             }
         }
         return .success(value)
+    }
+
+    /// Best-effort outcome for the UI: even when a step can't finish, hand back the furthest the flow
+    /// got — the text an OCR step read, say — instead of nothing. So the person always sees their input
+    /// was used and keeps whatever value was produced, and only a flow that got NOWHERE shows a bare error.
+    enum Outcome {
+        case done(ChainPayload)                  // every step finished
+        case partial(ChainPayload, Failure)      // got this far, then the named step couldn't finish
+        case failed(Failure)                     // nothing usable at all
+    }
+
+    static func runKeepingBest(_ chain: Chain, input: ChainPayload) async -> Outcome {
+        if let p = chain.problem(starting: input.kind) { return .failed(.invalid(p)) }
+        var value = input
+        var best: ChainPayload? = nil   // the furthest useful result past the raw input
+        for step in chain.steps {
+            switch await apply(step, to: value) {
+            case .success(let next): value = next; best = next
+            case .failure(let f): return best.map { .partial($0, f) } ?? .failed(f)
+            }
+        }
+        return .done(value)
     }
 
     static func apply(_ step: ChainStep, to rawInput: ChainPayload, dryRun: Bool = false) async -> Result<ChainPayload, Failure> {

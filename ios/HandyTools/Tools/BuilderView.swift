@@ -301,19 +301,40 @@ struct BuilderView: View {
     }
 
     private func templateCard(_ c: Chain) -> some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+        // A faint gradient drawn from the tool's own step colours, so each card reads at a glance as
+        // "the photo one", "the receipt one" — and the WHOLE card runs the tool, not just a small link.
+        let tints = c.steps.map(\.block.tint)
+        let g = [(tints.first ?? HandyColor.accent).opacity(0.18), (tints.last ?? tints.first ?? HandyColor.accent).opacity(0.10)]
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack(spacing: -8) {
-                ForEach(Array(c.steps.prefix(3).enumerated()), id: \.offset) { _, s in BlockBadge(block: s.block, size: 30).overlay(Circle().stroke(HandyColor.surface, lineWidth: 0)) }
+                ForEach(Array(c.steps.prefix(3).enumerated()), id: \.offset) { _, s in BlockBadge(block: s.block, size: 30) }
             }
             Text(c.name).font(HandyFont.bodyStrong).lineLimit(2).multilineTextAlignment(.leading)
+            Text(c.about).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2).multilineTextAlignment(.leading)
             Spacer(minLength: 0)
             HStack {
-                Button("Use") { running = c }.font(HandyFont.micro)
+                Label("Use", systemImage: "play.circle.fill").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                 Spacer()
-                Button("Edit copy") { var k = c; k.id = UUID().uuidString; k.name += " (mine)"; editHint = nil; editing = k }.font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                // Stays its own tap target (a Button inside the card), so only the rest of the card runs it.
+                Button("Edit copy") { var k = c; k.id = UUID().uuidString; k.name += " (mine)"; editHint = nil; editing = k }
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).buttonStyle(.plain)
             }
         }
-        .frame(maxWidth: .infinity, minHeight: 112, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+        .frame(maxWidth: .infinity, minHeight: 124, alignment: .leading)
+        .padding(HandySpacing.s12)
+        .background {
+            ZStack {
+                HandyColor.surface
+                LinearGradient(colors: g, startPoint: .topLeading, endPoint: .bottomTrailing)
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+        .contentShape(Rectangle())
+        .onTapGesture { running = c }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityLabel("\(c.name). \(c.about) Opens the tool.")
     }
 
     private func row(_ c: Chain, mine isMine: Bool) -> some View {
@@ -814,9 +835,13 @@ struct BatchItem: Identifiable {
     var text: String?
     var summary = ""
     var note: String?
+    /// A gentle best-effort note (not an error): the flow still delivered this, but a later step couldn't
+    /// finish, so this says what it would take to get the full result. The row still counts as done.
+    var hint: String?
 
-    static func make(n: Int, payload: ChainPayload, in dir: URL, named: String? = nil, tool: String = "") -> BatchItem {
+    static func make(n: Int, payload: ChainPayload, in dir: URL, named: String? = nil, tool: String = "", hint: String? = nil) -> BatchItem {
         var b = BatchItem(n: n)
+        b.hint = hint
         func write(_ d: Data, _ ext: String) {
             let u = dir.appendingPathComponent(ChainName.file(pattern: named, tool: tool, index: n, ext: ext))
             if (try? d.write(to: u)) != nil { b.url = u; b.summary = "\(SizeTarget.format(d.count)) · \(ext.uppercased())" } else { b.note = "Couldn't save this result." }
@@ -913,6 +938,17 @@ private struct ChainRunView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 Text(chain.name).font(HandyFont.title)
+                // Tell the person what this flow does and what good input looks like, the moment it opens —
+                // instead of a bare title over three file buttons with no clue what they're for.
+                VStack(alignment: .leading, spacing: HandySpacing.s4) {
+                    Text(chain.about).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                    if let w = chain.wants {
+                        Label("Works best with \(w).", systemImage: "lightbulb")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
                 stampSetup
                 if hasMeme {
                     TextField("Top line", text: $memeTop).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12)).accessibilityIdentifier("run-meme-top")
@@ -1138,11 +1174,16 @@ private struct ChainRunView: View {
                 guard let item = await load(i) else {
                     out.append(BatchItem(n: i + 1, note: "Couldn't open this \(name.lowercased()).")); continue
                 }
-                switch await ChainRunner.run(tool, input: item) {
-                case .success(let p):
+                switch await ChainRunner.runKeepingBest(tool, input: item) {
+                case .done(let p):
                     if combine || collage || gif || versus { kept.append(p) }
                     out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name))
-                case .failure(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
+                case .partial(let p, let f):
+                    // Best-effort: deliver how far it got (e.g. the text it read) and say what the last
+                    // step needs, instead of throwing it all away with a dead-end error.
+                    if combine || collage || gif || versus { kept.append(p) }
+                    out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name, hint: ChainRunView.bestEffortNote(f)))
+                case .failed(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
                 }
             }
             // One PDF for everything, when the tool asks for it and the results can be joined.
@@ -1227,11 +1268,16 @@ private struct ChainRunView: View {
         let texts = ok.compactMap { b in b.text.map { "\(noun) \(b.n)\n\($0)" } }
         Text("\(ok.count) of \(batch.count) done").font(HandyFont.cardTitle)
         ForEach(batch) { b in
-            HStack {
-                Image(systemName: b.note == nil ? "checkmark.circle.fill" : "exclamationmark.circle").foregroundStyle(b.note == nil ? Color.green : HandyColor.textSecondary)
-                Text("\(noun) \(b.n)").font(HandyFont.bodyStrong)
-                Spacer()
-                Text(b.note ?? b.summary).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.trailing)
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Image(systemName: b.note == nil ? "checkmark.circle.fill" : "exclamationmark.circle").foregroundStyle(b.note == nil ? Color.green : HandyColor.textSecondary)
+                    Text("\(noun) \(b.n)").font(HandyFont.bodyStrong)
+                    Spacer()
+                    Text(b.note ?? b.summary).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.trailing)
+                }
+                // Best-effort: this one still delivered (it's in the count and the copy/share), but a later
+                // step couldn't finish — say what it would take, without marking the row as failed.
+                if let h = b.hint { Text(h).font(HandyFont.micro).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true) }
             }.cardStyle(padding: HandySpacing.s12)
         }
         if !urls.isEmpty {
@@ -1277,14 +1323,17 @@ private struct ChainRunView: View {
         let name = chain.name
         Task {
             // Completion keeps the job alive if the user switches away and notifies them when it's done.
-            let r = await Completion.run(name, ok: { if case .success = $0 { return true } else { return false } }) {
-                await ChainRunner.run(tool, input: input)
+            let r = await Completion.run(name, ok: { if case .failed = $0 { return false } else { return true } }) {
+                await ChainRunner.runKeepingBest(tool, input: input)
             }
             await MainActor.run {
                 busy = false
                 switch r {
-                case .success(let p): result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
-                case .failure(let f): message = ChainRunView.words(f)
+                case .done(let p): message = nil; result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
+                case .partial(let p, let f):
+                    // Best-effort: show how far it got (the text it read) plus what the last step needs.
+                    message = ChainRunView.bestEffortNote(f); result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
+                case .failed(let f): message = ChainRunView.words(f)
                 }
             }
         }
@@ -1293,10 +1342,21 @@ private struct ChainRunView: View {
     static func words(_ f: ChainRunner.Failure) -> String {
         switch f {
         case .invalid(let s): return s
-        case .wrongInput(let b): return "\(b.title) can't use that input."
-        case .nothingFound(.businessCard): return "Make a contact needs a phone number or an email, and didn't find one. Try a business card or a signature."
-        case .nothingFound(let b): return b.takes == .text ? "\(b.title) didn't find anything in that text." : "\(b.title) didn't find anything in it. Try a clearer or closer picture."
-        case .failed(let b): return "\(b.title) couldn't finish. Try again."
+        case .wrongInput(let b): return "\(b.title) can't use that — it needs \(b.needs)."
+        case .nothingFound(let b):
+            let tail = b.takes == .image ? " Try a clearer or closer photo." : ""
+            return "\(b.title) works best with \(b.needs).\(tail)"
+        case .failed(let b): return "\(b.title) couldn't finish. Give it another go."
+        }
+    }
+
+    /// Shown when the flow still delivered a best-effort result (e.g. the text it read) even though a later
+    /// step couldn't finish — so the person knows why they got the earlier result and how to get the full one.
+    static func bestEffortNote(_ f: ChainRunner.Failure) -> String {
+        switch f {
+        case .invalid(let s): return s
+        case .wrongInput(let b), .nothingFound(let b), .failed(let b):
+            return "\(b.title) works best with \(b.needs) — here's what I read so you still have it:"
         }
     }
 }
