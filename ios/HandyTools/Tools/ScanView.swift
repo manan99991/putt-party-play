@@ -550,10 +550,17 @@ private struct InkCanvas: UIViewRepresentable {
         canvas.drawingPolicy = .anyInput
         canvas.backgroundColor = .clear
         canvas.isOpaque = false
+        // PKCanvasView is a scroll view; inside a draggable sheet the finger pan gets eaten by the
+        // sheet/scroll gesture instead of drawing. Turning scrolling off makes the canvas capture the
+        // stroke, so a finger signature actually inks.
+        canvas.isScrollEnabled = false
         canvas.tool = PKInkingTool(.pen, color: .black, width: 3)
         return canvas
     }
-    func updateUIView(_ uiView: PKCanvasView, context: Context) {}
+    // Re-assert the pen each update, so a freshly created canvas always has a drawing tool.
+    func updateUIView(_ uiView: PKCanvasView, context: Context) {
+        if !(uiView.tool is PKInkingTool) { uiView.tool = PKInkingTool(.pen, color: .black, width: 3) }
+    }
 }
 
 /// Draw once, keep forever: a white pad that saves a trimmed transparent signature.

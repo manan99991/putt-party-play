@@ -1287,7 +1287,14 @@ private struct ChainRunView: View {
                     Image(systemName: b.note == nil ? "checkmark.circle.fill" : "exclamationmark.circle").foregroundStyle(b.note == nil ? Color.green : HandyColor.textSecondary)
                     Text("\(noun) \(b.n)").font(HandyFont.bodyStrong)
                     Spacer()
-                    Text(b.note ?? b.summary).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.trailing)
+                    // For a text result, the character count isn't the answer — show it below instead.
+                    Text(b.note ?? (b.text == nil ? b.summary : "")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.trailing)
+                }
+                // The actual text each item produced (what "What is this?" found, the words read, …), so a
+                // batch shows its answers in-app instead of a row of "49 characters".
+                if let t = b.text, !t.trimmingCharacters(in: .whitespaces).isEmpty {
+                    Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
+                        .textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
                 }
                 // Best-effort: this one still delivered (it's in the count and the copy/share), but a later
                 // step couldn't finish — say what it would take, without marking the row as failed.
