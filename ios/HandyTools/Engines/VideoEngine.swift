@@ -40,6 +40,57 @@ enum VideoEngine {
         return UIImage(cgImage: cg)
     }
 
+    /// The BEST still from a clip, not a blind midpoint grab: samples frames across the middle of the
+    /// clip, scores each for sharpness (edge energy) and good exposure, and returns the sharpest,
+    /// well-exposed one at full size. Falls back to the midpoint if scoring can't run.
+    static func bestFrame(_ url: URL, maxDim: CGFloat = 1920) async -> UIImage? {
+        let asset = AVURLAsset(url: url)
+        let dur = (try? await asset.load(.duration).seconds) ?? 0
+        guard dur > 0.2 else { return await thumbnail(url, at: max(0, dur / 2), maxDim: maxDim) }
+        let gen = AVAssetImageGenerator(asset: asset)
+        gen.appliesPreferredTrackTransform = true
+        gen.requestedTimeToleranceBefore = .zero
+        gen.requestedTimeToleranceAfter = .zero
+        gen.maximumSize = CGSize(width: 200, height: 200)   // small copies — scoring stays fast
+        // Skip the first/last ~8% where title cards, fades and black frames usually sit.
+        let lo = dur * 0.08, hi = dur * 0.92
+        let n = 9
+        var bestScore = -1.0
+        var bestTime = dur * 0.5
+        for i in 0..<n {
+            let t = n == 1 ? dur * 0.5 : lo + (hi - lo) * Double(i) / Double(n - 1)
+            guard let cg = try? gen.copyCGImage(at: CMTime(seconds: t, preferredTimescale: 600), actualTime: nil) else { continue }
+            let s = sharpnessScore(cg)
+            if s > bestScore { bestScore = s; bestTime = t }
+        }
+        return await thumbnail(url, at: bestTime, maxDim: maxDim)
+    }
+
+    /// A rough "sharp and well-exposed?" score: average squared luminance gradient on a tiny grayscale
+    /// copy (high = crisp detail, low = blurry/flat), knocked down hard when the frame is near-black or
+    /// blown out — the title/fade frames a midpoint grab so often lands on.
+    private static func sharpnessScore(_ cg: CGImage) -> Double {
+        let w = 96, h = 96
+        var px = [UInt8](repeating: 0, count: w * h)
+        guard let ctx = CGContext(data: &px, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
+                                  space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return 0 }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        var grad = 0.0, mean = 0.0
+        for v in px { mean += Double(v) }
+        mean /= Double(px.count)
+        for y in 0..<h {
+            for x in 0..<(w - 1) {
+                let i = y * w + x
+                let dx = Double(Int(px[i + 1]) - Int(px[i]))
+                grad += dx * dx
+                if y < h - 1 { let dy = Double(Int(px[i + w]) - Int(px[i])); grad += dy * dy }
+            }
+        }
+        grad /= Double(px.count)
+        let exposure = (mean < 18 || mean > 238) ? 0.1 : 1.0   // mostly black or blown → almost certainly not the shot
+        return grad * exposure
+    }
+
     // MARK: operations
 
     /// Re-wrap/re-encode as H.264/AAC MP4 (plays on Windows, Android, the web). Drops metadata.

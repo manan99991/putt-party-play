@@ -50,7 +50,7 @@ enum class Block(val id: String, val title: String, val takes: Kind, val gives: 
     RETURN_BY("returnBy", "Return-by reminder", Kind.TEXT, Kind.FILE, "Puts the last day to return it in your calendar, counted from the receipt's date."),
     WIFI_QR("wifiQr", "Wi-Fi join code", Kind.TEXT, Kind.IMAGE, "Finds the network name and password and makes a code guests scan to join. No typing."),
     VIDEO_SHRINK("videoShrink", "Shrink video to size", Kind.VIDEO, Kind.VIDEO, "Makes a video fit under a size you pick, and leaves its location behind."),
-    VIDEO_STILL("videoStill", "Grab a still", Kind.VIDEO, Kind.IMAGE, "Takes one picture out of the video."),
+    VIDEO_STILL("videoStill", "Grab a still", Kind.VIDEO, Kind.IMAGE, "Picks the sharpest, best-lit frame from the video."),
     VIDEO_MUTE("videoMute", "Remove the sound", Kind.VIDEO, Kind.VIDEO, "The same video with no sound."),
     VIDEO_AUDIO("videoAudio", "Keep only the sound", Kind.VIDEO, Kind.AUDIO, "Just the sound, as an audio file."),
     STAMP("stamp", "Sign and stamp", Kind.IMAGE, Kind.IMAGE, "Puts your saved signature, your name and today's date where you placed them."),

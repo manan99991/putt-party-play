@@ -217,7 +217,7 @@ extension Block {
         case .wifiQr: return "makes a Wi-Fi join code"
         case .returnBy: return "sets a return-by reminder"
         case .videoShrink: return "shrinks the video under a size"
-        case .videoStill: return "grabs a still frame"
+        case .videoStill: return "picks the sharpest, best-lit frame"
         case .videoMute: return "removes the sound"
         case .videoAudio: return "keeps only the sound"
         case .videoTrim: return "keeps the part you choose"
@@ -647,7 +647,7 @@ enum ChainRunner {
             return .success(.video(out.url))
 
         case (.videoStill, .video(let url)):
-            guard let img = await VideoEngine.thumbnail(url, at: 0.5, maxDim: 1920) else { return .failure(.failed(b)) }
+            guard let img = await VideoEngine.bestFrame(url, maxDim: 1920) else { return .failure(.failed(b)) }
             return .success(.image(img))
 
         case (.videoMute, .video(let url)):

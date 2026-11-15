@@ -383,12 +383,59 @@ internal object MediaEngine {
         }
     }
 
+    /** The BEST still from a clip, not the first (usually black/title) frame: samples frames across the
+     * middle, scores each for sharpness (edge energy) and good exposure, and returns the best one at full
+     * size. Falls back to the first frame for a very short clip or if scoring can't run. */
     fun videoFrame(ctx: Context, uri: Uri): Bitmap? {
         val mmr = MediaMetadataRetriever()
         return try {
             mmr.setDataSource(ctx, uri)
-            mmr.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+            val durMs = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull() ?: 0L
+            if (durMs <= 200L) return mmr.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+            val loUs = durMs * 80L     // skip the first ~8% (titles/fades): durMs(ms) * 0.08 * 1000 (us)
+            val hiUs = durMs * 920L    // and the last ~8%
+            val n = 9
+            var bestScore = -1.0
+            var bestTimeUs = durMs * 500L   // midpoint, as a safe default
+            for (i in 0 until n) {
+                val tUs = loUs + (hiUs - loUs) * i / (n - 1)
+                val small = runCatching {
+                    if (Build.VERSION.SDK_INT >= 27) mmr.getScaledFrameAtTime(tUs, MediaMetadataRetriever.OPTION_CLOSEST, 160, 160)
+                    else mmr.getFrameAtTime(tUs, MediaMetadataRetriever.OPTION_CLOSEST)
+                }.getOrNull() ?: continue
+                val s = sharpnessScore(small)
+                small.recycle()
+                if (s > bestScore) { bestScore = s; bestTimeUs = tUs }
+            }
+            mmr.getFrameAtTime(bestTimeUs, MediaMetadataRetriever.OPTION_CLOSEST)
         } catch (e: Exception) { null } finally { try { mmr.release() } catch (_: Exception) {} }
+    }
+
+    /** Average squared luminance gradient on a tiny grayscale sampling (high = crisp, low = blurry/flat),
+     * knocked down hard for near-black or blown-out frames. Mirrors the iOS best-frame scoring. */
+    private fun sharpnessScore(bmp: Bitmap): Double {
+        val w = 64; val h = 64
+        val scaled = runCatching { Bitmap.createScaledBitmap(bmp, w, h, true) }.getOrNull() ?: return 0.0
+        val px = IntArray(w * h)
+        scaled.getPixels(px, 0, w, 0, 0, w, h)
+        if (scaled !== bmp) scaled.recycle()
+        val lum = DoubleArray(px.size)
+        var mean = 0.0
+        for (i in px.indices) {
+            val c = px[i]
+            val l = 0.299 * ((c shr 16) and 0xff) + 0.587 * ((c shr 8) and 0xff) + 0.114 * (c and 0xff)
+            lum[i] = l; mean += l
+        }
+        mean /= px.size
+        var grad = 0.0
+        for (y in 0 until h) for (x in 0 until w - 1) {
+            val i = y * w + x
+            val dx = lum[i + 1] - lum[i]; grad += dx * dx
+            if (y < h - 1) { val dy = lum[i + w] - lum[i]; grad += dy * dy }
+        }
+        grad /= px.size
+        val exposure = if (mean < 18 || mean > 238) 0.1 else 1.0
+        return grad * exposure
     }
 
     /** Source video height in px, or 0 if unreadable — used so "Keep original" never upscales. */
