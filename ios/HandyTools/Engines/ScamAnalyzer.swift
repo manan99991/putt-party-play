@@ -69,7 +69,9 @@ enum ScamAnalyzer {
         // 5b. employment / "task" scams — big daily/weekly/monthly pay, no experience, and "apply by
         // texting a keyword to this number". These rarely trip the other signals, so a blatant job
         // scam used to score 0 and read as "low-risk". Detect the combination directly.
-        let jobContext = hit([#"\b(hiring|now hiring|job offer|positions?|vacanc(y|ies)|recruit(ing|ment)?|employment|work from home|remote (job|work|position)|part[\s-]?time|full[\s-]?time|applicants?|apply now|openings?|daily pay|monthly income|side (job|gig|hustle)|training provided|no experience (needed|required|necessary)?)\b"#])
+        // Require a real hiring phrase, not a lone word like "positions" or "openings" that turns up in
+        // ordinary text (an itinerary, a newsletter) and used to trip a false "job scam".
+        let jobContext = hit([#"\b(now hiring|we('?| a)re hiring|hiring (now|immediately|today)|job offer|job opening|positions? (available|open)|vacanc(y|ies) (available|open)|recruit(ing|ment)|work[\s-]?from[\s-]?home|remote (job|position|opportunity)|no experience (needed|required|necessary)|training (is )?provided|daily pay|weekly pay|be your own boss|side (gig|hustle)|earn (money )?from home)\b"#])
         let hasBigPay = lower.range(of: #"\$\s?\d{3,}"#, options: .regularExpression) != nil || lower.range(of: #"\$\s?\d{1,3},\d{3}"#, options: .regularExpression) != nil
         let payPeriod = !hit([#"\b(daily|/\s?day|per day|a day|weekly|per week|a week|hourly|per hour|an hour|monthly|per month|a month)\b"#]).isEmpty
         let applyByText = lower.range(of: #"\b(text|txt|sms|message|whats\s?app|telegram|dm|reply|respond)\b[^.\n]{0,40}\bto\s+\+?\d[\d\s().\-]{5,}"#, options: .regularExpression) != nil
@@ -115,27 +117,51 @@ enum ScamAnalyzer {
 
     static let trustedBrands = ["paypal", "apple", "amazon", "microsoft", "google", "netflix", "chase", "wellsfargo", "barclays", "hsbc", "usps", "fedex", "ups", "dhl", "irs", "coinbase", "facebook", "instagram", "whatsapp"]
     static let shorteners: Set<String> = ["bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly", "is.gd", "buff.ly", "cutt.ly", "rb.gy", "shorturl.at", "tiny.cc", "rebrand.ly"]
+    /// Registrable domains that are genuinely owned by a trusted brand (or are common infrastructure),
+    /// so a legitimate subdomain like fonts.googleapis.com is never cried wolf over as a "look-alike".
+    static let legitDomains: Set<String> = [
+        "google.com", "googleapis.com", "gstatic.com", "withgoogle.com", "youtube.com", "ggpht.com", "goo.gl",
+        "apple.com", "icloud.com", "mzstatic.com", "itunes.com", "cdn-apple.com",
+        "amazon.com", "amazonaws.com", "media-amazon.com", "ssl-images-amazon.com", "primevideo.com",
+        "microsoft.com", "live.com", "office.com", "outlook.com", "microsoftonline.com", "windows.net", "azureedge.net", "bing.com",
+        "paypal.com", "paypalobjects.com", "netflix.com", "nflxext.com",
+        "chase.com", "wellsfargo.com", "barclays.co.uk", "hsbc.com", "hsbc.co.uk",
+        "usps.com", "fedex.com", "ups.com", "dhl.com", "irs.gov", "coinbase.com",
+        "facebook.com", "fbcdn.net", "instagram.com", "cdninstagram.com", "whatsapp.com", "whatsapp.net",
+        "cloudflare.com", "jsdelivr.net", "unpkg.com", "bootstrapcdn.com", "jquery.com", "fontawesome.com"
+    ]
 
     static func linkChecks(in text: String) -> [LinkCheck] {
         guard let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else { return [] }
+        let ns = text as NSString
         var out: [LinkCheck] = []
         for m in det.matches(in: text, range: NSRange(text.startIndex..., in: text)) {
             guard let u = m.url, let scheme = u.scheme?.lowercased(), scheme == "http" || scheme == "https", let host = u.host?.lowercased() else { continue }
-            var issues: [String] = []
-            if scheme == "http" { issues.append("Not encrypted (http://).") }
-            if host.hasPrefix("xn--") || host.contains(".xn--") { issues.append("Uses look-alike (punycode) characters in the address.") }
-            if shorteners.contains(host) { issues.append("A shortened link hides where it really goes.") }
-            if host.range(of: #"^\d{1,3}(\.\d{1,3}){3}$"#, options: .regularExpression) != nil { issues.append("Points at a bare IP address, not a company domain.") }
+            // Did the writer actually type a scheme, or did NSDataDetector infer "http://" for a bare
+            // token? A bare word lifted out of prose or stray code (e.g. a JS access like "d.id") must
+            // never be reported as an unencrypted link — the text never claimed it was one.
+            let hadScheme = ns.substring(with: m.range).lowercased().contains("://")
             let labels = host.split(separator: ".").map(String.init)
             let registrable = labels.suffix(2).joined(separator: ".")
-            for b in trustedBrands where host.contains(b) && !registrable.hasPrefix(b + ".") {
-                issues.append("\"\(b)\" appears in the address but the real site is \(registrable) — a classic look-alike.")
-                break
-            }
-            if labels.count >= 4 { issues.append("Unusually deep sub-domain — the real owner is \(registrable).") }
-            if let tld = labels.last, ["zip", "mov", "top", "xyz", "click", "link", "gq", "tk", "ml", "cf", "buzz"].contains(tld) { issues.append("Ends in .\(tld), a domain ending heavily used by scammers.") }
-            if u.path.lowercased().range(of: #"(login|verify|secure|account|update|confirm|wallet)"#, options: .regularExpression) != nil, issues.isEmpty == false || !trustedBrands.contains(where: { registrable.hasPrefix($0 + ".") }) {
-                issues.append("Path says \"\(u.path.split(separator: "/").first.map(String.init) ?? "login")\" — pages like this are where credentials get stolen.")
+            let legit = Self.legitDomains.contains(registrable)
+            var issues: [String] = []
+            if scheme == "http" && hadScheme { issues.append("Not encrypted (http://).") }
+            if host.hasPrefix("xn--") || host.contains(".xn--") { issues.append("Uses look-alike (punycode) characters in the address.") }
+            if shorteners.contains(registrable) { issues.append("A shortened link hides where it really goes.") }
+            if host.range(of: #"^\d{1,3}(\.\d{1,3}){3}$"#, options: .regularExpression) != nil { issues.append("Points at a bare IP address, not a company domain.") }
+            if !legit {
+                // A brand look-alike means the brand name is a whole label in the host (apple-support.com,
+                // paypal.secure-login.com) while the registrable domain isn't that brand's. A subdomain
+                // such as fonts.googleapis.com is safe, because "google" is not a label there.
+                for b in trustedBrands where labels.contains(where: { $0 == b || $0.hasPrefix(b + "-") || $0.hasSuffix("-" + b) }) && !registrable.hasPrefix(b + ".") {
+                    issues.append("\"\(b)\" appears in the address but the real site is \(registrable) — a classic look-alike.")
+                    break
+                }
+                if labels.count >= 5 { issues.append("Unusually deep sub-domain — the real owner is \(registrable).") }
+                if let tld = labels.last, ["zip", "mov", "top", "xyz", "click", "link", "gq", "tk", "ml", "cf", "buzz"].contains(tld) { issues.append("Ends in .\(tld), a domain ending heavily used by scammers.") }
+                if hadScheme, u.path.lowercased().range(of: #"(login|verify|secure|account|update|confirm|wallet)"#, options: .regularExpression) != nil {
+                    issues.append("Path says \"\(u.path.split(separator: "/").first.map(String.init) ?? "login")\" — pages like this are where credentials get stolen.")
+                }
             }
             out.append(LinkCheck(url: u.absoluteString, host: host, issues: Array(Set(issues)).sorted()))
         }

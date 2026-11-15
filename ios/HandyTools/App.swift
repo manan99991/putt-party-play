@@ -433,10 +433,11 @@ struct HomeView: View {
                 TenzyTabBar(selection: $tab)
             }
             .id(theme.current)   // force a full re-skin of the grid when the theme changes
-            .background(HandyColor.bg)
+            .background(Ground())
             .navigationDestination(for: String.self) { id in
                 switch id {
                 case "settings": SettingsView().toolbarRole(.editor)
+                case "alltools": AllToolsView().toolbarRole(.editor)
                 case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
                 case "privacy": PrivacyView().toolbarRole(.editor)
                 case "builder": BuilderView().toolbarRole(.editor)
@@ -600,6 +601,46 @@ struct ToolGridPage: View {
             }
             .scrollBounceBehavior(.basedOnSize)
         }
+    }
+}
+
+/// The full catalog on its own page, reached from Settings → "What Tenzy does". Every tool is a visual
+/// card (its themed art / gradient), grouped by what each of the three pages is for, tap to open. This
+/// is what moved out of Settings so that screen stays short and sharp.
+struct AllToolsView: View {
+    @EnvironmentObject var store: StoreManager
+    @ObservedObject private var theme = ThemeManager.shared
+    private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
+    private let groups: [(title: String, page: Int)] = [
+        ("Photo, video & sharing", 1), ("Scan, read & organize", 2), ("Tools, sensors & accessibility", 3)
+    ]
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s24) {
+                Text("Every tool in one place — tap any to open it. It all runs on your phone.")
+                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, HandySpacing.gutter)
+                ForEach(groups, id: \.page) { group in
+                    VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                        Text(group.title.uppercased()).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                            .padding(.horizontal, HandySpacing.gutter)
+                        LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
+                            ForEach(tools(onPage: group.page)) { t in
+                                NavigationLink(value: t.id) { ToolCard(tool: t, height: 128) }.buttonStyle(ToolCardPress())
+                            }
+                        }
+                        .padding(.horizontal, HandySpacing.gutter)
+                    }
+                }
+            }
+            .padding(.top, HandySpacing.s12)
+            .padding(.bottom, HandySpacing.s24)
+        }
+        .background(Ground())
+        .id(theme.current)   // re-skin live if the theme changes while this page is open
+        .navigationTitle("What Tenzy does")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

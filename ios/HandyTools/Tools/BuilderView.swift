@@ -13,6 +13,24 @@ struct Given: Identifiable {
     /// A few words for the top of the list: "A photo", "A PDF · 2 pages"...
     let label: String
 
+    /// Markup (HTML/XML) stripped down to its readable words, so a tool — and the chooser preview —
+    /// gets the text a person would read, never a wall of tags. Plain text passes straight through.
+    static func readable(_ raw: String, ext: String) -> String {
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        let looksMarkup = ["html", "htm", "xml", "xhtml", "svg"].contains(ext) || trimmed.hasPrefix("<")
+        guard looksMarkup else { return raw }
+        var s = raw
+        for tag in ["script", "style", "head"] {   // drop the non-visible blocks whole
+            s = s.replacingOccurrences(of: "(?is)<\(tag)\\b.*?</\(tag)>", with: " ", options: .regularExpression)
+        }
+        s = s.replacingOccurrences(of: "(?s)<[^>]+>", with: " ", options: .regularExpression)   // then every tag
+        let entities = ["&nbsp;": " ", "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": "\"", "&#39;": "'", "&apos;": "'"]
+        for (k, v) in entities { s = s.replacingOccurrences(of: k, with: v) }
+        s = s.replacingOccurrences(of: "[ \\t]+", with: " ", options: .regularExpression)
+        s = s.replacingOccurrences(of: "\\n\\s*\\n\\s*\\n+", with: "\n\n", options: .regularExpression)
+        return s.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     /// What a file from the Files app is, by its name. nil for a kind of file no tool takes.
     static func from(file url: URL) -> Given? {
         let scoped = url.startAccessingSecurityScopedResource()
@@ -33,8 +51,11 @@ struct Given: Identifiable {
         if type?.conforms(to: .image) == true {
             return (try? Data(contentsOf: url)).flatMap(UIImage.init).map { Given(payload: .image($0), label: "A photo") }
         }
-        if type?.conforms(to: .text) == true, let words = try? String(contentsOf: url, encoding: .utf8), !words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return Given(payload: .text(words), label: "Some text")
+        if type?.conforms(to: .text) == true, let words = try? String(contentsOf: url, encoding: .utf8) {
+            let clean = readable(words, ext: ext)
+            guard !clean.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
+            // Name it by the file so the chooser reads "report.html", not a vague "Some text".
+            return Given(payload: .text(clean), label: url.lastPathComponent)
         }
         return nil
     }
@@ -53,6 +74,8 @@ struct BuilderView: View {
     @State private var editing: Chain?
     @State private var running: Chain?
     @State private var note: String?
+    /// Feedback shown inside the Templates sheet itself (the main `note` sits behind the sheet, unseen).
+    @State private var pasteNote: String?
     @State private var ask = ""
     @State private var planning = false
     @State private var sheets: [RunningList.Sheet] = RunningList.all()
@@ -162,7 +185,7 @@ struct BuilderView: View {
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showMine = false } } }
             }
         }
-        .sheet(isPresented: $showTemplates) {
+        .sheet(isPresented: $showTemplates, onDismiss: { pasteNote = nil }) {
             NavigationStack {
                 ScrollView {
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
@@ -170,11 +193,24 @@ struct BuilderView: View {
                             Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []); showTemplates = false } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
                             Spacer()
                             Button {
-                                if let c = ToolLink.chain(from: UIPasteboard.general.string ?? "") {
-                                    if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) { mine.append(c); persist(); note = "Added \(c.name)."; showTemplates = false }
-                                    else { proForSave() }
-                                } else { note = "Copy a tool from another Tenzy first, then tap Paste." }
+                                let clip = UIPasteboard.general.string ?? ""
+                                if let c = ToolLink.chain(from: clip) {
+                                    if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) {
+                                        mine.append(c); persist(); pasteNote = nil; note = "Added \(c.name)."; showTemplates = false
+                                    } else {
+                                        pasteNote = "You've saved the \(BuilderLimits.freeSaved) tools the free plan keeps. Go Pro to add more."
+                                    }
+                                } else {
+                                    pasteNote = clip.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                                        ? "Nothing's copied yet. On another Tenzy, open a tool and tap “Copy to share”, then come back and tap Paste."
+                                        : "That's not a Tenzy tool link. Use a tool's “Copy to share” button, then tap Paste here."
+                                }
                             } label: { Label("Paste a tool", systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
+                        }
+                        if let pasteNote {
+                            Text(pasteNote).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .transition(.opacity)
                         }
                         Picker("What do you have?", selection: $have) {
                             Text("All").tag(ChainKind?.none)
@@ -575,14 +611,14 @@ private struct ChainEditor: View {
             Text("What do you start with?").font(HandyFont.cardTitle)
             HStack(spacing: HandySpacing.s12) {
                 startButton(.image, "A photo", "photo")
-                startButton(.text, "Text or a link", "text.alignleft")
+                startButton(.text, "Text, link or file", "text.alignleft")
                 startButton(.video, "A video", "film")
             }
             HStack(spacing: HandySpacing.s12) {
                 startButton(.audio, "A recording", "waveform")
                 startButton(.pdf, "A PDF", "doc.richtext")
             }
-            Text("A photo tool also takes scans, PDF pages and QR codes. A text tool also takes a link, what you say, a contact, where you are, or the words in a PDF. A recording tool writes out what was said.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text("“Text, link or file” also reads a file for its words — a CSV, a contact card (.vcf), a calendar file (.ics), .txt, .json or a web page. Photos and scans start with “A photo”; documents with “A PDF”; a recording writes out what was said. Tenzy handles each file as what it really is.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
     private func startButton(_ kind: ChainKind, _ title: String, _ icon: String) -> some View {
@@ -1001,7 +1037,12 @@ private struct ChainRunView: View {
                     }
                     if speech.running { Text(speech.live.isEmpty ? "Listening… tap Stop when you're done." : speech.live).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
                     if let e = speech.errorText { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
-                    TextEditor(text: $text).frame(minHeight: 140).cardStyle(padding: HandySpacing.s8)
+                    // Capped so a long paste or a whole file scrolls *inside* this box instead of
+                    // stretching down the page — the Run button and everything after it stay reachable.
+                    TextEditor(text: $text).frame(minHeight: 140, maxHeight: 260).cardStyle(padding: HandySpacing.s8)
+                    if text.count > 400 {
+                        Text("\(text.count) characters — scroll inside the box to read it all.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
                     Button("Run") { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
                 if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? "Working…" : progress) }
@@ -1320,12 +1361,19 @@ private struct ChainRunView: View {
         case .text(let t):
             // A planned task list carries tappable Maps links as markdown; render those so the links work.
             // Everything else stays plain monospaced so no stray character gets misread as formatting.
-            if (t.contains("maps.apple.com") || t.contains("google.com/maps") || t.contains("mailto:") || t.contains("tel:")),
-               let md = try? AttributedString(markdown: t, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)) {
-                Text(md).font(.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
-            } else {
-                Text(t).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+            // Capped in a scroll box so a long result scrolls inside it — Copy and the next options stay
+            // in reach instead of being pushed a whole screen down.
+            ScrollView {
+                if (t.contains("maps.apple.com") || t.contains("google.com/maps") || t.contains("mailto:") || t.contains("tel:")),
+                   let md = try? AttributedString(markdown: t, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace)) {
+                    Text(md).font(.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    Text(t).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
+            .frame(maxHeight: 300)
+            .scrollBounceBehavior(.basedOnSize)
+            .cardStyle(padding: HandySpacing.s12)
             CopyButton(text: t)
         case .image(let i):
             Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)
@@ -1456,8 +1504,10 @@ private struct ToolPickView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                Text(given.label).font(HandyFont.title)
-                if case .text(let t) = given.payload { Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3) }
+                Text(given.label).font(HandyFont.title).lineLimit(2).truncationMode(.middle)
+                if case .text(let t) = given.payload, !t.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
+                }
                 if tools.isEmpty {
                     Text("No tool takes this yet. Close this, tap Blank, and build one that starts with \(given.payload.kind.label).").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {

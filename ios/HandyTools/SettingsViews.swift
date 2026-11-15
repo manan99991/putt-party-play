@@ -212,20 +212,21 @@ struct SettingsView: View {
                     }
 
                     Section("What Tenzy does") {
-                        Text("Every tool in one place — tap any to open it. It all runs on your phone.")
-                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                        ForEach(TOOLS) { t in
-                            Button { NotificationCenter.default.post(name: .openTool, object: t.id) } label: {
-                                HStack(spacing: HandySpacing.s12) {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(t.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                        Text(t.blurb).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                                    }
-                                    Spacer()
-                                    Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
-                                }.contentShape(Rectangle())
-                            }.buttonStyle(.plain)
-                        }
+                        NavigationLink(value: "alltools") {
+                            HStack(spacing: HandySpacing.s16) {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous).fill(HandyColor.accentSoft).frame(width: 40, height: 40)
+                                    Image(systemName: "square.grid.2x2.fill").font(.system(size: 18)).foregroundStyle(HandyColor.accent)
+                                }
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("All \(TOOLS.count) tools").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                    Text("Everything Tenzy does, each with a tap to open").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+                            }
+                            .cardStyle()
+                        }.buttonStyle(.plain)
                     }
 
                     Section("App") {
@@ -261,7 +262,7 @@ struct SettingsView: View {
             BannerAd()
         }
         .id(theme.current)   // force a full re-skin of Settings when the theme changes (no stale cards/links)
-        .background(HandyColor.bg)
+        .background(Ground())
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showPaywall) { PaywallView().presentationDetents([.large]).presentationDragIndicator(.visible).presentationBackground(HandyColor.surfaceRaised).sheetCloseButton { showPaywall = false } }
         .sheet(isPresented: $showSetup) { SetupView(onDone: { showSetup = false }).sheetCloseButton { showSetup = false } }

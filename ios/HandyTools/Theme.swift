@@ -204,6 +204,50 @@ struct HandyCardStyle: ViewModifier {
     }
 }
 
+/** Level-2 card: a raised surface that catches the light. Same shape as the level-1 card, but on the
+    `surfaceRaised` tone with a soft drop shadow so it lifts off the Ground instead of sitting flat on
+    it. Shadow is deep on dark themes, feather-light on bright ones, so it reads on every look. Use it
+    for the hero cards a screen is built around (the builder starters, the tool catalog). */
+struct HandyRaisedCardStyle: ViewModifier {
+    var padding: CGFloat = HandySpacing.s16
+    var radius: CGFloat = HandyRadius.card
+    @Environment(\.colorScheme) private var scheme
+    func body(content: Content) -> some View {
+        content
+            .padding(padding)
+            .background(HandyColor.surfaceRaised, in: RoundedRectangle(cornerRadius: radius, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: radius, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            .shadow(color: .black.opacity(scheme == .dark ? 0.38 : 0.10), radius: 12, x: 0, y: 5)
+    }
+}
+
+/// The app's "ground": a subtle gradient chassis so a screen reads as a lit surface, not a flat void.
+/// Theme-aware — it derives entirely from the active tokens, staying gentle on the bright themes and
+/// richer on the dark ones. Drop it behind a screen with `.background(Ground())` in place of a flat
+/// `HandyColor.bg` fill.
+struct Ground: View {
+    /// A faint accent glow in the top-trailing corner. On by default; the per-tool pages that already
+    /// carry their own art pass `glow: false` so the two don't fight.
+    var glow: Bool = true
+    var body: some View {
+        ZStack {
+            HandyColor.bg
+            // A soft vertical lift: a little brighter toward the top so content sits on a surface.
+            LinearGradient(
+                colors: [HandyColor.surface.opacity(0.60), HandyColor.bg.opacity(0.0)],
+                startPoint: .top, endPoint: .center
+            )
+            if glow {
+                RadialGradient(
+                    colors: [HandyColor.accent.opacity(0.10), .clear],
+                    center: .topTrailing, startRadius: 0, endRadius: 440
+                )
+            }
+        }
+        .ignoresSafeArea()
+    }
+}
+
 /** Primary: pill, accent, 52pt, full width. Scales 0.98 while pressed. */
 struct HandyPrimaryButtonStyle: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled
