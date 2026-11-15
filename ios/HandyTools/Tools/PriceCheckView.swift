@@ -10,7 +10,7 @@ struct PriceCheckView: View {
     @State private var mode: Mode = .compare
 
     var body: some View {
-        ToolPage(title: "Price Check", subtitle: "Spot the real bargain, keep the cart under budget, and decode any label — right in the aisle.", working: busy) {
+        ToolPage(title: "Price Check", subtitle: "Spot the real bargain, keep the cart under budget, and decode any label — right in the aisle.") {
             HowTo("pricecheck", [
                 "Best deal: snap a photo of the shelf/screen or type in a couple of prices and sizes — it shows the true cost per unit.",
                 "Cart vs budget: tap items in as you shop and watch what's left.",
