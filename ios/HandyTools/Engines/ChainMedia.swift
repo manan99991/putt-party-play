@@ -278,6 +278,19 @@ enum Transcriber {
         }
     }
 
+    /// Holds the best transcript produced so far, the live recognition task, and the quiet-timer —
+    /// so a recording that never reports 'final' (common on-device past ~a minute) still yields text.
+    final class Box: @unchecked Sendable {
+        private let lock = NSLock()
+        private var _latest: Heard?
+        var idle: DispatchWorkItem?
+        var task: SFSpeechRecognitionTask?
+        var latest: Heard? {
+            get { lock.lock(); defer { lock.unlock() }; return _latest }
+            set { lock.lock(); _latest = newValue; lock.unlock() }
+        }
+    }
+
     static func listen(to url: URL) async -> Result<Heard, Problem> {
         let asked = Once<SFSpeechRecognizerAuthorizationStatus>()
         Permission.speech { asked.finish($0) }
@@ -286,21 +299,34 @@ enum Transcriber {
         guard let recognizer = SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(), recognizer.isAvailable, recognizer.supportsOnDeviceRecognition else { return .failure(.unavailable) }
         let request = SFSpeechURLRecognitionRequest(url: url)
         request.requiresOnDeviceRecognition = true
-        request.shouldReportPartialResults = false
+        // Stream words as they're recognised. On-device recognition past ~a minute often never fires
+        // 'final', so partial results are what keep a long recording moving and give us text to return.
+        request.shouldReportPartialResults = true
         request.addsPunctuation = true
         let seconds = await VideoEngine.duration(url)
+
         let result = Once<Heard?>()
-        let task = recognizer.recognitionTask(with: request) { found, error in
-            if let found, found.isFinal {
+        let box = Box()
+        // Once we've heard words, a few seconds of silence from the recogniser means it's effectively
+        // done — hand back what we have instead of waiting for a 'final' that may never arrive.
+        func armIdle() {
+            box.idle?.cancel()
+            let w = DispatchWorkItem { if box.latest != nil { box.task?.cancel(); result.finish(box.latest) } }
+            box.idle = w
+            DispatchQueue.global().asyncAfter(deadline: .now() + 6, execute: w)
+        }
+        box.task = recognizer.recognitionTask(with: request) { found, error in
+            if let found {
                 let t = found.bestTranscription
-                result.finish(Heard(text: t.formattedString, words: t.segments.map { (text: $0.substring, start: $0.timestamp, end: $0.timestamp + $0.duration) }))
+                box.latest = Heard(text: t.formattedString, words: t.segments.map { (text: $0.substring, start: $0.timestamp, end: $0.timestamp + $0.duration) })
+                if found.isFinal { box.idle?.cancel(); box.task?.cancel(); result.finish(box.latest) } else { armIdle() }
             } else if error != nil {
-                result.finish(nil)
+                result.finish(box.latest)   // on error, hand back whatever we already heard (may be nil)
             }
         }
-        // A recogniser that never answers must not hang the tool: give it three times the recording's length, at least a minute.
-        DispatchQueue.global().asyncAfter(deadline: .now() + max(60, seconds * 3)) { task.cancel(); result.finish(nil) }
-        guard let heard = await withCheckedContinuation({ result.wait($0) }) else { return .failure(.nothing) }
+        // Hard ceiling so a stuck recogniser can never hang the tool, a little over the clip's length.
+        DispatchQueue.global().asyncAfter(deadline: .now() + max(45, seconds * 1.4) + 15) { box.task?.cancel(); result.finish(box.latest) }
+        guard let heard = await withCheckedContinuation({ result.wait($0) }), !heard.text.isEmpty else { return .failure(.nothing) }
         return .success(heard)
     }
 }

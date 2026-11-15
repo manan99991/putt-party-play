@@ -1264,7 +1264,12 @@ private struct ChainRunView: View {
     }
 
     private func go(_ input: ChainPayload) {
-        busy = true; result = nil; message = nil; batch = []; progress = ""; outbox = nil
+        busy = true; result = nil; message = nil; batch = []; outbox = nil
+        // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
+        // say what's happening rather than showing a bare spinner on a long meeting recording.
+        if case let .file(_, ext) = input, ["m4a", "mp3", "wav", "aiff", "aifc", "caf", "aac", "m4b", "flac", "ogg"].contains(ext.lowercased()) {
+            progress = "Transcribing on your phone… about as long as the recording. It never leaves your phone."
+        } else { progress = "" }
         let tool = runChain
         Task {
             let r = await ChainRunner.run(tool, input: input)
