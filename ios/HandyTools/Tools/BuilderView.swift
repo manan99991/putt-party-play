@@ -564,7 +564,7 @@ private struct ChainEditor: View {
                 }
             }.padding(HandySpacing.gutter)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
         .navigationTitle("Build a tool").navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
@@ -1013,6 +1013,8 @@ private struct ChainRunView: View {
 
     private var start: ChainKind { chain.steps.first?.block.takes ?? .image }
     private var hasMeme: Bool { chain.steps.contains { $0.block == .meme } }
+    /// A QR-making result gets the long-press "what's inside this code" preview; ordinary photos don't.
+    private var isQRResult: Bool { chain.steps.contains { [.makeQr, .contactQr, .wifiQr].contains($0.block) } }
     /// A free user can't run a tool that uses a Pro step; they see the lock card instead of the inputs.
     private var locked: Bool { !store.isPremium && chain.needsPro }
 
@@ -1044,7 +1046,7 @@ private struct ChainRunView: View {
                 }.frame(maxWidth: .infinity).padding(.top, HandySpacing.s24)
             }.padding(HandySpacing.gutter)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
         .sheet(isPresented: $showPro) { PaywallView().environmentObject(StoreManager.shared) }
     }
@@ -1139,7 +1141,7 @@ private struct ChainRunView: View {
                 sendOn
             }.padding(HandySpacing.gutter)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
         .sheet(isPresented: $sending) {
             if let f = chain.finish, let box = outbox { SendSheet(finish: f, subject: chain.name, box: box).ignoresSafeArea() }
@@ -1463,6 +1465,11 @@ private struct ChainRunView: View {
             CopyButton(text: t)
         case .image(let i):
             Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)
+                .modifier(QRPeekIfCode(enabled: isQRResult, image: i))
+            if isQRResult {
+                Text("Press and hold the code to see what's inside it, without opening it.")
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
             ShareLink(item: Image(uiImage: i), preview: SharePreview("Result")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .file(let d, let ext):
             // Always show the result before Save or share — a photo, or a PDF's first page — so the person
@@ -1617,7 +1624,7 @@ private struct ToolPickView: View {
                 }
             }.padding(HandySpacing.gutter)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
         .navigationTitle("What to do with it").navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
     }
