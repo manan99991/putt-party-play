@@ -56,28 +56,35 @@ enum ScamAnalyzer {
         if !codeSolicit.isEmpty { f.append(Finding(title: "Wants a code, password or personal details", detail: "Nobody legitimate asks you to read back a one-time code or type your password into a link they sent. Codes are the keys to your accounts.", weight: 4)) }
         else if !credAsk.isEmpty { f.append(Finding(title: "Pushes you to \"verify\" your account", detail: "Being told to confirm or verify your account through a message is how fake login pages get filled in. Open the app or type the site address yourself instead.", weight: 3)) }
 
-        // 4. impersonation of institutions
+        // Employment / "task" scam signals — computed up front so the impersonation check can use them
+        // (an "Amazon hiring team" job offer IS impersonation). Require a real hiring phrase, not a lone
+        // word like "positions"/"openings" that turns up in ordinary text (an itinerary, a newsletter).
+        let jobContext = hit([#"\b(now hiring|we('?| a)re hiring|hiring (now|immediately|today|team)|hiring team|job offer|job opening|positions? (available|open|currently available)|vacanc(y|ies) (available|open)|recruit(ing|ment)|work[\s-]?from[\s-]?home|working remotely|remote (job|position|opportunity|work)|no experience (needed|required|necessary)|training (is )?provided|daily pay|weekly pay|be your own boss|side (gig|hustle)|earn (money )?from home)\b"#])
+        let hasBigPay = lower.range(of: #"\$\s?\d{3,}"#, options: .regularExpression) != nil || lower.range(of: #"\$\s?\d{1,3},\d{3}"#, options: .regularExpression) != nil
+        let payPeriod = !hit([#"\b(daily|/\s?day|per day|a day|weekly|per week|a week|hourly|per hour|an hour|monthly|per month|a month)\b"#]).isEmpty
+        let applyByText = lower.range(of: #"\b(text|txt|sms|message|whats\s?app|telegram|dm|reply|respond)\b[^.\n]{0,40}\bto\s+\+?\d[\d\s().\-]{5,}"#, options: .regularExpression) != nil
+        // A full phone number (10+ digits) to "apply" — not a 5–6 digit marketing short code.
+        let applyByPhone = lower.range(of: #"\b(text|txt|sms|message|whats\s?app|telegram|dm)\b[^.\n]{0,40}\bto\s+\+?(\d[\s().\-]*){10,}"#, options: .regularExpression) != nil
+        let jobScam = !jobContext.isEmpty && ((hasBigPay && payPeriod) || applyByText)
+        let jobScamStrong = !jobContext.isEmpty && (hasBigPay && payPeriod) && applyByText
+
+        // 4. impersonation of institutions — fires on urgency/creds/payment OR a job scam that names a brand.
         let brands = hit([#"\b(irs|hmrc|ato|cra|social security administration|medicare|dmv|usps|ups|fedex|dhl|royal mail|amazon|apple|microsoft|paypal|netflix|bank|chase|wells fargo|barclays|hsbc|coinbase|geek squad|norton|mcafee)\b"#])
         let genericGreeting = hit([#"^(dear (customer|user|member|account holder|sir|madam)|hello (customer|user|friend))"#, #"\bdear (customer|user|member|account holder)\b"#])
-        if !brands.isEmpty && (!urgency.isEmpty || !creds.isEmpty || railHit) { f.append(Finding(title: "Claims to be a well-known organisation", detail: "Impersonating a bank, delivery firm, tax office or tech company is the standard opener. Contact them through the number on your card or their official app — never the one in the message.", weight: 2)) }
+        if !brands.isEmpty && (!urgency.isEmpty || !creds.isEmpty || railHit || jobScam) { f.append(Finding(title: "Claims to be a well-known organisation", detail: "Impersonating a bank, delivery firm, tax office, retailer or tech company is the standard opener. A real employer or company reaches you through official channels — go to their own website or app, never a number or keyword in the message.", weight: jobScam ? 3 : 2)) }
         if !genericGreeting.isEmpty { f.append(Finding(title: "Generic greeting", detail: "\"Dear customer\" means they don't know your name — a mass-sent message.", weight: 1)) }
 
         // 5. too good to be true / advance fee / romance / job
         let lottery = hit([#"\byou('ve| have) (won|been selected|been chosen)\b"#, #"\bcongratulations\b"#, #"\blottery\b"#, #"\bprize\b"#, #"\binheritance\b"#, #"\bclaim your\b"#, #"\bfree (iphone|gift|money|reward)\b"#, #"\bguaranteed (return|profit|income)\b"#, #"\bdouble your\b"#, #"\bearn \$?\d{3,}.{0,20}(day|week|hour)\b"#, #"\bwork from home\b.{0,40}\$"#, #"\bprocessing fee\b"#, #"\bsmall fee\b"#, #"\bunlock (the )?funds\b"#])
         if !lottery.isEmpty { f.append(Finding(title: "Too good to be true", detail: "Prizes you didn't enter, guaranteed returns, and fees to release money are the oldest tricks in the book.", weight: 3)) }
 
-        // 5b. employment / "task" scams — big daily/weekly/monthly pay, no experience, and "apply by
-        // texting a keyword to this number". These rarely trip the other signals, so a blatant job
-        // scam used to score 0 and read as "low-risk". Detect the combination directly.
-        // Require a real hiring phrase, not a lone word like "positions" or "openings" that turns up in
-        // ordinary text (an itinerary, a newsletter) and used to trip a false "job scam".
-        let jobContext = hit([#"\b(now hiring|we('?| a)re hiring|hiring (now|immediately|today)|job offer|job opening|positions? (available|open)|vacanc(y|ies) (available|open)|recruit(ing|ment)|work[\s-]?from[\s-]?home|remote (job|position|opportunity)|no experience (needed|required|necessary)|training (is )?provided|daily pay|weekly pay|be your own boss|side (gig|hustle)|earn (money )?from home)\b"#])
-        let hasBigPay = lower.range(of: #"\$\s?\d{3,}"#, options: .regularExpression) != nil || lower.range(of: #"\$\s?\d{1,3},\d{3}"#, options: .regularExpression) != nil
-        let payPeriod = !hit([#"\b(daily|/\s?day|per day|a day|weekly|per week|a week|hourly|per hour|an hour|monthly|per month|a month)\b"#]).isEmpty
-        let applyByText = lower.range(of: #"\b(text|txt|sms|message|whats\s?app|telegram|dm|reply|respond)\b[^.\n]{0,40}\bto\s+\+?\d[\d\s().\-]{5,}"#, options: .regularExpression) != nil
-        if !jobContext.isEmpty && ((hasBigPay && payPeriod) || applyByText) {
-            let strong = (hasBigPay && payPeriod) && applyByText
-            f.append(Finding(title: "Job offer that's too good to be true", detail: "Hundreds a day with no experience, and \"text a word to this number to apply\", is the signature of a job or task scam. Real employers interview you and never promise that kind of pay up front or hire over a text keyword.", weight: strong ? 4 : 3))
+        // 5b. employment / "task" scams — the finding, from the signals computed above. A blatant job
+        // scam stacks (job offer + impersonation + apply-by-phone) so it reads "Likely a scam", not "low-risk".
+        if jobScam {
+            f.append(Finding(title: "Job offer that's too good to be true", detail: "Hundreds a day with no experience, and \"text a word to this number to apply\", is the signature of a job or task scam. Real employers interview you and never promise that kind of pay up front or hire over a text keyword.", weight: jobScamStrong ? 4 : 3))
+            if applyByPhone {
+                f.append(Finding(title: "Says to apply by texting a keyword to a number", detail: "Real employers interview you — they don't hire by having you text a word to a phone number. That number only starts the scam conversation.", weight: 3))
+            }
         }
 
         // 6. secrecy / isolation
