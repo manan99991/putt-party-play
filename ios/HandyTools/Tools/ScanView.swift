@@ -260,7 +260,7 @@ struct ScanView: View {
                     .frame(maxHeight: 220).padding(HandySpacing.s12)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 HStack(spacing: HandySpacing.s8) {
-                    Button { UIPasteboard.general.string = ocrText; HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                    Button { Copier.copy(ocrText) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
                     ShareLink(item: ocrText) { Label("Share text", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                 }
                 Button { runOCR(all: true) } label: { Label("Read every page", systemImage: "doc.text.magnifyingglass") }.textButton()

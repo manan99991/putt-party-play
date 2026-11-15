@@ -68,7 +68,7 @@ struct TextStudioView: View {
                     Text(output).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
                     if !note.isEmpty { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                     HStack(spacing: HandySpacing.s8) {
-                        Button { UIPasteboard.general.string = output; ClipStore.add(output); HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                        Button { Copier.copy(output); ClipStore.add(output) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
                         ShareLink(item: output) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                     }
                     Button { text = output; output = ""; note = "" } label: { Label("Keep working on this version", systemImage: "arrow.uturn.down") }.textButton()

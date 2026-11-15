@@ -55,7 +55,7 @@ struct VoiceNotesView: View {
                 HStack(spacing: HandySpacing.s8) {
                     Button { save() } label: { Label("Save note", systemImage: "tray.and.arrow.down").frame(maxWidth: .infinity) }.primaryButton()
                     ShareLink(item: exportText) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
-                    Button { UIPasteboard.general.string = exportText; HandyHaptics.success() } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy").frame(width: 36, height: 36) }.compactButton()
+                    Button { Copier.copy(exportText) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy").frame(width: 36, height: 36) }.compactButton()
                 }
             }
 

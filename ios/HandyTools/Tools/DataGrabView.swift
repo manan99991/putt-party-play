@@ -92,7 +92,7 @@ struct DataGrabView: View {
             HStack { Text("Total").font(HandyFont.bodyStrong); Spacer(); Text(money(receipt.total ?? 0)).font(HandyFont.bodyStrong).monospacedDigit() }
             HStack(spacing: HandySpacing.s8) {
                 ShareLink(item: CSVFile(data: Data(DataGrab.receiptCSV(receipt).utf8)), preview: SharePreview("Receipt.csv")) { Label("Items as CSV", systemImage: "tablecells") }.compactButton()
-                Button { UIPasteboard.general.string = DataGrab.expenseRow(receipt); HandyHaptics.success() } label: { Label("Copy expense row", systemImage: "doc.on.doc") }.compactButton()
+                Button { Copier.copy(DataGrab.expenseRow(receipt)) } label: { Label("Copy expense row", systemImage: "doc.on.doc") }.compactButton()
                 Spacer()
             }
             Text("The expense row pastes straight into a Numbers/Excel/Google Sheets expense log.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -133,7 +133,7 @@ struct DataGrabView: View {
             ScrollView(.horizontal) { Text(csv).font(.system(size: 12, design: .monospaced)).textSelection(.enabled) }.frame(maxHeight: 220)
             HStack(spacing: HandySpacing.s8) {
                 ShareLink(item: CSVFile(data: Data(csv.utf8)), preview: SharePreview("Table.csv")) { Label("Save CSV", systemImage: "tablecells") }.compactButton()
-                Button { UIPasteboard.general.string = csv.replacingOccurrences(of: ",", with: "\t"); HandyHaptics.success() } label: { Label("Copy for a spreadsheet", systemImage: "doc.on.doc") }.compactButton()
+                Button { Copier.copy(csv.replacingOccurrences(of: ",", with: "\t")) } label: { Label("Copy for a spreadsheet", systemImage: "doc.on.doc") }.compactButton()
                 Spacer()
             }
             Text("Copy pastes as columns into Numbers, Excel or Sheets.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

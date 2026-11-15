@@ -188,7 +188,7 @@ struct LensView: View {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text(gist).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
                     HStack(spacing: HandySpacing.s8) {
-                        Button { UIPasteboard.general.string = gist; ClipStore.add(gist); HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                        Button { Copier.copy(gist); ClipStore.add(gist) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
                         ShareLink(item: gist) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                     }
                 }.cardStyle()

@@ -840,7 +840,8 @@ private struct ChainRunView: View {
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
     @State private var progress = ""
-    @State private var progressValue: Double = 0   // 0 = indeterminate (shows a live elapsed clock)
+    @State private var progressValue: Double = 0   // 0 = indeterminate
+    @ObservedObject private var runProgress = RunProgress.shared   // live fraction from deep engine work (transcription)
     @State private var outbox: Outbox?
     @State private var sending = false
     @State private var scanning = false
@@ -956,7 +957,7 @@ private struct ChainRunView: View {
                     TextEditor(text: $text).frame(minHeight: 140).cardStyle(padding: HandySpacing.s8)
                     Button("Run") { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
-                if busy { ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: progress.isEmpty ? "Working…" : progress) }
+                if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? "Working…" : progress) }
                 if let message { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let result { output(result) }
                 if !batch.isEmpty { batchView }
@@ -1237,7 +1238,7 @@ private struct ChainRunView: View {
             ShareLink(items: urls) { Label("Save or share all (\(urls.count))", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         }
         if !texts.isEmpty {
-            Button { UIPasteboard.general.string = texts.joined(separator: "\n\n") } label: { Label("Copy all text", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
+            CopyButton(text: texts.joined(separator: "\n\n"), title: "Copy all text")
         }
     }
 
@@ -1245,7 +1246,7 @@ private struct ChainRunView: View {
         switch r {
         case .text(let t):
             Text(t).font(.system(.body, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
-            Button { UIPasteboard.general.string = t } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
+            CopyButton(text: t)
         case .image(let i):
             Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)
             ShareLink(item: Image(uiImage: i), preview: SharePreview("Result")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()

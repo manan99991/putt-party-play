@@ -16,9 +16,10 @@ struct ToolProgressBar: View {
     init(value: Double? = nil, label: String = "", showsTime: Bool = true) {
         self.value = value; self.label = label; self.showsTime = showsTime
     }
-    // When the bar first appears, work has just begun — anchor elapsed/ETA to now. @State survives the
-    // re-renders that update `value`, so the clock keeps running from the true start.
+    // When the bar first appears, work has just begun — anchor the ETA to now. @State survives the
+    // re-renders that update `value`, so the estimate keeps counting from the true start.
     @State private var startedAt = Date()
+    @State private var spin = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -31,37 +32,130 @@ struct ToolProgressBar: View {
                 Text(label).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            if showsTime {
-                // A line that ticks every second so the tool always reads as moving: a percentage and
-                // an honest "time left" when the work is measurable, otherwise the elapsed time — never
-                // a frozen spinner. It keeps counting from the real start even after backgrounding.
-                TimelineView(.periodic(from: startedAt, by: 1)) { ctx in
-                    Text(status(at: ctx.date))
-                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).monospacedDigit()
+            HStack(spacing: 6) {
+                // An always-spinning icon, so there's visible motion the entire time the tool is working.
+                Image(systemName: "arrow.triangle.2.circlepath")
+                    .font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.accent)
+                    .rotationEffect(.degrees(spin ? 360 : 0))
+                    .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: spin)
+                if showsTime {
+                    // Shows time REMAINING when the work is measurable (not elapsed); a plain "Working…"
+                    // only when the length genuinely can't be known. Re-reads the clock every second.
+                    TimelineView(.periodic(from: startedAt, by: 1)) { ctx in
+                        Text(status(at: ctx.date))
+                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).monospacedDigit()
+                    }
                 }
             }
         }
         .padding(.vertical, 2)
         .animation(.easeInOut(duration: 0.25), value: value)
+        .onAppear { spin = true }
     }
 
     private func status(at now: Date) -> String {
         let elapsed = max(0, now.timeIntervalSince(startedAt))
         if let v = value, v > 0.02 {
             let pct = Int((min(max(v, 0), 1)) * 100)
-            if v >= 0.999 { return "100% · finishing up" }
-            if elapsed > 2 {   // wait for enough signal before estimating, so the number doesn't jump around
+            if v >= 0.999 { return "Finishing up…" }
+            if elapsed > 2 {   // wait for a little signal before estimating, so the number doesn't jump around
                 let remaining = elapsed * (1 - v) / v
-                return "\(pct)% · \(remaining < 3 ? "almost done" : "about \(clock(remaining)) left")"
+                return remaining < 3 ? "Almost done · \(pct)%" : "About \(clock(remaining)) left · \(pct)%"
             }
             return "\(pct)%"
         }
-        return "\(clock(elapsed)) elapsed"
+        return "Working…"
     }
     private func clock(_ s: TimeInterval) -> String {
         let t = Int(s.rounded())
         return t >= 60 ? String(format: "%d:%02d", t / 60, t % 60) : "\(t)s"
     }
+}
+
+/// Live progress for a running job that can't hand a value straight to the bar because it runs deep in
+/// an engine (transcription above all). The engine posts a 0…1 fraction here; the running screen reads
+/// it and feeds the bar, so a long recording shows a real position and an honest time-remaining.
+@MainActor final class RunProgress: ObservableObject {
+    static let shared = RunProgress()
+    @Published var fraction: Double? = nil
+    func begin() { fraction = 0.0001 }
+    func set(_ f: Double) { fraction = max(fraction ?? 0, min(1, f)) }   // only ever moves forward
+    func end() { fraction = nil }
+}
+
+/// A copy button that confirms it worked: the label flips to "Copied!" with a checkmark and a haptic
+/// for a moment, so the user is never left wondering whether the tap did anything. Every tool that
+/// offers to copy its result should use this instead of a bare copy button.
+struct CopyButton: View {
+    let text: String
+    var title: String = "Copy"
+    @State private var copied = false
+    var body: some View {
+        Button {
+            UIPasteboard.general.string = text
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            withAnimation { copied = true }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) { withAnimation { copied = false } }
+        } label: {
+            Label(copied ? "Copied!" : title, systemImage: copied ? "checkmark" : "doc.on.doc").frame(maxWidth: .infinity)
+        }
+        .secondaryButton()
+        .animation(.easeInOut(duration: 0.2), value: copied)
+    }
+}
+
+/// App-wide "Copied" confirmation. Every copy in the app goes through `Clip.copy`, which puts the text
+/// on the clipboard, fires the success haptic, and flashes one shared toast pill — so a copy is never
+/// silent, in any tool, whatever the button's own style. Buttons that already flip their own label to
+/// "Copied" can keep doing that; this is the baseline for the rest.
+@MainActor final class CopyToast: ObservableObject {
+    static let shared = CopyToast()
+    @Published var text: String? = nil
+    private var token = 0
+    func flash(_ message: String = "Copied") {
+        text = message
+        token += 1
+        let mine = token
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+            if self.token == mine { self.text = nil }
+        }
+    }
+}
+
+@MainActor enum Copier {
+    /// Copy text to the clipboard with a haptic and a visible "Copied" toast. Pass `note` to say
+    /// exactly what was copied (e.g. "Password copied").
+    static func copy(_ s: String, note: String = "Copied") {
+        UIPasteboard.general.string = s
+        HandyHaptics.success()
+        CopyToast.shared.flash(note)
+    }
+}
+
+private struct CopyToastHost: ViewModifier {
+    @ObservedObject private var toast = CopyToast.shared
+    func body(content: Content) -> some View {
+        content.overlay(alignment: .bottom) {
+            if let t = toast.text {
+                HStack(spacing: 6) {
+                    Image(systemName: "checkmark.circle.fill")
+                    Text(t).font(HandyFont.bodyStrong)
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 16).padding(.vertical, 10)
+                .background(Color.black.opacity(0.82), in: Capsule())
+                .shadow(color: .black.opacity(0.25), radius: 8, y: 2)
+                .padding(.bottom, 96)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .allowsHitTesting(false)
+            }
+        }
+        .animation(.easeOut(duration: 0.2), value: toast.text)
+    }
+}
+extension View {
+    /// Hosts the single app-wide "Copied" toast. Attach once, near the app root.
+    func copyToastHost() -> some View { modifier(CopyToastHost()) }
 }
 
 /// Shown over a camera/sensor tool's preview when access was denied, so the user gets a clear reason

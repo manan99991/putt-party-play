@@ -92,7 +92,7 @@ struct CaptureView: View {
                     }
                 }
                 HStack(spacing: HandySpacing.s8) {
-                    Button { UIPasteboard.general.string = g.text; ClipStore.add(g.text); HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                    Button { Copier.copy(g.text); ClipStore.add(g.text) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
                     Button { translating = true } label: { Label("Translate", systemImage: "character.bubble").frame(maxWidth: .infinity) }.secondaryButton()
                 }
                 HStack(spacing: HandySpacing.s8) {

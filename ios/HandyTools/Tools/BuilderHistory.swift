@@ -125,7 +125,7 @@ struct HistoryView: View {
                     ShareLink(items: urls) { Label("Save or share", systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
                 } else if let t = item.text {
                     ShareLink(item: t) { Label("Share", systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
-                    Button { UIPasteboard.general.string = t } label: { Label("Copy", systemImage: "doc.on.doc") }.font(HandyFont.caption)
+                    Button { Copier.copy(t) } label: { Label("Copy", systemImage: "doc.on.doc") }.font(HandyFont.caption)
                 }
                 Spacer()
                 Button(role: .destructive) { RunHistory.remove(item); items = RunHistory.all() } label: { Label("Remove", systemImage: "trash") }.font(HandyFont.caption)

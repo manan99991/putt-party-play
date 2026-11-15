@@ -100,7 +100,7 @@ struct MemoryView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack(spacing: 6) { Image(systemName: "sparkles").foregroundStyle(HandyColor.accent); Text("Answer").font(HandyFont.bodyStrong) }
             Text(text).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
-            Button { UIPasteboard.general.string = text; ClipStore.add(text); HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
+            Button { Copier.copy(text); ClipStore.add(text) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
         }.cardStyle()
     }
 
@@ -128,7 +128,7 @@ struct MemoryView: View {
                         Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
                 }.buttonStyle(.plain)
-                Button { let line = MemoryEngine.bestLine(for: query, in: e); UIPasteboard.general.string = line; ClipStore.add(line); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                Button { let line = MemoryEngine.bestLine(for: query, in: e); Copier.copy(line); ClipStore.add(line) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
             }
         }
         .padding(HandySpacing.s12)
@@ -227,7 +227,7 @@ private struct MemoryImageViewer: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } }
                 ToolbarItem(placement: .primaryAction) {
-                    Button { UIPasteboard.general.string = entry.text; ClipStore.add(entry.text); HandyHaptics.success() } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }
+                    Button { Copier.copy(entry.text); ClipStore.add(entry.text) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }
                         .disabled(entry.text.isEmpty)
                 }
             }

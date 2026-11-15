@@ -297,37 +297,53 @@ enum Transcriber {
         let status = await withCheckedContinuation { asked.wait($0) }
         guard status == .authorized else { return .failure(.denied) }
         guard let recognizer = SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(), recognizer.isAvailable, recognizer.supportsOnDeviceRecognition else { return .failure(.unavailable) }
-        let request = SFSpeechURLRecognitionRequest(url: url)
-        request.requiresOnDeviceRecognition = true
-        // Stream words as they're recognised. On-device recognition past ~a minute often never fires
-        // 'final', so partial results are what keep a long recording moving and give us text to return.
-        request.shouldReportPartialResults = true
-        request.addsPunctuation = true
-        let seconds = await VideoEngine.duration(url)
 
-        let result = Once<Heard?>()
-        let box = Box()
-        // Once we've heard words, a few seconds of silence from the recogniser means it's effectively
-        // done — hand back what we have instead of waiting for a 'final' that may never arrive.
-        func armIdle() {
-            box.idle?.cancel()
-            let w = DispatchWorkItem { if box.latest != nil { box.task?.cancel(); result.finish(box.latest) } }
-            box.idle = w
-            DispatchQueue.global().asyncAfter(deadline: .now() + 6, execute: w)
-        }
-        box.task = recognizer.recognitionTask(with: request) { found, error in
-            if let found {
-                let t = found.bestTranscription
-                box.latest = Heard(text: t.formattedString, words: t.segments.map { (text: $0.substring, start: $0.timestamp, end: $0.timestamp + $0.duration) })
-                if found.isFinal { box.idle?.cancel(); box.task?.cancel(); result.finish(box.latest) } else { armIdle() }
-            } else if error != nil {
-                result.finish(box.latest)   // on error, hand back whatever we already heard (may be nil)
+        // On-device recognition only keeps a short span of a single long request — a 20-minute memo
+        // comes back as a few words. So we read the file ourselves and transcribe it in ~40-second
+        // windows (well inside what on-device handles), then stitch the pieces. That captures the
+        // WHOLE recording and gives a true position for the progress bar.
+        guard let file = try? AVAudioFile(forReading: url) else { return .failure(.nothing) }
+        let fmt = file.processingFormat
+        let total = file.length
+        guard total > 0, fmt.sampleRate > 0 else { return .failure(.nothing) }
+        let windowFrames = AVAudioFrameCount(fmt.sampleRate * 40)
+
+        await MainActor.run { RunProgress.shared.begin() }
+        defer { Task { @MainActor in RunProgress.shared.end() } }
+
+        var parts: [String] = []
+        while file.framePosition < total {
+            let req = SFSpeechAudioBufferRecognitionRequest()
+            req.requiresOnDeviceRecognition = true
+            req.shouldReportPartialResults = false
+            req.addsPunctuation = true
+            let once = Once<String>()
+            let box = Box()
+            box.task = recognizer.recognitionTask(with: req) { result, error in
+                if let result, result.isFinal { once.finish(result.bestTranscription.formattedString) }
+                else if error != nil { once.finish("") }
             }
+            var read: AVAudioFrameCount = 0
+            while read < windowFrames && file.framePosition < total {
+                let cap = min(AVAudioFrameCount(16000), windowFrames - read)
+                guard let buf = AVAudioPCMBuffer(pcmFormat: fmt, frameCapacity: cap) else { break }
+                do { try file.read(into: buf, frameCount: cap) } catch { break }
+                if buf.frameLength == 0 { break }
+                req.append(buf)
+                read += buf.frameLength
+            }
+            req.endAudio()
+            // A 40s window recognises in well under a minute; cap so one stuck window can't stall the job.
+            DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish("") }
+            let text = await withCheckedContinuation { once.wait($0) }
+            if !text.isEmpty { parts.append(text) }
+            let frac = min(1.0, Double(file.framePosition) / Double(total))
+            await MainActor.run { RunProgress.shared.set(frac) }
+            if read == 0 { break }   // nothing read — avoid an endless loop on a malformed file
         }
-        // Hard ceiling so a stuck recogniser can never hang the tool, a little over the clip's length.
-        DispatchQueue.global().asyncAfter(deadline: .now() + max(45, seconds * 1.4) + 15) { box.task?.cancel(); result.finish(box.latest) }
-        guard let heard = await withCheckedContinuation({ result.wait($0) }), !heard.text.isEmpty else { return .failure(.nothing) }
-        return .success(heard)
+        let joined = parts.joined(separator: " ").trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !joined.isEmpty else { return .failure(.nothing) }
+        return .success(Heard(text: joined, words: []))
     }
 }
 

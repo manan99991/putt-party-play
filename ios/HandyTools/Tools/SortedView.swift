@@ -79,7 +79,7 @@ struct SortedView: View {
                 if let url = icsFile {
                     ShareLink(item: url) { Label("Add to Calendar", systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.primaryButton()
                 }
-                Button { UIPasteboard.general.string = shareText(p); ClipStore.add(shareText(p)); HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { Copier.copy(shareText(p)); ClipStore.add(shareText(p)) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
             }
             if p.due == nil { Text("No clear date found, so there's nothing to calendar — the details above are still yours to copy.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
         }.cardStyle()

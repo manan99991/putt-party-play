@@ -113,7 +113,7 @@ struct TranslateView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text(s).font(.system(size: 20)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: HandySpacing.s8) {
-                Button { UIPasteboard.general.string = s; ClipStore.add(s); HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
+                Button { Copier.copy(s); ClipStore.add(s) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
                 Button { say(s, lang: toCode) } label: { Label("Speak", systemImage: "speaker.wave.2") }.compactButton()
                 ShareLink(item: s) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
                 Spacer()

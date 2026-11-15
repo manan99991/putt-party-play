@@ -204,7 +204,7 @@ struct QRResultCard: View {
                     Button(revealPassword ? "Hide" : "Show") { revealPassword.toggle() }.textButton().font(HandyFont.caption)
                 }.font(HandyFont.body)
                 Text("To join: Settings › Wi‑Fi › \(n), then paste the password.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                HStack { Button { UIPasteboard.general.string = p; HandyHaptics.success() } label: { Label("Copy password", systemImage: "doc.on.doc") }.compactButton(); Spacer() }
+                HStack { Button { Copier.copy(p, note: "Password copied") } label: { Label("Copy password", systemImage: "doc.on.doc") }.compactButton(); Spacer() }
             case .url(let u):
                 Text(u.absoluteString).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
                 HStack { Link(destination: u) { Label("Open", systemImage: "safari") }.compactButton(); copyButton(u.absoluteString); Spacer() }
@@ -241,7 +241,7 @@ struct QRResultCard: View {
         HStack { Text(k).foregroundStyle(HandyColor.textSecondary).frame(width: 90, alignment: .leading); Text(v); Spacer() }.font(HandyFont.body)
     }
     private func copyButton(_ s: String) -> some View {
-        Button { UIPasteboard.general.string = s; ClipStore.add(s); HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
+        Button { Copier.copy(s); ClipStore.add(s) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
     }
 }
 

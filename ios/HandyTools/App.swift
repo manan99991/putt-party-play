@@ -34,6 +34,7 @@ struct TenzyApp: App {
             .overlay(alignment: .top) {
                 if let r = crashReport { CrashBanner(summary: r) { crashReport = nil } }
             }
+            .copyToastHost()   // one shared "Copied" confirmation for every tool
             .onAppear {
                 if let r = Launch.route, r.hasPrefix("onboarding") { onboardingPage = Int(r.dropFirst("onboarding".count)).map { $0 - 1 } ?? 0; showOnboarding = true }
                 if crashReport == nil, !Launch.uitest { crashReport = Diagnostics.shared.takePendingCrash() }

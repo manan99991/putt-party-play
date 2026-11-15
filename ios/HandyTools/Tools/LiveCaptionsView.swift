@@ -57,7 +57,7 @@ struct LiveCaptionsView: View {
             }
 
             HStack(spacing: HandySpacing.s8) {
-                Button { UIPasteboard.general.string = speech.transcript; HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton().disabled(speech.transcript.isEmpty)
+                Button { Copier.copy(speech.transcript) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton().disabled(speech.transcript.isEmpty)
                 ShareLink(item: speech.transcript) { Label("Save transcript", systemImage: "square.and.arrow.up") }.compactButton().disabled(speech.transcript.isEmpty)
                 Button(role: .destructive) { speech.clear() } label: { Label("Clear", systemImage: "trash") }.compactButton().disabled(speech.transcript.isEmpty)
                 Spacer()

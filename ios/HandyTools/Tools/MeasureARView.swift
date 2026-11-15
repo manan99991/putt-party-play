@@ -185,7 +185,7 @@ struct MeasureARView: View {
                     HStack { Text("Height").font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.length(ar.points.count >= 2 ? MeasureMath.height(from: ar.points[0], to: ar.points[1]) : (ar.liveHeight ?? 0), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() }
                 }
                 HStack {
-                    Button { UIPasteboard.general.string = summary; HandyHaptics.success() } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
+                    Button { Copier.copy(summary) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
                     Button { capturePhoto() } label: { Label(capturing ? "…" : "Photo", systemImage: "camera") }.compactButton().disabled(capturing)
                     ShareLink(item: summary) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
                     Spacer()
