@@ -113,7 +113,28 @@ object ScamAnalyzer {
             3,
         ))
 
-        // 4. impersonation of institutions
+        // Employment / "task" scam signals — computed up front so the impersonation check can use them
+        // (an "Amazon hiring team" job offer IS impersonation). Require a real hiring phrase, not a lone
+        // word like "positions"/"openings" that turns up in ordinary text (an itinerary, a newsletter).
+        val jobContext = hit(lower, listOf(
+            """\b(now hiring|we('?| a)re hiring|hiring (now|immediately|today|team)|hiring team|job offer|job opening|positions? (available|open|currently available)|vacanc(y|ies) (available|open)|recruit(ing|ment)|work[\s-]?from[\s-]?home|working remotely|remote (job|position|opportunity|work)|no experience (needed|required|necessary)|training (is )?provided|daily pay|weekly pay|be your own boss|side (gig|hustle)|earn (money )?from home)\b""",
+        ))
+        val hasBigPay = Regex("""\${'$'}\s?\d{3,}""").containsMatchIn(lower) ||
+            Regex("""\${'$'}\s?\d{1,3},\d{3}""").containsMatchIn(lower)
+        val payPeriod = hit(lower, listOf(
+            """\b(daily|/\s?day|per day|a day|weekly|per week|a week|hourly|per hour|an hour|monthly|per month|a month)\b""",
+        )).isNotEmpty()
+        val applyByText = Regex(
+            """\b(text|txt|sms|message|whats\s?app|telegram|dm|reply|respond)\b[^.\n]{0,40}\bto\s+\+?\d[\d\s().\-]{5,}"""
+        ).containsMatchIn(lower)
+        // A full phone number (10+ digits) to "apply" — not a 5–6 digit marketing short code.
+        val applyByPhone = Regex(
+            """\b(text|txt|sms|message|whats\s?app|telegram|dm)\b[^.\n]{0,40}\bto\s+\+?(\d[\s().\-]*){10,}"""
+        ).containsMatchIn(lower)
+        val jobScam = jobContext.isNotEmpty() && ((hasBigPay && payPeriod) || applyByText)
+        val jobScamStrong = jobContext.isNotEmpty() && (hasBigPay && payPeriod) && applyByText
+
+        // 4. impersonation of institutions — fires on urgency/creds/payment OR a job scam that names a brand.
         val brands = hit(lower, listOf(
             """\b(irs|hmrc|ato|cra|social security administration|medicare|dmv|usps|ups|fedex|dhl|royal mail|amazon|apple|microsoft|paypal|netflix|bank|chase|wells fargo|barclays|hsbc|coinbase|geek squad|norton|mcafee)\b""",
         ))
@@ -121,10 +142,10 @@ object ScamAnalyzer {
             """^(dear (customer|user|member|account holder|sir|madam)|hello (customer|user|friend))""",
             """\bdear (customer|user|member|account holder)\b""",
         ))
-        if (brands.isNotEmpty() && (urgency.isNotEmpty() || creds.isNotEmpty() || railHit)) f.add(Finding(
+        if (brands.isNotEmpty() && (urgency.isNotEmpty() || creds.isNotEmpty() || railHit || jobScam)) f.add(Finding(
             "Claims to be a well-known organisation",
-            "Impersonating a bank, delivery firm, tax office or tech company is the standard opener. Contact them through the number on your card or their official app — never the one in the message.",
-            2,
+            "Impersonating a bank, delivery firm, tax office, retailer or tech company is the standard opener. A real employer or company reaches you through official channels — go to their own website or app, never a number or keyword in the message.",
+            if (jobScam) 3 else 2,
         ))
         if (genericGreeting.isNotEmpty()) f.add(Finding(
             "Generic greeting",
@@ -147,25 +168,21 @@ object ScamAnalyzer {
             3,
         ))
 
-        // 5b. employment / "task" scams — big pay, no experience, "text a keyword to this number".
-        val jobContext = hit(lower, listOf(
-            """\b(hiring|now hiring|job offer|positions?|vacanc(y|ies)|recruit(ing|ment)?|employment|work from home|remote (job|work|position)|part[\s-]?time|full[\s-]?time|applicants?|apply now|openings?|daily pay|monthly income|side (job|gig|hustle)|training provided|no experience (needed|required|necessary)?)\b""",
-        ))
-        val hasBigPay = Regex("""\${'$'}\s?\d{3,}""").containsMatchIn(lower) ||
-            Regex("""\${'$'}\s?\d{1,3},\d{3}""").containsMatchIn(lower)
-        val payPeriod = hit(lower, listOf(
-            """\b(daily|/\s?day|per day|a day|weekly|per week|a week|hourly|per hour|an hour|monthly|per month|a month)\b""",
-        )).isNotEmpty()
-        val applyByText = Regex(
-            """\b(text|txt|sms|message|whats\s?app|telegram|dm|reply|respond)\b[^.\n]{0,40}\bto\s+\+?\d[\d\s().\-]{5,}"""
-        ).containsMatchIn(lower)
-        if (jobContext.isNotEmpty() && ((hasBigPay && payPeriod) || applyByText)) {
-            val strong = (hasBigPay && payPeriod) && applyByText
+        // 5b. employment / "task" scams — the finding, from the signals computed above. A blatant job
+        // scam stacks (job offer + impersonation + apply-by-phone) so it reads "Likely a scam", not "low-risk".
+        if (jobScam) {
             f.add(Finding(
                 "Job offer that's too good to be true",
                 "Hundreds a day with no experience, and \"text a word to this number to apply\", is the signature of a job or task scam. Real employers interview you and never promise that kind of pay up front or hire over a text keyword.",
-                if (strong) 4 else 3,
+                if (jobScamStrong) 4 else 3,
             ))
+            if (applyByPhone) {
+                f.add(Finding(
+                    "Says to apply by texting a keyword to a number",
+                    "Real employers interview you — they don't hire by having you text a word to a phone number. That number only starts the scam conversation.",
+                    3,
+                ))
+            }
         }
 
         // 6. secrecy / isolation
@@ -220,7 +237,9 @@ object ScamAnalyzer {
         for (dom in emailDomains) {
             val labels = dom.split(".")
             val registrable = labels.takeLast(2).joinToString(".")
-            val brand = trustedBrands.firstOrNull { dom.contains(it) && !registrable.startsWith("$it.") }
+            if (registrable in legitDomains) continue   // a real brand subdomain (e.g. notifications.googleapis.com) is not a fake
+            // Whole-label match: "amazon" in amazon-support.com, not a substring of googleapis.com.
+            val brand = trustedBrands.firstOrNull { b -> labels.any { it == b || it.startsWith("$b-") || it.endsWith("-$b") } && !registrable.startsWith("$b.") }
             if (brand != null) {
                 f.add(Finding(
                     "Sender's address is faked",
@@ -253,6 +272,7 @@ object ScamAnalyzer {
             "Wants remote access or an install", "Wants a code, password or personal details",
             "Link looks wrong", "Threatens you with legal trouble",
             "Job offer that's too good to be true", "Sender's address is faked",
+            "Says to apply by texting a keyword to a number",
         )
         val hasStrong = f.any { it.title in strongTitles && it.weight >= 3 }
         var score = minOf(100, f.sumOf { it.weight * 12 })
@@ -277,6 +297,19 @@ object ScamAnalyzer {
     private val freeMailHosts = setOf(
         "gmail.com", "outlook.com", "hotmail.com", "yahoo.com", "proton.me", "protonmail.com",
         "icloud.com", "aol.com", "gmx.com", "mail.com", "yandex.com",
+    )
+    // Registrable domains genuinely owned by a trusted brand (or common infrastructure), so a legitimate
+    // subdomain like fonts.googleapis.com is never cried wolf over as a "look-alike".
+    private val legitDomains = setOf(
+        "google.com", "googleapis.com", "gstatic.com", "withgoogle.com", "youtube.com", "ggpht.com", "goo.gl",
+        "apple.com", "icloud.com", "mzstatic.com", "itunes.com", "cdn-apple.com",
+        "amazon.com", "amazonaws.com", "media-amazon.com", "ssl-images-amazon.com", "primevideo.com",
+        "microsoft.com", "live.com", "office.com", "outlook.com", "microsoftonline.com", "windows.net", "azureedge.net", "bing.com",
+        "paypal.com", "paypalobjects.com", "netflix.com", "nflxext.com",
+        "chase.com", "wellsfargo.com", "barclays.co.uk", "hsbc.com", "hsbc.co.uk",
+        "usps.com", "fedex.com", "ups.com", "dhl.com", "irs.gov", "coinbase.com",
+        "facebook.com", "fbcdn.net", "instagram.com", "cdninstagram.com", "whatsapp.com", "whatsapp.net",
+        "cloudflare.com", "jsdelivr.net", "unpkg.com", "bootstrapcdn.com", "jquery.com", "fontawesome.com",
     )
     // Known TLDs: lets us treat a scheme-less token like "paypal.secure-login.top/verify" as a link
     // without flagging ordinary prose such as "Mr.Smith" or "etc.".
@@ -303,25 +336,30 @@ object ScamAnalyzer {
             if (!hadScheme && !host.startsWith("www.") && tld !in knownTlds) continue
             if (labels.size < 2) continue
 
+            val registrable = labels.takeLast(2).joinToString(".")
+            val legit = registrable in legitDomains
             val issues = ArrayList<String>()
             if (scheme == "http://") issues.add("Not encrypted (http://).")
             if (host.startsWith("xn--") || host.contains(".xn--")) issues.add("Uses look-alike (punycode) characters in the address.")
-            if (host in shorteners) issues.add("A shortened link hides where it really goes.")
+            if (registrable in shorteners) issues.add("A shortened link hides where it really goes.")
             if (Regex("""^\d{1,3}(\.\d{1,3}){3}${'$'}""").containsMatchIn(host)) issues.add("Points at a bare IP address, not a company domain.")
-            val registrable = labels.takeLast(2).joinToString(".")
-            for (b in trustedBrands) {
-                if (host.contains(b) && !registrable.startsWith("$b.")) {
-                    issues.add("\"$b\" appears in the address but the real site is $registrable — a classic look-alike.")
-                    break
+            if (!legit) {
+                // A brand look-alike means the brand name is a whole label in the host (apple-support.com,
+                // paypal.secure-login.com) while the registrable domain isn't that brand's. A subdomain
+                // such as fonts.googleapis.com is safe, because "google" is not a label there.
+                for (b in trustedBrands) {
+                    if (labels.any { it == b || it.startsWith("$b-") || it.endsWith("-$b") } && !registrable.startsWith("$b.")) {
+                        issues.add("\"$b\" appears in the address but the real site is $registrable — a classic look-alike.")
+                        break
+                    }
                 }
-            }
-            if (labels.size >= 4) issues.add("Unusually deep sub-domain — the real owner is $registrable.")
-            if (tld in scamTlds) issues.add("Ends in .$tld, a domain ending heavily used by scammers.")
-            val pathLower = path.lowercase()
-            val isTrusted = trustedBrands.any { registrable.startsWith("$it.") }
-            if (Regex("""(login|verify|secure|account|update|confirm|wallet)""").containsMatchIn(pathLower) && (issues.isNotEmpty() || !isTrusted)) {
-                val firstSeg = path.trimStart('/').split("/").firstOrNull().orEmpty().ifEmpty { "login" }
-                issues.add("Path says \"$firstSeg\" — pages like this are where credentials get stolen.")
+                if (labels.size >= 5) issues.add("Unusually deep sub-domain — the real owner is $registrable.")
+                if (tld in scamTlds) issues.add("Ends in .$tld, a domain ending heavily used by scammers.")
+                val pathLower = path.lowercase()
+                if (hadScheme && Regex("""(login|verify|secure|account|update|confirm|wallet)""").containsMatchIn(pathLower)) {
+                    val firstSeg = path.trimStart('/').split("/").firstOrNull().orEmpty().ifEmpty { "login" }
+                    issues.add("Path says \"$firstSeg\" — pages like this are where credentials get stolen.")
+                }
             }
             out.add(LinkCheck(m.value, host, issues.distinct().sorted()))
         }
