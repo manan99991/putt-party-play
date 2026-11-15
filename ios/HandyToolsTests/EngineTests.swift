@@ -1285,7 +1285,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Transcriber.fraction(total, of: total), 1, accuracy: 0.0001)
         // Monotonic and clamped — never jumps backward, never exceeds 1, never NaN on an empty file.
         var last = 0.0
-        for pos in stride(from: AVAudioFramePosition(0), through: total, by: total / 20) {
+        for pos in stride(from: AVAudioFramePosition(0), through: total, by: Int(total / 20)) {
             let f = Transcriber.fraction(pos, of: total)
             XCTAssertGreaterThanOrEqual(f, last); XCTAssertLessThanOrEqual(f, 1); last = f
         }
