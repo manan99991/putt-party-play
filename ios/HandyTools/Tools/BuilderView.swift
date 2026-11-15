@@ -128,6 +128,10 @@ struct BuilderView: View {
     @State private var note: String?
     /// Feedback shown inside the Templates sheet itself (the main `note` sits behind the sheet, unseen).
     @State private var pasteNote: String?
+    /// What's on the clipboard right now (Text / Link / Image) for the Paste tile's subtitle, read with
+    /// the prompt-free hasStrings/hasImages/hasURLs checks so showing it never triggers the iOS paste prompt.
+    @State private var clipKind: String?
+    @Environment(\.scenePhase) private var scenePhase
     @State private var ask = ""
     @State private var planning = false
     @State private var sheets: [RunningList.Sheet] = RunningList.all()
@@ -333,15 +337,27 @@ struct BuilderView: View {
                     if let g = Given.from(text: UIPasteboard.general.string ?? "") { note = nil; given = g }
                     else if let img = UIPasteboard.general.image { note = nil; given = Given(payload: .image(img), label: "A photo") }
                     else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
-                } label: { objTile("Paste") }.accessibilityIdentifier("have-paste")
+                } label: { objTile("Paste", sub: clipKind.map { "\($0) copied" } ?? "Nothing copied") }.accessibilityIdentifier("have-paste")
             }
             if gettingReady { Text("Getting it ready…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
         }
+        .onAppear { refreshClipKind() }
+        .onChange(of: scenePhase) { _, p in if p == .active { refreshClipKind() } }
+        .onReceive(NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)) { _ in refreshClipKind() }
     }
-    private func objTile(_ title: String) -> some View {
-        Text(title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-            .frame(maxWidth: .infinity, minHeight: 56)
-            .cardStyle(padding: HandySpacing.s12)
+    /// What's on the clipboard, read prompt-free — hasImages/hasURLs/hasStrings return the type without
+    /// exposing the contents, so only the Paste tap (which reads it) ever triggers the iOS paste prompt.
+    private func refreshClipKind() {
+        let pb = UIPasteboard.general
+        clipKind = pb.hasImages ? "Image" : pb.hasURLs ? "Link" : pb.hasStrings ? "Text" : nil
+    }
+    private func objTile(_ title: String, sub: String? = nil) -> some View {
+        VStack(spacing: 2) {
+            Text(title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+            if let sub { Text(sub).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
+        }
+        .frame(maxWidth: .infinity, minHeight: 56)
+        .cardStyle(padding: HandySpacing.s12)
     }
     private func footBtn(_ label: String, _ action: @escaping () -> Void) -> some View {
         Button(action: action) {
