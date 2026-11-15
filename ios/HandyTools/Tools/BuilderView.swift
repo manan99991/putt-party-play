@@ -1064,6 +1064,12 @@ private struct ChainRunView: View {
                 memeLoaded = true
                 memeTop = words["top"] ?? ""; memeBottom = words["bottom"] ?? ""
             }
+            // Fresh launch = clean slate. If the screen re-appears with no input queued and nothing
+            // running, clear any previous run's result so a tool never opens showing an old image. (A
+            // child picker/sheet doesn't fire onAppear, so a result you're actively viewing is safe.)
+            if initial == nil, !started, !busy {
+                result = nil; batch = []; outbox = nil; report = nil; message = nil; picks = []
+            }
             guard let initial, !started else { return }
             started = true
             if case .text(let t) = initial { text = t }
@@ -1334,6 +1340,12 @@ private struct ChainRunView: View {
                 Image(uiImage: page.thumbnail(of: CGSize(width: 360, height: 480), for: .cropBox))
                     .resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
                     .cardStyle(padding: HandySpacing.s8)
+            } else if ["csv", "vcf", "ics", "txt", "json", "md", "rtf", "html", "xml"].contains(ext.lowercased()),
+                      let s = String(data: d, encoding: .utf8), !s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                // A CSV / contact / calendar / text file is its text — show it so an expense sheet, a vCard
+                // or an .ics is read in the app before saving, not handed over as an opaque "77 bytes".
+                ScrollView { Text(s).font(.system(.caption, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading) }
+                    .frame(maxHeight: 260).cardStyle(padding: HandySpacing.s12)
             }
             if let u = tempURL(d, ext) {
                 Text("\(SizeTarget.format(d.count)) · \(ext.uppercased())").font(HandyFont.caption)
