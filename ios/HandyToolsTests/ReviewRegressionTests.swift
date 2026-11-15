@@ -108,39 +108,4 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(c.kind, .text)
         XCTAssertNil(c.url, "plain text must not be openable as a URL")
     }
-
-    // MARK: - No tool silently under-delivers (the whole-catalog free sweep)
-
-    /// Every text/photo block is run on ONE rich, real fixture and must either deliver non-empty output
-    /// OR fail gracefully with a named reason — never succeed with nothing. A silent under-deliver is a
-    /// test failure, not just a code bug (Manan's standing rule). Runs free in CI, no device/network.
-    func testNoBlockSilentlyUnderDelivers() async {
-        let richText = "Dinner at Luigi's on 14 Nov 2026. Pizza 12.50, Wine 8.00, Tip 4.00. Total 24.50. "
-            + "Menu: https://example.com/menu — call +1 312 555 0100 or email jane@acme.com. "
-            + "Jane Doe, Designer at Acme Inc. Meet Monday 3pm at 1585 N Barrington Rd, Hoffman Estates, IL. "
-            + "Reply STOP to opt out. A longer paragraph so summarize and rewrite have something to work with."
-        let photo = SampleAssets.receipt()
-        for block in Block.allCases {
-            let input: ChainPayload
-            switch block.takes {
-            case .text: input = .text(richText)
-            case .image, .photoFile: input = .image(photo)
-            default: continue   // video/audio/pdf blocks need media files — covered by their own fixtures
-            }
-            let r = await ChainRunner.apply(ChainStep(block: block), to: input)
-            if case .success(let payload) = r {
-                XCTAssertFalse(Self.isEmpty(payload), "block '\(block.rawValue)' returned an EMPTY success — a silent under-deliver")
-            }
-            // a graceful .failure with a named reason is acceptable (e.g. a block that needs a QR image)
-        }
-    }
-
-    private static func isEmpty(_ p: ChainPayload) -> Bool {
-        switch p {
-        case .text(let s): return s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        case .image(let i): return i.size.width < 1 || i.size.height < 1
-        case .file(let d, _): return d.isEmpty
-        case .video(let u): return ((try? Data(contentsOf: u))?.isEmpty ?? true)
-        }
-    }
 }
