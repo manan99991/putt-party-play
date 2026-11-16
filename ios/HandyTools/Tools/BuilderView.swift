@@ -1068,6 +1068,10 @@ private struct ChainEditor: View {
                 Text("Fit the photo").tag("auto"); Text("A4").tag("a4"); Text("US Letter").tag("letter")
             }.pickerStyle(.segmented)
             Toggle("Searchable text (find & copy)", isOn: Binding(get: { chain.steps[i].settings["searchable"] != "false" }, set: { chain.steps[i].settings["searchable"] = $0 ? "true" : "false" })).font(HandyFont.caption)
+        case .readAloud:
+            Picker("Speed", selection: Binding(get: { chain.steps[i].settings["speed"] ?? "normal" }, set: { chain.steps[i].settings["speed"] = $0 })) {
+                Text("Slow").tag("slow"); Text("Normal").tag("normal"); Text("Fast").tag("fast")
+            }.pickerStyle(.segmented)
         case .passportPhoto:
             Picker("Country", selection: Binding(get: { chain.steps[i].settings["country"] ?? "us" }, set: { chain.steps[i].settings["country"] = $0 })) {
                 ForEach(ImageStudio.passportSpecs) { Text($0.name).tag($0.id) }

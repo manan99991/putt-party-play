@@ -129,5 +129,13 @@ class ReviewRegressionTest {
         assertTrueMsg("an ordinary text tool always fits", ChainOffers.fitsText(summarize, "Review the checklist before noon."))
     }
 
+    // Read-it-aloud speed option maps to a TextToSpeech rate (#278 per-tool options).
+    @Test fun readAloudSpeedMapsToRate() {
+        assertEquals(1f, com.handytools.app.tools.builder.ExtraSteps.ttsRate("normal"), 0.001f)
+        assertEquals(1f, com.handytools.app.tools.builder.ExtraSteps.ttsRate(null), 0.001f)
+        assertTrueMsg("slow < normal", com.handytools.app.tools.builder.ExtraSteps.ttsRate("slow") < 1f)
+        assertTrueMsg("fast > normal", com.handytools.app.tools.builder.ExtraSteps.ttsRate("fast") > 1f)
+    }
+
     private fun assertTrueMsg(msg: String, cond: Boolean) = org.junit.Assert.assertTrue(msg, cond)
 }

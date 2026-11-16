@@ -1,4 +1,5 @@
 import XCTest
+import AVFoundation
 @testable import HandyTools
 
 /// Every bug Manan found in the 15 Nov full-app review, pinned as a permanent regression test. Each of
@@ -109,6 +110,15 @@ final class ReviewRegressionTests: XCTestCase {
     func testOrdinaryTextToolsStillOfferedForPlainText() {
         let plain = ChainStore.offers(for: .text, mine: [], last: nil, text: "Remember to review the launch checklist before noon.")
         XCTAssertTrue(plain.contains { $0.steps.first?.block == .summarize || $0.steps.first?.block == .cleanText }, "normal text tools stay offered")
+    }
+
+    // MARK: - Read Aloud speed option (#278 per-tool options)
+
+    func testReadAloudSpeedMapsToRate() {
+        XCTAssertEqual(ChainMedia.ttsRate("normal"), AVSpeechUtteranceDefaultSpeechRate, accuracy: 0.001)
+        XCTAssertEqual(ChainMedia.ttsRate(nil), AVSpeechUtteranceDefaultSpeechRate, accuracy: 0.001)
+        XCTAssertLessThan(ChainMedia.ttsRate("slow"), AVSpeechUtteranceDefaultSpeechRate)
+        XCTAssertGreaterThan(ChainMedia.ttsRate("fast"), AVSpeechUtteranceDefaultSpeechRate)
     }
 
     func testRichDocumentReadsItsWords() {

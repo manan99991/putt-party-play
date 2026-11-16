@@ -190,7 +190,7 @@ object ExtraSteps {
                 b == Block.READ_ALOUD && input is Payload.Words -> {
                     val words = input.text.trim().take((runCatching { TextToSpeech.getMaxSpeechInputLength() }.getOrDefault(4000) - 100).coerceAtLeast(500))
                     if (words.isEmpty()) stop("Read it aloud didn't find anything in that text.")
-                    else speak(ctx, words)?.let { Outcome.Done(Payload.Doc(it, "wav")) }
+                    else speak(ctx, words, ttsRate(step.settings["speed"]))?.let { Outcome.Done(Payload.Doc(it, "wav")) }
                         ?: stop("Read it aloud couldn't make the audio on this phone. Check that a voice is installed in Settings, under Text-to-speech.")
                 }
 
@@ -308,7 +308,10 @@ object ExtraSteps {
     }
 
     /** The text spoken into a .wav file by the phone's own voice. Null when the phone has no voice to use. */
-    private suspend fun speak(ctx: Context, text: String): ByteArray? = withContext(Dispatchers.Main) {
+    /** Maps the Read-it-aloud speed option to a TextToSpeech rate (1.0 = normal). */
+    fun ttsRate(speed: String?): Float = when (speed) { "slow" -> 0.8f; "fast" -> 1.3f; else -> 1f }
+
+    private suspend fun speak(ctx: Context, text: String, rate: Float = 1f): ByteArray? = withContext(Dispatchers.Main) {
         withTimeoutOrNull(180_000L) {
             suspendCancellableCoroutine<ByteArray?> { cont ->
                 val out = File(ctx.cacheDir, "tenzy-speech-${System.nanoTime()}.wav")
@@ -322,6 +325,7 @@ object ExtraSteps {
                 tts = TextToSpeech(ctx.applicationContext) { status ->
                     val voice = tts
                     if (status != TextToSpeech.SUCCESS || voice == null) { done(false); return@TextToSpeech }
+                    runCatching { voice.setSpeechRate(rate) }
                     voice.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                         override fun onStart(utteranceId: String?) {}
                         override fun onDone(utteranceId: String?) { done(true) }

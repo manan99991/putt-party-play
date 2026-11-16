@@ -46,7 +46,7 @@ enum ChainMedia {
         case (.readAloud, .text(let t)):
             let words = String(t.trimmingCharacters(in: .whitespacesAndNewlines).prefix(20_000))
             guard !words.isEmpty else { return .failure(.nothingFound(b)) }
-            guard let url = await speak(words), let d = try? Data(contentsOf: url), !d.isEmpty else {
+            guard let url = await speak(words, rate: ttsRate(step.settings["speed"])), let d = try? Data(contentsOf: url), !d.isEmpty else {
                 return .failure(.invalid("Read it aloud couldn't make the audio on this phone. Check that a voice is installed in Settings, under Accessibility, Spoken Content."))
             }
             return .success(.file(d, ext: url.pathExtension.isEmpty ? "m4a" : url.pathExtension.lowercased()))
@@ -140,8 +140,19 @@ enum ChainMedia {
         }
     }
 
-    @MainActor private static func speak(_ text: String) async -> URL? {
+    /// The speaking rate for "Read it aloud", from the tool's speed option. Normal is the device default.
+    static func ttsRate(_ speed: String?) -> Float {
+        let d = AVSpeechUtteranceDefaultSpeechRate
+        switch speed {
+        case "slow": return max(AVSpeechUtteranceMinimumSpeechRate, d * 0.8)
+        case "fast": return min(AVSpeechUtteranceMaximumSpeechRate, d * 1.28)
+        default: return d
+        }
+    }
+
+    @MainActor private static func speak(_ text: String, rate: Float = AVSpeechUtteranceDefaultSpeechRate) async -> URL? {
         let reader = Reader()
+        reader.rate = rate
         reader.load(text)
         return await reader.exportAudio()
     }

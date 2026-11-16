@@ -662,6 +662,12 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 TextButton({ set("pagesize", id) }) { Text(if (id == size) "● $label" else label) }
             }
         }
+        Block.READ_ALOUD -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val speed = s.settings["speed"] ?: "normal"
+            listOf("slow" to "Slow", "normal" to "Normal", "fast" to "Fast").forEach { (id, label) ->
+                TextButton({ set("speed", id) }) { Text(if (id == speed) "● $label" else label) }
+            }
+        }
         Block.SPEECH_TEXT -> {
             var open by remember { mutableStateOf(false) }
             val lang = s.settings["lang"] ?: "auto"
