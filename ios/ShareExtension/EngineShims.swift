@@ -12,6 +12,7 @@ enum VideoEngine {
     static func transcodeH264(_ asset: AVAsset, maxDimension: CGFloat? = nil, videoBps: Int? = nil,
                               timeout: TimeInterval = 180, progress: ((Double) -> Void)? = nil) async -> URL? { nil }
     static func thumbnail(_ url: URL, at seconds: Double = 0.5, maxDim: CGFloat = 640) async -> UIImage? { nil }
+    static func bestFrame(_ url: URL, maxDim: CGFloat = 1920) async -> UIImage? { nil }
     static func mute(_ src: URL) async -> URL? { nil }
     static func extractAudio(_ src: URL) async -> URL? { nil }
 }
