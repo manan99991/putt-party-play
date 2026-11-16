@@ -324,14 +324,14 @@ struct BuilderView: View {
                     if let movie = await loadWithinTimeout(180) { try? await item.loadTransferable(type: MovieImport.self) } {
                         g = Given(payload: .video(movie.url), label: "A video")
                     }
-                } else if let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) {
+                } else if let img = await loadWithinTimeout(120, { (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) }) {
                     g = Given(payload: .image(img), label: "A photo")
                 }
                 await MainActor.run {
                     gettingReady = false
                     if let g { given = g }
                     else if isMovie { note = "That video didn't load. If it's a large iCloud video, open it once in Photos to download it to this phone, then pick it again." }
-                    else { note = "That couldn't be opened. Try another." }
+                    else { note = "That photo didn't load. If it's a large iCloud photo, open it once in Photos to download it, then pick it again." }
                 }
             }
         }
@@ -1270,9 +1270,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             guard !items.isEmpty else { return }
             picks = []
             if items.count == 1, chain.gif != true, chain.versus != true, let item = items.first {
+                busy = true; result = nil; message = nil; progress = "Getting the photo ready…"; progressValue = 0
                 Task {
-                    let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init)
-                    if let img { go(.image(img)) } else { message = "That photo couldn't be opened. Try another." }
+                    let img = await loadWithinTimeout(120) { (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) }
+                    await MainActor.run {
+                        if let img { go(.image(img)) }
+                        else { busy = false; progress = ""; message = "That photo didn't load. If it's a large iCloud photo, open it once in Photos to download it, then pick it again." }
+                    }
                 }
             } else { runBatch(count: items.count) { i in (try? await items[i].loadTransferable(type: Data.self)).flatMap(UIImage.init) } }
         }
@@ -1341,9 +1345,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             livePick = nil
             busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the Live Photo ready…"; progressValue = 0
             Task {
-                let movie = await LivePhotoVideo.movie(from: item)
+                let movie = await loadWithinTimeout(180) { await LivePhotoVideo.movie(from: item) }
                 await MainActor.run {
-                    if let movie { go(.video(movie)) } else { busy = false; progress = ""; message = "That Live Photo couldn't be opened. Try another, or choose a video." }
+                    if let movie { go(.video(movie)) } else { busy = false; progress = ""; message = "That Live Photo didn't load. If it's a large iCloud item, open it once in Photos to download it, then try again — or choose a video." }
                 }
             }
         }
