@@ -127,6 +127,23 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(ChainText.qrCorrection(nil), "M")
     }
 
+    // Tidy-text "Keep lines" vs "One paragraph" option (#278). Default keeps the writer's line breaks;
+    // paragraph mode reflows wrapped lines into flowing paragraphs (the pasted-from-PDF case).
+    func testCleanTextKeepsLinesByDefault() {
+        let out = TextTidy.clean("First line\nSecond line")
+        XCTAssertEqual(out, "First line\nSecond line", "the default must keep the line breaks")
+        XCTAssertFalse(TextTidy.reflowsToParagraph(nil), "no setting means keep lines")
+        XCTAssertFalse(TextTidy.reflowsToParagraph("lines"), "'lines' means keep lines")
+        XCTAssertTrue(TextTidy.reflowsToParagraph("paragraph"), "'paragraph' means reflow")
+    }
+
+    func testCleanTextParagraphReflowsWrappedLines() {
+        // Two wrapped lines, a blank gap, then another paragraph — becomes two space-joined paragraphs.
+        let out = TextTidy.clean("The quick brown\nfox jumps over\n\nthe lazy dog\nand runs away", oneParagraph: true)
+        XCTAssertEqual(out, "The quick brown fox jumps over\n\nthe lazy dog and runs away")
+        XCTAssertFalse(out.contains("brown\nfox"), "wrapped lines inside a paragraph must join with a space")
+    }
+
     func testSummaryFormatBulletsVsParagraph() {
         let s = ["First point.", "Second point."]
         XCTAssertEqual(ChainText.summaryText(s, bullets: false), "First point. Second point.")

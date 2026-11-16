@@ -153,5 +153,25 @@ class ReviewRegressionTest {
         assertEquals("M", com.handytools.app.tools.builder.TextTidy.qrCorrection(null))
     }
 
+    // Tidy-text "Keep lines" vs "One paragraph" option (#278), parity with the iOS twin.
+    @Test fun cleanTextKeepsLinesByDefault() {
+        assertEquals(
+            "the default must keep the line breaks",
+            "First line\nSecond line",
+            com.handytools.app.tools.builder.TextTidy.clean("First line\nSecond line"),
+        )
+        assertFalse("no setting means keep lines", com.handytools.app.tools.builder.TextTidy.reflowsToParagraph(null))
+        assertFalse("'lines' means keep lines", com.handytools.app.tools.builder.TextTidy.reflowsToParagraph("lines"))
+        assertTrueMsg("'paragraph' means reflow", com.handytools.app.tools.builder.TextTidy.reflowsToParagraph("paragraph"))
+    }
+
+    @Test fun cleanTextParagraphReflowsWrappedLines() {
+        val out = com.handytools.app.tools.builder.TextTidy.clean(
+            "The quick brown\nfox jumps over\n\nthe lazy dog\nand runs away", oneParagraph = true,
+        )
+        assertEquals("The quick brown fox jumps over\n\nthe lazy dog and runs away", out)
+        assertFalse("wrapped lines inside a paragraph must join with a space", out.contains("brown\nfox"))
+    }
+
     private fun assertTrueMsg(msg: String, cond: Boolean) = org.junit.Assert.assertTrue(msg, cond)
 }

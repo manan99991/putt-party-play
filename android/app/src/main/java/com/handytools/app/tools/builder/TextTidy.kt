@@ -8,8 +8,12 @@ object TextTidy {
     private val NEWLINE = Regex("[\\n\\u000B\\u000C\\r\\u0085\\u2028\\u2029]")
     private val SPACES = Regex("[\\s\\u00A0]+")
 
-    /** Collapses runs of spaces, trims every line, removes blank gaps and repeated lines (ignoring case). */
-    fun clean(text: String): String {
+    /**
+     * Collapses runs of spaces, trims every line, removes blank gaps and repeated lines (ignoring case).
+     * `oneParagraph` reflows the kept lines into a single flowing paragraph (the pasted-from-PDF case);
+     * the default keeps the line/paragraph structure the writer had.
+     */
+    fun clean(text: String, oneParagraph: Boolean = false): String {
         val seen = HashSet<String>()
         val out = ArrayList<String>()
         var lastBlank = true            // also drops blank lines at the very top
@@ -23,8 +27,23 @@ object TextTidy {
             out.add(line); lastBlank = false
         }
         while (out.isNotEmpty() && out.last().isEmpty()) out.removeAt(out.size - 1)
+        if (oneParagraph) {
+            // Reflow: consecutive non-blank lines join with a space; a blank gap is a paragraph break.
+            val paragraphs = ArrayList<String>()
+            val current = ArrayList<String>()
+            for (line in out) {
+                if (line.isEmpty()) {
+                    if (current.isNotEmpty()) { paragraphs.add(current.joinToString(" ")); current.clear() }
+                } else current.add(line)
+            }
+            if (current.isNotEmpty()) paragraphs.add(current.joinToString(" "))
+            return paragraphs.joinToString("\n\n")
+        }
         return out.joinToString("\n")
     }
+
+    /** Maps the Tidy-text "shape" option to the `oneParagraph` flag. Default/"lines" preserves line breaks. */
+    fun reflowsToParagraph(shape: String?): Boolean = shape == "paragraph"
 
     data class Details(val links: List<String> = emptyList(), val emails: List<String> = emptyList(), val phones: List<String> = emptyList()) {
         fun isEmpty() = links.isEmpty() && emails.isEmpty() && phones.isEmpty()

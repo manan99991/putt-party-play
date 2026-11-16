@@ -282,7 +282,7 @@ object ChainRunner {
                     Outcome.Done(Payload.Doc(onePdf(listOf(input.bmp), pageSize = step.settings["pagesize"] ?: "auto"), "pdf"))
                 }
                 b == Block.CLEAN_TEXT && input is Payload.Words ->
-                    TextTidy.clean(input.text).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Words(it)) }
+                    TextTidy.clean(input.text, TextTidy.reflowsToParagraph(step.settings["shape"])).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Words(it)) }
                 b == Block.PULL_DETAILS && input is Payload.Words ->
                     TextTidy.details(input.text).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Words(it.text)) }
                 b == Block.MAKE_TABLE && input is Payload.Words ->

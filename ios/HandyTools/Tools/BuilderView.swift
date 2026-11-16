@@ -981,6 +981,10 @@ private struct ChainEditor: View {
             Picker("Size", selection: Binding(get: { chain.steps[i].settings["size"] ?? "413x531" }, set: { chain.steps[i].settings["size"] = $0 })) {
                 ForEach(ChainImage.sizes, id: \.value) { s in Text(s.label).tag(s.value) }
             }.pickerStyle(.menu).font(HandyFont.caption)
+        case .cleanText:
+            Picker("Keep as", selection: Binding(get: { chain.steps[i].settings["shape"] ?? "lines" }, set: { chain.steps[i].settings["shape"] = $0 })) {
+                Text("Keep lines").tag("lines"); Text("One paragraph").tag("paragraph")
+            }.pickerStyle(.segmented)
         case .summarize:
             let n = Int(chain.steps[i].settings["sentences"] ?? "3") ?? 3
             Stepper("\(n) sentences", value: Binding(get: { n }, set: { chain.steps[i].settings["sentences"] = String($0) }), in: 1...8).font(HandyFont.caption)

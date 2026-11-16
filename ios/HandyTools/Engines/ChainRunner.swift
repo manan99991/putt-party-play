@@ -573,7 +573,7 @@ enum ChainRunner {
             return .success(.text(RoutePlan.plan(from: items)))
 
         case (.cleanText, .text(let t)):
-            let out = TextTidy.clean(t)
+            let out = TextTidy.clean(t, oneParagraph: TextTidy.reflowsToParagraph(step.settings["shape"]))
             return out.isEmpty ? .failure(.nothingFound(b)) : .success(.text(out))
 
         case (.pullDetails, .text(let t)):

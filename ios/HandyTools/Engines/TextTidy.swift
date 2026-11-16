@@ -4,7 +4,9 @@ import Foundation
 /// so they are unit-tested off-device, and the Android twin (`TextTidy.kt`) uses the same rules.
 enum TextTidy {
     /// Collapses runs of spaces, trims every line, removes blank gaps and repeated lines (ignoring case).
-    static func clean(_ text: String) -> String {
+    /// `oneParagraph` reflows the kept lines into a single flowing paragraph (the pasted-from-PDF case);
+    /// the default keeps the line/paragraph structure the writer had.
+    static func clean(_ text: String, oneParagraph: Bool = false) -> String {
         var seen = Set<String>()
         var out: [String] = []
         var lastBlank = true            // also drops blank lines at the very top
@@ -18,8 +20,25 @@ enum TextTidy {
             out.append(line); lastBlank = false
         }
         while out.last == "" { out.removeLast() }
+        if oneParagraph {
+            // Reflow: consecutive non-blank lines join with a space; a blank gap is a paragraph break.
+            var paragraphs: [String] = []
+            var current: [String] = []
+            for line in out {
+                if line.isEmpty {
+                    if !current.isEmpty { paragraphs.append(current.joined(separator: " ")); current = [] }
+                } else {
+                    current.append(line)
+                }
+            }
+            if !current.isEmpty { paragraphs.append(current.joined(separator: " ")) }
+            return paragraphs.joined(separator: "\n\n")
+        }
         return out.joined(separator: "\n")
     }
+
+    /// Maps the Tidy-text "shape" option to the `oneParagraph` flag. Default/"keep" preserves line breaks.
+    static func reflowsToParagraph(_ shape: String?) -> Bool { shape == "paragraph" }
 
     struct Details: Equatable {
         var links: [String] = []

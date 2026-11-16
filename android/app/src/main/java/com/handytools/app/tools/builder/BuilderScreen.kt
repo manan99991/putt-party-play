@@ -623,6 +623,12 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 TextButton({ set("size", value) }) { Text(if ((s.settings["size"] ?: "413x531") == value) "● $label" else label) }
             }
         }
+        Block.CLEAN_TEXT -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val shape = s.settings["shape"] ?: "lines"
+            listOf("lines" to "Keep lines", "paragraph" to "One paragraph").forEach { (id, label) ->
+                TextButton({ set("shape", id) }) { Text(if (id == shape) "● $label" else label) }
+            }
+        }
         Block.SUMMARIZE -> {
             val n = s.settings["sentences"]?.toIntOrNull() ?: 3
             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
