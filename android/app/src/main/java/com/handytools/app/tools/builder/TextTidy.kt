@@ -321,7 +321,13 @@ object TextTidy {
     // -------------------------------------------------------------- recordings, PDFs, links, video parts (same rules as iOS)
 
     /** A recording or any other sound file, by its ending. */
-    fun isAudio(ext: String) = ext.lowercase() in listOf("m4a", "mp3", "wav", "aac", "caf", "ogg", "flac")
+    // The common audio file endings, so a recording is recognised as audio however it arrives — an
+    // external recorder's MP3/WAV, a WhatsApp/Telegram voice note (opus/ogg), an m4a/caf memo, an old
+    // AMR/AIFF, a WMA. (Android's MediaCodec decodes most of these natively.)
+    fun isAudio(ext: String) = ext.lowercase() in listOf(
+        "m4a", "m4b", "m4r", "mp3", "mp2", "mpga", "wav", "wave", "aac", "caf", "ogg", "oga", "opus",
+        "flac", "aiff", "aif", "aifc", "amr", "wma", "au", "snd", "aax",
+    )
 
     /** Lengths "Keep the start or the end" can pick, in seconds: story and status limits. */
     val TRIM_LENGTHS = listOf(15, 30, 60, 90)

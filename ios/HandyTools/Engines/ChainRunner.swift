@@ -24,7 +24,13 @@ enum ChainPayload {
     }
     static func isPhoto(_ ext: String) -> Bool { ["jpg", "jpeg", "png", "heic"].contains(ext.lowercased()) }
     /// A recording or any other sound file.
-    static func isAudio(_ ext: String) -> Bool { ["m4a", "mp3", "wav", "aac", "caf", "ogg", "flac"].contains(ext.lowercased()) }
+    // The common audio file endings, so a recording is recognised as audio however it arrives — an
+    // external recorder's MP3/WAV, a WhatsApp/Telegram voice note (opus/ogg), an Apple memo (m4a/caf), an
+    // old AMR/AIFF, a WMA. Anything the recogniser's reader can't open natively is transcoded first.
+    static func isAudio(_ ext: String) -> Bool {
+        ["m4a", "m4b", "m4r", "mp3", "mp2", "mpga", "wav", "wave", "aac", "caf", "ogg", "oga", "opus",
+         "flac", "aiff", "aif", "aifc", "amr", "wma", "au", "snd", "aax"].contains(ext.lowercased())
+    }
 }
 
 /// What flows between blocks. The builder only offers a block whose `takes` matches the step above it.

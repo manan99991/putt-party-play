@@ -222,6 +222,15 @@ class ReviewRegressionTest {
         assertNull(ThinkingActions.mapsURL("   "))
     }
 
+    // Any common audio format a user might send must be recognised as audio, lockstep with the iOS twin.
+    @Test fun commonAudioFormatsAreRecognised() {
+        for (e in listOf("mp3", "m4a", "wav", "aac", "caf", "ogg", "flac", "aiff", "aif", "amr", "wma", "opus", "m4b", "MP3")) {
+            assertTrueMsg("$e must be recognised as audio", com.handytools.app.tools.builder.TextTidy.isAudio(e))
+        }
+        assertFalse("pdf is not audio", com.handytools.app.tools.builder.TextTidy.isAudio("pdf"))
+        assertFalse("jpg is not audio", com.handytools.app.tools.builder.TextTidy.isAudio("jpg"))
+    }
+
     // A link/phone/page tool fits a piece of text only when the text actually has a link/number (#283).
     @Test fun linkToolFitsTextOnlyWhenTextHasLink() {
         val linkChain = Chain("x", "Clean link", listOf(Step(Block.CLEAN_LINKS)))

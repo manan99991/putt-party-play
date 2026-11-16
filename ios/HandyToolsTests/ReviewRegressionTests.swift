@@ -202,6 +202,16 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertFalse(Transcriber.needsTranscode("caf"))
     }
 
+    // Any common audio format a user might send must be recognised as audio (then transcoded if needed),
+    // not treated as a generic file — whatever recorder or app it came from.
+    func testCommonAudioFormatsAreRecognised() {
+        for e in ["mp3", "m4a", "wav", "aac", "caf", "ogg", "flac", "aiff", "aif", "amr", "wma", "opus", "m4b", "MP3"] {
+            XCTAssertTrue(ChainPayload.isAudio(e), "\(e) must be recognised as audio")
+        }
+        XCTAssertFalse(ChainPayload.isAudio("pdf"))
+        XCTAssertFalse(ChainPayload.isAudio("jpg"))
+    }
+
     // PowerPoint .pptx coverage (#294): a slide's XML read into readable lines, entities decoded, tags gone.
     func testPptxSlideReadsItsText() {
         let xml = "<a:p><a:r><a:t>Hello</a:t></a:r><a:r><a:t>World</a:t></a:r></a:p><a:p><a:r><a:t>Second &amp; line</a:t></a:r></a:p>"
