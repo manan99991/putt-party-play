@@ -53,6 +53,13 @@ struct Given: Identifiable {
         if type?.conforms(to: .image) == true {
             return (try? Data(contentsOf: url)).flatMap(UIImage.init).map { Given(payload: .image($0), label: "A photo") }
         }
+        // Rich documents (Word, RTF, OpenDocument) read via the system's own document reader, so a .docx
+        // or .rtf opens into its real words — ready to summarise, translate, turn into a PDF and share —
+        // instead of a dead "no tool for that file". Done before the plain-text branch so RTF/Word markup
+        // is never dumped raw. (HTML stays in the text branch, where readable() already strips its tags.)
+        if let words = richDocumentText(url, ext: ext), !words.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return Given(payload: .text(words), label: url.lastPathComponent)
+        }
         if type?.conforms(to: .text) == true, let words = try? String(contentsOf: url, encoding: .utf8) {
             let clean = readable(words, ext: ext)
             guard !clean.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
@@ -60,6 +67,17 @@ struct Given: Identifiable {
             return Given(payload: .text(clean), label: url.lastPathComponent)
         }
         return nil
+    }
+
+    /// The plain words of a rich document (Word .docx/.doc, .rtf/.rtfd, OpenDocument .odt), read with
+    /// Foundation's own document reader — no third-party dependency. Nil for anything it can't read.
+    static func richDocumentText(_ url: URL, ext: String) -> String? {
+        let types: [String: NSAttributedString.DocumentType] = [
+            "docx": .officeOpenXML, "doc": .docFormat, "rtf": .rtf, "rtfd": .rtfd, "odt": .openDocument, "wordml": .wordML,
+        ]
+        guard let dt = types[ext], let data = try? Data(contentsOf: url),
+              let att = try? NSAttributedString(data: data, options: [.documentType: dt], documentAttributes: nil) else { return nil }
+        return att.string
     }
 
     static func from(text: String) -> Given? {

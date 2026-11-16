@@ -158,7 +158,10 @@ fun BuilderScreen() {
         val mime = ctx.contentResolver.getType(uri)
         if (kindOf(mime, false) == null) {
             val name = runCatching { com.handytools.app.tools.power.MediaEngine.displayName(ctx, uri) }.getOrNull()
-            note = unsupportedNote(mime, name)
+            // A Word/OpenDocument file opens into its real words (unzipped on-device), ready to summarise,
+            // translate, turn into a PDF and share — instead of a dead "no tool for that file".
+            val rich = BuilderInputs.richDocumentText(ctx, uri, name)
+            if (!rich.isNullOrBlank()) { note = null; givenText = rich } else note = unsupportedNote(mime, name)
         } else { note = null; givenMime = mime; givenUri = uri }
     }
     val havePhoto = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? -> give(uri) }

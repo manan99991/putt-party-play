@@ -106,5 +106,15 @@ class ReviewRegressionTest {
         assertFalse("a non-archive must not be mislabelled an archive", note.contains("archive"))
     }
 
+    // A Word/OpenDocument body XML is stripped to its real words (real file coverage, not a dead-end).
+    @Test fun docBodyXmlStripsToReadableText() {
+        val xml = "<w:document><w:body><w:p><w:r><w:t>Hello</w:t></w:r></w:p>" +
+            "<w:p><w:r><w:t>World &amp; more</w:t></w:r></w:p></w:body></w:document>"
+        val out = com.handytools.app.tools.builder.BuilderInputs.stripDocXml(xml)
+        assertTrueMsg("first paragraph survives", out.contains("Hello"))
+        assertTrueMsg("second paragraph survives, entity decoded", out.contains("World & more"))
+        assertFalse("no XML tags remain", out.contains("<"))
+    }
+
     private fun assertTrueMsg(msg: String, cond: Boolean) = org.junit.Assert.assertTrue(msg, cond)
 }

@@ -90,6 +90,18 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertFalse(note.contains("archive"), "a non-archive must not be mislabelled an archive")
     }
 
+    // MARK: - Real coverage for rich documents (Word/RTF/OpenDocument) — read, not dead-ended
+
+    func testRichDocumentReadsItsWords() {
+        let rtf = "{\\rtf1\\ansi\\ansicpg1252 Hello from a rich document.}"
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("review-\(UUID().uuidString).rtf")
+        try? rtf.data(using: .utf8)?.write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let words = Given.richDocumentText(url, ext: "rtf")
+        XCTAssertNotNil(words, "a rich document must open into real text, not nil")
+        XCTAssertTrue(words?.contains("Hello from a rich document") == true, "the document's words must survive")
+    }
+
     // MARK: - QR long-press preview classification
 
     func testQRWifiParsed() {

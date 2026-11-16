@@ -119,6 +119,38 @@ object BuilderInputs {
         return name.substringAfterLast('.', "").lowercase().takeIf { TextTidy.isAudio(it) } ?: "m4a"
     }
 
+    /** The plain words of a Word .docx or OpenDocument .odt — unzip the one entry that holds the body
+     * (java.util.zip is built in, no third-party library) and strip its XML. Null if it isn't one of those
+     * or can't be read, so the caller can fall back to an honest message. */
+    fun richDocumentText(ctx: Context, uri: Uri, name: String?): String? {
+        val ext = name?.substringAfterLast('.', "")?.lowercase().orEmpty()
+        val entryName = when (ext) { "docx" -> "word/document.xml"; "odt" -> "content.xml"; else -> return null }
+        return try {
+            ctx.contentResolver.openInputStream(uri)?.use { ins ->
+                java.util.zip.ZipInputStream(ins.buffered()).use { zip ->
+                    var found: String? = null
+                    var e = zip.nextEntry
+                    while (e != null) {
+                        if (e.name == entryName) { found = stripDocXml(zip.readBytes().toString(Charsets.UTF_8)); break }
+                        e = zip.nextEntry
+                    }
+                    found?.takeIf { it.isNotBlank() }
+                }
+            }
+        } catch (_: Throwable) { null }
+    }
+
+    /** Turn a Word/OpenDocument body XML into readable lines: paragraph/break tags become newlines, tabs
+     * become tabs, every other tag is dropped, and the common entities are decoded. */
+    internal fun stripDocXml(xml: String): String {
+        var s = xml
+        s = s.replace(Regex("<w:tab\\b[^>]*/?>", RegexOption.IGNORE_CASE), "\t")
+        s = s.replace(Regex("</w:p>|<w:br\\b[^>]*/?>|</text:p>|<text:line-break\\b[^>]*/?>", RegexOption.IGNORE_CASE), "\n")
+        s = s.replace(Regex("<[^>]+>"), "")
+        s = s.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&apos;", "'")
+        return s.split("\n").map { it.trim() }.filter { it.isNotEmpty() }.joinToString("\n").trim()
+    }
+
     /** Several PDFs joined page after page, in the order given. Null if one of them can't be opened. */
     fun joinPdfs(ctx: Context, parts: List<ByteArray>): ByteArray? = try {
         if (!pdfboxReady) { PDFBoxResourceLoader.init(ctx.applicationContext); pdfboxReady = true }
