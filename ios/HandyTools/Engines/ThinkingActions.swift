@@ -101,7 +101,69 @@ enum ThinkingActions {
         return Plan(kinds: kinds, isDated: isDated, place: place, phone: phone, isCall: isCall)
     }
 
+    /// A `tel:` URL string for a one-tap dial, or nil — digits (and a leading +) only.
+    static func telURL(_ phone: String) -> String? {
+        let keep = phone.filter { $0.isNumber || $0 == "+" }
+        return keep.filter(\.isNumber).count >= 7 ? "tel:" + keep : nil
+    }
+
+    /// Weekday words → `Calendar.component(.weekday)` numbers (Sunday = 1 … Saturday = 7).
+    private static let weekdays: [String: Int] = [
+        "sunday": 1, "sun": 1, "monday": 2, "mon": 2, "tuesday": 3, "tues": 3, "tue": 3,
+        "wednesday": 4, "weds": 4, "wed": 4, "thursday": 5, "thurs": 5, "thur": 5, "thu": 5,
+        "friday": 6, "fri": 6, "saturday": 7, "sat": 7,
+    ]
+
+    /// Turn a task into the concrete moment it is due, or nil when it carries no date. Deterministic given
+    /// `now` and `calendar` (the tests pin both). Reads a clock time ("2pm", "9:30am"), a day anchor
+    /// (today/tonight/tomorrow, a weekday → its next occurrence, "in N days/weeks", "next week"), and
+    /// combines them; a day with no clock time defaults to 9am (tonight → 8pm); a time today that has
+    /// already passed rolls to tomorrow. Same rules as the Android twin.
+    static func dueDate(from task: String, now: Date, calendar: Calendar = .current) -> Date? {
+        let t = task.lowercased()
+        // Time of day.
+        var hour: Int? = nil; var minute = 0
+        if let g = groups(#"\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b"#, in: t), let h = Int(g[1]) {
+            hour = (h % 12) + (g[3] == "pm" ? 12 : 0); minute = Int(g[2]) ?? 0
+        } else if let g = groups(#"\b(\d{1,2}):(\d{2})\b"#, in: t), let h = Int(g[1]) {
+            hour = h; minute = Int(g[2]) ?? 0
+        }
+        // Day anchor.
+        var offset: Int? = nil; var tonight = false
+        func has(_ p: String) -> Bool { t.range(of: p, options: [.regularExpression]) != nil }
+        if has(#"\btonight\b"#) { offset = 0; tonight = true }
+        else if has(#"\btoday\b"#) { offset = 0 }
+        else if has(#"\b(tomorrow|tmrw|tmr)\b"#) { offset = 1 }
+        else if let g = groups(#"\bin\s+(\d+)\s+(day|week)s?\b"#, in: t), let n = Int(g[1]) {
+            offset = n * (g[2] == "week" ? 7 : 1)
+        } else if has(#"\bnext week\b"#) { offset = 7 }
+        else if let wd = weekdays.first(where: { has(#"\b"# + $0.key + #"\b"#) })?.value {
+            let cur = calendar.component(.weekday, from: now)
+            let d = ((wd - cur) % 7 + 7) % 7
+            offset = d == 0 ? 7 : d
+        }
+        guard let off = offset ?? (hour != nil ? 0 : nil) else { return nil }
+
+        guard let shifted = calendar.date(byAdding: .day, value: off, to: now) else { return nil }
+        var comps = calendar.dateComponents([.year, .month, .day], from: shifted)
+        comps.hour = hour ?? (tonight ? 20 : 9)
+        comps.minute = hour == nil ? 0 : minute
+        guard var res = calendar.date(from: comps) else { return nil }
+        if off == 0, hour != nil, res < now, !has(#"\btoday\b|\btonight\b"#) {
+            res = calendar.date(byAdding: .day, value: 1, to: res) ?? res
+        }
+        return res
+    }
+
     // MARK: - tiny regex helpers
+    private static func groups(_ pattern: String, in s: String) -> [String]? {
+        guard let re = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]),
+              let m = re.firstMatch(in: s, range: NSRange(s.startIndex..., in: s)) else { return nil }
+        let ns = s as NSString
+        return (0..<m.numberOfRanges).map { i in
+            let r = m.range(at: i); return r.location == NSNotFound ? "" : ns.substring(with: r)
+        }
+    }
     private static func firstMatch(_ pattern: String, in s: String) -> String? {
         guard let r = s.range(of: pattern, options: [.regularExpression, .caseInsensitive]) else { return nil }
         return String(s[r])

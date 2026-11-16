@@ -161,6 +161,27 @@ class ReviewRegressionTest {
         assertTrueMsg("has call", withNumber.kinds.contains(K.CALL))
     }
 
+    // Due-date parser (#285), lockstep with the iOS twin: pinned to Mon 16 Nov 2026 08:00 UTC.
+    @Test fun dueDateParser() {
+        val utc = java.util.TimeZone.getTimeZone("UTC")
+        val now = java.util.Calendar.getInstance(utc).apply { clear(); set(2026, 10, 16, 8, 0, 0) }.timeInMillis // Nov = month 10
+        val TA = com.handytools.app.tools.builder.ThinkingActions
+        fun f(s: String, field: Int): Int? {
+            val ms = TA.dueDateMs(s, now, utc) ?: return null
+            return java.util.Calendar.getInstance(utc).apply { timeInMillis = ms }.get(field)
+        }
+        assertEquals(19, f("Email Ana by Thursday", java.util.Calendar.DAY_OF_MONTH))
+        assertEquals(9, f("Email Ana by Thursday", java.util.Calendar.HOUR_OF_DAY))
+        assertEquals(16, f("Call dentist at 2pm", java.util.Calendar.DAY_OF_MONTH))
+        assertEquals(14, f("Call dentist at 2pm", java.util.Calendar.HOUR_OF_DAY))
+        assertEquals(17, f("Groceries tomorrow", java.util.Calendar.DAY_OF_MONTH))
+        assertEquals(20, f("Finish deck tonight", java.util.Calendar.HOUR_OF_DAY))
+        assertEquals(19, f("Pay rent in 3 days", java.util.Calendar.DAY_OF_MONTH))
+        assertNull("no date → no due time", TA.dueDateMs("Buy milk", now, utc))
+        assertEquals("tel:5551234567", TA.telURL("555-123-4567"))
+        assertNull(TA.telURL("call me"))
+    }
+
     // A link/phone/page tool fits a piece of text only when the text actually has a link/number (#283).
     @Test fun linkToolFitsTextOnlyWhenTextHasLink() {
         val linkChain = Chain("x", "Clean link", listOf(Step(Block.CLEAN_LINKS)))

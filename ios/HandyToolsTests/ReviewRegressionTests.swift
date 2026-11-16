@@ -201,6 +201,25 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertTrue(withNumber.kinds.contains(.call))
     }
 
+    // Due-date parser (#285): a task → the concrete moment to set the calendar event / reminder for.
+    // Pinned to Mon 16 Nov 2026 08:00 UTC so it is deterministic; kept in lockstep with the Android twin.
+    func testDueDateParser() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let now = cal.date(from: DateComponents(year: 2026, month: 11, day: 16, hour: 8, minute: 0))!   // a Monday
+        func f(_ s: String, _ c: Calendar.Component) -> Int? {
+            ThinkingActions.dueDate(from: s, now: now, calendar: cal).map { cal.component(c, from: $0) }
+        }
+        XCTAssertEqual(f("Email Ana by Thursday", .day), 19); XCTAssertEqual(f("Email Ana by Thursday", .hour), 9)
+        XCTAssertEqual(f("Call dentist at 2pm", .day), 16);   XCTAssertEqual(f("Call dentist at 2pm", .hour), 14)
+        XCTAssertEqual(f("Groceries tomorrow", .day), 17)
+        XCTAssertEqual(f("Finish deck tonight", .hour), 20)
+        XCTAssertEqual(f("Pay rent in 3 days", .day), 19)
+        XCTAssertNil(ThinkingActions.dueDate(from: "Buy milk", now: now, calendar: cal), "no date → no due time")
+        XCTAssertEqual(ThinkingActions.telURL("555-123-4567"), "tel:5551234567")
+        XCTAssertNil(ThinkingActions.telURL("call me"))
+    }
+
     // MARK: - QR long-press preview classification
 
     func testQRWifiParsed() {
