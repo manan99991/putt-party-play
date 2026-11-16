@@ -1,3 +1,6 @@
 == test.log (results)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/ChainRunner.swift:650:47: error: type 'VideoEngine' has no member 'bestFrame'
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/BuilderView.swift:76:22: error: type 'NSAttributedString.DocumentType' has no member 'officeOpenXML'
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/BuilderView.swift:76:45: error: type 'NSAttributedString.DocumentType' has no member 'docFormat'
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/BuilderView.swift:76:92: error: type 'NSAttributedString.DocumentType' has no member 'openDocument'
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/BuilderView.swift:76:117: error: type 'NSAttributedString.DocumentType' has no member 'wordML'
 ** TEST FAILED **
