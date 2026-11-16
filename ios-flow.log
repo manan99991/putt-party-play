@@ -1,32 +1,32 @@
 == flow.log (results)
-Test Case '-[HandyToolsUITests.ToolFlowTests testAudioLabToneSpeakerAndTuner]' passed (50.816 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testCleanerOpensAndOffersCategories]' passed (8.959 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testColorVisionModesOnSamplePhoto]' passed (45.452 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testDataGrabberParsesSampleReceipt]' passed (18.471 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testFitItShrinksSamplePhotoUnderLimit]' passed (10.707 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testFlashlightMorseScreenLightAndMirror]' passed (25.239 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testFormatFixerConvertsAndShareReadyPreparesPhoto]' passed (19.113 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testGPSDashboardUnitsAndHUD]' passed (14.016 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testInstrumentsSwitchEveryGauge]' passed (33.245 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testLensListensToSampleText]' passed (14.162 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testLensSimplifiesAndGists]' passed (15.739 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testLongScreenshotStitchesSamplePair]' passed (10.586 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testMagnifierLooksOnFrozenFrame]' passed (21.123 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testMessageShieldFlagsTheSampleScam]' passed (11.479 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testPrivacyScrubberMakesCleanCopy]' passed (14.867 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testProCameraAndMeasureRenderControls]' passed (44.367 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testQRMakesCodeAndWifiCard]' passed (20.803 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testRestPlaysSoundsSetsTimerAndShowsRecorder]' passed (16.854 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testScanCleansSignsReadsAndExportsSearchablePDF]' passed (40.978 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testSceneDescriberDescribesSamplePhoto]' passed (12.948 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testSortedExtractsBillDetails]' passed (9.507 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testStudioCutsOutResizesAndConverts]' passed (25.084 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testTextStudioFixesBulletsAndSummarizes]' passed (15.267 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testTranslateModesAndSwap]' passed (18.004 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testVaultLockScreenAndUnlockAttempt]' passed (25.533 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testVideoTrimsAndShrinksSampleClip]' passed (21.077 seconds).
-Test Case '-[HandyToolsUITests.ToolFlowTests testVoiceNotesAndLiveCaptionsRender]' passed (23.545 seconds).
-	 Executed 27 tests, with 0 failures (0 unexpected) in 587.942 (587.965) seconds
-	 Executed 27 tests, with 0 failures (0 unexpected) in 587.942 (587.972) seconds
-	 Executed 27 tests, with 0 failures (0 unexpected) in 587.942 (587.974) seconds
+Test Case '-[HandyToolsUITests.ToolFlowTests testAudioLabToneSpeakerAndTuner]' passed (62.570 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testCleanerOpensAndOffersCategories]' passed (12.618 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testColorVisionModesOnSamplePhoto]' passed (28.118 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testDataGrabberParsesSampleReceipt]' passed (20.293 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testFitItShrinksSamplePhotoUnderLimit]' passed (17.075 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testFlashlightMorseScreenLightAndMirror]' passed (47.035 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testFormatFixerConvertsAndShareReadyPreparesPhoto]' passed (22.497 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testGPSDashboardUnitsAndHUD]' passed (15.257 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testInstrumentsSwitchEveryGauge]' passed (42.323 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testLensListensToSampleText]' passed (15.305 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testLensSimplifiesAndGists]' passed (16.332 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testLongScreenshotStitchesSamplePair]' passed (29.365 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testMagnifierLooksOnFrozenFrame]' passed (27.397 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testMessageShieldFlagsTheSampleScam]' passed (13.561 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testPrivacyScrubberMakesCleanCopy]' passed (17.750 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testProCameraAndMeasureRenderControls]' passed (52.150 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testQRMakesCodeAndWifiCard]' passed (26.944 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testRestPlaysSoundsSetsTimerAndShowsRecorder]' passed (59.107 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testScanCleansSignsReadsAndExportsSearchablePDF]' passed (69.377 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testSceneDescriberDescribesSamplePhoto]' passed (14.121 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testSortedExtractsBillDetails]' passed (11.480 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testStudioCutsOutResizesAndConverts]' passed (30.533 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testTextStudioFixesBulletsAndSummarizes]' passed (28.170 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testTranslateModesAndSwap]' passed (25.330 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testVaultLockScreenAndUnlockAttempt]' passed (27.813 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testVideoTrimsAndShrinksSampleClip]' passed (35.319 seconds).
+Test Case '-[HandyToolsUITests.ToolFlowTests testVoiceNotesAndLiveCaptionsRender]' passed (37.483 seconds).
+	 Executed 27 tests, with 0 failures (0 unexpected) in 805.322 (805.354) seconds
+	 Executed 27 tests, with 0 failures (0 unexpected) in 805.322 (805.360) seconds
+	 Executed 27 tests, with 0 failures (0 unexpected) in 805.322 (805.365) seconds
 ** TEST SUCCEEDED **
