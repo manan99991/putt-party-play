@@ -94,7 +94,7 @@ struct HistoryView: View {
                 ForEach(items) { item in card(item) }
             }.padding(HandySpacing.gutter)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
         .navigationTitle("Recent results").navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
@@ -156,7 +156,7 @@ struct ToolLinkSheet: View {
                 Text("The link never carries your email addresses, phone numbers, reminders or a PDF password.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
             }.padding(HandySpacing.gutter)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
     }
 }

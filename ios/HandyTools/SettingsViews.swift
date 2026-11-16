@@ -76,7 +76,7 @@ struct SetupView: View {
             }
             Button("Done for now") { onDone() }.primaryButton().padding(.horizontal, HandySpacing.gutter).padding(.bottom, HandySpacing.s16)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
         .task { await refresh() }
         .onAppear { Diagnostics.shared.currentTool = "Permissions" }
         .onChange(of: phase) { _, p in if p == .active { Task { await refresh() } } }
@@ -339,7 +339,7 @@ struct AboutView: View {
             .padding(.horizontal, HandySpacing.gutter)
             .padding(.bottom, HandySpacing.s48)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
     }
 }
 
@@ -374,7 +374,7 @@ struct DiagnosticsView: View {
                 .padding(.horizontal, HandySpacing.gutter).padding(.bottom, HandySpacing.s32)
             }
         }
-        .background(HandyColor.bg)
+        .background(Ground())
     }
 }
 
@@ -426,7 +426,7 @@ struct PrivacyView: View {
             }
             .padding(.horizontal, HandySpacing.gutter)
         }
-        .background(HandyColor.bg)
+        .background(Ground())
     }
 
     @ViewBuilder private func Block(_ title: String, check: Bool, _ lines: [String], note: String?) -> some View {
