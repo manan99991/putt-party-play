@@ -218,6 +218,19 @@ private struct AudioResultPreview: View {
     }
 }
 
+/// Runs `work`, but gives up after `seconds` and returns nil instead of hanging forever — so a video
+/// that stalls while downloading from iCloud (or a huge import) can never freeze the picker on an endless
+/// "Getting it ready…". A generous limit, so a genuinely large local video still finishes and loads.
+fileprivate func loadWithinTimeout<T: Sendable>(_ seconds: Double, _ work: @escaping @Sendable () async -> T?) async -> T? {
+    await withTaskGroup(of: T?.self) { group in
+        group.addTask { await work() }
+        group.addTask { try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000)); return nil }
+        let first = await group.next() ?? nil
+        group.cancelAll()
+        return first
+    }
+}
+
 /// Tenzy Builder (M2): run a starter or saved tool, or build your own by stacking blocks.
 /// Everything here is data over built-in blocks (see ChainRunner), nothing is downloaded or generated as code.
 struct BuilderView: View {
@@ -305,14 +318,20 @@ struct BuilderView: View {
             anyPick = nil; gettingReady = true; note = nil
             Task {
                 var g: Given?
-                if item.supportedContentTypes.contains(where: { $0.conforms(to: .movie) }) {
-                    if let movie = try? await item.loadTransferable(type: MovieImport.self) { g = Given(payload: .video(movie.url), label: "A video") }
+                let isMovie = item.supportedContentTypes.contains(where: { $0.conforms(to: .movie) })
+                if isMovie {
+                    // Never hang on a large or still-in-iCloud video: give it room, but always resolve.
+                    if let movie = await loadWithinTimeout(180) { try? await item.loadTransferable(type: MovieImport.self) } {
+                        g = Given(payload: .video(movie.url), label: "A video")
+                    }
                 } else if let img = (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) {
                     g = Given(payload: .image(img), label: "A photo")
                 }
                 await MainActor.run {
                     gettingReady = false
-                    if let g { given = g } else { note = "That couldn't be opened. Try another." }
+                    if let g { given = g }
+                    else if isMovie { note = "That video didn't load. If it's a large iCloud video, open it once in Photos to download it to this phone, then pick it again." }
+                    else { note = "That couldn't be opened. Try another." }
                 }
             }
         }
@@ -438,7 +457,15 @@ struct BuilderView: View {
                     else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
                 } label: { objTile("Paste", sub: clipKind.map { "\($0) copied" } ?? "Nothing copied") }.accessibilityIdentifier("have-paste")
             }
-            if gettingReady { Text("Getting it ready…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            if gettingReady {
+                HStack(spacing: HandySpacing.s8) {
+                    ProgressView()
+                    Text("Got it — getting your file ready. A large or iCloud video can take a moment.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(HandySpacing.s12)
+                .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            }
         }
         .onAppear { refreshClipKind() }
         .onChange(of: scenePhase) { _, p in if p == .active { refreshClipKind() } }
@@ -1302,9 +1329,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             videoPick = nil
             busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the video ready…"; progressValue = 0
             Task {
-                let movie = try? await item.loadTransferable(type: MovieImport.self)
+                let movie = await loadWithinTimeout(180) { try? await item.loadTransferable(type: MovieImport.self) }
                 await MainActor.run {
-                    if let movie { go(.video(movie.url)) } else { busy = false; progress = ""; message = "That video couldn't be opened. Try another." }
+                    if let movie { go(.video(movie.url)) }
+                    else { busy = false; progress = ""; message = "That video didn't load. If it's a large iCloud video, open it once in Photos to download it to this phone, then pick it again." }
                 }
             }
         }
