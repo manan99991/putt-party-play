@@ -10,6 +10,7 @@ import com.handytools.app.tools.power.CodesEngine
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 /**
