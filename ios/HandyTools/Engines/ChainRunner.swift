@@ -615,7 +615,10 @@ enum ChainRunner {
             return lines.isEmpty ? .failure(.nothingFound(b)) : .success(.text(lines.joined(separator: "\n")))
 
         case (.photoPdf, .image(let img)):
-            guard let d = DocEngine.pdf(images: [img], ocr: [DocEngine.recognize(img)], options: DocEngine.PDFOptions()) else { return .failure(.failed(b)) }
+            var opts = DocEngine.PDFOptions()
+            switch step.settings["pagesize"] { case "a4": opts.pageSize = .a4; case "letter": opts.pageSize = .letter; default: break }
+            if step.settings["searchable"] == "false" { opts.searchable = false }
+            guard let d = DocEngine.pdf(images: [img], ocr: [opts.searchable ? DocEngine.recognize(img) : nil], options: opts) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "pdf"))
 
         case (.chatLink, .text(let t)):
@@ -1369,7 +1372,7 @@ enum ChainCombine {
     /// PDFs are joined page after page; pictures become a page each. Text, other files or a mix can't be
     /// combined, and the caller then keeps the separate results (nil).
     /// - Parameter onePage: put every picture on a single sheet (both sides of an ID) instead of a page each.
-    static func onePDF(_ results: [ChainPayload], onePage: Bool = false) -> ChainPayload? {
+    static func onePDF(_ results: [ChainPayload], onePage: Bool = false, pageSize: DocEngine.PageSize = .auto) -> ChainPayload? {
         guard !results.isEmpty else { return nil }
         var pdfs: [Data] = [], images: [UIImage] = []
         for r in results {
@@ -1394,9 +1397,9 @@ enum ChainCombine {
         }
         if !images.isEmpty, pdfs.isEmpty {
             if onePage, images.count > 1 {
-                return DocEngine.pdf(images: [ChainImage.sheet(images)], ocr: [nil], options: DocEngine.PDFOptions(searchable: false)).map { .file($0, ext: "pdf") }
+                return DocEngine.pdf(images: [ChainImage.sheet(images)], ocr: [nil], options: DocEngine.PDFOptions(searchable: false, pageSize: pageSize)).map { .file($0, ext: "pdf") }
             }
-            return DocEngine.pdf(images: images, ocr: images.map { _ -> [DocEngine.OCRLine]? in nil }, options: DocEngine.PDFOptions(searchable: false))
+            return DocEngine.pdf(images: images, ocr: images.map { _ -> [DocEngine.OCRLine]? in nil }, options: DocEngine.PDFOptions(searchable: false, pageSize: pageSize))
                 .map { .file($0, ext: "pdf") }
         }
         return nil

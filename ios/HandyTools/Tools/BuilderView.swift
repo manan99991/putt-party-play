@@ -1063,6 +1063,11 @@ private struct ChainEditor: View {
             Picker("Format", selection: Binding(get: { chain.steps[i].settings["format"] ?? "JPG" }, set: { chain.steps[i].settings["format"] = $0 })) {
                 ForEach(ImageStudio.Format.allCases, id: \.rawValue) { Text($0.rawValue).tag($0.rawValue) }
             }.pickerStyle(.segmented)
+        case .photoPdf:
+            Picker("Page size", selection: Binding(get: { chain.steps[i].settings["pagesize"] ?? "auto" }, set: { chain.steps[i].settings["pagesize"] = $0 })) {
+                Text("Fit the photo").tag("auto"); Text("A4").tag("a4"); Text("US Letter").tag("letter")
+            }.pickerStyle(.segmented)
+            Toggle("Searchable text (find & copy)", isOn: Binding(get: { chain.steps[i].settings["searchable"] != "false" }, set: { chain.steps[i].settings["searchable"] = $0 ? "true" : "false" })).font(HandyFont.caption)
         case .passportPhoto:
             Picker("Country", selection: Binding(get: { chain.steps[i].settings["country"] ?? "us" }, set: { chain.steps[i].settings["country"] = $0 })) {
                 ForEach(ImageStudio.passportSpecs) { Text($0.name).tag($0.id) }
@@ -1494,7 +1499,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 await MainActor.run { busy = false; progress = ""; message = "Before and after needs two photos: pick the before and the after together." }
                 return
             }
-            if let one = versus ? ChainCombine.beforeAfter(kept) : gif ? ChainCombine.oneGif(kept) : collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true) : nil {
+            let pdfSize: DocEngine.PageSize = { switch chain.steps.first(where: { $0.block == .photoPdf })?.settings["pagesize"] { case "a4": return .a4; case "letter": return .letter; default: return .auto } }()
+            if let one = versus ? ChainCombine.beforeAfter(kept) : gif ? ChainCombine.oneGif(kept) : collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true, pageSize: pdfSize) : nil {
                 let skipped = out.filter { $0.note != nil }.count
                 await MainActor.run {
                     busy = false; progress = ""; result = one

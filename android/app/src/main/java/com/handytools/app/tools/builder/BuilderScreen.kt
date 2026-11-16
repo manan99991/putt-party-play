@@ -656,6 +656,12 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             }
             Text("The first time you use a language, the phone downloads it and needs a connection.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
+        Block.PHOTO_PDF -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val size = s.settings["pagesize"] ?: "auto"
+            listOf("auto" to "Fit photo", "a4" to "A4", "letter" to "US Letter").forEach { (id, label) ->
+                TextButton({ set("pagesize", id) }) { Text(if (id == size) "● $label" else label) }
+            }
+        }
         Block.SPEECH_TEXT -> {
             var open by remember { mutableStateOf(false) }
             val lang = s.settings["lang"] ?: "auto"
@@ -880,7 +886,8 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             }
             if (chain.combine && joinable && pages.isNotEmpty()) {
                 val skipped = out.count { it.note != null }
-                result = Payload.Doc(withContext(Dispatchers.Default) { ChainRunner.onePdf(pages, chain.onePage) }, "pdf")
+                val pdfSize = chain.steps.firstOrNull { it.block == Block.PHOTO_PDF }?.settings?.get("pagesize") ?: "auto"
+                result = Payload.Doc(withContext(Dispatchers.Default) { ChainRunner.onePdf(pages, chain.onePage, pdfSize) }, "pdf")
                 if (skipped > 0) message = "$skipped of ${picked.size} couldn't be used and were left out."
                 busy = false; progress = ""
                 return@launch

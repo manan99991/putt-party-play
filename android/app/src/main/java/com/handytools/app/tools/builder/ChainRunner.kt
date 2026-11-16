@@ -44,8 +44,10 @@ sealed class Outcome {
 }
 
 object ChainRunner {
-    /** One PDF with a page per picture, each page the shape of its picture (long side 842 pt, like A4). */
-    fun onePdf(pages: List<android.graphics.Bitmap>, onePage: Boolean = false): ByteArray {
+    /** One PDF with a page per picture. "auto" makes each page the shape of its picture (long side 842 pt);
+     * "a4"/"letter" fit each picture, centred with a margin, onto a fixed A4 or US-Letter page. */
+    fun onePdf(pages: List<android.graphics.Bitmap>, onePage: Boolean = false, pageSize: String = "auto"): ByteArray {
+        val fixed: Pair<Int, Int>? = when (pageSize) { "a4" -> 595 to 842; "letter" -> 612 to 792; else -> null }
         val doc = android.graphics.pdf.PdfDocument()
         if (onePage && pages.size > 1) {
             // Every picture on one A4-shaped sheet, stacked top to bottom, each as large as fits (both sides of an ID).
@@ -64,11 +66,24 @@ object ChainRunner {
             return out.toByteArray()
         }
         pages.forEachIndexed { i, bmp ->
-            val scale = 842f / maxOf(bmp.width, bmp.height)
-            val w = (bmp.width * scale).toInt().coerceAtLeast(1); val h = (bmp.height * scale).toInt().coerceAtLeast(1)
-            val page = doc.startPage(android.graphics.pdf.PdfDocument.PageInfo.Builder(w, h, i + 1).create())
-            page.canvas.drawBitmap(bmp, null, android.graphics.Rect(0, 0, w, h), android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG))
-            doc.finishPage(page)
+            val paint = android.graphics.Paint(android.graphics.Paint.FILTER_BITMAP_FLAG)
+            if (fixed != null) {
+                val (pw, ph) = fixed
+                val page = doc.startPage(android.graphics.pdf.PdfDocument.PageInfo.Builder(pw, ph, i + 1).create())
+                page.canvas.drawColor(android.graphics.Color.WHITE)
+                val margin = 24f
+                val k = minOf((pw - 2 * margin) / bmp.width, (ph - 2 * margin) / bmp.height)
+                val bw = bmp.width * k; val bh = bmp.height * k
+                val left = (pw - bw) / 2f; val top = (ph - bh) / 2f
+                page.canvas.drawBitmap(bmp, null, android.graphics.RectF(left, top, left + bw, top + bh), paint)
+                doc.finishPage(page)
+            } else {
+                val scale = 842f / maxOf(bmp.width, bmp.height)
+                val w = (bmp.width * scale).toInt().coerceAtLeast(1); val h = (bmp.height * scale).toInt().coerceAtLeast(1)
+                val page = doc.startPage(android.graphics.pdf.PdfDocument.PageInfo.Builder(w, h, i + 1).create())
+                page.canvas.drawBitmap(bmp, null, android.graphics.Rect(0, 0, w, h), paint)
+                doc.finishPage(page)
+            }
         }
         val out = java.io.ByteArrayOutputStream(); doc.writeTo(out); doc.close()
         return out.toByteArray()
@@ -264,7 +279,7 @@ object ChainRunner {
                     else com.handytools.app.tools.power.CodesEngine.qr(input.text.trim())?.let { Outcome.Done(Payload.Pic(it)) }
                         ?: Outcome.Stopped("Make a QR code couldn't fit that much text into one code. Try something shorter.")
                 b == Block.PHOTO_PDF && input is Payload.Pic -> {
-                    Outcome.Done(Payload.Doc(onePdf(listOf(input.bmp)), "pdf"))
+                    Outcome.Done(Payload.Doc(onePdf(listOf(input.bmp), pageSize = step.settings["pagesize"] ?: "auto"), "pdf"))
                 }
                 b == Block.CLEAN_TEXT && input is Payload.Words ->
                     TextTidy.clean(input.text).let { if (it.isEmpty()) none() else Outcome.Done(Payload.Words(it)) }
