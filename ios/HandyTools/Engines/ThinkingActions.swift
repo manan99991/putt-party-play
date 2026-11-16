@@ -116,6 +116,22 @@ enum ThinkingActions {
         DataGrab.ics(DataGrab.Event(title: title, start: due, end: nil, location: place))
     }
 
+    /// One .ics holding every dated task as its own event, so "Add to Calendar" adds the whole plan at
+    /// once. Same event format as the rest of the app. Pure and testable.
+    static func icsCalendar(_ events: [(title: String, due: Date, place: String)]) -> String {
+        let f = DateFormatter(); f.dateFormat = "yyyyMMdd'T'HHmmss'Z'"; f.timeZone = TimeZone(identifier: "UTC")
+        var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Tenzy//Thinking//EN"]
+        for e in events {
+            lines += ["BEGIN:VEVENT", "UID:\(UUID().uuidString)@tenzy", "DTSTAMP:\(f.string(from: Date()))",
+                      "DTSTART:\(f.string(from: e.due))", "DTEND:\(f.string(from: e.due.addingTimeInterval(3600)))",
+                      "SUMMARY:\(e.title)"]
+            if !e.place.isEmpty { lines.append("LOCATION:\(e.place.replacingOccurrences(of: ",", with: "\\,"))") }
+            lines.append("END:VEVENT")
+        }
+        lines.append("END:VCALENDAR")
+        return lines.joined(separator: "\r\n")
+    }
+
     /// Weekday words → `Calendar.component(.weekday)` numbers (Sunday = 1 … Saturday = 7).
     private static let weekdays: [String: Int] = [
         "sunday": 1, "sun": 1, "monday": 2, "mon": 2, "tuesday": 3, "tues": 3, "tue": 3,

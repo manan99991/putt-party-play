@@ -113,6 +113,7 @@ struct ThinkingToolView: View {
 
     @State private var input = ""
     @State private var tasks: [ThinkingEngine.Task] = []
+    @State private var calendarICS: URL?
     @State private var output = ""
     @State private var note = ""
     @State private var working = false
@@ -198,7 +199,10 @@ struct ThinkingToolView: View {
                 Button { Copier.copy(plainList); ClipStore.add(plainList) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
                 ShareLink(item: plainList) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
-            Text("Adding these straight to Reminders and Calendar is coming next.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            if let calendarICS {
+                ShareLink(item: calendarICS) { Label("Add dates to Calendar", systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.secondaryButton()
+                Text("Opens the dated steps as calendar events. One-tap add to Reminders is coming next.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
         }.cardStyle()
     }
 
@@ -217,7 +221,16 @@ struct ThinkingToolView: View {
         tasks.isEmpty ? output : tasks.map { "• " + $0.text }.joined(separator: "\n")
     }
 
-    private func reset() { tasks = []; output = ""; note = ""; errorText = nil }
+    private func reset() { tasks = []; calendarICS = nil; output = ""; note = ""; errorText = nil }
+
+    /// Bundle every dated task into one .ics written to a temp file, so "Add to Calendar" adds the plan.
+    private func buildCalendarICS() {
+        let dated = tasks.compactMap { t in t.due.map { (title: t.text, due: $0, place: t.actions.place ?? "") } }
+        guard !dated.isEmpty else { calendarICS = nil; return }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-plan-\(UUID().uuidString).ics")
+        try? ThinkingActions.icsCalendar(dated).data(using: .utf8)?.write(to: url)
+        calendarICS = url
+    }
 
     private func run() {
         focused = false; reset(); working = true
@@ -229,10 +242,12 @@ struct ThinkingToolView: View {
                 tasks = ThinkingEngine.clearMyHead(text)
                 note = tasks.isEmpty ? "" : "\(tasks.count) task\(tasks.count == 1 ? "" : "s"), tidied and deduped."
                 if tasks.isEmpty { errorText = "Nothing to sort yet — type a few things first." } else { HandyHaptics.success() }
+                buildCalendarICS()
             case .myday:
                 tasks = ThinkingEngine.myDay(text)
                 note = tasks.isEmpty ? "" : "Laid out by time; the fixed points lead."
                 if tasks.isEmpty { errorText = "Nothing to lay out yet." } else { HandyHaptics.success() }
+                buildCalendarICS()
             default:
                 guard let mind = t.mind else { return }
                 guard AIEngine.isAvailable else { errorText = "\(t.title) needs Apple Intelligence on this phone."; return }

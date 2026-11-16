@@ -307,6 +307,16 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertNotNil(maps); XCTAssertTrue(maps?.contains("maps.apple.com") == true)
     }
 
+    // "Act on it" Add-to-Calendar (#285): every dated task becomes one event in a single .ics.
+    func testThinkingActionsCalendarBundle() {
+        let d1 = Date(timeIntervalSince1970: 1_800_000_000), d2 = Date(timeIntervalSince1970: 1_800_100_000)
+        let ics = ThinkingActions.icsCalendar([("Email Ana", d1, ""), ("Dentist", d2, "Oak Street Clinic")])
+        XCTAssertEqual(ics.components(separatedBy: "BEGIN:VEVENT").count - 1, 2, "one event per dated task")
+        XCTAssertEqual(ics.components(separatedBy: "BEGIN:VCALENDAR").count - 1, 1, "one calendar wrapper")
+        XCTAssertTrue(ics.contains("SUMMARY:Email Ana") && ics.contains("SUMMARY:Dentist"))
+        XCTAssertTrue(ics.contains("LOCATION:Oak Street Clinic"))
+    }
+
     // MARK: - QR long-press preview classification
 
     func testQRWifiParsed() {
