@@ -282,12 +282,16 @@ final class Once<T>: @unchecked Sendable {
 enum Transcriber {
     struct Heard { let text: String; let words: [(text: String, start: Double, end: Double)] }
     enum Problem: Error {
-        case denied, unavailable, nothing
+        case denied, unavailable, nothing, recognizerFailed
         func words(for b: Block) -> String {
             switch self {
             case .denied: return "\(b.title) needs permission to recognise speech. Allow Speech Recognition for Tenzy in Settings, then run this again."
             case .unavailable: return "\(b.title) isn't available on this phone right now. Speech can't be turned into text on the phone in its language."
-            case .nothing: return "\(b.title) couldn't make out any words. Try a clearer recording."
+            // On-device dictation erroring out (model still downloading, or Dictation turned off) looks just
+            // like "no words" to the user — so say what's really wrong and how to fix it, and don't blame
+            // their recording.
+            case .recognizerFailed: return "\(b.title) couldn't run on-device dictation — your recording is fine. Turn on Dictation in Settings › General › Keyboard, let the language finish downloading, then run this again."
+            case .nothing: return "\(b.title) didn't find any speech in that recording. If it has talking in it, make sure Dictation is on in Settings › General › Keyboard and try again."
             }
         }
     }
@@ -303,6 +307,14 @@ enum Transcriber {
             get { lock.lock(); defer { lock.unlock() }; return _latest }
             set { lock.lock(); _latest = newValue; lock.unlock() }
         }
+    }
+
+    /// A thread-safe "did any recognition window actually error" flag, so an empty result from a failing
+    /// recogniser (model not ready / Dictation off) is told apart from a recording that truly has no speech.
+    final class Flag: @unchecked Sendable {
+        private let lock = NSLock(); private var v = false
+        func set() { lock.lock(); v = true; lock.unlock() }
+        var value: Bool { lock.lock(); defer { lock.unlock() }; return v }
     }
 
     // ── Pure, unit-tested helpers ────────────────────────────────────────────
@@ -360,6 +372,7 @@ enum Transcriber {
         defer { Task { @MainActor in RunProgress.shared.end() } }
 
         var parts: [String] = []
+        let recogError = Flag()
         while file.framePosition < total {
             let req = SFSpeechAudioBufferRecognitionRequest()
             req.requiresOnDeviceRecognition = true
@@ -369,7 +382,7 @@ enum Transcriber {
             let box = Box()
             box.task = recognizer.recognitionTask(with: req) { result, error in
                 if let result, result.isFinal { once.finish(result.bestTranscription.formattedString) }
-                else if error != nil { once.finish("") }
+                else if error != nil { recogError.set(); once.finish("") }
             }
             var read: AVAudioFrameCount = 0
             while read < windowFrames && file.framePosition < total {
@@ -389,7 +402,9 @@ enum Transcriber {
             if read == 0 { break }   // nothing read — avoid an endless loop on a malformed file
         }
         let joined = stitch(parts)
-        guard !joined.isEmpty else { return .failure(.nothing) }
+        // Empty because the recogniser erred (model/Dictation not ready) is a different problem from a
+        // recording that genuinely has no speech — report the right one so the message is honest.
+        guard !joined.isEmpty else { return .failure(recogError.value ? .recognizerFailed : .nothing) }
         return .success(Heard(text: joined, words: []))
     }
 }

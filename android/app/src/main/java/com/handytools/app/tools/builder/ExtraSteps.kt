@@ -182,8 +182,16 @@ object ExtraSteps {
                     try {
                         // "auto"/unset = the phone's own language (smart default); a chosen language transcribes in it.
                         val lang = (step.settings["lang"] ?: "auto").let { if (it == "auto" || it.isBlank()) null else it }
-                        val text = FileTranscriber.transcribe(ctx, f, VoiceAudio.durationMs(f), lang)?.trim().orEmpty()
-                        if (text.isEmpty()) stop("${b.title} couldn't make out any words. Try a clearer recording.") else Outcome.Done(Payload.Words(text))
+                        // null = on-device recognition isn't ready/available (a setup problem, not the
+                        // recording); "" = it ran but heard no speech. Say the right one — never blame the
+                        // user's recording for a setup issue.
+                        val raw = FileTranscriber.transcribe(ctx, f, VoiceAudio.durationMs(f), lang)
+                        val text = raw?.trim().orEmpty()
+                        when {
+                            text.isNotEmpty() -> Outcome.Done(Payload.Words(text))
+                            raw == null -> stop("${b.title} couldn't run on-device dictation on this phone — your recording is fine. Make sure the language's offline speech is downloaded (Settings › System › Languages & input › On-device speech), then try again.")
+                            else -> stop("${b.title} didn't find any speech in that recording. If it has talking in it, check the language's offline speech is installed and try again.")
+                        }
                     } finally { f.delete() }
                 }
 

@@ -178,6 +178,18 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(Given.sheetText(sharedStrings: nil, sheet: sheet), "A & B\t3")
     }
 
+    // Voice → Notes dead-end (found in a 16 Nov recording): on-device dictation erroring out (model not
+    // ready / Dictation off) was shown to the user as "couldn't make out any words. Try a clearer recording"
+    // — blaming their recording for a setup problem. The recogniser error is now told apart from true
+    // silence, and no message blames the recording.
+    func testTranscriptionFailureMessagesAreHonest() {
+        let failed = Transcriber.Problem.recognizerFailed.words(for: .speechText)
+        XCTAssertTrue(failed.contains("Dictation"), "a dictation failure must name the real fix")
+        XCTAssertFalse(failed.lowercased().contains("clearer recording"), "a setup failure must not blame the recording")
+        let nothing = Transcriber.Problem.nothing.words(for: .speechText)
+        XCTAssertFalse(nothing.lowercased().contains("clearer recording"), "even true silence shouldn't dead-end on 'try a clearer recording'")
+    }
+
     // PowerPoint .pptx coverage (#294): a slide's XML read into readable lines, entities decoded, tags gone.
     func testPptxSlideReadsItsText() {
         let xml = "<a:p><a:r><a:t>Hello</a:t></a:r><a:r><a:t>World</a:t></a:r></a:p><a:p><a:r><a:t>Second &amp; line</a:t></a:r></a:p>"
