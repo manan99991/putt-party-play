@@ -83,10 +83,16 @@ struct Given: Identifiable {
         return richOfficeText(url, ext: ext)
     }
 
-    /// Word .docx and OpenDocument .odt are ZIP packages; read the one entry that holds the body
-    /// (word/document.xml or content.xml) with Foundation's own zip reader and strip its XML to text.
-    /// Dependency-free. Nil if it isn't one of those or can't be read.
+    /// Word .docx, OpenDocument .odt and Excel .xlsx are ZIP packages; read the entry that holds the body
+    /// with Foundation's own zip reader and turn it into text. Dependency-free. Nil if it isn't one of
+    /// those or can't be read.
     static func richOfficeText(_ url: URL, ext: String) -> String? {
+        if ext == "xlsx" {
+            // The first worksheet's rows, with text cells resolved through the shared-strings table.
+            guard let sheet = Zip.entryText(in: url, named: "xl/worksheets/sheet1.xml") else { return nil }
+            let out = sheetText(sharedStrings: Zip.entryText(in: url, named: "xl/sharedStrings.xml"), sheet: sheet)
+            return out.isEmpty ? nil : out
+        }
         let entry: String
         switch ext { case "docx": entry = "word/document.xml"; case "odt": entry = "content.xml"; default: return nil }
         guard let xml = Zip.entryText(in: url, named: entry) else { return nil }
@@ -96,6 +102,52 @@ struct Given: Identifiable {
         s = s.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
         for (e, c) in ["&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": "\"", "&apos;": "'"] { s = s.replacingOccurrences(of: e, with: c) }
         return s.split(separator: "\n").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }.joined(separator: "\n")
+    }
+
+    /// Turn an .xlsx worksheet's XML (plus the shared-strings table) into tab/newline text — pure and
+    /// testable, so the off-device tests cover it without a real workbook. Cells with t="s" reference a
+    /// shared string by index; inline and numeric cells are read directly. Reads a sheet's rows, not formulas.
+    static func sheetText(sharedStrings sstXml: String?, sheet sheetXml: String) -> String {
+        let shared = Self.sharedStrings(sstXml)
+        var rows: [String] = []
+        for rowXml in Self.allMatches("<row\\b[^>]*>(.*?)</row>", in: sheetXml, group: 1) {
+            let cells = Self.allMatches("<c\\b[^>]*>.*?</c>|<c\\b[^>]*/>", in: rowXml).map { Self.cellValue($0, shared: shared) }
+            rows.append(cells.joined(separator: "\t"))
+        }
+        while rows.last?.trimmingCharacters(in: .whitespaces).isEmpty == true { rows.removeLast() }
+        return rows.joined(separator: "\n")
+    }
+
+    private static func sharedStrings(_ xml: String?) -> [String] {
+        guard let xml else { return [] }
+        return allMatches("<si\\b[^>]*>(.*?)</si>", in: xml, group: 1).map { si in
+            decodeEntities(allMatches("<t\\b[^>]*>(.*?)</t>", in: si, group: 1).joined())
+        }
+    }
+
+    private static func cellValue(_ c: String, shared: [String]) -> String {
+        let type = allMatches("<c\\b[^>]*\\bt=\"([a-z]+)\"", in: c, group: 1).first
+        if type == "inlineStr" {
+            return decodeEntities(allMatches("<t\\b[^>]*>(.*?)</t>", in: c, group: 1).joined())
+        }
+        guard let v = allMatches("<v\\b[^>]*>(.*?)</v>", in: c, group: 1).first else { return "" }
+        if type == "s", let idx = Int(v.trimmingCharacters(in: .whitespaces)), shared.indices.contains(idx) { return shared[idx] }
+        return decodeEntities(v)
+    }
+
+    private static func decodeEntities(_ s: String) -> String {
+        var r = s
+        for (e, c) in ["&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": "\"", "&apos;": "'"] { r = r.replacingOccurrences(of: e, with: c) }
+        return r
+    }
+
+    private static func allMatches(_ pattern: String, in s: String, group: Int = 0) -> [String] {
+        guard let re = try? NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators, .caseInsensitive]) else { return [] }
+        let ns = s as NSString
+        return re.matches(in: s, range: NSRange(location: 0, length: ns.length)).compactMap { m in
+            let r = m.range(at: group)
+            return r.location == NSNotFound ? nil : ns.substring(with: r)
+        }
     }
 
     static func from(text: String) -> Given? {

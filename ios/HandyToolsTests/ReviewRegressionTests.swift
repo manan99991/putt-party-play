@@ -162,6 +162,22 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertTrue(words?.contains("Hello from a rich document") == true, "the document's words must survive")
     }
 
+    // Excel .xlsx coverage (#294): a worksheet's rows read into tab/newline text, with text cells resolved
+    // through the shared-strings table — so a picked spreadsheet opens into real rows, not a dead-end.
+    func testXlsxSheetReadsItsCells() {
+        let sst = "<sst><si><t>Name</t></si><si><t>Widget</t></si></sst>"
+        let sheet = "<worksheet><sheetData>"
+            + "<row><c r=\"A1\" t=\"s\"><v>0</v></c><c r=\"B1\"><v>10</v></c></row>"
+            + "<row><c r=\"A2\" t=\"s\"><v>1</v></c><c r=\"B2\"><v>25</v></c></row>"
+            + "</sheetData></worksheet>"
+        XCTAssertEqual(Given.sheetText(sharedStrings: sst, sheet: sheet), "Name\t10\nWidget\t25")
+    }
+
+    func testXlsxInlineStringAndEntitiesDecode() {
+        let sheet = "<sheetData><row><c t=\"inlineStr\"><is><t>A &amp; B</t></is></c><c><v>3</v></c></row></sheetData>"
+        XCTAssertEqual(Given.sheetText(sharedStrings: nil, sheet: sheet), "A & B\t3")
+    }
+
     // MARK: - QR long-press preview classification
 
     func testQRWifiParsed() {

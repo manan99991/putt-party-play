@@ -120,6 +120,22 @@ class ReviewRegressionTest {
         assertFalse("no XML tags remain", out.contains("<"))
     }
 
+    // Excel .xlsx coverage (#294), parity with the iOS twin: a worksheet's rows read into tab/newline
+    // text, text cells resolved through the shared-strings table.
+    @Test fun xlsxSheetReadsItsCells() {
+        val sst = "<sst><si><t>Name</t></si><si><t>Widget</t></si></sst>"
+        val sheet = "<worksheet><sheetData>" +
+            "<row><c r=\"A1\" t=\"s\"><v>0</v></c><c r=\"B1\"><v>10</v></c></row>" +
+            "<row><c r=\"A2\" t=\"s\"><v>1</v></c><c r=\"B2\"><v>25</v></c></row>" +
+            "</sheetData></worksheet>"
+        assertEquals("Name\t10\nWidget\t25", com.handytools.app.tools.builder.BuilderInputs.sheetText(sst, sheet))
+    }
+
+    @Test fun xlsxInlineStringAndEntitiesDecode() {
+        val sheet = "<sheetData><row><c t=\"inlineStr\"><is><t>A &amp; B</t></is></c><c><v>3</v></c></row></sheetData>"
+        assertEquals("A & B\t3", com.handytools.app.tools.builder.BuilderInputs.sheetText(null, sheet))
+    }
+
     // A link/phone/page tool fits a piece of text only when the text actually has a link/number (#283).
     @Test fun linkToolFitsTextOnlyWhenTextHasLink() {
         val linkChain = Chain("x", "Clean link", listOf(Step(Block.CLEAN_LINKS)))

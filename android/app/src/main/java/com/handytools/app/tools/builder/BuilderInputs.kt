@@ -124,6 +124,7 @@ object BuilderInputs {
      * or can't be read, so the caller can fall back to an honest message. */
     fun richDocumentText(ctx: Context, uri: Uri, name: String?): String? {
         val ext = name?.substringAfterLast('.', "")?.lowercase().orEmpty()
+        if (ext == "xlsx") return xlsxText(ctx, uri)
         val entryName = when (ext) { "docx" -> "word/document.xml"; "odt" -> "content.xml"; else -> return null }
         return try {
             ctx.contentResolver.openInputStream(uri)?.use { ins ->
@@ -139,6 +140,65 @@ object BuilderInputs {
             }
         } catch (_: Throwable) { null }
     }
+
+    /** An Excel .xlsx is a ZIP too; read the first worksheet (and the shared-strings table it references)
+     * and turn its rows into tab/newline text. Null if it can't be read or has no rows. */
+    private fun xlsxText(ctx: Context, uri: Uri): String? = try {
+        ctx.contentResolver.openInputStream(uri)?.use { ins ->
+            java.util.zip.ZipInputStream(ins.buffered()).use { zip ->
+                var sheet: String? = null
+                var sst: String? = null
+                var e = zip.nextEntry
+                while (e != null) {
+                    when (e.name) {
+                        "xl/worksheets/sheet1.xml" -> sheet = zip.readBytes().toString(Charsets.UTF_8)
+                        "xl/sharedStrings.xml" -> sst = zip.readBytes().toString(Charsets.UTF_8)
+                    }
+                    e = zip.nextEntry
+                }
+                sheet?.let { sheetText(sst, it) }?.takeIf { it.isNotBlank() }
+            }
+        }
+    } catch (_: Throwable) { null }
+
+    /** Turn an .xlsx worksheet's XML (plus the shared-strings table) into tab/newline text — pure and
+     * testable, the same rules as the iOS twin. Cells with t="s" reference a shared string by index;
+     * inline and numeric cells are read directly. Reads a sheet's rows, not formulas. */
+    internal fun sheetText(sharedStringsXml: String?, sheetXml: String): String {
+        val shared = sharedStrings(sharedStringsXml)
+        val rows = ArrayList<String>()
+        for (row in Regex("<row\\b[^>]*>(.*?)</row>", RegexOption.DOT_MATCHES_ALL).findAll(sheetXml)) {
+            val cells = Regex("<c\\b[^>]*>.*?</c>|<c\\b[^>]*/>", RegexOption.DOT_MATCHES_ALL)
+                .findAll(row.groupValues[1]).map { cellValue(it.value, shared) }.toList()
+            rows.add(cells.joinToString("\t"))
+        }
+        while (rows.isNotEmpty() && rows.last().isBlank()) rows.removeAt(rows.size - 1)
+        return rows.joinToString("\n")
+    }
+
+    private fun sharedStrings(xml: String?): List<String> {
+        if (xml == null) return emptyList()
+        return Regex("<si\\b[^>]*>(.*?)</si>", RegexOption.DOT_MATCHES_ALL).findAll(xml).map { si ->
+            val text = Regex("<t\\b[^>]*>(.*?)</t>", RegexOption.DOT_MATCHES_ALL)
+                .findAll(si.groupValues[1]).joinToString("") { it.groupValues[1] }
+            decodeXmlEntities(text)
+        }.toList()
+    }
+
+    private fun cellValue(c: String, shared: List<String>): String {
+        val type = Regex("<c\\b[^>]*\\bt=\"([a-z]+)\"", RegexOption.IGNORE_CASE).find(c)?.groupValues?.get(1)
+        if (type == "inlineStr") {
+            val inline = Regex("<t\\b[^>]*>(.*?)</t>", RegexOption.DOT_MATCHES_ALL)
+                .findAll(c).joinToString("") { it.groupValues[1] }
+            return decodeXmlEntities(inline)
+        }
+        val v = Regex("<v\\b[^>]*>(.*?)</v>", RegexOption.DOT_MATCHES_ALL).find(c)?.groupValues?.get(1) ?: return ""
+        if (type == "s") { v.trim().toIntOrNull()?.let { if (it in shared.indices) return shared[it] } }
+        return decodeXmlEntities(v)
+    }
+
+    private fun decodeXmlEntities(s: String): String =
+        s.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&apos;", "'")
 
     /** Turn a Word/OpenDocument body XML into readable lines: paragraph/break tags become newlines, tabs
      * become tabs, every other tag is dropped, and the common entities are decoded. */
