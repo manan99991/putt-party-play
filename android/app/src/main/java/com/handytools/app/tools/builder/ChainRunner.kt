@@ -259,7 +259,7 @@ object ChainRunner {
                 b == Block.SUMMARIZE && input is Payload.Words -> {
                     val n = (step.settings["sentences"]?.toIntOrNull() ?: 3).coerceAtLeast(1)
                     val s = VoiceText.sentences(input.text).take(n)
-                    if (s.isEmpty()) none() else Outcome.Done(Payload.Words(s.joinToString(" ")))
+                    if (s.isEmpty()) none() else Outcome.Done(Payload.Words(TextTidy.summaryText(s, step.settings["format"] == "bullets")))
                 }
                 b == Block.ACTION_ITEMS && input is Payload.Words -> {
                     val items = VoiceText.sentences(input.text).filter { VoiceText.TODO.containsMatchIn(it) }

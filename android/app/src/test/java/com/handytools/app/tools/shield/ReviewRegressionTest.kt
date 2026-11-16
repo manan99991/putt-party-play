@@ -137,5 +137,14 @@ class ReviewRegressionTest {
         assertTrueMsg("fast > normal", com.handytools.app.tools.builder.ExtraSteps.ttsRate("fast") > 1f)
     }
 
+    // Summarize paragraph-vs-bullets option (#278).
+    @Test fun summaryFormatBulletsVsParagraph() {
+        val s = listOf("First point.", "Second point.")
+        assertEquals("First point. Second point.", com.handytools.app.tools.builder.TextTidy.summaryText(s, false))
+        val b = com.handytools.app.tools.builder.TextTidy.summaryText(s, true)
+        assertTrueMsg("bullets mode prefixes each sentence", b.contains("• First point."))
+        assertTrueMsg("each bullet on its own line", b.contains("\n• Second point."))
+    }
+
     private fun assertTrueMsg(msg: String, cond: Boolean) = org.junit.Assert.assertTrue(msg, cond)
 }

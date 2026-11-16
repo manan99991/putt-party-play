@@ -121,6 +121,14 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertGreaterThan(ChainMedia.ttsRate("fast"), AVSpeechUtteranceDefaultSpeechRate)
     }
 
+    func testSummaryFormatBulletsVsParagraph() {
+        let s = ["First point.", "Second point."]
+        XCTAssertEqual(ChainText.summaryText(s, bullets: false), "First point. Second point.")
+        let b = ChainText.summaryText(s, bullets: true)
+        XCTAssertTrue(b.contains("• First point."), "bullets mode prefixes each sentence")
+        XCTAssertTrue(b.contains("\n• Second point."), "each bullet is on its own line")
+    }
+
     func testRichDocumentReadsItsWords() {
         let rtf = "{\\rtf1\\ansi\\ansicpg1252 Hello from a rich document.}"
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("review-\(UUID().uuidString).rtf")

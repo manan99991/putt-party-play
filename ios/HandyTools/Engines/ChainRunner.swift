@@ -528,7 +528,7 @@ enum ChainRunner {
         case (.summarize, .text(let t)):
             let n = Int(step.settings["sentences"] ?? "") ?? 3
             let s = TextTools.summarize(t, sentences: max(1, n))
-            return s.isEmpty ? .failure(.nothingFound(b)) : .success(.text(s.joined(separator: " ")))
+            return s.isEmpty ? .failure(.nothingFound(b)) : .success(.text(ChainText.summaryText(s, bullets: step.settings["format"] == "bullets")))
 
         case (.shrinkImage, .image(let img)):
             let mb = Double(step.settings["mb"] ?? "") ?? 2
@@ -916,6 +916,11 @@ enum ChainText {
         for l in r.links where !l.issues.isEmpty { out.append("• Link \(l.host): \(l.issues.joined(separator: "; "))") }
         if let first = ScamAnalyzer.advice(for: r).first { out.append(""); out.append(first) }
         return out.joined(separator: "\n")
+    }
+
+    /// Shapes a summary: a flowing paragraph (default), or one bullet per sentence when the tool is set to bullets.
+    static func summaryText(_ sentences: [String], bullets: Bool) -> String {
+        bullets ? sentences.map { "• \($0)" }.joined(separator: "\n") : sentences.joined(separator: " ")
     }
 
     /// A wa.me link that opens a WhatsApp chat with the number in the text, so it never has to be saved as a contact.

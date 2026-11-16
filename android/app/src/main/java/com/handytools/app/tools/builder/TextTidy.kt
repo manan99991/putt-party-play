@@ -354,6 +354,10 @@ object TextTidy {
     /** The link a "Read the page" step should open: the first web link in the text, with https added if it has none. */
     fun pageLink(text: String): String? = details(text).links.firstOrNull()?.let { if (it.startsWith("http", ignoreCase = true)) it else "https://$it" }
 
+    /** Shapes a summary: a flowing paragraph (default), or one bullet per sentence when set to bullets. */
+    fun summaryText(sentences: List<String>, bullets: Boolean): String =
+        if (bullets) sentences.joinToString("\n") { "• $it" } else sentences.joinToString(" ")
+
     private val I = setOf(RegexOption.IGNORE_CASE)
     private val IS = setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
     private val TAG = Regex("<[^>]+>")

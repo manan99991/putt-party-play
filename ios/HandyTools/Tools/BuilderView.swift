@@ -984,6 +984,9 @@ private struct ChainEditor: View {
         case .summarize:
             let n = Int(chain.steps[i].settings["sentences"] ?? "3") ?? 3
             Stepper("\(n) sentences", value: Binding(get: { n }, set: { chain.steps[i].settings["sentences"] = String($0) }), in: 1...8).font(HandyFont.caption)
+            Picker("As", selection: Binding(get: { chain.steps[i].settings["format"] ?? "paragraph" }, set: { chain.steps[i].settings["format"] = $0 })) {
+                Text("Paragraph").tag("paragraph"); Text("Bullets").tag("bullets")
+            }.pickerStyle(.segmented)
         case .videoShrink:
             Picker("Size limit", selection: Binding(get: { ChainText.videoLimit(chain.steps[i].settings["mb"]) }, set: { chain.steps[i].settings["mb"] = String($0) })) {
                 ForEach(ChainText.videoLimits, id: \.self) { Text("\($0) MB").tag($0) }

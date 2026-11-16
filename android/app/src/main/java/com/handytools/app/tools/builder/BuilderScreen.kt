@@ -630,6 +630,12 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 Text("$n sentences", style = MaterialTheme.typography.bodyMedium)
                 TextButton({ set("sentences", (n + 1).coerceAtMost(8).toString()) }) { Text("+") }
             }
+            Row {
+                val fmt = s.settings["format"] ?: "paragraph"
+                listOf("paragraph" to "Paragraph", "bullets" to "Bullets").forEach { (id, label) ->
+                    TextButton({ set("format", id) }) { Text(if (id == fmt) "● $label" else label) }
+                }
+            }
         }
         Block.VIDEO_TRIM -> {
             Row {
