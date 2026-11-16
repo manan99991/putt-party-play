@@ -220,6 +220,24 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertNil(ThinkingActions.telURL("call me"))
     }
 
+    // Clear My Head / My Day structuring engine (#285): a brain-dump → deduped, routed, time-ordered tasks.
+    // Needs no language model, so it runs the same on both platforms (kept in lockstep with the Android twin).
+    func testThinkingEngineStructuresADump() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let now = cal.date(from: DateComponents(year: 2026, month: 11, day: 16, hour: 8, minute: 0))!
+
+        let cleared = ThinkingEngine.clearMyHead("call vendor, buy milk, finish deck, email Ana by Thursday, buy milk", now: now, calendar: cal)
+        XCTAssertEqual(cleared.count, 4, "exact duplicates are merged")
+        let ana = cleared.first { $0.text.contains("Ana") }!
+        XCTAssertNotNil(ana.due, "a dated task gets a concrete due time")
+        XCTAssertTrue(ana.actions.kinds.contains(.calendar), "and routes to the calendar")
+
+        let day = ThinkingEngine.myDay("groceries tomorrow, call dentist at 2pm, buy milk", now: now, calendar: cal)
+        XCTAssertTrue(day.first!.text.contains("dentist"), "the earliest timed task leads the day")
+        XCTAssertTrue(day.last!.text.contains("milk"), "untimed tasks fall to the end")
+    }
+
     // MARK: - QR long-press preview classification
 
     func testQRWifiParsed() {

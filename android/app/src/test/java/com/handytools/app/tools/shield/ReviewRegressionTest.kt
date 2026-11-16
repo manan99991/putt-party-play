@@ -184,6 +184,23 @@ class ReviewRegressionTest {
         assertNull(TA.telURL("call me"))
     }
 
+    // Clear My Head / My Day structuring engine (#285), lockstep with the iOS twin.
+    @Test fun thinkingEngineStructuresADump() {
+        val utc = java.util.TimeZone.getTimeZone("UTC")
+        val now = java.util.Calendar.getInstance(utc).apply { clear(); set(2026, 10, 16, 8, 0, 0) }.timeInMillis
+        val TE = com.handytools.app.tools.builder.ThinkingEngine
+
+        val cleared = TE.clearMyHead("call vendor, buy milk, finish deck, email Ana by Thursday, buy milk", now, utc)
+        assertEquals(4, cleared.size)
+        val ana = cleared.first { it.text.contains("Ana") }
+        assertTrueMsg("a dated task gets a due time", ana.due != null)
+        assertTrueMsg("and routes to the calendar", ana.actions.kinds.contains(Kind.CALENDAR))
+
+        val day = TE.myDay("groceries tomorrow, call dentist at 2pm, buy milk", now, utc)
+        assertTrueMsg("earliest timed task leads", day.first().text.contains("dentist"))
+        assertTrueMsg("untimed tasks fall to the end", day.last().text.contains("milk"))
+    }
+
     // A link/phone/page tool fits a piece of text only when the text actually has a link/number (#283).
     @Test fun linkToolFitsTextOnlyWhenTextHasLink() {
         val linkChain = Chain("x", "Clean link", listOf(Step(Block.CLEAN_LINKS)))
