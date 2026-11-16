@@ -178,6 +178,29 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(Given.sheetText(sharedStrings: nil, sheet: sheet), "A & B\t3")
     }
 
+    // Thinking tools "Act on it" spine (#285): a task line is read into the built-in apps it belongs to.
+    // Kept in lockstep with the Android twin so both platforms route the same task the same way.
+    func testThinkingActionsRoutesTasksToTheRightApps() {
+        let dated = ThinkingActions.plan(for: "Email Ana the budget by Thursday")
+        XCTAssertEqual(dated.kinds, [.calendar, .reminder], "a deadline → Calendar + a reminder, nothing else")
+        XCTAssertTrue(dated.isDated)
+
+        let call = ThinkingActions.plan(for: "Call the dentist")
+        XCTAssertEqual(call.kinds, [.reminder, .call], "a call cue with no number → reminder + call")
+        XCTAssertTrue(call.isCall); XCTAssertNil(call.phone)
+
+        let errand = ThinkingActions.plan(for: "Pick up Deeyan from Oak Street Clinic at 3pm")
+        XCTAssertEqual(errand.kinds, [.calendar, .reminder, .maps], "a timed task with a place → Calendar + reminder + Maps")
+        XCTAssertEqual(errand.place, "Oak Street Clinic")
+
+        let plain = ThinkingActions.plan(for: "Buy milk")
+        XCTAssertEqual(plain.kinds, [.reminder], "a plain task never dead-ends — it is at least a reminder")
+
+        let withNumber = ThinkingActions.plan(for: "call 555-123-4567")
+        XCTAssertEqual(withNumber.phone, "555-123-4567", "a real number is pulled out for a one-tap dial")
+        XCTAssertTrue(withNumber.kinds.contains(.call))
+    }
+
     // MARK: - QR long-press preview classification
 
     func testQRWifiParsed() {
