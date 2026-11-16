@@ -388,11 +388,23 @@ fun unsupportedNote(mime: String?, name: String?): String {
 
 /** What "Share to Tenzy" offers for a shared photo or text: the user's own tools first, then the starters, last-used on top. */
 object ChainOffers {
-    fun forKind(kind: Kind, mine: List<Chain>, last: String?): List<Chain> {
-        val all = (mine + ChainTemplates.all).filter { it.steps.isNotEmpty() && it.steps.first().block.takes == kind && it.problem(kind) == null }.toMutableList()
+    fun forKind(kind: Kind, mine: List<Chain>, last: String?, text: String? = null): List<Chain> {
+        val all = (mine + ChainTemplates.all).filter {
+            it.steps.isNotEmpty() && it.steps.first().block.takes == kind && it.problem(kind) == null &&
+                (kind != Kind.TEXT || text == null || fitsText(it, text))
+        }.toMutableList()
         val i = all.indexOfFirst { it.id == last }
         if (i > 0) all.add(0, all.removeAt(i))
         return all
+    }
+
+    /** A link/phone/page tool fits a piece of text only when that text really has a link, number or URL —
+     * so plain prose never offers a tool that would immediately dead-end with "didn't find one". */
+    fun fitsText(chain: Chain, text: String): Boolean = when (chain.steps.firstOrNull()?.block) {
+        Block.CLEAN_LINKS -> TextTidy.cleanLinks(text) != null
+        Block.CHAT_LINK -> TextTidy.chatLink(text, TextTidy.callingCode(java.util.Locale.getDefault().country)) != null
+        Block.PAGE_TEXT -> TextTidy.pageLink(text) != null
+        else -> true
     }
 }
 

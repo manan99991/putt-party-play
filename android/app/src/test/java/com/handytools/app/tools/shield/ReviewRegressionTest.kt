@@ -1,5 +1,9 @@
 package com.handytools.app.tools.shield
 
+import com.handytools.app.tools.builder.Block
+import com.handytools.app.tools.builder.Chain
+import com.handytools.app.tools.builder.ChainOffers
+import com.handytools.app.tools.builder.Step
 import com.handytools.app.tools.power.CodesEngine
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -114,6 +118,15 @@ class ReviewRegressionTest {
         assertTrueMsg("first paragraph survives", out.contains("Hello"))
         assertTrueMsg("second paragraph survives, entity decoded", out.contains("World & more"))
         assertFalse("no XML tags remain", out.contains("<"))
+    }
+
+    // A link/phone/page tool fits a piece of text only when the text actually has a link/number (#283).
+    @Test fun linkToolFitsTextOnlyWhenTextHasLink() {
+        val linkChain = Chain("x", "Clean link", listOf(Step(Block.CLEAN_LINKS)))
+        assertFalse("link tool must not fit plain prose", ChainOffers.fitsText(linkChain, "Review the checklist before noon."))
+        assertTrueMsg("link tool fits text with a link", ChainOffers.fitsText(linkChain, "See https://shop.example.com/i?utm_source=x"))
+        val summarize = Chain("y", "Summary", listOf(Step(Block.SUMMARIZE, mapOf("sentences" to "3"))))
+        assertTrueMsg("an ordinary text tool always fits", ChainOffers.fitsText(summarize, "Review the checklist before noon."))
     }
 
     private fun assertTrueMsg(msg: String, cond: Boolean) = org.junit.Assert.assertTrue(msg, cond)

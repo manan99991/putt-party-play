@@ -885,10 +885,23 @@ enum ChainStore {
     }
 
     /// Every tool that can start from what was shared: the user's own first, then the starters, with the last-used one on top.
-    static func offers(for kind: ChainKind, mine: [Chain], last: String?) -> [Chain] {
+    /// When the thing is text, link/phone/page tools are hidden unless the text actually has a link or number,
+    /// so plain prose never offers a tool that would immediately dead-end with "didn't find one".
+    static func offers(for kind: ChainKind, mine: [Chain], last: String?, text: String? = nil) -> [Chain] {
         var all = (mine + ChainTemplates.all).filter { $0.problem(starting: kind) == nil && $0.unavailable == nil }
+        if kind == .text, let text { all = all.filter { fitsText($0, text) } }
         if let last, let i = all.firstIndex(where: { $0.id == last }) { all.insert(all.remove(at: i), at: 0) }
         return all
+    }
+
+    /// A link/phone/page tool fits a piece of text only when that text really contains a link, number or URL.
+    static func fitsText(_ chain: Chain, _ text: String) -> Bool {
+        switch chain.steps.first?.block {
+        case .cleanLinks: return ChainText.cleanLinks(in: text) != nil
+        case .chatLink:   return ChainText.chatLink(text, countryCode: ChainText.callingCode(region: Locale.current.region?.identifier)) != nil
+        case .pageText:   return ChainText.pageLink(in: text) != nil
+        default:          return true
+        }
     }
 }
 

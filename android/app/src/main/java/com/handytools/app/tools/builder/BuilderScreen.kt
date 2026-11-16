@@ -86,7 +86,7 @@ object ChainStore {
 fun ShareToToolScreen(uri: Uri?, mime: String? = "image/*", text: String? = null, otherWay: String = "Just open the file", onOpenInstead: () -> Unit) {
     val ctx = LocalContext.current
     val kind = kindOf(if (uri != null) mime else null, !text.isNullOrBlank()) ?: Kind.IMAGE
-    val tools = remember(kind) { ChainOffers.forKind(kind, ChainStore.load(ctx), ChainStore.lastShared(ctx)).filter { ExtraSteps.unavailable(ctx, it) == null } }
+    val tools = remember(kind, text) { ChainOffers.forKind(kind, ChainStore.load(ctx), ChainStore.lastShared(ctx), if (kind == Kind.TEXT) text else null).filter { ExtraSteps.unavailable(ctx, it) == null } }
     var running by remember { mutableStateOf<Chain?>(null) }
     running?.let { c -> ChainRunScreen(c, initial = uri, initialKind = kind, initialText = if (kind == Kind.TEXT) text else null) { running = null }; return }
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {

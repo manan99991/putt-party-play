@@ -1746,7 +1746,8 @@ private struct ToolPickView: View {
 
     private var tools: [Chain] {
         let kind = given.payload.kind == .photoFile ? ChainKind.image : given.payload.kind
-        return ChainStore.offers(for: kind, mine: mine, last: nil)
+        let text: String? = { if case .text(let t) = given.payload { return t } else { return nil } }()
+        return ChainStore.offers(for: kind, mine: mine, last: nil, text: text)
     }
 
     var body: some View {

@@ -92,6 +92,25 @@ final class ReviewRegressionTests: XCTestCase {
 
     // MARK: - Real coverage for rich documents (Word/RTF/OpenDocument) — read, not dead-ended
 
+    // MARK: - Link/phone/page tools aren't offered for text that has no link or number (#283)
+
+    func testLinkToolsNotOfferedForPlainText() {
+        let plain = ChainStore.offers(for: .text, mine: [], last: nil, text: "Remember to review the launch checklist before noon.")
+        XCTAssertFalse(plain.contains { $0.steps.first?.block == .cleanLinks }, "a link cleaner must not be offered for text with no link")
+        XCTAssertFalse(plain.contains { $0.steps.first?.block == .chatLink }, "a WhatsApp-a-number tool must not be offered for text with no number")
+        XCTAssertFalse(plain.contains { $0.steps.first?.block == .pageText }, "a read-the-page tool must not be offered for text with no URL")
+    }
+
+    func testLinkToolIsOfferedWhenTextHasALink() {
+        let withLink = ChainStore.offers(for: .text, mine: [], last: nil, text: "Deal here https://shop.example.com/item?utm_source=x")
+        XCTAssertTrue(withLink.contains { $0.steps.first?.block == .cleanLinks }, "the link cleaner must be offered when the text has a link")
+    }
+
+    func testOrdinaryTextToolsStillOfferedForPlainText() {
+        let plain = ChainStore.offers(for: .text, mine: [], last: nil, text: "Remember to review the launch checklist before noon.")
+        XCTAssertTrue(plain.contains { $0.steps.first?.block == .summarize || $0.steps.first?.block == .cleanText }, "normal text tools stay offered")
+    }
+
     func testRichDocumentReadsItsWords() {
         let rtf = "{\\rtf1\\ansi\\ansicpg1252 Hello from a rich document.}"
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("review-\(UUID().uuidString).rtf")
