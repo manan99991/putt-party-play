@@ -389,30 +389,40 @@ struct PrivacyView: View {
                     Text("Short version: everything you do in Tenzy stays on this iPhone.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                 }
                 Block("Stays on your phone", check: true, [
-                    "Clips and snippets you save (keyboard, Share Sheet, or Grab)",
+                    "Photos, videos, PDFs and files you open in a tool, and the results — until you save or share them yourself",
+                    "Scans, extracted text, receipts, warranties and invoices you make",
+                    "Voice notes and transcripts, only when you tap record",
+                    "What Memory indexes from your photos — the index is built and kept on this iPhone",
                     "Vault items — encrypted with a key only your Face ID or passcode can release",
-                    "Voice notes, night-recorder clips and transcripts",
-                    "Scans, extracted text, and cleaned photos — until you share them yourself",
+                    "Your saved tools, clips, notes and settings",
                 ], note: "Stored in the app's private container. Deleting the app deletes all of it. We can't see it; there is no server.")
                 Block("Never collected", check: true, [
                     "Your name, email, or any account — there isn't one",
-                    "Your location (used live for the compass and GPS dashboard, never stored or sent), contacts, or photo library beyond what you pick",
-                    "Analytics or crash reports — Tenzy has none",
+                    "Analytics, tracking of what you do inside the app, or crash reports — Tenzy has none",
+                    "Your contacts, location, photos or recordings: they're used on your phone to do the job you asked for and are never sent to us",
                 ], note: nil)
                 Block("The one exception: ads", check: false, [
                     "The free version shows ads through Google AdMob.",
-                    "If you allow tracking when asked, AdMob may use your advertising identifier to pick ads; say no and you still get ads, just less relevant ones.",
+                    "If you allow tracking when asked, AdMob may use your advertising identifier to pick and count ads; say no and you still get ads, just less personalised.",
                     "Change it anytime in Settings › Privacy & Security › Tracking.",
                     "Pro removes the ads and the ad code doesn't run.",
                 ], note: nil)
                 Block("Payments", check: false, ["Pro is $19.99 a year, billed by Apple. We never see your card."], note: nil)
-                Block("Permissions", check: false, [
-                    "Microphone: Decibel Meter measures level only; audio is never recorded.",
-                    "Camera: Doc Scanner, QR scanner, flashlight.",
-                    "Photos: Cleaner finds large or duplicate photos and videos to free space; iOS always confirms a delete.",
+                Block("Permissions — each asked for by the tool that needs it", check: false, [
+                    "Camera: scanning, QR and barcodes, Pro Camera, Identify, Color Vision.",
+                    "Microphone: Voice notes, Hearing Boost, Rest, and the sound meter (which measures level only, unless you record).",
+                    "Speech recognition: turning a recording into text, done on the phone.",
+                    "Contacts: the Contacts tool, only when you open it.",
+                    "Location: compass, GPS dashboard, Where I Parked and the Wi-Fi tools — used live, never stored or sent.",
+                    "Photos: the tools you pick media in; iOS always confirms a delete.",
+                ], note: nil)
+                Block("Network use", check: false, [
+                    "Read-the-page downloads a web page only when you paste its link.",
+                    "Tools run on your phone with no connection, unless you ask for something that's online.",
+                    "Ads and purchases, as described above.",
                 ], note: nil)
                 Block("Children", check: false, ["Tenzy isn't for children under 13 and doesn't knowingly collect anything from them."], note: nil)
-                Text("Questions: \(SUPPORT_EMAIL) · Last updated October 15, 2026").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.bottom, HandySpacing.s32)
+                Text("Questions: \(SUPPORT_EMAIL) · Last updated November 16, 2026").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.bottom, HandySpacing.s32)
             }
             .padding(.horizontal, HandySpacing.gutter)
         }
