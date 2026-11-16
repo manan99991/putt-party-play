@@ -48,9 +48,9 @@ Unable to strip the following libraries, packaging them as they are: libandroidx
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1794824577145.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1794827546752.json
 
-BUILD SUCCESSFUL in 1m 39s
+BUILD SUCCESSFUL in 1m 40s
 38 actionable tasks: 19 executed, 19 up-to-date
 === keystore sanity ===
 upload.jks bytes: 2694 (expect ~2694)
@@ -80,8 +80,8 @@ Daemon will be stopped at the end of the build
 > Task :app:processReleaseMainManifest
 > Task :app:processReleaseManifest
 > Task :app:processReleaseManifestForPackage
-> Task :app:javaPreCompileRelease
 > Task :app:mergeReleaseResources
+> Task :app:javaPreCompileRelease
 > Task :app:mergeReleaseArtProfile
 > Task :app:extractProguardFiles
 > Task :app:mergeReleaseStartupProfile
@@ -141,7 +141,7 @@ w: file:///home/runner/work/putt-party-play/putt-party-play/android/app/src/main
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794824676838.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1794827647405.json
 
-BUILD SUCCESSFUL in 4m 52s
+BUILD SUCCESSFUL in 4m 50s
 50 actionable tasks: 50 executed
