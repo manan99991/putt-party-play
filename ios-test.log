@@ -1,201 +1,201 @@
 == test.log (results)
-2026-11-16 15:04:13.783274+0000 HandyTools[22975:65844] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-2026-11-16 15:04:14.187137+0000 HandyTools[22975:65844] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-Test Case '-[HandyToolsTests.BlockGoalTests testEveryBlockHasAKnownGoal]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.BlockGoalTests testPhotoStartOffersOnlyPhotoStepsGrouped]' passed (0.001 seconds).
+2026-11-16 15:45:45.846370+0000 HandyTools[22649:65553] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+2026-11-16 15:45:45.847323+0000 HandyTools[22649:65553] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
+Test Case '-[HandyToolsTests.BlockGoalTests testEveryBlockHasAKnownGoal]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.BlockGoalTests testPhotoStartOffersOnlyPhotoStepsGrouped]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.BlockGoalTests testTextStartOffersOnlyTextSteps]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.005 (0.008) seconds
-Test Case '-[HandyToolsTests.ChainFinishTests testFinishRoundTripsAndSplitsRecipients]' passed (0.046 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.009 (0.012) seconds
+Test Case '-[HandyToolsTests.ChainFinishTests testFinishRoundTripsAndSplitsRecipients]' passed (0.056 seconds).
 Test Case '-[HandyToolsTests.ChainFinishTests testLabels]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.ChainFinishTests testOutboxFromTextAndFile]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.ChainFinishTests testSharedToolNeverCarriesRecipients]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.ChainFinishTests testToolsSavedBeforeFinishExistedStillLoad]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.ChainFinishTests testOutboxFromTextAndFile]' passed (0.012 seconds).
+Test Case '-[HandyToolsTests.ChainFinishTests testSharedToolNeverCarriesRecipients]' passed (0.008 seconds).
+Test Case '-[HandyToolsTests.ChainFinishTests testToolsSavedBeforeFinishExistedStillLoad]' passed (0.014 seconds).
 Test Case '-[HandyToolsTests.ChainFinishTests testUnknownFinishKindFromAnotherPhoneFallsBackToShare]' passed (0.001 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.063 (0.727) seconds
-Test Case '-[HandyToolsTests.ChainPlannerTests testHideThenShrinkRuns]' passed (0.189 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testNonsenseGivesNothing]' passed (0.008 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testPhotoFileFeedsImageBlocks]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testReceiptReadsThenPulls]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testShrinkAndStrip]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.ChainPlannerTests testSummarizeText]' passed (0.002 seconds).
-	 Executed 6 tests, with 0 failures (0 unexpected) in 0.207 (1.781) seconds
-Test Case '-[HandyToolsTests.ChainRowTests testSplitPiecesOnOneRowAreRejoined]' passed (0.022 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.022 (0.022) seconds
-Test Case '-[HandyToolsTests.ChainRunnerTests testEmptyTextStopsWithNamedBlock]' passed (0.022 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testFullReceiptChainOnSampleImage]' passed (3.651 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testMismatchedStepsAreRejectedInPlainWords]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testReceiptBlockProducesCSV]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testRunnerRefusesInvalidChainWithoutRunning]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testShrinkAndStripGiveJPEGFiles]' passed (0.071 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testSummarizeBlockRuns]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.ChainRunnerTests testTemplatesAreValidAndCodable]' passed (0.025 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 3.786 (3.790) seconds
-Test Case '-[HandyToolsTests.ChainTemplateTests testCardAndTaskBlocks]' passed (0.016 seconds).
-Test Case '-[HandyToolsTests.ChainTemplateTests testShareRoundTripAndRejectsJunk]' passed (0.003 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.094 (2.734) seconds
+Test Case '-[HandyToolsTests.ChainPlannerTests testHideThenShrinkRuns]' passed (3.448 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testNonsenseGivesNothing]' passed (0.016 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testPhotoFileFeedsImageBlocks]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testReceiptReadsThenPulls]' passed (0.009 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testShrinkAndStrip]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.ChainPlannerTests testSummarizeText]' passed (0.917 seconds).
+	 Executed 6 tests, with 0 failures (0 unexpected) in 4.397 (4.404) seconds
+Test Case '-[HandyToolsTests.ChainRowTests testSplitPiecesOnOneRowAreRejoined]' passed (0.047 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.047 (0.048) seconds
+Test Case '-[HandyToolsTests.ChainRunnerTests testEmptyTextStopsWithNamedBlock]' passed (0.032 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testFullReceiptChainOnSampleImage]' passed (4.583 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testMismatchedStepsAreRejectedInPlainWords]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testReceiptBlockProducesCSV]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testRunnerRefusesInvalidChainWithoutRunning]' passed (0.008 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testShrinkAndStripGiveJPEGFiles]' passed (0.062 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testSummarizeBlockRuns]' passed (0.564 seconds).
+Test Case '-[HandyToolsTests.ChainRunnerTests testTemplatesAreValidAndCodable]' passed (0.034 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 5.292 (5.933) seconds
+Test Case '-[HandyToolsTests.ChainTemplateTests testCardAndTaskBlocks]' passed (0.023 seconds).
+Test Case '-[HandyToolsTests.ChainTemplateTests testShareRoundTripAndRejectsJunk]' passed (0.004 seconds).
 Test Case '-[HandyToolsTests.ChainTemplateTests testTwentyEightTemplatesAllValidAndUnique]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.020 (0.022) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.027 (0.063) seconds
 Test Case '-[HandyToolsTests.CombineTests testCombineFlagSurvivesSavingAndOldToolsLoadWithoutIt]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.CombineTests testPicturesBecomeOnePdfWithAPageEach]' passed (0.028 seconds).
-Test Case '-[HandyToolsTests.CombineTests testSavedPhotosCombineToo]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.CombineTests testSeparatePdfsAreJoinedInOrder]' passed (0.525 seconds).
+Test Case '-[HandyToolsTests.CombineTests testPicturesBecomeOnePdfWithAPageEach]' passed (0.032 seconds).
+Test Case '-[HandyToolsTests.CombineTests testSavedPhotosCombineToo]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.CombineTests testSeparatePdfsAreJoinedInOrder]' passed (0.693 seconds).
 Test Case '-[HandyToolsTests.CombineTests testTextOrMixedResultsAreLeftSeparate]' passed (0.002 seconds).
-	 Executed 5 tests, with 0 failures (0 unexpected) in 0.563 (0.565) seconds
-Test Case '-[HandyToolsTests.ContactsTransferTests testPlanSkipsPeopleAlreadyThereAndDuplicatesInsideTheBatch]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.ContactsTransferTests testSamePersonAcrossAccountsIsRecognised]' passed (0.001 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.003 (0.008) seconds
-Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (1.416 seconds).
-Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.047 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.022 seconds).
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.734 (0.737) seconds
+Test Case '-[HandyToolsTests.ContactsTransferTests testPlanSkipsPeopleAlreadyThereAndDuplicatesInsideTheBatch]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.ContactsTransferTests testSamePersonAcrossAccountsIsRecognised]' passed (0.056 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.059 (0.061) seconds
+Test Case '-[HandyToolsTests.EngineTests testCaptureFindsCodesInPhotosAndActionsInText]' passed (1.580 seconds).
+Test Case '-[HandyToolsTests.EngineTests testCatalogIsConsistent]' passed (0.036 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionHighlightCubeKeepsTargetGreysRest]' passed (0.023 seconds).
 Test Case '-[HandyToolsTests.EngineTests testColorVisionMatricesBehave]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.132 seconds).
+Test Case '-[HandyToolsTests.EngineTests testColorVisionNamesAndAverage]' passed (0.156 seconds).
 Test Case '-[HandyToolsTests.EngineTests testContactsBackupDueLogic]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testContactsCategorize]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.019 seconds).
-Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (1.202 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDataGrabReceiptCardEventTable]' passed (0.035 seconds).
+Test Case '-[HandyToolsTests.EngineTests testDuplicateHashSeparatesDifferentDocuments]' passed (0.019 seconds).
+Test Case '-[HandyToolsTests.EngineTests testEnhanceProducesAValidImageBothModes]' passed (1.824 seconds).
 Test Case '-[HandyToolsTests.EngineTests testFileKindClassifier]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGeoFormatting]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGeoFormatting]' passed (0.005 seconds).
 Test Case '-[HandyToolsTests.EngineTests testGifFromPhotosHasEveryFrame]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.043 seconds).
-Test Case '-[HandyToolsTests.EngineTests testIdentifierCleansLabels]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLabelDecodeFlagsAndServingMath]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.123 seconds).
-Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testGlossaryFindsTermsAndRedFlags]' passed (0.057 seconds).
+Test Case '-[HandyToolsTests.EngineTests testIdentifierCleansLabels]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testLabelDecodeFlagsAndServingMath]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testLinkCleanerStripsTrackingAndUnwrapsRedirects]' passed (0.008 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMagnifierPipelineKeepsExtentAndAppliesLooks]' passed (0.131 seconds).
+Test Case '-[HandyToolsTests.EngineTests testMeasureMathLengthsAreasAndFormatting]' passed (0.004 seconds).
 Test Case '-[HandyToolsTests.EngineTests testMemorySynonymAndColorSearch]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testMorseEncoding]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.123 seconds).
-Test Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (0.237 seconds).
-Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (1.409 seconds).
-Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.014 seconds).
+Test Case '-[HandyToolsTests.EngineTests testNoiseSynthEveryKindRendersFiniteAudio]' passed (0.021 seconds).
+Test Case '-[HandyToolsTests.EngineTests testNoiseSynthProducesBoundedColouredNoise]' passed (0.265 seconds).
+Test Case '-[HandyToolsTests.EngineTests testOCRReadsCleanRenderedText]' passed (1.281 seconds).
+Test Case '-[HandyToolsTests.EngineTests testPitchDetectionAndNoteMath]' passed (0.016 seconds).
 Test Case '-[HandyToolsTests.EngineTests testPriceExtractionFromListingText]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.375 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (0.318 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (0.042 seconds).
+Test Case '-[HandyToolsTests.EngineTests testProImageOverlaysAndHistogram]' passed (0.372 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReadAloudPicksOneStableLanguageForMixedPages]' passed (1.322 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReadSourceExtractsArticleTextAndReaderSplits]' passed (0.366 seconds).
 Test Case '-[HandyToolsTests.EngineTests testReceiptFuzzySearchFindsTypoAndVagueWords]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.EngineTests testReceiptSimilarityIsBoundedAndSane]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.017 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRoutePlanLinksPlacesAndOrders]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testReceiptSimilarityIsBoundedAndSane]' passed (2.274 seconds).
+Test Case '-[HandyToolsTests.EngineTests testResizeCapsLongestSideAndNeverUpscales]' passed (0.026 seconds).
+Test Case '-[HandyToolsTests.EngineTests testRoutePlanLinksPlacesAndOrders]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.EngineTests testRoutePlanNeverGuessesANameAndStaysGraceful]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testRoutePlanRoutesEmailAndCallTasksToTheRightApp]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.672 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.052 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (1.602 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.254 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (2.459 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (6.757 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanRotationKeepsStampsAndInkInPlace]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.038 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (1.714 seconds).
-Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.059 seconds).
+Test Case '-[HandyToolsTests.EngineTests testRoutePlanRoutesEmailAndCallTasksToTheRightApp]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSavedSignatureRoundTrips]' passed (0.818 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScamAnalyzerCatchesClassicsAndClearsNormalText]' passed (0.058 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanCleanupProducesDocumentLooks]' passed (2.227 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanNonSearchablePDFHasNoText]' passed (0.646 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanPDFIsSearchableAndKeepsPageCount]' passed (4.521 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanPDFUnderLimitKeepsTextLayer]' passed (8.250 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanRotationKeepsStampsAndInkInPlace]' passed (0.006 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScanSplitRangesAndEveryPage]' passed (0.046 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSceneComposerSpeaksConcretely]' passed (2.510 seconds).
+Test Case '-[HandyToolsTests.EngineTests testScrubberBlocksPixelsAndDropsMetadata]' passed (0.053 seconds).
 Test Case '-[HandyToolsTests.EngineTests testScrubberClassifiesPersonalTextForAutoHiding]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSensorMathConversions]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.EngineTests testShutterLabelNeverTrapsOnInvalidExposure]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeParserHandlesMultipacksAndJunk]' passed (0.004 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (7.596 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (2.463 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (3.969 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' passed (13.804 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.108 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (0.702 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (0.516 seconds).
-Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.102 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (0.461 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptionCoversTheWholeRecording]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeParserHandlesMultipacksAndJunk]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageIsFastAndOffMainForBigPhoto]' passed (8.692 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetImageLandsUnderLimit]' passed (2.224 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetPDFLandsUnderLimit]' passed (3.287 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSizeTargetVideoLandsUnderLimit]' passed (21.423 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSoundEventDetectorArmsHoldsAndStops]' passed (0.004 seconds).
+Test Case '-[HandyToolsTests.EngineTests testSpellFixFollowsLanguage]' passed (0.160 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStitcherOrdersShuffledScreenshots]' passed (0.499 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStitcherRemovesOverlapAndKeepsChromeOnce]' passed (0.586 seconds).
+Test Case '-[HandyToolsTests.EngineTests testStudioEncodesEveryFormat]' passed (0.079 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTextToolsFixSummarizeActionsStats]' passed (0.507 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTranscriptionCoversTheWholeRecording]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.EngineTests testTranscriptionProgressIsHonest]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTranscriptionStitchKeepsEveryWindow]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.EngineTests testTroyOunceForPreciousMetals]' passed (0.076 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTranscriptionStitchKeepsEveryWindow]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTripTrackerAccumulatesAndFiltersNoise]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testTroyOunceForPreciousMetals]' passed (0.008 seconds).
 Test Case '-[HandyToolsTests.EngineTests testUnitPriceComparesAcrossDifferentUnits]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVaultCryptoRoundTripsAndRejectsTampering]' passed (0.009 seconds).
-Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (0.443 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWarrantyCountdown]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.EngineTests testWifiPayloadRoundTripsThroughParser]' passed (0.104 seconds).
-	 Executed 70 tests, with 0 failures (0 unexpected) in 49.600 (49.683) seconds
-Test Case '-[HandyToolsTests.FunStepTests testDescribeItUnderstandsTheFunRequests]' passed (0.009 seconds).
-Test Case '-[HandyToolsTests.FunStepTests testEmojiFacesSaysSoWhenThereIsNoFace]' passed (0.228 seconds).
-Test Case '-[HandyToolsTests.FunStepTests testEmojiMosaicIsBuiltFromTheGrid]' passed (0.249 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVaultCryptoRoundTripsAndRejectsTampering]' passed (0.010 seconds).
+Test Case '-[HandyToolsTests.EngineTests testVideoEngineTrimsConvertsMutesAndMakesGIF]' passed (0.786 seconds).
+Test Case '-[HandyToolsTests.EngineTests testWarrantyCountdown]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.EngineTests testWifiPayloadRoundTripsThroughParser]' passed (0.091 seconds).
+	 Executed 70 tests, with 0 failures (0 unexpected) in 67.388 (69.043) seconds
+Test Case '-[HandyToolsTests.FunStepTests testDescribeItUnderstandsTheFunRequests]' passed (0.013 seconds).
+Test Case '-[HandyToolsTests.FunStepTests testEmojiFacesSaysSoWhenThereIsNoFace]' passed (0.153 seconds).
+Test Case '-[HandyToolsTests.FunStepTests testEmojiMosaicIsBuiltFromTheGrid]' passed (0.242 seconds).
 Test Case '-[HandyToolsTests.FunStepTests testFunHelpersDoWhatTheySay]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.FunStepTests testFunStepsFitWhereTheyShould]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.FunStepTests testMemeTextKeepsThePhotoSizeAndNeedsWords]' passed (0.030 seconds).
-Test Case '-[HandyToolsTests.FunStepTests testPhotosBecomeOneGif]' passed (0.025 seconds).
-Test Case '-[HandyToolsTests.FunStepTests testStickerTrimsToTheSubjectAndAddsAnEdge]' passed (0.039 seconds).
-Test Case '-[HandyToolsTests.FunStepTests testTheGifOptionTravelsWithTheTool]' passed (0.001 seconds).
-	 Executed 9 tests, with 0 failures (0 unexpected) in 0.583 (0.588) seconds
-Test Case '-[HandyToolsTests.GivenTests testAFileIsSortedByItsName]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.GivenTests testEveryKindHasAToolWaiting]' passed (1.004 seconds).
-Test Case '-[HandyToolsTests.GivenTests testPastedWordsAreTextOrALink]' passed (0.003 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1.015 (1.017) seconds
-Test Case '-[HandyToolsTests.InputTests testAContactBecomesLinesTheTextStepsCanRead]' passed (1.037 seconds).
-Test Case '-[HandyToolsTests.InputTests testAPdfGivesItsWordsAndItsPages]' passed (0.026 seconds).
+Test Case '-[HandyToolsTests.FunStepTests testFunStepsFitWhereTheyShould]' passed (0.000 seconds).
+Test Case '-[HandyToolsTests.FunStepTests testMemeTextKeepsThePhotoSizeAndNeedsWords]' passed (0.027 seconds).
+Test Case '-[HandyToolsTests.FunStepTests testPhotosBecomeOneGif]' passed (0.016 seconds).
+Test Case '-[HandyToolsTests.FunStepTests testStickerTrimsToTheSubjectAndAddsAnEdge]' passed (0.025 seconds).
+Test Case '-[HandyToolsTests.FunStepTests testTheGifOptionTravelsWithTheTool]' passed (0.003 seconds).
+	 Executed 9 tests, with 0 failures (0 unexpected) in 0.480 (0.484) seconds
+Test Case '-[HandyToolsTests.GivenTests testAFileIsSortedByItsName]' passed (0.015 seconds).
+Test Case '-[HandyToolsTests.GivenTests testEveryKindHasAToolWaiting]' passed (0.501 seconds).
+Test Case '-[HandyToolsTests.GivenTests testPastedWordsAreTextOrALink]' passed (0.002 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.518 (0.519) seconds
+Test Case '-[HandyToolsTests.InputTests testAContactBecomesLinesTheTextStepsCanRead]' passed (0.312 seconds).
+Test Case '-[HandyToolsTests.InputTests testAPdfGivesItsWordsAndItsPages]' passed (0.030 seconds).
 Test Case '-[HandyToolsTests.InputTests testNewWordsGoUnderWhatIsThere]' passed (0.001 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1.063 (1.065) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.343 (0.344) seconds
 Test Case '-[HandyToolsTests.IntroTests testStartersCanBeNarrowedToWhatYouHave]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.IntroTests testTheDemoStarterExistsAndTheIntroIsThreeIdeas]' passed (0.019 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 0.020 (0.021) seconds
-Test Case '-[HandyToolsTests.MoreBlocksTests testBestDealRanksByUnitPrice]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.MoreBlocksTests testCleanLinksStripsTrackingAndKeepsTheRest]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.MoreBlocksTests testNewBlocksChainCorrectly]' passed (0.000 seconds).
-Test Case '-[HandyToolsTests.MoreBlocksTests testPhotoToPdfGivesAPdfFile]' passed (0.628 seconds).
+Test Case '-[HandyToolsTests.IntroTests testTheDemoStarterExistsAndTheIntroIsThreeIdeas]' passed (0.018 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.018 (0.019) seconds
+Test Case '-[HandyToolsTests.MoreBlocksTests testBestDealRanksByUnitPrice]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.MoreBlocksTests testCleanLinksStripsTrackingAndKeepsTheRest]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.MoreBlocksTests testNewBlocksChainCorrectly]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.MoreBlocksTests testPhotoToPdfGivesAPdfFile]' passed (0.882 seconds).
 Test Case '-[HandyToolsTests.MoreBlocksTests testPlannerUnderstandsTheNewJobs]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.MoreBlocksTests testQrBlockGivesAnImageAndRefusesEmptyText]' passed (0.225 seconds).
-Test Case '-[HandyToolsTests.MoreBlocksTests testScamBlockNamesTheVerdictAndWhy]' passed (0.009 seconds).
-Test Case '-[HandyToolsTests.MoreBlocksTests testScamBlockOnNormalTextIsLowRisk]' passed (0.003 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 0.875 (0.879) seconds
+Test Case '-[HandyToolsTests.MoreBlocksTests testQrBlockGivesAnImageAndRefusesEmptyText]' passed (0.281 seconds).
+Test Case '-[HandyToolsTests.MoreBlocksTests testScamBlockNamesTheVerdictAndWhy]' passed (0.013 seconds).
+Test Case '-[HandyToolsTests.MoreBlocksTests testScamBlockOnNormalTextIsLowRisk]' passed (0.004 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 1.190 (1.193) seconds
 Test Case '-[HandyToolsTests.NewKindTests testAFileIsARecordingAPdfOrAPhotoByItsEnding]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.NewKindTests testASharedToolNeverCarriesAPdfPassword]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.NewKindTests testAWebPageBecomesItsWords]' passed (0.012 seconds).
-Test Case '-[HandyToolsTests.NewKindTests testCaptionsBreakOnFullLinesAndPauses]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.NewKindTests testEveryStepHasAGoalTheBuilderShows]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.NewKindTests testASharedToolNeverCarriesAPdfPassword]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.NewKindTests testAWebPageBecomesItsWords]' passed (0.013 seconds).
+Test Case '-[HandyToolsTests.NewKindTests testCaptionsBreakOnFullLinesAndPauses]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.NewKindTests testEveryStepHasAGoalTheBuilderShows]' passed (0.003 seconds).
 Test Case '-[HandyToolsTests.NewKindTests testLanguagesStylesGridAndLocation]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.NewKindTests testNewStartersAreSetUpAsDescribed]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.NewKindTests testNewStepsFitOnlyTheirOwnKind]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.NewKindTests testPageListReadsRangesAndIgnoresJunk]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.NewKindTests testPlannerUnderstandsTheNewKinds]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.NewKindTests testStepsChainAcrossTheNewKinds]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.NewKindTests testTrimKeepsTheStartOrTheEnd]' passed (0.001 seconds).
-	 Executed 12 tests, with 0 failures (0 unexpected) in 0.029 (0.035) seconds
-Test Case '-[HandyToolsTests.NewStepRunTests testACaptionIsDrawnOnlyWhileItIsDue]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testACodeIsReadBackWhenThePhoneCanSeeIt]' passed (1.073 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testAFileKnowsItsKind]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testALockedPdfNeedsItsPassword]' passed (0.014 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testAStepThisPhoneCannotRunSaysSoInsteadOfFailing]' passed (0.107 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testATextToolCanEndAsALockedPdf]' passed (0.035 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testKeepSomePagesKeepsThemInTheOrderAsked]' passed (0.010 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testPdfWordsAndShrinkNeverMakeThingsWorse]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testPhotosBecomeOneCollage]' passed (0.042 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testReadThePageNeedsALinkAndPreviewsWithoutTheNetwork]' passed (0.011 seconds).
+Test Case '-[HandyToolsTests.NewKindTests testPlannerUnderstandsTheNewKinds]' passed (0.011 seconds).
+Test Case '-[HandyToolsTests.NewKindTests testStepsChainAcrossTheNewKinds]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.NewKindTests testTrimKeepsTheStartOrTheEnd]' passed (0.026 seconds).
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.064 (0.074) seconds
+Test Case '-[HandyToolsTests.NewStepRunTests testACaptionIsDrawnOnlyWhileItIsDue]' passed (0.015 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testACodeIsReadBackWhenThePhoneCanSeeIt]' passed (0.922 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testAFileKnowsItsKind]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testALockedPdfNeedsItsPassword]' passed (0.027 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testAStepThisPhoneCannotRunSaysSoInsteadOfFailing]' passed (0.090 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testATextToolCanEndAsALockedPdf]' passed (0.054 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testKeepSomePagesKeepsThemInTheOrderAsked]' passed (0.011 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testPdfWordsAndShrinkNeverMakeThingsWorse]' passed (0.005 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testPhotosBecomeOneCollage]' passed (0.048 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testReadThePageNeedsALinkAndPreviewsWithoutTheNetwork]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.NewStepRunTests testTallCropKeepsTheMiddleAtNineBySixteen]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.NewStepRunTests testTextBecomesAPdfThatHoldsItsWords]' passed (0.046 seconds).
-	 Executed 12 tests, with 0 failures (0 unexpected) in 1.358 (1.365) seconds
-Test Case '-[HandyToolsTests.NewestDrawingTests testAChangedVoiceIsAWavAtTheNewSpeed]' passed (0.159 seconds).
-Test Case '-[HandyToolsTests.NewestDrawingTests testArtKeepsTheShapeAndShrinksBigPhotos]' passed (1.972 seconds).
-Test Case '-[HandyToolsTests.NewestDrawingTests testBeforeAndAfterNeedsTwoPictures]' passed (0.018 seconds).
+Test Case '-[HandyToolsTests.NewStepRunTests testTextBecomesAPdfThatHoldsItsWords]' passed (0.064 seconds).
+	 Executed 12 tests, with 0 failures (0 unexpected) in 1.241 (1.249) seconds
+Test Case '-[HandyToolsTests.NewestDrawingTests testAChangedVoiceIsAWavAtTheNewSpeed]' passed (0.065 seconds).
+Test Case '-[HandyToolsTests.NewestDrawingTests testArtKeepsTheShapeAndShrinksBigPhotos]' passed (1.394 seconds).
+Test Case '-[HandyToolsTests.NewestDrawingTests testBeforeAndAfterNeedsTwoPictures]' passed (0.012 seconds).
 Test Case '-[HandyToolsTests.NewestDrawingTests testOnlyTheNewestResultsAreKept]' passed (0.002 seconds).
-	 Executed 4 tests, with 0 failures (0 unexpected) in 2.151 (2.155) seconds
-Test Case '-[HandyToolsTests.NewestStepTests testAToolTravelsAsALink]' passed (0.026 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 1.473 (1.476) seconds
+Test Case '-[HandyToolsTests.NewestStepTests testAToolTravelsAsALink]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.NewestStepTests testDescribeItUnderstandsTheNewestRequests]' passed (0.002 seconds).
 Test Case '-[HandyToolsTests.NewestStepTests testPicturesAreRedrawnInEachStyle]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.NewestStepTests testVoicesAndWavFiles]' passed (0.001 seconds).
-	 Executed 4 tests, with 0 failures (0 unexpected) in 0.030 (0.032) seconds
-Test Case '-[HandyToolsTests.PeopleAndIdTests testBothSidesOfAnIdBecomeOnePageNotTwo]' passed (0.089 seconds).
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.006 (0.008) seconds
+Test Case '-[HandyToolsTests.PeopleAndIdTests testBothSidesOfAnIdBecomeOnePageNotTwo]' passed (0.070 seconds).
 Test Case '-[HandyToolsTests.PeopleAndIdTests testCallingCodes]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.PeopleAndIdTests testChatLinkAddsTheCountryCodeOnlyWhenItIsMissing]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.PeopleAndIdTests testChatLinkBlockAndItsStarterEndByOpening]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.PeopleAndIdTests testChatLinkAddsTheCountryCodeOnlyWhenItIsMissing]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.PeopleAndIdTests testChatLinkBlockAndItsStarterEndByOpening]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.PeopleAndIdTests testChatLinkWithNoNumberIsNil]' passed (0.001 seconds).
-Test Case '-[HandyToolsTests.PeopleAndIdTests testContactQrNeedsAWayToReachThePerson]' passed (0.689 seconds).
+Test Case '-[HandyToolsTests.PeopleAndIdTests testContactQrNeedsAWayToReachThePerson]' passed (0.245 seconds).
 Test Case '-[HandyToolsTests.PeopleAndIdTests testIdStarterIsWired]' passed (0.001 seconds).
 Test Case '-[HandyToolsTests.PeopleAndIdTests testSlotsStackDownThePageInsideTheMargins]' passed (0.001 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 0.785 (0.979) seconds
-Test Case '-[HandyToolsTests.PortalBlocksTests testExactSizeBlockExplainsABadSize]' passed (0.002 seconds).
-Test Case '-[HandyToolsTests.PortalBlocksTests testExactSizeBlockGivesExactlyThatManyPixels]' passed (0.007 seconds).
-Test Case '-[HandyToolsTests.PortalBlocksTests testLimitLabels]' passed (0.005 seconds).
-Test Case '-[HandyToolsTests.PortalBlocksTests testPixelsParsesCommonSpellingsAndRejectsNonsense]' passed (0.003 seconds).
-Test Case '-[HandyToolsTests.PortalBlocksTests testPlannerUnderstandsKilobytesAndWatermark]' passed (0.006 seconds).
-Test Case '-[HandyToolsTests.PortalBlocksTests testPortalPhotoTemplateLandsUnderFiftyKilobytesAtExactSize]' passed (0.033 seconds).
-Test Case '-[HandyToolsTests.PortalBlocksTests testWatermarkKeepsTheSizeAndChangesThePicture]' passed (0.020 seconds).
-Test Case '-[HandyToolsTests.PortalBlocksTests testWatermarkLineHasWordsAndTheDay]' passed (0.003 seconds).
-	 Executed 8 tests, with 0 failures (0 unexpected) in 0.080 (0.087) seconds
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.320 (0.323) seconds
+Test Case '-[HandyToolsTests.PortalBlocksTests testExactSizeBlockExplainsABadSize]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.PortalBlocksTests testExactSizeBlockGivesExactlyThatManyPixels]' passed (0.008 seconds).
+Test Case '-[HandyToolsTests.PortalBlocksTests testLimitLabels]' passed (0.003 seconds).
+Test Case '-[HandyToolsTests.PortalBlocksTests testPixelsParsesCommonSpellingsAndRejectsNonsense]' passed (0.001 seconds).
+Test Case '-[HandyToolsTests.PortalBlocksTests testPlannerUnderstandsKilobytesAndWatermark]' passed (0.002 seconds).
+Test Case '-[HandyToolsTests.PortalBlocksTests testPortalPhotoTemplateLandsUnderFiftyKilobytesAtExactSize]' passed (0.023 seconds).
+Test Case '-[HandyToolsTests.PortalBlocksTests testWatermarkKeepsTheSizeAndChangesThePicture]' passed (0.012 seconds).
+Test Case '-[HandyToolsTests.PortalBlocksTests testWatermarkLineHasWordsAndTheDay]' passed (0.001 seconds).
+	 Executed 8 tests, with 0 failures (0 unexpected) in 0.050 (0.053) seconds
 Test Case '-[HandyToolsTests.ProStepTests testAToolNeedsProOnlyIfItUsesAProStep]' passed (0.001 seconds).
