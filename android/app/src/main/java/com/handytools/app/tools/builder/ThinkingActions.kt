@@ -85,6 +85,26 @@ object ThinkingActions {
     fun mapsURL(place: String): String? =
         if (place.isBlank()) null else "geo:0,0?q=" + java.net.URLEncoder.encode(place, "UTF-8")
 
+    /** One .ics holding every dated task as its own event, so "Add to Calendar" adds the whole plan at
+     * once. Same event format as the rest of the app. Pure and testable (parity with the iOS twin). */
+    fun icsCalendar(events: List<Triple<String, Long, String>>): String {
+        val f = java.text.SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'", java.util.Locale.US)
+            .apply { timeZone = java.util.TimeZone.getTimeZone("UTC") }
+        return buildString {
+            append("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Tenzy//Thinking//EN\r\n")
+            for ((title, dueMs, place) in events) {
+                append("BEGIN:VEVENT\r\nUID:").append(dueMs).append("@tenzy\r\n")
+                append("DTSTAMP:").append(f.format(java.util.Date())).append("\r\n")
+                append("DTSTART:").append(f.format(java.util.Date(dueMs))).append("\r\n")
+                append("DTEND:").append(f.format(java.util.Date(dueMs + 3_600_000L))).append("\r\n")
+                append("SUMMARY:").append(title).append("\r\n")
+                if (place.isNotBlank()) append("LOCATION:").append(place).append("\r\n")
+                append("END:VEVENT\r\n")
+            }
+            append("END:VCALENDAR\r\n")
+        }
+    }
+
     /** A one-event .ics calendar payload for a dated task — same format as the rest of the app. */
     fun icsEvent(title: String, dueMs: Long, place: String = ""): String {
         val f = java.text.SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'", java.util.Locale.US)

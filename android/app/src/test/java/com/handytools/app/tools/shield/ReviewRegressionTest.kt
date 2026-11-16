@@ -222,6 +222,16 @@ class ReviewRegressionTest {
         assertNull(ThinkingActions.mapsURL("   "))
     }
 
+    // "Act on it" Add-to-Calendar bundle (#285), parity with the iOS twin.
+    @Test fun thinkingActionsCalendarBundle() {
+        val ics = ThinkingActions.icsCalendar(listOf(
+            Triple("Email Ana", 1_800_000_000_000L, ""), Triple("Dentist", 1_800_100_000_000L, "Oak Street Clinic")))
+        assertEquals(2, ics.split("BEGIN:VEVENT").size - 1)          // one event per dated task
+        assertEquals(1, ics.split("BEGIN:VCALENDAR").size - 1)        // one calendar wrapper
+        assertTrueMsg("both summaries", ics.contains("SUMMARY:Email Ana") && ics.contains("SUMMARY:Dentist"))
+        assertTrueMsg("location", ics.contains("LOCATION:Oak Street Clinic"))
+    }
+
     // Any common audio format a user might send must be recognised as audio, lockstep with the iOS twin.
     @Test fun commonAudioFormatsAreRecognised() {
         for (e in listOf("mp3", "m4a", "wav", "aac", "caf", "ogg", "flac", "aiff", "aif", "amr", "wma", "opus", "m4b", "MP3")) {
