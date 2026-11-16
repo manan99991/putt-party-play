@@ -119,7 +119,7 @@ struct Tool: Identifiable {
     Tool(id: "memory",     name: "Memory",           blurb: "Ask your screenshots anything",     icon: "doc.text.magnifyingglass",            page: 2, ai: true, asset: "tool_memory", keywords: ["memory","find","search","photos","screenshot","screenshots","wifi","password","code","confirmation","parking","remember","where","receipt","ask","my photos","camera roll","saved"]),
     Tool(id: "warranty",   name: "Warranty & Receipts", blurb: "File receipts, never miss a warranty", icon: "shippingbox.fill",                 page: 2, asset: "tool_shareready", keywords: ["warranty","receipt","receipts","proof of purchase","vault","store","shoebox","expiry","expires","return","refund","find receipt","search receipt","appliance","electronics","guarantee"]),
     Tool(id: "textstudio", name: "Text Studio",      blurb: "Fix, rewrite, reply, summarize",    icon: "text.badge.checkmark",                page: 2, ai: true, asset: "tool_textstudio", keywords: ["text","grammar","proofread","rewrite","tone","reply","summarize","summary","edit","polish","email","message","ai"]),
-    Tool(id: "thinking",   name: "Thinking tools",   blurb: "Untangle, plan the day, decide, explain, reword", icon: "brain.head.profile",       page: 2, ai: true, keywords: ["think","thinking","untangle","plan my day","decide","decision","crossroads","explain","plain english","reword","rewrite","tone","brain dump","clear my head","prep","checklist","focus","overwhelmed","steps","to-do","todo","ai"]),
+    Tool(id: "thinking",   name: "Thinking tools",   blurb: "Untangle, plan the day, decide, explain, reword", icon: "brain.head.profile",       page: 4, ai: true, asset: "tool_explain", keywords: ["think","thinking","untangle","plan my day","decide","decision","crossroads","explain","plain english","reword","rewrite","tone","brain dump","clear my head","prep","checklist","focus","overwhelmed","steps","to-do","todo","ai"]),
     Tool(id: "translate",  name: "Translate",        blurb: "Text, camera, voice — offline",     icon: "character.bubble.fill",               page: 2, asset: "tool_translate", keywords: ["translate","translation","language","offline","camera","voice","conversation","spanish","french","menu","sign"]),
     Tool(id: "voicenotes", name: "Voice → Notes",    blurb: "Transcript, summary, to‑dos",       icon: "waveform.badge.mic",                  page: 2, ai: true, asset: "tool_voicenotes", keywords: ["voice","record","transcribe","transcript","meeting","notes","summary","action items","dictation","audio","speech","ai"]),
     Tool(id: "shield",     name: "Message Shield",   blurb: "Spot scams, see why",               icon: "shield.lefthalf.filled",              page: 2, ai: true, asset: "tool_shield", keywords: ["scam","phishing","spam","fraud","suspicious","text","email","link","safe","check","is this real","mom","ai"]),
@@ -399,7 +399,7 @@ struct HomeView: View {
     @FocusState private var searching: Bool
     @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" || $0 == "home" || $0 == "homepro" ? nil : [$0] } ?? []
 
-    private let captions = ["Everyday essentials", "Power tools", "AI · on your phone"]
+    private let captions = ["Everyday essentials", "Power tools", "AI · on your phone", "Think & plan"]
 
     /// True while the search box has text — the grid is replaced by results that span every page.
     private var hasSearch: Bool { !search.trimmingCharacters(in: .whitespaces).isEmpty }
@@ -614,7 +614,7 @@ struct AllToolsView: View {
     @ObservedObject private var theme = ThemeManager.shared
     private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
     private let groups: [(title: String, page: Int)] = [
-        ("Photo, video & sharing", 1), ("Scan, read & organize", 2), ("Tools, sensors & accessibility", 3)
+        ("Photo, video & sharing", 1), ("Scan, read & organize", 2), ("Tools, sensors & accessibility", 3), ("Think & plan", 4)
     ]
     var body: some View {
         ScrollView {
