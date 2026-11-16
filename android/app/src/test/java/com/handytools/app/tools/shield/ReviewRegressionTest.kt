@@ -108,6 +108,15 @@ class ReviewRegressionTest {
         assertTrueMsg("the message must point at the files inside", note.lowercase().contains("inside"))
     }
 
+    // PowerPoint .pptx coverage (#294), lockstep with the iOS twin.
+    @Test fun pptxSlideReadsItsText() {
+        val xml = "<a:p><a:r><a:t>Hello</a:t></a:r><a:r><a:t>World</a:t></a:r></a:p><a:p><a:r><a:t>Second &amp; line</a:t></a:r></a:p>"
+        val out = com.handytools.app.tools.builder.BuilderInputs.slideText(xml)
+        assertTrueMsg("runs on a paragraph join with a space", out.contains("Hello World"))
+        assertTrueMsg("next paragraph survives, entity decoded", out.contains("Second & line"))
+        assertFalse("no tags remain", out.contains("<"))
+    }
+
     @Test fun unknownFileStillGetsTheGenericMessage() {
         val note = com.handytools.app.tools.builder.unsupportedNote("application/acad", "drawing.dwg")
         assertFalse("a non-archive must not be mislabelled an archive", note.contains("archive"))

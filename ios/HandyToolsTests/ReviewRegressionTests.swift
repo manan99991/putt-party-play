@@ -178,6 +178,15 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(Given.sheetText(sharedStrings: nil, sheet: sheet), "A & B\t3")
     }
 
+    // PowerPoint .pptx coverage (#294): a slide's XML read into readable lines, entities decoded, tags gone.
+    func testPptxSlideReadsItsText() {
+        let xml = "<a:p><a:r><a:t>Hello</a:t></a:r><a:r><a:t>World</a:t></a:r></a:p><a:p><a:r><a:t>Second &amp; line</a:t></a:r></a:p>"
+        let out = Given.slideText(xml)
+        XCTAssertTrue(out.contains("Hello World"), "runs on a paragraph join with a space")
+        XCTAssertTrue(out.contains("Second & line"), "next paragraph survives, entity decoded")
+        XCTAssertFalse(out.contains("<"), "no tags remain")
+    }
+
     // Thinking tools "Act on it" spine (#285): a task line is read into the built-in apps it belongs to.
     // Kept in lockstep with the Android twin so both platforms route the same task the same way.
     func testThinkingActionsRoutesTasksToTheRightApps() {

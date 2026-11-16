@@ -125,6 +125,7 @@ object BuilderInputs {
     fun richDocumentText(ctx: Context, uri: Uri, name: String?): String? {
         val ext = name?.substringAfterLast('.', "")?.lowercase().orEmpty()
         if (ext == "xlsx") return xlsxText(ctx, uri)
+        if (ext == "pptx") return pptxText(ctx, uri)
         val entryName = when (ext) { "docx" -> "word/document.xml"; "odt" -> "content.xml"; else -> return null }
         return try {
             ctx.contentResolver.openInputStream(uri)?.use { ins ->
@@ -160,6 +161,28 @@ object BuilderInputs {
             }
         }
     } catch (_: Throwable) { null }
+
+    /** A PowerPoint .pptx is a ZIP of per-slide XML; read every slide (ppt/slides/slideN.xml) in order and
+     * turn each into readable text. Null if it can't be read or has no text. */
+    private fun pptxText(ctx: Context, uri: Uri): String? = try {
+        ctx.contentResolver.openInputStream(uri)?.use { ins ->
+            java.util.zip.ZipInputStream(ins.buffered()).use { zip ->
+                val slides = sortedMapOf<String, String>(compareBy({ it.length }, { it }))
+                var e = zip.nextEntry
+                while (e != null) {
+                    val n = e.name
+                    if (n.startsWith("ppt/slides/slide") && n.endsWith(".xml")) slides[n] = zip.readBytes().toString(Charsets.UTF_8)
+                    e = zip.nextEntry
+                }
+                slides.values.joinToString("\n\n") { slideText(it) }.trim().ifBlank { null }
+            }
+        }
+    } catch (_: Throwable) { null }
+
+    /** One PowerPoint slide's XML → readable text: a paragraph (</a:p>) becomes a newline, a text run
+     * (</a:t>) a space, every tag is dropped and entities decoded (via stripDocXml). */
+    internal fun slideText(xml: String): String =
+        stripDocXml(xml.replace("</a:p>", "\n").replace("</a:t>", " "))
 
     /** Turn an .xlsx worksheet's XML (plus the shared-strings table) into tab/newline text — pure and
      * testable, the same rules as the iOS twin. Cells with t="s" reference a shared string by index;

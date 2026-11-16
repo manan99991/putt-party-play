@@ -93,6 +93,16 @@ struct Given: Identifiable {
             let out = sheetText(sharedStrings: Zip.entryText(in: url, named: "xl/sharedStrings.xml"), sheet: sheet)
             return out.isEmpty ? nil : out
         }
+        if ext == "pptx" {
+            // Each slide's text, slide after slide (ppt/slides/slide1.xml, slide2.xml, …).
+            var slides: [String] = []; var i = 1
+            while i <= 300, let xml = Zip.entryText(in: url, named: "ppt/slides/slide\(i).xml") {
+                let text = slideText(xml); if !text.isEmpty { slides.append(text) }
+                i += 1
+            }
+            let out = slides.joined(separator: "\n\n")
+            return out.isEmpty ? nil : out
+        }
         let entry: String
         switch ext { case "docx": entry = "word/document.xml"; case "odt": entry = "content.xml"; default: return nil }
         guard let xml = Zip.entryText(in: url, named: entry) else { return nil }
@@ -116,6 +126,15 @@ struct Given: Identifiable {
         }
         while rows.last?.trimmingCharacters(in: .whitespaces).isEmpty == true { rows.removeLast() }
         return rows.joined(separator: "\n")
+    }
+
+    /// One PowerPoint slide's XML → its readable text: a paragraph (`</a:p>`) becomes a newline, a text run
+    /// (`</a:t>`) a space, every tag is dropped and entities decoded. Same rule as the Word Finder's reader.
+    static func slideText(_ xml: String) -> String {
+        var s = xml.replacingOccurrences(of: "</a:p>", with: "\n").replacingOccurrences(of: "</a:t>", with: " ")
+        s = s.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+        s = decodeEntities(s)
+        return s.split(separator: "\n").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }.joined(separator: "\n")
     }
 
     private static func sharedStrings(_ xml: String?) -> [String] {
