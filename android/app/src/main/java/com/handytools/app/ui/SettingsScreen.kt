@@ -30,6 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Star
@@ -109,10 +110,10 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
 
             Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("What Tenzy does")
-            Text("Every tool in one place — tap any to open it. It all runs on your phone.",
+            Text("Every tool in one place. It all runs on your phone.",
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space8))
-            TOOLS.forEach { t -> MapRow(t.name, t.blurb, pro = ToolGate.isPro(t.route) && !premium) { onOpen(t.route) } }
+            SettingsRow(Icons.Outlined.Apps, "All ${TOOLS.size} tools", "Browse every tool and open any one") { onOpen("alltools") }
 
             Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("App")
@@ -137,6 +138,22 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
             Spacer(Modifier.height(HandyTokens.Space24))
         }
         BannerAd()
+    }
+}
+
+/** The full tool catalogue on its own page, so Settings stays short. Reached from the "All N tools" row. */
+@Composable
+fun AllToolsScreen(onOpen: (String) -> Unit) {
+    val premium by HandyApp.instance.billing.isPremium.collectAsState()
+    Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter)) {
+        Spacer(Modifier.height(HandyTokens.Space8))
+        Text("What Tenzy does", style = MaterialTheme.typography.headlineMedium)
+        Spacer(Modifier.height(HandyTokens.Space8))
+        Text("Every tool, in one place — tap any to open it. It all runs on your phone.",
+            style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        Spacer(Modifier.height(HandyTokens.Space16))
+        TOOLS.forEach { t -> MapRow(t.name, t.blurb, pro = ToolGate.isPro(t.route) && !premium) { onOpen(t.route) } }
+        Spacer(Modifier.height(HandyTokens.Space24))
     }
 }
 

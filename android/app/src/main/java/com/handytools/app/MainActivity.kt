@@ -177,6 +177,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("onboarding") { OnboardingScreen(onDone = { Onboarding.markSeen(this@MainActivity); nav.navigate("home") { popUpTo("onboarding") { inclusive = true } } }, onSeePro = { nav.navigate("paywall") }) }
                     composable("settings") { SettingsScreen(onOpen = { openTool(it) }) }
+                    composable("alltools") { com.handytools.app.ui.AllToolsScreen(onOpen = { openTool(it) }) }
                     composable("privacy") { PrivacyScreen() }
                     composable("onboarding2") { OnboardingScreen(startPage = 1, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }
                     composable("onboarding3") { OnboardingScreen(startPage = 2, onDone = { nav.navigate("home") }, onSeePro = { nav.navigate("paywall") }) }
