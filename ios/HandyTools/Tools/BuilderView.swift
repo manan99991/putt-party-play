@@ -7,6 +7,7 @@ import WidgetKit
 import PDFKit
 import AVKit
 import AVFoundation
+import Compression
 
 /// Something handed over before a tool was chosen: "here is what I have, what can you do with it?"
 struct Given: Identifiable {
@@ -69,21 +70,88 @@ struct Given: Identifiable {
         return nil
     }
 
-    /// The plain words of a rich document (Word .docx/.doc, .rtf/.rtfd, OpenDocument .odt), read with
-    /// Foundation's own document reader — no third-party dependency. Nil for anything it can't read.
+    /// The plain words of a rich-text document, read with Foundation's own document reader — no
+    /// third-party dependency. On iOS that reader supports RTF (the Office/OpenDocument document types
+    /// are macOS-only), so Word .docx / OpenDocument .odt are handled by unzipping instead (richOfficeText).
+    /// Nil for anything it can't read, so the caller falls back to the honest message.
     static func richDocumentText(_ url: URL, ext: String) -> String? {
-        let types: [String: NSAttributedString.DocumentType] = [
-            "docx": .officeOpenXML, "doc": .docFormat, "rtf": .rtf, "rtfd": .rtfd, "odt": .openDocument, "wordml": .wordML,
-        ]
-        guard let dt = types[ext], let data = try? Data(contentsOf: url),
-              let att = try? NSAttributedString(data: data, options: [.documentType: dt], documentAttributes: nil) else { return nil }
-        return att.string
+        let types: [String: NSAttributedString.DocumentType] = ["rtf": .rtf, "rtfd": .rtfd]
+        if let dt = types[ext], let data = try? Data(contentsOf: url),
+           let att = try? NSAttributedString(data: data, options: [.documentType: dt], documentAttributes: nil) {
+            return att.string
+        }
+        return richOfficeText(url, ext: ext)
+    }
+
+    /// Word .docx and OpenDocument .odt are ZIP packages; read the one entry that holds the body
+    /// (word/document.xml or content.xml) with Foundation's own zip reader and strip its XML to text.
+    /// Dependency-free. Nil if it isn't one of those or can't be read.
+    static func richOfficeText(_ url: URL, ext: String) -> String? {
+        let entry: String
+        switch ext { case "docx": entry = "word/document.xml"; case "odt": entry = "content.xml"; default: return nil }
+        guard let xml = Zip.entryText(in: url, named: entry) else { return nil }
+        var s = xml
+        s = s.replacingOccurrences(of: "<w:tab[^>]*/?>", with: "\t", options: [.regularExpression, .caseInsensitive])
+        s = s.replacingOccurrences(of: "</w:p>|<w:br[^>]*/?>|</text:p>|<text:line-break[^>]*/?>", with: "\n", options: [.regularExpression, .caseInsensitive])
+        s = s.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression)
+        for (e, c) in ["&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": "\"", "&apos;": "'"] { s = s.replacingOccurrences(of: e, with: c) }
+        return s.split(separator: "\n").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }.joined(separator: "\n")
     }
 
     static func from(text: String) -> Given? {
         let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !t.isEmpty else { return nil }
         return Given(payload: .text(t), label: TextTidy.details(t).links.isEmpty ? "Some text" : "A link")
+    }
+
+    /// A tiny, dependency-free ZIP reader: pulls one entry's bytes out of a ZIP package (a .docx/.odt is
+    /// one) by parsing the central directory and inflating the entry with Foundation's Compression
+    /// framework. Enough for reading an Office/OpenDocument body; not a general archive extractor.
+    enum Zip {
+        static func entryText(in url: URL, named wanted: String) -> String? {
+            guard let raw = try? Data(contentsOf: url), raw.count > 22 else { return nil }
+            let d = [UInt8](raw); let n = d.count
+            func u16(_ o: Int) -> Int { Int(d[o]) | (Int(d[o + 1]) << 8) }
+            func u32(_ o: Int) -> Int { Int(d[o]) | (Int(d[o + 1]) << 8) | (Int(d[o + 2]) << 16) | (Int(d[o + 3]) << 24) }
+            // End of central directory (0x06054b50), scanned from the end (a trailing comment is allowed).
+            var eocd = -1, i = n - 22, minI = max(0, n - 22 - 65_535)
+            while i >= minI { if u32(i) == 0x06054b50 { eocd = i; break }; i -= 1 }
+            guard eocd >= 0 else { return nil }
+            let count = u16(eocd + 10); var p = u32(eocd + 16)
+            for _ in 0..<count {
+                guard p + 46 <= n, u32(p) == 0x02014b50 else { break }
+                let method = u16(p + 10), compSize = u32(p + 20), uncompSize = u32(p + 24)
+                let nameLen = u16(p + 28), extraLen = u16(p + 30), commentLen = u16(p + 32), localOff = u32(p + 42)
+                let nameStart = p + 46
+                guard nameStart + nameLen <= n else { break }
+                let name = String(decoding: d[nameStart..<nameStart + nameLen], as: UTF8.self)
+                if name == wanted {
+                    guard localOff + 30 <= n, u32(localOff) == 0x04034b50 else { return nil }
+                    let dataStart = localOff + 30 + u16(localOff + 26) + u16(localOff + 28)
+                    guard dataStart + compSize <= n else { return nil }
+                    let comp = Data(d[dataStart..<dataStart + compSize])
+                    if method == 0 { return String(data: comp, encoding: .utf8) }
+                    if method == 8 { return inflate(comp, expected: uncompSize).flatMap { String(data: $0, encoding: .utf8) } }
+                    return nil
+                }
+                p = nameStart + nameLen + extraLen + commentLen
+            }
+            return nil
+        }
+
+        /// Raw DEFLATE inflate (ZIP method 8 stores a headerless deflate stream → COMPRESSION_ZLIB).
+        private static func inflate(_ src: Data, expected: Int) -> Data? {
+            let cap = (expected > 0 ? expected : src.count * 8) + 1024
+            var dst = [UInt8](repeating: 0, count: cap)
+            let produced = src.withUnsafeBytes { srcRaw -> Int in
+                guard let sp = srcRaw.bindMemory(to: UInt8.self).baseAddress else { return 0 }
+                return dst.withUnsafeMutableBufferPointer { dp in
+                    compression_decode_buffer(dp.baseAddress!, cap, sp, src.count, nil, COMPRESSION_ZLIB)
+                }
+            }
+            guard produced > 0 else { return nil }
+            return Data(dst[0..<produced])
+        }
     }
 
     /// Archive endings — a ZIP (or similar) holds other files; Tenzy works on what's inside, not the box.
