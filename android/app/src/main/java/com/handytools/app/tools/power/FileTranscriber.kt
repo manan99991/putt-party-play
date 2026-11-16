@@ -49,11 +49,11 @@ object FileTranscriber {
     fun budgetMs(durationMs: Long): Long = (durationMs * 5 / 2).coerceIn(20_000L, 900_000L)
 
     /** Decodes [file] + runs recognition. Null if unsupported or nothing decoded/recognised. */
-    suspend fun transcribe(ctx: Context, file: File, durationMs: Long): String? {
+    suspend fun transcribe(ctx: Context, file: File, durationMs: Long, langTag: String? = null): String? {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || !SpeechRecognizer.isRecognitionAvailable(ctx)) return null
         val pcm = try { withContext(Dispatchers.IO) { decodeToPcm(file) } } catch (_: Exception) { null } ?: return null
         try {
-            return withTimeoutOrNull(budgetMs(durationMs)) { recognise(ctx, pcm.file, pcm.sampleRate) }
+            return withTimeoutOrNull(budgetMs(durationMs)) { recognise(ctx, pcm.file, pcm.sampleRate, langTag) }
         } finally {
             try { pcm.file.delete() } catch (_: Exception) {}
         }
@@ -149,7 +149,7 @@ object FileTranscriber {
 
     /** Runs the on-device recogniser against a PCM file, accumulating every segment it returns. */
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private suspend fun recognise(ctx: Context, pcm: File, sampleRate: Int): String? =
+    private suspend fun recognise(ctx: Context, pcm: File, sampleRate: Int, langTag: String? = null): String? =
         suspendCancellableCoroutine { cont ->
             val main = Handler(Looper.getMainLooper())
             main.post {
@@ -166,6 +166,8 @@ object FileTranscriber {
 
                 val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                     putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                    // The chosen spoken language, when the tool set one; otherwise the recogniser's default.
+                    if (!langTag.isNullOrBlank()) putExtra(RecognizerIntent.EXTRA_LANGUAGE, langTag)
                     putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true)
                     putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, ctx.packageName)
                     putExtra(RecognizerIntent.EXTRA_AUDIO_SOURCE, pfd)

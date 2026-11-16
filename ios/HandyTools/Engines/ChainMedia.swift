@@ -33,7 +33,10 @@ enum ChainMedia {
             let url = VideoEngine.tempURL(ext.isEmpty ? "m4a" : ext.lowercased())
             guard (try? d.write(to: url)) != nil else { return .failure(.failed(b)) }
             defer { try? FileManager.default.removeItem(at: url) }
-            switch await Transcriber.listen(to: url) {
+            // "auto"/unset = the phone's own language (the smart default); a chosen language transcribes in it.
+            let lang = step.settings["lang"] ?? "auto"
+            let locale = (lang == "auto" || lang.isEmpty) ? Locale.current : Locale(identifier: lang)
+            switch await Transcriber.listen(to: url, locale: locale) {
             case .failure(let p): return .failure(.invalid(p.words(for: b)))
             case .success(let heard):
                 let text = heard.text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -321,12 +324,16 @@ enum Transcriber {
         return min(1, max(0, Double(pos) / Double(total)))
     }
 
-    static func listen(to url: URL) async -> Result<Heard, Problem> {
+    static func listen(to url: URL, locale: Locale = .current) async -> Result<Heard, Problem> {
         let asked = Once<SFSpeechRecognizerAuthorizationStatus>()
         Permission.speech { asked.finish($0) }
         let status = await withCheckedContinuation { asked.wait($0) }
         guard status == .authorized else { return .failure(.denied) }
-        guard let recognizer = SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(), recognizer.isAvailable, recognizer.supportsOnDeviceRecognition else { return .failure(.unavailable) }
+        // The chosen language first; fall back to the device's, then any available recognizer, so a tool
+        // set to transcribe Hindi uses a Hindi recogniser instead of forcing the words through English.
+        guard let recognizer = (SFSpeechRecognizer(locale: locale).flatMap { $0.supportsOnDeviceRecognition ? $0 : nil })
+                ?? SFSpeechRecognizer(locale: Locale.current) ?? SFSpeechRecognizer(),
+              recognizer.isAvailable, recognizer.supportsOnDeviceRecognition else { return .failure(.unavailable) }
 
         // On-device recognition only keeps a short span of a single long request — a 20-minute memo
         // comes back as a few words. So we read the file ourselves and transcribe it in ~40-second

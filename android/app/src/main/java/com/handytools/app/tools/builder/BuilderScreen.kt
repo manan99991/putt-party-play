@@ -656,6 +656,17 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             }
             Text("The first time you use a language, the phone downloads it and needs a connection.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
+        Block.SPEECH_TEXT -> {
+            var open by remember { mutableStateOf(false) }
+            val lang = s.settings["lang"] ?: "auto"
+            val label = if (lang == "auto") "Auto (phone language)" else (TextTidy.LANGUAGES.firstOrNull { it.first == lang }?.second ?: lang)
+            OutlinedButton({ open = true }) { Text("Spoken: $label") }
+            DropdownMenu(open, { open = false }) {
+                DropdownMenuItem(text = { Text("Auto (phone language)") }, onClick = { open = false; set("lang", "auto") })
+                TextTidy.LANGUAGES.forEach { (code, name) -> DropdownMenuItem(text = { Text(name) }, onClick = { open = false; set("lang", code) }) }
+            }
+            Text("Set this to the language spoken in the recording.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+        }
         Block.REWRITE -> Row(Modifier.horizontalScroll(rememberScrollState())) {
             val style = TextTidy.rewriteStyle(s.settings["style"])
             TextTidy.REWRITE_STYLES.forEach { (id, label) -> TextButton({ set("style", id) }) { Text(if (id == style) "● $label" else label) } }

@@ -982,6 +982,12 @@ private struct ChainEditor: View {
                 ForEach(ChainText.languages, id: \.code) { Text($0.name).tag($0.code) }
             }.pickerStyle(.menu).font(HandyFont.caption)
             Text("The first time you use a language, the phone may ask to download it.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        case .speechText:
+            let langs: [(code: String, name: String)] = [(code: "auto", name: "Auto (phone language)")] + ChainText.languages.map { (code: $0.code, name: $0.name) }
+            Picker("Spoken language", selection: Binding(get: { chain.steps[i].settings["lang"] ?? "auto" }, set: { chain.steps[i].settings["lang"] = $0 })) {
+                ForEach(langs, id: \.code) { Text($0.name).tag($0.code) }
+            }.pickerStyle(.menu).font(HandyFont.caption)
+            Text("Set this to the language spoken in the recording. The first time, the phone may ask to download it.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .rewrite:
             Picker("Make it", selection: Binding(get: { ChainText.rewriteStyle(chain.steps[i].settings["style"]) }, set: { chain.steps[i].settings["style"] = $0 })) {
                 ForEach(ChainText.rewriteStyles, id: \.id) { Text($0.name).tag($0.id) }

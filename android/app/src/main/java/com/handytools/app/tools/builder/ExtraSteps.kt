@@ -180,7 +180,9 @@ object ExtraSteps {
                 b == Block.SPEECH_TEXT && input is Payload.Doc -> {
                     val f = temp(ctx, input.bytes, input.ext.ifEmpty { "m4a" })
                     try {
-                        val text = FileTranscriber.transcribe(ctx, f, VoiceAudio.durationMs(f))?.trim().orEmpty()
+                        // "auto"/unset = the phone's own language (smart default); a chosen language transcribes in it.
+                        val lang = (step.settings["lang"] ?: "auto").let { if (it == "auto" || it.isBlank()) null else it }
+                        val text = FileTranscriber.transcribe(ctx, f, VoiceAudio.durationMs(f), lang)?.trim().orEmpty()
                         if (text.isEmpty()) stop("${b.title} couldn't make out any words. Try a clearer recording.") else Outcome.Done(Payload.Words(text))
                     } finally { f.delete() }
                 }
