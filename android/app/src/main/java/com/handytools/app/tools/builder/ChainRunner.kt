@@ -276,7 +276,7 @@ object ChainRunner {
                     TextTidy.cleanLinks(input.text)?.let { Outcome.Done(Payload.Words(it)) } ?: none()
                 b == Block.MAKE_QR && input is Payload.Words ->
                     if (input.text.isBlank()) none()
-                    else com.handytools.app.tools.power.CodesEngine.qr(input.text.trim())?.let { Outcome.Done(Payload.Pic(it)) }
+                    else com.handytools.app.tools.power.CodesEngine.qr(input.text.trim(), correction = TextTidy.qrCorrection(step.settings["sturdiness"]))?.let { Outcome.Done(Payload.Pic(it)) }
                         ?: Outcome.Stopped("Make a QR code couldn't fit that much text into one code. Try something shorter.")
                 b == Block.PHOTO_PDF && input is Payload.Pic -> {
                     Outcome.Done(Payload.Doc(onePdf(listOf(input.bmp), pageSize = step.settings["pagesize"] ?: "auto"), "pdf"))

@@ -674,6 +674,12 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
                 TextButton({ set("speed", id) }) { Text(if (id == speed) "● $label" else label) }
             }
         }
+        Block.MAKE_QR -> Row(Modifier.horizontalScroll(rememberScrollState())) {
+            val st = s.settings["sturdiness"] ?: "normal"
+            listOf("normal" to "Normal", "high" to "High (survives a logo)").forEach { (id, label) ->
+                TextButton({ set("sturdiness", id) }) { Text(if (id == st) "● $label" else label) }
+            }
+        }
         Block.SPEECH_TEXT -> {
             var open by remember { mutableStateOf(false) }
             val lang = s.settings["lang"] ?: "auto"

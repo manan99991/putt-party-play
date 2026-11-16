@@ -121,6 +121,12 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertGreaterThan(ChainMedia.ttsRate("fast"), AVSpeechUtteranceDefaultSpeechRate)
     }
 
+    func testQrSturdinessMapsToCorrectionLevel() {
+        XCTAssertEqual(ChainText.qrCorrection("high"), "H")
+        XCTAssertEqual(ChainText.qrCorrection("normal"), "M")
+        XCTAssertEqual(ChainText.qrCorrection(nil), "M")
+    }
+
     func testSummaryFormatBulletsVsParagraph() {
         let s = ["First point.", "Second point."]
         XCTAssertEqual(ChainText.summaryText(s, bullets: false), "First point. Second point.")

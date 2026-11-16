@@ -358,6 +358,9 @@ object TextTidy {
     fun summaryText(sentences: List<String>, bullets: Boolean): String =
         if (bullets) sentences.joinToString("\n") { "• $it" } else sentences.joinToString(" ")
 
+    /** QR "sturdiness" option → error-correction level. High (H) survives scuffs and a centre logo. */
+    fun qrCorrection(s: String?): String = if (s == "high") "H" else "M"
+
     private val I = setOf(RegexOption.IGNORE_CASE)
     private val IS = setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
     private val TAG = Regex("<[^>]+>")

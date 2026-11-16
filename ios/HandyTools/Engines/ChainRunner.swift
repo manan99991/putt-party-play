@@ -600,7 +600,7 @@ enum ChainRunner {
         case (.makeQr, .text(let t)):
             let msg = t.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !msg.isEmpty else { return .failure(.nothingFound(b)) }
-            guard let img = ChainText.qr(msg) else { return .failure(.failed(b)) }   // too long for one code
+            guard let img = ChainText.qr(msg, correction: ChainText.qrCorrection(step.settings["sturdiness"])) else { return .failure(.failed(b)) }   // too long for one code
             return .success(.image(img))
 
         case (.describe, .image(let img)):
@@ -1257,10 +1257,14 @@ enum ChainText {
         return w.password.isEmpty ? "WIFI:T:nopass;S:\(esc(w.name));;" : "WIFI:T:WPA;S:\(esc(w.name));P:\(esc(w.password));;"
     }
 
-    static func qr(_ message: String) -> UIImage? {
+    /// Maps the QR "sturdiness" option to an error-correction level: High (H) survives scuffs and a logo
+    /// overlay at the cost of a denser code; Normal (M) is the everyday default.
+    static func qrCorrection(_ s: String?) -> String { s == "high" ? "H" : "M" }
+
+    static func qr(_ message: String, correction: String = "M") -> UIImage? {
         guard let f = CIFilter(name: "CIQRCodeGenerator") else { return nil }
         f.setValue(Data(message.utf8), forKey: "inputMessage")
-        f.setValue("M", forKey: "inputCorrectionLevel")
+        f.setValue(correction, forKey: "inputCorrectionLevel")
         guard let ci = f.outputImage?.transformed(by: CGAffineTransform(scaleX: 12, y: 12)),
               let cg = CIContext().createCGImage(ci, from: ci.extent) else { return nil }
         return UIImage(cgImage: cg)

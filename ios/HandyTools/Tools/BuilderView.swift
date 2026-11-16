@@ -1075,6 +1075,11 @@ private struct ChainEditor: View {
             Picker("Speed", selection: Binding(get: { chain.steps[i].settings["speed"] ?? "normal" }, set: { chain.steps[i].settings["speed"] = $0 })) {
                 Text("Slow").tag("slow"); Text("Normal").tag("normal"); Text("Fast").tag("fast")
             }.pickerStyle(.segmented)
+        case .makeQr:
+            Picker("Sturdiness", selection: Binding(get: { chain.steps[i].settings["sturdiness"] ?? "normal" }, set: { chain.steps[i].settings["sturdiness"] = $0 })) {
+                Text("Normal").tag("normal"); Text("High").tag("high")
+            }.pickerStyle(.segmented)
+            Text("High survives scuffs and a logo in the middle.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .passportPhoto:
             Picker("Country", selection: Binding(get: { chain.steps[i].settings["country"] ?? "us" }, set: { chain.steps[i].settings["country"] = $0 })) {
                 ForEach(ImageStudio.passportSpecs) { Text($0.name).tag($0.id) }

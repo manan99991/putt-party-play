@@ -47,9 +47,10 @@ object CodesEngine {
     // ------------------------------------------------------------------ generate
 
     /** Render [text] as a QR bitmap with a quiet margin. Null if the text is too long for a QR. */
-    fun qr(text: String, size: Int = 720): Bitmap? = try {
+    fun qr(text: String, size: Int = 720, correction: String = "M"): Bitmap? = try {
         if (text.isEmpty()) null else {
-            val hints = mapOf(EncodeHintType.MARGIN to 1)
+            val ecc = if (correction == "H") com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.H else com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.M
+            val hints = mapOf(EncodeHintType.MARGIN to 1, EncodeHintType.ERROR_CORRECTION to ecc)
             val m = QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, size, size, hints)
             val w = m.width; val h = m.height
             val px = IntArray(w * h)

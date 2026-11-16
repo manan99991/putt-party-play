@@ -146,5 +146,12 @@ class ReviewRegressionTest {
         assertTrueMsg("each bullet on its own line", b.contains("\n• Second point."))
     }
 
+    // QR sturdiness option → error-correction level (#278).
+    @Test fun qrSturdinessMapsToCorrectionLevel() {
+        assertEquals("H", com.handytools.app.tools.builder.TextTidy.qrCorrection("high"))
+        assertEquals("M", com.handytools.app.tools.builder.TextTidy.qrCorrection("normal"))
+        assertEquals("M", com.handytools.app.tools.builder.TextTidy.qrCorrection(null))
+    }
+
     private fun assertTrueMsg(msg: String, cond: Boolean) = org.junit.Assert.assertTrue(msg, cond)
 }
