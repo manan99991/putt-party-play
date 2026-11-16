@@ -212,6 +212,21 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertFalse(ChainPayload.isAudio("jpg"))
     }
 
+    // Thinking tools' on-device-model layer (#285): the instruction/prompt builders carry the "think a
+    // step deeper" framing and fold in the explain-level / reword-tone options with smart defaults. The
+    // model call itself is device-only; these builders are pure.
+    func testThinkingMindPromptsAndOptions() {
+        XCTAssertTrue(ThinkingMind.instructions(for: .untangle).lowercased().contains("step"), "Untangle asks for steps")
+        XCTAssertEqual(ThinkingMind.prompt(for: .untangle, input: " Plan the party "), "Task: Plan the party")
+        XCTAssertTrue(ThinkingMind.instructions(for: .crossroads).contains("Lean"), "Crossroads commits to a lean")
+        XCTAssertTrue(ThinkingMind.instructions(for: .plain, options: ["level": "kid"]).contains("8-year-old"))
+        XCTAssertTrue(ThinkingMind.instructions(for: .plain).contains("curious adult"), "the smart default level")
+        XCTAssertTrue(ThinkingMind.instructions(for: .reword, options: ["tone": "formal"]).contains("professional"))
+        XCTAssertTrue(ThinkingMind.instructions(for: .reword).contains("warmer"), "the smart default tone")
+        XCTAssertEqual(ThinkingMind.explainLevel("teen"), "a teenager")
+        XCTAssertEqual(ThinkingMind.rewordTone("firmer"), "firm and direct but still polite")
+    }
+
     // PowerPoint .pptx coverage (#294): a slide's XML read into readable lines, entities decoded, tags gone.
     func testPptxSlideReadsItsText() {
         let xml = "<a:p><a:r><a:t>Hello</a:t></a:r><a:r><a:t>World</a:t></a:r></a:p><a:p><a:r><a:t>Second &amp; line</a:t></a:r></a:p>"
