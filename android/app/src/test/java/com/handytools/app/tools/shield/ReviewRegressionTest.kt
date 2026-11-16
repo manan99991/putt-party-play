@@ -4,6 +4,8 @@ import com.handytools.app.tools.builder.Block
 import com.handytools.app.tools.builder.Chain
 import com.handytools.app.tools.builder.ChainOffers
 import com.handytools.app.tools.builder.Step
+import com.handytools.app.tools.builder.ThinkingActions
+import com.handytools.app.tools.builder.ThinkingActions.Kind
 import com.handytools.app.tools.power.CodesEngine
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -139,26 +141,25 @@ class ReviewRegressionTest {
     // Thinking tools "Act on it" spine (#285), in lockstep with the iOS twin: a task line is read into
     // the built-in apps it belongs to.
     @Test fun thinkingActionsRoutesTasksToTheRightApps() {
-        val K = com.handytools.app.tools.builder.ThinkingActions.Kind
-        val plan = com.handytools.app.tools.builder.ThinkingActions::plan
+        val plan = ThinkingActions::plan
 
         val dated = plan("Email Ana the budget by Thursday")
-        assertEquals(listOf(K.CALENDAR, K.REMINDER), dated.kinds)
+        assertEquals(listOf(Kind.CALENDAR, Kind.REMINDER), dated.kinds)
         assertTrueMsg("a deadline is dated", dated.isDated)
 
         val call = plan("Call the dentist")
-        assertEquals(listOf(K.REMINDER, K.CALL), call.kinds)
+        assertEquals(listOf(Kind.REMINDER, Kind.CALL), call.kinds)
         assertTrueMsg("call cue", call.isCall)
 
         val errand = plan("Pick up Deeyan from Oak Street Clinic at 3pm")
-        assertEquals(listOf(K.CALENDAR, K.REMINDER, K.MAPS), errand.kinds)
+        assertEquals(listOf(Kind.CALENDAR, Kind.REMINDER, Kind.MAPS), errand.kinds)
         assertEquals("Oak Street Clinic", errand.place)
 
-        assertEquals(listOf(K.REMINDER), plan("Buy milk").kinds)
+        assertEquals(listOf(Kind.REMINDER), plan("Buy milk").kinds)
 
         val withNumber = plan("call 555-123-4567")
         assertEquals("555-123-4567", withNumber.phone)
-        assertTrueMsg("has call", withNumber.kinds.contains(K.CALL))
+        assertTrueMsg("has call", withNumber.kinds.contains(Kind.CALL))
     }
 
     // Due-date parser (#285), lockstep with the iOS twin: pinned to Mon 16 Nov 2026 08:00 UTC.
