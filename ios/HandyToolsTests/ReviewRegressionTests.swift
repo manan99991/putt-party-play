@@ -238,6 +238,17 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertTrue(day.last!.text.contains("milk"), "untimed tasks fall to the end")
     }
 
+    // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
+    func testThinkingActionPayloads() {
+        let ics = ThinkingActions.icsEvent(title: "Email Ana", due: Date(timeIntervalSince1970: 1_800_000_000), place: "Office")
+        XCTAssertTrue(ics.contains("BEGIN:VEVENT"))
+        XCTAssertTrue(ics.contains("SUMMARY:Email Ana"))
+        XCTAssertTrue(ics.contains("DTSTART:"))
+        XCTAssertTrue(ics.contains("LOCATION:Office"))
+        let maps = ThinkingActions.mapsURL("Oak Street Clinic")
+        XCTAssertNotNil(maps); XCTAssertTrue(maps?.contains("maps.apple.com") == true)
+    }
+
     // MARK: - QR long-press preview classification
 
     func testQRWifiParsed() {

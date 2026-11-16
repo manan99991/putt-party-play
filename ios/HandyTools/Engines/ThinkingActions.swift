@@ -107,6 +107,15 @@ enum ThinkingActions {
         return keep.filter(\.isNumber).count >= 7 ? "tel:" + keep : nil
     }
 
+    /// A Maps directions URL for a place (opens Maps), or nil. Reuses the tuned RoutePlan builder.
+    static func mapsURL(_ place: String) -> String? { RoutePlan.appleMaps(place)?.absoluteString }
+
+    /// A one-event .ics calendar payload for a dated task — reuses the Data Grabber's ICS writer, so the
+    /// format stays identical to the rest of the app. The caller adds it to the calendar (or shares it).
+    static func icsEvent(title: String, due: Date, place: String = "") -> String {
+        DataGrab.ics(DataGrab.Event(title: title, start: due, end: nil, location: place))
+    }
+
     /// Weekday words → `Calendar.component(.weekday)` numbers (Sunday = 1 … Saturday = 7).
     private static let weekdays: [String: Int] = [
         "sunday": 1, "sun": 1, "monday": 2, "mon": 2, "tuesday": 3, "tues": 3, "tue": 3,

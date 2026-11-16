@@ -201,6 +201,18 @@ class ReviewRegressionTest {
         assertTrueMsg("untimed tasks fall to the end", day.last().text.contains("milk"))
     }
 
+    // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
+    @Test fun thinkingActionPayloads() {
+        val ics = ThinkingActions.icsEvent("Email Ana", 1_800_000_000_000L, "Office")
+        assertTrueMsg("has event", ics.contains("BEGIN:VEVENT"))
+        assertTrueMsg("has summary", ics.contains("SUMMARY:Email Ana"))
+        assertTrueMsg("has start", ics.contains("DTSTART:"))
+        assertTrueMsg("has location", ics.contains("LOCATION:Office"))
+        val maps = ThinkingActions.mapsURL("Oak Street Clinic")
+        assertTrueMsg("geo url", maps != null && maps.startsWith("geo:0,0?q="))
+        assertNull(ThinkingActions.mapsURL("   "))
+    }
+
     // A link/phone/page tool fits a piece of text only when the text actually has a link/number (#283).
     @Test fun linkToolFitsTextOnlyWhenTextHasLink() {
         val linkChain = Chain("x", "Clean link", listOf(Step(Block.CLEAN_LINKS)))

@@ -81,6 +81,26 @@ object ThinkingActions {
         return if (keep.count { it.isDigit() } >= 7) "tel:$keep" else null
     }
 
+    /** A `geo:` Maps URL for a place (opens Maps), or null for a blank place. */
+    fun mapsURL(place: String): String? =
+        if (place.isBlank()) null else "geo:0,0?q=" + java.net.URLEncoder.encode(place, "UTF-8")
+
+    /** A one-event .ics calendar payload for a dated task — same format as the rest of the app. */
+    fun icsEvent(title: String, dueMs: Long, place: String = ""): String {
+        val f = java.text.SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'", java.util.Locale.US)
+            .apply { timeZone = java.util.TimeZone.getTimeZone("UTC") }
+        return buildString {
+            append("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Tenzy//EN\r\nBEGIN:VEVENT\r\n")
+            append("UID:").append(dueMs).append("@tenzy\r\n")
+            append("DTSTAMP:").append(f.format(java.util.Date())).append("\r\n")
+            append("DTSTART:").append(f.format(java.util.Date(dueMs))).append("\r\n")
+            append("DTEND:").append(f.format(java.util.Date(dueMs + 3_600_000L))).append("\r\n")
+            append("SUMMARY:").append(title).append("\r\n")
+            if (place.isNotBlank()) append("LOCATION:").append(place).append("\r\n")
+            append("END:VEVENT\r\nEND:VCALENDAR\r\n")
+        }
+    }
+
     // Weekday words → Calendar.DAY_OF_WEEK numbers (Sunday = 1 … Saturday = 7), matching the iOS twin.
     private val weekdays = mapOf(
         "sunday" to 1, "sun" to 1, "monday" to 2, "mon" to 2, "tuesday" to 3, "tues" to 3, "tue" to 3,
