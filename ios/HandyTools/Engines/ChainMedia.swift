@@ -326,6 +326,29 @@ enum Transcriber {
     /// Seconds of audio each on-device recognition window covers — well inside what one request handles.
     static let windowSeconds: Double = 40
 
+    /// File endings the recogniser's own reader (AVAudioFile) handles directly. Anything else — an MP3 or
+    /// other compressed recording from an external recorder — must be transcoded first: AVAudioFile *opens*
+    /// an MP3 but reads it unreliably, which is why an external MP3 ran the progress bar to 100% yet came
+    /// back with no words. Pure, so a test pins which formats get transcoded.
+    static let readableExts: Set<String> = ["m4a", "aac", "wav", "wave", "caf", "aif", "aiff", "mp4", "mov", "m4v", "adts"]
+    static func needsTranscode(_ ext: String) -> Bool { !readableExts.contains(ext.lowercased()) }
+
+    /// A URL the recogniser's reader can handle: the original when it's already a supported format, else a
+    /// temporary .m4a transcoded from it (MP3 and friends). Falls back to the original if transcoding
+    /// fails, so the worst case is the old behaviour rather than a crash.
+    static func readableAudioURL(for url: URL) async -> URL {
+        guard needsTranscode(url.pathExtension) else { return url }
+        let asset = AVURLAsset(url: url)
+        guard let export = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A) else { return url }
+        let out = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-stt-\(UUID().uuidString).m4a")
+        export.outputURL = out
+        export.outputFileType = .m4a
+        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+            export.exportAsynchronously { cont.resume() }
+        }
+        return export.status == .completed ? out : url
+    }
+
     /// Number of windows a recording of `frames` at `sampleRate` is split into. It always covers the
     /// whole file: a 22-minute memo is ~33 windows, never 1. Zero only for an empty/invalid file.
     static func windowCount(frames: AVAudioFramePosition, sampleRate: Double, seconds: Double = windowSeconds) -> Int {
@@ -362,7 +385,12 @@ enum Transcriber {
         // comes back as a few words. So we read the file ourselves and transcribe it in ~40-second
         // windows (well inside what on-device handles), then stitch the pieces. That captures the
         // WHOLE recording and gives a true position for the progress bar.
-        guard let file = try? AVAudioFile(forReading: url) else { return .failure(.nothing) }
+        // An external recorder's MP3 (and other compressed formats) is transcoded to .m4a first, because
+        // AVAudioFile reads those unreliably — the reason an 8-minute MP3 came back empty. iPhone voice
+        // memos are already .m4a and pass straight through.
+        let readURL = await readableAudioURL(for: url)
+        defer { if readURL != url { try? FileManager.default.removeItem(at: readURL) } }
+        guard let file = try? AVAudioFile(forReading: readURL) else { return .failure(.nothing) }
         let fmt = file.processingFormat
         let total = file.length
         guard total > 0, fmt.sampleRate > 0 else { return .failure(.nothing) }

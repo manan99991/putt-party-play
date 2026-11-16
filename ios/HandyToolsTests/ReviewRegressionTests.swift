@@ -190,6 +190,18 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertFalse(nothing.lowercased().contains("clearer recording"), "even true silence shouldn't dead-end on 'try a clearer recording'")
     }
 
+    // The real cause of that empty transcript: the recording was an external-recorder MP3 (16kHz mono,
+    // 8.5 min, full of speech). AVAudioFile opens an MP3 but reads it unreliably, so it must be transcoded
+    // to .m4a first. iPhone voice memos (.m4a) pass straight through.
+    func testExternalMp3GetsTranscodedForSpeech() {
+        XCTAssertTrue(Transcriber.needsTranscode("mp3"), "an external MP3 must be transcoded before transcription")
+        XCTAssertTrue(Transcriber.needsTranscode("MP3"), "format check is case-insensitive")
+        XCTAssertTrue(Transcriber.needsTranscode("ogg"))
+        XCTAssertFalse(Transcriber.needsTranscode("m4a"), "an iPhone voice memo is already readable")
+        XCTAssertFalse(Transcriber.needsTranscode("wav"))
+        XCTAssertFalse(Transcriber.needsTranscode("caf"))
+    }
+
     // PowerPoint .pptx coverage (#294): a slide's XML read into readable lines, entities decoded, tags gone.
     func testPptxSlideReadsItsText() {
         let xml = "<a:p><a:r><a:t>Hello</a:t></a:r><a:r><a:t>World</a:t></a:r></a:p><a:p><a:r><a:t>Second &amp; line</a:t></a:r></a:p>"
