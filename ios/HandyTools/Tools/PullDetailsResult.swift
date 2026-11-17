@@ -75,7 +75,7 @@ struct PullDetailsResult: View {
     }
     private func contact(phone: String) -> CNContact {
         let c = CNMutableContact()
-        c.phoneNumbers = [CNLabeledValue(label: CNLabelPhoneNumberMobile, value: CNPhoneNumber(string: phone))]
+        c.phoneNumbers = [CNLabeledValue(label: CNLabelPhoneNumberMobile, value: CNPhoneNumber(stringValue: phone))]
         return c
     }
     private func contact(email: String) -> CNContact {
