@@ -27,6 +27,11 @@ packages:
   GoogleMobileAds:
     url: https://github.com/googleads/swift-package-manager-google-mobile-ads.git
     from: "12.0.0"
+  SwiftOGG:
+    # libopus/libogg wrapper (Element/Matrix). Decodes WhatsApp/Telegram Ogg-Opus voice notes to m4a.
+    # No tagged release upstream; its binary deps (vector-im opus-swift 0.8.4 / ogg-swift 0.8.3) are versioned.
+    url: https://github.com/element-hq/swift-ogg
+    branch: main
 
 targets:
   HandyTools:
@@ -42,6 +47,7 @@ targets:
       - path: Shared
     dependencies:
       - package: GoogleMobileAds
+      - package: SwiftOGG
       - target: ShareExtension
       - target: StickyWidget
       - sdk: VisionKit.framework

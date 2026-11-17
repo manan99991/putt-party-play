@@ -4,6 +4,9 @@ import AVFoundation
 import Speech
 import CoreImage
 @preconcurrency import Translation
+#if canImport(SwiftOGG)
+import SwiftOGG   // libopus/libogg: decodes WhatsApp/Telegram Ogg-Opus voice notes, which AVFoundation can't demux
+#endif
 
 /// The steps of Build your own that need the phone's speech engine, a voice, the translator, the writing model or the
 /// video encoder. App only: the share sheet has a small stand-in (see ShareExtension/EngineShims.swift).
@@ -336,7 +339,28 @@ enum Transcriber {
     /// A URL the recogniser's reader can handle: the original when it's already a supported format, else a
     /// temporary .m4a transcoded from it (MP3 and friends). Falls back to the original if transcoding
     /// fails, so the worst case is the old behaviour rather than a crash.
+    /// Extensions whose audio is Opus inside an Ogg container — WhatsApp and Telegram voice notes. AVFoundation
+    /// can decode Opus but can't demux the Ogg container, so these are decoded to .m4a with libopus first.
+    static let oggOpusExts: Set<String> = ["opus", "ogg", "oga"]
+
+    /// Decodes an Ogg-Opus file to a temporary .m4a using libopus (SwiftOGG), or nil if the decode fails or the
+    /// library isn't linked. Isolated so the rest of the pipeline is unchanged and a missing package still compiles.
+    static func oggOpusToM4A(_ src: URL) -> URL? {
+        #if canImport(SwiftOGG)
+        let out = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-opus-\(UUID().uuidString).m4a")
+        do {
+            try OGGConverter.convertOpusOGGToM4aFile(src: src, dest: out)
+            return FileManager.default.fileExists(atPath: out.path) ? out : nil
+        } catch { return nil }
+        #else
+        return nil
+        #endif
+    }
+
     static func readableAudioURL(for url: URL) async -> URL {
+        // WhatsApp/Telegram voice notes (Ogg-Opus) are decoded to .m4a up front; the result then flows through
+        // the normal readable path. If the decode fails we fall through to the old behaviour rather than crash.
+        if oggOpusExts.contains(url.pathExtension.lowercased()), let decoded = oggOpusToM4A(url) { return decoded }
         guard needsTranscode(url.pathExtension) else { return url }
         let asset = AVURLAsset(url: url)
         guard let export = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A) else { return url }
