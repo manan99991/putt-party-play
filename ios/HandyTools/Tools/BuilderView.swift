@@ -1760,7 +1760,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             } else {
             // Always show the result before Save or share — a photo, or a PDF's first page — so the person
             // can check it (faces covered, the right pages) and never shares something they haven't seen.
-            if ChainPayload.isPhoto(ext), let img = UIImage(data: d) {
+            if lext == "gif" {
+                AnimatedGIFView(data: d).frame(maxWidth: .infinity).frame(maxHeight: 360).cardStyle(padding: HandySpacing.s8)
+            } else if ChainPayload.isPhoto(ext), let img = UIImage(data: d) {
                 Image(uiImage: img).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
                     .cardStyle(padding: HandySpacing.s8)
             } else if ext.lowercased() == "pdf", let page = PDFDocument(data: d)?.page(at: 0) {

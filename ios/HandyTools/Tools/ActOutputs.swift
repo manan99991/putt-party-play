@@ -1,8 +1,51 @@
 import SwiftUI
+import UIKit
+import ImageIO
 import EventKit
 import EventKitUI
 import Contacts
 import ContactsUI
+
+// MARK: - Animated GIF preview
+
+extension UIImage {
+    /// Build a playable animated UIImage from GIF data (SwiftUI's Image shows only the first frame).
+    static func animatedGIF(data: Data) -> UIImage? {
+        guard let src = CGImageSourceCreateWithData(data as CFData, nil) else { return UIImage(data: data) }
+        let count = CGImageSourceGetCount(src)
+        guard count > 1 else { return UIImage(data: data) }
+        var frames: [UIImage] = []; var total = 0.0
+        for i in 0..<count {
+            guard let cg = CGImageSourceCreateImageAtIndex(src, i, nil) else { continue }
+            var delay = 0.1
+            if let props = CGImageSourceCopyPropertiesAtIndex(src, i, nil) as? [CFString: Any],
+               let gif = props[kCGImagePropertyGIFDictionary] as? [CFString: Any] {
+                if let d = gif[kCGImagePropertyGIFUnclampedDelayTime] as? Double, d > 0 { delay = d }
+                else if let d = gif[kCGImagePropertyGIFDelayTime] as? Double, d > 0 { delay = d }
+            }
+            total += delay
+            frames.append(UIImage(cgImage: cg))
+        }
+        guard !frames.isEmpty else { return UIImage(data: data) }
+        return UIImage.animatedImage(with: frames, duration: total)
+    }
+}
+
+/// Plays an animated GIF in the result preview, so a GIF is seen before Save or share.
+struct AnimatedGIFView: UIViewRepresentable {
+    let data: Data
+    func makeUIView(context: Context) -> UIImageView {
+        let v = UIImageView()
+        v.contentMode = .scaleAspectFit
+        v.clipsToBounds = true
+        v.image = UIImage.animatedGIF(data: data)
+        v.startAnimating()
+        v.setContentHuggingPriority(.defaultLow, for: .vertical)
+        v.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        return v
+    }
+    func updateUIView(_ uiView: UIImageView, context: Context) {}
+}
 
 /// "Act on it" result views. A calendar or contact result does the real thing — opens the native
 /// Add-to-Calendar / Save-to-Contacts sheet pre-filled — instead of dumping raw .ics / .vcf text.
