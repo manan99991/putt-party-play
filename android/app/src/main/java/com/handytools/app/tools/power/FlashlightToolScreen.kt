@@ -222,7 +222,7 @@ fun FlashlightToolScreen() {
             )
             if (torch.hasFlash && !torch.hasLevels) {
                 Text(
-                    "This phone's torch has one brightness — the slider sets the screen light instead.",
+                    com.handytools.app.I18n.t("This phone's torch has one brightness — the slider sets the screen light instead."),
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary
                 )
             }
@@ -231,7 +231,7 @@ fun FlashlightToolScreen() {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 OutlinedTextField(
                     value = morseText, onValueChange = { morseText = it }, modifier = Modifier.weight(1f),
-                    placeholder = { Text("Type a message to flash…") }, singleLine = true
+                    placeholder = { Text(com.handytools.app.I18n.t("Type a message to flash…")) }, singleLine = true
                 )
                 HPrimaryButton("Flash", Modifier.width(96.dp)) {
                     val m = morseText.trim()
@@ -250,7 +250,7 @@ fun FlashlightToolScreen() {
                 HSecondaryButton("🎨 Colour lamp", Modifier.weight(1f)) { colourIdx = 0; colourLamp = true }
             }
             if (mirror) MirrorView()
-            NoteText("The torch is the real camera flash. Patterns and Morse run on it; without a flash unit they run on the screen light.")
+            NoteText(com.handytools.app.I18n.t("The torch is the real camera flash. Patterns and Morse run on it; without a flash unit they run on the screen light."))
         }
 
         if (screenLight) {
@@ -349,7 +349,7 @@ private fun ScreenLightOverlay(alpha: Float, brightness: Float, onBrightness: (F
                     colors = SliderDefaults.colors(thumbColor = Color(0xFF444444), activeTrackColor = Color(0xFF444444), inactiveTrackColor = Color(0x33000000))
                 )
                 Text(
-                    "tap above to close · slider sets brightness", style = MaterialTheme.typography.bodySmall,
+                    com.handytools.app.I18n.t("tap above to close · slider sets brightness"), style = MaterialTheme.typography.bodySmall,
                     color = Color(0xFF666666), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -365,7 +365,7 @@ private fun ColourLampOverlay(colour: Color, onTap: () -> Unit, onClose: () -> U
         }
     ) {
         Text(
-            "tap to change colour · hold to close", style = MaterialTheme.typography.bodySmall,
+            com.handytools.app.I18n.t("tap to change colour · hold to close"), style = MaterialTheme.typography.bodySmall,
             color = Color(0x80000000), textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().navigationBarsPadding().padding(bottom = 30.dp)
         )

@@ -84,9 +84,9 @@ private fun GrabbedSample() {
         androidx.compose.foundation.layout.Column(Modifier.padding(16.dp)) {
             val mono = androidx.compose.ui.text.font.FontFamily.Monospace
             Text("Total: $42.50", style = MaterialTheme.typography.bodyMedium.copy(fontFamily = mono))
-            Text("Arriving Thursday, 9:41 AM", style = MaterialTheme.typography.bodyMedium.copy(fontFamily = mono))
+            Text(com.handytools.app.I18n.t("Arriving Thursday, 9:41 AM"), style = MaterialTheme.typography.bodyMedium.copy(fontFamily = mono))
             androidx.compose.foundation.layout.Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                Text("Confirmation 8X2K-44QZ", style = MaterialTheme.typography.bodyMedium.copy(fontFamily = mono))
+                Text(com.handytools.app.I18n.t("Confirmation 8X2K-44QZ"), style = MaterialTheme.typography.bodyMedium.copy(fontFamily = mono))
                 if (caretOn || reduceMotion) {
                     androidx.compose.foundation.layout.Spacer(Modifier.width(4.dp))
                     androidx.compose.foundation.layout.Box(

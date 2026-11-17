@@ -202,7 +202,7 @@ internal fun DocScanPanel(st: DocScanState) {
     // Preview-first: the current page, big.
     if (page == null) {
         PreviewBox(minHeight = 190.dp) {
-            Text("Scan a page — edges are found automatically.", color = Handy.palette.textSecondary,
+            Text(com.handytools.app.I18n.t("Scan a page — edges are found automatically."), color = Handy.palette.textSecondary,
                 style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(24.dp))
         }
     } else {
@@ -274,7 +274,7 @@ internal fun DocScanPanel(st: DocScanState) {
     if (!hasRoom) Text("You've used today's ${Limits.FREE_SCAN_PAGES} free exports. Go Pro for unlimited.",
         style = MaterialTheme.typography.bodySmall, color = HandyColors.Accent, modifier = Modifier.padding(top = 8.dp))
     st.status?.let { Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 10.dp)) }
-    NoteText("Edge detection and the text layer run on the phone. The PDF is searchable — the recognised text sits invisibly under each page.")
+    NoteText(com.handytools.app.I18n.t("Edge detection and the text layer run on the phone. The PDF is searchable — the recognised text sits invisibly under each page."))
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -443,7 +443,7 @@ internal fun DocSignPanel(st: DocSignState) {
                 } else if (s.size == 1) drawCircle(ink, 2.dp.toPx(), s[0])
             }
         }
-        if (st.strokes.isEmpty() && currentStroke == null) Text("Sign here with your finger", color = Handy.palette.textSecondary,
+        if (st.strokes.isEmpty() && currentStroke == null) Text(com.handytools.app.I18n.t("Sign here with your finger"), color = Handy.palette.textSecondary,
             style = MaterialTheme.typography.bodySmall, modifier = Modifier.align(Alignment.Center))
     }
     Spacer(Modifier.height(10.dp))
@@ -457,11 +457,11 @@ internal fun DocSignPanel(st: DocSignState) {
             st.status = null
         }
     }
-    if (page == null) Text("Choose a document above to place it.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
+    if (page == null) Text(com.handytools.app.I18n.t("Choose a document above to place it."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
 
     // Fill fields.
     SectionLabel("Fill fields")
-    OutlinedTextField(st.name, { st.name = it }, label = { Text("Your name (for Name / Initials)") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+    OutlinedTextField(st.name, { st.name = it }, label = { Text(com.handytools.app.I18n.t("Your name (for Name / Initials)")) }, singleLine = true, modifier = Modifier.fillMaxWidth())
     Spacer(Modifier.height(8.dp))
     fun field(text: String) {
         if (page == null) { st.status = "Choose a document first."; return }
@@ -501,7 +501,7 @@ internal fun DocSignPanel(st: DocSignState) {
     if (!hasRoom) Text("You've used today's ${Limits.FREE_SIGN_PER_DAY} free signed exports. Go Pro for unlimited.",
         style = MaterialTheme.typography.bodySmall, color = HandyColors.Accent, modifier = Modifier.padding(top = 8.dp))
     st.status?.let { Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 10.dp)) }
-    NoteText("The signed copy is flattened on the phone and never uploaded. Tap a placed item and drag to move it.")
+    NoteText(com.handytools.app.I18n.t("The signed copy is flattened on the phone and never uploaded. Tap a placed item and drag to move it."))
 }
 
 /** Rasterise the pad strokes into a transparent bitmap cropped to the ink. */

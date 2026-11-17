@@ -45,11 +45,11 @@ fun ProLockScreen(route: String, onBack: () -> Unit, onPro: () -> Unit) {
             }
             Text("$name is a Pro tool", style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
             Text(
-                "Go Pro to unlock it and every other Pro tool — no ads, no daily limits, and unlimited tools you build yourself.",
+                com.handytools.app.I18n.t("Go Pro to unlock it and every other Pro tool — no ads, no daily limits, and unlimited tools you build yourself."),
                 style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, textAlign = TextAlign.Center
             )
             HPrimaryButton("Go Pro — \$19.99 a year", onClick = onPro)
-            TextButton(onClick = onBack) { Text("Not now") }
+            TextButton(onClick = onBack) { Text(com.handytools.app.I18n.t("Not now")) }
         }
     }
 }

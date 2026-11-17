@@ -66,7 +66,7 @@ fun ScreenshotScreen() {
         Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
             ToolHeader("Screenshot+", "A red button floats over every app. Tap it to capture. Apps that block screenshots are respected.")
             PermissionCard("Draw over other apps", "Needed for the floating capture button.", overlay, Permissions.overlayIntent(ctx))
-            Text("Mode", style = MaterialTheme.typography.titleMedium)
+            Text(com.handytools.app.I18n.t("Mode"), style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
             // Hero: mode chips as three 72dp mini-illustrations (one frame / three stacked / one tall frame).
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -77,7 +77,7 @@ fun ScreenshotScreen() {
             if (mode == ScreenCaptureService.Mode.FULL_PAGE) {
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "Long screenshot: tap the floating button to start, scroll down slowly, then tap it again — Tenzy stitches the screens into one tall image. No extra permission needed.",
+                    com.handytools.app.I18n.t("Long screenshot: tap the floating button to start, scroll down slowly, then tap it again — Tenzy stitches the screens into one tall image. No extra permission needed."),
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary
                 )
             }

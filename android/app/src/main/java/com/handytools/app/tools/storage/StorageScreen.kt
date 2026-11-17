@@ -76,7 +76,7 @@ fun StorageScreen(onOpen: (String) -> Unit = {}) {
             !granted -> {
                 HCard(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
-                        Text("Tenzy reads your photos and videos on this device to show what's using space. Nothing is uploaded.",
+                        Text(com.handytools.app.I18n.t("Tenzy reads your photos and videos on this device to show what's using space. Nothing is uploaded."),
                             color = Handy.palette.textSecondary)
                         Spacer(Modifier.size(12.dp))
                         HPrimaryButton("Allow access", modifier = Modifier.fillMaxWidth()) { permLauncher.launch(perms) }
@@ -114,7 +114,7 @@ fun StorageScreen(onOpen: (String) -> Unit = {}) {
                     Spacer(Modifier.size(16.dp))
 
                     if (r.folders.isNotEmpty()) {
-                        Text("Biggest folders", style = MaterialTheme.typography.titleSmall)
+                        Text(com.handytools.app.I18n.t("Biggest folders"), style = MaterialTheme.typography.titleSmall)
                         Spacer(Modifier.size(8.dp))
                         r.folders.forEach { f ->
                             RowLine(f.name.ifBlank { "Other" }, "${f.count} · ${StorageEngine.human(f.bytes)}")
@@ -123,7 +123,7 @@ fun StorageScreen(onOpen: (String) -> Unit = {}) {
                     }
 
                     if (r.largest.isNotEmpty()) {
-                        Text("Largest files", style = MaterialTheme.typography.titleSmall)
+                        Text(com.handytools.app.I18n.t("Largest files"), style = MaterialTheme.typography.titleSmall)
                         Spacer(Modifier.size(8.dp))
                         r.largest.forEach { item ->
                             RowLine(item.name, StorageEngine.human(item.bytes))

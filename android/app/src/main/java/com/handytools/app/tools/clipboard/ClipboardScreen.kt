@@ -53,9 +53,9 @@ fun ClipboardScreen() {
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
         ToolHeader("Multi-Clipboard", "Save as many clips as you like and paste any of them later. Three one-tap ways to capture — pick whatever's handy.")
 
-        Text("3 ways to save a clip", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 8.dp, bottom = 4.dp))
+        Text(com.handytools.app.I18n.t("3 ways to save a clip"), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 8.dp, bottom = 4.dp))
         Text(
-            "1.  In any app, select text → Share → “Save to Tenzy”.\n" +
+            com.handytools.app.I18n.t("1.  In any app, select text → Share → “Save to Tenzy”.\n") +
             "2.  Add the Tenzy “Save clip” tile to Quick Settings — one tap from the shade.\n" +
             "3.  Copy something, then tap the button below (or “+ Grab copy” on the bubble).",
             style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary
@@ -75,7 +75,7 @@ fun ClipboardScreen() {
             on = v; ClipboardOverlay.setEnabled(ctx, v)
         }
 
-        Text("History", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
+        Text(com.handytools.app.I18n.t("History"), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 16.dp, bottom = 8.dp))
         val reduceMotion = rememberReduceMotion()
         if (clips.isEmpty()) {
             Column(Modifier.weight(1f)) { EmptyState(Icons.Outlined.ContentPaste, "No clips yet — save one with any of the three ways above.") }
@@ -83,7 +83,7 @@ fun ClipboardScreen() {
             itemsIndexed(clips, key = { _, c -> c.id }) { i, c ->
                 HCard(Modifier.fillMaxWidth().handyListEnter(i, reduceMotion), onClick = {
                     (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
-                        .setPrimaryClip(ClipData.newPlainText("Tenzy", c.text))
+                        .setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), c.text))
                     android.widget.Toast.makeText(ctx, "Copied — paste it anywhere", android.widget.Toast.LENGTH_SHORT).show()
                 }) {
                     Text((if (c.pinned) "📌 " else "") + c.text, Modifier.padding(14.dp), maxLines = 3, style = MaterialTheme.typography.bodyLarge)

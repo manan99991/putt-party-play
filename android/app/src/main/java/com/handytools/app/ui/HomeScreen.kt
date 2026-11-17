@@ -321,8 +321,8 @@ fun HomeScreen(onOpen: (String) -> Unit) {
                     Icon(Icons.Outlined.Bolt, null, tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(HandyTokens.Space8))
                     Column(Modifier.weight(1f)) {
-                        Text("Build your own tool", style = MaterialTheme.typography.titleSmall)
-                        Text("Describe it or snap steps together", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                        Text(com.handytools.app.I18n.t("Build your own tool"), style = MaterialTheme.typography.titleSmall)
+                        Text(com.handytools.app.I18n.t("Describe it or snap steps together"), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     }
                 }
             }
@@ -472,7 +472,7 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
         // Pro badge, top-right — a free user sees at a glance which tools need Pro before tapping.
         if (ToolGate.isPro(tool.route) && !premium) {
             Text(
-                "PRO", color = HandyColors.OnAccent, style = MaterialTheme.typography.labelSmall,
+                com.handytools.app.I18n.t("PRO"), color = HandyColors.OnAccent, style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.TopEnd).padding(12.dp)
                     .background(HandyColors.Accent, RoundedCornerShape(50))

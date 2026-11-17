@@ -119,7 +119,7 @@ fun NotifHistoryScreen() {
                                             Modifier.background(Handy.palette.accentSoft, RoundedCornerShape(8.dp))
                                                 .padding(horizontal = 8.dp, vertical = 2.dp)
                                         ) {
-                                            Text("swiped away", style = MaterialTheme.typography.labelSmall, color = HandyColors.Accent)
+                                            Text(com.handytools.app.I18n.t("swiped away"), style = MaterialTheme.typography.labelSmall, color = HandyColors.Accent)
                                         }
                                     }
                                 }

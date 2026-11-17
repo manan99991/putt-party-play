@@ -80,12 +80,12 @@ fun HearingBoostScreen() {
     engine.gain = gain
 
     PowerToolPage("hearing") {
-        Text("Pop your earbuds in first — on the speaker it will whistle with feedback.",
+        Text(com.handytools.app.I18n.t("Pop your earbuds in first — on the speaker it will whistle with feedback."),
             color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodySmall)
         Spacer(Modifier.size(16.dp))
 
         if (!granted) {
-            Text("Microphone access is needed to pick up and amplify sound around you. It's processed live on your phone and never recorded.", color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Microphone access is needed to pick up and amplify sound around you. It's processed live on your phone and never recorded."), color = Handy.palette.textSecondary)
             Spacer(Modifier.size(16.dp))
             HSecondaryButton("Allow microphone", modifier = Modifier.fillMaxWidth()) {
                 permLauncher.launch(Manifest.permission.RECORD_AUDIO)
@@ -111,10 +111,10 @@ fun HearingBoostScreen() {
             }
             if (running) {
                 Spacer(Modifier.size(8.dp))
-                Text("Keep earbuds in to avoid feedback.", color = Handy.palette.textSecondary, fontSize = 13.sp)
+                Text(com.handytools.app.I18n.t("Keep earbuds in to avoid feedback."), color = Handy.palette.textSecondary, fontSize = 13.sp)
             }
             Spacer(Modifier.size(12.dp))
-            Text("A casual sound amplifier, not a hearing aid or medical device. Keep the volume comfortable to protect your ears, and see a hearing professional if you have trouble hearing.",
+            Text(com.handytools.app.I18n.t("A casual sound amplifier, not a hearing aid or medical device. Keep the volume comfortable to protect your ears, and see a hearing professional if you have trouble hearing."),
                 color = Handy.palette.textSecondary, fontSize = 12.sp)
         }
     }

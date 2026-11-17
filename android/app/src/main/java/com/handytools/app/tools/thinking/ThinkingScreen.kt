@@ -70,7 +70,7 @@ fun ThinkingScreen() {
             value = dump,
             onValueChange = { dump = it },
             label = { Text(if (tab == 0) "Everything on your mind" else "What's your day look like?") },
-            placeholder = { Text("call the dentist, pick up a parcel from the post office at 3pm, email Sam, pay rent Friday") },
+            placeholder = { Text(com.handytools.app.I18n.t("call the dentist, pick up a parcel from the post office at 3pm, email Sam, pay rent Friday")) },
             minLines = 5,
             modifier = Modifier.fillMaxWidth().heightIn(min = 150.dp)
         )

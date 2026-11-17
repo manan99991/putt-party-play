@@ -32,9 +32,9 @@ fun PrivacyScreen() {
     Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).navigationBarsPadding().padding(horizontal = HandyTokens.Gutter)) {
         Spacer(Modifier.height(HandyTokens.Space8))
         BackArrow(Modifier.offset(x = (-12).dp))
-        Text("Privacy", style = MaterialTheme.typography.headlineMedium)
+        Text(com.handytools.app.I18n.t("Privacy"), style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(HandyTokens.Space4))
-        Text("Short version: everything you do in Tenzy stays on this phone.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+        Text(com.handytools.app.I18n.t("Short version: everything you do in Tenzy stays on this phone."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space24))
 
         Block("Stays on your phone", true, listOf(

@@ -100,7 +100,7 @@ fun ShareToToolScreen(uri: Uri?, mime: String? = "image/*", text: String? = null
                         Text(c.name, style = MaterialTheme.typography.titleSmall)
                         Text(c.steps.joinToString("  ›  ") { it.block.title }, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     }
-                    TextButton({ ChainStore.setLastShared(ctx, c.id); running = c }) { Text("Run") }
+                    TextButton({ ChainStore.setLastShared(ctx, c.id); running = c }) { Text(com.handytools.app.I18n.t("Run")) }
                 }
             }
         }
@@ -192,24 +192,24 @@ fun BuilderScreen() {
     renaming?.let { r ->
         androidx.compose.material3.AlertDialog(
             onDismissRequest = { renaming = null },
-            title = { Text("Name this tool") },
-            text = { OutlinedTextField(newName, { newName = it }, singleLine = true, label = { Text("Name") }) },
+            title = { Text(com.handytools.app.I18n.t("Name this tool")) },
+            text = { OutlinedTextField(newName, { newName = it }, singleLine = true, label = { Text(com.handytools.app.I18n.t("Name")) }) },
             confirmButton = { TextButton({
                 val name = newName.trim()
                 val i = mine.indexOfFirst { it.id == r.id }
                 if (name.isNotEmpty() && i >= 0) { mine[i] = mine[i].copy(name = name); saveAll() }
                 renaming = null
-            }) { Text("Save") } },
-            dismissButton = { TextButton({ renaming = null }) { Text("Cancel") } })
+            }) { Text(com.handytools.app.I18n.t("Save")) } },
+            dismissButton = { TextButton({ renaming = null }) { Text(com.handytools.app.I18n.t("Cancel")) } })
     }
     running?.let { c -> ChainRunScreen(c, initial = runOn) { running = null; runOn = null }; return }
     if (showSheets) { SheetsScreen { showSheets = false }; return }
     if (showHistory) { HistoryScreen { showHistory = false }; return }
     if (showMine) {
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
-            TextButton({ showMine = false }) { Text("‹ Back") }
-            Text("My tools", style = MaterialTheme.typography.headlineSmall)
-            if (mine.isEmpty()) Text("Nothing saved yet. Build one from the start screen and it lands here.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            TextButton({ showMine = false }) { Text(com.handytools.app.I18n.t("‹ Back")) }
+            Text(com.handytools.app.I18n.t("My tools"), style = MaterialTheme.typography.headlineSmall)
+            if (mine.isEmpty()) Text(com.handytools.app.I18n.t("Nothing saved yet. Build one from the start screen and it lands here."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             mine.toList().forEach { c ->
                 ChainRow(c, onRun = { running = c }, onEdit = { editHint = null; editing = c }, onCopy = { copy(ctx, c); note = "Copied. Paste it into Tenzy on another phone." }, onLink = { linking = c }, onDelete = { mine.removeAll { it.id == c.id }; saveAll() },
                     onRename = { newName = c.name; renaming = c },
@@ -218,25 +218,25 @@ fun BuilderScreen() {
                     onDuplicate = { if (BuilderLimits.canSave(mine.size, premium)) { val k = c.copy(id = java.util.UUID.randomUUID().toString(), name = c.name + " copy", schedule = null, auto = AutoRun.OFF); mine.add(k); saveAll(); note = "Duplicated as ${k.name}." } else proForSave() })
             }
             val sheetCount = SheetStore.all(ctx).size
-            if (sheetCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showSheets = true }) { Column(Modifier.padding(HandyTokens.Space12)) { Text("My sheets", style = MaterialTheme.typography.titleSmall); Text(if (sheetCount == 1) "1 sheet your tools add to" else "$sheetCount sheets your tools add to", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) } }
+            if (sheetCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showSheets = true }) { Column(Modifier.padding(HandyTokens.Space12)) { Text(com.handytools.app.I18n.t("My sheets"), style = MaterialTheme.typography.titleSmall); Text(if (sheetCount == 1) "1 sheet your tools add to" else "$sheetCount sheets your tools add to", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) } }
             val historyCount = RunHistory.all(ctx).size
-            if (historyCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showHistory = true }) { Column(Modifier.padding(HandyTokens.Space12)) { Text("Recent results", style = MaterialTheme.typography.titleSmall); Text(if (historyCount == 1) "The last thing a tool made" else "The last $historyCount things your tools made", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) } }
+            if (historyCount > 0) HCard(Modifier.fillMaxWidth(), onClick = { showHistory = true }) { Column(Modifier.padding(HandyTokens.Space12)) { Text(com.handytools.app.I18n.t("Recent results"), style = MaterialTheme.typography.titleSmall); Text(if (historyCount == 1) "The last thing a tool made" else "The last $historyCount things your tools made", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) } }
         }
         return
     }
     if (showTemplates) {
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                TextButton({ showTemplates = false }) { Text("‹ Back") }
+                TextButton({ showTemplates = false }) { Text(com.handytools.app.I18n.t("‹ Back")) }
                 Row {
-                    TextButton({ editHint = null; editing = Chain.blank() }) { Text("Blank") }
+                    TextButton({ editHint = null; editing = Chain.blank() }) { Text(com.handytools.app.I18n.t("Blank")) }
                     TextButton({
                         val c = ToolLink.chain(paste(ctx))
                         if (c != null) { if (BuilderLimits.canSave(mine.size, premium)) { mine.add(c); saveAll(); note = "Added ${c.name}."; showTemplates = false } else proForSave() } else note = "Copy a tool from another Tenzy first, then tap Paste. Tools that use steps this phone doesn't have can't be added."
-                    }) { Text("Paste a tool") }
+                    }) { Text(com.handytools.app.I18n.t("Paste a tool")) }
                 }
             }
-            Text("Start from a template", style = MaterialTheme.typography.headlineSmall)
+            Text(com.handytools.app.I18n.t("Start from a template"), style = MaterialTheme.typography.headlineSmall)
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 listOf<Pair<String, Kind?>>("All" to null, "Photo" to Kind.IMAGE, "Text" to Kind.TEXT, "Video" to Kind.VIDEO, "Sound" to Kind.AUDIO, "PDF" to Kind.PDF).forEach { (label, k) ->
                     if (have == k) Button({ have = k }) { Text(label) } else OutlinedButton({ have = k }) { Text(label) }
@@ -250,8 +250,8 @@ fun BuilderScreen() {
     }
     if (showGuide) {
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
-            TextButton({ showGuide = false }) { Text("‹ Back") }
-            Text("How building works", style = MaterialTheme.typography.headlineSmall)
+            TextButton({ showGuide = false }) { Text(com.handytools.app.I18n.t("‹ Back")) }
+            Text(com.handytools.app.I18n.t("How building works"), style = MaterialTheme.typography.headlineSmall)
             BuilderIntro.PAGES.forEach { (title, body) ->
                 HCard(Modifier.fillMaxWidth()) { Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space4)) {
                     Text(title, style = MaterialTheme.typography.titleSmall)
@@ -270,13 +270,13 @@ fun BuilderScreen() {
     // The start screen: one clear, non-scrolling page. Two ways in — say it, or hand it what you
     // have — then everything else (your tools, templates, the guide) is one tap away at the foot.
     Column(Modifier.fillMaxSize().padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space16)) {
-        Text("Build your own", style = MaterialTheme.typography.headlineMedium)
-        Text("Make a tool that does the whole job — it runs on your phone.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+        Text(com.handytools.app.I18n.t("Build your own"), style = MaterialTheme.typography.headlineMedium)
+        Text(com.handytools.app.I18n.t("Make a tool that does the whole job — it runs on your phone."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
 
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(HandyTokens.Space16), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-                Text("Describe it", style = MaterialTheme.typography.titleMedium)
-                OutlinedTextField(ask, { ask = it }, Modifier.fillMaxWidth(), placeholder = { Text("e.g. shrink a photo under 1 MB and hide where it was taken") }, minLines = 1, maxLines = 2)
+                Text(com.handytools.app.I18n.t("Describe it"), style = MaterialTheme.typography.titleMedium)
+                OutlinedTextField(ask, { ask = it }, Modifier.fillMaxWidth(), placeholder = { Text(com.handytools.app.I18n.t("e.g. shrink a photo under 1 MB and hide where it was taken")) }, minLines = 1, maxLines = 2)
                 HPrimaryButton("Build it for me", enabled = ask.isNotBlank()) {
                     val g = ChainPlanner.guess(ask)
                     if (g != null) {
@@ -288,7 +288,7 @@ fun BuilderScreen() {
             }
         }
 
-        Text("…or start with what you have", style = MaterialTheme.typography.titleSmall, color = Handy.palette.textSecondary)
+        Text(com.handytools.app.I18n.t("…or start with what you have"), style = MaterialTheme.typography.titleSmall, color = Handy.palette.textSecondary)
         Column(verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 BuildObjectTile("Photo", Modifier.weight(1f)) { havePhoto.launch("image/*") }
@@ -312,8 +312,8 @@ fun BuilderScreen() {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
             val footPad = androidx.compose.foundation.layout.PaddingValues(horizontal = HandyTokens.Space8, vertical = HandyTokens.Space12)
             OutlinedButton({ showMine = true }, Modifier.weight(1f), contentPadding = footPad) { Text(if (mine.isEmpty()) "My tools" else "My tools · ${mine.size}", maxLines = 1, style = MaterialTheme.typography.labelLarge) }
-            OutlinedButton({ showTemplates = true }, Modifier.weight(1f), contentPadding = footPad) { Text("Templates", maxLines = 1, style = MaterialTheme.typography.labelLarge) }
-            OutlinedButton({ showGuide = true }, Modifier.weight(1f), contentPadding = footPad) { Text("Guide", maxLines = 1, style = MaterialTheme.typography.labelLarge) }
+            OutlinedButton({ showTemplates = true }, Modifier.weight(1f), contentPadding = footPad) { Text(com.handytools.app.I18n.t("Templates"), maxLines = 1, style = MaterialTheme.typography.labelLarge) }
+            OutlinedButton({ showGuide = true }, Modifier.weight(1f), contentPadding = footPad) { Text(com.handytools.app.I18n.t("Guide"), maxLines = 1, style = MaterialTheme.typography.labelLarge) }
         }
     }
 }
@@ -342,20 +342,20 @@ private fun ToolLinkDialog(c: Chain, onDone: () -> Unit) {
             Column(verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 if (code != null) Image(code.asImageBitmap(), "QR code for this tool", Modifier.fillMaxWidth())
                 Text(if (code != null) "Point another phone's camera at this, or send the link. It opens the tool in Tenzy." else "This tool is too big to fit in a QR code. Send the link instead.", style = MaterialTheme.typography.bodySmall)
-                Text("The link never carries your email addresses, phone numbers, reminders or a PDF password.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                Text(com.handytools.app.I18n.t("The link never carries your email addresses, phone numbers, reminders or a PDF password."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             }
         },
         confirmButton = {
             TextButton({
                 link?.let { l -> runCatching { ctx.startActivity(android.content.Intent.createChooser(android.content.Intent(android.content.Intent.ACTION_SEND).setType("text/plain").putExtra(android.content.Intent.EXTRA_TEXT, l), "Send the link")) } }
-            }) { Text("Send the link") }
+            }) { Text(com.handytools.app.I18n.t("Send the link")) }
         },
-        dismissButton = { TextButton(onDone) { Text("Done") } },
+        dismissButton = { TextButton(onDone) { Text(com.handytools.app.I18n.t("Done")) } },
     )
 }
 
 private fun copy(ctx: Context, c: Chain) {
-    (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy tool", c.shareText))
+    (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy tool"), c.shareText))
 }
 /** Puts a tool on the Home screen as its own icon: one tap opens Tenzy with that tool ready to run. False if the launcher can't. */
 private fun pinToHome(ctx: Context, c: Chain): Boolean = try {
@@ -383,21 +383,21 @@ private fun ChainRow(c: Chain, onRun: () -> Unit, onEdit: () -> Unit, onCopy: ()
             Column(Modifier.weight(1f)) {
                 Text(c.name, style = MaterialTheme.typography.titleSmall)
                 Text(c.steps.joinToString("  ›  ") { it.block.title }, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
-                if (ExtraSteps.unavailable(LocalContext.current, c) != null) Text("Has a step this phone can't run", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                if (ExtraSteps.unavailable(LocalContext.current, c) != null) Text(com.handytools.app.I18n.t("Has a step this phone can't run"), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                 if (c.auto.isNotEmpty()) Text(AutoRun.label(c.auto), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
-                c.schedule?.let { w -> Text("Reminder: " + w.label(android.text.format.DateFormat.is24HourFormat(LocalContext.current)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary) }
+                c.schedule?.let { w -> Text(com.handytools.app.I18n.t("Reminder: ") + w.label(android.text.format.DateFormat.is24HourFormat(LocalContext.current)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary) }
             }
-            TextButton(onRun) { Text("Run") }
-            TextButton({ menu = true }) { Text("More") }
+            TextButton(onRun) { Text(com.handytools.app.I18n.t("Run")) }
+            TextButton({ menu = true }) { Text(com.handytools.app.I18n.t("More")) }
             DropdownMenu(menu, { menu = false }) {
                 DropdownMenuItem(text = { Text(if (onDelete == null) "Edit a copy" else "Edit") }, onClick = { menu = false; onEdit() })
-                if (onRename != null) DropdownMenuItem(text = { Text("Rename") }, onClick = { menu = false; onRename() })
-                if (onPin != null) DropdownMenuItem(text = { Text("Add to Home screen") }, onClick = { menu = false; onPin() })
-                if (onTop != null) DropdownMenuItem(text = { Text("Move to top") }, onClick = { menu = false; onTop() })
-                if (onDuplicate != null) DropdownMenuItem(text = { Text("Duplicate") }, onClick = { menu = false; onDuplicate() })
-                DropdownMenuItem(text = { Text("Copy to share") }, onClick = { menu = false; onCopy() })
-                if (onLink != null && ToolLink.LIVE) DropdownMenuItem(text = { Text("Share as a link or QR code") }, onClick = { menu = false; onLink() })
-                if (onDelete != null) DropdownMenuItem(text = { Text("Delete") }, onClick = { menu = false; onDelete() })
+                if (onRename != null) DropdownMenuItem(text = { Text(com.handytools.app.I18n.t("Rename")) }, onClick = { menu = false; onRename() })
+                if (onPin != null) DropdownMenuItem(text = { Text(com.handytools.app.I18n.t("Add to Home screen")) }, onClick = { menu = false; onPin() })
+                if (onTop != null) DropdownMenuItem(text = { Text(com.handytools.app.I18n.t("Move to top")) }, onClick = { menu = false; onTop() })
+                if (onDuplicate != null) DropdownMenuItem(text = { Text(com.handytools.app.I18n.t("Duplicate")) }, onClick = { menu = false; onDuplicate() })
+                DropdownMenuItem(text = { Text(com.handytools.app.I18n.t("Copy to share")) }, onClick = { menu = false; onCopy() })
+                if (onLink != null && ToolLink.LIVE) DropdownMenuItem(text = { Text(com.handytools.app.I18n.t("Share as a link or QR code")) }, onClick = { menu = false; onLink() })
+                if (onDelete != null) DropdownMenuItem(text = { Text(com.handytools.app.I18n.t("Delete")) }, onClick = { menu = false; onDelete() })
             }
         }
     }
@@ -456,7 +456,7 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
 
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
         ToolHeader("Build a tool", "Each step is tried on a sample so you can see it work.")
-        OutlinedTextField(chain.name, { chain = chain.copy(name = it) }, Modifier.fillMaxWidth(), label = { Text("Name your tool") }, singleLine = true)
+        OutlinedTextField(chain.name, { chain = chain.copy(name = it) }, Modifier.fillMaxWidth(), label = { Text(com.handytools.app.I18n.t("Name your tool")) }, singleLine = true)
         if ((chain.name.isBlank() || chain.name.trim() == "My tool") && chain.steps.isNotEmpty())
             Text("No name yet. It will be saved as \u201C${ChainPlanner.autoName(chain)}\u201D.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         hint?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary) }
@@ -469,30 +469,30 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
                     StepSettings(s) { ns -> chain = chain.copy(steps = chain.steps.toMutableList().also { it[i] = ns }) }
                     PreviewStrip(previews.getOrNull(i))
                     Row {
-                        if (i > 0) TextButton({ chain = chain.copy(steps = chain.steps.toMutableList().also { it.add(i - 1, it.removeAt(i)) }) }) { Text("Up") }
-                        if (i < chain.steps.size - 1) TextButton({ chain = chain.copy(steps = chain.steps.toMutableList().also { it.add(i + 1, it.removeAt(i)) }) }) { Text("Down") }
-                        TextButton({ chain = chain.copy(steps = chain.steps.toMutableList().also { it.removeAt(i) }) }) { Text("Remove") }
+                        if (i > 0) TextButton({ chain = chain.copy(steps = chain.steps.toMutableList().also { it.add(i - 1, it.removeAt(i)) }) }) { Text(com.handytools.app.I18n.t("Up")) }
+                        if (i < chain.steps.size - 1) TextButton({ chain = chain.copy(steps = chain.steps.toMutableList().also { it.add(i + 1, it.removeAt(i)) }) }) { Text(com.handytools.app.I18n.t("Down")) }
+                        TextButton({ chain = chain.copy(steps = chain.steps.toMutableList().also { it.removeAt(i) }) }) { Text(com.handytools.app.I18n.t("Remove")) }
                     }
                 }
             }
         }
         if (chain.steps.isEmpty() && startChoice == null) {
             // First question of a new tool: what do you have? Everything offered after this fits the answer.
-            Text("What do you start with?", style = MaterialTheme.typography.titleMedium)
+            Text(com.handytools.app.I18n.t("What do you start with?"), style = MaterialTheme.typography.titleMedium)
             Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-                Button({ startChoice = Kind.IMAGE }, Modifier.weight(1f)) { Text("A photo") }
-                Button({ startChoice = Kind.TEXT }, Modifier.weight(1f)) { Text("Text") }
-                Button({ startChoice = Kind.VIDEO }, Modifier.weight(1f)) { Text("A video") }
+                Button({ startChoice = Kind.IMAGE }, Modifier.weight(1f)) { Text(com.handytools.app.I18n.t("A photo")) }
+                Button({ startChoice = Kind.TEXT }, Modifier.weight(1f)) { Text(com.handytools.app.I18n.t("Text")) }
+                Button({ startChoice = Kind.VIDEO }, Modifier.weight(1f)) { Text(com.handytools.app.I18n.t("A video")) }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-                Button({ startChoice = Kind.AUDIO }, Modifier.weight(1f)) { Text("A recording") }
-                Button({ startChoice = Kind.PDF }, Modifier.weight(1f)) { Text("A PDF") }
+                Button({ startChoice = Kind.AUDIO }, Modifier.weight(1f)) { Text(com.handytools.app.I18n.t("A recording")) }
+                Button({ startChoice = Kind.PDF }, Modifier.weight(1f)) { Text(com.handytools.app.I18n.t("A PDF")) }
             }
-            Text("A photo tool also takes scans, PDF pages and QR codes. A text tool also takes a link, what you say, a contact, where you are, or the words in a PDF. A recording tool writes out what was said.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("A photo tool also takes scans, PDF pages and QR codes. A text tool also takes a link, what you say, a contact, where you are, or the words in a PDF. A recording tool writes out what was said."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         } else {
             if (chain.steps.isEmpty()) {
                 Text("You start with ${startChoice?.label}. You only see steps that work with it.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
-                TextButton({ startChoice = null }) { Text("Start with something else") }
+                TextButton({ startChoice = null }) { Text(com.handytools.app.I18n.t("Start with something else")) }
             }
             HSecondaryButton(if (chain.steps.isEmpty()) "Add the first step" else "Add a step") { addMenu = true }
             DropdownMenu(addMenu, { addMenu = false }) {
@@ -505,11 +505,11 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
                     }
                 }
                 if (missing.isNotEmpty()) {
-                    Text("Not on this phone", style = MaterialTheme.typography.labelMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = HandyTokens.Space12, vertical = HandyTokens.Space4))
+                    Text(com.handytools.app.I18n.t("Not on this phone"), style = MaterialTheme.typography.labelMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = HandyTokens.Space12, vertical = HandyTokens.Space4))
                     missing.forEach { b -> DropdownMenuItem(text = { Text(b.title) }, onClick = {}, enabled = false) }
                 }
             }
-            if (!premium) Text("Free tools use the basic steps. The ones marked Pro unlock with Tenzy Pro.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            if (!premium) Text(com.handytools.app.I18n.t("Free tools use the basic steps. The ones marked Pro unlock with Tenzy Pro."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             missing.firstOrNull()?.let { first ->
                 Text(if (missing.size == 1) "${first.title} is greyed out on this phone. ${ExtraSteps.unavailable(ctx, first)}" else "${missing.size} steps are greyed out because this phone can't run them. Everything else works.",
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
@@ -532,34 +532,34 @@ private fun ChainEditor(start: Chain, hint: String? = null, onCancel: () -> Unit
                     label = { Text(if (fin.kind == "mail") "Email address (optional)" else "Phone number (optional)") })
             }
             if (it != Kind.TEXT) {
-                OutlinedTextField(chain.fileName, { v -> chain = chain.copy(fileName = v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("File name (optional), e.g. Signed form {date}") })
-                Text("Write {date} where today's date should go.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                OutlinedTextField(chain.fileName, { v -> chain = chain.copy(fileName = v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("File name (optional), e.g. Signed form {date}")) })
+                Text(com.handytools.app.I18n.t("Write {date} where today's date should go."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             }
             if (chain.start == Kind.IMAGE && it != Kind.TEXT) {
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on, onePage = on && chain.onePage, collage = if (on) false else chain.collage, gif = if (on) false else chain.gif, versus = if (on) false else chain.versus) })
-                    Text("  Put all pages or photos into one PDF", style = MaterialTheme.typography.bodyMedium)
+                    Text(com.handytools.app.I18n.t("  Put all pages or photos into one PDF"), style = MaterialTheme.typography.bodyMedium)
                 }
                 if (chain.combine) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     androidx.compose.material3.Switch(chain.onePage, { on -> chain = chain.copy(onePage = on) })
-                    Text("  All on a single page (both sides of an ID)", style = MaterialTheme.typography.bodyMedium)
+                    Text(com.handytools.app.I18n.t("  All on a single page (both sides of an ID)"), style = MaterialTheme.typography.bodyMedium)
                 }
                 if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     androidx.compose.material3.Switch(chain.collage, { on -> chain = if (on) chain.copy(collage = true, combine = false, onePage = false, gif = false, versus = false) else chain.copy(collage = false) })
-                    Text("  Put all photos into one picture (a collage)", style = MaterialTheme.typography.bodyMedium)
+                    Text(com.handytools.app.I18n.t("  Put all photos into one picture (a collage)"), style = MaterialTheme.typography.bodyMedium)
                 }
                 if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     androidx.compose.material3.Switch(chain.gif, { on -> chain = if (on) chain.copy(gif = true, collage = false, combine = false, onePage = false, versus = false) else chain.copy(gif = false) })
-                    Text("  Play all photos as one GIF", style = MaterialTheme.typography.bodyMedium)
+                    Text(com.handytools.app.I18n.t("  Play all photos as one GIF"), style = MaterialTheme.typography.bodyMedium)
                 }
                 if (it == Kind.IMAGE || it == Kind.PHOTO_FILE) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                     androidx.compose.material3.Switch(chain.versus, { on -> chain = if (on) chain.copy(versus = true, gif = false, collage = false, combine = false, onePage = false) else chain.copy(versus = false) })
-                    Text("  Before and after: two photos side by side", style = MaterialTheme.typography.bodyMedium)
+                    Text(com.handytools.app.I18n.t("  Before and after: two photos side by side"), style = MaterialTheme.typography.bodyMedium)
                 }
             }
             if (chain.start == Kind.PDF && it == Kind.PDF) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                 androidx.compose.material3.Switch(chain.combine, { on -> chain = chain.copy(combine = on) })
-                Text("  Join several PDFs into one", style = MaterialTheme.typography.bodyMedium)
+                Text(com.handytools.app.I18n.t("  Join several PDFs into one"), style = MaterialTheme.typography.bodyMedium)
             }
             if (fin.kind != "share") Text(
                 when (fin.kind) { "mail" -> "When the tool finishes, an email opens with the result attached. You tap Send."
@@ -587,23 +587,23 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             val mb = s.settings["mb"]?.toDoubleOrNull() ?: 2.0
             val i = TextTidy.LIMITS.indexOfFirst { it >= mb }.let { if (it < 0) TextTidy.LIMITS.lastIndex else it }
             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                TextButton({ set("mb", TextTidy.LIMITS[(i - 1).coerceAtLeast(0)].toString()) }) { Text("−") }
+                TextButton({ set("mb", TextTidy.LIMITS[(i - 1).coerceAtLeast(0)].toString()) }) { Text(com.handytools.app.I18n.t("−")) }
                 Text("Under ${TextTidy.limitLabel(mb)}", style = MaterialTheme.typography.bodyMedium)
-                TextButton({ set("mb", TextTidy.LIMITS[(i + 1).coerceAtMost(TextTidy.LIMITS.lastIndex)].toString()) }) { Text("+") }
+                TextButton({ set("mb", TextTidy.LIMITS[(i + 1).coerceAtMost(TextTidy.LIMITS.lastIndex)].toString()) }) { Text(com.handytools.app.I18n.t("+")) }
             }
         }
         Block.CHAT_LINK -> {
-            OutlinedTextField(s.settings["cc"] ?: "1", { v -> set("cc", v.filter { it.isDigit() }) }, singleLine = true, label = { Text("Country code (without +)") })
-            Text("Used when the number is written without one.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            OutlinedTextField(s.settings["cc"] ?: "1", { v -> set("cc", v.filter { it.isDigit() }) }, singleLine = true, label = { Text(com.handytools.app.I18n.t("Country code (without +)")) })
+            Text(com.handytools.app.I18n.t("Used when the number is written without one."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.ADD_TO_LIST -> {
-            OutlinedTextField(s.settings["list"] ?: TextTidy.DEFAULT_LIST, { v -> set("list", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Sheet name") })
-            Text("Write {month} to start a fresh sheet each month. The sample shown here is not saved.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            OutlinedTextField(s.settings["list"] ?: TextTidy.DEFAULT_LIST, { v -> set("list", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Sheet name")) })
+            Text(com.handytools.app.I18n.t("Write {month} to start a fresh sheet each month. The sample shown here is not saved."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.STAMP -> StampSettings(s.settings["marks"] ?: StampPlan.STANDARD) { v -> set("marks", v) }
         Block.WATERMARK -> {
-            OutlinedTextField(s.settings["text"] ?: "", { v -> set("text", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Words to write across it") })
-            Text("Today's date is added each time it runs.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            OutlinedTextField(s.settings["text"] ?: "", { v -> set("text", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Words to write across it")) })
+            Text(com.handytools.app.I18n.t("Today's date is added each time it runs."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.PASSPORT_PHOTO -> Column {
             PriceDeal.PASSPORT.forEach { (id, label, _) ->
@@ -632,9 +632,9 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
         Block.SUMMARIZE -> {
             val n = s.settings["sentences"]?.toIntOrNull() ?: 3
             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
-                TextButton({ set("sentences", (n - 1).coerceAtLeast(1).toString()) }) { Text("−") }
+                TextButton({ set("sentences", (n - 1).coerceAtLeast(1).toString()) }) { Text(com.handytools.app.I18n.t("−")) }
                 Text("$n sentences", style = MaterialTheme.typography.bodyMedium)
-                TextButton({ set("sentences", (n + 1).coerceAtMost(8).toString()) }) { Text("+") }
+                TextButton({ set("sentences", (n + 1).coerceAtMost(8).toString()) }) { Text(com.handytools.app.I18n.t("+")) }
             }
             Row {
                 val fmt = s.settings["format"] ?: "paragraph"
@@ -666,7 +666,7 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             DropdownMenu(open, { open = false }) {
                 TextTidy.LANGUAGES.forEach { (code, name) -> DropdownMenuItem(text = { Text(name) }, onClick = { open = false; set("to", code) }) }
             }
-            Text("The first time you use a language, the phone downloads it and needs a connection.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("The first time you use a language, the phone downloads it and needs a connection."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.PHOTO_PDF -> Row(Modifier.horizontalScroll(rememberScrollState())) {
             val size = s.settings["pagesize"] ?: "auto"
@@ -692,10 +692,10 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             val label = if (lang == "auto") "Auto (phone language)" else (TextTidy.LANGUAGES.firstOrNull { it.first == lang }?.second ?: lang)
             OutlinedButton({ open = true }) { Text("Spoken: $label") }
             DropdownMenu(open, { open = false }) {
-                DropdownMenuItem(text = { Text("Auto (phone language)") }, onClick = { open = false; set("lang", "auto") })
+                DropdownMenuItem(text = { Text(com.handytools.app.I18n.t("Auto (phone language)")) }, onClick = { open = false; set("lang", "auto") })
                 TextTidy.LANGUAGES.forEach { (code, name) -> DropdownMenuItem(text = { Text(name) }, onClick = { open = false; set("lang", code) }) }
             }
-            Text("Set this to the language spoken in the recording.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Set this to the language spoken in the recording."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.REWRITE -> Row(Modifier.horizontalScroll(rememberScrollState())) {
             val style = TextTidy.rewriteStyle(s.settings["style"])
@@ -706,20 +706,20 @@ private fun StepSettings(s: Step, onChange: (Step) -> Unit) {
             TextTidy.PDF_LIMITS.forEach { m -> TextButton({ set("mb", m.toString()) }) { Text(if (m == mb) "● $m MB" else "$m MB") } }
         }
         Block.PDF_LOCK -> {
-            OutlinedTextField(s.settings["password"] ?: "", { v -> set("password", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Password") },
+            OutlinedTextField(s.settings["password"] ?: "", { v -> set("password", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Password")) },
                 visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation())
-            Text("Kept on this phone with the tool. It is left out when you copy the tool to share.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Kept on this phone with the tool. It is left out when you copy the tool to share."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.PDF_PAGES ->
-            OutlinedTextField(s.settings["pages"] ?: "", { v -> set("pages", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Pages, e.g. 1-3, 5 (empty keeps all)") })
+            OutlinedTextField(s.settings["pages"] ?: "", { v -> set("pages", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Pages, e.g. 1-3, 5 (empty keeps all)")) })
         Block.EMOJI_FACES -> Row(Modifier.horizontalScroll(rememberScrollState())) {
             val now = TextTidy.faceEmoji(s.settings["emoji"])
             TextTidy.FACE_EMOJIS.forEach { e -> TextButton({ set("emoji", e) }) { Text(if (e == now) "● $e" else e) } }
         }
         Block.MEME -> {
-            OutlinedTextField(s.settings["top"] ?: "", { v -> set("top", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Top line") })
-            OutlinedTextField(s.settings["bottom"] ?: "", { v -> set("bottom", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Bottom line") })
-            Text("Leave them empty to type new words every time you run the tool.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            OutlinedTextField(s.settings["top"] ?: "", { v -> set("top", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Top line")) })
+            OutlinedTextField(s.settings["bottom"] ?: "", { v -> set("bottom", v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Bottom line")) })
+            Text(com.handytools.app.I18n.t("Leave them empty to type new words every time you run the tool."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         Block.VIDEO_SPEED -> Row(Modifier.horizontalScroll(rememberScrollState())) {
             val now = TextTidy.SPEEDS.firstOrNull { it.first == s.settings["speed"] }?.first ?: "slow"
@@ -767,7 +767,7 @@ sealed class Preview {
 private fun PreviewStrip(p: Preview?) {
     Column(Modifier.fillMaxWidth()) {
         when (p) {
-            null -> Text("Trying it on a sample…", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            null -> Text(com.handytools.app.I18n.t("Trying it on a sample…"), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             is Preview.Words -> Text(p.t.lines().take(6).joinToString("\n"), style = MaterialTheme.typography.bodySmall)
             is Preview.Pic -> Image(p.b.asImageBitmap(), null, Modifier.heightIn(max = 120.dp))
             is Preview.Doc -> Text(p.d, style = MaterialTheme.typography.bodySmall)
@@ -1048,12 +1048,12 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
         ToolHeader(chain.name, chain.steps.joinToString("  ›  ") { it.block.title })
         ExtraSteps.unavailable(ctx, chain)?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
         if (memeStep != null) {
-            OutlinedTextField(memeTop, { memeTop = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Top line") })
-            OutlinedTextField(memeBottom, { memeBottom = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Bottom line") })
+            OutlinedTextField(memeTop, { memeTop = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Top line")) })
+            OutlinedTextField(memeBottom, { memeBottom = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Bottom line")) })
         }
         if (chain.start == Kind.AUDIO) {
             HPrimaryButton("Choose a recording", enabled = !busy) { audioPicker.launch("audio/*") }
-            Text("Pick a voice recording or any sound file. It never leaves this phone.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Pick a voice recording or any sound file. It never leaves this phone."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         } else if (chain.start == Kind.PDF) {
             HPrimaryButton(if (chain.combine) "Choose PDFs" else "Choose a PDF", enabled = !busy) { pdfFiles.launch("application/pdf") }
             Text(if (chain.combine) "Pick the PDFs to join. They go into one PDF in the order the phone lists them." else "Pick one, or several at once. Each one gets the same steps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
@@ -1062,25 +1062,25 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
                 TextButton({
                     val c = paste(ctx)
                     if (c.isBlank()) message = "There is nothing copied to paste." else text = TextTidy.joined(text, c)
-                }) { Text("Paste") }
+                }) { Text(com.handytools.app.I18n.t("Paste")) }
                 TextButton({
                     try {
                         speak.launch(android.content.Intent(android.speech.RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
                             .putExtra(android.speech.RecognizerIntent.EXTRA_LANGUAGE_MODEL, android.speech.RecognizerIntent.LANGUAGE_MODEL_FREE_FORM))
                     } catch (_: Throwable) { message = "This phone has no voice typing set up. Type or paste instead." }
-                }) { Text("Speak") }
+                }) { Text(com.handytools.app.I18n.t("Speak")) }
                 TextButton({
                     try { contact.launch(android.content.Intent(android.content.Intent.ACTION_PICK, android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI)) }
                     catch (_: Throwable) { message = "This phone has no contacts app to pick from." }
-                }) { Text("Contact") }
-                TextButton({ pdf.launch("application/pdf") }) { Text("PDF") }
-                TextButton({ locationAsk.launch(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION)) }) { Text("Location") }
+                }) { Text(com.handytools.app.I18n.t("Contact")) }
+                TextButton({ pdf.launch("application/pdf") }) { Text(com.handytools.app.I18n.t("PDF")) }
+                TextButton({ locationAsk.launch(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION)) }) { Text(com.handytools.app.I18n.t("Location")) }
             }
-            OutlinedTextField(text, { text = it }, Modifier.fillMaxWidth().heightIn(min = 140.dp), label = { Text("Your text") })
+            OutlinedTextField(text, { text = it }, Modifier.fillMaxWidth().heightIn(min = 140.dp), label = { Text(com.handytools.app.I18n.t("Your text")) })
             HPrimaryButton("Run", enabled = text.isNotBlank() && !busy) { go(Payload.Words(text)) }
         } else if (chain.start == Kind.VIDEO) {
             HPrimaryButton("Choose a video", enabled = !busy) { videoPicker.launch("video/*") }
-            Text("Long videos take a little while. Keep Tenzy open until it finishes.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Long videos take a little while. Keep Tenzy open until it finishes."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         } else {
             HPrimaryButton("Choose photos", enabled = !busy) { picker.launch("image/*") }
             HSecondaryButton("Scan a document") { scan() }
@@ -1093,7 +1093,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             is Payload.Words -> {
                 Text(r.text, style = MaterialTheme.typography.bodyMedium)
                 HSecondaryButton("Copy") {
-                    (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", r.text))
+                    (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), r.text))
                     if (android.os.Build.VERSION.SDK_INT < 33) android.widget.Toast.makeText(ctx, "Copied", android.widget.Toast.LENGTH_SHORT).show()
                 }
             }
@@ -1106,7 +1106,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             }
             is Payload.Clip -> {
                 val f = r.uri.path?.let { File(it) }
-                Text("Your video is ready" + (f?.takeIf { it.exists() }?.let { " · ${MediaEngine.human(it.length())}" } ?: ""), style = MaterialTheme.typography.titleSmall)
+                Text(com.handytools.app.I18n.t("Your video is ready") + (f?.takeIf { it.exists() }?.let { " · ${MediaEngine.human(it.length())}" } ?: ""), style = MaterialTheme.typography.titleSmall)
                 HPrimaryButton("Save or share") { if (f != null && f.exists()) Share.file(ctx, f, "video/mp4") else message = "The video couldn't be found to share. Run the tool again." }
             }
             is Payload.Doc -> {
@@ -1168,7 +1168,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
             }
             val texts = ok.mapNotNull { b -> b.text?.let { "$noun ${b.n}\n$it" } }
             if (texts.isNotEmpty()) HSecondaryButton("Copy all text") {
-                (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", texts.joinToString("\n\n")))
+                (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), texts.joinToString("\n\n")))
                 if (android.os.Build.VERSION.SDK_INT < 33) android.widget.Toast.makeText(ctx, "Copied", android.widget.Toast.LENGTH_SHORT).show()
             }
         }

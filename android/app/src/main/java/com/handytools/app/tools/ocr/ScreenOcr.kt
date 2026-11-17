@@ -25,7 +25,7 @@ object ScreenOcr {
         val text = runCatching { recognizer.process(InputImage.fromBitmap(frame, 0)).await().text }.getOrDefault("")
         if (text.isBlank()) { withContext(Dispatchers.Main) { Toast.makeText(ctx, "No text found on screen", Toast.LENGTH_SHORT).show() }; return }
         withContext(Dispatchers.Main) {
-            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Screen text", text))
+            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Screen text"), text))
             com.handytools.app.ui.HandyHaptics.medium(ctx)
             Toast.makeText(ctx, "Copied ${text.lines().size} lines of text", Toast.LENGTH_SHORT).show()
         }

@@ -84,7 +84,7 @@ fun TranslateScreen() {
             LANGS.forEach { (code, nm) -> HChip(nm, other == code) { other = code } }
         }
         Spacer(Modifier.size(12.dp))
-        OutlinedTextField(input, { input = it }, label = { Text("Text to translate") }, modifier = Modifier.fillMaxWidth(), minLines = 3)
+        OutlinedTextField(input, { input = it }, label = { Text(com.handytools.app.I18n.t("Text to translate")) }, modifier = Modifier.fillMaxWidth(), minLines = 3)
         if (overQuota) Text("You've used today's ${Limits.FREE_TRANSLATE_PER_DAY} free translations. Go Pro for unlimited.",
             style = MaterialTheme.typography.bodySmall, color = HandyColors.Accent, modifier = Modifier.padding(top = 8.dp))
         Spacer(Modifier.size(12.dp))

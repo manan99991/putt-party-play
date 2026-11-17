@@ -104,7 +104,7 @@ fun FileViewerToolScreen(initialUri: Uri? = null) {
 
     PowerToolPage("fileviewer") {
         HPrimaryButton("Open a file", icon = Icons.Outlined.Folder) { picker.launch(arrayOf("*/*")) }
-        NoteText("Everything is read on your phone — nothing is uploaded. Tenzy also appears in other apps' “Open with” list, so you can send a file straight here.")
+        NoteText(com.handytools.app.I18n.t("Everything is read on your phone — nothing is uploaded. Tenzy also appears in other apps' “Open with” list, so you can send a file straight here."))
 
         val u = uri
         val m = meta
@@ -230,10 +230,10 @@ private fun ImageRenderer(uri: Uri) {
         when {
             b != null -> Image(b.asImageBitmap(), "Image preview", Modifier.fillMaxWidth().graphicsLayer(scaleX = scale, scaleY = scale, translationX = ox, translationY = oy))
             !done -> CircularProgressIndicator(color = HandyColors.Accent)
-            else -> Text("This device can't decode this image format — try “Open with” above.", style = MaterialTheme.typography.bodySmall, color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(24.dp))
+            else -> Text(com.handytools.app.I18n.t("This device can't decode this image format — try “Open with” above."), style = MaterialTheme.typography.bodySmall, color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(24.dp))
         }
     }
-    if (b != null) NoteText("Pinch to zoom, drag to pan.")
+    if (b != null) NoteText(com.handytools.app.I18n.t("Pinch to zoom, drag to pan."))
 }
 
 @Composable
@@ -312,7 +312,7 @@ private fun TextRenderer(uri: Uri, kind: FileViewer.Kind) {
     val t = text
     if (t == null) { CircularProgressIndicator(color = HandyColors.Accent); return }
     MonoPanel(t, lineNumbers = kind == FileViewer.Kind.TEXT)
-    if (truncated) NoteText("Showing the first part of a large file.")
+    if (truncated) NoteText(com.handytools.app.I18n.t("Showing the first part of a large file."))
 }
 
 @Composable
@@ -322,7 +322,7 @@ private fun CsvRenderer(uri: Uri) {
     LaunchedEffect(uri) { rows = withContext(Dispatchers.IO) { FileViewer.csvRows(ctx, uri) } }
     val data = rows
     if (data == null) { CircularProgressIndicator(color = HandyColors.Accent); return }
-    if (data.isEmpty()) { NoteText("No rows found."); return }
+    if (data.isEmpty()) { NoteText(com.handytools.app.I18n.t("No rows found.")); return }
     val scrollV = rememberScrollState(); val scrollH = rememberScrollState()
     Box(Modifier.fillMaxWidth().heightIn(max = 460.dp).clip(RoundedCornerShape(12.dp)).background(MaterialTheme.colorScheme.surface).border(1.dp, Handy.palette.border, RoundedCornerShape(12.dp)).verticalScroll(scrollV)) {
         Column(Modifier.horizontalScroll(scrollH).padding(8.dp)) {
@@ -411,7 +411,7 @@ private fun SqliteRenderer(uri: Uri) {
     }
     val tl = tables
     if (tl == null) { CircularProgressIndicator(color = HandyColors.Accent); return }
-    if (tl.isEmpty()) { NoteText("No readable tables (the file may be encrypted or not a database)."); return }
+    if (tl.isEmpty()) { NoteText(com.handytools.app.I18n.t("No readable tables (the file may be encrypted or not a database).")); return }
     SectionLabel("${tl.size} table${if (tl.size == 1) "" else "s"}")
     Box(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -425,7 +425,7 @@ private fun SqliteRenderer(uri: Uri) {
             cols = r.first; rows = r.second
         }
         Spacer(Modifier.height(8.dp))
-        if (cols.isEmpty()) { NoteText("(empty)"); return }
+        if (cols.isEmpty()) { NoteText(com.handytools.app.I18n.t("(empty)")); return }
         val sv = rememberScrollState(); val sh = rememberScrollState()
         Box(Modifier.fillMaxWidth().heightIn(max = 420.dp).clip(RoundedCornerShape(12.dp)).background(MaterialTheme.colorScheme.surface).border(1.dp, Handy.palette.border, RoundedCornerShape(12.dp)).verticalScroll(sv)) {
             Column(Modifier.horizontalScroll(sh).padding(8.dp)) {
@@ -448,7 +448,7 @@ private fun ApkRenderer(uri: Uri) {
         info = i; failed = i == null
     }
     val a = info
-    if (failed) { NoteText("Couldn't parse this APK."); return }
+    if (failed) { NoteText(com.handytools.app.I18n.t("Couldn't parse this APK.")); return }
     if (a == null) { CircularProgressIndicator(color = HandyColors.Accent); return }
     HCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(14.dp)) {
@@ -461,7 +461,7 @@ private fun ApkRenderer(uri: Uri) {
     SectionLabel("${a.permissions.size} permission${if (a.permissions.size == 1) "" else "s"}")
     Box(Modifier.fillMaxWidth().heightIn(max = 300.dp).clip(RoundedCornerShape(12.dp)).background(MaterialTheme.colorScheme.surface).border(1.dp, Handy.palette.border, RoundedCornerShape(12.dp)).verticalScroll(rememberScrollState())) {
         Column(Modifier.padding(10.dp)) {
-            if (a.permissions.isEmpty()) Text("None requested.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            if (a.permissions.isEmpty()) Text(com.handytools.app.I18n.t("None requested."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             a.permissions.forEach { Text("• ${it.substringAfterLast('.')}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.padding(vertical = 2.dp)) }
         }
     }
@@ -523,7 +523,7 @@ private fun EbookRenderer(uri: Uri) {
     ) {
         Text(t, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.padding(16.dp), lineHeight = 22.sp)
     }
-    NoteText("Reading the book's text on-device. Tap “Open with” for a full e-reader.")
+    NoteText(com.handytools.app.I18n.t("Reading the book's text on-device. Tap “Open with” for a full e-reader."))
 }
 
 @Composable
@@ -540,7 +540,7 @@ private fun DocRenderer(uri: Uri) {
     ) {
         Text(t, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.padding(16.dp), lineHeight = 22.sp)
     }
-    NoteText("Reading the document's text on-device. Tap “Open with” to open it in an office app with full formatting.")
+    NoteText(com.handytools.app.I18n.t("Reading the document's text on-device. Tap “Open with” to open it in an office app with full formatting."))
 }
 
 @Composable

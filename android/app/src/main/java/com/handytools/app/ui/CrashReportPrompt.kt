@@ -23,17 +23,17 @@ fun CrashReportPrompt() {
     if (!show) return
     AlertDialog(
         onDismissRequest = { show = false },
-        title = { Text("Tenzy hit a snag last time") },
-        text = { Text("A crash report was saved on this phone. Send it so the bug can be fixed? Nothing is uploaded unless you tap Send.") },
+        title = { Text(com.handytools.app.I18n.t("Tenzy hit a snag last time")) },
+        text = { Text(com.handytools.app.I18n.t("A crash report was saved on this phone. Send it so the bug can be fixed? Nothing is uploaded unless you tap Send.")) },
         confirmButton = {
             TextButton(onClick = {
                 runCatching { ctx.startActivity(Intent.createChooser(CrashReporter.shareIntent(ctx), "Send crash report")) }
                 CrashReporter.clear(ctx)
                 show = false
-            }) { Text("Send report") }
+            }) { Text(com.handytools.app.I18n.t("Send report")) }
         },
         dismissButton = {
-            TextButton(onClick = { CrashReporter.clear(ctx); show = false }) { Text("Dismiss") }
+            TextButton(onClick = { CrashReporter.clear(ctx); show = false }) { Text(com.handytools.app.I18n.t("Dismiss")) }
         }
     )
 }

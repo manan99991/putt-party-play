@@ -90,7 +90,7 @@ fun ScanCsvScreen() {
 
         if (csv.isNotBlank()) {
             Spacer(Modifier.size(16.dp))
-            Text("Rows & columns (comma-separated). Fix anything the scan got wrong:", color = Handy.palette.textSecondary, fontSize = 13.sp)
+            Text(com.handytools.app.I18n.t("Rows & columns (comma-separated). Fix anything the scan got wrong:"), color = Handy.palette.textSecondary, fontSize = 13.sp)
             Spacer(Modifier.size(8.dp))
             OutlinedTextField(
                 value = csv,
@@ -102,7 +102,7 @@ fun ScanCsvScreen() {
             HSecondaryButton("Save & share .csv", modifier = Modifier.fillMaxWidth()) { export() }
         }
 
-        NoteText("Reads text on your phone — the photo is never uploaded. OCR isn't perfect, so check the values before you rely on them.")
+        NoteText(com.handytools.app.I18n.t("Reads text on your phone — the photo is never uploaded. OCR isn't perfect, so check the values before you rely on them."))
     }
 }
 

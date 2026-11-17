@@ -196,7 +196,7 @@ fun SafetyToolScreen() {
             0 -> {
                 OutlinedTextField(
                     value = message, onValueChange = { message = it }, modifier = Modifier.fillMaxWidth(), minLines = 5,
-                    placeholder = { Text("Paste a suspicious text, email, link or number…") },
+                    placeholder = { Text(com.handytools.app.I18n.t("Paste a suspicious text, email, link or number…")) },
                 )
                 Spacer(Modifier.height(HandyTokens.Space8))
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
@@ -211,16 +211,16 @@ fun SafetyToolScreen() {
                 msgNote?.let { Text(it, color = HandyColors.Amber, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 6.dp)) }
             }
             1 -> {
-                OutlinedTextField(value = link, onValueChange = { link = it }, modifier = Modifier.fillMaxWidth(), singleLine = true, placeholder = { Text("Paste a link…") })
+                OutlinedTextField(value = link, onValueChange = { link = it }, modifier = Modifier.fillMaxWidth(), singleLine = true, placeholder = { Text(com.handytools.app.I18n.t("Paste a link…")) })
                 Spacer(Modifier.height(HandyTokens.Space12))
                 HPrimaryButton("Check link", enabled = link.isNotBlank()) { show(SafetyEngine.checkLink(link), "link") }
-                NoteText("Checks the address itself — look-alike brands, risky endings, shorteners, raw IPs. Nothing is opened.")
+                NoteText(com.handytools.app.I18n.t("Checks the address itself — look-alike brands, risky endings, shorteners, raw IPs. Nothing is opened."))
             }
             2 -> {
-                OutlinedTextField(value = phone, onValueChange = { phone = it }, modifier = Modifier.fillMaxWidth(), singleLine = true, placeholder = { Text("Phone number…") })
+                OutlinedTextField(value = phone, onValueChange = { phone = it }, modifier = Modifier.fillMaxWidth(), singleLine = true, placeholder = { Text(com.handytools.app.I18n.t("Phone number…")) })
                 Spacer(Modifier.height(HandyTokens.Space12))
                 HPrimaryButton("Check number", enabled = phone.any { it.isDigit() }) { show(SafetyEngine.checkPhone(phone), "phone") }
-                NoteText("Spots premium-rate and spoof-pattern numbers; your phone's dialer also checks its own spam list.")
+                NoteText(com.handytools.app.I18n.t("Spots premium-rate and spoof-pattern numbers; your phone's dialer also checks its own spam list."))
             }
             3 -> {
                 val img = qrImage
@@ -230,7 +230,7 @@ fun SafetyToolScreen() {
                         Image(img.asImageBitmap(), null, Modifier.fillMaxWidth().heightIn(min = 160.dp, max = 360.dp), contentScale = ContentScale.Fit)
                     }
                     else -> PreviewBox(minHeight = 170.dp) {
-                        Text("Scan a QR code before you open it — the link inside is checked first.", textAlign = TextAlign.Center, color = Handy.palette.textSecondary, modifier = Modifier.padding(HandyTokens.Space24))
+                        Text(com.handytools.app.I18n.t("Scan a QR code before you open it — the link inside is checked first."), textAlign = TextAlign.Center, color = Handy.palette.textSecondary, modifier = Modifier.padding(HandyTokens.Space24))
                     }
                 }
                 Spacer(Modifier.height(HandyTokens.Space12))
@@ -244,7 +244,7 @@ fun SafetyToolScreen() {
                         library.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     }
                 }
-                if (cameraDenied) NoteText("Camera isn't allowed for Tenzy — use From image instead, or allow it in Settings › Apps › Tenzy.")
+                if (cameraDenied) NoteText(com.handytools.app.I18n.t("Camera isn't allowed for Tenzy — use From image instead, or allow it in Settings › Apps › Tenzy."))
                 qrStatus?.let { Spacer(Modifier.height(HandyTokens.Space12)); Pill(it, HandyColors.Amber) }
             }
             else -> {
@@ -277,7 +277,7 @@ fun SafetyToolScreen() {
             blockHint?.let { NoteText(it) }
         }
 
-        NoteText("Runs entirely on the phone — nothing is uploaded, and links are never opened. A clean result isn't a guarantee: when money or codes are involved, verify through an official channel.")
+        NoteText(com.handytools.app.I18n.t("Runs entirely on the phone — nothing is uploaded, and links are never opened. A clean result isn't a guarantee: when money or codes are involved, verify through an official channel."))
     }
 }
 
@@ -327,9 +327,9 @@ private fun ResultCard(c: SafetyEngine.Check, label: String?, onReport: () -> Un
             }
             Spacer(Modifier.height(HandyTokens.Space12))
             Row {
-                Text("✅", fontSize = 15.sp, modifier = Modifier.padding(end = 10.dp))
+                Text(com.handytools.app.I18n.t("✅"), fontSize = 15.sp, modifier = Modifier.padding(end = 10.dp))
                 Column {
-                    Text("What to do", fontWeight = FontWeight.SemiBold)
+                    Text(com.handytools.app.I18n.t("What to do"), fontWeight = FontWeight.SemiBold)
                     c.advice.forEach { Text(it, color = Handy.palette.textSecondary, fontSize = 13.sp, modifier = Modifier.padding(top = 2.dp)) }
                 }
             }

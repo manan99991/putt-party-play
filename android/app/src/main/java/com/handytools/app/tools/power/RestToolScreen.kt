@@ -77,10 +77,10 @@ fun RestToolScreen() {
                 if (remaining != null) {
                     Spacer(Modifier.height(6.dp))
                     val m = remaining!! / 60; val s = remaining!! % 60
-                    Text("sleeps in %d:%02d".format(m, s), fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.onSurface)
+                    Text(com.handytools.app.I18n.t("sleeps in %d:%02d").format(m, s), fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.onSurface)
                 } else if (playing) {
                     Spacer(Modifier.height(6.dp))
-                    Text("playing", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+                    Text(com.handytools.app.I18n.t("playing"), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
                 }
             }
         }
@@ -99,6 +99,6 @@ fun RestToolScreen() {
         Spacer(Modifier.height(16.dp))
         HPrimaryButton(if (playing) "Stop" else "Play") { if (playing) stopPlay() else startPlay() }
 
-        NoteText("The sound is generated on your phone in real time, so it never loops or repeats and can run as long as you like. The sleep timer stops it for you. Keep the volume gentle.")
+        NoteText(com.handytools.app.I18n.t("The sound is generated on your phone in real time, so it never loops or repeats and can run as long as you like. The sleep timer stops it for you. Keep the volume gentle."))
     }
 }

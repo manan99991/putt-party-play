@@ -28,7 +28,7 @@ fun ComingSoonScreen(name: String) {
                 Icon(Icons.Outlined.Bolt, null, tint = HandyColors.Accent, modifier = Modifier.size(30.dp))
             }
             Text(name, style = MaterialTheme.typography.headlineSmall)
-            Text("Coming to Android in the next update.", style = MaterialTheme.typography.bodyMedium,
+            Text(com.handytools.app.I18n.t("Coming to Android in the next update."), style = MaterialTheme.typography.bodyMedium,
                 color = Handy.palette.textSecondary, textAlign = TextAlign.Center)
         }
     }

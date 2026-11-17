@@ -75,7 +75,7 @@ fun SheetsScreen(onBack: () -> Unit) {
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader("My sheets", "Each sheet opens in Excel or Google Sheets. They stay on this phone until you send one.")
         note?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary) }
-        if (sheets.isEmpty()) Text("No sheets yet. Run \"Receipt into this month's expense sheet\" and it appears here.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+        if (sheets.isEmpty()) Text(com.handytools.app.I18n.t("No sheets yet. Run \"Receipt into this month's expense sheet\" and it appears here."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
         sheets.forEach { s ->
             val key = s.file.name
             HCard(Modifier.fillMaxWidth(), onClick = { open = if (open == key) null else key }) {
@@ -94,26 +94,26 @@ fun SheetsScreen(onBack: () -> Unit) {
                         }
                     }
                     if (renaming == key) {
-                        OutlinedTextField(newName, { newName = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("New name") })
-                        Text("Tools that add to this sheet by its old name will start a new one.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                        OutlinedTextField(newName, { newName = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("New name")) })
+                        Text(com.handytools.app.I18n.t("Tools that add to this sheet by its old name will start a new one."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                         Row {
                             TextButton({
                                 note = if (SheetStore.rename(ctx, s, newName)) "Renamed." else "That name is empty or already used. The sheet kept its name."
                                 renaming = null; reload()
-                            }) { Text("Save name") }
-                            TextButton({ renaming = null }) { Text("Cancel") }
+                            }) { Text(com.handytools.app.I18n.t("Save name")) }
+                            TextButton({ renaming = null }) { Text(com.handytools.app.I18n.t("Cancel")) }
                         }
                     } else if (deleting == key) {
-                        Text("Delete this sheet? Its entries are removed from this phone. This can't be undone.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                        Text(com.handytools.app.I18n.t("Delete this sheet? Its entries are removed from this phone. This can't be undone."), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
                         Row {
                             TextButton({ SheetStore.delete(s); note = "Deleted ${s.name}."; deleting = null; reload() }) { Text("Delete ${s.name}", color = MaterialTheme.colorScheme.error) }
-                            TextButton({ deleting = null }) { Text("Keep it") }
+                            TextButton({ deleting = null }) { Text(com.handytools.app.I18n.t("Keep it")) }
                         }
                     } else Row(Modifier.horizontalScroll(rememberScrollState())) {
-                        TextButton({ Share.file(ctx, s.file, "text/csv") }) { Text("Send") }
-                        TextButton({ newName = s.name; renaming = key }) { Text("Rename") }
-                        if (s.rows > 0) TextButton({ if (SheetStore.removeLastRow(s)) { note = "Removed the last entry from ${s.name}."; reload() } }) { Text("Undo last") }
-                        TextButton({ deleting = key }) { Text("Delete") }
+                        TextButton({ Share.file(ctx, s.file, "text/csv") }) { Text(com.handytools.app.I18n.t("Send")) }
+                        TextButton({ newName = s.name; renaming = key }) { Text(com.handytools.app.I18n.t("Rename")) }
+                        if (s.rows > 0) TextButton({ if (SheetStore.removeLastRow(s)) { note = "Removed the last entry from ${s.name}."; reload() } }) { Text(com.handytools.app.I18n.t("Undo last")) }
+                        TextButton({ deleting = key }) { Text(com.handytools.app.I18n.t("Delete")) }
                     }
                 }
             }

@@ -75,7 +75,7 @@ fun GpsDashboardToolScreen() {
     PowerToolPage("gpsdash") {
         if (!granted) {
             PreviewBox(minHeight = 160.dp) {
-                Text("GPS Dashboard needs location access to read your speed and position. Nothing is uploaded — it stays on your phone.",
+                Text(com.handytools.app.I18n.t("GPS Dashboard needs location access to read your speed and position. Nothing is uploaded — it stays on your phone."),
                     style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = 20.dp))
             }
             Spacer(Modifier.height(12.dp))
@@ -108,14 +108,14 @@ fun GpsDashboardToolScreen() {
                 Spacer(Modifier.height(10.dp))
                 HCard(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(14.dp)) {
-                        Text("Position", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+                        Text(com.handytools.app.I18n.t("Position"), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
                         Spacer(Modifier.height(4.dp))
-                        Text("%.5f, %.5f".format(f.latitude, f.longitude), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+                        Text(com.handytools.app.I18n.t("%.5f, %.5f").format(f.latitude, f.longitude), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
             }
         }
-        NoteText("Reads the phone's GNSS directly. Speed and heading need you to be moving, and a clear view of the sky gives the best fix. Nothing is sent anywhere.")
+        NoteText(com.handytools.app.I18n.t("Reads the phone's GNSS directly. Speed and heading need you to be moving, and a clear view of the sky gives the best fix. Nothing is sent anywhere."))
     }
 }
 

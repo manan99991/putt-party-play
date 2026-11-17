@@ -276,7 +276,7 @@ internal fun MetalPanel() {
         }
         BigToggle("Beep and buzz near metal", beep) { beep = it; prefs.metalBeep = it }
         SliderRow("Sensitivity", "${threshold.roundToInt()} µT", threshold, { threshold = it }, 10f..100f, onFinished = { prefs.metalThreshold = threshold })
-        NoteText("Lower sensitivity values trigger sooner. The sensor sits near the top of the phone — sweep that end over the wall or ground.")
+        NoteText(com.handytools.app.I18n.t("Lower sensitivity values trigger sooner. The sensor sits near the top of the phone — sweep that end over the wall or ground."))
     }
 }
 
@@ -338,7 +338,7 @@ internal fun RulerPanel() {
                         .clip(RoundedCornerShape(8.dp)).background(HandyColors.Accent.copy(alpha = 0.18f))
                         .border(2.dp, HandyColors.Accent, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
-                ) { Text("85.6 mm", style = MaterialTheme.typography.labelMedium, color = HandyColors.Accent, fontWeight = FontWeight.SemiBold) }
+                ) { Text(com.handytools.app.I18n.t("85.6 mm"), style = MaterialTheme.typography.labelMedium, color = HandyColors.Accent, fontWeight = FontWeight.SemiBold) }
             }
             Spacer(Modifier.height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -415,7 +415,7 @@ internal fun MagnifierPanel() {
         }
         if (!started) {
             PreviewBox(minHeight = 240.dp) {
-                Text("Camera zoom with light.", color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodyMedium)
+                Text(com.handytools.app.I18n.t("Camera zoom with light."), color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodyMedium)
             }
         } else {
             Box(Modifier.fillMaxWidth().aspectRatio(3f / 4f).clip(RoundedCornerShape(16.dp)).background(androidx.compose.ui.graphics.Color.Black)) {
@@ -457,6 +457,6 @@ internal fun MagnifierPanel() {
             Spacer(Modifier.height(8.dp))
             HSecondaryButton("Stop") { stop() }
         }
-        NoteText("Zoom goes past what the Camera app allows. Freeze to read fine print without holding still.")
+        NoteText(com.handytools.app.I18n.t("Zoom goes past what the Camera app allows. Freeze to read fine print without holding still."))
     }
 }

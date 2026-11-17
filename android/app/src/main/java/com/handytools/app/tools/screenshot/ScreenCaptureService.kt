@@ -85,7 +85,7 @@ class ScreenCaptureService : Service() {
         val n: Notification = NotificationCompat.Builder(this, HandyApp.CH_TOOLS)
             .setSmallIcon(R.drawable.ic_notif)
             .setContentTitle("Screenshot+ is on")
-            .setContentText("Tap the floating button in any app to capture.")
+            .setContentText(com.handytools.app.I18n.t("Tap the floating button in any app to capture."))
             .setContentIntent(pi)
             .addAction(0, "Stop", stop)
             .setOngoing(true)

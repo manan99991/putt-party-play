@@ -106,7 +106,7 @@ fun AiScreen(route: String) {
             Kind.GEN -> {
                 HCard(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
-                        Text("Needs on-device Gemini", style = MaterialTheme.typography.titleMedium)
+                        Text(com.handytools.app.I18n.t("Needs on-device Gemini"), style = MaterialTheme.typography.titleMedium)
                         Spacer(Modifier.size(6.dp))
                         Text("This writing tool runs on phones with on-device Gemini Nano (Pixel 9, Galaxy S24+ and newer). On this phone it isn't available yet — it stays free and private when it is. ${s.subtitle}",
                             style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
@@ -114,7 +114,7 @@ fun AiScreen(route: String) {
                 }
             }
         }
-        if (working) { Spacer(Modifier.size(12.dp)); Text("Working…", color = Handy.palette.textSecondary) }
+        if (working) { Spacer(Modifier.size(12.dp)); Text(com.handytools.app.I18n.t("Working…"), color = Handy.palette.textSecondary) }
         if (output.isNotEmpty()) {
             Spacer(Modifier.size(12.dp))
             Column(Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState())) {

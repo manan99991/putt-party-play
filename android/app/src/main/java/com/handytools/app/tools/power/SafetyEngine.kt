@@ -196,7 +196,7 @@ object SafetyEngine {
     /** True when the system blocked-numbers screen opened. Otherwise the number is copied. */
     fun block(ctx: Context, number: String?): Boolean {
         if (number != null) {
-            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", number))
+            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), number))
         }
         return try {
             if (!BlockedNumberContract.canCurrentUserBlockNumbers(ctx)) return false

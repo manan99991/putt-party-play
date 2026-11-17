@@ -145,16 +145,16 @@ private fun ScanTab() {
                 modifier = Modifier.fillMaxWidth().aspectRatio(3f / 4f)
             )
         }
-        NoteText("Point the camera at any QR or barcode. It reads on your phone — nothing is uploaded.")
+        NoteText(com.handytools.app.I18n.t("Point the camera at any QR or barcode. It reads on your phone — nothing is uploaded."))
     } else {
         Spacer(Modifier.height(HandyTokens.Space12))
         HPrimaryButton("Allow camera") { permLauncher.launch(Manifest.permission.CAMERA) }
-        NoteText("Camera access lets you scan live. You can also scan a picture from your gallery without it.")
+        NoteText(com.handytools.app.I18n.t("Camera access lets you scan live. You can also scan a picture from your gallery without it."))
     }
 
     Spacer(Modifier.height(HandyTokens.Space8))
     HSecondaryButton("Scan from image") { picker.launch(arrayOf("image/*")) }
-    if (imageError && decoded == null) NoteText("No code found in that image — try another picture, or point the camera at it.")
+    if (imageError && decoded == null) NoteText(com.handytools.app.I18n.t("No code found in that image — try another picture, or point the camera at it."))
 
     decoded?.let { d ->
         Spacer(Modifier.height(HandyTokens.Space12))
@@ -245,16 +245,16 @@ private fun NfcSection() {
 
     SectionLabel("NFC")
     if (!adapter.isEnabled) {
-        NoteText("NFC is switched off. Turn it on in Settings, then hold a tag to the back of your phone.")
+        NoteText(com.handytools.app.I18n.t("NFC is switched off. Turn it on in Settings, then hold a tag to the back of your phone."))
         return
     }
-    if (!enabled) { NoteText("NFC reading isn't available right now."); return }
+    if (!enabled) { NoteText(com.handytools.app.I18n.t("NFC reading isn't available right now.")); return }
     val info = tagInfo
     if (info == null) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Outlined.Nfc, null, Modifier.size(22.dp), tint = HandyColors.Accent)
             Spacer(Modifier.size(8.dp))
-            Text("Hold an NFC tag to the back of your phone.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Hold an NFC tag to the back of your phone."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
         }
     } else {
         HCard(Modifier.fillMaxWidth()) {
@@ -354,7 +354,7 @@ private fun CreateTab() {
                 Image(bmp.asImageBitmap(), "QR code", Modifier.size(220.dp))
             }
         } else {
-            Text("Fill in the field above to build a QR code.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(24.dp))
+            Text(com.handytools.app.I18n.t("Fill in the field above to build a QR code."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(24.dp))
         }
     }
 
@@ -370,7 +370,7 @@ private fun CreateTab() {
         val f = CodesEngine.cachePng(ctx, b2, "tenzy-qr")
         if (f != null) Share.file(ctx, f, "image/png") else toast(ctx, "Couldn't prepare the image")
     }
-    NoteText("The code is generated on your phone. Wi-Fi codes carry the password in plain text — share them only with people you'd give the password to.")
+    NoteText(com.handytools.app.I18n.t("The code is generated on your phone. Wi-Fi codes carry the password in plain text — share them only with people you'd give the password to."))
 }
 
 /* ------------------------------------------------------------------ small shared bits ------------------------------------------------------------------ */

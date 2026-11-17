@@ -382,7 +382,7 @@ fun VoiceToolScreen() {
     }
 
     fun copyText(t: String) {
-        (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("note", t))
+        (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("note"), t))
         Toast.makeText(ctx, "Copied", Toast.LENGTH_SHORT).show()
     }
 
@@ -420,7 +420,7 @@ fun VoiceToolScreen() {
                     )
                 } else if (current == null) {
                     Spacer(Modifier.height(8.dp))
-                    Text("Tap Record and start talking — the transcript appears as you speak.",
+                    Text(com.handytools.app.I18n.t("Tap Record and start talking — the transcript appears as you speak."),
                         style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                 } else {
                     Spacer(Modifier.height(4.dp))
@@ -486,7 +486,7 @@ fun VoiceToolScreen() {
                         else Text(summary, style = MaterialTheme.typography.bodyMedium)
                         if (details.isNotEmpty()) {
                             Spacer(Modifier.height(10.dp))
-                            Text("Key details", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+                            Text(com.handytools.app.I18n.t("Key details"), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
                             Spacer(Modifier.height(4.dp))
                             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 details.take(4).forEach { Pill(it) }
@@ -498,7 +498,7 @@ fun VoiceToolScreen() {
                     }
                 }
                 2 -> if (todos.isEmpty()) {
-                    HCard(Modifier.fillMaxWidth()) { Text("No action items found.", color = Handy.palette.textSecondary, modifier = Modifier.padding(14.dp)) }
+                    HCard(Modifier.fillMaxWidth()) { Text(com.handytools.app.I18n.t("No action items found."), color = Handy.palette.textSecondary, modifier = Modifier.padding(14.dp)) }
                 } else Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     todos.forEachIndexed { i, t ->
                         HCard(Modifier.fillMaxWidth(), onClick = { if (checked.contains(i)) checked.remove(i) else checked.add(i) }) {
@@ -515,13 +515,13 @@ fun VoiceToolScreen() {
                 }
                 else -> HCard(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(14.dp)) {
-                        Text("Keep from · to", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+                        Text(com.handytools.app.I18n.t("Keep from · to"), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
                         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                             Text(VoiceNotes.fmt((range.start * currentDur).toLong()), fontWeight = FontWeight.Medium)
                             Text(VoiceNotes.fmt((range.endInclusive * currentDur).toLong()), fontWeight = FontWeight.Medium)
                         }
                         RangeSlider(value = range, onValueChange = { range = it }, valueRange = 0f..1f)
-                        Text("Clip length  " + VoiceNotes.fmt(((range.endInclusive - range.start) * currentDur).toLong()),
+                        Text(com.handytools.app.I18n.t("Clip length  ") + VoiceNotes.fmt(((range.endInclusive - range.start) * currentDur).toLong()),
                             style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                         Spacer(Modifier.height(10.dp))
                         HSecondaryButton(if (busy) "Trimming…" else "Trim & save copy", enabled = !busy) { trimAndSave() }
@@ -544,11 +544,11 @@ fun VoiceToolScreen() {
         if (notes.isNotEmpty()) {
             OutlinedTextField(
                 value = query, onValueChange = { query = it }, singleLine = true,
-                placeholder = { Text("Search transcripts") }, modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+                placeholder = { Text(com.handytools.app.I18n.t("Search transcripts")) }, modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
             )
         }
         val visible = if (query.isBlank()) notes else notes.filter { it.title.contains(query, true) || it.transcript.contains(query, true) }
-        if (notes.isEmpty()) Text("No notes yet.", color = Handy.palette.textSecondary, modifier = Modifier.padding(10.dp))
+        if (notes.isEmpty()) Text(com.handytools.app.I18n.t("No notes yet."), color = Handy.palette.textSecondary, modifier = Modifier.padding(10.dp))
         else if (visible.isEmpty()) Text("No notes match \"$query\".", color = Handy.palette.textSecondary, modifier = Modifier.padding(10.dp))
         else Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             visible.forEach { n ->
@@ -573,13 +573,13 @@ fun VoiceToolScreen() {
                 }
             }
         }
-        NoteText("Transcription runs on the phone. Nothing is uploaded.")
+        NoteText(com.handytools.app.I18n.t("Transcription runs on the phone. Nothing is uploaded."))
     }
 
     confirmDelete?.let { n ->
         AlertDialog(
             onDismissRequest = { confirmDelete = null },
-            title = { Text("Delete this note?") },
+            title = { Text(com.handytools.app.I18n.t("Delete this note?")) },
             text = { Text("\"${n.title}\" and its audio will be removed from your phone.") },
             confirmButton = {
                 TextButton(onClick = {
@@ -587,9 +587,9 @@ fun VoiceToolScreen() {
                     VoiceNotes.delete(ctx, n)
                     notes = VoiceNotes.load(ctx)
                     confirmDelete = null
-                }) { Text("Delete", color = HandyColors.Danger) }
+                }) { Text(com.handytools.app.I18n.t("Delete"), color = HandyColors.Danger) }
             },
-            dismissButton = { TextButton(onClick = { confirmDelete = null }) { Text("Keep") } }
+            dismissButton = { TextButton(onClick = { confirmDelete = null }) { Text(com.handytools.app.I18n.t("Keep")) } }
         )
     }
 }

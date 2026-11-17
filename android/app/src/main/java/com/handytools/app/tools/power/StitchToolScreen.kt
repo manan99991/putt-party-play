@@ -111,6 +111,6 @@ fun StitchToolScreen() {
             HPrimaryButton("Save & share", Modifier.fillMaxWidth()) { save() }
         }
         error?.let { Spacer(Modifier.height(10.dp)); Text(it, color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodyMedium) }
-        NoteText("Works best on screenshots of the same screen taken as you scroll, picked in order. Tenzy finds the overlap between each pair and joins them seamlessly — all on your phone.")
+        NoteText(com.handytools.app.I18n.t("Works best on screenshots of the same screen taken as you scroll, picked in order. Tenzy finds the overlap between each pair and joins them seamlessly — all on your phone."))
     }
 }

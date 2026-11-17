@@ -142,11 +142,11 @@ private fun AlarmEditor(initial: Alarm, onSave: (Alarm) -> Unit, onDelete: (Alar
 
     AlertDialog(
         onDismissRequest = onCancel,
-        confirmButton = { Button(onClick = { onSave(a) }) { Text("Save") } },
+        confirmButton = { Button(onClick = { onSave(a) }) { Text(com.handytools.app.I18n.t("Save")) } },
         dismissButton = {
             Row {
-                if (initial.id != 0L) TextButton(onClick = { onDelete(initial) }) { Text("Delete alarm") }
-                TextButton(onClick = onCancel) { Text("Cancel") }
+                if (initial.id != 0L) TextButton(onClick = { onDelete(initial) }) { Text(com.handytools.app.I18n.t("Delete alarm")) }
+                TextButton(onClick = onCancel) { Text(com.handytools.app.I18n.t("Cancel")) }
             }
         },
         title = { Text(if (initial.id == 0L) "New alarm" else "Edit alarm") },
@@ -155,9 +155,9 @@ private fun AlarmEditor(initial: Alarm, onSave: (Alarm) -> Unit, onDelete: (Alar
                 OutlinedButton(onClick = {
                     TimePickerDialog(ctx, { _, h, m -> a = a.copy(hour = h, minute = m) }, a.hour, a.minute, false).show()
                 }, modifier = Modifier.fillMaxWidth()) { Text(String.format("%02d:%02d", a.hour, a.minute), fontSize = 28.sp) }
-                OutlinedTextField(a.label, { a = a.copy(label = it) }, label = { Text("Label") }, singleLine = true, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
+                OutlinedTextField(a.label, { a = a.copy(label = it) }, label = { Text(com.handytools.app.I18n.t("Label")) }, singleLine = true, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
 
-                Text("Repeat", style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 12.dp))
+                Text(com.handytools.app.I18n.t("Repeat"), style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 12.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     DAYS.forEachIndexed { i, d ->
                         val bit = 1 shl i
@@ -167,7 +167,7 @@ private fun AlarmEditor(initial: Alarm, onSave: (Alarm) -> Unit, onDelete: (Alar
 
                 Spacer(Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.Bottom) {
-                    Text("Snooze length", style = MaterialTheme.typography.bodyLarge)
+                    Text(com.handytools.app.I18n.t("Snooze length"), style = MaterialTheme.typography.bodyLarge)
                     Text("${a.snoozeMinutes} min", fontSize = 28.sp, fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold, color = HandyColors.Accent)
                 }
                 Slider(a.snoozeMinutes.toFloat(), { a = a.copy(snoozeMinutes = it.toInt()) }, valueRange = 1f..30f, steps = 28)

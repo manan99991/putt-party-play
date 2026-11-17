@@ -119,7 +119,7 @@ object ClipboardOverlay {
     private fun recopy(ctx: Context, text: String) {
         panel?.hide()
         (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)
-            .setPrimaryClip(ClipData.newPlainText("Tenzy", text))
+            .setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), text))
         Toast.makeText(ctx, "Copied — long-press the field and tap Paste", Toast.LENGTH_SHORT).show()
     }
 
@@ -134,7 +134,7 @@ object ClipboardOverlay {
             val all = withContext(Dispatchers.IO) { HandyApp.instance.db.clips().allOnce() }
             if (all.isEmpty()) { Toast.makeText(ctx, "Nothing to copy yet", Toast.LENGTH_SHORT).show(); return@launch }
             val joined = all.joinToString("\n") { it.text }
-            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", joined))
+            (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), joined))
             Toast.makeText(ctx, "${all.size} items copied, ready to paste", Toast.LENGTH_SHORT).show()
             panel?.hide()
         }

@@ -271,8 +271,8 @@ fun CleanupToolScreen() {
             onDismissRequest = { confirmPurge = false },
             title = { Text("Delete ${trashAll.size} items forever?") },
             text = { Text("This can't be undone. ${CleanupEngine.human(trashAll.sumOf { it.size })} will be freed.") },
-            confirmButton = { TextButton(onClick = { confirmPurge = false; purgeAll() }) { Text("Delete forever", color = HandyColors.Danger) } },
-            dismissButton = { TextButton(onClick = { confirmPurge = false }) { Text("Keep in Trash") } }
+            confirmButton = { TextButton(onClick = { confirmPurge = false; purgeAll() }) { Text(com.handytools.app.I18n.t("Delete forever"), color = HandyColors.Danger) } },
+            dismissButton = { TextButton(onClick = { confirmPurge = false }) { Text(com.handytools.app.I18n.t("Keep in Trash")) } }
         )
     }
     if (confirmEmpty) {
@@ -280,17 +280,17 @@ fun CleanupToolScreen() {
         AlertDialog(
             onDismissRequest = { confirmEmpty = false },
             title = { Text("Remove ${empties.size} empty contacts?") },
-            text = { Text("They have no name and no number, so there's nothing to recover — contacts don't have a Trash. Back up first if you'd like a copy.") },
+            text = { Text(com.handytools.app.I18n.t("They have no name and no number, so there's nothing to recover — contacts don't have a Trash. Back up first if you'd like a copy.")) },
             confirmButton = {
                 TextButton(onClick = {
                     confirmEmpty = false; cBusy = true
                     scope.launch { val n = withContext(Dispatchers.IO) { CleanupEngine.deleteEmpty(ctx, empties) }; cNote = "Removed $n empty contact${if (n == 1) "" else "s"}"; scanContacts() }
-                }) { Text("Remove", color = HandyColors.Danger) }
+                }) { Text(com.handytools.app.I18n.t("Remove"), color = HandyColors.Danger) }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = { scope.launch { val f = runCatching { withContext(Dispatchers.IO) { ContactsEngine.exportVcf(ctx) } }.getOrNull(); if (f != null) Share.file(ctx, f, "text/x-vcard") } }) { Text("Back up (.vcf)") }
-                    TextButton(onClick = { confirmEmpty = false }) { Text("Cancel") }
+                    TextButton(onClick = { scope.launch { val f = runCatching { withContext(Dispatchers.IO) { ContactsEngine.exportVcf(ctx) } }.getOrNull(); if (f != null) Share.file(ctx, f, "text/x-vcard") } }) { Text(com.handytools.app.I18n.t("Back up (.vcf)")) }
+                    TextButton(onClick = { confirmEmpty = false }) { Text(com.handytools.app.I18n.t("Cancel")) }
                 }
             }
         )
@@ -370,7 +370,7 @@ private fun SpaceTab(
         Spacer(Modifier.height(8.dp))
         HSecondaryButton("← Back to categories") { onBack() }
     }
-    NoteText("Nothing is deleted outright — everything goes to a recoverable Trash. Files are shown in full so you can review before you act.")
+    NoteText(com.handytools.app.I18n.t("Nothing is deleted outright — everything goes to a recoverable Trash. Files are shown in full so you can review before you act."))
 }
 
 @Composable
@@ -451,13 +451,13 @@ private fun ContactsTab(
     var transferOpen by remember { mutableStateOf(false) }
     HCard(Modifier.fillMaxWidth().padding(bottom = 10.dp), onClick = { transferOpen = true }) {
         Column(Modifier.padding(14.dp)) {
-            Text("Move contacts between accounts", style = MaterialTheme.typography.titleMedium)
-            Text("Google, your phone, Exchange: copy or move in three taps.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Move contacts between accounts"), style = MaterialTheme.typography.titleMedium)
+            Text(com.handytools.app.I18n.t("Google, your phone, Exchange: copy or move in three taps."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
     }
     if (transferOpen) com.handytools.app.tools.contacts.ContactsTransferDialog(onDismiss = { transferOpen = false }, onChanged = onRescan)
     if (report == null) {
-        if (busy) { LinearProgressIndicator(modifier = Modifier.fillMaxWidth()); Text("Reading contacts…", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 8.dp)) }
+        if (busy) { LinearProgressIndicator(modifier = Modifier.fillMaxWidth()); Text(com.handytools.app.I18n.t("Reading contacts…"), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 8.dp)) }
         else HPrimaryButton("Scan my contacts") { onRescan() }
         note?.let { NoteText(it) }
         return
@@ -492,7 +492,7 @@ private fun ContactsTab(
     }
     Spacer(Modifier.height(8.dp))
     HSecondaryButton(if (busy) "Working…" else "Rescan", enabled = !busy) { onRescan() }
-    NoteText("Merging links the entries into one contact and keeps every number and email — nothing is lost.")
+    NoteText(com.handytools.app.I18n.t("Merging links the entries into one contact and keeps every number and email — nothing is lost."))
 }
 
 // ------------------------------------------------------------------------------------------ Trash

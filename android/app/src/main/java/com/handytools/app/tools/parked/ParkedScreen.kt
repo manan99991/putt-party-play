@@ -126,7 +126,7 @@ fun ParkedScreen() {
     PowerToolPage("parked") {
         if (!granted) {
             Text(
-                "Turn on location to drop and find your parking pin. Your location is used only on this phone to measure the distance back — it's never uploaded.",
+                com.handytools.app.I18n.t("Turn on location to drop and find your parking pin. Your location is used only on this phone to measure the distance back — it's never uploaded."),
                 color = Handy.palette.textSecondary
             )
             Spacer(Modifier.size(16.dp))
@@ -181,13 +181,13 @@ fun ParkedScreen() {
                 }
             } else {
                 Text(
-                    "Park, then tap below to save this spot. Add a note if the lot has levels or rows.",
+                    com.handytools.app.I18n.t("Park, then tap below to save this spot. Add a note if the lot has levels or rows."),
                     color = Handy.palette.textSecondary
                 )
                 Spacer(Modifier.size(16.dp))
                 OutlinedTextField(
                     value = note, onValueChange = { note = it },
-                    label = { Text("Note (optional) — e.g. Level 3, Blue") },
+                    label = { Text(com.handytools.app.I18n.t("Note (optional) — e.g. Level 3, Blue")) },
                     modifier = Modifier.fillMaxWidth(), singleLine = true
                 )
                 Spacer(Modifier.size(16.dp))
@@ -205,7 +205,7 @@ fun ParkedScreen() {
                 }
                 if (here == null) {
                     Spacer(Modifier.size(8.dp))
-                    Text("Getting a GPS fix… step outside if it's slow.", color = Handy.palette.textSecondary, fontSize = 13.sp)
+                    Text(com.handytools.app.I18n.t("Getting a GPS fix… step outside if it's slow."), color = Handy.palette.textSecondary, fontSize = 13.sp)
                 }
             }
         }

@@ -203,21 +203,21 @@ fun NetworkToolScreen() {
     PowerToolPage("network", tabs, tab, { tab = it }, tabIcons = tabIcons, accent = tabTints.getOrNull(tab)) {
         when (tab) {
             0 -> {
-                NoteText("Measures your real download speed and latency by pulling a test file from Cloudflare — the honest number your phone actually gets right now. Uses about 10 MB of data; everything else stays on your device.")
+                NoteText(com.handytools.app.I18n.t("Measures your real download speed and latency by pulling a test file from Cloudflare — the honest number your phone actually gets right now. Uses about 10 MB of data; everything else stays on your device."))
                 Spacer(Modifier.height(14.dp))
                 PreviewBox(minHeight = 160.dp) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         when {
-                            testing -> Text("Testing…", style = MaterialTheme.typography.titleMedium, color = Handy.palette.textSecondary)
+                            testing -> Text(com.handytools.app.I18n.t("Testing…"), style = MaterialTheme.typography.titleMedium, color = Handy.palette.textSecondary)
                             mbps != null -> {
                                 Row(verticalAlignment = Alignment.Bottom) {
-                                    Text("%.1f".format(mbps), fontSize = 52.sp, fontWeight = FontWeight.ExtraBold, color = HandyColors.Accent)
-                                    Text(" Mbps", fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = Handy.palette.textSecondary, modifier = Modifier.padding(bottom = 8.dp))
+                                    Text(com.handytools.app.I18n.t("%.1f").format(mbps), fontSize = 52.sp, fontWeight = FontWeight.ExtraBold, color = HandyColors.Accent)
+                                    Text(com.handytools.app.I18n.t(" Mbps"), fontSize = 20.sp, fontWeight = FontWeight.SemiBold, color = Handy.palette.textSecondary, modifier = Modifier.padding(bottom = 8.dp))
                                 }
                                 Text("download · ${latencyMs ?: 0} ms latency", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
                             }
                             speedError != null -> Text(speedError!!, style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = 20.dp))
-                            else -> Text("Tap below to measure your real download speed.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = 20.dp))
+                            else -> Text(com.handytools.app.I18n.t("Tap below to measure your real download speed."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = 20.dp))
                         }
                     }
                 }
@@ -229,10 +229,10 @@ fun NetworkToolScreen() {
                 HPrimaryButton(if (testing) "Testing…" else if (mbps != null) "Test again" else "Test my speed", enabled = !testing) { speedTest() }
             }
             1 -> {
-                NoteText("Everything about your current connection, read straight from the phone — signal, link speed, your IP, the router and DNS. Nothing leaves the device.")
+                NoteText(com.handytools.app.I18n.t("Everything about your current connection, read straight from the phone — signal, link speed, your IP, the router and DNS. Nothing leaves the device."))
                 Spacer(Modifier.height(10.dp))
                 if (info.isEmpty()) {
-                    Text("No connection details available.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(vertical = 12.dp))
+                    Text(com.handytools.app.I18n.t("No connection details available."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary, modifier = Modifier.padding(vertical = 12.dp))
                 } else {
                     info.forEach { (k, v) ->
                         Row(Modifier.fillMaxWidth().padding(vertical = 7.dp), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -245,7 +245,7 @@ fun NetworkToolScreen() {
                 HSecondaryButton("Refresh") { refreshInfo() }
             }
             else -> {
-                NoteText("Pings every address on your Wi-Fi to list the phones, laptops, TVs and smart-home gadgets connected to it — a quick \"who's on my network\". Runs on-device over the local network only.")
+                NoteText(com.handytools.app.I18n.t("Pings every address on your Wi-Fi to list the phones, laptops, TVs and smart-home gadgets connected to it — a quick \"who's on my network\". Runs on-device over the local network only."))
                 Spacer(Modifier.height(14.dp))
                 HPrimaryButton(if (scanning) "Scanning… $progress/254" else "Scan my network", enabled = !scanning) { scan() }
                 Spacer(Modifier.height(12.dp))
@@ -259,7 +259,7 @@ fun NetworkToolScreen() {
                     }
                 } else if (!scanning) {
                     Box(Modifier.fillMaxWidth().padding(top = 4.dp)) {
-                        Text("Tap Scan to list everything on your Wi-Fi. Join the Wi-Fi network first — this can't see devices over mobile data.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+                        Text(com.handytools.app.I18n.t("Tap Scan to list everything on your Wi-Fi. Join the Wi-Fi network first — this can't see devices over mobile data."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
                     }
                 }
             }

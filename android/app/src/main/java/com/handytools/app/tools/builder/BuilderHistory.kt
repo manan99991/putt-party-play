@@ -130,7 +130,7 @@ fun HistoryScreen(onBack: () -> Unit) {
 
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
         ToolHeader("Recent results", "The last ${RunHistory.LIMIT} things your tools made. They stay on this phone until you clear them.")
-        if (items.isEmpty()) Text("Nothing yet. Run a tool and its result appears here.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+        if (items.isEmpty()) Text(com.handytools.app.I18n.t("Nothing yet. Run a tool and its result appears here."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
         items.forEach { item ->
             val found = remember(item.id) { RunHistory.files(ctx, item) }
             HCard(Modifier.fillMaxWidth()) {
@@ -148,11 +148,11 @@ fun HistoryScreen(onBack: () -> Unit) {
                         if (found.isNotEmpty()) TextButton({
                             val mime = found.map { it.extension.lowercase() }.distinct().singleOrNull()?.let { mimeFor(it) } ?: "*/*"
                             Share.files(ctx, found, mime)
-                        }) { Text("Save or share") }
+                        }) { Text(com.handytools.app.I18n.t("Save or share")) }
                         else item.text?.let { t ->
-                            TextButton({ (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", t)) }) { Text("Copy") }
+                            TextButton({ (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), t)) }) { Text(com.handytools.app.I18n.t("Copy")) }
                         }
-                        TextButton({ RunHistory.remove(ctx, item); items = RunHistory.all(ctx) }) { Text("Remove") }
+                        TextButton({ RunHistory.remove(ctx, item); items = RunHistory.all(ctx) }) { Text(com.handytools.app.I18n.t("Remove")) }
                     }
                 }
             }
@@ -162,9 +162,9 @@ fun HistoryScreen(onBack: () -> Unit) {
     }
     if (clearing) AlertDialog(
         onDismissRequest = { clearing = false },
-        title = { Text("Clear every recent result?") },
-        text = { Text("They are removed from this phone. Anything you already saved or sent is not touched.") },
-        confirmButton = { TextButton({ RunHistory.clear(ctx); items = emptyList(); clearing = false }) { Text("Clear them all") } },
-        dismissButton = { TextButton({ clearing = false }) { Text("Keep them") } },
+        title = { Text(com.handytools.app.I18n.t("Clear every recent result?")) },
+        text = { Text(com.handytools.app.I18n.t("They are removed from this phone. Anything you already saved or sent is not touched.")) },
+        confirmButton = { TextButton({ RunHistory.clear(ctx); items = emptyList(); clearing = false }) { Text(com.handytools.app.I18n.t("Clear them all")) } },
+        dismissButton = { TextButton({ clearing = false }) { Text(com.handytools.app.I18n.t("Keep them")) } },
     )
 }

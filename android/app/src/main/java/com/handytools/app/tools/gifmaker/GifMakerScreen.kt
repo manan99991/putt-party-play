@@ -127,26 +127,26 @@ fun GifMakerScreen() {
     }
 
     PowerToolPage("gifmaker") {
-        Text("Size", color = Handy.palette.textSecondary, fontSize = 13.sp)
+        Text(com.handytools.app.I18n.t("Size"), color = Handy.palette.textSecondary, fontSize = 13.sp)
         Spacer(Modifier.size(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             SIZES.forEach { s -> HChip(s.label, s == sizeSel) { sizeSel = s; gif = null; preview = null } }
         }
 
         Spacer(Modifier.size(14.dp))
-        Text("Length", color = Handy.palette.textSecondary, fontSize = 13.sp)
+        Text(com.handytools.app.I18n.t("Length"), color = Handy.palette.textSecondary, fontSize = 13.sp)
         Spacer(Modifier.size(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             LENGTHS.forEach { l -> HChip(l.label, l == lenSel) { lenSel = l; gif = null; preview = null } }
         }
         Spacer(Modifier.size(14.dp))
-        Text("Smoothness", color = Handy.palette.textSecondary, fontSize = 13.sp)
+        Text(com.handytools.app.I18n.t("Smoothness"), color = Handy.palette.textSecondary, fontSize = 13.sp)
         Spacer(Modifier.size(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             SMOOTHS.forEach { m -> HChip(m.label, m == smoothSel) { smoothSel = m; gif = null; preview = null } }
         }
         Spacer(Modifier.size(14.dp))
-        Text("Which part", color = Handy.palette.textSecondary, fontSize = 13.sp)
+        Text(com.handytools.app.I18n.t("Which part"), color = Handy.palette.textSecondary, fontSize = 13.sp)
         Spacer(Modifier.size(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FROMS.forEach { f -> HChip(f.label, f == fromSel) { fromSel = f; gif = null; preview = null } }
@@ -171,7 +171,7 @@ fun GifMakerScreen() {
 
         Spacer(Modifier.size(16.dp))
         Text(
-            "Encoded on your phone — nothing is uploaded. The preview shows the first frame; the saved file loops. Longer, smoother and bigger GIFs make larger files — if memory runs short the frame rate is lowered automatically.",
+            com.handytools.app.I18n.t("Encoded on your phone — nothing is uploaded. The preview shows the first frame; the saved file loops. Longer, smoother and bigger GIFs make larger files — if memory runs short the frame rate is lowered automatically."),
             color = Handy.palette.textSecondary, fontSize = 12.sp,
         )
     }

@@ -81,9 +81,9 @@ fun MemoryScreen() {
         if (!authorized) {
             HCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp)) {
-                    Text("Memory reads your screenshots", style = MaterialTheme.typography.titleMedium)
+                    Text(com.handytools.app.I18n.t("Memory reads your screenshots"), style = MaterialTheme.typography.titleMedium)
                     Spacer(Modifier.size(6.dp))
-                    Text("It needs access to your photos to find things in them. Nothing is uploaded — it stays on your phone.",
+                    Text(com.handytools.app.I18n.t("It needs access to your photos to find things in them. Nothing is uploaded — it stays on your phone."),
                         style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
                 }
             }
@@ -99,7 +99,7 @@ fun MemoryScreen() {
                             singleLine = true,
                             textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                             decorationBox = { inner ->
-                                if (query.text.isBlank()) Text("Ask your screenshots…", color = Handy.palette.textSecondary)
+                                if (query.text.isBlank()) Text(com.handytools.app.I18n.t("Ask your screenshots…"), color = Handy.palette.textSecondary)
                                 inner()
                             })
                     }
@@ -119,7 +119,7 @@ fun MemoryScreen() {
                 Spacer(Modifier.size(12.dp))
                 HCard(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
-                        Text("Read your screenshots once so you can search them. It happens on your phone and is cached — only slow the first time.",
+                        Text(com.handytools.app.I18n.t("Read your screenshots once so you can search them. It happens on your phone and is cached — only slow the first time."),
                             style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
                         Spacer(Modifier.size(10.dp))
                         HPrimaryButton("Index my screenshots", modifier = Modifier.fillMaxWidth()) { reindex() }
@@ -130,14 +130,14 @@ fun MemoryScreen() {
             Spacer(Modifier.size(12.dp))
             Column(Modifier.fillMaxWidth()) {
                 if (searched && results.isEmpty() && !indexing)
-                    Text("Nothing matched that. Try the words that were on the screenshot, or re-index if it's recent.",
+                    Text(com.handytools.app.I18n.t("Nothing matched that. Try the words that were on the screenshot, or re-index if it's recent."),
                         style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                 results.forEach { e ->
                     HCard(Modifier.fillMaxWidth().clickable { viewing = e }) {
                         Column(Modifier.padding(14.dp)) {
                             Text(MemoryEngine.bestLine(query.text, e), style = MaterialTheme.typography.bodyLarge)
                             Spacer(Modifier.size(6.dp))
-                            Text("Tap to open the screenshot", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                            Text(com.handytools.app.I18n.t("Tap to open the screenshot"), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                             Spacer(Modifier.size(6.dp))
                             HSecondaryButton("Share") { Share.text(ctx, MemoryEngine.bestLine(query.text, e)) }
                         }
@@ -150,7 +150,7 @@ fun MemoryScreen() {
                 }
             }
         }
-        NoteText("A one-line AI answer needs on-device Gemini Nano (Pixel 9, Galaxy S24+ and newer). Otherwise you get the best-matching screenshot.")
+        NoteText(com.handytools.app.I18n.t("A one-line AI answer needs on-device Gemini Nano (Pixel 9, Galaxy S24+ and newer). Otherwise you get the best-matching screenshot."))
     }
 
     viewing?.let { e ->
@@ -161,12 +161,12 @@ fun MemoryScreen() {
                     if (bmp != null) {
                         Image(bitmap = bmp.asImageBitmap(), contentDescription = "Screenshot", modifier = Modifier.fillMaxWidth())
                     } else {
-                        Text("This screenshot isn't on your phone anymore. The text read from it is below.",
+                        Text(com.handytools.app.I18n.t("This screenshot isn't on your phone anymore. The text read from it is below."),
                             style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
                     }
                     Spacer(Modifier.size(12.dp))
                     if (e.text.isNotBlank()) {
-                        Text("Text read from this screenshot", style = MaterialTheme.typography.titleSmall)
+                        Text(com.handytools.app.I18n.t("Text read from this screenshot"), style = MaterialTheme.typography.titleSmall)
                         Spacer(Modifier.size(4.dp))
                         Text(e.text, style = MaterialTheme.typography.bodyMedium)
                         Spacer(Modifier.size(12.dp))

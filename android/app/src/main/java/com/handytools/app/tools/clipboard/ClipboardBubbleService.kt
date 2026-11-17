@@ -29,7 +29,7 @@ class ClipboardBubbleService : Service() {
         val n = NotificationCompat.Builder(this, HandyApp.CH_TOOLS)
             .setSmallIcon(R.drawable.ic_notif)
             .setContentTitle("Clipboard bubble is on")
-            .setContentText("Tap the bubble in any app to grab or re-copy a clip.")
+            .setContentText(com.handytools.app.I18n.t("Tap the bubble in any app to grab or re-copy a clip."))
             .addAction(0, "Stop", stop)
             .setOngoing(true)
             .build()

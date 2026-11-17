@@ -84,7 +84,7 @@ fun LensScreen() {
                 BasicTextField(value = text, onValueChange = { text = it }, modifier = Modifier.fillMaxWidth(),
                     textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                     decorationBox = { inner ->
-                        if (text.text.isBlank()) Text("Paste text, or snap a photo below…", color = Handy.palette.textSecondary)
+                        if (text.text.isBlank()) Text(com.handytools.app.I18n.t("Paste text, or snap a photo below…"), color = Handy.palette.textSecondary)
                         inner()
                     })
             }
@@ -95,7 +95,7 @@ fun LensScreen() {
                 picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
-        if (working) { Spacer(Modifier.size(12.dp)); Text("Reading the text…", color = Handy.palette.textSecondary) }
+        if (working) { Spacer(Modifier.size(12.dp)); Text(com.handytools.app.I18n.t("Reading the text…"), color = Handy.palette.textSecondary) }
         error?.let { Spacer(Modifier.size(12.dp)); Text(it, color = com.handytools.app.ui.HandyColors.Danger, style = MaterialTheme.typography.bodySmall) }
 
         if (hasText) {
@@ -120,6 +120,6 @@ fun LensScreen() {
                 }
             }
         }
-        NoteText("Plain-English rewriting needs on-device Gemini Nano (Pixel 9, Galaxy S24+). Listen and Gist work on every phone.")
+        NoteText(com.handytools.app.I18n.t("Plain-English rewriting needs on-device Gemini Nano (Pixel 9, Galaxy S24+). Listen and Gist work on every phone."))
     }
 }

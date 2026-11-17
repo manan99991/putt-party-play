@@ -128,7 +128,7 @@ fun StampSettings(marks: String, onChange: (String) -> Unit) {
         StampPlan.MARKS.forEach { mark ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Switch(spots.any { it.mark == mark }, { on -> onChange(StampPlan.text(StampPlan.set(spots, mark, on))) })
-                Text("  " + StampPlan.title(mark), style = MaterialTheme.typography.bodyMedium)
+                Text(com.handytools.app.I18n.t("  ") + StampPlan.title(mark), style = MaterialTheme.typography.bodyMedium)
             }
         }
         if (spots.any { it.mark == StampPlan.SIG }) {
@@ -136,10 +136,10 @@ fun StampSettings(marks: String, onChange: (String) -> Unit) {
             if (sig != null && !drawing) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(sig.asImageBitmap(), "Your saved signature", Modifier.height(48.dp).widthIn(max = 180.dp))
-                    TextButton({ strokes.clear(); drawing = true }) { Text("Draw again") }
+                    TextButton({ strokes.clear(); drawing = true }) { Text(com.handytools.app.I18n.t("Draw again")) }
                 }
             } else {
-                Text("Draw your signature once. It is kept on this phone.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                Text(com.handytools.app.I18n.t("Draw your signature once. It is kept on this phone."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                 Box(
                     Modifier.fillMaxWidth().height(150.dp).clip(RoundedCornerShape(10.dp)).background(Color.White)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(10.dp))
@@ -161,17 +161,17 @@ fun StampSettings(marks: String, onChange: (String) -> Unit) {
                     TextButton({
                         val bmp = StampBook.inkBitmap(strokes.toList(), pad.width, pad.height, 4f * ctx.resources.displayMetrics.density)
                         if (bmp != null && StampBook.saveSignature(ctx, bmp)) { saved = bmp; drawing = false }
-                    }, enabled = strokes.isNotEmpty()) { Text("Save signature") }
-                    TextButton({ strokes.clear() }) { Text("Clear") }
-                    if (saved != null) TextButton({ drawing = false }) { Text("Keep the old one") }
+                    }, enabled = strokes.isNotEmpty()) { Text(com.handytools.app.I18n.t("Save signature")) }
+                    TextButton({ strokes.clear() }) { Text(com.handytools.app.I18n.t("Clear")) }
+                    if (saved != null) TextButton({ drawing = false }) { Text(com.handytools.app.I18n.t("Keep the old one")) }
                 }
             }
         }
         if (spots.any { it.mark == StampPlan.NAME }) {
-            OutlinedTextField(name, { v -> name = v; StampBook.setName(ctx, v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Your name, as it should appear") })
+            OutlinedTextField(name, { v -> name = v; StampBook.setName(ctx, v) }, Modifier.fillMaxWidth(), singleLine = true, label = { Text(com.handytools.app.I18n.t("Your name, as it should appear")) })
         }
         if (spots.isNotEmpty()) {
-            Text("Drag each label to where it belongs on your form. The tool puts them there every time.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Drag each label to where it belongs on your form. The tool puts them there every time."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             val latest by rememberUpdatedState(spots)
             val send by rememberUpdatedState(onChange)
             BoxWithConstraints(

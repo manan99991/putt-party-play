@@ -269,7 +269,7 @@ fun ConverterToolScreen() {
         HSecondaryButton("Choose several photos (batch)") {
             pickPhotos.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        NoteText("One file — image, PDF, audio or video — for the full conversion options, or several photos at once to batch-convert or combine into one PDF. Everything runs on your phone and costs nothing.")
+        NoteText(com.handytools.app.I18n.t("One file — image, PDF, audio or video — for the full conversion options, or several photos at once to batch-convert or combine into one PDF. Everything runs on your phone and costs nothing."))
 
         if (inspecting) {
             Spacer(Modifier.height(HandyTokens.Space16))
@@ -388,7 +388,7 @@ fun ConverterToolScreen() {
                         Icon(Icons.Outlined.PhotoLibrary, null, Modifier.size(28.dp), tint = HandyColors.Success)
                         Spacer(Modifier.width(HandyTokens.Space12))
                         Column(Modifier.weight(1f)) {
-                            Text("Converted", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface)
+                            Text(com.handytools.app.I18n.t("Converted"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface)
                             resultSummary?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }
                         }
                     }
@@ -405,7 +405,7 @@ fun ConverterToolScreen() {
                     HSecondaryButton(if (out.size == 1) "Share" else "Share all ${out.size}") {
                         if (out.size == 1) Share.file(ctx, out.first(), resultMime) else Share.files(ctx, out, resultMime)
                     }
-                    if (out.size > 1) NoteText("“Save all” writes every file to a folder you pick; Share hands them all over at once.")
+                    if (out.size > 1) NoteText(com.handytools.app.I18n.t("“Save all” writes every file to a folder you pick; Share hands them all over at once."))
                     savedNote?.let { NoteText(it) }
                 }
             }
@@ -436,12 +436,12 @@ private fun ConvertedPreview(file: File, mime: String, extra: Int) {
             mime.startsWith("audio/") -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Outlined.GraphicEq, null, Modifier.size(40.dp), tint = HandyColors.Accent)
                 Spacer(Modifier.height(HandyTokens.Space8))
-                Text("Audio ready — tap Share to play", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+                Text(com.handytools.app.I18n.t("Audio ready — tap Share to play"), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
             }
             else -> Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Icon(Icons.Outlined.InsertDriveFile, null, Modifier.size(40.dp), tint = HandyColors.Accent)
                 Spacer(Modifier.height(HandyTokens.Space8))
-                Text("Ready to save", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                Text(com.handytools.app.I18n.t("Ready to save"), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             }
         }
         if (extra > 0) {

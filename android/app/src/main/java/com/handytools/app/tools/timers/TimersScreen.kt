@@ -66,7 +66,7 @@ private fun Countdown() {
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-        Text("%02d:%02d".format(remaining / 60, remaining % 60),
+        Text(com.handytools.app.I18n.t("%02d:%02d").format(remaining / 60, remaining % 60),
             fontSize = 56.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.size(20.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -98,7 +98,7 @@ private fun Stopwatch() {
 
     val cs = (elapsed / 10) % 100; val s = (elapsed / 1000) % 60; val m = elapsed / 60000
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-        Text("%02d:%02d.%02d".format(m, s, cs), fontSize = 52.sp, fontWeight = FontWeight.Bold)
+        Text(com.handytools.app.I18n.t("%02d:%02d.%02d").format(m, s, cs), fontSize = 52.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.size(20.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             HPrimaryButton(if (running) "Stop" else "Start", modifier = Modifier.weight(1f)) {

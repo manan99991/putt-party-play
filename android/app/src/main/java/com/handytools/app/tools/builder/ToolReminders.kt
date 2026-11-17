@@ -130,7 +130,7 @@ fun ScheduleCard(schedule: Schedule?, onChange: (Schedule?) -> Unit) {
     HCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Remind me to run this", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
+                Text(com.handytools.app.I18n.t("Remind me to run this"), Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
                 Switch(schedule != null, { on ->
                     onChange(if (on) Schedule() else null)
                     if (on && !allowed && Build.VERSION.SDK_INT >= 33) ask.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -139,7 +139,7 @@ fun ScheduleCard(schedule: Schedule?, onChange: (Schedule?) -> Unit) {
             if (schedule != null) {
                 TextButton({
                     TimePickerDialog(ctx, { _, h, m -> onChange(schedule.copy(hour = h, minute = m)) }, schedule.hour, schedule.minute, uses24h).show()
-                }) { Text("Time: " + Schedule.clock(schedule.hour, schedule.minute, uses24h) + "  (change)") }
+                }) { Text(com.handytools.app.I18n.t("Time: ") + Schedule.clock(schedule.hour, schedule.minute, uses24h) + "  (change)") }
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     week.forEach { d ->
                         val picked = schedule.days.isEmpty() || d in schedule.days
@@ -177,7 +177,7 @@ fun AutoRunCard(auto: String, onChange: (String) -> Unit) {
     val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { photosOk = granted(); notifOk = Permissions.canPostNotifications(ctx) }
     HCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(HandyTokens.Space12), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
-            Text("Offer this tool by itself", style = MaterialTheme.typography.titleSmall)
+            Text(com.handytools.app.I18n.t("Offer this tool by itself"), style = MaterialTheme.typography.titleSmall)
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 AutoRun.ALL.forEach { a ->
                     val picked = a == auto

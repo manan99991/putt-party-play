@@ -68,8 +68,8 @@ fun BannerAd(modifier: Modifier = Modifier, onRemoveAds: (() -> Unit)? = LocalRe
             Modifier.fillMaxWidth().padding(horizontal = HandyTokens.Gutter, vertical = 2.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Ads support Tenzy", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
-            Text("Remove ads", style = MaterialTheme.typography.labelSmall, color = HandyColors.Accent,
+            Text(com.handytools.app.I18n.t("Ads support Tenzy"), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Remove ads"), style = MaterialTheme.typography.labelSmall, color = HandyColors.Accent,
                 modifier = Modifier.clickable { onRemoveAds?.invoke() })
         }
         Box(Modifier.fillMaxWidth().heightIn(min = HandyTokens.AdReservedHeight), contentAlignment = Alignment.Center) {

@@ -113,7 +113,7 @@ private fun HeroPage() {
         Text("$TENZY_TOOL_COUNT tools your phone forgot.", color = Color.White, fontSize = 34.sp, lineHeight = 40.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(HandyTokens.Space12))
-        Text("One tap each. Nothing leaves your phone.", color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.bodyLarge,
+        Text(com.handytools.app.I18n.t("One tap each. Nothing leaves your phone."), color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.bodyLarge,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.weight(1.2f))
     }
@@ -147,9 +147,9 @@ private fun GridPage() {
             }
         }
         Spacer(Modifier.weight(0.5f))
-        Text("Pick a tool. It explains itself.", style = MaterialTheme.typography.headlineMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text(com.handytools.app.I18n.t("Pick a tool. It explains itself."), style = MaterialTheme.typography.headlineMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(HandyTokens.Space12))
-        Text("Each one asks for only the permission it needs, when you turn it on.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary,
+        Text(com.handytools.app.I18n.t("Each one asks for only the permission it needs, when you turn it on."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.weight(1.2f))
     }
@@ -171,9 +171,9 @@ private fun ProPage(onSeePro: () -> Unit) {
             }
         }
         Spacer(Modifier.weight(0.5f))
-        Text("Free is really free.", style = MaterialTheme.typography.headlineMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text(com.handytools.app.I18n.t("Free is really free."), style = MaterialTheme.typography.headlineMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(HandyTokens.Space12))
-        Text("Pro removes ads. That's the whole pitch.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+        Text(com.handytools.app.I18n.t("Pro removes ads. That's the whole pitch."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space8))
         HTextButton("See Pro", onClick = onSeePro)
         Spacer(Modifier.weight(1.2f))

@@ -243,7 +243,7 @@ fun ScrubberToolScreen() {
                 videoPicker.launch(arrayOf("video/*"))
             }
         }
-        NoteText("Finds faces and text — plates, names, addresses, card and account numbers — and paints them out, then saves a copy with no location or metadata. It all runs on your phone; nothing is uploaded and it never uses a credit.")
+        NoteText(com.handytools.app.I18n.t("Finds faces and text — plates, names, addresses, card and account numbers — and paints them out, then saves a copy with no location or metadata. It all runs on your phone; nothing is uploaded and it never uses a credit."))
 
         status?.let { Spacer(Modifier.height(HandyTokens.Space8)); Text(it, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary) }
 
@@ -344,12 +344,12 @@ fun ScrubberToolScreen() {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     androidx.compose.material3.Icon(Icons.Outlined.Movie, null, Modifier.size(28.dp), tint = HandyColors.Accent)
                     Spacer(Modifier.height(HandyTokens.Space8))
-                    Text("Video ready to scrub", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                    Text(com.handytools.app.I18n.t("Video ready to scrub"), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
                 }
             }
             Spacer(Modifier.height(HandyTokens.Space8))
             Text(
-                "Heavy job — best for short clips. The detector samples frames and burns fixed boxes over the faces and text it finds, then re-encodes the clip so all metadata (including location) is dropped. One thing to know: the boxes don't track movement, so if a face or plate moves across the frame, size the box to cover its whole path — or redact a photo for pixel-exact control.",
+                com.handytools.app.I18n.t("Heavy job — best for short clips. The detector samples frames and burns fixed boxes over the faces and text it finds, then re-encodes the clip so all metadata (including location) is dropped. One thing to know: the boxes don't track movement, so if a face or plate moves across the frame, size the box to cover its whole path — or redact a photo for pixel-exact control."),
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary,
             )
             if (videoWorking) {

@@ -69,7 +69,7 @@ fun SortedScreen() {
                 BasicTextField(value = text, onValueChange = { text = it }, modifier = Modifier.fillMaxWidth(),
                     textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                     decorationBox = { inner ->
-                        if (text.text.isBlank()) Text("Snap or paste the document…", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+                        if (text.text.isBlank()) Text(com.handytools.app.I18n.t("Snap or paste the document…"), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
                         inner()
                     })
             }
@@ -87,7 +87,7 @@ fun SortedScreen() {
                 parsed = SortedEngine.parse(text.text)
             }
         }
-        if (working) { Spacer(Modifier.size(12.dp)); Text("Reading it…", color = Handy.palette.textSecondary) }
+        if (working) { Spacer(Modifier.size(12.dp)); Text(com.handytools.app.I18n.t("Reading it…"), color = Handy.palette.textSecondary) }
         error?.let { Spacer(Modifier.size(12.dp)); Text(it, color = com.handytools.app.ui.HandyColors.Danger, style = MaterialTheme.typography.bodySmall) }
 
         val p = parsed
@@ -121,7 +121,7 @@ fun SortedScreen() {
                     Spacer(Modifier.size(8.dp))
                 }
                 HSecondaryButton("Copy / Share", modifier = Modifier.fillMaxWidth()) { Share.text(ctx, p.shareText()) }
-                Text("A reading aid, not official advice — always check the original for the exact terms and deadline.",
+                Text(com.handytools.app.I18n.t("A reading aid, not official advice — always check the original for the exact terms and deadline."),
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 10.dp))
             }
         }

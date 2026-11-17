@@ -83,7 +83,7 @@ fun PriceCheckToolScreen() {
             val savePct = next?.let { ((it.second - best.second) / it.second * 100).toInt() }
             HCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp)) {
-                    Text("BEST VALUE", style = MaterialTheme.typography.labelSmall, color = HandyColors.Accent)
+                    Text(com.handytools.app.I18n.t("BEST VALUE"), style = MaterialTheme.typography.labelSmall, color = HandyColors.Accent)
                     Spacer(Modifier.height(4.dp))
                     Text(best.first.name.ifBlank { "Option ${items.indexOf(best.first) + 1}" }, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(2.dp))
@@ -93,18 +93,18 @@ fun PriceCheckToolScreen() {
             }
             Spacer(Modifier.height(6.dp))
         }
-        if (mixed) { NoteText("You're mixing weight, volume and count — compare like with like for a fair result."); Spacer(Modifier.height(6.dp)) }
+        if (mixed) { NoteText(com.handytools.app.I18n.t("You're mixing weight, volume and count — compare like with like for a fair result.")); Spacer(Modifier.height(6.dp)) }
 
         items.forEachIndexed { idx, item ->
             val upb = unitPrice(item)
             val isBest = best != null && item === best.first && (bestGroup?.size ?: 0) >= 2
             HCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(14.dp)) {
-                    OutlinedTextField(item.name, { item.name = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Name (optional)") }, singleLine = true)
+                    OutlinedTextField(item.name, { item.name = it }, modifier = Modifier.fillMaxWidth(), label = { Text(com.handytools.app.I18n.t("Name (optional)")) }, singleLine = true)
                     Spacer(Modifier.height(8.dp))
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         OutlinedTextField(item.price, { item.price = it.filter { c -> c.isDigit() || c == '.' } }, modifier = Modifier.weight(1f), label = { Text("Price $") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
-                        OutlinedTextField(item.qty, { item.qty = it.filter { c -> c.isDigit() || c == '.' } }, modifier = Modifier.weight(1f), label = { Text("Size") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
+                        OutlinedTextField(item.qty, { item.qty = it.filter { c -> c.isDigit() || c == '.' } }, modifier = Modifier.weight(1f), label = { Text(com.handytools.app.I18n.t("Size")) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal), singleLine = true)
                     }
                     Spacer(Modifier.height(8.dp))
                     ChipRow { UNITS.forEachIndexed { ui, u -> HChip(u.label, item.unit == ui) { item.unit = ui } } }
@@ -123,6 +123,6 @@ fun PriceCheckToolScreen() {
         }
 
         if (items.size < 4) HPrimaryButton("Add another option") { items.add(PriceItem()) }
-        NoteText("Enter each product's price and size, then its unit. Tenzy normalises them to the same measure so you can see which is genuinely cheaper — the bigger pack often isn't.")
+        NoteText(com.handytools.app.I18n.t("Enter each product's price and size, then its unit. Tenzy normalises them to the same measure so you can see which is genuinely cheaper — the bigger pack often isn't."))
     }
 }

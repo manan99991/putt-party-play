@@ -142,13 +142,13 @@ fun ReceiptKeeperScreen() {
                 picker.launch("image/*")
             }
         } else {
-            Text("New receipt", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
+            Text(com.handytools.app.I18n.t("New receipt"), fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
             Spacer(Modifier.size(10.dp))
-            OutlinedTextField(merchant, { merchant = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Merchant") })
+            OutlinedTextField(merchant, { merchant = it }, modifier = Modifier.fillMaxWidth(), label = { Text(com.handytools.app.I18n.t("Merchant")) })
             Spacer(Modifier.size(8.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedTextField(total, { total = it }, modifier = Modifier.weight(1f), label = { Text("Total") })
-                OutlinedTextField(months, { months = it.filter { c -> c.isDigit() }.take(3) }, modifier = Modifier.weight(1f), label = { Text("Warranty (months)") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                OutlinedTextField(total, { total = it }, modifier = Modifier.weight(1f), label = { Text(com.handytools.app.I18n.t("Total")) })
+                OutlinedTextField(months, { months = it.filter { c -> c.isDigit() }.take(3) }, modifier = Modifier.weight(1f), label = { Text(com.handytools.app.I18n.t("Warranty (months)")) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             }
             Spacer(Modifier.size(12.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -190,7 +190,7 @@ fun ReceiptKeeperScreen() {
             }
         }
 
-        NoteText("Read and stored on your phone only. “Remind” drops an event into your calendar app for you to confirm — no background alarms, no special permissions.")
+        NoteText(com.handytools.app.I18n.t("Read and stored on your phone only. “Remind” drops an event into your calendar app for you to confirm — no background alarms, no special permissions."))
     }
 }
 

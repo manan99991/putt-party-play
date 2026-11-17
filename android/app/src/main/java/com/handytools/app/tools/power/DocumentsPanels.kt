@@ -124,7 +124,7 @@ internal fun DocMergePanel(st: DocMergeState) {
             st.files.forEachIndexed { i, f ->
                 HCard(Modifier.fillMaxWidth()) {
                     Row(Modifier.fillMaxWidth().padding(start = 14.dp, end = 4.dp, top = 6.dp, bottom = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text("📄", fontSize = 22.sp)
+                        Text(com.handytools.app.I18n.t("📄"), fontSize = 22.sp)
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
                             Text(f.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -167,8 +167,8 @@ internal fun DocMergePanel(st: DocMergeState) {
     }
     if (one) {
         Spacer(Modifier.height(8.dp))
-        OutlinedTextField(st.range, { st.range = it }, label = { Text("Pages to keep (optional, e.g. 1-3, 5)") }, singleLine = true,
-            placeholder = { Text("Empty = one PDF per page") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(st.range, { st.range = it }, label = { Text(com.handytools.app.I18n.t("Pages to keep (optional, e.g. 1-3, 5)")) }, singleLine = true,
+            placeholder = { Text(com.handytools.app.I18n.t("Empty = one PDF per page")) }, modifier = Modifier.fillMaxWidth())
     }
 
     Spacer(Modifier.height(10.dp))
@@ -194,7 +194,7 @@ internal fun DocMergePanel(st: DocMergeState) {
     if (!hasRoom) Text("You've done today's ${Limits.FREE_PDF_OPS_PER_DAY} free PDF jobs. Go Pro for unlimited.",
         style = MaterialTheme.typography.bodySmall, color = HandyColors.Accent, modifier = Modifier.padding(top = 8.dp))
     st.status?.let { Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 10.dp)) }
-    NoteText("Reorder with the arrows. Everything is rebuilt page by page on the phone; PDF → images shares up to 20 pages as JPEGs.")
+    NoteText(com.handytools.app.I18n.t("Reorder with the arrows. Everything is rebuilt page by page on the phone; PDF → images shares up to 20 pages as JPEGs."))
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -274,7 +274,7 @@ internal fun DocFinderPanel(st: DocFinderState) {
 
     OutlinedTextField(
         st.query, { st.query = it }, modifier = Modifier.fillMaxWidth(), singleLine = true,
-        placeholder = { Text("Find a word or phrase across all your documents…") },
+        placeholder = { Text(com.handytools.app.I18n.t("Find a word or phrase across all your documents…")) },
         leadingIcon = { Icon(Icons.Outlined.Search, null) },
         trailingIcon = { if (st.query.isNotEmpty()) IconButton(onClick = { st.query = "" }) { Icon(Icons.Outlined.Close, "Clear") } }
     )
@@ -305,7 +305,7 @@ internal fun DocFinderPanel(st: DocFinderState) {
             HPrimaryButton("Add folder", Modifier.weight(1f)) { folderPicker.launch(null) }
             HSecondaryButton("Add files", Modifier.weight(1f)) { filePicker.launch(arrayOf("*/*")) }
         }
-        Text("Searches every PDF, Word, Excel, PowerPoint and text file you add — no account, nothing uploaded.",
+        Text(com.handytools.app.I18n.t("Searches every PDF, Word, Excel, PowerPoint and text file you add — no account, nothing uploaded."),
             style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 12.dp))
     } else if (st.query.isBlank()) {
         val noText = st.docs.count { it.noText }
@@ -369,13 +369,13 @@ internal fun DocFinderPanel(st: DocFinderState) {
 
     SectionLabel("Saved passages")
     if (st.saved.isEmpty()) {
-        Text("Nothing saved yet.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(start = 2.dp))
+        Text(com.handytools.app.I18n.t("Nothing saved yet."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(start = 2.dp))
     } else {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             st.saved.forEachIndexed { i, s ->
                 HCard(Modifier.fillMaxWidth(), onClick = { openDoc(Uri.parse(s.uri)) }) {
                     Row(Modifier.fillMaxWidth().padding(start = 12.dp, top = 10.dp, bottom = 10.dp, end = 2.dp), verticalAlignment = Alignment.Top) {
-                        Text("🔖", fontSize = 20.sp)
+                        Text(com.handytools.app.I18n.t("🔖"), fontSize = 20.sp)
                         Spacer(Modifier.width(10.dp))
                         Column(Modifier.weight(1f)) {
                             Text(s.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -389,7 +389,7 @@ internal fun DocFinderPanel(st: DocFinderState) {
             }
         }
     }
-    NoteText("Tap a result to open the file. Scanned PDFs without a text layer get a quick on-device OCR of their first pages.")
+    NoteText(com.handytools.app.I18n.t("Tap a result to open the file. Scanned PDFs without a text layer get a quick on-device OCR of their first pages."))
 }
 
 private fun iconFor(name: String): String = when (name.substringAfterLast('.', "").lowercase()) {

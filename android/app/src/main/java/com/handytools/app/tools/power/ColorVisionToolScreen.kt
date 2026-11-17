@@ -122,6 +122,6 @@ fun ColorVisionToolScreen() {
                 HPrimaryButton("Save & share corrected", Modifier.fillMaxWidth()) { save() }
             }
         }
-        NoteText("Daltonisation nudges the colours your type of colour blindness confuses into differences you can still see. It helps tell colours apart — it doesn't restore true colour. All on your phone.")
+        NoteText(com.handytools.app.I18n.t("Daltonisation nudges the colours your type of colour blindness confuses into differences you can still see. It helps tell colours apart — it doesn't restore true colour. All on your phone."))
     }
 }

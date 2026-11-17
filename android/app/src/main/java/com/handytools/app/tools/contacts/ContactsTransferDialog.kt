@@ -94,17 +94,17 @@ fun ContactsTransferDialog(onDismiss: () -> Unit, onChanged: () -> Unit) {
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.verticalScroll(rememberScrollState()).padding(16.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text("Move contacts", style = MaterialTheme.typography.titleLarge)
-                    TextButton(onClick = onDismiss) { Text("Close") }
+                    Text(com.handytools.app.I18n.t("Move contacts"), style = MaterialTheme.typography.titleLarge)
+                    TextButton(onClick = onDismiss) { Text(com.handytools.app.I18n.t("Close")) }
                 }
-                Text("Pick where your contacts are now and where they should go. Nothing leaves this phone.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+                Text(com.handytools.app.I18n.t("Pick where your contacts are now and where they should go. Nothing leaves this phone."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
 
                 SectionLabel("1. Take contacts from")
                 accounts.forEach { a -> AccountRow(a, from == a.key) { from = a.key; if (to == a.key) to = null } }
 
                 SectionLabel("2. Put them into")
                 accounts.filter { it.key != from && it.writable }.forEach { a -> AccountRow(a, to == a.key) { to = a.key } }
-                Text("Don't see your Google account? Add it in Settings › Passwords & accounts › Add account › Google, and keep Contacts sync on.",
+                Text(com.handytools.app.I18n.t("Don't see your Google account? Add it in Settings › Passwords & accounts › Add account › Google, and keep Contacts sync on."),
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
 
                 SectionLabel("3. How")
@@ -112,7 +112,7 @@ fun ContactsTransferDialog(onDismiss: () -> Unit, onChanged: () -> Unit) {
                     HChip("Copy (keep originals)", !move) { move = false }
                     HChip("Move (remove from old)", move) { move = true }
                 }
-                if (move) Text("Move removes the originals from the first account once the copies are saved. If that account is Google, they're removed from your Google contacts too. A backup file is made first.",
+                if (move) Text(com.handytools.app.I18n.t("Move removes the originals from the first account once the copies are saved. If that account is Google, they're removed from your Google contacts too. A backup file is made first."),
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
 
                 Spacer(Modifier.height(16.dp))
@@ -124,7 +124,7 @@ fun ContactsTransferDialog(onDismiss: () -> Unit, onChanged: () -> Unit) {
                 ) { if (move) confirm = true else run() }
                 if (busy) { Spacer(Modifier.height(8.dp)); LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth()) }
 
-                TextButton(onClick = { vcfPicker.launch(arrayOf("text/x-vcard", "text/vcard", "text/directory", "*/*")) }) { Text("Or add contacts from a .vcf file") }
+                TextButton(onClick = { vcfPicker.launch(arrayOf("text/x-vcard", "text/vcard", "text/directory", "*/*")) }) { Text(com.handytools.app.I18n.t("Or add contacts from a .vcf file")) }
 
                 outcome?.let { o ->
                     Spacer(Modifier.height(12.dp))
@@ -134,7 +134,7 @@ fun ContactsTransferDialog(onDismiss: () -> Unit, onChanged: () -> Unit) {
                             if (o.alreadyThere > 0) NoteText("${o.alreadyThere} already there, so skipped")
                             if (o.failed > 0) NoteText("${o.failed} couldn't be added. They were left where they are.")
                             if (o.removed > 0) NoteText("${o.removed} removed from the old account")
-                            backup?.let { f -> TextButton(onClick = { Share.file(ctx, f, "text/x-vcard") }) { Text("Save the backup file") } }
+                            backup?.let { f -> TextButton(onClick = { Share.file(ctx, f, "text/x-vcard") }) { Text(com.handytools.app.I18n.t("Save the backup file")) } }
                         }
                     }
                 }
@@ -146,8 +146,8 @@ fun ContactsTransferDialog(onDismiss: () -> Unit, onChanged: () -> Unit) {
         onDismissRequest = { confirm = false },
         title = { Text("Move ${fromAcc?.count ?: 0} contacts?") },
         text = { Text("They're copied into ${toAcc?.title ?: "the new account"} first, then removed from ${fromAcc?.title ?: "the old one"}. Contacts have no Trash, so removing can't be undone. A backup file is saved first.") },
-        confirmButton = { TextButton(onClick = { confirm = false; run() }) { Text("Move") } },
-        dismissButton = { TextButton(onClick = { confirm = false }) { Text("Cancel") } }
+        confirmButton = { TextButton(onClick = { confirm = false; run() }) { Text(com.handytools.app.I18n.t("Move")) } },
+        dismissButton = { TextButton(onClick = { confirm = false }) { Text(com.handytools.app.I18n.t("Cancel")) } }
     )
 }
 

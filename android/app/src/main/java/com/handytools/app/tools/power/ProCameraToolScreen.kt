@@ -160,7 +160,7 @@ fun ProCameraToolScreen() {
 
     PowerToolPage("procam") {
         if (!granted) {
-            Text("Pro Camera needs camera access. Nothing is uploaded — photos save to your gallery only.", style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
+            Text(com.handytools.app.I18n.t("Pro Camera needs camera access. Nothing is uploaded — photos save to your gallery only."), style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(12.dp))
             HPrimaryButton("Allow camera") { permLauncher.launch(Manifest.permission.CAMERA) }
         } else {
@@ -183,13 +183,13 @@ fun ProCameraToolScreen() {
                     Slider(value = expFrac, onValueChange = { expFrac = it; applyManual() }, modifier = Modifier.fillMaxWidth())
                 }
             } else {
-                Text("This phone doesn't expose manual sensor control, so Pro Camera runs in auto.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                Text(com.handytools.app.I18n.t("This phone doesn't expose manual sensor control, so Pro Camera runs in auto."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             }
             Spacer(Modifier.height(14.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 HPrimaryButton("Capture", Modifier.fillMaxWidth()) { capture() }
             }
         }
-        NoteText("Manual ISO and shutter work on phones that allow it (most mid-range and up); elsewhere it falls back to auto so you always get a shot. Photos save to Pictures/Tenzy — nothing leaves the phone.")
+        NoteText(com.handytools.app.I18n.t("Manual ISO and shutter work on phones that allow it (most mid-range and up); elsewhere it falls back to auto so you always get a shot. Photos save to Pictures/Tenzy — nothing leaves the phone."))
     }
 }

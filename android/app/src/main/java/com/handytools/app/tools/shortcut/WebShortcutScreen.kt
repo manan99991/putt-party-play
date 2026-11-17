@@ -79,7 +79,7 @@ fun WebShortcutScreen(initialUrl: String? = null) {
 
     Column(Modifier.fillMaxSize().statusBarsPadding().padding(20.dp)) {
         ToolHeader("Web → Home", "Paste a link. We pick a name and icon. Tap Add. Done.")
-        OutlinedTextField(url, { url = it }, label = { Text("URL") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(url, { url = it }, label = { Text(com.handytools.app.I18n.t("URL")) }, singleLine = true, modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.height(8.dp))
         HPrimaryButton("Fetch", enabled = url.isNotBlank() && !loading) { load(url) }
         HTextButton("Paste from clipboard") {
@@ -98,7 +98,7 @@ fun WebShortcutScreen(initialUrl: String? = null) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     p.icon?.let { Image(it.asImageBitmap(), null, Modifier.size(48.dp)) }
                     Spacer(Modifier.width(12.dp))
-                    OutlinedTextField(name, { name = it.take(30) }, label = { Text("Shortcut name") }, singleLine = true, modifier = Modifier.weight(1f))
+                    OutlinedTextField(name, { name = it.take(30) }, label = { Text(com.handytools.app.I18n.t("Shortcut name")) }, singleLine = true, modifier = Modifier.weight(1f))
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -110,7 +110,7 @@ fun WebShortcutScreen(initialUrl: String? = null) {
                     Interstitials.showIfReady(ctx as Activity)
                 }
             }
-            if (done) Text("Added to your home screen.", style = MaterialTheme.typography.titleMedium,
+            if (done) Text(com.handytools.app.I18n.t("Added to your home screen."), style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 12.dp))
         }
         Spacer(Modifier.height(16.dp))

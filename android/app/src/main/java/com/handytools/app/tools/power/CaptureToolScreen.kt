@@ -104,7 +104,7 @@ private fun open(ctx: Context, intent: Intent, fallback: String = "No app on thi
 }
 
 private fun copy(ctx: Context, text: String, msg: String = "Copied") {
-    (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("Tenzy", text))
+    (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), text))
     toast(ctx, msg)
 }
 
@@ -233,9 +233,9 @@ fun ColumnScope.CapturePanel() {
         if (bmp == null) {
             PreviewBox(minHeight = 190.dp) {
                 Column(Modifier.padding(HandyTokens.Space24), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("Point the camera at a receipt, card, flyer, sign or document.", textAlign = TextAlign.Center, color = Handy.palette.textSecondary)
+                    Text(com.handytools.app.I18n.t("Point the camera at a receipt, card, flyer, sign or document."), textAlign = TextAlign.Center, color = Handy.palette.textSecondary)
                     Spacer(Modifier.height(HandyTokens.Space8))
-                    Text("Tenzy works out what it is and offers the next step.", style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center, color = Handy.palette.textSecondary)
+                    Text(com.handytools.app.I18n.t("Tenzy works out what it is and offers the next step."), style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center, color = Handy.palette.textSecondary)
                 }
             }
         } else {
@@ -253,7 +253,7 @@ fun ColumnScope.CapturePanel() {
                 library.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
-        if (cameraDenied) NoteText("Camera isn't allowed for Tenzy — pick a photo from Library instead, or allow it in Settings › Apps › Tenzy.")
+        if (cameraDenied) NoteText(com.handytools.app.I18n.t("Camera isn't allowed for Tenzy — pick a photo from Library instead, or allow it in Settings › Apps › Tenzy."))
 
         if (bitmap == null && !busy) {
             SectionLabel("Or try a sample")
@@ -267,7 +267,7 @@ fun ColumnScope.CapturePanel() {
             }
         }
 
-        if (busy) Text("Reading the text…", color = Handy.palette.textSecondary, modifier = Modifier.padding(top = HandyTokens.Space12))
+        if (busy) Text(com.handytools.app.I18n.t("Reading the text…"), color = Handy.palette.textSecondary, modifier = Modifier.padding(top = HandyTokens.Space12))
         status?.let { Spacer(Modifier.height(HandyTokens.Space12)); Pill(it, HandyColors.Amber) }
         quotaNote?.let { Spacer(Modifier.height(HandyTokens.Space12)); Text(it, style = MaterialTheme.typography.bodySmall, color = HandyColors.Accent) }
 
@@ -287,7 +287,7 @@ fun ColumnScope.CapturePanel() {
             HSecondaryButton("📤 Share photo") { sharePhoto() }
         }
 
-        NoteText("Text recognition runs on the phone (ML Kit). Nothing is uploaded.")
+        NoteText(com.handytools.app.I18n.t("Text recognition runs on the phone (ML Kit). Nothing is uploaded."))
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -483,7 +483,7 @@ private fun AllText(text: String) {
     HCard(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(HandyTokens.Space16)) {
             Row(Modifier.fillMaxWidth().clickable { expanded = !expanded }, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text("All text", style = MaterialTheme.typography.titleMedium)
+                Text(com.handytools.app.I18n.t("All text"), style = MaterialTheme.typography.titleMedium)
                 Icon(if (expanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore, null, tint = Handy.palette.textSecondary)
             }
             if (expanded) {

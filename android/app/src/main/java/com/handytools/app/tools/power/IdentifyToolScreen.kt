@@ -132,6 +132,6 @@ fun IdentifyToolScreen() {
                 }
             }
         }
-        NoteText("Recognises everyday objects, plants, animals and products on-device — the photo never leaves your phone. For a web lookup it opens your browser.")
+        NoteText(com.handytools.app.I18n.t("Recognises everyday objects, plants, animals and products on-device — the photo never leaves your phone. For a web lookup it opens your browser."))
     }
 }

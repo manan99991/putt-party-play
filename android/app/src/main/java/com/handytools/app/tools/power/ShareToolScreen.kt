@@ -208,7 +208,7 @@ private fun ShareSendPanel(st: ShareSendState) {
     val uri = st.uri
     if (uri == null) {
         PreviewBox(minHeight = 150.dp) {
-            Text("Pick any file. The other device scans the code or opens the address — same Wi-Fi, no cable, no cloud.",
+            Text(com.handytools.app.I18n.t("Pick any file. The other device scans the code or opens the address — same Wi-Fi, no cable, no cloud."),
                 color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(24.dp))
         }
     } else {
@@ -242,7 +242,7 @@ private fun ShareSendPanel(st: ShareSendState) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             st.qr?.let { Box(Modifier.background(Color.White, RoundedCornerShape(12.dp)).padding(10.dp)) { Image(it.asImageBitmap(), "Scan to download", Modifier.size(190.dp)) } }
             Spacer(Modifier.height(10.dp))
-            Text("Scan on the other device, or open", color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodySmall)
+            Text(com.handytools.app.I18n.t("Scan on the other device, or open"), color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodySmall)
             SelectionContainer { Text(link, fontFamily = FontFamily.Monospace, fontSize = 13.sp, fontWeight = FontWeight.SemiBold) }
             Spacer(Modifier.height(10.dp))
             val frac = if (st.size > 0) (st.sent.toFloat() / st.size).coerceIn(0f, 1f) else if (st.phase == 4) 1f else 0f
@@ -269,9 +269,9 @@ private fun ShareSendPanel(st: ShareSendState) {
     }
     st.status?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = HandyColors.Amber, modifier = Modifier.padding(top = 10.dp)) }
     if (st.phase in 1..4) {
-        NoteText("Both phones must be on the SAME Wi-Fi. On an iPhone, Safari may warn the link “isn't private/secure” — that's normal for a direct phone-to-phone link, not an error: tap “Show IP Address” if offered, then “Continue”, then “Download file”. Nothing is uploaded.")
+        NoteText(com.handytools.app.I18n.t("Both phones must be on the SAME Wi-Fi. On an iPhone, Safari may warn the link “isn't private/secure” — that's normal for a direct phone-to-phone link, not an error: tap “Show IP Address” if offered, then “Continue”, then “Download file”. Nothing is uploaded."))
     }
-    NoteText("The file is served straight from your phone and the mini server stops when you leave or tap Stop. Guest/public Wi-Fi often blocks phone-to-phone connections — if it won't connect, use “Send another way” for AirDrop, Nearby Share or a messaging app instead.")
+    NoteText(com.handytools.app.I18n.t("The file is served straight from your phone and the mini server stops when you leave or tap Stop. Guest/public Wi-Fi often blocks phone-to-phone connections — if it won't connect, use “Send another way” for AirDrop, Nearby Share or a messaging app instead."))
 }
 
 /** Hand the file to the OS share sheet (AirDrop, Nearby Share, messaging, email…) — the reliable
@@ -300,11 +300,11 @@ private fun ShareQrPanel(st: ShareQrState) {
     }
     Spacer(Modifier.height(10.dp))
     when (st.kind) {
-        0 -> OutlinedTextField(st.text, { st.text = it }, label = { Text("Text or URL") }, modifier = Modifier.fillMaxWidth())
+        0 -> OutlinedTextField(st.text, { st.text = it }, label = { Text(com.handytools.app.I18n.t("Text or URL")) }, modifier = Modifier.fillMaxWidth())
         1 -> {
-            OutlinedTextField(st.ssid, { st.ssid = it }, label = { Text("Network name") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(st.ssid, { st.ssid = it }, label = { Text(com.handytools.app.I18n.t("Network name")) }, singleLine = true, modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.height(8.dp))
-            OutlinedTextField(st.pass, { st.pass = it }, label = { Text("Password") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(st.pass, { st.pass = it }, label = { Text(com.handytools.app.I18n.t("Password")) }, singleLine = true, modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(HandyTokens.Space8)) {
                 HChip("WPA/WPA2", st.security == "WPA") { st.security = "WPA" }
@@ -313,11 +313,11 @@ private fun ShareQrPanel(st: ShareQrState) {
             }
         }
         else -> {
-            OutlinedTextField(st.name, { st.name = it }, label = { Text("Name") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(st.name, { st.name = it }, label = { Text(com.handytools.app.I18n.t("Name")) }, singleLine = true, modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.height(8.dp))
-            OutlinedTextField(st.phone, { st.phone = it }, label = { Text("Phone") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(st.phone, { st.phone = it }, label = { Text(com.handytools.app.I18n.t("Phone")) }, singleLine = true, modifier = Modifier.fillMaxWidth())
             Spacer(Modifier.height(8.dp))
-            OutlinedTextField(st.email, { st.email = it }, label = { Text("Email") }, singleLine = true, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(st.email, { st.email = it }, label = { Text(com.handytools.app.I18n.t("Email")) }, singleLine = true, modifier = Modifier.fillMaxWidth())
         }
     }
     Spacer(Modifier.height(12.dp))
@@ -355,7 +355,7 @@ private fun ShareQrPanel(st: ShareQrState) {
             }
         }
     }
-    NoteText("Made on the phone. A Wi-Fi code lets guests join by scanning — the password never leaves the picture.")
+    NoteText(com.handytools.app.I18n.t("Made on the phone. A Wi-Fi code lets guests join by scanning — the password never leaves the picture."))
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -407,8 +407,8 @@ private fun ShareScanPanel(st: ShareScanState) {
         Spacer(Modifier.height(10.dp))
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(14.dp)) {
-                Text("Camera", style = MaterialTheme.typography.titleMedium)
-                Text("Needed only to point at a code. Nothing is recorded or uploaded.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 4.dp, bottom = 10.dp))
+                Text(com.handytools.app.I18n.t("Camera"), style = MaterialTheme.typography.titleMedium)
+                Text(com.handytools.app.I18n.t("Needed only to point at a code. Nothing is recorded or uploaded."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 4.dp, bottom = 10.dp))
                 HCompactButton("Allow camera") { camPerm.launch(Manifest.permission.CAMERA) }
             }
         }
@@ -416,7 +416,7 @@ private fun ShareScanPanel(st: ShareScanState) {
     st.status?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = HandyColors.Amber, modifier = Modifier.padding(top = 10.dp)) }
 
     st.decoded?.let { d -> Spacer(Modifier.height(14.dp)); ShareScanResult(d) }
-    NoteText("Codes are read on the phone. Links get checked against Tenzy's scam rules before you open them.")
+    NoteText(com.handytools.app.I18n.t("Codes are read on the phone. Links get checked against Tenzy's scam rules before you open them."))
 }
 
 @Composable
@@ -450,7 +450,7 @@ private fun ShareScanResult(d: QrDecoded) {
                 QrKind.WIFI -> {
                     val creds = ShareEngine.parseWifi(d.raw)
                     if (creds == null) {
-                        Text("Couldn't read the network details from this code.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(bottom = 10.dp))
+                        Text(com.handytools.app.I18n.t("Couldn't read the network details from this code."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(bottom = 10.dp))
                         HSecondaryButton("Copy") { ShareEngine.copy(ctx, "Code", d.raw); Toast.makeText(ctx, "Copied", Toast.LENGTH_SHORT).show() }
                     } else {
                         Text("${creds.ssid}  ·  ${if (creds.password.isBlank()) "open network" else creds.security}", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(bottom = 10.dp))
@@ -551,12 +551,12 @@ private fun ShareWifiPanel(st: ShareWifiState, onShareQr: (String) -> Unit) {
     Pill("Runs natively · reads the current network")
     val info = st.info
     if (info == null) {
-        PreviewBox(minHeight = 120.dp) { Text("Reading your connection…", color = Handy.palette.textSecondary) }
+        PreviewBox(minHeight = 120.dp) { Text(com.handytools.app.I18n.t("Reading your connection…"), color = Handy.palette.textSecondary) }
     } else if (!info.connected) {
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp)) {
-                Text("Not connected", style = MaterialTheme.typography.titleMedium)
-                Text("Join a Wi-Fi network and this page fills in by itself.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 4.dp, bottom = 10.dp))
+                Text(com.handytools.app.I18n.t("Not connected"), style = MaterialTheme.typography.titleMedium)
+                Text(com.handytools.app.I18n.t("Join a Wi-Fi network and this page fills in by itself."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 4.dp, bottom = 10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     HCompactButton("Open Wi-Fi settings") {
                         try { ctx.startActivity(Intent(Settings.ACTION_WIFI_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) } catch (_: Exception) {}
@@ -589,7 +589,7 @@ private fun ShareWifiPanel(st: ShareWifiState, onShareQr: (String) -> Unit) {
             Spacer(Modifier.height(10.dp))
             HCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(14.dp)) {
-                    Text("Network name hidden", style = MaterialTheme.typography.titleMedium)
+                    Text(com.handytools.app.I18n.t("Network name hidden"), style = MaterialTheme.typography.titleMedium)
                     Text(
                         if (locGranted) "Android also needs Location switched on to show the Wi-Fi name. Everything else above is live."
                         else "Android only shows the Wi-Fi name to apps with location access. Tenzy never stores or sends your location.",
@@ -617,5 +617,5 @@ private fun ShareWifiPanel(st: ShareWifiState, onShareQr: (String) -> Unit) {
     HSecondaryButton("Share this Wi-Fi as QR") { onShareQr(info?.ssid ?: "") }
     Spacer(Modifier.height(10.dp))
     HSecondaryButton("Refresh") { refresh() }
-    NoteText("Read from the phone's own connection info. The speed test downloads a short sample (about 8 MB) and nothing else goes anywhere.")
+    NoteText(com.handytools.app.I18n.t("Read from the phone's own connection info. The speed test downloads a short sample (about 8 MB) and nothing else goes anywhere."))
 }

@@ -205,7 +205,7 @@ private fun AboutDialog(onDismiss: () -> Unit) {
         dismissButton = {
             TextButton(onClick = {
                 val cb = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
-                cb?.setPrimaryClip(ClipData.newPlainText("Tenzy", details))
+                cb?.setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("Tenzy"), details))
                 Toast.makeText(ctx, "Copied — paste it into your feedback email", Toast.LENGTH_SHORT).show()
             }) { Text(com.handytools.app.I18n.t("Copy details")) }
         }

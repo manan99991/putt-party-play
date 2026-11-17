@@ -287,7 +287,7 @@ private fun DismissPill(enabled: Boolean, onDismiss: () -> Unit) {
             Modifier.fillMaxWidth(progress.value.coerceIn(0f, 1f)).fillMaxHeight()
                 .background(if (enabled) accent else Color.Transparent)
         )
-        Text("Dismiss", fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+        Text(com.handytools.app.I18n.t("Dismiss"), fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
     }
 }
 

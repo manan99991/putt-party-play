@@ -90,29 +90,29 @@ fun QuickInvoiceScreen() {
     }
 
     PowerToolPage("invoice") {
-        OutlinedTextField(from, { from = it }, modifier = Modifier.fillMaxWidth(), label = { Text("From (your name or business)") })
+        OutlinedTextField(from, { from = it }, modifier = Modifier.fillMaxWidth(), label = { Text(com.handytools.app.I18n.t("From (your name or business)")) })
         Spacer(Modifier.size(10.dp))
-        OutlinedTextField(billTo, { billTo = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Bill to") })
+        OutlinedTextField(billTo, { billTo = it }, modifier = Modifier.fillMaxWidth(), label = { Text(com.handytools.app.I18n.t("Bill to")) })
         Spacer(Modifier.size(10.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            OutlinedTextField(number, { number = it }, modifier = Modifier.weight(1f), label = { Text("Invoice #") })
-            OutlinedTextField(date, { date = it }, modifier = Modifier.weight(1f), label = { Text("Date") })
+            OutlinedTextField(number, { number = it }, modifier = Modifier.weight(1f), label = { Text(com.handytools.app.I18n.t("Invoice #")) })
+            OutlinedTextField(date, { date = it }, modifier = Modifier.weight(1f), label = { Text(com.handytools.app.I18n.t("Date")) })
         }
         Spacer(Modifier.size(10.dp))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            OutlinedTextField(currency, { currency = it.take(3) }, modifier = Modifier.width(90.dp), label = { Text("Symbol") })
-            OutlinedTextField(taxPct, { taxPct = it }, modifier = Modifier.weight(1f), label = { Text("Tax %") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+            OutlinedTextField(currency, { currency = it.take(3) }, modifier = Modifier.width(90.dp), label = { Text(com.handytools.app.I18n.t("Symbol")) })
+            OutlinedTextField(taxPct, { taxPct = it }, modifier = Modifier.weight(1f), label = { Text(com.handytools.app.I18n.t("Tax %")) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
         }
 
         Spacer(Modifier.size(18.dp))
-        Text("Items", fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
+        Text(com.handytools.app.I18n.t("Items"), fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onBackground)
         items.forEachIndexed { i, item ->
             Spacer(Modifier.size(10.dp))
-            OutlinedTextField(item.desc, { item.desc = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Description") })
+            OutlinedTextField(item.desc, { item.desc = it }, modifier = Modifier.fillMaxWidth(), label = { Text(com.handytools.app.I18n.t("Description")) })
             Spacer(Modifier.size(6.dp))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedTextField(item.qty, { item.qty = it }, modifier = Modifier.weight(1f), label = { Text("Qty") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-                OutlinedTextField(item.price, { item.price = it }, modifier = Modifier.weight(1f), label = { Text("Unit price") }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal))
+                OutlinedTextField(item.qty, { item.qty = it }, modifier = Modifier.weight(1f), label = { Text(com.handytools.app.I18n.t("Qty")) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                OutlinedTextField(item.price, { item.price = it }, modifier = Modifier.weight(1f), label = { Text(com.handytools.app.I18n.t("Unit price")) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal))
                 if (items.size > 1) {
                     Column(Modifier.width(60.dp)) {
                         Spacer(Modifier.size(8.dp))
@@ -126,7 +126,7 @@ fun QuickInvoiceScreen() {
         HSecondaryButton("+ Add item", modifier = Modifier.fillMaxWidth()) { items.add(ItemState()) }
 
         Spacer(Modifier.size(16.dp))
-        OutlinedTextField(notes, { notes = it }, modifier = Modifier.fillMaxWidth(), label = { Text("Notes (optional)") }, minLines = 2)
+        OutlinedTextField(notes, { notes = it }, modifier = Modifier.fillMaxWidth(), label = { Text(com.handytools.app.I18n.t("Notes (optional)")) }, minLines = 2)
 
         Spacer(Modifier.size(16.dp))
         Column(Modifier.fillMaxWidth()) {
@@ -177,16 +177,16 @@ private fun buildInvoicePdf(
     var c = page.canvas
     var y = margin + 20f
 
-    c.drawText("INVOICE", margin, y, title); y += 28f
+    c.drawText(com.handytools.app.I18n.t("INVOICE"), margin, y, title); y += 28f
     c.drawText("#$number   ·   $date", margin, y, label); y += 24f
 
-    c.drawText("FROM", margin, y, label)
-    c.drawText("BILL TO", w / 2f, y, label); y += 14f
+    c.drawText(com.handytools.app.I18n.t("FROM"), margin, y, label)
+    c.drawText(com.handytools.app.I18n.t("BILL TO"), w / 2f, y, label); y += 14f
     c.drawText(from, margin, y, body)
     c.drawText(billTo, w / 2f, y, body); y += 28f
 
     c.drawLine(margin, y, w - margin, y, rule); y += 16f
-    c.drawText("Description", margin, y, bodyBold)
+    c.drawText(com.handytools.app.I18n.t("Description"), margin, y, bodyBold)
     right(c, "Qty", colQtyR, y, bodyBold)
     right(c, "Unit", colUnitR, y, bodyBold)
     right(c, "Amount", colAmtR, y, bodyBold); y += 8f
@@ -222,7 +222,7 @@ private fun buildInvoicePdf(
     right(c, "Total", colUnitR, y, bodyBold); right(c, money(subtotal + tax), colAmtR, y, bodyBold); y += 30f
 
     if (notes.isNotBlank()) {
-        c.drawText("Notes", margin, y, label); y += 14f
+        c.drawText(com.handytools.app.I18n.t("Notes"), margin, y, label); y += 14f
         for (line in wrap(notes, body, w - 2 * margin)) { c.drawText(line, margin, y, body); y += 15f }
     }
 

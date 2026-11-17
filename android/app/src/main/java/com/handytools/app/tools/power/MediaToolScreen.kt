@@ -536,10 +536,10 @@ fun MediaToolScreen() {
                     modifier = Modifier.fillMaxWidth().height(230.dp).clip(RoundedCornerShape(16.dp)).background(Color.Black)
                 )
             }
-            Text("Tap the video to play or pause", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
+            Text(com.handytools.app.I18n.t("Tap the video to play or pause"), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
         } else {
             PreviewBox(minHeight = 170.dp) {
-                Text("Pick a photo or video to get it ready to send, post or print.", style = MaterialTheme.typography.bodyMedium,
+                Text(com.handytools.app.I18n.t("Pick a photo or video to get it ready to send, post or print."), style = MaterialTheme.typography.bodyMedium,
                     color = Handy.palette.textSecondary, modifier = Modifier.padding(horizontal = 24.dp))
             }
         }
@@ -607,14 +607,14 @@ fun MediaToolScreen() {
                 QuotaNote(bgRoom, "backgrounds")
                 Spacer(Modifier.height(12.dp))
                 HPrimaryButton(if (working) "Cutting out…" else "Remove background", enabled = hasPhoto && !working && bgRoom) { removeBackground() }
-                if (hasVideo) NoteText("Background removal works on photos — choose a photo above.")
+                if (hasVideo) NoteText(com.handytools.app.I18n.t("Background removal works on photos — choose a photo above."))
                 if (modelMissing) {
                     Spacer(Modifier.height(8.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) { HChip("Go to Shrink", false) { tab = 0 }; HChip("Go to Redact", false) { tab = 2 } }
                 }
             }
             2 -> {
-                NoteText("Drag on the photo to black out faces, names, card numbers. Numbers and emails can be auto-found on the phone.")
+                NoteText(com.handytools.app.I18n.t("Drag on the photo to black out faces, names, card numbers. Numbers and emails can be auto-found on the phone."))
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     HChip("Find numbers & emails", false) { if (hasPhoto && !working) findSensitiveText() }
@@ -626,7 +626,7 @@ fun MediaToolScreen() {
                     HSecondaryButton("Undo", Modifier.weight(1f), enabled = boxes.isNotEmpty() && !working) { boxes.removeAt(boxes.size - 1); result = null }
                     HPrimaryButton(if (working) "Saving…" else "Save redacted", Modifier.weight(1.4f), enabled = hasPhoto && boxes.isNotEmpty() && !working && imgRoom) { saveRedacted() }
                 }
-                if (hasVideo) NoteText("Redact works on photos — choose a photo above.")
+                if (hasVideo) NoteText(com.handytools.app.I18n.t("Redact works on photos — choose a photo above."))
             }
             3 -> {
                 Spacer(Modifier.height(10.dp))
@@ -640,8 +640,8 @@ fun MediaToolScreen() {
                     Spacer(Modifier.height(10.dp))
                     HSecondaryButton(if (working) "Building…" else "Save print sheet", enabled = !working && imgRoom) { printSheet() }
                 }
-                NoteText("Centres the face and crops to the exact ratio at 300 dpi; prints 4 or 6 on a 4×6 sheet. Always check your authority's exact rules before printing.")
-                if (hasVideo) NoteText("Passport photos come from photos — choose a photo above.")
+                NoteText(com.handytools.app.I18n.t("Centres the face and crops to the exact ratio at 300 dpi; prints 4 or 6 on a 4×6 sheet. Always check your authority's exact rules before printing."))
+                if (hasVideo) NoteText(com.handytools.app.I18n.t("Passport photos come from photos — choose a photo above."))
             }
             4 -> {
                 Spacer(Modifier.height(10.dp))
@@ -656,8 +656,8 @@ fun MediaToolScreen() {
                 QuotaNote(imgRoom, "photos")
                 Spacer(Modifier.height(12.dp))
                 HPrimaryButton(if (working) "Saving…" else if (stripped) "Stripped ✓ — saved" else "Strip metadata & save", enabled = hasPhoto && !working && !stripped && imgRoom) { stripMetadata() }
-                NoteText("Re-encodes the image so nothing hidden travels with it.")
-                if (hasVideo) NoteText("This reads photo metadata — choose a photo above. Shrinking a video re-encodes it from scratch.")
+                NoteText(com.handytools.app.I18n.t("Re-encodes the image so nothing hidden travels with it."))
+                if (hasVideo) NoteText(com.handytools.app.I18n.t("This reads photo metadata — choose a photo above. Shrinking a video re-encodes it from scratch."))
             }
             else -> {
                 Spacer(Modifier.height(10.dp))
@@ -671,8 +671,8 @@ fun MediaToolScreen() {
                     Spacer(Modifier.height(10.dp))
                 }
                 HPrimaryButton(if (working) "Converting…" else "Convert", enabled = !working && room && (if (needsVideo) hasVideo else hasPhoto)) { convert() }
-                if (needsVideo && !hasVideo && hasPhoto) NoteText("That one needs a video — tap Video above.")
-                if (!needsVideo && !hasPhoto && hasVideo) NoteText("That one needs a photo — tap Choose photo above.")
+                if (needsVideo && !hasVideo && hasPhoto) NoteText(com.handytools.app.I18n.t("That one needs a video — tap Video above."))
+                if (!needsVideo && !hasPhoto && hasVideo) NoteText(com.handytools.app.I18n.t("That one needs a photo — tap Choose photo above."))
                 Row(Modifier.padding(top = 12.dp), verticalAlignment = Alignment.CenterVertically) { Pill("Runs natively") }
                 NoteText(if (convSel == 4) "Pulls the soundtrack out losslessly as M4A (phones can't write MP3 natively; M4A plays everywhere)." else "HEIC and video conversion use the phone's own codecs. Nothing is uploaded.")
             }
@@ -800,6 +800,6 @@ private fun PhotoCanvas(bmp: Bitmap, transparent: Boolean, redact: Boolean, guid
             }
         }
     }
-    if (guide) Text("Line the head up inside the oval — it's cut out and centred for you.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
-    if (redact) Text("Drag a box over anything to hide it. Undo removes the last one.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
+    if (guide) Text(com.handytools.app.I18n.t("Line the head up inside the oval — it's cut out and centred for you."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
+    if (redact) Text(com.handytools.app.I18n.t("Drag a box over anything to hide it. Undo removes the last one."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 6.dp))
 }

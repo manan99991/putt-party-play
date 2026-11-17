@@ -46,7 +46,7 @@ fun TextToolsScreen() {
         OutlinedTextField(
             value = text,
             onValueChange = { text = it },
-            label = { Text("Your text") },
+            label = { Text(com.handytools.app.I18n.t("Your text")) },
             minLines = 6,
             modifier = Modifier.fillMaxWidth().heightIn(min = 180.dp)
         )
@@ -75,7 +75,7 @@ fun TextToolsScreen() {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             HSecondaryButton("Copy", modifier = Modifier.weight(1f)) {
                 val cb = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                cb.setPrimaryClip(ClipData.newPlainText("text", text))
+                cb.setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("text"), text))
                 Toast.makeText(ctx, "Copied", Toast.LENGTH_SHORT).show()
             }
             HSecondaryButton("Share", modifier = Modifier.weight(1f)) { Share.text(ctx, text) }

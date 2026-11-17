@@ -104,14 +104,14 @@ private fun AddCardDialog(onDismiss: () -> Unit, onSave: (Card) -> Unit) {
     var qr by remember { mutableStateOf(false) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add card") },
+        title = { Text(com.handytools.app.I18n.t("Add card")) },
         text = {
             Column {
-                OutlinedTextField(name, { name = it }, label = { Text("Card name") }, singleLine = true)
+                OutlinedTextField(name, { name = it }, label = { Text(com.handytools.app.I18n.t("Card name")) }, singleLine = true)
                 Spacer(Modifier.size(8.dp))
-                OutlinedTextField(code, { code = it }, label = { Text("Card number / code") }, singleLine = true)
+                OutlinedTextField(code, { code = it }, label = { Text(com.handytools.app.I18n.t("Card number / code")) }, singleLine = true)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(qr, { qr = it }); Text("This is a QR code")
+                    Checkbox(qr, { qr = it }); Text(com.handytools.app.I18n.t("This is a QR code"))
                 }
             }
         },

@@ -127,15 +127,15 @@ fun InstrumentsToolScreen() {
 private fun TorchPanel() {
     val open = com.handytools.app.LocalOpenTool.current
     Column(Modifier.fillMaxWidth()) {
-        Text("Flashlight", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+        Text(com.handytools.app.I18n.t("Flashlight"), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
         Spacer(Modifier.height(8.dp))
         Text(
-            "Torch, strobe, SOS & Morse, beacon, screen light and mirror — the full flashlight.",
+            com.handytools.app.I18n.t("Torch, strobe, SOS & Morse, beacon, screen light and mirror — the full flashlight."),
             style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary
         )
         Spacer(Modifier.height(16.dp))
         HPrimaryButton("Open Flashlight") { open?.invoke("flashlight") }
-        NoteText("Flashlight lives here now — same features, one less tile on the home screen.")
+        NoteText(com.handytools.app.I18n.t("Flashlight lives here now — same features, one less tile on the home screen."))
     }
 }
 
@@ -331,10 +331,10 @@ private fun CompassPanel() {
                         drawLine(border, Offset(sx, sy), Offset(ex, ey), 1.dp.toPx())
                     }
                 }
-                Text("N", Modifier.align(Alignment.TopCenter).padding(top = 8.dp), color = HandyColors.Danger, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                Text("S", Modifier.align(Alignment.BottomCenter).padding(bottom = 8.dp), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                Text("W", Modifier.align(Alignment.CenterStart).padding(start = 10.dp), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-                Text("E", Modifier.align(Alignment.CenterEnd).padding(end = 10.dp), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                Text(com.handytools.app.I18n.t("N"), Modifier.align(Alignment.TopCenter).padding(top = 8.dp), color = HandyColors.Danger, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                Text(com.handytools.app.I18n.t("S"), Modifier.align(Alignment.BottomCenter).padding(bottom = 8.dp), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                Text(com.handytools.app.I18n.t("W"), Modifier.align(Alignment.CenterStart).padding(start = 10.dp), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                Text(com.handytools.app.I18n.t("E"), Modifier.align(Alignment.CenterEnd).padding(end = 10.dp), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
             }
             // Fixed needle at the top: this is where the phone is pointing.
             Box(Modifier.align(Alignment.TopCenter).offset(y = 6.dp).width(3.dp).height(28.dp).background(HandyColors.Accent, RoundedCornerShape(2.dp)))
@@ -403,11 +403,11 @@ private fun SoundPanel() {
         Row(Modifier.fillMaxWidth().padding(top = 4.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(if (n > 0) "$peak" else "—", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                Text("peak", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+                Text(com.handytools.app.I18n.t("peak"), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(if (n > 0) "${sum / n}" else "—", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                Text("average", style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
+                Text(com.handytools.app.I18n.t("average"), style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
             }
         }
         InstrRefTable(
@@ -424,7 +424,7 @@ private fun SoundPanel() {
             else if (granted) start()
             else permLauncher.launch(Manifest.permission.RECORD_AUDIO)
         }
-        NoteText("Phone mics aren't lab meters — treat readings as a guide, within a few dB.")
+        NoteText(com.handytools.app.I18n.t("Phone mics aren't lab meters — treat readings as a guide, within a few dB."))
     }
 }
 
@@ -461,7 +461,7 @@ private fun LightPanel() {
                 InstrRef("Direct sunlight", "30,000+"),
             )
         )
-        NoteText("The sensor sits near the front camera — don't cover the top of the phone.")
+        NoteText(com.handytools.app.I18n.t("The sensor sits near the front camera — don't cover the top of the phone."))
     }
 }
 

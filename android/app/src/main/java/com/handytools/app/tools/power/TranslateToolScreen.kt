@@ -158,7 +158,7 @@ fun TranslateToolScreen() {
     }
 
     fun copy(t: String) {
-        (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText("translation", t))
+        (ctx.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(ClipData.newPlainText(com.handytools.app.I18n.t("translation"), t))
         Toast.makeText(ctx, "Copied", Toast.LENGTH_SHORT).show()
     }
 
@@ -324,7 +324,7 @@ fun TranslateToolScreen() {
 
         when (tab) {
             0 -> {
-                OutlinedTextField(value = input, onValueChange = { input = it }, placeholder = { Text("Type or paste…") },
+                OutlinedTextField(value = input, onValueChange = { input = it }, placeholder = { Text(com.handytools.app.I18n.t("Type or paste…")) },
                     modifier = Modifier.fillMaxWidth(), minLines = 3)
                 Spacer(Modifier.height(8.dp))
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -332,7 +332,7 @@ fun TranslateToolScreen() {
                 }
                 Spacer(Modifier.height(10.dp))
                 HPrimaryButton(if (working) "Translating…" else "Translate", enabled = !working && input.isNotBlank() && from != to) { translateText() }
-                if (from == to) { Text("Pick two different languages to translate.", color = HandyColors.Accent, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 6.dp)) }
+                if (from == to) { Text(com.handytools.app.I18n.t("Pick two different languages to translate."), color = HandyColors.Accent, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 6.dp)) }
                 textError?.let { Text(it, color = HandyColors.Accent, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp)) }
                 if (output.isNotEmpty()) {
                     Spacer(Modifier.height(10.dp))
@@ -367,7 +367,7 @@ fun TranslateToolScreen() {
             }
             1 -> {
                 val bmp = camBitmap
-                if (bmp == null) PreviewBox(minHeight = 200.dp) { Text("Point at a menu, sign or label.", color = Handy.palette.textSecondary) }
+                if (bmp == null) PreviewBox(minHeight = 200.dp) { Text(com.handytools.app.I18n.t("Point at a menu, sign or label."), color = Handy.palette.textSecondary) }
                 else Image(bmp.asImageBitmap(), "Photo with translation", Modifier.fillMaxWidth().heightIn(max = 440.dp).clip(RoundedCornerShape(16.dp)), contentScale = ContentScale.Fit)
                 Spacer(Modifier.height(HandyTokens.Space12))
                 PermissionCard("Camera", "Needed to photograph text to translate. Photos stay on your phone.", granted = !camDenied, intent = settingsIntent, buttonText = "Open settings")
@@ -413,13 +413,13 @@ fun TranslateToolScreen() {
                 }
                 Spacer(Modifier.height(8.dp))
                 Pill("Runs natively")
-                Text("Text is recognised and the translation is drawn over it in place, on the phone. Reads Latin-alphabet text (Spanish, French, German, Italian, Portuguese…).",
+                Text(com.handytools.app.I18n.t("Text is recognised and the translation is drawn over it in place, on the phone. Reads Latin-alphabet text (Spanish, French, German, Italian, Portuguese…)."),
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             }
             else -> {
                 HCard(Modifier.fillMaxWidth()) {
                     Column(Modifier.fillMaxWidth().heightIn(min = 140.dp).padding(14.dp)) {
-                        if (log.isEmpty()) Text("Tap a mic, speak, and the other side hears it in their language.", color = Handy.palette.textSecondary)
+                        if (log.isEmpty()) Text(com.handytools.app.I18n.t("Tap a mic, speak, and the other side hears it in their language."), color = Handy.palette.textSecondary)
                         log.forEach { t ->
                             Column(Modifier.padding(bottom = 10.dp)) {
                                 Text(t.who, style = MaterialTheme.typography.labelSmall, color = Handy.palette.textSecondary)
@@ -447,11 +447,11 @@ fun TranslateToolScreen() {
                         HSecondaryButton("Clear", modifier = Modifier.weight(1f)) { log.clear() }
                     }
                 }
-                Text("Each side speaks in their language; the phone translates and reads it aloud in the other one. Uses the phone's speech recogniser — offline when its language pack is installed.",
+                Text(com.handytools.app.I18n.t("Each side speaks in their language; the phone translates and reads it aloud in the other one. Uses the phone's speech recogniser — offline when its language pack is installed."),
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary, modifier = Modifier.padding(top = 10.dp))
             }
         }
-        NoteText("Offline once a language pack is downloaded (ML Kit on-device). Nothing you translate leaves the phone.")
+        NoteText(com.handytools.app.I18n.t("Offline once a language pack is downloaded (ML Kit on-device). Nothing you translate leaves the phone."))
     }
 }
 

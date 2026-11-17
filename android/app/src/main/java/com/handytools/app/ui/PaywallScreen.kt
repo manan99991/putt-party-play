@@ -69,9 +69,9 @@ fun PaywallContent(onBack: () -> Unit) {
             Icon(Icons.Outlined.WorkspacePremium, null, Modifier.size(32.dp), tint = HandyColors.Accent)
         }
         Spacer(Modifier.height(HandyTokens.Space16))
-        Text("Tenzy Pro", style = MaterialTheme.typography.headlineSmall.copy(fontSize = 28.sp))
+        Text(com.handytools.app.I18n.t("Tenzy Pro"), style = MaterialTheme.typography.headlineSmall.copy(fontSize = 28.sp))
         Spacer(Modifier.height(HandyTokens.Space4))
-        Text("Every tool and every builder step. No ads, no limits.", style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+        Text(com.handytools.app.I18n.t("Every tool and every builder step. No ads, no limits."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space24))
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
             listOf("Unlock every tool", "Every Build-your-own step, unlimited saved tools", "No banner or full-screen ads", "No daily limits — build and run freely").forEach {
@@ -87,14 +87,14 @@ fun PaywallContent(onBack: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Outlined.CheckCircle, null, tint = HandyColors.Success)
                 Spacer(Modifier.width(HandyTokens.Space8))
-                Text("You're Pro. Thank you.", style = MaterialTheme.typography.titleMedium)
+                Text(com.handytools.app.I18n.t("You're Pro. Thank you."), style = MaterialTheme.typography.titleMedium)
             }
         } else {
             PlanRow("Yearly", billing.yearlyPrice ?: "$19.99", if (billing.trialLabel != null) "One plan · ${billing.trialLabel}" else "One plan · renews yearly", null, true) { billing.launchPurchase(activity) }
             Spacer(Modifier.height(HandyTokens.Space16))
             HPrimaryButton("Go Pro · ${billing.yearlyPrice ?: "$19.99"} / year") { billing.launchPurchase(activity) }
             Spacer(Modifier.height(HandyTokens.Space8))
-            Text("Auto-renews until cancelled in Google Play. Price shown in your currency at checkout.", style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary,
+            Text(com.handytools.app.I18n.t("Auto-renews until cancelled in Google Play. Price shown in your currency at checkout."), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary,
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         }
         Spacer(Modifier.height(HandyTokens.Space8))
