@@ -216,10 +216,10 @@ class ReviewRegressionTest {
         val now = java.util.Calendar.getInstance(utc).apply { clear(); set(2026, 10, 16, 8, 0, 0) }.timeInMillis
         val TE = com.handytools.app.tools.builder.ThinkingEngine
         fun urg(line: String) = TE.urgency(TE.tasks(line, now, utc).first())
-        assertEquals(TE.Urgency.DEADLINE, urg("pay rent Friday"))
-        assertEquals(TE.Urgency.NUDGE, urg("call the dentist"))
-        assertEquals(TE.Urgency.NUDGE, urg("email Sam"))
-        assertEquals(TE.Urgency.QUIET, urg("milk"))
+        assertEquals(com.handytools.app.tools.builder.ThinkingEngine.Urgency.DEADLINE, urg("pay rent Friday"))
+        assertEquals(com.handytools.app.tools.builder.ThinkingEngine.Urgency.NUDGE, urg("call the dentist"))
+        assertEquals(com.handytools.app.tools.builder.ThinkingEngine.Urgency.NUDGE, urg("email Sam"))
+        assertEquals(com.handytools.app.tools.builder.ThinkingEngine.Urgency.QUIET, urg("milk"))
     }
 
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
