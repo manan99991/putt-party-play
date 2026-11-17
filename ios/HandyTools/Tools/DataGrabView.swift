@@ -25,8 +25,8 @@ struct DataGrabView: View {
                 "Fix the type if it guessed wrong, then copy or export as CSV.",
             ])
             if text.isEmpty {
-                PhotosPicker(selection: $photoItem, matching: .images) { Label("Choose a photo or screenshot", systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity) }.secondaryButton()
-                Button { if let s = UIPasteboard.general.string { text = s; run() } } label: { Label("Paste text instead", systemImage: "doc.on.clipboard").frame(maxWidth: .infinity) }.secondaryButton()
+                PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Choose a photo or screenshot"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { if let s = UIPasteboard.general.string { text = s; run() } } label: { Label(L("Paste text instead"), systemImage: "doc.on.clipboard").frame(maxWidth: .infinity) }.secondaryButton()
                 if busy { ToolProgressBar(label: "Reading…") }
             } else {
                 HandyFlow(spacing: HandySpacing.s8) {
@@ -41,14 +41,14 @@ struct DataGrabView: View {
                 }
                 if AIEngine.isAvailable {
                     if aiText.isEmpty {
-                        Button { refine() } label: { HStack { if aiBusy { ProgressView() }; Label("Tidy with on-device AI", systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
+                        Button { refine() } label: { HStack { if aiBusy { ProgressView() }; Label(L("Tidy with on-device AI"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
                     } else {
                         Text(aiText).font(.system(.body, design: .monospaced)).textSelection(.enabled).padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
                             .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     }
                 }
                 DisclosureGroup("Text that was read") { Text(text).font(HandyFont.caption).textSelection(.enabled).foregroundStyle(HandyColor.textSecondary) }.font(HandyFont.caption)
-                HStack { PhotosPicker(selection: $photoItem, matching: .images) { Label("Different photo", systemImage: "photo") }.textButton(); Button { text = ""; aiText = "" } label: { Label("Start over", systemImage: "arrow.counterclockwise") }.textButton(); Spacer() }
+                HStack { PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Different photo"), systemImage: "photo") }.textButton(); Button { text = ""; aiText = "" } label: { Label(L("Start over"), systemImage: "arrow.counterclockwise") }.textButton(); Spacer() }
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
@@ -89,13 +89,13 @@ struct DataGrabView: View {
             if let s = receipt.subtotal { row("Subtotal", money(s)) }
             if let t = receipt.tax { row("Tax", money(t)) }
             if let t = receipt.tip { row("Tip", money(t)) }
-            HStack { Text("Total").font(HandyFont.bodyStrong); Spacer(); Text(money(receipt.total ?? 0)).font(HandyFont.bodyStrong).monospacedDigit() }
+            HStack { Text(L("Total")).font(HandyFont.bodyStrong); Spacer(); Text(money(receipt.total ?? 0)).font(HandyFont.bodyStrong).monospacedDigit() }
             HStack(spacing: HandySpacing.s8) {
-                ShareLink(item: CSVFile(data: Data(DataGrab.receiptCSV(receipt).utf8)), preview: SharePreview("Receipt.csv")) { Label("Items as CSV", systemImage: "tablecells") }.compactButton()
-                Button { Copier.copy(DataGrab.expenseRow(receipt)) } label: { Label("Copy expense row", systemImage: "doc.on.doc") }.compactButton()
+                ShareLink(item: CSVFile(data: Data(DataGrab.receiptCSV(receipt).utf8)), preview: SharePreview("Receipt.csv")) { Label(L("Items as CSV"), systemImage: "tablecells") }.compactButton()
+                Button { Copier.copy(DataGrab.expenseRow(receipt)) } label: { Label(L("Copy expense row"), systemImage: "doc.on.doc") }.compactButton()
                 Spacer()
             }
-            Text("The expense row pastes straight into a Numbers/Excel/Google Sheets expense log.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("The expense row pastes straight into a Numbers/Excel/Google Sheets expense log.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle(padding: HandySpacing.s12)
     }
 
@@ -107,8 +107,8 @@ struct DataGrabView: View {
             field("Phone", Binding(get: { card.phones.joined(separator: ", ") }, set: { card.phones = $0.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty } }))
             field("Email", Binding(get: { card.emails.joined(separator: ", ") }, set: { card.emails = $0.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty } }))
             field("Website", $card.website); field("Address", $card.address)
-            ShareLink(item: VCardFile(data: Data(DataGrab.vcard(card).utf8)), preview: SharePreview(card.name.isEmpty ? "Contact" : card.name)) { Label("Add to Contacts", systemImage: "person.crop.circle.badge.plus").frame(maxWidth: .infinity) }.primaryButton()
-            Text("Opens the share sheet — pick Contacts to save, or send the card on.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            ShareLink(item: VCardFile(data: Data(DataGrab.vcard(card).utf8)), preview: SharePreview(card.name.isEmpty ? "Contact" : card.name)) { Label(L("Add to Contacts"), systemImage: "person.crop.circle.badge.plus").frame(maxWidth: .infinity) }.primaryButton()
+            Text(L("Opens the share sheet — pick Contacts to save, or send the card on.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle(padding: HandySpacing.s12)
     }
 
@@ -120,8 +120,8 @@ struct DataGrabView: View {
             DatePicker("Starts", selection: Binding(get: { event.start ?? Date() }, set: { event.start = $0 })).font(HandyFont.body)
             DatePicker("Ends", selection: Binding(get: { event.end ?? (event.start ?? Date()).addingTimeInterval(3600) }, set: { event.end = $0 })).font(HandyFont.body)
             field("Location", $event.location)
-            ShareLink(item: ICSFile(data: Data(DataGrab.ics(event).utf8)), preview: SharePreview(event.title.isEmpty ? "Event" : event.title)) { Label("Add to Calendar", systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.primaryButton()
-            Text("Share → Calendar adds it; or send the invite file to someone else.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            ShareLink(item: ICSFile(data: Data(DataGrab.ics(event).utf8)), preview: SharePreview(event.title.isEmpty ? "Event" : event.title)) { Label(L("Add to Calendar"), systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.primaryButton()
+            Text(L("Share → Calendar adds it; or send the invite file to someone else.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle(padding: HandySpacing.s12)
     }
 
@@ -132,11 +132,11 @@ struct DataGrabView: View {
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
             ScrollView(.horizontal) { Text(csv).font(.system(size: 12, design: .monospaced)).textSelection(.enabled) }.frame(maxHeight: 220)
             HStack(spacing: HandySpacing.s8) {
-                ShareLink(item: CSVFile(data: Data(csv.utf8)), preview: SharePreview("Table.csv")) { Label("Save CSV", systemImage: "tablecells") }.compactButton()
-                Button { Copier.copy(csv.replacingOccurrences(of: ",", with: "\t")) } label: { Label("Copy for a spreadsheet", systemImage: "doc.on.doc") }.compactButton()
+                ShareLink(item: CSVFile(data: Data(csv.utf8)), preview: SharePreview("Table.csv")) { Label(L("Save CSV"), systemImage: "tablecells") }.compactButton()
+                Button { Copier.copy(csv.replacingOccurrences(of: ",", with: "\t")) } label: { Label(L("Copy for a spreadsheet"), systemImage: "doc.on.doc") }.compactButton()
                 Spacer()
             }
-            Text("Copy pastes as columns into Numbers, Excel or Sheets.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Copy pastes as columns into Numbers, Excel or Sheets.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle(padding: HandySpacing.s12)
     }
 

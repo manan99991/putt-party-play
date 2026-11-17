@@ -43,7 +43,7 @@ struct LiveCaptionsView: View {
                 }.primaryButton()
                 Button { showLanguages = true } label: { Text(speech.locale.localizedString(forLanguageCode: speech.locale.language.languageCode?.identifier ?? "en") ?? "Language").lineLimit(1) }.compactButton()
                 Menu {
-                    Button { fontSize = 22 } label: { Text("Normal") }; Button { fontSize = 28 } label: { Text("Large") }; Button { fontSize = 38 } label: { Text("Huge") }
+                    Button { fontSize = 22 } label: { Text(L("Normal")) }; Button { fontSize = 28 } label: { Text(L("Large")) }; Button { fontSize = 38 } label: { Text(L("Huge")) }
                 } label: { Image(systemName: "textformat.size").frame(width: 36, height: 36) }.compactButton().accessibilityLabel("Text size")
             }
 
@@ -57,9 +57,9 @@ struct LiveCaptionsView: View {
             }
 
             HStack(spacing: HandySpacing.s8) {
-                Button { Copier.copy(speech.transcript) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton().disabled(speech.transcript.isEmpty)
-                ShareLink(item: speech.transcript) { Label("Save transcript", systemImage: "square.and.arrow.up") }.compactButton().disabled(speech.transcript.isEmpty)
-                Button(role: .destructive) { speech.clear() } label: { Label("Clear", systemImage: "trash") }.compactButton().disabled(speech.transcript.isEmpty)
+                Button { Copier.copy(speech.transcript) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton().disabled(speech.transcript.isEmpty)
+                ShareLink(item: speech.transcript) { Label(L("Save transcript"), systemImage: "square.and.arrow.up") }.compactButton().disabled(speech.transcript.isEmpty)
+                Button(role: .destructive) { speech.clear() } label: { Label(L("Clear"), systemImage: "trash") }.compactButton().disabled(speech.transcript.isEmpty)
                 Spacer()
             }
             if let e = speech.errorText { LimitNote(e) }
@@ -92,7 +92,7 @@ struct LanguagePicker: View {
             }
             .searchable(text: $query)
             .navigationTitle("Language").navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
         }
     }
     private func name(_ l: Locale) -> String { Locale.current.localizedString(forIdentifier: l.identifier) ?? l.identifier }

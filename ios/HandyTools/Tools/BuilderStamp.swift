@@ -22,7 +22,7 @@ struct StampEditor: View {
                 Button { showPad = true } label: { Label(signature == nil ? "Draw my signature" : "Redraw my signature", systemImage: "signature") }
                     .font(HandyFont.caption).accessibilityIdentifier("stamp-draw")
                 if signature == nil {
-                    Text("Draw it once. It is saved on this phone and used by every tool.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Draw it once. It is saved on this phone and used by every tool.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
             }
             if plan.has(.name) {
@@ -32,7 +32,7 @@ struct StampEditor: View {
             }
             if !plan.spots.isEmpty {
                 board
-                Text("Drag each one to where it belongs. The tool puts them in the same place every time.")
+                Text(L("Drag each one to where it belongs. The tool puts them in the same place every time."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }

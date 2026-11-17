@@ -30,7 +30,7 @@ struct StitchView: View {
             .onChange(of: items) { _, new in load(new) }
 
             if shots.isEmpty && result == nil {
-                Text("Tip: overlap each screenshot a little with the previous one so the join is seamless.")
+                Text(L("Tip: overlap each screenshot a little with the previous one so the join is seamless."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
 
@@ -49,7 +49,7 @@ struct StitchView: View {
                 HStack {
                     Text("\(shots.count) screenshot\(shots.count == 1 ? "" : "s"), in this order").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     Spacer()
-                    Button("Reverse order") { shots.reverse() }.textButton().font(HandyFont.caption)
+                    Button(L("Reverse order")) { shots.reverse() }.textButton().font(HandyFont.caption)
                 }
 
                 if !store.isPremium { QuotaChip(name: "stitch", limit: Limits.freeStitchPerDay).environmentObject(store) }
@@ -73,10 +73,10 @@ struct StitchView: View {
                 Text("\(Int(result.size.width)) × \(Int(result.size.height)) px").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 if let png = resultPNG {
                     ShareLink(item: PNGFile(data: png), preview: SharePreview("Long screenshot")) {
-                        Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                        Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
                     }.primaryButton()
                 }
-                Button("Start over") { self.result = nil; resultPNG = nil; shots = []; items = [] }.textButton()
+                Button(L("Start over")) { self.result = nil; resultPNG = nil; shots = []; items = [] }.textButton()
             }
         }
     }

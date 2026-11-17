@@ -85,11 +85,11 @@ struct FormatFixView: View {
                 if imageCount > 0 { typeRow(icon: "photo", count: imageCount, noun: "photo") { imageMenu } }
                 if videoCount > 0 { typeRow(icon: "film", count: videoCount, noun: "video") { videoMenu } }
 
-                Text("Location and camera metadata are removed from every file.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Location and camera metadata are removed from every file.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
                 if !store.isPremium { QuotaChip(name: "formatfix", limit: Limits.freeConvertPerDay).environmentObject(store) }
                 if overQuota { LimitReachedBanner(message: "You've converted today's \(Limits.freeConvertPerDay) free batches.") }
-                if !store.isPremium { Text("Free converts up to 10 at once. Pro: unlimited.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                if !store.isPremium { Text(L("Free converts up to 10 at once. Pro: unlimited.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
 
                 Button { convert() } label: {
                     Text(working ? (progressValue > 0 ? "Converting… \(Int(progressValue * 100))%" : "Converting…") : "Convert \(loaded.count)").frame(maxWidth: .infinity)
@@ -101,7 +101,7 @@ struct FormatFixView: View {
             if let skippedNote { Label(skippedNote, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
 
             if !outputs.isEmpty {
-                Text("Converted").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                Text(L("Converted")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: HandySpacing.s8) {
                         ForEach(outputs, id: \.self) { url in

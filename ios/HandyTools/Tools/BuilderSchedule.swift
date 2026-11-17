@@ -112,7 +112,7 @@ struct ScheduleCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Toggle(isOn: on) { Label("Remind me to run this", systemImage: "bell").font(HandyFont.bodyStrong) }
+            Toggle(isOn: on) { Label(L("Remind me to run this"), systemImage: "bell").font(HandyFont.bodyStrong) }
                 .accessibilityIdentifier("schedule-on")
             if let s = schedule {
                 DatePicker("Time", selection: time, displayedComponents: .hourAndMinute).font(HandyFont.caption)

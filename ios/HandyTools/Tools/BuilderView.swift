@@ -276,7 +276,7 @@ private struct AudioResultPreview: View {
                 Image(systemName: playing ? "pause.circle.fill" : "play.circle.fill").font(.system(size: 34)).foregroundStyle(HandyColor.accent)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(playing ? "Playing…" : "Play the result").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                    Text("Hear it before you save").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Hear it before you save")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 Spacer()
                 Image(systemName: "waveform").foregroundStyle(HandyColor.textSecondary)
@@ -344,8 +344,8 @@ struct BuilderView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s16) {
-            Text("Build your own").font(HandyFont.display).frame(maxWidth: .infinity, alignment: .leading)
-            Text("Make a tool that does the whole job — it runs on your phone.")
+            Text(L("Build your own")).font(HandyFont.display).frame(maxWidth: .infinity, alignment: .leading)
+            Text(L("Make a tool that does the whole job — it runs on your phone."))
                 .font(.system(size: 14)).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
             hero
             anythingTiles
@@ -373,12 +373,12 @@ struct BuilderView: View {
         .sheet(item: $given) { g in NavigationStack { ToolPickView(given: g, mine: mine) } }
         .alert("Name this tool", isPresented: Binding(get: { renaming != nil }, set: { if !$0 { renaming = nil } })) {
             TextField("Name", text: $newName)
-            Button("Save") {
+            Button(L("Save")) {
                 let name = newName.trimmingCharacters(in: .whitespacesAndNewlines)
                 if let r = renaming, !name.isEmpty, let i = mine.firstIndex(where: { $0.id == r.id }) { mine[i].name = name; persist() }
                 renaming = nil
             }
-            Button("Cancel", role: .cancel) { renaming = nil }
+            Button(L("Cancel"), role: .cancel) { renaming = nil }
         }
         .fileImporter(isPresented: $pickingAny, allowedContentTypes: pickTypes) { r in
             guard case .success(let url) = r else { return }
@@ -414,7 +414,7 @@ struct BuilderView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
                         if mine.isEmpty {
-                            Text("Nothing saved yet. Build one from the start screen and it lands here.")
+                            Text(L("Nothing saved yet. Build one from the start screen and it lands here."))
                                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
                         ForEach(mine) { c in row(c, mine: true) }
@@ -427,7 +427,7 @@ struct BuilderView: View {
                     }.padding(HandySpacing.gutter)
                 }
                 .navigationTitle("My tools").navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showMine = false } } }
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showMine = false } } }
             }
         }
         .sheet(isPresented: $showTemplates, onDismiss: { pasteNote = nil }) {
@@ -435,7 +435,7 @@ struct BuilderView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
                         HStack {
-                            Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []); showTemplates = false } label: { Label("Blank", systemImage: "plus") }.font(HandyFont.caption)
+                            Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []); showTemplates = false } label: { Label(L("Blank"), systemImage: "plus") }.font(HandyFont.caption)
                             Spacer()
                             Button {
                                 let clip = UIPasteboard.general.string ?? ""
@@ -450,7 +450,7 @@ struct BuilderView: View {
                                         ? "Nothing's copied yet. On another Tenzy, open a tool and tap “Copy to share”, then come back and tap Paste."
                                         : "That's not a Tenzy tool link. Use a tool's “Copy to share” button, then tap Paste here."
                                 }
-                            } label: { Label("Paste a tool", systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
+                            } label: { Label(L("Paste a tool"), systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
                         }
                         if let pasteNote {
                             Text(pasteNote).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -458,12 +458,12 @@ struct BuilderView: View {
                                 .transition(.opacity)
                         }
                         Picker("What do you have?", selection: $have) {
-                            Text("All").tag(ChainKind?.none)
-                            Text("Photo").tag(ChainKind?.some(.image))
-                            Text("Text").tag(ChainKind?.some(.text))
-                            Text("Video").tag(ChainKind?.some(.video))
-                            Text("Sound").tag(ChainKind?.some(.audio))
-                            Text("PDF").tag(ChainKind?.some(.pdf))
+                            Text(L("All")).tag(ChainKind?.none)
+                            Text(L("Photo")).tag(ChainKind?.some(.image))
+                            Text(L("Text")).tag(ChainKind?.some(.text))
+                            Text(L("Video")).tag(ChainKind?.some(.video))
+                            Text(L("Sound")).tag(ChainKind?.some(.audio))
+                            Text(L("PDF")).tag(ChainKind?.some(.pdf))
                         }.pickerStyle(.segmented).accessibilityIdentifier("starter-filter")
                         LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
                             ForEach(BuilderIntro.starters(for: have).filter { $0.unavailable == nil }) { c in templateCard(c) }
@@ -471,7 +471,7 @@ struct BuilderView: View {
                     }.padding(HandySpacing.gutter)
                 }
                 .navigationTitle("Templates").navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showTemplates = false } } }
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showTemplates = false } } }
             }
         }
         .sheet(isPresented: $showGuide) {
@@ -485,7 +485,7 @@ struct BuilderView: View {
                     .padding(HandySpacing.gutter)
                 }
                 .navigationTitle("How building works").navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showGuide = false } } }
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showGuide = false } } }
             }
         }
         .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all(); history = RunHistory.all() } }   // a run may have added to a sheet, and to the recent results
@@ -512,7 +512,7 @@ struct BuilderView: View {
     /// Tenzy lists the tools that fit it.
     private var anythingTiles: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text("…or start with what you have").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("…or start with what you have")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: HandySpacing.s8) {
                 PhotosPicker(selection: $anyPick, matching: .images) { objTile("Photo") }.accessibilityIdentifier("have-photo")
@@ -531,7 +531,7 @@ struct BuilderView: View {
             if gettingReady {
                 HStack(spacing: HandySpacing.s8) {
                     ProgressView()
-                    Text("Got it — getting your file ready. A large or iCloud video can take a moment.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Got it — getting your file ready. A large or iCloud video can take a moment.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(HandySpacing.s12)
@@ -581,7 +581,7 @@ struct BuilderView: View {
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Label("Describe it", systemImage: "sparkles").font(HandyFont.cardTitle)
+            Label(L("Describe it"), systemImage: "sparkles").font(HandyFont.cardTitle)
             TextField("e.g. shrink a photo under 1 MB and hide where it was taken", text: $ask, axis: .vertical)
                 .lineLimit(1...3).textFieldStyle(.roundedBorder).accessibilityIdentifier("describe-field")
             Button {
@@ -615,10 +615,10 @@ struct BuilderView: View {
             Text(c.about).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2).multilineTextAlignment(.leading)
             Spacer(minLength: 0)
             HStack {
-                Label("Use", systemImage: "play.circle.fill").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
+                Label(L("Use"), systemImage: "play.circle.fill").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                 Spacer()
                 // Stays its own tap target (a Button inside the card), so only the rest of the card runs it.
-                Button("Edit copy") { var k = c; k.id = UUID().uuidString; k.name += " (mine)"; editHint = nil; editing = k }
+                Button(L("Edit copy")) { var k = c; k.id = UUID().uuidString; k.name += " (mine)"; editHint = nil; editing = k }
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).buttonStyle(.plain)
             }
         }
@@ -649,31 +649,31 @@ struct BuilderView: View {
                     Label(when.label(uses24h: ToolSchedules.uses24h), systemImage: "bell").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
                 }
                 if c.unavailable != nil {
-                    Label("Has a step this phone can't run", systemImage: "exclamationmark.triangle").font(HandyFont.caption).foregroundStyle(HandyColor.amber)
+                    Label(L("Has a step this phone can't run"), systemImage: "exclamationmark.triangle").font(HandyFont.caption).foregroundStyle(HandyColor.amber)
                 }
             }
             Spacer(minLength: 0)
             Menu {
-                Button("Edit") { editHint = nil; editing = c }
-                Button("Rename") { newName = c.name; renaming = c }
+                Button(L("Edit")) { editHint = nil; editing = c }
+                Button(L("Rename")) { newName = c.name; renaming = c }
                 if mine.first?.id != c.id {
-                    Button("Move to top") { mine.removeAll { $0.id == c.id }; mine.insert(c, at: 0); persist(); note = "\(c.name) is now first, here and on the My Tools widget." }
+                    Button(L("Move to top")) { mine.removeAll { $0.id == c.id }; mine.insert(c, at: 0); persist(); note = "\(c.name) is now first, here and on the My Tools widget." }
                 }
-                Button("Put on Home Screen") {
+                Button(L("Put on Home Screen")) {
                     note = "Add the My Tools widget: touch and hold the Home Screen, tap Edit, then Add Widget, choose Tenzy, then My Tools. Your first tools appear on it, one tap each. Use Move to top to choose which."
                 }
-                Button("Duplicate") {
+                Button(L("Duplicate")) {
                     guard BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) else { proForSave(); return }
                     var k = c; k.id = UUID().uuidString; k.name += " copy"; k.schedule = nil
                     mine.append(k); persist(); note = "Duplicated as \(k.name)."
                 }
-                Button("Copy to share") { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
-                if ToolLink.live { Button("Share as a link or QR code") { linking = c } }
-                Button("Delete", role: .destructive) { mine.removeAll { $0.id == c.id }; persist() }
+                Button(L("Copy to share")) { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
+                if ToolLink.live { Button(L("Share as a link or QR code")) { linking = c } }
+                Button(L("Delete"), role: .destructive) { mine.removeAll { $0.id == c.id }; persist() }
             } label: { Image(systemName: "ellipsis.circle").accessibilityLabel("More").font(.system(size: 20)).frame(width: 44, height: 44) }
             // A compact button with room around its word, so it never looks squeezed beside a long name.
             Button { running = c } label: {
-                Text("Run").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+                Text(L("Run")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
                     .padding(.horizontal, HandySpacing.s16).frame(minHeight: 44)
                     .background(HandyColor.accentSoft, in: Capsule())
             }.buttonStyle(.plain).fixedSize().accessibilityLabel("Run \(c.name)")
@@ -731,7 +731,7 @@ private struct ChainEditor: View {
                     let k = chain.steps.isEmpty ? (startChoice ?? .image) : startKind
                     node(icon: Self.icon(for: k), title: "You give it \(k.label)", sub: chain.steps.isEmpty ? "Now add a first step. You only see steps that work with \(k.label)." : "Preview uses a sample so you can see each step work.")
                     if chain.steps.isEmpty {
-                        Button("Start with something else") { startChoice = nil }.font(HandyFont.caption).padding(.top, HandySpacing.s8)
+                        Button(L("Start with something else")) { startChoice = nil }.font(HandyFont.caption).padding(.top, HandySpacing.s8)
                     }
                 }
                 ForEach(Array(chain.steps.enumerated()), id: \.offset) { i, s in
@@ -742,7 +742,7 @@ private struct ChainEditor: View {
                     connector
                     addMenu
                     if !store.isPremium {
-                        Text("Free tools use the basic steps. The ones marked Pro unlock with Tenzy Pro — tap one to see what you get.")
+                        Text(L("Free tools use the basic steps. The ones marked Pro unlock with Tenzy Pro — tap one to see what you get."))
                             .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s8)
                     }
                     if let first = missing.first, let why = first.unavailable {
@@ -764,8 +764,8 @@ private struct ChainEditor: View {
         .background(Ground())
         .navigationTitle("Build a tool").navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-            ToolbarItem(placement: .confirmationAction) { Button("Save") { if !store.isPremium && chain.needsPro { showPro = true } else { var c = chain; c.name = ChainText.savedName(c); onSave(c) } }.disabled(!valid) }
+            ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { dismiss() } }
+            ToolbarItem(placement: .confirmationAction) { Button(L("Save")) { if !store.isPremium && chain.needsPro { showPro = true } else { var c = chain; c.name = ChainText.savedName(c); onSave(c) } }.disabled(!valid) }
         }
         .task(id: chain.steps) { await refreshPreviews() }
         .sheet(isPresented: $showPro) { PaywallView().environmentObject(StoreManager.shared) }
@@ -804,17 +804,17 @@ private struct ChainEditor: View {
                     .font(HandyFont.caption).autocorrectionDisabled()
                     .padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
                     .accessibilityIdentifier("finish-file-name")
-                Text("Write {date} where today's date should go.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Write {date} where today's date should go.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
-            Text("Then").font(HandyFont.bodyStrong)
+            Text(L("Then")).font(HandyFont.bodyStrong)
             Picker("Then", selection: kind) {
-                Text("Share").tag(ChainFinish.Kind.share)
-                Text("Email").tag(ChainFinish.Kind.mail)
-                Text("Message").tag(ChainFinish.Kind.message)
-                if endKind == .text { Text("Open").tag(ChainFinish.Kind.open) }
+                Text(L("Share")).tag(ChainFinish.Kind.share)
+                Text(L("Email")).tag(ChainFinish.Kind.mail)
+                Text(L("Message")).tag(ChainFinish.Kind.message)
+                if endKind == .text { Text(L("Open")).tag(ChainFinish.Kind.open) }
             }.pickerStyle(.segmented).accessibilityIdentifier("finish-kind")
             if kind.wrappedValue == .open {
-                Text("When the tool finishes, the link it made opens.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("When the tool finishes, the link it made opens.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             if kind.wrappedValue == .mail || kind.wrappedValue == .message {
                 TextField(kind.wrappedValue == .mail ? "Email address (optional)" : "Phone number (optional)", text: to)
@@ -873,7 +873,7 @@ private struct ChainEditor: View {
     /// First question of a new tool: what do you have? Everything offered after this fits the answer.
     private var startPicker: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Text("What do you start with?").font(HandyFont.cardTitle)
+            Text(L("What do you start with?")).font(HandyFont.cardTitle)
             HStack(spacing: HandySpacing.s12) {
                 startButton(.image, "A photo", "photo")
                 startButton(.text, "Text, link or file", "text.alignleft")
@@ -883,7 +883,7 @@ private struct ChainEditor: View {
                 startButton(.audio, "A recording", "waveform")
                 startButton(.pdf, "A PDF", "doc.richtext")
             }
-            Text("“Text, link or file” also reads a file for its words — a CSV, a contact card (.vcf), a calendar file (.ics), .txt, .json or a web page. Photos and scans start with “A photo”; documents with “A PDF”; a recording writes out what was said. Tenzy handles each file as what it really is.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("“Text, link or file” also reads a file for its words — a CSV, a contact card (.vcf), a calendar file (.ics), .txt, .json or a web page. Photos and scans start with “A photo”; documents with “A PDF”; a recording writes out what was said. Tenzy handles each file as what it really is.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
     private func startButton(_ kind: ChainKind, _ title: String, _ icon: String) -> some View {
@@ -911,9 +911,9 @@ private struct ChainEditor: View {
                 }
                 Spacer(minLength: 0)
                 Menu {
-                    if i > 0 { Button { chain.steps.swapAt(i, i - 1) } label: { Label("Move up", systemImage: "arrow.up") } }
-                    if i < chain.steps.count - 1 { Button { chain.steps.swapAt(i, i + 1) } label: { Label("Move down", systemImage: "arrow.down") } }
-                    Button(role: .destructive) { chain.steps.remove(at: i) } label: { Label("Remove step", systemImage: "trash") }
+                    if i > 0 { Button { chain.steps.swapAt(i, i - 1) } label: { Label(L("Move up"), systemImage: "arrow.up") } }
+                    if i < chain.steps.count - 1 { Button { chain.steps.swapAt(i, i + 1) } label: { Label(L("Move down"), systemImage: "arrow.down") } }
+                    Button(role: .destructive) { chain.steps.remove(at: i) } label: { Label(L("Remove step"), systemImage: "trash") }
                 } label: { Image(systemName: "ellipsis").accessibilityLabel("More").frame(width: 44, height: 44) }
             }
             settings(i)
@@ -924,7 +924,7 @@ private struct ChainEditor: View {
     @ViewBuilder private func previewView(_ p: StepPreview?) -> some View {
         Group {
             switch p {
-            case .none: HStack { ProgressView().controlSize(.small); Text("Trying it on a sample…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            case .none: HStack { ProgressView().controlSize(.small); Text(L("Trying it on a sample…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             case .text(let t): Text(t).font(.system(.caption, design: .monospaced)).lineLimit(6).frame(maxWidth: .infinity, alignment: .leading)
             case .image(let i): Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 120).clipShape(RoundedRectangle(cornerRadius: 8))
             case .file(let d): Label(d, systemImage: "doc.fill").font(HandyFont.caption)
@@ -1028,39 +1028,39 @@ private struct ChainEditor: View {
             // A short list of limits, down to the 20-50 KB that government and bank upload forms ask for.
             let mb = Double(chain.steps[i].settings["mb"] ?? "2") ?? 2
             Picker("Size limit", selection: Binding(get: { mb }, set: { chain.steps[i].settings["mb"] = String($0) })) {
-                ForEach((ChainImage.limits.contains(mb) ? ChainImage.limits : (ChainImage.limits + [mb]).sorted()), id: \.self) { v in Text("Under " + ChainImage.limitLabel(v)).tag(v) }
+                ForEach((ChainImage.limits.contains(mb) ? ChainImage.limits : (ChainImage.limits + [mb]).sorted()), id: \.self) { v in Text(L("Under ") + ChainImage.limitLabel(v)).tag(v) }
             }.pickerStyle(.menu).font(HandyFont.caption)
         case .chatLink:
             HStack {
-                Text("Country code  +").font(HandyFont.caption)
+                Text(L("Country code  +")).font(HandyFont.caption)
                 TextField("1", text: Binding(get: { chain.steps[i].settings["cc"] ?? "1" }, set: { chain.steps[i].settings["cc"] = $0.filter(\.isNumber) }))
                     .keyboardType(.numberPad).font(HandyFont.caption).frame(width: 60)
                     .padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
             }
-            Text("Used when the number is written without one.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Used when the number is written without one.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .addToList:
             TextField("Sheet name", text: Binding(get: { chain.steps[i].settings["list"] ?? RunningList.defaultName }, set: { chain.steps[i].settings["list"] = $0 }))
                 .font(HandyFont.caption).autocorrectionDisabled().padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
-            Text("Write {month} to start a fresh sheet each month. The sample shown here is not saved.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Write {month} to start a fresh sheet each month. The sample shown here is not saved.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .stamp:
             StampEditor(marks: Binding(get: { chain.steps[i].settings["marks"] ?? StampPlan.standard.text }, set: { chain.steps[i].settings["marks"] = $0 }), page: pageBefore(i))
         case .watermark:
             TextField("Words to write across it", text: Binding(get: { chain.steps[i].settings["text"] ?? "" }, set: { chain.steps[i].settings["text"] = $0 }))
                 .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
-            Text("Today's date is added each time it runs.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Today's date is added each time it runs.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .resizePhoto:
             Picker("Size", selection: Binding(get: { chain.steps[i].settings["size"] ?? "413x531" }, set: { chain.steps[i].settings["size"] = $0 })) {
                 ForEach(ChainImage.sizes, id: \.value) { s in Text(s.label).tag(s.value) }
             }.pickerStyle(.menu).font(HandyFont.caption)
         case .cleanText:
             Picker("Keep as", selection: Binding(get: { chain.steps[i].settings["shape"] ?? "lines" }, set: { chain.steps[i].settings["shape"] = $0 })) {
-                Text("Keep lines").tag("lines"); Text("One paragraph").tag("paragraph")
+                Text(L("Keep lines")).tag("lines"); Text(L("One paragraph")).tag("paragraph")
             }.pickerStyle(.segmented)
         case .summarize:
             let n = Int(chain.steps[i].settings["sentences"] ?? "3") ?? 3
             Stepper("\(n) sentences", value: Binding(get: { n }, set: { chain.steps[i].settings["sentences"] = String($0) }), in: 1...8).font(HandyFont.caption)
             Picker("As", selection: Binding(get: { chain.steps[i].settings["format"] ?? "paragraph" }, set: { chain.steps[i].settings["format"] = $0 })) {
-                Text("Paragraph").tag("paragraph"); Text("Bullets").tag("bullets")
+                Text(L("Paragraph")).tag("paragraph"); Text(L("Bullets")).tag("bullets")
             }.pickerStyle(.segmented)
         case .videoShrink:
             Picker("Size limit", selection: Binding(get: { ChainText.videoLimit(chain.steps[i].settings["mb"]) }, set: { chain.steps[i].settings["mb"] = String($0) })) {
@@ -1072,7 +1072,7 @@ private struct ChainEditor: View {
             }.pickerStyle(.segmented)
         case .videoTrim:
             Picker("Which part", selection: Binding(get: { chain.steps[i].settings["side"] == "last" ? "last" : "first" }, set: { chain.steps[i].settings["side"] = $0 })) {
-                Text("The start").tag("first"); Text("The end").tag("last")
+                Text(L("The start")).tag("first"); Text(L("The end")).tag("last")
             }.pickerStyle(.segmented)
             let secs = Int(chain.steps[i].settings["secs"] ?? "") ?? 30
             Picker("How long", selection: Binding(get: { secs }, set: { chain.steps[i].settings["secs"] = String($0) })) {
@@ -1080,19 +1080,19 @@ private struct ChainEditor: View {
             }.pickerStyle(.segmented)
         case .videoRotate:
             Picker("Turn", selection: Binding(get: { chain.steps[i].settings["turn"] ?? "right" }, set: { chain.steps[i].settings["turn"] = $0 })) {
-                Text("Right").tag("right"); Text("Left").tag("left"); Text("Upside down").tag("flip")
+                Text(L("Right")).tag("right"); Text(L("Left")).tag("left"); Text(L("Upside down")).tag("flip")
             }.pickerStyle(.segmented)
         case .translate:
             Picker("Into", selection: Binding(get: { ChainText.languageCode(chain.steps[i].settings["to"]) }, set: { chain.steps[i].settings["to"] = $0 })) {
                 ForEach(ChainText.languages, id: \.code) { Text($0.name).tag($0.code) }
             }.pickerStyle(.menu).font(HandyFont.caption)
-            Text("The first time you use a language, the phone may ask to download it.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("The first time you use a language, the phone may ask to download it.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .speechText:
             let langs: [(code: String, name: String)] = [(code: "auto", name: "Auto (phone language)")] + ChainText.languages.map { (code: $0.code, name: $0.name) }
             Picker("Spoken language", selection: Binding(get: { chain.steps[i].settings["lang"] ?? "auto" }, set: { chain.steps[i].settings["lang"] = $0 })) {
                 ForEach(langs, id: \.code) { Text($0.name).tag($0.code) }
             }.pickerStyle(.menu).font(HandyFont.caption)
-            Text("Set this to the language spoken in the recording. The first time, the phone may ask to download it.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Set this to the language spoken in the recording. The first time, the phone may ask to download it.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .rewrite:
             Picker("Make it", selection: Binding(get: { ChainText.rewriteStyle(chain.steps[i].settings["style"]) }, set: { chain.steps[i].settings["style"] = $0 })) {
                 ForEach(ChainText.rewriteStyles, id: \.id) { Text($0.name).tag($0.id) }
@@ -1106,7 +1106,7 @@ private struct ChainEditor: View {
             SecureField("Password", text: Binding(get: { chain.steps[i].settings["password"] ?? "" }, set: { chain.steps[i].settings["password"] = $0 }))
                 .textInputAutocapitalization(.never).autocorrectionDisabled()
                 .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
-            Text("Kept on this phone with the tool. It is left out when you copy the tool to share.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Kept on this phone with the tool. It is left out when you copy the tool to share.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .pdfPages:
             TextField("Pages, e.g. 1-3, 5 (empty keeps all)", text: Binding(get: { chain.steps[i].settings["pages"] ?? "" }, set: { chain.steps[i].settings["pages"] = $0 }))
                 .keyboardType(.numbersAndPunctuation).autocorrectionDisabled()
@@ -1120,7 +1120,7 @@ private struct ChainEditor: View {
                 .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8)).accessibilityIdentifier("meme-top")
             TextField("Bottom line", text: Binding(get: { chain.steps[i].settings["bottom"] ?? "" }, set: { chain.steps[i].settings["bottom"] = $0 }))
                 .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8)).accessibilityIdentifier("meme-bottom")
-            Text("Leave them empty to type new words every time you run the tool.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Leave them empty to type new words every time you run the tool.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .videoSpeed:
             Picker("Speed", selection: Binding(get: { ChainText.speeds.first { $0.id == chain.steps[i].settings["speed"] }?.id ?? "slow" }, set: { chain.steps[i].settings["speed"] = $0 })) {
                 ForEach(ChainText.speeds, id: \.id) { Text($0.name).tag($0.id) }
@@ -1135,7 +1135,7 @@ private struct ChainEditor: View {
             }.pickerStyle(.segmented)
         case .videoLoop:
             Picker("Plays", selection: Binding(get: { chain.steps[i].settings["style"] == "reverse" ? "reverse" : "boomerang" }, set: { chain.steps[i].settings["style"] = $0 })) {
-                Text("Forwards and back").tag("boomerang"); Text("Backwards").tag("reverse")
+                Text(L("Forwards and back")).tag("boomerang"); Text(L("Backwards")).tag("reverse")
             }.pickerStyle(.segmented)
         case .convertImage:
             Picker("Format", selection: Binding(get: { chain.steps[i].settings["format"] ?? "JPG" }, set: { chain.steps[i].settings["format"] = $0 })) {
@@ -1143,18 +1143,18 @@ private struct ChainEditor: View {
             }.pickerStyle(.segmented)
         case .photoPdf:
             Picker("Page size", selection: Binding(get: { chain.steps[i].settings["pagesize"] ?? "auto" }, set: { chain.steps[i].settings["pagesize"] = $0 })) {
-                Text("Fit the photo").tag("auto"); Text("A4").tag("a4"); Text("US Letter").tag("letter")
+                Text(L("Fit the photo")).tag("auto"); Text(L("A4")).tag("a4"); Text(L("US Letter")).tag("letter")
             }.pickerStyle(.segmented)
             Toggle("Searchable text (find & copy)", isOn: Binding(get: { chain.steps[i].settings["searchable"] != "false" }, set: { chain.steps[i].settings["searchable"] = $0 ? "true" : "false" })).font(HandyFont.caption)
         case .readAloud:
             Picker("Speed", selection: Binding(get: { chain.steps[i].settings["speed"] ?? "normal" }, set: { chain.steps[i].settings["speed"] = $0 })) {
-                Text("Slow").tag("slow"); Text("Normal").tag("normal"); Text("Fast").tag("fast")
+                Text(L("Slow")).tag("slow"); Text(L("Normal")).tag("normal"); Text(L("Fast")).tag("fast")
             }.pickerStyle(.segmented)
         case .makeQr:
             Picker("Sturdiness", selection: Binding(get: { chain.steps[i].settings["sturdiness"] ?? "normal" }, set: { chain.steps[i].settings["sturdiness"] = $0 })) {
-                Text("Normal").tag("normal"); Text("High").tag("high")
+                Text(L("Normal")).tag("normal"); Text(L("High")).tag("high")
             }.pickerStyle(.segmented)
-            Text("High survives scuffs and a logo in the middle.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("High survives scuffs and a logo in the middle.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .passportPhoto:
             Picker("Country", selection: Binding(get: { chain.steps[i].settings["country"] ?? "us" }, set: { chain.steps[i].settings["country"] = $0 })) {
                 ForEach(ImageStudio.passportSpecs) { Text($0.name).tag($0.id) }
@@ -1263,7 +1263,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 Text(chain.name).font(HandyFont.title)
                 VStack(spacing: HandySpacing.s12) {
                     ZStack { Circle().fill(HandyColor.accentSoft).frame(width: 72, height: 72); Image(systemName: "lock.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent) }
-                    Text("A Pro tool").font(.system(size: 22, weight: .bold))
+                    Text(L("A Pro tool")).font(.system(size: 22, weight: .bold))
                     Text("This tool uses \(chain.proSteps.count == 1 ? "a Pro step" : "Pro steps") (\(chain.proSteps.map(\.title).joined(separator: ", "))). Go Pro to run it — plus every Pro step, all \(TOOLS.count) tools, and no ads.")
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                     Button { showPro = true } label: { Label(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro — \(store.yearlyPrice)/year", systemImage: "crown.fill").frame(maxWidth: .infinity) }.primaryButton()
@@ -1271,7 +1271,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }.padding(HandySpacing.gutter)
         }
         .background(Ground())
-        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
         .sheet(isPresented: $showPro) { PaywallView().environmentObject(StoreManager.shared) }
     }
 
@@ -1303,18 +1303,18 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 } else if start == .pdf {
                     pdfInputs
                 } else if start == .video {
-                    PhotosPicker(selection: $videoPick, matching: .videos) { Label("Choose a video", systemImage: "film").frame(maxWidth: .infinity) }
+                    PhotosPicker(selection: $videoPick, matching: .videos) { Label(L("Choose a video"), systemImage: "film").frame(maxWidth: .infinity) }
                         .primaryButton().accessibilityIdentifier("run-video")
-                    PhotosPicker(selection: $livePick, matching: .livePhotos) { Label("Choose a Live Photo", systemImage: "livephoto").frame(maxWidth: .infinity) }
+                    PhotosPicker(selection: $livePick, matching: .livePhotos) { Label(L("Choose a Live Photo"), systemImage: "livephoto").frame(maxWidth: .infinity) }
                         .secondaryButton().accessibilityIdentifier("run-live-photo")
-                    Text("Long videos take a little while. Keep Tenzy open until it finishes. A Live Photo is used as its short video.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Long videos take a little while. Keep Tenzy open until it finishes. A Live Photo is used as its short video.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else if start != .text {
-                    PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label("Choose photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
+                    PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label(L("Choose photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
                     if VNDocumentCameraViewController.isSupported {
-                        Button { scanning = true } label: { Label("Scan a document", systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
+                        Button { scanning = true } label: { Label(L("Scan a document"), systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
                             .secondaryButton().accessibilityIdentifier("run-scan")
                     }
-                    Button { pickingPDF = true } label: { Label("Choose a PDF", systemImage: "doc.richtext").frame(maxWidth: .infinity) }
+                    Button { pickingPDF = true } label: { Label(L("Choose a PDF"), systemImage: "doc.richtext").frame(maxWidth: .infinity) }
                         .secondaryButton().accessibilityIdentifier("run-pdf")
                     Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : chain.versus == true ? "Pick two photos: the before, then the after." : "Pick one, or up to 20 at once. Each one gets the same steps.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -1343,7 +1343,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     if text.count > 400 {
                         Text("\(text.count) characters — scroll inside the box to read it all.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     }
-                    Button("Run") { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    Button(L("Run")) { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
                 if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? "Working…" : progress) }
                 if let report { stepLog(report) }
@@ -1354,7 +1354,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }.padding(HandySpacing.gutter)
         }
         .background(Ground())
-        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
         .sheet(isPresented: $sending) {
             if let f = chain.finish, let box = outbox { SendSheet(finish: f, subject: chain.name, box: box).ignoresSafeArea() }
         }
@@ -1456,7 +1456,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @ViewBuilder private var audioInputs: some View {
             Button { toggleRecording() } label: { Label(recorder.running ? "Stop and run" : "Record", systemImage: recorder.running ? "stop.circle.fill" : "mic").frame(maxWidth: .infinity) }
                 .primaryButton().accessibilityIdentifier("run-record")
-            Button { pickingPDF = true } label: { Label("Choose a recording", systemImage: "waveform").frame(maxWidth: .infinity) }
+            Button { pickingPDF = true } label: { Label(L("Choose a recording"), systemImage: "waveform").frame(maxWidth: .infinity) }
                 .secondaryButton().disabled(recorder.running).accessibilityIdentifier("run-audio")
             Text(recorder.running ? "Recording… tap Stop when you're done." : "Record now, or pick a voice memo or any sound file. It never leaves this phone.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
     }
@@ -1610,8 +1610,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let plans = chain.steps.filter { $0.block == .stamp }.map { StampPlan($0.settings["marks"] ?? StampPlan.standard.text) }
         if plans.contains(where: { $0.has(.signature) }), !hasSignature {
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                Text("This tool signs for you. Draw your signature once; it stays on this phone.").font(HandyFont.caption)
-                Button { signing = true } label: { Label("Draw my signature", systemImage: "signature").frame(maxWidth: .infinity) }
+                Text(L("This tool signs for you. Draw your signature once; it stays on this phone.")).font(HandyFont.caption)
+                Button { signing = true } label: { Label(L("Draw my signature"), systemImage: "signature").frame(maxWidth: .infinity) }
                     .secondaryButton().accessibilityIdentifier("run-draw-signature")
             }.cardStyle(padding: HandySpacing.s12)
         }
@@ -1716,10 +1716,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)
                 .modifier(QRPeekIfCode(enabled: isQRResult, image: i))
             if isQRResult {
-                Text("Press and hold the code to see what's inside it, without opening it.")
+                Text(L("Press and hold the code to see what's inside it, without opening it."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
-            ShareLink(item: Image(uiImage: i), preview: SharePreview("Result")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: Image(uiImage: i), preview: SharePreview("Result")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .file(let d, let ext):
             // Always show the result before Save or share — a photo, or a PDF's first page — so the person
             // can check it (faces covered, the right pages) and never shares something they haven't seen.
@@ -1741,12 +1741,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             if let u = tempURL(d, ext) {
                 Text("\(SizeTarget.format(d.count)) · \(ext.uppercased())").font(HandyFont.caption)
-                ShareLink(item: u) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                ShareLink(item: u) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             }
         case .video(let u):
-            Label("Your video is ready" + (SizeTarget.fileSize(u).map { " · " + SizeTarget.format($0) } ?? ""), systemImage: "film").font(HandyFont.bodyStrong)
+            Label(L("Your video is ready") + (SizeTarget.fileSize(u).map { " · " + SizeTarget.format($0) } ?? ""), systemImage: "film").font(HandyFont.bodyStrong)
             VideoResultPreview(url: u)   // watch it before saving, like photos and PDFs
-            ShareLink(item: u) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: u) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         }
     }
 
@@ -1803,7 +1803,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                         Text("\(line.block.title) — \(line.block.does)").font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
                         switch line.mark {
                         case .ran: EmptyView()
-                        case .skipped: Text("Found nothing here, so it was skipped — the next steps still ran.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        case .skipped: Text(L("Found nothing here, so it was skipped — the next steps still ran.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                         case .stopped(let f): Text(ChainRunView.words(f)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                         }
                     }
@@ -1857,7 +1857,7 @@ private struct ToolPickView: View {
                 if tools.isEmpty {
                     Text("No tool takes this yet. Close this, tap Blank, and build one that starts with \(given.payload.kind.label).").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
-                    Text("Pick what to do with it. It runs straight away.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Pick what to do with it. It runs straight away.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 ForEach(tools) { c in
                     NavigationLink { ChainRunView(chain: c, initial: given.payload) } label: {
@@ -1876,14 +1876,14 @@ private struct ToolPickView: View {
         }
         .background(Ground())
         .navigationTitle("What to do with it").navigationBarTitleDisplayMode(.inline)
-        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
+        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Close")) { dismiss() } } }
     }
 }
 
 /// A small "PRO" badge for a premium step a free user can see but not use yet.
 struct ProTag: View {
     var body: some View {
-        Text("PRO").font(.system(size: 10, weight: .heavy)).foregroundStyle(HandyColor.onAccent)
+        Text(L("PRO")).font(.system(size: 10, weight: .heavy)).foregroundStyle(HandyColor.onAccent)
             .padding(.horizontal, 6).padding(.vertical, 2)
             .background(HandyColor.accent, in: Capsule())
             .accessibilityLabel("Pro step")

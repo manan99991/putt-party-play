@@ -71,7 +71,7 @@ struct LimitReachedBanner: View {
                 Image(systemName: "crown.fill").foregroundStyle(HandyColor.accent)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary).multilineTextAlignment(.leading)
-                    Text("Tap to go Pro — unlimited").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+                    Text(L("Tap to go Pro — unlimited")).font(HandyFont.caption).foregroundStyle(HandyColor.accent)
                 }
                 Spacer()
                 Image(systemName: "chevron.right").font(.system(size: 12)).foregroundStyle(HandyColor.textSecondary)

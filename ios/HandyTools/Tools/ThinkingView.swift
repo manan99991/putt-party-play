@@ -135,8 +135,8 @@ struct ThinkingToolView: View {
                         .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(focused ? HandyColor.accent : HandyColor.border, lineWidth: 1))
                         .overlay(alignment: .topLeading) { if input.isEmpty { Text(tool.placeholder).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
                     HStack {
-                        Button("Paste") { if let s = UIPasteboard.general.string { input = s } }.compactButton()
-                        if !input.isEmpty { Button("Clear") { input = ""; reset() }.textButton() }
+                        Button(L("Paste")) { if let s = UIPasteboard.general.string { input = s } }.compactButton()
+                        if !input.isEmpty { Button(L("Clear")) { input = ""; reset() }.textButton() }
                         Spacer()
                     }
                 }
@@ -171,7 +171,7 @@ struct ThinkingToolView: View {
                 if !output.isEmpty { textResult }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
             .onAppear { if Launch.sample, input.isEmpty { input = tool.sample } }
         }
     }
@@ -184,16 +184,16 @@ struct ThinkingToolView: View {
                     Text(t.text).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).frame(maxWidth: .infinity, alignment: .leading)
                     HandyFlow(spacing: HandySpacing.s8) {
                         if let place = t.actions.place, let u = ThinkingActions.mapsURL(place).flatMap(URL.init) {
-                            Link(destination: u) { Label("Directions", systemImage: "map").font(HandyFont.micro) }.compactButton()
+                            Link(destination: u) { Label(L("Directions"), systemImage: "map").font(HandyFont.micro) }.compactButton()
                         }
                         if let phone = t.actions.phone, let u = ThinkingActions.telURL(phone).flatMap(URL.init) {
-                            Link(destination: u) { Label("Call", systemImage: "phone").font(HandyFont.micro) }.compactButton()
+                            Link(destination: u) { Label(L("Call"), systemImage: "phone").font(HandyFont.micro) }.compactButton()
                         }
                         if let phone = t.actions.phone, let u = ThinkingActions.smsURL(phone).flatMap(URL.init) {
-                            Link(destination: u) { Label("Text", systemImage: "message").font(HandyFont.micro) }.compactButton()
+                            Link(destination: u) { Label(L("Text"), systemImage: "message").font(HandyFont.micro) }.compactButton()
                         }
                         if let email = ThinkingActions.emailIn(t.text), let u = ThinkingActions.mailtoURL(email).flatMap(URL.init) {
-                            Link(destination: u) { Label("Email", systemImage: "envelope").font(HandyFont.micro) }.compactButton()
+                            Link(destination: u) { Label(L("Email"), systemImage: "envelope").font(HandyFont.micro) }.compactButton()
                         }
                         if let contact = ThinkingContacts.field(for: t) {
                             Button {
@@ -207,17 +207,17 @@ struct ThinkingToolView: View {
                                         errorText = "Couldn't save the contact."
                                     }
                                 }
-                            } label: { Label("Save contact", systemImage: "person.crop.circle.badge.plus").font(HandyFont.micro) }.compactButton()
+                            } label: { Label(L("Save contact"), systemImage: "person.crop.circle.badge.plus").font(HandyFont.micro) }.compactButton()
                         }
-                        if t.due != nil { Label("has a date", systemImage: "calendar").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+                        if t.due != nil { Label(L("has a date"), systemImage: "calendar").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
                     }
                 }.padding(.vertical, 2)
                 if t.text != tasks.last?.text { Divider() }
             }
             if !note.isEmpty { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             HStack(spacing: HandySpacing.s8) {
-                Button { Copier.copy(plainList); ClipStore.add(plainList) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
-                ShareLink(item: plainList) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { Copier.copy(plainList); ClipStore.add(plainList) } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                ShareLink(item: plainList) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
             if !tasks.isEmpty {
                 Button {
@@ -232,11 +232,11 @@ struct ThinkingToolView: View {
                             errorText = "Couldn't add to Reminders — your dates are still here to add to Calendar."
                         }
                     }
-                } label: { Label("Add to Reminders", systemImage: "checklist").frame(maxWidth: .infinity) }.secondaryButton()
+                } label: { Label(L("Add to Reminders"), systemImage: "checklist").frame(maxWidth: .infinity) }.secondaryButton()
             }
             if let calendarICS {
-                ShareLink(item: calendarICS) { Label("Add dates to Calendar", systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.secondaryButton()
-                Text("First time, your phone asks once; after that it's a silent one-tap.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                ShareLink(item: calendarICS) { Label(L("Add dates to Calendar"), systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.secondaryButton()
+                Text(L("First time, your phone asks once; after that it's a silent one-tap.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
         }.cardStyle()
     }
@@ -246,8 +246,8 @@ struct ThinkingToolView: View {
             Text(output).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
             if !note.isEmpty { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             HStack(spacing: HandySpacing.s8) {
-                Button { Copier.copy(output); ClipStore.add(output) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
-                ShareLink(item: output) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { Copier.copy(output); ClipStore.add(output) } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                ShareLink(item: output) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
         }.cardStyle()
     }

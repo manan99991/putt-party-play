@@ -26,8 +26,8 @@ struct WarrantyView: View {
             ])
 
             HStack(spacing: HandySpacing.s8) {
-                Button { showCamera = true } label: { Label("Photograph", systemImage: "camera.fill").frame(maxWidth: .infinity) }.primaryButton()
-                PhotosPicker(selection: $pickerItem, matching: .images) { Label("From Photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { showCamera = true } label: { Label(L("Photograph"), systemImage: "camera.fill").frame(maxWidth: .infinity) }.primaryButton()
+                PhotosPicker(selection: $pickerItem, matching: .images) { Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
             }
             if busy { ToolProgressBar(label: "Reading the receipt…") }
 
@@ -79,8 +79,8 @@ struct WarrantyView: View {
 
     private var emptyState: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Label("Nothing filed yet", systemImage: "shippingbox").font(HandyFont.bodyStrong)
-            Text("Add the receipt for anything with a warranty — a TV, a drill, an appliance. When it breaks in month 11, you'll have the proof in two taps instead of tearing the house apart.")
+            Label(L("Nothing filed yet"), systemImage: "shippingbox").font(HandyFont.bodyStrong)
+            Text(L("Add the receipt for anything with a warranty — a TV, a drill, an appliance. When it breaks in month 11, you'll have the proof in two taps instead of tearing the house apart."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle(padding: HandySpacing.s12)
     }
@@ -160,18 +160,18 @@ private struct DraftSheet: View {
                         .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     field("Store", text: $storeName)
                     field("Total", text: $total)
-                    Text("Warranty").font(HandyFont.bodyStrong)
+                    Text(L("Warranty")).font(HandyFont.bodyStrong)
                     HandyFlow(spacing: HandySpacing.s8) {
                         ForEach(options, id: \.0) { o in HChip(text: o.0, selected: months == o.1) { months = o.1 } }
                     }
-                    if months != nil { Text("We'll remind you a week before it ends.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                    if months != nil { Text(L("We'll remind you a week before it ends.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 }.padding(HandySpacing.gutter)
             }
             .navigationTitle("Save receipt").navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
+                    Button(L("Save")) {
                         var scan = draft.scan
                         scan = ReceiptScan.Result(store: storeName.isEmpty ? scan.store : storeName, date: scan.date,
                                                   total: total, items: scan.items, rawText: scan.rawText)
@@ -215,22 +215,22 @@ private struct ReceiptDetail: View {
                         row("Warranty", days < 0 ? "Ended \(end.formatted(date: .abbreviated, time: .omitted))" : "Until \(end.formatted(date: .abbreviated, time: .omitted)) · \(days) days left")
                     }
                     if !receipt.items.isEmpty {
-                        Text("Items").font(HandyFont.bodyStrong)
+                        Text(L("Items")).font(HandyFont.bodyStrong)
                         ForEach(receipt.items, id: \.self) { Text("• \($0)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                     }
                     if let img = store.image(receipt) {
                         ShareLink(item: Image(uiImage: img), preview: SharePreview(receipt.store, image: Image(uiImage: img))) {
-                            Label("Share receipt", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                            Label(L("Share receipt"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
                         }.secondaryButton()
                     }
-                    Button(role: .destructive) { confirmDelete = true } label: { Label("Delete", systemImage: "trash").frame(maxWidth: .infinity) }.secondaryButton()
+                    Button(role: .destructive) { confirmDelete = true } label: { Label(L("Delete"), systemImage: "trash").frame(maxWidth: .infinity) }.secondaryButton()
                 }.padding(HandySpacing.gutter)
             }
             .navigationTitle(receipt.store).navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
             .confirmationDialog("Delete this receipt? This can't be undone.", isPresented: $confirmDelete, titleVisibility: .visible) {
-                Button("Delete receipt", role: .destructive) { store.delete(receipt); dismiss() }
-                Button("Keep", role: .cancel) {}
+                Button(L("Delete receipt"), role: .destructive) { store.delete(receipt); dismiss() }
+                Button(L("Keep"), role: .cancel) {}
             }
         }
     }

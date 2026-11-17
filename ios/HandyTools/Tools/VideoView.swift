@@ -65,11 +65,11 @@ struct VideoView: View {
             ])
             if source == nil {
                 PhotosPicker(selection: $pickedItem, matching: .videos) {
-                    Label("Choose a video", systemImage: "film").frame(maxWidth: .infinity)
+                    Label(L("Choose a video"), systemImage: "film").frame(maxWidth: .infinity)
                 }.secondaryButton()
-                Text("Or make a GIF from photos:").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Or make a GIF from photos:")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 PhotosPicker(selection: $gifPhotoItems, maxSelectionCount: 30, matching: .images) {
-                    Label("Choose photos for a GIF", systemImage: "photo.stack").frame(maxWidth: .infinity)
+                    Label(L("Choose photos for a GIF"), systemImage: "photo.stack").frame(maxWidth: .infinity)
                 }.secondaryButton()
                 if !gifPhotos.isEmpty { photoGIFControls }
             }
@@ -96,7 +96,7 @@ struct VideoView: View {
                     ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: "Keep Tenzy open while this finishes.")
                 }
 
-                PhotosPicker(selection: $pickedItem, matching: .videos) { Label("Choose a different video", systemImage: "film") }.textButton()
+                PhotosPicker(selection: $pickedItem, matching: .videos) { Label(L("Choose a different video"), systemImage: "film") }.textButton()
             }
 
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -119,7 +119,7 @@ struct VideoView: View {
             if let thumb { Image(uiImage: thumb).resizable().scaledToFill().frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous)) }
             else { RoundedRectangle(cornerRadius: 10, style: .continuous).fill(HandyColor.surface).frame(width: 64, height: 64).overlay(Image(systemName: "film").foregroundStyle(HandyColor.textSecondary)) }
             VStack(alignment: .leading, spacing: 2) {
-                Text("Your video").font(HandyFont.bodyStrong)
+                Text(L("Your video")).font(HandyFont.bodyStrong)
                 Text("\(Self.clock(duration)) · \(SizeTarget.format(sourceBytes))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             Spacer()
@@ -137,7 +137,7 @@ struct VideoView: View {
 
     private var shrinkControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text("Must be under").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Must be under")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(videoPresets, id: \.bytes) { p in
                     HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = ""; errorText = nil }
@@ -149,7 +149,7 @@ struct VideoView: View {
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .onChange(of: customValue) { _, _ in applyCustom() }
-                Picker("Unit", selection: $customUnitMB) { Text("MB").tag(true); Text("KB").tag(false) }.pickerStyle(.segmented).frame(width: 120)
+                Picker("Unit", selection: $customUnitMB) { Text(L("MB")).tag(true); Text(L("KB")).tag(false) }.pickerStyle(.segmented).frame(width: 120)
                     .onChange(of: customUnitMB) { _, _ in applyCustom() }
             }
             if duration > 0 {
@@ -167,8 +167,8 @@ struct VideoView: View {
                 trimFrame(startThumb, label: "Start \(Self.clock(trimStart))")
                 trimFrame(endThumb, label: "End \(Self.clock(trimEnd))")
             }
-            HStack { Text("Start").font(HandyFont.caption).frame(width: 40, alignment: .leading); Slider(value: $trimStart, in: 0...max(0.5, duration)).tint(HandyColor.accent) }
-            HStack { Text("End").font(HandyFont.caption).frame(width: 40, alignment: .leading); Slider(value: $trimEnd, in: 0...max(0.5, duration)).tint(HandyColor.accent) }
+            HStack { Text(L("Start")).font(HandyFont.caption).frame(width: 40, alignment: .leading); Slider(value: $trimStart, in: 0...max(0.5, duration)).tint(HandyColor.accent) }
+            HStack { Text(L("End")).font(HandyFont.caption).frame(width: 40, alignment: .leading); Slider(value: $trimEnd, in: 0...max(0.5, duration)).tint(HandyColor.accent) }
             Text("Keeps \(Self.clock(max(0, trimEnd - trimStart))). Original quality — no re-encode when the clip allows it.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
@@ -196,7 +196,7 @@ struct VideoView: View {
             HStack(spacing: HandySpacing.s8) {
                 ForEach([8.0, 10.0, 15.0], id: \.self) { f in HChip(text: "\(Int(f)) fps", selected: gifFPS == f) { gifFPS = f } }
             }
-            Text("Up to 72 frames. Smaller + fewer fps = a GIF that actually sends in chat.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Up to 72 frames. Smaller + fewer fps = a GIF that actually sends in chat.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -253,9 +253,9 @@ struct VideoView: View {
             } else if r.kind == .gif, let img = UIImage(contentsOfFile: r.url.path) {
                 Image(uiImage: img).resizable().scaledToFit().frame(maxHeight: 200).frame(maxWidth: .infinity)
             }
-            ShareLink(item: r.url) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: r.url) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             if r.kind == .video {
-                Button { adopt(r) } label: { Label("Use this as the source (e.g. trim, then shrink)", systemImage: "arrow.uturn.down").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { adopt(r) } label: { Label(L("Use this as the source (e.g. trim, then shrink)"), systemImage: "arrow.uturn.down").frame(maxWidth: .infinity) }.secondaryButton()
             }
         }
         .cardStyle(padding: HandySpacing.s16)

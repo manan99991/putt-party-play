@@ -63,7 +63,7 @@ struct LensView: View {
             ])
 
             inputCard
-            if busy { HStack { ProgressView(); Text("Reading the text…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack { ProgressView(); Text(L("Reading the text…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
             if hasText {
                 HandyFlow(spacing: HandySpacing.s8) {
@@ -87,12 +87,12 @@ struct LensView: View {
             TextEditor(text: $text).frame(minHeight: 130).padding(HandySpacing.s8).scrollContentBackground(.hidden)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                .overlay(alignment: .topLeading) { if text.isEmpty { Text("Paste text, or bring it in below…").foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
+                .overlay(alignment: .topLeading) { if text.isEmpty { Text(L("Paste text, or bring it in below…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             HandyFlow(spacing: HandySpacing.s8) {
-                Button("Paste") { if let s = UIPasteboard.general.string { setText(s) } }.compactButton()
-                PhotosPicker(selection: $photoItem, matching: .images) { Label("Photo", systemImage: "camera.viewfinder") }.compactButton()
-                Button { showFiles = true } label: { Label("PDF", systemImage: "doc.fill") }.compactButton()
-                if hasText { Button("Clear") { clearAll() }.textButton() }
+                Button(L("Paste")) { if let s = UIPasteboard.general.string { setText(s) } }.compactButton()
+                PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Photo"), systemImage: "camera.viewfinder") }.compactButton()
+                Button { showFiles = true } label: { Label(L("PDF"), systemImage: "doc.fill") }.compactButton()
+                if hasText { Button(L("Clear")) { clearAll() }.textButton() }
             }
             HStack(spacing: HandySpacing.s8) {
                 TextField("https://… article link", text: $urlText).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
@@ -109,7 +109,7 @@ struct LensView: View {
     private var listenPanel: some View {
         VStack(spacing: HandySpacing.s12) {
             if reader.sentences.isEmpty {
-                Button { reader.load(text); reader.play() } label: { Label("Read it aloud", systemImage: "play.fill").frame(maxWidth: .infinity) }.primaryButton()
+                Button { reader.load(text); reader.play() } label: { Label(L("Read it aloud"), systemImage: "play.fill").frame(maxWidth: .infinity) }.primaryButton()
             } else {
                 ProgressView(value: reader.progress).tint(HandyColor.accent)
                 HStack { Text("\(reader.index + 1) / \(reader.sentences.count)").font(HandyFont.caption).monospacedDigit(); Spacer(); Text("~\(reader.remainingMinutes) min left").font(HandyFont.caption) }.foregroundStyle(HandyColor.textSecondary)
@@ -122,13 +122,13 @@ struct LensView: View {
                 }.foregroundStyle(HandyColor.textPrimary).frame(maxWidth: .infinity)
                 HStack { Image(systemName: "tortoise"); Slider(value: $rate, in: 0.3...0.7).tint(HandyColor.accent).onChange(of: rate) { _, r in reader.rate = Float(r) }; Image(systemName: "hare"); Text(String(format: "%.1f×", rate / Double(AVSpeechUtteranceDefaultSpeechRate))).font(HandyFont.caption).monospacedDigit().frame(width: 40) }.foregroundStyle(HandyColor.textSecondary)
                 HStack(spacing: HandySpacing.s8) {
-                    Button { export() } label: { HStack { if reader.exporting { ProgressView() }; Label("Save as audio", systemImage: "waveform.badge.plus") } }.compactButton().disabled(reader.exporting)
-                    if let exported { ShareLink(item: exported) { Label("Share audio", systemImage: "square.and.arrow.up") }.compactButton() }
+                    Button { export() } label: { HStack { if reader.exporting { ProgressView() }; Label(L("Save as audio"), systemImage: "waveform.badge.plus") } }.compactButton().disabled(reader.exporting)
+                    if let exported { ShareLink(item: exported) { Label(L("Share audio"), systemImage: "square.and.arrow.up") }.compactButton() }
                     Spacer()
                     Button { reader.stop(); reader.sentences = []; exported = nil } label: { Image(systemName: "xmark").accessibilityLabel("Close").frame(width: 36, height: 36) }.compactButton()
                 }
             }
-            Text("Keeps reading with the screen locked. For a more natural voice, add an Enhanced voice in Settings › Accessibility › Spoken Content.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Keeps reading with the screen locked. For a more natural voice, add an Enhanced voice in Settings › Accessibility › Spoken Content.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -152,7 +152,7 @@ struct LensView: View {
             }
             if !flags.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    Text("Worth a second look").font(HandyFont.bodyStrong)
+                    Text(L("Worth a second look")).font(HandyFont.bodyStrong)
                     ForEach(Array(flags.enumerated()), id: \.offset) { _, f in
                         HStack(alignment: .top, spacing: HandySpacing.s8) {
                             Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(HandyColor.accent).frame(width: 20)
@@ -163,7 +163,7 @@ struct LensView: View {
             }
             if !terms.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    Text("Terms in this text").font(HandyFont.bodyStrong)
+                    Text(L("Terms in this text")).font(HandyFont.bodyStrong)
                     ForEach(terms) { t in
                         VStack(alignment: .leading, spacing: 2) {
                             HStack { Text(t.term.capitalized).font(HandyFont.bodyStrong); Text(t.domain).font(HandyFont.micro).foregroundStyle(HandyColor.accent).padding(.horizontal, 6).padding(.vertical, 2).background(HandyColor.accentSoft, in: Capsule()) }
@@ -173,8 +173,8 @@ struct LensView: View {
                 }.cardStyle()
             }
             if !explanation.isEmpty || !flags.isEmpty || !terms.isEmpty {
-                HStack { ShareLink(item: simplifyShare) { Label("Share", systemImage: "square.and.arrow.up") }.textButton(); Spacer() }
-                Text("General information to help you read the document — not legal, medical or financial advice.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                HStack { ShareLink(item: simplifyShare) { Label(L("Share"), systemImage: "square.and.arrow.up") }.textButton(); Spacer() }
+                Text(L("General information to help you read the document — not legal, medical or financial advice.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }
     }
@@ -183,13 +183,13 @@ struct LensView: View {
 
     private var gistPanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Button { makeGist() } label: { Label("Boil it down", systemImage: "list.bullet.rectangle").frame(maxWidth: .infinity) }.primaryButton().disabled(working)
+            Button { makeGist() } label: { Label(L("Boil it down"), systemImage: "list.bullet.rectangle").frame(maxWidth: .infinity) }.primaryButton().disabled(working)
             if !gist.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text(gist).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
                     HStack(spacing: HandySpacing.s8) {
-                        Button { Copier.copy(gist); ClipStore.add(gist) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
-                        ShareLink(item: gist) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                        Button { Copier.copy(gist); ClipStore.add(gist) } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                        ShareLink(item: gist) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                     }
                 }.cardStyle()
             }

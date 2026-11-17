@@ -44,9 +44,9 @@ struct ScrubView: View {
             ])
             if original == nil && videoInURL == nil {
                 PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
-                    Label("Choose a photo or video", systemImage: "photo").frame(maxWidth: .infinity)
+                    Label(L("Choose a photo or video"), systemImage: "photo").frame(maxWidth: .infinity)
                 }.secondaryButton()
-                Text("Blur can be undone. Our blocks can't — the pixels underneath are gone in the copy.")
+                Text(L("Blur can be undone. Our blocks can't — the pixels underneath are gone in the copy."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
 
@@ -57,7 +57,7 @@ struct ScrubView: View {
                 canvas(original)
                 controls
                 PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
-                    Label("Choose a different photo or video", systemImage: "photo.on.rectangle.angled")
+                    Label(L("Choose a different photo or video"), systemImage: "photo.on.rectangle.angled")
                 }.textButton()
             }
 
@@ -65,10 +65,10 @@ struct ScrubView: View {
 
             if let result {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    Label("Clean copy ready — no location, no metadata, redactions permanent.", systemImage: "checkmark.shield.fill")
+                    Label(L("Clean copy ready — no location, no metadata, redactions permanent."), systemImage: "checkmark.shield.fill")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                     ShareLink(item: JPEGFile(data: result), preview: SharePreview("Clean copy")) {
-                        Label("Save or share the clean copy", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                        Label(L("Save or share the clean copy"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
                     }.primaryButton()
                 }
             }
@@ -86,19 +86,19 @@ struct ScrubView: View {
     private var metadataCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             if meta.hasGPS {
-                Label("This photo contains your location", systemImage: "location.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.danger)
+                Label(L("This photo contains your location"), systemImage: "location.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.danger)
                 if let mapImage {
                     Image(uiImage: mapImage).resizable().aspectRatio(contentMode: .fill).frame(height: 110)
                         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 }
             } else {
-                Label("No location data in this photo", systemImage: "location.slash").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
+                Label(L("No location data in this photo"), systemImage: "location.slash").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             }
             HStack(spacing: HandySpacing.s16) {
                 if let d = meta.device { Label(d, systemImage: "camera").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let t = meta.taken { Label(t, systemImage: "calendar").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             }
-            Text("All of this is removed from the clean copy.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("All of this is removed from the clean copy.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .cardStyle(padding: HandySpacing.s12)
     }
@@ -140,12 +140,12 @@ struct ScrubView: View {
 
     private var controls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text("Tap a box to toggle it. Drag on the photo to add your own.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Tap a box to toggle it. Drag on the photo to add your own.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HStack(spacing: HandySpacing.s8) {
                 HChip(text: "Faces (\(faceCount))", selected: boxes.contains { $0.kind == .face && $0.on }) { setAll(.face, on: !boxes.contains { $0.kind == .face && $0.on }) }
                 HChip(text: "Text (\(textCount))", selected: boxes.contains { $0.kind == .text && $0.on }) { setAll(.text, on: !boxes.contains { $0.kind == .text && $0.on }) }
                 if boxes.contains(where: { $0.kind == .manual }) {
-                    Button("Clear drawn") { boxes.removeAll { $0.kind == .manual } }.textButton().font(HandyFont.caption)
+                    Button(L("Clear drawn")) { boxes.removeAll { $0.kind == .manual } }.textButton().font(HandyFont.caption)
                 }
                 Spacer()
             }
@@ -179,16 +179,16 @@ struct ScrubView: View {
 
     @ViewBuilder private func videoPanel(_ url: URL) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Label("Faces and personal text (plates, phone numbers, emails) are found and blacked out automatically across the whole clip, and location/metadata is stripped. Best-effort — check the result before you share.",
+            Label(L("Faces and personal text (plates, phone numbers, emails) are found and blacked out automatically across the whole clip, and location/metadata is stripped. Best-effort — check the result before you share."),
                   systemImage: "video.fill")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             ResultPreview(kind: .videoURL(videoOutURL ?? url))
             if !store.isPremium { QuotaChip(name: "scrub", limit: Limits.freeScrubPerDay).environmentObject(store) }
             if overQuota { LimitReachedBanner(message: "You've scrubbed today's \(Limits.freeScrubPerDay) free files.") }
             if let out = videoOutURL {
-                Label("Clean video ready — faces & personal text hidden, metadata stripped.", systemImage: "checkmark.shield.fill")
+                Label(L("Clean video ready — faces & personal text hidden, metadata stripped."), systemImage: "checkmark.shield.fill")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.success)
-                ShareLink(item: out) { Label("Save or share the clean video", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                ShareLink(item: out) { Label(L("Save or share the clean video"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             } else {
                 Button { scrubVideo(url) } label: {
                     HStack {
@@ -198,7 +198,7 @@ struct ScrubView: View {
                 }.primaryButton().disabled(overQuota || videoWorking)
             }
             PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
-                Label("Choose a different photo or video", systemImage: "photo.on.rectangle.angled")
+                Label(L("Choose a different photo or video"), systemImage: "photo.on.rectangle.angled")
             }.textButton()
         }
     }

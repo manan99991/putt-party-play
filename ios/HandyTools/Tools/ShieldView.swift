@@ -26,19 +26,19 @@ struct ShieldView: View {
                     .frame(minHeight: 140).padding(HandySpacing.s8).scrollContentBackground(.hidden)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                    .overlay(alignment: .topLeading) { if text.isEmpty { Text("Paste the text, email or DM here…").foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
+                    .overlay(alignment: .topLeading) { if text.isEmpty { Text(L("Paste the text, email or DM here…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
                 HStack(spacing: HandySpacing.s8) {
-                    Button("Paste") { if let s = UIPasteboard.general.string { text = s; analyze() } }.compactButton()
-                    PhotosPicker(selection: $photoItem, matching: .images) { Label("Screenshot", systemImage: "photo") }.compactButton()
-                    if !text.isEmpty { Button("Clear") { text = ""; report = nil; aiOpinion = ""; aiVerdict = nil }.textButton() }
+                    Button(L("Paste")) { if let s = UIPasteboard.general.string { text = s; analyze() } }.compactButton()
+                    PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Screenshot"), systemImage: "photo") }.compactButton()
+                    if !text.isEmpty { Button(L("Clear")) { text = ""; report = nil; aiOpinion = ""; aiVerdict = nil }.textButton() }
                     Spacer()
                 }
             }
-            Button { analyze() } label: { HStack { if busy { ProgressView().tint(.white) }; Label("Check it", systemImage: "shield.lefthalf.filled") }.frame(maxWidth: .infinity) }
+            Button { analyze() } label: { HStack { if busy { ProgressView().tint(.white) }; Label(L("Check it"), systemImage: "shield.lefthalf.filled") }.frame(maxWidth: .infinity) }
                 .primaryButton().disabled(text.trimmingCharacters(in: .whitespaces).isEmpty || busy)
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let r = report { reportView(r) }
-            Text("Runs entirely on your phone; the message is never sent anywhere. A clean result isn't a guarantee — when money or codes are involved, verify through an official channel.")
+            Text(L("Runs entirely on your phone; the message is never sent anywhere. A clean result isn't a guarantee — when money or codes are involved, verify through an official channel."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .onAppear { if Launch.sample, text.isEmpty { text = "URGENT: Your account will be suspended within 24 hours. Verify your identity at http://paypal.secure-login.top/verify and pay the fee in Apple gift cards. Do not tell anyone."; analyze() } }
@@ -118,7 +118,7 @@ struct ShieldView: View {
                 }
             }
             if !r.links.isEmpty {
-                Text("Links").font(HandyFont.bodyStrong)
+                Text(L("Links")).font(HandyFont.bodyStrong)
                 ForEach(r.links) { l in
                     VStack(alignment: .leading, spacing: 2) {
                         Text(l.host).font(.system(.body, design: .monospaced)).foregroundStyle(l.issues.isEmpty ? HandyColor.textPrimary : HandyColor.danger)
@@ -127,17 +127,17 @@ struct ShieldView: View {
                 }
             }
             Divider()
-            Text("What to do").font(HandyFont.bodyStrong)
-            ForEach(adviceList(r), id: \.self) { a in HStack(alignment: .top, spacing: 6) { Text("•"); Text(a) }.font(HandyFont.body) }
+            Text(L("What to do")).font(HandyFont.bodyStrong)
+            ForEach(adviceList(r), id: \.self) { a in HStack(alignment: .top, spacing: 6) { Text(L("•")); Text(a) }.font(HandyFont.body) }
             if AIEngine.isAvailable {
                 if aiOpinion.isEmpty {
-                    Button { secondOpinion() } label: { HStack { if aiBusy { ProgressView() }; Label("Second opinion (on-device AI)", systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
+                    Button { secondOpinion() } label: { HStack { if aiBusy { ProgressView() }; Label(L("Second opinion (on-device AI)"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
                 } else {
                     Text(aiOpinion).font(HandyFont.body).padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
                         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 }
             }
-            ShareLink(item: shareText(r)) { Label("Share this check with someone", systemImage: "square.and.arrow.up") }.textButton()
+            ShareLink(item: shareText(r)) { Label(L("Share this check with someone"), systemImage: "square.and.arrow.up") }.textButton()
         }.cardStyle()
     }
 

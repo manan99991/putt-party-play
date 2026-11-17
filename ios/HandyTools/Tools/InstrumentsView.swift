@@ -92,12 +92,12 @@ struct InstrumentsView: View {
                 .foregroundStyle(motion.level ? HandyColor.success : HandyColor.textPrimary)
             Text(motion.upright ? "Protractor — angle of the long edge from vertical" : (motion.level ? "Level" : "Tilt from level")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HStack(spacing: HandySpacing.s8) {
-                Button { motion.zeroHere() } label: { Label("Zero here", systemImage: "scope") }.compactButton()
-                Button { motion.resetZero() } label: { Label("Reset", systemImage: "arrow.counterclockwise") }.compactButton()
+                Button { motion.zeroHere() } label: { Label(L("Zero here"), systemImage: "scope") }.compactButton()
+                Button { motion.resetZero() } label: { Label(L("Reset"), systemImage: "arrow.counterclockwise") }.compactButton()
                 Button { holdAngle = holdAngle == nil ? motion.angle : nil } label: { Label(holdAngle == nil ? "Hold" : "Release", systemImage: holdAngle == nil ? "pause.fill" : "play.fill") }.compactButton()
             }
             if !motion.available { LimitNote("Motion sensors aren't available on this device.") }
-            Text("Zero here makes the surface you're on the reference — handy when the table itself isn't level. Stand the phone on its edge for a protractor.")
+            Text(L("Zero here makes the surface you're on the reference — handy when the table itself isn't level. Stand the phone on its edge for a protractor."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
@@ -135,7 +135,7 @@ struct InstrumentsView: View {
                 stat("Accuracy", heading.accuracy < 0 ? "—" : "±\(Int(heading.accuracy))°")
             }
             if !heading.available { LimitNote("No compass hardware, or location access is off (needed for true north).") }
-            if heading.accuracy > 25 { Text("Wave the phone in a figure‑8 to calibrate.").font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
+            if heading.accuracy > 25 { Text(L("Wave the phone in a figure‑8 to calibrate.")).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
         }
     }
 
@@ -144,19 +144,19 @@ struct InstrumentsView: View {
     private var soundPanel: some View {
         VStack(spacing: HandySpacing.s12) {
             Text("\(Int(sound.db))").font(.system(size: 72, weight: .bold, design: .rounded)).monospacedDigit().foregroundStyle(dbColor(sound.db))
-                + Text(" dB").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                + Text(L(" dB")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
             Text(SensorMath.dbLabel(sound.db)).font(HandyFont.bodyStrong).foregroundStyle(dbColor(sound.db))
             trace(sound.history, range: 20...110).frame(height: 90)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
             HStack { stat("Peak", "\(Int(sound.peak)) dB"); stat("Average", "\(Int(sound.average)) dB"); stat("Samples", "\(sound.history.count / 10)s") }
             HStack(spacing: HandySpacing.s8) {
-                Button { sound.reset() } label: { Label("Reset", systemImage: "arrow.counterclockwise") }.compactButton()
+                Button { sound.reset() } label: { Label(L("Reset"), systemImage: "arrow.counterclockwise") }.compactButton()
                 Spacer()
-                Text("Calibrate").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Calibrate")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Stepper("\(dbOffset >= 0 ? "+" : "")\(Int(dbOffset)) dB", value: $dbOffset, in: -20...20).font(HandyFont.caption).fixedSize()
             }
             if sound.denied { LimitNote("Microphone access is off. Allow it in Settings to measure sound.") }
-            Text("Phone mics aren't lab meters — treat it as ±5 dB. If you have a real meter, set the offset so they match.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Phone mics aren't lab meters — treat it as ±5 dB. If you have a real meter, set the offset so they match.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -168,14 +168,14 @@ struct InstrumentsView: View {
         VStack(spacing: HandySpacing.s12) {
             Text(light.lux < 100 ? String(format: "%.0f", light.lux) : light.lux < 10_000 ? "\(Int(light.lux / 10) * 10)" : "\(Int(light.lux / 100) * 100)")
                 .font(.system(size: 72, weight: .bold, design: .rounded)).monospacedDigit()
-                + Text(" lux").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                + Text(L(" lux")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
             Text(SensorMath.luxLabel(light.lux)).font(HandyFont.bodyStrong)
             VStack(alignment: .leading, spacing: 4) {
                 ForEach([("Reading / desk work", "300–500"), ("Plants: low light", "50–250"), ("Plants: bright indirect", "1,000–2,500"), ("Photography: EV check", "—")], id: \.0) { r in
                     HStack { Text(r.0).font(HandyFont.caption); Spacer(); Text(r.1).font(HandyFont.caption).monospacedDigit().foregroundStyle(HandyColor.textSecondary) }
                 }
             }.cardStyle(padding: HandySpacing.s12)
-            Text("Reads the back camera's exposure — point it at the surface you care about. Approximate (±30%), fine for plants, desks and rooms.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Reads the back camera's exposure — point it at the surface you care about. Approximate (±30%), fine for plants, desks and rooms.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -185,7 +185,7 @@ struct InstrumentsView: View {
         VStack(spacing: HandySpacing.s12) {
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(heading.altitude.map { String(format: "%.0f", $0) } ?? "—").font(.system(size: 64, weight: .bold, design: .rounded)).monospacedDigit()
-                Text("m above sea level").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                Text(L("m above sea level")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
             }
             if let a = heading.altitude { Text(String(format: "%.0f ft · GPS ±%.0f m", a * 3.28084, heading.altitudeAccuracy)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             HStack {
@@ -194,11 +194,11 @@ struct InstrumentsView: View {
                 stat("", "")
             }
             HStack(spacing: HandySpacing.s8) {
-                Button { baro.reset() } label: { Label("Reset climb", systemImage: "arrow.counterclockwise") }.compactButton()
+                Button { baro.reset() } label: { Label(L("Reset climb"), systemImage: "arrow.counterclockwise") }.compactButton()
                 Spacer()
             }
             if !baro.available { LimitNote("No barometer on this device — GPS altitude only.") }
-            Text("Barometer tracks floors and hills precisely (±1 m relative); GPS gives the absolute number. Pressure trend falling fast = weather coming.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Barometer tracks floors and hills precisely (±1 m relative); GPS gives the absolute number. Pressure trend falling fast = weather coming.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -212,15 +212,15 @@ struct InstrumentsView: View {
                     .frame(width: 220, height: 220).rotationEffect(.degrees(-90)).animation(.easeOut(duration: 0.1), value: motion.metalScore)
                 VStack(spacing: 2) {
                     Text("\(Int(motion.field))").font(.system(size: 56, weight: .bold, design: .rounded)).monospacedDigit()
-                    Text("µT").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("µT")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                 }
             }.padding(.top, HandySpacing.s8)
             Text(motion.metalScore > 0.6 ? "Strong — magnet or steel right here" : motion.metalScore > 0.2 ? "Something ferrous nearby" : "Ambient field").font(HandyFont.bodyStrong)
             HStack(spacing: HandySpacing.s8) {
-                Button { motion.calibrateMagnet() } label: { Label("Set baseline here", systemImage: "scope") }.compactButton()
+                Button { motion.calibrateMagnet() } label: { Label(L("Set baseline here"), systemImage: "scope") }.compactButton()
                 Spacer()
             }
-            Text("Sweep slowly near the wall to find studs' screws, nails, pipes and wiring boxes. Keep it away from your case's magnets. The sensor sits near the top of the phone.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Sweep slowly near the wall to find studs' screws, nails, pipes and wiring boxes. Keep it away from your case's magnets. The sensor sits near the top of the phone.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -232,19 +232,19 @@ struct InstrumentsView: View {
                 .frame(height: 110)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-            Picker("Units", selection: $rulerInches) { Text("cm").tag(false); Text("inches").tag(true) }.pickerStyle(.segmented).frame(width: 180)
+            Picker("Units", selection: $rulerInches) { Text(L("cm")).tag(false); Text(L("inches")).tag(true) }.pickerStyle(.segmented).frame(width: 180)
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                Text("Calibrate: lay a bank card along the ruler's top edge and slide until its width reads 85.6 mm.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Calibrate: lay a bank card along the ruler's top edge and slide until its width reads 85.6 mm.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 // A real bank card (85.6 mm) is wider than most phone screens, so keep this preview in a
                 // horizontal scroller — otherwise its fixed width would widen the whole page and clip it.
                 ScrollView(.horizontal, showsIndicators: false) {
                     Rectangle().fill(HandyColor.accentSoft)
                         .frame(width: 85.6 * SensorMath.pointsPerMM(nativeScale: UIScreen.main.nativeScale, calibration: rulerCal), height: 28)
-                        .overlay(Text("bank card width").font(HandyFont.micro).foregroundStyle(HandyColor.accent))
+                        .overlay(Text(L("bank card width")).font(HandyFont.micro).foregroundStyle(HandyColor.accent))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 Slider(value: $rulerCal, in: 0.85...1.15).tint(HandyColor.accent)
-                HStack { Button("Reset calibration") { rulerCal = 1 }.textButton(); Spacer() }
+                HStack { Button(L("Reset calibration")) { rulerCal = 1 }.textButton(); Spacer() }
             }.frame(maxWidth: .infinity).cardStyle(padding: HandySpacing.s12)
         }
     }

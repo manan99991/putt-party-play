@@ -37,7 +37,7 @@ struct SortedView: View {
             if !AIEngine.isAvailable {
                 LimitNote("Dates and amounts are found on every phone. The plain-English \u{201C}what it is / what to do\u{201D} line uses Apple Intelligence (iPhone 15 Pro or newer).")
             }
-            Text("A reading aid, not official advice — always check the original document for the exact terms and deadline.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("A reading aid, not official advice — always check the original document for the exact terms and deadline.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .onAppear { if Launch.sample, text.isEmpty { text = "City Water Utility\nAccount 55-2910\nService address: 12 Maple St\nAmount due: $84.20\nPayment due by December 15, 2026\nPlease pay by the due date to avoid a $10 late fee." } }
         .onChange(of: photoItem) { _, item in
@@ -52,11 +52,11 @@ struct SortedView: View {
             TextEditor(text: $text).frame(minHeight: 110).padding(HandySpacing.s8).scrollContentBackground(.hidden)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                .overlay(alignment: .topLeading) { if text.isEmpty { Text("Snap or paste the document…").foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
+                .overlay(alignment: .topLeading) { if text.isEmpty { Text(L("Snap or paste the document…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             HandyFlow(spacing: HandySpacing.s8) {
-                PhotosPicker(selection: $photoItem, matching: .images) { Label("Photo", systemImage: "camera.viewfinder") }.compactButton()
-                Button("Paste") { if let s = UIPasteboard.general.string { text = s; parsed = nil } }.compactButton()
-                if hasText { Button("Clear") { text = ""; parsed = nil; errorText = nil } .textButton() }
+                PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Photo"), systemImage: "camera.viewfinder") }.compactButton()
+                Button(L("Paste")) { if let s = UIPasteboard.general.string { text = s; parsed = nil } }.compactButton()
+                if hasText { Button(L("Clear")) { text = ""; parsed = nil; errorText = nil } .textButton() }
             }
         }
     }
@@ -70,18 +70,18 @@ struct SortedView: View {
             Text(p.title).font(HandyFont.cardTitle).frame(maxWidth: .infinity, alignment: .leading)
             Text(p.summary).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).frame(maxWidth: .infinity, alignment: .leading)
             if let amount = p.amount {
-                HStack(spacing: HandySpacing.s8) { Image(systemName: "dollarsign.circle.fill").foregroundStyle(HandyColor.accent); Text("Amount").foregroundStyle(HandyColor.textSecondary); Spacer(); Text(amount).font(HandyFont.bodyStrong) }
+                HStack(spacing: HandySpacing.s8) { Image(systemName: "dollarsign.circle.fill").foregroundStyle(HandyColor.accent); Text(L("Amount")).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(amount).font(HandyFont.bodyStrong) }
             }
             if let due = p.due {
-                HStack(spacing: HandySpacing.s8) { Image(systemName: "calendar").foregroundStyle(HandyColor.accent); Text("Date").foregroundStyle(HandyColor.textSecondary); Spacer(); Text(SortedEngine.dateString(due)).font(HandyFont.bodyStrong).multilineTextAlignment(.trailing) }
+                HStack(spacing: HandySpacing.s8) { Image(systemName: "calendar").foregroundStyle(HandyColor.accent); Text(L("Date")).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(SortedEngine.dateString(due)).font(HandyFont.bodyStrong).multilineTextAlignment(.trailing) }
             }
             HStack(spacing: HandySpacing.s8) {
                 if let url = icsFile {
-                    ShareLink(item: url) { Label("Add to Calendar", systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.primaryButton()
+                    ShareLink(item: url) { Label(L("Add to Calendar"), systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.primaryButton()
                 }
-                Button { Copier.copy(shareText(p)); ClipStore.add(shareText(p)) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { Copier.copy(shareText(p)); ClipStore.add(shareText(p)) } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
             }
-            if p.due == nil { Text("No clear date found, so there's nothing to calendar — the details above are still yours to copy.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            if p.due == nil { Text(L("No clear date found, so there's nothing to calendar — the details above are still yours to copy.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
         }.cardStyle()
     }
 

@@ -22,10 +22,10 @@ struct IdentifyView: View {
                 "Tap to confirm with a quick web search for the top guess.",
             ])
             HStack(spacing: HandySpacing.s8) {
-                Button { showCamera = true } label: { Label("Photograph", systemImage: "camera.fill").frame(maxWidth: .infinity) }.primaryButton()
-                PhotosPicker(selection: $pickerItem, matching: .images) { Label("From Photos", systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { showCamera = true } label: { Label(L("Photograph"), systemImage: "camera.fill").frame(maxWidth: .infinity) }.primaryButton()
+                PhotosPicker(selection: $pickerItem, matching: .images) { Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
             }
-            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text("Looking…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text(L("Looking…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
             if let image {
                 Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 240)
@@ -37,15 +37,15 @@ struct IdentifyView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Label(outcome.symbology ?? "Barcode", systemImage: "barcode.viewfinder").font(HandyFont.bodyStrong)
                         Text(code).font(.system(.body, design: .monospaced)).textSelection(.enabled)
-                        Link(destination: searchURL(code)) { Label("Look up this product", systemImage: "magnifyingglass").font(HandyFont.caption) }
+                        Link(destination: searchURL(code)) { Label(L("Look up this product"), systemImage: "magnifyingglass").font(HandyFont.caption) }
                     }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
                 }
 
                 if outcome.guesses.isEmpty && outcome.barcode == nil {
-                    Text("No confident guess. Try filling the frame with the subject, in good light, against a plain background.")
+                    Text(L("No confident guess. Try filling the frame with the subject, in good light, against a plain background."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else if !outcome.guesses.isEmpty {
-                    Text("Best guess").font(HandyFont.bodyStrong)
+                    Text(L("Best guess")).font(HandyFont.bodyStrong)
                     ForEach(outcome.guesses) { g in
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
@@ -61,11 +61,11 @@ struct IdentifyView: View {
                             Label("Search the web for “\(best.label)”", systemImage: "magnifyingglass").frame(maxWidth: .infinity)
                         }.secondaryButton()
                     }
-                    Text("Best guess from on-device recognition — a quick search confirms the exact species or model.")
+                    Text(L("Best guess from on-device recognition — a quick search confirms the exact species or model."))
                         .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                 }
             } else if !busy {
-                Text("Works on plants, animals, food, everyday objects and barcodes. Nothing is uploaded to make the guess.")
+                Text(L("Works on plants, animals, food, everyday objects and barcodes. Nothing is uploaded to make the guess."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }

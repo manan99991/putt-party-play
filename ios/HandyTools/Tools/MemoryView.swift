@@ -31,13 +31,13 @@ struct MemoryView: View {
                 if index.indexing { indexingCard }
                 else if index.entries.isEmpty { emptyIndexCard }
 
-                if answering { HStack { ProgressView(); Text("Looking through your photos…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+                if answering { HStack { ProgressView(); Text(L("Looking through your photos…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
                 if let aiAnswer, !aiAnswer.isEmpty {
                     answerCard(aiAnswer)
-                    if !results.isEmpty { Text("Pulled from your photos below — tap any to open the original.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                    if !results.isEmpty { Text(L("Pulled from your photos below — tap any to open the original.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 }
                 if searched && results.isEmpty && !answering {
-                    Text("Nothing matched that. Try different words — what the photo shows (a colour, an object) or text that was on it — or re-index if it's recent.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Nothing matched that. Try different words — what the photo shows (a colour, an object) or text that was on it — or re-index if it's recent.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 ForEach(results) { m in resultRow(m) }
 
@@ -46,11 +46,11 @@ struct MemoryView: View {
                         Text(index.indexing ? "Indexing \(index.done) of \(index.total)… you can search what's ready" : "\(index.entries.count) photos & videos indexed")
                             .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                         Spacer()
-                        Button { index.refresh() } label: { Label("Re-index", systemImage: "arrow.clockwise") }.textButton().disabled(index.indexing)
+                        Button { index.refresh() } label: { Label(L("Re-index"), systemImage: "arrow.clockwise") }.textButton().disabled(index.indexing)
                     }
                 }
             }
-            Text("Reads the text and recognises what's in your photos — objects and colours — on device. For a one-line answer in plain language, Apple Intelligence (iPhone 15 Pro or newer) extracts it; otherwise you get the best-matching photos, each with why it matched.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Reads the text and recognises what's in your photos — objects and colours — on device. For a one-line answer in plain language, Apple Intelligence (iPhone 15 Pro or newer) extracts it; otherwise you get the best-matching photos, each with why it matched.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .task { await checkAuth() }
         .sheet(item: $viewing) { e in MemoryImageViewer(entry: e) }
@@ -74,7 +74,7 @@ struct MemoryView: View {
             Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
             TextField("Ask your photos… (text or what they show)", text: $query).submitLabel(.search).onSubmit { runSearch() }
             if !query.isEmpty { Button { query = ""; results = []; aiAnswer = nil; searched = false } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel("Clear").foregroundStyle(HandyColor.textSecondary) }.buttonStyle(.plain) }
-            Button { runSearch() } label: { Text("Ask").font(HandyFont.bodyStrong) }.disabled(query.trimmingCharacters(in: .whitespaces).isEmpty || index.entries.isEmpty)
+            Button { runSearch() } label: { Text(L("Ask")).font(HandyFont.bodyStrong) }.disabled(query.trimmingCharacters(in: .whitespaces).isEmpty || index.entries.isEmpty)
         }
         .padding(HandySpacing.s12)
         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
@@ -85,24 +85,24 @@ struct MemoryView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack { ProgressView(); Text(index.total > 0 ? "Building your photo index — \(index.done) of \(index.total)" : "Building your photo index…").font(HandyFont.body) }
             ProgressView(value: index.progress).tint(HandyColor.accent)
-            Text("One-time, on your phone. You can search what's ready now — next time it's instant.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("One-time, on your phone. You can search what's ready now — next time it's instant.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle()
     }
 
     private var emptyIndexCard: some View {
         VStack(spacing: HandySpacing.s12) {
-            Text("Build a private index of your whole photo library — it reads each photo once, on your phone, so you can ask anything. A big library fills in gradually and you can search as it goes; after that it's instant and keeps itself up to date.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
-            Button { index.refresh() } label: { Label("Build my photo index", systemImage: "sparkles").frame(maxWidth: .infinity) }.primaryButton()
+            Text(L("Build a private index of your whole photo library — it reads each photo once, on your phone, so you can ask anything. A big library fills in gradually and you can search as it goes; after that it's instant and keeps itself up to date.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+            Button { index.refresh() } label: { Label(L("Build my photo index"), systemImage: "sparkles").frame(maxWidth: .infinity) }.primaryButton()
         }.cardStyle()
     }
 
     private func answerCard(_ text: String) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            HStack(spacing: 6) { Image(systemName: "sparkles").foregroundStyle(HandyColor.accent); Text("Answer").font(HandyFont.bodyStrong) }
+            HStack(spacing: 6) { Image(systemName: "sparkles").foregroundStyle(HandyColor.accent); Text(L("Answer")).font(HandyFont.bodyStrong) }
             Text(text).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: HandySpacing.s8) {
-                Button { Copier.copy(text); ClipStore.add(text) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
-                ShareLink(item: text) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
+                Button { Copier.copy(text); ClipStore.add(text) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
+                ShareLink(item: text) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
             }
         }.cardStyle()
     }
@@ -209,16 +209,16 @@ private struct MemoryImageViewer: View {
                     } else {
                         VStack(spacing: HandySpacing.s8) {
                             Image(systemName: "photo.badge.exclamationmark").font(.system(size: 32)).foregroundStyle(HandyColor.textSecondary)
-                            Text("This photo isn't in your library anymore. Anything read from it is below.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                            Text(L("This photo isn't in your library anymore. Anything read from it is below.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                         }.frame(maxWidth: .infinity, minHeight: 200)
                     }
                     if !entry.text.isEmpty {
-                        Text("Text read from this photo").font(HandyFont.bodyStrong)
+                        Text(L("Text read from this photo")).font(HandyFont.bodyStrong)
                         Text(entry.text).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
                     } else {
                         let bits = (entry.colors ?? []) + (entry.labels ?? [])
                         if !bits.isEmpty {
-                            Text("What's in this photo").font(HandyFont.bodyStrong)
+                            Text(L("What's in this photo")).font(HandyFont.bodyStrong)
                             Text(bits.prefix(10).joined(separator: ", ")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
@@ -228,7 +228,7 @@ private struct MemoryImageViewer: View {
             .navigationTitle(MemoryEngine.dateString(entry.date))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } }
                 ToolbarItem(placement: .primaryAction) {
                     Button { Copier.copy(entry.text); ClipStore.add(entry.text) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }
                         .disabled(entry.text.isEmpty)

@@ -49,7 +49,7 @@ struct StudioView: View {
             ])
             if original == nil {
                 PhotosPicker(selection: $pickedItem, matching: .images) {
-                    Label("Choose a photo", systemImage: "photo").frame(maxWidth: .infinity)
+                    Label(L("Choose a photo"), systemImage: "photo").frame(maxWidth: .infinity)
                 }.secondaryButton()
             }
 
@@ -66,7 +66,7 @@ struct StudioView: View {
                 .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
 
-                PhotosPicker(selection: $pickedItem, matching: .images) { Label("Choose a different photo", systemImage: "photo.on.rectangle.angled") }.textButton()
+                PhotosPicker(selection: $pickedItem, matching: .images) { Label(L("Choose a different photo"), systemImage: "photo.on.rectangle.angled") }.textButton()
 
                 switch mode {
                 case .cutout: cutoutControls
@@ -105,7 +105,7 @@ struct StudioView: View {
 
     private var cutoutControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text("Background").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Background")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HStack(spacing: HandySpacing.s8) {
                 ForEach(0..<backgrounds.count, id: \.self) { i in
                     Button { bgIdx = i } label: {
@@ -124,7 +124,7 @@ struct StudioView: View {
     private var enhanceControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Toggle("Upscale 2× (sharper, larger file)", isOn: $enhanceUpscale).tint(HandyColor.accent).font(HandyFont.body)
-            Text("Auto-levels, gentle denoise and sharpening — good for dull or soft phone shots. Runs entirely on your phone.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Auto-levels, gentle denoise and sharpening — good for dull or soft phone shots. Runs entirely on your phone.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -133,17 +133,17 @@ struct StudioView: View {
             Picker("Size", selection: $specIdx) { ForEach(0..<ImageStudio.passportSpecs.count, id: \.self) { Text(ImageStudio.passportSpecs[$0].name).tag($0) } }
                 .pickerStyle(.menu).tint(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
             Toggle("Clean white background", isOn: $passportBG).tint(HandyColor.accent).font(HandyFont.body)
-            Text("Face the camera, even light. A helper — check your country's exact rules before submitting.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Face the camera, even light. A helper — check your country's exact rules before submitting.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
     private var resizeControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text("Longest side").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Longest side")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(0..<resizeOptions.count, id: \.self) { i in HChip(text: resizeOptions[i].0, selected: sizeLimitIdx == nil && resizeIdx == i) { resizeIdx = i; sizeLimitIdx = nil } }
             }
-            Text("…or under a file size").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("…or under a file size")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Array(SizeTarget.presets.enumerated()), id: \.offset) { i, p in HChip(text: p.label, selected: sizeLimitIdx == i) { sizeLimitIdx = i } }
             }
@@ -154,7 +154,7 @@ struct StudioView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Picker("Format", selection: $format) { ForEach(ImageStudio.Format.allCases, id: \.self) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented)
             if format != .png {
-                HStack { Text("Quality").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Slider(value: $quality, in: 0.3...1).tint(HandyColor.accent); Text("\(Int(quality * 100))%").font(HandyFont.caption).monospacedDigit() }
+                HStack { Text(L("Quality")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Slider(value: $quality, in: 0.3...1).tint(HandyColor.accent); Text("\(Int(quality * 100))%").font(HandyFont.caption).monospacedDigit() }
             }
             Text("Now \(SizeTarget.format(originalBytes)). Metadata is dropped in the copy.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
@@ -168,17 +168,17 @@ struct StudioView: View {
         switch out {
         case .png(let d):
             Text("\(SizeTarget.format(d.count)) · PNG").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            ShareLink(item: PNGFile(data: d), preview: SharePreview("Studio")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: PNGFile(data: d), preview: SharePreview("Studio")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .jpg(let d):
             Text("\(SizeTarget.format(d.count)) · JPG").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            ShareLink(item: JPEGFile(data: d), preview: SharePreview("Studio")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: JPEGFile(data: d), preview: SharePreview("Studio")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             if mode == .passport {
-                Button { if let p = preview { sheet = ImageStudio.printSheet(p); if sheet != nil { HandyHaptics.success() } } } label: { Label("Make a 4×6 print sheet", systemImage: "squareshape.split.3x3").frame(maxWidth: .infinity) }.secondaryButton()
-                if let sheet { ShareLink(item: JPEGFile(data: sheet), preview: SharePreview("Print sheet")) { Label("Save the print sheet", systemImage: "printer").frame(maxWidth: .infinity) }.primaryButton() }
+                Button { if let p = preview { sheet = ImageStudio.printSheet(p); if sheet != nil { HandyHaptics.success() } } } label: { Label(L("Make a 4×6 print sheet"), systemImage: "squareshape.split.3x3").frame(maxWidth: .infinity) }.secondaryButton()
+                if let sheet { ShareLink(item: JPEGFile(data: sheet), preview: SharePreview("Print sheet")) { Label(L("Save the print sheet"), systemImage: "printer").frame(maxWidth: .infinity) }.primaryButton() }
             }
         case .heic(let d):
             Text("\(SizeTarget.format(d.count)) · HEIC").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            ShareLink(item: HEICFile(data: d), preview: SharePreview("Studio")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: HEICFile(data: d), preview: SharePreview("Studio")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         }
     }
 

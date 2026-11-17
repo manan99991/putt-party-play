@@ -36,10 +36,10 @@ struct TextStudioView: View {
                     .frame(minHeight: 150).padding(HandySpacing.s8).scrollContentBackground(.hidden)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(focused ? HandyColor.accent : HandyColor.border, lineWidth: 1))
-                    .overlay(alignment: .topLeading) { if text.isEmpty { Text("Type or paste your text, email, or the message you're replying to…").foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
+                    .overlay(alignment: .topLeading) { if text.isEmpty { Text(L("Type or paste your text, email, or the message you're replying to…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
                 HStack {
-                    Button("Paste") { if let s = UIPasteboard.general.string { text = s } }.compactButton()
-                    if !text.isEmpty { Button("Clear") { text = ""; output = "" }.textButton() }
+                    Button(L("Paste")) { if let s = UIPasteboard.general.string { text = s } }.compactButton()
+                    if !text.isEmpty { Button(L("Clear")) { text = ""; output = "" }.textButton() }
                     Spacer()
                     if !text.isEmpty { Text("\(stats.words) words · \(stats.readingSeconds)s read · grade \(String(format: "%.0f", stats.grade))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
                 }
@@ -68,10 +68,10 @@ struct TextStudioView: View {
                     Text(output).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
                     if !note.isEmpty { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                     HStack(spacing: HandySpacing.s8) {
-                        Button { Copier.copy(output); ClipStore.add(output) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
-                        ShareLink(item: output) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                        Button { Copier.copy(output); ClipStore.add(output) } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                        ShareLink(item: output) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                     }
-                    Button { text = output; output = ""; note = "" } label: { Label("Keep working on this version", systemImage: "arrow.uturn.down") }.textButton()
+                    Button { text = output; output = ""; note = "" } label: { Label(L("Keep working on this version"), systemImage: "arrow.uturn.down") }.textButton()
                 }.cardStyle()
             }
         }

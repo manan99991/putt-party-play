@@ -55,7 +55,7 @@ struct MagnifierView: View {
                         else { zoom = min(12, max(1, zoom * (1 + (v.magnification - 1) * 0.15))); cam.setZoom(zoom) }
                     })
                 if frozen {
-                    Text("Frozen · pinch to zoom in").font(HandyFont.caption).padding(.horizontal, 10).padding(.vertical, 4)
+                    Text(L("Frozen · pinch to zoom in")).font(HandyFont.caption).padding(.horizontal, 10).padding(.vertical, 4)
                         .background(.ultraThinMaterial, in: Capsule()).padding(HandySpacing.s12)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
@@ -90,9 +90,9 @@ struct MagnifierView: View {
             }
 
             if let snapshot {
-                ShareLink(item: JPEGFile(data: snapshot), preview: SharePreview("Magnifier")) { Label("Save or share this frame", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                ShareLink(item: JPEGFile(data: snapshot), preview: SharePreview("Magnifier")) { Label(L("Save or share this frame"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
-            Text("Tip: freeze first, then zoom — no shaky hands. Yellow-on-black and inverted are the looks low-vision readers find easiest.")
+            Text(L("Tip: freeze first, then zoom — no shaky hands. Yellow-on-black and inverted are the looks low-vision readers find easiest."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
     }
 

@@ -34,7 +34,7 @@ struct FileViewerView: View {
             }.secondaryButton()
 
             if info == nil && errorText == nil {
-                Text("Works offline and on files other apps choke on — if something can't preview, you still get its details and a way to share it, never a dead end.")
+                Text(L("Works offline and on files other apps choke on — if something can't preview, you still get its details and a way to share it, never a dead end."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
 
@@ -60,7 +60,7 @@ struct FileViewerView: View {
                     }.font(HandyFont.caption)
                 }
 
-                ShareLink(item: info.url) { Label("Share or save", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                ShareLink(item: info.url) { Label(L("Share or save"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             }
 
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }

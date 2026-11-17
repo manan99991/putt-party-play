@@ -380,8 +380,8 @@ private struct SearchPrompt: View {
     var body: some View {
         VStack(spacing: 10) {
             Image(systemName: "magnifyingglass").font(.system(size: 34)).foregroundStyle(HandyColor.textSecondary)
-            Text("Search every tool").font(HandyFont.cardTitle)
-            Text("Type what you want to do — shrink a photo, scan a receipt, make a QR code.")
+            Text(L("Search every tool")).font(HandyFont.cardTitle)
+            Text(L("Type what you want to do — shrink a photo, scan a receipt, make a QR code."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                 .multilineTextAlignment(.center).padding(.horizontal, 32)
         }
@@ -466,7 +466,7 @@ struct HomeView: View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: HandySpacing.s4) {
                 HStack(alignment: .firstTextBaseline, spacing: HandySpacing.s12) {
-                    Text("Tenzy").font(HandyFont.display)
+                    Text(L("Tenzy")).font(HandyFont.display)
                     // Tapping a page tab always leaves search and shows that page — so the tabs are
                     // never dead while a search is up (the "con" bug: tabs changed only the caption).
                     PageTabs(page: $page, active: !hasSearch) { n in
@@ -534,7 +534,7 @@ struct SearchField: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
-                        Button("Done") { focused.wrappedValue = false }
+                        Button(L("Done")) { focused.wrappedValue = false }
                     }
                 }
             if !text.isEmpty {
@@ -559,7 +559,7 @@ struct SearchResults: View {
                 VStack(spacing: HandySpacing.s8) {
                     Image(systemName: "magnifyingglass").font(.system(size: 36)).foregroundStyle(HandyColor.textSecondary)
                     Text("No tools match “\(query)”").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
-                    Text("Try “photo”, “pdf”, “scan”, or “ai”.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Try “photo”, “pdf”, “scan”, or “ai”.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }.frame(maxWidth: .infinity).padding(.top, HandySpacing.s48)
             } else {
                 LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
@@ -619,7 +619,7 @@ struct AllToolsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s24) {
-                Text("Every tool in one place — tap any to open it. It all runs on your phone.")
+                Text(L("Every tool in one place — tap any to open it. It all runs on your phone."))
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, HandySpacing.gutter)
@@ -737,7 +737,7 @@ struct ProLockView: View {
                     Circle().fill(HandyColor.accentSoft).frame(width: 72, height: 72)
                     Image(systemName: "lock.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent)
                 }.padding(.top, HandySpacing.s32)
-                Text("A Pro tool").font(.system(size: 22, weight: .bold))
+                Text(L("A Pro tool")).font(.system(size: 22, weight: .bold))
                 Text(store.showsFreeTrial
                      ? "\(tool.name) is part of Tenzy Pro. Start a \(store.trialLength) free trial to unlock it and every other Pro tool — no ads, unlimited use."
                      : "\(tool.name) is part of Tenzy Pro. Go Pro to unlock it and every other Pro tool — no ads, unlimited use.")
@@ -769,8 +769,8 @@ struct PaywallView: View {
                 Circle().fill(HandyColor.accentSoft).frame(width: 64, height: 64)
                 Image(systemName: "crown.fill").font(.system(size: 28)).foregroundStyle(HandyColor.accent)
             }.padding(.top, HandySpacing.s24)
-            Text("Tenzy Pro").font(.system(size: 28, weight: .bold))
-            Text("Every tool and every builder step. No ads, no limits.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Tenzy Pro")).font(.system(size: 28, weight: .bold))
+            Text(L("Every tool and every builder step. No ads, no limits.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
 
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 ForEach(["Unlock all \(TOOLS.count) tools", "Every Build-your-own step, unlimited saved tools", "No banner or full-screen ads", "No daily limits — build and run freely"], id: \.self) { line in
@@ -787,10 +787,10 @@ struct PaywallView: View {
             // purchase screen must still show the real price, trial terms and Buy button so a
             // reviewer can find and complete the subscription (Guidelines 2.1(b), 3.1.2).
             if store.isPremium && !AppEnv.isTestBuild {
-                Label("You're Pro. Thank you.", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
+                Label(L("You're Pro. Thank you."), systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
             } else {
                 if store.isPremium && !Launch.screenshots {
-                    Text("Test build: every tool is already unlocked. You can still try the purchase below with a sandbox account.")
+                    Text(L("Test build: every tool is already unlocked. You can still try the purchase below with a sandbox account."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 }
                 PlanRow(selected: true, title: "Yearly", price: store.yearlyPrice, caption: store.showsFreeTrial ? "\(store.trialLength) free trial, then yearly" : "Renews yearly · cancel anytime", badge: nil) { }
@@ -806,13 +806,13 @@ struct PaywallView: View {
                      : "\(store.yearlyPrice)/year. Payment is charged to your Apple ID. Renews automatically unless cancelled at least 24 hours before the period ends, in Settings › Apple ID › Subscriptions.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 HStack(spacing: HandySpacing.s24) {
-                    Button("Restore purchases") { Task { await store.restore() } }.textButton()
-                    Button("Not now") { dismiss() }.textButton()
+                    Button(L("Restore purchases")) { Task { await store.restore() } }.textButton()
+                    Button(L("Not now")) { dismiss() }.textButton()
                 }
                 // Guideline 3.1.2: functional Terms of Use (EULA) + Privacy Policy links at point of purchase.
                 HStack(spacing: HandySpacing.s8) {
                     Link("Terms of Use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-                    Text("·").foregroundStyle(HandyColor.textSecondary)
+                    Text(L("·")).foregroundStyle(HandyColor.textSecondary)
                     Link("Privacy Policy", destination: URL(string: "https://manan99991.github.io/tenzy/privacy.html")!)
                 }
                 .font(HandyFont.caption).foregroundStyle(HandyColor.accent)
@@ -863,12 +863,12 @@ struct CrashBanner: View {
         HStack(spacing: HandySpacing.s12) {
             Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(.white)
             VStack(alignment: .leading, spacing: 2) {
-                Text("Tenzy crashed last time").font(HandyFont.bodyStrong).foregroundStyle(.white)
+                Text(L("Tenzy crashed last time")).font(HandyFont.bodyStrong).foregroundStyle(.white)
                 Text(summary).font(HandyFont.micro).foregroundStyle(.white.opacity(0.9)).lineLimit(2)
             }
             Spacer(minLength: HandySpacing.s8)
             ShareLink(item: Diagnostics.shared.reportFileURL()) {
-                Text("Send").font(HandyFont.caption).foregroundStyle(HandyColor.danger)
+                Text(L("Send")).font(HandyFont.caption).foregroundStyle(HandyColor.danger)
                     .padding(.horizontal, 12).padding(.vertical, 6).background(.white, in: Capsule())
             }
             Button(action: onDismiss) { Image(systemName: "xmark").foregroundStyle(.white.opacity(0.9)) }.buttonStyle(.plain)

@@ -24,7 +24,7 @@ struct ContactsTransferView: View {
     var body: some View {
         List {
             Section {
-                Text("Moving contacts from Gmail to your phone, or the other way? Pick the two places and tap the button. Nothing leaves your phone.")
+                Text(L("Moving contacts from Gmail to your phone, or the other way? Pick the two places and tap the button. Nothing leaves your phone."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             Section("1. Take contacts from") {
@@ -32,33 +32,33 @@ struct ContactsTransferView: View {
             }
             Section("2. Put them into") {
                 ForEach(accounts.filter { $0.id != from }) { a in row(a, selected: to == a.id) { to = a.id } }
-                Text("Don't see Gmail? Add it in Settings › Contacts › Accounts › Add Account › Google, and turn Contacts on.")
+                Text(L("Don't see Gmail? Add it in Settings › Contacts › Accounts › Add Account › Google, and turn Contacts on."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
             Section("3. How") {
                 Picker("How", selection: $move) {
-                    Text("Copy (keep originals)").tag(false)
-                    Text("Move (remove from old)").tag(true)
+                    Text(L("Copy (keep originals)")).tag(false)
+                    Text(L("Move (remove from old)")).tag(true)
                 }.pickerStyle(.segmented)
-                if move { Text("Move removes the originals from the first account once the copies are saved. A backup file is made first.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+                if move { Text(L("Move removes the originals from the first account once the copies are saved. A backup file is made first.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
             }
             Section {
                 Button { move ? (confirmMove = true) : run() } label: {
                     HStack { if busy { ProgressView() }; Text(label).frame(maxWidth: .infinity) }
                 }.primaryButton().disabled(!ready).listRowInsets(EdgeInsets()).listRowBackground(Color.clear)
                 if busy { ProgressView(value: progress) }
-                Button { pickFile = true } label: { Label("Or add contacts from a .vcf file", systemImage: "doc.badge.plus") }
+                Button { pickFile = true } label: { Label(L("Or add contacts from a .vcf file"), systemImage: "doc.badge.plus") }
                     .disabled(to == nil || busy)
-                if to == nil { Text("Pick where they should go in step 2 first.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+                if to == nil { Text(L("Pick where they should go in step 2 first.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
             }
             if let o = outcome { Section("Done") { result(o) } }
         }
         .navigationTitle("Move contacts").navigationBarTitleDisplayMode(.inline)
-        .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
+        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Close")) { dismiss() } } }
         .task { accounts = ContactsTransfer.accounts() }
         .confirmationDialog("Move contacts?", isPresented: $confirmMove, titleVisibility: .visible) {
             Button("Move \(fromAcc?.count ?? 0) contacts", role: .destructive) { run() }
-            Button("Cancel", role: .cancel) {}
+            Button(L("Cancel"), role: .cancel) {}
         } message: { Text("They are copied into \(toAcc?.title ?? "the new account") first, then removed from \(fromAcc?.title ?? "the old one"). Removing can't be undone. A backup file is saved first.") }
         .fileImporter(isPresented: $pickFile, allowedContentTypes: [UTType(filenameExtension: "vcf") ?? .data, .vCard]) { r in
             guard case .success(let url) = r, let to else { return }
@@ -94,7 +94,7 @@ struct ContactsTransferView: View {
         if o.alreadyThere > 0 { Text("\(o.alreadyThere) already there, so skipped").font(HandyFont.caption) }
         if o.failed > 0 { Text("\(o.failed) couldn't be added (the account may be read-only). They were left where they are.").font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         if o.removed > 0 { Text("\(o.removed) removed from the old account").font(HandyFont.caption) }
-        if let backup { ShareLink(item: backup) { Label("Save the backup file", systemImage: "square.and.arrow.up") } }
+        if let backup { ShareLink(item: backup) { Label(L("Save the backup file"), systemImage: "square.and.arrow.up") } }
     }
 
     private func run() {

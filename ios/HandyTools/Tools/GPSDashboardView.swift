@@ -41,7 +41,7 @@ struct GPSDashboardView: View {
             tripCard
 
             if gps.denied { LimitNote("Location access is off. Allow it in Settings for parking, your location and speed.") }
-            Text("Speed comes from GPS, so it lags a second and reads low under trees or between tall buildings. Trip tracking pauses when you leave the app.")
+            Text(L("Speed comes from GPS, so it lags a second and reads low under trees or between tall buildings. Trip tracking pauses when you leave the app."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .onAppear { if Launch.startHardware { gps.start() } }
@@ -56,9 +56,9 @@ struct GPSDashboardView: View {
                 Text(GeoFormat.speedUnit(metric: metric)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textSecondary)
             }
             HStack(spacing: HandySpacing.s8) {
-                Picker("Units", selection: $metric) { Text("mph").tag(false); Text("km/h").tag(true) }.pickerStyle(.segmented).frame(width: 150)
+                Picker("Units", selection: $metric) { Text(L("mph")).tag(false); Text(L("km/h")).tag(true) }.pickerStyle(.segmented).frame(width: 150)
                 Spacer()
-                Button { hud = true } label: { Label("HUD", systemImage: "car.windshield") }.compactButton()
+                Button { hud = true } label: { Label(L("HUD"), systemImage: "car.windshield") }.compactButton()
             }
         }.cardStyle()
     }
@@ -66,10 +66,10 @@ struct GPSDashboardView: View {
     private var tripCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack {
-                Text("Trip").font(HandyFont.bodyStrong)
+                Text(L("Trip")).font(HandyFont.bodyStrong)
                 Spacer()
                 Button { gps.trip.running.toggle() } label: { Label(gps.trip.running ? "Pause" : "Resume", systemImage: gps.trip.running ? "pause.fill" : "play.fill") }.compactButton()
-                Button { gps.trip.reset() } label: { Label("Reset", systemImage: "arrow.counterclockwise") }.compactButton()
+                Button { gps.trip.reset() } label: { Label(L("Reset"), systemImage: "arrow.counterclockwise") }.compactButton()
             }
             HStack(spacing: HandySpacing.s8) {
                 tile("Distance", GeoFormat.distance(gps.trip.distance, metric: metric), nil)
@@ -96,11 +96,11 @@ struct GPSDashboardView: View {
                 Text(GeoFormat.dms(c)).font(HandyFont.caption).monospaced().foregroundStyle(HandyColor.textSecondary)
                 HStack(spacing: HandySpacing.s8) {
                     Button { UIPasteboard.general.string = GeoFormat.decimal(c); copied = true; HandyHaptics.success() } label: { Label(copied ? "Copied" : "Copy", systemImage: "doc.on.doc") }.compactButton()
-                    ShareLink(item: "I'm here: \(GeoFormat.decimal(c))\n\(GeoFormat.mapsLink(c))") { Label("Send my location", systemImage: "square.and.arrow.up") }.compactButton()
+                    ShareLink(item: "I'm here: \(GeoFormat.decimal(c))\n\(GeoFormat.mapsLink(c))") { Label(L("Send my location"), systemImage: "square.and.arrow.up") }.compactButton()
                     Spacer()
                 }
             } else {
-                Text("Waiting for a GPS fix…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Waiting for a GPS fix…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }.cardStyle()
     }
@@ -124,11 +124,11 @@ struct GPSDashboardView: View {
                 if let parkedAt { Text("Saved \(parkedAt.formatted(.relative(presentation: .named)))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 TextField("Note (Level 3, near the lift…)", text: $parkNote).textFieldStyle(.roundedBorder).onChange(of: parkNote) { _, n in ParkStore.setNote(n) }
                 HStack(spacing: HandySpacing.s8) {
-                    Button { walkBack(p) } label: { Label("Walk me back", systemImage: "figure.walk").frame(maxWidth: .infinity) }.primaryButton()
-                    Button { park() } label: { Label("Move pin here", systemImage: "mappin.and.ellipse") }.compactButton()
+                    Button { walkBack(p) } label: { Label(L("Walk me back"), systemImage: "figure.walk").frame(maxWidth: .infinity) }.primaryButton()
+                    Button { park() } label: { Label(L("Move pin here"), systemImage: "mappin.and.ellipse") }.compactButton()
                 }
             } else {
-                Button { park() } label: { Label("Park here — remember this spot", systemImage: "mappin.and.ellipse").frame(maxWidth: .infinity) }.primaryButton().disabled(gps.coordinate == nil)
+                Button { park() } label: { Label(L("Park here — remember this spot"), systemImage: "mappin.and.ellipse").frame(maxWidth: .infinity) }.primaryButton().disabled(gps.coordinate == nil)
                 Text(gps.coordinate == nil ? "Waiting for a GPS fix — step outside for a clearer signal." : "Saves the spot on your phone. Nothing is uploaded.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }

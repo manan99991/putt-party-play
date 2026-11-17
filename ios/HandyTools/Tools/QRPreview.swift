@@ -98,7 +98,7 @@ struct QRPreviewSheet: View {
                     Image(systemName: content.icon).font(.system(size: 20)).foregroundStyle(HandyColor.accent)
                 }
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Inside this QR code").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Inside this QR code")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     Text(content.title).font(HandyFont.title)
                 }
             }
@@ -116,13 +116,13 @@ struct QRPreviewSheet: View {
             CopyButton(text: content.url?.absoluteString ?? content.detail)
 
             if let url = content.url {
-                Text("Only open it if you trust where it goes. Scammers hide fake sites in QR codes.")
+                Text(L("Only open it if you trust where it goes. Scammers hide fake sites in QR codes."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Button { UIApplication.shared.open(url) } label: {
-                    Label("Open link", systemImage: "safari").frame(maxWidth: .infinity)
+                    Label(L("Open link"), systemImage: "safari").frame(maxWidth: .infinity)
                 }.secondaryButton()
             }
-            Button("Done") { dismiss() }.textButton().frame(maxWidth: .infinity)
+            Button(L("Done")) { dismiss() }.textButton().frame(maxWidth: .infinity)
         }
         .padding(HandySpacing.gutter)
         .background(Ground())
@@ -150,9 +150,9 @@ private struct QRLongPressPreview: ViewModifier {
                 }
             }
             .alert("No QR code here", isPresented: $notFound) {
-                Button("OK", role: .cancel) {}
+                Button(L("OK"), role: .cancel) {}
             } message: {
-                Text("Long-press a QR code to see what it holds without opening it.")
+                Text(L("Long-press a QR code to see what it holds without opening it."))
             }
     }
 }

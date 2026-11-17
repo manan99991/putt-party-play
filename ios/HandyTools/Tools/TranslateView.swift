@@ -55,7 +55,7 @@ struct TranslateView: View {
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if !store.isPremium { QuotaChip(name: "translate", limit: Limits.freeTranslatePerDay).environmentObject(store) }
             if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeTranslatePerDay) free translations.") }
-            Text("First use of a language pair downloads it (Settings › Translate › Downloaded Languages). After that it's fully offline.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("First use of a language pair downloads it (Settings › Translate › Downloaded Languages). After that it's fully offline.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .translationTask(config) { session in
             guard let p = pending else { await MainActor.run { busy = false }; return }
@@ -87,7 +87,7 @@ struct TranslateView: View {
                 Button { showPicker = .to } label: { Text(name(toCode)).frame(maxWidth: .infinity) }.secondaryButton()
             }
             if sameLang {
-                Text("Pick two different languages to translate.").font(HandyFont.caption).foregroundStyle(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
+                Text(L("Pick two different languages to translate.")).font(HandyFont.caption).foregroundStyle(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
@@ -99,10 +99,10 @@ struct TranslateView: View {
             TextEditor(text: $input).frame(minHeight: 110).padding(HandySpacing.s8).scrollContentBackground(.hidden)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                .overlay(alignment: .topLeading) { if input.isEmpty { Text("Type or paste…").foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
+                .overlay(alignment: .topLeading) { if input.isEmpty { Text(L("Type or paste…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             HStack(spacing: HandySpacing.s8) {
-                Button("Paste") { if let s = UIPasteboard.general.string { input = s } }.compactButton()
-                Button { translate(input, from: fromCode, to: toCode, speak: false) } label: { HStack { if busy { ProgressView().tint(.white) }; Label("Translate", systemImage: "character.bubble") }.frame(maxWidth: .infinity) }
+                Button(L("Paste")) { if let s = UIPasteboard.general.string { input = s } }.compactButton()
+                Button { translate(input, from: fromCode, to: toCode, speak: false) } label: { HStack { if busy { ProgressView().tint(.white) }; Label(L("Translate"), systemImage: "character.bubble") }.frame(maxWidth: .infinity) }
                     .primaryButton().disabled(input.trimmingCharacters(in: .whitespaces).isEmpty || busy || overQuota || sameLang)
             }
             if !output.isEmpty { resultCard(output) }
@@ -113,9 +113,9 @@ struct TranslateView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text(s).font(.system(size: 20)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: HandySpacing.s8) {
-                Button { Copier.copy(s); ClipStore.add(s) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
-                Button { say(s, lang: toCode) } label: { Label("Speak", systemImage: "speaker.wave.2") }.compactButton()
-                ShareLink(item: s) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
+                Button { Copier.copy(s); ClipStore.add(s) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
+                Button { say(s, lang: toCode) } label: { Label(L("Speak"), systemImage: "speaker.wave.2") }.compactButton()
+                ShareLink(item: s) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
                 Spacer()
             }
         }.cardStyle(padding: HandySpacing.s12)
@@ -127,7 +127,7 @@ struct TranslateView: View {
         VStack(spacing: HandySpacing.s12) {
             ScrollView {
                 VStack(spacing: HandySpacing.s8) {
-                    if exchanges.isEmpty { Text("Hold the phone between you. Tap the button for whoever is speaking, talk, then let go of the conversation — the other side appears translated and is spoken aloud.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center).padding() }
+                    if exchanges.isEmpty { Text(L("Hold the phone between you. Tap the button for whoever is speaking, talk, then let go of the conversation — the other side appears translated and is spoken aloud.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center).padding() }
                     ForEach(Array(exchanges.enumerated()), id: \.offset) { _, e in
                         VStack(alignment: e.side == 0 ? .leading : .trailing, spacing: 2) {
                             Text(e.heard).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -143,7 +143,7 @@ struct TranslateView: View {
                 talkButton(side: 0, label: name(fromCode))
                 talkButton(side: 1, label: name(toCode))
             }
-            if !exchanges.isEmpty { HStack { Button(role: .destructive) { exchanges = [] } label: { Label("Clear", systemImage: "trash") }.textButton(); Spacer(); ShareLink(item: exchanges.map { "\($0.heard)\n→ \($0.said)" }.joined(separator: "\n\n")) { Label("Share transcript", systemImage: "square.and.arrow.up") }.textButton() } }
+            if !exchanges.isEmpty { HStack { Button(role: .destructive) { exchanges = [] } label: { Label(L("Clear"), systemImage: "trash") }.textButton(); Spacer(); ShareLink(item: exchanges.map { "\($0.heard)\n→ \($0.said)" }.joined(separator: "\n\n")) { Label(L("Share transcript"), systemImage: "square.and.arrow.up") }.textButton() } }
         }
     }
 
@@ -175,11 +175,11 @@ struct TranslateView: View {
 
     private var photoPanel: some View {
         VStack(spacing: HandySpacing.s8) {
-            PhotosPicker(selection: $photoItem, matching: .images) { Label("Choose a photo of a sign, menu, or page", systemImage: "camera.viewfinder").frame(maxWidth: .infinity) }.secondaryButton().disabled(overQuota)
+            PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Choose a photo of a sign, menu, or page"), systemImage: "camera.viewfinder").frame(maxWidth: .infinity) }.secondaryButton().disabled(overQuota)
             if busy { ToolProgressBar(label: "Reading…") }
             if !photoText.isEmpty { DisclosureGroup("Original text") { Text(photoText).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).textSelection(.enabled) }.font(HandyFont.caption) }
             if !output.isEmpty && mode == .photo { resultCard(output) }
-            Text("For live camera translation, use Capture — tap a line there and choose Translate.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("For live camera translation, use Capture — tap a line there and choose Translate.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -272,7 +272,7 @@ private struct LangList: View {
                 Button { selected = l.code; dismiss() } label: { HStack { Text(l.name); Spacer(); if l.code == selected { Image(systemName: "checkmark").foregroundStyle(HandyColor.accent) } } }.foregroundStyle(HandyColor.textPrimary)
             }
             .navigationTitle("Language").navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
         }
     }
 }

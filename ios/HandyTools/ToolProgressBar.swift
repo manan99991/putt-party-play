@@ -171,7 +171,7 @@ struct PermissionOffCard: View {
             Text(line).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).multilineTextAlignment(.center)
             if let sub { Text(sub).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center) }
             Button { Permission.openSettings() } label: {
-                Label("Open Settings", systemImage: "gearshape").frame(maxWidth: .infinity)
+                Label(L("Open Settings"), systemImage: "gearshape").frame(maxWidth: .infinity)
             }.secondaryButton()
         }
         .padding(HandySpacing.s16)

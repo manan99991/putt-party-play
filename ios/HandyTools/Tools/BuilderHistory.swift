@@ -89,7 +89,7 @@ struct HistoryView: View {
                 Text("The last \(RunHistory.limit) things your tools made. They stay on this phone until you clear them.")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 if items.isEmpty {
-                    Text("Nothing yet. Run a tool and its result appears here.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
+                    Text(L("Nothing yet. Run a tool and its result appears here.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
                 }
                 ForEach(items) { item in card(item) }
             }.padding(HandySpacing.gutter)
@@ -97,13 +97,13 @@ struct HistoryView: View {
         .background(Ground())
         .navigationTitle("Recent results").navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
-            ToolbarItem(placement: .cancellationAction) { if !items.isEmpty { Button("Clear") { clearing = true }.accessibilityIdentifier("history-clear") } }
+            ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } }
+            ToolbarItem(placement: .cancellationAction) { if !items.isEmpty { Button(L("Clear")) { clearing = true }.accessibilityIdentifier("history-clear") } }
         }
         .confirmationDialog("Clear every recent result?", isPresented: $clearing, titleVisibility: .visible) {
-            Button("Clear them all", role: .destructive) { RunHistory.clear(); items = [] }
-            Button("Keep them", role: .cancel) {}
-        } message: { Text("They are removed from this phone. Anything you already saved or sent is not touched.") }
+            Button(L("Clear them all"), role: .destructive) { RunHistory.clear(); items = [] }
+            Button(L("Keep them"), role: .cancel) {}
+        } message: { Text(L("They are removed from this phone. Anything you already saved or sent is not touched.")) }
     }
 
     private func card(_ item: HistoryItem) -> some View {
@@ -122,13 +122,13 @@ struct HistoryView: View {
             }
             HStack(spacing: HandySpacing.s8) {
                 if !urls.isEmpty {
-                    ShareLink(items: urls) { Label("Save or share", systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
+                    ShareLink(items: urls) { Label(L("Save or share"), systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
                 } else if let t = item.text {
-                    ShareLink(item: t) { Label("Share", systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
-                    Button { Copier.copy(t) } label: { Label("Copy", systemImage: "doc.on.doc") }.font(HandyFont.caption)
+                    ShareLink(item: t) { Label(L("Share"), systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
+                    Button { Copier.copy(t) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.font(HandyFont.caption)
                 }
                 Spacer()
-                Button(role: .destructive) { RunHistory.remove(item); items = RunHistory.all() } label: { Label("Remove", systemImage: "trash") }.font(HandyFont.caption)
+                Button(role: .destructive) { RunHistory.remove(item); items = RunHistory.all() } label: { Label(L("Remove"), systemImage: "trash") }.font(HandyFont.caption)
             }
         }.cardStyle(padding: HandySpacing.s12)
     }
@@ -147,16 +147,16 @@ struct ToolLinkSheet: View {
                 if let link, let code = ChainText.qr(link) {
                     Image(uiImage: code).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).padding(HandySpacing.s12).background(Color.white, in: RoundedRectangle(cornerRadius: 16))
                         .accessibilityLabel("QR code for this tool")
-                    Text("Point another phone's camera at this, or send the link. It opens the tool in Tenzy.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-                    ShareLink(item: link) { Label("Send the link", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                    Text(L("Point another phone's camera at this, or send the link. It opens the tool in Tenzy.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                    ShareLink(item: link) { Label(L("Send the link"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
                 } else {
-                    Text("This tool is too big to fit in a QR code. Use Copy to share instead.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
-                    if let link { ShareLink(item: link) { Label("Send the link", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton() }
+                    Text(L("This tool is too big to fit in a QR code. Use Copy to share instead.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                    if let link { ShareLink(item: link) { Label(L("Send the link"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton() }
                 }
-                Text("The link never carries your email addresses, phone numbers, reminders or a PDF password.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+                Text(L("The link never carries your email addresses, phone numbers, reminders or a PDF password.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
             }.padding(HandySpacing.gutter)
         }
         .background(Ground())
-        .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+        .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
     }
 }

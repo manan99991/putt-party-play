@@ -47,7 +47,7 @@ struct CaptureView: View {
                         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     HStack(spacing: HandySpacing.s8) {
                         if paused {
-                            Button { paused = false; grab = nil; aiAnswer = "" } label: { Label("Scan again", systemImage: "arrow.clockwise") }.compactButton()
+                            Button { paused = false; grab = nil; aiAnswer = "" } label: { Label(L("Scan again"), systemImage: "arrow.clockwise") }.compactButton()
                         } else {
                             Button { grabTrigger += 1 } label: {
                                 Label(liveCounts.text > 0 ? "Grab all text (\(liveCounts.text))" : "Looking for text…", systemImage: "text.viewfinder")
@@ -62,13 +62,13 @@ struct CaptureView: View {
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             } else {
                 PhotosPicker(selection: $photoItem, matching: .images) {
-                    Label("Choose a photo with text or a code", systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
+                    Label(L("Choose a photo with text or a code"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
                 }.secondaryButton()
-                Text("The live camera reader needs a real iPhone (and camera access). Photos work everywhere.")
+                Text(L("The live camera reader needs a real iPhone (and camera access). Photos work everywhere."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
 
-            if busy { HStack { ProgressView(); Text("Reading…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack { ProgressView(); Text(L("Reading…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let grab { result(grab) }
         }
@@ -92,13 +92,13 @@ struct CaptureView: View {
                     }
                 }
                 HStack(spacing: HandySpacing.s8) {
-                    Button { Copier.copy(g.text); ClipStore.add(g.text) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
-                    Button { translating = true } label: { Label("Translate", systemImage: "character.bubble").frame(maxWidth: .infinity) }.secondaryButton()
+                    Button { Copier.copy(g.text); ClipStore.add(g.text) } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                    Button { translating = true } label: { Label(L("Translate"), systemImage: "character.bubble").frame(maxWidth: .infinity) }.secondaryButton()
                 }
                 HStack(spacing: HandySpacing.s8) {
-                    ShareLink(item: g.text) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
+                    ShareLink(item: g.text) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
                     if AIEngine.isAvailable {
-                        Button { ask(g.text) } label: { HStack { if aiBusy { ProgressView() }; Label("What does this mean?", systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
+                        Button { ask(g.text) } label: { HStack { if aiBusy { ProgressView() }; Label(L("What does this mean?"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
                     }
                     Spacer()
                 }

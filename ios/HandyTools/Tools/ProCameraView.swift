@@ -76,7 +76,7 @@ struct ProCameraView: View {
             .frame(height: 420)
             .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
 
-            Text("Tap the picture to focus. Every button below starts from the camera's own best auto settings.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Tap the picture to focus. Every button below starts from the camera's own best auto settings.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
             presetRow
 
@@ -113,7 +113,7 @@ struct ProCameraView: View {
             case .long: longPanel
             }
                 }.padding(.top, HandySpacing.s8)
-            } label: { Text("Pro controls").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textPrimary) }
+            } label: { Text(L("Pro controls")).font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textPrimary) }
             .tint(HandyColor.accent)
 
             Text(cam.rawSupported ? "RAW saves a DNG alongside the HEIF — edit it in Photos, Lightroom or Darkroom. Long exposures average frames, so use a tripod or a steady ledge."
@@ -158,47 +158,47 @@ struct ProCameraView: View {
 
     private var exposurePanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker("", selection: $cam.current.autoExposure) { Text("Auto").tag(true); Text("Manual").tag(false) }.pickerStyle(.segmented).frame(width: 180)
+            Picker("", selection: $cam.current.autoExposure) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
                 .onChange(of: cam.current.autoExposure) { _, auto in if !auto { cam.syncFromDevice() }; cam.applyExposure() }
             if cam.current.autoExposure {
-                HStack { Text("EV").font(HandyFont.caption).frame(width: 60, alignment: .leading); Slider(value: $cam.current.ev, in: -3...3, step: 0.3).tint(HandyColor.accent).onChange(of: cam.current.ev) { _, _ in cam.applyExposure() }; Text(String(format: "%+.1f", cam.current.ev)).font(HandyFont.caption).monospacedDigit().frame(width: 40) }
+                HStack { Text(L("EV")).font(HandyFont.caption).frame(width: 60, alignment: .leading); Slider(value: $cam.current.ev, in: -3...3, step: 0.3).tint(HandyColor.accent).onChange(of: cam.current.ev) { _, _ in cam.applyExposure() }; Text(String(format: "%+.1f", cam.current.ev)).font(HandyFont.caption).monospacedDigit().frame(width: 40) }
             } else {
-                HStack { Text("ISO").font(HandyFont.caption).frame(width: 60, alignment: .leading)
+                HStack { Text(L("ISO")).font(HandyFont.caption).frame(width: 60, alignment: .leading)
                     Slider(value: Binding(get: { log2(Double(cam.current.iso)) }, set: { cam.current.iso = Float(pow(2, $0)); cam.applyExposure() }), in: log2(Double(cam.ranges.minISO))...log2(Double(cam.ranges.maxISO))).tint(HandyColor.accent)
                     Text("\(Int(cam.current.iso))").font(HandyFont.caption).monospacedDigit().frame(width: 44) }
-                HStack { Text("Shutter").font(HandyFont.caption).frame(width: 60, alignment: .leading)
+                HStack { Text(L("Shutter")).font(HandyFont.caption).frame(width: 60, alignment: .leading)
                     Slider(value: Binding(get: { log2(cam.current.shutter) }, set: { cam.current.shutter = pow(2, $0); cam.applyExposure() }), in: log2(cam.ranges.minShutter)...log2(cam.ranges.maxShutter)).tint(HandyColor.accent)
                     Text(ProImage.shutterLabel(cam.current.shutter)).font(HandyFont.caption).monospacedDigit().frame(width: 44) }
             }
-            Text("Manual: low ISO + slow shutter for clean night shots on a tripod; fast shutter to freeze motion. Zebras show what's blowing out.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Manual: low ISO + slow shutter for clean night shots on a tripod; fast shutter to freeze motion. Zebras show what's blowing out.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
     private var focusPanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker("", selection: $cam.current.autoFocus) { Text("Auto").tag(true); Text("Manual").tag(false) }.pickerStyle(.segmented).frame(width: 180)
+            Picker("", selection: $cam.current.autoFocus) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
                 .onChange(of: cam.current.autoFocus) { _, auto in if !auto { cam.syncFromDevice() }; cam.applyFocus() }
             if !cam.current.autoFocus {
-                HStack { Text("Near").font(HandyFont.caption); Slider(value: $cam.current.lens, in: 0...1).tint(HandyColor.accent).onChange(of: cam.current.lens) { _, _ in cam.applyFocus() }; Text("Far").font(HandyFont.caption) }
-                Text("Turn on Peaking — the red edges show exactly what's sharp.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                HStack { Text(L("Near")).font(HandyFont.caption); Slider(value: $cam.current.lens, in: 0...1).tint(HandyColor.accent).onChange(of: cam.current.lens) { _, _ in cam.applyFocus() }; Text(L("Far")).font(HandyFont.caption) }
+                Text(L("Turn on Peaking — the red edges show exactly what's sharp.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             } else {
-                Text("Lock focus for macro, through glass, or so it stops hunting in video.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Lock focus for macro, through glass, or so it stops hunting in video.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }
     }
 
     private var wbPanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker("", selection: $cam.current.autoWB) { Text("Auto").tag(true); Text("Manual").tag(false) }.pickerStyle(.segmented).frame(width: 180)
+            Picker("", selection: $cam.current.autoWB) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
                 .onChange(of: cam.current.autoWB) { _, auto in if !auto { cam.syncFromDevice() }; cam.applyWhiteBalance() }
             if !cam.current.autoWB {
-                HStack { Text("Warm").font(HandyFont.caption); Slider(value: $cam.current.temp, in: cam.ranges.minTemp...cam.ranges.maxTemp, step: 50).tint(HandyColor.accent).onChange(of: cam.current.temp) { _, _ in cam.applyWhiteBalance() }; Text("Cool").font(HandyFont.caption) }
+                HStack { Text(L("Warm")).font(HandyFont.caption); Slider(value: $cam.current.temp, in: cam.ranges.minTemp...cam.ranges.maxTemp, step: 50).tint(HandyColor.accent).onChange(of: cam.current.temp) { _, _ in cam.applyWhiteBalance() }; Text(L("Cool")).font(HandyFont.caption) }
                 HandyFlow(spacing: HandySpacing.s8) {
                     ForEach([("Tungsten", 3200), ("Fluorescent", 4200), ("Daylight", 5500), ("Cloudy", 6500), ("Shade", 7500)], id: \.1) { n, k in HChip(text: n, selected: Int(cam.current.temp) == k) { cam.current.temp = Float(k); cam.applyWhiteBalance() } }
                 }
                 Text("\(Int(cam.current.temp)) K").font(HandyFont.caption).monospacedDigit().foregroundStyle(HandyColor.textSecondary)
             } else {
-                Text("Lock it when mixed lighting keeps shifting colours between shots.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Lock it when mixed lighting keeps shifting colours between shots.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }
     }
@@ -206,7 +206,7 @@ struct ProCameraView: View {
     private var longPanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HandyFlow(spacing: HandySpacing.s8) { ForEach([1, 2, 4, 8, 15], id: \.self) { s in HChip(text: "\(s) s", selected: longSeconds == s) { longSeconds = s } } }
-            Text("Averages ~30 frames per second into one image: silky water, light trails, crowds that vanish. Brace the phone and press the blue button.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Averages ~30 frames per second into one image: silky water, light trails, crowds that vanish. Brace the phone and press the blue button.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -250,7 +250,7 @@ struct ProCameraView: View {
 
     private var presetRow: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Best for…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Best for…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Preset.allCases, id: \.rawValue) { p in
                     Button { preset = p; apply(p) } label: {

@@ -458,7 +458,7 @@ struct HowTo: View {
             Button { withAnimation(.easeInOut(duration: 0.2)) { open.toggle() } } label: {
                 HStack(spacing: HandySpacing.s8) {
                     Image(systemName: "lightbulb.fill").font(.system(size: 13)).foregroundStyle(HandyColor.accent)
-                    Text("How to use").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                    Text(L("How to use")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                     Spacer()
                     Image(systemName: open ? "chevron.up" : "chevron.down").font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textSecondary)
                 }.contentShape(Rectangle())

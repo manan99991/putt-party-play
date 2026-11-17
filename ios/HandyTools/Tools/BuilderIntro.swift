@@ -30,7 +30,7 @@ struct BuilderIntroCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Text("Make a tool that does the whole job").font(HandyFont.cardTitle)
+            Text(L("Make a tool that does the whole job")).font(HandyFont.cardTitle)
             ForEach(BuilderIntro.pages, id: \.title) { p in
                 HStack(alignment: .top, spacing: HandySpacing.s12) {
                     Image(systemName: p.icon).font(.system(size: 16, weight: .semibold)).foregroundStyle(HandyColor.accent)
@@ -42,8 +42,8 @@ struct BuilderIntroCard: View {
                 }
             }
             HStack(spacing: HandySpacing.s12) {
-                Button(action: onShow) { Label("Show me one", systemImage: "play.fill").frame(maxWidth: .infinity) }.primaryButton().accessibilityIdentifier("intro-show")
-                Button("Got it", action: onDone).secondaryButton().fixedSize().accessibilityIdentifier("intro-done")
+                Button(action: onShow) { Label(L("Show me one"), systemImage: "play.fill").frame(maxWidth: .infinity) }.primaryButton().accessibilityIdentifier("intro-show")
+                Button(L("Got it"), action: onDone).secondaryButton().fixedSize().accessibilityIdentifier("intro-done")
             }
         }.cardStyle()
     }

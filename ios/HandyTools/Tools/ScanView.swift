@@ -90,23 +90,23 @@ struct ScanView: View {
 
     private var emptyState: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Button { showScanner = true } label: { Label("Scan with the camera", systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
+            Button { showScanner = true } label: { Label(L("Scan with the camera"), systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(!VNDocumentCameraViewController.isSupported)
             PhotosPicker(selection: $photoItems, maxSelectionCount: 40, matching: .images) {
-                Label("Choose photos of pages", systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
+                Label(L("Choose photos of pages"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
             }.secondaryButton()
-            Button { showPDFImporter = true } label: { Label("Open a PDF (or several, to merge)", systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
-            Text("Auto-crop and flatten · enhance, grayscale or black-and-white · sign with a saved signature · type into form fields · copy the text · export a PDF you can search, under any size limit, or split.")
+            Button { showPDFImporter = true } label: { Label(L("Open a PDF (or several, to merge)"), systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
+            Text(L("Auto-crop and flatten · enhance, grayscale or black-and-white · sign with a saved signature · type into form fields · copy the text · export a PDF you can search, under any size limit, or split."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
     private var addMenu: some View {
         Menu {
-            Button { showScanner = true } label: { Label("Scan more pages", systemImage: "doc.viewfinder") }.disabled(!VNDocumentCameraViewController.isSupported)
-            Button { showPDFImporter = true } label: { Label("Add a PDF", systemImage: "doc.fill") }
+            Button { showScanner = true } label: { Label(L("Scan more pages"), systemImage: "doc.viewfinder") }.disabled(!VNDocumentCameraViewController.isSupported)
+            Button { showPDFImporter = true } label: { Label(L("Add a PDF"), systemImage: "doc.fill") }
         } label: {
-            VStack { Image(systemName: "plus").font(.system(size: 20, weight: .semibold)); Text("Add").font(HandyFont.micro) }
+            VStack { Image(systemName: "plus").font(.system(size: 20, weight: .semibold)); Text(L("Add")).font(HandyFont.micro) }
                 .foregroundStyle(HandyColor.accent).frame(width: 56, height: 74)
                 .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
         }
@@ -129,7 +129,7 @@ struct ScanView: View {
                     }.buttonStyle(.plain)
                 }
                 PhotosPicker(selection: $photoItems, maxSelectionCount: 40, matching: .images) {
-                    VStack { Image(systemName: "photo").font(.system(size: 18)); Text("Photos").font(HandyFont.micro) }
+                    VStack { Image(systemName: "photo").font(.system(size: 18)); Text(L("Photos")).font(HandyFont.micro) }
                         .foregroundStyle(HandyColor.accent).frame(width: 56, height: 74)
                         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                 }
@@ -196,12 +196,12 @@ struct ScanView: View {
                 }
             }
             HStack(spacing: HandySpacing.s8) {
-                Button { rotate() } label: { Label("Rotate", systemImage: "rotate.right") }.compactButton()
+                Button { rotate() } label: { Label(L("Rotate"), systemImage: "rotate.right") }.compactButton()
                 Button { move(-1) } label: { Image(systemName: "arrow.left") }.compactButton().disabled(selected == 0).accessibilityLabel("Move page left")
                 Button { move(1) } label: { Image(systemName: "arrow.right") }.compactButton().disabled(selected >= pages.count - 1).accessibilityLabel("Move page right")
                 Button(role: .destructive) { remove() } label: { Image(systemName: "trash") }.compactButton().accessibilityLabel("Delete page")
             }
-            Button { applyFilterToAll() } label: { Label("Apply this look to every page", systemImage: "square.on.square") }.textButton()
+            Button { applyFilterToAll() } label: { Label(L("Apply this look to every page"), systemImage: "square.on.square") }.textButton()
             Text("Page \(selected + 1) of \(pages.count). Enhance fixes shadows and uneven lighting; Black & white makes the smallest, crispest forms.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
@@ -215,9 +215,9 @@ struct ScanView: View {
                 Button { toggleInk() } label: { Label(inking ? "Done drawing" : "Draw", systemImage: inking ? "checkmark" : "pencil.tip").frame(maxWidth: .infinity) }
                     .buttonStyle(inking ? AnyButtonStyle(HandyPrimaryButtonStyle()) : AnyButtonStyle(HandySecondaryButtonStyle()))
                 if let savedSignature {
-                    Button { place(.signature(savedSignature)) } label: { Label("Place signature", systemImage: "signature").frame(maxWidth: .infinity) }.secondaryButton().disabled(inking)
+                    Button { place(.signature(savedSignature)) } label: { Label(L("Place signature"), systemImage: "signature").frame(maxWidth: .infinity) }.secondaryButton().disabled(inking)
                 } else {
-                    Button { showSignaturePad = true } label: { Label("Save a signature", systemImage: "signature").frame(maxWidth: .infinity) }.secondaryButton().disabled(inking)
+                    Button { showSignaturePad = true } label: { Label(L("Save a signature"), systemImage: "signature").frame(maxWidth: .infinity) }.secondaryButton().disabled(inking)
                 }
             }
             HStack(spacing: HandySpacing.s8) {
@@ -226,20 +226,20 @@ struct ScanView: View {
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .submitLabel(.done).onSubmit { addText() }
-                Button { addText() } label: { Text("Add") }.compactButton().disabled(newText.trimmingCharacters(in: .whitespaces).isEmpty)
+                Button { addText() } label: { Text(L("Add")) }.compactButton().disabled(newText.trimmingCharacters(in: .whitespaces).isEmpty)
             }
             if let sid = selectedStamp, let st = page?.stamps.first(where: { $0.id == sid }) {
                 HStack(spacing: HandySpacing.s8) {
-                    Text("Size").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Size")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     Slider(value: Binding(get: { st.width }, set: { w in update(sid) { $0.width = w } }), in: 0.06...0.9).tint(HandyColor.accent)
                     Button(role: .destructive) { update(selected) { $0.stamps.removeAll { $0.id == sid } }; selectedStamp = nil } label: { Image(systemName: "trash") }.compactButton().accessibilityLabel("Remove stamp")
                 }
             }
             HStack {
                 if savedSignature != nil {
-                    Button { showSignaturePad = true } label: { Label("Redo signature", systemImage: "arrow.counterclockwise") }.textButton()
+                    Button { showSignaturePad = true } label: { Label(L("Redo signature"), systemImage: "arrow.counterclockwise") }.textButton()
                 }
-                Button { update(selected) { $0.ink = PKDrawing(); $0.stamps = [] }; canvas.drawing = PKDrawing(); selectedStamp = nil } label: { Label("Clear this page", systemImage: "eraser") }.textButton()
+                Button { update(selected) { $0.ink = PKDrawing(); $0.stamps = [] }; canvas.drawing = PKDrawing(); selectedStamp = nil } label: { Label(L("Clear this page"), systemImage: "eraser") }.textButton()
                 Spacer()
             }
             Text(inking ? "Draw on the page with your finger. Tap Done drawing when finished."
@@ -254,16 +254,16 @@ struct ScanView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             if ocrText.isEmpty {
                 Button { runOCR(all: false) } label: { HStack { if ocrBusy { ProgressView().tint(.white) }; Text(ocrBusy ? "Reading…" : "Read this page") }.frame(maxWidth: .infinity) }.primaryButton().disabled(ocrBusy)
-                Button { runOCR(all: true) } label: { Label("Read every page", systemImage: "doc.text.magnifyingglass").frame(maxWidth: .infinity) }.secondaryButton().disabled(ocrBusy)
+                Button { runOCR(all: true) } label: { Label(L("Read every page"), systemImage: "doc.text.magnifyingglass").frame(maxWidth: .infinity) }.secondaryButton().disabled(ocrBusy)
             } else {
                 ScrollView { Text(ocrText).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading) }
                     .frame(maxHeight: 220).padding(HandySpacing.s12)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 HStack(spacing: HandySpacing.s8) {
-                    Button { Copier.copy(ocrText) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
-                    ShareLink(item: ocrText) { Label("Share text", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                    Button { Copier.copy(ocrText) } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+                    ShareLink(item: ocrText) { Label(L("Share text"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                 }
-                Button { runOCR(all: true) } label: { Label("Read every page", systemImage: "doc.text.magnifyingglass") }.textButton()
+                Button { runOCR(all: true) } label: { Label(L("Read every page"), systemImage: "doc.text.magnifyingglass") }.textButton()
             }
         }
     }
@@ -274,8 +274,8 @@ struct ScanView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Toggle(isOn: $searchable) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Searchable PDF").font(HandyFont.body)
-                    Text("Adds an invisible text layer so Find, select and copy work in any reader.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Searchable PDF")).font(HandyFont.body)
+                    Text(L("Adds an invisible text layer so Find, select and copy work in any reader.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
             }.tint(HandyColor.accent)
             HandyFlow(spacing: HandySpacing.s8) {
@@ -311,7 +311,7 @@ struct ScanView: View {
                     }
                     ShareLink(items: outputs) { Label(outputs.count == 1 ? "Save or share PDF" : "Save or share all", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
                     if jpgOutputs.isEmpty {
-                        Button { exportJPGs() } label: { Label("Pages as JPGs instead", systemImage: "photo.stack") }.textButton()
+                        Button { exportJPGs() } label: { Label(L("Pages as JPGs instead"), systemImage: "photo.stack") }.textButton()
                     } else {
                         ShareLink(items: jpgOutputs) { Label("Save or share \(jpgOutputs.count) JPG\(jpgOutputs.count == 1 ? "" : "s")", systemImage: "photo.stack").frame(maxWidth: .infinity) }.secondaryButton()
                     }
@@ -571,7 +571,7 @@ struct SignaturePadSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: HandySpacing.s16) {
-                Text("Sign in the box with your finger. It's saved on this phone only.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Sign in the box with your finger. It's saved on this phone only.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 ZStack {
                     RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).fill(Color.white)
                     Rectangle().fill(HandyColor.border).frame(height: 1).padding(.horizontal, 24).offset(y: 50)
@@ -580,18 +580,18 @@ struct SignaturePadSheet: View {
                 .frame(height: 220)
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 HStack {
-                    Button { pad.drawing = PKDrawing() } label: { Label("Clear", systemImage: "eraser") }.textButton()
+                    Button { pad.drawing = PKDrawing() } label: { Label(L("Clear"), systemImage: "eraser") }.textButton()
                     Spacer()
                 }
                 Button {
                     if let img = DocEngine.saveSignature(pad.drawing) { saved(img); HandyHaptics.success(); dismiss() }
-                } label: { Text("Save signature").frame(maxWidth: .infinity) }.primaryButton().padding(.top, HandySpacing.s8)
+                } label: { Text(L("Save signature")).frame(maxWidth: .infinity) }.primaryButton().padding(.top, HandySpacing.s8)
                 Spacer()
             }
             .padding(HandySpacing.gutter)
             .background(HandyColor.bg)
             .navigationTitle("Your signature").navigationBarTitleDisplayMode(.inline)
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { dismiss() } } }
         }
         .presentationDetents([.medium])
     }

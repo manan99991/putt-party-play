@@ -70,9 +70,9 @@ struct SceneDescriberView: View {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text(description).font(.system(size: 20, weight: .medium)).textSelection(.enabled)
                     HStack(spacing: HandySpacing.s8) {
-                        Button { speaker.say(description) } label: { Label("Repeat", systemImage: "speaker.wave.2") }.compactButton()
-                        Button { readText() } label: { Label("Read the text", systemImage: "text.viewfinder") }.compactButton()
-                        if speaker.speaking { Button { speaker.stop() } label: { Label("Stop", systemImage: "stop.fill") }.compactButton() }
+                        Button { speaker.say(description) } label: { Label(L("Repeat"), systemImage: "speaker.wave.2") }.compactButton()
+                        Button { readText() } label: { Label(L("Read the text"), systemImage: "text.viewfinder") }.compactButton()
+                        if speaker.speaking { Button { speaker.stop() } label: { Label(L("Stop"), systemImage: "stop.fill") }.compactButton() }
                         Spacer()
                     }
                 }.cardStyle()

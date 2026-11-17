@@ -47,29 +47,29 @@ struct VoiceNotesView: View {
                     Button { digest() } label: { HStack { if working { ProgressView().tint(.white) }; Label(working ? "Reading…" : "Summary + to-dos", systemImage: "list.bullet.clipboard") }.frame(maxWidth: .infinity) }.secondaryButton().disabled(working)
                 } else {
                     VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                        if !summary.isEmpty { Text("Summary").font(HandyFont.bodyStrong); ForEach(summary, id: \.self) { Text("• \($0)").font(HandyFont.body) } }
-                        if !todos.isEmpty { Text("To-dos").font(HandyFont.bodyStrong).padding(.top, 4); ForEach(todos, id: \.self) { Label($0, systemImage: "circle").font(HandyFont.body) } }
+                        if !summary.isEmpty { Text(L("Summary")).font(HandyFont.bodyStrong); ForEach(summary, id: \.self) { Text("• \($0)").font(HandyFont.body) } }
+                        if !todos.isEmpty { Text(L("To-dos")).font(HandyFont.bodyStrong).padding(.top, 4); ForEach(todos, id: \.self) { Label($0, systemImage: "circle").font(HandyFont.body) } }
                         if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                     }.cardStyle(padding: HandySpacing.s12)
                 }
                 HStack(spacing: HandySpacing.s8) {
-                    Button { save() } label: { Label("Save note", systemImage: "tray.and.arrow.down").frame(maxWidth: .infinity) }.primaryButton()
-                    ShareLink(item: exportText) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
+                    Button { save() } label: { Label(L("Save note"), systemImage: "tray.and.arrow.down").frame(maxWidth: .infinity) }.primaryButton()
+                    ShareLink(item: exportText) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
                     Button { Copier.copy(exportText) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy").frame(width: 36, height: 36) }.compactButton()
                 }
             }
 
             if !notes.items.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    HStack { Text("Saved notes").font(HandyFont.bodyStrong); Spacer(); Text("\(notes.items.count)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                    HStack { Text(L("Saved notes")).font(HandyFont.bodyStrong); Spacer(); Text("\(notes.items.count)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                     TextField("Search notes", text: $query).padding(HandySpacing.s8).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                     ForEach(notes.items.filter { query.isEmpty || $0.text.localizedCaseInsensitiveContains(query) || $0.title.localizedCaseInsensitiveContains(query) }) { n in
                         VStack(alignment: .leading, spacing: 4) {
                             HStack { Text(n.title).font(HandyFont.bodyStrong).lineLimit(1); Spacer(); Text(n.date.formatted(date: .abbreviated, time: .shortened)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
                             Text(n.summary.isEmpty ? n.text : n.summary.joined(separator: " · ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
                             HStack(spacing: HandySpacing.s8) {
-                                ShareLink(item: n.export) { Label("Share", systemImage: "square.and.arrow.up") }.textButton()
-                                Button(role: .destructive) { notes.delete(n) } label: { Label("Delete", systemImage: "trash") }.textButton()
+                                ShareLink(item: n.export) { Label(L("Share"), systemImage: "square.and.arrow.up") }.textButton()
+                                Button(role: .destructive) { notes.delete(n) } label: { Label(L("Delete"), systemImage: "trash") }.textButton()
                                 Spacer()
                             }
                         }.cardStyle(padding: HandySpacing.s12)

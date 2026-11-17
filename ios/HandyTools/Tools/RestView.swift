@@ -18,7 +18,7 @@ struct RestView: View {
                 "Set a sleep timer so it fades out on its own.",
                 "It keeps playing with the screen locked.",
             ])
-            Picker("", selection: $tab) { Text("Sounds").tag(0); Text("Night recorder").tag(1) }.pickerStyle(.segmented)
+            Picker("", selection: $tab) { Text(L("Sounds")).tag(0); Text(L("Night recorder")).tag(1) }.pickerStyle(.segmented)
             if tab == 0 { soundsPanel } else { recorderPanel }
         }
         .onDisappear { if !player.playing && !recorder.armed { player.stop() } }
@@ -45,13 +45,13 @@ struct RestView: View {
             }
             HStack { Image(systemName: "speaker.wave.1"); Slider(value: $player.volume, in: 0...1).tint(HandyColor.accent); Image(systemName: "speaker.wave.3") }.foregroundStyle(HandyColor.textSecondary)
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                HStack { Text("Sleep timer").font(HandyFont.bodyStrong); Spacer()
+                HStack { Text(L("Sleep timer")).font(HandyFont.bodyStrong); Spacer()
                     if let r = player.remaining { Text("fades out in \(GeoFormat.duration(r))").font(HandyFont.caption).monospacedDigit().foregroundStyle(HandyColor.accent) } }
                 HandyFlow(spacing: HandySpacing.s8) {
                     ForEach([0, 15, 30, 45, 60, 90], id: \.self) { m in HChip(text: m == 0 ? "Off" : "\(m) min", selected: player.timerMinutes == m) { player.setTimer(minutes: m) } }
                 }
             }.cardStyle(padding: HandySpacing.s12)
-            Text("Keeps playing with the screen locked. Brown and Fan mask traffic and snoring best; Pink is the one studies use for deeper sleep.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Keeps playing with the screen locked. Brown and Fan mask traffic and snoring best; Pink is the one studies use for deeper sleep.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -74,12 +74,12 @@ struct RestView: View {
             }.cardStyle()
 
             if recorder.events.isEmpty {
-                Text("Nothing captured yet. Plug the phone in, put it on the nightstand, start listening, and check back in the morning.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Nothing captured yet. Plug the phone in, put it on the nightstand, start listening, and check back in the morning.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             } else {
                 HStack {
                     Text("\(recorder.events.count) moment\(recorder.events.count == 1 ? "" : "s") · \(GeoFormat.duration(recorder.events.reduce(0) { $0 + $1.seconds })) total").font(HandyFont.bodyStrong)
                     Spacer()
-                    Button(role: .destructive) { recorder.clearAll(); playingClip = nil } label: { Text("Clear all") }.textButton()
+                    Button(role: .destructive) { recorder.clearAll(); playingClip = nil } label: { Text(L("Clear all")) }.textButton()
                 }
                 ForEach(recorder.events.reversed()) { e in
                     HStack(spacing: HandySpacing.s12) {
@@ -94,7 +94,7 @@ struct RestView: View {
                     }.cardStyle(padding: HandySpacing.s12)
                 }
             }
-            Text("Clips live only on this phone. A noisy night usually comes back as 5–40 short clips.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Clips live only on this phone. A noisy night usually comes back as 5–40 short clips.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 

@@ -77,7 +77,7 @@ struct ColorVisionView: View {
                 }
                 HStack(spacing: HandySpacing.s8) {
                     if photo != nil {
-                        Button { photo = nil; frozen = false; cam.setPaused(false) } label: { Label("Back to camera", systemImage: "camera") }.compactButton()
+                        Button { photo = nil; frozen = false; cam.setPaused(false) } label: { Label(L("Back to camera"), systemImage: "camera") }.compactButton()
                     } else {
                         Button { frozen.toggle(); cam.setPaused(frozen) } label: { Label(frozen ? "Live" : "Freeze", systemImage: frozen ? "play.fill" : "pause.fill") }.compactButton()
                     }
@@ -94,11 +94,11 @@ struct ColorVisionView: View {
             switch mode {
             case .correct, .simulate: typeControls
             case .highlight: highlightControls
-            case .name: Text("Centre the ring on the thing. The name and hex code update live; freeze to hold it.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            case .name: Text(L("Centre the ring on the thing. The name and hex code update live; freeze to hold it.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
 
             if let snapshot {
-                ShareLink(item: JPEGFile(data: snapshot), preview: SharePreview("Color Vision")) { Label("Save or share this frame", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                ShareLink(item: JPEGFile(data: snapshot), preview: SharePreview("Color Vision")) { Label(L("Save or share this frame"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             }
 
             Text(mode == .simulate ? "Show this to family, designers, or a teacher: it's how \(deficiency.short.lowercased()) eyes see the scene."
@@ -122,9 +122,9 @@ struct ColorVisionView: View {
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(ColorVision.Deficiency.allCases, id: \.rawValue) { d in HChip(text: d.short, selected: deficiency == d) { deficiencyRaw = d.rawValue } }
             }
-            HStack { Text("How strong is it").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(width: 118, alignment: .leading); Slider(value: $severity, in: 0.2...1).tint(HandyColor.accent); Text("\(Int(severity * 100))%").font(HandyFont.caption).monospacedDigit().frame(width: 40) }
+            HStack { Text(L("How strong is it")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(width: 118, alignment: .leading); Slider(value: $severity, in: 0.2...1).tint(HandyColor.accent); Text("\(Int(severity * 100))%").font(HandyFont.caption).monospacedDigit().frame(width: 40) }
             if mode == .correct {
-                HStack { Text("Correction").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(width: 118, alignment: .leading); Slider(value: $strength, in: 0...1.5).tint(HandyColor.accent); Text("\(Int(strength * 100))%").font(HandyFont.caption).monospacedDigit().frame(width: 40) }
+                HStack { Text(L("Correction")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(width: 118, alignment: .leading); Slider(value: $strength, in: 0...1.5).tint(HandyColor.accent); Text("\(Int(strength * 100))%").font(HandyFont.caption).monospacedDigit().frame(width: 40) }
             }
         }
     }

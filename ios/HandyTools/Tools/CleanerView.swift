@@ -64,12 +64,12 @@ struct CleanerView: View {
 
                 if cat == .videos {
                     Picker("Source", selection: $receivedOnly) {
-                        Text("Large videos").tag(false)
-                        Text("Received").tag(true)
+                        Text(L("Large videos")).tag(false)
+                        Text(L("Received")).tag(true)
                     }
                     .pickerStyle(.segmented)
                     .onChange(of: receivedOnly) { _, _ in selected = []; scanLocal() }
-                    Text("Received = saved, downloaded or forwarded to you — not recorded on this phone.")
+                    Text(L("Received = saved, downloaded or forwarded to you — not recorded on this phone."))
                         .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                 }
 
@@ -96,7 +96,7 @@ struct CleanerView: View {
             if index.scanning && safeDupExtras.isEmpty {
                 ToolProgressBar(label: "Finding space you can free…")
             } else if safeDupExtras.isEmpty {
-                Label("No duplicate copies to clear — your library's already tidy.", systemImage: "checkmark.seal.fill")
+                Label(L("No duplicate copies to clear — your library's already tidy."), systemImage: "checkmark.seal.fill")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.success)
             } else {
                 Text("Free up about \(PhotoCleaner.format(safeReclaim))")
@@ -133,7 +133,7 @@ struct CleanerView: View {
     private var authGate: some View {
         VStack(spacing: HandySpacing.s12) {
             Image(systemName: "photo.on.rectangle.angled").font(.system(size: 40)).foregroundStyle(HandyColor.accent).padding(.top, HandySpacing.s24)
-            Text("Allow photo access to scan for space you can free. Nothing leaves your phone, and deleting always asks you first.")
+            Text(L("Allow photo access to scan for space you can free. Nothing leaves your phone, and deleting always asks you first."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
             Button {
                 if Permission.photosDenied { Permission.openSettings(); return }
@@ -167,8 +167,8 @@ struct CleanerView: View {
                 Spacer()
             }
             Picker("Sort", selection: $sortBySize) {
-                Text("Largest first").tag(true)
-                Text("Most recent").tag(false)
+                Text(L("Largest first")).tag(true)
+                Text(L("Most recent")).tag(false)
             }
             .pickerStyle(.segmented)
             ScrollViewReader { proxy in
@@ -189,7 +189,7 @@ struct CleanerView: View {
             .onPreferenceChange(PaintCellFrames.self) { cellFrames = $0 }
             .paintSelect(active: selecting, frames: cellFrames, selected: $selected, proxy: proxy)
             }
-            Text("Deleting asks iOS to remove the items — you'll get the system confirmation, and they go to Recently Deleted for 30 days.")
+            Text(L("Deleting asks iOS to remove the items — you'll get the system confirmation, and they go to Recently Deleted for 30 days."))
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
     }
@@ -207,7 +207,7 @@ struct CleanerView: View {
                 Text("\(selected.count) selected").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             if selecting {
-                Text("Drag across photos to select or deselect a whole run.")
+                Text(L("Drag across photos to select or deselect a whole run."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
             }
             Button { deleteSelected() } label: {
@@ -311,7 +311,7 @@ private struct AssetThumb: View {
                     else if unavailable {
                         Rectangle().fill(HandyColor.surface).overlay(VStack(spacing: 4) {
                             Image(systemName: "icloud.and.arrow.down").font(.system(size: 18))
-                            Text("In iCloud").font(HandyFont.micro)
+                            Text(L("In iCloud")).font(HandyFont.micro)
                         }.foregroundStyle(HandyColor.textSecondary))
                     }
                     else { Rectangle().fill(HandyColor.surface) }

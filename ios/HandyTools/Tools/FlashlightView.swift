@@ -173,8 +173,8 @@ struct FlashlightView: View {
             if !torch.available { LimitNote("No flash on this device — the screen light and mirror still work.") }
 
             HStack(spacing: HandySpacing.s8) {
-                Button { screenLight = true } label: { Label("Screen light", systemImage: "sun.max.fill").frame(maxWidth: .infinity) }.secondaryButton()
-                Button { mirror = true } label: { Label("Mirror", systemImage: "person.crop.square").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { screenLight = true } label: { Label(L("Screen light"), systemImage: "sun.max.fill").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { mirror = true } label: { Label(L("Mirror"), systemImage: "person.crop.square").frame(maxWidth: .infinity) }.secondaryButton()
             }
 
             VStack(spacing: HandySpacing.s12) {
@@ -183,13 +183,13 @@ struct FlashlightView: View {
                     .foregroundStyle(torch.isOn ? HandyColor.accent : HandyColor.textSecondary)
                     .shadow(color: HandyColor.accent.opacity(torch.isOn ? Double(torch.level) * 0.6 : 0), radius: 22)
                 HStack {
-                    Text("Brightness").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Brightness")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     Spacer()
                     Text("\(Int(torch.level * 100))%").font(HandyFont.bodyStrong).monospacedDigit()
                 }
                 Slider(value: $torch.level, in: 0.05...1.0).tint(HandyColor.accent)
                 HandyFlow(spacing: HandySpacing.s8) {
-                    Text("Auto-off").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Auto-off")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     ForEach([0, 5, 15, 60], id: \.self) { m in HChip(text: m == 0 ? "Never" : "\(m) min", selected: torch.autoOffMinutes == m) { torch.autoOffMinutes = m } }
                 }
             }
@@ -216,7 +216,7 @@ struct FlashlightView: View {
             }
 
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                Text("Morse a message").font(HandyFont.bodyStrong)
+                Text(L("Morse a message")).font(HandyFont.bodyStrong)
                 HStack(spacing: HandySpacing.s8) {
                     TextField("e.g. HELP or your name", text: $morse)
                         .textInputAutocapitalization(.characters).autocorrectionDisabled()
@@ -269,7 +269,7 @@ private struct ScreenLightSheet: View {
                 }
                 Slider(value: $brightness, in: 0.2...1).tint(.black.opacity(0.6)).padding(.horizontal)
                     .onChange(of: brightness) { _, b in UIScreen.main.brightness = CGFloat(b) }
-                Text("Tap anywhere to close").font(HandyFont.caption).foregroundStyle(.black.opacity(0.55)).onTapGesture { dismiss() }
+                Text(L("Tap anywhere to close")).font(HandyFont.caption).foregroundStyle(.black.opacity(0.55)).onTapGesture { dismiss() }
             }
             .padding(HandySpacing.s24)
             .background(.white.opacity(0.35), in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))

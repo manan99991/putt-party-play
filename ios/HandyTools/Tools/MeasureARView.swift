@@ -53,7 +53,7 @@ struct MeasureARView: View {
                 HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; ar.reset() } }
                 }
-                Picker("Units", selection: $metric) { Text("ft/in").tag(false); Text("m/cm").tag(true) }.pickerStyle(.segmented).frame(width: 160)
+                Picker("Units", selection: $metric) { Text(L("ft/in")).tag(false); Text(L("m/cm")).tag(true) }.pickerStyle(.segmented).frame(width: 160)
                 HStack(spacing: HandySpacing.s8) {
                     Button { ar.place() } label: { Label(primaryActionLabel, systemImage: "plus.circle.fill").frame(maxWidth: .infinity) }.primaryButton().disabled(!ar.hasSurface)
                     if mode == .area && ar.points.count >= 3 {
@@ -67,7 +67,7 @@ struct MeasureARView: View {
                 LimitNote("AR measuring needs a real iPhone with ARKit — it isn't available here.")
             }
             Button { showSensors = true } label: {
-                Label("Level, compass & sensors", systemImage: "level").frame(maxWidth: .infinity)
+                Label(L("Level, compass & sensors"), systemImage: "level").frame(maxWidth: .infinity)
             }.secondaryButton()
             Text(ar.lidar ? "LiDAR detected — expect ±1 cm on flat surfaces." : "Accuracy is typically ±1–2 cm up to a few metres; move the phone slowly first so it learns the room.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -77,7 +77,7 @@ struct MeasureARView: View {
         .sheet(isPresented: $showSensors) {
             NavigationStack {
                 InstrumentsView()
-                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { showSensors = false } } }
+                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { showSensors = false } } }
             }
         }
         .sheet(item: $photo) { p in
@@ -89,7 +89,7 @@ struct MeasureARView: View {
                 .background(HandyColor.bg)
                 .navigationTitle("Measurement photo").navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Done") { photo = nil } }
+                    ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { photo = nil } }
                     ToolbarItem(placement: .primaryAction) { ShareLink(item: p.url) { Image(systemName: "square.and.arrow.up") } }
                 }
             }
@@ -177,17 +177,17 @@ struct MeasureARView: View {
                     ForEach(Array(zip(ar.points.dropFirst(), ar.points).enumerated()), id: \.offset) { i, pair in
                         HStack { Text("Segment \(i + 1)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(MeasureMath.length(MeasureMath.distance(pair.0, pair.1), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() }
                     }
-                    if ar.points.count > 2 { HStack { Text("Total").font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.length(MeasureMath.pathLength(ar.points), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() } }
+                    if ar.points.count > 2 { HStack { Text(L("Total")).font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.length(MeasureMath.pathLength(ar.points), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() } }
                 case .area:
-                    HStack { Text("Perimeter").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(MeasureMath.length(MeasureMath.pathLength(ar.points + [ar.points[0]]), metric: metric)).monospacedDigit() }
-                    if ar.points.count >= 3 { HStack { Text("Area").font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.area(MeasureMath.polygonArea(ar.points), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() } }
+                    HStack { Text(L("Perimeter")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(MeasureMath.length(MeasureMath.pathLength(ar.points + [ar.points[0]]), metric: metric)).monospacedDigit() }
+                    if ar.points.count >= 3 { HStack { Text(L("Area")).font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.area(MeasureMath.polygonArea(ar.points), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() } }
                 case .height:
-                    HStack { Text("Height").font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.length(ar.points.count >= 2 ? MeasureMath.height(from: ar.points[0], to: ar.points[1]) : (ar.liveHeight ?? 0), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() }
+                    HStack { Text(L("Height")).font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.length(ar.points.count >= 2 ? MeasureMath.height(from: ar.points[0], to: ar.points[1]) : (ar.liveHeight ?? 0), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() }
                 }
                 HStack {
-                    Button { Copier.copy(summary) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
+                    Button { Copier.copy(summary) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
                     Button { capturePhoto() } label: { Label(capturing ? "…" : "Photo", systemImage: "camera") }.compactButton().disabled(capturing)
-                    ShareLink(item: summary) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
+                    ShareLink(item: summary) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
                     Spacer()
                 }
             }.cardStyle(padding: HandySpacing.s12)

@@ -44,10 +44,10 @@ struct FitItView: View {
             ])
             if source == nil {
                 PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) {
-                    Label("Choose a photo or video", systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
+                    Label(L("Choose a photo or video"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
                 }.secondaryButton()
-                Button { showFiles = true } label: { Label("Choose a PDF", systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
-                Text("Typical limits: email 25 MB, most portals 2 MB, government photo uploads 50–200 KB.")
+                Button { showFiles = true } label: { Label(L("Choose a PDF"), systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
+                Text(L("Typical limits: email 25 MB, most portals 2 MB, government photo uploads 50–200 KB."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             } else {
                 sourceCard
@@ -62,8 +62,8 @@ struct FitItView: View {
                 if working { ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: "Working…") }
 
                 HStack {
-                    PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) { Label("Different photo/video", systemImage: "photo") }.textButton()
-                    Button { showFiles = true } label: { Label("Different PDF", systemImage: "doc") }.textButton()
+                    PhotosPicker(selection: $pickedItem, matching: .any(of: [.images, .videos])) { Label(L("Different photo/video"), systemImage: "photo") }.textButton()
+                    Button { showFiles = true } label: { Label(L("Different PDF"), systemImage: "doc") }.textButton()
                     Spacer()
                 }
             }
@@ -99,7 +99,7 @@ struct FitItView: View {
 
     private var targetPicker: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text("Must be under").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Must be under")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(availablePresets, id: \.bytes) { p in
                     HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = ""; errorText = nil }
@@ -112,7 +112,7 @@ struct FitItView: View {
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .onChange(of: customValue) { _, _ in applyCustom() }
-                Picker("Unit", selection: $customUnitMB) { Text("MB").tag(true); Text("KB").tag(false) }
+                Picker("Unit", selection: $customUnitMB) { Text(L("MB")).tag(true); Text(L("KB")).tag(false) }
                     .pickerStyle(.segmented).frame(width: 120)
                     .onChange(of: customUnitMB) { _, _ in applyCustom() }
             }
@@ -132,7 +132,7 @@ struct FitItView: View {
             }
             if let previewKind { ResultPreview(kind: previewKind) }   // show the fitted result, don't just describe it
             if case .pdf = source {
-                Text("Pages are flattened to reach the size, so text won't be selectable in the copy.")
+                Text(L("Pages are flattened to reach the size, so text won't be selectable in the copy."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             shareButton
@@ -158,11 +158,11 @@ struct FitItView: View {
     @ViewBuilder private var shareButton: some View {
         switch output {
         case .data(let d, let ext) where ext == "pdf":
-            ShareLink(item: PDFFile(data: d), preview: SharePreview("Fitted PDF")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: PDFFile(data: d), preview: SharePreview("Fitted PDF")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .data(let d, _):
-            ShareLink(item: JPEGFile(data: d), preview: SharePreview("Fitted photo")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: JPEGFile(data: d), preview: SharePreview("Fitted photo")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .file(let url):
-            ShareLink(item: url) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            ShareLink(item: url) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .none:
             EmptyView()
         }

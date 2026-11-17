@@ -92,7 +92,7 @@ struct MediaPlayerSheet: View {
             .ignoresSafeArea()
             // A visible way out (Apple 2.1: no dead-end screens), not just a swipe-down.
             .overlay(alignment: .topTrailing) {
-                Button("Done") { dismiss() }
+                Button(L("Done")) { dismiss() }
                     .font(.system(size: 16, weight: .semibold)).foregroundStyle(.white)
                     .padding(.horizontal, 14).padding(.vertical, 8)
                     .background(.black.opacity(0.55), in: Capsule())

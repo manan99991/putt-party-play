@@ -54,7 +54,7 @@ struct VaultView: View {
                 }
             } else if let url = previewURL {
                 QuickLookSheet(url: url).onDisappear { try? FileManager.default.removeItem(at: url); previewURL = nil }
-            } else { Text("Couldn't open this item.").padding() }
+            } else { Text(L("Couldn't open this item.")).padding() }
         }
     }
 
@@ -63,15 +63,15 @@ struct VaultView: View {
     private var lockedBody: some View {
         VStack(spacing: HandySpacing.s16) {
             ZStack { Circle().fill(HandyColor.accentSoft).frame(width: 72, height: 72); Image(systemName: "lock.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent) }.padding(.top, HandySpacing.s32)
-            Text("Locked").font(HandyFont.title)
-            Text("Everything in here is encrypted with a key that lives only in this phone's Secure Enclave-protected keychain and is released by Face ID or your passcode.")
+            Text(L("Locked")).font(HandyFont.title)
+            Text(L("Everything in here is encrypted with a key that lives only in this phone's Secure Enclave-protected keychain and is released by Face ID or your passcode."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
             Button {
                 guard !unlocking else { return }
                 unlocking = true
                 Task { await vault.unlock(); unlocking = false }
             } label: {
-                HStack { if unlocking { ProgressView().tint(.white) }; Label("Unlock", systemImage: "faceid") }.frame(maxWidth: .infinity)
+                HStack { if unlocking { ProgressView().tint(.white) }; Label(L("Unlock"), systemImage: "faceid") }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(unlocking)
             if let e = vault.errorText { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger).multilineTextAlignment(.center) }
         }.frame(maxWidth: .infinity)
@@ -83,11 +83,11 @@ struct VaultView: View {
         VStack(spacing: HandySpacing.s12) {
             LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8)], spacing: HandySpacing.s8) {
                 addButton(.note, "Note", "square.and.pencil"); addButton(.secret, "Secret", "key.fill")
-                Button { showCamera = true } label: { VStack(spacing: 4) { Image(systemName: "camera.fill"); Text("Camera").font(HandyFont.micro) }.frame(maxWidth: .infinity, minHeight: 56) }.secondaryButton()
-                PhotosPicker(selection: $photoItem, matching: .images, photoLibrary: .shared()) { VStack(spacing: 4) { Image(systemName: "photo.badge.plus"); Text("Photo").font(HandyFont.micro) }.frame(maxWidth: .infinity, minHeight: 56) }.secondaryButton()
-                Button { showFiles = true } label: { VStack(spacing: 4) { Image(systemName: "doc.badge.plus"); Text("File").font(HandyFont.micro) }.frame(maxWidth: .infinity, minHeight: 56) }.secondaryButton()
+                Button { showCamera = true } label: { VStack(spacing: 4) { Image(systemName: "camera.fill"); Text(L("Camera")).font(HandyFont.micro) }.frame(maxWidth: .infinity, minHeight: 56) }.secondaryButton()
+                PhotosPicker(selection: $photoItem, matching: .images, photoLibrary: .shared()) { VStack(spacing: 4) { Image(systemName: "photo.badge.plus"); Text(L("Photo")).font(HandyFont.micro) }.frame(maxWidth: .infinity, minHeight: 56) }.secondaryButton()
+                Button { showFiles = true } label: { VStack(spacing: 4) { Image(systemName: "doc.badge.plus"); Text(L("File")).font(HandyFont.micro) }.frame(maxWidth: .infinity, minHeight: 56) }.secondaryButton()
             }
-            Toggle(isOn: $moveOriginal) { Text("When adding from Photos, delete the original").font(HandyFont.caption) }.tint(HandyColor.accent)
+            Toggle(isOn: $moveOriginal) { Text(L("When adding from Photos, delete the original")).font(HandyFont.caption) }.tint(HandyColor.accent)
 
             if let kind = adding { composer(kind) }
 
@@ -97,9 +97,9 @@ struct VaultView: View {
             HStack {
                 Text("\(vault.items.count) item\(vault.items.count == 1 ? "" : "s") · \(SizeTarget.format(vault.totalBytes))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Spacer()
-                Button { vault.lock(); thumbs = [:]; revealed = [] } label: { Label("Lock now", systemImage: "lock.fill") }.compactButton()
+                Button { vault.lock(); thumbs = [:]; revealed = [] } label: { Label(L("Lock now"), systemImage: "lock.fill") }.compactButton()
             }
-            Text("Camera photos never touch the camera roll or iCloud. Copied secrets leave the clipboard after 30 s. Deleting shreds the file. Lost passcode = lost vault — there is no recovery, by design.")
+            Text(L("Camera photos never touch the camera roll or iCloud. Copied secrets leave the clipboard after 30 s. Deleting shreds the file. Lost passcode = lost vault — there is no recovery, by design."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
@@ -127,7 +127,7 @@ struct VaultView: View {
                     if kind == .secret { vault.addSecret(title: title, value: body_) } else { vault.addNote(title: title, text: body_) }
                     adding = nil; title = ""; body_ = ""; HandyHaptics.success()
                 }.compactButton().disabled(body_.trimmingCharacters(in: .whitespaces).isEmpty)
-                Button("Cancel") { adding = nil }.textButton()
+                Button(L("Cancel")) { adding = nil }.textButton()
                 Spacer()
             }
         }.cardStyle(padding: HandySpacing.s12)
@@ -154,9 +154,9 @@ struct VaultView: View {
                 Button { copySecret(item.text) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
             }
             Menu {
-                if item.kind == .note { Button { UIPasteboard.general.string = item.text; toast = "Copied" } label: { Label("Copy", systemImage: "doc.on.doc") } }
-                if item.kind == .document || item.kind == .photo, let d = vault.data(for: item) { ShareLink(item: TextFileOrData(data: d, ext: item.fileExt ?? "jpg"), preview: SharePreview(item.title)) { Label("Export", systemImage: "square.and.arrow.up") } }
-                Button(role: .destructive) { vault.delete(item); thumbs[item.id] = nil; HandyHaptics.light() } label: { Label("Delete (shred)", systemImage: "trash") }
+                if item.kind == .note { Button { UIPasteboard.general.string = item.text; toast = "Copied" } label: { Label(L("Copy"), systemImage: "doc.on.doc") } }
+                if item.kind == .document || item.kind == .photo, let d = vault.data(for: item) { ShareLink(item: TextFileOrData(data: d, ext: item.fileExt ?? "jpg"), preview: SharePreview(item.title)) { Label(L("Export"), systemImage: "square.and.arrow.up") } }
+                Button(role: .destructive) { vault.delete(item); thumbs[item.id] = nil; HandyHaptics.light() } label: { Label(L("Delete (shred)"), systemImage: "trash") }
             } label: { Image(systemName: "ellipsis.circle").accessibilityLabel("More").font(.system(size: 20)).foregroundStyle(HandyColor.textSecondary) }
         }
         .padding(HandySpacing.s12)

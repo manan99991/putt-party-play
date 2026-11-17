@@ -40,17 +40,17 @@ struct ContactsView: View {
                     HStack {
                         Image(systemName: "arrow.left.arrow.right.circle.fill").font(.system(size: 26)).foregroundStyle(HandyColor.accent)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Move contacts between accounts").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                            Text("Gmail, iCloud, your phone: copy or move in three taps.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            Text(L("Move contacts between accounts")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                            Text(L("Gmail, iCloud, your phone: copy or move in three taps.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
                         Spacer(); Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
                     }.cardStyle(padding: HandySpacing.s12)
                 }.buttonStyle(.plain).accessibilityIdentifier("move-contacts")
-                if scanning { HStack { ProgressView(); Text("Reading your contacts…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+                if scanning { HStack { ProgressView(); Text(L("Reading your contacts…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
                 if let r = report { reportBody(r) }
                 if let error { Text(error).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             }
-            Text("Everything runs on your phone; nothing is uploaded. A merge is permanent — iOS has no contacts trash — so back up before you merge.")
+            Text(L("Everything runs on your phone; nothing is uploaded. A merge is permanent — iOS has no contacts trash — so back up before you merge."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .task { if authorized && report == nil { scan() }; await autoBackupIfDue() }
@@ -63,24 +63,24 @@ struct ContactsView: View {
                             isPresented: Binding(get: { pendingMerge != nil }, set: { if !$0 { pendingMerge = nil } }),
                             titleVisibility: .visible) {
             Button("Merge \(pendingMerge?.count ?? 0) into one", role: .destructive) { if let g = pendingMerge { doMerge(g) }; pendingMerge = nil }
-            Button("Cancel", role: .cancel) { pendingMerge = nil }
+            Button(L("Cancel"), role: .cancel) { pendingMerge = nil }
         } message: {
-            Text("Every number and email is kept on one contact; the duplicates are removed. This can't be undone, so make sure you've backed up.")
+            Text(L("Every number and email is kept on one contact; the duplicates are removed. This can't be undone, so make sure you've backed up."))
         }
         .confirmationDialog("Merge all duplicate groups?",
                             isPresented: Binding(get: { pendingMergeAll != nil }, set: { if !$0 { pendingMergeAll = nil } }),
                             titleVisibility: .visible) {
             Button("Merge all \(pendingMergeAll?.count ?? 0) groups", role: .destructive) { if let gs = pendingMergeAll { doMergeAll(gs) }; pendingMergeAll = nil }
-            Button("Cancel", role: .cancel) { pendingMergeAll = nil }
+            Button(L("Cancel"), role: .cancel) { pendingMergeAll = nil }
         } message: {
-            Text("Each group collapses to one contact, keeping every number and email. This can't be undone, so make sure you've backed up.")
+            Text(L("Each group collapses to one contact, keeping every number and email. This can't be undone, so make sure you've backed up."))
         }
         .sheet(isPresented: $showTransfer) { NavigationStack { ContactsTransferView(onChanged: { scan() }) } }
         .sheet(item: $tidy) { g in
             NavigationStack {
                 ContactsTidySheet(group: g, onChanged: { scan() })
                     .navigationTitle(g.title).navigationBarTitleDisplayMode(.inline)
-                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { tidy = nil } } }
+                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { tidy = nil } } }
             }
         }
     }
@@ -102,10 +102,10 @@ struct ContactsView: View {
     private var backupBar: some View {
         Group {
             if let backupURL {
-                ShareLink(item: backupURL) { Label("Share or save the backup", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                ShareLink(item: backupURL) { Label(L("Share or save the backup"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             } else {
                 Button { backup() } label: {
-                    HStack { if busy { ProgressView() }; Label("Back up all contacts (.vcf)", systemImage: "arrow.down.doc") }.frame(maxWidth: .infinity)
+                    HStack { if busy { ProgressView() }; Label(L("Back up all contacts (.vcf)"), systemImage: "arrow.down.doc") }.frame(maxWidth: .infinity)
                 }.primaryButton().disabled(busy)
             }
         }
@@ -116,11 +116,11 @@ struct ContactsView: View {
             Text("\(r.total) contacts · \(r.duplicateCount) duplicate\(r.duplicateCount == 1 ? "" : "s")")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             Spacer()
-            Button { scan() } label: { Label("Rescan", systemImage: "arrow.clockwise") }.textButton().disabled(scanning || busy)
+            Button { scan() } label: { Label(L("Rescan"), systemImage: "arrow.clockwise") }.textButton().disabled(scanning || busy)
         }
 
         if r.duplicateGroups.isEmpty {
-            Text("No duplicates found.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+            Text(L("No duplicates found.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
         }
 
         // Merge every duplicate group in one go — each group collapses to a single contact.
@@ -155,7 +155,7 @@ struct ContactsView: View {
             TidyGroup(title: "Empty — nothing saved", icon: "person.crop.circle.badge.xmark", recs: r.empty, deletable: true),
         ].filter { !$0.recs.isEmpty }
         if !buckets.isEmpty {
-            Text("Tidy up").font(HandyFont.bodyStrong)
+            Text(L("Tidy up")).font(HandyFont.bodyStrong)
             ForEach(buckets) { b in
                 Button { tidy = b } label: {
                     HStack(spacing: HandySpacing.s12) {
@@ -170,11 +170,11 @@ struct ContactsView: View {
                 }.buttonStyle(.plain)
             }
         } else {
-            Text("Every contact has a name and a number. ✓").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Every contact has a name and a number. ✓")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
 
         if !r.sources.isEmpty {
-            Text("Where they're saved").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Where they're saved")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(r.sources) { s in
                     Text("\(s.name) · \(s.count)").font(HandyFont.micro).padding(.horizontal, 10).padding(.vertical, 5)
@@ -211,12 +211,12 @@ struct ContactsView: View {
     private var autoBackupCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack {
-                Label("Automatic backup", systemImage: "clock.arrow.circlepath").font(HandyFont.bodyStrong)
+                Label(L("Automatic backup"), systemImage: "clock.arrow.circlepath").font(HandyFont.bodyStrong)
                 Spacer()
                 Text(autoBackup.lastBackup.map { "Last: " + $0.formatted(date: .abbreviated, time: .omitted) } ?? "Never")
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
-            Text("Saves a dated copy to the Files app (and iCloud Drive if it's on) on the schedule you pick, so a lost phone never means lost contacts.")
+            Text(L("Saves a dated copy to the Files app (and iCloud Drive if it's on) on the schedule you pick, so a lost phone never means lost contacts."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(BackupFrequency.allCases, id: \.rawValue) { f in
@@ -228,9 +228,9 @@ struct ContactsView: View {
             }
             if let backupNote { Text(backupNote).font(HandyFont.micro).foregroundStyle(HandyColor.accent) }
             HStack(spacing: HandySpacing.s8) {
-                Button { runBackupNow() } label: { Label("Back up now", systemImage: "arrow.down.doc") }.compactButton().disabled(busy)
+                Button { runBackupNow() } label: { Label(L("Back up now"), systemImage: "arrow.down.doc") }.compactButton().disabled(busy)
                 if autoBackup.lastBackupURL != nil {
-                    if MailComposer.canSend { Button { showMail = true } label: { Label("Email a copy", systemImage: "envelope") }.compactButton() }
+                    if MailComposer.canSend { Button { showMail = true } label: { Label(L("Email a copy"), systemImage: "envelope") }.compactButton() }
                     if let u = autoBackup.lastBackupURL { ShareLink(item: u) { Image(systemName: "square.and.arrow.up").frame(width: 36, height: 36) }.compactButton() }
                 }
             }
@@ -321,10 +321,10 @@ private struct ContactsTidySheet: View {
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: HandySpacing.s8) {
                 if let url = shareURL {
-                    ShareLink(item: url) { Label("Share .vcf", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                    ShareLink(item: url) { Label(L("Share .vcf"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                 } else {
                     Button { exportGroup() } label: {
-                        HStack { if busy { ProgressView() }; Label("Export (.vcf)", systemImage: "square.and.arrow.up") }.frame(maxWidth: .infinity)
+                        HStack { if busy { ProgressView() }; Label(L("Export (.vcf)"), systemImage: "square.and.arrow.up") }.frame(maxWidth: .infinity)
                     }.secondaryButton().disabled(busy)
                 }
                 if group.deletable {
@@ -337,8 +337,8 @@ private struct ContactsTidySheet: View {
         }
         .confirmationDialog("Delete \(group.recs.count) empty contacts?", isPresented: $confirmDelete, titleVisibility: .visible) {
             Button("Delete \(group.recs.count)", role: .destructive) { deleteAll() }
-            Button("Cancel", role: .cancel) {}
-        } message: { Text("They have no name and no number. This can't be undone.") }
+            Button(L("Cancel"), role: .cancel) {}
+        } message: { Text(L("They have no name and no number. This can't be undone.")) }
     }
 
     private func exportGroup() {

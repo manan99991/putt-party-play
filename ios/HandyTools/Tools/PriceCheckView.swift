@@ -50,15 +50,15 @@ private struct ComparePanel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             PhotosPicker(selection: $photoItem, matching: .images) {
-                Label("Scan a photo or screenshot", systemImage: "camera.viewfinder").frame(maxWidth: .infinity)
+                Label(L("Scan a photo or screenshot"), systemImage: "camera.viewfinder").frame(maxWidth: .infinity)
             }.secondaryButton()
-            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text("Reading prices…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text(L("Reading prices…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
             if let scanNote { Text(scanNote).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
 
             if usesOz {
                 Toggle(isOn: Binding(get: { troy }, set: { troyManual = $0 })) {
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("Precious metal (troy ounce)").font(HandyFont.body)
+                        Text(L("Precious metal (troy ounce)")).font(HandyFont.body)
                         Text(troy ? "“oz” = 31.1 g — gold, silver, platinum" : "“oz” = 28.35 g — food & household").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     }
                 }.tint(HandyColor.accent)
@@ -85,11 +85,11 @@ private struct ComparePanel: View {
                 }.cardStyle(padding: HandySpacing.s12)
             }
             HStack {
-                Button { rows.append(CompareRow()) } label: { Label("Add item", systemImage: "plus") }.textButton()
+                Button { rows.append(CompareRow()) } label: { Label(L("Add item"), systemImage: "plus") }.textButton()
                 Spacer()
-                if rows.count > 2 { Button(role: .destructive) { rows.removeLast() } label: { Label("Remove", systemImage: "minus") }.textButton() }
+                if rows.count > 2 { Button(role: .destructive) { rows.removeLast() } label: { Label(L("Remove"), systemImage: "minus") }.textButton() }
             }
-            Text("Tip: works across units — compare a 16 oz jar against a 500 g one and it still tells you which is cheaper per 100 g.")
+            Text(L("Tip: works across units — compare a 16 oz jar against a 500 g one and it still tells you which is cheaper per 100 g."))
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
         .onChange(of: photoItem) { _, item in
@@ -138,7 +138,7 @@ private struct CartPanel: View {
 
             VStack(spacing: HandySpacing.s8) {
                 HStack {
-                    Text("Running total").font(HandyFont.bodyStrong)
+                    Text(L("Running total")).font(HandyFont.bodyStrong)
                     Spacer()
                     Text(PriceBrain.money(total)).font(HandyFont.bodyStrong)
                 }
@@ -160,9 +160,9 @@ private struct CartPanel: View {
                 }
             }
             HStack {
-                Button { lines.append(CartLine()) } label: { Label("Add item", systemImage: "plus") }.textButton()
+                Button { lines.append(CartLine()) } label: { Label(L("Add item"), systemImage: "plus") }.textButton()
                 Spacer()
-                if lines.count > 1 { Button(role: .destructive) { lines.removeLast() } label: { Label("Remove", systemImage: "minus") }.textButton() }
+                if lines.count > 1 { Button(role: .destructive) { lines.removeLast() } label: { Label(L("Remove"), systemImage: "minus") }.textButton() }
             }
         }
     }
@@ -178,9 +178,9 @@ private struct LabelPanel: View {
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             PhotosPicker(selection: $photoItem, matching: .images) {
-                Label("Snap or choose a label", systemImage: "text.viewfinder").frame(maxWidth: .infinity)
+                Label(L("Snap or choose a label"), systemImage: "text.viewfinder").frame(maxWidth: .infinity)
             }.secondaryButton()
-            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text("Reading the label…").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text(L("Reading the label…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
             if let result {
                 if let note = result.servingNote {
@@ -191,21 +191,21 @@ private struct LabelPanel: View {
                     Text(result.rawText.isEmpty ? "Couldn't read that — try a straight, well-lit shot of the ingredients list." : "Nothing on our watch-list stood out. Here's what we read below.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
-                    Text("On this label").font(HandyFont.bodyStrong)
+                    Text(L("On this label")).font(HandyFont.bodyStrong)
                     ForEach(result.flags) { f in
                         VStack(alignment: .leading, spacing: 2) {
                             Text(f.term.capitalized).font(HandyFont.body)
                             Text(f.note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s8)
                     }
-                    Text("Guidance, not medical advice. Always check the label itself for allergens.")
+                    Text(L("Guidance, not medical advice. Always check the label itself for allergens."))
                         .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                 }
                 if !result.rawText.isEmpty {
                     DisclosureGroup("Text we read") { Text(result.rawText).font(HandyFont.caption).textSelection(.enabled).foregroundStyle(HandyColor.textSecondary) }.font(HandyFont.caption)
                 }
             } else if !busy {
-                Text("Confused by an ingredients list? Snap it and get a plain-language read of the additives, allergens and the serving-size math.")
+                Text(L("Confused by an ingredients list? Snap it and get a plain-language read of the additives, allergens and the serving-size math."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }

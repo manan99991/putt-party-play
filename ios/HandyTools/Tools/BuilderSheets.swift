@@ -14,11 +14,11 @@ struct SheetsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                Text("Each sheet opens in Numbers, Excel or Google Sheets. They stay on this phone until you send one.")
+                Text(L("Each sheet opens in Numbers, Excel or Google Sheets. They stay on this phone until you send one."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
                 if sheets.isEmpty {
-                    Text("No sheets yet. Run \"Receipt into this month's expense sheet\" and it appears here.")
+                    Text(L("No sheets yet. Run \"Receipt into this month's expense sheet\" and it appears here."))
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
                 }
                 ForEach(sheets) { s in card(s) }
@@ -26,25 +26,25 @@ struct SheetsView: View {
         }
         .background(HandyColor.bg)
         .navigationTitle("My sheets").navigationBarTitleDisplayMode(.inline)
-        .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+        .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
         .alert("Rename sheet", isPresented: Binding(get: { renaming != nil }, set: { if !$0 { renaming = nil } })) {
             TextField("Name", text: $newName)
-            Button("Rename") {
+            Button(L("Rename")) {
                 if let r = renaming {
                     note = RunningList.rename(r.file, to: newName) == nil ? "That name is empty or already used. The sheet kept its name." : "Renamed."
                     reload()
                 }
                 renaming = nil
             }
-            Button("Cancel", role: .cancel) { renaming = nil }
-        } message: { Text("Tools that add to this sheet by its old name will start a new one.") }
+            Button(L("Cancel"), role: .cancel) { renaming = nil }
+        } message: { Text(L("Tools that add to this sheet by its old name will start a new one.")) }
         .confirmationDialog("Delete this sheet?", isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }), titleVisibility: .visible) {
             Button("Delete \(deleting?.name ?? "sheet")", role: .destructive) {
                 if let d = deleting { RunningList.delete(d.file); note = "Deleted \(d.name)."; if open?.file == d.file { open = nil }; reload() }
                 deleting = nil
             }
-            Button("Keep it", role: .cancel) { deleting = nil }
-        } message: { Text("Its entries are removed from this phone. This can't be undone.") }
+            Button(L("Keep it"), role: .cancel) { deleting = nil }
+        } message: { Text(L("Its entries are removed from this phone. This can't be undone.")) }
     }
 
     private func reload() { sheets = RunningList.all() }
@@ -63,13 +63,13 @@ struct SheetsView: View {
             }.buttonStyle(.plain).accessibilityIdentifier("sheet-\(s.name)")
             if open?.file == s.file { rows(s) }
             HStack(spacing: HandySpacing.s12) {
-                ShareLink(item: RunningList.url(s.file)) { Label("Send", systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
-                Button { newName = s.name; renaming = s } label: { Label("Rename", systemImage: "pencil") }.font(HandyFont.caption)
+                ShareLink(item: RunningList.url(s.file)) { Label(L("Send"), systemImage: "square.and.arrow.up") }.font(HandyFont.caption)
+                Button { newName = s.name; renaming = s } label: { Label(L("Rename"), systemImage: "pencil") }.font(HandyFont.caption)
                 if s.rows > 0 {
-                    Button { if RunningList.removeLastRow(s.file) { note = "Removed the last entry from \(s.name)."; reload() } } label: { Label("Undo last", systemImage: "arrow.uturn.backward") }.font(HandyFont.caption)
+                    Button { if RunningList.removeLastRow(s.file) { note = "Removed the last entry from \(s.name)."; reload() } } label: { Label(L("Undo last"), systemImage: "arrow.uturn.backward") }.font(HandyFont.caption)
                 }
                 Spacer()
-                Button(role: .destructive) { deleting = s } label: { Label("Delete", systemImage: "trash") }.font(HandyFont.caption)
+                Button(role: .destructive) { deleting = s } label: { Label(L("Delete"), systemImage: "trash") }.font(HandyFont.caption)
             }.frame(minHeight: 44)
         }.cardStyle(padding: HandySpacing.s12)
     }

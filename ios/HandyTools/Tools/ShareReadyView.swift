@@ -45,7 +45,7 @@ struct ShareReadyView: View {
                 "Export the share-ready copies.",
             ])
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                Text("Where is it going?").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Where is it going?")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 ForEach(Self.recipes) { r in
                     Button { recipe = r } label: {
                         HStack(spacing: HandySpacing.s12) {
@@ -65,9 +65,9 @@ struct ShareReadyView: View {
 
             HStack(spacing: HandySpacing.s12) {
                 PhotosPicker(selection: $photoItems, maxSelectionCount: store.isPremium ? 0 : 10, matching: .any(of: [.images, .videos])) {
-                    Label("Photos & videos", systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
+                    Label(L("Photos & videos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
                 }.secondaryButton()
-                Button { showFiles = true } label: { Label("PDFs", systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { showFiles = true } label: { Label(L("PDFs"), systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
             }
             .onAppear { if Launch.sample, queue.isEmpty { queue = [.image(SampleAssets.photo())] } }
             .onChange(of: photoItems) { _, new in loadPhotos(new) }
@@ -90,7 +90,7 @@ struct ShareReadyView: View {
             if !outputs.isEmpty {
                 Label("\(outputs.count) ready for \(recipe.name.lowercased())", systemImage: "checkmark.seal.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 OutputPreviewStrip(urls: outputs)   // review before sharing
-                ShareLink(items: outputs) { Label("Share them", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                ShareLink(items: outputs) { Label(L("Share them"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
             }
             if !skipped.isEmpty {
                 Text("Couldn't fit: \(skipped.joined(separator: ", ")). Try a looser recipe for those.").font(HandyFont.caption).foregroundStyle(HandyColor.danger)

@@ -84,7 +84,7 @@ struct AudioLabView: View {
                             .onTapGesture { tone.frequency = Pitch.frequency(midi: midi, a4: a4); tone.wave = .sine; tone.volume = 0.5; tone.pan = 0; tone.start(); Task { try? await Task.sleep(for: .seconds(1.5)); tone.stop() } }
                     }
                 }
-                Text("Tap a string to hear the reference pitch.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L("Tap a string to hear the reference pitch.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             HStack { Text("A4 = \(Int(a4)) Hz").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Stepper("", value: $a4, in: 415...466).labelsHidden(); Spacer() }
             if tuner.denied { LimitNote("Microphone access is off. Allow it in Settings to tune.") }
@@ -106,9 +106,9 @@ struct AudioLabView: View {
                 Spacer()
             }
             HStack { Image(systemName: "speaker.wave.1"); Slider(value: $tone.volume, in: 0...1).tint(HandyColor.accent); Image(systemName: "speaker.wave.3") }.foregroundStyle(HandyColor.textSecondary)
-            HStack { Text("L").font(HandyFont.caption); Slider(value: $tone.pan, in: -1...1).tint(HandyColor.accent); Text("R").font(HandyFont.caption) }.foregroundStyle(HandyColor.textSecondary)
+            HStack { Text(L("L")).font(HandyFont.caption); Slider(value: $tone.pan, in: -1...1).tint(HandyColor.accent); Text(L("R")).font(HandyFont.caption) }.foregroundStyle(HandyColor.textSecondary)
             Button { tone.playing ? tone.stop() : tone.start() } label: { Label(tone.playing ? "Stop" : "Play tone", systemImage: tone.playing ? "stop.fill" : "play.fill").frame(maxWidth: .infinity) }.primaryButton()
-            Text("Start quiet with earbuds. Pure tones above ~16 kHz are inaudible for most adults — that's normal.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Start quiet with earbuds. Pure tones above ~16 kHz are inaudible for most adults — that's normal.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -117,15 +117,15 @@ struct AudioLabView: View {
     private var speakerPanel: some View {
         VStack(spacing: HandySpacing.s12) {
             HStack(spacing: HandySpacing.s8) {
-                Button { play(pan: -1) } label: { Label("Left", systemImage: "l.circle").frame(maxWidth: .infinity) }.secondaryButton()
-                Button { play(pan: 0) } label: { Label("Both", systemImage: "circle.grid.2x1").frame(maxWidth: .infinity) }.secondaryButton()
-                Button { play(pan: 1) } label: { Label("Right", systemImage: "r.circle").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { play(pan: -1) } label: { Label(L("Left"), systemImage: "l.circle").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { play(pan: 0) } label: { Label(L("Both"), systemImage: "circle.grid.2x1").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { play(pan: 1) } label: { Label(L("Right"), systemImage: "r.circle").frame(maxWidth: .infinity) }.secondaryButton()
             }
-            Button { tone.volume = 0.6; tone.wave = .sine; tone.pan = 0; tone.sweep(from: 40, to: 16000, seconds: 10) } label: { Label("Full sweep 40 Hz → 16 kHz (10 s)", systemImage: "waveform.path").frame(maxWidth: .infinity) }.secondaryButton()
-            Button { tone.volume = 0.5; tone.wave = .sine; tone.pan = 0; tone.sweep(from: 8000, to: 20000, seconds: 12) } label: { Label("How high can you hear? 8 → 20 kHz", systemImage: "ear").frame(maxWidth: .infinity) }.secondaryButton()
-            Button { tone.volume = 0.8; tone.wave = .sine; tone.pan = 0; tone.frequency = 45; tone.start() } label: { Label("Bass rattle check — 45 Hz", systemImage: "speaker.wave.3.fill").frame(maxWidth: .infinity) }.secondaryButton()
-            if tone.playing { Button { tone.stop() } label: { Label("Stop", systemImage: "stop.fill").frame(maxWidth: .infinity) }.primaryButton() }
-            Text("Left/Right confirms a swapped or dead channel; the sweep exposes buzzes and dropouts. The hearing sweep is a fun check, not a medical test.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Button { tone.volume = 0.6; tone.wave = .sine; tone.pan = 0; tone.sweep(from: 40, to: 16000, seconds: 10) } label: { Label(L("Full sweep 40 Hz → 16 kHz (10 s)"), systemImage: "waveform.path").frame(maxWidth: .infinity) }.secondaryButton()
+            Button { tone.volume = 0.5; tone.wave = .sine; tone.pan = 0; tone.sweep(from: 8000, to: 20000, seconds: 12) } label: { Label(L("How high can you hear? 8 → 20 kHz"), systemImage: "ear").frame(maxWidth: .infinity) }.secondaryButton()
+            Button { tone.volume = 0.8; tone.wave = .sine; tone.pan = 0; tone.frequency = 45; tone.start() } label: { Label(L("Bass rattle check — 45 Hz"), systemImage: "speaker.wave.3.fill").frame(maxWidth: .infinity) }.secondaryButton()
+            if tone.playing { Button { tone.stop() } label: { Label(L("Stop"), systemImage: "stop.fill").frame(maxWidth: .infinity) }.primaryButton() }
+            Text(L("Left/Right confirms a swapped or dead channel; the sweep exposes buzzes and dropouts. The hearing sweep is a fun check, not a medical test.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -144,7 +144,7 @@ struct AudioLabView: View {
             Button {
                 if ejecting { tone.stop(); ejecting = false } else { tone.waterEject(); ejecting = true; Task { try? await Task.sleep(for: .seconds(12.5)); ejecting = false } }
             } label: { Label(ejecting ? "Stop" : "Eject water (12 s)", systemImage: ejecting ? "stop.fill" : "drop.triangle").frame(maxWidth: .infinity) }.primaryButton()
-            Text("Turn volume to max, unplug earbuds, run it 2–3 times. Dry the port with a cloth afterwards — don't use heat.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Turn volume to max, unplug earbuds, run it 2–3 times. Dry the port with a cloth afterwards — don't use heat.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.padding(.top, HandySpacing.s16)
     }
 }

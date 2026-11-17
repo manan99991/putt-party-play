@@ -27,7 +27,7 @@ struct OnboardingView: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             VStack {
-                HStack { Spacer(); Button("Skip") { onDone() }.font(HandyFont.bodyStrong).foregroundStyle(onBlue ? .white : HandyColor.accent).padding(HandySpacing.s16) }
+                HStack { Spacer(); Button(L("Skip")) { onDone() }.font(HandyFont.bodyStrong).foregroundStyle(onBlue ? .white : HandyColor.accent).padding(HandySpacing.s16) }
                 Spacer()
                 HStack(spacing: 8) {
                     ForEach(0..<3, id: \.self) { i in
@@ -69,8 +69,8 @@ private struct HeroPage: View {
             Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(.white).scaledToFit().frame(width: 240, height: 240)
                 .id(idx).transition(.opacity)
             Spacer()
-            Text("30 tools your phone forgot.").font(HandyFont.display).foregroundStyle(.white).multilineTextAlignment(.center)
-            Text("Each one does the job properly. Nothing leaves your phone.").font(HandyFont.body).foregroundStyle(.white.opacity(0.85)).multilineTextAlignment(.center)
+            Text(L("30 tools your phone forgot.")).font(HandyFont.display).foregroundStyle(.white).multilineTextAlignment(.center)
+            Text(L("Each one does the job properly. Nothing leaves your phone.")).font(HandyFont.body).foregroundStyle(.white.opacity(0.85)).multilineTextAlignment(.center)
             Spacer().frame(height: 140)
         }
         .padding(.horizontal, HandySpacing.s24)
@@ -98,8 +98,8 @@ private struct GridPage: View {
             }
             .frame(maxWidth: 300)
             Spacer()
-            Text("Pick a tool. It explains itself.").font(HandyFont.display).multilineTextAlignment(.center)
-            Text("Each one asks for only the permission it needs, when you turn it on.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
+            Text(L("Pick a tool. It explains itself.")).font(HandyFont.display).multilineTextAlignment(.center)
+            Text(L("Each one asks for only the permission it needs, when you turn it on.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
             Spacer().frame(height: 140)
         }
         .padding(.horizontal, HandySpacing.s24)
@@ -114,7 +114,7 @@ private struct ProPage: View {
         VStack(spacing: HandySpacing.s12) {
             Spacer()
             VStack(spacing: 0) {
-                HStack { Spacer(); Text("Free").frame(width: 80); Text("Pro").frame(width: 90).foregroundStyle(HandyColor.accent) }
+                HStack { Spacer(); Text(L("Free")).frame(width: 80); Text(L("Pro")).frame(width: 90).foregroundStyle(HandyColor.accent) }
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).padding(.bottom, HandySpacing.s8)
                 ForEach(rows, id: \.0) { r in
                     Divider().overlay(HandyColor.border)
@@ -128,9 +128,9 @@ private struct ProPage: View {
             }
             .cardStyle()
             Spacer()
-            Text("Free is really free.").font(HandyFont.display).multilineTextAlignment(.center)
-            Text("Pro removes ads. That's the whole pitch.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
-            Button("See Pro", action: onSeePro).textButton()
+            Text(L("Free is really free.")).font(HandyFont.display).multilineTextAlignment(.center)
+            Text(L("Pro removes ads. That's the whole pitch.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+            Button(L("See Pro"), action: onSeePro).textButton()
             Spacer().frame(height: 140)
         }
         .padding(.horizontal, HandySpacing.s24)

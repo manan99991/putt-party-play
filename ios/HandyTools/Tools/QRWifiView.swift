@@ -63,10 +63,10 @@ struct QRWifiView: View {
 
     private var scanTab: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Button { showScanner = true } label: { Label("Open scanner", systemImage: "qrcode.viewfinder").frame(maxWidth: .infinity) }
+            Button { showScanner = true } label: { Label(L("Open scanner"), systemImage: "qrcode.viewfinder").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(!DataScannerViewController.isSupported)
             PhotosPicker(selection: $photoItem, matching: .images) {
-                Label("Scan a code in a photo or screenshot", systemImage: "photo").frame(maxWidth: .infinity)
+                Label(L("Scan a code in a photo or screenshot"), systemImage: "photo").frame(maxWidth: .infinity)
             }.secondaryButton()
             if let scanError { Text(scanError).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let s = scanned { resultCard(for: s) }
@@ -102,7 +102,7 @@ struct QRWifiView: View {
             case 1:
                 field("Network name (SSID)", $ssid)
                 secureField("Password", $password)
-                Picker("Security", selection: $security) { Text("WPA/WPA2/3").tag(0); Text("WEP").tag(1); Text("Open").tag(2) }.pickerStyle(.segmented)
+                Picker("Security", selection: $security) { Text(L("WPA/WPA2/3")).tag(0); Text(L("WEP")).tag(1); Text(L("Open")).tag(2) }.pickerStyle(.segmented)
                 Toggle("Hidden network", isOn: $hidden).tint(HandyColor.accent).font(HandyFont.body)
             case 2:
                 field("Full name", $cName); field("Phone", $cPhone); field("Email", $cEmail); field("Company (optional)", $cOrg)
@@ -112,9 +112,9 @@ struct QRWifiView: View {
                 TextEditor(text: $batch).frame(minHeight: 120).padding(HandySpacing.s8).scrollContentBackground(.hidden)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                    .overlay(alignment: .topLeading) { if batch.isEmpty { Text("One link or text per line — one QR each").foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
+                    .overlay(alignment: .topLeading) { if batch.isEmpty { Text(L("One link or text per line — one QR each")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             }
-            Picker("Size", selection: $sizeIdx) { Text("Small").tag(0); Text("Medium").tag(1); Text("Large").tag(2) }.pickerStyle(.segmented)
+            Picker("Size", selection: $sizeIdx) { Text(L("Small")).tag(0); Text(L("Medium")).tag(1); Text(L("Large")).tag(2) }.pickerStyle(.segmented)
 
             Button { generate() } label: { Label(kind == 4 ? "Make all" : "Make QR code", systemImage: "qrcode").frame(maxWidth: .infinity) }.primaryButton()
 
@@ -122,7 +122,7 @@ struct QRWifiView: View {
                 Image(uiImage: qrImage).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).frame(maxWidth: .infinity)
                     .padding(HandySpacing.s24).background(.white, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
                 if let png = qrImage.pngData() {
-                    ShareLink(item: PNGFile(data: png), preview: SharePreview("QR code")) { Label("Save or share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                    ShareLink(item: PNGFile(data: png), preview: SharePreview("QR code")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                 }
             }
             if !batchImages.isEmpty {
@@ -130,7 +130,7 @@ struct QRWifiView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: HandySpacing.s8) { ForEach(Array(batchImages.enumerated()), id: \.offset) { _, im in Image(uiImage: im).interpolation(.none).resizable().frame(width: 96, height: 96).background(.white) } }
                 }
-                ShareLink(items: batchImages.compactMap { $0.pngData() }.map { PNGFile(data: $0) }, preview: { _ in SharePreview("QR code") }) { Label("Share all", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                ShareLink(items: batchImages.compactMap { $0.pngData() }.map { PNGFile(data: $0) }, preview: { _ in SharePreview("QR code") }) { Label(L("Share all"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
         }
     }
@@ -165,17 +165,17 @@ struct QRWifiView: View {
 
     private var wifiCardTab: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Text("A printable card for the fridge or guest room — people scan it and join, no typing.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("A printable card for the fridge or guest room — people scan it and join, no typing.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             field("Network name (SSID)", $ssid)
             secureField("Password", $password)
-            Picker("Security", selection: $security) { Text("WPA/WPA2/3").tag(0); Text("WEP").tag(1); Text("Open").tag(2) }.pickerStyle(.segmented)
+            Picker("Security", selection: $security) { Text(L("WPA/WPA2/3")).tag(0); Text(L("WEP")).tag(1); Text(L("Open")).tag(2) }.pickerStyle(.segmented)
             Button { cardImage = QRGen.wifiCard(ssid: ssid, password: password, security: ["WPA", "WEP", "nopass"][security]) ; if cardImage != nil { HandyHaptics.success() } } label: {
-                Label("Make the card", systemImage: "wifi").frame(maxWidth: .infinity)
+                Label(L("Make the card"), systemImage: "wifi").frame(maxWidth: .infinity)
             }.primaryButton().disabled(ssid.isEmpty)
             if let cardImage, let png = cardImage.pngData() {
                 Image(uiImage: cardImage).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                ShareLink(item: PNGFile(data: png), preview: SharePreview("Wi‑Fi card")) { Label("Save, share or print", systemImage: "printer").frame(maxWidth: .infinity) }.secondaryButton()
+                ShareLink(item: PNGFile(data: png), preview: SharePreview("Wi‑Fi card")) { Label(L("Save, share or print"), systemImage: "printer").frame(maxWidth: .infinity) }.secondaryButton()
             }
         }
     }
@@ -198,40 +198,40 @@ struct QRResultCard: View {
                 row("Network", n)
                 row("Security", sec)
                 HStack {
-                    Text("Password").foregroundStyle(HandyColor.textSecondary).frame(width: 90, alignment: .leading)
+                    Text(L("Password")).foregroundStyle(HandyColor.textSecondary).frame(width: 90, alignment: .leading)
                     Text(revealPassword ? p : String(repeating: "•", count: max(6, p.count))).font(.system(.body, design: .monospaced))
                     Spacer()
                     Button(revealPassword ? "Hide" : "Show") { revealPassword.toggle() }.textButton().font(HandyFont.caption)
                 }.font(HandyFont.body)
                 Text("To join: Settings › Wi‑Fi › \(n), then paste the password.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                HStack { Button { Copier.copy(p, note: "Password copied") } label: { Label("Copy password", systemImage: "doc.on.doc") }.compactButton(); Spacer() }
+                HStack { Button { Copier.copy(p, note: "Password copied") } label: { Label(L("Copy password"), systemImage: "doc.on.doc") }.compactButton(); Spacer() }
             case .url(let u):
                 Text(u.absoluteString).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
-                HStack { Link(destination: u) { Label("Open", systemImage: "safari") }.compactButton(); copyButton(u.absoluteString); Spacer() }
+                HStack { Link(destination: u) { Label(L("Open"), systemImage: "safari") }.compactButton(); copyButton(u.absoluteString); Spacer() }
             case .contact(let vcf, let summary):
                 Text(summary).font(HandyFont.body)
                 HStack {
-                    ShareLink(item: VCardFile(data: Data(vcf.utf8)), preview: SharePreview("Contact")) { Label("Add to Contacts", systemImage: "person.crop.circle.badge.plus") }.compactButton()
+                    ShareLink(item: VCardFile(data: Data(vcf.utf8)), preview: SharePreview("Contact")) { Label(L("Add to Contacts"), systemImage: "person.crop.circle.badge.plus") }.compactButton()
                     Spacer()
                 }
             case .phone(let number, let message):
                 Text(number).font(HandyFont.body)
                 HStack {
-                    if let tel = URL(string: "tel:\(number.filter { !$0.isWhitespace })") { Link(destination: tel) { Label("Call", systemImage: "phone") }.compactButton() }
+                    if let tel = URL(string: "tel:\(number.filter { !$0.isWhitespace })") { Link(destination: tel) { Label(L("Call"), systemImage: "phone") }.compactButton() }
                     if let smsURL = URL(string: "sms:\(number.filter { !$0.isWhitespace })" + (message.isEmpty ? "" : "&body=\(message.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")) {
-                        Link(destination: smsURL) { Label("Message", systemImage: "message") }.compactButton()
+                        Link(destination: smsURL) { Label(L("Message"), systemImage: "message") }.compactButton()
                     }
                     Spacer()
                 }
             case .email(let addr):
                 Text(addr).font(HandyFont.body)
-                HStack { if let m = URL(string: "mailto:\(addr)") { Link(destination: m) { Label("Email", systemImage: "envelope") }.compactButton() }; copyButton(addr); Spacer() }
+                HStack { if let m = URL(string: "mailto:\(addr)") { Link(destination: m) { Label(L("Email"), systemImage: "envelope") }.compactButton() }; copyButton(addr); Spacer() }
             case .location(let lat, let lon):
                 Text(String(format: "%.5f, %.5f", lat, lon)).font(HandyFont.body)
-                HStack { if let m = URL(string: "maps://?ll=\(lat),\(lon)") { Link(destination: m) { Label("Open in Maps", systemImage: "map") }.compactButton() }; Spacer() }
+                HStack { if let m = URL(string: "maps://?ll=\(lat),\(lon)") { Link(destination: m) { Label(L("Open in Maps"), systemImage: "map") }.compactButton() }; Spacer() }
             case .text(let t):
                 Text(t).font(HandyFont.body).textSelection(.enabled)
-                HStack { copyButton(t); ShareLink(item: t) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton(); Spacer() }
+                HStack { copyButton(t); ShareLink(item: t) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton(); Spacer() }
             }
         }
         .cardStyle(padding: HandySpacing.s16)
@@ -241,7 +241,7 @@ struct QRResultCard: View {
         HStack { Text(k).foregroundStyle(HandyColor.textSecondary).frame(width: 90, alignment: .leading); Text(v); Spacer() }.font(HandyFont.body)
     }
     private func copyButton(_ s: String) -> some View {
-        Button { Copier.copy(s); ClipStore.add(s) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
+        Button { Copier.copy(s); ClipStore.add(s) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
     }
 }
 
