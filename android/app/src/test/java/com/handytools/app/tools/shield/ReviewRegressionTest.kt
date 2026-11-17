@@ -235,6 +235,30 @@ class ReviewRegressionTest {
         assertNull(f("buy milk"))
     }
 
+    // Multi-language (#285), parity with the iOS twin: Spanish dates/times/call cues, English intact.
+    @Test fun thinkingSpanishParsing() {
+        val utc = java.util.TimeZone.getTimeZone("UTC")
+        val now = java.util.Calendar.getInstance(utc).apply { clear(); set(2026, 10, 16, 8, 0, 0) }.timeInMillis // Mon Nov 16
+        val TA = com.handytools.app.tools.builder.ThinkingActions
+        fun field(s: String, f: Int): Int? {
+            val ms = TA.dueDateMs(s, now, utc) ?: return null
+            return java.util.Calendar.getInstance(utc).apply { timeInMillis = ms }.get(f)
+        }
+        fun day(s: String) = field(s, java.util.Calendar.DAY_OF_MONTH)
+        fun hour(s: String) = field(s, java.util.Calendar.HOUR_OF_DAY)
+        assertEquals(17, day("llamar al dentista mañana"))
+        assertEquals(18, day("pasado mañana enviar informe"))
+        assertEquals(19, day("en 3 días renovar seguro"))
+        assertEquals(20, day("pagar el alquiler el viernes"))
+        assertEquals(15, hour("reunión a las 3 de la tarde"))
+        assertEquals(9, hour("cita a las 9 de la mañana"))
+        assertNull(day("comprar pan"))
+        assertTrueMsg("llamar → a call", TA.plan("llamar al dentista").isCall)
+        assertTrueMsg("Spanish relative is a date cue", TA.hasDateCue("la próxima semana"))
+        assertEquals(14, hour("call dentist at 2pm"))
+        assertEquals(17, day("tomorrow buy milk"))
+    }
+
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
     @Test fun thinkingActionPayloads() {
         val ics = ThinkingActions.icsEvent("Email Ana", 1_800_000_000_000L, "Office")

@@ -339,6 +339,27 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertNil(f("buy milk"), "no number or email → nothing to save")
     }
 
+    // Multi-language (#285): the thinking parser reads Spanish dates, times and call cues, English intact.
+    func testThinkingSpanishParsing() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let now = cal.date(from: DateComponents(year: 2026, month: 11, day: 16, hour: 8, minute: 0))! // Monday
+        func day(_ s: String) -> Int? { ThinkingActions.dueDate(from: s, now: now, calendar: cal).map { cal.component(.day, from: $0) } }
+        func hour(_ s: String) -> Int? { ThinkingActions.dueDate(from: s, now: now, calendar: cal).map { cal.component(.hour, from: $0) } }
+        XCTAssertEqual(day("llamar al dentista mañana"), 17, "mañana → tomorrow")
+        XCTAssertEqual(day("pasado mañana enviar informe"), 18, "pasado mañana → +2")
+        XCTAssertEqual(day("en 3 días renovar seguro"), 19, "en 3 días → +3")
+        XCTAssertEqual(day("pagar el alquiler el viernes"), 20, "el viernes → the next Friday")
+        XCTAssertEqual(hour("reunión a las 3 de la tarde"), 15, "3 de la tarde → 15:00")
+        XCTAssertEqual(hour("cita a las 9 de la mañana"), 9, "9 de la mañana → 09:00")
+        XCTAssertNil(day("comprar pan"), "no date cue → no due")
+        XCTAssertTrue(ThinkingActions.plan(for: "llamar al dentista").isCall, "llamar → a call")
+        XCTAssertTrue(ThinkingActions.hasDateCue("la próxima semana"), "Spanish relative is a date cue")
+        // English regression — unchanged.
+        XCTAssertEqual(hour("call dentist at 2pm"), 14, "English time still parses")
+        XCTAssertEqual(day("tomorrow buy milk"), 17, "English tomorrow still parses")
+    }
+
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
     func testThinkingActionPayloads() {
         let ics = ThinkingActions.icsEvent(title: "Email Ana", due: Date(timeIntervalSince1970: 1_800_000_000), place: "Office")

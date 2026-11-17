@@ -28,7 +28,12 @@ enum ThinkingActions {
     }
 
     /// Words that mark a task as a phone/text action even when no number is written in it.
-    private static let callCues: Set<String> = ["call", "phone", "ring", "dial", "text", "callback"]
+    private static let callCues: Set<String> = [
+        "call", "phone", "ring", "dial", "text", "callback",
+        // Spanish
+        "llamar", "llama", "telefonear", "teléfono", "telefono", "marcar", "mensaje", "mensajear",
+        "textear", "contactar",
+    ]
 
     /// Place-type words that confirm a capitalised phrase after "at/to/from/in" names a real location.
     private static let placeWords: Set<String> = [
@@ -56,6 +61,17 @@ enum ThinkingActions {
             + #"|(\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\b)"#
             + #"|(\b\d{1,2}/\d{1,2}\b)"#
             + #"|(\b(in|by|within|next)\s+\d*\s*(day|week|month|hour)s?\b)"#
+            // Spanish
+            + #"|(\b(hoy|mañana|manana)\b)"#
+            + #"|(\besta\s+(noche|tarde|mañana|manana)\b)"#
+            + #"|(\bpasado\s+(mañana|manana)\b)"#
+            + #"|(\b(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo)\b)"#
+            + #"|(\b(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\b)"#
+            + #"|(\ba\s+las?\s+\d{1,2}(:\d{2})?\b)"#
+            + #"|(\b\d{1,2}\s+de\s+la\s+(tarde|noche|mañana|manana)\b)"#
+            + #"|(\ben\s+\d+\s+(día|dia|semana)s?\b)"#
+            + #"|(\b(la\s+)?próxima\s+semana\b)"#
+            + #"|(\bsemana\s+que\s+viene\b)"#
         return s.range(of: pattern, options: [.regularExpression, .caseInsensitive]) != nil
     }
 
@@ -153,6 +169,9 @@ enum ThinkingActions {
         "sunday": 1, "sun": 1, "monday": 2, "mon": 2, "tuesday": 3, "tues": 3, "tue": 3,
         "wednesday": 4, "weds": 4, "wed": 4, "thursday": 5, "thurs": 5, "thur": 5, "thu": 5,
         "friday": 6, "fri": 6, "saturday": 7, "sat": 7,
+        // Spanish
+        "domingo": 1, "lunes": 2, "martes": 3, "miércoles": 4, "miercoles": 4, "jueves": 5,
+        "viernes": 6, "sábado": 7, "sabado": 7,
     ]
 
     /// Turn a task into the concrete moment it is due, or nil when it carries no date. Deterministic given
@@ -162,22 +181,34 @@ enum ThinkingActions {
     /// already passed rolls to tomorrow. Same rules as the Android twin.
     static func dueDate(from task: String, now: Date, calendar: Calendar = .current) -> Date? {
         let t = task.lowercased()
-        // Time of day.
+        func has(_ p: String) -> Bool { t.range(of: p, options: [.regularExpression]) != nil }
+        // Time of day — English "2pm"/"9:30am", 24h "15:30", or Spanish "a las 3" / "3 de la tarde".
         var hour: Int? = nil; var minute = 0
         if let g = groups(#"\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b"#, in: t), let h = Int(g[1]) {
             hour = (h % 12) + (g[3] == "pm" ? 12 : 0); minute = Int(g[2]) ?? 0
+        } else if let g = groups(#"\ba\s+las?\s+(\d{1,2})(?::(\d{2}))?"#, in: t), let h = Int(g[1]) {
+            hour = h; minute = Int(g[2]) ?? 0
+            if has(#"(?:de|por)\s+la\s+(?:tarde|noche)"#) { if h < 12 { hour = h + 12 } }
+            else if has(#"(?:de|por)\s+la\s+ma(?:ñ|n)ana"#), h == 12 { hour = 0 }
+        } else if let g = groups(#"\b(\d{1,2})(?::(\d{2}))?\s+de\s+la\s+(tarde|noche|ma(?:ñ|n)ana)"#, in: t), let h = Int(g[1]) {
+            hour = h; minute = Int(g[2]) ?? 0
+            if g[3] == "tarde" || g[3] == "noche" { if h < 12 { hour = h + 12 } }
+            else if h == 12 { hour = 0 }
         } else if let g = groups(#"\b(\d{1,2}):(\d{2})\b"#, in: t), let h = Int(g[1]) {
             hour = h; minute = Int(g[2]) ?? 0
         }
-        // Day anchor.
-        var offset: Int? = nil; var tonight = false
-        func has(_ p: String) -> Bool { t.range(of: p, options: [.regularExpression]) != nil }
-        if has(#"\btonight\b"#) { offset = 0; tonight = true }
-        else if has(#"\btoday\b"#) { offset = 0 }
+        // Day anchor — English and Spanish, most specific first.
+        var offset: Int? = nil; var tonight = false; var estaTarde = false
+        if has(#"\btonight\b"#) || has(#"\besta\s+noche\b"#) { offset = 0; tonight = true }
+        else if has(#"\btoday\b"#) || has(#"\bhoy\b"#) { offset = 0 }
+        else if has(#"\besta\s+tarde\b"#) { offset = 0; estaTarde = true }
+        else if has(#"\besta\s+ma(?:ñ|n)ana\b"#) { offset = 0 }
+        else if has(#"\bpasado\s+ma(?:ñ|n)ana\b"#) { offset = 2 }
         else if has(#"\b(tomorrow|tmrw|tmr)\b"#) { offset = 1 }
-        else if let g = groups(#"\bin\s+(\d+)\s+(day|week)s?\b"#, in: t), let n = Int(g[1]) {
-            offset = n * (g[2] == "week" ? 7 : 1)
-        } else if has(#"\bnext week\b"#) { offset = 7 }
+        else if has(#"(?<!de la )(?<!por la )(?<!esta )\bma(?:ñ|n)ana\b"#) { offset = 1 }
+        else if let g = groups(#"\b(?:in|en)\s+(\d+)\s+(day|d(?:í|i)as?|week|semanas?)\b"#, in: t), let n = Int(g[1]) {
+            offset = n * (g[2].hasPrefix("week") || g[2].hasPrefix("seman") ? 7 : 1)
+        } else if has(#"\bnext week\b"#) || has(#"\b(?:la\s+)?pr(?:ó|o)xima\s+semana\b"#) || has(#"\bsemana que viene\b"#) { offset = 7 }
         else if let wd = weekdays.first(where: { has(#"\b"# + $0.key + #"\b"#) })?.value {
             let cur = calendar.component(.weekday, from: now)
             let d = ((wd - cur) % 7 + 7) % 7
@@ -187,10 +218,10 @@ enum ThinkingActions {
 
         guard let shifted = calendar.date(byAdding: .day, value: off, to: now) else { return nil }
         var comps = calendar.dateComponents([.year, .month, .day], from: shifted)
-        comps.hour = hour ?? (tonight ? 20 : 9)
+        comps.hour = hour ?? (tonight ? 20 : (estaTarde ? 15 : 9))
         comps.minute = hour == nil ? 0 : minute
         guard var res = calendar.date(from: comps) else { return nil }
-        if off == 0, hour != nil, res < now, !has(#"\btoday\b|\btonight\b"#) {
+        if off == 0, hour != nil, res < now, !has(#"\btoday\b|\btonight\b|\bhoy\b|\besta\s+noche\b"#) {
             res = calendar.date(byAdding: .day, value: 1, to: res) ?? res
         }
         return res

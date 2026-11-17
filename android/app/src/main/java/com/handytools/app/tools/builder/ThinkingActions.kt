@@ -23,7 +23,12 @@ object ThinkingActions {
         val isCall: Boolean,     // reads like a call/text even without a number ("call the dentist")
     )
 
-    private val callCues = setOf("call", "phone", "ring", "dial", "text", "callback")
+    private val callCues = setOf(
+        "call", "phone", "ring", "dial", "text", "callback",
+        // Spanish
+        "llamar", "llama", "telefonear", "teléfono", "telefono", "marcar", "mensaje", "mensajear",
+        "textear", "contactar",
+    )
 
     private val placeWords = setOf(
         "street", "st", "ave", "avenue", "road", "rd", "blvd", "boulevard", "lane", "ln", "drive", "dr",
@@ -46,7 +51,18 @@ object ThinkingActions {
             """|(\b(today|tonight|tomorrow|tmrw|tmr)\b)""" +
             """|(\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\b)""" +
             """|(\b\d{1,2}/\d{1,2}\b)""" +
-            """|(\b(in|by|within|next)\s+\d*\s*(day|week|month|hour)s?\b)""",
+            """|(\b(in|by|within|next)\s+\d*\s*(day|week|month|hour)s?\b)""" +
+            // Spanish
+            """|(\b(hoy|mañana|manana)\b)""" +
+            """|(\besta\s+(noche|tarde|mañana|manana)\b)""" +
+            """|(\bpasado\s+(mañana|manana)\b)""" +
+            """|(\b(lunes|martes|miércoles|miercoles|jueves|viernes|sábado|sabado|domingo)\b)""" +
+            """|(\b(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre)\b)""" +
+            """|(\ba\s+las?\s+\d{1,2}(:\d{2})?\b)""" +
+            """|(\b\d{1,2}\s+de\s+la\s+(tarde|noche|mañana|manana)\b)""" +
+            """|(\ben\s+\d+\s+(día|dia|semana)s?\b)""" +
+            """|(\b(la\s+)?próxima\s+semana\b)""" +
+            """|(\bsemana\s+que\s+viene\b)""",
         RegexOption.IGNORE_CASE,
     )
     private val LOCATIVE = Regex("""\b(?:at|to|from|in)\s+(?:the\s+)?([A-Z][\p{L}'&.\-]*(?:\s+[A-Z][\p{L}'&.\-]*){0,3})""")
@@ -140,6 +156,9 @@ object ThinkingActions {
         "sunday" to 1, "sun" to 1, "monday" to 2, "mon" to 2, "tuesday" to 3, "tues" to 3, "tue" to 3,
         "wednesday" to 4, "weds" to 4, "wed" to 4, "thursday" to 5, "thurs" to 5, "thur" to 5, "thu" to 5,
         "friday" to 6, "fri" to 6, "saturday" to 7, "sat" to 7,
+        // Spanish
+        "domingo" to 1, "lunes" to 2, "martes" to 3, "miércoles" to 4, "miercoles" to 4, "jueves" to 5,
+        "viernes" to 6, "sábado" to 7, "sabado" to 7,
     )
 
     /** Turn a task into the concrete moment it is due (epoch millis), or null when it carries no date.
@@ -148,25 +167,46 @@ object ThinkingActions {
      * a day with no time defaults to 9am (tonight → 8pm), and a time today already past rolls to tomorrow. */
     fun dueDateMs(task: String, nowMs: Long, zone: java.util.TimeZone = java.util.TimeZone.getDefault()): Long? {
         val t = task.lowercase()
+        fun has(p: String) = Regex(p).containsMatchIn(t)
         var hour: Int? = null; var minute = 0
         val ap = Regex("""\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b""").find(t)
+        val alas = Regex("""\ba\s+las?\s+(\d{1,2})(?::(\d{2}))?""").find(t)
+        val deLa = Regex("""\b(\d{1,2})(?::(\d{2}))?\s+de\s+la\s+(tarde|noche|mañana|manana)""").find(t)
         if (ap != null) {
             hour = (ap.groupValues[1].toInt() % 12) + (if (ap.groupValues[3] == "pm") 12 else 0)
             minute = ap.groupValues[2].toIntOrNull() ?: 0
+        } else if (alas != null) {
+            val h = alas.groupValues[1].toInt(); minute = alas.groupValues[2].toIntOrNull() ?: 0
+            hour = when {
+                has("""(?:de|por)\s+la\s+(?:tarde|noche)""") && h < 12 -> h + 12
+                has("""(?:de|por)\s+la\s+ma(?:ñ|n)ana""") && h == 12 -> 0
+                else -> h
+            }
+        } else if (deLa != null) {
+            val h = deLa.groupValues[1].toInt(); minute = deLa.groupValues[2].toIntOrNull() ?: 0
+            val marker = deLa.groupValues[3]
+            hour = when {
+                (marker == "tarde" || marker == "noche") && h < 12 -> h + 12
+                (marker == "mañana" || marker == "manana") && h == 12 -> 0
+                else -> h
+            }
         } else {
             Regex("""\b(\d{1,2}):(\d{2})\b""").find(t)?.let { hour = it.groupValues[1].toInt(); minute = it.groupValues[2].toIntOrNull() ?: 0 }
         }
-        fun has(p: String) = Regex(p).containsMatchIn(t)
-        var off: Int? = null; var tonight = false
+        var off: Int? = null; var tonight = false; var estaTarde = false
         when {
-            has("""\btonight\b""") -> { off = 0; tonight = true }
-            has("""\btoday\b""") -> off = 0
+            has("""\btonight\b""") || has("""\besta\s+noche\b""") -> { off = 0; tonight = true }
+            has("""\btoday\b""") || has("""\bhoy\b""") -> off = 0
+            has("""\besta\s+tarde\b""") -> { off = 0; estaTarde = true }
+            has("""\besta\s+ma(?:ñ|n)ana\b""") -> off = 0
+            has("""\bpasado\s+ma(?:ñ|n)ana\b""") -> off = 2
             has("""\b(tomorrow|tmrw|tmr)\b""") -> off = 1
+            has("""(?<!de la )(?<!por la )(?<!esta )\bma(?:ñ|n)ana\b""") -> off = 1
             else -> {
-                val inN = Regex("""\bin\s+(\d+)\s+(day|week)s?\b""").find(t)
+                val inN = Regex("""\b(?:in|en)\s+(\d+)\s+(day|día|dia|week|semana)s?\b""").find(t)
                 when {
-                    inN != null -> off = inN.groupValues[1].toInt() * (if (inN.groupValues[2] == "week") 7 else 1)
-                    has("""\bnext week\b""") -> off = 7
+                    inN != null -> off = inN.groupValues[1].toInt() * (if (inN.groupValues[2].startsWith("week") || inN.groupValues[2].startsWith("seman")) 7 else 1)
+                    has("""\bnext week\b""") || has("""\b(?:la\s+)?próxima\s+semana\b""") || has("""\bsemana que viene\b""") -> off = 7
                     else -> weekdays.entries.firstOrNull { has("""\b""" + it.key + """\b""") }?.let { e ->
                         val cur = java.util.Calendar.getInstance(zone).apply { timeInMillis = nowMs }.get(java.util.Calendar.DAY_OF_WEEK)
                         val d = ((e.value - cur) % 7 + 7) % 7
@@ -179,11 +219,11 @@ object ThinkingActions {
         val cal = java.util.Calendar.getInstance(zone).apply {
             timeInMillis = nowMs
             add(java.util.Calendar.DAY_OF_MONTH, o)
-            set(java.util.Calendar.HOUR_OF_DAY, hour ?: if (tonight) 20 else 9)
+            set(java.util.Calendar.HOUR_OF_DAY, hour ?: if (tonight) 20 else if (estaTarde) 15 else 9)
             set(java.util.Calendar.MINUTE, if (hour == null) 0 else minute)
             set(java.util.Calendar.SECOND, 0); set(java.util.Calendar.MILLISECOND, 0)
         }
-        if (o == 0 && hour != null && cal.timeInMillis < nowMs && !has("""\btoday\b|\btonight\b""")) {
+        if (o == 0 && hour != null && cal.timeInMillis < nowMs && !has("""\btoday\b|\btonight\b|\bhoy\b|\besta\s+noche\b""")) {
             cal.add(java.util.Calendar.DAY_OF_MONTH, 1)
         }
         return cal.timeInMillis
