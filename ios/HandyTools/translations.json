@@ -1209,6 +1209,16 @@
   "pt": "Verifica o próprio endereço — marcas imitadas, terminações arriscadas, encurtadores, IP em bruto. Nada é aberto.",
   "zh": "检查网址本身 — 仿冒品牌、可疑后缀、短链接、裸 IP。不打开任何内容。"
  },
+ "Chipmunk": {
+  "de": "Eichhörnchen",
+  "es": "Ardilla",
+  "fr": "Écureuil",
+  "hi": "चिपमंक",
+  "it": "Scoiattolo",
+  "ja": "チップマンク",
+  "pt": "Esquilo",
+  "zh": "花栗鼠"
+ },
  "Choose a Live Photo": {
   "de": "Live Photo auswählen",
   "es": "Elegir una Live Photo",
@@ -1858,6 +1868,16 @@
   "ja": "日付",
   "pt": "Data",
   "zh": "日期"
+ },
+ "Deep": {
+  "de": "Tief",
+  "es": "Grave",
+  "fr": "Grave",
+  "hi": "गहरी",
+  "it": "Profonda",
+  "ja": "低音",
+  "pt": "Grave",
+  "zh": "低沉"
  },
  "Delete": {
   "de": "Löschen",
@@ -2979,6 +2999,16 @@
   "pt": "A obter sinal GPS… sai para o exterior se estiver lento.",
   "zh": "正在获取 GPS 定位… 如果很慢请走到户外。"
  },
+ "Giant": {
+  "de": "Riese",
+  "es": "Gigante",
+  "fr": "Géant",
+  "hi": "विशालकाय",
+  "it": "Gigante",
+  "ja": "巨人",
+  "pt": "Gigante",
+  "zh": "巨人"
+ },
  "Gmail, iCloud, your phone: copy or move in three taps.": {
   "de": "Gmail, iCloud, dein Handy: kopieren oder verschieben in drei Tipps.",
   "es": "Gmail, iCloud, tu teléfono: copia o mueve en tres toques.",
@@ -3128,6 +3158,16 @@
   "ja": "高さ",
   "pt": "Altura",
   "zh": "高度"
+ },
+ "Helium": {
+  "de": "Helium",
+  "es": "Helio",
+  "fr": "Hélium",
+  "hi": "हीलियम",
+  "it": "Elio",
+  "ja": "ヘリウム",
+  "pt": "Hélio",
+  "zh": "氦气"
  },
  "Help": {
   "de": "Hilfe",

@@ -1136,7 +1136,7 @@ private struct ChainEditor: View {
             }.pickerStyle(.menu).font(HandyFont.caption)
         case .voiceChange:
             Picker(L("Voice"), selection: Binding(get: { ChainText.voices.first { $0.id == chain.steps[i].settings["voice"] }?.id ?? "chipmunk" }, set: { chain.steps[i].settings["voice"] = $0 })) {
-                ForEach(ChainText.voices, id: \.id) { Text($0.name).tag($0.id) }
+                ForEach(ChainText.voices, id: \.id) { Text(L($0.name)).tag($0.id) }
             }.pickerStyle(.segmented)
         case .videoLoop:
             Picker(L("Plays"), selection: Binding(get: { chain.steps[i].settings["style"] == "reverse" ? "reverse" : "boomerang" }, set: { chain.steps[i].settings["style"] = $0 })) {

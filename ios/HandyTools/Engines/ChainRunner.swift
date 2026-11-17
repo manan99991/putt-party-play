@@ -822,6 +822,8 @@ enum ChainTemplates {
         Chain(id: "photo-comic", name: "Photo to a comic", steps: [ChainStep(block: .artFilter, settings: ["style": "comic"])]),
         Chain(id: "voice-chipmunk", name: "Chipmunk voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
         Chain(id: "voice-deep", name: "Deep voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "deep"])]),
+        Chain(id: "voice-helium", name: "Helium voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "helium"])]),
+        Chain(id: "voice-giant", name: "Giant voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "giant"])]),
         Chain(id: "video-voice", name: "Funny voice from a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
         Chain(id: "before-after", name: "Before and after, side by side", steps: [ChainStep(block: .stripLocation)], versus: true),
     ]
@@ -1186,7 +1188,7 @@ enum ChainText {
     // MARK: voices
 
     /// Voices "Change the voice" offers, and how much faster (and so higher) each plays the recording.
-    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6)]
+    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6)]
     static func voiceRate(_ setting: String?) -> Double { voices.first { $0.id == setting }?.rate ?? 1.5 }
 
     /// The 44 bytes that start a .wav file of plain 16-bit sound.

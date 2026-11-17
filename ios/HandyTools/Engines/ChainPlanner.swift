@@ -104,7 +104,8 @@ enum ChainPlanner {
             return c
         }
         if has(["chipmunk", "helium", "voice changer", "funny voice", "deep voice", "change my voice", "change the voice"]) {
-            return build(ask, (film ? [ChainStep(block: .videoAudio)] : []) + [ChainStep(block: .voiceChange, settings: ["voice": has(["deep", "giant", "low voice"]) ? "deep" : "chipmunk"])])
+            let voice = has(["giant"]) ? "giant" : has(["deep", "low voice", "monster"]) ? "deep" : has(["helium", "high voice", "squeaky"]) ? "helium" : "chipmunk"
+            return build(ask, (film ? [ChainStep(block: .videoAudio)] : []) + [ChainStep(block: .voiceChange, settings: ["voice": voice])])
         }
         if has(["sketch", "pencil", "drawing", "cartoon", "comic", "pop art", "black and white", "noir"]) {
             let style = has(["cartoon", "comic"]) ? "comic" : has(["pop art"]) ? "pop" : has(["black and white", "noir"]) ? "noir" : "sketch"
