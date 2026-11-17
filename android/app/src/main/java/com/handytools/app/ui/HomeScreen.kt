@@ -35,6 +35,7 @@ import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Gif
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Hearing
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.PieChart
 import androidx.compose.material.icons.outlined.ReceiptLong
@@ -124,6 +125,10 @@ val TOOLS = listOf(
     HTool("scrubber", "Scrubber", "Blur & strip data", R.drawable.ic_scrubber, R.drawable.card_scrubber,
         listOf("scrub","scrubber","blur","hide","face","faces","plate","licence","license","redact","anonymize","privacy","metadata","exif","gps","location","strip","personal"),
         about = "Blur faces and licence plates and strip hidden location and metadata from a photo before you post it — the covered pixels are gone for good."),
+    HTool("thinking", "Thinking tools", "Untangle a task, plan your day", 0, 0,
+        listOf("think","thinking","plan","planner","day","my day","clear","head","brain","dump","todo","tasks","organise","organize","untangle","overwhelm","focus","break down","steps","mind"),
+        about = "Dump everything on your mind and get it back as clean, deduped tasks — each already wired to your phone's apps: Directions on Maps, a one-tap Call, and dated steps added to your Calendar in a tap. All on your phone.",
+        tint = Color(0xFF7C3AED), vicon = Icons.Outlined.Psychology),
     HTool("voice", "Voice", "Record, transcribe & trim", R.drawable.tool_voice, R.drawable.card_voice,
         listOf("voice","record","recorder","transcribe","transcript","speech","text","dictate","dictation","audio","trim","cut","memo","note","speak"),
         about = "Record speech and get an instant transcript you can tidy and share, or trim an audio clip down — all on your phone, no account."),
