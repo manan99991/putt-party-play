@@ -1,6 +1,5 @@
 === /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Products/Debug-iphonesimulator/HandyTools.app/Info.plist ===
       "CFBundleURLSchemes" => [
-  "GADApplicationIdentifier" => "ca-app-pub-5414801919054534~3553659163"
   "NSCameraUsageDescription" => "Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded."
   "NSContactsUsageDescription" => "Needed to find duplicate contacts, merge them without losing a number, back them up to a file, and copy or move them between your accounts. Your contacts stay on this phone and are never uploaded."
   "NSFaceIDUsageDescription" => "Used to unlock your Secure Vault so only you can open your private notes and photos."
@@ -12,7 +11,6 @@
   "NSRemindersFullAccessUsageDescription" => "Needed so the thinking tools can add your tasks straight to Reminders with one tap. Only the tasks you add are written; nothing is read back or uploaded."
   "NSRemindersUsageDescription" => "Needed so the thinking tools can add your tasks straight to Reminders with one tap. Only the tasks you add are written; nothing is read back or uploaded."
   "NSSpeechRecognitionUsageDescription" => "Needed to transcribe your voice to text. Audio is processed on your phone and never uploaded."
-  "NSUserTrackingUsageDescription" => "Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones."
   "UIBackgroundModes" => [
 --- presence ---
 OK NSCameraUsageDescription
