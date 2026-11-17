@@ -1,15 +1,15 @@
-[19:02:49]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[19:02:49]: fastlane 2.241.2 (Ruby 3.4.12, gem)
-[19:02:51]: Sending anonymous analytics information
-[19:02:51]: Learn more at https://docs.fastlane.tools/#metrics
-[19:02:51]: No personal or sensitive data is sent.
-[19:02:51]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[19:02:51]: [32m------------------------------[0m
-[19:02:51]: [32m--- Step: default_platform ---[0m
-[19:02:51]: [32m------------------------------[0m
-[19:02:51]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[19:02:56]: App 6824023361
-[19:03:38]: Created group (500)
+[20:24:17]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[20:24:17]: fastlane 2.241.2 (Ruby 3.4.12, gem)
+[20:24:19]: Sending anonymous analytics information
+[20:24:19]: Learn more at https://docs.fastlane.tools/#metrics
+[20:24:19]: No personal or sensitive data is sent.
+[20:24:19]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[20:24:19]: [32m------------------------------[0m
+[20:24:19]: [32m--- Step: default_platform ---[0m
+[20:24:19]: [32m------------------------------[0m
+[20:24:19]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[20:24:23]: App 6824023361
+[20:25:06]: Created group (500)
 +--------------------------------------+
 |             [33mLane Context[0m             |
 +------------------+-------------------+
@@ -17,14 +17,14 @@
 | PLATFORM_NAME    | ios               |
 | LANE_NAME        | ios subscriptions |
 +------------------+-------------------+
-[19:03:38]: [31mError in your Fastfile at line 145[0m
-[19:03:38]: [31m```[0m
-[19:03:38]: [31m    143:	      UI.message("Created group (#{code})")[0m
-[19:03:38]: [31m    144:	    end[0m
-[19:03:38]: [31m => 145:	    group_id = group["id"][0m
-[19:03:38]: [31m    146:	[0m
-[19:03:38]: [31m    147:	    code, data = req.call(:get, "/v1/subscriptionGroups/#{group_id}/subscriptions?limit=50")[0m
-[19:03:38]: [31m```[0m
+[20:25:06]: [31mError in your Fastfile at line 145[0m
+[20:25:06]: [31m```[0m
+[20:25:06]: [31m    143:	      UI.message("Created group (#{code})")[0m
+[20:25:06]: [31m    144:	    end[0m
+[20:25:06]: [31m => 145:	    group_id = group["id"][0m
+[20:25:06]: [31m    146:	[0m
+[20:25:06]: [31m    147:	    code, data = req.call(:get, "/v1/subscriptionGroups/#{group_id}/subscriptions?limit=50")[0m
+[20:25:06]: [31m```[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -34,7 +34,7 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[19:03:38]: [31mfastlane finished with errors[0m
+[20:25:06]: [31mfastlane finished with errors[0m
 
 Looking for related GitHub issues on fastlane/fastlane...
 
@@ -60,8 +60,6 @@ and 673 more at: https://github.com/fastlane/fastlane/search?q=undefined%20metho
 # Please update using `gem install fastlane`.
 # To see what's new, open https://github.com/fastlane/fastlane/releases.
 #######################################################################
-# Run `gem cleanup` from time to time to speed up fastlane
-#######################################################################
 Fastfile:145:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': [31m[!] undefined method '[]' for nil[0m (NoMethodError)
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
@@ -79,8 +77,8 @@ Fastfile:145:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': [31m[
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/bin/fastlane:25:in '<top (required)>'
-	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
-	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
+	from /opt/homebrew/Cellar/ruby@3.4/3.4.12/lib/ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
+	from /opt/homebrew/Cellar/ruby@3.4/3.4.12/lib/ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
 Fastfile:145:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': undefined method '[]' for nil (NoMethodError)
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
@@ -99,6 +97,6 @@ Fastfile:145:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': undefi
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/commands_generator.rb:43:in 'Fastlane::CommandsGenerator.start'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/cli_tools_distributor.rb:133:in 'Fastlane::CLIToolsDistributor.take_off'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/bin/fastlane:25:in '<top (required)>'
-	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
-	from /opt/homebrew/lib/ruby/site_ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
+	from /opt/homebrew/Cellar/ruby@3.4/3.4.12/lib/ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
+	from /opt/homebrew/Cellar/ruby@3.4/3.4.12/lib/ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
