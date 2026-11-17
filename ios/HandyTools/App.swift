@@ -64,6 +64,7 @@ struct TenzyApp: App {
                 if !didWarmup {
                     await MainActor.run {
                         didWarmup = true
+                        KeyboardDismiss.shared.install()   // tap anywhere outside a field to dismiss the keyboard, app-wide
                         // Pre-scan photo duplicates in the background so Cleaner's Duplicates tab is
                         // ready the moment it's opened, instead of making the user wait on a scan.
                         if !Launch.uitest { CleanerIndex.shared.prewarm() }
