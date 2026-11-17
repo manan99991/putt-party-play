@@ -1361,7 +1361,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     }
                     Button { pickingPDF = true } label: { Label(L("Choose a PDF"), systemImage: "doc.richtext").frame(maxWidth: .infinity) }
                         .secondaryButton().accessibilityIdentifier("run-pdf")
-                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : chain.versus == true ? "Pick two photos: the before, then the after." : "Pick one, or up to 20 at once. Each one gets the same steps.")
+                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : chain.flipbook == true ? "Pick 2–20 photos. They flip like the pages of a book." : chain.versus == true ? "Pick two photos: the before, then the after." : "Pick one, or up to 20 at once. Each one gets the same steps.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
                     // Ways to get the words in without typing them.
@@ -1425,7 +1425,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 }
                 return
             }
-            if items.count == 1, chain.gif != true, chain.versus != true, let item = items.first {
+            if items.count == 1, chain.gif != true, chain.versus != true, chain.flipbook != true, let item = items.first {
                 busy = true; result = nil; message = nil; progress = "Getting the photo ready…"; progressValue = 0
                 Task {
                     let img = await loadWithinTimeout(120) { (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) }
@@ -1622,6 +1622,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let collage = chain.collage == true
         let gif = chain.gif == true
         let versus = chain.versus == true
+        let flipbook = chain.flipbook == true
         let tool = runChain
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-batch-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
@@ -1635,12 +1636,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 }
                 switch await ChainRunner.runKeepingBest(tool, input: item) {
                 case .done(let p):
-                    if combine || collage || gif || versus { kept.append(p) }
+                    if combine || collage || gif || versus || flipbook { kept.append(p) }
                     out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name))
                 case .partial(let p, let f):
                     // Best-effort: deliver how far it got (e.g. the text it read) and say what the last
                     // step needs, instead of throwing it all away with a dead-end error.
-                    if combine || collage || gif || versus { kept.append(p) }
+                    if combine || collage || gif || versus || flipbook { kept.append(p) }
                     out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name, hint: ChainRunView.bestEffortNote(f)))
                 case .failed(let f): out.append(BatchItem(n: i + 1, note: ChainRunView.words(f)))
                 }
@@ -1674,6 +1675,26 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     return
                 }
                 await MainActor.run { busy = false; progress = ""; message = "Couldn't build the before and after from those two photos." }
+                return
+            }
+            // A flipbook plays the photos as a page-turning riffle video.
+            if flipbook {
+                let imgs: [UIImage] = kept.compactMap { p in
+                    if case .image(let i) = p { return i }
+                    if case .file(let d, let e) = p, ChainPayload.isPhoto(e) { return UIImage(data: d) }
+                    return nil
+                }
+                if imgs.count >= 2, let data = await ChainMotion.flipbookVideo(images: imgs) {
+                    let url = FileManager.default.temporaryDirectory.appendingPathComponent(ChainName.file(pattern: chain.fileName, tool: chain.name, ext: "mp4"))
+                    if (try? data.write(to: url)) != nil {
+                        await MainActor.run {
+                            busy = false; progress = ""; result = .video(url)
+                            finished(Outbox.make(.video(url), named: chain.fileName, tool: chain.name))
+                        }
+                        return
+                    }
+                }
+                await MainActor.run { busy = false; progress = ""; message = "A flipbook needs at least two photos." }
                 return
             }
             let pdfSize: DocEngine.PageSize = { switch chain.steps.first(where: { $0.block == .photoPdf })?.settings["pagesize"] { case "a4": return .a4; case "letter": return .letter; default: return .auto } }()

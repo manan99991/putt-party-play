@@ -414,6 +414,8 @@ struct Chain: Codable, Equatable, Identifiable {
     var gif: Bool?
     /// Before and after: the first and last of the photos side by side, each with its label.
     var versus: Bool?
+    /// Flipbook: the chosen photos played as a page-turning riffle video.
+    var flipbook: Bool?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {
@@ -826,6 +828,7 @@ enum ChainTemplates {
         Chain(id: "photo-collage", name: "Photos into one collage", steps: [ChainStep(block: .stripLocation)], collage: true, blurb: "Lays your chosen photos out as one combined picture."),
         Chain(id: "where-i-am", name: "Send where I am", steps: [ChainStep(block: .cleanText)], finish: ChainFinish(kind: .message, to: "")),
         Chain(id: "photos-gif", name: "Photos into a GIF", steps: [ChainStep(block: .stripLocation)], blurb: "Plays your chosen photos one after another as a looping GIF.", gif: true),
+        Chain(id: "photos-flipbook", name: "Photos into a flipbook", steps: [ChainStep(block: .stripLocation)], blurb: "Flips your chosen photos like the pages of a book — a looping page-riffle video to share.", flipbook: true),
         Chain(id: "sticker-maker", name: "Photo to a sticker", steps: [ChainStep(block: .sticker)]),
         Chain(id: "emoji-faces", name: "Emoji over every face", steps: [ChainStep(block: .emojiFaces, settings: ["emoji": ChainText.faceEmojis[0]])]),
         Chain(id: "meme", name: "Make a meme", steps: [ChainStep(block: .meme, settings: ["top": "", "bottom": ""])]),
