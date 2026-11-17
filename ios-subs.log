@@ -1,18 +1,18 @@
-[15:59:32]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[15:59:32]: fastlane 2.241.2 (Ruby 3.4.12, gem)
-[15:59:33]: Sending anonymous analytics information
-[15:59:33]: Learn more at https://docs.fastlane.tools/#metrics
-[15:59:33]: No personal or sensitive data is sent.
-[15:59:33]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[15:59:33]: [32m------------------------------[0m
-[15:59:33]: [32m--- Step: default_platform ---[0m
-[15:59:33]: [32m------------------------------[0m
-[15:59:33]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[15:59:34]: App 6824023361
-[15:59:34]: Territories: 175
-[15:59:34]: tenzy_pro_yearly exists (6824154364)
-[15:59:36]: [32m  price -> 409 near $19.99 (19.99) {"errors" => [{"id" => "fb25b860-08de-475d-93df-bab4b38ed8ec", "status" => "409", "code" => "STATE_ERROR", "title" => "The request cannot be fulfilled because of the state of another resource.", "detail" => "Initial price cannot be created again after subscription is approved."}]}[0m
-[15:59:36]: [32m  intro offer 3-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
+[16:15:57]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[16:15:57]: fastlane 2.241.2 (Ruby 3.4.12, gem)
+[16:15:58]: Sending anonymous analytics information
+[16:15:58]: Learn more at https://docs.fastlane.tools/#metrics
+[16:15:58]: No personal or sensitive data is sent.
+[16:15:58]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[16:15:58]: [32m------------------------------[0m
+[16:15:58]: [32m--- Step: default_platform ---[0m
+[16:15:58]: [32m------------------------------[0m
+[16:15:58]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[16:15:59]: App 6824023361
+[16:16:00]: Territories: 175
+[16:16:00]: tenzy_pro_yearly exists (6824154364)
+[16:16:01]: [32m  price -> 409 near $19.99 (19.99) {"errors" => [{"id" => "4c6ae340-92e6-4a77-976b-9fded0e04fa2", "status" => "409", "code" => "STATE_ERROR", "title" => "The request cannot be fulfilled because of the state of another resource.", "detail" => "Initial price cannot be created again after subscription is approved."}]}[0m
+[16:16:02]: [32m  intro offer 3-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
 +--------------------------------------+
 |             [33mLane Context[0m             |
 +------------------+-------------------+
@@ -20,22 +20,22 @@
 | PLATFORM_NAME    | ios               |
 | LANE_NAME        | ios subscriptions |
 +------------------+-------------------+
-[15:59:36]: [31mError in your Fastfile at line 122[0m
-[15:59:36]: [31m```[0m
-[15:59:36]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
-[15:59:36]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
-[15:59:36]: [31m => 122:	      r = klass.new(URI(base + path))[0m
-[15:59:36]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
-[15:59:36]: [31m    124:	      r["Content-Type"] = "application/json"[0m
-[15:59:36]: [31m```[0m
-[15:59:36]: [31mCalled from Fastfile at line 242[0m
-[15:59:36]: [31m```[0m
-[15:59:36]: [31m    240:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
-[15:59:36]: [31m    241:	        if cur.is_a?(Hash) && cur["data"][0m
-[15:59:36]: [31m => 242:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
-[15:59:36]: [31m    243:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
-[15:59:36]: [31m    244:	        end[0m
-[15:59:36]: [31m```[0m
+[16:16:02]: [31mError in your Fastfile at line 122[0m
+[16:16:02]: [31m```[0m
+[16:16:02]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
+[16:16:02]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
+[16:16:02]: [31m => 122:	      r = klass.new(URI(base + path))[0m
+[16:16:02]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
+[16:16:02]: [31m    124:	      r["Content-Type"] = "application/json"[0m
+[16:16:02]: [31m```[0m
+[16:16:02]: [31mCalled from Fastfile at line 242[0m
+[16:16:02]: [31m```[0m
+[16:16:02]: [31m    240:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
+[16:16:02]: [31m    241:	        if cur.is_a?(Hash) && cur["data"][0m
+[16:16:02]: [31m => 242:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
+[16:16:02]: [31m    243:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
+[16:16:02]: [31m    244:	        end[0m
+[16:16:02]: [31m```[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -45,7 +45,7 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[15:59:36]: [31mfastlane finished with errors[0m
+[16:16:02]: [31mfastlane finished with errors[0m
 
 Looking for related GitHub issues on fastlane/fastlane...
 
@@ -59,11 +59,18 @@ Looking for related GitHub issues on fastlane/fastlane...
 
 ➡️  [33m[pilot] Stop requesting betaTesterMetrics for testers[0m
     https://github.com/fastlane/fastlane/pull/30471 [[31mopen[0m] 5 💬
-    2 days ago
+    20 hours ago
 
-and 613 more at: https://github.com/fastlane/fastlane/search?q=undefined%20method%20%27new%27%20for%20nil&type=Issues&utf8=✓
+and 614 more at: https://github.com/fastlane/fastlane/search?q=undefined%20method%20%27new%27%20for%20nil&type=Issues&utf8=✓
 
 🔗  You can ⌘ + double-click on links to open them directly in your browser.
+
+#######################################################################
+# fastlane 2.242.0 is available. You are on 2.241.2.
+# You should use the latest version.
+# Please update using `gem install fastlane`.
+# To see what's new, open https://github.com/fastlane/fastlane/releases.
+#######################################################################
 Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': [31m[!] undefined method 'new' for nil[0m (NoMethodError)
 	from Fastfile:242:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
 	from Fastfile:164:in 'Array#each'
