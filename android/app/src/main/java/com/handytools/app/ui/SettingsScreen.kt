@@ -75,7 +75,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
     Column(Modifier.fillMaxSize().statusBarsPadding()) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter)) {
             Spacer(Modifier.height(HandyTokens.Space8))
-            Text("Settings", style = MaterialTheme.typography.headlineMedium)
+            Text(com.handytools.app.I18n.t("Settings"), style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(HandyTokens.Space16))
 
             // Pro card
@@ -101,7 +101,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
 
             Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("Appearance")
-            Text("Theme", style = MaterialTheme.typography.bodyLarge)
+            Text(com.handytools.app.I18n.t("Theme"), style = MaterialTheme.typography.bodyLarge)
             Spacer(Modifier.height(HandyTokens.Space4))
             Text(if (premium) "Tap to switch — applies instantly." else "Aurora is free; the rest come with Pro.",
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
@@ -110,7 +110,7 @@ fun SettingsScreen(onOpen: (String) -> Unit) {
 
             Spacer(Modifier.height(HandyTokens.Space24))
             SettingsSectionLabel("What Tenzy does")
-            Text("Every tool in one place. It all runs on your phone.",
+            Text(com.handytools.app.I18n.t("Every tool in one place. It all runs on your phone."),
                 style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
             Spacer(Modifier.height(HandyTokens.Space8))
             SettingsRow(Icons.Outlined.Apps, "All ${TOOLS.size} tools", "Browse every tool and open any one") { onOpen("alltools") }
@@ -147,9 +147,9 @@ fun AllToolsScreen(onOpen: (String) -> Unit) {
     val premium by HandyApp.instance.billing.isPremium.collectAsState()
     Column(Modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = HandyTokens.Gutter)) {
         Spacer(Modifier.height(HandyTokens.Space8))
-        Text("What Tenzy does", style = MaterialTheme.typography.headlineMedium)
+        Text(com.handytools.app.I18n.t("What Tenzy does"), style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(HandyTokens.Space8))
-        Text("Every tool, in one place — tap any to open it. It all runs on your phone.",
+        Text(com.handytools.app.I18n.t("Every tool, in one place — tap any to open it. It all runs on your phone."),
             style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space16))
         TOOLS.forEach { t -> MapRow(t.name, t.blurb, pro = ToolGate.isPro(t.route) && !premium) { onOpen(t.route) } }
@@ -170,7 +170,7 @@ private fun MapRow(name: String, blurb: String, pro: Boolean = false, onClick: (
             Text(blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
         }
         if (pro) {
-            Text("PRO", color = HandyColors.OnAccent, style = MaterialTheme.typography.labelSmall,
+            Text(com.handytools.app.I18n.t("PRO"), color = HandyColors.OnAccent, style = MaterialTheme.typography.labelSmall,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                 modifier = Modifier.padding(end = HandyTokens.Space8)
                     .background(HandyColors.Accent, androidx.compose.foundation.shape.RoundedCornerShape(50))
@@ -189,7 +189,7 @@ private fun AboutDialog(onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = { Icon(Icons.Outlined.Info, null, tint = HandyColors.Accent) },
-        title = { Text("Tenzy") },
+        title = { Text(com.handytools.app.I18n.t("Tenzy")) },
         text = {
             Column {
                 Text("Version $version", style = MaterialTheme.typography.bodyLarge)
@@ -197,17 +197,17 @@ private fun AboutDialog(onDismiss: () -> Unit) {
                 Text("${Build.MANUFACTURER.replaceFirstChar { it.uppercase() }} ${Build.MODEL} · Android ${Build.VERSION.RELEASE}",
                     style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                 Spacer(Modifier.height(HandyTokens.Space12))
-                Text("Made by one person in Illinois. Every tool runs on your phone — nothing is uploaded.",
+                Text(com.handytools.app.I18n.t("Made by one person in Illinois. Every tool runs on your phone — nothing is uploaded."),
                     style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text("Close") } },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(com.handytools.app.I18n.t("Close")) } },
         dismissButton = {
             TextButton(onClick = {
                 val cb = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
                 cb?.setPrimaryClip(ClipData.newPlainText("Tenzy", details))
                 Toast.makeText(ctx, "Copied — paste it into your feedback email", Toast.LENGTH_SHORT).show()
-            }) { Text("Copy details") }
+            }) { Text(com.handytools.app.I18n.t("Copy details")) }
         }
     )
 }

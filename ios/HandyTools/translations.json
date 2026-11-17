@@ -1,4 +1,24 @@
 {
+ "30 small tools your phone should've had — flashlight, cleaner, scanner, PDF, AI and more. Everything runs on your phone; nothing is uploaded.": {
+  "de": "30 kleine Werkzeuge, die dein Handy haben sollte — Taschenlampe, Reiniger, Scanner, PDF, KI und mehr. Alles läuft auf deinem Handy; nichts wird hochgeladen.",
+  "es": "30 pequeñas herramientas que tu teléfono debería traer — linterna, limpiador, escáner, PDF, IA y más. Todo funciona en tu teléfono; nada se sube.",
+  "fr": "30 petits outils que votre téléphone aurait dû avoir — lampe, nettoyeur, scanner, PDF, IA et plus. Tout fonctionne sur votre téléphone ; rien n'est envoyé.",
+  "hi": "30 छोटे टूल जो आपके फ़ोन में होने चाहिए थे — टॉर्च, क्लीनर, स्कैनर, PDF, AI और बहुत कुछ। सब आपके फ़ोन पर चलता है; कुछ भी अपलोड नहीं होता।",
+  "it": "30 piccoli strumenti che il tuo telefono dovrebbe avere — torcia, pulizia, scanner, PDF, IA e altro. Tutto sul telefono; nulla viene caricato.",
+  "ja": "スマホにあるべき30の小さなツール — ライト、クリーナー、スキャナー、PDF、AIなど。すべて端末内で動作し、何もアップロードしません。",
+  "pt": "30 pequenas ferramentas que o teu telefone devia ter — lanterna, limpador, scanner, PDF, IA e mais. Tudo corre no telefone; nada é enviado.",
+  "zh": "你手机本该有的 30 个小工具 — 手电、清理、扫描、PDF、AI 等。全部在手机上运行，不上传任何内容。"
+ },
+ "A local record of what the app did — tools opened, how long actions took, UI freezes and crashes. Share it with me to debug a problem. It only leaves your phone when you send it.": {
+  "de": "Ein lokales Protokoll der App — geöffnete Tools, Dauer von Aktionen, Hänger und Abstürze. Teile es zur Fehlersuche. Es verlässt dein Handy nur, wenn du es sendest.",
+  "es": "Un registro local de lo que hizo la app — herramientas abiertas, duración de acciones, bloqueos y fallos. Compártelo conmigo para depurar. Solo sale de tu teléfono cuando lo envías.",
+  "fr": "Un journal local de ce que l'app a fait — outils ouverts, durée des actions, blocages et plantages. Partagez-le avec moi pour déboguer. Il ne quitte votre téléphone que si vous l'envoyez.",
+  "hi": "ऐप ने क्या किया इसका लोकल रिकॉर्ड — खुले टूल, क्रियाओं का समय, फ़्रीज़ और क्रैश। समस्या के लिए शेयर करें। यह तभी फ़ोन से जाता है जब आप भेजते हैं।",
+  "it": "Un registro locale dell'app — strumenti aperti, durata delle azioni, blocchi e crash. Condividilo per il debug. Lascia il telefono solo se lo invii.",
+  "ja": "アプリ動作のローカル記録 — 開いたツール、処理時間、フリーズやクラッシュ。問題解決のため共有を。送信時のみ端末外へ。",
+  "pt": "Um registo local do que a app fez — ferramentas abertas, duração das ações, bloqueios e falhas. Partilha para depurar. Só sai do telefone quando o enviares.",
+  "zh": "应用操作的本地记录 — 打开的工具、耗时、卡顿与崩溃。发给我排查问题。仅在你发送时离开手机。"
+ },
  "AR tape: distance, height, area": {
   "de": "AR-Maßband: Distanz, Höhe, Fläche",
   "es": "Cinta AR: distancia, altura, área",
@@ -19,6 +39,16 @@
   "pt": "Adicionar",
   "zh": "添加"
  },
+ "Ads off, every tool unlimited — for testing the paid experience.": {
+  "de": "Keine Werbung, alle Tools unbegrenzt — zum Testen der Bezahlversion.",
+  "es": "Sin anuncios, todas las herramientas sin límite — para probar la experiencia de pago.",
+  "fr": "Sans pub, tous les outils illimités — pour tester l'expérience payante.",
+  "hi": "कोई विज्ञापन नहीं, हर टूल असीमित — पेड अनुभव जांचने के लिए।",
+  "it": "Niente pubblicità, strumenti illimitati — per testare l'esperienza a pagamento.",
+  "ja": "広告なし・全ツール無制限 — 有料版のテスト用。",
+  "pt": "Sem anúncios, ferramentas sem limite — para testar a experiência paga.",
+  "zh": "无广告、所有工具无限制 — 用于测试付费体验。"
+ },
  "Ask your screenshots anything": {
   "de": "Frag deine Screenshots alles",
   "es": "Pregunta lo que sea a tus capturas",
@@ -38,6 +68,16 @@
   "ja": "オーディオラボ",
   "pt": "Laboratório de áudio",
   "zh": "音频实验室"
+ },
+ "Aurora is free. The rest unlock with Pro.": {
+  "de": "Aurora ist kostenlos. Der Rest mit Pro.",
+  "es": "Aurora es gratis. El resto se desbloquea con Pro.",
+  "fr": "Aurora est gratuit. Le reste se débloque avec Pro.",
+  "hi": "Aurora मुफ़्त है। बाकी Pro से अनलॉक।",
+  "it": "Aurora è gratis. Il resto si sblocca con Pro.",
+  "ja": "Auroraは無料。残りはProで解放。",
+  "pt": "Aurora é grátis. O resto desbloqueia com Pro.",
+  "zh": "Aurora 免费，其余需 Pro 解锁。"
  },
  "Back": {
   "de": "Zurück",
@@ -105,9 +145,19 @@
   "fr": "Effacer",
   "hi": "साफ़ करें",
   "it": "Cancella",
-  "ja": "クリア",
+  "ja": "消去",
   "pt": "Limpar",
   "zh": "清除"
+ },
+ "Close": {
+  "de": "Schließen",
+  "es": "Cerrar",
+  "fr": "Fermer",
+  "hi": "बंद करें",
+  "it": "Chiudi",
+  "ja": "閉じる",
+  "pt": "Fechar",
+  "zh": "关闭"
  },
  "Codes": {
   "de": "Codes",
@@ -159,6 +209,16 @@
   "pt": "Copiar",
   "zh": "复制"
  },
+ "Copy details": {
+  "de": "Details kopieren",
+  "es": "Copiar detalles",
+  "fr": "Copier les détails",
+  "hi": "विवरण कॉपी करें",
+  "it": "Copia dettagli",
+  "ja": "詳細をコピー",
+  "pt": "Copiar detalhes",
+  "zh": "复制详情"
+ },
  "Data Grabber": {
   "de": "Daten-Greifer",
   "es": "Captura de datos",
@@ -178,6 +238,16 @@
   "ja": "削除",
   "pt": "Eliminar",
   "zh": "删除"
+ },
+ "Diagnostics": {
+  "de": "Diagnose",
+  "es": "Diagnóstico",
+  "fr": "Diagnostics",
+  "hi": "डायग्नोस्टिक्स",
+  "it": "Diagnostica",
+  "ja": "診断",
+  "pt": "Diagnóstico",
+  "zh": "诊断"
  },
  "Docs & Capture": {
   "de": "Docs & Scan",
@@ -199,6 +269,16 @@
   "pt": "Concluído",
   "zh": "完成"
  },
+ "Done for now": {
+  "de": "Fertig für jetzt",
+  "es": "Listo por ahora",
+  "fr": "Terminé pour l'instant",
+  "hi": "अभी के लिए हो गया",
+  "it": "Fatto per ora",
+  "ja": "ひとまず完了",
+  "pt": "Pronto por agora",
+  "zh": "暂时完成"
+ },
  "Enhance, cut out, passport, resize": {
   "de": "Verbessern, freistellen, Passfoto, Größe ändern",
   "es": "Mejorar, recortar, carnet, redimensionar",
@@ -208,6 +288,46 @@
   "ja": "補正・切り抜き・証明写真・リサイズ",
   "pt": "Melhorar, recortar, passaporte, redimensionar",
   "zh": "增强、抠图、证件照、调整大小"
+ },
+ "Every tool in one place. It all runs on your phone.": {
+  "de": "Alle Werkzeuge an einem Ort. Alles läuft auf deinem Handy.",
+  "es": "Todas las herramientas en un lugar. Todo funciona en tu teléfono.",
+  "fr": "Tous les outils au même endroit. Tout fonctionne sur votre téléphone.",
+  "hi": "सभी टूल एक जगह। सब आपके फ़ोन पर चलता है।",
+  "it": "Tutti gli strumenti in un posto. Tutto sul telefono.",
+  "ja": "すべてのツールが一か所に。全部スマホで動作。",
+  "pt": "Todas as ferramentas num só lugar. Tudo corre no telefone.",
+  "zh": "所有工具集于一处。全部在手机上运行。"
+ },
+ "Every tool, in one place — tap any to open it. It all runs on your phone.": {
+  "de": "Alle Werkzeuge an einem Ort — zum Öffnen tippen. Alles läuft auf deinem Handy.",
+  "es": "Todas las herramientas en un lugar — toca cualquiera para abrirla. Todo funciona en tu teléfono.",
+  "fr": "Tous les outils au même endroit — touchez pour ouvrir. Tout fonctionne sur votre téléphone.",
+  "hi": "सभी टूल एक जगह — खोलने के लिए टैप करें। सब आपके फ़ोन पर चलता है।",
+  "it": "Tutti gli strumenti in un posto — tocca per aprire. Tutto sul telefono.",
+  "ja": "すべてのツールが一か所に — タップで開く。全部スマホで動作。",
+  "pt": "Todas as ferramentas num só lugar — toca para abrir. Tudo corre no telefone.",
+  "zh": "所有工具集于一处 — 轻点打开。全部在手机上运行。"
+ },
+ "Everything Tenzy does, each with a tap to open": {
+  "de": "Alles, was Tenzy kann, mit einem Tipp",
+  "es": "Todo lo que hace Tenzy, cada uno a un toque",
+  "fr": "Tout ce que fait Tenzy, à portée de clic",
+  "hi": "Tenzy जो करता है, हर एक टैप पर",
+  "it": "Tutto ciò che fa Tenzy, con un tocco",
+  "ja": "Tenzyの全機能、タップで開く",
+  "pt": "Tudo o que o Tenzy faz, a um toque",
+  "zh": "Tenzy 的全部功能，一触即开"
+ },
+ "Everything stays on your iPhone. No account, no cloud, no analytics.": {
+  "de": "Alles bleibt auf deinem iPhone. Kein Konto, keine Cloud, keine Analyse.",
+  "es": "Todo se queda en tu iPhone. Sin cuenta, sin nube, sin analíticas.",
+  "fr": "Tout reste sur votre iPhone. Pas de compte, pas de cloud, pas d'analyse.",
+  "hi": "सब कुछ आपके iPhone पर रहता है। कोई अकाउंट, क्लाउड या एनालिटिक्स नहीं।",
+  "it": "Tutto resta sul tuo iPhone. Nessun account, nessun cloud, nessuna analisi.",
+  "ja": "すべてiPhoneに保存。アカウントもクラウドも解析もなし。",
+  "pt": "Tudo fica no teu iPhone. Sem conta, sem nuvem, sem análise.",
+  "zh": "一切都留在你的 iPhone 上。无账户、无云、无分析。"
  },
  "Face ID locker": {
   "de": "Face-ID-Tresor",
@@ -329,6 +449,16 @@
   "pt": "Painel GPS",
   "zh": "GPS仪表盘"
  },
+ "Grant what you'll use; skip the rest. Any tool will ask again the first time it needs something.": {
+  "de": "Erlaube, was du nutzt; den Rest überspringen. Jedes Werkzeug fragt beim ersten Bedarf erneut.",
+  "es": "Concede lo que vayas a usar; omite el resto. Cada herramienta volverá a preguntar la primera vez que lo necesite.",
+  "fr": "Autorisez ce que vous utiliserez ; ignorez le reste. Chaque outil redemandera au premier besoin.",
+  "hi": "जो इस्तेमाल करेंगे वही दें; बाकी छोड़ें। हर टूल ज़रूरत पर फिर पूछेगा।",
+  "it": "Concedi ciò che userai; salta il resto. Ogni strumento richiederà al primo utilizzo.",
+  "ja": "使うものだけ許可し、あとは後回しに。各ツールは必要になった時にまた尋ねます。",
+  "pt": "Concede o que vais usar; ignora o resto. Cada ferramenta volta a pedir quando precisar.",
+  "zh": "授予要用的，其余跳过。每个工具首次需要时会再询问。"
+ },
  "HEIC/MOV → JPG/MP4, in batch": {
   "de": "HEIC/MOV → JPG/MP4, im Stapel",
   "es": "HEIC/MOV → JPG/MP4, por lotes",
@@ -398,6 +528,36 @@
   "ja": "長いスクショ",
   "pt": "Captura longa",
   "zh": "长截图"
+ },
+ "Made by a Dad.": {
+  "de": "Von einem Papa gemacht.",
+  "es": "Hecho por un papá.",
+  "fr": "Fait par un papa.",
+  "hi": "एक पापा द्वारा बनाया गया।",
+  "it": "Fatto da un papà.",
+  "ja": "パパが作りました。",
+  "pt": "Feito por um pai.",
+  "zh": "由一位爸爸打造。"
+ },
+ "Made by one person in Illinois. Every tool runs on your phone — nothing is uploaded.": {
+  "de": "Von einer Person in Illinois gemacht. Jedes Werkzeug läuft auf deinem Handy — nichts wird hochgeladen.",
+  "es": "Hecho por una persona en Illinois. Cada herramienta funciona en tu teléfono — nada se sube.",
+  "fr": "Fait par une seule personne dans l'Illinois. Chaque outil fonctionne sur votre téléphone — rien n'est envoyé.",
+  "hi": "इलिनॉय में एक व्यक्ति द्वारा बनाया गया। हर टूल आपके फ़ोन पर चलता है — कुछ भी अपलोड नहीं होता।",
+  "it": "Fatto da una persona in Illinois. Ogni strumento funziona sul telefono — nulla viene caricato.",
+  "ja": "イリノイの一人が制作。各ツールはスマホで動作 — 何もアップロードしません。",
+  "pt": "Feito por uma pessoa no Illinois. Cada ferramenta corre no telefone — nada é enviado.",
+  "zh": "由伊利诺伊州的一个人打造。每个工具都在手机上运行 — 不上传任何内容。"
+ },
+ "Manage subscription": {
+  "de": "Abo verwalten",
+  "es": "Gestionar suscripción",
+  "fr": "Gérer l'abonnement",
+  "hi": "सदस्यता प्रबंधित करें",
+  "it": "Gestisci abbonamento",
+  "ja": "サブスクを管理",
+  "pt": "Gerir subscrição",
+  "zh": "管理订阅"
  },
  "Manual ISO, shutter, RAW": {
   "de": "Manuell: ISO, Verschluss, RAW",
@@ -499,6 +659,16 @@
   "pt": "Abre quase qualquer ficheiro",
   "zh": "打开几乎任何文件"
  },
+ "PRO": {
+  "de": "PRO",
+  "es": "PRO",
+  "fr": "PRO",
+  "hi": "PRO",
+  "it": "PRO",
+  "ja": "PRO",
+  "pt": "PRO",
+  "zh": "PRO"
+ },
  "Price Check": {
   "de": "Preis-Check",
   "es": "Comparar precios",
@@ -508,6 +678,16 @@
   "ja": "価格チェック",
   "pt": "Verificar preços",
   "zh": "比价"
+ },
+ "Privacy": {
+  "de": "Datenschutz",
+  "es": "Privacidad",
+  "fr": "Confidentialité",
+  "hi": "गोपनीयता",
+  "it": "Privacy",
+  "ja": "プライバシー",
+  "pt": "Privacidade",
+  "zh": "隐私"
  },
  "Privacy Scrubber": {
   "de": "Datenschutz-Reiniger",
@@ -549,6 +729,16 @@
   "pt": "QR e Wi-Fi",
   "zh": "二维码和 Wi-Fi"
  },
+ "Rate Tenzy": {
+  "de": "Tenzy bewerten",
+  "es": "Valorar Tenzy",
+  "fr": "Noter Tenzy",
+  "hi": "Tenzy को रेट करें",
+  "it": "Valuta Tenzy",
+  "ja": "Tenzyを評価",
+  "pt": "Avaliar o Tenzy",
+  "zh": "评价 Tenzy"
+ },
  "Read, hear & magnify anything": {
   "de": "Lesen, hören & alles vergrößern",
   "es": "Lee, escucha y amplía lo que sea",
@@ -578,6 +768,16 @@
   "ja": "休息",
   "pt": "Descanso",
   "zh": "休息"
+ },
+ "Restore purchases": {
+  "de": "Käufe wiederherstellen",
+  "es": "Restaurar compras",
+  "fr": "Restaurer les achats",
+  "hi": "खरीदारी पुनर्स्थापित करें",
+  "it": "Ripristina acquisti",
+  "ja": "購入を復元",
+  "pt": "Restaurar compras",
+  "zh": "恢复购买"
  },
  "Retry": {
   "de": "Erneut versuchen",
@@ -679,6 +879,26 @@
   "pt": "Ver e ler",
   "zh": "查看与朗读"
  },
+ "Send feedback": {
+  "de": "Feedback senden",
+  "es": "Enviar comentarios",
+  "fr": "Envoyer un avis",
+  "hi": "फ़ीडबैक भेजें",
+  "it": "Invia un feedback",
+  "ja": "フィードバックを送る",
+  "pt": "Enviar feedback",
+  "zh": "发送反馈"
+ },
+ "Set up once": {
+  "de": "Einmal einrichten",
+  "es": "Configúralo una vez",
+  "fr": "Configurez une fois",
+  "hi": "एक बार सेट करें",
+  "it": "Imposta una volta",
+  "ja": "一度だけ設定",
+  "pt": "Configura uma vez",
+  "zh": "设置一次"
+ },
  "Settings": {
   "de": "Einstellungen",
   "es": "Ajustes",
@@ -708,6 +928,36 @@
   "ja": "共有と接続",
   "pt": "Partilhar e ligar",
   "zh": "分享与连接"
+ },
+ "Share Tenzy": {
+  "de": "Tenzy teilen",
+  "es": "Compartir Tenzy",
+  "fr": "Partager Tenzy",
+  "hi": "Tenzy शेयर करें",
+  "it": "Condividi Tenzy",
+  "ja": "Tenzyを共有",
+  "pt": "Partilhar Tenzy",
+  "zh": "分享 Tenzy"
+ },
+ "Share log": {
+  "de": "Protokoll teilen",
+  "es": "Compartir registro",
+  "fr": "Partager le journal",
+  "hi": "लॉग शेयर करें",
+  "it": "Condividi registro",
+  "ja": "ログを共有",
+  "pt": "Partilhar registo",
+  "zh": "分享日志"
+ },
+ "Short version: everything you do in Tenzy stays on this iPhone.": {
+  "de": "Kurz gesagt: Alles, was du in Tenzy tust, bleibt auf diesem iPhone.",
+  "es": "Versión corta: todo lo que haces en Tenzy se queda en este iPhone.",
+  "fr": "En bref : tout ce que vous faites dans Tenzy reste sur cet iPhone.",
+  "hi": "संक्षेप में: Tenzy में आप जो करते हैं वह इसी iPhone पर रहता है।",
+  "it": "In breve: tutto ciò che fai in Tenzy resta su questo iPhone.",
+  "ja": "要するに：Tenzyでの操作はすべてこのiPhone内に留まります。",
+  "pt": "Versão curta: tudo o que fazes no Tenzy fica neste iPhone.",
+  "zh": "简而言之：你在 Tenzy 中做的一切都留在这台 iPhone 上。"
  },
  "Shrink to an exact size limit": {
   "de": "Auf exakte Größe verkleinern",
@@ -819,6 +1069,16 @@
   "pt": "Estúdio",
   "zh": "工作室"
  },
+ "Tenzy": {
+  "de": "Tenzy",
+  "es": "Tenzy",
+  "fr": "Tenzy",
+  "hi": "Tenzy",
+  "it": "Tenzy",
+  "ja": "Tenzy",
+  "pt": "Tenzy",
+  "zh": "Tenzy"
+ },
  "Text Studio": {
   "de": "Text-Studio",
   "es": "Estudio de texto",
@@ -848,6 +1108,16 @@
   "ja": "テキスト・カメラ・音声 — オフライン",
   "pt": "Texto, câmara, voz — offline",
   "zh": "文字、相机、语音 — 离线"
+ },
+ "Theme": {
+  "de": "Design",
+  "es": "Tema",
+  "fr": "Thème",
+  "hi": "थीम",
+  "it": "Tema",
+  "ja": "テーマ",
+  "pt": "Tema",
+  "zh": "主题"
  },
  "Thinking tools": {
   "de": "Denkwerkzeuge",
@@ -898,6 +1168,16 @@
   "ja": "チューナー・トーン・スピーカー診断",
   "pt": "Afinador, tons, teste de coluna",
   "zh": "调音器、音调、扬声器测试"
+ },
+ "Unlock Pro (tester)": {
+  "de": "Pro freischalten (Tester)",
+  "es": "Desbloquear Pro (tester)",
+  "fr": "Débloquer Pro (testeur)",
+  "hi": "Pro अनलॉक करें (टेस्टर)",
+  "it": "Sblocca Pro (tester)",
+  "ja": "Proを解放（テスター）",
+  "pt": "Desbloquear Pro (tester)",
+  "zh": "解锁 Pro（测试）"
  },
  "Untangle, plan the day, decide, explain, reword": {
   "de": "Entwirren, Tag planen, entscheiden, erklären",
@@ -958,6 +1238,16 @@
   "ja": "保証とレシート",
   "pt": "Garantia e recibos",
   "zh": "保修与收据"
+ },
+ "What Tenzy does": {
+  "de": "Was Tenzy kann",
+  "es": "Qué hace Tenzy",
+  "fr": "Ce que fait Tenzy",
+  "hi": "Tenzy क्या करता है",
+  "it": "Cosa fa Tenzy",
+  "ja": "Tenzyでできること",
+  "pt": "O que o Tenzy faz",
+  "zh": "Tenzy 能做什么"
  },
  "What is this? Point and know": {
   "de": "Was ist das? Draufhalten und wissen",

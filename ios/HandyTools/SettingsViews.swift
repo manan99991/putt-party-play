@@ -47,8 +47,8 @@ struct SetupView: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                    Text("Set up once").font(HandyFont.display)
-                    Text("Grant what you'll use; skip the rest. Any tool will ask again the first time it needs something.").font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Set up once")).font(HandyFont.display)
+                    Text(L("Grant what you'll use; skip the rest. Any tool will ask again the first time it needs something.")).font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
                     Text("\(done) of 5 granted").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                     SetupRow(icon: "camera", title: "Camera", why: "Scan, Capture, Color Vision, Magnifier+, Pro Camera, Measure and the light meter. Frames are processed on the phone.", unlocks: "Camera tools", granted: camera) {
                         Permission.camera { _ in Task { @MainActor in await refresh() } }
@@ -69,12 +69,12 @@ struct SetupView: View {
                     SetupRow(icon: "photo.badge.plus", title: "Save to Photos", why: "Lets Pro Camera and long exposures save into your library. Picking photos never needs this.", unlocks: "Pro Camera", granted: photos) {
                         Task { _ = await PHPhotoLibrary.requestAuthorization(for: .addOnly); await refresh() }
                     }
-                    Text("Everything stays on your iPhone. No account, no cloud, no analytics.")
+                    Text(L("Everything stays on your iPhone. No account, no cloud, no analytics."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s16)
             }
-            Button("Done for now") { onDone() }.primaryButton().padding(.horizontal, HandySpacing.gutter).padding(.bottom, HandySpacing.s16)
+            Button(L("Done for now")) { onDone() }.primaryButton().padding(.horizontal, HandySpacing.gutter).padding(.bottom, HandySpacing.s16)
         }
         .background(Ground())
         .task { await refresh() }
@@ -146,7 +146,7 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    Text("Settings").font(HandyFont.display).padding(.bottom, HandySpacing.s8)
+                    Text(L("Settings")).font(HandyFont.display).padding(.bottom, HandySpacing.s8)
                         .onTapGesture {
                             guard !devUnlocked else { return }
                             devTaps += 1
@@ -171,9 +171,9 @@ struct SettingsView: View {
                     }
                     .buttonStyle(.plain)
                     if store.isPremium {
-                        Button("Manage subscription") { UIApplication.shared.open(URL(string: "https://apps.apple.com/account/subscriptions")!) }.textButton()
+                        Button(L("Manage subscription")) { UIApplication.shared.open(URL(string: "https://apps.apple.com/account/subscriptions")!) }.textButton()
                     } else {
-                        Button("Restore purchases") { Task { await store.restore() } }.textButton()
+                        Button(L("Restore purchases")) { Task { await store.restore() } }.textButton()
                     }
 
                     Section("Theme") {
@@ -192,7 +192,7 @@ struct SettingsView: View {
                                             HStack(spacing: 6) {
                                                 Text(th.title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                                                 if th.isPro {
-                                                    Text("PRO").font(.system(size: 9, weight: .bold)).foregroundStyle(HandyColor.accent)
+                                                    Text(L("PRO")).font(.system(size: 9, weight: .bold)).foregroundStyle(HandyColor.accent)
                                                         .padding(.horizontal, 5).padding(.vertical, 1).background(HandyColor.accentSoft, in: Capsule())
                                                 }
                                             }
@@ -207,7 +207,7 @@ struct SettingsView: View {
                             }
                         }
                         if !store.isPremium {
-                            Text("Aurora is free. The rest unlock with Pro.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            Text(L("Aurora is free. The rest unlock with Pro.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
                     }
 
@@ -220,7 +220,7 @@ struct SettingsView: View {
                                 }
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text("All \(TOOLS.count) tools").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                    Text("Everything Tenzy does, each with a tap to open").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                    Text(L("Everything Tenzy does, each with a tap to open")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 }
                                 Spacer()
                                 Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
@@ -247,8 +247,8 @@ struct SettingsView: View {
                         Section("Developer") {
                             Toggle(isOn: Binding(get: { store.isTesterPro }, set: { store.setTesterPro($0) })) {
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text("Unlock Pro (tester)").font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
-                                    Text("Ads off, every tool unlimited — for testing the paid experience.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                    Text(L("Unlock Pro (tester)")).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
+                                    Text(L("Ads off, every tool unlimited — for testing the paid experience.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 }
                             }.tint(HandyColor.accent).padding(.vertical, HandySpacing.s8)
                             SettingsRow(icon: "ladybug", title: "Diagnostics", sub: "View the on-device log and share it with me") { showDiagnostics = true }
@@ -316,24 +316,24 @@ struct AboutView: View {
                     Image(systemName: "square.grid.2x2.fill").font(.system(size: 40)).foregroundStyle(.white)
                 }.padding(.top, HandySpacing.s32)
 
-                Text("Tenzy").font(.system(size: 30, weight: .bold))
+                Text(L("Tenzy")).font(.system(size: 30, weight: .bold))
                 Text("Version \(version)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
-                Text("30 small tools your phone should've had — flashlight, cleaner, scanner, PDF, AI and more. Everything runs on your phone; nothing is uploaded.")
+                Text(L("30 small tools your phone should've had — flashlight, cleaner, scanner, PDF, AI and more. Everything runs on your phone; nothing is uploaded."))
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                     .multilineTextAlignment(.center).padding(.horizontal, HandySpacing.s8)
 
                 VStack(spacing: HandySpacing.s12) {
                     Button { UIApplication.shared.open(URL(string: "https://apps.apple.com/app/id\(APP_STORE_ID)?action=write-review")!) } label: {
-                        Label("Rate Tenzy", systemImage: "star.fill").frame(maxWidth: .infinity)
+                        Label(L("Rate Tenzy"), systemImage: "star.fill").frame(maxWidth: .infinity)
                     }.primaryButton()
-                    ShareLink(item: storeURL) { Label("Share Tenzy", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.compactButton()
+                    ShareLink(item: storeURL) { Label(L("Share Tenzy"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.compactButton()
                     Button { UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!) } label: {
-                        Label("Send feedback", systemImage: "envelope").frame(maxWidth: .infinity)
+                        Label(L("Send feedback"), systemImage: "envelope").frame(maxWidth: .infinity)
                     }.compactButton()
                 }.padding(.top, HandySpacing.s8)
 
-                Text("Made by a Dad.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s16)
+                Text(L("Made by a Dad.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s16)
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, HandySpacing.gutter)
@@ -355,14 +355,14 @@ struct DiagnosticsView: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                    Text("Diagnostics").font(HandyFont.display).padding(.top, HandySpacing.s24)
-                    Text("A local record of what the app did — tools opened, how long actions took, UI freezes and crashes. Share it with me to debug a problem. It only leaves your phone when you send it.")
+                    Text(L("Diagnostics")).font(HandyFont.display).padding(.top, HandySpacing.s24)
+                    Text(L("A local record of what the app did — tools opened, how long actions took, UI freezes and crashes. Share it with me to debug a problem. It only leaves your phone when you send it."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     HStack(spacing: HandySpacing.s8) {
-                        ShareLink(item: fileURL) { Label("Share log", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                        ShareLink(item: fileURL) { Label(L("Share log"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
                         Button {
                             Diagnostics.shared.clear(); text = Diagnostics.shared.reportText(); fileURL = Diagnostics.shared.reportFileURL()
-                        } label: { Label("Clear", systemImage: "trash").frame(maxWidth: .infinity) }.secondaryButton()
+                        } label: { Label(L("Clear"), systemImage: "trash").frame(maxWidth: .infinity) }.secondaryButton()
                     }
                     Text(text)
                         .font(.system(size: 11, design: .monospaced))
@@ -385,8 +385,8 @@ struct PrivacyView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s24) {
                 VStack(alignment: .leading, spacing: HandySpacing.s4) {
-                    Text("Privacy").font(HandyFont.display).padding(.top, HandySpacing.s24)
-                    Text("Short version: everything you do in Tenzy stays on this iPhone.").font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                    Text(L("Privacy")).font(HandyFont.display).padding(.top, HandySpacing.s24)
+                    Text(L("Short version: everything you do in Tenzy stays on this iPhone.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                 }
                 Block("Stays on your phone", check: true, [
                     "Photos, videos, PDFs and files you open in a tool, and the results — until you save or share them yourself",
