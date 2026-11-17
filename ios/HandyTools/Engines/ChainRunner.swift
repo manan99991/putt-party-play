@@ -279,6 +279,7 @@ extension Chain {
     /// One plain sentence describing what the whole flow does, built from its steps — so a tool explains
     /// itself the moment it opens instead of showing a bare title and three file buttons.
     var about: String {
+        if let blurb { return blurb }
         let parts = steps.map { $0.block.does }
         guard let first = parts.first else { return "" }
         let body: String
@@ -406,6 +407,9 @@ struct Chain: Codable, Equatable, Identifiable {
     var schedule: ChainSchedule?
     /// When several photos go in at once, lay the results out as one picture (a collage) instead of one file each.
     var collage: Bool?
+    /// A hand-written description that overrides the auto-built `about` sentence — for tools (collage, GIF)
+    /// whose processing step would otherwise describe the wrong thing (e.g. "removes location").
+    var blurb: String?
     /// When several photos go in at once, play the results one after another as a single looping GIF.
     var gif: Bool?
     /// Before and after: the first and last of the photos side by side, each with its label.
@@ -808,9 +812,9 @@ enum ChainTemplates {
         Chain(id: "video-story", name: "First 30 seconds, cropped tall", steps: [ChainStep(block: .videoTrim, settings: ["side": "first", "secs": "30"]), ChainStep(block: .videoVertical)]),
         Chain(id: "video-gif", name: "Video to a GIF", steps: [ChainStep(block: .videoGif)]),
         Chain(id: "video-words", name: "What was said in a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .speechText)]),
-        Chain(id: "photo-collage", name: "Photos into one collage", steps: [ChainStep(block: .stripLocation)], collage: true),
+        Chain(id: "photo-collage", name: "Photos into one collage", steps: [ChainStep(block: .stripLocation)], collage: true, blurb: "Lays your chosen photos out as one combined picture."),
         Chain(id: "where-i-am", name: "Send where I am", steps: [ChainStep(block: .cleanText)], finish: ChainFinish(kind: .message, to: "")),
-        Chain(id: "photos-gif", name: "Photos into a GIF", steps: [ChainStep(block: .stripLocation)], gif: true),
+        Chain(id: "photos-gif", name: "Photos into a GIF", steps: [ChainStep(block: .stripLocation)], gif: true, blurb: "Plays your chosen photos one after another as a looping GIF."),
         Chain(id: "sticker-maker", name: "Photo to a sticker", steps: [ChainStep(block: .sticker)]),
         Chain(id: "emoji-faces", name: "Emoji over every face", steps: [ChainStep(block: .emojiFaces, settings: ["emoji": ChainText.faceEmojis[0]])]),
         Chain(id: "meme", name: "Make a meme", steps: [ChainStep(block: .meme, settings: ["top": "", "bottom": ""])]),
@@ -828,7 +832,7 @@ enum ChainTemplates {
         Chain(id: "voice-alien", name: "Alien voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "alien"])]),
         Chain(id: "voice-monster", name: "Monster voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "monster"])]),
         Chain(id: "video-voice", name: "Funny voice from a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
-        Chain(id: "before-after", name: "Before and after, side by side", steps: [ChainStep(block: .stripLocation)], versus: true),
+        Chain(id: "before-after", name: "Before and after, side by side", steps: [ChainStep(block: .stripLocation)], versus: true, blurb: "Puts two photos side by side so you can compare them."),
     ]
 }
 
