@@ -100,7 +100,10 @@ struct MemoryView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack(spacing: 6) { Image(systemName: "sparkles").foregroundStyle(HandyColor.accent); Text("Answer").font(HandyFont.bodyStrong) }
             Text(text).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading)
-            Button { Copier.copy(text); ClipStore.add(text) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
+            HStack(spacing: HandySpacing.s8) {
+                Button { Copier.copy(text); ClipStore.add(text) } label: { Label("Copy", systemImage: "doc.on.doc") }.compactButton()
+                ShareLink(item: text) { Label("Share", systemImage: "square.and.arrow.up") }.compactButton()
+            }
         }.cardStyle()
     }
 

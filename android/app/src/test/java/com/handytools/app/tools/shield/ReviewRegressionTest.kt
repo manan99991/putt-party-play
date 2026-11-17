@@ -222,6 +222,19 @@ class ReviewRegressionTest {
         assertEquals(com.handytools.app.tools.builder.ThinkingEngine.Urgency.QUIET, urg("milk"))
     }
 
+    // Save-to-Contacts mapping (#285), parity with the iOS twin.
+    @Test fun thinkingContactMapping() {
+        val utc = java.util.TimeZone.getTimeZone("UTC")
+        val now = java.util.Calendar.getInstance(utc).apply { clear(); set(2026, 10, 16, 8, 0, 0) }.timeInMillis
+        val TE = com.handytools.app.tools.builder.ThinkingEngine
+        val TC = com.handytools.app.tools.builder.ThinkingContacts
+        fun f(s: String) = TC.field(TE.tasks(s, now, utc).first())
+        assertEquals("Dentist", f("call the dentist 555-123-4567")?.name)
+        assertEquals("555-123-4567", f("call the dentist 555-123-4567")?.phone)
+        assertEquals("Landlord", f("email landlord@acme.co about the leak")?.name)
+        assertNull(f("buy milk"))
+    }
+
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
     @Test fun thinkingActionPayloads() {
         val ics = ThinkingActions.icsEvent("Email Ana", 1_800_000_000_000L, "Office")

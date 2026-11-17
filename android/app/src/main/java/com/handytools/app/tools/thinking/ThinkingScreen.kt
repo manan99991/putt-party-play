@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.handytools.app.tools.Share
 import com.handytools.app.tools.builder.ThinkingActions
+import com.handytools.app.tools.builder.ThinkingContacts
 import com.handytools.app.tools.builder.ThinkingEngine
 import com.handytools.app.ui.HChip
 import com.handytools.app.ui.HPrimaryButton
@@ -139,6 +140,7 @@ private fun TaskRow(ctx: Context, t: ThinkingEngine.Task) {
                 email?.let { e ->
                     ThinkingActions.mailtoURL(e)?.let { url -> HChip("Email", false) { open(ctx, url) } }
                 }
+                ThinkingContacts.field(t)?.let { f -> HChip("Save contact", false) { addContact(ctx, f) } }
             }
         }
     }
@@ -149,6 +151,18 @@ private fun open(ctx: Context, url: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     if (intent.resolveActivity(ctx.packageManager) != null) ctx.startActivity(intent)
     else Toast.makeText(ctx, "No app on this phone can open that", Toast.LENGTH_SHORT).show()
+}
+
+/** Open the contact editor prefilled (the person confirms + saves) — no permission needed. */
+private fun addContact(ctx: Context, f: ThinkingContacts.Field) {
+    val intent = Intent(Intent.ACTION_INSERT).apply {
+        type = android.provider.ContactsContract.Contacts.CONTENT_TYPE
+        putExtra(android.provider.ContactsContract.Intents.Insert.NAME, f.name)
+        f.phone?.let { putExtra(android.provider.ContactsContract.Intents.Insert.PHONE, it) }
+        f.email?.let { putExtra(android.provider.ContactsContract.Intents.Insert.EMAIL, it) }
+    }
+    if (intent.resolveActivity(ctx.packageManager) != null) ctx.startActivity(intent)
+    else Toast.makeText(ctx, "No contacts app to open", Toast.LENGTH_SHORT).show()
 }
 
 /** Build one .ics holding every dated task and hand it to the calendar — the whole plan in a tap. */

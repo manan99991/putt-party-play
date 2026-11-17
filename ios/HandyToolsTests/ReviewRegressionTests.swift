@@ -325,6 +325,20 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertNil(ThinkingReminders.field(for: ThinkingEngine.tasks(from: "buy milk", now: now, calendar: cal).first!).due, "an undated task has no due date")
     }
 
+    // Save-to-Contacts mapping (#285): a name guessed from the task, with the number/email it names.
+    func testThinkingContactMapping() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let now = cal.date(from: DateComponents(year: 2026, month: 11, day: 16, hour: 8, minute: 0))!
+        func f(_ s: String) -> ThinkingContacts.Field? {
+            ThinkingContacts.field(for: ThinkingEngine.tasks(from: s, now: now, calendar: cal).first!)
+        }
+        XCTAssertEqual(f("call the dentist 555-123-4567")?.name, "Dentist", "name from the noun after the verb")
+        XCTAssertEqual(f("call the dentist 555-123-4567")?.phone, "555-123-4567", "carries the number")
+        XCTAssertEqual(f("email landlord@acme.co about the leak")?.name, "Landlord", "name from the email's local part")
+        XCTAssertNil(f("buy milk"), "no number or email → nothing to save")
+    }
+
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
     func testThinkingActionPayloads() {
         let ics = ThinkingActions.icsEvent(title: "Email Ana", due: Date(timeIntervalSince1970: 1_800_000_000), place: "Office")

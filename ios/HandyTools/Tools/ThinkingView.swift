@@ -195,6 +195,20 @@ struct ThinkingToolView: View {
                         if let email = ThinkingActions.emailIn(t.text), let u = ThinkingActions.mailtoURL(email).flatMap(URL.init) {
                             Link(destination: u) { Label("Email", systemImage: "envelope").font(HandyFont.micro) }.compactButton()
                         }
+                        if let contact = ThinkingContacts.field(for: t) {
+                            Button {
+                                Task { @MainActor in
+                                    do {
+                                        try await ThinkingContacts.add(contact)
+                                        note = "Saved \(contact.name) to Contacts."; HandyHaptics.success()
+                                    } catch ThinkingContacts.AddError.denied {
+                                        errorText = "Contacts access is off. Turn it on in Settings › Tenzy and tap again."
+                                    } catch {
+                                        errorText = "Couldn't save the contact."
+                                    }
+                                }
+                            } label: { Label("Save contact", systemImage: "person.crop.circle.badge.plus").font(HandyFont.micro) }.compactButton()
+                        }
                         if t.due != nil { Label("has a date", systemImage: "calendar").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
                     }
                 }.padding(.vertical, 2)
