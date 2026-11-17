@@ -555,8 +555,8 @@ struct BuilderView: View {
     }
     private func objTile(_ title: String, sub: String? = nil) -> some View {
         VStack(spacing: 2) {
-            Text(title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-            if let sub { Text(sub).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
+            Text(L(title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+            if let sub { Text(L(sub)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
         }
         .frame(maxWidth: .infinity, minHeight: 56)
         .cardStyle(padding: HandySpacing.s12)

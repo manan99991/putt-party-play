@@ -579,6 +579,16 @@
   "pt": "Pergunta às tuas capturas…",
   "zh": "向你的截图提问…"
  },
+ "Audio": {
+  "de": "Audio",
+  "es": "Audio",
+  "fr": "Audio",
+  "hi": "ऑडियो",
+  "it": "Audio",
+  "ja": "音声",
+  "pt": "Áudio",
+  "zh": "音频"
+ },
  "Audio Lab": {
   "de": "Audio-Labor",
   "es": "Laboratorio de audio",
@@ -4778,6 +4788,16 @@
   "ja": "まだ何も記録されていません。端末を充電につなぎ、ナイトスタンドに置いて録音を開始し、朝に確認してください。",
   "pt": "Ainda nada captado. Liga o telemóvel à corrente, põe-no na mesa de cabeceira, começa a ouvir e volta de manhã.",
   "zh": "尚未捕捉到内容。给手机充上电，放在床头柜上，开始聆听，早上再回来查看。"
+ },
+ "Nothing copied": {
+  "de": "Nichts kopiert",
+  "es": "Nada copiado",
+  "fr": "Rien de copié",
+  "hi": "कुछ भी कॉपी नहीं",
+  "it": "Niente copiato",
+  "ja": "コピーなし",
+  "pt": "Nada copiado",
+  "zh": "未复制任何内容"
  },
  "Nothing filed yet": {
   "de": "Noch nichts abgelegt",
