@@ -307,12 +307,9 @@ platform :ios do
       submission_information: {
         # HTTPS/standard crypto only — exempt from export compliance docs.
         export_compliance_uses_encryption: false,
-        # App serves ads via AdMob and therefore uses the advertising identifier.
-        add_id_info_uses_idfa: true,
-        add_id_info_serves_ads: true,
-        add_id_info_tracks_install: true,
-        add_id_info_tracks_action: false,
-        add_id_info_limits_tracking: true,
+        # Subscription-only: no ads, no ad SDK, no advertising identifier (IDFA). Must be false so the
+        # declaration matches a binary with no AdMob framework — a stale uses_idfa:true is an auto-reject.
+        add_id_info_uses_idfa: false,
         content_rights_contains_third_party_content: false
       }
     )

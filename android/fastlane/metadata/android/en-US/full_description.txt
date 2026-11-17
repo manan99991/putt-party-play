@@ -29,7 +29,7 @@ PHONE & TOOLBOX
 • Hearing Boost, GPS Dashboard, Where I Parked, Rest (sleep sounds), Color Vision, Identify, See & Read, Price Check and Quick Buttons
 
 FREE TO DOWNLOAD, WITH OPTIONAL TENZY PRO
-Every tool is free to try with daily limits on the heavier jobs. Optional Tenzy Pro is $19.99 a year, billed by Google Play: it removes the ads and the daily limits and unlocks the extra themes. Cancel any time in Google Play.
+Every tool is free to try with daily limits on the heavier jobs. Optional Tenzy Pro is $19.99 a year, billed by Google Play: it removes the daily limits, unlocks every tool and the extra themes. Cancel any time in Google Play.
 
 PRIVACY
-Your files stay on your phone. There is no account and no analytics. The free version shows ads through Google AdMob, which may use your advertising ID; Pro turns the ads off. Each permission (camera, microphone, contacts, location, photos) is asked for only by the tool that needs it. Full policy: https://manan99991.github.io/tenzy/privacy.html
+Your files stay on your phone. There is no account, no ads, no analytics and no advertising ID — Tenzy collects no data. Each permission (camera, microphone, contacts, location, photos) is asked for only by the tool that needs it. Full policy: https://manan99991.github.io/tenzy/privacy.html

@@ -5,7 +5,7 @@ Tenzy is 30 on-device utility tools. Seven everyday tools are always free: Flash
 
 TENZY PRO (in-app subscription)
 - A single auto-renewing subscription: "Tenzy Pro", 1 year, US$19.99, with a 3-day free trial. There is no monthly plan.
-- It removes ads and, for end users, unlocks the Pro tools.
+- For end users it unlocks the Pro tools and removes the daily limits. (Tenzy has no ads at all.)
 - The purchase screen (Settings > Go Pro, or the unlock screen on any Pro tool) clearly shows the price, the 3-day free-trial terms, the auto-renewal disclosure, and functional links to the Terms of Use (EULA) and Privacy Policy, per Guideline 3.1.2.
 - The purchase can be completed in the sandbox from that screen: it shows the price, the 3-day free trial, the Start button and the terms even though the review build already has every Pro tool unlocked (so you can assess the full app without paying). A real App Store install keeps the Pro tools locked until purchase.
 
@@ -19,6 +19,5 @@ PERMISSIONS (all processed on-device; nothing is uploaded)
 - Speech Recognition: Voice to Notes and Translate's voice mode transcribe speech on-device where supported.
 - Background audio: Rest keeps playing sleep sounds (or listening for snoring when the user starts it) with the screen off. It runs only after the user taps start.
 - Face ID: unlocks the private Vault.
-- Tracking (ATT): shown only to request personalized ads via AdMob; declining does not limit any feature.
 
-The on-device AI tools use Apple's Foundation Models framework on supported devices and fall back gracefully elsewhere. No data is collected except the AdMob advertising identifier, and Tenzy Pro disables ads entirely.
+Tenzy shows no ads and contains no advertising SDK. It does not use the advertising identifier (IDFA) and presents no App Tracking Transparency prompt. The on-device AI tools use Apple's Foundation Models framework on supported devices and fall back gracefully elsewhere. No data is collected; everything is processed on the device.
