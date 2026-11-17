@@ -310,6 +310,21 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(urg("milk"), .quiet, "a bare fragment stays quiet")
     }
 
+    // One-tap Reminders mapping (#285): a task becomes a tidy reminder — capitalised title, its due date,
+    // and a note naming the place. The field map is pure; only the EventKit save needs a device.
+    func testThinkingReminderFieldMapping() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let now = cal.date(from: DateComponents(year: 2026, month: 11, day: 16, hour: 8, minute: 0))!
+        let dentist = ThinkingEngine.tasks(from: "call dentist at 2pm", now: now, calendar: cal).first!
+        let f = ThinkingReminders.field(for: dentist)
+        XCTAssertTrue(f.title.hasPrefix("C"), "the title is capitalised")
+        XCTAssertNotNil(f.due, "a dated task carries its due date onto the reminder")
+        let clinic = ThinkingEngine.tasks(from: "drop forms at Oak Street Clinic", now: now, calendar: cal).first!
+        XCTAssertEqual(ThinkingReminders.field(for: clinic).notes, "At Oak Street Clinic", "a place becomes a note")
+        XCTAssertNil(ThinkingReminders.field(for: ThinkingEngine.tasks(from: "buy milk", now: now, calendar: cal).first!).due, "an undated task has no due date")
+    }
+
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
     func testThinkingActionPayloads() {
         let ics = ThinkingActions.icsEvent(title: "Email Ana", due: Date(timeIntervalSince1970: 1_800_000_000), place: "Office")

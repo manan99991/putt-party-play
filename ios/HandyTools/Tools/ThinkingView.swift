@@ -199,9 +199,24 @@ struct ThinkingToolView: View {
                 Button { Copier.copy(plainList); ClipStore.add(plainList) } label: { Label("Copy", systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
                 ShareLink(item: plainList) { Label("Share", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
+            if !tasks.isEmpty {
+                Button {
+                    let items = tasks
+                    Task { @MainActor in
+                        do {
+                            let n = try await ThinkingReminders.add(items)
+                            note = "Added \(n) to Reminders."; HandyHaptics.success()
+                        } catch ThinkingReminders.AddError.denied {
+                            errorText = "Reminders access is off. Turn it on in Settings › Tenzy and tap again."
+                        } catch {
+                            errorText = "Couldn't add to Reminders — your dates are still here to add to Calendar."
+                        }
+                    }
+                } label: { Label("Add to Reminders", systemImage: "checklist").frame(maxWidth: .infinity) }.secondaryButton()
+            }
             if let calendarICS {
                 ShareLink(item: calendarICS) { Label("Add dates to Calendar", systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.secondaryButton()
-                Text("Opens the dated steps as calendar events. One-tap add to Reminders is coming next.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                Text("First time, your phone asks once; after that it's a silent one-tap.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
         }.cardStyle()
     }
