@@ -33,6 +33,8 @@ enum ThinkingActions {
         // Spanish
         "llamar", "llama", "telefonear", "teléfono", "telefono", "marcar", "mensaje", "mensajear",
         "textear", "contactar",
+        // French
+        "appeler", "appelle", "téléphoner", "téléphone", "telephoner", "joindre", "texto", "contacter",
     ]
 
     /// Place-type words that confirm a capitalised phrase after "at/to/from/in" names a real location.
@@ -72,6 +74,18 @@ enum ThinkingActions {
             + #"|(\ben\s+\d+\s+(día|dia|semana)s?\b)"#
             + #"|(\b(la\s+)?próxima\s+semana\b)"#
             + #"|(\bsemana\s+que\s+viene\b)"#
+            // French
+            + #"|(\b(aujourd'?hui|demain)\b)"#
+            + #"|(\bapr[eè]s[- ]demain\b)"#
+            + #"|(\bce\s+soir\b)"#
+            + #"|(\bcet?\s+apr[eè]s.?midi\b)"#
+            + #"|(\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b)"#
+            + #"|(\b(janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre)\b)"#
+            + #"|(\bà\s+([01]?\d|2[0-3])\s*h\b)"#
+            + #"|(\b([01]?\d|2[0-3])h[0-5]\d\b)"#
+            + #"|(\bà\s+(midi|minuit)\b)"#
+            + #"|(\bdans\s+\d+\s+(jour|semaine)s?\b)"#
+            + #"|(\b(la\s+)?semaine\s+prochaine\b)"#
         return s.range(of: pattern, options: [.regularExpression, .caseInsensitive]) != nil
     }
 
@@ -172,6 +186,8 @@ enum ThinkingActions {
         // Spanish
         "domingo": 1, "lunes": 2, "martes": 3, "miércoles": 4, "miercoles": 4, "jueves": 5,
         "viernes": 6, "sábado": 7, "sabado": 7,
+        // French
+        "dimanche": 1, "lundi": 2, "mardi": 3, "mercredi": 4, "jeudi": 5, "vendredi": 6, "samedi": 7,
     ]
 
     /// Turn a task into the concrete moment it is due, or nil when it carries no date. Deterministic given
@@ -194,21 +210,31 @@ enum ThinkingActions {
             hour = h; minute = Int(g[2]) ?? 0
             if g[3] == "tarde" || g[3] == "noche" { if h < 12 { hour = h + 12 } }
             else if h == 12 { hour = 0 }
+        } else if has(#"\bà\s+midi\b"#) {
+            hour = 12
+        } else if has(#"\bà\s+minuit\b"#) {
+            hour = 0
+        } else if let g = groups(#"\bà\s+([01]?\d|2[0-3])\s*h\s*(?:([0-5]\d))?\b"#, in: t) ?? groups(#"\b([01]?\d|2[0-3])h([0-5]\d)\b"#, in: t), let h = Int(g[1]) {
+            // French clock: "à 15h", "à 9h30", "15h30". Markers "du soir"/"de l'après-midi" → pm.
+            hour = h; minute = Int(g[2]) ?? 0
+            if has(#"du\s+soir"#) || has(#"de\s+l.?apr[eè]s.?midi"#) { if h < 12 { hour = h + 12 } }
+            else if has(#"du\s+matin"#), h == 12 { hour = 0 }
         } else if let g = groups(#"\b(\d{1,2}):(\d{2})\b"#, in: t), let h = Int(g[1]) {
             hour = h; minute = Int(g[2]) ?? 0
         }
-        // Day anchor — English and Spanish, most specific first.
+        // Day anchor — English, Spanish and French, most specific first.
         var offset: Int? = nil; var tonight = false; var estaTarde = false
-        if has(#"\btonight\b"#) || has(#"\besta\s+noche\b"#) { offset = 0; tonight = true }
-        else if has(#"\btoday\b"#) || has(#"\bhoy\b"#) { offset = 0 }
-        else if has(#"\besta\s+tarde\b"#) { offset = 0; estaTarde = true }
+        if has(#"\btonight\b"#) || has(#"\besta\s+noche\b"#) || has(#"\bce\s+soir\b"#) { offset = 0; tonight = true }
+        else if has(#"\btoday\b"#) || has(#"\bhoy\b"#) || has(#"\baujourd'?hui\b"#) { offset = 0 }
+        else if has(#"\besta\s+tarde\b"#) || has(#"\bcet?\s+apr[eè]s.?midi\b"#) { offset = 0; estaTarde = true }
         else if has(#"\besta\s+ma(?:ñ|n)ana\b"#) { offset = 0 }
-        else if has(#"\bpasado\s+ma(?:ñ|n)ana\b"#) { offset = 2 }
+        else if has(#"\bpasado\s+ma(?:ñ|n)ana\b"#) || has(#"\bapr[eè]s[- ]demain\b"#) { offset = 2 }
         else if has(#"\b(tomorrow|tmrw|tmr)\b"#) { offset = 1 }
         else if has(#"(?<!de la )(?<!por la )(?<!esta )\bma(?:ñ|n)ana\b"#) { offset = 1 }
-        else if let g = groups(#"\b(?:in|en)\s+(\d+)\s+(day|d(?:í|i)as?|week|semanas?)\b"#, in: t), let n = Int(g[1]) {
+        else if has(#"\bdemain\b"#) { offset = 1 }
+        else if let g = groups(#"\b(?:in|en|dans)\s+(\d+)\s+(day|d(?:í|i)as?|jours?|week|semanas?|semaines?)\b"#, in: t), let n = Int(g[1]) {
             offset = n * (g[2].hasPrefix("week") || g[2].hasPrefix("seman") ? 7 : 1)
-        } else if has(#"\bnext week\b"#) || has(#"\b(?:la\s+)?pr(?:ó|o)xima\s+semana\b"#) || has(#"\bsemana que viene\b"#) { offset = 7 }
+        } else if has(#"\bnext week\b"#) || has(#"\b(?:la\s+)?pr(?:ó|o)xima\s+semana\b"#) || has(#"\bsemana que viene\b"#) || has(#"\b(?:la\s+)?semaine\s+prochaine\b"#) { offset = 7 }
         else if let wd = weekdays.first(where: { has(#"\b"# + $0.key + #"\b"#) })?.value {
             let cur = calendar.component(.weekday, from: now)
             let d = ((wd - cur) % 7 + 7) % 7
@@ -221,7 +247,7 @@ enum ThinkingActions {
         comps.hour = hour ?? (tonight ? 20 : (estaTarde ? 15 : 9))
         comps.minute = hour == nil ? 0 : minute
         guard var res = calendar.date(from: comps) else { return nil }
-        if off == 0, hour != nil, res < now, !has(#"\btoday\b|\btonight\b|\bhoy\b|\besta\s+noche\b"#) {
+        if off == 0, hour != nil, res < now, !has(#"\btoday\b|\btonight\b|\bhoy\b|\besta\s+noche\b|\baujourd'?hui\b|\bce\s+soir\b"#) {
             res = calendar.date(byAdding: .day, value: 1, to: res) ?? res
         }
         return res

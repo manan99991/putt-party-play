@@ -28,6 +28,8 @@ object ThinkingActions {
         // Spanish
         "llamar", "llama", "telefonear", "teléfono", "telefono", "marcar", "mensaje", "mensajear",
         "textear", "contactar",
+        // French
+        "appeler", "appelle", "téléphoner", "téléphone", "telephoner", "joindre", "texto", "contacter",
     )
 
     private val placeWords = setOf(
@@ -62,7 +64,19 @@ object ThinkingActions {
             """|(\b\d{1,2}\s+de\s+la\s+(tarde|noche|mañana|manana)\b)""" +
             """|(\ben\s+\d+\s+(día|dia|semana)s?\b)""" +
             """|(\b(la\s+)?próxima\s+semana\b)""" +
-            """|(\bsemana\s+que\s+viene\b)""",
+            """|(\bsemana\s+que\s+viene\b)""" +
+            // French
+            """|(\b(aujourd'?hui|demain)\b)""" +
+            """|(\bapr[eè]s[- ]demain\b)""" +
+            """|(\bce\s+soir\b)""" +
+            """|(\bcet?\s+apr[eè]s.?midi\b)""" +
+            """|(\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b)""" +
+            """|(\b(janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre)\b)""" +
+            """|(\bà\s+([01]?\d|2[0-3])\s*h\b)""" +
+            """|(\b([01]?\d|2[0-3])h[0-5]\d\b)""" +
+            """|(\bà\s+(midi|minuit)\b)""" +
+            """|(\bdans\s+\d+\s+(jour|semaine)s?\b)""" +
+            """|(\b(la\s+)?semaine\s+prochaine\b)""",
         RegexOption.IGNORE_CASE,
     )
     private val LOCATIVE = Regex("""\b(?:at|to|from|in)\s+(?:the\s+)?([A-Z][\p{L}'&.\-]*(?:\s+[A-Z][\p{L}'&.\-]*){0,3})""")
@@ -159,6 +173,8 @@ object ThinkingActions {
         // Spanish
         "domingo" to 1, "lunes" to 2, "martes" to 3, "miércoles" to 4, "miercoles" to 4, "jueves" to 5,
         "viernes" to 6, "sábado" to 7, "sabado" to 7,
+        // French
+        "dimanche" to 1, "lundi" to 2, "mardi" to 3, "mercredi" to 4, "jeudi" to 5, "vendredi" to 6, "samedi" to 7,
     )
 
     /** Turn a task into the concrete moment it is due (epoch millis), or null when it carries no date.
@@ -172,6 +188,7 @@ object ThinkingActions {
         val ap = Regex("""\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b""").find(t)
         val alas = Regex("""\ba\s+las?\s+(\d{1,2})(?::(\d{2}))?""").find(t)
         val deLa = Regex("""\b(\d{1,2})(?::(\d{2}))?\s+de\s+la\s+(tarde|noche|mañana|manana)""").find(t)
+        val fr = Regex("""\bà\s+([01]?\d|2[0-3])\s*h\s*(?:([0-5]\d))?\b""").find(t) ?: Regex("""\b([01]?\d|2[0-3])h([0-5]\d)\b""").find(t)
         if (ap != null) {
             hour = (ap.groupValues[1].toInt() % 12) + (if (ap.groupValues[3] == "pm") 12 else 0)
             minute = ap.groupValues[2].toIntOrNull() ?: 0
@@ -190,23 +207,35 @@ object ThinkingActions {
                 (marker == "mañana" || marker == "manana") && h == 12 -> 0
                 else -> h
             }
+        } else if (has("""\bà\s+midi\b""")) {
+            hour = 12
+        } else if (has("""\bà\s+minuit\b""")) {
+            hour = 0
+        } else if (fr != null) {
+            val h = fr.groupValues[1].toInt(); minute = fr.groupValues[2].toIntOrNull() ?: 0
+            hour = when {
+                (has("""du\s+soir""") || has("""de\s+l.?apr[eè]s.?midi""")) && h < 12 -> h + 12
+                has("""du\s+matin""") && h == 12 -> 0
+                else -> h
+            }
         } else {
             Regex("""\b(\d{1,2}):(\d{2})\b""").find(t)?.let { hour = it.groupValues[1].toInt(); minute = it.groupValues[2].toIntOrNull() ?: 0 }
         }
         var off: Int? = null; var tonight = false; var estaTarde = false
         when {
-            has("""\btonight\b""") || has("""\besta\s+noche\b""") -> { off = 0; tonight = true }
-            has("""\btoday\b""") || has("""\bhoy\b""") -> off = 0
-            has("""\besta\s+tarde\b""") -> { off = 0; estaTarde = true }
+            has("""\btonight\b""") || has("""\besta\s+noche\b""") || has("""\bce\s+soir\b""") -> { off = 0; tonight = true }
+            has("""\btoday\b""") || has("""\bhoy\b""") || has("""\baujourd'?hui\b""") -> off = 0
+            has("""\besta\s+tarde\b""") || has("""\bcet?\s+apr[eè]s.?midi\b""") -> { off = 0; estaTarde = true }
             has("""\besta\s+ma(?:ñ|n)ana\b""") -> off = 0
-            has("""\bpasado\s+ma(?:ñ|n)ana\b""") -> off = 2
+            has("""\bpasado\s+ma(?:ñ|n)ana\b""") || has("""\bapr[eè]s[- ]demain\b""") -> off = 2
             has("""\b(tomorrow|tmrw|tmr)\b""") -> off = 1
             has("""(?<!de la )(?<!por la )(?<!esta )\bma(?:ñ|n)ana\b""") -> off = 1
+            has("""\bdemain\b""") -> off = 1
             else -> {
-                val inN = Regex("""\b(?:in|en)\s+(\d+)\s+(day|día|dia|week|semana)s?\b""").find(t)
+                val inN = Regex("""\b(?:in|en|dans)\s+(\d+)\s+(day|día|dia|jour|week|semana|semaine)s?\b""").find(t)
                 when {
                     inN != null -> off = inN.groupValues[1].toInt() * (if (inN.groupValues[2].startsWith("week") || inN.groupValues[2].startsWith("seman")) 7 else 1)
-                    has("""\bnext week\b""") || has("""\b(?:la\s+)?próxima\s+semana\b""") || has("""\bsemana que viene\b""") -> off = 7
+                    has("""\bnext week\b""") || has("""\b(?:la\s+)?próxima\s+semana\b""") || has("""\bsemana que viene\b""") || has("""\b(?:la\s+)?semaine\s+prochaine\b""") -> off = 7
                     else -> weekdays.entries.firstOrNull { has("""\b""" + it.key + """\b""") }?.let { e ->
                         val cur = java.util.Calendar.getInstance(zone).apply { timeInMillis = nowMs }.get(java.util.Calendar.DAY_OF_WEEK)
                         val d = ((e.value - cur) % 7 + 7) % 7
@@ -223,7 +252,7 @@ object ThinkingActions {
             set(java.util.Calendar.MINUTE, if (hour == null) 0 else minute)
             set(java.util.Calendar.SECOND, 0); set(java.util.Calendar.MILLISECOND, 0)
         }
-        if (o == 0 && hour != null && cal.timeInMillis < nowMs && !has("""\btoday\b|\btonight\b|\bhoy\b|\besta\s+noche\b""")) {
+        if (o == 0 && hour != null && cal.timeInMillis < nowMs && !has("""\btoday\b|\btonight\b|\bhoy\b|\besta\s+noche\b|\baujourd'?hui\b|\bce\s+soir\b""")) {
             cal.add(java.util.Calendar.DAY_OF_MONTH, 1)
         }
         return cal.timeInMillis

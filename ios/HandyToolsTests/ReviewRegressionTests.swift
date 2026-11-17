@@ -360,6 +360,25 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(day("tomorrow buy milk"), 17, "English tomorrow still parses")
     }
 
+    // Multi-language (#285): French dates, times and call cues, with English clocks left intact.
+    func testThinkingFrenchParsing() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let now = cal.date(from: DateComponents(year: 2026, month: 11, day: 16, hour: 8, minute: 0))! // Monday
+        func day(_ s: String) -> Int? { ThinkingActions.dueDate(from: s, now: now, calendar: cal).map { cal.component(.day, from: $0) } }
+        func hour(_ s: String) -> Int? { ThinkingActions.dueDate(from: s, now: now, calendar: cal).map { cal.component(.hour, from: $0) } }
+        XCTAssertEqual(day("appeler le dentiste demain"), 17, "demain → tomorrow")
+        XCTAssertEqual(day("après-demain envoyer le rapport"), 18, "après-demain → +2")
+        XCTAssertEqual(day("payer le loyer vendredi"), 20, "vendredi → the next Friday")
+        XCTAssertEqual(hour("réunion à 15h"), 15, "à 15h → 15:00")
+        XCTAssertEqual(hour("ce soir dîner avec Ana"), 20, "ce soir → tonight")
+        XCTAssertEqual(day("dans 3 jours renouveler"), 19, "dans 3 jours → +3")
+        XCTAssertEqual(hour("cet après-midi récupérer le colis"), 15, "cet après-midi → 15:00, not noon")
+        XCTAssertNil(day("acheter du pain"), "no date cue → no due")
+        XCTAssertTrue(ThinkingActions.plan(for: "appeler le dentiste").isCall, "appeler → a call")
+        XCTAssertNil(day("log 3h of work"), "the French clock must not misread English 3h")
+    }
+
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
     func testThinkingActionPayloads() {
         let ics = ThinkingActions.icsEvent(title: "Email Ana", due: Date(timeIntervalSince1970: 1_800_000_000), place: "Office")
