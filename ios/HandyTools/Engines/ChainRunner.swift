@@ -843,7 +843,7 @@ enum ChainTemplates {
         Chain(id: "voice-alien", name: "Alien voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "alien"])]),
         Chain(id: "voice-monster", name: "Monster voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "monster"])]),
         Chain(id: "video-voice", name: "Funny voice from a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
-        Chain(id: "before-after", name: "Before and after, side by side", steps: [ChainStep(block: .stripLocation)], blurb: "Puts two photos side by side so you can compare them.", versus: true),
+        Chain(id: "before-after", name: "Before and after", steps: [ChainStep(block: .stripLocation)], blurb: "Turns your before and after into a swipe-reveal video — the way people post a transformation.", versus: true),
     ]
 }
 

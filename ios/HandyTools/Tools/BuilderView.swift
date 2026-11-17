@@ -1650,8 +1650,34 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 await MainActor.run { busy = false; progress = ""; message = "Before and after needs two photos: pick the before and the after together." }
                 return
             }
+            // Before & after lands as a share-ready swipe-reveal video — the way people actually post a
+            // transformation — with the static side-by-side as a fallback if the phone can't encode it.
+            if versus {
+                let imgs: [UIImage] = kept.compactMap { p in
+                    if case .image(let i) = p { return i }
+                    if case .file(let d, let e) = p, ChainPayload.isPhoto(e) { return UIImage(data: d) }
+                    return nil
+                }
+                if imgs.count >= 2, let before = imgs.first, let after = imgs.last,
+                   let data = await ChainMotion.revealVideo(before: before, after: after) {
+                    let url = FileManager.default.temporaryDirectory.appendingPathComponent(ChainName.file(pattern: chain.fileName, tool: chain.name, ext: "mp4"))
+                    if (try? data.write(to: url)) != nil {
+                        await MainActor.run {
+                            busy = false; progress = ""; result = .video(url)
+                            finished(Outbox.make(.video(url), named: chain.fileName, tool: chain.name))
+                        }
+                        return
+                    }
+                }
+                if let one = ChainCombine.beforeAfter(kept) {
+                    await MainActor.run { busy = false; progress = ""; result = one; finished(Outbox.make(one, named: chain.fileName, tool: chain.name)) }
+                    return
+                }
+                await MainActor.run { busy = false; progress = ""; message = "Couldn't build the before and after from those two photos." }
+                return
+            }
             let pdfSize: DocEngine.PageSize = { switch chain.steps.first(where: { $0.block == .photoPdf })?.settings["pagesize"] { case "a4": return .a4; case "letter": return .letter; default: return .auto } }()
-            if let one = versus ? ChainCombine.beforeAfter(kept) : gif ? ChainCombine.oneGif(kept) : collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true, pageSize: pdfSize) : nil {
+            if let one = gif ? ChainCombine.oneGif(kept) : collage ? ChainCombine.onePicture(kept) : combine ? ChainCombine.onePDF(kept, onePage: chain.onePage == true, pageSize: pdfSize) : nil {
                 let skipped = out.filter { $0.note != nil }.count
                 await MainActor.run {
                     busy = false; progress = ""; result = one
