@@ -1,0 +1,4 @@
+== test.log (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/ChainRunner.swift:817:114: error: argument 'blurb' must precede argument 'gif'
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/ChainRunner.swift:835:132: error: argument 'blurb' must precede argument 'versus'
+** TEST FAILED **
