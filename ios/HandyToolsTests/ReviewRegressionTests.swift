@@ -334,6 +334,11 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertTrue(ics.contains("LOCATION:Office"))
         let maps = ThinkingActions.mapsURL("Oak Street Clinic")
         XCTAssertNotNil(maps); XCTAssertTrue(maps?.contains("maps.apple.com") == true)
+        // Send-elsewhere hand-offs (#285): a number → Text, an address → Email.
+        XCTAssertEqual(ThinkingActions.smsURL("555-123-4567"), "sms:5551234567")
+        XCTAssertEqual(ThinkingActions.emailIn("email landlord@acme.co about the leak"), "landlord@acme.co")
+        XCTAssertEqual(ThinkingActions.mailtoURL("a@b.com"), "mailto:a@b.com")
+        XCTAssertNil(ThinkingActions.emailIn("no address here"))
     }
 
     // "Act on it" Add-to-Calendar (#285): every dated task becomes one event in a single .ics.

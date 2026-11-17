@@ -81,6 +81,20 @@ object ThinkingActions {
         return if (keep.count { it.isDigit() } >= 7) "tel:$keep" else null
     }
 
+    /** An `sms:` URL to open the messaging app addressed to a number (the person types the message), or null. */
+    fun smsURL(phone: String): String? {
+        val keep = phone.filter { it.isDigit() || it == '+' }
+        return if (keep.count { it.isDigit() } >= 7) "sms:$keep" else null
+    }
+
+    private val EMAIL = Regex("""[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}""")
+
+    /** The first email address in a task, or null. */
+    fun emailIn(task: String): String? = EMAIL.find(task)?.value
+
+    /** A `mailto:` URL to open the mail composer addressed to an email, or null for a blank address. */
+    fun mailtoURL(email: String): String? = if (email.contains("@")) "mailto:$email" else null
+
     /** A `geo:` Maps URL for a place (opens Maps), or null for a blank place. */
     fun mapsURL(place: String): String? =
         if (place.isBlank()) null else "geo:0,0?q=" + java.net.URLEncoder.encode(place, "UTF-8")

@@ -182,12 +182,18 @@ struct ThinkingToolView: View {
             ForEach(Array(tasks.enumerated()), id: \.offset) { _, t in
                 VStack(alignment: .leading, spacing: 4) {
                     Text(t.text).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).frame(maxWidth: .infinity, alignment: .leading)
-                    HStack(spacing: HandySpacing.s8) {
+                    HandyFlow(spacing: HandySpacing.s8) {
                         if let place = t.actions.place, let u = ThinkingActions.mapsURL(place).flatMap(URL.init) {
                             Link(destination: u) { Label("Directions", systemImage: "map").font(HandyFont.micro) }.compactButton()
                         }
                         if let phone = t.actions.phone, let u = ThinkingActions.telURL(phone).flatMap(URL.init) {
                             Link(destination: u) { Label("Call", systemImage: "phone").font(HandyFont.micro) }.compactButton()
+                        }
+                        if let phone = t.actions.phone, let u = ThinkingActions.smsURL(phone).flatMap(URL.init) {
+                            Link(destination: u) { Label("Text", systemImage: "message").font(HandyFont.micro) }.compactButton()
+                        }
+                        if let email = ThinkingActions.emailIn(t.text), let u = ThinkingActions.mailtoURL(email).flatMap(URL.init) {
+                            Link(destination: u) { Label("Email", systemImage: "envelope").font(HandyFont.micro) }.compactButton()
                         }
                         if t.due != nil { Label("has a date", systemImage: "calendar").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
                     }

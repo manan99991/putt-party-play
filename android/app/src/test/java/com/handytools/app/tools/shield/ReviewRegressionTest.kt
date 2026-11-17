@@ -232,6 +232,11 @@ class ReviewRegressionTest {
         val maps = ThinkingActions.mapsURL("Oak Street Clinic")
         assertTrueMsg("geo url", maps != null && maps.startsWith("geo:0,0?q="))
         assertNull(ThinkingActions.mapsURL("   "))
+        // Send-elsewhere hand-offs (#285): a number → Text, an address → Email.
+        assertEquals("sms:5551234567", ThinkingActions.smsURL("555-123-4567"))
+        assertEquals("landlord@acme.co", ThinkingActions.emailIn("email landlord@acme.co about the leak"))
+        assertEquals("mailto:a@b.com", ThinkingActions.mailtoURL("a@b.com"))
+        assertNull(ThinkingActions.emailIn("no address here"))
     }
 
     // "Act on it" Add-to-Calendar bundle (#285), parity with the iOS twin.

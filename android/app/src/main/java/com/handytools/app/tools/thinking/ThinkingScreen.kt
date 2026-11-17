@@ -117,7 +117,8 @@ private fun TaskRow(ctx: Context, t: ThinkingEngine.Task) {
             )
         }
         val p = t.actions
-        if (p.place != null || p.isCall) {
+        val email = ThinkingActions.emailIn(t.text)
+        if (p.place != null || p.isCall || p.phone != null || email != null) {
             Spacer(Modifier.size(4.dp))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 p.place?.let { place ->
@@ -125,12 +126,18 @@ private fun TaskRow(ctx: Context, t: ThinkingEngine.Task) {
                         ThinkingActions.mapsURL(place)?.let { open(ctx, it) }
                     }
                 }
+                val tel = p.phone?.let { ThinkingActions.telURL(it) }
                 if (p.isCall) {
-                    val tel = p.phone?.let { ThinkingActions.telURL(it) }
                     HChip(if (tel != null) "Call" else "Find number", false) {
                         if (tel != null) open(ctx, tel)
                         else Toast.makeText(ctx, "No number in this task — add one to call in a tap", Toast.LENGTH_SHORT).show()
                     }
+                }
+                p.phone?.let { phone ->
+                    ThinkingActions.smsURL(phone)?.let { sms -> HChip("Text", false) { open(ctx, sms) } }
+                }
+                email?.let { e ->
+                    ThinkingActions.mailtoURL(e)?.let { url -> HChip("Email", false) { open(ctx, url) } }
                 }
             }
         }

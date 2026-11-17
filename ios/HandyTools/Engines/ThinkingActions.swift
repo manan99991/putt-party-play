@@ -107,6 +107,22 @@ enum ThinkingActions {
         return keep.filter(\.isNumber).count >= 7 ? "tel:" + keep : nil
     }
 
+    /// An `sms:` URL to open Messages addressed to a number (the person types the message), or nil.
+    static func smsURL(_ phone: String) -> String? {
+        let keep = phone.filter { $0.isNumber || $0 == "+" }
+        return keep.filter(\.isNumber).count >= 7 ? "sms:" + keep : nil
+    }
+
+    /// The first email address in a task, or nil.
+    static func emailIn(_ task: String) -> String? {
+        firstMatch(#"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}"#, in: task)
+    }
+
+    /// A `mailto:` URL to open the mail composer addressed to an email, or nil for a blank address.
+    static func mailtoURL(_ email: String) -> String? {
+        email.contains("@") ? "mailto:" + email : nil
+    }
+
     /// A Maps directions URL for a place (opens Maps), or nil. Reuses the tuned RoutePlan builder.
     static func mapsURL(_ place: String) -> String? { RoutePlan.appleMaps(place)?.absoluteString }
 
