@@ -824,6 +824,9 @@ enum ChainTemplates {
         Chain(id: "voice-deep", name: "Deep voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "deep"])]),
         Chain(id: "voice-helium", name: "Helium voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "helium"])]),
         Chain(id: "voice-giant", name: "Giant voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "giant"])]),
+        Chain(id: "voice-robot", name: "Robot voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "robot"])]),
+        Chain(id: "voice-alien", name: "Alien voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "alien"])]),
+        Chain(id: "voice-monster", name: "Monster voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "monster"])]),
         Chain(id: "video-voice", name: "Funny voice from a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
         Chain(id: "before-after", name: "Before and after, side by side", steps: [ChainStep(block: .stripLocation)], versus: true),
     ]
@@ -1188,7 +1191,9 @@ enum ChainText {
     // MARK: voices
 
     /// Voices "Change the voice" offers, and how much faster (and so higher) each plays the recording.
-    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6)]
+    // Chipmunk/helium/deep/giant use the simple varispeed path (rate); robot/alien/monster are handled by offline
+    // DSP (ChainMedia.characters) — their rate here is only a fallback if DSP is unavailable on the device.
+    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6), ("robot", "Robot", 0.9), ("alien", "Alien", 1.7), ("monster", "Monster", 0.6)]
     static func voiceRate(_ setting: String?) -> Double { voices.first { $0.id == setting }?.rate ?? 1.5 }
 
     /// The 44 bytes that start a .wav file of plain 16-bit sound.

@@ -419,6 +419,16 @@
   "pt": "Os anúncios apoiam o Tenzy",
   "zh": "广告支持 Tenzy"
  },
+ "Alien": {
+  "de": "Alien",
+  "es": "Alienígena",
+  "fr": "Extraterrestre",
+  "hi": "एलियन",
+  "it": "Alieno",
+  "ja": "エイリアン",
+  "pt": "Alienígena",
+  "zh": "外星人"
+ },
  "All": {
   "de": "Alle",
   "es": "Todo",
@@ -4209,6 +4219,16 @@
   "pt": "Modo",
   "zh": "模式"
  },
+ "Monster": {
+  "de": "Monster",
+  "es": "Monstruo",
+  "fr": "Monstre",
+  "hi": "राक्षस",
+  "it": "Mostro",
+  "ja": "モンスター",
+  "pt": "Monstro",
+  "zh": "怪物"
+ },
  "More": {
   "de": "Mehr",
   "es": "Más",
@@ -6358,6 +6378,16 @@
   "ja": "右",
   "pt": "Direita",
   "zh": "右"
+ },
+ "Robot": {
+  "de": "Roboter",
+  "es": "Robot",
+  "fr": "Robot",
+  "hi": "रोबोट",
+  "it": "Robot",
+  "ja": "ロボット",
+  "pt": "Robô",
+  "zh": "机器人"
  },
  "Rotate": {
   "de": "Drehen",

@@ -89,7 +89,12 @@ enum ChainMedia {
             let url = VideoEngine.tempURL(ext.isEmpty ? "m4a" : ext.lowercased())
             guard (try? d.write(to: url)) != nil else { return .failure(.failed(b)) }
             defer { try? FileManager.default.removeItem(at: url) }
-            guard let wav = revoice(url, rate: ChainText.voiceRate(step.settings["voice"])) else {
+            // Character voices (robot/alien/monster) pitch-shift without changing tempo via offline DSP; the classic
+            // chipmunk/deep/giant/helium stay on the simple varispeed path. DSP falls back to varispeed on any failure.
+            let voiceID = step.settings["voice"]
+            let wav = (voiceID.flatMap { characters[$0] }.flatMap { revoiceDSP(url, $0) })
+                ?? revoice(url, rate: ChainText.voiceRate(voiceID))
+            guard let wav else {
                 return .failure(.invalid("Change the voice couldn't read that recording. Try another one."))
             }
             return .success(.file(wav, ext: "wav"))
@@ -181,6 +186,60 @@ enum ChainMedia {
         }
         guard !pcm.isEmpty else { return nil }
         return Data(ChainText.wavHeader(sampleRate: Int((format.sampleRate * rate).rounded()), channels: 1, dataBytes: pcm.count)) + Data(pcm)
+    }
+
+    /// Voice "characters" that need real DSP — the pitch shifted WITHOUT changing tempo (so the speech stays
+    /// intelligible, unlike the varispeed chipmunk/deep), plus a timbre effect. Keyed by the same voice id in settings.
+    struct VoiceCharacter { let pitchCents: Float; let distortion: AVAudioUnitDistortionPreset?; let wet: Float }
+    static let characters: [String: VoiceCharacter] = [
+        "robot":   VoiceCharacter(pitchCents: -150, distortion: .multiDecimated2,    wet: 55),
+        "alien":   VoiceCharacter(pitchCents:  500, distortion: .speechAlienChatter, wet: 45),
+        "monster": VoiceCharacter(pitchCents: -650, distortion: .multiBrokenSpeaker, wet: 35),
+    ]
+
+    /// Pitch-shifts a recording without changing its tempo and adds a character timbre, rendered entirely offline
+    /// on the phone (no playback, nothing uploaded). Returns 16-bit mono WAV, or nil so the caller falls back to
+    /// the simple varispeed path — any failure is graceful, never a crash.
+    static func revoiceDSP(_ url: URL, _ c: VoiceCharacter) -> Data? {
+        guard let file = try? AVAudioFile(forReading: url) else { return nil }
+        let format = file.processingFormat
+        guard format.sampleRate > 0, file.length > 0, file.length < Int64(format.sampleRate * 600) else { return nil }
+        let engine = AVAudioEngine()
+        let player = AVAudioPlayerNode()
+        let pitch = AVAudioUnitTimePitch(); pitch.pitch = max(-2400, min(2400, c.pitchCents))
+        engine.attach(player); engine.attach(pitch)
+        engine.connect(player, to: pitch, format: format)
+        var tail: AVAudioNode = pitch
+        if let preset = c.distortion {
+            let dist = AVAudioUnitDistortion(); dist.loadFactoryPreset(preset); dist.wetDryMix = c.wet
+            engine.attach(dist); engine.connect(pitch, to: dist, format: format); tail = dist
+        }
+        engine.connect(tail, to: engine.mainMixerNode, format: format)
+        do {
+            try engine.enableManualRenderingMode(.offline, format: format, maximumFrameCount: 4096)
+            try engine.start()
+        } catch { return nil }
+        defer { engine.stop() }
+        player.scheduleFile(file, at: nil)
+        player.play()
+        guard let render = AVAudioPCMBuffer(pcmFormat: engine.manualRenderingFormat, frameCapacity: engine.manualRenderingMaximumFrameCount) else { return nil }
+        let lanes = max(1, Int(engine.manualRenderingFormat.channelCount))
+        let cap = Int(file.length) * 2
+        var pcm: [UInt8] = []; pcm.reserveCapacity(cap)
+        while engine.manualRenderingSampleTime < file.length && pcm.count < cap {
+            let remaining = file.length - engine.manualRenderingSampleTime
+            let frames = AVAudioFrameCount(min(Int64(render.frameCapacity), remaining))
+            guard let status = try? engine.renderOffline(frames, to: render), status == .success,
+                  let ch = render.floatChannelData, render.frameLength > 0 else { break }
+            for i in 0..<Int(render.frameLength) {
+                var sum: Float = 0
+                for c2 in 0..<lanes { sum += ch[c2][i] }
+                let v = Int16(max(-1, min(1, sum / Float(lanes))) * 32767)
+                pcm.append(UInt8(truncatingIfNeeded: v)); pcm.append(UInt8(truncatingIfNeeded: v >> 8))
+            }
+        }
+        guard !pcm.isEmpty else { return nil }
+        return Data(ChainText.wavHeader(sampleRate: Int(engine.manualRenderingFormat.sampleRate.rounded()), channels: 1, dataBytes: pcm.count)) + Data(pcm)
     }
 
     /// The same video played slower or faster. It comes out without sound, since sound at another speed is only noise.
