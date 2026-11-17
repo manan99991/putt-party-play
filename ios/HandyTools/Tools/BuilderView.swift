@@ -1723,6 +1723,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @ViewBuilder private func output(_ r: ChainPayload) -> some View {
         switch r {
         case .text(let t):
+            if chain.steps.last?.block == .actionItems {
+                RemindersResult(planText: t)
+            } else {
             // A planned task list carries tappable Maps links as markdown; render those so the links work.
             // Everything else stays plain monospaced so no stray character gets misread as formatting.
             // Capped in a scroll box so a long result scrolls inside it — Copy and the next options stay
@@ -1739,6 +1742,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             .scrollBounceBehavior(.basedOnSize)
             .cardStyle(padding: HandySpacing.s12)
             CopyButton(text: t)
+            }
         case .image(let i):
             Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)
                 .modifier(QRPeekIfCode(enabled: isQRResult, image: i))
@@ -1748,6 +1752,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             ShareLink(item: Image(uiImage: i), preview: SharePreview("Result")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .file(let d, let ext):
+            let lext = ext.lowercased()
+            if lext == "ics", let icsText = String(data: d, encoding: .utf8) {
+                CalendarEventResult(ics: icsText, shareURL: tempURL(d, ext))
+            } else if lext == "vcf" {
+                ContactResult(vcf: d, shareURL: tempURL(d, ext))
+            } else {
             // Always show the result before Save or share — a photo, or a PDF's first page — so the person
             // can check it (faces covered, the right pages) and never shares something they haven't seen.
             if ChainPayload.isPhoto(ext), let img = UIImage(data: d) {
@@ -1769,6 +1779,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             if let u = tempURL(d, ext) {
                 Text("\(SizeTarget.format(d.count)) · \(ext.uppercased())").font(HandyFont.caption)
                 ShareLink(item: u) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            }
             }
         case .video(let u):
             Label(L("Your video is ready") + (SizeTarget.fileSize(u).map { " · " + SizeTarget.format($0) } ?? ""), systemImage: "film").font(HandyFont.bodyStrong)
@@ -1856,8 +1867,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     static func bestEffortNote(_ f: ChainRunner.Failure) -> String {
         switch f {
         case .invalid(let s): return s
-        case .wrongInput(let b), .nothingFound(let b), .failed(let b):
-            return "\(b.title) works best with \(b.needs) — here's what I read so you still have it:"
+        case .wrongInput, .nothingFound, .failed:
+            // The step card above ("Here's how far it got") already explains why the last step
+            // stopped — don't repeat that reason here, just introduce the result it still produced.
+            return "Here's what it got so far, so you still have it:"
         }
     }
 }
@@ -1871,7 +1884,17 @@ private struct ToolPickView: View {
     private var tools: [Chain] {
         let kind = given.payload.kind == .photoFile ? ChainKind.image : given.payload.kind
         let text: String? = { if case .text(let t) = given.payload { return t } else { return nil } }()
-        return ChainStore.offers(for: kind, mine: mine, last: nil, text: text)
+        let offers = ChainStore.offers(for: kind, mine: mine, last: nil, text: text)
+        // A pasted URL is its own object, not plain text: offer link actions — read/summarize the page,
+        // strip tracking, QR, check it's safe — and drop the text-only tools (tidy, task list, pull
+        // entities, WhatsApp-a-number) that make no sense on a bare link. First block picks relevance:
+        // anything starting with "read the page" also covers summarize/translate/read-aloud of the page.
+        if given.label == "A link" {
+            let linkStart: Set<Block> = [.pageText, .cleanLinks, .makeQr, .scamCheck]
+            let picked = offers.filter { linkStart.contains($0.steps.first?.block ?? .readText) }
+            return picked.isEmpty ? offers : picked
+        }
+        return offers
     }
 
     var body: some View {

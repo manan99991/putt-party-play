@@ -56,4 +56,29 @@ enum ThinkingReminders {
         try store.commit()
         return added
     }
+
+    /// Add plain task titles as reminders (used by the Builder's "Find tasks" result, which produces a
+    /// task list rather than enriched ThinkingEngine tasks). Same one-time permission prompt, then silent.
+    @MainActor static func add(titles: [String], store: EKEventStore = EKEventStore()) async throws -> Int {
+        let granted: Bool
+        if #available(iOS 17.0, *) {
+            granted = (try? await store.requestFullAccessToReminders()) ?? false
+        } else {
+            granted = (try? await store.requestAccess(to: .reminder)) ?? false
+        }
+        guard granted else { throw AddError.denied }
+        guard let cal = store.defaultCalendarForNewReminders() else { throw AddError.noList }
+        var added = 0
+        for raw in titles {
+            let t = raw.trimmingCharacters(in: .whitespaces)
+            guard !t.isEmpty else { continue }
+            let r = EKReminder(eventStore: store)
+            r.calendar = cal
+            r.title = t.prefix(1).uppercased() + t.dropFirst()
+            try store.save(r, commit: false)
+            added += 1
+        }
+        try store.commit()
+        return added
+    }
 }

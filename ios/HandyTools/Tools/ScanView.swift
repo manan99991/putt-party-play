@@ -594,6 +594,9 @@ struct SignaturePadSheet: View {
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { dismiss() } } }
         }
         .presentationDetents([.medium])
+        // The sheet's swipe-to-dismiss gesture was eating the finger stroke, so nothing inked. Disable
+        // interactive dismiss (Cancel/Save are the way out) so every finger drag reaches the canvas.
+        .interactiveDismissDisabled(true)
     }
 }
 
