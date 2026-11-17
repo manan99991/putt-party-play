@@ -1,0 +1,652 @@
+{
+ "Add": {
+  "de": "Hinzufügen",
+  "es": "Añadir",
+  "fr": "Ajouter",
+  "hi": "जोड़ें",
+  "it": "Aggiungi",
+  "ja": "追加",
+  "pt": "Adicionar",
+  "zh": "添加"
+ },
+ "Audio Lab": {
+  "de": "Audio-Labor",
+  "es": "Laboratorio de audio",
+  "fr": "Labo audio",
+  "hi": "ऑडियो लैब",
+  "it": "Laboratorio audio",
+  "ja": "オーディオラボ",
+  "pt": "Laboratório de áudio",
+  "zh": "音频实验室"
+ },
+ "Back": {
+  "de": "Zurück",
+  "es": "Atrás",
+  "fr": "Retour",
+  "hi": "वापस",
+  "it": "Indietro",
+  "ja": "戻る",
+  "pt": "Voltar",
+  "zh": "返回"
+ },
+ "Build": {
+  "de": "Erstellen",
+  "es": "Crear",
+  "fr": "Créer",
+  "hi": "बनाएं",
+  "it": "Crea",
+  "ja": "作成",
+  "pt": "Criar",
+  "zh": "创建"
+ },
+ "Cancel": {
+  "de": "Abbrechen",
+  "es": "Cancelar",
+  "fr": "Annuler",
+  "hi": "रद्द करें",
+  "it": "Annulla",
+  "ja": "キャンセル",
+  "pt": "Cancelar",
+  "zh": "取消"
+ },
+ "Clean Up": {
+  "de": "Aufräumen",
+  "es": "Limpiar",
+  "fr": "Nettoyer",
+  "hi": "साफ़ करें",
+  "it": "Pulisci",
+  "ja": "整理",
+  "pt": "Limpar",
+  "zh": "清理"
+ },
+ "Cleaner": {
+  "de": "Aufräumen",
+  "es": "Limpiador",
+  "fr": "Nettoyeur",
+  "hi": "क्लीनर",
+  "it": "Pulizia",
+  "ja": "クリーナー",
+  "pt": "Limpador",
+  "zh": "清理"
+ },
+ "Clear": {
+  "de": "Löschen",
+  "es": "Borrar",
+  "fr": "Effacer",
+  "hi": "साफ़ करें",
+  "it": "Cancella",
+  "ja": "クリア",
+  "pt": "Limpar",
+  "zh": "清除"
+ },
+ "Codes": {
+  "de": "Codes",
+  "es": "Códigos",
+  "fr": "Codes",
+  "hi": "कोड",
+  "it": "Codici",
+  "ja": "コード",
+  "pt": "Códigos",
+  "zh": "二维码"
+ },
+ "Color Vision": {
+  "de": "Farbsehen",
+  "es": "Visión de color",
+  "fr": "Vision des couleurs",
+  "hi": "रंग दृष्टि",
+  "it": "Visione colori",
+  "ja": "色覚",
+  "pt": "Visão de cor",
+  "zh": "色觉"
+ },
+ "Contacts": {
+  "de": "Kontakte",
+  "es": "Contactos",
+  "fr": "Contacts",
+  "hi": "संपर्क",
+  "it": "Contatti",
+  "ja": "連絡先",
+  "pt": "Contactos",
+  "zh": "联系人"
+ },
+ "Converter": {
+  "de": "Konverter",
+  "es": "Conversor",
+  "fr": "Convertisseur",
+  "hi": "कन्वर्टर",
+  "it": "Convertitore",
+  "ja": "変換",
+  "pt": "Conversor",
+  "zh": "转换器"
+ },
+ "Copy": {
+  "de": "Kopieren",
+  "es": "Copiar",
+  "fr": "Copier",
+  "hi": "कॉपी करें",
+  "it": "Copia",
+  "ja": "コピー",
+  "pt": "Copiar",
+  "zh": "复制"
+ },
+ "Data Grabber": {
+  "de": "Daten-Greifer",
+  "es": "Captura de datos",
+  "fr": "Extracteur de données",
+  "hi": "डेटा ग्रैबर",
+  "it": "Estrai dati",
+  "ja": "データ抽出",
+  "pt": "Extrator de dados",
+  "zh": "数据抓取"
+ },
+ "Delete": {
+  "de": "Löschen",
+  "es": "Eliminar",
+  "fr": "Supprimer",
+  "hi": "हटाएं",
+  "it": "Elimina",
+  "ja": "削除",
+  "pt": "Eliminar",
+  "zh": "删除"
+ },
+ "Docs & Capture": {
+  "de": "Docs & Scan",
+  "es": "Docs y captura",
+  "fr": "Docs & capture",
+  "hi": "डॉक्स और कैप्चर",
+  "it": "Doc e cattura",
+  "ja": "書類とスキャン",
+  "pt": "Docs e captura",
+  "zh": "文档与扫描"
+ },
+ "Done": {
+  "de": "Fertig",
+  "es": "Listo",
+  "fr": "Terminé",
+  "hi": "हो गया",
+  "it": "Fatto",
+  "ja": "完了",
+  "pt": "Concluído",
+  "zh": "完成"
+ },
+ "File Opener": {
+  "de": "Datei-Öffner",
+  "es": "Abrir archivos",
+  "fr": "Ouvrir fichiers",
+  "hi": "फ़ाइल ओपनर",
+  "it": "Apri file",
+  "ja": "ファイルを開く",
+  "pt": "Abrir ficheiros",
+  "zh": "文件打开器"
+ },
+ "File Viewer": {
+  "de": "Datei-Viewer",
+  "es": "Visor de archivos",
+  "fr": "Visionneuse",
+  "hi": "फ़ाइल व्यूअर",
+  "it": "Visore file",
+  "ja": "ファイル表示",
+  "pt": "Visualizador",
+  "zh": "文件查看器"
+ },
+ "Fit It": {
+  "de": "Anpassen",
+  "es": "Ajustar tamaño",
+  "fr": "Ajuster la taille",
+  "hi": "साइज़ फ़िट करें",
+  "it": "Adatta",
+  "ja": "サイズ調整",
+  "pt": "Ajustar tamanho",
+  "zh": "调整大小"
+ },
+ "Format Fixer": {
+  "de": "Format-Fixer",
+  "es": "Arreglar formato",
+  "fr": "Corriger le format",
+  "hi": "फ़ॉर्मेट फ़िक्सर",
+  "it": "Correggi formato",
+  "ja": "フォーマット修正",
+  "pt": "Corretor de formato",
+  "zh": "格式修复"
+ },
+ "GIF Maker": {
+  "de": "GIF-Ersteller",
+  "es": "Creador de GIF",
+  "fr": "Créateur de GIF",
+  "hi": "GIF मेकर",
+  "it": "Crea GIF",
+  "ja": "GIFメーカー",
+  "pt": "Criador de GIF",
+  "zh": "GIF制作"
+ },
+ "GPS Dashboard": {
+  "de": "GPS-Dashboard",
+  "es": "Panel GPS",
+  "fr": "Tableau GPS",
+  "hi": "GPS डैशबोर्ड",
+  "it": "Cruscotto GPS",
+  "ja": "GPSダッシュボード",
+  "pt": "Painel GPS",
+  "zh": "GPS仪表盘"
+ },
+ "Hearing Boost": {
+  "de": "Hörverstärker",
+  "es": "Mejora auditiva",
+  "fr": "Amplifier l'audition",
+  "hi": "सुनने में मदद",
+  "it": "Potenzia l'udito",
+  "ja": "聴覚ブースト",
+  "pt": "Reforço auditivo",
+  "zh": "助听增强"
+ },
+ "Identify": {
+  "de": "Erkennen",
+  "es": "Identificar",
+  "fr": "Identifier",
+  "hi": "पहचानें",
+  "it": "Identifica",
+  "ja": "識別",
+  "pt": "Identificar",
+  "zh": "识别"
+ },
+ "Instruments": {
+  "de": "Instrumente",
+  "es": "Instrumentos",
+  "fr": "Instruments",
+  "hi": "उपकरण",
+  "it": "Strumenti",
+  "ja": "計測器",
+  "pt": "Instrumentos",
+  "zh": "仪器"
+ },
+ "Invoice": {
+  "de": "Rechnung",
+  "es": "Factura",
+  "fr": "Facture",
+  "hi": "इनवॉइस",
+  "it": "Fattura",
+  "ja": "請求書",
+  "pt": "Fatura",
+  "zh": "发票"
+ },
+ "Long Screenshot": {
+  "de": "Langer Screenshot",
+  "es": "Captura larga",
+  "fr": "Capture longue",
+  "hi": "लंबा स्क्रीनशॉट",
+  "it": "Screenshot lungo",
+  "ja": "長いスクショ",
+  "pt": "Captura longa",
+  "zh": "长截图"
+ },
+ "Measure": {
+  "de": "Messen",
+  "es": "Medir",
+  "fr": "Mesurer",
+  "hi": "मापें",
+  "it": "Misura",
+  "ja": "計測",
+  "pt": "Medir",
+  "zh": "测量"
+ },
+ "Media Studio": {
+  "de": "Medien-Studio",
+  "es": "Estudio multimedia",
+  "fr": "Studio média",
+  "hi": "मीडिया स्टूडियो",
+  "it": "Studio media",
+  "ja": "メディアスタジオ",
+  "pt": "Estúdio de média",
+  "zh": "媒体工作室"
+ },
+ "Memory": {
+  "de": "Erinnerung",
+  "es": "Memoria",
+  "fr": "Mémoire",
+  "hi": "मेमोरी",
+  "it": "Memoria",
+  "ja": "メモリー",
+  "pt": "Memória",
+  "zh": "记忆"
+ },
+ "Message Shield": {
+  "de": "Nachrichtenschutz",
+  "es": "Escudo de mensajes",
+  "fr": "Bouclier de messages",
+  "hi": "मैसेज शील्ड",
+  "it": "Scudo messaggi",
+  "ja": "メッセージ保護",
+  "pt": "Escudo de mensagens",
+  "zh": "消息盾"
+ },
+ "My Phone": {
+  "de": "Mein Handy",
+  "es": "Mi teléfono",
+  "fr": "Mon téléphone",
+  "hi": "मेरा फ़ोन",
+  "it": "Il mio telefono",
+  "ja": "自分の端末",
+  "pt": "Meu telemóvel",
+  "zh": "我的手机"
+ },
+ "Network": {
+  "de": "Netzwerk",
+  "es": "Red",
+  "fr": "Réseau",
+  "hi": "नेटवर्क",
+  "it": "Rete",
+  "ja": "ネットワーク",
+  "pt": "Rede",
+  "zh": "网络"
+ },
+ "Next": {
+  "de": "Weiter",
+  "es": "Siguiente",
+  "fr": "Suivant",
+  "hi": "आगे",
+  "it": "Avanti",
+  "ja": "次へ",
+  "pt": "Seguinte",
+  "zh": "下一步"
+ },
+ "Open": {
+  "de": "Öffnen",
+  "es": "Abrir",
+  "fr": "Ouvrir",
+  "hi": "खोलें",
+  "it": "Apri",
+  "ja": "開く",
+  "pt": "Abrir",
+  "zh": "打开"
+ },
+ "Price Check": {
+  "de": "Preis-Check",
+  "es": "Comparar precios",
+  "fr": "Vérifier les prix",
+  "hi": "कीमत जांचें",
+  "it": "Controlla prezzi",
+  "ja": "価格チェック",
+  "pt": "Verificar preços",
+  "zh": "比价"
+ },
+ "Privacy Scrubber": {
+  "de": "Datenschutz-Reiniger",
+  "es": "Limpiador de privacidad",
+  "fr": "Nettoyeur de confidentialité",
+  "hi": "प्राइवेसी स्क्रबर",
+  "it": "Pulizia privacy",
+  "ja": "プライバシー消去",
+  "pt": "Limpador de privacidade",
+  "zh": "隐私清除"
+ },
+ "Pro": {
+  "de": "Pro",
+  "es": "Pro",
+  "fr": "Pro",
+  "hi": "प्रो",
+  "it": "Pro",
+  "ja": "Pro",
+  "pt": "Pro",
+  "zh": "Pro"
+ },
+ "Pro Camera": {
+  "de": "Pro-Kamera",
+  "es": "Cámara Pro",
+  "fr": "Appareil Pro",
+  "hi": "प्रो कैमरा",
+  "it": "Fotocamera Pro",
+  "ja": "プロカメラ",
+  "pt": "Câmara Pro",
+  "zh": "专业相机"
+ },
+ "Rest": {
+  "de": "Ruhe",
+  "es": "Descanso",
+  "fr": "Repos",
+  "hi": "आराम",
+  "it": "Riposo",
+  "ja": "休息",
+  "pt": "Descanso",
+  "zh": "休息"
+ },
+ "Retry": {
+  "de": "Erneut versuchen",
+  "es": "Reintentar",
+  "fr": "Réessayer",
+  "hi": "फिर से",
+  "it": "Riprova",
+  "ja": "再試行",
+  "pt": "Tentar de novo",
+  "zh": "重试"
+ },
+ "Safety": {
+  "de": "Sicherheit",
+  "es": "Seguridad",
+  "fr": "Sécurité",
+  "hi": "सुरक्षा",
+  "it": "Sicurezza",
+  "ja": "安全",
+  "pt": "Segurança",
+  "zh": "安全"
+ },
+ "Save": {
+  "de": "Speichern",
+  "es": "Guardar",
+  "fr": "Enregistrer",
+  "hi": "सेव करें",
+  "it": "Salva",
+  "ja": "保存",
+  "pt": "Guardar",
+  "zh": "保存"
+ },
+ "Scan": {
+  "de": "Scannen",
+  "es": "Escanear",
+  "fr": "Numériser",
+  "hi": "स्कैन",
+  "it": "Scansiona",
+  "ja": "スキャン",
+  "pt": "Digitalizar",
+  "zh": "扫描"
+ },
+ "Scan & Sort": {
+  "de": "Scannen & Sortieren",
+  "es": "Escanear y ordenar",
+  "fr": "Scanner & trier",
+  "hi": "स्कैन और सॉर्ट",
+  "it": "Scansiona e ordina",
+  "ja": "スキャンと整理",
+  "pt": "Digitalizar e organizar",
+  "zh": "扫描与整理"
+ },
+ "Scrubber": {
+  "de": "Reiniger",
+  "es": "Limpiador",
+  "fr": "Nettoyeur",
+  "hi": "स्क्रबर",
+  "it": "Pulitore",
+  "ja": "消去",
+  "pt": "Limpador",
+  "zh": "清除器"
+ },
+ "Search": {
+  "de": "Suchen",
+  "es": "Buscar",
+  "fr": "Rechercher",
+  "hi": "खोजें",
+  "it": "Cerca",
+  "ja": "検索",
+  "pt": "Pesquisar",
+  "zh": "搜索"
+ },
+ "See & Read": {
+  "de": "Sehen & Lesen",
+  "es": "Ver y leer",
+  "fr": "Voir et lire",
+  "hi": "देखें और पढ़ें",
+  "it": "Vedi e leggi",
+  "ja": "見る・読む",
+  "pt": "Ver e ler",
+  "zh": "查看与朗读"
+ },
+ "Settings": {
+  "de": "Einstellungen",
+  "es": "Ajustes",
+  "fr": "Réglages",
+  "hi": "सेटिंग्स",
+  "it": "Impostazioni",
+  "ja": "設定",
+  "pt": "Definições",
+  "zh": "设置"
+ },
+ "Share": {
+  "de": "Teilen",
+  "es": "Compartir",
+  "fr": "Partager",
+  "hi": "शेयर करें",
+  "it": "Condividi",
+  "ja": "共有",
+  "pt": "Partilhar",
+  "zh": "分享"
+ },
+ "Share & Connect": {
+  "de": "Teilen & Verbinden",
+  "es": "Compartir y conectar",
+  "fr": "Partager & connecter",
+  "hi": "शेयर और कनेक्ट",
+  "it": "Condividi e connetti",
+  "ja": "共有と接続",
+  "pt": "Partilhar e ligar",
+  "zh": "分享与连接"
+ },
+ "Sorted": {
+  "de": "Sortiert",
+  "es": "Ordenado",
+  "fr": "Trié",
+  "hi": "सॉर्टेड",
+  "it": "Ordinato",
+  "ja": "整理",
+  "pt": "Organizado",
+  "zh": "整理"
+ },
+ "Storage": {
+  "de": "Speicher",
+  "es": "Almacenamiento",
+  "fr": "Stockage",
+  "hi": "स्टोरेज",
+  "it": "Spazio",
+  "ja": "ストレージ",
+  "pt": "Armazenamento",
+  "zh": "存储"
+ },
+ "Studio": {
+  "de": "Studio",
+  "es": "Estudio",
+  "fr": "Studio",
+  "hi": "स्टूडियो",
+  "it": "Studio",
+  "ja": "スタジオ",
+  "pt": "Estúdio",
+  "zh": "工作室"
+ },
+ "Text Studio": {
+  "de": "Text-Studio",
+  "es": "Estudio de texto",
+  "fr": "Studio de texte",
+  "hi": "टेक्स्ट स्टूडियो",
+  "it": "Studio di testo",
+  "ja": "テキストスタジオ",
+  "pt": "Estúdio de texto",
+  "zh": "文本工作室"
+ },
+ "Text Tools": {
+  "de": "Text-Tools",
+  "es": "Herramientas de texto",
+  "fr": "Outils de texte",
+  "hi": "टेक्स्ट टूल",
+  "it": "Strumenti testo",
+  "ja": "テキストツール",
+  "pt": "Ferramentas de texto",
+  "zh": "文本工具"
+ },
+ "Thinking tools": {
+  "de": "Denkwerkzeuge",
+  "es": "Herramientas de pensar",
+  "fr": "Outils de réflexion",
+  "hi": "सोचने के टूल",
+  "it": "Strumenti di pensiero",
+  "ja": "思考ツール",
+  "pt": "Ferramentas de pensar",
+  "zh": "思考工具"
+ },
+ "Tools": {
+  "de": "Werkzeuge",
+  "es": "Herramientas",
+  "fr": "Outils",
+  "hi": "टूल",
+  "it": "Strumenti",
+  "ja": "ツール",
+  "pt": "Ferramentas",
+  "zh": "工具"
+ },
+ "Translate": {
+  "de": "Übersetzen",
+  "es": "Traducir",
+  "fr": "Traduire",
+  "hi": "अनुवाद",
+  "it": "Traduci",
+  "ja": "翻訳",
+  "pt": "Traduzir",
+  "zh": "翻译"
+ },
+ "Vault": {
+  "de": "Tresor",
+  "es": "Caja fuerte",
+  "fr": "Coffre-fort",
+  "hi": "वॉल्ट",
+  "it": "Cassaforte",
+  "ja": "金庫",
+  "pt": "Cofre",
+  "zh": "保险库"
+ },
+ "Video": {
+  "de": "Video",
+  "es": "Vídeo",
+  "fr": "Vidéo",
+  "hi": "वीडियो",
+  "it": "Video",
+  "ja": "ビデオ",
+  "pt": "Vídeo",
+  "zh": "视频"
+ },
+ "Voice": {
+  "de": "Stimme",
+  "es": "Voz",
+  "fr": "Voix",
+  "hi": "वॉइस",
+  "it": "Voce",
+  "ja": "音声",
+  "pt": "Voz",
+  "zh": "语音"
+ },
+ "Warranty & Receipts": {
+  "de": "Garantie & Belege",
+  "es": "Garantías y recibos",
+  "fr": "Garantie et reçus",
+  "hi": "वारंटी और रसीदें",
+  "it": "Garanzie e ricevute",
+  "ja": "保証とレシート",
+  "pt": "Garantia e recibos",
+  "zh": "保修与收据"
+ },
+ "Where I Parked": {
+  "de": "Wo geparkt",
+  "es": "Dónde aparqué",
+  "fr": "Où je suis garé",
+  "hi": "कहां पार्क किया",
+  "it": "Dove ho parcheggiato",
+  "ja": "駐車位置",
+  "pt": "Onde estacionei",
+  "zh": "停车位置"
+ }
+}

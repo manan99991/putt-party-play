@@ -23,6 +23,8 @@ class HandyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        // Load UI translations before any screen renders (small file; falls back to English on any error).
+        I18n.load(this)
         // First thing: capture any uncaught exception to a local report so crashes become readable
         // stack traces instead of a bare "the app has a bug" dialog.
         CrashReporter.install(this)

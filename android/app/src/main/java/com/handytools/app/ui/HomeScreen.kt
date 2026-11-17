@@ -463,10 +463,10 @@ private fun PowerToolCard(tool: HTool, height: androidx.compose.ui.unit.Dp, onCl
         // always sits inside the card — if space is ever tight it's the gap above that shrinks, never
         // the words that get clipped.
         Column(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(14.dp)) {
-            Text(tool.name, color = Color.White, style = MaterialTheme.typography.titleMedium,
+            Text(com.handytools.app.I18n.t(tool.name), color = Color.White, style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(2.dp))
-            Text(tool.blurb, color = Color(0xCCFFFFFF), style = MaterialTheme.typography.bodySmall,
+            Text(com.handytools.app.I18n.t(tool.blurb), color = Color(0xCCFFFFFF), style = MaterialTheme.typography.bodySmall,
                 maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
         // Pro badge, top-right — a free user sees at a glance which tools need Pro before tapping.
@@ -499,9 +499,9 @@ fun GroupScreen(route: String, entries: List<HTool>, onOpen: (String) -> Unit) {
                     }
                     Spacer(Modifier.width(HandyTokens.Space12))
                     Column(Modifier.weight(1f)) {
-                        Text(t.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold,
+                        Text(com.handytools.app.I18n.t(t.name), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface)
-                        Text(t.blurb, style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
+                        Text(com.handytools.app.I18n.t(t.blurb), style = MaterialTheme.typography.bodySmall, color = Handy.palette.textSecondary)
                     }
                     Icon(Icons.Outlined.ChevronRight, null, tint = Handy.palette.textSecondary)
                 }

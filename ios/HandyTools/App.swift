@@ -364,7 +364,7 @@ private struct TenzyTabBar: View {
         Button { selection = t } label: {
             VStack(spacing: 3) {
                 Image(systemName: icon).font(.system(size: 18, weight: .semibold))
-                Text(label).font(.system(size: 10, weight: .semibold))
+                Text(L(label)).font(.system(size: 10, weight: .semibold))
             }
             .frame(maxWidth: .infinity)
             .foregroundStyle(selection == t ? HandyColor.accent : HandyColor.textSecondary)
@@ -702,8 +702,8 @@ struct ToolCard: View {
             // Anchored to the bottom as an overlay (sized to its own content), so it can never
             // overflow or be clipped by the card the way a greedy VStack did.
             VStack(alignment: .leading, spacing: 1) {
-                Text(tool.name).font(HandyFont.cardTitle).foregroundStyle(aurora ? Color.white : HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.7)
-                Text(tool.blurb).font(HandyFont.caption).foregroundStyle(aurora ? Color.white.opacity(0.85) : HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.8)
+                Text(L(tool.name)).font(HandyFont.cardTitle).foregroundStyle(aurora ? Color.white : HandyColor.textPrimary).lineLimit(1).minimumScaleFactor(0.7)
+                Text(L(tool.blurb)).font(HandyFont.caption).foregroundStyle(aurora ? Color.white.opacity(0.85) : HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.8)
             }
             .padding(.horizontal, HandySpacing.s12)
             .padding(.bottom, HandySpacing.s8)
@@ -731,7 +731,7 @@ struct ProLockView: View {
     @EnvironmentObject var store: StoreManager
     let tool: Tool
     var body: some View {
-        ToolPage(title: tool.name, subtitle: tool.blurb) {
+        ToolPage(title: L(tool.name), subtitle: L(tool.blurb)) {
             VStack(spacing: HandySpacing.s16) {
                 ZStack {
                     Circle().fill(HandyColor.accentSoft).frame(width: 72, height: 72)
