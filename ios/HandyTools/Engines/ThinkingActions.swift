@@ -198,6 +198,9 @@ enum ThinkingActions {
     static func dueDate(from task: String, now: Date, calendar: Calendar = .current) -> Date? {
         let t = task.lowercased()
         func has(_ p: String) -> Bool { t.range(of: p, options: [.regularExpression]) != nil }
+        // The task's words (letter-runs), for exact weekday lookup — matching a weekday by word membership
+        // is robust where a per-key `\bword\b` regex is not (ICU mishandles `\b` next to accented keys).
+        let words = Set(t.split(whereSeparator: { !$0.isLetter }).map(String.init))
         // Time of day — English "2pm"/"9:30am", 24h "15:30", or Spanish "a las 3" / "3 de la tarde".
         var hour: Int? = nil; var minute = 0
         if let g = groups(#"\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b"#, in: t), let h = Int(g[1]) {
@@ -235,7 +238,7 @@ enum ThinkingActions {
         else if let g = groups(#"\b(?:in|en|dans)\s+(\d+)\s+(day|d(?:í|i)as?|jours?|week|semanas?|semaines?)\b"#, in: t), let n = Int(g[1]) {
             offset = n * (g[2].hasPrefix("week") || g[2].hasPrefix("seman") ? 7 : 1)
         } else if has(#"\bnext week\b"#) || has(#"\b(?:la\s+)?pr(?:ó|o)xima\s+semana\b"#) || has(#"\bsemana que viene\b"#) || has(#"\b(?:la\s+)?semaine\s+prochaine\b"#) { offset = 7 }
-        else if let wd = weekdays.first(where: { has(#"\b"# + $0.key + #"\b"#) })?.value {
+        else if let wd = weekdays.first(where: { words.contains($0.key) })?.value {
             let cur = calendar.component(.weekday, from: now)
             let d = ((wd - cur) % 7 + 7) % 7
             offset = d == 0 ? 7 : d
