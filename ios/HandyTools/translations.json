@@ -1,4 +1,14 @@
 {
+ "AR tape: distance, height, area": {
+  "de": "AR-Maßband: Distanz, Höhe, Fläche",
+  "es": "Cinta AR: distancia, altura, área",
+  "fr": "Mètre AR : distance, hauteur, surface",
+  "hi": "AR टेप: दूरी, ऊंचाई, क्षेत्रफल",
+  "it": "Metro AR: distanza, altezza, area",
+  "ja": "ARメジャー：距離・高さ・面積",
+  "pt": "Fita AR: distância, altura, área",
+  "zh": "AR 卷尺：距离、高度、面积"
+ },
  "Add": {
   "de": "Hinzufügen",
   "es": "Añadir",
@@ -8,6 +18,16 @@
   "ja": "追加",
   "pt": "Adicionar",
   "zh": "添加"
+ },
+ "Ask your screenshots anything": {
+  "de": "Frag deine Screenshots alles",
+  "es": "Pregunta lo que sea a tus capturas",
+  "fr": "Interroge tes captures d'écran",
+  "hi": "अपने स्क्रीनशॉट से कुछ भी पूछें",
+  "it": "Chiedi di tutto ai tuoi screenshot",
+  "ja": "スクショに何でも質問",
+  "pt": "Pergunta o que quiseres às capturas",
+  "zh": "向你的截图提问"
  },
  "Audio Lab": {
   "de": "Audio-Labor",
@@ -28,6 +48,16 @@
   "ja": "戻る",
   "pt": "Voltar",
   "zh": "返回"
+ },
+ "Best deal, budget & label decode": {
+  "de": "Bestes Angebot, Budget & Etiketten",
+  "es": "Mejor precio, presupuesto y etiquetas",
+  "fr": "Meilleure offre, budget et étiquettes",
+  "hi": "बेस्ट डील, बजट और लेबल पढ़ें",
+  "it": "Miglior prezzo, budget ed etichette",
+  "ja": "最安値・予算・ラベル解読",
+  "pt": "Melhor preço, orçamento e rótulos",
+  "zh": "最优价格、预算与标签解读"
  },
  "Build": {
   "de": "Erstellen",
@@ -169,6 +199,26 @@
   "pt": "Concluído",
   "zh": "完成"
  },
+ "Enhance, cut out, passport, resize": {
+  "de": "Verbessern, freistellen, Passfoto, Größe ändern",
+  "es": "Mejorar, recortar, carnet, redimensionar",
+  "fr": "Améliorer, détourer, photo d'identité, redimensionner",
+  "hi": "बेहतर करें, काटें, पासपोर्ट, आकार बदलें",
+  "it": "Migliora, ritaglia, foto tessera, ridimensiona",
+  "ja": "補正・切り抜き・証明写真・リサイズ",
+  "pt": "Melhorar, recortar, passaporte, redimensionar",
+  "zh": "增强、抠图、证件照、调整大小"
+ },
+ "Face ID locker": {
+  "de": "Face-ID-Tresor",
+  "es": "Caja con Face ID",
+  "fr": "Casier Face ID",
+  "hi": "Face ID लॉकर",
+  "it": "Cassaforte con Face ID",
+  "ja": "Face IDロッカー",
+  "pt": "Cofre com Face ID",
+  "zh": "Face ID 保险箱"
+ },
  "File Opener": {
   "de": "Datei-Öffner",
   "es": "Abrir archivos",
@@ -189,6 +239,26 @@
   "pt": "Visualizador",
   "zh": "文件查看器"
  },
+ "File receipts, never miss a warranty": {
+  "de": "Belege ablegen, keine Garantie verpassen",
+  "es": "Guarda recibos, no pierdas garantías",
+  "fr": "Classe les reçus, ne rate aucune garantie",
+  "hi": "रसीदें रखें, वारंटी न चूकें",
+  "it": "Archivia ricevute, mai perdere garanzie",
+  "ja": "レシート保管・保証を逃さない",
+  "pt": "Arquiva recibos, nunca percas garantias",
+  "zh": "归档收据，不错过保修"
+ },
+ "Find duplicates, merge & back up": {
+  "de": "Duplikate finden, zusammenführen, sichern",
+  "es": "Encuentra duplicados, fusiona y respalda",
+  "fr": "Trouve les doublons, fusionne et sauvegarde",
+  "hi": "डुप्लिकेट ढूंढें, मर्ज और बैकअप",
+  "it": "Trova duplicati, unisci e salva",
+  "ja": "重複を検出・統合・バックアップ",
+  "pt": "Encontra duplicados, junta e faz backup",
+  "zh": "查找重复、合并并备份"
+ },
  "Fit It": {
   "de": "Anpassen",
   "es": "Ajustar tamaño",
@@ -199,6 +269,26 @@
   "pt": "Ajustar tamanho",
   "zh": "调整大小"
  },
+ "Fix, rewrite, reply, summarize": {
+  "de": "Korrigieren, umschreiben, antworten, kürzen",
+  "es": "Corrige, reescribe, responde, resume",
+  "fr": "Corrige, réécris, réponds, résume",
+  "hi": "ठीक करें, दोबारा लिखें, जवाब, सारांश",
+  "it": "Correggi, riscrivi, rispondi, riassumi",
+  "ja": "修正・書き換え・返信・要約",
+  "pt": "Corrige, reescreve, responde, resume",
+  "zh": "修正、改写、回复、总结"
+ },
+ "Flashlight+": {
+  "de": "Taschenlampe+",
+  "es": "Linterna+",
+  "fr": "Lampe+",
+  "hi": "टॉर्च+",
+  "it": "Torcia+",
+  "ja": "ライト+",
+  "pt": "Lanterna+",
+  "zh": "手电筒+"
+ },
  "Format Fixer": {
   "de": "Format-Fixer",
   "es": "Arreglar formato",
@@ -208,6 +298,16 @@
   "ja": "フォーマット修正",
   "pt": "Corretor de formato",
   "zh": "格式修复"
+ },
+ "Free space: dupes & big files": {
+  "de": "Speicher frei: Duplikate & große Dateien",
+  "es": "Libera espacio: duplicados y grandes",
+  "fr": "Libère de l'espace : doublons et gros fichiers",
+  "hi": "जगह खाली करें: डुप्लिकेट और बड़ी फ़ाइलें",
+  "it": "Libera spazio: duplicati e file grandi",
+  "ja": "空き容量：重複と大きいファイル",
+  "pt": "Liberta espaço: duplicados e grandes",
+  "zh": "释放空间：重复项和大文件"
  },
  "GIF Maker": {
   "de": "GIF-Ersteller",
@@ -228,6 +328,16 @@
   "ja": "GPSダッシュボード",
   "pt": "Painel GPS",
   "zh": "GPS仪表盘"
+ },
+ "HEIC/MOV → JPG/MP4, in batch": {
+  "de": "HEIC/MOV → JPG/MP4, im Stapel",
+  "es": "HEIC/MOV → JPG/MP4, por lotes",
+  "fr": "HEIC/MOV → JPG/MP4, en lot",
+  "hi": "HEIC/MOV → JPG/MP4, बैच में",
+  "it": "HEIC/MOV → JPG/MP4, in blocco",
+  "ja": "HEIC/MOV → JPG/MP4、一括",
+  "pt": "HEIC/MOV → JPG/MP4, em lote",
+  "zh": "HEIC/MOV → JPG/MP4，批量"
  },
  "Hearing Boost": {
   "de": "Hörverstärker",
@@ -269,6 +379,16 @@
   "pt": "Fatura",
   "zh": "发票"
  },
+ "Live color‑blind correction": {
+  "de": "Live-Farbsehkorrektur",
+  "es": "Corrección daltónica en vivo",
+  "fr": "Correction daltonienne en direct",
+  "hi": "लाइव कलर-ब्लाइंड सुधार",
+  "it": "Correzione daltonismo dal vivo",
+  "ja": "色覚補正をリアルタイム",
+  "pt": "Correção de daltonismo ao vivo",
+  "zh": "实时色盲校正"
+ },
  "Long Screenshot": {
   "de": "Langer Screenshot",
   "es": "Captura larga",
@@ -278,6 +398,16 @@
   "ja": "長いスクショ",
   "pt": "Captura longa",
   "zh": "长截图"
+ },
+ "Manual ISO, shutter, RAW": {
+  "de": "Manuell: ISO, Verschluss, RAW",
+  "es": "ISO manual, obturador, RAW",
+  "fr": "ISO manuel, obturateur, RAW",
+  "hi": "मैनुअल ISO, शटर, RAW",
+  "it": "ISO manuale, otturatore, RAW",
+  "ja": "マニュアルISO・シャッター・RAW",
+  "pt": "ISO manual, obturador, RAW",
+  "zh": "手动 ISO、快门、RAW"
  },
  "Measure": {
   "de": "Messen",
@@ -359,6 +489,16 @@
   "pt": "Abrir",
   "zh": "打开"
  },
+ "Open almost any file": {
+  "de": "Fast jede Datei öffnen",
+  "es": "Abre casi cualquier archivo",
+  "fr": "Ouvre presque tous les fichiers",
+  "hi": "लगभग कोई भी फ़ाइल खोलें",
+  "it": "Apri quasi ogni file",
+  "ja": "ほぼどんなファイルも開く",
+  "pt": "Abre quase qualquer ficheiro",
+  "zh": "打开几乎任何文件"
+ },
  "Price Check": {
   "de": "Preis-Check",
   "es": "Comparar precios",
@@ -398,6 +538,36 @@
   "ja": "プロカメラ",
   "pt": "Câmara Pro",
   "zh": "专业相机"
+ },
+ "QR & Wi‑Fi": {
+  "de": "QR & WLAN",
+  "es": "QR y Wi-Fi",
+  "fr": "QR et Wi-Fi",
+  "hi": "QR और Wi-Fi",
+  "it": "QR e Wi-Fi",
+  "ja": "QRとWi-Fi",
+  "pt": "QR e Wi-Fi",
+  "zh": "二维码和 Wi-Fi"
+ },
+ "Read, hear & magnify anything": {
+  "de": "Lesen, hören & alles vergrößern",
+  "es": "Lee, escucha y amplía lo que sea",
+  "fr": "Lis, écoute et agrandis tout",
+  "hi": "कुछ भी पढ़ें, सुनें और बड़ा करें",
+  "it": "Leggi, ascolta e ingrandisci tutto",
+  "ja": "読む・聞く・拡大、何でも",
+  "pt": "Lê, ouve e amplia tudo",
+  "zh": "朗读、聆听并放大任何内容"
+ },
+ "Receipt → rows, contacts, dates": {
+  "de": "Beleg → Zeilen, Kontakte, Daten",
+  "es": "Recibo → filas, contactos, fechas",
+  "fr": "Reçu → lignes, contacts, dates",
+  "hi": "रसीद → पंक्तियाँ, संपर्क, तिथियाँ",
+  "it": "Scontrino → righe, contatti, date",
+  "ja": "レシート → 表・連絡先・日付",
+  "pt": "Recibo → linhas, contactos, datas",
+  "zh": "收据 → 表格、联系人、日期"
  },
  "Rest": {
   "de": "Ruhe",
@@ -459,6 +629,26 @@
   "pt": "Digitalizar e organizar",
   "zh": "扫描与整理"
  },
+ "Scan, OCR, sign & fill PDFs": {
+  "de": "PDFs scannen, OCR, signieren, ausfüllen",
+  "es": "Escanear, OCR, firmar y rellenar PDF",
+  "fr": "Scanner, OCR, signer et remplir des PDF",
+  "hi": "PDF स्कैन, OCR, साइन और भरें",
+  "it": "Scansiona, OCR, firma e compila PDF",
+  "ja": "PDFをスキャン・OCR・署名・入力",
+  "pt": "Digitalizar, OCR, assinar e preencher PDF",
+  "zh": "扫描、OCR、签名并填写 PDF"
+ },
+ "Scan, make & share Wi‑Fi codes": {
+  "de": "Wi-Fi-Codes scannen, erstellen, teilen",
+  "es": "Escanea, crea y comparte Wi-Fi",
+  "fr": "Scanne, crée et partage le Wi-Fi",
+  "hi": "Wi-Fi कोड स्कैन, बनाएं, शेयर करें",
+  "it": "Scansiona, crea e condividi Wi-Fi",
+  "ja": "Wi-Fiコードを読取・作成・共有",
+  "pt": "Ler, criar e partilhar Wi-Fi",
+  "zh": "扫描、生成并分享 Wi-Fi 码"
+ },
  "Scrubber": {
   "de": "Reiniger",
   "es": "Limpiador",
@@ -519,6 +709,36 @@
   "pt": "Partilhar e ligar",
   "zh": "分享与连接"
  },
+ "Shrink to an exact size limit": {
+  "de": "Auf exakte Größe verkleinern",
+  "es": "Reducir a un tamaño exacto",
+  "fr": "Réduire à une taille précise",
+  "hi": "सटीक साइज़ तक छोटा करें",
+  "it": "Riduci a una dimensione esatta",
+  "ja": "指定サイズまで縮小",
+  "pt": "Reduzir a um tamanho exato",
+  "zh": "压缩到精确大小"
+ },
+ "Shrink, trim, convert, GIF": {
+  "de": "Verkleinern, schneiden, umwandeln, GIF",
+  "es": "Reducir, recortar, convertir, GIF",
+  "fr": "Réduire, couper, convertir, GIF",
+  "hi": "छोटा करें, ट्रिम, कन्वर्ट, GIF",
+  "it": "Riduci, taglia, converti, GIF",
+  "ja": "縮小・トリム・変換・GIF",
+  "pt": "Reduzir, cortar, converter, GIF",
+  "zh": "压缩、裁剪、转换、GIF"
+ },
+ "Snap a bill → calendar it": {
+  "de": "Rechnung fotografieren → in den Kalender",
+  "es": "Foto a una factura → al calendario",
+  "fr": "Photo d'une facture → au calendrier",
+  "hi": "बिल की फ़ोटो → कैलेंडर में",
+  "it": "Fotografa una bolletta → nel calendario",
+  "ja": "請求書を撮影 → カレンダーへ",
+  "pt": "Fotografa uma conta → no calendário",
+  "zh": "拍下账单 → 加入日历"
+ },
  "Sorted": {
   "de": "Sortiert",
   "es": "Ordenado",
@@ -529,6 +749,36 @@
   "pt": "Organizado",
   "zh": "整理"
  },
+ "Speed, heading, altitude, HUD": {
+  "de": "Tempo, Kurs, Höhe, HUD",
+  "es": "Velocidad, rumbo, altitud, HUD",
+  "fr": "Vitesse, cap, altitude, HUD",
+  "hi": "गति, दिशा, ऊंचाई, HUD",
+  "it": "Velocità, rotta, altitudine, HUD",
+  "ja": "速度・方位・高度・HUD",
+  "pt": "Velocidade, rumo, altitude, HUD",
+  "zh": "速度、方向、海拔、HUD"
+ },
+ "Spot scams, see why": {
+  "de": "Betrug erkennen, mit Begründung",
+  "es": "Detecta estafas y ve por qué",
+  "fr": "Repère les arnaques, et pourquoi",
+  "hi": "धोखाधड़ी पहचानें, कारण भी",
+  "it": "Scopri le truffe e il perché",
+  "ja": "詐欺を見抜く・理由も表示",
+  "pt": "Deteta burlas e vê porquê",
+  "zh": "识别诈骗，并说明原因"
+ },
+ "Stitch shots into one tall image": {
+  "de": "Screenshots zu einem Bild fügen",
+  "es": "Une capturas en una imagen alta",
+  "fr": "Assemble les captures en une image",
+  "hi": "स्क्रीनशॉट को एक लंबी छवि में जोड़ें",
+  "it": "Unisci gli screenshot in uno",
+  "ja": "スクショを1枚に連結",
+  "pt": "Junta capturas numa imagem alta",
+  "zh": "把截图拼成一张长图"
+ },
  "Storage": {
   "de": "Speicher",
   "es": "Almacenamiento",
@@ -538,6 +788,26 @@
   "ja": "ストレージ",
   "pt": "Armazenamento",
   "zh": "存储"
+ },
+ "Strip location, redact for good": {
+  "de": "Standort entfernen, dauerhaft schwärzen",
+  "es": "Quitar ubicación, censurar de verdad",
+  "fr": "Retirer la localisation, masquer définitivement",
+  "hi": "लोकेशन हटाएं, पक्का छुपाएं",
+  "it": "Rimuovi posizione, oscura per sempre",
+  "ja": "位置情報を削除・完全マスク",
+  "pt": "Remover localização, ocultar de vez",
+  "zh": "去除位置、彻底涂抹"
+ },
+ "Strobe, SOS, screen light, mirror": {
+  "de": "Stroboskop, SOS, Bildschirmlicht, Spiegel",
+  "es": "Estroboscopio, SOS, luz, espejo",
+  "fr": "Stroboscope, SOS, écran lumineux, miroir",
+  "hi": "स्ट्रोब, SOS, स्क्रीन लाइट, दर्पण",
+  "it": "Stroboscopio, SOS, luce schermo, specchio",
+  "ja": "ストロボ・SOS・画面ライト・鏡",
+  "pt": "Estroboscópio, SOS, luz do ecrã, espelho",
+  "zh": "频闪、SOS、屏幕灯、镜子"
  },
  "Studio": {
   "de": "Studio",
@@ -569,6 +839,16 @@
   "pt": "Ferramentas de texto",
   "zh": "文本工具"
  },
+ "Text, camera, voice — offline": {
+  "de": "Text, Kamera, Stimme — offline",
+  "es": "Texto, cámara, voz — sin conexión",
+  "fr": "Texte, caméra, voix — hors ligne",
+  "hi": "टेक्स्ट, कैमरा, आवाज़ — ऑफ़लाइन",
+  "it": "Testo, fotocamera, voce — offline",
+  "ja": "テキスト・カメラ・音声 — オフライン",
+  "pt": "Texto, câmara, voz — offline",
+  "zh": "文字、相机、语音 — 离线"
+ },
  "Thinking tools": {
   "de": "Denkwerkzeuge",
   "es": "Herramientas de pensar",
@@ -589,6 +869,16 @@
   "pt": "Ferramentas",
   "zh": "工具"
  },
+ "Transcript, summary, to‑dos": {
+  "de": "Transkript, Zusammenfassung, To-dos",
+  "es": "Transcripción, resumen, tareas",
+  "fr": "Transcription, résumé, tâches",
+  "hi": "ट्रांसक्रिप्ट, सारांश, काम",
+  "it": "Trascrizione, riassunto, attività",
+  "ja": "文字起こし・要約・ToDo",
+  "pt": "Transcrição, resumo, tarefas",
+  "zh": "转写、摘要、待办"
+ },
  "Translate": {
   "de": "Übersetzen",
   "es": "Traducir",
@@ -598,6 +888,26 @@
   "ja": "翻訳",
   "pt": "Traduzir",
   "zh": "翻译"
+ },
+ "Tuner, tones, speaker test": {
+  "de": "Stimmgerät, Töne, Lautsprechertest",
+  "es": "Afinador, tonos, prueba de altavoz",
+  "fr": "Accordeur, tonalités, test haut-parleur",
+  "hi": "ट्यूनर, टोन, स्पीकर टेस्ट",
+  "it": "Accordatore, toni, test altoparlante",
+  "ja": "チューナー・トーン・スピーカー診断",
+  "pt": "Afinador, tons, teste de coluna",
+  "zh": "调音器、音调、扬声器测试"
+ },
+ "Untangle, plan the day, decide, explain, reword": {
+  "de": "Entwirren, Tag planen, entscheiden, erklären",
+  "es": "Aclara, planea el día, decide, explica",
+  "fr": "Démêle, planifie la journée, décide, explique",
+  "hi": "उलझन सुलझाएं, दिन की योजना, निर्णय",
+  "it": "Districa, pianifica, decidi, spiega",
+  "ja": "整理・計画・決断・説明・言い換え",
+  "pt": "Desembaraça, planeia o dia, decide, explica",
+  "zh": "理清、规划一天、决策、解释"
  },
  "Vault": {
   "de": "Tresor",
@@ -629,6 +939,16 @@
   "pt": "Voz",
   "zh": "语音"
  },
+ "Voice → Notes": {
+  "de": "Stimme → Notizen",
+  "es": "Voz → Notas",
+  "fr": "Voix → Notes",
+  "hi": "आवाज़ → नोट्स",
+  "it": "Voce → Note",
+  "ja": "音声 → ノート",
+  "pt": "Voz → Notas",
+  "zh": "语音 → 笔记"
+ },
  "Warranty & Receipts": {
   "de": "Garantie & Belege",
   "es": "Garantías y recibos",
@@ -639,6 +959,16 @@
   "pt": "Garantia e recibos",
   "zh": "保修与收据"
  },
+ "What is this? Point and know": {
+  "de": "Was ist das? Draufhalten und wissen",
+  "es": "¿Qué es esto? Apunta y descubre",
+  "fr": "Qu'est-ce que c'est ? Pointez et sachez",
+  "hi": "यह क्या है? तानें और जानें",
+  "it": "Cos'è? Inquadra e scopri",
+  "ja": "これは何？かざして判別",
+  "pt": "O que é isto? Aponta e sabe",
+  "zh": "这是什么？对准即知"
+ },
  "Where I Parked": {
   "de": "Wo geparkt",
   "es": "Dónde aparqué",
@@ -648,5 +978,15 @@
   "ja": "駐車位置",
   "pt": "Onde estacionei",
   "zh": "停车位置"
+ },
+ "White noise + snore recorder": {
+  "de": "Weißes Rauschen + Schnarch-Recorder",
+  "es": "Ruido blanco + grabador de ronquidos",
+  "fr": "Bruit blanc + enregistreur de ronflement",
+  "hi": "व्हाइट नॉइज़ + खर्राटे रिकॉर्डर",
+  "it": "Rumore bianco + registra russamento",
+  "ja": "ホワイトノイズ＋いびき録音",
+  "pt": "Ruído branco + gravador de ressono",
+  "zh": "白噪音 + 鼾声录制"
  }
 }
