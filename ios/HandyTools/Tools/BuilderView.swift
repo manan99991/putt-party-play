@@ -6,6 +6,11 @@ import UniformTypeIdentifiers
 import WidgetKit
 import PDFKit
 import AVKit
+
+/// Audio types the recording pickers accept. `.audio` covers m4a/mp3/wav/caf and friends; the explicit
+/// opus/ogg extensions also admit WhatsApp & Telegram voice notes (Ogg-Opus), which iOS does not map to
+/// public.audio — so a plain `[.audio]` filter greys them out in the Files browser.
+private let audioImportTypes: [UTType] = [.audio] + ["opus", "ogg", "oga"].compactMap { UTType(filenameExtension: $0) }
 import AVFoundation
 import Compression
 
@@ -517,7 +522,7 @@ struct BuilderView: View {
             HStack(spacing: HandySpacing.s8) {
                 PhotosPicker(selection: $anyPick, matching: .images) { objTile("Photo") }.accessibilityIdentifier("have-photo")
                 PhotosPicker(selection: $anyPick, matching: .videos) { objTile("Video") }.accessibilityIdentifier("have-video")
-                Button { pickTypes = [.audio]; pickingAny = true } label: { objTile("Audio") }.accessibilityIdentifier("have-audio")
+                Button { pickTypes = audioImportTypes; pickingAny = true } label: { objTile("Audio") }.accessibilityIdentifier("have-audio")
             }
             HStack(spacing: HandySpacing.s8) {
                 Button { pickTypes = [.pdf]; pickingAny = true } label: { objTile("PDF") }.accessibilityIdentifier("have-pdf")
@@ -1379,7 +1384,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 if let picked { text = InputText.joined(text, picked) }
             }.ignoresSafeArea()
         }
-        .fileImporter(isPresented: $pickingPDF, allowedContentTypes: start == .audio ? [.audio] : [.pdf], allowsMultipleSelection: start == .pdf) { r in
+        .fileImporter(isPresented: $pickingPDF, allowedContentTypes: start == .audio ? audioImportTypes : [.pdf], allowsMultipleSelection: start == .pdf) { r in
             guard case .success(let urls) = r, let url = urls.first else { return }
             if start == .audio {
                 if let d = Self.read(url) { go(.file(d, ext: url.pathExtension.isEmpty ? "m4a" : url.pathExtension.lowercased())) }
