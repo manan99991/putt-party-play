@@ -235,8 +235,8 @@ enum ThinkingActions {
         else if has(#"\b(tomorrow|tmrw|tmr)\b"#) { offset = 1 }
         else if has(#"(?<!de la )(?<!por la )(?<!esta )\bma(?:ñ|n)ana\b"#) { offset = 1 }
         else if has(#"\bdemain\b"#) { offset = 1 }
-        else if let g = groups(#"\b(?:in|en|dans)\s+(\d+)\s+(day|d(?:í|i)as?|jours?|week|semanas?|semaines?)\b"#, in: t), let n = Int(g[1]) {
-            offset = n * (g[2].hasPrefix("week") || g[2].hasPrefix("seman") ? 7 : 1)
+        else if let g = groups(#"\b(?:in|en|dans)\s+(\d+)\s+(day|d(?:í|i)a|jour|week|semana|semaine)s?\b"#, in: t), let n = Int(g[1]) {
+            offset = n * (g[2].hasPrefix("week") || g[2].hasPrefix("sema") ? 7 : 1)
         } else if has(#"\bnext week\b"#) || has(#"\b(?:la\s+)?pr(?:ó|o)xima\s+semana\b"#) || has(#"\bsemana que viene\b"#) || has(#"\b(?:la\s+)?semaine\s+prochaine\b"#) { offset = 7 }
         else if let wd = weekdays.first(where: { words.contains($0.key) })?.value {
             let cur = calendar.component(.weekday, from: now)

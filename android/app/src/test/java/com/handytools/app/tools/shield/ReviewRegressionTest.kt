@@ -276,6 +276,7 @@ class ReviewRegressionTest {
         assertEquals(15, hour("réunion à 15h"))
         assertEquals(20, hour("ce soir dîner avec Ana"))
         assertEquals(19, day("dans 3 jours renouveler"))
+        assertEquals(30, day("payer dans 2 semaines"))
         assertEquals(15, hour("cet après-midi récupérer le colis"))
         assertNull(day("acheter du pain"))
         assertTrueMsg("appeler → a call", TA.plan("appeler le dentiste").isCall)

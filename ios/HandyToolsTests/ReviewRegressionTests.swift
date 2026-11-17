@@ -373,6 +373,7 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertEqual(hour("réunion à 15h"), 15, "à 15h → 15:00")
         XCTAssertEqual(hour("ce soir dîner avec Ana"), 20, "ce soir → tonight")
         XCTAssertEqual(day("dans 3 jours renouveler"), 19, "dans 3 jours → +3")
+        XCTAssertEqual(day("payer dans 2 semaines"), 30, "dans N semaines → +7N (the week multiplier)")
         XCTAssertEqual(hour("cet après-midi récupérer le colis"), 15, "cet après-midi → 15:00, not noon")
         XCTAssertNil(day("acheter du pain"), "no date cue → no due")
         XCTAssertTrue(ThinkingActions.plan(for: "appeler le dentiste").isCall, "appeler → a call")

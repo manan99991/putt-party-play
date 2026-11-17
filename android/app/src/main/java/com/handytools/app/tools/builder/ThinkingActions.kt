@@ -234,7 +234,7 @@ object ThinkingActions {
             else -> {
                 val inN = Regex("""\b(?:in|en|dans)\s+(\d+)\s+(day|día|dia|jour|week|semana|semaine)s?\b""").find(t)
                 when {
-                    inN != null -> off = inN.groupValues[1].toInt() * (if (inN.groupValues[2].startsWith("week") || inN.groupValues[2].startsWith("seman")) 7 else 1)
+                    inN != null -> off = inN.groupValues[1].toInt() * (if (inN.groupValues[2].startsWith("week") || inN.groupValues[2].startsWith("sema")) 7 else 1)
                     has("""\bnext week\b""") || has("""\b(?:la\s+)?próxima\s+semana\b""") || has("""\bsemana que viene\b""") || has("""\b(?:la\s+)?semaine\s+prochaine\b""") -> off = 7
                     else -> weekdays.entries.firstOrNull { has("""\b""" + it.key + """\b""") }?.let { e ->
                         val cur = java.util.Calendar.getInstance(zone).apply { timeInMillis = nowMs }.get(java.util.Calendar.DAY_OF_WEEK)
