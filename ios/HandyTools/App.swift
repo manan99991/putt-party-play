@@ -6,9 +6,9 @@ struct TenzyApp: App {
     @StateObject private var store = StoreManager.shared
     @StateObject private var theme = ThemeManager.shared
 
-    // AdMob init and the interstitial preload are deferred until after the first frame
-    // (prompt 1: cold-start work). They fire once, from a .task on the root view below.
-    @State private var adsStarted = false
+    // One-time, post-first-frame startup warmup (background pre-scans), fired once from a
+    // .task on the root view below so cold-start work stays off the first-frame path.
+    @State private var didWarmup = false
 
     @State private var showOnboarding = !OnboardingFlag.seen && Launch.route == nil
     @State private var onboardingPage = 0
@@ -61,11 +61,9 @@ struct TenzyApp: App {
                 NotificationCenter.default.post(name: .openTool, object: id)
             }
             .task {
-                if !adsStarted {
+                if !didWarmup {
                     await MainActor.run {
-                        adsStarted = true
-                        AdsBootstrap.start()
-                        Interstitials.shared.preload()
+                        didWarmup = true
                         // Pre-scan photo duplicates in the background so Cleaner's Duplicates tab is
                         // ready the moment it's opened, instead of making the user wait on a scan.
                         if !Launch.uitest { CleanerIndex.shared.prewarm() }
@@ -406,7 +404,7 @@ struct HomeView: View {
     /// Subtitle under the wordmark: a live result count while searching, else the page name.
     private var headerCaption: String {
         if hasSearch { let n = searchTools(search).count; return "\(n) result\(n == 1 ? "" : "s")" }
-        return store.isPremium ? "Pro · no ads" : captions[page - 1]
+        return store.isPremium ? "Pro · unlimited" : captions[page - 1]
     }
 
     var body: some View {
@@ -739,8 +737,8 @@ struct ProLockView: View {
                 }.padding(.top, HandySpacing.s32)
                 Text(L("A Pro tool")).font(.system(size: 22, weight: .bold))
                 Text(store.showsFreeTrial
-                     ? "\(tool.name) is part of Tenzy Pro. Start a \(store.trialLength) free trial to unlock it and every other Pro tool — no ads, unlimited use."
-                     : "\(tool.name) is part of Tenzy Pro. Go Pro to unlock it and every other Pro tool — no ads, unlimited use.")
+                     ? "\(tool.name) is part of Tenzy Pro. Start a \(store.trialLength) free trial to unlock it and every other Pro tool — unlimited use, no daily limits."
+                     : "\(tool.name) is part of Tenzy Pro. Go Pro to unlock it and every other Pro tool — unlimited use, no daily limits.")
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                 Button { NotificationCenter.default.post(name: .showPaywall, object: nil) } label: {
                     Label(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro — \(store.yearlyPrice)/year", systemImage: "crown.fill").frame(maxWidth: .infinity)
@@ -770,10 +768,10 @@ struct PaywallView: View {
                 Image(systemName: "crown.fill").font(.system(size: 28)).foregroundStyle(HandyColor.accent)
             }.padding(.top, HandySpacing.s24)
             Text(L("Tenzy Pro")).font(.system(size: 28, weight: .bold))
-            Text(L("Every tool and every builder step. No ads, no limits.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Every tool and every builder step. No daily limits.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
 
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                ForEach(["Unlock all \(TOOLS.count) tools", "Every Build-your-own step, unlimited saved tools", "No banner or full-screen ads", "No daily limits — build and run freely"], id: \.self) { line in
+                ForEach(["Unlock all \(TOOLS.count) tools", "Every Build-your-own step, unlimited saved tools", "Every theme unlocked", "No daily limits — build and run freely"], id: \.self) { line in
                     HStack(spacing: HandySpacing.s12) {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent)
                         Text(line).font(HandyFont.body)

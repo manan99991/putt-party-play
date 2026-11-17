@@ -109,7 +109,7 @@ private struct GridPage: View {
 
 private struct ProPage: View {
     let onSeePro: () -> Void
-    private let rows: [(String, String, String)] = [("Ads", "Yes", "None"), ("Fits, scans, exports", "Daily limits", "Unlimited"), ("AI, video, voice jobs", "Daily limits", "Unlimited"), ("Price", "Free", "$19.99 a year")]
+    private let rows: [(String, String, String)] = [("Tools", "A few", "All of them"), ("Fits, scans, exports", "Daily limits", "Unlimited"), ("AI, video, voice jobs", "Daily limits", "Unlimited"), ("Price", "Free", "$19.99 a year")]
     var body: some View {
         VStack(spacing: HandySpacing.s12) {
             Spacer()
@@ -128,8 +128,8 @@ private struct ProPage: View {
             }
             .cardStyle()
             Spacer()
-            Text(L("Free is really free.")).font(HandyFont.display).multilineTextAlignment(.center)
-            Text(L("Pro removes ads. That's the whole pitch.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Free stays free.")).font(HandyFont.display).multilineTextAlignment(.center)
+            Text(L("Pro unlocks every tool, with no daily limits.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
             Button(L("See Pro"), action: onSeePro).textButton()
             Spacer().frame(height: 140)
         }

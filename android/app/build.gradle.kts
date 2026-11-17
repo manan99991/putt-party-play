@@ -18,15 +18,6 @@ android {
         versionCode = (System.getenv("VERSION_CODE")?.toIntOrNull() ?: 3)
         versionName = "1.0.14"
 
-        // AdMob app ID (identifies the app; it doesn't serve ads itself).
-        manifestPlaceholders["admobAppId"] = "ca-app-pub-5414801919054534~4620337988"
-
-        // Live ads only in a production build invoked with -PliveAds=true. Every other build —
-        // debug AND the internal-testing release — uses Google's reserved TEST ad units, which are
-        // always safe to view and tap. Viewing/tapping your own LIVE ads is an AdMob policy
-        // violation that can disable the account, so testing must never touch them.
-        buildConfigField("boolean", "LIVE_ADS", (project.findProperty("liveAds")?.toString() ?: "false"))
-
         // INTERNAL TESTING ONLY: -PinternalUnlock=true makes every install behave as Tenzy Pro —
         // no ads, no quotas, no paywall — so testers exercise every tool at full. Defaults to
         // false; CI sets it for the internal track. MUST be false for any production release
@@ -88,9 +79,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
 
-    // Monetization
-    implementation("com.google.android.gms:play-services-ads:23.6.0")
-    implementation("com.google.android.ump:user-messaging-platform:3.1.0")
+    // Monetization (subscriptions only — AdMob removed)
     implementation("com.android.billingclient:billing-ktx:8.0.0")
     // Google Play's own "a newer version is ready" step, shown when the app opens. Keeps testers and users on the latest build.
     implementation("com.google.android.play:app-update:2.1.0")

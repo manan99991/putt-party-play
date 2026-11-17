@@ -24,9 +24,6 @@ settings:
     OTHER_LDFLAGS: "-ObjC"                 # required by Google Mobile Ads
 
 packages:
-  GoogleMobileAds:
-    url: https://github.com/googleads/swift-package-manager-google-mobile-ads.git
-    from: "12.0.0"
   SwiftOGG:
     # libopus/libogg wrapper (Element/Matrix). Decodes WhatsApp/Telegram Ogg-Opus voice notes to m4a.
     # No tagged release upstream; its binary deps (vector-im opus-swift 0.8.4 / ogg-swift 0.8.3) are versioned.
@@ -46,7 +43,6 @@ targets:
       - path: HandyTools
       - path: Shared
     dependencies:
-      - package: GoogleMobileAds
       - package: SwiftOGG
       - target: ShareExtension
       - target: StickyWidget
@@ -69,11 +65,6 @@ targets:
         CFBundleURLTypes:
           - CFBundleURLName: com.tenzy.toolkit
             CFBundleURLSchemes: [tenzy]
-        # --- AdMob (live Tenzy app id) ---
-        GADApplicationIdentifier: ca-app-pub-5414801919054534~3553659163
-        SKAdNetworkItems:
-          - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
-        NSUserTrackingUsageDescription: Used to show you ads that are more relevant. Say no and you still get ads, just less relevant ones.
         # --- Tool permissions ---
         NSCameraUsageDescription: Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded.
         NSMicrophoneUsageDescription: Needed for the sound meter and voice tools. Levels are measured on your phone; nothing is uploaded.

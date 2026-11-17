@@ -528,8 +528,13 @@ struct BuilderView: View {
                 Button { pickTypes = [.pdf]; pickingAny = true } label: { objTile("PDF") }.accessibilityIdentifier("have-pdf")
                 Button { pickTypes = [.item]; pickingAny = true } label: { objTile("File") }.accessibilityIdentifier("have-file")
                 Button {
-                    if let g = Given.from(text: UIPasteboard.general.string ?? "") { note = nil; given = g }
-                    else if let img = UIPasteboard.general.image { note = nil; given = Given(payload: .image(img), label: "A photo") }
+                    let pb = UIPasteboard.general
+                    // Prefer an image when the clipboard reports one, reading it robustly — plain
+                    // `pb.image` returns nil for HEIC / file-backed / multi-representation items that
+                    // still set `hasImages`, which used to dead-end the tile that said "Image copied".
+                    if pb.hasImages, let img = pasteboardImage() { note = nil; given = Given(payload: .image(img), label: "A photo") }
+                    else if let g = Given.from(text: pb.string ?? "") { note = nil; given = g }
+                    else if let img = pasteboardImage() { note = nil; given = Given(payload: .image(img), label: "A photo") }
                     else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
                 } label: { objTile("Paste", sub: clipKind.map { "\($0) copied" } ?? "Nothing copied") }.accessibilityIdentifier("have-paste")
             }
@@ -552,6 +557,23 @@ struct BuilderView: View {
     private func refreshClipKind() {
         let pb = UIPasteboard.general
         clipKind = pb.hasImages ? "Image" : pb.hasURLs ? "Link" : pb.hasStrings ? "Text" : nil
+    }
+    /// Reads an image from the clipboard even when `UIPasteboard.image` returns nil — HEIC, file-backed
+    /// or multi-representation items that still report `hasImages`. Falls back to decoding the raw data
+    /// for each known image type, then any item carrying an image-conforming representation.
+    private func pasteboardImage() -> UIImage? {
+        let pb = UIPasteboard.general
+        if let img = pb.image { return img }
+        for t in [UTType.png, .jpeg, .heic, .tiff, .gif, .bmp, .webP, .image] {
+            if let d = pb.data(forPasteboardType: t.identifier), let im = UIImage(data: d) { return im }
+        }
+        for item in pb.items {
+            for (type, value) in item where (UTType(type)?.conforms(to: .image) ?? false) {
+                if let im = value as? UIImage { return im }
+                if let d = value as? Data, let im = UIImage(data: d) { return im }
+            }
+        }
+        return nil
     }
     private func objTile(_ title: String, sub: String? = nil) -> some View {
         VStack(spacing: 2) {
@@ -1269,7 +1291,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 VStack(spacing: HandySpacing.s12) {
                     ZStack { Circle().fill(HandyColor.accentSoft).frame(width: 72, height: 72); Image(systemName: "lock.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent) }
                     Text(L("A Pro tool")).font(.system(size: 22, weight: .bold))
-                    Text("This tool uses \(chain.proSteps.count == 1 ? "a Pro step" : "Pro steps") (\(chain.proSteps.map(\.title).joined(separator: ", "))). Go Pro to run it — plus every Pro step, all \(TOOLS.count) tools, and no ads.")
+                    Text("This tool uses \(chain.proSteps.count == 1 ? "a Pro step" : "Pro steps") (\(chain.proSteps.map(\.title).joined(separator: ", "))). Go Pro to run it — plus every Pro step, all \(TOOLS.count) tools, and no daily limits.")
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                     Button { showPro = true } label: { Label(store.showsFreeTrial ? "Start \(store.trialLength) free trial" : "Go Pro — \(store.yearlyPrice)/year", systemImage: "crown.fill").frame(maxWidth: .infinity) }.primaryButton()
                 }.frame(maxWidth: .infinity).padding(.top, HandySpacing.s24)

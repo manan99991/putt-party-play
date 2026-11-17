@@ -161,7 +161,7 @@ struct SettingsView: View {
                             }
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(store.isPremium ? "Tenzy Pro" : "Go Pro").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                Text(store.isPremium ? "Ads off. Every tool unlimited." : "\(store.yearlyPrice)/yr. Ads gone, everything unlimited.")
+                                Text(store.isPremium ? "Every tool unlimited. No daily limits." : "\(store.yearlyPrice)/yr. Every tool unlimited, no daily limits.")
                                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.leading)
                             }
                             Spacer()
@@ -248,7 +248,7 @@ struct SettingsView: View {
                             Toggle(isOn: Binding(get: { store.isTesterPro }, set: { store.setTesterPro($0) })) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(L("Unlock Pro (tester)")).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)
-                                    Text(L("Ads off, every tool unlimited — for testing the paid experience.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                    Text(L("Every tool unlimited — for testing the paid experience.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 }
                             }.tint(HandyColor.accent).padding(.vertical, HandySpacing.s8)
                             SettingsRow(icon: "ladybug", title: "Diagnostics", sub: "View the on-device log and share it with me") { showDiagnostics = true }
@@ -401,11 +401,8 @@ struct PrivacyView: View {
                     "Analytics, tracking of what you do inside the app, or crash reports — Tenzy has none",
                     "Your contacts, location, photos or recordings: they're used on your phone to do the job you asked for and are never sent to us",
                 ], note: nil)
-                Block("The one exception: ads", check: false, [
-                    "The free version shows ads through Google AdMob.",
-                    "If you allow tracking when asked, AdMob may use your advertising identifier to pick and count ads; say no and you still get ads, just less personalised.",
-                    "Change it anytime in Settings › Privacy & Security › Tracking.",
-                    "Pro removes the ads and the ad code doesn't run.",
+                Block("No ads", check: true, [
+                    "Tenzy shows no ads at all — free or Pro. There is no ad SDK and no advertising identifier is used.",
                 ], note: nil)
                 Block("Payments", check: false, ["Pro is $19.99 a year, billed by Apple. We never see your card."], note: nil)
                 Block("Permissions — each asked for by the tool that needs it", check: false, [
@@ -419,7 +416,7 @@ struct PrivacyView: View {
                 Block("Network use", check: false, [
                     "Read-the-page downloads a web page only when you paste its link.",
                     "Tools run on your phone with no connection, unless you ask for something that's online.",
-                    "Ads and purchases, as described above.",
+                    "Purchases, as described above.",
                 ], note: nil)
                 Block("Children", check: false, ["Tenzy isn't for children under 13 and doesn't knowingly collect anything from them."], note: nil)
                 Text("Questions: \(SUPPORT_EMAIL) · Last updated November 16, 2026").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.bottom, HandySpacing.s32)

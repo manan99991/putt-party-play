@@ -2449,6 +2449,16 @@
   "pt": "Todas as ferramentas e cada passo do criador. Sem anúncios, sem limites.",
   "zh": "每个工具和构建器的每一步。无广告，无限制。"
  },
+ "Every tool and every builder step. No daily limits.": {
+  "de": "Jedes Tool und jeder Baustein. Keine täglichen Limits.",
+  "es": "Todas las herramientas y todos los pasos del creador. Sin límites diarios.",
+  "fr": "Tous les outils et toutes les étapes du créateur. Aucune limite quotidienne.",
+  "hi": "हर टूल और बिल्डर का हर चरण। कोई दैनिक सीमा नहीं।",
+  "it": "Ogni strumento e ogni passaggio del creatore. Nessun limite giornaliero.",
+  "ja": "すべてのツールとビルダーのすべてのステップ。1日の制限なし。",
+  "pt": "Todas as ferramentas e todos os passos do criador. Sem limites diários.",
+  "zh": "每个工具和构建器的每个步骤。没有每日限制。"
+ },
  "Every tool in one place — tap any to open it. It all runs on your phone.": {
   "de": "Alle Tools an einem Ort — tippe eines an, um es zu öffnen. Alles läuft auf deinem Handy.",
   "es": "Todas las herramientas en un sitio: toca cualquiera para abrirla. Todo funciona en tu teléfono.",
@@ -2468,6 +2478,16 @@
   "ja": "すべてのツールが一か所に。全部スマホで動作。",
   "pt": "Todas as ferramentas num só lugar. Tudo corre no telefone.",
   "zh": "所有工具集于一处。全部在手机上运行。"
+ },
+ "Every tool unlimited — for testing the paid experience.": {
+  "de": "Jedes Tool unbegrenzt – zum Testen der kostenpflichtigen Version.",
+  "es": "Todas las herramientas sin límite: para probar la experiencia de pago.",
+  "fr": "Tous les outils sans limite — pour tester l'expérience payante.",
+  "hi": "हर टूल असीमित — सशुल्क अनुभव को आज़माने के लिए।",
+  "it": "Ogni strumento senza limiti: per testare l'esperienza a pagamento.",
+  "ja": "すべてのツールが無制限 — 有料版をテストするため。",
+  "pt": "Todas as ferramentas sem limite — para testar a experiência paga.",
+  "zh": "每个工具无限制 — 用于测试付费体验。"
  },
  "Every tool, in one place — tap any to open it. It all runs on your phone.": {
   "de": "Alle Werkzeuge an einem Ort — zum Öffnen tippen. Alles läuft auf deinem Handy.",
@@ -2889,6 +2909,16 @@
   "pt": "Liberta espaço: duplicados e grandes",
   "zh": "释放空间：重复项和大文件"
  },
+ "Free stays free.": {
+  "de": "Kostenlos bleibt kostenlos.",
+  "es": "Lo gratis sigue siendo gratis.",
+  "fr": "Le gratuit reste gratuit.",
+  "hi": "मुफ़्त, मुफ़्त ही रहता है।",
+  "it": "Il gratuito resta gratuito.",
+  "ja": "無料はずっと無料。",
+  "pt": "O gratuito continua gratuito.",
+  "zh": "免费始终免费。"
+ },
  "Free tools use the basic steps. The ones marked Pro unlock with Tenzy Pro — tap one to see what you get.": {
   "de": "Kostenlose Tools nutzen die Basisschritte. Die mit Pro markierten schaltest du mit Tenzy Pro frei — tippe eins an, um zu sehen, was du bekommst.",
   "es": "Las herramientas gratuitas usan los pasos básicos. Las marcadas como Pro se desbloquean con Tenzy Pro: toca una para ver qué incluye.",
@@ -3048,6 +3078,16 @@
   "ja": "Proにすると、これと他のすべてのProツールが解放されます — 広告なし、1日の制限なし、自作ツールも無制限。",
   "pt": "Torna-te Pro para a desbloqueares e a todas as outras ferramentas Pro — sem anúncios, sem limites diários e ferramentas ilimitadas criadas por ti.",
   "zh": "升级 Pro 即可解锁它以及所有其他 Pro 工具 — 无广告、无每日限制，以及你自建的无限工具。"
+ },
+ "Go Pro to unlock it and every other Pro tool — no daily limits, and unlimited tools you build yourself.": {
+  "de": "Hol dir Pro, um es und alle anderen Pro-Tools freizuschalten – keine täglichen Limits und unbegrenzt viele selbst erstellte Tools.",
+  "es": "Hazte Pro para desbloquearla y todas las demás herramientas Pro: sin límites diarios y herramientas ilimitadas creadas por ti.",
+  "fr": "Passez à Pro pour le débloquer ainsi que tous les autres outils Pro — aucune limite quotidienne et un nombre illimité d'outils que vous créez vous-même.",
+  "hi": "इसे और हर दूसरे Pro टूल को अनलॉक करने के लिए Pro लें — कोई दैनिक सीमा नहीं, और आपके बनाए असीमित टूल।",
+  "it": "Passa a Pro per sbloccarlo e ogni altro strumento Pro — nessun limite giornaliero e strumenti illimitati creati da te.",
+  "ja": "Proにアップグレードすると、これも他のすべてのProツールも使えます — 1日の制限はなく、自分で作れるツールも無制限です。",
+  "pt": "Assine o Pro para desbloqueá-la e todas as outras ferramentas Pro — sem limites diários e ferramentas ilimitadas criadas por você.",
+  "zh": "升级到 Pro 即可解锁它和所有其他 Pro 工具 — 没有每日限制，还可无限创建你自己的工具。"
  },
  "Google, your phone, Exchange: copy or move in three taps.": {
   "de": "Google, dein Handy, Exchange: kopieren oder verschieben in drei Tipps.",
@@ -5778,6 +5818,16 @@
   "ja": "Proステップ",
   "pt": "Passo Pro",
   "zh": "Pro 步骤"
+ },
+ "Pro unlocks every tool, with no daily limits.": {
+  "de": "Pro schaltet jedes Tool frei – ohne tägliche Limits.",
+  "es": "Pro desbloquea todas las herramientas, sin límites diarios.",
+  "fr": "Pro débloque tous les outils, sans limite quotidienne.",
+  "hi": "Pro हर टूल अनलॉक करता है, बिना किसी दैनिक सीमा के।",
+  "it": "Pro sblocca ogni strumento, senza limiti giornalieri.",
+  "ja": "Proはすべてのツールを解除し、1日の制限もありません。",
+  "pt": "O Pro desbloqueia todas as ferramentas, sem limites diários.",
+  "zh": "Pro 解锁所有工具，且没有每日限制。"
  },
  "Pulled from your photos below — tap any to open the original.": {
   "de": "Aus deinen Fotos unten entnommen — tippe eines an, um das Original zu öffnen.",

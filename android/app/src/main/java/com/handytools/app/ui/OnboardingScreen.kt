@@ -162,7 +162,7 @@ private fun ProPage(onSeePro: () -> Unit) {
         HCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(HandyTokens.Space16)) {
                 Row { Spacer(Modifier.weight(1.4f)); Cell("Free", true); Cell("Pro", true, accent = true) }
-                listOf("Ads" to ("Yes" to "None"), "Clipboard history" to ("20" to "Unlimited"), "Alarms" to ("3" to "Unlimited"), "Price" to ("Free" to "$19.99 a year")).forEach { (k, v) ->
+                listOf("Tools" to ("A few" to "All of them"), "Clipboard history" to ("20" to "Unlimited"), "Alarms" to ("3" to "Unlimited"), "Price" to ("Free" to "$19.99 a year")).forEach { (k, v) ->
                     Box(Modifier.fillMaxWidth().height(1.dp).background(Handy.palette.border))
                     Row(Modifier.padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text(k, Modifier.weight(1.4f), style = MaterialTheme.typography.bodyLarge); Cell(v.first); Cell(v.second, accent = true)
@@ -171,9 +171,9 @@ private fun ProPage(onSeePro: () -> Unit) {
             }
         }
         Spacer(Modifier.weight(0.5f))
-        Text(com.handytools.app.I18n.t("Free is really free."), style = MaterialTheme.typography.headlineMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        Text(com.handytools.app.I18n.t("Free stays free."), style = MaterialTheme.typography.headlineMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         Spacer(Modifier.height(HandyTokens.Space12))
-        Text(com.handytools.app.I18n.t("Pro removes ads. That's the whole pitch."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
+        Text(com.handytools.app.I18n.t("Pro unlocks every tool, with no daily limits."), style = MaterialTheme.typography.bodyLarge, color = Handy.palette.textSecondary)
         Spacer(Modifier.height(HandyTokens.Space8))
         HTextButton("See Pro", onClick = onSeePro)
         Spacer(Modifier.weight(1.2f))

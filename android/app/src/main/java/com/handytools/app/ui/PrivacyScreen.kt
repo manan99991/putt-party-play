@@ -52,11 +52,8 @@ fun PrivacyScreen() {
             "Your contacts, location, photos or recordings: they are used on your phone to do the job you asked for and are never sent to us",
         ), null)
 
-        Block("The one exception: ads", false, listOf(
-            "The free version shows ads through Google AdMob.",
-            "AdMob may use your phone's advertising ID and basic device info to pick and count ads, under Google's privacy policy.",
-            "You can reset or delete that ID in Android Settings › Google › Ads.",
-            "Pro removes the ads and the ad code doesn't run.",
+        Block("No ads", true, listOf(
+            "Tenzy shows no ads at all — free or Pro. There is no ad SDK and no advertising ID is used.",
         ), null)
 
         Block("Payments", false, listOf("Pro is $19.99 a year, billed by Google Play. We never see your card."), null)

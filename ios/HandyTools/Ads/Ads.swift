@@ -1,146 +1,25 @@
 import SwiftUI
-import GoogleMobileAds
-import AppTrackingTransparency
-import UserMessagingPlatform
 
-/// AdMob ad unit ids. The LIVE Tenzy units are used only in a build installed from the App Store.
-/// Every other build — TestFlight, dev — uses Google's reserved test units, which always fill and
-/// are safe to view and tap. That way testers see that the ad slot works without generating invalid
-/// traffic on the real account (viewing/tapping your own live ads violates AdMob policy).
-enum AdUnits {
-    private static let liveBanner = "ca-app-pub-5414801919054534/9681092972"
-    private static let liveInterstitial = "ca-app-pub-5414801919054534/5362574012"
-    private static let testBanner = "ca-app-pub-3940256099942544/2934735716"        // Google's iOS test banner
-    private static let testInterstitial = "ca-app-pub-3940256099942544/4411468910"  // Google's iOS test interstitial
-
-    /// True only for a build installed from the App Store. TestFlight and dev builds carry a
-    /// "sandboxReceipt"; a DEBUG build is never the store.
-    static var isAppStore: Bool {
-        #if DEBUG
-        return false
-        #else
-        return Bundle.main.appStoreReceiptURL?.lastPathComponent == "receipt"
-        #endif
-    }
-
-    static var banner: String { isAppStore ? liveBanner : testBanner }
-    static var interstitial: String { isAppStore ? liveInterstitial : testInterstitial }
-}
+// Tenzy is subscription-only — AdMob was removed entirely (the account kept getting
+// declined and ads weren't serving, so we dropped ad revenue in favour of Tenzy Pro).
+// These are inert shims so the former call sites keep compiling; none of them render
+// an ad or load any ad SDK. Tenzy Pro now means unlimited tools and no daily limits.
 
 @MainActor
 enum AdsBootstrap {
-    private static var started = false
-    private static var adsStarted = false
-
-    static func start() {
-        guard !started else { return }
-        started = true
-        // Defer the SDK start until after the first frame: the first foreground activation
-        // lands right after first render, so cold start stays under 800ms with no ad SDK
-        // on the main thread before first draw.
-        // MEASURE: cold-start timing — CI measures with the xctrace 'App Launch' template.
-        let testing = ProcessInfo.processInfo.arguments.contains("-screenshots") || ProcessInfo.processInfo.arguments.contains("-uitest")
-        if testing {
-            // Tests/screenshots use Google's test units and skip consent entirely.
-            if !ProcessInfo.processInfo.arguments.contains("-uitest") { startAdsOnce() }
-            return
-        }
-        var token: NSObjectProtocol?
-        token = NotificationCenter.default.addObserver(
-            forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main
-        ) { _ in
-            if let token { NotificationCenter.default.removeObserver(token) }
-            gatherConsentThenStartAds()
-        }
-        // ATT prompt after a short delay so it doesn't collide with the first-launch UI.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            ATTrackingManager.requestTrackingAuthorization { _ in }
-        }
-    }
-
-    private static func startAdsOnce() {
-        guard !adsStarted else { return }
-        adsStarted = true
-        MobileAds.shared.start()
-    }
-
-    /// Gather EEA/UK/CH consent with the Google UMP SDK before any ad request. Where no form is
-    /// required (most of the world), `canRequestAds` is already true and ads start immediately;
-    /// where it is required, ads start only after the user answers. Nothing here blocks the UI.
-    private static func gatherConsentThenStartAds() {
-        let root = UIApplication.shared.connectedScenes
-            .compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController }.first
-        let params = RequestParameters()
-        ConsentInformation.shared.requestConsentInfoUpdate(with: params) { _ in
-            ConsentForm.loadAndPresentIfRequired(from: root) { _ in
-                if ConsentInformation.shared.canRequestAds { startAdsOnce() }
-            }
-        }
-        // Returning users who already consented can serve ads without waiting for the update.
-        if ConsentInformation.shared.canRequestAds { startAdsOnce() }
-    }
+    /// No-op: there is no ad SDK to start.
+    static func start() {}
 }
 
-/// Adaptive banner anchored at the bottom of every tool. Renders nothing for Pro.
+/// Renders nothing. Kept so screens that still call `BannerAd()` compile; there is no ad strip.
 struct BannerAd: View {
-    @ObservedObject private var store = StoreManager.shared
-    var body: some View {
-        if !store.isPremium {
-            VStack(spacing: 0) {
-                Rectangle().fill(HandyColor.border).frame(height: 1)
-                HStack {
-                    Text("Ads support Tenzy").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-                    Spacer()
-                    Button("Remove ads") { NotificationCenter.default.post(name: .showPaywall, object: nil) }.font(HandyFont.micro).foregroundStyle(HandyColor.accent)
-                }
-                .padding(.horizontal, HandySpacing.gutter).padding(.vertical, 2)
-                // Store screenshots: keep the "Ads support Tenzy" strip but don't render a live
-                // (test) ad creative — a visible "Test mode" banner looks unfinished in the listing.
-                if ProcessInfo.processInfo.arguments.contains("-screenshots") {
-                    Color.clear.frame(height: HandySpacing.adReservedHeight)
-                } else {
-                    BannerViewRep().frame(height: HandySpacing.adReservedHeight)
-                }
-            }
-            .background(HandyColor.bg)
-        }
-    }
+    var body: some View { EmptyView() }
 }
 
-private struct BannerViewRep: UIViewRepresentable {
-    func makeUIView(context: Context) -> BannerView {
-        let width = UIScreen.main.bounds.width
-        let v = BannerView(adSize: currentOrientationAnchoredAdaptiveBanner(width: width))
-        v.adUnitID = AdUnits.banner
-        v.rootViewController = UIApplication.shared.connectedScenes
-            .compactMap { ($0 as? UIWindowScene)?.keyWindow?.rootViewController }.first
-        v.load(Request())
-        return v
-    }
-    func updateUIView(_ uiView: BannerView, context: Context) {}
-}
-
-/// Full-screen ad after a tool finishes, at most once every 3 minutes.
+/// No-op interstitials. Kept so former call sites compile; nothing is ever shown.
 @MainActor
 final class Interstitials {
     static let shared = Interstitials()
-    private var ad: InterstitialAd?
-    private var lastShown = Date.distantPast
-    private let gap: TimeInterval = 180
-
-    func preload() {
-        guard !StoreManager.shared.isPremium, ad == nil else { return }
-        InterstitialAd.load(with: AdUnits.interstitial, request: Request()) { [weak self] ad, _ in self?.ad = ad } // GMA calls back on main
-    }
-
-    func showIfReady() {
-        guard !StoreManager.shared.isPremium, let ad, Date().timeIntervalSince(lastShown) > gap,
-              let root = UIApplication.shared.connectedScenes
-                .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController }).first
-        else { preload(); return }
-        lastShown = Date()
-        ad.present(from: root)
-        self.ad = nil
-        preload()
-    }
+    func preload() {}
+    func showIfReady() {}
 }

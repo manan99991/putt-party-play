@@ -6,7 +6,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Bundle
 import androidx.core.view.doOnPreDraw
-import com.google.android.gms.ads.MobileAds
 import com.handytools.app.billing.BillingManager
 import com.handytools.app.data.AppDb
 import com.handytools.app.tools.alarm.AlarmScheduler
@@ -53,9 +52,7 @@ class HandyApp : Application() {
                         deferredInitDone = true
                         // MEASURE: cold-start timing ends here (first frame drawn). CI fills in
                         // Macrobenchmark StartupTimingMetric before/after numbers.
-                        // Gather EEA/UK consent (UMP) before initialising ads; outside those
-                        // regions this fires immediately. Billing is independent of consent.
-                        com.handytools.app.ads.Consent.gather(activity) { MobileAds.initialize(this@HandyApp) {} }
+                        // Subscription-only: no ad SDK to initialise. Start billing.
                         billing.start()
                     }
                 }

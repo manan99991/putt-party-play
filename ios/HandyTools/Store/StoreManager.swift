@@ -27,7 +27,7 @@ final class StoreManager: ObservableObject {
     // sim entitlement can't downgrade it back to free.
     private let previewPremium = CommandLine.arguments.contains("homepro")
 
-    // Tester unlock: lets the owner run the app with Pro on (ads off, no limits) without a purchase,
+    // Tester unlock: lets the owner run the app with Pro on (no limits) without a purchase,
     // for testing the paid experience. Persisted, and refresh() won't downgrade it. Not shown to
     // normal users — reachable only from Settings › Developer (reveal by tapping the title 7×).
     private let testerProKey = "tenzy.testerPro"
@@ -40,7 +40,7 @@ final class StoreManager: ObservableObject {
 
     private init() {
         // Unlock Pro automatically in every non-production build — DEBUG and TestFlight (sandbox
-        // receipt) — so beta testers get the full paid experience (all themes, no ads, no limits)
+        // receipt) — so beta testers get the full paid experience (all themes, no limits)
         // without a purchase. A real App Store build has a production receipt, so isTestBuild is
         // false there and the Pro gate stays on for paying users. (previewPremium/isTesterPro remain
         // for CI screenshots and the manual Developer toggle.)

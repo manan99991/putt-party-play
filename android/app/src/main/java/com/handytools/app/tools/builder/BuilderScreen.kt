@@ -1037,7 +1037,7 @@ private fun ChainRunScreen(chain: Chain, initial: Uri? = null, initialKind: Kind
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(HandyTokens.Gutter), verticalArrangement = Arrangement.spacedBy(HandyTokens.Space12)) {
             ToolHeader(chain.name, "A Pro tool")
             val pro = chain.proSteps.joinToString(", ") { it.title }
-            Text("This tool uses ${if (chain.proSteps.size == 1) "a Pro step" else "Pro steps"} ($pro). Go Pro to run it — plus every Pro step, all the built-in tools, and no ads.",
+            Text("This tool uses ${if (chain.proSteps.size == 1) "a Pro step" else "Pro steps"} ($pro). Go Pro to run it — plus every Pro step, all the built-in tools, and no daily limits.",
                 style = MaterialTheme.typography.bodyMedium, color = Handy.palette.textSecondary)
             HPrimaryButton("Go Pro") { openPaywall?.invoke() }
             HSecondaryButton("Back") { onDone() }
