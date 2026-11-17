@@ -1250,6 +1250,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var memeTop = ""
     @State private var memeBottom = ""
     @State private var memeLoaded = false
+    /// The photos picked for a meme are held so the caption can be typed in any order and re-applied
+    /// without picking again — pick first or type first, then tap Make meme as many times as you like.
+    @State private var memePhotos: [UIImage] = []
     @StateObject private var here = WhereAmI()
     @StateObject private var recorder = QuickRecorder()
     /// What each result of a many-at-once run is called in the list: a photo, or a file.
@@ -1277,6 +1280,14 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             c.steps[i].settings["top"] = memeTop; c.steps[i].settings["bottom"] = memeBottom
         }
         return c
+    }
+
+    /// Draw the meme onto the photos held from the last pick, using whatever caption is typed right now.
+    /// Lets the order be either way round and lets the caption be changed and re-applied with one tap.
+    private func makeMeme() {
+        guard !memePhotos.isEmpty else { return }
+        if memePhotos.count == 1 { go(.image(memePhotos[0])) }
+        else { let imgs = memePhotos; runBatch(count: imgs.count) { i in imgs[i] } }
     }
 
     var body: some View {
@@ -1321,6 +1332,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 if hasMeme {
                     TextField(L("Top line"), text: $memeTop).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12)).accessibilityIdentifier("run-meme-top")
                     TextField(L("Bottom line"), text: $memeBottom).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12)).accessibilityIdentifier("run-meme-bottom")
+                    if !memePhotos.isEmpty {
+                        // The photos are already picked and held — one tap draws the current caption onto them,
+                        // and tapping again after editing the words re-draws, with no need to pick again.
+                        Button { makeMeme() } label: { Label(L("Make meme"), systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
+                            .primaryButton().disabled(busy || (memeTop.isEmpty && memeBottom.isEmpty)).accessibilityIdentifier("run-meme-make")
+                        Text("\(memePhotos.count) photo\(memePhotos.count == 1 ? "" : "s") ready. Change the words above and tap Make meme again any time.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    }
                 }
                 if let why = chain.unavailable {
                     Label(why, systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber).cardStyle(padding: HandySpacing.s12)
@@ -1388,6 +1406,25 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         .onChange(of: picks) { _, items in
             guard !items.isEmpty else { return }
             picks = []
+            // A meme keeps its photos so the caption can be typed before or after picking, then applied
+            // (and re-applied) with the Make meme button — picking no longer runs it with empty words.
+            if hasMeme {
+                busy = true; result = nil; message = nil; batch = []; progress = "Getting your photos ready…"; progressValue = 0
+                Task {
+                    var imgs: [UIImage] = []
+                    for it in items {
+                        if let img = await loadWithinTimeout(120, { (try? await it.loadTransferable(type: Data.self)).flatMap(UIImage.init) }) { imgs.append(img) }
+                    }
+                    await MainActor.run {
+                        busy = false; progress = ""
+                        memePhotos = imgs
+                        if imgs.isEmpty { message = "Those photos didn't load. If they're large iCloud photos, open them once in Photos, then pick again." }
+                        else if memeTop.isEmpty, memeBottom.isEmpty { message = "Added \(imgs.count) photo\(imgs.count == 1 ? "" : "s"). Now type a top or bottom line above, then tap Make meme." }
+                        else { makeMeme() }
+                    }
+                }
+                return
+            }
             if items.count == 1, chain.gif != true, chain.versus != true, let item = items.first {
                 busy = true; result = nil; message = nil; progress = "Getting the photo ready…"; progressValue = 0
                 Task {
@@ -1440,7 +1477,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // running, clear any previous run's result so a tool never opens showing an old image. (A
             // child picker/sheet doesn't fire onAppear, so a result you're actively viewing is safe.)
             if initial == nil, !started, !busy {
-                result = nil; batch = []; outbox = nil; report = nil; message = nil; picks = []
+                result = nil; batch = []; outbox = nil; report = nil; message = nil; picks = []; memePhotos = []
             }
             guard let initial, !started else { return }
             started = true
