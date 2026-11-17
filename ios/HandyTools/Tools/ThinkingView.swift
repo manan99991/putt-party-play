@@ -223,6 +223,20 @@ struct ThinkingToolView: View {
 
     private func reset() { tasks = []; calendarICS = nil; output = ""; note = ""; errorText = nil }
 
+    /// Adaptive summary: deadlines named plainly, soft tasks nudged, the trivial left quiet — the behaviour
+    /// the thinking tools were asked for, so the list guides without nagging.
+    static func adaptiveNote(_ tasks: [ThinkingEngine.Task]) -> String {
+        if tasks.isEmpty { return "" }
+        let deadlines = tasks.filter { ThinkingEngine.urgency(for: $0) == .deadline }.count
+        let nudges = tasks.filter { ThinkingEngine.urgency(for: $0) == .nudge }.count
+        let quiet = tasks.count - deadlines - nudges
+        var parts: [String] = []
+        if deadlines > 0 { parts.append("\(deadlines) with a deadline") }
+        if nudges > 0 { parts.append("\(nudges) to get to") }
+        if quiet > 0 { parts.append("\(quiet) can wait") }
+        return parts.isEmpty ? "\(tasks.count) task\(tasks.count == 1 ? "" : "s")" : parts.joined(separator: " · ")
+    }
+
     /// Bundle every dated task into one .ics written to a temp file, so "Add to Calendar" adds the plan.
     private func buildCalendarICS() {
         let dated = tasks.compactMap { t in t.due.map { (title: t.text, due: $0, place: t.actions.place ?? "") } }
@@ -240,12 +254,12 @@ struct ThinkingToolView: View {
             switch t {
             case .clearhead:
                 tasks = ThinkingEngine.clearMyHead(text)
-                note = tasks.isEmpty ? "" : "\(tasks.count) task\(tasks.count == 1 ? "" : "s"), tidied and deduped."
+                note = Self.adaptiveNote(tasks)
                 if tasks.isEmpty { errorText = "Nothing to sort yet — type a few things first." } else { HandyHaptics.success() }
                 buildCalendarICS()
             case .myday:
                 tasks = ThinkingEngine.myDay(text)
-                note = tasks.isEmpty ? "" : "Laid out by time; the fixed points lead."
+                note = Self.adaptiveNote(tasks)
                 if tasks.isEmpty { errorText = "Nothing to lay out yet." } else { HandyHaptics.success() }
                 buildCalendarICS()
             default:

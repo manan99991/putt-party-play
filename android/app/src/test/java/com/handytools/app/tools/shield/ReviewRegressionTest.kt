@@ -210,6 +210,18 @@ class ReviewRegressionTest {
         assertTrueMsg("untimed tasks fall to the end", day.last().text.contains("milk"))
     }
 
+    // Adaptive urgency (#285), parity with the iOS twin: deadline flagged, soft task nudged, fragment quiet.
+    @Test fun thinkingUrgencyAdaptsToTheTask() {
+        val utc = java.util.TimeZone.getTimeZone("UTC")
+        val now = java.util.Calendar.getInstance(utc).apply { clear(); set(2026, 10, 16, 8, 0, 0) }.timeInMillis
+        val TE = com.handytools.app.tools.builder.ThinkingEngine
+        fun urg(line: String) = TE.urgency(TE.tasks(line, now, utc).first())
+        assertEquals(TE.Urgency.DEADLINE, urg("pay rent Friday"))
+        assertEquals(TE.Urgency.NUDGE, urg("call the dentist"))
+        assertEquals(TE.Urgency.NUDGE, urg("email Sam"))
+        assertEquals(TE.Urgency.QUIET, urg("milk"))
+    }
+
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
     @Test fun thinkingActionPayloads() {
         val ics = ThinkingActions.icsEvent("Email Ana", 1_800_000_000_000L, "Office")

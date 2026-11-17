@@ -40,4 +40,26 @@ object ThinkingEngine {
         val timed = all.filter { it.due != null }.sortedBy { it.due!! }
         return timed + all.filter { it.due == null }
     }
+
+    /** How loudly a task wants attention — the adaptive behaviour the thinking tools were asked for: a real
+     * deadline is flagged plainly, a soft-but-actionable task earns a gentle nudge, and a trivial or vague
+     * line stays quiet so the list never nags. Pure and deterministic; the iOS twin uses the same rules. */
+    enum class Urgency { DEADLINE, NUDGE, QUIET }
+
+    /** A short, everyday set of action verbs — a line with one and some substance is worth a nudge even
+     * without a date; a bare fragment ("milk", "that thing") stays quiet. */
+    val actionVerbs = setOf(
+        "email", "send", "pay", "book", "buy", "get", "pick", "finish", "fix", "write", "reply", "submit",
+        "renew", "cancel", "schedule", "order", "return", "print", "sign", "review", "ask", "check", "clean",
+        "update", "plan", "prepare", "file", "draft", "confirm", "call", "text", "message", "follow",
+    )
+
+    /** Classify one task: dated → DEADLINE; a place/call or a real action verb with substance → NUDGE; else QUIET. */
+    fun urgency(task: Task): Urgency {
+        if (task.due != null) return Urgency.DEADLINE
+        if (task.actions.isCall || task.actions.place != null) return Urgency.NUDGE
+        val words = task.text.split(Regex("[^A-Za-z]+")).filter { it.isNotEmpty() }.map { it.lowercase() }
+        if (words.any { it in actionVerbs }) return Urgency.NUDGE
+        return Urgency.QUIET
+    }
 }

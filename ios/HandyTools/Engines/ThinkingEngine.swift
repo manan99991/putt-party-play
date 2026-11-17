@@ -46,4 +46,26 @@ enum ThinkingEngine {
         let timed = all.filter { $0.due != nil }.sorted { $0.due! < $1.due! }
         return timed + all.filter { $0.due == nil }
     }
+
+    /// How loudly a task wants attention — the adaptive behaviour the thinking tools were asked for: a real
+    /// deadline is flagged plainly, a soft-but-actionable task earns a gentle nudge, and a trivial or vague
+    /// line stays quiet so the list never nags. Pure and deterministic; the Android twin uses the same rules.
+    enum Urgency: String { case deadline, nudge, quiet }
+
+    /// A short, everyday set of action verbs — a line that has one and some substance is worth a nudge even
+    /// without a date; a bare fragment ("milk", "that thing") stays quiet.
+    static let actionVerbs: Set<String> = [
+        "email", "send", "pay", "book", "buy", "get", "pick", "finish", "fix", "write", "reply", "submit",
+        "renew", "cancel", "schedule", "order", "return", "print", "sign", "review", "ask", "check", "clean",
+        "update", "plan", "prepare", "file", "draft", "confirm", "call", "text", "message", "follow",
+    ]
+
+    /// Classify one task: dated → deadline; a place/call or a real action verb with substance → nudge; else quiet.
+    static func urgency(for task: Task) -> Urgency {
+        if task.due != nil { return .deadline }
+        if task.actions.isCall || task.actions.place != nil { return .nudge }
+        let words = task.text.split(whereSeparator: { !$0.isLetter }).map { $0.lowercased() }
+        if words.contains(where: { actionVerbs.contains($0) }) { return .nudge }
+        return .quiet
+    }
 }

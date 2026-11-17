@@ -296,6 +296,20 @@ final class ReviewRegressionTests: XCTestCase {
         XCTAssertTrue(day.last!.text.contains("milk"), "untimed tasks fall to the end")
     }
 
+    // Adaptive urgency (#285): a deadline is flagged, a soft actionable task is nudged, a fragment stays quiet.
+    func testThinkingUrgencyAdaptsToTheTask() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let now = cal.date(from: DateComponents(year: 2026, month: 11, day: 16, hour: 8, minute: 0))!
+        func urg(_ line: String) -> ThinkingEngine.Urgency {
+            ThinkingEngine.urgency(for: ThinkingEngine.tasks(from: line, now: now, calendar: cal).first!)
+        }
+        XCTAssertEqual(urg("pay rent Friday"), .deadline, "a dated task is a plain deadline")
+        XCTAssertEqual(urg("call the dentist"), .nudge, "a call is worth a nudge even without a date")
+        XCTAssertEqual(urg("email Sam"), .nudge, "a short action verb line is still a nudge")
+        XCTAssertEqual(urg("milk"), .quiet, "a bare fragment stays quiet")
+    }
+
     // Action payloads (#285): a dated task → a valid .ics event; a place → a Maps URL.
     func testThinkingActionPayloads() {
         let ics = ThinkingActions.icsEvent(title: "Email Ana", due: Date(timeIntervalSince1970: 1_800_000_000), place: "Office")

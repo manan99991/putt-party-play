@@ -78,14 +78,23 @@ fun ThinkingScreen() {
 
         if (tasks.isNotEmpty()) {
             Spacer(Modifier.size(16.dp))
-            val timed = tasks.count { it.due != null }
+            // Adaptive summary: deadlines named plainly, soft tasks nudged, the trivial left quiet.
+            val deadlines = tasks.count { ThinkingEngine.urgency(it) == ThinkingEngine.Urgency.DEADLINE }
+            val nudges = tasks.count { ThinkingEngine.urgency(it) == ThinkingEngine.Urgency.NUDGE }
+            val quiet = tasks.size - deadlines - nudges
+            val parts = buildList {
+                if (deadlines > 0) add("$deadlines with a deadline")
+                if (nudges > 0) add("$nudges to get to")
+                if (quiet > 0) add("$quiet can wait")
+            }
             Text(
-                "${tasks.size} task${if (tasks.size == 1) "" else "s"}" + if (timed > 0) " · $timed with a time" else "",
+                parts.joinToString(" · ").ifEmpty { "${tasks.size} task${if (tasks.size == 1) "" else "s"}" },
                 color = Handy.palette.textSecondary, style = MaterialTheme.typography.bodySmall
             )
             Spacer(Modifier.size(8.dp))
             for (t in tasks) TaskRow(ctx, t)
 
+            val timed = tasks.count { it.due != null }
             if (timed > 0) {
                 Spacer(Modifier.size(14.dp))
                 HSecondaryButton("Add dated steps to Calendar", modifier = Modifier.fillMaxWidth()) {
