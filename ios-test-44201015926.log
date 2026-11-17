@@ -1,0 +1,3 @@
+== test.log (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/PullDetailsResult.swift:78:95: error: incorrect argument label in call (have 'string:', expected 'stringValue:')
+** TEST FAILED **
