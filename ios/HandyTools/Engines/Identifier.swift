@@ -1,32 +1,58 @@
 import Vision
 import UIKit
 
-/// Identify — "what is this?" On-device image recognition gives the best guesses with how sure it is,
-/// reads any barcode, and (honestly) hands off to a web search to confirm the specifics it can't know
-/// locally. It crops to the main subject first so a bee on a flower is identified as the bee.
+/// Identify — "what is this?" Everything runs on the phone. It finds the main subject, reads any writing
+/// and barcode on it, says honestly how sure it is, and knows what category the thing is so the result can
+/// offer the useful next step (a plant's care, where to buy a product, a landmark on the map). When the
+/// picture is really a group of people or a busy scene, it says so instead of guessing — and it never puts
+/// a name on a person.
 enum Identifier {
     struct Guess: Identifiable { let id = UUID(); let label: String; let confidence: Double }
-    struct Outcome { let guesses: [Guess]; let barcode: String?; let symbology: String? }
+
+    /// What the picture mainly is. `.people` means "a photo of people / a scene", not a single object to name.
+    enum Subject { case object, animal, people }
+
+    /// The kind of thing, so the result can offer the right next step. Drives the action buttons on the card.
+    enum Category: String { case plant, animal, food, product, vehicle, place, art, money, object }
+
+    struct Outcome {
+        let subject: Subject
+        let guesses: [Guess]
+        let barcode: String?
+        let symbology: String?
+        let text: String?          // writing read off the thing (a brand, a model number, a label)
+        let category: Category
+        let sceneNote: String?     // set when it's really people / a scene, so we don't force a wrong guess
+    }
 
     static func identify(_ image: UIImage) async -> Outcome {
-        guard let cg = image.normalizedUp().cgImage else { return Outcome(guesses: [], barcode: nil, symbology: nil) }
+        guard let cg = image.normalizedUp().cgImage else {
+            return Outcome(subject: .object, guesses: [], barcode: nil, symbology: nil, text: nil, category: .object, sceneNote: nil)
+        }
+        let handler = VNImageRequestHandler(cgImage: cg, orientation: .up)
 
-        // Barcode first — a product barcode is a definite answer, not a guess.
+        // Barcode — a product barcode is a definite answer, not a guess.
         let barcodeReq = VNDetectBarcodesRequest()
-        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([barcodeReq])
-        let bc = (barcodeReq.results)?.first
-        let payload = bc?.payloadStringValue
+        try? handler.perform([barcodeReq])
+        let bc = barcodeReq.results?.first
+        let barcode = bc?.payloadStringValue
         let symbology = bc.map { prettySymbology($0.symbology) }
 
-        // Classify the whole picture AND zoomed-in windows of it. One pass over the whole frame is
-        // dominated by whatever fills it (people, clothing, sky), so a small subject like a statue in the
-        // distance never surfaced. Looking at crops at two zoom levels finds it; the best confidence for
-        // each label across all views wins.
+        // Writing on the thing — a brand or model number names it better than any classifier.
+        let onThing = readText(cg)
+
+        // How much of the frame is people — so a group photo is called what it is, not "Lamp".
+        let people = peopleCoverage(cg)
+
+        // Is it an animal? Apple recognises cats and dogs directly.
+        let animal = recognisedAnimal(cg)
+
+        // Classify the whole frame AND zoomed-in windows, so a small subject still surfaces; best confidence
+        // per label across all views wins, with generic "any photo" labels demoted.
         var views: [CGImage] = [cg]
         if let subject = subjectCrop(cg) { views.append(subject) }
         views += windows(of: cg, fraction: 0.5)
         views += windows(of: cg, fraction: 0.33)
-
         let frames = views
         let box = Merge()
         DispatchQueue.concurrentPerform(iterations: frames.count) { i in
@@ -35,16 +61,67 @@ enum Identifier {
             box.add((req.results ?? []).filter { $0.confidence > 0.08 }.map { ($0.identifier, Double($0.confidence)) })
         }
         let best = box.best
-
-        // Generic "what's in every photo of people/sky" labels would always win; rank specific ones first
-        // (they're still shown if nothing more specific was found).
-        let ranked = best.map { (id: $0.key, conf: $0.value, score: $0.value * (generic.contains($0.key.lowercased()) ? 0.35 : 1)) }
+        let ranked = best.map { (id: $0.key, conf: $0.value, score: $0.value * (generic.contains($0.key.lowercased()) ? 0.3 : 1)) }
             .sorted { $0.score > $1.score }
-            .prefix(6)
-            .map { Guess(label: cleanLabel($0.id), confidence: $0.conf) }
+        let specific = ranked.filter { !generic.contains($0.id.lowercased()) }
+        let topSpecific = specific.first
 
-        return Outcome(guesses: Array(ranked), barcode: payload, symbology: symbology)
+        // Decide what the picture mainly is.
+        let subject: Subject
+        var sceneNote: String? = nil
+        if animal != nil {
+            subject = .animal
+        } else if barcode != nil {
+            subject = .object
+        } else if people > 0.3 && (topSpecific?.conf ?? 0) < 0.5 {
+            // People fill the frame and nothing else stands out — don't invent an object name.
+            subject = .people
+            sceneNote = "This looks like a photo of people, not a single object. To name something, point at the one thing you want — get in close on just that."
+        } else {
+            subject = .object
+        }
+
+        // Build the guess list. For an animal, lead with the recognised kind, then the breed if the classifier found one.
+        var guesses: [Guess]
+        switch subject {
+        case .people:
+            guesses = []
+        case .animal:
+            var g: [Guess] = []
+            if let a = animal { g.append(Guess(label: a.label, confidence: a.confidence)) }
+            g += specific.prefix(4).map { Guess(label: cleanLabel($0.id), confidence: $0.conf) }
+            guesses = dedupe(g)
+        case .object:
+            // Prefer specific labels; fall back to whatever we have (still honest about low confidence).
+            let source = specific.isEmpty ? ranked : specific
+            guesses = source.prefix(6).map { Guess(label: cleanLabel($0.id), confidence: $0.conf) }
+        }
+
+        let topLabel = guesses.first?.label
+        let category = categoryFor(topLabel, animal: animal != nil, barcode: barcode != nil)
+        return Outcome(subject: subject, guesses: guesses, barcode: barcode, symbology: symbology, text: onThing, category: category, sceneNote: sceneNote)
     }
+
+    // MARK: - Category → the useful next step
+
+    /// Work out the category from the best label, so the card can offer the right action (plant care, where to buy…).
+    static func categoryFor(_ label: String?, animal: Bool, barcode: Bool) -> Category {
+        if animal { return .animal }
+        if barcode { return .product }
+        let l = (label ?? "").lowercased()
+        func has(_ words: [String]) -> Bool { words.contains { l.contains($0) } }
+        if has(["dog", "cat", "bird", "fish", "retriever", "terrier", "spaniel", "poodle", "bulldog", "tabby", "kitten", "puppy", "horse", "rabbit", "hamster", "reptile", "snake", "lizard", "turtle", "spider", "insect", "bee", "butterfly", "beetle", "frog", "ant"]) { return .animal }
+        if has(["plant", "flower", "tree", "leaf", "succulent", "fern", "cactus", "rose", "orchid", "monstera", "houseplant", "shrub", "moss", "bonsai", "mushroom", "fungus", "ivy", "palm"]) { return .plant }
+        if has(["food", "dish", "cake", "pizza", "bread", "fruit", "vegetable", "meal", "dessert", "soup", "salad", "burger", "sandwich", "coffee", "sushi", "pasta", "rice", "noodle", "cheese", "pie", "cookie", "banana", "apple", "drink"]) { return .food }
+        if has(["car", "truck", "suv", "motorcycle", "bicycle", "bike", "vehicle", "van", "bus", "scooter", "sedan", "automobile"]) { return .vehicle }
+        if has(["building", "landmark", "tower", "bridge", "monument", "church", "temple", "castle", "statue", "skyscraper", "mountain", "architecture", "palace", "cathedral", "lighthouse"]) { return .place }
+        if has(["painting", "sculpture", "artwork", "portrait", "drawing", "mural", "fresco"]) { return .art }
+        if has(["coin", "currency", "banknote", "cash", "stamp", "medal", "bill"]) { return .money }
+        if has(["phone", "laptop", "camera", "headphone", "earbud", "watch", "appliance", "gadget", "device", "bottle", "shoe", "bag", "furniture", "chair", "lamp", "tool", "keyboard", "mouse", "speaker", "console", "controller"]) { return .product }
+        return .object
+    }
+
+    // MARK: - Pieces
 
     /// Thread-safe "best confidence per label" accumulator for the parallel classification passes.
     private final class Merge: @unchecked Sendable {
@@ -54,13 +131,57 @@ enum Identifier {
         var best: [String: Double] { lock.lock(); defer { lock.unlock() }; return map }
     }
 
-    /// Labels that describe nearly any photo with people, sky or ground in it.
+    /// Labels that describe nearly any photo with people, sky or ground in it — including the people words that
+    /// let "Child" slip through before. These are demoted, and people words never become a guess.
     private static let generic: Set<String> = [
-        "clothing", "jeans", "footwear", "shoes", "shoe", "boot", "people", "adult", "crowd", "person", "outerwear", "jacket", "hat",
-        "headwear", "portrait", "face", "hair", "sky", "cloudy", "cloud", "outdoor", "structure", "water", "material", "wood_processed",
-        "textile", "fabric", "denim", "sportswear", "t_shirt", "shirt", "pants", "coat", "sweater", "hoodie", "sunglasses", "glasses",
-        "machine", "vehicle", "land", "ground", "floor", "wall", "plant", "tree", "vegetation", "grass"
+        "clothing", "jeans", "footwear", "shoes", "shoe", "boot", "people", "adult", "crowd", "person", "child", "children",
+        "baby", "toddler", "man", "woman", "boy", "girl", "human", "kid", "family", "group", "outerwear", "jacket", "hat",
+        "headwear", "portrait", "face", "hair", "sky", "cloudy", "cloud", "outdoor", "indoor", "structure", "water", "material",
+        "wood_processed", "textile", "fabric", "denim", "sportswear", "t_shirt", "shirt", "pants", "coat", "sweater", "hoodie",
+        "sunglasses", "glasses", "machine", "land", "ground", "floor", "wall", "ceiling", "room", "furniture", "table"
     ]
+
+    /// Read the most prominent writing on the thing (a brand, a model number). The two largest text lines, joined.
+    private static func readText(_ cg: CGImage) -> String? {
+        let req = VNRecognizeTextRequest()
+        req.recognitionLevel = .accurate
+        req.usesLanguageCorrection = true
+        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
+        let lines = (req.results ?? [])
+            .compactMap { obs -> (text: String, height: CGFloat)? in
+                guard let s = obs.topCandidates(1).first?.string else { return nil }
+                let t = s.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard t.count >= 2, t.count <= 40, t.rangeOfCharacter(from: .letters) != nil else { return nil }
+                return (t, obs.boundingBox.height)
+            }
+            .sorted { $0.height > $1.height }
+            .prefix(2)
+            .map { $0.text }
+        let joined = lines.joined(separator: " · ")
+        return joined.isEmpty ? nil : joined
+    }
+
+    /// Fraction of the frame covered by people (faces and bodies), used to tell a scene from a single object.
+    private static func peopleCoverage(_ cg: CGImage) -> CGFloat {
+        let faces = VNDetectFaceRectanglesRequest()
+        let bodies = VNDetectHumanRectanglesRequest()
+        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([faces, bodies])
+        func cover(_ boxes: [CGRect]) -> CGFloat { min(1, boxes.reduce(0) { $0 + $1.width * $1.height }) }
+        let faceCover = cover((faces.results ?? []).map { $0.boundingBox })
+        let bodyCover = cover((bodies.results ?? []).map { $0.boundingBox })
+        // Faces are small but reliable; count several faces as a strong people signal too.
+        let faceCount = CGFloat((faces.results ?? []).count)
+        return max(bodyCover, faceCover, min(1, faceCount * 0.12))
+    }
+
+    /// Apple's on-device cat/dog recogniser. Returns the kind and how sure it is.
+    private static func recognisedAnimal(_ cg: CGImage) -> (label: String, confidence: Double)? {
+        let req = VNRecognizeAnimalsRequest()
+        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
+        guard let obj = req.results?.max(by: { ($0.labels.first?.confidence ?? 0) < ($1.labels.first?.confidence ?? 0) }),
+              let top = obj.labels.first, top.confidence > 0.6 else { return nil }
+        return (cleanLabel(top.identifier), Double(top.confidence))
+    }
 
     /// Overlapping square-ish windows covering the picture, each `fraction` of its size, stepping by half a window.
     private static func windows(of cg: CGImage, fraction: CGFloat) -> [CGImage] {
@@ -80,11 +201,17 @@ enum Identifier {
         return out
     }
 
-    /// Turn a raw classifier identifier ("golden_retriever") into something a person reads
-    /// ("Golden Retriever").
+    /// Turn a raw classifier identifier ("golden_retriever") into something a person reads ("Golden Retriever").
     static func cleanLabel(_ raw: String) -> String {
         raw.replacingOccurrences(of: "_", with: " ")
             .split(separator: " ").map { $0.prefix(1).uppercased() + $0.dropFirst() }.joined(separator: " ")
+    }
+
+    /// Drop repeated labels (case-insensitive), keeping the first (highest) occurrence.
+    private static func dedupe(_ g: [Guess]) -> [Guess] {
+        var seen = Set<String>(); var out: [Guess] = []
+        for x in g where seen.insert(x.label.lowercased()).inserted { out.append(x) }
+        return out
     }
 
     /// A tight crop around the most salient region, so classification focuses on the actual subject.
@@ -94,7 +221,6 @@ enum Identifier {
         guard let obj = req.results?.first as? VNSaliencyImageObservation,
               let salient = obj.salientObjects?.max(by: { $0.confidence < $1.confidence }) else { return nil }
         let b = salient.boundingBox
-        // Pad the box a little and convert from normalized (bottom-left) to pixel (top-left) space.
         let w = CGFloat(cg.width), h = CGFloat(cg.height)
         let rect = CGRect(x: b.minX * w, y: (1 - b.maxY) * h, width: b.width * w, height: b.height * h)
             .insetBy(dx: -b.width * w * 0.08, dy: -b.height * h * 0.08)

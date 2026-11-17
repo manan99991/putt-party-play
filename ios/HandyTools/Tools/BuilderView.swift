@@ -1762,6 +1762,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         case .text(let t):
             if chain.steps.last?.block == .actionItems {
                 RemindersResult(planText: t)
+            } else if chain.steps.last?.block == .identify {
+                IdentifyResult(text: t)
             } else {
             // A planned task list carries tappable Maps links as markdown; render those so the links work.
             // Everything else stays plain monospaced so no stray character gets misread as formatting.

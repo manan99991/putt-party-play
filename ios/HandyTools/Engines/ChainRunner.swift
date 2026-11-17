@@ -620,8 +620,19 @@ enum ChainRunner {
 
         case (.identify, .image(let img)):
             let o = await Identifier.identify(img)
-            var lines = o.guesses.prefix(3).map { "\($0.label) (\(Int(($0.confidence * 100).rounded()))% sure)" }
-            if let code = o.barcode { lines.insert("Barcode \(code)" + (o.symbology.map { " (\($0))" } ?? ""), at: 0) }
+            // A busy people-scene with nothing to name: say so honestly instead of guessing an object.
+            if let note = o.sceneNote, o.guesses.isEmpty, o.barcode == nil {
+                return .success(.text(note))
+            }
+            func pct(_ x: Double) -> Int { Int((x * 100).rounded()) }
+            var lines: [String] = []
+            if let top = o.guesses.first {
+                lines.append("Most likely: \(top.label) — \(pct(top.confidence))%")
+                let rest = o.guesses.dropFirst().prefix(3).map { "\($0.label) — \(pct($0.confidence))%" }
+                if !rest.isEmpty { lines.append("Also: " + rest.joined(separator: ", ")) }
+            }
+            if let t = o.text { lines.append("Text: \(t)") }
+            if let code = o.barcode { lines.append("Barcode: \(code)" + (o.symbology.map { " (\($0))" } ?? "")) }
             return lines.isEmpty ? .failure(.nothingFound(b)) : .success(.text(lines.joined(separator: "\n")))
 
         case (.photoPdf, .image(let img)):
@@ -814,7 +825,7 @@ enum ChainTemplates {
         Chain(id: "video-words", name: "What was said in a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .speechText)]),
         Chain(id: "photo-collage", name: "Photos into one collage", steps: [ChainStep(block: .stripLocation)], collage: true, blurb: "Lays your chosen photos out as one combined picture."),
         Chain(id: "where-i-am", name: "Send where I am", steps: [ChainStep(block: .cleanText)], finish: ChainFinish(kind: .message, to: "")),
-        Chain(id: "photos-gif", name: "Photos into a GIF", steps: [ChainStep(block: .stripLocation)], gif: true, blurb: "Plays your chosen photos one after another as a looping GIF."),
+        Chain(id: "photos-gif", name: "Photos into a GIF", steps: [ChainStep(block: .stripLocation)], blurb: "Plays your chosen photos one after another as a looping GIF.", gif: true),
         Chain(id: "sticker-maker", name: "Photo to a sticker", steps: [ChainStep(block: .sticker)]),
         Chain(id: "emoji-faces", name: "Emoji over every face", steps: [ChainStep(block: .emojiFaces, settings: ["emoji": ChainText.faceEmojis[0]])]),
         Chain(id: "meme", name: "Make a meme", steps: [ChainStep(block: .meme, settings: ["top": "", "bottom": ""])]),
@@ -832,7 +843,7 @@ enum ChainTemplates {
         Chain(id: "voice-alien", name: "Alien voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "alien"])]),
         Chain(id: "voice-monster", name: "Monster voice", steps: [ChainStep(block: .voiceChange, settings: ["voice": "monster"])]),
         Chain(id: "video-voice", name: "Funny voice from a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
-        Chain(id: "before-after", name: "Before and after, side by side", steps: [ChainStep(block: .stripLocation)], versus: true, blurb: "Puts two photos side by side so you can compare them."),
+        Chain(id: "before-after", name: "Before and after, side by side", steps: [ChainStep(block: .stripLocation)], blurb: "Puts two photos side by side so you can compare them.", versus: true),
     ]
 }
 
