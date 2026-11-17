@@ -102,8 +102,8 @@ struct QRWifiView: View {
             case 1:
                 field("Network name (SSID)", $ssid)
                 secureField("Password", $password)
-                Picker("Security", selection: $security) { Text(L("WPA/WPA2/3")).tag(0); Text(L("WEP")).tag(1); Text(L("Open")).tag(2) }.pickerStyle(.segmented)
-                Toggle("Hidden network", isOn: $hidden).tint(HandyColor.accent).font(HandyFont.body)
+                Picker(L("Security"), selection: $security) { Text(L("WPA/WPA2/3")).tag(0); Text(L("WEP")).tag(1); Text(L("Open")).tag(2) }.pickerStyle(.segmented)
+                Toggle(L("Hidden network"), isOn: $hidden).tint(HandyColor.accent).font(HandyFont.body)
             case 2:
                 field("Full name", $cName); field("Phone", $cPhone); field("Email", $cEmail); field("Company (optional)", $cOrg)
             case 3:
@@ -114,7 +114,7 @@ struct QRWifiView: View {
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .overlay(alignment: .topLeading) { if batch.isEmpty { Text(L("One link or text per line — one QR each")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             }
-            Picker("Size", selection: $sizeIdx) { Text(L("Small")).tag(0); Text(L("Medium")).tag(1); Text(L("Large")).tag(2) }.pickerStyle(.segmented)
+            Picker(L("Size"), selection: $sizeIdx) { Text(L("Small")).tag(0); Text(L("Medium")).tag(1); Text(L("Large")).tag(2) }.pickerStyle(.segmented)
 
             Button { generate() } label: { Label(kind == 4 ? "Make all" : "Make QR code", systemImage: "qrcode").frame(maxWidth: .infinity) }.primaryButton()
 
@@ -168,7 +168,7 @@ struct QRWifiView: View {
             Text(L("A printable card for the fridge or guest room — people scan it and join, no typing.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             field("Network name (SSID)", $ssid)
             secureField("Password", $password)
-            Picker("Security", selection: $security) { Text(L("WPA/WPA2/3")).tag(0); Text(L("WEP")).tag(1); Text(L("Open")).tag(2) }.pickerStyle(.segmented)
+            Picker(L("Security"), selection: $security) { Text(L("WPA/WPA2/3")).tag(0); Text(L("WEP")).tag(1); Text(L("Open")).tag(2) }.pickerStyle(.segmented)
             Button { cardImage = QRGen.wifiCard(ssid: ssid, password: password, security: ["WPA", "WEP", "nopass"][security]) ; if cardImage != nil { HandyHaptics.success() } } label: {
                 Label(L("Make the card"), systemImage: "wifi").frame(maxWidth: .infinity)
             }.primaryButton().disabled(ssid.isEmpty)
@@ -369,8 +369,8 @@ private struct ScanSheet: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             LiveScanner(onResult: onResult).ignoresSafeArea()
-            Button { dismiss() } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel("Close").font(.largeTitle).foregroundStyle(.white).padding() }
-                .accessibilityLabel("Close scanner")
+            Button { dismiss() } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel(L("Close")).font(.largeTitle).foregroundStyle(.white).padding() }
+                .accessibilityLabel(L("Close scanner"))
         }
     }
 }

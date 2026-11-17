@@ -72,8 +72,8 @@ struct MemoryView: View {
     private var searchBar: some View {
         HStack(spacing: HandySpacing.s8) {
             Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
-            TextField("Ask your photos… (text or what they show)", text: $query).submitLabel(.search).onSubmit { runSearch() }
-            if !query.isEmpty { Button { query = ""; results = []; aiAnswer = nil; searched = false } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel("Clear").foregroundStyle(HandyColor.textSecondary) }.buttonStyle(.plain) }
+            TextField(L("Ask your photos… (text or what they show)"), text: $query).submitLabel(.search).onSubmit { runSearch() }
+            if !query.isEmpty { Button { query = ""; results = []; aiAnswer = nil; searched = false } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel(L("Clear")).foregroundStyle(HandyColor.textSecondary) }.buttonStyle(.plain) }
             Button { runSearch() } label: { Text(L("Ask")).font(HandyFont.bodyStrong) }.disabled(query.trimmingCharacters(in: .whitespaces).isEmpty || index.entries.isEmpty)
         }
         .padding(HandySpacing.s12)
@@ -131,7 +131,7 @@ struct MemoryView: View {
                         Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
                 }.buttonStyle(.plain)
-                Button { let line = MemoryEngine.bestLine(for: query, in: e); Copier.copy(line); ClipStore.add(line) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                Button { let line = MemoryEngine.bestLine(for: query, in: e); Copier.copy(line); ClipStore.add(line) } label: { Image(systemName: "doc.on.doc").accessibilityLabel(L("Copy")) }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
             }
         }
         .padding(HandySpacing.s12)
@@ -230,7 +230,7 @@ private struct MemoryImageViewer: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } }
                 ToolbarItem(placement: .primaryAction) {
-                    Button { Copier.copy(entry.text); ClipStore.add(entry.text) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }
+                    Button { Copier.copy(entry.text); ClipStore.add(entry.text) } label: { Image(systemName: "doc.on.doc").accessibilityLabel(L("Copy")) }
                         .disabled(entry.text.isEmpty)
                 }
             }

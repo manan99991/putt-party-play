@@ -484,11 +484,11 @@ struct HomeView: View {
                     Button { showPaywall = true } label: {
                         Image(systemName: "crown.fill").font(.system(size: 18)).foregroundStyle(HandyColor.accent)
                             .frame(width: 40, height: 40).background(HandyColor.accentSoft, in: Circle())
-                    }.accessibilityLabel("Go Pro")
+                    }.accessibilityLabel(L("Go Pro"))
                 }
                 NavigationLink(value: "settings") {
                     Image(systemName: "gearshape").font(.system(size: 18)).foregroundStyle(HandyColor.textSecondary).frame(width: 40, height: 40)
-                }.accessibilityLabel("Settings")
+                }.accessibilityLabel(L("Settings"))
             }
         }
         .padding(.horizontal, HandySpacing.gutter)
@@ -527,7 +527,7 @@ struct SearchField: View {
     var body: some View {
         HStack(spacing: HandySpacing.s8) {
             Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
-            TextField("Search 30 tools…", text: $text)
+            TextField(L("Search 30 tools…"), text: $text)
                 .focused(focused)
                 .autocorrectionDisabled().textInputAutocapitalization(.never).submitLabel(.search)
                 .onSubmit { focused.wrappedValue = false }
@@ -538,8 +538,8 @@ struct SearchField: View {
                     }
                 }
             if !text.isEmpty {
-                Button { text = ""; focused.wrappedValue = false } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel("Clear").foregroundStyle(HandyColor.textSecondary) }
-                    .accessibilityLabel("Clear search")
+                Button { text = ""; focused.wrappedValue = false } label: { Image(systemName: "xmark.circle.fill").accessibilityLabel(L("Clear")).foregroundStyle(HandyColor.textSecondary) }
+                    .accessibilityLabel(L("Clear search"))
             }
         }
         .padding(.horizontal, HandySpacing.s12).padding(.vertical, HandySpacing.s8)
@@ -641,7 +641,7 @@ struct AllToolsView: View {
         }
         .background(Ground())
         .id(theme.current)   // re-skin live if the theme changes while this page is open
-        .navigationTitle("What Tenzy does")
+        .navigationTitle(L("What Tenzy does"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }

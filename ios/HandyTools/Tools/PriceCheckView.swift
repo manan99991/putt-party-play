@@ -66,10 +66,10 @@ private struct ComparePanel: View {
 
             ForEach($rows) { $row in
                 VStack(spacing: HandySpacing.s8) {
-                    TextField("Name (optional) — e.g. Store brand", text: $row.name).priceField()
+                    TextField(L("Name (optional) — e.g. Store brand"), text: $row.name).priceField()
                     HStack(spacing: HandySpacing.s8) {
-                        TextField("Price", text: $row.price).keyboardType(.decimalPad).priceField()
-                        TextField("Size — 500g, 1.5L, 12 ct", text: $row.size).autocorrectionDisabled().priceField()
+                        TextField(L("Price"), text: $row.price).keyboardType(.decimalPad).priceField()
+                        TextField(L("Size — 500g, 1.5L, 12 ct"), text: $row.size).autocorrectionDisabled().priceField()
                     }
                     if let r = ranked.first(where: { $0.entry.id == row.id }) {
                         HStack {
@@ -134,7 +134,7 @@ private struct CartPanel: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            TextField("Budget (optional)", text: $budget).keyboardType(.decimalPad).priceField()
+            TextField(L("Budget (optional)"), text: $budget).keyboardType(.decimalPad).priceField()
 
             VStack(spacing: HandySpacing.s8) {
                 HStack {
@@ -155,8 +155,8 @@ private struct CartPanel: View {
 
             ForEach($lines) { $line in
                 HStack(spacing: HandySpacing.s8) {
-                    TextField("Item", text: $line.name).priceField()
-                    TextField("Price", text: $line.price).keyboardType(.decimalPad).priceField().frame(width: 100)
+                    TextField(L("Item"), text: $line.name).priceField()
+                    TextField(L("Price"), text: $line.price).keyboardType(.decimalPad).priceField().frame(width: 100)
                 }
             }
             HStack {

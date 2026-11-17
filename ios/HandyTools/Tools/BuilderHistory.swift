@@ -95,12 +95,12 @@ struct HistoryView: View {
             }.padding(HandySpacing.gutter)
         }
         .background(Ground())
-        .navigationTitle("Recent results").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("Recent results")).navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } }
             ToolbarItem(placement: .cancellationAction) { if !items.isEmpty { Button(L("Clear")) { clearing = true }.accessibilityIdentifier("history-clear") } }
         }
-        .confirmationDialog("Clear every recent result?", isPresented: $clearing, titleVisibility: .visible) {
+        .confirmationDialog(L("Clear every recent result?"), isPresented: $clearing, titleVisibility: .visible) {
             Button(L("Clear them all"), role: .destructive) { RunHistory.clear(); items = [] }
             Button(L("Keep them"), role: .cancel) {}
         } message: { Text(L("They are removed from this phone. Anything you already saved or sent is not touched.")) }
@@ -146,7 +146,7 @@ struct ToolLinkSheet: View {
                 Text(chain.name).font(HandyFont.title)
                 if let link, let code = ChainText.qr(link) {
                     Image(uiImage: code).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).padding(HandySpacing.s12).background(Color.white, in: RoundedRectangle(cornerRadius: 16))
-                        .accessibilityLabel("QR code for this tool")
+                        .accessibilityLabel(L("QR code for this tool"))
                     Text(L("Point another phone's camera at this, or send the link. It opens the tool in Tenzy.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
                     ShareLink(item: link) { Label(L("Send the link"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
                 } else {

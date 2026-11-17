@@ -149,7 +149,7 @@ private struct QRLongPressPreview: ViewModifier {
                         .presentationDetents([.medium, .large]).presentationDragIndicator(.visible)
                 }
             }
-            .alert("No QR code here", isPresented: $notFound) {
+            .alert(L("No QR code here"), isPresented: $notFound) {
                 Button(L("OK"), role: .cancel) {}
             } message: {
                 Text(L("Long-press a QR code to see what it holds without opening it."))

@@ -51,7 +51,7 @@ struct SceneDescriberView: View {
                         }
                     }
                     .onTapGesture { describeNow() }
-                    .accessibilityLabel("Camera view. Double tap to describe.")
+                    .accessibilityLabel(L("Camera view. Double tap to describe."))
                 HStack(spacing: HandySpacing.s8) {
                     Button { continuous.toggle(); if continuous { startContinuous() } else { stopContinuous() } } label: {
                         Label(continuous ? "Stop narrating" : "Narrate continuously", systemImage: continuous ? "stop.fill" : "waveform.and.mic")
@@ -64,7 +64,7 @@ struct SceneDescriberView: View {
             Button { describeNow() } label: {
                 HStack { if busy { ProgressView().tint(.white) }; Label(busy ? "Looking…" : "Describe what's in front of me", systemImage: "eye.fill") }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(busy || cam.latest == nil)
-            .accessibilityHint("Speaks a description of the camera view")
+            .accessibilityHint(L("Speaks a description of the camera view"))
 
             if !description.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {

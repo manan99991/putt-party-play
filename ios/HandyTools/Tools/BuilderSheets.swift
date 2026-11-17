@@ -25,10 +25,10 @@ struct SheetsView: View {
             }.padding(HandySpacing.gutter)
         }
         .background(HandyColor.bg)
-        .navigationTitle("My sheets").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("My sheets")).navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
-        .alert("Rename sheet", isPresented: Binding(get: { renaming != nil }, set: { if !$0 { renaming = nil } })) {
-            TextField("Name", text: $newName)
+        .alert(L("Rename sheet"), isPresented: Binding(get: { renaming != nil }, set: { if !$0 { renaming = nil } })) {
+            TextField(L("Name"), text: $newName)
             Button(L("Rename")) {
                 if let r = renaming {
                     note = RunningList.rename(r.file, to: newName) == nil ? "That name is empty or already used. The sheet kept its name." : "Renamed."
@@ -38,7 +38,7 @@ struct SheetsView: View {
             }
             Button(L("Cancel"), role: .cancel) { renaming = nil }
         } message: { Text(L("Tools that add to this sheet by its old name will start a new one.")) }
-        .confirmationDialog("Delete this sheet?", isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }), titleVisibility: .visible) {
+        .confirmationDialog(L("Delete this sheet?"), isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }), titleVisibility: .visible) {
             Button("Delete \(deleting?.name ?? "sheet")", role: .destructive) {
                 if let d = deleting { RunningList.delete(d.file); note = "Deleted \(d.name)."; if open?.file == d.file { open = nil }; reload() }
                 deleting = nil

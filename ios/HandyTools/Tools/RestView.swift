@@ -18,7 +18,7 @@ struct RestView: View {
                 "Set a sleep timer so it fades out on its own.",
                 "It keeps playing with the screen locked.",
             ])
-            Picker("", selection: $tab) { Text(L("Sounds")).tag(0); Text(L("Night recorder")).tag(1) }.pickerStyle(.segmented)
+            Picker(L(""), selection: $tab) { Text(L("Sounds")).tag(0); Text(L("Night recorder")).tag(1) }.pickerStyle(.segmented)
             if tab == 0 { soundsPanel } else { recorderPanel }
         }
         .onDisappear { if !player.playing && !recorder.armed { player.stop() } }
@@ -83,14 +83,14 @@ struct RestView: View {
                 }
                 ForEach(recorder.events.reversed()) { e in
                     HStack(spacing: HandySpacing.s12) {
-                        Button { toggle(e) } label: { Image(systemName: playingClip == e.url ? "stop.circle.fill" : "play.circle.fill").accessibilityLabel("Play").font(.system(size: 30)).foregroundStyle(HandyColor.accent) }.buttonStyle(.plain)
+                        Button { toggle(e) } label: { Image(systemName: playingClip == e.url ? "stop.circle.fill" : "play.circle.fill").accessibilityLabel(L("Play")).font(.system(size: 30)).foregroundStyle(HandyColor.accent) }.buttonStyle(.plain)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(e.date.formatted(date: .abbreviated, time: .shortened)).font(HandyFont.bodyStrong)
                             Text("\(GeoFormat.duration(e.seconds)) · peak \(Int(e.peakDB)) dB").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
                         Spacer()
                         ShareLink(item: e.url) { Image(systemName: "square.and.arrow.up") }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
-                        Button(role: .destructive) { recorder.delete(e) } label: { Image(systemName: "trash").accessibilityLabel("Delete") }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
+                        Button(role: .destructive) { recorder.delete(e) } label: { Image(systemName: "trash").accessibilityLabel(L("Delete")) }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
                     }.cardStyle(padding: HandySpacing.s12)
                 }
             }

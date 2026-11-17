@@ -86,7 +86,7 @@ struct AudioLabView: View {
                 }
                 Text(L("Tap a string to hear the reference pitch.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
-            HStack { Text("A4 = \(Int(a4)) Hz").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Stepper("", value: $a4, in: 415...466).labelsHidden(); Spacer() }
+            HStack { Text("A4 = \(Int(a4)) Hz").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Stepper(L(""), value: $a4, in: 415...466).labelsHidden(); Spacer() }
             if tuner.denied { LimitNote("Microphone access is off. Allow it in Settings to tune.") }
         }
     }

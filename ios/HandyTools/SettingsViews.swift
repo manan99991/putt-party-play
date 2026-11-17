@@ -22,7 +22,7 @@ extension View {
             }
             .padding(.top, HandySpacing.s12)
             .padding(.trailing, HandySpacing.s16)
-            .accessibilityLabel("Close")
+            .accessibilityLabel(L("Close"))
         }
     }
 }
@@ -176,7 +176,7 @@ struct SettingsView: View {
                         Button(L("Restore purchases")) { Task { await store.restore() } }.textButton()
                     }
 
-                    Section("Theme") {
+                    Section(L("Theme")) {
                         VStack(spacing: HandySpacing.s8) {
                             ForEach(TenzyTheme.allCases) { th in
                                 Button {
@@ -211,7 +211,7 @@ struct SettingsView: View {
                         }
                     }
 
-                    Section("What Tenzy does") {
+                    Section(L("What Tenzy does")) {
                         NavigationLink(value: "alltools") {
                             HStack(spacing: HandySpacing.s16) {
                                 ZStack {
@@ -229,11 +229,11 @@ struct SettingsView: View {
                         }.buttonStyle(.plain)
                     }
 
-                    Section("App") {
+                    Section(L("App")) {
                         SettingsRow(icon: "slider.horizontal.3", title: "Permissions", sub: "Camera, microphone, speech, location, Photos") { showSetup = true }
                         SettingsRow(icon: "lock", title: "Privacy", sub: "What stays on your phone (everything)") { showPrivacy = true }
                     }
-                    Section("Help") {
+                    Section(L("Help")) {
                         SettingsRow(icon: "envelope", title: "Send feedback", sub: SUPPORT_EMAIL) {
                             UIApplication.shared.open(URL(string: "mailto:\(SUPPORT_EMAIL)?subject=Tenzy%20iOS%20\(version)")!)
                         }
@@ -244,7 +244,7 @@ struct SettingsView: View {
                     }
                     #if DEBUG
                     if devUnlocked {
-                        Section("Developer") {
+                        Section(L("Developer")) {
                             Toggle(isOn: Binding(get: { store.isTesterPro }, set: { store.setTesterPro($0) })) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(L("Unlock Pro (tester)")).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary)

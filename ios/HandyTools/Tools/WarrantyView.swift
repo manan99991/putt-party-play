@@ -36,7 +36,7 @@ struct WarrantyView: View {
             } else {
                 if !expiring.isEmpty && query.isEmpty { expiringCard }
 
-                TextField("Search receipts — store, item, or a rough amount", text: $query)
+                TextField(L("Search receipts — store, item, or a rough amount"), text: $query)
                     .padding(HandySpacing.s12)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
@@ -167,7 +167,7 @@ private struct DraftSheet: View {
                     if months != nil { Text(L("We'll remind you a week before it ends.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 }.padding(HandySpacing.gutter)
             }
-            .navigationTitle("Save receipt").navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(L("Save receipt")).navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
@@ -228,7 +228,7 @@ private struct ReceiptDetail: View {
             }
             .navigationTitle(receipt.store).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
-            .confirmationDialog("Delete this receipt? This can't be undone.", isPresented: $confirmDelete, titleVisibility: .visible) {
+            .confirmationDialog(L("Delete this receipt? This can't be undone."), isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button(L("Delete receipt"), role: .destructive) { store.delete(receipt); dismiss() }
                 Button(L("Keep"), role: .cancel) {}
             }

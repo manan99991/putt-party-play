@@ -53,14 +53,14 @@ struct MeasureARView: View {
                 HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; ar.reset() } }
                 }
-                Picker("Units", selection: $metric) { Text(L("ft/in")).tag(false); Text(L("m/cm")).tag(true) }.pickerStyle(.segmented).frame(width: 160)
+                Picker(L("Units"), selection: $metric) { Text(L("ft/in")).tag(false); Text(L("m/cm")).tag(true) }.pickerStyle(.segmented).frame(width: 160)
                 HStack(spacing: HandySpacing.s8) {
                     Button { ar.place() } label: { Label(primaryActionLabel, systemImage: "plus.circle.fill").frame(maxWidth: .infinity) }.primaryButton().disabled(!ar.hasSurface)
                     if mode == .area && ar.points.count >= 3 {
-                        Button { ar.closeLoop() } label: { Image(systemName: "checkmark.circle.fill").accessibilityLabel("Close shape").frame(width: 36, height: 36) }.compactButton()
+                        Button { ar.closeLoop() } label: { Image(systemName: "checkmark.circle.fill").accessibilityLabel(L("Close shape")).frame(width: 36, height: 36) }.compactButton()
                     }
-                    Button { ar.undo() } label: { Image(systemName: "arrow.uturn.backward").accessibilityLabel("Undo").frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
-                    Button { ar.reset() } label: { Image(systemName: "trash").accessibilityLabel("Clear").frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
+                    Button { ar.undo() } label: { Image(systemName: "arrow.uturn.backward").accessibilityLabel(L("Undo")).frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
+                    Button { ar.reset() } label: { Image(systemName: "trash").accessibilityLabel(L("Clear")).frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
                 }
                 results
             } else {
@@ -87,7 +87,7 @@ struct MeasureARView: View {
                         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous)).padding(HandySpacing.s16)
                 }
                 .background(HandyColor.bg)
-                .navigationTitle("Measurement photo").navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(L("Measurement photo")).navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { photo = nil } }
                     ToolbarItem(placement: .primaryAction) { ShareLink(item: p.url) { Image(systemName: "square.and.arrow.up") } }

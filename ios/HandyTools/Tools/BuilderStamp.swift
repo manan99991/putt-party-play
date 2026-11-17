@@ -26,7 +26,7 @@ struct StampEditor: View {
                 }
             }
             if plan.has(.name) {
-                TextField("Your name as it should appear", text: $name)
+                TextField(L("Your name as it should appear"), text: $name)
                     .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
                     .onChange(of: name) { _, v in StampBook.name = v }
             }

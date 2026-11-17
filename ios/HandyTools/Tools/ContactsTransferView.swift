@@ -27,16 +27,16 @@ struct ContactsTransferView: View {
                 Text(L("Moving contacts from Gmail to your phone, or the other way? Pick the two places and tap the button. Nothing leaves your phone."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
-            Section("1. Take contacts from") {
+            Section(L("1. Take contacts from")) {
                 ForEach(accounts) { a in row(a, selected: from == a.id) { from = a.id; if to == a.id { to = nil } } }
             }
-            Section("2. Put them into") {
+            Section(L("2. Put them into")) {
                 ForEach(accounts.filter { $0.id != from }) { a in row(a, selected: to == a.id) { to = a.id } }
                 Text(L("Don't see Gmail? Add it in Settings › Contacts › Accounts › Add Account › Google, and turn Contacts on."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
-            Section("3. How") {
-                Picker("How", selection: $move) {
+            Section(L("3. How")) {
+                Picker(L("How"), selection: $move) {
                     Text(L("Copy (keep originals)")).tag(false)
                     Text(L("Move (remove from old)")).tag(true)
                 }.pickerStyle(.segmented)
@@ -51,12 +51,12 @@ struct ContactsTransferView: View {
                     .disabled(to == nil || busy)
                 if to == nil { Text(L("Pick where they should go in step 2 first.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
             }
-            if let o = outcome { Section("Done") { result(o) } }
+            if let o = outcome { Section(L("Done")) { result(o) } }
         }
-        .navigationTitle("Move contacts").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(L("Move contacts")).navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Close")) { dismiss() } } }
         .task { accounts = ContactsTransfer.accounts() }
-        .confirmationDialog("Move contacts?", isPresented: $confirmMove, titleVisibility: .visible) {
+        .confirmationDialog(L("Move contacts?"), isPresented: $confirmMove, titleVisibility: .visible) {
             Button("Move \(fromAcc?.count ?? 0) contacts", role: .destructive) { run() }
             Button(L("Cancel"), role: .cancel) {}
         } message: { Text("They are copied into \(toAcc?.title ?? "the new account") first, then removed from \(fromAcc?.title ?? "the old one"). Removing can't be undone. A backup file is saved first.") }

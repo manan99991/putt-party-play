@@ -144,12 +144,12 @@ struct VideoView: View {
                 }
             }
             HStack(spacing: HandySpacing.s8) {
-                TextField("Custom", text: $customValue).keyboardType(.decimalPad)
+                TextField(L("Custom"), text: $customValue).keyboardType(.decimalPad)
                     .padding(HandySpacing.s12)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .onChange(of: customValue) { _, _ in applyCustom() }
-                Picker("Unit", selection: $customUnitMB) { Text(L("MB")).tag(true); Text(L("KB")).tag(false) }.pickerStyle(.segmented).frame(width: 120)
+                Picker(L("Unit"), selection: $customUnitMB) { Text(L("MB")).tag(true); Text(L("KB")).tag(false) }.pickerStyle(.segmented).frame(width: 120)
                     .onChange(of: customUnitMB) { _, _ in applyCustom() }
             }
             if duration > 0 {

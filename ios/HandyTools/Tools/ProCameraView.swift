@@ -158,7 +158,7 @@ struct ProCameraView: View {
 
     private var exposurePanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker("", selection: $cam.current.autoExposure) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
+            Picker(L(""), selection: $cam.current.autoExposure) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
                 .onChange(of: cam.current.autoExposure) { _, auto in if !auto { cam.syncFromDevice() }; cam.applyExposure() }
             if cam.current.autoExposure {
                 HStack { Text(L("EV")).font(HandyFont.caption).frame(width: 60, alignment: .leading); Slider(value: $cam.current.ev, in: -3...3, step: 0.3).tint(HandyColor.accent).onChange(of: cam.current.ev) { _, _ in cam.applyExposure() }; Text(String(format: "%+.1f", cam.current.ev)).font(HandyFont.caption).monospacedDigit().frame(width: 40) }
@@ -176,7 +176,7 @@ struct ProCameraView: View {
 
     private var focusPanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker("", selection: $cam.current.autoFocus) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
+            Picker(L(""), selection: $cam.current.autoFocus) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
                 .onChange(of: cam.current.autoFocus) { _, auto in if !auto { cam.syncFromDevice() }; cam.applyFocus() }
             if !cam.current.autoFocus {
                 HStack { Text(L("Near")).font(HandyFont.caption); Slider(value: $cam.current.lens, in: 0...1).tint(HandyColor.accent).onChange(of: cam.current.lens) { _, _ in cam.applyFocus() }; Text(L("Far")).font(HandyFont.caption) }
@@ -189,7 +189,7 @@ struct ProCameraView: View {
 
     private var wbPanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker("", selection: $cam.current.autoWB) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
+            Picker(L(""), selection: $cam.current.autoWB) { Text(L("Auto")).tag(true); Text(L("Manual")).tag(false) }.pickerStyle(.segmented).frame(width: 180)
                 .onChange(of: cam.current.autoWB) { _, auto in if !auto { cam.syncFromDevice() }; cam.applyWhiteBalance() }
             if !cam.current.autoWB {
                 HStack { Text(L("Warm")).font(HandyFont.caption); Slider(value: $cam.current.temp, in: cam.ranges.minTemp...cam.ranges.maxTemp, step: 50).tint(HandyColor.accent).onChange(of: cam.current.temp) { _, _ in cam.applyWhiteBalance() }; Text(L("Cool")).font(HandyFont.caption) }

@@ -59,7 +59,7 @@ struct ContactsView: View {
                 MailComposer(subject: "My contacts backup", body: "Attached is a backup of my contacts (.vcf). Keep it somewhere safe.", attachment: url)
             }
         }
-        .confirmationDialog("Merge these contacts?",
+        .confirmationDialog(L("Merge these contacts?"),
                             isPresented: Binding(get: { pendingMerge != nil }, set: { if !$0 { pendingMerge = nil } }),
                             titleVisibility: .visible) {
             Button("Merge \(pendingMerge?.count ?? 0) into one", role: .destructive) { if let g = pendingMerge { doMerge(g) }; pendingMerge = nil }
@@ -67,7 +67,7 @@ struct ContactsView: View {
         } message: {
             Text(L("Every number and email is kept on one contact; the duplicates are removed. This can't be undone, so make sure you've backed up."))
         }
-        .confirmationDialog("Merge all duplicate groups?",
+        .confirmationDialog(L("Merge all duplicate groups?"),
                             isPresented: Binding(get: { pendingMergeAll != nil }, set: { if !$0 { pendingMergeAll = nil } }),
                             titleVisibility: .visible) {
             Button("Merge all \(pendingMergeAll?.count ?? 0) groups", role: .destructive) { if let gs = pendingMergeAll { doMergeAll(gs) }; pendingMergeAll = nil }

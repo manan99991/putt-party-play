@@ -34,8 +34,8 @@ struct VoiceNotesView: View {
                 HStack(spacing: HandySpacing.s8) {
                     Button { toggle() } label: { Label(speech.running ? "Stop" : (speech.transcript.isEmpty ? "Record" : "Continue"), systemImage: speech.running ? "stop.fill" : "mic.fill").frame(maxWidth: .infinity) }
                         .primaryButton().disabled(overQuota && !speech.running)
-                    Button { showLanguages = true } label: { Image(systemName: "globe").accessibilityLabel("Language").frame(width: 36, height: 36) }.compactButton()
-                    if !speech.transcript.isEmpty && !speech.running { Button(role: .destructive) { speech.clear(); summary = []; todos = [] } label: { Image(systemName: "trash").accessibilityLabel("Clear transcript").frame(width: 36, height: 36) }.compactButton() }
+                    Button { showLanguages = true } label: { Image(systemName: "globe").accessibilityLabel(L("Language")).frame(width: 36, height: 36) }.compactButton()
+                    if !speech.transcript.isEmpty && !speech.running { Button(role: .destructive) { speech.clear(); summary = []; todos = [] } label: { Image(systemName: "trash").accessibilityLabel(L("Clear transcript")).frame(width: 36, height: 36) }.compactButton() }
                 }
                 if !store.isPremium { QuotaChip(name: "audio", limit: Limits.freeAudioPerDay).environmentObject(store) }
                 if overQuota && !speech.running { LimitReachedBanner(message: "You've used today's \(Limits.freeAudioPerDay) free recordings.") }
@@ -55,14 +55,14 @@ struct VoiceNotesView: View {
                 HStack(spacing: HandySpacing.s8) {
                     Button { save() } label: { Label(L("Save note"), systemImage: "tray.and.arrow.down").frame(maxWidth: .infinity) }.primaryButton()
                     ShareLink(item: exportText) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
-                    Button { Copier.copy(exportText) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy").frame(width: 36, height: 36) }.compactButton()
+                    Button { Copier.copy(exportText) } label: { Image(systemName: "doc.on.doc").accessibilityLabel(L("Copy")).frame(width: 36, height: 36) }.compactButton()
                 }
             }
 
             if !notes.items.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     HStack { Text(L("Saved notes")).font(HandyFont.bodyStrong); Spacer(); Text("\(notes.items.count)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-                    TextField("Search notes", text: $query).padding(HandySpacing.s8).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    TextField(L("Search notes"), text: $query).padding(HandySpacing.s8).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                     ForEach(notes.items.filter { query.isEmpty || $0.text.localizedCaseInsensitiveContains(query) || $0.title.localizedCaseInsensitiveContains(query) }) { n in
                         VStack(alignment: .leading, spacing: 4) {
                             HStack { Text(n.title).font(HandyFont.bodyStrong).lineLimit(1); Spacer(); Text(n.date.formatted(date: .abbreviated, time: .shortened)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }

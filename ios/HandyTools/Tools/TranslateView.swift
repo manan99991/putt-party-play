@@ -83,7 +83,7 @@ struct TranslateView: View {
         VStack(spacing: HandySpacing.s8) {
             HStack(spacing: HandySpacing.s8) {
                 Button { showPicker = .from } label: { Text(name(fromCode)).frame(maxWidth: .infinity) }.secondaryButton()
-                Button { swap() } label: { Image(systemName: "arrow.left.arrow.right").frame(width: 36, height: 36) }.compactButton().accessibilityLabel("Swap languages")
+                Button { swap() } label: { Image(systemName: "arrow.left.arrow.right").frame(width: 36, height: 36) }.compactButton().accessibilityLabel(L("Swap languages"))
                 Button { showPicker = .to } label: { Text(name(toCode)).frame(maxWidth: .infinity) }.secondaryButton()
             }
             if sameLang {
@@ -238,9 +238,9 @@ struct TranslateView: View {
                 ForEach(currentPhrases, id: \.self) { phrase in
                     HStack(spacing: HandySpacing.s8) {
                         Text(phrase).font(HandyFont.body).frame(maxWidth: .infinity, alignment: .leading)
-                        Button { toggleFav(phrase) } label: { Image(systemName: favs.contains(phrase) ? "star.fill" : "star").accessibilityLabel("Favourite") }
+                        Button { toggleFav(phrase) } label: { Image(systemName: favs.contains(phrase) ? "star.fill" : "star").accessibilityLabel(L("Favourite")) }
                             .buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityLabel(favs.contains(phrase) ? "Unstar" : "Star")
-                        Button { translate(phrase, from: "en", to: toCode, speak: true) } label: { Image(systemName: "character.bubble.fill").accessibilityLabel("Speak") }
+                        Button { translate(phrase, from: "en", to: toCode, speak: true) } label: { Image(systemName: "character.bubble.fill").accessibilityLabel(L("Speak")) }
                             .buttonStyle(.plain).foregroundStyle(HandyColor.accent).disabled(toCode == "en" || overQuota)
                     }.padding(.vertical, 10)
                     if phrase != currentPhrases.last { Divider() }
@@ -271,7 +271,7 @@ private struct LangList: View {
             List(TranslateView.languages, id: \.code) { l in
                 Button { selected = l.code; dismiss() } label: { HStack { Text(l.name); Spacer(); if l.code == selected { Image(systemName: "checkmark").foregroundStyle(HandyColor.accent) } } }.foregroundStyle(HandyColor.textPrimary)
             }
-            .navigationTitle("Language").navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(L("Language")).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
         }
     }

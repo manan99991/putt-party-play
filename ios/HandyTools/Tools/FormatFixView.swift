@@ -130,14 +130,14 @@ struct FormatFixView: View {
 
     private var imageMenu: some View {
         Menu {
-            Picker("Photos become", selection: $imageOut) {
+            Picker(L("Photos become"), selection: $imageOut) {
                 ForEach(ImageOut.allCases) { Text("\($0.rawValue) — \($0.note)").tag($0) }
             }
         } label: { formatPill(imageOut.rawValue) }
     }
     private var videoMenu: some View {
         Menu {
-            Picker("Videos become", selection: $videoOut) {
+            Picker(L("Videos become"), selection: $videoOut) {
                 ForEach(VideoOut.allCases) { Text("\($0.rawValue) — \($0.note)").tag($0) }
             }
         } label: { formatPill(videoOut.rawValue) }

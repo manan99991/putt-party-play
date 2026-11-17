@@ -123,16 +123,16 @@ struct StudioView: View {
 
     private var enhanceControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Toggle("Upscale 2× (sharper, larger file)", isOn: $enhanceUpscale).tint(HandyColor.accent).font(HandyFont.body)
+            Toggle(L("Upscale 2× (sharper, larger file)"), isOn: $enhanceUpscale).tint(HandyColor.accent).font(HandyFont.body)
             Text(L("Auto-levels, gentle denoise and sharpening — good for dull or soft phone shots. Runs entirely on your phone.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
     private var passportControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker("Size", selection: $specIdx) { ForEach(0..<ImageStudio.passportSpecs.count, id: \.self) { Text(ImageStudio.passportSpecs[$0].name).tag($0) } }
+            Picker(L("Size"), selection: $specIdx) { ForEach(0..<ImageStudio.passportSpecs.count, id: \.self) { Text(ImageStudio.passportSpecs[$0].name).tag($0) } }
                 .pickerStyle(.menu).tint(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
-            Toggle("Clean white background", isOn: $passportBG).tint(HandyColor.accent).font(HandyFont.body)
+            Toggle(L("Clean white background"), isOn: $passportBG).tint(HandyColor.accent).font(HandyFont.body)
             Text(L("Face the camera, even light. A helper — check your country's exact rules before submitting.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
@@ -152,7 +152,7 @@ struct StudioView: View {
 
     private var convertControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker("Format", selection: $format) { ForEach(ImageStudio.Format.allCases, id: \.self) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented)
+            Picker(L("Format"), selection: $format) { ForEach(ImageStudio.Format.allCases, id: \.self) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented)
             if format != .png {
                 HStack { Text(L("Quality")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Slider(value: $quality, in: 0.3...1).tint(HandyColor.accent); Text("\(Int(quality * 100))%").font(HandyFont.caption).monospacedDigit() }
             }

@@ -114,7 +114,7 @@ struct VaultView: View {
                 .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
             if kind == .secret {
-                TextField("The secret itself", text: $body_).textInputAutocapitalization(.never).autocorrectionDisabled().font(.system(.body, design: .monospaced))
+                TextField(L("The secret itself"), text: $body_).textInputAutocapitalization(.never).autocorrectionDisabled().font(.system(.body, design: .monospaced))
                     .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
             } else {
@@ -150,14 +150,14 @@ struct VaultView: View {
             }
             Spacer()
             if item.kind == .secret {
-                Button { if revealed.contains(item.id) { revealed.remove(item.id) } else { revealed.insert(item.id) } } label: { Image(systemName: revealed.contains(item.id) ? "eye.slash" : "eye").accessibilityLabel("Show or hide") }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
-                Button { copySecret(item.text) } label: { Image(systemName: "doc.on.doc").accessibilityLabel("Copy") }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                Button { if revealed.contains(item.id) { revealed.remove(item.id) } else { revealed.insert(item.id) } } label: { Image(systemName: revealed.contains(item.id) ? "eye.slash" : "eye").accessibilityLabel(L("Show or hide")) }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
+                Button { copySecret(item.text) } label: { Image(systemName: "doc.on.doc").accessibilityLabel(L("Copy")) }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
             }
             Menu {
                 if item.kind == .note { Button { UIPasteboard.general.string = item.text; toast = "Copied" } label: { Label(L("Copy"), systemImage: "doc.on.doc") } }
                 if item.kind == .document || item.kind == .photo, let d = vault.data(for: item) { ShareLink(item: TextFileOrData(data: d, ext: item.fileExt ?? "jpg"), preview: SharePreview(item.title)) { Label(L("Export"), systemImage: "square.and.arrow.up") } }
                 Button(role: .destructive) { vault.delete(item); thumbs[item.id] = nil; HandyHaptics.light() } label: { Label(L("Delete (shred)"), systemImage: "trash") }
-            } label: { Image(systemName: "ellipsis.circle").accessibilityLabel("More").font(.system(size: 20)).foregroundStyle(HandyColor.textSecondary) }
+            } label: { Image(systemName: "ellipsis.circle").accessibilityLabel(L("More")).font(.system(size: 20)).foregroundStyle(HandyColor.textSecondary) }
         }
         .padding(HandySpacing.s12)
         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))

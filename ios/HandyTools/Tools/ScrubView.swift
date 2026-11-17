@@ -149,7 +149,7 @@ struct ScrubView: View {
                 }
                 Spacer()
             }
-            Picker("Style", selection: $style) {
+            Picker(L("Style"), selection: $style) {
                 ForEach(Scrubber.RedactStyle.allCases, id: \.self) { Text($0.rawValue).tag($0) }
             }.pickerStyle(.segmented)
             if style == .emoji {

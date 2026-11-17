@@ -56,7 +56,7 @@ struct GPSDashboardView: View {
                 Text(GeoFormat.speedUnit(metric: metric)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textSecondary)
             }
             HStack(spacing: HandySpacing.s8) {
-                Picker("Units", selection: $metric) { Text(L("mph")).tag(false); Text(L("km/h")).tag(true) }.pickerStyle(.segmented).frame(width: 150)
+                Picker(L("Units"), selection: $metric) { Text(L("mph")).tag(false); Text(L("km/h")).tag(true) }.pickerStyle(.segmented).frame(width: 150)
                 Spacer()
                 Button { hud = true } label: { Label(L("HUD"), systemImage: "car.windshield") }.compactButton()
             }
@@ -122,7 +122,7 @@ struct GPSDashboardView: View {
                 }
                 .frame(height: 160).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 if let parkedAt { Text("Saved \(parkedAt.formatted(.relative(presentation: .named)))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-                TextField("Note (Level 3, near the lift…)", text: $parkNote).textFieldStyle(.roundedBorder).onChange(of: parkNote) { _, n in ParkStore.setNote(n) }
+                TextField(L("Note (Level 3, near the lift…)"), text: $parkNote).textFieldStyle(.roundedBorder).onChange(of: parkNote) { _, n in ParkStore.setNote(n) }
                 HStack(spacing: HandySpacing.s8) {
                     Button { walkBack(p) } label: { Label(L("Walk me back"), systemImage: "figure.walk").frame(maxWidth: .infinity) }.primaryButton()
                     Button { park() } label: { Label(L("Move pin here"), systemImage: "mappin.and.ellipse") }.compactButton()
@@ -176,9 +176,9 @@ private struct HUDSheet: View {
             .scaleEffect(x: mirrored ? -1 : 1, y: 1)
             VStack {
                 HStack {
-                    Button { dismiss() } label: { Image(systemName: "xmark").font(.system(size: 16, weight: .bold)).padding(12).background(.white.opacity(0.12), in: Circle()) }.accessibilityLabel("Close HUD")
+                    Button { dismiss() } label: { Image(systemName: "xmark").font(.system(size: 16, weight: .bold)).padding(12).background(.white.opacity(0.12), in: Circle()) }.accessibilityLabel(L("Close HUD"))
                     Spacer()
-                    Button { mirrored.toggle() } label: { Image(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right").accessibilityLabel("Mirror").font(.system(size: 16, weight: .bold)).padding(12).background(.white.opacity(0.12), in: Circle()) }
+                    Button { mirrored.toggle() } label: { Image(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right").accessibilityLabel(L("Mirror")).font(.system(size: 16, weight: .bold)).padding(12).background(.white.opacity(0.12), in: Circle()) }
                 }
                 Spacer()
                 Text(mirrored ? "Mirrored for the windshield · tap to flip" : "Normal view").font(HandyFont.caption).foregroundStyle(.white.opacity(0.4))

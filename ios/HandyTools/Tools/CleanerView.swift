@@ -58,12 +58,12 @@ struct CleanerView: View {
                 authGate
             } else {
                 cleanupHero
-                Picker("", selection: $cat) { ForEach(Cat.allCases, id: \.rawValue) { Text($0.title).tag($0) } }
+                Picker(L(""), selection: $cat) { ForEach(Cat.allCases, id: \.rawValue) { Text($0.title).tag($0) } }
                     .pickerStyle(.segmented)
                     .onChange(of: cat) { _, _ in refreshForCat() }
 
                 if cat == .videos {
-                    Picker("Source", selection: $receivedOnly) {
+                    Picker(L("Source"), selection: $receivedOnly) {
                         Text(L("Large videos")).tag(false)
                         Text(L("Received")).tag(true)
                     }
@@ -166,7 +166,7 @@ struct CleanerView: View {
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Spacer()
             }
-            Picker("Sort", selection: $sortBySize) {
+            Picker(L("Sort"), selection: $sortBySize) {
                 Text(L("Largest first")).tag(true)
                 Text(L("Most recent")).tag(false)
             }

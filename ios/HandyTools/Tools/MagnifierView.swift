@@ -60,9 +60,9 @@ struct MagnifierView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
                 HStack(spacing: HandySpacing.s8) {
-                    Button { cam.setTorch(!cam.torchOn) } label: { Image(systemName: cam.torchOn ? "flashlight.on.fill" : "flashlight.off.fill").accessibilityLabel("Torch").frame(width: 36, height: 36) }.compactButton()
+                    Button { cam.setTorch(!cam.torchOn) } label: { Image(systemName: cam.torchOn ? "flashlight.on.fill" : "flashlight.off.fill").accessibilityLabel(L("Torch")).frame(width: 36, height: 36) }.compactButton()
                     Spacer()
-                    Button { save() } label: { Image(systemName: "square.and.arrow.down").accessibilityLabel("Save").frame(width: 36, height: 36) }.compactButton().disabled(processed == nil)
+                    Button { save() } label: { Image(systemName: "square.and.arrow.down").accessibilityLabel(L("Save")).frame(width: 36, height: 36) }.compactButton().disabled(processed == nil)
                     Button { toggleFreeze() } label: { Label(frozen ? "Live" : "Freeze", systemImage: frozen ? "play.fill" : "pause.fill") }.primaryButton()
                 }.padding(HandySpacing.s12)
             }
@@ -82,7 +82,7 @@ struct MagnifierView: View {
                 ForEach(Look.allCases, id: \.rawValue) { l in HChip(text: l.title, selected: look == l) { look = l } }
             }
             HStack(spacing: HandySpacing.s12) {
-                Toggle("Sharpen text", isOn: $sharpen).tint(HandyColor.accent).font(HandyFont.body).fixedSize()
+                Toggle(L("Sharpen text"), isOn: $sharpen).tint(HandyColor.accent).font(HandyFont.body).fixedSize()
                 Spacer()
                 Image(systemName: "sun.min").foregroundStyle(HandyColor.textSecondary)
                 Slider(value: $brightness, in: -0.3...0.4).tint(HandyColor.accent).frame(width: 130)

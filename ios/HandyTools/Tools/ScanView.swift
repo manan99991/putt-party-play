@@ -197,9 +197,9 @@ struct ScanView: View {
             }
             HStack(spacing: HandySpacing.s8) {
                 Button { rotate() } label: { Label(L("Rotate"), systemImage: "rotate.right") }.compactButton()
-                Button { move(-1) } label: { Image(systemName: "arrow.left") }.compactButton().disabled(selected == 0).accessibilityLabel("Move page left")
-                Button { move(1) } label: { Image(systemName: "arrow.right") }.compactButton().disabled(selected >= pages.count - 1).accessibilityLabel("Move page right")
-                Button(role: .destructive) { remove() } label: { Image(systemName: "trash") }.compactButton().accessibilityLabel("Delete page")
+                Button { move(-1) } label: { Image(systemName: "arrow.left") }.compactButton().disabled(selected == 0).accessibilityLabel(L("Move page left"))
+                Button { move(1) } label: { Image(systemName: "arrow.right") }.compactButton().disabled(selected >= pages.count - 1).accessibilityLabel(L("Move page right"))
+                Button(role: .destructive) { remove() } label: { Image(systemName: "trash") }.compactButton().accessibilityLabel(L("Delete page"))
             }
             Button { applyFilterToAll() } label: { Label(L("Apply this look to every page"), systemImage: "square.on.square") }.textButton()
             Text("Page \(selected + 1) of \(pages.count). Enhance fixes shadows and uneven lighting; Black & white makes the smallest, crispest forms.")
@@ -221,7 +221,7 @@ struct ScanView: View {
                 }
             }
             HStack(spacing: HandySpacing.s8) {
-                TextField("Type a name, date, or answer…", text: $newText)
+                TextField(L("Type a name, date, or answer…"), text: $newText)
                     .padding(HandySpacing.s12)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
@@ -232,7 +232,7 @@ struct ScanView: View {
                 HStack(spacing: HandySpacing.s8) {
                     Text(L("Size")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     Slider(value: Binding(get: { st.width }, set: { w in update(sid) { $0.width = w } }), in: 0.06...0.9).tint(HandyColor.accent)
-                    Button(role: .destructive) { update(selected) { $0.stamps.removeAll { $0.id == sid } }; selectedStamp = nil } label: { Image(systemName: "trash") }.compactButton().accessibilityLabel("Remove stamp")
+                    Button(role: .destructive) { update(selected) { $0.stamps.removeAll { $0.id == sid } }; selectedStamp = nil } label: { Image(systemName: "trash") }.compactButton().accessibilityLabel(L("Remove stamp"))
                 }
             }
             HStack {
@@ -285,9 +285,9 @@ struct ScanView: View {
                 ForEach(0..<limits.count, id: \.self) { i in HChip(text: limits[i].0, selected: (limitIdx ?? 0) == i) { limitIdx = i == 0 ? nil : i } }
             }
             HStack(spacing: HandySpacing.s8) {
-                Toggle("Split", isOn: $splitting).tint(HandyColor.accent).font(HandyFont.body).fixedSize()
+                Toggle(L("Split"), isOn: $splitting).tint(HandyColor.accent).font(HandyFont.body).fixedSize()
                 if splitting {
-                    TextField("e.g. 1-2, 3, 4-  (blank = every page)", text: $splitSpec)
+                    TextField(L("e.g. 1-2, 3, 4-  (blank = every page)"), text: $splitSpec)
                         .padding(HandySpacing.s12)
                         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
@@ -590,7 +590,7 @@ struct SignaturePadSheet: View {
             }
             .padding(HandySpacing.gutter)
             .background(HandyColor.bg)
-            .navigationTitle("Your signature").navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(L("Your signature")).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { dismiss() } } }
         }
         .presentationDetents([.medium])

@@ -232,7 +232,7 @@ struct InstrumentsView: View {
                 .frame(height: 110)
                 .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-            Picker("Units", selection: $rulerInches) { Text(L("cm")).tag(false); Text(L("inches")).tag(true) }.pickerStyle(.segmented).frame(width: 180)
+            Picker(L("Units"), selection: $rulerInches) { Text(L("cm")).tag(false); Text(L("inches")).tag(true) }.pickerStyle(.segmented).frame(width: 180)
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
                 Text(L("Calibrate: lay a bank card along the ruler's top edge and slide until its width reads 85.6 mm.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 // A real bank card (85.6 mm) is wider than most phone screens, so keep this preview in a

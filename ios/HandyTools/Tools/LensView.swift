@@ -95,11 +95,11 @@ struct LensView: View {
                 if hasText { Button(L("Clear")) { clearAll() }.textButton() }
             }
             HStack(spacing: HandySpacing.s8) {
-                TextField("https://… article link", text: $urlText).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
+                TextField(L("https://… article link"), text: $urlText).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled()
                     .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .onSubmit { loadWeb() }
-                Button { loadWeb() } label: { Image(systemName: "arrow.down.doc").accessibilityLabel("Load page").frame(width: 36, height: 36) }.compactButton().disabled(URL(string: urlText)?.host == nil)
+                Button { loadWeb() } label: { Image(systemName: "arrow.down.doc").accessibilityLabel(L("Load page")).frame(width: 36, height: 36) }.compactButton().disabled(URL(string: urlText)?.host == nil)
             }
         }
     }
@@ -114,18 +114,18 @@ struct LensView: View {
                 ProgressView(value: reader.progress).tint(HandyColor.accent)
                 HStack { Text("\(reader.index + 1) / \(reader.sentences.count)").font(HandyFont.caption).monospacedDigit(); Spacer(); Text("~\(reader.remainingMinutes) min left").font(HandyFont.caption) }.foregroundStyle(HandyColor.textSecondary)
                 HStack(spacing: HandySpacing.s16) {
-                    Button { reader.previous() } label: { Image(systemName: "backward.fill").font(.system(size: 22)) }.buttonStyle(.plain).accessibilityLabel("Previous sentence")
+                    Button { reader.previous() } label: { Image(systemName: "backward.fill").font(.system(size: 22)) }.buttonStyle(.plain).accessibilityLabel(L("Previous sentence"))
                     Button { reader.playing ? reader.pause() : reader.play() } label: {
                         Image(systemName: reader.playing ? "pause.circle.fill" : "play.circle.fill").font(.system(size: 60)).foregroundStyle(HandyColor.accent)
                     }.buttonStyle(.plain).accessibilityLabel(reader.playing ? "Pause" : "Play")
-                    Button { reader.next() } label: { Image(systemName: "forward.fill").font(.system(size: 22)) }.buttonStyle(.plain).accessibilityLabel("Next sentence")
+                    Button { reader.next() } label: { Image(systemName: "forward.fill").font(.system(size: 22)) }.buttonStyle(.plain).accessibilityLabel(L("Next sentence"))
                 }.foregroundStyle(HandyColor.textPrimary).frame(maxWidth: .infinity)
                 HStack { Image(systemName: "tortoise"); Slider(value: $rate, in: 0.3...0.7).tint(HandyColor.accent).onChange(of: rate) { _, r in reader.rate = Float(r) }; Image(systemName: "hare"); Text(String(format: "%.1f×", rate / Double(AVSpeechUtteranceDefaultSpeechRate))).font(HandyFont.caption).monospacedDigit().frame(width: 40) }.foregroundStyle(HandyColor.textSecondary)
                 HStack(spacing: HandySpacing.s8) {
                     Button { export() } label: { HStack { if reader.exporting { ProgressView() }; Label(L("Save as audio"), systemImage: "waveform.badge.plus") } }.compactButton().disabled(reader.exporting)
                     if let exported { ShareLink(item: exported) { Label(L("Share audio"), systemImage: "square.and.arrow.up") }.compactButton() }
                     Spacer()
-                    Button { reader.stop(); reader.sentences = []; exported = nil } label: { Image(systemName: "xmark").accessibilityLabel("Close").frame(width: 36, height: 36) }.compactButton()
+                    Button { reader.stop(); reader.sentences = []; exported = nil } label: { Image(systemName: "xmark").accessibilityLabel(L("Close")).frame(width: 36, height: 36) }.compactButton()
                 }
             }
             Text(L("Keeps reading with the screen locked. For a more natural voice, add an Enhanced voice in Settings › Accessibility › Spoken Content.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

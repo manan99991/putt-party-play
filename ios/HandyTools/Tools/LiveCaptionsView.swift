@@ -44,16 +44,16 @@ struct LiveCaptionsView: View {
                 Button { showLanguages = true } label: { Text(speech.locale.localizedString(forLanguageCode: speech.locale.language.languageCode?.identifier ?? "en") ?? "Language").lineLimit(1) }.compactButton()
                 Menu {
                     Button { fontSize = 22 } label: { Text(L("Normal")) }; Button { fontSize = 28 } label: { Text(L("Large")) }; Button { fontSize = 38 } label: { Text(L("Huge")) }
-                } label: { Image(systemName: "textformat.size").frame(width: 36, height: 36) }.compactButton().accessibilityLabel("Text size")
+                } label: { Image(systemName: "textformat.size").frame(width: 36, height: 36) }.compactButton().accessibilityLabel(L("Text size"))
             }
 
             HStack(spacing: HandySpacing.s8) {
-                TextField("Type a reply — the phone will say it", text: $reply)
+                TextField(L("Type a reply — the phone will say it"), text: $reply)
                     .padding(HandySpacing.s12)
                     .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .submitLabel(.send).onSubmit { say() }
-                Button { say() } label: { Image(systemName: "speaker.wave.2.fill").frame(width: 36, height: 36) }.compactButton().disabled(reply.trimmingCharacters(in: .whitespaces).isEmpty).accessibilityLabel("Speak reply")
+                Button { say() } label: { Image(systemName: "speaker.wave.2.fill").frame(width: 36, height: 36) }.compactButton().disabled(reply.trimmingCharacters(in: .whitespaces).isEmpty).accessibilityLabel(L("Speak reply"))
             }
 
             HStack(spacing: HandySpacing.s8) {
@@ -91,7 +91,7 @@ struct LanguagePicker: View {
                 }
             }
             .searchable(text: $query)
-            .navigationTitle("Language").navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(L("Language")).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
         }
     }
