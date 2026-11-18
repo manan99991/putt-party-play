@@ -32,7 +32,7 @@ enum ThinkingTool: String, CaseIterable, Identifiable {
     }
     var blurb: String {
         switch self {
-        case .untangle: return "An overwhelming task → ordered, timed steps you can schedule."
+        case .untangle: return "Everything on your plate → a plan built around how you feel, with maps, check-ins and Reminders."
         case .myday: return "Everything today → a realistic timeline."
         case .clearhead: return "Dump it all out → sorted, deduped tasks with dates found."
         case .crossroads: return "A decision → pros, cons and a clear recommendation."
@@ -101,7 +101,9 @@ struct ThinkingHubView: View {
                 }
             }
         }
-        .sheet(item: $selected) { ThinkingToolView(tool: $0) }
+        .sheet(item: $selected) { t in
+            if t == .untangle { UntangleView() } else { ThinkingToolView(tool: t) }
+        }
     }
 }
 

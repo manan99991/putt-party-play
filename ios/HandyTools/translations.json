@@ -79,6 +79,16 @@
   "pt": "(vazio)",
   "zh": "(空)"
  },
+ "+10 min": {
+  "de": "+10 Min.",
+  "es": "+10 min",
+  "fr": "+10 min",
+  "hi": "+10 मिनट",
+  "it": "+10 min",
+  "ja": "+10分",
+  "pt": "+10 min",
+  "zh": "+10 分钟"
+ },
  "1 day left": {
   "de": "noch 1 Tag",
   "es": "queda 1 día",
@@ -529,6 +539,16 @@
   "pt": "Adicionar fotos",
   "zh": "添加照片"
  },
+ "Add the plan to Reminders, with alerts": {
+  "de": "Plan zu Erinnerungen hinzufügen, mit Hinweisen",
+  "es": "Añadir el plan a Recordatorios, con avisos",
+  "fr": "Ajouter le plan aux Rappels, avec alertes",
+  "hi": "प्लान को अलर्ट के साथ Reminders में जोड़ें",
+  "it": "Aggiungi il piano a Promemoria, con avvisi",
+  "ja": "プランを通知付きでリマインダーに追加",
+  "pt": "Adicionar o plano aos Lembretes, com alertas",
+  "zh": "将计划添加到“提醒事项”，并设置提醒"
+ },
  "Add the receipt for anything with a warranty — a TV, a drill, an appliance. When it breaks in month 11, you'll have the proof in two taps instead of tearing the house apart.": {
   "de": "Füge den Beleg für alles mit Garantie hinzu — Fernseher, Bohrmaschine, Haushaltsgerät. Geht es im 11. Monat kaputt, hast du den Nachweis mit zwei Tipps statt das Haus auf den Kopf zu stellen.",
   "es": "Añade el recibo de cualquier cosa con garantía: un televisor, un taladro, un electrodoméstico. Cuando se estropee en el mes 11, tendrás la prueba en dos toques en vez de revolver la casa.",
@@ -678,6 +698,16 @@
   "ja": "すべて",
   "pt": "Tudo",
   "zh": "全部"
+ },
+ "All done. That was a lot — well done for getting through it.": {
+  "de": "Alles erledigt. Das war viel – gut gemacht!",
+  "es": "Todo listo. Era mucho, ¡bien hecho por sacarlo adelante!",
+  "fr": "Tout est fait. C'était beaucoup — bravo d'en être venu à bout.",
+  "hi": "सब हो गया। काफ़ी कुछ था — इसे पूरा करने के लिए शाबाश।",
+  "it": "Tutto fatto. Era tanto: bravo per avercela fatta.",
+  "ja": "すべて完了。たくさんあったのに、よくやり切りました。",
+  "pt": "Tudo feito. Era muita coisa — parabéns por dar conta.",
+  "zh": "全部完成。事情不少——你做到了，真棒。"
  },
  "All of this is removed from the clean copy.": {
   "de": "All dies wird aus der sauberen Kopie entfernt.",
@@ -1729,6 +1759,16 @@
   "pt": "Verificar",
   "zh": "查看"
  },
+ "Check-ins on — I'll nudge you as each step starts": {
+  "de": "Check-ins an – ich melde mich bei jedem Schritt",
+  "es": "Avisos activados: te aviso al empezar cada paso",
+  "fr": "Suivi activé — je vous préviens à chaque étape",
+  "hi": "चेक-इन चालू — हर कदम शुरू होने पर याद दिलाऊँगा",
+  "it": "Promemoria attivi: ti avviso all'inizio di ogni passo",
+  "ja": "チェックイン オン — 各ステップの開始時にお知らせします",
+  "pt": "Check-ins ativados — aviso no início de cada etapa",
+  "zh": "已开启提醒——每一步开始时我会提醒你"
+ },
  "Checkbox": {
   "de": "Kästchen",
   "es": "Casilla",
@@ -2679,6 +2719,16 @@
   "pt": "Correção",
   "zh": "校正"
  },
+ "Couldn't add to Reminders — try again.": {
+  "de": "Hinzufügen zu Erinnerungen fehlgeschlagen – bitte erneut versuchen.",
+  "es": "No se pudo añadir a Recordatorios; inténtalo de nuevo.",
+  "fr": "Impossible d'ajouter aux Rappels — réessayez.",
+  "hi": "Reminders में नहीं जुड़ सका — फिर से कोशिश करें।",
+  "it": "Impossibile aggiungere a Promemoria, riprova.",
+  "ja": "リマインダーに追加できませんでした。もう一度お試しください。",
+  "pt": "Não foi possível adicionar aos Lembretes — tente de novo.",
+  "zh": "无法添加到“提醒事项”，请重试。"
+ },
  "Couldn't convert this video. It may be DRM-protected or damaged.": {
   "de": "Video ließ sich nicht umwandeln. Es ist vielleicht DRM-geschützt oder beschädigt.",
   "es": "No se pudo convertir este vídeo. Puede tener DRM o estar dañado.",
@@ -2868,6 +2918,16 @@
   "ja": "このAPKを解析できませんでした。",
   "pt": "Não foi possível analisar este APK.",
   "zh": "无法解析此 APK。"
+ },
+ "Couldn't read any text in that picture — try a clearer screenshot.": {
+  "de": "Im Bild war kein Text lesbar – versuch einen klareren Screenshot.",
+  "es": "No se pudo leer texto en esa imagen; prueba con una captura más nítida.",
+  "fr": "Aucun texte lisible sur cette image — essayez une capture plus nette.",
+  "hi": "उस तस्वीर में कोई टेक्स्ट नहीं पढ़ा जा सका — साफ़ स्क्रीनशॉट आज़माएँ।",
+  "it": "Nessun testo leggibile nell'immagine: prova uno screenshot più nitido.",
+  "ja": "画像から文字を読み取れませんでした。より鮮明なスクリーンショットでお試しください。",
+  "pt": "Não foi possível ler texto nessa imagem — tente uma captura mais nítida.",
+  "zh": "这张图片里读不到文字——换一张更清晰的截图试试。"
  },
  "Couldn't read frames from this video. Try a different range.": {
   "de": "Bilder aus diesem Video ließen sich nicht lesen. Versuch einen anderen Bereich.",
@@ -3359,6 +3419,16 @@
   "pt": "Descrição",
   "zh": "描述"
  },
+ "Detailed": {
+  "de": "Ausführlich",
+  "es": "Detallado",
+  "fr": "Détaillé",
+  "hi": "विस्तृत",
+  "it": "Dettagliato",
+  "ja": "詳しく",
+  "pt": "Detalhado",
+  "zh": "详细"
+ },
  "Developer": {
   "de": "Entwickler",
   "es": "Desarrollador",
@@ -3518,6 +3588,16 @@
   "ja": "完了",
   "pt": "Concluído",
   "zh": "完成"
+ },
+ "Done by": {
+  "de": "Fertig um",
+  "es": "Listo a las",
+  "fr": "Terminé à",
+  "hi": "इतने बजे तक पूरा",
+  "it": "Finito alle",
+  "ja": "完了予定",
+  "pt": "Pronto às",
+  "zh": "完成于"
  },
  "Done for now": {
   "de": "Fertig für jetzt",
@@ -4109,6 +4189,26 @@
   "pt": "Tudo é lido no teu telemóvel — nada é enviado. O Tenzy também aparece na lista “Abrir com” de outras apps, para enviares um ficheiro diretamente para aqui.",
   "zh": "一切都在你的手机上读取 — 不上传任何内容。Tenzy 也会出现在其他应用的“打开方式”列表中，你可以把文件直接发到这里。"
  },
+ "Everything on your mind, and how you feel — e.g. \"Shower, groceries, office work, not feeling well\"": {
+  "de": "Alles, was dich beschäftigt, und wie du dich fühlst – z. B. „Duschen, Einkaufen, Büroarbeit, fühle mich nicht gut“",
+  "es": "Todo lo que tienes en mente y cómo te sientes; p. ej., \"Ducha, compras, trabajo, no me siento bien\"",
+  "fr": "Tout ce qui vous occupe, et comment vous vous sentez — ex. « Douche, courses, travail, pas en forme »",
+  "hi": "जो कुछ दिमाग़ में है, और आप कैसा महसूस कर रहे हैं — जैसे \"नहाना, किराना, ऑफ़िस का काम, तबीयत ठीक नहीं\"",
+  "it": "Tutto quello che hai in mente e come ti senti — es. \"Doccia, spesa, lavoro, non mi sento bene\"",
+  "ja": "頭にあることと今の気分を — 例：「シャワー、買い物、仕事、体調が悪い」",
+  "pt": "Tudo o que está na sua cabeça e como você se sente — ex.: \"Banho, mercado, trabalho, não estou bem\"",
+  "zh": "把脑子里的事和现在的感受都写下——例如“洗澡、买菜、办公、不太舒服”"
+ },
+ "Everything on your plate → a plan built around how you feel today.": {
+  "de": "Alles, was ansteht → ein Plan, der zu deinem Tag passt.",
+  "es": "Todo lo que tienes pendiente → un plan hecho a cómo te sientes hoy.",
+  "fr": "Tout ce que vous avez à faire → un plan adapté à votre forme du jour.",
+  "hi": "आपके सारे काम → आज आप कैसा महसूस कर रहे हैं, उसके हिसाब से बना प्लान।",
+  "it": "Tutto quello che hai da fare → un piano costruito su come ti senti oggi.",
+  "ja": "やることすべて → 今日の気分に合わせたプランに。",
+  "pt": "Tudo o que você tem pra fazer → um plano feito pra como você está hoje.",
+  "zh": "手头所有事情 → 按你今天的状态定制的计划。"
+ },
  "Everything runs on your phone; nothing is uploaded. A merge is permanent — iOS has no contacts trash — so back up before you merge.": {
   "de": "Alles läuft auf deinem Handy; nichts wird hochgeladen. Eine Zusammenführung ist dauerhaft — iOS hat keinen Kontakte-Papierkorb — sichere also vorher.",
   "es": "Todo funciona en tu teléfono; no se sube nada. Una fusión es permanente —iOS no tiene papelera de contactos— así que haz copia antes de fusionar.",
@@ -4458,6 +4558,16 @@
   "ja": "顔を探しています…",
   "pt": "Procurando rostos…",
   "zh": "正在查找人脸…"
+ },
+ "Finding the closest…": {
+  "de": "Suche die nächsten …",
+  "es": "Buscando los más cercanos…",
+  "fr": "Recherche des plus proches…",
+  "hi": "सबसे नज़दीकी ढूँढ़ रहे हैं…",
+  "it": "Cerco i più vicini…",
+  "ja": "最寄りを探しています…",
+  "pt": "Procurando os mais próximos…",
+  "zh": "正在查找最近的…"
  },
  "Finds faces and text — plates, names, addresses, card and account numbers — and paints them out, then saves a copy with no location or metadata. It all runs on your phone; nothing is uploaded and it never uses a credit.": {
   "de": "Findet Gesichter und Text — Kennzeichen, Namen, Adressen, Karten- und Kontonummern — und übermalt sie, dann wird eine Kopie ohne Standort und Metadaten gespeichert. Alles auf deinem Handy; nichts wird hochgeladen und es kostet nie ein Guthaben.",
@@ -4848,6 +4958,16 @@
   "ja": "静止中 · ピンチで拡大",
   "pt": "Congelado · aperte para ampliar",
   "zh": "已冻结 · 捏合放大"
+ },
+ "Full of energy": {
+  "de": "Voller Energie",
+  "es": "Con mucha energía",
+  "fr": "Plein d'énergie",
+  "hi": "पूरी ऊर्जा",
+  "it": "Pieno di energia",
+  "ja": "元気いっぱい",
+  "pt": "Cheio de energia",
+  "zh": "精力充沛"
  },
  "Full sweep 40 Hz → 16 kHz (10 s)": {
   "de": "Vollständiger Sweep 40 Hz → 16 kHz (10 s)",
@@ -6029,6 +6149,16 @@
   "pt": "Ligações",
   "zh": "链接"
  },
+ "List": {
+  "de": "Liste",
+  "es": "Lista",
+  "fr": "Liste",
+  "hi": "सूची",
+  "it": "Lista",
+  "ja": "リスト",
+  "pt": "Lista",
+  "zh": "清单"
+ },
  "Listen": {
   "de": "Anhören",
   "es": "Escuchar",
@@ -6048,6 +6178,16 @@
   "ja": "聞き取り中…",
   "pt": "Ouvindo…",
   "zh": "正在聆听…"
+ },
+ "Listening… say everything you need to do, and how you feel.": {
+  "de": "Ich höre zu … sag alles, was du erledigen musst, und wie du dich fühlst.",
+  "es": "Escuchando… di todo lo que tienes que hacer y cómo te sientes.",
+  "fr": "J'écoute… dites tout ce que vous avez à faire, et comment vous vous sentez.",
+  "hi": "सुन रहे हैं… जो कुछ करना है और आप कैसा महसूस कर रहे हैं, सब बोलें।",
+  "it": "Ti ascolto… di' tutto quello che devi fare e come ti senti.",
+  "ja": "聞いています… やることと今の気分を話してください。",
+  "pt": "Ouvindo… diga tudo o que precisa fazer e como se sente.",
+  "zh": "正在听……说出你要做的所有事，以及你的感受。"
  },
  "Live color‑blind correction": {
   "de": "Live-Farbsehkorrektur",
@@ -6098,6 +6238,16 @@
   "ja": "位置情報とカメラのメタデータは、すべてのファイルから削除されます。",
   "pt": "A localização e os metadados da câmara são removidos de cada ficheiro.",
   "zh": "每个文件的位置信息和相机元数据都会被移除。"
+ },
+ "Location is off — Maps will still search near you.": {
+  "de": "Ortung ist aus – Karten sucht trotzdem in deiner Nähe.",
+  "es": "La ubicación está desactivada; Mapas buscará igualmente cerca de ti.",
+  "fr": "La localisation est désactivée — Plans cherchera quand même près de vous.",
+  "hi": "लोकेशन बंद है — Maps फिर भी आपके पास खोजेगा।",
+  "it": "La posizione è disattivata: Mappe cercherà comunque vicino a te.",
+  "ja": "位置情報はオフです。マップは現在地周辺を検索します。",
+  "pt": "A localização está desativada — o Mapas ainda busca perto de você.",
+  "zh": "定位已关闭——“地图”仍会在你附近搜索。"
  },
  "Lock focus for macro, through glass, or so it stops hunting in video.": {
   "de": "Fokus sperren für Makro, durch Glas oder damit er im Video nicht pumpt.",
@@ -6269,6 +6419,16 @@
   "pt": "Baixo",
   "zh": "低"
  },
+ "Low energy": {
+  "de": "Wenig Energie",
+  "es": "Poca energía",
+  "fr": "Peu d'énergie",
+  "hi": "कम ऊर्जा",
+  "it": "Poca energia",
+  "ja": "元気が出ない",
+  "pt": "Pouca energia",
+  "zh": "精力不足"
+ },
  "Lower sensitivity values trigger sooner. The sensor sits near the top of the phone — sweep that end over the wall or ground.": {
   "de": "Niedrigere Empfindlichkeitswerte lösen früher aus. Der Sensor sitzt nahe der Oberseite des Handys — streiche mit diesem Ende über Wand oder Boden.",
   "es": "Los valores de sensibilidad más bajos se activan antes. El sensor está cerca de la parte superior del teléfono — pasa ese extremo por la pared o el suelo.",
@@ -6308,6 +6468,16 @@
   "ja": "端末内で作成。Wi-FiコードならゲストはスキャンするだけでWi-Fiに接続でき — パスワードは画像の外に出ません。",
   "pt": "Feito no telemóvel. Um código Wi-Fi permite que os convidados entrem ao digitalizar — a palavra-passe nunca sai da imagem.",
   "zh": "在手机上生成。Wi-Fi 码让访客扫码即可加入 — 密码从不离开这张图。"
+ },
+ "Made on your phone. Nothing you type or say leaves it, except a map search if you tap one.": {
+  "de": "Auf deinem Handy erstellt. Nichts, was du tippst oder sagst, verlässt es – außer einer Kartensuche, wenn du sie antippst.",
+  "es": "Hecho en tu teléfono. Nada de lo que escribes o dices sale de él, salvo una búsqueda en el mapa si la tocas.",
+  "fr": "Créé sur votre téléphone. Rien de ce que vous tapez ou dites n'en sort, sauf une recherche de carte si vous la touchez.",
+  "hi": "आपके फ़ोन पर बना। आप जो लिखते या बोलते हैं, कुछ भी बाहर नहीं जाता — सिवाय मैप सर्च के, अगर आप टैप करें।",
+  "it": "Creato sul tuo telefono. Niente di ciò che scrivi o dici esce, tranne una ricerca sulla mappa se la tocchi.",
+  "ja": "スマホの中で作成。入力や音声は外に出ません（地図検索をタップした場合を除く）。",
+  "pt": "Feito no seu celular. Nada do que você digita ou fala sai dele, exceto uma busca no mapa se você tocar.",
+  "zh": "在你的手机上生成。你输入或说的内容都不会离开手机，除非你点了地图搜索。"
  },
  "Make GIF": {
   "de": "GIF erstellen",
@@ -6458,6 +6628,16 @@
   "ja": "さらに作る",
   "pt": "Fazer mais",
   "zh": "再做一些"
+ },
+ "Make my plan": {
+  "de": "Meinen Plan erstellen",
+  "es": "Crear mi plan",
+  "fr": "Créer mon plan",
+  "hi": "मेरा प्लान बनाएँ",
+  "it": "Crea il mio piano",
+  "ja": "プランを作る",
+  "pt": "Criar meu plano",
+  "zh": "生成我的计划"
  },
  "Make passport photo": {
   "de": "Passfoto erstellen",
@@ -7769,6 +7949,16 @@
   "pt": "Ainda nada. Executa uma ferramenta e o resultado aparece aqui.",
   "zh": "暂无内容。运行一个工具，其结果会出现在这里。"
  },
+ "Notifications are off for Tenzy — turn them on in Settings to get check-ins.": {
+  "de": "Mitteilungen für Tenzy sind aus – aktiviere sie in den Einstellungen für Check-ins.",
+  "es": "Las notificaciones de Tenzy están desactivadas; actívalas en Ajustes para recibir avisos.",
+  "fr": "Les notifications de Tenzy sont désactivées — activez-les dans Réglages pour le suivi.",
+  "hi": "Tenzy की सूचनाएँ बंद हैं — चेक-इन के लिए Settings में चालू करें।",
+  "it": "Le notifiche di Tenzy sono disattivate: attivale in Impostazioni per i promemoria.",
+  "ja": "Tenzyの通知がオフです。チェックインを受けるには設定でオンにしてください。",
+  "pt": "As notificações do Tenzy estão desativadas — ative em Ajustes para receber check-ins.",
+  "zh": "Tenzy 的通知已关闭——请在“设置”中开启以接收提醒。"
+ },
  "Notifications are off for Tenzy, so reminders can't alert you. Turn them on in Settings → Notifications → Tenzy.": {
   "de": "Mitteilungen sind für Tenzy aus, Erinnerungen können dich nicht benachrichtigen. Einschalten unter Einstellungen → Mitteilungen → Tenzy.",
   "es": "Las notificaciones de Tenzy están desactivadas, así que los recordatorios no pueden avisarte. Actívalas en Ajustes → Notificaciones → Tenzy.",
@@ -7778,6 +7968,26 @@
   "ja": "Tenzyの通知がオフのため、リマインダーでお知らせできません。設定 → 通知 → Tenzy でオンにしてください。",
   "pt": "As notificações do Tenzy estão desligadas, então os lembretes não podem avisar. Ative em Ajustes → Notificações → Tenzy.",
   "zh": "Tenzy的通知已关闭，提醒无法通知你。请在设置→通知→Tenzy中打开。"
+ },
+ "Now": {
+  "de": "Jetzt",
+  "es": "Ahora",
+  "fr": "Maintenant",
+  "hi": "अभी",
+  "it": "Ora",
+  "ja": "今",
+  "pt": "Agora",
+  "zh": "现在"
+ },
+ "Nudge me as each step starts": {
+  "de": "Erinnere mich bei jedem Schritt",
+  "es": "Avísame al empezar cada paso",
+  "fr": "Préviens-moi à chaque étape",
+  "hi": "हर कदम शुरू होने पर याद दिलाएँ",
+  "it": "Avvisami all'inizio di ogni passo",
+  "ja": "各ステップの開始時に知らせて",
+  "pt": "Me avise no início de cada etapa",
+  "zh": "每一步开始时提醒我"
  },
  "Nuts": {
   "de": "Nüsse",
@@ -7949,6 +8159,16 @@
   "pt": "Abrir",
   "zh": "打开"
  },
+ "Open Maps": {
+  "de": "Karten öffnen",
+  "es": "Abrir Mapas",
+  "fr": "Ouvrir Plans",
+  "hi": "Maps खोलें",
+  "it": "Apri Mappe",
+  "ja": "マップを開く",
+  "pt": "Abrir Mapas",
+  "zh": "打开“地图”"
+ },
  "Open Photos and tap a sticker (they're your newest photos).": {
   "de": "Öffne Fotos und tippe auf einen Sticker (es sind deine neuesten Fotos).",
   "es": "Abre Fotos y toca un sticker (son tus fotos más recientes).",
@@ -7978,6 +8198,16 @@
   "ja": "設定を開く",
   "pt": "Abrir Definições",
   "zh": "打开设置"
+ },
+ "Open Untangle to tick it off or get more time.": {
+  "de": "Öffne Untangle, um es abzuhaken oder mehr Zeit zu nehmen.",
+  "es": "Abre Untangle para marcarlo o pedir más tiempo.",
+  "fr": "Ouvrez Untangle pour le cocher ou prendre plus de temps.",
+  "hi": "इसे पूरा मार्क करने या और समय लेने के लिए Untangle खोलें।",
+  "it": "Apri Untangle per spuntarlo o avere più tempo.",
+  "ja": "Untangleを開いて完了にするか、時間を延ばしましょう。",
+  "pt": "Abra o Untangle para marcar ou ganhar mais tempo.",
+  "zh": "打开 Untangle 标记完成或延长时间。"
  },
  "Open a PDF (or several, to merge)": {
   "de": "Ein PDF öffnen (oder mehrere zum Zusammenführen)",
@@ -8428,6 +8658,16 @@
   "ja": "周囲の長さ",
   "pt": "Perímetro",
   "zh": "周长"
+ },
+ "Pharmacies near me": {
+  "de": "Apotheken in der Nähe",
+  "es": "Farmacias cerca",
+  "fr": "Pharmacies à proximité",
+  "hi": "पास की फ़ार्मेसी",
+  "it": "Farmacie vicine",
+  "ja": "近くの薬局",
+  "pt": "Farmácias perto de mim",
+  "zh": "附近的药店"
  },
  "Phone": {
   "de": "Telefon",
@@ -9339,6 +9579,16 @@
   "pt": "Qualidade",
   "zh": "质量"
  },
+ "Quick & light": {
+  "de": "Kurz & leicht",
+  "es": "Rápido y ligero",
+  "fr": "Rapide et léger",
+  "hi": "झटपट और हल्का",
+  "it": "Rapido e leggero",
+  "ja": "さっと軽く",
+  "pt": "Rápido e leve",
+  "zh": "简单快速"
+ },
  "Rainbow": {
   "de": "Regenbogen",
   "es": "Arcoíris",
@@ -9388,6 +9638,16 @@
   "ja": "再インデックス",
   "pt": "Reindexar",
   "zh": "重新索引"
+ },
+ "Re-plan": {
+  "de": "Neu planen",
+  "es": "Volver a planificar",
+  "fr": "Replanifier",
+  "hi": "फिर से प्लान करें",
+  "it": "Ripianifica",
+  "ja": "プランを作り直す",
+  "pt": "Replanejar",
+  "zh": "重新规划"
  },
  "Read aloud": {
   "de": "Vorlesen",
@@ -9448,6 +9708,16 @@
   "ja": "読み上げる",
   "pt": "Ler em voz alta",
   "zh": "朗读"
+ },
+ "Read my mood": {
+  "de": "Stimmung erkennen",
+  "es": "Leer mi ánimo",
+  "fr": "Lire mon humeur",
+  "hi": "मेरा मूड समझें",
+  "it": "Leggi il mio umore",
+  "ja": "気分を読み取る",
+  "pt": "Ler meu humor",
+  "zh": "读懂我的状态"
  },
  "Read the text": {
   "de": "Text lesen",
@@ -9588,6 +9858,16 @@
   "ja": "連絡先を読み取り中…",
   "pt": "A ler os teus contactos…",
   "zh": "正在读取通讯录…"
+ },
+ "Reading your screenshot…": {
+  "de": "Screenshot wird gelesen …",
+  "es": "Leyendo tu captura…",
+  "fr": "Lecture de votre capture…",
+  "hi": "आपका स्क्रीनशॉट पढ़ रहे हैं…",
+  "it": "Lettura dello screenshot…",
+  "ja": "スクリーンショットを読み取り中…",
+  "pt": "Lendo sua captura…",
+  "zh": "正在读取截图…"
  },
  "Reading…": {
   "de": "Wird gelesen…",
@@ -9798,6 +10078,16 @@
   "ja": "リマインダー：",
   "pt": "Lembrete: ",
   "zh": "提醒："
+ },
+ "Reminders access is off. Turn it on in Settings › Tenzy and tap again.": {
+  "de": "Zugriff auf Erinnerungen ist aus. Aktiviere ihn unter Einstellungen › Tenzy und tippe erneut.",
+  "es": "El acceso a Recordatorios está desactivado. Actívalo en Ajustes › Tenzy y vuelve a tocar.",
+  "fr": "L'accès aux Rappels est désactivé. Activez-le dans Réglages › Tenzy puis touchez à nouveau.",
+  "hi": "Reminders की अनुमति बंद है। Settings › Tenzy में चालू करें और फिर टैप करें।",
+  "it": "L'accesso a Promemoria è disattivato. Attivalo in Impostazioni › Tenzy e tocca di nuovo.",
+  "ja": "リマインダーへのアクセスがオフです。設定 › Tenzy でオンにしてもう一度タップしてください。",
+  "pt": "O acesso aos Lembretes está desativado. Ative em Ajustes › Tenzy e toque de novo.",
+  "zh": "“提醒事项”权限已关闭。请在“设置 › Tenzy”中开启后再点一次。"
  },
  "Reminders for every medicine, with a Taken button and a week view.": {
   "de": "Erinnerungen für jedes Medikament, mit „Genommen“-Taste und Wochenübersicht.",
@@ -11149,6 +11439,16 @@
   "pt": "Compartilhar organizado",
   "zh": "分享整理版"
  },
+ "Share plan": {
+  "de": "Plan teilen",
+  "es": "Compartir plan",
+  "fr": "Partager le plan",
+  "hi": "प्लान शेयर करें",
+  "it": "Condividi piano",
+  "ja": "プランを共有",
+  "pt": "Compartilhar plano",
+  "zh": "分享计划"
+ },
  "Share receipt": {
   "de": "Beleg teilen",
   "es": "Compartir recibo",
@@ -11959,6 +12259,26 @@
   "pt": "Começar a partir de um modelo",
   "zh": "从模板开始"
  },
+ "Start in": {
+  "de": "Start in",
+  "es": "Empezar en",
+  "fr": "Commencer dans",
+  "hi": "इतनी देर में शुरू",
+  "it": "Inizia tra",
+  "ja": "開始まで",
+  "pt": "Começar em",
+  "zh": "开始于"
+ },
+ "Start now": {
+  "de": "Jetzt starten",
+  "es": "Empezar ya",
+  "fr": "Commencer maintenant",
+  "hi": "अभी शुरू करें",
+  "it": "Inizia ora",
+  "ja": "今すぐ開始",
+  "pt": "Começar agora",
+  "zh": "现在开始"
+ },
  "Start over": {
   "de": "Von vorn beginnen",
   "es": "Empezar de nuevo",
@@ -12078,6 +12398,16 @@
   "ja": "ストレージ",
   "pt": "Armazenamento",
   "zh": "存储"
+ },
+ "Stores near me": {
+  "de": "Geschäfte in der Nähe",
+  "es": "Tiendas cerca",
+  "fr": "Magasins à proximité",
+  "hi": "पास की दुकानें",
+  "it": "Negozi vicini",
+  "ja": "近くのお店",
+  "pt": "Lojas perto de mim",
+  "zh": "附近的商店"
  },
  "Strip location, redact for good": {
   "de": "Standort entfernen, dauerhaft schwärzen",
@@ -12218,6 +12548,16 @@
   "ja": "飲んだ ✓",
   "pt": "Tomei ✓",
   "zh": "已服用 ✓"
+ },
+ "Talk": {
+  "de": "Sprechen",
+  "es": "Hablar",
+  "fr": "Parler",
+  "hi": "बोलें",
+  "it": "Parla",
+  "ja": "話す",
+  "pt": "Falar",
+  "zh": "说话"
  },
  "Talk it out. Get the transcript, a summary and the to-dos — kept on your phone.": {
   "de": "Einfach reden. Transkript, Zusammenfassung und To-dos – auf deinem Telefon.",
@@ -12408,6 +12748,16 @@
   "ja": "税 %",
   "pt": "Imposto %",
   "zh": "税 %"
+ },
+ "Tell me at least one thing you need to do — even a small one.": {
+  "de": "Nenn mir mindestens eine Sache, die du erledigen musst – auch eine kleine.",
+  "es": "Dime al menos una cosa que tengas que hacer, aunque sea pequeña.",
+  "fr": "Dites-moi au moins une chose à faire — même petite.",
+  "hi": "कम से कम एक काम बताइए — छोटा ही सही।",
+  "it": "Dimmi almeno una cosa da fare, anche piccola.",
+  "ja": "やることを少なくとも1つ教えてください。小さなことでも大丈夫。",
+  "pt": "Me diga pelo menos uma coisa que precisa fazer — mesmo pequena.",
+  "zh": "至少告诉我一件要做的事——小事也行。"
  },
  "Tells you to keep it secret": {
   "de": "Sagt dir, es geheim zu halten",
@@ -13219,6 +13569,16 @@
   "pt": "Ladrilho",
   "zh": "方块"
  },
+ "Time for": {
+  "de": "Zeit für",
+  "es": "Es hora de",
+  "fr": "C'est l'heure de",
+  "hi": "अब समय है",
+  "it": "È ora di",
+  "ja": "次は",
+  "pt": "Hora de",
+  "zh": "该做"
+ },
  "Time: ": {
   "de": "Zeit: ",
   "es": "Hora: ",
@@ -13918,6 +14278,16 @@
   "ja": "Proを解放（テスター）",
   "pt": "Desbloquear Pro (tester)",
   "zh": "解锁 Pro（测试）"
+ },
+ "Untangle": {
+  "de": "Untangle",
+  "es": "Untangle",
+  "fr": "Untangle",
+  "hi": "Untangle",
+  "it": "Untangle",
+  "ja": "Untangle",
+  "pt": "Untangle",
+  "zh": "Untangle"
  },
  "Untangle, plan the day, decide, explain, reword": {
   "de": "Entwirren, Tag planen, entscheiden, erklären",
@@ -14839,6 +15209,16 @@
   "pt": "O iPhone permite 64 alertas por app — as",
   "zh": "iPhone每个App最多64条提醒——最远的"
  },
+ "incl.": {
+  "de": "inkl.",
+  "es": "incl.",
+  "fr": "incl.",
+  "hi": "सहित",
+  "it": "incl.",
+  "ja": "含む",
+  "pt": "incl.",
+  "zh": "含"
+ },
  "it's a long recording. Trim it first in Audio Edit to go smaller.": {
   "de": "es ist eine lange Aufnahme. Kürze sie zuerst im Audio-Editor.",
   "es": "es una grabación larga. Recórtala antes en el Editor de audio.",
@@ -14858,6 +15238,36 @@
   "ja": "返品最終日",
   "pt": "último dia para devolver",
   "zh": "退货最后一天"
+ },
+ "min": {
+  "de": "Min.",
+  "es": "min",
+  "fr": "min",
+  "hi": "मिनट",
+  "it": "min",
+  "ja": "分",
+  "pt": "min",
+  "zh": "分钟"
+ },
+ "min drive": {
+  "de": "Min. Fahrt",
+  "es": "min en coche",
+  "fr": "min en voiture",
+  "hi": "मिनट की ड्राइव",
+  "it": "min in auto",
+  "ja": "分（車）",
+  "pt": "min de carro",
+  "zh": "分钟车程"
+ },
+ "min travel": {
+  "de": "Min. Weg",
+  "es": "min de trayecto",
+  "fr": "min de trajet",
+  "hi": "मिनट का सफ़र",
+  "it": "min di tragitto",
+  "ja": "分の移動",
+  "pt": "min de deslocamento",
+  "zh": "分钟路程"
  },
  "new length": {
   "de": "neue Länge",
@@ -14958,6 +15368,16 @@
   "ja": "短い行は空欄で補完",
   "pt": "linhas curtas preenchidas com vazios",
   "zh": "短行以空白补齐"
+ },
+ "steps": {
+  "de": "Schritte",
+  "es": "pasos",
+  "fr": "étapes",
+  "hi": "कदम",
+  "it": "passi",
+  "ja": "ステップ",
+  "pt": "etapas",
+  "zh": "步"
  },
  "swiped away": {
   "de": "weggewischt",
