@@ -49,6 +49,7 @@ enum TenzyArt {
         "ringtone": "audiolab",
         "audioedit": "audiolab",
         "audioclean": "audiolab",
+        "soundboard": "audiolab",
         "meetingnotes": "voicenotes",
     ]
 

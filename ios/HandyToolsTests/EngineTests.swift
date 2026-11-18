@@ -68,6 +68,10 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("meeting notes").first?.id, "meetingnotes")
         XCTAssertEqual(searchTools("minutes").first?.id, "meetingnotes")
         XCTAssertFalse(searchTools("voice").isEmpty)
+        // Soundboard (item 9) owns its own name + the distinctive character queries, without stealing
+        // Voice → Notes' plain "voice" (its name prefixes "voice", so it keeps the lead there).
+        XCTAssertEqual(searchTools("soundboard").first?.id, "soundboard")
+        XCTAssertEqual(searchTools("chipmunk").first?.id, "soundboard")
     }
 
     // MARK: duplicate detection precision
@@ -1744,5 +1748,49 @@ final class EngineTests: XCTestCase {
         XCTAssertLessThanOrEqual(ppl.count, 8, "respects the cap")
         XCTAssertEqual(Set(ppl.map { $0.lowercased() }).count, ppl.count, "no duplicate names")
         XCTAssertTrue(ppl.allSatisfy { !$0.isEmpty }, "no empty names")
+    }
+
+    // MARK: Soundboard — voice changer (item 9)
+
+    /// Every voice card must turn a real recording into a non-empty, playable WAV — a true end-to-end
+    /// output assertion that the proven voice-change DSP is wired through every Soundboard card. (robot/
+    /// alien/monster render via offline DSP; chipmunk/helium/giant/deep via varispeed — and a DSP voice
+    /// safely falls back to varispeed, so every card produces sound.)
+    func testSoundboardEveryVoiceProducesPlayableWAV() async throws {
+        let src = try makeToneFile(seconds: 1.0)
+        defer { try? FileManager.default.removeItem(at: src) }
+        for voice in ChainText.voices.map({ $0.id }) {
+            let data = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: voice), "\(voice) produced no audio")
+            XCTAssertGreaterThan(data.count, 44, "\(voice) WAV is header-only/empty")
+            XCTAssertEqual(Array(data.prefix(4)), Array("RIFF".utf8), "\(voice) output isn't a WAV")
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent("sb-\(voice)-\(UUID().uuidString.prefix(6)).wav")
+            try data.write(to: url)
+            defer { try? FileManager.default.removeItem(at: url) }
+            let tracks = try await AVURLAsset(url: url).loadTracks(withMediaType: .audio)
+            XCTAssertFalse(tracks.isEmpty, "\(voice) WAV has no audio track")
+        }
+    }
+
+    /// The varispeed cards map to distinct effects: chipmunk speeds the clip up (higher output sample
+    /// rate), deep slows it down (lower) — proving each card produces its own output, not one shared one.
+    func testSoundboardVarispeedRateIsPerVoice() throws {
+        let src = try makeToneFile(seconds: 0.5)
+        defer { try? FileManager.default.removeItem(at: src) }
+        let chip = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: "chipmunk"))
+        let deep = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: "deep"))
+        func wavRate(_ d: Data) -> Int {
+            let b = Array(d)
+            guard b.count >= 28 else { return 0 }
+            return Int(b[24]) | (Int(b[25]) << 8) | (Int(b[26]) << 16) | (Int(b[27]) << 24)
+        }
+        XCTAssertGreaterThan(wavRate(chip), wavRate(deep), "chipmunk should come out faster/higher than deep")
+    }
+
+    /// A file with no audio must fail cleanly (nil), never crash or hang.
+    func testSoundboardRejectsNonAudioGracefully() throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("sbjunk-\(UUID().uuidString.prefix(6)).caf")
+        try Data("not audio".utf8).write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        XCTAssertNil(ChainMedia.soundboardVoice(url, voice: "robot"), "garbage input should return nil, not crash")
     }
 }

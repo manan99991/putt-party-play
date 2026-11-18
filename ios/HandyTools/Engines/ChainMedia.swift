@@ -242,6 +242,16 @@ enum ChainMedia {
         return Data(ChainText.wavHeader(sampleRate: Int(engine.manualRenderingFormat.sampleRate.rounded()), channels: 1, dataBytes: pcm.count)) + Data(pcm)
     }
 
+    /// Soundboard: apply one named character voice to an already-readable audio file, returning 16-bit mono WAV.
+    /// robot/alien/monster use the offline pitch-shift + timbre DSP (so the speech stays intelligible); the classic
+    /// chipmunk/helium/giant/deep use the simple varispeed path, and a DSP voice falls back to varispeed if the
+    /// device can't render the effect. Pure reuse of the proven voice-change path — no new DSP. Returns nil only
+    /// when the audio itself can't be read at all.
+    static func soundboardVoice(_ url: URL, voice: String) -> Data? {
+        if let c = characters[voice], let dsp = revoiceDSP(url, c) { return dsp }
+        return revoice(url, rate: ChainText.voiceRate(voice))
+    }
+
     /// The same video played slower or faster. It comes out without sound, since sound at another speed is only noise.
     private static func respeed(_ url: URL, rate: Double) async -> URL? {
         let asset = AVURLAsset(url: url)
