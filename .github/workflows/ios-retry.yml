@@ -1,0 +1,37 @@
+name: iOS auto-retry
+
+# When GitHub's shared macOS pool is full, a job is dropped with "The job was not acquired by Runner".
+# That isn't a code failure, so re-run the dropped jobs automatically (up to 3 attempts) instead of
+# leaving a red run that someone has to notice and re-run by hand. Runs on a cheap Linux runner.
+on:
+  workflow_run:
+    workflows: ["iOS"]
+    types: [completed]
+
+permissions:
+  actions: write
+  checks: read
+  contents: read
+
+jobs:
+  retry:
+    if: "${{ github.event.workflow_run.conclusion != 'success' && github.event.workflow_run.run_attempt < 3 }}"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-run if a job never got a Mac
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN: ${{ github.event.workflow_run.id }}
+          REPO: ${{ github.repository }}
+        run: |
+          dropped=0
+          for job in $(gh api "repos/$REPO/actions/runs/$RUN/jobs" -q '.jobs[] | select(.conclusion=="cancelled" or .conclusion=="failure") | .id'); do
+            if gh api "repos/$REPO/check-runs/$job/annotations" -q '.[].message' | grep -q "not acquired by Runner"; then dropped=1; fi
+          done
+          if [ "$dropped" = 1 ]; then
+            echo "A job never got a macOS runner — re-running the failed jobs."
+            sleep 120
+            gh run rerun "$RUN" --failed --repo "$REPO"
+          else
+            echo "Real failure (or none) — nothing to retry."
+          fi

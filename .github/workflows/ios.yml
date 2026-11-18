@@ -60,72 +60,10 @@ jobs:
           cat plist-check.log
           echo "::warning title=plist::$summary"
           bash .github/publish-log.sh ios-plist plist-check.log || true
-      - name: Simulator screenshots of every tool
-        if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
-        run: |
-          set -x
-          APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/HandyTools.app" -maxdepth 6 | head -1)
-          echo "APP=$APP"
-          UDID=$(xcrun simctl list devices available -j | python3 -c '
-          import json,sys
-          d=json.load(sys.stdin)["devices"]
-          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone 17 Pro") or x["name"].startswith("iPhone 16 Pro") or x["name"].startswith("iPhone")]
-          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
-          print(c[0]["udid"]); print(c[0]["name"], file=sys.stderr)')
-          xcrun simctl boot "$UDID" || true
-          xcrun simctl bootstatus "$UDID" -b
-          xcrun simctl install "$UDID" "$APP"
-          # Explicitly grant every permission a tool might ask for, so no system permission alert
-          # pops during capture and lingers over later screenshots (grant all alone left mic undetermined).
-          for p in all camera microphone photos location speech-recognition; do
-            xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true
-          done
-          # Pre-answer the App Tracking Transparency prompt so it doesn't cover every screenshot
-          xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
-          xcrun simctl spawn "$UDID" defaults write com.apple.AppTrackingTransparency.plist 2>/dev/null || true
-          xcrun simctl terminate "$UDID" com.tenzy.toolkit || true
-          mkdir -p shots
-          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
-          for mode in light dark; do
-            xcrun simctl ui "$UDID" appearance $mode
-            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub cleaner qrwifi stitch shareready light contacts measure magnify procam gpsdash audiolab rest colorvision sorted textstudio translate voicenotes livecaptions shield lens memory datagrab describe vault; do
-              xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
-              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
-              sleep 9
-              xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
-            done
-          done
-          ls -la shots
-      - name: Publish screenshots
-        if: "${{ always() && (contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES')) }}"
-        working-directory: .
-        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
-        run: bash .github/publish-log.sh ios-shots ios/shots
-      - name: Publish build log
-        if: always()
-        working-directory: .
-        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
-        run: |
-          { echo "== xcode"; ls /Applications | grep -i xcode; xcodebuild -version 2>&1; echo "== setup.log"; cat ios/setup.log 2>/dev/null; echo "== build.log"; cat ios/build.log 2>/dev/null; } > ios-full.log
-          bash .github/publish-log.sh ios ios-full.log || true
-          bash .github/publish-log.sh "ios-build-${GITHUB_RUN_ID}" ios-full.log || true
-
-  # Full test gate. The deploy will NOT upload unless the engine unit tests and the every-tool
-  # smoke suite pass. Regression tests for every shipped crash fix live in HandyToolsTests, so a
-  # fixed crash cannot silently return in a later build. (ToolFlowTests run in the separate
-  # `flowtests` job below — informational, never gating, because their synthetic inputs are flaky.)
-  test:
-    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
-    runs-on: macos-26
-    defaults:
-      run: { working-directory: ios }
-    steps:
-      - uses: actions/checkout@v4
-      - run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
-      - name: Install XcodeGen + generate + resolve
-        run: |
-          set -o pipefail
-          { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tee setup.log
+      # Full test gate, on the SAME Mac as the build: one runner per commit instead of two, so a busy
+      # GitHub macOS pool only has to find us one machine. The deploy will NOT upload unless the engine
+      # unit tests, the every-tool smoke suite and the iPad smoke pass. Regression tests for every
+      # shipped crash fix live in HandyToolsTests, so a fixed crash cannot silently return.
       - name: Test (engine unit + smoke + LIVE hardware) — gates the deploy
         run: |
           set -o pipefail
@@ -183,6 +121,55 @@ jobs:
           { echo "== test.log (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -200; } > ios-test.log
           bash .github/publish-log.sh ios-test ios-test.log || true
           bash .github/publish-log.sh "ios-test-${GITHUB_RUN_ID}" ios-test.log || true
+      - name: Simulator screenshots of every tool
+        if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
+        run: |
+          set -x
+          APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/HandyTools.app" -maxdepth 6 | head -1)
+          echo "APP=$APP"
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone 17 Pro") or x["name"].startswith("iPhone 16 Pro") or x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
+          print(c[0]["udid"]); print(c[0]["name"], file=sys.stderr)')
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" "$APP"
+          # Explicitly grant every permission a tool might ask for, so no system permission alert
+          # pops during capture and lingers over later screenshots (grant all alone left mic undetermined).
+          for p in all camera microphone photos location speech-recognition; do
+            xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true
+          done
+          # Pre-answer the App Tracking Transparency prompt so it doesn't cover every screenshot
+          xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
+          xcrun simctl spawn "$UDID" defaults write com.apple.AppTrackingTransparency.plist 2>/dev/null || true
+          xcrun simctl terminate "$UDID" com.tenzy.toolkit || true
+          mkdir -p shots
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
+          for mode in light dark; do
+            xcrun simctl ui "$UDID" appearance $mode
+            for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub cleaner qrwifi stitch shareready light contacts measure magnify procam gpsdash audiolab rest colorvision sorted textstudio translate voicenotes livecaptions shield lens memory datagrab describe vault; do
+              xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
+              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
+              sleep 9
+              xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
+            done
+          done
+          ls -la shots
+      - name: Publish screenshots
+        if: "${{ always() && (contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES')) }}"
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: bash .github/publish-log.sh ios-shots ios/shots
+      - name: Publish build log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "== xcode"; ls /Applications | grep -i xcode; xcodebuild -version 2>&1; echo "== setup.log"; cat ios/setup.log 2>/dev/null; echo "== build.log"; cat ios/build.log 2>/dev/null; } > ios-full.log
+          bash .github/publish-log.sh ios ios-full.log || true
+          bash .github/publish-log.sh "ios-build-${GITHUB_RUN_ID}" ios-full.log || true
 
   # Per-tool flow tests — informational only. Nothing `needs` this job and it is allowed to fail
   # (continue-on-error), so a flaky synthetic-input flake here NEVER blocks TestFlight or the store
@@ -232,10 +219,10 @@ jobs:
           bash .github/publish-log.sh ios-flow ios-flow.log || true
 
   # Runs only when App Store Connect secrets are present. Archives, signs with an
-  # ASC API key via automatic signing, and uploads to TestFlight. Gated on `test`: a red
+  # ASC API key via automatic signing, and uploads to TestFlight. Gated on `build` (which runs the tests): a red
   # suite blocks the upload.
   testflight:
-    needs: test
+    needs: build
     # Decoupled from `build` so signing can be iterated fast — `archive` compiles the code too.
     # HOLD: build + test run on every push, but TestFlight upload happens ONLY when the commit
     # message contains the trailer line  Ship-Build: YES  — a distinctive token that is never written
