@@ -96,6 +96,9 @@ enum MemoryEngine {
                                   bytesPerRow: w * 4, space: cs,
                                   bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return false }
             ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+            return true
+        }
+        guard drew else { return [] }
         var counts: [String: Int] = [:]
         var i = 0
         while i < data.count {
@@ -393,9 +396,6 @@ enum MemoryEngine {
                 onBatch: { snap in Task { @MainActor in self.entries = snap } },
                 onProgress: { d, t in Task { @MainActor in self.done = d; self.total = t; self.progress = t > 0 ? Double(d) / Double(t) : 0 } }
             )
-            return true
-        }
-        guard drew else { return [] }
             await MainActor.run { self.entries = result; self.indexedAt = Date(); self.indexing = false }
         }
     }

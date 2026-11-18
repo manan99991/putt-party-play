@@ -156,6 +156,9 @@ enum PhotoCleaner {
                 guard let ctx = CGContext(data: buf.baseAddress, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
                                       space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return false }
                 ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+                return true
+            }
+            guard drew else { return nil }
             return px
         }
         var h: UInt64 = 0, v: UInt64 = 0
@@ -229,9 +232,6 @@ enum PhotoCleaner {
             self.duplicates = groups
             self.skippedInCloud = skipped
             self.scannedAt = Date()
-                return true
-            }
-            guard drew else { return nil }
             self.scanning = false
         }
     }

@@ -76,6 +76,9 @@ enum VideoEngine {
             guard let ctx = CGContext(data: buf.baseAddress, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
                                   space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return false }
             ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+            return true
+        }
+        guard drew else { return 0 }
         var grad = 0.0, mean = 0.0
         for v in px { mean += Double(v) }
         mean /= Double(px.count)
@@ -354,9 +357,6 @@ struct MovieImport: Transferable {
             try? FileManager.default.removeItem(at: copy)
             try FileManager.default.copyItem(at: received.file, to: copy)
             return MovieImport(url: copy)
-            return true
-        }
-        guard drew else { return 0 }
         }
     }
 }
