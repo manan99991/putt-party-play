@@ -54,7 +54,7 @@ enum MeetingNotes {
 
         var parts: [String] = []
         var timed: [Timed] = []
-        let recogError = Flag()
+        let recogError = Transcriber.Flag()
         while file.framePosition < total {
             // The window's start time in the whole recording — each window's recogniser timestamps are relative
             // to the window, so they're offset by this to land on the meeting's real timeline.
