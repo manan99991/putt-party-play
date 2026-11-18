@@ -1423,4 +1423,53 @@ final class EngineTests: XCTestCase {
         XCTAssertFalse((outDoc.string ?? "").contains("SECRET"),
                        "redaction must flatten the page so the hidden text is gone, not sit a box over selectable text")
     }
+
+    // MARK: Audio Convert — format conversion (item 4)
+
+    /// Write a short real audio file (a 440 Hz tone) to disk so the converter has genuine samples to
+    /// chew on, not an empty container.
+    private func makeToneFile(seconds: Double = 1.0, sampleRate: Double = 44_100) throws -> URL {
+        let fmt = try XCTUnwrap(AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 1))
+        let frames = AVAudioFrameCount(seconds * sampleRate)
+        let buf = try XCTUnwrap(AVAudioPCMBuffer(pcmFormat: fmt, frameCapacity: frames))
+        buf.frameLength = frames
+        let ch = try XCTUnwrap(buf.floatChannelData?[0])
+        for i in 0..<Int(frames) { ch[i] = Float(sin(2 * Double.pi * 440 * Double(i) / sampleRate)) * 0.3 }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tone-\(UUID().uuidString.prefix(6)).caf")
+        let file = try AVAudioFile(forWriting: url, settings: fmt.settings)
+        try file.write(from: buf)
+        return url
+    }
+
+    /// Every output format the tool offers must produce a non-empty file that is a real, playable audio
+    /// asset of roughly the original length — a true end-to-end output assertion, not "did it open".
+    func testAudioConvertProducesPlayableFilesEveryFormat() async throws {
+        let src = try makeToneFile(seconds: 1.0)
+        defer { try? FileManager.default.removeItem(at: src) }
+        for format in AudioConvert.Format.allCases {
+            let outcome = await AudioConvert.convert(src, to: format)
+            guard case .success(let out) = outcome else {
+                XCTFail("\(format.title) conversion failed"); continue
+            }
+            defer { try? FileManager.default.removeItem(at: out) }
+            XCTAssertEqual(out.pathExtension, format.ext, "\(format.title) wrong extension")
+            let size = ((try? FileManager.default.attributesOfItem(atPath: out.path))?[.size] as? Int) ?? 0
+            XCTAssertGreaterThan(size, 1_000, "\(format.title) output is empty/tiny")
+            let outAsset = AVURLAsset(url: out)
+            let tracks = try await outAsset.loadTracks(withMediaType: .audio)
+            XCTAssertFalse(tracks.isEmpty, "\(format.title) output has no audio track")
+            let dur = try await outAsset.load(.duration).seconds
+            XCTAssertEqual(dur, 1.0, accuracy: 0.25, "\(format.title) duration drifted from the source")
+        }
+    }
+
+    /// A file with no audio must fail cleanly with a message, never crash or hang.
+    func testAudioConvertRejectsNonAudioGracefully() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
+        try Data("not audio".utf8).write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let outcome = await AudioConvert.convert(url, to: .m4a)
+        guard case .failure(let f) = outcome else { return XCTFail("garbage input should fail, not succeed") }
+        XCTAssertFalse(f.message.isEmpty, "a failure must carry a human message")
+    }
 }
