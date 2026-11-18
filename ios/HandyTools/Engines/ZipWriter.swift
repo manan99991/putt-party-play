@@ -22,10 +22,12 @@ enum ZipWriter {
     static let maxTotalBytes = 2_000_000_000
 
     /// Build the archive bytes. `progress` reports 0…1 per file.
-    static func zip(_ items: [Item], progress: ((Double) -> Void)? = nil) -> Result<Data, Failure> {
+    /// `keepPaths`: keep "folder/file" names as real folders (Office files need "xl/workbook.xml");
+    /// off for user files, where a slash in a name must not create a folder.
+    static func zip(_ items: [Item], keepPaths: Bool = false, progress: ((Double) -> Void)? = nil) -> Result<Data, Failure> {
         guard !items.isEmpty else { return .failure(.empty) }
         guard items.count < 65_535, items.reduce(0, { $0 + $1.data.count }) < maxTotalBytes else { return .failure(.tooBig) }
-        let names = uniqueNames(items.map(\.name))
+        let names = keepPaths ? items.map(\.name) : uniqueNames(items.map(\.name))
         let (time, date) = dosStamp(Date())
         var out = Data()
         var central = Data()

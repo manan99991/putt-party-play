@@ -152,9 +152,10 @@ enum PhotoCleaner {
     static func dHash(_ cg: CGImage) -> (UInt64, UInt64) {
         func gray(_ w: Int, _ h: Int) -> [UInt8]? {
             var px = [UInt8](repeating: 0, count: w * h)
-            guard let ctx = CGContext(data: &px, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
-                                      space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return nil }
-            ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+            let drew = px.withUnsafeMutableBytes { buf -> Bool in
+                guard let ctx = CGContext(data: buf.baseAddress, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
+                                      space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return false }
+                ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
             return px
         }
         var h: UInt64 = 0, v: UInt64 = 0
@@ -228,6 +229,9 @@ enum PhotoCleaner {
             self.duplicates = groups
             self.skippedInCloud = skipped
             self.scannedAt = Date()
+                return true
+            }
+            guard drew else { return nil }
             self.scanning = false
         }
     }

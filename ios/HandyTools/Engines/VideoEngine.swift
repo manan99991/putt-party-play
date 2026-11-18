@@ -72,9 +72,10 @@ enum VideoEngine {
     private static func sharpnessScore(_ cg: CGImage) -> Double {
         let w = 96, h = 96
         var px = [UInt8](repeating: 0, count: w * h)
-        guard let ctx = CGContext(data: &px, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
-                                  space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return 0 }
-        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        let drew = px.withUnsafeMutableBytes { buf -> Bool in
+            guard let ctx = CGContext(data: buf.baseAddress, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
+                                  space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return false }
+            ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
         var grad = 0.0, mean = 0.0
         for v in px { mean += Double(v) }
         mean /= Double(px.count)
@@ -353,6 +354,9 @@ struct MovieImport: Transferable {
             try? FileManager.default.removeItem(at: copy)
             try FileManager.default.copyItem(at: received.file, to: copy)
             return MovieImport(url: copy)
+            return true
+        }
+        guard drew else { return 0 }
         }
     }
 }

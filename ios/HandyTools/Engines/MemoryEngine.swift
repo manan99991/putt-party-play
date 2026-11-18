@@ -91,10 +91,11 @@ enum MemoryEngine {
         let w = 24, h = 24
         var data = [UInt8](repeating: 0, count: w * h * 4)
         let cs = CGColorSpaceCreateDeviceRGB()
-        guard let ctx = CGContext(data: &data, width: w, height: h, bitsPerComponent: 8,
+        let drew = data.withUnsafeMutableBytes { buf -> Bool in
+            guard let ctx = CGContext(data: buf.baseAddress, width: w, height: h, bitsPerComponent: 8,
                                   bytesPerRow: w * 4, space: cs,
-                                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return [] }
-        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+                                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return false }
+            ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
         var counts: [String: Int] = [:]
         var i = 0
         while i < data.count {
@@ -392,6 +393,9 @@ enum MemoryEngine {
                 onBatch: { snap in Task { @MainActor in self.entries = snap } },
                 onProgress: { d, t in Task { @MainActor in self.done = d; self.total = t; self.progress = t > 0 ? Double(d) / Double(t) : 0 } }
             )
+            return true
+        }
+        guard drew else { return [] }
             await MainActor.run { self.entries = result; self.indexedAt = Date(); self.indexing = false }
         }
     }

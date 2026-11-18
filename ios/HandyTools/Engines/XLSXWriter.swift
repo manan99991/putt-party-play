@@ -78,7 +78,7 @@ enum XLSXWriter {
             </styleSheet>
             """).utf8)),
         ]
-        guard case .success(let zip) = ZipWriter.zip(parts) else { return nil }
+        guard case .success(let zip) = ZipWriter.zip(parts, keepPaths: true) else { return nil }
         return zip
     }
 

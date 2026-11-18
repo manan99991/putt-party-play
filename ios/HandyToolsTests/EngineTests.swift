@@ -459,12 +459,20 @@ final class EngineTests: XCTestCase {
         guard let cg = img.cgImage else { return nil }
         let x = min(max(Int(fx * CGFloat(cg.width)), 0), cg.width - 1)
         let y = min(max(Int(fy * CGFloat(cg.height)), 0), cg.height - 1)
-        var px: [UInt8] = [0, 0, 0, 0]
-        let cs = CGColorSpaceCreateDeviceRGB()
-        guard let ctx = CGContext(data: &px, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
-                                  space: cs, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
-        ctx.draw(cg, in: CGRect(x: -CGFloat(x), y: -CGFloat(cg.height - 1 - y), width: CGFloat(cg.width), height: CGFloat(cg.height)))
+        let px = Self.rgba(cg, width: 1, height: 1, in: CGRect(x: -CGFloat(x), y: -CGFloat(cg.height - 1 - y), width: CGFloat(cg.width), height: CGFloat(cg.height)))
         return (Int(px[0]), Int(px[1]), Int(px[2]))
+    }
+
+    /// Draw `cg` into a fresh w×h RGBA (premultiplied) bitmap and return its bytes, top row first.
+    /// The buffer pointer is only used inside withUnsafeMutableBytes, so the read is well-defined.
+    static func rgba(_ cg: CGImage, width w: Int, height h: Int, in rect: CGRect) -> [UInt8] {
+        var px = [UInt8](repeating: 0, count: w * h * 4)
+        px.withUnsafeMutableBytes { buf in
+            CGContext(data: buf.baseAddress, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w * 4,
+                      space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)?
+                .draw(cg, in: rect)
+        }
+        return px
     }
 
     func testScanRotationKeepsStampsAndInkInPlace() {
@@ -1956,7 +1964,8 @@ final class EngineTests: XCTestCase {
             UIColor.systemTeal.setFill(); c.fill(CGRect(x: 0, y: 0, width: 1200, height: 900)) }
         XCTAssertTrue(Scrubber.thoroughFaces(try XCTUnwrap(blank.cgImage)).isEmpty)
         // Only covered faces are drawn: an uncovered one leaves the photo untouched there.
-        let photo = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 400)).image { c in
+        let one = UIGraphicsImageRendererFormat(); one.scale = 1
+        let photo = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 400), format: one).image { c in
             UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 400)) }
         let out = FaceEmoji.render(photo, covers: [FaceCover(rect: CGRect(x: 0.1, y: 0.1, width: 0.3, height: 0.3), emoji: "😀"),
                                                    FaceCover(rect: CGRect(x: 0.6, y: 0.6, width: 0.3, height: 0.3), emoji: nil)], scale: 1)
@@ -1964,10 +1973,7 @@ final class EngineTests: XCTestCase {
         func brightness(_ img: UIImage, _ p: CGPoint) -> CGFloat {
             // Average of a 9×9 patch around p, read straight from a bitmap.
             guard let cg = img.cgImage, let patch = cg.cropping(to: CGRect(x: p.x - 4, y: p.y - 4, width: 9, height: 9)) else { return -1 }
-            var px = [UInt8](repeating: 0, count: 9 * 9 * 4)
-            guard let ctx = CGContext(data: &px, width: 9, height: 9, bitsPerComponent: 8, bytesPerRow: 36,
-                                      space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return -1 }
-            ctx.draw(patch, in: CGRect(x: 0, y: 0, width: 9, height: 9))
+            let px = Self.rgba(patch, width: 9, height: 9, in: CGRect(x: 0, y: 0, width: 9, height: 9))
             var sum = 0
             for i in stride(from: 0, to: px.count, by: 4) { sum += Int(px[i]) + Int(px[i + 1]) + Int(px[i + 2]) }
             return CGFloat(sum) / CGFloat(81 * 3 * 255)
@@ -2036,22 +2042,19 @@ final class EngineTests: XCTestCase {
     }
 
     func testCutoutEdgesArePulledInAndFeathered() throws {
-        let photo = UIGraphicsImageRenderer(size: CGSize(width: 1400, height: 1400)).image { c in
+        let one = UIGraphicsImageRendererFormat(); one.scale = 1
+        let photo = UIGraphicsImageRenderer(size: CGSize(width: 1400, height: 1400), format: one).image { c in
             UIColor.red.setFill(); c.fill(CGRect(x: 0, y: 0, width: 1400, height: 1400)) }
         // Mask: a white square in the middle (the "subject"), black elsewhere — at a quarter resolution,
         // like Vision's masks, so the scale-up is exercised too.
-        let maskImg = UIGraphicsImageRenderer(size: CGSize(width: 350, height: 350)).image { c in
+        let maskImg = UIGraphicsImageRenderer(size: CGSize(width: 350, height: 350), format: one).image { c in
             UIColor.black.setFill(); c.fill(CGRect(x: 0, y: 0, width: 350, height: 350))
             UIColor.white.setFill(); c.fill(CGRect(x: 100, y: 100, width: 150, height: 150)) }
         let out = try XCTUnwrap(ImageStudio.refinedCutout(try XCTUnwrap(photo.cgImage), mask: CIImage(cgImage: try XCTUnwrap(maskImg.cgImage))))
         let cg = try XCTUnwrap(out.cgImage)
         XCTAssertEqual(cg.width, 1400); XCTAssertEqual(cg.height, 1400)
         func alpha(_ x: Int, _ y: Int) -> Int {
-            var px = [UInt8](repeating: 0, count: 4)
-            let ctx = CGContext(data: &px, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
-                                space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
-            ctx.draw(cg, in: CGRect(x: -x, y: -(cg.height - 1 - y), width: cg.width, height: cg.height))
-            return Int(px[3])
+            return Int(Self.rgba(cg, width: 1, height: 1, in: CGRect(x: -x, y: -(cg.height - 1 - y), width: cg.width, height: cg.height))[3])
         }
         XCTAssertGreaterThan(alpha(700, 700), 250, "subject solid")
         XCTAssertLessThan(alpha(50, 50), 5, "background fully clear")
@@ -2080,11 +2083,7 @@ final class EngineTests: XCTestCase {
             UIColor.red.setFill(); UIBezierPath(ovalIn: CGRect(x: 80, y: 80, width: 240, height: 240)).fill() }
         func alpha(_ img: UIImage, _ x: Int, _ y: Int) -> Int {
             guard let cg = img.cgImage else { return -1 }
-            var px = [UInt8](repeating: 0, count: 4)
-            let ctx = CGContext(data: &px, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
-                                space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
-            ctx.draw(cg, in: CGRect(x: -x, y: -(cg.height - 1 - y), width: cg.width, height: cg.height))
-            return Int(px[3])
+            return Int(Self.rgba(cg, width: 1, height: 1, in: CGRect(x: -x, y: -(cg.height - 1 - y), width: cg.width, height: cg.height))[3])
         }
         XCTAssertEqual(StickerStudio.presets.count, 10)
         XCTAssertEqual(Set(StickerStudio.presets.map(\.id)).count, 10, "unique preset ids")
@@ -2113,6 +2112,52 @@ final class EngineTests: XCTestCase {
         let many = try XCTUnwrap(PDFDocument(data: try XCTUnwrap(StickerStudio.sheetPDF(Array(repeating: a, count: 13)))))
         XCTAssertEqual(many.pageCount, 2)
         XCTAssertNil(StickerStudio.sheetPDF([]))
+    }
+
+    func testUntanglePlansAroundHowYouFeel() throws {
+        let cal = Calendar(identifier: .gregorian)
+        let nine = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 18, hour: 9)))
+        // The real dump from a user: the feeling shapes the plan but is not a step.
+        let p = UntanglePlan.make(from: "Shower, groceries, office work, not feeling well,", start: nine)
+        XCTAssertTrue(p.situation.unwell); XCTAssertEqual(p.energy, .low)
+        let real = p.steps.filter { !$0.isRest }
+        XCTAssertFalse(real.contains { $0.title.lowercased().contains("feeling") }, "a feeling isn't a task")
+        XCTAssertEqual(real.map(\.kind), [.getUp, .care, .hygiene, .groceries, .work], "gentle start, care first, trip out before work")
+        XCTAssertTrue(p.steps.contains { $0.isRest }, "low energy gets rests built in")
+        let g = try XCTUnwrap(real.first { $0.kind == .groceries })
+        XCTAssertEqual(g.tripMinutes, 30, "travel counted, there and back")
+        XCTAssertTrue(g.items.contains { $0.contains("pharmacy") }, "unwell → pick up medicine on the same trip")
+        XCTAssertNotNil(p.careNote); XCTAssertFalse(p.encouragement.isEmpty)
+        // Times chain with no gaps; total and finish line agree.
+        for (a, b) in zip(p.steps, p.steps.dropFirst()) { XCTAssertEqual(a.end, b.start) }
+        XCTAssertEqual(p.finishAt, nine.addingTimeInterval(TimeInterval(p.totalMinutes * 60)))
+        XCTAssertTrue(p.steps.allSatisfy { !$0.why.isEmpty && !$0.feel.isEmpty }, "every step says why and how it'll feel")
+
+        // Keeping up: done early pulls everything in; more time pushes it out; skip drops it.
+        var q = p
+        let first = q.steps[0].id
+        UntanglePlan.markDone(&q, first, now: nine)
+        XCTAssertEqual(q.steps[1].start, nine)
+        let before = q.finishAt
+        UntanglePlan.extend(&q, q.steps[1].id, by: 10, now: nine)
+        XCTAssertEqual(q.finishAt, before.addingTimeInterval(600))
+        let work = try XCTUnwrap(q.steps.first { $0.kind == .work })
+        UntanglePlan.skip(&q, work.id, now: nine)
+        XCTAssertLessThan(q.finishAt, before)
+        XCTAssertGreaterThan(q.progress, 0)
+
+        // Detail levels, a normal-energy day, lists that stay together, and no false alarms.
+        let quick = UntanglePlan.make(from: "groceries: milk, eggs, bread\nclean the kitchen", detail: .quick, start: nine)
+        XCTAssertEqual(quick.energy, .normal)
+        XCTAssertFalse(quick.steps.contains { $0.kind == .getUp || $0.isRest || $0.kind == .care })
+        XCTAssertEqual(quick.steps.first { $0.kind == .groceries }?.items, ["milk", "eggs", "bread"])
+        XCTAssertTrue(quick.steps.allSatisfy { $0.substeps.isEmpty })
+        XCTAssertGreaterThan(UntanglePlan.make(from: "clean the kitchen", detail: .detailed, start: nine).steps[0].substeps.count, 1)
+        XCTAssertFalse(UntanglePlan.situation(of: "follow up with Sam, buy a pillow").unwell)
+        XCTAssertFalse(UntanglePlan.situation(of: "follow up with Sam").lowEnergy)
+        XCTAssertTrue(UntanglePlan.make(from: "can't get out of bed, laundry", start: nine).steps.first?.kind == .getUp)
+        XCTAssertEqual(UntanglePlan.kind(of: "great report"), .work, "'eat' inside 'great' isn't food")
+        XCTAssertTrue(UntanglePlan.text(p).contains("done by"))
     }
 
     func testAnimateLooksAndPrintableFlipbook() throws {
