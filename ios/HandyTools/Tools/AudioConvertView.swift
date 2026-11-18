@@ -191,8 +191,8 @@ struct AudioConvertView: View {
 
 /// A simple play/pause preview for a converted audio file, so the user confirms what was built before
 /// it leaves the app. Plays through the speaker, resets to the start when it reaches the end, and stops
-/// when the screen goes away.
-private struct AudioPlayBar: View {
+/// when the screen goes away. Shared by the audio tools (Audio Convert, Ringtone).
+struct AudioPlayBar: View {
     let url: URL
     @State private var player: AVPlayer?
     @State private var playing = false

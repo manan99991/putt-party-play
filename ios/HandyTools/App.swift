@@ -123,6 +123,7 @@ struct Tool: Identifiable {
     Tool(id: "pdfannotate", name: "Annotate",        blurb: "Highlight & draw on a PDF, baked in", icon: "highlighter",                        page: 4, asset: "tool_scan", keywords: ["annotate","annotation","highlight","highlighter","marker","markup","mark up","draw","drawing","pen","freehand","note","notes","comment","pdf"]),
     Tool(id: "pdfconvert", name: "Convert",          blurb: "PDF → image pages or text",         icon: "doc.on.doc",                          page: 4, asset: "tool_scan", keywords: ["convert","pdf to image","pdf to text","extract text","pages","image","images","jpg","jpeg","png","picture","export","copy text"]),
     Tool(id: "audioconvert", name: "Audio Convert",  blurb: "Swap formats: M4A, WAV, AIFF, CAF",  icon: "waveform.path",                       page: 4, asset: "tool_audiolab", keywords: ["audio convert","audio converter","audio format","convert audio","m4a","wav","aiff","caf","aac","mp3 to m4a","change audio format","sound file","audio file","music file"]),
+    Tool(id: "ringtone",   name: "Ringtone",         blurb: "Trim a clip to a 30s ringtone",     icon: "bell.badge.fill",                     page: 4, asset: "tool_audiolab", keywords: ["ringtone","ring tone","ringtones","m4r","custom ringtone","make a ringtone","phone ringtone","song to ringtone","alarm sound"]),
     Tool(id: "translate",  name: "Translate",        blurb: "Text, camera, voice — offline",     icon: "character.bubble.fill",               page: 2, asset: "tool_translate", keywords: ["translate","translation","language","offline","camera","voice","conversation","spanish","french","menu","sign"]),
     Tool(id: "voicenotes", name: "Voice → Notes",    blurb: "Transcript, summary, to‑dos",       icon: "waveform.badge.mic",                  page: 2, ai: true, asset: "tool_voicenotes", keywords: ["voice","record","transcribe","transcript","meeting","notes","summary","action items","dictation","audio","speech","ai"]),
     Tool(id: "shield",     name: "Message Shield",   blurb: "Spot scams, see why",               icon: "shield.lefthalf.filled",              page: 2, ai: true, asset: "tool_shield", keywords: ["scam","phishing","spam","fraud","suspicious","text","email","link","safe","check","is this real","mom","ai"]),
@@ -317,6 +318,7 @@ struct ToolDestination: View {
         case "pdfannotate": PDFAnnotateView()
         case "pdfconvert": PDFConvertView()
         case "audioconvert": AudioConvertView()
+        case "ringtone": RingtoneView()
         default: ComingSoonView(id: id)
         }
     }

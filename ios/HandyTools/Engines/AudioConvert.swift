@@ -174,4 +174,48 @@ enum AudioConvert {
         try? FileManager.default.removeItem(at: out)
         return .failure(reader.status == .cancelled ? .timedOut : .cannotWrite)
     }
+
+    /// Longest a ringtone may be: iOS rejects a custom tone over 30 seconds.
+    static let maxRingtoneSeconds = 30.0
+
+    /// Build a ringtone: the [start, start+length] slice of the source re-encoded as AAC in an `.m4r`
+    /// container (the same MPEG-4 audio container iOS uses for tones). `length` is clamped to 30s, and
+    /// the slice is clamped inside the source so a bad range can never produce an empty or over-long
+    /// file. The caller hands the result off via the share sheet (Files → GarageBand), since iOS gives
+    /// no API to set a ringtone directly.
+    static func ringtone(_ src: URL, start: Double, length: Double) async -> Result<URL, Failure> {
+        let asset = AVURLAsset(url: src)
+        guard (try? await asset.loadTracks(withMediaType: .audio).first) != nil else {
+            return .failure(.noAudioTrack)
+        }
+        let total = (try? await asset.load(.duration))?.seconds ?? 0
+        guard total > 0 else { return .failure(.noAudioTrack) }
+        let begin = max(0, min(start, max(0, total - 0.5)))
+        let len = max(0.5, min(min(length, maxRingtoneSeconds), total - begin))
+        let range = CMTimeRange(start: CMTime(seconds: begin, preferredTimescale: 600),
+                                duration: CMTime(seconds: len, preferredTimescale: 600))
+
+        guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A) else {
+            return .failure(.cannotWrite)
+        }
+        let out = VideoEngine.tempURL("m4r")
+        session.outputURL = out
+        session.outputFileType = .m4a   // .m4r is the same container; only the extension differs
+        session.timeRange = range
+        session.metadata = []
+
+        let ok = await withTaskGroup(of: Bool.self) { group -> Bool in
+            group.addTask { await session.export(); return session.status == .completed }
+            group.addTask {
+                try? await Task.sleep(nanoseconds: 120 * 1_000_000_000)
+                session.cancelExport(); return false
+            }
+            let first = await group.next() ?? false
+            group.cancelAll()
+            return first
+        }
+        if ok { return .success(out) }
+        try? FileManager.default.removeItem(at: out)
+        return .failure(.cannotWrite)
+    }
 }

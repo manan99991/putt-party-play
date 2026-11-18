@@ -1472,4 +1472,25 @@ final class EngineTests: XCTestCase {
         guard case .failure(let f) = outcome else { return XCTFail("garbage input should fail, not succeed") }
         XCTAssertFalse(f.message.isEmpty, "a failure must carry a human message")
     }
+
+    // MARK: Ringtone maker (item 5)
+
+    /// A ringtone must be a real .m4r audio file clamped to ≤30s, cut from the chosen start.
+    func testRingtoneClampsToThirtySecondsAndCutsFromStart() async throws {
+        let src = try makeToneFile(seconds: 40.0)   // longer than the 30s ceiling on purpose
+        defer { try? FileManager.default.removeItem(at: src) }
+
+        // Ask for 60s from 5s in — must clamp to 30s (not 35s to the end, not 60s).
+        let outcome = await AudioConvert.ringtone(src, start: 5, length: 60)
+        guard case .success(let out) = outcome else { return XCTFail("ringtone export failed") }
+        defer { try? FileManager.default.removeItem(at: out) }
+        XCTAssertEqual(out.pathExtension, "m4r", "a ringtone must be a .m4r file")
+        let size = ((try? FileManager.default.attributesOfItem(atPath: out.path))?[.size] as? Int) ?? 0
+        XCTAssertGreaterThan(size, 1_000, "ringtone output is empty/tiny")
+        let asset = AVURLAsset(url: out)
+        XCTAssertFalse(try await asset.loadTracks(withMediaType: .audio).isEmpty, "ringtone has no audio")
+        let dur = try await asset.load(.duration).seconds
+        XCTAssertLessThanOrEqual(dur, 30.3, "ringtone must be clamped to 30 seconds")
+        XCTAssertEqual(dur, 30.0, accuracy: 0.6, "a 60s request should fill the 30s ceiling")
+    }
 }
