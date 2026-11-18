@@ -1,0 +1,86 @@
+== test.log (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:111:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:111:20: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:138:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:138:20: error: static properties may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:143:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:143:20: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:147:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:147:20: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:155:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:163:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:175:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:175:20: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:187:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:253:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:253:20: error: static properties may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:254:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:254:20: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:258:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:258:20: error: static properties may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:282:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:313:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:313:20: error: static properties may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:314:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:320:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:332:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:344:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:349:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:364:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/PhotoCleaner.swift:172:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/PhotoCleaner.swift:178:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/PhotoCleaner.swift:187:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:103:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:112:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:123:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:235:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:242:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:254:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:263:12: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:269:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:269:20: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:294:5: error: attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:294:20: error: static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:111:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:111:20: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:138:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:138:20: error: Static properties may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:143:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:143:20: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:147:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:147:20: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:155:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:163:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:175:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:175:20: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:187:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:253:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:253:20: error: Static properties may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:254:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:254:20: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:258:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:258:20: error: Static properties may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:282:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:313:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:313:20: error: Static properties may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:314:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:320:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:332:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:344:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:349:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MemoryEngine.swift:364:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/PhotoCleaner.swift:172:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/PhotoCleaner.swift:178:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/PhotoCleaner.swift:187:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:103:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:112:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:123:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:235:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:242:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:254:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:263:12: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:269:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:269:20: error: Static methods may only be declared on a type
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:294:5: error: Attribute 'private' can only be used in a non-local scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/VideoEngine.swift:294:20: error: Static methods may only be declared on a type
+** TEST FAILED **
