@@ -84,6 +84,8 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("extract audio").first?.id, "audioconvert")
         XCTAssertEqual(searchTools("album art").first?.id, "audiotags")
         XCTAssertEqual(searchTools("zip files").first?.id, "zipmaker")
+        XCTAssertEqual(searchTools("animate").first?.id, "animate")
+        XCTAssertEqual(searchTools("ken burns").first?.id, "animate")
     }
 
     // MARK: duplicate detection precision
@@ -1750,6 +1752,44 @@ final class EngineTests: XCTestCase {
         // Already-punctuated dictation keeps its own sentences.
         let p2 = TranscriptTidy.paragraphs("Okay, um, so I had had a long day. The the client called twice. Anyway, we need to fix the login bug.")
         XCTAssertEqual(p2, ["Okay, so I had had a long day. The client called twice.", "Anyway, we need to fix the login bug."])
+    }
+
+    func testAnimateRendersEveryStyleAtTheRealFormat() async throws {
+        let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
+        // Timeline math: 5 photos, normal pace, Ken Burns = 5×2.0 s holds + 4×0.7 s moves = 12.8 s.
+        var five = Animate.Settings(); five.style = .kenBurns
+        let tl5 = Animate.timeline(count: 5, settings: five)
+        XCTAssertEqual(tl5.seconds, 12.8, accuracy: 0.05)
+        XCTAssertEqual(Animate.phase(frame: 0, in: tl5), .hold(k: 0, u: 0))
+        if case .move(let k, let v) = Animate.phase(frame: Int(2.35 * 30), in: tl5) {
+            XCTAssertEqual(k, 0); XCTAssertEqual(v, 0.5, accuracy: 0.05)
+        } else { XCTFail("2.35 s should be mid-transition") }
+        XCTAssertEqual(Animate.suggestedStyle(count: 1), .kenBurns)
+        XCTAssertEqual(Animate.suggestedStyle(count: 12), .zoomPulse)
+
+        for style in Animate.Style.allCases {
+            var s = Animate.Settings(); s.style = style
+            s.format = try XCTUnwrap(VideoFormat.preset(style == .cube ? "youtube" : "reels"))
+            s.framing = style == .crossfade ? .fit : .fill
+            s.pace = .quick
+            guard let url = await Animate.render(photos, settings: s, scale: 0.1, fps: 10) else {
+                XCTFail("\(style.title) failed to render"); continue
+            }
+            defer { try? FileManager.default.removeItem(at: url) }
+            let asset = AVURLAsset(url: url)
+            let tracks = try await asset.loadTracks(withMediaType: .video)
+            let track = try XCTUnwrap(tracks.first, "\(style.title) has video")
+            let size = try await track.load(.naturalSize)
+            XCTAssertEqual(size, Animate.evenSize(CGSize(width: s.format.size.width * 0.1, height: s.format.size.height * 0.1)),
+                           "\(style.title) is exactly the platform's shape")
+            let secs = try await asset.load(.duration).seconds
+            XCTAssertEqual(secs, Animate.timeline(count: 3, settings: s, fps: 10).seconds, accuracy: 0.25, "\(style.title) length")
+        }
+        // A one-photo video works (styles that need two are disabled in the UI).
+        var one = Animate.Settings(); one.style = .polaroid
+        let still = try XCTUnwrap(Animate.still([photos[0]], settings: one, at: 0.9))
+        XCTAssertEqual(still.size, Animate.evenSize(CGSize(width: 270, height: 480)))
+        XCTAssertEqual(Animate.Style.cube.minPhotos, 2)
     }
 
     func testAudioConvertRejectsNonAudioGracefully() async throws {

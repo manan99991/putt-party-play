@@ -13,6 +13,7 @@ struct ExploreView: View {
     /// The catalog, grouped the way the three pages already divide it, plus Think & plan.
     private let groups: [(title: String, page: Int)] = [
         ("Photo, video & sharing", 1),
+        ("Animate & create", 7),
         ("Scan, read & organize", 2),
         ("Everyday, sensors & accessibility", 3),
         ("Documents & PDF", 4),
@@ -21,7 +22,7 @@ struct ExploreView: View {
     ]
 
     /// Hero tools spotlighted at the top — each is a real, full tool that shows Tenzy at its best.
-    private let featuredIDs = ["identify", "video", "scan", "voicenotes", "translate", "seeread"]
+    private let featuredIDs = ["animate", "identify", "video", "scan", "voicenotes", "translate", "seeread"]
     private var featured: [Tool] { featuredIDs.compactMap { id in TOOLS.first { $0.id == id } } }
 
     var body: some View {
