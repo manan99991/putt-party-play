@@ -1488,7 +1488,8 @@ final class EngineTests: XCTestCase {
         let size = ((try? FileManager.default.attributesOfItem(atPath: out.path))?[.size] as? Int) ?? 0
         XCTAssertGreaterThan(size, 1_000, "ringtone output is empty/tiny")
         let asset = AVURLAsset(url: out)
-        XCTAssertFalse(try await asset.loadTracks(withMediaType: .audio).isEmpty, "ringtone has no audio")
+        let audioTracks = try await asset.loadTracks(withMediaType: .audio)   // hoisted: await can't live inside an XCTAssert autoclosure
+        XCTAssertFalse(audioTracks.isEmpty, "ringtone has no audio")
         let dur = try await asset.load(.duration).seconds
         XCTAssertLessThanOrEqual(dur, 30.3, "ringtone must be clamped to 30 seconds")
         XCTAssertEqual(dur, 30.0, accuracy: 0.6, "a 60s request should fill the 30s ceiling")
