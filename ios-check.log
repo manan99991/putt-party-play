@@ -24,13 +24,13 @@ Creating working copy of package ‘ogg-swift’
 
 Checking out 0.8.3 of package ‘ogg-swift’
 
-Creating working copy of package ‘opus-swift’
-
-Checking out 0.8.4 of package ‘opus-swift’
-
 Creating working copy of package ‘swift-ogg’
 
 Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
 
 
 Resolved source packages:
@@ -40,4 +40,5 @@ Resolved source packages:
 
 resolved source packages: SwiftOGG, YbridOpus, YbridOgg
 == build.log (errors)
-** TEST SUCCEEDED **
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MeetingNotes.swift:57:26: error: cannot find 'Flag' in scope
+** TEST FAILED **
