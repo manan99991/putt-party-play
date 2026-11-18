@@ -22,7 +22,7 @@ does the **top undone item**, checks it off, and pushes one validation commit. O
 - Mark an item `building` when you start, `done` once its CI is green. Use a fresh `doc_id`.
 
 ## Ordered queue (do the top undone one)
-1. **Redaction UI** — tap/drag to mark regions on each PDF page, preview the flattened result, Save/Share. Engine `DocEngine.redact` is done; this is the interface + preview.
+1. ~~Redaction UI~~ — **DONE** (Redact PDF tool `pdfredact`, drag-to-black-out + preview + true removal; commit d58160a4). Start at item 2.
 2. **PDF annotate** — marker/highlight + freehand on a page, flatten into the PDF, preview before save.
 3. **PDF convert** — PDF → image pages, and PDF → text (reuse `importPDF` / OCR). Land in the share sheet.
 4. **Audio convert** — between the common phone formats (bundle codecs where iOS lacks them); honest about what each phone can do.
