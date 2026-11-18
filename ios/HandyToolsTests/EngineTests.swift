@@ -1792,6 +1792,24 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Animate.Style.cube.minPhotos, 2)
     }
 
+    func testVideoReframeMakesExactPlatformSizes() async throws {
+        let fixture = await Self.movie(seconds: 1.5)
+        let src = try XCTUnwrap(fixture, "fixture")
+        defer { try? FileManager.default.removeItem(at: src) }
+        for (id, fit) in [("reels", true), ("square", false)] {
+            let spec = try XCTUnwrap(VideoFormat.preset(id))
+            guard let out = await VideoReframe.reframe(src, to: spec, fit: fit) else { XCTFail("\(id) reframe failed"); continue }
+            defer { try? FileManager.default.removeItem(at: out) }
+            let asset = AVURLAsset(url: out)
+            let tracks = try await asset.loadTracks(withMediaType: .video)
+            let track = try XCTUnwrap(tracks.first)
+            let size = try await track.load(.naturalSize)
+            XCTAssertEqual(size, spec.size, "\(id) is the platform's exact size")
+            let secs = try await asset.load(.duration).seconds
+            XCTAssertEqual(secs, 1.5, accuracy: 0.3, "\(id) keeps the full length")
+        }
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)

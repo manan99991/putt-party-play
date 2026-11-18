@@ -10,9 +10,9 @@ import UniformTypeIdentifiers
 struct VideoView: View {
     @EnvironmentObject var store: StoreManager
 
-    private enum Mode: Int, CaseIterable { case shrink, trim, convert, mute, audio, gif
-        var title: String { ["Shrink", "Trim", "To MP4", "Mute", "Audio only", "GIF"][rawValue] }
-        var icon: String { ["arrow.down.right.and.arrow.up.left", "scissors", "film", "speaker.slash", "waveform", "photo.stack"][rawValue] }
+    private enum Mode: Int, CaseIterable { case shrink, trim, convert, mute, audio, gif, social
+        var title: String { ["Shrink", "Trim", "To MP4", "Mute", "Audio only", "GIF", "For social"][rawValue] }
+        var icon: String { ["arrow.down.right.and.arrow.up.left", "scissors", "film", "speaker.slash", "waveform", "photo.stack", "rectangle.portrait.on.rectangle.portrait"][rawValue] }
     }
     private struct Output { let url: URL; let bytes: Int; let kind: Kind; enum Kind { case video, audio, gif } }
 
@@ -53,6 +53,8 @@ struct VideoView: View {
     private let gifWidths: [(String, CGFloat)] = [("Small 320", 320), ("Medium 480", 480), ("Large 640", 640)]
     @State private var gifPhotoDelay: Double = 0.5
     @State private var gifPhotos: [Data] = []
+    @State private var socialFormat: VideoFormat.Spec = VideoFormat.presets[0]
+    @State private var socialFit = false
 
     private var overQuota: Bool { !Usage.hasRoom("video", limit: Limits.freeVideoPerDay) }
 
@@ -84,6 +86,7 @@ struct VideoView: View {
                 case .mute: note("Keeps the picture, removes every audio track. Handy before posting something recorded in a loud room.")
                 case .audio: note("Saves just the sound as an M4A you can send, transcribe, or set as a ringtone source.")
                 case .gif: gifControls
+                case .social: socialControls
                 }
 
                 if !store.isPremium { QuotaChip(name: "video", limit: Limits.freeVideoPerDay).environmentObject(store) }
@@ -216,6 +219,24 @@ struct VideoView: View {
         .cardStyle(padding: HandySpacing.s12)
     }
 
+    private var socialControls: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(L("Where will you post it?")).font(HandyFont.bodyStrong)
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(VideoFormat.presets) { f in
+                    HChip(text: "\(f.name) · \(f.ratio)", selected: socialFormat == f) { socialFormat = f }
+                }
+            }
+            Picker("", selection: $socialFit) {
+                Text(L("Fill the frame")).tag(false)
+                Text(L("Show whole video")).tag(true)
+            }.pickerStyle(.segmented)
+            note(socialFit
+                 ? "Keeps the whole picture, over a soft blurred copy of itself instead of black bars. \(Int(socialFormat.size.width))×\(Int(socialFormat.size.height)), sound kept."
+                 : "Crops to the centre so it fills the screen with no bars. \(Int(socialFormat.size.width))×\(Int(socialFormat.size.height)), sound kept.")
+        }
+    }
+
     private var actionLabel: String {
         switch mode {
         case .shrink: return "Shrink under \(SizeTarget.format(targetBytes))"
@@ -224,6 +245,7 @@ struct VideoView: View {
         case .mute: return "Remove the sound"
         case .audio: return "Save audio only"
         case .gif: return "Make GIF"
+        case .social: return "Make \(socialFormat.ratio) video"
         }
     }
 
@@ -341,6 +363,7 @@ struct VideoView: View {
         result = nil; player?.pause(); player = nil; resultNote = nil; errorText = nil
         let m = mode, target = targetBytes, s = trimStart, e = trimEnd
         let gFrom = gifFrom, gLen = gifLength, gFPS = gifFPS, gSpeed = gifSpeed, gW = gifWidths[gifWidthIdx].1
+        let fmt = socialFormat, fit = socialFit
         let failMsg = failureText(m)
         let tooBigNote = "This is the smallest I can make it without wrecking it. To get under \(SizeTarget.format(target)), trim it shorter first, then shrink."
         // Runs in JobBus so the job and its result survive leaving the tool; the charge + the on-screen
@@ -359,6 +382,7 @@ struct VideoView: View {
                 case .mute: return await VideoEngine.mute(src)
                 case .audio: return await VideoEngine.extractAudio(src)
                 case .gif: return await tenzyGIFFromVideo(url: src, start: gFrom, duration: gLen, fps: gFPS, speed: gSpeed, maxDim: gW)
+                case .social: return await VideoReframe.reframe(src, to: fmt, fit: fit, progress: report)
                 }
             }
             guard let out else { return ([], "", nil, failMsg) }
@@ -401,6 +425,7 @@ struct VideoView: View {
         case .mute: return "Couldn't remove the audio from this clip."
         case .audio: return "This clip has no audio track to save."
         case .gif: return "Couldn't read frames from this video. Try a different range."
+        case .social: return "Couldn't reshape this clip. It may be DRM-protected or damaged."
         }
     }
 
