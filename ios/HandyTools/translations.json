@@ -2439,6 +2439,16 @@
   "pt": "Frio",
   "zh": "冷色"
  },
+ "Copied — paste it into any chat": {
+  "de": "Kopiert – in jeden Chat einfügen",
+  "es": "Copiado: pégalo en cualquier chat",
+  "fr": "Copié – collez-le dans n'importe quelle discussion",
+  "hi": "कॉपी हुआ — किसी भी चैट में पेस्ट करें",
+  "it": "Copiato: incollalo in qualsiasi chat",
+  "ja": "コピーしました — どのチャットにも貼り付けられます",
+  "pt": "Copiado — cole em qualquer conversa",
+  "zh": "已复制——可粘贴到任何聊天"
+ },
  "Copy": {
   "de": "Kopieren",
   "es": "Copiar",
@@ -2519,6 +2529,16 @@
   "pt": "Copiar cola como colunas no Numbers, Excel ou Sheets.",
   "zh": "复制后会以列的形式粘贴到 Numbers、Excel 或 Sheets 中。"
  },
+ "Copy sticker": {
+  "de": "Sticker kopieren",
+  "es": "Copiar sticker",
+  "fr": "Copier le sticker",
+  "hi": "स्टिकर कॉपी करें",
+  "it": "Copia sticker",
+  "ja": "ステッカーをコピー",
+  "pt": "Copiar figurinha",
+  "zh": "复制贴纸"
+ },
  "Copy to share": {
   "de": "Zum Teilen kopieren",
   "es": "Copiar para compartir",
@@ -2588,6 +2608,16 @@
   "ja": "はっきりした被写体が見つかりません。前景が明確な写真をお試しください。",
   "pt": "Nenhum objeto claro encontrado. Tente uma foto com primeiro plano definido.",
   "zh": "未找到清晰主体。请换一张前景明显的照片。"
+ },
+ "Couldn't find a person, pet or thing to cut out. Try a photo where it stands clear of the background.": {
+  "de": "Keine Person, kein Tier oder Ding zum Ausschneiden gefunden. Versuch ein Foto, auf dem es sich klar vom Hintergrund abhebt.",
+  "es": "No se encontró persona, mascota u objeto que recortar. Prueba una foto donde destaque del fondo.",
+  "fr": "Aucune personne, animal ou objet à détourer. Essayez une photo où le sujet se détache du fond.",
+  "hi": "काटने के लिए कोई व्यक्ति, पालतू या चीज़ नहीं मिली। ऐसी फ़ोटो लें जिसमें वह पृष्ठभूमि से अलग दिखे।",
+  "it": "Nessuna persona, animale o oggetto da ritagliare. Prova una foto in cui si stacchi dallo sfondo.",
+  "ja": "切り抜く人・ペット・物が見つかりません。背景からはっきり分かれた写真をお試しください。",
+  "pt": "Nenhuma pessoa, pet ou objeto para recortar. Tente uma foto em que ele se destaque do fundo.",
+  "zh": "没找到可抠出的人物、宠物或物品。请换一张主体和背景分明的照片。"
  },
  "Couldn't find dishes in that photo — try closer, flatter, with good light.": {
   "de": "Keine Gerichte im Foto gefunden – näher, flacher und mit gutem Licht versuchen.",
@@ -2968,6 +2998,16 @@
   "ja": "被写体の切り抜き、証明写真、リサイズ、変換 — 1枚の写真をここで。",
   "pt": "Recorte o objeto, faça foto de passaporte, redimensione ou converta — uma foto, um lugar.",
   "zh": "抠图、证件照、调整大小或转换——一张照片，一处搞定。"
+ },
+ "Cutting it out…": {
+  "de": "Wird ausgeschnitten …",
+  "es": "Recortando…",
+  "fr": "Détourage…",
+  "hi": "काटा जा रहा है…",
+  "it": "Ritaglio…",
+  "ja": "切り抜き中…",
+  "pt": "Recortando…",
+  "zh": "正在抠图…"
  },
  "Dairy": {
   "de": "Milchprodukte",
@@ -5219,6 +5259,16 @@
   "pt": "Já estava bem comprimido.",
   "zh": "原本已经压缩得很好了。"
  },
+ "It's now in your stickers — in Messages, WhatsApp and any app, from the emoji keyboard.": {
+  "de": "Jetzt ist er in deinen Stickern – in Nachrichten, WhatsApp und jeder App, über die Emoji-Tastatur.",
+  "es": "Ya está en tus stickers: en Mensajes, WhatsApp y cualquier app, desde el teclado de emojis.",
+  "fr": "Il est dans vos stickers – dans Messages, WhatsApp et toute app, via le clavier emoji.",
+  "hi": "अब यह आपके स्टिकर में है — Messages, WhatsApp और हर ऐप में, इमोजी कीबोर्ड से।",
+  "it": "Ora è tra i tuoi sticker: in Messaggi, WhatsApp e ogni app, dalla tastiera emoji.",
+  "ja": "これでステッカーに追加 — メッセージ・WhatsAppなど、絵文字キーボードからどのアプリでも。",
+  "pt": "Agora está nas suas figurinhas — em Mensagens, WhatsApp e qualquer app, pelo teclado de emojis.",
+  "zh": "现在它就在你的贴纸里了——信息、WhatsApp等任何App都能从表情键盘使用。"
+ },
  "It's still a working form — you or anyone can change the answers later.": {
   "de": "Es bleibt ein funktionierendes Formular – du oder andere können die Antworten später ändern.",
   "es": "Sigue siendo un formulario funcional: tú o cualquiera puede cambiar las respuestas después.",
@@ -5448,6 +5498,16 @@
   "ja": "保持する",
   "pt": "Mantê-lo",
   "zh": "保留"
+ },
+ "Keep it in your sticker drawer": {
+  "de": "Im Sticker-Fach behalten",
+  "es": "Guárdalo en tus stickers",
+  "fr": "Gardez-le dans vos stickers",
+  "hi": "इसे अपने स्टिकर में रखें",
+  "it": "Tienilo tra i tuoi sticker",
+  "ja": "ステッカーに追加して残す",
+  "pt": "Guarde nas suas figurinhas",
+  "zh": "收进你的贴纸栏"
  },
  "Keep lines": {
   "de": "Zeilen behalten",
@@ -6098,6 +6158,16 @@
   "ja": "すべて作成",
   "pt": "Criar todos",
   "zh": "全部生成"
+ },
+ "Make another": {
+  "de": "Noch einen machen",
+  "es": "Hacer otro",
+  "fr": "En faire un autre",
+  "hi": "एक और बनाएँ",
+  "it": "Creane un altro",
+  "ja": "もう1つ作る",
+  "pt": "Fazer outra",
+  "zh": "再做一个"
  },
  "Make collage": {
   "de": "Collage erstellen",
@@ -7609,6 +7679,16 @@
   "pt": "Abrir",
   "zh": "打开"
  },
+ "Open Photos and tap this sticker (it's your newest photo).": {
+  "de": "Öffne Fotos und tippe auf diesen Sticker (dein neuestes Foto).",
+  "es": "Abre Fotos y toca este sticker (es tu foto más reciente).",
+  "fr": "Ouvrez Photos et touchez ce sticker (votre photo la plus récente).",
+  "hi": "फ़ोटो खोलें और यह स्टिकर टैप करें (यह आपकी सबसे नई फ़ोटो है)।",
+  "it": "Apri Foto e tocca questo sticker (è la tua foto più recente).",
+  "ja": "写真アプリを開き、このステッカー（最新の写真）をタップ。",
+  "pt": "Abra Fotos e toque nesta figurinha (é sua foto mais recente).",
+  "zh": "打开“照片”，点按这张贴纸（就是最新的照片）。"
+ },
  "Open Settings": {
   "de": "Einstellungen öffnen",
   "es": "Abrir Ajustes",
@@ -8139,6 +8219,16 @@
   "pt": "Tira de fotos",
   "zh": "照片条"
  },
+ "Photo → sticker for any chat": {
+  "de": "Foto → Sticker für jeden Chat",
+  "es": "Foto → sticker para cualquier chat",
+  "fr": "Photo → sticker pour toutes les discussions",
+  "hi": "फ़ोटो → किसी भी चैट के लिए स्टिकर",
+  "it": "Foto → sticker per ogni chat",
+  "ja": "写真 → どのチャットでも使えるステッカー",
+  "pt": "Foto → figurinha para qualquer conversa",
+  "zh": "照片 → 任意聊天可用的贴纸"
+ },
  "Photo, video & sharing": {
   "de": "Foto, Video & Teilen",
   "es": "Foto, vídeo y compartir",
@@ -8308,6 +8398,16 @@
   "ja": "会議の録音を選ぶと、発言・要約・ToDo・フォローアップメールを端末上で作成。",
   "pt": "Escolha a gravação de uma reunião — falas, resumo, tarefas e e-mail de acompanhamento, tudo no telefone.",
   "zh": "选择会议录音——在手机上得到发言、摘要、待办和跟进邮件。"
+ },
+ "Pick a photo of a person, pet or thing. Tenzy cuts it out and gives it a sticker edge.": {
+  "de": "Wähle ein Foto von einer Person, einem Tier oder Ding. Tenzy schneidet es aus und gibt ihm einen Sticker-Rand.",
+  "es": "Elige una foto de una persona, mascota u objeto. Tenzy la recorta y le pone borde de sticker.",
+  "fr": "Choisissez une photo d'une personne, d'un animal ou d'un objet. Tenzy le détoure et ajoute un bord de sticker.",
+  "hi": "किसी व्यक्ति, पालतू या चीज़ की फ़ोटो चुनें। Tenzy उसे काटकर स्टिकर जैसा किनारा देता है।",
+  "it": "Scegli la foto di una persona, un animale o un oggetto. Tenzy lo ritaglia e aggiunge il bordo da sticker.",
+  "ja": "人・ペット・物の写真を選ぶと、Tenzyが切り抜いてステッカーの縁を付けます。",
+  "pt": "Escolha uma foto de pessoa, pet ou objeto. O Tenzy recorta e dá borda de figurinha.",
+  "zh": "选一张人物、宠物或物品的照片，Tenzy会抠出来并加上贴纸白边。"
  },
  "Pick a photo or video to get it ready to send, post or print.": {
   "de": "Wähle ein Foto oder Video, um es zum Senden, Posten oder Drucken vorzubereiten.",
@@ -9999,6 +10099,16 @@
   "pt": "Salvar em Notas ou compartilhar",
   "zh": "存到备忘录或分享"
  },
+ "Save to Photos": {
+  "de": "In Fotos sichern",
+  "es": "Guardar en Fotos",
+  "fr": "Enregistrer dans Photos",
+  "hi": "फ़ोटो में सेव करें",
+  "it": "Salva in Foto",
+  "ja": "写真に保存",
+  "pt": "Salvar em Fotos",
+  "zh": "存到照片"
+ },
  "Save transcript": {
   "de": "Transkript speichern",
   "es": "Guardar transcripción",
@@ -10028,6 +10138,16 @@
   "ja": "保存したメモ",
   "pt": "Notas guardadas",
   "zh": "已保存的笔记"
+ },
+ "Saved to Photos": {
+  "de": "In Fotos gesichert",
+  "es": "Guardado en Fotos",
+  "fr": "Enregistré dans Photos",
+  "hi": "फ़ोटो में सेव हुआ",
+  "it": "Salvato in Foto",
+  "ja": "写真に保存しました",
+  "pt": "Salvo em Fotos",
+  "zh": "已存到照片"
  },
  "Saved — this is what players will show:": {
   "de": "Gesichert – so zeigen es Player an:",
@@ -11499,6 +11619,16 @@
   "pt": "Estéreo · 96 kbps — ótimo para a maioria das músicas",
   "zh": "立体声 · 96 kbps——适合大多数音乐"
  },
+ "Sticker Maker": {
+  "de": "Sticker-Macher",
+  "es": "Creador de stickers",
+  "fr": "Créateur de stickers",
+  "hi": "स्टिकर मेकर",
+  "it": "Crea sticker",
+  "ja": "ステッカーメーカー",
+  "pt": "Criador de figurinhas",
+  "zh": "贴纸制作"
+ },
  "Stitch shots into one tall image": {
   "de": "Screenshots zu einem Bild fügen",
   "es": "Une capturas en una imagen alta",
@@ -11698,6 +11828,16 @@
   "ja": "録音をタップして話し始めてください — 話すそばから文字起こしが表示されます。",
   "pt": "Toca em Gravar e começa a falar — a transcrição aparece enquanto falas.",
   "zh": "点按录音并开始讲话 — 文字记录会随你说话实时出现。"
+ },
+ "Tap Save to Photos above, then open Photos and tap the sticker.": {
+  "de": "Tippe oben auf „In Fotos sichern“, öffne dann Fotos und tippe auf den Sticker.",
+  "es": "Toca «Guardar en Fotos» arriba, luego abre Fotos y toca el sticker.",
+  "fr": "Touchez « Enregistrer dans Photos » ci-dessus, puis ouvrez Photos et touchez le sticker.",
+  "hi": "ऊपर ‘फ़ोटो में सेव करें’ टैप करें, फिर फ़ोटो खोलकर स्टिकर टैप करें।",
+  "it": "Tocca «Salva in Foto» qui sopra, poi apri Foto e tocca lo sticker.",
+  "ja": "上の「写真に保存」をタップし、写真アプリでステッカーをタップ。",
+  "pt": "Toque em «Salvar em Fotos» acima, abra Fotos e toque na figurinha.",
+  "zh": "先点上方“存到照片”，再打开“照片”点按这张贴纸。"
  },
  "Tap Scan to list everything on your Wi-Fi. Join the Wi-Fi network first — this can't see devices over mobile data.": {
   "de": "Tippe auf Scannen, um alles in deinem WLAN aufzulisten. Verbinde dich zuerst mit dem WLAN — über mobile Daten sieht dies keine Geräte.",
@@ -11918,6 +12058,16 @@
   "ja": "前回Tenzyで問題が発生しました",
   "pt": "O Tenzy teve um problema da última vez",
   "zh": "Tenzy 上次遇到了问题"
+ },
+ "Tenzy needs permission to add to Photos — allow it in Settings → Privacy → Photos → Tenzy, or use Copy.": {
+  "de": "Tenzy braucht die Erlaubnis, zu Fotos hinzuzufügen – erlaube es unter Einstellungen → Datenschutz → Fotos → Tenzy oder nutze Kopieren.",
+  "es": "Tenzy necesita permiso para añadir a Fotos: actívalo en Ajustes → Privacidad → Fotos → Tenzy, o usa Copiar.",
+  "fr": "Tenzy a besoin d'autorisation pour ajouter à Photos – autorisez-la dans Réglages → Confidentialité → Photos → Tenzy, ou utilisez Copier.",
+  "hi": "Tenzy को फ़ोटो में जोड़ने की अनुमति चाहिए — सेटिंग्स → प्राइवेसी → फ़ोटो → Tenzy में दें, या कॉपी इस्तेमाल करें।",
+  "it": "Tenzy ha bisogno del permesso per aggiungere a Foto: consentilo in Impostazioni → Privacy → Foto → Tenzy, oppure usa Copia.",
+  "ja": "写真への追加にはTenzyの許可が必要です — 設定 → プライバシー → 写真 → Tenzy で許可するか、コピーを使ってください。",
+  "pt": "O Tenzy precisa de permissão para adicionar a Fotos — permita em Ajustes → Privacidade → Fotos → Tenzy, ou use Copiar.",
+  "zh": "Tenzy需要“添加到照片”的权限——请在设置→隐私→照片→Tenzy中允许，或使用复制。"
  },
  "Tenzy reads your photos and videos on this device to show what's using space. Nothing is uploaded.": {
   "de": "Tenzy liest deine Fotos und Videos auf diesem Gerät, um zu zeigen, was Speicher belegt. Nichts wird hochgeladen.",
@@ -12809,6 +12959,16 @@
   "pt": "Total",
   "zh": "合计"
  },
+ "Touch and hold the cut-out, then tap Add Sticker.": {
+  "de": "Halte den Ausschnitt gedrückt und tippe auf „Sticker hinzufügen“.",
+  "es": "Mantén pulsado el recorte y toca «Añadir sticker».",
+  "fr": "Touchez et maintenez le détourage, puis touchez « Ajouter un autocollant ».",
+  "hi": "कटे हिस्से को दबाकर रखें, फिर ‘स्टिकर जोड़ें’ टैप करें।",
+  "it": "Tieni premuto il ritaglio, poi tocca «Aggiungi sticker».",
+  "ja": "切り抜き部分を長押しし、「ステッカーを追加」をタップ。",
+  "pt": "Toque e segure o recorte e toque em «Adicionar figurinha».",
+  "zh": "长按抠出的部分，然后点“添加贴纸”。"
+ },
  "Transcribed on your phone; nothing is uploaded.": {
   "de": "Auf deinem Telefon transkribiert; nichts wird hochgeladen.",
   "es": "Transcrito en tu teléfono; no se sube nada.",
@@ -12968,6 +13128,16 @@
   "ja": "スキャンしたPDFを、文字を検索・コピーできるPDFに。",
   "pt": "Transforme um PDF escaneado em um que dá para pesquisar e copiar texto.",
   "zh": "把扫描PDF变成可搜索、可复制文字的PDF。"
+ },
+ "Turn any photo into a sticker for Messages, WhatsApp and more.": {
+  "de": "Mach aus jedem Foto einen Sticker für Nachrichten, WhatsApp und mehr.",
+  "es": "Convierte cualquier foto en un sticker para Mensajes, WhatsApp y más.",
+  "fr": "Transformez une photo en sticker pour Messages, WhatsApp et plus.",
+  "hi": "किसी भी फ़ोटो को Messages, WhatsApp आदि के लिए स्टिकर बनाएँ।",
+  "it": "Trasforma qualsiasi foto in uno sticker per Messaggi, WhatsApp e altro.",
+  "ja": "どんな写真もメッセージやWhatsAppなどで使えるステッカーに。",
+  "pt": "Transforme qualquer foto em figurinha para Mensagens, WhatsApp e mais.",
+  "zh": "把任何照片变成可用于信息、WhatsApp等的贴纸。"
  },
  "Turn into bullet points": {
   "de": "In Stichpunkte umwandeln",

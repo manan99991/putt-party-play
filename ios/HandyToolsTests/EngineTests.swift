@@ -97,6 +97,8 @@ final class EngineTests: XCTestCase {
         }
         XCTAssertTrue(ToolHandoff.tools(for: .pdf).contains("pdfsign"))
         XCTAssertTrue(ToolHandoff.tools(for: .image).contains("animate"))
+        XCTAssertEqual(ToolHandoff.tools(for: .image).first, "sticker")
+        XCTAssertEqual(searchTools("sticker maker").first?.id, "sticker")
         ToolHandoff.shared.put(.file(Data("%PDF".utf8), ext: "pdf"), for: "pdfsign")
         let handed = ToolHandoff.shared.take("pdfsign")
         XCTAssertNotNil(handed); XCTAssertNil(ToolHandoff.shared.take("pdfsign"), "consumed once")

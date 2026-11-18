@@ -134,6 +134,7 @@ struct Tool: Identifiable {
     Tool(id: "collage",    name: "Collage",          blurb: "Photos into one designed picture",   icon: "square.grid.3x3.square",              page: 7, asset: "tool_stitch", keywords: ["collage","photo collage","grid","mosaic","photo strip","layout","combine photos","story collage","photo grid","moodboard"]),
     Tool(id: "faceemoji",  name: "Face Emoji",       blurb: "Cover faces with emoji — you pick",  icon: "face.smiling.inverse",                page: 7, asset: "tool_scrub", keywords: ["face emoji","emoji face","cover faces","hide faces","hide kids faces","kids","children","blur faces","privacy photo","emoji over face","sticker face"]),
     Tool(id: "comicstrip", name: "Comic Strip",      blurb: "Photos into comic panels + bubbles", icon: "bubble.left.and.text.bubble.right.fill", page: 7, asset: "tool_studio", keywords: ["comic","comic strip","cartoon","speech bubble","manga","panels","inked","funny","meme strip","storyboard"]),
+    Tool(id: "sticker",    name: "Sticker Maker",    blurb: "Photo → sticker for any chat",       icon: "scissors",                            page: 7, asset: "tool_studio", keywords: ["sticker","sticker maker","make a sticker","stickers","cut out","imessage sticker","whatsapp sticker","cutout sticker","pet sticker"]),
     Tool(id: "audioconvert", name: "Audio Convert",  blurb: "Swap formats: M4A, WAV, AIFF, CAF",  icon: "waveform.path",                       page: 5, asset: "tool_audiolab", keywords: ["audio convert","audio converter","audio format","convert audio","extract audio","audio from video","video to audio","m4a","wav","aiff","caf","aac","mp3 to m4a","change audio format","sound file","audio file","music file"]),
     Tool(id: "audiocompress", name: "Compress Audio", blurb: "Shrink a recording to email it",    icon: "arrow.down.right.and.arrow.up.left.circle", page: 5, asset: "tool_audiolab", keywords: ["compress audio","shrink audio","smaller audio","audio too big","file too large","email a recording","reduce audio size","make smaller","bitrate","voice memo size"]),
     Tool(id: "ringtone",   name: "Ringtone",         blurb: "Trim a clip to a 30s ringtone",     icon: "bell.badge.fill",                     page: 5, asset: "tool_audiolab", keywords: ["ringtone","ring tone","ringtones","m4r","custom ringtone","make a ringtone","phone ringtone","song to ringtone","alarm sound"]),
@@ -346,6 +347,7 @@ struct ToolDestination: View {
         case "collage": CollageView()
         case "faceemoji": FaceEmojiView()
         case "comicstrip": ComicStripView()
+        case "sticker": StickerMakerView()
         case "medreminder": MedRemindersView()
         case "menu": MenuView()
         case "audioconvert": AudioConvertView()
