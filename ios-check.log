@@ -16,17 +16,17 @@ Resolve Package Graph
 
 Fetching from https://github.com/element-hq/swift-ogg
 
-Fetching from https://github.com/vector-im/opus-swift
-
 Fetching from https://github.com/vector-im/ogg-swift.git
 
-Creating working copy of package ‘ogg-swift’
-
-Checking out 0.8.3 of package ‘ogg-swift’
+Fetching from https://github.com/vector-im/opus-swift
 
 Creating working copy of package ‘swift-ogg’
 
 Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘ogg-swift’
+
+Checking out 0.8.3 of package ‘ogg-swift’
 
 Creating working copy of package ‘opus-swift’
 
@@ -34,10 +34,10 @@ Checking out 0.8.4 of package ‘opus-swift’
 
 
 Resolved source packages:
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
   SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
   YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
 
-resolved source packages: YbridOpus, SwiftOGG, YbridOgg
+resolved source packages: SwiftOGG, YbridOgg, YbridOpus
 == build.log (errors)
 ** TEST SUCCEEDED **
