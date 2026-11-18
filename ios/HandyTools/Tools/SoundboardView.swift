@@ -181,7 +181,7 @@ struct SoundboardView: View {
         if hasVideo {
             return await VideoEngine.extractAudio(src)
         }
-        let audio = await ChainMedia.readableAudioURL(for: src)
+        let audio = await Transcriber.readableAudioURL(for: src)
         if let tracks = try? await AVURLAsset(url: audio).loadTracks(withMediaType: .audio), !tracks.isEmpty {
             return audio
         }
