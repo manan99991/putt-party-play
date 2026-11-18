@@ -2176,6 +2176,37 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(WeatherWear.bestTripHour(hours.map { ($0.0, 0.9) }, now: now))
     }
 
+    func testDescribeItBuildsWhatWasAskedOrSaysWhatsMissing() throws {
+        // The real request: reminders for the day must never become a photo/receipt tool.
+        let ask = "I want to organize my day better with reminders for things I need to do"
+        let g = try XCTUnwrap(ChainPlanner.guess(ask))
+        XCTAssertEqual(g.chain.steps.first?.block, .actionItems, "a to-do list, from what you type")
+        XCTAssertEqual(g.chain.steps.first?.block.takes, .text, "no photo was mentioned")
+        XCTAssertFalse(PlanCheck.startConflict(ask, g.chain))
+        XCTAssertEqual(Set(PlanCheck.needs(ask)), [.tasks, .reminders])
+        XCTAssertTrue(PlanCheck.missing(ask, g.chain).isEmpty)
+        XCTAssertEqual(PlanCheck.builtIn(ask)?.id, "untangle", "the full tool is offered first")
+
+        // The plan the model once made for it is recognised as wrong and scored below the right one.
+        let wrong = Chain(id: "w", name: "Reminder Organizer", steps: [ChainStep(block: .readText), ChainStep(block: .summarize), ChainStep(block: .makeTable)])
+        XCTAssertTrue(PlanCheck.startConflict(ask, wrong))
+        XCTAssertLessThan(PlanCheck.score(ask, wrong), PlanCheck.score(ask, g.chain))
+        XCTAssertEqual(Set(PlanCheck.report(ask, wrong).gaps), ["a to-do list", "reminders"])
+
+        // Things a custom tool can't do are said out loud, not dropped.
+        let w = "summarize my notes and tell me the weather"
+        let wc = try XCTUnwrap(ChainPlanner.guess(w)).chain
+        XCTAssertEqual(PlanCheck.report(w, wc).good, ["a summary"])
+        XCTAssertEqual(PlanCheck.report(w, wc).gaps, ["weather"])
+
+        // Photo requests still start from a photo; meds go to Med Reminders; no false matches.
+        let r = "turn my receipt photo into an expense row"
+        XCTAssertFalse(PlanCheck.startConflict(r, try XCTUnwrap(ChainPlanner.guess(r)).chain))
+        XCTAssertEqual(PlanCheck.builtIn("remind me to take my meds at 8")?.id, "medreminder")
+        XCTAssertNil(PlanCheck.builtIn("shrink a photo under 2 mb"))
+        XCTAssertFalse(PlanCheck.needs("a brainstorm about trains").contains(.weather), "'rain' inside 'brain'/'trains' isn't weather")
+    }
+
     func testAnimateLooksAndPrintableFlipbook() throws {
         let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
         XCTAssertEqual(Animate.applyLook(.original, to: photos).count, 3)

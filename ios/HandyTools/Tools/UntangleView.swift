@@ -30,17 +30,28 @@ struct UntangleView: View {
     private let timer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
     private var trimmed: String { input.trimmingCharacters(in: .whitespacesAndNewlines) }
 
-    var body: some View {
-        NavigationStack {
-            ToolPage(title: "Untangle", subtitle: "Everything on your plate → a plan built around how you feel today.", working: reading) {
-                VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                    inputCard
-                    if let p = plan { planView(p) }
-                }
-                .padding(.horizontal, HandySpacing.gutter)
-                .padding(.vertical, HandySpacing.s12)
+    /// true when pushed inside the app's own navigation (Describe it, search); false as its own sheet.
+    var embedded = false
+
+    private var page: some View {
+        ToolPage(title: "Untangle", subtitle: "Everything on your plate → a plan built around how you feel today.", working: reading) {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                inputCard
+                if let p = plan { planView(p) }
             }
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { speech.stop(); dismiss() } } }
+            .padding(.horizontal, HandySpacing.gutter)
+            .padding(.vertical, HandySpacing.s12)
+        }
+    }
+
+    var body: some View {
+        Group {
+            if embedded { page }
+            else {
+                NavigationStack {
+                    page.toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { speech.stop(); dismiss() } } }
+                }
+            }
         }
         .onChange(of: speech.transcript) { _, t in if speech.running, !t.isEmpty { input = t } }
         .onChange(of: shot) { _, item in readShot(item) }

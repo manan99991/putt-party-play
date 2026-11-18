@@ -17,9 +17,15 @@ enum ChainPlanner {
         let text = ask.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return nil }
         let g = guess(text)
-        if let g, g.sure { return Plan(chain: g.chain, usedModel: false) }
+        if let g, g.sure, !PlanCheck.startConflict(text, g.chain) { return Plan(chain: g.chain, usedModel: false) }
         #if canImport(FoundationModels)
-        if #available(iOS 26.0, *), let c = await modelPlan(PlannerWords.tidy(text)) { return Plan(chain: c, usedModel: true) }
+        // The model's idea is only taken when it fits the request at least as well as the rules' guess —
+        // never a photo tool for a request that never mentioned a photo.
+        if #available(iOS 26.0, *), var c = await modelPlan(PlannerWords.tidy(text)),
+           !PlanCheck.startConflict(text, c), PlanCheck.score(text, c) >= (g.map { PlanCheck.score(text, $0.chain) } ?? Int.min) {
+            c.name = ChainText.toolName(ask: text, chain: c)
+            return Plan(chain: c, usedModel: true)
+        }
         #endif
         return g.map { Plan(chain: $0.chain, usedModel: false, guessed: true) }
     }
@@ -209,6 +215,7 @@ enum ChainPlanner {
             has(["receipt", "expense", "invoice"]) ? .pullReceipt :
             has(["business card", "contact", "vcard"]) ? .businessCard :
             has(["calendar", "event", "poster", "flyer", "invite", "appointment"]) ? .calendarEvent :
+            has(["remind", "organize my day", "organise my day", "plan my day", "need to do", "things to do", "my to do", "errands", "chores"]) ? .actionItems :
             has(["spreadsheet", "csv", "excel", "table", "columns"]) ? .makeTable :
             has(["links", "urls", "web address", "email address", "phone number"]) ? .pullDetails :
             has(["task", "to-do", "todo", "whiteboard", "action item", "checklist"]) ? .actionItems :
@@ -222,7 +229,8 @@ enum ChainPlanner {
             return build(ask, steps)
         }
         if textJob != nil || wantsClean {
-            let needsPhoto = wantsPhotoInput || textJob == .pullReceipt || textJob == .businessCard || textJob == .calendarEvent
+            // A to-do list from what you type needs no photo; a poster or receipt does.
+            let needsPhoto = wantsPhotoInput || textJob == .pullReceipt || textJob == .businessCard || (textJob == .calendarEvent && has(["poster", "flyer", "invite", "screenshot", "photo"]))
             if needsPhoto { steps.append(ChainStep(block: .readText)) }
             // Tidying goes first so the next step sees clean text.
             if wantsClean { steps.append(ChainStep(block: .cleanText)) }
@@ -345,7 +353,7 @@ enum PlannerWords {
 
     /// Words the rules look for. A typed word close to exactly one of these is taken to be it.
     static let vocab: Set<String> = Set(("""
-    photo photos picture pictures image images scan screenshot camera receipt receipts card poster flyer whiteboard video videos clip movie footage still frame \
+    remind reminder reminders organize organise errands chores photo photos picture pictures image images scan screenshot camera receipt receipts card poster flyer whiteboard video videos clip movie footage still frame \
     thumbnail audio sound mute silent shrink smaller compress reduce under email whatsapp send size caption captions subtitle subtitles trim seconds rotate sideways \
     upside vertical portrait story stories reel tiktok merge join combine pages page split extract password lock protect encrypt words translate translation webpage \
     article website link links aloud listen speech barcode read safe decode rewrite reword rephrase formal friendlier polite professional scam phishing fraud \

@@ -328,6 +328,7 @@ struct ToolDestination: View {
         case "datagrab": DataGrabView()
         case "textstudio": TextStudioView()
         case "thinking": ThinkingHubView()
+        case "untangle": UntangleView(embedded: true)
         case "vault": VaultView()
         case "fileviewer": FileViewerView()
         case "warranty": WarrantyView()

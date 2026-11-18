@@ -426,6 +426,13 @@ struct BuilderView: View {
     @State private var have: ChainKind?
     /// Shown at the top of the editor after Describe it, when the request was only half said.
     @State private var editHint: String?
+    /// What the request asked for that the built tool does, and doesn't, cover (Describe it only).
+    @State private var editGood: [String] = []
+    @State private var editGaps: [String] = []
+    @State private var editAsk = ""
+    /// Describe it found a full Tenzy tool that already does the job; the plan waits behind it.
+    @State private var builtIn: PlanCheck.BuiltIn?
+    @State private var pendingPlan: ChainPlanner.Plan?
     @State private var renaming: Chain?
     @State private var newName = ""
     /// "Start with what you have": the thing picked, waiting for a tool to be chosen for it.
@@ -446,6 +453,7 @@ struct BuilderView: View {
             Text(L("Make a tool that does the whole job — it runs on your phone."))
                 .font(.system(size: 14)).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
             hero
+            if let b = builtIn { builtInCard(b) }
             anythingTiles
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             Spacer(minLength: 0)
@@ -460,7 +468,7 @@ struct BuilderView: View {
         .padding(.vertical, HandySpacing.s8)
         .sheet(item: $editing) { c in
             NavigationStack {
-                ChainEditor(chain: c, hint: editHint) { saved in
+                ChainEditor(chain: c, hint: editHint, good: editGood, gaps: editGaps, ask: editAsk) { saved in
                     if let i = mine.firstIndex(where: { $0.id == saved.id }) { mine[i] = saved; persist(); editing = nil; editHint = nil }
                     else if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) { mine.append(saved); persist(); editing = nil; editHint = nil }
                     else { proForSave() }   // keep the editor open so the built tool isn't lost; Save works again after upgrading
@@ -711,23 +719,49 @@ struct BuilderView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Label(L("Describe it"), systemImage: "sparkles").font(HandyFont.cardTitle)
             TextField(L("e.g. shrink a photo under 1 MB and hide where it was taken"), text: $ask, axis: .vertical)
-                .lineLimit(1...3).textFieldStyle(.roundedBorder).accessibilityIdentifier("describe-field")
+                .lineLimit(3...8).textFieldStyle(.roundedBorder).accessibilityIdentifier("describe-field")
             Button {
-                planning = true
+                planning = true; builtIn = nil; note = nil
+                let request = ask
                 Task {
-                    let p = await ChainPlanner.plan(ask)
+                    let p = await ChainPlanner.plan(request)
                     await MainActor.run {
                         planning = false
-                        if let p {
-                            editHint = p.guessed ? "That wasn't much to go on, so this is my best guess. Change, add or remove any step before you save." : nil
-                            editing = p.chain; note = nil
-                        }
+                        pendingPlan = p
+                        if let b = PlanCheck.builtIn(request) { withAnimation { builtIn = b }; return }
+                        if let p { openPlanned(p, ask: request) }
                         else { note = "I couldn't tell what you'd like done. Say what you have (a photo, a PDF, a video, a recording, a link or some text) and what should happen to it." }
                     }
                 }
             } label: { Label(planning ? "Working…" : "Build it for me", systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(planning || ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }.cardStyle()
+    }
+
+    /// Open the editor on a planned tool, with an honest note of what it covers and what it can't do.
+    private func openPlanned(_ p: ChainPlanner.Plan, ask request: String) {
+        let r = PlanCheck.report(request, p.chain)
+        editGood = r.good; editGaps = r.gaps; editAsk = request
+        editHint = p.guessed ? "That wasn't much to go on, so this is my best guess. Change, add or remove any step before you save." : nil
+        builtIn = nil
+        editing = p.chain
+    }
+
+    /// "Tenzy already has this": the full tool first, building a custom one second.
+    private func builtInCard(_ b: PlanCheck.BuiltIn) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Tenzy already has a tool for this"), systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+            Text(L(b.name)).font(HandyFont.cardTitle)
+            Text(L(b.why)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            Button { let id = b.id; builtIn = nil; NotificationCenter.default.post(name: .openTool, object: id) } label: {
+                Label("\(L("Open")) \(L(b.name))", systemImage: "arrow.right.circle.fill").frame(maxWidth: .infinity)
+            }.primaryButton()
+            if let p = pendingPlan {
+                Button(L("Build my own tool anyway")) { openPlanned(p, ask: ask) }.textButton().font(HandyFont.caption).frame(maxWidth: .infinity)
+            }
+        }
+        .cardStyle(padding: HandySpacing.s16)
+        .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.accent, lineWidth: 1.5))
     }
 
     private func templateCard(_ c: Chain) -> some View {
@@ -815,6 +849,10 @@ private struct ChainEditor: View {
     @State var chain: Chain
     /// A line from Describe it shown above the steps, e.g. that the tool is a best guess.
     var hint: String? = nil
+    /// From Describe it: what was asked for that this tool covers, what it can't do, and the request itself.
+    var good: [String] = []
+    var gaps: [String] = []
+    var ask: String = ""
     var onSave: (Chain) -> Void
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var store = StoreManager.shared
@@ -853,6 +891,7 @@ private struct ChainEditor: View {
                     Label(hint, systemImage: "sparkles").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
                         .frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12).padding(.bottom, HandySpacing.s12)
                 }
+                if !good.isEmpty || !gaps.isEmpty { coverage.padding(.bottom, HandySpacing.s12) }
                 if chain.steps.isEmpty, startChoice == nil {
                     startPicker
                 } else {
@@ -999,6 +1038,36 @@ private struct ChainEditor: View {
     }
 
     /// First question of a new tool: what do you have? Everything offered after this fits the answer.
+    /// What you asked for vs. what this tool does — honest, so nothing is quietly left out.
+    private var coverage: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if !ask.isEmpty {
+                Text("\u{201C}\(ask)\u{201D}").font(HandyFont.caption.italic()).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
+            ForEach(good, id: \.self) { g in
+                Label { Text("\(L("Does")): \(L(g))").font(HandyFont.caption) } icon: { Image(systemName: "checkmark.circle.fill").foregroundStyle(Color.green) }
+            }
+            ForEach(gaps, id: \.self) { g in
+                Label { Text("\(L("Can't do yet")): \(L(g))").font(HandyFont.caption) } icon: { Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(HandyColor.amber) }
+            }
+            if !gaps.isEmpty {
+                Text(L("This tool does the rest. Tell us what's missing and we'll add it in a coming update.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                if let u = Self.requestURL(ask: ask, gaps: gaps) {
+                    Link(destination: u) { Label(L("Ask for it"), systemImage: "envelope") }.font(HandyFont.caption)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .cardStyle(padding: HandySpacing.s12)
+    }
+
+    static func requestURL(ask: String, gaps: [String]) -> URL? {
+        var c = URLComponents(); c.scheme = "mailto"; c.path = SUPPORT_EMAIL
+        c.queryItems = [URLQueryItem(name: "subject", value: "Tenzy: please add to Build your own"),
+                        URLQueryItem(name: "body", value: "I asked for: \(ask)\n\nMissing: \(gaps.joined(separator: ", "))\n")]
+        return c.url
+    }
+
     private var startPicker: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Text(L("What do you start with?")).font(HandyFont.cardTitle)
