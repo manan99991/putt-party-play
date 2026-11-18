@@ -579,6 +579,16 @@
   "pt": "Adicionar aos lembretes",
   "zh": "添加到提醒事项"
  },
+ "Add words (optional) — e.g. LOL, Yay, Miss you": {
+  "de": "Text hinzufügen (optional) – z. B. LOL, Yay, Vermisse dich",
+  "es": "Añade palabras (opcional): p. ej., LOL, Yay, Te extraño",
+  "fr": "Ajoutez des mots (facultatif) — ex. MDR, Youpi, Tu me manques",
+  "hi": "शब्द जोड़ें (वैकल्पिक) — जैसे LOL, Yay, Miss you",
+  "it": "Aggiungi parole (facoltativo) — es. LOL, Evviva, Mi manchi",
+  "ja": "文字を追加（任意）— 例：LOL、やった、会いたい",
+  "pt": "Adicione palavras (opcional) — ex.: KKK, Oba, Saudade",
+  "zh": "添加文字（可选）— 例如 LOL、耶、想你"
+ },
  "Add your first medicine — name, dose and when. Tenzy reminds you, and you tap Taken right from the alert.": {
   "de": "Füge dein erstes Medikament hinzu – Name, Dosis und Zeit. Tenzy erinnert dich, und du tippst direkt im Hinweis auf „Genommen“.",
   "es": "Añade tu primera medicina: nombre, dosis y cuándo. Tenzy te avisa y tocas «Tomado» desde el aviso.",
@@ -1119,6 +1129,16 @@
   "pt": "Loop de ida e volta — ótimo para rajadas",
   "zh": "来回循环——适合连拍"
  },
+ "Backdrop colour": {
+  "de": "Hintergrundfarbe",
+  "es": "Color del fondo",
+  "fr": "Couleur du fond",
+  "hi": "पृष्ठभूमि का रंग",
+  "it": "Colore dello sfondo",
+  "ja": "背景の色",
+  "pt": "Cor do fundo",
+  "zh": "背景颜色"
+ },
  "Background": {
   "de": "Hintergrund",
   "es": "Fondo",
@@ -1158,6 +1178,16 @@
   "ja": "後ろ向き",
   "pt": "Para trás",
   "zh": "向后"
+ },
+ "Badge": {
+  "de": "Abzeichen",
+  "es": "Insignia",
+  "fr": "Badge",
+  "hi": "बैज",
+  "it": "Badge",
+  "ja": "バッジ",
+  "pt": "Selo",
+  "zh": "徽章"
  },
  "Balanced": {
   "de": "Ausgewogen",
@@ -1219,6 +1249,16 @@
   "pt": "Antes e depois: duas fotos lado a lado",
   "zh": "前后对比：两张照片并排"
  },
+ "Behind it": {
+  "de": "Dahinter",
+  "es": "Detrás",
+  "fr": "Derrière",
+  "hi": "पीछे",
+  "it": "Dietro",
+  "ja": "背景",
+  "pt": "Atrás",
+  "zh": "背后"
+ },
  "Best deal, budget & label decode": {
   "de": "Bestes Angebot, Budget & Etiketten",
   "es": "Mejor precio, presupuesto y etiquetas",
@@ -1278,6 +1318,16 @@
   "ja": "請求先",
   "pt": "Faturar a",
   "zh": "账单寄往"
+ },
+ "Black": {
+  "de": "Schwarz",
+  "es": "Negro",
+  "fr": "Noir",
+  "hi": "काला",
+  "it": "Nero",
+  "ja": "黒",
+  "pt": "Preto",
+  "zh": "黑色"
  },
  "Black out text so it's truly gone": {
   "de": "Text schwärzen – wirklich entfernt",
@@ -1469,6 +1519,16 @@
   "pt": "Junte arquivos em um .zip",
   "zh": "将文件打包成一个.zip"
  },
+ "Burst": {
+  "de": "Strahlen",
+  "es": "Estallido",
+  "fr": "Éclat",
+  "hi": "बर्स्ट",
+  "it": "Esplosione",
+  "ja": "バースト",
+  "pt": "Explosão",
+  "zh": "爆炸星"
+ },
  "Calibrate": {
   "de": "Kalibrieren",
   "es": "Calibrar",
@@ -1598,6 +1658,16 @@
   "ja": "カード番号／コード",
   "pt": "Número / código do cartão",
   "zh": "卡号 / 代码"
+ },
+ "Cartoon": {
+  "de": "Cartoon",
+  "es": "Caricatura",
+  "fr": "Cartoon",
+  "hi": "कार्टून",
+  "it": "Cartoon",
+  "ja": "カートゥーン",
+  "pt": "Desenho",
+  "zh": "卡通"
  },
  "Centre the ring on the thing. The name and hex code update live; freeze to hold it.": {
   "de": "Zentriere den Ring auf dem Objekt. Name und Hex-Code aktualisieren live; einfrieren, um sie zu halten.",
@@ -2009,6 +2079,16 @@
   "pt": "Escolher…",
   "zh": "选择…"
  },
+ "Circle": {
+  "de": "Kreis",
+  "es": "Círculo",
+  "fr": "Cercle",
+  "hi": "गोला",
+  "it": "Cerchio",
+  "ja": "円",
+  "pt": "Círculo",
+  "zh": "圆形"
+ },
  "Claims to be a well-known organisation": {
   "de": "Gibt sich als bekannte Organisation aus",
   "es": "Dice ser una organización conocida",
@@ -2018,6 +2098,26 @@
   "ja": "有名な組織を名乗っている",
   "pt": "Diz ser uma organização conhecida",
   "zh": "自称知名机构"
+ },
+ "Classic": {
+  "de": "Klassisch",
+  "es": "Clásico",
+  "fr": "Classique",
+  "hi": "क्लासिक",
+  "it": "Classico",
+  "ja": "クラシック",
+  "pt": "Clássico",
+  "zh": "经典"
+ },
+ "Clean": {
+  "de": "Schlicht",
+  "es": "Limpio",
+  "fr": "Épuré",
+  "hi": "सादा",
+  "it": "Pulito",
+  "ja": "シンプル",
+  "pt": "Limpo",
+  "zh": "简洁"
  },
  "Clean Up": {
   "de": "Aufräumen",
@@ -2268,6 +2368,16 @@
   "ja": "4コマ漫画",
   "pt": "Tirinha",
   "zh": "连环漫画"
+ },
+ "Comic outline": {
+  "de": "Comic-Kontur",
+  "es": "Contorno de cómic",
+  "fr": "Contour BD",
+  "hi": "कॉमिक आउटलाइन",
+  "it": "Contorno fumetto",
+  "ja": "コミック風の輪郭",
+  "pt": "Contorno de quadrinho",
+  "zh": "漫画描边"
  },
  "Coming to Android in the next update.": {
   "de": "Kommt mit dem nächsten Update für Android.",
@@ -2669,6 +2779,16 @@
   "pt": "Não foi possível criar o flipbook para imprimir.",
   "zh": "无法生成可打印的翻页书。"
  },
+ "Couldn't make the sticker sheet.": {
+  "de": "Der Stickerbogen konnte nicht erstellt werden.",
+  "es": "No se pudo crear la hoja de stickers.",
+  "fr": "Impossible de créer la planche d'autocollants.",
+  "hi": "स्टिकर शीट नहीं बन सकी।",
+  "it": "Impossibile creare il foglio di sticker.",
+  "ja": "ステッカーシートを作成できませんでした。",
+  "pt": "Não foi possível criar a folha de figurinhas.",
+  "zh": "无法生成贴纸页。"
+ },
  "Couldn't make the video — try again, or fewer photos.": {
   "de": "Video konnte nicht erstellt werden – erneut versuchen oder weniger Fotos.",
   "es": "No se pudo crear el vídeo: inténtalo de nuevo o con menos fotos.",
@@ -3009,6 +3129,16 @@
   "pt": "Recortando…",
   "zh": "正在抠图…"
  },
+ "Cutting out your stickers…": {
+  "de": "Deine Sticker werden ausgeschnitten …",
+  "es": "Recortando tus stickers…",
+  "fr": "Découpage de vos autocollants…",
+  "hi": "आपके स्टिकर काटे जा रहे हैं…",
+  "it": "Ritaglio dei tuoi sticker…",
+  "ja": "ステッカーを切り抜いています…",
+  "pt": "Recortando suas figurinhas…",
+  "zh": "正在抠出你的贴纸…"
+ },
  "Dairy": {
   "de": "Milchprodukte",
   "es": "Lácteos",
@@ -3259,6 +3389,16 @@
   "pt": "Nenhuma fala encontrada nessa gravação. Se houver fala, confirme que o Ditado está ativo em Ajustes › Geral › Teclado e tente de novo.",
   "zh": "录音中未发现说话声。如果确实有人说话，请确认已在设置›通用›键盘中打开听写，然后重试。"
  },
+ "Die-cut": {
+  "de": "Stanzrand",
+  "es": "Troquelado",
+  "fr": "Découpe",
+  "hi": "डाई-कट",
+  "it": "Fustellato",
+  "ja": "ダイカット",
+  "pt": "Recorte",
+  "zh": "模切"
+ },
  "Different PDF": {
   "de": "Anderes PDF",
   "es": "Otro PDF",
@@ -3419,6 +3559,16 @@
   "pt": "Dose (ex.: 1 comprimido, 5 ml)",
   "zh": "剂量（如1片、5毫升）"
  },
+ "Double": {
+  "de": "Doppelt",
+  "es": "Doble",
+  "fr": "Double",
+  "hi": "डबल",
+  "it": "Doppio",
+  "ja": "ダブル",
+  "pt": "Duplo",
+  "zh": "双层"
+ },
  "Down": {
   "de": "Runter",
   "es": "Abajo",
@@ -3519,6 +3669,16 @@
   "pt": "Desenha a tua assinatura uma vez. Fica guardada neste telemóvel.",
   "zh": "绘制一次你的签名。它会保存在本机上。"
  },
+ "Drop shadow": {
+  "de": "Schlagschatten",
+  "es": "Sombra",
+  "fr": "Ombre portée",
+  "hi": "छाया",
+  "it": "Ombra",
+  "ja": "ドロップシャドウ",
+  "pt": "Sombra",
+  "zh": "投影"
+ },
  "Duplicate": {
   "de": "Duplizieren",
   "es": "Duplicar",
@@ -3588,6 +3748,26 @@
   "ja": "各自が自分の言語で話すと、端末が翻訳してもう一方の言語で読み上げます。端末の音声認識を使用し — 言語パックを入れればオフラインで動作します。",
   "pt": "Cada lado fala no seu idioma; o telemóvel traduz e lê em voz alta no outro. Usa o reconhecimento de voz do telemóvel — offline quando o pacote de idioma está instalado.",
   "zh": "双方各用自己的语言说话；手机翻译后用另一种语言朗读。使用手机的语音识别 — 安装语言包后可离线。"
+ },
+ "Edge": {
+  "de": "Rand",
+  "es": "Borde",
+  "fr": "Bord",
+  "hi": "किनारा",
+  "it": "Bordo",
+  "ja": "フチ",
+  "pt": "Borda",
+  "zh": "边框"
+ },
+ "Edge colour": {
+  "de": "Randfarbe",
+  "es": "Color del borde",
+  "fr": "Couleur du bord",
+  "hi": "किनारे का रंग",
+  "it": "Colore del bordo",
+  "ja": "フチの色",
+  "pt": "Cor da borda",
+  "zh": "边框颜色"
  },
  "Edge detection and the text layer run on the phone. The PDF is searchable — the recognised text sits invisibly under each page.": {
   "de": "Kantenerkennung und Textebene laufen auf dem Handy. Das PDF ist durchsuchbar — der erkannte Text liegt unsichtbar unter jeder Seite.",
@@ -4289,6 +4469,16 @@
   "pt": "Encontra rostos e texto — matrículas, nomes, moradas, números de cartão e conta — e tapa-os, depois guarda uma cópia sem localização nem metadados. Corre tudo no teu telemóvel; nada é enviado e nunca usa um crédito.",
   "zh": "识别人脸和文字 — 车牌、姓名、地址、卡号和账号 — 并将其涂抹，然后保存一份不含位置和元数据的副本。全部在你的手机上运行；不上传任何内容，也从不消耗额度。"
  },
+ "Fine-tune": {
+  "de": "Feinabstimmung",
+  "es": "Ajustar",
+  "fr": "Affiner",
+  "hi": "बारीकी से बदलें",
+  "it": "Regola",
+  "ja": "細かく調整",
+  "pt": "Ajustar",
+  "zh": "微调"
+ },
  "Finishing up…": {
   "de": "Wird abgeschlossen …",
   "es": "Terminando…",
@@ -4298,6 +4488,16 @@
   "ja": "仕上げ中…",
   "pt": "Finalizando…",
   "zh": "即将完成…"
+ },
+ "Finishing your stickers…": {
+  "de": "Deine Sticker werden fertiggestellt …",
+  "es": "Terminando tus stickers…",
+  "fr": "Finalisation de vos autocollants…",
+  "hi": "आपके स्टिकर तैयार हो रहे हैं…",
+  "it": "Completamento dei tuoi sticker…",
+  "ja": "ステッカーを仕上げています…",
+  "pt": "Finalizando suas figurinhas…",
+  "zh": "正在完成你的贴纸…"
  },
  "First row is the header": {
   "de": "Erste Zeile ist die Überschrift",
@@ -5079,6 +5279,16 @@
   "pt": "Segura o telemóvel entre vós. Toca no botão de quem fala, fala e depois larga a conversa — o outro lado aparece traduzido e é lido em voz alta.",
   "zh": "把手机拿在你们之间。点按正在说话一方的按钮，说话，然后松开对话——另一方会以翻译形式显示并朗读出来。"
  },
+ "Holographic": {
+  "de": "Holografisch",
+  "es": "Holográfico",
+  "fr": "Holographique",
+  "hi": "होलोग्राफ़िक",
+  "it": "Olografico",
+  "ja": "ホログラム",
+  "pt": "Holográfico",
+  "zh": "全息"
+ },
  "How": {
   "de": "Wie",
   "es": "Cómo",
@@ -5539,6 +5749,16 @@
   "pt": "Mantê-los",
   "zh": "保留"
  },
+ "Keep them in your sticker drawer": {
+  "de": "Bewahre sie in deiner Sticker-Schublade auf",
+  "es": "Guárdalos en tu cajón de stickers",
+  "fr": "Gardez-les dans votre tiroir d'autocollants",
+  "hi": "इन्हें अपने स्टिकर ड्रॉअर में रखें",
+  "it": "Tienili nel cassetto degli sticker",
+  "ja": "ステッカードロワーに保存",
+  "pt": "Guarde-as na sua gaveta de figurinhas",
+  "zh": "保存到你的贴纸抽屉"
+ },
  "Keep working on this version": {
   "de": "An dieser Version weiterarbeiten",
   "es": "Seguir con esta versión",
@@ -5979,6 +6199,16 @@
   "pt": "Lado mais comprido",
   "zh": "最长边"
  },
+ "Look": {
+  "de": "Stil",
+  "es": "Estilo",
+  "fr": "Style",
+  "hi": "लुक",
+  "it": "Stile",
+  "ja": "ルック",
+  "pt": "Visual",
+  "zh": "风格"
+ },
  "Look up this product": {
   "de": "Dieses Produkt nachschlagen",
   "es": "Buscar este producto",
@@ -6218,6 +6448,16 @@
   "ja": "短くする",
   "pt": "Encurtar",
   "zh": "缩短"
+ },
+ "Make more": {
+  "de": "Mehr erstellen",
+  "es": "Hacer más",
+  "fr": "En créer d'autres",
+  "hi": "और बनाएं",
+  "it": "Creane altri",
+  "ja": "さらに作る",
+  "pt": "Fazer mais",
+  "zh": "再做一些"
  },
  "Make passport photo": {
   "de": "Passfoto erstellen",
@@ -6518,6 +6758,16 @@
   "ja": "周囲の音を拾って増幅するためマイクへのアクセスが必要です。端末内でリアルタイム処理され、録音は一切されません。",
   "pt": "É preciso acesso ao microfone para captar e amplificar o som à tua volta. É processado em direto no teu telemóvel e nunca gravado.",
   "zh": "需要麦克风权限以拾取并放大你周围的声音。它在你的手机上实时处理，绝不录制。"
+ },
+ "Mint": {
+  "de": "Mint",
+  "es": "Menta",
+  "fr": "Menthe",
+  "hi": "पुदीना",
+  "it": "Menta",
+  "ja": "ミント",
+  "pt": "Menta",
+  "zh": "薄荷"
  },
  "Mirror": {
   "de": "Spiegeln",
@@ -6948,6 +7198,26 @@
   "ja": "2枚以上の写真が必要",
   "pt": "Precisa de duas ou mais fotos",
   "zh": "需要两张或更多照片"
+ },
+ "Neon": {
+  "de": "Neon",
+  "es": "Neón",
+  "fr": "Néon",
+  "hi": "नियॉन",
+  "it": "Neon",
+  "ja": "ネオン",
+  "pt": "Neon",
+  "zh": "霓虹"
+ },
+ "Neon glow": {
+  "de": "Neon-Leuchten",
+  "es": "Brillo neón",
+  "fr": "Halo néon",
+  "hi": "नियॉन चमक",
+  "it": "Bagliore neon",
+  "ja": "ネオングロー",
+  "pt": "Brilho neon",
+  "zh": "霓虹光晕"
  },
  "Network": {
   "de": "Netzwerk",
@@ -7678,6 +7948,16 @@
   "ja": "開く",
   "pt": "Abrir",
   "zh": "打开"
+ },
+ "Open Photos and tap a sticker (they're your newest photos).": {
+  "de": "Öffne Fotos und tippe auf einen Sticker (es sind deine neuesten Fotos).",
+  "es": "Abre Fotos y toca un sticker (son tus fotos más recientes).",
+  "fr": "Ouvrez Photos et touchez un autocollant (ce sont vos photos les plus récentes).",
+  "hi": "Photos खोलें और एक स्टिकर पर टैप करें (ये आपकी सबसे नई फ़ोटो हैं)।",
+  "it": "Apri Foto e tocca uno sticker (sono le tue foto più recenti).",
+  "ja": "写真アプリを開いてステッカーをタップ（最新の写真にあります）。",
+  "pt": "Abra o Fotos e toque em uma figurinha (são suas fotos mais recentes).",
+  "zh": "打开“照片”并轻点一张贴纸（它们是你最新的照片）。"
  },
  "Open Photos and tap this sticker (it's your newest photo).": {
   "de": "Öffne Fotos und tippe auf diesen Sticker (dein neuestes Foto).",
@@ -8459,6 +8739,16 @@
   "pt": "Escolhe qualquer ficheiro. O outro dispositivo digitaliza o código ou abre o endereço — mesma Wi-Fi, sem cabo, sem nuvem.",
   "zh": "选择任意文件。另一台设备扫码或打开该地址 — 同一 Wi-Fi，无需数据线，无需云端。"
  },
+ "Pick one photo or a few — people, pets, food, anything. Tenzy cuts them out and shows you ten sticker styles to choose from.": {
+  "de": "Wähle ein oder mehrere Fotos – Menschen, Haustiere, Essen, alles. Tenzy schneidet sie aus und zeigt dir zehn Sticker-Stile zur Auswahl.",
+  "es": "Elige una foto o varias: personas, mascotas, comida, lo que sea. Tenzy las recorta y te muestra diez estilos de sticker para elegir.",
+  "fr": "Choisissez une ou plusieurs photos — personnes, animaux, plats, tout. Tenzy les détoure et vous propose dix styles d'autocollant.",
+  "hi": "एक या कुछ फ़ोटो चुनें — लोग, पालतू, खाना, कुछ भी। Tenzy उन्हें काटकर आपको चुनने के लिए दस स्टिकर स्टाइल दिखाता है।",
+  "it": "Scegli una o più foto — persone, animali, cibo, qualsiasi cosa. Tenzy le ritaglia e ti mostra dieci stili di sticker tra cui scegliere.",
+  "ja": "写真を1枚または数枚選んでください。人、ペット、料理、何でもOK。Tenzyが切り抜いて、10種類のステッカースタイルを表示します。",
+  "pt": "Escolha uma ou algumas fotos — pessoas, pets, comida, qualquer coisa. O Tenzy recorta e mostra dez estilos de figurinha para você escolher.",
+  "zh": "选择一张或几张照片——人物、宠物、美食，什么都行。Tenzy 会抠出主体，并给你十种贴纸风格任选。"
+ },
  "Pick quality": {
   "de": "Qualität wählen",
   "es": "Elegir calidad",
@@ -8548,6 +8838,16 @@
   "ja": "Wi-Fi上のすべてのアドレスにpingを送り、接続中のスマホ・ノートPC・テレビ・スマート家電を一覧します — 手早く\"ネットワークに誰がいるか\"を確認。端末内でローカルネットワークのみ使用します。",
   "pt": "Faz ping a cada endereço na tua Wi-Fi para listar os telemóveis, portáteis, TVs e aparelhos de casa inteligente ligados — um rápido \"quem está na minha rede\". Corre no dispositivo, apenas pela rede local.",
   "zh": "对你 Wi-Fi 上的每个地址发送 ping，列出连接其上的手机、笔记本、电视和智能家居设备 — 快速查看\"谁在我的网络上\"。仅在本地网络上于设备端运行。"
+ },
+ "Pink": {
+  "de": "Pink",
+  "es": "Rosa",
+  "fr": "Rose",
+  "hi": "गुलाबी",
+  "it": "Rosa",
+  "ja": "ピンク",
+  "pt": "Rosa",
+  "zh": "粉色"
  },
  "Place signature": {
   "de": "Unterschrift platzieren",
@@ -8669,6 +8969,16 @@
   "pt": "Pilha de Polaroids",
   "zh": "拍立得叠放"
  },
+ "Pop": {
+  "de": "Pop",
+  "es": "Pop",
+  "fr": "Pop",
+  "hi": "पॉप",
+  "it": "Pop",
+  "ja": "ポップ",
+  "pt": "Pop",
+  "zh": "波普"
+ },
  "Pop art": {
   "de": "Pop-Art",
   "es": "Pop art",
@@ -8678,6 +8988,16 @@
   "ja": "ポップアート",
   "pt": "Pop art",
   "zh": "波普艺术"
+ },
+ "Pop burst": {
+  "de": "Pop-Explosion",
+  "es": "Estallido pop",
+  "fr": "Éclat pop",
+  "hi": "पॉप बर्स्ट",
+  "it": "Esplosione pop",
+  "ja": "ポップバースト",
+  "pt": "Explosão pop",
+  "zh": "波普爆炸"
  },
  "Pop your earbuds in first — on the speaker it will whistle with feedback.": {
   "de": "Setz zuerst deine Ohrhörer ein — über den Lautsprecher pfeift es durch Rückkopplung.",
@@ -8778,6 +9098,16 @@
   "ja": "紙のパラパラ漫画として印刷",
   "pt": "Imprimir como flipbook de papel",
   "zh": "打印成纸质翻页书"
+ },
+ "Print sticker sheet": {
+  "de": "Stickerbogen drucken",
+  "es": "Imprimir hoja de stickers",
+  "fr": "Imprimer la planche",
+  "hi": "स्टिकर शीट प्रिंट करें",
+  "it": "Stampa foglio di sticker",
+  "ja": "ステッカーシートを印刷",
+  "pt": "Imprimir folha de figurinhas",
+  "zh": "打印贴纸页"
  },
  "Prints drop onto a pile": {
   "de": "Abzüge fallen auf einen Stapel",
@@ -9008,6 +9338,16 @@
   "ja": "画質",
   "pt": "Qualidade",
   "zh": "质量"
+ },
+ "Rainbow": {
+  "de": "Regenbogen",
+  "es": "Arcoíris",
+  "fr": "Arc-en-ciel",
+  "hi": "इंद्रधनुष",
+  "it": "Arcobaleno",
+  "ja": "レインボー",
+  "pt": "Arco-íris",
+  "zh": "彩虹"
  },
  "Rate Tenzy": {
   "de": "Tenzy bewerten",
@@ -9669,6 +10009,16 @@
   "pt": "Restaurar compras",
   "zh": "恢复购买"
  },
+ "Retro": {
+  "de": "Retro",
+  "es": "Retro",
+  "fr": "Rétro",
+  "hi": "रेट्रो",
+  "it": "Retrò",
+  "ja": "レトロ",
+  "pt": "Retrô",
+  "zh": "复古"
+ },
  "Retry": {
   "de": "Erneut versuchen",
   "es": "Reintentar",
@@ -9848,6 +10198,16 @@
   "ja": "署名を保存",
   "pt": "Guardar uma assinatura",
   "zh": "保存签名"
+ },
+ "Save all to Photos": {
+  "de": "Alle in Fotos sichern",
+  "es": "Guardar todo en Fotos",
+  "fr": "Tout enregistrer dans Photos",
+  "hi": "सभी Photos में सहेजें",
+  "it": "Salva tutto in Foto",
+  "ja": "すべて写真に保存",
+  "pt": "Salvar todas no Fotos",
+  "zh": "全部存储到“照片”"
  },
  "Save as Excel (.xlsx)": {
   "de": "Als Excel sichern (.xlsx)",
@@ -11099,6 +11459,16 @@
   "pt": "Tamanho — 500 g, 1,5 L, 12 un",
   "zh": "规格 — 500克、1.5升、12 件"
  },
+ "Sketch": {
+  "de": "Skizze",
+  "es": "Boceto",
+  "fr": "Croquis",
+  "hi": "स्केच",
+  "it": "Schizzo",
+  "ja": "スケッチ",
+  "pt": "Esboço",
+  "zh": "素描"
+ },
  "Skip": {
   "de": "Überspringen",
   "es": "Omitir",
@@ -11108,6 +11478,16 @@
   "ja": "スキップ",
   "pt": "Ignorar",
   "zh": "跳过"
+ },
+ "Sky": {
+  "de": "Himmelblau",
+  "es": "Celeste",
+  "fr": "Ciel",
+  "hi": "आसमानी",
+  "it": "Azzurro",
+  "ja": "スカイ",
+  "pt": "Céu",
+  "zh": "天蓝"
  },
  "Sleep timer": {
   "de": "Sleep-Timer",
@@ -11399,6 +11779,16 @@
   "pt": "Espaçamento",
   "zh": "间距"
  },
+ "Sparkles": {
+  "de": "Glitzer",
+  "es": "Destellos",
+  "fr": "Paillettes",
+  "hi": "चमक",
+  "it": "Brillantini",
+  "ja": "キラキラ",
+  "pt": "Brilhos",
+  "zh": "闪光"
+ },
  "Speak": {
   "de": "Sprechen",
   "es": "Hablar",
@@ -11619,6 +12009,16 @@
   "pt": "Estéreo · 96 kbps — ótimo para a maioria das músicas",
   "zh": "立体声 · 96 kbps——适合大多数音乐"
  },
+ "Sticker": {
+  "de": "Sticker",
+  "es": "Sticker",
+  "fr": "Autocollant",
+  "hi": "स्टिकर",
+  "it": "Sticker",
+  "ja": "ステッカー",
+  "pt": "Figurinha",
+  "zh": "贴纸"
+ },
  "Sticker Maker": {
   "de": "Sticker-Macher",
   "es": "Creador de stickers",
@@ -11628,6 +12028,16 @@
   "ja": "ステッカーメーカー",
   "pt": "Criador de figurinhas",
   "zh": "贴纸制作"
+ },
+ "Sticker sheet to print": {
+  "de": "Stickerbogen zum Drucken",
+  "es": "Hoja de stickers para imprimir",
+  "fr": "Planche à imprimer",
+  "hi": "प्रिंट के लिए स्टिकर शीट",
+  "it": "Foglio di sticker da stampare",
+  "ja": "印刷用ステッカーシート",
+  "pt": "Folha de figurinhas para imprimir",
+  "zh": "可打印的贴纸页"
  },
  "Stitch shots into one tall image": {
   "de": "Screenshots zu einem Bild fügen",
@@ -11828,6 +12238,16 @@
   "ja": "録音をタップして話し始めてください — 話すそばから文字起こしが表示されます。",
   "pt": "Toca em Gravar e começa a falar — a transcrição aparece enquanto falas.",
   "zh": "点按录音并开始讲话 — 文字记录会随你说话实时出现。"
+ },
+ "Tap Save to Photos above, then open Photos and tap a sticker.": {
+  "de": "Tippe oben auf „In Fotos sichern“, öffne dann Fotos und tippe auf einen Sticker.",
+  "es": "Toca Guardar en Fotos arriba, luego abre Fotos y toca un sticker.",
+  "fr": "Touchez Enregistrer dans Photos ci-dessus, puis ouvrez Photos et touchez un autocollant.",
+  "hi": "ऊपर Photos में सहेजें पर टैप करें, फिर Photos खोलें और एक स्टिकर पर टैप करें।",
+  "it": "Tocca Salva in Foto qui sopra, poi apri Foto e tocca uno sticker.",
+  "ja": "上の「写真に保存」をタップしてから、写真アプリを開いてステッカーをタップ。",
+  "pt": "Toque em Salvar no Fotos acima, depois abra o Fotos e toque em uma figurinha.",
+  "zh": "先轻点上方的“存储到照片”，再打开“照片”并轻点一张贴纸。"
  },
  "Tap Save to Photos above, then open Photos and tap the sticker.": {
   "de": "Tippe oben auf „In Fotos sichern“, öffne dann Fotos und tippe auf den Sticker.",
@@ -12549,6 +12969,16 @@
   "pt": "Não têm nome nem número. Não pode ser anulado.",
   "zh": "它们没有姓名也没有号码。此操作无法撤销。"
  },
+ "Thin": {
+  "de": "Dünn",
+  "es": "Fino",
+  "fr": "Fin",
+  "hi": "पतला",
+  "it": "Sottile",
+  "ja": "細め",
+  "pt": "Fina",
+  "zh": "细"
+ },
  "Think twice before opening": {
   "de": "Vor dem Öffnen gut überlegen",
   "es": "Piénsalo dos veces antes de abrir",
@@ -12779,6 +13209,16 @@
   "pt": "Arrumar com IA no dispositivo",
   "zh": "用设备端 AI 整理"
  },
+ "Tile": {
+  "de": "Kachel",
+  "es": "Mosaico",
+  "fr": "Carreau",
+  "hi": "टाइल",
+  "it": "Riquadro",
+  "ja": "タイル",
+  "pt": "Ladrilho",
+  "zh": "方块"
+ },
  "Time: ": {
   "de": "Zeit: ",
   "es": "Hora: ",
@@ -12968,6 +13408,16 @@
   "ja": "切り抜き部分を長押しし、「ステッカーを追加」をタップ。",
   "pt": "Toque e segure o recorte e toque em «Adicionar figurinha».",
   "zh": "长按抠出的部分，然后点“添加贴纸”。"
+ },
+ "Touch and hold the sticker, then tap Add Sticker.": {
+  "de": "Halte den Sticker gedrückt und tippe dann auf „Sticker hinzufügen“.",
+  "es": "Mantén pulsado el sticker y toca Añadir sticker.",
+  "fr": "Maintenez l'autocollant appuyé, puis touchez Ajouter un autocollant.",
+  "hi": "स्टिकर को दबाकर रखें, फिर Add Sticker पर टैप करें।",
+  "it": "Tieni premuto lo sticker, poi tocca Aggiungi sticker.",
+  "ja": "ステッカーを長押しして、「ステッカーを追加」をタップ。",
+  "pt": "Toque e segure a figurinha e toque em Adicionar Figurinha.",
+  "zh": "按住贴纸，然后轻点“添加贴纸”。"
  },
  "Transcribed on your phone; nothing is uploaded.": {
   "de": "Auf deinem Telefon transkribiert; nichts wird hochgeladen.",
@@ -13178,6 +13628,16 @@
   "ja": "写真をリール・TikTok・ショート・ストーリーズ向けの動画に。",
   "pt": "Transforme fotos em vídeo para Reels, TikTok, Shorts, Stories e mais.",
   "zh": "把照片变成适合Reels、TikTok、Shorts、快拍等的视频。"
+ },
+ "Turn photos into designed stickers for Messages, WhatsApp and more.": {
+  "de": "Mach aus Fotos gestaltete Sticker für Nachrichten, WhatsApp und mehr.",
+  "es": "Convierte fotos en stickers con diseño para Mensajes, WhatsApp y más.",
+  "fr": "Transformez vos photos en autocollants stylés pour Messages, WhatsApp et plus.",
+  "hi": "फ़ोटो को Messages, WhatsApp और अन्य के लिए डिज़ाइन किए गए स्टिकर में बदलें।",
+  "it": "Trasforma le foto in sticker di design per Messaggi, WhatsApp e altro.",
+  "ja": "写真をメッセージやWhatsAppなどで使えるデザインステッカーに。",
+  "pt": "Transforme fotos em figurinhas estilosas para Mensagens, WhatsApp e mais.",
+  "zh": "把照片变成精心设计的贴纸，用于“信息”、WhatsApp 等。"
  },
  "Turn volume to max, unplug earbuds, run it 2–3 times. Dry the port with a cloth afterwards — don't use heat.": {
   "de": "Stelle die Lautstärke auf max, zieh die Ohrhörer ab, führe es 2–3 Mal aus. Trockne danach den Anschluss mit einem Tuch — keine Hitze verwenden.",
@@ -13929,6 +14389,16 @@
   "pt": "Que parte",
   "zh": "哪一部分"
  },
+ "White": {
+  "de": "Weiß",
+  "es": "Blanco",
+  "fr": "Blanc",
+  "hi": "सफ़ेद",
+  "it": "Bianco",
+  "ja": "白",
+  "pt": "Branco",
+  "zh": "白色"
+ },
  "White noise + snore recorder": {
   "de": "Weißes Rauschen + Schnarch-Recorder",
   "es": "Ruido blanco + grabador de ronquidos",
@@ -14079,6 +14549,16 @@
   "pt": "Abertura de «número errado»",
   "zh": "“打错号码”式开场"
  },
+ "Yellow": {
+  "de": "Gelb",
+  "es": "Amarillo",
+  "fr": "Jaune",
+  "hi": "पीला",
+  "it": "Giallo",
+  "ja": "黄",
+  "pt": "Amarelo",
+  "zh": "黄色"
+ },
  "You can still fill it: open Sign and use “Add text” to type anywhere on the page, then add your signature.": {
   "de": "Du kannst es trotzdem ausfüllen: Öffne „Unterschreiben“, tippe mit „Text hinzufügen“ irgendwo auf die Seite und füge deine Unterschrift hinzu.",
   "es": "Aun así puedes rellenarlo: abre Firmar, usa «Añadir texto» para escribir en cualquier parte y añade tu firma.",
@@ -14168,6 +14648,16 @@
   "ja": "あなたの署名",
   "pt": "A tua assinatura",
   "zh": "你的签名"
+ },
+ "Your style applies to the whole pack.": {
+  "de": "Dein Stil gilt für das ganze Paket.",
+  "es": "Tu estilo se aplica a todo el paquete.",
+  "fr": "Votre style s'applique à tout le pack.",
+  "hi": "आपका स्टाइल पूरे पैक पर लागू होता है।",
+  "it": "Il tuo stile vale per tutto il pacchetto.",
+  "ja": "スタイルはパック全体に適用されます。",
+  "pt": "Seu estilo vale para o pacote inteiro.",
+  "zh": "你的风格会应用到整套贴纸。"
  },
  "Your text": {
   "de": "Dein Text",
@@ -14408,6 +14898,16 @@
   "ja": "ピーク",
   "pt": "pico",
   "zh": "峰值"
+ },
+ "photo(s) skipped — no clear subject found.": {
+  "de": "Foto(s) übersprungen – kein klares Motiv gefunden.",
+  "es": "foto(s) omitida(s): no se encontró un sujeto claro.",
+  "fr": "photo(s) ignorée(s) — aucun sujet net trouvé.",
+  "hi": "फ़ोटो छोड़ी गई — कोई साफ़ विषय नहीं मिला।",
+  "it": "foto saltate — nessun soggetto chiaro trovato.",
+  "ja": "枚の写真をスキップ（はっきりした被写体が見つかりません）。",
+  "pt": "foto(s) ignorada(s) — nenhum objeto claro encontrado.",
+  "zh": "张照片已跳过——未找到清晰主体。"
  },
  "playing": {
   "de": "wird abgespielt",

@@ -2073,6 +2073,48 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(strip.size, CGSize(width: 540, height: 675))
     }
 
+    func testStickerStudioEveryPresetIsATrimmedSeeThroughSticker() throws {
+        // A cut-out: a red disc on clear, with empty margin around it (the studio trims that away).
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = false
+        let cut = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 400), format: fmt).image { _ in
+            UIColor.red.setFill(); UIBezierPath(ovalIn: CGRect(x: 80, y: 80, width: 240, height: 240)).fill() }
+        func alpha(_ img: UIImage, _ x: Int, _ y: Int) -> Int {
+            guard let cg = img.cgImage else { return -1 }
+            var px = [UInt8](repeating: 0, count: 4)
+            let ctx = CGContext(data: &px, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                                space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+            ctx.draw(cg, in: CGRect(x: -x, y: -(cg.height - 1 - y), width: cg.width, height: cg.height))
+            return Int(px[3])
+        }
+        XCTAssertEqual(StickerStudio.presets.count, 10)
+        XCTAssertEqual(Set(StickerStudio.presets.map(\.id)).count, 10, "unique preset ids")
+        for p in StickerStudio.presets {
+            let st = try XCTUnwrap(StickerStudio.render(cut, style: p.style, side: 240), p.id)
+            let cg = try XCTUnwrap(st.cgImage, p.id)
+            XCTAssertGreaterThan(cg.width, 240, "\(p.id): the edge/backdrop adds room around the subject")
+            XCTAssertLessThan(cg.width, 600, "\(p.id): trimmed, no wasted canvas")
+            let corners = [alpha(st, 0, 0), alpha(st, cg.width - 1, 0), alpha(st, 0, cg.height - 1), alpha(st, cg.width - 1, cg.height - 1)]
+            XCTAssertLessThan(corners.min() ?? 255, 40, "\(p.id): shaped, not a box — corners see-through")
+            XCTAssertGreaterThan(alpha(st, cg.width / 2, cg.height / 2), 250, "\(p.id): subject is solid")
+        }
+        // The look really changes the art; a caption adds a line below.
+        var plain = StickerStudio.Style(); plain.shadow = false
+        var worded = plain; worded.caption = "Yay"
+        let a = try XCTUnwrap(StickerStudio.render(cut, style: plain, side: 240))
+        let b = try XCTUnwrap(StickerStudio.render(cut, style: worded, side: 240))
+        XCTAssertGreaterThan(b.size.height, a.size.height + 20)
+        // Empty cut-out → nil, never a blank sticker.
+        let empty = UIGraphicsImageRenderer(size: CGSize(width: 50, height: 50), format: fmt).image { _ in }
+        XCTAssertNil(StickerStudio.render(empty, style: plain, side: 100))
+        // Printable sheet: a short pack fills one page; 13 stickers run onto a second.
+        let one = try XCTUnwrap(PDFDocument(data: try XCTUnwrap(StickerStudio.sheetPDF([a]))))
+        XCTAssertEqual(one.pageCount, 1)
+        XCTAssertTrue((one.string ?? "").contains("sticker paper"))
+        let many = try XCTUnwrap(PDFDocument(data: try XCTUnwrap(StickerStudio.sheetPDF(Array(repeating: a, count: 13)))))
+        XCTAssertEqual(many.pageCount, 2)
+        XCTAssertNil(StickerStudio.sheetPDF([]))
+    }
+
     func testAnimateLooksAndPrintableFlipbook() throws {
         let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
         XCTAssertEqual(Animate.applyLook(.original, to: photos).count, 3)
