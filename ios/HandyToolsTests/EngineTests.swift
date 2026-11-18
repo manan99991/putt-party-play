@@ -1336,6 +1336,17 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(plan.contains("tel:5551234567"))    // mom → call
     }
 
+    func testPdfTextExtractsEmbeddedLayer() throws {
+        let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 300)).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 300))
+        }
+        let line = DocEngine.OCRLine(text: "INVOICE 2026", box: CGRect(x: 0.1, y: 0.1, width: 0.8, height: 0.2))
+        var opts = DocEngine.PDFOptions(); opts.searchable = true
+        guard let data = DocEngine.pdf(images: [img], ocr: [[line]], options: opts) else { return XCTFail("could not build source PDF") }
+        let extracted = DocEngine.pdfText(data)
+        XCTAssertTrue(extracted.contains("INVOICE"), "should pull the embedded text layer out of the PDF")
+    }
+
     func testRedactionTrulyRemovesHiddenText() throws {
         // A searchable PDF carrying an invisible, selectable text layer that reads "SECRET".
         let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 300)).image { c in
