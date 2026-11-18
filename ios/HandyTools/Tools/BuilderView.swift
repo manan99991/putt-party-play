@@ -184,7 +184,11 @@ struct Given: Identifiable {
     /// one) by parsing the central directory and inflating the entry with Foundation's Compression
     /// framework. Enough for reading an Office/OpenDocument body; not a general archive extractor.
     enum Zip {
-        static func entryText(in url: URL, named wanted: String) -> String? {
+        /// One file inside the archive, as the central directory describes it.
+        struct Entry: Identifiable { let id = UUID(); let name: String; let method: Int; let compSize: Int; let uncompSize: Int; let localOff: Int }
+
+        /// Parse the central directory once: the raw bytes plus every entry. nil if it isn't a readable ZIP.
+        private static func catalog(_ url: URL) -> (bytes: [UInt8], entries: [Entry])? {
             guard let raw = try? Data(contentsOf: url), raw.count > 22 else { return nil }
             let d = [UInt8](raw); let n = d.count
             func u16(_ o: Int) -> Int { Int(d[o]) | (Int(d[o + 1]) << 8) }
@@ -194,6 +198,7 @@ struct Given: Identifiable {
             while i >= minI { if u32(i) == 0x06054b50 { eocd = i; break }; i -= 1 }
             guard eocd >= 0 else { return nil }
             let count = u16(eocd + 10); var p = u32(eocd + 16)
+            var entries: [Entry] = []
             for _ in 0..<count {
                 guard p + 46 <= n, u32(p) == 0x02014b50 else { break }
                 let method = u16(p + 10), compSize = u32(p + 20), uncompSize = u32(p + 24)
@@ -201,18 +206,35 @@ struct Given: Identifiable {
                 let nameStart = p + 46
                 guard nameStart + nameLen <= n else { break }
                 let name = String(decoding: d[nameStart..<nameStart + nameLen], as: UTF8.self)
-                if name == wanted {
-                    guard localOff + 30 <= n, u32(localOff) == 0x04034b50 else { return nil }
-                    let dataStart = localOff + 30 + u16(localOff + 26) + u16(localOff + 28)
-                    guard dataStart + compSize <= n else { return nil }
-                    let comp = Data(d[dataStart..<dataStart + compSize])
-                    if method == 0 { return String(data: comp, encoding: .utf8) }
-                    if method == 8 { return inflate(comp, expected: uncompSize).flatMap { String(data: $0, encoding: .utf8) } }
-                    return nil
-                }
+                entries.append(Entry(name: name, method: method, compSize: compSize, uncompSize: uncompSize, localOff: localOff))
                 p = nameStart + nameLen + extraLen + commentLen
             }
+            return (d, entries)
+        }
+
+        /// Every file path inside the archive, skipping directory entries.
+        static func names(in url: URL) -> [String] {
+            (catalog(url)?.entries ?? []).map(\.name).filter { !$0.hasSuffix("/") }
+        }
+
+        /// Extract one entry's raw bytes (any file type). nil if missing or stored with an unsupported method.
+        static func entryData(in url: URL, named wanted: String) -> Data? {
+            guard let (d, entries) = catalog(url), let e = entries.first(where: { $0.name == wanted }) else { return nil }
+            let n = d.count
+            func u16(_ o: Int) -> Int { Int(d[o]) | (Int(d[o + 1]) << 8) }
+            func u32(_ o: Int) -> Int { Int(d[o]) | (Int(d[o + 1]) << 8) | (Int(d[o + 2]) << 16) | (Int(d[o + 3]) << 24) }
+            guard e.localOff + 30 <= n, u32(e.localOff) == 0x04034b50 else { return nil }
+            let dataStart = e.localOff + 30 + u16(e.localOff + 26) + u16(e.localOff + 28)
+            guard dataStart + e.compSize <= n else { return nil }
+            let comp = Data(d[dataStart..<dataStart + e.compSize])
+            if e.method == 0 { return comp }
+            if e.method == 8 { return inflate(comp, expected: e.uncompSize) }
             return nil
+        }
+
+        /// One entry's bytes decoded as UTF-8 text (how the Office/OpenDocument readers use it).
+        static func entryText(in url: URL, named wanted: String) -> String? {
+            entryData(in: url, named: wanted).flatMap { String(data: $0, encoding: .utf8) }
         }
 
         /// Raw DEFLATE inflate (ZIP method 8 stores a headerless deflate stream → COMPRESSION_ZLIB).
