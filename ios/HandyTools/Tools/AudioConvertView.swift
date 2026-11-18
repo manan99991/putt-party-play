@@ -37,6 +37,7 @@ struct AudioConvertView: View {
         }
         .onChange(of: format) { _, _ in clearResult() }
         .finishes(working, tool: "Audio Convert")
+        .handoff("audioconvert") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     // MARK: - Pick

@@ -41,6 +41,7 @@ struct AudioCompressView: View {
             if case .success(let url) = res { load(url) }
         }
         .finishes(working, tool: "Compress Audio")
+        .handoff("audiocompress") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     private var pickCard: some View {

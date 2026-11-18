@@ -34,6 +34,7 @@ struct PDFFormView: View {
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf]) { res in
             if case .success(let url) = res { load(url) }
         }
+        .handoff("pdfform") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     private var pickCard: some View {

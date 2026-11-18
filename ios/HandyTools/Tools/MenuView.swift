@@ -36,6 +36,7 @@ struct MenuView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: pick) { _, item in load(item) }
+        .handoff("menu") { p in if let img = ToolHandoff.image(p) { read(img) } }
         .translationTask(translateConfig) { session in
             let reqs = items.map { TranslationSession.Request(sourceText: $0.detail.isEmpty ? $0.name : "\($0.name) — \($0.detail)",
                                                                clientIdentifier: $0.id.uuidString) }
@@ -173,6 +174,14 @@ struct MenuView: View {
             guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) else {
                 await MainActor.run { reading = false; errorText = "Couldn't open that photo." }; return
             }
+            await MainActor.run { read(img) }
+        }
+    }
+
+    /// Read a menu photo (shared by picking here and a hand-off).
+    private func read(_ img: UIImage) {
+        reading = true; errorText = nil; items = []; translated = [:]; picks = []
+        Task {
             let lines: [String] = await Task.detached(priority: .userInitiated) {
                 DocEngine.recognize(img.resized(maxDimension: 2400).normalizedUp()).map(\.text)
             }.value

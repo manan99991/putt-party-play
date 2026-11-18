@@ -26,6 +26,7 @@ struct ComicStripView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: picks) { _, items in load(items) }
+        .handoff("comicstrip") { p in if let img = ToolHandoff.image(p) { ink([img.resized(maxDimension: 1400).normalizedUp()]) } }
     }
 
     private var pickCard: some View {
@@ -83,6 +84,14 @@ struct ComicStripView: View {
             for item in items.prefix(4) {
                 if let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) { raw.append(img.resized(maxDimension: 1400).normalizedUp()) }
             }
+            await MainActor.run { ink(raw) }
+        }
+    }
+
+    /// Ink the photos into panels (shared by picking here and a hand-off).
+    private func ink(_ raw: [UIImage]) {
+        inking = true; errorText = nil; resultURL = nil
+        Task {
             let inked: [UIImage] = await Task.detached(priority: .userInitiated) {
                 raw.compactMap { ChainFun.art($0, style: "comic", long: 1100) }
             }.value

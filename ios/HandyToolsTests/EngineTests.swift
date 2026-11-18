@@ -91,6 +91,17 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("hide kids faces").first?.id, "faceemoji")
         XCTAssertEqual(searchTools("menu").first?.id, "menu")
         XCTAssertEqual(searchTools("comic strip").first?.id, "comicstrip")
+        // Every "Open in a tool" target is a real tool, and a hand-off is used exactly once (fresh slate).
+        for k in [ChainKind.pdf, .image, .photoFile, .audio, .video, .file] {
+            for id in ToolHandoff.tools(for: k) { XCTAssertNotNil(TOOLS.first { $0.id == id }, "\(id) is in the catalog") }
+        }
+        XCTAssertTrue(ToolHandoff.tools(for: .pdf).contains("pdfsign"))
+        XCTAssertTrue(ToolHandoff.tools(for: .image).contains("animate"))
+        ToolHandoff.shared.put(.file(Data("%PDF".utf8), ext: "pdf"), for: "pdfsign")
+        let handed = ToolHandoff.shared.take("pdfsign")
+        XCTAssertNotNil(handed); XCTAssertNil(ToolHandoff.shared.take("pdfsign"), "consumed once")
+        if let h = handed, let u = ToolHandoff.fileURL(h) { XCTAssertEqual(u.pathExtension, "pdf"); try? FileManager.default.removeItem(at: u) }
+        else { XCTFail("hand-off writes a file") }
     }
 
     // MARK: duplicate detection precision

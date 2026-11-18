@@ -41,6 +41,7 @@ struct SignPDFView: View {
         }
         .sheet(isPresented: $showPad) { SignaturePadSheet { img in signature = img } }
         .onAppear { if Launch.sample, pages.isEmpty { loadSample() } }
+        .handoff("pdfsign") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     // MARK: - Pick

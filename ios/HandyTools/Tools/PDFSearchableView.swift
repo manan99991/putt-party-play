@@ -35,6 +35,7 @@ struct PDFSearchableView: View {
             if case .success(let url) = res { load(url) }
         }
         .onAppear { if Launch.sample, sourceData == nil { loadSample() } }
+        .handoff("pdfsearchable") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     private var pickCard: some View {

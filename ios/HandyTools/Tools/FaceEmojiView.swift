@@ -55,6 +55,7 @@ struct FaceEmojiView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: pick) { _, item in load(item) }
+        .handoff("faceemoji") { p in if let img = ToolHandoff.image(p) { use(img) } }
     }
 
     private var pickCard: some View {
@@ -174,8 +175,16 @@ struct FaceEmojiView: View {
             guard let d = try? await item.loadTransferable(type: Data.self), let raw = UIImage(data: d) else {
                 await MainActor.run { errorText = "Couldn't open that photo." }; return
             }
-            let img = raw.resized(maxDimension: 3000).normalizedUp()
-            await MainActor.run { photo = img; finding = true }
+            await MainActor.run { use(raw) }
+        }
+    }
+
+    /// Show the photo and find its faces (shared by picking here and a hand-off).
+    private func use(_ raw: UIImage) {
+        errorText = nil; resultURL = nil; covers = []
+        let img = raw.resized(maxDimension: 3000).normalizedUp()
+        photo = img; finding = true
+        Task {
             let found: [CGRect] = await Task.detached(priority: .userInitiated) {
                 guard let cg = img.cgImage else { return [] }
                 return Scrubber.thoroughFaces(cg).map { $0.insetBy(dx: -$0.width * 0.08, dy: -$0.height * 0.1) }

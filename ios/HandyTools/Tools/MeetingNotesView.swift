@@ -47,6 +47,7 @@ struct MeetingNotesView: View {
             if case .success(let url) = res { load(url) }
         }
         .finishes(working, tool: "Meeting Notes")
+        .handoff("meetingnotes") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     // MARK: - Pick

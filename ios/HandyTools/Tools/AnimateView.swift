@@ -43,6 +43,7 @@ struct AnimateView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: picks) { _, items in load(items) }
+        .handoff("animate") { p in if let img = ToolHandoff.image(p) { adopt([img.resized(maxDimension: 1440).normalizedUp()]) } }
         .onChange(of: settings) { _, _ in schedulePreview() }
         .onChange(of: look) { _, _ in restyle() }
         .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { n in
@@ -238,6 +239,14 @@ struct AnimateView: View {
                 if look == .original { schedulePreview() } else { restyle() }
             }
         }
+    }
+
+    /// Use photos handed in from elsewhere (same as picking them here).
+    private func adopt(_ imgs: [UIImage]) {
+        guard !imgs.isEmpty else { return }
+        photos = imgs; errorText = nil; resultURL = nil
+        if !styleTouched || photos.count < settings.style.minPhotos { settings.style = Animate.suggestedStyle(count: photos.count) }
+        if look == .original { schedulePreview() } else { restyle() }
     }
 
     /// Re-render a quick, low-res draft whenever something changes (debounced), and loop it.

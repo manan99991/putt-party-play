@@ -50,6 +50,7 @@ struct AudioMixView: View {
             if m == .speed, clips.count > 1 { clips = Array(clips.prefix(1)) }
         }
         .finishes(working, tool: "Join & Speed")
+        .handoff("audiomix") { p in if let u = ToolHandoff.fileURL(p) { add([u]) } }
     }
 
     // MARK: - Join

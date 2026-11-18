@@ -49,6 +49,7 @@ struct PDFProtectView: View {
         }
         .onChange(of: mode) { _, _ in errorText = nil }
         .onAppear { if Launch.sample, sourceData == nil { loadSample() } }
+        .handoff("pdfprotect") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     // MARK: - Pick

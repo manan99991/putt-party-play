@@ -2072,6 +2072,18 @@ private struct ToolPickView: View {
     let mine: [Chain]
     @Environment(\.dismiss) private var dismiss
 
+    /// The app's own full tools that open this kind of thing, already loaded (see ToolHandoff).
+    private var direct: [Tool] {
+        ToolHandoff.tools(for: given.payload.kind).compactMap { id in TOOLS.first { $0.id == id } }
+    }
+
+    /// Hand the item to a full tool: close this sheet, then open the tool with the item waiting.
+    private func openIn(_ id: String) {
+        ToolHandoff.shared.put(given.payload, for: id)
+        dismiss()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { NotificationCenter.default.post(name: .openTool, object: id) }
+    }
+
     private var tools: [Chain] {
         let kind = given.payload.kind == .photoFile ? ChainKind.image : given.payload.kind
         let text: String? = { if case .text(let t) = given.payload { return t } else { return nil } }()
@@ -2095,8 +2107,32 @@ private struct ToolPickView: View {
                 if case .text(let t) = given.payload, !t.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
                 }
+                if !direct.isEmpty {
+                    Text(L("Open in a tool")).font(HandyFont.bodyStrong)
+                    ForEach(direct, id: \.id) { t in
+                        Button { openIn(t.id) } label: {
+                            HStack(spacing: HandySpacing.s12) {
+                                Image(systemName: t.icon).font(.system(size: 20)).foregroundStyle(HandyColor.accent).frame(width: 32, height: 32)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(L(t.name)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                    Text(L(t.blurb)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right").font(.caption).foregroundStyle(HandyColor.textSecondary)
+                            }
+                            .padding(HandySpacing.s12)
+                            .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("open-in-\(t.id)")
+                    }
+                    if !tools.isEmpty { Text(L("Or run a quick shortcut")).font(HandyFont.bodyStrong).padding(.top, HandySpacing.s8) }
+                }
                 if tools.isEmpty {
-                    Text("No tool takes this yet. Close this, tap Blank, and build one that starts with \(given.payload.kind.label).").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    if direct.isEmpty {
+                        Text("No tool takes this yet. Close this, tap Blank, and build one that starts with \(given.payload.kind.label).").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    }
                 } else {
                     Text(L("Pick what to do with it. It runs straight away.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }

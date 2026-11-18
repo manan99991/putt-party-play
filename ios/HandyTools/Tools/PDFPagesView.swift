@@ -33,6 +33,7 @@ struct PDFPagesView: View {
             if case .success(let url) = res { load(url) }
         }
         .onAppear { if Launch.sample, thumbs.isEmpty { loadSample() } }
+        .handoff("pdfpages") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     // MARK: - Pick

@@ -36,6 +36,7 @@ struct ZipMakerView: View {
             if case .success(let urls) = res { addFiles(urls) }
         }
         .onChange(of: photoPicks) { _, items in addPhotos(items) }
+        .handoff("zipmaker") { p in if let u = ToolHandoff.fileURL(p) { addFiles([u]) } }
     }
 
     private var editor: some View {

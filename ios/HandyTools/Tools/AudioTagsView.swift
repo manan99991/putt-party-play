@@ -32,6 +32,7 @@ struct AudioTagsView: View {
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.audio]) { res in
             if case .success(let url) = res { load(url) }
         }
+        .handoff("audiotags") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
         .onChange(of: artPick) { _, item in
             guard let item else { return }
             Task {
