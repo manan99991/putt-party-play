@@ -5,136 +5,93 @@
 | skip_screenshots                                                   | false                                                                      |
 | skip_metadata                                                      | false                                                                      |
 | sync_screenshots                                                   | false                                                                      |
-[22:46:08]: [32mSuccessfully set the version to '1.2.57'[0m
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
-[22:46:12]: [33mWill begin uploading metadata for '1.2.57' on App Store Connect[0m
-[22:46:12]: Uploading metadata to App Store Connect for version
-[22:46:16]: Uploading metadata to App Store Connect for localized version 'en-US'
-[22:46:16]: Uploading metadata to App Store Connect for localized info 'en-US'
-[22:46:23]: Starting with the upload of screenshots...
-[22:46:25]: [33mNumber of screenshots not deleted: 0[0m
-[22:46:25]: Successfully deleted all screenshots
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-03.png'... (1.791594434 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-07.png'... (1.866812645 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-06.png'... (1.871507913 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-01.png'... (1.889900545 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-02.png'... (1.931842283 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-02.png'... (1.937213869 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-01.png'... (1.937565326 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-08.png'... (1.938466077 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-04.png'... (1.978233194 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-05.png'... (2.206944642 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-04.png'... (1.739143252 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-07.png'... (1.778926259 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-03.png'... (1.952315837 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-08.png'... (1.8162389 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-06.png'... (1.899301264 secs)
-[22:46:30]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-05.png'... (2.02168455 secs)
-[22:46:30]: Waiting for all the screenshots to finish being processed...
-[22:46:35]: Successfully uploaded all screenshots
-[22:46:35]: Sorting screenshots uploaded...
-[22:46:36]: [32mSuccessfully uploaded screenshots to App Store Connect[0m
-[22:46:37]: [32mSuccessfully finished processing the build 1.2.57 - 1794695716 for IOS[0m
-[22:46:39]: [32mSuccessfully selected build[0m
-[22:46:40]: [32mSuccessfully updated contents rights declaration on App Store Connect[0m
-[22:46:48]: [32mSuccessfully submitted the app for review![0m
-[22:46:48]: [32mSubmitted Tenzy to App Store review (held for manual release).[0m
-[22:46:48]: [32mfastlane.tools finished successfully 🎉[0m
+[02:20:27]: [31mfastlane finished with errors[0m
+➡️  [33m[upload_app_privacy_details_to_app_store] fix error when `Info.plist` contains `NSUserTrackingUsageDescription`[0m
+➡️  [33mupload_app_privacy_details_to_app_store fails and returns error when NSUserTrackingUsageDescription is present in info.plist[0m
+and 3 more at: https://github.com/fastlane/fastlane/search?q=The%20provided%20entity%20includes%20a%20relationship%20with%20an%20invalid%20value%20-%20You%20cannot%20create%20a%20new%20version%20of%20the%20App%20in%20the%20current%20state.%20-%20%2Fdata%2Frelationships%2Fapp&type=Issues&utf8=✓
+/opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/api_client.rb:222:in `handle_response': [31m[!] The provided entity includes a relationship with an invalid value - You cannot create a new version of the App in the current state. - /data/relationships/app[0m (Spaceship::UnexpectedResponse)
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'
+/opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/api_client.rb:222:in `handle_response': The provided entity includes a relationship with an invalid value - You cannot create a new version of the App in the current state. - /data/relationships/app (Spaceship::UnexpectedResponse)
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'
 
 ===== tail =====
-| sync_screenshots                                                   | false                                                                      |
-| verify_only                                                        | false                                                                      |
-| reject_if_possible                                                 | false                                                                      |
-| version_check_wait_retry_limit                                     | 7                                                                          |
-| phased_release                                                     | false                                                                      |
-| reset_ratings                                                      | false                                                                      |
-| precheck_default_rule_level                                        | warn                                                                       |
-| ignore_language_directory_validation                               | false                                                                      |
-+--------------------------------------------------------------------+----------------------------------------------------------------------------+
+    08 Jul 2026
 
-[22:46:06]: Making sure the latest version on App Store Connect matches '1.2.57'...
-[22:46:08]: [32mSuccessfully set the version to '1.2.57'[0m
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/description.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/keywords.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/release_notes.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/support_url.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/marketing_url.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/promotional_text.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/name.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/subtitle.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/en-US/privacy_url.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/copyright.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/primary_category.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/secondary_category.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/first_name.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/last_name.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/phone_number.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/email_address.txt'...
-[22:46:08]: Loading '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/metadata/review_information/notes.txt'...
-[22:46:12]: [33mWill begin uploading metadata for '1.2.57' on App Store Connect[0m
-[22:46:12]: Uploading metadata to App Store Connect for version
-[22:46:16]: Uploading metadata to App Store Connect for localized version 'en-US'
-[22:46:16]: Uploading metadata to App Store Connect for localized info 'en-US'
-[22:46:21]: Uploading app review information to App Store Connect
-[22:46:23]: [33mWill begin uploading snapshots for '1.2.57' on App Store Connect[0m
-[22:46:23]: Starting with the upload of screenshots...
-[22:46:24]: Deleted 'en-US APP_IPHONE_61' -  (0.380530781 secs)
-[22:46:25]: Deleted 'en-US APP_IPAD_PRO_3GEN_129' -  (1.54449671 secs)
-[22:46:25]: [33mNumber of screenshots not deleted: 0[0m
-[22:46:25]: Successfully deleted all screenshots
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-03.png'... (1.791594434 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-07.png'... (1.866812645 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-06.png'... (1.871507913 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-01.png'... (1.889900545 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-02.png'... (1.931842283 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-02.png'... (1.937213869 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-01.png'... (1.937565326 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-08.png'... (1.938466077 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-04.png'... (1.978233194 secs)
-[22:46:28]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/ipad-05.png'... (2.206944642 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-04.png'... (1.739143252 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-07.png'... (1.778926259 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-03.png'... (1.952315837 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-08.png'... (1.8162389 secs)
-[22:46:29]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-06.png'... (1.899301264 secs)
-[22:46:30]: Uploaded '/home/runner/work/putt-party-play/putt-party-play/ios/fastlane/screenshots/en-US/iphone-05.png'... (2.02168455 secs)
-[22:46:30]: Waiting for all the screenshots to finish being processed...
-[22:46:35]: Successfully uploaded all screenshots
-[22:46:35]: Sorting screenshots uploaded...
-[22:46:36]: [32mSuccessfully uploaded screenshots to App Store Connect[0m
-[22:46:36]: Selecting the latest build...
-[22:46:36]: Waiting for processing on... app_id: 6824023361, app_version: 1.2.57, build_version: , platform: IOS
-[22:46:37]: [32mSuccessfully finished processing the build 1.2.57 - 1794695716 for IOS[0m
-[22:46:37]: Selecting build 1.2.57 (1794695716)...
-[22:46:39]: [32mSuccessfully selected build[0m
-[22:46:40]: [32mSuccessfully updated contents rights declaration on App Store Connect[0m
-[22:46:48]: [32mSuccessfully submitted the app for review![0m
-[22:46:48]: [32mSubmitted Tenzy to App Store review (held for manual release).[0m
+➡️  [33mupload_app_privacy_details_to_app_store fails and returns error when NSUserTrackingUsageDescription is present in info.plist[0m
+    https://github.com/fastlane/fastlane/issues/19781 [[31mopen[0m] 20 💬
+    30 Aug 2024
 
-+------------------------------------------------+
-|                [32mfastlane summary[0m                |
-+------+---------------------------+-------------+
-| Step | Action                    | Time (in s) |
-+------+---------------------------+-------------+
-| 1    | default_platform          | 0           |
-| 2    | app_store_connect_api_key | 0           |
-| 3    | deliver                   | 42          |
-+------+---------------------------+-------------+
+➡️  [33m[deliver] increase chances of success when creating a new app version even when Apple servers are degraded[0m
+    https://github.com/fastlane/fastlane/pull/21742 [[32mclosed[0m] 58 💬
+    10 Dec 2025
 
-[22:46:48]: [32mfastlane.tools finished successfully 🎉[0m
+and 3 more at: https://github.com/fastlane/fastlane/search?q=The%20provided%20entity%20includes%20a%20relationship%20with%20an%20invalid%20value%20-%20You%20cannot%20create%20a%20new%20version%20of%20the%20App%20in%20the%20current%20state.%20-%20%2Fdata%2Frelationships%2Fapp&type=Issues&utf8=✓
+
+/opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/api_client.rb:222:in `handle_response': [31m[!] The provided entity includes a relationship with an invalid value - You cannot create a new version of the App in the current state. - /data/relationships/app[0m (Spaceship::UnexpectedResponse)
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/api_client.rb:125:in `post'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/tunes/tunes.rb:950:in `post_app_store_version'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/3.3.0/forwardable.rb:240:in `post_app_store_version'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/models/app.rb:228:in `ensure_version!'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/deliver/lib/deliver/runner.rb:136:in `verify_version'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/deliver/lib/deliver/runner.rb:59:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/actions/upload_to_app_store.rb:25:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:261:in `block (2 levels) in execute_action'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/actions/actions_helper.rb:69:in `execute_action'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:253:in `block in execute_action'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:227:in `chdir'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:227:in `execute_action'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:158:in `trigger_action_by_name'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'
+	from Fastfile:291:in `block (2 levels) in parsing_binding'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/lane.rb:41:in `call'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:49:in `block in execute'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:45:in `chdir'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:45:in `execute'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:187:in `call'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:157:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:129:in `run!'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/commands_generator.rb:369:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/commands_generator.rb:43:in `start'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/cli_tools_distributor.rb:140:in `take_off'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/bin/fastlane:25:in `<top (required)>'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/bin/fastlane:25:in `load'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/bin/fastlane:25:in `<main>'
+/opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/api_client.rb:222:in `handle_response': The provided entity includes a relationship with an invalid value - You cannot create a new version of the App in the current state. - /data/relationships/app (Spaceship::UnexpectedResponse)
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/api_client.rb:125:in `post'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/tunes/tunes.rb:950:in `post_app_store_version'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/3.3.0/forwardable.rb:240:in `post_app_store_version'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/spaceship/lib/spaceship/connect_api/models/app.rb:228:in `ensure_version!'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/deliver/lib/deliver/runner.rb:136:in `verify_version'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/deliver/lib/deliver/runner.rb:59:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/actions/upload_to_app_store.rb:25:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:261:in `block (2 levels) in execute_action'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/actions/actions_helper.rb:69:in `execute_action'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:253:in `block in execute_action'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:227:in `chdir'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:227:in `execute_action'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:158:in `trigger_action_by_name'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'
+	from Fastfile:291:in `block (2 levels) in parsing_binding'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/lane.rb:41:in `call'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:49:in `block in execute'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:45:in `chdir'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/runner.rb:45:in `execute'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/lane_manager.rb:46:in `cruise_lane'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/command_line_handler.rb:34:in `handle'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/commands_generator.rb:110:in `block (2 levels) in run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:187:in `call'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/command.rb:157:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:129:in `run!'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/commands_generator.rb:369:in `run'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/commands_generator.rb:43:in `start'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/fastlane/lib/fastlane/cli_tools_distributor.rb:140:in `take_off'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/lib/ruby/gems/3.3.0/gems/fastlane-2.242.0/bin/fastlane:25:in `<top (required)>'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/bin/fastlane:25:in `load'
+	from /opt/hostedtoolcache/Ruby/3.3.13/x64/bin/fastlane:25:in `<main>'
