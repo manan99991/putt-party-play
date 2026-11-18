@@ -219,6 +219,29 @@ enum DocEngine {
         return out
     }
 
+    /// Pull the text out of a PDF for the PDF → text converter: the embedded text layer when the PDF
+    /// has one (fast and exact), otherwise OCR each rendered page so even a scanned PDF yields text.
+    static func pdfText(_ data: Data) -> String {
+        guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return "" }
+        if let s = doc.string?.trimmingCharacters(in: .whitespacesAndNewlines), s.count > 2 { return s }
+        var out: [String] = []
+        for i in 0..<doc.pageCount {
+            guard let page = doc.page(at: i) else { continue }
+            let b = page.bounds(for: .mediaBox)
+            let scale = min(3, 1600 / max(1, b.width))
+            let size = CGSize(width: (b.width * scale).rounded(), height: (b.height * scale).rounded())
+            let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+            let img = UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+                UIColor.white.setFill(); c.fill(CGRect(origin: .zero, size: size))
+                c.cgContext.translateBy(x: 0, y: size.height); c.cgContext.scaleBy(x: scale, y: -scale)
+                page.draw(with: .mediaBox, to: c.cgContext)
+            }
+            let t = text(recognize(img))
+            if !t.isEmpty { out.append(t) }
+        }
+        return out.joined(separator: "\n\n")
+    }
+
     /// True redaction. Each page is rasterized, opaque black is painted over the chosen regions, and
     /// the PDF is rebuilt from the flattened pages — so the hidden text and images are genuinely gone,
     /// with no selectable layer left underneath (the mistake a drawn-on black box makes). `boxes[i]`
