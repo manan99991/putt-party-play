@@ -121,6 +121,7 @@ struct Tool: Identifiable {
     Tool(id: "textstudio", name: "Text Studio",      blurb: "Fix, rewrite, reply, summarize",    icon: "text.badge.checkmark",                page: 4, ai: true, asset: "tool_textstudio", keywords: ["text","grammar","proofread","rewrite","tone","reply","summarize","summary","edit","polish","email","message","ai"]),
     Tool(id: "thinking",   name: "Thinking tools",   blurb: "Untangle, plan the day, decide, explain, reword", icon: "brain.head.profile",       page: 4, ai: true, asset: "tool_explain", keywords: ["think","thinking","untangle","plan my day","decide","decision","crossroads","explain","plain english","reword","rewrite","tone","brain dump","clear my head","prep","checklist","focus","overwhelmed","steps","to-do","todo","ai"]),
     Tool(id: "pdfannotate", name: "Annotate",        blurb: "Highlight & draw on a PDF, baked in", icon: "highlighter",                        page: 4, asset: "tool_scan", keywords: ["annotate","annotation","highlight","highlighter","marker","markup","mark up","draw","drawing","pen","freehand","note","notes","comment","pdf"]),
+    Tool(id: "pdfconvert", name: "Convert",          blurb: "PDF → image pages or text",         icon: "doc.on.doc",                          page: 4, asset: "tool_scan", keywords: ["convert","pdf to image","pdf to text","extract text","pages","image","images","jpg","jpeg","png","picture","export","copy text"]),
     Tool(id: "translate",  name: "Translate",        blurb: "Text, camera, voice — offline",     icon: "character.bubble.fill",               page: 2, asset: "tool_translate", keywords: ["translate","translation","language","offline","camera","voice","conversation","spanish","french","menu","sign"]),
     Tool(id: "voicenotes", name: "Voice → Notes",    blurb: "Transcript, summary, to‑dos",       icon: "waveform.badge.mic",                  page: 2, ai: true, asset: "tool_voicenotes", keywords: ["voice","record","transcribe","transcript","meeting","notes","summary","action items","dictation","audio","speech","ai"]),
     Tool(id: "shield",     name: "Message Shield",   blurb: "Spot scams, see why",               icon: "shield.lefthalf.filled",              page: 2, ai: true, asset: "tool_shield", keywords: ["scam","phishing","spam","fraud","suspicious","text","email","link","safe","check","is this real","mom","ai"]),
@@ -313,6 +314,7 @@ struct ToolDestination: View {
         case "seeread": SeeReadView()
         case "pdfredact": PDFRedactView()
         case "pdfannotate": PDFAnnotateView()
+        case "pdfconvert": PDFConvertView()
         default: ComingSoonView(id: id)
         }
     }

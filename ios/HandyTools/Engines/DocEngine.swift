@@ -242,6 +242,28 @@ enum DocEngine {
         return out.joined(separator: "\n\n")
     }
 
+    /// Render each page of a PDF to a standalone image for the PDF → image converter. Returns the
+    /// encoded bytes per page — JPEG by default (small, universal) or PNG when `png` is set — using the
+    /// same crisp, white-backed rasterization as `importPDF`. Empty only if the PDF can't be read.
+    static func pdfToImages(_ data: Data, png: Bool = false, maxWidth: CGFloat = 1600, quality: CGFloat = 0.9) -> [Data] {
+        guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return [] }
+        var out: [Data] = []
+        for i in 0..<doc.pageCount {
+            guard let page = doc.page(at: i) else { continue }
+            let b = page.bounds(for: .mediaBox)
+            let scale = min(3, maxWidth / max(1, b.width))
+            let size = CGSize(width: (b.width * scale).rounded(), height: (b.height * scale).rounded())
+            let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+            let img = UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+                UIColor.white.setFill(); c.fill(CGRect(origin: .zero, size: size))
+                c.cgContext.translateBy(x: 0, y: size.height); c.cgContext.scaleBy(x: scale, y: -scale)
+                page.draw(with: .mediaBox, to: c.cgContext)
+            }
+            if let d = png ? img.pngData() : img.jpegData(compressionQuality: quality) { out.append(d) }
+        }
+        return out
+    }
+
     /// True redaction. Each page is rasterized, opaque black is painted over the chosen regions, and
     /// the PDF is rebuilt from the flattened pages — so the hidden text and images are genuinely gone,
     /// with no selectable layer left underneath (the mistake a drawn-on black box makes). `boxes[i]`

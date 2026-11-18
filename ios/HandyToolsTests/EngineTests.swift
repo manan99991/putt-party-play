@@ -1392,6 +1392,19 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(extracted.contains("INVOICE"), "should pull the embedded text layer out of the PDF")
     }
 
+    /// PDF → image converter: one decodable image per page, both JPEG and PNG, garbage in → empty.
+    func testPdfToImagesRendersEveryPage() throws {
+        let pages = (1...3).map { DocEngine.Page(source: Self.text("PAGE \($0)"), filter: .color) }
+        let data = try XCTUnwrap(DocEngine.pdf(pages, options: .init(searchable: false)))
+        let jpgs = DocEngine.pdfToImages(data)
+        XCTAssertEqual(jpgs.count, 3, "one JPEG per page")
+        for d in jpgs { XCTAssertNotNil(UIImage(data: d), "each exported page must decode as an image") }
+        let pngs = DocEngine.pdfToImages(data, png: true)
+        XCTAssertEqual(pngs.count, 3, "one PNG per page")
+        XCTAssertNotNil(UIImage(data: try XCTUnwrap(pngs.first)))
+        XCTAssertTrue(DocEngine.pdfToImages(Data("not a pdf".utf8)).isEmpty, "garbage in → empty, never a crash")
+    }
+
     func testRedactionTrulyRemovesHiddenText() throws {
         // A searchable PDF carrying an invisible, selectable text layer that reads "SECRET".
         let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 300)).image { c in

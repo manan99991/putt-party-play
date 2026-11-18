@@ -44,6 +44,7 @@ enum TenzyArt {
         "pricecheck": "livecaptions",
         "pdfredact": "scrub",
         "pdfannotate": "scan",
+        "pdfconvert": "scan",
     ]
 
     static func name(id: String, theme: TenzyTheme, scheme: ColorScheme, kind: Kind) -> String {
