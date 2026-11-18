@@ -24,7 +24,7 @@ does the **top undone item**, checks it off, and pushes one validation commit. O
 ## Ordered queue (do the top undone one)
 1. ~~Redaction UI~~ — **DONE** (Redact PDF tool `pdfredact`, drag-to-black-out + preview + true removal; commit d58160a4). Start at item 2.
 2. ~~PDF annotate~~ — **DONE** (Annotate tool `pdfannotate`: highlighter sweep + freehand draw, colour picker, per-page undo/clear, marks baked into the page via `DocEngine.annotate`, text kept selectable (re-OCR), preview before Save/Share; commit 8094673). Start at item 3.
-3. **PDF convert** — PDF → image pages, and PDF → text (reuse `importPDF` / OCR). Land in the share sheet.
+3. ~~PDF convert~~ — **DONE** (Convert tool `pdfconvert`, page 4: PDF → image pages (JPEG/PNG) + PDF → text (.txt via embedded layer / OCR fallback), preview before Save/Share, lands in the share sheet; `DocEngine.pdfToImages` + unit test; commit 66fca2a, CI run #109 green). Start at item 4.
 4. **Audio convert** — between the common phone formats (bundle codecs where iOS lacks them); honest about what each phone can do.
 5. **Ringtone maker** — trim a clip to ≤30s, export `.m4r`, hand off to the right place (state the manual GarageBand step honestly — iOS won't let an app set ringtones directly).
 6. **Audio trim / fades / dead-air** — cut, fade in/out, auto-remove silence, preview.
