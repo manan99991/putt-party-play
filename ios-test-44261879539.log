@@ -1,0 +1,6 @@
+== test.log (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:1:1: error: expressions are not allowed at the top level
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Backgrounds.swift:1:1: error: expressions are not allowed at the top level
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/App.swift:1:1: error: Expressions are not allowed at the top level
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Backgrounds.swift:1:1: error: Expressions are not allowed at the top level
+** TEST FAILED **
