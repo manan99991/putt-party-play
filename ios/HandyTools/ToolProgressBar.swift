@@ -29,7 +29,7 @@ struct ToolProgressBar: View {
                 ProgressView().progressViewStyle(.linear).tint(HandyColor.accent)
             }
             if !label.isEmpty {
-                Text(label).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(L(label)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             HStack(spacing: 6) {

@@ -58,7 +58,7 @@ struct ExploreView: View {
                 // The full catalog, by category
                 ForEach(groups, id: \.page) { group in
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                        Text(group.title.uppercased()).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        Text(L(group.title).uppercased()).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                             .padding(.horizontal, HandySpacing.gutter)
                         LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
                             ForEach(tools(onPage: group.page)) { t in

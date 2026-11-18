@@ -676,7 +676,7 @@ struct AllToolsView: View {
                     .padding(.horizontal, HandySpacing.gutter)
                 ForEach(groups, id: \.page) { group in
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                        Text(group.title.uppercased()).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        Text(L(group.title).uppercased()).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                             .padding(.horizontal, HandySpacing.gutter)
                         LazyVGrid(columns: cols, spacing: HandySpacing.s12) {
                             ForEach(tools(onPage: group.page)) { t in
@@ -953,8 +953,8 @@ struct ToolPage<Content: View>: View {
                     HStack(spacing: HandySpacing.s12) {
                         if !toolID.isEmpty { ToolIconBadge(id: toolID, symbol: "square.grid.2x2", size: 44) }
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(title).font(HandyFont.title)
-                            Text(subtitle).font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
+                            Text(L(title)).font(HandyFont.title)
+                            Text(L(subtitle)).font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
                         }
                     }
                     content()

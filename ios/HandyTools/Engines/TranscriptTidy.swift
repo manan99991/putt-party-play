@@ -27,7 +27,8 @@ enum TranscriptTidy {
             }
             if let prev = out.last, !realDoubles.contains(core), !core.isEmpty,
                prev.lowercased() == core, tok.lowercased().hasPrefix(core) {
-                out[out.count - 1] = tok      // "the the," → "the,"
+                // "The the," → "The," — keep the first word's capital, take the second's punctuation.
+                out[out.count - 1] = prev.first?.isUppercase == true ? tok.prefix(1).uppercased() + tok.dropFirst() : tok
                 continue
             }
             out.append(tok)
@@ -63,7 +64,7 @@ enum TranscriptTidy {
             cur.append(s)
         }
         if !cur.isEmpty { paras.append(cur) }
-        return paras.map { $0.joined(separator: " ") }
+        return paras.map { TextTools.capitalizeSentences($0.joined(separator: " ")) }
     }
 
     // MARK: helpers
