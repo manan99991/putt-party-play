@@ -1402,6 +1402,26 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(plan.contains("tel:5551234567"))    // mom → call
     }
 
+    func testSignPDFStampsAndKeepsOriginalText() throws {
+        let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 500)).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 500)) }
+        let line = DocEngine.OCRLine(text: "CONTRACT", box: CGRect(x: 0.1, y: 0.1, width: 0.6, height: 0.1))
+        var opts = DocEngine.PDFOptions(); opts.searchable = true
+        guard let src = DocEngine.pdf(images: [img], ocr: [[line]], options: opts) else { return XCTFail("no source") }
+        var st = DocEngine.Stamp(kind: .text("SIGNED HERE")); st.center = CGPoint(x: 0.5, y: 0.8); st.width = 0.5
+        guard let outData = PDFOverlay.stamp(src, stamps: [0: [st]]), let out = PDFDocument(data: outData)
+        else { return XCTFail("stamp returned nil") }
+        XCTAssertEqual(out.pageCount, 1)
+        let text = out.string ?? ""
+        XCTAssertTrue(text.contains("SIGNED"), "the stamp must be on the page")
+        XCTAssertTrue(text.contains("CONTRACT"), "the original page must stay vector — its text still there")
+        let a = PDFDocument(data: src)!.page(at: 0)!.bounds(for: .mediaBox).size
+        let b = out.page(at: 0)!.bounds(for: .mediaBox).size
+        XCTAssertEqual(a.width, b.width, accuracy: 1); XCTAssertEqual(a.height, b.height, accuracy: 1)
+        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
+        XCTAssertEqual(searchTools("sign").first?.id, "pdfsign")
+    }
+
     func testPDFPagesReorderRotateRemove() throws {
         // Three pages of different heights so the output order is checkable from page bounds.
         func page(_ h: CGFloat) -> UIImage {
