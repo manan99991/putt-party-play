@@ -1209,11 +1209,17 @@ final class SmartDescribeTests: XCTestCase {
         let long = ChainPlanner.keywordPlan("I want to post a photo online stripping all the personal data")
         XCTAssertEqual(long?.name, "Privacy share shield", "a long request is named for what the tool does")
         let c = Chain(id: "x", name: "My tool", steps: [ChainStep(block: .readText), ChainStep(block: .translate), ChainStep(block: .readAloud)])
-        XCTAssertEqual(ChainText.autoName(c), "Read text + 2 more")
-        XCTAssertEqual(ChainText.autoName(Chain(id: "x", name: "", steps: [ChainStep(block: .enhance), ChainStep(block: .watermark)])), "Enhance + Add a watermark")
+        XCTAssertEqual(ChainText.autoName(c), "Read text, translate and read it aloud")
+        XCTAssertEqual(ChainText.autoName(Chain(id: "x", name: "", steps: [ChainStep(block: .enhance), ChainStep(block: .watermark)])), "Enhance and add a watermark")
         XCTAssertEqual(ChainText.autoName(Chain(id: "x", name: "", steps: [ChainStep(block: .calendarEvent)])), "Make a calendar event")
         XCTAssertEqual(ChainText.autoName(Chain(id: "x", name: "", steps: [])), "My tool")
-        XCTAssertEqual(ChainText.savedName(c), "Read text + 2 more", "a tool left as My tool is named for its steps when saved")
+        XCTAssertEqual(ChainText.savedName(c), "Read text, translate and read it aloud", "a tool left as My tool is named for its steps when saved")
+        // A raw request is never shown as a name; sizes and endings are said in the sentence.
+        let pdf = Chain(id: "p", name: "I want an image to convert to pdf without location", steps: [ChainStep(block: .stripLocation), ChainStep(block: .photoPdf)])
+        XCTAssertFalse(ChainText.displayName(pdf).lowercased().hasPrefix("i want"))
+        let mail = Chain(id: "m", name: "", steps: [ChainStep(block: .pdfShrink, settings: ["mb": "5"])], finish: ChainFinish(kind: .mail, to: ""))
+        XCTAssertEqual(ChainText.sentence(mail), "Shrink the PDF under 5 MB — then email it")
+        XCTAssertEqual(ChainText.displayName(Chain(id: "k", name: "Receipts to my sheet", steps: [ChainStep(block: .readText)])), "Receipts to my sheet", "a name you typed stays")
         var named = c; named.name = "  Menu helper "
         XCTAssertEqual(ChainText.savedName(named), "Menu helper")
     }

@@ -805,8 +805,8 @@ struct BuilderView: View {
         HStack(spacing: HandySpacing.s12) {
             if let f = c.steps.first { BlockBadge(block: f.block) }
             VStack(alignment: .leading, spacing: 2) {
-                Text(c.name).font(HandyFont.bodyStrong).lineLimit(2)
-                Text(c.steps.map(\.block.title).joined(separator: "  ›  ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+                Text(ChainText.displayName(c)).font(HandyFont.bodyStrong).lineLimit(3).fixedSize(horizontal: false, vertical: true)
+                Text(c.about).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3).fixedSize(horizontal: false, vertical: true)
                 if let when = c.schedule {
                     Label(when.label(uses24h: ToolSchedules.uses24h), systemImage: "bell").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
                 }
@@ -1910,6 +1910,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             Button { openLink() } label: { Label(f.label, systemImage: "arrow.up.forward.app").frame(maxWidth: .infinity) }
                 .primaryButton().accessibilityIdentifier("open-link")
         } else if let f = chain.finish, f.kind != .share, outbox != nil {
+            if let w = sizeWarning {
+                Label { Text(L(w)).font(HandyFont.caption).fixedSize(horizontal: false, vertical: true) }
+                    icon: { Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(HandyColor.amber) }
+            }
             if SendSheet.canSend(f.kind) {
                 Button { sending = true } label: { Label(f.label, systemImage: f.kind == .mail ? "envelope" : "message").frame(maxWidth: .infinity) }
                     .primaryButton().accessibilityIdentifier("send-on")
@@ -1936,7 +1940,23 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         // Kept so the result is still there after this screen is closed. Copied off the main thread: a video can be large.
         if let box { let name = chain.name; Task.detached(priority: .utility) { RunHistory.add(box, tool: name) } }
         if let f = chain.finish, f.kind == .open, box != nil { openLink(box) }
-        else if let f = chain.finish, f.kind == .mail || f.kind == .message, box != nil, SendSheet.canSend(f.kind) { sending = true }
+        // Over the size limit the tool promised: stop and say so instead of opening the email with a too-big file.
+        else if let f = chain.finish, f.kind == .mail || f.kind == .message, box != nil, SendSheet.canSend(f.kind), sizeWarning == nil { sending = true }
+    }
+
+    /// When a "shrink to N MB" step couldn't get under N, the honest line shown above Send.
+    private var sizeWarning: String? {
+        guard let box = outbox, let file = box.files.first,
+              let bytes = (try? FileManager.default.attributesOfItem(atPath: file.path)[.size] as? NSNumber)?.intValue else { return nil }
+        let limits = chain.steps.filter { [.pdfShrink, .shrinkImage, .videoShrink].contains($0.block) }.compactMap { Double($0.settings["mb"] ?? "") }
+        guard let mb = limits.min(), mb > 0, Double(bytes) > mb * 1_048_576 else { return nil }
+        let got = String(format: "%.1f", Double(bytes) / 1_048_576)
+        return ChainRunView.overLimitNote(got: got, limit: mb)
+    }
+
+    static func overLimitNote(got: String, limit: Double) -> String {
+        let lim = limit == limit.rounded() ? String(Int(limit)) : String(format: "%.1f", limit)
+        return "The smallest this file goes without becoming unreadable is \(got) MB — over your \(lim) MB. Most email accepts up to 20–25 MB, and Gmail and Outlook send bigger files as a link. Check it above, then send it anyway or save it."
     }
 
     @ViewBuilder private var batchView: some View {

@@ -77,7 +77,8 @@ enum SizeTarget {
     static func pdfSync(_ data: Data, targetBytes: Int) -> Data? {
         if data.count <= targetBytes { return data }
         guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return nil }
-        let ladder: [(CGFloat, CGFloat)] = [(2.0, 0.8), (1.6, 0.7), (1.3, 0.6), (1.0, 0.55), (0.8, 0.5), (0.65, 0.45), (0.5, 0.4), (0.4, 0.35)]
+        // Pixels per point, JPEG quality. Ends around 36 dpi / q 0.3 — still readable text on screen.
+        let ladder: [(CGFloat, CGFloat)] = [(2.0, 0.8), (1.6, 0.7), (1.3, 0.6), (1.0, 0.55), (0.8, 0.5), (0.65, 0.45), (0.5, 0.4), (0.4, 0.35), (0.33, 0.3)]
         for (scale, q) in ladder {
             if let out = rerender(doc, scale: scale, quality: q), out.count <= targetBytes { return out }
         }
@@ -102,8 +103,15 @@ enum SizeTarget {
                     page.draw(with: .mediaBox, to: c.cgContext)
                     c.cgContext.restoreGState()
                 }
-                if let jd = raster.jpegData(compressionQuality: quality), let j = UIImage(data: jd) {
-                    j.draw(in: bounds)
+                // Draw the page as a JPEG-backed CGImage: the PDF then stores the compressed JPEG as-is.
+                // (Drawing a decoded UIImage made the PDF keep raw pixels — the "shrunk" file barely shrank.)
+                if let jd = raster.jpegData(compressionQuality: quality), let provider = CGDataProvider(data: jd as CFData),
+                   let cg = CGImage(jpegDataProviderSource: provider, decode: nil, shouldInterpolate: true, intent: .defaultIntent) {
+                    let c = ctx.cgContext
+                    c.saveGState()
+                    c.translateBy(x: bounds.minX, y: bounds.maxY); c.scaleBy(x: 1, y: -1)
+                    c.draw(cg, in: CGRect(origin: .zero, size: bounds.size))
+                    c.restoreGState()
                 } else {
                     raster.draw(in: bounds)
                 }

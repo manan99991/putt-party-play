@@ -1137,15 +1137,42 @@ enum ChainText {
         let blocks = chain.steps.map(\.block)
         if blocks.isEmpty { return "My tool" }
         if let t = ChainTemplates.all.first(where: { $0.steps.map(\.block) == blocks }) { return t.name }
-        if blocks.count == 1 { return blocks[0].title }
-        if blocks.count == 2 { return blocks[0].title + " + " + blocks[1].title }
-        return blocks[0].title + " + \(blocks.count - 1) more"
+        return sentence(chain)
+    }
+
+    /// A tool's name as a plain sentence from its steps: "Strip location, convert format and make a PDF —
+    /// then email it". Sizes are named ("Shrink the PDF under 5 MB").
+    static func sentence(_ chain: Chain) -> String {
+        let parts: [String] = chain.steps.enumerated().map { i, st in
+            var t = st.block.title
+            if let mb = st.settings["mb"], !mb.isEmpty, [.pdfShrink, .shrinkImage, .videoShrink].contains(st.block) { t += " under \(mb) MB" }
+            return i == 0 ? t : t.prefix(1).lowercased() + t.dropFirst()
+        }
+        guard let last = parts.last else { return "My tool" }
+        var body = parts.count == 1 ? last : parts.dropLast().prefix(3).joined(separator: ", ") + " and " + last
+        if parts.count > 4 { body = parts[0] + " and \(parts.count - 1) more steps" }
+        switch chain.finish?.kind {
+        case .mail?: body += " — then email it"
+        case .message?: body += " — then text it"
+        default: break
+        }
+        return body
+    }
+
+    /// The name shown in lists: a name the person typed, unless it's empty, "My tool", or the raw request
+    /// Describe it was given ("I want an image to convert to pdf…") — then the plain sentence instead.
+    static func displayName(_ chain: Chain) -> String {
+        let n = chain.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let l = n.lowercased()
+        let rawAsk = ["i want", "i need", "i'd like", "can you", "could you", "please", "make me", "help me", "want to"].contains { l.hasPrefix($0) } || n.count > 42
+        return n.isEmpty || n == "My tool" || rawAsk ? autoName(chain) : n
     }
     /// The name "Describe it" gives a tool: the request itself when it is short enough to read as a name, otherwise `autoName`.
     static func toolName(ask: String, chain: Chain) -> String {
         let t = ask.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\n", with: " ")
+        let candidate = Chain(id: "", name: t.prefix(1).uppercased() + t.dropFirst(), steps: chain.steps, finish: chain.finish)
         guard !t.isEmpty, t.count <= 28 else { return autoName(chain) }
-        return t.prefix(1).uppercased() + t.dropFirst()
+        return displayName(candidate)
     }
     /// What a tool is saved as: the name typed, or `autoName` when it was left empty or as "My tool".
     static func savedName(_ chain: Chain) -> String {
