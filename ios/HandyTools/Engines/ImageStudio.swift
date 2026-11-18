@@ -16,12 +16,36 @@ enum ImageStudio {
         guard let cg = image.normalizedUp().cgImage else { return nil }
         let handler = VNImageRequestHandler(cgImage: cg)
         let req = VNGenerateForegroundInstanceMaskRequest()
-        if (try? handler.perform([req])) != nil, let res = req.results?.first, !res.allInstances.isEmpty,
+        if (try? handler.perform([req])) != nil, let res = req.results?.first, !res.allInstances.isEmpty {
+            if let mask = try? res.generateScaledMaskForImage(forInstances: res.allInstances, from: handler),
+               let clean = refinedCutout(cg, mask: CIImage(cvPixelBuffer: mask)) { return clean }
+        }
+        if let res = req.results?.first, !res.allInstances.isEmpty,
            let masked = try? res.generateMaskedImage(ofInstances: res.allInstances, from: handler, croppedToInstancesExtent: false) {
             let ci = CIImage(cvPixelBuffer: masked)
             if let out = CIContext().createCGImage(ci, from: ci.extent) { return UIImage(cgImage: out) }
         }
         return saliencyCutout(cg)
+    }
+
+    /// Clean edges: pull the mask in by a pixel or two (removes the background "halo" that clings to a
+    /// raw cut-out), then feather it slightly so hair and soft edges blend instead of looking cut with
+    /// scissors. The amount scales with the photo so it looks the same on a selfie and a 48 MP shot.
+    static func refinedCutout(_ cg: CGImage, mask raw: CIImage) -> UIImage? {
+        let full = CIImage(cgImage: cg)
+        guard raw.extent.width > 0, raw.extent.height > 0 else { return nil }
+        let fit = raw.transformed(by: CGAffineTransform(scaleX: full.extent.width / raw.extent.width, y: full.extent.height / raw.extent.height))
+        let r = max(1, min(full.extent.width, full.extent.height) / 700)
+        let mask = fit
+            .applyingFilter("CIMorphologyMinimum", parameters: [kCIInputRadiusKey: r])
+            .clampedToExtent()
+            .applyingGaussianBlur(sigma: Double(r) * 0.9)
+            .cropped(to: full.extent)
+        let clear = CIImage(color: .clear).cropped(to: full.extent)
+        let out = full.applyingFilter("CIBlendWithMask", parameters: [kCIInputBackgroundImageKey: clear, kCIInputMaskImageKey: mask])
+        guard let made = CIContext().createCGImage(out, from: full.extent, format: .RGBA8,
+                                                   colorSpace: CGColorSpace(name: CGColorSpace.sRGB)) else { return nil }
+        return UIImage(cgImage: made)
     }
 
     /// When the instance model finds no subject, fall back to attention-based saliency: scale the

@@ -2021,6 +2021,31 @@ final class EngineTests: XCTestCase {
         XCTAssertLessThan(h.0, 0.1); XCTAssertGreaterThan(h.1, 0.9)
     }
 
+    func testCutoutEdgesArePulledInAndFeathered() throws {
+        let photo = UIGraphicsImageRenderer(size: CGSize(width: 1400, height: 1400)).image { c in
+            UIColor.red.setFill(); c.fill(CGRect(x: 0, y: 0, width: 1400, height: 1400)) }
+        // Mask: a white square in the middle (the "subject"), black elsewhere — at a quarter resolution,
+        // like Vision's masks, so the scale-up is exercised too.
+        let maskImg = UIGraphicsImageRenderer(size: CGSize(width: 350, height: 350)).image { c in
+            UIColor.black.setFill(); c.fill(CGRect(x: 0, y: 0, width: 350, height: 350))
+            UIColor.white.setFill(); c.fill(CGRect(x: 100, y: 100, width: 150, height: 150)) }
+        let out = try XCTUnwrap(ImageStudio.refinedCutout(try XCTUnwrap(photo.cgImage), mask: CIImage(cgImage: try XCTUnwrap(maskImg.cgImage))))
+        let cg = try XCTUnwrap(out.cgImage)
+        XCTAssertEqual(cg.width, 1400); XCTAssertEqual(cg.height, 1400)
+        func alpha(_ x: Int, _ y: Int) -> Int {
+            var px = [UInt8](repeating: 0, count: 4)
+            let ctx = CGContext(data: &px, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                                space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+            ctx.draw(cg, in: CGRect(x: -x, y: -(cg.height - 1 - y), width: cg.width, height: cg.height))
+            return Int(px[3])
+        }
+        XCTAssertGreaterThan(alpha(700, 700), 250, "subject solid")
+        XCTAssertLessThan(alpha(50, 50), 5, "background fully clear")
+        // Right at the original edge (x = 400) the edge has been pulled in and softened: partly see-through.
+        XCTAssertLessThan(alpha(400, 700), 200, "edge pulled in — no halo of background")
+        XCTAssertGreaterThan(alpha(410, 700), 0, "but a soft blend, not a hard scissor cut")
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)
