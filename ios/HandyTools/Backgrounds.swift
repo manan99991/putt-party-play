@@ -54,6 +54,7 @@ enum TenzyArt {
         "animate": "studio",
         "collage": "stitch",
         "faceemoji": "scrub",
+        "comicstrip": "studio",
         "medreminder": "rest",
         "menu": "translate",
         "audioconvert": "audiolab",

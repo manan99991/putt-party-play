@@ -90,6 +90,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("collage").first?.id, "collage")
         XCTAssertEqual(searchTools("hide kids faces").first?.id, "faceemoji")
         XCTAssertEqual(searchTools("menu").first?.id, "menu")
+        XCTAssertEqual(searchTools("comic strip").first?.id, "comicstrip")
     }
 
     // MARK: duplicate detection precision
@@ -2044,6 +2045,19 @@ final class EngineTests: XCTestCase {
         // Right at the original edge (x = 400) the edge has been pulled in and softened: partly see-through.
         XCTAssertLessThan(alpha(400, 700), 200, "edge pulled in — no halo of background")
         XCTAssertGreaterThan(alpha(410, 700), 0, "but a soft blend, not a hard scissor cut")
+    }
+
+    func testComicStripInksPanelsAndLaysThemOut() throws {
+        // A photo with a hard edge gets real ink lines.
+        let photo = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 200)).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 300, height: 200))
+            UIColor.systemBlue.setFill(); c.fill(CGRect(x: 100, y: 40, width: 120, height: 120)) }
+        let inked = try XCTUnwrap(ChainFun.art(photo, style: "comic", long: 300))
+        XCTAssertEqual(inked.size, CGSize(width: 300, height: 200))
+        XCTAssertEqual(ComicStrip.layout(for: 4), .grid); XCTAssertEqual(ComicStrip.layout(for: 3), .strip)
+        let strip = ComicStrip.render(panels: [inked, inked, inked], words: ["Hello!", "", "A much longer line of dialogue that has to wrap"],
+                                      title: "Monday", canvas: CGSize(width: 540, height: 675))
+        XCTAssertEqual(strip.size, CGSize(width: 540, height: 675))
     }
 
     func testAudioConvertRejectsNonAudioGracefully() async throws {

@@ -1364,7 +1364,10 @@ final class NewestStepTests: XCTestCase {
         let sketch = PixelArt.apply(wall, width: w, height: h, style: "sketch")
         XCTAssertTrue(sketch.allSatisfy { $0 == 0xFFFFFF }, "an even grey wall is blank paper")
         XCTAssertEqual(PixelArt.apply(wall, width: w, height: h, style: "nonsense"), sketch)
-        XCTAssertTrue(PixelArt.apply([Int](repeating: 0x2060E0, count: w * h), width: w, height: h, style: "comic").allSatisfy { $0 == 0x4080FF })
+        // A flat colour has no edges, so no ink lines: just the cel colour, plus halftone dots of a deeper shade.
+        let flatComic = Set(PixelArt.apply([Int](repeating: 0x2060E0, count: w * h), width: w, height: h, style: "comic"))
+        XCTAssertTrue(flatComic.contains(0x4080FF))
+        XCTAssertTrue(flatComic.isSubset(of: [0x4080FF, 0x23468C]), "\(flatComic.map { String($0, radix: 16) })")
         XCTAssertEqual(PixelArt.apply(px, width: 5, height: 5, style: "noir"), px)
         XCTAssertEqual(PixelArt.style(nil), "sketch"); XCTAssertEqual(PixelArt.style("comic"), "comic"); XCTAssertEqual(PixelArt.style("x"), "sketch")
     }
