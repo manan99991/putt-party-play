@@ -35,6 +35,14 @@ does the **top undone item**, checks it off, and pushes one validation commit. O
 11. **Rebuilds** — spreadsheet, return-by, hide-faces recall, passport panel, cutout matte, scam/QR, menu assistant, collage/GIF, summaries, emoji-faces. One per run.
 12. **Cross-cutting** — progress+notifications, preview-before-save, and real end-to-end output tests on every tool AND every chain (assert actual output, including step hand-offs).
 
+## Serial / human-owned — do NOT auto-build in a parallel stream
+These modify EXISTING tools (regression risk), so they are done serially with full
+call-site impact analysis, not loosely in parallel:
+- **Soundboard (#9)** — reworks the existing voice-changer tool's DSP.
+- **Rebuilds (#11)** — all ten (spreadsheet, return-by, hide-faces, passport, cutout, scam/QR, menu, collage/GIF, summaries, emoji-faces) change existing tools.
+- **Wave-1** — sticker-pack landing, animation extras, comic inking all change existing tools.
+Autonomous streams skip these. The additive items (Meeting-notes #8, Medication reminder #10, the PDF suite, audio tags/compress/merge, zip-into-one) are fine to build in parallel.
+
 ## Human-gated (do NOT do autonomously — leave for the user)
 - **Android port** of the validated batch (mandatory gate before any store submit).
 - **Store submit** of either platform, and cancelling/releasing 1.2.57.
