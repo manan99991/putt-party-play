@@ -20,13 +20,13 @@ Fetching from https://github.com/vector-im/opus-swift
 
 Fetching from https://github.com/vector-im/ogg-swift.git
 
-Creating working copy of package ‘ogg-swift’
-
-Checking out 0.8.3 of package ‘ogg-swift’
-
 Creating working copy of package ‘swift-ogg’
 
 Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘ogg-swift’
+
+Checking out 0.8.3 of package ‘ogg-swift’
 
 Creating working copy of package ‘opus-swift’
 
@@ -35,10 +35,10 @@ Checking out 0.8.4 of package ‘opus-swift’
 
 Resolved source packages:
   SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
   YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
 
-resolved source packages: SwiftOGG, YbridOpus, YbridOgg
+resolved source packages: SwiftOGG, YbridOgg, YbridOpus
 == build.log (errors)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Engines/MeetingNotes.swift:57:26: error: cannot find 'Flag' in scope
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Tools/SoundboardView.swift:184:38: error: type 'ChainMedia' has no member 'readableAudioURL'
 ** TEST FAILED **
