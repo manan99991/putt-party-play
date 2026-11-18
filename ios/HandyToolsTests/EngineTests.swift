@@ -1893,6 +1893,19 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(short.risky, "shortened links hide the destination")
     }
 
+    func testReturnWindowIsReadOffTheReceipt() throws {
+        XCTAssertEqual(ReceiptScan.guessReturnDays("RETURNS ACCEPTED WITHIN 30 DAYS WITH RECEIPT", purchase: nil), 30)
+        XCTAssertEqual(ReceiptScan.guessReturnDays("30-Day Return Policy", purchase: nil), 30)
+        XCTAssertEqual(ReceiptScan.guessReturnDays("Refund or exchange within 14 days of purchase", purchase: nil), 14)
+        XCTAssertNil(ReceiptScan.guessReturnDays("Store hours 9-5, 7 days a week\nTOTAL 45.99", purchase: nil), "no false hit")
+        let bought = try XCTUnwrap(Calendar.current.date(from: DateComponents(year: 2026, month: 11, day: 1)))
+        XCTAssertEqual(ReceiptScan.guessReturnDays("Return by 11/15/2026", purchase: bought), 14, "explicit date counted from purchase")
+        var r = Receipt(imageFile: "x.jpg", store: "Shop", purchaseDate: bought, total: "$10", rawText: "")
+        XCTAssertNil(r.returnBy)
+        r.returnDays = 30
+        XCTAssertEqual(r.returnBy, Calendar.current.date(byAdding: .day, value: 30, to: bought))
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)

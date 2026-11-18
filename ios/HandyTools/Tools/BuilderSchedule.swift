@@ -91,6 +91,10 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
             }
             completionHandler(); return
         }
+        if let tool = content.userInfo["open"] as? String {
+            DispatchQueue.main.async { NotificationCenter.default.post(name: .openTool, object: tool) }
+            completionHandler(); return
+        }
         if let id = response.notification.request.content.userInfo["tool"] as? String {
             ToolSchedules.setPending(id)
             DispatchQueue.main.async { NotificationCenter.default.post(name: .openTool, object: "builder") }

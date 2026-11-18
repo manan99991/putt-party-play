@@ -16,6 +16,7 @@ struct WarrantyView: View {
 
     private var results: [Receipt] { ReceiptSearch.rank(store.receipts, query: query) }
     private var expiring: [Receipt] { store.expiring(within: 45) }
+    private var returnsSoon: [Receipt] { store.returnsClosing(within: 7) }
 
     var body: some View {
         ToolPage(title: "Warranty & Receipts", subtitle: "Snap a receipt, find it later by typing roughly what you remember, and never miss a warranty.", working: busy) {
@@ -34,6 +35,7 @@ struct WarrantyView: View {
             if store.receipts.isEmpty && !busy {
                 emptyState
             } else {
+                if !returnsSoon.isEmpty && query.isEmpty { returnsCard }
                 if !expiring.isEmpty && query.isEmpty { expiringCard }
 
                 TextField(L("Search receipts — store, item, or a rough amount"), text: $query)
@@ -101,6 +103,30 @@ struct WarrantyView: View {
         }.cardStyle(padding: HandySpacing.s12)
     }
 
+    private var returnsCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label("\(returnsSoon.count) \(returnsSoon.count == 1 ? L("return window closing") : L("return windows closing"))", systemImage: "arrow.uturn.backward.circle.fill")
+                .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.amber)
+            ForEach(returnsSoon.prefix(3)) { r in
+                Button { open = r } label: {
+                    HStack {
+                        Text(r.store).font(HandyFont.body).lineLimit(1)
+                        Spacer()
+                        Text(Self.returnPhrase(r)).font(HandyFont.caption).foregroundStyle(HandyColor.amber)
+                    }
+                }.buttonStyle(.plain)
+            }
+        }.cardStyle(padding: HandySpacing.s12)
+    }
+
+    static func returnPhrase(_ r: Receipt) -> String {
+        guard let d = r.daysLeftToReturn else { return "" }
+        if d < 0 { return "return window closed" }
+        if d == 0 { return "last day to return" }
+        if d == 1 { return "1 day to return" }
+        return "\(d) days to return"
+    }
+
     private func warrantyPhrase(_ r: Receipt) -> String {
         guard let d = r.daysLeftOnWarranty else { return "" }
         if d == 0 { return "ends today" }
@@ -135,6 +161,11 @@ private struct ReceiptRow: View {
                 }.font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             Spacer()
+            if let r = receipt.daysLeftToReturn, r >= 0 {
+                Label("\(r)d", systemImage: "arrow.uturn.backward").labelStyle(.titleAndIcon)
+                    .font(HandyFont.micro).foregroundStyle(r <= 7 ? HandyColor.amber : HandyColor.textSecondary)
+                    .accessibilityLabel("\(r) days left to return")
+            }
             if let days = receipt.daysLeftOnWarranty {
                 Text(days < 0 ? "expired" : "\(days)d")
                     .font(HandyFont.micro).foregroundStyle(days < 0 ? HandyColor.textSecondary : (days <= 45 ? HandyColor.danger : HandyColor.accent))
@@ -150,7 +181,14 @@ private struct DraftSheet: View {
     @State private var storeName = ""
     @State private var total = ""
     @State private var months: Int? = nil
+    @State private var returnDays: Int? = nil
+    @State private var foundReturn: Int? = nil
     private let options: [(String, Int?)] = [("No warranty", nil), ("1 year", 12), ("2 years", 24), ("3 years", 36)]
+    private var returnOptions: [(String, Int?)] {
+        var o: [(String, Int?)] = [("Not tracking", nil), ("14 days", 14), ("30 days", 30), ("60 days", 60), ("90 days", 90)]
+        if let f = foundReturn, ![14, 30, 60, 90].contains(f) { o.insert(("\(f) days", f), at: 1) }
+        return o
+    }
 
     var body: some View {
         NavigationStack {
@@ -165,6 +203,18 @@ private struct DraftSheet: View {
                         ForEach(options, id: \.0) { o in HChip(text: o.0, selected: months == o.1) { months = o.1 } }
                     }
                     if months != nil { Text(L("We'll remind you a week before it ends.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                    Text(L("Return window")).font(HandyFont.bodyStrong).padding(.top, 4)
+                    HandyFlow(spacing: HandySpacing.s8) {
+                        ForEach(returnOptions, id: \.0) { o in HChip(text: o.0, selected: returnDays == o.1) { returnDays = o.1 } }
+                    }
+                    if let f = foundReturn {
+                        Label("\(L("Found on the receipt")): \(f)-\(L("day returns"))", systemImage: "text.viewfinder")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                    }
+                    if let d = returnDays, let by = Calendar.current.date(byAdding: .day, value: d, to: Calendar.current.startOfDay(for: draft.scan.date ?? Date())) {
+                        Text("\(L("Return by")) \(by.formatted(date: .abbreviated, time: .omitted)) — \(L("we'll remind you 2 days before and on the last day."))")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    }
                 }.padding(HandySpacing.gutter)
             }
             .navigationTitle(L("Save receipt")).navigationBarTitleDisplayMode(.inline)
@@ -175,12 +225,16 @@ private struct DraftSheet: View {
                         var scan = draft.scan
                         scan = ReceiptScan.Result(store: storeName.isEmpty ? scan.store : storeName, date: scan.date,
                                                   total: total, items: scan.items, rawText: scan.rawText)
-                        _ = store.add(image: draft.image, scan: scan, warrantyMonths: months)
+                        _ = store.add(image: draft.image, scan: scan, warrantyMonths: months, returnDays: returnDays)
                         HandyHaptics.success(); dismiss()
                     }
                 }
             }
-            .onAppear { storeName = draft.scan.store; total = draft.scan.total }
+            .onAppear {
+                storeName = draft.scan.store; total = draft.scan.total
+                foundReturn = ReceiptScan.guessReturnDays(draft.scan.rawText, purchase: draft.scan.date)
+                returnDays = foundReturn
+            }
         }
     }
 
@@ -213,6 +267,9 @@ private struct ReceiptDetail: View {
                     if let end = receipt.warrantyEnds {
                         let days = receipt.daysLeftOnWarranty ?? 0
                         row("Warranty", days < 0 ? "Ended \(end.formatted(date: .abbreviated, time: .omitted))" : "Until \(end.formatted(date: .abbreviated, time: .omitted)) · \(days) days left")
+                    }
+                    if let by = receipt.returnBy {
+                        row("Return", "By \(by.formatted(date: .abbreviated, time: .omitted)) · \(WarrantyView.returnPhrase(receipt))")
                     }
                     if !receipt.items.isEmpty {
                         Text(L("Items")).font(HandyFont.bodyStrong)

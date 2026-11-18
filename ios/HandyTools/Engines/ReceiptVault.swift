@@ -17,6 +17,18 @@ struct Receipt: Codable, Identifiable, Equatable {
     var items: [String] = []            // notable line items
     var warrantyMonths: Int?            // nil = not tracking a warranty
     var note: String = ""
+    var returnDays: Int? = nil          // nil = no return window tracked
+
+    /// Last day to return it: purchase date (or the day it was filed) + the store's return window.
+    var returnBy: Date? {
+        guard let d = returnDays, d > 0 else { return nil }
+        return Calendar.current.date(byAdding: .day, value: d, to: Calendar.current.startOfDay(for: purchaseDate ?? addedAt))
+    }
+
+    var daysLeftToReturn: Int? {
+        guard let end = returnBy else { return nil }
+        return Calendar.current.dateComponents([.day], from: Calendar.current.startOfDay(for: Date()), to: end).day
+    }
 
     /// When the warranty lapses, measured from the purchase date (or the day it was filed if unknown).
     var warrantyEnds: Date? {
@@ -57,6 +69,35 @@ enum ReceiptScan {
             }
         }
         return lines.first?.capitalizedStore ?? "Receipt"
+    }
+
+    /// The store's return window, read off the receipt's small print: "returns within 30 days",
+    /// "30-day return policy", "refund or exchange within 14 days", or an explicit "return by 12/15/2026"
+    /// (counted from the purchase date). Nil when the receipt doesn't say.
+    static func guessReturnDays(_ text: String, purchase: Date?) -> Int? {
+        let t = text.lowercased().replacingOccurrences(of: "\n", with: " ")
+        let patterns = [
+            #"(\d{1,3})[\s-]*day[s]?\s+(?:money[\s-]*back\s+)?(?:return|refund|exchange)"#,
+            #"(?:return|refund|exchange)[a-z\s,/&]{0,40}?within\s+(\d{1,3})\s+day"#,
+            #"(?:return|refund|exchange)[a-z\s,/&]{0,40}?(\d{1,3})\s+day"#,
+        ]
+        for p in patterns {
+            guard let re = try? NSRegularExpression(pattern: p),
+                  let m = re.firstMatch(in: t, range: NSRange(t.startIndex..., in: t)),
+                  let r = Range(m.range(at: 1), in: t), let n = Int(t[r]), (1...365).contains(n) else { continue }
+            return n
+        }
+        // "return by / returns accepted until / return deadline: <date>"
+        if let re = try? NSRegularExpression(pattern: #"(?:return(?:s)?\s+(?:by|before|until|accepted\s+until)|return\s+deadline:?)\s+(.{4,30})"#),
+           let m = re.firstMatch(in: t, range: NSRange(t.startIndex..., in: t)),
+           let r = Range(m.range(at: 1), in: t),
+           let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.date.rawValue),
+           let when = det.firstMatch(in: String(t[r]), range: NSRange(location: 0, length: (String(t[r]) as NSString).length))?.date {
+            let start = Calendar.current.startOfDay(for: purchase ?? Date())
+            let days = Calendar.current.dateComponents([.day], from: start, to: Calendar.current.startOfDay(for: when)).day ?? 0
+            if (1...365).contains(days) { return days }
+        }
+        return nil
     }
 
     static func guessDate(_ text: String) -> Date? {
@@ -204,13 +245,14 @@ enum ReceiptSearch {
         return img
     }
 
-    func add(image: UIImage, scan: ReceiptScan.Result, warrantyMonths: Int?) -> Receipt {
+    func add(image: UIImage, scan: ReceiptScan.Result, warrantyMonths: Int?, returnDays: Int? = nil) -> Receipt {
         let name = "\(UUID().uuidString).jpg"
         if let data = image.jpegData(compressionQuality: 0.8) { try? data.write(to: Self.dir.appendingPathComponent(name)) }
         let r = Receipt(imageFile: name, store: scan.store, purchaseDate: scan.date, total: scan.total,
-                        rawText: scan.rawText, items: scan.items, warrantyMonths: warrantyMonths)
+                        rawText: scan.rawText, items: scan.items, warrantyMonths: warrantyMonths, returnDays: returnDays)
         receipts.insert(r, at: 0); persist()
         if r.warrantyEnds != nil { WarrantyReminders.schedule(r) }
+        if r.returnBy != nil { ReturnReminders.schedule(r) }
         return r
     }
 
@@ -218,12 +260,20 @@ enum ReceiptSearch {
         guard let i = receipts.firstIndex(where: { $0.id == r.id }) else { return }
         receipts[i] = r; persist()
         WarrantyReminders.cancel(r); if r.warrantyEnds != nil { WarrantyReminders.schedule(r) }
+        ReturnReminders.cancel(r); if r.returnBy != nil { ReturnReminders.schedule(r) }
     }
 
     func delete(_ r: Receipt) {
         try? FileManager.default.removeItem(at: imageURL(r))
         receipts.removeAll { $0.id == r.id }; thumbs[r.id] = nil; persist()
         WarrantyReminders.cancel(r)
+        ReturnReminders.cancel(r)
+    }
+
+    /// Receipts whose return window closes within `days` (and hasn't passed), soonest first.
+    func returnsClosing(within days: Int) -> [Receipt] {
+        receipts.filter { if let d = $0.daysLeftToReturn { return d >= 0 && d <= days } else { return false } }
+            .sorted { ($0.daysLeftToReturn ?? 0) < ($1.daysLeftToReturn ?? 0) }
     }
 
     /// Receipts whose warranty lapses within `days`, soonest first — the home screen's "act now" list.
@@ -252,6 +302,34 @@ enum WarrantyReminders {
     }
     static func cancel(_ r: Receipt) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["warranty-\(r.id.uuidString)"])
+    }
+}
+
+/// "Last chance to return" — two days before the window closes and on the last morning.
+enum ReturnReminders {
+    static func ids(_ r: Receipt) -> [String] { ["return-\(r.id.uuidString)-2d", "return-\(r.id.uuidString)-0d"] }
+
+    static func schedule(_ r: Receipt) {
+        guard let end = r.returnBy else { return }
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+            guard granted else { return }
+            for (id, back, hour) in [(ids(r)[0], -2, 10), (ids(r)[1], 0, 9)] {
+                guard let day = Calendar.current.date(byAdding: .day, value: back, to: end),
+                      let fire = Calendar.current.date(bySettingHour: hour, minute: 0, second: 0, of: day), fire > Date() else { continue }
+                let c = UNMutableNotificationContent()
+                c.title = back == 0 ? "Last day to return" : "Return window closing"
+                c.body = "\(r.store)\(r.total.isEmpty ? "" : " · \(r.total)") — return by \(end.formatted(date: .abbreviated, time: .omitted)). Tap for the receipt."
+                c.sound = .default
+                c.userInfo = ["open": "warranty"]
+                let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fire)
+                center.add(UNNotificationRequest(identifier: id, content: c, trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)))
+            }
+        }
+    }
+
+    static func cancel(_ r: Receipt) {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids(r))
     }
 }
 
