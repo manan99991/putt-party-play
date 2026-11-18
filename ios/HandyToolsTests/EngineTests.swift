@@ -369,6 +369,51 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(DocEngine.split(data, ranges: "9-12").count, 5, "invalid ranges fall back to every page")
     }
 
+    // MARK: PDF annotate — marks baked in, page count kept, text preserved
+
+    /// Annotate must bake highlighter + freehand marks into the raster, keep every page, and — unlike
+    /// redaction — leave the underlying text selectable (the rebuilt pages are re-OCR'd).
+    func testAnnotateBakesMarksKeepsPagesAndText() throws {
+        let src = try XCTUnwrap(DocEngine.pdf([DocEngine.Page(source: Self.text("REPORT 2026"), filter: .enhance)],
+                                              options: .init(searchable: false)))
+        // Highlight sits in the top white band (above the text at y≈0.32); a red pen stroke crosses the page.
+        let hl = DocEngine.Annotation(kind: .highlight(CGRect(x: 0.08, y: 0.05, width: 0.6, height: 0.15)), color: .yellow)
+        let pen = DocEngine.Annotation(kind: .stroke(points: [CGPoint(x: 0.1, y: 0.9), CGPoint(x: 0.9, y: 0.9)], width: 0.02), color: .red)
+        let out = try XCTUnwrap(DocEngine.annotate(src, marks: [[hl, pen]]))
+        let doc = try XCTUnwrap(PDFDocument(data: out))
+        XCTAssertEqual(doc.pageCount, 1, "annotate must keep the page count")
+        XCTAssertFalse(doc.findString("REPORT", withOptions: .caseInsensitive).isEmpty, "text layer lost after annotate")
+        // The highlight is genuinely in the pixels: a point inside the (previously white) rect is now yellow-ish.
+        let page = try XCTUnwrap(doc.page(at: 0))
+        let b = page.bounds(for: .mediaBox)
+        let img = page.thumbnail(of: CGSize(width: b.width * 2, height: b.height * 2), for: .mediaBox)
+        let c = try XCTUnwrap(Self.pixelRGB(img, 0.3, 0.1), "could not sample pixel")
+        XCTAssertLessThan(c.b, 215, "highlight should drop the blue channel (yellow), got \(c)")
+        XCTAssertGreaterThan(c.r - c.b, 25, "highlighted pixel should read yellow (r ≫ b), got \(c)")
+    }
+
+    /// Edge cases: no marks on a page is a no-op that still returns every page; garbage in → nil, never a crash.
+    func testAnnotateHandlesEmptyMarksAndBadInput() throws {
+        let src = try XCTUnwrap(DocEngine.pdf((1...3).map { DocEngine.Page(source: Self.text("P\($0)"), filter: .color) },
+                                              options: .init(searchable: false)))
+        let out = try XCTUnwrap(DocEngine.annotate(src, marks: [[], [], []]))
+        XCTAssertEqual(PDFDocument(data: out)?.pageCount, 3, "empty marks must still return every page")
+        XCTAssertNil(DocEngine.annotate(Data("not a pdf".utf8), marks: []), "unreadable input returns nil")
+    }
+
+    /// Sample one pixel of an image at a normalized top-left point. Returns nil if the image has no bitmap.
+    private static func pixelRGB(_ img: UIImage, _ fx: CGFloat, _ fy: CGFloat) -> (r: Int, g: Int, b: Int)? {
+        guard let cg = img.cgImage else { return nil }
+        let x = min(max(Int(fx * CGFloat(cg.width)), 0), cg.width - 1)
+        let y = min(max(Int(fy * CGFloat(cg.height)), 0), cg.height - 1)
+        var px: [UInt8] = [0, 0, 0, 0]
+        let cs = CGColorSpaceCreateDeviceRGB()
+        guard let ctx = CGContext(data: &px, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                                  space: cs, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+        ctx.draw(cg, in: CGRect(x: -CGFloat(x), y: -CGFloat(cg.height - 1 - y), width: CGFloat(cg.width), height: CGFloat(cg.height)))
+        return (Int(px[0]), Int(px[1]), Int(px[2]))
+    }
+
     func testScanRotationKeepsStampsAndInkInPlace() {
         let img = Self.bands(CGSize(width: 300, height: 500))
         let r = img.rotated(quarterTurns: 1)

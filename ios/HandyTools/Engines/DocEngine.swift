@@ -254,6 +254,73 @@ enum DocEngine {
         return pdf(images: flattened, ocr: Array(repeating: nil, count: flattened.count), options: opts)
     }
 
+    // MARK: annotate
+
+    /// A mark laid on a page: a translucent highlighter sweep, or a freehand ink stroke. The rect and
+    /// the stroke points are normalized top-left (0...1) to the page, so a mark drawn at one preview
+    /// size lands in the same place when it is baked into the full-resolution page.
+    struct Annotation: @unchecked Sendable {
+        enum Kind { case highlight(CGRect), stroke(points: [CGPoint], width: CGFloat) }   // width: fraction of page width
+        var kind: Kind
+        var color: UIColor
+    }
+
+    /// Flatten highlighter + freehand marks into a PDF. Each page is rasterized, its marks are painted
+    /// on — highlights with a multiply blend so the text underneath stays readable, strokes as solid
+    /// ink — and the document is rebuilt from the flattened pages, so the marks are a permanent part of
+    /// the file that shows in every reader (not a removable annotation layer). Unlike redaction, the
+    /// text is not destroyed, so the rebuilt pages are re-OCR'd and keep a searchable/selectable text
+    /// layer. `marks[i]` are the marks on page i. Returns nil only if the PDF can't be read.
+    static func annotate(_ data: Data, marks: [[Annotation]], maxWidth: CGFloat = 1600) -> Data? {
+        guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return nil }
+        var flattened: [UIImage] = []
+        for i in 0..<doc.pageCount {
+            guard let page = doc.page(at: i) else { continue }
+            let b = page.bounds(for: .mediaBox)
+            let scale = min(3, maxWidth / max(1, b.width))
+            let size = CGSize(width: (b.width * scale).rounded(), height: (b.height * scale).rounded())
+            let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+            flattened.append(UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+                let cg = c.cgContext
+                UIColor.white.setFill(); c.fill(CGRect(origin: .zero, size: size))
+                cg.saveGState()
+                cg.translateBy(x: 0, y: size.height); cg.scaleBy(x: scale, y: -scale)
+                page.draw(with: .mediaBox, to: cg)
+                cg.restoreGState()
+                // Marks are painted in the renderer's top-left pixel space (normalized → size), after the
+                // page is drawn, so they sit on top exactly where the user placed them.
+                for m in (i < marks.count ? marks[i] : []) { paint(m, in: size, context: cg) }
+            })
+        }
+        guard !flattened.isEmpty else { return nil }
+        let ocr: [[OCRLine]?] = flattened.map { recognize($0) }
+        var opts = PDFOptions(); opts.searchable = true; opts.maxWidth = maxWidth
+        return pdf(images: flattened, ocr: ocr, options: opts)
+    }
+
+    /// Paint one mark into the flattened page. Top-left pixel space; coordinates are the normalized
+    /// mark scaled by `size`.
+    private static func paint(_ m: Annotation, in size: CGSize, context cg: CGContext) {
+        cg.saveGState()
+        defer { cg.restoreGState() }
+        switch m.kind {
+        case .highlight(let r):
+            cg.setBlendMode(.multiply)   // yellow × black text ≈ black (text survives); × white ≈ yellow
+            m.color.withAlphaComponent(0.4).setFill()
+            cg.fill(CGRect(x: r.minX * size.width, y: r.minY * size.height,
+                           width: r.width * size.width, height: r.height * size.height))
+        case .stroke(let pts, let wFrac):
+            guard pts.count > 1 else { return }
+            cg.setStrokeColor(m.color.cgColor)
+            cg.setLineWidth(max(1, wFrac * size.width))
+            cg.setLineCap(.round); cg.setLineJoin(.round)
+            cg.beginPath()
+            cg.move(to: CGPoint(x: pts[0].x * size.width, y: pts[0].y * size.height))
+            for p in pts.dropFirst() { cg.addLine(to: CGPoint(x: p.x * size.width, y: p.y * size.height)) }
+            cg.strokePath()
+        }
+    }
+
     /// Split a finished PDF into the given 1-based inclusive page ranges ("1-3", "4", "5-").
     static func split(_ data: Data, ranges spec: String) -> [Data] {
         guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return [] }
