@@ -549,3 +549,61 @@ struct SeededRandom {
     }
     mutating func next(_ lo: Double, _ hi: Double) -> Double { lo + (hi - lo) * next() }
 }
+
+// MARK: - Looks & printable flipbook
+
+extension Animate {
+    /// A drawn look applied to every photo before animating (the "sketch / comic feed").
+    enum Look: String, CaseIterable, Identifiable {
+        case original, comic, sketch, noir, pop
+        var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .original: return "Original"
+            case .comic: return "Comic"
+            case .sketch: return "Pencil"
+            case .noir: return "Noir"
+            case .pop: return "Pop art"
+            }
+        }
+        /// PixelArt style id, nil for the photo as-is.
+        var style: String? { self == .original ? nil : rawValue }
+    }
+
+    static func applyLook(_ look: Look, to images: [UIImage]) -> [UIImage] {
+        guard let style = look.style else { return images }
+        return images.map { ChainFun.art($0, style: style, long: 1440) ?? $0 }
+    }
+
+    /// A printable flipbook: the animation's frames, numbered, 8 to an A4/Letter page, each with a blank
+    /// staple margin on the left and light cut lines. Print, cut, stack in order, staple, flick.
+    static func flipbookPDF(_ images: [UIImage], settings: Settings, frames wanted: Int = 32) -> Data? {
+        guard !images.isEmpty else { return nil }
+        let tl = timeline(count: images.count, settings: settings, fps: 12)
+        let count = min(max(8, wanted), tl.frameCount)
+        let page = CGRect(x: 0, y: 0, width: 595, height: 842)          // A4 in points (Letter crops a hair)
+        let margin: CGFloat = 28, cols = 2, rows = 4
+        let cellW = (page.width - margin * 2) / CGFloat(cols), cellH = (page.height - margin * 2) / CGFloat(rows)
+        let staple = cellW * 0.22
+        let frameW = cellW - staple - 10, frameH = min(cellH - 14, frameW * settings.format.size.height / settings.format.size.width)
+        let scale = min(1, 600 / max(settings.format.size.width, settings.format.size.height))
+        let r = UIGraphicsPDFRenderer(bounds: page)
+        return r.pdfData { ctx in
+            for i in 0..<count {
+                if i % (cols * rows) == 0 { ctx.beginPage() }
+                let slot = i % (cols * rows)
+                let cell = CGRect(x: margin + CGFloat(slot % cols) * cellW, y: margin + CGFloat(slot / cols) * cellH, width: cellW, height: cellH)
+                let at = Double(i) / Double(max(1, count - 1))
+                if let img = still(images, settings: settings, at: at, scale: scale) {
+                    img.draw(in: CGRect(x: cell.minX + staple, y: cell.minY + (cellH - frameH) / 2, width: frameW, height: frameH))
+                }
+                let n = "\(i + 1)" as NSString
+                n.draw(at: CGPoint(x: cell.minX + 6, y: cell.minY + 6),
+                       withAttributes: [.font: UIFont.systemFont(ofSize: 11, weight: .bold), .foregroundColor: UIColor.gray])
+                UIColor(white: 0.75, alpha: 1).setStroke()
+                let cut = UIBezierPath(rect: cell); cut.lineWidth = 0.5
+                cut.setLineDash([3, 3], count: 2, phase: 0); cut.stroke()
+            }
+        }
+    }
+}

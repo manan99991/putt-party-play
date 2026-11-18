@@ -21,6 +21,9 @@ struct AnimateView: View {
     @State private var resultURL: URL?
     @State private var errorText: String?
     @State private var gifURL: URL?
+    @State private var look: Animate.Look = .original
+    @State private var styledPhotos: [UIImage] = []
+    @State private var printURL: URL?
     @State private var makingGIF = false
 
     static let maxPhotos = 24
@@ -41,6 +44,7 @@ struct AnimateView: View {
         }
         .onChange(of: picks) { _, items in load(items) }
         .onChange(of: settings) { _, _ in schedulePreview() }
+        .onChange(of: look) { _, _ in restyle() }
         .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { n in
             if (n.object as? AVPlayerItem) == player.currentItem { player.seek(to: .zero); player.play() }
         }
@@ -107,6 +111,10 @@ struct AnimateView: View {
                     }
                 }
             }
+            section("Look")
+            Picker("", selection: $look) {
+                ForEach(Animate.Look.allCases) { Text(L($0.title)).tag($0) }
+            }.pickerStyle(.segmented)
             Picker("", selection: $settings.framing) {
                 ForEach(Animate.Framing.allCases) { Text(L($0.title)).tag($0) }
             }.pickerStyle(.segmented)
@@ -131,7 +139,7 @@ struct AnimateView: View {
                 RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).fill(Color.black)
                 if previewURL != nil {
                     VideoPlayer(player: player).disabled(true)
-                } else if let still = Animate.still(photos, settings: settings, at: 0.1) {
+                } else if let still = Animate.still(animPhotos, settings: settings, at: 0.1) {
                     Image(uiImage: still).resizable().scaledToFit()
                 }
                 if previewing {
@@ -195,7 +203,14 @@ struct AnimateView: View {
                     Label(makingGIF ? L("Making GIF…") : L("Also make a GIF (for chats)"), systemImage: "photo.stack").frame(maxWidth: .infinity)
                 }.secondaryButton().disabled(makingGIF)
             }
-            Button(L("Try another style")) { resultURL = nil; gifURL = nil; schedulePreview() }.textButton().font(HandyFont.caption)
+            if let p = printURL {
+                ShareLink(item: p) { Label(L("Save or print the flipbook"), systemImage: "printer").frame(maxWidth: .infinity) }.secondaryButton()
+            } else {
+                Button { makePrintable() } label: {
+                    Label(L("Print it as a paper flipbook"), systemImage: "book.pages").frame(maxWidth: .infinity)
+                }.secondaryButton()
+            }
+            Button(L("Try another style")) { resultURL = nil; gifURL = nil; printURL = nil; schedulePreview() }.textButton().font(HandyFont.caption)
         }
     }
 
@@ -220,7 +235,7 @@ struct AnimateView: View {
                     settings.style = Animate.suggestedStyle(count: photos.count)
                 }
                 resultURL = nil
-                schedulePreview()
+                if look == .original { schedulePreview() } else { restyle() }
             }
         }
     }
@@ -229,7 +244,7 @@ struct AnimateView: View {
     private func schedulePreview() {
         previewTask?.cancel()
         guard !photos.isEmpty, resultURL == nil else { return }
-        let imgs = photos, s = settings
+        let imgs = animPhotos, s = settings
         previewing = true
         previewTask = Task {
             try? await Task.sleep(nanoseconds: 350_000_000)
@@ -255,7 +270,7 @@ struct AnimateView: View {
         guard !photos.isEmpty else { return }
         previewTask?.cancel(); player.pause()
         working = true; errorText = nil; progress = 0
-        let imgs = photos, s = settings
+        let imgs = animPhotos, s = settings
         Task {
             let url = await Task.detached(priority: .userInitiated) {
                 await Animate.render(imgs, settings: s) { p in Task { @MainActor in progress = p } }
@@ -272,6 +287,33 @@ struct AnimateView: View {
                 player.isMuted = false
                 player.play()
                 HandyHaptics.success()
+            }
+        }
+    }
+
+    /// The photos with the chosen look applied (drawn once, reused by preview and render).
+    private var animPhotos: [UIImage] { look == .original || styledPhotos.count != photos.count ? photos : styledPhotos }
+
+    private func restyle() {
+        resultURL = nil; gifURL = nil; printURL = nil
+        guard look != .original, !photos.isEmpty else { styledPhotos = []; schedulePreview(); return }
+        let src = photos, l = look
+        previewing = true
+        Task {
+            let out = await Task.detached(priority: .userInitiated) { Animate.applyLook(l, to: src) }.value
+            await MainActor.run { if look == l { styledPhotos = out; schedulePreview() } }
+        }
+    }
+
+    private func makePrintable() {
+        let imgs = animPhotos, s = settings
+        Task {
+            let data = await Task.detached(priority: .userInitiated) { Animate.flipbookPDF(imgs, settings: s) }.value
+            await MainActor.run {
+                guard let data else { errorText = "Couldn't make the printable flipbook."; return }
+                let u = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy flipbook to print.pdf")
+                try? FileManager.default.removeItem(at: u)
+                if (try? data.write(to: u)) != nil { printURL = u; HandyHaptics.success() }
             }
         }
     }
@@ -294,6 +336,7 @@ struct AnimateView: View {
     private func reset() {
         previewTask?.cancel(); player.pause()
         photos = []; picks = []; previewURL = nil; resultURL = nil; errorText = nil; styleTouched = false
+        styledPhotos = []; look = .original; gifURL = nil; printURL = nil
         settings = Animate.Settings()
     }
 }

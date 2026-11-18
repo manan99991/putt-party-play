@@ -2060,6 +2060,19 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(strip.size, CGSize(width: 540, height: 675))
     }
 
+    func testAnimateLooksAndPrintableFlipbook() throws {
+        let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
+        XCTAssertEqual(Animate.applyLook(.original, to: photos).count, 3)
+        let comic = Animate.applyLook(.comic, to: photos)
+        XCTAssertEqual(comic.count, 3)
+        XCTAssertFalse(comic[0].pngData() == photos[0].pngData(), "the look really changes the picture")
+        var s = Animate.Settings(); s.style = .crossfade
+        let pdf = try XCTUnwrap(Animate.flipbookPDF(photos, settings: s, frames: 16))
+        let doc = try XCTUnwrap(PDFDocument(data: pdf))
+        XCTAssertEqual(doc.pageCount, 2, "16 frames at 8 a page")
+        XCTAssertTrue((doc.string ?? "").contains("16"), "frames are numbered")
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)
