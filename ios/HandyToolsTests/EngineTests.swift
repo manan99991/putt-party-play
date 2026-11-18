@@ -1394,6 +1394,22 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(plan.contains("tel:5551234567"))    // mom → call
     }
 
+    func testVideoFormatFillAndFit() throws {
+        let src = CGSize(width: 1920, height: 1080)      // a landscape video
+        let reels = CGSize(width: 1080, height: 1920)    // into a 9:16 canvas
+        // Aspect-fill crop: fills 9:16 with no bars → keeps full height, trims width, centered.
+        let crop = VideoFormat.fillCrop(source: src, target: reels)
+        XCTAssertEqual(crop.height, 1080, accuracy: 0.5, "fill keeps the full source height")
+        XCTAssertEqual(crop.width, 607.5, accuracy: 0.5, "fill trims width to the 9:16 slice")
+        XCTAssertEqual(crop.midX, src.width / 2, accuracy: 0.5, "crop is centered")
+        // Aspect-fit: whole frame kept, letterboxed top/bottom, centered.
+        let fit = VideoFormat.fitRect(source: src, target: reels)
+        XCTAssertEqual(fit.width, 1080, accuracy: 0.5, "fit keeps the full width")
+        XCTAssertEqual(fit.height, 607.5, accuracy: 0.5, "fit scales height down, no crop")
+        XCTAssertEqual(fit.midY, reels.height / 2, accuracy: 0.5, "fit is centered vertically")
+        XCTAssertNotNil(VideoFormat.preset("reels"))
+    }
+
     func testPdfTextExtractsEmbeddedLayer() throws {
         let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 300)).image { c in
             UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 300))
