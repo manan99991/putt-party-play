@@ -219,6 +219,26 @@
   "pt": "Uma ferramenta Pro",
   "zh": "Pro 工具"
  },
+ "A bit steadier, and ready for the next small thing.": {
+  "de": "Etwas stabiler und bereit für den nächsten kleinen Schritt.",
+  "es": "Un poco más estable y listo para lo siguiente.",
+  "fr": "Un peu plus stable, prêt pour la petite étape suivante.",
+  "hi": "थोड़ा संभले हुए, और अगले छोटे काम के लिए तैयार।",
+  "it": "Un po' più saldo e pronto per la prossima piccola cosa.",
+  "ja": "少し落ち着いて、次の小さな一歩へ。",
+  "pt": "Um pouco mais firme e pronto para a próxima coisinha.",
+  "zh": "稍微稳一点，准备好下一件小事。"
+ },
+ "A calmer space — you'll notice it every time you walk in.": {
+  "de": "Ein ruhigerer Raum – du merkst es jedes Mal, wenn du reinkommst.",
+  "es": "Un espacio más tranquilo: lo notarás cada vez que entres.",
+  "fr": "Un espace plus calme — vous le remarquerez à chaque fois.",
+  "hi": "शांत जगह — हर बार अंदर आने पर महसूस होगा।",
+  "it": "Uno spazio più calmo: lo noterai ogni volta che entri.",
+  "ja": "落ち着いた空間に。入るたびに感じられます。",
+  "pt": "Um espaço mais calmo — você vai notar toda vez que entrar.",
+  "zh": "更清爽的空间——每次走进来都能感受到。"
+ },
  "A casual sound amplifier, not a hearing aid or medical device. Keep the volume comfortable to protect your ears, and see a hearing professional if you have trouble hearing.": {
   "de": "Ein beiläufiger Klangverstärker, kein Hörgerät oder Medizingerät. Halte die Lautstärke angenehm, um deine Ohren zu schützen, und geh zu einem Hörfachmann, wenn du Hörprobleme hast.",
   "es": "Un amplificador de sonido casual, no un audífono ni un dispositivo médico. Mantén el volumen cómodo para proteger tus oídos, y consulta a un profesional si tienes problemas de audición.",
@@ -238,6 +258,16 @@
   "ja": "この端末にクラッシュレポートが保存されました。不具合修正のため送信しますか？送信をタップするまで何もアップロードされません。",
   "pt": "Foi guardado um relatório de falha neste telemóvel. Enviá-lo para corrigir o erro? Nada é enviado a menos que toques em Enviar.",
   "zh": "本机已保存一份崩溃报告。发送它以便修复该缺陷？除非你点按「发送」，否则不会上传任何内容。"
+ },
+ "A full glass of water": {
+  "de": "Ein volles Glas Wasser",
+  "es": "Un vaso de agua lleno",
+  "fr": "Un grand verre d'eau",
+  "hi": "एक पूरा गिलास पानी",
+  "it": "Un bicchiere d'acqua pieno",
+  "ja": "コップ1杯の水",
+  "pt": "Um copo cheio de água",
+  "zh": "一整杯水"
  },
  "A local record of what the app did — tools opened, how long actions took, UI freezes and crashes. Share it with me to debug a problem. It only leaves your phone when you send it.": {
   "de": "Ein lokales Protokoll der App — geöffnete Tools, Dauer von Aktionen, Hänger und Abstürze. Teile es zur Fehlersuche. Es verlässt dein Handy nur, wenn du es sendest.",
@@ -329,6 +359,26 @@
   "pt": "Uma ferramenta de lembretes, não conselho médico — siga sempre as orientações do seu médico ou farmacêutico. Fica neste telefone.",
   "zh": "这是提醒工具，不是医疗建议——请始终遵循医生或药师的指示。数据只保存在本机。"
  },
+ "A reset before the next stretch.": {
+  "de": "Ein Neustart vor dem nächsten Abschnitt.",
+  "es": "Un reinicio antes del siguiente tramo.",
+  "fr": "Une remise à zéro avant la suite.",
+  "hi": "अगले हिस्से से पहले एक ताज़गी।",
+  "it": "Una ripartenza prima del prossimo tratto.",
+  "ja": "次に進む前のリセット。",
+  "pt": "Um recomeço antes da próxima etapa.",
+  "zh": "进入下一段前重新充电。"
+ },
+ "A shower early resets how you feel for everything after it.": {
+  "de": "Eine frühe Dusche verändert, wie du dich danach fühlst.",
+  "es": "Una ducha temprano cambia cómo te sientes para todo lo demás.",
+  "fr": "Une douche tôt change votre ressenti pour tout le reste.",
+  "hi": "जल्दी नहाने से आगे के हर काम के लिए मन बदल जाता है।",
+  "it": "Una doccia presto cambia come ti senti per tutto il resto.",
+  "ja": "早めのシャワーで、その後の気分がリセットされます。",
+  "pt": "Um banho cedo muda como você se sente pro resto do dia.",
+  "zh": "早点洗个澡，之后做什么感觉都不一样。"
+ },
  "A strip of film rolls past": {
   "de": "Ein Filmstreifen rollt vorbei",
   "es": "Pasa una tira de película",
@@ -338,6 +388,16 @@
   "ja": "フィルムが流れていく",
   "pt": "Um rolo de filme passa",
   "zh": "一条胶片滚过"
+ },
+ "A touch brighter and warmer, so it looks as good as it tastes.": {
+  "de": "Etwas heller und wärmer – sieht so gut aus, wie es schmeckt.",
+  "es": "Un poco más luminosa y cálida, para que se vea tan rica como sabe.",
+  "fr": "Un peu plus lumineux et chaud, pour qu'il ait l'air aussi bon qu'il l'est.",
+  "hi": "थोड़ा ज़्यादा रोशन और गर्म, ताकि स्वाद जितना अच्छा दिखे।",
+  "it": "Un po' più luminoso e caldo, così sembra buono quanto è.",
+  "ja": "少し明るく暖かく。味と同じくらいおいしそうに。",
+  "pt": "Um pouco mais claro e quente, pra parecer tão gostoso quanto é.",
+  "zh": "稍亮稍暖，看起来和吃起来一样好。"
  },
  "A video": {
   "de": "Ein Video",
@@ -819,6 +879,16 @@
   "pt": "Resposta",
   "zh": "回答"
  },
+ "Anything from the pharmacy aisle": {
+  "de": "Etwas aus der Apothekenabteilung",
+  "es": "Algo del pasillo de farmacia",
+  "fr": "Quelque chose du rayon pharmacie",
+  "hi": "फ़ार्मेसी वाले हिस्से से कुछ",
+  "it": "Qualcosa dal reparto farmacia",
+  "ja": "薬コーナーのもの",
+  "pt": "Algo do corredor da farmácia",
+  "zh": "药品区的东西"
+ },
  "App": {
   "de": "App",
   "es": "App",
@@ -898,6 +968,16 @@
   "ja": "リクエストする",
   "pt": "Pedir",
   "zh": "提出需求"
+ },
+ "Ask the pharmacist what suits your symptoms": {
+  "de": "Frag in der Apotheke, was zu deinen Beschwerden passt",
+  "es": "Pregunta al farmacéutico qué va bien para tus síntomas",
+  "fr": "Demandez au pharmacien ce qui convient à vos symptômes",
+  "hi": "फ़ार्मासिस्ट से पूछें कि आपके लक्षणों के लिए क्या ठीक है",
+  "it": "Chiedi al farmacista cosa va bene per i tuoi sintomi",
+  "ja": "症状に合うものを薬剤師に相談",
+  "pt": "Pergunte ao farmacêutico o que serve para seus sintomas",
+  "zh": "问问药剂师什么适合你的症状"
  },
  "Ask your photos… (text or what they show)": {
   "de": "Frag deine Fotos… (Text oder was sie zeigen)",
@@ -1489,6 +1569,16 @@
   "pt": "Conclusão",
   "zh": "底线"
  },
+ "Bright scene — I've lifted the exposure so white stays white.": {
+  "de": "Helle Szene – ich habe die Belichtung angehoben, damit Weiß weiß bleibt.",
+  "es": "Escena luminosa: he subido la exposición para que el blanco siga blanco.",
+  "fr": "Scène lumineuse — j'ai relevé l'exposition pour que le blanc reste blanc.",
+  "hi": "चमकीला दृश्य — मैंने एक्सपोज़र बढ़ाया है ताकि सफ़ेद सफ़ेद रहे।",
+  "it": "Scena luminosa: ho alzato l'esposizione perché il bianco resti bianco.",
+  "ja": "明るいシーン — 白が白く写るよう露出を上げました。",
+  "pt": "Cena clara — aumentei a exposição para o branco ficar branco.",
+  "zh": "明亮场景——已提高曝光，白色保持白色。"
+ },
  "Bright snow or beach": {
   "de": "Heller Schnee oder Strand",
   "es": "Nieve o playa brillante",
@@ -1499,6 +1589,26 @@
   "pt": "Neve ou praia clara",
   "zh": "明亮的雪地或海滩"
  },
+ "Brighter exposure so white looks white, not grey.": {
+  "de": "Hellere Belichtung, damit Weiß weiß aussieht, nicht grau.",
+  "es": "Exposición más brillante para que el blanco se vea blanco, no gris.",
+  "fr": "Exposition plus claire pour que le blanc reste blanc, pas gris.",
+  "hi": "ज़्यादा रोशन एक्सपोज़र, ताकि सफ़ेद सफ़ेद दिखे, धूसर नहीं।",
+  "it": "Esposizione più luminosa perché il bianco resti bianco, non grigio.",
+  "ja": "明るめの露出で、白をグレーではなく白に。",
+  "pt": "Exposição mais clara para o branco ficar branco, não cinza.",
+  "zh": "曝光更亮，白色不发灰。"
+ },
+ "Brighter exposure; the phone stacks frames to keep it clean.": {
+  "de": "Hellere Belichtung; das iPhone kombiniert Bilder für weniger Rauschen.",
+  "es": "Exposición más brillante; el teléfono combina fotogramas para que quede limpia.",
+  "fr": "Exposition plus claire ; le téléphone empile les images pour un rendu propre.",
+  "hi": "ज़्यादा रोशन एक्सपोज़र; फ़ोन फ़्रेम जोड़कर फ़ोटो साफ़ रखता है।",
+  "it": "Esposizione più luminosa; il telefono unisce più fotogrammi per un'immagine pulita.",
+  "ja": "明るめの露出。複数の画像を合成してノイズを抑えます。",
+  "pt": "Exposição mais clara; o celular junta quadros para manter a foto limpa.",
+  "zh": "曝光更亮；手机叠加多帧保持画面干净。"
+ },
  "Brightness": {
   "de": "Helligkeit",
   "es": "Brillo",
@@ -1508,6 +1618,16 @@
   "ja": "明るさ",
   "pt": "Brilho",
   "zh": "亮度"
+ },
+ "Bring ID, card and anything they asked for": {
+  "de": "Ausweis, Karte und alles Verlangte mitnehmen",
+  "es": "Lleva identificación, tarjeta y lo que te hayan pedido",
+  "fr": "Prenez une pièce d'identité, la carte et ce qu'on vous a demandé",
+  "hi": "पहचान पत्र, कार्ड और जो भी माँगा हो, साथ ले जाएँ",
+  "it": "Porta documento, carta e quanto richiesto",
+  "ja": "身分証、カード、頼まれたものを持参",
+  "pt": "Leve documento, cartão e o que pediram",
+  "zh": "带上证件、卡和对方要求的东西"
  },
  "Budget (optional)": {
   "de": "Budget (optional)",
@@ -1838,6 +1958,26 @@
   "ja": "確認する",
   "pt": "Verificar",
   "zh": "查看"
+ },
+ "Check the fridge and write the list first": {
+  "de": "Erst den Kühlschrank checken und die Liste schreiben",
+  "es": "Revisa la nevera y escribe la lista primero",
+  "fr": "Vérifiez le frigo et faites la liste d'abord",
+  "hi": "पहले फ़्रिज देखें और सूची लिखें",
+  "it": "Controlla il frigo e scrivi prima la lista",
+  "ja": "先に冷蔵庫を見てリストを作る",
+  "pt": "Confira a geladeira e faça a lista primeiro",
+  "zh": "先看看冰箱，写好清单"
+ },
+ "Check what you already have at home first": {
+  "de": "Erst schauen, was du schon zu Hause hast",
+  "es": "Mira primero lo que ya tienes en casa",
+  "fr": "Vérifiez d'abord ce que vous avez déjà chez vous",
+  "hi": "पहले देखें कि घर में क्या पहले से है",
+  "it": "Controlla prima cosa hai già a casa",
+  "ja": "まず家にあるものを確認",
+  "pt": "Veja primeiro o que já tem em casa",
+  "zh": "先看看家里已经有什么"
  },
  "Check-ins on — I'll nudge you as each step starts": {
   "de": "Check-ins an – ich melde mich bei jedem Schritt",
@@ -2289,6 +2429,16 @@
   "pt": "Fundo branco limpo",
   "zh": "干净的白色背景"
  },
+ "Clean, comfy clothes after": {
+  "de": "Danach saubere, bequeme Kleidung",
+  "es": "Después, ropa limpia y cómoda",
+  "fr": "Ensuite, des vêtements propres et confortables",
+  "hi": "बाद में साफ़, आरामदायक कपड़े",
+  "it": "Dopo, vestiti puliti e comodi",
+  "ja": "そのあと清潔で楽な服に",
+  "pt": "Depois, roupas limpas e confortáveis",
+  "zh": "之后换上干净舒适的衣服"
+ },
  "Cleaner": {
   "de": "Aufräumen",
   "es": "Limpiador",
@@ -2378,6 +2528,16 @@
   "ja": "文字起こしを消去",
   "pt": "Limpar transcrição",
   "zh": "清除文字记录"
+ },
+ "Clearer head and more energy, even after a short one.": {
+  "de": "Klarer Kopf und mehr Energie, schon nach kurzer Zeit.",
+  "es": "Mente más clara y más energía, incluso tras algo corto.",
+  "fr": "Esprit plus clair et plus d'énergie, même après un court moment.",
+  "hi": "छोटे से भी दिमाग़ साफ़ और ज़्यादा ऊर्जा।",
+  "it": "Mente più lucida e più energia, anche dopo poco.",
+  "ja": "短くても頭がすっきり、元気が出ます。",
+  "pt": "Cabeça mais leve e mais energia, mesmo depois de algo curto.",
+  "zh": "哪怕时间很短，头脑也更清醒、更有精神。"
  },
  "Clip length  ": {
   "de": "Cliplänge  ",
@@ -3749,6 +3909,16 @@
   "pt": "Concluído",
   "zh": "完成"
  },
+ "Done and off the list.": {
+  "de": "Erledigt und von der Liste.",
+  "es": "Hecho y fuera de la lista.",
+  "fr": "Fait et rayé de la liste.",
+  "hi": "हो गया, सूची से हटा।",
+  "it": "Fatto e tolto dalla lista.",
+  "ja": "完了、リストから消えました。",
+  "pt": "Feito e fora da lista.",
+  "zh": "完成，从清单上划掉。"
+ },
  "Done by": {
   "de": "Fertig um",
   "es": "Listo a las",
@@ -3929,6 +4099,16 @@
   "pt": "Melhor hora sem chuva para sair:",
   "zh": "最适合出门的无雨时间："
  },
+ "Drink a glass of water": {
+  "de": "Ein Glas Wasser trinken",
+  "es": "Bebe un vaso de agua",
+  "fr": "Buvez un verre d'eau",
+  "hi": "एक गिलास पानी पिएँ",
+  "it": "Bevi un bicchiere d'acqua",
+  "ja": "水を1杯飲む",
+  "pt": "Beba um copo de água",
+  "zh": "喝一杯水"
+ },
  "Drop shadow": {
   "de": "Schlagschatten",
   "es": "Sombra",
@@ -4008,6 +4188,36 @@
   "ja": "各自が自分の言語で話すと、端末が翻訳してもう一方の言語で読み上げます。端末の音声認識を使用し — 言語パックを入れればオフラインで動作します。",
   "pt": "Cada lado fala no seu idioma; o telemóvel traduz e lê em voz alta no outro. Usa o reconhecimento de voz do telemóvel — offline quando o pacote de idioma está instalado.",
   "zh": "双方各用自己的语言说话；手机翻译后用另一种语言朗读。使用手机的语音识别 — 安装语言包后可离线。"
+ },
+ "Easy foods if you're unwell: soup, fruit, crackers, tea": {
+  "de": "Leichtes Essen, wenn du krank bist: Suppe, Obst, Cracker, Tee",
+  "es": "Comida fácil si no te encuentras bien: sopa, fruta, galletas, té",
+  "fr": "Aliments faciles si vous n'êtes pas bien : soupe, fruits, crackers, thé",
+  "hi": "तबीयत ठीक न हो तो हल्का खाना: सूप, फल, क्रैकर, चाय",
+  "it": "Cibi leggeri se non stai bene: zuppa, frutta, cracker, tè",
+  "ja": "体調が悪いときの食べ物：スープ、果物、クラッカー、お茶",
+  "pt": "Comidas leves se não estiver bem: sopa, fruta, biscoito, chá",
+  "zh": "不舒服时吃清淡的：汤、水果、饼干、茶"
+ },
+ "Easy pace — a short walk counts": {
+  "de": "Gemütliches Tempo – ein kurzer Spaziergang zählt",
+  "es": "Ritmo suave: un paseo corto cuenta",
+  "fr": "Rythme tranquille — une petite marche compte",
+  "hi": "आराम से — छोटी सैर भी गिनती में आती है",
+  "it": "Ritmo tranquillo: anche una breve passeggiata conta",
+  "ja": "ゆっくりで — 短い散歩でもOK",
+  "pt": "Ritmo leve — uma caminhada curta conta",
+  "zh": "慢慢来——短短散步也算"
+ },
+ "Eat before the bigger tasks so your energy holds.": {
+  "de": "Iss vor den größeren Aufgaben, damit die Energie reicht.",
+  "es": "Come antes de las tareas grandes para que te dure la energía.",
+  "fr": "Mangez avant les grosses tâches pour garder de l'énergie.",
+  "hi": "बड़े कामों से पहले खाएँ ताकि ऊर्जा बनी रहे।",
+  "it": "Mangia prima dei compiti più grandi così l'energia regge.",
+  "ja": "大きな用事の前に食べて、体力を保ちましょう。",
+  "pt": "Coma antes das tarefas maiores para a energia durar.",
+  "zh": "做大事之前先吃饭，精力才撑得住。"
  },
  "Edge": {
   "de": "Rand",
@@ -4329,6 +4539,16 @@
   "pt": "Todas as ferramentas num só lugar — toca para abrir. Tudo corre no telefone.",
   "zh": "所有工具集于一处 — 轻点打开。全部在手机上运行。"
  },
+ "Everyone in? Leave a little room around the edges.": {
+  "de": "Alle drauf? Lass etwas Platz am Rand.",
+  "es": "¿Están todos? Deja un poco de espacio en los bordes.",
+  "fr": "Tout le monde y est ? Laissez un peu de marge.",
+  "hi": "सब आ गए? किनारों पर थोड़ी जगह छोड़ें।",
+  "it": "Ci sono tutti? Lascia un po' di spazio ai bordi.",
+  "ja": "全員入った？端に少し余白を。",
+  "pt": "Todo mundo? Deixe um pouco de espaço nas bordas.",
+  "zh": "都在画面里吗？边缘留点空间。"
+ },
  "Everything Tenzy does, each with a tap to open": {
   "de": "Alles, was Tenzy kann, mit einem Tipp",
   "es": "Todo lo que hace Tenzy, cada uno a un toque",
@@ -4459,6 +4679,26 @@
   "pt": "Exportar (.vcf)",
   "zh": "导出 (.vcf)"
  },
+ "Exposure and colour balanced for indoor light.": {
+  "de": "Belichtung und Farbe für Innenlicht abgestimmt.",
+  "es": "Exposición y color ajustados a la luz interior.",
+  "fr": "Exposition et couleurs équilibrées pour la lumière intérieure.",
+  "hi": "घर के अंदर की रोशनी के हिसाब से एक्सपोज़र और रंग।",
+  "it": "Esposizione e colore bilanciati per la luce interna.",
+  "ja": "室内の光に合わせて露出と色を調整。",
+  "pt": "Exposição e cor equilibradas para luz interna.",
+  "zh": "曝光和色彩适配室内光线。"
+ },
+ "Exposure lifted so your subject isn't a dark shape.": {
+  "de": "Belichtung angehoben, damit dein Motiv keine dunkle Silhouette ist.",
+  "es": "Exposición elevada para que el sujeto no sea una sombra oscura.",
+  "fr": "Exposition relevée pour que le sujet ne soit pas une forme sombre.",
+  "hi": "एक्सपोज़र बढ़ाया, ताकि आपका विषय काली परछाईं न लगे।",
+  "it": "Esposizione alzata perché il soggetto non sia una sagoma scura.",
+  "ja": "露出を上げて、被写体が黒くつぶれないように。",
+  "pt": "Exposição aumentada para o assunto não virar uma sombra escura.",
+  "zh": "提高曝光，主体不会成为黑影。"
+ },
  "Eyes look closed or squinting — take another with eyes open.": {
   "de": "Augen wirken geschlossen oder zusammengekniffen – mach noch eins mit offenen Augen.",
   "es": "Los ojos parecen cerrados o entrecerrados: haz otra con los ojos abiertos.",
@@ -4569,6 +4809,16 @@
   "pt": "Rápido",
   "zh": "快"
  },
+ "Fast enough to catch everyone, exposure balanced across faces.": {
+  "de": "Schnell genug für alle, Belichtung über alle Gesichter ausgeglichen.",
+  "es": "Lo bastante rápido para captar a todos, con la exposición equilibrada entre caras.",
+  "fr": "Assez rapide pour saisir tout le monde, exposition équilibrée sur les visages.",
+  "hi": "सबको कैद करने लायक तेज़, सभी चेहरों पर संतुलित एक्सपोज़र।",
+  "it": "Abbastanza veloce per tutti, esposizione bilanciata sui volti.",
+  "ja": "全員をとらえる速さで、顔の明るさもそろえます。",
+  "pt": "Rápido o bastante para pegar todo mundo, com exposição equilibrada nos rostos.",
+  "zh": "速度足以拍到每个人，各张脸曝光均衡。"
+ },
  "Faster": {
   "de": "Schneller",
   "es": "Más rápido",
@@ -4578,6 +4828,16 @@
   "ja": "速く",
   "pt": "Mais rápido",
   "zh": "更快"
+ },
+ "Faster shutter so a moving pet stays sharp.": {
+  "de": "Kürzere Verschlusszeit, damit ein bewegtes Tier scharf bleibt.",
+  "es": "Obturación más rápida para que una mascota en movimiento salga nítida.",
+  "fr": "Obturation plus rapide pour qu'un animal en mouvement reste net.",
+  "hi": "तेज़ शटर, ताकि हिलता पालतू साफ़ आए।",
+  "it": "Otturatore più rapido perché un animale in movimento resti nitido.",
+  "ja": "速いシャッターで、動くペットもくっきり。",
+  "pt": "Obturador mais rápido para o pet em movimento sair nítido.",
+  "zh": "更快的快门，让活动的宠物也清晰。"
  },
  "Favourite": {
   "de": "Favorit",
@@ -4869,6 +5129,16 @@
   "pt": "Caber num tamanho",
   "zh": "压到某个大小以下"
  },
+ "Fits here without blocking anything else.": {
+  "de": "Passt hier hin, ohne etwas anderes zu blockieren.",
+  "es": "Encaja aquí sin bloquear nada más.",
+  "fr": "Trouve sa place ici sans rien bloquer.",
+  "hi": "यहाँ बिना कुछ रोके फ़िट होता है।",
+  "it": "Sta qui senza bloccare nient'altro.",
+  "ja": "ほかの邪魔をせず、ここに入ります。",
+  "pt": "Cabe aqui sem atrapalhar mais nada.",
+  "zh": "放在这里不影响其他事。"
+ },
  "Fits you": {
   "de": "Passt zu dir",
   "es": "Te encaja",
@@ -4909,6 +5179,16 @@
   "pt": "Corrija, reescreva, encurte, liste, resuma ou rascunhe uma resposta — e envie.",
   "zh": "修改、改写、缩短、列要点、总结或草拟回复——然后发出去。"
  },
+ "Fixed time — the rest fits around it.": {
+  "de": "Feste Zeit – der Rest passt sich an.",
+  "es": "Hora fija: lo demás se organiza alrededor.",
+  "fr": "Heure fixe — le reste s'organise autour.",
+  "hi": "तय समय — बाकी सब उसके आसपास।",
+  "it": "Orario fisso: il resto si incastra attorno.",
+  "ja": "時間が決まっているので、ほかはそれに合わせます。",
+  "pt": "Horário fixo — o resto se encaixa em volta.",
+  "zh": "时间固定——其他事围绕它安排。"
+ },
  "Flashlight": {
   "de": "Taschenlampe",
   "es": "Linterna",
@@ -4948,6 +5228,36 @@
   "ja": "パラパラ漫画",
   "pt": "Flipbook",
   "zh": "翻页书"
+ },
+ "Focus and exposure follow the face.": {
+  "de": "Fokus und Belichtung folgen dem Gesicht.",
+  "es": "El enfoque y la exposición siguen la cara.",
+  "fr": "La mise au point et l'exposition suivent le visage.",
+  "hi": "फ़ोकस और एक्सपोज़र चेहरे के साथ चलते हैं।",
+  "it": "Messa a fuoco ed esposizione seguono il viso.",
+  "ja": "ピントと露出が顔を追いかけます。",
+  "pt": "Foco e exposição acompanham o rosto.",
+  "zh": "对焦和曝光跟随面部。"
+ },
+ "Focus on the nearest detail.": {
+  "de": "Fokus auf das nächste Detail.",
+  "es": "Enfoque en el detalle más cercano.",
+  "fr": "Mise au point sur le détail le plus proche.",
+  "hi": "सबसे नज़दीकी हिस्से पर फ़ोकस।",
+  "it": "Messa a fuoco sul dettaglio più vicino.",
+  "ja": "いちばん近いところにピント。",
+  "pt": "Foco no detalhe mais próximo.",
+  "zh": "对焦最近的细节。"
+ },
+ "Follow the movement and tap — the shutter is set to freeze it.": {
+  "de": "Folge der Bewegung und tippe – der Verschluss friert sie ein.",
+  "es": "Sigue el movimiento y toca: el obturador está listo para congelarlo.",
+  "fr": "Suivez le mouvement et touchez — l'obturateur est réglé pour le figer.",
+  "hi": "हलचल के साथ चलें और टैप करें — शटर उसे थामने के लिए सेट है।",
+  "it": "Segui il movimento e tocca: l'otturatore è pronto a congelarlo.",
+  "ja": "動きを追ってタップ — 動きを止める設定です。",
+  "pt": "Acompanhe o movimento e toque — o obturador vai congelá-lo.",
+  "zh": "跟着动作点按——快门已设为定格。"
  },
  "Follow-up": {
   "de": "Nachfassen",
@@ -5139,6 +5449,26 @@
   "pt": "Congelante — casaco grosso, gorro, luvas e cachecol.",
   "zh": "严寒——厚外套、帽子、手套和围巾。"
  },
+ "Fresh and more like yourself — this one lifts the whole day.": {
+  "de": "Frisch und mehr du selbst – das hebt den ganzen Tag.",
+  "es": "Fresco y más tú: esto mejora todo el día.",
+  "fr": "Frais et plus vous-même — ça illumine toute la journée.",
+  "hi": "ताज़ा और फिर से अपने जैसे — इससे पूरा दिन बेहतर होता है।",
+  "it": "Fresco e più te stesso: questo solleva tutta la giornata.",
+  "ja": "さっぱりして自分らしく。一日が明るくなります。",
+  "pt": "Renovado e mais você — isso melhora o dia inteiro.",
+  "zh": "焕然一新，更像自己——整天都会好起来。"
+ },
+ "Fridge stocked — one less thing on your mind all week.": {
+  "de": "Kühlschrank voll – eine Sorge weniger für die ganze Woche.",
+  "es": "Nevera llena: una preocupación menos toda la semana.",
+  "fr": "Frigo rempli — un souci de moins toute la semaine.",
+  "hi": "फ़्रिज भरा — पूरे हफ़्ते एक चिंता कम।",
+  "it": "Frigo pieno: un pensiero in meno per tutta la settimana.",
+  "ja": "冷蔵庫いっぱい。一週間、気がかりがひとつ減ります。",
+  "pt": "Geladeira cheia — uma preocupação a menos na semana.",
+  "zh": "冰箱满了——这周少操一份心。"
+ },
  "From": {
   "de": "Ab",
   "es": "Desde",
@@ -5178,6 +5508,16 @@
   "ja": "静止中 · ピンチで拡大",
   "pt": "Congelado · aperte para ampliar",
   "zh": "已冻结 · 捏合放大"
+ },
+ "Fuelled. Focus comes back after you eat.": {
+  "de": "Gestärkt. Nach dem Essen kommt die Konzentration zurück.",
+  "es": "Con energía. La concentración vuelve después de comer.",
+  "fr": "Rechargé. La concentration revient après avoir mangé.",
+  "hi": "ऊर्जा मिली। खाने के बाद ध्यान लौट आता है।",
+  "it": "Carico. La concentrazione torna dopo aver mangiato.",
+  "ja": "エネルギー補給。食べると集中力が戻ります。",
+  "pt": "Abastecido. O foco volta depois de comer.",
+  "zh": "吃饱了。吃完饭专注力就回来了。"
  },
  "Full of energy": {
   "de": "Voller Energie",
@@ -5248,6 +5588,26 @@
   "ja": "一般的な呼びかけ",
   "pt": "Saudação genérica",
   "zh": "泛泛的称呼"
+ },
+ "Get close and tap the detail you want sharp.": {
+  "de": "Geh nah ran und tippe auf das Detail, das scharf sein soll.",
+  "es": "Acércate y toca el detalle que quieras nítido.",
+  "fr": "Approchez-vous et touchez le détail à rendre net.",
+  "hi": "पास जाएँ और जिस हिस्से को साफ़ चाहते हैं उस पर टैप करें।",
+  "it": "Avvicinati e tocca il dettaglio da mettere a fuoco.",
+  "ja": "近づいて、くっきりさせたい所をタップ。",
+  "pt": "Chegue perto e toque no detalhe que quer nítido.",
+  "zh": "靠近并点按想拍清楚的细节。"
+ },
+ "Get down to their eye level for the best shot.": {
+  "de": "Geh auf Augenhöhe – so wird's am schönsten.",
+  "es": "Ponte a la altura de sus ojos para la mejor foto.",
+  "fr": "Mettez-vous à hauteur de ses yeux pour la meilleure photo.",
+  "hi": "सबसे अच्छी फ़ोटो के लिए उनकी आँखों की ऊँचाई पर आएँ।",
+  "it": "Mettiti all'altezza dei suoi occhi per lo scatto migliore.",
+  "ja": "目線の高さまで下がると最高の一枚に。",
+  "pt": "Abaixe até a altura dos olhos dele para a melhor foto.",
+  "zh": "蹲到它的视线高度，拍得最好。"
  },
  "Getting a GPS fix… step outside if it's slow.": {
   "de": "GPS-Fix wird ermittelt… geh nach draußen, wenn es langsam ist.",
@@ -5338,6 +5698,26 @@
   "ja": "Proにアップグレードすると、これも他のすべてのProツールも使えます — 1日の制限はなく、自分で作れるツールも無制限です。",
   "pt": "Assine o Pro para desbloqueá-la e todas as outras ferramentas Pro — sem limites diários e ferramentas ilimitadas criadas por você.",
   "zh": "升级到 Pro 即可解锁它和所有其他 Pro 工具 — 没有每日限制，还可无限创建你自己的工具。"
+ },
+ "Go to the nearest store — the map below shows them": {
+  "de": "Zum nächsten Laden – die Karte unten zeigt sie",
+  "es": "Ve a la tienda más cercana: el mapa de abajo las muestra",
+  "fr": "Allez au magasin le plus proche — la carte ci-dessous les montre",
+  "hi": "सबसे नज़दीकी दुकान जाएँ — नीचे मैप में दिखेंगी",
+  "it": "Vai al negozio più vicino: la mappa qui sotto li mostra",
+  "ja": "いちばん近いお店へ — 下の地図に表示されます",
+  "pt": "Vá à loja mais próxima — o mapa abaixo mostra",
+  "zh": "去最近的商店——下方地图会显示"
+ },
+ "Go while you still have the energy — and get it done in one trip.": {
+  "de": "Geh, solange du noch Energie hast – und erledige alles auf einmal.",
+  "es": "Ve mientras tengas energía, y hazlo en un solo viaje.",
+  "fr": "Allez-y tant que vous avez de l'énergie — en un seul trajet.",
+  "hi": "जब तक ऊर्जा है तब तक जाएँ — और एक ही बार में निपटाएँ।",
+  "it": "Vai finché hai energia, e fai tutto in un solo giro.",
+  "ja": "元気なうちに、1回の外出で済ませましょう。",
+  "pt": "Vá enquanto ainda tem energia — e resolva numa viagem só.",
+  "zh": "趁还有精力去，一趟办完。"
  },
  "Goes to": {
   "de": "Führt zu",
@@ -5619,6 +5999,26 @@
   "pt": "Encosta uma etiqueta NFC à parte de trás do telemóvel.",
   "zh": "将 NFC 标签靠近手机背面。"
  },
+ "Hold still for a moment after you tap.": {
+  "de": "Nach dem Tippen kurz ruhig halten.",
+  "es": "Quédate quieto un momento después de tocar.",
+  "fr": "Restez immobile un instant après avoir touché.",
+  "hi": "टैप करने के बाद कुछ पल स्थिर रहें।",
+  "it": "Resta fermo un attimo dopo il tocco.",
+  "ja": "タップしたら少し動かさないで。",
+  "pt": "Fique parado um instante depois de tocar.",
+  "zh": "点按后保持片刻不动。"
+ },
+ "Hold still — brace your elbows or lean on something.": {
+  "de": "Ruhig halten – Ellbogen abstützen oder anlehnen.",
+  "es": "Quédate quieto: apoya los codos o recuéstate en algo.",
+  "fr": "Ne bougez pas — calez vos coudes ou appuyez-vous.",
+  "hi": "स्थिर रहें — कोहनियाँ टिकाएँ या किसी चीज़ से सहारा लें।",
+  "it": "Stai fermo: appoggia i gomiti o appoggiati a qualcosa.",
+  "ja": "動かないで — ひじを固定するか、何かにもたれて。",
+  "pt": "Fique parado — apoie os cotovelos ou encoste em algo.",
+  "zh": "保持不动——稳住手肘或靠着东西。"
+ },
  "Hold the camera at eye level — chin is up or down.": {
   "de": "Halte die Kamera auf Augenhöhe – das Kinn ist oben oder unten.",
   "es": "Sostén la cámara a la altura de los ojos: la barbilla está arriba o abajo.",
@@ -5638,6 +6038,16 @@
   "ja": "端末を二人の間に持ちます。話す人のボタンをタップして話し、会話を離すと、相手側は翻訳されて表示され、読み上げられます。",
   "pt": "Segura o telemóvel entre vós. Toca no botão de quem fala, fala e depois larga a conversa — o outro lado aparece traduzido e é lido em voz alta.",
   "zh": "把手机拿在你们之间。点按正在说话一方的按钮，说话，然后松开对话——另一方会以翻译形式显示并朗读出来。"
+ },
+ "Hold the phone flat above the page, filling the frame.": {
+  "de": "Halte das Handy flach über die Seite, bildfüllend.",
+  "es": "Sostén el teléfono plano sobre la página, llenando el encuadre.",
+  "fr": "Tenez le téléphone à plat au-dessus de la page, en remplissant le cadre.",
+  "hi": "फ़ोन को पेज के ऊपर सीधा रखें, पूरा फ़्रेम भरें।",
+  "it": "Tieni il telefono piatto sopra la pagina, riempiendo l'inquadratura.",
+  "ja": "ページの真上で水平に構え、画面いっぱいに。",
+  "pt": "Segure o celular reto sobre a página, preenchendo o quadro.",
+  "zh": "手机平放在页面正上方，填满画面。"
  },
  "Holographic": {
   "de": "Holografisch",
@@ -6019,6 +6429,26 @@
   "pt": "Juntando…",
   "zh": "正在合并…"
  },
+ "Jot the one thing you need from the call": {
+  "de": "Notier dir das Eine, das du vom Anruf brauchst",
+  "es": "Anota lo único que necesitas de la llamada",
+  "fr": "Notez la seule chose qu'il vous faut de l'appel",
+  "hi": "कॉल से जो एक बात चाहिए, उसे लिख लें",
+  "it": "Annota l'unica cosa che ti serve dalla chiamata",
+  "ja": "電話で確認したいことを1つメモ",
+  "pt": "Anote a única coisa que você precisa da ligação",
+  "zh": "记下这通电话最需要的那件事"
+ },
+ "Just the two-minute start. Nothing else yet. Once you're up, the next step is waiting and it's small.": {
+  "de": "Nur der Zwei-Minuten-Start. Sonst noch nichts. Wenn du auf bist, wartet ein kleiner nächster Schritt.",
+  "es": "Solo el inicio de dos minutos. Nada más todavía. Cuando te levantes, el siguiente paso te espera y es pequeño.",
+  "fr": "Juste le démarrage de deux minutes. Rien d'autre pour l'instant. Une fois debout, l'étape suivante est petite.",
+  "hi": "बस दो मिनट की शुरुआत। अभी और कुछ नहीं। उठने के बाद अगला कदम छोटा है और तैयार है।",
+  "it": "Solo la partenza di due minuti. Nient'altro per ora. Una volta in piedi, il passo successivo è piccolo.",
+  "ja": "まずは2分間だけ。ほかはまだいい。起きたら、次の小さな一歩が待っています。",
+  "pt": "Só o começo de dois minutos. Mais nada ainda. Quando levantar, o próximo passo é pequeno e está esperando.",
+  "zh": "先完成两分钟的开始，别的先不管。起来之后，下一步很小，已经在等你。"
+ },
  "Keep": {
   "de": "Behalten",
   "es": "Conservar",
@@ -6108,6 +6538,16 @@
   "ja": "ステッカーに追加して残す",
   "pt": "Guarde nas suas figurinhas",
   "zh": "收进你的贴纸栏"
+ },
+ "Keep it simple": {
+  "de": "Einfach halten",
+  "es": "Hazlo sencillo",
+  "fr": "Faites simple",
+  "hi": "सादा रखें",
+  "it": "Fallo semplice",
+  "ja": "シンプルに",
+  "pt": "Mantenha simples",
+  "zh": "简单就好"
  },
  "Keep lines": {
   "de": "Zeilen behalten",
@@ -6319,6 +6759,16 @@
   "pt": "Último dia para devolver",
   "zh": "退货最后一天"
  },
+ "Leave 10 minutes early": {
+  "de": "10 Minuten früher losgehen",
+  "es": "Sal 10 minutos antes",
+  "fr": "Partez 10 minutes plus tôt",
+  "hi": "10 मिनट पहले निकलें",
+  "it": "Esci 10 minuti prima",
+  "ja": "10分早く出る",
+  "pt": "Saia 10 minutos antes",
+  "zh": "提前 10 分钟出发"
+ },
  "Leave them empty to type new words every time you run the tool.": {
   "de": "Lass sie leer, um bei jeder Ausführung des Tools neue Wörter einzugeben.",
   "es": "Déjalos vacíos para escribir palabras nuevas cada vez que ejecutes la herramienta.",
@@ -6328,6 +6778,16 @@
   "ja": "空のままにすると、ツールを実行するたびに新しい語を入力できます。",
   "pt": "Deixa-os vazios para escrever palavras novas sempre que executares a ferramenta.",
   "zh": "留空即可在每次运行工具时输入新词。"
+ },
+ "Leaves you with more energy for the evening.": {
+  "de": "Gibt dir mehr Energie für den Abend.",
+  "es": "Te deja más energía para la tarde.",
+  "fr": "Vous laisse plus d'énergie pour la soirée.",
+  "hi": "शाम के लिए ज़्यादा ऊर्जा देता है।",
+  "it": "Ti lascia più energia per la sera.",
+  "ja": "夜に向けて元気が残ります。",
+  "pt": "Deixa você com mais energia para a noite.",
+  "zh": "让你晚上更有精神。"
  },
  "Left": {
   "de": "Links",
@@ -6369,6 +6829,16 @@
   "pt": "Nível, bússola e sensores",
   "zh": "水平仪、指南针和传感器"
  },
+ "Light is behind them — I've brightened their face. Turning them toward the light is even better.": {
+  "de": "Licht von hinten – ich habe das Gesicht aufgehellt. Noch besser: zum Licht drehen.",
+  "es": "La luz está detrás: he iluminado su cara. Mejor aún si se gira hacia la luz.",
+  "fr": "La lumière est derrière — j'ai éclairci le visage. Encore mieux : tournez-le vers la lumière.",
+  "hi": "रोशनी पीछे है — मैंने चेहरा रोशन किया है। उन्हें रोशनी की ओर मोड़ें तो और अच्छा।",
+  "it": "La luce è dietro: ho schiarito il viso. Ancora meglio girarlo verso la luce.",
+  "ja": "逆光です — 顔を明るくしました。光の方を向くとさらに良くなります。",
+  "pt": "A luz está atrás — clareei o rosto. Virar para a luz é ainda melhor.",
+  "zh": "逆光——我已提亮面部。让对方转向光线会更好。"
+ },
  "Light, plain background": {
   "de": "Heller, schlichter Hintergrund",
   "es": "Fondo claro y liso",
@@ -6378,6 +6848,16 @@
   "ja": "明るく無地の背景",
   "pt": "Fundo claro e liso",
   "zh": "浅色纯色背景"
+ },
+ "Lighter task for when energy dips.": {
+  "de": "Leichtere Aufgabe für das Energietief.",
+  "es": "Tarea más ligera para cuando baja la energía.",
+  "fr": "Tâche plus légère pour quand l'énergie baisse.",
+  "hi": "ऊर्जा कम होने पर हल्का काम।",
+  "it": "Compito più leggero per quando cala l'energia.",
+  "ja": "元気が落ちてきた時の軽い用事。",
+  "pt": "Tarefa mais leve para quando a energia cair.",
+  "zh": "精力下降时做的轻松事。"
  },
  "Line the head up inside the oval — it's cut out and centred for you.": {
   "de": "Richte den Kopf im Oval aus — er wird für dich freigestellt und zentriert.",
@@ -6578,6 +7058,16 @@
   "ja": "長いスクショ",
   "pt": "Captura longa",
   "zh": "长截图"
+ },
+ "Long exposure and focus set to the far distance.": {
+  "de": "Langzeitbelichtung, Fokus auf unendlich.",
+  "es": "Exposición larga y enfoque al infinito.",
+  "fr": "Pose longue et mise au point à l'infini.",
+  "hi": "लंबा एक्सपोज़र और फ़ोकस दूर तक सेट।",
+  "it": "Esposizione lunga e messa a fuoco all'infinito.",
+  "ja": "長時間露光、ピントは遠くに設定。",
+  "pt": "Exposição longa e foco no infinito.",
+  "zh": "长曝光，焦点设在远处。"
  },
  "Long screenshot: tap the floating button to start, scroll down slowly, then tap it again — Tenzy stitches the screens into one tall image. No extra permission needed.": {
   "de": "Langer Screenshot: Tippe zum Start den schwebenden Knopf, scrolle langsam nach unten und tippe erneut — Tenzy fügt die Bildschirme zu einem hohen Bild zusammen. Keine zusätzliche Berechtigung nötig.",
@@ -7499,6 +7989,16 @@
   "pt": "Mover remove os originais da primeira conta assim que as cópias são guardadas. Se essa conta for Google, são removidos também dos teus contactos Google. É criado primeiro um ficheiro de cópia.",
   "zh": "复制保存后，移动会从第一个账户中删除原件。若该账户是 Google，也会从你的 Google 联系人中删除。会先创建一个备份文件。"
  },
+ "Move so their face isn't at the edge of the frame.": {
+  "de": "Verschieb das Bild, damit das Gesicht nicht am Rand ist.",
+  "es": "Muévete para que su cara no quede en el borde.",
+  "fr": "Décalez-vous pour que le visage ne soit pas au bord.",
+  "hi": "ऐसे हिलें कि चेहरा फ़्रेम के किनारे पर न हो।",
+  "it": "Spostati perché il viso non sia sul bordo.",
+  "ja": "顔がフレームの端に来ないよう動いて。",
+  "pt": "Mexa-se para o rosto não ficar na borda.",
+  "zh": "调整位置，别让脸在画面边缘。"
+ },
  "Move to top": {
   "de": "Nach ganz oben",
   "es": "Mover arriba",
@@ -7678,6 +8178,16 @@
   "ja": "近い",
   "pt": "Perto",
   "zh": "近"
+ },
+ "Near a window is the best light indoors.": {
+  "de": "Am Fenster ist das beste Licht drinnen.",
+  "es": "Junto a una ventana está la mejor luz en interiores.",
+  "fr": "Près d'une fenêtre, c'est la meilleure lumière en intérieur.",
+  "hi": "घर के अंदर खिड़की के पास सबसे अच्छी रोशनी होती है।",
+  "it": "Vicino a una finestra c'è la luce migliore al chiuso.",
+  "ja": "室内なら窓際の光がいちばん。",
+  "pt": "Perto da janela é a melhor luz em ambientes internos.",
+  "zh": "室内靠窗的光线最好。"
  },
  "Needed only to point at a code. Nothing is recorded or uploaded.": {
   "de": "Nur nötig, um auf einen Code zu zielen. Es wird nichts aufgezeichnet oder hochgeladen.",
@@ -8099,6 +8609,16 @@
   "pt": "Normal",
   "zh": "正常"
  },
+ "Not a diagnosis. Call your doctor or go to urgent care if you have trouble breathing, chest pain, a high fever that won't come down, you can't keep fluids down, or you're getting worse or not better after a few days. In an emergency, call your local emergency number.": {
+  "de": "Keine Diagnose. Ruf deine Ärztin/deinen Arzt an oder geh in die Notfallpraxis bei Atemnot, Brustschmerzen, hohem Fieber, das nicht sinkt, wenn du nichts bei dir behältst oder es dir nach ein paar Tagen schlechter oder nicht besser geht. Im Notfall die örtliche Notrufnummer wählen.",
+  "es": "No es un diagnóstico. Llama a tu médico o ve a urgencias si te cuesta respirar, tienes dolor en el pecho, fiebre alta que no baja, no retienes líquidos o empeoras o no mejoras en unos días. En una emergencia, llama al número de emergencias local.",
+  "fr": "Ceci n'est pas un diagnostic. Appelez votre médecin ou allez aux urgences en cas de difficulté à respirer, de douleur thoracique, de forte fièvre qui ne baisse pas, si vous ne gardez pas les liquides, ou si ça empire ou ne s'améliore pas après quelques jours. En cas d'urgence, appelez le numéro d'urgence local.",
+  "hi": "यह निदान नहीं है। साँस लेने में तकलीफ़, सीने में दर्द, तेज़ बुखार जो न उतरे, पानी तक न रुके, या कुछ दिनों बाद हालत बिगड़े या सुधरे नहीं — तो डॉक्टर को फ़ोन करें या अर्जेंट केयर जाएँ। आपात स्थिति में स्थानीय इमरजेंसी नंबर पर कॉल करें।",
+  "it": "Non è una diagnosi. Chiama il medico o vai in guardia medica se hai difficoltà a respirare, dolore al petto, febbre alta che non scende, non riesci a trattenere i liquidi o peggiori o non migliori dopo qualche giorno. In caso di emergenza, chiama il numero di emergenza locale.",
+  "ja": "診断ではありません。息苦しさ、胸の痛み、下がらない高熱、水分がとれない、数日たっても悪化または改善しない場合は、医師に連絡するか救急外来へ。緊急時は地域の緊急番号に電話してください。",
+  "pt": "Não é um diagnóstico. Ligue para seu médico ou vá a um pronto atendimento se tiver dificuldade para respirar, dor no peito, febre alta que não baixa, não conseguir manter líquidos, ou se piorar ou não melhorar após alguns dias. Em emergência, ligue para o número de emergência local.",
+  "zh": "这不是诊断。如果呼吸困难、胸痛、高烧不退、喝水都吐，或几天后加重、不见好，请联系医生或去急诊。紧急情况请拨打当地急救电话。"
+ },
  "Not connected": {
   "de": "Nicht verbunden",
   "es": "Sin conexión",
@@ -8409,6 +8929,16 @@
   "pt": "A transcrição no aparelho não está disponível para este idioma neste telefone agora.",
   "zh": "此手机目前不支持该语言的设备端转写。"
  },
+ "Once the basics are done, your head is clearer for work. A shorter block — it still counts.": {
+  "de": "Wenn das Nötigste erledigt ist, ist der Kopf freier für die Arbeit. Ein kürzerer Block – zählt trotzdem.",
+  "es": "Con lo básico hecho, tienes la mente más clara para trabajar. Un bloque más corto también cuenta.",
+  "fr": "Une fois l'essentiel fait, l'esprit est plus clair pour travailler. Un bloc plus court, ça compte quand même.",
+  "hi": "बुनियादी काम होने के बाद काम के लिए दिमाग़ साफ़ रहता है। छोटा हिस्सा भी गिना जाता है।",
+  "it": "Fatte le cose base, la testa è più lucida per lavorare. Un blocco più breve conta comunque.",
+  "ja": "基本のことを済ませると、仕事に集中しやすくなります。短めでも十分です。",
+  "pt": "Com o básico feito, a cabeça fica mais leve para trabalhar. Um bloco menor ainda conta.",
+  "zh": "基本的事做完，脑子更清楚地工作。时间短一点也算数。"
+ },
  "One face, clearly visible": {
   "de": "Ein Gesicht, klar sichtbar",
   "es": "Una cara, bien visible",
@@ -8439,6 +8969,16 @@
   "pt": "Um link ou texto por linha — um QR cada",
   "zh": "每行一个链接或文本——各生成一个二维码"
  },
+ "One more thing done.": {
+  "de": "Wieder eine Sache erledigt.",
+  "es": "Una cosa más hecha.",
+  "fr": "Une chose de plus de faite.",
+  "hi": "एक और काम पूरा।",
+  "it": "Un'altra cosa fatta.",
+  "ja": "またひとつ完了。",
+  "pt": "Mais uma coisa feita.",
+  "zh": "又完成一件事。"
+ },
  "One of those files has no sound Tenzy can read.": {
   "de": "Eine dieser Dateien hat keinen Ton, den Tenzy lesen kann.",
   "es": "Uno de esos archivos no tiene sonido que Tenzy pueda leer.",
@@ -8468,6 +9008,16 @@
   "ja": "それぞれワンタップ。データが端末外に出ることはありません。",
   "pt": "Um toque cada. Nada sai do teu telemóvel.",
   "zh": "每个只需一下点按。所有内容都不离开你的手机。"
+ },
+ "One trip, at a time stores are open and calm.": {
+  "de": "Ein Weg, zu einer Zeit, in der die Läden offen und ruhig sind.",
+  "es": "Un solo viaje, cuando las tiendas están abiertas y tranquilas.",
+  "fr": "Un seul trajet, quand les magasins sont ouverts et calmes.",
+  "hi": "एक ही बार, जब दुकानें खुली और शांत हों।",
+  "it": "Un solo giro, quando i negozi sono aperti e tranquilli.",
+  "ja": "お店が開いていて空いている時間に1回で。",
+  "pt": "Uma viagem só, quando as lojas estão abertas e tranquilas.",
+  "zh": "一趟出门，挑商店营业且人少的时候。"
  },
  "One-time, on your phone. You can search what's ready now — next time it's instant.": {
   "de": "Einmalig, auf deinem Handy. Du kannst durchsuchen, was schon fertig ist — beim nächsten Mal ist es sofort da.",
@@ -8619,6 +9169,16 @@
   "pt": "Abrir digitalizador",
   "zh": "打开扫描器"
  },
+ "Open the curtains — let light in": {
+  "de": "Vorhänge auf – Licht reinlassen",
+  "es": "Abre las cortinas: deja entrar la luz",
+  "fr": "Ouvrez les rideaux — laissez entrer la lumière",
+  "hi": "पर्दे खोलें — रोशनी आने दें",
+  "it": "Apri le tende: fai entrare la luce",
+  "ja": "カーテンを開けて光を入れる",
+  "pt": "Abra as cortinas — deixe a luz entrar",
+  "zh": "拉开窗帘，让光进来"
+ },
  "Opens the share sheet — pick Contacts to save, or send the card on.": {
   "de": "Öffnet das Teilen-Menü — wähle Kontakte zum Speichern oder sende die Karte weiter.",
   "es": "Abre el menú de compartir: elige Contactos para guardar, o envía la tarjeta.",
@@ -8718,6 +9278,16 @@
   "ja": "PRO",
   "pt": "PRO",
   "zh": "PRO"
+ },
+ "Pacing yourself is how the whole list gets done.": {
+  "de": "Mit deinem Tempo schaffst du die ganze Liste.",
+  "es": "Ir a tu ritmo es como se termina toda la lista.",
+  "fr": "Avancer à votre rythme, c'est ainsi que toute la liste se fait.",
+  "hi": "अपनी रफ़्तार से चलना ही पूरी सूची पूरी करने का तरीका है।",
+  "it": "Andare al tuo ritmo è il modo per finire tutta la lista.",
+  "ja": "ペースを守ることが、全部やり切るコツです。",
+  "pt": "Ir no seu ritmo é como a lista toda fica pronta.",
+  "zh": "按自己的节奏来，才能做完整张清单。"
  },
  "Packed": {
   "de": "Gepackt",
@@ -9049,6 +9619,16 @@
   "pt": "Telefone",
   "zh": "电话"
  },
+ "Phone face-down, start a focus timer": {
+  "de": "Handy umdrehen, Fokus-Timer starten",
+  "es": "Teléfono boca abajo y pon un temporizador de concentración",
+  "fr": "Téléphone retourné, lancez un minuteur de concentration",
+  "hi": "फ़ोन उल्टा रखें, फ़ोकस टाइमर शुरू करें",
+  "it": "Telefono a faccia in giù, avvia un timer di concentrazione",
+  "ja": "スマホを伏せて集中タイマーを開始",
+  "pt": "Celular virado para baixo, comece um timer de foco",
+  "zh": "手机扣过来，开始专注计时"
+ },
  "Phone mics aren't lab meters — treat it as ±5 dB. If you have a real meter, set the offset so they match.": {
   "de": "Handy-Mikrofone sind keine Labormessgeräte — rechne mit ±5 dB. Hast du ein echtes Messgerät, stelle den Versatz so ein, dass sie übereinstimmen.",
   "es": "Los micrófonos del móvil no son medidores de laboratorio: considéralo ±5 dB. Si tienes un medidor real, ajusta el desfase para que coincidan.",
@@ -9368,6 +9948,16 @@
   "ja": "品質を選ぶ",
   "pt": "Escolher qualidade",
   "zh": "选择质量"
+ },
+ "Pick the ONE thing that matters most today": {
+  "de": "Wähl die EINE Sache, die heute am wichtigsten ist",
+  "es": "Elige la ÚNICA cosa que más importa hoy",
+  "fr": "Choisissez LA chose qui compte le plus aujourd'hui",
+  "hi": "आज की सबसे ज़रूरी एक चीज़ चुनें",
+  "it": "Scegli L'UNICA cosa più importante di oggi",
+  "ja": "今日いちばん大事なことを1つ選ぶ",
+  "pt": "Escolha a ÚNICA coisa mais importante hoje",
+  "zh": "选出今天最重要的那一件事"
  },
  "Pick two different languages to translate.": {
   "de": "Wähle zwei verschiedene Sprachen zum Übersetzen.",
@@ -9919,6 +10509,26 @@
   "pt": "Colocar no ecrã principal",
   "zh": "添加到主屏幕"
  },
+ "Put the horizon on a line, not across the middle.": {
+  "de": "Setz den Horizont auf eine Linie, nicht in die Mitte.",
+  "es": "Pon el horizonte en una línea, no en el centro.",
+  "fr": "Placez l'horizon sur une ligne, pas au milieu.",
+  "hi": "क्षितिज को बीच में नहीं, किसी रेखा पर रखें।",
+  "it": "Metti l'orizzonte su una linea, non al centro.",
+  "ja": "水平線は真ん中ではなく線の上に。",
+  "pt": "Coloque o horizonte numa linha, não no meio.",
+  "zh": "把地平线放在线上，别在正中间。"
+ },
+ "Put the horizon on the lower line for more sky.": {
+  "de": "Setz den Horizont auf die untere Linie – für mehr Himmel.",
+  "es": "Pon el horizonte en la línea inferior para más cielo.",
+  "fr": "Placez l'horizon sur la ligne du bas pour plus de ciel.",
+  "hi": "ज़्यादा आसमान के लिए क्षितिज को नीचे वाली रेखा पर रखें।",
+  "it": "Metti l'orizzonte sulla linea bassa per più cielo.",
+  "ja": "空を広く入れるなら、水平線を下の線に。",
+  "pt": "Coloque o horizonte na linha de baixo para mais céu.",
+  "zh": "把地平线放在下方线上，天空更多。"
+ },
  "QR & Wi‑Fi": {
   "de": "QR & WLAN",
   "es": "QR y Wi-Fi",
@@ -9978,6 +10588,16 @@
   "ja": "さっと軽く",
   "pt": "Rápido e leve",
   "zh": "简单快速"
+ },
+ "Quick win between bigger tasks.": {
+  "de": "Schneller Erfolg zwischen größeren Aufgaben.",
+  "es": "Logro rápido entre tareas grandes.",
+  "fr": "Petite victoire entre deux grosses tâches.",
+  "hi": "बड़े कामों के बीच एक झटपट जीत।",
+  "it": "Piccola vittoria tra compiti più grandi.",
+  "ja": "大きな用事の合間の、すぐ終わる一つ。",
+  "pt": "Vitória rápida entre tarefas maiores.",
+  "zh": "大任务之间的小胜利。"
  },
  "Rainbow": {
   "de": "Regenbogen",
@@ -10379,6 +10999,16 @@
   "pt": "Resultados recentes",
   "zh": "最近的结果"
  },
+ "Recharged for the next one.": {
+  "de": "Aufgeladen für den nächsten Schritt.",
+  "es": "Con energía para el siguiente.",
+  "fr": "Rechargé pour la suite.",
+  "hi": "अगले काम के लिए फिर से ऊर्जा।",
+  "it": "Ricaricato per il prossimo.",
+  "ja": "次に向けて充電完了。",
+  "pt": "Recarregado para o próximo.",
+  "zh": "为下一件事充好电。"
+ },
  "Recognises everyday objects, plants, animals and products on-device — the photo never leaves your phone. For a web lookup it opens your browser.": {
   "de": "Erkennt Alltagsgegenstände, Pflanzen, Tiere und Produkte auf dem Gerät — das Foto verlässt dein Handy nie. Für eine Websuche öffnet es deinen Browser.",
   "es": "Reconoce objetos cotidianos, plantas, animales y productos en el dispositivo — la foto nunca sale de tu teléfono. Para una búsqueda web, abre tu navegador.",
@@ -10679,6 +11309,26 @@
   "pt": "Descanso",
   "zh": "休息"
  },
+ "Rest the phone on something still — this one takes a few seconds.": {
+  "de": "Leg das Handy auf etwas Ruhiges – das dauert ein paar Sekunden.",
+  "es": "Apoya el teléfono en algo firme: tarda unos segundos.",
+  "fr": "Posez le téléphone sur un support stable — cela prend quelques secondes.",
+  "hi": "फ़ोन को किसी स्थिर चीज़ पर टिकाएँ — इसमें कुछ सेकंड लगते हैं।",
+  "it": "Appoggia il telefono su qualcosa di fermo: ci vuole qualche secondo.",
+  "ja": "スマホを安定した所に置いて — 数秒かかります。",
+  "pt": "Apoie o celular em algo firme — leva alguns segundos.",
+  "zh": "把手机放稳——这张需要几秒钟。"
+ },
+ "Rest, water and something light to eat": {
+  "de": "Ausruhen, trinken und etwas Leichtes essen",
+  "es": "Descansar, agua y algo ligero de comer",
+  "fr": "Repos, eau et quelque chose de léger à manger",
+  "hi": "आराम, पानी और कुछ हल्का खाना",
+  "it": "Riposo, acqua e qualcosa di leggero",
+  "ja": "休んで、水分と軽い食事を",
+  "pt": "Descansar, água e algo leve para comer",
+  "zh": "休息、喝水、吃点清淡的"
+ },
  "Restore purchases": {
   "de": "Käufe wiederherstellen",
   "es": "Restaurar compras",
@@ -10748,6 +11398,16 @@
   "ja": "右",
   "pt": "Direita",
   "zh": "右"
+ },
+ "Right after the last stop — one trip instead of two.": {
+  "de": "Direkt nach dem letzten Halt – ein Weg statt zwei.",
+  "es": "Justo después de la última parada: un viaje en vez de dos.",
+  "fr": "Juste après le dernier arrêt — un trajet au lieu de deux.",
+  "hi": "पिछले पड़ाव के ठीक बाद — दो की जगह एक ही बार जाना।",
+  "it": "Subito dopo l'ultima tappa: un viaggio invece di due.",
+  "ja": "前の用事のすぐ後に。2回ではなく1回の外出で。",
+  "pt": "Logo depois da última parada — uma viagem em vez de duas.",
+  "zh": "紧接上一站——一趟出门代替两趟。"
  },
  "Robot": {
   "de": "Roboter",
@@ -11649,6 +12309,16 @@
   "pt": "Defina título, artista, álbum e capa de uma música.",
   "zh": "设置歌曲的标题、艺人、专辑和封面。"
  },
+ "Set a timer — stop when it rings": {
+  "de": "Timer stellen – aufhören, wenn er klingelt",
+  "es": "Pon un temporizador: para cuando suene",
+  "fr": "Mettez un minuteur — arrêtez quand il sonne",
+  "hi": "टाइमर लगाएँ — बजने पर रुक जाएँ",
+  "it": "Imposta un timer: fermati quando suona",
+  "ja": "タイマーをセット。鳴ったら終わり",
+  "pt": "Ponha um timer — pare quando tocar",
+  "zh": "定个计时器——响了就停"
+ },
  "Set baseline here": {
   "de": "Basiswert hier setzen",
   "es": "Fijar referencia aquí",
@@ -11909,6 +12579,16 @@
   "pt": "Nítida e em foco",
   "zh": "清晰对焦"
  },
+ "Sharp, even exposure so every word reads.": {
+  "de": "Scharf und gleichmäßig belichtet, damit jedes Wort lesbar ist.",
+  "es": "Nítida y con exposición uniforme para que se lea cada palabra.",
+  "fr": "Net et exposé uniformément pour que chaque mot soit lisible.",
+  "hi": "साफ़ और एक-सा एक्सपोज़र, ताकि हर शब्द पढ़ा जा सके।",
+  "it": "Nitido ed esposto in modo uniforme perché ogni parola si legga.",
+  "ja": "くっきり均一な露出で、どの文字も読めます。",
+  "pt": "Nítida e com exposição uniforme para ler cada palavra.",
+  "zh": "清晰、曝光均匀，每个字都看得清。"
+ },
  "Sharpen text": {
   "de": "Text schärfen",
   "es": "Realzar texto",
@@ -11938,6 +12618,16 @@
   "ja": "甲殻類・貝類",
   "pt": "Frutos do mar",
   "zh": "贝类海鲜"
+ },
+ "Short rest": {
+  "de": "Kurze Pause",
+  "es": "Descanso corto",
+  "fr": "Courte pause",
+  "hi": "छोटा आराम",
+  "it": "Breve pausa",
+  "ja": "ひと休み",
+  "pt": "Pausa curta",
+  "zh": "短暂休息"
  },
  "Short version: everything you do in Tenzy stays on this iPhone.": {
   "de": "Kurz gesagt: Alles, was du in Tenzy tust, bleibt auf diesem iPhone.",
@@ -12069,6 +12759,16 @@
   "pt": "Obturador",
   "zh": "快门"
  },
+ "Shutter never slower than 1/500 s — motion freezes.": {
+  "de": "Verschlusszeit nie länger als 1/500 s – Bewegung wird eingefroren.",
+  "es": "Obturación nunca más lenta de 1/500 s: el movimiento se congela.",
+  "fr": "Obturation jamais plus lente que 1/500 s — le mouvement est figé.",
+  "hi": "शटर कभी 1/500 s से धीमा नहीं — हलचल थम जाती है।",
+  "it": "Otturatore mai più lento di 1/500 s: il movimento si congela.",
+  "ja": "シャッターは常に1/500秒以上。動きを止めます。",
+  "pt": "Obturador nunca mais lento que 1/500 s — o movimento congela.",
+  "zh": "快门不慢于 1/500 秒——定格动作。"
+ },
  "Side hero": {
   "de": "Hauptbild seitlich",
   "es": "Destacada lateral",
@@ -12128,6 +12828,26 @@
   "ja": "シルエット",
   "pt": "Silhueta",
   "zh": "剪影"
+ },
+ "Sit or lie down for a few minutes": {
+  "de": "Ein paar Minuten sitzen oder liegen",
+  "es": "Siéntate o túmbate unos minutos",
+  "fr": "Asseyez-vous ou allongez-vous quelques minutes",
+  "hi": "कुछ मिनट बैठें या लेटें",
+  "it": "Siediti o sdraiati qualche minuto",
+  "ja": "数分座るか横になる",
+  "pt": "Sente ou deite por alguns minutos",
+  "zh": "坐下或躺几分钟"
+ },
+ "Sit up and put your feet on the floor": {
+  "de": "Aufsetzen und Füße auf den Boden",
+  "es": "Siéntate y pon los pies en el suelo",
+  "fr": "Asseyez-vous et posez les pieds par terre",
+  "hi": "उठकर बैठें और पैर ज़मीन पर रखें",
+  "it": "Mettiti seduto e appoggia i piedi a terra",
+  "ja": "起き上がって足を床に",
+  "pt": "Sente e coloque os pés no chão",
+  "zh": "坐起来，双脚着地"
  },
  "Size": {
   "de": "Größe",
@@ -12208,6 +12928,16 @@
   "ja": "スライド",
   "pt": "Deslizar",
   "zh": "滑动"
+ },
+ "Slightly darker exposure to keep detail in the sky.": {
+  "de": "Etwas dunkler belichtet, damit der Himmel Details behält.",
+  "es": "Exposición algo más oscura para conservar el detalle del cielo.",
+  "fr": "Exposition un peu plus sombre pour garder les détails du ciel.",
+  "hi": "थोड़ा गहरा एक्सपोज़र, ताकि आसमान का ब्योरा बना रहे।",
+  "it": "Esposizione un po' più scura per conservare i dettagli del cielo.",
+  "ja": "少し暗めの露出で、空のディテールを残します。",
+  "pt": "Exposição um pouco mais escura para manter detalhes no céu.",
+  "zh": "曝光略暗，保留天空细节。"
  },
  "Slow": {
   "de": "Langsam",
@@ -12408,6 +13138,16 @@
   "ja": "一部の写真を開けませんでした。",
   "pt": "Algumas fotos não puderam ser abertas.",
   "zh": "部分照片无法打开。"
+ },
+ "Something light — toast, fruit, soup": {
+  "de": "Etwas Leichtes – Toast, Obst, Suppe",
+  "es": "Algo ligero: tostada, fruta, sopa",
+  "fr": "Quelque chose de léger — toast, fruit, soupe",
+  "hi": "कुछ हल्का — टोस्ट, फल, सूप",
+  "it": "Qualcosa di leggero: toast, frutta, zuppa",
+  "ja": "軽いもの — トースト、果物、スープ",
+  "pt": "Algo leve — torrada, fruta, sopa",
+  "zh": "清淡点——吐司、水果、汤"
  },
  "Song Info & Cover": {
   "de": "Song-Infos & Cover",
@@ -12649,6 +13389,16 @@
   "pt": "Deteta números de tarifa premium e com padrão de falsificação; o marcador do teu telemóvel também verifica a sua própria lista de spam.",
   "zh": "识别高费率和仿冒模式的号码；你手机的拨号器也会对照自己的垃圾名单。"
  },
+ "Stand up and stretch your arms up once": {
+  "de": "Aufstehen und die Arme einmal hochstrecken",
+  "es": "Ponte de pie y estira los brazos una vez",
+  "fr": "Levez-vous et étirez les bras une fois",
+  "hi": "खड़े होकर एक बार हाथ ऊपर फैलाएँ",
+  "it": "Alzati e allunga le braccia una volta",
+  "ja": "立ち上がって一度腕を上に伸ばす",
+  "pt": "Levante e estique os braços uma vez",
+  "zh": "站起来，向上伸展一次手臂"
+ },
  "Start": {
   "de": "Start",
   "es": "Iniciar",
@@ -12718,6 +13468,26 @@
   "ja": "別のものから始める",
   "pt": "Começar com outra coisa",
   "zh": "换个方式开始"
+ },
+ "Start with the spot you see most": {
+  "de": "Fang mit der Stelle an, die du am häufigsten siehst",
+  "es": "Empieza por el rincón que más ves",
+  "fr": "Commencez par l'endroit que vous voyez le plus",
+  "hi": "उस जगह से शुरू करें जो सबसे ज़्यादा दिखती है",
+  "it": "Inizia dal punto che vedi di più",
+  "ja": "いちばん目に入る場所から",
+  "pt": "Comece pelo canto que você mais vê",
+  "zh": "从最常看到的地方开始"
+ },
+ "Step back a little — you're very close to their face.": {
+  "de": "Geh etwas zurück – du bist sehr nah am Gesicht.",
+  "es": "Retrocede un poco: estás muy cerca de su cara.",
+  "fr": "Reculez un peu — vous êtes très près du visage.",
+  "hi": "थोड़ा पीछे हटें — आप चेहरे के बहुत पास हैं।",
+  "it": "Fai un passo indietro: sei molto vicino al viso.",
+  "ja": "少し下がって — 顔に近すぎます。",
+  "pt": "Afaste-se um pouco — você está muito perto do rosto.",
+  "zh": "后退一点——离脸太近了。"
  },
  "Stereo · 128 kbps — music sounds like the original": {
   "de": "Stereo · 128 kbps – Musik klingt wie das Original",
@@ -12789,6 +13559,16 @@
   "pt": "Parar",
   "zh": "停止"
  },
+ "Stop at a natural break and note where you left off": {
+  "de": "An einer passenden Stelle aufhören und notieren, wo du warst",
+  "es": "Para en una pausa natural y anota dónde lo dejaste",
+  "fr": "Arrêtez-vous à une pause naturelle et notez où vous en êtes",
+  "hi": "सही ठहराव पर रुकें और लिख लें कि कहाँ छोड़ा",
+  "it": "Fermati a una pausa naturale e annota dove sei arrivato",
+  "ja": "区切りのいいところで止めて、続きをメモ",
+  "pt": "Pare num intervalo natural e anote onde parou",
+  "zh": "在自然的停顿处停下，记下做到哪里"
+ },
  "Stop reading": {
   "de": "Vorlesen stoppen",
   "es": "Dejar de leer",
@@ -12848,6 +13628,16 @@
   "ja": "強い逆光",
   "pt": "Luz forte atrás",
   "zh": "强烈逆光"
+ },
+ "Strong light behind — I've lifted the exposure. Moving so the light is beside you helps too.": {
+  "de": "Starkes Gegenlicht – ich habe die Belichtung angehoben. Seitliches Licht hilft auch.",
+  "es": "Luz fuerte detrás: he subido la exposición. Ponerte con la luz de lado también ayuda.",
+  "fr": "Forte lumière derrière — j'ai relevé l'exposition. Avoir la lumière de côté aide aussi.",
+  "hi": "पीछे तेज़ रोशनी — मैंने एक्सपोज़र बढ़ाया है। रोशनी को बगल में रखना भी मदद करता है।",
+  "it": "Luce forte dietro: ho alzato l'esposizione. Anche mettere la luce di lato aiuta.",
+  "ja": "強い逆光 — 露出を上げました。光を横に受けるとさらに良くなります。",
+  "pt": "Luz forte atrás — aumentei a exposição. Deixar a luz de lado também ajuda.",
+  "zh": "强烈逆光——已提高曝光。让光从侧面来也有帮助。"
  },
  "Strong sun — sunglasses and sunscreen.": {
   "de": "Starke Sonne – Sonnenbrille und Sonnencreme.",
@@ -13299,6 +14089,16 @@
   "pt": "Toca no vídeo para reproduzir ou pausar",
   "zh": "点按视频以播放或暂停"
  },
+ "Tap their face to lock focus, then shoot.": {
+  "de": "Tippe aufs Gesicht, um den Fokus zu fixieren, dann auslösen.",
+  "es": "Toca su cara para fijar el enfoque y dispara.",
+  "fr": "Touchez le visage pour verrouiller la mise au point, puis déclenchez.",
+  "hi": "फ़ोकस लॉक करने के लिए चेहरे पर टैप करें, फिर फ़ोटो लें।",
+  "it": "Tocca il viso per bloccare la messa a fuoco, poi scatta.",
+  "ja": "顔をタップしてピントを固定してから撮影。",
+  "pt": "Toque no rosto para travar o foco e fotografe.",
+  "zh": "点按面部锁定对焦，然后拍摄。"
+ },
  "Tap to go Pro — unlimited": {
   "de": "Für Pro tippen — unbegrenzt",
   "es": "Toca para Pro — ilimitado",
@@ -13669,6 +14469,16 @@
   "pt": "É só uma verificação do endereço — não digite senhas nem dados de cartão se não confiar no site.",
   "zh": "这只是检查地址——除非信任该网站，否则不要输入密码或银行卡信息。"
  },
+ "That's off your mind.": {
+  "de": "Das ist aus dem Kopf.",
+  "es": "Eso ya no te preocupa.",
+  "fr": "C'est sorti de votre tête.",
+  "hi": "वह दिमाग़ से उतर गया।",
+  "it": "Non ci devi più pensare.",
+  "ja": "気がかりがひとつ消えました。",
+  "pt": "Isso saiu da sua cabeça.",
+  "zh": "这件事不用再想了。"
+ },
  "That's too much for one zip on a phone (keep it under 2 GB).": {
   "de": "Das ist zu viel für ein Zip auf dem Telefon (unter 2 GB bleiben).",
   "es": "Es demasiado para un zip en el teléfono (menos de 2 GB).",
@@ -13678,6 +14488,16 @@
   "ja": "スマホで1つのzipには大きすぎます（2GB未満に）。",
   "pt": "É demais para um zip no telefone (fique abaixo de 2 GB).",
   "zh": "手机上一个zip放不下这么多（请控制在2GB以内）。"
+ },
+ "The camera's own best automatic settings.": {
+  "de": "Die besten Automatik-Einstellungen der Kamera.",
+  "es": "Los mejores ajustes automáticos de la cámara.",
+  "fr": "Les meilleurs réglages automatiques de l'appareil.",
+  "hi": "कैमरे की अपनी सबसे अच्छी ऑटो सेटिंग।",
+  "it": "Le migliori impostazioni automatiche della fotocamera.",
+  "ja": "カメラ本来の最適な自動設定。",
+  "pt": "As melhores configurações automáticas da câmera.",
+  "zh": "相机自身的最佳自动设置。"
  },
  "The code is generated on your phone. Wi-Fi codes carry the password in plain text — share them only with people you'd give the password to.": {
   "de": "Der Code wird auf deinem Handy erzeugt. WLAN-Codes enthalten das Passwort im Klartext — teile sie nur mit Leuten, denen du das Passwort geben würdest.",
@@ -13759,6 +14579,16 @@
   "pt": "Da primeira vez que usas um idioma, o telemóvel pode pedir para o transferir.",
   "zh": "首次使用某语言时，手机可能会要求下载它。"
  },
+ "The hardest part is the first move — this one is tiny on purpose.": {
+  "de": "Das Schwerste ist der erste Schritt – dieser ist absichtlich winzig.",
+  "es": "Lo más difícil es el primer paso: este es pequeño a propósito.",
+  "fr": "Le plus dur, c'est le premier pas — celui-ci est volontairement minuscule.",
+  "hi": "सबसे मुश्किल पहला कदम है — इसलिए यह जानबूझकर बहुत छोटा है।",
+  "it": "La parte più difficile è il primo passo: questo è piccolissimo apposta.",
+  "ja": "いちばん大変なのは最初の一歩。だからわざと小さくしています。",
+  "pt": "O mais difícil é o primeiro passo — este é pequeno de propósito.",
+  "zh": "最难的是第一步——所以这一步特意很小。"
+ },
  "The link never carries your email addresses, phone numbers, reminders or a PDF password.": {
   "de": "Der Link enthält nie deine E-Mail-Adressen, Telefonnummern, Erinnerungen oder ein PDF-Passwort.",
   "es": "El enlace nunca lleva tus direcciones de correo, teléfonos, recordatorios ni la contraseña de un PDF.",
@@ -13839,6 +14669,16 @@
   "pt": "O início",
   "zh": "开头"
  },
+ "The sun is very bright — I've darkened it to keep the colours.": {
+  "de": "Die Sonne ist sehr hell – ich habe abgedunkelt, damit die Farben bleiben.",
+  "es": "El sol es muy brillante: lo he oscurecido para conservar los colores.",
+  "fr": "Le soleil est très vif — j'ai assombri pour garder les couleurs.",
+  "hi": "सूरज बहुत तेज़ है — रंग बचाने के लिए मैंने इसे गहरा किया है।",
+  "it": "Il sole è molto forte: ho scurito per mantenere i colori.",
+  "ja": "太陽がとても明るいので、色を残すために暗くしました。",
+  "pt": "O sol está muito forte — escureci para manter as cores.",
+  "zh": "太阳很亮——我已压暗以保留色彩。"
+ },
  "The torch is the real camera flash. Patterns and Morse run on it; without a flash unit they run on the screen light.": {
   "de": "Die Taschenlampe ist der echte Kamerablitz. Muster und Morse laufen darüber; ohne Blitzeinheit laufen sie über das Bildschirmlicht.",
   "es": "La linterna es el flash real de la cámara. Los patrones y el morse funcionan en él; sin unidad de flash, usan la luz de la pantalla.",
@@ -13848,6 +14688,16 @@
   "ja": "トーチは実際のカメラフラッシュです。パターンやモールスはそれで動作し、フラッシュがない場合は画面ライトで動作します。",
   "pt": "A lanterna é o flash real da câmara. Os padrões e o morse correm nele; sem unidade de flash, usam a luz do ecrã.",
   "zh": "手电筒是真正的相机闪光灯。图案和摩尔斯在它上面运行；没有闪光灯单元时则用屏幕补光。"
+ },
+ "The work weight is lighter, and you can stop thinking about it.": {
+  "de": "Die Arbeit wiegt weniger, und du kannst aufhören, daran zu denken.",
+  "es": "El peso del trabajo es menor y puedes dejar de pensar en él.",
+  "fr": "Le poids du travail est plus léger, vous pouvez arrêter d'y penser.",
+  "hi": "काम का बोझ हल्का हुआ, अब इसके बारे में सोचना बंद कर सकते हैं।",
+  "it": "Il peso del lavoro è più leggero e puoi smettere di pensarci.",
+  "ja": "仕事の重荷が軽くなり、もう考えなくて大丈夫。",
+  "pt": "O peso do trabalho ficou menor e você pode parar de pensar nisso.",
+  "zh": "工作的压力轻了，可以不再惦记了。"
  },
  "The zip didn't check out — try again.": {
   "de": "Die Zip hat die Prüfung nicht bestanden – versuch es erneut.",
@@ -14139,6 +14989,16 @@
   "pt": "Ameaça você com problemas legais",
   "zh": "以法律麻烦威胁你"
  },
+ "Three slow breaths": {
+  "de": "Drei langsame Atemzüge",
+  "es": "Tres respiraciones lentas",
+  "fr": "Trois respirations lentes",
+  "hi": "तीन धीमी साँसें",
+  "it": "Tre respiri lenti",
+  "ja": "ゆっくり3回深呼吸",
+  "pt": "Três respirações lentas",
+  "zh": "三次慢呼吸"
+ },
  "Tidy up": {
   "de": "Aufräumen",
   "es": "Ordenar",
@@ -14159,6 +15019,16 @@
   "pt": "Arrumar com IA no dispositivo",
   "zh": "用设备端 AI 整理"
  },
+ "Tight on time, so it's ordered for speed — the must-dos first.": {
+  "de": "Wenig Zeit – darum nach Tempo sortiert, das Wichtigste zuerst.",
+  "es": "Vas justo de tiempo, así que está ordenado por rapidez: lo imprescindible primero.",
+  "fr": "Peu de temps, donc ordonné pour aller vite — l'indispensable d'abord.",
+  "hi": "समय कम है, इसलिए तेज़ी के हिसाब से क्रम — ज़रूरी काम पहले।",
+  "it": "Poco tempo, quindi ordinato per velocità: prima l'indispensabile.",
+  "ja": "時間がないので速さ優先の順番。必須のことから。",
+  "pt": "Pouco tempo, então em ordem de rapidez — o essencial primeiro.",
+  "zh": "时间紧，所以按速度排序——必须做的先来。"
+ },
  "Tile": {
   "de": "Kachel",
   "es": "Mosaico",
@@ -14168,6 +15038,26 @@
   "ja": "タイル",
   "pt": "Ladrilho",
   "zh": "方块"
+ },
+ "Tilt left a little — the horizon is crooked.": {
+  "de": "Etwas nach links neigen – der Horizont ist schief.",
+  "es": "Inclina un poco a la izquierda: el horizonte está torcido.",
+  "fr": "Inclinez un peu à gauche — l'horizon penche.",
+  "hi": "थोड़ा बाईं ओर झुकाएँ — क्षितिज टेढ़ा है।",
+  "it": "Inclina un po' a sinistra: l'orizzonte è storto.",
+  "ja": "少し左に傾けて — 水平線が曲がっています。",
+  "pt": "Incline um pouco para a esquerda — o horizonte está torto.",
+  "zh": "向左稍微倾斜——地平线歪了。"
+ },
+ "Tilt right a little — the horizon is crooked.": {
+  "de": "Etwas nach rechts neigen – der Horizont ist schief.",
+  "es": "Inclina un poco a la derecha: el horizonte está torcido.",
+  "fr": "Inclinez un peu à droite — l'horizon penche.",
+  "hi": "थोड़ा दाईं ओर झुकाएँ — क्षितिज टेढ़ा है।",
+  "it": "Inclina un po' a destra: l'orizzonte è storto.",
+  "ja": "少し右に傾けて — 水平線が曲がっています。",
+  "pt": "Incline um pouco para a direita — o horizonte está torto.",
+  "zh": "向右稍微倾斜——地平线歪了。"
  },
  "Time for": {
   "de": "Zeit für",
@@ -14499,6 +15389,16 @@
   "pt": "Tentar outro estilo",
   "zh": "换个风格"
  },
+ "Try straight from above, or a 45° angle near a window.": {
+  "de": "Probier's direkt von oben oder im 45°-Winkel am Fenster.",
+  "es": "Prueba desde arriba, o a 45° cerca de una ventana.",
+  "fr": "Essayez du dessus, ou à 45° près d'une fenêtre.",
+  "hi": "सीधे ऊपर से, या खिड़की के पास 45° के कोण से आज़माएँ।",
+  "it": "Prova dall'alto, o a 45° vicino a una finestra.",
+  "ja": "真上から、または窓辺で45°の角度から。",
+  "pt": "Tente de cima, ou num ângulo de 45° perto de uma janela.",
+  "zh": "试试正上方，或在窗边 45° 角拍。"
+ },
  "Try “photo”, “pdf”, “scan”, or “ai”.": {
   "de": "Versuche „photo“, „pdf“, „scan“ oder „ai“.",
   "es": "Prueba «photo», «pdf», «scan» o «ai».",
@@ -14638,6 +15538,16 @@
   "ja": "発言",
   "pt": "Falas",
   "zh": "发言段落"
+ },
+ "Two-minute start": {
+  "de": "Zwei-Minuten-Start",
+  "es": "Inicio de dos minutos",
+  "fr": "Démarrage en deux minutes",
+  "hi": "दो मिनट की शुरुआत",
+  "it": "Partenza in due minuti",
+  "ja": "2分間スタート",
+  "pt": "Começo de dois minutos",
+  "zh": "两分钟开始"
  },
  "Type a message to flash…": {
   "de": "Nachricht zum Blinken eingeben…",
@@ -15149,6 +16059,16 @@
   "pt": "Quente",
   "zh": "暖色"
  },
+ "Warm water, not hot, if you're unwell": {
+  "de": "Warmes, nicht heißes Wasser, wenn du krank bist",
+  "es": "Agua tibia, no caliente, si no te encuentras bien",
+  "fr": "De l'eau tiède, pas chaude, si vous n'êtes pas bien",
+  "hi": "तबीयत ठीक न हो तो गुनगुना पानी, गरम नहीं",
+  "it": "Acqua tiepida, non calda, se non stai bene",
+  "ja": "体調が悪いなら熱すぎないお湯で",
+  "pt": "Água morna, não quente, se não estiver bem",
+  "zh": "身体不适时用温水，别太烫"
+ },
  "Warm — T-shirt weather.": {
   "de": "Warm – T-Shirt-Wetter.",
   "es": "Cálido: tiempo de camiseta.",
@@ -15158,6 +16078,16 @@
   "ja": "暖かい — Tシャツで大丈夫。",
   "pt": "Quente — clima de camiseta.",
   "zh": "暖和——穿 T 恤就行。"
+ },
+ "Warmer colour and a slightly darker exposure so the sky keeps its glow.": {
+  "de": "Wärmere Farben und etwas dunkler belichtet, damit der Himmel leuchtet.",
+  "es": "Color más cálido y exposición algo más oscura para que el cielo conserve su brillo.",
+  "fr": "Couleurs plus chaudes et exposition un peu plus sombre pour garder l'éclat du ciel.",
+  "hi": "गर्म रंग और थोड़ा गहरा एक्सपोज़र, ताकि आसमान की चमक बनी रहे।",
+  "it": "Colori più caldi ed esposizione un po' più scura per mantenere il bagliore del cielo.",
+  "ja": "暖かい色味と少し暗めの露出で、空の輝きを残します。",
+  "pt": "Cor mais quente e exposição um pouco mais escura para o céu manter o brilho.",
+  "zh": "色调更暖、曝光略暗，保留天空的光辉。"
  },
  "Warranty": {
   "de": "Garantie",
@@ -15399,6 +16329,16 @@
   "pt": "Que parte",
   "zh": "哪一部分"
  },
+ "While you're out: the pharmacy aisle for anything you need": {
+  "de": "Unterwegs: in der Apothekenabteilung holen, was du brauchst",
+  "es": "Ya que sales: el pasillo de farmacia para lo que necesites",
+  "fr": "En passant : le rayon pharmacie pour ce qu'il vous faut",
+  "hi": "बाहर जाते समय: फ़ार्मेसी वाले हिस्से से जो चाहिए",
+  "it": "Già che sei fuori: il reparto farmacia per ciò che ti serve",
+  "ja": "ついでに：薬コーナーで必要なものを",
+  "pt": "Aproveitando: o corredor da farmácia para o que precisar",
+  "zh": "顺便去药品区买需要的东西"
+ },
  "White": {
   "de": "Weiß",
   "es": "Blanco",
@@ -15589,6 +16529,16 @@
   "pt": "Você ainda pode preencher: abra Assinar, use «Adicionar texto» para digitar em qualquer lugar e assine.",
   "zh": "仍可填写：打开“签名”，用“添加文字”在页面任意位置输入，再加上签名。"
  },
+ "You don't have to do it all at full speed today. Small steps, rest in between — doing it gently still gets it done.": {
+  "de": "Du musst heute nicht alles mit vollem Tempo machen. Kleine Schritte, Pausen dazwischen – sanft schaffst du es trotzdem.",
+  "es": "Hoy no tienes que hacerlo todo a toda velocidad. Pasos pequeños, descansos entre medias: hacerlo con calma también lo saca adelante.",
+  "fr": "Pas besoin de tout faire à fond aujourd'hui. Petits pas, pauses entre deux — en douceur, ça se fait quand même.",
+  "hi": "आज सब कुछ पूरी रफ़्तार से करना ज़रूरी नहीं। छोटे कदम, बीच में आराम — धीरे करके भी काम पूरा होता है।",
+  "it": "Oggi non devi fare tutto a tutta velocità. Piccoli passi, pause in mezzo: con calma si finisce lo stesso.",
+  "ja": "今日は全力でなくて大丈夫。小さな一歩と休憩をはさんで、ゆっくりでもちゃんと終わります。",
+  "pt": "Você não precisa fazer tudo a toda hoje. Passos pequenos, pausas no meio — com calma também dá conta.",
+  "zh": "今天不必全速前进。小步走，中间休息——慢慢来也能做完。"
+ },
  "You're Pro. Thank you.": {
   "de": "Du bist Pro. Danke.",
   "es": "Eres Pro. Gracias.",
@@ -15608,6 +16558,56 @@
   "ja": "重さ・体積・個数が混在しています — 公平な結果には同じ種類どうしで比べてください。",
   "pt": "Estás a misturar peso, volume e contagem — compara o comparável para um resultado justo.",
   "zh": "你把重量、体积和数量混在一起了 — 要公平比较请拿同类比同类。"
+ },
+ "You're up. That was the hardest step of the day.": {
+  "de": "Du bist auf. Das war der schwerste Schritt des Tages.",
+  "es": "Ya estás arriba. Ese fue el paso más difícil del día.",
+  "fr": "Vous êtes debout. C'était l'étape la plus dure de la journée.",
+  "hi": "आप उठ गए। यह दिन का सबसे मुश्किल कदम था।",
+  "it": "Sei in piedi. Era il passo più difficile della giornata.",
+  "ja": "起きられました。今日いちばん大変な一歩でした。",
+  "pt": "Você levantou. Esse foi o passo mais difícil do dia.",
+  "zh": "你起来了。这是今天最难的一步。"
+ },
+ "You've got what you need to feel better.": {
+  "de": "Du hast, was du brauchst, um dich besser zu fühlen.",
+  "es": "Tienes lo que necesitas para sentirte mejor.",
+  "fr": "Vous avez ce qu'il faut pour aller mieux.",
+  "hi": "बेहतर महसूस करने के लिए जो चाहिए, वह आपके पास है।",
+  "it": "Hai quello che ti serve per stare meglio.",
+  "ja": "元気になるためのものがそろいました。",
+  "pt": "Você tem o que precisa para se sentir melhor.",
+  "zh": "你有了让自己好起来的东西。"
+ },
+ "Your best focus block, with the small stuff out of the way first.": {
+  "de": "Dein bester Fokus-Block, nachdem der Kleinkram erledigt ist.",
+  "es": "Tu mejor bloque de concentración, con lo pequeño ya resuelto.",
+  "fr": "Votre meilleur moment de concentration, une fois les petites choses faites.",
+  "hi": "छोटे काम निपटाकर आपका सबसे अच्छा फ़ोकस समय।",
+  "it": "Il tuo blocco di concentrazione migliore, tolte prima le piccole cose.",
+  "ja": "細かいことを片づけたあとの、最も集中できる時間。",
+  "pt": "Seu melhor bloco de foco, com as coisinhas resolvidas antes.",
+  "zh": "先处理小事，再进入最专注的时段。"
+ },
+ "Your body first — everything after goes easier.": {
+  "de": "Zuerst dein Körper – danach geht alles leichter.",
+  "es": "Primero tu cuerpo: todo lo demás será más fácil.",
+  "fr": "Votre corps d'abord — tout le reste sera plus facile.",
+  "hi": "पहले शरीर — उसके बाद सब आसान होता है।",
+  "it": "Prima il corpo: dopo tutto è più facile.",
+  "ja": "まず体を。あとが楽になります。",
+  "pt": "Seu corpo primeiro — o resto fica mais fácil.",
+  "zh": "先照顾身体——之后都更轻松。"
+ },
+ "Your body's asking for it — everything after goes easier on a little fuel.": {
+  "de": "Dein Körper braucht das – mit etwas Energie geht alles danach leichter.",
+  "es": "Tu cuerpo lo pide: con un poco de energía todo lo demás es más fácil.",
+  "fr": "Votre corps le demande — avec un peu d'énergie, la suite est plus facile.",
+  "hi": "शरीर यही माँग रहा है — थोड़ी ऊर्जा से आगे सब आसान होगा।",
+  "it": "Il corpo lo chiede: con un po' di energia il resto è più facile.",
+  "ja": "体が求めています。少し栄養をとれば、あとが楽になります。",
+  "pt": "Seu corpo está pedindo — com um pouco de energia, o resto fica mais fácil.",
+  "zh": "身体需要它——补充一点能量，后面都更轻松。"
  },
  "Your diet": {
   "de": "Deine Ernährung",

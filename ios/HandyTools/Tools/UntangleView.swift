@@ -156,7 +156,7 @@ struct UntangleView: View {
                         .font(.system(size: 20)).foregroundStyle(s.status == .done ? Color.green : (s.isRest ? HandyColor.textSecondary : HandyColor.accent))
                         .frame(width: 28)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(s.isRest ? L(s.title) : s.title).font(s.isRest ? HandyFont.caption : HandyFont.bodyStrong)
+                        Text(L(s.title)).font(s.isRest ? HandyFont.caption : HandyFont.bodyStrong)
                             .strikethrough(s.status == .done || s.status == .skipped)
                             .foregroundStyle(s.status == .skipped ? HandyColor.textSecondary : HandyColor.textPrimary)
                         Text(timeLine(s)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
