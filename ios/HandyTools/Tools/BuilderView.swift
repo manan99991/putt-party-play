@@ -322,32 +322,67 @@ private struct VideoResultPreview: View {
     }
 }
 
-/// Play button for an audio result — so a transcribed-to-voice / funny-voice / extracted-audio clip
-/// can be heard in the app before Save or share, instead of a bare "2.8 MB · WAV".
+/// A full audio player for a result — so a transcribed-to-voice / funny-voice / extracted-audio clip can be
+/// heard, scrubbed and skipped before Save or share, instead of a bare "2.8 MB · WAV" or a play-only button.
+/// A draggable progress bar, current/total time, and 15-second skip either way. Works on every phone.
+private final class AudioScrubModel: ObservableObject {
+    @Published var current: Double = 0
+    @Published var duration: Double = 0
+    @Published var playing = false
+    var dragging = false
+    private var player: AVPlayer?
+    private var token: Any?
+
+    func start(_ url: URL) {
+        guard player == nil else { return }
+        let p = AVPlayer(url: url); player = p
+        // Periodic observer fires on the main queue, so updating @Published here is safe for SwiftUI.
+        token = p.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.2, preferredTimescale: 600), queue: .main) { [weak self] t in
+            guard let self else { return }
+            if !self.dragging { self.current = t.seconds }
+            if let d = self.player?.currentItem?.duration.seconds, d.isFinite, d > 0 { self.duration = d }
+        }
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: p.currentItem, queue: .main) { [weak self] _ in
+            self?.playing = false; self?.current = 0; self?.player?.seek(to: .zero)
+        }
+    }
+    func toggle() {
+        guard let player else { return }
+        if playing { player.pause() } else { if duration > 0, current >= duration - 0.1 { seek(0) }; player.play() }
+        playing.toggle()
+    }
+    func skip(_ by: Double) { seek(min(max(current + by, 0), max(duration, 0))) }
+    func seek(_ to: Double) { current = to; player?.seek(to: CMTime(seconds: to, preferredTimescale: 600)) }
+    func stop() { player?.pause(); if let token { player?.removeTimeObserver(token); self.token = nil } }
+}
+
 private struct AudioResultPreview: View {
     let url: URL
-    @State private var player: AVPlayer?
-    @State private var playing = false
+    @StateObject private var m = AudioScrubModel()
     var body: some View {
-        Button {
-            if player == nil { player = AVPlayer(url: url) }
-            if playing { player?.pause() } else { player?.seek(to: .zero); player?.play() }
-            playing.toggle()
-        } label: {
-            HStack(spacing: HandySpacing.s12) {
-                Image(systemName: playing ? "pause.circle.fill" : "play.circle.fill").font(.system(size: 34)).foregroundStyle(HandyColor.accent)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(playing ? "Playing…" : "Play the result").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                    Text(L("Hear it before you save")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                }
-                Spacer()
-                Image(systemName: "waveform").foregroundStyle(HandyColor.textSecondary)
+        VStack(spacing: HandySpacing.s8) {
+            HStack(spacing: HandySpacing.s24) {
+                Button { m.skip(-15) } label: { Image(systemName: "gobackward.15").font(.system(size: 24)) }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
+                Button { m.toggle() } label: { Image(systemName: m.playing ? "pause.circle.fill" : "play.circle.fill").font(.system(size: 44)) }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                Button { m.skip(15) } label: { Image(systemName: "goforward.15").font(.system(size: 24)) }.buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
             }
-            .cardStyle(padding: HandySpacing.s12)
+            Slider(value: Binding(get: { m.current }, set: { m.current = $0 }), in: 0...max(m.duration, 0.1)) { editing in
+                m.dragging = editing
+                if !editing { m.seek(m.current) }
+            }.tint(HandyColor.accent)
+            HStack {
+                Text(clock(m.current)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Spacer()
+                Text(clock(m.duration)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
         }
-        .buttonStyle(.plain)
-        .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { _ in playing = false }
-        .onDisappear { player?.pause() }
+        .cardStyle(padding: HandySpacing.s12)
+        .onAppear { m.start(url) }
+        .onDisappear { m.stop() }
+    }
+    private func clock(_ s: Double) -> String {
+        guard s.isFinite, s >= 0 else { return "0:00" }
+        return String(format: "%d:%02d", Int(s) / 60, Int(s) % 60)
     }
 }
 
