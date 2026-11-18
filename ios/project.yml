@@ -52,6 +52,7 @@ targets:
       path: HandyTools/HandyTools.entitlements
       properties:
         com.apple.security.application-groups: [group.com.tenzy.toolkit]
+        com.apple.developer.weatherkit: true
     info:
       path: HandyTools/Info.plist
       properties:

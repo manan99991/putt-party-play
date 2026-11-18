@@ -2160,6 +2160,22 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(UntanglePlan.text(p).contains("done by"))
     }
 
+    func testWeatherWearSaysWhatToWear() {
+        var s = WeatherWear.Snapshot(tempC: 5, feelsC: 3, highC: 8, lowC: 1, rainChance: 0.7, windKph: 10, uv: 1, condition: "Rain", symbol: "cloud.rain")
+        var a = WeatherWear.advice(s)
+        XCTAssertTrue(a[0].hasPrefix("Cold")); XCTAssertTrue(a.contains { $0.contains("umbrella") && $0.contains("70%") })
+        s.feelsC = 15; s.rainChance = 0.1; s.uv = 8; s.highC = 26; s.lowC = 12
+        a = WeatherWear.advice(s)
+        XCTAssertTrue(a[0].hasPrefix("Mild")); XCTAssertFalse(a.contains { $0.contains("umbrella") })
+        XCTAssertTrue(a.contains { $0.contains("sunscreen") }); XCTAssertTrue(a.contains { $0.contains("layers") })
+        XCTAssertFalse(WeatherWear.advice(s, goingOut: false).contains { $0.contains("sunscreen") })
+        XCTAssertTrue(WeatherWear.advice(s, unwell: true)[0].hasPrefix("Cool"), "unwell feels 3° colder")
+        let now = Date()
+        let hours = (0..<8).map { (now.addingTimeInterval(Double($0) * 3600), $0 < 3 ? 0.8 : 0.1) }
+        XCTAssertEqual(WeatherWear.bestTripHour(hours, now: now), hours[3].0)
+        XCTAssertNil(WeatherWear.bestTripHour(hours.map { ($0.0, 0.9) }, now: now))
+    }
+
     func testAnimateLooksAndPrintableFlipbook() throws {
         let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
         XCTAssertEqual(Animate.applyLook(.original, to: photos).count, 3)

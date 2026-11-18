@@ -68,7 +68,7 @@ import UserNotifications
 
     // MARK: - One-shot location
 
-    private func locate(_ done: @escaping (CLLocation?) -> Void) {
+    func locate(_ done: @escaping (CLLocation?) -> Void) {
         if let h = here, abs(h.timestamp.timeIntervalSinceNow) < 600 { done(h); return }
         waiting.append(done)
         guard waiting.count == 1 else { return }

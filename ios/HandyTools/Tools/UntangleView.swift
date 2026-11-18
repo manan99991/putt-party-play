@@ -11,6 +11,7 @@ struct UntangleView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var speech = SpeechStream()
     @StateObject private var nearby = NearbyPlaces()
+    @StateObject private var weather = WeatherNow()
 
     @State private var input = ""
     @State private var shot: PhotosPickerItem?
@@ -88,6 +89,7 @@ struct UntangleView: View {
     private func planView(_ p: UntanglePlan.Plan) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             header(p)
+            WeatherWearCard(weather: weather, unwell: p.situation.unwell, goingOut: p.steps.contains { $0.kind.needsTrip })
             presets
             if let c = p.careNote {
                 Label { Text(L(c)).font(HandyFont.caption) } icon: { Image(systemName: "cross.case.fill").foregroundStyle(HandyColor.danger) }
@@ -218,7 +220,7 @@ struct UntangleView: View {
             }.secondaryButton()
             ShareLink(item: UntanglePlan.text(p)) { Label(L("Share plan"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             if let n = note { Text(L(n)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-            Text(L("Made on your phone. Nothing you type or say leaves it, except a map search if you tap one.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Made on your phone. What you type or say never leaves it — only your rough location is used for maps and weather.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -244,6 +246,7 @@ struct UntangleView: View {
         }
         withAnimation { plan = p }
         if let q = p.steps.compactMap({ $0.kind.placeQuery }).first, nearby.places[q] == nil, !nearby.denied { nearby.find(q) }
+        weather.load(using: nearby)
         if nudges { UntangleCheckIns.schedule(p) }
         HandyHaptics.success()
     }

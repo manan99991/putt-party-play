@@ -1329,6 +1329,16 @@
   "pt": "Melhor estimativa do reconhecimento no dispositivo — uma pesquisa rápida confirma a espécie ou o modelo exatos.",
   "zh": "基于设备端识别的最佳猜测——快速搜索即可确认确切的物种或型号。"
  },
+ "Big swing today — wear layers you can take off.": {
+  "de": "Große Temperaturschwankung – Schichten, die du ausziehen kannst.",
+  "es": "Gran cambio de temperatura hoy: capas que puedas quitarte.",
+  "fr": "Grand écart aujourd'hui — des couches à retirer.",
+  "hi": "आज तापमान में बड़ा अंतर — ऐसी परतें पहनें जो उतार सकें।",
+  "it": "Forte escursione oggi: strati da togliere.",
+  "ja": "今日は寒暖差が大きい — 脱ぎ着しやすい重ね着を。",
+  "pt": "Grande variação hoje — camadas que dá pra tirar.",
+  "zh": "今天温差大——穿可以随时脱的多层衣服。"
+ },
  "Biggest folders": {
   "de": "Größte Ordner",
   "es": "Carpetas más grandes",
@@ -1778,6 +1788,16 @@
   "ja": "チェックボックス",
   "pt": "Caixa de seleção",
   "zh": "复选框"
+ },
+ "Checking today's weather…": {
+  "de": "Wetter für heute wird geprüft …",
+  "es": "Consultando el tiempo de hoy…",
+  "fr": "Vérification de la météo du jour…",
+  "hi": "आज का मौसम देख रहे हैं…",
+  "it": "Controllo il meteo di oggi…",
+  "ja": "今日の天気を確認中…",
+  "pt": "Verificando o clima de hoje…",
+  "zh": "正在查看今天的天气…"
  },
  "Checks the address itself — look-alike brands, risky endings, shorteners, raw IPs. Nothing is opened.": {
   "de": "Prüft die Adresse selbst — nachgemachte Marken, riskante Endungen, Kürzungsdienste, rohe IPs. Nichts wird geöffnet.",
@@ -2369,6 +2389,16 @@
   "pt": "Os códigos são lidos no telemóvel. Os links são verificados com as regras antifraude do Tenzy antes de os abrires.",
   "zh": "代码在手机上读取。链接在你打开前会按 Tenzy 的防骗规则进行检查。"
  },
+ "Cold — a warm coat and layers.": {
+  "de": "Kalt – warmer Mantel und Schichten.",
+  "es": "Frío: abrigo y capas.",
+  "fr": "Froid — un manteau chaud et des couches.",
+  "hi": "ठंड — गर्म कोट और परतें।",
+  "it": "Freddo: cappotto caldo e strati.",
+  "ja": "寒い — 暖かいコートと重ね着を。",
+  "pt": "Frio — casaco quente e camadas.",
+  "zh": "冷——保暖外套，多穿几层。"
+ },
  "Collage": {
   "de": "Collage",
   "es": "Collage",
@@ -2588,6 +2618,16 @@
   "ja": "クール",
   "pt": "Frio",
   "zh": "冷色"
+ },
+ "Cool — a jacket or a warm sweater.": {
+  "de": "Kühl – Jacke oder warmer Pulli.",
+  "es": "Fresco: chaqueta o un jersey abrigado.",
+  "fr": "Frais — une veste ou un pull chaud.",
+  "hi": "ठंडक — जैकेट या गर्म स्वेटर।",
+  "it": "Fresco: giacca o un maglione caldo.",
+  "ja": "涼しい — ジャケットか暖かいセーターを。",
+  "pt": "Fresco — jaqueta ou um suéter quente.",
+  "zh": "凉——夹克或保暖毛衣。"
  },
  "Copied — paste it into any chat": {
   "de": "Kopiert – in jeden Chat einfügen",
@@ -3239,6 +3279,16 @@
   "pt": "Extrator de dados",
   "zh": "数据抓取"
  },
+ "Data sources": {
+  "de": "Datenquellen",
+  "es": "Fuentes de datos",
+  "fr": "Sources des données",
+  "hi": "डेटा स्रोत",
+  "it": "Fonti dei dati",
+  "ja": "データソース",
+  "pt": "Fontes de dados",
+  "zh": "数据来源"
+ },
  "Date": {
   "de": "Datum",
   "es": "Fecha",
@@ -3748,6 +3798,16 @@
   "ja": "署名を一度描いてください。この端末に保存されます。",
   "pt": "Desenha a tua assinatura uma vez. Fica guardada neste telemóvel.",
   "zh": "绘制一次你的签名。它会保存在本机上。"
+ },
+ "Driest time to head out:": {
+  "de": "Trockenste Zeit zum Losgehen:",
+  "es": "Mejor hora sin lluvia para salir:",
+  "fr": "Moment le plus sec pour sortir :",
+  "hi": "निकलने का सबसे सूखा समय:",
+  "it": "Momento più asciutto per uscire:",
+  "ja": "雨の少ない出発時間：",
+  "pt": "Melhor hora sem chuva para sair:",
+  "zh": "最适合出门的无雨时间："
  },
  "Drop shadow": {
   "de": "Schlagschatten",
@@ -4409,6 +4469,16 @@
   "pt": "Favorito",
   "zh": "收藏"
  },
+ "Feels like": {
+  "de": "Gefühlt",
+  "es": "Sensación",
+  "fr": "Ressenti",
+  "hi": "महसूस",
+  "it": "Percepita",
+  "ja": "体感",
+  "pt": "Sensação",
+  "zh": "体感"
+ },
  "File": {
   "de": "Datei",
   "es": "Archivo",
@@ -4919,6 +4989,16 @@
   "pt": "Congelar",
   "zh": "冻结"
  },
+ "Freezing — heavy coat, hat, gloves and a scarf.": {
+  "de": "Eiskalt – dicker Mantel, Mütze, Handschuhe und Schal.",
+  "es": "Helada: abrigo grueso, gorro, guantes y bufanda.",
+  "fr": "Glacial — gros manteau, bonnet, gants et écharpe.",
+  "hi": "कड़ाके की ठंड — भारी कोट, टोपी, दस्ताने और मफ़लर।",
+  "it": "Gelido: cappotto pesante, cappello, guanti e sciarpa.",
+  "ja": "極寒 — 厚手のコート、帽子、手袋、マフラーを。",
+  "pt": "Congelante — casaco grosso, gorro, luvas e cachecol.",
+  "zh": "严寒——厚外套、帽子、手套和围巾。"
+ },
  "From": {
   "de": "Ab",
   "es": "Desde",
@@ -5408,6 +5488,16 @@
   "ja": "ホログラム",
   "pt": "Holográfico",
   "zh": "全息"
+ },
+ "Hot — light, loose clothes, and drink plenty of water.": {
+  "de": "Heiß – leichte, luftige Kleidung und viel trinken.",
+  "es": "Calor: ropa ligera y holgada, y bebe mucha agua.",
+  "fr": "Très chaud — vêtements légers et amples, et buvez beaucoup.",
+  "hi": "बहुत गर्मी — हल्के, ढीले कपड़े और खूब पानी पिएँ।",
+  "it": "Molto caldo: abiti leggeri e larghi, e bevi molta acqua.",
+  "ja": "暑い — 軽くゆったりした服で、水分をしっかり。",
+  "pt": "Calor — roupas leves e soltas, e beba bastante água.",
+  "zh": "炎热——穿轻薄宽松的衣服，多喝水。"
  },
  "How": {
   "de": "Wie",
@@ -6469,15 +6559,15 @@
   "pt": "Feito no telemóvel. Um código Wi-Fi permite que os convidados entrem ao digitalizar — a palavra-passe nunca sai da imagem.",
   "zh": "在手机上生成。Wi-Fi 码让访客扫码即可加入 — 密码从不离开这张图。"
  },
- "Made on your phone. Nothing you type or say leaves it, except a map search if you tap one.": {
-  "de": "Auf deinem Handy erstellt. Nichts, was du tippst oder sagst, verlässt es – außer einer Kartensuche, wenn du sie antippst.",
-  "es": "Hecho en tu teléfono. Nada de lo que escribes o dices sale de él, salvo una búsqueda en el mapa si la tocas.",
-  "fr": "Créé sur votre téléphone. Rien de ce que vous tapez ou dites n'en sort, sauf une recherche de carte si vous la touchez.",
-  "hi": "आपके फ़ोन पर बना। आप जो लिखते या बोलते हैं, कुछ भी बाहर नहीं जाता — सिवाय मैप सर्च के, अगर आप टैप करें।",
-  "it": "Creato sul tuo telefono. Niente di ciò che scrivi o dici esce, tranne una ricerca sulla mappa se la tocchi.",
-  "ja": "スマホの中で作成。入力や音声は外に出ません（地図検索をタップした場合を除く）。",
-  "pt": "Feito no seu celular. Nada do que você digita ou fala sai dele, exceto uma busca no mapa se você tocar.",
-  "zh": "在你的手机上生成。你输入或说的内容都不会离开手机，除非你点了地图搜索。"
+ "Made on your phone. What you type or say never leaves it — only your rough location is used for maps and weather.": {
+  "de": "Auf deinem Handy erstellt. Was du tippst oder sagst, verlässt es nie – nur dein ungefährer Standort wird für Karten und Wetter genutzt.",
+  "es": "Hecho en tu teléfono. Lo que escribes o dices nunca sale de él; solo se usa tu ubicación aproximada para mapas y clima.",
+  "fr": "Créé sur votre téléphone. Ce que vous tapez ou dites n'en sort jamais — seule votre position approximative sert aux cartes et à la météo.",
+  "hi": "आपके फ़ोन पर बना। आप जो लिखते या बोलते हैं, वह कभी बाहर नहीं जाता — सिर्फ़ आपकी अनुमानित लोकेशन मैप और मौसम के लिए इस्तेमाल होती है।",
+  "it": "Creato sul tuo telefono. Ciò che scrivi o dici non esce mai: solo la posizione approssimativa serve per mappe e meteo.",
+  "ja": "スマホの中で作成。入力や音声は外に出ません。地図と天気にはおおよその位置情報のみを使います。",
+  "pt": "Feito no seu celular. O que você digita ou fala nunca sai dele — só sua localização aproximada é usada para mapas e clima.",
+  "zh": "在你的手机上生成。你输入或说的内容不会离开手机——仅使用大致位置来查地图和天气。"
  },
  "Make GIF": {
   "de": "GIF erstellen",
@@ -6938,6 +7028,16 @@
   "ja": "周囲の音を拾って増幅するためマイクへのアクセスが必要です。端末内でリアルタイム処理され、録音は一切されません。",
   "pt": "É preciso acesso ao microfone para captar e amplificar o som à tua volta. É processado em direto no teu telemóvel e nunca gravado.",
   "zh": "需要麦克风权限以拾取并放大你周围的声音。它在你的手机上实时处理，绝不录制。"
+ },
+ "Mild — a light jacket or long sleeves.": {
+  "de": "Mild – leichte Jacke oder lange Ärmel.",
+  "es": "Templado: chaqueta ligera o manga larga.",
+  "fr": "Doux — une veste légère ou des manches longues.",
+  "hi": "सुहाना — हल्की जैकेट या पूरी बाँह के कपड़े।",
+  "it": "Mite: giacca leggera o maniche lunghe.",
+  "ja": "穏やか — 薄手のジャケットか長袖を。",
+  "pt": "Ameno — jaqueta leve ou manga longa.",
+  "zh": "温和——薄外套或长袖。"
  },
  "Mint": {
   "de": "Mint",
@@ -7768,6 +7868,16 @@
   "ja": "未接続",
   "pt": "Não ligado",
   "zh": "未连接"
+ },
+ "Not feeling well — dress a layer warmer than usual.": {
+  "de": "Dir geht's nicht gut – zieh eine Schicht wärmer an als sonst.",
+  "es": "No te encuentras bien: abrígate una capa más de lo normal.",
+  "fr": "Pas en forme — une couche de plus que d'habitude.",
+  "hi": "तबीयत ठीक नहीं — आम दिनों से एक परत ज़्यादा पहनें।",
+  "it": "Non stai bene: uno strato in più del solito.",
+  "ja": "体調がよくない — いつもより一枚多めに。",
+  "pt": "Não está bem — uma camada a mais que o normal.",
+  "zh": "身体不舒服——比平时多穿一层。"
  },
  "Not now": {
   "de": "Nicht jetzt",
@@ -12429,6 +12539,16 @@
   "pt": "Estroboscópio, SOS, luz do ecrã, espelho",
   "zh": "频闪、SOS、屏幕灯、镜子"
  },
+ "Strong sun — sunglasses and sunscreen.": {
+  "de": "Starke Sonne – Sonnenbrille und Sonnencreme.",
+  "es": "Sol fuerte: gafas de sol y protector solar.",
+  "fr": "Soleil fort — lunettes de soleil et crème solaire.",
+  "hi": "तेज़ धूप — धूप का चश्मा और सनस्क्रीन।",
+  "it": "Sole forte: occhiali da sole e crema solare.",
+  "ja": "日差しが強い — サングラスと日焼け止めを。",
+  "pt": "Sol forte — óculos de sol e protetor solar.",
+  "zh": "阳光强烈——戴墨镜，涂防晒。"
+ },
  "Studio": {
   "de": "Studio",
   "es": "Estudio",
@@ -14529,6 +14649,16 @@
   "pt": "Quente",
   "zh": "暖色"
  },
+ "Warm — T-shirt weather.": {
+  "de": "Warm – T-Shirt-Wetter.",
+  "es": "Cálido: tiempo de camiseta.",
+  "fr": "Chaud — temps à t-shirt.",
+  "hi": "गर्म — टी-शर्ट वाला मौसम।",
+  "it": "Caldo: tempo da maglietta.",
+  "ja": "暖かい — Tシャツで大丈夫。",
+  "pt": "Quente — clima de camiseta.",
+  "zh": "暖和——穿 T 恤就行。"
+ },
  "Warranty": {
   "de": "Garantie",
   "es": "Garantía",
@@ -14669,6 +14799,16 @@
   "pt": "O que fazer com isto",
   "zh": "如何处理它"
  },
+ "What to wear": {
+  "de": "Was anziehen",
+  "es": "Qué ponerte",
+  "fr": "Quoi porter",
+  "hi": "क्या पहनें",
+  "it": "Cosa indossare",
+  "ja": "服装のヒント",
+  "pt": "O que vestir",
+  "zh": "穿什么"
+ },
  "What's in this photo": {
   "de": "Was ist auf diesem Foto",
   "es": "Qué hay en esta foto",
@@ -14798,6 +14938,16 @@
   "ja": "使用する設定",
   "pt": "Vai usar",
   "zh": "将使用"
+ },
+ "Windy — something windproof; skip the umbrella if it's gusty.": {
+  "de": "Windig – etwas Winddichtes; bei Böen lieber ohne Schirm.",
+  "es": "Viento: algo cortavientos; deja el paraguas si hay rachas.",
+  "fr": "Venteux — un coupe-vent ; oubliez le parapluie s'il y a des rafales.",
+  "hi": "तेज़ हवा — हवा रोकने वाला कुछ पहनें; झोंके हों तो छाता न लें।",
+  "it": "Ventoso: qualcosa di antivento; niente ombrello se ci sono raffiche.",
+  "ja": "風が強い — 防風の服を。突風なら傘は避けて。",
+  "pt": "Ventando — algo corta-vento; dispense o guarda-chuva se tiver rajadas.",
+  "zh": "有风——穿防风的；阵风大就别带伞。"
  },
  "Wi‑Fi network": {
   "de": "WLAN-Netz",
