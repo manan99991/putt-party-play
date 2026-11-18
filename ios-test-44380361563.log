@@ -1,0 +1,18 @@
+== test.log (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1427:56: error: main actor-isolated property 'id' can not be referenced from a nonisolated autoclosure
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1427:24: error: call to main actor-isolated global function 'searchTools' in a synchronous nonisolated context
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1428:50: error: main actor-isolated property 'id' can not be referenced from a nonisolated autoclosure
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1428:24: error: call to main actor-isolated global function 'searchTools' in a synchronous nonisolated context
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1448:57: error: main actor-isolated property 'id' can not be referenced from a nonisolated autoclosure
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1448:24: error: call to main actor-isolated global function 'searchTools' in a synchronous nonisolated context
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1449:50: error: main actor-isolated property 'id' can not be referenced from a nonisolated autoclosure
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1449:24: error: call to main actor-isolated global function 'searchTools' in a synchronous nonisolated context
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1468:50: error: main actor-isolated property 'id' can not be referenced from a nonisolated autoclosure
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1468:24: error: call to main actor-isolated global function 'searchTools' in a synchronous nonisolated context
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1469:51: error: main actor-isolated property 'id' can not be referenced from a nonisolated autoclosure
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1469:24: error: call to main actor-isolated global function 'searchTools' in a synchronous nonisolated context
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1492:50: error: main actor-isolated property 'id' can not be referenced from a nonisolated autoclosure
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1492:24: error: call to main actor-isolated global function 'searchTools' in a synchronous nonisolated context
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1493:60: error: main actor-isolated property 'id' can not be referenced from a nonisolated autoclosure
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1493:24: error: call to main actor-isolated global function 'searchTools' in a synchronous nonisolated context
+** TEST FAILED **
