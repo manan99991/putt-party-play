@@ -1402,6 +1402,32 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(plan.contains("tel:5551234567"))    // mom → call
     }
 
+    func testPDFProtectLockUnlockWatermark() throws {
+        let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 500)).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 500)) }
+        let line = DocEngine.OCRLine(text: "INVOICE", box: CGRect(x: 0.1, y: 0.1, width: 0.6, height: 0.1))
+        var opts = DocEngine.PDFOptions(); opts.searchable = true
+        guard let src = DocEngine.pdf(images: [img], ocr: [[line]], options: opts) else { return XCTFail("no source") }
+        // Lock
+        XCTAssertNil(PDFSecure.protect(src, password: ""), "empty password must be refused")
+        guard let locked = PDFSecure.protect(src, password: "tenzy123") else { return XCTFail("protect nil") }
+        XCTAssertTrue(PDFSecure.isLocked(locked), "the saved file must ask for a password")
+        // Unlock: wrong password refused, right one gives a free-opening copy with the content intact.
+        XCTAssertNil(PDFSecure.unlock(locked, password: "nope"))
+        guard let opened = PDFSecure.unlock(locked, password: "tenzy123"), let doc = PDFDocument(data: opened)
+        else { return XCTFail("unlock nil") }
+        XCTAssertFalse(doc.isLocked)
+        XCTAssertEqual(doc.pageCount, 1)
+        // Watermark: on the page, original text kept, locked input refused.
+        guard let wm = PDFOverlay.watermark(src, text: "CONFIDENTIAL"), let wdoc = PDFDocument(data: wm)
+        else { return XCTFail("watermark nil") }
+        let t = wdoc.string ?? ""
+        XCTAssertTrue(t.contains("CONFIDENTIAL")); XCTAssertTrue(t.contains("INVOICE"))
+        XCTAssertNil(PDFOverlay.watermark(src, text: "   "), "blank watermark refused")
+        XCTAssertEqual(searchTools("watermark").first?.id, "pdfprotect")
+        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
+    }
+
     func testSignPDFStampsAndKeepsOriginalText() throws {
         let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 500)).image { c in
             UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 500)) }
