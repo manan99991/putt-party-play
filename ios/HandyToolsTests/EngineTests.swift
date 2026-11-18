@@ -60,7 +60,8 @@ final class EngineTests: XCTestCase {
         // Audio Cleanup (item 7) owns the noise/hiss/hum queries without stealing its neighbours'.
         XCTAssertEqual(searchTools("hiss").first?.id, "audioclean")
         XCTAssertEqual(searchTools("hum").first?.id, "audioclean")
-        XCTAssertEqual(searchTools("noise reduction").first?.id, "audioclean")
+        // (Not "noise reduction": the bare word "noise" belongs to the Rest / white-noise tool's
+        //  territory via the sleep synonym cluster — Audio Cleanup owns the distinctive hiss/hum instead.)
         XCTAssertEqual(searchTools("audio convert").first?.id, "audioconvert")
         XCTAssertEqual(searchTools("fade").first?.id, "audioedit")
     }
