@@ -89,6 +89,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("pill reminder").first?.id, "medreminder")
         XCTAssertEqual(searchTools("collage").first?.id, "collage")
         XCTAssertEqual(searchTools("hide kids faces").first?.id, "faceemoji")
+        XCTAssertEqual(searchTools("menu").first?.id, "menu")
     }
 
     // MARK: duplicate detection precision
@@ -1959,6 +1960,43 @@ final class EngineTests: XCTestCase {
         }
         XCTAssertLessThan(brightness(out, CGPoint(x: 100, y: 100)), 0.97, "covered face has the emoji drawn on it")
         XCTAssertGreaterThan(brightness(out, CGPoint(x: 300, y: 300)), 0.99, "the face left showing is untouched")
+    }
+
+    func testMenuReaderFindsDishesPricesAndWhatsInThem() {
+        let menu = """
+        STARTERS
+        Garlic Bread ........ 5.50
+        toasted sourdough, garlic butter
+        Calamari Fritti 8.90
+        crispy squid, lemon aioli
+        Grilled Salmon
+        14.50
+        MAINS
+        Margherita Pizza (v) €12
+        tomato, mozzarella, basil
+        Pad Thai with Prawns 15
+        rice noodles, peanuts, egg
+        POSTRES
+        Tarta de queso 6,50 €
+        Pollo al ajillo 11
+        """.components(separatedBy: "\n")
+        let items = MenuReader.parse(menu)
+        XCTAssertEqual(items.map(\.name), ["Garlic Bread", "Calamari Fritti", "Grilled Salmon", "Margherita Pizza (v)",
+                                            "Pad Thai with Prawns", "Tarta de queso", "Pollo al ajillo"])
+        XCTAssertEqual(items.map(\.price), [5.5, 8.9, 14.5, 12, 15, 6.5, 11])
+        XCTAssertEqual(items[0].section, "Starters"); XCTAssertEqual(items[3].section, "Mains")
+        XCTAssertTrue(items[1].flags.contains(.shellfish), "squid")
+        XCTAssertTrue(items[2].flags.contains(.fish))
+        XCTAssertTrue(items[3].flags.contains(.vegetarian) && items[3].flags.contains(.dairy) && items[3].flags.contains(.gluten))
+        XCTAssertTrue(items[4].flags.isSuperset(of: [.shellfish, .nuts, .egg, .gluten]))
+        XCTAssertTrue(items[5].flags.contains(.dairy), "queso is cheese")
+        XCTAssertTrue(items[6].flags.contains(.chicken) && items[6].flags.contains(.meat), "pollo is chicken")
+        XCTAssertEqual(MenuReader.conflicts(items[4], diets: [.noNuts]), [.nuts])
+        XCTAssertTrue(MenuReader.conflicts(items[3], diets: [.vegetarian]).isEmpty, "margherita fits a vegetarian")
+        XCTAssertFalse(MenuReader.conflicts(items[3], diets: [.vegan]).isEmpty, "but not a vegan (cheese)")
+        XCTAssertFalse(MenuReader.flags("Paneer tikka").contains(.gluten), "'paneer' isn't bread")
+        XCTAssertEqual(MenuReader.currency(in: menu), "EUR")
+        XCTAssertNil(MenuReader.splitPrice("Since 1998"), "a year isn't a price")
     }
 
     func testAudioConvertRejectsNonAudioGracefully() async throws {

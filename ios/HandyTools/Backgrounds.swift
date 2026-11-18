@@ -55,6 +55,7 @@ enum TenzyArt {
         "collage": "stitch",
         "faceemoji": "scrub",
         "medreminder": "rest",
+        "menu": "translate",
         "audioconvert": "audiolab",
         "audiocompress": "audiolab",
         "audiomix": "audiolab",
