@@ -1679,6 +1679,42 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("extract audio").first?.id, "audioconvert")
     }
 
+    func testAudioTagsWriteMP3AndM4AWithoutTouchingAudio() async throws {
+        // MP3: an old tag is replaced, the audio bytes after it are copied untouched.
+        let audio = Data((0..<500).map { UInt8($0 % 251) })
+        let oldTag = Data([0x49, 0x44, 0x33, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x05]) + Data(repeating: 0, count: 5)
+        let art = try XCTUnwrap(AudioTags.coverJPEG(from: Self.text("ART")))
+        let tags = AudioTags.Tags(title: "Café Song", artist: "Manan", album: "Tenzy", artwork: art)
+        let tagged = ID3.retag(oldTag + audio, with: tags)
+        XCTAssertEqual(Data(tagged.suffix(audio.count)), audio, "audio untouched")
+        XCTAssertEqual(tagged.count, ID3.tagLength(tagged) + audio.count, "old tag gone")
+        XCTAssertEqual(ID3.parse(tagged), tags, "title/artist/album/cover read back")
+        let mp3 = FileManager.default.temporaryDirectory.appendingPathComponent("tag-\(UUID().uuidString.prefix(6)).mp3")
+        try (oldTag + audio).write(to: mp3)
+        defer { try? FileManager.default.removeItem(at: mp3) }
+        guard case .success(let outMP3) = await AudioTags.write(mp3, tags: tags) else { return XCTFail("mp3 write failed") }
+        defer { try? FileManager.default.removeItem(at: outMP3) }
+        let backMP3 = await AudioTags.read(outMP3)
+        XCTAssertEqual(backMP3.title, "Café Song")
+
+        // M4A: re-wrapped with iTunes tags, still plays at full length.
+        let tone = try makeToneFile(seconds: 1.0)
+        defer { try? FileManager.default.removeItem(at: tone) }
+        guard case .success(let m4a) = await AudioConvert.convert(tone, to: .m4a) else { return XCTFail("fixture") }
+        defer { try? FileManager.default.removeItem(at: m4a) }
+        guard case .success(let out) = await AudioTags.write(m4a, tags: tags) else { return XCTFail("m4a write failed") }
+        defer { try? FileManager.default.removeItem(at: out) }
+        let back = await AudioTags.read(out)
+        XCTAssertEqual(back.title, "Café Song")
+        XCTAssertEqual(back.artist, "Manan")
+        XCTAssertEqual(back.album, "Tenzy")
+        XCTAssertNotNil(back.artwork, "cover art embedded")
+        let d = (try? await AVURLAsset(url: out).load(.duration))?.seconds ?? 0
+        XCTAssertEqual(d, 1.0, accuracy: 0.2)
+        XCTAssertEqual(AudioTags.route(for: URL(fileURLWithPath: "/a.wav")), .convert)
+        XCTAssertEqual(searchTools("album art").first?.id, "audiotags")
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)

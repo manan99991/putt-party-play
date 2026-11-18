@@ -132,6 +132,7 @@ struct Tool: Identifiable {
     Tool(id: "ringtone",   name: "Ringtone",         blurb: "Trim a clip to a 30s ringtone",     icon: "bell.badge.fill",                     page: 5, asset: "tool_audiolab", keywords: ["ringtone","ring tone","ringtones","m4r","custom ringtone","make a ringtone","phone ringtone","song to ringtone","alarm sound"]),
     Tool(id: "audioedit",  name: "Audio Editor",     blurb: "Trim, fade & cut dead air",         icon: "waveform.badge.minus",                page: 5, asset: "tool_audiolab", keywords: ["audio editor","edit audio","trim audio","cut audio","shorten audio","crop audio","fade","fade in","fade out","silence","remove silence","cut silence","dead air","gap"]),
     Tool(id: "audiomix",   name: "Join & Speed",     blurb: "Join clips, speed up or slow down", icon: "link.circle.fill",                    page: 5, asset: "tool_audiolab", keywords: ["join audio","merge audio","combine audio","join clips","stitch","append","speed up audio","slow down audio","playback speed","faster","slower","2x","lecture speed"]),
+    Tool(id: "audiotags",  name: "Song Info & Cover", blurb: "Title, artist, album & cover art",  icon: "music.note.list",                     page: 5, asset: "tool_audiolab", keywords: ["album art","cover art","song info","song title","artist","album","id3","tags","rename song","music tags","metadata","artwork"]),
     Tool(id: "audioclean", name: "Audio Cleanup",    blurb: "Cut noise, even out volume",        icon: "wand.and.stars",                      page: 5, asset: "tool_audiolab", keywords: ["audio cleanup","clean up audio","clean audio","noise reduction","reduce noise","background noise","remove noise","hiss","hum","rumble","clearer","clearer voice","voice clarity","boost volume","normalize audio","even out volume","louder","noisy recording"]),
     Tool(id: "meetingnotes", name: "Meeting Notes",  blurb: "Recording → turns, to-dos, email",  icon: "person.wave.2.fill",                  page: 5, ai: true, asset: "tool_voicenotes", keywords: ["meeting notes","meeting","meeting minutes","minutes","recap","meeting recap","action items","meeting recording","record a meeting","call notes","interview","standup","stand-up","follow-up email","follow up email","turns","who said what"]),
     Tool(id: "soundboard", name: "Soundboard",       blurb: "Robot, alien & more — change a voice", icon: "theatermasks.fill",                 page: 5, asset: "tool_audiolab", keywords: ["soundboard","voice changer","change my voice","change voice","robot voice","alien voice","monster voice","chipmunk","helium","giant","deep voice","funny voice","voice effect","voice fx","disguise","prank"]),
@@ -336,6 +337,7 @@ struct ToolDestination: View {
         case "audioconvert": AudioConvertView()
         case "audiocompress": AudioCompressView()
         case "audiomix": AudioMixView()
+        case "audiotags": AudioTagsView()
         case "ringtone": RingtoneView()
         case "audioedit": AudioEditView()
         case "audioclean": AudioCleanView()

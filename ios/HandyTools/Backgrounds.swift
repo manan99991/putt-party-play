@@ -53,6 +53,7 @@ enum TenzyArt {
         "audioconvert": "audiolab",
         "audiocompress": "audiolab",
         "audiomix": "audiolab",
+        "audiotags": "audiolab",
         "ringtone": "audiolab",
         "audioedit": "audiolab",
         "audioclean": "audiolab",
