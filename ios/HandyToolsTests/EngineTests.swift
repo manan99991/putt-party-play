@@ -1856,6 +1856,31 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(MedSchedule.summary(many[0]).contains("at"))
     }
 
+    func testExcelWorkbookKeepsNumbersAsNumbers() throws {
+        XCTAssertEqual(XLSXWriter.column(0), "A"); XCTAssertEqual(XLSXWriter.column(25), "Z"); XCTAssertEqual(XLSXWriter.column(26), "AA")
+        XCTAssertEqual(XLSXWriter.number("$4.50"), "4.50")
+        XCTAssertEqual(XLSXWriter.number("1,234.50"), "1234.50")
+        XCTAssertNil(XLSXWriter.number("00123"), "IDs and ZIP codes keep their zeros")
+        XCTAssertNil(XLSXWriter.number("8%"))
+        XCTAssertNil(XLSXWriter.number("12 Main St"))
+        let rows = [["Item", "Qty", "Price"], ["Coffee & cake", "2", "$4.50"], ["Bagel <plain>", "1", "1,234.50"]]
+        let data = try XCTUnwrap(XLSXWriter.workbook(rows: rows, sheetName: "Receipt"))
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("t-\(UUID().uuidString.prefix(6)).xlsx")
+        try data.write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let names = Set(Given.Zip.names(in: url))
+        XCTAssertTrue(names.isSuperset(of: ["[Content_Types].xml", "_rels/.rels", "xl/workbook.xml", "xl/_rels/workbook.xml.rels",
+                                            "xl/worksheets/sheet1.xml", "xl/styles.xml"]))
+        let sheet = try XCTUnwrap(Given.Zip.entryText(in: url, named: "xl/worksheets/sheet1.xml"))
+        XCTAssertTrue(sheet.contains("<c r=\"B2\"><v>2</v></c>"), "Qty is a number")
+        XCTAssertTrue(sheet.contains("<c r=\"C3\"><v>1234.50</v></c>"), "thousands separator understood")
+        XCTAssertTrue(sheet.contains("Coffee &amp; cake") && sheet.contains("Bagel &lt;plain&gt;"), "text escaped")
+        XCTAssertTrue(sheet.contains("<c r=\"A1\" t=\"inlineStr\" s=\"1\">"), "bold header")
+        XCTAssertTrue(sheet.contains("state=\"frozen\""), "header row frozen")
+        let t = DataGrab.tableRows("Name\tQty\tPrice\nTea\t2\nMilk\t1\t0.99")
+        XCTAssertEqual(t.rows.count, 3); XCTAssertEqual(t.rows[1].count, 3); XCTAssertEqual(t.ragged, 1)
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)

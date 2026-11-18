@@ -152,6 +152,26 @@ enum DataGrab {
         return [line.trimmingCharacters(in: .whitespaces)]
     }
 
+    /// The table as rows of cells, every row padded to the same width — what the grid preview and the
+    /// Excel export use. `ragged` counts rows that had fewer cells than the widest row.
+    static func tableRows(_ text: String) -> (rows: [[String]], ragged: Int) {
+        let rows = text.split(whereSeparator: \.isNewline).map { columns(String($0)) }.filter { !$0.isEmpty }
+        let width = rows.map(\.count).max() ?? 0
+        let ragged = rows.filter { $0.count < width }.count
+        return (rows.map { $0 + Array(repeating: "", count: max(0, width - $0.count)) }, ragged)
+    }
+
+    /// Receipt lines as spreadsheet rows (header first), money as plain numbers.
+    static func receiptRows(_ r: Receipt) -> [[String]] {
+        var rows = [["Item", "Amount"]]
+        rows += r.items.map { [$0.0, String(format: "%.2f", $0.1)] }
+        if let s = r.subtotal { rows.append(["Subtotal", String(format: "%.2f", s)]) }
+        if let t = r.tax { rows.append(["Tax", String(format: "%.2f", t)]) }
+        if let t = r.tip { rows.append(["Tip", String(format: "%.2f", t)]) }
+        if let t = r.total { rows.append(["Total", String(format: "%.2f", t)]) }
+        return rows
+    }
+
     static func tableCSV(_ text: String) -> String {
         let rows = text.split(whereSeparator: \.isNewline).map { columns(String($0)) }.filter { !$0.isEmpty }
         let width = rows.map(\.count).max() ?? 0

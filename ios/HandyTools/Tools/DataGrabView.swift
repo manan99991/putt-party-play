@@ -16,6 +16,7 @@ struct DataGrabView: View {
     @State private var event = DataGrab.Event()
     @State private var aiText = ""
     @State private var aiBusy = false
+    @State private var tableHeader = true
 
     var body: some View {
         ToolPage(title: "Data Grabber", subtitle: "Receipt → rows, business card → contact, flyer → calendar event, printed table → CSV.", working: busy) {
@@ -91,6 +92,7 @@ struct DataGrabView: View {
             if let t = receipt.tip { row("Tip", money(t)) }
             HStack { Text(L("Total")).font(HandyFont.bodyStrong); Spacer(); Text(money(receipt.total ?? 0)).font(HandyFont.bodyStrong).monospacedDigit() }
             HStack(spacing: HandySpacing.s8) {
+                ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: DataGrab.receiptRows(receipt), sheetName: receipt.merchant.isEmpty ? "Receipt" : receipt.merchant) ?? Data()), preview: SharePreview("Receipt.xlsx")) { Label(L("Excel"), systemImage: "tablecells.badge.ellipsis") }.compactButton()
                 ShareLink(item: CSVFile(data: Data(DataGrab.receiptCSV(receipt).utf8)), preview: SharePreview("Receipt.csv")) { Label(L("Items as CSV"), systemImage: "tablecells") }.compactButton()
                 Button { Copier.copy(DataGrab.expenseRow(receipt)) } label: { Label(L("Copy expense row"), systemImage: "doc.on.doc") }.compactButton()
                 Spacer()
@@ -128,15 +130,47 @@ struct DataGrabView: View {
     // MARK: table
 
     private var tableView: some View {
+        let parsed = DataGrab.tableRows(text)
+        let rows = parsed.rows
         let csv = DataGrab.tableCSV(text)
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            ScrollView(.horizontal) { Text(csv).font(.system(size: 12, design: .monospaced)).textSelection(.enabled) }.frame(maxHeight: 220)
-            HStack(spacing: HandySpacing.s8) {
-                ShareLink(item: CSVFile(data: Data(csv.utf8)), preview: SharePreview("Table.csv")) { Label(L("Save CSV"), systemImage: "tablecells") }.compactButton()
-                Button { Copier.copy(csv.replacingOccurrences(of: ",", with: "\t")) } label: { Label(L("Copy for a spreadsheet"), systemImage: "doc.on.doc") }.compactButton()
-                Spacer()
+            if rows.isEmpty {
+                Text(L("No table found — each line becomes a row; columns split on tabs, commas or wide gaps."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            } else {
+                Text("\(rows.count) \(L("rows")) × \(rows.first?.count ?? 0) \(L("columns"))" + (parsed.ragged > 0 ? " · \(parsed.ragged) \(L("short rows filled with blanks"))" : ""))
+                    .font(HandyFont.caption).foregroundStyle(parsed.ragged > 0 ? HandyColor.amber : HandyColor.textSecondary)
+                ScrollView([.horizontal, .vertical]) {
+                    Grid(alignment: .leading, horizontalSpacing: 0, verticalSpacing: 0) {
+                        ForEach(rows.indices, id: \.self) { r in
+                            GridRow {
+                                ForEach(rows[r].indices, id: \.self) { c in
+                                    Text(rows[r][c].isEmpty ? " " : rows[r][c])
+                                        .font(.system(size: 13, weight: tableHeader && r == 0 ? .semibold : .regular))
+                                        .lineLimit(1)
+                                        .frame(minWidth: 60, alignment: XLSXWriter.number(rows[r][c]) != nil ? .trailing : .leading)
+                                        .padding(.horizontal, 8).padding(.vertical, 6)
+                                        .background(tableHeader && r == 0 ? HandyColor.accent.opacity(0.12) : (r % 2 == 0 ? HandyColor.surface : Color.clear))
+                                        .overlay(Rectangle().stroke(HandyColor.border.opacity(0.6), lineWidth: 0.5))
+                                }
+                            }
+                        }
+                    }
+                }
+                .frame(maxHeight: 260)
+                Toggle(L("First row is the header"), isOn: $tableHeader).font(HandyFont.caption).tint(HandyColor.accent)
+                ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: rows, sheetName: "Table", header: tableHeader) ?? Data()),
+                          preview: SharePreview("Table.xlsx")) {
+                    Label(L("Save as Excel (.xlsx)"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity)
+                }.primaryButton()
+                HStack(spacing: HandySpacing.s8) {
+                    ShareLink(item: CSVFile(data: Data(csv.utf8)), preview: SharePreview("Table.csv")) { Label(L("Save CSV"), systemImage: "tablecells") }.compactButton()
+                    Button { Copier.copy(csv.replacingOccurrences(of: ",", with: "\t")) } label: { Label(L("Copy for a spreadsheet"), systemImage: "doc.on.doc") }.compactButton()
+                    Spacer()
+                }
+                Text(L("Excel keeps numbers as numbers, so they add up and sort. Opens in Excel, Numbers and Google Sheets."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
-            Text(L("Copy pastes as columns into Numbers, Excel or Sheets.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle(padding: HandySpacing.s12)
     }
 
