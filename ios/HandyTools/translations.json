@@ -869,6 +869,16 @@
   "pt": "Como",
   "zh": "作为"
  },
+ "As shot": {
+  "de": "Original",
+  "es": "Original",
+  "fr": "Telle quelle",
+  "hi": "जैसी खींची",
+  "it": "Originale",
+  "ja": "撮影したまま",
+  "pt": "Original",
+  "zh": "原图"
+ },
  "Ask": {
   "de": "Fragen",
   "es": "Preguntar",
@@ -1098,6 +1108,16 @@
   "ja": "戻る",
   "pt": "Voltar",
   "zh": "返回"
+ },
+ "Back to automatic": {
+  "de": "Zurück zu Automatik",
+  "es": "Volver a automático",
+  "fr": "Revenir en automatique",
+  "hi": "ऑटोमैटिक पर वापस",
+  "it": "Torna all'automatico",
+  "ja": "自動に戻す",
+  "pt": "Voltar ao automático",
+  "zh": "返回自动"
  },
  "Back to camera": {
   "de": "Zurück zur Kamera",
@@ -1379,6 +1399,16 @@
   "pt": "Preto",
   "zh": "黑色"
  },
+ "Black & white": {
+  "de": "Schwarzweiß",
+  "es": "Blanco y negro",
+  "fr": "Noir et blanc",
+  "hi": "ब्लैक एंड व्हाइट",
+  "it": "Bianco e nero",
+  "ja": "モノクロ",
+  "pt": "Preto e branco",
+  "zh": "黑白"
+ },
  "Black out text so it's truly gone": {
   "de": "Text schwärzen – wirklich entfernt",
   "es": "Tapa texto para que desaparezca de verdad",
@@ -1458,6 +1488,16 @@
   "ja": "結論",
   "pt": "Conclusão",
   "zh": "底线"
+ },
+ "Bright snow or beach": {
+  "de": "Heller Schnee oder Strand",
+  "es": "Nieve o playa brillante",
+  "fr": "Neige ou plage lumineuse",
+  "hi": "चमकीली बर्फ़ या बीच",
+  "it": "Neve o spiaggia luminosa",
+  "ja": "明るい雪やビーチ",
+  "pt": "Neve ou praia clara",
+  "zh": "明亮的雪地或海滩"
  },
  "Brightness": {
   "de": "Helligkeit",
@@ -2399,6 +2439,16 @@
   "pt": "Fechar forma",
   "zh": "闭合形状"
  },
+ "Close-up spotted": {
+  "de": "Nahaufnahme erkannt",
+  "es": "Primer plano detectado",
+  "fr": "Gros plan repéré",
+  "hi": "क्लोज़-अप दिखा",
+  "it": "Primo piano rilevato",
+  "ja": "クローズアップを検出",
+  "pt": "Close detectado",
+  "zh": "发现特写"
+ },
  "Codes": {
   "de": "Codes",
   "es": "Códigos",
@@ -3209,6 +3259,16 @@
   "pt": "Cubra rostos com emoji — você escolhe",
   "zh": "用表情遮脸——由你选择"
  },
+ "Crisp": {
+  "de": "Klar",
+  "es": "Nítido",
+  "fr": "Net",
+  "hi": "साफ़",
+  "it": "Nitido",
+  "ja": "くっきり",
+  "pt": "Nítido",
+  "zh": "清晰"
+ },
  "Crossfade": {
   "de": "Überblenden",
   "es": "Fundido",
@@ -3619,6 +3679,16 @@
   "pt": "Fazer outro",
   "zh": "再来一个"
  },
+ "Do you like it?": {
+  "de": "Gefällt es dir?",
+  "es": "¿Te gusta?",
+  "fr": "Ça vous plaît ?",
+  "hi": "क्या यह पसंद आया?",
+  "it": "Ti piace?",
+  "ja": "気に入りましたか？",
+  "pt": "Gostou?",
+  "zh": "喜欢吗？"
+ },
  "Docs & Capture": {
   "de": "Docs & Scan",
   "es": "Docs y captura",
@@ -3798,6 +3868,16 @@
   "ja": "写真上をドラッグして顔・名前・カード番号を黒塗りします。番号やメールは端末内で自動検出できます。",
   "pt": "Arrasta sobre a foto para tapar rostos, nomes, números de cartão. Números e e-mails podem ser encontrados automaticamente no telemóvel.",
   "zh": "在照片上拖动以涂黑人脸、姓名、卡号。号码和邮箱可在手机上自动识别。"
+ },
+ "Dramatic": {
+  "de": "Dramatisch",
+  "es": "Dramático",
+  "fr": "Dramatique",
+  "hi": "ड्रामैटिक",
+  "it": "Drammatico",
+  "ja": "ドラマチック",
+  "pt": "Dramático",
+  "zh": "戏剧化"
  },
  "Draw again": {
   "de": "Neu zeichnen",
@@ -4889,6 +4969,16 @@
   "pt": "E-mail de acompanhamento",
   "zh": "跟进邮件"
  },
+ "Food spotted": {
+  "de": "Essen erkannt",
+  "es": "Comida detectada",
+  "fr": "Plat repéré",
+  "hi": "खाना दिखा",
+  "it": "Cibo rilevato",
+  "ja": "料理を検出",
+  "pt": "Comida detectada",
+  "zh": "发现美食"
+ },
  "For live camera translation, use Capture — tap a line there and choose Translate.": {
   "de": "Für Live-Kameraübersetzung nutze „Erfassen“ — tippe dort eine Zeile an und wähle „Übersetzen“.",
   "es": "Para traducción con cámara en vivo, usa Capturar: toca una línea ahí y elige Traducir.",
@@ -5028,6 +5118,16 @@
   "ja": "静止",
   "pt": "Congelar",
   "zh": "冻结"
+ },
+ "Freeze the action": {
+  "de": "Bewegung einfrieren",
+  "es": "Congela la acción",
+  "fr": "Figer l'action",
+  "hi": "एक्शन को रोकें",
+  "it": "Congela l'azione",
+  "ja": "動きを止めて撮る",
+  "pt": "Congele a ação",
+  "zh": "定格动作"
  },
  "Freezing — heavy coat, hat, gloves and a scarf.": {
   "de": "Eiskalt – dicker Mantel, Mütze, Handschuhe und Schal.",
@@ -5249,6 +5349,16 @@
   "pt": "Vai para",
   "zh": "指向"
  },
+ "Golden": {
+  "de": "Golden",
+  "es": "Dorado",
+  "fr": "Doré",
+  "hi": "सुनहरा",
+  "it": "Dorato",
+  "ja": "ゴールデン",
+  "pt": "Dourado",
+  "zh": "金色"
+ },
  "Google, your phone, Exchange: copy or move in three taps.": {
   "de": "Google, dein Handy, Exchange: kopieren oder verschieben in drei Tipps.",
   "es": "Google, tu teléfono, Exchange: copia o mueve en tres toques.",
@@ -5298,6 +5408,16 @@
   "ja": "グリッド",
   "pt": "Grade",
   "zh": "网格"
+ },
+ "Group photo spotted": {
+  "de": "Gruppenfoto erkannt",
+  "es": "Foto de grupo detectada",
+  "fr": "Photo de groupe repérée",
+  "hi": "ग्रुप फ़ोटो दिखी",
+  "it": "Foto di gruppo rilevata",
+  "ja": "集合写真を検出",
+  "pt": "Foto em grupo detectada",
+  "zh": "发现合影"
  },
  "Guidance, not medical advice. Always check the label itself for allergens.": {
   "de": "Hinweise, keine medizinische Beratung. Prüfe Allergene immer auf dem Etikett selbst.",
@@ -5639,6 +5759,16 @@
   "pt": "No iCloud",
   "zh": "在 iCloud 中"
  },
+ "Indoor light": {
+  "de": "Innenlicht",
+  "es": "Luz interior",
+  "fr": "Lumière intérieure",
+  "hi": "घर के अंदर की रोशनी",
+  "it": "Luce interna",
+  "ja": "室内の光",
+  "pt": "Luz interna",
+  "zh": "室内光线"
+ },
  "Inking your panels…": {
   "de": "Panels werden gezeichnet …",
   "es": "Entintando tus viñetas…",
@@ -5718,6 +5848,16 @@
   "ja": "すでに十分圧縮されていました。",
   "pt": "Já estava bem comprimido.",
   "zh": "原本已经压缩得很好了。"
+ },
+ "It's dark — night mode": {
+  "de": "Es ist dunkel – Nachtmodus",
+  "es": "Está oscuro: modo noche",
+  "fr": "Il fait sombre — mode nuit",
+  "hi": "अंधेरा है — नाइट मोड",
+  "it": "È buio: modalità notte",
+  "ja": "暗いのでナイトモード",
+  "pt": "Está escuro — modo noturno",
+  "zh": "光线暗——夜间模式"
  },
  "It's now in your stickers — in Messages, WhatsApp and any app, from the emoji keyboard.": {
   "de": "Jetzt ist er in deinen Stickern – in Nachrichten, WhatsApp und jeder App, über die Emoji-Tastatur.",
@@ -6098,6 +6238,16 @@
   "ja": "ラベル",
   "pt": "Rótulo",
   "zh": "标签"
+ },
+ "Landscape spotted": {
+  "de": "Landschaft erkannt",
+  "es": "Paisaje detectado",
+  "fr": "Paysage repéré",
+  "hi": "लैंडस्केप दिखा",
+  "it": "Paesaggio rilevato",
+  "ja": "風景を検出",
+  "pt": "Paisagem detectada",
+  "zh": "发现风景"
  },
  "Language": {
   "de": "Sprache",
@@ -6539,6 +6689,16 @@
   "pt": "Parece pronta — todas as verificações passaram",
   "zh": "看起来没问题——全部检查通过"
  },
+ "Love it — save": {
+  "de": "Gefällt mir – speichern",
+  "es": "Me encanta: guardar",
+  "fr": "J'adore — enregistrer",
+  "hi": "पसंद है — सहेजें",
+  "it": "Mi piace: salva",
+  "ja": "いいね — 保存",
+  "pt": "Amei — salvar",
+  "zh": "喜欢——保存"
+ },
  "Low": {
   "de": "Niedrig",
   "es": "Bajo",
@@ -6858,6 +7018,16 @@
   "ja": "マニュアルISO・シャッター・RAW",
   "pt": "ISO manual, obturador, RAW",
   "zh": "手动 ISO、快门、RAW"
+ },
+ "Manual — your settings. Tap Back to automatic to let Tenzy set it up again.": {
+  "de": "Manuell – deine Einstellungen. Tippe auf „Zurück zu Automatik“, damit Tenzy wieder übernimmt.",
+  "es": "Manual: tus ajustes. Toca Volver a automático para que Tenzy lo configure de nuevo.",
+  "fr": "Manuel — vos réglages. Touchez Revenir en automatique pour que Tenzy reprenne la main.",
+  "hi": "मैनुअल — आपकी सेटिंग। Tenzy से फिर सेट कराने के लिए ऑटोमैटिक पर वापस टैप करें।",
+  "it": "Manuale: le tue impostazioni. Tocca Torna all'automatico per lasciar fare a Tenzy.",
+  "ja": "マニュアル — あなたの設定です。「自動に戻す」でTenzyが再び設定します。",
+  "pt": "Manual — suas configurações. Toque em Voltar ao automático para o Tenzy ajustar de novo.",
+  "zh": "手动——你的设置。轻点“返回自动”让 Tenzy 重新设置。"
  },
  "Manual: low ISO + slow shutter for clean night shots on a tripod; fast shutter to freeze motion. Zebras show what's blowing out.": {
   "de": "Manuell: niedriger ISO + lange Belichtung für saubere Nachtaufnahmen auf dem Stativ; kurze Belichtung friert Bewegung ein. Zebras zeigen, was ausbrennt.",
@@ -7349,6 +7519,16 @@
   "pt": "Mover para cima",
   "zh": "上移"
  },
+ "Movement spotted": {
+  "de": "Bewegung erkannt",
+  "es": "Movimiento detectado",
+  "fr": "Mouvement repéré",
+  "hi": "हलचल दिखी",
+  "it": "Movimento rilevato",
+  "ja": "動きを検出",
+  "pt": "Movimento detectado",
+  "zh": "发现移动"
+ },
  "Moving contacts from Gmail to your phone, or the other way? Pick the two places and tap the button. Nothing leaves your phone.": {
   "de": "Kontakte von Gmail aufs Handy verschieben, oder umgekehrt? Wähle die beiden Orte und tippe den Knopf. Nichts verlässt dein Handy.",
   "es": "¿Pasas contactos de Gmail a tu teléfono, o al revés? Elige los dos lugares y toca el botón. Nada sale de tu teléfono.",
@@ -7638,6 +7818,16 @@
   "ja": "夜間レコーダー",
   "pt": "Gravador noturno",
   "zh": "夜间录音"
+ },
+ "Night sky spotted": {
+  "de": "Nachthimmel erkannt",
+  "es": "Cielo nocturno detectado",
+  "fr": "Ciel nocturne repéré",
+  "hi": "रात का आसमान दिखा",
+  "it": "Cielo notturno rilevato",
+  "ja": "夜空を検出",
+  "pt": "Céu noturno detectado",
+  "zh": "发现夜空"
  },
  "No QR code here": {
   "de": "Kein QR-Code hier",
@@ -8559,6 +8749,16 @@
   "pt": "Tamanho da página",
   "zh": "页面大小"
  },
+ "Page spotted": {
+  "de": "Seite erkannt",
+  "es": "Página detectada",
+  "fr": "Page repérée",
+  "hi": "पेज दिखा",
+  "it": "Pagina rilevata",
+  "ja": "書類を検出",
+  "pt": "Página detectada",
+  "zh": "发现文档"
+ },
  "Pages are flattened to reach the size, so text won't be selectable in the copy.": {
   "de": "Die Seiten werden verflacht, um die Größe zu erreichen, daher ist der Text in der Kopie nicht markierbar.",
   "es": "Las páginas se aplanan para alcanzar el tamaño, así que el texto no se podrá seleccionar en la copia.",
@@ -8818,6 +9018,16 @@
   "ja": "周囲の長さ",
   "pt": "Perímetro",
   "zh": "周长"
+ },
+ "Pet spotted": {
+  "de": "Haustier erkannt",
+  "es": "Mascota detectada",
+  "fr": "Animal repéré",
+  "hi": "पालतू दिखा",
+  "it": "Animale rilevato",
+  "ja": "ペットを検出",
+  "pt": "Pet detectado",
+  "zh": "发现宠物"
  },
  "Pharmacies near me": {
   "de": "Apotheken in der Nähe",
@@ -9339,6 +9549,16 @@
   "pt": "Aponta a uma ementa, placa ou rótulo.",
   "zh": "对准菜单、标志或标签。"
  },
+ "Point it at anything — it sets itself up for the scene and coaches you to the best shot.": {
+  "de": "Richte sie auf irgendetwas – sie stellt sich auf die Szene ein und führt dich zum besten Bild.",
+  "es": "Apunta a lo que sea: se ajusta a la escena y te guía hasta la mejor foto.",
+  "fr": "Visez n'importe quoi — il s'adapte à la scène et vous guide vers la meilleure photo.",
+  "hi": "किसी भी चीज़ पर लगाएँ — यह दृश्य के हिसाब से खुद सेट होता है और बेहतरीन फ़ोटो तक गाइड करता है।",
+  "it": "Inquadra qualsiasi cosa: si regola sulla scena e ti guida allo scatto migliore.",
+  "ja": "何にでも向けるだけ。シーンに合わせて自動で設定し、最高の一枚へ導きます。",
+  "pt": "Aponte para qualquer coisa — ele se ajusta à cena e te guia até a melhor foto.",
+  "zh": "对准任何东西——它会根据场景自动设置，并指导你拍出最好的照片。"
+ },
  "Point the camera at a receipt, card, flyer, sign or document.": {
   "de": "Richte die Kamera auf einen Beleg, eine Karte, einen Flyer, ein Schild oder ein Dokument.",
   "es": "Apunta la cámara a un recibo, tarjeta, folleto, cartel o documento.",
@@ -9418,6 +9638,16 @@
   "ja": "豚肉",
   "pt": "Porco",
   "zh": "猪肉"
+ },
+ "Portrait spotted": {
+  "de": "Porträt erkannt",
+  "es": "Retrato detectado",
+  "fr": "Portrait repéré",
+  "hi": "पोर्ट्रेट दिखा",
+  "it": "Ritratto rilevato",
+  "ja": "ポートレートを検出",
+  "pt": "Retrato detectado",
+  "zh": "发现人像"
  },
  "Position": {
   "de": "Position",
@@ -11889,6 +12119,16 @@
   "pt": "Assina na caixa com o dedo. Fica guardado só neste telemóvel.",
   "zh": "用手指在框内签名。仅保存在本机上。"
  },
+ "Silhouette": {
+  "de": "Silhouette",
+  "es": "Silueta",
+  "fr": "Silhouette",
+  "hi": "सिल्हूट",
+  "it": "Silhouette",
+  "ja": "シルエット",
+  "pt": "Silhueta",
+  "zh": "剪影"
+ },
  "Size": {
   "de": "Größe",
   "es": "Tamaño",
@@ -12118,6 +12358,16 @@
   "ja": "写真の間をやわらかく溶け合わせる",
   "pt": "Dissolução suave entre fotos",
   "zh": "照片间柔和溶解"
+ },
+ "Soft glow": {
+  "de": "Weicher Glanz",
+  "es": "Brillo suave",
+  "fr": "Halo doux",
+  "hi": "हल्की चमक",
+  "it": "Bagliore soffuso",
+  "ja": "ソフトグロー",
+  "pt": "Brilho suave",
+  "zh": "柔光"
  },
  "Some days": {
   "de": "An bestimmten Tagen",
@@ -12589,6 +12839,16 @@
   "pt": "Estroboscópio, SOS, luz do ecrã, espelho",
   "zh": "频闪、SOS、屏幕灯、镜子"
  },
+ "Strong light behind": {
+  "de": "Starkes Gegenlicht",
+  "es": "Luz fuerte detrás",
+  "fr": "Forte lumière derrière",
+  "hi": "पीछे तेज़ रोशनी",
+  "it": "Luce forte dietro",
+  "ja": "強い逆光",
+  "pt": "Luz forte atrás",
+  "zh": "强烈逆光"
+ },
  "Strong sun — sunglasses and sunscreen.": {
   "de": "Starke Sonne – Sonnenbrille und Sonnencreme.",
   "es": "Sol fuerte: gafas de sol y protector solar.",
@@ -12659,6 +12919,16 @@
   "pt": "Resumo",
   "zh": "摘要"
  },
+ "Sunset spotted": {
+  "de": "Sonnenuntergang erkannt",
+  "es": "Atardecer detectado",
+  "fr": "Coucher de soleil repéré",
+  "hi": "सूर्यास्त दिखा",
+  "it": "Tramonto rilevato",
+  "ja": "夕日を検出",
+  "pt": "Pôr do sol detectado",
+  "zh": "发现日落"
+ },
  "Swap an audio file between M4A, WAV, AIFF and CAF — on your phone.": {
   "de": "Audiodateien zwischen M4A, WAV, AIFF und CAF umwandeln – auf dem Telefon.",
   "es": "Cambia un audio entre M4A, WAV, AIFF y CAF, en tu teléfono.",
@@ -12708,6 +12978,146 @@
   "ja": "メニューを撮影または選択。平らにして画面いっぱいに。",
   "pt": "Tire ou escolha uma foto do cardápio. Segure reto e preencha o quadro.",
   "zh": "拍摄或选择菜单照片。保持平整并填满画面。"
+ },
+ "Take the best bright-scene shot": {
+  "de": "Bestes Foto heller Szene",
+  "es": "Mejor foto de escena luminosa",
+  "fr": "Meilleure photo de scène lumineuse",
+  "hi": "चमकीले दृश्य की सबसे अच्छी फ़ोटो लें",
+  "it": "Il miglior scatto di scena luminosa",
+  "ja": "明るいシーンを最高に撮る",
+  "pt": "Melhor foto de cena clara",
+  "zh": "拍好明亮场景"
+ },
+ "Take the best close-up": {
+  "de": "Beste Nahaufnahme",
+  "es": "Mejor primer plano",
+  "fr": "Meilleur gros plan",
+  "hi": "सबसे अच्छा क्लोज़-अप लें",
+  "it": "Il miglior primo piano",
+  "ja": "最高のクローズアップを撮る",
+  "pt": "Melhor close",
+  "zh": "拍出最好的特写"
+ },
+ "Take the best food photo": {
+  "de": "Bestes Essensfoto",
+  "es": "Mejor foto de comida",
+  "fr": "Meilleure photo de plat",
+  "hi": "खाने की सबसे अच्छी फ़ोटो लें",
+  "it": "La miglior foto di cibo",
+  "ja": "最高の料理写真を撮る",
+  "pt": "Melhor foto de comida",
+  "zh": "拍出最好的美食照"
+ },
+ "Take the best group photo": {
+  "de": "Bestes Gruppenfoto",
+  "es": "Mejor foto de grupo",
+  "fr": "Meilleure photo de groupe",
+  "hi": "सबसे अच्छी ग्रुप फ़ोटो लें",
+  "it": "La miglior foto di gruppo",
+  "ja": "最高の集合写真を撮る",
+  "pt": "Melhor foto em grupo",
+  "zh": "拍出最好的合影"
+ },
+ "Take the best indoor photo": {
+  "de": "Bestes Innenfoto",
+  "es": "Mejor foto en interior",
+  "fr": "Meilleure photo en intérieur",
+  "hi": "घर के अंदर की सबसे अच्छी फ़ोटो लें",
+  "it": "La miglior foto in interni",
+  "ja": "室内で最高に撮る",
+  "pt": "Melhor foto em ambiente interno",
+  "zh": "拍出最好的室内照"
+ },
+ "Take the best landscape": {
+  "de": "Beste Landschaft",
+  "es": "Mejor paisaje",
+  "fr": "Meilleur paysage",
+  "hi": "सबसे अच्छा लैंडस्केप लें",
+  "it": "Il miglior paesaggio",
+  "ja": "最高の風景を撮る",
+  "pt": "Melhor paisagem",
+  "zh": "拍出最好的风景"
+ },
+ "Take the best night photo": {
+  "de": "Bestes Nachtfoto",
+  "es": "Mejor foto nocturna",
+  "fr": "Meilleure photo de nuit",
+  "hi": "सबसे अच्छी नाइट फ़ोटो लें",
+  "it": "La miglior foto notturna",
+  "ja": "最高の夜景を撮る",
+  "pt": "Melhor foto noturna",
+  "zh": "拍出最好的夜景"
+ },
+ "Take the best night-sky shot": {
+  "de": "Bestes Nachthimmelfoto",
+  "es": "Mejor foto del cielo nocturno",
+  "fr": "Meilleure photo du ciel nocturne",
+  "hi": "सबसे अच्छी रात के आसमान की फ़ोटो लें",
+  "it": "Il miglior scatto del cielo notturno",
+  "ja": "最高の夜空を撮る",
+  "pt": "Melhor foto do céu noturno",
+  "zh": "拍出最美夜空"
+ },
+ "Take the best pet photo": {
+  "de": "Bestes Haustierfoto",
+  "es": "Mejor foto de tu mascota",
+  "fr": "Meilleure photo de votre animal",
+  "hi": "पालतू की सबसे अच्छी फ़ोटो लें",
+  "it": "La miglior foto del tuo animale",
+  "ja": "最高のペット写真を撮る",
+  "pt": "Melhor foto do pet",
+  "zh": "拍出最好的宠物照"
+ },
+ "Take the best photo": {
+  "de": "Bestes Foto",
+  "es": "Mejor foto",
+  "fr": "Meilleure photo",
+  "hi": "सबसे अच्छी फ़ोटो लें",
+  "it": "La foto migliore",
+  "ja": "最高の一枚を撮る",
+  "pt": "Melhor foto",
+  "zh": "拍出最好的照片"
+ },
+ "Take the best portrait": {
+  "de": "Bestes Porträt",
+  "es": "Mejor retrato",
+  "fr": "Meilleur portrait",
+  "hi": "सबसे अच्छा पोर्ट्रेट लें",
+  "it": "Il miglior ritratto",
+  "ja": "最高のポートレートを撮る",
+  "pt": "Melhor retrato",
+  "zh": "拍出最好的人像"
+ },
+ "Take the best shot into the light": {
+  "de": "Bestes Gegenlichtfoto",
+  "es": "Mejor foto a contraluz",
+  "fr": "Meilleure photo à contre-jour",
+  "hi": "रोशनी की ओर सबसे अच्छी फ़ोटो लें",
+  "it": "Il miglior scatto controluce",
+  "ja": "逆光で最高に撮る",
+  "pt": "Melhor foto contra a luz",
+  "zh": "拍好逆光照"
+ },
+ "Take the best sunset shot": {
+  "de": "Bestes Sonnenuntergangsfoto",
+  "es": "Mejor foto del atardecer",
+  "fr": "Meilleure photo du coucher de soleil",
+  "hi": "सबसे अच्छी सूर्यास्त फ़ोटो लें",
+  "it": "Il miglior scatto al tramonto",
+  "ja": "最高の夕日を撮る",
+  "pt": "Melhor foto do pôr do sol",
+  "zh": "拍出最美日落"
+ },
+ "Take the clearest page photo": {
+  "de": "Klarste Seitenaufnahme",
+  "es": "La foto de página más nítida",
+  "fr": "Photo de page la plus nette",
+  "hi": "सबसे साफ़ पेज फ़ोटो लें",
+  "it": "La foto della pagina più nitida",
+  "ja": "いちばん読みやすく書類を撮る",
+  "pt": "Foto de página mais nítida",
+  "zh": "拍出最清晰的文档"
  },
  "Taken ✓": {
   "de": "Genommen ✓",
@@ -14059,6 +14469,16 @@
   "pt": "Viagem",
   "zh": "行程"
  },
+ "Try again": {
+  "de": "Nochmal",
+  "es": "Intentar de nuevo",
+  "fr": "Réessayer",
+  "hi": "फिर से कोशिश करें",
+  "it": "Riprova",
+  "ja": "撮り直す",
+  "pt": "Tentar de novo",
+  "zh": "再拍一张"
+ },
  "Try another size": {
   "de": "Andere Größe probieren",
   "es": "Probar otro tamaño",
@@ -14628,6 +15048,16 @@
   "ja": "動画の変換先",
   "pt": "Os vídeos tornam-se",
   "zh": "视频转为"
+ },
+ "Vivid": {
+  "de": "Lebendig",
+  "es": "Vívido",
+  "fr": "Éclatant",
+  "hi": "चटकीला",
+  "it": "Vivido",
+  "ja": "鮮やか",
+  "pt": "Vívido",
+  "zh": "鲜艳"
  },
  "Voice": {
   "de": "Stimme",
