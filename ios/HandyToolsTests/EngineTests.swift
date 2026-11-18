@@ -2245,6 +2245,44 @@ final class EngineTests: XCTestCase {
         for l in S.Look.allCases { XCTAssertEqual(S.apply(l, to: img).extent, img.extent, l.rawValue) }
     }
 
+    func testMyDayDiaryLogsLocksAndRemembers() throws {
+        var cal = Calendar(identifier: .gregorian); cal.firstWeekday = 1; cal.timeZone = TimeZone(identifier: "UTC")!
+        // November 2026 starts on a Sunday: 30 days → 5 weeks, first cell is the 1st.
+        let nov = DayDiary.monthGrid(year: 2026, month: 11, cal: cal)
+        XCTAssertEqual(nov.count, 5); XCTAssertEqual(nov[0][0], 1); XCTAssertTrue(nov.allSatisfy { $0.count == 7 })
+        XCTAssertEqual(nov.flatMap { $0 }.compactMap { $0 }.count, 30)
+        // Streak counts back from today (or yesterday if today isn't logged yet).
+        let today = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 18, hour: 21)))
+        let keys: Set<String> = ["2026-11-15", "2026-11-16", "2026-11-17"]
+        XCTAssertEqual(DayDiary.streak(keys, today: today, cal: cal), 3)
+        XCTAssertEqual(DayDiary.streak(keys.union(["2026-11-18"]), today: today, cal: cal), 4)
+        XCTAssertEqual(DayDiary.streak(["2026-11-10"], today: today, cal: cal), 0)
+        // PIN rules and hashing: same secret + salt → same hash; capitals/spaces in answers don't matter.
+        XCTAssertNotNil(DayDiary.pinProblem("12")); XCTAssertNotNil(DayDiary.pinProblem("1111")); XCTAssertNotNil(DayDiary.pinProblem("1234"))
+        XCTAssertNotNil(DayDiary.pinProblem("98a7")); XCTAssertNil(DayDiary.pinProblem("2580"))
+        let salt = Data(repeating: 7, count: 16)
+        XCTAssertEqual(DayDiary.hash(" Elm Street ", salt: salt), DayDiary.hash("elm street", salt: salt))
+        XCTAssertNotEqual(DayDiary.hash("2580", salt: salt), DayDiary.hash("2581", salt: salt))
+        XCTAssertEqual(DayDiary.hash("x", salt: salt).count, 32)
+        // The store: one tap saves today's mood (latest wins), notes add up, files are encrypted on disk.
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("diary-test-\(UUID().uuidString)")
+        defer { try? FileManager.default.removeItem(at: dir) }
+        let store = DiaryStore(folder: dir)
+        let day = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 3, day: 4, hour: 21)))
+        store.log(.bad, at: day)
+        let saved = try XCTUnwrap(store.log(.good, at: day, note: DayDiary.Note(at: day, mood: .good, transcript: "Lunch with Sam")))
+        XCTAssertEqual(saved.mood, .good); XCTAssertEqual(saved.notes.count, 1)
+        let k = DayDiary.key(day)
+        XCTAssertEqual(store.day(k)?.notes.first?.transcript, "Lunch with Sam")
+        XCTAssertTrue(store.allKeys().contains(k))
+        let c = Calendar.current.dateComponents([.year, .month], from: day)
+        XCTAssertEqual(store.days(inMonthOf: c.year!, c.month!).count, 1)
+        let raw = try Data(contentsOf: dir.appendingPathComponent(k + ".day"))
+        XCTAssertNil(String(data: raw, encoding: .utf8)?.range(of: "Lunch with Sam"), "never stored as plain text")
+        XCTAssertEqual(DayDiary.tally([saved]).good, 1)
+        XCTAssertTrue(DayDiary.message(for: .good).contains("tomorrow")); XCTAssertTrue(DayDiary.message(for: .bad).contains("tomorrow"))
+    }
+
     func testAnimateLooksAndPrintableFlipbook() throws {
         let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
         XCTAssertEqual(Animate.applyLook(.original, to: photos).count, 3)

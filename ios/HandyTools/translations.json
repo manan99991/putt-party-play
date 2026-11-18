@@ -259,6 +259,16 @@
   "pt": "Foi guardado um relatório de falha neste telemóvel. Enviá-lo para corrigir o erro? Nada é enviado a menos que toques em Enviar.",
   "zh": "本机已保存一份崩溃报告。发送它以便修复该缺陷？除非你点按「发送」，否则不会上传任何内容。"
  },
+ "A food you hated as a child": {
+  "de": "Ein Essen, das du als Kind gehasst hast",
+  "es": "Una comida que odiabas de niño",
+  "fr": "Un plat que vous détestiez enfant",
+  "hi": "बचपन में नापसंद खाना",
+  "it": "Un cibo che odiavi da bambino",
+  "ja": "子どもの頃に嫌いだった食べ物",
+  "pt": "Uma comida que você odiava quando criança",
+  "zh": "你小时候讨厌的食物"
+ },
  "A full glass of water": {
   "de": "Ein volles Glas Wasser",
   "es": "Un vaso de agua lleno",
@@ -268,6 +278,26 @@
   "ja": "コップ1杯の水",
   "pt": "Um copo cheio de água",
   "zh": "一整杯水"
+ },
+ "A good day": {
+  "de": "Ein guter Tag",
+  "es": "Un buen día",
+  "fr": "Une bonne journée",
+  "hi": "एक अच्छा दिन",
+  "it": "Una bella giornata",
+  "ja": "いい日",
+  "pt": "Um dia bom",
+  "zh": "美好的一天"
+ },
+ "A hard day": {
+  "de": "Ein schwerer Tag",
+  "es": "Un día difícil",
+  "fr": "Une journée difficile",
+  "hi": "एक मुश्किल दिन",
+  "it": "Una giornata difficile",
+  "ja": "大変な日",
+  "pt": "Um dia difícil",
+  "zh": "艰难的一天"
  },
  "A local record of what the app did — tools opened, how long actions took, UI freezes and crashes. Share it with me to debug a problem. It only leaves your phone when you send it.": {
   "de": "Ein lokales Protokoll der App — geöffnete Tools, Dauer von Aktionen, Hänger und Abstürze. Teile es zur Fehlersuche. Es verlässt dein Handy nur, wenn du es sendest.",
@@ -879,6 +909,16 @@
   "pt": "Resposta",
   "zh": "回答"
  },
+ "Answer your recovery question": {
+  "de": "Beantworte deine Wiederherstellungsfrage",
+  "es": "Responde a tu pregunta de recuperación",
+  "fr": "Répondez à votre question de récupération",
+  "hi": "अपने रिकवरी सवाल का जवाब दें",
+  "it": "Rispondi alla domanda di recupero",
+  "ja": "復旧用の質問に答える",
+  "pt": "Responda à sua pergunta de recuperação",
+  "zh": "回答你的找回问题"
+ },
  "Anything from the pharmacy aisle": {
   "de": "Etwas aus der Apothekenabteilung",
   "es": "Algo del pasillo de farmacia",
@@ -969,6 +1009,16 @@
   "pt": "Pedir",
   "zh": "提出需求"
  },
+ "Ask me every evening": {
+  "de": "Frag mich jeden Abend",
+  "es": "Pregúntame cada noche",
+  "fr": "Me demander chaque soir",
+  "hi": "हर शाम मुझसे पूछें",
+  "it": "Chiedimelo ogni sera",
+  "ja": "毎晩たずねて",
+  "pt": "Me pergunte toda noite",
+  "zh": "每晚问我"
+ },
  "Ask the pharmacist what suits your symptoms": {
   "de": "Frag in der Apotheke, was zu deinen Beschwerden passt",
   "es": "Pregunta al farmacéutico qué va bien para tus síntomas",
@@ -1018,6 +1068,16 @@
   "ja": "追跡できない支払いを求めている",
   "pt": "Pede um pagamento impossível de rastrear",
   "zh": "要求无法追踪的付款"
+ },
+ "At": {
+  "de": "Um",
+  "es": "A las",
+  "fr": "À",
+  "hi": "समय",
+  "it": "Alle",
+  "ja": "時刻",
+  "pt": "Às",
+  "zh": "时间"
  },
  "Audio": {
   "de": "Audio",
@@ -1318,6 +1378,26 @@
   "ja": "後ろ向き",
   "pt": "Para trás",
   "zh": "向后"
+ },
+ "Bad day": {
+  "de": "Schlechter Tag",
+  "es": "Mal día",
+  "fr": "Mauvaise journée",
+  "hi": "बुरा दिन",
+  "it": "Brutta giornata",
+  "ja": "悪い日",
+  "pt": "Dia ruim",
+  "zh": "糟糕的一天"
+ },
+ "Bad day — record why": {
+  "de": "Schlechter Tag – erzähl warum",
+  "es": "Mal día: graba por qué",
+  "fr": "Mauvaise journée — enregistrez pourquoi",
+  "hi": "बुरा दिन — वजह रिकॉर्ड करें",
+  "it": "Brutta giornata: registra perché",
+  "ja": "悪い日 — 理由を録音",
+  "pt": "Dia ruim — grave o porquê",
+  "zh": "糟糕的一天——录下原因"
  },
  "Badge": {
   "de": "Abzeichen",
@@ -1949,6 +2029,16 @@
   "pt": "Mudar velocidade",
   "zh": "变速"
  },
+ "Check": {
+  "de": "Prüfen",
+  "es": "Comprobar",
+  "fr": "Vérifier",
+  "hi": "जाँचें",
+  "it": "Verifica",
+  "ja": "確認",
+  "pt": "Verificar",
+  "zh": "验证"
+ },
  "Check it": {
   "de": "Prüfen",
   "es": "Compruébalo",
@@ -2068,6 +2158,16 @@
   "ja": "PDFフォーム（申請書・税・学校の書類など）を選んで、ここで記入。",
   "pt": "Escolha um formulário PDF — inscrição, impostos ou escola — e preencha aqui.",
   "zh": "选择PDF表单——申请表、税表或学校表格——在这里填写。"
+ },
+ "Choose a PIN only you know. You'll need it to look back at your days — not to save them.": {
+  "de": "Wähle eine PIN, die nur du kennst. Du brauchst sie zum Zurückschauen – nicht zum Speichern.",
+  "es": "Elige un PIN que solo tú sepas. Lo necesitarás para revisar tus días, no para guardarlos.",
+  "fr": "Choisissez un code que vous seul connaissez. Il sert à revoir vos journées, pas à les enregistrer.",
+  "hi": "ऐसा PIN चुनें जो सिर्फ़ आप जानते हों। दिन देखने के लिए चाहिए होगा — सहेजने के लिए नहीं।",
+  "it": "Scegli un PIN che conosci solo tu. Serve per rivedere le giornate, non per salvarle.",
+  "ja": "自分だけが知るPINを。振り返るときに必要で、記録には不要です。",
+  "pt": "Escolha um PIN que só você saiba. Ele serve para rever seus dias — não para salvar.",
+  "zh": "设置只有你知道的 PIN。回顾时需要，保存时不需要。"
  },
  "Choose a different PDF": {
   "de": "Anderes PDF wählen",
@@ -3329,6 +3429,16 @@
   "pt": "Não foi possível salvar o zip — tente de novo.",
   "zh": "无法保存zip——请重试。"
  },
+ "Couldn't save — try again.": {
+  "de": "Speichern fehlgeschlagen – nochmal versuchen.",
+  "es": "No se pudo guardar; inténtalo de nuevo.",
+  "fr": "Impossible d'enregistrer — réessayez.",
+  "hi": "सहेज नहीं सका — फिर कोशिश करें।",
+  "it": "Impossibile salvare, riprova.",
+  "ja": "保存できませんでした。もう一度お試しください。",
+  "pt": "Não foi possível salvar — tente de novo.",
+  "zh": "保存失败，请重试。"
+ },
  "Couldn't translate — the first time, iOS downloads the language. Try again in a moment.": {
   "de": "Übersetzung fehlgeschlagen – beim ersten Mal lädt iOS die Sprache. Gleich noch einmal versuchen.",
   "es": "No se pudo traducir: la primera vez, iOS descarga el idioma. Inténtalo en un momento.",
@@ -4399,6 +4509,16 @@
   "pt": "Introduz o preço e o tamanho de cada produto, e a sua unidade. O Tenzy normaliza-os à mesma medida para veres qual é mesmo mais barato — a embalagem maior muitas vezes não é.",
   "zh": "输入每件商品的价格和规格，再输入其单位。Tenzy 会将它们统一换算，让你看出到底哪个更便宜 — 大包装往往并不便宜。"
  },
+ "Enter your diary PIN": {
+  "de": "Tagebuch-PIN eingeben",
+  "es": "Introduce el PIN del diario",
+  "fr": "Saisissez le code du journal",
+  "hi": "डायरी का PIN डालें",
+  "it": "Inserisci il PIN del diario",
+  "ja": "日記のPINを入力",
+  "pt": "Digite o PIN do diário",
+  "zh": "输入日记 PIN"
+ },
  "Even lighting, no harsh shadows": {
   "de": "Gleichmäßiges Licht, keine harten Schatten",
   "es": "Luz uniforme, sin sombras duras",
@@ -4608,6 +4728,16 @@
   "ja": "やることすべて → 今日の気分に合わせたプランに。",
   "pt": "Tudo o que você tem pra fazer → um plano feito pra como você está hoje.",
   "zh": "手头所有事情 → 按你今天的状态定制的计划。"
+ },
+ "Everything on your plate, planned": {
+  "de": "Alles, was ansteht – geplant",
+  "es": "Todo lo que tienes pendiente, planificado",
+  "fr": "Tout ce que vous avez à faire, planifié",
+  "hi": "आपके सारे काम, प्लान किए हुए",
+  "it": "Tutto quello che hai da fare, pianificato",
+  "ja": "やることすべてをプランに",
+  "pt": "Tudo o que você tem pra fazer, planejado",
+  "zh": "手头所有事情，一并规划"
  },
  "Everything runs on your phone; nothing is uploaded. A merge is permanent — iOS has no contacts trash — so back up before you merge.": {
   "de": "Alles läuft auf deinem Handy; nichts wird hochgeladen. Eine Zusammenführung ist dauerhaft — iOS hat keinen Kontakte-Papierkorb — sichere also vorher.",
@@ -5299,6 +5429,16 @@
   "pt": "Para tradução com câmara em direto, usa Capturar — toca numa linha e escolhe Traduzir.",
   "zh": "若需实时相机翻译，请使用「捕捉」——在那里点按一行并选择「翻译」。"
  },
+ "Forgot your PIN?": {
+  "de": "PIN vergessen?",
+  "es": "¿Olvidaste el PIN?",
+  "fr": "Code oublié ?",
+  "hi": "PIN भूल गए?",
+  "it": "PIN dimenticato?",
+  "ja": "PINを忘れた？",
+  "pt": "Esqueceu o PIN?",
+  "zh": "忘记 PIN？"
+ },
  "Format": {
   "de": "Format",
   "es": "Formato",
@@ -5739,6 +5879,26 @@
   "pt": "Dourado",
   "zh": "金色"
  },
+ "Good day": {
+  "de": "Guter Tag",
+  "es": "Buen día",
+  "fr": "Bonne journée",
+  "hi": "अच्छा दिन",
+  "it": "Bella giornata",
+  "ja": "いい日",
+  "pt": "Dia bom",
+  "zh": "美好的一天"
+ },
+ "Good day — record why": {
+  "de": "Guter Tag – erzähl warum",
+  "es": "Buen día: graba por qué",
+  "fr": "Bonne journée — enregistrez pourquoi",
+  "hi": "अच्छा दिन — वजह रिकॉर्ड करें",
+  "it": "Bella giornata: registra perché",
+  "ja": "いい日 — 理由を録音",
+  "pt": "Dia bom — grave o porquê",
+  "zh": "美好的一天——录下原因"
+ },
  "Google, your phone, Exchange: copy or move in three taps.": {
   "de": "Google, dein Handy, Exchange: kopieren oder verschieben in drei Tipps.",
   "es": "Google, tu teléfono, Exchange: copia o mueve en tres toques.",
@@ -5908,6 +6068,16 @@
   "ja": "ヘルプ",
   "pt": "Ajuda",
   "zh": "帮助"
+ },
+ "Help me think": {
+  "de": "Hilf mir beim Denken",
+  "es": "Ayúdame a pensar",
+  "fr": "Aide-moi à réfléchir",
+  "hi": "सोचने में मदद करो",
+  "it": "Aiutami a pensare",
+  "ja": "考えるのを手伝って",
+  "pt": "Me ajuda a pensar",
+  "zh": "帮我想想"
  },
  "Here's the text it can now find and copy:": {
   "de": "Diesen Text kann es jetzt finden und kopieren:",
@@ -6089,6 +6259,16 @@
   "pt": "Como funciona a criação",
   "zh": "构建的工作原理"
  },
+ "How did today go? One tap — or tell it why. Private, locked, only on your phone.": {
+  "de": "Wie lief heute? Ein Tipp – oder erzähl warum. Privat, gesperrt, nur auf deinem Handy.",
+  "es": "¿Cómo fue hoy? Un toque, o cuenta por qué. Privado, bloqueado, solo en tu teléfono.",
+  "fr": "Comment s'est passée la journée ? Un geste — ou dites pourquoi. Privé, verrouillé, uniquement sur votre téléphone.",
+  "hi": "आज का दिन कैसा रहा? एक टैप — या बताइए क्यों। निजी, लॉक, सिर्फ़ आपके फ़ोन पर।",
+  "it": "Com'è andata oggi? Un tocco, o racconta perché. Privato, bloccato, solo sul tuo telefono.",
+  "ja": "今日はどうだった？ワンタップ、または理由を話して。非公開・ロック付き・スマホの中だけ。",
+  "pt": "Como foi hoje? Um toque — ou conte por quê. Privado, trancado, só no seu celular.",
+  "zh": "今天过得怎么样？点一下，或说说原因。私密、加锁、只存在你的手机上。"
+ },
  "How high can you hear? 8 → 20 kHz": {
   "de": "Wie hoch hörst du? 8 → 20 kHz",
   "es": "¿Hasta qué agudo oyes? 8 → 20 kHz",
@@ -6129,6 +6309,16 @@
   "pt": "Como usar",
   "zh": "使用方法"
  },
+ "How was today? One tap, or say why": {
+  "de": "Wie war heute? Ein Tipp – oder sag warum",
+  "es": "¿Qué tal hoy? Un toque, o cuenta por qué",
+  "fr": "Comment était aujourd'hui ? Un geste, ou dites pourquoi",
+  "hi": "आज कैसा रहा? एक टैप, या बताइए क्यों",
+  "it": "Com'è andata oggi? Un tocco, o di' perché",
+  "ja": "今日はどうだった？ワンタップか、理由を話して",
+  "pt": "Como foi hoje? Um toque, ou conte por quê",
+  "zh": "今天怎么样？点一下，或说说原因"
+ },
  "Huge": {
   "de": "Riesig",
   "es": "Enorme",
@@ -6158,6 +6348,26 @@
   "ja": "識別",
   "pt": "Identificar",
   "zh": "识别"
+ },
+ "If you forget it": {
+  "de": "Falls du sie vergisst",
+  "es": "Si lo olvidas",
+  "fr": "Si vous l'oubliez",
+  "hi": "अगर भूल जाएँ",
+  "it": "Se lo dimentichi",
+  "ja": "忘れたときのために",
+  "pt": "Se esquecer",
+  "zh": "如果忘记了"
+ },
+ "If you forget the PIN, this answer lets you set a new one. Pick something you'll always remember and others don't know. Capitals don't matter.": {
+  "de": "Wenn du die PIN vergisst, kannst du mit dieser Antwort eine neue setzen. Wähle etwas, das du nie vergisst und andere nicht wissen. Groß-/Kleinschreibung egal.",
+  "es": "Si olvidas el PIN, esta respuesta te deja poner uno nuevo. Elige algo que siempre recordarás y otros no saben. Las mayúsculas dan igual.",
+  "fr": "Si vous oubliez le code, cette réponse permet d'en choisir un nouveau. Choisissez quelque chose que vous n'oublierez pas et que les autres ignorent. Majuscules sans importance.",
+  "hi": "PIN भूलने पर यह जवाब नया PIN बनाने देता है। ऐसा कुछ चुनें जो आप हमेशा याद रखें और दूसरे न जानें। बड़े-छोटे अक्षरों से फ़र्क नहीं पड़ता।",
+  "it": "Se dimentichi il PIN, questa risposta ti permette di impostarne uno nuovo. Scegli qualcosa che ricorderai sempre e che altri non sanno. Le maiuscole non contano.",
+  "ja": "PINを忘れたら、この答えで新しいPINを設定できます。自分は忘れず、他人は知らないものを。大文字小文字は区別しません。",
+  "pt": "Se esquecer o PIN, esta resposta deixa você criar outro. Escolha algo que você sempre lembra e os outros não sabem. Maiúsculas não importam.",
+  "zh": "忘记 PIN 时，可用这个答案重设。选一个你永远记得、别人不知道的。不区分大小写。"
  },
  "In iCloud": {
   "de": "In iCloud",
@@ -7028,6 +7238,16 @@
   "ja": "混在した照明でショットごとに色が変わるときは固定します。",
   "pt": "Bloqueia-o quando a iluminação mista muda as cores entre disparos.",
   "zh": "当混合光线使每次拍摄的颜色不断变化时，将其锁定。"
+ },
+ "Lock my diary": {
+  "de": "Tagebuch sperren",
+  "es": "Bloquear mi diario",
+  "fr": "Verrouiller mon journal",
+  "hi": "मेरी डायरी लॉक करें",
+  "it": "Blocca il mio diario",
+  "ja": "日記をロック",
+  "pt": "Trancar meu diário",
+  "zh": "锁定我的日记"
  },
  "Lock now": {
   "de": "Jetzt sperren",
@@ -8049,6 +8269,26 @@
   "pt": "Deve ser inferior a",
   "zh": "必须小于"
  },
+ "My Day": {
+  "de": "Mein Tag",
+  "es": "Mi día",
+  "fr": "Ma journée",
+  "hi": "मेरा दिन",
+  "it": "La mia giornata",
+  "ja": "今日の記録",
+  "pt": "Meu dia",
+  "zh": "我的一天"
+ },
+ "My Day is locked": {
+  "de": "Mein Tag ist gesperrt",
+  "es": "Mi día está bloqueado",
+  "fr": "Ma journée est verrouillée",
+  "hi": "मेरा दिन लॉक है",
+  "it": "La mia giornata è bloccata",
+  "ja": "今日の記録はロック中",
+  "pt": "Meu dia está trancado",
+  "zh": "我的一天已锁定"
+ },
  "My Phone": {
   "de": "Mein Handy",
   "es": "Mi teléfono",
@@ -8058,6 +8298,16 @@
   "ja": "自分の端末",
   "pt": "Meu telemóvel",
   "zh": "我的手机"
+ },
+ "My days": {
+  "de": "Meine Tage",
+  "es": "Mis días",
+  "fr": "Mes journées",
+  "hi": "मेरे दिन",
+  "it": "Le mie giornate",
+  "ja": "私の日々",
+  "pt": "Meus dias",
+  "zh": "我的日子"
  },
  "My sheets": {
   "de": "Meine Tabellen",
@@ -8279,6 +8529,16 @@
   "pt": "Rosto neutro, boca fechada",
   "zh": "表情自然，闭嘴"
  },
+ "New PIN (4–8 numbers)": {
+  "de": "Neue PIN (4–8 Ziffern)",
+  "es": "Nuevo PIN (4–8 números)",
+  "fr": "Nouveau code (4 à 8 chiffres)",
+  "hi": "नया PIN (4–8 अंक)",
+  "it": "Nuovo PIN (4–8 cifre)",
+  "ja": "新しいPIN（4〜8桁）",
+  "pt": "Novo PIN (4–8 números)",
+  "zh": "新 PIN（4–8 位数字）"
+ },
  "New name": {
   "de": "Neuer Name",
   "es": "Nombre nuevo",
@@ -8308,6 +8568,16 @@
   "ja": "次へ",
   "pt": "Seguinte",
   "zh": "下一步"
+ },
+ "Next month": {
+  "de": "Nächster Monat",
+  "es": "Mes siguiente",
+  "fr": "Mois suivant",
+  "hi": "अगला महीना",
+  "it": "Mese successivo",
+  "ja": "次の月",
+  "pt": "Próximo mês",
+  "zh": "下个月"
  },
  "Next sentence": {
   "de": "Nächster Satz",
@@ -8829,6 +9099,16 @@
   "pt": "As notificações do Tenzy estão desativadas — ative em Ajustes para receber check-ins.",
   "zh": "Tenzy 的通知已关闭——请在“设置”中开启以接收提醒。"
  },
+ "Notifications are off for Tenzy — turn them on in Settings to get the evening question.": {
+  "de": "Mitteilungen für Tenzy sind aus – aktiviere sie in den Einstellungen für die Abendfrage.",
+  "es": "Las notificaciones de Tenzy están desactivadas; actívalas en Ajustes para recibir la pregunta de la noche.",
+  "fr": "Les notifications de Tenzy sont désactivées — activez-les dans Réglages pour recevoir la question du soir.",
+  "hi": "Tenzy की सूचनाएँ बंद हैं — शाम का सवाल पाने के लिए Settings में चालू करें।",
+  "it": "Le notifiche di Tenzy sono disattivate: attivale in Impostazioni per ricevere la domanda serale.",
+  "ja": "Tenzyの通知がオフです。夜の質問を受け取るには設定でオンに。",
+  "pt": "As notificações do Tenzy estão desativadas — ative em Ajustes para receber a pergunta da noite.",
+  "zh": "Tenzy 的通知已关闭——请在“设置”中开启以接收晚间提问。"
+ },
  "Notifications are off for Tenzy, so reminders can't alert you. Turn them on in Settings → Notifications → Tenzy.": {
   "de": "Mitteilungen sind für Tenzy aus, Erinnerungen können dich nicht benachrichtigen. Einschalten unter Einstellungen → Mitteilungen → Tenzy.",
   "es": "Las notificaciones de Tenzy están desactivadas, así que los recordatorios no pueden avisarte. Actívalas en Ajustes → Notificaciones → Tenzy.",
@@ -9268,6 +9548,16 @@
   "ja": "PDF",
   "pt": "PDFs",
   "zh": "PDF"
+ },
+ "PIN": {
+  "de": "PIN",
+  "es": "PIN",
+  "fr": "Code",
+  "hi": "PIN",
+  "it": "PIN",
+  "ja": "PIN",
+  "pt": "PIN",
+  "zh": "PIN"
  },
  "PRO": {
   "de": "PRO",
@@ -10279,6 +10569,16 @@
   "pt": "Pressão para agir rápido",
   "zh": "催促你立即行动"
  },
+ "Previous month": {
+  "de": "Voriger Monat",
+  "es": "Mes anterior",
+  "fr": "Mois précédent",
+  "hi": "पिछला महीना",
+  "it": "Mese precedente",
+  "ja": "前の月",
+  "pt": "Mês anterior",
+  "zh": "上个月"
+ },
  "Previous sentence": {
   "de": "Vorheriger Satz",
   "es": "Frase anterior",
@@ -10578,6 +10878,16 @@
   "ja": "画質",
   "pt": "Qualidade",
   "zh": "质量"
+ },
+ "Question": {
+  "de": "Frage",
+  "es": "Pregunta",
+  "fr": "Question",
+  "hi": "सवाल",
+  "it": "Domanda",
+  "ja": "質問",
+  "pt": "Pergunta",
+  "zh": "问题"
  },
  "Quick & light": {
   "de": "Kurz & leicht",
@@ -11029,6 +11339,26 @@
   "pt": "Gravar",
   "zh": "录音"
  },
+ "Recording — what made it good?": {
+  "de": "Aufnahme – was war gut?",
+  "es": "Grabando: ¿qué lo hizo bueno?",
+  "fr": "Enregistrement — qu'est-ce qui l'a rendue bonne ?",
+  "hi": "रिकॉर्डिंग — क्या अच्छा रहा?",
+  "it": "Registrazione: cosa l'ha resa bella?",
+  "ja": "録音中 — 何がよかった？",
+  "pt": "Gravando — o que foi bom?",
+  "zh": "录音中——什么让今天美好？"
+ },
+ "Recording — what made it hard?": {
+  "de": "Aufnahme – was war schwer?",
+  "es": "Grabando: ¿qué lo hizo difícil?",
+  "fr": "Enregistrement — qu'est-ce qui l'a rendue difficile ?",
+  "hi": "रिकॉर्डिंग — क्या मुश्किल रहा?",
+  "it": "Registrazione: cosa l'ha resa difficile?",
+  "ja": "録音中 — 何が大変だった？",
+  "pt": "Gravando — o que foi difícil?",
+  "zh": "录音中——什么让今天不好过？"
+ },
  "Recording → turns, to-dos, email": {
   "de": "Aufnahme → Abschnitte, To-dos, E-Mail",
   "es": "Grabación → turnos, tareas, correo",
@@ -11098,6 +11428,16 @@
   "ja": "リマインダー：",
   "pt": "Lembrete: ",
   "zh": "提醒："
+ },
+ "Reminders": {
+  "de": "Erinnerungen",
+  "es": "Recordatorios",
+  "fr": "Rappels",
+  "hi": "रिमाइंडर",
+  "it": "Promemoria",
+  "ja": "リマインダー",
+  "pt": "Lembretes",
+  "zh": "提醒"
  },
  "Reminders access is off. Turn it on in Settings › Tenzy and tap again.": {
   "de": "Zugriff auf Erinnerungen ist aus. Aktiviere ihn unter Einstellungen › Tenzy und tippe erneut.",
@@ -11389,6 +11729,16 @@
   "pt": "Ordem inversa",
   "zh": "反向排序"
  },
+ "Review my days": {
+  "de": "Meine Tage ansehen",
+  "es": "Ver mis días",
+  "fr": "Revoir mes journées",
+  "hi": "मेरे दिन देखें",
+  "it": "Rivedi le mie giornate",
+  "ja": "日々を振り返る",
+  "pt": "Rever meus dias",
+  "zh": "回顾我的日子"
+ },
  "Right": {
   "de": "Rechts",
   "es": "Derecha",
@@ -11598,6 +11948,16 @@
   "ja": "名前を保存",
   "pt": "Guardar nome",
   "zh": "保存名称"
+ },
+ "Save new PIN": {
+  "de": "Neue PIN speichern",
+  "es": "Guardar PIN nuevo",
+  "fr": "Enregistrer le nouveau code",
+  "hi": "नया PIN सहेजें",
+  "it": "Salva nuovo PIN",
+  "ja": "新しいPINを保存",
+  "pt": "Salvar novo PIN",
+  "zh": "保存新 PIN"
  },
  "Save note": {
   "de": "Notiz speichern",
@@ -11859,6 +12219,26 @@
   "pt": "Salvo — é isso que os players vão mostrar:",
   "zh": "已保存——播放器将显示如下："
  },
+ "Saved. We hope tomorrow is just as beautiful.": {
+  "de": "Gespeichert. Wir hoffen, morgen wird genauso schön.",
+  "es": "Guardado. Ojalá mañana sea igual de bonito.",
+  "fr": "Enregistré. Nous espérons que demain sera tout aussi beau.",
+  "hi": "सहेज लिया। उम्मीद है कल भी इतना ही खूबसूरत हो।",
+  "it": "Salvato. Speriamo che domani sia altrettanto bello.",
+  "ja": "保存しました。明日も素敵な一日になりますように。",
+  "pt": "Salvo. Que amanhã seja tão lindo quanto hoje.",
+  "zh": "已保存。愿明天也一样美好。"
+ },
+ "Saved. We hope tomorrow is kinder to you.": {
+  "de": "Gespeichert. Wir hoffen, morgen ist gnädiger zu dir.",
+  "es": "Guardado. Ojalá mañana sea más amable contigo.",
+  "fr": "Enregistré. Nous espérons que demain sera plus doux pour vous.",
+  "hi": "सहेज लिया। उम्मीद है कल आपके लिए बेहतर हो।",
+  "it": "Salvato. Speriamo che domani sia più gentile con te.",
+  "ja": "保存しました。明日はもっといい日になりますように。",
+  "pt": "Salvo. Que amanhã seja mais gentil com você.",
+  "zh": "已保存。愿明天对你温柔一些。"
+ },
  "Saves a dated copy to the Files app (and iCloud Drive if it's on) on the schedule you pick, so a lost phone never means lost contacts.": {
   "de": "Speichert eine datierte Kopie in der Dateien-App (und in iCloud Drive, falls aktiviert) im von dir gewählten Rhythmus, damit ein verlorenes Handy nie verlorene Kontakte bedeutet.",
   "es": "Guarda una copia con fecha en la app Archivos (y en iCloud Drive si está activado) según la frecuencia que elijas, para que perder el teléfono nunca signifique perder los contactos.",
@@ -11878,6 +12258,16 @@
   "ja": "音声だけをM4Aで保存 — 送信、文字起こし、着信音の素材に。",
   "pt": "Salva só o som como M4A para enviar, transcrever ou usar como toque.",
   "zh": "仅把声音存为M4A，可发送、转写或做铃声素材。"
+ },
+ "Saving a day never needs your PIN. Looking back does. Your diary is encrypted on this phone and never uploaded.": {
+  "de": "Zum Speichern brauchst du nie die PIN, zum Zurückschauen schon. Dein Tagebuch ist auf diesem Handy verschlüsselt und wird nie hochgeladen.",
+  "es": "Guardar un día nunca pide tu PIN. Revisar el pasado sí. Tu diario está cifrado en este teléfono y nunca se sube.",
+  "fr": "Enregistrer une journée ne demande jamais votre code. Revenir en arrière, si. Votre journal est chiffré sur ce téléphone et jamais envoyé.",
+  "hi": "दिन सहेजने के लिए PIN कभी नहीं चाहिए। पीछे देखने के लिए चाहिए। आपकी डायरी इसी फ़ोन पर एन्क्रिप्टेड है और कभी अपलोड नहीं होती।",
+  "it": "Salvare una giornata non chiede mai il PIN. Guardare indietro sì. Il diario è cifrato su questo telefono e non viene mai caricato.",
+  "ja": "記録にPINは不要。振り返るときだけ必要です。日記はこのスマホ内で暗号化され、アップロードされません。",
+  "pt": "Salvar um dia nunca pede o PIN. Olhar para trás pede. Seu diário é criptografado neste celular e nunca é enviado.",
+  "zh": "保存一天从不需要 PIN，回顾时才需要。你的日记在这部手机上加密，从不上传。"
  },
  "Saving…": {
   "de": "Wird gesichert …",
@@ -12298,6 +12688,16 @@
   "ja": "リンクを送信",
   "pt": "Enviar a ligação",
   "zh": "发送链接"
+ },
+ "Set a new PIN": {
+  "de": "Neue PIN festlegen",
+  "es": "Crear un PIN nuevo",
+  "fr": "Choisir un nouveau code",
+  "hi": "नया PIN सेट करें",
+  "it": "Imposta un nuovo PIN",
+  "ja": "新しいPINを設定",
+  "pt": "Criar um novo PIN",
+  "zh": "设置新 PIN"
  },
  "Set a song's title, artist, album and cover art.": {
   "de": "Titel, Interpret, Album und Cover eines Songs festlegen.",
@@ -13559,6 +13959,16 @@
   "pt": "Parar",
   "zh": "停止"
  },
+ "Stop and save": {
+  "de": "Stoppen und speichern",
+  "es": "Detener y guardar",
+  "fr": "Arrêter et enregistrer",
+  "hi": "रोकें और सहेजें",
+  "it": "Ferma e salva",
+  "ja": "停止して保存",
+  "pt": "Parar e salvar",
+  "zh": "停止并保存"
+ },
  "Stop at a natural break and note where you left off": {
   "de": "An einer passenden Stelle aufhören und notieren, wo du warst",
   "es": "Para en una pausa natural y anota dónde lo dejaste",
@@ -14069,6 +14479,16 @@
   "pt": "Toca no botão flutuante em qualquer app para capturar.",
   "zh": "在任意应用中点按悬浮按钮即可截取。"
  },
+ "Tap the middle to say why": {
+  "de": "Tippe in die Mitte, um zu sagen warum",
+  "es": "Toca el centro para contar por qué",
+  "fr": "Touchez le centre pour dire pourquoi",
+  "hi": "वजह बताने के लिए बीच में टैप करें",
+  "it": "Tocca al centro per dire perché",
+  "ja": "真ん中をタップして理由を話す",
+  "pt": "Toque no meio para dizer por quê",
+  "zh": "点中间说说原因"
+ },
  "Tap the picture to focus. Every button below starts from the camera's own best auto settings.": {
   "de": "Tippe aufs Bild, um zu fokussieren. Jeder Knopf unten startet mit den besten Auto-Einstellungen der Kamera.",
   "es": "Toca la imagen para enfocar. Cada botón de abajo parte de los mejores ajustes automáticos de la cámara.",
@@ -14228,6 +14648,16 @@
   "ja": "写真への追加にはTenzyの許可が必要です — 設定 → プライバシー → 写真 → Tenzy で許可するか、コピーを使ってください。",
   "pt": "O Tenzy precisa de permissão para adicionar a Fotos — permita em Ajustes → Privacidade → Fotos → Tenzy, ou use Copiar.",
   "zh": "Tenzy需要“添加到照片”的权限——请在设置→隐私→照片→Tenzy中允许，或使用复制。"
+ },
+ "Tenzy needs the microphone to record — allow it in Settings, or just tap Good or Bad.": {
+  "de": "Tenzy braucht das Mikrofon – erlaube es in den Einstellungen oder tippe einfach Gut oder Schlecht.",
+  "es": "Tenzy necesita el micrófono para grabar; permítelo en Ajustes o simplemente toca Bueno o Malo.",
+  "fr": "Tenzy a besoin du micro pour enregistrer — autorisez-le dans Réglages, ou touchez simplement Bonne ou Mauvaise.",
+  "hi": "रिकॉर्ड करने के लिए Tenzy को माइक्रोफ़ोन चाहिए — Settings में अनुमति दें, या बस अच्छा या बुरा टैप करें।",
+  "it": "Tenzy ha bisogno del microfono: consentilo in Impostazioni, o tocca semplicemente Bella o Brutta.",
+  "ja": "録音にはマイクが必要です。設定で許可するか、「いい日」「悪い日」をタップしてください。",
+  "pt": "O Tenzy precisa do microfone para gravar — permita em Ajustes, ou só toque em Bom ou Ruim.",
+  "zh": "录音需要麦克风——请在“设置”中允许，或直接点“好”或“不好”。"
  },
  "Tenzy reads your photos and videos on this device to show what's using space. Nothing is uploaded.": {
   "de": "Tenzy liest deine Fotos und Videos auf diesem Gerät, um zu zeigen, was Speicher belegt. Nichts wird hochgeladen.",
@@ -14419,6 +14849,16 @@
   "pt": "Esse PDF tem senha — remova primeiro com Proteger.",
   "zh": "该PDF已加密——请先用“保护”移除密码。"
  },
+ "That answer doesn't match. Capitals and spaces don't matter — try again.": {
+  "de": "Die Antwort passt nicht. Groß-/Kleinschreibung und Leerzeichen egal – nochmal.",
+  "es": "Esa respuesta no coincide. Mayúsculas y espacios dan igual; inténtalo de nuevo.",
+  "fr": "Cette réponse ne correspond pas. Majuscules et espaces sans importance — réessayez.",
+  "hi": "जवाब मेल नहीं खाता। बड़े-छोटे अक्षर और स्पेस से फ़र्क नहीं पड़ता — फिर कोशिश करें।",
+  "it": "La risposta non corrisponde. Maiuscole e spazi non contano: riprova.",
+  "ja": "答えが一致しません。大文字小文字や空白は関係ありません。もう一度。",
+  "pt": "Essa resposta não confere. Maiúsculas e espaços não importam — tente de novo.",
+  "zh": "答案不匹配。大小写和空格不影响，请再试一次。"
+ },
  "That file has no audio Tenzy can read.": {
   "de": "Diese Datei hat keinen Ton, den Tenzy lesen kann.",
   "es": "Ese archivo no tiene audio que Tenzy pueda leer.",
@@ -14469,6 +14909,16 @@
   "pt": "É só uma verificação do endereço — não digite senhas nem dados de cartão se não confiar no site.",
   "zh": "这只是检查地址——除非信任该网站，否则不要输入密码或银行卡信息。"
  },
+ "That's not it — try again.": {
+  "de": "Das ist sie nicht – nochmal versuchen.",
+  "es": "No es ese; inténtalo de nuevo.",
+  "fr": "Ce n'est pas ça — réessayez.",
+  "hi": "यह सही नहीं — फिर कोशिश करें।",
+  "it": "Non è questo, riprova.",
+  "ja": "違います。もう一度。",
+  "pt": "Não é esse — tente de novo.",
+  "zh": "不对，请再试一次。"
+ },
  "That's off your mind.": {
   "de": "Das ist aus dem Kopf.",
   "es": "Eso ya no te preocupa.",
@@ -14498,6 +14948,16 @@
   "ja": "カメラ本来の最適な自動設定。",
   "pt": "As melhores configurações automáticas da câmera.",
   "zh": "相机自身的最佳自动设置。"
+ },
+ "The city where your parents met": {
+  "de": "Die Stadt, in der sich deine Eltern kennenlernten",
+  "es": "La ciudad donde se conocieron tus padres",
+  "fr": "La ville où vos parents se sont rencontrés",
+  "hi": "वह शहर जहाँ आपके माता-पिता मिले",
+  "it": "La città dove si sono conosciuti i tuoi genitori",
+  "ja": "両親が出会った街",
+  "pt": "A cidade onde seus pais se conheceram",
+  "zh": "你父母相识的城市"
  },
  "The code is generated on your phone. Wi-Fi codes carry the password in plain text — share them only with people you'd give the password to.": {
   "de": "Der Code wird auf deinem Handy erzeugt. WLAN-Codes enthalten das Passwort im Klartext — teile sie nur mit Leuten, denen du das Passwort geben würdest.",
@@ -14669,6 +15129,16 @@
   "pt": "O início",
   "zh": "开头"
  },
+ "The street you grew up on": {
+  "de": "Die Straße, in der du aufgewachsen bist",
+  "es": "La calle donde creciste",
+  "fr": "La rue où vous avez grandi",
+  "hi": "वह गली जहाँ आप बड़े हुए",
+  "it": "La via in cui sei cresciuto",
+  "ja": "育った通りの名前",
+  "pt": "A rua onde você cresceu",
+  "zh": "你长大的那条街"
+ },
  "The sun is very bright — I've darkened it to keep the colours.": {
   "de": "Die Sonne ist sehr hell – ich habe abgedunkelt, damit die Farben bleiben.",
   "es": "El sol es muy brillante: lo he oscurecido para conservar los colores.",
@@ -14688,6 +15158,16 @@
   "ja": "トーチは実際のカメラフラッシュです。パターンやモールスはそれで動作し、フラッシュがない場合は画面ライトで動作します。",
   "pt": "A lanterna é o flash real da câmara. Os padrões e o morse correm nele; sem unidade de flash, usam a luz do ecrã.",
   "zh": "手电筒是真正的相机闪光灯。图案和摩尔斯在它上面运行；没有闪光灯单元时则用屏幕补光。"
+ },
+ "The two PINs don't match.": {
+  "de": "Die beiden PINs stimmen nicht überein.",
+  "es": "Los dos PIN no coinciden.",
+  "fr": "Les deux codes ne correspondent pas.",
+  "hi": "दोनों PIN मेल नहीं खाते।",
+  "it": "I due PIN non corrispondono.",
+  "ja": "2つのPINが一致しません。",
+  "pt": "Os dois PINs não conferem.",
+  "zh": "两次 PIN 不一致。"
  },
  "The work weight is lighter, and you can stop thinking about it.": {
   "de": "Die Arbeit wiegt weniger, und du kannst aufhören, daran zu denken.",
@@ -15149,6 +15629,16 @@
   "pt": "Hoje",
   "zh": "今天"
  },
+ "Today so far:": {
+  "de": "Heute bisher:",
+  "es": "Hoy por ahora:",
+  "fr": "Aujourd'hui pour l'instant :",
+  "hi": "आज अब तक:",
+  "it": "Oggi finora:",
+  "ja": "今日はここまで：",
+  "pt": "Hoje até agora:",
+  "zh": "今天到目前为止："
+ },
  "Today's date is added each time it runs.": {
   "de": "Das heutige Datum wird bei jeder Ausführung hinzugefügt.",
   "es": "La fecha de hoy se añade cada vez que se ejecuta.",
@@ -15168,6 +15658,26 @@
   "ja": "暗すぎます — 窓や照明の方を向いてください。",
   "pt": "Escuro demais — fique de frente para uma janela ou luz.",
   "zh": "太暗了——请面向窗户或灯光。"
+ },
+ "Too easy to guess — avoid 1234-style runs.": {
+  "de": "Zu leicht zu erraten – keine Folgen wie 1234.",
+  "es": "Muy fácil de adivinar: evita secuencias tipo 1234.",
+  "fr": "Trop facile à deviner — évitez les suites type 1234.",
+  "hi": "अंदाज़ा लगाना आसान — 1234 जैसे क्रम से बचें।",
+  "it": "Troppo facile: evita sequenze tipo 1234.",
+  "ja": "推測されやすいです。1234のような並びは避けて。",
+  "pt": "Fácil demais — evite sequências tipo 1234.",
+  "zh": "太容易猜——别用 1234 这样的连号。"
+ },
+ "Too easy to guess — avoid one digit repeated.": {
+  "de": "Zu leicht zu erraten – keine wiederholte Ziffer.",
+  "es": "Muy fácil de adivinar: evita repetir un dígito.",
+  "fr": "Trop facile à deviner — évitez un chiffre répété.",
+  "hi": "अंदाज़ा लगाना आसान — एक ही अंक दोहराने से बचें।",
+  "it": "Troppo facile: evita una cifra ripetuta.",
+  "ja": "推測されやすいです。同じ数字の繰り返しは避けて。",
+  "pt": "Fácil demais — evite repetir um dígito.",
+  "zh": "太容易猜——别用重复的数字。"
  },
  "Too good to be true": {
   "de": "Zu gut, um wahr zu sein",
@@ -15609,6 +16119,16 @@
   "pt": "Digite num formulário e marque as caixas",
   "zh": "在表单中输入并勾选"
  },
+ "Type it again": {
+  "de": "Nochmal eingeben",
+  "es": "Escríbelo de nuevo",
+  "fr": "Saisissez-le à nouveau",
+  "hi": "फिर से लिखें",
+  "it": "Digitalo di nuovo",
+  "ja": "もう一度入力",
+  "pt": "Digite de novo",
+  "zh": "再输入一次"
+ },
  "Type on it with Sign": {
   "de": "Mit „Unterschreiben“ darauf tippen",
   "es": "Escribir con Firmar",
@@ -15879,6 +16399,26 @@
   "pt": "Usar",
   "zh": "使用"
  },
+ "Use 4 to 8 numbers.": {
+  "de": "Nutze 4 bis 8 Ziffern.",
+  "es": "Usa de 4 a 8 números.",
+  "fr": "Utilisez 4 à 8 chiffres.",
+  "hi": "4 से 8 अंक इस्तेमाल करें।",
+  "it": "Usa da 4 a 8 cifre.",
+  "ja": "4〜8桁の数字にしてください。",
+  "pt": "Use de 4 a 8 números.",
+  "zh": "请使用 4 到 8 位数字。"
+ },
+ "Use Face ID": {
+  "de": "Face ID verwenden",
+  "es": "Usar Face ID",
+  "fr": "Utiliser Face ID",
+  "hi": "Face ID इस्तेमाल करें",
+  "it": "Usa Face ID",
+  "ja": "Face IDを使う",
+  "pt": "Usar Face ID",
+  "zh": "使用面容 ID"
+ },
  "Use this as the source (e.g. trim, then shrink)": {
   "de": "Dies als Quelle verwenden (z. B. kürzen, dann verkleinern)",
   "es": "Usar esto como origen (p. ej. recortar y luego reducir)",
@@ -15988,6 +16528,16 @@
   "ja": "ボイスメモの要約",
   "pt": "Resumo da nota de voz",
   "zh": "语音笔记摘要"
+ },
+ "Voice note — tap play to listen.": {
+  "de": "Sprachnotiz – zum Anhören auf Play tippen.",
+  "es": "Nota de voz: toca reproducir para escucharla.",
+  "fr": "Note vocale — touchez lecture pour l'écouter.",
+  "hi": "वॉइस नोट — सुनने के लिए प्ले दबाएँ।",
+  "it": "Nota vocale: tocca play per ascoltarla.",
+  "ja": "音声メモ — 再生をタップして聞く。",
+  "pt": "Nota de voz — toque em reproduzir para ouvir.",
+  "zh": "语音——点播放收听。"
  },
  "Voice → Notes": {
   "de": "Stimme → Notizen",
@@ -16519,6 +17069,16 @@
   "pt": "Amarelo",
   "zh": "黄色"
  },
+ "You can answer Good or Bad right from the notification.": {
+  "de": "Du kannst direkt in der Mitteilung mit Gut oder Schlecht antworten.",
+  "es": "Puedes responder Bueno o Malo desde la propia notificación.",
+  "fr": "Vous pouvez répondre Bonne ou Mauvaise directement depuis la notification.",
+  "hi": "आप सूचना से ही अच्छा या बुरा जवाब दे सकते हैं।",
+  "it": "Puoi rispondere Bella o Brutta direttamente dalla notifica.",
+  "ja": "通知からそのまま「いい日」「悪い日」で答えられます。",
+  "pt": "Dá pra responder Bom ou Ruim direto na notificação.",
+  "zh": "可直接在通知里回答“好”或“不好”。"
+ },
  "You can still fill it: open Sign and use “Add text” to type anywhere on the page, then add your signature.": {
   "de": "Du kannst es trotzdem ausfüllen: Öffne „Unterschreiben“, tippe mit „Text hinzufügen“ irgendwo auf die Seite und füge deine Unterschrift hinzu.",
   "es": "Aun así puedes rellenarlo: abre Firmar, usa «Añadir texto» para escribir en cualquier parte y añade tu firma.",
@@ -16538,6 +17098,16 @@
   "ja": "今日は全力でなくて大丈夫。小さな一歩と休憩をはさんで、ゆっくりでもちゃんと終わります。",
   "pt": "Você não precisa fazer tudo a toda hoje. Passos pequenos, pausas no meio — com calma também dá conta.",
   "zh": "今天不必全速前进。小步走，中间休息——慢慢来也能做完。"
+ },
+ "You logged the day with one tap — no voice note.": {
+  "de": "Du hast den Tag mit einem Tipp eingetragen – ohne Sprachnotiz.",
+  "es": "Registraste el día con un toque, sin nota de voz.",
+  "fr": "Vous avez noté la journée d'un geste — sans note vocale.",
+  "hi": "आपने दिन एक टैप से दर्ज किया — कोई वॉइस नोट नहीं।",
+  "it": "Hai registrato la giornata con un tocco, senza nota vocale.",
+  "ja": "ワンタップで記録しました（音声メモなし）。",
+  "pt": "Você registrou o dia com um toque — sem nota de voz.",
+  "zh": "你用一键记录了这一天——没有语音。"
  },
  "You're Pro. Thank you.": {
   "de": "Du bist Pro. Danke.",
@@ -16579,6 +17149,16 @@
   "pt": "Você tem o que precisa para se sentir melhor.",
   "zh": "你有了让自己好起来的东西。"
  },
+ "Your answer": {
+  "de": "Deine Antwort",
+  "es": "Tu respuesta",
+  "fr": "Votre réponse",
+  "hi": "आपका जवाब",
+  "it": "La tua risposta",
+  "ja": "あなたの答え",
+  "pt": "Sua resposta",
+  "zh": "你的答案"
+ },
  "Your best focus block, with the small stuff out of the way first.": {
   "de": "Dein bester Fokus-Block, nachdem der Kleinkram erledigt ist.",
   "es": "Tu mejor bloque de concentración, con lo pequeño ya resuelto.",
@@ -16609,6 +17189,26 @@
   "pt": "Seu corpo está pedindo — com um pouco de energia, o resto fica mais fácil.",
   "zh": "身体需要它——补充一点能量，后面都更轻松。"
  },
+ "Your childhood best friend's first name": {
+  "de": "Vorname deiner besten Kindheitsfreundin/deines besten Kindheitsfreundes",
+  "es": "El nombre de tu mejor amigo de la infancia",
+  "fr": "Le prénom de votre meilleur ami d'enfance",
+  "hi": "बचपन के सबसे अच्छे दोस्त का नाम",
+  "it": "Il nome del tuo migliore amico d'infanzia",
+  "ja": "子どもの頃の親友の名前",
+  "pt": "O nome do seu melhor amigo de infância",
+  "zh": "你童年最好朋友的名字"
+ },
+ "Your diary PIN": {
+  "de": "Deine Tagebuch-PIN",
+  "es": "El PIN de tu diario",
+  "fr": "Le code de votre journal",
+  "hi": "आपकी डायरी का PIN",
+  "it": "Il PIN del tuo diario",
+  "ja": "日記のPIN",
+  "pt": "O PIN do seu diário",
+  "zh": "你的日记 PIN"
+ },
  "Your diet": {
   "de": "Deine Ernährung",
   "es": "Tu dieta",
@@ -16618,6 +17218,26 @@
   "ja": "あなたの食事制限",
   "pt": "Sua dieta",
   "zh": "你的饮食"
+ },
+ "Your favourite teacher's last name": {
+  "de": "Nachname deiner Lieblingslehrkraft",
+  "es": "El apellido de tu profesor favorito",
+  "fr": "Le nom de votre professeur préféré",
+  "hi": "आपके पसंदीदा शिक्षक का उपनाम",
+  "it": "Il cognome del tuo insegnante preferito",
+  "ja": "好きだった先生の名字",
+  "pt": "O sobrenome do seu professor favorito",
+  "zh": "你最喜欢的老师的姓"
+ },
+ "Your first pet's name": {
+  "de": "Name deines ersten Haustiers",
+  "es": "El nombre de tu primera mascota",
+  "fr": "Le nom de votre premier animal",
+  "hi": "आपके पहले पालतू का नाम",
+  "it": "Il nome del tuo primo animale",
+  "ja": "初めて飼ったペットの名前",
+  "pt": "O nome do seu primeiro pet",
+  "zh": "你第一只宠物的名字"
  },
  "Your medicines": {
   "de": "Deine Medikamente",
@@ -16759,6 +17379,26 @@
   "pt": "um PDF",
   "zh": "PDF"
  },
+ "a good day": {
+  "de": "ein guter Tag",
+  "es": "un buen día",
+  "fr": "une bonne journée",
+  "hi": "अच्छा दिन",
+  "it": "una bella giornata",
+  "ja": "いい日",
+  "pt": "um dia bom",
+  "zh": "美好的一天"
+ },
+ "a hard day": {
+  "de": "ein schwerer Tag",
+  "es": "un día difícil",
+  "fr": "une journée difficile",
+  "hi": "मुश्किल दिन",
+  "it": "una giornata difficile",
+  "ja": "大変な日",
+  "pt": "um dia difícil",
+  "zh": "艰难的一天"
+ },
  "a spreadsheet": {
   "de": "eine Tabelle",
   "es": "una hoja de cálculo",
@@ -16829,6 +17469,16 @@
   "pt": "dias para devolução",
   "zh": "天退货"
  },
+ "days in a row": {
+  "de": "Tage in Folge",
+  "es": "días seguidos",
+  "fr": "jours d'affilée",
+  "hi": "दिन लगातार",
+  "it": "giorni di fila",
+  "ja": "日連続",
+  "pt": "dias seguidos",
+  "zh": "天连续"
+ },
  "e.g. 1-2, 3, 4-  (blank = every page)": {
   "de": "z. B. 1-2, 3, 4-  (leer = jede Seite)",
   "es": "p. ej. 1-2, 3, 4-  (vacío = todas las páginas)",
@@ -16878,6 +17528,26 @@
   "ja": "服用分は、近いものが過ぎるにつれて予約されます。ときどきTenzyを開いて補充してください。",
   "pt": "doses mais distantes serão agendadas conforme as próximas passarem. Abra o Tenzy de vez em quando para completar.",
   "zh": "剂量会在较近的过去后再排上。偶尔打开Tenzy补充一下。"
+ },
+ "good": {
+  "de": "gut",
+  "es": "buenos",
+  "fr": "bonnes",
+  "hi": "अच्छे",
+  "it": "belle",
+  "ja": "いい日",
+  "pt": "bons",
+  "zh": "好"
+ },
+ "hard": {
+  "de": "schwer",
+  "es": "difíciles",
+  "fr": "difficiles",
+  "hi": "मुश्किल",
+  "it": "difficili",
+  "ja": "大変な日",
+  "pt": "difíceis",
+  "zh": "难"
  },
  "has a date": {
   "de": "hat ein Datum",
@@ -17018,6 +17688,16 @@
   "ja": "メモ",
   "pt": "nota",
   "zh": "笔记"
+ },
+ "nothing logged": {
+  "de": "nichts eingetragen",
+  "es": "sin registro",
+  "fr": "rien noté",
+  "hi": "कुछ दर्ज नहीं",
+  "it": "niente registrato",
+  "ja": "記録なし",
+  "pt": "nada registrado",
+  "zh": "无记录"
  },
  "payments or bank accounts": {
   "de": "Zahlungen oder Bankkonten",
@@ -17268,6 +17948,16 @@
   "ja": "翻訳",
   "pt": "tradução",
   "zh": "翻译"
+ },
+ "voice note(s)": {
+  "de": "Sprachnotiz(en)",
+  "es": "nota(s) de voz",
+  "fr": "note(s) vocale(s)",
+  "hi": "वॉइस नोट",
+  "it": "nota/e vocale/i",
+  "ja": "件の音声メモ",
+  "pt": "nota(s) de voz",
+  "zh": "条语音"
  },
  "we'll remind you 2 days before and on the last day.": {
   "de": "wir erinnern dich 2 Tage vorher und am letzten Tag.",

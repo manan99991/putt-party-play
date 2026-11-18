@@ -13,6 +13,8 @@ struct ExploreView: View {
     /// The catalog, grouped the way the three pages already divide it, plus Think & plan.
     private let groups: [(title: String, page: Int)] = [
         ("Photo, video & sharing", 1),
+        ("Help me think", 9),
+        ("Reminders", 8),
         ("Animate & create", 7),
         ("Scan, read & organize", 2),
         ("Everyday, sensors & accessibility", 3),
