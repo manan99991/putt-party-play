@@ -1335,4 +1335,23 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(plan.contains("mailto:"))           // landlord → draft email
         XCTAssertTrue(plan.contains("tel:5551234567"))    // mom → call
     }
+
+    func testRedactionTrulyRemovesHiddenText() throws {
+        // A searchable PDF carrying an invisible, selectable text layer that reads "SECRET".
+        let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 300)).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 300))
+        }
+        let line = DocEngine.OCRLine(text: "SECRET", box: CGRect(x: 0.1, y: 0.1, width: 0.8, height: 0.2))
+        var opts = DocEngine.PDFOptions(); opts.searchable = true
+        guard let src = DocEngine.pdf(images: [img], ocr: [[line]], options: opts),
+              let srcDoc = PDFDocument(data: src) else { return XCTFail("could not build source PDF") }
+        XCTAssertTrue((srcDoc.string ?? "").contains("SECRET"), "sanity: the source has a selectable text layer")
+
+        // Redact the whole page — the hidden text must be destroyed, not merely covered.
+        guard let redacted = DocEngine.redact(src, boxes: [[CGRect(x: 0, y: 0, width: 1, height: 1)]]),
+              let outDoc = PDFDocument(data: redacted) else { return XCTFail("redaction returned nil") }
+        XCTAssertEqual(outDoc.pageCount, 1)
+        XCTAssertFalse((outDoc.string ?? "").contains("SECRET"),
+                       "redaction must flatten the page so the hidden text is gone, not sit a box over selectable text")
+    }
 }

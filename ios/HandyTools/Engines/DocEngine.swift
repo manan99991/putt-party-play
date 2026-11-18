@@ -219,6 +219,41 @@ enum DocEngine {
         return out
     }
 
+    /// True redaction. Each page is rasterized, opaque black is painted over the chosen regions, and
+    /// the PDF is rebuilt from the flattened pages — so the hidden text and images are genuinely gone,
+    /// with no selectable layer left underneath (the mistake a drawn-on black box makes). `boxes[i]`
+    /// are the regions to hide on page i, normalized top-left (0...1). The output pages are flattened
+    /// images, so the whole document loses its text layer — the honest cost of guaranteed removal, and
+    /// the UI states that before saving. Returns nil only if the PDF can't be read.
+    static func redact(_ data: Data, boxes: [[CGRect]], maxWidth: CGFloat = 1600) -> Data? {
+        guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return nil }
+        var flattened: [UIImage] = []
+        for i in 0..<doc.pageCount {
+            guard let page = doc.page(at: i) else { continue }
+            let b = page.bounds(for: .mediaBox)
+            let scale = min(3, maxWidth / max(1, b.width))
+            let size = CGSize(width: (b.width * scale).rounded(), height: (b.height * scale).rounded())
+            let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+            flattened.append(UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+                let cg = c.cgContext
+                UIColor.white.setFill(); c.fill(CGRect(origin: .zero, size: size))
+                cg.saveGState()
+                cg.translateBy(x: 0, y: size.height); cg.scaleBy(x: scale, y: -scale)
+                page.draw(with: .mediaBox, to: cg)
+                cg.restoreGState()
+                // Opaque redaction, baked into the raster (top-left origin) before re-encoding.
+                UIColor.black.setFill()
+                for nb in (i < boxes.count ? boxes[i] : []) {
+                    c.fill(CGRect(x: nb.minX * size.width, y: nb.minY * size.height,
+                                  width: nb.width * size.width, height: nb.height * size.height))
+                }
+            })
+        }
+        guard !flattened.isEmpty else { return nil }
+        var opts = PDFOptions(); opts.searchable = false; opts.maxWidth = maxWidth
+        return pdf(images: flattened, ocr: Array(repeating: nil, count: flattened.count), options: opts)
+    }
+
     /// Split a finished PDF into the given 1-based inclusive page ranges ("1-3", "4", "5-").
     static func split(_ data: Data, ranges spec: String) -> [Data] {
         guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return [] }
