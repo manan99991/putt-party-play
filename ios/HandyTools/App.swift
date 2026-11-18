@@ -343,7 +343,7 @@ enum Launch {
 
 /// The three home destinations of the rebuilt interface. Build is the front door (make a tool),
 /// Search is the powerful way into any single tool, Settings holds the map, themes and Pro.
-enum RootTab { case build, search, settings }
+enum RootTab { case build, explore, search, settings }
 
 /// The bottom tab bar for the three home destinations.
 private struct TenzyTabBar: View {
@@ -351,6 +351,7 @@ private struct TenzyTabBar: View {
     var body: some View {
         HStack(spacing: 0) {
             item(.build, "square.stack.3d.up.fill", "Build")
+            item(.explore, "square.grid.2x2.fill", "Explore")
             item(.search, "magnifyingglass", "Search")
             item(.settings, "gearshape.fill", "Settings")
         }
@@ -417,6 +418,9 @@ struct HomeView: View {
                         // The front door: the Builder's own start screen (Describe it · Start with
                         // what you have · Ready-made) is the home now.
                         BuilderView()
+                    case .explore:
+                        // The browse home: every tool, one tap away, grouped by what it's for.
+                        ExploreView()
                     case .search:
                         VStack(spacing: 0) {
                             SearchField(text: $search, focused: $searching)
