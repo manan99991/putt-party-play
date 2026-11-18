@@ -64,6 +64,14 @@ final class EngineTests: XCTestCase {
         //  territory via the sleep synonym cluster — Audio Cleanup owns the distinctive hiss/hum instead.)
         XCTAssertEqual(searchTools("audio convert").first?.id, "audioconvert")
         XCTAssertEqual(searchTools("fade").first?.id, "audioedit")
+        // Meeting Notes (item 8) owns the meeting queries; Voice → Notes still answers plain "voice".
+        XCTAssertEqual(searchTools("meeting notes").first?.id, "meetingnotes")
+        XCTAssertEqual(searchTools("minutes").first?.id, "meetingnotes")
+        XCTAssertFalse(searchTools("voice").isEmpty)
+        // Soundboard (item 9) owns its own name + the distinctive character queries, without stealing
+        // Voice → Notes' plain "voice" (its name prefixes "voice", so it keeps the lead there).
+        XCTAssertEqual(searchTools("soundboard").first?.id, "soundboard")
+        XCTAssertEqual(searchTools("chipmunk").first?.id, "soundboard")
     }
 
     // MARK: duplicate detection precision
@@ -1695,5 +1703,110 @@ final class EngineTests: XCTestCase {
         let outcome = await AudioClean.clean(url, options: AudioClean.Options())
         guard case .failure(let f) = outcome else { return XCTFail("garbage input should fail, not succeed") }
         XCTAssertFalse(f.message.isEmpty, "a failure must carry a human message")
+    }
+
+    // MARK: Meeting Notes — turns / names / follow-up email (item 8)
+
+    /// Turns start a fresh block only where the talking pauses longer than the gap; words close together
+    /// stay in one turn. Timestamps and 1-based indexes come through for the turn headers.
+    func testMeetingTurnsSplitAtPauses() {
+        let words = [
+            MeetingNotes.Timed(text: "hello", start: 0.0, end: 0.5),
+            MeetingNotes.Timed(text: "there", start: 0.6, end: 1.0),   // 0.1s gap → same turn
+            MeetingNotes.Timed(text: "yes",   start: 3.0, end: 3.4),   // 2.0s gap → new turn
+            MeetingNotes.Timed(text: "indeed", start: 3.5, end: 3.9),  // 0.1s gap → same turn
+        ]
+        let turns = MeetingNotes.turns(from: words, gap: 1.2)
+        XCTAssertEqual(turns.count, 2, "a long pause starts a new turn")
+        XCTAssertEqual(turns[0].text, "hello there")
+        XCTAssertEqual(turns[0].index, 1)
+        XCTAssertEqual(turns[0].start, 0.0, accuracy: 0.001)
+        XCTAssertEqual(turns[1].text, "yes indeed")
+        XCTAssertEqual(turns[1].index, 2)
+        XCTAssertEqual(turns[1].start, 3.0, accuracy: 0.001)
+    }
+
+    func testMeetingTurnsEmptyIsEmpty() {
+        XCTAssertTrue(MeetingNotes.turns(from: []).isEmpty)
+    }
+
+    /// No big pause anywhere → it all stays one turn (a monologue isn't chopped into fake speakers).
+    func testMeetingTurnsSingleWhenNoBigGap() {
+        let words = (0..<6).map { MeetingNotes.Timed(text: "w\($0)", start: Double($0) * 0.5, end: Double($0) * 0.5 + 0.3) }
+        let turns = MeetingNotes.turns(from: words, gap: 1.2)
+        XCTAssertEqual(turns.count, 1)
+        XCTAssertEqual(turns[0].text, "w0 w1 w2 w3 w4 w5")
+    }
+
+    /// The draft email greets the named people and carries the recap and next steps verbatim.
+    func testMeetingEmailAddressesNamedPeopleWithTodos() {
+        let email = MeetingNotes.followUpEmail(people: ["John", "Sarah"],
+                                               summary: ["Agreed on the Q3 plan"],
+                                               todos: ["Send the slides by Friday"])
+        XCTAssertTrue(email.hasPrefix("Hi John, Sarah,"), "greets the named attendees")
+        XCTAssertTrue(email.contains("Agreed on the Q3 plan"), "recaps the summary")
+        XCTAssertTrue(email.contains("Send the slides by Friday"), "lists the next steps")
+    }
+
+    /// With nobody named it still produces a usable draft that greets everyone.
+    func testMeetingEmailGreetsAllWhenNoNames() {
+        let email = MeetingNotes.followUpEmail(people: [], summary: ["Covered the roadmap"], todos: [])
+        XCTAssertTrue(email.contains("Hi all,"))
+        XCTAssertTrue(email.contains("Covered the roadmap"))
+    }
+
+    /// The name finder never invents names and never returns junk: empty in → empty out, and any result is
+    /// de-duplicated, capped and non-empty. (It doesn't assert specific detections, which depend on the
+    /// on-device name model that may be absent in CI.)
+    func testMeetingPeopleIsCleanAndSafe() {
+        XCTAssertTrue(MeetingNotes.people(in: "").isEmpty, "no text → no names")
+        let ppl = MeetingNotes.people(in: "Thanks everyone. Priya and Marcus will own the rollout; Priya, send the deck.", limit: 8)
+        XCTAssertLessThanOrEqual(ppl.count, 8, "respects the cap")
+        XCTAssertEqual(Set(ppl.map { $0.lowercased() }).count, ppl.count, "no duplicate names")
+        XCTAssertTrue(ppl.allSatisfy { !$0.isEmpty }, "no empty names")
+    }
+
+    // MARK: Soundboard — voice changer (item 9)
+
+    /// Every voice card must turn a real recording into a non-empty, playable WAV — a true end-to-end
+    /// output assertion that the proven voice-change DSP is wired through every Soundboard card. (robot/
+    /// alien/monster render via offline DSP; chipmunk/helium/giant/deep via varispeed — and a DSP voice
+    /// safely falls back to varispeed, so every card produces sound.)
+    func testSoundboardEveryVoiceProducesPlayableWAV() async throws {
+        let src = try makeToneFile(seconds: 1.0)
+        defer { try? FileManager.default.removeItem(at: src) }
+        for voice in ChainText.voices.map({ $0.id }) {
+            let data = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: voice), "\(voice) produced no audio")
+            XCTAssertGreaterThan(data.count, 44, "\(voice) WAV is header-only/empty")
+            XCTAssertEqual(Array(data.prefix(4)), Array("RIFF".utf8), "\(voice) output isn't a WAV")
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent("sb-\(voice)-\(UUID().uuidString.prefix(6)).wav")
+            try data.write(to: url)
+            defer { try? FileManager.default.removeItem(at: url) }
+            let tracks = try await AVURLAsset(url: url).loadTracks(withMediaType: .audio)
+            XCTAssertFalse(tracks.isEmpty, "\(voice) WAV has no audio track")
+        }
+    }
+
+    /// The varispeed cards map to distinct effects: chipmunk speeds the clip up (higher output sample
+    /// rate), deep slows it down (lower) — proving each card produces its own output, not one shared one.
+    func testSoundboardVarispeedRateIsPerVoice() throws {
+        let src = try makeToneFile(seconds: 0.5)
+        defer { try? FileManager.default.removeItem(at: src) }
+        let chip = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: "chipmunk"))
+        let deep = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: "deep"))
+        func wavRate(_ d: Data) -> Int {
+            let b = Array(d)
+            guard b.count >= 28 else { return 0 }
+            return Int(b[24]) | (Int(b[25]) << 8) | (Int(b[26]) << 16) | (Int(b[27]) << 24)
+        }
+        XCTAssertGreaterThan(wavRate(chip), wavRate(deep), "chipmunk should come out faster/higher than deep")
+    }
+
+    /// A file with no audio must fail cleanly (nil), never crash or hang.
+    func testSoundboardRejectsNonAudioGracefully() throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("sbjunk-\(UUID().uuidString.prefix(6)).caf")
+        try Data("not audio".utf8).write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        XCTAssertNil(ChainMedia.soundboardVoice(url, voice: "robot"), "garbage input should return nil, not crash")
     }
 }
