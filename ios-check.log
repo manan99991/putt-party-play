@@ -14,25 +14,30 @@ Command line invocation:
 
 Resolve Package Graph
 
-Fetching from https://github.com/googleads/swift-package-manager-google-mobile-ads.git
+Fetching from https://github.com/element-hq/swift-ogg
 
-Fetching from https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
+Fetching from https://github.com/vector-im/opus-swift
 
-Creating working copy of package ‘swift-package-manager-google-user-messaging-platform’
+Fetching from https://github.com/vector-im/ogg-swift.git
 
-Checking out 3.1.0 of package ‘swift-package-manager-google-user-messaging-platform’
+Creating working copy of package ‘ogg-swift’
 
-Creating working copy of package ‘swift-package-manager-google-mobile-ads’
+Checking out 0.8.3 of package ‘ogg-swift’
 
-Checking out 12.14.0 of package ‘swift-package-manager-google-mobile-ads’
+Creating working copy of package ‘swift-ogg’
+
+Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
 
 
 Resolved source packages:
-  GoogleMobileAds: https://github.com/googleads/swift-package-manager-google-mobile-ads.git @ 12.14.0
-  GoogleUserMessagingPlatform: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git @ 3.1.0
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
 
-resolved source packages: GoogleMobileAds, GoogleUserMessagingPlatform
+resolved source packages: YbridOpus, SwiftOGG, YbridOgg
 == build.log (errors)
-2026-11-14 11:12:03.636059+0000 HandyTools[7934:30150] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
-2026-11-14 11:12:03.643241+0000 HandyTools[7934:30150] [Client] Synchronous remote object proxy returned error: Error Domain=NSCocoaErrorDomain Code=4099 "The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process." UserInfo={NSDebugDescription=The connection to service named com.apple.commcenter.coretelephony.xpc was invalidated: Connection init failed at lookup with error 3 - No such process.}
 ** TEST SUCCEEDED **
