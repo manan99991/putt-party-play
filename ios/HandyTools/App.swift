@@ -127,6 +127,7 @@ struct Tool: Identifiable {
     Tool(id: "pdfprotect", name: "Protect",          blurb: "Password-lock or watermark a PDF",  icon: "lock.doc.fill",                       page: 4, asset: "tool_scan", keywords: ["password","protect","lock","unlock","remove password","encrypt","secure","watermark","confidential","draft","private"]),
     Tool(id: "pdfsearchable", name: "Make Searchable", blurb: "Search and copy text from a scan", icon: "text.viewfinder",                     page: 4, asset: "tool_scan", keywords: ["searchable","make searchable","ocr","selectable text","copy text from scan","find text","scanned","text layer"]),
     Tool(id: "pdfform",    name: "Fill a Form",      blurb: "Type into a form, tick its boxes",  icon: "list.bullet.rectangle.portrait",      page: 4, asset: "tool_scan", keywords: ["fill a form","fill in","form filler","application","tax form","checkbox","tick boxes","fillable","questionnaire","enrollment"]),
+    Tool(id: "zipmaker",   name: "Make a Zip",       blurb: "Bundle files into one .zip",        icon: "doc.zipper",                          page: 4, asset: "tool_shareready", keywords: ["make a zip","zip files","create zip","bundle files","archive","compress files","send many files","package files","one file"]),
     Tool(id: "audioconvert", name: "Audio Convert",  blurb: "Swap formats: M4A, WAV, AIFF, CAF",  icon: "waveform.path",                       page: 5, asset: "tool_audiolab", keywords: ["audio convert","audio converter","audio format","convert audio","extract audio","audio from video","video to audio","m4a","wav","aiff","caf","aac","mp3 to m4a","change audio format","sound file","audio file","music file"]),
     Tool(id: "audiocompress", name: "Compress Audio", blurb: "Shrink a recording to email it",    icon: "arrow.down.right.and.arrow.up.left.circle", page: 5, asset: "tool_audiolab", keywords: ["compress audio","shrink audio","smaller audio","audio too big","file too large","email a recording","reduce audio size","make smaller","bitrate","voice memo size"]),
     Tool(id: "ringtone",   name: "Ringtone",         blurb: "Trim a clip to a 30s ringtone",     icon: "bell.badge.fill",                     page: 5, asset: "tool_audiolab", keywords: ["ringtone","ring tone","ringtones","m4r","custom ringtone","make a ringtone","phone ringtone","song to ringtone","alarm sound"]),
@@ -334,6 +335,7 @@ struct ToolDestination: View {
         case "pdfprotect": PDFProtectView()
         case "pdfsearchable": PDFSearchableView()
         case "pdfform": PDFFormView()
+        case "zipmaker": ZipMakerView()
         case "audioconvert": AudioConvertView()
         case "audiocompress": AudioCompressView()
         case "audiomix": AudioMixView()

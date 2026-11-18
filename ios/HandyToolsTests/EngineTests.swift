@@ -1715,6 +1715,29 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("album art").first?.id, "audiotags")
     }
 
+    func testZipMakerBuildsArchiveTheUnzipReaderOpens() throws {
+        XCTAssertEqual(ZipWriter.crc32(Data("123456789".utf8)), 0xCBF43926, "standard CRC-32 check value")
+        let text = Data(String(repeating: "Tenzy zips files. ", count: 200).utf8)
+        let noise = Data((0..<3000).map { UInt8(($0 * 7919) % 256) })
+        let items = [ZipWriter.Item(name: "notes.txt", data: text),
+                     ZipWriter.Item(name: "photo.jpg", data: noise),
+                     ZipWriter.Item(name: "notes.txt", data: Data("second".utf8)),
+                     ZipWriter.Item(name: "café/ü.txt", data: Data("x".utf8))]
+        var seen: [Double] = []
+        guard case .success(let zip) = ZipWriter.zip(items, progress: { seen.append($0) }) else { return XCTFail("zip failed") }
+        XCTAssertLessThan(zip.count, text.count + noise.count, "text really compressed")
+        XCTAssertEqual(seen.last ?? 0, 1, accuracy: 0.001)
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("t-\(UUID().uuidString.prefix(6)).zip")
+        try zip.write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        XCTAssertEqual(Given.Zip.names(in: url), ["notes.txt", "photo.jpg", "notes (2).txt", "café-ü.txt"])
+        XCTAssertEqual(Given.Zip.entryData(in: url, named: "notes.txt"), text, "deflated file round-trips")
+        XCTAssertEqual(Given.Zip.entryData(in: url, named: "photo.jpg"), noise)
+        XCTAssertEqual(Given.Zip.entryData(in: url, named: "notes (2).txt"), Data("second".utf8))
+        if case .success = ZipWriter.zip([]) { XCTFail("empty zip refused") }
+        XCTAssertEqual(searchTools("zip files").first?.id, "zipmaker")
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)
