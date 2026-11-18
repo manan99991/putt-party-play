@@ -61,10 +61,9 @@ enum Scrubber {
     /// person and we cover their head. It over-covers rather than under-covers, on purpose.
     static func faces(in image: UIImage) -> [CGRect] {
         guard let cg = image.normalizedUp().cgImage else { return [] }
-        let fr = VNDetectFaceRectanglesRequest(); fr.revision = VNDetectFaceRectanglesRequestRevision3
         let hr = VNDetectHumanRectanglesRequest(); hr.upperBodyOnly = true
-        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([fr, hr])
-        var rects = (fr.results ?? []).map { flip($0.boundingBox).insetBy(dx: -$0.boundingBox.width * 0.12, dy: -$0.boundingBox.height * 0.14) }
+        try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([hr])
+        var rects = thoroughFaces(cg).map { $0.insetBy(dx: -$0.width * 0.12, dy: -$0.height * 0.14) }
         // Safety net: a face the detector missed is still a person the body detector found — cover the
         // head region (the top of the upper body) so nobody is left showing.
         for h in (hr.results ?? []) {
@@ -75,6 +74,50 @@ enum Scrubber {
         }
         let unit = CGRect(x: 0, y: 0, width: 1, height: 1)
         return rects.map { $0.intersection(unit) }.filter { !$0.isNull && $0.width > 0.001 && $0.height > 0.001 }
+    }
+
+    /// Faces found three ways and merged (normalized, top-left origin, un-padded): the whole picture; four
+    /// overlapping quarter tiles, so small faces at the back of a group photo are seen at a usable size;
+    /// and a mirrored pass, which catches profiles the detector misses one way round.
+    static func thoroughFaces(_ cg: CGImage) -> [CGRect] {
+        func detect(_ img: CGImage, orientation: CGImagePropertyOrientation = .up) -> [CGRect] {
+            let r = VNDetectFaceRectanglesRequest(); r.revision = VNDetectFaceRectanglesRequestRevision3
+            try? VNImageRequestHandler(cgImage: img, orientation: orientation).perform([r])
+            return (r.results ?? []).filter { $0.confidence > 0.5 }.map { flip($0.boundingBox) }
+        }
+        var found = detect(cg)
+        // Mirrored: results come back in the mirrored picture's space — flip them back.
+        found += detect(cg, orientation: .upMirrored).map { CGRect(x: 1 - $0.maxX, y: $0.minY, width: $0.width, height: $0.height) }
+        // Tiles only help when there's resolution to spare.
+        let w = CGFloat(cg.width), h = CGFloat(cg.height)
+        if max(w, h) >= 900 {
+            let span: CGFloat = 0.6
+            for tx in [0, 1 - span] as [CGFloat] {
+                for ty in [0, 1 - span] as [CGFloat] {
+                    let px = CGRect(x: tx * w, y: ty * h, width: span * w, height: span * h).integral
+                    guard let tile = cg.cropping(to: px) else { continue }
+                    found += detect(tile).map {
+                        CGRect(x: tx + $0.minX * span, y: ty + $0.minY * span, width: $0.width * span, height: $0.height * span)
+                    }
+                }
+            }
+        }
+        return mergeFaces(found)
+    }
+
+    /// One box per face: overlapping detections (the same face seen by two passes) keep the larger box.
+    static func mergeFaces(_ boxes: [CGRect]) -> [CGRect] {
+        var out: [CGRect] = []
+        for b in boxes.sorted(by: { $0.width * $0.height > $1.width * $1.height }) {
+            let dup = out.contains { a in
+                let i = a.intersection(b)
+                guard !i.isNull else { return false }
+                let overlap = (i.width * i.height) / max(0.000001, min(a.width * a.height, b.width * b.height))
+                return overlap > 0.45 || a.contains(CGPoint(x: b.midX, y: b.midY))
+            }
+            if !dup { out.append(b) }
+        }
+        return out
     }
 
     /// Heuristic: does this recognised string look like something a person would want hidden —

@@ -88,6 +88,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("ken burns").first?.id, "animate")
         XCTAssertEqual(searchTools("pill reminder").first?.id, "medreminder")
         XCTAssertEqual(searchTools("collage").first?.id, "collage")
+        XCTAssertEqual(searchTools("hide kids faces").first?.id, "faceemoji")
     }
 
     // MARK: duplicate detection precision
@@ -1927,6 +1928,37 @@ final class EngineTests: XCTestCase {
         let img = CollageLayout.render([Self.text("A"), Self.text("B"), Self.text("C")], layout: .mosaic,
                                        canvas: CGSize(width: 360, height: 640), gapRatio: 0.02, cornerRatio: 0.03, background: .white)
         XCTAssertEqual(img.size, CGSize(width: 360, height: 640))
+    }
+
+    func testFaceEmojiCoversOnlyChosenFacesAndMergesDetections() throws {
+        // Two passes seeing the same face become one box (the larger); a separate face stays separate.
+        let a = CGRect(x: 0.10, y: 0.10, width: 0.20, height: 0.20)
+        let aSmall = CGRect(x: 0.12, y: 0.12, width: 0.15, height: 0.15)
+        let b = CGRect(x: 0.60, y: 0.50, width: 0.10, height: 0.10)
+        XCTAssertEqual(Scrubber.mergeFaces([aSmall, b, a]), [a, b])
+        // A plain picture has no faces (no false hits from the tiles or the mirror).
+        let blank = UIGraphicsImageRenderer(size: CGSize(width: 1200, height: 900)).image { c in
+            UIColor.systemTeal.setFill(); c.fill(CGRect(x: 0, y: 0, width: 1200, height: 900)) }
+        XCTAssertTrue(Scrubber.thoroughFaces(try XCTUnwrap(blank.cgImage)).isEmpty)
+        // Only covered faces are drawn: an uncovered one leaves the photo untouched there.
+        let photo = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 400)).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 400)) }
+        let out = FaceEmoji.render(photo, covers: [FaceCover(rect: CGRect(x: 0.1, y: 0.1, width: 0.3, height: 0.3), emoji: "😀"),
+                                                   FaceCover(rect: CGRect(x: 0.6, y: 0.6, width: 0.3, height: 0.3), emoji: nil)], scale: 1)
+        XCTAssertEqual(out.size, CGSize(width: 400, height: 400))
+        func brightness(_ img: UIImage, _ p: CGPoint) -> CGFloat {
+            // Average of a 9×9 patch around p, read straight from a bitmap.
+            guard let cg = img.cgImage, let patch = cg.cropping(to: CGRect(x: p.x - 4, y: p.y - 4, width: 9, height: 9)) else { return -1 }
+            var px = [UInt8](repeating: 0, count: 9 * 9 * 4)
+            guard let ctx = CGContext(data: &px, width: 9, height: 9, bitsPerComponent: 8, bytesPerRow: 36,
+                                      space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return -1 }
+            ctx.draw(patch, in: CGRect(x: 0, y: 0, width: 9, height: 9))
+            var sum = 0
+            for i in stride(from: 0, to: px.count, by: 4) { sum += Int(px[i]) + Int(px[i + 1]) + Int(px[i + 2]) }
+            return CGFloat(sum) / CGFloat(81 * 3 * 255)
+        }
+        XCTAssertLessThan(brightness(out, CGPoint(x: 100, y: 100)), 0.97, "covered face has the emoji drawn on it")
+        XCTAssertGreaterThan(brightness(out, CGPoint(x: 300, y: 300)), 0.99, "the face left showing is untouched")
     }
 
     func testAudioConvertRejectsNonAudioGracefully() async throws {

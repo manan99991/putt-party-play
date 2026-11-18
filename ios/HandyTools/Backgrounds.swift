@@ -53,6 +53,7 @@ enum TenzyArt {
         "zipmaker": "shareready",
         "animate": "studio",
         "collage": "stitch",
+        "faceemoji": "scrub",
         "medreminder": "rest",
         "audioconvert": "audiolab",
         "audiocompress": "audiolab",
