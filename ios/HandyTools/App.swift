@@ -114,6 +114,7 @@ struct Tool: Identifiable {
     // ── Page 2 · Scan, read & organize ───────────────────────────────────────
     Tool(id: "scan",       name: "Scan",             blurb: "Scan, OCR, sign & fill PDFs",       icon: "doc.viewfinder.fill",                 page: 2, asset: "tool_scan", keywords: ["scan","scanner","document","pdf","ocr","sign","signature","fill","form","flatten","merge","split","pages","business card","handwriting"]),
     Tool(id: "datagrab",   name: "Data Grabber",     blurb: "Receipt → rows, contacts, dates",   icon: "tablecells.fill",                     page: 2, ai: true, asset: "tool_datagrab", keywords: ["receipt","table","data","extract","csv","spreadsheet","contact","business card","calendar","event","expense","ai"]),
+    Tool(id: "pdfredact",  name: "Redact PDF",       blurb: "Black out text so it's truly gone",  icon: "eye.slash.fill",                      page: 2, keywords: ["redact","redaction","black out","hide","censor","pdf","private","confidential","remove","text","sign","signature","leak","cover"]),
     Tool(id: "sorted",     name: "Sorted",           blurb: "Snap a bill → calendar it",         icon: "calendar.badge.plus",                 page: 2, ai: true, asset: "tool_sorted", keywords: ["sorted","bill","letter","mail","document","appointment","form","notice","invoice","due","deadline","calendar","remind","reminder","scan","amount","pay","admin","paperwork"]),
     Tool(id: "memory",     name: "Memory",           blurb: "Ask your screenshots anything",     icon: "doc.text.magnifyingglass",            page: 2, ai: true, asset: "tool_memory", keywords: ["memory","find","search","photos","screenshot","screenshots","wifi","password","code","confirmation","parking","remember","where","receipt","ask","my photos","camera roll","saved"]),
     Tool(id: "warranty",   name: "Warranty & Receipts", blurb: "File receipts, never miss a warranty", icon: "shippingbox.fill",                 page: 2, asset: "tool_shareready", keywords: ["warranty","receipt","receipts","proof of purchase","vault","store","shoebox","expiry","expires","return","refund","find receipt","search receipt","appliance","electronics","guarantee"]),
@@ -309,6 +310,7 @@ struct ToolDestination: View {
         case "pricecheck": PriceCheckView()
         case "identify": IdentifyView()
         case "seeread": SeeReadView()
+        case "pdfredact": PDFRedactView()
         default: ComingSoonView(id: id)
         }
     }
