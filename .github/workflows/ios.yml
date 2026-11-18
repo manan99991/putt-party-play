@@ -188,7 +188,10 @@ jobs:
   # (continue-on-error), so a flaky synthetic-input flake here NEVER blocks TestFlight or the store
   # submit. It still runs on every push for visibility (failures surface as annotations).
   flowtests:
-    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
+    # On-demand only: this informational job no longer competes for a macOS runner on every push,
+    # so the critical build + test jobs acquire runners faster while GitHub's shared macOS pool is
+    # congested. Run it manually from the Actions tab (workflow_dispatch) when you want the flow pass.
+    if: "${{ github.event_name == 'workflow_dispatch' }}"
     continue-on-error: true
     runs-on: macos-26
     defaults:
