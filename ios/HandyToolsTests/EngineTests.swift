@@ -1449,6 +1449,48 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("pdf").first?.id, "scan")
     }
 
+    func testFillFormWritesRealFields() throws {
+        // A one-page form with a text box, a checkbox and a dropdown, made the way real forms are.
+        let doc = PDFDocument()
+        let blank = UIGraphicsImageRenderer(size: CGSize(width: 612, height: 792)).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 612, height: 792)) }
+        let page = try XCTUnwrap(PDFPage(image: blank)); doc.insert(page, at: 0)
+        let name = PDFAnnotation(bounds: CGRect(x: 72, y: 680, width: 300, height: 24), forType: .widget, withProperties: nil)
+        name.widgetFieldType = .text; name.fieldName = "Full name"; page.addAnnotation(name)
+        let agree = PDFAnnotation(bounds: CGRect(x: 72, y: 600, width: 18, height: 18), forType: .widget, withProperties: nil)
+        agree.widgetFieldType = .button; agree.widgetControlType = .checkBoxControl; agree.fieldName = "Agree"
+        page.addAnnotation(agree)
+        let pick = PDFAnnotation(bounds: CGRect(x: 72, y: 640, width: 200, height: 24), forType: .widget, withProperties: nil)
+        pick.widgetFieldType = .choice; pick.fieldName = "Country"; pick.choices = ["India", "USA"]; page.addAnnotation(pick)
+        let form = try XCTUnwrap(doc.dataRepresentation())
+
+        let fields = PDFForm.fields(form)
+        XCTAssertEqual(fields.map(\.name), ["Full name", "Country", "Agree"], "reading order, top to bottom")
+        XCTAssertEqual(fields.map(\.kind), [.text, .choice, .checkbox])
+        var vals: [String: String] = [:]
+        for f in fields {
+            switch f.kind {
+            case .text: vals[f.id] = "Jane Doe"
+            case .choice: vals[f.id] = "USA"
+            case .checkbox: vals[f.id] = "1"
+            }
+        }
+        let filled = try XCTUnwrap(PDFForm.fill(form, values: vals))
+        let back = PDFForm.fields(filled)
+        XCTAssertEqual(back.first { $0.name == "Full name" }?.value, "Jane Doe")
+        XCTAssertEqual(back.first { $0.name == "Country" }?.value, "USA")
+        XCTAssertEqual(back.first { $0.name == "Agree" }?.value, "1", "checkbox ticked")
+        XCTAssertEqual(PDFForm.fields(PDFDocument(data: filled)?.dataRepresentation() ?? Data()).count, 3, "still a working form")
+
+        // A flat PDF has no fields (the view points to Sign → Add text instead).
+        var opts = DocEngine.PDFOptions(); opts.searchable = false
+        let flat = try XCTUnwrap(DocEngine.pdf(images: [blank], ocr: [nil], options: opts))
+        XCTAssertTrue(PDFForm.fields(flat).isEmpty)
+        XCTAssertNil(PDFForm.fill(Data("nope".utf8), values: [:]))
+        XCTAssertEqual(searchTools("fill a form").first?.id, "pdfform")
+        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
+    }
+
     func testSignPDFStampsAndKeepsOriginalText() throws {
         let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 500)).image { c in
             UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 500)) }
