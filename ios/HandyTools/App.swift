@@ -125,6 +125,7 @@ struct Tool: Identifiable {
     Tool(id: "pdfpages",   name: "Organize Pages",   blurb: "Reorder, rotate or remove pages",   icon: "rectangle.stack",                     page: 4, asset: "tool_scan", keywords: ["organize pages","reorder","rearrange","move pages","page order","rotate pages","turn pages","upside down","sideways","delete pages","remove pages","extract pages","drop a page","keep pages"]),
     Tool(id: "pdfsign",    name: "Sign",             blurb: "Sign any PDF with your signature",  icon: "signature",                           page: 4, asset: "tool_scan", keywords: ["sign","signature","signing","e-sign","esign","sign a document","initial","initials","contract","agreement","lease"]),
     Tool(id: "pdfprotect", name: "Protect",          blurb: "Password-lock or watermark a PDF",  icon: "lock.doc.fill",                       page: 4, asset: "tool_scan", keywords: ["password","protect","lock","unlock","remove password","encrypt","secure","watermark","confidential","draft","private"]),
+    Tool(id: "pdfsearchable", name: "Make Searchable", blurb: "Search and copy text from a scan", icon: "text.viewfinder",                     page: 4, asset: "tool_scan", keywords: ["searchable","make searchable","ocr","selectable text","copy text from scan","find text","scanned","text layer"]),
     Tool(id: "audioconvert", name: "Audio Convert",  blurb: "Swap formats: M4A, WAV, AIFF, CAF",  icon: "waveform.path",                       page: 5, asset: "tool_audiolab", keywords: ["audio convert","audio converter","audio format","convert audio","m4a","wav","aiff","caf","aac","mp3 to m4a","change audio format","sound file","audio file","music file"]),
     Tool(id: "ringtone",   name: "Ringtone",         blurb: "Trim a clip to a 30s ringtone",     icon: "bell.badge.fill",                     page: 5, asset: "tool_audiolab", keywords: ["ringtone","ring tone","ringtones","m4r","custom ringtone","make a ringtone","phone ringtone","song to ringtone","alarm sound"]),
     Tool(id: "audioedit",  name: "Audio Editor",     blurb: "Trim, fade & cut dead air",         icon: "waveform.badge.minus",                page: 5, asset: "tool_audiolab", keywords: ["audio editor","edit audio","trim audio","cut audio","shorten audio","crop audio","fade","fade in","fade out","silence","remove silence","cut silence","dead air","gap"]),
@@ -327,6 +328,7 @@ struct ToolDestination: View {
         case "pdfpages": PDFPagesView()
         case "pdfsign": SignPDFView()
         case "pdfprotect": PDFProtectView()
+        case "pdfsearchable": PDFSearchableView()
         case "audioconvert": AudioConvertView()
         case "ringtone": RingtoneView()
         case "audioedit": AudioEditView()

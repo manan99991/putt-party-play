@@ -1428,6 +1428,27 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("pdf").first?.id, "scan")
     }
 
+    func testMakeSearchableAddsRealTextLayer() async throws {
+        // An image-only "scan": two pages, no text layer.
+        var opts = DocEngine.PDFOptions(); opts.searchable = false
+        let scan = try XCTUnwrap(DocEngine.pdf(images: [Self.text("HELLO 2026"), Self.text("INVOICE 4471")], ocr: [nil, nil], options: opts))
+        XCTAssertFalse(PDFSearchable.hasText(scan), "fixture starts with no text")
+        var seen: [Double] = []
+        let made = await PDFSearchable.make(scan) { seen.append($0) }
+        let out = try XCTUnwrap(made, "searchable PDF built")
+        let doc = try XCTUnwrap(PDFDocument(data: out.data))
+        XCTAssertEqual(doc.pageCount, 2, "every page kept")
+        let text = (doc.string ?? "").uppercased()
+        XCTAssertTrue(text.contains("HELLO"), "page 1 text now findable: \(text)")
+        XCTAssertTrue(text.contains("INVOICE"), "page 2 text now findable: \(text)")
+        XCTAssertGreaterThan(out.words, 1)
+        XCTAssertEqual(seen.last ?? 0, 1, accuracy: 0.001, "progress reaches 100%")
+        let junk = await PDFSearchable.make(Data("nope".utf8))
+        XCTAssertNil(junk, "garbage refused")
+        XCTAssertEqual(searchTools("searchable").first?.id, "pdfsearchable")
+        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
+    }
+
     func testSignPDFStampsAndKeepsOriginalText() throws {
         let img = UIGraphicsImageRenderer(size: CGSize(width: 400, height: 500)).image { c in
             UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: 500)) }
