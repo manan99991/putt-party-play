@@ -57,6 +57,12 @@ final class EngineTests: XCTestCase {
         // …but it should own its own territory.
         XCTAssertEqual(searchTools("fade").first?.id, "audioedit")
         XCTAssertEqual(searchTools("dead air").first?.id, "audioedit")
+        // Audio Cleanup (item 7) owns the noise/hiss/hum queries without stealing its neighbours'.
+        XCTAssertEqual(searchTools("hiss").first?.id, "audioclean")
+        XCTAssertEqual(searchTools("hum").first?.id, "audioclean")
+        XCTAssertEqual(searchTools("noise reduction").first?.id, "audioclean")
+        XCTAssertEqual(searchTools("audio convert").first?.id, "audioconvert")
+        XCTAssertEqual(searchTools("fade").first?.id, "audioedit")
     }
 
     // MARK: duplicate detection precision
@@ -1576,6 +1582,100 @@ final class EngineTests: XCTestCase {
         try Data("not audio".utf8).write(to: url)
         defer { try? FileManager.default.removeItem(at: url) }
         let outcome = await AudioEdit.edit(url, options: AudioEdit.Options())
+        guard case .failure(let f) = outcome else { return XCTFail("garbage input should fail, not succeed") }
+        XCTAssertFalse(f.message.isEmpty, "a failure must carry a human message")
+    }
+
+    // MARK: Audio Cleanup — noise reduction / high-pass / normalize (item 7)
+
+    /// The high-pass must kill DC (0 Hz, the ultimate low frequency): a constant input decays to silence.
+    func testAudioCleanHighPassRemovesDC() {
+        var x = [Float](repeating: 0.5, count: 4000)
+        AudioClean.highPass(&x, rate: 44_100, cutoff: 90)
+        XCTAssertEqual(x[3999], 0, accuracy: 0.02, "DC is removed by the high-pass once settled")
+    }
+
+    /// …but a tone well above the cutoff passes through largely intact (most of its energy survives).
+    func testAudioCleanHighPassKeepsHighTone() {
+        let rate = 44_100.0
+        var x = (0..<4410).map { Float(sin(2 * Double.pi * 1000 * Double($0) / rate)) }
+        let before = x
+        AudioClean.highPass(&x, rate: rate, cutoff: 90)
+        let e0 = before.reduce(Float(0)) { $0 + $1 * $1 }
+        let e1 = x.reduce(Float(0)) { $0 + $1 * $1 }
+        XCTAssertGreaterThan(e1, e0 * 0.8, "a 1 kHz tone passes the 90 Hz high-pass largely intact")
+    }
+
+    /// The noise floor is measured from the quiet windows, not the loud ones.
+    func testAudioCleanNoiseFloorTracksTheQuietParts() {
+        let rate = 1000.0
+        let loud = [Float](repeating: 0.5, count: 2000)
+        let quiet = [Float](repeating: 0.01, count: 2000)
+        let floor = AudioClean.noiseFloor(loud + quiet + loud, rate: rate)
+        XCTAssertEqual(floor, 0.01, accuracy: 0.004, "floor reflects the quiet background, not the peaks")
+    }
+
+    /// The gate pushes down a quiet, noisy passage while leaving loud passages at full level.
+    func testAudioCleanGateAttenuatesQuietKeepsLoud() {
+        let rate = 1000.0
+        let loud = [Float](repeating: 0.5, count: 2000)
+        let quiet = [Float](repeating: 0.01, count: 2000)
+        var buf = loud + quiet + loud
+        let floor = AudioClean.noiseFloor(quiet, rate: rate)
+        AudioClean.gate(&buf, rate: rate, floor: floor, strength: 0.8)
+        XCTAssertEqual(buf[1500], 0.5, accuracy: 0.05, "loud passage preserved")
+        XCTAssertEqual(buf[5000], 0.5, accuracy: 0.05, "second loud passage preserved")
+        XCTAssertLessThan(abs(buf[3000]), 0.005, "the quiet noisy middle is clearly reduced")
+    }
+
+    /// Normalize scales the loudest peak to the target, shares one gain across channels, and never blows
+    /// up on silence.
+    func testAudioCleanNormalizeRaisesPeakAndKeepsBalance() {
+        var chans: [[Float]] = [[0.1, 0.2, 0.1], [0.05, 0.1, 0.05]]
+        AudioClean.normalize(&chans, targetPeak: 0.9)
+        let peak = chans.flatMap { $0 }.map { abs($0) }.max() ?? 0
+        XCTAssertEqual(peak, 0.9, accuracy: 0.01, "loudest peak hits the target")
+        XCTAssertEqual(chans[0][1] / chans[1][1], 2.0, accuracy: 0.01, "stereo balance preserved (one shared gain)")
+    }
+
+    func testAudioCleanNormalizeLeavesSilenceAlone() {
+        var chans: [[Float]] = [[0, 0, 0]]
+        AudioClean.normalize(&chans, targetPeak: 0.9)
+        XCTAssertEqual(chans[0].map { abs($0) }.max() ?? 0, 0, "silence stays silent, no divide-by-zero blow-up")
+    }
+
+    /// clean(channels:) preserves channel count and length.
+    func testAudioCleanProcessPreservesShape() {
+        let rate = 1000.0
+        let channel = (0..<3000).map { Float(sin(2 * Double.pi * 200 * Double($0) / rate)) * 0.4 }
+        let out = AudioClean.clean(channels: [channel, channel], rate: rate, options: AudioClean.Options())
+        XCTAssertEqual(out.count, 2, "channel count preserved")
+        XCTAssertEqual(out[0].count, channel.count, "length preserved — cleanup doesn't trim")
+    }
+
+    /// End-to-end on a real file: a 2 s tone comes back as a playable ~2 s M4A — a true output assertion.
+    func testAudioCleanFileProducesPlayableResult() async throws {
+        let src = try makeToneFile(seconds: 2.0)
+        defer { try? FileManager.default.removeItem(at: src) }
+        let outcome = await AudioClean.clean(src, options: AudioClean.Options(), format: .m4a)
+        guard case .success(let out) = outcome else { return XCTFail("audio cleanup failed") }
+        defer { try? FileManager.default.removeItem(at: out) }
+        XCTAssertEqual(out.pathExtension, "m4a", "cleaned clip should be the chosen format")
+        let size = ((try? FileManager.default.attributesOfItem(atPath: out.path))?[.size] as? Int) ?? 0
+        XCTAssertGreaterThan(size, 1_000, "cleaned output is empty/tiny")
+        let asset = AVURLAsset(url: out)
+        let tracks = try await asset.loadTracks(withMediaType: .audio)
+        XCTAssertFalse(tracks.isEmpty, "cleaned output has no audio track")
+        let dur = try await asset.load(.duration).seconds
+        XCTAssertEqual(dur, 2.0, accuracy: 0.3, "cleanup keeps the clip length")
+    }
+
+    /// Garbage input must fail cleanly with a human message, never crash or hang.
+    func testAudioCleanRejectsNonAudioGracefully() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("junkc-\(UUID().uuidString.prefix(6)).caf")
+        try Data("not audio".utf8).write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let outcome = await AudioClean.clean(url, options: AudioClean.Options())
         guard case .failure(let f) = outcome else { return XCTFail("garbage input should fail, not succeed") }
         XCTAssertFalse(f.message.isEmpty, "a failure must carry a human message")
     }

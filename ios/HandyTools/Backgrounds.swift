@@ -48,6 +48,7 @@ enum TenzyArt {
         "audioconvert": "audiolab",
         "ringtone": "audiolab",
         "audioedit": "audiolab",
+        "audioclean": "audiolab",
     ]
 
     static func name(id: String, theme: TenzyTheme, scheme: ColorScheme, kind: Kind) -> String {
