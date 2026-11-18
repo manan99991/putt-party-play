@@ -50,6 +50,7 @@ struct VoiceNotesView: View {
                         if !summary.isEmpty { Text(L("Summary")).font(HandyFont.bodyStrong); ForEach(summary, id: \.self) { Text("• \($0)").font(HandyFont.body) } }
                         if !todos.isEmpty { Text(L("To-dos")).font(HandyFont.bodyStrong).padding(.top, 4); ForEach(todos, id: \.self) { Label($0, systemImage: "circle").font(HandyFont.body) } }
                         if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                        SummaryActions(title: L("Voice note summary"), text: digestText)
                     }.cardStyle(padding: HandySpacing.s12)
                 }
                 TranscriptOrganizerView(text: speech.transcript)
@@ -81,6 +82,13 @@ struct VoiceNotesView: View {
         }
         .onDisappear { speech.stop() }
         .sheet(isPresented: $showLanguages) { LanguagePicker(selected: $speech.locale) }
+    }
+
+    private var digestText: String {
+        var parts: [String] = []
+        if !summary.isEmpty { parts.append("Summary:\n" + summary.map { "• " + $0 }.joined(separator: "\n")) }
+        if !todos.isEmpty { parts.append("To-dos:\n" + todos.map { "☐ " + $0 }.joined(separator: "\n")) }
+        return parts.joined(separator: "\n\n")
     }
 
     private var exportText: String {

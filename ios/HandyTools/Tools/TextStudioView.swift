@@ -71,6 +71,7 @@ struct TextStudioView: View {
                         Button { Copier.copy(output); ClipStore.add(output) } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
                         ShareLink(item: output) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                     }
+                    SummaryActions(title: L("Text Studio"), text: output)
                     Button { text = output; output = ""; note = "" } label: { Label(L("Keep working on this version"), systemImage: "arrow.uturn.down") }.textButton()
                 }.cardStyle()
             }

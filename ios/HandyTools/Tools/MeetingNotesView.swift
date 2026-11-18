@@ -113,7 +113,8 @@ struct MeetingNotesView: View {
             HStack {
                 Label(L(title), systemImage: systemImage).font(HandyFont.bodyStrong)
                 Spacer()
-                Button { Copier.copy(shareText) } label: { Image(systemName: "doc.on.doc").accessibilityLabel(L("Copy")) }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
+                SummaryActions(title: L(title), text: shareText, compact: true)
+                Button { Copier.copy(shareText) } label: { Image(systemName: "doc.on.doc").accessibilityLabel(L("Copy")).frame(width: 36, height: 36) }.buttonStyle(.plain).foregroundStyle(HandyColor.accent)
             }
             ScrollView {
                 VStack(alignment: .leading, spacing: 4) {
