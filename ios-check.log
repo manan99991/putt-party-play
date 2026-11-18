@@ -20,13 +20,13 @@ Fetching from https://github.com/vector-im/ogg-swift.git
 
 Fetching from https://github.com/vector-im/opus-swift
 
-Creating working copy of package ‘opus-swift’
-
-Checking out 0.8.4 of package ‘opus-swift’
-
 Creating working copy of package ‘swift-ogg’
 
 Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
 
 Creating working copy of package ‘ogg-swift’
 
@@ -34,10 +34,11 @@ Checking out 0.8.3 of package ‘ogg-swift’
 
 
 Resolved source packages:
-  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
   YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
   YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
 
-resolved source packages: SwiftOGG, YbridOpus, YbridOgg
+resolved source packages: YbridOpus, SwiftOGG, YbridOgg
 == build.log (errors)
-** TEST SUCCEEDED **
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:63: error: -[HandyToolsTests.EngineTests testSearchRanksTheObviousToolFirst] : XCTAssertEqual failed: ("Optional("rest")") is not equal to ("Optional("audioclean")")
+** TEST FAILED **
