@@ -206,8 +206,7 @@ struct QRResultCard: View {
                 Text("To join: Settings › Wi‑Fi › \(n), then paste the password.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 HStack { Button { Copier.copy(p, note: "Password copied") } label: { Label(L("Copy password"), systemImage: "doc.on.doc") }.compactButton(); Spacer() }
             case .url(let u):
-                Text(u.absoluteString).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
-                HStack { Link(destination: u) { Label(L("Open"), systemImage: "safari") }.compactButton(); copyButton(u.absoluteString); Spacer() }
+                LinkSafetyPanel(url: u)
             case .contact(let vcf, let summary):
                 Text(summary).font(HandyFont.body)
                 HStack {
@@ -393,3 +392,47 @@ private struct LiveScanner: UIViewControllerRepresentable {
         }
     }
 }
+
+/// "Where this really goes" for a link from a QR code: the real owner in big letters, the warning signs
+/// in plain words, and an Open button that becomes "Open anyway" when something looks off.
+struct LinkSafetyPanel: View {
+    let url: URL
+    var body: some View {
+        let v = ScamAnalyzer.verdict(for: url)
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(L("Goes to")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                Text(v.owner).font(.system(size: 22, weight: .bold)).lineLimit(1).minimumScaleFactor(0.6)
+                Text(url.absoluteString).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
+                    .textSelection(.enabled)
+            }
+            if v.risky {
+                Label(L("Think twice before opening"), systemImage: "exclamationmark.triangle.fill")
+                    .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.danger)
+                ForEach(v.issues, id: \.self) { i in
+                    Label(L(i), systemImage: "xmark.octagon").font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
+                }
+                Text(L("QR stickers are easy to paste over real ones. If you expected a company's site, type its address yourself instead."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            } else {
+                Label(v.knownSafe ? L("A well-known site's own address") : L("No warning signs in the address"),
+                      systemImage: v.knownSafe ? "checkmark.shield.fill" : "checkmark.shield")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                if !v.knownSafe {
+                    Text(L("That's a check of the address only — still don't enter passwords or card details unless you trust the site."))
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                }
+            }
+            HStack {
+                if v.risky {
+                    Link(destination: url) { Label(L("Open anyway"), systemImage: "safari") }.textButton()
+                } else {
+                    Link(destination: url) { Label(L("Open"), systemImage: "safari") }.compactButton()
+                }
+                Button { Copier.copy(url.absoluteString) } label: { Label(L("Copy link"), systemImage: "doc.on.doc") }.compactButton()
+                Spacer()
+            }
+        }
+    }
+}
+

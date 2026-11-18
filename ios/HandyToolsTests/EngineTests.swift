@@ -1881,6 +1881,18 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(t.rows.count, 3); XCTAssertEqual(t.rows[1].count, 3); XCTAssertEqual(t.ragged, 1)
     }
 
+    func testQRLinkVerdictNamesTheRealOwner() throws {
+        let fake = ScamAnalyzer.verdict(for: try XCTUnwrap(URL(string: "https://paypal.secure-login.xyz/login")))
+        XCTAssertEqual(fake.owner, "secure-login.xyz"); XCTAssertTrue(fake.risky)
+        let disguised = ScamAnalyzer.verdict(for: try XCTUnwrap(URL(string: "https://paypal.com@evil.top/pay")))
+        XCTAssertEqual(disguised.owner, "evil.top")
+        XCTAssertTrue(disguised.issues.contains { $0.contains("@") }, "\(disguised.issues)")
+        let real = ScamAnalyzer.verdict(for: try XCTUnwrap(URL(string: "https://www.apple.com/iphone/")))
+        XCTAssertEqual(real.owner, "apple.com"); XCTAssertFalse(real.risky); XCTAssertTrue(real.knownSafe)
+        let short = ScamAnalyzer.verdict(for: try XCTUnwrap(URL(string: "https://bit.ly/3abc")))
+        XCTAssertTrue(short.risky, "shortened links hide the destination")
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)

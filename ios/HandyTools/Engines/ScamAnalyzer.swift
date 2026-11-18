@@ -187,3 +187,29 @@ enum ScamAnalyzer {
         return r.verdict == .lowRisk ? Array(a.prefix(1)) : a
     }
 }
+
+extension ScamAnalyzer {
+    /// A plain verdict for one link (from a QR code, a paste, a message): who really owns it, any warning
+    /// signs, and whether opening it deserves a second thought. On device; nothing is fetched.
+    struct LinkVerdict: Equatable {
+        let owner: String          // registrable domain, e.g. "paypal.com"
+        let issues: [String]
+        let knownSafe: Bool        // a well-known site's own domain
+        var risky: Bool { !issues.isEmpty }
+    }
+
+    static func verdict(for url: URL) -> LinkVerdict {
+        let host = url.host?.lowercased() ?? ""
+        let labels = host.split(separator: ".").map(String.init)
+        let owner = labels.suffix(2).joined(separator: ".")
+        let check = linkChecks(in: url.absoluteString).first
+        var issues = check?.issues ?? []
+        if let scheme = url.scheme?.lowercased(), scheme != "http", scheme != "https" {
+            issues.append("Opens \(scheme): — not a normal web page.")
+        }
+        if url.user != nil {
+            issues.append("Has an @ in the address — the part before it is a disguise; the real site is \(owner).")
+        }
+        return LinkVerdict(owner: owner.isEmpty ? host : owner, issues: Array(Set(issues)).sorted(), knownSafe: legitDomains.contains(owner))
+    }
+}
