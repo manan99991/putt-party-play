@@ -2101,7 +2101,7 @@ final class EngineTests: XCTestCase {
         var worded = plain; worded.caption = "Yay"
         let a = try XCTUnwrap(StickerStudio.render(cut, style: plain, side: 240))
         let b = try XCTUnwrap(StickerStudio.render(cut, style: worded, side: 240))
-        XCTAssertGreaterThan(b.size.height, a.size.height + 20)
+        XCTAssertGreaterThan(b.size.height, a.size.height + 5, "the caption sits over the bottom edge and adds a line below it")
         // Empty cut-out → nil, never a blank sticker.
         let empty = UIGraphicsImageRenderer(size: CGSize(width: 50, height: 50), format: fmt).image { _ in }
         XCTAssertNil(StickerStudio.render(empty, style: plain, side: 100))

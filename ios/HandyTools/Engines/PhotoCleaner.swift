@@ -150,17 +150,7 @@ enum PhotoCleaner {
     /// (and re-saves/resizes) still match. This is the precision guard that stops Vision's perceptual
     /// feature-print from lumping unrelated screenshots together as look-alikes.
     static func dHash(_ cg: CGImage) -> (UInt64, UInt64) {
-        func gray(_ w: Int, _ h: Int) -> [UInt8]? {
-            var px = [UInt8](repeating: 0, count: w * h)
-            let drew = px.withUnsafeMutableBytes { buf -> Bool in
-                guard let ctx = CGContext(data: buf.baseAddress, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
-                                      space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return false }
-                ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
-                return true
-            }
-            guard drew else { return nil }
-            return px
-        }
+        func gray(_ w: Int, _ h: Int) -> [UInt8]? { GrayPixels.read(cg, w: w, h: h) }
         var h: UInt64 = 0, v: UInt64 = 0
         if let p = gray(9, 8) {                                    // horizontal: compare each pixel to its right neighbour
             var bit: UInt64 = 0

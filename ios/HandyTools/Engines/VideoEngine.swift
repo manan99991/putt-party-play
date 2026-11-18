@@ -71,14 +71,7 @@ enum VideoEngine {
     /// blown out — the title/fade frames a midpoint grab so often lands on.
     private static func sharpnessScore(_ cg: CGImage) -> Double {
         let w = 96, h = 96
-        var px = [UInt8](repeating: 0, count: w * h)
-        let drew = px.withUnsafeMutableBytes { buf -> Bool in
-            guard let ctx = CGContext(data: buf.baseAddress, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
-                                  space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return false }
-            ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
-            return true
-        }
-        guard drew else { return 0 }
+        guard let px = GrayPixels.read(cg, w: w, h: h) else { return 0 }
         var grad = 0.0, mean = 0.0
         for v in px { mean += Double(v) }
         mean /= Double(px.count)

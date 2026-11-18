@@ -91,11 +91,10 @@ struct DataGrabView: View {
             if let t = receipt.tax { row("Tax", money(t)) }
             if let t = receipt.tip { row("Tip", money(t)) }
             HStack { Text(L("Total")).font(HandyFont.bodyStrong); Spacer(); Text(money(receipt.total ?? 0)).font(HandyFont.bodyStrong).monospacedDigit() }
-            HStack(spacing: HandySpacing.s8) {
+            HandyFlow(spacing: HandySpacing.s8) {
                 ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: DataGrab.receiptRows(receipt), sheetName: receipt.merchant.isEmpty ? "Receipt" : receipt.merchant) ?? Data()), preview: SharePreview("Receipt.xlsx")) { Label(L("Excel"), systemImage: "tablecells.badge.ellipsis") }.compactButton()
                 ShareLink(item: CSVFile(data: Data(DataGrab.receiptCSV(receipt).utf8)), preview: SharePreview("Receipt.csv")) { Label(L("Items as CSV"), systemImage: "tablecells") }.compactButton()
                 Button { Copier.copy(DataGrab.expenseRow(receipt)) } label: { Label(L("Copy expense row"), systemImage: "doc.on.doc") }.compactButton()
-                Spacer()
             }
             Text(L("The expense row pastes straight into a Numbers/Excel/Google Sheets expense log.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle(padding: HandySpacing.s12)
@@ -163,10 +162,9 @@ struct DataGrabView: View {
                           preview: SharePreview("Table.xlsx")) {
                     Label(L("Save as Excel (.xlsx)"), systemImage: "tablecells.badge.ellipsis").frame(maxWidth: .infinity)
                 }.primaryButton()
-                HStack(spacing: HandySpacing.s8) {
+                HandyFlow(spacing: HandySpacing.s8) {
                     ShareLink(item: CSVFile(data: Data(csv.utf8)), preview: SharePreview("Table.csv")) { Label(L("Save CSV"), systemImage: "tablecells") }.compactButton()
                     Button { Copier.copy(csv.replacingOccurrences(of: ",", with: "\t")) } label: { Label(L("Copy for a spreadsheet"), systemImage: "doc.on.doc") }.compactButton()
-                    Spacer()
                 }
                 Text(L("Excel keeps numbers as numbers, so they add up and sort. Opens in Excel, Numbers and Google Sheets."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
