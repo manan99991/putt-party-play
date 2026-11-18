@@ -29,6 +29,7 @@ struct StudioView: View {
     // passport
     @State private var specIdx = 0
     @State private var passportBG = true
+    @State private var passportChecks: [PassportCheck.Item] = []
     @State private var sheet: Data?
     // resize
     @State private var resizeIdx = 1
@@ -137,6 +138,25 @@ struct StudioView: View {
         }
     }
 
+    private var passportChecklist: some View {
+        let failing = passportChecks.filter { !$0.pass }
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(failing.isEmpty ? L("Looks ready — every check passed") : "\(failing.count) \(failing.count == 1 ? L("thing to fix") : L("things to fix"))",
+                  systemImage: failing.isEmpty ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
+                .font(HandyFont.bodyStrong).foregroundStyle(failing.isEmpty ? HandyColor.success : HandyColor.amber)
+            ForEach(passportChecks) { c in
+                VStack(alignment: .leading, spacing: 2) {
+                    Label(L(c.title), systemImage: c.pass ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        .font(HandyFont.body).foregroundStyle(c.pass ? HandyColor.success : HandyColor.danger)
+                    if !c.pass { Text(L(c.fix)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.leading, 28) }
+                }
+            }
+            Text(L("Also check your country's rules on glasses, headwear and the photo's age. A helper, not an official verdict."))
+                .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+        }
+        .cardStyle(padding: HandySpacing.s12)
+    }
+
     private var resizeControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text(L("Longest side")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -172,6 +192,7 @@ struct StudioView: View {
         case .jpg(let d):
             Text("\(SizeTarget.format(d.count)) · JPG").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             ShareLink(item: JPEGFile(data: d), preview: SharePreview("Studio")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            if mode == .passport && !passportChecks.isEmpty { passportChecklist }
             if mode == .passport {
                 Button { if let p = preview { sheet = ImageStudio.printSheet(p); if sheet != nil { HandyHaptics.success() } } } label: { Label(L("Make a 4×6 print sheet"), systemImage: "squareshape.split.3x3").frame(maxWidth: .infinity) }.secondaryButton()
                 if let sheet { ShareLink(item: JPEGFile(data: sheet), preview: SharePreview("Print sheet")) { Label(L("Save the print sheet"), systemImage: "printer").frame(maxWidth: .infinity) }.primaryButton() }
@@ -187,7 +208,7 @@ struct StudioView: View {
     private func run() {
         guard let src = original else { return }
         guard Usage.hasRoom("studio", limit: Limits.freeStudioPerDay) else { return }
-        working = true; errorText = nil; output = nil; sheet = nil
+        working = true; errorText = nil; output = nil; sheet = nil; passportChecks = []
         let m = mode, bg = backgrounds[bgIdx].1, spec = ImageStudio.passportSpecs[specIdx], pbg = passportBG
         let rIdx = resizeIdx, sIdx = sizeLimitIdx, fmt = format, q = CGFloat(quality), up = enhanceUpscale
         // Every case runs its heavy work (Vision cut-out, face detect, full-res encode) via
@@ -214,6 +235,7 @@ struct StudioView: View {
                 let out = await Task.detached(priority: .userInitiated) { ImageStudio.passport(src, spec: spec, background: pbg ? .white : nil) }.value
                 guard let img = out else { errorText = "Couldn't find a clear face. Use a straight-on portrait with the whole head visible."; return }
                 preview = img
+                passportChecks = await Task.detached(priority: .userInitiated) { PassportCheck.run(original: src, finished: img) }.value
                 if let d = await Task.detached(priority: .userInitiated) { img.jpegData(compressionQuality: 0.95) }.value { output = .jpg(d) }
             case .resize:
                 if let sIdx {

@@ -1999,6 +1999,28 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(MenuReader.splitPrice("Since 1998"), "a year isn't a price")
     }
 
+    func testPassportCheckGradesPhotos() throws {
+        // No face → one clear failing check, nothing else invented.
+        let noFace = PassportCheck.run(original: Self.text("HELLO"), finished: nil)
+        XCTAssertEqual(noFace.map(\.id), ["one"]); XCTAssertFalse(noFace[0].pass)
+        // Background: a plain white border passes, a busy dark one fails.
+        let white = UIGraphicsImageRenderer(size: CGSize(width: 413, height: 531)).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 413, height: 531)) }
+        let w = try XCTUnwrap(PassportCheck.borderStats(try XCTUnwrap(white.cgImage)))
+        XCTAssertGreaterThan(w.mean, 0.95); XCTAssertLessThan(w.spread, 0.02)
+        let busy = UIGraphicsImageRenderer(size: CGSize(width: 413, height: 531)).image { c in
+            for i in 0..<20 { (i % 2 == 0 ? UIColor.black : UIColor.darkGray).setFill()
+                c.fill(CGRect(x: CGFloat(i) * 21, y: 0, width: 21, height: 531)) } }
+        let b = try XCTUnwrap(PassportCheck.borderStats(try XCTUnwrap(busy.cgImage)))
+        XCTAssertLessThan(b.mean, 0.72)
+        // Lighting: a face box lit on one side only is uneven.
+        let split = UIGraphicsImageRenderer(size: CGSize(width: 200, height: 200)).image { c in
+            UIColor.black.setFill(); c.fill(CGRect(x: 0, y: 0, width: 100, height: 200))
+            UIColor.white.setFill(); c.fill(CGRect(x: 100, y: 0, width: 100, height: 200)) }
+        let h = try XCTUnwrap(PassportCheck.halves(try XCTUnwrap(split.cgImage), CGRect(x: 0, y: 0, width: 200, height: 200)))
+        XCTAssertLessThan(h.0, 0.1); XCTAssertGreaterThan(h.1, 0.9)
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)
