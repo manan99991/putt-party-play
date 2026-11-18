@@ -32,7 +32,7 @@ struct AudioConvertView: View {
             .padding(.horizontal, HandySpacing.gutter)
             .padding(.vertical, HandySpacing.s12)
         }
-        .fileImporter(isPresented: $showFiles, allowedContentTypes: [.audio]) { res in
+        .fileImporter(isPresented: $showFiles, allowedContentTypes: [.audio, .movie]) { res in
             if case .success(let url) = res { load(url) }
         }
         .onChange(of: format) { _, _ in clearResult() }

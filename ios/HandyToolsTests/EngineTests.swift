@@ -1662,6 +1662,23 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("compress audio").first?.id, "audiocompress")
     }
 
+    func testAudioJoinAndSpeedKeepRealLengths() async throws {
+        let a = try makeToneFile(seconds: 1.0), b = try makeToneFile(seconds: 2.0)
+        defer { try? FileManager.default.removeItem(at: a); try? FileManager.default.removeItem(at: b) }
+        guard case .success(let joined) = await AudioMix.merge([a, b], gap: 0.5) else { return XCTFail("join failed") }
+        defer { try? FileManager.default.removeItem(at: joined) }
+        let jd = (try? await AVURLAsset(url: joined).load(.duration))?.seconds ?? 0
+        XCTAssertEqual(jd, 3.5, accuracy: 0.3, "1s + 0.5s pause + 2s")
+        guard case .success(let fast) = await AudioMix.speed(b, rate: 2) else { return XCTFail("speed failed") }
+        defer { try? FileManager.default.removeItem(at: fast) }
+        let fd = (try? await AVURLAsset(url: fast).load(.duration))?.seconds ?? 0
+        XCTAssertEqual(fd, 1.0, accuracy: 0.25, "2s at 2x is 1s")
+        let one = await AudioMix.merge([a])
+        if case .failure(let f) = one { XCTAssertEqual(f, .tooFew) } else { XCTFail("one clip can't be joined") }
+        XCTAssertEqual(searchTools("join audio").first?.id, "audiomix")
+        XCTAssertEqual(searchTools("extract audio").first?.id, "audioconvert")
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)
