@@ -72,6 +72,29 @@ struct Given: Identifiable {
             // Name it by the file so the chooser reads "report.html", not a vague "Some text".
             return Given(payload: .text(clean), label: url.lastPathComponent)
         }
+        // A saved link (.webloc, .url, or a plist/bookmark that just holds a URL) isn't a dead end: pull the
+        // link out and hand it to the link tools (open, scam-check, clean tracking, QR), labelled "A link".
+        if let link = linkFromFile(url) {
+            return Given(payload: .text(link), label: "A link")
+        }
+        return nil
+    }
+
+    /// Extract the URL from a saved-link file: a .webloc/.fileloc plist with a "URL" key, a .url INI shortcut,
+    /// or any small file whose bytes contain a single http(s) link (the binary-plist share files the OS makes).
+    static func linkFromFile(_ url: URL) -> String? {
+        guard let data = try? Data(contentsOf: url), data.count < 200_000 else { return nil }
+        if let obj = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) {
+            if let dict = obj as? [String: Any] {
+                if let s = dict["URL"] as? String, s.hasPrefix("http") { return s }
+                for v in dict.values { if let s = v as? String, s.hasPrefix("http") { return s } }
+            }
+            if let s = obj as? String, s.hasPrefix("http") { return s }
+        }
+        if let text = String(data: data, encoding: .utf8),
+           let r = text.range(of: #"https?://[^\s"'<>]+"#, options: .regularExpression) {
+            return String(text[r])
+        }
         return nil
     }
 
