@@ -87,6 +87,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("animate").first?.id, "animate")
         XCTAssertEqual(searchTools("ken burns").first?.id, "animate")
         XCTAssertEqual(searchTools("pill reminder").first?.id, "medreminder")
+        XCTAssertEqual(searchTools("collage").first?.id, "collage")
     }
 
     // MARK: duplicate detection precision
@@ -1904,6 +1905,28 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(r.returnBy)
         r.returnDays = 30
         XCTAssertEqual(r.returnBy, Calendar.current.date(byAdding: .day, value: 30, to: bought))
+    }
+
+    func testCollageLayoutsTileTheCanvasExactly() {
+        let canvas = CGSize(width: 1080, height: 1350), gap: CGFloat = 16
+        for layout in CollageLayout.allCases {
+            for n in 1...9 {
+                let f = layout.frames(count: n, canvas: canvas, gap: gap)
+                XCTAssertEqual(f.count, n, "\(layout.title) gives one frame per photo (\(n))")
+                for (i, a) in f.enumerated() {
+                    XCTAssertGreaterThanOrEqual(a.minX, gap - 0.5); XCTAssertGreaterThanOrEqual(a.minY, gap - 0.5)
+                    XCTAssertLessThanOrEqual(a.maxX, canvas.width - gap + 0.5); XCTAssertLessThanOrEqual(a.maxY, canvas.height - gap + 0.5)
+                    XCTAssertGreaterThan(a.width, 20); XCTAssertGreaterThan(a.height, 20)
+                    for b in f[(i + 1)...] { XCTAssertFalse(a.insetBy(dx: 0.5, dy: 0.5).intersects(b), "\(layout.title) tiles never overlap") }
+                }
+            }
+        }
+        // The hero tile really is the biggest.
+        let hero = CollageLayout.hero.frames(count: 4, canvas: canvas, gap: gap)
+        XCTAssertTrue(hero.dropFirst().allSatisfy { $0.width * $0.height < hero[0].width * hero[0].height })
+        let img = CollageLayout.render([Self.text("A"), Self.text("B"), Self.text("C")], layout: .mosaic,
+                                       canvas: CGSize(width: 360, height: 640), gapRatio: 0.02, cornerRatio: 0.03, background: .white)
+        XCTAssertEqual(img.size, CGSize(width: 360, height: 640))
     }
 
     func testAudioConvertRejectsNonAudioGracefully() async throws {

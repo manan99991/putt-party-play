@@ -20,6 +20,8 @@ struct AnimateView: View {
     @State private var working = false
     @State private var resultURL: URL?
     @State private var errorText: String?
+    @State private var gifURL: URL?
+    @State private var makingGIF = false
 
     static let maxPhotos = 24
     private let cols = [GridItem(.flexible(), spacing: HandySpacing.s8), GridItem(.flexible(), spacing: HandySpacing.s8),
@@ -184,7 +186,16 @@ struct AnimateView: View {
             ShareLink(item: url) {
                 Label(L("Save or share video"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
             }.primaryButton()
-            Button(L("Try another style")) { resultURL = nil; schedulePreview() }.textButton().font(HandyFont.caption)
+            if let g = gifURL {
+                ShareLink(item: g) {
+                    Label(L("Save or share GIF"), systemImage: "photo.stack").frame(maxWidth: .infinity)
+                }.secondaryButton()
+            } else {
+                Button { makeGIF(from: url) } label: {
+                    Label(makingGIF ? L("Making GIF…") : L("Also make a GIF (for chats)"), systemImage: "photo.stack").frame(maxWidth: .infinity)
+                }.secondaryButton().disabled(makingGIF)
+            }
+            Button(L("Try another style")) { resultURL = nil; gifURL = nil; schedulePreview() }.textButton().font(HandyFont.caption)
         }
     }
 
@@ -261,6 +272,21 @@ struct AnimateView: View {
                 player.isMuted = false
                 player.play()
                 HandyHaptics.success()
+            }
+        }
+    }
+
+    /// A small looping GIF of the finished video — chats and email show GIFs where they won't play video.
+    private func makeGIF(from url: URL) {
+        makingGIF = true
+        let s = settings
+        Task {
+            let secs = await VideoEngine.duration(url)
+            let g = await tenzyGIFFromVideo(url: url, start: 0, duration: min(max(1, secs), 12), fps: 12, speed: 1,
+                                            maxDim: s.format.size.width >= s.format.size.height ? 640 : 540)
+            await MainActor.run {
+                makingGIF = false
+                if let g { gifURL = g; HandyHaptics.success() } else { errorText = "Couldn't make the GIF — the video is still ready above." }
             }
         }
     }
