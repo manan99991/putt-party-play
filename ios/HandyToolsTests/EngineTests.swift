@@ -2207,6 +2207,43 @@ final class EngineTests: XCTestCase {
         XCTAssertFalse(PlanCheck.needs("a brainstorm about trains").contains(.weather), "'rain' inside 'brain'/'trains' isn't weather")
     }
 
+    func testCameraReadsTheSceneAndCoaches() {
+        typealias S = SceneSense
+        var s = S.Signals(); s.labels = ["sunset_sunrise": 0.8, "sky": 0.7]; s.hour = 18; s.warmth = 0.2; s.meanLuma = 0.4
+        XCTAssertEqual(S.scene(s), .sunset)
+        s.tilt = 5; XCTAssertEqual(S.coach(s, scene: .sunset), "Tilt left a little — the horizon is crooked.")
+        s.tilt = 0; s.highlights = 0.3; XCTAssertTrue(S.coach(s, scene: .sunset)!.contains("darkened"))
+        // Warm light at golden hour over the sea reads as a sunset even without the label.
+        var g = S.Signals(); g.labels = ["sea": 0.5]; g.hour = 19; g.warmth = 0.18; g.meanLuma = 0.35
+        XCTAssertEqual(S.scene(g), .sunset)
+        g.hour = 13; XCTAssertNotEqual(S.scene(g), .sunset, "not at midday")
+        var p = S.Signals(); p.faces = 1; p.faceArea = 0.08; p.faceCenter = CGPoint(x: 0.5, y: 0.4)
+        XCTAssertEqual(S.scene(p), .portrait)
+        p.faceArea = 0.5; XCTAssertTrue(S.coach(p, scene: .portrait)!.contains("Step back"))
+        p.faces = 3; XCTAssertEqual(S.scene(p), .group)
+        var n = S.Signals(); n.meanLuma = 0.05; n.iso = 3200; n.shutter = 1.0 / 4; n.hour = 23; n.labels = ["sky": 0.4]
+        XCTAssertEqual(S.scene(n), .stars)
+        n.shake = 1.2; XCTAssertTrue(S.coach(n, scene: .stars)!.hasPrefix("Hold still"))
+        n.labels = [:]; n.hour = 14; n.iso = 1200; n.meanLuma = 0.12; XCTAssertEqual(S.scene(n), .night)
+        var d = S.Signals(); d.labels = ["document": 0.7]; XCTAssertEqual(S.scene(d), .document)
+        var f = S.Signals(); f.labels = ["food": 0.6]; XCTAssertEqual(S.scene(f), .food)
+        var m = S.Signals(); m.motion = 0.2; XCTAssertEqual(S.scene(m), .action)
+        XCTAssertEqual(S.scene(S.Signals()), .everyday); XCTAssertNil(S.coach(S.Signals(), scene: .everyday))
+        // Tones, motion and tilt helpers.
+        let white = [UInt8](repeating: 255, count: 4 * 4 * 4)
+        XCTAssertEqual(S.tones(white, w: 4, h: 4).mean, 1, accuracy: 0.01)
+        XCTAssertEqual(S.tones(white, w: 4, h: 4).highlights, 1, accuracy: 0.01)
+        XCTAssertEqual(S.motion([0, 0], [255, 255]), 1, accuracy: 0.001)
+        XCTAssertEqual(S.tilt(gravityX: 0, gravityY: -1), 0, accuracy: 0.01)
+        XCTAssertGreaterThan(S.tilt(gravityX: 0.1, gravityY: -0.99), 4)
+        // Every scene has a button, a reason and looks that start with "As shot"; every look renders.
+        let img = CIImage(color: CIColor(red: 0.8, green: 0.5, blue: 0.3)).cropped(to: CGRect(x: 0, y: 0, width: 64, height: 64))
+        for sc in S.Scene.allCases {
+            XCTAssertFalse(sc.button.isEmpty); XCTAssertFalse(sc.why.isEmpty); XCTAssertEqual(sc.looks.first, .natural)
+        }
+        for l in S.Look.allCases { XCTAssertEqual(S.apply(l, to: img).extent, img.extent, l.rawValue) }
+    }
+
     func testAnimateLooksAndPrintableFlipbook() throws {
         let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
         XCTAssertEqual(Animate.applyLook(.original, to: photos).count, 3)

@@ -2,11 +2,18 @@ import SwiftUI
 import CoreImage
 import AVFoundation
 
-/// Pro Camera — the manual camera iPhone never shipped: lock ISO, shutter, focus and white balance,
-/// see focus peaking, zebras and a live histogram, shoot RAW (DNG) where the hardware allows, and
-/// make light-trail / silky-water long exposures by averaging frames.
+/// Pro Camera — the camera that thinks for you. Point it: it recognises the scene (sunset, portrait,
+/// night sky, food, a page…), sets itself up for it, and coaches you while you aim ("tilt left a little",
+/// "hold still"). One button takes the shot; you see it before it's saved — Love it, Try again, or try a
+/// different look. Everything manual (ISO, shutter, focus, white balance, peaking, zebras, RAW, long
+/// exposures) sits under Manual at the bottom for anyone who wants it.
 struct ProCameraView: View {
     @StateObject private var cam = ProCameraController()
+    @StateObject private var reader = SceneReader()
+    @State private var autoScene = true          // false once the person picks something by hand
+    @State private var appliedScene: SceneSense.Scene?
+    @State private var review: Shot?
+    @State private var tick = 0
     @State private var holder = MetalViewHolder()
     private enum Panel: Int, CaseIterable { case exposure, focus, wb, long
         var title: String { ["Exposure", "Focus", "White balance", "Long exposure"][rawValue] } }
@@ -34,12 +41,7 @@ struct ProCameraView: View {
     }
 
     var body: some View {
-        ToolPage(title: "Pro Camera", subtitle: "Manual ISO, shutter, focus and white balance; peaking, zebras, histogram; RAW and long exposures.") {
-            HowTo("procam", [
-                "Pick a panel — exposure, focus, white balance or long exposure.",
-                "Drag the sliders to set it by hand; the preview updates live.",
-                "Tap the shutter; long exposure needs the phone held still.",
-            ])
+        ToolPage(title: "Pro Camera", subtitle: "Point it at anything — it sets itself up for the scene and coaches you to the best shot.") {
             ZStack {
                 ProcessedFrameView(image: processed, holder: holder, fit: true)
                     .overlay {
@@ -56,13 +58,27 @@ struct ProCameraView: View {
                         }.stroke(.white.opacity(0.35), lineWidth: 0.5)
                     }.allowsHitTesting(false)
                 }
+                if autoScene, abs(reader.tilt) > 0.8, showsLevel { levelLine }
                 VStack {
-                    HStack {
-                        if !histogram.isEmpty { HistogramView(values: histogram).frame(width: 96, height: 36).background(.black.opacity(0.35), in: RoundedRectangle(cornerRadius: 6)) }
+                    HStack(alignment: .top) {
+                        if autoScene {
+                            Label(L(reader.scene.title), systemImage: "sparkles").font(.system(size: 13, weight: .semibold)).foregroundStyle(.white)
+                                .padding(.horizontal, 10).padding(.vertical, 6).background(.black.opacity(0.5), in: Capsule())
+                                .animation(.easeInOut, value: reader.scene)
+                        } else if !histogram.isEmpty {
+                            HistogramView(values: histogram).frame(width: 96, height: 36).background(.black.opacity(0.35), in: RoundedRectangle(cornerRadius: 6))
+                        }
                         Spacer()
-                        Text(readout).font(.system(size: 11, weight: .medium, design: .monospaced)).foregroundStyle(.white).padding(6).background(.black.opacity(0.35), in: RoundedRectangle(cornerRadius: 6))
+                        if !autoScene || showPro {
+                            Text(readout).font(.system(size: 11, weight: .medium, design: .monospaced)).foregroundStyle(.white).padding(6).background(.black.opacity(0.35), in: RoundedRectangle(cornerRadius: 6))
+                        }
                     }
                     Spacer()
+                    if autoScene, let t = reader.tip, !cam.accumulating {
+                        Text(L(t)).font(.system(size: 14, weight: .medium)).foregroundStyle(.white).multilineTextAlignment(.center)
+                            .padding(.horizontal, 12).padding(.vertical, 8).background(.black.opacity(0.55), in: RoundedRectangle(cornerRadius: 12))
+                            .transition(.opacity).id(t)
+                    }
                     if cam.accumulating { Text("Exposing… \(cam.accumulated)/\(longSeconds * 30) frames").font(HandyFont.caption).foregroundStyle(.white).padding(6).background(.black.opacity(0.5), in: Capsule()) }
                 }.padding(HandySpacing.s8)
                 GeometryReader { g in
@@ -76,11 +92,9 @@ struct ProCameraView: View {
             .frame(height: 420)
             .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
 
-            Text(L("Tap the picture to focus. Every button below starts from the camera's own best auto settings.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-
-            presetRow
-
             bestButton
+            Text(autoScene ? L(reader.scene.why) : L("Manual — your settings. Tap Back to automatic to let Tenzy set it up again."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
             if let img = cam.lastSaved ?? longResult {
                 HStack(spacing: HandySpacing.s12) {
@@ -97,6 +111,10 @@ struct ProCameraView: View {
             }
             DisclosureGroup(isExpanded: $showPro) {
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            if !autoScene {
+                Button { backToAuto() } label: { Label(L("Back to automatic"), systemImage: "sparkles") }.compactButton()
+            }
+            presetRow
             HStack(spacing: HandySpacing.s8) {
                 toggle("Peaking", $peaking, "scope"); toggle("Zebras", $zebras, "sun.max.trianglebadge.exclamationmark"); toggle("Grid", $grid, "grid")
                 if cam.rawSupported { toggle("RAW", $raw, "r.square") }
@@ -113,16 +131,23 @@ struct ProCameraView: View {
             case .long: longPanel
             }
                 }.padding(.top, HandySpacing.s8)
-            } label: { Text(L("Pro controls")).font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textPrimary) }
+            } label: { Label(L("Manual"), systemImage: "slider.horizontal.3").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textPrimary) }
             .tint(HandyColor.accent)
 
             Text(cam.rawSupported ? "RAW saves a DNG alongside the HEIF — edit it in Photos, Lightroom or Darkroom. Long exposures average frames, so use a tripod or a steady ledge."
                                   : "This camera doesn't offer RAW capture to apps; HEIF at full quality is saved. Long exposures average frames — steady the phone.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .onAppear { if Launch.startHardware { cam.start() } }
-        .onDisappear { cam.stop() }
-        .onReceive(timer) { _ in if let l = cam.latest { histogram = ProImage.histogram(l, context: ctx) } }
+        .onAppear { if Launch.startHardware { cam.start(); reader.start() } }
+        .onDisappear { cam.stop(); reader.stop() }
+        .onReceive(timer) { _ in
+            guard let l = cam.latest else { return }
+            if showPro || !autoScene { histogram = ProImage.histogram(l, context: ctx) }
+            tick += 1
+            if autoScene, tick % 2 == 0, !cam.accumulating, !shooting { reader.read(l, device: cam.device) }
+        }
+        .onChange(of: reader.scene) { _, sc in if autoScene, !cam.accumulating, !shooting { applyScene(sc) } }
+        .sheet(item: $review) { shot in ShotReview(shot: shot, scene: autoScene ? reader.scene : .everyday) { data in await keep(shot, data) } }
         .onChange(of: cam.accumulating) { was, now in if was, !now, panel == .long { finishLong() } }
     }
 
@@ -232,7 +257,9 @@ struct ProCameraView: View {
         }
     }
 
-    private var bestLabel: String { cam.accumulating ? "Exposing…" : (panel == .long ? "Start long exposure" : preset.bestLabel) }
+    private var bestLabel: String {
+        cam.accumulating ? "Exposing…" : (panel == .long ? "Start long exposure" : (autoScene ? reader.scene.button : preset.bestLabel))
+    }
 
     private var bestButton: some View {
         Button { panel == .long ? startLong() : shoot() } label: {
@@ -253,7 +280,7 @@ struct ProCameraView: View {
             Text(L("Best for…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(Preset.allCases, id: \.rawValue) { p in
-                    Button { preset = p; apply(p) } label: {
+                    Button { autoScene = false; preset = p; apply(p) } label: {
                         Label(p.rawValue, systemImage: p.icon).font(.system(size: 13, weight: .medium))
                             .padding(.horizontal, HandySpacing.s12).frame(minHeight: HandySpacing.chipHeight)
                             .background(preset == p ? HandyColor.accentSoft : HandyColor.surface, in: Capsule())
@@ -308,18 +335,67 @@ struct ProCameraView: View {
     // MARK: actions
 
     private func shoot() {
+        if autoScene, appliedScene != reader.scene { applyScene(reader.scene) }
         shooting = true
         Task { @MainActor in
             let (processed, rawData) = await cam.capture(raw: raw && cam.rawSupported)
             shooting = false
-            guard processed != nil || rawData != nil else { cam.lastMessage = "Capture failed — try again."; return }
-            cam.saving = true
-            let ok = await cam.save(processed: processed, raw: rawData)
-            cam.saving = false
-            if let p = processed, let img = UIImage(data: p) { cam.lastSaved = img.resized(maxDimension: 300); shareData = img.jpegData(compressionQuality: 0.95) }
-            cam.lastMessage = ok ? (rawData != nil ? "Saved to Photos — HEIF + DNG" : "Saved to Photos") : "Couldn't save to Photos — tap share to keep this shot, or allow Photos access in Settings."
-            if ok { HandyHaptics.success() }
+            guard let processed, let img = UIImage(data: processed) else {
+                cam.lastMessage = "Capture failed — try again."; return
+            }
+            HandyHaptics.light()
+            review = Shot(data: processed, raw: rawData, image: img)      // you see it before it's saved
         }
+    }
+
+    /// "Love it": save the chosen version (the original file when it's "As shot", so nothing is lost).
+    private func keep(_ shot: Shot, _ data: Data) async {
+        cam.saving = true
+        let ok = await cam.save(processed: data, raw: shot.raw)
+        cam.saving = false
+        cam.lastSaved = UIImage(data: data)?.resized(maxDimension: 300)
+        shareData = data
+        cam.lastMessage = ok ? (shot.raw != nil ? "Saved to Photos — with RAW" : "Saved to Photos") : "Couldn't save to Photos — tap share to keep this shot, or allow Photos access in Settings."
+        if ok { HandyHaptics.success() }
+    }
+
+    // MARK: scene
+
+    private var showsLevel: Bool { [.sunset, .landscape, .snowBeach, .stars, .everyday, .document, .backlit].contains(reader.scene) }
+
+    /// A line across the preview that turns green when the phone is level.
+    private var levelLine: some View {
+        let level = abs(reader.tilt) < 1.5
+        return GeometryReader { g in
+            Rectangle().fill(level ? Color.green : Color.yellow).frame(width: g.size.width * 0.6, height: 2)
+                .rotationEffect(.degrees(-reader.tilt))
+                .position(x: g.size.width / 2, y: g.size.height / 2)
+                .shadow(radius: 2)
+        }.allowsHitTesting(false)
+    }
+
+    /// Set the camera up for what it sees. Always starts from full auto, then nudges.
+    private func applyScene(_ sc: SceneSense.Scene) {
+        appliedScene = sc
+        switch sc {
+        case .sunset: apply(.golden)
+        case .stars: apply(.astro)
+        case .night, .indoor: apply(.night)
+        case .portrait: apply(.portrait)
+        case .group, .pet: apply(.portrait); cam.limitShutter(1.0 / 250); cam.applyExposure()
+        case .action: apply(.action)
+        case .landscape: apply(.scenic)
+        case .food: apply(.auto); cam.current.ev = 0.3; cam.applyExposure()
+        case .document: apply(.auto); cam.limitShutter(1.0 / 125); cam.applyExposure()
+        case .snowBeach, .backlit: apply(.auto); cam.current.ev = 0.7; cam.applyExposure()
+        case .closeup, .everyday: apply(.auto)
+        }
+        if sc == .stars || sc == .sunset { panel = .exposure }
+    }
+
+    private func backToAuto() {
+        autoScene = true; preset = .auto; panel = .exposure
+        applyScene(reader.scene)
     }
 
     private func startLong() { longResult = nil; cam.lastSaved = nil; shareData = nil; cam.beginLongExposure(frames: longSeconds * 30) }
@@ -348,5 +424,92 @@ struct HistogramView: View {
                 }
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
         }.padding(3)
+    }
+}
+
+/// A photo just taken, waiting for Love it / Try again.
+struct Shot: Identifiable {
+    let id = UUID()
+    let data: Data
+    let raw: Data?
+    let image: UIImage
+}
+
+/// See the shot before it's kept: the looks that suit this scene, rendered on your photo.
+private struct ShotReview: View {
+    let shot: Shot
+    let scene: SceneSense.Scene
+    let keep: (Data) async -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var look: SceneSense.Look = .natural
+    @State private var thumbs: [SceneSense.Look: UIImage] = [:]
+    @State private var shown: UIImage?
+    @State private var saving = false
+    private let ctx = CIContext()
+
+    var body: some View {
+        VStack(spacing: HandySpacing.s12) {
+            Text(L("Do you like it?")).font(HandyFont.title).frame(maxWidth: .infinity, alignment: .leading)
+            Image(uiImage: shown ?? shot.image).resizable().scaledToFit()
+                .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                .frame(maxHeight: 440)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: HandySpacing.s8) {
+                    ForEach(scene.looks, id: \.self) { l in
+                        Button { look = l; render() } label: {
+                            VStack(spacing: 4) {
+                                Group {
+                                    if let t = thumbs[l] { Image(uiImage: t).resizable().scaledToFill() } else { HandyColor.surface }
+                                }
+                                .frame(width: 68, height: 68).clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay(RoundedRectangle(cornerRadius: 10).stroke(look == l ? HandyColor.accent : Color.clear, lineWidth: 3))
+                                Text(L(l.title)).font(HandyFont.micro).foregroundStyle(look == l ? HandyColor.accent : HandyColor.textPrimary)
+                            }
+                        }.buttonStyle(.plain)
+                    }
+                }
+            }
+            Button { save() } label: {
+                Label(saving ? L("Saving…") : L("Love it — save"), systemImage: "heart.fill").frame(maxWidth: .infinity)
+            }.primaryButton().disabled(saving)
+            Button { dismiss() } label: { Label(L("Try again"), systemImage: "camera.rotate").frame(maxWidth: .infinity) }.secondaryButton()
+        }
+        .padding(HandySpacing.gutter)
+        .presentationDetents([.large])
+        .task { makeThumbs() }
+    }
+
+    private var base: CIImage? { CIImage(data: shot.data, options: [.applyOrientationProperty: true]) }
+
+    private func makeThumbs() {
+        guard let b = base else { return }
+        let k = 160 / max(b.extent.width, b.extent.height)
+        let small = b.transformed(by: CGAffineTransform(scaleX: k, y: k))
+        for l in scene.looks {
+            let out = SceneSense.apply(l, to: small)
+            if let cg = ctx.createCGImage(out, from: out.extent) { thumbs[l] = UIImage(cgImage: cg) }
+        }
+    }
+
+    private func render() {
+        guard look != .natural, let b = base else { shown = nil; return }
+        let k = 1400 / max(b.extent.width, b.extent.height)
+        let out = SceneSense.apply(look, to: b.transformed(by: CGAffineTransform(scaleX: min(1, k), y: min(1, k))))
+        if let cg = ctx.createCGImage(out, from: out.extent) { shown = UIImage(cgImage: cg) }
+    }
+
+    private func save() {
+        saving = true
+        let chosen = look
+        Task {
+            var data = shot.data
+            if chosen != .natural, let b = base {
+                let out = SceneSense.apply(chosen, to: b)
+                if let d = ctx.jpegRepresentation(of: out, colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!, options: [:]) { data = d }
+            }
+            await keep(data)
+            saving = false
+            dismiss()
+        }
     }
 }
