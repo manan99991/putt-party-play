@@ -72,6 +72,18 @@ final class EngineTests: XCTestCase {
         // Voice → Notes' plain "voice" (its name prefixes "voice", so it keeps the lead there).
         XCTAssertEqual(searchTools("soundboard").first?.id, "soundboard")
         XCTAssertEqual(searchTools("chipmunk").first?.id, "soundboard")
+        XCTAssertEqual(searchTools("watermark").first?.id, "pdfprotect")
+        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
+        XCTAssertEqual(searchTools("searchable").first?.id, "pdfsearchable")
+        XCTAssertEqual(searchTools("fill a form").first?.id, "pdfform")
+        XCTAssertEqual(searchTools("sign").first?.id, "pdfsign")
+        XCTAssertEqual(searchTools("pdf").first?.id, "scan", "Organize Pages must not steal 'pdf' from Scan")
+        XCTAssertEqual(searchTools("reorder pages").first?.id, "pdfpages")
+        XCTAssertEqual(searchTools("compress audio").first?.id, "audiocompress")
+        XCTAssertEqual(searchTools("join audio").first?.id, "audiomix")
+        XCTAssertEqual(searchTools("extract audio").first?.id, "audioconvert")
+        XCTAssertEqual(searchTools("album art").first?.id, "audiotags")
+        XCTAssertEqual(searchTools("zip files").first?.id, "zipmaker")
     }
 
     // MARK: duplicate detection precision
@@ -1424,8 +1436,6 @@ final class EngineTests: XCTestCase {
         let t = wdoc.string ?? ""
         XCTAssertTrue(t.contains("CONFIDENTIAL")); XCTAssertTrue(t.contains("INVOICE"))
         XCTAssertNil(PDFOverlay.watermark(src, text: "   "), "blank watermark refused")
-        XCTAssertEqual(searchTools("watermark").first?.id, "pdfprotect")
-        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
     }
 
     func testMakeSearchableAddsRealTextLayer() async throws {
@@ -1445,8 +1455,6 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(seen.last ?? 0, 1, accuracy: 0.001, "progress reaches 100%")
         let junk = await PDFSearchable.make(Data("nope".utf8))
         XCTAssertNil(junk, "garbage refused")
-        XCTAssertEqual(searchTools("searchable").first?.id, "pdfsearchable")
-        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
     }
 
     func testFillFormWritesRealFields() throws {
@@ -1487,8 +1495,6 @@ final class EngineTests: XCTestCase {
         let flat = try XCTUnwrap(DocEngine.pdf(images: [blank], ocr: [nil], options: opts))
         XCTAssertTrue(PDFForm.fields(flat).isEmpty)
         XCTAssertNil(PDFForm.fill(Data("nope".utf8), values: [:]))
-        XCTAssertEqual(searchTools("fill a form").first?.id, "pdfform")
-        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
     }
 
     func testSignPDFStampsAndKeepsOriginalText() throws {
@@ -1507,8 +1513,6 @@ final class EngineTests: XCTestCase {
         let a = PDFDocument(data: src)!.page(at: 0)!.bounds(for: .mediaBox).size
         let b = out.page(at: 0)!.bounds(for: .mediaBox).size
         XCTAssertEqual(a.width, b.width, accuracy: 1); XCTAssertEqual(a.height, b.height, accuracy: 1)
-        XCTAssertEqual(searchTools("pdf").first?.id, "scan")
-        XCTAssertEqual(searchTools("sign").first?.id, "pdfsign")
     }
 
     func testPDFPagesReorderRotateRemove() throws {
@@ -1531,8 +1535,6 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(out.page(at: 1)!.rotation, 0)
         XCTAssertEqual(PDFPages.normalized(-90), 270)
         XCTAssertNil(PDFPages.build(src, items: [PDFPages.Item(index: 9)]), "nothing usable → nil, never an empty file")
-        XCTAssertEqual(searchTools("pdf").first?.id, "scan", "Organize Pages must not steal 'pdf' from Scan")
-        XCTAssertEqual(searchTools("reorder pages").first?.id, "pdfpages")
     }
 
     func testVideoFormatFillAndFit() throws {
@@ -1659,7 +1661,6 @@ final class EngineTests: XCTestCase {
         try Data("not audio".utf8).write(to: junk)
         defer { try? FileManager.default.removeItem(at: junk) }
         if case .success = await AudioConvert.compress(junk, level: .balanced) { XCTFail("garbage should fail") }
-        XCTAssertEqual(searchTools("compress audio").first?.id, "audiocompress")
     }
 
     func testAudioJoinAndSpeedKeepRealLengths() async throws {
@@ -1675,8 +1676,6 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(fd, 1.0, accuracy: 0.25, "2s at 2x is 1s")
         let one = await AudioMix.merge([a])
         if case .failure(let f) = one { XCTAssertEqual(f, .tooFew) } else { XCTFail("one clip can't be joined") }
-        XCTAssertEqual(searchTools("join audio").first?.id, "audiomix")
-        XCTAssertEqual(searchTools("extract audio").first?.id, "audioconvert")
     }
 
     func testAudioTagsWriteMP3AndM4AWithoutTouchingAudio() async throws {
@@ -1712,7 +1711,6 @@ final class EngineTests: XCTestCase {
         let d = (try? await AVURLAsset(url: out).load(.duration))?.seconds ?? 0
         XCTAssertEqual(d, 1.0, accuracy: 0.2)
         XCTAssertEqual(AudioTags.route(for: URL(fileURLWithPath: "/a.wav")), .convert)
-        XCTAssertEqual(searchTools("album art").first?.id, "audiotags")
     }
 
     func testZipMakerBuildsArchiveTheUnzipReaderOpens() throws {
@@ -1735,7 +1733,6 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Given.Zip.entryData(in: url, named: "photo.jpg"), noise)
         XCTAssertEqual(Given.Zip.entryData(in: url, named: "notes (2).txt"), Data("second".utf8))
         if case .success = ZipWriter.zip([]) { XCTFail("empty zip refused") }
-        XCTAssertEqual(searchTools("zip files").first?.id, "zipmaker")
     }
 
     func testTranscriptTidyRemovesFillersAndBuildsParagraphs() {
