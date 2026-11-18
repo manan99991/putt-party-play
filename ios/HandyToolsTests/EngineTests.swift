@@ -2034,7 +2034,8 @@ final class EngineTests: XCTestCase {
         let b = try XCTUnwrap(PassportCheck.borderStats(try XCTUnwrap(busy.cgImage)))
         XCTAssertLessThan(b.mean, 0.72)
         // Lighting: a face box lit on one side only is uneven.
-        let split = UIGraphicsImageRenderer(size: CGSize(width: 200, height: 200)).image { c in
+        let px1 = UIGraphicsImageRendererFormat(); px1.scale = 1     // the box is in pixels, so draw 1 point = 1 pixel
+        let split = UIGraphicsImageRenderer(size: CGSize(width: 200, height: 200), format: px1).image { c in
             UIColor.black.setFill(); c.fill(CGRect(x: 0, y: 0, width: 100, height: 200))
             UIColor.white.setFill(); c.fill(CGRect(x: 100, y: 0, width: 100, height: 200)) }
         let h = try XCTUnwrap(PassportCheck.halves(try XCTUnwrap(split.cgImage), CGRect(x: 0, y: 0, width: 200, height: 200)))
