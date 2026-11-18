@@ -1402,6 +1402,30 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(plan.contains("tel:5551234567"))    // mom → call
     }
 
+    func testPDFPagesReorderRotateRemove() throws {
+        // Three pages of different heights so the output order is checkable from page bounds.
+        func page(_ h: CGFloat) -> UIImage {
+            UIGraphicsImageRenderer(size: CGSize(width: 400, height: h)).image { c in
+                UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 400, height: h)) }
+        }
+        var opts = DocEngine.PDFOptions(); opts.searchable = false
+        guard let src = DocEngine.pdf(images: [page(300), page(500), page(700)], ocr: [nil, nil, nil], options: opts)
+        else { return XCTFail("could not build source PDF") }
+        // Keep page 3 then page 1 (drop page 2), turning page 3 a quarter clockwise.
+        let plan = [PDFPages.Item(index: 2, rotation: 90), PDFPages.Item(index: 0)]
+        guard let outData = PDFPages.build(src, items: plan), let out = PDFDocument(data: outData)
+        else { return XCTFail("build returned nil") }
+        XCTAssertEqual(out.pageCount, 2, "the removed page must be gone")
+        let h0 = out.page(at: 0)!.bounds(for: .mediaBox).height, h1 = out.page(at: 1)!.bounds(for: .mediaBox).height
+        XCTAssertGreaterThan(h0, h1, "the tall page 3 must now come first")
+        XCTAssertEqual(out.page(at: 0)!.rotation, 90)
+        XCTAssertEqual(out.page(at: 1)!.rotation, 0)
+        XCTAssertEqual(PDFPages.normalized(-90), 270)
+        XCTAssertNil(PDFPages.build(src, items: [PDFPages.Item(index: 9)]), "nothing usable → nil, never an empty file")
+        XCTAssertEqual(searchTools("pdf").first?.id, "scan", "Organize Pages must not steal 'pdf' from Scan")
+        XCTAssertEqual(searchTools("reorder pages").first?.id, "pdfpages")
+    }
+
     func testVideoFormatFillAndFit() throws {
         let src = CGSize(width: 1920, height: 1080)      // a landscape video
         let reels = CGSize(width: 1080, height: 1920)    // into a 9:16 canvas

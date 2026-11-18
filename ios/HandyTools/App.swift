@@ -122,6 +122,7 @@ struct Tool: Identifiable {
     Tool(id: "thinking",   name: "Thinking tools",   blurb: "Untangle, plan the day, decide, explain, reword", icon: "brain.head.profile",       page: 6, ai: true, asset: "tool_explain", keywords: ["think","thinking","untangle","plan my day","decide","decision","crossroads","explain","plain english","reword","rewrite","tone","brain dump","clear my head","prep","checklist","focus","overwhelmed","steps","to-do","todo","ai"]),
     Tool(id: "pdfannotate", name: "Annotate",        blurb: "Highlight & draw on a PDF, baked in", icon: "highlighter",                        page: 4, asset: "tool_scan", keywords: ["annotate","annotation","highlight","highlighter","marker","markup","mark up","draw","drawing","pen","freehand","note","notes","comment","pdf"]),
     Tool(id: "pdfconvert", name: "Convert",          blurb: "PDF → image pages or text",         icon: "doc.on.doc",                          page: 4, asset: "tool_scan", keywords: ["convert","pdf to image","pdf to text","extract text","pages","image","images","jpg","jpeg","png","picture","export","copy text"]),
+    Tool(id: "pdfpages",   name: "Organize Pages",   blurb: "Reorder, rotate or remove pages",   icon: "rectangle.stack",                     page: 4, asset: "tool_scan", keywords: ["organize pages","reorder","rearrange","move pages","page order","rotate pages","turn pages","upside down","sideways","delete pages","remove pages","extract pages","drop a page","keep pages"]),
     Tool(id: "audioconvert", name: "Audio Convert",  blurb: "Swap formats: M4A, WAV, AIFF, CAF",  icon: "waveform.path",                       page: 5, asset: "tool_audiolab", keywords: ["audio convert","audio converter","audio format","convert audio","m4a","wav","aiff","caf","aac","mp3 to m4a","change audio format","sound file","audio file","music file"]),
     Tool(id: "ringtone",   name: "Ringtone",         blurb: "Trim a clip to a 30s ringtone",     icon: "bell.badge.fill",                     page: 5, asset: "tool_audiolab", keywords: ["ringtone","ring tone","ringtones","m4r","custom ringtone","make a ringtone","phone ringtone","song to ringtone","alarm sound"]),
     Tool(id: "audioedit",  name: "Audio Editor",     blurb: "Trim, fade & cut dead air",         icon: "waveform.badge.minus",                page: 5, asset: "tool_audiolab", keywords: ["audio editor","edit audio","trim audio","cut audio","shorten audio","crop audio","fade","fade in","fade out","silence","remove silence","cut silence","dead air","gap"]),
@@ -321,6 +322,7 @@ struct ToolDestination: View {
         case "pdfredact": PDFRedactView()
         case "pdfannotate": PDFAnnotateView()
         case "pdfconvert": PDFConvertView()
+        case "pdfpages": PDFPagesView()
         case "audioconvert": AudioConvertView()
         case "ringtone": RingtoneView()
         case "audioedit": AudioEditView()

@@ -45,6 +45,7 @@ enum TenzyArt {
         "pdfredact": "scrub",
         "pdfannotate": "scan",
         "pdfconvert": "scan",
+        "pdfpages": "scan",
         "audioconvert": "audiolab",
         "ringtone": "audiolab",
         "audioedit": "audiolab",
