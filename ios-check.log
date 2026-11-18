@@ -16,9 +16,9 @@ Resolve Package Graph
 
 Fetching from https://github.com/element-hq/swift-ogg
 
-Fetching from https://github.com/vector-im/opus-swift
-
 Fetching from https://github.com/vector-im/ogg-swift.git
+
+Fetching from https://github.com/vector-im/opus-swift
 
 Creating working copy of package ‘opus-swift’
 
@@ -35,9 +35,10 @@ Checking out 0.8.3 of package ‘ogg-swift’
 
 Resolved source packages:
   YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
-  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
   SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
 
-resolved source packages: YbridOgg, YbridOpus, SwiftOGG
+resolved source packages: YbridOgg, SwiftOGG, YbridOpus
 == build.log (errors)
-** TEST SUCCEEDED **
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:1491:34: error: 'async' call in an autoclosure that does not support concurrency
+** TEST FAILED **
