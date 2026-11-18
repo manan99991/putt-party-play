@@ -52,6 +52,7 @@ enum TenzyArt {
         "pdfform": "scan",
         "zipmaker": "shareready",
         "animate": "studio",
+        "medreminder": "rest",
         "audioconvert": "audiolab",
         "audiocompress": "audiolab",
         "audiomix": "audiolab",

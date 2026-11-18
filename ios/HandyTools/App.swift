@@ -120,6 +120,7 @@ struct Tool: Identifiable {
     Tool(id: "warranty",   name: "Warranty & Receipts", blurb: "File receipts, never miss a warranty", icon: "shippingbox.fill",                 page: 2, asset: "tool_shareready", keywords: ["warranty","receipt","receipts","proof of purchase","vault","store","shoebox","expiry","expires","return","refund","find receipt","search receipt","appliance","electronics","guarantee"]),
     Tool(id: "textstudio", name: "Text Studio",      blurb: "Fix, rewrite, reply, summarize",    icon: "text.badge.checkmark",                page: 6, ai: true, asset: "tool_textstudio", keywords: ["text","grammar","proofread","rewrite","tone","reply","summarize","summary","edit","polish","email","message","ai"]),
     Tool(id: "thinking",   name: "Thinking tools",   blurb: "Untangle, plan the day, decide, explain, reword", icon: "brain.head.profile",       page: 6, ai: true, asset: "tool_explain", keywords: ["think","thinking","untangle","plan my day","decide","decision","crossroads","explain","plain english","reword","rewrite","tone","brain dump","clear my head","prep","checklist","focus","overwhelmed","steps","to-do","todo","ai"]),
+    Tool(id: "medreminder", name: "Medicine Reminders", blurb: "Reminders with a Taken button",   icon: "pills.fill",                          page: 6, asset: "tool_rest", keywords: ["medicine","medication","pill","pills","tablet","dose","reminder","medicine reminder","pill reminder","vitamins","refill","prescription","take my meds"]),
     Tool(id: "pdfannotate", name: "Annotate",        blurb: "Highlight & draw on a PDF, baked in", icon: "highlighter",                        page: 4, asset: "tool_scan", keywords: ["annotate","annotation","highlight","highlighter","marker","markup","mark up","draw","drawing","pen","freehand","note","notes","comment","pdf"]),
     Tool(id: "pdfconvert", name: "Convert",          blurb: "PDF → image pages or text",         icon: "doc.on.doc",                          page: 4, asset: "tool_scan", keywords: ["convert","pdf to image","pdf to text","extract text","pages","image","images","jpg","jpeg","png","picture","export","copy text"]),
     Tool(id: "pdfpages",   name: "Organize Pages",   blurb: "Reorder, rotate or remove pages",   icon: "rectangle.stack",                     page: 4, asset: "tool_scan", keywords: ["organize pages","reorder","rearrange","move pages","page order","rotate pages","turn pages","upside down","sideways","delete pages","remove pages","extract pages","drop a page","keep pages"]),
@@ -338,6 +339,7 @@ struct ToolDestination: View {
         case "pdfform": PDFFormView()
         case "zipmaker": ZipMakerView()
         case "animate": AnimateView()
+        case "medreminder": MedRemindersView()
         case "audioconvert": AudioConvertView()
         case "audiocompress": AudioCompressView()
         case "audiomix": AudioMixView()
@@ -655,7 +657,7 @@ struct AllToolsView: View {
     @ObservedObject private var theme = ThemeManager.shared
     private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
     private let groups: [(title: String, page: Int)] = [
-        ("Photo, video & sharing", 1), ("Animate & create", 7), ("Scan, read & organize", 2), ("Tools, sensors & accessibility", 3), ("Documents & PDF", 4), ("Audio & voice", 5), ("Think & plan", 6)
+        ("Photo, video & sharing", 1), ("Animate & create", 7), ("Scan, read & organize", 2), ("Tools, sensors & accessibility", 3), ("Documents & PDF", 4), ("Audio & voice", 5), ("Plan, health & reminders", 6)
     ]
     var body: some View {
         ScrollView {

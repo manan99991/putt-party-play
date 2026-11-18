@@ -86,6 +86,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("zip files").first?.id, "zipmaker")
         XCTAssertEqual(searchTools("animate").first?.id, "animate")
         XCTAssertEqual(searchTools("ken burns").first?.id, "animate")
+        XCTAssertEqual(searchTools("pill reminder").first?.id, "medreminder")
     }
 
     // MARK: duplicate detection precision
@@ -1808,6 +1809,51 @@ final class EngineTests: XCTestCase {
             let secs = try await asset.load(.duration).seconds
             XCTAssertEqual(secs, 1.5, accuracy: 0.3, "\(id) keeps the full length")
         }
+    }
+
+    func testMedicineScheduleRules() {
+        var cal = Calendar(identifier: .gregorian); cal.timeZone = TimeZone(identifier: "UTC")!
+        let mon = cal.date(from: DateComponents(year: 2026, month: 11, day: 16, hour: 7))!   // a Monday, 7 am
+        var m = Med(); m.name = "Vitamin D"; m.dose = "1 tablet"; m.start = cal.startOfDay(for: mon)
+        m.times = [TimeOfDay(hour: 20, minute: 0), TimeOfDay(hour: 8, minute: 30), TimeOfDay(hour: 8, minute: 30)]
+        XCTAssertEqual(MedSchedule.clockTimes(m).map(\.hour), [8, 20], "sorted, duplicates merged")
+        XCTAssertEqual(MedSchedule.doses(m, on: mon, cal: cal).count, 2)
+        // Open-ended daily → one repeating alert per time.
+        var r = MedSchedule.plans([m], now: mon, cal: cal)
+        XCTAssertEqual(r.plans.count, 2); XCTAssertTrue(r.plans.allSatisfy(\.repeats)); XCTAssertEqual(r.dropped, 0)
+        // Weekdays: Mon/Wed/Fri only, one repeating alert per time per day.
+        m.pattern = .weekdays; m.weekdays = [2, 4, 6]
+        XCTAssertTrue(MedSchedule.isDue(m, on: mon, cal: cal))
+        XCTAssertFalse(MedSchedule.isDue(m, on: cal.date(byAdding: .day, value: 1, to: mon)!, cal: cal), "not Tuesday")
+        XCTAssertEqual(MedSchedule.plans([m], now: mon, cal: cal).plans.count, 6)
+        // Every 6 hours from 8 to 22 → 8, 14, 20.
+        m.pattern = .everyHours; m.everyHours = 6; m.firstHour = 8; m.lastHour = 22
+        XCTAssertEqual(MedSchedule.clockTimes(m).map(\.hour), [8, 14, 20])
+        // An end date → dated one-off alerts only up to the last day, none in the past.
+        m.pattern = .daily; m.times = [TimeOfDay(hour: 9, minute: 0)]
+        m.end = cal.date(byAdding: .day, value: 2, to: mon)
+        r = MedSchedule.plans([m], now: mon, cal: cal)
+        XCTAssertEqual(r.plans.count, 3, "Mon, Tue, Wed at 9")
+        XCTAssertTrue(r.plans.allSatisfy { !$0.repeats && ($0.at ?? mon) > mon })
+        // Starting next week → nothing due today.
+        m.end = nil; m.start = cal.date(byAdding: .day, value: 7, to: mon)!
+        XCTAssertTrue(MedSchedule.doses(m, on: mon, cal: cal).isEmpty)
+        // A follow-up in 3 months is its own alert; paused meds schedule nothing.
+        m.start = cal.startOfDay(for: mon); m.followUp = cal.date(byAdding: .month, value: 3, to: mon)
+        XCTAssertTrue(MedSchedule.plans([m], now: mon, cal: cal).plans.contains { $0.id.hasSuffix("-follow") })
+        m.paused = true
+        XCTAssertTrue(MedSchedule.plans([m], now: mon, cal: cal).plans.isEmpty)
+        // The 64-alert limit: many meds × many times stay within budget, soonest kept.
+        var many: [Med] = []
+        for i in 0..<10 {
+            var x = Med(); x.name = "Med \(i)"; x.start = cal.startOfDay(for: mon)
+            x.pattern = .weekdays; x.weekdays = Set(1...7); x.times = [TimeOfDay(hour: 8, minute: 0), TimeOfDay(hour: 20, minute: 0)]
+            many.append(x)
+        }
+        let big = MedSchedule.plans(many, now: mon, cal: cal)
+        XCTAssertEqual(big.plans.count, MedSchedule.budget)
+        XCTAssertEqual(big.dropped, 140 - MedSchedule.budget)
+        XCTAssertTrue(MedSchedule.summary(many[0]).contains("at"))
     }
 
     func testAudioConvertRejectsNonAudioGracefully() async throws {

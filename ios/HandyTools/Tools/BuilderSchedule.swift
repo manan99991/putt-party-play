@@ -69,10 +69,28 @@ enum ToolSchedules {
 final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
     static let shared = ToolNotifications()
 
-    func install() { UNUserNotificationCenter.current().delegate = self }
+    func install() {
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().setNotificationCategories([MedSchedule.registerCategory()])
+        // Top up dated medication alerts (they're scheduled two weeks ahead) every launch.
+        Task { @MainActor in MedStore.shared.reschedule() }
+    }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        let content = response.notification.request.content
+        if content.categoryIdentifier == MedSchedule.category {
+            let medID = (content.userInfo["med"] as? String).flatMap(UUID.init(uuidString:))
+            switch response.actionIdentifier {
+            case MedSchedule.takenAction:
+                if let medID { Task { @MainActor in MedStore.shared.takenFromAlert(medID: medID) } }
+            case MedSchedule.snoozeAction:
+                MedSchedule.snooze(content)
+            default:
+                DispatchQueue.main.async { NotificationCenter.default.post(name: .openTool, object: "medreminder") }
+            }
+            completionHandler(); return
+        }
         if let id = response.notification.request.content.userInfo["tool"] as? String {
             ToolSchedules.setPending(id)
             DispatchQueue.main.async { NotificationCenter.default.post(name: .openTool, object: "builder") }
