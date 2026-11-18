@@ -879,6 +879,16 @@
   "pt": "Perguntar",
   "zh": "询问"
  },
+ "Ask for it": {
+  "de": "Anfragen",
+  "es": "Pedirlo",
+  "fr": "Le demander",
+  "hi": "इसकी माँग करें",
+  "it": "Richiedilo",
+  "ja": "リクエストする",
+  "pt": "Pedir",
+  "zh": "提出需求"
+ },
  "Ask your photos… (text or what they show)": {
   "de": "Frag deine Fotos… (Text oder was sie zeigen)",
   "es": "Pregunta a tus fotos… (texto o lo que muestran)",
@@ -1499,6 +1509,16 @@
   "pt": "Criar uma ferramenta",
   "zh": "创建工具"
  },
+ "Build my own tool anyway": {
+  "de": "Trotzdem eigenes Tool bauen",
+  "es": "Crear mi propia herramienta igualmente",
+  "fr": "Créer mon propre outil quand même",
+  "hi": "फिर भी अपना टूल बनाएँ",
+  "it": "Crea comunque il mio strumento",
+  "ja": "それでも自分のツールを作る",
+  "pt": "Criar minha própria ferramenta mesmo assim",
+  "zh": "仍然自己创建工具"
+ },
  "Build my photo index": {
   "de": "Fotoindex erstellen",
   "es": "Crear mi índice de fotos",
@@ -1668,6 +1688,16 @@
   "ja": "ライト付きカメラズーム。",
   "pt": "Zoom da câmara com luz.",
   "zh": "带补光的相机变焦。"
+ },
+ "Can't do yet": {
+  "de": "Kann noch nicht",
+  "es": "Aún no puede",
+  "fr": "Ne sait pas encore",
+  "hi": "अभी नहीं कर सकता",
+  "it": "Non ancora",
+  "ja": "まだできないこと",
+  "pt": "Ainda não faz",
+  "zh": "暂不支持"
  },
  "Cancel": {
   "de": "Abbrechen",
@@ -3608,6 +3638,16 @@
   "ja": "書類とPDF",
   "pt": "Documentos e PDF",
   "zh": "文档与PDF"
+ },
+ "Does": {
+  "de": "Kann",
+  "es": "Hace",
+  "fr": "Fait",
+  "hi": "करता है",
+  "it": "Fa",
+  "ja": "できること",
+  "pt": "Faz",
+  "zh": "可以"
  },
  "Don't see Gmail? Add it in Settings › Contacts › Accounts › Add Account › Google, and turn Contacts on.": {
   "de": "Kein Gmail zu sehen? Füge es unter Einstellungen › Kontakte › Accounts › Account hinzufügen › Google hinzu und aktiviere Kontakte.",
@@ -6868,6 +6908,16 @@
   "ja": "肉",
   "pt": "Carne",
   "zh": "肉类"
+ },
+ "Med Reminders": {
+  "de": "Medikamenten-Erinnerungen",
+  "es": "Recordatorios de medicación",
+  "fr": "Rappels de médicaments",
+  "hi": "दवा रिमाइंडर",
+  "it": "Promemoria farmaci",
+  "ja": "服薬リマインダー",
+  "pt": "Lembretes de remédios",
+  "zh": "用药提醒"
  },
  "Media Studio": {
   "de": "Medien-Studio",
@@ -12919,6 +12969,16 @@
   "pt": "Tenzy Pro",
   "zh": "Tenzy Pro"
  },
+ "Tenzy already has a tool for this": {
+  "de": "Tenzy hat dafür schon ein Tool",
+  "es": "Tenzy ya tiene una herramienta para esto",
+  "fr": "Tenzy a déjà un outil pour ça",
+  "hi": "Tenzy में इसके लिए पहले से एक टूल है",
+  "it": "Tenzy ha già uno strumento per questo",
+  "ja": "Tenzyにはこのためのツールがあります",
+  "pt": "O Tenzy já tem uma ferramenta para isso",
+  "zh": "Tenzy 已有可以做到这件事的工具"
+ },
  "Tenzy couldn't read that audio file.": {
   "de": "Tenzy konnte diese Audiodatei nicht lesen.",
   "es": "Tenzy no pudo leer ese archivo de audio.",
@@ -13618,6 +13678,16 @@
   "ja": "このスクショはもう端末にありません。そこから読み取った文字は下に表示されます。",
   "pt": "Esta captura já não está no teu telemóvel. O texto lido dela está abaixo.",
   "zh": "此截图已不在你的手机上。从中读取的文字见下方。"
+ },
+ "This tool does the rest. Tell us what's missing and we'll add it in a coming update.": {
+  "de": "Den Rest erledigt dieses Tool. Sag uns, was fehlt – wir fügen es in einem der nächsten Updates hinzu.",
+  "es": "Esta herramienta hace el resto. Dinos qué falta y lo añadiremos en una próxima actualización.",
+  "fr": "Cet outil fait le reste. Dites-nous ce qui manque et nous l'ajouterons dans une prochaine mise à jour.",
+  "hi": "बाकी काम यह टूल करता है। बताइए क्या कमी है, हम आने वाले अपडेट में जोड़ देंगे।",
+  "it": "Questo strumento fa il resto. Dicci cosa manca e lo aggiungeremo in un prossimo aggiornamento.",
+  "ja": "残りはこのツールが行います。足りないものを教えてください。今後のアップデートで追加します。",
+  "pt": "Esta ferramenta faz o resto. Diga o que falta e vamos adicionar numa próxima atualização.",
+  "zh": "其余部分由这个工具完成。告诉我们缺什么，我们会在后续更新中加上。"
  },
  "This tool is too big to fit in a QR code. Use Copy to share instead.": {
   "de": "Dieses Tool ist zu groß für einen QR-Code. Nutze stattdessen Kopieren zum Teilen.",
@@ -15249,6 +15319,46 @@
   "pt": "O zoom vai além do que a app Câmara permite. Congela para ler as letras pequenas sem manter a mão firme.",
   "zh": "变焦超出了相机应用允许的范围。冻结即可无需保持不动地阅读小字。"
  },
+ "a PDF": {
+  "de": "ein PDF",
+  "es": "un PDF",
+  "fr": "un PDF",
+  "hi": "एक PDF",
+  "it": "un PDF",
+  "ja": "PDF",
+  "pt": "um PDF",
+  "zh": "PDF"
+ },
+ "a spreadsheet": {
+  "de": "eine Tabelle",
+  "es": "una hoja de cálculo",
+  "fr": "un tableur",
+  "hi": "एक स्प्रेडशीट",
+  "it": "un foglio di calcolo",
+  "ja": "スプレッドシート",
+  "pt": "uma planilha",
+  "zh": "电子表格"
+ },
+ "a summary": {
+  "de": "eine Zusammenfassung",
+  "es": "un resumen",
+  "fr": "un résumé",
+  "hi": "सारांश",
+  "it": "un riassunto",
+  "ja": "要約",
+  "pt": "um resumo",
+  "zh": "摘要"
+ },
+ "a to-do list": {
+  "de": "eine To-do-Liste",
+  "es": "una lista de tareas",
+  "fr": "une liste de tâches",
+  "hi": "करने के कामों की सूची",
+  "it": "una lista di cose da fare",
+  "ja": "ToDoリスト",
+  "pt": "uma lista de tarefas",
+  "zh": "待办清单"
+ },
  "average": {
   "de": "Durchschnitt",
   "es": "promedio",
@@ -15258,6 +15368,16 @@
   "ja": "平均",
   "pt": "média",
   "zh": "平均"
+ },
+ "calendar events": {
+  "de": "Kalendertermine",
+  "es": "eventos de calendario",
+  "fr": "des événements de calendrier",
+  "hi": "कैलेंडर इवेंट",
+  "it": "eventi del calendario",
+  "ja": "カレンダーの予定",
+  "pt": "eventos de calendário",
+  "zh": "日历事件"
  },
  "call the dentist, pick up a parcel from the post office at 3pm, email Sam, pay rent Friday": {
   "de": "Zahnarzt anrufen, um 15 Uhr ein Paket von der Post abholen, Sam eine E-Mail schreiben, Freitag Miete zahlen",
@@ -15389,6 +15509,26 @@
   "pt": "último dia para devolver",
   "zh": "退货最后一天"
  },
+ "looking things up online": {
+  "de": "Online-Suche",
+  "es": "buscar en internet",
+  "fr": "rechercher en ligne",
+  "hi": "ऑनलाइन खोजना",
+  "it": "cercare online",
+  "ja": "オンライン検索",
+  "pt": "pesquisar online",
+  "zh": "在线搜索"
+ },
+ "maps and directions": {
+  "de": "Karten und Routen",
+  "es": "mapas y rutas",
+  "fr": "cartes et itinéraires",
+  "hi": "मैप और दिशा-निर्देश",
+  "it": "mappe e indicazioni",
+  "ja": "地図と経路",
+  "pt": "mapas e rotas",
+  "zh": "地图和路线"
+ },
  "min": {
   "de": "Min.",
   "es": "min",
@@ -15449,6 +15589,16 @@
   "pt": "nota",
   "zh": "笔记"
  },
+ "payments or bank accounts": {
+  "de": "Zahlungen oder Bankkonten",
+  "es": "pagos o cuentas bancarias",
+  "fr": "paiements ou comptes bancaires",
+  "hi": "भुगतान या बैंक खाते",
+  "it": "pagamenti o conti bancari",
+  "ja": "支払いや銀行口座",
+  "pt": "pagamentos ou contas bancárias",
+  "zh": "付款或银行账户"
+ },
  "peak": {
   "de": "Spitze",
   "es": "pico",
@@ -15478,6 +15628,16 @@
   "ja": "再生中",
   "pt": "a reproduzir",
   "zh": "播放中"
+ },
+ "reminders": {
+  "de": "Erinnerungen",
+  "es": "recordatorios",
+  "fr": "des rappels",
+  "hi": "रिमाइंडर",
+  "it": "promemoria",
+  "ja": "リマインダー",
+  "pt": "lembretes",
+  "zh": "提醒"
  },
  "return window closed": {
   "de": "Rückgabefrist abgelaufen",
@@ -15509,6 +15669,26 @@
   "pt": "prazos de devolução acabando",
   "zh": "退货期即将截止"
  },
+ "sending a message": {
+  "de": "eine Nachricht senden",
+  "es": "enviar un mensaje",
+  "fr": "envoyer un message",
+  "hi": "मैसेज भेजना",
+  "it": "inviare un messaggio",
+  "ja": "メッセージの送信",
+  "pt": "enviar uma mensagem",
+  "zh": "发送消息"
+ },
+ "sending an email": {
+  "de": "eine E-Mail senden",
+  "es": "enviar un correo",
+  "fr": "envoyer un e-mail",
+  "hi": "ईमेल भेजना",
+  "it": "inviare un'email",
+  "ja": "メールの送信",
+  "pt": "enviar um e-mail",
+  "zh": "发送邮件"
+ },
  "short rows filled with blanks": {
   "de": "kurze Zeilen mit Leerfeldern aufgefüllt",
   "es": "filas cortas rellenadas con vacíos",
@@ -15518,6 +15698,46 @@
   "ja": "短い行は空欄で補完",
   "pt": "linhas curtas preenchidas com vazios",
   "zh": "短行以空白补齐"
+ },
+ "starting from a PDF": {
+  "de": "mit einem PDF starten",
+  "es": "empezar desde un PDF",
+  "fr": "partir d'un PDF",
+  "hi": "PDF से शुरू करना",
+  "it": "partire da un PDF",
+  "ja": "PDFから始める",
+  "pt": "começar por um PDF",
+  "zh": "从 PDF 开始"
+ },
+ "starting from a photo": {
+  "de": "mit einem Foto starten",
+  "es": "empezar desde una foto",
+  "fr": "partir d'une photo",
+  "hi": "फ़ोटो से शुरू करना",
+  "it": "partire da una foto",
+  "ja": "写真から始める",
+  "pt": "começar por uma foto",
+  "zh": "从照片开始"
+ },
+ "starting from a recording": {
+  "de": "mit einer Aufnahme starten",
+  "es": "empezar desde una grabación",
+  "fr": "partir d'un enregistrement",
+  "hi": "रिकॉर्डिंग से शुरू करना",
+  "it": "partire da una registrazione",
+  "ja": "録音から始める",
+  "pt": "começar por uma gravação",
+  "zh": "从录音开始"
+ },
+ "starting from a video": {
+  "de": "mit einem Video starten",
+  "es": "empezar desde un vídeo",
+  "fr": "partir d'une vidéo",
+  "hi": "वीडियो से शुरू करना",
+  "it": "partire da un video",
+  "ja": "動画から始める",
+  "pt": "começar por um vídeo",
+  "zh": "从视频开始"
  },
  "steps": {
   "de": "Schritte",
@@ -15599,6 +15819,16 @@
   "pt": "itens para corrigir",
   "zh": "项需修正"
  },
+ "translating": {
+  "de": "Übersetzen",
+  "es": "traducir",
+  "fr": "traduire",
+  "hi": "अनुवाद",
+  "it": "tradurre",
+  "ja": "翻訳",
+  "pt": "traduzir",
+  "zh": "翻译"
+ },
  "translation": {
   "de": "Übersetzung",
   "es": "traducción",
@@ -15618,6 +15848,16 @@
   "ja": "2日前と最終日にお知らせします。",
   "pt": "vamos lembrar 2 dias antes e no último dia.",
   "zh": "我们会在截止前2天和最后一天提醒你。"
+ },
+ "weather": {
+  "de": "Wetter",
+  "es": "el tiempo",
+  "fr": "la météo",
+  "hi": "मौसम",
+  "it": "meteo",
+  "ja": "天気",
+  "pt": "clima",
+  "zh": "天气"
  },
  "what are they saying?": {
   "de": "was sagen sie?",
