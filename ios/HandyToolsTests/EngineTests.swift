@@ -1634,6 +1634,34 @@ final class EngineTests: XCTestCase {
     }
 
     /// A file with no audio must fail cleanly with a message, never crash or hang.
+    func testAudioCompressShrinksAndStaysPlayable() async throws {
+        let src = try makeToneFile(seconds: 4.0)
+        defer { try? FileManager.default.removeItem(at: src) }
+        var sizes: [AudioConvert.Level: Int] = [:]
+        for l in [AudioConvert.Level.high, .smallest] {
+            let outcome = await AudioConvert.compress(src, level: l)
+            guard case .success(let made) = outcome else { XCTFail("\(l.title) compress failed"); continue }
+            defer { try? FileManager.default.removeItem(at: made.url) }
+            XCTAssertEqual(made.url.pathExtension, "m4a")
+            let size = ((try? FileManager.default.attributesOfItem(atPath: made.url.path))?[.size] as? Int) ?? 0
+            XCTAssertGreaterThan(size, 1_000, "\(l.title) output is empty")
+            let dur = (try? await AVURLAsset(url: made.url).load(.duration))?.seconds ?? 0
+            XCTAssertEqual(dur, 4.0, accuracy: 0.3, "\(l.title) keeps the full length")
+            sizes[made.level] = size
+        }
+        if let hi = sizes[.high], let lo = sizes[.smallest] { XCTAssertLessThan(lo, hi, "smallest really is smaller") }
+        // Fit-under picks the best level that fits, and says honestly when nothing fits.
+        XCTAssertEqual(AudioConvert.level(fitting: 25_000_000, seconds: 600).level, .high)
+        XCTAssertEqual(AudioConvert.level(fitting: 3_000_000, seconds: 600).level, .smallest)
+        XCTAssertTrue(AudioConvert.level(fitting: 3_000_000, seconds: 600).fits)
+        XCTAssertFalse(AudioConvert.level(fitting: 1_000_000, seconds: 3600).fits)
+        let junk = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
+        try Data("not audio".utf8).write(to: junk)
+        defer { try? FileManager.default.removeItem(at: junk) }
+        if case .success = await AudioConvert.compress(junk, level: .balanced) { XCTFail("garbage should fail") }
+        XCTAssertEqual(searchTools("compress audio").first?.id, "audiocompress")
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)

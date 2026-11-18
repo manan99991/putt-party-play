@@ -74,6 +74,7 @@ enum AudioConvert {
     /// `progress`, and never hangs: a hard `timeout` cancels the pipeline and resolves cleanly.
     static func convert(_ src: URL, to format: Format,
                         timeout: TimeInterval = 180,
+                        bitRate: Int? = nil, maxChannels: Int = 2, maxSampleRate: Double? = nil,
                         progress: ((Double) -> Void)? = nil) async -> Result<URL, Failure> {
         let asset = AVURLAsset(url: src)
         guard let track = try? await asset.loadTracks(withMediaType: .audio).first else {
@@ -90,7 +91,8 @@ enum AudioConvert {
             if asbd.mSampleRate > 0 { sampleRate = asbd.mSampleRate }
             if asbd.mChannelsPerFrame > 0 { channels = Int(asbd.mChannelsPerFrame) }
         }
-        channels = min(2, max(1, channels))
+        channels = min(max(1, min(2, maxChannels)), max(1, channels))
+        if let cap = maxSampleRate, sampleRate > cap { sampleRate = cap }
 
         let out = VideoEngine.tempURL(format.ext)
         guard let reader = try? AVAssetReader(asset: asset),
@@ -116,12 +118,18 @@ enum AudioConvert {
             readerSettings = pcm
             writerSettings = pcm
         } else {
-            readerSettings = [AVFormatIDKey: kAudioFormatLinearPCM]
+            if maxChannels < 2 || maxSampleRate != nil {
+                // Downmix / resample in the decoder so the AAC encoder gets exactly what it encodes.
+                readerSettings = [AVFormatIDKey: kAudioFormatLinearPCM,
+                                  AVSampleRateKey: sampleRate, AVNumberOfChannelsKey: channels]
+            } else {
+                readerSettings = [AVFormatIDKey: kAudioFormatLinearPCM]
+            }
             writerSettings = [
                 AVFormatIDKey: kAudioFormatMPEG4AAC,
                 AVNumberOfChannelsKey: channels,
                 AVSampleRateKey: sampleRate,
-                AVEncoderBitRateKey: channels >= 2 ? 128_000 : 96_000,
+                AVEncoderBitRateKey: bitRate ?? (channels >= 2 ? 128_000 : 96_000),
             ]
         }
 
@@ -217,5 +225,70 @@ enum AudioConvert {
         if ok { return .success(out) }
         try? FileManager.default.removeItem(at: out)
         return .failure(.cannotWrite)
+    }
+}
+
+// MARK: - Compress
+
+extension AudioConvert {
+    /// Compression levels, smallest last. Each is a bitrate/channel/sample-rate combination the AAC
+    /// encoder accepts on every iPhone, so a level never fails for being "invalid".
+    enum Level: Int, CaseIterable, Identifiable {
+        case high, balanced, small, smallest
+        var id: Int { rawValue }
+        var title: String {
+            switch self {
+            case .high: return "High quality"
+            case .balanced: return "Balanced"
+            case .small: return "Small"
+            case .smallest: return "Smallest (voice)"
+            }
+        }
+        var detail: String {
+            switch self {
+            case .high: return "Stereo · 128 kbps — music sounds like the original"
+            case .balanced: return "Stereo · 96 kbps — great for most music"
+            case .small: return "Mono · 64 kbps — podcasts, lectures, voice memos"
+            case .smallest: return "Mono · 32 kbps — speech only, tiny files"
+            }
+        }
+        var bitRate: Int {
+            switch self {
+            case .high: return 128_000
+            case .balanced: return 96_000
+            case .small: return 64_000
+            case .smallest: return 32_000
+            }
+        }
+        var channels: Int { self == .high || self == .balanced ? 2 : 1 }
+        var sampleRate: Double { self == .smallest ? 22_050 : 44_100 }
+
+        /// Expected output size for `seconds` of audio (AAC + container overhead ≈ 3%).
+        func estimatedBytes(seconds: Double) -> Int { Int(Double(bitRate) / 8 * max(0, seconds) * 1.03) }
+    }
+
+    /// The best-sounding level whose estimate fits under `bytes` — or `.smallest` if nothing does
+    /// (the caller says so honestly).
+    static func level(fitting bytes: Int, seconds: Double) -> (level: Level, fits: Bool) {
+        for l in Level.allCases where l.estimatedBytes(seconds: seconds) <= bytes { return (l, true) }
+        return (.smallest, false)
+    }
+
+    /// Re-encode `src` as M4A at `level`. If this phone's encoder refuses that combination, steps up to
+    /// the next level instead of failing — best effort, never a dead end.
+    static func compress(_ src: URL, level: Level,
+                         progress: ((Double) -> Void)? = nil) async -> Result<(url: URL, level: Level), Failure> {
+        var lastError: Failure = .cannotWrite
+        for l in Level.allCases.reversed() where l.rawValue <= level.rawValue {
+            let r = await convert(src, to: .m4a, timeout: 600, bitRate: l.bitRate, maxChannels: l.channels,
+                                  maxSampleRate: l.sampleRate, progress: progress)
+            switch r {
+            case .success(let url): return .success((url, l))
+            case .failure(let f):
+                lastError = f
+                if f != .cannotWrite { return .failure(f) }   // no audio / timed out: a higher level won't help
+            }
+        }
+        return .failure(lastError)
     }
 }

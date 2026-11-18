@@ -51,6 +51,7 @@ enum TenzyArt {
         "pdfsearchable": "scan",
         "pdfform": "scan",
         "audioconvert": "audiolab",
+        "audiocompress": "audiolab",
         "ringtone": "audiolab",
         "audioedit": "audiolab",
         "audioclean": "audiolab",
