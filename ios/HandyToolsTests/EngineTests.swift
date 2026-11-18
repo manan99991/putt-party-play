@@ -51,6 +51,12 @@ final class EngineTests: XCTestCase {
         XCTAssertFalse(searchTools("translate").isEmpty)
         XCTAssertFalse(searchTools("photo").isEmpty)
         XCTAssertTrue(searchTools("zzxqzzq").isEmpty, "nonsense query returns nothing")
+        // The Audio Editor (item 6) must not elbow past the obvious tool for its neighbours' queries…
+        XCTAssertEqual(searchTools("audio convert").first?.id, "audioconvert")
+        XCTAssertEqual(searchTools("ringtone").first?.id, "ringtone")
+        // …but it should own its own territory.
+        XCTAssertEqual(searchTools("fade").first?.id, "audioedit")
+        XCTAssertEqual(searchTools("dead air").first?.id, "audioedit")
     }
 
     // MARK: duplicate detection precision
@@ -1493,5 +1499,84 @@ final class EngineTests: XCTestCase {
         let dur = try await asset.load(.duration).seconds
         XCTAssertLessThanOrEqual(dur, 30.3, "ringtone must be clamped to 30 seconds")
         XCTAssertEqual(dur, 30.0, accuracy: 0.6, "a 60s request should fill the 30s ceiling")
+    }
+
+    // MARK: Audio Editor — trim / fades / dead-air (item 6)
+
+    /// Fades must ramp the first and last stretch from silence, leaving the middle untouched.
+    func testAudioEditFadesRampTheEdgesToSilence() {
+        var x = [Float](repeating: 1.0, count: 1000)      // 1 s at 1000 Hz
+        AudioEdit.applyFades(&x, rate: 1000, fadeIn: 0.1, fadeOut: 0.1)   // 100 samples each
+        XCTAssertEqual(x.first ?? 1, 0, accuracy: 0.0001, "fade-in starts at silence")
+        XCTAssertEqual(x.last ?? 1, 0, accuracy: 0.0001, "fade-out ends at silence")
+        XCTAssertEqual(x[50], 0.5, accuracy: 0.02, "fade-in is about half-way at its midpoint")
+        XCTAssertEqual(x[500], 1.0, accuracy: 0.0001, "the middle is left untouched")
+    }
+
+    /// A loud / silent / loud buffer must yield exactly one dead-air region covering the silent second,
+    /// and the kept segments must be the two loud seconds.
+    func testAudioEditFindsDeadAirAndKeepsTheRest() {
+        let rate = 1000.0
+        let loud = [Float](repeating: 0.5, count: 1000)
+        let quiet = [Float](repeating: 0.0, count: 1000)
+        let mono = loud + quiet + loud                    // 3 s: loud, 1 s silence, loud
+        let regions = AudioEdit.silentRegions(mono, rate: rate, thresholdDB: -40, minSilence: 0.5)
+        XCTAssertEqual(regions.count, 1, "exactly one dead-air gap")
+        if let r = regions.first {
+            XCTAssertEqual(Double(r.lowerBound), 1000, accuracy: 40, "gap starts at the silence")
+            XCTAssertEqual(Double(r.upperBound), 2000, accuracy: 40, "gap ends where the loud audio returns")
+        }
+        let kept = AudioEdit.keepSegments(total: mono.count, cut: regions)
+        let keptCount = kept.reduce(0) { $0 + ($1.upperBound - $1.lowerBound) }
+        XCTAssertEqual(Double(keptCount), 2000, accuracy: 60, "keeps the two loud seconds, drops the silent one")
+    }
+
+    /// End-to-end on in-memory channels: trimming keeps exactly the window, and dead-air removal shortens.
+    func testAudioEditProcessTrimsAndRemovesSilence() {
+        let rate = 1000.0
+        let loud = [Float](repeating: 0.5, count: 1000)
+        let quiet = [Float](repeating: 0.0, count: 1000)
+        let channel = loud + quiet + loud                 // 3 s
+
+        var silence = AudioEdit.Options()
+        silence.removeSilence = true
+        let cut = AudioEdit.process(channels: [channel], rate: rate, options: silence)
+        XCTAssertEqual(cut.count, 1, "channel count preserved")
+        XCTAssertEqual(Double(cut[0].count), 2000, accuracy: 60, "dead air removed → two loud seconds remain")
+
+        var trim = AudioEdit.Options()
+        trim.start = 0.5; trim.end = 2.5
+        let t = AudioEdit.process(channels: [channel], rate: rate, options: trim)
+        XCTAssertEqual(Double(t[0].count), 2000, accuracy: 2, "trim keeps exactly the 2 s window")
+    }
+
+    /// Writing a real file: a 3 s tone trimmed to [0.5, 2.5] must produce a playable ~2 s M4A — a true
+    /// end-to-end output assertion, not "did it open".
+    func testAudioEditFileTrimProducesPlayableShorterClip() async throws {
+        let src = try makeToneFile(seconds: 3.0)
+        defer { try? FileManager.default.removeItem(at: src) }
+        var opts = AudioEdit.Options()
+        opts.start = 0.5; opts.end = 2.5; opts.fadeIn = 0.1; opts.fadeOut = 0.1
+        let outcome = await AudioEdit.edit(src, options: opts, format: .m4a)
+        guard case .success(let out) = outcome else { return XCTFail("audio edit failed") }
+        defer { try? FileManager.default.removeItem(at: out) }
+        XCTAssertEqual(out.pathExtension, "m4a", "edited clip should be the chosen format")
+        let size = ((try? FileManager.default.attributesOfItem(atPath: out.path))?[.size] as? Int) ?? 0
+        XCTAssertGreaterThan(size, 1_000, "edited output is empty/tiny")
+        let asset = AVURLAsset(url: out)
+        let tracks = try await asset.loadTracks(withMediaType: .audio)
+        XCTAssertFalse(tracks.isEmpty, "edited output has no audio track")
+        let dur = try await asset.load(.duration).seconds
+        XCTAssertEqual(dur, 2.0, accuracy: 0.3, "trimming 0.5–2.5 s of a 3 s clip should leave ~2 s")
+    }
+
+    /// Garbage input must fail cleanly with a human message, never crash or hang.
+    func testAudioEditRejectsNonAudioGracefully() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
+        try Data("not audio".utf8).write(to: url)
+        defer { try? FileManager.default.removeItem(at: url) }
+        let outcome = await AudioEdit.edit(url, options: AudioEdit.Options())
+        guard case .failure(let f) = outcome else { return XCTFail("garbage input should fail, not succeed") }
+        XCTAssertFalse(f.message.isEmpty, "a failure must carry a human message")
     }
 }
