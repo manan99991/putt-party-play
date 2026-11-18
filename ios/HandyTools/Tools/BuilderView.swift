@@ -255,6 +255,18 @@ struct Given: Identifiable {
     /// Archive endings — a ZIP (or similar) holds other files; Tenzy works on what's inside, not the box.
     private static let archiveExts: Set<String> = ["zip", "rar", "7z", "tar", "gz", "tgz", "bz2", "xz", "zipx", "iso"]
 
+    /// A ZIP we can open in-app (the reader handles ZIP, not rar/7z/tar). Drives the Unzip screen.
+    static func isZip(_ url: URL) -> Bool { ["zip", "zipx"].contains(url.pathExtension.lowercased()) }
+
+    /// Copy a security-scoped ZIP into a temp file the Unzip screen can read after the picker closes. nil if unreadable.
+    static func stageZip(_ url: URL) -> URL? {
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        let tmp = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-zip-\(UUID().uuidString).zip")
+        return (try? data.write(to: tmp)) != nil ? tmp : nil
+    }
+
     /// A specific, non-dead-end message when a file can't be opened — so a ZIP isn't a vague "couldn't open"
     /// (the app handles files, but an archive is a container of files, not a file to work on).
     static func unsupportedNote(for url: URL) -> String {
@@ -360,6 +372,7 @@ struct BuilderView: View {
     @State private var newName = ""
     /// "Start with what you have": the thing picked, waiting for a tool to be chosen for it.
     @State private var given: Given?
+    @State private var unzipping: UnzipTarget?
     @State private var anyPick: PhotosPickerItem?
     @State private var pickingAny = false
     @State private var pickTypes: [UTType] = [.item]
@@ -398,6 +411,13 @@ struct BuilderView: View {
         }
         .sheet(item: $running) { c in NavigationStack { ChainRunView(chain: c) } }
         .sheet(item: $given) { g in NavigationStack { ToolPickView(given: g, mine: mine) } }
+        .sheet(item: $unzipping) { t in
+            UnzipView(url: t.url) { g in
+                // A file opened from inside the archive → close Unzip, then hand it to the tools.
+                unzipping = nil
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { given = g }
+            }
+        }
         .alert(L("Name this tool"), isPresented: Binding(get: { renaming != nil }, set: { if !$0 { renaming = nil } })) {
             TextField(L("Name"), text: $newName)
             Button(L("Save")) {
@@ -409,6 +429,7 @@ struct BuilderView: View {
         }
         .fileImporter(isPresented: $pickingAny, allowedContentTypes: pickTypes) { r in
             guard case .success(let url) = r else { return }
+            if Given.isZip(url), let staged = Given.stageZip(url) { note = nil; unzipping = UnzipTarget(url: staged); return }
             if let g = Given.from(file: url) { note = nil; given = g } else { note = Given.unsupportedNote(for: url) }
         }
         .onChange(of: anyPick) { _, item in
