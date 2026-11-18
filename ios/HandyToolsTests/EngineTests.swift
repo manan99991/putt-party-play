@@ -1738,6 +1738,23 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(searchTools("zip files").first?.id, "zipmaker")
     }
 
+    func testTranscriptTidyRemovesFillersAndBuildsParagraphs() {
+        XCTAssertEqual(TranscriptTidy.clean("um so the the meeting uh is friday"), "so the meeting is friday")
+        XCTAssertEqual(TranscriptTidy.clean("I had had enough"), "I had had enough", "real doubles kept")
+        // Raw recognizer output with no punctuation gets real sentences back.
+        let raw = "um so the the meeting is on friday and uh we need to send the deck to priya by thursday uh I think the budget is fine but we should check with finance anyway the other thing is the launch date which um might slip to march so let's plan for that and also book the venue"
+        let paras = TranscriptTidy.paragraphs(raw)
+        XCTAssertEqual(paras.count, 2, "\(paras)")
+        XCTAssertTrue(paras[0].hasPrefix("So the meeting is on Friday"), paras[0])
+        XCTAssertTrue(paras[0].contains("Thursday. I think"), "sentence restored before 'I think': \(paras[0])")
+        XCTAssertTrue(paras[1].hasPrefix("Anyway"), "new paragraph at the topic change")
+        XCTAssertTrue(paras[1].contains("and also book the venue."), "never split after 'and'")
+        XCTAssertFalse(paras.joined().lowercased().contains(" um "))
+        // Already-punctuated dictation keeps its own sentences.
+        let p2 = TranscriptTidy.paragraphs("Okay, um, so I had had a long day. The the client called twice. Anyway, we need to fix the login bug.")
+        XCTAssertEqual(p2, ["Okay, so I had had a long day. The client called twice.", "Anyway, we need to fix the login bug."])
+    }
+
     func testAudioConvertRejectsNonAudioGracefully() async throws {
         let url = FileManager.default.temporaryDirectory.appendingPathComponent("junk-\(UUID().uuidString.prefix(6)).caf")
         try Data("not audio".utf8).write(to: url)

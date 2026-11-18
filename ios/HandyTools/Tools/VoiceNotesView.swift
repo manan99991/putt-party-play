@@ -52,6 +52,7 @@ struct VoiceNotesView: View {
                         if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                     }.cardStyle(padding: HandySpacing.s12)
                 }
+                TranscriptOrganizerView(text: speech.transcript)
                 HStack(spacing: HandySpacing.s8) {
                     Button { save() } label: { Label(L("Save note"), systemImage: "tray.and.arrow.down").frame(maxWidth: .infinity) }.primaryButton()
                     ShareLink(item: exportText) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
