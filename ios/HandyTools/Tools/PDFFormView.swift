@@ -17,6 +17,9 @@ struct PDFFormView: View {
     @State private var working = false
     @State private var errorText: String?
     @State private var showFiles = false
+    @State private var me = MyDetails.load()
+    @State private var editingMe = false
+    @State private var autoNote: String?
 
     var body: some View {
         ToolPage(title: "Fill a Form",
@@ -65,11 +68,48 @@ struct PDFFormView: View {
         }
     }
 
+    /// Type your details once; every form after that fills its name, address, email, phone and dates for you.
+    private var myDetailsCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Button {
+                let n = fillFromMe()
+                autoNote = me.isEmpty ? "Add your details below first — they're kept only on this phone."
+                    : (n == 0 ? "No empty fields matched your details." : "Filled \(n) field\(n == 1 ? "" : "s") from My details — check them below.")
+                if me.isEmpty { editingMe = true }
+            } label: { Label(L("Fill from My details"), systemImage: "person.text.rectangle").frame(maxWidth: .infinity) }.primaryButton()
+                .accessibilityIdentifier("form-mydetails")
+            if let autoNote { Text(L(autoNote)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
+            DisclosureGroup(isExpanded: $editingMe) {
+                VStack(spacing: 6) {
+                    HStack { TextField(L("First name"), text: $me.first); TextField(L("Last name"), text: $me.last) }
+                    TextField(L("Email"), text: $me.email).keyboardType(.emailAddress).textInputAutocapitalization(.never)
+                    TextField(L("Phone"), text: $me.phone).keyboardType(.phonePad)
+                    TextField(L("Street address"), text: $me.street)
+                    HStack { TextField(L("City"), text: $me.city); TextField(L("State / county"), text: $me.region) }
+                    HStack { TextField(L("Postcode / ZIP"), text: $me.postcode); TextField(L("Country"), text: $me.country) }
+                    TextField(L("Date of birth"), text: $me.birth)
+                    Text(L("Kept only on this phone, never sent anywhere.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                }.textFieldStyle(.roundedBorder).font(HandyFont.body)
+            } label: { Text(L("My details")).font(HandyFont.caption.weight(.semibold)) }
+            .onChange(of: me) { _, v in v.save() }
+        }.cardStyle(padding: HandySpacing.s12)
+    }
+
+    /// Empty fields only, so nothing already typed is overwritten.
+    @discardableResult private func fillFromMe() -> Int {
+        var n = 0
+        for f in fields where f.kind == .text && (values[f.id] ?? f.value).trimmingCharacters(in: .whitespaces).isEmpty {
+            if let v = me.value(for: f.name) { values[f.id] = v; n += 1 }
+        }
+        return n
+    }
+
     private var editor: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             if let img = preview { pageImage(img, maxHeight: 220) }
             Text("\(fields.count) \(fields.count == 1 ? L("field") : L("fields"))")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            myDetailsCard
             ForEach(fields) { f in row(f) }
             if let e = errorText {
                 Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger)
