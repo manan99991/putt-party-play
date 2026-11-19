@@ -352,6 +352,57 @@ extension ContactBook {
         return failed
     }
 
+    // MARK: bulk edit
+
+    enum BulkField: String, CaseIterable, Identifiable {
+        case company, jobTitle, countryCode
+        var id: String { rawValue }
+        var title: String { ["Set company", "Set job title", "Add country code to phone numbers"][Self.allCases.firstIndex(of: self)!] }
+        var prompt: String { ["Company name (leave empty to clear)", "Job title (leave empty to clear)", "Country code, e.g. +1 or +44"][Self.allCases.firstIndex(of: self)!] }
+    }
+
+    /// A local number → international, so WhatsApp, travel and other countries' phones can reach it.
+    /// "+…" and "00…" numbers are already international and left alone (nil). One leading trunk "0" is
+    /// dropped ("07700 900123" + 44 → "+44 7700 900123"). Too-short numbers (codes, extensions) are skipped.
+    static func withCountryCode(_ number: String, code raw: String) -> String? {
+        let code = raw.filter(\.isNumber)
+        let t = number.trimmingCharacters(in: .whitespaces)
+        guard !code.isEmpty, !t.hasPrefix("+"), !t.hasPrefix("00") else { return nil }
+        let digits = t.filter(\.isNumber)
+        guard digits.count >= 7 else { return nil }
+        if code == "1", digits.count == 11, digits.hasPrefix("1") {          // "1 555 123 4567" already has the 1
+            let afterOne = t.drop { !$0.isNumber }.dropFirst()
+            return "+1 " + afterOne.trimmingCharacters(in: .whitespaces)
+        }
+        var rest = Substring(t)
+        if let i = rest.firstIndex(where: \.isNumber), rest[i] == "0" { rest.remove(at: i) }
+        return "+\(code) " + rest.trimmingCharacters(in: .whitespaces)
+    }
+
+    /// Change one field on everyone picked. Returns (changed, failed).
+    static func bulkSet(_ ids: [String], field: BulkField, value: String, store: CNContactStore = CNContactStore()) -> (changed: Int, failed: Int) {
+        let v = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        var changed = 0, failed = 0
+        for c in fetch(ids, store: store) {
+            guard let m = c.mutableCopy() as? CNMutableContact else { failed += 1; continue }
+            var touched = false
+            switch field {
+            case .company: if m.organizationName != v { m.organizationName = v; touched = true }
+            case .jobTitle: if m.jobTitle != v { m.jobTitle = v; touched = true }
+            case .countryCode:
+                m.phoneNumbers = m.phoneNumbers.map { lv in
+                    guard let n = withCountryCode(lv.value.stringValue, code: v) else { return lv }
+                    touched = true
+                    return CNLabeledValue(label: lv.label, value: CNPhoneNumber(stringValue: n))
+                }
+            }
+            guard touched else { continue }
+            let req = CNSaveRequest(); req.update(m)
+            if (try? store.execute(req)) != nil { changed += 1 } else { failed += 1 }
+        }
+        return (changed, failed)
+    }
+
     static func remove(_ ids: [String], fromGroup gid: String, store: CNContactStore = CNContactStore()) {
         guard let g = (try? store.groups(matching: CNGroup.predicateForGroups(withIdentifiers: [gid])))?.first else { return }
         for c in fetch(ids, store: store) { let req = CNSaveRequest(); req.removeMember(c, from: g); try? store.execute(req) }
@@ -400,5 +451,47 @@ enum BirthdayReminders {
         c.userInfo = ["open": "contacts", "contact": p.id]
         let trigger = at.map { UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: $0), repeats: false) }
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: at == nil ? "bday-test-\(UUID().uuidString)" : id, content: c, trigger: trigger))
+    }
+}
+
+
+/// "Back up my contacts": a regular nudge (weekly or monthly) — tap it and the full backup is one button.
+/// iPhone doesn't let apps save into your iCloud Drive on their own, so the nudge is the honest way.
+enum ContactBackupReminder {
+    static let id = "contacts-backup"
+    static var every: Int { UserDefaults.standard.integer(forKey: "contacts.backup.every") }   // 0 off, 7 weekly, 30 monthly
+    static var last: Date? { UserDefaults.standard.object(forKey: "contacts.backup.last") as? Date }
+    static func markDone(_ d: Date = Date()) { UserDefaults.standard.set(d, forKey: "contacts.backup.last") }
+
+    static let message = ("Time to back up your contacts", "One tap in Tenzy saves everyone to Files or iCloud Drive.")
+
+    /// Weekly → every Sunday 7 pm; monthly → the 1st at 7 pm.
+    static func trigger(every: Int) -> DateComponents? {
+        var c = DateComponents(); c.hour = 19; c.minute = 0
+        switch every {
+        case 7: c.weekday = 1
+        case 30: c.day = 1
+        default: return nil
+        }
+        return c
+    }
+
+    static func set(every: Int) async {
+        UserDefaults.standard.set(every, forKey: "contacts.backup.every")
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [id])
+        guard let when = trigger(every: every) else { return }
+        let c = UNMutableNotificationContent()
+        c.title = message.0; c.body = message.1; c.sound = .default
+        c.userInfo = ["open": "contacts"]
+        try? await center.add(UNNotificationRequest(identifier: id, content: c, trigger: UNCalendarNotificationTrigger(dateMatching: when, repeats: true)))
+    }
+
+    static func testRun() async {
+        let c = UNMutableNotificationContent()
+        c.title = "Test · " + message.0; c.body = message.1; c.sound = .default
+        c.userInfo = ["open": "contacts"]
+        try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "contacts-backup-test-\(UUID().uuidString)", content: c,
+                                                                                trigger: UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)))
     }
 }

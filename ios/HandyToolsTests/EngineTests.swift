@@ -2608,6 +2608,20 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testContactsCountryCodeAndBackupReminder() {
+        XCTAssertEqual(ContactBook.withCountryCode("(555) 123-4567", code: "+1"), "+1 (555) 123-4567")
+        XCTAssertEqual(ContactBook.withCountryCode("1 555 123 4567", code: "1"), "+1 555 123 4567", "the 1 isn't doubled")
+        XCTAssertEqual(ContactBook.withCountryCode("07700 900123", code: "+44"), "+44 7700 900123", "trunk 0 dropped")
+        XCTAssertEqual(ContactBook.withCountryCode("098765 43210", code: "91"), "+91 98765 43210")
+        XCTAssertNil(ContactBook.withCountryCode("+49 30 1234567", code: "+1"), "already international")
+        XCTAssertNil(ContactBook.withCountryCode("0049 30 1234567", code: "+1"))
+        XCTAssertNil(ContactBook.withCountryCode("611", code: "+1"), "short codes left alone")
+        XCTAssertNil(ContactBook.withCountryCode("555 1234", code: "+"), "no code, no change")
+        XCTAssertEqual(ContactBackupReminder.trigger(every: 7)?.weekday, 1)
+        XCTAssertEqual(ContactBackupReminder.trigger(every: 30)?.day, 1)
+        XCTAssertNil(ContactBackupReminder.trigger(every: 0))
+    }
+
     func testOrganizePagesMergeSplitAndBlankPages() {
         func page(_ text: String?) -> UIImage {
             UIGraphicsImageRenderer(size: CGSize(width: 612, height: 792)).image { c in

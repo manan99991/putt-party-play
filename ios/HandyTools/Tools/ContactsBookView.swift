@@ -29,6 +29,11 @@ struct ContactsBookView: View {
     @AppStorage("birthdays.on") private var birthdaysOn = false
     @AppStorage("birthdays.hour") private var birthdayHour = 9
     @State private var notifOff = false
+    @State private var editing: ContactBook.BulkField?
+    @State private var editValue = ""
+    @State private var backupURL: URL?
+    @State private var backupEvery = ContactBackupReminder.every
+    @State private var backupNote: String?
 
     private var shown: [ContactBook.Person] {
         ContactBook.filtered(people, query: query, filters: filters, group: group, account: account, tags: tags)
@@ -63,6 +68,17 @@ struct ContactsBookView: View {
                 EmptyState(icon: "magnifyingglass", line: "No one matches", sub: "Clear a filter or try fewer letters.")
             }
             birthdayCard
+            backupCard
+        }
+        .alert(L(editing?.title ?? ""), isPresented: Binding(get: { editing != nil }, set: { if !$0 { editing = nil } })) {
+            TextField(L(editing?.prompt ?? ""), text: $editValue)
+                .keyboardType(editing == .countryCode ? .phonePad : .default)
+            Button("\(L("Change")) \(picked.count)") { if let f = editing { bulkEdit(f, editValue) } }
+            Button(L("Cancel"), role: .cancel) {}
+        } message: {
+            Text(editing == .countryCode
+                 ? L("Numbers that already start with + or 00 are left as they are. A leading 0 is dropped, the way international dialling needs.")
+                 : L("This changes the contact on your iPhone and the account it syncs to."))
         }
         .safeAreaInset(edge: .bottom) { if selecting && !picked.isEmpty { bulkBar } }
         .task { if people.isEmpty { await reload() } }
@@ -189,6 +205,11 @@ struct ContactsBookView: View {
                         Button { mark(t, on: false) } label: { Label("\(L("Unmark")) \(L(t.title))", systemImage: "minus.circle") }
                     }
                 } label: { Label(L("Mark"), systemImage: "star").frame(maxWidth: .infinity) }.secondaryButton()
+                Menu {
+                    ForEach(ContactBook.BulkField.allCases) { f in
+                        Button { editValue = f == .countryCode ? defaultCode : ""; editing = f } label: { Label(L(f.title), systemImage: f == .countryCode ? "phone.badge.plus" : "pencil") }
+                    }
+                } label: { Label(L("Edit"), systemImage: "pencil").frame(maxWidth: .infinity) }.secondaryButton().accessibilityIdentifier("book-bulk-edit")
             }
             Button(role: .destructive) { confirmDelete = true } label: { Label("\(L("Delete")) \(picked.count)", systemImage: "trash").frame(maxWidth: .infinity) }
                 .buttonStyle(.bordered).tint(HandyColor.danger)
@@ -201,6 +222,72 @@ struct ContactsBookView: View {
         .padding(HandySpacing.s12)
         .background(HandyColor.bg)
         .onChange(of: picked) { _, _ in exportURL = nil }
+    }
+
+    private var defaultCode: String {
+        switch Locale.current.region?.identifier ?? "US" {
+        case "US", "CA": return "+1"
+        case "GB": return "+44"
+        case "IN": return "+91"
+        case "AU": return "+61"
+        case "DE": return "+49"
+        case "FR": return "+33"
+        case "ES": return "+34"
+        case "IT": return "+39"
+        case "BR": return "+55"
+        case "MX": return "+52"
+        case "JP": return "+81"
+        default: return "+"
+        }
+    }
+
+    private func bulkEdit(_ f: ContactBook.BulkField, _ value: String) {
+        let ids = Array(picked)
+        Task {
+            let r = await Task.detached(priority: .userInitiated) { ContactBook.bulkSet(ids, field: f, value: value) }.value
+            note = r.failed > 0 ? "\(L("Changed")) \(r.changed) · \(r.failed) \(L("couldn't be changed (read-only account)"))"
+                                : (r.changed == 0 ? L("Nothing needed changing.") : "\(L("Changed")) \(r.changed) \(L("contacts"))")
+            selecting = false; picked = []; editing = nil
+            HandyHaptics.success()
+            await reload()
+        }
+    }
+
+    /// Everyone in one file, and a regular nudge to do it again.
+    private var backupCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Back up all your contacts"), systemImage: "externaldrive.badge.icloud").font(HandyFont.bodyStrong)
+            Text(ContactBackupReminder.last.map { "\(L("Last backup")) \($0.formatted(.relative(presentation: .named)))" } ?? L("Save everyone to one contact-card file in Files, iCloud Drive or Google Drive. It opens on any phone or computer."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            if let u = backupURL {
+                ShareLink(item: u) { Label("\(L("Save")) \(u.lastPathComponent)", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
+                    .primaryButton().simultaneousGesture(TapGesture().onEnded { ContactBackupReminder.markDone() })
+            } else {
+                Button {
+                    backupURL = ContactBook.vcard(people.map(\.id), name: "Contacts backup \(Date().formatted(.dateTime.year().month().day()))")
+                } label: { Label("\(L("Back up")) \(people.count) \(L("contacts"))", systemImage: "arrow.down.doc").frame(maxWidth: .infinity) }
+                    .primaryButton().disabled(people.isEmpty).accessibilityIdentifier("book-backup")
+            }
+            HandyFlow(spacing: HandySpacing.s8) {
+                Text(L("Remind me")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                ForEach([(0, "Off"), (7, "Weekly"), (30, "Monthly")], id: \.0) { v in
+                    HChip(text: L(v.1), selected: backupEvery == v.0) {
+                        Task {
+                            if v.0 > 0, !(await NotifyPermission.ensure()) { notifOff = true; return }
+                            backupEvery = v.0; await ContactBackupReminder.set(every: v.0)
+                            backupNote = v.0 == 7 ? L("On — every Sunday at 7 pm.") : v.0 == 30 ? L("On — the 1st of each month at 7 pm.") : nil
+                        }
+                    }
+                }
+            }
+            if backupEvery > 0 {
+                Button { Task { await ContactBackupReminder.testRun(); backupNote = L("Test sent — it arrives in 5 seconds.") } } label: {
+                    Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity)
+                }.secondaryButton()
+            }
+            if let backupNote { Text(backupNote).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
+        }
+        .cardStyle()
     }
 
     private var exportName: String {

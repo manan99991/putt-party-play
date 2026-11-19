@@ -729,6 +729,16 @@
   "pt": "Adicionar cartão",
   "zh": "添加卡片"
  },
+ "Add country code to phone numbers": {
+  "de": "Ländervorwahl zu Nummern hinzufügen",
+  "es": "Añadir prefijo de país a los números",
+  "fr": "Ajouter l'indicatif pays aux numéros",
+  "hi": "फ़ोन नंबरों में कंट्री कोड जोड़ें",
+  "it": "Aggiungi il prefisso internazionale ai numeri",
+  "ja": "電話番号に国番号を追加",
+  "pt": "Adicionar código do país aos números",
+  "zh": "给电话号码加国家代码"
+ },
  "Add cover art": {
   "de": "Cover hinzufügen",
   "es": "Añadir portada",
@@ -1699,6 +1709,16 @@
   "pt": "Voltar aos arquivos",
   "zh": "返回文件"
  },
+ "Back up": {
+  "de": "Sichern",
+  "es": "Copiar",
+  "fr": "Sauvegarder",
+  "hi": "बैकअप लें",
+  "it": "Backup di",
+  "ja": "バックアップ",
+  "pt": "Fazer backup de",
+  "zh": "备份"
+ },
  "Back up (.vcf)": {
   "de": "Sichern (.vcf)",
   "es": "Copia de seguridad (.vcf)",
@@ -1718,6 +1738,16 @@
   "ja": "全連絡先をバックアップ (.vcf)",
   "pt": "Guardar todos os contactos (.vcf)",
   "zh": "备份所有联系人 (.vcf)"
+ },
+ "Back up all your contacts": {
+  "de": "Alle Kontakte sichern",
+  "es": "Haz copia de todos tus contactos",
+  "fr": "Sauvegarder tous vos contacts",
+  "hi": "सारे संपर्कों का बैकअप लें",
+  "it": "Fai il backup di tutti i contatti",
+  "ja": "すべての連絡先をバックアップ",
+  "pt": "Faça backup de todos os contatos",
+  "zh": "备份所有联系人"
  },
  "Back up now": {
   "de": "Jetzt sichern",
@@ -2579,6 +2609,16 @@
   "pt": "Centra o rosto e recorta à proporção exata a 300 ppp; imprime 4 ou 6 numa folha 4×6. Confirma sempre as regras exatas da tua entidade antes de imprimir.",
   "zh": "将面部居中并以 300 dpi 裁剪为精确比例；在 4×6 相纸上打印 4 或 6 张。打印前请务必核对主管机构的确切规定。"
  },
+ "Change": {
+  "de": "Ändern",
+  "es": "Cambiar",
+  "fr": "Modifier",
+  "hi": "बदलें",
+  "it": "Modifica",
+  "ja": "変更",
+  "pt": "Alterar",
+  "zh": "更改"
+ },
  "Change cover art": {
   "de": "Cover ändern",
   "es": "Cambiar portada",
@@ -2628,6 +2668,16 @@
   "ja": "声を変える",
   "pt": "Mudar a voz",
   "zh": "变声"
+ },
+ "Changed": {
+  "de": "Geändert",
+  "es": "Cambiados",
+  "fr": "Modifiés",
+  "hi": "बदले गए",
+  "it": "Modificati",
+  "ja": "変更済み",
+  "pt": "Alterados",
+  "zh": "已更改"
  },
  "Check": {
   "de": "Prüfen",
@@ -3539,6 +3589,16 @@
   "pt": "Empresa",
   "zh": "公司"
  },
+ "Company name (leave empty to clear)": {
+  "de": "Firmenname (leer lassen zum Löschen)",
+  "es": "Nombre de la empresa (vacío para borrar)",
+  "fr": "Nom de l'entreprise (vide pour effacer)",
+  "hi": "कंपनी का नाम (हटाने के लिए खाली छोड़ें)",
+  "it": "Nome azienda (vuoto per cancellare)",
+  "ja": "会社名（空欄で消去）",
+  "pt": "Nome da empresa (vazio para limpar)",
+  "zh": "公司名称（留空则清除）"
+ },
  "Compress": {
   "de": "Komprimieren",
   "es": "Comprimir",
@@ -4378,6 +4438,16 @@
   "ja": "国番号（+なし）",
   "pt": "Indicativo do país (sem +)",
   "zh": "国家代码（不含 +）"
+ },
+ "Country code, e.g. +1 or +44": {
+  "de": "Ländervorwahl, z. B. +1 oder +44",
+  "es": "Prefijo, p. ej. +1 o +44",
+  "fr": "Indicatif, ex. +1 ou +44",
+  "hi": "कंट्री कोड, जैसे +1 या +44",
+  "it": "Prefisso, es. +1 o +44",
+  "ja": "国番号（例：+1、+44）",
+  "pt": "Código do país, ex.: +1 ou +44",
+  "zh": "国家代码，如 +1 或 +44"
  },
  "Cover all": {
   "de": "Alle verdecken",
@@ -8289,6 +8359,16 @@
   "pt": "Cargo",
   "zh": "职位"
  },
+ "Job title (leave empty to clear)": {
+  "de": "Position (leer lassen zum Löschen)",
+  "es": "Cargo (vacío para borrar)",
+  "fr": "Poste (vide pour effacer)",
+  "hi": "पद (हटाने के लिए खाली छोड़ें)",
+  "it": "Ruolo (vuoto per cancellare)",
+  "ja": "役職（空欄で消去）",
+  "pt": "Cargo (vazio para limpar)",
+  "zh": "职位（留空则清除）"
+ },
  "Join & Speed": {
   "de": "Verbinden & Tempo",
   "es": "Unir y velocidad",
@@ -8798,6 +8878,16 @@
   "ja": "大きい順",
   "pt": "Maiores primeiro",
   "zh": "最大优先"
+ },
+ "Last backup": {
+  "de": "Letzte Sicherung",
+  "es": "Última copia",
+  "fr": "Dernière sauvegarde",
+  "hi": "पिछला बैकअप",
+  "it": "Ultimo backup",
+  "ja": "前回のバックアップ",
+  "pt": "Último backup",
+  "zh": "上次备份"
  },
  "Last checked": {
   "de": "Zuletzt geprüft",
@@ -10169,6 +10259,16 @@
   "pt": "Monstro",
   "zh": "怪物"
  },
+ "Monthly": {
+  "de": "Monatlich",
+  "es": "Mensual",
+  "fr": "Chaque mois",
+  "hi": "हर महीने",
+  "it": "Mensile",
+  "ja": "毎月",
+  "pt": "Mensal",
+  "zh": "每月"
+ },
  "More": {
   "de": "Mehr",
   "es": "Más",
@@ -11509,6 +11609,16 @@
   "pt": "Nada correspondeu. Tenta as palavras que estavam na captura, ou reindexa se for recente.",
   "zh": "没有匹配项。试试截图上出现过的词，如果是最近的就重新索引。"
  },
+ "Nothing needed changing.": {
+  "de": "Nichts musste geändert werden.",
+  "es": "No había nada que cambiar.",
+  "fr": "Rien à modifier.",
+  "hi": "कुछ बदलने की ज़रूरत नहीं थी।",
+  "it": "Non c'era nulla da cambiare.",
+  "ja": "変更が必要なものはありませんでした。",
+  "pt": "Nada precisava mudar.",
+  "zh": "没有需要更改的。"
+ },
  "Nothing on this menu clearly fits — ask the staff what they can adapt.": {
   "de": "Nichts auf dieser Karte passt eindeutig – frag das Personal, was es anpassen kann.",
   "es": "Nada de este menú encaja claramente: pregunta al personal qué pueden adaptar.",
@@ -11649,6 +11759,16 @@
   "pt": "Me avise no início de cada etapa",
   "zh": "每一步开始时提醒我"
  },
+ "Numbers that already start with + or 00 are left as they are. A leading 0 is dropped, the way international dialling needs.": {
+  "de": "Nummern mit + oder 00 bleiben, wie sie sind. Eine führende 0 fällt weg, wie es internationale Wahl verlangt.",
+  "es": "Los números que ya empiezan por + o 00 se quedan igual. Se quita un 0 inicial, como pide la marcación internacional.",
+  "fr": "Les numéros qui commencent déjà par + ou 00 restent tels quels. Un 0 initial est retiré, comme l'exige l'appel international.",
+  "hi": "जो नंबर पहले से + या 00 से शुरू हैं, वैसे ही रहते हैं। शुरू का 0 हटाया जाता है, जैसा अंतरराष्ट्रीय डायल में चाहिए।",
+  "it": "I numeri che iniziano già con + o 00 restano così. Lo 0 iniziale viene tolto, come serve per le chiamate internazionali.",
+  "ja": "+や00で始まる番号はそのまま。先頭の0は国際電話の形式に合わせて外します。",
+  "pt": "Números que já começam com + ou 00 ficam como estão. Um 0 inicial é removido, como pede a discagem internacional.",
+  "zh": "已以 + 或 00 开头的号码保持不变。按国际拨号规则去掉开头的 0。"
+ },
  "Nuts": {
   "de": "Nüsse",
   "es": "Frutos secos",
@@ -11749,6 +11869,16 @@
   "pt": "No seu telemóvel: adicione aqui os medicamentos, copie a lista e envie. No dele: Tenzy → Medicamentos → Adicionar medicamentos que me enviaram. Os lembretes começam logo.",
   "zh": "在你的手机上：在这里添加对方的药，复制清单并发给对方。在对方手机上：打开 Tenzy → 服药提醒 →“添加别人发来的药”。提醒立即生效。"
  },
+ "On — every Sunday at 7 pm.": {
+  "de": "An – jeden Sonntag um 19 Uhr.",
+  "es": "Activado: cada domingo a las 19:00.",
+  "fr": "Activé — chaque dimanche à 19 h.",
+  "hi": "चालू — हर रविवार शाम 7 बजे।",
+  "it": "Attivo: ogni domenica alle 19.",
+  "ja": "オン — 毎週日曜19時。",
+  "pt": "Ligado — todo domingo às 19h.",
+  "zh": "已开启——每周日晚 7 点。"
+ },
  "On — every night at": {
   "de": "An – jeden Abend um",
   "es": "Activado: cada noche a las",
@@ -11758,6 +11888,16 @@
   "ja": "オン — 毎晩",
   "pt": "Ligado — toda noite às",
   "zh": "已开启——每晚"
+ },
+ "On — the 1st of each month at 7 pm.": {
+  "de": "An – am 1. jedes Monats um 19 Uhr.",
+  "es": "Activado: el día 1 de cada mes a las 19:00.",
+  "fr": "Activé — le 1er de chaque mois à 19 h.",
+  "hi": "चालू — हर महीने की 1 तारीख शाम 7 बजे।",
+  "it": "Attivo: il 1° di ogni mese alle 19.",
+  "ja": "オン — 毎月1日19時。",
+  "pt": "Ligado — todo dia 1º às 19h.",
+  "zh": "已开启——每月 1 日晚 7 点。"
  },
  "On-device transcription isn't available for this language on this phone right now.": {
   "de": "Transkription auf dem Gerät ist für diese Sprache auf diesem Telefon gerade nicht verfügbar.",
@@ -15229,6 +15369,16 @@
   "pt": "Guardar contacto",
   "zh": "保存联系人"
  },
+ "Save everyone to one contact-card file in Files, iCloud Drive or Google Drive. It opens on any phone or computer.": {
+  "de": "Alle in einer Kontaktkarten-Datei in Dateien, iCloud Drive oder Google Drive sichern. Sie öffnet sich auf jedem Telefon oder Computer.",
+  "es": "Guarda a todos en un archivo de tarjetas en Archivos, iCloud Drive o Google Drive. Se abre en cualquier teléfono u ordenador.",
+  "fr": "Enregistrez tout le monde dans un fichier de fiches dans Fichiers, iCloud Drive ou Google Drive. Il s'ouvre sur tout téléphone ou ordinateur.",
+  "hi": "सबको एक कॉन्टैक्ट-कार्ड फ़ाइल में Files, iCloud Drive या Google Drive में सेव करें। यह किसी भी फ़ोन या कंप्यूटर पर खुलती है।",
+  "it": "Salva tutti in un file di schede in File, iCloud Drive o Google Drive. Si apre su qualsiasi telefono o computer.",
+  "ja": "全員を1つの連絡先ファイルにしてファイル、iCloud Drive、Google Driveに保存。どの端末でも開けます。",
+  "pt": "Salve todos num arquivo de cartões em Arquivos, iCloud Drive ou Google Drive. Abre em qualquer telefone ou computador.",
+  "zh": "把所有人存成一个联系人卡片文件，放到“文件”、iCloud 云盘或 Google 云端硬盘，任何手机或电脑都能打开。"
+ },
  "Save it to Photos, share it, or send it as a PDF cut into pages.": {
   "de": "In Fotos sichern, teilen oder als PDF mit Seiten senden.",
   "es": "Guárdala en Fotos, compártela o envíala como PDF en páginas.",
@@ -16339,6 +16489,16 @@
   "pt": "Definir referência aqui",
   "zh": "将此处设为基准"
  },
+ "Set company": {
+  "de": "Firma festlegen",
+  "es": "Poner empresa",
+  "fr": "Définir l'entreprise",
+  "hi": "कंपनी सेट करें",
+  "it": "Imposta azienda",
+  "ja": "会社名を設定",
+  "pt": "Definir empresa",
+  "zh": "设置公司"
+ },
  "Set it up": {
   "de": "Einrichten",
   "es": "Configurarlo",
@@ -16348,6 +16508,16 @@
   "ja": "設定する",
   "pt": "Configurar",
   "zh": "设置"
+ },
+ "Set job title": {
+  "de": "Position festlegen",
+  "es": "Poner cargo",
+  "fr": "Définir le poste",
+  "hi": "पद सेट करें",
+  "it": "Imposta ruolo",
+  "ja": "役職を設定",
+  "pt": "Definir cargo",
+  "zh": "设置职位"
  },
  "Set the brightness and an auto-off timer so it won't drain your battery.": {
   "de": "Stell Helligkeit und Auto-Aus ein, damit der Akku hält.",
@@ -19759,6 +19929,16 @@
   "pt": "Não pode ser desfeito.",
   "zh": "此操作无法撤销。"
  },
+ "This changes the contact on your iPhone and the account it syncs to.": {
+  "de": "Das ändert den Kontakt auf deinem iPhone und im synchronisierten Konto.",
+  "es": "Cambia el contacto en tu iPhone y en la cuenta con la que se sincroniza.",
+  "fr": "Cela modifie le contact sur votre iPhone et dans le compte synchronisé.",
+  "hi": "यह आपके iPhone और सिंक होने वाले अकाउंट में संपर्क बदलता है।",
+  "it": "Modifica il contatto sull'iPhone e nell'account sincronizzato.",
+  "ja": "iPhoneと同期先アカウントの連絡先が変更されます。",
+  "pt": "Altera o contato no seu iPhone e na conta sincronizada.",
+  "zh": "这会更改 iPhone 及其同步账户中的联系人。"
+ },
  "This clip has no audio track to save.": {
   "de": "Dieser Clip hat keine Tonspur.",
   "es": "Este clip no tiene pista de audio que guardar.",
@@ -20098,6 +20278,16 @@
   "ja": "次は",
   "pt": "Hora de",
   "zh": "该做"
+ },
+ "Time to back up your contacts": {
+  "de": "Zeit, deine Kontakte zu sichern",
+  "es": "Hora de copiar tus contactos",
+  "fr": "C'est l'heure de sauvegarder vos contacts",
+  "hi": "संपर्कों का बैकअप लेने का समय",
+  "it": "È ora di fare il backup dei contatti",
+  "ja": "連絡先をバックアップする時間です",
+  "pt": "Hora de fazer backup dos contatos",
+  "zh": "该备份联系人了"
  },
  "Time to wind down": {
   "de": "Zeit zum Runterfahren",
@@ -21629,6 +21819,16 @@
   "pt": "Site",
   "zh": "网站"
  },
+ "Weekly": {
+  "de": "Wöchentlich",
+  "es": "Semanal",
+  "fr": "Chaque semaine",
+  "hi": "हर हफ़्ते",
+  "it": "Settimanale",
+  "ja": "毎週",
+  "pt": "Semanal",
+  "zh": "每周"
+ },
  "What": {
   "de": "Was",
   "es": "Qué",
@@ -22838,6 +23038,16 @@
   "ja": "変換済み",
   "pt": "convertidos",
   "zh": "已转换"
+ },
+ "couldn't be changed (read-only account)": {
+  "de": "konnten nicht geändert werden (schreibgeschütztes Konto)",
+  "es": "no se pudieron cambiar (cuenta de solo lectura)",
+  "fr": "non modifiables (compte en lecture seule)",
+  "hi": "नहीं बदले जा सके (केवल-पढ़ने वाला अकाउंट)",
+  "it": "non modificabili (account di sola lettura)",
+  "ja": "変更できず（読み取り専用アカウント）",
+  "pt": "não puderam ser alterados (conta somente leitura)",
+  "zh": "无法更改（只读账户）"
  },
  "couldn't be read": {
   "de": "nicht lesbar",
