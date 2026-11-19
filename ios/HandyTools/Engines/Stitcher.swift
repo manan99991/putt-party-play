@@ -11,10 +11,13 @@ enum Stitcher {
     struct Gray { let rows: Int; let width: Int; let px: [UInt8] }
 
     /// Result image (scale 1, pixel dimensions) or nil if nothing usable.
-    static func stitch(_ images: [UIImage]) -> UIImage? {
+    static func stitch(_ images: [UIImage]) -> UIImage? { stitchWithSeams(images)?.image }
+
+    /// The stitched image plus where each join is (pixels from the top), so the joins can be shown and checked.
+    static func stitchWithSeams(_ images: [UIImage]) -> (image: UIImage, seams: [CGFloat])? {
         let srcs = images.map { $0.normalizedUp() }
         guard !srcs.isEmpty else { return nil }
-        if srcs.count == 1 { return srcs[0] }
+        if srcs.count == 1 { return (srcs[0], []) }
 
         // Normalise all to the narrowest pixel width so columns line up.
         let targetW = srcs.map { $0.size.width * $0.scale }.min() ?? 0
@@ -56,9 +59,10 @@ enum Stitcher {
             pieces.append((img, CGRect(x: 0, y: top, width: img.size.width, height: h)))
             totalH += h
         }
-        guard totalH > 0 else { return nil }
-
-        return compose(pieces: pieces, width: targetW, height: totalH)
+        guard totalH > 0, let out = compose(pieces: pieces, width: targetW, height: totalH) else { return nil }
+        var seams: [CGFloat] = [], y: CGFloat = 0
+        for p in pieces.dropLast() { y += p.1.height; seams.append(y) }
+        return (out, seams)
     }
 
     // MARK: compose

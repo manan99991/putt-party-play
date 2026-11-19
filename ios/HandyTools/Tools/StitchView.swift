@@ -16,6 +16,9 @@ struct StitchView: View {
     @State private var finding = false
     @State private var resultPDF: Data?
     @State private var savedNote: String?
+    @State private var seams: [CGFloat] = []          // where each join is, in pixels from the top
+    @State private var hiddenCount: Int?
+    @State private var hiding = false
 
     private var overQuota: Bool { !Usage.hasRoom("stitch", limit: Limits.freeStitchPerDay) }
 
@@ -79,11 +82,45 @@ struct StitchView: View {
             if let result {
                 ScrollView {
                     Image(uiImage: result).resizable().scaledToFit()
+                        .overlay {
+                            // The joins, marked so they can be checked before sharing.
+                            GeometryReader { g in
+                                ForEach(Array(seams.enumerated()), id: \.offset) { _, y in
+                                    Rectangle().fill(HandyColor.accent.opacity(0.8)).frame(height: 1.5)
+                                        .offset(y: g.size.height * y / max(1, result.size.height * result.scale))
+                                }
+                            }.allowsHitTesting(false)
+                        }
                         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 }
                 .frame(maxHeight: 420)
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 Text("\(Int(result.size.width)) × \(Int(result.size.height)) px").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                if !seams.isEmpty {
+                    Label("\(L("Joined in")) \(seams.count) \(L(seams.count == 1 ? "place — the blue line shows where. Check nothing is doubled or missing." : "places — the blue lines show where. Check nothing is doubled or missing."))", systemImage: "line.3.horizontal")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                }
+                Button {
+                    hiding = true
+                    let src = result
+                    Task {
+                        let r = await Task.detached(priority: .userInitiated) { StitchExtras.hidePersonal(src) }.value
+                        hiding = false
+                        guard let r else { return }
+                        hiddenCount = r.hidden
+                        guard r.hidden > 0 else { return }
+                        self.result = r.image
+                        resultPNG = await Task.detached(priority: .userInitiated) { r.image.pngData() }.value
+                        resultPDF = await Task.detached(priority: .utility) { StitchExtras.pdf(r.image) }.value
+                        HandyHaptics.success()
+                    }
+                } label: {
+                    HStack { if hiding { ProgressView() }; Label(L("Hide faces and numbers before sharing"), systemImage: "eye.slash") }.frame(maxWidth: .infinity)
+                }.secondaryButton().disabled(hiding || hiddenCount != nil).accessibilityIdentifier("stitch-hide")
+                if let hiddenCount {
+                    Text(hiddenCount == 0 ? L("No faces or personal numbers found.") : "\(L("Hid")) \(hiddenCount) \(L(hiddenCount == 1 ? "face or number" : "faces and numbers")). \(L("Names written as words aren't hidden — check before you share."))")
+                        .font(HandyFont.caption).foregroundStyle(hiddenCount == 0 ? HandyColor.textSecondary : HandyColor.success).fixedSize(horizontal: false, vertical: true)
+                }
                 if let png = resultPNG {
                     Button {
                         Task { let ok = await StickerMaker.saveToPhotos([png]); savedNote = ok ? "Saved to Photos." : "Couldn't save — allow Tenzy to add photos in Settings." }
@@ -101,7 +138,7 @@ struct StitchView: View {
                     if let pdf = resultPDF { Text("\(L("The PDF has")) \(StitchExtras.pageSlices(height: result.size.height * result.scale, pageHeight: (result.size.width * result.scale * 1.414).rounded()).count) \(L("pages, sized like A4 — easy to print or email.")) (\(ByteCountFormatter.string(fromByteCount: Int64(pdf.count), countStyle: .file)))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
                     if let savedNote { Text(L(savedNote)).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
                 }
-                Button(L("Start over")) { self.result = nil; resultPNG = nil; resultPDF = nil; savedNote = nil; shots = []; items = [] }.textButton()
+                Button(L("Start over")) { self.result = nil; resultPNG = nil; resultPDF = nil; savedNote = nil; shots = []; items = []; seams = []; hiddenCount = nil }.textButton()
             }
         }
     }
@@ -147,8 +184,9 @@ struct StitchView: View {
         Task { @MainActor in
             // Stitch (per-image re-render, overlap search, tall composite) and the PNG encode both run
             // off the main thread — a 12-shot tall image would otherwise lock the UI for seconds.
-            let out = await Task.detached(priority: .userInitiated) { Stitcher.stitch(input) }.value
-            if let out {
+            let made = await Task.detached(priority: .userInitiated) { Stitcher.stitchWithSeams(input) }.value
+            seams = made?.seams ?? []; hiddenCount = nil
+            if let out = made?.image {
                 _ = Usage.use("stitch", limit: Limits.freeStitchPerDay)
                 result = out
                 resultPNG = await Task.detached(priority: .userInitiated) { out.pngData() }.value

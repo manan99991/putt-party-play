@@ -252,6 +252,10 @@ final class EngineTests: XCTestCase {
         let ci = CIImage(cgImage: try XCTUnwrap(out.cgImage))
         let avg = try XCTUnwrap(ColorVision.averageColor(of: ci, region: CGRect(x: 0, y: 0, width: 1, height: 1), context: ctx))
         XCTAssertLessThan((avg.x + avg.y + avg.z) / 3, 0.95, "stitched output must contain the pages, not be a blank white image")
+        // The join is reported where the first shot's content ends, so it can be shown on the result.
+        let seamed = try XCTUnwrap(Stitcher.stitchWithSeams([a, b]))
+        XCTAssertEqual(seamed.seams.count, 1, "two shots, one join")
+        XCTAssertGreaterThan(seamed.seams[0], 400); XCTAssertLessThan(seamed.seams[0], seamed.image.size.height - 100)
     }
 
     func testStitcherOrdersShuffledScreenshots() throws {

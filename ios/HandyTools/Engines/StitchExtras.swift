@@ -64,4 +64,26 @@ enum StitchExtras {
             }
         }
     }
+
+    /// Faces and personal numbers (phone, email, card, account, plates) hidden across a long screenshot. Read in
+    /// phone-screen-sized slices so small chat text is still found; returns the covered image and how many.
+    static func hidePersonal(_ img: UIImage) -> (image: UIImage, hidden: Int)? {
+        guard let cg = img.normalizedUp().cgImage else { return nil }
+        let W = CGFloat(cg.width), H = CGFloat(cg.height)
+        let sliceH = max(200, W * 2.0)
+        var rects: [CGRect] = []
+        var y: CGFloat = 0
+        while y < H {
+            let h = min(sliceH, H - y)
+            if let piece = cg.cropping(to: CGRect(x: 0, y: y, width: W, height: h)) {
+                let hits = Scrubber.detect(UIImage(cgImage: piece))
+                for r in hits.faces + hits.text.filter(\.personal).map(\.rect) {
+                    rects.append(CGRect(x: r.minX, y: (y + r.minY * h) / H, width: r.width, height: r.height * h / H))
+                }
+            }
+            y += sliceH * 0.9            // a little overlap so nothing on a slice edge is missed
+        }
+        guard let data = Scrubber.render(UIImage(cgImage: cg), rects: rects, style: .block), let out = UIImage(data: data) else { return nil }
+        return (out, Scrubber.mergeFaces(rects).count)
+    }
 }
