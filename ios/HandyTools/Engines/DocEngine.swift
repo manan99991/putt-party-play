@@ -245,10 +245,21 @@ enum DocEngine {
     /// Render each page of a PDF to a standalone image for the PDF → image converter. Returns the
     /// encoded bytes per page — JPEG by default (small, universal) or PNG when `png` is set — using the
     /// same crisp, white-backed rasterization as `importPDF`. Empty only if the PDF can't be read.
-    static func pdfToImages(_ data: Data, png: Bool = false, maxWidth: CGFloat = 1600, quality: CGFloat = 0.9) -> [Data] {
+    /// Which pages to convert: every page, the one on screen, or a from–to range (1-based, clamped, never empty).
+    static func pageIndexes(all: Bool, current: Int, from: Int, to: Int, count: Int) -> [Int] {
+        guard count > 0 else { return [] }
+        if all { return Array(0..<count) }
+        let a = max(1, min(from, to, count)), b = min(count, max(from, to, 1))
+        return Array((a - 1)...(b - 1))
+    }
+
+    /// Image sizes by what the pictures are for. Width in pixels of a US Letter / A4 page.
+    static let imageSizes: [(label: String, width: CGFloat)] = [("Small, for email", 1000), ("Sharp, for sharing", 1600), ("For printing (300 dpi)", 2550)]
+
+    static func pdfToImages(_ data: Data, png: Bool = false, maxWidth: CGFloat = 1600, quality: CGFloat = 0.9, only: [Int]? = nil) -> [Data] {
         guard let doc = PDFDocument(data: data), doc.pageCount > 0 else { return [] }
         var out: [Data] = []
-        for i in 0..<doc.pageCount {
+        for i in (only ?? Array(0..<doc.pageCount)) where i >= 0 && i < doc.pageCount {
             guard let page = doc.page(at: i) else { continue }
             let b = page.bounds(for: .mediaBox)
             let scale = min(3, maxWidth / max(1, b.width))

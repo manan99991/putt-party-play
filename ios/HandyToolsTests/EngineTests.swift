@@ -2608,6 +2608,22 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testPDFConvertPagesAndSizes() {
+        XCTAssertEqual(DocEngine.pageIndexes(all: true, current: 0, from: 1, to: 1, count: 4), [0, 1, 2, 3])
+        XCTAssertEqual(DocEngine.pageIndexes(all: false, current: 2, from: 3, to: 3, count: 4), [2], "this page")
+        XCTAssertEqual(DocEngine.pageIndexes(all: false, current: 0, from: 4, to: 2, count: 4), [1, 2, 3], "backwards range still works")
+        XCTAssertEqual(DocEngine.pageIndexes(all: false, current: 0, from: 2, to: 9, count: 4), [1, 2, 3], "clamped to the PDF")
+        XCTAssertEqual(DocEngine.pageIndexes(all: false, current: 0, from: 1, to: 1, count: 0), [])
+        // A real 3-page PDF: only pages 2–3, at email size.
+        let imgs = (0..<3).map { i in UIGraphicsImageRenderer(size: CGSize(width: 612, height: 792)).image { c in UIColor(white: CGFloat(i) / 3, alpha: 1).setFill(); c.fill(CGRect(x: 0, y: 0, width: 612, height: 792)) } }
+        let pdf = try! XCTUnwrap(DocEngine.pdf(images: imgs, ocr: [], options: DocEngine.PDFOptions()))
+        let out = DocEngine.pdfToImages(pdf, maxWidth: 1000, only: [1, 2])
+        XCTAssertEqual(out.count, 2)
+        let w = UIImage(data: out[0])!.size.width
+        XCTAssertEqual(w, 1000, accuracy: 2, "email size")
+        XCTAssertEqual(DocEngine.pdfToImages(pdf, maxWidth: 2550, only: [0]).first.flatMap { UIImage(data: $0)?.size.width } ?? 0, 2550, accuracy: 2, "print size")
+    }
+
     func testAudioConvertPicksFormatByPurpose() {
         let p = AudioConvert.Format.purposes
         XCTAssertEqual(p.first { $0.label == "Email or message it" }?.format, .m4a)

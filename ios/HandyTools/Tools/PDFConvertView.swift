@@ -21,12 +21,22 @@ struct PDFConvertView: View {
     @State private var working = false
     @State private var errorText: String?
     @State private var showFiles = false
+    @State private var allPages = true
+    @State private var fromPage = 1
+    @State private var toPage = 1
+    @State private var width: CGFloat = 1600
+    @State private var savedNote: String?
 
     var body: some View {
         ToolPage(title: "Convert PDF",
-                 subtitle: "Turn a PDF into image pages, or pull its text out — on your phone.",
+                 subtitle: "Turn a PDF into pictures — all pages or just the ones you need, sized for email, sharing or print — or pull its text out. On your phone.",
                  working: working) {
             VStack(spacing: HandySpacing.s16) {
+                HowTo("pdfconvert", [
+                    "Choose a PDF — from Files, Mail or Downloads.",
+                    "Images: pick all pages or a range, and the size (email, sharing or print). Save straight to Photos.",
+                    "Text: pulls the words out — even from a scan — to copy or save as a .txt.",
+                ])
                 if pages.isEmpty {
                     pickCard
                 } else {
@@ -71,6 +81,7 @@ struct PDFConvertView: View {
             preview
 
             if mode == .images {
+                imageOptions
                 Toggle(L("PNG (lossless, larger)"), isOn: $asPNG).tint(HandyColor.accent).font(HandyFont.body)
             }
 
@@ -94,6 +105,29 @@ struct PDFConvertView: View {
 
             Button(L("Choose a different PDF")) { reset() }.textButton().font(HandyFont.caption)
         }
+    }
+
+    private var imageOptions: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            if pages.count > 1 {
+                HandyFlow(spacing: HandySpacing.s8) {
+                    HChip(text: L("All pages"), selected: allPages) { allPages = true; imageURLs = [] }
+                    HChip(text: L("This page"), selected: !allPages && fromPage == page + 1 && toPage == page + 1) { allPages = false; fromPage = page + 1; toPage = page + 1; imageURLs = [] }
+                    HChip(text: L("Choose pages"), selected: !allPages && !(fromPage == page + 1 && toPage == page + 1)) { allPages = false; fromPage = 1; toPage = pages.count; imageURLs = [] }
+                }
+                if !allPages {
+                    Stepper("\(L("From page")) \(fromPage)", value: $fromPage, in: 1...pages.count).font(HandyFont.caption)
+                    Stepper("\(L("To page")) \(toPage)", value: $toPage, in: 1...pages.count).font(HandyFont.caption)
+                }
+            }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(DocEngine.imageSizes, id: \.width) { sz in
+                    HChip(text: L(sz.label), selected: width == sz.width) { width = sz.width; imageURLs = [] }
+                }
+            }
+        }
+        .onChange(of: fromPage) { _, _ in imageURLs = [] }
+        .onChange(of: toPage) { _, _ in imageURLs = [] }
     }
 
     private var pager: some View {
@@ -120,9 +154,19 @@ struct PDFConvertView: View {
                   systemImage: "checkmark.circle.fill")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            Button {
+                let urls = imageURLs
+                Task {
+                    let ok = await StickerMakerView.saveToPhotos(urls.compactMap { try? Data(contentsOf: $0) })
+                    savedNote = ok ? L("Saved to Photos.") : L("Photos access is off — allow it in Settings to save.")
+                    if ok { HandyHaptics.success() }
+                }
+            } label: { Label(L("Save to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }
+                .primaryButton().accessibilityIdentifier("convert-save-photos")
+            if let savedNote { Text(savedNote).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             ShareLink(items: imageURLs) {
-                Label(imageURLs.count == 1 ? L("Save or share image") : L("Save or share all"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-            }.primaryButton()
+                Label(imageURLs.count == 1 ? L("Share image") : L("Share all"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+            }.secondaryButton()
             Button(L("Convert again")) { imageURLs = [] }.textButton().font(HandyFont.caption)
         }
         .cardStyle(padding: HandySpacing.s12)
@@ -140,6 +184,9 @@ struct PDFConvertView: View {
             .padding(HandySpacing.s12)
             .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            Text("\(extractedText.split { $0.isWhitespace || $0.isNewline }.count) \(L("words"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Button { Copier.copy(extractedText, note: "Text copied") } label: { Label(L("Copy all the text"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }
+                .secondaryButton()
             if let url = textURL {
                 ShareLink(item: url) {
                     Label(L("Save or share .txt"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
@@ -158,7 +205,7 @@ struct PDFConvertView: View {
         guard let data = try? Data(contentsOf: url) else { errorText = "Couldn't open that PDF."; return }
         let imgs = DocEngine.importPDF(url)
         guard !imgs.isEmpty else { errorText = "That PDF has no pages Tenzy can read."; return }
-        sourceData = data; pages = imgs; page = 0
+        sourceData = data; pages = imgs; page = 0; allPages = true; fromPage = 1; toPage = imgs.count
         fileName = url.deletingPathExtension().lastPathComponent
         clearResults()
     }
@@ -176,19 +223,20 @@ struct PDFConvertView: View {
     }
 
     private func clearResults() {
-        imageURLs = []; extractedText = ""; textURL = nil; errorText = nil
+        imageURLs = []; extractedText = ""; textURL = nil; errorText = nil; savedNote = nil
     }
 
     private func run() {
         guard let data = sourceData else { return }
         working = true; errorText = nil
-        let png = asPNG, name = safeName(fileName), m = mode
+        let png = asPNG, name = safeName(fileName), m = mode, w = width
+        let picked = DocEngine.pageIndexes(all: allPages, current: page, from: fromPage, to: toPage, count: pages.count)
         Task.detached(priority: .userInitiated) {
             if m == .images {
-                let datas = DocEngine.pdfToImages(data, png: png)
+                let datas = DocEngine.pdfToImages(data, png: png, maxWidth: w, only: picked)
                 var urls: [URL] = []
                 for (i, d) in datas.enumerated() {
-                    let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(name)-\(i + 1).\(png ? "png" : "jpg")")
+                    let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(name)-\((picked.indices.contains(i) ? picked[i] : i) + 1).\(png ? "png" : "jpg")")
                     try? FileManager.default.removeItem(at: url)
                     if (try? d.write(to: url)) != nil { urls.append(url) }
                 }
