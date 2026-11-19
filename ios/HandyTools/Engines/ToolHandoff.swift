@@ -10,19 +10,31 @@ import SwiftUI
 final class ToolHandoff {
     static let shared = ToolHandoff()
     private var pending: [String: ChainPayload] = [:]
+    private var more: [String: [UIImage]] = [:]
 
-    func put(_ payload: ChainPayload, for tool: String) { pending[tool] = payload }
+    /// `others`: the rest of the photos when several were picked at once (the first is `payload`).
+    func put(_ payload: ChainPayload, for tool: String, others: [UIImage] = []) {
+        pending[tool] = payload
+        more[tool] = others.isEmpty ? nil : others
+    }
+
+    /// Every photo waiting for `tool` — the one handed over plus any others picked with it — removed so they're used once.
+    func takePhotos(_ tool: String) -> [UIImage] {
+        let rest = more.removeValue(forKey: tool) ?? []
+        guard let p = pending.removeValue(forKey: tool) else { return rest }
+        return (ToolHandoff.image(p).map { [$0] } ?? []) + rest
+    }
 
     /// The waiting item for `tool`, removed so it's used once.
-    func take(_ tool: String) -> ChainPayload? { pending.removeValue(forKey: tool) }
+    func take(_ tool: String) -> ChainPayload? { more[tool] = nil; return pending.removeValue(forKey: tool) }
 
     /// Dedicated tools that open this kind of thing, best first. Only tools that accept a hand-off.
     nonisolated static func tools(for kind: ChainKind) -> [String] {
         switch kind {
-        case .pdf: return ["pdfsign", "pdfform", "pdfsearchable", "pdfprotect", "pdfpages", "zipmaker"]
-        case .image, .photoFile: return ["sticker", "animate", "collage", "faceemoji", "comicstrip", "menu", "cards"]
+        case .pdf: return ["pdfsign", "pdfform", "pdfsearchable", "pdfprotect", "pdfpages", "fitit", "zipmaker"]
+        case .image, .photoFile: return ["scrub", "fitit", "sticker", "animate", "collage", "faceemoji", "comicstrip", "menu", "cards"]
         case .audio: return ["meetingnotes", "audiocompress", "audiomix", "audiotags", "audioconvert", "zipmaker"]
-        case .video: return ["audiocompress", "audioconvert", "audiomix"]
+        case .video: return ["fitit", "audiocompress", "audioconvert", "audiomix"]
         case .file: return ["zipmaker"]
         case .text: return []
         }
@@ -59,5 +71,10 @@ extension View {
     /// a share), load it once — the same as if the person had just picked it here.
     func handoff(_ tool: String, _ use: @escaping (ChainPayload) -> Void) -> some View {
         onAppear { if let p = ToolHandoff.shared.take(tool) { use(p) } }
+    }
+
+    /// The same for a photo tool that takes several at once: every photo picked arrives together.
+    func handoffPhotos(_ tool: String, _ use: @escaping ([UIImage]) -> Void) -> some View {
+        onAppear { let photos = ToolHandoff.shared.takePhotos(tool); if !photos.isEmpty { use(photos) } }
     }
 }

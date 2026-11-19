@@ -33,7 +33,10 @@ struct CollageView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: picks) { _, items in load(items) }
-        .handoff("collage") { p in if let img = ToolHandoff.image(p) { photos = [img.resized(maxDimension: 1600).normalizedUp()]; layout = .grid; refresh() } }
+        .handoffPhotos("collage") { imgs in
+            let p = imgs.prefix(12).map { $0.resized(maxDimension: 1600).normalizedUp() }
+            photos = p; layout = p.count >= 5 ? .mosaic : (p.count == 3 ? .hero : .grid); refresh()
+        }
     }
 
     private var pickCard: some View {

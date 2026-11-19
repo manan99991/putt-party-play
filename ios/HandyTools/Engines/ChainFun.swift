@@ -174,7 +174,17 @@ enum ChainFun {
             let at = y * row + x * 4
             px[y * w + x] = Int(bytes[at]) << 16 | Int(bytes[at + 1]) << 8 | Int(bytes[at + 2])
         } }
-        let out = PixelArt.apply(px, width: w, height: h, style: style)
+        // The comic keeps faces clear, so find them first (on the phone, in a moment).
+        var faces: [CGRect] = []
+        if style == "comic", let small = ctx.makeImage() {
+            let req = VNDetectFaceRectanglesRequest()
+            try? VNImageRequestHandler(cgImage: small, orientation: .up).perform([req])
+            faces = (req.results ?? []).map { o in
+                let b = o.boundingBox
+                return CGRect(x: b.minX * CGFloat(w), y: (1 - b.maxY) * CGFloat(h), width: b.width * CGFloat(w), height: b.height * CGFloat(h))
+            }
+        }
+        let out = PixelArt.apply(px, width: w, height: h, style: style, faces: faces)
         for y in 0..<h { for x in 0..<w {
             let at = y * row + x * 4, v = out[y * w + x]
             bytes[at] = UInt8(v >> 16 & 0xFF); bytes[at + 1] = UInt8(v >> 8 & 0xFF); bytes[at + 2] = UInt8(v & 0xFF)

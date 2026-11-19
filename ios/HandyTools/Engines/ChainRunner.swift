@@ -537,7 +537,9 @@ enum ChainRunner {
         case (.pullReceipt, .text(let t)):
             let r = DataGrab.receipt(t)
             guard r.total != nil || !r.items.isEmpty else { return .failure(.nothingFound(b)) }
-            return .success(.text(DataGrab.receiptCSV(r)))
+            let csv = DataGrab.receiptCSV(r)
+            DataGrab.remember(csv, r)
+            return .success(.text(csv))
 
         case (.summarize, .text(let t)):
             let n = Int(step.settings["sentences"] ?? "") ?? 3
@@ -546,7 +548,8 @@ enum ChainRunner {
 
         case (.shrinkImage, .image(let img)):
             let mb = Double(step.settings["mb"] ?? "") ?? 2
-            guard let data = await SizeTarget.image(img, targetBytes: Int(max(0.01, mb) * 1_048_576)) else { return .failure(.failed(b)) }
+            // "2 MB" means 2,000,000 bytes — what upload sites count and what the phone shows — so it's always under.
+            guard let data = await SizeTarget.image(img, targetBytes: Int(max(0.01, mb) * 1_000_000)) else { return .failure(.failed(b)) }
             return .success(.file(data, ext: "jpg"))
 
         case (.stripLocation, .image(let img)):
@@ -666,7 +669,9 @@ enum ChainRunner {
         case (.expenseRow, .text(let t)):
             let r = DataGrab.receipt(t)
             guard r.total != nil || !r.items.isEmpty else { return .failure(.nothingFound(b)) }
-            return .success(.text(DataGrab.expenseRow(r)))
+            let row = DataGrab.expenseRow(r)
+            DataGrab.remember(row, r)
+            return .success(.text(row))
 
         case (.videoShrink, .video(let url)):
             // Re-encoded to fit the limit. The new file carries no location or camera details from the original.
@@ -776,7 +781,7 @@ extension ChainRunner {
 /// Starter chains shipped inside the app. Users can run them, or copy one and edit it.
 enum ChainTemplates {
     static let all: [Chain] = [
-        Chain(id: "receipt-to-row", name: "Turn a receipt into an expense row", steps: [
+        Chain(id: "receipt-to-row", name: "Read a receipt into your expenses", steps: [
             ChainStep(block: .readText), ChainStep(block: .pullReceipt)]),
         Chain(id: "photo-under-2mb", name: "Shrink a photo to under 2 MB", steps: [
             ChainStep(block: .shrinkImage, settings: ["mb": "2"])]),

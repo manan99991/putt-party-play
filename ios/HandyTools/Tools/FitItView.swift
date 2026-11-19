@@ -25,6 +25,7 @@ struct FitItView: View {
     @State private var progressValue = 0.0   // 0…1 for video fits; 0 means quick/unmeasured → animated bar
     @State private var errorText: String?
     @State private var fitNote: String?   // "smallest we could do" when a video can't reach the target
+    @State private var fitInfo: String?   // "Full size kept · 4032 × 3024 · 88% quality"
 
     private var overQuota: Bool { !Usage.hasRoom("fitit", limit: Limits.freeFitPerDay) }
 
@@ -73,6 +74,13 @@ struct FitItView: View {
             if output != nil { resultCard }
         }
         .onChange(of: pickedItem) { _, item in loadPhotoItem(item) }
+        .handoff("fitit") { p in
+            reset()
+            if case .file(let d, let e) = p, ChainPayload.isPhoto(e), let img = UIImage(data: d) { source = .image(img); sourceName = "Photo"; sourceBytes = d.count }
+            else if case .file(let d, let e) = p, e.lowercased() == "pdf" { source = .pdf(d); sourceName = "PDF"; sourceBytes = d.count }
+            else if case .video(let u) = p { source = .video(u); sourceName = "Video"; sourceBytes = SizeTarget.fileSize(u) ?? 0 }
+            else if let img = ToolHandoff.image(p) { source = .image(img); sourceName = "Photo"; sourceBytes = img.jpegData(compressionQuality: 0.95)?.count ?? 0 }
+        }
         .onAppear { if Launch.sample, source == nil { let img = SampleAssets.photo(); source = .image(img); sourceName = "Sample photo"; sourceBytes = img.jpegData(compressionQuality: 0.95)?.count ?? 0; targetBytes = 200_000 } }
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf]) { res in
             if case .success(let url) = res { loadPDF(url) }
@@ -146,6 +154,7 @@ struct FitItView: View {
                     Text(fitNote == nil ? "Fits — \(SizeTarget.format(outputBytes))" : "Smallest — \(SizeTarget.format(outputBytes))").font(HandyFont.bodyStrong)
                     Text("Down from \(SizeTarget.format(sourceBytes)) · \(savingsText)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     if let fitNote { Text(fitNote).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
+                    if let fitInfo { Text(fitInfo).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 }
                 Spacer()
             }
@@ -189,7 +198,7 @@ struct FitItView: View {
 
     // MARK: loading
 
-    private func reset() { output = nil; outputBytes = 0; errorText = nil; fitNote = nil }
+    private func reset() { output = nil; outputBytes = 0; errorText = nil; fitNote = nil; fitInfo = nil }
 
     private func loadPhotoItem(_ item: PhotosPickerItem?) {
         guard let item else { return }
@@ -228,14 +237,17 @@ struct FitItView: View {
     private func run() {
         guard let source else { return }
         guard Usage.hasRoom("fitit", limit: Limits.freeFitPerDay) else { return }   // gate only — charge on success
-        working = true; progressValue = 0; errorText = nil; fitNote = nil; output = nil
+        working = true; progressValue = 0; errorText = nil; fitNote = nil; fitInfo = nil; output = nil
         let target = targetBytes
         Task { @MainActor in
             defer { working = false }
             switch source {
             case .image(let img):
-                guard let d = await SizeTarget.image(img, targetBytes: target) else { errorText = "Couldn't get this photo under \(SizeTarget.format(target)) without ruining it. Try a slightly larger limit."; return }
-                output = .data(d, ext: "jpg"); outputBytes = d.count
+                let box = UncheckedImage(img)
+                guard let f = await Task.detached(priority: .userInitiated, operation: { SizeTarget.imageFit(box.image, targetBytes: target) }).value else { errorText = "Couldn't get this photo under \(SizeTarget.format(target)) without ruining it. Try a slightly larger limit."; return }
+                output = .data(f.data, ext: "jpg"); outputBytes = f.data.count
+                let full = Int(img.size.width * img.scale) == f.width || Int(img.size.height * img.scale) == f.height
+                fitInfo = "\(full ? L("Full size kept") : L("Resized to fit")) · \(f.width) × \(f.height) · \(Int(f.quality * 100))% \(L("quality"))"
             case .pdf(let data):
                 guard let d = await SizeTarget.pdf(data, targetBytes: target) else { errorText = "Couldn't get this PDF under \(SizeTarget.format(target)). Try a larger limit or fewer pages."; return }
                 output = .data(d, ext: "pdf"); outputBytes = d.count
@@ -251,3 +263,6 @@ struct FitItView: View {
     }
 }
 
+
+/// Lets a picture cross into a background task (it is only read there).
+struct UncheckedImage: @unchecked Sendable { let image: UIImage; init(_ i: UIImage) { image = i } }

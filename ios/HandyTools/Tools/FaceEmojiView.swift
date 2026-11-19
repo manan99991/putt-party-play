@@ -55,7 +55,7 @@ struct FaceEmojiView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: pick) { _, item in load(item) }
-        .handoff("faceemoji") { p in if let img = ToolHandoff.image(p) { use(img) } }
+        .handoffPhotos("faceemoji") { imgs in if let img = imgs.first { use(img) } }
     }
 
     private var pickCard: some View {

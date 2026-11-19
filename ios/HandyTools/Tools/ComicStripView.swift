@@ -26,7 +26,7 @@ struct ComicStripView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: picks) { _, items in load(items) }
-        .handoff("comicstrip") { p in if let img = ToolHandoff.image(p) { ink([img.resized(maxDimension: 1400).normalizedUp()]) } }
+        .handoffPhotos("comicstrip") { imgs in ink(imgs.prefix(4).map { $0.resized(maxDimension: 1400).normalizedUp() }) }
     }
 
     private var pickCard: some View {

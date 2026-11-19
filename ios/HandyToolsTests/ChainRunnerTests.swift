@@ -1388,10 +1388,17 @@ final class NewestStepTests: XCTestCase {
         let sketch = PixelArt.apply(wall, width: w, height: h, style: "sketch")
         XCTAssertTrue(sketch.allSatisfy { $0 == 0xFFFFFF }, "an even grey wall is blank paper")
         XCTAssertEqual(PixelArt.apply(wall, width: w, height: h, style: "nonsense"), sketch)
-        // A flat colour has no edges, so no ink lines: just the cel colour, plus halftone dots of a deeper shade.
+        // A flat colour has no edges, so no ink lines and no dots: one even cel colour, still the same blue.
         let flatComic = Set(PixelArt.apply([Int](repeating: 0x2060E0, count: w * h), width: w, height: h, style: "comic"))
-        XCTAssertTrue(flatComic.contains(0x4080FF))
-        XCTAssertTrue(flatComic.isSubset(of: [0x4080FF, 0x23468C]), "\(flatComic.map { String($0, radix: 16) })")
+        XCTAssertEqual(flatComic.count, 1, "\(flatComic.map { String($0, radix: 16) })")
+        if let c = flatComic.first { XCTAssertGreaterThan(c & 0xFF, c >> 16 & 0xFF, "blue stays blue") }
+        // Skin keeps its colour (the old look flattened each channel on its own and turned faces pink or green).
+        let skin = 0xD9A27E
+        let inked = PixelArt.apply([Int](repeating: skin, count: 64 * 64), width: 64, height: 64, style: "comic", faces: [CGRect(x: 16, y: 16, width: 32, height: 32)])
+        let mid = inked[32 * 64 + 32]
+        let (r, g, b) = (mid >> 16 & 0xFF, mid >> 8 & 0xFF, mid & 0xFF)
+        XCTAssertTrue(r > g && g > b, "skin stays warm: \(String(mid, radix: 16))")
+        XCTAssertLessThan(abs(r - 0xD9) + abs(g - 0xA2) + abs(b - 0x7E), 90, "close to the real tone: \(String(mid, radix: 16))")
         XCTAssertEqual(PixelArt.apply(px, width: 5, height: 5, style: "noir"), px)
         XCTAssertEqual(PixelArt.style(nil), "sketch"); XCTAssertEqual(PixelArt.style("comic"), "comic"); XCTAssertEqual(PixelArt.style("x"), "sketch")
     }

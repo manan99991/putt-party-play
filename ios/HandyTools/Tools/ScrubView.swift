@@ -75,6 +75,10 @@ struct ScrubView: View {
         }
         .onAppear { if Launch.sample, original == nil, let d = SampleAssets.photo().jpegData(compressionQuality: 0.9) { originalData = d; original = UIImage(data: d); meta = Scrubber.metadata(in: d); if let img = original { let f = Scrubber.detect(img); boxes = f.faces.map { Box(rect: $0, kind: .face, on: true) } + f.text.map { Box(rect: $0.rect, kind: .text, on: $0.personal) } } } }
         .onChange(of: pickedItem) { _, item in load(item) }
+        .handoff("scrub") { p in
+            if case .file(let d, _) = p { Task { await adopt(d) } }
+            else if let img = ToolHandoff.image(p), let d = img.jpegData(compressionQuality: 0.95) { Task { await adopt(d) } }
+        }
         .task(id: meta.coordinate?.latitude) {
             guard let c = meta.coordinate else { mapImage = nil; return }
             mapImage = await Scrubber.mapSnapshot(c)
@@ -234,16 +238,22 @@ struct ScrubView: View {
                 await MainActor.run { original = nil; originalData = nil; meta = Scrubber.Metadata(); mapImage = nil; videoInURL = m?.url }
                 return
             }
-            guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) else { return }
-            await MainActor.run {
-                videoInURL = nil
-                originalData = d; original = img.normalizedUp(); meta = Scrubber.metadata(in: d); detecting = true
-            }
-            let found = Scrubber.detect(img)
-            await MainActor.run {
-                boxes = found.faces.map { Box(rect: $0, kind: .face, on: true) } + found.text.map { Box(rect: $0.rect, kind: .text, on: $0.personal) }
-                detecting = false
-            }
+            guard let d = try? await item.loadTransferable(type: Data.self) else { return }
+            await adopt(d)
+        }
+    }
+
+    /// A photo's file (picked here or handed over), hidden details intact so they can be shown and stripped.
+    private func adopt(_ d: Data) async {
+        guard let img = UIImage(data: d) else { return }
+        await MainActor.run {
+            videoInURL = nil; result = nil; errorText = nil
+            originalData = d; original = img.normalizedUp(); meta = Scrubber.metadata(in: d); detecting = true
+        }
+        let found = Scrubber.detect(img)
+        await MainActor.run {
+            boxes = found.faces.map { Box(rect: $0, kind: .face, on: true) } + found.text.map { Box(rect: $0.rect, kind: .text, on: $0.personal) }
+            detecting = false
         }
     }
 

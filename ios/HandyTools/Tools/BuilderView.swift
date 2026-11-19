@@ -20,6 +20,14 @@ struct Given: Identifiable {
     let payload: ChainPayload
     /// A few words for the top of the list: "A photo", "A PDF · 2 pages"...
     let label: String
+    /// The other photos when several were picked at once (the first one is `payload`).
+    var more: [UIImage] = []
+    /// The same photos as their original files (hidden details intact), for flows that report what they changed.
+    var moreFiles: [ChainPayload] = []
+    /// Every item as it came in, first one included.
+    var all: [ChainPayload] { [payload] + (moreFiles.count == more.count ? moreFiles : more.map { ChainPayload.image($0) }) }
+    /// How many things were handed over.
+    var count: Int { 1 + more.count }
 
     /// Markup (HTML/XML) stripped down to its readable words, so a tool — and the chooser preview —
     /// gets the text a person would read, never a wall of tags. Plain text passes straight through.
@@ -445,6 +453,7 @@ struct BuilderView: View {
     @State private var given: Given?
     @State private var unzipping: UnzipTarget?
     @State private var anyPick: PhotosPickerItem?
+    @State private var anyPhotos: [PhotosPickerItem] = []
     @State private var pickingAny = false
     @State private var pickTypes: [UTType] = [.item]
     @State private var gettingReady = false
@@ -482,7 +491,7 @@ struct BuilderView: View {
             }
         }
         .sheet(item: $running) { c in NavigationStack { ChainRunView(chain: c) } }
-        .sheet(item: $given) { g in NavigationStack { ToolPickView(given: g, mine: mine) } }
+        .sheet(item: $given) { g in GuideView(given: g, mine: mine) }
         .sheet(item: $unzipping) { t in
             UnzipView(url: t.url) { g in
                 // A file opened from inside the archive → close Unzip, then hand it to the tools.
@@ -503,6 +512,33 @@ struct BuilderView: View {
             guard case .success(let url) = r else { return }
             if Given.isZip(url), let staged = Given.stageZip(url) { note = nil; unzipping = UnzipTarget(url: staged); return }
             if let g = Given.from(file: url) { note = nil; given = g } else { note = Given.unsupportedNote(for: url) }
+        }
+        .onChange(of: anyPhotos) { _, items in
+            // One photo or many: all of them go to the chooser together, in the order they were picked.
+            guard !items.isEmpty else { return }
+            anyPhotos = []; gettingReady = true; note = nil
+            Task {
+                var imgs: [UIImage] = []
+                var files: [ChainPayload] = []
+                for it in items {
+                    let ext = it.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
+                    if let d = await loadWithinTimeout(120, { try? await it.loadTransferable(type: Data.self) }), let img = UIImage(data: d) {
+                        imgs.append(img)
+                        files.append(ChainPayload.isPhoto(ext) ? .file(d, ext: ext) : .image(img))   // the original file, hidden details and all
+                    }
+                }
+                await MainActor.run {
+                    gettingReady = false
+                    guard let first = imgs.first, let firstFile = files.first else {
+                        note = items.count == 1 ? "That photo didn't load. If it's a large iCloud photo, open it once in Photos to download it, then pick it again."
+                                                : "Those photos didn't load. If they're large iCloud photos, open them once in Photos to download them, then pick again."
+                        return
+                    }
+                    if imgs.count < items.count { note = "\(items.count - imgs.count) of the photos didn't load, so Tenzy went ahead with \(imgs.count)." }
+                    _ = first
+                    given = Given(payload: firstFile, label: imgs.count == 1 ? "A photo" : "\(imgs.count) photos", more: Array(imgs.dropFirst()), moreFiles: Array(files.dropFirst()))
+                }
+            }
         }
         .onChange(of: anyPick) { _, item in
             guard let item else { return }
@@ -755,7 +791,7 @@ struct BuilderView: View {
             Text(L("…or start with what you have")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: HandySpacing.s8) {
-                PhotosPicker(selection: $anyPick, matching: .images) { objTile("Photo") }.accessibilityIdentifier("have-photo")
+                PhotosPicker(selection: $anyPhotos, maxSelectionCount: 20, selectionBehavior: .ordered, matching: .images) { objTile("Photo") }.accessibilityIdentifier("have-photo")
                 PhotosPicker(selection: $anyPick, matching: .videos) { objTile("Video") }.accessibilityIdentifier("have-video")
                 Button { pickTypes = audioImportTypes; pickingAny = true } label: { objTile("Audio") }.accessibilityIdentifier("have-audio")
             }
@@ -881,7 +917,7 @@ struct BuilderView: View {
             Label(L("Tenzy already has a tool for this"), systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
             Text(L(b.name)).font(HandyFont.cardTitle)
             Text(L(b.why)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-            Button { let id = b.id; builtIn = nil; NotificationCenter.default.post(name: .openTool, object: id) } label: {
+            Button { let id = b.id; builtIn = nil; NotificationCenter.default.post(name: .openTool, object: id, userInfo: ["from": "builder"]) } label: {
                 Label("\(L("Open")) \(L(b.name))", systemImage: "arrow.right.circle.fill").frame(maxWidth: .infinity)
             }.primaryButton()
             if let p = pendingPlan {
@@ -906,7 +942,7 @@ struct BuilderView: View {
             ForEach(BuilderIntro.bigJobs, id: \.id) { j in
                 Button {
                     showTemplates = false
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { NotificationCenter.default.post(name: .openTool, object: j.id) }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { NotificationCenter.default.post(name: .openTool, object: j.id, userInfo: ["from": "builder"]) }
                 } label: {
                     HStack(spacing: HandySpacing.s12) {
                         Image(systemName: j.icon).font(.system(size: 16, weight: .semibold)).foregroundStyle(HandyColor.accent)
@@ -1534,6 +1570,14 @@ private struct ChainEditor: View {
     }
 }
 
+/// The original sizes of a batch's photos, filled in as each one loads.
+final class BeforeSizes: @unchecked Sendable {
+    private var map: [Int: Int] = [:]
+    private let lock = NSLock()
+    func set(_ i: Int, _ v: Int) { lock.lock(); map[i] = v; lock.unlock() }
+    func get(_ i: Int) -> Int? { lock.lock(); defer { lock.unlock() }; return map[i] }
+}
+
 /// One photo's outcome in a batch run. Files and pictures are written to a temporary folder straight away,
 /// so twenty full-size results never sit in memory together.
 struct BatchItem: Identifiable {
@@ -1569,6 +1613,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     let chain: Chain
     /// Handed over already ("Start with what you have"): the tool runs on it straight away.
     var initial: ChainPayload? = nil
+    /// Several photos picked at once (from "What to do with it"): each one gets the same steps, like a batch picked here.
+    var initialMany: [ChainPayload] = []
     @State private var started = false
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
@@ -1602,6 +1648,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var noun = "Photo"
     @State private var busy = false
     @State private var result: ChainPayload?
+    /// The photo as it came in (with its hidden details), so the result can say what changed and what was removed.
+    @State private var originalPhoto: Data?
     @State private var watchLine: String?
     @State private var message: String?
     @State private var report: ChainRunner.RunReport?   // the per-step "what went through" story, for multi-step flows
@@ -1743,7 +1791,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                         .accessibilityIdentifier("run-watch-line")
                 }
-                if let result { output(result) }
+                if let result {
+                    if let orig = originalPhoto, case .file(let d, let e) = result, ChainPayload.isPhoto(e) {
+                        PhotoResultInsight(original: orig, result: d, stripped: chain.steps.contains { $0.block == .stripLocation },
+                                           hideFaces: chain.steps.contains { $0.block == .hideSensitive } ? nil : { hideInResult(d, e) })
+                    }
+                    output(result)
+                }
                 if !batch.isEmpty { batchView }
                 sendOn
             }.padding(HandySpacing.gutter)
@@ -1777,14 +1831,24 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             if items.count == 1, chain.gif != true, chain.versus != true, chain.flipbook != true, let item = items.first {
                 busy = true; result = nil; message = nil; progress = "Getting the photo ready…"; progressValue = 0
+                let ext = item.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
                 Task {
-                    let img = await loadWithinTimeout(120) { (try? await item.loadTransferable(type: Data.self)).flatMap(UIImage.init) }
+                    let data = await loadWithinTimeout(120) { try? await item.loadTransferable(type: Data.self) }
                     await MainActor.run {
-                        if let img { go(.image(img)) }
+                        // Keep the photo as its own file, so its hidden details travel with it and can be reported on.
+                        if let data, UIImage(data: data) != nil { go(ChainPayload.isPhoto(ext) ? .file(data, ext: ext) : .image(UIImage(data: data)!)) }
                         else { busy = false; progress = ""; message = "That photo didn't load. If it's a large iCloud photo, open it once in Photos to download it, then pick it again." }
                     }
                 }
-            } else { runBatch(count: items.count) { i in (try? await items[i].loadTransferable(type: Data.self)).flatMap(UIImage.init) } }
+            } else {
+                let sizes = BeforeSizes()
+                runMany(count: items.count, noun: "Photo", before: { sizes.get($0) }) { i in
+                    guard let d = try? await items[i].loadTransferable(type: Data.self), let img = UIImage(data: d) else { return nil }
+                    sizes.set(i, d.count)
+                    let ext = items[i].supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
+                    return ChainPayload.isPhoto(ext) ? .file(d, ext: ext) : .image(img)
+                }
+            }
         }
         .sheet(isPresented: $signing) { SignaturePadSheet { _ in hasSignature = true } }
         .sheet(isPresented: $pickingContact) {
@@ -1826,8 +1890,19 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // Fresh launch = clean slate. If the screen re-appears with no input queued and nothing
             // running, clear any previous run's result so a tool never opens showing an old image. (A
             // child picker/sheet doesn't fire onAppear, so a result you're actively viewing is safe.)
-            if initial == nil, !started, !busy {
+            if initial == nil, initialMany.isEmpty, !started, !busy {
                 result = nil; batch = []; outbox = nil; report = nil; message = nil; picks = []; memePhotos = []
+            }
+            if initialMany.count > 1, !started {
+                started = true
+                let items = initialMany
+                if hasMeme {
+                    memePhotos = items.compactMap(ToolHandoff.image)
+                    if memeTop.isEmpty, memeBottom.isEmpty { message = "Added \(memePhotos.count) photos. Now type a top or bottom line above, then tap Make meme." } else { makeMeme() }
+                } else {
+                    runMany(count: items.count, noun: "Photo", before: { i in if case .file(let d, _) = items[i] { return d.count }; return nil }) { i in items[i] }
+                }
+                return
             }
             guard let initial, !started else { return }
             started = true
@@ -1966,7 +2041,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     }
 
     /// The same for anything a tool can start with: photos, pages, or several PDFs.
-    private func runMany(count: Int, noun name: String, load: @escaping (Int) async -> ChainPayload?) {
+    private func runMany(count: Int, noun name: String, before: @escaping (Int) -> Int? = { _ in nil }, load: @escaping (Int) async -> ChainPayload?) {
         busy = true; result = nil; message = nil; batch = []; outbox = nil; noun = name; progressValue = 0
         let combine = chain.combine == true
         let collage = chain.collage == true
@@ -1987,7 +2062,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 switch await ChainRunner.runKeepingBest(tool, input: item) {
                 case .done(let p):
                     if combine || collage || gif || versus || flipbook { kept.append(p) }
-                    out.append(BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name))
+                    var made = BatchItem.make(n: i + 1, payload: p, in: dir, named: chain.fileName, tool: chain.name)
+                    // "4.8 MB → 1.9 MB": what it was and what it is now.
+                    if let was = before(i), let u = made.url, let now = SizeTarget.fileSize(u) { made.summary = "\(SizeTarget.format(was)) → \(SizeTarget.format(now))" }
+                    out.append(made)
                 case .partial(let p, let f):
                     // Best-effort: deliver how far it got (e.g. the text it read) and say what the last
                     // step needs, instead of throwing it all away with a dead-end error.
@@ -2177,7 +2255,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @ViewBuilder private func output(_ r: ChainPayload) -> some View {
         switch r {
         case .text(let t):
-            if chain.steps.last?.block == .actionItems {
+            if [.pullReceipt, .expenseRow].contains(chain.steps.last?.block), let r = DataGrab.recalled(t) {
+                ReceiptResult(receipt: r, photo: initial.flatMap(ToolHandoff.image))
+            } else if chain.steps.last?.block == .actionItems {
                 RemindersResult(planText: t)
             } else if chain.steps.last?.block == .identify {
                 IdentifyResult(text: t)
@@ -2220,7 +2300,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // can check it (faces covered, the right pages) and never shares something they haven't seen.
             if lext == "gif" {
                 AnimatedGIFView(data: d).frame(maxWidth: .infinity).frame(maxHeight: 360).cardStyle(padding: HandySpacing.s8)
-            } else if ChainPayload.isPhoto(ext), let img = UIImage(data: d) {
+            } else if ChainPayload.isPhoto(ext), originalPhoto == nil, let img = UIImage(data: d) {
+                // (With the original known, the insight above shows it — with press-and-hold to compare.)
                 Image(uiImage: img).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
                     .cardStyle(padding: HandySpacing.s8)
             } else if ext.lowercased() == "pdf", let page = PDFDocument(data: d)?.page(at: 0) {
@@ -2248,6 +2329,19 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         }
     }
 
+    /// "Hide them too": cover the faces and personal text that are still in the picture, keeping everything else.
+    private func hideInResult(_ d: Data, _ e: String) {
+        busy = true; progress = "Hiding faces and personal text…"
+        Task {
+            let r = await ChainRunner.apply(ChainStep(block: .hideSensitive), to: .file(d, ext: e))
+            await MainActor.run {
+                busy = false; progress = ""
+                if case .success(let p) = r { result = p; finished(Outbox.make(p, named: chain.fileName, tool: chain.name)) }
+                else { message = "Couldn't cover them on this photo. Try the Hide faces tool for more control." }
+            }
+        }
+    }
+
     private func tempURL(_ d: Data, _ ext: String) -> URL? {
         let u = FileManager.default.temporaryDirectory.appendingPathComponent(ChainName.file(pattern: chain.fileName, tool: chain.name, ext: ext))
         return (try? d.write(to: u)) != nil ? u : nil
@@ -2255,6 +2349,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
 
     private func go(_ input: ChainPayload) {
         busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
+        if case .file(let d, let e) = input, ChainPayload.isPhoto(e) { originalPhoto = d } else { originalPhoto = nil }
         // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
         // say what's happening rather than showing a bare spinner on a long meeting recording.
         if case let .file(_, ext) = input, ["m4a", "mp3", "wav", "aiff", "aifc", "caf", "aac", "m4b", "flac", "ogg"].contains(ext.lowercased()) {
@@ -2333,118 +2428,6 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // stopped — don't repeat that reason here, just introduce the result it still produced.
             return "Here's what it got so far, so you still have it:"
         }
-    }
-}
-
-/// "Start with what you have", step two: the tools that fit the thing that was picked. The person's own first.
-private struct ToolPickView: View {
-    let given: Given
-    let mine: [Chain]
-    @Environment(\.dismiss) private var dismiss
-
-    /// The app's own full tools that open this kind of thing, already loaded (see ToolHandoff).
-    private var direct: [Tool] {
-        ToolHandoff.tools(for: given.payload.kind).compactMap { id in TOOLS.first { $0.id == id } }
-    }
-
-    /// Hand the item to a full tool: close this sheet, then open the tool with the item waiting.
-    private func openIn(_ id: String) {
-        ToolHandoff.shared.put(given.payload, for: id)
-        dismiss()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { NotificationCenter.default.post(name: .openTool, object: id) }
-    }
-
-    private var tools: [Chain] {
-        let kind = given.payload.kind == .photoFile ? ChainKind.image : given.payload.kind
-        let text: String? = { if case .text(let t) = given.payload { return t } else { return nil } }()
-        let offers = ChainStore.offers(for: kind, mine: mine, last: nil, text: text)
-        // A pasted URL is its own object, not plain text: offer link actions — read/summarize the page,
-        // strip tracking, QR, check it's safe — and drop the text-only tools (tidy, task list, pull
-        // entities, WhatsApp-a-number) that make no sense on a bare link. First block picks relevance:
-        // anything starting with "read the page" also covers summarize/translate/read-aloud of the page.
-        if given.label == "A link" {
-            let linkStart: Set<Block> = [.pageText, .cleanLinks, .makeQr, .scamCheck]
-            let picked = offers.filter { linkStart.contains($0.steps.first?.block ?? .readText) }
-            return picked.isEmpty ? offers : picked
-        }
-        // A recording: the voices live together behind one "Change the voice" row (see voiceRow), not one row each.
-        if kind == .audio { return offers.filter { $0.steps.first?.block != .voiceChange } }
-        return offers
-    }
-
-    /// Every fun voice in one place: pick one, hear your recording in it, then use it.
-    private var voiceRow: some View {
-        NavigationLink { VoicePickerView(payload: given.payload) } label: {
-            HStack(spacing: HandySpacing.s12) {
-                Text("🐿️").font(.system(size: 24)).frame(width: 40, height: 40).background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(L("Change the voice")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                    Text(ChainText.voices.compactMap { ChainText.voiceLooks[$0.id]?.emoji }.joined(separator: " ")).font(.system(size: 15)).lineLimit(1)
-                    Text("\(ChainText.voices.count) \(L("voices — hear each one before you choose"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                }
-                Spacer(minLength: 0)
-                Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
-            }.cardStyle(padding: HandySpacing.s12)
-        }.buttonStyle(.plain).accessibilityIdentifier("pick-voices")
-    }
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                Text(given.label).font(HandyFont.title).lineLimit(2).truncationMode(.middle)
-                if case .text(let t) = given.payload, !t.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
-                }
-                if !direct.isEmpty {
-                    Text(L("Open in a tool")).font(HandyFont.bodyStrong)
-                    ForEach(direct, id: \.id) { t in
-                        Button { openIn(t.id) } label: {
-                            HStack(spacing: HandySpacing.s12) {
-                                Image(systemName: t.icon).font(.system(size: 20)).foregroundStyle(HandyColor.accent).frame(width: 32, height: 32)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(L(t.name)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                    Text(L(t.blurb)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right").font(.caption).foregroundStyle(HandyColor.textSecondary)
-                            }
-                            .padding(HandySpacing.s12)
-                            .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityIdentifier("open-in-\(t.id)")
-                    }
-                    if !tools.isEmpty { Text(L("Or run a quick shortcut")).font(HandyFont.bodyStrong).padding(.top, HandySpacing.s8) }
-                }
-                if tools.isEmpty {
-                    if direct.isEmpty {
-                        Text("No tool takes this yet. Close this, tap Blank, and build one that starts with \(given.payload.kind.label).").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                    }
-                } else {
-                    Text(L("Pick what to do with it. It runs straight away.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                }
-                if given.payload.kind == .audio { voiceRow }
-                ForEach(tools) { c in
-                    NavigationLink { ChainRunView(chain: c, initial: given.payload) } label: {
-                        HStack(spacing: HandySpacing.s12) {
-                            if let f = c.steps.first { BlockBadge(block: f.block) }
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(c.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).lineLimit(2).multilineTextAlignment(.leading)
-                                // One step: say what you'll get instead of repeating the name ("Passport photo / Passport photo").
-                                Text(c.steps.count == 1 ? L(c.steps[0].block.does) : c.steps.map(\.block.title).joined(separator: "  ›  "))
-                                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2).multilineTextAlignment(.leading)
-                            }
-                            Spacer(minLength: 0)
-                            Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
-                        }.cardStyle(padding: HandySpacing.s12)
-                    }.buttonStyle(.plain).accessibilityIdentifier("pick-tool-\(c.id)")
-                }
-            }.padding(HandySpacing.gutter)
-        }
-        .background(Ground())
-        .navigationTitle(L("What to do with it")).navigationBarTitleDisplayMode(.inline)
-        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Close")) { dismiss() } } }
     }
 }
 

@@ -39,7 +39,7 @@ struct BusinessCardsView: View {
         .onChange(of: picks) { _, items in load(items) }
         .fullScreenCover(isPresented: $scanning) { DocCameraSheet { imgs in scanning = false; read(imgs) }.ignoresSafeArea() }
         .sheet(item: Binding(get: { adding.map { ContactBox(c: $0) } }, set: { adding = $0?.c })) { ContactAddSheet(contact: $0.c) }
-        .handoff("cards") { p in if let img = ToolHandoff.image(p) { read([img]) } }
+        .handoffPhotos("cards") { imgs in read(imgs) }
     }
 
     private struct ContactBox: Identifiable { let c: CNMutableContact; let id = UUID() }
@@ -106,7 +106,9 @@ struct BusinessCardsView: View {
         Task {
             var texts: [(UIImage, String)] = []
             for (i, img) in imgs.enumerated() {
-                let t = await AIEngine.recognizeText(img)
+                // Read row by row, so a two-column card's sides stay apart ("Name    Company") and stacked lines line up.
+                let box = UncheckedImage(img)
+                let t = await Task.detached(priority: .userInitiated) { ChainRunner.rows(DocEngine.recognize(box.image.normalizedUp())) }.value
                 texts.append((img, t))
                 await MainActor.run { progress = Double(i + 1) / Double(imgs.count) }
             }

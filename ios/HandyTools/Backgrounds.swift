@@ -100,8 +100,30 @@ struct ToolIconBadge: View {
         if let n = TenzyArt.iconName(id: id, theme: theme.current) {
             Image(n).resizable().scaledToFit().frame(width: size, height: size).accessibilityHidden(true)
         } else {
-            Image(systemName: symbol).font(.system(size: size * 0.6)).foregroundStyle(HandyColor.accent)
-                .frame(width: size, height: size).accessibilityHidden(true)
+            // No drawn art for this tool yet: its own symbol on a glowing tile in the tool family's colour,
+            // so every tool reads at a glance (never a generic placeholder).
+            let tint = ToolIconBadge.tint(for: id)
+            Image(systemName: symbol).font(.system(size: size * 0.46, weight: .semibold)).foregroundStyle(.white)
+                .frame(width: size, height: size)
+                .background(LinearGradient(colors: [tint, tint.opacity(0.65)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            in: RoundedRectangle(cornerRadius: size * 0.28, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: size * 0.28, style: .continuous).stroke(.white.opacity(0.25), lineWidth: 1))
+                .shadow(color: tint.opacity(0.45), radius: size * 0.18)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
+extension ToolIconBadge {
+    /// One colour per family of tools, so related tools look related.
+    static func tint(for id: String) -> Color {
+        switch id {
+        case "medreminder", "brief", "daydiary", "untangle", "thinking", "pricewatch": return Color(hex: 0x22C55E)
+        case "pdfannotate", "pdfconvert", "pdfpages", "pdfsign", "pdfprotect", "pdfsearchable", "pdfform", "zipmaker": return Color(hex: 0xEF4444)
+        case "animate", "collage", "faceemoji", "comicstrip", "sticker": return Color(hex: 0xF59E0B)
+        case "audioconvert", "audiocompress", "ringtone", "audioedit", "audiomix", "audiotags", "audioclean", "meetingnotes", "soundboard": return Color(hex: 0x8B5CF6)
+        case "menu", "cards": return Color(hex: 0x06B6D4)
+        default: return Color(hex: 0x3B82F6)
         }
     }
 }

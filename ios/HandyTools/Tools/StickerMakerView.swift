@@ -61,7 +61,7 @@ struct StickerMakerView: View {
         .onChange(of: picks) { _, items in load(items) }
         .onChange(of: style) { _, _ in rerender(); resetActions() }
         .onChange(of: current) { _, _ in rerender(thumbsToo: true); resetActions() }
-        .handoff("sticker") { p in if let img = ToolHandoff.image(p) { cut([img]) } }
+        .handoffPhotos("sticker") { imgs in cut(Array(imgs.prefix(12))) }
     }
 
     // MARK: - Pick

@@ -43,7 +43,7 @@ struct AnimateView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: picks) { _, items in load(items) }
-        .handoff("animate") { p in if let img = ToolHandoff.image(p) { adopt([img.resized(maxDimension: 1440).normalizedUp()]) } }
+        .handoffPhotos("animate") { imgs in adopt(imgs.prefix(Self.maxPhotos).map { $0.resized(maxDimension: 1440).normalizedUp() }) }
         .onChange(of: settings) { _, _ in schedulePreview() }
         .onChange(of: look) { _, _ in restyle() }
         .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { n in

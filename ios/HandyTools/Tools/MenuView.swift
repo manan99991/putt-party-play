@@ -20,6 +20,7 @@ struct MenuView: View {
     @State private var translating = false
     @State private var picks: [String] = []
     @State private var picking = false
+    @State private var sectionNames: [String: String] = [:]
 
     private var diets: Set<MenuReader.Diet> { Set(dietsRaw.split(separator: ",").compactMap { MenuReader.Diet(rawValue: String($0)) }) }
     private var homeCurrency: String { Locale.current.currency?.identifier ?? "USD" }
@@ -36,15 +37,25 @@ struct MenuView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onChange(of: pick) { _, item in load(item) }
-        .handoff("menu") { p in if let img = ToolHandoff.image(p) { read(img) } }
+        .handoffPhotos("menu") { imgs in if let img = imgs.first { read(img) } }
         .translationTask(translateConfig) { session in
+            let secs = items.map(\.section).reduce(into: [String]()) { if !$1.isEmpty, !$0.contains($1) { $0.append($1) } }
             let reqs = items.map { TranslationSession.Request(sourceText: $0.detail.isEmpty ? $0.name : "\($0.name) — \($0.detail)",
                                                                clientIdentifier: $0.id.uuidString) }
+                + secs.enumerated().map { TranslationSession.Request(sourceText: $1, clientIdentifier: "sec-\($0)") }
             do {
                 let res = try await session.translations(from: reqs)
                 var map: [UUID: String] = [:]
-                for r in res { if let id = r.clientIdentifier.flatMap(UUID.init(uuidString:)) { map[id] = r.targetText } }
-                await MainActor.run { translated = map; translating = false }
+                var names: [String: String] = [:]
+                for r in res {
+                    if let id = r.clientIdentifier.flatMap(UUID.init(uuidString:)) { map[id] = r.targetText }
+                    else if let c = r.clientIdentifier, c.hasPrefix("sec-"), let i = Int(c.dropFirst(4)), i < secs.count { names[secs[i]] = r.targetText }
+                }
+                await MainActor.run {
+                    translated = map; sectionNames = names; translating = false
+                    // The translation names what's in a dish too ("…with shredded pork") — add what it says.
+                    for i in items.indices where !items[i].note { if let t = map[items[i].id] { items[i].flags.formUnion(MenuReader.flags(t)) } }
+                }
             } catch {
                 await MainActor.run { translating = false; errorText = "Couldn't translate — the first time, iOS downloads the language. Try again in a moment." }
             }
@@ -83,8 +94,9 @@ struct MenuView: View {
     }
 
     private var shown: [MenuReader.Item] {
-        onlyFits && !diets.isEmpty ? items.filter { MenuReader.conflicts($0, diets: diets).isEmpty } : items
+        onlyFits && !diets.isEmpty ? items.filter { $0.note || MenuReader.verdict($0, diets: diets) == .fits } : items
     }
+    private var dishCount: Int { items.filter { !$0.note }.count }
 
     private var results: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
@@ -99,11 +111,7 @@ struct MenuView: View {
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
             HStack(spacing: HandySpacing.s8) {
-                Button {
-                    translating = true; errorText = nil
-                    let target = Locale.Language(identifier: Locale.preferredLanguages.first ?? "en")
-                    if translateConfig == nil { translateConfig = TranslationSession.Configuration(source: nil, target: target) } else { translateConfig?.invalidate() }
-                } label: { Label(translated.isEmpty ? L("Translate dishes") : L("Translate again"), systemImage: "character.bubble") }
+                Button { startTranslation() } label: { Label(translated.isEmpty ? L("Translate dishes") : L("Translate again"), systemImage: "character.bubble") }
                     .compactButton().disabled(translating)
                 Button { suggest() } label: { Label(L("What should I order?"), systemImage: "sparkles") }
                     .compactButton().disabled(picking)
@@ -118,10 +126,20 @@ struct MenuView: View {
             if !diets.isEmpty { Toggle(L("Only show what fits my diet"), isOn: $onlyFits).font(HandyFont.caption).tint(HandyColor.accent) }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
 
+            Text("\(dishCount) \(L(dishCount == 1 ? "dish" : "dishes"))\(menuCurrency.map { " · \(L("prices in")) \($0)" } ?? "")")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             let sections = shown.reduce(into: [String]()) { if !$0.contains($1.section) { $0.append($1.section) } }
             ForEach(sections, id: \.self) { sec in
-                if !sec.isEmpty { Text(sec).font(HandyFont.bodyStrong).padding(.top, 4) }
-                ForEach(shown.filter { $0.section == sec }) { item in row(item) }
+                if !sec.isEmpty {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(sectionTitle(sec)).font(HandyFont.bodyStrong)
+                        if sectionTitle(sec) != sec { Text(sec).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                    }.padding(.top, 4)
+                }
+                ForEach(shown.filter { $0.section == sec && $0.note }) { n in
+                    Label(translated[n.id] ?? n.name, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                ForEach(shown.filter { $0.section == sec && !$0.note }) { item in row(item) }
             }
             Text(L("Read from the menu's own words — dishes can hide ingredients. With an allergy, always ask the staff."))
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
@@ -133,11 +151,20 @@ struct MenuView: View {
         }
     }
 
+    /// A section heading in the reader's language when the menu's was translated.
+    private func sectionTitle(_ sec: String) -> String { sectionNames[sec] ?? sec }
+
     private func row(_ item: MenuReader.Item) -> some View {
         let clash = MenuReader.conflicts(item, diets: diets)
+        let verdict = MenuReader.verdict(item, diets: diets)
+        let foreign = translated[item.id] != nil && MenuReader.needsTranslation([item.name])
         return VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .firstTextBaseline) {
-                Text(item.name).font(HandyFont.bodyStrong)
+                VStack(alignment: .leading, spacing: 2) {
+                    // A menu in a script the person can't read leads with the translation; the original stays below to point at.
+                    Text(foreign ? (translated[item.id] ?? item.name) : item.name).font(HandyFont.bodyStrong)
+                    if foreign { Text(item.name).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
                     if !item.priceText.isEmpty { Text(item.priceText).font(HandyFont.body).monospacedDigit() }
@@ -146,15 +173,18 @@ struct MenuView: View {
                     }
                 }
             }
-            if let t = translated[item.id] { Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
+            if !foreign, let t = translated[item.id] { Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
             if !item.detail.isEmpty { Text(item.detail).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             HStack(spacing: 6) {
                 if !diets.isEmpty {
-                    if clash.isEmpty {
+                    switch verdict {
+                    case .fits:
                         Label(L("Fits you"), systemImage: "checkmark.circle.fill").font(HandyFont.micro).foregroundStyle(HandyColor.success)
-                    } else {
-                        Label("\(L("Has")) \(clash.map { L($0.title).lowercased() }.joined(separator: ", "))", systemImage: "exclamationmark.circle.fill")
+                    case .clash(let c):
+                        Label("\(L("Has")) \(c.map { L($0.title).lowercased() }.joined(separator: ", "))", systemImage: "xmark.circle.fill")
                             .font(HandyFont.micro).foregroundStyle(HandyColor.danger)
+                    case .ask:
+                        Label(L("Ask first"), systemImage: "questionmark.circle.fill").font(HandyFont.micro).foregroundStyle(HandyColor.amber)
                     }
                 }
                 ForEach(MenuReader.Flag.allCases.filter { item.flags.contains($0) && !clash.contains($0) }, id: \.self) { f in
@@ -162,6 +192,11 @@ struct MenuView: View {
                         .padding(.horizontal, 6).padding(.vertical, 2)
                         .background(HandyColor.surface, in: Capsule())
                 }
+            }
+            if !diets.isEmpty, case .ask(let why) = verdict {
+                Text(L(why)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            } else if let why = item.caution {
+                Text(L(why)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
         }
         .cardStyle(padding: HandySpacing.s12)
@@ -180,29 +215,43 @@ struct MenuView: View {
 
     /// Read a menu photo (shared by picking here and a hand-off).
     private func read(_ img: UIImage) {
-        reading = true; errorText = nil; items = []; translated = [:]; picks = []
+        reading = true; errorText = nil; items = []; translated = [:]; sectionNames = [:]; picks = []
         Task {
             let lines: [String] = await Task.detached(priority: .userInitiated) {
-                DocEngine.recognize(img.resized(maxDimension: 2400).normalizedUp()).map(\.text)
+                MenuReader.lines(from: MenuReader.read(img))
             }.value
             let parsed = MenuReader.parse(lines)
             await MainActor.run {
                 reading = false
-                items = parsed.filter { $0.price != nil || !$0.detail.isEmpty || $0.name.count > 3 }
+                // A dish has a price, a description, or a real name — never a stray scrap of OCR.
+                let kept = parsed.filter { $0.note || $0.price != nil || !$0.detail.isEmpty || $0.name.filter(\.isLetter).count > 3 }
+                // A read with almost no priced dishes is a bad read, not a menu: say so plainly instead of showing junk.
+                guard kept.filter({ !$0.note && $0.price != nil }).count >= 2 else {
+                    errorText = "Tenzy couldn't read this menu clearly. Take the photo straight on, close enough to fill the screen, in good light — one page or column at a time works best."
+                    return
+                }
+                items = kept
                 menuCurrency = MenuReader.currency(in: lines)
                 if let c = menuCurrency { rateText = UserDefaults.standard.string(forKey: "menu.rate.\(c).\(homeCurrency)") ?? "" }
-                if items.isEmpty { errorText = "Couldn't find dishes in that photo — try closer, flatter, with good light." }
+                // A menu in a script the person can't read is translated straight away.
+                if MenuReader.needsTranslation(lines) { startTranslation() }
             }
         }
     }
 
+    private func startTranslation() {
+        translating = true; errorText = nil
+        let target = Locale.Language(identifier: Locale.preferredLanguages.first ?? "en")
+        if translateConfig == nil { translateConfig = TranslationSession.Configuration(source: nil, target: target) } else { translateConfig?.invalidate() }
+    }
+
     private func suggest() {
         if let c = menuCurrency { UserDefaults.standard.set(rateText, forKey: "menu.rate.\(c).\(homeCurrency)") }
-        let fitting = items.filter { MenuReader.conflicts($0, diets: diets).isEmpty && $0.price != nil }
+        let fitting = items.filter { !$0.note && $0.price != nil && (diets.isEmpty || MenuReader.verdict($0, diets: diets) == .fits) }
         guard !fitting.isEmpty else { picks = [L("Nothing on this menu clearly fits — ask the staff what they can adapt.")]; return }
         if AIEngine.isAvailable {
             picking = true
-            let list = fitting.prefix(40).map { "\($0.name)\($0.detail.isEmpty ? "" : " (\($0.detail))") \($0.priceText)" }.joined(separator: "\n")
+            let list = fitting.prefix(40).map { "\(translated[$0.id].map { "\($0) / " } ?? "")\($0.name)\($0.detail.isEmpty ? "" : " (\($0.detail))") \($0.priceText)" }.joined(separator: "\n")
             let dietText = diets.isEmpty ? "no restrictions" : diets.map(\.title).joined(separator: ", ")
             Task {
                 let out = try? await AIEngine.run(instructions: "You help a traveller choose from a restaurant menu. Reply with exactly 3 lines, each 'Dish — one short reason'. Only use dishes from the list. No preamble.",
@@ -221,7 +270,7 @@ struct MenuView: View {
     /// Without Apple Intelligence: one dish from each of the first sections that fit, mid-priced.
     private func fallbackPicks(_ fitting: [MenuReader.Item]) -> [String] {
         var out: [String] = [], seen = Set<String>()
-        for it in fitting where !seen.contains(it.section) { seen.insert(it.section); out.append("\(it.name) — \(it.priceText)") }
+        for it in fitting where !seen.contains(it.section) { seen.insert(it.section); out.append("\(translated[it.id] ?? it.name) — \(it.priceText)") }
         return Array(out.prefix(3))
     }
 }
