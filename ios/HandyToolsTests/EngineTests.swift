@@ -2608,6 +2608,29 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testParkingMeterAndSpeedWarning() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        let t = ParkingMeter.fireTimes(ends: now.addingTimeInterval(3600), lead: 10, now: now)
+        XCTAssertEqual(t.soon, now.addingTimeInterval(3000)); XCTAssertEqual(t.end, now.addingTimeInterval(3600))
+        let late = ParkingMeter.fireTimes(ends: now.addingTimeInterval(300), lead: 10, now: now)
+        XCTAssertNil(late.soon, "a heads-up that would be in the past is skipped"); XCTAssertNotNil(late.end)
+        XCTAssertNil(ParkingMeter.fireTimes(ends: now.addingTimeInterval(-1), lead: 10, now: now).end, "never a reminder for a meter that's already run out")
+        let m = ParkingMeter.messages(lead: 10, walk: "350 ft")
+        XCTAssertEqual(m.soon.0, "Parking ends in 10 minutes"); XCTAssertTrue(m.soon.1.contains("350 ft away"))
+        XCTAssertFalse(ParkingMeter.messages(lead: 5, walk: nil).end.1.contains("away"), "no made-up distance")
+
+        var st = SpeedWarning.State()
+        XCTAssertFalse(SpeedWarning.check(speed: 60, limit: 65, state: &st, now: now))
+        XCTAssertTrue(SpeedWarning.check(speed: 67, limit: 65, state: &st, now: now), "chimes going over")
+        XCTAssertFalse(SpeedWarning.check(speed: 70, limit: 65, state: &st, now: now.addingTimeInterval(5)), "once, not every second")
+        XCTAssertFalse(SpeedWarning.check(speed: 64, limit: 65, state: &st, now: now.addingTimeInterval(30)), "hovering at the limit doesn't re-arm")
+        XCTAssertFalse(SpeedWarning.check(speed: 66, limit: 65, state: &st, now: now.addingTimeInterval(40)))
+        XCTAssertFalse(SpeedWarning.check(speed: 55, limit: 65, state: &st, now: now.addingTimeInterval(50)))
+        XCTAssertTrue(SpeedWarning.check(speed: 68, limit: 65, state: &st, now: now.addingTimeInterval(80)), "re-arms after slowing down")
+        var off = SpeedWarning.State()
+        XCTAssertFalse(SpeedWarning.check(speed: 120, limit: 0, state: &off), "off means off")
+    }
+
     func testColorTypeCheckPairsFoolOnlyTheirOwnEye() {
         for d in ColorVision.Deficiency.allCases {
             for base in ColorVisionCheck.bases {

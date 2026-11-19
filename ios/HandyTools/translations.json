@@ -129,6 +129,16 @@
   "pt": "1 dia para devolver",
   "zh": "还剩1天可退货"
  },
+ "1 hour": {
+  "de": "1 Stunde",
+  "es": "1 hora",
+  "fr": "1 heure",
+  "hi": "1 घंटा",
+  "it": "1 ora",
+  "ja": "1時間",
+  "pt": "1 hora",
+  "zh": "1 小时"
+ },
  "1 hour before": {
   "de": "1 Stunde vorher",
   "es": "1 hora antes",
@@ -168,6 +178,16 @@
   "ja": "10分前",
   "pt": "10 min antes",
   "zh": "提前 10 分钟"
+ },
+ "2 hours": {
+  "de": "2 Stunden",
+  "es": "2 horas",
+  "fr": "2 heures",
+  "hi": "2 घंटे",
+  "it": "2 ore",
+  "ja": "2時間",
+  "pt": "2 horas",
+  "zh": "2 小时"
  },
  "2. Put them into": {
   "de": "2. Sie einfügen in",
@@ -219,6 +239,16 @@
   "pt": "3. Como",
   "zh": "3. 方式"
  },
+ "30 min": {
+  "de": "30 Min.",
+  "es": "30 min",
+  "fr": "30 min",
+  "hi": "30 मिनट",
+  "it": "30 min",
+  "ja": "30分",
+  "pt": "30 min",
+  "zh": "30 分钟"
+ },
  "30 min before": {
   "de": "30 Min. vorher",
   "es": "30 min antes",
@@ -258,6 +288,16 @@
   "ja": "3Dキューブ",
   "pt": "Cubo 3D",
   "zh": "3D立方体"
+ },
+ "4 hours": {
+  "de": "4 Stunden",
+  "es": "4 horas",
+  "fr": "4 heures",
+  "hi": "4 घंटे",
+  "it": "4 ore",
+  "ja": "4時間",
+  "pt": "4 horas",
+  "zh": "4 小时"
  },
  "A PDF": {
   "de": "Ein PDF",
@@ -2379,6 +2419,16 @@
   "pt": "Cancelar",
   "zh": "取消"
  },
+ "Cancel the reminder": {
+  "de": "Erinnerung abbrechen",
+  "es": "Cancelar el aviso",
+  "fr": "Annuler le rappel",
+  "hi": "रिमाइंडर रद्द करें",
+  "it": "Annulla il promemoria",
+  "ja": "リマインダーを取り消す",
+  "pt": "Cancelar o lembrete",
+  "zh": "取消提醒"
+ },
  "Caption under the code (e.g. Scan for our menu)": {
   "de": "Text unter dem Code (z. B. Scannen für die Speisekarte)",
   "es": "Texto bajo el código (p. ej. Escanea para ver el menú)",
@@ -2618,6 +2668,16 @@
   "ja": "鶏肉",
   "pt": "Frango",
   "zh": "鸡肉"
+ },
+ "Chimes once when you go over, and the number turns red. Works while this screen or the HUD is open.": {
+  "de": "Ertönt einmal beim Überschreiten, und die Zahl wird rot. Funktioniert, solange diese Seite oder das HUD offen ist.",
+  "es": "Suena una vez al pasarte y el número se pone rojo. Funciona con esta pantalla o el HUD abiertos.",
+  "fr": "Sonne une fois quand vous dépassez et le chiffre devient rouge. Fonctionne tant que cet écran ou l'affichage tête haute est ouvert.",
+  "hi": "सीमा पार करने पर एक बार बजता है और अंक लाल हो जाता है। यह स्क्रीन या HUD खुला रहने पर काम करता है।",
+  "it": "Suona una volta quando superi il limite e il numero diventa rosso. Funziona con questa schermata o l'HUD aperti.",
+  "ja": "超えると1回鳴り、数字が赤くなります。この画面かHUDを開いている間に動作します。",
+  "pt": "Toca uma vez quando você passa e o número fica vermelho. Funciona com esta tela ou o HUD abertos.",
+  "zh": "超速时响一次，数字变红。在此页面或 HUD 打开时有效。"
  },
  "Chipmunk": {
   "de": "Eichhörnchen",
@@ -4938,6 +4998,16 @@
   "ja": "水を1杯飲む",
   "pt": "Beba um copo de água",
   "zh": "喝一杯水"
+ },
+ "Driving? Watch speed and your trip, set a speed warning, or flip on the windshield HUD.": {
+  "de": "Unterwegs? Tempo und Fahrt sehen, eine Tempowarnung setzen oder das Windschutzscheiben-HUD einschalten.",
+  "es": "¿Conduces? Mira la velocidad y el viaje, pon un aviso de velocidad o activa el HUD del parabrisas.",
+  "fr": "Au volant ? Suivez vitesse et trajet, réglez une alerte de vitesse ou activez l'affichage tête haute.",
+  "hi": "ड्राइव कर रहे हैं? गति और यात्रा देखें, स्पीड चेतावनी सेट करें या विंडशील्ड HUD चालू करें।",
+  "it": "Alla guida? Guarda velocità e viaggio, imposta un avviso di velocità o attiva l'HUD sul parabrezza.",
+  "ja": "運転中？速度と走行を確認、速度警告を設定、またはフロントガラスHUDをオン。",
+  "pt": "Dirigindo? Veja velocidade e viagem, defina um aviso de velocidade ou ligue o HUD no para-brisa.",
+  "zh": "开车？查看速度和行程，设置超速提醒，或打开挡风玻璃 HUD。"
  },
  "Drop shadow": {
   "de": "Schlagschatten",
@@ -7559,6 +7629,16 @@
   "pt": "Mostro a sua lista quando chegar",
   "zh": "到达时会显示你的清单"
  },
+ "I'm back — clear it": {
+  "de": "Bin zurück – löschen",
+  "es": "Ya volví: borrar",
+  "fr": "Je suis revenu — effacer",
+  "hi": "वापस आ गया — हटाएँ",
+  "it": "Sono tornato: cancella",
+  "ja": "戻った — 消去",
+  "pt": "Voltei — limpar",
+  "zh": "我回来了——清除"
+ },
  "INVOICE": {
   "de": "RECHNUNG",
   "es": "FACTURA",
@@ -10049,6 +10129,16 @@
   "pt": "Meus alertas",
   "zh": "我的提醒"
  },
+ "My car is here": {
+  "de": "Mein Auto steht hier",
+  "es": "Mi coche está aquí",
+  "fr": "Ma voiture est ici",
+  "hi": "मेरी कार यहाँ है",
+  "it": "La mia auto è qui",
+  "ja": "車はここ",
+  "pt": "Meu carro está aqui",
+  "zh": "我的车在这里"
+ },
  "My cards have a back side — pair them front, back": {
   "de": "Meine Karten haben eine Rückseite – Vorder- und Rückseite koppeln",
   "es": "Mis tarjetas tienen reverso: emparejar anverso y reverso",
@@ -11639,6 +11729,16 @@
   "pt": "Ou cria um GIF a partir de fotos:",
   "zh": "或用照片制作 GIF："
  },
+ "Or runs out at": {
+  "de": "Oder läuft ab um",
+  "es": "O vence a las",
+  "fr": "Ou expire à",
+  "hi": "या खत्म होगा",
+  "it": "Oppure scade alle",
+  "ja": "または終了時刻",
+  "pt": "Ou acaba às",
+  "zh": "或到期时间"
+ },
  "Or the exact limit:": {
   "de": "Oder das genaue Limit:",
   "es": "O el límite exacto:",
@@ -11889,6 +11989,26 @@
   "pt": "Páginas, ex. 1-3, 5 (vazio mantém todas)",
   "zh": "页面，例如 1-3, 5（留空保留全部）"
  },
+ "Paid parking? Set when the meter runs out and get a heads-up with the walk back.": {
+  "de": "Parkuhr? Stell ein, wann sie abläuft, und bekomm rechtzeitig einen Hinweis mit dem Rückweg.",
+  "es": "¿Parquímetro? Indica cuándo vence y recibe un aviso con el camino de vuelta.",
+  "fr": "Parking payant ? Indiquez la fin du ticket et recevez un rappel avec le chemin du retour.",
+  "hi": "पेड पार्किंग? मीटर कब खत्म होगा सेट करें और वापसी के रास्ते के साथ पहले से सूचना पाएँ।",
+  "it": "Parcheggio a pagamento? Imposta quando scade e ricevi un avviso con il percorso di ritorno.",
+  "ja": "有料駐車？終了時刻を設定すると、戻り道つきで事前に知らせます。",
+  "pt": "Estacionamento pago? Defina quando acaba e receba um aviso com o caminho de volta.",
+  "zh": "付费停车？设置到期时间，提前提醒并给出步行返回路线。"
+ },
+ "Paid parking? Tell Tenzy when it runs out and get a heads-up in time to walk back.": {
+  "de": "Parkuhr? Sag Tenzy, wann sie abläuft, und du bekommst rechtzeitig Bescheid zum Zurückgehen.",
+  "es": "¿Parquímetro? Dile a Tenzy cuándo vence y te avisará a tiempo para volver.",
+  "fr": "Parking payant ? Dites à Tenzy quand il expire et soyez prévenu à temps pour revenir.",
+  "hi": "पेड पार्किंग? Tenzy को बताएँ कब खत्म होगी, और वापस जाने के लिए समय पर सूचना पाएँ।",
+  "it": "Parcheggio a pagamento? Di' a Tenzy quando scade e ricevi un avviso in tempo per tornare.",
+  "ja": "有料駐車？終了時刻をTenzyに伝えれば、戻るのに間に合うよう知らせます。",
+  "pt": "Estacionamento pago? Diga à Tenzy quando acaba e receba um aviso a tempo de voltar.",
+  "zh": "付费停车？告诉 Tenzy 到期时间，及时提醒你走回去。"
+ },
  "Panel": {
   "de": "Bild",
   "es": "Viñeta",
@@ -11938,6 +12058,26 @@
   "ja": "駐車したら下をタップしてこの場所を保存。駐車場に階や列があればメモを追加してください。",
   "pt": "Estaciona e depois toca abaixo para guardar este sítio. Adiciona uma nota se o parque tiver pisos ou filas.",
   "zh": "停好车，然后点按下方保存此位置。如果停车场有楼层或排号，可添加备注。"
+ },
+ "Parking ends in 10 minutes": {
+  "de": "Parken endet in 10 Minuten",
+  "es": "El parking termina en 10 minutos",
+  "fr": "Le stationnement se termine dans 10 minutes",
+  "hi": "पार्किंग 10 मिनट में खत्म",
+  "it": "Il parcheggio scade tra 10 minuti",
+  "ja": "駐車時間終了まで10分",
+  "pt": "O estacionamento acaba em 10 minutos",
+  "zh": "停车 10 分钟后到期"
+ },
+ "Parking meter": {
+  "de": "Parkuhr",
+  "es": "Parquímetro",
+  "fr": "Parcmètre",
+  "hi": "पार्किंग मीटर",
+  "it": "Parchimetro",
+  "ja": "パーキングメーター",
+  "pt": "Parquímetro",
+  "zh": "停车计时"
  },
  "Passport photos come from photos — choose a photo above.": {
   "de": "Passfotos entstehen aus Fotos — wähle oben ein Foto.",
@@ -14439,6 +14579,16 @@
   "pt": "Corre inteiramente no teu telemóvel; a mensagem nunca é enviada para lado nenhum. Um resultado limpo não é garantia — quando há dinheiro ou códigos envolvidos, confirma por um canal oficial.",
   "zh": "完全在你的手机上运行；消息绝不会发送到任何地方。结果干净并不等于担保——涉及钱款或验证码时，请通过官方渠道核实。"
  },
+ "Runs out at": {
+  "de": "Läuft ab um",
+  "es": "Vence a las",
+  "fr": "Expire à",
+  "hi": "खत्म होगा",
+  "it": "Scade alle",
+  "ja": "終了",
+  "pt": "Acaba às",
+  "zh": "到期时间"
+ },
  "SOS is flashing — that's what your button will do. It stops in 6 seconds.": {
   "de": "SOS blinkt – das macht deine Taste. Es stoppt in 6 Sekunden.",
   "es": "SOS parpadea: eso hará tu botón. Se detiene en 6 segundos.",
@@ -15569,6 +15719,16 @@
   "pt": "Enviar a ligação",
   "zh": "发送链接"
  },
+ "Send the spot": {
+  "de": "Ort senden",
+  "es": "Enviar el lugar",
+  "fr": "Envoyer l'endroit",
+  "hi": "जगह भेजें",
+  "it": "Invia il punto",
+  "ja": "場所を送る",
+  "pt": "Enviar o local",
+  "zh": "发送位置"
+ },
  "Send to Android or Windows": {
   "de": "An Android oder Windows senden",
   "es": "Enviar a Android o Windows",
@@ -15578,6 +15738,16 @@
   "ja": "Android や Windows に送る",
   "pt": "Enviar para Android ou Windows",
   "zh": "发给安卓或 Windows"
+ },
+ "Set": {
+  "de": "Setzen",
+  "es": "Fijar",
+  "fr": "Régler",
+  "hi": "सेट करें",
+  "it": "Imposta",
+  "ja": "設定",
+  "pt": "Definir",
+  "zh": "设置"
  },
  "Set a new PIN": {
   "de": "Neue PIN festlegen",
@@ -16869,6 +17039,16 @@
   "pt": "A velocidade vem do GPS, por isso tem um segundo de atraso e lê baixo sob árvores ou entre edifícios altos. O registo da viagem pausa quando sais da app.",
   "zh": "速度来自 GPS，因此会有一秒延迟，并在树下或高楼之间偏低。离开应用时行程追踪会暂停。"
  },
+ "Speed warning": {
+  "de": "Tempowarnung",
+  "es": "Aviso de velocidad",
+  "fr": "Alerte de vitesse",
+  "hi": "स्पीड चेतावनी",
+  "it": "Avviso velocità",
+  "ja": "速度警告",
+  "pt": "Aviso de velocidade",
+  "zh": "超速提醒"
+ },
  "Speed, heading, altitude, HUD": {
   "de": "Tempo, Kurs, Höhe, HUD",
   "es": "Velocidad, rumbo, altitud, HUD",
@@ -18139,6 +18319,16 @@
   "pt": "Teste",
   "zh": "测试一下"
  },
+ "Test run — hear the chime": {
+  "de": "Testlauf – Ton anhören",
+  "es": "Prueba: oír el aviso",
+  "fr": "Essai — écouter le son",
+  "hi": "टेस्ट रन — आवाज़ सुनें",
+  "it": "Prova: ascolta il suono",
+  "ja": "テスト実行 — 音を聞く",
+  "pt": "Teste — ouvir o aviso",
+  "zh": "试运行——听提示音"
+ },
  "Test run — send me a dose alert and its follow-up now": {
   "de": "Probelauf – Dosis-Hinweis und Nachfrage jetzt senden",
   "es": "Prueba: enviarme ahora un aviso de dosis y su seguimiento",
@@ -18158,6 +18348,16 @@
   "ja": "テスト実行 — 今すぐ通知を送る",
   "pt": "Teste — envie-me estes alertas agora",
   "zh": "测试——现在发送这些提醒"
+ },
+ "Test sent — lock your phone; it arrives in 5 seconds.": {
+  "de": "Test gesendet – sperre das Telefon; er kommt in 5 Sekunden.",
+  "es": "Prueba enviada: bloquea el teléfono; llega en 5 segundos.",
+  "fr": "Test envoyé — verrouillez le téléphone ; il arrive dans 5 secondes.",
+  "hi": "टेस्ट भेजा गया — फ़ोन लॉक करें; 5 सेकंड में आएगा।",
+  "it": "Prova inviata: blocca il telefono; arriva tra 5 secondi.",
+  "ja": "テスト送信 — iPhoneをロックしてください。5秒後に届きます。",
+  "pt": "Teste enviado — bloqueie o telefone; chega em 5 segundos.",
+  "zh": "测试已发送——锁屏，5 秒后到达。"
  },
  "Testing…": {
   "de": "Test läuft…",
@@ -21999,6 +22199,16 @@
   "pt": "min",
   "zh": "分钟"
  },
+ "min before": {
+  "de": "Min. vorher",
+  "es": "min antes",
+  "fr": "min avant",
+  "hi": "मिनट पहले",
+  "it": "min prima",
+  "ja": "分前",
+  "pt": "min antes",
+  "zh": "分钟前"
+ },
  "min drive": {
   "de": "Min. Fahrt",
   "es": "min en coche",
@@ -22618,6 +22828,16 @@
   "ja": "種類の声 — 選ぶ前に試聴できます",
   "pt": "vozes — ouça cada uma antes de escolher",
   "zh": "种声音，选择前可先试听"
+ },
+ "we'll remind you": {
+  "de": "wir erinnern dich",
+  "es": "te avisaremos",
+  "fr": "on vous préviendra",
+  "hi": "हम याद दिलाएँगे",
+  "it": "ti avviseremo",
+  "ja": "お知らせします",
+  "pt": "vamos lembrar",
+  "zh": "我们会提醒你"
  },
  "we'll remind you 2 days before and on the last day.": {
   "de": "wir erinnern dich 2 Tage vorher und am letzten Tag.",
