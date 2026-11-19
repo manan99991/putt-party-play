@@ -169,6 +169,16 @@
   "pt": "1. Tirar contactos de",
   "zh": "1. 从以下位置取联系人"
  },
+ "1. Take the phone out of a magnetic case. Hold it away from the wall and tap Set baseline here.": {
+  "de": "1. Nimm das Handy aus einer Magnethülle. Halte es vom Wand weg und tippe auf „Basis hier setzen“.",
+  "es": "1. Saca el móvil de una funda magnética. Aléjalo de la pared y toca Fijar referencia aquí.",
+  "fr": "1. Retirez le téléphone d'une coque magnétique. Éloignez-le du mur et touchez Définir la référence ici.",
+  "hi": "1. फ़ोन को चुंबकीय कवर से निकालें। दीवार से दूर रखकर 'यहाँ आधार सेट करें' दबाएँ।",
+  "it": "1. Togli il telefono dalla custodia magnetica. Tienilo lontano dal muro e tocca Imposta riferimento qui.",
+  "ja": "1. 磁石付きケースから出し、壁から離して「ここを基準にする」をタップ。",
+  "pt": "1. Tire o celular da capa magnética. Afaste da parede e toque em Definir referência aqui.",
+  "zh": "1. 取下磁吸手机壳。远离墙面，点按“在此设为基准”。"
+ },
  "10 min before": {
   "de": "10 Min. vorher",
   "es": "10 min antes",
@@ -188,6 +198,16 @@
   "ja": "2時間",
   "pt": "2 horas",
   "zh": "2 小时"
+ },
+ "2. Lay it flat on the wall and slide it slowly sideways. It buzzes harder as you get closer.": {
+  "de": "2. Leg es flach an die Wand und schiebe es langsam seitwärts. Je näher, desto stärker vibriert es.",
+  "es": "2. Apóyalo en la pared y deslízalo despacio de lado. Vibra más fuerte al acercarte.",
+  "fr": "2. Posez-le à plat sur le mur et glissez-le lentement. Il vibre plus fort en approchant.",
+  "hi": "2. इसे दीवार पर सपाट रखकर धीरे-धीरे बगल में खिसकाएँ। पास आने पर ज़्यादा कंपन होगा।",
+  "it": "2. Appoggialo al muro e fallo scorrere piano di lato. Vibra di più man mano che ti avvicini.",
+  "ja": "2. 壁に平らに当て、ゆっくり横へ滑らせます。近づくほど強く振動します。",
+  "pt": "2. Encoste na parede e deslize devagar para o lado. Vibra mais forte quando você se aproxima.",
+  "zh": "2. 平贴墙面慢慢横向移动，越靠近震动越强。"
  },
  "2. Put them into": {
   "de": "2. Sie einfügen in",
@@ -238,6 +258,16 @@
   "ja": "3. 方法",
   "pt": "3. Como",
   "zh": "3. 方式"
+ },
+ "3. The firmest buzz is over the metal — the sensor is near the top of the phone. Mark it with a pencil.": {
+  "de": "3. Die stärkste Vibration ist über dem Metall – der Sensor sitzt oben im Handy. Mit Bleistift markieren.",
+  "es": "3. La vibración más fuerte está sobre el metal; el sensor está en la parte superior del móvil. Márcalo con lápiz.",
+  "fr": "3. La vibration la plus forte est au-dessus du métal — le capteur est en haut du téléphone. Marquez au crayon.",
+  "hi": "3. सबसे तेज़ कंपन धातु के ऊपर होता है — सेंसर फ़ोन के ऊपरी हिस्से में है। पेंसिल से निशान लगाएँ।",
+  "it": "3. La vibrazione più forte è sopra il metallo: il sensore è in alto nel telefono. Segna con la matita.",
+  "ja": "3. 一番強い振動の場所が金属の上（センサーは本体上部）。鉛筆で印を。",
+  "pt": "3. A vibração mais forte fica sobre o metal — o sensor fica no topo do celular. Marque com lápis.",
+  "zh": "3. 震动最强处即金属所在（传感器在手机顶部），用铅笔标记。"
  },
  "30 min": {
   "de": "30 Min.",
@@ -318,6 +348,16 @@
   "ja": "Proツール",
   "pt": "Uma ferramenta Pro",
   "zh": "Pro 工具"
+ },
+ "A TV, a shelf, the ceiling": {
+  "de": "Ein Fernseher, ein Regal, die Decke",
+  "es": "Una tele, un estante, el techo",
+  "fr": "Une télé, une étagère, le plafond",
+  "hi": "टीवी, शेल्फ़, छत",
+  "it": "Una TV, una mensola, il soffitto",
+  "ja": "テレビ、棚、天井",
+  "pt": "Uma TV, uma prateleira, o teto",
+  "zh": "电视、搁架、天花板"
  },
  "A bit steadier, and ready for the next small thing.": {
   "de": "Etwas stabiler und bereit für den nächsten kleinen Schritt.",
@@ -429,6 +469,16 @@
   "pt": "Um vídeo flip-book das suas fotos",
   "zh": "照片翻页视频"
  },
+ "A floor plan in one walk": {
+  "de": "Ein Grundriss in einem Rundgang",
+  "es": "Un plano en una vuelta",
+  "fr": "Un plan en un seul tour",
+  "hi": "एक चक्कर में फ़्लोर प्लान",
+  "it": "Una planta in un solo giro",
+  "ja": "一周歩くだけで間取り図",
+  "pt": "Uma planta em uma volta",
+  "zh": "走一圈得到平面图"
+ },
  "A food you hated as a child": {
   "de": "Ein Essen, das du als Kind gehasst hast",
   "es": "Una comida que odiabas de niño",
@@ -498,6 +548,16 @@
   "ja": "写真のループGIF",
   "pt": "Um GIF em loop das suas fotos",
   "zh": "照片循环 GIF"
+ },
+ "A note at 8:00 with what's due that day": {
+  "de": "Eine Nachricht um 8:00 mit dem, was an dem Tag fällig ist",
+  "es": "Un aviso a las 8:00 con lo de ese día",
+  "fr": "Une note à 8 h avec ce qui est prévu ce jour-là",
+  "hi": "8:00 बजे उस दिन के कामों का नोट",
+  "it": "Un avviso alle 8:00 con le cose del giorno",
+  "ja": "8:00にその日の予定をお知らせ",
+  "pt": "Um aviso às 8:00 com o que vence no dia",
+  "zh": "每天 8:00 提醒当天要做的事"
  },
  "A one-line AI answer needs on-device Gemini Nano (Pixel 9, Galaxy S24+ and newer). Otherwise you get the best-matching screenshot.": {
   "de": "Eine einzeilige KI-Antwort braucht Gemini Nano auf dem Gerät (Pixel 9, Galaxy S24+ und neuer). Sonst erhältst du den am besten passenden Screenshot.",
@@ -638,6 +698,16 @@
   "ja": "選ぶ前にサイズが分かる小さな音声",
   "pt": "Um áudio menor, tamanhos mostrados antes de escolher",
   "zh": "更小的音频，选择前显示大小"
+ },
+ "A sofa, a table, a gap": {
+  "de": "Ein Sofa, ein Tisch, eine Lücke",
+  "es": "Un sofá, una mesa, un hueco",
+  "fr": "Un canapé, une table, un espace",
+  "hi": "सोफ़ा, मेज़, खाली जगह",
+  "it": "Un divano, un tavolo, uno spazio",
+  "ja": "ソファ、テーブル、すき間",
+  "pt": "Um sofá, uma mesa, um vão",
+  "zh": "沙发、桌子、空隙"
  },
  "A strip of film rolls past": {
   "de": "Ein Filmstreifen rollt vorbei",
@@ -889,6 +959,16 @@
   "pt": "Adicionar datas à agenda",
   "zh": "将日期添加到日历"
  },
+ "Add events to Calendar": {
+  "de": "Termine in den Kalender",
+  "es": "Añadir eventos al Calendario",
+  "fr": "Ajouter au Calendrier",
+  "hi": "इवेंट कैलेंडर में जोड़ें",
+  "it": "Aggiungi eventi al Calendario",
+  "ja": "イベントをカレンダーへ",
+  "pt": "Adicionar eventos ao Calendário",
+  "zh": "将活动添加到日历"
+ },
  "Add files": {
   "de": "Dateien hinzufügen",
   "es": "Añadir archivos",
@@ -1049,6 +1129,16 @@
   "pt": "Adicionar aos lembretes",
   "zh": "添加到提醒事项"
  },
+ "Add to Tenzy Planner": {
+  "de": "Zum Tenzy-Planer hinzufügen",
+  "es": "Añadir al Planificador de Tenzy",
+  "fr": "Ajouter au Planner Tenzy",
+  "hi": "Tenzy प्लानर में जोड़ें",
+  "it": "Aggiungi al Planner di Tenzy",
+  "ja": "Tenzyプランナーに追加",
+  "pt": "Adicionar ao Planner do Tenzy",
+  "zh": "添加到 Tenzy 计划"
+ },
  "Add to a group": {
   "de": "Zu einer Gruppe hinzufügen",
   "es": "Añadir a un grupo",
@@ -1179,6 +1269,16 @@
   "pt": "Os anúncios apoiam o Tenzy",
   "zh": "广告支持 Tenzy"
  },
+ "Aim at the top — the height updates live — and tap.": {
+  "de": "Auf die Oberkante zielen – die Höhe läuft mit – und tippen.",
+  "es": "Apunta arriba (la altura se actualiza) y toca.",
+  "fr": "Visez le haut — la hauteur s'actualise — et touchez.",
+  "hi": "ऊपर की ओर निशाना लगाएँ — ऊँचाई साथ-साथ बदलेगी — और टैप करें।",
+  "it": "Punta in alto (l'altezza si aggiorna) e tocca.",
+  "ja": "上端に合わせて（高さが随時更新）タップ。",
+  "pt": "Mire no topo — a altura atualiza — e toque.",
+  "zh": "对准顶部（高度实时更新）后点按。"
+ },
  "Alerts are set on your phone for each receipt with a date. Nothing is sent anywhere.": {
   "de": "Die Erinnerungen werden auf deinem Handy für jeden Beleg mit Datum gestellt. Nichts wird verschickt.",
   "es": "Los avisos se programan en tu teléfono para cada recibo con fecha. No se envía nada.",
@@ -1279,6 +1379,16 @@
   "pt": "Todo o texto",
   "zh": "全部文字"
  },
+ "Allow Calendars for Tenzy in Settings, then tap again.": {
+  "de": "Erlaube Kalender für Tenzy in den Einstellungen und tippe erneut.",
+  "es": "Permite Calendarios para Tenzy en Ajustes y vuelve a tocar.",
+  "fr": "Autorisez Calendriers pour Tenzy dans Réglages, puis réessayez.",
+  "hi": "Settings में Tenzy के लिए Calendars की अनुमति दें, फिर दोबारा टैप करें।",
+  "it": "Consenti Calendari per Tenzy in Impostazioni e tocca di nuovo.",
+  "ja": "設定でTenzyのカレンダーを許可して、もう一度タップ。",
+  "pt": "Permita Calendários para o Tenzy em Ajustes e toque de novo.",
+  "zh": "请在设置中允许 Tenzy 使用日历，然后再点按。"
+ },
  "Allow Photos access": {
   "de": "Zugriff auf Fotos erlauben",
   "es": "Permitir acceso a Fotos",
@@ -1288,6 +1398,16 @@
   "ja": "写真へのアクセスを許可",
   "pt": "Permitir acesso a Fotos",
   "zh": "允许访问照片"
+ },
+ "Allow Reminders for Tenzy in Settings, then tap again.": {
+  "de": "Erlaube Erinnerungen für Tenzy in den Einstellungen und tippe erneut.",
+  "es": "Permite Recordatorios para Tenzy en Ajustes y vuelve a tocar.",
+  "fr": "Autorisez Rappels pour Tenzy dans Réglages, puis réessayez.",
+  "hi": "Settings में Tenzy के लिए Reminders की अनुमति दें, फिर दोबारा टैप करें।",
+  "it": "Consenti Promemoria per Tenzy in Impostazioni e tocca di nuovo.",
+  "ja": "設定でTenzyのリマインダーを許可して、もう一度タップ。",
+  "pt": "Permita Lembretes para o Tenzy em Ajustes e toque de novo.",
+  "zh": "请在设置中允许 Tenzy 使用提醒事项，然后再点按。"
  },
  "Allow microphone access in Settings › Tenzy › Microphone.": {
   "de": "Erlaube den Mikrofonzugriff unter Einstellungen › Tenzy › Mikrofon.",
@@ -1329,6 +1449,16 @@
   "pt": "Já tem um PDF digitalizado? Leia cada página para pesquisar, selecionar e copiar.",
   "zh": "已有扫描 PDF？读取每页，即可搜索、选择和复制文字。"
  },
+ "Already in your Planner.": {
+  "de": "Schon in deinem Planer.",
+  "es": "Ya está en tu Planificador.",
+  "fr": "Déjà dans votre Planner.",
+  "hi": "पहले से आपके प्लानर में है।",
+  "it": "Già nel tuo Planner.",
+  "ja": "すでにプランナーにあります。",
+  "pt": "Já está no seu Planner.",
+  "zh": "已在你的计划中。"
+ },
  "Also add it to my calendar": {
   "de": "Auch in meinen Kalender eintragen",
   "es": "Añadirlo también a mi calendario",
@@ -1368,6 +1498,16 @@
   "ja": "GIFも作る（チャット用）",
   "pt": "Criar também um GIF (para conversas)",
   "zh": "同时生成GIF（用于聊天）"
+ },
+ "Altitude": {
+  "de": "Höhe",
+  "es": "Altitud",
+  "fr": "Altitude",
+  "hi": "ऊँचाई",
+  "it": "Altitudine",
+  "ja": "高度",
+  "pt": "Altitude",
+  "zh": "海拔"
  },
  "Amount": {
   "de": "Betrag",
@@ -1509,6 +1649,16 @@
   "pt": "Área",
   "zh": "面积"
  },
+ "Area and what to buy are below.": {
+  "de": "Fläche und Einkaufsliste stehen unten.",
+  "es": "El área y lo que comprar están abajo.",
+  "fr": "La surface et quoi acheter sont ci-dessous.",
+  "hi": "क्षेत्रफल और क्या ख़रीदना है, नीचे है।",
+  "it": "Area e cosa comprare sono qui sotto.",
+  "ja": "面積と買う物は下にあります。",
+  "pt": "A área e o que comprar estão abaixo.",
+  "zh": "面积和需要购买的材料在下方。"
+ },
  "Area: tap each corner of the floor — Tenzy works out the paint, flooring and tiles to buy.": {
   "de": "Fläche: Tippe auf jede Ecke des Bodens – Tenzy rechnet Farbe, Boden und Fliesen aus.",
   "es": "Área: toca cada esquina del suelo; Tenzy calcula la pintura, el suelo y los azulejos.",
@@ -1528,6 +1678,16 @@
   "ja": "木曜 午前9:41 到着",
   "pt": "Chega quinta-feira, 9:41",
   "zh": "周四 上午 9:41 送达"
+ },
+ "Arrows and ditto marks that carry a job across days can't be read from text alone — check the week.": {
+  "de": "Pfeile und Wiederholungszeichen über mehrere Tage lassen sich nicht nur aus Text lesen – prüfe die Woche.",
+  "es": "Las flechas y comillas que alargan un trabajo varios días no se leen solo del texto: revisa la semana.",
+  "fr": "Les flèches et signes « idem » sur plusieurs jours ne se lisent pas par le texte seul — vérifiez la semaine.",
+  "hi": "कई दिनों तक काम दिखाने वाले तीर और '〃' निशान सिर्फ़ टेक्स्ट से नहीं पढ़े जा सकते — हफ़्ता जाँचें।",
+  "it": "Frecce e virgolette che estendono un lavoro su più giorni non si leggono dal solo testo: controlla la settimana.",
+  "ja": "複数日にまたがる矢印や「〃」は文字認識だけでは読めません。週を確認してください。",
+  "pt": "Setas e aspas que estendem um trabalho por vários dias não são lidas só pelo texto — confira a semana.",
+  "zh": "跨天的箭头和“同上”符号无法仅靠文字识别读取，请核对本周。"
  },
  "As": {
   "de": "Als",
@@ -2189,6 +2349,16 @@
   "pt": "Carne bovina",
   "zh": "牛肉"
  },
+ "Beep when it's level": {
+  "de": "Piepen, wenn es gerade ist",
+  "es": "Pitar cuando esté nivelado",
+  "fr": "Bip quand c'est de niveau",
+  "hi": "सीधा होने पर बीप",
+  "it": "Bip quando è in bolla",
+  "ja": "水平になったら音で知らせる",
+  "pt": "Apitar quando estiver nivelado",
+  "zh": "水平时发出提示音"
+ },
  "Before a return window closes": {
   "de": "Bevor eine Rückgabefrist endet",
   "es": "Antes de que cierre el plazo de devolución",
@@ -2519,6 +2689,16 @@
   "pt": "Neve ou praia clara",
   "zh": "明亮的雪地或海滩"
  },
+ "Bright, indirect light": {
+  "de": "Helles, indirektes Licht",
+  "es": "Luz brillante e indirecta",
+  "fr": "Lumière vive indirecte",
+  "hi": "तेज़, अप्रत्यक्ष रोशनी",
+  "it": "Luce intensa indiretta",
+  "ja": "明るい間接光",
+  "pt": "Luz clara e indireta",
+  "zh": "明亮的散射光"
+ },
  "Brightened your face, which was in shade": {
   "de": "Gesicht aufgehellt, es lag im Schatten",
   "es": "Rostro aclarado, estaba en sombra",
@@ -2719,6 +2899,16 @@
   "pt": "Cartões de visita em contatos",
   "zh": "名片转联系人"
  },
+ "Buzzes over screws, nails and pipes before you drill": {
+  "de": "Vibriert über Schrauben, Nägeln und Rohren, bevor du bohrst",
+  "es": "Vibra sobre tornillos, clavos y tuberías antes de taladrar",
+  "fr": "Vibre au-dessus des vis, clous et tuyaux avant de percer",
+  "hi": "ड्रिल से पहले पेंच, कील और पाइप पर कंपन",
+  "it": "Vibra sopra viti, chiodi e tubi prima di forare",
+  "ja": "穴を開ける前にネジ・釘・配管の上で振動",
+  "pt": "Vibra sobre parafusos, pregos e canos antes de furar",
+  "zh": "钻孔前在螺丝、钉子和管道上方震动"
+ },
  "CAF has no 4 GB limit, so hours of audio stay in one file.": {
   "de": "CAF hat keine 4-GB-Grenze, so bleiben Stunden Audio in einer Datei.",
   "es": "CAF no tiene el límite de 4 GB, así que horas de audio caben en un archivo.",
@@ -2728,6 +2918,16 @@
   "ja": "CAFには4GBの制限がないため、何時間もの音声を1ファイルにできます。",
   "pt": "CAF não tem limite de 4 GB, então horas de áudio cabem num arquivo.",
   "zh": "CAF 没有 4 GB 限制，几小时的音频也能存成一个文件。"
+ },
+ "Cacti, herbs like basil and rosemary, tomatoes": {
+  "de": "Kakteen, Kräuter wie Basilikum und Rosmarin, Tomaten",
+  "es": "Cactus, hierbas como albahaca y romero, tomates",
+  "fr": "Cactus, herbes comme basilic et romarin, tomates",
+  "hi": "कैक्टस, तुलसी-रोज़मेरी जैसी जड़ी-बूटियाँ, टमाटर",
+  "it": "Cactus, erbe come basilico e rosmarino, pomodori",
+  "ja": "サボテン、バジルやローズマリー、トマト",
+  "pt": "Cactos, ervas como manjericão e alecrim, tomates",
+  "zh": "仙人掌、罗勒和迷迭香等香草、番茄"
  },
  "Calibrate": {
   "de": "Kalibrieren",
@@ -3118,6 +3318,16 @@
   "ja": "今すぐ確認",
   "pt": "Verificar agora",
   "zh": "立即检查"
+ },
+ "Check that plant spot again": {
+  "de": "Prüfe den Pflanzenplatz noch einmal",
+  "es": "Vuelve a medir ese sitio para la planta",
+  "fr": "Revérifiez cet emplacement pour la plante",
+  "hi": "पौधे की वह जगह फिर जाँचें",
+  "it": "Ricontrolla quel posto per la pianta",
+  "ja": "植物の置き場所をもう一度測ろう",
+  "pt": "Confira de novo o lugar da planta",
+  "zh": "再测一次那个放植物的位置"
  },
  "Check the fridge and write the list first": {
   "de": "Erst den Kühlschrank checken und die Liste schreiben",
@@ -4139,6 +4349,16 @@
   "pt": "Nome da empresa (vazio para limpar)",
   "zh": "公司名称（留空则清除）"
  },
+ "Compass": {
+  "de": "Kompass",
+  "es": "Brújula",
+  "fr": "Boussole",
+  "hi": "कम्पास",
+  "it": "Bussola",
+  "ja": "コンパス",
+  "pt": "Bússola",
+  "zh": "指南针"
+ },
  "Compress": {
   "de": "Komprimieren",
   "es": "Comprimir",
@@ -4929,6 +5149,16 @@
   "pt": "Não deu para ver bem os olhos",
   "zh": "看不清你的眼睛"
  },
+ "Couldn't tell which month this is — check the dates before adding them.": {
+  "de": "Monat nicht erkannt – prüfe die Daten vor dem Hinzufügen.",
+  "es": "No se pudo saber el mes: revisa las fechas antes de añadirlas.",
+  "fr": "Impossible de savoir le mois — vérifiez les dates avant de les ajouter.",
+  "hi": "महीना पता नहीं चला — जोड़ने से पहले तारीख़ें जाँचें।",
+  "it": "Non si capisce il mese: controlla le date prima di aggiungerle.",
+  "ja": "何月か判断できませんでした。追加前に日付を確認してください。",
+  "pt": "Não deu para saber o mês — confira as datas antes de adicionar.",
+  "zh": "无法判断月份，添加前请核对日期。"
+ },
  "Couldn't translate — the first time, iOS downloads the language. Try again in a moment.": {
   "de": "Übersetzung fehlgeschlagen – beim ersten Mal lädt iOS die Sprache. Gleich noch einmal versuchen.",
   "es": "No se pudo traducir: la primera vez, iOS descarga el idioma. Inténtalo en un momento.",
@@ -5499,6 +5729,16 @@
   "pt": "Outra foto/vídeo",
   "zh": "其他照片/视频"
  },
+ "Direct sun": {
+  "de": "Direkte Sonne",
+  "es": "Sol directo",
+  "fr": "Plein soleil",
+  "hi": "सीधी धूप",
+  "it": "Sole diretto",
+  "ja": "直射日光",
+  "pt": "Sol direto",
+  "zh": "直射阳光"
+ },
  "Directions": {
   "de": "Route",
   "es": "Cómo llegar",
@@ -5659,6 +5899,16 @@
   "pt": "Pronto por agora",
   "zh": "暂时完成"
  },
+ "Done scanning": {
+  "de": "Scan fertig",
+  "es": "Terminar escaneo",
+  "fr": "Fin du scan",
+  "hi": "स्कैन पूरा",
+  "it": "Fine scansione",
+  "ja": "スキャン完了",
+  "pt": "Concluir escaneamento",
+  "zh": "完成扫描"
+ },
  "Done — make the photo": {
   "de": "Fertig – Foto erstellen",
   "es": "Listo: crear la foto",
@@ -5668,6 +5918,16 @@
   "ja": "完了 — 写真を作成",
   "pt": "Pronto — criar a foto",
   "zh": "完成——生成照片"
+ },
+ "Door": {
+  "de": "Tür",
+  "es": "Puerta",
+  "fr": "Porte",
+  "hi": "दरवाज़ा",
+  "it": "Porta",
+  "ja": "ドア",
+  "pt": "Porta",
+  "zh": "门"
  },
  "Doors": {
   "de": "Türen",
@@ -5818,6 +6078,16 @@
   "ja": "署名を一度描いてください。この端末に保存されます。",
   "pt": "Desenha a tua assinatura uma vez. Fica guardada neste telemóvel.",
   "zh": "绘制一次你的签名。它会保存在本机上。"
+ },
+ "Drawing…": {
+  "de": "Wird gezeichnet…",
+  "es": "Dibujando…",
+  "fr": "Dessin…",
+  "hi": "बना रहे हैं…",
+  "it": "Disegno…",
+  "ja": "作図中…",
+  "pt": "Desenhando…",
+  "zh": "正在绘制…"
  },
  "Driest time to head out:": {
   "de": "Trockenste Zeit zum Losgehen:",
@@ -6098,6 +6368,16 @@
   "ja": "フチ",
   "pt": "Borda",
   "zh": "边框"
+ },
+ "Edge all round": {
+  "de": "Umfang",
+  "es": "Perímetro",
+  "fr": "Périmètre",
+  "hi": "चारों ओर का किनारा",
+  "it": "Perimetro",
+  "ja": "周囲の長さ",
+  "pt": "Perímetro",
+  "zh": "周长"
  },
  "Edge colour": {
   "de": "Randfarbe",
@@ -6419,6 +6699,16 @@
   "pt": "Equilibrar a luz",
   "zh": "均衡光线"
  },
+ "Even shade-lovers will struggle here — try a brighter spot or a grow light": {
+  "de": "Selbst Schattenpflanzen tun sich hier schwer – hellerer Platz oder Pflanzenlampe",
+  "es": "Incluso las de sombra sufrirán aquí: busca un sitio más claro o una lámpara de cultivo",
+  "fr": "Même les plantes d'ombre auront du mal — trouvez un endroit plus clair ou une lampe horticole",
+  "hi": "छाया वाले पौधे भी यहाँ मुश्किल में होंगे — ज़्यादा रोशनी वाली जगह या ग्रो लाइट आज़माएँ",
+  "it": "Anche le piante da ombra faticheranno: cerca un posto più luminoso o una lampada",
+  "ja": "日陰に強い植物でも厳しい場所です。明るい所か育成ライトを",
+  "pt": "Até plantas de sombra vão sofrer — tente um lugar mais claro ou luz de cultivo",
+  "zh": "耐阴植物也难以生长，换个更亮的位置或用补光灯"
+ },
  "Even the smallest setting makes about": {
   "de": "Selbst die kleinste Einstellung ergibt etwa",
   "es": "Incluso el ajuste mínimo da unos",
@@ -6448,6 +6738,26 @@
   "ja": "顔の右側の影を均一にしました",
   "pt": "Sombra do lado direito do rosto equilibrada",
   "zh": "已均衡面部右侧的阴影"
+ },
+ "Event": {
+  "de": "Termin",
+  "es": "Evento",
+  "fr": "Événement",
+  "hi": "इवेंट",
+  "it": "Evento",
+  "ja": "イベント",
+  "pt": "Evento",
+  "zh": "活动"
+ },
+ "Events": {
+  "de": "Termine",
+  "es": "Eventos",
+  "fr": "Événements",
+  "hi": "इवेंट",
+  "it": "Eventi",
+  "ja": "イベント",
+  "pt": "Eventos",
+  "zh": "活动"
  },
  "Every": {
   "de": "Alle",
@@ -6649,6 +6959,16 @@
   "pt": "Todas as ferramentas num só lugar — toca para abrir. Tudo corre no telefone.",
   "zh": "所有工具集于一处 — 轻点打开。全部在手机上运行。"
  },
+ "Every wall, door and window": {
+  "de": "Jede Wand, Tür und jedes Fenster",
+  "es": "Cada pared, puerta y ventana",
+  "fr": "Chaque mur, porte et fenêtre",
+  "hi": "हर दीवार, दरवाज़ा और खिड़की",
+  "it": "Ogni parete, porta e finestra",
+  "ja": "すべての壁・ドア・窓",
+  "pt": "Cada parede, porta e janela",
+  "zh": "每面墙、每扇门和窗"
+ },
  "Everyday": {
   "de": "Alltag",
   "es": "Diario",
@@ -6788,6 +7108,16 @@
   "ja": "詳しくする",
   "pt": "Expandir",
   "zh": "扩写"
+ },
+ "Expect about ±1–2 cm up to a few metres. Move slowly first so Tenzy can see the room.": {
+  "de": "Etwa ±1–2 cm auf einige Meter. Erst langsam bewegen, damit Tenzy den Raum sieht.",
+  "es": "Unos ±1–2 cm hasta unos metros. Muévete despacio primero para que Tenzy vea la habitación.",
+  "fr": "Environ ±1–2 cm sur quelques mètres. Bougez lentement d'abord pour que Tenzy voie la pièce.",
+  "hi": "कुछ मीटर तक लगभग ±1–2 सेमी। पहले धीरे घुमाएँ ताकि Tenzy कमरा देख सके।",
+  "it": "Circa ±1–2 cm fino a qualche metro. Muoviti piano all'inizio così Tenzy vede la stanza.",
+  "ja": "数メートルまで約±1〜2 cm。最初はゆっくり動かして部屋を認識させてください。",
+  "pt": "Cerca de ±1–2 cm até alguns metros. Mova devagar primeiro para o Tenzy ver o cômodo.",
+  "zh": "几米内误差约 ±1–2 厘米。先缓慢移动，让 Tenzy 识别房间。"
  },
  "Explore": {
   "de": "Entdecken",
@@ -6978,6 +7308,56 @@
   "ja": "顔や個人情報テキスト（ナンバープレート、電話番号、メール）はクリップ全体で自動的に検出・黒塗りされ、位置情報やメタデータも除去されます。ベストエフォートのため、共有前に結果をご確認ください。",
   "pt": "Rostos e texto pessoal (matrículas, números, e-mails) são detetados e tapados automaticamente em todo o clip, e localização/metadados são removidos. Melhor esforço — confirma o resultado antes de partilhar.",
   "zh": "整个片段中的人脸和个人文字（车牌、电话号码、邮箱）会被自动识别并涂黑，位置/元数据也会被清除。尽力而为——分享前请检查结果。"
+ },
+ "Faces away from the sun — soft, even light all day": {
+  "de": "Abgewandt von der Sonne – den ganzen Tag weiches, gleichmäßiges Licht",
+  "es": "De espaldas al sol: luz suave y uniforme todo el día",
+  "fr": "Dos au soleil — lumière douce et égale toute la journée",
+  "hi": "धूप से उलटी दिशा — पूरे दिन हल्की, एकसार रोशनी",
+  "it": "Lontano dal sole: luce morbida e uniforme tutto il giorno",
+  "ja": "日が当たらない向き — 一日中やわらかく均一な光",
+  "pt": "De costas para o sol — luz suave e uniforme o dia todo",
+  "zh": "背阳 — 全天光线柔和均匀"
+ },
+ "Faces east — morning sun": {
+  "de": "Richtung Osten – Morgensonne",
+  "es": "Mira al este: sol de mañana",
+  "fr": "Orienté est — soleil du matin",
+  "hi": "पूर्व की ओर — सुबह की धूप",
+  "it": "Rivolto a est: sole del mattino",
+  "ja": "東向き — 朝日",
+  "pt": "Voltado para o leste — sol da manhã",
+  "zh": "朝东 — 上午有阳光"
+ },
+ "Faces the sun at midday — bright most of the day": {
+  "de": "Mittags zur Sonne – fast den ganzen Tag hell",
+  "es": "Mira al sol de mediodía: luminoso casi todo el día",
+  "fr": "Face au soleil de midi — lumineux presque toute la journée",
+  "hi": "दोपहर की धूप की ओर — दिन भर ज़्यादातर उजाला",
+  "it": "Verso il sole di mezzogiorno: luminoso quasi tutto il giorno",
+  "ja": "昼の太陽側 — ほぼ一日明るい",
+  "pt": "Voltado para o sol do meio-dia — claro quase o dia todo",
+  "zh": "朝向正午阳光 — 大部分时间明亮"
+ },
+ "Faces west — afternoon and evening sun": {
+  "de": "Richtung Westen – Nachmittags- und Abendsonne",
+  "es": "Mira al oeste: sol de tarde",
+  "fr": "Orienté ouest — soleil de l'après-midi et du soir",
+  "hi": "पश्चिम की ओर — दोपहर बाद और शाम की धूप",
+  "it": "Rivolto a ovest: sole del pomeriggio e della sera",
+  "ja": "西向き — 午後と夕方の日差し",
+  "pt": "Voltado para o oeste — sol da tarde",
+  "zh": "朝西 — 下午和傍晚有阳光"
+ },
+ "Facing the Qibla": {
+  "de": "Richtung Qibla",
+  "es": "Mirando a la alquibla",
+  "fr": "Face à la qibla",
+  "hi": "क़िबला की ओर",
+  "it": "Rivolto alla qibla",
+  "ja": "キブラの方向です",
+  "pt": "Voltado para a Qibla",
+  "zh": "正对朝向（Qibla）"
  },
  "Facing the camera": {
   "de": "Blick zur Kamera",
@@ -7239,6 +7619,16 @@
   "pt": "Rolo de filme",
   "zh": "胶片"
  },
+ "Find a stud or pipe": {
+  "de": "Balken oder Rohr finden",
+  "es": "Encontrar un montante o tubería",
+  "fr": "Trouver un montant ou un tuyau",
+  "hi": "स्टड या पाइप खोजें",
+  "it": "Trova un montante o un tubo",
+  "ja": "下地や配管を探す",
+  "pt": "Achar viga ou cano",
+  "zh": "找龙骨或管道"
+ },
  "Find a word or phrase across all your documents…": {
   "de": "Finde ein Wort oder einen Satz in all deinen Dokumenten…",
   "es": "Encuentra una palabra o frase en todos tus documentos…",
@@ -7299,6 +7689,16 @@
   "pt": "Encontra rostos e texto — matrículas, nomes, moradas, números de cartão e conta — e tapa-os, depois guarda uma cópia sem localização nem metadados. Corre tudo no teu telemóvel; nada é enviado e nunca usa um crédito.",
   "zh": "识别人脸和文字 — 车牌、姓名、地址、卡号和账号 — 并将其涂抹，然后保存一份不含位置和元数据的副本。全部在你的手机上运行；不上传任何内容，也从不消耗额度。"
  },
+ "Finds screws, nails and metal pipes, not wood itself. Wiring can be near studs — check before drilling.": {
+  "de": "Findet Schrauben, Nägel und Metallrohre, kein Holz. Leitungen können nahe Balken liegen – vor dem Bohren prüfen.",
+  "es": "Detecta tornillos, clavos y tuberías metálicas, no la madera. Puede haber cables cerca: revisa antes de taladrar.",
+  "fr": "Détecte vis, clous et tuyaux métalliques, pas le bois. Des câbles peuvent être proches — vérifiez avant de percer.",
+  "hi": "पेंच, कील और धातु के पाइप ढूँढता है, लकड़ी नहीं। स्टड के पास तार हो सकते हैं — ड्रिल से पहले जाँचें।",
+  "it": "Trova viti, chiodi e tubi metallici, non il legno. Vicino ai montanti possono esserci cavi: controlla prima di forare.",
+  "ja": "ネジ・釘・金属管を検出（木材自体は不可）。下地の近くに配線があることも。穴あけ前に確認を。",
+  "pt": "Encontra parafusos, pregos e canos de metal, não a madeira. Pode haver fiação perto — confira antes de furar.",
+  "zh": "可找到螺丝、钉子和金属管，不能识别木头。龙骨附近可能有电线，钻孔前请确认。"
+ },
  "Fine-tune": {
   "de": "Feinabstimmung",
   "es": "Ajustar",
@@ -7308,6 +7708,16 @@
   "ja": "細かく調整",
   "pt": "Ajustar",
   "zh": "微调"
+ },
+ "Finish": {
+  "de": "Fertig",
+  "es": "Terminar",
+  "fr": "Terminer",
+  "hi": "पूरा करें",
+  "it": "Fine",
+  "ja": "完了",
+  "pt": "Concluir",
+  "zh": "完成"
  },
  "Finishing up…": {
   "de": "Wird abgeschlossen …",
@@ -7438,6 +7848,16 @@
   "ja": "あなたに合う",
   "pt": "Combina com você",
   "zh": "适合你"
+ },
+ "Fits, with": {
+  "de": "Passt, mit",
+  "es": "Cabe, con",
+  "fr": "Ça rentre, avec",
+  "hi": "फ़िट होगा,",
+  "it": "Ci sta, con",
+  "ja": "入ります。余裕",
+  "pt": "Cabe, com",
+  "zh": "放得下，还剩"
  },
  "Fix a song's title and cover": {
   "de": "Titel und Cover eines Songs korrigieren",
@@ -7609,6 +8029,36 @@
   "pt": "Flutuante, assustadora e distante",
   "zh": "飘忽、诡异、遥远"
  },
+ "Floor": {
+  "de": "Boden",
+  "es": "Suelo",
+  "fr": "Sol",
+  "hi": "फ़र्श",
+  "it": "Pavimento",
+  "ja": "床",
+  "pt": "Piso",
+  "zh": "地面"
+ },
+ "Floor area": {
+  "de": "Bodenfläche",
+  "es": "Superficie del suelo",
+  "fr": "Surface au sol",
+  "hi": "फ़र्श का क्षेत्रफल",
+  "it": "Superficie del pavimento",
+  "ja": "床面積",
+  "pt": "Área do piso",
+  "zh": "地面面积"
+ },
+ "Floor or table": {
+  "de": "Boden oder Tisch",
+  "es": "Suelo o mesa",
+  "fr": "Sol ou table",
+  "hi": "फ़र्श या मेज़",
+  "it": "Pavimento o tavolo",
+  "ja": "床やテーブル",
+  "pt": "Piso ou mesa",
+  "zh": "地面或桌面"
+ },
  "Flooring": {
   "de": "Bodenbelag",
   "es": "Suelo",
@@ -7628,6 +8078,16 @@
   "ja": "床材（カット分10%込み）",
   "pt": "Piso (com 10% para cortes)",
   "zh": "地板（含 10% 裁切损耗）"
+ },
+ "Flooring, a rug, tiles": {
+  "de": "Bodenbelag, Teppich, Fliesen",
+  "es": "Suelo, alfombra, baldosas",
+  "fr": "Revêtement, tapis, carrelage",
+  "hi": "फ़्लोरिंग, दरी, टाइल्स",
+  "it": "Pavimento, tappeto, piastrelle",
+  "ja": "床材、ラグ、タイル",
+  "pt": "Piso, tapete, azulejos",
+  "zh": "地板、地毯、瓷砖"
  },
  "Focus and exposure follow the face.": {
   "de": "Fokus und Belichtung folgen dem Gesicht.",
@@ -7708,6 +8168,16 @@
   "ja": "通る写真を撮るコツ",
   "pt": "Para uma foto aprovada",
   "zh": "拍出合格照片"
+ },
+ "For a picture or a shelf: hold the phone's long edge along its top. For a table: lay the phone flat.": {
+  "de": "Für Bild oder Regal: lange Handykante an die Oberkante halten. Für einen Tisch: Handy flach hinlegen.",
+  "es": "Para un cuadro o estante: apoya el lado largo del móvil arriba. Para una mesa: pon el móvil plano.",
+  "fr": "Pour un cadre ou une étagère : posez le grand côté du téléphone dessus. Pour une table : posez-le à plat.",
+  "hi": "तस्वीर या शेल्फ़ के लिए: फ़ोन का लंबा किनारा ऊपर टिकाएँ। मेज़ के लिए: फ़ोन सपाट रखें।",
+  "it": "Per un quadro o una mensola: appoggia il lato lungo del telefono sopra. Per un tavolo: posalo piatto.",
+  "ja": "額や棚は上端にスマホの長辺を当てる。テーブルは平らに置く。",
+  "pt": "Para quadro ou prateleira: apoie o lado comprido do celular em cima. Para mesa: deite o celular.",
+  "zh": "挂画或搁架：把手机长边贴在顶部。桌面：把手机平放。"
  },
  "For live camera translation, use Capture — tap a line there and choose Translate.": {
   "de": "Für Live-Kameraübersetzung nutze „Erfassen“ — tippe dort eine Zeile an und wähle „Übersetzen“.",
@@ -7988,6 +8458,16 @@
   "ja": "レターから",
   "pt": "Da carta",
   "zh": "来自信件"
+ },
+ "From your photo": {
+  "de": "Aus deinem Foto",
+  "es": "De tu foto",
+  "fr": "D'après votre photo",
+  "hi": "आपकी फ़ोटो से",
+  "it": "Dalla tua foto",
+  "ja": "写真から",
+  "pt": "Da sua foto",
+  "zh": "来自你的照片"
  },
  "Frozen · pinch to zoom in": {
   "de": "Eingefroren · zum Zoomen spreizen",
@@ -8339,6 +8819,16 @@
   "pt": "Assine o Pro para desbloqueá-la e todas as outras ferramentas Pro — sem limites diários e ferramentas ilimitadas criadas por você.",
   "zh": "升级到 Pro 即可解锁它和所有其他 Pro 工具 — 没有每日限制，还可无限创建你自己的工具。"
  },
+ "Go round the edge and tap the next corner.": {
+  "de": "Gehe am Rand entlang und tippe die nächste Ecke an.",
+  "es": "Recorre el borde y toca la siguiente esquina.",
+  "fr": "Suivez le bord et touchez le coin suivant.",
+  "hi": "किनारे के साथ चलें और अगला कोना टैप करें।",
+  "it": "Segui il bordo e tocca l'angolo successivo.",
+  "ja": "縁に沿って次の角をタップ。",
+  "pt": "Siga a borda e toque no próximo canto.",
+  "zh": "沿着边缘，点按下一个角。"
+ },
  "Go to the nearest store — the map below shows them": {
   "de": "Zum nächsten Laden – die Karte unten zeigt sie",
   "es": "Ve a la tienda más cercana: el mapa de abajo las muestra",
@@ -8398,6 +8888,16 @@
   "ja": "いい日 — 理由を録音",
   "pt": "Dia bom — grave o porquê",
   "zh": "美好的一天——录下原因"
+ },
+ "Good for reading and desk work": {
+  "de": "Gut zum Lesen und Arbeiten",
+  "es": "Buena para leer y trabajar",
+  "fr": "Bon pour lire et travailler",
+  "hi": "पढ़ने और डेस्क के काम के लिए अच्छी",
+  "it": "Buona per leggere e lavorare",
+  "ja": "読書やデスク作業に十分",
+  "pt": "Boa para ler e trabalhar",
+  "zh": "适合阅读和办公"
  },
  "Good or bad in one tap, say why, look back by month.": {
   "de": "Gut oder schlecht mit einem Tipp, sag warum, schau monatsweise zurück.",
@@ -8569,6 +9069,16 @@
   "pt": "Cabelo ou algo na cabeça dificultou achar o topo. Confira se a linha de cima está no alto da cabeça.",
   "zh": "头发或头饰使头顶难以识别。请确认上方的线位于头顶。"
  },
+ "Hang something straight": {
+  "de": "Etwas gerade aufhängen",
+  "es": "Colgar algo recto",
+  "fr": "Accrocher droit",
+  "hi": "कुछ सीधा टाँगें",
+  "it": "Appendere dritto",
+  "ja": "まっすぐ掛ける",
+  "pt": "Pendurar algo reto",
+  "zh": "挂正东西"
+ },
  "Has": {
   "de": "Enthält",
   "es": "Contiene",
@@ -8739,6 +9249,16 @@
   "pt": "Altura",
   "zh": "高度"
  },
+ "Height is below.": {
+  "de": "Die Höhe steht unten.",
+  "es": "La altura está abajo.",
+  "fr": "La hauteur est ci-dessous.",
+  "hi": "ऊँचाई नीचे है।",
+  "it": "L'altezza è qui sotto.",
+  "ja": "高さは下にあります。",
+  "pt": "A altura está abaixo.",
+  "zh": "高度在下方。"
+ },
  "Helium": {
   "de": "Helium",
   "es": "Helio",
@@ -8788,6 +9308,16 @@
   "ja": "この方法です。タップして開始。",
   "pt": "É assim que se faz. Toque para começar.",
   "zh": "就是这样做。点按开始。"
+ },
+ "Here's your room. Tap Use this room for the sizes and floor plan.": {
+  "de": "Hier ist dein Raum. Tippe auf „Diesen Raum nutzen“ für Maße und Grundriss.",
+  "es": "Esta es tu habitación. Toca Usar esta habitación para medidas y plano.",
+  "fr": "Voici votre pièce. Touchez Utiliser cette pièce pour les mesures et le plan.",
+  "hi": "यह रहा आपका कमरा। नाप और फ़्लोर प्लान के लिए 'यह कमरा इस्तेमाल करें' दबाएँ।",
+  "it": "Ecco la tua stanza. Tocca Usa questa stanza per misure e planimetria.",
+  "ja": "部屋ができました。「この部屋を使う」で寸法と間取り図へ。",
+  "pt": "Aqui está o cômodo. Toque em Usar este cômodo para medidas e planta.",
+  "zh": "房间已完成。点按“使用此房间”查看尺寸和平面图。"
  },
  "Hero": {
   "de": "Hauptbild",
@@ -8978,6 +9508,16 @@
   "ja": "ページの真上で水平に構え、画面いっぱいに。",
   "pt": "Segure o celular reto sobre a página, preenchendo o quadro.",
   "zh": "手机平放在页面正上方，填满画面。"
+ },
+ "Hold the phone where the plant's leaves would be, camera facing the window…": {
+  "de": "Halte das Handy dort, wo die Blätter wären, Kamera zum Fenster…",
+  "es": "Pon el móvil donde irían las hojas, con la cámara hacia la ventana…",
+  "fr": "Tenez le téléphone à la place des feuilles, caméra vers la fenêtre…",
+  "hi": "फ़ोन वहाँ रखें जहाँ पत्ते होंगे, कैमरा खिड़की की ओर…",
+  "it": "Tieni il telefono dove starebbero le foglie, fotocamera verso la finestra…",
+  "ja": "葉の位置にスマホを置き、カメラを窓へ向けて…",
+  "pt": "Segure o celular onde ficariam as folhas, câmera para a janela…",
+  "zh": "把手机放在叶子所在位置，摄像头朝向窗户…"
  },
  "Hold this colour": {
   "de": "Diese Farbe festhalten",
@@ -9429,6 +9969,16 @@
   "pt": "Fatura n.º",
   "zh": "发票编号"
  },
+ "Is it too loud?": {
+  "de": "Ist es zu laut?",
+  "es": "¿Hay demasiado ruido?",
+  "fr": "Est-ce trop fort ?",
+  "hi": "क्या बहुत शोर है?",
+  "it": "È troppo forte?",
+  "ja": "うるさすぎる？",
+  "pt": "Está alto demais?",
+  "zh": "太吵了吗？"
+ },
  "It carries where it was taken — clear it before you share": {
   "de": "Es verrät, wo es aufgenommen wurde – vor dem Teilen entfernen",
   "es": "Guarda dónde se hizo: bórralo antes de compartir",
@@ -9539,6 +10089,16 @@
   "pt": "Continua um formulário funcional — você ou qualquer pessoa pode mudar as respostas depois.",
   "zh": "它仍是可用的表单——你或他人之后都能修改答案。"
  },
+ "It's too loud here": {
+  "de": "Es ist hier zu laut",
+  "es": "Aquí hay demasiado ruido",
+  "fr": "C'est trop bruyant ici",
+  "hi": "यहाँ बहुत शोर है",
+  "it": "Qui c'è troppo rumore",
+  "ja": "ここはうるさすぎます",
+  "pt": "Está alto demais aqui",
+  "zh": "这里太吵了"
+ },
  "Item": {
   "de": "Position",
   "es": "Elemento",
@@ -9579,6 +10139,26 @@
   "pt": "As suas entradas são removidas deste telemóvel. Não pode ser anulado.",
   "zh": "其条目将从本机移除。此操作无法撤销。"
  },
+ "Its height, cm": {
+  "de": "Seine Höhe, cm",
+  "es": "Su alto, cm",
+  "fr": "Sa hauteur, cm",
+  "hi": "उसकी ऊँचाई, सेमी",
+  "it": "Altezza, cm",
+  "ja": "高さ（cm）",
+  "pt": "Altura, cm",
+  "zh": "高度（厘米）"
+ },
+ "Its height, inches": {
+  "de": "Seine Höhe, Zoll",
+  "es": "Su alto, pulgadas",
+  "fr": "Sa hauteur, pouces",
+  "hi": "उसकी ऊँचाई, इंच",
+  "it": "Altezza, pollici",
+  "ja": "高さ（インチ）",
+  "pt": "Altura, polegadas",
+  "zh": "高度（英寸）"
+ },
  "Its reminder will stop too.": {
   "de": "Seine Erinnerung endet auch.",
   "es": "Su recordatorio también se detendrá.",
@@ -9588,6 +10168,26 @@
   "ja": "リマインダーも止まります。",
   "pt": "O lembrete também para.",
   "zh": "它的提醒也会停止。"
+ },
+ "Its width, cm": {
+  "de": "Seine Breite, cm",
+  "es": "Su ancho, cm",
+  "fr": "Sa largeur, cm",
+  "hi": "उसकी चौड़ाई, सेमी",
+  "it": "Larghezza, cm",
+  "ja": "幅（cm）",
+  "pt": "Largura, cm",
+  "zh": "宽度（厘米）"
+ },
+ "Its width, inches": {
+  "de": "Seine Breite, Zoll",
+  "es": "Su ancho, pulgadas",
+  "fr": "Sa largeur, pouces",
+  "hi": "उसकी चौड़ाई, इंच",
+  "it": "Larghezza, pollici",
+  "ja": "幅（インチ）",
+  "pt": "Largura, polegadas",
+  "zh": "宽度（英寸）"
  },
  "Job application": {
   "de": "Bewerbung",
@@ -9808,6 +10408,16 @@
   "ja": "保持",
   "pt": "Manter",
   "zh": "保留"
+ },
+ "Keep Tenzy open on a table to log a neighbour's noise with times — useful for a complaint.": {
+  "de": "Lass Tenzy offen auf dem Tisch liegen, um Nachbarlärm mit Uhrzeit zu protokollieren – hilfreich für eine Beschwerde.",
+  "es": "Deja Tenzy abierto en una mesa para registrar el ruido del vecino con horas: útil para una queja.",
+  "fr": "Laissez Tenzy ouvert sur une table pour noter le bruit des voisins avec l'heure — utile pour une plainte.",
+  "hi": "पड़ोसी का शोर समय के साथ दर्ज करने के लिए Tenzy खुला रखकर मेज़ पर रखें — शिकायत में काम आएगा।",
+  "it": "Lascia Tenzy aperto su un tavolo per registrare il rumore dei vicini con gli orari: utile per un reclamo.",
+  "ja": "Tenzyを開いたまま机に置くと近所の騒音を時刻付きで記録できます。苦情の際に役立ちます。",
+  "pt": "Deixe o Tenzy aberto na mesa para registrar o barulho do vizinho com horários — útil para uma reclamação.",
+  "zh": "让 Tenzy 开着放在桌上，记录邻居噪音及时间，便于投诉。"
  },
  "Keep Tenzy open while this finishes.": {
   "de": "Lass Tenzy offen, bis das fertig ist.",
@@ -10369,6 +10979,16 @@
   "pt": "Retirar esta",
   "zh": "去掉这张"
  },
+ "Leave this out": {
+  "de": "Weglassen",
+  "es": "No incluir",
+  "fr": "Exclure",
+  "hi": "इसे छोड़ दें",
+  "it": "Escludi",
+  "ja": "除外する",
+  "pt": "Deixar de fora",
+  "zh": "不包括"
+ },
  "Leaves you with more energy for the evening.": {
   "de": "Gibt dir mehr Energie für den Abend.",
   "es": "Te deja más energía para la tarde.",
@@ -10438,6 +11058,56 @@
   "ja": "水準器・コンパス・センサー",
   "pt": "Nível, bússola e sensores",
   "zh": "水平仪、指南针和传感器"
+ },
+ "LiDAR on this iPhone: expect about ±1 cm on flat surfaces.": {
+  "de": "LiDAR auf diesem iPhone: auf flachen Flächen etwa ±1 cm.",
+  "es": "LiDAR en este iPhone: unos ±1 cm en superficies planas.",
+  "fr": "LiDAR sur cet iPhone : environ ±1 cm sur surfaces planes.",
+  "hi": "इस iPhone में LiDAR है: सपाट सतह पर लगभग ±1 सेमी।",
+  "it": "LiDAR su questo iPhone: circa ±1 cm su superfici piane.",
+  "ja": "このiPhoneはLiDAR搭載：平面で約±1 cm。",
+  "pt": "LiDAR neste iPhone: cerca de ±1 cm em superfícies planas.",
+  "zh": "此 iPhone 有 LiDAR：平面误差约 ±1 厘米。"
+ },
+ "Light": {
+  "de": "Licht",
+  "es": "Luz",
+  "fr": "Lumière",
+  "hi": "रोशनी",
+  "it": "Luce",
+  "ja": "明るさ",
+  "pt": "Luz",
+  "zh": "光照"
+ },
+ "Light changes through the day.": {
+  "de": "Das Licht ändert sich im Tagesverlauf.",
+  "es": "La luz cambia a lo largo del día.",
+  "fr": "La lumière change au fil de la journée.",
+  "hi": "रोशनी दिन भर बदलती रहती है।",
+  "it": "La luce cambia durante il giorno.",
+  "ja": "光は一日で変わります。",
+  "pt": "A luz muda ao longo do dia.",
+  "zh": "光照会随时间变化。"
+ },
+ "Light changes through the day. Open Tenzy › Instruments › Light for a plant to measure the same spot now.": {
+  "de": "Das Licht ändert sich. Öffne Tenzy › Instrumente › Licht für eine Pflanze und miss denselben Platz jetzt.",
+  "es": "La luz cambia. Abre Tenzy › Instrumentos › Luz para una planta y mide el mismo sitio ahora.",
+  "fr": "La lumière change. Ouvrez Tenzy › Instruments › Lumière pour une plante et mesurez le même endroit.",
+  "hi": "रोशनी बदलती है। Tenzy › Instruments › पौधे के लिए रोशनी खोलकर उसी जगह अभी मापें।",
+  "it": "La luce cambia. Apri Tenzy › Strumenti › Luce per una pianta e misura lo stesso posto ora.",
+  "ja": "光は変わります。Tenzy › 計測 › 植物の明るさで同じ場所を測りましょう。",
+  "pt": "A luz muda. Abra Tenzy › Instrumentos › Luz para planta e meça o mesmo lugar agora.",
+  "zh": "光照会变化。打开 Tenzy › 仪器 › 植物光照，现在再测同一位置。"
+ },
+ "Light for a plant or desk": {
+  "de": "Licht für Pflanze oder Schreibtisch",
+  "es": "Luz para una planta o escritorio",
+  "fr": "Lumière pour plante ou bureau",
+  "hi": "पौधे या डेस्क के लिए रोशनी",
+  "it": "Luce per pianta o scrivania",
+  "ja": "植物や机の明るさ",
+  "pt": "Luz para planta ou mesa",
+  "zh": "植物或书桌的光照"
  },
  "Light is behind them — I've brightened their face. Turning them toward the light is even better.": {
   "de": "Licht von hinten – ich habe das Gesicht aufgehellt. Noch besser: zum Licht drehen.",
@@ -10568,6 +11238,16 @@
   "ja": "聞いています… やることと今の気分を話してください。",
   "pt": "Ouvindo… diga tudo o que precisa fazer e como se sente.",
   "zh": "正在听……说出你要做的所有事，以及你的感受。"
+ },
+ "Lists": {
+  "de": "Listen",
+  "es": "Listas",
+  "fr": "Listes",
+  "hi": "सूचियाँ",
+  "it": "Elenchi",
+  "ja": "リスト",
+  "pt": "Listas",
+  "zh": "清单"
  },
  "Live color‑blind correction": {
   "de": "Live-Farbsehkorrektur",
@@ -10908,6 +11588,16 @@
   "ja": "スタイル、縁取り、印刷用シート。",
   "pt": "Estilos, contornos e uma folha para imprimir.",
   "zh": "多种风格、描边和可打印贴纸页。"
+ },
+ "Loud enough to harm your hearing — step away or use earplugs.": {
+  "de": "Laut genug, um das Gehör zu schädigen – Abstand halten oder Ohrstöpsel nutzen.",
+  "es": "Lo bastante fuerte para dañar el oído: aléjate o usa tapones.",
+  "fr": "Assez fort pour abîmer l'audition — éloignez-vous ou mettez des bouchons.",
+  "hi": "इतना तेज़ कि सुनने की क्षमता बिगड़ सकती है — दूर हटें या ईयरप्लग लगाएँ।",
+  "it": "Abbastanza forte da danneggiare l'udito: allontanati o usa i tappi.",
+  "ja": "聴力を傷めるほどの音量です。離れるか耳栓を。",
+  "pt": "Alto o bastante para prejudicar a audição — afaste-se ou use protetor.",
+  "zh": "音量足以损伤听力，请远离或戴耳塞。"
  },
  "Love it — save": {
   "de": "Gefällt mir – speichern",
@@ -11529,6 +12219,16 @@
   "pt": "Marcar como por fazer",
   "zh": "标记为未完成"
  },
+ "Mark done": {
+  "de": "Als erledigt markieren",
+  "es": "Marcar hecho",
+  "fr": "Marquer fait",
+  "hi": "पूरा चिह्नित करें",
+  "it": "Segna come fatto",
+  "ja": "完了にする",
+  "pt": "Marcar como feito",
+  "zh": "标记完成"
+ },
  "Measure": {
   "de": "Messen",
   "es": "Medir",
@@ -11549,6 +12249,36 @@
   "pt": "Meça um cômodo com a câmera",
   "zh": "用相机测量房间"
  },
+ "Measure again": {
+  "de": "Erneut messen",
+  "es": "Medir de nuevo",
+  "fr": "Mesurer à nouveau",
+  "hi": "फिर मापें",
+  "it": "Misura di nuovo",
+  "ja": "もう一度測る",
+  "pt": "Medir de novo",
+  "zh": "重新测量"
+ },
+ "Measure something small on the screen": {
+  "de": "Etwas Kleines auf dem Bildschirm messen",
+  "es": "Medir algo pequeño en la pantalla",
+  "fr": "Mesurer un petit objet sur l'écran",
+  "hi": "स्क्रीन पर कुछ छोटा मापें",
+  "it": "Misura qualcosa di piccolo sullo schermo",
+  "ja": "画面で小さな物を測る",
+  "pt": "Medir algo pequeno na tela",
+  "zh": "在屏幕上测量小物件"
+ },
+ "Measured at": {
+  "de": "Gemessen um",
+  "es": "Medido a las",
+  "fr": "Mesuré à",
+  "hi": "मापा गया",
+  "it": "Misurato alle",
+  "ja": "測定時刻",
+  "pt": "Medido às",
+  "zh": "测量时间"
+ },
  "Measured on your phone against the official rules:": {
   "de": "Auf deinem Handy anhand der offiziellen Vorgaben gemessen:",
   "es": "Medido en tu móvil según las normas oficiales:",
@@ -11558,6 +12288,16 @@
   "ja": "公式の規定に照らしてスマホ上で測定：",
   "pt": "Medido no seu celular conforme as regras oficiais:",
   "zh": "已在手机上按官方规定测量："
+ },
+ "Measured. Tap again to add another length, or check it below.": {
+  "de": "Gemessen. Tippe erneut für eine weitere Länge oder sieh unten nach.",
+  "es": "Medido. Toca otra vez para añadir otra medida o revísala abajo.",
+  "fr": "Mesuré. Touchez à nouveau pour une autre longueur, ou vérifiez ci-dessous.",
+  "hi": "माप लिया। दूसरी लंबाई के लिए फिर टैप करें या नीचे देखें।",
+  "it": "Misurato. Tocca ancora per un'altra lunghezza o controlla qui sotto.",
+  "ja": "測定完了。もう一度タップで別の長さ、または下で確認。",
+  "pt": "Medido. Toque de novo para outra medida ou confira abaixo.",
+  "zh": "已测量。再次点按可添加长度，或在下方查看。"
  },
  "Measurement photo": {
   "de": "Messfoto",
@@ -11658,6 +12398,16 @@
   "ja": "中",
   "pt": "Médio",
   "zh": "中"
+ },
+ "Medium light": {
+  "de": "Mittleres Licht",
+  "es": "Luz media",
+  "fr": "Lumière moyenne",
+  "hi": "मध्यम रोशनी",
+  "it": "Luce media",
+  "ja": "中くらいの明るさ",
+  "pt": "Luz média",
+  "zh": "中等光照"
  },
  "Meet": {
   "de": "Treffen",
@@ -11778,6 +12528,16 @@
   "ja": "メッセージ保護",
   "pt": "Escudo de mensagens",
   "zh": "消息盾"
+ },
+ "Metal": {
+  "de": "Metall",
+  "es": "Metal",
+  "fr": "Métal",
+  "hi": "धातु",
+  "it": "Metallo",
+  "ja": "金属",
+  "pt": "Metal",
+  "zh": "金属"
  },
  "Metal, buzzing, beep-boop": {
   "de": "Metallisch, summend, piep-piep",
@@ -11908,6 +12668,16 @@
   "ja": "モンスター",
   "pt": "Monstro",
   "zh": "怪物"
+ },
+ "Monstera, fiddle-leaf fig, rubber plant, orchids": {
+  "de": "Monstera, Geigenfeige, Gummibaum, Orchideen",
+  "es": "Monstera, ficus lira, ficus elástica, orquídeas",
+  "fr": "Monstera, figuier lyre, caoutchouc, orchidées",
+  "hi": "मॉन्स्टेरा, फ़िडल-लीफ़ फ़िग, रबर प्लांट, ऑर्किड",
+  "it": "Monstera, ficus lyrata, ficus elastica, orchidee",
+  "ja": "モンステラ、カシワバゴム、ゴムの木、ラン",
+  "pt": "Costela-de-adão, figueira-lira, falsa-seringueira, orquídeas",
+  "zh": "龟背竹、琴叶榕、橡皮树、兰花"
  },
  "Monthly": {
   "de": "Monatlich",
@@ -12168,6 +12938,36 @@
   "ja": "顔がフレームの端に来ないよう動いて。",
   "pt": "Mexa-se para o rosto não ficar na borda.",
   "zh": "调整位置，别让脸在画面边缘。"
+ },
+ "Move the phone slowly so Tenzy can see the room.": {
+  "de": "Bewege das Handy langsam, damit Tenzy den Raum sieht.",
+  "es": "Mueve el móvil despacio para que Tenzy vea la habitación.",
+  "fr": "Bougez lentement pour que Tenzy voie la pièce.",
+  "hi": "फ़ोन धीरे घुमाएँ ताकि Tenzy कमरा देख सके।",
+  "it": "Muovi piano il telefono così Tenzy vede la stanza.",
+  "ja": "ゆっくり動かして部屋を認識させてください。",
+  "pt": "Mova o celular devagar para o Tenzy ver o cômodo.",
+  "zh": "缓慢移动手机，让 Tenzy 识别房间。"
+ },
+ "Move the phone slowly, pointing at the floor or the wall, until the dot turns green.": {
+  "de": "Bewege das Handy langsam auf Boden oder Wand gerichtet, bis der Punkt grün wird.",
+  "es": "Mueve el móvil despacio apuntando al suelo o la pared hasta que el punto se ponga verde.",
+  "fr": "Bougez lentement vers le sol ou le mur jusqu'à ce que le point devienne vert.",
+  "hi": "फ़र्श या दीवार की ओर धीरे घुमाएँ, जब तक बिंदु हरा न हो जाए।",
+  "it": "Muovi piano verso pavimento o parete finché il punto diventa verde.",
+  "ja": "床か壁に向けてゆっくり動かし、点が緑になるまで待つ。",
+  "pt": "Mova devagar apontando para o piso ou a parede até o ponto ficar verde.",
+  "zh": "对准地面或墙面缓慢移动，直到圆点变绿。"
+ },
+ "Move to the other end — the length updates live — and tap.": {
+  "de": "Gehe zum anderen Ende – die Länge läuft mit – und tippe.",
+  "es": "Ve al otro extremo (la medida se actualiza) y toca.",
+  "fr": "Allez à l'autre bout — la longueur s'actualise — et touchez.",
+  "hi": "दूसरे सिरे पर जाएँ — लंबाई साथ-साथ बदलेगी — और टैप करें।",
+  "it": "Vai all'altra estremità (la misura si aggiorna) e tocca.",
+  "ja": "反対の端へ（長さが随時更新）移動してタップ。",
+  "pt": "Vá até a outra ponta — a medida atualiza — e toque.",
+  "zh": "移到另一端（长度实时更新）后点按。"
  },
  "Move to top": {
   "de": "Nach ganz oben",
@@ -12999,6 +13799,16 @@
   "pt": "Nenhum erro de ortografia; espaços e maiúsculas ajustados.",
   "zh": "未发现拼写错误；已整理空格和大小写。"
  },
+ "No month is written on the board, so this month is assumed — check the dates.": {
+  "de": "Kein Monat auf der Tafel, daher wird dieser Monat angenommen – prüfe die Daten.",
+  "es": "No hay mes escrito, así que se asume este mes: revisa las fechas.",
+  "fr": "Aucun mois n'est écrit, donc ce mois-ci est supposé — vérifiez les dates.",
+  "hi": "बोर्ड पर महीना नहीं लिखा, इसलिए यही महीना माना गया — तारीख़ें जाँचें।",
+  "it": "Non c'è scritto il mese, quindi si assume questo mese: controlla le date.",
+  "ja": "月の記載がないため今月と見なしました。日付を確認してください。",
+  "pt": "Não há mês escrito, então foi considerado este mês — confira as datas.",
+  "zh": "看板上没写月份，默认本月，请核对日期。"
+ },
  "No notes yet.": {
   "de": "Noch keine Notizen.",
   "es": "Aún no hay notas.",
@@ -13169,6 +13979,16 @@
   "pt": "Noir",
   "zh": "黑白"
  },
+ "Noise log": {
+  "de": "Lärmprotokoll",
+  "es": "Registro de ruido",
+  "fr": "Journal de bruit",
+  "hi": "शोर का रिकॉर्ड",
+  "it": "Registro del rumore",
+  "ja": "騒音ログ",
+  "pt": "Registro de ruído",
+  "zh": "噪音记录"
+ },
  "Noisiest around": {
   "de": "Am lautesten gegen",
   "es": "Más ruido hacia las",
@@ -13248,6 +14068,16 @@
   "ja": "未接続",
   "pt": "Não ligado",
   "zh": "未连接"
+ },
+ "Not done": {
+  "de": "Nicht erledigt",
+  "es": "Sin hacer",
+  "fr": "Pas fait",
+  "hi": "पूरा नहीं",
+  "it": "Non fatto",
+  "ja": "未完了",
+  "pt": "Não feito",
+  "zh": "未完成"
  },
  "Not feeling well — dress a layer warmer than usual.": {
   "de": "Dir geht's nicht gut – zieh eine Schicht wärmer an als sonst.",
@@ -13429,6 +14259,26 @@
   "pt": "Nada copiado",
   "zh": "未复制任何内容"
  },
+ "Nothing dated for today. Your lists are under Lists.": {
+  "de": "Heute nichts mit Datum. Deine Listen findest du unter Listen.",
+  "es": "Nada con fecha para hoy. Tus listas están en Listas.",
+  "fr": "Rien de daté aujourd'hui. Vos listes sont dans Listes.",
+  "hi": "आज के लिए कुछ तय नहीं। आपकी सूचियाँ 'सूचियाँ' में हैं।",
+  "it": "Niente con data per oggi. Le liste sono in Elenchi.",
+  "ja": "今日の予定はありません。リストは「リスト」に。",
+  "pt": "Nada com data para hoje. Suas listas estão em Listas.",
+  "zh": "今天没有带日期的事项。清单在“清单”中。"
+ },
+ "Nothing dated in the next 7 days.": {
+  "de": "Nichts mit Datum in den nächsten 7 Tagen.",
+  "es": "Nada con fecha en los próximos 7 días.",
+  "fr": "Rien de daté dans les 7 prochains jours.",
+  "hi": "अगले 7 दिनों में कुछ तय नहीं।",
+  "it": "Niente con data nei prossimi 7 giorni.",
+  "ja": "今後7日間の予定はありません。",
+  "pt": "Nada com data nos próximos 7 dias.",
+  "zh": "未来 7 天没有带日期的事项。"
+ },
  "Nothing due today.": {
   "de": "Heute nichts fällig.",
   "es": "Nada pendiente hoy.",
@@ -13509,6 +14359,16 @@
   "pt": "Nada urgente hoje. Aproveite.",
   "zh": "今天没有急事，好好享受。"
  },
+ "Nothing readable was found. Try a straighter, closer photo in good light.": {
+  "de": "Nichts Lesbares gefunden. Versuche ein geraderes, näheres Foto bei gutem Licht.",
+  "es": "No se encontró nada legible. Prueba una foto más recta y cercana, con buena luz.",
+  "fr": "Rien de lisible. Essayez une photo plus droite et plus proche, bien éclairée.",
+  "hi": "पढ़ने लायक कुछ नहीं मिला। अच्छी रोशनी में सीधी, नज़दीक फ़ोटो लें।",
+  "it": "Niente di leggibile. Prova una foto più dritta e vicina, con buona luce.",
+  "ja": "読み取れませんでした。明るい場所で正面から近づいて撮ってください。",
+  "pt": "Nada legível encontrado. Tente uma foto mais reta e próxima, com boa luz.",
+  "zh": "未找到可读内容。请在光线好处正对拍近一些。"
+ },
  "Nothing saved yet.": {
   "de": "Noch nichts gespeichert.",
   "es": "Aún no hay nada guardado.",
@@ -13558,6 +14418,16 @@
   "ja": "Tenzyの通知がオフです",
   "pt": "As notificações do Tenzy estão desativadas",
   "zh": "Tenzy 的通知已关闭"
+ },
+ "Notifications are off for Tenzy — open Settings": {
+  "de": "Mitteilungen für Tenzy sind aus – Einstellungen öffnen",
+  "es": "Las notificaciones de Tenzy están desactivadas: abre Ajustes",
+  "fr": "Les notifications de Tenzy sont désactivées — ouvrir Réglages",
+  "hi": "Tenzy की सूचनाएँ बंद हैं — Settings खोलें",
+  "it": "Le notifiche di Tenzy sono disattivate: apri Impostazioni",
+  "ja": "Tenzyの通知がオフです — 設定を開く",
+  "pt": "As notificações do Tenzy estão desligadas — abrir Ajustes",
+  "zh": "Tenzy 的通知已关闭 — 打开设置"
  },
  "Notifications are off for Tenzy — turn them on in Settings to get check-ins.": {
   "de": "Mitteilungen für Tenzy sind aus – aktiviere sie in den Einstellungen für Check-ins.",
@@ -13618,6 +14488,16 @@
   "ja": "今",
   "pt": "Agora",
   "zh": "现在"
+ },
+ "Now tap the opposite corner, top-right.": {
+  "de": "Tippe jetzt die gegenüberliegende Ecke oben rechts an.",
+  "es": "Ahora toca la esquina opuesta, arriba a la derecha.",
+  "fr": "Touchez maintenant le coin opposé, en haut à droite.",
+  "hi": "अब सामने वाला कोना, ऊपर दाईं ओर, टैप करें।",
+  "it": "Ora tocca l'angolo opposto, in alto a destra.",
+  "ja": "次に反対側の右上の角をタップ。",
+  "pt": "Agora toque no canto oposto, no alto à direita.",
+  "zh": "现在点按对角，右上角。"
  },
  "Nudge again": {
   "de": "Erneut erinnern",
@@ -13829,6 +14709,16 @@
   "pt": "Um app para tudo o que seu celular esqueceu — mais de 60 ferramentas, 90 prontas e as que você cria. Tudo roda no seu telefone; nada é enviado.",
   "zh": "一个应用搞定手机忘了做的事——60 多个工具、90 个现成工具，以及你自己搭建的工具。全部在手机上运行，不上传任何内容。"
  },
+ "One end is": {
+  "de": "Ein Ende liegt",
+  "es": "Un extremo está",
+  "fr": "Un bout est",
+  "hi": "एक सिरा",
+  "it": "Un'estremità è",
+  "ja": "片側が",
+  "pt": "Uma ponta está",
+  "zh": "一端偏了"
+ },
  "One face found": {
   "de": "Ein Gesicht gefunden",
   "es": "Se encontró una cara",
@@ -13989,6 +14879,16 @@
   "pt": "Uma única vez, no teu telemóvel. Podes pesquisar o que já está pronto — da próxima vez é instantâneo.",
   "zh": "一次性，在你的手机上。你可以搜索已就绪的内容——下次即是即时的。"
  },
+ "Only just — allow for skirting boards and handles.": {
+  "de": "Ganz knapp – denk an Sockelleisten und Griffe.",
+  "es": "Justo justo: ten en cuenta zócalos y tiradores.",
+  "fr": "Tout juste — pensez aux plinthes et poignées.",
+  "hi": "बस थोड़ा सा — स्कर्टिंग और हैंडल का ध्यान रखें।",
+  "it": "Al pelo: considera battiscopa e maniglie.",
+  "ja": "ぎりぎりです。幅木や取っ手も考慮して。",
+  "pt": "No limite — considere rodapés e puxadores.",
+  "zh": "刚好放下，注意踢脚线和把手。"
+ },
  "Only open a payment link if you trust the sender — when in doubt, type the company's address yourself.": {
   "de": "Öffne einen Zahlungslink nur, wenn du dem Absender vertraust – im Zweifel tippe die Adresse der Firma selbst ein.",
   "es": "Abre un enlace de pago solo si confías en el remitente; si dudas, escribe tú la dirección de la empresa.",
@@ -14079,6 +14979,16 @@
   "pt": "Abra Fotos e toque nesta figurinha (é sua foto mais recente).",
   "zh": "打开“照片”，点按这张贴纸（就是最新的照片）。"
  },
+ "Open Planner": {
+  "de": "Planer öffnen",
+  "es": "Abrir Planificador",
+  "fr": "Ouvrir le Planner",
+  "hi": "प्लानर खोलें",
+  "it": "Apri Planner",
+  "ja": "プランナーを開く",
+  "pt": "Abrir Planner",
+  "zh": "打开计划"
+ },
  "Open Settings": {
   "de": "Einstellungen öffnen",
   "es": "Abrir Ajustes",
@@ -14168,6 +15078,16 @@
   "ja": "それでも開く",
   "pt": "Abrir mesmo assim",
   "zh": "仍然打开"
+ },
+ "Open as a spreadsheet": {
+  "de": "Als Tabelle öffnen",
+  "es": "Abrir como hoja de cálculo",
+  "fr": "Ouvrir en tableur",
+  "hi": "स्प्रेडशीट के रूप में खोलें",
+  "it": "Apri come foglio di calcolo",
+  "ja": "スプレッドシートで開く",
+  "pt": "Abrir como planilha",
+  "zh": "以表格打开"
  },
  "Open files people send you": {
   "de": "Dateien öffnen, die man dir schickt",
@@ -14609,6 +15529,26 @@
   "pt": "Tinta",
   "zh": "油漆"
  },
+ "Paint for this wall": {
+  "de": "Farbe für diese Wand",
+  "es": "Pintura para esta pared",
+  "fr": "Peinture pour ce mur",
+  "hi": "इस दीवार के लिए पेंट",
+  "it": "Vernice per questa parete",
+  "ja": "この壁の塗料",
+  "pt": "Tinta para esta parede",
+  "zh": "这面墙需要的油漆"
+ },
+ "Paint, wallpaper, blinds": {
+  "de": "Farbe, Tapete, Rollos",
+  "es": "Pintura, papel pintado, persianas",
+  "fr": "Peinture, papier peint, stores",
+  "hi": "पेंट, वॉलपेपर, ब्लाइंड्स",
+  "it": "Vernice, carta da parati, tende",
+  "ja": "塗装、壁紙、ブラインド",
+  "pt": "Tinta, papel de parede, persianas",
+  "zh": "油漆、墙纸、百叶窗"
+ },
  "Panel": {
   "de": "Bild",
   "es": "Viñeta",
@@ -14908,6 +15848,16 @@
   "ja": "近くの薬局",
   "pt": "Farmácias perto de mim",
   "zh": "附近的药店"
+ },
+ "Philodendron, Chinese evergreen, calathea, spider plant": {
+  "de": "Philodendron, Kolbenfaden, Korbmarante, Grünlilie",
+  "es": "Filodendro, aglaonema, calathea, cinta",
+  "fr": "Philodendron, aglaonema, calathea, plante araignée",
+  "hi": "फ़िलोडेंड्रॉन, एग्लोनिमा, कैलेथिया, स्पाइडर प्लांट",
+  "it": "Filodendro, aglaonema, calathea, falangio",
+  "ja": "フィロデンドロン、アグラオネマ、カラテア、オリヅルラン",
+  "pt": "Filodendro, aglaonema, calatéia, clorofito",
+  "zh": "喜林芋、粗肋草、竹芋、吊兰"
  },
  "Phone": {
   "de": "Telefon",
@@ -15428,6 +16378,16 @@
   "ja": "中央の絵",
   "pt": "Imagem no centro",
   "zh": "中间的图案"
+ },
+ "Pictures, shelves, a wobbly table — beeps when it's level": {
+  "de": "Bilder, Regale, ein wackliger Tisch – piept, wenn es gerade ist",
+  "es": "Cuadros, estantes, una mesa que cojea: pita cuando está nivelado",
+  "fr": "Cadres, étagères, table bancale — bip quand c'est de niveau",
+  "hi": "तस्वीरें, शेल्फ़, डगमगाती मेज़ — सीधा होने पर बीप",
+  "it": "Quadri, mensole, un tavolo traballante: bip quando è in bolla",
+  "ja": "額、棚、がたつく机 — 水平で音が鳴る",
+  "pt": "Quadros, prateleiras, mesa bamba — apita quando nivela",
+  "zh": "挂画、搁架、晃动的桌子 — 水平时提示"
  },
  "Pills left now:": {
   "de": "Tabletten übrig:",
@@ -16149,6 +17109,16 @@
   "pt": "Juntar todas as fotos numa imagem (uma colagem)",
   "zh": "将所有照片合成一张图（拼贴）"
  },
+ "Put it back": {
+  "de": "Wieder aufnehmen",
+  "es": "Volver a incluir",
+  "fr": "Remettre",
+  "hi": "वापस जोड़ें",
+  "it": "Rimetti",
+  "ja": "戻す",
+  "pt": "Incluir de novo",
+  "zh": "放回"
+ },
  "Put many files into one zip": {
   "de": "Viele Dateien in ein ZIP packen",
   "es": "Pon muchos archivos en un zip",
@@ -16178,6 +17148,16 @@
   "ja": "録音を順に1つに、または講義を声が変わらず速く・遅く。",
   "pt": "Junte gravações num arquivo, ou acelere/desacelere uma aula sem voz de esquilo.",
   "zh": "把录音按顺序合成一个文件，或在不变调的情况下加速/减速讲座。"
+ },
+ "Put the circle on one end and tap.": {
+  "de": "Setze den Kreis auf ein Ende und tippe.",
+  "es": "Pon el círculo en un extremo y toca.",
+  "fr": "Placez le cercle sur un bout et touchez.",
+  "hi": "गोले को एक सिरे पर रखें और टैप करें।",
+  "it": "Metti il cerchio su un'estremità e tocca.",
+  "ja": "円を端に合わせてタップ。",
+  "pt": "Coloque o círculo em uma ponta e toque.",
+  "zh": "把圆圈对准一端后点按。"
  },
  "Put the horizon on a line, not across the middle.": {
   "de": "Setz den Horizont auf eine Linie, nicht in die Mitte.",
@@ -16268,6 +17248,16 @@
   "ja": "QRシールは本物の上に簡単に貼れます。企業のサイトのはずなら、アドレスを自分で入力してください。",
   "pt": "É fácil colar adesivos QR por cima dos verdadeiros. Se esperava o site de uma empresa, digite o endereço você mesmo.",
   "zh": "二维码贴纸很容易覆盖在真码上。如果你要访问的是公司网站，请自己输入网址。"
+ },
+ "Qibla": {
+  "de": "Qibla",
+  "es": "Alquibla",
+  "fr": "Qibla",
+  "hi": "क़िबला",
+  "it": "Qibla",
+  "ja": "キブラ",
+  "pt": "Qibla",
+  "zh": "朝向（Qibla）"
  },
  "Qty": {
   "de": "Menge",
@@ -16379,6 +17369,16 @@
   "pt": "Replanejar",
   "zh": "重新规划"
  },
+ "Read a photo": {
+  "de": "Foto lesen",
+  "es": "Leer una foto",
+  "fr": "Lire une photo",
+  "hi": "फ़ोटो पढ़ें",
+  "it": "Leggi una foto",
+  "ja": "写真を読む",
+  "pt": "Ler uma foto",
+  "zh": "读取照片"
+ },
  "Read a receipt into your expenses": {
   "de": "Beleg in deine Ausgaben einlesen",
   "es": "Pasa un recibo a tus gastos",
@@ -16418,6 +17418,36 @@
   "ja": "どんなメニューも自分の言語で",
   "pt": "Leia qualquer cardápio no seu idioma",
   "zh": "用你的语言读懂任何菜单"
+ },
+ "Read by Apple Intelligence on your phone": {
+  "de": "Gelesen von Apple Intelligence auf deinem Handy",
+  "es": "Leído por Apple Intelligence en tu móvil",
+  "fr": "Lu par Apple Intelligence sur votre téléphone",
+  "hi": "आपके फ़ोन पर Apple Intelligence ने पढ़ा",
+  "it": "Letto da Apple Intelligence sul telefono",
+  "ja": "iPhone上のApple Intelligenceで読み取り",
+  "pt": "Lido pelo Apple Intelligence no seu celular",
+  "zh": "由手机上的 Apple 智能读取"
+ },
+ "Read by text recognition": {
+  "de": "Gelesen per Texterkennung",
+  "es": "Leído con reconocimiento de texto",
+  "fr": "Lu par reconnaissance de texte",
+  "hi": "टेक्स्ट पहचान से पढ़ा",
+  "it": "Letto con il riconoscimento del testo",
+  "ja": "文字認識で読み取り",
+  "pt": "Lido por reconhecimento de texto",
+  "zh": "由文字识别读取"
+ },
+ "Read by text recognition. Handwriting can be misread — tap any item to fix it.": {
+  "de": "Per Texterkennung gelesen. Handschrift kann falsch gelesen werden – tippe auf einen Eintrag, um ihn zu korrigieren.",
+  "es": "Leído con reconocimiento de texto. La letra a mano puede leerse mal: toca un elemento para corregirlo.",
+  "fr": "Lu par reconnaissance de texte. L'écriture manuscrite peut être mal lue — touchez un élément pour le corriger.",
+  "hi": "टेक्स्ट पहचान से पढ़ा। हाथ की लिखावट ग़लत पढ़ी जा सकती है — ठीक करने के लिए आइटम टैप करें।",
+  "it": "Letto con il riconoscimento del testo. La scrittura a mano può essere letta male: tocca una voce per correggerla.",
+  "ja": "文字認識で読み取り。手書きは誤読の可能性あり — 項目をタップして修正。",
+  "pt": "Lido por reconhecimento de texto. Letra à mão pode ser lida errado — toque num item para corrigir.",
+  "zh": "由文字识别读取。手写可能识别错误，点按任一项即可修改。"
  },
  "Read every page": {
   "de": "Jede Seite lesen",
@@ -16578,6 +17608,16 @@
   "ja": "メニューを読み取り中…",
   "pt": "Lendo o cardápio…",
   "zh": "正在读取菜单…"
+ },
+ "Reading the photo — headings, ticks, dates and names…": {
+  "de": "Foto wird gelesen – Überschriften, Häkchen, Daten und Namen…",
+  "es": "Leyendo la foto: títulos, marcas, fechas y nombres…",
+  "fr": "Lecture de la photo — titres, coches, dates et noms…",
+  "hi": "फ़ोटो पढ़ रहे हैं — शीर्षक, टिक, तारीख़ें और नाम…",
+  "it": "Lettura della foto: titoli, spunte, date e nomi…",
+  "ja": "写真を読み取り中 — 見出し、チェック、日付、名前…",
+  "pt": "Lendo a foto — títulos, marcações, datas e nomes…",
+  "zh": "正在读取照片 — 标题、勾选、日期和姓名…"
  },
  "Reading the receipt…": {
   "de": "Beleg wird gelesen …",
@@ -16979,6 +18019,16 @@
   "pt": "Lembrar-me na véspera dos aniversários",
   "zh": "生日前一天提醒我"
  },
+ "Remind me this afternoon": {
+  "de": "Erinnere mich heute Nachmittag",
+  "es": "Recuérdamelo esta tarde",
+  "fr": "Rappelle-moi cet après-midi",
+  "hi": "आज दोपहर बाद याद दिलाएँ",
+  "it": "Ricordamelo nel pomeriggio",
+  "ja": "午後にリマインド",
+  "pt": "Lembre-me à tarde",
+  "zh": "今天下午提醒我"
+ },
  "Remind me to run this": {
   "de": "Erinnern, dies auszuführen",
   "es": "Recordarme ejecutar esto",
@@ -17008,6 +18058,16 @@
   "ja": "リマインドあり",
   "pt": "Lembrete ativo",
   "zh": "已设提醒"
+ },
+ "Reminder set for 4 hours from now": {
+  "de": "Erinnerung in 4 Stunden gestellt",
+  "es": "Recordatorio dentro de 4 horas",
+  "fr": "Rappel dans 4 heures",
+  "hi": "4 घंटे बाद का रिमाइंडर सेट",
+  "it": "Promemoria tra 4 ore",
+  "ja": "4時間後にリマインド設定",
+  "pt": "Lembrete em 4 horas",
+  "zh": "已设置 4 小时后提醒"
  },
  "Reminder:": {
   "de": "Erinnerung:",
@@ -17559,6 +18619,16 @@
   "pt": "Linhas e colunas (separadas por vírgulas). Corrige o que a digitalização apanhou mal:",
   "zh": "行和列（以逗号分隔）。修正扫描识别错误的任何内容："
  },
+ "Ruler": {
+  "de": "Lineal",
+  "es": "Regla",
+  "fr": "Règle",
+  "hi": "रूलर",
+  "it": "Righello",
+  "ja": "定規",
+  "pt": "Régua",
+  "zh": "尺子"
+ },
  "Run": {
   "de": "Ausführen",
   "es": "Ejecutar",
@@ -17618,6 +18688,26 @@
   "ja": "SOSが点滅中 — ボタンでこうなります。6秒で止まります。",
   "pt": "SOS está piscando — é isso que seu botão fará. Para em 6 segundos.",
   "zh": "SOS 正在闪烁——这就是你的按键会做的。6 秒后停止。"
+ },
+ "Safe for as long as you like": {
+  "de": "Beliebig lange unbedenklich",
+  "es": "Seguro todo el tiempo que quieras",
+  "fr": "Sans risque aussi longtemps que vous voulez",
+  "hi": "जितनी देर चाहें सुरक्षित",
+  "it": "Sicuro quanto vuoi",
+  "ja": "いくら聞いても安全",
+  "pt": "Seguro pelo tempo que quiser",
+  "zh": "多久都安全"
+ },
+ "Safe listening time, warnings and a noise log": {
+  "de": "Sichere Hörzeit, Warnungen und Lärmprotokoll",
+  "es": "Tiempo de escucha seguro, avisos y registro de ruido",
+  "fr": "Durée d'écoute sûre, alertes et journal de bruit",
+  "hi": "सुरक्षित सुनने का समय, चेतावनी और शोर रिकॉर्ड",
+  "it": "Tempo di ascolto sicuro, avvisi e registro del rumore",
+  "ja": "安全な時間、警告、騒音ログ",
+  "pt": "Tempo seguro, alertas e registro de ruído",
+  "zh": "安全时长、警告和噪音记录"
  },
  "Safety": {
   "de": "Sicherheit",
@@ -17988,6 +19078,16 @@
   "ja": "印刷シートを保存",
   "pt": "Guardar a folha de impressão",
   "zh": "保存打印页"
+ },
+ "Save this room": {
+  "de": "Diesen Raum speichern",
+  "es": "Guardar esta habitación",
+  "fr": "Enregistrer cette pièce",
+  "hi": "यह कमरा सहेजें",
+  "it": "Salva questa stanza",
+  "ja": "この部屋を保存",
+  "pt": "Salvar este cômodo",
+  "zh": "保存此房间"
  },
  "Save to Contacts": {
   "de": "In Kontakten sichern",
@@ -18719,6 +19819,16 @@
   "pt": "Veja chamadas e mensagens num lugar barulhento ou sem som: o iPhone pode piscar o flash a cada chamada e alerta. Já vem no iPhone — a Tenzy mostra onde.",
   "zh": "在嘈杂环境或静音时也能看到来电和消息：iPhone 可在每次来电和提醒时闪光。这是 iPhone 自带功能——Tenzy 告诉你在哪里。"
  },
+ "See the photo": {
+  "de": "Foto ansehen",
+  "es": "Ver la foto",
+  "fr": "Voir la photo",
+  "hi": "फ़ोटो देखें",
+  "it": "Vedi la foto",
+  "ja": "写真を見る",
+  "pt": "Ver a foto",
+  "zh": "查看照片"
+ },
  "Select": {
   "de": "Auswählen",
   "es": "Seleccionar",
@@ -19278,6 +20388,26 @@
   "ja": "アップロード用ファイルを共有",
   "pt": "Compartilhar o arquivo para enviar",
   "zh": "分享待上传的文件"
+ },
+ "Share the noise log": {
+  "de": "Lärmprotokoll teilen",
+  "es": "Compartir el registro de ruido",
+  "fr": "Partager le journal de bruit",
+  "hi": "शोर रिकॉर्ड शेयर करें",
+  "it": "Condividi il registro",
+  "ja": "騒音ログを共有",
+  "pt": "Compartilhar registro de ruído",
+  "zh": "分享噪音记录"
+ },
+ "Share the room's sizes": {
+  "de": "Raummaße teilen",
+  "es": "Compartir las medidas",
+  "fr": "Partager les dimensions",
+  "hi": "कमरे का नाप शेयर करें",
+  "it": "Condividi le misure",
+  "ja": "部屋の寸法を共有",
+  "pt": "Compartilhar as medidas",
+  "zh": "分享房间尺寸"
  },
  "Share the shopping list": {
   "de": "Einkaufsliste teilen",
@@ -19949,6 +21079,16 @@
   "pt": "Envio de foto pequena",
   "zh": "小照片上传"
  },
+ "Small ruler": {
+  "de": "Kleines Lineal",
+  "es": "Regla pequeña",
+  "fr": "Petite règle",
+  "hi": "छोटा रूलर",
+  "it": "Righello piccolo",
+  "ja": "小さな定規",
+  "pt": "Régua pequena",
+  "zh": "小尺子"
+ },
  "Small, for email": {
   "de": "Klein, für E-Mail",
   "es": "Pequeño, para correo",
@@ -19998,6 +21138,16 @@
   "ja": "滑らかさ",
   "pt": "Suavidade",
   "zh": "平滑度"
+ },
+ "Snake plant, ZZ plant, pothos, peace lily": {
+  "de": "Bogenhanf, Zamioculcas, Efeutute, Einblatt",
+  "es": "Sansevieria, zamioculca, potus, espatifilo",
+  "fr": "Sansevière, zamioculcas, pothos, spathiphyllum",
+  "hi": "स्नेक प्लांट, ZZ प्लांट, मनी प्लांट, पीस लिली",
+  "it": "Sansevieria, zamioculcas, potos, spatifillo",
+  "ja": "サンスベリア、ZZプラント、ポトス、スパティフィラム",
+  "pt": "Espada-de-são-jorge, zamioculca, jiboia, lírio-da-paz",
+  "zh": "虎尾兰、金钱树、绿萝、白掌"
  },
  "Snap a bill → calendar it": {
   "de": "Rechnung fotografieren → in den Kalender",
@@ -20599,6 +21749,16 @@
   "pt": "Levante e estique os braços uma vez",
   "zh": "站起来，向上伸展一次手臂"
  },
+ "Stand with your back to the window and the phone flat: that's the way the window faces.": {
+  "de": "Stell dich mit dem Rücken zum Fenster, Handy flach: Das ist die Richtung des Fensters.",
+  "es": "Ponte de espaldas a la ventana con el móvil plano: esa es su orientación.",
+  "fr": "Dos à la fenêtre, téléphone à plat : c'est l'orientation de la fenêtre.",
+  "hi": "खिड़की की ओर पीठ करके फ़ोन सपाट रखें: वही खिड़की की दिशा है।",
+  "it": "Dai le spalle alla finestra con il telefono piatto: è l'orientamento della finestra.",
+  "ja": "窓に背を向けスマホを水平に：それが窓の向きです。",
+  "pt": "Fique de costas para a janela com o celular deitado: essa é a direção da janela.",
+  "zh": "背对窗户、手机平放，显示的就是窗户朝向。"
+ },
  "Start": {
   "de": "Start",
   "es": "Iniciar",
@@ -20669,6 +21829,16 @@
   "pt": "Começar a gravar",
   "zh": "开始录制"
  },
+ "Start the room scan": {
+  "de": "Raumscan starten",
+  "es": "Empezar el escaneo",
+  "fr": "Lancer le scan de la pièce",
+  "hi": "कमरे का स्कैन शुरू करें",
+  "it": "Avvia la scansione",
+  "ja": "部屋のスキャン開始",
+  "pt": "Iniciar o escaneamento",
+  "zh": "开始扫描房间"
+ },
  "Start watching": {
   "de": "Beobachten starten",
   "es": "Empezar a vigilar",
@@ -20718,6 +21888,16 @@
   "ja": "ステップ",
   "pt": "Passo",
   "zh": "步骤"
+ },
+ "Step away from the source or use earplugs.": {
+  "de": "Geh weg von der Quelle oder nutze Ohrstöpsel.",
+  "es": "Aléjate de la fuente o usa tapones.",
+  "fr": "Éloignez-vous de la source ou mettez des bouchons.",
+  "hi": "स्रोत से दूर हटें या ईयरप्लग लगाएँ।",
+  "it": "Allontanati dalla fonte o usa i tappi.",
+  "ja": "音源から離れるか耳栓を。",
+  "pt": "Afaste-se da fonte ou use protetor.",
+  "zh": "远离声源或戴耳塞。"
  },
  "Step back a little — you're very close to their face.": {
   "de": "Geh etwas zurück – du bist sehr nah am Gesicht.",
@@ -21009,6 +22189,16 @@
   "pt": "Subtotal",
   "zh": "小计"
  },
+ "Succulents, aloe, citrus, most flowering plants": {
+  "de": "Sukkulenten, Aloe, Zitrus, die meisten Blühpflanzen",
+  "es": "Suculentas, aloe, cítricos, la mayoría de plantas con flor",
+  "fr": "Succulentes, aloès, agrumes, la plupart des plantes à fleurs",
+  "hi": "रसीले पौधे, एलोवेरा, नींबू जाति, ज़्यादातर फूल वाले पौधे",
+  "it": "Succulente, aloe, agrumi, quasi tutte le piante da fiore",
+  "ja": "多肉植物、アロエ、柑橘、多くの花",
+  "pt": "Suculentas, babosa, cítricos, a maioria das floríferas",
+  "zh": "多肉、芦荟、柑橘、多数开花植物"
+ },
  "Suggest subject lines": {
   "de": "Betreffzeilen vorschlagen",
   "es": "Sugerir asuntos",
@@ -21038,6 +22228,16 @@
   "ja": "要約",
   "pt": "Resumo",
   "zh": "摘要"
+ },
+ "Sun direction, Qibla, and how high you are": {
+  "de": "Sonnenrichtung, Qibla und deine Höhe",
+  "es": "Dirección del sol, alquibla y tu altitud",
+  "fr": "Direction du soleil, qibla et altitude",
+  "hi": "धूप की दिशा, क़िबला और ऊँचाई",
+  "it": "Direzione del sole, qibla e altitudine",
+  "ja": "日差しの向き、キブラ、標高",
+  "pt": "Direção do sol, Qibla e altitude",
+  "zh": "阳光方向、朝向和海拔"
  },
  "Sunset spotted": {
   "de": "Sonnenuntergang erkannt",
@@ -21128,6 +22328,16 @@
   "ja": "肩が写るよう、少し離れて撮ってください。",
   "pt": "Tire de um pouco mais longe para os ombros aparecerem.",
   "zh": "离远一点拍，让肩膀入镜。"
+ },
+ "Take one": {
+  "de": "Aufnehmen",
+  "es": "Hacer una",
+  "fr": "En prendre une",
+  "hi": "एक लें",
+  "it": "Scatta",
+  "ja": "撮る",
+  "pt": "Tirar uma",
+  "zh": "拍一张"
  },
  "Take one now": {
   "de": "Jetzt eins aufnehmen",
@@ -21419,6 +22629,16 @@
   "pt": "Toque em Editar (canto superior esquerdo) e Adicionar widget.",
   "zh": "点左上角“编辑”，再点“添加小组件”。"
  },
+ "Tap Finish (or the first corner again) when you've tapped every corner.": {
+  "de": "Tippe auf Fertig (oder wieder die erste Ecke), wenn alle Ecken gesetzt sind.",
+  "es": "Toca Terminar (o la primera esquina) cuando hayas tocado todas.",
+  "fr": "Touchez Terminer (ou le premier coin) une fois tous les coins posés.",
+  "hi": "सारे कोने टैप करने के बाद 'पूरा करें' (या पहला कोना फिर) दबाएँ।",
+  "it": "Tocca Fine (o di nuovo il primo angolo) dopo tutti gli angoli.",
+  "ja": "すべての角をタップしたら「完了」（または最初の角）を。",
+  "pt": "Toque em Concluir (ou no primeiro canto) depois de todos.",
+  "zh": "所有角点完后点按“完成”（或再点第一个角）。"
+ },
  "Tap Open Shortcuts below, then tap + to make a new shortcut.": {
   "de": "Tippe unten auf „Kurzbefehle öffnen“, dann auf +.",
   "es": "Toca Abrir Atajos abajo y luego + para crear uno nuevo.",
@@ -21619,6 +22839,16 @@
   "pt": "Toque para abrir esta página, com o tempo e o que vestir. Toque em Teste quando quiser para ver já.",
   "zh": "点开会看到本页面，含天气和穿衣建议。随时点“测试一下”即可预览。"
  },
+ "Tap the bottom-left corner of the wall, window or door.": {
+  "de": "Tippe die untere linke Ecke der Wand, des Fensters oder der Tür an.",
+  "es": "Toca la esquina inferior izquierda de la pared, ventana o puerta.",
+  "fr": "Touchez le coin inférieur gauche du mur, de la fenêtre ou de la porte.",
+  "hi": "दीवार, खिड़की या दरवाज़े का नीचे बायाँ कोना टैप करें।",
+  "it": "Tocca l'angolo in basso a sinistra di parete, finestra o porta.",
+  "ja": "壁・窓・ドアの左下の角をタップ。",
+  "pt": "Toque no canto inferior esquerdo da parede, janela ou porta.",
+  "zh": "点按墙、窗或门的左下角。"
+ },
  "Tap the bubble in any app to grab or re-copy a clip.": {
   "de": "Tippe die Blase in einer beliebigen App an, um einen Clip zu erfassen oder erneut zu kopieren.",
   "es": "Toca la burbuja en cualquier app para capturar o volver a copiar un clip.",
@@ -21629,6 +22859,16 @@
   "pt": "Toca na bolha em qualquer app para capturar ou voltar a copiar um clip.",
   "zh": "在任意应用中点按气泡即可抓取或重新复制一段剪贴内容。"
  },
+ "Tap the first corner of the floor or table.": {
+  "de": "Tippe die erste Ecke von Boden oder Tisch an.",
+  "es": "Toca la primera esquina del suelo o la mesa.",
+  "fr": "Touchez le premier coin du sol ou de la table.",
+  "hi": "फ़र्श या मेज़ का पहला कोना टैप करें।",
+  "it": "Tocca il primo angolo del pavimento o del tavolo.",
+  "ja": "床やテーブルの最初の角をタップ。",
+  "pt": "Toque no primeiro canto do piso ou da mesa.",
+  "zh": "点按地面或桌面的第一个角。"
+ },
  "Tap the floating button in any app to capture.": {
   "de": "Tippe den schwebenden Knopf in einer beliebigen App an, um zu erfassen.",
   "es": "Toca el botón flotante en cualquier app para capturar.",
@@ -21638,6 +22878,16 @@
   "ja": "どのアプリでもフローティングボタンをタップでキャプチャできます。",
   "pt": "Toca no botão flutuante em qualquer app para capturar.",
   "zh": "在任意应用中点按悬浮按钮即可截取。"
+ },
+ "Tap the floor right below what you're measuring.": {
+  "de": "Tippe auf den Boden direkt unter dem Objekt.",
+  "es": "Toca el suelo justo debajo de lo que mides.",
+  "fr": "Touchez le sol juste sous ce que vous mesurez.",
+  "hi": "जिसे माप रहे हैं, उसके ठीक नीचे फ़र्श टैप करें।",
+  "it": "Tocca il pavimento proprio sotto ciò che misuri.",
+  "ja": "測る物の真下の床をタップ。",
+  "pt": "Toque no piso logo abaixo do que você mede.",
+  "zh": "点按被测物体正下方的地面。"
  },
  "Tap the middle to say why": {
   "de": "Tippe in die Mitte, um zu sagen warum",
@@ -21658,6 +22908,16 @@
   "ja": "上部の名前 →「ホーム画面に追加」→「追加」。",
   "pt": "Toque no nome em cima → Adicionar ao ecrã principal e Adicionar.",
   "zh": "点顶部名称 →“添加到主屏幕”→“添加”。"
+ },
+ "Tap the next corner, or tap the first corner again (or Finish) to close the shape.": {
+  "de": "Tippe die nächste Ecke oder wieder die erste (bzw. Fertig), um die Form zu schließen.",
+  "es": "Toca la siguiente esquina, o la primera de nuevo (o Terminar) para cerrar la forma.",
+  "fr": "Touchez le coin suivant, ou le premier (ou Terminer) pour fermer la forme.",
+  "hi": "अगला कोना टैप करें, या आकार बंद करने के लिए पहला कोना (या 'पूरा करें')।",
+  "it": "Tocca l'angolo successivo, o il primo (o Fine) per chiudere la forma.",
+  "ja": "次の角、または最初の角（か完了）で形を閉じる。",
+  "pt": "Toque no próximo canto, ou no primeiro (ou Concluir) para fechar.",
+  "zh": "点按下一个角，或再点第一个角（或“完成”）闭合形状。"
  },
  "Tap the picture to focus. Every button below starts from the camera's own best auto settings.": {
   "de": "Tippe aufs Bild, um zu fokussieren. Jeder Knopf unten startet mit den besten Auto-Einstellungen der Kamera.",
@@ -21768,6 +23028,16 @@
   "ja": "不要な名刺は ✕ をタップ。保存されません。",
   "pt": "Toque em ✕ nos cartões que não quiser: não serão salvos.",
   "zh": "点按不需要的名片上的 ✕，它就不会被保存。"
+ },
+ "Task": {
+  "de": "Aufgabe",
+  "es": "Tarea",
+  "fr": "Tâche",
+  "hi": "काम",
+  "it": "Attività",
+  "ja": "タスク",
+  "pt": "Tarefa",
+  "zh": "任务"
  },
  "Tax": {
   "de": "Steuer",
@@ -22088,6 +23358,16 @@
   "ja": "テストビルド：すべてのツールはすでに解放済みです。下の購入はサンドボックスアカウントで試せます。",
   "pt": "Versão de teste: todas as ferramentas já estão desbloqueadas. Mesmo assim podes testar a compra abaixo com uma conta sandbox.",
   "zh": "测试版本：所有工具均已解锁。你仍可用沙盒账户尝试下方的购买。"
+ },
+ "Test note in 5 seconds": {
+  "de": "Testnachricht in 5 Sekunden",
+  "es": "Aviso de prueba en 5 segundos",
+  "fr": "Note de test dans 5 secondes",
+  "hi": "5 सेकंड में टेस्ट नोट",
+  "it": "Avviso di prova tra 5 secondi",
+  "ja": "5秒後にテスト通知",
+  "pt": "Aviso de teste em 5 segundos",
+  "zh": "5 秒后发送测试通知"
  },
  "Test run": {
   "de": "Probelauf",
@@ -22519,6 +23799,16 @@
   "pt": "O código é gerado no teu telemóvel. Os códigos Wi-Fi levam a palavra-passe em texto simples — partilha-os só com pessoas a quem darias a palavra-passe.",
   "zh": "代码在你的手机上生成。Wi-Fi 码以明文携带密码 — 只与你愿意把密码告诉的人分享。"
  },
+ "The corners were tapped out of order, so Tenzy put them back in order round the edge.": {
+  "de": "Die Ecken wurden durcheinander gesetzt, Tenzy hat sie entlang des Rands geordnet.",
+  "es": "Las esquinas se tocaron desordenadas, así que Tenzy las ordenó por el borde.",
+  "fr": "Les coins étaient dans le désordre ; Tenzy les a remis dans l'ordre.",
+  "hi": "कोने क्रम से नहीं थे, इसलिए Tenzy ने उन्हें किनारे के क्रम में लगाया।",
+  "it": "Gli angoli erano in disordine, Tenzy li ha rimessi in ordine lungo il bordo.",
+  "ja": "角の順番がばらばらだったので、縁に沿って並べ直しました。",
+  "pt": "Os cantos estavam fora de ordem, então o Tenzy os reordenou pela borda.",
+  "zh": "角点顺序不对，Tenzy 已按边缘重新排序。"
+ },
  "The end": {
   "de": "Das Ende",
   "es": "El final",
@@ -22819,6 +24109,16 @@
   "pt": "Os dois PINs não conferem.",
   "zh": "两次 PIN 不一致。"
  },
+ "The two corners are almost level — tap a bottom corner, then the top corner opposite it.": {
+  "de": "Die beiden Ecken sind fast auf gleicher Höhe – erst eine untere, dann die obere gegenüber.",
+  "es": "Las dos esquinas están casi a la misma altura: toca una de abajo y luego la de arriba opuesta.",
+  "fr": "Les deux coins sont presque à la même hauteur — touchez un coin bas puis le coin haut opposé.",
+  "hi": "दोनों कोने लगभग बराबर ऊँचाई पर हैं — पहले नीचे का कोना, फिर सामने का ऊपरी कोना।",
+  "it": "I due angoli sono quasi alla stessa altezza: tocca uno in basso e poi quello in alto opposto.",
+  "ja": "2つの角がほぼ同じ高さです。下の角、次に対角の上の角を。",
+  "pt": "Os dois cantos estão quase na mesma altura — toque num de baixo e depois no de cima oposto.",
+  "zh": "两个角几乎同高，请先点下角，再点对角的上角。"
+ },
  "The work weight is lighter, and you can stop thinking about it.": {
   "de": "Die Arbeit wiegt weniger, und du kannst aufhören, daran zu denken.",
   "es": "El peso del trabajo es menor y puedes dejar de pensar en él.",
@@ -22918,6 +24218,16 @@
   "ja": "文字が写っています",
   "pt": "Tem texto nela",
   "zh": "里面有文字"
+ },
+ "These corners aren't on one flat surface (some may be on the wall or furniture). Start over and tap only floor corners.": {
+  "de": "Diese Ecken liegen nicht auf einer Fläche (einige vielleicht an Wand oder Möbeln). Neu beginnen und nur Bodenecken antippen.",
+  "es": "Estas esquinas no están en una sola superficie (algunas en la pared o muebles). Empieza de nuevo y toca solo esquinas del suelo.",
+  "fr": "Ces coins ne sont pas sur une même surface (certains sur un mur ou un meuble). Recommencez avec seulement les coins du sol.",
+  "hi": "ये कोने एक सपाट सतह पर नहीं हैं (कुछ दीवार या फ़र्नीचर पर हो सकते हैं)। फिर से शुरू करें और सिर्फ़ फ़र्श के कोने टैप करें।",
+  "it": "Questi angoli non sono su una sola superficie (alcuni su parete o mobili). Ricomincia e tocca solo angoli del pavimento.",
+  "ja": "角が同じ平面にありません（壁や家具の上の可能性）。やり直して床の角だけをタップ。",
+  "pt": "Estes cantos não estão em uma só superfície (alguns na parede ou móveis). Recomece e toque só cantos do piso.",
+  "zh": "这些角不在同一平面（可能点到墙或家具），请重新开始，只点地面的角。"
  },
  "These need more than a few steps, so Tenzy has a whole tool for each.": {
   "de": "Diese brauchen mehr als ein paar Schritte, darum hat Tenzy für jede ein eigenes Tool.",
@@ -23239,6 +24549,16 @@
   "pt": "Esta captura já não está no teu telemóvel. O texto lido dela está abaixo.",
   "zh": "此截图已不在你的手机上。从中读取的文字见下方。"
  },
+ "This spot": {
+  "de": "Dieser Platz",
+  "es": "Este sitio",
+  "fr": "Cet endroit",
+  "hi": "यह जगह",
+  "it": "Questo punto",
+  "ja": "この場所",
+  "pt": "Este lugar",
+  "zh": "此位置"
+ },
  "This tool does the rest. Tell us what's missing and we'll add it in a coming update.": {
   "de": "Den Rest erledigt dieses Tool. Sag uns, was fehlt – wir fügen es in einem der nächsten Updates hinzu.",
   "es": "Esta herramienta hace el resto. Dinos qué falta y lo añadiremos en una próxima actualización.",
@@ -23549,6 +24869,36 @@
   "pt": "Título, artista, álbum e capa",
   "zh": "标题、艺人、专辑和封面"
  },
+ "To Calendar": {
+  "de": "In den Kalender",
+  "es": "Al Calendario",
+  "fr": "Vers Calendrier",
+  "hi": "कैलेंडर में",
+  "it": "Al Calendario",
+  "ja": "カレンダーへ",
+  "pt": "Para o Calendário",
+  "zh": "到日历"
+ },
+ "To Reminders": {
+  "de": "Zu Erinnerungen",
+  "es": "A Recordatorios",
+  "fr": "Vers Rappels",
+  "hi": "रिमाइंडर में",
+  "it": "A Promemoria",
+  "ja": "リマインダーへ",
+  "pt": "Para Lembretes",
+  "zh": "到提醒事项"
+ },
+ "To do": {
+  "de": "Zu erledigen",
+  "es": "Por hacer",
+  "fr": "À faire",
+  "hi": "करना है",
+  "it": "Da fare",
+  "ja": "やること",
+  "pt": "A fazer",
+  "zh": "待办"
+ },
  "To page": {
   "de": "Bis Seite",
   "es": "Hasta la página",
@@ -23619,6 +24969,26 @@
   "pt": "Amanhã",
   "zh": "明天"
  },
+ "Too big by": {
+  "de": "Zu groß um",
+  "es": "Demasiado grande por",
+  "fr": "Trop grand de",
+  "hi": "इतना बड़ा:",
+  "it": "Troppo grande di",
+  "ja": "大きすぎ：",
+  "pt": "Grande demais em",
+  "zh": "超出"
+ },
+ "Too dark for plants": {
+  "de": "Zu dunkel für Pflanzen",
+  "es": "Demasiado oscuro para plantas",
+  "fr": "Trop sombre pour des plantes",
+  "hi": "पौधों के लिए बहुत अंधेरा",
+  "it": "Troppo buio per le piante",
+  "ja": "植物には暗すぎる",
+  "pt": "Escuro demais para plantas",
+  "zh": "对植物来说太暗"
+ },
  "Too dark or busy": {
   "de": "Zu dunkel oder unruhig",
   "es": "Demasiado oscuro o recargado",
@@ -23648,6 +25018,16 @@
   "ja": "暗すぎます — 明るい所へ行くか「暗所」に切り替えて。",
   "pt": "Muito escuro — procure mais luz ou mude para Pouca luz.",
   "zh": "太暗——找更亮的地方或切换到弱光。"
+ },
+ "Too dim to read or work — add a desk lamp": {
+  "de": "Zu dunkel zum Lesen oder Arbeiten – Schreibtischlampe dazu",
+  "es": "Demasiado oscuro para leer o trabajar: añade una lámpara",
+  "fr": "Trop sombre pour lire ou travailler — ajoutez une lampe",
+  "hi": "पढ़ने या काम के लिए बहुत कम रोशनी — डेस्क लैंप लगाएँ",
+  "it": "Troppo buio per leggere o lavorare: aggiungi una lampada",
+  "ja": "読書や作業には暗い — デスクライトを",
+  "pt": "Escuro demais para ler ou trabalhar — use uma luminária",
+  "zh": "太暗不适合阅读或工作 — 加盏台灯"
  },
  "Too easy to guess — avoid 1234-style runs.": {
   "de": "Zu leicht zu erraten – keine Folgen wie 1234.",
@@ -24839,6 +26219,16 @@
   "pt": "Usar isto como origem (ex.: cortar e depois reduzir)",
   "zh": "将此作为源文件使用（例如先裁剪再缩小）"
  },
+ "Use this room": {
+  "de": "Diesen Raum nutzen",
+  "es": "Usar esta habitación",
+  "fr": "Utiliser cette pièce",
+  "hi": "यह कमरा इस्तेमाल करें",
+  "it": "Usa questa stanza",
+  "ja": "この部屋を使う",
+  "pt": "Usar este cômodo",
+  "zh": "使用此房间"
+ },
  "Used when the number is written without one.": {
   "de": "Wird verwendet, wenn die Nummer ohne eine geschrieben ist.",
   "es": "Se usa cuando el número se escribe sin uno.",
@@ -24908,6 +26298,26 @@
   "ja": "ベジタリアン",
   "pt": "Vegetariano",
   "zh": "素食"
+ },
+ "Very bright light": {
+  "de": "Sehr helles Licht",
+  "es": "Luz muy intensa",
+  "fr": "Lumière très vive",
+  "hi": "बहुत तेज़ रोशनी",
+  "it": "Luce molto intensa",
+  "ja": "とても明るい",
+  "pt": "Luz muito forte",
+  "zh": "非常明亮"
+ },
+ "Very bright — expect glare on screens": {
+  "de": "Sehr hell – Blendung auf Bildschirmen möglich",
+  "es": "Muy luminoso: habrá reflejos en pantallas",
+  "fr": "Très lumineux — reflets sur les écrans",
+  "hi": "बहुत तेज़ — स्क्रीन पर चमक आएगी",
+  "it": "Molto luminoso: riflessi sugli schermi",
+  "ja": "とても明るい — 画面が反射しがち",
+  "pt": "Muito claro — reflexo nas telas",
+  "zh": "非常亮 — 屏幕会反光"
  },
  "Very close — most people would call them the same": {
   "de": "Sehr nah – die meisten würden sie gleich nennen",
@@ -25119,6 +26529,26 @@
   "pt": "Guia-me de volta",
   "zh": "带我返回"
  },
+ "Walk slowly round the room with the camera on the walls. Get the corners, doors and windows in view. Tap Done scanning when the outline is complete.": {
+  "de": "Geh langsam durch den Raum, Kamera auf die Wände. Ecken, Türen und Fenster erfassen. Tippe auf „Scan fertig“, wenn der Umriss vollständig ist.",
+  "es": "Recorre la habitación despacio con la cámara en las paredes. Capta esquinas, puertas y ventanas. Toca Terminar escaneo cuando el contorno esté completo.",
+  "fr": "Faites lentement le tour de la pièce, caméra vers les murs. Captez coins, portes et fenêtres. Touchez Fin du scan quand le contour est complet.",
+  "hi": "कैमरा दीवारों पर रखकर कमरे में धीरे घूमें। कोने, दरवाज़े, खिड़कियाँ दिखें। रूपरेखा पूरी होने पर 'स्कैन पूरा' दबाएँ।",
+  "it": "Gira piano per la stanza con la fotocamera sulle pareti. Inquadra angoli, porte e finestre. Tocca Fine scansione quando il contorno è completo.",
+  "ja": "カメラを壁に向けてゆっくり部屋を一周。角・ドア・窓を映し、輪郭ができたら「スキャン完了」。",
+  "pt": "Ande devagar pelo cômodo com a câmera nas paredes. Capte cantos, portas e janelas. Toque em Concluir escaneamento quando o contorno estiver completo.",
+  "zh": "摄像头对着墙，在房间里慢慢走一圈，拍到角、门和窗。轮廓完整后点按“完成扫描”。"
+ },
+ "Walk slowly round the room with the camera on the walls. Tenzy finds every wall, door and window and draws the floor plan.": {
+  "de": "Geh langsam durch den Raum, Kamera auf die Wände. Tenzy findet jede Wand, Tür und jedes Fenster und zeichnet den Grundriss.",
+  "es": "Recorre la habitación despacio con la cámara en las paredes. Tenzy encuentra paredes, puertas y ventanas y dibuja el plano.",
+  "fr": "Faites lentement le tour de la pièce, caméra vers les murs. Tenzy trouve murs, portes et fenêtres et dessine le plan.",
+  "hi": "कैमरा दीवारों पर रखकर धीरे घूमें। Tenzy हर दीवार, दरवाज़ा, खिड़की ढूँढकर फ़्लोर प्लान बनाता है।",
+  "it": "Gira piano con la fotocamera sulle pareti. Tenzy trova pareti, porte e finestre e disegna la planimetria.",
+  "ja": "カメラを壁に向けてゆっくり一周。Tenzyが壁・ドア・窓を見つけ間取り図を描きます。",
+  "pt": "Ande devagar com a câmera nas paredes. O Tenzy encontra paredes, portas e janelas e desenha a planta.",
+  "zh": "摄像头对着墙慢慢走一圈，Tenzy 会找出所有墙、门和窗并画出平面图。"
+ },
  "Walkie-talkie": {
   "de": "Funkgerät",
   "es": "Walkie-talkie",
@@ -25129,6 +26559,16 @@
   "pt": "Walkie-talkie",
   "zh": "对讲机"
  },
+ "Wall": {
+  "de": "Wand",
+  "es": "Pared",
+  "fr": "Mur",
+  "hi": "दीवार",
+  "it": "Parete",
+  "ja": "壁",
+  "pt": "Parede",
+  "zh": "墙"
+ },
  "Wall area": {
   "de": "Wandfläche",
   "es": "Superficie de pared",
@@ -25138,6 +26578,56 @@
   "ja": "壁の面積",
   "pt": "Área das paredes",
   "zh": "墙面面积"
+ },
+ "Wall or window": {
+  "de": "Wand oder Fenster",
+  "es": "Pared o ventana",
+  "fr": "Mur ou fenêtre",
+  "hi": "दीवार या खिड़की",
+  "it": "Parete o finestra",
+  "ja": "壁や窓",
+  "pt": "Parede ou janela",
+  "zh": "墙或窗"
+ },
+ "Walls": {
+  "de": "Wände",
+  "es": "Paredes",
+  "fr": "Murs",
+  "hi": "दीवारें",
+  "it": "Pareti",
+  "ja": "壁",
+  "pt": "Paredes",
+  "zh": "墙"
+ },
+ "Walls to paint": {
+  "de": "Zu streichende Wände",
+  "es": "Paredes a pintar",
+  "fr": "Murs à peindre",
+  "hi": "पेंट करने वाली दीवारें",
+  "it": "Pareti da dipingere",
+  "ja": "塗る壁",
+  "pt": "Paredes para pintar",
+  "zh": "需粉刷的墙"
+ },
+ "Walls to paint (doors and windows off)": {
+  "de": "Zu streichende Wände (ohne Türen und Fenster)",
+  "es": "Paredes a pintar (sin puertas ni ventanas)",
+  "fr": "Murs à peindre (portes et fenêtres déduites)",
+  "hi": "पेंट करने वाली दीवारें (दरवाज़े-खिड़की घटाकर)",
+  "it": "Pareti da dipingere (senza porte e finestre)",
+  "ja": "塗る壁（ドア・窓を除く）",
+  "pt": "Paredes para pintar (sem portas e janelas)",
+  "zh": "需粉刷的墙（扣除门窗）"
+ },
+ "Walls, doors, windows": {
+  "de": "Wände, Türen, Fenster",
+  "es": "Paredes, puertas, ventanas",
+  "fr": "Murs, portes, fenêtres",
+  "hi": "दीवारें, दरवाज़े, खिड़कियाँ",
+  "it": "Pareti, porte, finestre",
+  "ja": "壁・ドア・窓",
+  "pt": "Paredes, portas, janelas",
+  "zh": "墙、门、窗"
  },
  "Wants a code, password or personal details": {
   "de": "Will einen Code, ein Passwort oder persönliche Daten",
@@ -25208,6 +26698,16 @@
   "ja": "暖かい色味と少し暗めの露出で、空の輝きを残します。",
   "pt": "Cor mais quente e exposição um pouco mais escura para o céu manter o brilho.",
   "zh": "色调更暖、曝光略暗，保留天空的光辉。"
+ },
+ "Warn me when it stays too loud": {
+  "de": "Warne mich, wenn es zu laut bleibt",
+  "es": "Avísame si sigue demasiado alto",
+  "fr": "Prévenez-moi si ça reste trop fort",
+  "hi": "बहुत देर तक तेज़ रहे तो चेतावनी दें",
+  "it": "Avvisami se resta troppo forte",
+  "ja": "大きな音が続いたら警告",
+  "pt": "Avise se continuar alto demais",
+  "zh": "持续太吵时提醒我"
  },
  "Warranty": {
   "de": "Garantie",
@@ -25329,6 +26829,16 @@
   "pt": "O que o Tenzy corrigiu",
   "zh": "Tenzy 修复的内容"
  },
+ "What are you measuring?": {
+  "de": "Was misst du?",
+  "es": "¿Qué vas a medir?",
+  "fr": "Que mesurez-vous ?",
+  "hi": "आप क्या माप रहे हैं?",
+  "it": "Cosa misuri?",
+  "ja": "何を測りますか？",
+  "pt": "O que você vai medir?",
+  "zh": "你要测量什么？"
+ },
  "What do you have?": {
   "de": "Was hast du?",
   "es": "¿Qué tienes?",
@@ -25348,6 +26858,16 @@
   "ja": "何をしたいですか？",
   "pt": "O que você precisa fazer?",
   "zh": "你需要做什么？"
+ },
+ "What do you need?": {
+  "de": "Was brauchst du?",
+  "es": "¿Qué necesitas?",
+  "fr": "De quoi avez-vous besoin ?",
+  "hi": "आपको क्या चाहिए?",
+  "it": "Cosa ti serve?",
+  "ja": "何をしますか？",
+  "pt": "Do que você precisa?",
+  "zh": "你需要什么？"
  },
  "What do you start with?": {
   "de": "Womit fängst du an?",
@@ -25699,6 +27219,16 @@
   "pt": "Qual passaporte ou visto?",
   "zh": "哪种护照或签证？"
  },
+ "Which plants will thrive in this spot": {
+  "de": "Welche Pflanzen hier gedeihen",
+  "es": "Qué plantas prosperarán aquí",
+  "fr": "Quelles plantes s'y plairont",
+  "hi": "इस जगह कौन से पौधे पनपेंगे",
+  "it": "Quali piante staranno bene qui",
+  "ja": "この場所で育つ植物",
+  "pt": "Quais plantas vão bem aqui",
+  "zh": "哪些植物适合这里"
+ },
  "Which type am I?": {
   "de": "Welcher Typ bin ich?",
   "es": "¿Qué tipo soy?",
@@ -25708,6 +27238,16 @@
   "ja": "自分はどのタイプ？",
   "pt": "Qual é o meu tipo?",
   "zh": "我是哪种类型？"
+ },
+ "Which way is it?": {
+  "de": "Welche Richtung?",
+  "es": "¿Hacia dónde?",
+  "fr": "Dans quelle direction ?",
+  "hi": "किस दिशा में?",
+  "it": "In che direzione?",
+  "ja": "どっちの方向？",
+  "pt": "Para que lado?",
+  "zh": "朝哪个方向？"
  },
  "While you're out: the pharmacy aisle for anything you need": {
   "de": "Unterwegs: in der Apothekenabteilung holen, was du brauchst",
@@ -25779,6 +27319,36 @@
   "pt": "Quem disse o quê, as tarefas e um e-mail pronto a enviar.",
   "zh": "谁说了什么、待办事项，以及一封可直接发送的邮件。"
  },
+ "Who's doing what": {
+  "de": "Wer macht was",
+  "es": "Quién hace qué",
+  "fr": "Qui fait quoi",
+  "hi": "कौन क्या कर रहा है",
+  "it": "Chi fa cosa",
+  "ja": "誰が何をする",
+  "pt": "Quem faz o quê",
+  "zh": "谁做什么"
+ },
+ "Whole room": {
+  "de": "Ganzer Raum",
+  "es": "Habitación entera",
+  "fr": "Pièce entière",
+  "hi": "पूरा कमरा",
+  "it": "Stanza intera",
+  "ja": "部屋全体",
+  "pt": "Cômodo inteiro",
+  "zh": "整个房间"
+ },
+ "Whole-room floor plans need an iPhone with LiDAR (the Pro models).": {
+  "de": "Grundrisse ganzer Räume brauchen ein iPhone mit LiDAR (Pro-Modelle).",
+  "es": "Los planos de habitación necesitan un iPhone con LiDAR (modelos Pro).",
+  "fr": "Les plans de pièce nécessitent un iPhone avec LiDAR (modèles Pro).",
+  "hi": "पूरे कमरे के प्लान के लिए LiDAR वाला iPhone चाहिए (Pro मॉडल)।",
+  "it": "Le planimetrie richiedono un iPhone con LiDAR (modelli Pro).",
+  "ja": "部屋全体の間取り図にはLiDAR搭載iPhone（Proモデル）が必要です。",
+  "pt": "Plantas de cômodo precisam de iPhone com LiDAR (modelos Pro).",
+  "zh": "整间平面图需要带 LiDAR 的 iPhone（Pro 机型）。"
+ },
  "Wi-Fi password": {
   "de": "WLAN-Passwort",
   "es": "Contraseña del wifi",
@@ -25789,6 +27359,36 @@
   "pt": "Senha do Wi-Fi",
   "zh": "Wi-Fi 密码"
  },
+ "Width": {
+  "de": "Breite",
+  "es": "Ancho",
+  "fr": "Largeur",
+  "hi": "चौड़ाई",
+  "it": "Larghezza",
+  "ja": "幅",
+  "pt": "Largura",
+  "zh": "宽度"
+ },
+ "Width, height and area are below. Start over to measure another.": {
+  "de": "Breite, Höhe und Fläche stehen unten. Neu beginnen für die nächste Messung.",
+  "es": "Ancho, alto y área están abajo. Empieza de nuevo para medir otra.",
+  "fr": "Largeur, hauteur et surface sont ci-dessous. Recommencez pour en mesurer une autre.",
+  "hi": "चौड़ाई, ऊँचाई और क्षेत्रफल नीचे हैं। दूसरा मापने के लिए फिर शुरू करें।",
+  "it": "Larghezza, altezza e area sono qui sotto. Ricomincia per misurarne un'altra.",
+  "ja": "幅・高さ・面積は下に。別の物はやり直しで。",
+  "pt": "Largura, altura e área estão abaixo. Recomece para medir outro.",
+  "zh": "宽、高和面积在下方。重新开始可测量另一个。"
+ },
+ "Will it fit?": {
+  "de": "Passt es?",
+  "es": "¿Cabe?",
+  "fr": "Ça rentre ?",
+  "hi": "क्या फ़िट होगा?",
+  "it": "Ci sta?",
+  "ja": "入る？",
+  "pt": "Cabe?",
+  "zh": "放得下吗？"
+ },
  "Will use": {
   "de": "Verwendet",
   "es": "Usará",
@@ -25798,6 +27398,16 @@
   "ja": "使用する設定",
   "pt": "Vai usar",
   "zh": "将使用"
+ },
+ "Window": {
+  "de": "Fenster",
+  "es": "Ventana",
+  "fr": "Fenêtre",
+  "hi": "खिड़की",
+  "it": "Finestra",
+  "ja": "窓",
+  "pt": "Janela",
+  "zh": "窗"
  },
  "Windows": {
   "de": "Fenster",
@@ -25938,6 +27548,16 @@
   "ja": "植物・動物・食べ物・日用品・バーコードに対応。推測のために何もアップロードしません。",
   "pt": "Funciona com plantas, animais, comida, objetos do dia a dia e códigos de barras. Nada é enviado para fazer a estimativa.",
   "zh": "适用于植物、动物、食物、日常物品和条形码。不会为了识别而上传任何内容。"
+ },
+ "Works with": {
+  "de": "Funktioniert mit",
+  "es": "Funciona con",
+  "fr": "Fonctionne avec",
+  "hi": "इनके साथ काम करता है",
+  "it": "Funziona con",
+  "ja": "使えるもの",
+  "pt": "Funciona com",
+  "zh": "适用于"
  },
  "Works with M4A, MP3, WAV, AIFF, CAF and the audio from a video.": {
   "de": "Funktioniert mit M4A, MP3, WAV, AIFF, CAF und dem Ton aus Videos.",
@@ -26609,6 +28229,46 @@
   "pt": "cerca de",
   "zh": "约"
  },
+ "added to Calendar.": {
+  "de": "zum Kalender hinzugefügt.",
+  "es": "añadidos al Calendario.",
+  "fr": "ajoutés au Calendrier.",
+  "hi": "कैलेंडर में जोड़े गए।",
+  "it": "aggiunti al Calendario.",
+  "ja": "件をカレンダーに追加。",
+  "pt": "adicionados ao Calendário.",
+  "zh": "项已添加到日历。"
+ },
+ "added to Reminders.": {
+  "de": "zu Erinnerungen hinzugefügt.",
+  "es": "añadidos a Recordatorios.",
+  "fr": "ajoutés aux Rappels.",
+  "hi": "रिमाइंडर में जोड़े गए।",
+  "it": "aggiunti ai Promemoria.",
+  "ja": "件をリマインダーに追加。",
+  "pt": "adicionados aos Lembretes.",
+  "zh": "项已添加到提醒事项。"
+ },
+ "added to Tenzy Planner.": {
+  "de": "zum Tenzy-Planer hinzugefügt.",
+  "es": "añadidos al Planificador de Tenzy.",
+  "fr": "ajoutés au Planner Tenzy.",
+  "hi": "Tenzy प्लानर में जोड़े गए।",
+  "it": "aggiunti al Planner di Tenzy.",
+  "ja": "件をTenzyプランナーに追加。",
+  "pt": "adicionados ao Planner do Tenzy.",
+  "zh": "项已添加到 Tenzy 计划。"
+ },
+ "already done": {
+  "de": "schon erledigt",
+  "es": "ya hechas",
+  "fr": "déjà faites",
+  "hi": "पहले से पूरे",
+  "it": "già fatte",
+  "ja": "完了済み",
+  "pt": "já feitas",
+  "zh": "已完成"
+ },
  "are left": {
   "de": "übrig sind",
   "es": "pastillas",
@@ -26638,6 +28298,16 @@
   "ja": "平均",
   "pt": "média",
   "zh": "平均"
+ },
+ "bank card width": {
+  "de": "Breite einer Bankkarte",
+  "es": "ancho de una tarjeta",
+  "fr": "largeur d'une carte bancaire",
+  "hi": "बैंक कार्ड की चौड़ाई",
+  "it": "larghezza di una carta",
+  "ja": "カードの幅",
+  "pt": "largura de um cartão",
+  "zh": "银行卡宽度"
  },
  "bigger": {
   "de": "größer",
@@ -26939,6 +28609,16 @@
   "pt": "cada",
   "zh": "每个"
  },
+ "edge all round": {
+  "de": "Umfang",
+  "es": "perímetro",
+  "fr": "périmètre",
+  "hi": "चारों ओर का किनारा",
+  "it": "perimetro",
+  "ja": "周囲",
+  "pt": "perímetro",
+  "zh": "周长"
+ },
  "ends today": {
   "de": "endet heute",
   "es": "termina hoy",
@@ -26948,6 +28628,26 @@
   "ja": "本日終了",
   "pt": "termina hoje",
   "zh": "今天到期"
+ },
+ "event": {
+  "de": "Termin",
+  "es": "evento",
+  "fr": "événement",
+  "hi": "इवेंट",
+  "it": "evento",
+  "ja": "件のイベント",
+  "pt": "evento",
+  "zh": "个活动"
+ },
+ "events": {
+  "de": "Termine",
+  "es": "eventos",
+  "fr": "événements",
+  "hi": "इवेंट",
+  "it": "eventi",
+  "ja": "件のイベント",
+  "pt": "eventos",
+  "zh": "个活动"
  },
  "face": {
   "de": "Gesicht",
@@ -27039,6 +28739,16 @@
   "pt": "tem data",
   "zh": "含日期"
  },
+ "height": {
+  "de": "Höhe",
+  "es": "alto",
+  "fr": "hauteur",
+  "hi": "ऊँचाई",
+  "it": "altezza",
+  "ja": "高さ",
+  "pt": "altura",
+  "zh": "高"
+ },
  "https://… article link": {
   "de": "https://… Artikel-Link",
   "es": "https://… enlace del artículo",
@@ -27109,6 +28819,16 @@
   "pt": "O iPhone mostra o alerta uma vez, ao chegar. Ele próprio vigia o local — o Tenzy não o segue.",
   "zh": "到达时 iPhone 会提醒一次。由 iPhone 自己留意地点，Tenzy 不会追踪你。"
  },
+ "inches": {
+  "de": "Zoll",
+  "es": "pulgadas",
+  "fr": "pouces",
+  "hi": "इंच",
+  "it": "pollici",
+  "ja": "インチ",
+  "pt": "polegadas",
+  "zh": "英寸"
+ },
  "incl.": {
   "de": "inkl.",
   "es": "incl.",
@@ -27139,6 +28859,16 @@
   "pt": "último dia para devolver",
   "zh": "退货最后一天"
  },
+ "left": {
+  "de": "übrig",
+  "es": "pendientes",
+  "fr": "restantes",
+  "hi": "बाकी",
+  "it": "rimaste",
+  "ja": "件残り",
+  "pt": "restantes",
+  "zh": "项剩余"
+ },
  "looking things up online": {
   "de": "Online-Suche",
   "es": "buscar en internet",
@@ -27149,6 +28879,26 @@
   "pt": "pesquisar online",
   "zh": "在线搜索"
  },
+ "loud moment": {
+  "de": "lauter Moment",
+  "es": "momento ruidoso",
+  "fr": "moment bruyant",
+  "hi": "तेज़ पल",
+  "it": "momento rumoroso",
+  "ja": "回の大きな音",
+  "pt": "momento barulhento",
+  "zh": "次高噪"
+ },
+ "loud moments": {
+  "de": "laute Momente",
+  "es": "momentos ruidosos",
+  "fr": "moments bruyants",
+  "hi": "तेज़ पल",
+  "it": "momenti rumorosi",
+  "ja": "回の大きな音",
+  "pt": "momentos barulhentos",
+  "zh": "次高噪"
+ },
  "loudest": {
   "de": "am lautesten",
   "es": "máximo",
@@ -27158,6 +28908,16 @@
   "ja": "最大",
   "pt": "mais alto",
   "zh": "最响"
+ },
+ "m above sea level": {
+  "de": "m über dem Meer",
+  "es": "m sobre el nivel del mar",
+  "fr": "m d'altitude",
+  "hi": "मी समुद्र तल से ऊपर",
+  "it": "m sul livello del mare",
+  "ja": "m（海抜）",
+  "pt": "m acima do nível do mar",
+  "zh": "米（海拔）"
  },
  "maps and directions": {
   "de": "Karten und Routen",
@@ -27349,6 +29109,16 @@
   "pt": "no ecrã principal",
   "zh": "放到主屏幕"
  },
+ "out over 50 cm": {
+  "de": "schief auf 50 cm",
+  "es": "desviado en 50 cm",
+  "fr": "d'écart sur 50 cm",
+  "hi": "50 सेमी पर इतना बाहर",
+  "it": "fuori su 50 cm",
+  "ja": "（50 cmあたり）ずれています",
+  "pt": "fora em 50 cm",
+  "zh": "（每 50 厘米）"
+ },
  "overdue": {
   "de": "überfällig",
   "es": "vencida",
@@ -27409,6 +29179,16 @@
   "pt": "pessoas",
   "zh": "人"
  },
+ "people's week": {
+  "de": "Wochen von Personen",
+  "es": "semanas de personas",
+  "fr": "semaines de personnes",
+  "hi": "लोगों का हफ़्ता",
+  "it": "settimane di persone",
+  "ja": "人の週予定",
+  "pt": "semanas de pessoas",
+  "zh": "人的一周安排"
+ },
  "person": {
   "de": "Person",
   "es": "persona",
@@ -27418,6 +29198,16 @@
   "ja": "人",
   "pt": "pessoa",
   "zh": "人"
+ },
+ "person's week": {
+  "de": "Woche einer Person",
+  "es": "semana de una persona",
+  "fr": "semaine d'une personne",
+  "hi": "व्यक्ति का हफ़्ता",
+  "it": "settimana di una persona",
+  "ja": "人の週予定",
+  "pt": "semana de uma pessoa",
+  "zh": "人的一周安排"
  },
  "photo(s) skipped — no clear subject found.": {
   "de": "Foto(s) übersprungen – kein klares Motiv gefunden.",
@@ -27749,6 +29539,16 @@
   "pt": "depois mais % de desconto",
   "zh": "再额外折扣 %"
  },
+ "thing to do": {
+  "de": "Aufgabe",
+  "es": "cosa por hacer",
+  "fr": "chose à faire",
+  "hi": "काम करना है",
+  "it": "cosa da fare",
+  "ja": "件のやること",
+  "pt": "coisa a fazer",
+  "zh": "件待办"
+ },
  "thing to fix": {
   "de": "Punkt zu beheben",
   "es": "cosa que arreglar",
@@ -27758,6 +29558,16 @@
   "ja": "件の要修正",
   "pt": "item para corrigir",
   "zh": "项需修正"
+ },
+ "things to do": {
+  "de": "Aufgaben",
+  "es": "cosas por hacer",
+  "fr": "choses à faire",
+  "hi": "काम करने हैं",
+  "it": "cose da fare",
+  "ja": "件のやること",
+  "pt": "coisas a fazer",
+  "zh": "件待办"
  },
  "things to fix": {
   "de": "Punkte zu beheben",
@@ -27798,6 +29608,16 @@
   "ja": "要確認",
   "pt": "para revisar",
   "zh": "需查看"
+ },
+ "to spare": {
+  "de": "Luft",
+  "es": "de margen",
+  "fr": "de marge",
+  "hi": "बचेगा",
+  "it": "di margine",
+  "ja": "の余裕",
+  "pt": "de folga",
+  "zh": "余量"
  },
  "tools": {
   "de": "Tools",
@@ -27848,6 +29668,26 @@
   "ja": "移動",
   "pt": "de deslocação",
   "zh": "路程"
+ },
+ "turn left": {
+  "de": "links drehen",
+  "es": "gira a la izquierda",
+  "fr": "tournez à gauche",
+  "hi": "बाएँ मुड़ें",
+  "it": "gira a sinistra",
+  "ja": "左へ",
+  "pt": "vire à esquerda",
+  "zh": "向左转"
+ },
+ "turn right": {
+  "de": "rechts drehen",
+  "es": "gira a la derecha",
+  "fr": "tournez à droite",
+  "hi": "दाएँ मुड़ें",
+  "it": "gira a destra",
+  "ja": "右へ",
+  "pt": "vire à direita",
+  "zh": "向右转"
  },
  "turns": {
   "de": "wird",
