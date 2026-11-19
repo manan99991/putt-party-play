@@ -569,6 +569,11 @@ struct BuilderView: View {
                         }
                         Text(L("Got a Tenzy tool from a friend? Copy the link they sent, then tap Add a shared tool. To send one of yours, open My tools and choose Copy to share."))
                             .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        // Checked without reading the clipboard (no paste prompt): if something is copied, say so.
+                        if UIPasteboard.general.hasURLs || UIPasteboard.general.hasStrings {
+                            Label(L("You have something copied. If it's a Tenzy tool link, tap Add a shared tool."), systemImage: "doc.on.clipboard")
+                                .font(HandyFont.micro).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true)
+                        }
                         if let pasteNote {
                             Text(pasteNote).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
