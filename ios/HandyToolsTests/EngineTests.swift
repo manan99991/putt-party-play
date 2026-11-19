@@ -2469,6 +2469,61 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(captioned.size.height, captioned.size.width, "room for the caption")
     }
 
+    func testContactsProSearchesFiltersExportsAndPlans() throws {
+        typealias P = ContactBook.Person
+        let doc = P(id: "1", given: "Priya", family: "Shah", company: "Lakeview Clinic", title: "Doctor",
+                    phones: [.init(label: "Work", value: "(630) 555-0142")], emails: [.init(label: "Work", value: "priya@lakeview.org")],
+                    addresses: [.init(label: "Work", value: "12 Main St\nNaperville IL")],
+                    birthday: DateComponents(year: 1980, month: 3, day: 14), hasPhoto: true, account: "iCloud")
+        let mom = P(id: "2", given: "Asha", family: "Shah", phones: [.init(label: "Mobile", value: "+1 630 555 0199")],
+                    socials: [.init(label: "Facebook", value: "asha.shah")], birthday: DateComponents(month: 11, day: 20), account: "Gmail")
+        let plumber = P(id: "3", company: "Joe's Plumbing", emails: [.init(label: "Home", value: "joe@pipes.com")], account: "iCloud")
+        let all = [plumber, mom, doc]
+        // Search: any part of a name, company, email, or the digits of a number.
+        XCTAssertEqual(all.filter { ContactBook.matches($0, query: "lakeview") }.map(\.id), ["1"])
+        XCTAssertEqual(all.filter { ContactBook.matches($0, query: "555-0199") }.map(\.id), ["2"])
+        XCTAssertEqual(all.filter { ContactBook.matches($0, query: "shah") }.count, 2)
+        XCTAssertEqual(plumber.name, "Joe's Plumbing", "no name → the company")
+        // Filters, together.
+        let tags: [String: Set<ContactBook.Tag>] = ["1": [.important, .emergency]]
+        func ids(_ f: Set<ContactBook.Filter>) -> [String] { ContactBook.filtered(all, query: "", filters: f, group: nil, account: nil, tags: tags).map(\.id) }
+        XCTAssertEqual(ids([.noPhone]), ["3"])
+        XCTAssertEqual(ids([.noEmail]), ["2"])
+        XCTAssertEqual(ids([.work]), ["3", "1"], "a company or a work number/email counts as work (A–Z: Joe's, then Shah)")
+        XCTAssertEqual(ids([.social]), ["2"]); XCTAssertEqual(ids([.mobile]), ["2"])
+        XCTAssertEqual(ids([.emergency]), ["1"]); XCTAssertEqual(ids([.birthday, .noPhoto]), ["2"])
+        XCTAssertEqual(ContactBook.filtered(all, query: "", filters: [], group: nil, account: "Gmail", tags: [:]).map(\.id), ["2"])
+        // Spreadsheet: header, one row each, commas and quotes kept safe.
+        let csv = ContactBook.csv([doc, plumber], tags: tags)
+        let lines = csv.split(separator: "\r\n").map(String.init)
+        XCTAssertEqual(lines.count, 3)
+        XCTAssertTrue(lines[0].hasPrefix("Name,First name,Last name,Company"))
+        XCTAssertTrue(lines[1].contains("(630) 555-0142") && lines[1].contains("1980-03-14") && lines[1].contains("Emergency; Important"))
+        XCTAssertTrue(lines[1].contains("\"12 Main St, Naperville IL\""), "an address with a comma is quoted")
+        XCTAssertTrue(lines[2].contains("Joe's Plumbing"))
+        // Birthdays: the next one, Feb 29, and the message.
+        let cal = Calendar(identifier: .gregorian)
+        let now = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 19, hour: 10)))
+        XCTAssertEqual(ContactBook.nextBirthday(DateComponents(month: 11, day: 20), after: now, cal: cal).map { cal.component(.year, from: $0) }, 2026)
+        XCTAssertEqual(ContactBook.nextBirthday(DateComponents(month: 3, day: 14), after: now, cal: cal).map { cal.component(.year, from: $0) }, 2027)
+        XCTAssertEqual(ContactBook.nextBirthday(DateComponents(month: 2, day: 29), after: now, cal: cal).map { cal.component(.year, from: $0) }, 2028)
+        XCTAssertEqual(ContactBook.upcoming(all, now: now, cal: cal).map { $0.person.id }, ["2", "1"])
+        let m = ContactBook.birthdayMessage(doc, on: try XCTUnwrap(cal.date(from: DateComponents(year: 2027, month: 3, day: 14))), cal: cal)
+        XCTAssertEqual(m.title, "Priya Shah's birthday is tomorrow — turning 47"); XCTAssertTrue(m.body.contains("(630) 555-0142"))
+        // Plans: leave-by time, and alerts that carry the number and address.
+        let eight = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 20, hour: 8)))
+        XCTAssertEqual(ContactBook.leaveBy(start: eight, travelMinutes: 25), eight.addingTimeInterval(-35 * 60))
+        XCTAssertNil(ContactBook.leaveBy(start: eight, travelMinutes: nil))
+        let call = ContactBook.planMessage(doc, kind: .call, start: eight, travelMinutes: nil, note: "Test results", leaving: false)
+        XCTAssertEqual(call.title, "Time to call Priya Shah"); XCTAssertTrue(call.body.contains("(630) 555-0142") && call.body.contains("Test results"))
+        let go = ContactBook.planMessage(doc, kind: .visit, start: eight, travelMinutes: 25, note: "", leaving: true)
+        XCTAssertTrue(go.title.hasPrefix("Leave now for Priya Shah — 25 min drive")); XCTAssertTrue(go.body.contains("12 Main St, Naperville IL"))
+        XCTAssertEqual(ContactPlans.telURL("(630) 555-0142")?.absoluteString, "tel:6305550142")
+        XCTAssertNotNil(ContactPlans.mapsURL("12 Main St\nNaperville IL"))
+        XCTAssertEqual(ContactPlans.handle(action: ContactPlans.callAction, info: ["tel": "tel:6305550142"])?.absoluteString, "tel:6305550142")
+        XCTAssertEqual(ContactBook.kind("_$!<Mobile>!$_"), "mobile"); XCTAssertEqual(ContactBook.safe("A/B: group"), "A-B- group")
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

@@ -89,6 +89,16 @@
   "pt": "+10 min",
   "zh": "+10 分钟"
  },
+ "1 day before": {
+  "de": "1 Tag vorher",
+  "es": "1 día antes",
+  "fr": "1 jour avant",
+  "hi": "1 दिन पहले",
+  "it": "1 giorno prima",
+  "ja": "1日前",
+  "pt": "1 dia antes",
+  "zh": "提前 1 天"
+ },
  "1 day left": {
   "de": "noch 1 Tag",
   "es": "queda 1 día",
@@ -109,6 +119,16 @@
   "pt": "1 dia para devolver",
   "zh": "还剩1天可退货"
  },
+ "1 hour before": {
+  "de": "1 Stunde vorher",
+  "es": "1 hora antes",
+  "fr": "1 heure avant",
+  "hi": "1 घंटा पहले",
+  "it": "1 ora prima",
+  "ja": "1時間前",
+  "pt": "1 hora antes",
+  "zh": "提前 1 小时"
+ },
  "1.  In any app, select text → Share → “Save to Tenzy”.\n": {
   "de": "1.  Markiere in einer beliebigen App Text → Teilen → „In Tenzy speichern“.\n",
   "es": "1.  En cualquier app, selecciona texto → Compartir → “Guardar en Tenzy”.\n",
@@ -128,6 +148,16 @@
   "ja": "1. 連絡先の取得元",
   "pt": "1. Tirar contactos de",
   "zh": "1. 从以下位置取联系人"
+ },
+ "10 min before": {
+  "de": "10 Min. vorher",
+  "es": "10 min antes",
+  "fr": "10 min avant",
+  "hi": "10 मिनट पहले",
+  "it": "10 min prima",
+  "ja": "10分前",
+  "pt": "10 min antes",
+  "zh": "提前 10 分钟"
  },
  "2. Put them into": {
   "de": "2. Sie einfügen in",
@@ -178,6 +208,16 @@
   "ja": "3. 方法",
   "pt": "3. Como",
   "zh": "3. 方式"
+ },
+ "30 min before": {
+  "de": "30 Min. vorher",
+  "es": "30 min antes",
+  "fr": "30 min avant",
+  "hi": "30 मिनट पहले",
+  "it": "30 min prima",
+  "ja": "30分前",
+  "pt": "30 min antes",
+  "zh": "提前 30 分钟"
  },
  "30 small tools your phone should've had — flashlight, cleaner, scanner, PDF, AI and more. Everything runs on your phone; nothing is uploaded.": {
   "de": "30 kleine Werkzeuge, die dein Handy haben sollte — Taschenlampe, Reiniger, Scanner, PDF, KI und mehr. Alles läuft auf deinem Handy; nichts wird hochgeladen.",
@@ -298,6 +338,16 @@
   "ja": "いい日",
   "pt": "Um dia bom",
   "zh": "美好的一天"
+ },
+ "A group belongs to one account (iCloud, Gmail…). People saved in another account can't join it — that's iPhone's rule.": {
+  "de": "Eine Gruppe gehört zu einem Konto (iCloud, Gmail …). Personen aus einem anderen Konto können nicht beitreten – das ist eine iPhone-Regel.",
+  "es": "Un grupo pertenece a una cuenta (iCloud, Gmail…). Quien esté guardado en otra cuenta no puede unirse: es una regla del iPhone.",
+  "fr": "Un groupe appartient à un compte (iCloud, Gmail…). Les contacts d'un autre compte ne peuvent pas y entrer — c'est une règle de l'iPhone.",
+  "hi": "एक ग्रुप एक ही अकाउंट (iCloud, Gmail…) का होता है। दूसरे अकाउंट में सेव लोग इसमें नहीं जुड़ सकते — यह iPhone का नियम है।",
+  "it": "Un gruppo appartiene a un account (iCloud, Gmail…). Chi è salvato in un altro account non può entrarci: è una regola dell'iPhone.",
+  "ja": "グループは1つのアカウント（iCloud、Gmail など）に属します。別のアカウントの連絡先は追加できません（iPhone の仕様）。",
+  "pt": "Um grupo pertence a uma conta (iCloud, Gmail…). Quem está noutra conta não pode entrar — é uma regra do iPhone.",
+  "zh": "一个群组只属于一个账户（iCloud、Gmail 等），其他账户里的联系人无法加入——这是 iPhone 的规则。"
  },
  "A hard day": {
   "de": "Ein schwerer Tag",
@@ -479,6 +529,16 @@
   "pt": "Fita AR: distância, altura, área",
   "zh": "AR 卷尺：距离、高度、面积"
  },
+ "About": {
+  "de": "Etwa",
+  "es": "Unos",
+  "fr": "Environ",
+  "hi": "लगभग",
+  "it": "Circa",
+  "ja": "約",
+  "pt": "Cerca de",
+  "zh": "约"
+ },
  "Add": {
   "de": "Hinzufügen",
   "es": "Añadir",
@@ -649,6 +709,16 @@
   "pt": "Adicionar mais",
   "zh": "添加更多"
  },
+ "Add photo": {
+  "de": "Foto hinzufügen",
+  "es": "Añadir foto",
+  "fr": "Ajouter une photo",
+  "hi": "फ़ोटो जोड़ें",
+  "it": "Aggiungi foto",
+  "ja": "写真を追加",
+  "pt": "Adicionar foto",
+  "zh": "添加照片"
+ },
  "Add photos": {
   "de": "Fotos hinzufügen",
   "es": "Añadir fotos",
@@ -718,6 +788,16 @@
   "ja": "リマインダーに追加",
   "pt": "Adicionar aos lembretes",
   "zh": "添加到提醒事项"
+ },
+ "Add to a group": {
+  "de": "Zu einer Gruppe hinzufügen",
+  "es": "Añadir a un grupo",
+  "fr": "Ajouter à un groupe",
+  "hi": "किसी ग्रुप में जोड़ें",
+  "it": "Aggiungi a un gruppo",
+  "ja": "グループに追加",
+  "pt": "Adicionar a um grupo",
+  "zh": "添加到群组"
  },
  "Add words (optional) — e.g. LOL, Yay, Miss you": {
   "de": "Text hinzufügen (optional) – z. B. LOL, Yay, Vermisse dich",
@@ -849,6 +929,16 @@
   "pt": "Tudo",
   "zh": "全部"
  },
+ "All accounts": {
+  "de": "Alle Konten",
+  "es": "Todas las cuentas",
+  "fr": "Tous les comptes",
+  "hi": "सभी अकाउंट",
+  "it": "Tutti gli account",
+  "ja": "すべてのアカウント",
+  "pt": "Todas as contas",
+  "zh": "所有账户"
+ },
  "All done. That was a lot — well done for getting through it.": {
   "de": "Alles erledigt. Das war viel – gut gemacht!",
   "es": "Todo listo. Era mucho, ¡bien hecho por sacarlo adelante!",
@@ -858,6 +948,16 @@
   "ja": "すべて完了。たくさんあったのに、よくやり切りました。",
   "pt": "Tudo feito. Era muita coisa — parabéns por dar conta.",
   "zh": "全部完成。事情不少——你做到了，真棒。"
+ },
+ "All groups": {
+  "de": "Alle Gruppen",
+  "es": "Todos los grupos",
+  "fr": "Tous les groupes",
+  "hi": "सभी ग्रुप",
+  "it": "Tutti i gruppi",
+  "ja": "すべてのグループ",
+  "pt": "Todos os grupos",
+  "zh": "所有群组"
  },
  "All of this is removed from the clean copy.": {
   "de": "All dies wird aus der sauberen Kopie entfernt.",
@@ -908,6 +1008,16 @@
   "ja": "空き容量を探すために写真へのアクセスを許可してください。データが端末外に出ることはなく、削除前には必ず確認します。",
   "pt": "Permite o acesso às fotos para procurar espaço que possas libertar. Nada sai do teu telemóvel, e apagar pede sempre confirmação.",
   "zh": "允许访问照片以查找可释放的空间。所有内容都不离开你的手机，删除前也总会先询问。"
+ },
+ "Also add it to my calendar": {
+  "de": "Auch in meinen Kalender eintragen",
+  "es": "Añadirlo también a mi calendario",
+  "fr": "L'ajouter aussi à mon calendrier",
+  "hi": "मेरे कैलेंडर में भी जोड़ें",
+  "it": "Aggiungilo anche al calendario",
+  "ja": "カレンダーにも追加",
+  "pt": "Adicionar também ao meu calendário",
+  "zh": "同时添加到我的日历"
  },
  "Also check your country's rules on glasses, headwear and the photo's age. A helper, not an official verdict.": {
   "de": "Prüfe auch die Regeln deines Landes zu Brille, Kopfbedeckung und Alter des Fotos. Eine Hilfe, kein amtliches Urteil.",
@@ -1208,6 +1318,16 @@
   "ja": "時刻",
   "pt": "Às",
   "zh": "时间"
+ },
+ "At the time": {
+  "de": "Zur Uhrzeit",
+  "es": "A la hora",
+  "fr": "À l'heure",
+  "hi": "उसी समय",
+  "it": "All'ora",
+  "ja": "その時刻に",
+  "pt": "Na hora",
+  "zh": "准时"
  },
  "At this schedule that's about": {
   "de": "Bei diesem Plan reicht das etwa",
@@ -1729,6 +1849,26 @@
   "pt": "Faturar a",
   "zh": "账单寄往"
  },
+ "Birthday": {
+  "de": "Geburtstag",
+  "es": "Cumpleaños",
+  "fr": "Anniversaire",
+  "hi": "जन्मदिन",
+  "it": "Compleanno",
+  "ja": "誕生日",
+  "pt": "Aniversário",
+  "zh": "生日"
+ },
+ "Birthdays": {
+  "de": "Geburtstage",
+  "es": "Cumpleaños",
+  "fr": "Anniversaires",
+  "hi": "जन्मदिन",
+  "it": "Compleanni",
+  "ja": "誕生日",
+  "pt": "Aniversários",
+  "zh": "生日"
+ },
  "Black": {
   "de": "Schwarz",
   "es": "Negro",
@@ -2218,6 +2358,16 @@
   "ja": "ジャケットを変更",
   "pt": "Trocar capa",
   "zh": "更换封面"
+ },
+ "Change photo": {
+  "de": "Foto ändern",
+  "es": "Cambiar foto",
+  "fr": "Changer la photo",
+  "hi": "फ़ोटो बदलें",
+  "it": "Cambia foto",
+  "ja": "写真を変更",
+  "pt": "Mudar foto",
+  "zh": "更换照片"
  },
  "Change photos": {
   "de": "Fotos ändern",
@@ -2779,6 +2929,16 @@
   "pt": "Cópia limpa pronta — sem localização, sem metadados, ocultações permanentes.",
   "zh": "清洁版本已就绪——无位置、无元数据、涂黑永久有效。"
  },
+ "Clean up & back up": {
+  "de": "Aufräumen & sichern",
+  "es": "Limpiar y copiar",
+  "fr": "Nettoyer et sauvegarder",
+  "hi": "साफ़ करें और बैकअप",
+  "it": "Pulisci e salva",
+  "ja": "整理とバックアップ",
+  "pt": "Limpar e fazer cópia",
+  "zh": "整理与备份"
+ },
  "Clean video ready — faces & personal text hidden, metadata stripped.": {
   "de": "Sauberes Video fertig — Gesichter & persönlicher Text verborgen, Metadaten entfernt.",
   "es": "Vídeo limpio listo: caras y texto personal ocultos, metadatos eliminados.",
@@ -3138,6 +3298,16 @@
   "ja": "連絡先",
   "pt": "Contacto",
   "zh": "联系人"
+ },
+ "Contact cards (.vcf)": {
+  "de": "Kontaktkarten (.vcf)",
+  "es": "Tarjetas de contacto (.vcf)",
+  "fr": "Fiches contact (.vcf)",
+  "hi": "कॉन्टैक्ट कार्ड (.vcf)",
+  "it": "Schede contatto (.vcf)",
+  "ja": "連絡先カード（.vcf）",
+  "pt": "Cartões de contacto (.vcf)",
+  "zh": "联系人名片（.vcf）"
  },
  "Contacts": {
   "de": "Kontakte",
@@ -4789,6 +4959,16 @@
   "pt": "Editar cópia",
   "zh": "编辑副本"
  },
+ "Edit everything in Contacts": {
+  "de": "Alles in Kontakte bearbeiten",
+  "es": "Editar todo en Contactos",
+  "fr": "Tout modifier dans Contacts",
+  "hi": "Contacts में सब कुछ बदलें",
+  "it": "Modifica tutto in Contatti",
+  "ja": "連絡先アプリですべて編集",
+  "pt": "Editar tudo em Contactos",
+  "zh": "在通讯录中编辑全部"
+ },
  "Egg": {
   "de": "Ei",
   "es": "Huevo",
@@ -4828,6 +5008,36 @@
   "ja": "メールアドレス",
   "pt": "Endereço de e-mail",
   "zh": "电子邮件地址"
+ },
+ "Email as a spreadsheet": {
+  "de": "Als Tabelle mailen",
+  "es": "Enviar como hoja de cálculo",
+  "fr": "Envoyer en tableur",
+  "hi": "स्प्रेडशीट के रूप में ईमेल",
+  "it": "Invia come foglio di calcolo",
+  "ja": "表としてメール",
+  "pt": "Enviar como folha de cálculo",
+  "zh": "以表格发邮件"
+ },
+ "Email as contact cards": {
+  "de": "Als Kontaktkarten mailen",
+  "es": "Enviar como tarjetas",
+  "fr": "Envoyer en fiches contact",
+  "hi": "कॉन्टैक्ट कार्ड के रूप में ईमेल",
+  "it": "Invia come schede contatto",
+  "ja": "連絡先カードとしてメール",
+  "pt": "Enviar como cartões",
+  "zh": "以名片发邮件"
+ },
+ "Emergency": {
+  "de": "Notfall",
+  "es": "Emergencia",
+  "fr": "Urgence",
+  "hi": "इमरजेंसी",
+  "it": "Emergenza",
+  "ja": "緊急",
+  "pt": "Emergência",
+  "zh": "紧急"
  },
  "Emoji": {
   "de": "Emoji",
@@ -5398,6 +5608,26 @@
   "ja": "速いシャッターで、動くペットもくっきり。",
   "pt": "Obturador mais rápido para o pet em movimento sair nítido.",
   "zh": "更快的快门，让活动的宠物也清晰。"
+ },
+ "Favorite": {
+  "de": "Favorit",
+  "es": "Favorito",
+  "fr": "Favori",
+  "hi": "पसंदीदा",
+  "it": "Preferito",
+  "ja": "お気に入り",
+  "pt": "Favorito",
+  "zh": "收藏"
+ },
+ "Favorites": {
+  "de": "Favoriten",
+  "es": "Favoritos",
+  "fr": "Favoris",
+  "hi": "पसंदीदा",
+  "it": "Preferiti",
+  "ja": "お気に入り",
+  "pt": "Favoritos",
+  "zh": "收藏"
  },
  "Favourite": {
   "de": "Favorit",
@@ -6289,6 +6519,16 @@
   "pt": "A obter sinal GPS… sai para o exterior se estiver lento.",
   "zh": "正在获取 GPS 定位… 如果很慢请走到户外。"
  },
+ "Getting there": {
+  "de": "Hinkommen",
+  "es": "Cómo llegar",
+  "fr": "Y aller",
+  "hi": "वहाँ पहुँचना",
+  "it": "Come arrivare",
+  "ja": "行き方",
+  "pt": "Como chegar",
+  "zh": "前往"
+ },
  "Getting your photos…": {
   "de": "Fotos werden geladen …",
   "es": "Cargando tus fotos…",
@@ -6338,6 +6578,16 @@
   "ja": "グルテンフリー",
   "pt": "Sem glúten",
   "zh": "无麸质"
+ },
+ "Gmail": {
+  "de": "Gmail",
+  "es": "Gmail",
+  "fr": "Gmail",
+  "hi": "Gmail",
+  "it": "Gmail",
+  "ja": "Gmail",
+  "pt": "Gmail",
+  "zh": "Gmail"
  },
  "Gmail, iCloud, your phone: copy or move in three taps.": {
   "de": "Gmail, iCloud, dein Handy: kopieren oder verschieben in drei Tipps.",
@@ -6519,6 +6769,16 @@
   "pt": "Grade",
   "zh": "网格"
  },
+ "Group": {
+  "de": "Gruppe",
+  "es": "Grupo",
+  "fr": "Groupe",
+  "hi": "ग्रुप",
+  "it": "Gruppo",
+  "ja": "グループ",
+  "pt": "Grupo",
+  "zh": "群组"
+ },
  "Group photo spotted": {
   "de": "Gruppenfoto erkannt",
   "es": "Foto de grupo detectada",
@@ -6528,6 +6788,16 @@
   "ja": "集合写真を検出",
   "pt": "Foto em grupo detectada",
   "zh": "发现合影"
+ },
+ "Groups": {
+  "de": "Gruppen",
+  "es": "Grupos",
+  "fr": "Groupes",
+  "hi": "ग्रुप",
+  "it": "Gruppi",
+  "ja": "グループ",
+  "pt": "Grupos",
+  "zh": "群组"
  },
  "Growly and scary": {
   "de": "Knurrig und gruselig",
@@ -6578,6 +6848,16 @@
   "ja": "含む",
   "pt": "Contém",
   "zh": "含有"
+ },
+ "Has a company": {
+  "de": "Mit Firma",
+  "es": "Con empresa",
+  "fr": "Avec entreprise",
+  "hi": "कंपनी वाले",
+  "it": "Con azienda",
+  "ja": "会社あり",
+  "pt": "Com empresa",
+  "zh": "有公司"
  },
  "Has a step this phone can't run": {
   "de": "Enthält einen Schritt, den dieses Handy nicht ausführen kann",
@@ -6819,6 +7099,16 @@
   "pt": "Holográfico",
   "zh": "全息"
  },
+ "Home": {
+  "de": "Privat",
+  "es": "Casa",
+  "fr": "Domicile",
+  "hi": "घर",
+  "it": "Casa",
+  "ja": "自宅",
+  "pt": "Casa",
+  "zh": "住宅"
+ },
  "Home Screen": {
   "de": "Home-Bildschirm",
   "es": "Pantalla de inicio",
@@ -6988,6 +7278,16 @@
   "ja": "PINを忘れたら、この答えで新しいPINを設定できます。自分は忘れず、他人は知らないものを。大文字小文字は区別しません。",
   "pt": "Se esquecer o PIN, esta resposta deixa você criar outro. Escolha algo que você sempre lembra e os outros não sabem. Maiúsculas não importam.",
   "zh": "忘记 PIN 时，可用这个答案重设。选一个你永远记得、别人不知道的。不区分大小写。"
+ },
+ "Important": {
+  "de": "Wichtig",
+  "es": "Importante",
+  "fr": "Important",
+  "hi": "महत्वपूर्ण",
+  "it": "Importante",
+  "ja": "重要",
+  "pt": "Importante",
+  "zh": "重要"
  },
  "In 2 weeks": {
   "de": "In 2 Wochen",
@@ -7759,6 +8059,26 @@
   "pt": "Saia 10 minutos antes",
   "zh": "提前 10 分钟出发"
  },
+ "Leave by": {
+  "de": "Losfahren bis",
+  "es": "Sal antes de las",
+  "fr": "Partez avant",
+  "hi": "इतने बजे तक निकलें",
+  "it": "Parti entro le",
+  "ja": "出発時刻",
+  "pt": "Saia até às",
+  "zh": "出发时间"
+ },
+ "Leave now alert:": {
+  "de": "„Jetzt los“-Hinweis:",
+  "es": "Aviso de «sal ya»:",
+  "fr": "Alerte « partez maintenant » :",
+  "hi": "‘अभी निकलें’ अलर्ट:",
+  "it": "Avviso «parti ora»:",
+  "ja": "「今すぐ出発」通知:",
+  "pt": "Alerta «saia agora»:",
+  "zh": "“现在出发”提醒："
+ },
  "Leave them empty to type new words every time you run the tool.": {
   "de": "Lass sie leer, um bei jeder Ausführung des Tools neue Wörter einzugeben.",
   "es": "Déjalos vacíos para escribir palabras nuevas cada vez que ejecutes la herramienta.",
@@ -8018,6 +8338,16 @@
   "ja": "位置情報はオフです。マップは現在地周辺を検索します。",
   "pt": "A localização está desativada — o Mapas ainda busca perto de você.",
   "zh": "定位已关闭——“地图”仍会在你附近搜索。"
+ },
+ "Location is off, so Tenzy can't time the drive. You'll still get the reminder.": {
+  "de": "Standort ist aus, darum kann Tenzy die Fahrzeit nicht berechnen. Die Erinnerung kommt trotzdem.",
+  "es": "La ubicación está desactivada, así que Tenzy no puede calcular el trayecto. El recordatorio llegará igual.",
+  "fr": "La localisation est coupée : Tenzy ne peut pas calculer le trajet. Le rappel arrivera quand même.",
+  "hi": "लोकेशन बंद है, इसलिए Tenzy ड्राइव का समय नहीं निकाल सकता। रिमाइंडर फिर भी आएगा।",
+  "it": "La posizione è disattivata, quindi Tenzy non può calcolare il tragitto. Il promemoria arriverà comunque.",
+  "ja": "位置情報がオフのため運転時間を計算できません。リマインダーは届きます。",
+  "pt": "A localização está desligada, por isso o Tenzy não calcula o trajeto. O lembrete chega na mesma.",
+  "zh": "定位已关闭，Tenzy 无法计算车程，但仍会提醒你。"
  },
  "Lock focus for macro, through glass, or so it stops hunting in video.": {
   "de": "Fokus sperren für Makro, durch Glas oder damit er im Video nicht pumpt.",
@@ -8509,6 +8839,16 @@
   "pt": "Criar o cartão",
   "zh": "制作卡片"
  },
+ "Make the group and add them": {
+  "de": "Gruppe anlegen und hinzufügen",
+  "es": "Crear el grupo y añadirlos",
+  "fr": "Créer le groupe et les ajouter",
+  "hi": "ग्रुप बनाएँ और जोड़ें",
+  "it": "Crea il gruppo e aggiungili",
+  "ja": "グループを作って追加",
+  "pt": "Criar o grupo e adicioná-los",
+  "zh": "创建群组并添加"
+ },
  "Make video": {
   "de": "Video erstellen",
   "es": "Crear vídeo",
@@ -8598,6 +8938,26 @@
   "ja": "マニュアル：三脚での夜景にはISO低め＋スローシャッター、動きを止めるには高速シャッター。ゼブラは白飛び部分を示します。",
   "pt": "Manual: ISO baixo + obturador lento para fotos noturnas limpas com tripé; obturador rápido para congelar o movimento. As zebras mostram o que está a estourar.",
   "zh": "手动：低 ISO + 慢快门，用三脚架拍出干净的夜景；高速快门凝固动作。斑马纹显示过曝区域。"
+ },
+ "Mark": {
+  "de": "Markieren",
+  "es": "Marcar",
+  "fr": "Marquer",
+  "hi": "चिह्नित करें",
+  "it": "Contrassegna",
+  "ja": "マーク",
+  "pt": "Marcar",
+  "zh": "标记"
+ },
+ "Mark as": {
+  "de": "Markieren als",
+  "es": "Marcar como",
+  "fr": "Marquer comme",
+  "hi": "इस रूप में चिह्नित करें:",
+  "it": "Contrassegna come",
+  "ja": "マーク:",
+  "pt": "Marcar como",
+  "zh": "标记为"
  },
  "Mark as done": {
   "de": "Als erledigt markieren",
@@ -8708,6 +9068,16 @@
   "ja": "中",
   "pt": "Médio",
   "zh": "中"
+ },
+ "Meet": {
+  "de": "Treffen",
+  "es": "Reunión",
+  "fr": "Rencontre",
+  "hi": "मिलना",
+  "it": "Incontro",
+  "ja": "会う",
+  "pt": "Encontro",
+  "zh": "见面"
  },
  "Meeting Notes": {
   "de": "Meeting-Notizen",
@@ -8878,6 +9248,16 @@
   "ja": "飲み忘れ？",
   "pt": "Esqueceu?",
   "zh": "漏服？"
+ },
+ "Mobile": {
+  "de": "Mobil",
+  "es": "Móvil",
+  "fr": "Mobile",
+  "hi": "मोबाइल",
+  "it": "Cellulare",
+  "ja": "携帯",
+  "pt": "Telemóvel",
+  "zh": "手机"
  },
  "Mode": {
   "de": "Modus",
@@ -9219,6 +9599,16 @@
   "pt": "Meus cartões têm verso — juntar frente e verso",
   "zh": "名片有背面——正反面配对"
  },
+ "My contacts": {
+  "de": "Meine Kontakte",
+  "es": "Mis contactos",
+  "fr": "Mes contacts",
+  "hi": "मेरे कॉन्टैक्ट",
+  "it": "I miei contatti",
+  "ja": "連絡先",
+  "pt": "Os meus contactos",
+  "zh": "我的联系人"
+ },
  "My days": {
   "de": "Meine Tage",
   "es": "Mis días",
@@ -9519,6 +9909,26 @@
   "pt": "Novo contato",
   "zh": "新联系人"
  },
+ "New group": {
+  "de": "Neue Gruppe",
+  "es": "Grupo nuevo",
+  "fr": "Nouveau groupe",
+  "hi": "नया ग्रुप",
+  "it": "Nuovo gruppo",
+  "ja": "新しいグループ",
+  "pt": "Novo grupo",
+  "zh": "新群组"
+ },
+ "New group name (e.g. Soccer parents)": {
+  "de": "Name der neuen Gruppe (z. B. Fußball-Eltern)",
+  "es": "Nombre del grupo (p. ej. Padres de fútbol)",
+  "fr": "Nom du groupe (ex. Parents du foot)",
+  "hi": "नए ग्रुप का नाम (जैसे फ़ुटबॉल पेरेंट्स)",
+  "it": "Nome del gruppo (es. Genitori calcio)",
+  "ja": "グループ名（例：サッカーの保護者）",
+  "pt": "Nome do grupo (ex.: Pais do futebol)",
+  "zh": "新群组名称（如：足球家长）"
+ },
  "New name": {
   "de": "Neuer Name",
   "es": "Nombre nuevo",
@@ -9609,6 +10019,16 @@
   "pt": "Nenhuma tarefa encontrada.",
   "zh": "未找到行动项。"
  },
+ "No address saved for this contact. Add one with Edit everything in Contacts to get a \"leave now\" alert and directions.": {
+  "de": "Für diesen Kontakt ist keine Adresse gespeichert. Füge eine über „Alles in Kontakte bearbeiten“ hinzu, um einen „Jetzt los“-Hinweis und eine Route zu bekommen.",
+  "es": "Este contacto no tiene dirección. Añádela con «Editar todo en Contactos» para recibir el aviso de «sal ya» y la ruta.",
+  "fr": "Aucune adresse pour ce contact. Ajoutez-en une avec « Tout modifier dans Contacts » pour l'alerte « partez maintenant » et l'itinéraire.",
+  "hi": "इस कॉन्टैक्ट का पता सेव नहीं है। ‘अभी निकलें’ अलर्ट और रास्ते के लिए ‘Contacts में सब कुछ बदलें’ से पता जोड़ें।",
+  "it": "Nessun indirizzo per questo contatto. Aggiungilo con «Modifica tutto in Contatti» per avere l'avviso «parti ora» e il percorso.",
+  "ja": "この連絡先には住所がありません。「連絡先アプリですべて編集」で追加すると「今すぐ出発」通知と経路が使えます。",
+  "pt": "Este contacto não tem morada. Adicione uma em «Editar tudo em Contactos» para receber o alerta «saia agora» e o caminho.",
+  "zh": "该联系人没有地址。通过“在通讯录中编辑全部”添加后，可获得“现在出发”提醒和路线。"
+ },
  "No beef": {
   "de": "Kein Rind",
   "es": "Sin ternera",
@@ -9679,6 +10099,16 @@
   "pt": "Nenhum duplicado encontrado.",
   "zh": "未找到重复项。"
  },
+ "No email": {
+  "de": "Ohne E-Mail",
+  "es": "Sin correo",
+  "fr": "Sans e-mail",
+  "hi": "ईमेल नहीं",
+  "it": "Senza email",
+  "ja": "メールなし",
+  "pt": "Sem email",
+  "zh": "无邮箱"
+ },
  "No face found — face the camera with the whole head in view.": {
   "de": "Kein Gesicht gefunden – schau in die Kamera, ganzer Kopf im Bild.",
   "es": "No se encontró ninguna cara: mira a la cámara con toda la cabeza visible.",
@@ -9738,6 +10168,26 @@
   "ja": "ナッツなし",
   "pt": "Sem nozes",
   "zh": "不吃坚果"
+ },
+ "No phone": {
+  "de": "Ohne Telefon",
+  "es": "Sin teléfono",
+  "fr": "Sans téléphone",
+  "hi": "फ़ोन नहीं",
+  "it": "Senza telefono",
+  "ja": "電話なし",
+  "pt": "Sem telefone",
+  "zh": "无电话"
+ },
+ "No photo": {
+  "de": "Ohne Foto",
+  "es": "Sin foto",
+  "fr": "Sans photo",
+  "hi": "फ़ोटो नहीं",
+  "it": "Senza foto",
+  "ja": "写真なし",
+  "pt": "Sem foto",
+  "zh": "无照片"
  },
  "No pork": {
   "de": "Kein Schwein",
@@ -9849,6 +10299,16 @@
   "pt": "Nenhuma",
   "zh": "无"
  },
+ "None of your contacts has a birthday saved yet. Add one in a contact and it's picked up here.": {
+  "de": "Noch kein Kontakt hat einen Geburtstag. Trag einen ein, dann erscheint er hier.",
+  "es": "Ningún contacto tiene cumpleaños guardado aún. Añade uno y aparecerá aquí.",
+  "fr": "Aucun contact n'a encore d'anniversaire. Ajoutez-en un et il apparaîtra ici.",
+  "hi": "अभी किसी कॉन्टैक्ट में जन्मदिन सेव नहीं है। किसी में जोड़ें, यहाँ दिख जाएगा।",
+  "it": "Nessun contatto ha ancora un compleanno. Aggiungine uno e comparirà qui.",
+  "ja": "誕生日が登録された連絡先はまだありません。追加するとここに表示されます。",
+  "pt": "Nenhum contacto tem aniversário ainda. Adicione um e aparece aqui.",
+  "zh": "还没有联系人保存生日。添加后会显示在这里。"
+ },
  "None requested.": {
   "de": "Keine angefordert.",
   "es": "Ninguno solicitado.",
@@ -9928,6 +10388,16 @@
   "ja": "メモ（3階、エレベーター付近…）",
   "pt": "Nota (Nível 3, perto do elevador…)",
   "zh": "备注（3 层，电梯附近…）"
+ },
+ "Note (e.g. ask about test results)": {
+  "de": "Notiz (z. B. nach Testergebnissen fragen)",
+  "es": "Nota (p. ej. preguntar por resultados)",
+  "fr": "Note (ex. demander les résultats)",
+  "hi": "नोट (जैसे टेस्ट रिज़ल्ट के बारे में पूछना)",
+  "it": "Nota (es. chiedere i risultati)",
+  "ja": "メモ（例：検査結果を聞く）",
+  "pt": "Nota (ex.: perguntar pelos resultados)",
+  "zh": "备注（如：询问检查结果）"
  },
  "Note (e.g. with food)": {
   "de": "Hinweis (z. B. zum Essen)",
@@ -10208,6 +10678,16 @@
   "ja": "日付",
   "pt": "Em",
   "zh": "日期"
+ },
+ "On My iPhone": {
+  "de": "Auf meinem iPhone",
+  "es": "En mi iPhone",
+  "fr": "Sur mon iPhone",
+  "hi": "मेरे iPhone पर",
+  "it": "Su iPhone",
+  "ja": "iPhone 内",
+  "pt": "No meu iPhone",
+  "zh": "我的 iPhone 上"
  },
  "On the day": {
   "de": "Am Tag selbst",
@@ -10628,6 +11108,16 @@
   "ja": "本日の無料AI操作を使い切りました。",
   "pt": "Acabaram as ações de IA grátis de hoje.",
   "zh": "今日的免费AI次数已用完。"
+ },
+ "Outlook / Exchange": {
+  "de": "Outlook / Exchange",
+  "es": "Outlook / Exchange",
+  "fr": "Outlook / Exchange",
+  "hi": "Outlook / Exchange",
+  "it": "Outlook / Exchange",
+  "ja": "Outlook / Exchange",
+  "pt": "Outlook / Exchange",
+  "zh": "Outlook / Exchange"
  },
  "Over 25 MB — too big for most email. Turn on Make photos smaller, or send it through a link (iCloud, Drive).": {
   "de": "Über 25 MB – zu groß für die meisten E-Mails. Schalte „Fotos verkleinern“ ein oder sende es per Link (iCloud, Drive).",
@@ -11529,6 +12019,16 @@
   "pt": "A reescrita em linguagem simples precisa do Gemini Nano no dispositivo (Pixel 9, Galaxy S24+). Ouvir e Resumo funcionam em todos os telemóveis.",
   "zh": "改写成通俗英语需要设备端 Gemini Nano（Pixel 9、Galaxy S24+）。朗读和要点在每部手机上都可用。"
  },
+ "Plan a call or visit": {
+  "de": "Anruf oder Besuch planen",
+  "es": "Planear una llamada o visita",
+  "fr": "Planifier un appel ou une visite",
+  "hi": "कॉल या मुलाक़ात प्लान करें",
+  "it": "Pianifica una chiamata o visita",
+  "ja": "電話や訪問を予定",
+  "pt": "Planear uma chamada ou visita",
+  "zh": "安排通话或拜访"
+ },
  "Plan my day around how I feel": {
   "de": "Meinen Tag danach planen, wie es mir geht",
   "es": "Planear mi día según cómo me siento",
@@ -11538,6 +12038,16 @@
   "ja": "気分に合わせて一日を計画",
   "pt": "Planear o meu dia conforme me sinto",
   "zh": "按我的状态安排一天"
+ },
+ "Plan with": {
+  "de": "Planen mit",
+  "es": "Planear con",
+  "fr": "Planifier avec",
+  "hi": "इनके साथ प्लान:",
+  "it": "Pianifica con",
+  "ja": "予定：",
+  "pt": "Planear com",
+  "zh": "安排："
  },
  "Plan, travel & health": {
   "de": "Planen, Reisen & Gesundheit",
@@ -12709,6 +13219,16 @@
   "pt": "Lembrar depois (reposição, retorno)",
   "zh": "稍后提醒（续药、复诊）"
  },
+ "Remind me the day before birthdays": {
+  "de": "Am Tag vor Geburtstagen erinnern",
+  "es": "Recordarme el día antes de cumpleaños",
+  "fr": "Me rappeler la veille des anniversaires",
+  "hi": "जन्मदिन से एक दिन पहले याद दिलाएँ",
+  "it": "Ricordamelo il giorno prima dei compleanni",
+  "ja": "誕生日の前日に知らせる",
+  "pt": "Lembrar-me na véspera dos aniversários",
+  "zh": "生日前一天提醒我"
+ },
  "Remind me to run this": {
   "de": "Erinnern, dies auszuführen",
   "es": "Recordarme ejecutar esto",
@@ -12738,6 +13258,16 @@
   "ja": "リマインドあり",
   "pt": "Lembrete ativo",
   "zh": "已设提醒"
+ },
+ "Reminder:": {
+  "de": "Erinnerung:",
+  "es": "Recordatorio:",
+  "fr": "Rappel :",
+  "hi": "रिमाइंडर:",
+  "it": "Promemoria:",
+  "ja": "リマインダー:",
+  "pt": "Lembrete:",
+  "zh": "提醒："
  },
  "Reminder: ": {
   "de": "Erinnerung: ",
@@ -12818,6 +13348,16 @@
   "ja": "ジャケットを削除",
   "pt": "Remover capa",
   "zh": "移除封面"
+ },
+ "Remove photo": {
+  "de": "Foto entfernen",
+  "es": "Quitar foto",
+  "fr": "Retirer la photo",
+  "hi": "फ़ोटो हटाएँ",
+  "it": "Rimuovi foto",
+  "ja": "写真を削除",
+  "pt": "Remover foto",
+  "zh": "移除照片"
  },
  "Remove stamp": {
   "de": "Stempel entfernen",
@@ -13349,6 +13889,16 @@
   "pt": "Salvar ou imprimir o flipbook",
   "zh": "保存或打印翻页书"
  },
+ "Save or send": {
+  "de": "Sichern oder senden",
+  "es": "Guardar o enviar",
+  "fr": "Enregistrer ou envoyer",
+  "hi": "सेव करें या भेजें",
+  "it": "Salva o invia",
+  "ja": "保存または送信",
+  "pt": "Guardar ou enviar",
+  "zh": "保存或发送"
+ },
  "Save or share": {
   "de": "Speichern oder teilen",
   "es": "Guardar o compartir",
@@ -13519,6 +14069,16 @@
   "pt": "Salvar nos Contatos",
   "zh": "存储到通讯录"
  },
+ "Save to Files, iCloud Drive or Google Drive, AirDrop it, or send it in any app.": {
+  "de": "In Dateien, iCloud Drive oder Google Drive sichern, per AirDrop oder in jeder App senden.",
+  "es": "Guárdalo en Archivos, iCloud Drive o Google Drive, pásalo por AirDrop o envíalo en cualquier app.",
+  "fr": "Enregistrez dans Fichiers, iCloud Drive ou Google Drive, AirDrop, ou envoyez dans n'importe quelle app.",
+  "hi": "Files, iCloud Drive या Google Drive में सेव करें, AirDrop करें, या किसी भी ऐप में भेजें।",
+  "it": "Salva in File, iCloud Drive o Google Drive, invia con AirDrop o da qualsiasi app.",
+  "ja": "ファイル・iCloud Drive・Google Drive に保存、AirDrop、どのアプリでも送信できます。",
+  "pt": "Guarde em Ficheiros, iCloud Drive ou Google Drive, envie por AirDrop ou em qualquer app.",
+  "zh": "保存到“文件”、iCloud 云盘或 Google Drive，隔空投送，或在任意应用中发送。"
+ },
  "Save to Notes": {
   "de": "In Notizen sichern",
   "es": "Guardar en Notas",
@@ -13568,6 +14128,16 @@
   "ja": "保存・共有・印刷",
   "pt": "Guardar, partilhar ou imprimir",
   "zh": "保存、分享或打印"
+ },
+ "Saved in": {
+  "de": "Gespeichert in",
+  "es": "Guardado en",
+  "fr": "Enregistré dans",
+  "hi": "यहाँ सेव",
+  "it": "Salvato in",
+  "ja": "保存先",
+  "pt": "Guardado em",
+  "zh": "保存在"
  },
  "Saved notes": {
   "de": "Gespeicherte Notizen",
@@ -14009,6 +14579,16 @@
   "pt": "Procure Tenzy e escolha My Tools. Adicione o tamanho que quiser.",
   "zh": "搜索 Tenzy，选择 My Tools，添加你喜欢的尺寸。"
  },
+ "Search name, company, phone or email": {
+  "de": "Name, Firma, Telefon oder E-Mail suchen",
+  "es": "Buscar nombre, empresa, teléfono o correo",
+  "fr": "Chercher nom, entreprise, téléphone ou e-mail",
+  "hi": "नाम, कंपनी, फ़ोन या ईमेल खोजें",
+  "it": "Cerca nome, azienda, telefono o email",
+  "ja": "名前・会社・電話・メールで検索",
+  "pt": "Procurar nome, empresa, telefone ou email",
+  "zh": "搜索姓名、公司、电话或邮箱"
+ },
  "Search notes": {
   "de": "Notizen durchsuchen",
   "es": "Buscar notas",
@@ -14278,6 +14858,16 @@
   "ja": "ここを基準に設定",
   "pt": "Definir referência aqui",
   "zh": "将此处设为基准"
+ },
+ "Set it up": {
+  "de": "Einrichten",
+  "es": "Configurarlo",
+  "fr": "Configurer",
+  "hi": "सेट करें",
+  "it": "Imposta",
+  "ja": "設定する",
+  "pt": "Configurar",
+  "zh": "设置"
  },
  "Set this to the language spoken in the recording.": {
   "de": "Stelle dies auf die im Aufnahme gesprochene Sprache.",
@@ -15099,6 +15689,16 @@
   "pt": "Assim este lembrete não chega até você. Toque abaixo, ative Permitir Notificações e volte — ele liga sozinho.",
   "zh": "这样提醒就无法送达。点下方按钮，打开“允许通知”，再回来——它会自动开启。"
  },
+ "Social media": {
+  "de": "Soziale Medien",
+  "es": "Redes sociales",
+  "fr": "Réseaux sociaux",
+  "hi": "सोशल मीडिया",
+  "it": "Social",
+  "ja": "SNS",
+  "pt": "Redes sociais",
+  "zh": "社交媒体"
+ },
  "Soft dissolve between photos": {
   "de": "Weiches Überblenden zwischen Fotos",
   "es": "Fundido suave entre fotos",
@@ -15428,6 +16028,16 @@
   "ja": "プレミアムレート番号やなりすましパターンの番号を検出します。端末の電話アプリも独自の迷惑リストを照合します。",
   "pt": "Deteta números de tarifa premium e com padrão de falsificação; o marcador do teu telemóvel também verifica a sua própria lista de spam.",
   "zh": "识别高费率和仿冒模式的号码；你手机的拨号器也会对照自己的垃圾名单。"
+ },
+ "Spreadsheet for Excel (.csv)": {
+  "de": "Tabelle für Excel (.csv)",
+  "es": "Hoja para Excel (.csv)",
+  "fr": "Tableur pour Excel (.csv)",
+  "hi": "Excel के लिए स्प्रेडशीट (.csv)",
+  "it": "Foglio per Excel (.csv)",
+  "ja": "Excel 用の表（.csv）",
+  "pt": "Folha para Excel (.csv)",
+  "zh": "Excel 表格（.csv）"
  },
  "Stand up and stretch your arms up once": {
   "de": "Aufstehen und die Arme einmal hochstrecken",
@@ -16549,6 +17159,26 @@
   "pt": "Versão de teste: todas as ferramentas já estão desbloqueadas. Mesmo assim podes testar a compra abaixo com uma conta sandbox.",
   "zh": "测试版本：所有工具均已解锁。你仍可用沙盒账户尝试下方的购买。"
  },
+ "Test run": {
+  "de": "Probelauf",
+  "es": "Prueba",
+  "fr": "Essai",
+  "hi": "टेस्ट रन",
+  "it": "Prova",
+  "ja": "テスト実行",
+  "pt": "Teste",
+  "zh": "测试一下"
+ },
+ "Test run — send me these alerts now": {
+  "de": "Probelauf – diese Hinweise jetzt senden",
+  "es": "Prueba: envíame estos avisos ahora",
+  "fr": "Essai — envoyez-moi ces alertes maintenant",
+  "hi": "टेस्ट रन — ये अलर्ट अभी भेजें",
+  "it": "Prova: inviami subito questi avvisi",
+  "ja": "テスト実行 — 今すぐ通知を送る",
+  "pt": "Teste — envie-me estes alertas agora",
+  "zh": "测试——现在发送这些提醒"
+ },
  "Testing…": {
   "de": "Test läuft…",
   "es": "Probando…",
@@ -16828,6 +17458,16 @@
   "ja": "PDFは",
   "pt": "O PDF tem",
   "zh": "PDF 共"
+ },
+ "The alert shows their number and address, with Call and Directions buttons right on it.": {
+  "de": "Der Hinweis zeigt Nummer und Adresse, mit Anrufen- und Route-Tasten direkt darin.",
+  "es": "El aviso muestra su número y dirección, con botones de Llamar y Cómo llegar.",
+  "fr": "L'alerte affiche le numéro et l'adresse, avec les boutons Appeler et Itinéraire.",
+  "hi": "अलर्ट में उनका नंबर और पता होगा, साथ में कॉल और रास्ता बटन।",
+  "it": "L'avviso mostra numero e indirizzo, con i pulsanti Chiama e Indicazioni.",
+  "ja": "通知に番号と住所、「電話」「経路」ボタンが表示されます。",
+  "pt": "O alerta mostra o número e a morada, com botões Ligar e Direções.",
+  "zh": "提醒会显示电话和地址，并带有“拨打”和“路线”按钮。"
  },
  "The camera's own best automatic settings.": {
   "de": "Die besten Automatik-Einstellungen der Kamera.",
@@ -17168,6 +17808,16 @@
   "ja": "名前も番号もありません。元に戻せません。",
   "pt": "Não têm nome nem número. Não pode ser anulado.",
   "zh": "它们没有姓名也没有号码。此操作无法撤销。"
+ },
+ "They're removed from your iPhone and every account they sync to (iCloud, Gmail, Outlook). iPhone has no contacts trash, so this can't be undone — export them first if you might need them.": {
+  "de": "Sie werden vom iPhone und allen synchronisierten Konten (iCloud, Gmail, Outlook) gelöscht. Es gibt keinen Papierkorb für Kontakte – exportiere sie vorher, falls du sie brauchen könntest.",
+  "es": "Se eliminan del iPhone y de todas las cuentas sincronizadas (iCloud, Gmail, Outlook). No hay papelera de contactos, así que no se puede deshacer: expórtalos antes si podrías necesitarlos.",
+  "fr": "Ils sont supprimés de l'iPhone et de tous les comptes synchronisés (iCloud, Gmail, Outlook). Il n'y a pas de corbeille pour les contacts : exportez-les d'abord si besoin.",
+  "hi": "ये iPhone और हर सिंक अकाउंट (iCloud, Gmail, Outlook) से हट जाएँगे। कॉन्टैक्ट का कोई ट्रैश नहीं है, इसलिए यह वापस नहीं होगा — ज़रूरत हो सकती है तो पहले एक्सपोर्ट करें।",
+  "it": "Vengono rimossi dall'iPhone e da ogni account sincronizzato (iCloud, Gmail, Outlook). Non esiste un cestino per i contatti: esportali prima se potrebbero servirti.",
+  "ja": "iPhone と同期中のすべてのアカウント（iCloud、Gmail、Outlook）から削除されます。連絡先にゴミ箱はないため元に戻せません。必要なら先に書き出してください。",
+  "pt": "São removidos do iPhone e de todas as contas sincronizadas (iCloud, Gmail, Outlook). Não há lixo de contactos, por isso não dá para anular — exporte-os antes se precisar.",
+  "zh": "将从 iPhone 及所有同步账户（iCloud、Gmail、Outlook）中删除。通讯录没有回收站，无法撤销——如可能还需要，请先导出。"
  },
  "Thin": {
   "de": "Dünn",
@@ -18349,6 +18999,16 @@
   "pt": "Desbloquear Pro (tester)",
   "zh": "解锁 Pro（测试）"
  },
+ "Unmark": {
+  "de": "Markierung entfernen",
+  "es": "Desmarcar",
+  "fr": "Retirer",
+  "hi": "चिह्न हटाएँ",
+  "it": "Rimuovi",
+  "ja": "マーク解除",
+  "pt": "Desmarcar",
+  "zh": "取消标记"
+ },
  "Untangle": {
   "de": "Untangle",
   "es": "Untangle",
@@ -18499,6 +19159,16 @@
   "pt": "Usado quando o número é escrito sem um.",
   "zh": "当号码未写区号时使用。"
  },
+ "Uses the birthdays saved in your contacts. You get a nudge the day before, with their number so you can call or text.": {
+  "de": "Nutzt die Geburtstage aus deinen Kontakten. Du bekommst am Vortag einen Hinweis mit ihrer Nummer zum Anrufen oder Schreiben.",
+  "es": "Usa los cumpleaños de tus contactos. Te avisa el día antes, con su número para llamar o escribir.",
+  "fr": "Utilise les anniversaires de vos contacts. Un rappel la veille, avec leur numéro pour appeler ou écrire.",
+  "hi": "आपके कॉन्टैक्ट में सेव जन्मदिन इस्तेमाल होते हैं। एक दिन पहले उनके नंबर के साथ याद दिलाया जाएगा।",
+  "it": "Usa i compleanni dei contatti. Ricevi un promemoria il giorno prima, con il numero per chiamare o scrivere.",
+  "ja": "連絡先の誕生日を使い、前日に電話番号付きでお知らせします。",
+  "pt": "Usa os aniversários dos contactos. Recebe um lembrete na véspera, com o número para ligar ou escrever.",
+  "zh": "使用通讯录里的生日，前一天提醒你，并附上电话方便打电话或发信息。"
+ },
  "Vault": {
   "de": "Tresor",
   "es": "Caja fuerte",
@@ -18558,6 +19228,26 @@
   "ja": "動画の変換先",
   "pt": "Os vídeos tornam-se",
   "zh": "视频转为"
+ },
+ "View": {
+  "de": "Ansicht",
+  "es": "Vista",
+  "fr": "Vue",
+  "hi": "दृश्य",
+  "it": "Vista",
+  "ja": "表示",
+  "pt": "Vista",
+  "zh": "视图"
+ },
+ "Visit": {
+  "de": "Besuch",
+  "es": "Visita",
+  "fr": "Visite",
+  "hi": "मुलाक़ात",
+  "it": "Visita",
+  "ja": "訪問",
+  "pt": "Visita",
+  "zh": "拜访"
  },
  "Vivid": {
   "de": "Lebendig",
@@ -18798,6 +19488,16 @@
   "ja": "ウェブサイト",
   "pt": "Site",
   "zh": "网站"
+ },
+ "What": {
+  "de": "Was",
+  "es": "Qué",
+  "fr": "Quoi",
+  "hi": "क्या",
+  "it": "Cosa",
+  "ja": "内容",
+  "pt": "O quê",
+  "zh": "内容"
  },
  "What Tenzy does": {
   "de": "Was Tenzy kann",
@@ -19139,6 +19839,26 @@
   "pt": "Palavras para escrever por cima",
   "zh": "要写在上面的文字"
  },
+ "Work": {
+  "de": "Arbeit",
+  "es": "Trabajo",
+  "fr": "Travail",
+  "hi": "काम",
+  "it": "Lavoro",
+  "ja": "仕事",
+  "pt": "Trabalho",
+  "zh": "工作"
+ },
+ "Work out the drive time": {
+  "de": "Fahrzeit berechnen",
+  "es": "Calcular el trayecto",
+  "fr": "Calculer le trajet",
+  "hi": "ड्राइव का समय निकालें",
+  "it": "Calcola il tragitto",
+  "ja": "運転時間を計算",
+  "pt": "Calcular o trajeto",
+  "zh": "计算车程"
+ },
  "Working on your photo…": {
   "de": "Foto wird bearbeitet …",
   "es": "Trabajando en tu foto…",
@@ -19148,6 +19868,16 @@
   "ja": "写真を処理中…",
   "pt": "Trabalhando na sua foto…",
   "zh": "正在处理照片…"
+ },
+ "Working out the drive…": {
+  "de": "Fahrzeit wird berechnet …",
+  "es": "Calculando el trayecto…",
+  "fr": "Calcul du trajet…",
+  "hi": "ड्राइव का समय निकाल रहे हैं…",
+  "it": "Calcolo del tragitto…",
+  "ja": "運転時間を計算中…",
+  "pt": "A calcular o trajeto…",
+  "zh": "正在计算车程…"
  },
  "Working…": {
   "de": "Wird bearbeitet…",
@@ -19328,6 +20058,16 @@
   "ja": "届く通知:",
   "pt": "Vai receber:",
   "zh": "你会收到："
+ },
+ "You'll see the calendar entry before it's added — tap Add to keep it.": {
+  "de": "Du siehst den Eintrag, bevor er hinzugefügt wird – tippe auf „Hinzufügen“, um ihn zu behalten.",
+  "es": "Verás el evento antes de añadirlo: toca Añadir para guardarlo.",
+  "fr": "Vous verrez l'événement avant l'ajout — touchez Ajouter pour le garder.",
+  "hi": "जुड़ने से पहले कैलेंडर एंट्री दिखेगी — रखने के लिए Add दबाएँ।",
+  "it": "Vedrai l'evento prima di aggiungerlo: tocca Aggiungi per tenerlo.",
+  "ja": "追加前に予定が表示されます。残すには「追加」をタップ。",
+  "pt": "Vai ver o evento antes de ser adicionado — toque em Adicionar para o guardar.",
+  "zh": "添加前你会先看到日历条目，点“添加”即可保留。"
  },
  "You're Pro. Thank you.": {
   "de": "Du bist Pro. Danke.",
@@ -19729,6 +20469,26 @@
   "pt": "ligar ao dentista, levantar uma encomenda nos correios às 15h, enviar e-mail ao Sam, pagar a renda sexta-feira",
   "zh": "给牙医打电话，下午 3 点到邮局取包裹，给 Sam 发邮件，周五付房租"
  },
+ "contacts": {
+  "de": "Kontakte",
+  "es": "contactos",
+  "fr": "contacts",
+  "hi": "कॉन्टैक्ट",
+  "it": "contatti",
+  "ja": "件の連絡先",
+  "pt": "contactos",
+  "zh": "个联系人"
+ },
+ "contacts?": {
+  "de": "Kontakte löschen?",
+  "es": "contactos?",
+  "fr": "contacts ?",
+  "hi": "कॉन्टैक्ट हटाएँ?",
+  "it": "contatti?",
+  "ja": "件の連絡先を削除しますか？",
+  "pt": "contactos?",
+  "zh": "个联系人？"
+ },
  "day": {
   "de": "Tag",
   "es": "día",
@@ -19879,6 +20639,16 @@
   "pt": "https://… link do artigo",
   "zh": "https://… 文章链接"
  },
+ "iCloud": {
+  "de": "iCloud",
+  "es": "iCloud",
+  "fr": "iCloud",
+  "hi": "iCloud",
+  "it": "iCloud",
+  "ja": "iCloud",
+  "pt": "iCloud",
+  "zh": "iCloud"
+ },
  "iPhone allows 64 alerts per app — the": {
   "de": "iPhone erlaubt 64 Hinweise pro App – die",
   "es": "El iPhone permite 64 avisos por app: las",
@@ -19989,6 +20759,16 @@
   "pt": "min de carro",
   "zh": "分钟车程"
  },
+ "min drive from here — you'll get a \"leave now\" alert": {
+  "de": "Min. Fahrt von hier – du bekommst einen „Jetzt los“-Hinweis",
+  "es": "min en coche desde aquí: recibirás un aviso de «sal ya»",
+  "fr": "min de route d'ici — vous aurez une alerte « partez maintenant »",
+  "hi": "मिनट की ड्राइव — आपको ‘अभी निकलें’ अलर्ट मिलेगा",
+  "it": "min di auto da qui: riceverai l'avviso «parti ora»",
+  "ja": "分の運転 —「今すぐ出発」通知が届きます",
+  "pt": "min de carro daqui — vai receber o alerta «saia agora»",
+  "zh": "分钟车程——你会收到“现在出发”提醒"
+ },
  "min travel": {
   "de": "Min. Weg",
   "es": "min de trayecto",
@@ -20048,6 +20828,16 @@
   "ja": "記録なし",
   "pt": "nada registrado",
   "zh": "无记录"
+ },
+ "of": {
+  "de": "von",
+  "es": "de",
+  "fr": "sur",
+  "hi": "में से",
+  "it": "di",
+  "ja": "/",
+  "pt": "de",
+  "zh": "/"
  },
  "older ones would go — about": {
   "de": "ältere würden gelöscht – etwa",
@@ -20228,6 +21018,16 @@
   "ja": "枚。",
   "pt": "capturas.",
   "zh": "张截图。"
+ },
+ "selected": {
+  "de": "ausgewählt",
+  "es": "seleccionados",
+  "fr": "sélectionnés",
+  "hi": "चुने गए",
+  "it": "selezionati",
+  "ja": "件選択",
+  "pt": "selecionados",
+  "zh": "已选"
  },
  "sending a message": {
   "de": "eine Nachricht senden",
@@ -20438,6 +21238,16 @@
   "ja": "移動",
   "pt": "de deslocação",
   "zh": "路程"
+ },
+ "turns": {
+  "de": "wird",
+  "es": "cumple",
+  "fr": "aura",
+  "hi": "होंगे",
+  "it": "compie",
+  "ja": "歳になる",
+  "pt": "faz",
+  "zh": "满"
  },
  "voice": {
   "de": "",

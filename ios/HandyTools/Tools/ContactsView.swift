@@ -20,20 +20,29 @@ struct ContactsView: View {
     @State private var backupNote: String?
     @State private var showMail = false
     @State private var showTransfer = false
+    @AppStorage("contacts.tab") private var tab = 0     // 0 My contacts · 1 Clean up & back up
 
     struct TidyGroup: Identifiable { let id = UUID(); let title: String; let icon: String; let recs: [ContactRec]; let deletable: Bool }
 
     var body: some View {
-        ToolPage(title: "Contacts", subtitle: "Find duplicates, merge them without losing a number, and back everything up — all on your phone.", working: busy) {
+        ToolPage(title: "Contacts", subtitle: "Search, filter and group everyone, export or back up any group, plan calls and visits, birthday reminders — and clean up duplicates. All on your phone.", working: busy) {
             HowTo("contacts", [
-                "Back up to a .vcf first — one tap, keep it somewhere safe.",
-                "Review the duplicate groups and merge the ones that match.",
-                "Merging keeps every number and email; the extra copies are removed.",
+                "My contacts: search anything, tap a filter (no phone, work, birthdays…), tick people, then export, group, mark or delete.",
+                "Tap a person to add a photo, mark them Favorite / Emergency / Important, or plan a call or visit with a reminder.",
+                "Clean up & back up: merge duplicates without losing a number, and keep automatic backups.",
             ])
 
             if !authorized {
                 permissionCard
             } else {
+                Picker(L("View"), selection: $tab) {
+                    Text(L("My contacts")).tag(0)
+                    Text(L("Clean up & back up")).tag(1)
+                }.pickerStyle(.segmented).accessibilityIdentifier("contacts-tab")
+            }
+            if authorized && tab == 0 {
+                ContactsBookView()
+            } else if authorized {
                 backupBar
                 autoBackupCard
                 Button { showTransfer = true } label: {

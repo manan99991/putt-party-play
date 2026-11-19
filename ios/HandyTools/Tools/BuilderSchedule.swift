@@ -71,7 +71,7 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
 
     func install() {
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().setNotificationCategories([MedSchedule.registerCategory(), DayDiary.registerCategory()])
+        UNUserNotificationCenter.current().setNotificationCategories([MedSchedule.registerCategory(), DayDiary.registerCategory(), ContactPlans.registerCategory()])
         // Top up dated medication alerts (they're scheduled two weeks ahead) every launch.
         Task { @MainActor in MedStore.shared.reschedule() }
     }
@@ -100,6 +100,10 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
             default:
                 DispatchQueue.main.async { NotificationCenter.default.post(name: .openTool, object: "daydiary") }
             }
+            completionHandler(); return
+        }
+        if content.categoryIdentifier == ContactPlans.category, let u = ContactPlans.handle(action: response.actionIdentifier, info: content.userInfo) {
+            DispatchQueue.main.async { UIApplication.shared.open(u) }   // Call or Directions, straight from the alert
             completionHandler(); return
         }
         if let tool = content.userInfo["open"] as? String {
