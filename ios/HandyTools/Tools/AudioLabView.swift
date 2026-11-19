@@ -14,6 +14,10 @@ struct AudioLabView: View {
     @State private var a4: Double = 440
     private let presets: [(String, [Int])] = [("Chromatic", []), ("Guitar", [40, 45, 50, 55, 59, 64]), ("Bass", [28, 33, 38, 43]), ("Ukulele", [67, 60, 64, 69]), ("Violin", [55, 62, 69, 76])]
     @State private var ejecting = false
+    // guided tuning: one string at a time
+    @State private var guideIdx = 0
+    @State private var tuned: Set<Int> = []
+    @State private var holdSince: Date?
 
     var body: some View {
         ToolPage(title: "Audio Lab", subtitle: "Tune an instrument, generate any tone, test your speakers and earbuds, or shake water out of them.") {
@@ -49,7 +53,7 @@ struct AudioLabView: View {
     private var tunerPanel: some View {
         VStack(spacing: HandySpacing.s12) {
             HandyFlow(spacing: HandySpacing.s8) {
-                ForEach(0..<presets.count, id: \.self) { i in HChip(text: presets[i].0, selected: preset == i) { preset = i } }
+                ForEach(0..<presets.count, id: \.self) { i in HChip(text: presets[i].0, selected: preset == i) { preset = i; guideIdx = 0; tuned = []; holdSince = nil } }
             }
             let inTune = abs(tuner.cents) < 5 && tuner.clarity > 0.85
             ZStack {
@@ -73,6 +77,7 @@ struct AudioLabView: View {
             }.foregroundStyle(inTune ? HandyColor.success : HandyColor.textPrimary)
             Text(tuner.clarity > 0.85 ? String(format: "%.1f Hz · %@%.0f cents", tuner.hz, tuner.cents >= 0 ? "+" : "", tuner.cents) : "Play a single note…")
                 .font(HandyFont.caption).monospacedDigit().foregroundStyle(HandyColor.textSecondary)
+            if !presets[preset].1.isEmpty { guidePanel(presets[preset].1) }
             if !presets[preset].1.isEmpty {
                 HStack(spacing: HandySpacing.s8) {
                     ForEach(presets[preset].1, id: \.self) { midi in
@@ -88,6 +93,44 @@ struct AudioLabView: View {
             }
             HStack { Text("A4 = \(Int(a4)) Hz").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Stepper(L(""), value: $a4, in: 415...466).labelsHidden(); Spacer() }
             if tuner.denied { LimitNote("Microphone access is off. Allow it in Settings to tune.") }
+        }
+    }
+
+    /// "String 2 of 6: A2 — tune up, tighten the peg", moving on by itself once a string holds in tune.
+    @ViewBuilder private func guidePanel(_ strings: [Int]) -> some View {
+        if tuned.count == strings.count {
+            VStack(spacing: 6) {
+                Label("\(L("All")) \(strings.count) \(L("strings in tune"))", systemImage: "checkmark.seal.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
+                Button(L("Tune again")) { tuned = []; guideIdx = 0 }.textButton()
+            }.frame(maxWidth: .infinity).cardStyle(padding: HandySpacing.s12)
+        } else {
+            let i = min(guideIdx, strings.count - 1)
+            let target = Pitch.frequency(midi: strings[i], a4: a4)
+            let n = Pitch.note(for: target, a4: a4)
+            let move = tuner.clarity > 0.85 ? TuneGuide.advice(hz: tuner.hz, target: target) : nil
+            VStack(spacing: 6) {
+                Text("\(L("String")) \(i + 1) \(L("of")) \(strings.count): \(n.name)\(n.octave)").font(.system(size: 22, weight: .bold, design: .rounded))
+                Text(L(move.map(TuneGuide.words) ?? "Play just this string")).font(HandyFont.body)
+                    .foregroundStyle(move == .inTune ? HandyColor.success : HandyColor.textPrimary)
+                HStack(spacing: 4) {
+                    ForEach(strings.indices, id: \.self) { k in
+                        Image(systemName: tuned.contains(k) ? "checkmark.circle.fill" : (k == i ? "circle.inset.filled" : "circle"))
+                            .foregroundStyle(tuned.contains(k) ? HandyColor.success : (k == i ? HandyColor.accent : HandyColor.textSecondary))
+                            .onTapGesture { guideIdx = k; holdSince = nil }
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity).cardStyle(padding: HandySpacing.s12)
+            .onChange(of: tuner.hz) { _, hz in
+                // A string held in tune for 0.8 s is done: tick it and move to the next one not yet tuned.
+                guard tuner.clarity > 0.85, TuneGuide.advice(hz: hz, target: target) == .inTune else { holdSince = nil; return }
+                if holdSince == nil { holdSince = Date() }
+                if let h = holdSince, Date().timeIntervalSince(h) > 0.8 {
+                    tuned.insert(i); holdSince = nil; HandyHaptics.success()
+                    if let next = strings.indices.first(where: { !tuned.contains($0) }) { guideIdx = next }
+                }
+            }
+            .accessibilityElement(children: .combine)
         }
     }
 
