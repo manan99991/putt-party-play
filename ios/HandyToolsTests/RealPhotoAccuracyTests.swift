@@ -26,7 +26,10 @@ final class RealPhotoAccuracyTests: XCTestCase {
     }
     /// "25/12/2018", "25-12-18", "2018-12-25" → day, month, year (two-digit years as 20xx).
     static func dmy(_ s: String) -> (Int, Int, Int)? {
-        let n = s.components(separatedBy: CharacterSet.decimalDigits.inverted).compactMap { Int($0) }
+        var n = s.components(separatedBy: CharacterSet.decimalDigits.inverted).compactMap { Int($0) }
+        // "05 MAR 2018": the month as a word.
+        let months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+        if n.count == 2, let m = months.firstIndex(where: { s.lowercased().contains($0) }) { n = [n[0], m + 1, n[1]] }
         guard n.count >= 3 else { return nil }
         if n[0] > 31 { return (n[2], n[1], n[0]) }
         return (n[0], n[1], n[2] < 100 ? 2000 + n[2] : n[2])
@@ -54,14 +57,17 @@ final class RealPhotoAccuracyTests: XCTestCase {
             var dOK = false
             if let d = r.date, let want = Self.dmy(k["date"] ?? "") {
                 let c = Calendar(identifier: .gregorian).dateComponents(in: TimeZone.current, from: d)
-                // Some receipts print month first; count either reading of an ambiguous day/month as right.
-                dOK = c.year == want.2 && ((c.day == want.0 && c.month == want.1) || (c.day == want.1 && c.month == want.0))
+                // SROIE receipts are Malaysian: always day first. A swapped day and month is a wrong date.
+                dOK = c.year == want.2 && c.day == want.0 && c.month == want.1
             }
             if dOK { date += 1 }
-            let tOK = r.total.map { abs($0 - (Double(k["total"]?.replacingOccurrences(of: ",", with: "") ?? "") ?? -1)) < 0.005 } ?? false
+            // "RM8.60", "$8.20", "1,234.00" → the number.
+            let wantTotal = Double((k["total"] ?? "").replacingOccurrences(of: ",", with: "").filter { $0.isNumber || $0 == "." }) ?? -1
+            let tOK = r.total.map { abs($0 - wantTotal) < 0.005 } ?? false
             if tOK { total += 1 }
             let shownDate = r.date.map { d -> String in f.dateFormat = "dd/MM/yyyy"; return f.string(from: d) } ?? "—"
             lines.append("\(stem)\t\(String(format: "%.2f", s))\t\(dOK ? 1 : 0)\t\(tOK ? 1 : 0)\t| \(r.merchant) / \(shownDate) / \(r.total.map { String(format: "%.2f", $0) } ?? "—")\t| \(k["company"] ?? "") / \(k["date"] ?? "") / \(k["total"] ?? "")")
+            if s < 0.99 || !dOK || !tOK { lines.append("   text: " + text.split(whereSeparator: \.isNewline).prefix(40).joined(separator: " ⏎ ")) }
         }
         guard n > 0 else { return }
         let sShop = shop / Double(n), sDate = Double(date) / Double(n), sTotal = Double(total) / Double(n)

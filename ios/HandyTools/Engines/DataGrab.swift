@@ -45,7 +45,9 @@ enum DataGrab {
 
     /// Words that head a receipt but aren't the shop's name.
     private static let notAShop = #"^(receipt|sales receipt|cash receipt|receipt example|invoice|tax invoice|bill|from|bill to|ship to|sold to|customer( name| address)?|logo|date.*|invoice (number|no\.?)|receipt (number|no\.?|#)|description|qty|thank you.*|welcome.*|copy|duplicate|original)$"#
-    private static let shopWord = #"\b(inc|llc|ltd|co|corp|company|store|shop|market|mart|cafe|café|coffee|restaurant|bar|grill|bakery|pharmacy|repair|services?|supply|hardware|foods?|kitchen|motors|garage|salon|studio|posters|outlet)\b"#
+    private static let shopWord = #"\b(inc|llc|ltd|co|corp|company|store|shop|market|mart|cafe|café|coffee|restaurant|restoran|bar|grill|bakery|pharmacy|repair|services?|supply|hardware|foods?|kitchen|kitchenette|motors|garage|salon|studio|posters|stickers|outlet|sdn|bhd|s/b|enterprise|trading|holdings|furnishing|stationery|books?|petrol|grocer|electrical|supermarket|pvt|gmbh|plc|pty)\b"#
+    /// Lines near the top that are never the shop: registration numbers, document titles, screenshot chrome.
+    private static let notAShopLine = #"(co\.?\s*-?\s*re?g|company\s*(no|reg)|\bgst\b|\btax\s*invoice|order\s*number|\bcash\s*sale|receipt\s*example|^lot\b|^tel\b|^fax\b|google\.com|^\d{1,2}:\d{2}$|^(share|save|visit|done)$|\|)"#
 
     static func receipt(_ text: String) -> Receipt {
         var r = Receipt()
@@ -53,23 +55,35 @@ enum DataGrab {
         let flat = lines.map { columns($0).joined(separator: " ") }
 
         // The shop: right after "From", else the first top line that names a business, else the first plain line.
-        let firstCells = lines.prefix(10).map { columns($0).first ?? $0 }
+        // A business name can sit below a logo, a title or (in a screenshot) the browser bar: look a little further
+        // for one that says it's a business, but take a plain line only from the very top.
+        let topCells = lines.prefix(25).map { columns($0).first ?? $0 }
+        let firstCells = Array(topCells.prefix(10))
         func shopLike(_ l: String) -> Bool {
             let low = l.lowercased().trimmingCharacters(in: CharacterSet(charactersIn: " :#"))
             return l.count > 2 && l.range(of: moneyPattern, options: .regularExpression) == nil && l.range(of: #"^\d"#, options: .regularExpression) == nil
-                && low.range(of: notAShop, options: .regularExpression) == nil && !low.contains("@") && !low.contains("www") && l.filter(\.isLetter).count >= 3
+                && low.range(of: notAShop, options: .regularExpression) == nil && low.range(of: notAShopLine, options: .regularExpression) == nil
+                && !low.contains("@") && !low.contains("www") && l.filter(\.isLetter).count >= 3
         }
         if let i = firstCells.firstIndex(where: { $0.lowercased().trimmingCharacters(in: CharacterSet(charactersIn: " :")) == "from" }), i + 1 < firstCells.count, shopLike(firstCells[i + 1]) {
             r.merchant = firstCells[i + 1]
         } else {
-            r.merchant = firstCells.first { shopLike($0) && $0.range(of: shopWord, options: [.regularExpression, .caseInsensitive]) != nil }
+            r.merchant = topCells.first { shopLike($0) && $0.range(of: shopWord, options: [.regularExpression, .caseInsensitive]) != nil }
                 ?? firstCells.first(where: shopLike) ?? ""
         }
 
         // The date: one labelled as the receipt's or sale's date wins; a due date never does.
         let dated = flat.filter { !$0.lowercased().contains("due") }
-        r.date = dated.first { $0.lowercased().contains("date") }.flatMap { dates(in: $0).first }
-            ?? dates(in: dated.joined(separator: "\n")).first
+        // Day or month first? A date on the receipt that can only be one way decides (26/02/2019 → day first);
+        // else where the receipt is from (ringgit, GST, VAT, pounds, euros, rupees print day first).
+        let order = numericDateOrder(in: text)
+        let dayFirst: Bool? = order ?? (text.range(of: #"\bRM\s?\d|SDN\.?\s?BHD|\bGST\b|\bVAT\b|£|€|₹|\bS/B\b"#, options: [.regularExpression, .caseInsensitive]) != nil ? true : nil)
+        func receiptDates(_ l: String) -> [Date] {
+            let printed = printedDates(in: l, dayFirst: dayFirst)
+            return printed.isEmpty ? calendarDates(in: l) : printed
+        }
+        r.date = dated.first { $0.lowercased().contains("date") && !receiptDates($0).isEmpty }.flatMap { receiptDates($0).first }
+            ?? dated.lazy.compactMap { receiptDates($0).first }.first
         if let m = matches(#"(?:receipt|invoice|order|transaction|ticket)\s*(?:#|no\.?|number|num)\s*[:#]?\s*[A-Z0-9][A-Z0-9-]{2,}"#, in: flat.joined(separator: "\n"), options: .caseInsensitive).first,
            let id = matches(#"[A-Z0-9][A-Z0-9-]{2,}$"#, in: m, options: .caseInsensitive).first { r.number = id }
         let low = text.lowercased()
@@ -78,8 +92,15 @@ enum DataGrab {
                              ("cash", "Cash"), ("cheque", "Check"), ("payment method: check", "Check")] where low.contains(word) { r.payment = name; break }
         if let sym = text.range(of: #"[$€£₹¥₩]|\bRp\b"#, options: .regularExpression) { r.currency = String(text[sym]) }
 
-        var balance: Double?
-        for raw in lines {
+        var balance: Double?, strongTotal: Double?, change: Double?, tendered: Double?
+        // "TOTAL" on one line and its amount alone on the next (columns read apart).
+        var rows = lines
+        for i in rows.indices.dropLast() where rows[i].range(of: #"^\s*(grand\s+)?total\b[^\d]*$"#, options: [.regularExpression, .caseInsensitive]) != nil
+            && matches(moneyPattern, in: rows[i]).isEmpty {
+            let next = rows[i + 1]
+            if next.filter(\.isLetter).count <= 3, !matches(moneyPattern, in: next).isEmpty { rows[i] += "  " + next; rows[i + 1] = "" }
+        }
+        for raw in rows where !raw.isEmpty {
             // A percentage is a rate, never a price ("Sales Tax 6.25%  9.06").
             let rate = matches(#"\d{1,2}(?:[.,]\d{1,3})?\s?%"#, in: raw).first
             let l = raw.replacingOccurrences(of: #"\d{1,2}(?:[.,]\d{1,3})?\s?%"#, with: " ", options: .regularExpression)
@@ -95,14 +116,22 @@ enum DataGrab {
             let label = cells.joined(separator: " ").trimmingCharacters(in: .whitespaces)
             let lowLabel = label.lowercased()
             if lowLabel.range(of: #"\b(sub ?total)\b"#, options: .regularExpression) != nil { r.subtotal = amt }
-            else if lowLabel.range(of: #"\b(tax|vat|gst|hst)\b"#, options: .regularExpression) != nil {
+            // "GST 6%" or "Total GST" is tax; "Total Sales (Incl GST)" is the total.
+            else if lowLabel.range(of: #"\b(tax|vat|gst|hst)\b"#, options: .regularExpression) != nil,
+                    lowLabel.range(of: #"\btotal\b(?!\s*(gst|tax|vat|hst))"#, options: .regularExpression) == nil {
                 r.tax = (r.tax ?? 0) + amt
                 if let rate { r.taxRate = Double(rate.replacingOccurrences(of: "%", with: "").replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces)) }
             }
             else if lowLabel.range(of: #"\b(tip|gratuity)\b"#, options: .regularExpression) != nil { r.tip = amt }
             else if lowLabel.range(of: #"\b(balance due|balance|amount due)\b"#, options: .regularExpression) != nil { if amt > 0 { balance = amt } }
-            else if lowLabel.range(of: #"\b(total|grand total|total paid|amount paid)\b"#, options: .regularExpression) != nil { r.total = max(r.total ?? 0, amt) }
-            else if lowLabel.range(of: #"\b(change|cash|tendered|visa|mastercard|amex|card|auth|approval|paid)\b"#, options: .regularExpression) != nil { continue }
+            else if lowLabel.range(of: #"\btotal\s*(qty|quantity|items?|discount|savings?|saved|gst|tax|vat|excl|exclusive|before)"#, options: .regularExpression) != nil { continue }
+            else if lowLabel.range(of: #"\b(grand total|net total|total amount|total payable|amount payable|total sales|total \(?incl|total due|nett?)\b"#, options: .regularExpression) != nil, amt > 0 {
+                strongTotal = max(strongTotal ?? 0, amt)
+            }
+            else if lowLabel.range(of: #"\b(total|total paid|amount paid)\b"#, options: .regularExpression) != nil { if amt > 0 { r.total = max(r.total ?? 0, amt) } }
+            else if lowLabel.range(of: #"\b(change|baki)\b"#, options: .regularExpression) != nil { change = amt; continue }
+            else if lowLabel.range(of: #"\b(cash|tendered|tunai)\b"#, options: .regularExpression) != nil { tendered = amt; continue }
+            else if lowLabel.range(of: #"\b(visa|mastercard|amex|card|auth|approval|paid)\b"#, options: .regularExpression) != nil { continue }
             else if label.filter(\.isLetter).count >= 2, amt > 0, label.split(separator: " ").count <= 9,
                     lowLabel.range(of: #"\b(due date|p\.?o\.?|invoice|receipt (date|number|#))\b"#, options: .regularExpression) == nil {
                 // "1  Front and rear brake cables  100.00  100.00": quantity, item, price of one, line amount.
@@ -110,6 +139,12 @@ enum DataGrab {
                 r.lines.append(Receipt.Line(name: label, qty: qty, unit: unit, amount: amt))
                 r.items.append((label, amt))
             }
+        }
+        if let st = strongTotal { r.total = st }
+        // Cash given minus change is what was paid: settles a total misread or missing.
+        if let t = tendered, let c = change, t > c {
+            let paid = ((t - c) * 100).rounded() / 100
+            if r.total == nil || (r.total.map { abs($0 - paid) > 0.01 && ($0 > t || $0 == 0) } ?? false) { r.total = paid }
         }
         if r.total == nil { r.total = balance }
         if r.total == nil, let s = r.subtotal { r.total = s + (r.tax ?? 0) + (r.tip ?? 0) }
@@ -472,10 +507,10 @@ enum DataGrab {
     /// Dates printed as numbers ("11/02/2019", "25.12.18", "2019-03-08"), read without the system detector, which
     /// misses some. A first number over 12 means day first; a second over 12 means month first; otherwise the
     /// phone's own order decides. Times and dates that can't exist are skipped.
-    static func printedDates(in text: String) -> [Date] {
+    static func printedDates(in text: String, dayFirst forced: Bool? = nil) -> [Date] {
         var out: [(Int, Date)] = []
         let cal = Calendar(identifier: .gregorian)
-        let dayFirst = !(DateFormatter.dateFormat(fromTemplate: "MMdd", options: 0, locale: .current) ?? "MM").hasPrefix("M")
+        let dayFirst = forced ?? !(DateFormatter.dateFormat(fromTemplate: "MMdd", options: 0, locale: .current) ?? "MM").hasPrefix("M")
         func make(_ y: Int, _ m: Int, _ d: Int) -> Date? {
             let year = y < 100 ? 2000 + y : y
             guard (1...12).contains(m), (1...31).contains(d), (1990...2100).contains(year) else { return nil }
@@ -499,6 +534,31 @@ enum DataGrab {
         }
         return out.sorted { $0.0 < $1.0 }.map(\.1)
     }
+    /// true when some numeric date on the page can only be day-first (a first number over 12), false when one can
+    /// only be month-first, nil when nothing settles it.
+    static func numericDateOrder(in text: String) -> Bool? {
+        guard let re = try? NSRegularExpression(pattern: #"(?<![\d/.-])(\d{1,2})[/.-](\d{1,2})[/.-](\d{4}|\d{2})(?![\d/])"#) else { return nil }
+        let ns = text as NSString
+        for m in re.matches(in: text, range: NSRange(location: 0, length: ns.length)) {
+            let a = Int(ns.substring(with: m.range(at: 1))) ?? 0, b = Int(ns.substring(with: m.range(at: 2))) ?? 0
+            if a > 12, b <= 12 { return true }
+            if b > 12, a <= 12 { return false }
+        }
+        return nil
+    }
+
+    /// Dates the system finds that really name a day ("5 Mar 2018", "March 5"): a bare time like the phone's
+    /// clock in a screenshot ("9:32") is not a date.
+    static func calendarDates(in text: String) -> [Date] {
+        guard let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.date.rawValue) else { return [] }
+        let ns = text as NSString
+        return det.matches(in: text, range: NSRange(location: 0, length: ns.length)).compactMap { m in
+            let piece = ns.substring(with: m.range).lowercased()
+            let names = piece.range(of: #"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\d{1,4}[/.-]\d{1,2}"#, options: .regularExpression) != nil
+            return names ? m.date : nil
+        }
+    }
+
     private static func dateMatches(in text: String) -> [(date: Date, duration: TimeInterval)] {
         guard let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.date.rawValue) else { return [] }
         return det.matches(in: text, range: NSRange(text.startIndex..., in: text)).compactMap { m in m.date.map { ($0, m.duration) } }
