@@ -271,6 +271,15 @@ enum ReceiptSearch {
     }
 
     /// Receipts whose return window closes within `days` (and hasn't passed), soonest first.
+    /// After the alert settings change: clear every receipt alert and set them again the new way.
+    func rescheduleAll() {
+        for r in receipts {
+            WarrantyReminders.cancel(r); ReturnReminders.cancel(r)
+            if r.warrantyEnds != nil { WarrantyReminders.schedule(r) }
+            if r.returnBy != nil { ReturnReminders.schedule(r) }
+        }
+    }
+
     func returnsClosing(within days: Int) -> [Receipt] {
         receipts.filter { if let d = $0.daysLeftToReturn { return d >= 0 && d <= days } else { return false } }
             .sorted { ($0.daysLeftToReturn ?? 0) < ($1.daysLeftToReturn ?? 0) }
@@ -286,8 +295,20 @@ enum ReceiptSearch {
 /// Local reminders a week before a warranty lapses — no server, scheduled on the phone. Best-effort:
 /// if the user hasn't granted notifications, the in-app "expiring soon" list still covers them.
 enum WarrantyReminders {
+    /// How the person set their receipt alerts (kept in the app's own settings).
+    static var on: Bool { UserDefaults.standard.object(forKey: "warranty.remind") as? Bool ?? true }
+    static var leadDays: Int { let v = UserDefaults.standard.integer(forKey: "warranty.lead"); return v > 0 ? v : 7 }
+    static let leadChoices = [7, 14, 30]
+
+    /// When the warranty nudge fires: `lead` days before it ends, at 10 am. nil when that's already past.
+    static func fireDate(end: Date, lead: Int, now: Date = Date(), cal: Calendar = .current) -> Date? {
+        guard let day = cal.date(byAdding: .day, value: -lead, to: end),
+              let at = cal.date(bySettingHour: 10, minute: 0, second: 0, of: day), at > now else { return nil }
+        return at
+    }
+
     static func schedule(_ r: Receipt) {
-        guard let end = r.warrantyEnds, let fire = Calendar.current.date(byAdding: .day, value: -7, to: end), fire > Date() else { return }
+        guard on, let end = r.warrantyEnds, let fire = fireDate(end: end, lead: leadDays) else { return }
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
             guard granted else { return }
@@ -295,7 +316,8 @@ enum WarrantyReminders {
             c.title = "Warranty ending soon"
             c.body = "\(r.store) — warranty ends \(end.formatted(date: .abbreviated, time: .omitted)). Tap to find the receipt."
             c.sound = .default
-            let comps = Calendar.current.dateComponents([.year, .month, .day, .hour], from: fire)
+            c.userInfo = ["open": "warranty"]
+            let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: fire)
             let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
             center.add(UNNotificationRequest(identifier: "warranty-\(r.id.uuidString)", content: c, trigger: trigger))
         }
@@ -309,8 +331,10 @@ enum WarrantyReminders {
 enum ReturnReminders {
     static func ids(_ r: Receipt) -> [String] { ["return-\(r.id.uuidString)-2d", "return-\(r.id.uuidString)-0d"] }
 
+    static var on: Bool { UserDefaults.standard.object(forKey: "returns.remind") as? Bool ?? true }
+
     static func schedule(_ r: Receipt) {
-        guard let end = r.returnBy else { return }
+        guard on, let end = r.returnBy else { return }
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
             guard granted else { return }

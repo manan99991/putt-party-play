@@ -13,6 +13,10 @@ struct WarrantyView: View {
     @State private var draft: Draft?
     @State private var open: Receipt?
     @State private var busy = false
+    @AppStorage("warranty.remind") private var warrantyOn = true
+    @AppStorage("warranty.lead") private var warrantyLead = 7
+    @AppStorage("returns.remind") private var returnsOn = true
+    @State private var notifOff = false
 
     private var results: [Receipt] { ReceiptSearch.rank(store.receipts, query: query) }
     private var expiring: [Receipt] { store.expiring(within: 45) }
@@ -23,7 +27,7 @@ struct WarrantyView: View {
             HowTo("warranty", [
                 "Add a receipt — photograph it or pick a photo. The store, date and total are read for you.",
                 "Search loosely: “cosco tv”, “the drill”, a rough amount — close enough still finds it.",
-                "Set a warranty and we'll remind you a week before it ends.",
+                "Set a warranty and a return date — Tenzy reminds you before each one (you choose how early under Notify me).",
             ])
 
             HStack(spacing: HandySpacing.s8) {
@@ -31,6 +35,7 @@ struct WarrantyView: View {
                 PhotosPicker(selection: $pickerItem, matching: .images) { Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
             }
             if busy { ToolProgressBar(label: "Reading the receipt…") }
+            alertsCard
 
             if store.receipts.isEmpty && !busy {
                 emptyState
@@ -68,6 +73,40 @@ struct WarrantyView: View {
         }
         .onAppear {
             if Launch.sample, store.receipts.isEmpty { startDraft(SampleAssets.receipt()) }
+        }
+    }
+
+    /// "Notify me": the two receipt alerts in plain words, each with a switch, and the warranty lead time.
+    private var alertsCard: some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                Toggle(L("Before a return window closes"), isOn: $returnsOn).tint(HandyColor.accent)
+                if returnsOn {
+                    Text(L("Two days before, at 10 am, and on the last morning, at 9 am.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                }
+                Toggle(L("Before a warranty ends"), isOn: $warrantyOn).tint(HandyColor.accent)
+                if warrantyOn {
+                    HStack(spacing: HandySpacing.s8) {
+                        ForEach(WarrantyReminders.leadChoices, id: \.self) { d in
+                            HChip(text: "\(d) \(L("days before"))", selected: warrantyLead == d) { warrantyLead = d }
+                        }
+                    }
+                }
+                NotificationsOffCard(isOff: $notifOff)
+                Text(L("Alerts are set on your phone for each receipt with a date. Nothing is sent anywhere.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }.padding(.top, HandySpacing.s8)
+        } label: { Label(L("Notify me"), systemImage: "bell.badge").font(HandyFont.bodyStrong) }
+        .tint(HandyColor.accent)
+        .onChange(of: returnsOn) { _, on in settingsChanged(on) }
+        .onChange(of: warrantyOn) { _, on in settingsChanged(on) }
+        .onChange(of: warrantyLead) { _, _ in settingsChanged(true) }
+        .task { if returnsOn || warrantyOn { notifOff = await NotifyPermission.state() == .off } }
+    }
+
+    private func settingsChanged(_ turnedOn: Bool) {
+        Task {
+            if turnedOn { let ok = await NotifyPermission.ensure(); await MainActor.run { notifOff = !ok } }
+            await MainActor.run { store.rescheduleAll() }
         }
     }
 

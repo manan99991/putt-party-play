@@ -2342,6 +2342,17 @@ final class EngineTests: XCTestCase {
         XCTAssertNoThrow(try JSONDecoder().decode(Med.self, from: Data(old.utf8)))
     }
 
+    func testWarrantyNudgeComesWhenYouChose() throws {
+        let cal = Calendar(identifier: .gregorian)
+        let now = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 19, hour: 12)))
+        let end = try XCTUnwrap(cal.date(from: DateComponents(year: 2027, month: 1, day: 31)))
+        let a = try XCTUnwrap(WarrantyReminders.fireDate(end: end, lead: 30, now: now, cal: cal))
+        XCTAssertEqual(cal.dateComponents([.month, .day, .hour], from: a), DateComponents(month: 1, day: 1, hour: 10))
+        let soon = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 25)))
+        XCTAssertNil(WarrantyReminders.fireDate(end: soon, lead: 14, now: now, cal: cal), "never an alert in the past")
+        XCTAssertNotNil(WarrantyReminders.fireDate(end: soon, lead: 3, now: now, cal: cal))
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

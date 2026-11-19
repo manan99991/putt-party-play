@@ -799,6 +799,16 @@
   "pt": "Os anúncios apoiam o Tenzy",
   "zh": "广告支持 Tenzy"
  },
+ "Alerts are set on your phone for each receipt with a date. Nothing is sent anywhere.": {
+  "de": "Die Erinnerungen werden auf deinem Handy für jeden Beleg mit Datum gestellt. Nichts wird verschickt.",
+  "es": "Los avisos se programan en tu teléfono para cada recibo con fecha. No se envía nada.",
+  "fr": "Les alertes sont réglées sur votre téléphone pour chaque reçu daté. Rien n'est envoyé.",
+  "hi": "तारीख़ वाली हर रसीद के लिए अलर्ट आपके फ़ोन पर ही सेट होते हैं। कुछ भी कहीं नहीं भेजा जाता।",
+  "it": "Gli avvisi sono impostati sul telefono per ogni scontrino con una data. Non viene inviato nulla.",
+  "ja": "日付のあるレシートごとに、通知はスマホ上で設定されます。外部には何も送りません。",
+  "pt": "Os alertas ficam no seu telemóvel para cada recibo com data. Nada é enviado.",
+  "zh": "每张有日期的收据都会在手机上设置提醒，不会发送到任何地方。"
+ },
  "Alien": {
   "de": "Alien",
   "es": "Alienígena",
@@ -1528,6 +1538,26 @@
   "ja": "牛肉",
   "pt": "Carne bovina",
   "zh": "牛肉"
+ },
+ "Before a return window closes": {
+  "de": "Bevor eine Rückgabefrist endet",
+  "es": "Antes de que cierre el plazo de devolución",
+  "fr": "Avant la fin du délai de retour",
+  "hi": "वापसी की समय-सीमा ख़त्म होने से पहले",
+  "it": "Prima che scada il periodo di reso",
+  "ja": "返品期限が終わる前",
+  "pt": "Antes de acabar o prazo de devolução",
+  "zh": "退货期结束前"
+ },
+ "Before a warranty ends": {
+  "de": "Bevor eine Garantie endet",
+  "es": "Antes de que acabe una garantía",
+  "fr": "Avant la fin d'une garantie",
+  "hi": "वारंटी ख़त्म होने से पहले",
+  "it": "Prima che scada una garanzia",
+  "ja": "保証が切れる前",
+  "pt": "Antes de acabar uma garantia",
+  "zh": "保修到期前"
  },
  "Before and after: two photos side by side": {
   "de": "Vorher und nachher: zwei Fotos nebeneinander",
@@ -9579,6 +9609,16 @@
   "pt": "As notificações do Tenzy estão desligadas, então os lembretes não podem avisar. Ative em Ajustes → Notificações → Tenzy.",
   "zh": "Tenzy的通知已关闭，提醒无法通知你。请在设置→通知→Tenzy中打开。"
  },
+ "Notify me": {
+  "de": "Benachrichtige mich",
+  "es": "Avísame",
+  "fr": "Me prévenir",
+  "hi": "मुझे बताएँ",
+  "it": "Avvisami",
+  "ja": "通知",
+  "pt": "Avisar-me",
+  "zh": "提醒我"
+ },
  "Notify me when it's time to clean up": {
   "de": "Sag Bescheid, wenn Aufräumen ansteht",
   "es": "Avísame cuando toque limpiar",
@@ -13429,6 +13469,16 @@
   "pt": "Ponha um timer — pare quando tocar",
   "zh": "定个计时器——响了就停"
  },
+ "Set a warranty and a return date — Tenzy reminds you before each one (you choose how early under Notify me).": {
+  "de": "Garantie und Rückgabedatum eintragen – Tenzy erinnert dich vorher (wie früh, wählst du unter „Benachrichtige mich“).",
+  "es": "Indica la garantía y la fecha de devolución: Tenzy te avisa antes de cada una (eliges cuándo en «Avísame»).",
+  "fr": "Indiquez la garantie et la date de retour : Tenzy vous prévient avant chacune (choisissez quand dans « Me prévenir »).",
+  "hi": "वारंटी और वापसी की तारीख़ डालें — Tenzy हर एक से पहले याद दिलाएगा (कितना पहले, यह “मुझे बताएँ” में चुनें)।",
+  "it": "Imposta garanzia e data di reso: Tenzy ti avvisa prima di ognuna (scegli quando in «Avvisami»).",
+  "ja": "保証と返品期限を設定すると、Tenzy がそれぞれの前に知らせます（時期は「通知」で選べます）。",
+  "pt": "Defina a garantia e a data de devolução — o Tenzy avisa antes de cada uma (escolha quando em «Avisar-me»).",
+  "zh": "设置保修和退货日期，Tenzy 会在每个日期前提醒你（在“提醒我”里选择提前多久）。"
+ },
  "Set baseline here": {
   "de": "Basiswert hier setzen",
   "es": "Fijar referencia aquí",
@@ -16949,6 +16999,16 @@
   "pt": "Falas",
   "zh": "发言段落"
  },
+ "Two days before, at 10 am, and on the last morning, at 9 am.": {
+  "de": "Zwei Tage vorher um 10 Uhr und am letzten Morgen um 9 Uhr.",
+  "es": "Dos días antes, a las 10, y la última mañana, a las 9.",
+  "fr": "Deux jours avant, à 10 h, et le dernier matin, à 9 h.",
+  "hi": "दो दिन पहले सुबह 10 बजे, और आख़िरी दिन सुबह 9 बजे।",
+  "it": "Due giorni prima, alle 10, e l'ultima mattina, alle 9.",
+  "ja": "2日前の午前10時と、最終日の午前9時。",
+  "pt": "Dois dias antes, às 10h, e na última manhã, às 9h.",
+  "zh": "提前两天上午 10 点，以及最后一天上午 9 点。"
+ },
  "Two-minute start": {
   "de": "Zwei-Minuten-Start",
   "es": "Inicio de dos minutos",
@@ -18528,6 +18588,16 @@
   "ja": "日",
   "pt": "dias",
   "zh": "天"
+ },
+ "days before": {
+  "de": "Tage vorher",
+  "es": "días antes",
+  "fr": "jours avant",
+  "hi": "दिन पहले",
+  "it": "giorni prima",
+  "ja": "日前",
+  "pt": "dias antes",
+  "zh": "天前"
  },
  "days in a row": {
   "de": "Tage in Folge",
