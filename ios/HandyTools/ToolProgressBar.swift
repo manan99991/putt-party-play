@@ -113,12 +113,60 @@ struct CopyButton: View {
     @Published var text: String? = nil
     private var token = 0
     func flash(_ message: String = "Copied") {
+        installWindow()
         text = message
         token += 1
         let mine = token
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
             if self.token == mine { self.text = nil }
         }
+    }
+
+    /// The pill lives in its own see-through window above everything, so it shows over sheets and
+    /// pop-ups too (a toast drawn in the main screen would be hidden behind any open sheet).
+    private var window: UIWindow?
+    private func installWindow() {
+        guard window == nil,
+              let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first(where: { $0.activationState == .foregroundActive })
+                ?? UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first else { return }
+        let w = PassThroughWindow(windowScene: scene)
+        w.windowLevel = .alert + 1
+        w.backgroundColor = .clear
+        w.isUserInteractionEnabled = false
+        let host = UIHostingController(rootView: CopyToastPill())
+        host.view.backgroundColor = .clear
+        w.rootViewController = host
+        w.isHidden = false
+        window = w
+    }
+}
+
+private final class PassThroughWindow: UIWindow {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? { nil }   // never takes a tap
+}
+
+private struct CopyToastPill: View {
+    @ObservedObject private var toast = CopyToast.shared
+    var body: some View {
+        VStack {
+            Spacer()
+            if let t = toast.text {
+                HStack(spacing: 6) {
+                    Image(systemName: "checkmark.circle.fill")
+                    Text(t).font(HandyFont.bodyStrong)
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, 16).padding(.vertical, 10)
+                .background(Color.black.opacity(0.82), in: Capsule())
+                .shadow(color: .black.opacity(0.25), radius: 8, y: 2)
+                .padding(.bottom, 96)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .accessibilityAddTraits(.updatesFrequently)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.easeOut(duration: 0.2), value: toast.text)
+        .allowsHitTesting(false)
     }
 }
 
@@ -133,25 +181,8 @@ struct CopyButton: View {
 }
 
 private struct CopyToastHost: ViewModifier {
-    @ObservedObject private var toast = CopyToast.shared
-    func body(content: Content) -> some View {
-        content.overlay(alignment: .bottom) {
-            if let t = toast.text {
-                HStack(spacing: 6) {
-                    Image(systemName: "checkmark.circle.fill")
-                    Text(t).font(HandyFont.bodyStrong)
-                }
-                .foregroundStyle(.white)
-                .padding(.horizontal, 16).padding(.vertical, 10)
-                .background(Color.black.opacity(0.82), in: Capsule())
-                .shadow(color: .black.opacity(0.25), radius: 8, y: 2)
-                .padding(.bottom, 96)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-                .allowsHitTesting(false)
-            }
-        }
-        .animation(.easeOut(duration: 0.2), value: toast.text)
-    }
+    // The pill is drawn in its own window above sheets (see CopyToast); nothing to draw here.
+    func body(content: Content) -> some View { content }
 }
 extension View {
     /// Hosts the single app-wide "Copied" toast. Attach once, near the app root.

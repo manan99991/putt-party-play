@@ -1089,6 +1089,26 @@
   "pt": "Como PDF",
   "zh": "作为 PDF"
  },
+ "As a widget — one tap runs it": {
+  "de": "Als Widget – ein Tipp startet es",
+  "es": "Como widget: un toque y se ejecuta",
+  "fr": "En widget — un geste pour le lancer",
+  "hi": "विजेट के रूप में — एक टैप में चले",
+  "it": "Come widget: un tocco e parte",
+  "ja": "ウィジェットで — タップ1回で実行",
+  "pt": "Como widget — um toque e corre",
+  "zh": "作为小组件——一点就运行"
+ },
+ "As its own icon — like an app": {
+  "de": "Als eigenes Symbol – wie eine App",
+  "es": "Como su propio icono, como una app",
+  "fr": "Avec sa propre icône — comme une app",
+  "hi": "अपने आइकन के रूप में — ऐप जैसा",
+  "it": "Con la sua icona, come un'app",
+  "ja": "専用アイコンで — アプリのように",
+  "pt": "Com ícone próprio — como uma app",
+  "zh": "作为独立图标——像一个应用"
+ },
  "As shot": {
   "de": "Original",
   "es": "Original",
@@ -6789,6 +6809,16 @@
   "pt": "Holográfico",
   "zh": "全息"
  },
+ "Home Screen": {
+  "de": "Home-Bildschirm",
+  "es": "Pantalla de inicio",
+  "fr": "Écran d'accueil",
+  "hi": "होम स्क्रीन",
+  "it": "Schermata Home",
+  "ja": "ホーム画面",
+  "pt": "Ecrã principal",
+  "zh": "主屏幕"
+ },
  "Hot — light, loose clothes, and drink plenty of water.": {
   "de": "Heiß – leichte, luftige Kleidung und viel trinken.",
   "es": "Calor: ropa ligera y holgada, y bebe mucha agua.",
@@ -10379,6 +10409,16 @@
   "pt": "Abrir Definições",
   "zh": "打开设置"
  },
+ "Open Shortcuts": {
+  "de": "Kurzbefehle öffnen",
+  "es": "Abrir Atajos",
+  "fr": "Ouvrir Raccourcis",
+  "hi": "Shortcuts खोलें",
+  "it": "Apri Comandi",
+  "ja": "ショートカットを開く",
+  "pt": "Abrir Atalhos",
+  "zh": "打开快捷指令"
+ },
  "Open Untangle to tick it off or get more time.": {
   "de": "Öffne Untangle, um es abzuhaken oder mehr Zeit zu nehmen.",
   "es": "Abre Untangle para marcarlo o pedir más tiempo.",
@@ -11949,6 +11989,16 @@
   "pt": "Pressiona você a «verificar» sua conta",
   "zh": "催你“验证”账户"
  },
+ "Put": {
+  "de": "Lege",
+  "es": "Poner",
+  "fr": "Mettre",
+  "hi": "रखें:",
+  "it": "Metti",
+  "ja": "ホーム画面に",
+  "pt": "Pôr",
+  "zh": "把"
+ },
  "Put all pages or photos into one PDF": {
   "de": "Alle Seiten oder Fotos in ein PDF packen",
   "es": "Reúne todas las páginas o fotos en un PDF",
@@ -11998,6 +12048,16 @@
   "ja": "空を広く入れるなら、水平線を下の線に。",
   "pt": "Coloque o horizonte na linha de baixo para mais céu.",
   "zh": "把地平线放在下方线上，天空更多。"
+ },
+ "Put this tool first on the widget": {
+  "de": "Dieses Tool im Widget nach oben",
+  "es": "Poner esta herramienta primera en el widget",
+  "fr": "Mettre cet outil en premier sur le widget",
+  "hi": "इस टूल को विजेट पर सबसे पहले रखें",
+  "it": "Metti questo strumento per primo nel widget",
+  "ja": "このツールをウィジェットの先頭に",
+  "pt": "Pôr esta ferramenta em primeiro no widget",
+  "zh": "把这个工具放到小组件第一位"
  },
  "QR & Wi‑Fi": {
   "de": "QR & WLAN",
@@ -13918,6 +13978,16 @@
   "ja": "全ツールを検索",
   "pt": "Procurar em todas as ferramentas",
   "zh": "搜索所有工具"
+ },
+ "Search for Tenzy and choose My Tools. Add the size you like.": {
+  "de": "Suche nach Tenzy und wähle „My Tools“. Füge die gewünschte Größe hinzu.",
+  "es": "Busca Tenzy y elige My Tools. Añade el tamaño que quieras.",
+  "fr": "Cherchez Tenzy et choisissez My Tools. Ajoutez la taille voulue.",
+  "hi": "Tenzy खोजें और My Tools चुनें। अपनी पसंद का साइज़ जोड़ें।",
+  "it": "Cerca Tenzy e scegli My Tools. Aggiungi la dimensione che preferisci.",
+  "ja": "Tenzy を検索して My Tools を選び、好きなサイズで追加。",
+  "pt": "Procure Tenzy e escolha My Tools. Adicione o tamanho que quiser.",
+  "zh": "搜索 Tenzy，选择 My Tools，添加你喜欢的尺寸。"
  },
  "Search notes": {
   "de": "Notizen durchsuchen",
@@ -15879,6 +15949,16 @@
   "pt": "Fale. Receba a transcrição, um resumo e as tarefas — no seu telefone.",
   "zh": "说出来。得到转写、摘要和待办——都存在手机上。"
  },
+ "Tap Add Action, search for Tenzy, and choose Open a Tool.": {
+  "de": "Tippe auf „Aktion hinzufügen“, suche Tenzy und wähle „Open a Tool“.",
+  "es": "Toca Añadir acción, busca Tenzy y elige Open a Tool.",
+  "fr": "Touchez Ajouter une action, cherchez Tenzy et choisissez Open a Tool.",
+  "hi": "‘Add Action’ दबाएँ, Tenzy खोजें और ‘Open a Tool’ चुनें।",
+  "it": "Tocca Aggiungi azione, cerca Tenzy e scegli Open a Tool.",
+  "ja": "「アクションを追加」→ Tenzy を検索 →「Open a Tool」。",
+  "pt": "Toque em Adicionar ação, procure Tenzy e escolha Open a Tool.",
+  "zh": "点“添加操作”，搜索 Tenzy，选“Open a Tool”。"
+ },
  "Tap Choose a file and pick anything — from Files, iCloud or a download. Or, in any app, tap Share → Tenzy.": {
   "de": "Tippe auf „Datei wählen“ – aus Dateien, iCloud oder einem Download. Oder in jeder App: Teilen → Tenzy.",
   "es": "Toca «Elegir un archivo»: de Archivos, iCloud o una descarga. O en cualquier app: Compartir → Tenzy.",
@@ -15888,6 +15968,26 @@
   "ja": "「ファイルを選ぶ」から、ファイル・iCloud・ダウンロードを選択。どのアプリでも 共有→Tenzy でも開けます。",
   "pt": "Toque em «Escolher um ficheiro» — de Ficheiros, iCloud ou uma transferência. Ou, em qualquer app: Partilhar → Tenzy.",
   "zh": "点“选择文件”，从“文件”、iCloud 或下载中选；或在任何应用里点 分享 → Tenzy。"
+ },
+ "Tap Edit (top left), then Add Widget.": {
+  "de": "Tippe oben links auf „Bearbeiten“, dann „Widget hinzufügen“.",
+  "es": "Toca Editar (arriba a la izquierda) y luego Añadir widget.",
+  "fr": "Touchez Modifier (en haut à gauche), puis Ajouter un widget.",
+  "hi": "ऊपर बाईं ओर ‘Edit’, फिर ‘Add Widget’ दबाएँ।",
+  "it": "Tocca Modifica (in alto a sinistra), poi Aggiungi widget.",
+  "ja": "左上の「編集」→「ウィジェットを追加」。",
+  "pt": "Toque em Editar (canto superior esquerdo) e Adicionar widget.",
+  "zh": "点左上角“编辑”，再点“添加小组件”。"
+ },
+ "Tap Open Shortcuts below, then tap + to make a new shortcut.": {
+  "de": "Tippe unten auf „Kurzbefehle öffnen“, dann auf +.",
+  "es": "Toca Abrir Atajos abajo y luego + para crear uno nuevo.",
+  "fr": "Touchez Ouvrir Raccourcis ci-dessous, puis + pour en créer un.",
+  "hi": "नीचे ‘Shortcuts खोलें’ दबाएँ, फिर नया बनाने के लिए + दबाएँ।",
+  "it": "Tocca Apri Comandi qui sotto, poi + per crearne uno nuovo.",
+  "ja": "下の「ショートカットを開く」→「＋」で新規作成。",
+  "pt": "Toque em Abrir Atalhos abaixo e depois em + para criar um novo.",
+  "zh": "点下方“打开快捷指令”，再点 + 新建。"
  },
  "Tap Record and start talking — the transcript appears as you speak.": {
   "de": "Tippe auf Aufnehmen und sprich los — das Transkript erscheint, während du sprichst.",
@@ -16078,6 +16178,16 @@
   "ja": "真ん中をタップして理由を話す",
   "pt": "Toque no meio para dizer por quê",
   "zh": "点中间说说原因"
+ },
+ "Tap the name at the top → Add to Home Screen, then Add.": {
+  "de": "Tippe oben auf den Namen → „Zum Home-Bildschirm“, dann „Hinzufügen“.",
+  "es": "Toca el nombre arriba → Añadir a pantalla de inicio y luego Añadir.",
+  "fr": "Touchez le nom en haut → Sur l'écran d'accueil, puis Ajouter.",
+  "hi": "ऊपर नाम पर टैप करें → ‘Add to Home Screen’, फिर ‘Add’।",
+  "it": "Tocca il nome in alto → Aggiungi a Home, poi Aggiungi.",
+  "ja": "上部の名前 →「ホーム画面に追加」→「追加」。",
+  "pt": "Toque no nome em cima → Adicionar ao ecrã principal e Adicionar.",
+  "zh": "点顶部名称 →“添加到主屏幕”→“添加”。"
  },
  "Tap the picture to focus. Every button below starts from the camera's own best auto settings.": {
   "de": "Tippe aufs Bild, um zu fokussieren. Jeder Knopf unten startet mit den besten Auto-Einstellungen der Kamera.",
@@ -17209,6 +17319,16 @@
   "pt": "Esta ferramenta faz o resto. Diga o que falta e vamos adicionar numa próxima atualização.",
   "zh": "其余部分由这个工具完成。告诉我们缺什么，我们会在后续更新中加上。"
  },
+ "This tool is first, so it's on the widget.": {
+  "de": "Dieses Tool steht ganz oben, also ist es im Widget.",
+  "es": "Esta herramienta es la primera, así que está en el widget.",
+  "fr": "Cet outil est en premier, il est donc sur le widget.",
+  "hi": "यह टूल सबसे ऊपर है, इसलिए विजेट पर है।",
+  "it": "Questo strumento è il primo, quindi è nel widget.",
+  "ja": "このツールは一番上なので、ウィジェットに表示されます。",
+  "pt": "Esta ferramenta está em primeiro, por isso está no widget.",
+  "zh": "这个工具排第一，所以在小组件上。"
+ },
  "This tool is too big to fit in a QR code. Use Copy to share instead.": {
   "de": "Dieses Tool ist zu groß für einen QR-Code. Nutze stattdessen Kopieren zum Teilen.",
   "es": "Esta herramienta es demasiado grande para un código QR. Usa Copiar para compartir en su lugar.",
@@ -17568,6 +17688,16 @@
   "ja": "合計",
   "pt": "Total",
   "zh": "合计"
+ },
+ "Touch and hold an empty spot on your Home Screen until the apps jiggle.": {
+  "de": "Halte eine leere Stelle auf dem Home-Bildschirm gedrückt, bis die Apps wackeln.",
+  "es": "Mantén pulsado un espacio vacío de la pantalla de inicio hasta que las apps se muevan.",
+  "fr": "Maintenez un espace vide de l'écran d'accueil jusqu'à ce que les apps bougent.",
+  "hi": "होम स्क्रीन की खाली जगह दबाकर रखें, जब तक ऐप हिलने न लगें।",
+  "it": "Tieni premuto uno spazio vuoto della Home finché le app tremolano.",
+  "ja": "ホーム画面の空いている所を、アプリが揺れるまで長押し。",
+  "pt": "Mantenha premido um espaço vazio do ecrã principal até as apps abanarem.",
+  "zh": "长按主屏幕空白处，直到应用开始抖动。"
  },
  "Touch and hold the cut-out, then tap Add Sticker.": {
   "de": "Halte den Ausschnitt gedrückt und tippe auf „Sticker hinzufügen“.",
@@ -19359,6 +19489,16 @@
   "pt": "O teu texto",
   "zh": "你的文本"
  },
+ "Your top tools show on it — tap one and it runs.": {
+  "de": "Deine obersten Tools erscheinen darauf – tippen, und es läuft.",
+  "es": "Muestra tus primeras herramientas: toca una y se ejecuta.",
+  "fr": "Vos premiers outils y apparaissent — touchez-en un pour le lancer.",
+  "hi": "आपके ऊपर के टूल इस पर दिखते हैं — टैप करें और चलेगा।",
+  "it": "Mostra i tuoi primi strumenti: toccane uno e parte.",
+  "ja": "上位のツールが表示され、タップで実行。",
+  "pt": "Mostra as suas primeiras ferramentas — toque e corre.",
+  "zh": "会显示你排在前面的工具，点一下就运行。"
+ },
  "Your video": {
   "de": "Dein Video",
   "es": "Tu vídeo",
@@ -19689,6 +19829,16 @@
   "pt": "O iPhone não deixa nenhuma app definir um som diretamente — este é o método da Apple e demora menos de um minuto.",
   "zh": "iPhone 不允许任何应用直接设置铃声——这是 Apple 自己的方法，不到一分钟。"
  },
+ "iPhone only lets you add Home Screen icons yourself — no app can place one for you. Both ways take under a minute.": {
+  "de": "Nur du selbst kannst Symbole auf den Home-Bildschirm legen – keine App darf das. Beides dauert unter einer Minute.",
+  "es": "Solo tú puedes añadir iconos a la pantalla de inicio; ninguna app puede hacerlo por ti. Ambas formas tardan menos de un minuto.",
+  "fr": "Seul vous pouvez ajouter des icônes à l'écran d'accueil — aucune app ne peut le faire. Les deux méthodes prennent moins d'une minute.",
+  "hi": "होम स्क्रीन पर आइकन सिर्फ़ आप ही जोड़ सकते हैं — कोई ऐप नहीं जोड़ सकता। दोनों तरीके एक मिनट से कम लेते हैं।",
+  "it": "Solo tu puoi aggiungere icone alla Home: nessuna app può farlo al posto tuo. Entrambi i modi richiedono meno di un minuto.",
+  "ja": "ホーム画面のアイコンは自分で追加する必要があり、アプリからは置けません。どちらも1分以内です。",
+  "pt": "Só você pode adicionar ícones ao ecrã principal — nenhuma app o faz por si. Ambas as formas demoram menos de um minuto.",
+  "zh": "主屏幕图标只能你自己添加，任何应用都不能代劳。两种方法都不到一分钟。"
+ },
  "iPhone shows the alert once, as you arrive. It watches the place itself — Tenzy doesn't track you.": {
   "de": "Das iPhone zeigt die Mitteilung einmal, wenn du ankommst. Es achtet selbst auf den Ort – Tenzy verfolgt dich nicht.",
   "es": "El iPhone muestra el aviso una vez, al llegar. Vigila el lugar por sí mismo: Tenzy no te rastrea.",
@@ -19848,6 +19998,16 @@
   "ja": "枚の古いスクショ",
   "pt": "capturas mais antigas",
   "zh": "张旧截图"
+ },
+ "on your Home Screen": {
+  "de": "auf deinen Home-Bildschirm",
+  "es": "en tu pantalla de inicio",
+  "fr": "sur votre écran d'accueil",
+  "hi": "होम स्क्रीन पर",
+  "it": "nella schermata Home",
+  "ja": "を置く",
+  "pt": "no ecrã principal",
+  "zh": "放到主屏幕"
  },
  "overdue": {
   "de": "überfällig",

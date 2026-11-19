@@ -434,6 +434,8 @@ struct BuilderView: View {
     @State private var builtIn: PlanCheck.BuiltIn?
     @State private var pendingPlan: ChainPlanner.Plan?
     @State private var renaming: Chain?
+    /// "Put on Home Screen": the tool whose how-to is showing.
+    @State private var homing: Chain?
     @State private var newName = ""
     /// "Start with what you have": the thing picked, waiting for a tool to be chosen for it.
     @State private var given: Given?
@@ -523,10 +525,21 @@ struct BuilderView: View {
         .sheet(isPresented: $showSheets, onDismiss: { sheets = RunningList.all() }) { NavigationStack { SheetsView() } }
         .sheet(isPresented: $showHistory, onDismiss: { history = RunHistory.all() }) { NavigationStack { HistoryView() } }
         .sheet(item: $linking) { c in NavigationStack { ToolLinkSheet(chain: c) } }
+        .sheet(item: $homing) { c in
+            NavigationStack {
+                HomeScreenHowTo(chain: c, isFirst: mine.first?.id == c.id) {
+                    mine.removeAll { $0.id == c.id }; mine.insert(c, at: 0); persist()
+                }
+            }
+        }
         .sheet(isPresented: $showMine) {
             NavigationStack {
                 ScrollView {
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                        if let note {
+                            Label(L(note), systemImage: "checkmark.circle").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
                         if mine.isEmpty {
                             Text(L("Nothing saved yet. Build one from the start screen and it lands here."))
                                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -629,6 +642,14 @@ struct BuilderView: View {
             if saved.count > mine.count, let added = saved.last { mine = saved; note = "Added \(added.name)." }
             openReminded()
         }
+    }
+
+    /// An action from a row in My tools that opens its own screen: My tools is itself a sheet, and iPhone can't
+    /// show a second sheet from behind it — so close My tools first, then open the next one.
+    private func fromMine(_ act: @escaping () -> Void) {
+        guard showMine else { act(); return }
+        showMine = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { act() }
     }
 
     /// Saves the tools and keeps the phone's reminders and the home-screen widget in step with them.
@@ -874,25 +895,26 @@ struct BuilderView: View {
             }
             Spacer(minLength: 0)
             Menu {
-                Button(L("Edit")) { editHint = nil; editing = c }
-                Button(L("Rename")) { newName = c.name; renaming = c }
+                Button(L("Edit")) { fromMine { editHint = nil; editing = c } }
+                Button(L("Rename")) { fromMine { newName = c.name; renaming = c } }
                 if mine.first?.id != c.id {
                     Button(L("Move to top")) { mine.removeAll { $0.id == c.id }; mine.insert(c, at: 0); persist(); note = "\(c.name) is now first, here and on the My Tools widget." }
                 }
-                Button(L("Put on Home Screen")) {
-                    note = "Add the My Tools widget: touch and hold the Home Screen, tap Edit, then Add Widget, choose Tenzy, then My Tools. Your first tools appear on it, one tap each. Use Move to top to choose which."
-                }
+                Button(L("Put on Home Screen")) { fromMine { homing = c } }
                 Button(L("Duplicate")) {
                     guard BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) else { proForSave(); return }
                     var k = c; k.id = UUID().uuidString; k.name += " copy"; k.schedule = nil
                     mine.append(k); persist(); note = "Duplicated as \(k.name)."
                 }
-                Button(L("Copy to share")) { UIPasteboard.general.string = c.shareText; note = "Copied. Paste it into Tenzy on another phone." }
-                if ToolLink.live { Button(L("Share as a link or QR code")) { linking = c } }
+                Button(L("Copy to share")) {
+                    Copier.copy(c.shareText, note: "Tool copied — paste it in a message")
+                    note = "Copied \u{201C}\(ChainText.displayName(c))\u{201D}. Paste it in a message; on their phone they copy it and tap Templates → Add a shared tool. Or use Share as a link or QR code — they just tap it."
+                }
+                if ToolLink.live { Button(L("Share as a link or QR code")) { fromMine { linking = c } } }
                 Button(L("Delete"), role: .destructive) { mine.removeAll { $0.id == c.id }; persist() }
             } label: { Image(systemName: "ellipsis.circle").accessibilityLabel(L("More")).font(.system(size: 20)).frame(width: 44, height: 44) }
             // A compact button with room around its word, so it never looks squeezed beside a long name.
-            Button { running = c } label: {
+            Button { fromMine { running = c } } label: {
                 Text(L("Run")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
                     .padding(.horizontal, HandySpacing.s16).frame(minHeight: 44)
                     .background(HandyColor.accentSoft, in: Capsule())
@@ -2333,5 +2355,65 @@ struct ProTag: View {
             .padding(.horizontal, 6).padding(.vertical, 2)
             .background(HandyColor.accent, in: Capsule())
             .accessibilityLabel(L("Pro step"))
+    }
+}
+
+/// "Put on Home Screen", for real: two ways, each a few taps, with the parts Tenzy can do done for you.
+struct HomeScreenHowTo: View {
+    let chain: Chain
+    let isFirst: Bool
+    let moveToTop: () -> Void
+    @State private var moved = false
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s16) {
+                Text("\(L("Put")) \u{201C}\(ChainText.displayName(chain))\u{201D} \(L("on your Home Screen"))").font(HandyFont.title)
+                    .fixedSize(horizontal: false, vertical: true)
+                way(icon: "square.grid.2x2", title: "As a widget — one tap runs it",
+                    steps: ["Touch and hold an empty spot on your Home Screen until the apps jiggle.",
+                            "Tap Edit (top left), then Add Widget.",
+                            "Search for Tenzy and choose My Tools. Add the size you like.",
+                            "Your top tools show on it — tap one and it runs."]) {
+                    if isFirst || moved {
+                        Label(L("This tool is first, so it's on the widget."), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                    } else {
+                        Button { moveToTop(); moved = true } label: { Label(L("Put this tool first on the widget"), systemImage: "arrow.up.to.line").frame(maxWidth: .infinity) }
+                            .primaryButton().accessibilityIdentifier("home-move-top")
+                    }
+                }
+                way(icon: "app.badge", title: "As its own icon — like an app",
+                    steps: ["Tap Open Shortcuts below, then tap + to make a new shortcut.",
+                            "Tap Add Action, search for Tenzy, and choose Open a Tool.",
+                            "Tap Tool and pick \u{201C}\(ChainText.displayName(chain))\u{201D}.",
+                            "Tap the name at the top → Add to Home Screen, then Add."]) {
+                    Button { if let u = URL(string: "shortcuts://") { openURL(u) } } label: { Label(L("Open Shortcuts"), systemImage: "arrow.up.forward.app").frame(maxWidth: .infinity) }
+                        .secondaryButton()
+                }
+                Text(L("iPhone only lets you add Home Screen icons yourself — no app can place one for you. Both ways take under a minute."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(Ground())
+        .navigationTitle(L("Home Screen")).navigationBarTitleDisplayMode(.inline)
+        .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
+    }
+
+    private func way<A: View>(icon: String, title: String, steps: [String], @ViewBuilder action: () -> A) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L(title), systemImage: icon).font(HandyFont.bodyStrong)
+            ForEach(Array(steps.enumerated()), id: \.offset) { i, t in
+                HStack(alignment: .top, spacing: 8) {
+                    Text("\(i + 1)").font(HandyFont.caption.weight(.bold)).foregroundStyle(HandyColor.onAccent)
+                        .frame(width: 22, height: 22).background(HandyColor.accent, in: Circle())
+                    Text(L(t)).font(HandyFont.caption).fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            action()
+        }
+        .cardStyle(padding: HandySpacing.s12)
     }
 }
