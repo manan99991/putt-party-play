@@ -15,6 +15,9 @@ struct PDFRedactView: View {
     @State private var result: Data?
     @State private var working = false
     @State private var showFiles = false
+    @State private var finding = false
+    @State private var foundNote: String?
+    @State private var proof: RedactFinder.Proof?
 
     private var boxCount: Int { boxesByPage.values.reduce(0) { $0 + $1.count } }
     private var thisPageBoxes: [CGRect] { boxesByPage[page] ?? [] }
@@ -71,6 +74,10 @@ struct PDFRedactView: View {
                 Text(boxCount == 1 ? L("1 region") : "\(boxCount) " + L("regions"))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
+            Button { findForMe() } label: {
+                HStack { if finding { ProgressView() }; Label(L("Find personal details for me"), systemImage: "sparkle.magnifyingglass") }.frame(maxWidth: .infinity)
+            }.secondaryButton().disabled(finding).accessibilityIdentifier("redact-find")
+            if let foundNote { Text(L(foundNote)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
             Button { runRedact() } label: {
                 Label(L("Redact & preview"), systemImage: "eye.slash.fill").frame(maxWidth: .infinity)
             }.primaryButton().disabled(boxCount == 0)
@@ -141,6 +148,17 @@ struct PDFRedactView: View {
             .frame(height: 380)
             .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            if let proof {
+                if proof.stillFound.isEmpty {
+                    Label(proof.checked == 0 ? L("Checked: nothing readable was under the boxes.") : "\(L("Proved: searched the finished file for all")) \(proof.checked) \(L("hidden words — none can be found."))",
+                          systemImage: "checkmark.seal.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success).frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    Label("\(L("Still readable in the file:")) \(proof.stillFound.prefix(5).joined(separator: ", ")). \(L("Make those boxes bigger and redact again."))",
+                          systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.danger).frame(maxWidth: .infinity, alignment: .leading)
+                }
+            } else {
+                HStack(spacing: 6) { ProgressView(); Text(L("Checking the hidden words are really gone…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            }
             ShareLink(item: PDFFile(data: out), preview: SharePreview(L("Redacted PDF"))) {
                 Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
             }.primaryButton()
@@ -176,11 +194,32 @@ struct PDFRedactView: View {
     private func runRedact() {
         guard let data = sourceData, boxCount > 0 else { return }
         let boxes = (0..<pages.count).map { boxesByPage[$0] ?? [] }
-        working = true
+        let imgs = pages
+        working = true; proof = nil
         Task { @MainActor in
             let out = await Task.detached(priority: .userInitiated) { DocEngine.redact(data, boxes: boxes) }.value
             result = out
             working = false
+            guard let out else { return }
+            // Prove it: every word that was under a box, searched for in the finished file.
+            proof = await Task.detached(priority: .utility) { RedactFinder.proof(hidden: RedactFinder.hiddenWords(pages: imgs, boxes: boxes), result: out) }.value
+        }
+    }
+
+    private func findForMe() {
+        let imgs = pages
+        finding = true; foundNote = nil
+        Task { @MainActor in
+            let found = await Task.detached(priority: .userInitiated) { imgs.map { RedactFinder.find($0) } }.value
+            var added = 0
+            for (i, list) in found.enumerated() {
+                var cur = boxesByPage[i] ?? []
+                for b in list where !cur.contains(where: { RedactFinder.covered(b, by: $0) > 0.6 }) { cur.append(b); added += 1 }
+                boxesByPage[i] = cur
+            }
+            finding = false
+            foundNote = added == 0 ? "Nothing personal found — drag boxes over anything else you want gone."
+                                   : "Boxed \(added) personal detail\(added == 1 ? "" : "s") — account and card numbers, phones, emails, addresses, IDs. Check each page, tap a box to remove it."
         }
     }
 
