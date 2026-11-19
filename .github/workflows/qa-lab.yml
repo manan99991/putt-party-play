@@ -17,6 +17,15 @@ concurrency:
 
 jobs:
   accuracy:
+    # Two halves side by side, so neither runs out of time: the readers, and what each tool hands back.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - part: readers
+            tests: "-only-testing:HandyToolsTests/RealPhotoAccuracyTests -only-testing:HandyToolsTests/PrivatePhotoAccuracyTests -only-testing:HandyToolsTests/ToughPhotoTests"
+          - part: tools
+            tests: "-only-testing:HandyToolsTests/ToolOutputQualityTests"
     runs-on: xcode-27
     timeout-minutes: 120
     defaults:
@@ -49,10 +58,7 @@ jobs:
           TEST_RUNNER_REAL_PHOTOS="$REAL" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" TEST_RUNNER_ACCURACY_REPORT="$RUNNER_TEMP/accuracy.txt" xcodebuild test \
             -project HandyTools.xcodeproj -scheme HandyTools \
             -destination "id=$UDID" \
-            -only-testing:HandyToolsTests/RealPhotoAccuracyTests \
-            -only-testing:HandyToolsTests/PrivatePhotoAccuracyTests \
-            -only-testing:HandyToolsTests/ToughPhotoTests \
-            -only-testing:HandyToolsTests/ToolOutputQualityTests \
+            ${{ matrix.tests }} \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee accuracy-run.log | grep -E "ACC\| SCORE|error:|Test Case .*(passed|failed)|TEST (SUCCEEDED|FAILED)" || true
@@ -64,8 +70,8 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          [ -f ios/accuracy.txt ] && bash .github/publish-log.sh ios-accuracy ios/accuracy.txt || true
+          [ -f ios/accuracy.txt ] && bash .github/publish-log.sh "ios-accuracy-${{ matrix.part }}" ios/accuracy.txt || true
       - name: Scores in the run summary
         if: always()
         run: |
-          { echo "## Real-file scores"; echo '```'; grep -E "^SCORE" accuracy.txt 2>/dev/null || echo "no scores"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          { echo "## Real-file scores (${{ matrix.part }})"; echo '```'; grep -E "^SCORE" accuracy.txt 2>/dev/null || echo "no scores"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
