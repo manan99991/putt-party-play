@@ -845,6 +845,9 @@ enum ChainTemplates {
         Chain(id: "voice-robot", name: "Make a voice sound like a robot", steps: [ChainStep(block: .voiceChange, settings: ["voice": "robot"])]),
         Chain(id: "voice-alien", name: "Make a voice sound like an alien", steps: [ChainStep(block: .voiceChange, settings: ["voice": "alien"])]),
         Chain(id: "voice-monster", name: "Make a voice sound like a monster", steps: [ChainStep(block: .voiceChange, settings: ["voice": "monster"])]),
+        Chain(id: "voice-walkie", name: "Make a voice sound like a walkie-talkie", steps: [ChainStep(block: .voiceChange, settings: ["voice": "walkie"])]),
+        Chain(id: "voice-cave", name: "Make a voice echo like in a cave", steps: [ChainStep(block: .voiceChange, settings: ["voice": "cave"])]),
+        Chain(id: "voice-ghost", name: "Make a voice sound like a ghost", steps: [ChainStep(block: .voiceChange, settings: ["voice": "ghost"])]),
         Chain(id: "video-voice", name: "Give a video a funny voice", steps: [ChainStep(block: .videoAudio), ChainStep(block: .voiceChange, settings: ["voice": "chipmunk"])]),
         Chain(id: "before-after", name: "Make a before-and-after reveal", steps: [ChainStep(block: .stripLocation)], blurb: "Turns your before and after into a swipe-reveal video — the way people post a transformation.", versus: true),
         // Start-to-finish jobs: several steps that together finish a real task, named as what you'd ask for.
@@ -1273,9 +1276,23 @@ enum ChainText {
     // MARK: voices
 
     /// Voices "Change the voice" offers, and how much faster (and so higher) each plays the recording.
-    // Chipmunk/helium/deep/giant use the simple varispeed path (rate); robot/alien/monster are handled by offline
+    // Every voice renders with offline DSP (ChainMedia.characters: pitch without changing the words' speed, plus
+    // timbre and room). The rate here is only the fallback if DSP can't run on the device. Robot/alien/monster: offline
     // DSP (ChainMedia.characters) — their rate here is only a fallback if DSP is unavailable on the device.
-    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6), ("robot", "Robot", 0.9), ("alien", "Alien", 1.7), ("monster", "Monster", 0.6)]
+    static let voices: [(id: String, name: String, rate: Double)] = [("chipmunk", "Chipmunk", 1.5), ("helium", "Helium", 1.9), ("deep", "Deep", 0.75), ("giant", "Giant", 0.6), ("robot", "Robot", 0.9), ("alien", "Alien", 1.7), ("monster", "Monster", 0.6), ("walkie", "Walkie-talkie", 1.0), ("cave", "Echo cave", 0.95), ("ghost", "Ghost", 1.1)]
+    /// How each voice looks and what it sounds like, for the picker: a picture (emoji) and one line.
+    static let voiceLooks: [String: (emoji: String, line: String)] = [
+        "chipmunk": ("🐿️", "Tiny, quick and squeaky"),
+        "helium":   ("🎈", "Like you breathed in a balloon"),
+        "deep":     ("🐻", "Low and calm, like a bear"),
+        "giant":    ("🗿", "Huge, slow and booming"),
+        "robot":    ("🤖", "Metal, buzzing, beep-boop"),
+        "alien":    ("👽", "Warbly, from another planet"),
+        "monster":  ("👹", "Growly and scary"),
+        "walkie":   ("📻", "Crackly radio, over and out"),
+        "cave":     ("🦇", "Echoing in a giant cave"),
+        "ghost":    ("👻", "Floaty, spooky and far away"),
+    ]
     static func voiceRate(_ setting: String?) -> Double { voices.first { $0.id == setting }?.rate ?? 1.5 }
 
     /// The 44 bytes that start a .wav file of plain 16-bit sound.

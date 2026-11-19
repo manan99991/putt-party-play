@@ -109,8 +109,8 @@ enum ChainPlanner {
             c?.versus = true
             return c
         }
-        if has(["chipmunk", "helium", "robot", "alien", "monster", "giant", "voice changer", "funny voice", "deep voice", "change my voice", "change the voice"]) {
-            let voice = has(["robot"]) ? "robot" : has(["alien"]) ? "alien" : has(["monster"]) ? "monster" : has(["giant"]) ? "giant" : has(["deep", "low voice"]) ? "deep" : has(["helium", "high voice", "squeaky"]) ? "helium" : "chipmunk"
+        if has(["chipmunk", "helium", "robot", "alien", "monster", "giant", "voice changer", "funny voice", "deep voice", "change my voice", "change the voice", "walkie", "radio voice", "ghost", "spooky voice", "echo voice", "cave"]) {
+            let voice = has(["robot"]) ? "robot" : has(["alien"]) ? "alien" : has(["monster"]) ? "monster" : has(["giant"]) ? "giant" : has(["walkie", "radio voice"]) ? "walkie" : has(["ghost", "spooky"]) ? "ghost" : has(["cave", "echo voice"]) ? "cave" : has(["deep", "low voice"]) ? "deep" : has(["helium", "high voice", "squeaky"]) ? "helium" : "chipmunk"
             return build(ask, (film ? [ChainStep(block: .videoAudio)] : []) + [ChainStep(block: .voiceChange, settings: ["voice": voice])])
         }
         if has(["sketch", "pencil", "drawing", "cartoon", "comic", "pop art", "black and white", "noir"]) {

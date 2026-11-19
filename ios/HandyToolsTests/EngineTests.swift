@@ -2728,19 +2728,21 @@ final class EngineTests: XCTestCase {
         }
     }
 
-    /// The varispeed cards map to distinct effects: chipmunk speeds the clip up (higher output sample
-    /// rate), deep slows it down (lower) — proving each card produces its own output, not one shared one.
-    func testSoundboardVarispeedRateIsPerVoice() throws {
-        let src = try makeToneFile(seconds: 0.5)
+    /// Every voice is its own sound: pitch shifted without garbling the words, small voices a touch quicker,
+    /// big ones slower and roomier — so no two voices give the same file. And a preview renders only the
+    /// opening seconds, so tapping a voice plays almost at once.
+    func testEveryVoiceSoundsDifferentAndPreviewsAreShort() throws {
+        let src = try makeToneFile(seconds: 2.0)
         defer { try? FileManager.default.removeItem(at: src) }
         let chip = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: "chipmunk"))
-        let deep = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: "deep"))
-        func wavRate(_ d: Data) -> Int {
-            let b = Array(d)
-            guard b.count >= 28 else { return 0 }
-            return Int(b[24]) | (Int(b[25]) << 8) | (Int(b[26]) << 16) | (Int(b[27]) << 24)
-        }
-        XCTAssertGreaterThan(wavRate(chip), wavRate(deep), "chipmunk should come out faster/higher than deep")
+        let giant = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: "giant"))
+        XCTAssertLessThan(chip.count, giant.count, "chipmunk is quicker; giant is slower with a room tail")
+        let outs = try ChainText.voices.map { try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: $0.id), $0.id) }
+        XCTAssertEqual(Set(outs).count, outs.count, "every voice gives its own sound")
+        let preview = try XCTUnwrap(ChainMedia.previewVoice(src, voice: "robot", seconds: 0.5))
+        let full = try XCTUnwrap(ChainMedia.soundboardVoice(src, voice: "robot"))
+        XCTAssertLessThan(preview.count, full.count / 2, "a preview is just the opening")
+        for v in ChainText.voices { XCTAssertNotNil(ChainText.voiceLooks[v.id], "\(v.id) has a picture and a line") }
     }
 
     /// A file with no audio must fail cleanly (nil), never crash or hang.

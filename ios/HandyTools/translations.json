@@ -2189,6 +2189,16 @@
   "pt": "Mudar velocidade",
   "zh": "变速"
  },
+ "Change the voice": {
+  "de": "Stimme ändern",
+  "es": "Cambiar la voz",
+  "fr": "Changer la voix",
+  "hi": "आवाज़ बदलें",
+  "it": "Cambia la voce",
+  "ja": "声を変える",
+  "pt": "Mudar a voz",
+  "zh": "变声"
+ },
  "Check": {
   "de": "Prüfen",
   "es": "Comprobar",
@@ -3789,6 +3799,16 @@
   "pt": "Cubra rostos com emoji — você escolhe",
   "zh": "用表情遮脸——由你选择"
  },
+ "Crackly radio, over and out": {
+  "de": "Knisterndes Funkgerät, Ende",
+  "es": "Radio con chasquidos, cambio y fuera",
+  "fr": "Radio qui grésille, terminé",
+  "hi": "चरचराता रेडियो, ओवर एंड आउट",
+  "it": "Radio gracchiante, passo e chiudo",
+  "ja": "ザザッと無線、どうぞ",
+  "pt": "Rádio a crepitar, escuto",
+  "zh": "沙沙的无线电，完毕"
+ },
  "Crisp": {
   "de": "Klar",
   "es": "Nítido",
@@ -4628,6 +4648,26 @@
   "ja": "大きな用事の前に食べて、体力を保ちましょう。",
   "pt": "Coma antes das tarefas maiores para a energia durar.",
   "zh": "做大事之前先吃饭，精力才撑得住。"
+ },
+ "Echo cave": {
+  "de": "Echohöhle",
+  "es": "Cueva con eco",
+  "fr": "Grotte à écho",
+  "hi": "गूँजती गुफा",
+  "it": "Grotta con eco",
+  "ja": "洞窟エコー",
+  "pt": "Gruta com eco",
+  "zh": "山洞回声"
+ },
+ "Echoing in a giant cave": {
+  "de": "Hallend wie in einer riesigen Höhle",
+  "es": "Con eco en una cueva gigante",
+  "fr": "Écho dans une grotte géante",
+  "hi": "विशाल गुफा में गूँजती",
+  "it": "Con eco in una grotta gigante",
+  "ja": "巨大な洞窟で響く",
+  "pt": "A ecoar numa gruta gigante",
+  "zh": "在巨大山洞里回响"
  },
  "Edge": {
   "de": "Rand",
@@ -5679,6 +5719,16 @@
   "pt": "Flipbook",
   "zh": "翻页书"
  },
+ "Floaty, spooky and far away": {
+  "de": "Schwebend, gruselig und fern",
+  "es": "Flotante, espeluznante y lejana",
+  "fr": "Flottante, effrayante et lointaine",
+  "hi": "तैरती, डरावनी और दूर की",
+  "it": "Fluttuante, spettrale e lontana",
+  "ja": "ふわふわ、不気味で遠い",
+  "pt": "Flutuante, assustadora e distante",
+  "zh": "飘忽、诡异、遥远"
+ },
  "Focus and exposure follow the face.": {
   "de": "Fokus und Belichtung folgen dem Gesicht.",
   "es": "El enfoque y la exposición siguen la cara.",
@@ -6029,6 +6079,16 @@
   "pt": "Varrimento completo 40 Hz → 16 kHz (10 s)",
   "zh": "完整扫频 40 Hz → 16 kHz（10 秒）"
  },
+ "Funny voices": {
+  "de": "Lustige Stimmen",
+  "es": "Voces divertidas",
+  "fr": "Voix rigolotes",
+  "hi": "मज़ेदार आवाज़ें",
+  "it": "Voci buffe",
+  "ja": "おもしろボイス",
+  "pt": "Vozes engraçadas",
+  "zh": "搞笑声音"
+ },
  "GB": {
   "de": "GB",
   "es": "GB",
@@ -6138,6 +6198,16 @@
   "ja": "写真を読み込み中…",
   "pt": "Carregando suas fotos…",
   "zh": "正在获取照片…"
+ },
+ "Ghost": {
+  "de": "Geist",
+  "es": "Fantasma",
+  "fr": "Fantôme",
+  "hi": "भूत",
+  "it": "Fantasma",
+  "ja": "おばけ",
+  "pt": "Fantasma",
+  "zh": "幽灵"
  },
  "Giant": {
   "de": "Riese",
@@ -6348,6 +6418,16 @@
   "ja": "集合写真を検出",
   "pt": "Foto em grupo detectada",
   "zh": "发现合影"
+ },
+ "Growly and scary": {
+  "de": "Knurrig und gruselig",
+  "es": "Gruñona y aterradora",
+  "fr": "Grondante et effrayante",
+  "hi": "गुर्राती और डरावनी",
+  "it": "Ringhiosa e spaventosa",
+  "ja": "うなるように怖い",
+  "pt": "Rosnante e assustadora",
+  "zh": "低吼又吓人"
  },
  "Guidance, not medical advice. Always check the label itself for allergens.": {
   "de": "Hinweise, keine medizinische Beratung. Prüfe Allergene immer auf dem Etikett selbst.",
@@ -6719,6 +6799,16 @@
   "pt": "Enorme",
   "zh": "超大"
  },
+ "Huge, slow and booming": {
+  "de": "Riesig, langsam und dröhnend",
+  "es": "Enorme, lenta y retumbante",
+  "fr": "Énorme, lente et tonitruante",
+  "hi": "विशाल, धीमी और गूँजदार",
+  "it": "Enorme, lenta e rimbombante",
+  "ja": "巨大でゆっくり響く",
+  "pt": "Enorme, lenta e retumbante",
+  "zh": "巨大、缓慢、轰鸣"
+ },
  "INVOICE": {
   "de": "RECHNUNG",
   "es": "FACTURA",
@@ -6778,6 +6868,16 @@
   "ja": "3日後",
   "pt": "Em 3 dias",
   "zh": "3 天后"
+ },
+ "In Files, Downloads, Mail, Safari or a chat: tap the file, tap Share, then tap Tenzy. It opens right here. If Tenzy isn't in the row of apps, swipe to the end, tap More and switch it on.": {
+  "de": "In Dateien, Downloads, Mail, Safari oder einem Chat: Datei antippen, „Teilen“, dann Tenzy. Sie öffnet sich hier. Fehlt Tenzy in der App-Reihe, wische ans Ende, tippe auf „Mehr“ und schalte es ein.",
+  "es": "En Archivos, Descargas, Mail, Safari o un chat: toca el archivo, toca Compartir y luego Tenzy. Se abre aquí. Si Tenzy no aparece en la fila de apps, desliza hasta el final, toca Más y actívalo.",
+  "fr": "Dans Fichiers, Téléchargements, Mail, Safari ou une discussion : touchez le fichier, Partager, puis Tenzy. Il s'ouvre ici. Si Tenzy n'est pas dans la rangée d'apps, allez au bout, touchez Plus et activez-le.",
+  "hi": "Files, डाउनलोड, Mail, Safari या चैट में: फ़ाइल पर टैप करें, शेयर दबाएँ, फिर Tenzy। यह यहीं खुलेगी। अगर ऐप की पंक्ति में Tenzy न दिखे, तो आख़िर तक स्वाइप करें, ‘और’ दबाएँ और चालू करें।",
+  "it": "In File, Download, Mail, Safari o in una chat: tocca il file, Condividi, poi Tenzy. Si apre qui. Se Tenzy non è nella fila di app, scorri fino in fondo, tocca Altro e attivalo.",
+  "ja": "ファイル、ダウンロード、メール、Safari、チャットで：ファイルをタップ→共有→Tenzy。ここで開きます。アプリの列に Tenzy がなければ、端までスワイプして「その他」で有効にしてください。",
+  "pt": "Em Ficheiros, Transferências, Mail, Safari ou numa conversa: toque no ficheiro, em Partilhar e depois em Tenzy. Abre aqui. Se o Tenzy não aparecer na fila de apps, deslize até ao fim, toque em Mais e ative-o.",
+  "zh": "在“文件”、下载、邮件、Safari 或聊天中：点文件→分享→Tenzy，就会在这里打开。如果应用行里没有 Tenzy，滑到最后点“更多”并打开它。"
  },
  "In a week": {
   "de": "In einer Woche",
@@ -7599,6 +7699,16 @@
   "pt": "Tarefa mais leve para quando a energia cair.",
   "zh": "精力下降时做的轻松事。"
  },
+ "Like you breathed in a balloon": {
+  "de": "Als hättest du Ballongas eingeatmet",
+  "es": "Como si respiraras de un globo",
+  "fr": "Comme si vous aviez respiré un ballon",
+  "hi": "जैसे गुब्बारे की गैस साँस में ली हो",
+  "it": "Come se avessi respirato da un palloncino",
+  "ja": "風船のガスを吸ったみたい",
+  "pt": "Como se tivesse respirado um balão",
+  "zh": "像吸了气球里的气"
+ },
  "Line the head up inside the oval — it's cut out and centred for you.": {
   "de": "Richte den Kopf im Oval aus — er wird für dich freigestellt und zentriert.",
   "es": "Alinea la cabeza dentro del óvalo — se recorta y centra por ti.",
@@ -7958,6 +8068,16 @@
   "ja": "低",
   "pt": "Baixo",
   "zh": "低"
+ },
+ "Low and calm, like a bear": {
+  "de": "Tief und ruhig, wie ein Bär",
+  "es": "Grave y tranquila, como un oso",
+  "fr": "Grave et calme, comme un ours",
+  "hi": "भालू जैसी, गहरी और शांत",
+  "it": "Bassa e calma, come un orso",
+  "ja": "クマみたいに低く穏やか",
+  "pt": "Grave e calma, como um urso",
+  "zh": "像熊一样低沉平静"
  },
  "Low energy": {
   "de": "Wenig Energie",
@@ -8518,6 +8638,16 @@
   "ja": "メッセージ保護",
   "pt": "Escudo de mensagens",
   "zh": "消息盾"
+ },
+ "Metal, buzzing, beep-boop": {
+  "de": "Metallisch, summend, piep-piep",
+  "es": "Metálica, zumbante, bip-bup",
+  "fr": "Métallique, grésillante, bip-boup",
+  "hi": "धातु जैसी, भिनभिनाती, बीप-बूप",
+  "it": "Metallica, ronzante, bip-bup",
+  "ja": "金属的でブーン、ピポパ",
+  "pt": "Metálica, a zumbir, bip-bup",
+  "zh": "金属感、嗡嗡、哔哔"
  },
  "Microphone access is needed to pick up and amplify sound around you. It's processed live on your phone and never recorded.": {
   "de": "Mikrofonzugriff ist nötig, um Geräusche um dich herum aufzunehmen und zu verstärken. Es wird live auf deinem Handy verarbeitet und nie aufgezeichnet.",
@@ -10139,6 +10269,16 @@
   "pt": "Abre quase qualquer ficheiro",
   "zh": "打开几乎任何文件"
  },
+ "Open any file in Tenzy, from anywhere": {
+  "de": "Jede Datei in Tenzy öffnen, von überall",
+  "es": "Abre cualquier archivo en Tenzy, desde cualquier sitio",
+  "fr": "Ouvrez n'importe quel fichier dans Tenzy, de partout",
+  "hi": "कहीं से भी कोई भी फ़ाइल Tenzy में खोलें",
+  "it": "Apri qualsiasi file in Tenzy, da ovunque",
+  "ja": "どこからでも、どんなファイルも Tenzy で開く",
+  "pt": "Abra qualquer ficheiro no Tenzy, de qualquer lado",
+  "zh": "从任何地方用 Tenzy 打开任意文件"
+ },
  "Open anyway": {
   "de": "Trotzdem öffnen",
   "es": "Abrir igualmente",
@@ -10288,6 +10428,16 @@
   "ja": "PDF",
   "pt": "PDF",
   "zh": "PDF"
+ },
+ "PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · images · RAW · video · audio · ZIP · text · code · CSV · and more": {
+  "de": "PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · Bilder · RAW · Video · Audio · ZIP · Text · Code · CSV · und mehr",
+  "es": "PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · imágenes · RAW · vídeo · audio · ZIP · texto · código · CSV · y más",
+  "fr": "PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · images · RAW · vidéo · audio · ZIP · texte · code · CSV · et plus",
+  "hi": "PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · इमेज · RAW · वीडियो · ऑडियो · ZIP · टेक्स्ट · कोड · CSV · और भी",
+  "it": "PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · immagini · RAW · video · audio · ZIP · testo · codice · CSV · e altro",
+  "ja": "PDF・Word・Excel・PowerPoint・Pages・Numbers・Keynote・画像・RAW・動画・音声・ZIP・テキスト・コード・CSV など",
+  "pt": "PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · imagens · RAW · vídeo · áudio · ZIP · texto · código · CSV · e mais",
+  "zh": "PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · 图片 · RAW · 视频 · 音频 · ZIP · 文本 · 代码 · CSV 等"
  },
  "PDFs": {
   "de": "PDFs",
@@ -11199,6 +11349,16 @@
   "pt": "Reproduzir todas as fotos como um GIF",
   "zh": "将所有照片作为一个 GIF 播放"
  },
+ "Play my original": {
+  "de": "Original abspielen",
+  "es": "Reproducir el original",
+  "fr": "Écouter l'original",
+  "hi": "मेरी असली रिकॉर्डिंग चलाएँ",
+  "it": "Riproduci l'originale",
+  "ja": "元の録音を再生",
+  "pt": "Ouvir o original",
+  "zh": "播放原声"
+ },
  "Play preview": {
   "de": "Vorschau abspielen",
   "es": "Reproducir vista previa",
@@ -11218,6 +11378,16 @@
   "ja": "再生",
   "pt": "Reproduções",
   "zh": "播放"
+ },
+ "Plays a preview of your recording in this voice": {
+  "de": "Spielt eine Vorschau deiner Aufnahme mit dieser Stimme",
+  "es": "Reproduce una muestra de tu grabación con esta voz",
+  "fr": "Joue un aperçu de votre enregistrement avec cette voix",
+  "hi": "इस आवाज़ में आपकी रिकॉर्डिंग का नमूना चलाता है",
+  "it": "Riproduce un'anteprima della registrazione con questa voce",
+  "ja": "この声で録音の試聴を再生します",
+  "pt": "Reproduz uma amostra da gravação com esta voz",
+  "zh": "用这个声音试听你的录音"
  },
  "Point another phone's camera at this, or send the link. It opens the tool in Tenzy.": {
   "de": "Richte die Kamera eines anderen Handys darauf, oder sende den Link. Es öffnet das Tool in Tenzy.",
@@ -15439,6 +15609,16 @@
   "pt": "Fale. Receba a transcrição, um resumo e as tarefas — no seu telefone.",
   "zh": "说出来。得到转写、摘要和待办——都存在手机上。"
  },
+ "Tap Choose a file and pick anything — from Files, iCloud or a download. Or, in any app, tap Share → Tenzy.": {
+  "de": "Tippe auf „Datei wählen“ – aus Dateien, iCloud oder einem Download. Oder in jeder App: Teilen → Tenzy.",
+  "es": "Toca «Elegir un archivo»: de Archivos, iCloud o una descarga. O en cualquier app: Compartir → Tenzy.",
+  "fr": "Touchez « Choisir un fichier » — depuis Fichiers, iCloud ou un téléchargement. Ou, dans n'importe quelle app : Partager → Tenzy.",
+  "hi": "‘फ़ाइल चुनें’ दबाएँ — Files, iCloud या डाउनलोड से। या किसी भी ऐप में: शेयर → Tenzy।",
+  "it": "Tocca «Scegli un file»: da File, iCloud o un download. Oppure, in qualsiasi app: Condividi → Tenzy.",
+  "ja": "「ファイルを選ぶ」から、ファイル・iCloud・ダウンロードを選択。どのアプリでも 共有→Tenzy でも開けます。",
+  "pt": "Toque em «Escolher um ficheiro» — de Ficheiros, iCloud ou uma transferência. Ou, em qualquer app: Partilhar → Tenzy.",
+  "zh": "点“选择文件”，从“文件”、iCloud 或下载中选；或在任何应用里点 分享 → Tenzy。"
+ },
  "Tap Record and start talking — the transcript appears as you speak.": {
   "de": "Tippe auf Aufnehmen und sprich los — das Transkript erscheint, während du sprichst.",
   "es": "Toca Grabar y empieza a hablar — la transcripción aparece mientras hablas.",
@@ -15538,6 +15718,16 @@
   "ja": "弦をタップすると基準音が鳴ります。",
   "pt": "Toca numa corda para ouvir o tom de referência.",
   "zh": "点按某根弦即可听到参考音高。"
+ },
+ "Tap a voice to hear the first seconds of your recording in it. Compare as many as you like, then use the one you love.": {
+  "de": "Tippe auf eine Stimme, um die ersten Sekunden deiner Aufnahme darin zu hören. Vergleiche beliebig viele und nimm deine Lieblingsstimme.",
+  "es": "Toca una voz para oír los primeros segundos de tu grabación con ella. Compara todas las que quieras y usa la que más te guste.",
+  "fr": "Touchez une voix pour entendre les premières secondes de votre enregistrement. Comparez-en autant que vous voulez, puis utilisez votre préférée.",
+  "hi": "किसी आवाज़ पर टैप करें और अपनी रिकॉर्डिंग के शुरुआती सेकंड उसमें सुनें। जितनी चाहें तुलना करें, फिर पसंदीदा चुनें।",
+  "it": "Tocca una voce per sentire i primi secondi della tua registrazione. Confrontane quante vuoi, poi usa quella che preferisci.",
+  "ja": "声をタップすると、録音の最初の数秒をその声で試聴できます。好きなだけ聴き比べて、気に入った声を使いましょう。",
+  "pt": "Toque numa voz para ouvir os primeiros segundos da sua gravação. Compare as que quiser e use a sua favorita.",
+  "zh": "点一个声音即可试听录音开头几秒的效果。随意比较，然后选你最喜欢的。"
  },
  "Tap anywhere to close": {
   "de": "Zum Schließen irgendwohin tippen",
@@ -16809,6 +16999,16 @@
   "pt": "Hora: ",
   "zh": "时间："
  },
+ "Tiny, quick and squeaky": {
+  "de": "Winzig, flink und quietschig",
+  "es": "Diminuta, rápida y chillona",
+  "fr": "Minuscule, rapide et aiguë",
+  "hi": "छोटी, तेज़ और चीं-चीं",
+  "it": "Piccola, veloce e squillante",
+  "ja": "小さくて速い、キーキー声",
+  "pt": "Pequenina, rápida e esganiçada",
+  "zh": "又小又快又尖"
+ },
  "Tip: freeze first, then zoom — no shaky hands. Yellow-on-black and inverted are the looks low-vision readers find easiest.": {
   "de": "Tipp: zuerst einfrieren, dann zoomen — ohne Verwackeln. Gelb auf Schwarz und invertiert sind die Ansichten, die Leser mit Sehschwäche am leichtesten finden.",
   "es": "Consejo: congela primero y luego amplía, sin pulso tembloroso. Amarillo sobre negro e invertido son los modos que los lectores con baja visión encuentran más fáciles.",
@@ -17699,6 +17899,16 @@
   "pt": "Usar Face ID",
   "zh": "使用面容 ID"
  },
+ "Use the": {
+  "de": "Nimm die Stimme",
+  "es": "Usar la voz",
+  "fr": "Utiliser la voix",
+  "hi": "इस्तेमाल करें:",
+  "it": "Usa la voce",
+  "ja": "使う:",
+  "pt": "Usar a voz",
+  "zh": "使用"
+ },
  "Use the screenshots I just took": {
   "de": "Die gerade gemachten Screenshots nehmen",
   "es": "Usar las capturas que acabo de hacer",
@@ -17839,6 +18049,16 @@
   "pt": "Voz → Notas",
   "zh": "语音 → 笔记"
  },
+ "Voices": {
+  "de": "Stimmen",
+  "es": "Voces",
+  "fr": "Voix",
+  "hi": "आवाज़ें",
+  "it": "Voci",
+  "ja": "ボイス",
+  "pt": "Vozes",
+  "zh": "声音"
+ },
  "Voices keep their natural pitch.": {
   "de": "Stimmen behalten ihre natürliche Tonhöhe.",
   "es": "Las voces mantienen su tono natural.",
@@ -17869,6 +18089,16 @@
   "pt": "Guia-me de volta",
   "zh": "带我返回"
  },
+ "Walkie-talkie": {
+  "de": "Funkgerät",
+  "es": "Walkie-talkie",
+  "fr": "Talkie-walkie",
+  "hi": "वॉकी-टॉकी",
+  "it": "Walkie-talkie",
+  "ja": "トランシーバー",
+  "pt": "Walkie-talkie",
+  "zh": "对讲机"
+ },
  "Wants a code, password or personal details": {
   "de": "Will einen Code, ein Passwort oder persönliche Daten",
   "es": "Quiere un código, contraseña o datos personales",
@@ -17888,6 +18118,16 @@
   "ja": "遠隔操作やインストールを求めている",
   "pt": "Quer acesso remoto ou uma instalação",
   "zh": "要求远程访问或安装软件"
+ },
+ "Warbly, from another planet": {
+  "de": "Wabernd, von einem anderen Planeten",
+  "es": "Ondulante, de otro planeta",
+  "fr": "Chevrotante, d'une autre planète",
+  "hi": "लहराती, दूसरे ग्रह से",
+  "it": "Tremolante, da un altro pianeta",
+  "ja": "ゆらゆら、別の星から",
+  "pt": "Ondulante, de outro planeta",
+  "zh": "颤颤的，来自外星"
  },
  "Warm": {
   "de": "Warm",
@@ -19549,6 +19789,16 @@
   "pt": "de deslocação",
   "zh": "路程"
  },
+ "voice": {
+  "de": "",
+  "es": "",
+  "fr": "",
+  "hi": "आवाज़",
+  "it": "",
+  "ja": "の声",
+  "pt": "",
+  "zh": "声音"
+ },
  "voice note(s)": {
   "de": "Sprachnotiz(en)",
   "es": "nota(s) de voz",
@@ -19558,6 +19808,16 @@
   "ja": "件の音声メモ",
   "pt": "nota(s) de voz",
   "zh": "条语音"
+ },
+ "voices — hear each one before you choose": {
+  "de": "Stimmen – hör jede vorher an",
+  "es": "voces: escucha cada una antes de elegir",
+  "fr": "voix — écoutez chacune avant de choisir",
+  "hi": "आवाज़ें — चुनने से पहले हर एक सुनें",
+  "it": "voci: ascoltale prima di scegliere",
+  "ja": "種類の声 — 選ぶ前に試聴できます",
+  "pt": "vozes — ouça cada uma antes de escolher",
+  "zh": "种声音，选择前可先试听"
  },
  "we'll remind you 2 days before and on the last day.": {
   "de": "wir erinnern dich 2 Tage vorher und am letzten Tag.",

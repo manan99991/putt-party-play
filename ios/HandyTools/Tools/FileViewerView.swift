@@ -25,7 +25,7 @@ struct FileViewerView: View {
     var body: some View {
         ToolPage(title: "File Opener", subtitle: "Open almost any file — PDFs, Office & iWork docs, images, text, code, archives and more. You pick it, it opens; nothing leaves your phone.") {
             HowTo("fileviewer", [
-                "Tap Choose a file and pick anything — from Files, iCloud or a download.",
+                "Tap Choose a file and pick anything — from Files, iCloud or a download. Or, in any app, tap Share → Tenzy.",
                 "It opens right here: read it, flip through pages, zoom.",
                 "Share or save it on. No permissions to grant — you chose the file.",
             ])
@@ -36,6 +36,7 @@ struct FileViewerView: View {
             if info == nil && errorText == nil {
                 Text(L("Works offline and on files other apps choke on — if something can't preview, you still get its details and a way to share it, never a dead end."))
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                openFromAnywhereCard
             }
 
             if let info {
@@ -66,6 +67,21 @@ struct FileViewerView: View {
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
         .sheet(isPresented: $showPicker) { DocumentPicker { url in handlePicked(url) } }
+        .onAppear { if let u = FileOpenInbox.shared.take() { handlePicked(u) } }
+        .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in
+            if (n.object as? String) == "fileviewer", let u = FileOpenInbox.shared.take() { handlePicked(u) }
+        }
+    }
+
+    /// How to send a file here from anywhere — so "which app opens this?" always has an answer.
+    private var openFromAnywhereCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Open any file in Tenzy, from anywhere"), systemImage: "square.and.arrow.up.on.square").font(HandyFont.bodyStrong)
+            Text(L("In Files, Downloads, Mail, Safari or a chat: tap the file, tap Share, then tap Tenzy. It opens right here. If Tenzy isn't in the row of apps, swipe to the end, tap More and switch it on."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            Text(L("PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · images · RAW · video · audio · ZIP · text · code · CSV · and more"))
+                .font(HandyFont.micro).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true)
+        }.cardStyle(padding: HandySpacing.s12)
     }
 
     private func handlePicked(_ url: URL) {
@@ -154,4 +170,23 @@ private struct DocumentPicker: UIViewControllerRepresentable {
             if let u = urls.first { onPick(u) }
         }
     }
+}
+
+/// A file handed to Tenzy by another app ("Open in Tenzy"), waiting for File Opener. iOS gives us a URL that
+/// may only be readable for a moment, so it is copied into Tenzy's own temporary folder first.
+@MainActor final class FileOpenInbox {
+    static let shared = FileOpenInbox()
+    private var pending: URL?
+
+    func receive(_ url: URL) {
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+        let dir = FileManager.default.temporaryDirectory.appendingPathComponent("opened-\(UUID().uuidString.prefix(6))", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let copy = dir.appendingPathComponent(url.lastPathComponent.isEmpty ? "File" : url.lastPathComponent)
+        if (try? FileManager.default.copyItem(at: url, to: copy)) != nil { pending = copy } else { pending = url }
+    }
+
+    /// The waiting file, used once.
+    func take() -> URL? { defer { pending = nil }; return pending }
 }

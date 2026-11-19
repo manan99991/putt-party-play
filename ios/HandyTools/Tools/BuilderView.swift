@@ -824,8 +824,12 @@ struct BuilderView: View {
         let tints = c.steps.map(\.block.tint)
         let g = [(tints.first ?? HandyColor.accent).opacity(0.18), (tints.last ?? tints.first ?? HandyColor.accent).opacity(0.10)]
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            HStack(spacing: -8) {
-                ForEach(Array(c.steps.prefix(3).enumerated()), id: \.offset) { _, s in BlockBadge(block: s.block, size: 30) }
+            if let v = c.steps.first(where: { $0.block == .voiceChange })?.settings["voice"], let look = ChainText.voiceLooks[v] {
+                Text(look.emoji).font(.system(size: 26)).frame(width: 34, height: 34).accessibilityHidden(true)   // the voice's own picture
+            } else {
+                HStack(spacing: -8) {
+                    ForEach(Array(c.steps.prefix(3).enumerated()), id: \.offset) { _, s in BlockBadge(block: s.block, size: 30) }
+                }
             }
             Text(c.name).font(HandyFont.bodyStrong).lineLimit(2).multilineTextAlignment(.leading)
             Text(c.about).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2).multilineTextAlignment(.leading)
@@ -1381,9 +1385,12 @@ private struct ChainEditor: View {
                 ForEach(PixelArt.styles, id: \.id) { Text($0.name).tag($0.id) }
             }.pickerStyle(.menu).font(HandyFont.caption)
         case .voiceChange:
-            Picker(L("Voice"), selection: Binding(get: { ChainText.voices.first { $0.id == chain.steps[i].settings["voice"] }?.id ?? "chipmunk" }, set: { chain.steps[i].settings["voice"] = $0 })) {
-                ForEach(ChainText.voices, id: \.id) { Text(L($0.name)).tag($0.id) }
-            }.pickerStyle(.segmented)
+            let current = ChainText.voices.first { $0.id == chain.steps[i].settings["voice"] }?.id ?? "chipmunk"
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(ChainText.voices, id: \.id) { v in
+                    HChip(text: "\(ChainText.voiceLooks[v.id]?.emoji ?? "") \(L(v.name))", selected: current == v.id) { chain.steps[i].settings["voice"] = v.id }
+                }
+            }
         case .videoLoop:
             Picker(L("Plays"), selection: Binding(get: { chain.steps[i].settings["style"] == "reverse" ? "reverse" : "boomerang" }, set: { chain.steps[i].settings["style"] = $0 })) {
                 Text(L("Forwards and back")).tag("boomerang"); Text(L("Backwards")).tag("reverse")
@@ -2240,7 +2247,25 @@ private struct ToolPickView: View {
             let picked = offers.filter { linkStart.contains($0.steps.first?.block ?? .readText) }
             return picked.isEmpty ? offers : picked
         }
+        // A recording: the voices live together behind one "Change the voice" row (see voiceRow), not one row each.
+        if kind == .audio { return offers.filter { $0.steps.first?.block != .voiceChange } }
         return offers
+    }
+
+    /// Every fun voice in one place: pick one, hear your recording in it, then use it.
+    private var voiceRow: some View {
+        NavigationLink { VoicePickerView(payload: given.payload) } label: {
+            HStack(spacing: HandySpacing.s12) {
+                Text("🐿️").font(.system(size: 24)).frame(width: 40, height: 40).background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L("Change the voice")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                    Text(ChainText.voices.compactMap { ChainText.voiceLooks[$0.id]?.emoji }.joined(separator: " ")).font(.system(size: 15)).lineLimit(1)
+                    Text("\(ChainText.voices.count) \(L("voices — hear each one before you choose"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+            }.cardStyle(padding: HandySpacing.s12)
+        }.buttonStyle(.plain).accessibilityIdentifier("pick-voices")
     }
 
     var body: some View {
@@ -2279,6 +2304,7 @@ private struct ToolPickView: View {
                 } else {
                     Text(L("Pick what to do with it. It runs straight away.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
+                if given.payload.kind == .audio { voiceRow }
                 ForEach(tools) { c in
                     NavigationLink { ChainRunView(chain: c, initial: given.payload) } label: {
                         HStack(spacing: HandySpacing.s12) {

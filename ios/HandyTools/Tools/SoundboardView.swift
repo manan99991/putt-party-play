@@ -3,7 +3,7 @@ import AVFoundation
 import UniformTypeIdentifiers
 
 /// Soundboard: pick an audio file (or a video — its audio is used), tap a voice card, and hear your
-/// clip transformed — robot, alien, monster, chipmunk, helium, giant or deep. The character voices
+/// clip transformed — chipmunk, helium, deep, giant, robot, alien, monster, walkie-talkie, echo cave or ghost. The character voices
 /// (robot/alien/monster) pitch-shift without changing tempo and add a timbre, so the speech stays
 /// intelligible; chipmunk/helium/giant/deep use the classic varispeed. Everything renders on the
 /// phone, offline — nothing is uploaded. You preview the result before you Save or Share, and tapping
@@ -12,15 +12,10 @@ struct SoundboardView: View {
     private struct Voice: Identifiable {
         let id: String, name: String, blurb: String, icon: String
     }
-    private let voices: [Voice] = [
-        Voice(id: "robot",    name: "Robot",    blurb: "Metallic monotone",       icon: "gearshape.2.fill"),
-        Voice(id: "alien",    name: "Alien",    blurb: "High, warbling chatter",   icon: "sparkles"),
-        Voice(id: "monster",  name: "Monster",  blurb: "Deep, growling",           icon: "flame.fill"),
-        Voice(id: "chipmunk", name: "Chipmunk", blurb: "Fast and squeaky",         icon: "hare.fill"),
-        Voice(id: "helium",   name: "Helium",   blurb: "Tiny and super-high",      icon: "balloon.fill"),
-        Voice(id: "giant",    name: "Giant",    blurb: "Huge and slow",            icon: "figure.stand"),
-        Voice(id: "deep",     name: "Deep",     blurb: "Low and slowed down",      icon: "tortoise.fill")
-    ]
+    /// The same voices, pictures and lines as everywhere else in Tenzy (ChainText.voices / voiceLooks).
+    private let voices: [Voice] = ChainText.voices.map { v in
+        Voice(id: v.id, name: v.name, blurb: ChainText.voiceLooks[v.id]?.line ?? "", icon: ChainText.voiceLooks[v.id]?.emoji ?? "🎙️")
+    }
 
     @State private var audioURL: URL?        // normalized, readable audio
     @State private var fileName = "Clip"
@@ -106,7 +101,8 @@ struct SoundboardView: View {
     private func voiceCard(_ v: Voice) -> some View {
         Button { choose(v.id) } label: {
             HStack(spacing: HandySpacing.s12) {
-                Image(systemName: v.icon).font(.system(size: 22)).foregroundStyle(HandyColor.accent).frame(width: 32)
+                Text(v.icon).font(.system(size: 28)).frame(width: 46, height: 46)
+                    .background(HandyColor.accent.opacity(selected == v.id ? 0.18 : 0.08), in: Circle()).accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L(v.name)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                     Text(L(v.blurb)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

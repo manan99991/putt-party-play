@@ -190,23 +190,43 @@ enum ChainMedia {
 
     /// Voice "characters" that need real DSP — the pitch shifted WITHOUT changing tempo (so the speech stays
     /// intelligible, unlike the varispeed chipmunk/deep), plus a timbre effect. Keyed by the same voice id in settings.
-    struct VoiceCharacter { let pitchCents: Float; let distortion: AVAudioUnitDistortionPreset?; let wet: Float }
+    struct VoiceCharacter {
+        let pitchCents: Float
+        let distortion: AVAudioUnitDistortionPreset?
+        let wet: Float
+        var rate: Float = 1                          // speaking speed (1 = as recorded); pitch stays independent
+        var reverb: AVAudioUnitReverbPreset? = nil   // the space the voice is in
+        var reverbWet: Float = 0
+    }
+    /// Every voice is a real pitch shift that keeps the words clear, tuned per character: a touch faster for
+    /// the small voices, slower and roomier for the big ones, a timbre for the strange ones.
     static let characters: [String: VoiceCharacter] = [
-        "robot":   VoiceCharacter(pitchCents: -150, distortion: .multiDecimated2,    wet: 55),
-        "alien":   VoiceCharacter(pitchCents:  500, distortion: .speechAlienChatter, wet: 45),
-        "monster": VoiceCharacter(pitchCents: -650, distortion: .multiBrokenSpeaker, wet: 35),
+        "chipmunk": VoiceCharacter(pitchCents: 1000, distortion: nil, wet: 0, rate: 1.12),
+        "helium":   VoiceCharacter(pitchCents:  700, distortion: nil, wet: 0, rate: 1.04, reverb: .smallRoom, reverbWet: 8),
+        "deep":     VoiceCharacter(pitchCents: -450, distortion: nil, wet: 0, rate: 0.97),
+        "giant":    VoiceCharacter(pitchCents: -900, distortion: nil, wet: 0, rate: 0.9, reverb: .largeHall, reverbWet: 22),
+        "robot":    VoiceCharacter(pitchCents: -150, distortion: .multiDecimated2,    wet: 55),
+        "alien":    VoiceCharacter(pitchCents:  500, distortion: .speechAlienChatter, wet: 45),
+        "monster":  VoiceCharacter(pitchCents: -650, distortion: .multiBrokenSpeaker, wet: 35, rate: 0.95, reverb: .mediumHall, reverbWet: 15),
+        "walkie":   VoiceCharacter(pitchCents:    0, distortion: .speechRadioTower,   wet: 60),
+        "cave":     VoiceCharacter(pitchCents: -100, distortion: nil, wet: 0, reverb: .cathedral, reverbWet: 45),
+        "ghost":    VoiceCharacter(pitchCents:  250, distortion: .speechWaves,        wet: 30, rate: 0.93, reverb: .largeHall2, reverbWet: 40),
     ]
 
     /// Pitch-shifts a recording without changing its tempo and adds a character timbre, rendered entirely offline
     /// on the phone (no playback, nothing uploaded). Returns 16-bit mono WAV, or nil so the caller falls back to
     /// the simple varispeed path — any failure is graceful, never a crash.
-    static func revoiceDSP(_ url: URL, _ c: VoiceCharacter) -> Data? {
+    static func revoiceDSP(_ url: URL, _ c: VoiceCharacter, maxSeconds: Double? = nil) -> Data? {
         guard let file = try? AVAudioFile(forReading: url) else { return nil }
         let format = file.processingFormat
         guard format.sampleRate > 0, file.length > 0, file.length < Int64(format.sampleRate * 600) else { return nil }
+        // A preview renders just the opening seconds; the result renders it all.
+        let inFrames = maxSeconds.map { min(file.length, Int64(format.sampleRate * $0)) } ?? file.length
+        let rate = max(0.5, min(2, c.rate))
+        let outFrames = Int64(Double(inFrames) / Double(rate)) + (c.reverb != nil ? Int64(format.sampleRate * 1.2) : 0)
         let engine = AVAudioEngine()
         let player = AVAudioPlayerNode()
-        let pitch = AVAudioUnitTimePitch(); pitch.pitch = max(-2400, min(2400, c.pitchCents))
+        let pitch = AVAudioUnitTimePitch(); pitch.pitch = max(-2400, min(2400, c.pitchCents)); pitch.rate = rate
         engine.attach(player); engine.attach(pitch)
         engine.connect(player, to: pitch, format: format)
         var tail: AVAudioNode = pitch
@@ -214,20 +234,24 @@ enum ChainMedia {
             let dist = AVAudioUnitDistortion(); dist.loadFactoryPreset(preset); dist.wetDryMix = c.wet
             engine.attach(dist); engine.connect(pitch, to: dist, format: format); tail = dist
         }
+        if let room = c.reverb {
+            let verb = AVAudioUnitReverb(); verb.loadFactoryPreset(room); verb.wetDryMix = c.reverbWet
+            engine.attach(verb); engine.connect(tail, to: verb, format: format); tail = verb
+        }
         engine.connect(tail, to: engine.mainMixerNode, format: format)
         do {
             try engine.enableManualRenderingMode(.offline, format: format, maximumFrameCount: 4096)
             try engine.start()
         } catch { return nil }
         defer { engine.stop() }
-        player.scheduleFile(file, at: nil)
+        player.scheduleSegment(file, startingFrame: 0, frameCount: AVAudioFrameCount(inFrames), at: nil)
         player.play()
         guard let render = AVAudioPCMBuffer(pcmFormat: engine.manualRenderingFormat, frameCapacity: engine.manualRenderingMaximumFrameCount) else { return nil }
         let lanes = max(1, Int(engine.manualRenderingFormat.channelCount))
-        let cap = Int(file.length) * 2
+        let cap = Int(outFrames) * 2
         var pcm: [UInt8] = []; pcm.reserveCapacity(cap)
-        while engine.manualRenderingSampleTime < file.length && pcm.count < cap {
-            let remaining = file.length - engine.manualRenderingSampleTime
+        while engine.manualRenderingSampleTime < outFrames && pcm.count < cap {
+            let remaining = outFrames - engine.manualRenderingSampleTime
             let frames = AVAudioFrameCount(min(Int64(render.frameCapacity), remaining))
             guard let status = try? engine.renderOffline(frames, to: render), status == .success,
                   let ch = render.floatChannelData, render.frameLength > 0 else { break }
@@ -247,6 +271,12 @@ enum ChainMedia {
     /// chipmunk/helium/giant/deep use the simple varispeed path, and a DSP voice falls back to varispeed if the
     /// device can't render the effect. Pure reuse of the proven voice-change path — no new DSP. Returns nil only
     /// when the audio itself can't be read at all.
+    /// The opening seconds of a recording in a voice, for "hear it before you choose".
+    static func previewVoice(_ url: URL, voice: String, seconds: Double = 8) -> Data? {
+        guard let c = characters[voice] else { return nil }
+        return revoiceDSP(url, c, maxSeconds: seconds)
+    }
+
     static func soundboardVoice(_ url: URL, voice: String) -> Data? {
         if let c = characters[voice], let dsp = revoiceDSP(url, c) { return dsp }
         return revoice(url, rate: ChainText.voiceRate(voice))

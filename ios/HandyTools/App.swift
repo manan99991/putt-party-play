@@ -46,6 +46,14 @@ struct TenzyApp: App {
                 if crashReport == nil, !Launch.uitest { crashReport = Diagnostics.shared.takePendingCrash() }
             }
             .onOpenURL { url in
+                // A file opened in Tenzy from the Share sheet / "Open in…" (Files, Downloads, Mail, Safari…):
+                // show it straight away in File Opener.
+                if url.isFileURL {
+                    showOnboarding = false
+                    FileOpenInbox.shared.receive(url)
+                    NotificationCenter.default.post(name: .openTool, object: "fileviewer")
+                    return
+                }
                 // tenzy://run/<id> from the My Tools widget: open that Build-your-own tool ready to run.
                 if url.scheme == "tenzy", url.host == "run", let id = url.pathComponents.dropFirst().first {
                     showOnboarding = false

@@ -35,10 +35,20 @@ enum BuilderIntro {
     /// The template sheet's sections, by what you start with. Every starter is in exactly one.
     static func sections(in all: [Chain] = ChainTemplates.all) -> [(title: String, kind: ChainKind, chains: [Chain])] {
         let order: [(String, ChainKind)] = [("Photos & scans", .image), ("Text, links & messages", .text), ("Video", .video), ("Sound & voice", .audio), ("PDF", .pdf)]
-        return order.compactMap { title, kind in
-            let c = jobsFirst(starters(for: kind, in: all))
-            return c.isEmpty ? nil : (title, kind, c)
+        var out: [(title: String, kind: ChainKind, chains: [Chain])] = []
+        for (title, kind) in order {
+            var c = jobsFirst(starters(for: kind, in: all))
+            if kind == .audio {
+                // The fun voices get their own shelf, so they're easy to find and don't bury the useful ones.
+                let voices = c.filter { $0.steps.first?.block == .voiceChange }
+                c.removeAll { $0.steps.first?.block == .voiceChange }
+                if !c.isEmpty { out.append((title, kind, c)) }
+                if !voices.isEmpty { out.append(("Funny voices", kind, voices)) }
+                continue
+            }
+            if !c.isEmpty { out.append((title, kind, c)) }
         }
+        return out
     }
 
     /// Bigger jobs that need a whole screen rather than a few steps — each opens a full Tenzy tool.
