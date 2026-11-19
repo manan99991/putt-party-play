@@ -20,6 +20,7 @@ struct DayDiaryView: View {
         return Calendar.current.date(from: DateComponents(hour: h, minute: m)) ?? Date()
     }()
     @State private var errorText: String?
+    @State private var notifOff = false
     @State private var tick = Date()
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
@@ -115,6 +116,7 @@ struct DayDiaryView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Toggle(isOn: $remind) { Label(L("Ask me every evening"), systemImage: "bell.badge") }.tint(HandyColor.accent)
             if remind {
+                NotificationsOffCard(isOff: $notifOff)
                 DatePicker(L("At"), selection: $remindAt, displayedComponents: .hourAndMinute)
                 Text(L("You can answer Good or Bad right from the notification.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }
@@ -122,6 +124,8 @@ struct DayDiaryView: View {
         .cardStyle(padding: HandySpacing.s12)
         .onChange(of: remind) { _, on in applyReminder(on) }
         .onChange(of: remindAt) { _, _ in if remind { applyReminder(true) } }
+        .onChange(of: notifOff) { _, off in if !off, remind { applyReminder(true) } }
+        .task { if remind { notifOff = await NotifyPermission.state() == .off } }
     }
 
     private func applyReminder(_ on: Bool) {
@@ -130,10 +134,11 @@ struct DayDiaryView: View {
         let c = Calendar.current.dateComponents([.hour, .minute], from: remindAt)
         UserDefaults.standard.set(c.hour ?? 21, forKey: "daydiary.hour"); UserDefaults.standard.set(c.minute ?? 0, forKey: "daydiary.minute")
         Task {
-            let ok = (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])) ?? false
+            let ok = await NotifyPermission.ensure()
             await MainActor.run {
-                if ok { DayDiary.scheduleReminder(hour: c.hour ?? 21, minute: c.minute ?? 0); errorText = nil }
-                else { remind = false; errorText = "Notifications are off for Tenzy — turn them on in Settings to get the evening question." }
+                notifOff = !ok
+                // Scheduled either way: the moment notifications are allowed, it's already waiting.
+                DayDiary.scheduleReminder(hour: c.hour ?? 21, minute: c.minute ?? 0); errorText = nil
             }
         }
     }

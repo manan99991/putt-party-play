@@ -24,6 +24,7 @@ struct UntangleView: View {
     @State private var note: String?
     @State private var errorText: String?
     @State private var nudges = false
+    @State private var notifOff = false
     @State private var tick = Date()
     @FocusState private var focused: Bool
 
@@ -229,6 +230,7 @@ struct UntangleView: View {
                 Label(nudges ? L("Check-ins on — I'll nudge you as each step starts") : L("Nudge me as each step starts"), systemImage: nudges ? "bell.badge.fill" : "bell")
                     .frame(maxWidth: .infinity)
             }.secondaryButton()
+            NotificationsOffCard(isOff: $notifOff)
             ShareLink(item: UntanglePlan.text(p)) { Label(L("Share plan"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             if let n = note { Text(L(n)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             Text(L("Made on your phone. What you type or say never leaves it — only your rough location is used for maps and weather.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
@@ -273,8 +275,11 @@ struct UntangleView: View {
     private func toggleNudges(_ p: UntanglePlan.Plan) {
         if nudges { nudges = false; UntangleCheckIns.cancelAll(); return }
         Task {
-            if await UntangleCheckIns.ask() { await MainActor.run { nudges = true; UntangleCheckIns.schedule(p) } }
-            else { await MainActor.run { errorText = "Notifications are off for Tenzy — turn them on in Settings to get check-ins." } }
+            let ok = await NotifyPermission.ensure()
+            await MainActor.run {
+                nudges = true; notifOff = !ok
+                UntangleCheckIns.schedule(p)     // waiting, so they arrive as soon as notifications are allowed
+            }
         }
     }
 

@@ -15,12 +15,7 @@ struct MedRemindersView: View {
                  subtitle: "Reminders for every medicine, with a Taken button and a week view.",
                  working: false) {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
-                if blocked {
-                    Label(L("Notifications are off for Tenzy, so reminders can't alert you. Turn them on in Settings → Notifications → Tenzy."),
-                          systemImage: "bell.slash.fill")
-                        .font(HandyFont.caption).foregroundStyle(HandyColor.danger)
-                        .cardStyle(padding: HandySpacing.s12)
-                }
+                NotificationsOffCard(isOff: $blocked)
                 if store.meds.isEmpty { emptyCard } else { todayCard; medsList }
                 if store.droppedAlerts > 0 {
                     Label("\(L("iPhone allows 64 alerts per app — the")) \(store.droppedAlerts) \(L("furthest-away doses will be scheduled as the nearer ones pass. Open Tenzy now and then to top them up."))",
@@ -40,6 +35,7 @@ struct MedRemindersView: View {
                 store.delete(gone); editing = nil
             } onCancel: { editing = nil }
         }
+        .onChange(of: blocked) { _, off in resumeIfAllowed(off) }
         .onAppear { checkBlocked() }
     }
 
@@ -133,6 +129,8 @@ struct MedRemindersView: View {
     }
 
     private func checkBlocked() { ToolSchedules.blocked { blocked = $0 } }
+    // When notifications come back on (from Settings), put every dose alert back.
+    private func resumeIfAllowed(_ off: Bool) { if !off { MedStore.shared.reschedule() } }
 }
 
 /// Add or edit one medicine.

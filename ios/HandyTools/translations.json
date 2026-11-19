@@ -9089,6 +9089,16 @@
   "pt": "Ainda nada. Executa uma ferramenta e o resultado aparece aqui.",
   "zh": "暂无内容。运行一个工具，其结果会出现在这里。"
  },
+ "Notifications are off for Tenzy": {
+  "de": "Mitteilungen für Tenzy sind aus",
+  "es": "Las notificaciones de Tenzy están desactivadas",
+  "fr": "Les notifications de Tenzy sont désactivées",
+  "hi": "Tenzy की सूचनाएँ बंद हैं",
+  "it": "Le notifiche di Tenzy sono disattivate",
+  "ja": "Tenzyの通知がオフです",
+  "pt": "As notificações do Tenzy estão desativadas",
+  "zh": "Tenzy 的通知已关闭"
+ },
  "Notifications are off for Tenzy — turn them on in Settings to get check-ins.": {
   "de": "Mitteilungen für Tenzy sind aus – aktiviere sie in den Einstellungen für Check-ins.",
   "es": "Las notificaciones de Tenzy están desactivadas; actívalas en Ajustes para recibir avisos.",
@@ -9438,6 +9448,16 @@
   "ja": "リンクを開く",
   "pt": "Abrir ligação",
   "zh": "打开链接"
+ },
+ "Open notification settings": {
+  "de": "Mitteilungseinstellungen öffnen",
+  "es": "Abrir ajustes de notificaciones",
+  "fr": "Ouvrir les réglages de notifications",
+  "hi": "सूचना सेटिंग खोलें",
+  "it": "Apri impostazioni notifiche",
+  "ja": "通知設定を開く",
+  "pt": "Abrir ajustes de notificações",
+  "zh": "打开通知设置"
  },
  "Open scanner": {
   "de": "Scanner öffnen",
@@ -13479,6 +13499,16 @@
   "pt": "Duração da soneca",
   "zh": "贪睡时长"
  },
+ "So this reminder can't reach you. Tap below, turn on Allow Notifications, then come back — it switches on by itself.": {
+  "de": "Diese Erinnerung kann dich also nicht erreichen. Tippe unten, aktiviere „Mitteilungen erlauben“ und komm zurück – sie schaltet sich dann selbst ein.",
+  "es": "Así este recordatorio no te llega. Toca abajo, activa Permitir notificaciones y vuelve: se activará solo.",
+  "fr": "Ce rappel ne peut donc pas vous joindre. Touchez ci-dessous, activez Autoriser les notifications, puis revenez — il s'activera tout seul.",
+  "hi": "इसलिए यह रिमाइंडर आप तक नहीं पहुँच सकता। नीचे टैप करें, Allow Notifications चालू करें और वापस आएँ — यह खुद चालू हो जाएगा।",
+  "it": "Quindi questo promemoria non ti raggiunge. Tocca sotto, attiva Consenti notifiche e torna: si attiverà da solo.",
+  "ja": "このままではリマインダーが届きません。下をタップして「通知を許可」をオンにし、戻ってきてください。自動でオンになります。",
+  "pt": "Assim este lembrete não chega até você. Toque abaixo, ative Permitir Notificações e volte — ele liga sozinho.",
+  "zh": "这样提醒就无法送达。点下方按钮，打开“允许通知”，再回来——它会自动开启。"
+ },
  "Soft dissolve between photos": {
   "de": "Weiches Überblenden zwischen Fotos",
   "es": "Fundido suave entre fotos",
@@ -17278,6 +17308,16 @@
   "ja": "表示される氏名",
   "pt": "O teu nome, como deve aparecer",
   "zh": "你的名字，按应显示的样子"
+ },
+ "Your phone shows a reminder at that time. Tap it and this tool opens, ready to run.": {
+  "de": "Dein Handy zeigt zu dieser Zeit eine Erinnerung. Tippe darauf und das Tool öffnet sich startbereit.",
+  "es": "Tu teléfono mostrará un recordatorio a esa hora. Tócalo y la herramienta se abrirá lista.",
+  "fr": "Votre téléphone affiche un rappel à cette heure. Touchez-le et l'outil s'ouvre, prêt.",
+  "hi": "उस समय आपका फ़ोन रिमाइंडर दिखाएगा। टैप करें और यह टूल तैयार खुल जाएगा।",
+  "it": "Il telefono mostra un promemoria a quell'ora. Toccalo e lo strumento si apre pronto.",
+  "ja": "その時刻に通知が届きます。タップするとこのツールがすぐ使える状態で開きます。",
+  "pt": "Seu celular mostra um lembrete nesse horário. Toque e a ferramenta abre pronta.",
+  "zh": "手机会在那个时间提醒你。点一下，这个工具就会打开并准备好。"
  },
  "Your signature": {
   "de": "Deine Unterschrift",

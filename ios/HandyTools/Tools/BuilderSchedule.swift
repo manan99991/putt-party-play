@@ -154,14 +154,21 @@ struct ScheduleCard: View {
                     ForEach(week, id: \.self) { d in dayChip(d, picked: s.days.isEmpty || s.days.contains(d)) }
                 }
                 Text(s.label(uses24h: ToolSchedules.uses24h)).font(HandyFont.caption).foregroundStyle(HandyColor.accent)
-                Text(blocked
-                     ? "Notifications are off for Tenzy. Turn them on in Settings, then save this tool again."
-                     : "Your phone shows a reminder at that time. Tap it and this tool opens, ready to run.")
-                    .font(HandyFont.caption).foregroundStyle(blocked ? HandyColor.danger : HandyColor.textSecondary)
+                if blocked {
+                    NotificationsOffCard(isOff: $blocked)
+                } else {
+                    Text(L("Your phone shows a reminder at that time. Tap it and this tool opens, ready to run."))
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
             }
         }
         .cardStyle(padding: HandySpacing.s12)
         .onAppear { ToolSchedules.blocked { blocked = $0 } }
+        .onChange(of: schedule != nil) { _, on in
+            // Turning the reminder on is the moment to ask — and to show how to fix it if the answer was no.
+            guard on else { return }
+            Task { let ok = await NotifyPermission.ensure(); await MainActor.run { blocked = !ok } }
+        }
     }
 
     private func dayChip(_ d: Int, picked: Bool) -> some View {
