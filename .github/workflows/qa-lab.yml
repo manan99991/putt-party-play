@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: qa-lab
-  cancel-in-progress: true
+  cancel-in-progress: false   # a running score finishes; only the newest waiting run is kept
 
 jobs:
   accuracy:
