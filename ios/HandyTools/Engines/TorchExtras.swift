@@ -7,7 +7,7 @@ enum TorchExtras {
     static let morseSpeeds: [(label: String, unitMs: Int)] = [("Slow", 280), ("Normal", 180), ("Fast", 110)]
 
     /// How long one pass of a message takes at a speed — shown so people know what to expect.
-    static func morseSeconds(_ text: String, unitMs: Int) -> Double {
+    @MainActor static func morseSeconds(_ text: String, unitMs: Int) -> Double {
         let code = Torch.encodeMorse(text)
         guard !code.isEmpty else { return 0 }
         var units = 0

@@ -380,7 +380,7 @@ private struct EmergencyLightSheet: View {
                     .accessibilityLabel(L("Emergency light is on"))
                 Spacer()
                 if siren {
-                    Button { sound.toggle(); sound ? player?.play() : player?.pause() } label: {
+                    Button { sound.toggle(); if sound { player?.play() } else { player?.pause() } } label: {
                         Label(sound ? L("Mute siren") : L("Siren on"), systemImage: sound ? "speaker.slash.fill" : "speaker.wave.3.fill")
                             .font(HandyFont.bodyStrong).padding(.horizontal, 20).padding(.vertical, 12)
                             .background(.black.opacity(0.75), in: Capsule()).foregroundStyle(.white)

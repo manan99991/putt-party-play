@@ -157,7 +157,7 @@ struct PDFConvertView: View {
             Button {
                 let urls = imageURLs
                 Task {
-                    let ok = await StickerMakerView.saveToPhotos(urls.compactMap { try? Data(contentsOf: $0) })
+                    let ok = await StickerMaker.saveToPhotos(urls.compactMap { try? Data(contentsOf: $0) })
                     savedNote = ok ? L("Saved to Photos.") : L("Photos access is off — allow it in Settings to save.")
                     if ok { HandyHaptics.success() }
                 }

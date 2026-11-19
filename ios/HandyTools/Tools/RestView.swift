@@ -82,7 +82,7 @@ struct RestView: View {
             if recorder.events.isEmpty {
                 Text(L("Nothing captured yet. Plug the phone in, put it on the nightstand, start listening, and check back in the morning.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             } else {
-                if let sm = RestNight.summary(recorder.events.map { ($0.date, $0.seconds, $0.peakDB) }) { nightCard(sm) }
+                if let sm = RestNight.summary(recorder.events.map { (date: $0.date, seconds: $0.seconds, peakDB: $0.peakDB) }) { nightCard(sm) }
                 HStack {
                     Text("\(recorder.events.count) moment\(recorder.events.count == 1 ? "" : "s") · \(GeoFormat.duration(recorder.events.reduce(0) { $0 + $1.seconds })) total").font(HandyFont.bodyStrong)
                     Spacer()

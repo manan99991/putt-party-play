@@ -2608,7 +2608,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
-    func testContactsCountryCodeAndBackupReminder() {
+    @MainActor func testContactsCountryCodeAndBackupReminder() {
         XCTAssertEqual(ContactBook.withCountryCode("(555) 123-4567", code: "+1"), "+1 (555) 123-4567")
         XCTAssertEqual(ContactBook.withCountryCode("1 555 123 4567", code: "1"), "+1 555 123 4567", "the 1 isn't doubled")
         XCTAssertEqual(ContactBook.withCountryCode("07700 900123", code: "+44"), "+44 7700 900123", "trunk 0 dropped")
@@ -2622,7 +2622,7 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(ContactBackupReminder.trigger(every: 0))
     }
 
-    func testOrganizePagesMergeSplitAndBlankPages() {
+    @MainActor func testOrganizePagesMergeSplitAndBlankPages() {
         func page(_ text: String?) -> UIImage {
             UIGraphicsImageRenderer(size: CGSize(width: 612, height: 792)).image { c in
                 UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 612, height: 792))
@@ -2643,7 +2643,7 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(parts.allSatisfy { PDFDocument(url: $0)?.pageCount == 1 }, "each part is one page")
     }
 
-    func testPDFConvertPagesAndSizes() {
+    @MainActor func testPDFConvertPagesAndSizes() {
         XCTAssertEqual(DocEngine.pageIndexes(all: true, current: 0, from: 1, to: 1, count: 4), [0, 1, 2, 3])
         XCTAssertEqual(DocEngine.pageIndexes(all: false, current: 2, from: 3, to: 3, count: 4), [2], "this page")
         XCTAssertEqual(DocEngine.pageIndexes(all: false, current: 0, from: 4, to: 2, count: 4), [1, 2, 3], "backwards range still works")
@@ -2660,7 +2660,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(DocEngine.pdfToImages(pdf, maxWidth: 2550, only: [0]).first.flatMap { UIImage(data: $0)?.size.width } ?? 0, 2550, accuracy: 2, "print size")
     }
 
-    func testAudioConvertPicksFormatByPurpose() {
+    @MainActor func testAudioConvertPicksFormatByPurpose() {
         let p = AudioConvert.Format.purposes
         XCTAssertEqual(p.first { $0.label == "Email or message it" }?.format, .m4a)
         XCTAssertEqual(p.first { $0.label == "Edit in GarageBand or Logic" }?.format, .aiff)
@@ -2671,7 +2671,7 @@ final class EngineTests: XCTestCase {
         XCTAssertLessThan(AudioConvert.Format.estimatedBytes(.m4a, seconds: 60), AudioConvert.Format.estimatedBytes(.wav, seconds: 60) / 10, "'about a tenth the size' is true")
     }
 
-    func testRoomMathWhatToBuyAndSavedMeasurements() {
+    @MainActor func testRoomMathWhatToBuyAndSavedMeasurements() {
         let n = RoomMath.needs(floorArea: 20, perimeter: 18, ceiling: 2.4, doors: 1, windows: 1, coats: 2, tileSide: 0.3, metric: true)
         XCTAssertEqual(n.wallArea, 39.8, accuracy: 0.001, "walls minus a door and a window")
         XCTAssertEqual(n.paintLitres, 7.96, accuracy: 0.001)
@@ -2693,7 +2693,7 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(RoomMath.image(s), "the photo is deleted with it")
     }
 
-    func testRestNightSummaryByHour() {
+    @MainActor func testRestNightSummaryByHour() {
         var cal = Calendar(identifier: .gregorian); cal.timeZone = TimeZone(identifier: "UTC")!
         let morning = cal.date(from: DateComponents(year: 2026, month: 11, day: 19, hour: 7))!
         func at(_ d: Int, _ h: Int, _ m: Int = 0) -> Date { cal.date(from: DateComponents(year: 2026, month: 11, day: d, hour: h, minute: m))! }
@@ -2708,7 +2708,7 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(RestNight.summary([], night: morning, cal: cal))
     }
 
-    func testParkingMeterAndSpeedWarning() {
+    @MainActor func testParkingMeterAndSpeedWarning() {
         let now = Date(timeIntervalSince1970: 1_800_000_000)
         let t = ParkingMeter.fireTimes(ends: now.addingTimeInterval(3600), lead: 10, now: now)
         XCTAssertEqual(t.soon, now.addingTimeInterval(3000)); XCTAssertEqual(t.end, now.addingTimeInterval(3600))
@@ -2731,7 +2731,7 @@ final class EngineTests: XCTestCase {
         XCTAssertFalse(SpeedWarning.check(speed: 120, limit: 0, state: &off), "off means off")
     }
 
-    func testColorTypeCheckPairsFoolOnlyTheirOwnEye() {
+    @MainActor func testColorTypeCheckPairsFoolOnlyTheirOwnEye() {
         for d in ColorVision.Deficiency.allCases {
             for base in ColorVisionCheck.bases {
                 let (a, b) = ColorVisionCheck.pair(d, base: base)
@@ -2755,7 +2755,7 @@ final class EngineTests: XCTestCase {
         XCTAssertLessThan(ColorVisionCheck.difference([0.5, 0.5, 0.5], [0.52, 0.5, 0.5]), 5, "navy and navy-ish socks match")
     }
 
-    func testFlashlightMorseSirenAndShortcut() {
+    @MainActor func testFlashlightMorseSirenAndShortcut() {
         XCTAssertEqual(Torch.encodeMorse("sos"), "... --- ...")
         XCTAssertEqual(TorchExtras.morseSeconds("E", unitMs: 100), 0.9, accuracy: 0.0001)
         XCTAssertEqual(TorchExtras.morseSeconds("SOS", unitMs: 100), 3.5, accuracy: 0.0001)
@@ -2774,7 +2774,7 @@ final class EngineTests: XCTestCase {
         for p in TorchExtras.shortcutPatterns where p != "emergency" { XCTAssertNotNil(Torch.Mode(rawValue: p), p) }
     }
 
-    func testSalePriceAndSplitTheBill() {
+    @MainActor func testSalePriceAndSplitTheBill() {
         let s = PriceMath.sale(price: 100, discounts: [30, 20])
         XCTAssertEqual(s.final, 56, accuracy: 0.001); XCTAssertEqual(PriceMath.percent(s.realPercent), "44", "30% then 20% is 44% off, not 50%")
         let t = PriceMath.sale(price: 59.99, discounts: [25, 0], taxPercent: 8.25)
