@@ -28,6 +28,15 @@ struct MemoryView: View {
                 permissionCard
             } else {
                 searchBar
+                if query.isEmpty, !index.entries.isEmpty {
+                    // The things people actually screenshot and then can't find — one tap to ask.
+                    HandyFlow(spacing: HandySpacing.s8) {
+                        ForEach(["Wi-Fi password", "Confirmation number", "Where I parked", "Flight", "Tracking number", "Receipt", "Address", "Gift card code"], id: \.self) { q in
+                            HChip(text: L(q), selected: false) { query = L(q); runSearch() }
+                        }
+                    }
+                    .accessibilityIdentifier("memory-suggestions")
+                }
                 if index.indexing { indexingCard }
                 else if index.entries.isEmpty { emptyIndexCard }
 

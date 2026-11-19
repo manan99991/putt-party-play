@@ -3479,6 +3479,16 @@
   "pt": "Confirmação 8X2K-44QZ",
   "zh": "确认号 8X2K-44QZ"
  },
+ "Confirmation number": {
+  "de": "Bestätigungsnummer",
+  "es": "Número de confirmación",
+  "fr": "Numéro de confirmation",
+  "hi": "कन्फ़र्मेशन नंबर",
+  "it": "Numero di conferma",
+  "ja": "確認番号",
+  "pt": "Número de confirmação",
+  "zh": "确认号"
+ },
  "Confused by an ingredients list? Snap it and get a plain-language read of the additives, allergens and the serving-size math.": {
   "de": "Verwirrt von einer Zutatenliste? Fotografiere sie und erhalte eine verständliche Erklärung zu Zusatzstoffen, Allergenen und der Portionsrechnung.",
   "es": "¿Te lía una lista de ingredientes? Fotografíala y obtén una lectura clara de los aditivos, alérgenos y el cálculo por ración.",
@@ -6469,6 +6479,16 @@
   "pt": "Teste do Flashlight+",
   "zh": "Flashlight+ 测试"
  },
+ "Flight": {
+  "de": "Flug",
+  "es": "Vuelo",
+  "fr": "Vol",
+  "hi": "फ़्लाइट",
+  "it": "Volo",
+  "ja": "フライト",
+  "pt": "Voo",
+  "zh": "航班"
+ },
  "Flipbook": {
   "de": "Daumenkino",
   "es": "Folioscopio",
@@ -7018,6 +7038,16 @@
   "ja": "巨人",
   "pt": "Gigante",
   "zh": "巨人"
+ },
+ "Gift card code": {
+  "de": "Geschenkkartencode",
+  "es": "Código de tarjeta regalo",
+  "fr": "Code de carte cadeau",
+  "hi": "गिफ़्ट कार्ड कोड",
+  "it": "Codice carta regalo",
+  "ja": "ギフトカードのコード",
+  "pt": "Código do vale-presente",
+  "zh": "礼品卡代码"
  },
  "Gluten": {
   "de": "Gluten",
@@ -13999,6 +14029,16 @@
   "pt": "Desconto real",
   "zh": "实际折扣"
  },
+ "Receipt": {
+  "de": "Beleg",
+  "es": "Recibo",
+  "fr": "Reçu",
+  "hi": "रसीद",
+  "it": "Scontrino",
+  "ja": "レシート",
+  "pt": "Recibo",
+  "zh": "收据"
+ },
  "Receipt → rows, business card → contact, flyer → calendar event, printed table → CSV.": {
   "de": "Beleg → Zeilen, Visitenkarte → Kontakt, Flyer → Termin, gedruckte Tabelle → CSV.",
   "es": "Recibo → filas, tarjeta → contacto, folleto → evento, tabla impresa → CSV.",
@@ -19989,6 +20029,16 @@
   "pt": "Toque e segure a figurinha e toque em Adicionar Figurinha.",
   "zh": "按住贴纸，然后轻点“添加贴纸”。"
  },
+ "Tracking number": {
+  "de": "Sendungsnummer",
+  "es": "Número de seguimiento",
+  "fr": "Numéro de suivi",
+  "hi": "ट्रैकिंग नंबर",
+  "it": "Numero di tracciamento",
+  "ja": "追跡番号",
+  "pt": "Código de rastreio",
+  "zh": "快递单号"
+ },
  "Transcribed on your phone; nothing is uploaded.": {
   "de": "Auf deinem Telefon transkribiert; nichts wird hochgeladen.",
   "es": "Transcrito en tu teléfono; no se sube nada.",
@@ -21369,6 +21419,16 @@
   "pt": "Onde estacionei",
   "zh": "停车位置"
  },
+ "Where I parked": {
+  "de": "Wo ich geparkt habe",
+  "es": "Dónde aparqué",
+  "fr": "Où je me suis garé",
+  "hi": "मैंने कहाँ पार्क किया",
+  "it": "Dove ho parcheggiato",
+  "ja": "駐車した場所",
+  "pt": "Onde estacionei",
+  "zh": "我停车的位置"
+ },
  "Where did you meet?": {
   "de": "Wo habt ihr euch getroffen?",
   "es": "¿Dónde os conocisteis?",
@@ -21488,6 +21548,16 @@
   "ja": "誰が何を言ったか、ToDo、送るだけのメール。",
   "pt": "Quem disse o quê, as tarefas e um e-mail pronto a enviar.",
   "zh": "谁说了什么、待办事项，以及一封可直接发送的邮件。"
+ },
+ "Wi-Fi password": {
+  "de": "WLAN-Passwort",
+  "es": "Contraseña del wifi",
+  "fr": "Mot de passe Wi-Fi",
+  "hi": "वाई-फ़ाई पासवर्ड",
+  "it": "Password Wi-Fi",
+  "ja": "Wi-Fiのパスワード",
+  "pt": "Senha do Wi-Fi",
+  "zh": "Wi-Fi 密码"
  },
  "Will use": {
   "de": "Verwendet",
