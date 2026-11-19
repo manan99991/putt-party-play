@@ -690,7 +690,12 @@ struct BuilderView: View {
         }
         .onChange(of: running?.id) { _, now in if now == nil { sheets = RunningList.all(); history = RunHistory.all() } }   // a run may have added to a sheet, and to the recent results
         .onChange(of: given?.id) { _, now in if now == nil { history = RunHistory.all() } }
-        .onAppear { openReminded() }
+        .onAppear {
+            openReminded()
+            // Store screenshots: open the Templates or My tools sheet straight away.
+            if Launch.screenshots, Launch.route == "templates" { showTemplates = true }
+            if Launch.screenshots, Launch.route == "mytools" { showMine = true }
+        }
         .onReceive(NotificationCenter.default.publisher(for: .openTool)) { _ in
             // A tool opened from a link was saved before this arrived, so pick it up.
             let saved = ChainStore.load()

@@ -18,6 +18,7 @@ struct TenzyApp: App {
         Diagnostics.shared.start()
         ToolNotifications.shared.install()   // so a tapped tool reminder opens that tool
         SmartAlerts.registerBackground()      // "tell me when…" checks, when iPhone grants a background refresh
+        ScreenshotDemo.seed()                 // store screenshots only (-screenshots -demo)
     }
     @Environment(\.scenePhase) private var phase
 
@@ -474,10 +475,10 @@ struct HomeView: View {
     @ObservedObject private var theme = ThemeManager.shared   // re-skin the home grid live on a theme change
     @State private var showPaywall = false
     @State private var page = 1
-    @State private var tab: RootTab = .build
+    @State private var tab: RootTab = Launch.route == "explore" ? .explore : (Launch.route == "search" ? .search : .build)
     @State private var search = ""
     @FocusState private var searching: Bool
-    @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || $0 == "paywall" || $0 == "home" || $0 == "homepro" ? nil : [$0] } ?? []
+    @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || ScreenshotDemo.homeRoutes.contains($0) ? nil : [$0] } ?? []
 
     private let captions = ["Everyday essentials", "Power tools", "AI · on your phone", "Think & plan"]
 

@@ -122,7 +122,7 @@ jobs:
           bash .github/publish-log.sh ios-test ios-test.log || true
           bash .github/publish-log.sh "ios-test-${GITHUB_RUN_ID}" ios-test.log || true
       - name: Simulator screenshots of every tool
-        if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES') }}"
+        if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES') || contains(github.event.head_commit.message, 'Capture-Shots=YES') }}"
         run: |
           set -x
           APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/HandyTools.app" -maxdepth 6 | head -1)
@@ -156,9 +156,39 @@ jobs:
               xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
             done
           done
+          # Store hero captures: demo data on (-demo), iPhone then iPad 13", one appearance (the app's own theme).
+          HERO="explore home templates mytools medreminder brief pricewatch contacts sorted warranty cleaner fitit procam soundboard sticker scan light measure untangle thinking gpsdash pdfpages translate shield rest meetingnotes studio privacy paywall"
+          xcrun simctl ui "$UDID" appearance dark
+          xcrun simctl uninstall "$UDID" com.tenzy.toolkit || true
+          xcrun simctl install "$UDID" "$APP"
+          for p in all camera microphone photos location speech-recognition contacts; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+          for r in $HERO; do
+            xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
+            xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -demo -route $r
+            sleep 9
+            xcrun simctl io "$UDID" screenshot shots/hero-iphone-$r.png
+          done
+          IPAD=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if "iPad Pro" in x["name"] and "13" in x["name"]] or [x for k,v in d.items() if "iOS" in k for x in v if "iPad" in x["name"]]
+          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"] if c else "")')
+          if [ -n "$IPAD" ]; then
+            xcrun simctl boot "$IPAD" || true; xcrun simctl bootstatus "$IPAD" -b
+            xcrun simctl install "$IPAD" "$APP"
+            xcrun simctl status_bar "$IPAD" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 || true
+            xcrun simctl ui "$IPAD" appearance dark
+            for p in all camera microphone photos location speech-recognition contacts; do xcrun simctl privacy "$IPAD" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+            for r in $HERO; do
+              xcrun simctl terminate "$IPAD" com.tenzy.toolkit 2>/dev/null || true
+              xcrun simctl launch "$IPAD" com.tenzy.toolkit -screenshots -sample -demo -route $r
+              sleep 9
+              xcrun simctl io "$IPAD" screenshot shots/hero-ipad-$r.png
+            done
+          fi
           ls -la shots
       - name: Publish screenshots
-        if: "${{ always() && (contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES')) }}"
+        if: "${{ always() && (contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES') || contains(github.event.head_commit.message, 'Capture-Shots=YES')) }}"
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: bash .github/publish-log.sh ios-shots ios/shots
