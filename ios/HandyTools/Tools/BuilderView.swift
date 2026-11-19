@@ -2246,7 +2246,20 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         return "The smallest this file goes without becoming unreadable is \(got) MB — over your \(lim) MB. Most email accepts up to 20–25 MB, and Gmail and Outlook send bigger files as a link. Check it above, then send it anyway or save it."
     }
 
+    /// The running sheet this tool adds to, when it is one (receipts into this month's expense sheet).
+    private var sheetFile: String? {
+        guard let st = chain.steps.last, st.block == .addToList, chain.steps.contains(where: { $0.block == .expenseRow }) else { return nil }
+        return ChainName.file(pattern: st.settings["list"] ?? RunningList.defaultName, tool: "List", ext: "csv")
+    }
+
     @ViewBuilder private var batchView: some View {
+        if let f = sheetFile {
+            ExpenseSheetCard(file: f, added: batch.filter { $0.note == nil }.count,
+                             skipped: batch.compactMap { b in b.note.map { "\(noun) \(b.n): \($0)" } })
+        } else { plainBatchView }
+    }
+
+    @ViewBuilder private var plainBatchView: some View {
         let ok = batch.filter { $0.note == nil }
         let urls = ok.compactMap(\.url)
         let texts = ok.compactMap { b in b.text.map { "\(noun) \(b.n)\n\($0)" } }
@@ -2323,7 +2336,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             ShareLink(item: Image(uiImage: i), preview: SharePreview("Result")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         case .file(let d, let ext):
             let lext = ext.lowercased()
-            if lext == "ics", let icsText = String(data: d, encoding: .utf8) {
+            if lext == "csv", let f = sheetFile {
+                ExpenseSheetCard(file: f, added: 1)
+            } else if lext == "ics", let icsText = String(data: d, encoding: .utf8) {
                 CalendarEventResult(ics: icsText, shareURL: tempURL(d, ext))
             } else if lext == "vcf" {
                 ContactResult(vcf: d, shareURL: tempURL(d, ext))

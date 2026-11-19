@@ -533,9 +533,30 @@ final class RunningListTests: XCTestCase {
         let second = RunningList.merged(existing: first, incoming: "Date,Merchant,Total\n2026-11-11,Hardware Hut,23.10\n")
         XCTAssertEqual(second, "Date,Merchant,Total\n2026-11-10,Blue Door Cafe,7.75\n2026-11-11,Hardware Hut,23.10")
     }
-    func testTwoIdenticalPurchasesAreBothKept() {
+    func testTheSameReceiptScannedTwiceIsKeptOnce() {
         let once = RunningList.merged(existing: "H\na,1", incoming: "H\na,1")
-        XCTAssertEqual(once, "H\na,1\na,1")
+        XCTAssertEqual(once, "H\na,1")
+    }
+    /// Your Nov sheet: a whole app screen's text and a whiteboard got in as rows, and Costco twice.
+    func testStrayTextNeverBecomesRowsAndOldStrayLinesAreCleaned() {
+        let polluted = """
+        Date,Merchant,Total,Tax,Currency
+        2025-11-28,COSTCO  WHOLESALE,596.74,140.25,$
+        2025-12-09,COSTCO,260.39,20.40,$
+        2025-11-28,COSTCO  WHOLESALE,596.74,140.25,$
+        1:06  .!!.  6
+        Close  What to do with it
+        https://www.cnn.com/2026/11/17/politics/trump-2026-
+        Summarize › Make a QR code
+        """
+        let m = RunningList.merged(existing: polluted, incoming: "Date,Merchant,Total,Tax,Currency\n2019-02-11,East Repair Inc.,154.06,9.06,$")
+        XCTAssertEqual(m, "Date,Merchant,Total,Tax,Currency\n2025-11-28,COSTCO  WHOLESALE,596.74,140.25,$\n2025-12-09,COSTCO,260.39,20.40,$\n2019-02-11,East Repair Inc.,154.06,9.06,$")
+        XCTAssertEqual(RunningList.fields(#"2026-01-08,"UPS, Store #3612",23.50,,"#), ["2026-01-08", "UPS, Store #3612", "23.50", "", ""])
+    }
+    func testOnlyAReceiptBecomesAnExpense() {
+        XCTAssertTrue(DataGrab.looksLikeReceipt("East Repair Inc.\nFront and rear brake cables 100.00 100.00\nSubtotal 145.00\nSales Tax 6.25% 9.06\nTOTAL $154.06"))
+        XCTAssertFalse(DataGrab.looksLikeReceipt("NAME MON TUE WED THU FRI SAT SUN\nJob 436 Job 436.1\n36.21 10.00"))
+        XCTAssertFalse(DataGrab.looksLikeReceipt("Close What to do with it\nA link https://www.cnn.com\nSummarize"))
     }
     func testBlankLinesAndEmptyInputs() {
         XCTAssertEqual(RunningList.merged(existing: "H\n\n a,1 \n", incoming: "\n\nb,2"), "H\na,1\nb,2")

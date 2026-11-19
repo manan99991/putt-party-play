@@ -531,7 +531,9 @@ enum ChainRunner {
         }
         switch (b, input) {
         case (.readText, .image(let img)):
-            let ocr = DocEngine.recognize(img)
+            // Read the document, not the screen around it: a receipt in a screenshot is cut out of the browser or
+            // app first, and the phone's status bar ("9:32", battery) is never read as part of it.
+            let ocr = ChainText.readDocument(img)
             let text = rows(ocr).trimmingCharacters(in: .whitespacesAndNewlines)
             // Remember how big each piece was printed, so a poster's biggest words can become its title.
             DataGrab.rememberHeights(text, Dictionary(ocr.map { ($0.text, $0.box.height) }, uniquingKeysWith: max))
@@ -677,7 +679,11 @@ enum ChainRunner {
 
         case (.expenseRow, .text(let t)):
             let r = DataGrab.receipt(t)
-            guard r.total != nil || !r.items.isEmpty else { return .failure(.nothingFound(b)) }
+            // Only a receipt becomes an expense: a total AND what a receipt looks like (several amounts, a total or
+            // tax or payment line). A whiteboard, an app screen or a parcel note is never written into the sheet.
+            guard r.total != nil, DataGrab.looksLikeReceipt(t) else {
+                return .failure(.invalid("That doesn't look like a receipt, so nothing was added to your sheet. Use a photo or screenshot of the receipt itself."))
+            }
             let row = DataGrab.expenseRow(r)
             DataGrab.remember(row, r)
             return .success(.text(row))
@@ -995,6 +1001,18 @@ enum ChainStore {
 
 /// Plain-text results for the blocks that wrap the scam, link and price engines. Pure, so they are unit-tested.
 enum ChainText {
+    /// The phone's own status bar in a screenshot — the clock, signal, battery — at the very top of the picture.
+    /// The words of the document in a photo or screenshot — cut to the page first when one sits inside it.
+    static func readDocument(_ img: UIImage) -> [DocEngine.OCRLine] {
+        let page = PageFlatten.cropToPage(img)
+        return DocEngine.recognize(page ?? img).filter { page != nil || !isStatusBar($0) }
+    }
+
+    static func isStatusBar(_ l: DocEngine.OCRLine) -> Bool {
+        guard l.box.minY < 0.045 else { return false }
+        let t = l.text.trimmingCharacters(in: .whitespaces)
+        return t.range(of: #"^\d{1,2}:\d{2}"#, options: .regularExpression) != nil || t.count <= 4
+    }
     static func scamReport(_ r: ScamAnalyzer.Report) -> String {
         var out = [r.verdict.rawValue + "."]
         out += r.findings.sorted { $0.weight > $1.weight }.prefix(4).map { "• \($0.title)" }
@@ -1696,7 +1714,39 @@ enum RunningList {
         let old = rows(existing)
         var new = rows(incoming)
         if let header = old.first, new.first == header { new.removeFirst() }
-        return (old + new).joined(separator: "\n")
+        guard let header = old.first ?? new.first else { return "" }
+        // A sheet keeps its shape: a line that isn't a row of the sheet's columns (stray text from another tool,
+        // a wrapped paragraph) is never added — and any that got in before are cleaned out. The same entry
+        // twice (the same receipt scanned again) is kept once.
+        let width = fields(header).count
+        var seen = Set<String>()
+        var out = [header]
+        for line in (old + new).dropFirst() where line != header {
+            let f = fields(line)
+            guard width <= 1 || f.count == width else { continue }
+            let key = f.map { $0.lowercased().filter { $0.isLetter || $0.isNumber || $0 == "." } }.joined(separator: "|")
+            guard !key.replacingOccurrences(of: "|", with: "").isEmpty, seen.insert(key).inserted else { continue }
+            out.append(line)
+        }
+        return out.joined(separator: "\n")
+    }
+
+    /// The cells of one CSV line ("a","b, c",d → a | b, c | d).
+    static func fields(_ line: String) -> [String] {
+        var out: [String] = [], cur = "", quoted = false
+        let it = Array(line)
+        var i = 0
+        while i < it.count {
+            let c = it[i]
+            if quoted {
+                if c == "\"" { if i + 1 < it.count, it[i + 1] == "\"" { cur.append("\""); i += 1 } else { quoted = false } } else { cur.append(c) }
+            } else if c == "\"" { quoted = true }
+            else if c == "," { out.append(cur); cur = "" }
+            else { cur.append(c) }
+            i += 1
+        }
+        out.append(cur)
+        return out
     }
 
     private static var folder: URL {

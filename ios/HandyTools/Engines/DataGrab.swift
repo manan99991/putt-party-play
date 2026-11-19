@@ -200,6 +200,17 @@ enum DataGrab {
     }
 
     /// One row for an expense sheet.
+    /// Reads like a receipt or invoice: at least two money amounts and a total, tax, paid or card line — and not a
+    /// weekly board (day names across the top).
+    static func looksLikeReceipt(_ text: String) -> Bool {
+        let lines = text.split(whereSeparator: \.isNewline).map(String.init)
+        let money = lines.filter { $0.range(of: #"\d[.,]\d{2}\b"#, options: .regularExpression) != nil }.count
+        let low = text.lowercased()
+        let words = low.range(of: #"\b(total|subtotal|amount|tax|vat|gst|paid|cash|change|visa|mastercard|amex|debit|credit|balance|receipt|invoice)\b"#, options: .regularExpression) != nil
+        let days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].filter { low.range(of: "\\b\($0)\\b", options: .regularExpression) != nil }.count
+        return money >= 2 && words && days < 4
+    }
+
     static func expenseRow(_ r: Receipt) -> String {
         let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"
         return "Date,Merchant,Total,Tax,Currency\n\(r.date.map { f.string(from: $0) } ?? ""),\(csv(r.merchant)),\(r.total.map { String(format: "%.2f", $0) } ?? ""),\(r.tax.map { String(format: "%.2f", $0) } ?? ""),\(r.currency)"

@@ -35,6 +35,23 @@ enum PageFlatten {
         return Result(image: UIImage(cgImage: out), flattened: flattened, whitened: true, handsRemoved: hands)
     }
 
+    /// Just the document, for reading: a page photographed on a desk, or a receipt inside a screenshot of a
+    /// browser or app (status bar, page title, buttons around it) — cut to the page and flattened, so the
+    /// reader never takes "Invoice Home" or "9:32" from the screen around it as the shop or the time. Returns
+    /// nil when no page clearly sits inside the picture.
+    static func cropToPage(_ image: UIImage) -> UIImage? {
+        let up = image.normalizedUp()
+        guard let cg = up.cgImage, let q = corners(cg) else { return nil }
+        let w = CGFloat(cg.width), h = CGFloat(cg.height)
+        let f = CIFilter.perspectiveCorrection()
+        f.inputImage = CIImage(cgImage: cg)
+        f.topLeft = CGPoint(x: q.topLeft.x * w, y: q.topLeft.y * h); f.topRight = CGPoint(x: q.topRight.x * w, y: q.topRight.y * h)
+        f.bottomLeft = CGPoint(x: q.bottomLeft.x * w, y: q.bottomLeft.y * h); f.bottomRight = CGPoint(x: q.bottomRight.x * w, y: q.bottomRight.y * h)
+        guard let out = f.outputImage, out.extent.width > 200, out.extent.height > 200,
+              let c = ctx.createCGImage(out, from: out.extent.integral) else { return nil }
+        return UIImage(cgImage: c)
+    }
+
     /// A page photo (scanned or taken) with the fingers and hands that held it painted out. Use on every image
     /// that comes in as a document.
     static func withoutHands(_ image: UIImage) -> UIImage {

@@ -38,7 +38,9 @@ final class PrivatePhotoAccuracyTests: XCTestCase {
         for case let e as [String: Any] in g["receipts"] as? [Any] ?? [] {
             let file = e["file"] as? String ?? ""
             guard let img = photo(file) else { lines.append("MISSING \(file)"); continue }
-            let r = DataGrab.receipt(ChainRunner.rows(DocEngine.recognize(img)))
+            // Exactly what the app reads: cut to the receipt inside the screenshot, then read.
+            let text = ChainRunner.rows(ChainText.readDocument(img))
+            let r = DataGrab.receipt(text)
             let shop = RealPhotoAccuracyTests.overlap(r.merchant, e["merchant"] as? String ?? "")
             let f = DateFormatter(); f.dateFormat = "yyyy-MM-dd"
             let dOK = r.date.map { (e["date"] as? [String] ?? []).contains(f.string(from: $0)) } ?? false
@@ -48,6 +50,7 @@ final class PrivatePhotoAccuracyTests: XCTestCase {
             let items = want.isEmpty ? 1 : Double(got) / Double(want.count)
             score += (shop + (dOK ? 1 : 0) + (tOK ? 1 : 0) + items) / 4; n += 1
             lines.append("\(file)\t\(String(format: "%.2f", shop))\t\(dOK ? 1 : 0)\t\(tOK ? 1 : 0)\t\(got)/\(want.count)\t| \(r.merchant) / \(r.date.map { f.string(from: $0) } ?? "—") / \(r.total.map { String(format: "%.2f", $0) } ?? "—") / \(r.items.map { "\($0.0)=\($0.1)" }.joined(separator: "; "))")
+            if !dOK || !tOK || shop < 0.8 { lines.append("   read: " + text.split(whereSeparator: \.isNewline).prefix(40).joined(separator: " ⏎ ")) }
         }
         lines.insert(String(format: "SCORE my-receipts %.3f", n > 0 ? score / n : 0), at: 0)
         report(lines)
