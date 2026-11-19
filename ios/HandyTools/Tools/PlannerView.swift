@@ -51,7 +51,7 @@ struct PlannerView: View {
             }
         }
         .fullScreenCover(isPresented: $camera) {
-            SelfieCamera { img in camera = false; if let img { reading = PhotoBox(image: img.normalizedUp()) } }.ignoresSafeArea()
+            SelfieCamera(front: false) { img in camera = false; if let img { reading = PhotoBox(image: img.normalizedUp()) } }.ignoresSafeArea()
         }
     }
 

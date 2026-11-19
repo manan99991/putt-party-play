@@ -110,7 +110,7 @@ struct BoardReview: View {
                             .buttonStyle(.plain).accessibilityLabel(L(e.include ? "Leave this out" : "Put it back"))
                     }
                     DatePicker(L("When"), selection: Binding(get: { e.date ?? Date() }, set: { e.date = $0; e.hasTime = true }),
-                               displayedComponents: e.hasTime ? [.date, .hourAndMinute] : [.date])
+                               displayedComponents: e.hasTime ? DatePickerComponents([.date, .hourAndMinute]) : DatePickerComponents.date)
                         .font(HandyFont.caption)
                 }
                 .opacity(e.include ? 1 : 0.45)

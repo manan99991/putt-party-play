@@ -298,13 +298,14 @@ struct PassportTips: View {
 
 /// The front camera, for taking a passport photo on the spot. Falls back to the photo library without a camera.
 struct SelfieCamera: UIViewControllerRepresentable {
+    var front = true          // false: the back camera, for whiteboards, lists and calendars
     let done: (UIImage?) -> Void
     func makeCoordinator() -> Coord { Coord(done: done) }
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let p = UIImagePickerController()
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             p.sourceType = .camera
-            if UIImagePickerController.isCameraDeviceAvailable(.front) { p.cameraDevice = .front }
+            if front, UIImagePickerController.isCameraDeviceAvailable(.front) { p.cameraDevice = .front }
         }
         p.delegate = context.coordinator
         return p
