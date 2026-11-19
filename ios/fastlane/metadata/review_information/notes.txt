@@ -1,7 +1,7 @@
-No account or login is required. This review build has full access to every tool, so you can evaluate all features directly from the home grid without making a purchase.
+No account or login is required. This review build has full access to every tool, so you can evaluate all features without making a purchase: the Build tab is the home screen, every tool is in Explore and Search.
 
 HOW THE APP WORKS
-Tenzy is 30 on-device utility tools. Seven everyday tools are always free: Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, and the Face ID Vault. The remaining tools are part of Tenzy Pro.
+Tenzy is 60+ on-device tools plus 90 ready-made "Build your own" tools, which the user can also describe in a sentence. Seven everyday tools are always free: Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, and the Face ID Vault. The remaining tools are part of Tenzy Pro.
 
 TENZY PRO (in-app subscription)
 - A single auto-renewing subscription: "Tenzy Pro", 1 year, US$19.99, with a 3-day free trial. There is no monthly plan.
@@ -11,13 +11,17 @@ TENZY PRO (in-app subscription)
 
 PERMISSIONS (all processed on-device; nothing is uploaded)
 - Contacts: the Contacts tool finds duplicate contacts, merges them without losing a number, exports a .vcf backup, and copies or moves contacts between the user's own accounts on the device (for example Gmail to iCloud). Requested only when the user opens that tool; nothing is uploaded.
-- Microphone: Audio Lab (decibel meter / tuner), Voice to Notes, and Translate's voice mode. Audio is metered or transcribed on-device; a recording is saved only when the user taps record.
+- Microphone: Audio Lab (decibel meter / tuner), Voice to Notes, Meeting Notes, Translate's voice mode and Pro Camera's video mode (sound for the clip). Audio is metered or transcribed on-device; a recording is saved only when the user taps record.
 - Camera: Scan, Studio, Measure, Pro Camera, Identify, Translate (camera mode), and See & Read.
 - Photos: Cleaner, Studio, Privacy Scrubber, and Memory read photos the user selects; Memory indexes screenshots on-device only.
 - Motion: the level, compass and sensors inside Measure.
-- Location (when in use): the compass (true north), altitude and the GPS Dashboard. Location stays on the phone.
+- Location (when in use): the compass (true north), altitude, the GPS Dashboard and parked-car distance, Daily Brief weather (Apple WeatherKit), travel times (Apple Maps) and arrival reminders in Untangle and Contacts (UNLocationNotificationTrigger, handled by iOS). Location stays on the phone.
 - Speech Recognition: Voice to Notes and Translate's voice mode transcribe speech on-device where supported.
 - Background audio: Rest keeps playing sleep sounds (or listening for snoring when the user starts it) with the screen off. It runs only after the user taps start.
 - Face ID: unlocks the private Vault.
+- Notifications: only reminders the user turns on (medicines, birthdays, Daily Brief, parking meter, bedtime, contact backup, Price Watch, bills, warranties, tool reminders). Every one has a "Test run" button that sends a sample within seconds.
+- Background App Refresh: used only for the user's own "tell me when" alerts (screenshot count, free space) and Price Watch, which downloads the web pages the user added (at most 10) a few times a day when iOS allows. Nothing else runs in the background.
+- Network: See & Read and the "Read the page at a link" step fetch only the page the user gives; Price Watch fetches the pages the user added. No data about the user is sent.
+- Calendar: plans open the system's own event editor (EKEventEditViewController); nothing is read.
 
 Tenzy shows no ads and contains no advertising SDK. It does not use the advertising identifier (IDFA) and presents no App Tracking Transparency prompt. The on-device AI tools use Apple's Foundation Models framework on supported devices and fall back gracefully elsewhere. No data is collected; everything is processed on the device.
