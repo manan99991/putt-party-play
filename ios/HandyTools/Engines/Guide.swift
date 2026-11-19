@@ -105,7 +105,7 @@ enum Guide {
         case .text:
             switch block {
             case .readAloud, .translate, .summarize, .rewrite: return "read"
-            case .calendarEvent, .actionItems, .pullDetails, .makeTable, .addToList, .expenseRow, .businessCard, .returnBy: return "save"
+            case .calendarEvent, .actionItems, .pullDetails, .makeTable, .addToList, .expenseRow, .businessCard, .returnBy, .pullReceipt: return "save"
             case .cleanText, .makeQr, .textPdf, .chatLink, .cleanLinks, .contactQr, .wifiQr: return "share"
             case .scamCheck, .priceCompare, .pageText: return "check"
             default: return "more"

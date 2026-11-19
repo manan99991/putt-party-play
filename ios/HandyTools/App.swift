@@ -260,18 +260,28 @@ enum SearchSynonyms {
             let forms = expanded[i]
             if name.contains(tok) { s += 120 }
             else if forms.contains(where: { name.contains($0) }) { s += 70 }
-            for k in keys {
-                if k == tok { s += 90 }
-                else if forms.contains(k) { s += 70 }                               // synonym hits a keyword exactly
-                else if k.contains(tok) || tok.contains(k) { s += 45 }
-                else if forms.contains(where: { k.contains($0) || $0.contains(k) }) { s += 28 }
-            }
+            // The best keyword for this word counts once — a long keyword list must not outrank a precise one.
+            s += keys.map { k -> Int in
+                if k == tok { return 90 }
+                if forms.contains(k) { return 70 }                                  // synonym hits a keyword exactly
+                if k.contains(tok) || tok.contains(k) { return 45 }
+                if forms.contains(where: { k.contains($0) || $0.contains(k) }) { return 28 }
+                return 0
+            }.max() ?? 0
             if blurb.contains(tok) { s += 25 }
             else if forms.contains(where: { blurb.contains($0) }) { s += 15 }
         }
         return s
     }
-    return TOOLS.map { ($0, score($0)) }.filter { $0.1 > 0 }.sorted { $0.1 > $1.1 }.map { $0.0 }
+    var ranked = TOOLS.map { ($0, score($0)) }.filter { $0.1 > 0 }.sorted { $0.1 > $1.1 }
+    // A tool that lives inside a bigger one comes first when it matches nearly as well: "join audio" opens Join,
+    // not the whole Audio Editor.
+    for (i, pair) in ranked.enumerated() {
+        guard let home = pair.0.home, let h = ranked.firstIndex(where: { $0.0.id == home }), h < i,
+              Double(pair.1) >= Double(ranked[h].1) * 0.8 else { continue }
+        ranked.remove(at: i); ranked.insert(pair, at: h)
+    }
+    return ranked.map { $0.0 }
 }
 
 @MainActor func tools(onPage p: Int) -> [Tool] { TOOLS.filter { $0.page == p && $0.home == nil } }

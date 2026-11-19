@@ -64,7 +64,7 @@ enum ICSParse {
              .trimmingCharacters(in: .whitespaces)
         }
         func value(for key: String) -> String? {
-            for raw in ics.split(whereSeparator: { $0 == "\r" || $0 == "\n" }) {
+            for raw in ics.split(whereSeparator: \.isNewline) {   // "\r\n" is one Character in Swift
                 let line = String(raw)
                 let up = line.uppercased()
                 // Match "KEY:" or "KEY;params:" — the property name ends at ':' or ';'.

@@ -460,7 +460,41 @@ enum DataGrab {
         guard let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue) else { return [] }
         return det.matches(in: text, range: NSRange(text.startIndex..., in: text)).compactMap(\.phoneNumber)
     }
-    static func dates(in text: String) -> [Date] { dateMatches(in: text).map(\.date) }
+    static func dates(in text: String) -> [Date] {
+        let found = dateMatches(in: text).map(\.date)
+        return found.isEmpty ? printedDates(in: text) : found
+    }
+
+    /// Dates printed as numbers ("11/02/2019", "25.12.18", "2019-03-08"), read without the system detector, which
+    /// misses some. A first number over 12 means day first; a second over 12 means month first; otherwise the
+    /// phone's own order decides. Times and dates that can't exist are skipped.
+    static func printedDates(in text: String) -> [Date] {
+        var out: [(Int, Date)] = []
+        let cal = Calendar(identifier: .gregorian)
+        let dayFirst = !(DateFormatter.dateFormat(fromTemplate: "MMdd", options: 0, locale: .current) ?? "MM").hasPrefix("M")
+        func make(_ y: Int, _ m: Int, _ d: Int) -> Date? {
+            let year = y < 100 ? 2000 + y : y
+            guard (1...12).contains(m), (1...31).contains(d), (1990...2100).contains(year) else { return nil }
+            let c = DateComponents(calendar: cal, year: year, month: m, day: d, hour: 12)
+            guard c.isValidDate(in: cal) else { return nil }
+            return cal.date(from: c)
+        }
+        let ns = text as NSString
+        if let re = try? NSRegularExpression(pattern: #"(?<![\d/.-])(\d{4})[/.-](\d{1,2})[/.-](\d{1,2})(?![\d/])"#) {
+            for m in re.matches(in: text, range: NSRange(location: 0, length: ns.length)) {
+                let n = (1...3).map { Int(ns.substring(with: m.range(at: $0))) ?? 0 }
+                if let d = make(n[0], n[1], n[2]) { out.append((m.range.location, d)) }
+            }
+        }
+        if let re = try? NSRegularExpression(pattern: #"(?<![\d/.-])(\d{1,2})[/.-](\d{1,2})[/.-](\d{4}|\d{2})(?![\d/])"#) {
+            for m in re.matches(in: text, range: NSRange(location: 0, length: ns.length)) {
+                let n = (1...3).map { Int(ns.substring(with: m.range(at: $0))) ?? 0 }
+                let dm = n[0] > 12 || (n[1] <= 12 && dayFirst)
+                if let d = dm ? make(n[2], n[1], n[0]) : make(n[2], n[0], n[1]) { out.append((m.range.location, d)) }
+            }
+        }
+        return out.sorted { $0.0 < $1.0 }.map(\.1)
+    }
     private static func dateMatches(in text: String) -> [(date: Date, duration: TimeInterval)] {
         guard let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.date.rawValue) else { return [] }
         return det.matches(in: text, range: NSRange(text.startIndex..., in: text)).compactMap { m in m.date.map { ($0, m.duration) } }

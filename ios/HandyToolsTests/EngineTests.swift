@@ -97,7 +97,7 @@ final class EngineTests: XCTestCase {
         }
         XCTAssertTrue(ToolHandoff.tools(for: .pdf).contains("pdfsign"))
         XCTAssertTrue(ToolHandoff.tools(for: .image).contains("animate"))
-        XCTAssertEqual(ToolHandoff.tools(for: .image).first, "sticker")
+        XCTAssertEqual(ToolHandoff.tools(for: .image).first, "scrub", "the Guide puts the private-share fix first")
         XCTAssertEqual(searchTools("sticker maker").first?.id, "sticker")
         ToolHandoff.shared.put(.file(Data("%PDF".utf8), ext: "pdf"), for: "pdfsign")
         let handed = ToolHandoff.shared.take("pdfsign")

@@ -69,7 +69,7 @@ final class PassportPhotoTests: XCTestCase {
         var normal = face(crownY: 400 - 150 * 2.2)
         XCTAssertFalse(PassportPhoto.clampCrown(&normal))
         XCTAssertEqual(normal.crown.y, 400 - 150 * 2.2, accuracy: 0.5)
-        var tallHat = face(crownY: 0)                       // a hat or big hair reads far too tall
+        var tallHat = face(crownY: -100)                    // a hat or big hair reads far too tall
         XCTAssertTrue(PassportPhoto.clampCrown(&tallHat))
         XCTAssertEqual(tallHat.crown.y, 400 - 150 * 2.7, accuracy: 0.5)
         var cutOff = face(crownY: 300)                      // the outline stopped at the forehead
