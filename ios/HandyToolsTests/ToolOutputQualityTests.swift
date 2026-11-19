@@ -236,7 +236,8 @@ final class ToolOutputQualityTests: XCTestCase {
             var comp = false
             if case .success(let r) = await AudioConvert.compress(clip, level: .smallest) {
                 let s2 = (try? r.url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? .max
-                comp = s2 < size / 4 && near(await Self.seconds(r.url), len, 0.15)
+                let got = await Self.seconds(r.url)
+                comp = s2 < size / 4 && near(got, len, 0.15)
                 if !comp { fails.append("compress: \(s2 / 1000) KB from \(size / 1000) KB") }
             } else { fails.append("compress failed") }
             var ring = false
