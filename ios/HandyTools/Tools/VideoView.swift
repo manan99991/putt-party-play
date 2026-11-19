@@ -55,6 +55,9 @@ struct VideoView: View {
     @State private var gifPhotos: [Data] = []
     @State private var socialFormat: VideoFormat.Spec = VideoFormat.presets[0]
     @State private var socialFit = false
+    @State private var sendPlace: SendOn.Place?
+    @State private var sendParts: [URL] = []
+    @State private var sendSaved: Int?
 
     private var overQuota: Bool { !Usage.hasRoom("video", limit: Limits.freeVideoPerDay) }
 
@@ -78,6 +81,8 @@ struct VideoView: View {
 
             if let source {
                 sourceCard(source)
+                sendOnCard(source)
+                Text(L("Or do one thing to it:")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 modeChips
                 switch mode {
                 case .shrink: shrinkControls
@@ -113,6 +118,46 @@ struct VideoView: View {
         .onChange(of: job.stamp) { _, _ in syncJob() }
         .onAppear { syncJob() }
         .onDisappear { player?.pause() }
+    }
+
+    // MARK: send on…
+
+    @ViewBuilder private func sendOnCard(_ src: URL) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Where are you sending it?"), systemImage: "paperplane.fill").font(HandyFont.bodyStrong)
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(SendOn.places) { p in
+                    HChip(text: p.name, selected: sendPlace?.id == p.id) { sendPlace = p; sendParts = []; sendSaved = nil }
+                }
+            }
+            if let p = sendPlace, duration > 0 {
+                let plan = SendOn.plan(duration: duration, bytes: sourceBytes, place: p)
+                ForEach(plan.lines, id: \.self) { Label(L($0), systemImage: "checkmark").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                if sendParts.isEmpty {
+                    Button {
+                        guard Usage.hasRoom("video", limit: Limits.freeVideoPerDay) else { return }
+                        let d = duration, name = p.name
+                        errorText = nil
+                        bus.run(jobKey, label: "Making it for \(name)…") { report in
+                            let parts = await SendOn.make(src, plan: plan, duration: d, progress: report)
+                            return (parts, "sendon", nil, parts.isEmpty ? "Couldn't make it for \(name). Try trimming it shorter first." : nil)
+                        }
+                    } label: { Label("\(L("Make it for")) \(L(p.name))", systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
+                        .primaryButton().disabled(working || overQuota).accessibilityIdentifier("video-sendon-make")
+                } else {
+                    ForEach(Array(sendParts.enumerated()), id: \.offset) { i, u in
+                        Text("\(sendParts.count > 1 ? "\(L("Part")) \(i + 1): " : "")\(SizeTarget.format(SizeTarget.fileSize(u) ?? 0))\(sourceBytes > 0 ? " · \(L("was")) \(SizeTarget.format(sourceBytes))" : "")")
+                            .font(HandyFont.caption.weight(.semibold))
+                    }
+                    ShareLink(items: sendParts) { Label(L(sendParts.count > 1 ? "Send all parts" : "Send it"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
+                        .primaryButton()
+                    Button {
+                        Task { var n = 0; for u in sendParts { if await PhotoSaver.saveVideo(u) { n += 1 } }; sendSaved = n }
+                    } label: { Label(L(sendSaved == nil ? "Save to Photos" : "Saved \(sendSaved!) to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }
+                        .secondaryButton()
+                }
+            }
+        }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
     }
 
     // MARK: pieces
@@ -397,6 +442,11 @@ struct VideoView: View {
         guard !j.working, j.stamp > 0, j.stamp != j.consumedStamp else { return }
         bus.markConsumed(jobKey)
         if let err = j.error { errorText = err; return }
+        if j.kind == "sendon" {
+            sendParts = j.outputs; sendSaved = nil
+            if !j.outputs.isEmpty { _ = Usage.use("video", limit: Limits.freeVideoPerDay); HandyHaptics.success() }
+            return
+        }
         guard let url = j.outputs.first else { return }
         _ = Usage.use("video", limit: Limits.freeVideoPerDay)
         let kind: Output.Kind = j.kind == "audio" ? .audio : (j.kind == "gif" ? .gif : .video)

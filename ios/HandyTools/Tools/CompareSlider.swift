@@ -58,4 +58,12 @@ enum PhotoSaver {
             return true
         } catch { return false }
     }
+    static func saveVideo(_ url: URL) async -> Bool {
+        let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        guard status == .authorized || status == .limited else { return false }
+        do {
+            try await PHPhotoLibrary.shared().performChanges { PHAssetCreationRequest.forAsset().addResource(with: .video, fileURL: url, options: nil) }
+            return true
+        } catch { return false }
+    }
 }
