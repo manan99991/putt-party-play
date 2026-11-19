@@ -2608,6 +2608,20 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testSalePriceAndSplitTheBill() {
+        let s = PriceMath.sale(price: 100, discounts: [30, 20])
+        XCTAssertEqual(s.final, 56, accuracy: 0.001); XCTAssertEqual(PriceMath.percent(s.realPercent), "44", "30% then 20% is 44% off, not 50%")
+        let t = PriceMath.sale(price: 59.99, discounts: [25, 0], taxPercent: 8.25)
+        XCTAssertEqual(t.final - t.tax, 44.99, accuracy: 0.001); XCTAssertEqual(t.tax, 3.71, accuracy: 0.001)
+        XCTAssertEqual(PriceMath.sale(price: 10, discounts: [150]).final, 0, "never below free")
+        let sp = PriceMath.split(subtotal: 100, taxAmount: 8, tipPercent: 20, people: 3, roundUp: true)
+        XCTAssertEqual(sp.tip, 20); XCTAssertEqual(sp.total, 128); XCTAssertEqual(sp.each, 43)
+        XCTAssertGreaterThanOrEqual(sp.each * 3, sp.total, "rounding never leaves the bill short"); XCTAssertEqual(sp.extra, 1, accuracy: 0.001)
+        let exact = PriceMath.split(subtotal: 100, taxAmount: 0, tipPercent: 15, people: 3, roundUp: false)
+        XCTAssertEqual(exact.each, 38.34, accuracy: 0.001)
+        XCTAssertEqual(PriceMath.split(subtotal: 100, taxAmount: 10, tipPercent: 20, people: 1, roundUp: false, tipOnPreTax: false).tip, 22)
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

@@ -6,7 +6,7 @@ import UIKit
 /// (true unit price across mixed units), whether the cart still fits the budget, and what the scary
 /// words on a label really mean. All instant and on-device.
 struct PriceCheckView: View {
-    enum Mode: String, CaseIterable { case compare = "Best deal", cart = "Cart vs budget", label = "Decode label" }
+    enum Mode: String, CaseIterable { case compare = "Best deal", cart = "Cart vs budget", sale = "Sale price", split = "Split the bill", label = "Decode label" }
     @State private var mode: Mode = .compare
 
     var body: some View {
@@ -14,6 +14,8 @@ struct PriceCheckView: View {
             HowTo("pricecheck", [
                 "Best deal: snap a photo of the shelf/screen or type in a couple of prices and sizes — it shows the true cost per unit.",
                 "Cart vs budget: tap items in as you shop and watch what's left.",
+                "Sale price: \"30% off, then an extra 20%\" — see what you really pay and the real discount.",
+                "Split the bill: total, tip and tax, how many people — what each one pays, rounded the way you like.",
                 "Decode label: snap an ingredients or nutrition label for a plain-language read.",
             ])
             HandyFlow(spacing: HandySpacing.s8) {
@@ -22,6 +24,8 @@ struct PriceCheckView: View {
             switch mode {
             case .compare: ComparePanel()
             case .cart: CartPanel()
+            case .sale: SalePanel()
+            case .split: SplitPanel()
             case .label: LabelPanel()
             }
         }
@@ -163,6 +167,84 @@ private struct CartPanel: View {
                 Button { lines.append(CartLine()) } label: { Label(L("Add item"), systemImage: "plus") }.textButton()
                 Spacer()
                 if lines.count > 1 { Button(role: .destructive) { lines.removeLast() } label: { Label(L("Remove"), systemImage: "minus") }.textButton() }
+            }
+        }
+    }
+}
+
+// MARK: Sale price
+
+/// "30% off, then an extra 20% off" isn't 50% off — this shows what you really pay.
+private struct SalePanel: View {
+    @State private var price = ""
+    @State private var first = "30"
+    @State private var extra = ""
+    @State private var tax = ""
+    private var r: PriceMath.Sale { PriceMath.sale(price: Double(price) ?? 0, discounts: [Double(first) ?? 0, Double(extra) ?? 0], taxPercent: Double(tax) ?? 0) }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            TextField(L("Original price"), text: $price).keyboardType(.decimalPad).priceField()
+            HStack(spacing: HandySpacing.s8) {
+                TextField(L("% off"), text: $first).keyboardType(.decimalPad).priceField()
+                TextField(L("then extra % off"), text: $extra).keyboardType(.decimalPad).priceField()
+            }
+            HandyFlow(spacing: 6) {
+                ForEach(["10", "20", "25", "30", "40", "50", "70"], id: \.self) { p in HChip(text: "\(p)%", selected: first == p) { first = p } }
+            }
+            TextField(L("Sales tax % (optional)"), text: $tax).keyboardType(.decimalPad).priceField()
+            if (Double(price) ?? 0) > 0 {
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack { Text(L("You pay")).font(HandyFont.bodyStrong); Spacer(); Text(PriceBrain.money(r.final)).font(.system(size: 26, weight: .bold, design: .rounded)) }
+                    HStack { Text(L("You save")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(PriceBrain.money(r.saved)).font(HandyFont.body).foregroundStyle(HandyColor.success) }
+                    HStack { Text(L("Real discount")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text("\(PriceMath.percent(r.realPercent))% off").font(HandyFont.bodyStrong) }
+                    if (Double(extra) ?? 0) > 0 {
+                        Text("\(L("Not")) \(PriceMath.percent((Double(first) ?? 0) + (Double(extra) ?? 0)))% — \(L("the extra discount comes off the already-lower price."))")
+                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    }
+                    if r.tax > 0 { Text("\(L("Includes tax")) \(PriceBrain.money(r.tax))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+                }.cardStyle(padding: HandySpacing.s12)
+            }
+        }
+    }
+}
+
+// MARK: Split the bill
+
+private struct SplitPanel: View {
+    @State private var total = ""
+    @State private var tip = 18.0
+    @State private var tax = ""
+    @State private var people = 2
+    @State private var roundUp = true
+    @State private var tipOnPreTax = true
+    private var r: PriceMath.Split {
+        PriceMath.split(subtotal: Double(total) ?? 0, taxAmount: Double(tax) ?? 0, tipPercent: tip, people: people, roundUp: roundUp, tipOnPreTax: tipOnPreTax)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            TextField(L("Bill before tip"), text: $total).keyboardType(.decimalPad).priceField()
+            TextField(L("Tax on the bill (optional)"), text: $tax).keyboardType(.decimalPad).priceField()
+            Text("\(L("Tip")) \(Int(tip))%").font(HandyFont.bodyStrong)
+            HandyFlow(spacing: 6) {
+                ForEach([0.0, 10, 15, 18, 20, 22, 25], id: \.self) { p in HChip(text: "\(Int(p))%", selected: tip == p) { tip = p } }
+            }
+            Stepper("\(people) \(L(people == 1 ? "person" : "people"))", value: $people, in: 1...30)
+            Toggle(L("Round each share up to the next whole amount"), isOn: $roundUp).font(HandyFont.caption).tint(HandyColor.accent)
+            Toggle(L("Tip on the amount before tax"), isOn: $tipOnPreTax).font(HandyFont.caption).tint(HandyColor.accent)
+            if (Double(total) ?? 0) > 0 {
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack { Text(L("Each person pays")).font(HandyFont.bodyStrong); Spacer(); Text(PriceBrain.money(r.each)).font(.system(size: 26, weight: .bold, design: .rounded)) }
+                    HStack { Text(L("Tip")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(PriceBrain.money(r.tip)) }
+                    HStack { Text(L("Total with tip")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(PriceBrain.money(r.total)) }
+                    if r.extra > 0.004 {
+                        Text("\(L("Rounding up adds")) \(PriceBrain.money(r.extra)) \(L("— a little extra for the server."))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
+                    Button { Copier.copy(PriceMath.splitText(r, people: people, tip: tip), note: "Split copied — paste it in the group chat") } label: {
+                        Label(L("Copy for the group chat"), systemImage: "doc.on.doc")
+                    }.compactButton()
+                }.cardStyle(padding: HandySpacing.s12)
             }
         }
     }

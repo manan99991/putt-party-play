@@ -59,6 +59,16 @@
   "pt": "  Juntar todas as fotos numa imagem (uma colagem)",
   "zh": "  将所有照片合成一张图（拼贴）"
  },
+ "% off": {
+  "de": "% Rabatt",
+  "es": "% de descuento",
+  "fr": "% de remise",
+  "hi": "% छूट",
+  "it": "% di sconto",
+  "ja": "%オフ",
+  "pt": "% de desconto",
+  "zh": "折扣 %"
+ },
  "(No readable words were found — the scan may be too faint or handwritten.)": {
   "de": "(Keine lesbaren Wörter gefunden – der Scan ist vielleicht zu blass oder handschriftlich.)",
   "es": "(No se encontraron palabras legibles: el escaneo puede ser muy tenue o manuscrito.)",
@@ -1879,6 +1889,16 @@
   "pt": "Pastas maiores",
   "zh": "最大的文件夹"
  },
+ "Bill before tip": {
+  "de": "Rechnung ohne Trinkgeld",
+  "es": "Cuenta sin propina",
+  "fr": "Addition sans pourboire",
+  "hi": "टिप से पहले बिल",
+  "it": "Conto senza mancia",
+  "ja": "チップ前の金額",
+  "pt": "Conta sem gorjeta",
+  "zh": "小费前账单"
+ },
  "Bill to": {
   "de": "Rechnung an",
   "es": "Facturar a",
@@ -3539,6 +3559,16 @@
   "pt": "Copiar para folha de cálculo",
   "zh": "复制到电子表格"
  },
+ "Copy for the group chat": {
+  "de": "Für den Gruppenchat kopieren",
+  "es": "Copiar para el grupo",
+  "fr": "Copier pour le groupe",
+  "hi": "ग्रुप चैट के लिए कॉपी करें",
+  "it": "Copia per la chat di gruppo",
+  "ja": "グループチャット用にコピー",
+  "pt": "Copiar para o grupo",
+  "zh": "复制到群聊"
+ },
  "Copy link": {
   "de": "Link kopieren",
   "es": "Copiar enlace",
@@ -4938,6 +4968,16 @@
   "ja": "どれも仕事をきちんとこなします。データが端末外に出ることはありません。",
   "pt": "Cada uma faz o trabalho como deve ser. Nada sai do teu telemóvel.",
   "zh": "每一个都把活儿做到位。所有内容都不离开你的手机。"
+ },
+ "Each person pays": {
+  "de": "Pro Person",
+  "es": "Cada persona paga",
+  "fr": "Chacun paie",
+  "hi": "हर व्यक्ति देगा",
+  "it": "Ognuno paga",
+  "ja": "1人あたり",
+  "pt": "Cada pessoa paga",
+  "zh": "每人支付"
  },
  "Each photo pushes the last away": {
   "de": "Jedes Foto schiebt das vorige weg",
@@ -7498,6 +7538,16 @@
   "ja": "iCloud内",
   "pt": "No iCloud",
   "zh": "在 iCloud 中"
+ },
+ "Includes tax": {
+  "de": "Inkl. Steuer",
+  "es": "Incluye impuesto",
+  "fr": "Taxe incluse",
+  "hi": "टैक्स सहित",
+  "it": "Include imposta",
+  "ja": "税込み",
+  "pt": "Inclui imposto",
+  "zh": "含税"
  },
  "Indoor light": {
   "de": "Innenlicht",
@@ -10569,6 +10619,16 @@
   "pt": "Normal",
   "zh": "正常"
  },
+ "Not": {
+  "de": "Nicht",
+  "es": "No es",
+  "fr": "Pas",
+  "hi": "नहीं",
+  "it": "Non",
+  "ja": "合計ではなく",
+  "pt": "Não é",
+  "zh": "不是"
+ },
  "Not a diagnosis. Call your doctor or go to urgent care if you have trouble breathing, chest pain, a high fever that won't come down, you can't keep fluids down, or you're getting worse or not better after a few days. In an emergency, call your local emergency number.": {
   "de": "Keine Diagnose. Ruf deine Ärztin/deinen Arzt an oder geh in die Notfallpraxis bei Atemnot, Brustschmerzen, hohem Fieber, das nicht sinkt, wenn du nichts bei dir behältst oder es dir nach ein paar Tagen schlechter oder nicht besser geht. Im Notfall die örtliche Notrufnummer wählen.",
   "es": "No es un diagnóstico. Llama a tu médico o ve a urgencias si te cuesta respirar, tienes dolor en el pecho, fiebre alta que no baja, no retienes líquidos o empeoras o no mejoras en unos días. En una emergencia, llama al número de emergencias local.",
@@ -11398,6 +11458,16 @@
   "ja": "オリジナル",
   "pt": "Original",
   "zh": "原图"
+ },
+ "Original price": {
+  "de": "Ursprünglicher Preis",
+  "es": "Precio original",
+  "fr": "Prix d'origine",
+  "hi": "असली कीमत",
+  "it": "Prezzo originale",
+  "ja": "元の価格",
+  "pt": "Preço original",
+  "zh": "原价"
  },
  "Other": {
   "de": "Andere",
@@ -13379,6 +13449,16 @@
   "pt": "Pronto a guardar",
   "zh": "准备保存"
  },
+ "Real discount": {
+  "de": "Echter Rabatt",
+  "es": "Descuento real",
+  "fr": "Remise réelle",
+  "hi": "असली छूट",
+  "it": "Sconto reale",
+  "ja": "実際の割引",
+  "pt": "Desconto real",
+  "zh": "实际折扣"
+ },
  "Receipt → rows, business card → contact, flyer → calendar event, printed table → CSV.": {
   "de": "Beleg → Zeilen, Visitenkarte → Kontakt, Flyer → Termin, gedruckte Tabelle → CSV.",
   "es": "Recibo → filas, tarjeta → contacto, folleto → evento, tabla impresa → CSV.",
@@ -14029,6 +14109,26 @@
   "pt": "Pontos redondos",
   "zh": "圆点"
  },
+ "Round each share up to the next whole amount": {
+  "de": "Jeden Anteil auf den nächsten vollen Betrag aufrunden",
+  "es": "Redondear cada parte al siguiente entero",
+  "fr": "Arrondir chaque part à l'unité supérieure",
+  "hi": "हर हिस्से को अगली पूरी रकम तक बढ़ाएँ",
+  "it": "Arrotonda ogni quota all'intero successivo",
+  "ja": "各自の分を切り上げる",
+  "pt": "Arredondar cada parte para cima",
+  "zh": "每人份额向上取整"
+ },
+ "Rounding up adds": {
+  "de": "Aufrunden ergibt",
+  "es": "Redondear añade",
+  "fr": "L'arrondi ajoute",
+  "hi": "ऊपर करने से जुड़ता है",
+  "it": "Arrotondare aggiunge",
+  "ja": "切り上げで",
+  "pt": "Arredondar acrescenta",
+  "zh": "向上取整多出"
+ },
  "Rows & columns (comma-separated). Fix anything the scan got wrong:": {
   "de": "Zeilen und Spalten (durch Kommas getrennt). Korrigiere, was der Scan falsch erfasst hat:",
   "es": "Filas y columnas (separadas por comas). Corrige lo que el escaneo haya captado mal:",
@@ -14088,6 +14188,16 @@
   "ja": "安全",
   "pt": "Segurança",
   "zh": "安全"
+ },
+ "Sales tax % (optional)": {
+  "de": "Mehrwertsteuer % (optional)",
+  "es": "Impuesto % (opcional)",
+  "fr": "Taxe % (facultatif)",
+  "hi": "सेल्स टैक्स % (वैकल्पिक)",
+  "it": "Imposta % (facoltativa)",
+  "ja": "消費税 %（任意）",
+  "pt": "Imposto % (opcional)",
+  "zh": "销售税 %（可选）"
  },
  "Same emoji on all": {
   "de": "Gleiches Emoji für alle",
@@ -17349,6 +17459,16 @@
   "pt": "Imposto %",
   "zh": "税 %"
  },
+ "Tax on the bill (optional)": {
+  "de": "Steuer auf der Rechnung (optional)",
+  "es": "Impuesto de la cuenta (opcional)",
+  "fr": "Taxe sur l'addition (facultatif)",
+  "hi": "बिल पर टैक्स (वैकल्पिक)",
+  "it": "Imposta sul conto (facoltativa)",
+  "ja": "税額（任意）",
+  "pt": "Imposto na conta (opcional)",
+  "zh": "账单税额（可选）"
+ },
  "Teal": {
   "de": "Petrol",
   "es": "Verde azulado",
@@ -18669,6 +18789,26 @@
   "pt": "Pequenina, rápida e esganiçada",
   "zh": "又小又快又尖"
  },
+ "Tip": {
+  "de": "Trinkgeld",
+  "es": "Propina",
+  "fr": "Pourboire",
+  "hi": "टिप",
+  "it": "Mancia",
+  "ja": "チップ",
+  "pt": "Gorjeta",
+  "zh": "小费"
+ },
+ "Tip on the amount before tax": {
+  "de": "Trinkgeld auf den Betrag vor Steuern",
+  "es": "Propina sobre el importe sin impuestos",
+  "fr": "Pourboire sur le montant hors taxe",
+  "hi": "टैक्स से पहले की रकम पर टिप",
+  "it": "Mancia sull'importo senza imposte",
+  "ja": "税抜き額にチップ",
+  "pt": "Gorjeta sobre o valor sem imposto",
+  "zh": "按税前金额算小费"
+ },
  "Tip: freeze first, then zoom — no shaky hands. Yellow-on-black and inverted are the looks low-vision readers find easiest.": {
   "de": "Tipp: zuerst einfrieren, dann zoomen — ohne Verwackeln. Gelb auf Schwarz und invertiert sind die Ansichten, die Leser mit Sehschwäche am leichtesten finden.",
   "es": "Consejo: congela primero y luego amplía, sin pulso tembloroso. Amarillo sobre negro e invertido son los modos que los lectores con baja visión encuentran más fáciles.",
@@ -18888,6 +19028,16 @@
   "ja": "合計",
   "pt": "Total",
   "zh": "合计"
+ },
+ "Total with tip": {
+  "de": "Gesamt mit Trinkgeld",
+  "es": "Total con propina",
+  "fr": "Total avec pourboire",
+  "hi": "टिप सहित कुल",
+  "it": "Totale con mancia",
+  "ja": "チップ込み合計",
+  "pt": "Total com gorjeta",
+  "zh": "含小费总计"
  },
  "Touch and hold an empty spot on your Home Screen until the apps jiggle.": {
   "de": "Halte eine leere Stelle auf dem Home-Bildschirm gedrückt, bis die Apps wackeln.",
@@ -20589,6 +20739,26 @@
   "pt": "Você registrou o dia com um toque — sem nota de voz.",
   "zh": "你用一键记录了这一天——没有语音。"
  },
+ "You pay": {
+  "de": "Du zahlst",
+  "es": "Pagas",
+  "fr": "Vous payez",
+  "hi": "आप देंगे",
+  "it": "Paghi",
+  "ja": "支払額",
+  "pt": "Paga",
+  "zh": "你要付"
+ },
+ "You save": {
+  "de": "Du sparst",
+  "es": "Ahorras",
+  "fr": "Vous économisez",
+  "hi": "आप बचाते हैं",
+  "it": "Risparmi",
+  "ja": "節約額",
+  "pt": "Poupa",
+  "zh": "你省下"
+ },
  "You'll get:": {
   "de": "Du bekommst:",
   "es": "Recibirás:",
@@ -21489,6 +21659,26 @@
   "pt": "pico",
   "zh": "峰值"
  },
+ "people": {
+  "de": "Personen",
+  "es": "personas",
+  "fr": "personnes",
+  "hi": "लोग",
+  "it": "persone",
+  "ja": "人",
+  "pt": "pessoas",
+  "zh": "人"
+ },
+ "person": {
+  "de": "Person",
+  "es": "persona",
+  "fr": "personne",
+  "hi": "व्यक्ति",
+  "it": "persona",
+  "ja": "人",
+  "pt": "pessoa",
+  "zh": "人"
+ },
  "photo(s) skipped — no clear subject found.": {
   "de": "Foto(s) übersprungen – kein klares Motiv gefunden.",
   "es": "foto(s) omitida(s): no se encontró un sujeto claro.",
@@ -21749,6 +21939,16 @@
   "pt": "texto",
   "zh": "文本"
  },
+ "the extra discount comes off the already-lower price.": {
+  "de": "der Zusatzrabatt gilt auf den schon reduzierten Preis.",
+  "es": "el descuento extra se aplica al precio ya rebajado.",
+  "fr": "la remise en plus s'applique au prix déjà réduit.",
+  "hi": "अतिरिक्त छूट पहले से घटी कीमत पर लगती है।",
+  "it": "lo sconto extra si applica al prezzo già ridotto.",
+  "ja": "追加割引は値下げ後の価格にかかります。",
+  "pt": "o desconto extra é sobre o preço já reduzido.",
+  "zh": "额外折扣是在已打折的价格上再打折。"
+ },
  "them": {
   "de": "ihnen",
   "es": "ellos",
@@ -21758,6 +21958,16 @@
   "ja": "相手",
   "pt": "eles",
   "zh": "对方"
+ },
+ "then extra % off": {
+  "de": "dann zusätzlich % Rabatt",
+  "es": "luego % extra",
+  "fr": "puis % en plus",
+  "hi": "फिर अतिरिक्त % छूट",
+  "it": "poi ulteriore %",
+  "ja": "さらに%オフ",
+  "pt": "depois mais % de desconto",
+  "zh": "再额外折扣 %"
  },
  "thing to fix": {
   "de": "Punkt zu beheben",
@@ -21928,6 +22138,16 @@
   "ja": "語を検出",
   "pt": "palavras encontradas",
   "zh": "个词"
+ },
+ "— a little extra for the server.": {
+  "de": "– ein kleines Extra fürs Personal.",
+  "es": ": un poco más para el camarero.",
+  "fr": "— un petit plus pour le serveur.",
+  "hi": "— वेटर के लिए थोड़ा और।",
+  "it": ": un piccolo extra per chi serve.",
+  "ja": "— お店へのちょっとした上乗せ。",
+  "pt": "— um extra para quem serve.",
+  "zh": "——给服务员的一点心意。"
  },
  "“Save all” writes every file to a folder you pick; Share hands them all over at once.": {
   "de": "„Alle speichern“ schreibt jede Datei in einen von dir gewählten Ordner; Teilen gibt alle auf einmal weiter.",
