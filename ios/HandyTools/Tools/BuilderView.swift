@@ -589,7 +589,7 @@ struct BuilderView: View {
                         }.pickerStyle(.segmented).accessibilityIdentifier("starter-filter")
                         if have == nil {
                             bigJobsSection
-                            ForEach(BuilderIntro.sections(), id: \.title) { sec in
+                            ForEach(Array(BuilderIntro.sections().enumerated()), id: \.offset) { _, sec in
                                 let list = sec.chains.filter { $0.unavailable == nil }
                                 if !list.isEmpty {
                                     Text(L(sec.title)).font(HandyFont.cardTitle).padding(.top, HandySpacing.s8)

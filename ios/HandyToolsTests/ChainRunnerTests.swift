@@ -771,7 +771,7 @@ final class IntroTests: XCTestCase {
     }
     @MainActor func testTemplatesAreSentencesInSectionsWithFullJobsFirst() {
         let secs = BuilderIntro.sections()
-        XCTAssertEqual(secs.map(\.chains.count).reduce(0, +), ChainTemplates.all.count, "every starter sits in exactly one section")
+        XCTAssertEqual(secs.map { $0.chains.count }.reduce(0, +), ChainTemplates.all.count, "every starter sits in exactly one section")
         for sec in secs {
             let jobs = sec.chains.map { $0.steps.count > 1 || $0.finish != nil }
             XCTAssertEqual(jobs, jobs.sorted { $0 && !$1 }, "\(sec.title): start-to-finish jobs come first")
