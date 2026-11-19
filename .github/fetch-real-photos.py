@@ -4,6 +4,7 @@
   sroie/      ICDAR 2019 SROIE shop receipts + official shop/date/total          (GitHub)
   cord/       CORD v2 receipts (Indonesian shops) + every item, price and total   (Hugging Face)
   hand/       IAM handwritten lines + their exact text                            (Hugging Face)
+  pdfs/       real-world PDFs from the PDF.js test corpus (odd fonts, scans, forms, rotations)  (GitHub)
   web/        hand-picked hard photos (menus, posters, cards, boards) listed in
               ios/RealPhotos/web.json, with their right answers in the same file
 
@@ -67,6 +68,24 @@ def hand():
         open(os.path.join(d, f"{i:03d}.txt"), "w").write(r["text"])
 
 
+def pdfs():
+    d = os.path.join(out, "pdfjs")
+    if not os.path.isdir(d):
+        subprocess.run(["git", "clone", "-q", "--depth", "1", "--filter=blob:none", "--no-checkout",
+                        "https://github.com/mozilla/pdf.js.git", d], check=True)
+    # Names only: asking git for sizes would download the whole corpus.
+    names = subprocess.run(["git", "-C", d, "ls-tree", "-r", "--name-only", "HEAD", "test/pdfs/"], capture_output=True, text=True).stdout.splitlines()
+    files = [n for n in names if n.lower().endswith(".pdf")]
+    picks = files[:: max(1, len(files) // min(limit, 40))][:40]
+    subprocess.run(["git", "-C", d, "sparse-checkout", "set", "--no-cone"] + picks, check=True)
+    subprocess.run(["git", "-C", d, "checkout", "-q"], check=True)
+    o = os.path.join(out, "pdfs"); os.makedirs(o, exist_ok=True)
+    for f in picks:
+        src = os.path.join(d, f)
+        if os.path.exists(src) and 10_000 < os.path.getsize(src) < 6_000_000:
+            os.replace(src, os.path.join(o, os.path.basename(f)))
+
+
 def web():
     here = os.path.dirname(os.path.abspath(__file__))
     listing = os.path.join(here, "..", "ios", "RealPhotos", "web.json")
@@ -85,7 +104,8 @@ def web():
 step("sroie", sroie)
 step("cord", cord)
 step("hand", hand)
+step("pdfs", pdfs)
 step("web", web)
-for s in ["sroie/data/img", "cord", "hand", "web"]:
+for s in ["sroie/data/img", "cord", "hand", "pdfs", "web"]:
     p = os.path.join(out, s)
     print(s, len(os.listdir(p)) if os.path.isdir(p) else 0)

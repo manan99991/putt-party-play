@@ -1,5 +1,6 @@
 import XCTest
 import UIKit
+import PDFKit
 @testable import HandyTools
 
 /// What each photo tool actually hands the user, checked on real photos (runs in the QA lab; skipped elsewhere).
@@ -155,6 +156,52 @@ final class ToolOutputQualityTests: XCTestCase {
             }
         }
         lines.insert(String(format: "SCORE cutout n=%.0f %.3f", n, good / max(1, n)), at: 0)
+        report(lines)
+    }
+
+    // MARK: PDF tools on real-world PDFs (PDF.js test corpus: odd fonts, scans, forms, rotations)
+
+    func testPDFToolsKeepEveryPageAndDoWhatTheySay() async throws {
+        guard let root else { throw XCTSkip("runs in the QA lab") }
+        let dir = root.appendingPathComponent("pdfs")
+        let files = ((try? FileManager.default.contentsOfDirectory(atPath: dir.path)) ?? []).filter { $0.lowercased().hasSuffix(".pdf") }.sorted()
+        guard !files.isEmpty else { throw XCTSkip("PDF corpus not downloaded") }
+        var lines = ["PDF TOOLS\tfile\tpages\treorder\tlock\tshrink\tsearchable\t| problem"]
+        var good = 0.0, n = 0.0
+        var ocrDone = 0
+        func text(_ d: Data?, _ i: Int) -> String { d.flatMap { PDFDocument(data: $0)?.page(at: i)?.string } ?? "" }
+        for f in files {
+            guard let data = try? Data(contentsOf: dir.appendingPathComponent(f)), let doc = PDFDocument(data: data), doc.pageCount > 0, !doc.isLocked else { continue }
+            let pages = doc.pageCount
+            var fails: [String] = []
+            // Organize Pages: reversed, every page kept, text still there and in the new order.
+            var items = PDFPages.items(pageCount: pages); items.reverse()
+            let re = PDFPages.build(data, items: items)
+            let reOK = re.flatMap { PDFDocument(data: $0)?.pageCount } == pages && text(re, 0) == text(data, pages - 1)
+            if !reOK { fails.append("reorder lost or mixed pages") }
+            // Protect: asks for the password, wrong one refused, right one gives every page back.
+            let locked = PDFSecure.protect(data, password: "Tenzy-123")
+            let lockOK = locked.map { PDFSecure.isLocked($0) && PDFSecure.unlock($0, password: "nope") == nil
+                && PDFSecure.unlock($0, password: "Tenzy-123").flatMap { PDFDocument(data: $0)?.pageCount } == pages } ?? false
+            if !lockOK { fails.append("password lock doesn't hold") }
+            // Fit It: half the size (at least 100 KB), still every page.
+            let target = max(100_000, data.count / 2)
+            let small = data.count > 150_000 ? await SizeTarget.pdf(data, targetBytes: target) : data
+            let shrinkOK = small.map { $0.count <= max(target, data.count <= 150_000 ? data.count : target) && PDFDocument(data: $0)?.pageCount == pages } ?? false
+            if !shrinkOK { fails.append(small == nil ? "couldn't shrink" : "shrunk file over the limit or lost pages") }
+            // Searchable: a PDF with no text layer gets one (first few only — OCR is slow).
+            var searchText = "has text"
+            if !PDFSearchable.hasText(data), ocrDone < 6, pages <= 6 {
+                ocrDone += 1
+                let made = await PDFSearchable.make(data)
+                let ok = made.map { PDFSearchable.hasText($0.data) && PDFDocument(data: $0.data)?.pageCount == pages } ?? false
+                searchText = ok ? "made" : "failed"
+                if !ok { fails.append("no text layer added") }
+            }
+            n += 1; if fails.isEmpty { good += 1 }
+            lines.append("\(f)\t\(pages)\t\(reOK ? 1 : 0)\t\(lockOK ? 1 : 0)\t\(shrinkOK ? 1 : 0)\t\(searchText)\t| \(fails.joined(separator: "; "))")
+        }
+        lines.insert(String(format: "SCORE pdf-tools n=%.0f %.3f", n, good / max(1, n)), at: 0)
         report(lines)
     }
 }
