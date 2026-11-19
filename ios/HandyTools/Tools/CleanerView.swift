@@ -22,6 +22,10 @@ struct CleanerView: View {
     @State private var receivedOnly = false                // videos tab: only videos not recorded on this phone
     @State private var busy = false
     @State private var note: String?
+    // "Keep only my newest N screenshots" — starts at the number the screenshot alert watches for.
+    @State private var keepN = Int(AlertStore.rule(.screenshots)?.limit ?? 100)
+    @State private var keepCustom = ""
+    @State private var keepFavourites = true
 
     // MARK: derived
 
@@ -84,6 +88,7 @@ struct CleanerView: View {
                 if isScanning {
                     scanningView
                 } else {
+                    if cat == .screenshots && !items.isEmpty { keepNewestCard }
                     content
                 }
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
@@ -136,6 +141,48 @@ struct CleanerView: View {
                 HandyHaptics.success()
             }
         }
+    }
+
+    // MARK: keep only the newest screenshots
+
+    /// The older screenshots past the newest `keepN` (items arrive newest first), favourites left alone if asked.
+    private var olderScreenshots: [PhotoCleaner.Item] {
+        PhotoCleaner.beyondNewest(items, keep: keepN, protect: { keepFavourites && $0.asset.isFavorite })
+    }
+
+    private var keepNewestCard: some View {
+        let older = olderScreenshots
+        let bytes = older.reduce(Int64(0)) { $0 + $1.bytes }
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Keep only my newest screenshots"), systemImage: "rectangle.stack.badge.minus").font(HandyFont.bodyStrong)
+            HStack(spacing: 6) {
+                Text(L("Keep my newest")).font(HandyFont.body)
+                Text("\(keepN)").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+            }
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach([50, 100, 200, 500], id: \.self) { n in
+                    HChip(text: "\(n)", selected: keepN == n && keepCustom.isEmpty) { keepN = n; keepCustom = "" }
+                }
+                TextField(L("Other"), text: $keepCustom).keyboardType(.numberPad).frame(width: 80).textFieldStyle(.roundedBorder)
+                    .onChange(of: keepCustom) { _, t in if let v = Int(t.filter(\.isNumber)), v >= 0 { keepN = v } }
+                    .accessibilityLabel(L("Another number to keep"))
+            }
+            Toggle(L("Never touch favourites"), isOn: $keepFavourites).font(HandyFont.caption).tint(HandyColor.accent)
+            if older.isEmpty {
+                Label("\(L("You have")) \(items.count) \(L("screenshots — nothing older to clear."))", systemImage: "checkmark.seal.fill")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true)
+            } else {
+                Text("\(L("You have")) \(items.count) \(L("screenshots.")) \(older.count) \(L("older ones would go — about")) \(PhotoCleaner.format(bytes)).")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                Button {
+                    selected = Set(older.map(\.id)); sortBySize = false
+                    note = "Selected \(older.count) older screenshot\(older.count == 1 ? "" : "s"). Scroll to check them, then tap Delete — iPhone asks you to confirm, and they stay in Recently Deleted for 30 days."
+                } label: {
+                    Label("\(L("Select the")) \(older.count) \(L("older screenshots"))", systemImage: "checkmark.circle").frame(maxWidth: .infinity)
+                }.primaryButton().disabled(busy).accessibilityIdentifier("keep-newest-select")
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
     }
 
     private var authGate: some View {

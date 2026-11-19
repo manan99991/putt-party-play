@@ -939,6 +939,16 @@
   "pt": "Outro cardápio",
   "zh": "另一份菜单"
  },
+ "Another number to keep": {
+  "de": "Andere Anzahl zum Behalten",
+  "es": "Otro número para conservar",
+  "fr": "Un autre nombre à garder",
+  "hi": "रखने के लिए दूसरी संख्या",
+  "it": "Un altro numero da tenere",
+  "ja": "残す枚数を入力",
+  "pt": "Outro número a manter",
+  "zh": "输入要保留的数量"
+ },
  "Answer": {
   "de": "Antwort",
   "es": "Respuesta",
@@ -7059,6 +7069,26 @@
   "pt": "Manter linhas",
   "zh": "保留换行"
  },
+ "Keep my newest": {
+  "de": "Behalte die neuesten",
+  "es": "Conservar las más recientes:",
+  "fr": "Garder les plus récentes :",
+  "hi": "सबसे नए रखें:",
+  "it": "Tieni i più recenti:",
+  "ja": "残す枚数（新しい順）:",
+  "pt": "Manter as mais recentes:",
+  "zh": "保留最新的"
+ },
+ "Keep only my newest screenshots": {
+  "de": "Nur meine neuesten Screenshots behalten",
+  "es": "Conservar solo mis capturas más recientes",
+  "fr": "Ne garder que mes captures les plus récentes",
+  "hi": "सिर्फ़ मेरे नए स्क्रीनशॉट रखें",
+  "it": "Tieni solo i miei screenshot più recenti",
+  "ja": "最新のスクショだけ残す",
+  "pt": "Manter só as minhas capturas mais recentes",
+  "zh": "只保留最新的截图"
+ },
  "Keep receipts and warranties in one place": {
   "de": "Belege und Garantien an einem Ort",
   "es": "Guardar recibos y garantías en un solo lugar",
@@ -8888,6 +8918,16 @@
   "ja": "返品期限も保証も見逃しません。",
   "pt": "Nunca perca uma data de devolução ou uma garantia.",
   "zh": "再也不错过退货日期或保修期。"
+ },
+ "Never touch favourites": {
+  "de": "Favoriten nie anfassen",
+  "es": "No tocar nunca los favoritos",
+  "fr": "Ne jamais toucher aux favoris",
+  "hi": "पसंदीदा को कभी न छुएँ",
+  "it": "Non toccare mai i preferiti",
+  "ja": "お気に入りは残す",
+  "pt": "Nunca mexer nos favoritos",
+  "zh": "不动收藏的截图"
  },
  "New PIN (4–8 numbers)": {
   "de": "Neue PIN (4–8 Ziffern)",
@@ -13198,6 +13238,16 @@
   "ja": "Proを見る",
   "pt": "Ver Pro",
   "zh": "查看 Pro"
+ },
+ "Select the": {
+  "de": "Wähle die",
+  "es": "Seleccionar las",
+  "fr": "Sélectionner les",
+  "hi": "चुनें:",
+  "it": "Seleziona i",
+  "ja": "選択:",
+  "pt": "Selecionar as",
+  "zh": "选择这"
  },
  "Send": {
   "de": "Senden",
@@ -17899,6 +17949,16 @@
   "pt": "Você não precisa fazer tudo a toda hoje. Passos pequenos, pausas no meio — com calma também dá conta.",
   "zh": "今天不必全速前进。小步走，中间休息——慢慢来也能做完。"
  },
+ "You have": {
+  "de": "Du hast",
+  "es": "Tienes",
+  "fr": "Vous avez",
+  "hi": "आपके पास",
+  "it": "Hai",
+  "ja": "スクショ枚数:",
+  "pt": "Tem",
+  "zh": "你有"
+ },
  "You logged the day with one tap — no voice note.": {
   "de": "Du hast den Tag mit einem Tipp eingetragen – ohne Sprachnotiz.",
   "es": "Registraste el día con un toque, sin nota de voz.",
@@ -18519,6 +18579,26 @@
   "pt": "nada registrado",
   "zh": "无记录"
  },
+ "older ones would go — about": {
+  "de": "ältere würden gelöscht – etwa",
+  "es": "más antiguas se borrarían: unos",
+  "fr": "plus anciennes partiraient — environ",
+  "hi": "पुराने हटेंगे — लगभग",
+  "it": "più vecchi verrebbero eliminati, circa",
+  "ja": "枚の古いものを削除 — 約",
+  "pt": "mais antigas seriam apagadas — cerca de",
+  "zh": "张旧截图会被删除，约"
+ },
+ "older screenshots": {
+  "de": "älteren Screenshots",
+  "es": "capturas antiguas",
+  "fr": "captures plus anciennes",
+  "hi": "पुराने स्क्रीनशॉट",
+  "it": "screenshot più vecchi",
+  "ja": "枚の古いスクショ",
+  "pt": "capturas mais antigas",
+  "zh": "张旧截图"
+ },
  "past your limit, so you'd get this today.": {
   "de": "über deinem Limit – du bekämst das heute.",
   "es": "por encima de tu límite, así que lo recibirías hoy.",
@@ -18618,6 +18698,26 @@
   "ja": "枚のスクリーンショット",
   "pt": "capturas",
   "zh": "张截图"
+ },
+ "screenshots — nothing older to clear.": {
+  "de": "Screenshots – nichts Älteres zu löschen.",
+  "es": "capturas: no hay antiguas que borrar.",
+  "fr": "captures : rien d'ancien à supprimer.",
+  "hi": "स्क्रीनशॉट हैं — हटाने को कोई पुराना नहीं।",
+  "it": "screenshot: niente di vecchio da eliminare.",
+  "ja": "枚 — 削除する古いものはありません。",
+  "pt": "capturas — nada antigo para apagar.",
+  "zh": "张截图，没有需要清理的旧截图。"
+ },
+ "screenshots.": {
+  "de": "Screenshots.",
+  "es": "capturas.",
+  "fr": "captures.",
+  "hi": "स्क्रीनशॉट हैं।",
+  "it": "screenshot.",
+  "ja": "枚。",
+  "pt": "capturas.",
+  "zh": "张截图。"
  },
  "sending a message": {
   "de": "eine Nachricht senden",

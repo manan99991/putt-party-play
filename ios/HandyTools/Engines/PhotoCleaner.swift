@@ -58,6 +58,13 @@ enum PhotoCleaner {
 
     // MARK: scans
 
+    /// "Keep only my newest N": everything after the first `keep` of a newest-first list, leaving out anything
+    /// to protect (a favourite stays even when it's old). Pure and unit-tested.
+    static func beyondNewest<T>(_ newestFirst: [T], keep: Int, protect: (T) -> Bool = { _ in false }) -> [T] {
+        guard keep >= 0, newestFirst.count > keep else { return [] }
+        return newestFirst.dropFirst(keep).filter { !protect($0) }
+    }
+
     static func screenshots() -> [Item] {
         let o = PHFetchOptions()
         o.predicate = NSPredicate(format: "(mediaSubtype & %d) != 0", Int(PHAssetMediaSubtype.photoScreenshot.rawValue))

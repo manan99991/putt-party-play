@@ -2313,6 +2313,15 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(A.read(.lowSpace) ?? 0, 0)
     }
 
+    func testKeepOnlyMyNewestScreenshots() {
+        let shots = Array(1...130)                                   // newest first
+        XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")
+        XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100, protect: { $0 == 120 }).count, 29, "a favourite stays even when old")
+        XCTAssertTrue(PhotoCleaner.beyondNewest(shots, keep: 150).isEmpty, "under the limit, nothing goes")
+        XCTAssertTrue(PhotoCleaner.beyondNewest(shots, keep: -1).isEmpty, "a bad number never selects everything")
+        XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 0).count, 130)
+    }
+
     func testBusinessCardsReadMergeAndNeverMistakeAChat() throws {
         let front = "JANE R. DOE\nSenior Product Manager\nACME ROBOTICS INC\n+1 (312) 555-0147\njane.doe@acme.io"
         let back = "www.acme.io\n200 Main Street, Chicago\nMobile 312 555 0199\njane.doe@acme.io"
