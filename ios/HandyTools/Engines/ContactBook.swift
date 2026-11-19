@@ -189,6 +189,27 @@ enum ContactBook {
         return cal.component(.year, from: date) - y
     }
 
+    /// A birthday wish ready to send, in their name — with the milestone when the year is known.
+    static func birthdayWish(_ p: Person, on date: Date, cal: Calendar = .current) -> String {
+        let first = p.given.isEmpty ? p.name : p.given
+        if let a = p.birthday.flatMap({ age($0, on: date, cal: cal) }), a > 0, a % 10 == 0 || a == 18 || a == 21 {
+            return "Happy \(ordinal(a)) birthday, \(first)! 🎉 What a milestone — hope it's a brilliant day."
+        }
+        return "Happy birthday, \(first)! 🎂 Hope you have a wonderful day."
+    }
+
+    static func ordinal(_ n: Int) -> String {
+        let s = (11...13).contains(n % 100) ? "th" : (["th", "st", "nd", "rd"] + Array(repeating: "th", count: 6))[n % 10]
+        return "\(n)\(s)"
+    }
+
+    /// Messages, addressed to their mobile, with the wish written — you press Send.
+    static func wishURL(_ p: Person, wish: String) -> URL? {
+        guard let phone = (p.phones.first { $0.label.lowercased().contains("mobile") || $0.label.lowercased().contains("iphone") } ?? p.phones.first)?.value else { return nil }
+        let digits = phone.filter { $0.isNumber || $0 == "+" }
+        return URL(string: "sms:\(digits)&body=\(wish.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")
+    }
+
     static func birthdayMessage(_ p: Person, on date: Date, cal: Calendar = .current) -> (title: String, body: String) {
         let turning = p.birthday.flatMap { age($0, on: date, cal: cal) }.map { " — turning \($0)" } ?? ""
         let reach = p.phones.first.map { " Call or text: \($0.value)." } ?? ""

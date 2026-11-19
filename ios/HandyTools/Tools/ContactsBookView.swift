@@ -488,6 +488,14 @@ struct ContactDetailView: View {
                 }
                 if let b = person.birthday, let next = ContactBook.nextBirthday(b, after: Date()) {
                     infoRow("gift", L("Birthday"), next.formatted(.dateTime.month(.wide).day()) + (ContactBook.age(b, on: next).map { " · \(L("turns")) \($0)" } ?? ""))
+                    let wish = ContactBook.birthdayWish(person, on: next)
+                    Text("“\(wish)”").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    HStack {
+                        if let u = ContactBook.wishURL(person, wish: wish) {
+                            Link(destination: u) { Label(L("Send the wish"), systemImage: "message.fill").frame(maxWidth: .infinity) }.compactButton()
+                        }
+                        Button { Copier.copy(wish) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
+                    }
                 }
                 let mine = groups.filter { person.groups.contains($0.id) }
                 if !mine.isEmpty { infoRow("person.3", L("Groups"), mine.map(\.name).joined(separator: ", ")) }
