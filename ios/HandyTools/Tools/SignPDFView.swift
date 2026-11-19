@@ -20,6 +20,8 @@ struct SignPDFView: View {
     @State private var errorText: String?
     @State private var showFiles = false
     @State private var showPad = false
+    @State private var finding = false
+    @State private var spotNote: String?
 
     private var here: [DocEngine.Stamp] { stamps[page] ?? [] }
     private var total: Int { stamps.values.reduce(0) { $0 + $1.count } }
@@ -100,6 +102,23 @@ struct SignPDFView: View {
                     Button { add(.text(Date().formatted(date: .abbreviated, time: .omitted)), width: 0.25) } label: {
                         Label(L("Add date"), systemImage: "calendar").frame(maxWidth: .infinity)
                     }.secondaryButton()
+                }
+                if let sig = signature {
+                    Button { signWhereAsked(sig) } label: {
+                        HStack { if finding { ProgressView() }; Label(L("Sign where it asks — every page"), systemImage: "wand.and.stars") }.frame(maxWidth: .infinity)
+                    }.secondaryButton().disabled(finding).accessibilityIdentifier("sign-auto")
+                }
+                if let spotNote { Text(L(spotNote)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
+                if pages.count > 1 {
+                    Button {
+                        let t = typed.trimmingCharacters(in: .whitespaces)
+                        guard !t.isEmpty else { spotNote = "Type your initials in the box below first."; return }
+                        for p in pages.indices {
+                            var st = DocEngine.Stamp(kind: .text(t)); st.width = 0.08; st.center = SignSpots.initialsSpot
+                            stamps[p, default: []].append(st)
+                        }
+                        spotNote = "Initials added to all \(pages.count) pages, bottom right."; typed = ""
+                    } label: { Label(L("Initials on every page"), systemImage: "textformat.abc").frame(maxWidth: .infinity) }.secondaryButton()
                 }
                 HStack(spacing: HandySpacing.s8) {
                     TextField(L("Name, initials or any text"), text: $typed)
@@ -193,6 +212,29 @@ struct SignPDFView: View {
     }
 
     // MARK: - Actions
+
+    /// Every page read for its signature and date lines; your signature and today's date put on each.
+    private func signWhereAsked(_ sig: UIImage) {
+        let imgs = pages
+        finding = true; spotNote = nil
+        Task { @MainActor in
+            let found = await Task.detached(priority: .userInitiated) { imgs.map { SignSpots.find($0) } }.value
+            var signs = 0, dates = 0
+            let today = Date().formatted(date: .abbreviated, time: .omitted)
+            for (p, spots) in found.enumerated() {
+                for s in spots {
+                    var st = DocEngine.Stamp(kind: s.kind == .signature ? .signature(sig) : .text(today))
+                    st.width = s.width; st.center = s.center
+                    stamps[p, default: []].append(st)
+                    if s.kind == .signature { signs += 1 } else { dates += 1 }
+                }
+            }
+            finding = false
+            if let first = found.firstIndex(where: { !$0.isEmpty }) { page = first }
+            spotNote = signs + dates == 0 ? "No signature or date lines found — tap Add signature and drag it into place."
+                : "Signed \(signs) place\(signs == 1 ? "" : "s") and dated \(dates). Check each page — drag anything that's off."
+        }
+    }
 
     private func add(_ kind: DocEngine.Stamp.Kind, width: CGFloat) {
         var st = DocEngine.Stamp(kind: kind)
