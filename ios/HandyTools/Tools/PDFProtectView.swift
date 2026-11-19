@@ -23,6 +23,8 @@ struct PDFProtectView: View {
     @State private var mode: Mode = .lock
     @State private var password = ""
     @State private var confirm = ""
+    @State private var madePassword: String?
+    @State private var lockedWith: String?
     @State private var stampText = "CONFIDENTIAL"
     @State private var opacity: Double = 0.18
     @State private var resultURL: URL?
@@ -85,6 +87,18 @@ struct PDFProtectView: View {
                     SecureField(L("Password"), text: $password).textFieldStyle(.roundedBorder)
                         .textContentType(.newPassword)
                     SecureField(L("Type it again"), text: $confirm).textFieldStyle(.roundedBorder)
+                    Button {
+                        let p = Self.strongPassword(); password = p; confirm = p; madePassword = p
+                    } label: { Label(L("Make a strong one for me"), systemImage: "key.fill").frame(maxWidth: .infinity) }.secondaryButton()
+                        .accessibilityIdentifier("protect-make")
+                    if let madePassword, madePassword == password {
+                        HStack {
+                            Text(madePassword).font(.system(.title3, design: .monospaced).weight(.semibold)).textSelection(.enabled)
+                            Spacer()
+                            Button { Copier.copy(madePassword) } label: { Image(systemName: "doc.on.doc") }.compactButton().accessibilityLabel(L("Copy"))
+                        }
+                        Text(L("Easy to read out or type, hard to guess.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+                    }
                     Text(L("Anyone opening the file will need this password. Tenzy doesn't keep it — note it somewhere safe."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -178,8 +192,27 @@ struct PDFProtectView: View {
             ShareLink(item: url) {
                 Label(L("Save or share PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
             }.primaryButton()
+            if let pw = lockedWith {
+                ShareLink(item: "\(L("Password for")) \(fileName).pdf: \(pw)") {
+                    Label(L("Send the password separately"), systemImage: "key.horizontal").frame(maxWidth: .infinity)
+                }.secondaryButton()
+                Text(L("Send it a different way from the file — if you emailed the PDF, text the password. Then anyone who gets one without the other can't open it."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true)
+            }
             Button(L("Start over")) { resultURL = nil; resultPreview = nil }.textButton().font(HandyFont.caption)
         }
+    }
+
+    /// Three everyday words and four digits, e.g. "Maple-Tiger-Harbor-4827": about 50 bits — far beyond guessing,
+    /// easy to read down a phone line. Uses the system's secure random source.
+    static let words = ["Maple", "Tiger", "Harbor", "Cactus", "Velvet", "Orbit", "Pepper", "Canyon", "Willow", "Falcon", "Lemon", "Glacier", "Comet", "Saddle", "Meadow", "Pebble",
+                        "Rocket", "Thistle", "Lantern", "Bamboo", "Copper", "Dolphin", "Ember", "Juniper", "Marble", "Nectar", "Otter", "Prairie", "Quartz", "Raven", "Summit", "Tulip",
+                        "Umber", "Violet", "Walnut", "Yonder", "Zephyr", "Anchor", "Biscuit", "Cobalt", "Dune", "Fern", "Garnet", "Hazel", "Iris", "Jasper", "Kettle", "Lagoon",
+                        "Mango", "Nimbus", "Olive", "Parrot", "Ripple", "Sparrow", "Timber", "Valley", "Wren", "Amber", "Breeze", "Cedar", "Delta", "Echo", "Fable", "Grove"]
+    static func strongPassword() -> String {
+        var g = SystemRandomNumberGenerator()
+        let picked = (0..<3).map { _ in words.randomElement(using: &g)! }
+        return picked.joined(separator: "-") + "-" + String(format: "%04d", Int.random(in: 0...9999, using: &g))
     }
 
     // MARK: - Actions
@@ -241,10 +274,12 @@ struct PDFProtectView: View {
             case .lock:
                 guard doc.isLocked else { errorText = "The lock didn't take — try again."; return }
                 resultNote = L("Locked — it now asks for your password to open.")
+                lockedWith = pw
                 resultPreview = preview
             case .unlock:
                 guard !doc.isLocked else { errorText = "Still locked — try again."; return }
                 resultNote = L("Password removed — this copy opens freely.")
+                lockedWith = nil
                 resultPreview = doc.page(at: 0)?.thumbnail(of: CGSize(width: 900, height: 1200), for: .mediaBox)
             case .watermark:
                 resultNote = L("Watermarked on every page — check it below.")
