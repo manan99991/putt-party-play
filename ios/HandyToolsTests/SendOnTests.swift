@@ -9,7 +9,8 @@ final class SendOnTests: XCTestCase {
         XCTAssertEqual(p.pieces.count, 3, "75 s → three 25 s pieces")
         XCTAssertEqual(p.pieces.first?.lowerBound, 0); XCTAssertEqual(p.pieces.last?.upperBound ?? 0, 75, accuracy: 0.01)
         XCTAssertTrue(p.pieces.allSatisfy { $0.upperBound - $0.lowerBound <= 30 }, "every piece fits a status")
-        XCTAssertNotNil(p.targetBytes, "~13 MB a piece is under 16 MB — but the estimate is close, so it's kept under")
+        XCTAssertNil(p.targetBytes, "about 13 MB a piece is already under 16 MB — no shrinking, original quality")
+        XCTAssertEqual(SendOn.plan(duration: 75, bytes: 90_000_000, place: place("wastatus")).targetBytes, 15_200_000, "30 MB pieces are shrunk under 16 MB")
     }
 
     func testAReelKeepsTheFirst90SecondsAndSaysSo() {
