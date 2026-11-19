@@ -6529,6 +6529,16 @@
   "pt": "Arrasta sobre a foto para tapar rostos, nomes, números de cartão. Números e e-mails podem ser encontrados automaticamente no telemóvel.",
   "zh": "在照片上拖动以涂黑人脸、姓名、卡号。号码和邮箱可在手机上自动识别。"
  },
+ "Drag the yellow ends to choose what stays. Original quality — no re-encode when the clip allows it.": {
+  "de": "Zieh die gelben Enden, um festzulegen, was bleibt. Originalqualität – keine Neucodierung, wenn der Clip es erlaubt.",
+  "es": "Arrastra los extremos amarillos para elegir qué se queda. Calidad original: sin recodificar cuando el clip lo permite.",
+  "fr": "Faites glisser les bords jaunes pour choisir ce qui reste. Qualité d'origine — sans réencodage quand le clip le permet.",
+  "hi": "जो रखना है उसे चुनने के लिए पीले सिरे खींचें। मूल क्वालिटी — क्लिप अनुमति दे तो दोबारा एन्कोड नहीं।",
+  "it": "Trascina le estremità gialle per scegliere cosa tenere. Qualità originale — nessuna ricodifica quando la clip lo consente.",
+  "ja": "黄色の端をドラッグして残す部分を選びます。元の画質のまま — 可能な場合は再エンコードしません。",
+  "pt": "Arraste as pontas amarelas para escolher o que fica. Qualidade original — sem recodificar quando o clipe permite.",
+  "zh": "拖动黄色两端选择要保留的部分。原画质——片段允许时不重新编码。"
+ },
  "Drag to draw. Tap a mark to remove it.": {
   "de": "Zum Zeichnen ziehen. Tippe auf eine Markierung, um sie zu entfernen.",
   "es": "Arrastra para dibujar. Toca una marca para quitarla.",
@@ -7648,6 +7658,16 @@
   "ja": "すべて端末内で読み取られ — 何もアップロードされません。Tenzyは他アプリの“開く方法”の一覧にも表示されるので、ファイルを直接ここへ送れます。",
   "pt": "Tudo é lido no teu telemóvel — nada é enviado. O Tenzy também aparece na lista “Abrir com” de outras apps, para enviares um ficheiro diretamente para aqui.",
   "zh": "一切都在你的手机上读取 — 不上传任何内容。Tenzy 也会出现在其他应用的“打开方式”列表中，你可以把文件直接发到这里。"
+ },
+ "Everything it says": {
+  "de": "Alles, was draufsteht",
+  "es": "Todo lo que dice",
+  "fr": "Tout ce qui est écrit",
+  "hi": "इसमें लिखा सब कुछ",
+  "it": "Tutto quello che dice",
+  "ja": "書かれている内容すべて",
+  "pt": "Tudo o que diz",
+  "zh": "上面写的全部内容"
  },
  "Everything on your mind, and how you feel — e.g. \"Shower, groceries, office work, not feeling well\"": {
   "de": "Alles, was dich beschäftigt, und wie du dich fühlst – z. B. „Duschen, Einkaufen, Büroarbeit, fühle mich nicht gut“",
@@ -10859,6 +10879,16 @@
   "pt": "Já passou do seu número — você recebe um alerta na primeira verificação.",
   "zh": "已经越过你的数字——第一次检查就会提醒。"
  },
+ "It's attached as a PDF. Mail shows a one-page PDF as a picture in the message — the person you send it to gets the PDF file.": {
+  "de": "Es ist als PDF angehängt. Mail zeigt ein einseitiges PDF als Bild in der Nachricht – der Empfänger bekommt die PDF-Datei.",
+  "es": "Va adjunto como PDF. Mail muestra un PDF de una página como imagen en el mensaje; quien lo recibe obtiene el archivo PDF.",
+  "fr": "Il est joint en PDF. Mail affiche un PDF d'une page comme une image dans le message — le destinataire reçoit bien le fichier PDF.",
+  "hi": "यह PDF के रूप में अटैच है। Mail एक पेज वाला PDF संदेश में तस्वीर की तरह दिखाता है — पाने वाले को PDF फ़ाइल मिलती है।",
+  "it": "È allegato come PDF. Mail mostra un PDF di una pagina come immagine nel messaggio — chi lo riceve ottiene il file PDF.",
+  "ja": "PDFとして添付されています。メールでは1ページのPDFが画像のように表示されますが、受信者にはPDFファイルが届きます。",
+  "pt": "Vai anexado como PDF. O Mail mostra um PDF de uma página como imagem na mensagem — quem recebe ganha o arquivo PDF.",
+  "zh": "已作为 PDF 附加。“邮件”会把单页 PDF 显示成图片，收件人收到的是 PDF 文件。"
+ },
  "It's built from what's already in Tenzy — Medicine Reminders, Sorted (bills and letters), your contacts' birthdays and the Cleaner alerts. Add things there and they show up here.": {
   "de": "Sie entsteht aus dem, was schon in Tenzy ist – Medikamente, Sorted (Rechnungen und Briefe), Geburtstage deiner Kontakte und Cleaner-Hinweise. Trag dort etwas ein, und es erscheint hier.",
   "es": "Se arma con lo que ya hay en Tenzy: Medicamentos, Sorted (facturas y cartas), cumpleaños de tus contactos y avisos del Limpiador. Añade cosas allí y aparecerán aquí.",
@@ -11538,6 +11568,16 @@
   "ja": "保持：",
   "pt": "Mantendo:",
   "zh": "保留："
+ },
+ "Keeps": {
+  "de": "Behält",
+  "es": "Conserva",
+  "fr": "Garde",
+  "hi": "रखता है",
+  "it": "Tiene",
+  "ja": "残す長さ",
+  "pt": "Mantém",
+  "zh": "保留"
  },
  "Keeps playing with the screen locked. Brown and Fan mask traffic and snoring best; Pink is the one studies use for deeper sleep.": {
   "de": "Läuft bei gesperrtem Bildschirm weiter. Braun und Ventilator überdecken Verkehr und Schnarchen am besten; Rosa nutzen Studien für tieferen Schlaf.",
@@ -12468,6 +12508,16 @@
   "ja": "確認中…",
   "pt": "A procurar…",
   "zh": "正在查找…"
+ },
+ "Looks good": {
+  "de": "Sieht gut aus",
+  "es": "Se ve bien",
+  "fr": "C'est bon",
+  "hi": "ठीक दिख रहा है",
+  "it": "Va bene",
+  "ja": "OK",
+  "pt": "Ficou bom",
+  "zh": "看起来不错"
  },
  "Looks ready — every check passed": {
   "de": "Sieht fertig aus – alle Prüfungen bestanden",
@@ -15018,6 +15068,16 @@
   "ja": "その画像に文字が見つかりません。",
   "pt": "Nenhum texto encontrado nessa imagem.",
   "zh": "该图片中未找到文字。"
+ },
+ "No text found — it's saved as a clean picture of the page.": {
+  "de": "Kein Text gefunden – als sauberes Bild der Seite gesichert.",
+  "es": "No se encontró texto: se guarda como una imagen limpia de la página.",
+  "fr": "Aucun texte trouvé — enregistré comme une image nette de la page.",
+  "hi": "कोई टेक्स्ट नहीं मिला — पेज की साफ़ तस्वीर के रूप में सहेजा गया।",
+  "it": "Nessun testo trovato — salvato come immagine pulita della pagina.",
+  "ja": "文字は見つかりませんでした。ページのきれいな画像として保存しました。",
+  "pt": "Nenhum texto encontrado — salvo como imagem limpa da página.",
+  "zh": "未找到文字——已保存为干净的页面图片。"
  },
  "No tinted glasses or glare over the eyes": {
   "de": "Keine getönten Gläser, keine Spiegelung über den Augen",
@@ -17739,6 +17799,16 @@
   "pt": "Reproduzir todas as fotos como um GIF",
   "zh": "将所有照片作为一个 GIF 播放"
  },
+ "Play it again": {
+  "de": "Nochmal abspielen",
+  "es": "Reproducir otra vez",
+  "fr": "Relire",
+  "hi": "फिर से चलाएं",
+  "it": "Riproduci di nuovo",
+  "ja": "もう一度再生",
+  "pt": "Tocar de novo",
+  "zh": "再播放一次"
+ },
  "Play my original": {
   "de": "Original abspielen",
   "es": "Reproducir el original",
@@ -17758,6 +17828,16 @@
   "ja": "プレビューを再生",
   "pt": "Ouvir prévia",
   "zh": "播放预览"
+ },
+ "Play the part you keep": {
+  "de": "Den behaltenen Teil abspielen",
+  "es": "Reproducir la parte que se queda",
+  "fr": "Lire la partie conservée",
+  "hi": "रखा जाने वाला हिस्सा चलाएं",
+  "it": "Riproduci la parte che tieni",
+  "ja": "残す部分を再生",
+  "pt": "Tocar a parte que fica",
+  "zh": "播放保留的部分"
  },
  "Play the preview, then Save or Share. The size before and after is shown.": {
   "de": "Hör die Vorschau an, dann Sichern oder Teilen. Die Größe vorher und nachher wird angezeigt.",
@@ -18728,6 +18808,16 @@
   "ja": "読み上げる",
   "pt": "Ler em voz alta",
   "zh": "朗读"
+ },
+ "Read it in Menu Assistant": {
+  "de": "Im Menü-Assistenten lesen",
+  "es": "Leerlo en Asistente de menú",
+  "fr": "Le lire dans l'Assistant menu",
+  "hi": "Menu Assistant में पढ़ें",
+  "it": "Leggilo in Assistente menu",
+  "ja": "メニューアシスタントで読む",
+  "pt": "Ler no Assistente de cardápio",
+  "zh": "在菜单助手中阅读"
  },
  "Read my mood": {
   "de": "Stimmung erkennen",
@@ -21759,6 +21849,16 @@
   "pt": "Compartilhar todas as notas",
   "zh": "分享全部笔记"
  },
+ "Share as CSV": {
+  "de": "Als CSV teilen",
+  "es": "Compartir como CSV",
+  "fr": "Partager en CSV",
+  "hi": "CSV के रूप में शेयर करें",
+  "it": "Condividi come CSV",
+  "ja": "CSVで共有",
+  "pt": "Compartilhar como CSV",
+  "zh": "以 CSV 分享"
+ },
  "Share as a link or QR code": {
   "de": "Als Link oder QR-Code teilen",
   "es": "Compartir como enlace o QR",
@@ -22358,6 +22458,16 @@
   "ja": "ここに指で署名",
   "pt": "Assina aqui com o dedo",
   "zh": "用手指在此签名"
+ },
+ "Sign in the box first": {
+  "de": "Erst im Feld unterschreiben",
+  "es": "Firma primero en el recuadro",
+  "fr": "Signez d'abord dans le cadre",
+  "hi": "पहले बॉक्स में साइन करें",
+  "it": "Prima firma nel riquadro",
+  "ja": "先に枠内に署名してください",
+  "pt": "Assine no quadro primeiro",
+  "zh": "请先在框内签名"
  },
  "Sign in the box with your finger. It's saved on this phone only.": {
   "de": "Unterschreibe mit dem Finger im Feld. Es wird nur auf diesem Handy gespeichert.",
@@ -23729,6 +23839,16 @@
   "pt": "Endireitar a cabeça inclinada",
   "zh": "摆正倾斜的头部"
  },
+ "Straightened to the page's edges, paper whitened, text darkened.": {
+  "de": "An den Seitenrändern ausgerichtet, Papier aufgehellt, Text abgedunkelt.",
+  "es": "Enderezado a los bordes de la página, papel blanqueado y texto oscurecido.",
+  "fr": "Redressé aux bords de la page, papier blanchi, texte assombri.",
+  "hi": "पेज के किनारों तक सीधा किया, कागज़ सफ़ेद किया, टेक्स्ट गहरा किया।",
+  "it": "Raddrizzato ai bordi della pagina, carta sbiancata, testo scurito.",
+  "ja": "ページの端に合わせて補正し、紙を白く、文字を濃くしました。",
+  "pt": "Endireitado pelas bordas da página, papel clareado, texto escurecido.",
+  "zh": "已按页面边缘拉直，纸张变白，文字加深。"
+ },
  "Street address": {
   "de": "Straße und Hausnummer",
   "es": "Dirección",
@@ -24188,6 +24308,16 @@
   "ja": "いちばん読みやすく書類を撮る",
   "pt": "Foto de página mais nítida",
   "zh": "拍出最清晰的文档"
+ },
+ "Take the last one back out": {
+  "de": "Den letzten wieder herausnehmen",
+  "es": "Quitar el último",
+  "fr": "Retirer le dernier",
+  "hi": "आख़िरी वाला वापस हटाएं",
+  "it": "Togli l'ultimo",
+  "ja": "最後の1件を取り消す",
+  "pt": "Tirar o último",
+  "zh": "撤回最后一条"
  },
  "Take the photo from a little further away so there's room above and below.": {
   "de": "Etwas weiter weg aufnehmen, damit oben und unten Platz bleibt.",
@@ -25459,6 +25589,16 @@
   "pt": "É demais para um zip no telefone (fique abaixo de 2 GB).",
   "zh": "手机上一个zip放不下这么多（请控制在2GB以内）。"
  },
+ "That's too small to read as a signature — sign a little bigger.": {
+  "de": "Das ist zu klein für eine Unterschrift – unterschreib etwas größer.",
+  "es": "Es demasiado pequeña para ser una firma: firma un poco más grande.",
+  "fr": "C'est trop petit pour une signature — signez un peu plus grand.",
+  "hi": "यह हस्ताक्षर के लिए बहुत छोटा है — थोड़ा बड़ा साइन करें।",
+  "it": "È troppo piccola per essere una firma — firma un po' più grande.",
+  "ja": "署名としては小さすぎます。もう少し大きく書いてください。",
+  "pt": "Está pequeno demais para uma assinatura — assine um pouco maior.",
+  "zh": "太小了，无法作为签名——请写大一点。"
+ },
  "The PDF has": {
   "de": "Das PDF hat",
   "es": "El PDF tiene",
@@ -25748,6 +25888,16 @@
   "ja": "撮影した端末",
   "pt": "O celular que tirou",
   "zh": "拍摄的手机"
+ },
+ "The scan": {
+  "de": "Der Scan",
+  "es": "El escaneo",
+  "fr": "Le scan",
+  "hi": "स्कैन",
+  "it": "La scansione",
+  "ja": "スキャン",
+  "pt": "A digitalização",
+  "zh": "扫描结果"
  },
  "The second alert has Taken ✓ on it. Tapping Taken on either one stops the other.": {
   "de": "Die zweite Mitteilung hat auch „Genommen ✓“. Ein Tipp auf eine stoppt die andere.",
@@ -27188,6 +27338,16 @@
   "ja": "別のスタイルを試す",
   "pt": "Tentar outro estilo",
   "zh": "换个风格"
+ },
+ "Try searching it for": {
+  "de": "Such darin zum Beispiel nach",
+  "es": "Prueba a buscar",
+  "fr": "Essayez d'y chercher",
+  "hi": "इसमें खोजकर देखें",
+  "it": "Prova a cercare",
+  "ja": "試しに検索：",
+  "pt": "Experimente buscar",
+  "zh": "试着搜索"
  },
  "Try straight from above, or a 45° angle near a window.": {
   "de": "Probier's direkt von oben oder im 45°-Winkel am Fenster.",
@@ -28819,6 +28979,16 @@
   "pt": "O que devo pedir?",
   "zh": "我该点什么？"
  },
+ "What this is": {
+  "de": "Was das ist",
+  "es": "Qué es",
+  "fr": "Ce que c'est",
+  "hi": "यह क्या है",
+  "it": "Cos'è",
+  "ja": "これは",
+  "pt": "O que é",
+  "zh": "这是什么"
+ },
  "What to buy for this room": {
   "de": "Was du für diesen Raum kaufen musst",
   "es": "Qué comprar para esta habitación",
@@ -29949,6 +30119,16 @@
   "pt": "Seu celular mostra um lembrete nesse horário. Toque e a ferramenta abre pronta.",
   "zh": "手机会在那个时间提醒你。点一下，这个工具就会打开并准备好。"
  },
+ "Your photo": {
+  "de": "Dein Foto",
+  "es": "Tu foto",
+  "fr": "Votre photo",
+  "hi": "आपकी फ़ोटो",
+  "it": "La tua foto",
+  "ja": "あなたの写真",
+  "pt": "Sua foto",
+  "zh": "你的照片"
+ },
  "Your plan as a picture": {
   "de": "Dein Plan als Bild",
   "es": "Tu plan como imagen",
@@ -30929,6 +31109,16 @@
   "pt": "é uma gravação longa. Corte-a primeiro no Editor de áudio.",
   "zh": "录音较长，请先在音频编辑器中剪短。"
  },
+ "just added, highlighted below.": {
+  "de": "gerade hinzugefügt, unten markiert.",
+  "es": "recién añadidos, resaltados abajo.",
+  "fr": "ajouté(s) à l'instant, surligné(s) ci-dessous.",
+  "hi": "अभी जोड़े गए, नीचे हाइलाइट हैं।",
+  "it": "appena aggiunti, evidenziati qui sotto.",
+  "ja": "件を追加しました（下で強調表示）。",
+  "pt": "acabaram de entrar, destacados abaixo.",
+  "zh": "条刚添加，已在下方高亮。"
+ },
  "last day to return": {
   "de": "letzter Rückgabetag",
   "es": "último día para devolver",
@@ -31419,6 +31609,16 @@
   "pt": "qualidade",
   "zh": "画质"
  },
+ "receipt": {
+  "de": "Beleg",
+  "es": "recibo",
+  "fr": "reçu",
+  "hi": "रसीद",
+  "it": "scontrino",
+  "ja": "件のレシート",
+  "pt": "recibo",
+  "zh": "张收据"
+ },
  "receipts": {
   "de": "Belege",
   "es": "recibos",
@@ -31899,6 +32099,16 @@
   "pt": "ferramentas?",
   "zh": "个工具？"
  },
+ "total": {
+  "de": "gesamt",
+  "es": "total",
+  "fr": "total",
+  "hi": "कुल",
+  "it": "totale",
+  "ja": "合計",
+  "pt": "total",
+  "zh": "合计"
+ },
  "translating": {
   "de": "Übersetzen",
   "es": "traducir",
@@ -32088,6 +32298,16 @@
   "ja": "語を検出",
   "pt": "palavras encontradas",
   "zh": "个词"
+ },
+ "words searchable in any PDF app": {
+  "de": "Wörter in jeder PDF-App durchsuchbar",
+  "es": "palabras que se pueden buscar en cualquier app de PDF",
+  "fr": "mots consultables dans toute app PDF",
+  "hi": "शब्द किसी भी PDF ऐप में खोजे जा सकते हैं",
+  "it": "parole ricercabili in qualsiasi app PDF",
+  "ja": "語をどのPDFアプリでも検索できます",
+  "pt": "palavras pesquisáveis em qualquer app de PDF",
+  "zh": "个词可在任何 PDF 应用中搜索"
  },
  "— a little extra for the server.": {
   "de": "– ein kleines Extra fürs Personal.",

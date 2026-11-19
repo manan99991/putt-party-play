@@ -64,13 +64,20 @@ enum PDFPages {
     /// margin (more words, read with more confidence). Pages with little text are left as they are.
     static func looksUpsideDown(_ image: UIImage) -> Bool {
         guard let cg = image.cgImage else { return false }
-        func score(_ o: CGImagePropertyOrientation) -> Float {
+        // Text read the wrong way up still comes back as "text" with fair confidence, so count real words instead:
+        // the way that yields far more correctly spelled words is the page's right way up.
+        let checker = UITextChecker()
+        func score(_ o: CGImagePropertyOrientation) -> Int {
             let r = VNRecognizeTextRequest(); r.recognitionLevel = .fast; r.usesLanguageCorrection = false
             try? VNImageRequestHandler(cgImage: cg, orientation: o).perform([r])
-            return (r.results ?? []).compactMap { $0.topCandidates(1).first }.reduce(0) { $0 + $1.confidence * Float(min(40, $1.string.count)) }
+            let words = (r.results ?? []).compactMap { $0.topCandidates(1).first?.string }
+                .flatMap { $0.split(whereSeparator: { !$0.isLetter }).map(String.init) }.filter { $0.count >= 3 }
+            return words.filter { w in
+                checker.rangeOfMisspelledWord(in: w, range: NSRange(location: 0, length: (w as NSString).length), startingAt: 0, wrap: false, language: "en").location == NSNotFound
+            }.count
         }
         let up = score(.up), turned = score(.down)
-        return turned > 40 && turned > up * 1.8
+        return turned >= 4 && Double(turned) > Double(up) * 1.5
     }
 
     static func looksBlank(_ image: UIImage) -> Bool {
