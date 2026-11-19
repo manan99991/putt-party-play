@@ -58,6 +58,7 @@ enum TenzyArt {
         "sticker": "studio",
         "medreminder": "rest",
         "daydiary": "rest",
+        "brief": "rest",
         "cards": "datagrab",
         "untangle": "explain",
         "menu": "translate",

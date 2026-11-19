@@ -2524,6 +2524,29 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(ContactBook.kind("_$!<Mobile>!$_"), "mobile"); XCTAssertEqual(ContactBook.safe("A/B: group"), "A-B- group")
     }
 
+    func testDailyBriefSaysWhatMattersToday() throws {
+        let cal = Calendar(identifier: .gregorian)
+        let day = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 20, hour: 7)))
+        var f = DailyBrief.Facts()
+        f.doses = [("Vitamin D", day.addingTimeInterval(3600)), ("Metformin", day.addingTimeInterval(12 * 3600))]
+        f.due = [("Water bill", day.addingTimeInterval(86400), "$84.20"), ("Car insurance", day.addingTimeInterval(-86400), nil)]
+        f.birthdays = [("Asha Shah", true)]
+        f.screenshots = 140; f.screenshotLimit = 100
+        let b = DailyBrief.compose(f, for: day, cal: cal)
+        XCTAssertTrue(b.title.hasPrefix("Your day · "))
+        XCTAssertTrue(b.lines[0].hasPrefix("💊 2 doses: Vitamin D"))
+        XCTAssertTrue(b.lines.contains("📄 Car insurance — overdue"), "\(b.lines)")
+        XCTAssertTrue(b.lines.contains("📄 Water bill ($84.20) — due tomorrow"))
+        XCTAssertTrue(b.lines.contains("🎂 Asha Shah's birthday is today"))
+        XCTAssertTrue(b.lines.contains("🧹 140 screenshots — tidy up to your 100"))
+        XCTAssertLessThanOrEqual(b.body.split(separator: "\n").count, 4, "the notification stays short")
+        let quiet = DailyBrief.compose(DailyBrief.Facts(), for: day, cal: cal)
+        XCTAssertTrue(quiet.lines.isEmpty); XCTAssertTrue(quiet.body.hasPrefix("Nothing pressing today"))
+        let six = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 20, hour: 6)))
+        XCTAssertEqual(cal.component(.day, from: DailyBrief.nextFire(after: six, hour: 7, minute: 0, cal: cal)), 20, "later today")
+        XCTAssertEqual(cal.component(.day, from: DailyBrief.nextFire(after: day.addingTimeInterval(60), hour: 7, minute: 0, cal: cal)), 21, "tomorrow once it's passed")
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

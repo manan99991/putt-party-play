@@ -1849,6 +1849,16 @@
   "pt": "Faturar a",
   "zh": "账单寄往"
  },
+ "Bills & letters": {
+  "de": "Rechnungen & Briefe",
+  "es": "Facturas y cartas",
+  "fr": "Factures et courriers",
+  "hi": "बिल और पत्र",
+  "it": "Bollette e lettere",
+  "ja": "請求書と手紙",
+  "pt": "Contas e cartas",
+  "zh": "账单和信件"
+ },
  "Birthday": {
   "de": "Geburtstag",
   "es": "Cumpleaños",
@@ -4109,6 +4119,26 @@
   "pt": "Recortando suas figurinhas…",
   "zh": "正在抠出你的贴纸…"
  },
+ "Daily Brief": {
+  "de": "Tägliche Übersicht",
+  "es": "Resumen diario",
+  "fr": "Point quotidien",
+  "hi": "रोज़ का ब्रीफ़",
+  "it": "Riepilogo giornaliero",
+  "ja": "デイリーブリーフ",
+  "pt": "Resumo diário",
+  "zh": "每日简报"
+ },
+ "Daily brief": {
+  "de": "Tägliche Übersicht",
+  "es": "Resumen diario",
+  "fr": "Point quotidien",
+  "hi": "रोज़ का ब्रीफ़",
+  "it": "Riepilogo giornaliero",
+  "ja": "デイリーブリーフ",
+  "pt": "Resumo diário",
+  "zh": "每日简报"
+ },
  "Dairy": {
   "de": "Milchprodukte",
   "es": "Lácteos",
@@ -4809,6 +4839,16 @@
   "pt": "Cada grupo é reduzido a um contacto, mantendo todos os números e e-mails. Não pode ser anulado, por isso garante que tens uma cópia.",
   "zh": "每组会合并为一个联系人，保留所有号码和邮箱。此操作无法撤销，请先确保已备份。"
  },
+ "Each morning you get one notification: medicines, bills and letters due, birthdays, a tidy-up nudge.": {
+  "de": "Jeden Morgen kommt eine Mitteilung: Medikamente, fällige Rechnungen und Briefe, Geburtstage, ein Aufräum-Tipp.",
+  "es": "Cada mañana recibes un aviso: medicamentos, facturas y cartas que vencen, cumpleaños y un recordatorio de limpieza.",
+  "fr": "Chaque matin, une notification : médicaments, factures et courriers à échéance, anniversaires, un rappel de rangement.",
+  "hi": "हर सुबह एक नोटिफ़िकेशन: दवाइयाँ, बकाया बिल और पत्र, जन्मदिन, एक सफ़ाई सुझाव।",
+  "it": "Ogni mattina una notifica: medicine, bollette e lettere in scadenza, compleanni, un invito a fare ordine.",
+  "ja": "毎朝1件の通知：お薬、期限の近い請求書や手紙、誕生日、整理のヒント。",
+  "pt": "Todas as manhãs uma notificação: medicamentos, contas e cartas a vencer, aniversários, uma dica de arrumação.",
+  "zh": "每天早上一条通知：服药、到期的账单和信件、生日、清理提示。"
+ },
  "Each one asks for only the permission it needs, when you turn it on.": {
   "de": "Jedes fragt nur nach der Berechtigung, die es braucht, wenn du es aktivierst.",
   "es": "Cada una pide solo el permiso que necesita, cuando la activas.",
@@ -5198,6 +5238,16 @@
   "ja": "数時間ごと",
   "pt": "A cada poucas horas",
   "zh": "每隔几小时"
+ },
+ "Every morning at": {
+  "de": "Jeden Morgen um",
+  "es": "Cada mañana a las",
+  "fr": "Chaque matin à",
+  "hi": "हर सुबह",
+  "it": "Ogni mattina alle",
+  "ja": "毎朝",
+  "pt": "Todas as manhãs às",
+  "zh": "每天早上"
  },
  "Every number and email is kept on one contact; the duplicates are removed. This can't be undone, so make sure you've backed up.": {
   "de": "Alle Nummern und E-Mails bleiben an einem Kontakt; die Duplikate werden entfernt. Nicht umkehrbar — stelle sicher, dass du ein Backup hast.",
@@ -6469,6 +6519,16 @@
   "pt": "O GPS Dashboard precisa de acesso à localização para ler a tua velocidade e posição. Nada é enviado — fica no teu telemóvel.",
   "zh": "GPS 仪表盘需要位置权限以读取你的速度和位置。不上传任何内容 — 它留在你的手机上。"
  },
+ "Gathering your day…": {
+  "de": "Dein Tag wird zusammengestellt …",
+  "es": "Reuniendo tu día…",
+  "fr": "Préparation de votre journée…",
+  "hi": "आपका दिन तैयार हो रहा है…",
+  "it": "Preparo la tua giornata…",
+  "ja": "今日の予定をまとめています…",
+  "pt": "A reunir o seu dia…",
+  "zh": "正在汇总你的一天…"
+ },
  "General information to help you read the document — not legal, medical or financial advice.": {
   "de": "Allgemeine Informationen, um dir beim Lesen des Dokuments zu helfen — keine rechtliche, medizinische oder finanzielle Beratung.",
   "es": "Información general para ayudarte a leer el documento, no asesoramiento legal, médico ni financiero.",
@@ -7428,6 +7488,16 @@
   "ja": "すでに十分圧縮されていました。",
   "pt": "Já estava bem comprimido.",
   "zh": "原本已经压缩得很好了。"
+ },
+ "It's built from what's already in Tenzy — Medicine Reminders, Sorted (bills and letters), your contacts' birthdays and the Cleaner alerts. Add things there and they show up here.": {
+  "de": "Sie entsteht aus dem, was schon in Tenzy ist – Medikamente, Sorted (Rechnungen und Briefe), Geburtstage deiner Kontakte und Cleaner-Hinweise. Trag dort etwas ein, und es erscheint hier.",
+  "es": "Se arma con lo que ya hay en Tenzy: Medicamentos, Sorted (facturas y cartas), cumpleaños de tus contactos y avisos del Limpiador. Añade cosas allí y aparecerán aquí.",
+  "fr": "Il se compose de ce qui est déjà dans Tenzy — Médicaments, Sorted (factures et courriers), anniversaires des contacts et alertes du Nettoyeur. Ajoutez-y des éléments et ils apparaîtront ici.",
+  "hi": "यह Tenzy में मौजूद चीज़ों से बनता है — दवा रिमाइंडर, Sorted (बिल और पत्र), कॉन्टैक्ट के जन्मदिन और Cleaner अलर्ट। वहाँ जोड़ें, यहाँ दिखेगा।",
+  "it": "Si basa su ciò che è già in Tenzy: Promemoria medicine, Sorted (bollette e lettere), compleanni dei contatti e avvisi del Pulitore. Aggiungi cose lì e compaiono qui.",
+  "ja": "Tenzy にある情報（服薬リマインダー、Sorted の請求書や手紙、連絡先の誕生日、クリーナーの通知）から作られます。そこに追加すればここに表示されます。",
+  "pt": "É feito com o que já está no Tenzy — Medicamentos, Sorted (contas e cartas), aniversários dos contactos e alertas do Limpador. Adicione lá e aparece aqui.",
+  "zh": "内容来自 Tenzy 里已有的信息——服药提醒、Sorted（账单和信件）、联系人生日和清理提醒。在那里添加，这里就会显示。"
  },
  "It's dark — night mode": {
   "de": "Es ist dunkel – Nachtmodus",
@@ -9059,6 +9129,16 @@
   "pt": "Lembretes de remédios",
   "zh": "服药提醒"
  },
+ "Medicines": {
+  "de": "Medikamente",
+  "es": "Medicamentos",
+  "fr": "Médicaments",
+  "hi": "दवाइयाँ",
+  "it": "Medicine",
+  "ja": "お薬",
+  "pt": "Medicamentos",
+  "zh": "药物"
+ },
  "Medium": {
   "de": "Mittel",
   "es": "Medio",
@@ -10519,6 +10599,16 @@
   "pt": "Nada neste cardápio combina claramente — pergunte à equipe o que podem adaptar.",
   "zh": "菜单上没有明确合适的——问问店员能否调整。"
  },
+ "Nothing pressing today. Enjoy it.": {
+  "de": "Heute nichts Dringendes. Genieß es.",
+  "es": "Nada urgente hoy. Disfrútalo.",
+  "fr": "Rien d'urgent aujourd'hui. Profitez-en.",
+  "hi": "आज कुछ ज़रूरी नहीं। मज़े करें।",
+  "it": "Niente di urgente oggi. Goditela.",
+  "ja": "今日は急ぎの用事はありません。",
+  "pt": "Nada urgente hoje. Aproveite.",
+  "zh": "今天没有急事，好好享受。"
+ },
  "Nothing saved yet.": {
   "de": "Noch nichts gespeichert.",
   "es": "Aún no hay nada guardado.",
@@ -10788,6 +10878,16 @@
   "ja": "1段落",
   "pt": "Um parágrafo",
   "zh": "一段"
+ },
+ "One short note each morning with what matters today — set it once and it just comes.": {
+  "de": "Jeden Morgen eine kurze Notiz mit dem, was heute zählt – einmal einrichten, dann kommt sie von selbst.",
+  "es": "Una nota breve cada mañana con lo importante de hoy: configúrala una vez y llega sola.",
+  "fr": "Une courte note chaque matin avec l'essentiel du jour — à régler une fois, elle arrive toute seule.",
+  "hi": "हर सुबह आज की ज़रूरी बातों का छोटा नोट — एक बार सेट करें, फिर अपने आप आएगा।",
+  "it": "Una breve nota ogni mattina con ciò che conta oggi: impostala una volta e arriva da sola.",
+  "ja": "今日の大事なことを毎朝ひとことで。一度設定すれば毎日届きます。",
+  "pt": "Uma nota curta todas as manhãs com o que importa hoje — configure uma vez e chega sozinha.",
+  "zh": "每天早上一条简短消息，告诉你今天的要事——设置一次，自动送达。"
  },
  "One tap each. Nothing leaves your phone.": {
   "de": "Je ein Tipp. Nichts verlässt dein Handy.",
@@ -14759,6 +14859,16 @@
   "pt": "Enviar feedback",
   "zh": "发送反馈"
  },
+ "Send me a daily brief": {
+  "de": "Schick mir eine tägliche Übersicht",
+  "es": "Envíame un resumen diario",
+  "fr": "Envoyez-moi un point quotidien",
+  "hi": "मुझे रोज़ का ब्रीफ़ भेजें",
+  "it": "Mandami un riepilogo giornaliero",
+  "ja": "毎朝のまとめを送る",
+  "pt": "Envie-me um resumo diário",
+  "zh": "每天给我发简报"
+ },
  "Send me a test": {
   "de": "Test senden",
   "es": "Envíame una prueba",
@@ -15278,6 +15388,16 @@
   "ja": "表示／非表示",
   "pt": "Mostrar ou ocultar",
   "zh": "显示或隐藏"
+ },
+ "Show today's weather and what to wear": {
+  "de": "Heutiges Wetter und passende Kleidung zeigen",
+  "es": "Ver el tiempo de hoy y qué ponerte",
+  "fr": "Voir la météo du jour et quoi porter",
+  "hi": "आज का मौसम और क्या पहनें दिखाएँ",
+  "it": "Mostra il meteo di oggi e cosa indossare",
+  "ja": "今日の天気と服装を表示",
+  "pt": "Ver o tempo de hoje e o que vestir",
+  "zh": "显示今天的天气和穿衣建议"
  },
  "Show whole video": {
   "de": "Ganzes Video zeigen",
@@ -16809,6 +16929,16 @@
   "pt": "Toca abaixo para medir a tua velocidade de download real.",
   "zh": "点按下方以测量你真实的下载速度。"
  },
+ "Tap it for this page, with the weather and what to wear. Tap Test run any time to see it now.": {
+  "de": "Tippe darauf für diese Seite mit Wetter und Kleidungstipp. Mit „Probelauf“ siehst du es jederzeit sofort.",
+  "es": "Tócalo para ver esta página con el tiempo y qué ponerte. Toca Prueba cuando quieras para verlo ya.",
+  "fr": "Touchez-la pour cette page, avec la météo et quoi porter. Touchez Essai quand vous voulez pour la voir.",
+  "hi": "टैप करें तो यह पेज मौसम और कपड़ों के सुझाव के साथ खुलेगा। अभी देखने के लिए कभी भी ‘टेस्ट रन’ दबाएँ।",
+  "it": "Toccala per questa pagina, con meteo e cosa indossare. Tocca Prova quando vuoi per vederla subito.",
+  "ja": "タップするとこのページ（天気と服装）が開きます。「テスト実行」でいつでも確認できます。",
+  "pt": "Toque para abrir esta página, com o tempo e o que vestir. Toque em Teste quando quiser para ver já.",
+  "zh": "点开会看到本页面，含天气和穿衣建议。随时点“测试一下”即可预览。"
+ },
  "Tap the bubble in any app to grab or re-copy a clip.": {
   "de": "Tippe die Blase in einer beliebigen App an, um einen Clip zu erfassen oder erneut zu kopieren.",
   "es": "Toca la burbuja en cualquier app para capturar o volver a copiar un clip.",
@@ -18119,6 +18249,16 @@
   "pt": "Arrumar com IA no dispositivo",
   "zh": "用设备端 AI 整理"
  },
+ "Tidy-up alerts": {
+  "de": "Aufräum-Hinweise",
+  "es": "Avisos de limpieza",
+  "fr": "Alertes de rangement",
+  "hi": "सफ़ाई अलर्ट",
+  "it": "Avvisi di pulizia",
+  "ja": "整理の通知",
+  "pt": "Alertas de arrumação",
+  "zh": "清理提醒"
+ },
  "Tight on time, so it's ordered for speed — the must-dos first.": {
   "de": "Wenig Zeit – darum nach Tempo sortiert, das Wichtigste zuerst.",
   "es": "Vas justo de tiempo, así que está ordenado por rapidez: lo imprescindible primero.",
@@ -18648,6 +18788,16 @@
   "ja": "箇条書きにする",
   "pt": "Transformar em tópicos",
   "zh": "转为要点"
+ },
+ "Turn it on and pick a time — 7 AM is a good start.": {
+  "de": "Einschalten und eine Uhrzeit wählen – 7 Uhr ist ein guter Start.",
+  "es": "Actívalo y elige una hora: las 7 es buen comienzo.",
+  "fr": "Activez-le et choisissez une heure — 7 h est un bon début.",
+  "hi": "इसे चालू करें और समय चुनें — सुबह 7 बजे अच्छा है।",
+  "it": "Attivalo e scegli un orario: le 7 vanno bene.",
+  "ja": "オンにして時刻を選びます（朝7時がおすすめ）。",
+  "pt": "Ative e escolha uma hora — 7h é um bom começo.",
+  "zh": "打开并选个时间——早上 7 点不错。"
  },
  "Turn on Peaking — the red edges show exactly what's sharp.": {
   "de": "Schalte Peaking ein — die roten Kanten zeigen genau, was scharf ist.",
@@ -19719,6 +19869,16 @@
   "pt": "Para onde vai?",
   "zh": "要发到哪里？"
  },
+ "Where it comes from": {
+  "de": "Woher es kommt",
+  "es": "De dónde sale",
+  "fr": "D'où ça vient",
+  "hi": "यह कहाँ से आता है",
+  "it": "Da dove arriva",
+  "ja": "情報元",
+  "pt": "De onde vem",
+  "zh": "内容来源"
+ },
  "Where they're saved": {
   "de": "Wo sie gespeichert sind",
   "es": "Dónde se guardan",
@@ -20168,6 +20328,16 @@
   "ja": "子どもの頃の親友の名前",
   "pt": "O nome do seu melhor amigo de infância",
   "zh": "你童年最好朋友的名字"
+ },
+ "Your day in one morning note": {
+  "de": "Dein Tag in einer Morgennotiz",
+  "es": "Tu día en una nota matinal",
+  "fr": "Votre journée en une note du matin",
+  "hi": "आपका दिन एक सुबह के नोट में",
+  "it": "La tua giornata in una nota mattutina",
+  "ja": "朝のひとことで今日がわかる",
+  "pt": "O seu dia numa nota de manhã",
+  "zh": "一条早间消息看清今天"
  },
  "Your diary PIN": {
   "de": "Deine Tagebuch-PIN",
