@@ -149,6 +149,26 @@
   "pt": "1 hora antes",
   "zh": "提前 1 小时"
  },
+ "1 mark": {
+  "de": "1 Markierung",
+  "es": "1 marca",
+  "fr": "1 marque",
+  "hi": "1 निशान",
+  "it": "1 segno",
+  "ja": "1 件のマーク",
+  "pt": "1 marca",
+  "zh": "1 处标记"
+ },
+ "1 region": {
+  "de": "1 Bereich",
+  "es": "1 zona",
+  "fr": "1 zone",
+  "hi": "1 हिस्सा",
+  "it": "1 area",
+  "ja": "1 か所",
+  "pt": "1 área",
+  "zh": "1 个区域"
+ },
  "1.  In any app, select text → Share → “Save to Tenzy”.\n": {
   "de": "1.  Markiere in einer beliebigen App Text → Teilen → „In Tenzy speichern“.\n",
   "es": "1.  En cualquier app, selecciona texto → Compartir → “Guardar en Tenzy”.\n",
@@ -879,6 +899,16 @@
   "pt": "Adicionar falante",
   "zh": "添加说话人"
  },
+ "Add all": {
+  "de": "Alle hinzufügen",
+  "es": "Añadir todo",
+  "fr": "Tout ajouter",
+  "hi": "सब जोड़ें",
+  "it": "Aggiungi tutto",
+  "ja": "すべて追加",
+  "pt": "Adicionar tudo",
+  "zh": "全部添加"
+ },
  "Add another PDF": {
   "de": "Weiteres PDF hinzufügen",
   "es": "Añadir otro PDF",
@@ -958,6 +988,16 @@
   "ja": "ジャケットを追加",
   "pt": "Adicionar capa",
   "zh": "添加封面"
+ },
+ "Add date": {
+  "de": "Datum hinzufügen",
+  "es": "Añadir fecha",
+  "fr": "Ajouter la date",
+  "hi": "तारीख़ जोड़ें",
+  "it": "Aggiungi data",
+  "ja": "日付を追加",
+  "pt": "Adicionar data",
+  "zh": "添加日期"
  },
  "Add dates to Calendar": {
   "de": "Termine zum Kalender hinzufügen",
@@ -1058,6 +1098,16 @@
   "ja": "写真を追加",
   "pt": "Adicionar fotos",
   "zh": "添加照片"
+ },
+ "Add signature": {
+  "de": "Unterschrift hinzufügen",
+  "es": "Añadir firma",
+  "fr": "Ajouter une signature",
+  "hi": "हस्ताक्षर जोड़ें",
+  "it": "Aggiungi firma",
+  "ja": "署名を追加",
+  "pt": "Adicionar assinatura",
+  "zh": "添加签名"
  },
  "Add the plan to Reminders, with alerts": {
   "de": "Plan zu Erinnerungen hinzufügen, mit Hinweisen",
@@ -1169,6 +1219,16 @@
   "pt": "Adicionar às despesas do mês",
   "zh": "加入本月支出"
  },
+ "Add watermark": {
+  "de": "Wasserzeichen hinzufügen",
+  "es": "Añadir marca de agua",
+  "fr": "Ajouter un filigrane",
+  "hi": "वॉटरमार्क जोड़ें",
+  "it": "Aggiungi filigrana",
+  "ja": "透かしを追加",
+  "pt": "Adicionar marca d'água",
+  "zh": "添加水印"
+ },
  "Add words (optional) — e.g. LOL, Yay, Miss you": {
   "de": "Text hinzufügen (optional) – z. B. LOL, Yay, Vermisse dich",
   "es": "Añade palabras (opcional): p. ej., LOL, Yay, Te extraño",
@@ -1259,6 +1319,16 @@
   "pt": "Adiciona uma camada de texto invisível para que procurar, selecionar e copiar funcionem em qualquer leitor.",
   "zh": "添加隐形文字层，让查找、选择和复制在任何阅读器中都能使用。"
  },
+ "Adds up": {
+  "de": "Stimmt",
+  "es": "Cuadra",
+  "fr": "C'est juste",
+  "hi": "जोड़ सही है",
+  "it": "Torna",
+  "ja": "合計が一致",
+  "pt": "Bate",
+  "zh": "加总一致"
+ },
  "Ads off, every tool unlimited — for testing the paid experience.": {
   "de": "Keine Werbung, alle Tools unbegrenzt — zum Testen der Bezahlversion.",
   "es": "Sin anuncios, todas las herramientas sin límite — para probar la experiencia de pago.",
@@ -1278,6 +1348,16 @@
   "ja": "広告がTenzyを支えています",
   "pt": "Os anúncios apoiam o Tenzy",
   "zh": "广告支持 Tenzy"
+ },
+ "After": {
+  "de": "Nachher",
+  "es": "Después",
+  "fr": "Après",
+  "hi": "बाद में",
+  "it": "Dopo",
+  "ja": "後",
+  "pt": "Depois",
+  "zh": "之后"
  },
  "Aim at the top — the height updates live — and tap.": {
   "de": "Auf die Oberkante zielen – die Höhe läuft mit – und tippen.",
@@ -1328,6 +1408,16 @@
   "ja": "すべてのアカウント",
   "pt": "Todas as contas",
   "zh": "所有账户"
+ },
+ "All added to your calendar": {
+  "de": "Alles im Kalender eingetragen",
+  "es": "Todo añadido a tu calendario",
+  "fr": "Tout est ajouté à votre calendrier",
+  "hi": "सब आपके कैलेंडर में जुड़ गया",
+  "it": "Tutto aggiunto al calendario",
+  "ja": "すべてカレンダーに追加しました",
+  "pt": "Tudo adicionado ao seu calendário",
+  "zh": "已全部添加到日历"
  },
  "All done. That was a lot — well done for getting through it.": {
   "de": "Alles erledigt. Das war viel – gut gemacht!",
@@ -1419,6 +1509,26 @@
   "pt": "Permita Lembretes para o Tenzy em Ajustes e toque de novo.",
   "zh": "请在设置中允许 Tenzy 使用提醒事项，然后再点按。"
  },
+ "Allow Reminders for Tenzy — open Settings": {
+  "de": "Erinnerungen für Tenzy erlauben – Einstellungen öffnen",
+  "es": "Permite Recordatorios para Tenzy: abre Ajustes",
+  "fr": "Autorisez Rappels pour Tenzy — ouvrir Réglages",
+  "hi": "Tenzy के लिए Reminders की अनुमति दें — Settings खोलें",
+  "it": "Consenti Promemoria a Tenzy — apri Impostazioni",
+  "ja": "Tenzyにリマインダーを許可 — 設定を開く",
+  "pt": "Permita Lembretes para o Tenzy — abra Ajustes",
+  "zh": "允许 Tenzy 使用提醒事项 — 打开设置"
+ },
+ "Allow Tenzy to add photos — open Settings": {
+  "de": "Tenzy erlauben, Fotos hinzuzufügen – Einstellungen öffnen",
+  "es": "Permite que Tenzy añada fotos: abre Ajustes",
+  "fr": "Autorisez Tenzy à ajouter des photos — ouvrir Réglages",
+  "hi": "Tenzy को फ़ोटो जोड़ने की अनुमति दें — Settings खोलें",
+  "it": "Consenti a Tenzy di aggiungere foto — apri Impostazioni",
+  "ja": "Tenzyに写真の追加を許可 — 設定を開く",
+  "pt": "Permita que o Tenzy adicione fotos — abra Ajustes",
+  "zh": "允许 Tenzy 添加照片 — 打开设置"
+ },
  "Allow microphone access in Settings › Tenzy › Microphone.": {
   "de": "Erlaube den Mikrofonzugriff unter Einstellungen › Tenzy › Mikrofon.",
   "es": "Permite el micrófono en Ajustes › Tenzy › Micrófono.",
@@ -1509,6 +1619,16 @@
   "pt": "Criar também um GIF (para conversas)",
   "zh": "同时生成GIF（用于聊天）"
  },
+ "Also make it bigger (2×)": {
+  "de": "Auch vergrößern (2×)",
+  "es": "Hacerla también más grande (2×)",
+  "fr": "L'agrandir aussi (2×)",
+  "hi": "इसे बड़ा भी करें (2×)",
+  "it": "Ingrandiscila anche (2×)",
+  "ja": "2倍に拡大もする",
+  "pt": "Também aumentar (2×)",
+  "zh": "同时放大（2×）"
+ },
  "Altitude": {
   "de": "Höhe",
   "es": "Altitud",
@@ -1529,6 +1649,16 @@
   "pt": "Valor",
   "zh": "金额"
  },
+ "And again on the day": {
+  "de": "Und noch einmal am Tag selbst",
+  "es": "Y otra vez el mismo día",
+  "fr": "Et encore le jour même",
+  "hi": "और उसी दिन फिर से",
+  "it": "E di nuovo il giorno stesso",
+  "ja": "当日にもう一度",
+  "pt": "E de novo no dia",
+  "zh": "当天再提醒一次"
+ },
  "Animate": {
   "de": "Animieren",
   "es": "Animar",
@@ -1548,6 +1678,16 @@
   "ja": "アニメと作成",
   "pt": "Animar e criar",
   "zh": "动画与创作"
+ },
+ "Annotated PDF": {
+  "de": "Kommentiertes PDF",
+  "es": "PDF anotado",
+  "fr": "PDF annoté",
+  "hi": "टिप्पणी वाला PDF",
+  "it": "PDF annotato",
+  "ja": "注釈付きPDF",
+  "pt": "PDF anotado",
+  "zh": "已批注的 PDF"
  },
  "Another app is using the microphone right now (a call, a voice memo or a video). Close it, then try again.": {
   "de": "Eine andere App nutzt gerade das Mikrofon (Anruf, Sprachmemo oder Video). Schließe sie und versuch es erneut.",
@@ -1609,6 +1749,16 @@
   "pt": "Qualquer pessoa pode escanear com a câmera para adicionar o contato.",
   "zh": "任何人用相机扫一扫即可添加联系人。"
  },
+ "Anyone opening the file will need this password. Tenzy doesn't keep it — note it somewhere safe.": {
+  "de": "Wer die Datei öffnet, braucht dieses Passwort. Tenzy speichert es nicht – notiere es an einem sicheren Ort.",
+  "es": "Quien abra el archivo necesitará esta contraseña. Tenzy no la guarda: anótala en un lugar seguro.",
+  "fr": "Toute personne qui ouvre le fichier aura besoin de ce mot de passe. Tenzy ne le conserve pas — notez-le en lieu sûr.",
+  "hi": "फ़ाइल खोलने वाले को यह पासवर्ड चाहिए होगा। Tenzy इसे नहीं रखता — इसे किसी सुरक्षित जगह लिख लें।",
+  "it": "Chi apre il file avrà bisogno di questa password. Tenzy non la conserva — annotala in un posto sicuro.",
+  "ja": "ファイルを開くにはこのパスワードが必要です。Tenzyは保存しないので、安全な場所に控えてください。",
+  "pt": "Quem abrir o arquivo vai precisar desta senha. O Tenzy não a guarda — anote em um lugar seguro.",
+  "zh": "打开文件的人都需要这个密码。Tenzy 不会保存它——请记在安全的地方。"
+ },
  "Anything from the pharmacy aisle": {
   "de": "Etwas aus der Apothekenabteilung",
   "es": "Algo del pasillo de farmacia",
@@ -1639,6 +1789,16 @@
   "pt": "Só se aplica às fotos deste zip. Os originais não mudam. As fotos ficam em JPEG para abrirem em todo o lado.",
   "zh": "只作用于此 zip 中的照片，原图不变。照片存为 JPEG，任何地方都能打开。"
  },
+ "Apply & preview": {
+  "de": "Anwenden & Vorschau",
+  "es": "Aplicar y ver",
+  "fr": "Appliquer et prévisualiser",
+  "hi": "लागू करें और देखें",
+  "it": "Applica e anteprima",
+  "ja": "適用してプレビュー",
+  "pt": "Aplicar e visualizar",
+  "zh": "应用并预览"
+ },
  "Apply this look to every page": {
   "de": "Dieses Aussehen auf jede Seite anwenden",
   "es": "Aplicar este aspecto a cada página",
@@ -1648,6 +1808,16 @@
   "ja": "この見た目を全ページに適用",
   "pt": "Aplicar este aspeto a todas as páginas",
   "zh": "将此效果应用到每一页"
+ },
+ "Archive": {
+  "de": "Archiv",
+  "es": "Archivo comprimido",
+  "fr": "Archive",
+  "hi": "आर्काइव",
+  "it": "Archivio",
+  "ja": "アーカイブ",
+  "pt": "Arquivo compactado",
+  "zh": "压缩包"
  },
  "Area": {
   "de": "Fläche",
@@ -2369,6 +2539,16 @@
   "pt": "Apitar quando estiver nivelado",
   "zh": "水平时发出提示音"
  },
+ "Before": {
+  "de": "Vorher",
+  "es": "Antes",
+  "fr": "Avant",
+  "hi": "पहले",
+  "it": "Prima",
+  "ja": "前",
+  "pt": "Antes",
+  "zh": "之前"
+ },
  "Before a return window closes": {
   "de": "Bevor eine Rückgabefrist endet",
   "es": "Antes de que cierre el plazo de devolución",
@@ -2388,6 +2568,16 @@
   "ja": "保証が切れる前",
   "pt": "Antes de acabar uma garantia",
   "zh": "保修到期前"
+ },
+ "Before and after": {
+  "de": "Vorher und nachher",
+  "es": "Antes y después",
+  "fr": "Avant et après",
+  "hi": "पहले और बाद में",
+  "it": "Prima e dopo",
+  "ja": "ビフォー・アフター",
+  "pt": "Antes e depois",
+  "zh": "前后对比"
  },
  "Before and after, side by side": {
   "de": "Vorher und nachher, nebeneinander",
@@ -2459,6 +2649,16 @@
   "pt": "Melhor estimativa do reconhecimento no dispositivo — uma pesquisa rápida confirma a espécie ou o modelo exatos.",
   "zh": "基于设备端识别的最佳猜测——快速搜索即可确认确切的物种或型号。"
  },
+ "Best on a voice memo or a too-quiet clip. On-device tidy-up, not a studio denoiser.": {
+  "de": "Am besten für Sprachmemos oder zu leise Clips. Aufräumen auf dem Gerät, kein Studio-Entrauscher.",
+  "es": "Ideal para notas de voz o clips muy bajos. Limpieza en el dispositivo, no un reductor de ruido de estudio.",
+  "fr": "Idéal pour un mémo vocal ou un clip trop faible. Nettoyage sur l'appareil, pas un débruiteur de studio.",
+  "hi": "वॉइस मेमो या बहुत धीमी क्लिप के लिए सबसे अच्छा। फ़ोन पर ही सफ़ाई, स्टूडियो डीनॉइज़र नहीं।",
+  "it": "Ideale per un memo vocale o una clip troppo bassa. Pulizia sul dispositivo, non un denoiser da studio.",
+  "ja": "ボイスメモや小さすぎる音声に最適。端末内での簡易処理で、スタジオ用ノイズ除去ではありません。",
+  "pt": "Melhor para memos de voz ou clipes muito baixos. Limpeza no aparelho, não um redutor de ruído de estúdio.",
+  "zh": "最适合语音备忘录或声音太小的片段。在设备上整理，不是录音棚级降噪。"
+ },
  "Best part": {
   "de": "Bester Teil",
   "es": "Mejor parte",
@@ -2508,6 +2708,16 @@
   "ja": "最大のフォルダ",
   "pt": "Pastas maiores",
   "zh": "最大的文件夹"
+ },
+ "Biggest wins first. Switch off anything you want to keep.": {
+  "de": "Die größten Gewinne zuerst. Schalte aus, was du behalten willst.",
+  "es": "Primero lo que más libera. Desactiva lo que quieras conservar.",
+  "fr": "Les plus gros gains d'abord. Désactivez ce que vous voulez garder.",
+  "hi": "सबसे बड़ी बचत पहले। जो रखना है उसे बंद कर दें।",
+  "it": "Prima i guadagni maggiori. Disattiva ciò che vuoi tenere.",
+  "ja": "効果の大きいものから。残したいものはオフに。",
+  "pt": "Os maiores ganhos primeiro. Desligue o que quiser manter.",
+  "zh": "先列出最省空间的。想保留的请关闭。"
  },
  "Bill before tip": {
   "de": "Rechnung ohne Trinkgeld",
@@ -2758,6 +2968,16 @@
   "ja": "身分証、カード、頼まれたものを持参",
   "pt": "Leve documento, cartão e o que pediram",
   "zh": "带上证件、卡和对方要求的东西"
+ },
+ "Brings a too-quiet clip up to a consistent level.": {
+  "de": "Hebt einen zu leisen Clip auf ein gleichmäßiges Niveau.",
+  "es": "Sube un clip muy bajo a un nivel uniforme.",
+  "fr": "Remonte un clip trop faible à un niveau constant.",
+  "hi": "बहुत धीमी क्लिप को एक जैसे स्तर तक लाता है।",
+  "it": "Porta una clip troppo bassa a un livello costante.",
+  "ja": "小さすぎる音声を一定の音量にそろえます。",
+  "pt": "Leva um clipe muito baixo a um nível constante.",
+  "zh": "把声音太小的片段提升到稳定的音量。"
  },
  "Budget (optional)": {
   "de": "Budget (optional)",
@@ -3339,6 +3559,16 @@
   "pt": "Confira de novo o lugar da planta",
   "zh": "再测一次那个放植物的位置"
  },
+ "Check the date and time against the poster — you can change anything before saving.": {
+  "de": "Prüfe Datum und Uhrzeit mit dem Plakat – du kannst vor dem Sichern alles ändern.",
+  "es": "Comprueba la fecha y la hora con el cartel: puedes cambiar todo antes de guardar.",
+  "fr": "Vérifiez la date et l'heure sur l'affiche — vous pouvez tout modifier avant d'enregistrer.",
+  "hi": "तारीख़ और समय पोस्टर से मिला लें — सहेजने से पहले कुछ भी बदल सकते हैं।",
+  "it": "Controlla data e ora sul poster — puoi cambiare tutto prima di salvare.",
+  "ja": "日付と時刻をポスターと照らし合わせてください。保存前に何でも変更できます。",
+  "pt": "Confira a data e a hora com o cartaz — dá para mudar tudo antes de salvar.",
+  "zh": "请对照海报核对日期和时间——保存前可以修改任何内容。"
+ },
  "Check the fridge and write the list first": {
   "de": "Erst den Kühlschrank checken und die Liste schreiben",
   "es": "Revisa la nevera y escribe la lista primero",
@@ -3358,6 +3588,16 @@
   "ja": "ご自身で確認してください",
   "pt": "Confira você mesmo",
   "zh": "请自行检查"
+ },
+ "Check this": {
+  "de": "Bitte prüfen",
+  "es": "Revisa esto",
+  "fr": "À vérifier",
+  "hi": "इसे जांचें",
+  "it": "Controlla",
+  "ja": "要確認",
+  "pt": "Confira isto",
+  "zh": "请核对"
  },
  "Check what you already have at home first": {
   "de": "Erst schauen, was du schon zu Hause hast",
@@ -3418,6 +3658,26 @@
   "ja": "規定に照らして確認",
   "pt": "Conferido com as regras",
   "zh": "已按规定检查"
+ },
+ "Checked: nothing readable was under the boxes.": {
+  "de": "Geprüft: Unter den Kästen war nichts Lesbares.",
+  "es": "Comprobado: no había nada legible bajo los recuadros.",
+  "fr": "Vérifié : rien de lisible sous les cadres.",
+  "hi": "जांचा गया: बॉक्स के नीचे कुछ पढ़ने लायक नहीं था।",
+  "it": "Verificato: sotto i riquadri non c'era nulla di leggibile.",
+  "ja": "確認済み：枠の下に読める文字はありませんでした。",
+  "pt": "Verificado: nada legível sob as caixas.",
+  "zh": "已检查：方框下没有可识别的文字。"
+ },
+ "Checking the hidden words are really gone…": {
+  "de": "Prüfe, ob die verborgenen Wörter wirklich weg sind …",
+  "es": "Comprobando que las palabras ocultas ya no están…",
+  "fr": "Vérification que les mots masqués ont bien disparu…",
+  "hi": "जांच रहे हैं कि छिपाए गए शब्द सच में हट गए…",
+  "it": "Verifico che le parole nascoste siano davvero sparite…",
+  "ja": "隠した文字が本当に消えたか確認中…",
+  "pt": "Verificando se as palavras ocultas sumiram mesmo…",
+  "zh": "正在确认隐藏的文字确实已删除…"
  },
  "Checking today's weather…": {
   "de": "Wetter für heute wird geprüft …",
@@ -3549,6 +3809,16 @@
   "pt": "Escolha um formulário PDF — inscrição, impostos ou escola — e preencha aqui.",
   "zh": "选择PDF表单——申请表、税表或学校表格——在这里填写。"
  },
+ "Choose a PDF to lock with a password, unlock, or watermark.": {
+  "de": "Wähle ein PDF, um es mit Passwort zu sperren, zu entsperren oder mit Wasserzeichen zu versehen.",
+  "es": "Elige un PDF para bloquearlo con contraseña, desbloquearlo o ponerle marca de agua.",
+  "fr": "Choisissez un PDF à verrouiller, déverrouiller ou filigraner.",
+  "hi": "पासवर्ड से लॉक, अनलॉक या वॉटरमार्क करने के लिए PDF चुनें।",
+  "it": "Scegli un PDF da bloccare con password, sbloccare o filigranare.",
+  "ja": "パスワードでロック、解除、または透かしを入れるPDFを選択。",
+  "pt": "Escolha um PDF para proteger com senha, desbloquear ou pôr marca d'água.",
+  "zh": "选择要加密、解锁或加水印的 PDF。"
+ },
  "Choose a PDF — from Files, Mail or Downloads.": {
   "de": "Wähle ein PDF – aus Dateien, Mail oder Downloads.",
   "es": "Elige un PDF de Archivos, Mail o Descargas.",
@@ -3558,6 +3828,56 @@
   "ja": "ファイル・メール・ダウンロードからPDFを選択。",
   "pt": "Escolha um PDF — de Arquivos, Mail ou Downloads.",
   "zh": "从“文件”、邮件或下载中选择 PDF。"
+ },
+ "Choose a PDF, then drag a box over anything you want gone.": {
+  "de": "Wähle ein PDF und zieh einen Kasten über alles, was weg soll.",
+  "es": "Elige un PDF y arrastra un recuadro sobre lo que quieras quitar.",
+  "fr": "Choisissez un PDF, puis tracez un cadre sur ce qui doit disparaître.",
+  "hi": "PDF चुनें, फिर जो हटाना है उस पर बॉक्स खींचें।",
+  "it": "Scegli un PDF, poi trascina un riquadro su ciò che vuoi eliminare.",
+  "ja": "PDFを選び、消したい部分を枠で囲みます。",
+  "pt": "Escolha um PDF e arraste uma caixa sobre o que quiser apagar.",
+  "zh": "选择 PDF，然后在要去掉的内容上拖出方框。"
+ },
+ "Choose a PDF, then drop your signature where it needs to go.": {
+  "de": "Wähle ein PDF und setz deine Unterschrift an die richtige Stelle.",
+  "es": "Elige un PDF y coloca tu firma donde haga falta.",
+  "fr": "Choisissez un PDF, puis placez votre signature au bon endroit.",
+  "hi": "PDF चुनें, फिर हस्ताक्षर सही जगह पर रखें।",
+  "it": "Scegli un PDF, poi metti la firma dove serve.",
+  "ja": "PDFを選び、必要な場所に署名を置きます。",
+  "pt": "Escolha um PDF e coloque sua assinatura onde precisa.",
+  "zh": "选择 PDF，然后把签名放到需要的位置。"
+ },
+ "Choose a PDF, then highlight lines or draw on the page.": {
+  "de": "Wähle ein PDF und markiere Zeilen oder zeichne auf die Seite.",
+  "es": "Elige un PDF y resalta líneas o dibuja en la página.",
+  "fr": "Choisissez un PDF, puis surlignez des lignes ou dessinez sur la page.",
+  "hi": "PDF चुनें, फिर पंक्तियां हाइलाइट करें या पेज पर बनाएं।",
+  "it": "Scegli un PDF, poi evidenzia righe o disegna sulla pagina.",
+  "ja": "PDFを選び、行をハイライトしたりページに書き込んだりします。",
+  "pt": "Escolha um PDF e destaque linhas ou desenhe na página.",
+  "zh": "选择 PDF，然后高亮文字行或在页面上绘制。"
+ },
+ "Choose a PDF, then move, turn or remove its pages.": {
+  "de": "Wähle ein PDF und verschiebe, drehe oder entferne Seiten.",
+  "es": "Elige un PDF y mueve, gira o quita sus páginas.",
+  "fr": "Choisissez un PDF, puis déplacez, pivotez ou supprimez ses pages.",
+  "hi": "PDF चुनें, फिर पेज हिलाएं, घुमाएं या हटाएं।",
+  "it": "Scegli un PDF, poi sposta, ruota o rimuovi le pagine.",
+  "ja": "PDFを選び、ページの移動・回転・削除を行います。",
+  "pt": "Escolha um PDF e mova, gire ou remova páginas.",
+  "zh": "选择 PDF，然后移动、旋转或删除页面。"
+ },
+ "Choose a PDF, then turn it into images or text.": {
+  "de": "Wähle ein PDF und wandle es in Bilder oder Text um.",
+  "es": "Elige un PDF y conviértelo en imágenes o texto.",
+  "fr": "Choisissez un PDF, puis convertissez-le en images ou en texte.",
+  "hi": "PDF चुनें, फिर उसे इमेज या टेक्स्ट में बदलें।",
+  "it": "Scegli un PDF, poi trasformalo in immagini o testo.",
+  "ja": "PDFを選び、画像やテキストに変換します。",
+  "pt": "Escolha um PDF e transforme em imagens ou texto.",
+  "zh": "选择 PDF，然后转为图片或文字。"
  },
  "Choose a PDF. Add another one to combine them into a single file.": {
   "de": "Wähle ein PDF. Füge ein weiteres hinzu, um beide zu einer Datei zu machen.",
@@ -3729,6 +4049,16 @@
   "pt": "Escolher uma gravação",
   "zh": "选择录音"
  },
+ "Choose a recording or a video, then tap a voice to transform it.": {
+  "de": "Wähle eine Aufnahme oder ein Video und tippe auf eine Stimme, um sie zu verwandeln.",
+  "es": "Elige una grabación o un vídeo y toca una voz para transformarla.",
+  "fr": "Choisissez un enregistrement ou une vidéo, puis touchez une voix pour la transformer.",
+  "hi": "रिकॉर्डिंग या वीडियो चुनें, फिर बदलने के लिए कोई आवाज़ टैप करें।",
+  "it": "Scegli una registrazione o un video, poi tocca una voce per trasformarla.",
+  "ja": "録音か動画を選び、声をタップして変換します。",
+  "pt": "Escolha uma gravação ou vídeo e toque em uma voz para transformar.",
+  "zh": "选择录音或视频，然后轻点一种声音来变声。"
+ },
  "Choose a recording, song or video — Tenzy shrinks its sound to the size you need.": {
   "de": "Wähle eine Aufnahme, einen Song oder ein Video – Tenzy verkleinert den Ton auf die gewünschte Größe.",
   "es": "Elige una grabación, canción o vídeo: Tenzy reduce su sonido al tamaño que necesitas.",
@@ -3759,6 +4089,16 @@
   "pt": "Escolher uma música ou ficheiro de áudio",
   "zh": "选择歌曲或音频文件"
  },
+ "Choose a song or clip, then trim up to 30 seconds for your ringtone.": {
+  "de": "Wähle einen Song oder Clip und schneide bis zu 30 Sekunden für deinen Klingelton zu.",
+  "es": "Elige una canción o clip y recorta hasta 30 segundos para tu tono.",
+  "fr": "Choisissez un morceau ou un clip, puis coupez jusqu'à 30 secondes pour votre sonnerie.",
+  "hi": "गाना या क्लिप चुनें, फिर रिंगटोन के लिए 30 सेकंड तक काटें।",
+  "it": "Scegli una canzone o clip, poi taglia fino a 30 secondi per la suoneria.",
+  "ja": "曲やクリップを選び、着信音用に最大30秒を切り出します。",
+  "pt": "Escolha uma música ou clipe e corte até 30 segundos para o toque.",
+  "zh": "选择歌曲或片段，然后截取最多 30 秒作为铃声。"
+ },
  "Choose a song or recording to name it properly and give it cover art.": {
   "de": "Wähle einen Song oder eine Aufnahme, um ihn richtig zu benennen und ein Cover zu geben.",
   "es": "Elige una canción o grabación para nombrarla bien y darle portada.",
@@ -3768,6 +4108,16 @@
   "ja": "曲や録音を選んで、正しい名前とジャケットを付けましょう。",
   "pt": "Escolha uma música ou gravação para nomeá-la direito e dar uma capa.",
   "zh": "选择歌曲或录音，正确命名并添加封面。"
+ },
+ "Choose a song, recording or clip, then trim it, fade the ends, and cut out dead air.": {
+  "de": "Wähle einen Song, eine Aufnahme oder einen Clip, schneide ihn zu, blende die Enden aus und entferne Stille.",
+  "es": "Elige una canción, grabación o clip; recórtalo, suaviza los extremos y quita los silencios.",
+  "fr": "Choisissez un morceau, un enregistrement ou un clip, puis coupez-le, adoucissez les extrémités et retirez les blancs.",
+  "hi": "गाना, रिकॉर्डिंग या क्लिप चुनें, फिर काटें, सिरों को फ़ेड करें और खाली हिस्से हटाएं।",
+  "it": "Scegli una canzone, registrazione o clip, poi tagliala, sfuma gli estremi e togli i silenzi.",
+  "ja": "曲・録音・クリップを選び、トリム、両端のフェード、無音のカットを行います。",
+  "pt": "Escolha uma música, gravação ou clipe, corte, suavize as pontas e tire os silêncios.",
+  "zh": "选择歌曲、录音或片段，然后剪辑、两端淡入淡出并去掉空白。"
  },
  "Choose a video": {
   "de": "Video auswählen",
@@ -3808,6 +4158,16 @@
   "ja": "音声を選択",
   "pt": "Escolher áudio",
   "zh": "选择音频"
+ },
+ "Choose audio or video": {
+  "de": "Audio oder Video wählen",
+  "es": "Elegir audio o vídeo",
+  "fr": "Choisir un audio ou une vidéo",
+  "hi": "ऑडियो या वीडियो चुनें",
+  "it": "Scegli audio o video",
+  "ja": "音声または動画を選択",
+  "pt": "Escolher áudio ou vídeo",
+  "zh": "选择音频或视频"
  },
  "Choose card photos": {
   "de": "Kartenfotos wählen",
@@ -3959,6 +4319,16 @@
   "pt": "Círculo",
   "zh": "圆形"
  },
+ "City": {
+  "de": "Stadt",
+  "es": "Ciudad",
+  "fr": "Ville",
+  "hi": "शहर",
+  "it": "Città",
+  "ja": "市区町村",
+  "pt": "Cidade",
+  "zh": "城市"
+ },
  "Claims to be a well-known organisation": {
   "de": "Gibt sich als bekannte Organisation aus",
   "es": "Dice ser una organización conocida",
@@ -3999,6 +4369,16 @@
   "pt": "Limpar",
   "zh": "清理"
  },
+ "Clean again": {
+  "de": "Erneut bereinigen",
+  "es": "Limpiar de nuevo",
+  "fr": "Nettoyer à nouveau",
+  "hi": "फिर से साफ़ करें",
+  "it": "Pulisci di nuovo",
+  "ja": "もう一度クリーンアップ",
+  "pt": "Limpar de novo",
+  "zh": "再次清理"
+ },
  "Clean copy ready — no location, no metadata, redactions permanent.": {
   "de": "Saubere Kopie fertig — kein Standort, keine Metadaten, Schwärzungen dauerhaft.",
   "es": "Copia limpia lista: sin ubicación, sin metadatos, tachados permanentes.",
@@ -4008,6 +4388,16 @@
   "ja": "クリーンなコピー完成——位置情報なし、メタデータなし、黒塗りは恒久的。",
   "pt": "Cópia limpa pronta — sem localização, sem metadados, ocultações permanentes.",
   "zh": "清洁版本已就绪——无位置、无元数据、涂黑永久有效。"
+ },
+ "Clean it up": {
+  "de": "Aufräumen",
+  "es": "Limpiarlo",
+  "fr": "Nettoyer",
+  "hi": "साफ़ करें",
+  "it": "Pulisci",
+  "ja": "クリーンアップ",
+  "pt": "Limpar",
+  "zh": "清理"
  },
  "Clean up & back up": {
   "de": "Aufräumen & sichern",
@@ -4048,6 +4438,16 @@
   "ja": "そのあと清潔で楽な服に",
   "pt": "Depois, roupas limpas e confortáveis",
   "zh": "之后换上干净舒适的衣服"
+ },
+ "Cleaned up — play it below, then save or share.": {
+  "de": "Bereinigt – unten abspielen, dann sichern oder teilen.",
+  "es": "Limpio: reprodúcelo abajo y luego guárdalo o compártelo.",
+  "fr": "Nettoyé — écoutez-le ci-dessous, puis enregistrez ou partagez.",
+  "hi": "साफ़ हो गया — नीचे चलाएं, फिर सहेजें या शेयर करें।",
+  "it": "Pulito — ascoltalo qui sotto, poi salva o condividi.",
+  "ja": "クリーンアップ完了 — 下で再生して、保存または共有。",
+  "pt": "Limpo — ouça abaixo e depois salve ou compartilhe.",
+  "zh": "已清理——在下方播放，然后保存或分享。"
  },
  "Cleaner": {
   "de": "Aufräumen",
@@ -4138,6 +4538,16 @@
   "ja": "文字起こしを消去",
   "pt": "Limpar transcrição",
   "zh": "清除文字记录"
+ },
+ "Cleared about": {
+  "de": "Freigegeben: etwa",
+  "es": "Liberado: unos",
+  "fr": "Libéré : environ",
+  "hi": "लगभग खाली हुआ",
+  "it": "Liberati circa",
+  "ja": "解放：約",
+  "pt": "Liberado: cerca de",
+  "zh": "已释放约"
  },
  "Clearer head and more energy, even after a short one.": {
   "de": "Klarer Kopf und mehr Energie, schon nach kurzer Zeit.",
@@ -4298,6 +4708,16 @@
   "ja": "色覚",
   "pt": "Visão de cor",
   "zh": "色觉"
+ },
+ "Column": {
+  "de": "Spalte",
+  "es": "Columna",
+  "fr": "Colonne",
+  "hi": "कॉलम",
+  "it": "Colonna",
+  "ja": "列",
+  "pt": "Coluna",
+  "zh": "列"
  },
  "Comic": {
   "de": "Comic",
@@ -4508,6 +4928,16 @@
   "ja": "MP4に変換",
   "pt": "Converter para MP4",
   "zh": "转换为MP4"
+ },
+ "Convert to images": {
+  "de": "In Bilder umwandeln",
+  "es": "Convertir en imágenes",
+  "fr": "Convertir en images",
+  "hi": "इमेज में बदलें",
+  "it": "Converti in immagini",
+  "ja": "画像に変換",
+  "pt": "Converter em imagens",
+  "zh": "转为图片"
  },
  "Converted": {
   "de": "Konvertiert",
@@ -5349,6 +5779,26 @@
   "pt": "Recorte o objeto, faça foto de passaporte, redimensione ou converta — uma foto, um lugar.",
   "zh": "抠图、证件照、调整大小或转换——一张照片，一处搞定。"
  },
+ "Cut rumble & hum": {
+  "de": "Rumpeln & Brummen entfernen",
+  "es": "Quitar retumbe y zumbido",
+  "fr": "Supprimer grondement et ronflement",
+  "hi": "गड़गड़ाहट और भनभनाहट हटाएं",
+  "it": "Elimina rombo e ronzio",
+  "ja": "低音ノイズとハムを除去",
+  "pt": "Cortar ronco e zumbido",
+  "zh": "去除低频轰鸣和嗡嗡声"
+ },
+ "Cuts out silent gaps longer than half a second.": {
+  "de": "Entfernt stille Lücken über einer halben Sekunde.",
+  "es": "Quita los silencios de más de medio segundo.",
+  "fr": "Supprime les silences de plus d'une demi-seconde.",
+  "hi": "आधे सेकंड से लंबे चुप हिस्से हटाता है।",
+  "it": "Taglia i silenzi più lunghi di mezzo secondo.",
+  "ja": "0.5秒より長い無音を削除します。",
+  "pt": "Corta silêncios com mais de meio segundo.",
+  "zh": "去掉超过半秒的静音间隙。"
+ },
  "Cutting it out…": {
   "de": "Wird ausgeschnitten …",
   "es": "Recortando…",
@@ -5448,6 +5898,16 @@
   "ja": "日付",
   "pt": "Data",
   "zh": "日期"
+ },
+ "Date of birth": {
+  "de": "Geburtsdatum",
+  "es": "Fecha de nacimiento",
+  "fr": "Date de naissance",
+  "hi": "जन्म तिथि",
+  "it": "Data di nascita",
+  "ja": "生年月日",
+  "pt": "Data de nascimento",
+  "zh": "出生日期"
  },
  "Dates": {
   "de": "Daten",
@@ -5829,6 +6289,16 @@
   "pt": "Docs e captura",
   "zh": "文档与扫描"
  },
+ "Document": {
+  "de": "Dokument",
+  "es": "Documento",
+  "fr": "Document",
+  "hi": "दस्तावेज़",
+  "it": "Documento",
+  "ja": "書類",
+  "pt": "Documento",
+  "zh": "文档"
+ },
  "Documents & PDF": {
   "de": "Dokumente & PDF",
   "es": "Documentos y PDF",
@@ -5999,6 +6469,16 @@
   "pt": "Arrasta uma caixa sobre o que queres ocultar. Anular remove a última.",
   "zh": "在要隐藏的内容上拖出一个框。撤销会移除最后一个。"
  },
+ "Drag across a line to highlight it.": {
+  "de": "Zieh über eine Zeile, um sie zu markieren.",
+  "es": "Arrastra sobre una línea para resaltarla.",
+  "fr": "Faites glisser sur une ligne pour la surligner.",
+  "hi": "हाइलाइट करने के लिए पंक्ति पर खींचें।",
+  "it": "Trascina su una riga per evidenziarla.",
+  "ja": "行をなぞるとハイライトされます。",
+  "pt": "Arraste sobre uma linha para destacá-la.",
+  "zh": "在一行上拖动即可高亮。"
+ },
  "Drag across photos to select or deselect a whole run.": {
   "de": "Über die Fotos ziehen, um eine ganze Reihe aus- oder abzuwählen.",
   "es": "Arrastra sobre las fotos para seleccionar o deseleccionar un tramo entero.",
@@ -6029,6 +6509,16 @@
   "pt": "Arrasta cada um para o seu lugar. A ferramenta coloca-os sempre no mesmo sítio.",
   "zh": "将每一个拖到它该在的位置。该工具每次都放在相同的位置。"
  },
+ "Drag on the page to black out a region. Tap a box to remove it.": {
+  "de": "Zieh auf der Seite, um einen Bereich zu schwärzen. Tippe auf einen Kasten, um ihn zu entfernen.",
+  "es": "Arrastra en la página para tapar una zona. Toca un recuadro para quitarlo.",
+  "fr": "Faites glisser sur la page pour noircir une zone. Touchez un cadre pour le retirer.",
+  "hi": "किसी हिस्से को काला करने के लिए पेज पर खींचें। बॉक्स हटाने के लिए उस पर टैप करें।",
+  "it": "Trascina sulla pagina per oscurare un'area. Tocca un riquadro per rimuoverlo.",
+  "ja": "ページ上をドラッグして黒塗りします。枠をタップで削除。",
+  "pt": "Arraste na página para tarjar uma área. Toque numa caixa para removê-la.",
+  "zh": "在页面上拖动以涂黑区域。轻点方框可移除。"
+ },
  "Drag on the photo to black out faces, names, card numbers. Numbers and emails can be auto-found on the phone.": {
   "de": "Ziehe über das Foto, um Gesichter, Namen, Kartennummern zu schwärzen. Nummern und E-Mails können auf dem Handy automatisch gefunden werden.",
   "es": "Arrastra sobre la foto para tapar caras, nombres, números de tarjeta. Los números y correos se pueden detectar automáticamente en el teléfono.",
@@ -6039,6 +6529,26 @@
   "pt": "Arrasta sobre a foto para tapar rostos, nomes, números de cartão. Números e e-mails podem ser encontrados automaticamente no telemóvel.",
   "zh": "在照片上拖动以涂黑人脸、姓名、卡号。号码和邮箱可在手机上自动识别。"
  },
+ "Drag to draw. Tap a mark to remove it.": {
+  "de": "Zum Zeichnen ziehen. Tippe auf eine Markierung, um sie zu entfernen.",
+  "es": "Arrastra para dibujar. Toca una marca para quitarla.",
+  "fr": "Faites glisser pour dessiner. Touchez une marque pour la retirer.",
+  "hi": "बनाने के लिए खींचें। निशान हटाने के लिए उस पर टैप करें।",
+  "it": "Trascina per disegnare. Tocca un segno per rimuoverlo.",
+  "ja": "ドラッグで描画。マークをタップで削除。",
+  "pt": "Arraste para desenhar. Toque numa marca para removê-la.",
+  "zh": "拖动即可绘制。轻点标记可移除。"
+ },
+ "Drag to move. Tap one to select it, then resize or remove it.": {
+  "de": "Zum Verschieben ziehen. Tippe zum Auswählen, dann Größe ändern oder entfernen.",
+  "es": "Arrastra para mover. Toca uno para seleccionarlo y luego cambia su tamaño o quítalo.",
+  "fr": "Faites glisser pour déplacer. Touchez-en un pour le sélectionner, puis redimensionnez-le ou retirez-le.",
+  "hi": "हिलाने के लिए खींचें। चुनने के लिए टैप करें, फिर आकार बदलें या हटाएं।",
+  "it": "Trascina per spostare. Toccane uno per selezionarlo, poi ridimensionalo o rimuovilo.",
+  "ja": "ドラッグで移動。タップで選択し、サイズ変更または削除。",
+  "pt": "Arraste para mover. Toque em um para selecionar e depois redimensione ou remova.",
+  "zh": "拖动可移动。轻点选中后可调整大小或移除。"
+ },
  "Dramatic": {
   "de": "Dramatisch",
   "es": "Dramático",
@@ -6048,6 +6558,16 @@
   "ja": "ドラマチック",
   "pt": "Dramático",
   "zh": "戏剧化"
+ },
+ "Draw": {
+  "de": "Zeichnen",
+  "es": "Dibujar",
+  "fr": "Dessiner",
+  "hi": "बनाएं",
+  "it": "Disegna",
+  "ja": "描く",
+  "pt": "Desenhar",
+  "zh": "绘制"
  },
  "Draw again": {
   "de": "Neu zeichnen",
@@ -6078,6 +6598,16 @@
   "ja": "署名を描く",
   "pt": "Desenhar a minha assinatura",
   "zh": "手写签名"
+ },
+ "Draw your signature": {
+  "de": "Unterschrift zeichnen",
+  "es": "Dibuja tu firma",
+  "fr": "Dessinez votre signature",
+  "hi": "अपना हस्ताक्षर बनाएं",
+  "it": "Disegna la tua firma",
+  "ja": "署名を書く",
+  "pt": "Desenhe sua assinatura",
+  "zh": "绘制你的签名"
  },
  "Draw your signature once. It is kept on this phone.": {
   "de": "Zeichne deine Unterschrift einmal. Sie wird auf diesem Handy aufbewahrt.",
@@ -6339,6 +6869,16 @@
   "pt": "Ritmo leve — uma caminhada curta conta",
   "zh": "慢慢来——短短散步也算"
  },
+ "Easy to read out or type, hard to guess.": {
+  "de": "Leicht vorzulesen oder zu tippen, schwer zu erraten.",
+  "es": "Fácil de dictar o escribir, difícil de adivinar.",
+  "fr": "Facile à dicter ou à taper, difficile à deviner.",
+  "hi": "बोलने या टाइप करने में आसान, अंदाज़ा लगाना मुश्किल।",
+  "it": "Facile da dettare o digitare, difficile da indovinare.",
+  "ja": "読み上げや入力は簡単、推測は困難。",
+  "pt": "Fácil de ditar ou digitar, difícil de adivinhar.",
+  "zh": "易读易输入，难以猜到。"
+ },
  "Eat before the bigger tasks so your energy holds.": {
   "de": "Iss vor den größeren Aufgaben, damit die Energie reicht.",
   "es": "Come antes de las tareas grandes para que te dure la energía.",
@@ -6419,6 +6959,16 @@
   "pt": "Editar",
   "zh": "编辑"
  },
+ "Edit again": {
+  "de": "Erneut bearbeiten",
+  "es": "Editar de nuevo",
+  "fr": "Modifier à nouveau",
+  "hi": "फिर से बदलें",
+  "it": "Modifica di nuovo",
+  "ja": "もう一度編集",
+  "pt": "Editar de novo",
+  "zh": "再次编辑"
+ },
  "Edit copy": {
   "de": "Kopie bearbeiten",
   "es": "Editar copia",
@@ -6448,6 +6998,36 @@
   "ja": "GarageBandやLogicで編集",
   "pt": "Editar no GarageBand ou Logic",
   "zh": "在 GarageBand 或 Logic 中编辑"
+ },
+ "Edit the marks": {
+  "de": "Markierungen bearbeiten",
+  "es": "Editar las marcas",
+  "fr": "Modifier les marques",
+  "hi": "निशान बदलें",
+  "it": "Modifica i segni",
+  "ja": "マークを編集",
+  "pt": "Editar as marcas",
+  "zh": "编辑标记"
+ },
+ "Edit the redactions": {
+  "de": "Schwärzungen bearbeiten",
+  "es": "Editar lo tapado",
+  "fr": "Modifier les caviardages",
+  "hi": "छिपाए हिस्से बदलें",
+  "it": "Modifica gli oscuramenti",
+  "ja": "黒塗りを編集",
+  "pt": "Editar as tarjas",
+  "zh": "编辑涂黑区域"
+ },
+ "Edited — play it below, then save or share.": {
+  "de": "Bearbeitet – unten abspielen, dann sichern oder teilen.",
+  "es": "Editado: reprodúcelo abajo y luego guárdalo o compártelo.",
+  "fr": "Modifié — écoutez-le ci-dessous, puis enregistrez ou partagez.",
+  "hi": "बदल दिया — नीचे चलाएं, फिर सहेजें या शेयर करें।",
+  "it": "Modificato — ascoltalo qui sotto, poi salva o condividi.",
+  "ja": "編集完了 — 下で再生して、保存または共有。",
+  "pt": "Editado — ouça abaixo e depois salve ou compartilhe.",
+  "zh": "已编辑——在下方播放，然后保存或分享。"
  },
  "Egg": {
   "de": "Ei",
@@ -6528,6 +7108,16 @@
   "ja": "メールやメッセージで送る",
   "pt": "Enviar por e-mail ou mensagem",
   "zh": "发邮件或消息"
+ },
+ "Email or share the claim pack": {
+  "de": "Reklamationspaket mailen oder teilen",
+  "es": "Enviar o compartir el paquete de reclamación",
+  "fr": "Envoyer ou partager le dossier de réclamation",
+  "hi": "क्लेम पैक ईमेल या शेयर करें",
+  "it": "Invia o condividi il pacchetto di reclamo",
+  "ja": "請求パックをメールまたは共有",
+  "pt": "Enviar ou compartilhar o pacote de reclamação",
+  "zh": "发送或分享索赔资料包"
  },
  "Emergency": {
   "de": "Notfall",
@@ -6708,6 +7298,16 @@
   "ja": "光を均一にする",
   "pt": "Equilibrar a luz",
   "zh": "均衡光线"
+ },
+ "Even out the volume": {
+  "de": "Lautstärke ausgleichen",
+  "es": "Igualar el volumen",
+  "fr": "Égaliser le volume",
+  "hi": "आवाज़ एक जैसी करें",
+  "it": "Uniforma il volume",
+  "ja": "音量をそろえる",
+  "pt": "Igualar o volume",
+  "zh": "均衡音量"
  },
  "Even shade-lovers will struggle here — try a brighter spot or a grow light": {
   "de": "Selbst Schattenpflanzen tun sich hier schwer – hellerer Platz oder Pflanzenlampe",
@@ -7179,6 +7779,26 @@
   "pt": "Exposição aumentada para o assunto não virar uma sombra escura.",
   "zh": "提高曝光，主体不会成为黑影。"
  },
+ "Extract again": {
+  "de": "Erneut extrahieren",
+  "es": "Extraer de nuevo",
+  "fr": "Extraire à nouveau",
+  "hi": "फिर से निकालें",
+  "it": "Estrai di nuovo",
+  "ja": "もう一度抽出",
+  "pt": "Extrair de novo",
+  "zh": "再次提取"
+ },
+ "Extract text": {
+  "de": "Text extrahieren",
+  "es": "Extraer texto",
+  "fr": "Extraire le texte",
+  "hi": "टेक्स्ट निकालें",
+  "it": "Estrai testo",
+  "ja": "テキストを抽出",
+  "pt": "Extrair texto",
+  "zh": "提取文字"
+ },
  "Eye height": {
   "de": "Augenhöhe",
   "es": "Altura de los ojos",
@@ -7379,6 +7999,16 @@
   "pt": "De frente para a câmera",
   "zh": "正对镜头"
  },
+ "Fade in": {
+  "de": "Einblenden",
+  "es": "Entrada gradual",
+  "fr": "Fondu d'entrée",
+  "hi": "फ़ेड इन",
+  "it": "Dissolvenza in entrata",
+  "ja": "フェードイン",
+  "pt": "Fade in",
+  "zh": "淡入"
+ },
  "Fade in and out": {
   "de": "Ein- und ausblenden",
   "es": "Entrada y salida suaves",
@@ -7388,6 +8018,16 @@
   "ja": "フェードイン・アウト",
   "pt": "Entrada e saída suaves",
   "zh": "淡入淡出"
+ },
+ "Fade out": {
+  "de": "Ausblenden",
+  "es": "Salida gradual",
+  "fr": "Fondu de sortie",
+  "hi": "फ़ेड आउट",
+  "it": "Dissolvenza in uscita",
+  "ja": "フェードアウト",
+  "pt": "Fade out",
+  "zh": "淡出"
  },
  "Family & caregiver": {
   "de": "Familie & Betreuung",
@@ -7569,6 +8209,16 @@
   "pt": "Preencher formulário",
   "zh": "填写表单"
  },
+ "Fill from My details": {
+  "de": "Aus „Meine Angaben“ ausfüllen",
+  "es": "Rellenar con Mis datos",
+  "fr": "Remplir avec Mes infos",
+  "hi": "मेरी जानकारी से भरें",
+  "it": "Compila da I miei dati",
+  "ja": "マイ情報から入力",
+  "pt": "Preencher com Meus dados",
+  "zh": "用“我的信息”填写"
+ },
  "Fill in a PDF form on your phone": {
   "de": "PDF-Formular am Handy ausfüllen",
   "es": "Rellena un formulario PDF en el móvil",
@@ -7669,6 +8319,16 @@
   "pt": "Encontrar no LinkedIn",
   "zh": "在领英上查找"
  },
+ "Find personal details for me": {
+  "de": "Persönliche Angaben für mich finden",
+  "es": "Buscar datos personales por mí",
+  "fr": "Trouver les infos personnelles pour moi",
+  "hi": "मेरे लिए निजी जानकारी ढूंढें",
+  "it": "Trova i dati personali per me",
+  "ja": "個人情報を自動で探す",
+  "pt": "Encontrar dados pessoais para mim",
+  "zh": "帮我找出个人信息"
+ },
  "Finding faces…": {
   "de": "Gesichter werden gesucht …",
   "es": "Buscando caras…",
@@ -7748,6 +8408,16 @@
   "ja": "ステッカーを仕上げています…",
   "pt": "Finalizando suas figurinhas…",
   "zh": "正在完成你的贴纸…"
+ },
+ "First name": {
+  "de": "Vorname",
+  "es": "Nombre",
+  "fr": "Prénom",
+  "hi": "पहला नाम",
+  "it": "Nome",
+  "ja": "名",
+  "pt": "Nome",
+  "zh": "名"
  },
  "First row is the header": {
   "de": "Erste Zeile ist die Überschrift",
@@ -7898,6 +8568,16 @@
   "ja": "スペルと文法を修正",
   "pt": "Corrigir ortografia e gramática",
   "zh": "修正拼写和语法"
+ },
+ "Fix upside-down pages": {
+  "de": "Kopfstehende Seiten korrigieren",
+  "es": "Corregir páginas al revés",
+  "fr": "Redresser les pages à l'envers",
+  "hi": "उल्टे पेज ठीक करें",
+  "it": "Raddrizza le pagine capovolte",
+  "ja": "逆さまのページを直す",
+  "pt": "Corrigir páginas de cabeça para baixo",
+  "zh": "修正倒置的页面"
  },
  "Fix, cut out or resize a photo": {
   "de": "Foto verbessern, freistellen oder skalieren",
@@ -8239,6 +8919,16 @@
   "pt": "Corretor de formato",
   "zh": "格式修复"
  },
+ "Forward it to 7726 (free) — your carrier blocks the sender": {
+  "de": "An 7726 weiterleiten (kostenlos) – dein Anbieter sperrt den Absender",
+  "es": "Reenvíalo al 7726 (gratis): tu operador bloquea al remitente",
+  "fr": "Transférez-le au 7726 (gratuit) — votre opérateur bloque l'expéditeur",
+  "hi": "इसे 7726 पर फ़ॉरवर्ड करें (मुफ़्त) — आपका कैरियर भेजने वाले को ब्लॉक करता है",
+  "it": "Inoltralo al 7726 (gratis) — il tuo operatore blocca il mittente",
+  "ja": "7726に転送（無料）— 通信事業者が送信元をブロックします",
+  "pt": "Encaminhe para 7726 (grátis) — sua operadora bloqueia o remetente",
+  "zh": "转发到 7726（免费）——运营商会屏蔽发送者"
+ },
  "Forwards and back": {
   "de": "Vor und zurück",
   "es": "Adelante y atrás",
@@ -8289,6 +8979,16 @@
   "pt": "Grátis",
   "zh": "免费"
  },
+ "Free about": {
+  "de": "Frei: etwa",
+  "es": "Libera unos",
+  "fr": "Libère environ",
+  "hi": "लगभग खाली करें",
+  "it": "Libera circa",
+  "ja": "約",
+  "pt": "Libera cerca de",
+  "zh": "可释放约"
+ },
  "Free converts up to 10 at once. Pro: unlimited.": {
   "de": "Kostenlos wandelt bis zu 10 auf einmal um. Pro: unbegrenzt.",
   "es": "Gratis convierte hasta 10 a la vez. Pro: ilimitado.",
@@ -8308,6 +9008,26 @@
   "ja": "無料は本当に無料。",
   "pt": "Grátis é mesmo grátis.",
   "zh": "免费就是真免费。"
+ },
+ "Free on your phone now:": {
+  "de": "Jetzt frei auf deinem Handy:",
+  "es": "Libre en tu teléfono ahora:",
+  "fr": "Libre sur votre téléphone :",
+  "hi": "अभी आपके फ़ोन में खाली:",
+  "it": "Libero ora sul telefono:",
+  "ja": "現在の空き容量：",
+  "pt": "Livre no seu celular agora:",
+  "zh": "手机当前可用："
+ },
+ "Free space": {
+  "de": "Freier Speicher",
+  "es": "Espacio libre",
+  "fr": "Espace libre",
+  "hi": "खाली जगह",
+  "it": "Spazio libero",
+  "ja": "空き容量",
+  "pt": "Espaço livre",
+  "zh": "可用空间"
  },
  "Free space: dupes & big files": {
   "de": "Speicher frei: Duplikate & große Dateien",
@@ -8618,6 +9338,26 @@
   "ja": "一般的な呼びかけ",
   "pt": "Saudação genérica",
   "zh": "泛泛的称呼"
+ },
+ "Gentle": {
+  "de": "Sanft",
+  "es": "Suave",
+  "fr": "Doux",
+  "hi": "हल्का",
+  "it": "Delicato",
+  "ja": "控えめ",
+  "pt": "Suave",
+  "zh": "轻柔"
+ },
+ "Gentle keeps it natural; strong cuts more but can sound clipped.": {
+  "de": "Sanft klingt natürlich; stark entfernt mehr, kann aber abgehackt klingen.",
+  "es": "Suave mantiene la naturalidad; fuerte quita más pero puede sonar recortado.",
+  "fr": "Doux reste naturel ; fort retire plus mais peut sembler haché.",
+  "hi": "हल्का स्वाभाविक रखता है; तेज़ ज़्यादा हटाता है पर आवाज़ कटी-कटी लग सकती है।",
+  "it": "Delicato resta naturale; forte toglie di più ma può suonare tagliato.",
+  "ja": "控えめは自然な仕上がり、強めはより除去しますが途切れて聞こえることがあります。",
+  "pt": "Suave mantém natural; forte corta mais, mas pode soar picotado.",
+  "zh": "轻柔保持自然；强力去除更多，但可能听起来断断续续。"
  },
  "Get close and tap the detail you want sharp.": {
   "de": "Geh nah ran und tippe auf das Detail, das scharf sein soll.",
@@ -9059,6 +9799,16 @@
   "pt": "Guia",
   "zh": "指南"
  },
+ "Guided shots: rental car, moving in, selling, damaged parcel — one dated PDF": {
+  "de": "Geführte Fotos: Mietwagen, Einzug, Verkauf, beschädigtes Paket – ein datiertes PDF",
+  "es": "Fotos guiadas: coche de alquiler, mudanza, venta, paquete dañado; un PDF con fecha",
+  "fr": "Photos guidées : voiture de location, emménagement, vente, colis abîmé — un PDF daté",
+  "hi": "गाइडेड फ़ोटो: किराये की कार, घर में आना, बेचना, खराब पार्सल — एक तारीख़ वाला PDF",
+  "it": "Scatti guidati: auto a noleggio, trasloco, vendita, pacco danneggiato — un PDF datato",
+  "ja": "ガイド付き撮影：レンタカー、入居、出品、破損した荷物 — 日付入りPDF1つに",
+  "pt": "Fotos guiadas: carro alugado, mudança, venda, encomenda danificada — um PDF datado",
+  "zh": "引导拍摄：租车、入住、出售、包裹损坏——生成一份带日期的 PDF"
+ },
  "HEIC/MOV → JPG/MP4, in batch": {
   "de": "HEIC/MOV → JPG/MP4, im Stapel",
   "es": "HEIC/MOV → JPG/MP4, por lotes",
@@ -9339,6 +10089,16 @@
   "pt": "Destaque",
   "zh": "主图"
  },
+ "Hid": {
+  "de": "Verborgen:",
+  "es": "Ocultados:",
+  "fr": "Masqués :",
+  "hi": "छिपाए:",
+  "it": "Nascosti:",
+  "ja": "非表示：",
+  "pt": "Ocultados:",
+  "zh": "已隐藏"
+ },
  "Hidden network": {
   "de": "Verborgenes Netzwerk",
   "es": "Red oculta",
@@ -9358,6 +10118,16 @@
   "ja": "隠す",
   "pt": "Ocultar",
   "zh": "隐藏"
+ },
+ "Hide faces and numbers before sharing": {
+  "de": "Gesichter und Nummern vor dem Teilen verbergen",
+  "es": "Oculta caras y números antes de compartir",
+  "fr": "Masquer visages et numéros avant de partager",
+  "hi": "शेयर करने से पहले चेहरे और नंबर छिपाएं",
+  "it": "Nascondi volti e numeri prima di condividere",
+  "ja": "共有前に顔と番号を隠す",
+  "pt": "Oculte rostos e números antes de compartilhar",
+  "zh": "分享前隐藏面孔和号码"
  },
  "Hide faces with emoji": {
   "de": "Gesichter mit Emoji verdecken",
@@ -9409,6 +10179,16 @@
   "pt": "Alta resiste a riscos e a um logótipo no centro.",
   "zh": "高容错可承受刮擦和中间的标志。"
  },
+ "Highlight": {
+  "de": "Markieren",
+  "es": "Resaltar",
+  "fr": "Surligner",
+  "hi": "हाइलाइट",
+  "it": "Evidenzia",
+  "ja": "ハイライト",
+  "pt": "Destacar",
+  "zh": "高亮"
+ },
  "Highlight and draw on a PDF": {
   "de": "PDF markieren und darauf zeichnen",
   "es": "Resalta y dibuja en un PDF",
@@ -9418,6 +10198,16 @@
   "ja": "PDFにマーカーや書き込み",
   "pt": "Destaque e desenhe num PDF",
   "zh": "在 PDF 上标注和画画"
+ },
+ "Highlights from": {
+  "de": "Markierungen aus",
+  "es": "Resaltados de",
+  "fr": "Passages surlignés de",
+  "hi": "हाइलाइट:",
+  "it": "Evidenziati da",
+  "ja": "ハイライト：",
+  "pt": "Destaques de",
+  "zh": "高亮内容："
  },
  "History": {
   "de": "Verlauf",
@@ -9839,6 +10629,16 @@
   "pt": "No iCloud",
   "zh": "在 iCloud 中"
  },
+ "In your calendar": {
+  "de": "In deinem Kalender",
+  "es": "En tu calendario",
+  "fr": "Dans votre calendrier",
+  "hi": "आपके कैलेंडर में",
+  "it": "Nel calendario",
+  "ja": "カレンダーに登録済み",
+  "pt": "No seu calendário",
+  "zh": "已在日历中"
+ },
  "Includes tax": {
   "de": "Inkl. Steuer",
   "es": "Incluye impuesto",
@@ -9908,6 +10708,16 @@
   "ja": "室内の光",
   "pt": "Luz interna",
   "zh": "室内光线"
+ },
+ "Initials on every page": {
+  "de": "Initialen auf jeder Seite",
+  "es": "Iniciales en cada página",
+  "fr": "Initiales sur chaque page",
+  "hi": "हर पेज पर आद्याक्षर",
+  "it": "Iniziali su ogni pagina",
+  "ja": "全ページにイニシャル",
+  "pt": "Iniciais em todas as páginas",
+  "zh": "每页加首字母签名"
  },
  "Inking your panels…": {
   "de": "Panels werden gezeichnet …",
@@ -10139,6 +10949,16 @@
   "pt": "Itens como CSV",
   "zh": "导出为 CSV"
  },
+ "Its current password": {
+  "de": "Sein aktuelles Passwort",
+  "es": "Su contraseña actual",
+  "fr": "Son mot de passe actuel",
+  "hi": "इसका मौजूदा पासवर्ड",
+  "it": "La password attuale",
+  "ja": "現在のパスワード",
+  "pt": "A senha atual",
+  "zh": "当前密码"
+ },
  "Its entries are removed from this phone. This can't be undone.": {
   "de": "Seine Einträge werden von diesem Handy entfernt. Nicht umkehrbar.",
   "es": "Sus entradas se eliminan de este teléfono. No se puede deshacer.",
@@ -10358,6 +11178,16 @@
   "ja": "結合完了",
   "pt": "Juntado",
   "zh": "已合并"
+ },
+ "Joined in": {
+  "de": "Zusammengefügt in",
+  "es": "Unido en",
+  "fr": "Assemblé en",
+  "hi": "इसमें जोड़ा",
+  "it": "Unito in",
+  "ja": "結合：",
+  "pt": "Unido em",
+  "zh": "已合并为"
  },
  "Joining…": {
   "de": "Wird verbunden …",
@@ -10699,6 +11529,16 @@
   "pt": "Manter, dividir, juntar ou reordenar",
   "zh": "保留、拆分、合并或重排"
  },
+ "Keeping:": {
+  "de": "Behalten:",
+  "es": "Se conserva:",
+  "fr": "Conservé :",
+  "hi": "रख रहे हैं:",
+  "it": "Tengo:",
+  "ja": "保持：",
+  "pt": "Mantendo:",
+  "zh": "保留："
+ },
  "Keeps playing with the screen locked. Brown and Fan mask traffic and snoring best; Pink is the one studies use for deeper sleep.": {
   "de": "Läuft bei gesperrtem Bildschirm weiter. Braun und Ventilator überdecken Verkehr und Schnarchen am besten; Rosa nutzen Studien für tieferen Schlaf.",
   "es": "Sigue sonando con la pantalla bloqueada. Marrón y Ventilador enmascaran mejor el tráfico y los ronquidos; Rosa es el que usan los estudios para un sueño más profundo.",
@@ -10778,6 +11618,16 @@
   "ja": "ツールとともにこの端末に保存されます。共有用にツールをコピーするときは含まれません。",
   "pt": "Fica neste telemóvel com a ferramenta. É deixado de fora quando copias a ferramenta para partilhar.",
   "zh": "与工具一起保存在本机上。复制工具以分享时会将其排除。"
+ },
+ "Kept only on this phone, never sent anywhere.": {
+  "de": "Nur auf diesem Handy gespeichert, nie irgendwohin gesendet.",
+  "es": "Solo se guarda en este teléfono y nunca se envía.",
+  "fr": "Conservé uniquement sur ce téléphone, jamais envoyé.",
+  "hi": "सिर्फ़ इसी फ़ोन पर रखा जाता है, कहीं भेजा नहीं जाता।",
+  "it": "Conservato solo su questo telefono, mai inviato.",
+  "ja": "この端末にのみ保存され、送信されることはありません。",
+  "pt": "Guardado só neste celular, nunca enviado.",
+  "zh": "仅保存在这部手机上，不会发送到任何地方。"
  },
  "Kept, with your reminder set.": {
   "de": "Gespeichert, Erinnerung gestellt.",
@@ -10918,6 +11768,16 @@
   "ja": "返品最終日",
   "pt": "Último dia para devolver",
   "zh": "退货最后一天"
+ },
+ "Last name": {
+  "de": "Nachname",
+  "es": "Apellidos",
+  "fr": "Nom",
+  "hi": "उपनाम",
+  "it": "Cognome",
+  "ja": "姓",
+  "pt": "Sobrenome",
+  "zh": "姓"
  },
  "Last night": {
   "de": "Letzte Nacht",
@@ -11319,6 +12179,16 @@
   "pt": "Localização",
   "zh": "位置"
  },
+ "Location and camera details are left out of the copy.": {
+  "de": "Standort und Kameradaten werden aus der Kopie entfernt.",
+  "es": "La ubicación y los datos de la cámara no se incluyen en la copia.",
+  "fr": "La position et les infos de l'appareil photo sont retirées de la copie.",
+  "hi": "कॉपी में लोकेशन और कैमरा की जानकारी नहीं रखी जाती।",
+  "it": "Posizione e dati della fotocamera sono esclusi dalla copia.",
+  "ja": "コピーには位置情報とカメラ情報が含まれません。",
+  "pt": "Localização e dados da câmera ficam fora da cópia.",
+  "zh": "副本不包含位置和相机信息。"
+ },
  "Location and camera metadata are removed from every file.": {
   "de": "Standort und Kamera-Metadaten werden aus jeder Datei entfernt.",
   "es": "La ubicación y los metadatos de cámara se eliminan de cada archivo.",
@@ -11409,6 +12279,16 @@
   "pt": "Bloquear agora",
   "zh": "立即锁定"
  },
+ "Lock with password": {
+  "de": "Mit Passwort sperren",
+  "es": "Bloquear con contraseña",
+  "fr": "Verrouiller par mot de passe",
+  "hi": "पासवर्ड से लॉक करें",
+  "it": "Blocca con password",
+  "ja": "パスワードでロック",
+  "pt": "Proteger com senha",
+  "zh": "用密码加密"
+ },
  "Lock your phone now. In 10 seconds a test alert arrives — if the flash blinks, you're set.": {
   "de": "Sperre jetzt dein Telefon. In 10 Sekunden kommt ein Testhinweis – blinkt der Blitz, ist alles bereit.",
   "es": "Bloquea el teléfono ahora. En 10 segundos llega un aviso de prueba: si el flash parpadea, listo.",
@@ -11428,6 +12308,16 @@
   "ja": "ロック中",
   "pt": "Bloqueado",
   "zh": "已锁定"
+ },
+ "Locked — it now asks for your password to open.": {
+  "de": "Gesperrt – zum Öffnen wird jetzt dein Passwort verlangt.",
+  "es": "Bloqueado: ahora pide tu contraseña para abrirse.",
+  "fr": "Verrouillé — il demande désormais votre mot de passe.",
+  "hi": "लॉक हो गया — अब खोलने के लिए आपका पासवर्ड मांगेगा।",
+  "it": "Bloccato — ora chiede la password per aprirsi.",
+  "ja": "ロック完了 — 開くときにパスワードが必要になりました。",
+  "pt": "Protegido — agora pede sua senha para abrir.",
+  "zh": "已加密——现在打开需要输入密码。"
  },
  "Log how your day went in a tap": {
   "de": "Mit einem Tipp festhalten, wie der Tag war",
@@ -11859,6 +12749,16 @@
   "pt": "Deixe o texto do scan pesquisável",
   "zh": "让扫描件的文字可搜索"
  },
+ "Make a strong one for me": {
+  "de": "Erstell mir ein starkes",
+  "es": "Créame una segura",
+  "fr": "En créer un solide pour moi",
+  "hi": "मेरे लिए मज़बूत पासवर्ड बनाएं",
+  "it": "Creane una sicura per me",
+  "ja": "強いパスワードを作る",
+  "pt": "Criar uma forte para mim",
+  "zh": "帮我生成强密码"
+ },
  "Make a tool that does the whole job": {
   "de": "Erstelle ein Tool, das die ganze Arbeit macht",
   "es": "Crea una herramienta que haga todo el trabajo",
@@ -11969,6 +12869,16 @@
   "pt": "Deixar mais clara",
   "zh": "让它更清晰"
  },
+ "Make it for": {
+  "de": "Erstellen für",
+  "es": "Hacerlo para",
+  "fr": "Préparer pour",
+  "hi": "इसके लिए बनाएं",
+  "it": "Prepara per",
+  "ja": "用途：",
+  "pt": "Fazer para",
+  "zh": "用于"
+ },
  "Make it look good": {
   "de": "Schön gestalten",
   "es": "Darle estilo",
@@ -11999,6 +12909,16 @@
   "pt": "Encurtar",
   "zh": "缩短"
  },
+ "Make meme": {
+  "de": "Meme erstellen",
+  "es": "Crear meme",
+  "fr": "Créer le mème",
+  "hi": "मीम बनाएं",
+  "it": "Crea meme",
+  "ja": "ミームを作る",
+  "pt": "Criar meme",
+  "zh": "制作表情包"
+ },
  "Make more": {
   "de": "Mehr erstellen",
   "es": "Hacer más",
@@ -12018,6 +12938,16 @@
   "ja": "プランを作る",
   "pt": "Criar meu plano",
   "zh": "生成我的计划"
+ },
+ "Make new PDF": {
+  "de": "Neues PDF erstellen",
+  "es": "Crear PDF nuevo",
+  "fr": "Créer un nouveau PDF",
+  "hi": "नया PDF बनाएं",
+  "it": "Crea nuovo PDF",
+  "ja": "新しいPDFを作成",
+  "pt": "Criar novo PDF",
+  "zh": "生成新 PDF"
  },
  "Make passport photo": {
   "de": "Passfoto erstellen",
@@ -12039,6 +12969,26 @@
   "pt": "Reduzir as fotos (bom para email)",
   "zh": "缩小照片（适合邮件）"
  },
+ "Make ringtone": {
+  "de": "Klingelton erstellen",
+  "es": "Crear tono",
+  "fr": "Créer la sonnerie",
+  "hi": "रिंगटोन बनाएं",
+  "it": "Crea suoneria",
+  "ja": "着信音を作る",
+  "pt": "Criar toque",
+  "zh": "制作铃声"
+ },
+ "Make the PDF": {
+  "de": "PDF erstellen",
+  "es": "Crear el PDF",
+  "fr": "Créer le PDF",
+  "hi": "PDF बनाएं",
+  "it": "Crea il PDF",
+  "ja": "PDFを作成",
+  "pt": "Criar o PDF",
+  "zh": "生成 PDF"
+ },
  "Make the card": {
   "de": "Karte erstellen",
   "es": "Crear la tarjeta",
@@ -12048,6 +12998,16 @@
   "ja": "カードを作成",
   "pt": "Criar o cartão",
   "zh": "制作卡片"
+ },
+ "Make the claim pack (PDF)": {
+  "de": "Reklamationspaket erstellen (PDF)",
+  "es": "Crear el paquete de reclamación (PDF)",
+  "fr": "Créer le dossier de réclamation (PDF)",
+  "hi": "क्लेम पैक बनाएं (PDF)",
+  "it": "Crea il pacchetto di reclamo (PDF)",
+  "ja": "請求パックを作成（PDF）",
+  "pt": "Criar o pacote de reclamação (PDF)",
+  "zh": "生成索赔资料包（PDF）"
  },
  "Make the group and add them": {
   "de": "Gruppe anlegen und hinzufügen",
@@ -12078,6 +13038,16 @@
   "ja": "書類パックを作る",
   "pt": "Criar o pacote de papelada",
   "zh": "生成文件包"
+ },
+ "Make those boxes bigger and redact again.": {
+  "de": "Vergrößere diese Kästen und schwärze erneut.",
+  "es": "Agranda esos recuadros y vuelve a tapar.",
+  "fr": "Agrandissez ces cadres et caviardez à nouveau.",
+  "hi": "उन बॉक्स को बड़ा करें और फिर से छिपाएं।",
+  "it": "Ingrandisci quei riquadri e oscura di nuovo.",
+  "ja": "その枠を大きくして、もう一度黒塗りしてください。",
+  "pt": "Aumente essas caixas e tarje de novo.",
+  "zh": "把这些方框调大，然后重新涂黑。"
  },
  "Make video": {
   "de": "Video erstellen",
@@ -12238,6 +13208,26 @@
   "ja": "完了にする",
   "pt": "Marcar como feito",
   "zh": "标记完成"
+ },
+ "Mark the copy 'For verification only' so it can't be reused": {
+  "de": "Kopie mit „Nur zur Prüfung“ kennzeichnen, damit sie nicht wiederverwendet werden kann",
+  "es": "Marca la copia como «Solo para verificación» para que no se reutilice",
+  "fr": "Marquez la copie « Pour vérification uniquement » pour qu'elle ne soit pas réutilisée",
+  "hi": "कॉपी पर 'सिर्फ़ सत्यापन के लिए' लिखें ताकि दोबारा इस्तेमाल न हो",
+  "it": "Segna la copia «Solo per verifica» così non può essere riutilizzata",
+  "ja": "コピーに「確認専用」と入れて再利用を防ぐ",
+  "pt": "Marque a cópia 'Somente para verificação' para que não seja reutilizada",
+  "zh": "在副本上标注“仅供核验”，防止被挪用"
+ },
+ "Marked up — baked into the page, and the text is still selectable.": {
+  "de": "Markiert – fest in die Seite eingebrannt, der Text bleibt auswählbar.",
+  "es": "Marcado: integrado en la página y el texto sigue siendo seleccionable.",
+  "fr": "Annoté — intégré à la page, le texte reste sélectionnable.",
+  "hi": "मार्क हो गया — पेज में पक्का, और टेक्स्ट अब भी चुना जा सकता है।",
+  "it": "Annotato — fissato nella pagina, il testo resta selezionabile.",
+  "ja": "書き込み完了 — ページに焼き込み済みで、テキストは選択可能なままです。",
+  "pt": "Marcado — fixado na página, e o texto continua selecionável.",
+  "zh": "已标注——固定在页面中，文字仍可选择。"
  },
  "Measure": {
   "de": "Messen",
@@ -13119,6 +14109,16 @@
   "pt": "Meus dias",
   "zh": "我的日子"
  },
+ "My details": {
+  "de": "Meine Angaben",
+  "es": "Mis datos",
+  "fr": "Mes infos",
+  "hi": "मेरी जानकारी",
+  "it": "I miei dati",
+  "ja": "マイ情報",
+  "pt": "Meus dados",
+  "zh": "我的信息"
+ },
  "My letters": {
   "de": "Meine Briefe",
   "es": "Mis cartas",
@@ -13288,6 +14288,26 @@
   "ja": "名前（例：ランニングシューズ）",
   "pt": "Nome, ex.: Tênis de corrida",
   "zh": "名称，例如：跑鞋"
+ },
+ "Name, initials or any text": {
+  "de": "Name, Initialen oder beliebiger Text",
+  "es": "Nombre, iniciales o cualquier texto",
+  "fr": "Nom, initiales ou tout texte",
+  "hi": "नाम, आद्याक्षर या कोई भी टेक्स्ट",
+  "it": "Nome, iniziali o qualsiasi testo",
+  "ja": "名前、イニシャル、任意のテキスト",
+  "pt": "Nome, iniciais ou qualquer texto",
+  "zh": "姓名、首字母或任意文字"
+ },
+ "Names written as words aren't hidden — check before you share.": {
+  "de": "Ausgeschriebene Namen werden nicht verborgen – prüfe vor dem Teilen.",
+  "es": "Los nombres escritos no se ocultan: revisa antes de compartir.",
+  "fr": "Les noms écrits en toutes lettres ne sont pas masqués — vérifiez avant de partager.",
+  "hi": "शब्दों में लिखे नाम नहीं छिपते — शेयर करने से पहले जांच लें।",
+  "it": "I nomi scritti per esteso non vengono nascosti — controlla prima di condividere.",
+  "ja": "文字で書かれた名前は隠れません。共有前に確認してください。",
+  "pt": "Nomes escritos por extenso não são ocultados — confira antes de compartilhar.",
+  "zh": "以文字书写的姓名不会被隐藏——分享前请检查。"
  },
  "Navy": {
   "de": "Marineblau",
@@ -13479,6 +14499,16 @@
   "pt": "Nunca mexer nos favoritos",
   "zh": "不动收藏的截图"
  },
+ "New PDF ready": {
+  "de": "Neues PDF fertig",
+  "es": "PDF nuevo listo",
+  "fr": "Nouveau PDF prêt",
+  "hi": "नया PDF तैयार",
+  "it": "Nuovo PDF pronto",
+  "ja": "新しいPDFができました",
+  "pt": "Novo PDF pronto",
+  "zh": "新 PDF 已生成"
+ },
  "New PIN (4–8 numbers)": {
   "de": "Neue PIN (4–8 Ziffern)",
   "es": "Nuevo PIN (4–8 números)",
@@ -13508,6 +14538,16 @@
   "ja": "新しいコピー",
   "pt": "Nova cópia",
   "zh": "新副本"
+ },
+ "New event": {
+  "de": "Neuer Termin",
+  "es": "Evento nuevo",
+  "fr": "Nouvel événement",
+  "hi": "नया इवेंट",
+  "it": "Nuovo evento",
+  "ja": "新規イベント",
+  "pt": "Novo evento",
+  "zh": "新事件"
  },
  "New group": {
   "de": "Neue Gruppe",
@@ -13739,6 +14779,16 @@
   "pt": "Sem email",
   "zh": "无邮箱"
  },
+ "No expiry reminders": {
+  "de": "Keine Ablauf-Erinnerungen",
+  "es": "Sin avisos de caducidad",
+  "fr": "Aucun rappel d'expiration",
+  "hi": "कोई समाप्ति रिमाइंडर नहीं",
+  "it": "Nessun promemoria di scadenza",
+  "ja": "期限リマインダーなし",
+  "pt": "Sem lembretes de validade",
+  "zh": "无到期提醒"
+ },
  "No face found — face the camera with the whole head in view.": {
   "de": "Kein Gesicht gefunden – schau in die Kamera, ganzer Kopf im Bild.",
   "es": "No se encontró ninguna cara: mira a la cámara con toda la cabeza visible.",
@@ -13768,6 +14818,16 @@
   "ja": "顔が見つかりません — 「タップで追加」をオンにして顔の位置をタップ。",
   "pt": "Nenhum rosto encontrado — ative «Adicionar tocando» e toque onde há um rosto.",
   "zh": "未找到人脸——打开“点按添加”，再点按人脸位置。"
+ },
+ "No faces or personal numbers found.": {
+  "de": "Keine Gesichter oder persönlichen Nummern gefunden.",
+  "es": "No se encontraron caras ni números personales.",
+  "fr": "Aucun visage ni numéro personnel trouvé.",
+  "hi": "कोई चेहरा या निजी नंबर नहीं मिला।",
+  "it": "Nessun volto o numero personale trovato.",
+  "ja": "顔や個人番号は見つかりませんでした。",
+  "pt": "Nenhum rosto ou número pessoal encontrado.",
+  "zh": "未发现面孔或个人号码。"
  },
  "No glare on glasses; eyes clearly visible": {
   "de": "Keine Spiegelung auf der Brille, Augen klar sichtbar",
@@ -14379,6 +15439,16 @@
   "pt": "Nada legível encontrado. Tente uma foto mais reta e próxima, com boa luz.",
   "zh": "未找到可读内容。请在光线好处正对拍近一些。"
  },
+ "Nothing safe to clear — your library's already tidy.": {
+  "de": "Nichts, was sicher gelöscht werden kann – deine Mediathek ist schon aufgeräumt.",
+  "es": "Nada seguro que borrar: tu fototeca ya está ordenada.",
+  "fr": "Rien à supprimer sans risque — votre photothèque est déjà en ordre.",
+  "hi": "सुरक्षित रूप से हटाने लायक कुछ नहीं — आपकी लाइब्रेरी पहले से साफ़ है।",
+  "it": "Niente da eliminare in sicurezza — la libreria è già in ordine.",
+  "ja": "安全に削除できるものはありません。ライブラリはすでに整理済みです。",
+  "pt": "Nada seguro para apagar — sua fototeca já está organizada.",
+  "zh": "没有可安全清理的内容——你的图库已经很整洁。"
+ },
  "Nothing saved yet.": {
   "de": "Noch nichts gespeichert.",
   "es": "Aún no hay nada guardado.",
@@ -14398,6 +15468,16 @@
   "ja": "まだ何も保存されていません。開始画面から作成すると、ここに表示されます。",
   "pt": "Ainda nada guardado. Cria um no ecrã inicial e aparece aqui.",
   "zh": "尚未保存任何内容。从起始屏幕创建一个，它就会出现在这里。"
+ },
+ "Nothing to open": {
+  "de": "Nichts zu öffnen",
+  "es": "Nada que abrir",
+  "fr": "Rien à ouvrir",
+  "hi": "खोलने को कुछ नहीं",
+  "it": "Niente da aprire",
+  "ja": "開くものがありません",
+  "pt": "Nada para abrir",
+  "zh": "没有可打开的内容"
  },
  "Nothing was filmed — try again and hold the button a moment longer.": {
   "de": "Nichts gefilmt – versuch es nochmal und filme etwas länger.",
@@ -14969,6 +16049,16 @@
   "pt": "Abrir Mapas",
   "zh": "打开“地图”"
  },
+ "Open Photos": {
+  "de": "Fotos öffnen",
+  "es": "Abrir Fotos",
+  "fr": "Ouvrir Photos",
+  "hi": "Photos खोलें",
+  "it": "Apri Foto",
+  "ja": "写真を開く",
+  "pt": "Abrir Fotos",
+  "zh": "打开“照片”"
+ },
  "Open Photos and tap a sticker (they're your newest photos).": {
   "de": "Öffne Fotos und tippe auf einen Sticker (es sind deine neuesten Fotos).",
   "es": "Abre Fotos y toca un sticker (son tus fotos más recientes).",
@@ -15219,6 +16309,16 @@
   "pt": "Ou adiciona contactos a partir de um ficheiro .vcf",
   "zh": "或从 .vcf 文件添加联系人"
  },
+ "Or do one thing to it:": {
+  "de": "Oder nur eine Sache daran ändern:",
+  "es": "O haz solo una cosa:",
+  "fr": "Ou faites une seule chose :",
+  "hi": "या इसमें बस एक काम करें:",
+  "it": "Oppure fai una sola cosa:",
+  "ja": "または1つだけ処理：",
+  "pt": "Ou faça só uma coisa:",
+  "zh": "或只做一项处理："
+ },
  "Or make a GIF from photos:": {
   "de": "Oder ein GIF aus Fotos erstellen:",
   "es": "O crea un GIF con fotos:",
@@ -15399,6 +16499,16 @@
   "pt": "PIN",
   "zh": "PIN"
  },
+ "PNG (lossless, larger)": {
+  "de": "PNG (verlustfrei, größer)",
+  "es": "PNG (sin pérdida, más grande)",
+  "fr": "PNG (sans perte, plus lourd)",
+  "hi": "PNG (बिना नुकसान, बड़ा)",
+  "it": "PNG (senza perdita, più grande)",
+  "ja": "PNG（劣化なし・大きめ）",
+  "pt": "PNG (sem perda, maior)",
+  "zh": "PNG（无损，较大）"
+ },
  "PRO": {
   "de": "PRO",
   "es": "PRO",
@@ -15438,6 +16548,16 @@
   "ja": "まとめています…",
   "pt": "Compactando…",
   "zh": "正在打包…"
+ },
+ "Page": {
+  "de": "Seite",
+  "es": "Página",
+  "fr": "Page",
+  "hi": "पेज",
+  "it": "Pagina",
+  "ja": "ページ",
+  "pt": "Página",
+  "zh": "页"
  },
  "Page size": {
   "de": "Seitengröße",
@@ -15629,6 +16749,16 @@
   "pt": "Parquímetro",
   "zh": "停车计时"
  },
+ "Part": {
+  "de": "Teil",
+  "es": "Parte",
+  "fr": "Partie",
+  "hi": "भाग",
+  "it": "Parte",
+  "ja": "パート",
+  "pt": "Parte",
+  "zh": "部分"
+ },
  "Passport photos come from photos — choose a photo above.": {
   "de": "Passfotos entstehen aus Fotos — wähle oben ein Foto.",
   "es": "Las fotos de pasaporte salen de fotos — elige una foto arriba.",
@@ -15658,6 +16788,26 @@
   "ja": "パスワード",
   "pt": "Palavra-passe",
   "zh": "密码"
+ },
+ "Password for": {
+  "de": "Passwort für",
+  "es": "Contraseña de",
+  "fr": "Mot de passe de",
+  "hi": "पासवर्ड:",
+  "it": "Password per",
+  "ja": "パスワード：",
+  "pt": "Senha de",
+  "zh": "密码："
+ },
+ "Password removed — this copy opens freely.": {
+  "de": "Passwort entfernt – diese Kopie öffnet ohne Passwort.",
+  "es": "Contraseña quitada: esta copia se abre libremente.",
+  "fr": "Mot de passe retiré — cette copie s'ouvre librement.",
+  "hi": "पासवर्ड हट गया — यह कॉपी बिना पासवर्ड खुलती है।",
+  "it": "Password rimossa — questa copia si apre liberamente.",
+  "ja": "パスワードを解除しました。このコピーは自由に開けます。",
+  "pt": "Senha removida — esta cópia abre livremente.",
+  "zh": "密码已移除——此副本可直接打开。"
  },
  "Password-lock or watermark a PDF": {
   "de": "PDF mit Passwort sperren oder Wasserzeichen",
@@ -16229,6 +17379,16 @@
   "pt": "Escolha uma gravação ou vídeo de reunião.",
   "zh": "选择会议录音或视频。"
  },
+ "Pick a recording or clip and Tenzy will cut the background noise, drop the rumble and hum, and bring the volume up to an even level.": {
+  "de": "Wähle eine Aufnahme oder einen Clip – Tenzy entfernt Hintergrundrauschen, Rumpeln und Brummen und gleicht die Lautstärke an.",
+  "es": "Elige una grabación o clip y Tenzy quitará el ruido de fondo, el retumbe y el zumbido, y nivelará el volumen.",
+  "fr": "Choisissez un enregistrement ou un clip : Tenzy retire le bruit de fond, le grondement et le ronflement, et égalise le volume.",
+  "hi": "रिकॉर्डिंग या क्लिप चुनें, Tenzy पीछे का शोर, गड़गड़ाहट और भनभनाहट हटाकर आवाज़ एक जैसी करेगा।",
+  "it": "Scegli una registrazione o clip: Tenzy toglie il rumore di fondo, rombo e ronzio, e uniforma il volume.",
+  "ja": "録音やクリップを選ぶと、Tenzyが背景ノイズ・低音ノイズ・ハムを除去し、音量をそろえます。",
+  "pt": "Escolha uma gravação ou clipe e o Tenzy tira o ruído de fundo, o ronco e o zumbido, e iguala o volume.",
+  "zh": "选择录音或片段，Tenzy 会去除背景噪音、低频轰鸣和嗡嗡声，并把音量调到均匀水平。"
+ },
  "Pick a tool. It explains itself.": {
   "de": "Wähle ein Tool. Es erklärt sich selbst.",
   "es": "Elige una herramienta. Se explica sola.",
@@ -16789,6 +17949,16 @@
   "pt": "Posição",
   "zh": "位置"
  },
+ "Postcode / ZIP": {
+  "de": "Postleitzahl",
+  "es": "Código postal",
+  "fr": "Code postal",
+  "hi": "पिन कोड / ZIP",
+  "it": "CAP",
+  "ja": "郵便番号",
+  "pt": "CEP / código postal",
+  "zh": "邮政编码"
+ },
  "Precious metal (troy ounce)": {
   "de": "Edelmetall (Feinunze)",
   "es": "Metal precioso (onza troy)",
@@ -16838,6 +18008,26 @@
   "ja": "急がせるプレッシャー",
   "pt": "Pressão para agir rápido",
   "zh": "催促你立即行动"
+ },
+ "Preview of the first page": {
+  "de": "Vorschau der ersten Seite",
+  "es": "Vista previa de la primera página",
+  "fr": "Aperçu de la première page",
+  "hi": "पहले पेज की झलक",
+  "it": "Anteprima della prima pagina",
+  "ja": "1ページ目のプレビュー",
+  "pt": "Prévia da primeira página",
+  "zh": "首页预览"
+ },
+ "Preview of the signed page": {
+  "de": "Vorschau der unterschriebenen Seite",
+  "es": "Vista previa de la página firmada",
+  "fr": "Aperçu de la page signée",
+  "hi": "हस्ताक्षर वाले पेज की झलक",
+  "it": "Anteprima della pagina firmata",
+  "ja": "署名ページのプレビュー",
+  "pt": "Prévia da página assinada",
+  "zh": "已签名页面预览"
  },
  "Previous month": {
   "de": "Voriger Monat",
@@ -17049,6 +18239,16 @@
   "pt": "Proteger",
   "zh": "保护"
  },
+ "Proved: searched the finished file for all": {
+  "de": "Nachgewiesen: Die fertige Datei wurde durchsucht nach allen",
+  "es": "Comprobado: se buscaron en el archivo final las",
+  "fr": "Prouvé : le fichier final a été fouillé pour les",
+  "hi": "साबित: तैयार फ़ाइल में सभी खोजे गए",
+  "it": "Verificato: cercate nel file finale tutte le",
+  "ja": "証明：完成ファイルですべて検索済み",
+  "pt": "Comprovado: o arquivo final foi buscado por todas as",
+  "zh": "已证明：在最终文件中搜索了全部"
+ },
  "Pulled from your photos below — tap any to open the original.": {
   "de": "Aus deinen Fotos unten entnommen — tippe eines an, um das Original zu öffnen.",
   "es": "Extraído de tus fotos de abajo: toca cualquiera para abrir el original.",
@@ -17078,6 +18278,16 @@
   "ja": "紫",
   "pt": "Roxo",
   "zh": "紫"
+ },
+ "Pushes down steady hiss between words.": {
+  "de": "Dämpft gleichmäßiges Rauschen zwischen den Wörtern.",
+  "es": "Reduce el siseo constante entre palabras.",
+  "fr": "Atténue le souffle continu entre les mots.",
+  "hi": "शब्दों के बीच की लगातार सरसराहट कम करता है।",
+  "it": "Attenua il fruscio costante tra le parole.",
+  "ja": "言葉の間の一定のヒスノイズを抑えます。",
+  "pt": "Reduz o chiado constante entre as palavras.",
+  "zh": "压低词语间持续的嘶嘶声。"
  },
  "Pushes you to \"verify\" your account": {
   "de": "Drängt dich, dein Konto zu „verifizieren“",
@@ -17198,6 +18408,16 @@
   "ja": "ライトをボタンに割り当てて、暗闇ですぐ使えるように。一度設定すればいつでも使えます。",
   "pt": "Coloque a luz num botão para tê-la no escuro. Faça uma vez e fica sempre pronta.",
   "zh": "把灯放到一个按键上，黑暗中随时可用。设置一次，永远就绪。"
+ },
+ "Put the to-dos in Reminders": {
+  "de": "To-dos in Erinnerungen eintragen",
+  "es": "Poner las tareas en Recordatorios",
+  "fr": "Mettre les tâches dans Rappels",
+  "hi": "टू-डू Reminders में डालें",
+  "it": "Metti le attività in Promemoria",
+  "ja": "やることをリマインダーに追加",
+  "pt": "Pôr as tarefas em Lembretes",
+  "zh": "把待办加入提醒事项"
  },
  "Put them together": {
   "de": "Zusammenfügen",
@@ -17519,6 +18739,16 @@
   "pt": "Ler meu humor",
   "zh": "读懂我的状态"
  },
+ "Read the expiry date": {
+  "de": "Ablaufdatum lesen",
+  "es": "Leer la fecha de caducidad",
+  "fr": "Lire la date d'expiration",
+  "hi": "समाप्ति तिथि पढ़ें",
+  "it": "Leggi la data di scadenza",
+  "ja": "有効期限を読み取る",
+  "pt": "Ler a data de validade",
+  "zh": "读取到期日"
+ },
  "Read the text": {
   "de": "Text lesen",
   "es": "Leer el texto",
@@ -17528,6 +18758,16 @@
   "ja": "テキストを読み取る",
   "pt": "Ler o texto",
   "zh": "读取文字"
+ },
+ "Read these aloud": {
+  "de": "Laut vorlesen",
+  "es": "Leer en voz alta",
+  "fr": "Lire à voix haute",
+  "hi": "इन्हें ज़ोर से पढ़ें",
+  "it": "Leggi ad alta voce",
+  "ja": "読み上げる",
+  "pt": "Ler em voz alta",
+  "zh": "朗读这些内容"
  },
  "Read your screenshots once so you can search them. It happens on your phone and is cached — only slow the first time.": {
   "de": "Liest deine Screenshots einmal, damit du sie durchsuchen kannst. Es passiert auf deinem Handy und wird zwischengespeichert — nur beim ersten Mal langsam.",
@@ -17588,6 +18828,16 @@
   "ja": "書籍のテキストを端末内で読み取り中。本格的な電子書籍リーダーには“開く方法”をタップ。",
   "pt": "A ler o texto do livro no dispositivo. Toca em “Abrir com” para um leitor de e-books completo.",
   "zh": "正在设备端读取书籍文字。点按“打开方式”使用完整的电子书阅读器。"
+ },
+ "Reading the clip…": {
+  "de": "Clip wird gelesen …",
+  "es": "Leyendo el clip…",
+  "fr": "Lecture du clip…",
+  "hi": "क्लिप पढ़ रहे हैं…",
+  "it": "Lettura della clip…",
+  "ja": "クリップを読み込み中…",
+  "pt": "Lendo o clipe…",
+  "zh": "正在读取片段…"
  },
  "Reading the document's text on-device. Tap “Open with” to open it in an office app with full formatting.": {
   "de": "Der Dokumenttext wird auf dem Gerät gelesen. Tippe „Öffnen mit“, um es in einer Office-App mit voller Formatierung zu öffnen.",
@@ -17959,6 +19209,16 @@
   "pt": "Ocultar",
   "zh": "涂黑"
  },
+ "Redact & preview": {
+  "de": "Schwärzen & Vorschau",
+  "es": "Tapar y ver",
+  "fr": "Caviarder et prévisualiser",
+  "hi": "छिपाएं और देखें",
+  "it": "Oscura e anteprima",
+  "ja": "黒塗りしてプレビュー",
+  "pt": "Tarjar e visualizar",
+  "zh": "涂黑并预览"
+ },
  "Redact works on photos — choose a photo above.": {
   "de": "Schwärzen funktioniert bei Fotos — wähle oben ein Foto.",
   "es": "Censurar funciona con fotos — elige una foto arriba.",
@@ -17969,6 +19229,36 @@
   "pt": "Ocultar funciona em fotos — escolhe uma foto acima.",
   "zh": "涂抹适用于照片 — 请在上方选择一张照片。"
  },
+ "Redacted PDF": {
+  "de": "Geschwärztes PDF",
+  "es": "PDF tapado",
+  "fr": "PDF caviardé",
+  "hi": "छिपाया गया PDF",
+  "it": "PDF oscurato",
+  "ja": "黒塗り済みPDF",
+  "pt": "PDF tarjado",
+  "zh": "已涂黑的 PDF"
+ },
+ "Redacted — the hidden text is gone, not just covered. Flattened, so it can't be lifted off.": {
+  "de": "Geschwärzt – der verborgene Text ist weg, nicht nur abgedeckt. Abgeflacht, damit er sich nicht ablösen lässt.",
+  "es": "Tapado: el texto oculto ya no está, no solo cubierto. Aplanado para que no se pueda quitar.",
+  "fr": "Caviardé — le texte masqué a disparu, pas seulement recouvert. Aplati, il ne peut pas être retiré.",
+  "hi": "छिपा दिया — छिपा टेक्स्ट हट गया है, सिर्फ़ ढका नहीं। फ़्लैट किया गया, ताकि हटाया न जा सके।",
+  "it": "Oscurato — il testo nascosto è sparito, non solo coperto. Appiattito, non si può staccare.",
+  "ja": "黒塗り完了 — 文字は覆われただけでなく削除済み。平坦化したので剥がせません。",
+  "pt": "Tarjado — o texto oculto sumiu, não só foi coberto. Achatado, não dá para remover.",
+  "zh": "已涂黑——隐藏文字已删除，而非仅被遮盖。已扁平化，无法揭开。"
+ },
+ "Redo my signature": {
+  "de": "Unterschrift neu zeichnen",
+  "es": "Rehacer mi firma",
+  "fr": "Refaire ma signature",
+  "hi": "हस्ताक्षर फिर से बनाएं",
+  "it": "Rifai la firma",
+  "ja": "署名を書き直す",
+  "pt": "Refazer minha assinatura",
+  "zh": "重新签名"
+ },
  "Redo signature": {
   "de": "Unterschrift wiederholen",
   "es": "Rehacer firma",
@@ -17978,6 +19268,16 @@
   "ja": "署名をやり直す",
   "pt": "Refazer assinatura",
   "zh": "重做签名"
+ },
+ "Reduce background noise": {
+  "de": "Hintergrundrauschen verringern",
+  "es": "Reducir el ruido de fondo",
+  "fr": "Réduire le bruit de fond",
+  "hi": "पीछे का शोर कम करें",
+  "it": "Riduci il rumore di fondo",
+  "ja": "背景ノイズを減らす",
+  "pt": "Reduzir ruído de fundo",
+  "zh": "降低背景噪音"
  },
  "Refill": {
   "de": "Nachschub",
@@ -18129,6 +19429,16 @@
   "pt": "Lembretes para cada remédio, com botão «Tomei» e visão da semana.",
   "zh": "为每种药设置提醒，带“已服用”按钮和周视图。"
  },
+ "Reminders set 6 months and 1 month before.": {
+  "de": "Erinnerungen 6 Monate und 1 Monat vorher eingestellt.",
+  "es": "Avisos programados 6 meses y 1 mes antes.",
+  "fr": "Rappels prévus 6 mois et 1 mois avant.",
+  "hi": "6 महीने और 1 महीने पहले के रिमाइंडर सेट हैं।",
+  "it": "Promemoria impostati 6 mesi e 1 mese prima.",
+  "ja": "6か月前と1か月前にリマインダーを設定しました。",
+  "pt": "Lembretes definidos 6 meses e 1 mês antes.",
+  "zh": "已设置提前 6 个月和 1 个月的提醒。"
+ },
  "Reminders with a Taken button": {
   "de": "Erinnerungen mit „Genommen“-Taste",
   "es": "Recordatorios con botón de «Tomado»",
@@ -18169,6 +19479,16 @@
   "pt": "Remover capa",
   "zh": "移除封面"
  },
+ "Remove dead air": {
+  "de": "Stille entfernen",
+  "es": "Quitar silencios",
+  "fr": "Retirer les blancs",
+  "hi": "खाली हिस्से हटाएं",
+  "it": "Togli i silenzi",
+  "ja": "無音をカット",
+  "pt": "Tirar silêncios",
+  "zh": "去除空白"
+ },
  "Remove hum and hiss, and bring a quiet recording up to an even volume.": {
   "de": "Brummen und Rauschen entfernen und eine leise Aufnahme gleichmäßig lauter machen.",
   "es": "Quita zumbidos y siseos y sube una grabación baja a un volumen uniforme.",
@@ -18188,6 +19508,26 @@
   "ja": "位置情報を消す・顔を隠す",
   "pt": "Remova a localização, esconda rostos",
   "zh": "去除位置、遮挡人脸"
+ },
+ "Remove page": {
+  "de": "Seite entfernen",
+  "es": "Quitar página",
+  "fr": "Supprimer la page",
+  "hi": "पेज हटाएं",
+  "it": "Rimuovi pagina",
+  "ja": "ページを削除",
+  "pt": "Remover página",
+  "zh": "删除页面"
+ },
+ "Remove password": {
+  "de": "Passwort entfernen",
+  "es": "Quitar contraseña",
+  "fr": "Retirer le mot de passe",
+  "hi": "पासवर्ड हटाएं",
+  "it": "Rimuovi password",
+  "ja": "パスワードを解除",
+  "pt": "Remover senha",
+  "zh": "移除密码"
  },
  "Remove photo": {
   "de": "Foto entfernen",
@@ -18269,6 +19609,16 @@
   "pt": "Removido",
   "zh": "已移除"
  },
+ "Removes low handling noise and mains hum.": {
+  "de": "Entfernt tiefe Griffgeräusche und Netzbrummen.",
+  "es": "Quita el ruido grave de manipulación y el zumbido eléctrico.",
+  "fr": "Retire les bruits de manipulation graves et le ronflement secteur.",
+  "hi": "हाथ लगने का भारी शोर और बिजली की भनभनाहट हटाता है।",
+  "it": "Rimuove i rumori bassi di manipolazione e il ronzio di rete.",
+  "ja": "持ったときの低いノイズや電源ハムを除去します。",
+  "pt": "Remove ruído grave de manuseio e zumbido elétrico.",
+  "zh": "去除低频的手持杂音和电源嗡嗡声。"
+ },
  "Rename": {
   "de": "Umbenennen",
   "es": "Renombrar",
@@ -18328,6 +19678,26 @@
   "ja": "繰り返し",
   "pt": "Repetir",
   "zh": "重复"
+ },
+ "Report and block it": {
+  "de": "Melden und blockieren",
+  "es": "Denunciar y bloquear",
+  "fr": "Signaler et bloquer",
+  "hi": "रिपोर्ट और ब्लॉक करें",
+  "it": "Segnala e blocca",
+  "ja": "報告してブロック",
+  "pt": "Denunciar e bloquear",
+  "zh": "举报并屏蔽"
+ },
+ "Report it to": {
+  "de": "Melden bei",
+  "es": "Denúncialo a",
+  "fr": "Signalez-le à",
+  "hi": "इसकी रिपोर्ट करें:",
+  "it": "Segnalalo a",
+  "ja": "報告先：",
+  "pt": "Denuncie para",
+  "zh": "举报给"
  },
  "Rescan": {
   "de": "Erneut scannen",
@@ -18529,6 +19899,16 @@
   "pt": "Agora:",
   "zh": "目前："
  },
+ "Ringtone ready — play it, then save or share.": {
+  "de": "Klingelton fertig – abspielen, dann sichern oder teilen.",
+  "es": "Tono listo: reprodúcelo y luego guárdalo o compártelo.",
+  "fr": "Sonnerie prête — écoutez-la, puis enregistrez ou partagez.",
+  "hi": "रिंगटोन तैयार — चलाएं, फिर सहेजें या शेयर करें।",
+  "it": "Suoneria pronta — ascoltala, poi salva o condividi.",
+  "ja": "着信音ができました — 再生して、保存または共有。",
+  "pt": "Toque pronto — ouça e depois salve ou compartilhe.",
+  "zh": "铃声已就绪——播放后保存或分享。"
+ },
  "Ringtone · up to 30 s": {
   "de": "Klingelton · bis 30 s",
   "es": "Tono de llamada · hasta 30 s",
@@ -18538,6 +19918,16 @@
   "ja": "着信音・最大30秒",
   "pt": "Toque · até 30 s",
   "zh": "来电铃声 · 最长 30 秒"
+ },
+ "Ringtone:": {
+  "de": "Klingelton:",
+  "es": "Tono:",
+  "fr": "Sonnerie :",
+  "hi": "रिंगटोन:",
+  "it": "Suoneria:",
+  "ja": "着信音：",
+  "pt": "Toque:",
+  "zh": "铃声："
  },
  "Robot": {
   "de": "Roboter",
@@ -18799,6 +20189,16 @@
   "pt": "Guardar uma assinatura",
   "zh": "保存签名"
  },
+ "Save all": {
+  "de": "Alle sichern",
+  "es": "Guardar todo",
+  "fr": "Tout enregistrer",
+  "hi": "सब सहेजें",
+  "it": "Salva tutto",
+  "ja": "すべて保存",
+  "pt": "Salvar tudo",
+  "zh": "全部保存"
+ },
  "Save all to Photos": {
   "de": "Alle in Fotos sichern",
   "es": "Guardar todo en Fotos",
@@ -18808,6 +20208,16 @@
   "ja": "すべて写真に保存",
   "pt": "Salvar todas no Fotos",
   "zh": "全部存储到“照片”"
+ },
+ "Save as": {
+  "de": "Sichern als",
+  "es": "Guardar como",
+  "fr": "Enregistrer sous",
+  "hi": "इस रूप में सहेजें",
+  "it": "Salva come",
+  "ja": "保存形式",
+  "pt": "Salvar como",
+  "zh": "另存为"
  },
  "Save as Excel (.xlsx)": {
   "de": "Als Excel sichern (.xlsx)",
@@ -18848,6 +20258,16 @@
   "ja": "連絡先を保存",
   "pt": "Guardar contacto",
   "zh": "保存联系人"
+ },
+ "Save edit": {
+  "de": "Bearbeitung sichern",
+  "es": "Guardar edición",
+  "fr": "Enregistrer la modification",
+  "hi": "बदलाव सहेजें",
+  "it": "Salva modifica",
+  "ja": "編集を保存",
+  "pt": "Salvar edição",
+  "zh": "保存编辑"
  },
  "Save everyone to one contact-card file in Files, iCloud Drive or Google Drive. It opens on any phone or computer.": {
   "de": "Alle in einer Kontaktkarten-Datei in Dateien, iCloud Drive oder Google Drive sichern. Sie öffnet sich auf jedem Telefon oder Computer.",
@@ -18929,6 +20349,26 @@
   "pt": "Guardar ou partilhar",
   "zh": "保存或分享"
  },
+ "Save or share .m4r": {
+  "de": ".m4r sichern oder teilen",
+  "es": "Guardar o compartir .m4r",
+  "fr": "Enregistrer ou partager le .m4r",
+  "hi": ".m4r सहेजें या शेयर करें",
+  "it": "Salva o condividi .m4r",
+  "ja": ".m4rを保存または共有",
+  "pt": "Salvar ou compartilhar .m4r",
+  "zh": "保存或分享 .m4r"
+ },
+ "Save or share .txt": {
+  "de": ".txt sichern oder teilen",
+  "es": "Guardar o compartir .txt",
+  "fr": "Enregistrer ou partager le .txt",
+  "hi": ".txt सहेजें या शेयर करें",
+  "it": "Salva o condividi .txt",
+  "ja": ".txtを保存または共有",
+  "pt": "Salvar ou compartilhar .txt",
+  "zh": "保存或分享 .txt"
+ },
  "Save or share GIF": {
   "de": "GIF sichern oder teilen",
   "es": "Guardar o compartir GIF",
@@ -18989,6 +20429,16 @@
   "pt": "Salvar ou compartilhar foto",
   "zh": "保存或分享照片"
  },
+ "Save or share signed PDF": {
+  "de": "Unterschriebenes PDF sichern oder teilen",
+  "es": "Guardar o compartir el PDF firmado",
+  "fr": "Enregistrer ou partager le PDF signé",
+  "hi": "हस्ताक्षर वाला PDF सहेजें या शेयर करें",
+  "it": "Salva o condividi il PDF firmato",
+  "ja": "署名済みPDFを保存または共有",
+  "pt": "Salvar ou compartilhar PDF assinado",
+  "zh": "保存或分享已签名的 PDF"
+ },
  "Save or share the clean copy": {
   "de": "Saubere Kopie speichern oder teilen",
   "es": "Guardar o compartir la copia limpia",
@@ -19008,6 +20458,16 @@
   "ja": "クリーンな動画を保存・共有",
   "pt": "Guardar ou partilhar o vídeo limpo",
   "zh": "保存或分享清洁视频"
+ },
+ "Save or share the file": {
+  "de": "Datei sichern oder teilen",
+  "es": "Guardar o compartir el archivo",
+  "fr": "Enregistrer ou partager le fichier",
+  "hi": "फ़ाइल सहेजें या शेयर करें",
+  "it": "Salva o condividi il file",
+  "ja": "ファイルを保存または共有",
+  "pt": "Salvar ou compartilhar o arquivo",
+  "zh": "保存或分享文件"
  },
  "Save or share this frame": {
   "de": "Dieses Bild speichern oder teilen",
@@ -19188,6 +20648,16 @@
   "ja": "保存。iPhoneが充電中や待機中に1日数回チェック — 電池とデータに優しく — 超えたら1回お知らせ。",
   "pt": "Salve. O iPhone verifica algumas vezes por dia carregando ou em repouso — leve na bateria e nos dados — e avisa uma vez.",
   "zh": "保存。iPhone 在充电或闲置时每天检查几次——省电省流量——越线时提醒一次。"
+ },
+ "Saved as": {
+  "de": "Gesichert als",
+  "es": "Guardado como",
+  "fr": "Enregistré sous",
+  "hi": "इस रूप में सहेजा",
+  "it": "Salvato come",
+  "ja": "保存名：",
+  "pt": "Salvo como",
+  "zh": "已保存为"
  },
  "Saved as a row in": {
   "de": "Als Zeile gespeichert in",
@@ -19909,6 +21379,16 @@
   "pt": "Enviar",
   "zh": "发送"
  },
+ "Send it a different way from the file — if you emailed the PDF, text the password. Then anyone who gets one without the other can't open it.": {
+  "de": "Sende es auf anderem Weg als die Datei – hast du das PDF gemailt, schick das Passwort per SMS. Wer nur eins von beidem bekommt, kann es nicht öffnen.",
+  "es": "Envíala por otra vía distinta al archivo: si mandaste el PDF por correo, envía la contraseña por mensaje. Así, quien reciba solo uno no podrá abrirlo.",
+  "fr": "Envoyez-le autrement que le fichier — si vous avez envoyé le PDF par e-mail, envoyez le mot de passe par SMS. Qui n'a que l'un des deux ne peut pas l'ouvrir.",
+  "hi": "इसे फ़ाइल से अलग तरीके से भेजें — PDF ईमेल किया हो तो पासवर्ड मैसेज करें। फिर जिसके पास सिर्फ़ एक हो, वह इसे नहीं खोल पाएगा।",
+  "it": "Invialo in modo diverso dal file — se hai mandato il PDF per email, manda la password per messaggio. Chi ha solo uno dei due non può aprirlo.",
+  "ja": "ファイルとは別の方法で送りましょう。PDFをメールしたならパスワードはメッセージで。片方だけでは開けません。",
+  "pt": "Envie por um caminho diferente do arquivo — se mandou o PDF por e-mail, mande a senha por mensagem. Quem tiver só um dos dois não consegue abrir.",
+  "zh": "用与文件不同的方式发送——如果用邮件发了 PDF，就用短信发密码。只拿到其中之一的人无法打开。"
+ },
  "Send me a daily brief": {
   "de": "Schick mir eine tägliche Übersicht",
   "es": "Envíame un resumen diario",
@@ -19938,6 +21418,16 @@
   "ja": "現在地を送信",
   "pt": "Enviar a minha localização",
   "zh": "发送我的位置"
+ },
+ "Send or save the PDF": {
+  "de": "PDF senden oder sichern",
+  "es": "Enviar o guardar el PDF",
+  "fr": "Envoyer ou enregistrer le PDF",
+  "hi": "PDF भेजें या सहेजें",
+  "it": "Invia o salva il PDF",
+  "ja": "PDFを送信または保存",
+  "pt": "Enviar ou salvar o PDF",
+  "zh": "发送或保存 PDF"
  },
  "Send or save the picture": {
   "de": "Bild senden oder sichern",
@@ -19969,6 +21459,16 @@
   "pt": "Enviar a ligação",
   "zh": "发送链接"
  },
+ "Send the password separately": {
+  "de": "Passwort separat senden",
+  "es": "Envía la contraseña por separado",
+  "fr": "Envoyez le mot de passe séparément",
+  "hi": "पासवर्ड अलग से भेजें",
+  "it": "Invia la password separatamente",
+  "ja": "パスワードは別に送る",
+  "pt": "Envie a senha separadamente",
+  "zh": "单独发送密码"
+ },
  "Send the spot": {
   "de": "Ort senden",
   "es": "Enviar el lugar",
@@ -19979,6 +21479,16 @@
   "pt": "Enviar o local",
   "zh": "发送位置"
  },
+ "Send the wish": {
+  "de": "Glückwunsch senden",
+  "es": "Enviar la felicitación",
+  "fr": "Envoyer le message",
+  "hi": "शुभकामना भेजें",
+  "it": "Invia gli auguri",
+  "ja": "お祝いを送る",
+  "pt": "Enviar a mensagem",
+  "zh": "发送祝福"
+ },
  "Send to Android or Windows": {
   "de": "An Android oder Windows senden",
   "es": "Enviar a Android o Windows",
@@ -19988,6 +21498,16 @@
   "ja": "Android や Windows に送る",
   "pt": "Enviar para Android ou Windows",
   "zh": "发给安卓或 Windows"
+ },
+ "Send to Notes or share": {
+  "de": "An Notizen senden oder teilen",
+  "es": "Enviar a Notas o compartir",
+  "fr": "Envoyer vers Notes ou partager",
+  "hi": "Notes में भेजें या शेयर करें",
+  "it": "Invia a Note o condividi",
+  "ja": "メモに送るか共有",
+  "pt": "Enviar para Notas ou compartilhar",
+  "zh": "发送到备忘录或分享"
  },
  "Set": {
   "de": "Setzen",
@@ -20589,6 +22109,26 @@
   "pt": "Nome do atalho",
   "zh": "快捷方式名称"
  },
+ "Shot": {
+  "de": "Foto",
+  "es": "Foto",
+  "fr": "Photo",
+  "hi": "फ़ोटो",
+  "it": "Scatto",
+  "ja": "ショット",
+  "pt": "Foto",
+  "zh": "照片"
+ },
+ "Shots you skipped are simply left out.": {
+  "de": "Übersprungene Fotos werden einfach weggelassen.",
+  "es": "Las fotos que omitas simplemente no se incluyen.",
+  "fr": "Les photos ignorées sont simplement laissées de côté.",
+  "hi": "जो फ़ोटो छोड़े, वे बस शामिल नहीं होंगे।",
+  "it": "Gli scatti saltati vengono semplicemente esclusi.",
+  "ja": "スキップした写真は含まれません。",
+  "pt": "As fotos que você pulou ficam de fora.",
+  "zh": "跳过的照片不会包含在内。"
+ },
  "Shouting": {
   "de": "Schreien in Großbuchstaben",
   "es": "Gritos en mayúsculas",
@@ -20769,6 +22309,16 @@
   "pt": "Assinar",
   "zh": "签名"
  },
+ "Sign & preview": {
+  "de": "Unterschreiben & Vorschau",
+  "es": "Firmar y ver",
+  "fr": "Signer et prévisualiser",
+  "hi": "हस्ताक्षर करें और देखें",
+  "it": "Firma e anteprima",
+  "ja": "署名してプレビュー",
+  "pt": "Assinar e visualizar",
+  "zh": "签名并预览"
+ },
  "Sign a PDF with your finger": {
   "de": "PDF mit dem Finger unterschreiben",
   "es": "Firma un PDF con el dedo",
@@ -20778,6 +22328,16 @@
   "ja": "指でPDFに署名",
   "pt": "Assine um PDF com o dedo",
   "zh": "用手指签署 PDF"
+ },
+ "Sign and fill it": {
+  "de": "Unterschreiben und ausfüllen",
+  "es": "Firmar y rellenar",
+  "fr": "Signer et remplir",
+  "hi": "हस्ताक्षर करें और भरें",
+  "it": "Firma e compila",
+  "ja": "署名して記入",
+  "pt": "Assinar e preencher",
+  "zh": "签名并填写"
  },
  "Sign any PDF with your signature": {
   "de": "Jedes PDF mit deiner Unterschrift signieren",
@@ -20819,6 +22379,16 @@
   "pt": "Assinar ou preencher",
   "zh": "签名或填写"
  },
+ "Sign where it asks — every page": {
+  "de": "Überall unterschreiben, wo es verlangt wird – jede Seite",
+  "es": "Firmar donde lo pide, en cada página",
+  "fr": "Signer là où c'est demandé — chaque page",
+  "hi": "जहां मांगा गया वहां हस्ताक्षर — हर पेज पर",
+  "it": "Firma dove richiesto — ogni pagina",
+  "ja": "求められている箇所に署名 — 全ページ",
+  "pt": "Assinar onde pede — todas as páginas",
+  "zh": "在要求签名处签名——每一页"
+ },
  "Signature upload": {
   "de": "Unterschrift hochladen",
   "es": "Subida de firma",
@@ -20828,6 +22398,16 @@
   "ja": "署名のアップロード",
   "pt": "Envio de assinatura",
   "zh": "签名上传"
+ },
+ "Signed — check it below, then save or share.": {
+  "de": "Unterschrieben – unten prüfen, dann sichern oder teilen.",
+  "es": "Firmado: revísalo abajo y luego guárdalo o compártelo.",
+  "fr": "Signé — vérifiez ci-dessous, puis enregistrez ou partagez.",
+  "hi": "हस्ताक्षर हो गया — नीचे जांचें, फिर सहेजें या शेयर करें।",
+  "it": "Firmato — controlla qui sotto, poi salva o condividi.",
+  "ja": "署名完了 — 下で確認して、保存または共有。",
+  "pt": "Assinado — confira abaixo e depois salve ou compartilhe.",
+  "zh": "已签名——在下方检查，然后保存或分享。"
  },
  "Silhouette": {
   "de": "Silhouette",
@@ -21289,6 +22869,16 @@
   "pt": "Suave ou borrada",
   "zh": "模糊"
  },
+ "Soft shadow under the product": {
+  "de": "Weicher Schatten unter dem Produkt",
+  "es": "Sombra suave bajo el producto",
+  "fr": "Ombre douce sous le produit",
+  "hi": "प्रोडक्ट के नीचे हल्की छाया",
+  "it": "Ombra morbida sotto il prodotto",
+  "ja": "商品の下にやわらかい影",
+  "pt": "Sombra suave sob o produto",
+  "zh": "商品下方的柔和阴影"
+ },
  "Software can't fix this:": {
   "de": "Das kann Software nicht beheben:",
   "es": "Ningún programa puede arreglar esto:",
@@ -21368,6 +22958,16 @@
   "ja": "軽いもの — トースト、果物、スープ",
   "pt": "Algo leve — torrada, fruta, sopa",
   "zh": "清淡点——吐司、水果、汤"
+ },
+ "Something wrong with it?": {
+  "de": "Stimmt etwas nicht damit?",
+  "es": "¿Tiene algún problema?",
+  "fr": "Un problème avec ?",
+  "hi": "इसमें कोई गड़बड़ी है?",
+  "it": "C'è qualche problema?",
+  "ja": "何か不具合がありますか？",
+  "pt": "Algum problema com ele?",
+  "zh": "有什么问题吗？"
  },
  "Sometimes topped with minced meat": {
   "de": "Manchmal mit Hackfleisch obendrauf",
@@ -21889,6 +23489,16 @@
   "pt": "Começa na melhor parte — o trecho mais forte e cheio. Toque na forma de onda para mudar.",
   "zh": "已从歌曲最精彩的部分开始。点波形可以移动。"
  },
+ "State / county": {
+  "de": "Bundesland / Region",
+  "es": "Provincia / estado",
+  "fr": "Région / département",
+  "hi": "राज्य / ज़िला",
+  "it": "Provincia / regione",
+  "ja": "都道府県",
+  "pt": "Estado / região",
+  "zh": "省 / 州"
+ },
  "Step": {
   "de": "Schritt",
   "es": "Paso",
@@ -21988,6 +23598,16 @@
   "ja": "ステッカー、コミック、絵文字の顔、ミーム",
   "pt": "Figurinhas, quadrinhos, rostos com emoji, memes",
   "zh": "贴纸、漫画、表情脸、梗图"
+ },
+ "Still readable in the file:": {
+  "de": "Noch lesbar in der Datei:",
+  "es": "Aún legible en el archivo:",
+  "fr": "Encore lisible dans le fichier :",
+  "hi": "फ़ाइल में अब भी पढ़ा जा सकता है:",
+  "it": "Ancora leggibile nel file:",
+  "ja": "ファイル内でまだ読める文字：",
+  "pt": "Ainda legível no arquivo:",
+  "zh": "文件中仍可识别："
  },
  "Still there": {
   "de": "Noch drin",
@@ -22109,6 +23729,36 @@
   "pt": "Endireitar a cabeça inclinada",
   "zh": "摆正倾斜的头部"
  },
+ "Street address": {
+  "de": "Straße und Hausnummer",
+  "es": "Dirección",
+  "fr": "Adresse",
+  "hi": "पता",
+  "it": "Indirizzo",
+  "ja": "番地",
+  "pt": "Endereço",
+  "zh": "街道地址"
+ },
+ "Strength": {
+  "de": "Stärke",
+  "es": "Intensidad",
+  "fr": "Intensité",
+  "hi": "ताकत",
+  "it": "Intensità",
+  "ja": "強さ",
+  "pt": "Intensidade",
+  "zh": "强度"
+ },
+ "String": {
+  "de": "Saite",
+  "es": "Cuerda",
+  "fr": "Corde",
+  "hi": "तार",
+  "it": "Corda",
+  "ja": "弦",
+  "pt": "Corda",
+  "zh": "弦"
+ },
  "Strip location, redact for good": {
   "de": "Standort entfernen, dauerhaft schwärzen",
   "es": "Quitar ubicación, censurar de verdad",
@@ -22128,6 +23778,16 @@
   "ja": "ストロボ・SOS・画面ライト・鏡",
   "pt": "Estroboscópio, SOS, luz do ecrã, espelho",
   "zh": "频闪、SOS、屏幕灯、镜子"
+ },
+ "Strong": {
+  "de": "Stark",
+  "es": "Fuerte",
+  "fr": "Fort",
+  "hi": "तेज़",
+  "it": "Forte",
+  "ja": "強め",
+  "pt": "Forte",
+  "zh": "强力"
  },
  "Strong light behind": {
   "de": "Starkes Gegenlicht",
@@ -22308,6 +23968,16 @@
   "ja": "記号",
   "pt": "Símbolo",
   "zh": "符号"
+ },
+ "Tables as a spreadsheet (Excel)": {
+  "de": "Tabellen als Tabellenblatt (Excel)",
+  "es": "Tablas como hoja de cálculo (Excel)",
+  "fr": "Tableaux en feuille de calcul (Excel)",
+  "hi": "टेबल स्प्रेडशीट के रूप में (Excel)",
+  "it": "Tabelle come foglio di calcolo (Excel)",
+  "ja": "表をスプレッドシートに（Excel）",
+  "pt": "Tabelas como planilha (Excel)",
+  "zh": "表格转为电子表格（Excel）"
  },
  "Take another photo — tips below.": {
   "de": "Mach ein neues Foto – Tipps unten.",
@@ -22819,6 +24489,16 @@
   "pt": "Toque numa voz para ouvir os primeiros segundos da sua gravação. Compare as que quiser e use a sua favorita.",
   "zh": "点一个声音即可试听录音开头几秒的效果。随意比较，然后选你最喜欢的。"
  },
+ "Tap another voice above to try a different one.": {
+  "de": "Tippe oben auf eine andere Stimme, um sie auszuprobieren.",
+  "es": "Toca otra voz arriba para probar otra.",
+  "fr": "Touchez une autre voix ci-dessus pour en essayer une autre.",
+  "hi": "कोई और आवाज़ आज़माने के लिए ऊपर दूसरी आवाज़ टैप करें।",
+  "it": "Tocca un'altra voce qui sopra per provarne una diversa.",
+  "ja": "別の声を試すには上の声をタップ。",
+  "pt": "Toque em outra voz acima para testar outra.",
+  "zh": "轻点上方其他声音即可换一种试试。"
+ },
  "Tap anywhere to close": {
   "de": "Zum Schließen irgendwohin tippen",
   "es": "Toca en cualquier sitio para cerrar",
@@ -23259,6 +24939,16 @@
   "pt": "O Tenzy falhou da última vez",
   "zh": "Tenzy 上次崩溃了"
  },
+ "Tenzy has no tool for this kind of file yet — save or share it.": {
+  "de": "Tenzy hat noch kein Werkzeug für diese Dateiart – sichere oder teile sie.",
+  "es": "Tenzy aún no tiene herramienta para este tipo de archivo: guárdalo o compártelo.",
+  "fr": "Tenzy n'a pas encore d'outil pour ce type de fichier — enregistrez-le ou partagez-le.",
+  "hi": "Tenzy के पास अभी इस तरह की फ़ाइल का टूल नहीं है — इसे सहेजें या शेयर करें।",
+  "it": "Tenzy non ha ancora uno strumento per questo tipo di file — salvalo o condividilo.",
+  "ja": "この種類のファイルに対応するツールはまだありません。保存または共有してください。",
+  "pt": "O Tenzy ainda não tem ferramenta para esse tipo de arquivo — salve ou compartilhe.",
+  "zh": "Tenzy 暂无处理此类文件的工具——请保存或分享。"
+ },
  "Tenzy hit a snag last time": {
   "de": "Tenzy hatte letztes Mal ein Problem",
   "es": "Tenzy tuvo un problema la última vez",
@@ -23318,6 +25008,16 @@
   "ja": "Tenzyはこの端末の写真と動画を読み取り、容量を使っているものを表示します。何もアップロードされません。",
   "pt": "O Tenzy lê as tuas fotos e vídeos neste dispositivo para mostrar o que ocupa espaço. Nada é enviado.",
   "zh": "Tenzy 在本设备上读取你的照片和视频，以显示什么在占用空间。不上传任何内容。"
+ },
+ "Tenzy saves a copy that opens without a password. You need the current password — this doesn't crack files.": {
+  "de": "Tenzy sichert eine Kopie, die ohne Passwort öffnet. Du brauchst das aktuelle Passwort – Dateien werden nicht geknackt.",
+  "es": "Tenzy guarda una copia que se abre sin contraseña. Necesitas la contraseña actual: no descifra archivos.",
+  "fr": "Tenzy enregistre une copie qui s'ouvre sans mot de passe. Il faut le mot de passe actuel — aucun cassage de fichier.",
+  "hi": "Tenzy बिना पासवर्ड खुलने वाली कॉपी सहेजता है। मौजूदा पासवर्ड चाहिए — यह फ़ाइलें क्रैक नहीं करता।",
+  "it": "Tenzy salva una copia che si apre senza password. Serve la password attuale — non forza i file.",
+  "ja": "Tenzyはパスワードなしで開けるコピーを保存します。現在のパスワードが必要で、解読はしません。",
+  "pt": "O Tenzy salva uma cópia que abre sem senha. Você precisa da senha atual — ele não quebra arquivos.",
+  "zh": "Tenzy 会保存一份无需密码即可打开的副本。需要当前密码——不会破解文件。"
  },
  "Tenzy taps you on the shoulder only when it matters.": {
   "de": "Tenzy meldet sich nur, wenn es wichtig ist.",
@@ -23508,6 +25208,16 @@
   "ja": "テキストをコピーしました",
   "pt": "Texto copiado",
   "zh": "文字已复制"
+ },
+ "Text extracted — preview below, then save or share.": {
+  "de": "Text extrahiert – unten ansehen, dann sichern oder teilen.",
+  "es": "Texto extraído: revísalo abajo y luego guárdalo o compártelo.",
+  "fr": "Texte extrait — aperçu ci-dessous, puis enregistrez ou partagez.",
+  "hi": "टेक्स्ट निकल गया — नीचे देखें, फिर सहेजें या शेयर करें।",
+  "it": "Testo estratto — anteprima qui sotto, poi salva o condividi.",
+  "ja": "テキスト抽出完了 — 下で確認して、保存または共有。",
+  "pt": "Texto extraído — veja abaixo e depois salve ou compartilhe.",
+  "zh": "文字已提取——在下方预览，然后保存或分享。"
  },
  "Text is recognised and the translation is drawn over it in place, on the phone. Reads Latin-alphabet text (Spanish, French, German, Italian, Portuguese…).": {
   "de": "Der Text wird erkannt und die Übersetzung an Ort und Stelle darübergelegt, auf dem Handy. Liest Text im lateinischen Alphabet (Spanisch, Französisch, Deutsch, Italienisch, Portugiesisch…).",
@@ -23908,6 +25618,26 @@
   "ja": "いちばん大変なのは最初の一歩。だからわざと小さくしています。",
   "pt": "O mais difícil é o primeiro passo — este é pequeno de propósito.",
   "zh": "最难的是第一步——所以这一步特意很小。"
+ },
+ "The important part, as printed": {
+  "de": "Das Wichtige, wie gedruckt",
+  "es": "Lo importante, tal como está impreso",
+  "fr": "L'essentiel, tel qu'imprimé",
+  "hi": "ज़रूरी हिस्सा, जैसा छपा है",
+  "it": "La parte importante, come stampata",
+  "ja": "重要な部分（印刷どおり）",
+  "pt": "A parte importante, como impressa",
+  "zh": "重要部分（按原文）"
+ },
+ "The label's own words. If anything is unclear, ask a pharmacist.": {
+  "de": "Die Worte des Etiketts. Wenn etwas unklar ist, frag in der Apotheke.",
+  "es": "Las palabras de la etiqueta. Si algo no está claro, pregunta en la farmacia.",
+  "fr": "Les mots de l'étiquette. Si quelque chose n'est pas clair, demandez à un pharmacien.",
+  "hi": "लेबल के अपने शब्द। कुछ साफ़ न हो तो फ़ार्मासिस्ट से पूछें।",
+  "it": "Le parole dell'etichetta. Se qualcosa non è chiaro, chiedi al farmacista.",
+  "ja": "ラベルの記載そのままです。不明な点は薬剤師に確認してください。",
+  "pt": "As palavras do próprio rótulo. Se algo não estiver claro, pergunte ao farmacêutico.",
+  "zh": "标签上的原文。如有不清楚之处，请咨询药剂师。"
  },
  "The link never carries your email addresses, phone numbers, reminders or a PDF password.": {
   "de": "Der Link enthält nie deine E-Mail-Adressen, Telefonnummern, Erinnerungen oder ein PDF-Passwort.",
@@ -24359,6 +26089,16 @@
   "pt": "Este PDF não tem campos preenchíveis — é um formulário plano.",
   "zh": "此PDF没有可填写的框——是扁平表单。"
  },
+ "This PDF is locked.": {
+  "de": "Dieses PDF ist gesperrt.",
+  "es": "Este PDF está bloqueado.",
+  "fr": "Ce PDF est verrouillé.",
+  "hi": "यह PDF लॉक है।",
+  "it": "Questo PDF è bloccato.",
+  "ja": "このPDFはロックされています。",
+  "pt": "Este PDF está protegido.",
+  "zh": "此 PDF 已加密。"
+ },
  "This alert counts what's in Photos, so Tenzy needs Photos access.": {
   "de": "Dieser Hinweis zählt in Fotos – Tenzy braucht Zugriff auf Fotos.",
   "es": "Esta alerta cuenta lo que hay en Fotos, así que Tenzy necesita acceso a Fotos.",
@@ -24368,6 +26108,16 @@
   "ja": "写真アプリの中身を数えるため、写真へのアクセスが必要です。",
   "pt": "Este alerta conta o que há em Fotos, então o Tenzy precisa de acesso a Fotos.",
   "zh": "此提醒需要统计照片，所以 Tenzy 需要照片访问权限。"
+ },
+ "This archive is empty or couldn't be read.": {
+  "de": "Dieses Archiv ist leer oder konnte nicht gelesen werden.",
+  "es": "Este archivo comprimido está vacío o no se pudo leer.",
+  "fr": "Cette archive est vide ou illisible.",
+  "hi": "यह आर्काइव खाली है या पढ़ा नहीं जा सका।",
+  "it": "Questo archivio è vuoto o non leggibile.",
+  "ja": "このアーカイブは空か、読み込めませんでした。",
+  "pt": "Este arquivo compactado está vazio ou não pôde ser lido.",
+  "zh": "此压缩包为空或无法读取。"
  },
  "This can't be undone.": {
   "de": "Das lässt sich nicht rückgängig machen.",
@@ -24819,6 +26569,16 @@
   "pt": "Gorjeta sobre o valor sem imposto",
   "zh": "按税前金额算小费"
  },
+ "Tip: Warranty & Receipts keeps it with a return-by reminder.": {
+  "de": "Tipp: Garantie & Belege bewahrt ihn mit einer Rückgabe-Erinnerung auf.",
+  "es": "Consejo: Garantías y recibos lo guarda con un aviso de fecha de devolución.",
+  "fr": "Astuce : Garanties et reçus le conserve avec un rappel de date de retour.",
+  "hi": "टिप: Warranty & Receipts इसे रिटर्न की आख़िरी तारीख़ के रिमाइंडर के साथ रखता है।",
+  "it": "Suggerimento: Garanzie e scontrini lo conserva con un promemoria per il reso.",
+  "ja": "ヒント：保証とレシートに返品期限のリマインダー付きで保管できます。",
+  "pt": "Dica: Garantias e recibos guarda com um lembrete de prazo de devolução.",
+  "zh": "提示：保修与收据可保存它并提醒退货截止日期。"
+ },
  "Tip: freeze first, then zoom — no shaky hands. Yellow-on-black and inverted are the looks low-vision readers find easiest.": {
   "de": "Tipp: zuerst einfrieren, dann zoomen — ohne Verwackeln. Gelb auf Schwarz und invertiert sind die Ansichten, die Leser mit Sehschwäche am leichtesten finden.",
   "es": "Consejo: congela primero y luego amplía, sin pulso tembloroso. Amarillo sobre negro e invertido son los modos que los lectores con baja visión encuentran más fáciles.",
@@ -24899,6 +26659,16 @@
   "pt": "Para Lembretes",
   "zh": "到提醒事项"
  },
+ "To block it: open the message, tap the sender's name at the top, then Block Caller. Then delete the message.": {
+  "de": "Zum Blockieren: Nachricht öffnen, oben auf den Absender tippen, dann „Anrufer blockieren“. Danach die Nachricht löschen.",
+  "es": "Para bloquearlo: abre el mensaje, toca el nombre del remitente arriba y luego Bloquear contacto. Después borra el mensaje.",
+  "fr": "Pour bloquer : ouvrez le message, touchez le nom de l'expéditeur en haut, puis Bloquer ce correspondant. Supprimez ensuite le message.",
+  "hi": "ब्लॉक करने के लिए: मैसेज खोलें, ऊपर भेजने वाले के नाम पर टैप करें, फिर Block Caller। फिर मैसेज डिलीट करें।",
+  "it": "Per bloccarlo: apri il messaggio, tocca il nome del mittente in alto, poi Blocca contatto. Poi elimina il messaggio.",
+  "ja": "ブロック方法：メッセージを開き、上部の送信者名をタップして「この発信者を着信拒否」。その後メッセージを削除。",
+  "pt": "Para bloquear: abra a mensagem, toque no nome do remetente no topo e em Bloquear Contato. Depois apague a mensagem.",
+  "zh": "屏蔽方法：打开信息，轻点顶部的发送者名称，然后选“阻止此来电号码”。再删除该信息。"
+ },
  "To do": {
   "de": "Zu erledigen",
   "es": "Por hacer",
@@ -24908,6 +26678,16 @@
   "ja": "やること",
   "pt": "A fazer",
   "zh": "待办"
+ },
+ "To get the space back now: Photos → Albums → Recently Deleted → Select → Delete All.": {
+  "de": "Um den Platz sofort freizugeben: Fotos → Alben → Zuletzt gelöscht → Auswählen → Alle löschen.",
+  "es": "Para recuperar el espacio ya: Fotos → Álbumes → Eliminado → Seleccionar → Eliminar todo.",
+  "fr": "Pour récupérer l'espace tout de suite : Photos → Albums → Supprimés récemment → Sélectionner → Tout supprimer.",
+  "hi": "जगह अभी वापस पाने के लिए: Photos → Albums → Recently Deleted → Select → Delete All।",
+  "it": "Per recuperare subito lo spazio: Foto → Album → Eliminati di recente → Seleziona → Elimina tutto.",
+  "ja": "すぐに容量を戻すには：写真 → アルバム → 最近削除した項目 → 選択 → すべて削除。",
+  "pt": "Para liberar o espaço agora: Fotos → Álbuns → Apagados → Selecionar → Apagar Tudo.",
+  "zh": "立即释放空间：照片 → 相簿 → 最近删除 → 选择 → 全部删除。"
  },
  "To page": {
   "de": "Bis Seite",
@@ -25439,6 +27219,16 @@
   "pt": "A testar num exemplo…",
   "zh": "正在用示例试运行…"
  },
+ "Tune again": {
+  "de": "Erneut stimmen",
+  "es": "Afinar de nuevo",
+  "fr": "Réaccorder",
+  "hi": "फिर से ट्यून करें",
+  "it": "Accorda di nuovo",
+  "ja": "もう一度チューニング",
+  "pt": "Afinar de novo",
+  "zh": "再次调音"
+ },
  "Tune an instrument, test speakers": {
   "de": "Instrument stimmen, Lautsprecher testen",
   "es": "Afina un instrumento, prueba altavoces",
@@ -25889,6 +27679,16 @@
   "pt": "URL",
   "zh": "网址"
  },
+ "US Letter": {
+  "de": "US-Letter",
+  "es": "Carta (EE. UU.)",
+  "fr": "Lettre US",
+  "hi": "US Letter",
+  "it": "Lettera USA",
+  "ja": "USレター",
+  "pt": "Carta (EUA)",
+  "zh": "美式信纸"
+ },
  "US passport · 2×2 in": {
   "de": "US-Pass · 2×2 Zoll",
   "es": "Pasaporte de EE. UU. · 2×2 in",
@@ -25949,6 +27749,16 @@
   "pt": "Menos de ",
   "zh": "小于 "
  },
+ "Under a file size": {
+  "de": "Unter einer Dateigröße",
+  "es": "Por debajo de un tamaño",
+  "fr": "Sous une taille de fichier",
+  "hi": "फ़ाइल साइज़ से कम",
+  "it": "Sotto una dimensione",
+  "ja": "ファイルサイズ以下に",
+  "pt": "Abaixo de um tamanho",
+  "zh": "低于指定文件大小"
+ },
  "Undo": {
   "de": "Rückgängig",
   "es": "Deshacer",
@@ -25958,6 +27768,16 @@
   "ja": "取り消す",
   "pt": "Anular",
   "zh": "撤销"
+ },
+ "Undo all": {
+  "de": "Alles rückgängig",
+  "es": "Deshacer todo",
+  "fr": "Tout annuler",
+  "hi": "सब पूर्ववत करें",
+  "it": "Annulla tutto",
+  "ja": "すべて取り消す",
+  "pt": "Desfazer tudo",
+  "zh": "全部撤销"
  },
  "Undo last": {
   "de": "Letztes rückgängig",
@@ -26719,6 +28539,16 @@
   "pt": "Avise se continuar alto demais",
   "zh": "持续太吵时提醒我"
  },
+ "Warn my family — they may get the same one": {
+  "de": "Familie warnen – sie bekommen vielleicht dieselbe",
+  "es": "Avisar a mi familia: puede que reciban lo mismo",
+  "fr": "Prévenir ma famille — ils pourraient recevoir le même",
+  "hi": "परिवार को सावधान करें — उन्हें भी ऐसा ही आ सकता है",
+  "it": "Avvisa la famiglia — potrebbero riceverlo anche loro",
+  "ja": "家族に知らせる — 同じものが届くかもしれません",
+  "pt": "Avisar minha família — eles podem receber a mesma",
+  "zh": "提醒家人——他们可能也会收到"
+ },
  "Warranty": {
   "de": "Garantie",
   "es": "Garantía",
@@ -26758,6 +28588,26 @@
   "ja": "ページを見張る",
   "pt": "Acompanhar uma página",
   "zh": "关注一个网页"
+ },
+ "Watermark text": {
+  "de": "Wasserzeichentext",
+  "es": "Texto de la marca de agua",
+  "fr": "Texte du filigrane",
+  "hi": "वॉटरमार्क टेक्स्ट",
+  "it": "Testo della filigrana",
+  "ja": "透かしの文字",
+  "pt": "Texto da marca d'água",
+  "zh": "水印文字"
+ },
+ "Watermarked on every page — check it below.": {
+  "de": "Wasserzeichen auf jeder Seite – unten prüfen.",
+  "es": "Marca de agua en cada página: revísala abajo.",
+  "fr": "Filigrane sur chaque page — vérifiez ci-dessous.",
+  "hi": "हर पेज पर वॉटरमार्क — नीचे जांचें।",
+  "it": "Filigrana su ogni pagina — controlla qui sotto.",
+  "ja": "全ページに透かしを入れました — 下で確認。",
+  "pt": "Marca d'água em todas as páginas — confira abaixo.",
+  "zh": "每页均已加水印——请在下方检查。"
  },
  "Wave the phone in a figure‑8 to calibrate.": {
   "de": "Bewege das Handy in einer Acht, um zu kalibrieren.",
@@ -26848,6 +28698,26 @@
   "ja": "何を測りますか？",
   "pt": "O que você vai medir?",
   "zh": "你要测量什么？"
+ },
+ "What are you photographing?": {
+  "de": "Was fotografierst du?",
+  "es": "¿Qué vas a fotografiar?",
+  "fr": "Que photographiez-vous ?",
+  "hi": "आप किसकी फ़ोटो ले रहे हैं?",
+  "it": "Cosa stai fotografando?",
+  "ja": "何を撮影しますか？",
+  "pt": "O que você vai fotografar?",
+  "zh": "你要拍什么？"
+ },
+ "What changed": {
+  "de": "Was sich geändert hat",
+  "es": "Qué cambió",
+  "fr": "Ce qui a changé",
+  "hi": "क्या बदला",
+  "it": "Cosa è cambiato",
+  "ja": "変更点",
+  "pt": "O que mudou",
+  "zh": "变化了什么"
  },
  "What do you have?": {
   "de": "Was hast du?",
@@ -26989,6 +28859,26 @@
   "pt": "O que vestir",
   "zh": "穿什么"
  },
+ "What you can still return": {
+  "de": "Was du noch zurückgeben kannst",
+  "es": "Lo que aún puedes devolver",
+  "fr": "Ce que vous pouvez encore retourner",
+  "hi": "जो आप अभी भी लौटा सकते हैं",
+  "it": "Cosa puoi ancora restituire",
+  "ja": "まだ返品できるもの",
+  "pt": "O que você ainda pode devolver",
+  "zh": "仍可退货的物品"
+ },
+ "What you highlighted": {
+  "de": "Was du markiert hast",
+  "es": "Lo que resaltaste",
+  "fr": "Ce que vous avez surligné",
+  "hi": "आपने क्या हाइलाइट किया",
+  "it": "Cosa hai evidenziato",
+  "ja": "ハイライトした内容",
+  "pt": "O que você destacou",
+  "zh": "你高亮的内容"
+ },
  "What you want": {
   "de": "Was du willst",
   "es": "Lo que quieres",
@@ -27028,6 +28918,16 @@
   "ja": "何に使いますか？",
   "pt": "Para que é?",
   "zh": "用来做什么？"
+ },
+ "What's wrong (optional)": {
+  "de": "Was ist kaputt (optional)",
+  "es": "Qué falla (opcional)",
+  "fr": "Quel est le problème (facultatif)",
+  "hi": "क्या गड़बड़ है (वैकल्पिक)",
+  "it": "Qual è il problema (facoltativo)",
+  "ja": "不具合の内容（任意）",
+  "pt": "O que está errado (opcional)",
+  "zh": "问题描述（可选）"
  },
  "WhatsApp video": {
   "de": "WhatsApp-Video",
@@ -27128,6 +29028,16 @@
   "ja": "駐車した場所",
   "pt": "Onde estacionei",
   "zh": "我停车的位置"
+ },
+ "Where are you sending it?": {
+  "de": "Wohin schickst du es?",
+  "es": "¿Adónde lo envías?",
+  "fr": "Où l'envoyez-vous ?",
+  "hi": "आप इसे कहां भेज रहे हैं?",
+  "it": "Dove lo stai inviando?",
+  "ja": "どこに送りますか？",
+  "pt": "Para onde você vai enviar?",
+  "zh": "你要发到哪里？"
  },
  "Where did you meet?": {
   "de": "Wo habt ihr euch getroffen?",
@@ -27999,6 +29909,16 @@
   "pt": "O teu nome, como deve aparecer",
   "zh": "你的名字，按应显示的样子"
  },
+ "Your new voice is ready — play it, then save or share.": {
+  "de": "Deine neue Stimme ist fertig – abspielen, dann sichern oder teilen.",
+  "es": "Tu nueva voz está lista: reprodúcela y luego guárdala o compártela.",
+  "fr": "Votre nouvelle voix est prête — écoutez-la, puis enregistrez ou partagez.",
+  "hi": "आपकी नई आवाज़ तैयार है — चलाएं, फिर सहेजें या शेयर करें।",
+  "it": "La tua nuova voce è pronta — ascoltala, poi salva o condividi.",
+  "ja": "新しい声ができました — 再生して、保存または共有。",
+  "pt": "Sua nova voz está pronta — ouça e depois salve ou compartilhe.",
+  "zh": "新声音已就绪——播放后保存或分享。"
+ },
  "Your personal assistant for the things that matter — on your phone, never uploaded.": {
   "de": "Dein persönlicher Assistent für das, was zählt – auf deinem Telefon, nie hochgeladen.",
   "es": "Tu asistente personal para lo que importa: en tu teléfono, sin subir nada.",
@@ -28279,6 +30199,26 @@
   "pt": "já feitas",
   "zh": "已完成"
  },
+ "answer": {
+  "de": "Antwort",
+  "es": "respuesta",
+  "fr": "réponse",
+  "hi": "जवाब",
+  "it": "risposta",
+  "ja": "件の回答",
+  "pt": "resposta",
+  "zh": "个答案"
+ },
+ "answers": {
+  "de": "Antworten",
+  "es": "respuestas",
+  "fr": "réponses",
+  "hi": "जवाब",
+  "it": "risposte",
+  "ja": "件の回答",
+  "pt": "respostas",
+  "zh": "个答案"
+ },
  "are left": {
   "de": "übrig sind",
   "es": "pastillas",
@@ -28299,6 +30239,16 @@
   "pt": "como",
   "zh": "为"
  },
+ "as the total says": {
+  "de": "wie in der Summe angegeben",
+  "es": "como indica el total",
+  "fr": "comme l'indique le total",
+  "hi": "जैसा कुल में लिखा है",
+  "it": "come riporta il totale",
+  "ja": "合計の表示どおり",
+  "pt": "como diz o total",
+  "zh": "与总计一致"
+ },
  "average": {
   "de": "Durchschnitt",
   "es": "promedio",
@@ -28318,6 +30268,16 @@
   "ja": "カードの幅",
   "pt": "largura de um cartão",
   "zh": "银行卡宽度"
+ },
+ "before": {
+  "de": "vorher",
+  "es": "antes",
+  "fr": "avant",
+  "hi": "पहले",
+  "it": "prima",
+  "ja": "前",
+  "pt": "antes",
+  "zh": "之前"
  },
  "bigger": {
   "de": "größer",
@@ -28389,6 +30349,16 @@
   "pt": "demãos",
   "zh": "遍"
  },
+ "columns": {
+  "de": "Spalten",
+  "es": "columnas",
+  "fr": "colonnes",
+  "hi": "कॉलम",
+  "it": "colonne",
+  "ja": "列",
+  "pt": "colunas",
+  "zh": "列"
+ },
  "contacts": {
   "de": "Kontakte",
   "es": "contactos",
@@ -28458,6 +30428,16 @@
   "ja": "読み込めず",
   "pt": "não puderam ser lidos",
   "zh": "无法读取"
+ },
+ "covered": {
+  "de": "abgedeckt",
+  "es": "tapadas",
+  "fr": "masqués",
+  "hi": "ढके",
+  "it": "coperte",
+  "ja": "覆った",
+  "pt": "cobertas",
+  "zh": "已遮盖"
  },
  "day": {
   "de": "Tag",
@@ -28538,6 +30518,16 @@
   "ja": "を下回る",
   "pt": "cai abaixo de",
   "zh": "低于"
+ },
+ "due": {
+  "de": "fällig",
+  "es": "vence",
+  "fr": "échéance",
+  "hi": "देय",
+  "it": "scadenza",
+  "ja": "期日",
+  "pt": "vence",
+  "zh": "到期"
  },
  "e.g. 1-2, 3, 4-  (blank = every page)": {
   "de": "z. B. 1-2, 3, 4-  (leer = jede Seite)",
@@ -28659,6 +30649,16 @@
   "pt": "eventos",
   "zh": "个活动"
  },
+ "expires": {
+  "de": "läuft ab",
+  "es": "caduca",
+  "fr": "expire",
+  "hi": "समाप्त",
+  "it": "scade",
+  "ja": "有効期限",
+  "pt": "vence",
+  "zh": "到期"
+ },
  "face": {
   "de": "Gesicht",
   "es": "cara",
@@ -28679,6 +30679,36 @@
   "pt": "rostos",
   "zh": "张脸"
  },
+ "field": {
+  "de": "Feld",
+  "es": "campo",
+  "fr": "champ",
+  "hi": "फ़ील्ड",
+  "it": "campo",
+  "ja": "項目",
+  "pt": "campo",
+  "zh": "个字段"
+ },
+ "fields": {
+  "de": "Felder",
+  "es": "campos",
+  "fr": "champs",
+  "hi": "फ़ील्ड",
+  "it": "campi",
+  "ja": "項目",
+  "pt": "campos",
+  "zh": "个字段"
+ },
+ "file": {
+  "de": "Datei",
+  "es": "archivo",
+  "fr": "fichier",
+  "hi": "फ़ाइल",
+  "it": "file",
+  "ja": "ファイル",
+  "pt": "arquivo",
+  "zh": "文件"
+ },
  "files": {
   "de": "Dateien",
   "es": "archivos",
@@ -28688,6 +30718,16 @@
   "ja": "ファイル",
   "pt": "arquivos",
   "zh": "个文件"
+ },
+ "finding where you are…": {
+  "de": "Standort wird ermittelt …",
+  "es": "buscando dónde estás…",
+  "fr": "localisation en cours…",
+  "hi": "आप कहां हैं, ढूंढ रहे हैं…",
+  "it": "ricerca della posizione…",
+  "ja": "現在地を確認中…",
+  "pt": "descobrindo onde você está…",
+  "zh": "正在定位…"
  },
  "from your check — correction is on.": {
   "de": "aus deinem Check – Korrektur ist an.",
@@ -28759,6 +30799,26 @@
   "pt": "altura",
   "zh": "高"
  },
+ "hidden words — none can be found.": {
+  "de": "verborgene Wörter – keines ist auffindbar.",
+  "es": "palabras ocultas: no se encuentra ninguna.",
+  "fr": "mots masqués — aucun n'est retrouvable.",
+  "hi": "छिपे शब्द — कोई नहीं मिला।",
+  "it": "parole nascoste — nessuna è rintracciabile.",
+  "ja": "件の隠した語 — どれも見つかりません。",
+  "pt": "palavras ocultas — nenhuma foi encontrada.",
+  "zh": "个隐藏词——均无法找到。"
+ },
+ "hours": {
+  "de": "Stunden",
+  "es": "horas",
+  "fr": "heures",
+  "hi": "घंटे",
+  "it": "ore",
+  "ja": "時間",
+  "pt": "horas",
+  "zh": "小时"
+ },
  "https://… article link": {
   "de": "https://… Artikel-Link",
   "es": "https://… enlace del artículo",
@@ -28788,6 +30848,16 @@
   "ja": "iPhoneは1つのアプリに64件までの通知を許可しています — 最も先の",
   "pt": "O iPhone permite 64 alertas por app — as",
   "zh": "iPhone每个App最多64条提醒——最远的"
+ },
+ "iPhone asks you to confirm. Everything goes to Recently Deleted for 30 days, so nothing is lost by mistake.": {
+  "de": "Das iPhone fragt nach einer Bestätigung. Alles landet 30 Tage in „Zuletzt gelöscht“, nichts geht versehentlich verloren.",
+  "es": "El iPhone te pide confirmar. Todo va a Eliminado durante 30 días, así que nada se pierde por error.",
+  "fr": "L'iPhone vous demande de confirmer. Tout va dans Supprimés récemment pendant 30 jours, rien n'est perdu par erreur.",
+  "hi": "iPhone पुष्टि मांगेगा। सब कुछ 30 दिन Recently Deleted में रहता है, इसलिए गलती से कुछ नहीं खोता।",
+  "it": "L'iPhone ti chiede di confermare. Tutto va in Eliminati di recente per 30 giorni, niente si perde per errore.",
+  "ja": "iPhoneで確認が求められます。すべて30日間「最近削除した項目」に残るので、誤って失うことはありません。",
+  "pt": "O iPhone pede confirmação. Tudo vai para Apagados por 30 dias, então nada se perde por engano.",
+  "zh": "iPhone 会请你确认。所有内容会在“最近删除”中保留 30 天，不会误删丢失。"
  },
  "iPhone doesn't let any app set a tone directly — this is Apple's own way, and it takes under a minute.": {
   "de": "Das iPhone lässt keine App direkt einen Ton setzen – das ist Apples eigener Weg und dauert unter einer Minute.",
@@ -28939,6 +31009,16 @@
   "pt": "mapas e rotas",
   "zh": "地图和路线"
  },
+ "marks": {
+  "de": "Markierungen",
+  "es": "marcas",
+  "fr": "marques",
+  "hi": "निशान",
+  "it": "segni",
+  "ja": "件のマーク",
+  "pt": "marcas",
+  "zh": "处标记"
+ },
  "min": {
   "de": "Min.",
   "es": "min",
@@ -28988,6 +31068,36 @@
   "ja": "分の移動",
   "pt": "min de deslocamento",
   "zh": "分钟路程"
+ },
+ "month": {
+  "de": "Monat",
+  "es": "mes",
+  "fr": "mois",
+  "hi": "महीना",
+  "it": "mese",
+  "ja": "か月",
+  "pt": "mês",
+  "zh": "个月"
+ },
+ "months": {
+  "de": "Monate",
+  "es": "meses",
+  "fr": "mois",
+  "hi": "महीने",
+  "it": "mesi",
+  "ja": "か月",
+  "pt": "meses",
+  "zh": "个月"
+ },
+ "more": {
+  "de": "weitere",
+  "es": "más",
+  "fr": "de plus",
+  "hi": "और",
+  "it": "altri",
+  "ja": "件以上",
+  "pt": "mais",
+  "zh": "更多"
  },
  "more steps": {
   "de": "weitere Schritte",
@@ -29119,6 +31229,16 @@
   "pt": "no ecrã principal",
   "zh": "放到主屏幕"
  },
+ "once Recently Deleted is emptied": {
+  "de": "sobald „Zuletzt gelöscht“ geleert ist",
+  "es": "cuando se vacíe Eliminado",
+  "fr": "une fois Supprimés récemment vidé",
+  "hi": "Recently Deleted खाली होने पर",
+  "it": "una volta svuotati gli Eliminati di recente",
+  "ja": "「最近削除した項目」を空にした後",
+  "pt": "depois de esvaziar Apagados",
+  "zh": "清空“最近删除”后"
+ },
  "out over 50 cm": {
   "de": "schief auf 50 cm",
   "es": "desviado en 50 cm",
@@ -29138,6 +31258,26 @@
   "ja": "期限切れ",
   "pt": "em atraso",
   "zh": "已逾期"
+ },
+ "page": {
+  "de": "Seite",
+  "es": "página",
+  "fr": "page",
+  "hi": "पेज",
+  "it": "pagina",
+  "ja": "ページ",
+  "pt": "página",
+  "zh": "页"
+ },
+ "pages": {
+  "de": "Seiten",
+  "es": "páginas",
+  "fr": "pages",
+  "hi": "पेज",
+  "it": "pagine",
+  "ja": "ページ",
+  "pt": "páginas",
+  "zh": "页"
  },
  "pages, sized like A4 — easy to print or email.": {
   "de": "Seiten im A4-Format – leicht zu drucken oder zu mailen.",
@@ -29219,6 +31359,16 @@
   "pt": "semana de uma pessoa",
   "zh": "人的一周安排"
  },
+ "photo": {
+  "de": "Foto",
+  "es": "foto",
+  "fr": "photo",
+  "hi": "फ़ोटो",
+  "it": "foto",
+  "ja": "枚の写真",
+  "pt": "foto",
+  "zh": "张照片"
+ },
  "photo(s) skipped — no clear subject found.": {
   "de": "Foto(s) übersprungen – kein klares Motiv gefunden.",
   "es": "foto(s) omitida(s): no se encontró un sujeto claro.",
@@ -29279,6 +31429,16 @@
   "pt": "recibos",
   "zh": "张收据"
  },
+ "regions": {
+  "de": "Bereiche",
+  "es": "zonas",
+  "fr": "zones",
+  "hi": "हिस्से",
+  "it": "aree",
+  "ja": "か所",
+  "pt": "áreas",
+  "zh": "个区域"
+ },
  "reminders": {
   "de": "Erinnerungen",
   "es": "recordatorios",
@@ -29328,6 +31488,16 @@
   "ja": "返品期限が迫っています",
   "pt": "prazos de devolução acabando",
   "zh": "退货期即将截止"
+ },
+ "rows": {
+  "de": "Zeilen",
+  "es": "filas",
+  "fr": "lignes",
+  "hi": "पंक्तियां",
+  "it": "righe",
+  "ja": "行",
+  "pt": "linhas",
+  "zh": "行"
  },
  "screenshots": {
   "de": "Screenshots",
@@ -29409,6 +31579,26 @@
   "pt": "linhas curtas preenchidas com vazios",
   "zh": "短行以空白补齐"
  },
+ "shots": {
+  "de": "Fotos",
+  "es": "fotos",
+  "fr": "photos",
+  "hi": "फ़ोटो",
+  "it": "scatti",
+  "ja": "枚",
+  "pt": "fotos",
+  "zh": "张照片"
+ },
+ "showing": {
+  "de": "angezeigt",
+  "es": "mostrando",
+  "fr": "affichés",
+  "hi": "दिख रहे",
+  "it": "mostrati",
+  "ja": "表示中",
+  "pt": "exibindo",
+  "zh": "显示"
+ },
  "smaller": {
   "de": "kleiner",
   "es": "más pequeño",
@@ -29469,6 +31659,16 @@
   "pt": "etapas",
   "zh": "步"
  },
+ "strings in tune": {
+  "de": "Saiten gestimmt",
+  "es": "cuerdas afinadas",
+  "fr": "cordes accordées",
+  "hi": "तार ट्यून में",
+  "it": "corde accordate",
+  "ja": "本の弦がチューニング済み",
+  "pt": "cordas afinadas",
+  "zh": "根弦已调准"
+ },
  "swiped away": {
   "de": "weggewischt",
   "es": "deslizado",
@@ -29478,6 +31678,16 @@
   "ja": "スワイプで消去",
   "pt": "deslizado",
   "zh": "已划走"
+ },
+ "taken": {
+  "de": "aufgenommen",
+  "es": "tomadas",
+  "fr": "prises",
+  "hi": "लिए गए",
+  "it": "scattati",
+  "ja": "撮影済み",
+  "pt": "tiradas",
+  "zh": "已拍"
  },
  "tap a face to change it": {
   "de": "tippe auf ein Gesicht zum Ändern",
@@ -29528,6 +31738,36 @@
   "ja": "追加割引は値下げ後の価格にかかります。",
   "pt": "o desconto extra é sobre o preço já reduzido.",
   "zh": "额外折扣是在已打折的价格上再打折。"
+ },
+ "the rows add to": {
+  "de": "die Zeilen ergeben",
+  "es": "las filas suman",
+  "fr": "les lignes totalisent",
+  "hi": "पंक्तियों का जोड़",
+  "it": "le righe sommano",
+  "ja": "行の合計は",
+  "pt": "as linhas somam",
+  "zh": "各行合计"
+ },
+ "the rows make": {
+  "de": "die Zeilen ergeben",
+  "es": "las filas dan",
+  "fr": "les lignes font",
+  "hi": "पंक्तियों से बनता है",
+  "it": "le righe fanno",
+  "ja": "行の合計",
+  "pt": "as linhas dão",
+  "zh": "各行合计为"
+ },
+ "the total says": {
+  "de": "die Summe lautet",
+  "es": "el total dice",
+  "fr": "le total indique",
+  "hi": "कुल में लिखा है",
+  "it": "il totale riporta",
+  "ja": "合計の表示",
+  "pt": "o total diz",
+  "zh": "总计显示"
  },
  "them": {
   "de": "ihnen",
@@ -29598,6 +31838,16 @@
   "ja": "今週のまとめ",
   "pt": "o resumo da semana",
   "zh": "本周总结"
+ },
+ "to Calendar": {
+  "de": "zum Kalender",
+  "es": "al Calendario",
+  "fr": "au Calendrier",
+  "hi": "कैलेंडर में",
+  "it": "al Calendario",
+  "ja": "カレンダーへ",
+  "pt": "ao Calendário",
+  "zh": "到日历"
  },
  "to Contacts": {
   "de": "in Kontakte",
@@ -29739,6 +31989,26 @@
   "pt": "vozes — ouça cada uma antes de escolher",
   "zh": "种声音，选择前可先试听"
  },
+ "was": {
+  "de": "war",
+  "es": "era",
+  "fr": "était",
+  "hi": "था",
+  "it": "era",
+  "ja": "変更前",
+  "pt": "era",
+  "zh": "原为"
+ },
+ "was page": {
+  "de": "war Seite",
+  "es": "era la página",
+  "fr": "était la page",
+  "hi": "पहले पेज",
+  "it": "era la pagina",
+  "ja": "元のページ",
+  "pt": "era a página",
+  "zh": "原为第"
+ },
  "way": {
   "de": "Weg",
   "es": "forma",
@@ -29848,6 +32118,16 @@
   "ja": "「テキスト・リンク・ファイル」は、ファイルの中身も読み取ります——CSV、連絡先カード（.vcf）、カレンダーファイル（.ics）、.txt、.json、ウェブページなど。写真やスキャンは「写真」、書類は「PDF」から始まり、録音は話された内容を書き出します。Tenzyは各ファイルを、その実体に応じて扱います。",
   "pt": "«Texto, link ou ficheiro» também lê um ficheiro pelas suas palavras — um CSV, um cartão de contacto (.vcf), um ficheiro de calendário (.ics), .txt, .json ou uma página web. Fotos e digitalizações começam com «Uma foto»; documentos com «Um PDF»; uma gravação transcreve o que foi dito. O Tenzy trata cada ficheiro como aquilo que ele realmente é.",
   "zh": "「文本、链接或文件」也会读取文件中的文字——CSV、联系人卡片（.vcf）、日历文件（.ics）、.txt、.json 或网页。照片和扫描以「一张照片」开始；文档以「一个 PDF」开始；录音会写出所说的内容。Tenzy 会按每个文件的真实类型来处理它。"
+ },
+ "…or a pixel size": {
+  "de": "… oder eine Pixelgröße",
+  "es": "…o un tamaño en píxeles",
+  "fr": "…ou une taille en pixels",
+  "hi": "…या पिक्सेल साइज़",
+  "it": "…o una dimensione in pixel",
+  "ja": "…またはピクセルサイズ",
+  "pt": "…ou um tamanho em pixels",
+  "zh": "…或像素尺寸"
  },
  "…or start with what you have": {
   "de": "…oder beginne mit dem, was du hast",
