@@ -74,12 +74,12 @@
   "id": "07-phone",
   "route": "cleaner",
   "h": "Your phone,<br>looked after.",
-  "sub": "Old screenshots cleared, duplicates gone, files that fit any upload.",
+  "sub": "Old screenshots cleared, duplicates gone, files that fit an upload limit.",
   "chips": [
    "🧹 Keep your newest 100",
-   "📏 Fit any size limit",
+   "📏 Fit a size limit",
    "🛡️ Scam-text check",
-   "📂 Open any file"
+   "📂 Open odd files"
   ]
  },
  {
@@ -90,7 +90,7 @@
   "chips": [
    "🔒 No account",
    "📵 Nothing uploaded",
-   "✈️ Works offline"
+   "🛡️ No tracking"
   ]
  }
 ]

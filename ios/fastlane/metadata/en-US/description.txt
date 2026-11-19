@@ -21,8 +21,8 @@ PEOPLE
 
 YOUR PHONE, LOOKED AFTER
 • Clean up screenshots and duplicates, keep just your newest ones
-• Open any file someone sends you
-• Shrink photos, videos and PDFs to fit any upload, and convert HEIC and MOV
+• Open the files people send you, even unusual formats
+• Shrink photos, videos and PDFs to fit an upload limit, and convert HEIC and MOV
 • Strip location from photos before you share them, and check a suspicious text for scams
 
 BUILD YOUR OWN HELPER

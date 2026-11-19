@@ -1091,7 +1091,7 @@ private struct ChainEditor: View {
                     node(icon: "checkmark.circle.fill", title: "You get \(end.label)", sub: "Then copy it, save it or share it.", tint: HandyColor.success)
                 }
                 if endKind != nil { finishCard.padding(.top, HandySpacing.s12) }
-                if endKind != nil { ScheduleCard(schedule: $chain.schedule).padding(.top, HandySpacing.s12) }
+                if endKind != nil { ScheduleCard(schedule: $chain.schedule, name: chain.name, toolID: chain.id).padding(.top, HandySpacing.s12) }
                 if endKind == .text { WatchCard(watch: $chain.watch).padding(.top, HandySpacing.s12) }
                 if let p = chain.problem(starting: startKind), !chain.steps.isEmpty {
                     Text(p).font(HandyFont.caption).foregroundStyle(HandyColor.danger).padding(.top, HandySpacing.s12)

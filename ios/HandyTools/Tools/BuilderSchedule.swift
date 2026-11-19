@@ -49,6 +49,17 @@ enum ToolSchedules {
     }
 
     /// Are reminders switched off for Tenzy in Settings? The editor says so instead of promising one that never arrives.
+    /// Test run: the reminder exactly as it will arrive, in 5 seconds. Tapping it opens the tool (once it's saved).
+    static func testRun(name: String, toolID: String?) async {
+        let c = UNMutableNotificationContent()
+        c.title = "Test · " + (name.isEmpty ? "Your tool" : name)
+        c.body = "Time to run this tool. Tap to open it."
+        c.sound = .default
+        if let toolID { c.userInfo = ["tool": toolID] }
+        try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "tool-test-\(UUID().uuidString)", content: c,
+                                                                                trigger: UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)))
+    }
+
     static func blocked(_ done: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { s in
             let off = s.authorizationStatus == .denied
@@ -132,7 +143,10 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
 /// "Remind me": a switch, a time, and the days. Lives at the bottom of the builder.
 struct ScheduleCard: View {
     @Binding var schedule: ChainSchedule?
+    var name = ""
+    var toolID: String?
     @State private var blocked = false
+    @State private var testNote: String?
 
     /// Monday first, Sunday last.
     private let week = [2, 3, 4, 5, 6, 7, 1]
@@ -169,6 +183,14 @@ struct ScheduleCard: View {
                     Text(L("Your phone shows a reminder at that time. Tap it and this tool opens, ready to run."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
+                Button {
+                    Task {
+                        guard await NotifyPermission.ensure() else { blocked = true; return }
+                        await ToolSchedules.testRun(name: name, toolID: toolID); testNote = L("Test sent — it arrives in 5 seconds.")
+                    }
+                } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
+                    .accessibilityIdentifier("schedule-testrun")
+                if let testNote { Text(testNote).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
             }
         }
         .cardStyle(padding: HandySpacing.s12)
