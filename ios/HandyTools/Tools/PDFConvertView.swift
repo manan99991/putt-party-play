@@ -26,6 +26,8 @@ struct PDFConvertView: View {
     @State private var toPage = 1
     @State private var width: CGFloat = 1600
     @State private var savedNote: String?
+    @State private var tableRows: [[String]] = []
+    @State private var tableNote: String?
 
     var body: some View {
         ToolPage(title: "Convert PDF",
@@ -190,6 +192,30 @@ struct PDFConvertView: View {
             if let url = textURL {
                 ShareLink(item: url) {
                     Label(L("Save or share .txt"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                }.primaryButton()
+            }
+            Button {
+                let imgs = pages, picked = DocEngine.pageIndexes(all: allPages, current: page, from: fromPage, to: toPage, count: pages.count)
+                tableNote = "Reading the tables…"
+                Task {
+                    let rows = await Task.detached(priority: .userInitiated) { () -> [[String]] in
+                        var all: [[String]] = []
+                        for i in picked where imgs.indices.contains(i) {
+                            // Read by position so columns stay columns, then keep the rows that have them.
+                            let t = DataGrab.tableRows(ChainRunner.rows(DocEngine.recognize(imgs[i]))).rows.filter { $0.filter { !$0.isEmpty }.count >= 2 }
+                            all += t
+                        }
+                        return all
+                    }.value
+                    tableRows = rows
+                    tableNote = rows.count < 2 ? "No table found on these pages." : "\(rows.count) rows × \(rows.map(\.count).max() ?? 0) columns — numbers kept as numbers."
+                }
+            } label: { Label(L("Tables as a spreadsheet (Excel)"), systemImage: "tablecells").frame(maxWidth: .infinity) }.secondaryButton()
+                .accessibilityIdentifier("convert-tables")
+            if let tableNote { Text(L(tableNote)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            if tableRows.count >= 2 {
+                ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: tableRows, sheetName: "Tables") ?? Data()), preview: SharePreview("\(fileName).xlsx")) {
+                    Label(L("Open in Numbers or Excel"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
                 }.primaryButton()
             }
             Button(L("Extract again")) { extractedText = ""; textURL = nil }.textButton().font(HandyFont.caption)
