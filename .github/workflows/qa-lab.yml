@@ -3,9 +3,13 @@ name: QA lab — real files
 # Every tool's output on real photos and files, scored against the right answers. Its own workflow so it always
 # runs (never skipped by the release job), the newest push wins, and it never builds or ships anything.
 on:
-  push:
+  # Only after a build has passed, so the scoring never holds a Mac runner while code is waiting to compile
+  # (it used to start on every push and the build queued behind it for an hour).
+  workflow_run:
+    workflows: ["iOS"]
+    types: [completed]
     branches: [handytools]
-    paths: ["ios/HandyTools/**", "ios/HandyToolsTests/**", "ios/RealPhotos/**", ".github/fetch-real-photos.py", ".github/workflows/qa-lab.yml"]
+  schedule: [{ cron: "17 7 * * *" }]   # and once a night on the newest code
   workflow_dispatch:
 
 permissions:
@@ -26,12 +30,14 @@ jobs:
             tests: "-only-testing:HandyToolsTests/RealPhotoAccuracyTests -only-testing:HandyToolsTests/PrivatePhotoAccuracyTests -only-testing:HandyToolsTests/ToughPhotoTests"
           - part: tools
             tests: "-only-testing:HandyToolsTests/ToolOutputQualityTests"
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: xcode-27
     timeout-minutes: 120
     defaults:
       run: { working-directory: ios }
     steps:
       - uses: actions/checkout@v4
+        with: { ref: "${{ github.event.workflow_run.head_sha || github.sha }}" }
       - name: Select newest Xcode
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)" && xcodebuild -version
       - name: Generate project
