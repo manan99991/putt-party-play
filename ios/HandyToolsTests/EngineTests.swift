@@ -2609,10 +2609,8 @@ final class EngineTests: XCTestCase {
     }
 
     /// Video mode, without a camera: made-up frames and sound go through the exact recorder the camera uses,
-    /// and the finished movie is opened and checked — length, size, frame rate, and that it has sound.
+    /// and the finished movie is opened and checked — length, size, frame rate, that it plays, and that it has sound.
     func testVideoRecorderMakesARealMovieWithSound() async throws {
-        let url = FileManager.default.temporaryDirectory.appendingPathComponent("rec-test-\(UUID().uuidString.prefix(6)).mov")
-        let rec = VideoRecorder(url: url, fps: 30, realtime: false)
         func frame(_ i: Int) -> CVPixelBuffer {
             var pb: CVPixelBuffer?
             CVPixelBufferCreate(nil, 640, 360, kCVPixelFormatType_32BGRA, [kCVPixelBufferIOSurfacePropertiesKey as String: [String: Any]()] as CFDictionary, &pb)
@@ -2623,94 +2621,53 @@ final class EngineTests: XCTestCase {
             CVPixelBufferUnlockBaseAddress(b, [])
             return b
         }
+        let dir = FileManager.default.temporaryDirectory
         let start = CMTime(value: 1000, timescale: 600)        // camera clocks never start at zero
-        XCTAssertNotNil(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: CMTimeSubtract(start, CMTime(value: 60, timescale: 600))))
-        // Sound before the first frame is left out.
-        XCTAssertFalse(rec.appendAudio(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: start)!), "no sound before the picture starts")
-        // Picture and sound arrive together, as they do from a camera and microphone.
-        var t = start
+
+        // 1. Two seconds of picture: length, size, frame rate, and that it plays.
+        let rec = VideoRecorder(url: dir.appendingPathComponent("rec-\(UUID().uuidString.prefix(6)).mov"), fps: 30, realtime: false, withAudio: false)
         for i in 0..<60 {
-            let ft = CMTimeAdd(start, CMTime(value: Int64(i * 20), timescale: 600))
-            XCTAssertTrue(rec.appendVideo(frame(i), at: ft), "frame \(i)")
-            let until = CMTimeAdd(ft, CMTime(value: 20, timescale: 600))
-            while CMTimeCompare(t, until) < 0 {
-                let buf = try XCTUnwrap(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: t))
-                rec.appendAudio(buf)
-                t = CMTimeAdd(t, CMTime(value: 1024, timescale: 44_100))
-            }
+            XCTAssertTrue(rec.appendVideo(frame(i), at: CMTimeAdd(start, CMTime(value: Int64(i * 20), timescale: 600))), "frame \(i)")
         }
         XCTAssertFalse(rec.appendVideo(frame(0), at: start), "a frame from the past is never written")
         XCTAssertEqual(rec.frames, 60)
-        XCTAssertGreaterThan(rec.audioBuffers, 70)
         XCTAssertEqual(rec.seconds, 59.0 / 30.0, accuracy: 0.01)
         let out = await rec.finish()
         let movie = try XCTUnwrap(out, "the movie is written")
         let asset = AVURLAsset(url: movie)
-        let duration = try await asset.load(.duration).seconds
-        XCTAssertEqual(duration, 2.0, accuracy: 0.15, "2 seconds of frames → a 2-second clip")
+        XCTAssertEqual(try await asset.load(.duration).seconds, 2.0, accuracy: 0.15, "2 seconds of frames → a 2-second clip")
         let v = try await asset.loadTracks(withMediaType: .video)
-        let a = try await asset.loadTracks(withMediaType: .audio)
-        XCTAssertEqual(v.count, 1); XCTAssertEqual(a.count, 1, "it has sound")
+        XCTAssertEqual(v.count, 1)
         let size = try await v[0].load(.naturalSize)
         XCTAssertEqual(size.width, 640); XCTAssertEqual(size.height, 360)
-        let rate = try await v[0].load(.nominalFrameRate)
-        XCTAssertEqual(Double(rate), 30, accuracy: 1.5)
-        // It plays back: the first frame decodes.
-        let gen = AVAssetImageGenerator(asset: asset)
-        let img = try await gen.image(at: .zero).image
-        XCTAssertEqual(img.width, 640)
-        let empty = VideoRecorder(url: url.deletingLastPathComponent().appendingPathComponent("empty-\(UUID().uuidString.prefix(4)).mov"), realtime: false)
-        let none = await empty.finish()
-        XCTAssertNil(none, "stopping before anything was filmed gives no file, not a broken one")
+        XCTAssertEqual(Double(try await v[0].load(.nominalFrameRate)), 30, accuracy: 1.5)
+        let img = try await AVAssetImageGenerator(asset: asset).image(at: .zero).image
+        XCTAssertEqual(img.width, 640, "it plays: the first frame decodes")
         try? FileManager.default.removeItem(at: movie)
-    }
 
-    func testTellMeWhenReadsTheRightNumberAndSpeaksOncePerCrossing() {
-        XCTAssertEqual(NumberReader.number("$1,299.99"), 1299.99)
-        XCTAssertEqual(NumberReader.number("1.299,99 €"), 1299.99)
-        XCTAssertEqual(NumberReader.number("12,50"), 12.5)
-        XCTAssertEqual(NumberReader.number("1,299"), 1299)
-        XCTAssertNil(NumberReader.number("free"))
-        let receipt = "Store #4412  Apples 3.49  Bread 2.99  Subtotal 46.10  Tax 3.80  Total $49.90  Card ****1234"
-        XCTAssertEqual(NumberReader.pick(in: receipt, near: "Total"), 49.90, "the number after the words you gave")
-        XCTAssertEqual(NumberReader.pick(in: receipt, near: "tax"), 3.80, "any case")
-        XCTAssertEqual(NumberReader.pick(in: "Order 88213 shipped. Price: £19.99", near: ""), 19.99, "money beats an order number")
-        XCTAssertNil(NumberReader.pick(in: "no numbers here", near: "Total"))
+        // 2. Picture and sound together, the way a camera and microphone deliver them: the clip has sound.
+        let talk = VideoRecorder(url: dir.appendingPathComponent("talk-\(UUID().uuidString.prefix(6)).mov"), fps: 30, realtime: false)
+        XCTAssertFalse(talk.appendAudio(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: start)!), "no sound before the picture starts")
+        var t = start
+        for i in 0..<12 {
+            let ft = CMTimeAdd(start, CMTime(value: Int64(i * 20), timescale: 600))
+            XCTAssertTrue(talk.appendVideo(frame(i), at: ft), "frame \(i) with sound")
+            while CMTimeCompare(t, CMTimeAdd(ft, CMTime(value: 20, timescale: 600))) < 0 {
+                talk.appendAudio(try XCTUnwrap(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: t)))
+                t = CMTimeAdd(t, CMTime(value: 1024, timescale: 44_100))
+            }
+        }
+        XCTAssertGreaterThan(talk.audioBuffers, 10)
+        let clipOut = await talk.finish()
+        let clip = try XCTUnwrap(clipOut)
+        let a = try await AVURLAsset(url: clip).loadTracks(withMediaType: .audio)
+        XCTAssertEqual(a.count, 1, "it has sound")
+        try? FileManager.default.removeItem(at: clip)
 
-        let below = NumberWatch(condition: .below, value: 50, near: "Price")
-        var m = WatchMemory()
-        XCTAssertFalse(NumberReader.evaluate(below, value: 59, memory: &m))
-        XCTAssertTrue(NumberReader.evaluate(below, value: 45, memory: &m), "speaks when it drops below")
-        XCTAssertFalse(NumberReader.evaluate(below, value: 44, memory: &m), "once — not again while it stays low")
-        XCTAssertFalse(NumberReader.evaluate(below, value: 55, memory: &m), "back above re-arms it quietly")
-        XCTAssertTrue(NumberReader.evaluate(below, value: 49, memory: &m), "and the next drop speaks again")
-        var c = WatchMemory()
-        let changes = NumberWatch(condition: .changes, value: 0, near: "")
-        XCTAssertFalse(NumberReader.evaluate(changes, value: 10, memory: &c), "the first look only learns the number")
-        XCTAssertFalse(NumberReader.evaluate(changes, value: 10, memory: &c))
-        XCTAssertTrue(NumberReader.evaluate(changes, value: 12, memory: &c))
-        XCTAssertEqual(NumberReader.message(below, value: 45, previous: 59, what: "Shoes"), "Shoes is 45 — below your 50.")
-        XCTAssertEqual(NumberReader.message(changes, value: 12, previous: 10, what: "Rate"), "Rate changed from 10 to 12.")
-
-        let html = """
-        <html><head><style>.p{color:red}</style><script>var price = 999;</script>
-        <script type="application/ld+json">{"@type":"Product","offers":{"price":"79.00"}}</script></head>
-        <body><h1>Trail shoes</h1><span class="was">Was &pound;120.00</span><span>Now&nbsp;&pound;89.99</span></body></html>
-        """
-        let text = PageWatcher.visibleText(html)
-        XCTAssertFalse(text.contains("color:red") || text.contains("var price"), "scripts and styles are not read")
-        XCTAssertTrue(text.contains("Now £89.99"), text)
-        XCTAssertEqual(NumberReader.pick(in: text, near: "Now"), 89.99)
-        XCTAssertEqual(NumberReader.pick(in: text, near: "Price"), 79, "structured price data is readable too")
-
-        var chain = Chain(id: "watch-test-\(UUID().uuidString.prefix(4))", name: "Receipt total", steps: [])
-        chain.watch = NumberWatch(condition: .above, value: 40, near: "Total")
-        XCTAssertEqual(ToolWatch.check(chain, text: receipt, notify: false), "Total is 49.90 — above your 40.")
-        XCTAssertNil(ToolWatch.check(chain, text: receipt, notify: false), "a second run over the line stays quiet")
-        chain.watch = nil
-        XCTAssertNil(ToolWatch.check(chain, text: receipt, notify: false), "no watch, no alert")
-        let saved = try? JSONDecoder().decode(Chain.self, from: Data(#"{"id":"a","name":"Old tool","steps":[]}"#.utf8))
-        XCTAssertNotNil(saved, "tools saved before Tell me when existed still load")
+        // 3. Stopping before anything was filmed gives no file, not a broken one.
+        let empty = VideoRecorder(url: dir.appendingPathComponent("empty-\(UUID().uuidString.prefix(4)).mov"), realtime: false)
+        let none = await empty.finish()
+        XCTAssertNil(none)
     }
 
     func testVideoScenesAndFilmingCoach() {

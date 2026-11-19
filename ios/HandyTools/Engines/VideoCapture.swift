@@ -14,6 +14,7 @@ final class VideoRecorder: @unchecked Sendable {
     let url: URL
     private let fps: Int
     private let realtime: Bool
+    private let withAudio: Bool
     private let lock = NSLock()
     private var writer: AVAssetWriter?
     private var videoIn: AVAssetWriterInput?
@@ -26,8 +27,8 @@ final class VideoRecorder: @unchecked Sendable {
     private(set) var firstTime: CMTime = .invalid
     private(set) var lastTime: CMTime = .invalid
 
-    init(url: URL, fps: Int = 30, realtime: Bool = true) {
-        self.url = url; self.fps = max(1, fps); self.realtime = realtime
+    init(url: URL, fps: Int = 30, realtime: Bool = true, withAudio: Bool = true) {
+        self.url = url; self.fps = max(1, fps); self.realtime = realtime; self.withAudio = withAudio
         try? FileManager.default.removeItem(at: url)
     }
 
@@ -55,7 +56,7 @@ final class VideoRecorder: @unchecked Sendable {
         w.add(v)
         let a = AVAssetWriterInput(mediaType: .audio, outputSettings: Self.audioSettings)
         a.expectsMediaDataInRealTime = realtime
-        if w.canAdd(a) { w.add(a); audioIn = a }
+        if withAudio, w.canAdd(a) { w.add(a); audioIn = a }
         guard w.startWriting() else { return false }
         w.startSession(atSourceTime: time)
         writer = w; videoIn = v; adaptor = ad; started = true; firstTime = time
