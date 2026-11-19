@@ -17,13 +17,23 @@ struct MeasureARView: View {
     @State private var photo: MeasurePhoto?
 
     private struct MeasurePhoto: Identifiable { let id = UUID(); let url: URL; let image: UIImage }
+    @State private var saved: [RoomMath.Saved] = RoomMath.load()
+    @State private var naming = false
+    @State private var saveName = ""
+    @State private var ceiling: Double = 0          // in the units shown; 0 = use the usual height
+    @State private var doors = 1
+    @State private var windows = 1
+    @State private var coats = 2
+    @State private var tileSide = 0.30              // metres
+    @State private var viewing: RoomMath.Saved?
 
     var body: some View {
-        ToolPage(title: "Measure", subtitle: "Tap to place points on real surfaces — distance, perimeter and area, or height from the floor.") {
+        ToolPage(title: "Measure", subtitle: "Tap to place points on real surfaces — distance, area or height. Get how much paint, flooring and tile to buy, and keep your measurements for the shop.") {
             HowTo("measure", [
                 "Move the phone slowly so it can map the surface.",
                 "Tap to drop a start point, move, then tap to drop the end.",
-                "Read the distance; add more points for an area or a running total.",
+                "Area: tap each corner of the floor — Tenzy works out the paint, flooring and tiles to buy.",
+                "Save a measurement with a name and photo; it's in My measurements when you're at the shop.",
             ])
             if ARWorldTrackingConfiguration.isSupported {
                 ZStack {
@@ -66,6 +76,8 @@ struct MeasureARView: View {
             } else {
                 LimitNote("AR measuring needs a real iPhone with ARKit — it isn't available here.")
             }
+            if mode == .area, ar.points.count >= 3 { buyCard }
+            savedSection
             Button { showSensors = true } label: {
                 Label(L("Level, compass & sensors"), systemImage: "level").frame(maxWidth: .infinity)
             }.secondaryButton()
@@ -78,6 +90,28 @@ struct MeasureARView: View {
             NavigationStack {
                 InstrumentsView()
                     .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { showSensors = false } } }
+            }
+        }
+        .alert(L("Name this measurement"), isPresented: $naming) {
+            TextField(L("e.g. Sofa wall, bedroom window"), text: $saveName)
+            Button(L("Save")) { saveNow() }
+            Button(L("Cancel"), role: .cancel) {}
+        }
+        .sheet(item: $viewing) { m in
+            NavigationStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                        if let img = RoomMath.image(m) { Image(uiImage: img).resizable().scaledToFit().clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous)) }
+                        Text(m.value).font(HandyFont.bodyStrong).textSelection(.enabled)
+                        Text(m.date.formatted(date: .abbreviated, time: .shortened)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    }.padding(HandySpacing.gutter)
+                }
+                .background(HandyColor.bg)
+                .navigationTitle(m.name).navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { viewing = nil } }
+                    ToolbarItem(placement: .primaryAction) { ShareLink(item: "\(m.name): \(m.value)") { Image(systemName: "square.and.arrow.up") } }
+                }
             }
         }
         .sheet(item: $photo) { p in
@@ -126,6 +160,101 @@ struct MeasureARView: View {
             ctx.fill(CGRect(x: 0, y: size.height - barH, width: size.width, height: barH))
             (text as NSString).draw(with: CGRect(x: pad, y: size.height - barH + pad * 0.8, width: size.width - pad * 2, height: bound.height),
                                     options: [.usesLineFragmentOrigin], attributes: attrs, context: nil)
+        }
+    }
+
+    // MARK: what to buy
+
+    private var ceilingMetres: Double {
+        if ceiling <= 0 { return 2.4 }
+        return metric ? ceiling : ceiling * 0.3048
+    }
+
+    private var needs: RoomMath.Needs {
+        RoomMath.needs(floorArea: Double(MeasureMath.polygonArea(ar.points)),
+                       perimeter: Double(MeasureMath.pathLength(ar.points + [ar.points[0]])),
+                       ceiling: ceilingMetres, doors: doors, windows: windows, coats: coats, tileSide: tileSide, metric: metric)
+    }
+
+    private func areaText(_ m2: Double) -> String { MeasureMath.area(Float(m2), metric: metric) }
+
+    /// From the floor you just measured: paint for the walls, flooring and tiles — with waste and coats included.
+    private var buyCard: some View {
+        let n = needs
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("What to buy for this room"), systemImage: "cart").font(HandyFont.bodyStrong)
+            Stepper(value: Binding(get: { ceiling <= 0 ? (metric ? 2.4 : 8) : ceiling }, set: { ceiling = $0 }),
+                    in: metric ? 1.8...6 : 6...20, step: metric ? 0.1 : 0.5) {
+                Text("\(L("Ceiling height")) \(metric ? String(format: "%.1f m", ceiling <= 0 ? 2.4 : ceiling) : String(format: "%.1f ft", ceiling <= 0 ? 8 : ceiling))").font(HandyFont.caption)
+            }
+            Stepper("\(L("Doors")) \(doors)", value: $doors, in: 0...6).font(HandyFont.caption)
+            Stepper("\(L("Windows")) \(windows)", value: $windows, in: 0...10).font(HandyFont.caption)
+            Stepper("\(L("Coats of paint")) \(coats)", value: $coats, in: 1...3).font(HandyFont.caption)
+            row(L("Wall area"), areaText(n.wallArea))
+            row(L("Paint"), RoomMath.paintText(n, metric: metric))
+            row(L("Flooring (with 10% for cuts)"), areaText(n.flooring))
+            HandyFlow(spacing: HandySpacing.s8) {
+                Text(L("Tile size")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                ForEach(metric ? [0.2, 0.3, 0.6] : [0.1524, 0.3048, 0.6096], id: \.self) { t in
+                    HChip(text: metric ? "\(Int(t * 100)) cm" : "\(Int((t / 0.0254).rounded()))\"", selected: abs(tileSide - t) < 0.001) { tileSide = t }
+                }
+            }
+            row(L("Tiles (10% spare)"), "\(n.tiles)")
+            Text(L("Usual numbers: a litre of paint covers about 10 m² per coat; check the can. Doors and windows are taken off the walls.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            ShareLink(item: buyList(n)) { Label(L("Share the shopping list"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+        }
+        .cardStyle()
+    }
+
+    private func row(_ k: String, _ v: String) -> some View {
+        HStack { Text(k).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(v).font(HandyFont.bodyStrong).monospacedDigit() }
+    }
+
+    private func buyList(_ n: RoomMath.Needs) -> String {
+        ["\(L("Room")): \(summary)",
+         "\(L("Paint")) (\(coats) \(L("coats"))): \(RoomMath.paintText(n, metric: metric))",
+         "\(L("Flooring")): \(areaText(n.flooring))",
+         "\(L("Tiles")): \(n.tiles)"].joined(separator: "\n")
+    }
+
+    // MARK: saved
+
+    @ViewBuilder private var savedSection: some View {
+        if !saved.isEmpty {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                Text(L("My measurements")).font(HandyFont.cardTitle)
+                ForEach(saved) { m in
+                    HStack(spacing: HandySpacing.s12) {
+                        if let img = RoomMath.image(m) {
+                            Image(uiImage: img).resizable().scaledToFill().frame(width: 48, height: 48).clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        } else {
+                            Image(systemName: "ruler").frame(width: 48, height: 48).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(m.name).font(HandyFont.bodyStrong)
+                            Text(m.value).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+                        }
+                        Spacer()
+                        Button(role: .destructive) { RoomMath.remove(m); saved = RoomMath.load() } label: { Image(systemName: "trash").accessibilityLabel(L("Delete")) }
+                            .buttonStyle(.plain).foregroundStyle(HandyColor.textSecondary)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture { viewing = m }
+                    .cardStyle(padding: HandySpacing.s12)
+                }
+            }
+        }
+    }
+
+    private func saveNow() {
+        let name = saveName, value = summary
+        Task {
+            let base = await ar.snapshot()
+            let img = base.map { label($0, with: value) }
+            RoomMath.add(name: name, value: value, photo: img)
+            saved = RoomMath.load()
+            HandyHaptics.success()
+            CopyToast.shared.flash("Saved to My measurements")
         }
     }
 
@@ -188,6 +317,8 @@ struct MeasureARView: View {
                     Button { Copier.copy(summary) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
                     Button { capturePhoto() } label: { Label(capturing ? "…" : "Photo", systemImage: "camera") }.compactButton().disabled(capturing)
                     ShareLink(item: summary) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
+                    Button { saveName = ""; naming = true } label: { Label(L("Save"), systemImage: "bookmark") }.compactButton()
+                        .accessibilityIdentifier("measure-save")
                     Spacer()
                 }
             }.cardStyle(padding: HandySpacing.s12)

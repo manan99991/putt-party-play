@@ -1269,6 +1269,16 @@
   "pt": "Área",
   "zh": "面积"
  },
+ "Area: tap each corner of the floor — Tenzy works out the paint, flooring and tiles to buy.": {
+  "de": "Fläche: Tippe auf jede Ecke des Bodens – Tenzy rechnet Farbe, Boden und Fliesen aus.",
+  "es": "Área: toca cada esquina del suelo; Tenzy calcula la pintura, el suelo y los azulejos.",
+  "fr": "Surface : touchez chaque coin du sol — Tenzy calcule peinture, sol et carrelage.",
+  "hi": "क्षेत्रफल: फ़र्श के हर कोने पर टैप करें — Tenzy पेंट, फ़्लोरिंग और टाइल का हिसाब लगाता है।",
+  "it": "Area: tocca ogni angolo del pavimento; Tenzy calcola vernice, pavimento e piastrelle.",
+  "ja": "面積：床の角をそれぞれタップ — 塗料・床材・タイルの量をTenzyが計算します。",
+  "pt": "Área: toque em cada canto do piso — a Tenzy calcula tinta, piso e azulejos.",
+  "zh": "面积：点地板的每个角——Tenzy 算出要买的油漆、地板和瓷砖。"
+ },
  "Arriving Thursday, 9:41 AM": {
   "de": "Ankunft Donnerstag, 9:41 Uhr",
   "es": "Llega el jueves a las 9:41",
@@ -2489,6 +2499,16 @@
   "pt": "Desenho",
   "zh": "卡通"
  },
+ "Ceiling height": {
+  "de": "Deckenhöhe",
+  "es": "Altura del techo",
+  "fr": "Hauteur sous plafond",
+  "hi": "छत की ऊँचाई",
+  "it": "Altezza del soffitto",
+  "ja": "天井の高さ",
+  "pt": "Altura do teto",
+  "zh": "层高"
+ },
  "Centre the ring on the thing. The name and hex code update live; freeze to hold it.": {
   "de": "Zentriere den Ring auf dem Objekt. Name und Hex-Code aktualisieren live; einfrieren, um sie zu halten.",
   "es": "Centra el anillo sobre el objeto. El nombre y el código hex se actualizan en vivo; congela para fijarlo.",
@@ -3308,6 +3328,16 @@
   "ja": "クローズアップを検出",
   "pt": "Close detectado",
   "zh": "发现特写"
+ },
+ "Coats of paint": {
+  "de": "Anstriche",
+  "es": "Manos de pintura",
+  "fr": "Couches de peinture",
+  "hi": "पेंट की परतें",
+  "it": "Mani di vernice",
+  "ja": "塗り回数",
+  "pt": "Demãos de tinta",
+  "zh": "刷漆遍数"
  },
  "Codes": {
   "de": "Codes",
@@ -4848,6 +4878,16 @@
   "ja": "完了 — 写真を作成",
   "pt": "Pronto — criar a foto",
   "zh": "完成——生成照片"
+ },
+ "Doors": {
+  "de": "Türen",
+  "es": "Puertas",
+  "fr": "Portes",
+  "hi": "दरवाज़े",
+  "it": "Porte",
+  "ja": "ドア",
+  "pt": "Portas",
+  "zh": "门"
  },
  "Dose": {
   "de": "Dosis",
@@ -6448,6 +6488,26 @@
   "ja": "ふわふわ、不気味で遠い",
   "pt": "Flutuante, assustadora e distante",
   "zh": "飘忽、诡异、遥远"
+ },
+ "Flooring": {
+  "de": "Bodenbelag",
+  "es": "Suelo",
+  "fr": "Sol",
+  "hi": "फ़्लोरिंग",
+  "it": "Pavimento",
+  "ja": "床材",
+  "pt": "Piso",
+  "zh": "地板"
+ },
+ "Flooring (with 10% for cuts)": {
+  "de": "Bodenbelag (mit 10 % Verschnitt)",
+  "es": "Suelo (con 10 % para cortes)",
+  "fr": "Sol (avec 10 % pour les coupes)",
+  "hi": "फ़्लोरिंग (कटाई के लिए 10% सहित)",
+  "it": "Pavimento (con 10% per i tagli)",
+  "ja": "床材（カット分10%込み）",
+  "pt": "Piso (com 10% para cortes)",
+  "zh": "地板（含 10% 裁切损耗）"
  },
  "Focus and exposure follow the face.": {
   "de": "Fokus und Belichtung folgen dem Gesicht.",
@@ -10209,6 +10269,16 @@
   "pt": "As minhas cartas",
   "zh": "我的信件"
  },
+ "My measurements": {
+  "de": "Meine Maße",
+  "es": "Mis medidas",
+  "fr": "Mes mesures",
+  "hi": "मेरे माप",
+  "it": "Le mie misure",
+  "ja": "マイ寸法",
+  "pt": "Minhas medidas",
+  "zh": "我的测量"
+ },
  "My plan": {
   "de": "Mein Plan",
   "es": "Mi plan",
@@ -10318,6 +10388,16 @@
   "ja": "名前は輪の中の色を読みます。1色を固定して別の物に向けると合うかわかります。",
   "pt": "Nomear lê a cor no anel. Segure uma cor e aponte para outra para ver se combinam.",
   "zh": "识别会读出圆圈里的颜色。先固定一种颜色，再对准另一个，看是否搭配。"
+ },
+ "Name this measurement": {
+  "de": "Diesem Maß einen Namen geben",
+  "es": "Pon nombre a esta medida",
+  "fr": "Nommer cette mesure",
+  "hi": "इस माप को नाम दें",
+  "it": "Dai un nome a questa misura",
+  "ja": "この寸法に名前を付ける",
+  "pt": "Dê um nome a esta medida",
+  "zh": "给这个测量命名"
  },
  "Name this tool": {
   "de": "Dieses Tool benennen",
@@ -12068,6 +12148,16 @@
   "ja": "有料駐車？終了時刻をTenzyに伝えれば、戻るのに間に合うよう知らせます。",
   "pt": "Estacionamento pago? Diga à Tenzy quando acaba e receba um aviso a tempo de voltar.",
   "zh": "付费停车？告诉 Tenzy 到期时间，及时提醒你走回去。"
+ },
+ "Paint": {
+  "de": "Farbe",
+  "es": "Pintura",
+  "fr": "Peinture",
+  "hi": "पेंट",
+  "it": "Vernice",
+  "ja": "塗料",
+  "pt": "Tinta",
+  "zh": "油漆"
  },
  "Panel": {
   "de": "Bild",
@@ -14549,6 +14639,16 @@
   "pt": "Robô, alien e mais — mude uma voz",
   "zh": "机器人、外星人等——变声"
  },
+ "Room": {
+  "de": "Raum",
+  "es": "Habitación",
+  "fr": "Pièce",
+  "hi": "कमरा",
+  "it": "Stanza",
+  "ja": "部屋",
+  "pt": "Cômodo",
+  "zh": "房间"
+ },
  "Rotate": {
   "de": "Drehen",
   "es": "Girar",
@@ -14728,6 +14828,16 @@
   "ja": "CSVを保存",
   "pt": "Guardar CSV",
   "zh": "保存 CSV"
+ },
+ "Save a measurement with a name and photo; it's in My measurements when you're at the shop.": {
+  "de": "Speichere ein Maß mit Name und Foto; im Laden findest du es unter Meine Maße.",
+  "es": "Guarda una medida con nombre y foto; en la tienda la tienes en Mis medidas.",
+  "fr": "Enregistrez une mesure avec un nom et une photo ; au magasin elle est dans Mes mesures.",
+  "hi": "नाम और फ़ोटो के साथ माप सहेजें; दुकान पर यह मेरे माप में मिलेगा।",
+  "it": "Salva una misura con nome e foto; al negozio la trovi in Le mie misure.",
+  "ja": "名前と写真付きで保存すると、店で「マイ寸法」から見られます。",
+  "pt": "Salve uma medida com nome e foto; na loja ela está em Minhas medidas.",
+  "zh": "给测量加上名字和照片保存，在商店里可从“我的测量”查看。"
  },
  "Save a signature": {
   "de": "Unterschrift speichern",
@@ -15098,6 +15208,16 @@
   "ja": "保存したメモ",
   "pt": "Notas guardadas",
   "zh": "已保存的笔记"
+ },
+ "Saved to My measurements": {
+  "de": "In Meine Maße gespeichert",
+  "es": "Guardado en Mis medidas",
+  "fr": "Enregistré dans Mes mesures",
+  "hi": "मेरे माप में सहेजा गया",
+  "it": "Salvato in Le mie misure",
+  "ja": "マイ寸法に保存しました",
+  "pt": "Salvo em Minhas medidas",
+  "zh": "已保存到我的测量"
  },
  "Saved to Photos": {
   "de": "In Fotos gesichert",
@@ -16168,6 +16288,16 @@
   "ja": "テキストを共有",
   "pt": "Partilhar texto",
   "zh": "分享文本"
+ },
+ "Share the shopping list": {
+  "de": "Einkaufsliste teilen",
+  "es": "Compartir la lista de compra",
+  "fr": "Partager la liste d'achats",
+  "hi": "खरीदारी की सूची शेयर करें",
+  "it": "Condividi la lista della spesa",
+  "ja": "買い物リストを共有",
+  "pt": "Compartilhar a lista de compras",
+  "zh": "分享购物清单"
  },
  "Share them": {
   "de": "Teilen",
@@ -18129,6 +18259,16 @@
   "pt": "Toca para abrir a captura",
   "zh": "点按打开截图"
  },
+ "Tap to place points on real surfaces — distance, area or height. Get how much paint, flooring and tile to buy, and keep your measurements for the shop.": {
+  "de": "Tippe, um Punkte auf echte Flächen zu setzen – Länge, Fläche oder Höhe. Erfahre, wie viel Farbe, Boden und Fliesen du brauchst, und nimm deine Maße mit in den Laden.",
+  "es": "Toca para poner puntos en superficies reales: distancia, área o altura. Calcula cuánta pintura, suelo y azulejo comprar, y lleva tus medidas a la tienda.",
+  "fr": "Touchez pour placer des points sur de vraies surfaces — distance, surface ou hauteur. Sachez combien de peinture, de sol et de carrelage acheter, et gardez vos mesures pour le magasin.",
+  "hi": "असली सतहों पर बिंदु रखने के लिए टैप करें — दूरी, क्षेत्रफल या ऊँचाई। जानें कितना पेंट, फ़्लोरिंग और टाइल खरीदनी है, और दुकान के लिए माप सहेजें।",
+  "it": "Tocca per mettere punti su superfici reali: distanza, area o altezza. Scopri quanta vernice, pavimento e piastrelle comprare e porta le misure al negozio.",
+  "ja": "実際の面にタップで点を置いて、距離・面積・高さを測定。必要な塗料・床材・タイルの量がわかり、測った寸法を店に持って行けます。",
+  "pt": "Toque para marcar pontos em superfícies reais — distância, área ou altura. Saiba quanta tinta, piso e azulejo comprar e leve suas medidas à loja.",
+  "zh": "点按在真实表面上放点——测距离、面积或高度。算出要买多少油漆、地板和瓷砖，并把测量结果带去商店。"
+ },
  "Tap to rename this file inside the zip": {
   "de": "Tippen, um die Datei im Zip umzubenennen",
   "es": "Toca para renombrar este archivo dentro del zip",
@@ -19479,6 +19619,36 @@
   "pt": "Ladrilho",
   "zh": "方块"
  },
+ "Tile size": {
+  "de": "Fliesengröße",
+  "es": "Tamaño de azulejo",
+  "fr": "Taille du carreau",
+  "hi": "टाइल का आकार",
+  "it": "Formato piastrella",
+  "ja": "タイルの大きさ",
+  "pt": "Tamanho do azulejo",
+  "zh": "瓷砖尺寸"
+ },
+ "Tiles": {
+  "de": "Fliesen",
+  "es": "Azulejos",
+  "fr": "Carreaux",
+  "hi": "टाइलें",
+  "it": "Piastrelle",
+  "ja": "タイル",
+  "pt": "Azulejos",
+  "zh": "瓷砖"
+ },
+ "Tiles (10% spare)": {
+  "de": "Fliesen (10 % Reserve)",
+  "es": "Azulejos (10 % de repuesto)",
+  "fr": "Carreaux (10 % en plus)",
+  "hi": "टाइलें (10% अतिरिक्त)",
+  "it": "Piastrelle (10% di scorta)",
+  "ja": "タイル（予備10%）",
+  "pt": "Azulejos (10% de sobra)",
+  "zh": "瓷砖（多备 10%）"
+ },
  "Tilt left a little — the horizon is crooked.": {
   "de": "Etwas nach links neigen – der Horizont ist schief.",
   "es": "Inclina un poco a la izquierda: el horizonte está torcido.",
@@ -20609,6 +20779,16 @@
   "pt": "Usa os aniversários dos contactos. Recebe um lembrete na véspera, com o número para ligar ou escrever.",
   "zh": "使用通讯录里的生日，前一天提醒你，并附上电话方便打电话或发信息。"
  },
+ "Usual numbers: a litre of paint covers about 10 m² per coat; check the can. Doors and windows are taken off the walls.": {
+  "de": "Übliche Werte: Ein Liter Farbe reicht für etwa 10 m² pro Anstrich; schau auf die Dose. Türen und Fenster werden abgezogen.",
+  "es": "Valores habituales: un litro de pintura cubre unos 10 m² por mano; revisa el bote. Se restan puertas y ventanas.",
+  "fr": "Valeurs usuelles : un litre de peinture couvre environ 10 m² par couche ; vérifiez le pot. Portes et fenêtres sont déduites.",
+  "hi": "आम अनुमान: एक लीटर पेंट हर परत में लगभग 10 m² ढकता है; डिब्बा देखें। दरवाज़े और खिड़कियाँ घटा दी जाती हैं।",
+  "it": "Valori tipici: un litro di vernice copre circa 10 m² per mano; controlla il barattolo. Porte e finestre vengono sottratte.",
+  "ja": "目安：塗料1リットルで1回あたり約10m²。缶の表示を確認してください。ドアと窓は差し引きます。",
+  "pt": "Valores comuns: um litro de tinta cobre cerca de 10 m² por demão; confira a lata. Portas e janelas são descontadas.",
+  "zh": "常用估算：1 升油漆每遍约刷 10 m²，请看漆桶说明。门窗面积已扣除。"
+ },
  "Vault": {
   "de": "Tresor",
   "es": "Caja fuerte",
@@ -20798,6 +20978,16 @@
   "ja": "トランシーバー",
   "pt": "Walkie-talkie",
   "zh": "对讲机"
+ },
+ "Wall area": {
+  "de": "Wandfläche",
+  "es": "Superficie de pared",
+  "fr": "Surface des murs",
+  "hi": "दीवार का क्षेत्रफल",
+  "it": "Superficie pareti",
+  "ja": "壁の面積",
+  "pt": "Área das paredes",
+  "zh": "墙面面积"
  },
  "Wants a code, password or personal details": {
   "de": "Will einen Code, ein Passwort oder persönliche Daten",
@@ -21028,6 +21218,16 @@
   "ja": "何を頼めばいい？",
   "pt": "O que devo pedir?",
   "zh": "我该点什么？"
+ },
+ "What to buy for this room": {
+  "de": "Was du für diesen Raum kaufen musst",
+  "es": "Qué comprar para esta habitación",
+  "fr": "Quoi acheter pour cette pièce",
+  "hi": "इस कमरे के लिए क्या खरीदें",
+  "it": "Cosa comprare per questa stanza",
+  "ja": "この部屋に必要なもの",
+  "pt": "O que comprar para este cômodo",
+  "zh": "这个房间要买什么"
  },
  "What to do": {
   "de": "Was zu tun ist",
@@ -21298,6 +21498,16 @@
   "ja": "使用する設定",
   "pt": "Vai usar",
   "zh": "将使用"
+ },
+ "Windows": {
+  "de": "Fenster",
+  "es": "Ventanas",
+  "fr": "Fenêtres",
+  "hi": "खिड़कियाँ",
+  "it": "Finestre",
+  "ja": "窓",
+  "pt": "Janelas",
+  "zh": "窗户"
  },
  "Windy — something windproof; skip the umbrella if it's gusty.": {
   "de": "Windig – etwas Winddichtes; bei Böen lieber ohne Schirm.",
@@ -22019,6 +22229,16 @@
   "pt": "ligar ao dentista, levantar uma encomenda nos correios às 15h, enviar e-mail ao Sam, pagar a renda sexta-feira",
   "zh": "给牙医打电话，下午 3 点到邮局取包裹，给 Sam 发邮件，周五付房租"
  },
+ "coats": {
+  "de": "Anstriche",
+  "es": "manos",
+  "fr": "couches",
+  "hi": "परतें",
+  "it": "mani",
+  "ja": "回",
+  "pt": "demãos",
+  "zh": "遍"
+ },
  "contacts": {
   "de": "Kontakte",
   "es": "contactos",
@@ -22118,6 +22338,16 @@
   "ja": "例：HIMSSカンファレンス、シカゴ（任意）",
   "pt": "ex.: conferência HIMSS, Chicago (opcional)",
   "zh": "例如：HIMSS 大会，芝加哥（可选）"
+ },
+ "e.g. Sofa wall, bedroom window": {
+  "de": "z. B. Sofawand, Schlafzimmerfenster",
+  "es": "p. ej., pared del sofá, ventana del dormitorio",
+  "fr": "ex. mur du canapé, fenêtre de la chambre",
+  "hi": "जैसे सोफ़े की दीवार, बेडरूम की खिड़की",
+  "it": "es. parete del divano, finestra della camera",
+  "ja": "例：ソファの壁、寝室の窓",
+  "pt": "ex.: parede do sofá, janela do quarto",
+  "zh": "例如：沙发墙、卧室窗户"
  },
  "e.g. shrink a photo under 1 MB and hide where it was taken": {
   "de": "z. B. ein Foto unter 1 MB verkleinern und verbergen, wo es aufgenommen wurde",

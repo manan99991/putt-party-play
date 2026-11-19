@@ -2608,6 +2608,28 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testRoomMathWhatToBuyAndSavedMeasurements() {
+        let n = RoomMath.needs(floorArea: 20, perimeter: 18, ceiling: 2.4, doors: 1, windows: 1, coats: 2, tileSide: 0.3, metric: true)
+        XCTAssertEqual(n.wallArea, 39.8, accuracy: 0.001, "walls minus a door and a window")
+        XCTAssertEqual(n.paintLitres, 7.96, accuracy: 0.001)
+        XCTAssertEqual(n.paintCans, 4, "3.2 cans of 2.5 L means buying 4")
+        XCTAssertEqual(n.flooring, 22, accuracy: 0.001, "10% for cuts")
+        XCTAssertEqual(n.tiles, 245)
+        XCTAssertEqual(RoomMath.needs(floorArea: 20, perimeter: 18, ceiling: 2.4, doors: 1, windows: 1, metric: false).paintCans, 3, "gallon cans")
+        let none = RoomMath.needs(floorArea: 0, perimeter: 0, ceiling: 2.4, doors: 2, windows: 2, metric: true)
+        XCTAssertEqual(none.wallArea, 0); XCTAssertEqual(none.paintCans, 0); XCTAssertEqual(none.tiles, 0, "never negative, never buy for nothing")
+
+        let before = RoomMath.load()
+        let img = UIGraphicsImageRenderer(size: CGSize(width: 20, height: 20)).image { c in UIColor.red.setFill(); c.fill(CGRect(x: 0, y: 0, width: 20, height: 20)) }
+        let s = RoomMath.add(name: "  ", value: "Width 1.82 m", photo: img)
+        XCTAssertEqual(s.name, "Measurement", "a blank name still saves")
+        XCTAssertEqual(RoomMath.load().first?.value, "Width 1.82 m", "newest first")
+        XCTAssertNotNil(RoomMath.image(s), "the photo comes back")
+        RoomMath.remove(s)
+        XCTAssertEqual(RoomMath.load(), before)
+        XCTAssertNil(RoomMath.image(s), "the photo is deleted with it")
+    }
+
     func testRestNightSummaryByHour() {
         var cal = Calendar(identifier: .gregorian); cal.timeZone = TimeZone(identifier: "UTC")!
         let morning = cal.date(from: DateComponents(year: 2026, month: 11, day: 19, hour: 7))!
