@@ -32,3 +32,28 @@ final class ScanSmartTests: XCTestCase {
         XCTAssertEqual(ScanSmart.safeFileName("   "), "Scan")
     }
 }
+
+final class SortedTwoRemindersTests: XCTestCase {
+    func testThreeDaysBeforeAndAgainOnTheDay() {
+        let cal = Calendar.current
+        let now = cal.date(from: DateComponents(year: 2026, month: 11, day: 19, hour: 8))!
+        let due = cal.date(from: DateComponents(year: 2026, month: 12, day: 3))!
+        var i = SortedLetters.Item(kind: "Bill", title: "Comcast bill", amount: "$84.20", due: due, summary: "", remindDays: 3)
+        XCTAssertEqual(SortedLetters.remindAt(i, now: now).map { cal.component(.day, from: $0) }, 30, "3 days before")
+        XCTAssertEqual(SortedLetters.onTheDay(i, now: now).map { cal.component(.day, from: $0) }, 3, "and on the day")
+        i.alsoOnDay = false
+        XCTAssertNil(SortedLetters.onTheDay(i, now: now))
+        i.alsoOnDay = nil; i.remindDays = 0
+        XCTAssertNil(SortedLetters.onTheDay(i, now: now), "an on-the-day reminder isn't doubled")
+    }
+
+    func testMonthsAddUpWhatsDue() {
+        let cal = Calendar.current
+        let d1 = cal.date(from: DateComponents(year: 2026, month: 12, day: 3))!, d2 = cal.date(from: DateComponents(year: 2026, month: 12, day: 20))!
+        let items = [SortedLetters.Item(kind: "Bill", title: "A", amount: "$84.20", due: d1, summary: ""),
+                     SortedLetters.Item(kind: "Bill", title: "B", amount: "$15.80", due: d2, summary: ""),
+                     SortedLetters.Item(kind: "Bill", title: "C", amount: "$99", due: d2, summary: "", done: true)]
+        let m = SortedLetters.months(items)
+        XCTAssertEqual(m.count, 1); XCTAssertEqual(m[0].count, 2); XCTAssertEqual(m[0].total, 100, accuracy: 0.001)
+    }
+}

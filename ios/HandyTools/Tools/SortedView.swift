@@ -114,6 +114,10 @@ struct SortedView: View {
                 }
                 if d.wrappedValue.remindDays != nil {
                     Stepper("\(L("At")) \(TimeOfDay(hour: d.wrappedValue.remindHour, minute: 0).label)", value: d.remindHour, in: 6...21)
+                    if (d.wrappedValue.remindDays ?? 0) > 0 {
+                        Toggle(L("And again on the day"), isOn: Binding(get: { d.wrappedValue.alsoOnDay ?? true }, set: { d.wrappedValue.alsoOnDay = $0 }))
+                            .font(HandyFont.caption).tint(HandyColor.accent)
+                    }
                     if let at = SortedLetters.remindAt(d.wrappedValue) {
                         Text("\(L("You'll get:")) \u{201C}\(SortedLetters.message(d.wrappedValue, now: at).title)\u{201D} — \(at.formatted(date: .abbreviated, time: .shortened))")
                             .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
@@ -173,6 +177,19 @@ struct SortedView: View {
     private var lettersList: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text(L("My letters")).font(HandyFont.cardTitle)
+            let months = SortedLetters.months(letters.items)
+            if !months.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    ForEach(months, id: \.month) { m in
+                        HStack {
+                            Text(m.month.formatted(.dateTime.month(.wide).year())).font(HandyFont.caption.weight(.semibold))
+                            Spacer()
+                            Text("\(m.count) \(L("due"))\(m.total > 0 ? String(format: " · %.2f", m.total) : "")").font(HandyFont.caption).monospacedDigit()
+                        }
+                    }
+                }.padding(10).background(HandyColor.accentSoft.opacity(0.5), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .accessibilityElement(children: .combine)
+            }
             ForEach(SortedLetters.ordered(letters.items)) { i in
                 HStack(alignment: .top, spacing: HandySpacing.s12) {
                     Button { letters.toggleDone(i) } label: {

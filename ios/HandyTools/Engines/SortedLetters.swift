@@ -48,6 +48,7 @@ enum SortedLetters {
         var summary: String
         var remindDays: Int?          // nil = no reminder; 0 = on the day
         var remindHour = 9
+        var alsoOnDay: Bool?          // a second reminder on the day itself (nil = yes)
         var done = false
         var added = Date()
     }
@@ -75,6 +76,17 @@ enum SortedLetters {
         }
     }
 
+    /// What's due, month by month: how many open letters and how much they add up to.
+    static func months(_ items: [Item], cal: Calendar = .current) -> [(month: Date, count: Int, total: Double)] {
+        var by: [Date: (Int, Double)] = [:]
+        for i in items where !i.done {
+            guard let d = i.due, let m = cal.date(from: cal.dateComponents([.year, .month], from: d)) else { continue }
+            let amt = Double((i.amount ?? "").filter { $0.isNumber || $0 == "." }) ?? 0
+            by[m, default: (0, 0)].0 += 1; by[m, default: (0, 0)].1 += amt
+        }
+        return by.keys.sorted().map { ($0, by[$0]!.0, by[$0]!.1) }
+    }
+
     static func message(_ i: Item, now: Date = Date(), cal: Calendar = .current) -> (title: String, body: String) {
         let when: String
         if let d = i.due {
@@ -87,8 +99,22 @@ enum SortedLetters {
 
     // MARK: reminders
 
+    /// The on-the-day reminder that follows an earlier one, when there is one to follow.
+    static func onTheDay(_ i: Item, now: Date = Date(), cal: Calendar = .current) -> Date? {
+        guard !i.done, let due = i.due, let days = i.remindDays, days > 0, i.alsoOnDay ?? true,
+              let at = cal.date(bySettingHour: i.remindHour, minute: 0, second: 0, of: cal.startOfDay(for: due)), at > now else { return nil }
+        return at
+    }
+
     static func schedule(_ i: Item) {
         cancel(i)
+        if let day = onTheDay(i) {
+            let m = message(i, now: day)
+            let c = UNMutableNotificationContent()
+            c.title = m.title; c.body = m.body; c.sound = .default; c.userInfo = ["open": "sorted"]
+            UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "sorted-\(i.id.uuidString)-day", content: c,
+                trigger: UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: day), repeats: false)))
+        }
         guard let at = remindAt(i) else { return }
         let m = message(i, now: at)
         let c = UNMutableNotificationContent()
@@ -99,7 +125,7 @@ enum SortedLetters {
                                                                      trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)))
     }
     static func cancel(_ i: Item) {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["sorted-\(i.id.uuidString)"])
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["sorted-\(i.id.uuidString)", "sorted-\(i.id.uuidString)-day"])
     }
 
     /// Test run: the exact reminder this letter will send, in 5 seconds.

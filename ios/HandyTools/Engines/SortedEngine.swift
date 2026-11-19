@@ -63,12 +63,17 @@ enum SortedEngine {
 
     /// Always-available parse from OCR text.
     static func basicParse(_ text: String) -> Parsed {
-        let due = keyDate(in: text)
-        let amt = amount(in: text)
+        // The labelled lines win: the date on the "due / pay by" line and the amount on the "amount due" line,
+        // not just any date or the biggest number on the page.
+        let smart = ScanSmart.read(text)
+        let due = smart.due ?? keyDate(in: text)
+        let sym = ["$", "£", "€", "₹"].first { text.contains($0) } ?? ""
+        let amt = smart.amount.map { sym + String(format: "%.2f", $0) } ?? amount(in: text)
         var summary = "Pulled the key details from the scan."
         if due != nil && amt != nil { summary = "Looks like something to pay by the date below — check the amount and deadline." }
         else if due != nil { summary = "There's a date on this — added below so you can calendar it." }
-        return Parsed(kind: guessKind(text), title: titleGuess(text), amount: amt, due: due, summary: summary)
+        let title = smart.kind == .bill && !smart.from.isEmpty ? "\(smart.from) bill" : titleGuess(text)
+        return Parsed(kind: guessKind(text), title: title, amount: amt, due: due, summary: summary)
     }
 
     // MARK: AI parse (iPhone 15 Pro+)
