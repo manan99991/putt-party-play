@@ -172,12 +172,13 @@ enum SensorMath {
     }
     private func begin() {
         let session = AVAudioSession.sharedInstance()
+        if MicCheck.onCall { MicCheck.announce(.onCall); return }
         try? session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers])
         try? session.setActive(true)
         let settings: [String: Any] = [AVFormatIDKey: Int(kAudioFormatAppleIMA4), AVSampleRateKey: 44100, AVNumberOfChannelsKey: 1, AVEncoderAudioQualityKey: AVAudioQuality.min.rawValue]
         recorder = try? AVAudioRecorder(url: URL(fileURLWithPath: "/dev/null"), settings: settings)
         recorder?.isMeteringEnabled = true
-        recorder?.record()
+        if recorder?.record() != true { MicCheck.announce(MicCheck.diagnose()) }
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in Task { @MainActor in self?.sample() } }
     }
     private func sample() {

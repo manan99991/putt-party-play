@@ -329,6 +329,26 @@
   "pt": "Um pouco mais firme e pronto para a próxima coisinha.",
   "zh": "稍微稳一点，准备好下一件小事。"
  },
+ "A call came in, so listening stopped. Everything heard before it is kept.": {
+  "de": "Ein Anruf kam rein, daher wurde das Zuhören beendet. Alles davor bleibt erhalten.",
+  "es": "Entró una llamada y dejé de escuchar. Todo lo anterior se conserva.",
+  "fr": "Un appel est arrivé : l'écoute s'est arrêtée. Tout ce qui précède est conservé.",
+  "hi": "कॉल आने से सुनना रुक गया। उससे पहले का सब रखा गया है।",
+  "it": "È arrivata una chiamata e l'ascolto si è fermato. Tutto quello di prima è conservato.",
+  "ja": "着信があったため聞き取りを止めました。それまでの内容は残っています。",
+  "pt": "Chegou uma ligação e a escuta parou. Tudo antes disso foi mantido.",
+  "zh": "来电导致聆听停止。此前识别的内容都已保留。"
+ },
+ "A call came in, so the recording stopped. What you said before it is saved.": {
+  "de": "Ein Anruf kam rein, daher wurde die Aufnahme gestoppt. Was du vorher gesagt hast, ist gespeichert.",
+  "es": "Entró una llamada y la grabación se detuvo. Lo que dijiste antes está guardado.",
+  "fr": "Un appel est arrivé : l'enregistrement s'est arrêté. Ce que vous avez dit avant est enregistré.",
+  "hi": "कॉल आने से रिकॉर्डिंग रुक गई। उससे पहले जो कहा, वह सहेजा गया है।",
+  "it": "È arrivata una chiamata e la registrazione si è fermata. Quello che hai detto prima è salvato.",
+  "ja": "着信があったため録音を止めました。それまでの内容は保存されています。",
+  "pt": "Chegou uma ligação e a gravação parou. O que você disse antes está salvo.",
+  "zh": "来电导致录音停止。来电前说的内容已保存。"
+ },
  "A calmer space — you'll notice it every time you walk in.": {
   "de": "Ein ruhigerer Raum – du merkst es jedes Mal, wenn du reinkommst.",
   "es": "Un espacio más tranquilo: lo notarás cada vez que entres.",
@@ -1269,6 +1289,16 @@
   "pt": "Permitir acesso a Fotos",
   "zh": "允许访问照片"
  },
+ "Allow microphone access in Settings › Tenzy › Microphone.": {
+  "de": "Erlaube den Mikrofonzugriff unter Einstellungen › Tenzy › Mikrofon.",
+  "es": "Permite el micrófono en Ajustes › Tenzy › Micrófono.",
+  "fr": "Autorisez le micro dans Réglages › Tenzy › Micro.",
+  "hi": "Settings › Tenzy › Microphone में माइक्रोफ़ोन की अनुमति दें।",
+  "it": "Consenti il microfono in Impostazioni › Tenzy › Microfono.",
+  "ja": "設定 › Tenzy › マイク でマイクを許可してください。",
+  "pt": "Permita o microfone em Ajustes › Tenzy › Microfone.",
+  "zh": "请在 设置 › Tenzy › 麦克风 中允许访问。"
+ },
  "Allow photo access to scan for space you can free. Nothing leaves your phone, and deleting always asks you first.": {
   "de": "Erlaube den Fotozugriff, um freiräumbaren Speicher zu finden. Nichts verlässt dein Handy, und Löschen fragt immer zuerst nach.",
   "es": "Permite el acceso a fotos para buscar espacio que puedas liberar. Nada sale de tu teléfono, y borrar siempre te pregunta antes.",
@@ -1368,6 +1398,16 @@
   "ja": "アニメと作成",
   "pt": "Animar e criar",
   "zh": "动画与创作"
+ },
+ "Another app is using the microphone right now (a call, a voice memo or a video). Close it, then try again.": {
+  "de": "Eine andere App nutzt gerade das Mikrofon (Anruf, Sprachmemo oder Video). Schließe sie und versuch es erneut.",
+  "es": "Otra app está usando el micrófono (una llamada, una nota de voz o un vídeo). Ciérrala y vuelve a intentarlo.",
+  "fr": "Une autre app utilise le micro (appel, mémo vocal ou vidéo). Fermez-la puis réessayez.",
+  "hi": "कोई और ऐप अभी माइक्रोफ़ोन इस्तेमाल कर रहा है (कॉल, वॉइस मेमो या वीडियो)। उसे बंद करके फिर कोशिश करें।",
+  "it": "Un'altra app sta usando il microfono (chiamata, memo vocale o video). Chiudila e riprova.",
+  "ja": "別のアプリがマイクを使用中です（通話・ボイスメモ・動画など）。閉じてからもう一度お試しください。",
+  "pt": "Outro app está usando o microfone (ligação, memo de voz ou vídeo). Feche-o e tente de novo.",
+  "zh": "另一个应用正在使用麦克风（通话、语音备忘录或视频）。请关闭后再试。"
  },
  "Another menu": {
   "de": "Andere Speisekarte",
@@ -26148,6 +26188,16 @@
   "ja": "重さ・体積・個数が混在しています — 公平な結果には同じ種類どうしで比べてください。",
   "pt": "Estás a misturar peso, volume e contagem — compara o comparável para um resultado justo.",
   "zh": "你把重量、体积和数量混在一起了 — 要公平比较请拿同类比同类。"
+ },
+ "You're on a call, so your iPhone keeps the microphone for it. Try again when the call ends.": {
+  "de": "Du telefonierst gerade, daher behält dein iPhone das Mikrofon für den Anruf. Versuch es nach dem Anruf erneut.",
+  "es": "Estás en una llamada, así que el iPhone reserva el micrófono para ella. Inténtalo cuando termine.",
+  "fr": "Vous êtes en appel : l'iPhone garde le micro pour l'appel. Réessayez après l'appel.",
+  "hi": "आप कॉल पर हैं, इसलिए iPhone माइक्रोफ़ोन कॉल के लिए रखता है। कॉल ख़त्म होने पर फिर कोशिश करें।",
+  "it": "Sei in chiamata, quindi l'iPhone tiene il microfono per la chiamata. Riprova quando finisce.",
+  "ja": "通話中のため、iPhoneはマイクを通話に使っています。通話が終わってからもう一度お試しください。",
+  "pt": "Você está em uma ligação, então o iPhone reserva o microfone para ela. Tente de novo quando terminar.",
+  "zh": "你正在通话，iPhone 会把麦克风留给通话。通话结束后再试。"
  },
  "You're up. That was the hardest step of the day.": {
   "de": "Du bist auf. Das war der schwerste Schritt des Tages.",

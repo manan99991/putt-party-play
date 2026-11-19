@@ -298,11 +298,12 @@ struct RestView: View {
     }
     private func begin() {
         let session = AVAudioSession.sharedInstance()
+        if MicCheck.onCall { MicCheck.announce(.onCall); return }
         try? session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetooth])
         try? session.setActive(true)
         let input = engine.inputNode
         let fmt = input.outputFormat(forBus: 0)
-        guard fmt.sampleRate > 0 else { return }
+        guard fmt.sampleRate > 0 else { MicCheck.announce(MicCheck.diagnose()); return }
         detector = SoundEventDetector()
         startTime = Date()
         input.installSendableTap(bufferSize: 4096, format: fmt) { [weak self] buf, when in

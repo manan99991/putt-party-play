@@ -159,14 +159,25 @@ struct ContactPickerSheet: UIViewControllerRepresentable {
 /// "Record": a quick recording made right on the run screen, for a tool that starts with a recording.
 @MainActor final class QuickRecorder: ObservableObject {
     @Published var running = false
+    /// A call (or another app) took the microphone mid-recording; what was said before it is kept.
+    @Published var interrupted = false
     private var recorder: AVAudioRecorder?
     private var file: URL?
+    private var watch: NSObjectProtocol?
 
-    /// Starts recording once the microphone is allowed. `refused` is called when it isn't.
-    func start(refused: @escaping () -> Void) {
+    /// Starts recording once the microphone is allowed and free. `failed` says why it couldn't:
+    /// not allowed, on a call, or another app holding the microphone.
+    func start(failed: @escaping (MicCheck.Problem) -> Void) {
+        interrupted = false
+        if let p = MicCheck.blocked() { failed(p); return }
         Permission.microphone { ok in
             Task { @MainActor in
-                guard ok, self.begin() else { refused(); return }
+                guard ok else { failed(.denied); return }
+                guard self.begin() else { failed(MicCheck.diagnose()); return }
+                self.watch = MicCheck.watchInterruptions { [weak self] in
+                    guard let self, self.running else { return }
+                    self.recorder?.stop(); self.running = false; self.interrupted = true
+                }
             }
         }
     }
@@ -184,6 +195,7 @@ struct ContactPickerSheet: UIViewControllerRepresentable {
 
     /// Stops and hands back the recording.
     func stop() -> URL? {
+        if let watch { NotificationCenter.default.removeObserver(watch) }; watch = nil
         recorder?.stop(); recorder = nil; running = false
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         return file

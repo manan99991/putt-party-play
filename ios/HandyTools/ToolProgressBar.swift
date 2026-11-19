@@ -111,13 +111,20 @@ struct CopyButton: View {
 @MainActor final class CopyToast: ObservableObject {
     static let shared = CopyToast()
     @Published var text: String? = nil
+    @Published var icon = "checkmark.circle.fill"
     private var token = 0
-    func flash(_ message: String = "Copied") {
+    func flash(_ message: String = "Copied") { show(message, icon: "checkmark.circle.fill", seconds: 1.6) }
+
+    /// A longer, plain-words notice in the same pill (e.g. "You're on a call…"), for things that need reading.
+    func notice(_ message: String, icon: String = "info.circle.fill", seconds: Double = 5) { show(message, icon: icon, seconds: seconds) }
+
+    private func show(_ message: String, icon: String, seconds: Double) {
         installWindow()
+        self.icon = icon
         text = message
         token += 1
         let mine = token
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             if self.token == mine { self.text = nil }
         }
     }
@@ -151,13 +158,15 @@ private struct CopyToastPill: View {
         VStack {
             Spacer()
             if let t = toast.text {
-                HStack(spacing: 6) {
-                    Image(systemName: "checkmark.circle.fill")
-                    Text(t).font(HandyFont.bodyStrong)
+                HStack(alignment: .top, spacing: 6) {
+                    Image(systemName: toast.icon)
+                    Text(t).font(HandyFont.bodyStrong).multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
                 }
+                .padding(.horizontal, 4)
                 .foregroundStyle(.white)
                 .padding(.horizontal, 16).padding(.vertical, 10)
-                .background(Color.black.opacity(0.82), in: Capsule())
+                .background(Color.black.opacity(0.82), in: RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .padding(.horizontal, 20)
                 .shadow(color: .black.opacity(0.25), radius: 8, y: 2)
                 .padding(.bottom, 96)
                 .transition(.move(edge: .bottom).combined(with: .opacity))

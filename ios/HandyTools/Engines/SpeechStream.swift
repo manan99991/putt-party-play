@@ -29,6 +29,7 @@ import AVFoundation
     private var task: SFSpeechRecognitionTask?
     private var rollTimer: Task<Void, Never>?
     private var tapInstalled = false
+    private var watch: NSObjectProtocol?
 
     /// "es" → es-MX on a Mexican phone, es-ES elsewhere; falls back to any region the recogniser offers.
     static func bestLocale(forLanguage code: String) -> Locale {
@@ -49,7 +50,7 @@ import AVFoundation
                 guard status == .authorized else { self.errorText = "Allow Speech Recognition in Settings."; return }
                 Permission.microphone { ok in
                     Task { @MainActor in
-                        guard ok else { self.errorText = "Allow microphone access in Settings."; return }
+                        guard ok else { self.errorText = "Allow microphone access in Settings › Tenzy › Microphone."; return }
                         self.begin()
                     }
                 }
@@ -84,7 +85,7 @@ import AVFoundation
                 tries += 1
             }
             guard format.sampleRate > 0 else {
-                self.errorText = otherAudioBusy
+                self.errorText = MicCheck.onCall ? MicCheck.text(.onCall) : otherAudioBusy
                     ? "Another app is using the microphone — likely a call. Live Captions listens through the mic, so it can't hear the other side of a call on a headset; put the call on speaker, then tap Start."
                     : "The microphone didn't start. Close anything else that might be using it (a call or recorder), then tap Start again."
                 return
@@ -97,10 +98,17 @@ import AVFoundation
             }
             self.engine.prepare()
             do { try self.engine.start() } catch {
-                self.errorText = "Couldn't start the microphone. Close anything else using it, then tap Start again."
+                self.errorText = MicCheck.text(MicCheck.diagnose())
                 return
             }
             self.running = true
+            // A call coming in takes the microphone: stop cleanly and keep what was heard, instead of
+            // sitting on "Listening…" with nothing arriving.
+            self.watch = MicCheck.watchInterruptions { [weak self] in
+                guard let self, self.running else { return }
+                self.stop()
+                self.errorText = "A call came in, so listening stopped. Everything heard before it is kept."
+            }
             self.newSegment()
         }
     }
@@ -145,6 +153,7 @@ import AVFoundation
     }
 
     func stop(keepText: Bool = true) {
+        if let watch { NotificationCenter.default.removeObserver(watch) }; watch = nil
         rollTimer?.cancel(); rollTimer = nil
         request?.endAudio(); task?.cancel(); task = nil; request = nil
         if engine.isRunning { engine.stop() }

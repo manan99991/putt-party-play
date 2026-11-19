@@ -50,6 +50,12 @@ struct DayDiaryView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .onAppear { today = DiaryStore.shared.day(DayDiary.key(Date())) }
+        .onChange(of: rec.interrupted) { _, cut in
+            // A call came in mid-recording: keep what was said before it, and say so.
+            guard cut, let m = recordingMood else { return }
+            stopAndSave(m)
+            errorText = "A call came in, so the recording stopped. What you said before it is saved."
+        }
         .onReceive(timer) { tick = $0 }
         .sheet(isPresented: $showReview) { DiaryReviewGate() }
     }
@@ -152,8 +158,11 @@ struct DayDiaryView: View {
 
     private func startRecording(_ mood: DayDiary.Mood) {
         errorText = nil; thanks = nil
-        rec.start { recordingMood = nil; errorText = "Tenzy needs the microphone to record — allow it in Settings, or just tap Good or Bad." }
         recordingMood = mood; started = Date()
+        rec.start { p in
+            recordingMood = nil
+            errorText = MicCheck.text(p, denied: "Tenzy needs the microphone to record — allow it in Settings, or just tap Good or Bad.", meanwhile: "just tap Good or Bad for now")
+        }
     }
 
     private func stopAndSave(_ mood: DayDiary.Mood) {

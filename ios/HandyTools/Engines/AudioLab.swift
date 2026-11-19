@@ -185,11 +185,12 @@ enum Pitch {
     }
     private func begin() {
         let session = AVAudioSession.sharedInstance()
+        if MicCheck.onCall { MicCheck.announce(.onCall); return }
         try? session.setCategory(.playAndRecord, options: [.defaultToSpeaker, .mixWithOthers])
         try? session.setActive(true)
         let input = engine.inputNode
         let fmt = input.outputFormat(forBus: 0)
-        guard fmt.sampleRate > 0 else { return }
+        guard fmt.sampleRate > 0 else { MicCheck.announce(MicCheck.diagnose()); return }
         let rate = fmt.sampleRate
         input.installSendableTap(bufferSize: 4096, format: fmt) { [weak self] buf, _ in
             guard let ch = buf.floatChannelData?[0] else { return }

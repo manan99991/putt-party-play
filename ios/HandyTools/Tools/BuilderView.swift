@@ -1895,6 +1895,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
         }
         .onDisappear { if speech.running { speech.stop() }; if recorder.running { _ = recorder.stop() } }
+        .onChange(of: recorder.interrupted) { _, cut in
+            // A call came in mid-recording: run the tool on what was recorded before it, and say so.
+            guard cut else { return }
+            if let url = recorder.stop(), let d = try? Data(contentsOf: url), d.count > 4000 {
+                go(.file(d, ext: "m4a")); message = "A call came in, so the recording stopped. Tenzy used what you said before it."
+            } else { message = "A call came in, so the recording stopped before anything was said. Try again when the call ends." }
+        }
         .onAppear {
             if !memeLoaded, let words = chain.steps.first(where: { $0.block == .meme })?.settings {
                 memeLoaded = true
@@ -2026,7 +2033,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             else { message = "Nothing was recorded. Try again." }
         } else {
             message = nil; result = nil
-            recorder.start { message = "Tenzy needs the microphone to record. Allow it in Settings, or choose a recording instead." }
+            recorder.start { p in message = MicCheck.text(p, denied: "Tenzy needs the microphone to record. Allow it in Settings, or choose a recording instead.", meanwhile: "choose a recording instead") }
         }
     }
 
