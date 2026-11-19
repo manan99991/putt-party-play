@@ -561,11 +561,14 @@ struct BuilderView: View {
                                     }
                                 } else {
                                     pasteNote = clip.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                                        ? "Nothing's copied yet. On another Tenzy, open a tool and tap “Copy to share”, then come back and tap Paste."
-                                        : "That's not a Tenzy tool link. Use a tool's “Copy to share” button, then tap Paste here."
+                                        ? "Nothing's copied yet. On another Tenzy, open a tool and tap “Copy to share”, then come back and tap Add a shared tool."
+                                        : "That's not a Tenzy tool link. Use a tool's “Copy to share” button, then tap Add a shared tool."
                                 }
-                            } label: { Label(L("Paste a tool"), systemImage: "doc.on.clipboard") }.font(HandyFont.caption)
+                            } label: { Label(L("Add a shared tool"), systemImage: "square.and.arrow.down") }.font(HandyFont.caption)
+                                .accessibilityHint(L("Adds a tool someone sent you. Copy their link first."))
                         }
+                        Text(L("Got a Tenzy tool from a friend? Copy the link they sent, then tap Add a shared tool. To send one of yours, open My tools and choose Copy to share."))
+                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                         if let pasteNote {
                             Text(pasteNote).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -579,8 +582,18 @@ struct BuilderView: View {
                             Text(L("Sound")).tag(ChainKind?.some(.audio))
                             Text(L("PDF")).tag(ChainKind?.some(.pdf))
                         }.pickerStyle(.segmented).accessibilityIdentifier("starter-filter")
-                        LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
-                            ForEach(BuilderIntro.starters(for: have).filter { $0.unavailable == nil }) { c in templateCard(c) }
+                        if have == nil {
+                            bigJobsSection
+                            ForEach(BuilderIntro.sections(), id: \.title) { sec in
+                                let list = sec.chains.filter { $0.unavailable == nil }
+                                if !list.isEmpty {
+                                    Text(L(sec.title)).font(HandyFont.cardTitle).padding(.top, HandySpacing.s8)
+                                        .frame(maxWidth: .infinity, alignment: .leading).accessibilityAddTraits(.isHeader)
+                                    templateGrid(list)
+                                }
+                            }
+                        } else {
+                            templateGrid(BuilderIntro.jobsFirst(BuilderIntro.starters(for: have)).filter { $0.unavailable == nil })
                         }
                     }.padding(HandySpacing.gutter)
                 }
@@ -762,6 +775,42 @@ struct BuilderView: View {
         }
         .cardStyle(padding: HandySpacing.s16)
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.accent, lineWidth: 1.5))
+    }
+
+    private func templateGrid(_ list: [Chain]) -> some View {
+        LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
+            ForEach(list) { c in templateCard(c) }
+        }
+    }
+
+    /// Jobs too big for a few steps: each opens the full Tenzy tool made for it.
+    private var bigJobsSection: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(L("Bigger jobs, full tools")).font(HandyFont.cardTitle).accessibilityAddTraits(.isHeader)
+            Text(L("These need more than a few steps, so Tenzy has a whole tool for each.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            ForEach(BuilderIntro.bigJobs, id: \.id) { j in
+                Button {
+                    showTemplates = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { NotificationCenter.default.post(name: .openTool, object: j.id) }
+                } label: {
+                    HStack(spacing: HandySpacing.s12) {
+                        Image(systemName: j.icon).font(.system(size: 16, weight: .semibold)).foregroundStyle(HandyColor.accent)
+                            .frame(width: 34, height: 34).background(HandyColor.accentSoft, in: Circle()).accessibilityHidden(true)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(L(j.name)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).multilineTextAlignment(.leading)
+                            Text(L(j.line)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.leading)
+                        }
+                        Spacer(minLength: 0)
+                        Image(systemName: "chevron.right").font(.caption).foregroundStyle(HandyColor.textSecondary).accessibilityHidden(true)
+                    }
+                    .padding(HandySpacing.s12)
+                    .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("bigjob-\(j.id)")
+            }
+        }
     }
 
     private func templateCard(_ c: Chain) -> some View {

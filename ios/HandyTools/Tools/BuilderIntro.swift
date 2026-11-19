@@ -22,6 +22,37 @@ enum BuilderIntro {
         guard let kind else { return all }
         return all.filter { ($0.steps.first?.block.takes ?? .image) == kind }
     }
+
+    /// Start-to-finish jobs (several steps, or a step that ends in an email or message) lead each list,
+    /// so the most complete tools are seen first. Stable otherwise.
+    static func jobsFirst(_ list: [Chain]) -> [Chain] {
+        list.enumerated().sorted { a, b in
+            let ja = a.element.steps.count > 1 || a.element.finish != nil, jb = b.element.steps.count > 1 || b.element.finish != nil
+            return ja != jb ? ja : a.offset < b.offset
+        }.map(\.element)
+    }
+
+    /// The template sheet's sections, by what you start with. Every starter is in exactly one.
+    static func sections(in all: [Chain] = ChainTemplates.all) -> [(title: String, kind: ChainKind, chains: [Chain])] {
+        let order: [(String, ChainKind)] = [("Photos & scans", .image), ("Text, links & messages", .text), ("Video", .video), ("Sound & voice", .audio), ("PDF", .pdf)]
+        return order.compactMap { title, kind in
+            let c = jobsFirst(starters(for: kind, in: all))
+            return c.isEmpty ? nil : (title, kind, c)
+        }
+    }
+
+    /// Bigger jobs that need a whole screen rather than a few steps — each opens a full Tenzy tool.
+    struct BigJob: Equatable { let id: String; let name: String; let line: String; let icon: String }
+    static let bigJobs = [
+        BigJob(id: "cards", name: "Scan a stack of business cards into contacts", line: "Both sides, edit any field, never a duplicate.", icon: "person.text.rectangle"),
+        BigJob(id: "untangle", name: "Plan my day around how I feel", line: "Say everything on your plate; get steps, rests and check-ins.", icon: "scribble.variable"),
+        BigJob(id: "medreminder", name: "Remind me to take my medicine", line: "Each dose on time, with Taken and Snooze on the alert.", icon: "pills.fill"),
+        BigJob(id: "daydiary", name: "Keep a private diary of my days", line: "Good or bad in one tap, say why, look back by month.", icon: "heart.text.square"),
+        BigJob(id: "meetingnotes", name: "Turn a meeting into notes and to-dos", line: "Who said what, the to-dos, and an email ready to send.", icon: "person.wave.2.fill"),
+        BigJob(id: "sticker", name: "Make a pack of stickers from my photos", line: "Looks, outlines and a printable sheet.", icon: "scissors"),
+        BigJob(id: "warranty", name: "Keep receipts and warranties in one place", line: "Never miss a return date or a warranty.", icon: "shippingbox.fill"),
+        BigJob(id: "cleaner", name: "Free up space on my phone", line: "Duplicates, big videos and old screenshots, reviewed first.", icon: "sparkles"),
+    ]
 }
 
 struct BuilderIntroCard: View {

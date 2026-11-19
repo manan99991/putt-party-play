@@ -489,6 +489,16 @@
   "pt": "Adicionar remédio",
   "zh": "添加药品"
  },
+ "Add a shared tool": {
+  "de": "Geteiltes Tool hinzufügen",
+  "es": "Añadir una herramienta compartida",
+  "fr": "Ajouter un outil partagé",
+  "hi": "शेयर किया गया टूल जोड़ें",
+  "it": "Aggiungi uno strumento condiviso",
+  "ja": "共有されたツールを追加",
+  "pt": "Adicionar uma ferramenta partilhada",
+  "zh": "添加分享的工具"
+ },
  "Add a speaker": {
   "de": "Sprecher hinzufügen",
   "es": "Añadir hablante",
@@ -748,6 +758,16 @@
   "ja": "宛先：",
   "pt": "Para:",
   "zh": "收件人："
+ },
+ "Adds a tool someone sent you. Copy their link first.": {
+  "de": "Fügt ein Tool hinzu, das dir jemand geschickt hat. Kopiere zuerst den Link.",
+  "es": "Añade una herramienta que alguien te envió. Copia primero su enlace.",
+  "fr": "Ajoute un outil qu'on vous a envoyé. Copiez d'abord son lien.",
+  "hi": "किसी का भेजा टूल जोड़ता है। पहले उनका लिंक कॉपी करें।",
+  "it": "Aggiunge uno strumento che qualcuno ti ha inviato. Copia prima il link.",
+  "ja": "誰かから届いたツールを追加します。先にリンクをコピーしてください。",
+  "pt": "Adiciona uma ferramenta que alguém lhe enviou. Copie primeiro o link.",
+  "zh": "添加别人发给你的工具。请先复制对方的链接。"
  },
  "Adds an invisible text layer so Find, select and copy work in any reader.": {
   "de": "Fügt eine unsichtbare Textebene hinzu, damit Suchen, Markieren und Kopieren in jedem Reader funktionieren.",
@@ -1559,6 +1579,16 @@
   "pt": "Grande variação hoje — camadas que dá pra tirar.",
   "zh": "今天温差大——穿可以随时脱的多层衣服。"
  },
+ "Bigger jobs, full tools": {
+  "de": "Größere Aufgaben, ganze Tools",
+  "es": "Tareas grandes, herramientas completas",
+  "fr": "Grandes tâches, outils complets",
+  "hi": "बड़े काम, पूरे टूल",
+  "it": "Lavori più grandi, strumenti completi",
+  "ja": "大きな作業は専用ツールで",
+  "pt": "Tarefas maiores, ferramentas completas",
+  "zh": "大任务，用完整工具"
+ },
  "Biggest folders": {
   "de": "Größte Ordner",
   "es": "Carpetas más grandes",
@@ -1668,6 +1698,16 @@
   "ja": "両方の端末が同じWi-Fiに接続している必要があります。iPhoneではSafariがリンクを“プライベートではない／安全ではない”と警告することがありますが — 端末間の直接リンクでは正常で、エラーではありません：表示されれば“IPアドレスを表示”、次に“続ける”、“ファイルをダウンロード”をタップ。何もアップロードされません。",
   "pt": "Ambos os telemóveis têm de estar na MESMA Wi-Fi. Num iPhone, o Safari pode avisar que o link “não é privado/seguro” — é normal num link direto entre telemóveis, não é um erro: toca em “Mostrar endereço IP” se aparecer, depois “Continuar” e “Transferir ficheiro”. Nada é enviado.",
   "zh": "两部手机必须在同一个 Wi-Fi 上。在 iPhone 上，Safari 可能警告该链接“不是私密/安全的” — 对于手机到手机的直连这是正常的，并非错误：如出现，点按“显示 IP 地址”，然后“继续”，再“下载文件”。不上传任何内容。"
+ },
+ "Both sides, edit any field, never a duplicate.": {
+  "de": "Beide Seiten, jedes Feld bearbeitbar, nie doppelt.",
+  "es": "Ambas caras, cualquier campo editable, nunca duplicados.",
+  "fr": "Recto et verso, chaque champ modifiable, jamais de doublon.",
+  "hi": "दोनों तरफ़, हर फ़ील्ड बदलें, कभी डुप्लिकेट नहीं।",
+  "it": "Fronte e retro, ogni campo modificabile, mai duplicati.",
+  "ja": "両面対応、どの項目も編集可、重複なし。",
+  "pt": "Frente e verso, qualquer campo editável, nunca duplicados.",
+  "zh": "正反面、任意字段可改、绝不重复。"
  },
  "Bottom line": {
   "de": "Fazit",
@@ -4349,6 +4389,26 @@
   "pt": "Duplicar",
   "zh": "复制"
  },
+ "Duplicates, big videos and old screenshots, reviewed first.": {
+  "de": "Duplikate, große Videos und alte Screenshots – erst prüfen.",
+  "es": "Duplicados, vídeos grandes y capturas viejas, revisados antes.",
+  "fr": "Doublons, grosses vidéos et vieilles captures, vérifiés d'abord.",
+  "hi": "डुप्लिकेट, बड़े वीडियो और पुराने स्क्रीनशॉट, पहले देखें।",
+  "it": "Duplicati, video grandi e vecchi screenshot, controllati prima.",
+  "ja": "重複、大きな動画、古いスクショを確認してから。",
+  "pt": "Duplicados, vídeos grandes e capturas antigas, revistos primeiro.",
+  "zh": "重复照片、大视频和旧截图，先查看再处理。"
+ },
+ "Each dose on time, with Taken and Snooze on the alert.": {
+  "de": "Jede Dosis pünktlich, mit „Genommen“ und „Später“ direkt in der Mitteilung.",
+  "es": "Cada dosis a tiempo, con Tomado y Posponer en el aviso.",
+  "fr": "Chaque dose à l'heure, avec Pris et Plus tard dans l'alerte.",
+  "hi": "हर ख़ुराक समय पर, अलर्ट में ‘ले ली’ और ‘बाद में’ के साथ।",
+  "it": "Ogni dose in orario, con Presa e Posticipa nell'avviso.",
+  "ja": "服用ごとに時間どおり、通知から「飲んだ」「スヌーズ」。",
+  "pt": "Cada dose a horas, com Tomado e Adiar no alerta.",
+  "zh": "每次准时提醒，通知里可点“已服用”和“稍后”。"
+ },
  "Each group collapses to one contact, keeping every number and email. This can't be undone, so make sure you've backed up.": {
   "de": "Jede Gruppe wird zu einem Kontakt zusammengeführt, mit allen Nummern und E-Mails. Nicht umkehrbar — stelle sicher, dass du ein Backup hast.",
   "es": "Cada grupo se reduce a un contacto, conservando todos los números y correos. No se puede deshacer, así que asegúrate de tener copia.",
@@ -5689,6 +5749,16 @@
   "pt": "As ferramentas gratuitas usam os passos básicos. As marcadas como Pro desbloqueiam com o Tenzy Pro.",
   "zh": "免费工具使用基本步骤。标有 Pro 的需用 Tenzy Pro 解锁。"
  },
+ "Free up space on my phone": {
+  "de": "Speicher auf meinem Handy freigeben",
+  "es": "Liberar espacio en mi teléfono",
+  "fr": "Libérer de l'espace sur mon téléphone",
+  "hi": "मेरे फ़ोन में जगह खाली करें",
+  "it": "Libera spazio sul mio telefono",
+  "ja": "スマホの空き容量を増やす",
+  "pt": "Libertar espaço no meu telemóvel",
+  "zh": "释放手机空间"
+ },
  "Freeze": {
   "de": "Einfrieren",
   "es": "Congelar",
@@ -6049,6 +6119,16 @@
   "pt": "Dia bom — grave o porquê",
   "zh": "美好的一天——录下原因"
  },
+ "Good or bad in one tap, say why, look back by month.": {
+  "de": "Gut oder schlecht mit einem Tipp, sag warum, schau monatsweise zurück.",
+  "es": "Bueno o malo en un toque, di por qué, repasa por meses.",
+  "fr": "Bon ou mauvais en un geste, dites pourquoi, revoyez par mois.",
+  "hi": "एक टैप में अच्छा या बुरा, वजह बोलें, महीने के हिसाब से देखें।",
+  "it": "Bene o male con un tocco, di' perché, rivedi per mese.",
+  "ja": "良い・悪いをワンタップ、理由を話して、月ごとに振り返り。",
+  "pt": "Bom ou mau num toque, diga porquê, reveja por mês.",
+  "zh": "一点记好坏，说说原因，按月回看。"
+ },
  "Google, your phone, Exchange: copy or move in three taps.": {
   "de": "Google, dein Handy, Exchange: kopieren oder verschieben in drei Tipps.",
   "es": "Google, tu teléfono, Exchange: copia o mueve en tres toques.",
@@ -6058,6 +6138,16 @@
   "ja": "Google、あなたの端末、Exchange：3タップでコピーまたは移動。",
   "pt": "Google, o teu telemóvel, Exchange: copia ou move em três toques.",
   "zh": "Google、你的手机、Exchange：三下点按即可复制或移动。"
+ },
+ "Got a Tenzy tool from a friend? Copy the link they sent, then tap Add a shared tool. To send one of yours, open My tools and choose Copy to share.": {
+  "de": "Ein Tenzy-Tool von einem Freund bekommen? Kopiere den Link und tippe auf „Geteiltes Tool hinzufügen“. Um eines deiner Tools zu senden, öffne „Meine Tools“ und wähle „Zum Teilen kopieren“.",
+  "es": "¿Te pasaron una herramienta de Tenzy? Copia el enlace y toca «Añadir una herramienta compartida». Para enviar una tuya, abre «Mis herramientas» y elige «Copiar para compartir».",
+  "fr": "Un ami vous a envoyé un outil Tenzy ? Copiez le lien, puis touchez « Ajouter un outil partagé ». Pour envoyer l'un des vôtres, ouvrez « Mes outils » et choisissez « Copier pour partager ».",
+  "hi": "दोस्त से Tenzy टूल मिला? भेजा गया लिंक कॉपी करें, फिर “शेयर किया गया टूल जोड़ें” दबाएँ। अपना टूल भेजने के लिए “मेरे टूल” खोलें और “शेयर के लिए कॉपी करें” चुनें।",
+  "it": "Hai ricevuto uno strumento Tenzy da un amico? Copia il link, poi tocca «Aggiungi uno strumento condiviso». Per inviarne uno tuo, apri «I miei strumenti» e scegli «Copia per condividere».",
+  "ja": "友達から Tenzy のツールが届きましたか？送られたリンクをコピーして「共有されたツールを追加」をタップ。自分のツールを送るには「マイツール」を開いて「コピーして共有」を選びます。",
+  "pt": "Recebeu uma ferramenta Tenzy de um amigo? Copie o link e toque em «Adicionar uma ferramenta partilhada». Para enviar uma sua, abra «As minhas ferramentas» e escolha «Copiar para partilhar».",
+  "zh": "朋友发来了 Tenzy 工具？复制对方发的链接，然后点“添加分享的工具”。要发送你自己的工具，打开“我的工具”并选择“复制以分享”。"
  },
  "Got it": {
   "de": "Verstanden",
@@ -6869,6 +6959,16 @@
   "pt": "Mantenha o Tenzy aberto enquanto termina.",
   "zh": "完成前请保持Tenzy打开。"
  },
+ "Keep a private diary of my days": {
+  "de": "Ein privates Tagebuch meiner Tage führen",
+  "es": "Llevar un diario privado de mis días",
+  "fr": "Tenir un journal privé de mes journées",
+  "hi": "अपने दिनों की निजी डायरी रखें",
+  "it": "Tenere un diario privato delle mie giornate",
+  "ja": "毎日の日記を非公開でつける",
+  "pt": "Manter um diário privado dos meus dias",
+  "zh": "记录我每天的私人日记"
+ },
  "Keep as": {
   "de": "Behalten als",
   "es": "Conservar como",
@@ -6958,6 +7058,16 @@
   "ja": "改行を保持",
   "pt": "Manter linhas",
   "zh": "保留换行"
+ },
+ "Keep receipts and warranties in one place": {
+  "de": "Belege und Garantien an einem Ort",
+  "es": "Guardar recibos y garantías en un solo lugar",
+  "fr": "Garder reçus et garanties au même endroit",
+  "hi": "रसीदें और वारंटी एक जगह रखें",
+  "it": "Tieni scontrini e garanzie in un unico posto",
+  "ja": "レシートと保証書をひとまとめに",
+  "pt": "Guardar recibos e garantias num só lugar",
+  "zh": "把收据和保修放在一处"
  },
  "Keep the old one": {
   "de": "Alten behalten",
@@ -7599,6 +7709,16 @@
   "pt": "Parece pronta — todas as verificações passaram",
   "zh": "看起来没问题——全部检查通过"
  },
+ "Looks, outlines and a printable sheet.": {
+  "de": "Looks, Umrisse und ein druckbarer Bogen.",
+  "es": "Estilos, contornos y una hoja para imprimir.",
+  "fr": "Styles, contours et une planche à imprimer.",
+  "hi": "लुक, आउटलाइन और प्रिंट करने लायक शीट।",
+  "it": "Stili, contorni e un foglio da stampare.",
+  "ja": "スタイル、縁取り、印刷用シート。",
+  "pt": "Estilos, contornos e uma folha para imprimir.",
+  "zh": "多种风格、描边和可打印贴纸页。"
+ },
  "Love it — save": {
   "de": "Gefällt mir – speichern",
   "es": "Me encanta: guardar",
@@ -7718,6 +7838,16 @@
   "ja": "Zipを作成",
   "pt": "Criar um Zip",
   "zh": "创建Zip"
+ },
+ "Make a pack of stickers from my photos": {
+  "de": "Ein Sticker-Pack aus meinen Fotos machen",
+  "es": "Hacer un paquete de stickers con mis fotos",
+  "fr": "Créer un pack d'autocollants avec mes photos",
+  "hi": "मेरी फ़ोटो से स्टिकर पैक बनाएँ",
+  "it": "Crea un pacchetto di sticker dalle mie foto",
+  "ja": "写真からステッカーパックを作る",
+  "pt": "Criar um pacote de autocolantes com as minhas fotos",
+  "zh": "用我的照片做一套贴纸"
  },
  "Make a recording small enough to email or message.": {
   "de": "Mach eine Aufnahme klein genug zum Mailen oder Verschicken.",
@@ -8748,6 +8878,16 @@
   "ja": "無表情で口を閉じている",
   "pt": "Rosto neutro, boca fechada",
   "zh": "表情自然，闭嘴"
+ },
+ "Never miss a return date or a warranty.": {
+  "de": "Nie wieder eine Rückgabefrist oder Garantie verpassen.",
+  "es": "No vuelvas a perder una fecha de devolución ni una garantía.",
+  "fr": "Ne ratez plus jamais une date de retour ou une garantie.",
+  "hi": "कोई वापसी तारीख़ या वारंटी कभी न चूकें।",
+  "it": "Non perdere mai una data di reso o una garanzia.",
+  "ja": "返品期限も保証も見逃しません。",
+  "pt": "Nunca perca uma data de devolução ou uma garantia.",
+  "zh": "再也不错过退货日期或保修期。"
  },
  "New PIN (4–8 numbers)": {
   "de": "Neue PIN (4–8 Ziffern)",
@@ -10299,6 +10439,16 @@
   "pt": "Fotos",
   "zh": "照片"
  },
+ "Photos & scans": {
+  "de": "Fotos & Scans",
+  "es": "Fotos y escaneos",
+  "fr": "Photos et scans",
+  "hi": "फ़ोटो और स्कैन",
+  "it": "Foto e scansioni",
+  "ja": "写真とスキャン",
+  "pt": "Fotos e digitalizações",
+  "zh": "照片和扫描"
+ },
  "Photos & videos": {
   "de": "Fotos & Videos",
   "es": "Fotos y vídeos",
@@ -10638,6 +10788,16 @@
   "ja": "平易な言葉への書き換えには端末内Gemini Nano（Pixel 9、Galaxy S24+）が必要です。読み上げと要約はどの端末でも動作します。",
   "pt": "A reescrita em linguagem simples precisa do Gemini Nano no dispositivo (Pixel 9, Galaxy S24+). Ouvir e Resumo funcionam em todos os telemóveis.",
   "zh": "改写成通俗英语需要设备端 Gemini Nano（Pixel 9、Galaxy S24+）。朗读和要点在每部手机上都可用。"
+ },
+ "Plan my day around how I feel": {
+  "de": "Meinen Tag danach planen, wie es mir geht",
+  "es": "Planear mi día según cómo me siento",
+  "fr": "Planifier ma journée selon mon humeur",
+  "hi": "मेरा दिन मेरे मूड के हिसाब से प्लान करें",
+  "it": "Pianifica la mia giornata in base a come sto",
+  "ja": "気分に合わせて一日を計画",
+  "pt": "Planear o meu dia conforme me sinto",
+  "zh": "按我的状态安排一天"
  },
  "Plan, travel & health": {
   "de": "Planen, Reisen & Gesundheit",
@@ -11719,6 +11879,16 @@
   "pt": "Lembrar-me de executar isto",
   "zh": "提醒我运行此项"
  },
+ "Remind me to take my medicine": {
+  "de": "Erinnere mich an meine Medikamente",
+  "es": "Recuérdame tomar mis medicamentos",
+  "fr": "Rappelle-moi de prendre mes médicaments",
+  "hi": "मुझे दवा लेने की याद दिलाएँ",
+  "it": "Ricordami di prendere le medicine",
+  "ja": "薬の時間を知らせて",
+  "pt": "Lembra-me de tomar os medicamentos",
+  "zh": "提醒我吃药"
+ },
  "Reminder: ": {
   "de": "Erinnerung: ",
   "es": "Recordatorio: ",
@@ -12599,6 +12769,16 @@
   "pt": "Salvando…",
   "zh": "正在保存…"
  },
+ "Say everything on your plate; get steps, rests and check-ins.": {
+  "de": "Sag alles, was ansteht; bekomme Schritte, Pausen und Erinnerungen.",
+  "es": "Di todo lo que tienes pendiente; recibe pasos, descansos y avisos.",
+  "fr": "Dites tout ce que vous avez à faire ; obtenez étapes, pauses et rappels.",
+  "hi": "जो कुछ करना है बताएँ; कदम, आराम और चेक-इन पाएँ।",
+  "it": "Di' tutto quello che hai da fare; ricevi passi, pause e promemoria.",
+  "ja": "やることを全部話すと、手順・休憩・確認が届きます。",
+  "pt": "Diga tudo o que tem para fazer; receba passos, pausas e lembretes.",
+  "zh": "说出所有待办，得到步骤、休息和提醒。"
+ },
  "Says to apply by texting a keyword to a number": {
   "de": "Sagt, man solle sich per SMS mit einem Stichwort bewerben",
   "es": "Dice que te postules enviando una palabra por SMS",
@@ -12678,6 +12858,16 @@
   "ja": "写真かスクショをスキャン",
   "pt": "Digitalizar foto ou captura",
   "zh": "扫描照片或截图"
+ },
+ "Scan a stack of business cards into contacts": {
+  "de": "Einen Stapel Visitenkarten in Kontakte scannen",
+  "es": "Escanear un montón de tarjetas a contactos",
+  "fr": "Scanner une pile de cartes de visite en contacts",
+  "hi": "बिज़नेस कार्ड का ढेर कॉन्टैक्ट में स्कैन करें",
+  "it": "Scansiona una pila di biglietti da visita nei contatti",
+  "ja": "名刺の束を連絡先に取り込む",
+  "pt": "Digitalizar uma pilha de cartões para os contactos",
+  "zh": "把一叠名片扫描成联系人"
  },
  "Scan a whole stack in one go — each card becomes its own contact.": {
   "de": "Scanne einen ganzen Stapel auf einmal – jede Karte wird ein eigener Kontakt.",
@@ -13989,6 +14179,16 @@
   "pt": "Som",
   "zh": "声音"
  },
+ "Sound & voice": {
+  "de": "Ton & Stimme",
+  "es": "Sonido y voz",
+  "fr": "Son et voix",
+  "hi": "आवाज़ और ध्वनि",
+  "it": "Suono e voce",
+  "ja": "音声と声",
+  "pt": "Som e voz",
+  "zh": "声音和语音"
+ },
  "Soundboard": {
   "de": "Soundboard",
   "es": "Mesa de sonidos",
@@ -15289,6 +15489,16 @@
   "pt": "Texto, câmara, voz — offline",
   "zh": "文字、相机、语音 — 离线"
  },
+ "Text, links & messages": {
+  "de": "Text, Links & Nachrichten",
+  "es": "Texto, enlaces y mensajes",
+  "fr": "Texte, liens et messages",
+  "hi": "टेक्स्ट, लिंक और संदेश",
+  "it": "Testo, link e messaggi",
+  "ja": "テキスト・リンク・メッセージ",
+  "pt": "Texto, links e mensagens",
+  "zh": "文字、链接和消息"
+ },
  "That PDF has no pages.": {
   "de": "Dieses PDF hat keine Seiten.",
   "es": "Ese PDF no tiene páginas.",
@@ -15678,6 +15888,16 @@
   "ja": "名刺のような電話番号やメールがありません。読み取った文字はこちら。コピーするか、鮮明な写真でお試しください。",
   "pt": "Não há telefone nem e-mail dispostos como num cartão. Aqui está o que diz — copie ou tente uma foto mais nítida.",
   "zh": "没有像名片那样的电话或邮箱。下面是读到的文字——可复制，或换一张更清晰的名片照片。"
+ },
+ "These need more than a few steps, so Tenzy has a whole tool for each.": {
+  "de": "Diese brauchen mehr als ein paar Schritte, darum hat Tenzy für jede ein eigenes Tool.",
+  "es": "Necesitan más de unos pocos pasos, así que Tenzy tiene una herramienta completa para cada una.",
+  "fr": "Elles demandent plus que quelques étapes : Tenzy a un outil complet pour chacune.",
+  "hi": "इनमें कुछ कदमों से ज़्यादा लगता है, इसलिए Tenzy में हर एक के लिए पूरा टूल है।",
+  "it": "Richiedono più di qualche passaggio, quindi Tenzy ha uno strumento completo per ognuno.",
+  "ja": "数ステップでは済まないので、Tenzy にはそれぞれ専用のツールがあります。",
+  "pt": "Precisam de mais do que alguns passos, por isso o Tenzy tem uma ferramenta completa para cada uma.",
+  "zh": "这些需要不止几个步骤，所以 Tenzy 为每项都准备了完整工具。"
  },
  "They are removed from this phone. Anything you already saved or sent is not touched.": {
   "de": "Sie werden von diesem Handy entfernt. Was du bereits gespeichert oder gesendet hast, bleibt unberührt.",
@@ -16448,6 +16668,16 @@
   "ja": "回転",
   "pt": "Rodar",
   "zh": "旋转"
+ },
+ "Turn a meeting into notes and to-dos": {
+  "de": "Ein Meeting in Notizen und Aufgaben verwandeln",
+  "es": "Convertir una reunión en notas y tareas",
+  "fr": "Transformer une réunion en notes et tâches",
+  "hi": "मीटिंग को नोट्स और काम में बदलें",
+  "it": "Trasforma una riunione in note e cose da fare",
+  "ja": "会議をメモとToDoに",
+  "pt": "Transformar uma reunião em notas e tarefas",
+  "zh": "把会议变成笔记和待办"
  },
  "Turn a scanned PDF into one you can search and copy text from.": {
   "de": "Mach aus einem gescannten PDF eins, in dem du Text suchen und kopieren kannst.",
@@ -17478,6 +17708,16 @@
   "ja": "誰の発言？",
   "pt": "Quem disse isso?",
   "zh": "这是谁说的？"
+ },
+ "Who said what, the to-dos, and an email ready to send.": {
+  "de": "Wer was gesagt hat, die Aufgaben und eine fertige E-Mail.",
+  "es": "Quién dijo qué, las tareas y un correo listo para enviar.",
+  "fr": "Qui a dit quoi, les tâches et un e-mail prêt à envoyer.",
+  "hi": "किसने क्या कहा, करने वाले काम और भेजने को तैयार ईमेल।",
+  "it": "Chi ha detto cosa, le cose da fare e un'email pronta da inviare.",
+  "ja": "誰が何を言ったか、ToDo、送るだけのメール。",
+  "pt": "Quem disse o quê, as tarefas e um e-mail pronto a enviar.",
+  "zh": "谁说了什么、待办事项，以及一封可直接发送的邮件。"
  },
  "Will use": {
   "de": "Verwendet",

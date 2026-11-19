@@ -86,7 +86,7 @@ final class ChainRowTests: XCTestCase {
 
 final class ChainTemplateTests: XCTestCase {
     func testTwentyEightTemplatesAllValidAndUnique() {
-        XCTAssertEqual(ChainTemplates.all.count, 69)
+        XCTAssertEqual(ChainTemplates.all.count, 87)
         XCTAssertEqual(Set(ChainTemplates.all.map(\.id)).count, ChainTemplates.all.count)
     }
     func testShareRoundTripAndRejectsJunk() throws {
@@ -769,6 +769,22 @@ final class IntroTests: XCTestCase {
         XCTAssertEqual(photo.count + text.count + video.count + sound.count + pdf.count, ChainTemplates.all.count)
         XCTAssertEqual(BuilderIntro.starters(for: nil), ChainTemplates.all)
     }
+    @MainActor func testTemplatesAreSentencesInSectionsWithFullJobsFirst() {
+        let secs = BuilderIntro.sections()
+        XCTAssertEqual(secs.map(\.chains.count).reduce(0, +), ChainTemplates.all.count, "every starter sits in exactly one section")
+        for sec in secs {
+            let jobs = sec.chains.map { $0.steps.count > 1 || $0.finish != nil }
+            XCTAssertEqual(jobs, jobs.sorted { $0 && !$1 }, "\(sec.title): start-to-finish jobs come first")
+        }
+        XCTAssertGreaterThanOrEqual(ChainTemplates.all.filter { $0.steps.count >= 3 }.count, 8, "plenty of real end-to-end flows")
+        for t in ChainTemplates.all {
+            XCTAssertLessThanOrEqual(t.name.count, 42, t.id)
+            XCTAssertTrue(t.name.first?.isUppercase ?? false, t.id)
+            XCTAssertNil(t.problem(starting: t.steps.first?.block.takes ?? .image), t.id)
+        }
+        let ids = Set(TOOLS.map(\.id))
+        for j in BuilderIntro.bigJobs { XCTAssertTrue(ids.contains(j.id), "\(j.id) opens a real tool") }
+    }
     func testTheDemoStarterExistsAndTheIntroIsThreeIdeas() {
         XCTAssertNotNil(ChainTemplates.all.first { $0.id == BuilderIntro.demoID })
         XCTAssertEqual(BuilderIntro.pages.count, 3)
@@ -1207,7 +1223,7 @@ final class SmartDescribeTests: XCTestCase {
     func testToolsGetNamesPeopleCanRead() {
         XCTAssertEqual(ChainPlanner.keywordPlan("shrink video for whatsapp")?.name, "Shrink video for whatsapp", "a short request is its own name")
         let long = ChainPlanner.keywordPlan("I want to post a photo online stripping all the personal data")
-        XCTAssertEqual(long?.name, "Privacy share shield", "a long request is named for what the tool does")
+        XCTAssertEqual(long?.name, "Hide, strip and shrink a photo to share", "a long request is named for what the tool does")
         let c = Chain(id: "x", name: "My tool", steps: [ChainStep(block: .readText), ChainStep(block: .translate), ChainStep(block: .readAloud)])
         XCTAssertEqual(ChainText.autoName(c), "Read text, translate and read it aloud")
         XCTAssertEqual(ChainText.autoName(Chain(id: "x", name: "", steps: [ChainStep(block: .enhance), ChainStep(block: .watermark)])), "Enhance and add a watermark")
@@ -1301,7 +1317,7 @@ final class FunStepTests: XCTestCase {
         XCTAssertEqual(t.gif, true); XCTAssertNil(t.collage)
         XCTAssertEqual(Chain.imported(from: t.shareText)?.gif, true)
         XCTAssertNil(Chain.imported(from: chain([.cleanText]).shareText)?.gif)
-        XCTAssertEqual(ChainText.autoName(chain([.sticker])), "Photo to a sticker")
+        XCTAssertEqual(ChainText.autoName(chain([.sticker])), "Turn a photo into a sticker")
     }
 
     // The drawing itself, on a real phone.
