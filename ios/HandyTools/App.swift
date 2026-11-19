@@ -113,7 +113,7 @@ struct Tool: Identifiable {
     var pro: Bool { !Tool.freeIDs.contains(id) }
 }
 
-/// The full catalog: 30 tools across 3 pages of 10.
+/// The full catalog: every standalone tool, up to 10 per page.
 ///   Page 1 — Photo, video & sharing: shoot, edit, convert, shrink, redact, share.
 ///   Page 2 — Scan, read & organize: scan/extract documents, read & translate text, sort admin.
 ///   Page 3 — Tools, sensors & accessibility: flashlight, measure, GPS, audio, and see/hear helpers.
@@ -230,7 +230,7 @@ enum SearchSynonyms {
     }
 }
 
-/// Google-style ranked search across all 30 tools: best matches first, then ok ones. Query tokens are
+/// Google-style ranked search across every tool: best matches first, then ok ones. Query tokens are
 /// expanded through SearchSynonyms, so related words ("image"→photo, "movie"→video) still find the tool.
 @MainActor func searchTools(_ raw: String) -> [Tool] {
     let query = raw.lowercased().trimmingCharacters(in: .whitespaces)
@@ -603,14 +603,14 @@ struct PageTabs: View {
     }
 }
 
-/// A rounded search field that filters all 30 tools as you type.
+/// A rounded search field that filters every tool as you type.
 struct SearchField: View {
     @Binding var text: String
     var focused: FocusState<Bool>.Binding
     var body: some View {
         HStack(spacing: HandySpacing.s8) {
             Image(systemName: "magnifyingglass").foregroundStyle(HandyColor.textSecondary)
-            TextField(L("Search 30 tools…"), text: $text)
+            TextField(L("What do you need to do?"), text: $text)
                 .focused(focused)
                 .autocorrectionDisabled().textInputAutocapitalization(.never).submitLabel(.search)
                 .onSubmit { focused.wrappedValue = false }

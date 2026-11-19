@@ -69,7 +69,7 @@ private struct HeroPage: View {
             Image(ILLOS[idx]).resizable().renderingMode(.template).foregroundStyle(.white).scaledToFit().frame(width: 240, height: 240)
                 .id(idx).transition(.opacity)
             Spacer()
-            Text(L("30 tools your phone forgot.")).font(HandyFont.display).foregroundStyle(.white).multilineTextAlignment(.center)
+            Text(L("Every job your phone forgot.")).font(HandyFont.display).foregroundStyle(.white).multilineTextAlignment(.center)
             Text(L("Each one does the job properly. Nothing leaves your phone.")).font(HandyFont.body).foregroundStyle(.white.opacity(0.85)).multilineTextAlignment(.center)
             Spacer().frame(height: 140)
         }

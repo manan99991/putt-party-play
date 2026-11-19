@@ -325,7 +325,7 @@ struct AboutView: View {
                 Text(L("Tenzy")).font(.system(size: 30, weight: .bold))
                 Text("Version \(version)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
 
-                Text(L("30 small tools your phone should've had — flashlight, cleaner, scanner, PDF, AI and more. Everything runs on your phone; nothing is uploaded."))
+                Text(L("One app for every job your phone forgot — 60+ tools, 90 ready-made ones, and the tools you build yourself. Everything runs on your phone; nothing is uploaded."))
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                     .multilineTextAlignment(.center).padding(.horizontal, HandySpacing.s8)
 

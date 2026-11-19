@@ -176,3 +176,17 @@ Everything still runs on your phone. No account, nothing uploaded.
 
 Describe it as "a bold new look," never by the internal theme name. Re-capture every screenshot from the shipped
 build before any listing goes live (rulebook section 3) — the app now defaults to the dark Aurora look.
+
+---
+
+## Play listing, Nov 2026 relaunch (apply after the Android port of the iOS batches ships)
+
+Only push this once the Android build really has these features (rulebook §3). Until then the current
+Play copy stays.
+
+- Title (≤30): Tenzy: Get Anything Done
+- Short description (≤80): One app for every job your phone forgot. 60+ tools, or build your own.
+- Full description: the iOS description in `ios/fastlane/metadata/en-US/description.txt`, with these changes:
+  - drop "Shortcuts", "widget", "Face ID" (say "a locked vault"), "Apple Weather"/"Apple Maps" wording, and the
+    Apple subscription paragraph; use "Cancel any time in Google Play → Subscriptions."
+  - drop anything the Android build still lacks at push time (check each line against the build).

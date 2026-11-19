@@ -21,16 +21,18 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
 ## 2. Privacy & data declarations (must match `docs/privacy.html`)
 
 - No analytics, no crash SDK, no account. Files stay on device.
-- The only data collected is the advertising identifier used by AdMob to show/count ads; Pro disables
-  ads and the ad code. Pro is a single auto-renewing subscription, **yearly only — $19.99/yr with a
+- AdMob was removed (Nov 17 2026): no ads, no advertising identifier, no ATT prompt. Nothing is collected. Pro is a single auto-renewing subscription, **yearly only — $19.99/yr with a
   3-day free trial**. There is no monthly plan (the old $2.99/mo plan was removed; do not reintroduce
   it in copy or metadata).
 - The Contacts tool reads and writes contacts on-device only: find duplicates, merge, export a .vcf backup, and copy or move them between the user's own accounts (Gmail/iCloud/phone). Android already declares READ/WRITE_CONTACTS; iOS uses the same Contacts permission. A move always saves a backup first.
   Nothing from Contacts is uploaded or collected; declare accordingly and keep the usage string,
   reviewer notes and privacy policy aligned.
-- Apple App Privacy: declare "Identifiers → Device ID" used for Third-Party Advertising, not linked to
-  identity, not used for tracking beyond the ATT prompt.
-- Play Data safety: no data collected or shared except the ad identifier; declare accordingly.
+- Apple App Privacy: "Data Not Collected" (no ads, no analytics). Re-check the answers in App Store Connect
+  match this before the next submit — they were set when AdMob was still in.
+- Play Data safety: no data collected or shared; declare accordingly.
+- Network calls the policy must name: See & Read / "Read the page at a link" (the page you give), Price Watch
+  (the pages you add, via background refresh only), Daily Brief weather (Apple WeatherKit) and travel times
+  (Apple Maps), all only with the person's own setup.
 - Keep App Privacy / Data safety answers identical in substance to the privacy policy.
 
 ## 3. Honesty of the listing (both stores reject misrepresentation)
@@ -40,10 +42,15 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
 - Do not advertise tools that don't work on the target platform:
   - Android page-3 AI tiles fall back to a "needs Gemini Nano" card on most devices, and `signfill`
     is a Coming-Soon placeholder. These are **excluded** from the Play listing copy and screenshots
-    until they genuinely work. iOS ships all 30 as working tools.
-- "30 tools" is an iOS claim. The Android listing describes the real working subset without a count.
-- The listing must represent the **free/Pro split honestly**: eight tools are free (Flashlight, QR &
-  Wi-Fi, Magnifier, Measure, Cleaner, Translate, Live Captions, Vault) and the rest are Tenzy Pro.
+    until they genuinely work.
+- Counts in copy (Nov 2026): iOS "60+ tools" (TOOLS has 61) and "90 ready-made tools" (ChainTemplates.all,
+  asserted 90 by ChainRunnerTests). Never say "30 tools" anywhere again. Use "60+" not an exact number so an
+  added tool never makes the listing wrong; re-check both numbers before every listing push. The Android
+  listing states only what the Android build ships, without a count, until the Android port catches up.
+- Tagline (Nov 2026): "One app. Every job your phone forgot." Subtitle: "60+ tools. Or build your own."
+- The listing must represent the **free/Pro split honestly**: seven tools are free (`Tool.freeIDs`: Flashlight,
+  QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, Vault), plus 2 saved tools of your own with the free
+  builder steps; the rest are Tenzy Pro.
   Do not imply the whole app is free. The paywall screen must show price, the 3-day trial terms,
   auto-renew disclosure, and working Terms (EULA) + Privacy links (Guideline 3.1.2).
 

@@ -1,55 +1,40 @@
-Shrink a photo under any upload limit.
-Turn paper into a PDF.
-Read a sign or menu in any language, even offline.
+One app. Every job your phone forgot.
 
-Tenzy is 30 small tools in one app — the stuff your phone makes you dig for, download five separate apps for, or just can't do on its own.
+Tenzy is 60+ tools in one app, with 90 more ready-made tools, and a builder that makes new ones from a sentence. Say "shrink a photo under 1 MB, remove the location and email it", and Tenzy builds that tool. Everything runs on your phone. No account, nothing uploaded.
 
-I built it because my home screen had become a graveyard of single-use utilities: one app to shrink a photo under an email limit, another to scan a PDF, another to read a sign in a different language, another to dig a Wi-Fi password out of a screenshot. Tenzy is all of them in one place — and most of it runs right on your phone. No account, no sign-up, nothing uploaded.
+SET IT ONCE. IT JUST WORKS.
+Each setup has a Test run, so you know it works before you rely on it.
+• Medicine Reminders: a Taken button, refill counts, and a follow-up if a dose is missed, with one tap to text a caregiver
+• Contacts birthdays: a reminder the day before
+• Daily Brief: one morning note with your doses, bills due, birthdays and the weather
+• Price Watch: tell me when a price on a web page drops
+• Parking meter: a heads-up before it runs out, with how far away your car is
+• Bedtime nudge, contact backup reminders, and reminders for any tool you build
 
-PHOTO, VIDEO & FILES
-• Studio — enhance, cut out the background, make a passport photo, resize
-• Fit It — shrink a photo, PDF or video under an exact size limit (25 MB for email, whatever a portal demands)
-• Video — shrink, trim, convert, make a GIF
-• Format Fixer — HEIC and MOV to JPG and MP4, in batch
-• Pro Camera — manual ISO, shutter and RAW
-• Privacy Scrubber — strip GPS and metadata, redact faces and plates for good
-• Long Screenshot — stitch a scrolling chat into one tall image
-• Cleaner — find duplicates and big files and free up space
-• File Opener — open almost any file your phone won't
+BUILD YOUR OWN
+• Describe it in plain words, or pick what you have (a photo, video, PDF, sound, text) and add steps
+• 90 ready-made tools, like "Read a foreign letter out loud in English" or "Turn a whiteboard photo into an email"
+• Run them from Tenzy, the share sheet, a widget or Shortcuts
+• Tell me when: get an alert when the number in a tool's result crosses your line
 
-DOCUMENTS & EVERYDAY
-• Scan — scan documents, pull out the text, sign and fill PDFs
-• Data Grabber — turn a receipt into rows, contacts or calendar dates
-• Warranty & Receipts — file receipts and never miss a warranty
-• Sorted — snap a bill or letter and it lands in your calendar
-• Contacts — find duplicate contacts, merge without losing a number, back them up
-• QR & Wi-Fi — scan, make and share Wi-Fi codes
-• Identify — point the camera and know what something is
-• Price Check — the best deal per unit, budget and label decode
+YOUR CONTACTS, FINALLY ORGANIZED
+Search and filter (work, home, no phone, no email), groups, favorites and emergency contacts, edit many at once, export to Excel or contact cards, find and merge duplicates, and plan a call or visit with a "time to leave" alert.
 
-TOOLS & INSTRUMENTS
-• Flashlight+ — strobe, SOS, screen light, mirror
-• Measure — an AR tape for distance, height and area, plus a level, compass, decibel and light meter
-• See & Read — magnify fine print, read any text out loud, or boil it down
-• GPS Dashboard — speed, heading, altitude, a driving HUD
-• Audio Lab — instrument tuner, test tones, speaker test
-• Rest — white noise and a snore recorder
-• Color Vision — live color-blind correction and color naming
-• Vault — a Face ID locker for private photos and notes
+PAPERWORK, SORTED
+Scan to PDF, sign, fill forms, redact, merge or split pages, and pull text from any scan. Snap a bill and it is filed with a reminder before it is due. Keep receipts and get a nudge before a warranty ends. Export a year of paperwork in one zip.
 
-ON-DEVICE AI
-• Text Studio — fix, rewrite, reply to or summarize any text
-• Translate — text, camera and voice, offline
-• Voice to Notes — a transcript, a summary and your to-dos from any recording
-• Memory — ask your screenshots anything ("what was that Wi-Fi password?")
-• Message Shield — spot a scam text and see why it's flagged
+PHOTOS, VIDEO & SOUND
+Shrink anything under an exact size limit, convert HEIC and MOV, strip location, make stickers, collages and Reels, stitch long screenshots, and clean up your camera roll. Pro Camera shoots photos and video with scene settings and tips as you film. Change a voice (chipmunk, robot, giant…), make a ringtone, clean up a recording, and turn a meeting into notes and to-dos.
 
-On supported iPhones the AI tools use the model built into your device, so they work offline and nothing leaves the device.
+EVERYDAY HELPERS
+Flashlight with SOS and an emergency light, AR tape measure with a paint and flooring calculator, GPS dashboard, Translate, Message Shield for scam texts, Memory to search your screenshots, Color Vision, white noise, Price Check, a QR and Wi-Fi maker, and a Face ID vault.
 
-FREE TOOLS, WITH TENZY PRO FOR THE REST
-Seven everyday tools are free: Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate and the Face ID Vault. The photo, video and PDF tools, the on-device AI tools and Contacts are Tenzy Pro — start with a 3-day free trial, then $19.99/year. One person builds and maintains this app; Pro is what keeps it going.
+On supported iPhones the thinking and text tools use the model built into your phone, so nothing you type is sent anywhere. Available in English, German, Spanish, French, Hindi, Italian, Japanese, Portuguese and Chinese.
+
+FREE, WITH OPTIONAL TENZY PRO
+Seven everyday tools are free (Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate and the Face ID Vault), and you can build and keep two tools of your own. Tenzy Pro unlocks every tool, every builder step, unlimited saved tools and all themes. Start with a 3-day free trial, then $19.99/year.
 
 PRIVACY
-Your files stay on your device. There's no account, no ads, and no tracking — Tenzy collects no data and uses no advertising identifier. Everything a tool does happens on your phone. Full policy: https://manan99991.github.io/tenzy/privacy.html
+No account, no ads, no tracking. Your files stay on your device. Privacy Policy: https://manan99991.github.io/tenzy/privacy.html
 Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 Subscription: Tenzy Pro renews automatically each year unless cancelled at least 24 hours before the period ends. Manage or cancel in your Apple ID settings.

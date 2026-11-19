@@ -5929,6 +5929,16 @@
   "pt": "A cada poucas horas",
   "zh": "每隔几小时"
  },
+ "Every job your phone forgot.": {
+  "de": "Jede Aufgabe, die dein Telefon vergessen hat.",
+  "es": "Todo lo que tu teléfono olvidó hacer.",
+  "fr": "Tout ce que votre téléphone a oublié.",
+  "hi": "हर काम जो आपका फ़ोन भूल गया।",
+  "it": "Ogni lavoro che il tuo telefono ha dimenticato.",
+  "ja": "スマホが忘れていた、あらゆる用事を。",
+  "pt": "Tudo o que seu celular esqueceu de fazer.",
+  "zh": "手机忘了做的事，这里都能做。"
+ },
  "Every morning at": {
   "de": "Jeden Morgen um",
   "es": "Cada mañana a las",
@@ -12188,6 +12198,16 @@
   "ja": "税金・会計士・請求に使える .zip 1つ：全レシートの表、請求書や手紙の表、日付と店名で名付けたレシート写真。",
   "pt": "Um .zip para impostos, o contabilista ou uma reclamação: uma folha com todos os recibos, outra das contas e cartas, e cada foto de recibo com data e loja.",
   "zh": "一个用于报税、会计或理赔的 .zip：所有收据的表格、账单和信件的表格，以及按日期和商店命名的每张收据照片。"
+ },
+ "One app for every job your phone forgot — 60+ tools, 90 ready-made ones, and the tools you build yourself. Everything runs on your phone; nothing is uploaded.": {
+  "de": "Eine App für jede Aufgabe, die dein Telefon vergessen hat – über 60 Werkzeuge, 90 fertige und die, die du selbst baust. Alles läuft auf deinem Telefon; nichts wird hochgeladen.",
+  "es": "Una app para todo lo que tu teléfono olvidó: más de 60 herramientas, 90 ya listas y las que tú mismo creas. Todo funciona en tu teléfono; no se sube nada.",
+  "fr": "Une app pour tout ce que votre téléphone a oublié — plus de 60 outils, 90 prêts à l'emploi et ceux que vous créez. Tout tourne sur votre téléphone ; rien n'est envoyé.",
+  "hi": "हर उस काम के लिए एक ऐप जो आपका फ़ोन भूल गया — 60+ टूल, 90 तैयार टूल, और जो आप खुद बनाएँ। सब आपके फ़ोन पर चलता है; कुछ भी अपलोड नहीं होता।",
+  "it": "Un'app per ogni lavoro che il telefono ha dimenticato: oltre 60 strumenti, 90 già pronti e quelli che crei tu. Tutto funziona sul telefono; nulla viene caricato.",
+  "ja": "スマホが忘れていた用事をすべて1つのアプリで — 60以上のツール、90の完成済みツール、そして自分で作るツール。すべてiPhone上で動き、何もアップロードされません。",
+  "pt": "Um app para tudo o que seu celular esqueceu — mais de 60 ferramentas, 90 prontas e as que você cria. Tudo roda no seu telefone; nada é enviado.",
+  "zh": "一个应用搞定手机忘了做的事——60 多个工具、90 个现成工具，以及你自己搭建的工具。全部在手机上运行，不上传任何内容。"
  },
  "One face, clearly visible": {
   "de": "Ein Gesicht, klar sichtbar",
@@ -22408,6 +22428,16 @@
   "ja": "何をお持ちですか？",
   "pt": "O que tens?",
   "zh": "你有什么？"
+ },
+ "What do you need to do?": {
+  "de": "Was möchtest du erledigen?",
+  "es": "¿Qué necesitas hacer?",
+  "fr": "Que voulez-vous faire ?",
+  "hi": "आपको क्या करना है?",
+  "it": "Cosa devi fare?",
+  "ja": "何をしたいですか？",
+  "pt": "O que você precisa fazer?",
+  "zh": "你需要做什么？"
  },
  "What do you start with?": {
   "de": "Womit fängst du an?",

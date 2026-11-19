@@ -1,1 +1,1 @@
-compress,pdf,scanner,ocr,translate,heic,resize,wifi,flashlight,contacts,measure,metadata,scrubber,qr
+scanner,pdf,compress,reminder,medicine,contacts,birthday,price,alert,translate,qr,cleaner,ocr,video
