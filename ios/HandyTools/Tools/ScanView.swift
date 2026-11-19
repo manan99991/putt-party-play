@@ -588,7 +588,15 @@ struct DocCameraSheet: UIViewControllerRepresentable {
     final class Coord: NSObject, VNDocumentCameraViewControllerDelegate {
         let done: ([UIImage]) -> Void
         init(done: @escaping ([UIImage]) -> Void) { self.done = done }
-        func documentCameraViewController(_ c: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) { done((0..<scan.pageCount).map { scan.imageOfPage(at: $0) }) }
+        func documentCameraViewController(_ c: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            // Every scanned page comes back as just the document: fingers that held it are painted out.
+            let pages = (0..<scan.pageCount).map { scan.imageOfPage(at: $0) }
+            let done = self.done
+            Task.detached(priority: .userInitiated) {
+                let clean = pages.map { PageFlatten.withoutHands($0) }
+                await MainActor.run { done(clean) }
+            }
+        }
         func documentCameraViewControllerDidCancel(_ c: VNDocumentCameraViewController) { done([]) }
         func documentCameraViewController(_ c: VNDocumentCameraViewController, didFailWithError e: Error) { done([]) }
     }
@@ -597,7 +605,19 @@ struct DocCameraSheet: UIViewControllerRepresentable {
 /// Transparent PencilKit canvas over the page.
 private struct InkCanvas: UIViewRepresentable {
     let canvas: PKCanvasView
+    /// Called after every stroke (and on Clear), so Save can stay off until there's real ink.
+    var changed: ((PKDrawing) -> Void)? = nil
+    func makeCoordinator() -> Coord { Coord(changed: changed) }
+    final class Coord: NSObject, PKCanvasViewDelegate {
+        let changed: ((PKDrawing) -> Void)?
+        init(changed: ((PKDrawing) -> Void)?) { self.changed = changed }
+        func canvasViewDrawingDidChange(_ v: PKCanvasView) { changed?(v.drawing) }
+    }
     func makeUIView(context: Context) -> PKCanvasView {
+        canvas.delegate = context.coordinator
+        // The pad is white paper in every theme. PencilKit flips black ink to WHITE in dark mode, so on the
+        // white pad a signature was invisible and saved blank. Pin the canvas to light so ink stays black.
+        canvas.overrideUserInterfaceStyle = .light
         canvas.drawingPolicy = .anyInput
         canvas.backgroundColor = .clear
         canvas.isOpaque = false
@@ -619,6 +639,8 @@ struct SignaturePadSheet: View {
     let saved: (UIImage) -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var pad = PKCanvasView()
+    @State private var inked = false
+    @State private var tooSmall = false
     var body: some View {
         NavigationStack {
             VStack(spacing: HandySpacing.s16) {
@@ -626,17 +648,22 @@ struct SignaturePadSheet: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).fill(Color.white)
                     Rectangle().fill(HandyColor.border).frame(height: 1).padding(.horizontal, 24).offset(y: 50)
-                    InkCanvas(canvas: pad)
+                    InkCanvas(canvas: pad) { d in inked = !d.strokes.isEmpty; tooSmall = false }
                 }
                 .frame(height: 220)
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 HStack {
-                    Button { pad.drawing = PKDrawing() } label: { Label(L("Clear"), systemImage: "eraser") }.textButton()
+                    Button { pad.drawing = PKDrawing(); inked = false } label: { Label(L("Clear"), systemImage: "eraser") }.textButton()
                     Spacer()
+                    if inked { Label(L("Looks good"), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success) }
+                }
+                if tooSmall {
+                    Text(L("That's too small to read as a signature — sign a little bigger.")).font(HandyFont.caption).foregroundStyle(HandyColor.amber)
                 }
                 Button {
-                    if let img = DocEngine.saveSignature(pad.drawing) { saved(img); HandyHaptics.success(); dismiss() }
-                } label: { Text(L("Save signature")).frame(maxWidth: .infinity) }.primaryButton().padding(.top, HandySpacing.s8)
+                    if let img = DocEngine.saveSignature(pad.drawing) { saved(img); HandyHaptics.success(); dismiss() } else { tooSmall = true }
+                } label: { Text(L(inked ? "Save signature" : "Sign in the box first")).frame(maxWidth: .infinity) }
+                    .primaryButton().disabled(!inked).padding(.top, HandySpacing.s8)
                 Spacer()
             }
             .padding(HandySpacing.gutter)

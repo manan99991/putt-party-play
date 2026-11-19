@@ -470,17 +470,41 @@ enum DocEngine {
             // that move is copied across the first time it is read.
             let g = AppGroup.defaults
             if g.data(forKey: sigKey) == nil, let old = UserDefaults.standard.data(forKey: sigKey) { g.set(old, forKey: sigKey) }
-            return g.data(forKey: sigKey).flatMap(UIImage.init(data:))
+            guard let img = g.data(forKey: sigKey).flatMap(UIImage.init(data:)) else { return nil }
+            // A blank signature saved by the old dark-mode bug (white ink): drop it so the person is asked to sign again.
+            if inkCoverage(img) < 0.004 { clearSignature(); return nil }
+            return img
         }
     }
     /// Trim a PencilKit drawing to its ink and keep it as a transparent PNG.
     static func saveSignature(_ drawing: PKDrawing) -> UIImage? {
+        // A dot or a stray tap isn't a signature.
+        guard !drawing.strokes.isEmpty, drawing.bounds.width >= 30 || drawing.bounds.height >= 30 else { return nil }
         let b = drawing.bounds.insetBy(dx: -8, dy: -8)
-        guard !b.isEmpty else { return nil }
-        let img = drawing.image(from: b, scale: 3)
+        // Render in light mode: in dark mode PencilKit draws black ink as white, which saved an invisible signature.
+        var img = UIImage()
+        UITraitCollection(userInterfaceStyle: .light).performAsCurrent { img = drawing.image(from: b, scale: 3) }
+        guard inkCoverage(img) > 0.004 else { return nil }   // never keep a blank one
         AppGroup.defaults.set(img.pngData(), forKey: sigKey)
         return img
     }
+    /// Share of the picture that is dark, visible ink (not white, not see-through).
+    static func inkCoverage(_ img: UIImage) -> Double {
+        guard let cg = img.cgImage else { return 0 }
+        let w = min(cg.width, 300), h = max(1, Int(Double(cg.height) * Double(w) / Double(max(cg.width, 1))))
+        var buf = [UInt8](repeating: 0, count: w * h * 4)
+        guard let ctx = CGContext(data: &buf, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w * 4,
+                                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return 0 }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        var dark = 0
+        for i in stride(from: 0, to: buf.count, by: 4) where buf[i + 3] > 100 {
+            let a = Double(buf[i + 3]) / 255
+            let lum = (Double(buf[i]) + Double(buf[i + 1]) + Double(buf[i + 2])) / 3 / max(a, 0.01)
+            if lum < 140 { dark += 1 }
+        }
+        return Double(dark) / Double(w * h)
+    }
+
     static func clearSignature() { UserDefaults.standard.removeObject(forKey: sigKey); AppGroup.defaults.removeObject(forKey: sigKey) }
 }
 
