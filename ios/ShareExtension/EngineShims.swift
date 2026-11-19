@@ -45,3 +45,13 @@ enum ChainMedia {
     static func unavailable(_ b: Block) -> String? { appOnly.contains(b) ? "Open Tenzy to run this tool." : nil }
     static func apply(_ step: ChainStep, to input: ChainPayload, dryRun: Bool) async -> ChainExtras.Outcome? { nil }
 }
+
+
+// "What is this?" names written things in the app (Engines/Paper.swift reads boards, menus, receipts with the app's
+// readers). In the share sheet it answers as an object identifier, so this stand-in never names paper.
+enum Paper {
+    enum Kind: String { case schedule, calendar, receipt, menu, label, card, poster, bill, lists, page }
+    struct Read: Equatable { var kind: Kind; var name: String; var gist: String; var text: String }
+    static func classify(_ lines: [DocEngine.OCRLine], now: Date = Date()) -> Read? { nil }
+    static func encode(_ r: Read) -> String { r.name }
+}

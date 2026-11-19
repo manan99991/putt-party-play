@@ -121,6 +121,7 @@ targets:
       - HandyTools/Engines/PriceBrain.swift
       - HandyTools/Engines/Identifier.swift
       - HandyTools/Engines/SceneDescriber.swift
+      - HandyTools/Engines/PageFlatten.swift
       # The email / message composer, so a tool that ends with "Email it" can do that from the share sheet too.
       - HandyTools/Tools/BuilderSend.swift
     entitlements:
