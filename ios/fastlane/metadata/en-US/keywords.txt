@@ -1,1 +1,1 @@
-reminder,medicine,pill,bills,birthday,assistant,contacts,scanner,pdf,price,alert,cleaner,brief,life
+reminder,medicine,pill,bills,birthday,organizer,contacts,scanner,pdf,price,alert,cleaner,brief,life

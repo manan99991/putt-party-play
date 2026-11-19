@@ -184,7 +184,7 @@ build before any listing goes live (rulebook section 3) — the app now defaults
 Only push this once the Android build really has these features (rulebook §3). Until then the current
 Play copy stays.
 
-- Title (≤30): Tenzy: Get Anything Done
+- Title (≤30): Tenzy: Your Personal Assistant
 - Short description (≤80): One app for every job your phone forgot. 60+ tools, or build your own.
 - Full description: the iOS description in `ios/fastlane/metadata/en-US/description.txt`, with these changes:
   - drop "Shortcuts", "widget", "Face ID" (say "a locked vault"), "Apple Weather"/"Apple Maps" wording, and the
