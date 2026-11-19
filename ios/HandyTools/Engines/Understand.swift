@@ -100,7 +100,7 @@ enum Understand {
 
     static func isJunk(_ s: String) -> Bool {
         let t = s.trimmingCharacters(in: .whitespaces)
-        if t.count < 2 { return true }
+        if t.count < 2 { return dayNumber(t) == nil }      // a lone "7" is a calendar day, not noise
         let letters = t.unicodeScalars.filter { CharacterSet.alphanumerics.contains($0) }.count
         if Double(letters) / Double(t.unicodeScalars.count) < 0.4 { return true }
         let low = t.lowercased()
