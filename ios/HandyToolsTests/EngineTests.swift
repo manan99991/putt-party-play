@@ -2359,7 +2359,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(a.reference, "55-2910")
         XCTAssertEqual(a.emails, ["billing@citywater.gov"])
         XCTAssertEqual(a.links.first?.host(), "pay.citywater.gov")
-        XCTAssertEqual(a.phones.count, 1)
+        XCTAssertTrue(a.phones.contains { $0.filter(\.isNumber) == "5552013344" }, "\(a.phones)")
         XCTAssertNil(SortedLetters.reference(in: "Account Holder: Jane Smith"), "a word is not an account number")
 
         let cal = Calendar(identifier: .gregorian)
