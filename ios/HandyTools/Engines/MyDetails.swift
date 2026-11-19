@@ -32,7 +32,7 @@ struct MyDetails: Codable, Equatable {
         else if has(#"\bcountry\b"#) { pick = country }
         else if has(#"\b(address|street)\b"#) { pick = street }
         else if has(#"\b(full\s?name|your\s?name|name of applicant|applicant|^name$|^name\b)"#) { pick = full }
-        else if has(#"\b(date|today)\b"#) && !has(#"\b(expir|issue|start|end|from|to)\b"#) { pick = today.formatted(date: .numeric, time: .omitted) }
+        else if has(#"\b(date|today)\b"#) && !has(#"\b(expir\w*|issue\w*|valid\w*|start|end|from|to|until)\b"#) { pick = today.formatted(date: .numeric, time: .omitted) }
         else { pick = nil }
         return (pick?.isEmpty ?? true) ? nil : pick
     }
