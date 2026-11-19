@@ -2,6 +2,7 @@ import XCTest
 import UIKit
 import PDFKit
 import AVFoundation
+import ImageIO
 @testable import HandyTools
 
 /// What each photo tool actually hands the user, checked on real photos (runs in the QA lab; skipped elsewhere).
@@ -266,6 +267,52 @@ final class ToolOutputQualityTests: XCTestCase {
             else { lines.append("join\t\(String(format: "%.1f", a + b))\t\t\t\t\t\t| joined length wrong or failed") }
         }
         lines.insert(String(format: "SCORE audio-tools n=%.0f %.3f", n, good / max(1, n)), at: 0)
+        report(lines)
+    }
+
+    // MARK: whole flows on real photos (the same chains the Builder, Guide and Share sheet run)
+
+    func testPhotoFlowsDeliverWhatTheySay() async throws {
+        let photos = try privatePhotos()
+        var lines = ["PHOTO FLOWS\tflow\tphoto\t| result"]
+        var good = 0.0, n = 0.0
+        func chain(_ id: String) -> Chain? { ChainTemplates.all.first { $0.id == id } }
+        func data(_ p: ChainPayload) -> Data? {
+            switch p { case .file(let d, _): return d; case .image(let i): return i.jpegData(compressionQuality: 0.92); default: return nil }
+        }
+        for (name, img) in photos {
+            // Under 2 MB: really under, still a photo.
+            if let c = chain("photo-under-2mb") {
+                n += 1
+                let r = await ChainRunner.run(c, input: .image(img))
+                if case .success(let p) = r, let d = data(p), d.count <= 2_000_000, UIImage(data: d) != nil { good += 1; lines.append("under 2 MB\t\(name)\t| \(d.count / 1000) KB") }
+                else { lines.append("under 2 MB\t\(name)\t| FAILED") }
+            }
+            // Safe to share: no location or camera data left.
+            if let c = chain("safe-to-share") {
+                n += 1
+                let r = await ChainRunner.run(c, input: .image(img))
+                if case .success(let p) = r, let d = data(p), !Scrubber.metadata(in: d).hasGPS,
+                   let props = CGImageSourceCreateWithData(d as CFData, nil).flatMap({ CGImageSourceCopyPropertiesAtIndex($0, 0, nil) as? [String: Any] }),
+                   props[kCGImagePropertyGPSDictionary as String] == nil { good += 1; lines.append("safe to share\t\(name)\t| no location") }
+                else { lines.append("safe to share\t\(name)\t| FAILED: location data left or no file") }
+            }
+        }
+        // Hide faces: every face found before is gone after.
+        for (name, face) in try privatePhotos("face-") {
+            for (v, img) in [("as taken", face), ("farther away", Self.farther(face))] {
+                guard let c = chain("share-shield") else { continue }
+                n += 1
+                let before = Scrubber.faces(in: img).count
+                let r = await ChainRunner.run(c, input: .image(img))
+                if case .success(let p) = r, let d = data(p), let out = UIImage(data: d) {
+                    let after = Scrubber.faces(in: out).count
+                    if before > 0 && after == 0 && d.count <= 2_000_000 { good += 1 }
+                    lines.append("hide faces\t\(name) \(v)\t| \(before) face(s) before, \(after) after, \(d.count / 1000) KB")
+                } else { lines.append("hide faces\t\(name) \(v)\t| FAILED") }
+            }
+        }
+        lines.insert(String(format: "SCORE photo-flows n=%.0f %.3f", n, good / max(1, n)), at: 0)
         report(lines)
     }
 }
