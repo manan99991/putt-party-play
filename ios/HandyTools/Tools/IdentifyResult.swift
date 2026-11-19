@@ -6,12 +6,21 @@ import SwiftUI
 /// until you tap. When the picture is really a group of people, it says so instead of naming an object.
 struct IdentifyResult: View {
     let text: String
+    var photo: UIImage? = nil
     @Environment(\.openURL) private var openURL
 
     var body: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            if isScene { scene } else { answer }
-            CopyButton(text: text)
+        if let paper = Paper.decode(text) {
+            PaperCard(read: paper, photo: photo)
+        } else {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                if let photo {
+                    Image(uiImage: photo).resizable().scaledToFit().frame(maxHeight: 200).frame(maxWidth: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                }
+                if isScene { scene } else { answer }
+                CopyButton(text: text)
+            }
         }
     }
 

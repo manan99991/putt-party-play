@@ -1651,6 +1651,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var result: ChainPayload?
     /// The photo as it came in (with its hidden details), so the result can say what changed and what was removed.
     @State private var originalPhoto: Data?
+    /// The photo this run started from, so a result can show it beside the answer.
+    @State private var inputPhoto: UIImage?
     @State private var boardSource: UIImage?         // a whiteboard/list photo shows the board review and planner, not plain text
     @State private var passportSource: UIImage?      // a passport step shows the full passport screen, not a bare file
     @State private var watchLine: String?
@@ -2290,7 +2292,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             } else if chain.steps.last?.block == .actionItems {
                 RemindersResult(planText: t)
             } else if chain.steps.last?.block == .identify {
-                IdentifyResult(text: t)
+                IdentifyResult(text: t, photo: inputPhoto)
             } else if chain.steps.last?.block == .pullDetails {
                 PullDetailsResult(text: t)
             } else {
@@ -2381,6 +2383,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
         if case .file(let d, let e) = input, ChainPayload.isPhoto(e) { originalPhoto = d } else { originalPhoto = nil }
         passportSource = chain.steps.last?.block == .passportPhoto ? ToolHandoff.image(input) : nil
+        inputPhoto = ToolHandoff.image(input)
         boardSource = chain.steps.map(\.block) == [.readText, .actionItems] && chain.finish == nil ? ToolHandoff.image(input) : nil
         // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
         // say what's happening rather than showing a bare spinner on a long meeting recording.

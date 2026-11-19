@@ -23,6 +23,9 @@ enum Identifier {
         let text: String?          // writing read off the thing (a brand, a model number, a label)
         let category: Category
         let sceneNote: String?     // set when it's really people / a scene, so we don't force a wrong guess
+        /// Set when the photo is mostly writing — a schedule board, a receipt, a menu, a poster — named the way a
+        /// person would, so the answer isn't "Document". Leads the result when present.
+        var paper: Paper.Read? = nil
     }
 
     static func identify(_ image: UIImage) async -> Outcome {
@@ -99,7 +102,14 @@ enum Identifier {
 
         let topLabel = guesses.first?.label
         let category = categoryFor(topLabel, animal: animal != nil, barcode: barcode != nil)
-        return Outcome(subject: subject, guesses: guesses, barcode: barcode, symbology: symbology, text: onThing, category: category, sceneNote: sceneNote)
+        var out = Outcome(subject: subject, guesses: guesses, barcode: barcode, symbology: symbology, text: onThing, category: category, sceneNote: sceneNote)
+        // A photo that's mostly writing is a written thing first: read all of it and name what kind. A product
+        // with a barcode stays a product.
+        if barcode == nil, animal == nil {
+            let all = DocEngine.recognize(image.normalizedUp())
+            out.paper = Paper.classify(all)
+        }
+        return out
     }
 
     // MARK: - Category → the useful next step

@@ -44,6 +44,8 @@ struct VideoView: View {
     @State private var trimEnd: Double = 0
     @State private var startThumb: UIImage?
     @State private var endThumb: UIImage?
+    @State private var strip: [UIImage] = []
+    @State private var keptPreview: AVPlayer?
     // gif
     @State private var gifFrom: Double = 0
     @State private var gifLength: Double = 3
@@ -111,13 +113,13 @@ struct VideoView: View {
             if let result { resultCard(result) }
         }
         .onChange(of: pickedItem) { _, item in loadVideo(item) }
-        .onAppear { if Launch.sample, source == nil { Task { if let url = await SampleAssets.movie() { let d = await VideoEngine.duration(url); let t = await VideoEngine.thumbnail(url, at: 0.5); await MainActor.run { source = url; sourceBytes = SizeTarget.fileSize(url) ?? 0; duration = d; thumb = t; trimStart = 0; trimEnd = d; gifLength = min(3, max(0.5, d)); targetBytes = 2_000_000; refreshTrimThumbs() } } } } }
+        .onAppear { if Launch.sample, source == nil { Task { if let url = await SampleAssets.movie() { let d = await VideoEngine.duration(url); let t = await VideoEngine.thumbnail(url, at: 0.5); await MainActor.run { source = url; sourceBytes = SizeTarget.fileSize(url) ?? 0; duration = d; thumb = t; trimStart = 0; trimEnd = d; gifLength = min(3, max(0.5, d)); targetBytes = 2_000_000; refreshTrimThumbs(); refreshStrip() } } } } }
         .onChange(of: gifPhotoItems) { _, items in loadGIFPhotos(items) }
-        .onChange(of: trimStart) { _, v in refreshTrimThumbs() ; if trimEnd < v + 0.5 { trimEnd = min(duration, v + 0.5) } }
+        .onChange(of: trimStart) { _, v in refreshTrimThumbs(); keptPreview?.pause(); if trimEnd < v + 0.5 { trimEnd = min(duration, v + 0.5) } }
         .onChange(of: trimEnd) { _, v in refreshTrimThumbs(); if trimStart > v - 0.5 { trimStart = max(0, v - 0.5) } }
         .onChange(of: job.stamp) { _, _ in syncJob() }
         .onAppear { syncJob() }
-        .onDisappear { player?.pause() }
+        .onDisappear { player?.pause(); keptPreview?.pause() }
     }
 
     // MARK: send on…
@@ -215,9 +217,15 @@ struct VideoView: View {
                 trimFrame(startThumb, label: "Start \(Self.clock(trimStart))")
                 trimFrame(endThumb, label: "End \(Self.clock(trimEnd))")
             }
-            HStack { Text(L("Start")).font(HandyFont.caption).frame(width: 40, alignment: .leading); Slider(value: $trimStart, in: 0...max(0.5, duration)).tint(HandyColor.accent) }
-            HStack { Text(L("End")).font(HandyFont.caption).frame(width: 40, alignment: .leading); Slider(value: $trimEnd, in: 0...max(0.5, duration)).tint(HandyColor.accent) }
-            Text("Keeps \(Self.clock(max(0, trimEnd - trimStart))). Original quality — no re-encode when the clip allows it.").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            TrimStrip(frames: strip, duration: max(0.5, duration), start: $trimStart, end: $trimEnd)
+            if let keptPreview {
+                VideoPlayer(player: keptPreview).frame(height: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+            }
+            Button { playKept() } label: {
+                Label(L(keptPreview == nil ? "Play the part you keep" : "Play it again"), systemImage: "play.fill").frame(maxWidth: .infinity)
+            }.secondaryButton()
+            Text(L("Drag the yellow ends to choose what stays. Original quality — no re-encode when the clip allows it.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
@@ -349,7 +357,7 @@ struct VideoView: View {
                 source = movie.url; sourceBytes = SizeTarget.fileSize(movie.url) ?? 0; duration = d; thumb = t
                 trimStart = 0; trimEnd = d; gifFrom = 0; gifLength = min(3, max(0.5, d))
                 if targetBytes >= sourceBytes { targetBytes = videoPresets.first(where: { $0.bytes < sourceBytes })?.bytes ?? max(1_000_000, sourceBytes / 2) }
-                refreshTrimThumbs()
+                refreshTrimThumbs(); refreshStrip(); keptPreview?.pause(); keptPreview = nil
             }
         }
     }
@@ -364,7 +372,7 @@ struct VideoView: View {
                 source = r.url; sourceBytes = r.bytes; duration = d; thumb = t
                 trimStart = 0; trimEnd = d; gifFrom = 0; gifLength = min(3, max(0.5, d))
                 if targetBytes >= sourceBytes { targetBytes = max(1_000_000, sourceBytes / 2) }
-                refreshTrimThumbs(); HandyHaptics.light()
+                refreshTrimThumbs(); refreshStrip(); keptPreview?.pause(); keptPreview = nil; HandyHaptics.light()
             }
         }
     }
@@ -376,6 +384,22 @@ struct VideoView: View {
             for it in items { if let d = try? await it.loadTransferable(type: Data.self) { out.append(d) } }
             await MainActor.run { gifPhotos = out; result = nil }
         }
+    }
+
+    /// Plays only the kept range, so you hear and see exactly where the cut lands before you export.
+    private func playKept() {
+        guard let source else { return }
+        keptPreview?.pause()
+        let item = AVPlayerItem(url: source)
+        item.forwardPlaybackEndTime = CMTime(seconds: trimEnd, preferredTimescale: 600)
+        let p = AVPlayer(playerItem: item)
+        p.seek(to: CMTime(seconds: trimStart, preferredTimescale: 600), toleranceBefore: .zero, toleranceAfter: .zero) { _ in p.play() }
+        keptPreview = p
+    }
+
+    private func refreshStrip() {
+        guard let source else { strip = []; return }
+        Task { let f = await VideoEngine.filmstrip(source); await MainActor.run { strip = f } }
     }
 
     @State private var thumbTask: Task<Void, Never>?

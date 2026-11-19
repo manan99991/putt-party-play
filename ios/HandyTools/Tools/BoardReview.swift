@@ -199,7 +199,7 @@ struct BoardReview: View {
     }
 }
 
-private struct ZoomPhoto: View {
+struct ZoomPhoto: View {
     let image: UIImage
     @Environment(\.dismiss) private var dismiss
     var body: some View {

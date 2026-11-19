@@ -630,6 +630,9 @@ enum ChainRunner {
 
         case (.identify, .image(let img)):
             let o = await Identifier.identify(img)
+            // Mostly writing: say what kind of written thing it is and carry everything read, so the card can open
+            // the right reader in place — not "Document 71%" and a web search.
+            if let p = o.paper { return .success(.text(Paper.encode(p))) }
             // A busy people-scene with nothing to name: say so honestly instead of guessing an object.
             if let note = o.sceneNote, o.guesses.isEmpty, o.barcode == nil {
                 return .success(.text(note))

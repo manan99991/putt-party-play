@@ -342,4 +342,41 @@ final class ToolOutputQualityTests: XCTestCase {
         lines.insert(String(format: "SCORE profile-picture n=%.0f %.3f", n, good / max(1, n)), at: 0)
         report(lines)
     }
+
+    // MARK: what is this? — written things
+
+    /// Every private photo through "What is this?": a written thing must be named as the kind it is (a schedule
+    /// board, a receipt, a menu, a poster…), and a schedule must come back with its people by day. A face is not paper.
+    func testIdentifyNamesWrittenThingsByKind() async throws {
+        let photos = try privatePhotos()
+        func expected(_ n: String) -> [Paper.Kind?]? {
+            if n.hasPrefix("face-") { return [nil] }
+            if n.hasPrefix("receipt-") { return [.receipt] }
+            if n.hasPrefix("menu-") { return [.menu] }
+            if n.hasPrefix("poster-") { return [.poster, .page] }
+            if n.contains("people-week") || n.contains("schedule") { return [.schedule] }
+            if n.contains("calendar") { return [.calendar] }
+            if n.contains("todo") { return [.lists] }
+            return nil
+        }
+        var lines = ["IDENTIFY\tphoto\tgot\tgist\t| ok"]
+        var good = 0.0, n = 0.0
+        for (name, img) in photos {
+            guard let want = expected(name) else { continue }
+            n += 1
+            let o = await Identifier.identify(img)
+            let got = o.paper?.kind
+            var ok = want.contains(got)
+            if got == .schedule, name.contains("schedule") {
+                // The whiteboard rota has 20 names down the side: most of them must come back.
+                let people = Set(Understand.parse(DocEngine.recognize(img.normalizedUp()), now: Date()).people.map(\.person)).count
+                if people < 12 { ok = false }
+                lines.append("\(name)\tpeople read: \(people)")
+            }
+            if ok { good += 1 }
+            lines.append("\(name)\t\(got?.rawValue ?? "not paper (\(o.guesses.first?.label ?? "-"))")\t\(o.paper?.gist ?? "")\t| \(ok ? "ok" : "WRONG, wanted \(want.map { $0?.rawValue ?? "not paper" })")")
+        }
+        lines.insert(String(format: "SCORE identify-written n=%.0f %.3f", n, good / max(1, n)), at: 0)
+        report(lines)
+    }
 }

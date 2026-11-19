@@ -27,12 +27,14 @@ struct IdentifyView: View {
             }
             if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text(L("Looking…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
-            if let image {
+            if let image, outcome?.paper == nil {
                 Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 240)
                     .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
             }
 
-            if let outcome {
+            if let outcome, let paper = outcome.paper {
+                PaperCard(read: paper, photo: image)
+            } else if let outcome {
                 if let code = outcome.barcode {
                     VStack(alignment: .leading, spacing: 4) {
                         Label(outcome.symbology ?? "Barcode", systemImage: "barcode.viewfinder").font(HandyFont.bodyStrong)
