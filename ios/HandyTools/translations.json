@@ -149,6 +149,16 @@
   "pt": "25 MB cabem no Gmail e na maioria dos e-mails · 16 MB no WhatsApp",
   "zh": "25MB适合Gmail和大多数邮件 · 16MB适合WhatsApp"
  },
+ "3 days before": {
+  "de": "3 Tage vorher",
+  "es": "3 días antes",
+  "fr": "3 jours avant",
+  "hi": "3 दिन पहले",
+  "it": "3 giorni prima",
+  "ja": "3日前",
+  "pt": "3 dias antes",
+  "zh": "提前 3 天"
+ },
  "3 ways to save a clip": {
   "de": "3 Wege, einen Clip zu speichern",
   "es": "3 formas de guardar un clip",
@@ -438,6 +448,16 @@
   "ja": "動画",
   "pt": "Um vídeo",
   "zh": "一个视频"
+ },
+ "A week before": {
+  "de": "Eine Woche vorher",
+  "es": "Una semana antes",
+  "fr": "Une semaine avant",
+  "hi": "एक हफ़्ता पहले",
+  "it": "Una settimana prima",
+  "ja": "1週間前",
+  "pt": "Uma semana antes",
+  "zh": "提前一周"
  },
  "A well-known site's own address": {
   "de": "Die echte Adresse einer bekannten Seite",
@@ -2179,6 +2199,16 @@
   "pt": "Verificar",
   "zh": "查看"
  },
+ "Check it, fix anything": {
+  "de": "Prüfen, korrigieren",
+  "es": "Revísalo y corrige",
+  "fr": "Vérifiez, corrigez",
+  "hi": "जाँचें, ठीक करें",
+  "it": "Controlla e correggi",
+  "ja": "確認して修正",
+  "pt": "Confira e corrija",
+  "zh": "检查并修改"
+ },
  "Check the fridge and write the list first": {
   "de": "Erst den Kühlschrank checken und die Liste schreiben",
   "es": "Revisa la nevera y escribe la lista primero",
@@ -3879,6 +3909,16 @@
   "pt": "Datas",
   "zh": "日期"
  },
+ "Day before": {
+  "de": "Am Vortag",
+  "es": "El día antes",
+  "fr": "La veille",
+  "hi": "एक दिन पहले",
+  "it": "Il giorno prima",
+  "ja": "前日",
+  "pt": "Na véspera",
+  "zh": "前一天"
+ },
  "Deep": {
   "de": "Tief",
   "es": "Grave",
@@ -5529,6 +5569,16 @@
   "pt": "Combina com você",
   "zh": "适合你"
  },
+ "Fix anything it got wrong, pick when to be reminded, and keep it in My letters — or add it to your calendar.": {
+  "de": "Korrigiere Fehler, wähle die Erinnerung und behalte es in „Meine Briefe“ – oder trag es in den Kalender ein.",
+  "es": "Corrige lo que esté mal, elige cuándo recordarlo y guárdalo en «Mis cartas», o añádelo al calendario.",
+  "fr": "Corrigez les erreurs, choisissez quand être prévenu et gardez-le dans « Mes courriers » — ou ajoutez-le au calendrier.",
+  "hi": "जो गलत पढ़ा गया हो उसे ठीक करें, याद दिलाने का समय चुनें, और “मेरे पत्र” में रखें — या कैलेंडर में जोड़ें।",
+  "it": "Correggi ciò che è sbagliato, scegli quando ricevere il promemoria e tienilo in «Le mie lettere», o aggiungilo al calendario.",
+  "ja": "間違いを直し、リマインドの時期を選んで「マイレター」に保存。カレンダーにも追加できます。",
+  "pt": "Corrija o que estiver errado, escolha quando ser lembrado e guarde em «As minhas cartas» — ou adicione ao calendário.",
+  "zh": "改正读错的地方，选择提醒时间，保存到“我的信件”，或添加到日历。"
+ },
  "Fix spelling & grammar": {
   "de": "Rechtschreibung & Grammatik korrigieren",
   "es": "Corregir ortografía y gramática",
@@ -5908,6 +5958,16 @@
   "ja": "写真から",
   "pt": "A partir de Fotos",
   "zh": "从照片"
+ },
+ "From the letter": {
+  "de": "Aus dem Brief",
+  "es": "De la carta",
+  "fr": "Du courrier",
+  "hi": "पत्र से",
+  "it": "Dalla lettera",
+  "ja": "レターから",
+  "pt": "Da carta",
+  "zh": "来自信件"
  },
  "Frozen · pinch to zoom in": {
   "de": "Eingefroren · zum Zoomen spreizen",
@@ -7099,6 +7159,16 @@
   "pt": "Mantê-lo",
   "zh": "保留"
  },
+ "Keep it in My letters": {
+  "de": "In „Meine Briefe“ behalten",
+  "es": "Guardar en «Mis cartas»",
+  "fr": "Garder dans « Mes courriers »",
+  "hi": "“मेरे पत्र” में रखें",
+  "it": "Tieni in «Le mie lettere»",
+  "ja": "マイレターに保存",
+  "pt": "Guardar em «As minhas cartas»",
+  "zh": "保存到“我的信件”"
+ },
  "Keep it in your sticker drawer": {
   "de": "Im Sticker-Fach behalten",
   "es": "Guárdalo en tus stickers",
@@ -7249,6 +7319,26 @@
   "pt": "Ken Burns",
   "zh": "Ken Burns"
  },
+ "Kept in My letters.": {
+  "de": "In „Meine Briefe“ gespeichert.",
+  "es": "Guardado en «Mis cartas».",
+  "fr": "Gardé dans « Mes courriers ».",
+  "hi": "“मेरे पत्र” में रख लिया।",
+  "it": "Salvato in «Le mie lettere».",
+  "ja": "マイレターに保存しました。",
+  "pt": "Guardado em «As minhas cartas».",
+  "zh": "已保存到“我的信件”。"
+ },
+ "Kept on this phone only. Tick one off when it's paid or done — its reminder is cancelled.": {
+  "de": "Nur auf diesem Handy gespeichert. Hak ab, wenn bezahlt oder erledigt – die Erinnerung wird gelöscht.",
+  "es": "Solo se guarda en este teléfono. Márcala cuando esté pagada o hecha: su recordatorio se cancela.",
+  "fr": "Gardé sur ce téléphone uniquement. Cochez-le une fois payé ou fait — son rappel est annulé.",
+  "hi": "सिर्फ़ इसी फ़ोन पर रखा जाता है। भुगतान या काम होने पर टिक करें — रिमाइंडर रद्द हो जाएगा।",
+  "it": "Salvato solo su questo telefono. Spunta quando è pagato o fatto: il promemoria viene annullato.",
+  "ja": "この端末にのみ保存。支払い・対応が済んだらチェックするとリマインドは取り消されます。",
+  "pt": "Guardado só neste telemóvel. Marque quando estiver pago ou feito — o lembrete é cancelado.",
+  "zh": "仅保存在本机。付款或处理完后打勾，提醒会取消。"
+ },
  "Kept on this phone with the tool. It is left out when you copy the tool to share.": {
   "de": "Bleibt mit dem Tool auf diesem Handy. Beim Kopieren des Tools zum Teilen wird es weggelassen.",
   "es": "Se guarda en este teléfono con la herramienta. Se omite cuando copias la herramienta para compartir.",
@@ -7258,6 +7348,16 @@
   "ja": "ツールとともにこの端末に保存されます。共有用にツールをコピーするときは含まれません。",
   "pt": "Fica neste telemóvel com a ferramenta. É deixado de fora quando copias a ferramenta para partilhar.",
   "zh": "与工具一起保存在本机上。复制工具以分享时会将其排除。"
+ },
+ "Kept, with your reminder set.": {
+  "de": "Gespeichert, Erinnerung gestellt.",
+  "es": "Guardado, con tu recordatorio.",
+  "fr": "Gardé, avec votre rappel.",
+  "hi": "रख लिया, रिमाइंडर सेट है।",
+  "it": "Salvato, con il promemoria impostato.",
+  "ja": "保存し、リマインドを設定しました。",
+  "pt": "Guardado, com o lembrete definido.",
+  "zh": "已保存，并设置了提醒。"
  },
  "Key details": {
   "de": "Wichtige Details",
@@ -8169,6 +8269,26 @@
   "pt": "Manual: ISO baixo + obturador lento para fotos noturnas limpas com tripé; obturador rápido para congelar o movimento. As zebras mostram o que está a estourar.",
   "zh": "手动：低 ISO + 慢快门，用三脚架拍出干净的夜景；高速快门凝固动作。斑马纹显示过曝区域。"
  },
+ "Mark as done": {
+  "de": "Als erledigt markieren",
+  "es": "Marcar como hecho",
+  "fr": "Marquer comme fait",
+  "hi": "पूरा चिह्नित करें",
+  "it": "Segna come fatto",
+  "ja": "完了にする",
+  "pt": "Marcar como feito",
+  "zh": "标记为完成"
+ },
+ "Mark as not done": {
+  "de": "Als offen markieren",
+  "es": "Marcar como pendiente",
+  "fr": "Marquer comme non fait",
+  "hi": "अधूरा चिह्नित करें",
+  "it": "Segna come da fare",
+  "ja": "未完了にする",
+  "pt": "Marcar como por fazer",
+  "zh": "标记为未完成"
+ },
  "Measure": {
   "de": "Messen",
   "es": "Medir",
@@ -8749,6 +8869,16 @@
   "pt": "Meus dias",
   "zh": "我的日子"
  },
+ "My letters": {
+  "de": "Meine Briefe",
+  "es": "Mis cartas",
+  "fr": "Mes courriers",
+  "hi": "मेरे पत्र",
+  "it": "Le mie lettere",
+  "ja": "マイレター",
+  "pt": "As minhas cartas",
+  "zh": "我的信件"
+ },
  "My plan": {
   "de": "Mein Plan",
   "es": "Mi plan",
@@ -9259,6 +9389,16 @@
   "pt": "Sem tabelas legíveis (o ficheiro pode estar encriptado ou não ser uma base de dados).",
   "zh": "没有可读的表（文件可能已加密或不是数据库）。"
  },
+ "No reminder": {
+  "de": "Keine Erinnerung",
+  "es": "Sin recordatorio",
+  "fr": "Pas de rappel",
+  "hi": "कोई रिमाइंडर नहीं",
+  "it": "Nessun promemoria",
+  "ja": "リマインドなし",
+  "pt": "Sem lembrete",
+  "zh": "不提醒"
+ },
  "No rows found.": {
   "de": "Keine Zeilen gefunden.",
   "es": "No se encontraron filas.",
@@ -9699,6 +9839,16 @@
   "pt": "Em",
   "zh": "日期"
  },
+ "On the day": {
+  "de": "Am Tag selbst",
+  "es": "El mismo día",
+  "fr": "Le jour même",
+  "hi": "उसी दिन",
+  "it": "Il giorno stesso",
+  "ja": "当日",
+  "pt": "No próprio dia",
+  "zh": "当天"
+ },
  "On this label": {
   "de": "Auf diesem Etikett",
   "es": "En esta etiqueta",
@@ -9819,6 +9969,16 @@
   "pt": "Uma única vez, no teu telemóvel. Podes pesquisar o que já está pronto — da próxima vez é instantâneo.",
   "zh": "一次性，在你的手机上。你可以搜索已就绪的内容——下次即是即时的。"
  },
+ "Only open a payment link if you trust the sender — when in doubt, type the company's address yourself.": {
+  "de": "Öffne einen Zahlungslink nur, wenn du dem Absender vertraust – im Zweifel tippe die Adresse der Firma selbst ein.",
+  "es": "Abre un enlace de pago solo si confías en el remitente; si dudas, escribe tú la dirección de la empresa.",
+  "fr": "N'ouvrez un lien de paiement que si vous faites confiance à l'expéditeur — en cas de doute, tapez vous-même l'adresse de l'entreprise.",
+  "hi": "पेमेंट लिंक तभी खोलें जब भेजने वाले पर भरोसा हो — शक हो तो कंपनी का पता ख़ुद टाइप करें।",
+  "it": "Apri un link di pagamento solo se ti fidi del mittente; nel dubbio, digita tu l'indirizzo dell'azienda.",
+  "ja": "支払いリンクは送り主を信頼できる場合だけ開いてください。迷ったら会社のアドレスを自分で入力しましょう。",
+  "pt": "Só abra um link de pagamento se confiar no remetente — na dúvida, escreva o endereço da empresa.",
+  "zh": "只有信任发件人时才打开付款链接；不确定时请自己输入公司网址。"
+ },
  "Only open it if you trust where it goes. Scammers hide fake sites in QR codes.": {
   "de": "Öffne ihn nur, wenn du dem Ziel vertraust. Betrüger verstecken gefälschte Seiten in QR-Codes.",
   "es": "Ábrelo solo si confías en adónde lleva. Los estafadores esconden sitios falsos en los códigos QR.",
@@ -9908,6 +10068,16 @@
   "ja": "PDFを開く（結合するなら複数）",
   "pt": "Abrir um PDF (ou vários, para juntar)",
   "zh": "打开一个 PDF（或多个以合并）"
+ },
+ "Open again": {
+  "de": "Wieder öffnen",
+  "es": "Abrir de nuevo",
+  "fr": "Rouvrir",
+  "hi": "फिर खोलें",
+  "it": "Riapri",
+  "ja": "もう一度開く",
+  "pt": "Abrir de novo",
+  "zh": "再次打开"
  },
  "Open almost any file": {
   "de": "Fast jede Datei öffnen",
@@ -12019,6 +12189,16 @@
   "pt": "Reposição",
   "zh": "补药"
  },
+ "Remind me": {
+  "de": "Erinnere mich",
+  "es": "Recuérdame",
+  "fr": "Me rappeler",
+  "hi": "याद दिलाएँ",
+  "it": "Ricordamelo",
+  "ja": "リマインド",
+  "pt": "Lembrar-me",
+  "zh": "提醒我"
+ },
  "Remind me later (refill, check-in)": {
   "de": "Später erinnern (Nachfüllen, Kontrolle)",
   "es": "Recordármelo más tarde (reponer, revisión)",
@@ -12048,6 +12228,16 @@
   "ja": "薬の時間を知らせて",
   "pt": "Lembra-me de tomar os medicamentos",
   "zh": "提醒我吃药"
+ },
+ "Reminder on": {
+  "de": "Erinnerung an",
+  "es": "Recordatorio activo",
+  "fr": "Rappel activé",
+  "hi": "रिमाइंडर चालू",
+  "it": "Promemoria attivo",
+  "ja": "リマインドあり",
+  "pt": "Lembrete ativo",
+  "zh": "已设提醒"
  },
  "Reminder: ": {
   "de": "Erinnerung: ",
@@ -13108,6 +13298,16 @@
   "ja": "もう一方の端末でスキャン、または開く",
   "pt": "Digitaliza no outro dispositivo, ou abre",
   "zh": "在另一台设备上扫描，或打开"
+ },
+ "Scan pages": {
+  "de": "Seiten scannen",
+  "es": "Escanear páginas",
+  "fr": "Scanner des pages",
+  "hi": "पेज स्कैन करें",
+  "it": "Scansiona pagine",
+  "ja": "ページをスキャン",
+  "pt": "Digitalizar páginas",
+  "zh": "扫描页面"
  },
  "Scan with the camera": {
   "de": "Mit der Kamera scannen",
@@ -15759,6 +15959,16 @@
   "pt": "Esse arquivo não tem áudio que o Tenzy consiga ler.",
   "zh": "该文件没有Tenzy可读取的音频。"
  },
+ "That moment has already passed, so pick a later reminder.": {
+  "de": "Dieser Zeitpunkt ist schon vorbei – wähle eine spätere Erinnerung.",
+  "es": "Ese momento ya pasó; elige un recordatorio posterior.",
+  "fr": "Ce moment est déjà passé : choisissez un rappel plus tard.",
+  "hi": "वह समय निकल चुका है, बाद का रिमाइंडर चुनें।",
+  "it": "Quel momento è già passato: scegli un promemoria più tardi.",
+  "ja": "その時刻は過ぎています。後のリマインドを選んでください。",
+  "pt": "Esse momento já passou; escolha um lembrete mais tarde.",
+  "zh": "那个时间已经过了，请选一个更晚的提醒。"
+ },
  "That one needs a photo — tap Choose photo above.": {
   "de": "Das braucht ein Foto — tippe oben auf Foto wählen.",
   "es": "Ese necesita una foto — toca Elegir foto arriba.",
@@ -16098,6 +16308,16 @@
   "ja": "次に",
   "pt": "Depois",
   "zh": "然后"
+ },
+ "There's a date to remember": {
+  "de": "Es gibt ein Datum",
+  "es": "Hay una fecha que recordar",
+  "fr": "Il y a une date à retenir",
+  "hi": "याद रखने की तारीख़ है",
+  "it": "C'è una data da ricordare",
+  "ja": "覚えておく日付がある",
+  "pt": "Há uma data a lembrar",
+  "zh": "有需要记住的日期"
  },
  "There's no phone number or email laid out like a card. Here's what it says — copy it, or try a clearer photo of the card.": {
   "de": "Keine Telefonnummer oder E-Mail wie auf einer Karte. Hier steht, was drauf ist – kopieren oder ein klareres Foto versuchen.",
@@ -17719,6 +17939,16 @@
   "pt": "O que é isto? Aponta e sabe",
   "zh": "这是什么？对准即知"
  },
+ "What it is": {
+  "de": "Was es ist",
+  "es": "Qué es",
+  "fr": "Ce que c'est",
+  "hi": "यह क्या है",
+  "it": "Cos'è",
+  "ja": "内容",
+  "pt": "O que é",
+  "zh": "这是什么"
+ },
  "What should I order?": {
   "de": "Was soll ich bestellen?",
   "es": "¿Qué pido?",
@@ -18168,6 +18398,16 @@
   "ja": "ワンタップで記録しました（音声メモなし）。",
   "pt": "Você registrou o dia com um toque — sem nota de voz.",
   "zh": "你用一键记录了这一天——没有语音。"
+ },
+ "You'll get:": {
+  "de": "Du bekommst:",
+  "es": "Recibirás:",
+  "fr": "Vous recevrez :",
+  "hi": "आपको मिलेगा:",
+  "it": "Riceverai:",
+  "ja": "届く通知:",
+  "pt": "Vai receber:",
+  "zh": "你会收到："
  },
  "You're Pro. Thank you.": {
   "de": "Du bist Pro. Danke.",
@@ -18868,6 +19108,16 @@
   "ja": "枚の古いスクショ",
   "pt": "capturas mais antigas",
   "zh": "张旧截图"
+ },
+ "overdue": {
+  "de": "überfällig",
+  "es": "vencida",
+  "fr": "en retard",
+  "hi": "अवधि बीती",
+  "it": "scaduta",
+  "ja": "期限切れ",
+  "pt": "em atraso",
+  "zh": "已逾期"
  },
  "past your limit, so you'd get this today.": {
   "de": "über deinem Limit – du bekämst das heute.",

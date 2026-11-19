@@ -2353,6 +2353,33 @@ final class EngineTests: XCTestCase {
         XCTAssertNotNil(WarrantyReminders.fireDate(end: soon, lead: 3, now: now, cal: cal))
     }
 
+    func testSortedFindsWaysToActAndRemindsBeforeTheDate() throws {
+        let bill = "City Water Utility\nAccount 55-2910\nQuestions? Call (555) 201-3344 or email billing@citywater.gov\nPay online at https://pay.citywater.gov/bill\nAmount due: $84.20\nPayment due by December 15, 2026"
+        let a = SortedLetters.actions(in: bill)
+        XCTAssertEqual(a.reference, "55-2910")
+        XCTAssertEqual(a.emails, ["billing@citywater.gov"])
+        XCTAssertEqual(a.links.first?.host(), "pay.citywater.gov")
+        XCTAssertEqual(a.phones.count, 1)
+        XCTAssertNil(SortedLetters.reference(in: "Account Holder: Jane Smith"), "a word is not an account number")
+
+        let cal = Calendar(identifier: .gregorian)
+        let now = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 12, day: 1, hour: 12)))
+        let due = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 12, day: 15)))
+        var i = SortedLetters.Item(kind: "Bill", title: "Water bill", amount: "$84.20", due: due, summary: "", remindDays: 3)
+        let at = try XCTUnwrap(SortedLetters.remindAt(i, now: now, cal: cal))
+        XCTAssertEqual(cal.dateComponents([.day, .hour], from: at), DateComponents(day: 12, hour: 9))
+        XCTAssertEqual(SortedLetters.message(i, now: at, cal: cal).title, "Water bill — due in 3 days")
+        i.done = true; XCTAssertNil(SortedLetters.remindAt(i, now: now, cal: cal), "done means no reminder")
+        i.done = false; i.remindDays = nil; XCTAssertNil(SortedLetters.remindAt(i, now: now, cal: cal))
+        i.remindDays = 30; XCTAssertNil(SortedLetters.remindAt(i, now: now, cal: cal), "never a reminder in the past")
+
+        let late = SortedLetters.Item(kind: "Bill", title: "A", due: due, summary: "")
+        let undated = SortedLetters.Item(kind: "Notice", title: "B", summary: "")
+        var paid = SortedLetters.Item(kind: "Bill", title: "C", due: now, summary: ""); paid.done = true
+        let soon = SortedLetters.Item(kind: "Bill", title: "D", due: now, summary: "")
+        XCTAssertEqual(SortedLetters.ordered([paid, undated, late, soon]).map(\.title), ["D", "A", "B", "C"])
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")
