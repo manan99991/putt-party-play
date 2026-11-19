@@ -158,12 +158,20 @@ final class DiaryStore {
 
     // MARK: key
 
-    private var key: SymmetricKey {
+    /// The data key, made once and kept: in the Keychain, or — only if the Keychain refuses (it can on some
+    /// test hosts) — in a protected file beside the diary, so a key is never silently replaced (which would
+    /// make every earlier day unreadable).
+    private lazy var key: SymmetricKey = {
         if let d = keychainGet("datakey"), d.count == 32 { return SymmetricKey(data: d) }
+        let fileKey = folder.appendingPathComponent(".key")
+        if let d = try? Data(contentsOf: fileKey), d.count == 32 { return SymmetricKey(data: d) }
         let k = SymmetricKey(size: .bits256)
-        keychainSet("datakey", k.withUnsafeBytes { Data($0) })
+        let raw = k.withUnsafeBytes { Data($0) }
+        if !keychainSet("datakey", raw) {
+            try? raw.write(to: fileKey, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
+        }
         return k
-    }
+    }()
 
     private func seal(_ d: Data) -> Data? { try? AES.GCM.seal(d, using: key).combined }
     private func open(_ d: Data) -> Data? { (try? AES.GCM.SealedBox(combined: d)).flatMap { try? AES.GCM.open($0, using: key) } }
@@ -265,12 +273,13 @@ final class DiaryStore {
         return SecItemCopyMatching(q as CFDictionary, &out) == errSecSuccess ? out as? Data : nil
     }
 
-    private func keychainSet(_ account: String, _ data: Data) {
+    @discardableResult
+    private func keychainSet(_ account: String, _ data: Data) -> Bool {
         let q: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account]
         SecItemDelete(q as CFDictionary)
         var add = q
         add[kSecValueData as String] = data
         add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock   // moves with an encrypted backup to a new phone
-        SecItemAdd(add as CFDictionary, nil)
+        return SecItemAdd(add as CFDictionary, nil) == errSecSuccess
     }
 }
