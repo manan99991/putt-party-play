@@ -70,17 +70,79 @@ enum DocEngine {
 
     // MARK: OCR
 
+    /// Every piece of text on a photo, the way a careful person would read it:
+    ///  • the photo the right way up (phone photos are often stored sideways with a "rotate" flag),
+    ///  • small text kept (a dense whiteboard or schedule has lines far smaller than Vision's default minimum),
+    ///  • a small or soft photo enlarged first,
+    ///  • and when the first read is thin or unsure (glare, faint marker, handwriting), a second read on a
+    ///    contrast-cleaned copy — tiled for big photos so every part is read at full size — whose new finds
+    ///    are added where nothing was read before.
     static func recognize(_ image: UIImage) -> [OCRLine] {
-        guard let cg = image.cgImage else { return [] }
+        guard var cg = image.normalizedUp().cgImage else { return [] }
+        let long = max(cg.width, cg.height)
+        if long < 1600, let up = scaled(cg, by: min(3, 1600 / CGFloat(long))) { cg = up }
+        var found = pass(cg)
+        let sure = found.isEmpty ? 0 : found.map(\.1).reduce(0, +) / Float(found.count)
+        if found.count < 12 || sure < 0.75 {
+            var extra: [(OCRLine, Float)] = []
+            if let clean = enhanced(cg) {
+                extra += pass(clean)
+                if max(clean.width, clean.height) >= 1800 { extra += tiles(clean) }
+            }
+            for (l, c) in extra where !found.contains(where: { overlap($0.0.box, l.box) > 0.3 }) { found.append((l, c)) }
+        }
+        return found.map(\.0)
+    }
+
+    private static func pass(_ cg: CGImage) -> [(OCRLine, Float)] {
         let req = VNRecognizeTextRequest()
         req.recognitionLevel = .accurate
         req.usesLanguageCorrection = true
+        req.minimumTextHeight = 0.008
+        if #available(iOS 16.0, *) { req.automaticallyDetectsLanguage = true }
         try? VNImageRequestHandler(cgImage: cg, orientation: .up).perform([req])
         return (req.results ?? []).compactMap { obs in
-            guard let top = obs.topCandidates(1).first else { return nil }
+            guard let top = obs.topCandidates(1).first, !top.string.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
             let b = obs.boundingBox
-            return OCRLine(text: top.string, box: CGRect(x: b.minX, y: 1 - b.maxY, width: b.width, height: b.height))
+            return (OCRLine(text: top.string, box: CGRect(x: b.minX, y: 1 - b.maxY, width: b.width, height: b.height)), top.confidence)
         }
+    }
+
+    /// 2×2 overlapping tiles, each read at full size; boxes mapped back to the whole photo.
+    private static func tiles(_ cg: CGImage) -> [(OCRLine, Float)] {
+        let w = CGFloat(cg.width), h = CGFloat(cg.height)
+        var out: [(OCRLine, Float)] = []
+        for (tx, ty) in [(0.0, 0.0), (0.45, 0.0), (0.0, 0.45), (0.45, 0.45)] as [(CGFloat, CGFloat)] {
+            let r = CGRect(x: tx * w, y: ty * h, width: 0.55 * w, height: 0.55 * h).integral
+            guard let piece = cg.cropping(to: r) else { continue }
+            for (l, c) in pass(piece) {
+                let b = l.box
+                // Drop pieces cut by the tile edge; the neighbouring tile or the full read has them whole.
+                if (b.minX < 0.01 && tx > 0) || (b.maxX > 0.99 && tx == 0) || (b.minY < 0.01 && ty > 0) || (b.maxY > 0.99 && ty == 0) { continue }
+                out.append((OCRLine(text: l.text, box: CGRect(x: tx + b.minX * 0.55, y: ty + b.minY * 0.55, width: b.width * 0.55, height: b.height * 0.55)), c))
+            }
+        }
+        return out
+    }
+
+    /// Grey, evened out and sharpened: faint marker, glare and shadows read better.
+    private static func enhanced(_ cg: CGImage) -> CGImage? {
+        let ci = CIImage(cgImage: cg)
+        let mono = ci.applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 0, kCIInputContrastKey: 1.6])
+        let even = mono.applyingFilter("CIHighlightShadowAdjust", parameters: ["inputHighlightAmount": 0.25, "inputShadowAmount": 0.6])
+        let sharp = even.applyingFilter("CISharpenLuminance", parameters: [kCIInputSharpnessKey: 0.6])
+        return ctx.createCGImage(sharp, from: ci.extent)
+    }
+
+    private static func scaled(_ cg: CGImage, by f: CGFloat) -> CGImage? {
+        guard f > 1.05 else { return cg }
+        let ci = CIImage(cgImage: cg).applyingFilter("CILanczosScaleTransform", parameters: [kCIInputScaleKey: f, kCIInputAspectRatioKey: 1])
+        return ctx.createCGImage(ci, from: ci.extent.integral)
+    }
+
+    private static func overlap(_ a: CGRect, _ b: CGRect) -> CGFloat {
+        let i = a.intersection(b); guard !i.isNull, i.width > 0, i.height > 0 else { return 0 }
+        return (i.width * i.height) / min(a.width * a.height, b.width * b.height)
     }
 
     static func text(_ lines: [OCRLine]) -> String { lines.map(\.text).joined(separator: "\n") }

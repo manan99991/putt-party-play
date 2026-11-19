@@ -317,6 +317,33 @@ enum DataGrab {
         return ["shutterstock", "istock", "getty", "dreamstime", "adobe stock", "alamy", "123rf", "depositphotos", "vector eps", "image id", "©"].contains { low.contains($0) }
     }
 
+    /// Pieces of stock-photo watermarks, however the camera split them.
+    static func stripWatermark(_ l: String) -> String {
+        l.replacingOccurrences(of: #"(?i)\b\S*(?:utterst|terstoc|dreamstim|istockph|gettyim|depositph|adobestoc|alamy)\S*\b"#, with: " ", options: .regularExpression)
+            .replacingOccurrences(of: #"\s{2,}"#, with: "  ", options: .regularExpression)
+    }
+
+    /// "12 MARCH", "March 12", "Oct 20", "20th October" with no year → that day (the coming one).
+    static func monthDay(in text: String, now: Date) -> Date? {
+        let months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+        let low = text.lowercased()
+        let pats = [#"\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b"#,
+                    #"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b"#]
+        for (i, p) in pats.enumerated() {
+            guard let re = try? NSRegularExpression(pattern: p), let m = re.firstMatch(in: low, range: NSRange(low.startIndex..., in: low)) else { continue }
+            let ns = low as NSString
+            let a = ns.substring(with: m.range(at: 1)), b = ns.substring(with: m.range(at: 2))
+            let dayS = i == 0 ? a : b, monS = i == 0 ? b : a
+            guard let d = Int(dayS), (1...31).contains(d), let mi = months.firstIndex(of: String(monS.prefix(3))) else { continue }
+            let cal = Calendar.current
+            var c = cal.dateComponents([.year], from: now); c.month = mi + 1; c.day = d
+            guard var date = cal.date(from: c) else { continue }
+            if date < cal.startOfDay(for: now), let next = cal.date(byAdding: .year, value: 1, to: date) { date = next }
+            return date
+        }
+        return nil
+    }
+
     private static let eventWords = #"\b(dinner|party|festival|fest|concert|conference|workshop|meetup|meet-up|gala|fair|night|show|class|webinar|seminar|summit|expo|exhibition|tournament|match|game|race|run|walk|market|sale|launch|celebration|ceremony|service|wedding|birthday|reunion|fundraiser|auction|screening|recital|performance|tour|events?|dating|brunch|lunch|breakfast|open house|camp|retreat|talk|lecture)\b"#
     private static let venueWords = #"\b(hall|ballroom|auditorium|center|centre|park|theat(er|re)|stadium|arena|club|hotel|church|temple|school|library|room|gallery|museum|studio|bar|cafe|café|restaurant|garden|plaza|square|pavilion|venue|campus|field|beach)\b"#
     private static let timeRange = #"(\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.m\.|p\.m\.)?\s*(?:-|–|—|to|until|till)\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.m\.|p\.m\.)"#
@@ -326,7 +353,8 @@ enum DataGrab {
     /// photo) lets the biggest words become the title, the way a person reads a poster.
     static func event(_ text: String, heights: [String: CGFloat] = [:], now: Date = Date()) -> Event {
         var e = Event()
-        let lines = text.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty && !isWatermark($0) }
+        // Stock watermarks are read in pieces ("utterstoc", "hutterstock") stuck to real words: cut them out.
+        let lines = text.split(whereSeparator: \.isNewline).map { stripWatermark(String($0)).trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty && !isWatermark($0) }
         let flat = lines.map { columns($0).joined(separator: " ") }
         let cal = Calendar.current
         let hasYear = text.range(of: #"\b(19|20)\d{2}\b"#, options: .regularExpression) != nil
@@ -357,6 +385,7 @@ enum DataGrab {
             if let d = dateMatches(in: l).first?.date { day = d; dayLine = i; break }
         }
         if day == nil, let d = dateMatches(in: joined).first?.date { day = d }
+        if day == nil, let d = monthDay(in: joined, now: now) { day = d }
         if var d = day {
             // "Saturday Oct 20" with no year is the next one, never one already gone.
             if !hasYear, d < cal.startOfDay(for: now), let next = cal.date(byAdding: .year, value: 1, to: d) { d = next }
