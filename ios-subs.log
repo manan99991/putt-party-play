@@ -1,15 +1,18 @@
-[20:24:17]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
-[20:24:17]: fastlane 2.241.2 (Ruby 3.4.12, gem)
-[20:24:19]: Sending anonymous analytics information
-[20:24:19]: Learn more at https://docs.fastlane.tools/#metrics
-[20:24:19]: No personal or sensitive data is sent.
-[20:24:19]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
-[20:24:19]: [32m------------------------------[0m
-[20:24:19]: [32m--- Step: default_platform ---[0m
-[20:24:19]: [32m------------------------------[0m
-[20:24:19]: [32mDriving the lane 'ios subscriptions' 🚀[0m
-[20:24:23]: App 6824023361
-[20:25:06]: Created group (500)
+[12:24:04]: [33mGet started using a Gemfile for fastlane https://docs.fastlane.tools/getting-started/ios/setup/#use-a-gemfile[0m
+[12:24:04]: fastlane 2.241.2 (Ruby 3.4.12, gem)
+[12:24:05]: Sending anonymous analytics information
+[12:24:05]: Learn more at https://docs.fastlane.tools/#metrics
+[12:24:05]: No personal or sensitive data is sent.
+[12:24:05]: You can disable this by adding `opt_out_usage` at the top of your Fastfile
+[12:24:05]: [32m------------------------------[0m
+[12:24:05]: [32m--- Step: default_platform ---[0m
+[12:24:05]: [32m------------------------------[0m
+[12:24:05]: [32mDriving the lane 'ios subscriptions' 🚀[0m
+[12:24:06]: App 6824023361
+[12:24:08]: Territories: 175
+[12:24:08]: tenzy_pro_yearly exists (6824154364)
+[12:24:10]: [32m  price -> 409 near $19.99 (19.99) {"errors" => [{"id" => "9be37356-ab6c-45cc-82b0-61391be71ede", "status" => "409", "code" => "STATE_ERROR", "title" => "The request cannot be fulfilled because of the state of another resource.", "detail" => "Initial price cannot be created again after subscription is approved."}]}[0m
+[12:24:11]: [32m  intro offer 3-day free trial: created 0, already present 175, failed 0 (of 175 territories)[0m
 +--------------------------------------+
 |             [33mLane Context[0m             |
 +------------------+-------------------+
@@ -17,14 +20,22 @@
 | PLATFORM_NAME    | ios               |
 | LANE_NAME        | ios subscriptions |
 +------------------+-------------------+
-[20:25:06]: [31mError in your Fastfile at line 145[0m
-[20:25:06]: [31m```[0m
-[20:25:06]: [31m    143:	      UI.message("Created group (#{code})")[0m
-[20:25:06]: [31m    144:	    end[0m
-[20:25:06]: [31m => 145:	    group_id = group["id"][0m
-[20:25:06]: [31m    146:	[0m
-[20:25:06]: [31m    147:	    code, data = req.call(:get, "/v1/subscriptionGroups/#{group_id}/subscriptions?limit=50")[0m
-[20:25:06]: [31m```[0m
+[12:24:11]: [31mError in your Fastfile at line 122[0m
+[12:24:11]: [31m```[0m
+[12:24:11]: [31m    120:	    req = lambda do |method, path, body = nil|[0m
+[12:24:11]: [31m    121:	      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method][0m
+[12:24:11]: [31m => 122:	      r = klass.new(URI(base + path))[0m
+[12:24:11]: [31m    123:	      r["Authorization"] = "Bearer #{token.text}"[0m
+[12:24:11]: [31m    124:	      r["Content-Type"] = "application/json"[0m
+[12:24:11]: [31m```[0m
+[12:24:11]: [31mCalled from Fastfile at line 242[0m
+[12:24:11]: [31m```[0m
+[12:24:11]: [31m    240:	        code, cur = req.call(:get, "/v1/subscriptions/#{sub_id}/appStoreReviewScreenshot")[0m
+[12:24:11]: [31m    241:	        if cur.is_a?(Hash) && cur["data"][0m
+[12:24:11]: [31m => 242:	          req.call(:delete, "/v1/subscriptionAppStoreReviewScreenshots/#{cur['data']['id']}")[0m
+[12:24:11]: [31m    243:	          UI.message("  removed stale review screenshot; re-uploading current paywall")[0m
+[12:24:11]: [31m    244:	        end[0m
+[12:24:11]: [31m```[0m
 
 +---------------------------------------+
 |           [32mfastlane summary[0m            |
@@ -34,7 +45,7 @@
 | 1    | default_platform | 0           |
 +------+------------------+-------------+
 
-[20:25:06]: [31mfastlane finished with errors[0m
+[12:24:11]: [31mfastlane finished with errors[0m
 
 Looking for related GitHub issues on fastlane/fastlane...
 
@@ -42,15 +53,15 @@ Looking for related GitHub issues on fastlane/fastlane...
     https://github.com/fastlane/fastlane/issues/21496 [[31mopen[0m] 5 💬
     24 Sep 2024
 
-➡️  [33mfastlane init failed - undefined method `include?' for nil:NilClass [0m
-    https://github.com/fastlane/fastlane/issues/21049 [[31mopen[0m] 2 💬
-    24 Mar 2023
-
 ➡️  [33mfastlane match nuke development . undefined method `downcase' for nil:NilClass (NoMethodError)[0m
     https://github.com/fastlane/fastlane/issues/20525 [[31mopen[0m] 15 💬
     16 Feb 2023
 
-and 673 more at: https://github.com/fastlane/fastlane/search?q=undefined%20method%20%27%5B%5D%27%20for%20nil&type=Issues&utf8=✓
+➡️  [33m[pilot] Stop requesting betaTesterMetrics for testers[0m
+    https://github.com/fastlane/fastlane/pull/30471 [[31mopen[0m] 5 💬
+    2 days ago
+
+and 614 more at: https://github.com/fastlane/fastlane/search?q=undefined%20method%20%27new%27%20for%20nil&type=Issues&utf8=✓
 
 🔗  You can ⌘ + double-click on links to open them directly in your browser.
 
@@ -60,7 +71,10 @@ and 673 more at: https://github.com/fastlane/fastlane/search?q=undefined%20metho
 # Please update using `gem install fastlane`.
 # To see what's new, open https://github.com/fastlane/fastlane/releases.
 #######################################################################
-Fastfile:145:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': [31m[!] undefined method '[]' for nil[0m (NoMethodError)
+Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': [31m[!] undefined method 'new' for nil[0m (NoMethodError)
+	from Fastfile:242:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
+	from Fastfile:164:in 'Array#each'
+	from Fastfile:164:in 'block (2 levels) in Fastlane::FastFile#parsing_binding'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
@@ -80,7 +94,10 @@ Fastfile:145:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': [31m[
 	from /opt/homebrew/Cellar/ruby@3.4/3.4.12/lib/ruby/3.4.0/rubygems.rb:305:in 'Kernel#load'
 	from /opt/homebrew/Cellar/ruby@3.4/3.4.12/lib/ruby/3.4.0/rubygems.rb:305:in 'Gem.activate_and_load_bin_path'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/bin/fastlane:25:in '<main>'
-Fastfile:145:in 'block (2 levels) in Fastlane::FastFile#parsing_binding': undefined method '[]' for nil (NoMethodError)
+Fastfile:122:in 'block (3 levels) in Fastlane::FastFile#parsing_binding': undefined method 'new' for nil (NoMethodError)
+	from Fastfile:242:in 'block (3 levels) in Fastlane::FastFile#parsing_binding'
+	from Fastfile:164:in 'Array#each'
+	from Fastfile:164:in 'block (2 levels) in Fastlane::FastFile#parsing_binding'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/lane.rb:41:in 'Fastlane::Lane#call'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:49:in 'block in Fastlane::Runner#execute'
 	from /opt/homebrew/lib/ruby/gems/3.4.0/gems/fastlane-2.241.2/fastlane/lib/fastlane/runner.rb:45:in 'Dir.chdir'
