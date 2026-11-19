@@ -1,0 +1,22 @@
+[
+ {"id":"01-hero","route":"explore","h":"One app.<br>Every job your<br>phone forgot.","sub":"60+ tools, 90 ready-made, and the ones you build yourself.",
+  "chips":["📄 Scan, sign & fill PDFs","💊 Medicine reminders","👥 Contacts, organized","🏷️ Price-drop alerts","🎬 Pro video camera","🗣️ Voice changer","🌍 Translate offline","🧹 Free up space"]},
+ {"id":"02-describe","route":"describebuilt","h":"Say it.<br>Tenzy builds it.","sub":"Describe the job in plain words. Get a tool that does all of it.",
+  "bubble":"“Shrink a photo under 1 MB, remove the location and email it.”","steps":["Shrink to 1 MB","Remove location","Email it"]},
+ {"id":"03-ready","route":"templates","h":"90 tools,<br>ready in one tap.","sub":"Letters read aloud in English. Meetings into emails. Photos safe to share.",
+  "chips":["📸 Photos & scans","💬 Text & messages","🎥 Video","🎙️ Sound & voice","📑 PDF"]},
+ {"id":"04-setonce","route":"medreminder","h":"Set it once.<br>It just works.","sub":"Every reminder has a Test run, so you know it works before you rely on it.",
+  "chips":["✅ Test run","💊 Refill countdown","📲 Caregiver follow-up","🎂 Birthdays, a day early","☀️ Daily Brief at 7:30","🚗 Parking meter alert"]},
+ {"id":"05-pricewatch","route":"pricewatch","h":"Tell me when<br>the price drops.","sub":"Paste a link. Your phone checks quietly and alerts you once.",
+  "chips":["🔋 Light on battery","📉 Drops below / goes above","🔔 One alert, not a stream"]},
+ {"id":"06-contacts","route":"contacts","h":"Your contacts.<br>Finally organized.","sub":"Groups, favorites, bulk edit, export to Excel, merge duplicates.",
+  "chips":["⭐ Favorites & emergency","🗂️ Groups & filters","📤 Export to Excel","🧩 Merge duplicates","📅 Plan a call or visit"]},
+ {"id":"07-paperwork","route":"sorted","h":"Paperwork,<br>sorted.","sub":"Snap a bill and it's filed with a reminder before it's due.",
+  "chips":["📄 Scan to PDF","✍️ Sign & fill forms","⬛ Redact for good","🧾 Warranty alerts"]},
+ {"id":"08-media","route":"procam","h":"Photos, video<br>& sound, done right.","sub":"Shrink to any size limit, convert, strip location, film with scene settings.",
+  "chips":["📏 Fit under any size","🎞️ HEIC & MOV converted","🎬 Video with tips as you film","✂️ Ringtones & audio cleanup"]},
+ {"id":"09-fun","route":"soundboard","h":"And the fun stuff.","sub":"Chipmunk, robot, giant voices. Stickers for any chat. Collages and Reels.",
+  "chips":["🐿️ Chipmunk","🤖 Robot","👹 Giant","👽 Alien","😎 Stickers","🎞️ Reels"]},
+ {"id":"10-private","route":"privacy","h":"Private.<br>On your phone.","sub":"No account. No ads. Nothing uploaded. Free to start, Pro when you want it.",
+  "chips":["🔒 No account","🚫 No ads","📵 Nothing uploaded","✈️ Most tools work offline"]}
+]

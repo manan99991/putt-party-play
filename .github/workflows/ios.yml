@@ -157,7 +157,7 @@ jobs:
             done
           done
           # Store hero captures: demo data on (-demo), iPhone then iPad 13", one appearance (the app's own theme).
-          HERO="explore home templates mytools medreminder brief pricewatch contacts sorted warranty cleaner fitit procam soundboard sticker scan light measure untangle thinking gpsdash pdfpages translate shield rest meetingnotes studio privacy paywall"
+          HERO="explore home describebuilt templates mytools medreminder brief pricewatch contacts sorted warranty cleaner fitit procam soundboard sticker scan light measure untangle thinking gpsdash pdfpages translate shield rest meetingnotes studio privacy paywall"
           xcrun simctl ui "$UDID" appearance dark
           xcrun simctl uninstall "$UDID" com.tenzy.toolkit || true
           xcrun simctl install "$UDID" "$APP"

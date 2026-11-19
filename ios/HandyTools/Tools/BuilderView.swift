@@ -695,6 +695,10 @@ struct BuilderView: View {
             // Store screenshots: open the Templates or My tools sheet straight away.
             if Launch.screenshots, Launch.route == "templates" { showTemplates = true }
             if Launch.screenshots, Launch.route == "mytools" { showMine = true }
+            if Launch.screenshots, Launch.route == "describebuilt" {
+                ask = "Shrink a photo under 1 MB, remove the location and email it"
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { buildFromAsk() }
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .openTool)) { _ in
             // A tool opened from a link was saved before this arrived, so pick it up.
@@ -837,25 +841,27 @@ struct BuilderView: View {
         editing = nil; running = c
     }
 
+    private func buildFromAsk() {
+        planning = true; builtIn = nil; note = nil
+        let request = ask
+        Task {
+            let p = await ChainPlanner.plan(request)
+            await MainActor.run {
+                planning = false
+                pendingPlan = p
+                if let b = PlanCheck.builtIn(request) { withAnimation { builtIn = b }; return }
+                if let p { openPlanned(p, ask: request) }
+                else { note = "I couldn't tell what you'd like done. Say what you have (a photo, a PDF, a video, a recording, a link or some text) and what should happen to it." }
+            }
+        }
+    }
+
     private var hero: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Label(L("Describe it"), systemImage: "sparkles").font(HandyFont.cardTitle)
             TextField(L("e.g. shrink a photo under 1 MB and hide where it was taken"), text: $ask, axis: .vertical)
                 .lineLimit(3...8).textFieldStyle(.roundedBorder).accessibilityIdentifier("describe-field")
-            Button {
-                planning = true; builtIn = nil; note = nil
-                let request = ask
-                Task {
-                    let p = await ChainPlanner.plan(request)
-                    await MainActor.run {
-                        planning = false
-                        pendingPlan = p
-                        if let b = PlanCheck.builtIn(request) { withAnimation { builtIn = b }; return }
-                        if let p { openPlanned(p, ask: request) }
-                        else { note = "I couldn't tell what you'd like done. Say what you have (a photo, a PDF, a video, a recording, a link or some text) and what should happen to it." }
-                    }
-                }
-            } label: { Label(planning ? "Working…" : "Build it for me", systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
+            Button { buildFromAsk() } label: { Label(planning ? "Working…" : "Build it for me", systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(planning || ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }.cardStyle()
     }
