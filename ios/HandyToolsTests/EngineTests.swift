@@ -2428,6 +2428,29 @@ final class EngineTests: XCTestCase {
         } else { XCTFail("ringtone with a fade should export") }
     }
 
+    func testZipPhotosGetSmallerAndLoseTheirLocation() throws {
+        XCTAssertTrue(ZipPrep.isPhoto("IMG_0042.HEIC")); XCTAssertTrue(ZipPrep.isPhoto("a.jpg"))
+        XCTAssertFalse(ZipPrep.isPhoto("party.gif"), "a GIF keeps its animation")
+        XCTAssertFalse(ZipPrep.isPhoto("notes.pdf"))
+        XCTAssertEqual(ZipPrep.jpegName("IMG_0042.HEIC"), "IMG_0042.jpg")
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+        let big = UIGraphicsImageRenderer(size: CGSize(width: 4000, height: 3000), format: fmt).image { c in
+            UIColor.systemTeal.setFill(); c.fill(CGRect(x: 0, y: 0, width: 4000, height: 3000))
+            UIColor.orange.setFill(); c.fill(CGRect(x: 500, y: 500, width: 1500, height: 900))
+        }
+        // A photo carrying a GPS location, like one from the camera.
+        let withGPS = NSMutableData()
+        let dest = try XCTUnwrap(CGImageDestinationCreateWithData(withGPS, UTType.jpeg.identifier as CFString, 1, nil))
+        CGImageDestinationAddImage(dest, try XCTUnwrap(big.cgImage), [kCGImagePropertyGPSDictionary: [kCGImagePropertyGPSLatitude: 41.7, kCGImagePropertyGPSLongitude: 88.2]] as CFDictionary)
+        XCTAssertTrue(CGImageDestinationFinalize(dest))
+        let small = try XCTUnwrap(ZipPrep.prepared(withGPS as Data, shrink: true))
+        let src = try XCTUnwrap(CGImageSourceCreateWithData(small as CFData, nil))
+        let props = CGImageSourceCopyPropertiesAtIndex(src, 0, nil) as? [CFString: Any] ?? [:]
+        XCTAssertNil(props[kCGImagePropertyGPSDictionary], "no location left in the zipped photo")
+        XCTAssertLessThanOrEqual(max(props[kCGImagePropertyPixelWidth] as? Int ?? 0, props[kCGImagePropertyPixelHeight] as? Int ?? 0), 2560)
+        XCTAssertNil(ZipPrep.emailNote(bytes: 10_000_000)); XCTAssertNotNil(ZipPrep.emailNote(bytes: 30_000_000))
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

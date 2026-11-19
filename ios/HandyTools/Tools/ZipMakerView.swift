@@ -19,6 +19,10 @@ struct ZipMakerView: View {
     @State private var resultCount = 0
     @State private var errorText: String?
     @State private var showFiles = false
+    @State private var shrinkPhotos = false
+    @State private var stripPlaces = true
+
+    private var photoCount: Int { entries.filter { ZipPrep.isPhoto($0.name) }.count }
 
     private var totalBytes: Int { entries.reduce(0) { $0 + $1.bytes } }
 
@@ -54,11 +58,12 @@ struct ZipMakerView: View {
                 }.secondaryButton()
             }
             if loadingPhotos { ToolProgressBar(label: "Adding photos…", showsTime: false) }
-            ForEach(entries) { e in
+            ForEach($entries) { $e in
                 HStack(spacing: HandySpacing.s8) {
                     Image(systemName: icon(for: e.name)).foregroundStyle(HandyColor.accent).frame(width: 22)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(e.name).font(HandyFont.body).lineLimit(1).truncationMode(.middle)
+                        TextField(L("File name"), text: $e.name).font(HandyFont.body).lineLimit(1)
+                            .accessibilityHint(L("Tap to rename this file inside the zip"))
                         Text(AudioCompressView.size(e.bytes)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     }
                     Spacer()
@@ -71,6 +76,19 @@ struct ZipMakerView: View {
             if !entries.isEmpty {
                 Text("\(entries.count) \(entries.count == 1 ? L("file") : L("files")) · \(AudioCompressView.size(totalBytes))")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                if photoCount > 0 {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Toggle(L("Make photos smaller (good for email)"), isOn: $shrinkPhotos).tint(HandyColor.accent)
+                        Toggle(L("Remove where photos were taken"), isOn: $stripPlaces).tint(HandyColor.accent)
+                        Text(L("Applies to the photos in this zip only. Your originals don't change. Photos are saved as JPEG so they open everywhere."))
+                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    }
+                    .font(HandyFont.caption)
+                    .cardStyle(padding: HandySpacing.s12)
+                }
+                if let note = ZipPrep.emailNote(bytes: totalBytes), !shrinkPhotos {
+                    Label(L(note), systemImage: "envelope.badge").font(HandyFont.micro).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true)
+                }
                 Text(L("Zip name")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 TextField(L("Zip name"), text: $archiveName).textFieldStyle(.roundedBorder)
                 if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -99,6 +117,13 @@ struct ZipMakerView: View {
             } else {
                 Text(L("Photos and videos are already compressed, so the zip is about the same size — it's one tidy file to send."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            if let note = ZipPrep.emailNote(bytes: resultBytes) {
+                Label(L(note), systemImage: "envelope.badge").font(HandyFont.micro).foregroundStyle(HandyColor.amber)
+                    .frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true)
+            } else {
+                Label(L("Small enough to email."), systemImage: "envelope").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             ShareLink(item: url) {
@@ -154,12 +179,19 @@ struct ZipMakerView: View {
         let clean = archiveName.components(separatedBy: CharacterSet(charactersIn: "/\\:")).joined(separator: "-")
             .trimmingCharacters(in: .whitespacesAndNewlines)
         let name = clean.isEmpty ? "Files" : String(clean.prefix(60))
+        let shrink = shrinkPhotos, strip = stripPlaces
         Task { @MainActor in
             let out: Result<URL, ZipWriter.Failure> = await Task.detached(priority: .userInitiated) {
                 var items: [ZipWriter.Item] = []
                 for e in list {
                     guard let d = try? Data(contentsOf: e.url) else { return .failure(.cannotWrite) }
-                    items.append(ZipWriter.Item(name: e.name, data: d))
+                    let fileName = e.name.trimmingCharacters(in: .whitespaces).isEmpty ? "File" : e.name
+                    // Photos: smaller and/or without location, when asked. Anything unreadable stays as it was.
+                    if (shrink || strip), ZipPrep.isPhoto(fileName), let p = ZipPrep.prepared(d, shrink: shrink) {
+                        items.append(ZipWriter.Item(name: ZipPrep.jpegName(fileName), data: p))
+                    } else {
+                        items.append(ZipWriter.Item(name: fileName, data: d))
+                    }
                 }
                 switch ZipWriter.zip(items, progress: { p in Task { @MainActor in progress = p } }) {
                 case .failure(let f): return .failure(f)

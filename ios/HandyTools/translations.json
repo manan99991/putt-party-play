@@ -1029,6 +1029,16 @@
   "pt": "App",
   "zh": "应用"
  },
+ "Applies to the photos in this zip only. Your originals don't change. Photos are saved as JPEG so they open everywhere.": {
+  "de": "Gilt nur für die Fotos in diesem Zip. Deine Originale bleiben unverändert. Fotos werden als JPEG gespeichert, damit sie überall aufgehen.",
+  "es": "Solo afecta a las fotos de este zip. Tus originales no cambian. Se guardan como JPEG para que se abran en cualquier sitio.",
+  "fr": "Ne concerne que les photos de ce zip. Vos originaux ne changent pas. Elles sont enregistrées en JPEG pour s'ouvrir partout.",
+  "hi": "सिर्फ़ इस zip की फ़ोटो पर लागू। आपकी असली फ़ोटो नहीं बदलतीं। फ़ोटो JPEG में सेव होती हैं ताकि हर जगह खुलें।",
+  "it": "Vale solo per le foto in questo zip. Gli originali non cambiano. Le foto sono salvate in JPEG così si aprono ovunque.",
+  "ja": "この zip 内の写真だけに適用され、元の写真は変わりません。どこでも開けるよう JPEG で保存します。",
+  "pt": "Só se aplica às fotos deste zip. Os originais não mudam. As fotos ficam em JPEG para abrirem em todo o lado.",
+  "zh": "只作用于此 zip 中的照片，原图不变。照片存为 JPEG，任何地方都能打开。"
+ },
  "Apply this look to every page": {
   "de": "Dieses Aussehen auf jede Seite anwenden",
   "es": "Aplicar este aspecto a cada página",
@@ -5389,6 +5399,16 @@
   "pt": "Visualizador",
   "zh": "文件查看器"
  },
+ "File name": {
+  "de": "Dateiname",
+  "es": "Nombre del archivo",
+  "fr": "Nom du fichier",
+  "hi": "फ़ाइल का नाम",
+  "it": "Nome file",
+  "ja": "ファイル名",
+  "pt": "Nome do ficheiro",
+  "zh": "文件名"
+ },
  "File name (optional), e.g. Signed form {date}": {
   "de": "Dateiname (optional), z. B. Unterschriebenes Formular {date}",
   "es": "Nombre del archivo (opcional), p. ej. Formulario firmado {date}",
@@ -8379,6 +8399,16 @@
   "pt": "Criar foto de passaporte",
   "zh": "制作证件照"
  },
+ "Make photos smaller (good for email)": {
+  "de": "Fotos verkleinern (gut für E-Mail)",
+  "es": "Reducir las fotos (ideal para correo)",
+  "fr": "Réduire les photos (idéal pour l'e-mail)",
+  "hi": "फ़ोटो छोटी करें (ईमेल के लिए अच्छा)",
+  "it": "Rimpicciolisci le foto (ideale per email)",
+  "ja": "写真を小さくする（メール向け）",
+  "pt": "Reduzir as fotos (bom para email)",
+  "zh": "缩小照片（适合邮件）"
+ },
  "Make the card": {
   "de": "Karte erstellen",
   "es": "Crear la tarjeta",
@@ -10488,6 +10518,16 @@
   "ja": "本日の無料AI操作を使い切りました。",
   "pt": "Acabaram as ações de IA grátis de hoje.",
   "zh": "今日的免费AI次数已用完。"
+ },
+ "Over 25 MB — too big for most email. Turn on Make photos smaller, or send it through a link (iCloud, Drive).": {
+  "de": "Über 25 MB – zu groß für die meisten E-Mails. Schalte „Fotos verkleinern“ ein oder sende es per Link (iCloud, Drive).",
+  "es": "Más de 25 MB: demasiado para la mayoría de correos. Activa Reducir las fotos o envíalo con un enlace (iCloud, Drive).",
+  "fr": "Plus de 25 Mo — trop gros pour la plupart des e-mails. Activez Réduire les photos, ou envoyez un lien (iCloud, Drive).",
+  "hi": "25 MB से ज़्यादा — ज़्यादातर ईमेल के लिए बहुत बड़ा। ‘फ़ोटो छोटी करें’ चालू करें या लिंक से भेजें (iCloud, Drive)।",
+  "it": "Oltre 25 MB: troppo per la maggior parte delle email. Attiva Rimpicciolisci le foto o invialo con un link (iCloud, Drive).",
+  "ja": "25 MB 超 — ほとんどのメールでは大きすぎます。「写真を小さくする」をオンにするか、リンク（iCloud、Drive）で送ってください。",
+  "pt": "Mais de 25 MB — grande demais para a maioria dos emails. Ative Reduzir as fotos ou envie por link (iCloud, Drive).",
+  "zh": "超过 25 MB，大多数邮件发不了。打开“缩小照片”，或通过链接（iCloud、Drive）发送。"
  },
  "PDF": {
   "de": "PDF",
@@ -12659,6 +12699,16 @@
   "pt": "Remover este horário",
   "zh": "删除此时间"
  },
+ "Remove where photos were taken": {
+  "de": "Aufnahmeort aus Fotos entfernen",
+  "es": "Quitar dónde se hicieron las fotos",
+  "fr": "Retirer le lieu de prise de vue",
+  "hi": "फ़ोटो कहाँ ली गई, यह हटाएँ",
+  "it": "Rimuovi dove sono state scattate le foto",
+  "ja": "撮影場所を削除",
+  "pt": "Remover onde as fotos foram tiradas",
+  "zh": "移除照片拍摄地点"
+ },
  "Rename": {
   "de": "Umbenennen",
   "es": "Renombrar",
@@ -14719,6 +14769,16 @@
   "pt": "Pequeno",
   "zh": "小"
  },
+ "Small enough to email.": {
+  "de": "Klein genug für E-Mail.",
+  "es": "Cabe en un correo.",
+  "fr": "Assez petit pour l'e-mail.",
+  "hi": "ईमेल के लिए काफ़ी छोटा।",
+  "it": "Abbastanza piccolo per email.",
+  "ja": "メールで送れるサイズです。",
+  "pt": "Pequeno o suficiente para email.",
+  "zh": "大小可以用邮件发送。"
+ },
  "Small file, plays everywhere": {
   "de": "Kleine Datei, läuft überall",
   "es": "Archivo pequeño, se reproduce en todas partes",
@@ -15978,6 +16038,16 @@
   "ja": "タップでスクショを開く",
   "pt": "Toca para abrir a captura",
   "zh": "点按打开截图"
+ },
+ "Tap to rename this file inside the zip": {
+  "de": "Tippen, um die Datei im Zip umzubenennen",
+  "es": "Toca para renombrar este archivo dentro del zip",
+  "fr": "Touchez pour renommer ce fichier dans le zip",
+  "hi": "zip के अंदर इस फ़ाइल का नाम बदलने के लिए टैप करें",
+  "it": "Tocca per rinominare il file nello zip",
+  "ja": "タップして zip 内のファイル名を変更",
+  "pt": "Toque para mudar o nome dentro do zip",
+  "zh": "点击可重命名 zip 里的这个文件"
  },
  "Tax %": {
   "de": "Steuer %",
