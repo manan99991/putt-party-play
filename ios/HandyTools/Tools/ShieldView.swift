@@ -139,6 +139,51 @@ struct ShieldView: View {
             }
             ShareLink(item: shareText(r)) { Label(L("Share this check with someone"), systemImage: "square.and.arrow.up") }.textButton()
         }.cardStyle()
+        if combinedVerdict(r) != .lowRisk { reportCard(r) }
+    }
+
+    /// Report it where it counts, block it, and warn the people it'll go to next. Nothing is sent without you.
+    @ViewBuilder private func reportCard(_ r: ScamAnalyzer.Report) -> some View {
+        let region = Locale.current.region?.identifier ?? ""
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Report and block it"), systemImage: "hand.raised.fill").font(HandyFont.bodyStrong)
+            if ["US", "GB", "CA", "IE"].contains(region), let u = Self.forwardURL(text) {
+                Button { UIApplication.shared.open(u) } label: {
+                    Label(L("Forward it to 7726 (free) — your carrier blocks the sender"), systemImage: "arrowshape.turn.up.right.fill").frame(maxWidth: .infinity)
+                }.secondaryButton().accessibilityIdentifier("shield-7726")
+            }
+            if let site = Self.officialReport(region) {
+                Link(destination: site.url) { Label("\(L("Report it to")) \(site.name)", systemImage: "building.columns").frame(maxWidth: .infinity) }.secondaryButton()
+            }
+            Text(L("To block it: open the message, tap the sender's name at the top, then Block Caller. Then delete the message."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            ShareLink(item: Self.warning(text, findings: r.findings.map(\.title))) {
+                Label(L("Warn my family — they may get the same one"), systemImage: "person.2.wave.2.fill").frame(maxWidth: .infinity)
+            }.primaryButton()
+        }.cardStyle(padding: HandySpacing.s12)
+    }
+
+    /// Messages, already addressed to 7726 with the scam text, ready for you to press Send.
+    static func forwardURL(_ text: String) -> URL? {
+        let body = String(text.prefix(600)).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        return URL(string: "sms:7726&body=\(body)")
+    }
+
+    static func officialReport(_ region: String) -> (name: String, url: URL)? {
+        switch region {
+        case "US": return ("the FTC", URL(string: "https://reportfraud.ftc.gov/")!)
+        case "GB": return ("Action Fraud", URL(string: "https://www.actionfraud.police.uk/")!)
+        case "CA": return ("the Canadian Anti-Fraud Centre", URL(string: "https://antifraudcentre-centreantifraude.ca/")!)
+        case "AU": return ("Scamwatch", URL(string: "https://www.scamwatch.gov.au/report-a-scam")!)
+        case "IN": return ("the cybercrime portal", URL(string: "https://cybercrime.gov.in/")!)
+        default: return nil
+        }
+    }
+
+    static func warning(_ text: String, findings: [String]) -> String {
+        let quote = text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(160)
+        return "Heads up — this scam is going round. If you get it, don't tap the link or reply:\n\n“\(quote)\(text.count > 160 ? "…" : "")”\n\n"
+            + "How to spot it: " + findings.prefix(3).joined(separator: "; ") + ".\n\nIf it says it's from your bank or a delivery company, open their app or type their website yourself."
     }
 
     private func color(_ v: ScamAnalyzer.Verdict) -> Color { v == .likelyScam ? HandyColor.danger : v == .suspicious ? HandyColor.accent : HandyColor.success }
