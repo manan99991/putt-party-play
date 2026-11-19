@@ -1,6 +1,7 @@
 import XCTest
 import UIKit
 import PDFKit
+import AVFoundation
 @testable import HandyTools
 
 /// What each photo tool actually hands the user, checked on real photos (runs in the QA lab; skipped elsewhere).
@@ -202,6 +203,69 @@ final class ToolOutputQualityTests: XCTestCase {
             lines.append("\(f)\t\(pages)\t\(reOK ? 1 : 0)\t\(lockOK ? 1 : 0)\t\(shrinkOK ? 1 : 0)\t\(searchText)\t| \(fails.joined(separator: "; "))")
         }
         lines.insert(String(format: "SCORE pdf-tools n=%.0f %.3f", n, good / max(1, n)), at: 0)
+        report(lines)
+    }
+
+    // MARK: audio tools on real recordings (LibriSpeech read-aloud speech)
+
+    static func seconds(_ url: URL) async -> Double? {
+        guard let d = try? await AVURLAsset(url: url).load(.duration), d.isNumeric else { return nil }
+        return d.seconds
+    }
+
+    func testAudioToolsGiveTheRightLengthAndFormat() async throws {
+        guard let root else { throw XCTSkip("runs in the QA lab") }
+        let dir = root.appendingPathComponent("speech")
+        let clips = ((try? FileManager.default.contentsOfDirectory(atPath: dir.path)) ?? []).filter { $0.hasSuffix(".wav") }.sorted()
+            .map { dir.appendingPathComponent($0) }
+        guard clips.count >= 2 else { throw XCTSkip("speech recordings not downloaded") }
+        var lines = ["AUDIO TOOLS\tclip\tlength\tconvert\tcompress\tringtone\ttrim+fade\t2× speed\t| problem"]
+        var good = 0.0, n = 0.0
+        func near(_ a: Double?, _ b: Double, _ tol: Double) -> Bool { a.map { abs($0 - b) <= tol } ?? false }
+        for (i, clip) in clips.prefix(10).enumerated() {
+            guard let len = await Self.seconds(clip), len > 3 else { continue }
+            var fails: [String] = []
+            var conv = true
+            for f in [AudioConvert.Format.m4a, .aiff] {
+                if case .success(let u) = await AudioConvert.convert(clip, to: f) {
+                    if !near(await Self.seconds(u), len, 0.15) { conv = false; fails.append("\(f.rawValue) length changed") }
+                } else { conv = false; fails.append("\(f.rawValue) failed") }
+            }
+            let size = (try? clip.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+            var comp = false
+            if case .success(let r) = await AudioConvert.compress(clip, level: .smallest) {
+                let s2 = (try? r.url.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? .max
+                comp = s2 < size / 4 && near(await Self.seconds(r.url), len, 0.15)
+                if !comp { fails.append("compress: \(s2 / 1000) KB from \(size / 1000) KB") }
+            } else { fails.append("compress failed") }
+            var ring = false
+            if case .success(let u) = await AudioConvert.ringtone(clip, start: 1, length: 2.5, fade: 0.3) {
+                ring = near(await Self.seconds(u), 2.5, 0.2) && u.pathExtension.lowercased() == "m4r"
+                if !ring { fails.append("ringtone length or type wrong") }
+            } else { fails.append("ringtone failed") }
+            var trim = false
+            var o = AudioEdit.Options(); o.start = 1; o.end = 3; o.fadeIn = 0.3; o.fadeOut = 0.3
+            if case .success(let u) = await AudioEdit.edit(clip, options: o) {
+                let got = await Self.seconds(u) ?? -1
+                trim = near(got, 2, 0.2)
+                if !trim { fails.append("trim gave \(String(format: "%.2f", got)) s, wanted 2") }
+            } else { fails.append("trim failed") }
+            var fast = false
+            if case .success(let u) = await AudioMix.speed(clip, rate: 2) {
+                let got = await Self.seconds(u) ?? -1
+                fast = near(got, len / 2, max(0.25, len * 0.06))
+                if !fast { fails.append("2× speed gave \(String(format: "%.2f", got)) s from \(String(format: "%.2f", len))") }
+            } else { fails.append("speed failed") }
+            n += 1; if fails.isEmpty { good += 1 }
+            lines.append("\(i)\t\(String(format: "%.1f", len))\t\(conv ? 1 : 0)\t\(comp ? 1 : 0)\t\(ring ? 1 : 0)\t\(trim ? 1 : 0)\t\(fast ? 1 : 0)\t| \(fails.joined(separator: "; "))")
+        }
+        // Join: two clips end to end make one clip as long as both.
+        if clips.count >= 2, let a = await Self.seconds(clips[0]), let b = await Self.seconds(clips[1]) {
+            n += 1
+            if case .success(let u) = await AudioMix.merge([clips[0], clips[1]]), near(await Self.seconds(u), a + b, 0.3) { good += 1; lines.append("join\t\(String(format: "%.1f", a + b))\t\t\t\t\t\t| ") }
+            else { lines.append("join\t\(String(format: "%.1f", a + b))\t\t\t\t\t\t| joined length wrong or failed") }
+        }
+        lines.insert(String(format: "SCORE audio-tools n=%.0f %.3f", n, good / max(1, n)), at: 0)
         report(lines)
     }
 }

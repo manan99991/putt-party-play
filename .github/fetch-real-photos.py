@@ -4,6 +4,7 @@
   sroie/      ICDAR 2019 SROIE shop receipts + official shop/date/total          (GitHub)
   cord/       CORD v2 receipts (Indonesian shops) + every item, price and total   (Hugging Face)
   hand/       IAM handwritten lines + their exact text                            (Hugging Face)
+  speech/     real read-aloud recordings (LibriSpeech sample) + their exact words   (Hugging Face)
   pdfs/       real-world PDFs from the PDF.js test corpus (odd fonts, scans, forms, rotations)  (GitHub)
   web/        hand-picked hard photos (menus, posters, cards, boards) listed in
               ios/RealPhotos/web.json, with their right answers in the same file
@@ -86,6 +87,19 @@ def pdfs():
             os.replace(src, os.path.join(o, os.path.basename(f)))
 
 
+def speech():
+    import shutil
+    d = os.path.join(out, "speech"); os.makedirs(d, exist_ok=True)
+    rows = parquet_rows("hf-internal-testing/librispeech_asr_dummy", "clean", "validation", min(limit, 20))
+    for i, r in enumerate(rows):
+        a = r["audio"]
+        src = os.path.join(d, f"{i:03d}.flac")
+        open(src, "wb").write(a["bytes"])
+        open(os.path.join(d, f"{i:03d}.txt"), "w").write(r["text"])
+        if shutil.which("afconvert"):   # macOS: a plain WAV every tool can open
+            subprocess.run(["afconvert", "-f", "WAVE", "-d", "LEI16", src, os.path.join(d, f"{i:03d}.wav")], check=False)
+
+
 def web():
     here = os.path.dirname(os.path.abspath(__file__))
     listing = os.path.join(here, "..", "ios", "RealPhotos", "web.json")
@@ -105,7 +119,8 @@ step("sroie", sroie)
 step("cord", cord)
 step("hand", hand)
 step("pdfs", pdfs)
+step("speech", speech)
 step("web", web)
-for s in ["sroie/data/img", "cord", "hand", "pdfs", "web"]:
+for s in ["sroie/data/img", "cord", "hand", "pdfs", "speech", "web"]:
     p = os.path.join(out, s)
     print(s, len(os.listdir(p)) if os.path.isdir(p) else 0)
