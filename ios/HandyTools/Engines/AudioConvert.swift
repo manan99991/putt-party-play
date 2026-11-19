@@ -32,6 +32,24 @@ enum AudioConvert {
             }
         }
 
+        /// "What's it for?" → the format that fits, so nobody has to know what AIFF is.
+        static let purposes: [(label: String, format: Format, why: String)] = [
+            ("Email or message it", .m4a, "M4A is about a tenth the size of WAV and plays on every phone and computer."),
+            ("Works everywhere", .wav, "WAV opens in every app, website and car stereo — it's just bigger."),
+            ("Edit in GarageBand or Logic", .aiff, "AIFF is the lossless format Apple's audio apps prefer."),
+            ("Burn to a CD or DJ software", .wav, "WAV is what CD burners and DJ apps expect."),
+            ("Upload to a website", .wav, "Most upload forms accept WAV even when they refuse M4A."),
+            ("Very long recording", .caf, "CAF has no 4 GB limit, so hours of audio stay in one file."),
+        ]
+
+        /// Roughly how big the result will be, from the length — shown before converting.
+        static func estimatedBytes(_ f: Format, seconds: Double, sampleRate: Double = 44_100, channels: Int = 2) -> Double {
+            switch f {
+            case .m4a: return seconds * 128_000 / 8
+            case .wav, .aiff, .caf: return seconds * sampleRate * Double(channels) * 2
+            }
+        }
+
         var detail: String {
             switch self {
             case .m4a: return "Small file, plays everywhere"

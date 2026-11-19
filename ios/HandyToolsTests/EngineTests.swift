@@ -2608,6 +2608,17 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testAudioConvertPicksFormatByPurpose() {
+        let p = AudioConvert.Format.purposes
+        XCTAssertEqual(p.first { $0.label == "Email or message it" }?.format, .m4a)
+        XCTAssertEqual(p.first { $0.label == "Edit in GarageBand or Logic" }?.format, .aiff)
+        XCTAssertEqual(p.first { $0.label == "Very long recording" }?.format, .caf)
+        XCTAssertEqual(Set(p.map(\.label)).count, p.count, "no duplicate choices")
+        XCTAssertEqual(AudioConvert.Format.estimatedBytes(.m4a, seconds: 60), 960_000, accuracy: 1)
+        XCTAssertEqual(AudioConvert.Format.estimatedBytes(.wav, seconds: 60), 10_584_000, accuracy: 1)
+        XCTAssertLessThan(AudioConvert.Format.estimatedBytes(.m4a, seconds: 60), AudioConvert.Format.estimatedBytes(.wav, seconds: 60) / 10, "'about a tenth the size' is true")
+    }
+
     func testRoomMathWhatToBuyAndSavedMeasurements() {
         let n = RoomMath.needs(floorArea: 20, perimeter: 18, ceiling: 2.4, doors: 1, windows: 1, coats: 2, tileSide: 0.3, metric: true)
         XCTAssertEqual(n.wallArea, 39.8, accuracy: 0.001, "walls minus a door and a window")

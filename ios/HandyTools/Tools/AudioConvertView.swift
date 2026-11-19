@@ -17,13 +17,28 @@ struct AudioConvertView: View {
     @State private var resultURL: URL?
     @State private var errorText: String?
     @State private var showFiles = false
+    @State private var purpose: String?
+    @State private var seconds: Double = 0
+    @State private var sourceBytes: Int = 0
+    @State private var resultBytes: Int = 0
+    // Several files at once: converted one after another, then shared together.
+    @State private var batch: [URL] = []
+    @State private var batchDone: [URL] = []
+    @State private var batchFailed = 0
 
     var body: some View {
         ToolPage(title: "Audio Convert",
-                 subtitle: "Swap an audio file between M4A, WAV, AIFF and CAF — on your phone.",
+                 subtitle: "Swap audio between M4A, WAV, AIFF and CAF — one file or a whole batch — picked by what it's for, on your phone.",
                  working: working) {
             VStack(spacing: HandySpacing.s16) {
-                if sourceURL == nil {
+                HowTo("audioconvert", [
+                    "Choose one audio file — or several voice memos at once.",
+                    "Tap what it's for (email it, GarageBand, a CD…) and the right format is picked for you.",
+                    "Play the preview, then Save or Share. The size before and after is shown.",
+                ])
+                if !batch.isEmpty {
+                    batchCard
+                } else if sourceURL == nil {
                     pickCard
                 } else {
                     editor
@@ -32,8 +47,9 @@ struct AudioConvertView: View {
             .padding(.horizontal, HandySpacing.gutter)
             .padding(.vertical, HandySpacing.s12)
         }
-        .fileImporter(isPresented: $showFiles, allowedContentTypes: [.audio, .movie]) { res in
-            if case .success(let url) = res { load(url) }
+        .fileImporter(isPresented: $showFiles, allowedContentTypes: [.audio, .movie], allowsMultipleSelection: true) { res in
+            guard case .success(let urls) = res, !urls.isEmpty else { return }
+            if urls.count == 1 { load(urls[0]) } else { loadBatch(urls) }
         }
         .onChange(of: format) { _, _ in clearResult() }
         .finishes(working, tool: "Audio Convert")
@@ -47,7 +63,7 @@ struct AudioConvertView: View {
             Image(systemName: "waveform.path").font(.system(size: 44)).foregroundStyle(HandyColor.accent)
             Text(L("Choose an audio file, then convert it to another format."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            Text(L("Works with M4A, MP3, WAV, AIFF, CAF and the audio from a video."))
+            Text(L("Works with M4A, MP3, WAV, AIFF, CAF and the audio from a video. Pick several to convert them all at once."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
             Button { showFiles = true } label: {
                 Label(L("Choose audio"), systemImage: "folder").frame(maxWidth: .infinity)
@@ -71,6 +87,11 @@ struct AudioConvertView: View {
             .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
 
+            if seconds > 0 {
+                Text("\(GeoFormat.duration(seconds)) · \(ByteCountFormatter.string(fromByteCount: Int64(sourceBytes), countStyle: .file)) → \(L("about")) \(ByteCountFormatter.string(fromByteCount: Int64(AudioConvert.Format.estimatedBytes(format, seconds: seconds)), countStyle: .file)) \(L("as")) \(format.ext.uppercased())")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+            }
+            purposeChips
             formatPicker
 
             if sourceIsMP3 {
@@ -100,6 +121,85 @@ struct AudioConvertView: View {
         }
     }
 
+    private var purposeChips: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(L("What's it for?")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(AudioConvert.Format.purposes, id: \.label) { p in
+                    HChip(text: L(p.label), selected: purpose == p.label) { purpose = p.label; format = p.format }
+                }
+            }
+            if let p = AudioConvert.Format.purposes.first(where: { $0.label == purpose }) {
+                Text(L(p.why)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var batchCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            Text("\(batch.count) \(L("files"))").font(HandyFont.bodyStrong)
+            ForEach(batch, id: \.self) { u in
+                HStack {
+                    Image(systemName: "waveform").foregroundStyle(HandyColor.accent)
+                    Text(u.lastPathComponent).font(HandyFont.caption).lineLimit(1).truncationMode(.middle)
+                }
+            }
+            purposeChips
+            formatPicker
+            if !working, !batchDone.isEmpty, batchDone.count + batchFailed == batch.count {
+                Label("\(batchDone.count) \(L("converted"))" + (batchFailed > 0 ? " · \(batchFailed) \(L("couldn't be read"))" : ""), systemImage: "checkmark.circle.fill")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                AudioPlayBar(url: batchDone[0])
+                ShareLink(items: batchDone) { Label(L("Save or share all"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            } else {
+                Button { runBatch() } label: { Label("\(L("Convert all to")) \(format.ext.uppercased())", systemImage: "arrow.right.circle").frame(maxWidth: .infinity) }
+                    .primaryButton().disabled(working).accessibilityIdentifier("audio-convert-all")
+            }
+            if working { ToolProgressBar(value: progress, label: "\(L("Converting")) \(min(batchDone.count + batchFailed + 1, batch.count)) / \(batch.count)…") }
+            Button(L("Choose different files")) { batch = []; batchDone = []; batchFailed = 0 }.textButton().font(HandyFont.caption)
+        }
+        .cardStyle(padding: HandySpacing.s12)
+    }
+
+    private func loadBatch(_ urls: [URL]) {
+        var out: [URL] = []
+        for url in urls.prefix(50) {
+            let access = url.startAccessingSecurityScopedResource()
+            defer { if access { url.stopAccessingSecurityScopedResource() } }
+            let local = FileManager.default.temporaryDirectory.appendingPathComponent("batch-\(UUID().uuidString.prefix(6))", isDirectory: true)
+            try? FileManager.default.createDirectory(at: local, withIntermediateDirectories: true)
+            let dest = local.appendingPathComponent(url.lastPathComponent)
+            if (try? FileManager.default.copyItem(at: url, to: dest)) != nil { out.append(dest) }
+        }
+        batch = out; batchDone = []; batchFailed = 0; sourceURL = nil; clearResult()
+        if out.contains(where: { $0.pathExtension.lowercased() == "mp3" }) { format = .m4a }
+    }
+
+    private func runBatch() {
+        let list = batch, target = format
+        working = true; batchDone = []; batchFailed = 0; progress = 0
+        let outDir = FileManager.default.temporaryDirectory.appendingPathComponent("converted-\(UUID().uuidString.prefix(6))", isDirectory: true)
+        try? FileManager.default.createDirectory(at: outDir, withIntermediateDirectories: true)
+        Task {
+            for (i, src) in list.enumerated() {
+                let outcome = await AudioConvert.convert(src, to: target) { p in
+                    Task { @MainActor in progress = (Double(i) + p) / Double(list.count) }
+                }
+                await MainActor.run {
+                    switch outcome {
+                    case .success(let tmp):
+                        var named = outDir.appendingPathComponent("\(safeName(src.deletingPathExtension().lastPathComponent)).\(target.ext)")
+                        if FileManager.default.fileExists(atPath: named.path) { named = outDir.appendingPathComponent("\(safeName(src.deletingPathExtension().lastPathComponent)) \(i + 1).\(target.ext)") }
+                        batchDone.append((try? FileManager.default.moveItem(at: tmp, to: named)) != nil ? named : tmp)
+                    case .failure:
+                        batchFailed += 1
+                    }
+                }
+            }
+            await MainActor.run { working = false; progress = 1; if !batchDone.isEmpty { HandyHaptics.success() } }
+        }
+    }
+
     private var formatPicker: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text(L("Convert to")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -119,6 +219,11 @@ struct AudioConvertView: View {
             Label(L("Converted — play it below, then save or share."), systemImage: "checkmark.circle.fill")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            if resultBytes > 0, sourceBytes > 0 {
+                let change = Double(resultBytes - sourceBytes) / Double(sourceBytes) * 100
+                Text("\(ByteCountFormatter.string(fromByteCount: Int64(sourceBytes), countStyle: .file)) → \(ByteCountFormatter.string(fromByteCount: Int64(resultBytes), countStyle: .file)) (\(change < 0 ? "\(Int(-change.rounded()))% \(L("smaller"))" : "\(Int(change.rounded()))% \(L("bigger"))"))")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
+            }
             AudioPlayBar(url: url)
             ShareLink(item: url) {
                 Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
@@ -141,7 +246,11 @@ struct AudioConvertView: View {
             errorText = "Couldn't open that audio file."; return
         }
         sourceURL = local
+        batch = []
         fileName = url.deletingPathExtension().lastPathComponent
+        sourceBytes = ((try? FileManager.default.attributesOfItem(atPath: local.path)[.size]) as? NSNumber)?.intValue ?? 0
+        seconds = 0
+        Task { if let d = try? await AVURLAsset(url: local).load(.duration) { seconds = d.seconds.isFinite ? d.seconds : 0 } }
         sourceIsMP3 = url.pathExtension.lowercased() == "mp3"
         // A sensible default: converting an MP3? aim at M4A. Otherwise keep the current choice.
         if sourceIsMP3 { format = .m4a }
@@ -153,7 +262,7 @@ struct AudioConvertView: View {
     }
 
     private func clearResult() {
-        resultURL = nil; errorText = nil; progress = 0
+        resultURL = nil; errorText = nil; progress = 0; resultBytes = 0
     }
 
     private func run() {
@@ -173,6 +282,7 @@ struct AudioConvertView: View {
                     try? FileManager.default.removeItem(at: named)
                     let final = (try? FileManager.default.moveItem(at: tmp, to: named)) != nil ? named : tmp
                     resultURL = final
+                    resultBytes = ((try? FileManager.default.attributesOfItem(atPath: final.path)[.size]) as? NSNumber)?.intValue ?? 0
                     HandyHaptics.success()
                 case .failure(let f):
                     errorText = f.message

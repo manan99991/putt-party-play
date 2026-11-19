@@ -579,6 +579,16 @@
   "pt": "O endereço oficial de um site conhecido",
   "zh": "知名网站的官方地址"
  },
+ "AIFF is the lossless format Apple's audio apps prefer.": {
+  "de": "AIFF ist das verlustfreie Format, das Apples Audio-Apps bevorzugen.",
+  "es": "AIFF es el formato sin pérdida que prefieren las apps de audio de Apple.",
+  "fr": "AIFF est le format sans perte que préfèrent les apps audio d'Apple.",
+  "hi": "AIFF वह लॉसलेस फ़ॉर्मैट है जो Apple के ऑडियो ऐप पसंद करते हैं।",
+  "it": "AIFF è il formato senza perdita preferito dalle app audio di Apple.",
+  "ja": "AIFFはAppleのオーディオアプリが好むロスレス形式です。",
+  "pt": "AIFF é o formato sem perdas preferido pelos apps de áudio da Apple.",
+  "zh": "AIFF 是苹果音频应用首选的无损格式。"
+ },
  "AR tape: distance, height, area": {
   "de": "AR-Maßband: Distanz, Höhe, Fläche",
   "es": "Cinta AR: distancia, altura, área",
@@ -2299,6 +2309,16 @@
   "pt": "Junte arquivos em um .zip",
   "zh": "将文件打包成一个.zip"
  },
+ "Burn to a CD or DJ software": {
+  "de": "Auf CD brennen oder DJ-Software",
+  "es": "Grabar un CD o software de DJ",
+  "fr": "Graver un CD ou logiciel DJ",
+  "hi": "CD बर्न या DJ सॉफ़्टवेयर",
+  "it": "Masterizzare un CD o software DJ",
+  "ja": "CD作成やDJソフト",
+  "pt": "Gravar CD ou software de DJ",
+  "zh": "刻录 CD 或 DJ 软件"
+ },
  "Burst": {
   "de": "Strahlen",
   "es": "Estallido",
@@ -2318,6 +2338,16 @@
   "ja": "名刺",
   "pt": "Cartões de visita",
   "zh": "名片"
+ },
+ "CAF has no 4 GB limit, so hours of audio stay in one file.": {
+  "de": "CAF hat keine 4-GB-Grenze, so bleiben Stunden Audio in einer Datei.",
+  "es": "CAF no tiene el límite de 4 GB, así que horas de audio caben en un archivo.",
+  "fr": "CAF n'a pas de limite de 4 Go : des heures d'audio tiennent dans un fichier.",
+  "hi": "CAF में 4 GB की सीमा नहीं, इसलिए घंटों का ऑडियो एक फ़ाइल में रहता है।",
+  "it": "CAF non ha il limite di 4 GB, quindi ore di audio stanno in un file.",
+  "ja": "CAFには4GBの制限がないため、何時間もの音声を1ファイルにできます。",
+  "pt": "CAF não tem limite de 4 GB, então horas de áudio cabem num arquivo.",
+  "zh": "CAF 没有 4 GB 限制，几小时的音频也能存成一个文件。"
  },
  "Calibrate": {
   "de": "Kalibrieren",
@@ -2999,6 +3029,16 @@
   "pt": "Escolher clipes",
   "zh": "选择片段"
  },
+ "Choose different files": {
+  "de": "Andere Dateien wählen",
+  "es": "Elegir otros archivos",
+  "fr": "Choisir d'autres fichiers",
+  "hi": "दूसरी फ़ाइलें चुनें",
+  "it": "Scegli altri file",
+  "ja": "別のファイルを選ぶ",
+  "pt": "Escolher outros arquivos",
+  "zh": "选择其他文件"
+ },
  "Choose different photos": {
   "de": "Andere Fotos wählen",
   "es": "Elegir otras fotos",
@@ -3018,6 +3058,16 @@
   "ja": "メニューの写真を選ぶ",
   "pt": "Escolher foto do cardápio",
   "zh": "选择菜单照片"
+ },
+ "Choose one audio file — or several voice memos at once.": {
+  "de": "Wähle eine Audiodatei – oder mehrere Sprachmemos auf einmal.",
+  "es": "Elige un archivo de audio o varias notas de voz a la vez.",
+  "fr": "Choisissez un fichier audio — ou plusieurs mémos vocaux à la fois.",
+  "hi": "एक ऑडियो फ़ाइल चुनें — या एक साथ कई वॉइस मेमो।",
+  "it": "Scegli un file audio, o più memo vocali insieme.",
+  "ja": "音声ファイルを1つ — またはボイスメモを複数まとめて選びます。",
+  "pt": "Escolha um arquivo de áudio — ou vários memorandos de voz de uma vez.",
+  "zh": "选择一个音频文件，或一次选多个语音备忘录。"
  },
  "Choose photos": {
   "de": "Fotos auswählen",
@@ -3549,6 +3599,16 @@
   "pt": "Converter de novo",
   "zh": "再次转换"
  },
+ "Convert all to": {
+  "de": "Alle umwandeln in",
+  "es": "Convertir todo a",
+  "fr": "Tout convertir en",
+  "hi": "सबको बदलें:",
+  "it": "Converti tutto in",
+  "ja": "すべて変換：",
+  "pt": "Converter tudo para",
+  "zh": "全部转换为"
+ },
  "Convert to": {
   "de": "Umwandeln in",
   "es": "Convertir a",
@@ -3598,6 +3658,16 @@
   "ja": "変換",
   "pt": "Conversor",
   "zh": "转换器"
+ },
+ "Converting": {
+  "de": "Umwandeln",
+  "es": "Convirtiendo",
+  "fr": "Conversion",
+  "hi": "बदल रहे हैं",
+  "it": "Conversione",
+  "ja": "変換中",
+  "pt": "Convertendo",
+  "zh": "正在转换"
  },
  "Converting took too long and was stopped.": {
   "de": "Die Umwandlung dauerte zu lange und wurde gestoppt.",
@@ -5309,6 +5379,16 @@
   "pt": "Editar tudo em Contactos",
   "zh": "在通讯录中编辑全部"
  },
+ "Edit in GarageBand or Logic": {
+  "de": "In GarageBand oder Logic bearbeiten",
+  "es": "Editar en GarageBand o Logic",
+  "fr": "Éditer dans GarageBand ou Logic",
+  "hi": "GarageBand या Logic में एडिट करें",
+  "it": "Modificare in GarageBand o Logic",
+  "ja": "GarageBandやLogicで編集",
+  "pt": "Editar no GarageBand ou Logic",
+  "zh": "在 GarageBand 或 Logic 中编辑"
+ },
  "Egg": {
   "de": "Ei",
   "es": "Huevo",
@@ -5378,6 +5458,16 @@
   "ja": "連絡先カードとしてメール",
   "pt": "Enviar como cartões",
   "zh": "以名片发邮件"
+ },
+ "Email or message it": {
+  "de": "Per E-Mail oder Nachricht senden",
+  "es": "Enviarlo por correo o mensaje",
+  "fr": "L'envoyer par e-mail ou message",
+  "hi": "ईमेल या मैसेज करें",
+  "it": "Inviarlo per email o messaggio",
+  "ja": "メールやメッセージで送る",
+  "pt": "Enviar por e-mail ou mensagem",
+  "zh": "发邮件或消息"
  },
  "Emergency": {
   "de": "Notfall",
@@ -9199,6 +9289,16 @@
   "pt": "Valores de sensibilidade mais baixos disparam mais cedo. O sensor fica perto do topo do telemóvel — passa essa extremidade pela parede ou pelo chão.",
   "zh": "灵敏度数值越低越早触发。传感器位于手机顶部附近 — 用那一端在墙面或地面上扫动。"
  },
+ "M4A is about a tenth the size of WAV and plays on every phone and computer.": {
+  "de": "M4A ist etwa ein Zehntel so groß wie WAV und spielt auf jedem Telefon und Computer.",
+  "es": "M4A ocupa una décima parte que WAV y suena en cualquier teléfono y ordenador.",
+  "fr": "M4A fait environ un dixième de la taille d'un WAV et se lit sur tous les téléphones et ordinateurs.",
+  "hi": "M4A, WAV से लगभग दसवाँ हिस्सा होता है और हर फ़ोन व कंप्यूटर पर चलता है।",
+  "it": "M4A è circa un decimo di un WAV e si ascolta su ogni telefono e computer.",
+  "ja": "M4AはWAVの約10分の1のサイズで、どのスマホやパソコンでも再生できます。",
+  "pt": "M4A tem cerca de um décimo do tamanho de WAV e toca em qualquer telefone e computador.",
+  "zh": "M4A 约为 WAV 的十分之一大小，任何手机和电脑都能播放。"
+ },
  "Made by a Dad.": {
   "de": "Von einem Papa gemacht.",
   "es": "Hecho por un papá.",
@@ -9988,6 +10088,16 @@
   "ja": "最新",
   "pt": "Mais recente",
   "zh": "最近"
+ },
+ "Most upload forms accept WAV even when they refuse M4A.": {
+  "de": "Die meisten Upload-Formulare nehmen WAV, auch wenn sie M4A ablehnen.",
+  "es": "La mayoría de formularios aceptan WAV aunque rechacen M4A.",
+  "fr": "La plupart des formulaires acceptent WAV même s'ils refusent M4A.",
+  "hi": "ज़्यादातर अपलोड फ़ॉर्म M4A न लें तब भी WAV ले लेते हैं।",
+  "it": "La maggior parte dei moduli accetta WAV anche se rifiuta M4A.",
+  "ja": "M4Aを受け付けないフォームでも、たいていWAVはOKです。",
+  "pt": "A maioria dos formulários aceita WAV mesmo quando recusa M4A.",
+  "zh": "很多上传表单不收 M4A，但接受 WAV。"
  },
  "Most website forms": {
   "de": "Die meisten Webformulare",
@@ -13059,6 +13169,16 @@
   "pt": "Ouvir prévia",
   "zh": "播放预览"
  },
+ "Play the preview, then Save or Share. The size before and after is shown.": {
+  "de": "Hör die Vorschau an, dann Sichern oder Teilen. Die Größe vorher und nachher wird angezeigt.",
+  "es": "Escucha la vista previa y luego guarda o comparte. Se muestra el tamaño antes y después.",
+  "fr": "Écoutez l'aperçu, puis enregistrez ou partagez. La taille avant et après est affichée.",
+  "hi": "पूर्वावलोकन सुनें, फिर सेव या शेयर करें। पहले और बाद का आकार दिखता है।",
+  "it": "Ascolta l'anteprima, poi salva o condividi. Vedi la dimensione prima e dopo.",
+  "ja": "プレビューを再生してから保存・共有。変換前後のサイズが表示されます。",
+  "pt": "Ouça a prévia e depois salve ou compartilhe. O tamanho antes e depois é mostrado.",
+  "zh": "先试听，再保存或分享。会显示转换前后的大小。"
+ },
  "Plays": {
   "de": "Durchläufe",
   "es": "Reproducciones",
@@ -15028,6 +15148,16 @@
   "ja": "PDFを保存・共有",
   "pt": "Salvar ou compartilhar PDF",
   "zh": "保存或分享PDF"
+ },
+ "Save or share all": {
+  "de": "Alle sichern oder teilen",
+  "es": "Guardar o compartir todo",
+  "fr": "Tout enregistrer ou partager",
+  "hi": "सब सेव या शेयर करें",
+  "it": "Salva o condividi tutto",
+  "ja": "すべて保存・共有",
+  "pt": "Salvar ou compartilhar tudo",
+  "zh": "全部保存或分享"
  },
  "Save or share collage": {
   "de": "Collage sichern oder teilen",
@@ -17759,6 +17889,16 @@
   "pt": "Troque um áudio entre M4A, WAV, AIFF e CAF — no seu telefone.",
   "zh": "在手机上将音频在M4A、WAV、AIFF、CAF之间转换。"
  },
+ "Swap audio between M4A, WAV, AIFF and CAF — one file or a whole batch — picked by what it's for, on your phone.": {
+  "de": "Audio zwischen M4A, WAV, AIFF und CAF umwandeln – eine Datei oder viele – passend zum Zweck, auf deinem Telefon.",
+  "es": "Cambia audio entre M4A, WAV, AIFF y CAF —un archivo o un lote— según para qué sea, en tu teléfono.",
+  "fr": "Convertissez l'audio entre M4A, WAV, AIFF et CAF — un fichier ou un lot — selon l'usage, sur votre téléphone.",
+  "hi": "ऑडियो को M4A, WAV, AIFF और CAF में बदलें — एक फ़ाइल या कई — काम के हिसाब से, अपने फ़ोन पर।",
+  "it": "Converti l'audio tra M4A, WAV, AIFF e CAF, un file o un gruppo, in base all'uso, sul telefono.",
+  "ja": "音声をM4A・WAV・AIFF・CAFに変換 — 1つでもまとめてでも、用途に合わせて、iPhone上で。",
+  "pt": "Converta áudio entre M4A, WAV, AIFF e CAF — um arquivo ou vários — conforme o uso, no seu telefone.",
+  "zh": "在手机上把音频在 M4A、WAV、AIFF、CAF 间转换——单个或批量——按用途选格式。"
+ },
  "Swap languages": {
   "de": "Sprachen tauschen",
   "es": "Intercambiar idiomas",
@@ -18318,6 +18458,16 @@
   "ja": "タップして zip 内のファイル名を変更",
   "pt": "Toque para mudar o nome dentro do zip",
   "zh": "点击可重命名 zip 里的这个文件"
+ },
+ "Tap what it's for (email it, GarageBand, a CD…) and the right format is picked for you.": {
+  "de": "Tippe, wofür es ist (E-Mail, GarageBand, CD …), und das passende Format wird gewählt.",
+  "es": "Toca para qué es (correo, GarageBand, un CD…) y se elige el formato adecuado.",
+  "fr": "Touchez l'usage (e-mail, GarageBand, CD…) et le bon format est choisi.",
+  "hi": "बताएँ किसलिए है (ईमेल, GarageBand, CD…) और सही फ़ॉर्मैट अपने-आप चुना जाएगा।",
+  "it": "Tocca a cosa serve (email, GarageBand, un CD…) e il formato giusto viene scelto.",
+  "ja": "用途（メール、GarageBand、CDなど）をタップすると最適な形式が選ばれます。",
+  "pt": "Toque no uso (e-mail, GarageBand, um CD…) e o formato certo é escolhido.",
+  "zh": "点用途（发邮件、GarageBand、刻 CD…），自动选好格式。"
  },
  "Tax %": {
   "de": "Steuer %",
@@ -20709,6 +20859,16 @@
   "pt": "Até 72 fotogramas. Mais pequeno + menos fps = um GIF que se envia mesmo no chat.",
   "zh": "最多 72 帧。更小 + 更低帧率＝真正能在聊天里发出去的 GIF。"
  },
+ "Upload to a website": {
+  "de": "Auf eine Website hochladen",
+  "es": "Subir a una web",
+  "fr": "Envoyer sur un site",
+  "hi": "वेबसाइट पर अपलोड",
+  "it": "Caricare su un sito",
+  "ja": "ウェブサイトにアップロード",
+  "pt": "Enviar para um site",
+  "zh": "上传到网站"
+ },
  "Upscale 2× (sharper, larger file)": {
   "de": "2× hochskalieren (schärfer, größere Datei)",
   "es": "Ampliar 2× (más nítido, archivo mayor)",
@@ -20879,6 +21039,16 @@
   "pt": "Muito próximas — a maioria diria que são iguais",
   "zh": "非常接近——大多数人会说是同一种"
  },
+ "Very long recording": {
+  "de": "Sehr lange Aufnahme",
+  "es": "Grabación muy larga",
+  "fr": "Enregistrement très long",
+  "hi": "बहुत लंबी रिकॉर्डिंग",
+  "it": "Registrazione molto lunga",
+  "ja": "とても長い録音",
+  "pt": "Gravação muito longa",
+  "zh": "很长的录音"
+ },
  "Video": {
   "de": "Video",
   "es": "Vídeo",
@@ -20998,6 +21168,26 @@
   "ja": "声の高さは自然なままです。",
   "pt": "As vozes mantêm o tom natural.",
   "zh": "人声保持自然音调。"
+ },
+ "WAV is what CD burners and DJ apps expect.": {
+  "de": "WAV erwarten CD-Brenner und DJ-Apps.",
+  "es": "WAV es lo que esperan las grabadoras de CD y las apps de DJ.",
+  "fr": "WAV est ce qu'attendent les graveurs de CD et les apps DJ.",
+  "hi": "CD बर्नर और DJ ऐप WAV ही चाहते हैं।",
+  "it": "WAV è ciò che si aspettano masterizzatori e app DJ.",
+  "ja": "CD作成やDJアプリはWAVを想定しています。",
+  "pt": "WAV é o que gravadores de CD e apps de DJ esperam.",
+  "zh": "刻录软件和 DJ 应用需要 WAV。"
+ },
+ "WAV opens in every app, website and car stereo — it's just bigger.": {
+  "de": "WAV öffnet sich in jeder App, Website und im Autoradio – es ist nur größer.",
+  "es": "WAV se abre en cualquier app, web y radio de coche; solo es más grande.",
+  "fr": "WAV s'ouvre dans toutes les apps, sites et autoradios — il est juste plus lourd.",
+  "hi": "WAV हर ऐप, वेबसाइट और कार स्टीरियो में खुलता है — बस बड़ा होता है।",
+  "it": "WAV si apre in ogni app, sito e autoradio: è solo più grande.",
+  "ja": "WAVはどのアプリ、サイト、カーステレオでも開けます — サイズが大きいだけです。",
+  "pt": "WAV abre em qualquer app, site e som de carro — só é maior.",
+  "zh": "WAV 在所有应用、网站和车载音响上都能打开——只是更大。"
  },
  "Waiting for a GPS fix…": {
   "de": "Warte auf GPS-Fix…",
@@ -21669,6 +21859,16 @@
   "pt": "Funciona melhor com capturas do mesmo ecrã tiradas ao deslizares, escolhidas por ordem. O Tenzy encontra a sobreposição entre cada par e junta-as sem emendas — tudo no teu telemóvel.",
   "zh": "最适合用滚动时对同一屏幕拍的截图，按顺序选择。Tenzy 会找出每对之间的重叠并无缝拼接 — 全部在你的手机上。"
  },
+ "Works everywhere": {
+  "de": "Funktioniert überall",
+  "es": "Funciona en todas partes",
+  "fr": "Marche partout",
+  "hi": "हर जगह चले",
+  "it": "Funziona ovunque",
+  "ja": "どこでも使える",
+  "pt": "Funciona em qualquer lugar",
+  "zh": "到处都能用"
+ },
  "Works offline and on files other apps choke on — if something can't preview, you still get its details and a way to share it, never a dead end.": {
   "de": "Funktioniert offline und mit Dateien, an denen andere Apps scheitern — lässt sich etwas nicht in der Vorschau anzeigen, bekommst du trotzdem Details und einen Weg zum Teilen, nie eine Sackgasse.",
   "es": "Funciona sin conexión y con archivos que atascan a otras apps: si algo no se puede previsualizar, aún obtienes sus detalles y una forma de compartirlo, nunca un callejón sin salida.",
@@ -21698,6 +21898,16 @@
   "ja": "M4A・MP3・WAV・AIFF・CAF、動画の音声に対応。",
   "pt": "Funciona com M4A, MP3, WAV, AIFF, CAF e o áudio de vídeos.",
   "zh": "支持M4A、MP3、WAV、AIFF、CAF及视频中的音频。"
+ },
+ "Works with M4A, MP3, WAV, AIFF, CAF and the audio from a video. Pick several to convert them all at once.": {
+  "de": "Funktioniert mit M4A, MP3, WAV, AIFF, CAF und dem Ton eines Videos. Wähle mehrere, um alle auf einmal umzuwandeln.",
+  "es": "Funciona con M4A, MP3, WAV, AIFF, CAF y el audio de un vídeo. Elige varios para convertirlos a la vez.",
+  "fr": "Fonctionne avec M4A, MP3, WAV, AIFF, CAF et l'audio d'une vidéo. Choisissez-en plusieurs pour tout convertir d'un coup.",
+  "hi": "M4A, MP3, WAV, AIFF, CAF और वीडियो के ऑडियो के साथ काम करता है। सब एक साथ बदलने के लिए कई चुनें।",
+  "it": "Funziona con M4A, MP3, WAV, AIFF, CAF e l'audio di un video. Scegline più di uno per convertirli tutti insieme.",
+  "ja": "M4A・MP3・WAV・AIFF・CAFと動画の音声に対応。複数選ぶとまとめて変換します。",
+  "pt": "Funciona com M4A, MP3, WAV, AIFF, CAF e o áudio de um vídeo. Escolha vários para converter todos de uma vez.",
+  "zh": "支持 M4A、MP3、WAV、AIFF、CAF 和视频中的音频。多选可一次全部转换。"
  },
  "Worth a second look": {
   "de": "Einen zweiten Blick wert",
@@ -22249,6 +22459,16 @@
   "pt": "uma lista de tarefas",
   "zh": "待办清单"
  },
+ "about": {
+  "de": "etwa",
+  "es": "aprox.",
+  "fr": "environ",
+  "hi": "लगभग",
+  "it": "circa",
+  "ja": "約",
+  "pt": "cerca de",
+  "zh": "约"
+ },
  "are left": {
   "de": "übrig sind",
   "es": "pastillas",
@@ -22259,6 +22479,16 @@
   "pt": "comprimidos",
   "zh": "片时提醒我"
  },
+ "as": {
+  "de": "als",
+  "es": "como",
+  "fr": "en",
+  "hi": "के रूप में",
+  "it": "come",
+  "ja": "で",
+  "pt": "como",
+  "zh": "为"
+ },
  "average": {
   "de": "Durchschnitt",
   "es": "promedio",
@@ -22268,6 +22498,16 @@
   "ja": "平均",
   "pt": "média",
   "zh": "平均"
+ },
+ "bigger": {
+  "de": "größer",
+  "es": "más grande",
+  "fr": "plus grand",
+  "hi": "बड़ा",
+  "it": "più grande",
+  "ja": "大きく",
+  "pt": "maior",
+  "zh": "更大"
  },
  "bills and letters": {
   "de": "Rechnungen und Briefe",
@@ -22328,6 +22568,26 @@
   "ja": "件の連絡先を削除しますか？",
   "pt": "contactos?",
   "zh": "个联系人？"
+ },
+ "converted": {
+  "de": "umgewandelt",
+  "es": "convertidos",
+  "fr": "convertis",
+  "hi": "बदली गईं",
+  "it": "convertiti",
+  "ja": "変換済み",
+  "pt": "convertidos",
+  "zh": "已转换"
+ },
+ "couldn't be read": {
+  "de": "nicht lesbar",
+  "es": "no se pudieron leer",
+  "fr": "illisibles",
+  "hi": "पढ़ी नहीं जा सकीं",
+  "it": "non leggibili",
+  "ja": "読み込めず",
+  "pt": "não puderam ser lidos",
+  "zh": "无法读取"
  },
  "day": {
   "de": "Tag",
@@ -22438,6 +22698,16 @@
   "ja": "本日終了",
   "pt": "termina hoje",
   "zh": "今天到期"
+ },
+ "files": {
+  "de": "Dateien",
+  "es": "archivos",
+  "fr": "fichiers",
+  "hi": "फ़ाइलें",
+  "it": "file",
+  "ja": "ファイル",
+  "pt": "arquivos",
+  "zh": "个文件"
  },
  "from your check — correction is on.": {
   "de": "aus deinem Check – Korrektur ist an.",
@@ -23018,6 +23288,16 @@
   "ja": "短い行は空欄で補完",
   "pt": "linhas curtas preenchidas com vazios",
   "zh": "短行以空白补齐"
+ },
+ "smaller": {
+  "de": "kleiner",
+  "es": "más pequeño",
+  "fr": "plus petit",
+  "hi": "छोटा",
+  "it": "più piccolo",
+  "ja": "小さく",
+  "pt": "menor",
+  "zh": "更小"
  },
  "starting from a PDF": {
   "de": "mit einem PDF starten",
