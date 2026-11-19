@@ -2608,6 +2608,27 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testOrganizePagesMergeSplitAndBlankPages() {
+        func page(_ text: String?) -> UIImage {
+            UIGraphicsImageRenderer(size: CGSize(width: 612, height: 792)).image { c in
+                UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 612, height: 792))
+                if let text { (text as NSString).draw(at: CGPoint(x: 60, y: 80), withAttributes: [.font: UIFont.systemFont(ofSize: 40, weight: .bold), .foregroundColor: UIColor.black]) }
+            }
+        }
+        var o = DocEngine.PDFOptions(); o.searchable = false
+        let a = try! XCTUnwrap(DocEngine.pdf(images: [page("One"), page(nil)], ocr: [nil, nil], options: o))
+        let b = try! XCTUnwrap(DocEngine.pdf(images: [page("Three")], ocr: [nil], options: o))
+        let merged = try! XCTUnwrap(PDFPages.merge(a, b))
+        XCTAssertEqual(PDFDocument(data: merged)?.pageCount, 3, "two PDFs become one")
+        XCTAssertNil(PDFPages.merge(a, Data("not a pdf".utf8)))
+        XCTAssertTrue(PDFPages.looksBlank(page(nil)), "an empty page is blank")
+        XCTAssertFalse(PDFPages.looksBlank(page("Signed")), "a page with words isn't")
+        let parts = PDFPages.split(merged, items: PDFPages.items(pageCount: 3), name: "Lease")
+        XCTAssertEqual(parts.count, 3)
+        XCTAssertEqual(parts.first?.lastPathComponent, "Lease – page 1.pdf")
+        XCTAssertTrue(parts.allSatisfy { PDFDocument(url: $0)?.pageCount == 1 }, "each part is one page")
+    }
+
     func testPDFConvertPagesAndSizes() {
         XCTAssertEqual(DocEngine.pageIndexes(all: true, current: 0, from: 1, to: 1, count: 4), [0, 1, 2, 3])
         XCTAssertEqual(DocEngine.pageIndexes(all: false, current: 2, from: 3, to: 3, count: 4), [2], "this page")

@@ -16,12 +16,20 @@ struct PDFPagesView: View {
     @State private var working = false
     @State private var errorText: String?
     @State private var showFiles = false
+    @State private var adding = false
+    @State private var splitURLs: [URL] = []
+    @State private var note: String?
 
     var body: some View {
         ToolPage(title: "Organize Pages",
-                 subtitle: "Reorder, rotate or remove pages, then save a clean new PDF.",
+                 subtitle: "Reorder, rotate or remove pages, add another PDF, drop blank pages or split into single pages — then save a clean new PDF.",
                  working: working) {
             VStack(spacing: HandySpacing.s16) {
+                HowTo("pdfpages", [
+                    "Choose a PDF. Add another one to combine them into a single file.",
+                    "Move pages up or down, turn them, or remove them. One tap drops blank pages or reverses the order.",
+                    "Make the new PDF, check the preview, then save or share — or split it into one PDF per page.",
+                ])
                 if thumbs.isEmpty { pickCard }
                 else if let url = resultURL { result(url) }
                 else { editor }
@@ -30,7 +38,8 @@ struct PDFPagesView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.pdf]) { res in
-            if case .success(let url) = res { load(url) }
+            if case .success(let url) = res { if adding { append(url) } else { load(url) } }
+            adding = false
         }
         .onAppear { if Launch.sample, thumbs.isEmpty { loadSample() } }
         .handoff("pdfpages") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
@@ -66,6 +75,8 @@ struct PDFPagesView: View {
                         .textButton().font(HandyFont.caption)
                 }
             }
+            quickActions
+            if let note { Text(L(note)).font(HandyFont.caption).foregroundStyle(HandyColor.success).frame(maxWidth: .infinity, alignment: .leading) }
             VStack(spacing: HandySpacing.s8) {
                 ForEach(Array(items.enumerated()), id: \.element.id) { pos, item in row(pos, item) }
             }
@@ -77,7 +88,58 @@ struct PDFPagesView: View {
                 Label(L("Make new PDF"), systemImage: "doc.badge.gearshape").frame(maxWidth: .infinity)
             }.primaryButton().disabled(items.isEmpty || working)
             if working { ToolProgressBar(label: "Building your PDF…") }
+            if splitURLs.isEmpty {
+                Button { split() } label: { Label(L("Split into one PDF per page"), systemImage: "square.split.2x1").frame(maxWidth: .infinity) }
+                    .secondaryButton().disabled(items.count < 2 || working).accessibilityIdentifier("pages-split")
+            } else {
+                ShareLink(items: splitURLs) { Label("\(L("Save or share")) \(splitURLs.count) PDFs", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+            }
             Button(L("Choose a different PDF")) { reset() }.textButton().font(HandyFont.caption)
+        }
+        .onChange(of: items.map(\.id)) { _, _ in splitURLs = [] }
+    }
+
+    private var quickActions: some View {
+        HandyFlow(spacing: HandySpacing.s8) {
+            Button { adding = true; showFiles = true } label: { Label(L("Add another PDF"), systemImage: "plus.rectangle.on.rectangle") }.compactButton()
+                .accessibilityIdentifier("pages-add")
+            Button {
+                let before = items.count
+                items.removeAll { PDFPages.looksBlank(thumbs[$0.index]) }
+                if items.isEmpty { items = PDFPages.items(pageCount: thumbs.count); note = "Every page looked blank, so nothing was removed." }
+                else { note = before == items.count ? "No blank pages found." : "Removed \(before - items.count) blank page\(before - items.count == 1 ? "" : "s")." }
+                splitURLs = []
+            } label: { Label(L("Drop blank pages"), systemImage: "doc.badge.ellipsis") }.compactButton()
+                .accessibilityIdentifier("pages-blank")
+            Button { items.reverse(); splitURLs = []; note = nil } label: { Label(L("Reverse order"), systemImage: "arrow.up.arrow.down") }.compactButton()
+            Button { for i in items.indices { items[i].rotation = PDFPages.normalized(items[i].rotation + 90) }; splitURLs = []; note = nil } label: { Label(L("Turn all"), systemImage: "rotate.right") }.compactButton()
+        }
+    }
+
+    private func append(_ url: URL) {
+        let access = url.startAccessingSecurityScopedResource()
+        defer { if access { url.stopAccessingSecurityScopedResource() } }
+        guard let base = sourceData, let extra = try? Data(contentsOf: url), let merged = PDFPages.merge(base, extra) else {
+            errorText = "Couldn't add that PDF."; return
+        }
+        let newThumbs = DocEngine.importPDF(url, maxWidth: 240)
+        let start = thumbs.count
+        sourceData = merged
+        thumbs += newThumbs
+        items += (start..<thumbs.count).map { PDFPages.Item(index: $0) }
+        fileName = fileName.hasSuffix(" + more") ? fileName : fileName + " + more"
+        note = "Added \(newThumbs.count) page\(newThumbs.count == 1 ? "" : "s") from \(url.deletingPathExtension().lastPathComponent)."
+        splitURLs = []
+    }
+
+    private func split() {
+        guard let data = sourceData else { return }
+        let plan = items, name = fileName.components(separatedBy: CharacterSet(charactersIn: "/\\:")).joined(separator: "-")
+        working = true
+        Task { @MainActor in
+            let urls = await Task.detached(priority: .userInitiated) { PDFPages.split(data, items: plan, name: name.isEmpty ? "Document" : name) }.value
+            working = false; splitURLs = urls
+            if urls.isEmpty { errorText = "Couldn't split the PDF — try again." } else { HandyHaptics.success() }
         }
     }
 
@@ -162,7 +224,7 @@ struct PDFPagesView: View {
     }
 
     private func reset() {
-        sourceData = nil; thumbs = []; items = []; resultURL = nil; resultPreview = nil; errorText = nil
+        sourceData = nil; thumbs = []; items = []; resultURL = nil; resultPreview = nil; errorText = nil; splitURLs = []; note = nil
     }
 
     private func run() {

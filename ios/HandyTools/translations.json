@@ -669,6 +669,16 @@
   "pt": "Adicionar falante",
   "zh": "添加说话人"
  },
+ "Add another PDF": {
+  "de": "Weiteres PDF hinzufügen",
+  "es": "Añadir otro PDF",
+  "fr": "Ajouter un autre PDF",
+  "hi": "दूसरा PDF जोड़ें",
+  "it": "Aggiungi un altro PDF",
+  "ja": "別のPDFを追加",
+  "pt": "Adicionar outro PDF",
+  "zh": "添加另一个 PDF"
+ },
  "Add another time": {
   "de": "Weitere Zeit hinzufügen",
   "es": "Añadir otra hora",
@@ -2799,6 +2809,16 @@
   "pt": "Escolha um PDF — de Arquivos, Mail ou Downloads.",
   "zh": "从“文件”、邮件或下载中选择 PDF。"
  },
+ "Choose a PDF. Add another one to combine them into a single file.": {
+  "de": "Wähle ein PDF. Füge ein weiteres hinzu, um beide zu einer Datei zu machen.",
+  "es": "Elige un PDF. Añade otro para unirlos en un solo archivo.",
+  "fr": "Choisissez un PDF. Ajoutez-en un autre pour les combiner en un seul fichier.",
+  "hi": "एक PDF चुनें। दूसरा जोड़कर दोनों को एक फ़ाइल बनाएँ।",
+  "it": "Scegli un PDF. Aggiungine un altro per unirli in un solo file.",
+  "ja": "PDFを選び、別のPDFを追加すると1つのファイルにまとまります。",
+  "pt": "Escolha um PDF. Adicione outro para juntá-los num só arquivo.",
+  "zh": "选择一个 PDF，再添加另一个即可合并成一个文件。"
+ },
  "Choose a PIN only you know. You'll need it to look back at your days — not to save them.": {
   "de": "Wähle eine PIN, die nur du kennst. Du brauchst sie zum Zurückschauen – nicht zum Speichern.",
   "es": "Elige un PIN que solo tú sepas. Lo necesitarás para revisar tus días, no para guardarlos.",
@@ -3908,6 +3928,16 @@
   "ja": "補正",
   "pt": "Correção",
   "zh": "校正"
+ },
+ "Couldn't add that PDF.": {
+  "de": "Dieses PDF konnte nicht hinzugefügt werden.",
+  "es": "No se pudo añadir ese PDF.",
+  "fr": "Impossible d'ajouter ce PDF.",
+  "hi": "वह PDF नहीं जोड़ सके।",
+  "it": "Impossibile aggiungere quel PDF.",
+  "ja": "そのPDFを追加できませんでした。",
+  "pt": "Não foi possível adicionar esse PDF.",
+  "zh": "无法添加该 PDF。"
  },
  "Couldn't add to Reminders — try again.": {
   "de": "Hinzufügen zu Erinnerungen fehlgeschlagen – bitte erneut versuchen.",
@@ -5179,6 +5209,16 @@
   "pt": "Dirigindo? Veja velocidade e viagem, defina um aviso de velocidade ou ligue o HUD no para-brisa.",
   "zh": "开车？查看速度和行程，设置超速提醒，或打开挡风玻璃 HUD。"
  },
+ "Drop blank pages": {
+  "de": "Leere Seiten entfernen",
+  "es": "Quitar páginas en blanco",
+  "fr": "Retirer les pages blanches",
+  "hi": "खाली पेज हटाएँ",
+  "it": "Togli le pagine bianche",
+  "ja": "白紙ページを削除",
+  "pt": "Tirar páginas em branco",
+  "zh": "去掉空白页"
+ },
  "Drop shadow": {
   "de": "Schlagschatten",
   "es": "Sombra",
@@ -5738,6 +5778,16 @@
   "ja": "すべての番号とメールは1件の連絡先に保持され、重複は削除されます。元に戻せないので、必ずバックアップを取ってください。",
   "pt": "Todos os números e e-mails ficam num contacto; os duplicados são removidos. Não pode ser anulado, por isso garante que tens uma cópia.",
   "zh": "所有号码和邮箱都保留在一个联系人上；重复项会被移除。此操作无法撤销，请先确保已备份。"
+ },
+ "Every page looked blank, so nothing was removed.": {
+  "de": "Jede Seite wirkte leer, daher wurde nichts entfernt.",
+  "es": "Todas las páginas parecían en blanco, así que no se quitó nada.",
+  "fr": "Toutes les pages semblaient blanches, rien n'a été retiré.",
+  "hi": "हर पेज खाली लगा, इसलिए कुछ नहीं हटाया।",
+  "it": "Tutte le pagine sembravano bianche, quindi non è stato rimosso nulla.",
+  "ja": "すべてのページが白紙に見えたため、何も削除していません。",
+  "pt": "Todas as páginas pareciam em branco, então nada foi removido.",
+  "zh": "所有页面看起来都是空白，所以没有删除。"
  },
  "Every styled code is test-scanned before you see it — if a style wouldn't scan, you get the plain one instead.": {
   "de": "Jeder gestaltete Code wird vorher testweise gescannt – wenn ein Stil nicht scannbar wäre, bekommst du den schlichten.",
@@ -9639,6 +9689,16 @@
   "pt": "Criar o grupo e adicioná-los",
   "zh": "创建群组并添加"
  },
+ "Make the new PDF, check the preview, then save or share — or split it into one PDF per page.": {
+  "de": "Neues PDF erstellen, Vorschau prüfen, dann sichern oder teilen – oder in ein PDF pro Seite aufteilen.",
+  "es": "Crea el PDF nuevo, revisa la vista previa y guarda o comparte, o divídelo en un PDF por página.",
+  "fr": "Créez le nouveau PDF, vérifiez l'aperçu, puis enregistrez ou partagez — ou séparez-le en un PDF par page.",
+  "hi": "नया PDF बनाएँ, पूर्वावलोकन देखें, फिर सेव या शेयर करें — या हर पेज का अलग PDF बनाएँ।",
+  "it": "Crea il nuovo PDF, controlla l'anteprima, poi salva o condividi, oppure dividilo in un PDF per pagina.",
+  "ja": "新しいPDFを作ってプレビューを確認し、保存・共有 — または1ページずつのPDFに分割。",
+  "pt": "Crie o novo PDF, confira a prévia e salve ou compartilhe — ou divida em um PDF por página.",
+  "zh": "生成新 PDF，查看预览后保存或分享——或拆成每页一个 PDF。"
+ },
  "Make the paperwork pack": {
   "de": "Unterlagenpaket erstellen",
   "es": "Crear el paquete de papeles",
@@ -10289,6 +10349,16 @@
   "pt": "Mover página para a direita",
   "zh": "将页面右移"
  },
+ "Move pages up or down, turn them, or remove them. One tap drops blank pages or reverses the order.": {
+  "de": "Seiten nach oben oder unten schieben, drehen oder entfernen. Ein Tipp löscht leere Seiten oder dreht die Reihenfolge um.",
+  "es": "Mueve páginas arriba o abajo, gíralas o quítalas. Con un toque eliminas las páginas en blanco o inviertes el orden.",
+  "fr": "Déplacez les pages, tournez-les ou retirez-les. Un toucher supprime les pages blanches ou inverse l'ordre.",
+  "hi": "पेज ऊपर-नीचे करें, घुमाएँ या हटाएँ। एक टैप में खाली पेज हटें या क्रम उलटे।",
+  "it": "Sposta le pagine su o giù, ruotale o rimuovile. Un tocco toglie le pagine bianche o inverte l'ordine.",
+  "ja": "ページを上下に移動・回転・削除。ワンタップで白紙ページ削除や順序の反転ができます。",
+  "pt": "Mova páginas para cima ou para baixo, gire ou remova. Um toque tira páginas em branco ou inverte a ordem.",
+  "zh": "上下移动、旋转或删除页面。一键去掉空白页或倒序。"
+ },
  "Move pin here": {
   "de": "Pin hierher verschieben",
   "es": "Mover el pin aquí",
@@ -10928,6 +10998,16 @@
   "ja": "牛肉なし",
   "pt": "Sem carne bovina",
   "zh": "不吃牛肉"
+ },
+ "No blank pages found.": {
+  "de": "Keine leeren Seiten gefunden.",
+  "es": "No hay páginas en blanco.",
+  "fr": "Aucune page blanche trouvée.",
+  "hi": "कोई खाली पेज नहीं मिला।",
+  "it": "Nessuna pagina bianca trovata.",
+  "ja": "白紙ページはありませんでした。",
+  "pt": "Nenhuma página em branco encontrada.",
+  "zh": "没有发现空白页。"
  },
  "No clear date found, so there's nothing to calendar — the details above are still yours to copy.": {
   "de": "Kein klares Datum gefunden, also nichts für den Kalender — die Details oben kannst du trotzdem kopieren.",
@@ -14659,6 +14739,16 @@
   "pt": "Reordene, gire ou remova páginas",
   "zh": "重新排序、旋转或删除页面"
  },
+ "Reorder, rotate or remove pages, add another PDF, drop blank pages or split into single pages — then save a clean new PDF.": {
+  "de": "Seiten sortieren, drehen oder entfernen, ein weiteres PDF anhängen, leere Seiten löschen oder in Einzelseiten teilen – dann ein sauberes neues PDF sichern.",
+  "es": "Ordena, gira o quita páginas, añade otro PDF, elimina páginas en blanco o divídelo en páginas sueltas, y guarda un PDF nuevo y limpio.",
+  "fr": "Réordonnez, tournez ou retirez des pages, ajoutez un autre PDF, supprimez les pages blanches ou séparez en pages — puis enregistrez un nouveau PDF propre.",
+  "hi": "पेज का क्रम बदलें, घुमाएँ या हटाएँ, दूसरा PDF जोड़ें, खाली पेज हटाएँ या अलग-अलग पेज में बाँटें — फिर नया साफ़ PDF सेव करें।",
+  "it": "Riordina, ruota o rimuovi pagine, aggiungi un altro PDF, togli le pagine bianche o dividi in pagine singole, poi salva un nuovo PDF pulito.",
+  "ja": "ページの並べ替え・回転・削除、別のPDFの追加、白紙ページの削除、1ページずつに分割 — そして新しいPDFとして保存。",
+  "pt": "Reordene, gire ou remova páginas, adicione outro PDF, tire páginas em branco ou divida em páginas avulsas — e salve um PDF novo e limpo.",
+  "zh": "重新排序、旋转或删除页面，追加另一个 PDF，去掉空白页或拆成单页——然后保存为新的 PDF。"
+ },
  "Repeat": {
   "de": "Wiederholen",
   "es": "Repetir",
@@ -17568,6 +17658,16 @@
   "ja": "分割",
   "pt": "Dividir",
   "zh": "拆分"
+ },
+ "Split into one PDF per page": {
+  "de": "In ein PDF pro Seite teilen",
+  "es": "Dividir en un PDF por página",
+  "fr": "Séparer en un PDF par page",
+  "hi": "हर पेज का अलग PDF बनाएँ",
+  "it": "Dividi in un PDF per pagina",
+  "ja": "1ページずつのPDFに分割",
+  "pt": "Dividir em um PDF por página",
+  "zh": "拆成每页一个 PDF"
  },
  "Split where the talking pauses. On-device transcription can't tell voices apart, so turns are timed, not named.": {
   "de": "Getrennt an Sprechpausen. Die Transkription auf dem Gerät unterscheidet keine Stimmen, daher sind Abschnitte mit Zeit statt Namen.",
@@ -20528,6 +20628,16 @@
   "ja": "スキャンしたPDFを、文字を検索・コピーできるPDFに。",
   "pt": "Transforme um PDF escaneado em um que dá para pesquisar e copiar texto.",
   "zh": "把扫描PDF变成可搜索、可复制文字的PDF。"
+ },
+ "Turn all": {
+  "de": "Alle drehen",
+  "es": "Girar todas",
+  "fr": "Tout tourner",
+  "hi": "सब घुमाएँ",
+  "it": "Ruota tutte",
+  "ja": "すべて回転",
+  "pt": "Girar todas",
+  "zh": "全部旋转"
  },
  "Turn any photo into a sticker for Messages, WhatsApp and more.": {
   "de": "Mach aus jedem Foto einen Sticker für Nachrichten, WhatsApp und mehr.",
