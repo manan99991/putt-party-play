@@ -2420,7 +2420,8 @@ final class EngineTests: XCTestCase {
         XCTAssertLessThanOrEqual(RingtoneSmart.bestStart(lv, total: 120, length: 30) + 30, 120.0001)
         let src = try makeToneFile(seconds: 2.0)
         defer { try? FileManager.default.removeItem(at: src) }
-        let levels = try XCTUnwrap(await RingtoneSmart.levels(src, buckets: 40))
+        let read = await RingtoneSmart.levels(src, buckets: 40)
+        let levels = try XCTUnwrap(read)
         XCTAssertEqual(levels.count, 40); XCTAssertEqual(levels.max() ?? 0, 1, accuracy: 0.001)
         if case .success(let u) = await AudioConvert.ringtone(src, start: 0, length: 1.5, fade: 0.5) {
             let d = (try? await AVURLAsset(url: u).load(.duration))?.seconds ?? 0
