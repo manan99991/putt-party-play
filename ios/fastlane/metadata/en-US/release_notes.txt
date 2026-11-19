@@ -2,5 +2,5 @@ The biggest Tenzy yet.
 • Set it once, it just works: medicine reminders with refill counts and caregiver follow-ups, birthday reminders, a Daily Brief, parking-meter alerts and a bedtime nudge, each with a Test run
 • New tools: Price Watch, Contacts manager, Untangle, My Day, Make a Zip, Ringtone, Sticker Maker and more
 • Pro Camera now films video, with scene settings and tips as you shoot
-• Build your own: 90 ready-made tools, a voice changer with previews, and "Tell me when" alerts
+• Build your own helper: many more ready-made ones, a voice changer with previews, and "Tell me when" alerts
 • Open any file in Tenzy from Files, Mail or Downloads

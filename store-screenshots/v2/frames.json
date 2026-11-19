@@ -1,22 +1,96 @@
 [
- {"id":"01-hero","route":"explore","h":"One app.<br>Every job your<br>phone forgot.","sub":"60+ tools, 90 ready-made, and the ones you build yourself.",
-  "chips":["📄 Scan, sign & fill PDFs","💊 Medicine reminders","👥 Contacts, organized","🏷️ Price-drop alerts","🎬 Pro video camera","🗣️ Voice changer","🌍 Translate offline","🧹 Free up space"]},
- {"id":"02-describe","route":"describebuilt","h":"Say it.<br>Tenzy builds it.","sub":"Describe the job in plain words. Get a tool that does all of it.",
-  "bubble":"“Shrink a photo under 1 MB, remove the location and email it.”","steps":["Shrink to 1 MB","Remove location","Email it"]},
- {"id":"03-ready","route":"templates","h":"90 tools,<br>ready in one tap.","sub":"Letters read aloud in English. Meetings into emails. Photos safe to share.",
-  "chips":["📸 Photos & scans","💬 Text & messages","🎥 Video","🎙️ Sound & voice","📑 PDF"]},
- {"id":"04-setonce","route":"medreminder","h":"Set it once.<br>It just works.","sub":"Every reminder has a Test run, so you know it works before you rely on it.",
-  "chips":["✅ Test run","💊 Refill countdown","📲 Caregiver follow-up","🎂 Birthdays, a day early","☀️ Daily Brief at 7:30","🚗 Parking meter alert"]},
- {"id":"05-pricewatch","route":"pricewatch","h":"Tell me when<br>the price drops.","sub":"Paste a link. Your phone checks quietly and alerts you once.",
-  "chips":["🔋 Light on battery","📉 Drops below / goes above","🔔 One alert, not a stream"]},
- {"id":"06-contacts","route":"contacts","h":"Your contacts.<br>Finally organized.","sub":"Groups, favorites, bulk edit, export to Excel, merge duplicates.",
-  "chips":["⭐ Favorites & emergency","🗂️ Groups & filters","📤 Export to Excel","🧩 Merge duplicates","📅 Plan a call or visit"]},
- {"id":"07-paperwork","route":"sorted","h":"Paperwork,<br>sorted.","sub":"Snap a bill and it's filed with a reminder before it's due.",
-  "chips":["📄 Scan to PDF","✍️ Sign & fill forms","⬛ Redact for good","🧾 Warranty alerts"]},
- {"id":"08-media","route":"procam","h":"Photos, video<br>& sound, done right.","sub":"Shrink to any size limit, convert, strip location, film with scene settings.",
-  "chips":["📏 Fit under any size","🎞️ HEIC & MOV converted","🎬 Video with tips as you film","✂️ Ringtones & audio cleanup"]},
- {"id":"09-fun","route":"soundboard","h":"And the fun stuff.","sub":"Chipmunk, robot, giant voices. Stickers for any chat. Collages and Reels.",
-  "chips":["🐿️ Chipmunk","🤖 Robot","👹 Giant","👽 Alien","😎 Stickers","🎞️ Reels"]},
- {"id":"10-private","route":"privacy","h":"Private.<br>On your phone.","sub":"No account. No ads. Nothing uploaded. Free to start, Pro when you want it.",
-  "chips":["🔒 No account","🚫 No ads","📵 Nothing uploaded","✈️ Most tools work offline"]}
+ {
+  "id": "01-handled",
+  "route": "brief",
+  "h": "Set it once.<br>It's handled.",
+  "sub": "Your personal assistant for the things that matter, inside and outside your phone.",
+  "chips": [
+   "💊 Medicines",
+   "🧾 Bills due",
+   "🎂 Birthdays",
+   "☀️ Morning brief",
+   "🏷️ Price drops",
+   "🚗 Parking meter"
+  ]
+ },
+ {
+  "id": "02-meds",
+  "route": "medreminder",
+  "h": "Doses on time.<br>Refills on track.",
+  "sub": "A Taken button, a refill countdown, and a follow-up to a caregiver if one is missed.",
+  "chips": [
+   "✅ Test run",
+   "📲 Caregiver follow-up",
+   "💊 Refill countdown"
+  ]
+ },
+ {
+  "id": "03-testrun",
+  "route": "pricewatch",
+  "h": "Try it before<br>you trust it.",
+  "sub": "Every reminder and alert has a Test run, so you see it work first.",
+  "chips": [
+   "🔔 One alert, not a stream",
+   "🔋 Light on battery"
+  ]
+ },
+ {
+  "id": "04-paperwork",
+  "route": "sorted",
+  "h": "Bills and letters,<br>filed.",
+  "sub": "Snap it. It's filed with a reminder before it's due.",
+  "chips": [
+   "📄 Scan to PDF",
+   "✍️ Sign & fill",
+   "🧾 Warranty nudges",
+   "📦 Year-end export"
+  ]
+ },
+ {
+  "id": "05-people",
+  "route": "contacts",
+  "h": "The people<br>who matter.",
+  "sub": "Birthdays a day early, favorites and emergency contacts, calls and visits planned.",
+  "chips": [
+   "🎂 Birthdays",
+   "⭐ Favorites",
+   "🗂️ Groups",
+   "📤 Export to Excel"
+  ]
+ },
+ {
+  "id": "06-helper",
+  "route": "describebuilt",
+  "h": "Say what you need.<br>It's ready.",
+  "sub": "Describe the job in plain words, and Tenzy puts the steps together.",
+  "bubble": "“Shrink a photo under 1 MB, remove the location and email it.”",
+  "steps": [
+   "Shrink to 1 MB",
+   "Remove location",
+   "Email it"
+  ]
+ },
+ {
+  "id": "07-phone",
+  "route": "cleaner",
+  "h": "Your phone,<br>looked after.",
+  "sub": "Old screenshots cleared, duplicates gone, files that fit any upload.",
+  "chips": [
+   "🧹 Keep your newest 100",
+   "📏 Fit any size limit",
+   "🛡️ Scam-text check",
+   "📂 Open any file"
+  ]
+ },
+ {
+  "id": "08-private",
+  "route": "privacy",
+  "h": "Stays on<br>your phone.",
+  "sub": "No account. Nothing uploaded. Your assistant answers only to you.",
+  "chips": [
+   "🔒 No account",
+   "📵 Nothing uploaded",
+   "✈️ Works offline"
+  ]
+ }
 ]

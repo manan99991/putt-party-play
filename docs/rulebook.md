@@ -43,11 +43,12 @@ It is the gate AGENTS.md points at. Keep it in sync with the actual pipeline and
   - Android page-3 AI tiles fall back to a "needs Gemini Nano" card on most devices, and `signfill`
     is a Coming-Soon placeholder. These are **excluded** from the Play listing copy and screenshots
     until they genuinely work.
-- Counts in copy (Nov 2026): iOS "60+ tools" (TOOLS has 61) and "90 ready-made tools" (ChainTemplates.all,
-  asserted 90 by ChainRunnerTests). Never say "30 tools" anywhere again. Use "60+" not an exact number so an
-  added tool never makes the listing wrong; re-check both numbers before every listing push. The Android
-  listing states only what the Android build ships, without a count, until the Android port catches up.
-- Tagline (Nov 2026): "One app. Every job your phone forgot." Subtitle: "60+ tools. Or build your own."
+- Positioning (Nov 19 2026, Manan): Tenzy is a **personal assistant** — "Set it once. It's handled." No tool counts
+  anywhere (not "30", not "60+", not "90 ready-made"). Never "#1/best/leading/only" (Apple 2.3.7, Play metadata policy),
+  no "free"/price/"no ads" in subtitle or screenshots (description only), no competitor names. Medicine copy is
+  reminders and logging, never outcomes; the description carries "doesn't give medical advice — check with your
+  doctor or pharmacist" (Apple 1.4.1) and the Play listing adds "not a medical device" (Play health policy).
+  The Android listing states only what the Android build ships.
 - The listing must represent the **free/Pro split honestly**: seven tools are free (`Tool.freeIDs`: Flashlight,
   QR & Wi-Fi, See & Read, Measure, Cleaner, Translate, Vault), plus 2 saved tools of your own with the free
   builder steps; the rest are Tenzy Pro.

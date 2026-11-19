@@ -1,1 +1,1 @@
-scanner,pdf,compress,reminder,medicine,contacts,birthday,price,alert,translate,qr,cleaner,ocr,video
+reminder,medicine,pill,bills,birthday,assistant,contacts,scanner,pdf,price,alert,cleaner,brief,life

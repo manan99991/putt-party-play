@@ -1,38 +1,42 @@
-One app. Every job your phone forgot.
+Set it once. It's handled.
 
-Tenzy is 60+ tools in one app, with 90 more ready-made tools, and a builder that makes new ones from a sentence. Say "shrink a photo under 1 MB, remove the location and email it", and Tenzy builds that tool. Everything runs on your phone. No account, nothing uploaded.
+Tenzy is a personal assistant that lives on your phone. Tell it what matters, like your medicines, the bill due Friday, Mum's birthday or the price you're waiting for, and it takes care of it from then on. Every reminder has a Test run, so you see it work before you rely on it. No account, nothing uploaded.
 
-SET IT ONCE. IT JUST WORKS.
-Each setup has a Test run, so you know it works before you rely on it.
-• Medicine Reminders: a Taken button, refill counts, and a follow-up if a dose is missed, with one tap to text a caregiver
-• Contacts birthdays: a reminder the day before
-• Daily Brief: one morning note with your doses, bills due, birthdays and the weather
-• Price Watch: tell me when a price on a web page drops
-• Parking meter: a heads-up before it runs out, with how far away your car is
-• Bedtime nudge, contact backup reminders, and reminders for any tool you build
+YOUR DAY, LOOKED AFTER
+• Daily Brief: one note each morning with today's doses, bills due, birthdays and the weather
+• Medicine Reminders: a Taken button, a refill countdown, and a follow-up if a dose is missed, with one tap to text a caregiver
+• Birthdays from your contacts, a day early
+• A bedtime nudge, and a parking meter alert that tells you how far away your car is
 
-BUILD YOUR OWN
-• Describe it in plain words, or pick what you have (a photo, video, PDF, sound, text) and add steps
-• 90 ready-made tools, like "Read a foreign letter out loud in English" or "Turn a whiteboard photo into an email"
-• Run them from Tenzy, the share sheet, a widget or Shortcuts
-• Tell me when: get an alert when the number in a tool's result crosses your line
+MONEY & PAPERWORK
+• Snap a bill or letter: it's filed, with a reminder before it's due
+• Receipts kept, with a nudge before a warranty ends
+• Scan to PDF, sign, fill in forms, black out private details
+• Price Watch: get told when a price on a web page drops
+• Export a year of paperwork in one zip for your accountant
 
-YOUR CONTACTS, FINALLY ORGANIZED
-Search and filter (work, home, no phone, no email), groups, favorites and emergency contacts, edit many at once, export to Excel or contact cards, find and merge duplicates, and plan a call or visit with a "time to leave" alert.
+PEOPLE
+• Your contacts, organized: search, groups, favorites and emergency contacts, edit many at once, export to Excel, merge duplicates
+• Plan a call or a visit: it goes in your calendar with a "time to leave" alert, the number and the address
 
-PAPERWORK, SORTED
-Scan to PDF, sign, fill forms, redact, merge or split pages, and pull text from any scan. Snap a bill and it is filed with a reminder before it is due. Keep receipts and get a nudge before a warranty ends. Export a year of paperwork in one zip.
+YOUR PHONE, LOOKED AFTER
+• Clean up screenshots and duplicates, keep just your newest ones
+• Open any file someone sends you
+• Shrink photos, videos and PDFs to fit any upload, and convert HEIC and MOV
+• Strip location from photos before you share them, and check a suspicious text for scams
 
-PHOTOS, VIDEO & SOUND
-Shrink anything under an exact size limit, convert HEIC and MOV, strip location, make stickers, collages and Reels, stitch long screenshots, and clean up your camera roll. Pro Camera shoots photos and video with scene settings and tips as you film. Change a voice (chipmunk, robot, giant…), make a ringtone, clean up a recording, and turn a meeting into notes and to-dos.
+BUILD YOUR OWN HELPER
+Say what you need ("read this letter out loud in English", "shrink a photo, remove the location and email it") and Tenzy puts the steps together for you, or pick a ready-made one. Run it from the share sheet, a widget or Shortcuts, and set "tell me when" alerts on its result.
 
-EVERYDAY HELPERS
-Flashlight with SOS and an emergency light, AR tape measure with a paint and flooring calculator, GPS dashboard, Translate, Message Shield for scam texts, Memory to search your screenshots, Color Vision, white noise, Price Check, a QR and Wi-Fi maker, and a Face ID vault.
+AND EVERYTHING ELSE YOU REACH FOR
+A camera that films with scene settings, a voice changer, stickers and collages, a flashlight with SOS, an AR tape measure that works out the paint and flooring for a room, Translate, white noise, Color Vision, a GPS dashboard and a Face ID vault.
 
-On supported iPhones the thinking and text tools use the model built into your phone, so nothing you type is sent anywhere. Available in English, German, Spanish, French, Hindi, Italian, Japanese, Portuguese and Chinese.
+On supported iPhones the thinking and writing tools use the model built into your phone. Available in English, German, Spanish, French, Hindi, Italian, Japanese, Portuguese and Chinese.
+
+Tenzy reminds you; it doesn't give medical advice. Always check with your doctor or pharmacist about your medicines.
 
 FREE, WITH OPTIONAL TENZY PRO
-Seven everyday tools are free (Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate and the Face ID Vault), and you can build and keep two tools of your own. Tenzy Pro unlocks every tool, every builder step, unlimited saved tools and all themes. Start with a 3-day free trial, then $19.99/year.
+Seven everyday tools are free (Flashlight, QR & Wi-Fi, See & Read, Measure, Cleaner, Translate and the Face ID Vault), and you can build and keep two helpers of your own. Tenzy Pro unlocks everything else, unlimited helpers and all themes. Start with a 3-day free trial, then $19.99/year.
 
 PRIVACY
 No account, no ads, no tracking. Your files stay on your device. Privacy Policy: https://manan99991.github.io/tenzy/privacy.html

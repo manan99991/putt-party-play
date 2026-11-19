@@ -16859,6 +16859,16 @@
   "pt": "Definir empresa",
   "zh": "设置公司"
  },
+ "Set it once. It's handled.": {
+  "de": "Einmal einrichten. Erledigt.",
+  "es": "Configúralo una vez. Listo.",
+  "fr": "Réglez-le une fois. C'est géré.",
+  "hi": "एक बार सेट करें। बाकी हो जाएगा।",
+  "it": "Impostalo una volta. Fatto.",
+  "ja": "一度設定すれば、おまかせ。",
+  "pt": "Configure uma vez. Está resolvido.",
+  "zh": "设置一次，交给它就好。"
+ },
  "Set it up": {
   "de": "Einrichten",
   "es": "Configurarlo",
@@ -23348,6 +23358,26 @@
   "ja": "表示される氏名",
   "pt": "O teu nome, como deve aparecer",
   "zh": "你的名字，按应显示的样子"
+ },
+ "Your personal assistant for the things that matter — on your phone, never uploaded.": {
+  "de": "Dein persönlicher Assistent für das, was zählt – auf deinem Telefon, nie hochgeladen.",
+  "es": "Tu asistente personal para lo que importa: en tu teléfono, sin subir nada.",
+  "fr": "Votre assistant personnel pour ce qui compte — sur votre téléphone, jamais envoyé.",
+  "hi": "ज़रूरी चीज़ों के लिए आपका निजी सहायक — आपके फ़ोन पर, कभी अपलोड नहीं।",
+  "it": "Il tuo assistente personale per le cose importanti, sul telefono, mai caricato.",
+  "ja": "大切なことを任せられるパーソナルアシスタント — iPhone上で動き、アップロードされません。",
+  "pt": "Seu assistente pessoal para o que importa — no seu telefone, nunca enviado.",
+  "zh": "你的私人助理，打理重要的事——在手机上运行，从不上传。"
+ },
+ "Your personal assistant: medicines, bills, birthdays, paperwork, prices and your phone itself — set it once and it's handled. Everything runs on your phone; nothing is uploaded.": {
+  "de": "Dein persönlicher Assistent: Medikamente, Rechnungen, Geburtstage, Papierkram, Preise und dein Telefon selbst – einmal einrichten, erledigt. Alles läuft auf deinem Telefon; nichts wird hochgeladen.",
+  "es": "Tu asistente personal: medicinas, facturas, cumpleaños, papeles, precios y el propio teléfono; configúralo una vez y listo. Todo funciona en tu teléfono; no se sube nada.",
+  "fr": "Votre assistant personnel : médicaments, factures, anniversaires, papiers, prix et votre téléphone lui-même — réglez-le une fois, c'est géré. Tout tourne sur votre téléphone ; rien n'est envoyé.",
+  "hi": "आपका निजी सहायक: दवाइयाँ, बिल, जन्मदिन, कागज़ात, कीमतें और खुद आपका फ़ोन — एक बार सेट करें, बाकी हो जाएगा। सब आपके फ़ोन पर चलता है; कुछ भी अपलोड नहीं होता।",
+  "it": "Il tuo assistente personale: medicine, bollette, compleanni, documenti, prezzi e il telefono stesso. Impostalo una volta ed è fatta. Tutto funziona sul telefono; nulla viene caricato.",
+  "ja": "あなたのパーソナルアシスタント：薬、請求書、誕生日、書類、価格、そしてスマホそのもの — 一度設定すればおまかせ。すべてiPhone上で動き、何もアップロードされません。",
+  "pt": "Seu assistente pessoal: remédios, contas, aniversários, papelada, preços e o próprio telefone — configure uma vez e está resolvido. Tudo roda no seu telefone; nada é enviado.",
+  "zh": "你的私人助理：药品、账单、生日、文件、价格，还有手机本身——设置一次，交给它就好。全部在手机上运行，不上传任何内容。"
  },
  "Your phone shows a reminder at that time. Tap it and this tool opens, ready to run.": {
   "de": "Dein Handy zeigt zu dieser Zeit eine Erinnerung. Tippe darauf und das Tool öffnet sich startbereit.",
