@@ -316,4 +316,30 @@ final class ToolOutputQualityTests: XCTestCase {
         lines.insert(String(format: "SCORE photo-flows n=%.0f %.3f", n, good / max(1, n)), at: 0)
         report(lines)
     }
+
+    // MARK: Studio profile picture on a real face
+
+    func testProfilePictureCentresTheFace() throws {
+        let faces = try privatePhotos("face-")
+        var lines = ["PROFILE PICTURE\tphoto\tvariant\tface centre x\thead share\t| problem"]
+        var good = 0.0, n = 0.0
+        for (name, face) in faces {
+            for (v, img) in [("as taken", face), ("farther away", Self.farther(face)), ("tilted", ToughPhotoTests.trouble(face, .tilt))] {
+                n += 1
+                guard let out = ImageStudio.profile(img), let cg = out.cgImage, let f = PassportPhoto.analyze(cg) else {
+                    lines.append("\(name)\t\(v)\t—\t—\t| no picture or no face in it"); continue
+                }
+                let cx = f.centreX / CGFloat(cg.width), share = (f.chin.y - f.crown.y) / CGFloat(cg.height)
+                var fails: [String] = []
+                if cg.width != 1080 || cg.height != 1080 { fails.append("not 1080 square") }
+                if abs(cx - 0.5) > 0.06 { fails.append("face off centre") }
+                if share < 0.4 || share > 0.72 { fails.append("head \(Int(share * 100))% of the height") }
+                if f.crown.y < CGFloat(cg.height) * 0.04 { fails.append("top of the head cut off") }
+                if fails.isEmpty { good += 1 }
+                lines.append("\(name)\t\(v)\t\(String(format: "%.2f", cx))\t\(String(format: "%.2f", share))\t| \(fails.joined(separator: "; "))")
+            }
+        }
+        lines.insert(String(format: "SCORE profile-picture n=%.0f %.3f", n, good / max(1, n)), at: 0)
+        report(lines)
+    }
 }

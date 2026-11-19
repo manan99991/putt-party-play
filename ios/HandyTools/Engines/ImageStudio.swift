@@ -77,6 +77,131 @@ enum ImageStudio {
         }
     }
 
+    // MARK: listing photo
+
+    /// Where a product photo is going, and what that place wants: square, plain white, the product filling most
+    /// of the frame. Sizes from each marketplace's own photo guidance.
+    struct Market: Identifiable, Equatable { let id: String; let name: String; let side: CGFloat; let fill: CGFloat }
+    static let markets: [Market] = [
+        Market(id: "amazon", name: "Amazon", side: 2000, fill: 0.85),        // pure white, product ≥ 85% of the frame
+        Market(id: "ebay", name: "eBay", side: 1600, fill: 0.8),
+        Market(id: "etsy", name: "Etsy", side: 2000, fill: 0.75),
+        Market(id: "fbm", name: "Marketplace", side: 1200, fill: 0.78),
+    ]
+
+    /// A cut-out product placed on pure white: trimmed to the product, centred, scaled so it fills `fill` of the
+    /// square, with a soft contact shadow so it doesn't float.
+    static func listing(_ cut: UIImage, market: Market, shadow: Bool = true) -> UIImage? {
+        guard let cg = cut.cgImage, let box = opaqueBounds(cg) else { return nil }
+        let side = market.side
+        let scale = min(side * market.fill / box.width, side * market.fill / box.height)
+        let w = box.width * scale, h = box.height * scale
+        let rect = CGRect(x: (side - w) / 2, y: (side - h) / 2, width: w, height: h)
+        guard let trimmed = cg.cropping(to: box) else { return nil }
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: CGSize(width: side, height: side), format: fmt).image { ctx in
+            UIColor.white.setFill(); ctx.fill(CGRect(x: 0, y: 0, width: side, height: side))
+            if shadow {
+                let c = ctx.cgContext
+                c.saveGState()
+                c.setShadow(offset: .zero, blur: side * 0.03, color: UIColor(white: 0, alpha: 0.22).cgColor)
+                UIColor(white: 0.9, alpha: 1).setFill()
+                c.fillEllipse(in: CGRect(x: rect.minX + w * 0.12, y: rect.maxY - side * 0.012, width: w * 0.76, height: side * 0.018))
+                c.restoreGState()
+            }
+            UIImage(cgImage: trimmed).draw(in: rect)
+        }
+    }
+
+    /// The box around everything not see-through, in pixels (top-left origin).
+    static func opaqueBounds(_ cg: CGImage, threshold: UInt8 = 24) -> CGRect? {
+        let w = cg.width, h = cg.height
+        var buf = [UInt8](repeating: 0, count: w * h * 4)
+        guard let c = CGContext(data: &buf, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w * 4,
+                                space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+        c.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        var minX = w, minY = h, maxX = -1, maxY = -1
+        let step = max(1, min(w, h) / 600)
+        for y in stride(from: 0, to: h, by: step) { for x in stride(from: 0, to: w, by: step) where buf[(y * w + x) * 4 + 3] > threshold {
+            minX = min(minX, x); maxX = max(maxX, x); minY = min(minY, y); maxY = max(maxY, y)
+        } }
+        guard maxX >= minX, maxY >= minY else { return nil }
+        return CGRect(x: minX, y: minY, width: maxX - minX + step, height: maxY - minY + step).intersection(CGRect(x: 0, y: 0, width: w, height: h))
+    }
+
+    // MARK: profile picture
+
+    enum ProfileBackground: String, CaseIterable { case keep, blur, plain }
+
+    /// A square profile picture: the face centred, the head about 55% of the height with room above it, 1080 px
+    /// (what Instagram, LinkedIn, WhatsApp and Slack all crop to a circle). Background kept, softly blurred, or
+    /// swapped for a plain colour. Nil when there's no face.
+    static func profile(_ image: UIImage, background: ProfileBackground = .keep, color: UIColor = UIColor(red: 0.86, green: 0.9, blue: 0.96, alpha: 1)) -> UIImage? {
+        let up = image.normalizedUp()
+        guard let cg = up.cgImage else { return nil }
+        // The passport engine measures the head itself: crown to chin, in pixels, top-left origin.
+        guard let f = PassportPhoto.analyze(cg) else { return nil }
+        let W = CGFloat(cg.width), H = CGFloat(cg.height)
+        let head = max(1, f.chin.y - f.crown.y)
+        var side = min(head / 0.55, W, H)
+        side = max(side, min(W, H) * 0.3)
+        let cx = f.centreX, top = f.crown.y - side * 0.2          // a little room above the hair
+        var crop = CGRect(x: cx - side / 2, y: top, width: side, height: side)
+        crop.origin.x = min(max(0, crop.minX), W - side); crop.origin.y = min(max(0, crop.minY), H - side)
+        guard let piece = cg.cropping(to: crop.integral) else { return nil }
+        var base = UIImage(cgImage: piece)
+        if background != .keep, let cut = cutout(base) {
+            let size = CGSize(width: piece.width, height: piece.height)
+            let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1
+            let behind: UIImage = background == .plain ? UIGraphicsImageRenderer(size: size, format: fmt).image { c in color.setFill(); c.fill(CGRect(origin: .zero, size: size)) }
+                : blurred(base, radius: size.width * 0.03)
+            base = UIGraphicsImageRenderer(size: size, format: fmt).image { _ in
+                behind.draw(in: CGRect(origin: .zero, size: size)); cut.draw(in: CGRect(origin: .zero, size: size))
+            }
+        }
+        let out = CGSize(width: 1080, height: 1080)
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
+        return UIGraphicsImageRenderer(size: out, format: fmt).image { _ in base.draw(in: CGRect(origin: .zero, size: out)) }
+    }
+
+    static func blurred(_ image: UIImage, radius: CGFloat) -> UIImage {
+        guard let cg = image.cgImage else { return image }
+        let ci = CIImage(cgImage: cg)
+        let b = ci.clampedToExtent().applyingGaussianBlur(sigma: Double(radius)).cropped(to: ci.extent)
+        guard let out = CIContext().createCGImage(b, from: ci.extent) else { return image }
+        return UIImage(cgImage: out)
+    }
+
+    // MARK: what changed
+
+    /// Plain words for what a fix did to a photo, measured on both: brighter, more contrast, sharper, bigger.
+    static func changes(from a: UIImage, to b: UIImage) -> [String] {
+        func stats(_ img: UIImage) -> (mean: Double, spread: Double, px: Int)? {
+            guard let cg = img.cgImage else { return nil }
+            let w = 64, h = 64
+            var buf = [UInt8](repeating: 0, count: w * h * 4)
+            guard let c = CGContext(data: &buf, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w * 4, space: CGColorSpaceCreateDeviceRGB(),
+                                    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+            c.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+            var l: [Double] = []
+            for i in stride(from: 0, to: buf.count, by: 4) { l.append(0.299 * Double(buf[i]) + 0.587 * Double(buf[i + 1]) + 0.114 * Double(buf[i + 2])) }
+            let m = l.reduce(0, +) / Double(l.count)
+            let sd = (l.map { ($0 - m) * ($0 - m) }.reduce(0, +) / Double(l.count)).squareRoot()
+            return (m, sd, cg.width * cg.height)
+        }
+        guard let x = stats(a), let y = stats(b) else { return [] }
+        var out: [String] = []
+        let bright = (y.mean - x.mean) / max(1, x.mean) * 100
+        if abs(bright) >= 4 { out.append(bright > 0 ? "\(Int(bright.rounded()))% brighter" : "\(Int(-bright.rounded()))% darker") }
+        let contrast = (y.spread - x.spread) / max(1, x.spread) * 100
+        if abs(contrast) >= 5 { out.append(contrast > 0 ? "\(Int(contrast.rounded()))% more contrast" : "softer contrast") }
+        if y.px > x.px * 3 / 2 {
+            let sa = Int((Double(a.size.width * a.scale)).rounded()), sb = Int((Double(b.size.width * b.scale)).rounded())
+            out.append("enlarged \(sa) → \(sb) px wide")
+        }
+        return out
+    }
+
     // MARK: passport — see PassportPhoto (one engine for Studio, the Builder step and the Guide)
 
     /// Tile a finished ID photo across a 4×6 sheet at 300 dpi with light cut guides.
