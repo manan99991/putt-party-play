@@ -2380,6 +2380,23 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(SortedLetters.ordered([paid, undated, late, soon]).map(\.title), ["D", "A", "B", "C"])
     }
 
+    func testLongScreenshotFindsTheLatestScrollAndCutsPages() {
+        let t0 = Date(timeIntervalSince1970: 1_800_000_000)
+        let run = [t0, t0 - 20, t0 - 45, t0 - 70, t0 - 3600, t0 - 3620]   // newest first: 4 in a row, then an old pair
+        XCTAssertEqual(StitchExtras.burstCount(run), 4)
+        XCTAssertEqual(StitchExtras.burstCount(run, limit: 3), 3)
+        XCTAssertEqual(StitchExtras.burstCount([]), 0)
+        XCTAssertEqual(StitchExtras.burstCount([t0, t0 - 600]), 1, "an old screenshot isn't part of this scroll")
+        let cuts = StitchExtras.pageSlices(height: 5000, pageHeight: 1600)
+        XCTAssertEqual(cuts.map(\.height), [1600, 1600, 1600, 200])
+        XCTAssertEqual(cuts.last?.maxY, 5000)
+        XCTAssertTrue(StitchExtras.pageSlices(height: 0, pageHeight: 100).isEmpty)
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+        let tall = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 400), format: fmt).image { c in UIColor.red.setFill(); c.fill(CGRect(x: 0, y: 0, width: 100, height: 400)) }
+        let pdf = StitchExtras.pdf(tall)
+        XCTAssertNotNil(pdf); XCTAssertEqual(pdf.flatMap { PDFDocument(data: $0) }?.pageCount, 3)
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

@@ -1,6 +1,7 @@
 import SwiftUI
 import PhotosUI
 import UIKit
+import Photos
 
 /// Long Screenshot — pick the screenshots you took while scrolling (any app), get one tall image.
 /// The fixed header/footer appear once and the overlaps are removed automatically.
@@ -12,16 +13,23 @@ struct StitchView: View {
     @State private var resultPNG: Data?        // encoded once off-main, not on every body render
     @State private var working = false
     @State private var errorText: String?
+    @State private var finding = false
+    @State private var resultPDF: Data?
+    @State private var savedNote: String?
 
     private var overQuota: Bool { !Usage.hasRoom("stitch", limit: Limits.freeStitchPerDay) }
 
     var body: some View {
         ToolPage(title: "Long Screenshot", subtitle: "Take screenshots as you scroll, pick them here, get one tall image.", working: working) {
             HowTo("stitch", [
-                "Pick the overlapping screenshots, in order.",
+                "Tap Use the screenshots I just took — or pick them yourself, then fix the order.",
                 "It lines them up and merges them into one tall image.",
-                "Save or share the stitched result.",
+                "Save it to Photos, share it, or send it as a PDF cut into pages.",
             ])
+            Button { useLatest() } label: {
+                HStack { if finding { ProgressView().tint(.white) }; Label(L("Use the screenshots I just took"), systemImage: "sparkles.rectangle.stack") }.frame(maxWidth: .infinity)
+            }
+            .primaryButton().disabled(finding).accessibilityIdentifier("stitch-latest")
             PhotosPicker(selection: $items, maxSelectionCount: 12, matching: .screenshots) {
                 Label(shots.isEmpty ? "Choose screenshots (top to bottom)" : "Choose different screenshots", systemImage: "rectangle.stack").frame(maxWidth: .infinity)
             }
@@ -41,7 +49,12 @@ struct StitchView: View {
                             VStack(spacing: 4) {
                                 Image(uiImage: img).resizable().scaledToFit().frame(height: 120)
                                     .clipShape(RoundedRectangle(cornerRadius: HandyRadius.small, style: .continuous))
-                                Text("\(i + 1)").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                                HStack(spacing: 10) {
+                                    Button { move(i, by: -1) } label: { Image(systemName: "chevron.left") }.disabled(i == 0).accessibilityLabel(L("Move earlier"))
+                                    Text("\(i + 1)").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                                    Button { move(i, by: 1) } label: { Image(systemName: "chevron.right") }.disabled(i == shots.count - 1).accessibilityLabel(L("Move later"))
+                                    Button { shots.remove(at: i) } label: { Image(systemName: "xmark.circle.fill") }.foregroundStyle(HandyColor.textSecondary).accessibilityLabel(L("Leave this one out"))
+                                }.font(.system(size: 13)).buttonStyle(.plain).foregroundStyle(HandyColor.accent)
                             }
                         }
                     }
@@ -72,13 +85,50 @@ struct StitchView: View {
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 Text("\(Int(result.size.width)) × \(Int(result.size.height)) px").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 if let png = resultPNG {
-                    ShareLink(item: PNGFile(data: png), preview: SharePreview("Long screenshot")) {
-                        Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
-                    }.primaryButton()
+                    Button {
+                        Task { let ok = await StickerMaker.saveToPhotos([png]); savedNote = ok ? "Saved to Photos." : "Couldn't save — allow Tenzy to add photos in Settings." }
+                    } label: { Label(L("Save to Photos"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }.primaryButton()
+                    HStack(spacing: HandySpacing.s8) {
+                        ShareLink(item: PNGFile(data: png), preview: SharePreview("Long screenshot")) {
+                            Label(L("Share image"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                        }.secondaryButton()
+                        if let pdf = resultPDF {
+                            ShareLink(item: PDFFile(data: pdf), preview: SharePreview("Long screenshot.pdf")) {
+                                Label(L("As a PDF"), systemImage: "doc.richtext").frame(maxWidth: .infinity)
+                            }.secondaryButton()
+                        }
+                    }
+                    if let pdf = resultPDF { Text("\(L("The PDF has")) \(StitchExtras.pageSlices(height: result.size.height * result.scale, pageHeight: (result.size.width * result.scale * 1.414).rounded()).count) \(L("pages, sized like A4 — easy to print or email.")) (\(ByteCountFormatter.string(fromByteCount: Int64(pdf.count), countStyle: .file)))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+                    if let savedNote { Text(L(savedNote)).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
                 }
-                Button(L("Start over")) { self.result = nil; resultPNG = nil; shots = []; items = [] }.textButton()
+                Button(L("Start over")) { self.result = nil; resultPNG = nil; resultPDF = nil; savedNote = nil; shots = []; items = [] }.textButton()
             }
         }
+    }
+
+    /// One tap: the screenshots from your latest scroll (taken within a minute and a half of each other).
+    private func useLatest() {
+        result = nil; resultPNG = nil; resultPDF = nil; errorText = nil; savedNote = nil; finding = true
+        Task {
+            if PHPhotoLibrary.authorizationStatus(for: .readWrite) == .notDetermined { _ = await PHPhotoLibrary.requestAuthorization(for: .readWrite) }
+            let s = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+            guard s == .authorized || s == .limited else {
+                await MainActor.run { finding = false; errorText = "Tenzy needs Photos access to find your latest screenshots — or choose them yourself below." }
+                return
+            }
+            let found = await StitchExtras.latestRun()
+            await MainActor.run {
+                finding = false
+                if found.count >= 2 { shots = found }
+                else { errorText = "Your latest screenshots weren't taken one after another. Scroll and take a few, or choose them yourself." }
+            }
+        }
+    }
+
+    private func move(_ i: Int, by d: Int) {
+        let j = i + d
+        guard shots.indices.contains(i), shots.indices.contains(j) else { return }
+        shots.swapAt(i, j)
     }
 
     private func load(_ picked: [PhotosPickerItem]) {
@@ -102,6 +152,7 @@ struct StitchView: View {
                 _ = Usage.use("stitch", limit: Limits.freeStitchPerDay)
                 result = out
                 resultPNG = await Task.detached(priority: .userInitiated) { out.pngData() }.value
+                resultPDF = await Task.detached(priority: .utility) { StitchExtras.pdf(out) }.value
                 working = false
                 HandyHaptics.success()
             } else {

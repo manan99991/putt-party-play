@@ -1069,6 +1069,16 @@
   "pt": "Como",
   "zh": "作为"
  },
+ "As a PDF": {
+  "de": "Als PDF",
+  "es": "Como PDF",
+  "fr": "En PDF",
+  "hi": "PDF के रूप में",
+  "it": "Come PDF",
+  "ja": "PDFで",
+  "pt": "Como PDF",
+  "zh": "作为 PDF"
+ },
  "As shot": {
   "de": "Original",
   "es": "Original",
@@ -3658,6 +3668,16 @@
   "ja": "連絡先に保存できませんでした。1枚ずつお試しください。",
   "pt": "Não foi possível salvar nos Contatos — tente um cartão por vez.",
   "zh": "无法存储到通讯录——请逐张保存。"
+ },
+ "Couldn't save — allow Tenzy to add photos in Settings.": {
+  "de": "Speichern fehlgeschlagen – erlaube Tenzy in den Einstellungen, Fotos hinzuzufügen.",
+  "es": "No se pudo guardar: permite a Tenzy añadir fotos en Ajustes.",
+  "fr": "Échec de l'enregistrement — autorisez Tenzy à ajouter des photos dans Réglages.",
+  "hi": "सेव नहीं हुआ — सेटिंग्स में Tenzy को फ़ोटो जोड़ने दें।",
+  "it": "Impossibile salvare: consenti a Tenzy di aggiungere foto in Impostazioni.",
+  "ja": "保存できません。設定で Tenzy に写真の追加を許可してください。",
+  "pt": "Não foi possível guardar — permita que o Tenzy adicione fotos nas Definições.",
+  "zh": "无法保存，请在设置中允许 Tenzy 添加照片。"
  },
  "Couldn't save — try again.": {
   "de": "Speichern fehlgeschlagen – nochmal versuchen.",
@@ -7489,6 +7509,16 @@
   "pt": "Deixa-os vazios para escrever palavras novas sempre que executares a ferramenta.",
   "zh": "留空即可在每次运行工具时输入新词。"
  },
+ "Leave this one out": {
+  "de": "Diesen weglassen",
+  "es": "Quitar esta",
+  "fr": "Retirer celle-ci",
+  "hi": "इसे हटाएँ",
+  "it": "Escludi questo",
+  "ja": "これを外す",
+  "pt": "Retirar esta",
+  "zh": "去掉这张"
+ },
  "Leaves you with more energy for the evening.": {
   "de": "Gibt dir mehr Energie für den Abend.",
   "es": "Te deja más energía para la tarde.",
@@ -8698,6 +8728,26 @@
   "ja": "下に移動",
   "pt": "Mover para baixo",
   "zh": "下移"
+ },
+ "Move earlier": {
+  "de": "Nach vorne",
+  "es": "Mover antes",
+  "fr": "Déplacer avant",
+  "hi": "पहले करें",
+  "it": "Sposta prima",
+  "ja": "前へ",
+  "pt": "Mover para antes",
+  "zh": "前移"
+ },
+ "Move later": {
+  "de": "Nach hinten",
+  "es": "Mover después",
+  "fr": "Déplacer après",
+  "hi": "बाद में करें",
+  "it": "Sposta dopo",
+  "ja": "後ろへ",
+  "pt": "Mover para depois",
+  "zh": "后移"
  },
  "Move page left": {
   "de": "Seite nach links",
@@ -12769,6 +12819,16 @@
   "pt": "Guardar contacto",
   "zh": "保存联系人"
  },
+ "Save it to Photos, share it, or send it as a PDF cut into pages.": {
+  "de": "In Fotos sichern, teilen oder als PDF mit Seiten senden.",
+  "es": "Guárdala en Fotos, compártela o envíala como PDF en páginas.",
+  "fr": "Enregistrez-la dans Photos, partagez-la ou envoyez-la en PDF découpé en pages.",
+  "hi": "फ़ोटो में सेव करें, शेयर करें, या पेजों वाली PDF भेजें।",
+  "it": "Salvala in Foto, condividila o inviala come PDF a pagine.",
+  "ja": "写真に保存、共有、またはページに分けたPDFで送信。",
+  "pt": "Guarde em Fotos, partilhe ou envie como PDF em páginas.",
+  "zh": "保存到照片、分享，或作为分页 PDF 发送。"
+ },
  "Save name": {
   "de": "Namen speichern",
   "es": "Guardar nombre",
@@ -13048,6 +13108,16 @@
   "ja": "写真に保存しました",
   "pt": "Salvo em Fotos",
   "zh": "已存到照片"
+ },
+ "Saved to Photos.": {
+  "de": "In Fotos gesichert.",
+  "es": "Guardado en Fotos.",
+  "fr": "Enregistré dans Photos.",
+  "hi": "फ़ोटो में सेव हो गया।",
+  "it": "Salvato in Foto.",
+  "ja": "写真に保存しました。",
+  "pt": "Guardado em Fotos.",
+  "zh": "已保存到照片。"
  },
  "Saved — this is what players will show:": {
   "de": "Gesichert – so zeigen es Player an:",
@@ -13848,6 +13918,16 @@
   "ja": "メールを共有",
   "pt": "Compartilhar e-mail",
   "zh": "分享邮件"
+ },
+ "Share image": {
+  "de": "Bild teilen",
+  "es": "Compartir imagen",
+  "fr": "Partager l'image",
+  "hi": "तस्वीर शेयर करें",
+  "it": "Condividi immagine",
+  "ja": "画像を共有",
+  "pt": "Partilhar imagem",
+  "zh": "分享图片"
  },
  "Share log": {
   "de": "Protokoll teilen",
@@ -15399,6 +15479,16 @@
   "pt": "Toca em Digitalizar para listar tudo na tua Wi-Fi. Liga-te primeiro à rede Wi-Fi — isto não vê dispositivos por dados móveis.",
   "zh": "点按扫描以列出你 Wi-Fi 上的一切。请先加入 Wi-Fi 网络 — 这无法通过移动数据看到设备。"
  },
+ "Tap Use the screenshots I just took — or pick them yourself, then fix the order.": {
+  "de": "Tippe auf „Die gerade gemachten Screenshots nehmen“ – oder wähle sie selbst und korrigiere die Reihenfolge.",
+  "es": "Toca «Usar las capturas que acabo de hacer», o elígelas tú y ajusta el orden.",
+  "fr": "Touchez « Utiliser les captures que je viens de faire » — ou choisissez-les et corrigez l'ordre.",
+  "hi": "“अभी लिए स्क्रीनशॉट इस्तेमाल करें” दबाएँ — या ख़ुद चुनें और क्रम ठीक करें।",
+  "it": "Tocca «Usa gli screenshot appena fatti», oppure sceglili tu e sistema l'ordine.",
+  "ja": "「さっき撮ったスクショを使う」をタップ。自分で選んで順番を直すこともできます。",
+  "pt": "Toque em «Usar as capturas que acabei de fazer» — ou escolha-as e corrija a ordem.",
+  "zh": "点“使用我刚截的图”，或自己选择并调整顺序。"
+ },
  "Tap a box to toggle it. Drag on the photo to add your own.": {
   "de": "Tippe ein Feld an, um es umzuschalten. Ziehe auf dem Foto, um ein eigenes hinzuzufügen.",
   "es": "Toca una casilla para activarla o desactivarla. Arrastra sobre la foto para añadir la tuya.",
@@ -16038,6 +16128,16 @@
   "ja": "スマホで1つのzipには大きすぎます（2GB未満に）。",
   "pt": "É demais para um zip no telefone (fique abaixo de 2 GB).",
   "zh": "手机上一个zip放不下这么多（请控制在2GB以内）。"
+ },
+ "The PDF has": {
+  "de": "Das PDF hat",
+  "es": "El PDF tiene",
+  "fr": "Le PDF contient",
+  "hi": "PDF में",
+  "it": "Il PDF ha",
+  "ja": "PDFは",
+  "pt": "O PDF tem",
+  "zh": "PDF 共"
  },
  "The camera's own best automatic settings.": {
   "de": "Die besten Automatik-Einstellungen der Kamera.",
@@ -17599,6 +17699,16 @@
   "pt": "Usar Face ID",
   "zh": "使用面容 ID"
  },
+ "Use the screenshots I just took": {
+  "de": "Die gerade gemachten Screenshots nehmen",
+  "es": "Usar las capturas que acabo de hacer",
+  "fr": "Utiliser les captures que je viens de faire",
+  "hi": "अभी लिए स्क्रीनशॉट इस्तेमाल करें",
+  "it": "Usa gli screenshot appena fatti",
+  "ja": "さっき撮ったスクショを使う",
+  "pt": "Usar as capturas que acabei de fazer",
+  "zh": "使用我刚截的图"
+ },
  "Use this as the source (e.g. trim, then shrink)": {
   "de": "Dies als Quelle verwenden (z. B. kürzen, dann verkleinern)",
   "es": "Usar esto como origen (p. ej. recortar y luego reducir)",
@@ -19118,6 +19228,16 @@
   "ja": "期限切れ",
   "pt": "em atraso",
   "zh": "已逾期"
+ },
+ "pages, sized like A4 — easy to print or email.": {
+  "de": "Seiten im A4-Format – leicht zu drucken oder zu mailen.",
+  "es": "páginas tamaño A4: fácil de imprimir o enviar.",
+  "fr": "pages au format A4 — facile à imprimer ou envoyer.",
+  "hi": "A4 जैसे पेज हैं — प्रिंट या ईमेल करना आसान।",
+  "it": "pagine formato A4: facile da stampare o inviare.",
+  "ja": "ページ（A4サイズ）— 印刷やメールに便利。",
+  "pt": "páginas em A4 — fácil de imprimir ou enviar.",
+  "zh": "页（A4 尺寸），方便打印或发邮件。"
  },
  "past your limit, so you'd get this today.": {
   "de": "über deinem Limit – du bekämst das heute.",
