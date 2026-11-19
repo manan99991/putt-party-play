@@ -86,6 +86,11 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
                 if let medID { Task { @MainActor in MedStore.shared.takenFromAlert(medID: medID) } }
             case MedSchedule.snoozeAction:
                 MedSchedule.snooze(content)
+            case MedCare.textAction:
+                Task { @MainActor in
+                    let name = medID.flatMap { id in MedStore.shared.meds.first { $0.id == id }?.name } ?? "my medicine"
+                    if let u = MedCare.smsURL(MedCare.caregiverPhone, body: "Just a note about \(name) — ") { _ = await UIApplication.shared.open(u) }
+                }
             default:
                 DispatchQueue.main.async { NotificationCenter.default.post(name: .openTool, object: "medreminder") }
             }

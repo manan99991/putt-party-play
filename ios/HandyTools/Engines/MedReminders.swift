@@ -208,7 +208,8 @@ enum MedSchedule {
     static func registerCategory() -> UNNotificationCategory {
         UNNotificationCategory(identifier: category,
                                actions: [UNNotificationAction(identifier: takenAction, title: "Taken ✓", options: []),
-                                         UNNotificationAction(identifier: snoozeAction, title: "Snooze 10 min", options: [])],
+                                         UNNotificationAction(identifier: snoozeAction, title: "Snooze 10 min", options: [])]
+                                    + (MedCare.caregiverName.isEmpty ? [] : [UNNotificationAction(identifier: MedCare.textAction, title: "Text \(MedCare.caregiverName)", options: [.foreground])]),
                                intentIdentifiers: [], options: [])
     }
 
@@ -290,7 +291,7 @@ final class MedStore: ObservableObject {
             }
         }
         log.removeAll { $0.medID == m.id && abs($0.scheduled.timeIntervalSince(at)) < 60 }
-        if taken { log.append(DoseLog(medID: m.id, scheduled: at, taken: Date())) }
+        if taken { log.append(DoseLog(medID: m.id, scheduled: at, taken: Date())); MedCare.cancel(m.id, dose: at) }
         let cutoff = Calendar.current.date(byAdding: .day, value: -60, to: Date()) ?? Date()
         log.removeAll { $0.scheduled < cutoff }
         persist()
@@ -318,7 +319,24 @@ final class MedStore: ObservableObject {
         let r = MedSchedule.plans(meds)
         droppedAlerts = r.dropped
         MedSchedule.apply(r.plans)
+        MedCare.refresh(self)
     }
+
+    /// The doses missed in the last 7 days, as "Metformin Tue 8 PM".
+    func missedThisWeek(now: Date = Date()) -> [String] {
+        let cal = Calendar.current
+        var out: [String] = []
+        for back in (0..<7).reversed() {
+            guard let day = cal.date(byAdding: .day, value: -back, to: now) else { continue }
+            for m in meds { for at in MedSchedule.doses(m, on: day) where at <= now.addingTimeInterval(-3600) && !isTaken(m, at: at) {
+                out.append("\(m.name) \(at.formatted(.dateTime.weekday(.abbreviated).hour()))")
+            } }
+        }
+        return out
+    }
+
+    /// Medicines someone sent from their phone, added here (alerts set straight away).
+    func add(_ list: [Med]) { meds += list; persist(); reschedule() }
 
     private func persist() {
         try? JSONEncoder().encode(Saved(meds: meds, log: log)).write(to: Self.url, options: .completeFileProtection)

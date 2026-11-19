@@ -2572,6 +2572,32 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(PaperworkExport.make(year: 2020, receipts: [a], letters: []) { _ in nil }, "an empty year makes nothing")
     }
 
+    func testCaregiverFollowUpsSummaryAndSharing() throws {
+        let cal = Calendar(identifier: .gregorian)
+        let now = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 20, hour: 7, minute: 50)))
+        var m = Med(); m.name = "Metformin"; m.times = [TimeOfDay(hour: 8, minute: 0), TimeOfDay(hour: 20, minute: 0)]
+        m.start = cal.startOfDay(for: now.addingTimeInterval(-86400))
+        let all = MedCare.followUps([m], taken: { _, _ in false }, minutes: 30, now: now, cal: cal)
+        XCTAssertEqual(all.count, 4, "today and tomorrow, both doses")
+        XCTAssertEqual(cal.dateComponents([.hour, .minute], from: all[0].at), DateComponents(hour: 8, minute: 30))
+        let eight = all[0].dose
+        let afterTaken = MedCare.followUps([m], taken: { _, d in d == eight }, minutes: 30, now: now, cal: cal)
+        XCTAssertEqual(afterTaken.count, 3, "a taken dose gets no follow-up")
+        XCTAssertTrue(MedCare.followUps([m], taken: { _, _ in false }, minutes: 0, now: now, cal: cal).isEmpty, "off is off")
+        XCTAssertEqual(MedCare.followUpMessage(m, dose: eight, caregiver: "Ravi").title, "Did you take your Metformin?")
+        XCTAssertTrue(MedCare.followUpMessage(m, dose: eight, caregiver: "Ravi").body.hasSuffix("or let Ravi know."))
+        XCTAssertEqual(MedCare.weekSummary(taken: 13, due: 14, missed: ["Metformin Tue 8 PM"]),
+                       "This week: 13 of 14 doses taken (93%). Missed: Metformin Tue 8 PM. — from Tenzy Medicine Reminders")
+        XCTAssertEqual(MedCare.weekSummary(taken: 0, due: 0, missed: []), "No doses were due this week.")
+        XCTAssertNotNil(MedCare.smsURL("+1 (630) 555-0199", body: "13 of 14"))
+        // A list set up on one phone, added on another: same medicines, new ids, nothing else carried over.
+        let text = MedCare.shareText([m])
+        XCTAssertTrue(text.hasPrefix("tenzy-meds:"))
+        let back = try XCTUnwrap(MedCare.imported("Here you go Mom: " + text + " love you"))
+        XCTAssertEqual(back.map(\.name), ["Metformin"]); XCTAssertEqual(back[0].times, m.times); XCTAssertNotEqual(back[0].id, m.id)
+        XCTAssertNil(MedCare.imported("hello")); XCTAssertNil(MedCare.imported("tenzy-meds:notbase64!!"))
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

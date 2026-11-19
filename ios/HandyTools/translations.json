@@ -699,6 +699,16 @@
   "pt": "Adicionar remédio",
   "zh": "添加药品"
  },
+ "Add medicines someone sent me": {
+  "de": "Medikamente hinzufügen, die mir jemand geschickt hat",
+  "es": "Añadir medicamentos que me enviaron",
+  "fr": "Ajouter des médicaments reçus",
+  "hi": "किसी ने भेजी दवाइयाँ जोड़ें",
+  "it": "Aggiungi medicine ricevute",
+  "ja": "送られてきた薬を追加",
+  "pt": "Adicionar medicamentos que me enviaram",
+  "zh": "添加别人发来的药"
+ },
  "Add more": {
   "de": "Mehr hinzufügen",
   "es": "Añadir más",
@@ -748,6 +758,26 @@
   "ja": "保証のあるもの（テレビ、ドリル、家電）のレシートを追加。11か月目に壊れても、家じゅうを探さずに2タップで証明が出せます。",
   "pt": "Adicione o recibo de tudo o que tem garantia — uma TV, um berbequim, um eletrodoméstico. Quando avariar no mês 11, tens a prova em dois toques em vez de virar a casa do avesso.",
   "zh": "为任何有保修的物品添加收据——电视、电钻、家电。第 11 个月坏了时，两下点按就能找到凭证，而不必翻遍整个家。"
+ },
+ "Add them": {
+  "de": "Hinzufügen",
+  "es": "Añadirlos",
+  "fr": "Les ajouter",
+  "hi": "जोड़ें",
+  "it": "Aggiungili",
+  "ja": "追加",
+  "pt": "Adicionar",
+  "zh": "添加"
+ },
+ "Add these": {
+  "de": "Diese hinzufügen:",
+  "es": "¿Añadir estos",
+  "fr": "Ajouter ces",
+  "hi": "इन्हें जोड़ें:",
+  "it": "Aggiungere questi",
+  "ja": "追加しますか：",
+  "pt": "Adicionar estes",
+  "zh": "添加这些"
  },
  "Add to Calendar": {
   "de": "Zum Kalender hinzufügen",
@@ -2329,6 +2359,16 @@
   "pt": "Número / código do cartão",
   "zh": "卡号 / 代码"
  },
+ "Caregiver (optional)": {
+  "de": "Betreuungsperson (optional)",
+  "es": "Cuidador (opcional)",
+  "fr": "Aidant (facultatif)",
+  "hi": "देखभाल करने वाले (वैकल्पिक)",
+  "it": "Caregiver (facoltativo)",
+  "ja": "介護者（任意）",
+  "pt": "Cuidador (opcional)",
+  "zh": "照护人（可选）"
+ },
  "Cartoon": {
   "de": "Cartoon",
   "es": "Caricatura",
@@ -3538,6 +3578,16 @@
   "ja": "テキストをコピー",
   "pt": "Copiar texto",
   "zh": "复制文字"
+ },
+ "Copy the list": {
+  "de": "Liste kopieren",
+  "es": "Copiar la lista",
+  "fr": "Copier la liste",
+  "hi": "सूची कॉपी करें",
+  "it": "Copia la lista",
+  "ja": "リストをコピー",
+  "pt": "Copiar a lista",
+  "zh": "复制清单"
  },
  "Copy to share": {
   "de": "Zum Teilen kopieren",
@@ -5609,6 +5659,16 @@
   "pt": "Entrada e saída suaves",
   "zh": "淡入淡出"
  },
+ "Family & caregiver": {
+  "de": "Familie & Betreuung",
+  "es": "Familia y cuidador",
+  "fr": "Famille et aidant",
+  "hi": "परिवार और देखभाल",
+  "it": "Famiglia e caregiver",
+  "ja": "家族・介護者",
+  "pt": "Família e cuidador",
+  "zh": "家人与照护"
+ },
  "Far": {
   "de": "Fern",
   "es": "Lejos",
@@ -7318,6 +7378,16 @@
   "ja": "識別",
   "pt": "Identificar",
   "zh": "识别"
+ },
+ "If a dose isn't marked Taken, nudge again": {
+  "de": "Wenn eine Dosis nicht als genommen markiert ist, erneut erinnern",
+  "es": "Si una dosis no se marca como Tomada, avisar otra vez",
+  "fr": "Si une prise n'est pas cochée Pris, relancer",
+  "hi": "अगर ख़ुराक ‘ले ली’ नहीं हुई, फिर याद दिलाएँ",
+  "it": "Se una dose non è segnata come Presa, ricorda di nuovo",
+  "ja": "「飲んだ」が押されなければ再通知",
+  "pt": "Se uma dose não for marcada como Tomada, lembrar outra vez",
+  "zh": "如果未标记“已服用”，再次提醒"
  },
  "If you forget it": {
   "de": "Falls du sie vergisst",
@@ -10719,6 +10789,16 @@
   "pt": "Agora",
   "zh": "现在"
  },
+ "Nudge again": {
+  "de": "Erneut erinnern",
+  "es": "Avisar otra vez",
+  "fr": "Relancer",
+  "hi": "फिर याद दिलाएँ",
+  "it": "Ricorda di nuovo",
+  "ja": "再通知",
+  "pt": "Lembrar outra vez",
+  "zh": "再次提醒"
+ },
  "Nudge me as each step starts": {
   "de": "Erinnere mich bei jedem Schritt",
   "es": "Avísame al empezar cada paso",
@@ -10748,6 +10828,16 @@
   "ja": "OK",
   "pt": "OK",
   "zh": "好"
+ },
+ "Off": {
+  "de": "Aus",
+  "es": "No",
+  "fr": "Non",
+  "hi": "बंद",
+  "it": "No",
+  "ja": "オフ",
+  "pt": "Não",
+  "zh": "关闭"
  },
  "Offer this tool by itself": {
   "de": "Dieses Tool einzeln anbieten",
@@ -10808,6 +10898,16 @@
   "ja": "このラベルの内容",
   "pt": "Neste rótulo",
   "zh": "此标签上"
+ },
+ "On your phone: add their medicines here, then Copy the list and text it to them. On their phone: open Tenzy → Medicine Reminders → Add medicines someone sent me. Their reminders start straight away.": {
+  "de": "Auf deinem Handy: Medikamente hier eintragen, Liste kopieren und per Nachricht schicken. Auf ihrem Handy: Tenzy → Medikamente → „Medikamente hinzufügen, die mir jemand geschickt hat“. Die Erinnerungen starten sofort.",
+  "es": "En tu teléfono: añade sus medicamentos aquí, copia la lista y envíasela. En el suyo: Tenzy → Medicamentos → Añadir medicamentos que me enviaron. Los avisos empiezan enseguida.",
+  "fr": "Sur votre téléphone : ajoutez ses médicaments ici, copiez la liste et envoyez-la. Sur le sien : Tenzy → Médicaments → Ajouter des médicaments reçus. Les rappels démarrent tout de suite.",
+  "hi": "आपके फ़ोन पर: उनकी दवाइयाँ यहाँ जोड़ें, फिर सूची कॉपी करके उन्हें भेजें। उनके फ़ोन पर: Tenzy → दवा रिमाइंडर → ‘किसी ने भेजी दवाइयाँ जोड़ें’। रिमाइंडर तुरंत शुरू।",
+  "it": "Sul tuo telefono: aggiungi qui le sue medicine, copia la lista e mandagliela. Sul suo: Tenzy → Promemoria medicine → Aggiungi medicine ricevute. I promemoria partono subito.",
+  "ja": "自分の端末：ここに相手の薬を追加し、リストをコピーしてメッセージで送る。相手の端末：Tenzy →「服薬リマインダー」→「送られてきた薬を追加」。すぐに通知が始まります。",
+  "pt": "No seu telemóvel: adicione aqui os medicamentos, copie a lista e envie. No dele: Tenzy → Medicamentos → Adicionar medicamentos que me enviaram. Os lembretes começam logo.",
+  "zh": "在你的手机上：在这里添加对方的药，复制清单并发给对方。在对方手机上：打开 Tenzy → 服药提醒 →“添加别人发来的药”。提醒立即生效。"
  },
  "On-device transcription isn't available for this language on this phone right now.": {
   "de": "Transkription auf dem Gerät ist für diese Sprache auf diesem Telefon gerade nicht verfügbar.",
@@ -15029,6 +15129,16 @@
   "pt": "Define isto para o idioma falado na gravação. Da primeira vez, o telemóvel pode pedir para o transferir.",
   "zh": "将其设为录音中所讲的语言。首次使用时，手机可能会要求下载它。"
  },
+ "Set up medicines for someone else": {
+  "de": "Medikamente für jemand anderen einrichten",
+  "es": "Configurar medicamentos para otra persona",
+  "fr": "Configurer des médicaments pour quelqu'un",
+  "hi": "किसी और के लिए दवाइयाँ सेट करें",
+  "it": "Imposta le medicine per un'altra persona",
+  "ja": "ほかの人の薬を設定",
+  "pt": "Configurar medicamentos para outra pessoa",
+  "zh": "为他人设置用药"
+ },
  "Set up once": {
   "de": "Einmal einrichten",
   "es": "Configúralo una vez",
@@ -15908,6 +16018,16 @@
   "ja": "一部の写真を開けませんでした。",
   "pt": "Algumas fotos não puderam ser abertas.",
   "zh": "部分照片无法打开。"
+ },
+ "Someone who helps — a son, a daughter, a nurse. Their name goes on the alert with a Text button, so reaching them is one tap.": {
+  "de": "Jemand, der hilft – Sohn, Tochter, Pflegekraft. Der Name steht mit einer Nachricht-Taste auf der Mitteilung, so ist er einen Tipp entfernt.",
+  "es": "Alguien que ayuda: un hijo, una hija, una enfermera. Su nombre aparece en el aviso con un botón Mensaje, a un toque.",
+  "fr": "Quelqu'un qui aide — un fils, une fille, une infirmière. Son nom figure sur l'alerte avec un bouton Message, à un geste.",
+  "hi": "कोई जो मदद करता है — बेटा, बेटी, नर्स। अलर्ट पर उनका नाम और मैसेज बटन होगा, एक टैप में संपर्क।",
+  "it": "Qualcuno che aiuta: un figlio, una figlia, un'infermiera. Il nome compare nell'avviso con un pulsante Messaggio, a un tocco.",
+  "ja": "手伝ってくれる人（息子、娘、看護師など）。通知に名前と「メッセージ」ボタンが付き、ワンタップで連絡できます。",
+  "pt": "Alguém que ajuda — um filho, uma filha, uma enfermeira. O nome aparece no alerta com um botão Mensagem, a um toque.",
+  "zh": "帮忙照顾的人——儿子、女儿或护士。提醒上会显示其姓名和“发信息”按钮，一点即可联系。"
  },
  "Something light — toast, fruit, soup": {
   "de": "Etwas Leichtes – Toast, Obst, Suppe",
@@ -17329,6 +17449,16 @@
   "pt": "Teste",
   "zh": "测试一下"
  },
+ "Test run — send me a dose alert and its follow-up now": {
+  "de": "Probelauf – Dosis-Hinweis und Nachfrage jetzt senden",
+  "es": "Prueba: enviarme ahora un aviso de dosis y su seguimiento",
+  "fr": "Essai — envoyez-moi une alerte de prise et sa relance",
+  "hi": "टेस्ट रन — अभी ख़ुराक अलर्ट और उसका फ़ॉलो-अप भेजें",
+  "it": "Prova: inviami ora un avviso di dose e il suo promemoria",
+  "ja": "テスト実行 — 服薬通知と再通知を今すぐ送る",
+  "pt": "Teste — enviar já um alerta de dose e o seguimento",
+  "zh": "测试——立即发送服药提醒及其后续提醒"
+ },
  "Test run — send me these alerts now": {
   "de": "Probelauf – diese Hinweise jetzt senden",
   "es": "Prueba: envíame estos avisos ahora",
@@ -17769,6 +17899,16 @@
   "pt": "O telefone não identifica idades, então você escolhe quais rostos cobrir. Salvo como cópia nova sem localização.",
   "zh": "手机无法判断年龄，由你决定遮哪些脸。另存为不含位置信息的新副本。"
  },
+ "The second alert has Taken ✓ on it. Tapping Taken on either one stops the other.": {
+  "de": "Die zweite Mitteilung hat auch „Genommen ✓“. Ein Tipp auf eine stoppt die andere.",
+  "es": "El segundo aviso también tiene Tomado ✓. Tocar Tomado en uno detiene el otro.",
+  "fr": "La 2e alerte a aussi Pris ✓. Toucher Pris sur l'une arrête l'autre.",
+  "hi": "दूसरे अलर्ट पर भी ‘ले ली ✓’ है। किसी एक पर टैप करने से दूसरा रुक जाता है।",
+  "it": "Il secondo avviso ha Presa ✓. Toccarla su uno ferma l'altro.",
+  "ja": "2回目の通知にも「飲んだ ✓」があり、どちらかを押すともう一方は止まります。",
+  "pt": "O segundo alerta também tem Tomado ✓. Tocar num pára o outro.",
+  "zh": "第二条提醒也有“已服用 ✓”，点任意一条另一条就会取消。"
+ },
  "The secret itself": {
   "de": "Das Geheimnis selbst",
   "es": "El secreto en sí",
@@ -17878,6 +18018,26 @@
   "ja": "zipの確認に失敗しました — もう一度お試しください。",
   "pt": "O zip não passou na verificação — tente de novo.",
   "zh": "zip校验未通过——请重试。"
+ },
+ "Their mobile number": {
+  "de": "Handynummer",
+  "es": "Su móvil",
+  "fr": "Son portable",
+  "hi": "उनका मोबाइल नंबर",
+  "it": "Il cellulare",
+  "ja": "携帯番号",
+  "pt": "O telemóvel",
+  "zh": "手机号码"
+ },
+ "Their name": {
+  "de": "Name",
+  "es": "Su nombre",
+  "fr": "Son nom",
+  "hi": "उनका नाम",
+  "it": "Il nome",
+  "ja": "名前",
+  "pt": "O nome",
+  "zh": "姓名"
  },
  "Theme": {
   "de": "Design",
@@ -20889,6 +21049,16 @@
   "pt": "O iPhone não deixa nenhuma app definir um som diretamente — este é o método da Apple e demora menos de um minuto.",
   "zh": "iPhone 不允许任何应用直接设置铃声——这是 Apple 自己的方法，不到一分钟。"
  },
+ "iPhone doesn't let apps send texts on their own, so you see the message and tap Send.": {
+  "de": "Das iPhone lässt Apps nicht selbst Nachrichten senden – du siehst sie und tippst auf „Senden“.",
+  "es": "El iPhone no deja que las apps envíen mensajes solas: ves el mensaje y tocas Enviar.",
+  "fr": "L'iPhone ne laisse pas les apps envoyer seules : vous voyez le message et touchez Envoyer.",
+  "hi": "iPhone ऐप्स को अपने-आप मैसेज भेजने नहीं देता, इसलिए आप मैसेज देखकर भेजें दबाते हैं।",
+  "it": "L'iPhone non permette alle app di inviare messaggi da sole: vedi il messaggio e tocchi Invia.",
+  "ja": "iPhone ではアプリが自動でメッセージを送れないため、内容を確認して送信します。",
+  "pt": "O iPhone não deixa as apps enviar mensagens sozinhas: vê a mensagem e toca em Enviar.",
+  "zh": "iPhone 不允许应用自动发短信，你会先看到内容再点发送。"
+ },
  "iPhone only lets you add Home Screen icons yourself — no app can place one for you. Both ways take under a minute.": {
   "de": "Nur du selbst kannst Symbole auf den Home-Bildschirm legen – keine App darf das. Beides dauert unter einer Minute.",
   "es": "Solo tú puedes añadir iconos a la pantalla de inicio; ninguna app puede hacerlo por ti. Ambas formas tardan menos de un minuto.",
@@ -21399,6 +21569,16 @@
   "pt": "texto",
   "zh": "文本"
  },
+ "them": {
+  "de": "ihnen",
+  "es": "ellos",
+  "fr": "eux",
+  "hi": "उन्हें",
+  "it": "loro",
+  "ja": "相手",
+  "pt": "eles",
+  "zh": "对方"
+ },
  "thing to fix": {
   "de": "Punkt zu beheben",
   "es": "cosa que arreglar",
@@ -21418,6 +21598,16 @@
   "ja": "件の要修正",
   "pt": "itens para corrigir",
   "zh": "项需修正"
+ },
+ "this week's summary": {
+  "de": "die Wochenübersicht",
+  "es": "el resumen de la semana",
+  "fr": "le résumé de la semaine",
+  "hi": "इस हफ़्ते का सारांश",
+  "it": "il riepilogo della settimana",
+  "ja": "今週のまとめ",
+  "pt": "o resumo da semana",
+  "zh": "本周总结"
  },
  "to Contacts": {
   "de": "in Kontakte",

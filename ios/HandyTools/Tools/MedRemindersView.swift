@@ -17,6 +17,7 @@ struct MedRemindersView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
                 NotificationsOffCard(isOff: $blocked)
                 if store.meds.isEmpty { emptyCard } else { todayCard; medsList }
+                CareCard(store: store)
                 if store.droppedAlerts > 0 {
                     Label("\(L("iPhone allows 64 alerts per app — the")) \(store.droppedAlerts) \(L("furthest-away doses will be scheduled as the nearer ones pass. Open Tenzy now and then to top them up."))",
                           systemImage: "exclamationmark.triangle")
@@ -291,5 +292,101 @@ struct MedEditor: View {
             let c = Calendar.current.dateComponents([.hour, .minute], from: d)
             med.times[i] = TimeOfDay(hour: c.hour ?? 8, minute: c.minute ?? 0)
         })
+    }
+}
+
+/// Family & caregiver: a second nudge if a dose isn't marked Taken, a caregiver one tap away from the alert,
+/// a weekly summary to send them, and setting up medicines on one phone for someone else's.
+private struct CareCard: View {
+    @ObservedObject var store: MedStore
+    @AppStorage("medcare.followup") private var followUp = 0
+    @AppStorage("medcare.name") private var name = ""
+    @AppStorage("medcare.phone") private var phone = ""
+    @State private var pasteFound: [Med]?
+    @State private var note: String?
+
+    private var summary: String {
+        let w = store.week()
+        return MedCare.weekSummary(taken: w.taken, due: w.due, missed: store.missedThisWeek())
+    }
+
+    var body: some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(L("If a dose isn't marked Taken, nudge again")).font(HandyFont.bodyStrong)
+                    Picker(L("Nudge again"), selection: $followUp) {
+                        Text(L("Off")).tag(0); Text("15 min").tag(15); Text("30 min").tag(30); Text("1 hour").tag(60)
+                    }.pickerStyle(.segmented)
+                    Text(L("The second alert has Taken ✓ on it. Tapping Taken on either one stops the other.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                }
+                Divider()
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(L("Caregiver (optional)")).font(HandyFont.bodyStrong)
+                    Text(L("Someone who helps — a son, a daughter, a nurse. Their name goes on the alert with a Text button, so reaching them is one tap.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    TextField(L("Their name"), text: $name).textFieldStyle(.roundedBorder)
+                    TextField(L("Their mobile number"), text: $phone).textFieldStyle(.roundedBorder).keyboardType(.phonePad)
+                    if !phone.filter(\.isNumber).isEmpty {
+                        Text(summary).font(HandyFont.caption).padding(8).frame(maxWidth: .infinity, alignment: .leading)
+                            .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 10))
+                        if let u = MedCare.smsURL(phone, body: summary) {
+                            Link(destination: u) { Label("\(L("Send")) \(name.isEmpty ? L("them") : name) \(L("this week's summary"))", systemImage: "message.fill").frame(maxWidth: .infinity) }
+                                .secondaryButton()
+                        }
+                        Text(L("iPhone doesn't let apps send texts on their own, so you see the message and tap Send.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
+                }
+                Divider()
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(L("Set up medicines for someone else")).font(HandyFont.bodyStrong)
+                    Text(L("On your phone: add their medicines here, then Copy the list and text it to them. On their phone: open Tenzy → Medicine Reminders → Add medicines someone sent me. Their reminders start straight away.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    HStack(spacing: HandySpacing.s8) {
+                        Button { Copier.copy(MedCare.shareText(store.meds), note: "Medicine list copied — paste it in a text") } label: { Label(L("Copy the list"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }
+                            .secondaryButton().disabled(store.meds.isEmpty)
+                        Button {
+                            let t = UIPasteboard.general.string ?? ""
+                            if let found = MedCare.imported(t) { pasteFound = found } else { note = t.isEmpty ? "Nothing copied yet. Copy the whole message they sent, then tap here." : "That isn't a Tenzy medicine list. Copy the whole message they sent, then tap here." }
+                        } label: { Label(L("Add medicines someone sent me"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }
+                            .secondaryButton().accessibilityIdentifier("meds-import")
+                    }
+                    if let found = pasteFound {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("\(L("Add these")) \(found.count)?").font(HandyFont.caption.weight(.semibold))
+                            ForEach(found) { m in Text("• \(m.name) — \(MedSchedule.summary(m))").font(HandyFont.caption) }
+                            HStack {
+                                Button(L("Add them")) { store.add(found); pasteFound = nil; note = "Added \(found.count) — reminders are on." }.primaryButton()
+                                Button(L("Cancel")) { pasteFound = nil }.textButton()
+                            }
+                        }.cardStyle(padding: HandySpacing.s8)
+                    }
+                }
+                Button { testRun() } label: { Label(L("Test run — send me a dose alert and its follow-up now"), systemImage: "checkmark.seal") }
+                    .compactButton().disabled(store.meds.isEmpty).accessibilityIdentifier("care-test")
+                if let note { Label(L(note), systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
+            }.padding(.top, HandySpacing.s8)
+        } label: { Label(L("Family & caregiver"), systemImage: "figure.2.and.child.holdinghands").font(HandyFont.bodyStrong) }
+        .tint(HandyColor.accent)
+        .cardStyle(padding: HandySpacing.s12)
+        .onChange(of: followUp) { _, _ in store.reschedule() }
+        .onChange(of: name) { _, _ in ToolNotifications.shared.install() }   // the alert's "Text <name>" button
+    }
+
+    private func testRun() {
+        guard let m = store.meds.first else { return }
+        Task {
+            guard await NotifyPermission.ensure() else { note = "Notifications are off for Tenzy — turn them on to get reminders."; return }
+            let now = Date()
+            let fu = MedCare.followUpMessage(m, dose: now, caregiver: name)
+            let msgs: [(String, String)] = [("Test · Time for \(m.name)", [m.dose, m.note].filter { !$0.isEmpty }.joined(separator: " · ")), (fu.title, fu.body)]
+            for (i, msg) in msgs.enumerated() {
+                let c = UNMutableNotificationContent()
+                c.title = i == 0 ? msg.0 : "Test · " + msg.0; c.body = msg.1; c.sound = .default
+                c.categoryIdentifier = MedSchedule.category
+                c.userInfo = ["med": m.id.uuidString]
+                let trigger = i == 0 ? nil : UNTimeIntervalNotificationTrigger(timeInterval: 6, repeats: false)
+                try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "medtest-\(i)-\(UUID().uuidString)", content: c, trigger: trigger))
+            }
+            note = "Sent — the dose alert now and its follow-up in a few seconds. Long-press one to see the buttons."
+        }
     }
 }
