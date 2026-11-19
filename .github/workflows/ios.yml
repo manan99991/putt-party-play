@@ -93,6 +93,7 @@ jobs:
           grep -E "error:|Test Case .*failed|failed - " test.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
           grep -q "TEST SUCCEEDED" test.log
       - name: iPad smoke — every tool opens without crashing on iPad (gates the deploy)
+        timeout-minutes: 25
         run: |
           set -o pipefail
           IPAD=$(xcrun simctl list devices available -j | python3 -c '
@@ -112,7 +113,10 @@ jobs:
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee ipad.log | grep -E "error:|Test Case .*(passed|failed)|TEST (SUCCEEDED|FAILED)" || true
           grep -E "Test Case .*failed|failed - " ipad.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head | sed 's/^/::error::/' || true
-          grep -q "TEST SUCCEEDED" ipad.log
+          grep -q "TEST SUCCEEDED" ipad.log || { echo "== last lines of the iPad run"; tail -60 ipad.log; exit 1; }
+      - name: iPad run, last lines (when it didn't finish)
+        if: failure() || cancelled()
+        run: tail -80 ipad.log 2>/dev/null || true
       - name: Publish test log
         if: always()
         working-directory: .
