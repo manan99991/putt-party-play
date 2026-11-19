@@ -376,3 +376,45 @@ private extension String {
         return t == t.uppercased() ? t.capitalized : t
     }
 }
+
+/// Everything a shop or maker asks for when something breaks: what, where, when, how much, how long the warranty
+/// has left — then the receipt and a photo of the problem. One PDF to email or show at the counter.
+enum ClaimPack {
+    static func pdf(_ r: Receipt, receiptImage: UIImage?, problem: UIImage?, note: String, now: Date = Date()) -> Data {
+        let page = CGRect(x: 0, y: 0, width: 612, height: 792)
+        let df = DateFormatter(); df.dateStyle = .long
+        return UIGraphicsPDFRenderer(bounds: page).pdfData { ctx in
+            ctx.beginPage()
+            let h1: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 26, weight: .bold)]
+            let k: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 13, weight: .semibold), .foregroundColor: UIColor.darkGray]
+            let v: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 13)]
+            ("Warranty claim" as NSString).draw(at: CGPoint(x: 48, y: 56), withAttributes: h1)
+            var y: CGFloat = 104
+            var rows: [(String, String)] = [("Bought from", r.store)]
+            if let d = r.purchaseDate { rows.append(("Date of purchase", df.string(from: d))) }
+            if !r.total.isEmpty { rows.append(("Paid", r.total)) }
+            if !r.items.isEmpty { rows.append(("Items", r.items.prefix(6).joined(separator: ", "))) }
+            if let end = r.warrantyEnds {
+                let days = Calendar.current.dateComponents([.day], from: Calendar.current.startOfDay(for: now), to: end).day ?? 0
+                rows.append(("Warranty", "\(r.warrantyMonths ?? 0) months, until \(df.string(from: end))" + (days >= 0 ? " — \(days) days left" : " — ended")))
+            }
+            if let by = r.returnBy { rows.append(("Return by", df.string(from: by))) }
+            if !note.trimmingCharacters(in: .whitespaces).isEmpty { rows.append(("What's wrong", note)) }
+            rows.append(("Prepared", df.string(from: now)))
+            for (key, val) in rows {
+                (key as NSString).draw(in: CGRect(x: 48, y: y, width: 150, height: 20), withAttributes: k)
+                let h = max(20, (val as NSString).boundingRect(with: CGSize(width: 360, height: 400), options: .usesLineFragmentOrigin, attributes: v, context: nil).height)
+                (val as NSString).draw(in: CGRect(x: 200, y: y, width: 360, height: h + 4), withAttributes: v)
+                y += h + 10
+            }
+            for (title, img) in [("Receipt", receiptImage), ("The problem", problem)] {
+                guard let img else { continue }
+                ctx.beginPage()
+                (title as NSString).draw(at: CGPoint(x: 48, y: 40), withAttributes: k)
+                let box = CGRect(x: 48, y: 68, width: 516, height: 680)
+                let s = min(box.width / img.size.width, box.height / img.size.height)
+                img.draw(in: CGRect(x: box.minX, y: box.minY, width: img.size.width * s, height: img.size.height * s))
+            }
+        }
+    }
+}

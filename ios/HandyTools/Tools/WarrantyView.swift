@@ -22,6 +22,8 @@ struct WarrantyView: View {
     private var results: [Receipt] { ReceiptSearch.rank(store.receipts, query: query) }
     private var expiring: [Receipt] { store.expiring(within: 45) }
     private var returnsSoon: [Receipt] { store.returnsClosing(within: 7) }
+    /// Everything you can still take back, soonest deadline first.
+    private var stillReturnable: [Receipt] { store.returnsClosing(within: 3650).filter { ($0.daysLeftToReturn ?? -1) >= 0 }.sorted { ($0.daysLeftToReturn ?? 0) < ($1.daysLeftToReturn ?? 0) } }
 
     var body: some View {
         ToolPage(title: "Warranty & Receipts", subtitle: "Snap a receipt, find it later by typing roughly what you remember, and never miss a warranty.", working: busy) {
@@ -42,7 +44,7 @@ struct WarrantyView: View {
             if store.receipts.isEmpty && !busy {
                 emptyState
             } else {
-                if !returnsSoon.isEmpty && query.isEmpty { returnsCard }
+                if !stillReturnable.isEmpty && query.isEmpty { returnsCard }
                 if !expiring.isEmpty && query.isEmpty { expiringCard }
 
                 TextField(L("Search receipts — store, item, or a rough amount"), text: $query)
@@ -157,17 +159,19 @@ struct WarrantyView: View {
 
     private var returnsCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Label("\(returnsSoon.count) \(returnsSoon.count == 1 ? L("return window closing") : L("return windows closing"))", systemImage: "arrow.uturn.backward.circle.fill")
-                .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.amber)
-            ForEach(returnsSoon.prefix(3)) { r in
+            Label(L("What you can still return"), systemImage: "arrow.uturn.backward.circle.fill")
+                .font(HandyFont.bodyStrong).foregroundStyle(returnsSoon.isEmpty ? HandyColor.textPrimary : HandyColor.amber)
+            ForEach(stillReturnable.prefix(8)) { r in
                 Button { open = r } label: {
                     HStack {
                         Text(r.store).font(HandyFont.body).lineLimit(1)
+                        if !r.total.isEmpty { Text(r.total).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                         Spacer()
-                        Text(Self.returnPhrase(r)).font(HandyFont.caption).foregroundStyle(HandyColor.amber)
+                        Text(Self.returnPhrase(r)).font(HandyFont.caption).foregroundStyle((r.daysLeftToReturn ?? 99) <= 7 ? HandyColor.amber : HandyColor.textSecondary)
                     }
                 }.buttonStyle(.plain)
             }
+            if stillReturnable.count > 8 { Text("+\(stillReturnable.count - 8) \(L("more"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
         }.cardStyle(padding: HandySpacing.s12)
     }
 
@@ -304,6 +308,35 @@ private struct ReceiptDetail: View {
     @ObservedObject var store: ReceiptStore
     @Environment(\.dismiss) private var dismiss
     @State private var confirmDelete = false
+    @State private var problemItem: PhotosPickerItem?
+    @State private var problem: UIImage?
+    @State private var problemNote = ""
+    @State private var pack: Data?
+
+    /// Something broke: receipt, warranty details and a photo of the problem in one PDF for the shop or maker.
+    @ViewBuilder private var claimPack: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Something wrong with it?"), systemImage: "wrench.and.screwdriver").font(HandyFont.bodyStrong)
+            TextField(L("What's wrong (optional)"), text: $problemNote, axis: .vertical).textFieldStyle(.roundedBorder)
+            PhotosPicker(selection: $problemItem, matching: .images) {
+                Label(L(problem == nil ? "Add a photo of the problem (optional)" : "Photo added — change it"), systemImage: "camera").frame(maxWidth: .infinity)
+            }.secondaryButton()
+            Button {
+                pack = ClaimPack.pdf(receipt, receiptImage: store.image(receipt), problem: problem, note: problemNote); HandyHaptics.success()
+            } label: { Label(L("Make the claim pack (PDF)"), systemImage: "doc.richtext").frame(maxWidth: .infinity) }.primaryButton()
+                .accessibilityIdentifier("warranty-claimpack")
+            if let pack {
+                PDFPreview(data: pack).frame(height: 320).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                ShareLink(item: PDFFile(data: pack), preview: SharePreview("\(receipt.store) claim.pdf")) {
+                    Label(L("Email or share the claim pack"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                }.primaryButton()
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .onChange(of: problemItem) { _, item in
+            Task { if let d = try? await item?.loadTransferable(type: Data.self), let img = UIImage(data: d) { problem = img.normalizedUp(); pack = nil } }
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -332,6 +365,7 @@ private struct ReceiptDetail: View {
                             Label(L("Share receipt"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
                         }.secondaryButton()
                     }
+                    claimPack
                     Button(role: .destructive) { confirmDelete = true } label: { Label(L("Delete"), systemImage: "trash").frame(maxWidth: .infinity) }.secondaryButton()
                 }.padding(HandySpacing.gutter)
             }
