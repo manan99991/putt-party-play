@@ -22,6 +22,7 @@ struct PDFAnnotateView: View {
     @State private var result: Data?
     @State private var working = false
     @State private var showFiles = false
+    @State private var highlights: [(page: Int, text: String)] = []
 
     private let palette: [(String, Color)] = [
         ("Yellow", .yellow), ("Green", .green), ("Pink", .pink), ("Blue", .blue), ("Red", .red), ("Black", .black)
@@ -207,6 +208,22 @@ struct PDFAnnotateView: View {
             ShareLink(item: PDFFile(data: out), preview: SharePreview(L("Annotated PDF"))) {
                 Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
             }.primaryButton()
+            if !highlights.isEmpty {
+                let summary = highlights.map { "p.\($0.page) — \($0.text)" }.joined(separator: "\n")
+                VStack(alignment: .leading, spacing: 6) {
+                    Label("\(L("What you highlighted")) (\(highlights.count))", systemImage: "highlighter").font(HandyFont.bodyStrong)
+                    ForEach(Array(highlights.enumerated()), id: \.offset) { _, h in
+                        HStack(alignment: .top, spacing: 6) {
+                            Text("p.\(h.page)").font(HandyFont.micro.weight(.semibold)).foregroundStyle(HandyColor.textSecondary).frame(width: 30, alignment: .leading)
+                            Text(h.text).font(HandyFont.caption).fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    HStack {
+                        ShareLink(item: "\(L("Highlights from")) \(fileName)\n\n" + summary) { Label(L("Send to Notes or share"), systemImage: "note.text") }.compactButton()
+                        Button { Copier.copy(summary) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
+                    }
+                }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+            }
             Button(L("Edit the marks")) { result = nil }.textButton()
         }
     }
@@ -249,7 +266,21 @@ struct PDFAnnotateView: View {
             let out = await Task.detached(priority: .userInitiated) { DocEngine.annotate(data, marks: marks) }.value
             result = out
             working = false
+            let imgs = pages
+            highlights = await Task.detached(priority: .utility) { Self.highlightedLines(pages: imgs, marks: marks) }.value
         }
+    }
+
+    /// The words under each highlight, page by page, in reading order — the summary of what you marked.
+    nonisolated static func highlightedLines(pages: [UIImage], marks: [[DocEngine.Annotation]]) -> [(page: Int, text: String)] {
+        var out: [(Int, String)] = []
+        for (i, img) in pages.enumerated() where i < marks.count {
+            let rects = marks[i].compactMap { m -> CGRect? in if case .highlight(let r) = m.kind { return r } else { return nil } }
+            guard !rects.isEmpty else { continue }
+            let lines = DocEngine.recognize(img).sorted { $0.box.minY < $1.box.minY }
+            for l in lines where rects.contains(where: { RedactFinder.covered(l.box, by: $0.insetBy(dx: -0.01, dy: -0.01)) > 0.4 }) { out.append((i + 1, l.text)) }
+        }
+        return out
     }
 
     // MARK: - Coordinate math (shared convention with the Redact tool / Privacy Scrubber)
