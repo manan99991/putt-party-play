@@ -2547,6 +2547,31 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(cal.component(.day, from: DailyBrief.nextFire(after: day.addingTimeInterval(60), hour: 7, minute: 0, cal: cal)), 21, "tomorrow once it's passed")
     }
 
+    func testPaperworkPackForTheYear() throws {
+        let cal = Calendar(identifier: .gregorian)
+        func d(_ y: Int, _ m: Int, _ dd: Int) -> Date { cal.date(from: DateComponents(year: y, month: m, day: dd, hour: 12))! }
+        var a = Receipt(imageFile: "a.jpg", store: "Costco", purchaseDate: d(2026, 3, 14), total: "$129.99", rawText: "")
+        a.warrantyMonths = 12
+        let b = Receipt(imageFile: "b.jpg", store: "Costco", purchaseDate: d(2026, 3, 14), total: "$5.00", rawText: "")
+        let old = Receipt(imageFile: "c.jpg", store: "Target", purchaseDate: d(2025, 7, 1), total: "$20", rawText: "")
+        var bill = SortedLetters.Item(kind: "Bill", title: "Water, sewer", amount: "$84.20", due: d(2026, 12, 15), summary: ""); bill.done = true
+        XCTAssertEqual(PaperworkExport.years(receipts: [a, b, old], letters: [bill]), [2026, 2025])
+        var taken = Set<String>()
+        XCTAssertEqual(PaperworkExport.photoName(a, taken: &taken), "2026-03-14 Costco.jpg")
+        XCTAssertEqual(PaperworkExport.photoName(b, taken: &taken), "2026-03-14 Costco 2.jpg", "same day, same store → numbered")
+        let rows = PaperworkExport.receiptRows([b, a], photoNames: [a.id: "2026-03-14 Costco.jpg"])
+        XCTAssertEqual(rows.count, 3); XCTAssertEqual(rows[0][0], "Date")
+        XCTAssertTrue(rows.contains { $0[2] == "$129.99" && $0[4] == "2027-03-14" && $0[7] == "Receipt photos/2026-03-14 Costco.jpg" })
+        let csv = PaperworkExport.csv(PaperworkExport.letterRows([bill]))
+        XCTAssertTrue(csv.contains("2026-12-15,Bill,\"Water, sewer\",$84.20,Paid / done"), csv)
+        let pack = try XCTUnwrap(PaperworkExport.make(year: 2026, receipts: [a, b, old], letters: [bill]) { _ in Data([0xFF, 0xD8, 0xFF]) })
+        XCTAssertEqual(pack.receipts, 2); XCTAssertEqual(pack.letters, 1); XCTAssertEqual(pack.photos, 2)
+        let names = Given.Zip.names(in: pack.url)
+        XCTAssertTrue(names.contains("Receipts 2026.csv") && names.contains("Bills and letters 2026.csv") && names.contains("Read me.txt"), "\(names)")
+        XCTAssertTrue(names.contains("Receipt photos/2026-03-14 Costco 2.jpg"))
+        XCTAssertNil(PaperworkExport.make(year: 2020, receipts: [a], letters: []) { _ in nil }, "an empty year makes nothing")
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

@@ -36,6 +36,7 @@ struct WarrantyView: View {
             }
             if busy { ToolProgressBar(label: "Reading the receipt…") }
             alertsCard
+            if !store.receipts.isEmpty { PaperworkExportCard(receipts: store) }
 
             if store.receipts.isEmpty && !busy {
                 emptyState

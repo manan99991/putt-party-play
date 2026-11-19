@@ -8919,6 +8919,16 @@
   "pt": "Criar o grupo e adicioná-los",
   "zh": "创建群组并添加"
  },
+ "Make the paperwork pack": {
+  "de": "Unterlagenpaket erstellen",
+  "es": "Crear el paquete de papeles",
+  "fr": "Créer le dossier",
+  "hi": "कागज़ात पैक बनाएँ",
+  "it": "Crea il pacchetto documenti",
+  "ja": "書類パックを作る",
+  "pt": "Criar o pacote de papelada",
+  "zh": "生成文件包"
+ },
  "Make video": {
   "de": "Video erstellen",
   "es": "Crear vídeo",
@@ -10819,6 +10829,16 @@
   "pt": "Com o básico feito, a cabeça fica mais leve para trabalhar. Um bloco menor ainda conta.",
   "zh": "基本的事做完，脑子更清楚地工作。时间短一点也算数。"
  },
+ "One .zip for taxes, your accountant or a claim: a spreadsheet of every receipt, one of your bills and letters, and every receipt photo named by date and store.": {
+  "de": "Ein .zip für Steuern, Steuerberater oder Schadensfall: eine Tabelle aller Belege, eine deiner Rechnungen und Briefe und alle Belegfotos, benannt nach Datum und Geschäft.",
+  "es": "Un .zip para impuestos, tu gestor o una reclamación: una hoja con todos los recibos, otra con tus facturas y cartas, y cada foto de recibo nombrada por fecha y tienda.",
+  "fr": "Un .zip pour les impôts, le comptable ou une réclamation : un tableau de tous les reçus, un des factures et courriers, et chaque photo de reçu nommée par date et magasin.",
+  "hi": "टैक्स, अकाउंटेंट या क्लेम के लिए एक .zip: हर रसीद की स्प्रेडशीट, बिल और पत्रों की एक, और तारीख़ व दुकान के नाम वाली हर रसीद की फ़ोटो।",
+  "it": "Un .zip per tasse, commercialista o un reclamo: un foglio con tutti gli scontrini, uno con bollette e lettere, e ogni foto di scontrino nominata per data e negozio.",
+  "ja": "税金・会計士・請求に使える .zip 1つ：全レシートの表、請求書や手紙の表、日付と店名で名付けたレシート写真。",
+  "pt": "Um .zip para impostos, o contabilista ou uma reclamação: uma folha com todos os recibos, outra das contas e cartas, e cada foto de recibo com data e loja.",
+  "zh": "一个用于报税、会计或理赔的 .zip：所有收据的表格、账单和信件的表格，以及按日期和商店命名的每张收据照片。"
+ },
  "One face, clearly visible": {
   "de": "Ein Gesicht, klar sichtbar",
   "es": "Una cara, bien visible",
@@ -11388,6 +11408,16 @@
   "ja": "コマ",
   "pt": "Quadro",
   "zh": "第几格"
+ },
+ "Paperwork for the year": {
+  "de": "Unterlagen fürs Jahr",
+  "es": "Papeles del año",
+  "fr": "Paperasse de l'année",
+  "hi": "साल भर के कागज़ात",
+  "it": "Documenti dell'anno",
+  "ja": "1年分の書類",
+  "pt": "Papelada do ano",
+  "zh": "全年文件"
  },
  "Paragraph": {
   "de": "Absatz",
@@ -20129,6 +20159,16 @@
   "pt": "Abertura de «número errado»",
   "zh": "“打错号码”式开场"
  },
+ "Year": {
+  "de": "Jahr",
+  "es": "Año",
+  "fr": "Année",
+  "hi": "साल",
+  "it": "Anno",
+  "ja": "年",
+  "pt": "Ano",
+  "zh": "年份"
+ },
  "Yellow": {
   "de": "Gelb",
   "es": "Amarillo",
@@ -20619,6 +20659,16 @@
   "pt": "média",
   "zh": "平均"
  },
+ "bills and letters": {
+  "de": "Rechnungen und Briefe",
+  "es": "facturas y cartas",
+  "fr": "factures et courriers",
+  "hi": "बिल और पत्र",
+  "it": "bollette e lettere",
+  "ja": "件の請求書・手紙",
+  "pt": "contas e cartas",
+  "zh": "份账单和信件"
+ },
  "calendar events": {
   "de": "Kalendertermine",
   "es": "eventos de calendario",
@@ -21099,6 +21149,16 @@
   "pt": "foto(s) ignorada(s) — nenhum objeto claro encontrado.",
   "zh": "张照片已跳过——未找到清晰主体。"
  },
+ "photos": {
+  "de": "Fotos",
+  "es": "fotos",
+  "fr": "photos",
+  "hi": "फ़ोटो",
+  "it": "foto",
+  "ja": "枚の写真",
+  "pt": "fotos",
+  "zh": "张照片"
+ },
  "playing": {
   "de": "wird abgespielt",
   "es": "reproduciendo",
@@ -21108,6 +21168,16 @@
   "ja": "再生中",
   "pt": "a reproduzir",
   "zh": "播放中"
+ },
+ "receipts": {
+  "de": "Belege",
+  "es": "recibos",
+  "fr": "reçus",
+  "hi": "रसीदें",
+  "it": "scontrini",
+  "ja": "件のレシート",
+  "pt": "recibos",
+  "zh": "张收据"
  },
  "reminders": {
   "de": "Erinnerungen",

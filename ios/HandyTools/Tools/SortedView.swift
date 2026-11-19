@@ -14,6 +14,7 @@ struct SortedView: View {
     @State private var working = false
     @State private var errorText: String?
     @StateObject private var letters = SortedStore()
+    @StateObject private var receiptStore = ReceiptStore()
     @State private var draft: SortedLetters.Item?          // what was read, editable before it's kept
     @State private var acts = SortedLetters.Actions()
     @State private var showScanner = false
@@ -40,6 +41,7 @@ struct SortedView: View {
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let parsed, draft != nil { resultCard(parsed) }
             if !letters.items.isEmpty { lettersList }
+            if !letters.items.isEmpty { PaperworkExportCard(receipts: receiptStore) }
 
             if !AIEngine.isAvailable {
                 LimitNote("Dates and amounts are found on every phone. The plain-English \u{201C}what it is / what to do\u{201D} line uses Apple Intelligence (iPhone 15 Pro or newer).")
