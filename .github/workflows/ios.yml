@@ -129,9 +129,8 @@ jobs:
         run: |
           set -o pipefail
           REAL="$RUNNER_TEMP/real"; mkdir -p "$REAL"
-          ( cd "$REAL" && git clone -q --depth 1 --filter=blob:none --sparse https://github.com/zzzDavid/ICDAR-2019-SROIE.git sroie \
-            && cd sroie && git sparse-checkout set --no-cone $(for i in $(seq 0 5 625); do printf "data/img/%03d.jpg data/key/%03d.json " $i $i; done) ) || true
-          ls "$REAL/sroie/data/img" | wc -l
+          python3 -m pip install -q --break-system-packages pyarrow 2>/dev/null || python3 -m pip install -q pyarrow || true
+          python3 ../.github/fetch-real-photos.py "$REAL" 120 || true
           # Manan's own test photos (some are web/stock images, so they're kept encrypted in the repo).
           if [ -n "$TEST_PHOTOS_KEY" ]; then
             OSSL=$( [ -x /opt/homebrew/opt/openssl@3/bin/openssl ] && echo /opt/homebrew/opt/openssl@3/bin/openssl || echo openssl )
@@ -149,6 +148,7 @@ jobs:
             -destination "id=$UDID" \
             -only-testing:HandyToolsTests/RealPhotoAccuracyTests \
             -only-testing:HandyToolsTests/PrivatePhotoAccuracyTests \
+            -only-testing:HandyToolsTests/ToughPhotoTests \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee accuracy-run.log | grep -E "ACC\| SCORE|error:|Test Case .*(passed|failed)|TEST (SUCCEEDED|FAILED)" || true
