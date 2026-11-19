@@ -109,6 +109,7 @@ enum VaultCrypto {
         var fileExt: String? = nil     // original extension for documents
         var date = Date()
         var bytes: Int = 0
+        var expires: Date? = nil       // for a passport, licence, visa, card — read from its photo
     }
 
     @Published private(set) var items: [Item] = []
@@ -145,11 +146,22 @@ enum VaultCrypto {
     func addNote(title: String, text: String) { items.insert(Item(kind: .note, title: title.isEmpty ? "Note" : title, text: text), at: 0); persist() }
     func addSecret(title: String, value: String) { items.insert(Item(kind: .secret, title: title.isEmpty ? "Secret" : title, text: value), at: 0); persist() }
 
-    func addBlob(_ data: Data, kind: Item.Kind, title: String, ext: String?) {
-        guard let key, let sealed = try? VaultCrypto.seal(data, with: key) else { return }
+    @discardableResult func addBlob(_ data: Data, kind: Item.Kind, title: String, ext: String?) -> UUID? {
+        guard let key, let sealed = try? VaultCrypto.seal(data, with: key) else { return nil }
         let name = UUID().uuidString + ".enc"
-        guard (try? sealed.write(to: Self.dir.appendingPathComponent(name), options: [.completeFileProtection, .atomic])) != nil else { return }
-        items.insert(Item(kind: kind, title: title, file: name, fileExt: ext, bytes: data.count), at: 0); persist()
+        guard (try? sealed.write(to: Self.dir.appendingPathComponent(name), options: [.completeFileProtection, .atomic])) != nil else { return nil }
+        let item = Item(kind: kind, title: title, file: name, fileExt: ext, bytes: data.count)
+        items.insert(item, at: 0); persist()
+        return item.id
+    }
+
+    /// Name it and set when it runs out; reminders follow (6 months and 1 month before).
+    func setExpiry(_ id: UUID, expires: Date?, name: String? = nil) {
+        guard let i = items.firstIndex(where: { $0.id == id }) else { return }
+        items[i].expires = expires
+        if let name, ["Photo", "Camera photo"].contains(items[i].title) || items[i].title.hasPrefix("IMG_") { items[i].title = name }
+        persist()
+        VaultExpiry.schedule(id: id, expires: expires)
     }
 
     func data(for item: Item) -> Data? {
@@ -166,6 +178,7 @@ enum VaultCrypto {
     }
 
     func delete(_ item: Item) {
+        VaultExpiry.schedule(id: item.id, expires: nil)
         if let f = item.file { VaultCrypto.shred(Self.dir.appendingPathComponent(f)) }
         items.removeAll { $0.id == item.id }; persist()
     }

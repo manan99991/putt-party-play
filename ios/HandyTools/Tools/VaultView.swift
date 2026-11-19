@@ -38,7 +38,7 @@ struct VaultView: View {
         }
         .onChange(of: scenePhase) { _, p in if p != .active { vault.lock(); thumbs = [:]; revealed = [] } }
         .onChange(of: photoItem) { _, item in importPhoto(item) }
-        .fullScreenCover(isPresented: $showCamera) { VaultCamera { data in showCamera = false; if let data { vault.addBlob(data, kind: .photo, title: "Photo", ext: "jpg"); HandyHaptics.success() } }.ignoresSafeArea() }
+        .fullScreenCover(isPresented: $showCamera) { VaultCamera { data in showCamera = false; if let data, let id = vault.addBlob(data, kind: .photo, title: "Photo", ext: "jpg") { HandyHaptics.success(); readExpiry(id, data) } }.ignoresSafeArea() }
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.item]) { res in
             if case .success(let url) = res {
                 let ok = url.startAccessingSecurityScopedResource(); defer { if ok { url.stopAccessingSecurityScopedResource() } }
@@ -147,6 +147,11 @@ struct VaultView: View {
                 case .note: Text(item.text).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
                 default: Text("\(item.date.formatted(date: .abbreviated, time: .shortened)) · \(SizeTarget.format(item.bytes))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
+                if let exp = item.expires {
+                    let soon = exp < (Calendar.current.date(byAdding: .month, value: 6, to: Date()) ?? Date())
+                    Label("\(L(exp < Date() ? "Expired" : "Expires")) \(exp.formatted(date: .abbreviated, time: .omitted))", systemImage: soon ? "exclamationmark.circle.fill" : "calendar")
+                        .font(HandyFont.micro).foregroundStyle(soon ? HandyColor.amber : HandyColor.textSecondary)
+                }
             }
             Spacer()
             if item.kind == .secret {
@@ -156,6 +161,10 @@ struct VaultView: View {
             Menu {
                 if item.kind == .note { Button { UIPasteboard.general.string = item.text; toast = "Copied" } label: { Label(L("Copy"), systemImage: "doc.on.doc") } }
                 if item.kind == .document || item.kind == .photo, let d = vault.data(for: item) { ShareLink(item: TextFileOrData(data: d, ext: item.fileExt ?? "jpg"), preview: SharePreview(item.title)) { Label(L("Export"), systemImage: "square.and.arrow.up") } }
+                if item.kind == .photo || item.kind == .document {
+                    if item.expires != nil { Button { vault.setExpiry(item.id, expires: nil) } label: { Label(L("No expiry reminders"), systemImage: "bell.slash") } }
+                    else if item.kind == .photo, let d = vault.data(for: item) { Button { readExpiry(item.id, d) } label: { Label(L("Read the expiry date"), systemImage: "calendar.badge.clock") } }
+                }
                 Button(role: .destructive) { vault.delete(item); thumbs[item.id] = nil; HandyHaptics.light() } label: { Label(L("Delete (shred)"), systemImage: "trash") }
             } label: { Image(systemName: "ellipsis.circle").accessibilityLabel(L("More")).font(.system(size: 20)).foregroundStyle(HandyColor.textSecondary) }
         }
@@ -193,6 +202,20 @@ struct VaultView: View {
         }
     }
 
+    /// A photo of a passport, licence, visa or card: read what it is and when it runs out, then set the reminders.
+    private func readExpiry(_ id: UUID, _ data: Data) {
+        Task {
+            let found = await Task.detached(priority: .utility) { () -> (name: String?, expires: Date?) in
+                guard let img = UIImage(data: data) else { return (nil, nil) }
+                return VaultExpiry.read(DocEngine.text(DocEngine.recognize(img)))
+            }.value
+            guard let exp = found.expires, exp > Date() else { return }
+            vault.setExpiry(id, expires: exp, name: found.name)
+            _ = await NotifyPermission.ensure()
+            toast = "\(found.name ?? L("Document")): \(L("expires")) \(exp.formatted(date: .abbreviated, time: .omitted)). \(L("Reminders set 6 months and 1 month before."))"
+        }
+    }
+
     private func copySecret(_ s: String) {
         UIPasteboard.general.setItems([[UTType.utf8PlainText.identifier: s]], options: [.expirationDate: Date().addingTimeInterval(30), .localOnly: true])
         toast = "Copied — clears from the clipboard in 30 s"; HandyHaptics.success()
@@ -202,7 +225,10 @@ struct VaultView: View {
         guard let item else { return }
         Task {
             guard let data = try? await item.loadTransferable(type: Data.self) else { return }
-            await MainActor.run { vault.addBlob(data, kind: .photo, title: "Photo", ext: "jpg"); HandyHaptics.success(); photoItem = nil }
+            await MainActor.run {
+                if let id = vault.addBlob(data, kind: .photo, title: "Photo", ext: "jpg") { readExpiry(id, data) }
+                HandyHaptics.success(); photoItem = nil
+            }
             if moveOriginal, let id = item.itemIdentifier {
                 let status = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
                 guard status == .authorized else { await MainActor.run { toast = "Saved to the vault. To delete originals, allow full Photos access in Settings." }; return }
