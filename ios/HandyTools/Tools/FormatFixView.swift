@@ -82,6 +82,7 @@ struct FormatFixView: View {
 
             if !loaded.isEmpty {
                 // One row per file type present, each with its own format picker.
+                purposeChips
                 if imageCount > 0 { typeRow(icon: "photo", count: imageCount, noun: "photo") { imageMenu } }
                 if videoCount > 0 { typeRow(icon: "film", count: videoCount, noun: "video") { videoMenu } }
 
@@ -114,6 +115,37 @@ struct FormatFixView: View {
         }
         .sheet(item: $playing) { item in
             VideoPlayerSheet(url: item.url)
+        }
+    }
+
+    // MARK: what it's for — picks the formats for you
+
+    /// The reason people convert, in their words. Each sets both formats; the menus below still let you change them.
+    private static let purposes: [(name: String, icon: String, image: ImageOut, video: VideoOut)] = [
+        ("A website won't take it", "globe", .jpg, .mp4),
+        ("Send to Android or Windows", "desktopcomputer", .jpg, .mp4),
+        ("Keep the see-through background", "square.dashed", .png, .mov),
+        ("Smallest file", "arrow.down.right.and.arrow.up.left", .heic, .mp4),
+        ("Print or a document", "printer", .pdf, .mp4),
+        ("Make it a GIF", "sparkles.rectangle.stack", .gif, .gif),
+        ("Just the sound", "waveform", .jpg, .audio),
+    ]
+
+    private var purposeChips: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(L("What's it for?")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow(spacing: 6) {
+                ForEach(Array(Self.purposes.enumerated()), id: \.offset) { _, p in
+                    let on = imageOut == p.image && videoOut == p.video
+                    Button { imageOut = p.image; videoOut = p.video } label: {
+                        Label(L(p.name), systemImage: p.icon).font(HandyFont.caption)
+                            .padding(.horizontal, 10).padding(.vertical, 7)
+                            .background(on ? HandyColor.accent : HandyColor.surface, in: Capsule())
+                            .foregroundStyle(on ? HandyColor.onAccent : HandyColor.textPrimary)
+                            .overlay(Capsule().stroke(HandyColor.border, lineWidth: on ? 0 : 1))
+                    }.buttonStyle(.plain).accessibilityAddTraits(on ? .isSelected : [])
+                }
+            }
         }
     }
 

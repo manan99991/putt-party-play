@@ -499,6 +499,16 @@
   "pt": "Um vídeo",
   "zh": "一个视频"
  },
+ "A website won't take it": {
+  "de": "Eine Website nimmt es nicht",
+  "es": "Una web no lo acepta",
+  "fr": "Un site ne l'accepte pas",
+  "hi": "कोई वेबसाइट इसे नहीं ले रही",
+  "it": "Un sito non lo accetta",
+  "ja": "サイトが受け付けない",
+  "pt": "Um site não aceita",
+  "zh": "网站不接受"
+ },
  "A week before": {
   "de": "Eine Woche vorher",
   "es": "Una semana antes",
@@ -7799,6 +7809,16 @@
   "pt": "Anote a única coisa que você precisa da ligação",
   "zh": "记下这通电话最需要的那件事"
  },
+ "Just the sound": {
+  "de": "Nur den Ton",
+  "es": "Solo el sonido",
+  "fr": "Juste le son",
+  "hi": "सिर्फ़ आवाज़",
+  "it": "Solo l'audio",
+  "ja": "音だけ",
+  "pt": "Só o som",
+  "zh": "只要声音"
+ },
  "Just the two-minute start. Nothing else yet. Once you're up, the next step is waiting and it's small.": {
   "de": "Nur der Zwei-Minuten-Start. Sonst noch nichts. Wenn du auf bist, wartet ein kleiner nächster Schritt.",
   "es": "Solo el inicio de dos minutos. Nada más todavía. Cuando te levantes, el siguiente paso te espera y es pequeño.",
@@ -7978,6 +7998,16 @@
   "ja": "古いものを残す",
   "pt": "Manter o antigo",
   "zh": "保留旧的"
+ },
+ "Keep the see-through background": {
+  "de": "Durchsichtigen Hintergrund behalten",
+  "es": "Mantener el fondo transparente",
+  "fr": "Garder le fond transparent",
+  "hi": "पारदर्शी बैकग्राउंड रखें",
+  "it": "Mantieni lo sfondo trasparente",
+  "ja": "透明な背景を残す",
+  "pt": "Manter o fundo transparente",
+  "zh": "保留透明背景"
  },
  "Keep them": {
   "de": "Behalten",
@@ -8928,6 +8958,16 @@
   "ja": "変換先",
   "pt": "Torná-lo",
   "zh": "制作为"
+ },
+ "Make it a GIF": {
+  "de": "Ein GIF daraus machen",
+  "es": "Convertir en GIF",
+  "fr": "En faire un GIF",
+  "hi": "GIF बनाएँ",
+  "it": "Trasforma in GIF",
+  "ja": "GIF にする",
+  "pt": "Fazer um GIF",
+  "zh": "做成 GIF"
  },
  "Make it look good": {
   "de": "Schön gestalten",
@@ -12639,6 +12679,16 @@
   "pt": "Imprimir como flipbook de papel",
   "zh": "打印成纸质翻页书"
  },
+ "Print or a document": {
+  "de": "Drucken oder Dokument",
+  "es": "Imprimir o documento",
+  "fr": "Imprimer ou document",
+  "hi": "प्रिंट या दस्तावेज़",
+  "it": "Stampa o documento",
+  "ja": "印刷・書類用",
+  "pt": "Imprimir ou documento",
+  "zh": "打印或文档"
+ },
  "Print sticker sheet": {
   "de": "Stickerbogen drucken",
   "es": "Imprimir hoja de stickers",
@@ -15109,6 +15159,16 @@
   "pt": "Enviar a ligação",
   "zh": "发送链接"
  },
+ "Send to Android or Windows": {
+  "de": "An Android oder Windows senden",
+  "es": "Enviar a Android o Windows",
+  "fr": "Envoyer vers Android ou Windows",
+  "hi": "Android या Windows पर भेजें",
+  "it": "Invia ad Android o Windows",
+  "ja": "Android や Windows に送る",
+  "pt": "Enviar para Android ou Windows",
+  "zh": "发给安卓或 Windows"
+ },
  "Set a new PIN": {
   "de": "Neue PIN festlegen",
   "es": "Crear un PIN nuevo",
@@ -15938,6 +15998,16 @@
   "ja": "最小（音声）",
   "pt": "Menor (voz)",
   "zh": "最小（语音）"
+ },
+ "Smallest file": {
+  "de": "Kleinste Datei",
+  "es": "Archivo más pequeño",
+  "fr": "Fichier le plus léger",
+  "hi": "सबसे छोटी फ़ाइल",
+  "it": "File più piccolo",
+  "ja": "いちばん小さいファイル",
+  "pt": "Ficheiro mais pequeno",
+  "zh": "最小文件"
  },
  "Smoothness": {
   "de": "Glättung",
@@ -20058,6 +20128,16 @@
   "ja": "この写真には何が",
   "pt": "O que há nesta foto",
   "zh": "这张照片里有什么"
+ },
+ "What's it for?": {
+  "de": "Wofür ist es?",
+  "es": "¿Para qué es?",
+  "fr": "C'est pour quoi ?",
+  "hi": "यह किसलिए है?",
+  "it": "A cosa serve?",
+  "ja": "何に使いますか？",
+  "pt": "Para que é?",
+  "zh": "用来做什么？"
  },
  "WhatsApp video": {
   "de": "WhatsApp-Video",
