@@ -26,6 +26,7 @@ struct UntangleView: View {
     @State private var nudges = false
     @State private var notifOff = false
     @State private var tick = Date()
+    @State private var cardImage: UIImage?                    // the plan as a picture, while the share sheet is up
     @FocusState private var focused: Bool
 
     private let timer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -231,9 +232,34 @@ struct UntangleView: View {
                     .frame(maxWidth: .infinity)
             }.secondaryButton()
             NotificationsOffCard(isOff: $notifOff)
-            ShareLink(item: UntanglePlan.text(p)) { Label(L("Share plan"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+            HStack(spacing: HandySpacing.s8) {
+                Button { cardImage = UntanglePlanCard.image(p) } label: { Label(L("Share as a picture"), systemImage: "photo").frame(maxWidth: .infinity) }
+                    .secondaryButton().accessibilityIdentifier("untangle-share-card")
+                ShareLink(item: UntanglePlan.text(p)) { Label(L("Share as text"), systemImage: "text.alignleft").frame(maxWidth: .infinity) }.secondaryButton()
+            }
             if let n = note { Text(L(n)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             Text(L("Made on your phone. What you type or say never leaves it — only your rough location is used for maps and weather.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+        }
+        .sheet(isPresented: Binding(get: { cardImage != nil }, set: { if !$0 { cardImage = nil } })) {
+            if let img = cardImage {
+                NavigationStack {
+                    ScrollView {
+                        Image(uiImage: img).resizable().scaledToFit()
+                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .shadow(color: .black.opacity(0.15), radius: 10, y: 4)
+                            .padding(HandySpacing.gutter)
+                            .accessibilityLabel(L("Your plan as a picture"))
+                    }
+                    .safeAreaInset(edge: .bottom) {
+                        ShareLink(item: Image(uiImage: img), preview: SharePreview(L("My plan"), image: Image(uiImage: img))) {
+                            Label(L("Send or save the picture"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                        }
+                        .primaryButton().padding(HandySpacing.gutter).background(HandyColor.bg)
+                    }
+                    .navigationTitle(L("Your plan as a picture")).navigationBarTitleDisplayMode(.inline)
+                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { cardImage = nil } } }
+                }
+            }
         }
     }
 

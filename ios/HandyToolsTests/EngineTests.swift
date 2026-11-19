@@ -2115,6 +2115,14 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(StickerStudio.sheetPDF([]))
     }
 
+    @MainActor func testUntanglePlanBecomesAPictureToShare() throws {
+        let p = UntanglePlan.make(from: "Shower, groceries: milk, eggs, bread, call mum, office work", start: Date())
+        let img = try XCTUnwrap(UntanglePlanCard.image(p), "the plan renders as a picture")
+        XCTAssertEqual(img.size.width, 390, accuracy: 1)
+        XCTAssertGreaterThan(img.size.height, 300, "the timeline is on the card")
+        XCTAssertEqual(UntanglePlanCard.duration(45), "45 min"); XCTAssertEqual(UntanglePlanCard.duration(120), "2 h"); XCTAssertEqual(UntanglePlanCard.duration(95), "1 h 35 min")
+    }
+
     func testUntanglePlansAroundHowYouFeel() throws {
         let cal = Calendar(identifier: .gregorian)
         let nine = try XCTUnwrap(cal.date(from: DateComponents(year: 2026, month: 11, day: 18, hour: 9)))

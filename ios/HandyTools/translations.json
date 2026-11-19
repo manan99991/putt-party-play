@@ -8689,6 +8689,16 @@
   "pt": "Meus dias",
   "zh": "我的日子"
  },
+ "My plan": {
+  "de": "Mein Plan",
+  "es": "Mi plan",
+  "fr": "Mon plan",
+  "hi": "मेरा प्लान",
+  "it": "Il mio piano",
+  "ja": "わたしの計画",
+  "pt": "O meu plano",
+  "zh": "我的计划"
+ },
  "My sheets": {
   "de": "Meine Tabellen",
   "es": "Mis hojas",
@@ -10848,6 +10858,16 @@
   "ja": "計画・旅行・健康",
   "pt": "Planejar, viajar e saúde",
   "zh": "计划、旅行与健康"
+ },
+ "Planned with Tenzy · Untangle": {
+  "de": "Geplant mit Tenzy · Untangle",
+  "es": "Planificado con Tenzy · Untangle",
+  "fr": "Planifié avec Tenzy · Untangle",
+  "hi": "Tenzy · Untangle से प्लान किया",
+  "it": "Pianificato con Tenzy · Untangle",
+  "ja": "Tenzy · Untangle で計画",
+  "pt": "Planeado com Tenzy · Untangle",
+  "zh": "用 Tenzy · Untangle 规划"
  },
  "Play": {
   "de": "Abspielen",
@@ -13289,6 +13309,16 @@
   "pt": "Enviar a minha localização",
   "zh": "发送我的位置"
  },
+ "Send or save the picture": {
+  "de": "Bild senden oder sichern",
+  "es": "Enviar o guardar la imagen",
+  "fr": "Envoyer ou enregistrer l'image",
+  "hi": "तस्वीर भेजें या सेव करें",
+  "it": "Invia o salva l'immagine",
+  "ja": "画像を送信・保存",
+  "pt": "Enviar ou guardar a imagem",
+  "zh": "发送或保存图片"
+ },
  "Send report": {
   "de": "Bericht senden",
   "es": "Enviar informe",
@@ -13458,6 +13488,26 @@
   "ja": "リンクまたはQRで共有",
   "pt": "Partilhar como ligação ou QR",
   "zh": "以链接或二维码分享"
+ },
+ "Share as a picture": {
+  "de": "Als Bild teilen",
+  "es": "Compartir como imagen",
+  "fr": "Partager en image",
+  "hi": "तस्वीर के रूप में शेयर करें",
+  "it": "Condividi come immagine",
+  "ja": "画像で共有",
+  "pt": "Partilhar como imagem",
+  "zh": "以图片分享"
+ },
+ "Share as text": {
+  "de": "Als Text teilen",
+  "es": "Compartir como texto",
+  "fr": "Partager en texte",
+  "hi": "टेक्स्ट के रूप में शेयर करें",
+  "it": "Condividi come testo",
+  "ja": "テキストで共有",
+  "pt": "Partilhar como texto",
+  "zh": "以文字分享"
  },
  "Share audio": {
   "de": "Audio teilen",
@@ -18159,6 +18209,16 @@
   "pt": "Seu celular mostra um lembrete nesse horário. Toque e a ferramenta abre pronta.",
   "zh": "手机会在那个时间提醒你。点一下，这个工具就会打开并准备好。"
  },
+ "Your plan as a picture": {
+  "de": "Dein Plan als Bild",
+  "es": "Tu plan como imagen",
+  "fr": "Votre plan en image",
+  "hi": "आपका प्लान तस्वीर में",
+  "it": "Il tuo piano come immagine",
+  "ja": "計画を画像に",
+  "pt": "O seu plano como imagem",
+  "zh": "你的计划图片"
+ },
  "Your signature": {
   "de": "Deine Unterschrift",
   "es": "Tu firma",
@@ -18549,6 +18609,16 @@
   "pt": "min de deslocamento",
   "zh": "分钟路程"
  },
+ "more steps": {
+  "de": "weitere Schritte",
+  "es": "pasos más",
+  "fr": "étapes de plus",
+  "hi": "और कदम",
+  "it": "altri passi",
+  "ja": "ステップ（ほか）",
+  "pt": "passos a mais",
+  "zh": "个其他步骤"
+ },
  "new length": {
   "de": "neue Länge",
   "es": "nueva duración",
@@ -18908,6 +18978,16 @@
   "ja": "翻訳",
   "pt": "tradução",
   "zh": "翻译"
+ },
+ "travel": {
+  "de": "Weg",
+  "es": "de trayecto",
+  "fr": "de trajet",
+  "hi": "आने-जाने का",
+  "it": "di tragitto",
+  "ja": "移動",
+  "pt": "de deslocação",
+  "zh": "路程"
  },
  "voice note(s)": {
   "de": "Sprachnotiz(en)",
