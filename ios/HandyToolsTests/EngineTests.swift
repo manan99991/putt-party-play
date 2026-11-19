@@ -359,7 +359,7 @@ final class EngineTests: XCTestCase {
         let jpg = try XCTUnwrap(ImageStudio.encode(img, as: .jpg, quality: 0.8))
         let png = try XCTUnwrap(ImageStudio.encode(img, as: .png, quality: 1))
         XCTAssertNotNil(UIImage(data: jpg)); XCTAssertNotNil(UIImage(data: png))
-        XCTAssertEqual(ImageStudio.passportSpecs.count, 5)
+        XCTAssertEqual(PassportPhoto.specs.count, 6)
         // HEIC may be unavailable in some simulators; if it encodes, it must decode.
         if let heic = ImageStudio.encode(img, as: .heic, quality: 0.8) { XCTAssertNotNil(UIImage(data: heic)) }
     }

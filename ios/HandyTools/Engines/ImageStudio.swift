@@ -77,46 +77,7 @@ enum ImageStudio {
         }
     }
 
-    // MARK: passport
-
-    struct PassportSpec: Identifiable, Hashable { let id: String; let name: String; let px: CGSize }
-    static let passportSpecs: [PassportSpec] = [
-        PassportSpec(id: "us", name: "US 2×2 in",            px: CGSize(width: 600, height: 600)),
-        PassportSpec(id: "eu", name: "EU / Schengen 35×45",  px: CGSize(width: 413, height: 531)),
-        PassportSpec(id: "uk", name: "UK 35×45 mm",          px: CGSize(width: 413, height: 531)),
-        PassportSpec(id: "in", name: "India 35×45 mm",       px: CGSize(width: 413, height: 531)),
-        PassportSpec(id: "ca", name: "Canada 50×70 mm",      px: CGSize(width: 591, height: 827)),
-    ]
-
-    /// Optional clean background, then crop to the spec with the face ~62% of the height and a
-    /// touch above centre — the usual ID layout. Nil if no clear face.
-    static func passport(_ image: UIImage, spec: PassportSpec, background: UIColor?) -> UIImage? {
-        var working = image.normalizedUp()
-        if let background, let cut = cutout(working) { working = composite(cut, on: background) }
-        guard let cg = working.cgImage else { return nil }
-        let W = CGFloat(cg.width), H = CGFloat(cg.height)
-
-        let handler = VNImageRequestHandler(cgImage: cg, orientation: .up)
-        let faceReq = VNDetectFaceRectanglesRequest()
-        try? handler.perform([faceReq])
-        guard let face = faceReq.results?.max(by: { $0.boundingBox.height < $1.boundingBox.height }) else { return nil }
-        let fb = face.boundingBox
-        let faceRect = CGRect(x: fb.minX * W, y: (1 - fb.maxY) * H, width: fb.width * W, height: fb.height * H)
-
-        let aspect = spec.px.width / spec.px.height
-        let headH = faceRect.height * 1.5
-        var cropH = headH / 0.62, cropW = cropH * aspect
-        if cropW > W { cropW = W; cropH = cropW / aspect }
-        if cropH > H { cropH = H; cropW = cropH * aspect }
-        let originX = min(max(0, faceRect.midX - cropW / 2), W - cropW)
-        let originY = min(max(0, faceRect.midY - cropH * 0.46), H - cropH)
-        guard let cropped = cg.cropping(to: CGRect(x: originX, y: originY, width: cropW, height: cropH).integral) else { return nil }
-
-        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
-        return UIGraphicsImageRenderer(size: spec.px, format: fmt).image { _ in
-            UIImage(cgImage: cropped).draw(in: CGRect(origin: .zero, size: spec.px))
-        }
-    }
+    // MARK: passport — see PassportPhoto (one engine for Studio, the Builder step and the Guide)
 
     /// Tile a finished ID photo across a 4×6 sheet at 300 dpi with light cut guides.
     static func printSheet(_ photo: UIImage) -> Data? {

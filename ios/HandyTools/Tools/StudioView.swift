@@ -26,11 +26,8 @@ struct StudioView: View {
     // cut out
     @State private var bgIdx = 0
     private let backgrounds: [(String, UIColor?)] = [("Transparent", nil), ("White", .white), ("Black", .black), ("Light grey", UIColor(white: 0.9, alpha: 1)), ("Blue", UIColor(red: 0.84, green: 0.9, blue: 0.97, alpha: 1))]
-    // passport
-    @State private var specIdx = 0
-    @State private var passportBG = true
-    @State private var passportChecks: [PassportCheck.Item] = []
-    @State private var sheet: Data?
+    // passport: the shared PassportStudio screen (same as the Builder step and the Guide)
+    @State private var passportCounted = false
     // resize
     @State private var resizeIdx = 1
     private let resizeOptions: [(String, CGFloat)] = [("4096 px", 4096), ("2048 px", 2048), ("1280 px", 1280), ("800 px", 800)]
@@ -59,36 +56,46 @@ struct StudioView: View {
                     ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; preview = nil; output = nil; errorText = nil } }
                 }
 
-                ZStack {
-                    if case .png = output { Checkerboard() }
-                    Image(uiImage: preview ?? original).resizable().scaledToFit()
+                if mode != .passport {     // the passport screen shows its own before / after
+                    ZStack {
+                        if case .png = output { Checkerboard() }
+                        Image(uiImage: preview ?? original).resizable().scaledToFit()
+                    }
+                    .frame(maxHeight: 280).frame(maxWidth: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 }
-                .frame(maxHeight: 280).frame(maxWidth: .infinity)
-                .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
 
                 PhotosPicker(selection: $pickedItem, matching: .images) { Label(L("Choose a different photo"), systemImage: "photo.on.rectangle.angled") }.textButton()
 
                 switch mode {
                 case .cutout: cutoutControls
                 case .enhance: enhanceControls
-                case .passport: passportControls
+                case .passport:
+                    if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeStudioPerDay) free Studio edits.") }
+                    else {
+                        PassportStudio(original: original, specID: "us", retake: nil)
+                            .id(ObjectIdentifier(original))
+                            .onAppear { if !passportCounted { passportCounted = true; _ = Usage.use("studio", limit: Limits.freeStudioPerDay) } }
+                    }
                 case .resize: resizeControls
                 case .convert: convertControls
                 }
 
                 if !store.isPremium { QuotaChip(name: "studio", limit: Limits.freeStudioPerDay).environmentObject(store) }
-                if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeStudioPerDay) free Studio edits.") }
+                if mode != .passport {
+                    if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeStudioPerDay) free Studio edits.") }
 
-                Button { run() } label: {
-                    HStack { if working { ProgressView().tint(.white) }; Text(working ? "Working…" : actionLabel) }.frame(maxWidth: .infinity)
-                }.primaryButton().disabled(working || overQuota)
-                if working { ToolProgressBar(label: "Working on your photo…") }
+                    Button { run() } label: {
+                        HStack { if working { ProgressView().tint(.white) }; Text(working ? "Working…" : actionLabel) }.frame(maxWidth: .infinity)
+                    }.primaryButton().disabled(working || overQuota)
+                    if working { ToolProgressBar(label: "Working on your photo…") }
+                }
             }
 
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
 
-            if let output {
+            if let output, mode != .passport {
                 resultActions(output)
             }
         }
@@ -96,7 +103,7 @@ struct StudioView: View {
         .onChange(of: pickedItem) { _, item in
             Task {
                 if let d = try? await item?.loadTransferable(type: Data.self), let img = UIImage(data: d) {
-                    await MainActor.run { original = img.normalizedUp(); originalBytes = d.count; preview = nil; output = nil; sheet = nil; errorText = nil }
+                    await MainActor.run { original = img.normalizedUp(); originalBytes = d.count; preview = nil; output = nil; passportCounted = false; errorText = nil }
                 }
             }
         }
@@ -127,34 +134,6 @@ struct StudioView: View {
             Toggle(L("Upscale 2× (sharper, larger file)"), isOn: $enhanceUpscale).tint(HandyColor.accent).font(HandyFont.body)
             Text(L("Auto-levels, gentle denoise and sharpening — good for dull or soft phone shots. Runs entirely on your phone.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-    }
-
-    private var passportControls: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Picker(L("Size"), selection: $specIdx) { ForEach(0..<ImageStudio.passportSpecs.count, id: \.self) { Text(ImageStudio.passportSpecs[$0].name).tag($0) } }
-                .pickerStyle(.menu).tint(HandyColor.accent).frame(maxWidth: .infinity, alignment: .leading)
-            Toggle(L("Clean white background"), isOn: $passportBG).tint(HandyColor.accent).font(HandyFont.body)
-            Text(L("Face the camera, even light. A helper — check your country's exact rules before submitting.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        }
-    }
-
-    private var passportChecklist: some View {
-        let failing = passportChecks.filter { !$0.pass }
-        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Label(failing.isEmpty ? L("Looks ready — every check passed") : "\(failing.count) \(failing.count == 1 ? L("thing to fix") : L("things to fix"))",
-                  systemImage: failing.isEmpty ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
-                .font(HandyFont.bodyStrong).foregroundStyle(failing.isEmpty ? HandyColor.success : HandyColor.amber)
-            ForEach(passportChecks) { c in
-                VStack(alignment: .leading, spacing: 2) {
-                    Label(L(c.title), systemImage: c.pass ? "checkmark.circle.fill" : "xmark.circle.fill")
-                        .font(HandyFont.body).foregroundStyle(c.pass ? HandyColor.success : HandyColor.danger)
-                    if !c.pass { Text(L(c.fix)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.leading, 28) }
-                }
-            }
-            Text(L("Also check your country's rules on glasses, headwear and the photo's age. A helper, not an official verdict."))
-                .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-        }
-        .cardStyle(padding: HandySpacing.s12)
     }
 
     private var resizeControls: some View {
@@ -192,11 +171,6 @@ struct StudioView: View {
         case .jpg(let d):
             Text("\(SizeTarget.format(d.count)) · JPG").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             ShareLink(item: JPEGFile(data: d), preview: SharePreview("Studio")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
-            if mode == .passport && !passportChecks.isEmpty { passportChecklist }
-            if mode == .passport {
-                Button { if let p = preview { sheet = ImageStudio.printSheet(p); if sheet != nil { HandyHaptics.success() } } } label: { Label(L("Make a 4×6 print sheet"), systemImage: "squareshape.split.3x3").frame(maxWidth: .infinity) }.secondaryButton()
-                if let sheet { ShareLink(item: JPEGFile(data: sheet), preview: SharePreview("Print sheet")) { Label(L("Save the print sheet"), systemImage: "printer").frame(maxWidth: .infinity) }.primaryButton() }
-            }
         case .heic(let d):
             Text("\(SizeTarget.format(d.count)) · HEIC").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             ShareLink(item: HEICFile(data: d), preview: SharePreview("Studio")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
@@ -208,8 +182,8 @@ struct StudioView: View {
     private func run() {
         guard let src = original else { return }
         guard Usage.hasRoom("studio", limit: Limits.freeStudioPerDay) else { return }
-        working = true; errorText = nil; output = nil; sheet = nil; passportChecks = []
-        let m = mode, bg = backgrounds[bgIdx].1, spec = ImageStudio.passportSpecs[specIdx], pbg = passportBG
+        working = true; errorText = nil; output = nil
+        let m = mode, bg = backgrounds[bgIdx].1
         let rIdx = resizeIdx, sIdx = sizeLimitIdx, fmt = format, q = CGFloat(quality), up = enhanceUpscale
         // Every case runs its heavy work (Vision cut-out, face detect, full-res encode) via
         // `await Task.detached`, so the main actor yields and the UI never freezes while it runs.
@@ -232,11 +206,7 @@ struct StudioView: View {
                 preview = img
                 if let d = await Task.detached(priority: .userInitiated) { img.jpegData(compressionQuality: 0.95) }.value { output = .jpg(d) }
             case .passport:
-                let out = await Task.detached(priority: .userInitiated) { ImageStudio.passport(src, spec: spec, background: pbg ? .white : nil) }.value
-                guard let img = out else { errorText = "Couldn't find a clear face. Use a straight-on portrait with the whole head visible."; return }
-                preview = img
-                passportChecks = await Task.detached(priority: .userInitiated) { PassportCheck.run(original: src, finished: img) }.value
-                if let d = await Task.detached(priority: .userInitiated) { img.jpegData(compressionQuality: 0.95) }.value { output = .jpg(d) }
+                return     // PassportStudio runs itself
             case .resize:
                 if let sIdx {
                     guard let d = await SizeTarget.image(src, targetBytes: SizeTarget.presets[sIdx].bytes) else { errorText = "Couldn't get under that size without ruining it. Try a larger limit."; return }

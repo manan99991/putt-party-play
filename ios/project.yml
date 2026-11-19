@@ -112,6 +112,9 @@ targets:
       - HandyTools/Engines/RoutePlan.swift
       - HandyTools/Engines/SizeTarget.swift
       - HandyTools/Engines/ImageStudio.swift
+      - HandyTools/Engines/PassportPhoto.swift
+      - HandyTools/Engines/PassportCheck.swift
+      - HandyTools/Engines/GrayPixels.swift
       - HandyTools/Engines/Scrubber.swift
       - HandyTools/Engines/ScamAnalyzer.swift
       - HandyTools/Engines/LinkCleaner.swift

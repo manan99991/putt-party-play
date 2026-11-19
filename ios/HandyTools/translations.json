@@ -1279,6 +1279,16 @@
   "pt": "Permite o acesso às fotos para procurar espaço que possas libertar. Nada sai do teu telemóvel, e apagar pede sempre confirmação.",
   "zh": "允许访问照片以查找可释放的空间。所有内容都不离开你的手机，删除前也总会先询问。"
  },
+ "Almost there": {
+  "de": "Fast geschafft",
+  "es": "Casi listo",
+  "fr": "Presque prêt",
+  "hi": "लगभग तैयार",
+  "it": "Quasi pronta",
+  "ja": "あと少し",
+  "pt": "Quase lá",
+  "zh": "差一点"
+ },
  "Already have a scanned PDF? Read every page so you can search, select and copy its words.": {
   "de": "Schon ein gescanntes PDF? Jede Seite lesen, um Text zu suchen, markieren und kopieren.",
   "es": "¿Ya tienes un PDF escaneado? Lee cada página para buscar, seleccionar y copiar el texto.",
@@ -1979,6 +1989,46 @@
   "pt": "O fundo está escuro ou poluído — fique diante de uma parede clara e lisa ou ative «Fundo branco limpo».",
   "zh": "背景太暗或太杂——请站在浅色纯色墙前，或打开“干净白色背景”。"
  },
+ "Background made plain light grey": {
+  "de": "Hintergrund schlicht hellgrau gemacht",
+  "es": "Fondo cambiado a gris claro liso",
+  "fr": "Arrière-plan rendu gris clair uni",
+  "hi": "बैकग्राउंड सादा हल्का ग्रे किया",
+  "it": "Sfondo reso grigio chiaro uniforme",
+  "ja": "背景を無地のライトグレーにしました",
+  "pt": "Fundo deixado cinza-claro liso",
+  "zh": "背景已改为纯浅灰色"
+ },
+ "Background made plain white": {
+  "de": "Hintergrund schlicht weiß gemacht",
+  "es": "Fondo cambiado a blanco liso",
+  "fr": "Arrière-plan rendu blanc uni",
+  "hi": "बैकग्राउंड सादा सफ़ेद किया",
+  "it": "Sfondo reso bianco uniforme",
+  "ja": "背景を無地の白にしました",
+  "pt": "Fundo deixado branco liso",
+  "zh": "背景已改为纯白色"
+ },
+ "Background plain light grey": {
+  "de": "Hintergrund schlicht hellgrau",
+  "es": "Fondo gris claro liso",
+  "fr": "Arrière-plan gris clair uni",
+  "hi": "सादा हल्का ग्रे बैकग्राउंड",
+  "it": "Sfondo grigio chiaro uniforme",
+  "ja": "背景は無地のライトグレー",
+  "pt": "Fundo cinza-claro liso",
+  "zh": "纯浅灰色背景"
+ },
+ "Background plain white": {
+  "de": "Hintergrund schlicht weiß",
+  "es": "Fondo blanco liso",
+  "fr": "Arrière-plan blanc uni",
+  "hi": "सादा सफ़ेद बैकग्राउंड",
+  "it": "Sfondo bianco uniforme",
+  "ja": "背景は無地の白",
+  "pt": "Fundo branco liso",
+  "zh": "纯白色背景"
+ },
  "Background removal works on photos — choose a photo above.": {
   "de": "Hintergrundentfernung funktioniert bei Fotos — wähle oben ein Foto.",
   "es": "El borrado de fondo funciona con fotos — elige una foto arriba.",
@@ -1988,6 +2038,16 @@
   "ja": "背景除去は写真に対して動作します — 上で写真を選んでください。",
   "pt": "A remoção de fundo funciona em fotos — escolhe uma foto acima.",
   "zh": "背景移除适用于照片 — 请在上方选择一张照片。"
+ },
+ "Background: plain cream or light grey": {
+  "de": "Hintergrund: schlicht cremefarben oder hellgrau",
+  "es": "Fondo: crema o gris claro liso",
+  "fr": "Arrière-plan : crème ou gris clair uni",
+  "hi": "बैकग्राउंड: सादा क्रीम या हल्का ग्रे",
+  "it": "Sfondo: crema o grigio chiaro uniforme",
+  "ja": "背景：無地のクリーム色かライトグレー",
+  "pt": "Fundo: creme ou cinza-claro liso",
+  "zh": "背景：纯奶油色或浅灰色"
  },
  "Backwards": {
   "de": "Rückwärts",
@@ -2359,6 +2419,16 @@
   "pt": "Ambos",
   "zh": "两者"
  },
+ "Both open": {
+  "de": "Beide offen",
+  "es": "Ambos abiertos",
+  "fr": "Les deux ouverts",
+  "hi": "दोनों खुली",
+  "it": "Entrambi aperti",
+  "ja": "両目とも開いています",
+  "pt": "Ambos abertos",
+  "zh": "双眼睁开"
+ },
  "Both phones must be on the SAME Wi-Fi. On an iPhone, Safari may warn the link “isn't private/secure” — that's normal for a direct phone-to-phone link, not an error: tap “Show IP Address” if offered, then “Continue”, then “Download file”. Nothing is uploaded.": {
   "de": "Beide Handys müssen im GLEICHEN WLAN sein. Auf einem iPhone warnt Safari evtl., der Link sei „nicht privat/sicher“ — das ist bei einer direkten Handy-zu-Handy-Verbindung normal, kein Fehler: tippe ggf. „IP-Adresse anzeigen“, dann „Fortfahren“, dann „Datei laden“. Nichts wird hochgeladen.",
   "es": "Ambos teléfonos deben estar en la MISMA Wi-Fi. En un iPhone, Safari puede avisar de que el enlace “no es privado/seguro” — es normal en un enlace directo entre teléfonos, no un error: toca “Mostrar dirección IP” si aparece, luego “Continuar” y “Descargar archivo”. No se sube nada.",
@@ -2408,6 +2478,16 @@
   "ja": "明るい雪やビーチ",
   "pt": "Neve ou praia clara",
   "zh": "明亮的雪地或海滩"
+ },
+ "Brightened your face, which was in shade": {
+  "de": "Gesicht aufgehellt, es lag im Schatten",
+  "es": "Rostro aclarado, estaba en sombra",
+  "fr": "Visage éclairci, il était dans l'ombre",
+  "hi": "चेहरा छाया में था, उसे उजला किया",
+  "it": "Viso schiarito, era in ombra",
+  "ja": "影になっていた顔を明るくしました",
+  "pt": "Rosto clareado, estava na sombra",
+  "zh": "已提亮处于阴影中的面部"
  },
  "Brighter exposure so white looks white, not grey.": {
   "de": "Hellere Belichtung, damit Weiß weiß aussieht, nicht grau.",
@@ -2719,6 +2799,46 @@
   "pt": "Ainda não faz",
   "zh": "暂不支持"
  },
+ "Canada": {
+  "de": "Kanada",
+  "es": "Canadá",
+  "fr": "Canada",
+  "hi": "कनाडा",
+  "it": "Canada",
+  "ja": "カナダ",
+  "pt": "Canadá",
+  "zh": "加拿大"
+ },
+ "Canada online": {
+  "de": "Kanada online",
+  "es": "Canadá en línea",
+  "fr": "Canada en ligne",
+  "hi": "कनाडा ऑनलाइन",
+  "it": "Canada online",
+  "ja": "カナダ（オンライン）",
+  "pt": "Canadá on-line",
+  "zh": "加拿大在线"
+ },
+ "Canada online renewal · 1200×1800": {
+  "de": "Kanada Online-Verlängerung · 1200×1800",
+  "es": "Renovación en línea de Canadá · 1200×1800",
+  "fr": "Renouvellement en ligne Canada · 1200×1800",
+  "hi": "कनाडा ऑनलाइन नवीनीकरण · 1200×1800",
+  "it": "Rinnovo online Canada · 1200×1800",
+  "ja": "カナダ オンライン更新 · 1200×1800",
+  "pt": "Renovação on-line do Canadá · 1200×1800",
+  "zh": "加拿大在线续签 · 1200×1800"
+ },
+ "Canada passport · 50×70 mm": {
+  "de": "Kanadischer Pass · 50×70 mm",
+  "es": "Pasaporte de Canadá · 50×70 mm",
+  "fr": "Passeport canadien · 50×70 mm",
+  "hi": "कनाडा पासपोर्ट · 50×70 mm",
+  "it": "Passaporto canadese · 50×70 mm",
+  "ja": "カナダ旅券 · 50×70 mm",
+  "pt": "Passaporte do Canadá · 50×70 mm",
+  "zh": "加拿大护照 · 50×70 毫米"
+ },
  "Cancel": {
   "de": "Abbrechen",
   "es": "Cancelar",
@@ -2969,6 +3089,16 @@
   "pt": "Confira a geladeira e faça a lista primeiro",
   "zh": "先看看冰箱，写好清单"
  },
+ "Check these yourself": {
+  "de": "Das prüfst du selbst",
+  "es": "Comprueba esto tú",
+  "fr": "À vérifier vous-même",
+  "hi": "ये ख़ुद जाँचें",
+  "it": "Controlla tu stesso",
+  "ja": "ご自身で確認してください",
+  "pt": "Confira você mesmo",
+  "zh": "请自行检查"
+ },
  "Check what you already have at home first": {
   "de": "Erst schauen, was du schon zu Hause hast",
   "es": "Mira primero lo que ya tienes en casa",
@@ -3018,6 +3148,16 @@
   "ja": "新しいコピーで再確認済み：どれも残っていません。画像そのものは変わりません。",
   "pt": "Verificado de novo na cópia: nada disso está nela. A imagem continua igual.",
   "zh": "已在新副本上再次检查：以上信息都已不在，画面本身不变。"
+ },
+ "Checked against the rules": {
+  "de": "Mit den Vorgaben abgeglichen",
+  "es": "Comprobado con las normas",
+  "fr": "Vérifié selon les règles",
+  "hi": "नियमों से जाँचा गया",
+  "it": "Verificata secondo le regole",
+  "ja": "規定に照らして確認",
+  "pt": "Conferido com as regras",
+  "zh": "已按规定检查"
  },
  "Checking today's weather…": {
   "de": "Wetter für heute wird geprüft …",
@@ -3088,6 +3228,26 @@
   "ja": "超えると1回鳴り、数字が赤くなります。この画面かHUDを開いている間に動作します。",
   "pt": "Toca uma vez quando você passa e o número fica vermelho. Funciona com esta tela ou o HUD abertos.",
   "zh": "超速时响一次，数字变红。在此页面或 HUD 打开时有效。"
+ },
+ "Chin": {
+  "de": "Kinn",
+  "es": "Barbilla",
+  "fr": "Menton",
+  "hi": "ठुड्डी",
+  "it": "Mento",
+  "ja": "あご",
+  "pt": "Queixo",
+  "zh": "下巴"
+ },
+ "Chin level, not up or down": {
+  "de": "Kinn gerade, nicht hoch oder runter",
+  "es": "Barbilla recta, ni arriba ni abajo",
+  "fr": "Menton droit, ni levé ni baissé",
+  "hi": "ठुड्डी सीधी, न ऊपर न नीचे",
+  "it": "Mento dritto, né su né giù",
+  "ja": "あごは上げず下げず水平に",
+  "pt": "Queixo reto, nem para cima nem para baixo",
+  "zh": "下巴水平，不抬不低"
  },
  "Chipmunk": {
   "de": "Eichhörnchen",
@@ -3368,6 +3528,16 @@
   "ja": "音声ファイルを選んで別の形式に変換します。",
   "pt": "Escolha um arquivo de áudio e converta para outro formato.",
   "zh": "选择音频文件，再转换为其他格式。"
+ },
+ "Choose another photo": {
+  "de": "Anderes Foto wählen",
+  "es": "Elegir otra foto",
+  "fr": "Choisir une autre photo",
+  "hi": "दूसरी फ़ोटो चुनें",
+  "it": "Scegli un'altra foto",
+  "ja": "別の写真を選ぶ",
+  "pt": "Escolher outra foto",
+  "zh": "选择另一张照片"
  },
  "Choose audio": {
   "de": "Audio wählen",
@@ -3788,6 +3958,16 @@
   "ja": "図形を閉じる",
   "pt": "Fechar forma",
   "zh": "闭合形状"
+ },
+ "Close your mouth and keep a neutral face — most countries don't accept a smile with teeth.": {
+  "de": "Mund schließen und neutral schauen – die meisten Länder akzeptieren kein Lächeln mit Zähnen.",
+  "es": "Cierra la boca y pon cara neutra: la mayoría de países no aceptan sonreír mostrando los dientes.",
+  "fr": "Fermez la bouche, expression neutre : la plupart des pays refusent un sourire qui montre les dents.",
+  "hi": "मुँह बंद रखें और चेहरा सामान्य रखें — ज़्यादातर देश दाँत दिखाती मुस्कान स्वीकार नहीं करते।",
+  "it": "Chiudi la bocca ed espressione neutra: quasi tutti i paesi non accettano sorrisi con i denti.",
+  "ja": "口を閉じて無表情に。歯を見せる笑顔はほとんどの国で不可です。",
+  "pt": "Feche a boca e mantenha o rosto neutro — a maioria dos países não aceita sorriso mostrando os dentes.",
+  "zh": "闭上嘴，保持自然表情——多数国家不接受露齿微笑。"
  },
  "Close-up spotted": {
   "de": "Nahaufnahme erkannt",
@@ -4698,6 +4878,16 @@
   "ja": "保存できませんでした。もう一度お試しください。",
   "pt": "Não foi possível salvar — tente de novo.",
   "zh": "保存失败，请重试。"
+ },
+ "Couldn't see your eyes clearly": {
+  "de": "Augen nicht klar erkennbar",
+  "es": "No se ven bien tus ojos",
+  "fr": "Yeux pas clairement visibles",
+  "hi": "आँखें साफ़ नहीं दिखीं",
+  "it": "Occhi non ben visibili",
+  "ja": "目がはっきり見えません",
+  "pt": "Não deu para ver bem os olhos",
+  "zh": "看不清你的眼睛"
  },
  "Couldn't translate — the first time, iOS downloads the language. Try again in a moment.": {
   "de": "Übersetzung fehlgeschlagen – beim ersten Mal lädt iOS die Sprache. Gleich noch einmal versuchen.",
@@ -5669,6 +5859,36 @@
   "pt": "Duplicados, vídeos grandes e capturas antigas, revistos primeiro.",
   "zh": "重复照片、大视频和旧截图，先查看再处理。"
  },
+ "EU / Schengen": {
+  "de": "EU / Schengen",
+  "es": "UE / Schengen",
+  "fr": "UE / Schengen",
+  "hi": "ईयू / शेंगेन",
+  "it": "UE / Schengen",
+  "ja": "EU／シェンゲン",
+  "pt": "UE / Schengen",
+  "zh": "欧盟／申根"
+ },
+ "EU / Schengen · 35×45 mm": {
+  "de": "EU / Schengen · 35×45 mm",
+  "es": "UE / Schengen · 35×45 mm",
+  "fr": "UE / Schengen · 35×45 mm",
+  "hi": "ईयू / शेंगेन · 35×45 mm",
+  "it": "UE / Schengen · 35×45 mm",
+  "ja": "EU／シェンゲン · 35×45 mm",
+  "pt": "UE / Schengen · 35×45 mm",
+  "zh": "欧盟／申根 · 35×45 毫米"
+ },
+ "EU Visa Code and ICAO 9303": {
+  "de": "EU-Visakodex und ICAO 9303",
+  "es": "Código de visados de la UE e ICAO 9303",
+  "fr": "Code des visas de l'UE et OACI 9303",
+  "hi": "ईयू वीज़ा कोड और ICAO 9303",
+  "it": "Codice dei visti UE e ICAO 9303",
+  "ja": "EU査証コードとICAO 9303",
+  "pt": "Código de Vistos da UE e ICAO 9303",
+  "zh": "欧盟签证法规与 ICAO 9303"
+ },
  "Each Taken counts one dose off; undoing it puts it back.": {
   "de": "Jedes „Genommen“ zieht eine Dosis ab; Rückgängig legt sie zurück.",
   "es": "Cada «Tomado» resta una toma; deshacerlo la devuelve.",
@@ -6119,6 +6339,26 @@
   "pt": "Digite o PIN do diário",
   "zh": "输入日记 PIN"
  },
+ "Even": {
+  "de": "Gleichmäßig",
+  "es": "Uniforme",
+  "fr": "Uniforme",
+  "hi": "बराबर",
+  "it": "Uniforme",
+  "ja": "均一",
+  "pt": "Uniforme",
+  "zh": "均匀"
+ },
+ "Even light on your face": {
+  "de": "Gleichmäßiges Licht im Gesicht",
+  "es": "Luz uniforme en el rostro",
+  "fr": "Lumière uniforme sur le visage",
+  "hi": "चेहरे पर बराबर रोशनी",
+  "it": "Luce uniforme sul viso",
+  "ja": "顔に均一な光",
+  "pt": "Luz uniforme no rosto",
+  "zh": "面部光线均匀"
+ },
  "Even lighting, no harsh shadows": {
   "de": "Gleichmäßiges Licht, keine harten Schatten",
   "es": "Luz uniforme, sin sombras duras",
@@ -6129,6 +6369,16 @@
   "pt": "Luz uniforme, sem sombras fortes",
   "zh": "光线均匀，没有明显阴影"
  },
+ "Even out the light": {
+  "de": "Licht ausgleichen",
+  "es": "Igualar la luz",
+  "fr": "Équilibrer la lumière",
+  "hi": "रोशनी बराबर करें",
+  "it": "Uniforma la luce",
+  "ja": "光を均一にする",
+  "pt": "Equilibrar a luz",
+  "zh": "均衡光线"
+ },
  "Even the smallest setting makes about": {
   "de": "Selbst die kleinste Einstellung ergibt etwa",
   "es": "Incluso el ajuste mínimo da unos",
@@ -6138,6 +6388,26 @@
   "ja": "最小設定でも約",
   "pt": "Mesmo a menor configuração gera cerca de",
   "zh": "即使最小设置也约为"
+ },
+ "Evened out the shadow on the left of your face": {
+  "de": "Schatten links im Gesicht ausgeglichen",
+  "es": "Sombra del lado izquierdo del rostro igualada",
+  "fr": "Ombre à gauche du visage atténuée",
+  "hi": "चेहरे के बाएँ तरफ़ की छाया बराबर की",
+  "it": "Ombra a sinistra del viso uniformata",
+  "ja": "顔の左側の影を均一にしました",
+  "pt": "Sombra do lado esquerdo do rosto equilibrada",
+  "zh": "已均衡面部左侧的阴影"
+ },
+ "Evened out the shadow on the right of your face": {
+  "de": "Schatten rechts im Gesicht ausgeglichen",
+  "es": "Sombra del lado derecho del rostro igualada",
+  "fr": "Ombre à droite du visage atténuée",
+  "hi": "चेहरे के दाएँ तरफ़ की छाया बराबर की",
+  "it": "Ombra a destra del viso uniformata",
+  "ja": "顔の右側の影を均一にしました",
+  "pt": "Sombra do lado direito do rosto equilibrada",
+  "zh": "已均衡面部右侧的阴影"
  },
  "Every": {
   "de": "Alle",
@@ -6529,6 +6799,36 @@
   "pt": "Exposição aumentada para o assunto não virar uma sombra escura.",
   "zh": "提高曝光，主体不会成为黑影。"
  },
+ "Eye height": {
+  "de": "Augenhöhe",
+  "es": "Altura de los ojos",
+  "fr": "Hauteur des yeux",
+  "hi": "आँखों की ऊँचाई",
+  "it": "Altezza degli occhi",
+  "ja": "目の高さ",
+  "pt": "Altura dos olhos",
+  "zh": "眼睛高度"
+ },
+ "Eyes": {
+  "de": "Augen",
+  "es": "Ojos",
+  "fr": "Yeux",
+  "hi": "आँखें",
+  "it": "Occhi",
+  "ja": "目",
+  "pt": "Olhos",
+  "zh": "眼睛"
+ },
+ "Eyes clearly visible: no tinted glasses or glare": {
+  "de": "Augen klar sichtbar: keine getönten Gläser, keine Spiegelung",
+  "es": "Ojos bien visibles: sin gafas tintadas ni reflejos",
+  "fr": "Yeux bien visibles : pas de verres teintés ni de reflets",
+  "hi": "आँखें साफ़ दिखें: रंगीन चश्मा या चमक नहीं",
+  "it": "Occhi ben visibili: niente lenti colorate o riflessi",
+  "ja": "目がはっきり見えること：色付きレンズや反射は不可",
+  "pt": "Olhos bem visíveis: sem lentes escuras nem reflexos",
+  "zh": "眼睛清晰可见：不戴有色眼镜、无反光"
+ },
  "Eyes look closed or squinting — take another with eyes open.": {
   "de": "Augen wirken geschlossen oder zusammengekniffen – mach noch eins mit offenen Augen.",
   "es": "Los ojos parecen cerrados o entrecerrados: haz otra con los ojos abiertos.",
@@ -6579,6 +6879,16 @@
   "pt": "Cofre com Face ID",
   "zh": "Face ID 保险箱"
  },
+ "Face a window or a lamp so light falls evenly on both sides.": {
+  "de": "Zum Fenster oder zu einer Lampe drehen, damit beide Seiten gleich hell sind.",
+  "es": "Ponte frente a una ventana o lámpara para que la luz llegue igual a ambos lados.",
+  "fr": "Placez-vous face à une fenêtre ou une lampe pour éclairer les deux côtés.",
+  "hi": "खिड़की या लैंप की ओर मुँह करें ताकि दोनों तरफ़ बराबर रोशनी पड़े।",
+  "it": "Mettiti di fronte a una finestra o una lampada per una luce uniforme.",
+  "ja": "窓やライトの方を向いて、顔の両側に均一に光を当ててください。",
+  "pt": "Fique de frente para uma janela ou luminária para iluminar os dois lados.",
+  "zh": "面向窗户或灯，让两侧光线均匀。"
+ },
  "Face covered — tap to change": {
   "de": "Gesicht verdeckt – zum Ändern tippen",
   "es": "Cara tapada: toca para cambiar",
@@ -6588,6 +6898,16 @@
   "ja": "顔を隠しています — タップで変更",
   "pt": "Rosto coberto — toque para mudar",
   "zh": "已遮住——点按更改"
+ },
+ "Face is dark": {
+  "de": "Gesicht ist dunkel",
+  "es": "El rostro está oscuro",
+  "fr": "Visage trop sombre",
+  "hi": "चेहरा अंधेरे में है",
+  "it": "Viso scuro",
+  "ja": "顔が暗い",
+  "pt": "Rosto escuro",
+  "zh": "面部太暗"
  },
  "Face showing — tap to cover": {
   "de": "Gesicht sichtbar – zum Verdecken tippen",
@@ -6618,6 +6938,16 @@
   "ja": "顔や個人情報テキスト（ナンバープレート、電話番号、メール）はクリップ全体で自動的に検出・黒塗りされ、位置情報やメタデータも除去されます。ベストエフォートのため、共有前に結果をご確認ください。",
   "pt": "Rostos e texto pessoal (matrículas, números, e-mails) são detetados e tapados automaticamente em todo o clip, e localização/metadados são removidos. Melhor esforço — confirma o resultado antes de partilhar.",
   "zh": "整个片段中的人脸和个人文字（车牌、电话号码、邮箱）会被自动识别并涂黑，位置/元数据也会被清除。尽力而为——分享前请检查结果。"
+ },
+ "Facing the camera": {
+  "de": "Blick zur Kamera",
+  "es": "Mirando a la cámara",
+  "fr": "Face à l'appareil",
+  "hi": "कैमरे की ओर चेहरा",
+  "it": "Rivolto alla fotocamera",
+  "ja": "カメラに正面を向く",
+  "pt": "De frente para a câmera",
+  "zh": "正对镜头"
  },
  "Fade in and out": {
   "de": "Ein- und ausblenden",
@@ -7329,6 +7659,16 @@
   "pt": "Comida detectada",
   "zh": "发现美食"
  },
+ "For a photo that passes": {
+  "de": "Für ein Foto, das durchgeht",
+  "es": "Para una foto que pase",
+  "fr": "Pour une photo acceptée",
+  "hi": "पास होने वाली फ़ोटो के लिए",
+  "it": "Per una foto che passa",
+  "ja": "通る写真を撮るコツ",
+  "pt": "Para uma foto aprovada",
+  "zh": "拍出合格照片"
+ },
  "For live camera translation, use Capture — tap a line there and choose Translate.": {
   "de": "Für Live-Kameraübersetzung nutze „Erfassen“ — tippe dort eine Zeile an und wähle „Übersetzen“.",
   "es": "Para traducción con cámara en vivo, usa Capturar: toca una línea ahí y elige Traducir.",
@@ -7869,6 +8209,26 @@
   "pt": "Código do vale-presente",
   "zh": "礼品卡代码"
  },
+ "Glasses off — the US no longer accepts glasses in passport photos": {
+  "de": "Brille ab – die USA akzeptieren keine Brillen mehr auf Passfotos",
+  "es": "Sin gafas: EE. UU. ya no acepta gafas en las fotos de pasaporte",
+  "fr": "Retirez vos lunettes : les États-Unis ne les acceptent plus",
+  "hi": "चश्मा उतारें — अमेरिका अब पासपोर्ट फ़ोटो में चश्मा स्वीकार नहीं करता",
+  "it": "Togli gli occhiali: gli USA non li accettano più",
+  "ja": "眼鏡は外す（米国は旅券写真での眼鏡を認めていません）",
+  "pt": "Sem óculos — os EUA não aceitam mais óculos em fotos de passaporte",
+  "zh": "摘下眼镜——美国护照照片不再接受戴眼镜"
+ },
+ "Glasses only if you need them: no tint, glare or frames over the eyes": {
+  "de": "Brille nur, wenn nötig: keine Tönung, Spiegelung oder Rahmen über den Augen",
+  "es": "Gafas solo si las necesitas: sin tinte, reflejos ni montura sobre los ojos",
+  "fr": "Lunettes seulement si nécessaire : ni teinte, ni reflet, ni monture sur les yeux",
+  "hi": "चश्मा तभी जब ज़रूरी हो: न रंग, न चमक, न फ़्रेम आँखों पर",
+  "it": "Occhiali solo se servono: niente tinta, riflessi o montatura sugli occhi",
+  "ja": "眼鏡は必要な場合のみ：色付き・反射・目にかかるフレームは不可",
+  "pt": "Óculos só se precisar: sem tinta, reflexo ou armação sobre os olhos",
+  "zh": "仅在必要时戴眼镜：无色片、无反光、镜框不遮眼"
+ },
  "Gluten": {
   "de": "Gluten",
   "es": "Gluten",
@@ -8069,6 +8429,16 @@
   "pt": "Verde",
   "zh": "绿"
  },
+ "Green band: where the top of your head may be. Blue band: where your eyes may be. Press and hold to see the original.": {
+  "de": "Grüner Streifen: wo dein Scheitel sein darf. Blauer Streifen: wo deine Augen sein dürfen. Gedrückt halten für das Original.",
+  "es": "Franja verde: dónde puede estar la parte superior de la cabeza. Franja azul: dónde pueden estar los ojos. Mantén pulsado para ver el original.",
+  "fr": "Bande verte : zone du haut de la tête. Bande bleue : zone des yeux. Maintenez appuyé pour voir l'original.",
+  "hi": "हरी पट्टी: सिर का ऊपरी हिस्सा कहाँ हो सकता है। नीली पट्टी: आँखें कहाँ हो सकती हैं। मूल फ़ोटो देखने के लिए दबाकर रखें।",
+  "it": "Fascia verde: dove può stare la sommità della testa. Fascia blu: dove possono stare gli occhi. Tieni premuto per l'originale.",
+  "ja": "緑の帯：頭頂部が入るべき範囲。青の帯：目が入るべき範囲。長押しで元の写真。",
+  "pt": "Faixa verde: onde pode ficar o topo da cabeça. Faixa azul: onde podem ficar os olhos. Toque e segure para ver o original.",
+  "zh": "绿色带：头顶应在的范围。蓝色带：眼睛应在的范围。长按查看原图。"
+ },
  "Grid": {
   "de": "Raster",
   "es": "Cuadrícula",
@@ -8149,6 +8519,16 @@
   "pt": "HEIC/MOV → JPG/MP4, em lote",
   "zh": "HEIC/MOV → JPG/MP4，批量"
  },
+ "Hair or a head covering made the top of your head hard to find. Check the top line sits at the top of your head.": {
+  "de": "Haare oder eine Kopfbedeckung erschweren das Finden des Scheitels. Prüfe, ob die obere Linie oben am Kopf sitzt.",
+  "es": "El pelo o algo en la cabeza dificultó encontrar su parte superior. Comprueba que la línea de arriba esté en lo alto de la cabeza.",
+  "fr": "Les cheveux ou un couvre-chef masquent le haut de la tête. Vérifiez que la ligne du haut est bien au sommet.",
+  "hi": "बालों या सिर ढकने से सिर का ऊपरी हिस्सा पहचानना मुश्किल था। जाँचें कि ऊपरी रेखा सिर के ऊपर है।",
+  "it": "Capelli o un copricapo rendono difficile trovare la sommità della testa. Controlla che la linea in alto sia lì.",
+  "ja": "髪や帽子で頭頂部が分かりにくい状態です。上の線が頭のてっぺんにあるか確認してください。",
+  "pt": "Cabelo ou algo na cabeça dificultou achar o topo. Confira se a linha de cima está no alto da cabeça.",
+  "zh": "头发或头饰使头顶难以识别。请确认上方的线位于头顶。"
+ },
  "Has": {
   "de": "Enthält",
   "es": "Contiene",
@@ -8188,6 +8568,66 @@
   "ja": "楽しく加工する",
   "pt": "Divirta-se com ela",
   "zh": "玩出花样"
+ },
+ "Head": {
+  "de": "Kopf",
+  "es": "Cabeza",
+  "fr": "Tête",
+  "hi": "सिर",
+  "it": "Testa",
+  "ja": "頭",
+  "pt": "Cabeça",
+  "zh": "头部"
+ },
+ "Head and shoulders in frame": {
+  "de": "Kopf und Schultern im Bild",
+  "es": "Cabeza y hombros en el encuadre",
+  "fr": "Tête et épaules dans le cadre",
+  "hi": "सिर और कंधे फ़्रेम में",
+  "it": "Testa e spalle nell'inquadratura",
+  "ja": "頭と肩が写っている",
+  "pt": "Cabeça e ombros no enquadramento",
+  "zh": "头和肩膀在画面内"
+ },
+ "Head and shoulders in view, looking straight at the lens": {
+  "de": "Kopf und Schultern im Bild, direkt in die Linse schauen",
+  "es": "Cabeza y hombros a la vista, mirando al objetivo",
+  "fr": "Tête et épaules visibles, regard droit vers l'objectif",
+  "hi": "सिर और कंधे दिखें, सीधे लेंस की ओर देखें",
+  "it": "Testa e spalle visibili, sguardo dritto nell'obiettivo",
+  "ja": "頭と肩を入れて、レンズをまっすぐ見る",
+  "pt": "Cabeça e ombros à vista, olhando direto para a lente",
+  "zh": "露出头和肩膀，直视镜头"
+ },
+ "Head level": {
+  "de": "Kopf gerade",
+  "es": "Cabeza recta",
+  "fr": "Tête droite",
+  "hi": "सिर सीधा",
+  "it": "Testa dritta",
+  "ja": "頭がまっすぐ",
+  "pt": "Cabeça reta",
+  "zh": "头部端正"
+ },
+ "Head size": {
+  "de": "Kopfgröße",
+  "es": "Tamaño de la cabeza",
+  "fr": "Taille de la tête",
+  "hi": "सिर का आकार",
+  "it": "Dimensione della testa",
+  "ja": "頭の大きさ",
+  "pt": "Tamanho da cabeça",
+  "zh": "头部大小"
+ },
+ "Head, chin to top:": {
+  "de": "Kopf, Kinn bis Scheitel:",
+  "es": "Cabeza, de la barbilla a lo alto:",
+  "fr": "Tête, du menton au sommet :",
+  "hi": "सिर, ठुड्डी से ऊपर तक:",
+  "it": "Testa, dal mento alla sommità:",
+  "ja": "頭（あごから頭頂まで）:",
+  "pt": "Cabeça, do queixo ao topo:",
+  "zh": "头部（下巴到头顶）："
  },
  "Hear it as a chipmunk, robot and more": {
   "de": "Als Streifenhörnchen, Roboter und mehr anhören",
@@ -8429,6 +8869,16 @@
   "pt": "Mantenha firme — mova o telefone mais devagar.",
   "zh": "拿稳——慢一点移动手机。"
  },
+ "Hold steady, use more light and tap your face to focus. Software can't sharpen a blurry face honestly.": {
+  "de": "Ruhig halten, mehr Licht und aufs Gesicht tippen zum Fokussieren. Software kann ein unscharfes Gesicht nicht ehrlich schärfen.",
+  "es": "Mantén el móvil quieto, usa más luz y toca tu cara para enfocar. Ningún programa puede enfocar de verdad una cara borrosa.",
+  "fr": "Restez stable, ajoutez de la lumière et touchez le visage pour faire la mise au point. Un logiciel ne peut pas vraiment rendre net un visage flou.",
+  "hi": "फ़ोन स्थिर रखें, ज़्यादा रोशनी लें और फ़ोकस के लिए चेहरे पर टैप करें। सॉफ़्टवेयर धुंधले चेहरे को सच में साफ़ नहीं कर सकता।",
+  "it": "Tieni fermo, usa più luce e tocca il viso per mettere a fuoco. Un software non può rendere davvero nitido un viso mosso.",
+  "ja": "スマホを固定し、明るくして顔をタップしてピントを合わせてください。ぼやけた顔をソフトで正しく鮮明にはできません。",
+  "pt": "Segure firme, use mais luz e toque no rosto para focar. Nenhum programa deixa um rosto borrado nítido de verdade.",
+  "zh": "拿稳手机，增加光线并点按面部对焦。软件无法如实修复模糊的面部。"
+ },
  "Hold still for a moment after you tap.": {
   "de": "Nach dem Tippen kurz ruhig halten.",
   "es": "Quédate quieto un momento después de tocar.",
@@ -8448,6 +8898,16 @@
   "ja": "動かないで — ひじを固定するか、何かにもたれて。",
   "pt": "Fique parado — apoie os cotovelos ou encoste em algo.",
   "zh": "保持不动——稳住手肘或靠着东西。"
+ },
+ "Hold the camera at eye level and keep your chin level.": {
+  "de": "Kamera auf Augenhöhe halten und das Kinn gerade lassen.",
+  "es": "Sostén la cámara a la altura de los ojos y mantén la barbilla recta.",
+  "fr": "Tenez l'appareil à hauteur des yeux, menton droit.",
+  "hi": "कैमरा आँखों की ऊँचाई पर रखें और ठुड्डी सीधी रखें।",
+  "it": "Tieni la fotocamera all'altezza degli occhi e il mento dritto.",
+  "ja": "カメラを目の高さに構え、あごを水平に保ってください。",
+  "pt": "Segure a câmera na altura dos olhos e mantenha o queixo reto.",
+  "zh": "将相机举到与眼睛同高，保持下巴水平。"
  },
  "Hold the camera at eye level — chin is up or down.": {
   "de": "Halte die Kamera auf Augenhöhe – das Kinn ist oben oder unten.",
@@ -8769,6 +9229,16 @@
   "pt": "Em uma semana",
   "zh": "一周后"
  },
+ "In frame": {
+  "de": "Im Bild",
+  "es": "En el encuadre",
+  "fr": "Dans le cadre",
+  "hi": "फ़्रेम में",
+  "it": "Nell'inquadratura",
+  "ja": "写っています",
+  "pt": "No enquadramento",
+  "zh": "在画面内"
+ },
  "In iCloud": {
   "de": "In iCloud",
   "es": "En iCloud",
@@ -8788,6 +9258,56 @@
   "ja": "税込み",
   "pt": "Inclui imposto",
   "zh": "含税"
+ },
+ "India": {
+  "de": "Indien",
+  "es": "India",
+  "fr": "Inde",
+  "hi": "भारत",
+  "it": "India",
+  "ja": "インド",
+  "pt": "Índia",
+  "zh": "印度"
+ },
+ "India asks for photos not altered by software — retake rather than retouch": {
+  "de": "Indien verlangt unbearbeitete Fotos – lieber neu aufnehmen als retuschieren",
+  "es": "India pide fotos sin retoques: mejor repetir que retocar",
+  "fr": "L'Inde exige des photos non retouchées : reprenez plutôt que de retoucher",
+  "hi": "भारत सॉफ़्टवेयर से बदली फ़ोटो नहीं चाहता — सुधारने के बजाय दोबारा लें",
+  "it": "L'India chiede foto non ritoccate: meglio rifarla che ritoccarla",
+  "ja": "インドはソフトで加工した写真を認めません。修正より撮り直しを",
+  "pt": "A Índia pede fotos sem edição — refaça em vez de retocar",
+  "zh": "印度要求未经软件修改的照片——请重拍而非修图"
+ },
+ "India asks for photos not altered by software, so only sizing and straightening are on. Turn the others on only if your photo office allows it.": {
+  "de": "Indien verlangt unbearbeitete Fotos, daher sind nur Größe und Ausrichten an. Schalte den Rest nur ein, wenn die Stelle es erlaubt.",
+  "es": "India pide fotos sin retoques, así que solo están activados el tamaño y el enderezado. Activa lo demás solo si la oficina lo permite.",
+  "fr": "L'Inde exige des photos non retouchées : seuls le cadrage et le redressement sont activés. N'activez le reste que si le service l'autorise.",
+  "hi": "भारत बिना बदली फ़ोटो चाहता है, इसलिए सिर्फ़ आकार और सीधा करना चालू है। बाकी तभी चालू करें जब आपका कार्यालय अनुमति दे।",
+  "it": "L'India chiede foto non ritoccate: sono attivi solo dimensioni e raddrizzamento. Attiva il resto solo se l'ufficio lo consente.",
+  "ja": "インドは加工なしの写真を求めるため、サイズ調整と傾き補正のみオンです。他は窓口が認める場合のみオンに。",
+  "pt": "A Índia pede fotos sem edição, então só o tamanho e o alinhamento estão ligados. Ligue o resto só se o órgão permitir.",
+  "zh": "印度要求未经修改的照片，因此仅开启尺寸调整和摆正。仅在受理机构允许时开启其他选项。"
+ },
+ "India passport · 35×45 mm": {
+  "de": "Indischer Pass · 35×45 mm",
+  "es": "Pasaporte de India · 35×45 mm",
+  "fr": "Passeport indien · 35×45 mm",
+  "hi": "भारतीय पासपोर्ट · 35×45 mm",
+  "it": "Passaporto indiano · 35×45 mm",
+  "ja": "インド旅券 · 35×45 mm",
+  "pt": "Passaporte da Índia · 35×45 mm",
+  "zh": "印度护照 · 35×45 毫米"
+ },
+ "Indian missions' ICAO photo guidelines": {
+  "de": "ICAO-Fotorichtlinien der indischen Vertretungen",
+  "es": "Directrices ICAO de las misiones de India",
+  "fr": "Directives photo OACI des missions indiennes",
+  "hi": "भारतीय मिशनों के ICAO फ़ोटो दिशानिर्देश",
+  "it": "Linee guida ICAO delle rappresentanze indiane",
+  "ja": "インド在外公館のICAO写真ガイドライン",
+  "pt": "Diretrizes ICAO das missões da Índia",
+  "zh": "印度驻外使团的 ICAO 照片指南"
  },
  "Indoor light": {
   "de": "Innenlicht",
@@ -9229,6 +9749,16 @@
   "pt": "Só o começo de dois minutos. Mais nada ainda. Quando levantar, o próximo passo é pequeno e está esperando.",
   "zh": "先完成两分钟的开始，别的先不管。起来之后，下一步很小，已经在等你。"
  },
+ "Just you, face fully in view": {
+  "de": "Nur du, Gesicht ganz sichtbar",
+  "es": "Solo tú, con la cara entera a la vista",
+  "fr": "Vous seul, visage entièrement visible",
+  "hi": "सिर्फ़ आप, पूरा चेहरा दिखे",
+  "it": "Solo tu, viso ben visibile",
+  "ja": "本人のみ、顔全体が写っている",
+  "pt": "Só você, rosto todo à vista",
+  "zh": "仅本人，面部完整可见"
+ },
  "Keep": {
   "de": "Behalten",
   "es": "Conservar",
@@ -9488,6 +10018,16 @@
   "ja": "頭をまっすぐに — 傾いています。",
   "pt": "Mantenha a cabeça reta — está inclinada.",
   "zh": "保持头部水平——现在是歪的。"
+ },
+ "Keep your head straight, not leaning to one side.": {
+  "de": "Kopf gerade halten, nicht zur Seite neigen.",
+  "es": "Mantén la cabeza recta, sin inclinarla.",
+  "fr": "Gardez la tête droite, sans la pencher.",
+  "hi": "सिर सीधा रखें, किसी तरफ़ न झुकाएँ।",
+  "it": "Tieni la testa dritta, senza inclinarla.",
+  "ja": "頭を傾けず、まっすぐにしてください。",
+  "pt": "Mantenha a cabeça reta, sem inclinar.",
+  "zh": "保持头部端正，不要歪向一侧。"
  },
  "Keep, split, merge or reorder": {
   "de": "Behalten, teilen, zusammenfügen oder ordnen",
@@ -9838,6 +10378,16 @@
   "ja": "解除",
   "pt": "Soltar",
   "zh": "松开"
+ },
+ "Level": {
+  "de": "Gerade",
+  "es": "Recta",
+  "fr": "Droite",
+  "hi": "सीधा",
+  "it": "Dritta",
+  "ja": "まっすぐ",
+  "pt": "Reta",
+  "zh": "端正"
  },
  "Level, compass & sensors": {
   "de": "Wasserwaage, Kompass & Sensoren",
@@ -10239,6 +10789,16 @@
   "pt": "Visual",
   "zh": "风格"
  },
+ "Look closed or squinting": {
+  "de": "Wirken geschlossen oder zusammengekniffen",
+  "es": "Parecen cerrados o entrecerrados",
+  "fr": "Semblent fermés ou plissés",
+  "hi": "बंद या सिकुड़ी लग रही हैं",
+  "it": "Sembrano chiusi o socchiusi",
+  "ja": "閉じているか細めているようです",
+  "pt": "Parecem fechados ou semicerrados",
+  "zh": "看起来闭着或眯着"
+ },
  "Look up this product": {
   "de": "Dieses Produkt nachschlagen",
   "es": "Buscar este producto",
@@ -10448,6 +11008,16 @@
   "ja": "検索可能にする",
   "pt": "Tornar pesquisável",
   "zh": "使其可搜索"
+ },
+ "Make a 4×6 in print sheet": {
+  "de": "4×6-Zoll-Druckbogen erstellen",
+  "es": "Hacer una hoja de impresión de 10×15",
+  "fr": "Créer une planche 10×15",
+  "hi": "4×6 इंच प्रिंट शीट बनाएँ",
+  "it": "Crea un foglio di stampa 10×15",
+  "ja": "4×6インチのプリント用紙を作る",
+  "pt": "Criar folha de impressão 10×15",
+  "zh": "制作 4×6 英寸打印纸"
  },
  "Make a 4×6 print sheet": {
   "de": "4×6-Druckbogen erstellen",
@@ -10939,6 +11509,16 @@
   "pt": "Meça um cômodo com a câmera",
   "zh": "用相机测量房间"
  },
+ "Measured on your phone against the official rules:": {
+  "de": "Auf deinem Handy anhand der offiziellen Vorgaben gemessen:",
+  "es": "Medido en tu móvil según las normas oficiales:",
+  "fr": "Mesuré sur votre téléphone selon les règles officielles :",
+  "hi": "आपके फ़ोन पर आधिकारिक नियमों से मापा गया:",
+  "it": "Misurata sul telefono secondo le regole ufficiali:",
+  "ja": "公式の規定に照らしてスマホ上で測定：",
+  "pt": "Medido no seu celular conforme as regras oficiais:",
+  "zh": "已在手机上按官方规定测量："
+ },
  "Measurement photo": {
   "de": "Messfoto",
   "es": "Foto de medición",
@@ -10958,6 +11538,16 @@
   "ja": "Cloudflareからテストファイルを取得し、実際のダウンロード速度と遅延を測定します — 今この端末が本当に得ている正直な数値です。約10 MBのデータを使い、それ以外はすべて端末内に留まります。",
   "pt": "Mede a tua velocidade de download e latência reais ao obter um ficheiro de teste da Cloudflare — o número honesto que o teu telemóvel obtém agora mesmo. Usa cerca de 10 MB de dados; tudo o resto fica no teu dispositivo.",
   "zh": "通过从 Cloudflare 拉取测试文件来测量你真实的下载速度和延迟 — 即你手机此刻实际得到的真实数值。约使用 10 MB 流量；其余一切都留在你的设备上。"
+ },
+ "Measuring your face against the rules…": {
+  "de": "Gesicht wird anhand der Vorgaben vermessen…",
+  "es": "Midiendo tu cara según las normas…",
+  "fr": "Mesure du visage selon les règles…",
+  "hi": "नियमों के हिसाब से चेहरा माप रहे हैं…",
+  "it": "Misuro il viso secondo le regole…",
+  "ja": "規定に沿って顔を測定中…",
+  "pt": "Medindo seu rosto conforme as regras…",
+  "zh": "正在按规定测量面部…"
  },
  "Meat": {
   "de": "Fleisch",
@@ -11378,6 +11968,16 @@
   "ja": "口が開いているか大きく笑っています — 多くの国では無表情が必要です。",
   "pt": "Boca aberta ou sorriso largo — a maioria dos países pede expressão neutra.",
   "zh": "嘴巴张开或笑得太开——多数国家要求表情自然。"
+ },
+ "Mouth open or a big smile": {
+  "de": "Mund offen oder breites Lächeln",
+  "es": "Boca abierta o gran sonrisa",
+  "fr": "Bouche ouverte ou grand sourire",
+  "hi": "मुँह खुला या बड़ी मुस्कान",
+  "it": "Bocca aperta o grande sorriso",
+  "ja": "口が開いているか大きな笑顔",
+  "pt": "Boca aberta ou sorriso largo",
+  "zh": "张嘴或大笑"
  },
  "Move": {
   "de": "Verschieben",
@@ -11899,6 +12499,16 @@
   "pt": "Precisa de duas ou mais fotos",
   "zh": "需要两张或更多照片"
  },
+ "Needs work": {
+  "de": "Muss nachgebessert werden",
+  "es": "Necesita mejoras",
+  "fr": "À améliorer",
+  "hi": "सुधार चाहिए",
+  "it": "Da migliorare",
+  "ja": "要改善",
+  "pt": "Precisa melhorar",
+  "zh": "需要改进"
+ },
  "Neon": {
   "de": "Neon",
   "es": "Neón",
@@ -11949,6 +12559,26 @@
   "pt": "Nome da rede oculto",
   "zh": "网络名称已隐藏"
  },
+ "Neutral": {
+  "de": "Neutral",
+  "es": "Neutra",
+  "fr": "Neutre",
+  "hi": "सामान्य",
+  "it": "Neutra",
+  "ja": "無表情",
+  "pt": "Neutra",
+  "zh": "自然"
+ },
+ "Neutral expression, mouth closed": {
+  "de": "Neutraler Ausdruck, Mund zu",
+  "es": "Expresión neutra, boca cerrada",
+  "fr": "Expression neutre, bouche fermée",
+  "hi": "सामान्य भाव, मुँह बंद",
+  "it": "Espressione neutra, bocca chiusa",
+  "ja": "無表情で口を閉じる",
+  "pt": "Expressão neutra, boca fechada",
+  "zh": "表情自然，闭嘴"
+ },
  "Neutral face, mouth closed": {
   "de": "Neutraler Ausdruck, Mund geschlossen",
   "es": "Cara neutra, boca cerrada",
@@ -11958,6 +12588,16 @@
   "ja": "無表情で口を閉じている",
   "pt": "Rosto neutro, boca fechada",
   "zh": "表情自然，闭嘴"
+ },
+ "Neutral face, mouth closed, glasses off": {
+  "de": "Neutral schauen, Mund zu, Brille ab",
+  "es": "Cara neutra, boca cerrada, sin gafas",
+  "fr": "Visage neutre, bouche fermée, sans lunettes",
+  "hi": "सामान्य चेहरा, मुँह बंद, चश्मा उतारें",
+  "it": "Viso neutro, bocca chiusa, senza occhiali",
+  "ja": "無表情、口を閉じ、眼鏡は外す",
+  "pt": "Rosto neutro, boca fechada, sem óculos",
+  "zh": "表情自然，闭嘴，摘下眼镜"
  },
  "Never miss a dose or a refill": {
   "de": "Keine Dosis und kein Nachkauf verpasst",
@@ -12259,6 +12899,16 @@
   "pt": "Nenhum rosto encontrado — olhe para a câmera com a cabeça inteira à vista.",
   "zh": "未找到人脸——请面向镜头，露出整个头部。"
  },
+ "No face found. Use a photo of you facing the camera, with your whole head and shoulders in view.": {
+  "de": "Kein Gesicht gefunden. Nimm ein Foto, auf dem du zur Kamera schaust und Kopf und Schultern ganz zu sehen sind.",
+  "es": "No se encontró ninguna cara. Usa una foto mirando a la cámara, con la cabeza y los hombros enteros.",
+  "fr": "Aucun visage trouvé. Utilisez une photo face à l'appareil, tête et épaules entières.",
+  "hi": "कोई चेहरा नहीं मिला। ऐसी फ़ोटो लें जिसमें आप कैमरे की ओर हों और पूरा सिर व कंधे दिखें।",
+  "it": "Nessun viso trovato. Usa una foto rivolta alla fotocamera, con testa e spalle intere.",
+  "ja": "顔が見つかりません。カメラに正面を向き、頭と肩全体が写った写真を使ってください。",
+  "pt": "Nenhum rosto encontrado. Use uma foto de frente para a câmera, com a cabeça e os ombros inteiros.",
+  "zh": "未找到人脸。请使用正对镜头、完整露出头和肩膀的照片。"
+ },
  "No faces found — turn on 'Add by tapping' and tap where a face is.": {
   "de": "Keine Gesichter gefunden – schalte „Durch Tippen hinzufügen“ ein und tippe auf ein Gesicht.",
   "es": "No se encontraron caras: activa «Añadir tocando» y toca donde haya una cara.",
@@ -12268,6 +12918,26 @@
   "ja": "顔が見つかりません — 「タップで追加」をオンにして顔の位置をタップ。",
   "pt": "Nenhum rosto encontrado — ative «Adicionar tocando» e toque onde há um rosto.",
   "zh": "未找到人脸——打开“点按添加”，再点按人脸位置。"
+ },
+ "No glare on glasses; eyes clearly visible": {
+  "de": "Keine Spiegelung auf der Brille, Augen klar sichtbar",
+  "es": "Sin reflejos en las gafas; ojos bien visibles",
+  "fr": "Pas de reflet sur les lunettes ; yeux bien visibles",
+  "hi": "चश्मे पर चमक नहीं; आँखें साफ़ दिखें",
+  "it": "Niente riflessi sugli occhiali; occhi ben visibili",
+  "ja": "眼鏡に反射がなく、目がはっきり見えること",
+  "pt": "Sem reflexo nos óculos; olhos bem visíveis",
+  "zh": "眼镜无反光，眼睛清晰可见"
+ },
+ "No hat or head covering, unless for religious or medical reasons": {
+  "de": "Kein Hut oder Kopfbedeckung, außer aus religiösen oder medizinischen Gründen",
+  "es": "Sin sombrero ni nada en la cabeza, salvo por motivos religiosos o médicos",
+  "fr": "Pas de chapeau ni couvre-chef, sauf pour raisons religieuses ou médicales",
+  "hi": "टोपी या सिर ढकना नहीं, धार्मिक या चिकित्सा कारण को छोड़कर",
+  "it": "Niente cappello o copricapo, salvo motivi religiosi o medici",
+  "ja": "宗教・医療上の理由がない限り帽子やかぶり物は不可",
+  "pt": "Sem chapéu ou cobertura, exceto por motivo religioso ou médico",
+  "zh": "除宗教或医疗原因外，不戴帽子或头饰"
  },
  "No location data in this photo": {
   "de": "Keine Standortdaten in diesem Foto",
@@ -12429,6 +13099,16 @@
   "pt": "Nenhum texto encontrado nessa imagem.",
   "zh": "该图片中未找到文字。"
  },
+ "No tinted glasses or glare over the eyes": {
+  "de": "Keine getönten Gläser, keine Spiegelung über den Augen",
+  "es": "Sin gafas tintadas ni reflejos sobre los ojos",
+  "fr": "Pas de verres teintés ni de reflets sur les yeux",
+  "hi": "रंगीन चश्मा नहीं, आँखों पर चमक नहीं",
+  "it": "Niente lenti colorate o riflessi sugli occhi",
+  "ja": "色付きレンズや目にかかる反射は不可",
+  "pt": "Sem lentes escuras nem reflexos nos olhos",
+  "zh": "不戴有色眼镜，眼部无反光"
+ },
  "No warning signs in the address": {
   "de": "Keine Warnzeichen in der Adresse",
   "es": "Sin señales de alerta en la dirección",
@@ -12568,6 +13248,16 @@
   "ja": "まだ基準を超えていません — 超えたら1回お知らせします。",
   "pt": "Ainda não passou — você recebe um alerta quando passar.",
   "zh": "还没越过你的数字——越过时会提醒一次。"
+ },
+ "Not quite plain": {
+  "de": "Nicht ganz einfarbig",
+  "es": "No del todo liso",
+  "fr": "Pas tout à fait uni",
+  "hi": "पूरी तरह सादा नहीं",
+  "it": "Non del tutto uniforme",
+  "ja": "無地とは言えません",
+  "pt": "Não totalmente liso",
+  "zh": "不够纯净"
  },
  "Not sure which type you are? Tap “Which type am I?” — a 1-minute check sets it for you.": {
   "de": "Unsicher, welcher Typ du bist? Tippe auf „Welcher Typ bin ich?“ – ein 1-Minuten-Check stellt es ein.",
@@ -13099,6 +13789,16 @@
   "pt": "Um app para tudo o que seu celular esqueceu — mais de 60 ferramentas, 90 prontas e as que você cria. Tudo roda no seu telefone; nada é enviado.",
   "zh": "一个应用搞定手机忘了做的事——60 多个工具、90 个现成工具，以及你自己搭建的工具。全部在手机上运行，不上传任何内容。"
  },
+ "One face found": {
+  "de": "Ein Gesicht gefunden",
+  "es": "Se encontró una cara",
+  "fr": "Un visage trouvé",
+  "hi": "एक चेहरा मिला",
+  "it": "Trovato un viso",
+  "ja": "顔を1つ検出",
+  "pt": "Um rosto encontrado",
+  "zh": "检测到一张人脸"
+ },
  "One face, clearly visible": {
   "de": "Ein Gesicht, klar sichtbar",
   "es": "Una cara, bien visible",
@@ -13209,6 +13909,16 @@
   "pt": "Uma nota curta todas as manhãs com o que importa hoje — configure uma vez e chega sozinha.",
   "zh": "每天早上一条简短消息，告诉你今天的要事——设置一次，自动送达。"
  },
+ "One side darker": {
+  "de": "Eine Seite dunkler",
+  "es": "Un lado más oscuro",
+  "fr": "Un côté plus sombre",
+  "hi": "एक तरफ़ ज़्यादा अंधेरा",
+  "it": "Un lato più scuro",
+  "ja": "片側が暗い",
+  "pt": "Um lado mais escuro",
+  "zh": "一侧较暗"
+ },
  "One tap each. Nothing leaves your phone.": {
   "de": "Je ein Tipp. Nichts verlässt dein Handy.",
   "es": "Un toque cada uno. Nada sale de tu teléfono.",
@@ -13268,6 +13978,16 @@
   "ja": "食事制限に合うものだけ表示",
   "pt": "Mostrar só o que combina com minha dieta",
   "zh": "只显示符合我饮食的"
+ },
+ "Only you should be in the photo. Take one with nobody else in the frame.": {
+  "de": "Nur du solltest auf dem Foto sein. Mach eins ohne andere Personen im Bild.",
+  "es": "Solo debes salir tú. Haz una foto sin nadie más en el encuadre.",
+  "fr": "Vous seul devez être sur la photo. Prenez-en une sans personne d'autre.",
+  "hi": "फ़ोटो में सिर्फ़ आप हों। ऐसी फ़ोटो लें जिसमें कोई और न हो।",
+  "it": "Nella foto devi esserci solo tu. Scattane una senza altre persone.",
+  "ja": "写るのは本人だけです。他の人が入らないように撮ってください。",
+  "pt": "Só você deve aparecer. Tire uma sem mais ninguém no enquadramento.",
+  "zh": "照片中应只有你本人。请拍一张画面中没有他人的照片。"
  },
  "Open": {
   "de": "Öffnen",
@@ -13558,6 +14278,16 @@
   "ja": "または上限を指定：",
   "pt": "Ou o limite exato:",
   "zh": "或精确上限："
+ },
+ "Order it as a 4×6 in (10×15 cm) print at any photo counter or photo app, at 100% size, then cut along the lines.": {
+  "de": "Als 10×15-cm-Abzug (4×6 Zoll) in Originalgröße bei einem Fotoservice bestellen, dann an den Linien schneiden.",
+  "es": "Pídela como copia de 10×15 cm (4×6 in) al 100 % en cualquier tienda o app de fotos y recorta por las líneas.",
+  "fr": "Commandez un tirage 10×15 cm (4×6 po) à 100 % dans un point photo ou une app, puis découpez le long des lignes.",
+  "hi": "किसी भी फ़ोटो दुकान या ऐप पर 100% आकार में 4×6 इंच (10×15 सेमी) प्रिंट मँगाएँ, फिर रेखाओं पर काटें।",
+  "it": "Ordinala come stampa 10×15 cm (4×6 in) al 100% in un negozio o app di foto, poi ritaglia lungo le linee.",
+  "ja": "写真店やアプリで4×6インチ（10×15 cm）、等倍でプリントし、線に沿って切ってください。",
+  "pt": "Peça uma cópia 10×15 cm (4×6 pol.) em 100% em qualquer loja ou app de fotos e recorte nas linhas.",
+  "zh": "在任意冲印店或冲印应用按 100% 尺寸冲印 4×6 英寸（10×15 厘米），再沿线裁剪。"
  },
  "Organize Pages": {
   "de": "Seiten ordnen",
@@ -13919,6 +14649,16 @@
   "pt": "As fotos de passaporte vêm de fotos — escolhe uma foto acima.",
   "zh": "护照照片来自照片 — 请在上方选择一张照片。"
  },
+ "Passport-ready score": {
+  "de": "Passfoto-Tauglichkeit",
+  "es": "Puntuación para pasaporte",
+  "fr": "Score de conformité",
+  "hi": "पासपोर्ट-तैयार स्कोर",
+  "it": "Punteggio di idoneità",
+  "ja": "旅券写真の適合スコア",
+  "pt": "Pontuação para passaporte",
+  "zh": "护照照片合格分"
+ },
  "Password": {
   "de": "Passwort",
   "es": "Contraseña",
@@ -14138,6 +14878,16 @@
   "ja": "電話",
   "pt": "Telefone",
   "zh": "电话"
+ },
+ "Phone at eye level, about an arm's length away — or ask someone to take it": {
+  "de": "Handy auf Augenhöhe, etwa eine Armlänge entfernt – oder jemanden bitten",
+  "es": "Móvil a la altura de los ojos, a un brazo de distancia, o pide a alguien que la haga",
+  "fr": "Téléphone à hauteur des yeux, à bout de bras — ou demandez à quelqu'un",
+  "hi": "फ़ोन आँखों की ऊँचाई पर, लगभग एक हाथ दूर — या किसी से खिंचवाएँ",
+  "it": "Telefono all'altezza degli occhi, a un braccio di distanza, o fatti aiutare",
+  "ja": "スマホは目の高さで腕の長さほど離す（誰かに撮ってもらうのも可）",
+  "pt": "Celular na altura dos olhos, a um braço de distância — ou peça a alguém",
+  "zh": "手机与眼睛同高，约一臂距离——或请别人帮忙拍"
  },
  "Phone face-down, start a focus timer": {
   "de": "Handy umdrehen, Fokus-Timer starten",
@@ -14699,6 +15449,36 @@
   "pt": "Colocar assinatura",
   "zh": "放置签名"
  },
+ "Plain": {
+  "de": "Einfarbig",
+  "es": "Liso",
+  "fr": "Uni",
+  "hi": "सादा",
+  "it": "Uniforme",
+  "ja": "無地",
+  "pt": "Liso",
+  "zh": "纯色"
+ },
+ "Plain light grey background": {
+  "de": "Schlichter hellgrauer Hintergrund",
+  "es": "Fondo gris claro liso",
+  "fr": "Fond gris clair uni",
+  "hi": "सादा हल्का ग्रे बैकग्राउंड",
+  "it": "Sfondo grigio chiaro uniforme",
+  "ja": "無地のライトグレー背景",
+  "pt": "Fundo cinza-claro liso",
+  "zh": "纯浅灰色背景"
+ },
+ "Plain white background": {
+  "de": "Schlichter weißer Hintergrund",
+  "es": "Fondo blanco liso",
+  "fr": "Fond blanc uni",
+  "hi": "सादा सफ़ेद बैकग्राउंड",
+  "it": "Sfondo bianco uniforme",
+  "ja": "無地の白背景",
+  "pt": "Fundo branco liso",
+  "zh": "纯白色背景"
+ },
  "Plain-English rewriting needs on-device Gemini Nano (Pixel 9, Galaxy S24+). Listen and Gist work on every phone.": {
   "de": "Das Umschreiben in einfache Sprache braucht Gemini Nano auf dem Gerät (Pixel 9, Galaxy S24+). Anhören und Kurzfassung funktionieren auf jedem Handy.",
   "es": "La reescritura en lenguaje claro requiere Gemini Nano en el dispositivo (Pixel 9, Galaxy S24+). Escuchar y Resumen funcionan en todos los teléfonos.",
@@ -14838,6 +15618,16 @@
   "ja": "この声で録音の試聴を再生します",
   "pt": "Reproduz uma amostra da gravação com esta voz",
   "zh": "用这个声音试听你的录音"
+ },
+ "Plenty": {
+  "de": "Reichlich",
+  "es": "De sobra",
+  "fr": "Largement",
+  "hi": "पर्याप्त",
+  "it": "Più che sufficiente",
+  "ja": "十分",
+  "pt": "De sobra",
+  "zh": "充足"
  },
  "Point another phone's camera at this, or send the link. It opens the tool in Tenzy.": {
   "de": "Richte die Kamera eines anderen Handys darauf, oder sende den Link. Es öffnet das Tool in Tenzy.",
@@ -15108,6 +15898,16 @@
   "ja": "印刷・書類用",
   "pt": "Imprimir ou documento",
   "zh": "打印或文档"
+ },
+ "Print sheet": {
+  "de": "Druckbogen",
+  "es": "Hoja de impresión",
+  "fr": "Planche d'impression",
+  "hi": "प्रिंट शीट",
+  "it": "Foglio di stampa",
+  "ja": "プリント用紙",
+  "pt": "Folha de impressão",
+  "zh": "打印纸"
  },
  "Print sticker sheet": {
   "de": "Stickerbogen drucken",
@@ -15889,6 +16689,16 @@
   "pt": "Pronta para enviar",
   "zh": "可以发送了"
  },
+ "Ready to use": {
+  "de": "Einsatzbereit",
+  "es": "Lista para usar",
+  "fr": "Prête à l'emploi",
+  "hi": "इस्तेमाल के लिए तैयार",
+  "it": "Pronta all'uso",
+  "ja": "そのまま使えます",
+  "pt": "Pronta para usar",
+  "zh": "可直接使用"
+ },
  "Ready when you are": {
   "de": "Bereit, wenn du es bist",
   "es": "Listo cuando quieras",
@@ -16508,6 +17318,16 @@
   "ja": "購入を復元",
   "pt": "Restaurar compras",
   "zh": "恢复购买"
+ },
+ "Retake recommended": {
+  "de": "Neues Foto empfohlen",
+  "es": "Mejor repetirla",
+  "fr": "Nouvelle photo conseillée",
+  "hi": "दोबारा लेना बेहतर",
+  "it": "Meglio rifarla",
+  "ja": "撮り直しをおすすめします",
+  "pt": "Melhor tirar outra",
+  "zh": "建议重拍"
  },
  "Retro": {
   "de": "Retro",
@@ -18399,6 +19219,26 @@
   "pt": "Partilhar texto",
   "zh": "分享文本"
  },
+ "Share the file": {
+  "de": "Datei teilen",
+  "es": "Compartir el archivo",
+  "fr": "Partager le fichier",
+  "hi": "फ़ाइल शेयर करें",
+  "it": "Condividi il file",
+  "ja": "ファイルを共有",
+  "pt": "Compartilhar o arquivo",
+  "zh": "分享文件"
+ },
+ "Share the file to upload": {
+  "de": "Datei zum Hochladen teilen",
+  "es": "Compartir el archivo para subirlo",
+  "fr": "Partager le fichier à envoyer",
+  "hi": "अपलोड के लिए फ़ाइल शेयर करें",
+  "it": "Condividi il file da caricare",
+  "ja": "アップロード用ファイルを共有",
+  "pt": "Compartilhar o arquivo para enviar",
+  "zh": "分享待上传的文件"
+ },
  "Share the shopping list": {
   "de": "Einkaufsliste teilen",
   "es": "Compartir la lista de compra",
@@ -18448,6 +19288,16 @@
   "ja": "共有 → カレンダーで追加されます。または招待ファイルを別の人に送ります。",
   "pt": "Partilhar → Calendário adiciona-o; ou envia o ficheiro de convite a outra pessoa.",
   "zh": "分享 → 日历即可添加；或将邀请文件发送给其他人。"
+ },
+ "Sharp": {
+  "de": "Scharf",
+  "es": "Nítida",
+  "fr": "Nette",
+  "hi": "साफ़",
+  "it": "Nitida",
+  "ja": "鮮明",
+  "pt": "Nítida",
+  "zh": "清晰"
  },
  "Sharp and in focus": {
   "de": "Scharf und fokussiert",
@@ -18568,6 +19418,16 @@
   "ja": "大文字で叫んでいる",
   "pt": "Gritos em maiúsculas",
   "zh": "全大写吼叫"
+ },
+ "Show guide lines": {
+  "de": "Hilfslinien zeigen",
+  "es": "Mostrar guías",
+  "fr": "Afficher les repères",
+  "hi": "गाइड लाइनें दिखाएँ",
+  "it": "Mostra le guide",
+  "ja": "ガイド線を表示",
+  "pt": "Mostrar guias",
+  "zh": "显示参考线"
  },
  "Show me one": {
   "de": "Zeig mir eins",
@@ -19219,6 +20079,26 @@
   "pt": "Brilho suave",
   "zh": "柔光"
  },
+ "Soft or blurry": {
+  "de": "Weich oder unscharf",
+  "es": "Suave o borrosa",
+  "fr": "Floue",
+  "hi": "धुंधली",
+  "it": "Morbida o mossa",
+  "ja": "ぼやけています",
+  "pt": "Suave ou borrada",
+  "zh": "模糊"
+ },
+ "Software can't fix this:": {
+  "de": "Das kann Software nicht beheben:",
+  "es": "Ningún programa puede arreglar esto:",
+  "fr": "Un logiciel ne peut pas corriger ceci :",
+  "hi": "सॉफ़्टवेयर इसे ठीक नहीं कर सकता:",
+  "it": "Un software non può correggere questo:",
+  "ja": "ソフトでは直せません：",
+  "pt": "Nenhum programa corrige isto:",
+  "zh": "软件无法修复："
+ },
  "Some days": {
   "de": "An bestimmten Tagen",
   "es": "Algunos días",
@@ -19649,6 +20529,26 @@
   "pt": "Quadrado",
   "zh": "方块"
  },
+ "Stand in front of a plain light wall and try again.": {
+  "de": "Vor eine helle, einfarbige Wand stellen und erneut versuchen.",
+  "es": "Ponte delante de una pared clara y lisa y vuelve a intentarlo.",
+  "fr": "Placez-vous devant un mur clair uni et réessayez.",
+  "hi": "किसी सादी हल्की दीवार के सामने खड़े होकर फिर कोशिश करें।",
+  "it": "Mettiti davanti a una parete chiara e uniforme e riprova.",
+  "ja": "無地の明るい壁の前に立って撮り直してください。",
+  "pt": "Fique diante de uma parede clara e lisa e tente de novo.",
+  "zh": "站在纯色浅色墙前再试一次。"
+ },
+ "Stand in front of a plain light wall, facing a window": {
+  "de": "Vor eine helle, einfarbige Wand stellen, mit Blick zum Fenster",
+  "es": "Ponte delante de una pared clara y lisa, mirando a una ventana",
+  "fr": "Devant un mur clair uni, face à une fenêtre",
+  "hi": "सादी हल्की दीवार के सामने, खिड़की की ओर मुँह करके खड़े हों",
+  "it": "Davanti a una parete chiara e uniforme, di fronte a una finestra",
+  "ja": "無地の明るい壁の前で、窓の方を向いて立つ",
+  "pt": "Diante de uma parede clara e lisa, de frente para uma janela",
+  "zh": "站在纯色浅色墙前，面向窗户"
+ },
  "Stand up and stretch your arms up once": {
   "de": "Aufstehen und die Arme einmal hochstrecken",
   "es": "Ponte de pie y estira los brazos una vez",
@@ -19788,6 +20688,16 @@
   "ja": "少し下がって — 顔に近すぎます。",
   "pt": "Afaste-se um pouco — você está muito perto do rosto.",
   "zh": "后退一点——离脸太近了。"
+ },
+ "Step closer or use the back camera so your face fills more of the frame.": {
+  "de": "Näher herangehen oder die Rückkamera nutzen, damit das Gesicht mehr vom Bild füllt.",
+  "es": "Acércate o usa la cámara trasera para que tu cara ocupe más espacio.",
+  "fr": "Rapprochez-vous ou utilisez l'appareil arrière pour que le visage remplisse plus le cadre.",
+  "hi": "पास आएँ या पीछे का कैमरा इस्तेमाल करें ताकि चेहरा फ़्रेम में बड़ा दिखे।",
+  "it": "Avvicinati o usa la fotocamera posteriore perché il viso riempia di più l'inquadratura.",
+  "ja": "近づくか背面カメラを使い、顔を大きく写してください。",
+  "pt": "Aproxime-se ou use a câmera traseira para o rosto ocupar mais o quadro.",
+  "zh": "靠近一些或使用后置摄像头，让面部占更多画面。"
  },
  "Stereo · 128 kbps — music sounds like the original": {
   "de": "Stereo · 128 kbps – Musik klingt wie das Original",
@@ -19958,6 +20868,16 @@
   "ja": "近くのお店",
   "pt": "Lojas perto de mim",
   "zh": "附近的商店"
+ },
+ "Straighten a tilted head": {
+  "de": "Schiefen Kopf gerade richten",
+  "es": "Enderezar la cabeza inclinada",
+  "fr": "Redresser une tête penchée",
+  "hi": "झुके सिर को सीधा करें",
+  "it": "Raddrizza la testa inclinata",
+  "ja": "傾いた頭をまっすぐにする",
+  "pt": "Endireitar a cabeça inclinada",
+  "zh": "摆正倾斜的头部"
  },
  "Strip location, redact for good": {
   "de": "Standort entfernen, dauerhaft schwärzen",
@@ -20139,6 +21059,46 @@
   "pt": "Símbolo",
   "zh": "符号"
  },
+ "Take another photo — tips below.": {
+  "de": "Mach ein neues Foto – Tipps unten.",
+  "es": "Haz otra foto: consejos abajo.",
+  "fr": "Prenez une autre photo — conseils ci-dessous.",
+  "hi": "दूसरी फ़ोटो लें — सुझाव नीचे हैं।",
+  "it": "Scatta un'altra foto: consigli qui sotto.",
+  "ja": "撮り直してください（下にコツがあります）。",
+  "pt": "Tire outra foto — dicas abaixo.",
+  "zh": "请重拍——提示见下方。"
+ },
+ "Take another with your eyes fully open, looking at the lens.": {
+  "de": "Mach ein neues mit ganz geöffneten Augen, Blick in die Linse.",
+  "es": "Haz otra con los ojos bien abiertos, mirando al objetivo.",
+  "fr": "Reprenez-en une les yeux grands ouverts, en regardant l'objectif.",
+  "hi": "आँखें पूरी खोलकर, लेंस की ओर देखते हुए दूसरी फ़ोटो लें।",
+  "it": "Scattane un'altra con gli occhi ben aperti, guardando l'obiettivo.",
+  "ja": "目をしっかり開けてレンズを見て撮り直してください。",
+  "pt": "Tire outra com os olhos bem abertos, olhando para a lente.",
+  "zh": "请睁大眼睛、看着镜头重拍一张。"
+ },
+ "Take it from a little further away so your shoulders show.": {
+  "de": "Etwas weiter weg aufnehmen, damit die Schultern zu sehen sind.",
+  "es": "Hazla desde un poco más lejos para que se vean los hombros.",
+  "fr": "Prenez-la d'un peu plus loin pour que les épaules apparaissent.",
+  "hi": "थोड़ा दूर से लें ताकि कंधे दिखें।",
+  "it": "Scattala da un po' più lontano così si vedono le spalle.",
+  "ja": "肩が写るよう、少し離れて撮ってください。",
+  "pt": "Tire de um pouco mais longe para os ombros aparecerem.",
+  "zh": "离远一点拍，让肩膀入镜。"
+ },
+ "Take one now": {
+  "de": "Jetzt eins aufnehmen",
+  "es": "Hacer una ahora",
+  "fr": "En prendre une maintenant",
+  "hi": "अभी एक लें",
+  "it": "Scattane una ora",
+  "ja": "今すぐ撮る",
+  "pt": "Tirar uma agora",
+  "zh": "现在拍一张"
+ },
  "Take or choose a photo of the menu. Hold it flat and fill the frame.": {
   "de": "Fotografiere die Karte oder wähle ein Foto. Flach halten, Bild ausfüllen.",
   "es": "Haz o elige una foto del menú. Mantenlo plano y que llene el encuadre.",
@@ -20148,6 +21108,16 @@
   "ja": "メニューを撮影または選択。平らにして画面いっぱいに。",
   "pt": "Tire ou escolha uma foto do cardápio. Segure reto e preencha o quadro.",
   "zh": "拍摄或选择菜单照片。保持平整并填满画面。"
+ },
+ "Take or choose another photo": {
+  "de": "Neues Foto aufnehmen oder wählen",
+  "es": "Hacer o elegir otra foto",
+  "fr": "Prendre ou choisir une autre photo",
+  "hi": "दूसरी फ़ोटो लें या चुनें",
+  "it": "Scatta o scegli un'altra foto",
+  "ja": "別の写真を撮る・選ぶ",
+  "pt": "Tirar ou escolher outra foto",
+  "zh": "重拍或选择另一张照片"
  },
  "Take the best bright-scene shot": {
   "de": "Bestes Foto heller Szene",
@@ -20288,6 +21258,46 @@
   "ja": "いちばん読みやすく書類を撮る",
   "pt": "Foto de página mais nítida",
   "zh": "拍出最清晰的文档"
+ },
+ "Take the photo from a little further away so there's room above and below.": {
+  "de": "Etwas weiter weg aufnehmen, damit oben und unten Platz bleibt.",
+  "es": "Haz la foto desde un poco más lejos para que haya espacio arriba y abajo.",
+  "fr": "Prenez la photo d'un peu plus loin pour laisser de la place en haut et en bas.",
+  "hi": "थोड़ा दूर से फ़ोटो लें ताकि ऊपर और नीचे जगह रहे।",
+  "it": "Scatta da un po' più lontano per lasciare spazio sopra e sotto.",
+  "ja": "上下に余白ができるよう、少し離れて撮ってください。",
+  "pt": "Tire um pouco mais de longe para sobrar espaço em cima e embaixo.",
+  "zh": "离远一点拍，让上下留出空间。"
+ },
+ "Taken in the last 6 months": {
+  "de": "In den letzten 6 Monaten aufgenommen",
+  "es": "Hecha en los últimos 6 meses",
+  "fr": "Prise il y a moins de 6 mois",
+  "hi": "पिछले 6 महीनों में ली गई",
+  "it": "Scattata negli ultimi 6 mesi",
+  "ja": "6か月以内に撮影",
+  "pt": "Tirada nos últimos 6 meses",
+  "zh": "近 6 个月内拍摄"
+ },
+ "Taken in the last 6 months, in colour": {
+  "de": "In den letzten 6 Monaten aufgenommen, in Farbe",
+  "es": "Hecha en los últimos 6 meses, en color",
+  "fr": "Prise il y a moins de 6 mois, en couleur",
+  "hi": "पिछले 6 महीनों में ली गई, रंगीन",
+  "it": "Scattata negli ultimi 6 mesi, a colori",
+  "ja": "6か月以内に撮影したカラー写真",
+  "pt": "Tirada nos últimos 6 meses, colorida",
+  "zh": "近 6 个月内拍摄的彩色照片"
+ },
+ "Taken in the last month": {
+  "de": "Im letzten Monat aufgenommen",
+  "es": "Hecha en el último mes",
+  "fr": "Prise il y a moins d'un mois",
+  "hi": "पिछले एक महीने में ली गई",
+  "it": "Scattata nell'ultimo mese",
+  "ja": "1か月以内に撮影",
+  "pt": "Tirada no último mês",
+  "zh": "近一个月内拍摄"
  },
  "Taken out of the file": {
   "de": "Aus der Datei entfernt",
@@ -20959,6 +21969,16 @@
   "pt": "O Tenzy precisa de permissão para adicionar a Fotos — permita em Ajustes → Privacidade → Fotos → Tenzy, ou use Copiar.",
   "zh": "Tenzy需要“添加到照片”的权限——请在设置→隐私→照片→Tenzy中允许，或使用复制。"
  },
+ "Tenzy needs permission to add to Photos. You can allow it in Settings › Tenzy › Photos.": {
+  "de": "Tenzy braucht die Erlaubnis, zu Fotos hinzuzufügen. Erlaube es unter Einstellungen › Tenzy › Fotos.",
+  "es": "Tenzy necesita permiso para añadir a Fotos. Puedes darlo en Ajustes › Tenzy › Fotos.",
+  "fr": "Tenzy a besoin de l'autorisation d'ajouter à Photos. Activez-la dans Réglages › Tenzy › Photos.",
+  "hi": "Tenzy को Photos में जोड़ने की अनुमति चाहिए। Settings › Tenzy › Photos में अनुमति दें।",
+  "it": "Tenzy ha bisogno del permesso per aggiungere a Foto. Puoi darlo in Impostazioni › Tenzy › Foto.",
+  "ja": "Tenzyに写真への追加を許可してください（設定 › Tenzy › 写真）。",
+  "pt": "O Tenzy precisa de permissão para adicionar a Fotos. Permita em Ajustes › Tenzy › Fotos.",
+  "zh": "Tenzy 需要添加到照片的权限。可在 设置 › Tenzy › 照片 中允许。"
+ },
  "Tenzy needs the microphone to record — allow it in Settings, or just tap Good or Bad.": {
   "de": "Tenzy braucht das Mikrofon – erlaube es in den Einstellungen oder tippe einfach Gut oder Schlecht.",
   "es": "Tenzy necesita el micrófono para grabar; permítelo en Ajustes o simplemente toca Bueno o Malo.",
@@ -21509,6 +22529,16 @@
   "pt": "O ficheiro é servido diretamente do teu telemóvel e o mini servidor para quando sais ou tocas em Parar. A Wi-Fi de convidados/pública bloqueia muitas vezes ligações entre telemóveis — se não ligar, usa “Enviar de outra forma” para AirDrop, Partilha por proximidade ou uma app de mensagens.",
   "zh": "文件直接从你的手机提供，离开或点按停止时迷你服务器即停止。访客/公共 Wi-Fi 常会阻止手机到手机的连接 — 如果连不上，请改用“换一种方式发送”使用隔空投送、附近分享或消息应用。"
  },
+ "The finished passport photo. Press and hold to see the original.": {
+  "de": "Das fertige Passfoto. Gedrückt halten für das Original.",
+  "es": "La foto de pasaporte terminada. Mantén pulsado para ver el original.",
+  "fr": "La photo d'identité terminée. Maintenez appuyé pour voir l'original.",
+  "hi": "तैयार पासपोर्ट फ़ोटो। मूल देखने के लिए दबाकर रखें।",
+  "it": "La foto tessera finita. Tieni premuto per vedere l'originale.",
+  "ja": "完成した旅券写真。長押しで元の写真を表示。",
+  "pt": "A foto de passaporte pronta. Toque e segure para ver o original.",
+  "zh": "制作好的护照照片。长按查看原图。"
+ },
  "The first time you use a language, the phone downloads it and needs a connection.": {
   "de": "Wenn du eine Sprache zum ersten Mal nutzt, lädt das Handy sie herunter und braucht eine Verbindung.",
   "es": "La primera vez que usas un idioma, el teléfono lo descarga y necesita conexión.",
@@ -21608,6 +22638,26 @@
   "ja": "数値",
   "pt": "O número",
   "zh": "数字"
+ },
+ "The office that takes the photo has the final say.": {
+  "de": "Die Stelle, die das Foto annimmt, entscheidet endgültig.",
+  "es": "La oficina que recibe la foto tiene la última palabra.",
+  "fr": "Le service qui reçoit la photo a le dernier mot.",
+  "hi": "फ़ोटो लेने वाला कार्यालय ही अंतिम निर्णय लेता है।",
+  "it": "L'ufficio che riceve la foto ha l'ultima parola.",
+  "ja": "最終判断は写真を受け付ける窓口が行います。",
+  "pt": "O órgão que recebe a foto tem a palavra final.",
+  "zh": "最终以受理照片的机构为准。"
+ },
+ "The original stops above your shoulders": {
+  "de": "Das Original endet über den Schultern",
+  "es": "El original se corta por encima de los hombros",
+  "fr": "L'original s'arrête au-dessus des épaules",
+  "hi": "मूल फ़ोटो कंधों से ऊपर ही ख़त्म हो जाती है",
+  "it": "L'originale si ferma sopra le spalle",
+  "ja": "元の写真は肩より上で切れています",
+  "pt": "O original termina acima dos ombros",
+  "zh": "原图在肩膀以上被截断"
  },
  "The phone can't tell ages, so you choose which faces to cover. Saved as a fresh copy with no location data.": {
   "de": "Das Telefon erkennt kein Alter, also wählst du, welche Gesichter verdeckt werden. Gespeichert als neue Kopie ohne Standortdaten.",
@@ -22529,6 +23579,16 @@
   "pt": "Amanhã",
   "zh": "明天"
  },
+ "Too dark or busy": {
+  "de": "Zu dunkel oder unruhig",
+  "es": "Demasiado oscuro o recargado",
+  "fr": "Trop sombre ou chargé",
+  "hi": "बहुत गहरा या भरा-भरा",
+  "it": "Troppo scuro o confuso",
+  "ja": "暗すぎるか、ごちゃごちゃしています",
+  "pt": "Escuro demais ou poluído",
+  "zh": "太暗或太杂乱"
+ },
  "Too dark — face a window or a lamp.": {
   "de": "Zu dunkel – stell dich vor ein Fenster oder eine Lampe.",
   "es": "Demasiado oscuro: ponte frente a una ventana o lámpara.",
@@ -22618,6 +23678,16 @@
   "ja": "上の行",
   "pt": "Linha de cima",
   "zh": "顶部行"
+ },
+ "Top of head": {
+  "de": "Scheitel",
+  "es": "Parte superior de la cabeza",
+  "fr": "Haut de la tête",
+  "hi": "सिर का ऊपरी हिस्सा",
+  "it": "Sommità della testa",
+  "ja": "頭頂部",
+  "pt": "Topo da cabeça",
+  "zh": "头顶"
  },
  "Torch": {
   "de": "Taschenlampe",
@@ -22868,6 +23938,16 @@
   "ja": "移動",
   "pt": "Viagem",
   "zh": "行程"
+ },
+ "Try a photo with your whole head and shoulders in view.": {
+  "de": "Versuche ein Foto, auf dem Kopf und Schultern ganz zu sehen sind.",
+  "es": "Prueba con una foto en la que se vean enteros la cabeza y los hombros.",
+  "fr": "Essayez une photo où la tête et les épaules sont entières.",
+  "hi": "ऐसी फ़ोटो आज़माएँ जिसमें पूरा सिर और कंधे दिखें।",
+  "it": "Prova una foto con testa e spalle intere.",
+  "ja": "頭と肩全体が写った写真で試してください。",
+  "pt": "Tente uma foto com a cabeça e os ombros inteiros.",
+  "zh": "请换一张完整露出头和肩膀的照片。"
  },
  "Try again": {
   "de": "Nochmal",
@@ -23159,6 +24239,16 @@
   "pt": "Põe o volume no máximo, desliga os auriculares, executa 2–3 vezes. Seca a porta com um pano depois — não uses calor.",
   "zh": "将音量调到最大，拔下耳机，运行 2–3 次。之后用布擦干接口——不要用热源。"
  },
+ "Turn your face straight to the camera, shoulders square.": {
+  "de": "Gesicht gerade zur Kamera, Schultern gerade.",
+  "es": "Gira la cara de frente a la cámara, con los hombros rectos.",
+  "fr": "Tournez le visage face à l'appareil, épaules droites.",
+  "hi": "चेहरा सीधे कैमरे की ओर करें, कंधे सीधे रखें।",
+  "it": "Rivolgi il viso dritto alla fotocamera, spalle diritte.",
+  "ja": "顔をカメラに正対させ、肩をまっすぐに。",
+  "pt": "Vire o rosto de frente para a câmera, ombros retos.",
+  "zh": "将脸正对镜头，双肩摆正。"
+ },
  "Turn your face to the camera — it's turned to one side.": {
   "de": "Dreh dein Gesicht zur Kamera – es ist zur Seite gedreht.",
   "es": "Gira la cara hacia la cámara: está de lado.",
@@ -23198,6 +24288,16 @@
   "ja": "2日前の午前10時と、最終日の午前9時。",
   "pt": "Dois dias antes, às 10h, e na última manhã, às 9h.",
   "zh": "提前两天上午 10 点，以及最后一天上午 9 点。"
+ },
+ "Two identical prints, with the photographer's details on the back of one": {
+  "de": "Zwei identische Abzüge, auf der Rückseite von einem die Angaben des Fotografen",
+  "es": "Dos copias idénticas, con los datos del fotógrafo al dorso de una",
+  "fr": "Deux tirages identiques, avec les coordonnées du photographe au dos de l'un",
+  "hi": "दो एक जैसे प्रिंट, एक के पीछे फ़ोटोग्राफ़र का विवरण",
+  "it": "Due stampe identiche, con i dati del fotografo sul retro di una",
+  "ja": "同じ写真を2枚、うち1枚の裏に撮影者の情報",
+  "pt": "Duas cópias idênticas, com os dados do fotógrafo no verso de uma",
+  "zh": "两张相同的照片，其中一张背面写摄影师信息"
  },
  "Two-minute start": {
   "de": "Zwei-Minuten-Start",
@@ -23339,6 +24439,16 @@
   "pt": "Limites típicos: e-mail 25 MB, a maioria dos portais 2 MB, envios de fotos governamentais 50–200 KB.",
   "zh": "常见上限：邮件 25 MB，多数门户 2 MB，政府照片上传 50–200 KB。"
  },
+ "UK passport · 35×45 mm": {
+  "de": "Britischer Pass · 35×45 mm",
+  "es": "Pasaporte del Reino Unido · 35×45 mm",
+  "fr": "Passeport britannique · 35×45 mm",
+  "hi": "यूके पासपोर्ट · 35×45 mm",
+  "it": "Passaporto britannico · 35×45 mm",
+  "ja": "英国旅券 · 35×45 mm",
+  "pt": "Passaporte do Reino Unido · 35×45 mm",
+  "zh": "英国护照 · 35×45 毫米"
+ },
  "URL": {
   "de": "URL",
   "es": "URL",
@@ -23348,6 +24458,16 @@
   "ja": "URL",
   "pt": "URL",
   "zh": "网址"
+ },
+ "US passport · 2×2 in": {
+  "de": "US-Pass · 2×2 Zoll",
+  "es": "Pasaporte de EE. UU. · 2×2 in",
+  "fr": "Passeport américain · 2×2 po",
+  "hi": "अमेरिकी पासपोर्ट · 2×2 इंच",
+  "it": "Passaporto USA · 2×2 in",
+  "ja": "米国旅券 · 2×2インチ",
+  "pt": "Passaporte dos EUA · 2×2 pol.",
+  "zh": "美国护照 · 2×2 英寸"
  },
  "US visa photo (DS-160)": {
   "de": "US-Visumfoto (DS-160)",
@@ -23558,6 +24678,16 @@
   "ja": "最大72フレーム。小さく＋低fps＝チャットで実際に送れるGIFに。",
   "pt": "Até 72 fotogramas. Mais pequeno + menos fps = um GIF que se envia mesmo no chat.",
   "zh": "最多 72 帧。更小 + 更低帧率＝真正能在聊天里发出去的 GIF。"
+ },
+ "Upload as JPEG, 200 KB to 5 MB — this file fits": {
+  "de": "Als JPEG hochladen, 200 KB bis 5 MB – diese Datei passt",
+  "es": "Sube un JPEG de 200 KB a 5 MB; este archivo cumple",
+  "fr": "Envoyez un JPEG de 200 Ko à 5 Mo — ce fichier convient",
+  "hi": "JPEG के रूप में अपलोड करें, 200 KB से 5 MB — यह फ़ाइल सही है",
+  "it": "Carica un JPEG da 200 KB a 5 MB: questo file va bene",
+  "ja": "JPEG・200 KB〜5 MBでアップロード（このファイルは条件内）",
+  "pt": "Envie em JPEG, de 200 KB a 5 MB — este arquivo serve",
+  "zh": "以 JPEG 上传，200 KB 至 5 MB——此文件符合"
  },
  "Upload to a website": {
   "de": "Auf eine Website hochladen",
@@ -24149,6 +25279,16 @@
   "pt": "O que o Tenzy faz",
   "zh": "Tenzy 能做什么"
  },
+ "What Tenzy fixed": {
+  "de": "Was Tenzy korrigiert hat",
+  "es": "Lo que Tenzy corrigió",
+  "fr": "Ce que Tenzy a corrigé",
+  "hi": "Tenzy ने क्या ठीक किया",
+  "it": "Cosa ha corretto Tenzy",
+  "ja": "Tenzyが直したこと",
+  "pt": "O que o Tenzy corrigiu",
+  "zh": "Tenzy 修复的内容"
+ },
  "What do you have?": {
   "de": "Was hast du?",
   "es": "¿Qué tienes?",
@@ -24509,6 +25649,16 @@
   "pt": "Que parte",
   "zh": "哪一部分"
  },
+ "Which passport or visa?": {
+  "de": "Welcher Pass oder welches Visum?",
+  "es": "¿Qué pasaporte o visado?",
+  "fr": "Quel passeport ou visa ?",
+  "hi": "कौन-सा पासपोर्ट या वीज़ा?",
+  "it": "Quale passaporto o visto?",
+  "ja": "どの旅券・ビザ？",
+  "pt": "Qual passaporte ou visto?",
+  "zh": "哪种护照或签证？"
+ },
  "Which type am I?": {
   "de": "Welcher Typ bin ich?",
   "es": "¿Qué tipo soy?",
@@ -24538,6 +25688,16 @@
   "ja": "白",
   "pt": "Branco",
   "zh": "白色"
+ },
+ "White background": {
+  "de": "Weißer Hintergrund",
+  "es": "Fondo blanco",
+  "fr": "Fond blanc",
+  "hi": "सफ़ेद बैकग्राउंड",
+  "it": "Sfondo bianco",
+  "ja": "白背景",
+  "pt": "Fundo branco",
+  "zh": "白色背景"
  },
  "White noise + snore recorder": {
   "de": "Weißes Rauschen + Schnarch-Recorder",
@@ -25479,6 +26639,16 @@
   "pt": "mudar",
   "zh": "有任何变化"
  },
+ "checks passed": {
+  "de": "Prüfungen bestanden",
+  "es": "comprobaciones superadas",
+  "fr": "vérifications réussies",
+  "hi": "जाँचें पास",
+  "it": "controlli superati",
+  "ja": "項目クリア",
+  "pt": "verificações aprovadas",
+  "zh": "项检查通过"
+ },
  "coats": {
   "de": "Anstriche",
   "es": "manos",
@@ -25518,6 +26688,26 @@
   "ja": "変換済み",
   "pt": "convertidos",
   "zh": "已转换"
+ },
+ "copies": {
+  "de": "Kopien",
+  "es": "copias",
+  "fr": "copies",
+  "hi": "प्रतियाँ",
+  "it": "copie",
+  "ja": "枚",
+  "pt": "cópias",
+  "zh": "份"
+ },
+ "copy": {
+  "de": "Kopie",
+  "es": "copia",
+  "fr": "copie",
+  "hi": "प्रति",
+  "it": "copia",
+  "ja": "枚",
+  "pt": "cópia",
+  "zh": "份"
  },
  "couldn't be changed (read-only account)": {
   "de": "konnten nicht geändert werden (schreibgeschütztes Konto)",
@@ -26069,6 +27259,16 @@
   "pt": "de",
   "zh": "/"
  },
+ "of 100": {
+  "de": "von 100",
+  "es": "de 100",
+  "fr": "sur 100",
+  "hi": "100 में से",
+  "it": "su 100",
+  "ja": "/100",
+  "pt": "de 100",
+  "zh": "/100"
+ },
  "older ones would go — about": {
   "de": "ältere würden gelöscht – etwa",
   "es": "más antiguas se borrarían: unos",
@@ -26538,6 +27738,16 @@
   "ja": "件を連絡先へ",
   "pt": "nos Contatos",
   "zh": "到通讯录"
+ },
+ "to look at": {
+  "de": "zum Ansehen",
+  "es": "por revisar",
+  "fr": "à revoir",
+  "hi": "देखने लायक",
+  "it": "da rivedere",
+  "ja": "要確認",
+  "pt": "para revisar",
+  "zh": "需查看"
  },
  "tools": {
   "de": "Tools",

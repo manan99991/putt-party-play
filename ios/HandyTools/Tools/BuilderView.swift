@@ -1563,7 +1563,7 @@ private struct ChainEditor: View {
             Text(L("High survives scuffs and a logo in the middle.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .passportPhoto:
             Picker(L("Country"), selection: Binding(get: { chain.steps[i].settings["country"] ?? "us" }, set: { chain.steps[i].settings["country"] = $0 })) {
-                ForEach(ImageStudio.passportSpecs) { Text($0.name).tag($0.id) }
+                ForEach(PassportPhoto.specs) { Text(L($0.name)).tag($0.id) }
             }.font(HandyFont.caption)
         default: EmptyView()
         }
@@ -1624,6 +1624,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var outbox: Outbox?
     @State private var sending = false
     @State private var scanning = false
+    @State private var selfie = false
     @State private var signing = false
     @State private var hasSignature = DocEngine.savedSignature != nil
     @State private var myName = StampBook.name
@@ -1650,6 +1651,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var result: ChainPayload?
     /// The photo as it came in (with its hidden details), so the result can say what changed and what was removed.
     @State private var originalPhoto: Data?
+    @State private var passportSource: UIImage?      // a passport step shows the full passport screen, not a bare file
     @State private var watchLine: String?
     @State private var message: String?
     @State private var report: ChainRunner.RunReport?   // the per-step "what went through" story, for multi-step flows
@@ -1747,12 +1749,19 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     Text(L("Long videos take a little while. Keep Tenzy open until it finishes. A Live Photo is used as its short video.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else if start != .text {
                     PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label(L("Choose photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
-                    if VNDocumentCameraViewController.isSupported {
+                    if chain.steps.first?.block == .passportPhoto {
+                        // A passport photo starts from a portrait, never a scan or a PDF.
+                        Button { selfie = true } label: { Label(L("Take one now"), systemImage: "camera").frame(maxWidth: .infinity) }
+                            .secondaryButton().accessibilityIdentifier("run-selfie")
+                        PassportTips()
+                    } else if VNDocumentCameraViewController.isSupported {
                         Button { scanning = true } label: { Label(L("Scan a document"), systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
                             .secondaryButton().accessibilityIdentifier("run-scan")
                     }
-                    Button { pickingPDF = true } label: { Label(L("Choose a PDF"), systemImage: "doc.richtext").frame(maxWidth: .infinity) }
-                        .secondaryButton().accessibilityIdentifier("run-pdf")
+                    if chain.steps.first?.block != .passportPhoto {
+                        Button { pickingPDF = true } label: { Label(L("Choose a PDF"), systemImage: "doc.richtext").frame(maxWidth: .infinity) }
+                            .secondaryButton().accessibilityIdentifier("run-pdf")
+                    }
                     Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : chain.flipbook == true ? "Pick 2–20 photos. They flip like the pages of a book." : chain.versus == true ? "Pick two photos: the before, then the after." : "Pick one, or up to 20 at once. Each one gets the same steps.")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
@@ -1791,7 +1800,11 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                         .accessibilityIdentifier("run-watch-line")
                 }
-                if let result {
+                if result != nil, let src = passportSource {
+                    // Same screen as Studio → Passport: score, guide lines, fixes, checks, Photos and print sheet.
+                    PassportStudio(original: src, specID: chain.steps.last?.settings["country"] ?? "us",
+                                   retake: { result = nil; passportSource = nil })
+                } else if let result {
                     if let orig = originalPhoto, case .file(let d, let e) = result, ChainPayload.isPhoto(e) {
                         PhotoResultInsight(original: orig, result: d, stripped: chain.steps.contains { $0.block == .stripLocation },
                                            hideFaces: chain.steps.contains { $0.block == .hideSensitive } ? nil : { hideInResult(d, e) })
@@ -1931,6 +1944,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     if let movie { go(.video(movie)) } else { busy = false; progress = ""; message = "That Live Photo didn't load. If it's a large iCloud item, open it once in Photos to download it, then try again — or choose a video." }
                 }
             }
+        }
+        .fullScreenCover(isPresented: $selfie) {
+            SelfieCamera { img in selfie = false; if let img { go(.image(img.normalizedUp())) } }.ignoresSafeArea()
         }
         .fullScreenCover(isPresented: $scanning) {
             // Apple's document camera: finds the page edges, straightens it, and takes several pages in one go.
@@ -2353,6 +2369,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     private func go(_ input: ChainPayload) {
         busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
         if case .file(let d, let e) = input, ChainPayload.isPhoto(e) { originalPhoto = d } else { originalPhoto = nil }
+        passportSource = chain.steps.last?.block == .passportPhoto ? ToolHandoff.image(input) : nil
         // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
         // say what's happening rather than showing a bare spinner on a long meeting recording.
         if case let .file(_, ext) = input, ["m4a", "mp3", "wav", "aiff", "aifc", "caf", "aac", "m4b", "flac", "ogg"].contains(ext.lowercased()) {

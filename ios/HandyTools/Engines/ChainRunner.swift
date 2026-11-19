@@ -754,8 +754,8 @@ enum ChainRunner {
             return .success(.file(d, ext: "jpg"))
 
         case (.passportPhoto, .image(let img)):
-            let spec = ImageStudio.passportSpecs.first { $0.id == (step.settings["country"] ?? "us") } ?? ImageStudio.passportSpecs[0]
-            guard let out = ImageStudio.passport(img, spec: spec, background: .white), let d = out.jpegData(compressionQuality: 0.95) else { return .failure(.nothingFound(b)) }
+            // The same engine as Studio and the passport screen: measured to the country's rules, fixed, graded.
+            guard let made = PassportPhoto.make(img, spec: PassportPhoto.spec(step.settings["country"])), let d = PassportPhoto.file(made) else { return .failure(.nothingFound(b)) }
             return .success(.file(d, ext: "jpg"))
 
         default:
