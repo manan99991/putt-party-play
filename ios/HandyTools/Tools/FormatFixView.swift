@@ -122,8 +122,7 @@ struct FormatFixView: View {
 
     /// The reason people convert, in their words. Each sets both formats; the menus below still let you change them.
     private static let purposes: [(name: String, icon: String, image: ImageOut, video: VideoOut)] = [
-        ("A website won't take it", "globe", .jpg, .mp4),
-        ("Send to Android or Windows", "desktopcomputer", .jpg, .mp4),
+        ("A website, Windows or Android won't open it", "globe", .jpg, .mp4),
         ("Keep the see-through background", "square.dashed", .png, .mov),
         ("Smallest file", "arrow.down.right.and.arrow.up.left", .heic, .mp4),
         ("Print or a document", "printer", .pdf, .mp4),

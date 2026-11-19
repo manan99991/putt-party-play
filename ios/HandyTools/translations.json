@@ -749,6 +749,16 @@
   "pt": "Um site não aceita",
   "zh": "网站不接受"
  },
+ "A website, Windows or Android won't open it": {
+  "de": "Eine Website, Windows oder Android öffnet es nicht",
+  "es": "Una web, Windows o Android no lo abre",
+  "fr": "Un site, Windows ou Android ne l'ouvre pas",
+  "hi": "कोई वेबसाइट, Windows या Android इसे नहीं खोलता",
+  "it": "Un sito, Windows o Android non lo apre",
+  "ja": "サイトやWindows・Androidで開けない",
+  "pt": "Um site, Windows ou Android não abre",
+  "zh": "网站、Windows 或安卓打不开"
+ },
  "A week before": {
   "de": "Eine Woche vorher",
   "es": "Una semana antes",
