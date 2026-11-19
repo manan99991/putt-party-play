@@ -19,7 +19,7 @@ concurrency:
 jobs:
   build:
     if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
-    runs-on: macos-26
+    runs-on: xcode-27
     defaults:
       run: { working-directory: ios }
     steps:
@@ -210,7 +210,7 @@ jobs:
     # congested. Run it manually from the Actions tab (workflow_dispatch) when you want the flow pass.
     if: "${{ github.event_name == 'workflow_dispatch' }}"
     continue-on-error: true
-    runs-on: macos-26
+    runs-on: xcode-27
     defaults:
       run: { working-directory: ios }
     steps:
@@ -259,7 +259,7 @@ jobs:
     # in ordinary prose (so a commit that merely mentions shipping can't trigger a deploy by accident).
     # Default pushes build-and-test, never deploy.
     if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') }}"
-    runs-on: macos-26
+    runs-on: xcode-27
     defaults:
       run: { working-directory: ios }
     env:

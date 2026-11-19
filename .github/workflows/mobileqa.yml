@@ -221,9 +221,9 @@ jobs:
   # boot a simulator, start Appium (xcuitest driver), and run: python -m mobileqa.cli ci qa/app.ios.yaml.
   # Kept manual-only here because macOS runners bill 10x; enable when you want it in the gate.
   ios:
-    # macos-26 with the newest Xcode: this app targets iOS 26, so an older runner's Xcode can't build
+    # Xcode 27 runner: Apple requires the iOS 27 SDK for uploads from April 2027 (ITMS-90725)
     # it. Mirror the repo's working ios.yml build exactly (that pipeline is green).
-    runs-on: macos-26
+    runs-on: xcode-27
     if: github.event_name == 'workflow_dispatch'
     timeout-minutes: 90
     steps:
