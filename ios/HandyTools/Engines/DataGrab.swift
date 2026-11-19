@@ -478,6 +478,44 @@ enum DataGrab {
         return [line.trimmingCharacters(in: .whitespaces)]
     }
 
+    /// What a table says about itself: columns that are mostly numbers, each one's sum, cells in a number column
+    /// that don't read as a number (likely misread), and whether a printed "Total" row matches the rows above it.
+    struct TableCheck: Equatable {
+        var numberColumns: [Int] = []
+        var sums: [Int: Double] = [:]
+        var suspect: Set<[Int]> = []                              // [row, column]
+        var totals: [(column: Int, printed: Double, added: Double)] = []
+        static func == (a: TableCheck, b: TableCheck) -> Bool { a.numberColumns == b.numberColumns && a.sums == b.sums && a.suspect == b.suspect && a.totals.map(\.column) == b.totals.map(\.column) }
+        var addsUp: Bool { totals.allSatisfy { abs($0.printed - $0.added) < 0.011 } }
+    }
+
+    static func cellNumber(_ s: String) -> Double? {
+        let t = s.trimmingCharacters(in: .whitespaces)
+        guard !t.isEmpty, t.range(of: #"^[-+]?[$€£₹¥]?\s?-?\d[\d,]*(\.\d+)?%?$"#, options: .regularExpression) != nil else { return nil }
+        return Double(t.filter { $0.isNumber || $0 == "." || $0 == "-" })
+    }
+
+    static func tableCheck(_ rows: [[String]], header: Bool) -> TableCheck {
+        var c = TableCheck()
+        let body = Array(rows.dropFirst(header ? 1 : 0).enumerated()).map { (i: $0.offset + (header ? 1 : 0), r: $0.element) }
+        let width = rows.map(\.count).max() ?? 0
+        func isTotal(_ r: [String]) -> Bool { r.contains { $0.range(of: #"^\s*(grand\s+)?(sub)?total\b"#, options: [.regularExpression, .caseInsensitive]) != nil } }
+        for col in 0..<width {
+            let cells = body.filter { col < $0.r.count && !$0.r[col].trimmingCharacters(in: .whitespaces).isEmpty }
+            guard cells.count >= 2 else { continue }
+            let nums = cells.filter { cellNumber($0.r[col]) != nil }
+            guard Double(nums.count) >= Double(cells.count) * 0.7 else { continue }
+            c.numberColumns.append(col)
+            // A cell with a digit in it that still doesn't read as a number is probably a misread ("1O.00", "4S").
+            for x in cells where cellNumber(x.r[col]) == nil && x.r[col].contains(where: \.isNumber) && !isTotal(x.r) { c.suspect.insert([x.i, col]) }
+            let lines = nums.filter { !isTotal($0.r) }
+            let sum = lines.compactMap { cellNumber($0.r[col]) }.reduce(0, +)
+            c.sums[col] = sum
+            if let t = nums.first(where: { isTotal($0.r) }), let printed = cellNumber(t.r[col]) { c.totals.append((col, printed, sum)) }
+        }
+        return c
+    }
+
     /// The table as rows of cells, every row padded to the same width — what the grid preview and the
     /// Excel export use. `ragged` counts rows that had fewer cells than the widest row.
     static func tableRows(_ text: String) -> (rows: [[String]], ragged: Int) {

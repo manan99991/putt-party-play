@@ -107,15 +107,10 @@ struct DataGrabView: View {
 
     // MARK: event
 
+    /// The same event card as every other path: everything the poster says, with Apple's own Add to Calendar.
     private var eventView: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            field("Title", $event.title)
-            DatePicker("Starts", selection: Binding(get: { event.start ?? Date() }, set: { event.start = $0 })).font(HandyFont.body)
-            DatePicker("Ends", selection: Binding(get: { event.end ?? (event.start ?? Date()).addingTimeInterval(3600) }, set: { event.end = $0 })).font(HandyFont.body)
-            field("Location", $event.location)
-            ShareLink(item: ICSFile(data: Data(DataGrab.ics(event).utf8)), preview: SharePreview(event.title.isEmpty ? "Event" : event.title)) { Label(L("Add to Calendar"), systemImage: "calendar.badge.plus").frame(maxWidth: .infinity) }.primaryButton()
-            Text(L("Share → Calendar adds it; or send the invite file to someone else.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        }.cardStyle(padding: HandySpacing.s12)
+        EventCard(event: ICSParse.parse(DataGrab.ics(event)), primary: true)
+            .id("\(event.title)|\(event.start?.timeIntervalSince1970 ?? 0)|\(event.location)")
     }
 
     // MARK: table
@@ -131,6 +126,23 @@ struct DataGrabView: View {
             } else {
                 Text("\(rows.count) \(L("rows")) × \(rows.first?.count ?? 0) \(L("columns"))" + (parsed.ragged > 0 ? " · \(parsed.ragged) \(L("short rows filled with blanks"))" : ""))
                     .font(HandyFont.caption).foregroundStyle(parsed.ragged > 0 ? HandyColor.amber : HandyColor.textSecondary)
+                let check = DataGrab.tableCheck(rows, header: tableHeader)
+                if !check.totals.isEmpty {
+                    ForEach(check.totals, id: \.column) { t in
+                        let ok = abs(t.printed - t.added) < 0.011
+                        Label(ok ? "\(L("Adds up")): \(L("the rows make")) \(String(format: "%.2f", t.added)), \(L("as the total says"))"
+                                 : "\(L("Check this")): \(L("the total says")) \(String(format: "%.2f", t.printed)), \(L("the rows add to")) \(String(format: "%.2f", t.added))",
+                              systemImage: ok ? "checkmark.seal.fill" : "exclamationmark.triangle.fill")
+                            .font(HandyFont.caption).foregroundStyle(ok ? HandyColor.success : HandyColor.amber).fixedSize(horizontal: false, vertical: true)
+                    }
+                } else if !check.sums.isEmpty, rows.count > 2 {
+                    Text(check.numberColumns.compactMap { c in check.sums[c].map { "\(tableHeader && rows[0].indices.contains(c) ? rows[0][c] : "\(L("Column")) \(c + 1)"): \(String(format: "%.2f", $0))" } }.joined(separator: " · "))
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                if !check.suspect.isEmpty {
+                    Label("\(check.suspect.count) \(L(check.suspect.count == 1 ? "cell may be misread — marked in orange. Tap the photo to compare." : "cells may be misread — marked in orange. Compare with the photo."))", systemImage: "eye.trianglebadge.exclamationmark")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true)
+                }
                 ScrollView([.horizontal, .vertical]) {
                     Grid(alignment: .leading, horizontalSpacing: 0, verticalSpacing: 0) {
                         ForEach(rows.indices, id: \.self) { r in
@@ -141,7 +153,8 @@ struct DataGrabView: View {
                                         .lineLimit(1)
                                         .frame(minWidth: 60, alignment: XLSXWriter.number(rows[r][c]) != nil ? .trailing : .leading)
                                         .padding(.horizontal, 8).padding(.vertical, 6)
-                                        .background(tableHeader && r == 0 ? HandyColor.accent.opacity(0.12) : (r % 2 == 0 ? HandyColor.surface : Color.clear))
+                                        .background(check.suspect.contains([r, c]) ? HandyColor.amber.opacity(0.35)
+                                                    : (tableHeader && r == 0 ? HandyColor.accent.opacity(0.12) : (r % 2 == 0 ? HandyColor.surface : Color.clear)))
                                         .overlay(Rectangle().stroke(HandyColor.border.opacity(0.6), lineWidth: 0.5))
                                 }
                             }
