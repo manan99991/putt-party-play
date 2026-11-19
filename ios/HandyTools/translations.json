@@ -1819,6 +1819,16 @@
   "pt": "Zoom no ritmo",
   "zh": "节拍缩放"
  },
+ "Bedtime nudge": {
+  "de": "Schlafenszeit-Erinnerung",
+  "es": "Aviso para acostarte",
+  "fr": "Rappel du coucher",
+  "hi": "सोने का रिमाइंडर",
+  "it": "Promemoria nanna",
+  "ja": "就寝リマインダー",
+  "pt": "Lembrete de dormir",
+  "zh": "睡前提醒"
+ },
  "Beef": {
   "de": "Rind",
   "es": "Ternera",
@@ -5529,6 +5539,16 @@
   "pt": "Todas as manhãs às",
   "zh": "每天早上"
  },
+ "Every night at this time, a gentle reminder to wind down — tap it to start your sound and the recorder.": {
+  "de": "Jeden Abend um diese Zeit eine sanfte Erinnerung – tippe darauf, um dein Geräusch und den Rekorder zu starten.",
+  "es": "Cada noche a esta hora, un aviso suave para relajarte; tócalo para iniciar tu sonido y la grabadora.",
+  "fr": "Chaque soir à cette heure, un doux rappel — touchez-le pour lancer votre son et l'enregistreur.",
+  "hi": "हर रात इस समय आराम करने की हल्की याद — इसे दबाकर अपनी आवाज़ और रिकॉर्डर शुरू करें।",
+  "it": "Ogni sera a quest'ora un promemoria gentile: toccalo per avviare il suono e il registratore.",
+  "ja": "毎晩この時刻にやさしくお知らせ — タップでサウンドとレコーダーを開始。",
+  "pt": "Toda noite neste horário, um lembrete suave — toque para iniciar o som e o gravador.",
+  "zh": "每晚此时温和提醒——点一下开始声音和录音。"
+ },
  "Every number and email is kept on one contact; the duplicates are removed. This can't be undone, so make sure you've backed up.": {
   "de": "Alle Nummern und E-Mails bleiben an einem Kontakt; die Duplikate werden entfernt. Nicht umkehrbar — stelle sicher, dass du ein Backup hast.",
   "es": "Todos los números y correos se conservan en un contacto; los duplicados se eliminan. No se puede deshacer, así que asegúrate de tener copia.",
@@ -8509,6 +8529,16 @@
   "pt": "Último dia para devolver",
   "zh": "退货最后一天"
  },
+ "Last night": {
+  "de": "Letzte Nacht",
+  "es": "Anoche",
+  "fr": "La nuit dernière",
+  "hi": "पिछली रात",
+  "it": "Stanotte",
+  "ja": "昨夜",
+  "pt": "Ontem à noite",
+  "zh": "昨晚"
+ },
  "Leave 10 minutes early": {
   "de": "10 Minuten früher losgehen",
   "es": "Sal 10 minutos antes",
@@ -10549,6 +10579,16 @@
   "pt": "Gravador noturno",
   "zh": "夜间录音"
  },
+ "Night recorder: start it, put the phone by the bed, and see in the morning when it was noisy.": {
+  "de": "Nachtrekorder: starten, Telefon ans Bett legen und morgens sehen, wann es laut war.",
+  "es": "Grabadora nocturna: iníciala, deja el teléfono junto a la cama y mira por la mañana cuándo hubo ruido.",
+  "fr": "Enregistreur de nuit : lancez-le, posez le téléphone près du lit et voyez le matin quand c'était bruyant.",
+  "hi": "नाइट रिकॉर्डर: चालू करें, फ़ोन बिस्तर के पास रखें, सुबह देखें कब शोर था।",
+  "it": "Registratore notturno: avvialo, metti il telefono vicino al letto e al mattino vedi quando c'era rumore.",
+  "ja": "ナイトレコーダー：開始してベッドの横に置き、朝にいつ騒がしかったか確認。",
+  "pt": "Gravador noturno: inicie, deixe o telefone perto da cama e veja de manhã quando houve barulho.",
+  "zh": "夜间录音：开始后把手机放在床边，早上查看什么时候吵。"
+ },
  "Night sky spotted": {
   "de": "Nachthimmel erkannt",
   "es": "Cielo nocturno detectado",
@@ -10848,6 +10888,16 @@
   "ja": "ノワール",
   "pt": "Noir",
   "zh": "黑白"
+ },
+ "Noisiest around": {
+  "de": "Am lautesten gegen",
+  "es": "Más ruido hacia las",
+  "fr": "Le plus bruyant vers",
+  "hi": "सबसे ज़्यादा शोर लगभग",
+  "it": "Più rumoroso verso le",
+  "ja": "最も騒がしかったのは",
+  "pt": "Mais barulho por volta de",
+  "zh": "最吵的时段约在"
  },
  "None": {
   "de": "Keine",
@@ -11328,6 +11378,16 @@
   "ja": "自分の端末：ここに相手の薬を追加し、リストをコピーしてメッセージで送る。相手の端末：Tenzy →「服薬リマインダー」→「送られてきた薬を追加」。すぐに通知が始まります。",
   "pt": "No seu telemóvel: adicione aqui os medicamentos, copie a lista e envie. No dele: Tenzy → Medicamentos → Adicionar medicamentos que me enviaram. Os lembretes começam logo.",
   "zh": "在你的手机上：在这里添加对方的药，复制清单并发给对方。在对方手机上：打开 Tenzy → 服药提醒 →“添加别人发来的药”。提醒立即生效。"
+ },
+ "On — every night at": {
+  "de": "An – jeden Abend um",
+  "es": "Activado: cada noche a las",
+  "fr": "Activé — chaque soir à",
+  "hi": "चालू — हर रात",
+  "it": "Attivo: ogni sera alle",
+  "ja": "オン — 毎晩",
+  "pt": "Ligado — toda noite às",
+  "zh": "已开启——每晚"
  },
  "On-device transcription isn't available for this language on this phone right now.": {
   "de": "Transkription auf dem Gerät ist für diese Sprache auf diesem Telefon gerade nicht verfügbar.",
@@ -14019,6 +14079,16 @@
   "pt": "Lembrar-me",
   "zh": "提醒我"
  },
+ "Remind me at": {
+  "de": "Erinnere mich um",
+  "es": "Avísame a las",
+  "fr": "Me rappeler à",
+  "hi": "मुझे याद दिलाएँ",
+  "it": "Ricordami alle",
+  "ja": "通知時刻",
+  "pt": "Lembrar às",
+  "zh": "提醒时间"
+ },
  "Remind me later (refill, check-in)": {
   "de": "Später erinnern (Nachfüllen, Kontrolle)",
   "es": "Recordármelo más tarde (reponer, revisión)",
@@ -15759,6 +15829,16 @@
   "pt": "Criar um novo PIN",
   "zh": "设置新 PIN"
  },
+ "Set a sleep timer so it fades out on its own. It keeps playing with the screen locked.": {
+  "de": "Stell einen Schlaftimer, damit es von selbst ausblendet. Es spielt auch bei gesperrtem Bildschirm weiter.",
+  "es": "Pon un temporizador para que se apague solo. Sigue sonando con la pantalla bloqueada.",
+  "fr": "Réglez une minuterie pour un fondu automatique. Ça continue écran verrouillé.",
+  "hi": "स्लीप टाइमर लगाएँ ताकि यह खुद धीरे बंद हो। स्क्रीन लॉक होने पर भी चलता रहता है।",
+  "it": "Imposta un timer per lo spegnimento graduale. Continua a suonare a schermo bloccato.",
+  "ja": "スリープタイマーで自動的にフェードアウト。画面ロック中も再生されます。",
+  "pt": "Defina um timer para sumir sozinho. Continua tocando com a tela bloqueada.",
+  "zh": "设置睡眠定时，自动渐弱。锁屏时继续播放。"
+ },
  "Set a song's title, artist, album and cover art.": {
   "de": "Titel, Interpret, Album und Cover eines Songs festlegen.",
   "es": "Pon título, artista, álbum y portada a una canción.",
@@ -16538,6 +16618,16 @@
   "ja": "スカイ",
   "pt": "Céu",
   "zh": "天蓝"
+ },
+ "Sleep sounds with a fading timer, a bedtime nudge, and a recorder that keeps only the noisy moments — with a morning summary of your night.": {
+  "de": "Schlafgeräusche mit ausblendendem Timer, eine Schlafenszeit-Erinnerung und ein Rekorder, der nur die lauten Momente behält – mit einer Zusammenfassung am Morgen.",
+  "es": "Sonidos para dormir con temporizador que se apaga poco a poco, aviso para acostarte y una grabadora que solo guarda los momentos ruidosos, con resumen por la mañana.",
+  "fr": "Sons pour dormir avec minuterie en fondu, rappel du coucher et enregistreur qui ne garde que les moments bruyants — avec un résumé le matin.",
+  "hi": "धीरे बंद होने वाले टाइमर के साथ नींद की आवाज़ें, सोने का रिमाइंडर, और सिर्फ़ शोर वाले पल रखने वाला रिकॉर्डर — सुबह रात का सारांश।",
+  "it": "Suoni per dormire con timer in dissolvenza, promemoria per andare a letto e un registratore che tiene solo i momenti rumorosi, con riepilogo al mattino.",
+  "ja": "フェードアウトするタイマー付きの睡眠サウンド、就寝リマインダー、騒がしい瞬間だけ残すレコーダー — 朝に夜のまとめ。",
+  "pt": "Sons para dormir com timer que vai sumindo, lembrete de hora de dormir e um gravador que guarda só os momentos barulhentos — com resumo de manhã.",
+  "zh": "带渐弱定时的助眠声音、睡前提醒，以及只保留嘈杂时刻的录音——早上给出夜间总结。"
  },
  "Sleep timer": {
   "de": "Sleep-Timer",
@@ -18349,6 +18439,16 @@
   "pt": "Teste — envie-me estes alertas agora",
   "zh": "测试——现在发送这些提醒"
  },
+ "Test sent — it arrives in 5 seconds.": {
+  "de": "Test gesendet – er kommt in 5 Sekunden.",
+  "es": "Prueba enviada: llega en 5 segundos.",
+  "fr": "Test envoyé — il arrive dans 5 secondes.",
+  "hi": "टेस्ट भेजा गया — 5 सेकंड में आएगा।",
+  "it": "Prova inviata: arriva tra 5 secondi.",
+  "ja": "テスト送信 — 5秒後に届きます。",
+  "pt": "Teste enviado — chega em 5 segundos.",
+  "zh": "测试已发送——5 秒后到达。"
+ },
  "Test sent — lock your phone; it arrives in 5 seconds.": {
   "de": "Test gesendet – sperre das Telefon; er kommt in 5 Sekunden.",
   "es": "Prueba enviada: bloquea el teléfono; llega en 5 segundos.",
@@ -19409,6 +19509,16 @@
   "pt": "Hora de",
   "zh": "该做"
  },
+ "Time to wind down": {
+  "de": "Zeit zum Runterfahren",
+  "es": "Hora de relajarse",
+  "fr": "C'est l'heure de décompresser",
+  "hi": "आराम का समय",
+  "it": "È ora di rilassarsi",
+  "ja": "そろそろリラックス",
+  "pt": "Hora de relaxar",
+  "zh": "该放松了"
+ },
  "Time: ": {
   "de": "Zeit: ",
   "es": "Hora: ",
@@ -19958,6 +20068,16 @@
   "ja": "駐車ピンを置いて見つけるには位置情報をオンにしてください。位置情報は戻る距離を測るためこの端末内でのみ使われ — アップロードされることはありません。",
   "pt": "Ativa a localização para colocar e encontrar o teu marcador de estacionamento. A tua localização é usada só neste telemóvel para medir a distância de volta — nunca é enviada.",
   "zh": "打开定位以放置并找到你的停车标记。你的位置仅在本机上用于测量返回的距离 — 绝不上传。"
+ },
+ "Turn on the bedtime nudge once; every night it reminds you to wind down.": {
+  "de": "Schalte die Schlafenszeit-Erinnerung einmal ein; jeden Abend erinnert sie dich ans Runterfahren.",
+  "es": "Activa el aviso para acostarte una vez; cada noche te recordará relajarte.",
+  "fr": "Activez une fois le rappel du coucher ; chaque soir il vous invite à décompresser.",
+  "hi": "एक बार सोने का रिमाइंडर चालू करें; हर रात आराम करने की याद दिलाएगा।",
+  "it": "Attiva una volta il promemoria; ogni sera ti ricorda di rilassarti.",
+  "ja": "就寝リマインダーを一度オンにすれば、毎晩リラックスを促します。",
+  "pt": "Ligue o lembrete uma vez; toda noite ele lembra você de relaxar.",
+  "zh": "打开一次睡前提醒，每晚提醒你放松。"
  },
  "Turn photos into a video made for Reels, TikTok, Shorts, Stories and more.": {
   "de": "Mach aus Fotos ein Video für Reels, TikTok, Shorts, Stories und mehr.",
@@ -22179,6 +22299,16 @@
   "pt": "pesquisar online",
   "zh": "在线搜索"
  },
+ "loudest": {
+  "de": "am lautesten",
+  "es": "máximo",
+  "fr": "le plus fort",
+  "hi": "सबसे तेज़",
+  "it": "massimo",
+  "ja": "最大",
+  "pt": "mais alto",
+  "zh": "最响"
+ },
  "maps and directions": {
   "de": "Karten und Routen",
   "es": "mapas y rutas",
@@ -22258,6 +22388,26 @@
   "ja": "新しい長さ",
   "pt": "nova duração",
   "zh": "新时长"
+ },
+ "noisy moment": {
+  "de": "lauter Moment",
+  "es": "momento ruidoso",
+  "fr": "moment bruyant",
+  "hi": "शोर वाला पल",
+  "it": "momento rumoroso",
+  "ja": "騒がしい瞬間",
+  "pt": "momento barulhento",
+  "zh": "次嘈杂"
+ },
+ "noisy moments": {
+  "de": "laute Momente",
+  "es": "momentos ruidosos",
+  "fr": "moments bruyants",
+  "hi": "शोर वाले पल",
+  "it": "momenti rumorosi",
+  "ja": "騒がしい瞬間",
+  "pt": "momentos barulhentos",
+  "zh": "次嘈杂"
  },
  "not taken yet": {
   "de": "noch nicht genommen",

@@ -10,13 +10,18 @@ struct RestView: View {
     @StateObject private var recorder = NightRecorder()
     @State private var tab = 0
     @State private var playingClip: URL?
+    @State private var bedOn = RestNight.on
+    @State private var bedTime = Calendar.current.date(bySettingHour: RestNight.hour, minute: RestNight.minute, second: 0, of: Date()) ?? Date()
+    @State private var bedNote: String?
+    @State private var notifyOff = false
 
     var body: some View {
-        ToolPage(title: "Rest", subtitle: "Sleep sounds with a fading timer, and a recorder that only keeps the noisy moments of the night.") {
+        ToolPage(title: "Rest", subtitle: "Sleep sounds with a fading timer, a bedtime nudge, and a recorder that keeps only the noisy moments — with a morning summary of your night.") {
             HowTo("rest", [
                 "Pick a sound — brown, pink, fan and more — and set the volume.",
-                "Set a sleep timer so it fades out on its own.",
-                "It keeps playing with the screen locked.",
+                "Set a sleep timer so it fades out on its own. It keeps playing with the screen locked.",
+                "Turn on the bedtime nudge once; every night it reminds you to wind down.",
+                "Night recorder: start it, put the phone by the bed, and see in the morning when it was noisy.",
             ])
             Picker(L(""), selection: $tab) { Text(L("Sounds")).tag(0); Text(L("Night recorder")).tag(1) }.pickerStyle(.segmented)
             if tab == 0 { soundsPanel } else { recorderPanel }
@@ -52,6 +57,7 @@ struct RestView: View {
                 }
             }.cardStyle(padding: HandySpacing.s12)
             Text(L("Keeps playing with the screen locked. Brown and Fan mask traffic and snoring best; Pink is the one studies use for deeper sleep.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            bedtimeCard
         }
     }
 
@@ -76,6 +82,7 @@ struct RestView: View {
             if recorder.events.isEmpty {
                 Text(L("Nothing captured yet. Plug the phone in, put it on the nightstand, start listening, and check back in the morning.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             } else {
+                if let sm = RestNight.summary(recorder.events.map { ($0.date, $0.seconds, $0.peakDB) }) { nightCard(sm) }
                 HStack {
                     Text("\(recorder.events.count) moment\(recorder.events.count == 1 ? "" : "s") · \(GeoFormat.duration(recorder.events.reduce(0) { $0 + $1.seconds })) total").font(HandyFont.bodyStrong)
                     Spacer()
@@ -95,6 +102,63 @@ struct RestView: View {
                 }
             }
             Text(L("Clips live only on this phone. A noisy night usually comes back as 5–40 short clips.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        }
+    }
+
+    /// Last night at a glance: how many noisy moments, how long, and which hour was the worst.
+    private func nightCard(_ sm: RestNight.Summary) -> some View {
+        let top = sm.byHour.map(\.seconds).max() ?? 1
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text(L("Last night")).font(HandyFont.bodyStrong)
+            Text("\(sm.count) \(L(sm.count == 1 ? "noisy moment" : "noisy moments")) · \(GeoFormat.duration(sm.seconds)) · \(L("loudest")) \(Int(sm.loudestDB)) dB")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            if let h = sm.busiestHour {
+                Text("\(L("Noisiest around")) \(RestNight.hourLabel(h))").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+            }
+            HStack(alignment: .bottom, spacing: 4) {
+                ForEach(sm.byHour, id: \.hour) { b in
+                    VStack(spacing: 2) {
+                        RoundedRectangle(cornerRadius: 3).fill(HandyColor.accent.opacity(b.hour == sm.busiestHour ? 1 : 0.45))
+                            .frame(height: max(4, 60 * b.seconds / max(1, top)))
+                        Text(RestNight.hourLabel(b.hour)).font(.system(size: 9)).foregroundStyle(HandyColor.textSecondary).lineLimit(1).minimumScaleFactor(0.6)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(RestNight.hourLabel(b.hour)): \(GeoFormat.duration(b.seconds))")
+                }
+            }
+            .frame(height: 80)
+        }
+        .cardStyle()
+    }
+
+    /// A nightly "time to wind down" nudge — set once, Test run proves it.
+    private var bedtimeCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Toggle(isOn: $bedOn) { Label(L("Bedtime nudge"), systemImage: "bed.double.fill").font(HandyFont.bodyStrong) }
+                .tint(HandyColor.accent).accessibilityIdentifier("rest-bedtime")
+            Text(L("Every night at this time, a gentle reminder to wind down — tap it to start your sound and the recorder.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            DatePicker(L("Remind me at"), selection: $bedTime, displayedComponents: .hourAndMinute).font(HandyFont.caption)
+            NotificationsOffCard(isOff: $notifyOff)
+            Button {
+                Task {
+                    guard await NotifyPermission.ensure() else { notifyOff = true; return }
+                    await RestNight.testRun(); bedNote = L("Test sent — it arrives in 5 seconds.")
+                }
+            } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
+            if let bedNote { Text(bedNote).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .onChange(of: bedOn) { _, _ in saveBedtime() }
+        .onChange(of: bedTime) { _, _ in if bedOn { saveBedtime() } }
+    }
+
+    private func saveBedtime() {
+        let c = Calendar.current.dateComponents([.hour, .minute], from: bedTime)
+        Task {
+            if bedOn, !(await NotifyPermission.ensure()) { notifyOff = true; bedOn = false; return }
+            await RestNight.set(on: bedOn, hour: c.hour ?? 22, minute: c.minute ?? 0)
+            bedNote = bedOn ? "\(L("On — every night at")) \(bedTime.formatted(date: .omitted, time: .shortened))." : nil
         }
     }
 

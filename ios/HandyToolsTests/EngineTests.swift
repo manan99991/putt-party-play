@@ -2608,6 +2608,21 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testRestNightSummaryByHour() {
+        var cal = Calendar(identifier: .gregorian); cal.timeZone = TimeZone(identifier: "UTC")!
+        let morning = cal.date(from: DateComponents(year: 2026, month: 11, day: 19, hour: 7))!
+        func at(_ d: Int, _ h: Int, _ m: Int = 0) -> Date { cal.date(from: DateComponents(year: 2026, month: 11, day: d, hour: h, minute: m))! }
+        let clips: [(date: Date, seconds: Double, peakDB: Double)] = [
+            (at(18, 23, 10), 20, 55), (at(19, 2, 5), 60, 62), (at(19, 2, 40), 45, 70), (at(19, 4), 10, 50),
+            (at(17, 3), 999, 99),                       // the night before: not counted
+        ]
+        let sm = try! XCTUnwrap(RestNight.summary(clips, night: morning, cal: cal))
+        XCTAssertEqual(sm.count, 4); XCTAssertEqual(sm.seconds, 135); XCTAssertEqual(sm.loudestDB, 70)
+        XCTAssertEqual(sm.busiestHour, 2, "the 2 am hour had the most noise")
+        XCTAssertEqual(sm.byHour.map(\.hour), [23, 2, 4], "hours in the order the night runs")
+        XCTAssertNil(RestNight.summary([], night: morning, cal: cal))
+    }
+
     func testParkingMeterAndSpeedWarning() {
         let now = Date(timeIntervalSince1970: 1_800_000_000)
         let t = ParkingMeter.fireTimes(ends: now.addingTimeInterval(3600), lead: 10, now: now)
