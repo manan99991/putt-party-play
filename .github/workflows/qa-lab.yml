@@ -52,6 +52,7 @@ jobs:
             -only-testing:HandyToolsTests/RealPhotoAccuracyTests \
             -only-testing:HandyToolsTests/PrivatePhotoAccuracyTests \
             -only-testing:HandyToolsTests/ToughPhotoTests \
+            -only-testing:HandyToolsTests/ToolOutputQualityTests \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee accuracy-run.log | grep -E "ACC\| SCORE|error:|Test Case .*(passed|failed)|TEST (SUCCEEDED|FAILED)" || true
