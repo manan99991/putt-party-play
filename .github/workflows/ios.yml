@@ -123,24 +123,32 @@ jobs:
           bash .github/publish-log.sh "ios-test-${GITHUB_RUN_ID}" ios-test.log || true
       # Accuracy on REAL photos: scores each reader against official answers (SROIE receipts first). Informational
       # while the floors are being set; the test ratchets so a change that reads worse fails.
-      - name: Accuracy on real photos (receipts; informational)
+      - name: Accuracy on real photos (receipts, posters, menus, boards; informational)
         continue-on-error: true
+        env: { TEST_PHOTOS_KEY: "${{ secrets.TEST_PHOTOS_KEY }}" }
         run: |
           set -o pipefail
           REAL="$RUNNER_TEMP/real"; mkdir -p "$REAL"
           ( cd "$REAL" && git clone -q --depth 1 --filter=blob:none --sparse https://github.com/zzzDavid/ICDAR-2019-SROIE.git sroie \
             && cd sroie && git sparse-checkout set --no-cone $(for i in $(seq 0 5 625); do printf "data/img/%03d.jpg data/key/%03d.json " $i $i; done) ) || true
           ls "$REAL/sroie/data/img" | wc -l
+          # Manan's own test photos (some are web/stock images, so they're kept encrypted in the repo).
+          if [ -n "$TEST_PHOTOS_KEY" ]; then
+            OSSL=$( [ -x /opt/homebrew/opt/openssl@3/bin/openssl ] && echo /opt/homebrew/opt/openssl@3/bin/openssl || echo openssl )
+            $OSSL enc -d -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -in RealPhotos/private.zip.enc -out "$RUNNER_TEMP/private.zip" -pass env:TEST_PHOTOS_KEY \
+              && mkdir -p "$REAL/private" && unzip -q -o "$RUNNER_TEMP/private.zip" -d "$REAL/private" && ls "$REAL/private" | wc -l
+          else echo "::warning title=accuracy::TEST_PHOTOS_KEY secret not set — only public photos scored"; fi
           UDID=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys
           d=json.load(sys.stdin)["devices"]
           c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
           c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
           rm -f "$RUNNER_TEMP/accuracy.txt"
-          TEST_RUNNER_REAL_PHOTOS="$REAL" TEST_RUNNER_ACCURACY_REPORT="$RUNNER_TEMP/accuracy.txt" xcodebuild test \
+          TEST_RUNNER_REAL_PHOTOS="$REAL" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" TEST_RUNNER_ACCURACY_REPORT="$RUNNER_TEMP/accuracy.txt" xcodebuild test \
             -project HandyTools.xcodeproj -scheme HandyTools \
             -destination "id=$UDID" \
             -only-testing:HandyToolsTests/RealPhotoAccuracyTests \
+            -only-testing:HandyToolsTests/PrivatePhotoAccuracyTests \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee accuracy-run.log | grep -E "ACC\| SCORE|error:|Test Case .*(passed|failed)|TEST (SUCCEEDED|FAILED)" || true
