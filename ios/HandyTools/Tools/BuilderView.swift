@@ -2431,7 +2431,9 @@ private struct ToolPickView: View {
                             if let f = c.steps.first { BlockBadge(block: f.block) }
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(c.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).lineLimit(2).multilineTextAlignment(.leading)
-                                Text(c.steps.map(\.block.title).joined(separator: "  ›  ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2).multilineTextAlignment(.leading)
+                                // One step: say what you'll get instead of repeating the name ("Passport photo / Passport photo").
+                                Text(c.steps.count == 1 ? L(c.steps[0].block.does) : c.steps.map(\.block.title).joined(separator: "  ›  "))
+                                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(2).multilineTextAlignment(.leading)
                             }
                             Spacer(minLength: 0)
                             Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)

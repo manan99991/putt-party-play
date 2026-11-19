@@ -1661,4 +1661,16 @@ final class ProStepTests: XCTestCase {
         XCTAssertEqual(rep.lines[2].mark, .ran)       // Summarize ran
         XCTAssertNotNil(rep.result, "it completed, so it must carry a result")
     }
+
+    /// A described tool gets a clean name — never "I want an image to convert to pd…".
+    func testDescribedToolsGetCleanNames() {
+        let c = Chain(id: "x", name: "", steps: [ChainStep(block: .stripLocation), ChainStep(block: .convertImage), ChainStep(block: .photoPdf)])
+        let long = ChainPlanner.title(from: "I want an image to convert to pdf and remove where it was taken please", chain: c)
+        XCTAssertFalse(long.hasSuffix("…"), long)
+        XCTAssertFalse(long.lowercased().hasPrefix("i want"), long)
+        XCTAssertLessThanOrEqual(long.count, 48, long)
+        XCTAssertEqual(ChainPlanner.title(from: "can you shrink a photo please", chain: c), "Shrink a photo")
+        XCTAssertEqual(ChainPlanner.title(from: "I need to make a PDF", chain: c), "Make a PDF")
+    }
+
 }

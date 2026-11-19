@@ -281,14 +281,32 @@ enum ChainPlanner {
         // Keep one conversion at most.
         var seenConvert = false
         ordered = ordered.filter { if $0.block == .convertImage { defer { seenConvert = true }; return !seenConvert }; return true }
-        let name = title(from: ask)
-        return validated(Chain(id: UUID().uuidString, name: name, steps: ordered))
+        var chain = Chain(id: UUID().uuidString, name: "", steps: ordered)
+        chain.name = title(from: ask, chain: chain)
+        return validated(chain)
     }
 
-    private static func title(from ask: String) -> String {
-        let t = ask.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\n", with: " ")
+    /// A clean name for a described tool: the request without "I want / can you / please", if that is short;
+    /// otherwise what the steps do ("Strip location, convert format and make a PDF"). Never a cut-off sentence.
+    static func title(from ask: String, chain: Chain) -> String {
+        var t = ask.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\n", with: " ")
+        let fillers = ["i want to ", "i want an ", "i want a ", "i want ", "i need to ", "i need an ", "i need a ", "i need ", "i'd like to ", "i would like to ",
+                       "can you ", "could you ", "please ", "help me ", "make me ", "tenzy, ", "how do i ", "how to "]
+        var changed = true
+        while changed {
+            changed = false
+            for f in fillers where t.lowercased().hasPrefix(f) { t = String(t.dropFirst(f.count)); changed = true }
+        }
+        t = t.trimmingCharacters(in: CharacterSet(charactersIn: " .!?"))
+        if t.lowercased().hasSuffix(" please") { t = String(t.dropLast(7)) }
         let first = t.prefix(1).uppercased() + t.dropFirst()
-        return first.count > 34 ? String(first.prefix(32)) + "…" : String(first)
+        if !first.isEmpty, first.count <= 34 { return first }
+        let auto = ChainText.autoName(chain)
+        if auto.count <= 48 { return auto }
+        // Last resort: whole words only, never a word cut in half.
+        var out = ""
+        for w in first.split(separator: " ") { if (out + " " + w).count > 32 { break }; out += out.isEmpty ? String(w) : " " + w }
+        return out.isEmpty ? auto : out
     }
 
     /// The number written next to a unit word: "under 3 mb" gives 3, "in 2 sentences" gives 2.
