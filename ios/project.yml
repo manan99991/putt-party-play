@@ -85,6 +85,7 @@ targets:
         NSPhotoLibraryAddUsageDescription: Needed to save cleaned photos and scanned documents.
         NSFaceIDUsageDescription: Used to unlock your Secure Vault so only you can open your private notes and photos.
         NSContactsUsageDescription: Needed to find duplicate contacts, merge them without losing a number, back them up to a file, and copy or move them between your accounts. Your contacts stay on this phone and are never uploaded.
+        NSCalendarsWriteOnlyAccessUsageDescription: Needed so Tenzy can add the events it reads from your posters and invites straight to your calendar when you tap Add all. It only adds; it never reads your calendar.
         NSRemindersFullAccessUsageDescription: Needed so the thinking tools can add your tasks straight to Reminders with one tap. Only the tasks you add are written; nothing is read back or uploaded.
         NSRemindersUsageDescription: Needed so the thinking tools can add your tasks straight to Reminders with one tap. Only the tasks you add are written; nothing is read back or uploaded.
         NSSupportsLiveActivities: true

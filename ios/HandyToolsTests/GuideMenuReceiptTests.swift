@@ -216,4 +216,63 @@ final class GuideMenuReceiptTests: XCTestCase {
         for hub in Set(Tool.homes.values) { XCTAssertTrue((1...9).flatMap { tools(onPage: $0) }.contains { $0.id == hub }, "\(hub) is on Home") }
         XCTAssertTrue(searchTools("ringtone").contains { $0.id == "audiostudio" || $0.id == "ringtone" })
     }
+
+    // MARK: posters → events (the user's two test posters)
+
+    func testSpeedDatingPosterBecomesAFullEvent() {
+        let text = """
+        Looking for that special someone?
+        LET US HELP YOU
+        SPEED UP THE PROCESS!
+        Speed Dating
+        DINNER
+        YOU WILL ENJOY COCKTAIL HOUR APPETIZER OR SALAD
+        SELECTION FROM 4 MAIN COURSES
+        SATURDAY OCT 20
+        6:00PM - 8:00PM
+        PRE-EVENT PRICE: $80, AT THE DOOR: $100
+        DOWNTOWN BALLROOM 1234 BROADWAY AVE
+        PLEASE CONTACT SUSAN AT 555-1234 OR SUSAN@SPEEDDATING.COM
+        OR VISIT WWW.SPEEDDATING.COM
+        """
+        let heights: [String: CGFloat] = ["Speed Dating": 0.07, "DINNER": 0.05, "Looking for that special someone?": 0.025, "SATURDAY OCT 20": 0.03]
+        let now = Calendar.current.date(from: DateComponents(year: 2026, month: 11, day: 19))!
+        let e = DataGrab.event(text, heights: heights, now: now)
+        XCTAssertEqual(e.title, "Speed Dating Dinner")
+        let s = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: e.start ?? .distantPast)
+        XCTAssertEqual(s.month, 10); XCTAssertEqual(s.day, 20); XCTAssertEqual(s.hour, 18); XCTAssertEqual(s.minute, 0)
+        XCTAssertGreaterThan(e.start ?? .distantPast, now, "Oct 20 has passed this year, so it's a coming one")
+        XCTAssertEqual(Calendar.current.component(.hour, from: e.end ?? .distantPast), 20)
+        XCTAssertTrue(e.location.lowercased().contains("broadway"), e.location)
+        XCTAssertEqual(e.url, "https://www.speeddating.com")
+        XCTAssertTrue(e.notes.contains("$80"), e.notes)
+        XCTAssertTrue(e.notes.lowercased().contains("susan"), e.notes)
+        let ics = DataGrab.ics(e)
+        XCTAssertTrue(ics.contains("DESCRIPTION:")); XCTAssertTrue(ics.contains("URL:https://www.speeddating.com"))
+        let back = ICSParse.parse(ics)
+        XCTAssertEqual(back.title, e.title); XCTAssertEqual(back.url, e.url); XCTAssertTrue(back.notes.contains("$80"))
+    }
+
+    func testStockPosterIgnoresWatermarksAndReadsLabels() {
+        let text = """
+        VECTOR  EPS 10
+        UPCOMING
+        EVENTS
+        Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.
+        WHERE  LOREM IPSUM AUDITORIUM
+        WHEN  9 PM  12 MARCH
+        TICKETS  WWW.LOREMIPSUM.COM
+        shutterstock
+        IMAGE ID: 1072866329
+        www.shutterstock.com
+        """
+        let heights: [String: CGFloat] = ["UPCOMING": 0.1, "EVENTS": 0.1, "shutterstock": 0.04]
+        let e = DataGrab.event(text, heights: heights, now: Calendar.current.date(from: DateComponents(year: 2026, month: 11, day: 19))!)
+        XCTAssertEqual(e.title, "Upcoming Events")
+        XCTAssertEqual(e.location, "Lorem Ipsum Auditorium")
+        XCTAssertEqual(e.url, "https://www.loremipsum.com")
+        let s = Calendar.current.dateComponents([.month, .day, .hour], from: e.start ?? .distantPast)
+        XCTAssertEqual(s.month, 3); XCTAssertEqual(s.day, 12); XCTAssertEqual(s.hour, 21)
+        XCTAssertFalse(e.notes.lowercased().contains("shutterstock"))
+    }
 }

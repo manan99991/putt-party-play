@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 
 /// Turns OCR'd text into structured data without a model: receipts → line items + totals,
 /// business cards → vCard, events → .ics, anything tabular → CSV. Rule-based, so it's testable and
@@ -17,7 +18,7 @@ enum DataGrab {
         static func == (a: Receipt, b: Receipt) -> Bool { a.merchant == b.merchant && a.total == b.total && a.items.map(\.0) == b.items.map(\.0) }
     }
     struct Card: Equatable { var name = ""; var title = ""; var company = ""; var phones: [String] = []; var emails: [String] = []; var website = ""; var address = "" }
-    struct Event: Equatable { var title = ""; var start: Date?; var end: Date?; var location = "" }
+    struct Event: Equatable { var title = ""; var start: Date?; var end: Date?; var location = ""; var notes = ""; var url = "" }
 
     // MARK: detect
 
@@ -121,6 +122,16 @@ enum DataGrab {
         memoLock.lock(); defer { memoLock.unlock() }
         if memo.count > 20 { memo.removeAll() }
         memo[key] = r
+    }
+    private static var layout: [String: [String: CGFloat]] = [:]
+    static func rememberHeights(_ text: String, _ h: [String: CGFloat]) {
+        memoLock.lock(); defer { memoLock.unlock() }
+        if layout.count > 20 { layout.removeAll() }
+        layout[text] = h
+    }
+    static func heights(for text: String) -> [String: CGFloat] {
+        memoLock.lock(); defer { memoLock.unlock() }
+        return layout[text] ?? [:]
     }
     static func recalled(_ key: String) -> Receipt? {
         memoLock.lock(); defer { memoLock.unlock() }
@@ -261,26 +272,130 @@ enum DataGrab {
 
     // MARK: event
 
-    static func event(_ text: String) -> Event {
+    /// Stock-photo watermarks and print marks — never part of an event.
+    static func isWatermark(_ l: String) -> Bool {
+        let low = l.lowercased().split(whereSeparator: \.isWhitespace).joined(separator: " ")
+        return ["shutterstock", "istock", "getty", "dreamstime", "adobe stock", "alamy", "123rf", "depositphotos", "vector eps", "image id", "©"].contains { low.contains($0) }
+    }
+
+    private static let eventWords = #"\b(dinner|party|festival|fest|concert|conference|workshop|meetup|meet-up|gala|fair|night|show|class|webinar|seminar|summit|expo|exhibition|tournament|match|game|race|run|walk|market|sale|launch|celebration|ceremony|service|wedding|birthday|reunion|fundraiser|auction|screening|recital|performance|tour|events?|dating|brunch|lunch|breakfast|open house|camp|retreat|talk|lecture)\b"#
+    private static let venueWords = #"\b(hall|ballroom|auditorium|center|centre|park|theat(er|re)|stadium|arena|club|hotel|church|temple|school|library|room|gallery|museum|studio|bar|cafe|café|restaurant|garden|plaza|square|pavilion|venue|campus|field|beach)\b"#
+    private static let timeRange = #"(\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.m\.|p\.m\.)?\s*(?:-|–|—|to|until|till)\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.m\.|p\.m\.)"#
+    private static let oneTime = #"\b(\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.m\.|p\.m\.)"#
+
+    /// An event from a poster, flyer or invite. `heights` (each piece of text → its printed height, from the
+    /// photo) lets the biggest words become the title, the way a person reads a poster.
+    static func event(_ text: String, heights: [String: CGFloat] = [:], now: Date = Date()) -> Event {
         var e = Event()
-        let lines = text.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
-        let ds = dateMatches(in: text)
-        e.start = ds.first?.date
-        if let first = ds.first { e.end = first.duration > 0 ? first.date.addingTimeInterval(first.duration) : ds.dropFirst().first?.date }
-        if e.end == nil, let s = e.start { e.end = s.addingTimeInterval(3600) }
-        e.title = lines.first { l in l.range(of: #"\d"#, options: .regularExpression) == nil && l.count >= 4 && l.lowercased().range(of: #"\b(rsvp|join us|tickets|doors|location|venue|where|when)\b"#, options: .regularExpression) == nil } ?? lines.first ?? "Event"
-        if let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.address.rawValue), let m = det.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) {
-            e.location = (text as NSString).substring(with: m.range)
-        } else if let l = lines.first(where: { $0.lowercased().hasPrefix("at ") || $0.lowercased().hasPrefix("location") || $0.lowercased().hasPrefix("venue") || $0.lowercased().hasPrefix("where") }) {
-            e.location = l.replacingOccurrences(of: #"^(at|location|venue|where)[:\s-]*"#, with: "", options: [.regularExpression, .caseInsensitive])
+        let lines = text.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty && !isWatermark($0) }
+        let flat = lines.map { columns($0).joined(separator: " ") }
+        let cal = Calendar.current
+        let hasYear = text.range(of: #"\b(19|20)\d{2}\b"#, options: .regularExpression) != nil
+
+        // When: the day from the line that names it; the time (or time range) from wherever it's printed.
+        func hm(_ h: String, _ m: String?, _ ap: String?) -> (Int, Int)? {
+            guard var hh = Int(h), hh <= 23 else { return nil }
+            let mm = Int(m ?? "") ?? 0
+            let a = (ap ?? "").lowercased().replacingOccurrences(of: ".", with: "")
+            if a == "pm", hh < 12 { hh += 12 }; if a == "am", hh == 12 { hh = 0 }
+            return (hh, mm)
         }
+        var startHM: (Int, Int)?, endHM: (Int, Int)?
+        let joined = flat.joined(separator: "\n")
+        if let re = try? NSRegularExpression(pattern: timeRange, options: .caseInsensitive),
+           let m = re.firstMatch(in: joined, range: NSRange(joined.startIndex..., in: joined)) {
+            func g(_ i: Int) -> String? { Range(m.range(at: i), in: joined).map { String(joined[$0]) } }
+            endHM = hm(g(4) ?? "", g(5), g(6))
+            startHM = hm(g(1) ?? "", g(2), g(3) ?? g(6))   // "6 - 8pm": the start shares the end's am/pm
+        } else if let re = try? NSRegularExpression(pattern: oneTime, options: .caseInsensitive),
+                  let m = re.firstMatch(in: joined, range: NSRange(joined.startIndex..., in: joined)) {
+            func g(_ i: Int) -> String? { Range(m.range(at: i), in: joined).map { String(joined[$0]) } }
+            startHM = hm(g(1) ?? "", g(2), g(3))
+        }
+        var day: Date?
+        var dayLine: Int?
+        for (i, l) in flat.enumerated() where !l.lowercased().contains("rsvp") && !l.lowercased().contains("deadline") {
+            if let d = dateMatches(in: l).first?.date { day = d; dayLine = i; break }
+        }
+        if day == nil, let d = dateMatches(in: joined).first?.date { day = d }
+        if var d = day {
+            // "Saturday Oct 20" with no year is the next one, never one already gone.
+            if !hasYear, d < cal.startOfDay(for: now), let next = cal.date(byAdding: .year, value: 1, to: d) { d = next }
+            if let t = startHM {
+                d = cal.date(bySettingHour: t.0, minute: t.1, second: 0, of: d) ?? d
+                e.start = d
+                if let et = endHM, var end = cal.date(bySettingHour: et.0, minute: et.1, second: 0, of: d) {
+                    if end <= d { end = cal.date(byAdding: .day, value: 1, to: end) ?? end }   // ends after midnight
+                    e.end = end
+                } else { e.end = d.addingTimeInterval(2 * 3600) }
+            } else {
+                e.start = d
+                let first = dateMatches(in: joined).first
+                e.end = d.addingTimeInterval((first?.duration ?? 0) > 0 ? first!.duration : 3600)
+            }
+        }
+
+        // Where: a labelled place, else a line with a street address, else one that names a venue.
+        let labelled = flat.first { $0.range(of: #"^(where|location|venue|place|at)\b[:\s]"#, options: [.regularExpression, .caseInsensitive]) != nil }
+        if let l = labelled {
+            e.location = l.replacingOccurrences(of: #"^(where|location|venue|place|at)\b[:\s-]*"#, with: "", options: [.regularExpression, .caseInsensitive]).trimmingCharacters(in: .whitespaces)
+        } else if let det = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.address.rawValue),
+                  let l = flat.first(where: { det.firstMatch(in: $0, range: NSRange($0.startIndex..., in: $0)) != nil }) {
+            e.location = l
+        } else if let l = flat.first(where: { $0.range(of: venueWords, options: [.regularExpression, .caseInsensitive]) != nil && dateMatches(in: $0).isEmpty }) {
+            e.location = l
+        }
+        if e.location == e.location.uppercased() { e.location = e.location.capitalized }
+
+        // The title: the biggest words on the poster (joined when a title runs over two lines), else the line that
+        // names the kind of event, else the first plain line.
+        let dated = Set(flat.indices.filter { !dateMatches(in: flat[$0]).isEmpty || flat[$0].range(of: oneTime, options: [.regularExpression, .caseInsensitive]) != nil })
+        func plain(_ i: Int) -> Bool {
+            let l = flat[i]
+            return !dated.contains(i) && l != e.location && l.filter(\.isLetter).count >= 3 && !l.contains("@") && !l.lowercased().contains("www.") && !l.hasSuffix("?")
+                && l.range(of: #"^(where|when|tickets?|price|rsvp|please|contact|call)\b"#, options: [.regularExpression, .caseInsensitive]) == nil
+        }
+        func height(_ l: String) -> CGFloat { heights.filter { l.contains($0.key) || $0.key.contains(l) }.map(\.value).max() ?? 0 }
+        if !heights.isEmpty, let tallest = flat.indices.filter(plain).max(by: { height(flat[$0]) < height(flat[$1]) }), height(flat[tallest]) > 0 {
+            let top = height(flat[tallest])
+            var parts = [flat[tallest]]
+            var j = tallest + 1
+            while j < flat.count, plain(j), height(flat[j]) >= top * 0.55, parts.count < 3 { parts.append(flat[j]); j += 1 }
+            var k = tallest - 1
+            while k >= 0, plain(k), height(flat[k]) >= top * 0.75, parts.count < 3 { parts.insert(flat[k], at: 0); k -= 1 }
+            e.title = parts.joined(separator: " ")
+        } else {
+            e.title = flat.indices.filter(plain).first { flat[$0].range(of: eventWords, options: [.regularExpression, .caseInsensitive]) != nil }.map { flat[$0] }
+                ?? flat.indices.first(where: plain).map { flat[$0] } ?? lines.first ?? "Event"
+        }
+        // Poster capitals read as a normal title ("Speed Dating DINNER" → "Speed Dating Dinner").
+        e.title = e.title.split(separator: " ").map { w in w.count > 3 && w == w.uppercased() ? w.capitalized : String(w) }.joined(separator: " ")
+
+        // The rest worth keeping with the event: prices, tickets, contact, the details.
+        if let link = matches(#"(?:https?://)?(?:www\.)[a-z0-9-]+\.[a-z.]{2,}(?:/\S*)?"#, in: joined, options: .caseInsensitive).first(where: { !isWatermark($0) }) {
+            e.url = link.lowercased().hasPrefix("http") ? link : "https://" + link.lowercased()
+        }
+        // Prices, tickets and how to reach them first; then what the poster says about it.
+        var key: [String] = [], more: [String] = []
+        for (i, l) in flat.enumerated() where i != dayLine && !e.title.lowercased().contains(l.lowercased()) && l.lowercased() != e.location.lowercased() && !dated.contains(i) {
+            let low = l.lowercased()
+            let tidy = l == l.uppercased() ? l.prefix(1) + l.dropFirst().lowercased() : l
+            if low.range(of: #"[$€£₹]\s?\d|\bfree\b|price|ticket|admission|entry|rsvp|contact|call|@|www\.|dress|bring|parking|doors"#, options: .regularExpression) != nil { key.append(String(tidy)) }
+            else if l.split(separator: " ").count >= 4 { more.append(String(tidy)) }
+        }
+        e.notes = (key + more).prefix(8).joined(separator: "\n")
         return e
     }
 
     static func ics(_ e: Event) -> String {
         let f = DateFormatter(); f.dateFormat = "yyyyMMdd'T'HHmmss'Z'"; f.timeZone = TimeZone(identifier: "UTC")
         let start = e.start ?? Date(), end = e.end ?? start.addingTimeInterval(3600)
-        return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Tenzy//Data Grabber//EN", "BEGIN:VEVENT", "UID:\(UUID().uuidString)@tenzy", "DTSTAMP:\(f.string(from: Date()))", "DTSTART:\(f.string(from: start))", "DTEND:\(f.string(from: end))", "SUMMARY:\(e.title)", e.location.isEmpty ? nil : "LOCATION:\(e.location.replacingOccurrences(of: ",", with: "\\,"))", "END:VEVENT", "END:VCALENDAR"].compactMap { $0 }.joined(separator: "\r\n")
+        func esc(_ s: String) -> String { s.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: ",", with: "\\,").replacingOccurrences(of: ";", with: "\\;").replacingOccurrences(of: "\n", with: "\\n") }
+        return ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Tenzy//Data Grabber//EN", "BEGIN:VEVENT", "UID:\(UUID().uuidString)@tenzy", "DTSTAMP:\(f.string(from: Date()))", "DTSTART:\(f.string(from: start))", "DTEND:\(f.string(from: end))", "SUMMARY:\(esc(e.title))",
+                e.location.isEmpty ? nil : "LOCATION:\(esc(e.location))",
+                e.notes.isEmpty ? nil : "DESCRIPTION:\(esc(e.notes))",
+                e.url.isEmpty ? nil : "URL:\(e.url)",
+                "END:VEVENT", "END:VCALENDAR"].compactMap { $0 }.joined(separator: "\r\n")
     }
 
     // MARK: table

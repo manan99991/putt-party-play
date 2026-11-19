@@ -531,7 +531,10 @@ enum ChainRunner {
         }
         switch (b, input) {
         case (.readText, .image(let img)):
-            let text = rows(DocEngine.recognize(img)).trimmingCharacters(in: .whitespacesAndNewlines)
+            let ocr = DocEngine.recognize(img)
+            let text = rows(ocr).trimmingCharacters(in: .whitespacesAndNewlines)
+            // Remember how big each piece was printed, so a poster's biggest words can become its title.
+            DataGrab.rememberHeights(text, Dictionary(ocr.map { ($0.text, $0.box.height) }, uniquingKeysWith: max))
             return text.isEmpty ? .failure(.nothingFound(b)) : .success(.text(text))
 
         case (.pullReceipt, .text(let t)):
@@ -577,7 +580,7 @@ enum ChainRunner {
             return .success(.file(d, ext: "vcf"))
 
         case (.calendarEvent, .text(let t)):
-            let e = DataGrab.event(t)
+            let e = DataGrab.event(t, heights: DataGrab.heights(for: t))
             guard e.start != nil, let d = DataGrab.ics(e).data(using: .utf8) else { return .failure(.nothingFound(b)) }
             return .success(.file(d, ext: "ics"))
 

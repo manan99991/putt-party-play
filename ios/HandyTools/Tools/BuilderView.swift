@@ -2222,9 +2222,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let urls = ok.compactMap(\.url)
         let texts = ok.compactMap { b in b.text.map { "\(noun) \(b.n)\n\($0)" } }
         Text("\(ok.count) of \(batch.count) done").font(HandyFont.cardTitle)
+        // Posters read into events: show every event in full, each with its own Add, and Add all.
+        let events = urls.filter { $0.pathExtension.lowercased() == "ics" }.compactMap { (try? String(contentsOf: $0, encoding: .utf8)).map(ICSParse.parse) }
+        if !events.isEmpty, events.count == urls.count { EventsBatchResult(events: events) }
         // Thumbnails of every result, so a batch is checked at a glance before saving or sharing.
-        OutputPreviewStrip(urls: urls)
-        ForEach(batch) { b in
+        else { OutputPreviewStrip(urls: urls) }
+        ForEach(batch.filter { !(!events.isEmpty && $0.url?.pathExtension.lowercased() == "ics") }) { b in
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
                     Image(systemName: b.note == nil ? "checkmark.circle.fill" : "exclamationmark.circle").foregroundStyle(b.note == nil ? Color.green : HandyColor.textSecondary)

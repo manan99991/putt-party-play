@@ -63,7 +63,12 @@ struct DataGrabView: View {
                 await MainActor.run { photo = img }
                 // Row by row, so prices stay with their items and a card's two columns stay apart.
                 let box = UncheckedImage(img)
-                let s = await Task.detached(priority: .userInitiated) { ChainRunner.rows(DocEngine.recognize(box.image.normalizedUp())) }.value
+                let s = await Task.detached(priority: .userInitiated) { () -> String in
+                    let ocr = DocEngine.recognize(box.image.normalizedUp())
+                    let t = ChainRunner.rows(ocr).trimmingCharacters(in: .whitespacesAndNewlines)
+                    DataGrab.rememberHeights(t, Dictionary(ocr.map { ($0.text, $0.box.height) }, uniquingKeysWith: max))
+                    return t
+                }.value
                 await MainActor.run { busy = false; if s.isEmpty { errorText = "No text found in that image." } else { text = s; run() } }
             }
         }
@@ -75,7 +80,7 @@ struct DataGrabView: View {
         switch kind {
         case .receipt: receipt = DataGrab.receipt(text)
         case .card: card = DataGrab.card(text)
-        case .event: event = DataGrab.event(text)
+        case .event: event = DataGrab.event(text, heights: DataGrab.heights(for: text))
         default: break
         }
         HandyHaptics.light()
