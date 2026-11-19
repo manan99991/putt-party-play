@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 
 /// Manual camera: locked ISO / shutter / focus / white balance, RAW (DNG) capture, focus peaking,
 /// zebras, a live histogram and frame-averaged long exposures — the controls the stock app hides.
-@MainActor final class ProCameraController: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
+@MainActor final class ProCameraController: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate, AVCapturePhotoCaptureDelegate {
     @Published var latest: CIImage?
     @Published var authorized = true
     @Published var ranges = Ranges()
@@ -18,6 +18,16 @@ import UniformTypeIdentifiers
     @Published var lastMessage = ""
     @Published var accumulating = false
     @Published var accumulated = 0
+    // Video mode
+    @Published private(set) var videoMode = false
+    @Published private(set) var recording = false
+    @Published private(set) var recordSeconds: Double = 0
+    @Published private(set) var videoScene: VideoScene = .everyday
+    @Published private(set) var micOff = false
+    nonisolated(unsafe) private var recorder: VideoRecorder?
+    private let audioOut = AVCaptureAudioDataOutput()
+    private var audioInput: AVCaptureDeviceInput?
+    private var clock: Task<Void, Never>?
 
     struct Ranges { var minISO: Float = 50, maxISO: Float = 1600; var minShutter = 1.0 / 8000, maxShutter = 1.0 / 3; var minTemp: Float = 2500, maxTemp: Float = 8000 }
     struct Current { var iso: Float = 100; var shutter = 1.0 / 60; var lens: Float = 0.5; var temp: Float = 5000; var autoExposure = true; var autoFocus = true; var autoWB = true; var ev: Float = 0 }
@@ -94,7 +104,7 @@ import UniformTypeIdentifiers
 
     /// Rotate the live frames and the photo output to match the phone. Held still during a long exposure.
     private func applyRotation(_ angle: CGFloat) {
-        guard !accumulating else { return }
+        guard !accumulating, !recording else { return }   // a clip keeps the shape it started with
         self.angle = angle
         if let c = video.connection(with: .video), c.isVideoRotationAngleSupported(angle) { c.videoRotationAngle = angle }
         if let c = photo.connection(with: .video), c.isVideoRotationAngleSupported(angle) { c.videoRotationAngle = angle }
@@ -209,6 +219,97 @@ import UniformTypeIdentifiers
         current.temp = max(ranges.minTemp, min(ranges.maxTemp, d.temperatureAndTintValues(for: d.deviceWhiteBalanceGains).temperature))
     }
 
+    // MARK: video
+
+    /// Switch between photo and video. Video uses a 1080p format that can do the scene's frame rate and adds
+    /// the microphone (asked once; if it's off, clips are filmed silent and the screen says so).
+    func setVideoMode(_ on: Bool) {
+        guard on != videoMode, !recording else { return }
+        videoMode = on
+        if on {
+            Permission.microphone { [weak self] ok in Task { @MainActor in self?.configureVideo(mic: ok) } }
+        } else {
+            session.beginConfiguration()
+            if let a = audioInput { session.removeInput(a); audioInput = nil }
+            if session.outputs.contains(audioOut) { session.removeOutput(audioOut) }
+            if session.canSetSessionPreset(.photo) { session.sessionPreset = .photo }
+            session.commitConfiguration()
+            resetToAuto()
+        }
+    }
+
+    private func configureVideo(mic: Bool) {
+        micOff = !mic
+        session.beginConfiguration()
+        if session.canSetSessionPreset(.hd1920x1080) { session.sessionPreset = .hd1920x1080 } else { session.sessionPreset = .high }
+        if mic, audioInput == nil, let m = AVCaptureDevice.default(for: .audio), let inp = try? AVCaptureDeviceInput(device: m), session.canAddInput(inp) {
+            session.addInput(inp); audioInput = inp
+        }
+        if mic, !session.outputs.contains(audioOut), session.canAddOutput(audioOut) {
+            session.addOutput(audioOut); audioOut.setSampleBufferDelegate(self, queue: queue)
+        }
+        session.commitConfiguration()
+        applyVideoScene(videoScene)
+    }
+
+    /// Frame rate, shutter limit and steadiness for a kind of filming.
+    func applyVideoScene(_ sc: VideoScene) {
+        guard !recording else { return }
+        videoScene = sc
+        guard let d = device else { return }
+        resetToAuto()
+        try? d.lockForConfiguration()
+        // Pick a 1080p (or the largest ≤1080p) format that can run this fast, if the current one can't.
+        let canNow = d.activeFormat.videoSupportedFrameRateRanges.contains { $0.maxFrameRate >= Double(sc.fps) }
+        if !canNow, let f = Self.format(for: sc.fps, in: d.formats) { d.activeFormat = f }
+        if d.activeFormat.videoSupportedFrameRateRanges.contains(where: { $0.maxFrameRate >= Double(sc.fps) && $0.minFrameRate <= Double(sc.fps) }) {
+            let t = CMTime(value: 1, timescale: CMTimeScale(sc.fps))
+            d.activeVideoMinFrameDuration = t; d.activeVideoMaxFrameDuration = t
+        }
+        let f = d.activeFormat
+        let lo = f.minExposureDuration.seconds, hi = f.maxExposureDuration.seconds
+        if lo.isFinite, hi.isFinite, hi > lo {
+            d.activeMaxExposureDuration = CMTime(seconds: min(max(sc.maxShutter, lo), hi), preferredTimescale: 1_000_000)
+        }
+        if d.isLowLightBoostSupported { d.automaticallyEnablesLowLightBoostWhenAvailable = sc == .night }
+        d.unlockForConfiguration()
+        if let c = video.connection(with: .video), c.isVideoStabilizationSupported { c.preferredVideoStabilizationMode = sc.stabilization }
+    }
+
+    /// The best format for a frame rate: 1080p if possible, otherwise the widest that is no bigger than 1080p.
+    nonisolated static func format(for fps: Int, in formats: [AVCaptureDevice.Format]) -> AVCaptureDevice.Format? {
+        let ok = formats.filter { f in
+            let d = CMVideoFormatDescriptionGetDimensions(f.formatDescription)
+            return d.width <= 1920 && f.videoSupportedFrameRateRanges.contains { $0.maxFrameRate >= Double(fps) }
+        }
+        return ok.max { a, b in
+            let da = CMVideoFormatDescriptionGetDimensions(a.formatDescription), db = CMVideoFormatDescriptionGetDimensions(b.formatDescription)
+            return da.width * da.height < db.width * db.height
+        }
+    }
+
+    func startRecording() {
+        guard videoMode, !recording else { return }
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("Tenzy video \(Date().formatted(.dateTime.year().month().day().hour().minute().second())).mov".replacingOccurrences(of: "/", with: "-").replacingOccurrences(of: ":", with: "."))
+        recorder = VideoRecorder(url: url, fps: videoScene.fps, realtime: true)
+        recording = true; recordSeconds = 0
+        clock = Task { @MainActor in
+            while !Task.isCancelled, self.recording {
+                self.recordSeconds = self.recorder?.seconds ?? 0
+                try? await Task.sleep(for: .milliseconds(250))
+            }
+        }
+    }
+
+    /// Stop and close the file. Nil when nothing was filmed.
+    func stopRecording() async -> URL? {
+        guard recording else { return nil }
+        recording = false
+        clock?.cancel(); clock = nil
+        let r = recorder; recorder = nil
+        return await r?.finish()
+    }
+
     // MARK: capture
 
     /// Take a photo. Returns (processed HEIF/JPEG data, RAW DNG data if requested and available).
@@ -300,7 +401,9 @@ import UniformTypeIdentifiers
     }
 
     nonisolated func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        if output is AVCaptureAudioDataOutput { recorder?.appendAudio(sampleBuffer); return }
         guard let pb = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        if let r = recorder { r.appendVideo(pb, at: CMSampleBufferGetPresentationTimeStamp(sampleBuffer)) }
         let ci = CIImage(cvPixelBuffer: pb)
         nonisolated(unsafe) let frame = ci
         if accTarget > 0, accCount < accTarget {

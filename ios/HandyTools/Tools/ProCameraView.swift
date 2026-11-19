@@ -1,6 +1,7 @@
 import SwiftUI
 import CoreImage
 import AVFoundation
+import AVKit
 
 /// Pro Camera — the camera that thinks for you. Point it: it recognises the scene (sunset, portrait,
 /// night sky, food, a page…), sets itself up for it, and coaches you while you aim ("tilt left a little",
@@ -30,6 +31,8 @@ struct ProCameraView: View {
     @State private var shooting = false
     @State private var showPro = false
     @State private var ring: CGPoint?   // tap-to-focus ring
+    @State private var clip: VideoClip?
+    @State private var videoNote: String?
     private let ctx = CIContext()
     private let timer = Timer.publish(every: 0.5, on: .main, in: .common).autoconnect()
 
@@ -41,7 +44,18 @@ struct ProCameraView: View {
     }
 
     var body: some View {
-        ToolPage(title: "Pro Camera", subtitle: "Point it at anything — it sets itself up for the scene and coaches you to the best shot.") {
+        ToolPage(title: "Pro Camera", subtitle: "Photos and video. Point it at anything — it sets itself up for the scene and coaches you to the best shot or clip.") {
+            HowTo("procamera", [
+                "Photo: point and tap the big button — it picks the scene and coaches you.",
+                "Video: pick what you're filming (sports, low light, interview, walk & talk, cinematic) and press record.",
+                "Tips appear while you film — hold steady, more light, turn sideways. Watch the clip before you save it.",
+            ])
+            Picker("", selection: Binding(get: { cam.videoMode }, set: { on in cam.setVideoMode(on); videoNote = nil })) {
+                Label(L("Photo"), systemImage: "camera").tag(false)
+                Label(L("Video"), systemImage: "video").tag(true)
+            }
+            .pickerStyle(.segmented).disabled(cam.recording || cam.accumulating)
+            .accessibilityIdentifier("procam-mode")
             ZStack {
                 ProcessedFrameView(image: processed, holder: holder, fit: true)
                     .overlay {
@@ -61,7 +75,15 @@ struct ProCameraView: View {
                 if autoScene, abs(reader.tilt) > 0.8, showsLevel { levelLine }
                 VStack {
                     HStack(alignment: .top) {
-                        if autoScene {
+                        if cam.videoMode {
+                            HStack(spacing: 6) {
+                                Circle().fill(cam.recording ? Color.red : Color.white.opacity(0.6)).frame(width: 10, height: 10)
+                                Text(cam.recording ? FilmingCoach.timeText(cam.recordSeconds) : "\(L(cam.videoScene.title)) · \(cam.videoScene.fps) fps")
+                                    .font(.system(size: 13, weight: .semibold, design: .monospaced))
+                            }
+                            .foregroundStyle(.white).padding(.horizontal, 10).padding(.vertical, 6).background(.black.opacity(0.5), in: Capsule())
+                            .accessibilityIdentifier("procam-rec-label")
+                        } else if autoScene {
                             Label(L(reader.scene.title), systemImage: "sparkles").font(.system(size: 13, weight: .semibold)).foregroundStyle(.white)
                                 .padding(.horizontal, 10).padding(.vertical, 6).background(.black.opacity(0.5), in: Capsule())
                                 .animation(.easeInOut, value: reader.scene)
@@ -74,7 +96,12 @@ struct ProCameraView: View {
                         }
                     }
                     Spacer()
-                    if autoScene, let t = reader.tip, !cam.accumulating {
+                    if cam.videoMode, let t = coachTip {
+                        Text(L(t)).font(.system(size: 14, weight: .medium)).foregroundStyle(.white).multilineTextAlignment(.center)
+                            .padding(.horizontal, 12).padding(.vertical, 8).background(.black.opacity(0.55), in: RoundedRectangle(cornerRadius: 12))
+                            .transition(.opacity).id(t)
+                    }
+                    if !cam.videoMode, autoScene, let t = reader.tip, !cam.accumulating {
                         Text(L(t)).font(.system(size: 14, weight: .medium)).foregroundStyle(.white).multilineTextAlignment(.center)
                             .padding(.horizontal, 12).padding(.vertical, 8).background(.black.opacity(0.55), in: RoundedRectangle(cornerRadius: 12))
                             .transition(.opacity).id(t)
@@ -92,9 +119,13 @@ struct ProCameraView: View {
             .frame(height: 420)
             .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
 
+            if cam.videoMode {
+                videoControls
+            } else {
             bestButton
             Text(autoScene ? L(reader.scene.why) : L("Manual — your settings. Tap Back to automatic to let Tenzy set it up again."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
 
             if let img = cam.lastSaved ?? longResult {
                 HStack(spacing: HandySpacing.s12) {
@@ -109,6 +140,7 @@ struct ProCameraView: View {
                     }
                 }.cardStyle(padding: HandySpacing.s12)
             }
+            if !cam.videoMode {
             DisclosureGroup(isExpanded: $showPro) {
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
             if !autoScene {
@@ -133,22 +165,85 @@ struct ProCameraView: View {
                 }.padding(.top, HandySpacing.s8)
             } label: { Label(L("Manual"), systemImage: "slider.horizontal.3").font(.system(size: 15, weight: .semibold)).foregroundStyle(HandyColor.textPrimary) }
             .tint(HandyColor.accent)
+            }
 
             Text(cam.rawSupported ? "RAW saves a DNG alongside the HEIF — edit it in Photos, Lightroom or Darkroom. Long exposures average frames, so use a tripod or a steady ledge."
                                   : "This camera doesn't offer RAW capture to apps; HEIF at full quality is saved. Long exposures average frames — steady the phone.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
         .onAppear { if Launch.startHardware { cam.start(); reader.start() } }
-        .onDisappear { cam.stop(); reader.stop() }
+        .onDisappear {
+            // Leaving mid-clip never loses it: the clip is finished and put in Photos.
+            if cam.recording { Task { if let u = await cam.stopRecording() { _ = await VideoRecorder.saveToPhotos(u) } } }
+            cam.stop(); reader.stop()
+        }
+        .sheet(item: $clip, onDismiss: { cam.start() }) { c in VideoReview(clip: c) { note in videoNote = note } }
         .onReceive(timer) { _ in
             guard let l = cam.latest else { return }
             if showPro || !autoScene { histogram = ProImage.histogram(l, context: ctx) }
             tick += 1
-            if autoScene, tick % 2 == 0, !cam.accumulating, !shooting { reader.read(l, device: cam.device) }
+            if (autoScene || cam.videoMode), tick % 2 == 0, !cam.accumulating, !shooting { reader.read(l, device: cam.device) }
         }
-        .onChange(of: reader.scene) { _, sc in if autoScene, !cam.accumulating, !shooting { applyScene(sc) } }
+        .onChange(of: reader.scene) { _, sc in if autoScene, !cam.videoMode, !cam.accumulating, !shooting { applyScene(sc) } }
         .sheet(item: $review) { shot in ShotReview(shot: shot, scene: autoScene ? reader.scene : .everyday) { data in await keep(shot, data) } }
         .onChange(of: cam.accumulating) { was, now in if was, !now, panel == .long { finishLong() } }
+    }
+
+    // MARK: video
+
+    private var coachTip: String? {
+        let e = cam.latest?.extent ?? .zero
+        return FilmingCoach.tip(.init(brightness: reader.signals.meanLuma, clipped: reader.signals.highlights,
+                                      upright: e.height > e.width, shake: reader.signals.shake,
+                                      recording: cam.recording, seconds: cam.recordSeconds, scene: cam.videoScene))
+    }
+
+    private var videoControls: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(VideoScene.allCases) { sc in
+                    Button { cam.applyVideoScene(sc) } label: {
+                        Label(L(sc.title), systemImage: sc.icon).font(.system(size: 13, weight: .medium))
+                            .padding(.horizontal, HandySpacing.s12).frame(minHeight: HandySpacing.chipHeight)
+                            .background(cam.videoScene == sc ? HandyColor.accentSoft : HandyColor.surface, in: Capsule())
+                            .overlay(Capsule().stroke(cam.videoScene == sc ? HandyColor.accent : HandyColor.border, lineWidth: cam.videoScene == sc ? 1.5 : 1))
+                            .foregroundStyle(cam.videoScene == sc ? HandyColor.accent : HandyColor.textPrimary)
+                    }
+                    .buttonStyle(.plain).disabled(cam.recording)
+                    .accessibilityIdentifier("procam-scene-\(sc.rawValue)")
+                }
+            }
+            Button { toggleRecording() } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: cam.recording ? "stop.fill" : "record.circle")
+                    Text(cam.recording ? "\(L("Stop")) · \(FilmingCoach.timeText(cam.recordSeconds))" : L("Start recording")).font(.system(size: 17, weight: .semibold)).monospacedDigit()
+                }
+                .frame(maxWidth: .infinity, minHeight: 56).foregroundStyle(.white)
+                .background(cam.recording ? Color.red : HandyColor.accent, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            }
+            .buttonStyle(.plain).disabled(cam.latest == nil)
+            .accessibilityLabel(cam.recording ? L("Stop recording") : L("Start recording"))
+            .accessibilityIdentifier("procam-record")
+            Text(L(cam.videoScene.why)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            if cam.micOff {
+                Label(L("Microphone is off for Tenzy, so clips are silent. Turn it on in Settings → Tenzy → Microphone."), systemImage: "mic.slash")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.danger).fixedSize(horizontal: false, vertical: true)
+            }
+            if let videoNote { Text(videoNote).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
+        }
+    }
+
+    private func toggleRecording() {
+        if cam.recording {
+            Task {
+                if let u = await cam.stopRecording() { cam.stop(); clip = VideoClip(url: u) }   // camera rests while you watch
+                else { videoNote = L("Nothing was filmed — try again and hold the button a moment longer.") }
+            }
+        } else {
+            videoNote = nil
+            HandyHaptics.light()
+            cam.startRecording()
+        }
     }
 
     private var readout: String {
@@ -511,5 +606,67 @@ private struct ShotReview: View {
             saving = false
             dismiss()
         }
+    }
+}
+
+struct VideoClip: Identifiable { let id = UUID(); let url: URL }
+
+/// Watch the clip before it goes anywhere: Save to Photos, Share, or Delete.
+private struct VideoReview: View {
+    let clip: VideoClip
+    let done: (String) -> Void
+    @Environment(\.dismiss) private var dismiss
+    @State private var player: AVPlayer
+    @State private var saving = false
+    @State private var info = ""
+
+    init(clip: VideoClip, done: @escaping (String) -> Void) {
+        self.clip = clip; self.done = done
+        _player = State(initialValue: AVPlayer(url: clip.url))
+    }
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: HandySpacing.s12) {
+                VideoPlayer(player: player)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .accessibilityIdentifier("procam-review-player")
+                if !info.isEmpty { Text(info).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                Button {
+                    saving = true
+                    Task {
+                        let ok = await VideoRecorder.saveToPhotos(clip.url)
+                        saving = false
+                        if ok { HandyHaptics.success(); done(L("Saved to Photos.")); dismiss() }
+                        else { info = L("Photos access is off — allow it in Settings, or use Share to save it to Files.") }
+                    }
+                } label: { Label(saving ? L("Saving…") : L("Save to Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }
+                    .primaryButton().disabled(saving).accessibilityIdentifier("procam-review-save")
+                HStack(spacing: HandySpacing.s8) {
+                    ShareLink(item: clip.url) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                    Button(role: .destructive) { try? FileManager.default.removeItem(at: clip.url); done(L("Clip deleted.")); dismiss() } label: {
+                        Label(L("Delete"), systemImage: "trash").frame(maxWidth: .infinity)
+                    }.secondaryButton()
+                }
+            }
+            .padding(HandySpacing.gutter)
+            .background(HandyColor.bg)
+            .navigationTitle(L("Your clip")).navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Close")) { dismiss() } } }
+        }
+        .onAppear {
+            try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
+            try? AVAudioSession.sharedInstance().setActive(true)
+            player.play()
+            Task {
+                let a = AVURLAsset(url: clip.url)
+                let d = (try? await a.load(.duration).seconds) ?? 0
+                let size = ((try? FileManager.default.attributesOfItem(atPath: clip.url.path)[.size]) as? NSNumber)?.int64Value ?? 0
+                let tracks = (try? await a.loadTracks(withMediaType: .audio).count) ?? 0
+                info = "\(FilmingCoach.timeText(d)) · \(ByteCountFormatter.string(fromByteCount: size, countStyle: .file))" + (tracks == 0 ? " · \(L("no sound"))" : "")
+            }
+        }
+        .onDisappear { player.pause() }
     }
 }

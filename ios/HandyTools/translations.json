@@ -3209,6 +3209,16 @@
   "pt": "Escolher…",
   "zh": "选择…"
  },
+ "Cinematic": {
+  "de": "Kino-Look",
+  "es": "Cinematográfico",
+  "fr": "Cinéma",
+  "hi": "सिनेमैटिक",
+  "it": "Cinematografico",
+  "ja": "シネマ",
+  "pt": "Cinematográfico",
+  "zh": "电影感"
+ },
  "Circle": {
   "de": "Kreis",
   "es": "Círculo",
@@ -3408,6 +3418,16 @@
   "ja": "短くても頭がすっきり、元気が出ます。",
   "pt": "Cabeça mais leve e mais energia, mesmo depois de algo curto.",
   "zh": "哪怕时间很短，头脑也更清醒、更有精神。"
+ },
+ "Clip deleted.": {
+  "de": "Clip gelöscht.",
+  "es": "Clip eliminado.",
+  "fr": "Clip supprimé.",
+  "hi": "क्लिप हटाई गई।",
+  "it": "Clip eliminato.",
+  "ja": "動画を削除しました。",
+  "pt": "Clipe apagado.",
+  "zh": "视频已删除。"
  },
  "Clip length  ": {
   "de": "Cliplänge  ",
@@ -5939,6 +5959,16 @@
   "pt": "Todas as ferramentas num só lugar — toca para abrir. Tudo corre no telefone.",
   "zh": "所有工具集于一处 — 轻点打开。全部在手机上运行。"
  },
+ "Everyday": {
+  "de": "Alltag",
+  "es": "Diario",
+  "fr": "Quotidien",
+  "hi": "रोज़मर्रा",
+  "it": "Quotidiano",
+  "ja": "ふだん",
+  "pt": "Dia a dia",
+  "zh": "日常"
+ },
  "Everyone in? Leave a little room around the edges.": {
   "de": "Alle drauf? Lass etwas Platz am Rand.",
   "es": "¿Están todos? Deja un poco de espacio en los bordes.",
@@ -7249,6 +7279,16 @@
   "pt": "Chegue perto e toque no detalhe que quer nítido.",
   "zh": "靠近并点按想拍清楚的细节。"
  },
+ "Get close: the mic is on the phone, so 1 metre from the speaker sounds best.": {
+  "de": "Geh nah ran: Das Mikro ist im Telefon, 1 Meter vom Sprecher klingt am besten.",
+  "es": "Acércate: el micro está en el teléfono, a 1 metro de quien habla suena mejor.",
+  "fr": "Rapprochez-vous : le micro est dans le téléphone, à 1 mètre de la personne c'est idéal.",
+  "hi": "पास जाएँ: माइक फ़ोन में है, बोलने वाले से 1 मीटर पर सबसे अच्छा लगता है।",
+  "it": "Avvicinati: il microfono è nel telefono, a 1 metro da chi parla suona meglio.",
+  "ja": "近づいて：マイクは本体にあるので、話す人から1mが最適です。",
+  "pt": "Chegue perto: o microfone é do telefone, 1 metro de quem fala soa melhor.",
+  "zh": "靠近点：麦克风在手机上，离说话人 1 米效果最好。"
+ },
  "Get down to their eye level for the best shot.": {
   "de": "Geh auf Augenhöhe – so wird's am schönsten.",
   "es": "Ponte a la altura de sus ojos para la mejor foto.",
@@ -7799,6 +7839,16 @@
   "pt": "Encosta uma etiqueta NFC à parte de trás do telemóvel.",
   "zh": "将 NFC 标签靠近手机背面。"
  },
+ "Hold steady — move the phone slower.": {
+  "de": "Ruhig halten – bewege das Telefon langsamer.",
+  "es": "Mantén firme: mueve el teléfono más despacio.",
+  "fr": "Restez stable — bougez le téléphone plus lentement.",
+  "hi": "स्थिर रखें — फ़ोन धीरे घुमाएँ।",
+  "it": "Tieni fermo: muovi il telefono più piano.",
+  "ja": "手ブレ注意 — ゆっくり動かして。",
+  "pt": "Mantenha firme — mova o telefone mais devagar.",
+  "zh": "拿稳——慢一点移动手机。"
+ },
  "Hold still for a moment after you tap.": {
   "de": "Nach dem Tippen kurz ruhig halten.",
   "es": "Quédate quieto un momento después de tocar.",
@@ -8189,6 +8239,16 @@
   "pt": "Instrumentos",
   "zh": "仪器"
  },
+ "Interview": {
+  "de": "Interview",
+  "es": "Entrevista",
+  "fr": "Interview",
+  "hi": "इंटरव्यू",
+  "it": "Intervista",
+  "ja": "インタビュー",
+  "pt": "Entrevista",
+  "zh": "采访"
+ },
  "Into": {
   "de": "Nach",
   "es": "A",
@@ -8558,6 +8618,16 @@
   "ja": "保持 · から · まで",
   "pt": "Manter de · a",
   "zh": "保留 · 从 · 到"
+ },
+ "Keep going — clips under 3 seconds feel too short.": {
+  "de": "Weiter – Clips unter 3 Sekunden wirken zu kurz.",
+  "es": "Sigue: los clips de menos de 3 segundos se quedan cortos.",
+  "fr": "Continuez — les clips de moins de 3 secondes paraissent trop courts.",
+  "hi": "जारी रखें — 3 सेकंड से छोटी क्लिप बहुत छोटी लगती है।",
+  "it": "Continua: i clip sotto i 3 secondi sembrano troppo brevi.",
+  "ja": "続けて — 3秒未満は短すぎます。",
+  "pt": "Continue — clipes com menos de 3 segundos parecem curtos.",
+  "zh": "继续——少于 3 秒的视频太短。"
  },
  "Keep in Trash": {
   "de": "Im Papierkorb behalten",
@@ -9489,6 +9559,16 @@
   "pt": "Pouca energia",
   "zh": "精力不足"
  },
+ "Low light": {
+  "de": "Wenig Licht",
+  "es": "Poca luz",
+  "fr": "Faible lumière",
+  "hi": "कम रोशनी",
+  "it": "Poca luce",
+  "ja": "暗所",
+  "pt": "Pouca luz",
+  "zh": "弱光"
+ },
  "Lower sensitivity values trigger sooner. The sensor sits near the top of the phone — sweep that end over the wall or ground.": {
   "de": "Niedrigere Empfindlichkeitswerte lösen früher aus. Der Sensor sitzt nahe der Oberseite des Handys — streiche mit diesem Ende über Wand oder Boden.",
   "es": "Los valores de sensibilidad más bajos se activan antes. El sensor está cerca de la parte superior del teléfono — pasa ese extremo por la pared o el suelo.",
@@ -10168,6 +10248,16 @@
   "ja": "周囲の音を拾って増幅するためマイクへのアクセスが必要です。端末内でリアルタイム処理され、録音は一切されません。",
   "pt": "É preciso acesso ao microfone para captar e amplificar o som à tua volta. É processado em direto no teu telemóvel e nunca gravado.",
   "zh": "需要麦克风权限以拾取并放大你周围的声音。它在你的手机上实时处理，绝不录制。"
+ },
+ "Microphone is off for Tenzy, so clips are silent. Turn it on in Settings → Tenzy → Microphone.": {
+  "de": "Mikrofon ist für Tenzy aus, Clips sind stumm. Schalte es ein unter Einstellungen → Tenzy → Mikrofon.",
+  "es": "El micrófono está desactivado para Tenzy, así que los clips no tienen sonido. Actívalo en Ajustes → Tenzy → Micrófono.",
+  "fr": "Le micro est désactivé pour Tenzy, les clips sont muets. Activez-le dans Réglages → Tenzy → Micro.",
+  "hi": "Tenzy के लिए माइक बंद है, इसलिए क्लिप बिना आवाज़ के हैं। Settings → Tenzy → Microphone में चालू करें।",
+  "it": "Il microfono è disattivato per Tenzy, quindi i clip sono muti. Attivalo in Impostazioni → Tenzy → Microfono.",
+  "ja": "Tenzyのマイクがオフのため無音です。設定 → Tenzy → マイクでオンにしてください。",
+  "pt": "O microfone está desligado para a Tenzy, então os clipes ficam sem som. Ative em Ajustes → Tenzy → Microfone.",
+  "zh": "Tenzy 的麦克风已关闭，视频将没有声音。请在 设置 → Tenzy → 麦克风 中开启。"
  },
  "Mild — a light jacket or long sleeves.": {
   "de": "Mild – leichte Jacke oder lange Ärmel.",
@@ -11659,6 +11749,16 @@
   "pt": "Ainda nada guardado. Cria um no ecrã inicial e aparece aqui.",
   "zh": "尚未保存任何内容。从起始屏幕创建一个，它就会出现在这里。"
  },
+ "Nothing was filmed — try again and hold the button a moment longer.": {
+  "de": "Nichts gefilmt – versuch es nochmal und filme etwas länger.",
+  "es": "No se grabó nada: inténtalo otra vez y graba un poco más.",
+  "fr": "Rien n'a été filmé — réessayez un peu plus longtemps.",
+  "hi": "कुछ रिकॉर्ड नहीं हुआ — फिर से कोशिश करें और थोड़ा ज़्यादा देर रिकॉर्ड करें।",
+  "it": "Non è stato ripreso nulla: riprova e registra un po' di più.",
+  "ja": "何も撮れていません — もう少し長く撮ってみてください。",
+  "pt": "Nada foi filmado — tente de novo e grave um pouco mais.",
+  "zh": "没有录到内容——请再试一次，录久一点。"
+ },
  "Nothing yet. Run a tool and its result appears here.": {
   "de": "Noch nichts. Führe ein Tool aus, und sein Ergebnis erscheint hier.",
   "es": "Nada aún. Ejecuta una herramienta y su resultado aparecerá aquí.",
@@ -12969,6 +13069,16 @@
   "pt": "Foto, vídeo e compartilhamento",
   "zh": "照片、视频与分享"
  },
+ "Photo: point and tap the big button — it picks the scene and coaches you.": {
+  "de": "Foto: zielen und auf den großen Knopf tippen – es erkennt die Szene und hilft dir.",
+  "es": "Foto: apunta y toca el botón grande; elige la escena y te guía.",
+  "fr": "Photo : visez et touchez le gros bouton — il choisit la scène et vous guide.",
+  "hi": "फ़ोटो: निशाना लगाएँ और बड़ा बटन दबाएँ — यह दृश्य चुनता है और गाइड करता है।",
+  "it": "Foto: inquadra e tocca il pulsante grande: sceglie la scena e ti guida.",
+  "ja": "写真：向けて大きなボタンをタップ — シーンを判断してアドバイスします。",
+  "pt": "Foto: aponte e toque no botão grande — ele escolhe a cena e orienta você.",
+  "zh": "照片：对准后点大按钮——它会识别场景并指导你。"
+ },
  "Photograph": {
   "de": "Fotografieren",
   "es": "Fotografiar",
@@ -13018,6 +13128,26 @@
   "ja": "写真へのアクセスがオフです — 設定で許可してください。",
   "pt": "O acesso a Fotos está desligado — permita em Ajustes.",
   "zh": "照片访问已关闭——请在设置中允许。"
+ },
+ "Photos access is off — allow it in Settings, or use Share to save it to Files.": {
+  "de": "Fotozugriff ist aus – erlaube ihn in den Einstellungen oder sichere über Teilen in Dateien.",
+  "es": "El acceso a Fotos está desactivado: permítelo en Ajustes o usa Compartir para guardarlo en Archivos.",
+  "fr": "L'accès à Photos est désactivé — autorisez-le dans Réglages ou utilisez Partager pour l'enregistrer dans Fichiers.",
+  "hi": "Photos की अनुमति बंद है — Settings में चालू करें, या Share से Files में सेव करें।",
+  "it": "L'accesso a Foto è disattivato: consentilo in Impostazioni o usa Condividi per salvarlo in File.",
+  "ja": "写真へのアクセスがオフです — 設定で許可するか、共有から「ファイル」に保存してください。",
+  "pt": "O acesso a Fotos está desligado — permita em Ajustes ou use Compartilhar para salvar em Arquivos.",
+  "zh": "照片访问已关闭——请在设置中允许，或用“分享”存到“文件”。"
+ },
+ "Photos and video. Point it at anything — it sets itself up for the scene and coaches you to the best shot or clip.": {
+  "de": "Fotos und Video. Richte es auf irgendetwas – es stellt sich auf die Szene ein und hilft dir zum besten Foto oder Clip.",
+  "es": "Fotos y vídeo. Apunta a cualquier cosa: se ajusta a la escena y te guía hacia la mejor foto o el mejor clip.",
+  "fr": "Photos et vidéo. Visez n'importe quoi — il s'adapte à la scène et vous guide vers la meilleure photo ou le meilleur clip.",
+  "hi": "फ़ोटो और वीडियो। किसी भी चीज़ पर रखें — यह दृश्य के हिसाब से सेट होता है और सबसे अच्छी फ़ोटो या क्लिप तक गाइड करता है।",
+  "it": "Foto e video. Puntalo su qualsiasi cosa: si regola sulla scena e ti guida alla foto o clip migliore.",
+  "ja": "写真と動画。何にでも向けるだけで、シーンに合わせて設定し、最高の写真や動画へ導きます。",
+  "pt": "Fotos e vídeo. Aponte para qualquer coisa — ele se ajusta à cena e guia você para a melhor foto ou clipe.",
+  "zh": "照片和视频。对准任何东西——它会自动适配场景，并指导你拍出最好的照片或视频。"
  },
  "Photos and videos are already compressed, so the zip is about the same size — it's one tidy file to send.": {
   "de": "Fotos und Videos sind schon komprimiert, die Zip ist also etwa gleich groß – aber eine ordentliche Datei zum Senden.",
@@ -17329,6 +17459,16 @@
   "pt": "Pan e zoom lentos, cinematográficos",
   "zh": "缓慢的电影感平移与缩放"
  },
+ "Slow down — smooth steps keep it watchable.": {
+  "de": "Langsamer – ruhige Schritte machen es ansehbar.",
+  "es": "Más despacio: pasos suaves hacen que se vea bien.",
+  "fr": "Ralentissez — des pas souples rendent la vidéo regardable.",
+  "hi": "धीरे चलें — सधे कदम वीडियो को देखने लायक रखते हैं।",
+  "it": "Rallenta: passi fluidi lo rendono guardabile.",
+  "ja": "ゆっくり — なめらかに歩くと見やすくなります。",
+  "pt": "Mais devagar — passos suaves deixam assistível.",
+  "zh": "慢一点——步子平稳更好看。"
+ },
  "Slower": {
   "de": "Langsamer",
   "es": "Más lento",
@@ -17859,6 +17999,16 @@
   "pt": "Idioma falado",
   "zh": "口语语言"
  },
+ "Sports & kids": {
+  "de": "Sport & Kinder",
+  "es": "Deporte y niños",
+  "fr": "Sport & enfants",
+  "hi": "खेल और बच्चे",
+  "it": "Sport e bambini",
+  "ja": "スポーツ・子ども",
+  "pt": "Esportes e crianças",
+  "zh": "运动与孩子"
+ },
  "Spot scams, see why": {
   "de": "Betrug erkennen, mit Begründung",
   "es": "Detecta estafas y ve por qué",
@@ -17968,6 +18118,16 @@
   "ja": "イヤフォンで小さめの音から始めてください。約16 kHzを超える純音は多くの大人には聞こえません——正常です。",
   "pt": "Começa baixo com auriculares. Os tons puros acima de ~16 kHz são inaudíveis para a maioria dos adultos — é normal.",
   "zh": "用耳机从小音量开始。约 16 kHz 以上的纯音对大多数成年人来说听不到——这很正常。"
+ },
+ "Start recording": {
+  "de": "Aufnahme starten",
+  "es": "Empezar a grabar",
+  "fr": "Démarrer l'enregistrement",
+  "hi": "रिकॉर्डिंग शुरू करें",
+  "it": "Avvia registrazione",
+  "ja": "録画開始",
+  "pt": "Começar a gravar",
+  "zh": "开始录制"
  },
  "Start with something else": {
   "de": "Mit etwas anderem beginnen",
@@ -18108,6 +18268,16 @@
   "ja": "読み上げを停止",
   "pt": "Parar leitura",
   "zh": "停止朗读"
+ },
+ "Stop recording": {
+  "de": "Aufnahme stoppen",
+  "es": "Detener grabación",
+  "fr": "Arrêter l'enregistrement",
+  "hi": "रिकॉर्डिंग रोकें",
+  "it": "Ferma registrazione",
+  "ja": "録画停止",
+  "pt": "Parar gravação",
+  "zh": "停止录制"
  },
  "Storage": {
   "de": "Speicher",
@@ -19469,6 +19639,16 @@
   "pt": "O alerta mostra o número e a morada, com botões Ligar e Direções.",
   "zh": "提醒会显示电话和地址，并带有“拨打”和“路线”按钮。"
  },
+ "The bright part is blown out — tap it to expose for it.": {
+  "de": "Der helle Teil ist überbelichtet – tippe darauf, um darauf zu belichten.",
+  "es": "La parte clara está quemada: tócala para exponer para ella.",
+  "fr": "La partie claire est brûlée — touchez-la pour l'exposer correctement.",
+  "hi": "चमकीला हिस्सा ज़्यादा उजला है — उस पर टैप करें।",
+  "it": "La parte chiara è bruciata: toccala per esporre su di essa.",
+  "ja": "明るい部分が白飛び — タップして露出を合わせて。",
+  "pt": "A parte clara estourou — toque nela para expor por ela.",
+  "zh": "亮部过曝——点一下按它测光。"
+ },
  "The camera's own best automatic settings.": {
   "de": "Die besten Automatik-Einstellungen der Kamera.",
   "es": "Los mejores ajustes automáticos de la cámara.",
@@ -20369,6 +20549,16 @@
   "pt": "Dica: funciona entre unidades — compara um frasco de 16 oz com um de 500 g e continua a dizer qual é mais barato por 100 g.",
   "zh": "提示：可跨单位比较——拿 16 盎司的罐子和 500 克的比较，它仍会告诉你每 100 克哪个更便宜。"
  },
+ "Tips appear while you film — hold steady, more light, turn sideways. Watch the clip before you save it.": {
+  "de": "Beim Filmen erscheinen Tipps – ruhig halten, mehr Licht, quer drehen. Sieh dir den Clip vor dem Sichern an.",
+  "es": "Aparecen consejos mientras grabas: mantén firme, más luz, gira el teléfono. Mira el clip antes de guardarlo.",
+  "fr": "Des conseils s'affichent pendant le tournage — stable, plus de lumière, à l'horizontale. Regardez le clip avant de l'enregistrer.",
+  "hi": "शूट करते समय सुझाव दिखते हैं — स्थिर रखें, ज़्यादा रोशनी, फ़ोन आड़ा करें। सेव करने से पहले क्लिप देखें।",
+  "it": "Mentre riprendi compaiono consigli: tieni fermo, più luce, gira il telefono. Guarda il clip prima di salvarlo.",
+  "ja": "撮影中にヒントが出ます — 手ブレ、光量、横向き。保存前に動画を確認できます。",
+  "pt": "Dicas aparecem enquanto filma — firme, mais luz, gire o telefone. Assista ao clipe antes de salvar.",
+  "zh": "拍摄时会出现提示——拿稳、补光、横过来。保存前先看一遍。"
+ },
  "Title (optional)": {
   "de": "Titel (optional)",
   "es": "Título (opcional)",
@@ -20468,6 +20658,16 @@
   "ja": "暗すぎます — 窓や照明の方を向いてください。",
   "pt": "Escuro demais — fique de frente para uma janela ou luz.",
   "zh": "太暗了——请面向窗户或灯光。"
+ },
+ "Too dark — find more light or switch to Low light.": {
+  "de": "Zu dunkel – such mehr Licht oder wechsle zu Wenig Licht.",
+  "es": "Demasiado oscuro: busca más luz o cambia a Poca luz.",
+  "fr": "Trop sombre — trouvez plus de lumière ou passez en Faible lumière.",
+  "hi": "बहुत अंधेरा — ज़्यादा रोशनी ढूँढें या कम रोशनी चुनें।",
+  "it": "Troppo buio: cerca più luce o passa a Poca luce.",
+  "ja": "暗すぎます — 明るい所へ行くか「暗所」に切り替えて。",
+  "pt": "Muito escuro — procure mais luz ou mude para Pouca luz.",
+  "zh": "太暗——找更亮的地方或切换到弱光。"
  },
  "Too easy to guess — avoid 1234-style runs.": {
   "de": "Zu leicht zu erraten – keine Folgen wie 1234.",
@@ -20918,6 +21118,16 @@
   "ja": "写真をメッセージやWhatsAppなどで使えるデザインステッカーに。",
   "pt": "Transforme fotos em figurinhas estilosas para Mensagens, WhatsApp e mais.",
   "zh": "把照片变成精心设计的贴纸，用于“信息”、WhatsApp 等。"
+ },
+ "Turn the phone sideways for a video that fills TVs and YouTube.": {
+  "de": "Dreh das Telefon quer – für Videos, die Fernseher und YouTube füllen.",
+  "es": "Gira el teléfono en horizontal para un vídeo que llene la tele y YouTube.",
+  "fr": "Tournez le téléphone à l'horizontale pour une vidéo qui remplit la TV et YouTube.",
+  "hi": "फ़ोन आड़ा करें ताकि वीडियो टीवी और YouTube पर पूरा दिखे।",
+  "it": "Gira il telefono in orizzontale per un video che riempie TV e YouTube.",
+  "ja": "横向きにするとテレビやYouTubeいっぱいに映ります。",
+  "pt": "Gire o telefone de lado para um vídeo que preenche TVs e YouTube.",
+  "zh": "横过手机，视频在电视和 YouTube 上才能铺满。"
  },
  "Turn volume to max, unplug earbuds, run it 2–3 times. Dry the port with a cloth afterwards — don't use heat.": {
   "de": "Stelle die Lautstärke auf max, zieh die Ohrhörer ab, führe es 2–3 Mal aus. Trockne danach den Anschluss mit einem Tuch — keine Hitze verwenden.",
@@ -21489,6 +21699,16 @@
   "pt": "Muito próximas — a maioria diria que são iguais",
   "zh": "非常接近——大多数人会说是同一种"
  },
+ "Very dark — rest the phone on something steady.": {
+  "de": "Sehr dunkel – leg das Telefon auf etwas Stabiles.",
+  "es": "Muy oscuro: apoya el teléfono en algo firme.",
+  "fr": "Très sombre — posez le téléphone sur un appui stable.",
+  "hi": "बहुत अंधेरा — फ़ोन किसी स्थिर चीज़ पर टिकाएँ।",
+  "it": "Molto buio: appoggia il telefono su qualcosa di stabile.",
+  "ja": "とても暗い — 安定した所に置いてください。",
+  "pt": "Muito escuro — apoie o telefone em algo firme.",
+  "zh": "很暗——把手机放在稳的地方。"
+ },
  "Very long recording": {
   "de": "Sehr lange Aufnahme",
   "es": "Grabación muy larga",
@@ -21518,6 +21738,16 @@
   "ja": "スクラブ準備完了の動画",
   "pt": "Vídeo pronto para percorrer",
   "zh": "视频已就绪可拖动浏览"
+ },
+ "Video: pick what you're filming (sports, low light, interview, walk & talk, cinematic) and press record.": {
+  "de": "Video: wähle, was du filmst (Sport, wenig Licht, Interview, Gehen & Reden, Kino) und drück Aufnahme.",
+  "es": "Vídeo: elige qué grabas (deporte, poca luz, entrevista, caminar y hablar, cine) y pulsa grabar.",
+  "fr": "Vidéo : choisissez ce que vous filmez (sport, faible lumière, interview, marche & parole, cinéma) et appuyez sur enregistrer.",
+  "hi": "वीडियो: चुनें क्या शूट कर रहे हैं (खेल, कम रोशनी, इंटरव्यू, चलते हुए बात, सिनेमैटिक) और रिकॉर्ड दबाएँ।",
+  "it": "Video: scegli cosa riprendi (sport, poca luce, intervista, cammina e parla, cinematografico) e premi registra.",
+  "ja": "動画：撮るもの（スポーツ、暗所、インタビュー、歩き撮り、シネマ）を選んで録画。",
+  "pt": "Vídeo: escolha o que vai filmar (esportes, pouca luz, entrevista, andar e falar, cinematográfico) e grave.",
+  "zh": "视频：选择拍摄内容（运动、弱光、采访、边走边说、电影感），然后开始录制。"
  },
  "Videos become": {
   "de": "Videos werden zu",
@@ -21648,6 +21878,16 @@
   "ja": "GPS測位を待機中…",
   "pt": "À espera de sinal GPS…",
   "zh": "正在等待 GPS 定位…"
+ },
+ "Walk & talk": {
+  "de": "Gehen & Reden",
+  "es": "Caminar y hablar",
+  "fr": "Marche & parole",
+  "hi": "चलते हुए बात",
+  "it": "Cammina e parla",
+  "ja": "歩き撮り",
+  "pt": "Andar e falar",
+  "zh": "边走边说"
  },
  "Walk me back": {
   "de": "Zurück navigieren",
@@ -22649,6 +22889,16 @@
   "pt": "O nome do seu melhor amigo de infância",
   "zh": "你童年最好朋友的名字"
  },
+ "Your clip": {
+  "de": "Dein Clip",
+  "es": "Tu clip",
+  "fr": "Votre clip",
+  "hi": "आपकी क्लिप",
+  "it": "Il tuo clip",
+  "ja": "撮った動画",
+  "pt": "Seu clipe",
+  "zh": "你的视频"
+ },
  "Your day in one morning note": {
   "de": "Dein Tag in einer Morgennotiz",
   "es": "Tu día en una nota matinal",
@@ -23428,6 +23678,16 @@
   "ja": "新しい長さ",
   "pt": "nova duração",
   "zh": "新时长"
+ },
+ "no sound": {
+  "de": "kein Ton",
+  "es": "sin sonido",
+  "fr": "sans son",
+  "hi": "आवाज़ नहीं",
+  "it": "senza audio",
+  "ja": "音声なし",
+  "pt": "sem som",
+  "zh": "无声音"
  },
  "noisy moment": {
   "de": "lauter Moment",

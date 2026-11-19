@@ -2608,6 +2608,82 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    /// Video mode, without a camera: made-up frames and sound go through the exact recorder the camera uses,
+    /// and the finished movie is opened and checked — length, size, frame rate, and that it has sound.
+    func testVideoRecorderMakesARealMovieWithSound() async throws {
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("rec-test-\(UUID().uuidString.prefix(6)).mov")
+        let rec = VideoRecorder(url: url, fps: 30, realtime: false)
+        func frame(_ i: Int) -> CVPixelBuffer {
+            var pb: CVPixelBuffer?
+            CVPixelBufferCreate(nil, 640, 360, kCVPixelFormatType_32BGRA, [kCVPixelBufferIOSurfacePropertiesKey as String: [String: Any]()] as CFDictionary, &pb)
+            let b = pb!
+            CVPixelBufferLockBaseAddress(b, [])
+            let p = CVPixelBufferGetBaseAddress(b)!.assumingMemoryBound(to: UInt8.self)
+            for k in 0..<(CVPixelBufferGetBytesPerRow(b) * 360) { p[k] = UInt8((k + i * 7) % 255) }
+            CVPixelBufferUnlockBaseAddress(b, [])
+            return b
+        }
+        let start = CMTime(value: 1000, timescale: 600)        // camera clocks never start at zero
+        XCTAssertNotNil(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: CMTimeSubtract(start, CMTime(value: 60, timescale: 600))))
+        // Sound before the first frame is left out.
+        XCTAssertFalse(rec.appendAudio(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: start)!), "no sound before the picture starts")
+        for i in 0..<60 {
+            XCTAssertTrue(rec.appendVideo(frame(i), at: CMTimeAdd(start, CMTime(value: Int64(i * 20), timescale: 600))), "frame \(i)")
+        }
+        XCTAssertFalse(rec.appendVideo(frame(0), at: start), "a frame from the past is never written")
+        var t = start
+        while CMTimeCompare(t, CMTimeAdd(start, CMTime(seconds: 2, preferredTimescale: 600))) < 0 {
+            let buf = try XCTUnwrap(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: t))
+            rec.appendAudio(buf)
+            t = CMTimeAdd(t, CMTime(value: 1024, timescale: 44_100))
+        }
+        XCTAssertEqual(rec.frames, 60)
+        XCTAssertGreaterThan(rec.audioBuffers, 70)
+        XCTAssertEqual(rec.seconds, 59.0 / 30.0, accuracy: 0.01)
+        let out = await rec.finish()
+        let movie = try XCTUnwrap(out, "the movie is written")
+        let asset = AVURLAsset(url: movie)
+        let duration = try await asset.load(.duration).seconds
+        XCTAssertEqual(duration, 2.0, accuracy: 0.15, "2 seconds of frames → a 2-second clip")
+        let v = try await asset.loadTracks(withMediaType: .video)
+        let a = try await asset.loadTracks(withMediaType: .audio)
+        XCTAssertEqual(v.count, 1); XCTAssertEqual(a.count, 1, "it has sound")
+        let size = try await v[0].load(.naturalSize)
+        XCTAssertEqual(size.width, 640); XCTAssertEqual(size.height, 360)
+        let rate = try await v[0].load(.nominalFrameRate)
+        XCTAssertEqual(Double(rate), 30, accuracy: 1.5)
+        // It plays back: the first frame decodes.
+        let gen = AVAssetImageGenerator(asset: asset)
+        let img = try await gen.image(at: .zero).image
+        XCTAssertEqual(img.width, 640)
+        let empty = VideoRecorder(url: url.deletingLastPathComponent().appendingPathComponent("empty-\(UUID().uuidString.prefix(4)).mov"), realtime: false)
+        let none = await empty.finish()
+        XCTAssertNil(none, "stopping before anything was filmed gives no file, not a broken one")
+        try? FileManager.default.removeItem(at: movie)
+    }
+
+    func testVideoScenesAndFilmingCoach() {
+        XCTAssertEqual(VideoScene.action.fps, 60)
+        XCTAssertEqual(VideoScene.cinematic.fps, 24)
+        XCTAssertEqual(VideoScene.cinematic.maxShutter, 1.0 / Double(2 * VideoScene.cinematic.fps), accuracy: 0.0001, "the 180° shutter rule")
+        XCTAssertLessThan(VideoScene.action.maxShutter, 1.0 / 200, "fast shutter freezes motion")
+        for sc in VideoScene.allCases { XCTAssertLessThanOrEqual(sc.maxShutter, 1.0 / Double(sc.fps) + 0.0001, "\(sc) never exposes longer than a frame") }
+        func r(_ b: Double = 0.5, clipped: Double = 0, upright: Bool = false, shake: Double = 0, rec: Bool = true, s: Double = 10, sc: VideoScene = .everyday) -> FilmingCoach.Reading {
+            .init(brightness: b, clipped: clipped, upright: upright, shake: shake, recording: rec, seconds: s, scene: sc)
+        }
+        XCTAssertNil(FilmingCoach.tip(r()), "a good shot gets no nagging")
+        XCTAssertEqual(FilmingCoach.tip(r(shake: 2.5)), "Hold steady — move the phone slower.")
+        XCTAssertEqual(FilmingCoach.tip(r(shake: 2.5, sc: .vlog)), "Slow down — smooth steps keep it watchable.")
+        XCTAssertEqual(FilmingCoach.tip(r(0.05)), "Too dark — find more light or switch to Low light.")
+        XCTAssertEqual(FilmingCoach.tip(r(0.05, sc: .night)), "Very dark — rest the phone on something steady.")
+        XCTAssertEqual(FilmingCoach.tip(r(clipped: 0.3)), "The bright part is blown out — tap it to expose for it.")
+        XCTAssertEqual(FilmingCoach.tip(r(upright: true, rec: false)), "Turn the phone sideways for a video that fills TVs and YouTube.")
+        XCTAssertNil(FilmingCoach.tip(r(upright: true, rec: true)), "no 'turn sideways' once filming — rotating mid-clip would ruin it")
+        XCTAssertNil(FilmingCoach.tip(r(upright: true, rec: false, sc: .vlog)), "vertical is fine for walk & talk")
+        XCTAssertEqual(FilmingCoach.tip(r(s: 1.2)), "Keep going — clips under 3 seconds feel too short.")
+        XCTAssertEqual(FilmingCoach.timeText(75.4), "1:15")
+    }
+
     @MainActor func testContactsCountryCodeAndBackupReminder() {
         XCTAssertEqual(ContactBook.withCountryCode("(555) 123-4567", code: "+1"), "+1 (555) 123-4567")
         XCTAssertEqual(ContactBook.withCountryCode("1 555 123 4567", code: "1"), "+1 555 123 4567", "the 1 isn't doubled")
