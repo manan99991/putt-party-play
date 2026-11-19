@@ -1,20 +1,36 @@
 import SwiftUI
 import ARKit
 import RealityKit
+import RoomPlan
 import simd
 
-/// Measure — an AR tape: tap to drop points on real surfaces, read distance as you go, chain points
-/// for perimeter, close the loop for area, or measure height from the floor. Uses LiDAR when the
-/// phone has it. Results you can copy into a message.
+/// Measure — starts from the job, not the tape:
+///  • Length (a sofa, a gap), Wall or window (two opposite corners → width × height), Floor or table (corners in
+///    order, closes itself when you come back to the first), Height (floor, then the top), and Whole room
+///    (on iPhones with LiDAR: walk round once and get a floor plan with every wall, door and window).
+///  • One step at a time, said on screen ("Step 1 of 2 — put the circle on a corner and tap"); tap where you
+///    want the point, or aim the circle and tap the button.
+///  • Big markers with the length written on every line, in the scene.
+///  • Areas worked out on the real surface (wall, floor or table), with checks: corners out of order are put
+///    back in order; corners that aren't on one flat surface are flagged.
+///  • Will it fit? and what to buy (paint, flooring, tiles); a photo with the numbers on; saved rooms.
 struct MeasureARView: View {
     @StateObject private var ar = ARMeasure()
     @AppStorage("measure.metric") private var metric = !(Locale.current.measurementSystem == .us)
-    private enum Mode: Int, CaseIterable { case distance, area, height
-        var title: String { ["Distance", "Area", "Height"][rawValue] } }
-    @State private var mode: Mode = .distance
-    @State private var showSensors = false   // Level, compass and the other sensors, folded in here.
+
+    enum Job: Int, CaseIterable, Identifiable {
+        case length, wall, floor, height, room
+        var id: Int { rawValue }
+        var title: String { ["Length", "Wall or window", "Floor or table", "Height", "Whole room"][rawValue] }
+        var icon: String { ["ruler", "rectangle.portrait", "square.dashed", "arrow.up.and.down", "cube.transparent"][rawValue] }
+        var line: String { ["A sofa, a table, a gap", "Paint, wallpaper, blinds", "Flooring, a rug, tiles", "A TV, a shelf, the ceiling", "A floor plan in one walk"][rawValue] }
+    }
+    @State private var job: Job?
+    @State private var showSensors = false
     @State private var capturing = false
     @State private var photo: MeasurePhoto?
+    @State private var scanning = false
+    @State private var room: RoomSummary?
 
     private struct MeasurePhoto: Identifiable { let id = UUID(); let url: URL; let image: UIImage }
     @State private var saved: [RoomMath.Saved] = RoomMath.load()
@@ -26,71 +42,34 @@ struct MeasureARView: View {
     @State private var coats = 2
     @State private var tileSide = 0.30              // metres
     @State private var viewing: RoomMath.Saved?
+    @State private var itemW = ""
+    @State private var itemH = ""
+
+    private var roomSupported: Bool { RoomCaptureSession.isSupported }
 
     var body: some View {
-        ToolPage(title: "Measure", subtitle: "Tap to place points on real surfaces — distance, area or height. Get how much paint, flooring and tile to buy, and keep your measurements for the shop.") {
-            HowTo("measure", [
-                "Move the phone slowly so it can map the surface.",
-                "Tap to drop a start point, move, then tap to drop the end.",
-                "Area: tap each corner of the floor — Tenzy works out the paint, flooring and tiles to buy.",
-                "Save a measurement with a name and photo; it's in My measurements when you're at the shop.",
-            ])
-            if ARWorldTrackingConfiguration.isSupported {
-                ZStack {
-                    ARContainer(ar: ar)
-                        .frame(height: 440)
-                        .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                        .onTapGesture { ar.place() }
-                    // reticle + live readout
-                    VStack {
-                        Spacer()
-                        ZStack {
-                            Circle().stroke(.white, lineWidth: 2).frame(width: 22, height: 22).shadow(radius: 2)
-                            Circle().fill(ar.hasSurface ? HandyColor.success : HandyColor.danger).frame(width: 6, height: 6)
-                        }
-                        Spacer()
-                        VStack(spacing: 4) {
-                            if let big = bigReadout {
-                                Text(big).font(.system(size: 34, weight: .bold, design: .rounded)).monospacedDigit()
-                            }
-                            Text(statusLine).font(HandyFont.caption).multilineTextAlignment(.center)
-                        }
-                        .foregroundStyle(.white).padding(.horizontal, 14).padding(.vertical, 8)
-                        .background(.black.opacity(0.5), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .padding(.bottom, HandySpacing.s12)
-                    }.allowsHitTesting(false)
-                }
-                HandyFlow(spacing: HandySpacing.s8) {
-                    ForEach(Mode.allCases, id: \.rawValue) { m in HChip(text: m.title, selected: mode == m) { mode = m; ar.reset() } }
-                }
-                Picker(L("Units"), selection: $metric) { Text(L("ft/in")).tag(false); Text(L("m/cm")).tag(true) }.pickerStyle(.segmented).frame(width: 160)
-                HStack(spacing: HandySpacing.s8) {
-                    Button { ar.place() } label: { Label(primaryActionLabel, systemImage: "plus.circle.fill").frame(maxWidth: .infinity) }.primaryButton().disabled(!ar.hasSurface)
-                    if mode == .area && ar.points.count >= 3 {
-                        Button { ar.closeLoop() } label: { Image(systemName: "checkmark.circle.fill").accessibilityLabel(L("Close shape")).frame(width: 36, height: 36) }.compactButton()
-                    }
-                    Button { ar.undo() } label: { Image(systemName: "arrow.uturn.backward").accessibilityLabel(L("Undo")).frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
-                    Button { ar.reset() } label: { Image(systemName: "trash").accessibilityLabel(L("Clear")).frame(width: 36, height: 36) }.compactButton().disabled(ar.points.isEmpty)
-                }
-                results
-            } else {
+        ToolPage(title: "Measure", subtitle: "Pick what you're measuring. Tenzy walks you through it, writes the size on every line, and works out what to buy.") {
+            if !ARWorldTrackingConfiguration.isSupported {
                 LimitNote("AR measuring needs a real iPhone with ARKit — it isn't available here.")
+            } else if let job {
+                if job == .room { roomPanel } else { measuring(job) }
+            } else {
+                chooser
             }
-            if mode == .area, ar.points.count >= 3 { buyCard }
             savedSection
             Button { showSensors = true } label: {
                 Label(L("Level, compass & sensors"), systemImage: "level").frame(maxWidth: .infinity)
             }.secondaryButton()
-            Text(ar.lidar ? "LiDAR detected — expect ±1 cm on flat surfaces." : "Accuracy is typically ±1–2 cm up to a few metres; move the phone slowly first so it learns the room.")
-                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .onAppear { ar.start() }
         .onDisappear { ar.stop() }
         .sheet(isPresented: $showSensors) {
             NavigationStack {
                 InstrumentsView()
                     .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { showSensors = false } } }
             }
+        }
+        .fullScreenCover(isPresented: $scanning) {
+            RoomScanScreen { r in scanning = false; if let r { room = RoomSummary(r) } }.ignoresSafeArea()
         }
         .alert(L("Name this measurement"), isPresented: $naming) {
             TextField(L("e.g. Sofa wall, bedroom window"), text: $saveName)
@@ -130,55 +109,265 @@ struct MeasureARView: View {
         }
     }
 
-    /// Capture the AR view with the measurement burned in — a shareable "will it fit?" photo.
-    private func capturePhoto() {
-        capturing = true
-        Task {
-            let base = await ar.snapshot()
-            let composed = base.map { label($0, with: summary) }
-            defer { capturing = false }
-            guard let composed else { return }
-            let url = FileManager.default.temporaryDirectory.appendingPathComponent("Measurement-\(UUID().uuidString.prefix(4)).png")
-            if let d = composed.pngData() { try? d.write(to: url) }
-            photo = MeasurePhoto(url: url, image: composed)
+    // MARK: 1 · what are you measuring?
+
+    private var chooser: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            Text(L("What are you measuring?")).font(HandyFont.cardTitle)
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
+                ForEach(Job.allCases.filter { $0 != .room || roomSupported }) { j in
+                    Button { start(j) } label: {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Image(systemName: j.icon).font(.system(size: 26, weight: .semibold)).foregroundStyle(HandyColor.accent)
+                            Text(L(j.title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).fixedSize(horizontal: false, vertical: true)
+                            Text(L(j.line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        }
+                        .frame(maxWidth: .infinity, minHeight: 112, alignment: .topLeading)
+                        .multilineTextAlignment(.leading)
+                        .cardStyle(padding: HandySpacing.s12)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("measure-job-\(j.rawValue)")
+                }
+            }
+            if !roomSupported {
+                Text(L("Whole-room floor plans need an iPhone with LiDAR (the Pro models)."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
         }
     }
 
-    /// Draw the measurement summary onto a dark caption bar across the bottom of the snapshot.
-    private func label(_ base: UIImage, with text: String) -> UIImage {
-        let size = base.size
-        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = base.scale
-        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
-            base.draw(in: CGRect(origin: .zero, size: size))
-            let pad: CGFloat = size.width * 0.04
-            let font = UIFont.systemFont(ofSize: max(16, size.width * 0.045), weight: .bold)
-            let attrs: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: UIColor.white]
-            let bound = (text as NSString).boundingRect(with: CGSize(width: size.width - pad * 2, height: .greatestFiniteMagnitude),
-                                                        options: [.usesLineFragmentOrigin], attributes: attrs, context: nil)
-            let barH = bound.height + pad * 1.6
-            UIColor.black.withAlphaComponent(0.6).setFill()
-            ctx.fill(CGRect(x: 0, y: size.height - barH, width: size.width, height: barH))
-            (text as NSString).draw(with: CGRect(x: pad, y: size.height - barH + pad * 0.8, width: size.width - pad * 2, height: bound.height),
-                                    options: [.usesLineFragmentOrigin], attributes: attrs, context: nil)
+    private func start(_ j: Job) {
+        job = j; itemW = ""; itemH = ""
+        if j == .room { scanning = true; return }
+        ar.job = j; ar.reset(); ar.start()
+    }
+
+    // MARK: 2 · measuring, one step at a time
+
+    private func measuring(_ j: Job) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HStack {
+                Label(L(j.title), systemImage: j.icon).font(HandyFont.bodyStrong)
+                Spacer()
+                Button { ar.stop(); job = nil } label: { Label(L("Change"), systemImage: "chevron.left") }.textButton()
+            }
+            ZStack {
+                ARContainer(ar: ar)
+                    .frame(height: 460)
+                    .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                    .onTapGesture(coordinateSpace: .local) { p in ar.place(at: p) }
+                VStack(spacing: 0) {
+                    stepBanner(j)
+                    Spacer()
+                    ZStack {
+                        Circle().stroke(.white, lineWidth: 3).frame(width: 30, height: 30).shadow(radius: 2)
+                        Circle().fill(ar.hasSurface ? HandyColor.success : HandyColor.danger).frame(width: 8, height: 8)
+                    }
+                    Spacer()
+                    if let big = bigReadout(j) {
+                        Text(big).font(.system(size: 36, weight: .bold, design: .rounded)).monospacedDigit()
+                            .foregroundStyle(.white).padding(.horizontal, 16).padding(.vertical, 6)
+                            .background(.black.opacity(0.55), in: Capsule())
+                            .padding(.bottom, HandySpacing.s12)
+                    }
+                }
+                .allowsHitTesting(false)
+            }
+            HStack(spacing: HandySpacing.s8) {
+                Button { ar.place(at: nil) } label: { Label(L(placeLabel(j)), systemImage: "plus.circle.fill").frame(maxWidth: .infinity) }
+                    .primaryButton().disabled(!ar.hasSurface || ar.done)
+                    .accessibilityIdentifier("measure-place")
+                if j == .floor && ar.points.count >= 3 && !ar.closed {
+                    Button { ar.close() } label: { Label(L("Finish"), systemImage: "checkmark.circle.fill") }.compactButton()
+                }
+                Button { ar.undo() } label: { Image(systemName: "arrow.uturn.backward").accessibilityLabel(L("Undo")).frame(width: 36, height: 36) }
+                    .compactButton().disabled(ar.points.isEmpty)
+                Button { ar.reset() } label: { Image(systemName: "arrow.counterclockwise").accessibilityLabel(L("Start over")).frame(width: 36, height: 36) }
+                    .compactButton().disabled(ar.points.isEmpty)
+            }
+            Picker(L("Units"), selection: $metric) { Text(L("ft/in")).tag(false); Text(L("m/cm")).tag(true) }
+                .pickerStyle(.segmented).frame(width: 180)
+                .onChange(of: metric) { _, m in ar.metric = m; ar.redraw() }
+                .onAppear { ar.metric = metric }
+            results(j)
+            if j == .floor, ar.closed, ar.points.count >= 3 { buyCard }
+            Text(ar.lidar ? L("LiDAR on this iPhone: expect about ±1 cm on flat surfaces.") : L("Expect about ±1–2 cm up to a few metres. Move slowly first so Tenzy can see the room."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
     }
 
-    // MARK: what to buy
-
-    private var ceilingMetres: Double {
-        if ceiling <= 0 { return 2.4 }
-        return metric ? ceiling : ceiling * 0.3048
+    private func stepBanner(_ j: Job) -> some View {
+        let s = step(j)
+        return VStack(alignment: .leading, spacing: 2) {
+            if let n = s.count { Text(n).font(.system(size: 12, weight: .bold)).foregroundStyle(.white.opacity(0.8)) }
+            Text(L(s.text)).font(.system(size: 16, weight: .semibold)).foregroundStyle(.white).fixedSize(horizontal: false, vertical: true)
+            if let w = ar.warning { Label(L(w), systemImage: "exclamationmark.triangle.fill").font(.system(size: 13, weight: .semibold)).foregroundStyle(.yellow) }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 12).padding(.vertical, 8)
+        .background(.black.opacity(0.6), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .padding(10)
+        .accessibilityElement(children: .combine)
     }
+
+    /// What to do now, in plain words, and which step it is.
+    private func step(_ j: Job) -> (count: String?, text: String) {
+        let n = ar.points.count
+        if !ar.hasSurface && n == 0 { return (nil, "Move the phone slowly, pointing at the floor or the wall, until the dot turns green.") }
+        switch j {
+        case .length:
+            if n == 0 { return ("STEP 1 OF 2", "Put the circle on one end and tap.") }
+            if n == 1 { return ("STEP 2 OF 2", "Move to the other end — the length updates live — and tap.") }
+            return ("DONE", "Measured. Tap again to add another length, or check it below.")
+        case .wall:
+            if n == 0 { return ("STEP 1 OF 2", "Tap the bottom-left corner of the wall, window or door.") }
+            if n == 1 { return ("STEP 2 OF 2", "Now tap the opposite corner, top-right.") }
+            return ("DONE", "Width, height and area are below. Start over to measure another.")
+        case .floor:
+            if ar.closed { return ("DONE", "Area and what to buy are below.") }
+            if n == 0 { return ("CORNER 1", "Tap the first corner of the floor or table.") }
+            if n < 3 { return ("CORNER \(n + 1)", "Go round the edge and tap the next corner.") }
+            return ("CORNER \(n + 1)", "Tap the next corner, or tap the first corner again (or Finish) to close the shape.")
+        case .height:
+            if n == 0 { return ("STEP 1 OF 2", "Tap the floor right below what you're measuring.") }
+            if n == 1 { return ("STEP 2 OF 2", "Aim at the top — the height updates live — and tap.") }
+            return ("DONE", "Height is below.")
+        case .room: return (nil, "")
+        }
+    }
+
+    private func placeLabel(_ j: Job) -> String {
+        switch j {
+        case .length: return ar.points.isEmpty ? "Set this end" : "Set the other end"
+        case .wall: return ar.points.isEmpty ? "Set first corner" : "Set opposite corner"
+        case .floor: return "Add corner"
+        case .height: return ar.points.isEmpty ? "Set the floor" : "Set the top"
+        case .room: return ""
+        }
+    }
+
+    private func bigReadout(_ j: Job) -> String? {
+        let n = ar.points.count
+        switch j {
+        case .length:
+            if let live = ar.liveDistance, !ar.done || n == 1 { return MeasureMath.length(live, metric: metric) }
+            return n >= 2 ? MeasureMath.length(MeasureMath.pathLength(ar.points), metric: metric) : nil
+        case .wall:
+            if n >= 2 { let r = MeasureMath.rectangle(ar.points[0], ar.points[1]); return "\(MeasureMath.length(r.width, metric: metric)) × \(MeasureMath.length(r.height, metric: metric))" }
+            if n == 1, let c = ar.cursor { let r = MeasureMath.rectangle(ar.points[0], c); return "\(MeasureMath.length(r.width, metric: metric)) × \(MeasureMath.length(r.height, metric: metric))" }
+            return nil
+        case .floor:
+            guard n >= 3 else { return ar.liveDistance.map { MeasureMath.length($0, metric: metric) } }
+            return MeasureMath.area(MeasureMath.surface(ar.points).area, metric: metric)
+        case .height:
+            if n >= 2 { return MeasureMath.length(MeasureMath.height(from: ar.points[0], to: ar.points[1]), metric: metric) }
+            return ar.liveHeight.map { MeasureMath.length($0, metric: metric) }
+        case .room: return nil
+        }
+    }
+
+    // MARK: 3 · the result
+
+    @ViewBuilder private func results(_ j: Job) -> some View {
+        let n = ar.points.count
+        let ready = (j == .length && n >= 2) || (j == .wall && n >= 2) || (j == .height && n >= 2) || (j == .floor && n >= 3)
+        if ready {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                switch j {
+                case .length:
+                    ForEach(Array(zip(ar.points.dropFirst(), ar.points).enumerated()), id: \.offset) { i, pair in
+                        row("\(L("Length")) \(i + 1)", MeasureMath.length(MeasureMath.distance(pair.0, pair.1), metric: metric))
+                    }
+                    if n > 2 { row(L("Total"), MeasureMath.length(MeasureMath.pathLength(ar.points), metric: metric), strong: true) }
+                    fit(space: MeasureMath.distance(ar.points[0], ar.points[1]), spaceH: nil)
+                case .wall:
+                    let r = MeasureMath.rectangle(ar.points[0], ar.points[1])
+                    row(L("Width"), MeasureMath.length(r.width, metric: metric))
+                    row(L("Height"), MeasureMath.length(r.height, metric: metric))
+                    row(L("Area"), MeasureMath.area(r.area, metric: metric), strong: true)
+                    if r.height < 0.15 { note(L("The two corners are almost level — tap a bottom corner, then the top corner opposite it.")) }
+                    row("\(L("Paint for this wall")) (\(coats) \(L("coats")))", paintFor(r.area))
+                    fit(space: r.width, spaceH: r.height)
+                case .height:
+                    row(L("Height"), MeasureMath.length(MeasureMath.height(from: ar.points[0], to: ar.points[1]), metric: metric), strong: true)
+                case .floor:
+                    let s = MeasureMath.surface(ar.points)
+                    row(L("Area"), MeasureMath.area(s.area, metric: metric), strong: true)
+                    row(L("Edge all round"), MeasureMath.length(s.perimeter, metric: metric))
+                    if s.reordered { note(L("The corners were tapped out of order, so Tenzy put them back in order round the edge.")) }
+                    if !s.flat { warn(L("These corners aren't on one flat surface (some may be on the wall or furniture). Start over and tap only floor corners.")) }
+                    if !ar.closed { note(L("Tap Finish (or the first corner again) when you've tapped every corner.")) }
+                case .room: EmptyView()
+                }
+                HStack {
+                    Button { Copier.copy(summary(j)) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
+                    Button { capturePhoto(j) } label: { Label(capturing ? "…" : L("Photo"), systemImage: "camera") }.compactButton().disabled(capturing)
+                    ShareLink(item: summary(j)) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
+                    Button { saveName = ""; naming = true } label: { Label(L("Save"), systemImage: "bookmark") }.compactButton()
+                        .accessibilityIdentifier("measure-save")
+                    Spacer()
+                }
+            }.cardStyle(padding: HandySpacing.s12)
+        }
+    }
+
+    private func row(_ k: String, _ v: String, strong: Bool = false) -> some View {
+        HStack { Text(k).font(strong ? HandyFont.bodyStrong : HandyFont.caption).foregroundStyle(strong ? HandyColor.textPrimary : HandyColor.textSecondary); Spacer(); Text(v).font(HandyFont.bodyStrong).monospacedDigit() }
+    }
+    private func note(_ t: String) -> some View {
+        Label(t, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+    }
+    private func warn(_ t: String) -> some View {
+        Label(t, systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func paintFor(_ m2: Float) -> String {
+        let litres = Double(m2) * Double(coats) / RoomMath.coveragePerLitre
+        return metric ? String(format: "%.1f L", litres) : String(format: "%.2f gal", litres / RoomMath.litresPerGallon)
+    }
+
+    /// Will it fit? The thing's size in the units shown; the answer with the room to spare.
+    private func fit(space: Float, spaceH: Float?) -> some View {
+        let unit: Float = metric ? 0.01 : 0.0254
+        let w = Float(itemW.replacingOccurrences(of: ",", with: ".")).map { $0 * unit }
+        let h = Float(itemH.replacingOccurrences(of: ",", with: ".")).map { $0 * unit }
+        return VStack(alignment: .leading, spacing: 6) {
+            Text(L("Will it fit?")).font(HandyFont.bodyStrong)
+            HStack {
+                TextField(metric ? L("Its width, cm") : L("Its width, inches"), text: $itemW).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
+                if spaceH != nil { TextField(metric ? L("Its height, cm") : L("Its height, inches"), text: $itemH).keyboardType(.decimalPad).textFieldStyle(.roundedBorder) }
+            }
+            if let w {
+                let worst = Self.worstGap(space: space, spaceH: spaceH, w: w, h: h)
+                Label(worst >= 0 ? "\(L("Fits, with")) \(MeasureMath.length(worst, metric: metric)) \(L("to spare"))" : "\(L("Too big by")) \(MeasureMath.length(-worst, metric: metric))",
+                      systemImage: worst >= 0 ? "checkmark.circle.fill" : "xmark.circle.fill")
+                    .font(HandyFont.bodyStrong).foregroundStyle(worst >= 0.02 ? HandyColor.success : (worst >= 0 ? HandyColor.amber : HandyColor.danger))
+                if worst >= 0 && worst < 0.02 { Text(L("Only just — allow for skirting boards and handles.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            }
+        }
+        .padding(.top, 4)
+    }
+
+    /// The tightest side: room to spare (positive) or how much too big (negative).
+    static func worstGap(space: Float, spaceH: Float?, w: Float, h: Float?) -> Float {
+        var gap = MeasureMath.spare(space: space, item: w)
+        if let spaceH, let h { gap = min(gap, MeasureMath.spare(space: spaceH, item: h)) }
+        return gap
+    }
+
+    // MARK: what to buy (floors)
+
+    private var ceilingMetres: Double { ceiling <= 0 ? 2.4 : (metric ? ceiling : ceiling * 0.3048) }
 
     private var needs: RoomMath.Needs {
-        RoomMath.needs(floorArea: Double(MeasureMath.polygonArea(ar.points)),
-                       perimeter: Double(MeasureMath.pathLength(ar.points + [ar.points[0]])),
-                       ceiling: ceilingMetres, doors: doors, windows: windows, coats: coats, tileSide: tileSide, metric: metric)
+        let s = MeasureMath.surface(ar.points)
+        return RoomMath.needs(floorArea: Double(s.area), perimeter: Double(s.perimeter),
+                              ceiling: ceilingMetres, doors: doors, windows: windows, coats: coats, tileSide: tileSide, metric: metric)
     }
 
     private func areaText(_ m2: Double) -> String { MeasureMath.area(Float(m2), metric: metric) }
 
-    /// From the floor you just measured: paint for the walls, flooring and tiles — with waste and coats included.
     private var buyCard: some View {
         let n = needs
         return VStack(alignment: .leading, spacing: HandySpacing.s8) {
@@ -206,18 +395,87 @@ struct MeasureARView: View {
         .cardStyle()
     }
 
-    private func row(_ k: String, _ v: String) -> some View {
-        HStack { Text(k).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(v).font(HandyFont.bodyStrong).monospacedDigit() }
-    }
-
     private func buyList(_ n: RoomMath.Needs) -> String {
-        ["\(L("Room")): \(summary)",
+        ["\(L("Room")): \(summary(.floor))",
          "\(L("Paint")) (\(coats) \(L("coats"))): \(RoomMath.paintText(n, metric: metric))",
          "\(L("Flooring")): \(areaText(n.flooring))",
          "\(L("Tiles")): \(n.tiles)"].joined(separator: "\n")
     }
 
-    // MARK: saved
+    // MARK: whole room (LiDAR)
+
+    @ViewBuilder private var roomPanel: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HStack {
+                Label(L("Whole room"), systemImage: "cube.transparent").font(HandyFont.bodyStrong)
+                Spacer()
+                Button { job = nil; room = nil } label: { Label(L("Change"), systemImage: "chevron.left") }.textButton()
+            }
+            if let room {
+                RoomPlanCard(room: room, metric: metric)
+                ShareLink(item: room.text(metric: metric)) { Label(L("Share the room's sizes"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { saveName = L("Room"); RoomMath.add(name: L("Room"), value: room.text(metric: metric), photo: room.planImage(metric: metric)); saved = RoomMath.load(); CopyToast.shared.flash(L("Saved to My measurements")) } label: {
+                    Label(L("Save this room"), systemImage: "bookmark").frame(maxWidth: .infinity)
+                }.secondaryButton()
+            } else {
+                Text(L("Walk slowly round the room with the camera on the walls. Tenzy finds every wall, door and window and draws the floor plan.")).font(HandyFont.body).fixedSize(horizontal: false, vertical: true)
+            }
+            Button { scanning = true } label: { Label(room == nil ? L("Start the room scan") : L("Scan again"), systemImage: "camera.viewfinder").frame(maxWidth: .infinity) }.primaryButton()
+        }
+    }
+
+    // MARK: saving and sharing
+
+    private func summary(_ j: Job) -> String {
+        let p = ar.points
+        switch j {
+        case .length:
+            return "\(L("Length")): " + zip(p.dropFirst(), p).map { MeasureMath.length(MeasureMath.distance($0.0, $0.1), metric: metric) }.joined(separator: " + ") + (p.count > 2 ? " = \(MeasureMath.length(MeasureMath.pathLength(p), metric: metric))" : "")
+        case .wall:
+            guard p.count >= 2 else { return "" }
+            let r = MeasureMath.rectangle(p[0], p[1])
+            return "\(L("Width")) \(MeasureMath.length(r.width, metric: metric)) × \(L("height")) \(MeasureMath.length(r.height, metric: metric)) = \(MeasureMath.area(r.area, metric: metric))"
+        case .floor:
+            let s = MeasureMath.surface(p)
+            return "\(L("Area")) \(MeasureMath.area(s.area, metric: metric)), \(L("edge all round")) \(MeasureMath.length(s.perimeter, metric: metric))"
+        case .height:
+            guard p.count >= 2 else { return "" }
+            return "\(L("Height")) \(MeasureMath.length(MeasureMath.height(from: p[0], to: p[1]), metric: metric))"
+        case .room: return room?.text(metric: metric) ?? ""
+        }
+    }
+
+    private func capturePhoto(_ j: Job) {
+        capturing = true
+        let text = summary(j)
+        Task {
+            let base = await ar.snapshot()
+            let composed = base.map { label($0, with: text) }
+            defer { capturing = false }
+            guard let composed else { return }
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent("Measurement-\(UUID().uuidString.prefix(4)).png")
+            if let d = composed.pngData() { try? d.write(to: url) }
+            photo = MeasurePhoto(url: url, image: composed)
+        }
+    }
+
+    private func label(_ base: UIImage, with text: String) -> UIImage {
+        let size = base.size
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = base.scale
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            base.draw(in: CGRect(origin: .zero, size: size))
+            let pad: CGFloat = size.width * 0.04
+            let font = UIFont.systemFont(ofSize: max(16, size.width * 0.045), weight: .bold)
+            let attrs: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: UIColor.white]
+            let bound = (text as NSString).boundingRect(with: CGSize(width: size.width - pad * 2, height: .greatestFiniteMagnitude),
+                                                        options: [.usesLineFragmentOrigin], attributes: attrs, context: nil)
+            let barH = bound.height + pad * 1.6
+            UIColor.black.withAlphaComponent(0.6).setFill()
+            ctx.fill(CGRect(x: 0, y: size.height - barH, width: size.width, height: barH))
+            (text as NSString).draw(with: CGRect(x: pad, y: size.height - barH + pad * 0.8, width: size.width - pad * 2, height: bound.height),
+                                    options: [.usesLineFragmentOrigin], attributes: attrs, context: nil)
+        }
+    }
 
     @ViewBuilder private var savedSection: some View {
         if !saved.isEmpty {
@@ -247,89 +505,15 @@ struct MeasureARView: View {
     }
 
     private func saveNow() {
-        let name = saveName, value = summary
+        guard let j = job else { return }
+        let name = saveName, value = summary(j)
         Task {
             let base = await ar.snapshot()
             let img = base.map { label($0, with: value) }
             RoomMath.add(name: name, value: value, photo: img)
             saved = RoomMath.load()
             HandyHaptics.success()
-            CopyToast.shared.flash("Saved to My measurements")
-        }
-    }
-
-    private var statusLine: String {
-        if !ar.hasSurface { return "Point at a surface and move the phone slowly…" }
-        switch mode {
-        case .distance:
-            return ar.points.isEmpty ? "Tap to set the start, then move and tap again"
-                                     : "Live distance from the last point · tap to add another"
-        case .area:
-            if ar.points.count < 3 { return "Tap each corner of the floor — \(3 - ar.points.count) more to start an area" }
-            return "Running area shown above · add corners or tap Close to finish"
-        case .height:
-            return ar.points.isEmpty ? "Tap the floor at the base of what you're measuring"
-                                     : "Now aim at the top — the height updates live"
-        }
-    }
-
-    /// The big number, correct for the mode: live length (Distance), live/placed height (Height), or the
-    /// running floor area once there are enough corners (Area) — never a stray linear number in Area.
-    private var bigReadout: String? {
-        switch mode {
-        case .distance:
-            guard let live = ar.liveDistance else { return nil }
-            return MeasureMath.length(live, metric: metric)
-        case .height:
-            if ar.points.count >= 2 { return MeasureMath.length(MeasureMath.height(from: ar.points[0], to: ar.points[1]), metric: metric) }
-            guard let h = ar.liveHeight else { return nil }
-            return MeasureMath.length(h, metric: metric)
-        case .area:
-            guard ar.points.count >= 3 else { return nil }
-            return MeasureMath.area(MeasureMath.polygonArea(ar.points), metric: metric)
-        }
-    }
-
-    private var primaryActionLabel: String {
-        switch mode {
-        case .distance: return ar.points.isEmpty ? "Set start point" : "Add point"
-        case .area:     return ar.points.isEmpty ? "Tap first corner" : "Add corner"
-        case .height:   return ar.points.isEmpty ? "Tap the base" : "Set the top"
-        }
-    }
-
-    @ViewBuilder private var results: some View {
-        if ar.points.count >= 2 || (mode == .height && ar.points.count == 1 && ar.liveHeight != nil) {
-            VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                switch mode {
-                case .distance:
-                    ForEach(Array(zip(ar.points.dropFirst(), ar.points).enumerated()), id: \.offset) { i, pair in
-                        HStack { Text("Segment \(i + 1)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(MeasureMath.length(MeasureMath.distance(pair.0, pair.1), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() }
-                    }
-                    if ar.points.count > 2 { HStack { Text(L("Total")).font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.length(MeasureMath.pathLength(ar.points), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() } }
-                case .area:
-                    HStack { Text(L("Perimeter")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary); Spacer(); Text(MeasureMath.length(MeasureMath.pathLength(ar.points + [ar.points[0]]), metric: metric)).monospacedDigit() }
-                    if ar.points.count >= 3 { HStack { Text(L("Area")).font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.area(MeasureMath.polygonArea(ar.points), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() } }
-                case .height:
-                    HStack { Text(L("Height")).font(HandyFont.bodyStrong); Spacer(); Text(MeasureMath.length(ar.points.count >= 2 ? MeasureMath.height(from: ar.points[0], to: ar.points[1]) : (ar.liveHeight ?? 0), metric: metric)).font(HandyFont.bodyStrong).monospacedDigit() }
-                }
-                HStack {
-                    Button { Copier.copy(summary) } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
-                    Button { capturePhoto() } label: { Label(capturing ? "…" : "Photo", systemImage: "camera") }.compactButton().disabled(capturing)
-                    ShareLink(item: summary) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
-                    Button { saveName = ""; naming = true } label: { Label(L("Save"), systemImage: "bookmark") }.compactButton()
-                        .accessibilityIdentifier("measure-save")
-                    Spacer()
-                }
-            }.cardStyle(padding: HandySpacing.s12)
-        }
-    }
-
-    private var summary: String {
-        switch mode {
-        case .distance: return "Measured: " + zip(ar.points.dropFirst(), ar.points).map { MeasureMath.length(MeasureMath.distance($0.0, $0.1), metric: metric) }.joined(separator: " + ") + (ar.points.count > 2 ? " = \(MeasureMath.length(MeasureMath.pathLength(ar.points), metric: metric))" : "")
-        case .area: return "Area \(MeasureMath.area(MeasureMath.polygonArea(ar.points), metric: metric)), perimeter \(MeasureMath.length(MeasureMath.pathLength(ar.points + [ar.points[0]]), metric: metric))"
-        case .height: return "Height \(MeasureMath.length(ar.points.count >= 2 ? MeasureMath.height(from: ar.points[0], to: ar.points[1]) : (ar.liveHeight ?? 0), metric: metric))"
+            CopyToast.shared.flash(L("Saved to My measurements"))
         }
     }
 }
@@ -340,82 +524,173 @@ struct MeasureARView: View {
     @Published var points: [SIMD3<Float>] = []
     @Published var liveDistance: Float?
     @Published var liveHeight: Float?
+    @Published var cursor: SIMD3<Float>?
     @Published var hasSurface = false
+    @Published var closed = false
+    @Published var warning: String?
     @Published var lidar = ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh)
+    var job: MeasureARView.Job = .length
+    var metric = true
     weak var view: ARView?
-    private var anchors: [AnchorEntity] = []
-    private var lines: [AnchorEntity] = []
-    private var cursor: SIMD3<Float>?
+    private var drawn: [AnchorEntity] = []
+    private var recent: [SIMD3<Float>] = []
+    private var running = false
+
+    /// Done = this job has all its points (more taps start nothing new until Start over).
+    var done: Bool {
+        switch job {
+        case .wall, .height: return points.count >= 2
+        case .floor: return closed
+        default: return false
+        }
+    }
 
     func start() {
-        guard let v = view, ARWorldTrackingConfiguration.isSupported else { return }
+        guard let v = view, ARWorldTrackingConfiguration.isSupported, !running else { return }
         let cfg = ARWorldTrackingConfiguration()
         cfg.planeDetection = [.horizontal, .vertical]
         if ARWorldTrackingConfiguration.supportsSceneReconstruction(.mesh) { cfg.sceneReconstruction = .mesh }
+        if ARWorldTrackingConfiguration.supportsFrameSemantics(.smoothedSceneDepth) { cfg.frameSemantics.insert(.smoothedSceneDepth) }
         cfg.environmentTexturing = .none
         v.session.delegate = self
         v.session.run(cfg, options: [.resetTracking, .removeExistingAnchors])
+        running = true
     }
-    func stop() { view?.session.pause() }
+    func stop() { view?.session.pause(); running = false }
 
-    /// Called every frame from the delegate: raycast the screen centre to keep the cursor live.
     nonisolated func session(_ session: ARSession, didUpdate frame: ARFrame) {
         Task { @MainActor in self.updateCursor() }
     }
 
+    /// Plain words when tracking is poor, so a point isn't placed somewhere wrong without the person knowing.
+    nonisolated func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        let text: String?
+        switch camera.trackingState {
+        case .normal: text = nil
+        case .notAvailable: text = "Camera tracking isn't available right now."
+        case .limited(.excessiveMotion): text = "Slow down — move the phone more gently."
+        case .limited(.insufficientFeatures): text = "Too plain or too dark here — add light or aim at something with detail."
+        case .limited(.initializing), .limited(.relocalizing): text = "Getting ready — move the phone slowly from side to side."
+        case .limited: text = "Move the phone slowly so Tenzy can see the room."
+        @unknown default: text = nil
+        }
+        Task { @MainActor in self.warning = text }
+    }
+
+    private func hit(_ p: CGPoint) -> SIMD3<Float>? {
+        guard let v = view else { return nil }
+        let r = v.raycast(from: p, allowing: .existingPlaneGeometry, alignment: .any).first
+            ?? v.raycast(from: p, allowing: .estimatedPlane, alignment: .any).first
+        return r.map { SIMD3<Float>($0.worldTransform.columns.3.x, $0.worldTransform.columns.3.y, $0.worldTransform.columns.3.z) }
+    }
+
+    /// The live point under the circle, smoothed over the last few frames so the reading doesn't jitter.
     private func updateCursor() {
         guard let v = view else { return }
-        let center = CGPoint(x: v.bounds.midX, y: v.bounds.midY)
-        let hit = v.raycast(from: center, allowing: .estimatedPlane, alignment: .any).first
-        cursor = hit.map { SIMD3<Float>($0.worldTransform.columns.3.x, $0.worldTransform.columns.3.y, $0.worldTransform.columns.3.z) }
+        if let c = hit(CGPoint(x: v.bounds.midX, y: v.bounds.midY)) {
+            if let last = recent.last, simd_distance(last, c) > 0.08 { recent = [] }   // jumped to another surface
+            recent.append(c); if recent.count > 5 { recent.removeFirst() }
+            cursor = recent.reduce(SIMD3<Float>(repeating: 0), +) / Float(recent.count)
+        } else { cursor = nil; recent = [] }
         hasSurface = cursor != nil
-        if let c = cursor, let last = points.last {
+        if let c = cursor, let last = points.last, !done {
             liveDistance = simd_distance(c, last)
             liveHeight = MeasureMath.height(from: points[0], to: c)
         } else { liveDistance = nil; liveHeight = nil }
     }
 
-    func place() {
-        guard let c = cursor, let v = view else { return }
+    /// Place a point where the person tapped, or under the circle when `at` is nil.
+    func place(at p: CGPoint?) {
+        guard !done else { HandyHaptics.light(); return }
+        let spot = p.flatMap(hit) ?? (p == nil ? cursor : nil)
+        guard let c = spot else { warning = "No surface there yet — move the phone slowly, then try again."; return }
+        warning = nil
+        // Floor: tapping back on the first corner closes the shape.
+        if job == .floor, points.count >= 3, simd_distance(c, points[0]) < 0.06 { close(); return }
         points.append(c)
-        let a = AnchorEntity(world: c)
-        let dot = ModelEntity(mesh: .generateSphere(radius: 0.006), materials: [UnlitMaterial(color: .systemOrange)])
-        a.addChild(dot); v.scene.addAnchor(a); anchors.append(a)
-        if points.count >= 2 { addLine(points[points.count - 2], c) }
         HandyHaptics.light()
+        if job == .wall || job == .height, points.count == 2 { HandyHaptics.success() }
+        redraw()
     }
 
-    private func addLine(_ a: SIMD3<Float>, _ b: SIMD3<Float>) {
-        guard let v = view else { return }
-        let len = simd_distance(a, b)
-        let mid = (a + b) / 2
-        let anchor = AnchorEntity(world: mid)
-        let bar = ModelEntity(mesh: .generateBox(size: SIMD3<Float>(0.003, 0.003, len)), materials: [UnlitMaterial(color: .white)])
-        bar.look(at: b, from: mid, relativeTo: nil)
-        anchor.addChild(bar)
-        v.scene.addAnchor(anchor); lines.append(anchor)
+    func close() {
+        guard points.count >= 3 else { return }
+        closed = true
+        // Put corners tapped out of order back in order, so the drawn shape matches the area.
+        points = MeasureMath.surface(points).points
+        HandyHaptics.success(); redraw()
     }
 
     func undo() {
-        guard !points.isEmpty else { return }
-        points.removeLast()
-        if let a = anchors.popLast() { view?.scene.removeAnchor(a) }
-        if let l = lines.popLast() { view?.scene.removeAnchor(l) }
+        if closed { closed = false } else if !points.isEmpty { points.removeLast() }
+        redraw()
     }
-    func reset() {
-        points = []
-        anchors.forEach { view?.scene.removeAnchor($0) }; lines.forEach { view?.scene.removeAnchor($0) }
-        anchors = []; lines = []
+    func reset() { points = []; closed = false; warning = nil; redraw() }
+
+    /// Redraw every marker, line and size label from the points, for the current job.
+    func redraw() {
+        guard let v = view else { drawn = []; return }
+        drawn.forEach { v.scene.removeAnchor($0) }; drawn = []
+        for p in points { add(dot(at: p)) }
+        switch job {
+        case .wall where points.count == 2:
+            let c = MeasureMath.rectangleCorners(points[0], points[1])
+            for i in 0..<4 { add(line(c[i], c[(i + 1) % 4])) }
+            add(label(MeasureMath.length(MeasureMath.distance(c[0], c[1]), metric: metric), at: (c[0] + c[1]) / 2))
+            add(label(MeasureMath.length(MeasureMath.distance(c[1], c[2]), metric: metric), at: (c[1] + c[2]) / 2))
+        case .height where points.count == 2:
+            let top = SIMD3<Float>(points[0].x, points[1].y, points[0].z)
+            add(line(points[0], top))
+            add(label(MeasureMath.length(MeasureMath.height(from: points[0], to: points[1]), metric: metric), at: (points[0] + top) / 2))
+        default:
+            let path = closed ? points + [points[0]] : points
+            for (a, b) in zip(path, path.dropFirst()) {
+                add(line(a, b))
+                add(label(MeasureMath.length(simd_distance(a, b), metric: metric), at: (a + b) / 2))
+            }
+            if job == .floor, closed {
+                let s = MeasureMath.surface(points)
+                add(label(MeasureMath.area(s.area, metric: metric), at: s.points.reduce(SIMD3<Float>(repeating: 0), +) / Float(s.points.count), big: true))
+            }
+        }
     }
 
-    /// Draw the closing edge of an area (last corner back to the first) so the shape reads as finished.
-    func closeLoop() {
-        guard points.count >= 3 else { return }
-        addLine(points[points.count - 1], points[0])
-        HandyHaptics.success()
+    private func add(_ a: AnchorEntity) { view?.scene.addAnchor(a); drawn.append(a) }
+
+    private func dot(at p: SIMD3<Float>) -> AnchorEntity {
+        let a = AnchorEntity(world: p)
+        a.addChild(ModelEntity(mesh: .generateSphere(radius: 0.012), materials: [UnlitMaterial(color: .white)]))
+        a.addChild(ModelEntity(mesh: .generateSphere(radius: 0.008), materials: [UnlitMaterial(color: .systemYellow)]))
+        return a
     }
 
-    /// A still of the live AR view (with the drawn points and lines) to caption and share.
+    private func line(_ a: SIMD3<Float>, _ b: SIMD3<Float>) -> AnchorEntity {
+        let mid = (a + b) / 2
+        let anchor = AnchorEntity(world: mid)
+        let bar = ModelEntity(mesh: .generateBox(size: SIMD3<Float>(0.006, 0.006, max(0.001, simd_distance(a, b)))), materials: [UnlitMaterial(color: .systemYellow)])
+        bar.look(at: b, from: mid, relativeTo: nil)
+        anchor.addChild(bar)
+        return anchor
+    }
+
+    /// The size written in the scene on a dark tag that always faces the camera.
+    private func label(_ text: String, at p: SIMD3<Float>, big: Bool = false) -> AnchorEntity {
+        let anchor = AnchorEntity(world: p + SIMD3<Float>(0, 0.025, 0))
+        let holder = Entity()
+        holder.components.set(BillboardComponent())
+        let mesh = MeshResource.generateText(text, extrusionDepth: 0.0005, font: .systemFont(ofSize: big ? 0.05 : 0.032, weight: .bold),
+                                             containerFrame: .zero, alignment: .center, lineBreakMode: .byClipping)
+        let t = ModelEntity(mesh: mesh, materials: [UnlitMaterial(color: .white)])
+        let b = mesh.bounds
+        t.position = SIMD3<Float>(-b.center.x, -b.center.y, 0.001)
+        var plate = UnlitMaterial(color: .black)
+        plate.blending = .transparent(opacity: 0.7)
+        let bg = ModelEntity(mesh: .generatePlane(width: b.extents.x + 0.024, height: b.extents.y + 0.014, cornerRadius: 0.008), materials: [plate])
+        holder.addChild(bg); holder.addChild(t)
+        anchor.addChild(holder)
+        return anchor
+    }
+
     func snapshot() async -> UIImage? {
         guard let v = view else { return nil }
         return await withCheckedContinuation { cont in
@@ -431,6 +706,13 @@ private struct ARContainer: UIViewRepresentable {
         v.renderOptions = [.disableMotionBlur, .disableDepthOfField, .disableHDR]
         ar.view = v
         ar.start()
+        // Apple's own "move iPhone to start" coaching, while the room is first being mapped.
+        let coach = ARCoachingOverlayView()
+        coach.session = v.session
+        coach.goal = .anyPlane
+        coach.activatesAutomatically = true
+        coach.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        v.addSubview(coach)
         return v
     }
     func updateUIView(_ uiView: ARView, context: Context) {}

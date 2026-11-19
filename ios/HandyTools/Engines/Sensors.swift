@@ -74,6 +74,73 @@ enum SensorMath {
         return 44330 * (1 - pow(p / p0, 1 / 5.255))
     }
 
+    // MARK: jobs, not gauges
+
+    /// Phone standing on an edge: how far the edge is from level (lying on its long side) or plumb (standing
+    /// up), whichever is nearer — so a picture frame or a shelf reads 0 when it's right.
+    static func offSquare(_ angle: Double) -> (off: Double, level: Bool) {
+        let k = (angle / 90).rounded()
+        return (angle - k * 90, Int(abs(k)) % 2 == 1)
+    }
+
+    /// How far one end is out, over a length (mm), and the slope as a percent and 1-in-N.
+    static func slope(degrees d: Double, overMM len: Double = 500) -> (mm: Double, percent: Double, oneIn: Int?) {
+        let t = tan(abs(d) * .pi / 180)
+        return (t * len, t * 100, t > 0.0005 ? Int((1 / t).rounded()) : nil)
+    }
+
+    /// Safe listening time at a level (NIOSH: 8 hours at 85 dB, halved for every 3 dB more), hours.
+    static func safeHours(_ db: Double) -> Double { 8 / pow(2, (db - 85) / 3) }
+
+    static func safeText(_ db: Double) -> String {
+        if db < 80 { return "Safe for as long as you like" }
+        let h = safeHours(db)
+        if h >= 1 { return "Safe for about \(Int(h.rounded())) hour\(Int(h.rounded()) == 1 ? "" : "s") a day" }
+        let m = h * 60
+        if m >= 1 { return "Safe for only about \(Int(m.rounded())) minutes a day" }
+        return "Harmful within seconds — cover your ears or leave"
+    }
+
+    /// Plants and desks: what this much light is good for.
+    static func lightVerdict(_ lux: Double) -> (title: String, plants: String, desk: String) {
+        let desk = lux < 300 ? "Too dim to read or work — add a desk lamp" : (lux <= 1000 ? "Good for reading and desk work" : "Very bright — expect glare on screens")
+        switch lux {
+        case ..<50: return ("Too dark for plants", "Even shade-lovers will struggle here — try a brighter spot or a grow light", desk)
+        case ..<250: return ("Low light", "Snake plant, ZZ plant, pothos, peace lily", desk)
+        case ..<1000: return ("Medium light", "Philodendron, Chinese evergreen, calathea, spider plant", desk)
+        case ..<2500: return ("Bright, indirect light", "Monstera, fiddle-leaf fig, rubber plant, orchids", desk)
+        case ..<10000: return ("Very bright light", "Succulents, aloe, citrus, most flowering plants", desk)
+        default: return ("Direct sun", "Cacti, herbs like basil and rosemary, tomatoes", desk)
+        }
+    }
+
+    /// Which way the sun comes from for a direction you face (out of a window), in plain words.
+    static func sunText(_ heading: Double, southernHemisphere: Bool = false) -> String {
+        let h = southernHemisphere ? (heading + 180).truncatingRemainder(dividingBy: 360) : heading
+        switch h {
+        case 45..<135: return "Faces east — morning sun"
+        case 135..<225: return "Faces the sun at midday — bright most of the day"
+        case 225..<315: return "Faces west — afternoon and evening sun"
+        default: return "Faces away from the sun — soft, even light all day"
+        }
+    }
+
+    /// Bearing from a place to the Kaaba in Mecca (Qibla), degrees from true north.
+    static func qibla(lat: Double, lon: Double) -> Double {
+        let k = (lat: 21.4225 * Double.pi / 180, lon: 39.8262 * Double.pi / 180)
+        let p = (lat: lat * Double.pi / 180, lon: lon * Double.pi / 180)
+        let dl = k.lon - p.lon
+        let y = sin(dl), x = cos(p.lat) * tan(k.lat) - sin(p.lat) * cos(dl)
+        return (atan2(y, x) * 180 / .pi + 360).truncatingRemainder(dividingBy: 360)
+    }
+
+    /// Turn left or right (−180…180) from where you face to a target bearing.
+    static func turn(from heading: Double, to target: Double) -> Double {
+        var d = (target - heading).truncatingRemainder(dividingBy: 360)
+        if d > 180 { d -= 360 }; if d < -180 { d += 360 }
+        return d
+    }
+
     /// Points per millimetre for an on-screen ruler. iPhones are ~460 ppi at 3× and ~326 ppi at 2×.
     static func pointsPerMM(nativeScale: CGFloat, calibration: Double = 1) -> Double {
         let ppi: Double = nativeScale >= 3 ? 460 : 326
@@ -156,9 +223,17 @@ enum SensorMath {
     @Published var average = 0.0
     @Published var history: [Double] = []
     @Published var denied = false
+    /// Share of a day's safe noise used since Reset (100 = a full day's worth).
+    @Published var dose = 0.0
+    /// Loud moments above `logAbove`, for a noise log you can share.
+    struct Moment: Identifiable { let id = UUID(); let start: Date; var seconds: Double; var peak: Double }
+    @Published var moments: [Moment] = []
+    @Published var loudFor = 0.0          // seconds in a row at 85 dB or more
+    var logAbove = 70.0
     private var recorder: AVAudioRecorder?
     private var timer: Timer?
     private var sum = 0.0, n = 0.0
+    private var quietFor = 0.0
     var offset: Double { UserDefaults.standard.double(forKey: "instruments.db.offset") }
 
     func start() {
@@ -187,8 +262,23 @@ enum SensorMath {
         let v = SensorMath.dbSPL(fromPower: Double(r.averagePower(forChannel: 0)), offset: offset)
         db = v; peak = max(peak, v); sum += v; n += 1; average = sum / n
         history.append(v); if history.count > 300 { history.removeFirst(history.count - 300) }
+        dose += 0.1 / (SensorMath.safeHours(v) * 3600) * 100
+        loudFor = v >= 85 ? loudFor + 0.1 : 0
+        if v >= logAbove {
+            quietFor = 0
+            if let last = moments.last, Date().timeIntervalSince(last.start) - last.seconds < 2.5 {
+                moments[moments.count - 1].seconds = Date().timeIntervalSince(last.start); moments[moments.count - 1].peak = max(last.peak, v)
+            } else { moments.append(Moment(start: Date(), seconds: 0.1, peak: v)) }
+        } else { quietFor += 0.1 }
     }
-    func reset() { peak = 0; sum = 0; n = 0; average = 0; history = [] }
+    func reset() { peak = 0; sum = 0; n = 0; average = 0; history = []; dose = 0; moments = []; loudFor = 0 }
+
+    /// The noise log as plain text: when, how long, how loud.
+    func logText() -> String {
+        let f = DateFormatter(); f.dateStyle = .medium; f.timeStyle = .medium
+        let lines = moments.filter { $0.seconds >= 1 }.map { "\(f.string(from: $0.start)) · \(Int($0.seconds.rounded())) s · peak \(Int($0.peak)) dB" }
+        return (["Noise log (phone microphone, about ±5 dB)"] + lines).joined(separator: "\n")
+    }
     func stop() { timer?.invalidate(); timer = nil; recorder?.stop(); recorder = nil; try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation) }
 }
 

@@ -185,7 +185,11 @@ final class ToolFlowTests: XCTestCase {
         // Instruments now lives behind Measure ("Level, compass & sensors"); reach it through there.
         launch("measure")
         button(containing: "Level, compass & sensors").tap(); sleep(1)
-        for g in ["Compass", "Sound", "Light", "Altitude", "Metal", "Ruler", "Level"] { tapChip(g); sleep(1); alive("measure:\(g)") }
+        // The gauges now open from what you're doing: each job, then back to the list.
+        for g in ["Hang something straight", "Is it too loud?", "Light for a plant or desk", "Find a stud or pipe", "Which way is it?", "Small ruler"] {
+            button(containing: g).tap(); sleep(1); alive("measure:\(g)")
+            button(containing: "Change").tap(); sleep(1)
+        }
     }
 
     func testMagnifierLooksOnFrozenFrame() {
