@@ -125,4 +125,38 @@ final class PrivatePhotoAccuracyTests: XCTestCase {
         lines.insert(String(format: "SCORE my-boards-read %.3f", n > 0 ? score / n : 0), at: 0)
         report(lines)
     }
+
+    // MARK: whiteboards understood (sections, items, ticks, events, people) — the rules path CI can run
+
+    func testBoardsAreUnderstood() throws {
+        let g = try setUpOrSkip()
+        var lines = ["MY BOARDS UNDERSTOOD\tfile\tkind\titems\tdone\tevents\tpeople\t| missed"]
+        var score = 0.0, n = 0.0
+        let cal = Calendar.current
+        for case let e as [String: Any] in g["boards"] as? [Any] ?? [] {
+            let file = e["file"] as? String ?? ""
+            guard let img = photo(file) else { lines.append("MISSING \(file)"); continue }
+            let b = Understand.parse(DocEngine.recognize(img.normalizedUp()), now: Date())
+            let texts = b.tasks.map { Self.norm($0.text) } + b.events.map { Self.norm($0.title) } + b.people.map { Self.norm($0.what) }
+            func found(_ w: String) -> Bool { let k = Self.norm(w); return texts.contains { $0.contains(k) || (k.count > 6 && k.contains($0) && $0.count > 4) } }
+            let items = e["items"] as? [String] ?? []
+            let missed = items.filter { !found($0) }
+            let iScore = items.isEmpty ? 1 : 1 - Double(missed.count) / Double(items.count)
+            let done = e["done"] as? [String] ?? []
+            let dScore = done.isEmpty ? 1 : Double(done.filter { d in b.tasks.contains { $0.done && Self.norm($0.text).contains(Self.norm(d)) } }.count) / Double(done.count)
+            let evs = e["events"] as? [[Any]] ?? []
+            let eScore = evs.isEmpty ? 1 : Double(evs.filter { w in b.events.contains { ev in
+                Self.norm(ev.title).contains(Self.norm(w[0] as? String ?? "")) && ev.date.map { cal.component(.day, from: $0) } == w[1] as? Int } }.count) / Double(evs.count)
+            let rows = e["rows"] as? [[String]] ?? []
+            let pScore = rows.isEmpty ? 1 : Double(rows.filter { r in b.people.contains { Self.norm($0.person) == Self.norm(r[0]) && $0.day == r[1] && Self.norm($0.what).contains(Self.norm(r[2])) } }.count) / Double(rows.count)
+            let s = (iScore + dScore + eScore + pScore) / 4
+            score += s; n += 1
+            lines.append("\(file)\t\(b.kind.rawValue)\t\(String(format: "%.2f", iScore))\t\(String(format: "%.2f", dScore))\t\(String(format: "%.2f", eScore))\t\(String(format: "%.2f", pScore))\t| \(missed.prefix(20).joined(separator: ", "))")
+            lines.append("   read: " + b.tasks.prefix(40).map { ($0.done ? "✓" : "") + $0.text + ($0.section.isEmpty ? "" : " [\($0.section)]") }.joined(separator: " | "))
+            if !b.events.isEmpty { lines.append("   events: " + b.events.map { "\($0.title) @ \($0.date.map { "\($0)" } ?? "—")" }.joined(separator: " | ")) }
+            if !b.people.isEmpty { lines.append("   people: " + b.people.prefix(30).map { "\($0.person) \($0.day): \($0.what)" }.joined(separator: " | ")) }
+        }
+        lines.insert(String(format: "SCORE my-boards-understood %.3f", n > 0 ? score / n : 0), at: 0)
+        report(lines)
+    }
 }

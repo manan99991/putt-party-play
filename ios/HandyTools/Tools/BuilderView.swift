@@ -1651,6 +1651,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var result: ChainPayload?
     /// The photo as it came in (with its hidden details), so the result can say what changed and what was removed.
     @State private var originalPhoto: Data?
+    @State private var boardSource: UIImage?         // a whiteboard/list photo shows the board review and planner, not plain text
     @State private var passportSource: UIImage?      // a passport step shows the full passport screen, not a bare file
     @State private var watchLine: String?
     @State private var message: String?
@@ -1793,14 +1794,17 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 }
                 if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? "Working…" : progress) }
                 if let report { stepLog(report) }
-                if let message { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                if let message, boardSource == nil { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let watchLine {
                     Label(watchLine, systemImage: "bell.badge.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
                         .padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
                         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                         .accessibilityIdentifier("run-watch-line")
                 }
-                if result != nil, let src = passportSource {
+                if !busy, let src = boardSource {
+                    // Same screen as the Planner: sections, ticks, dates, people — into Planner, Reminders, Calendar.
+                    BoardReview(photo: src)
+                } else if result != nil, let src = passportSource {
                     // Same screen as Studio → Passport: score, guide lines, fixes, checks, Photos and print sheet.
                     PassportStudio(original: src, specID: chain.steps.last?.settings["country"] ?? "us",
                                    retake: { result = nil; passportSource = nil })
@@ -2377,6 +2381,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
         if case .file(let d, let e) = input, ChainPayload.isPhoto(e) { originalPhoto = d } else { originalPhoto = nil }
         passportSource = chain.steps.last?.block == .passportPhoto ? ToolHandoff.image(input) : nil
+        boardSource = chain.steps.map(\.block) == [.readText, .actionItems] && chain.finish == nil ? ToolHandoff.image(input) : nil
         // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
         // say what's happening rather than showing a bare spinner on a long meeting recording.
         if case let .file(_, ext) = input, ["m4a", "mp3", "wav", "aiff", "aifc", "caf", "aac", "m4b", "flac", "ogg"].contains(ext.lowercased()) {

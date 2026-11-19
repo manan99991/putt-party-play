@@ -149,6 +149,7 @@ struct Tool: Identifiable {
     Tool(id: "thinking",   name: "Thinking tools",   blurb: "Plan, decide and think it through", icon: "lightbulb.max.fill",       page: 9, ai: true, asset: "tool_explain", keywords: ["think","thinking","untangle","plan my day","decide","decision","crossroads","explain","plain english","reword","rewrite","tone","brain dump","clear my head","prep","checklist","focus","overwhelmed","steps","to-do","todo","ai"]),
     Tool(id: "medreminder", name: "Medicine Reminders", blurb: "Never miss a dose or a refill",   icon: "pills.fill",                          page: 8, asset: "tool_rest", keywords: ["medicine","medication","pill","pills","tablet","dose","reminder","medicine reminder","pill reminder","vitamins","refill","prescription","take my meds"]),
     Tool(id: "pricewatch", name: "Price Watch",      blurb: "Get told when a price drops",      icon: "chart.line.downtrend.xyaxis",                     page: 8, asset: "tool_livecaptions", keywords: ["price watch","price drop","price alert","tell me when","watch a price","deal alert","cheaper","back in stock","track price","rate alert","web page","notify me"]),
+    Tool(id: "planner",    name: "Planner",          blurb: "Whiteboards and lists, ticked off", icon: "list.bullet.rectangle.portrait", page: 8, asset: "tool_sorted", keywords: ["planner","whiteboard","white board","to do","to-do","todo","task list","checklist","wall calendar","calendar photo","sticky notes","schedule","rota","who does what","chores","fridge list","list"]),
     Tool(id: "brief",      name: "Daily Brief",      blurb: "Your day in one morning note",    icon: "sun.horizon.fill",                    page: 8, asset: "tool_rest", keywords: ["daily brief","morning","today","my day","summary","agenda","what's today","briefing","digest","weather","what to wear","reminders","due today"]),
     Tool(id: "daydiary",   name: "My Day",           blurb: "Log how your day went in a tap", icon: "heart.text.square",               page: 8, asset: "tool_rest", keywords: ["diary","journal","mood","my day","how was my day","log my day","daily log","good day","bad day","feelings","gratitude","evening","reflect","private diary"]),
     Tool(id: "untangle",   name: "Untangle",         blurb: "Everything on your plate, planned",  icon: "list.bullet.clipboard.fill",                page: 9, asset: "tool_explain", keywords: ["untangle","plan my day","organize my day","to do","to-do","todo","overwhelmed","tasks","errands","schedule my day","not feeling well","day plan","reminders for my tasks"]),
@@ -388,6 +389,7 @@ struct ToolDestination: View {
         case "sticker": StickerMakerView()
         case "medreminder": MedRemindersView()
         case "daydiary": DayDiaryView()
+        case "planner": PlannerView()
         case "brief": DailyBriefView()
         case "pricewatch": PriceWatchView()
         case "cards": BusinessCardsView()
