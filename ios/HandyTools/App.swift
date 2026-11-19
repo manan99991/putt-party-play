@@ -40,6 +40,11 @@ struct TenzyApp: App {
             .onChange(of: phase) { _, p in
                 // Every time Tenzy comes to the front: check the "tell me when…" alerts, and book the next background check.
                 if p == .active, !Launch.uitest { Task { await SmartAlerts.checkAll(); await DailyBrief.refresh() }; SmartAlerts.scheduleBackground() }
+                // A flashlight shortcut that ran while Tenzy was closed: open Flashlight+, which starts the pattern.
+                if p == .active, UserDefaults.standard.string(forKey: TorchExtras.pendingKey) != nil {
+                    showOnboarding = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { NotificationCenter.default.post(name: .openTool, object: "light") }
+                }
             }
             .onAppear {
                 if let r = Launch.route, r.hasPrefix("onboarding") { onboardingPage = Int(r.dropFirst("onboarding".count)).map { $0 - 1 } ?? 0; showOnboarding = true }

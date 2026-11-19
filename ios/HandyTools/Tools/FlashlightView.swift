@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import UserNotifications
 
 /// The built-in flashlight is on/off plus a coarse brightness slider. This one adds the thing it
 /// doesn't have: patterns. Tap a pattern to start it, tap the same one again to stop, tap another
@@ -33,6 +34,7 @@ final class Torch: ObservableObject {
     private var autoOff: Task<Void, Never>?
     @Published var autoOffMinutes = 0 { didSet { armAutoOff() } }
     @Published private(set) var morseText = ""
+    @Published var morseUnitMs = 180
     private var device: AVCaptureDevice? { AVCaptureDevice.default(for: .video) }
     var available: Bool { device?.hasTorch == true }
 
@@ -49,7 +51,8 @@ final class Torch: ObservableObject {
     }
 
     /// Blink a message in Morse (dot = 1 unit, dash = 3, gaps 1/3/7), repeating until stopped.
-    func flashMorse(_ text: String, unitMs: Int = 180) {
+    func flashMorse(_ text: String, unitMs: Int? = nil) {
+        let unitMs = unitMs ?? morseUnitMs
         let code = Self.encodeMorse(text)
         guard !code.isEmpty else { return }
         morseText = text; mode = .steady; isOn = true
@@ -161,15 +164,28 @@ struct FlashlightView: View {
     @State private var morse = ""
     @State private var screenLight = false
     @State private var mirror = false
+    @State private var emergency = false
+    @State private var siren = true
+    @State private var alertTest: String?
+    @State private var sosNote: String?
+    @State private var notifyOff = false
     private let cols = [GridItem(.adaptive(minimum: 100), spacing: HandySpacing.s8)]
 
     var body: some View {
-        ToolPage(title: "Flashlight+", subtitle: "Patterns, SOS and Morse on the LED; a full-screen light and a mirror when you need your face lit.") {
+        ToolPage(title: "Flashlight+", subtitle: "Patterns, SOS and Morse on the LED, an emergency light with a siren, a screen light and a mirror — and a one-press SOS from your Action button.") {
             HowTo("light", [
-                "Tap the big button to turn the torch on or off.",
-                "Pick a pattern — steady, strobe or SOS — and set the brightness.",
-                "Set an auto-off timer so it will not drain your battery.",
+                "Tap a pattern to turn the torch on; tap it again to turn it off.",
+                "Set the brightness and an auto-off timer so it won't drain your battery.",
+                "Emergency light flashes SOS on the LED and the screen and can sound a siren — for being found in the dark.",
+                "Set up once: put SOS on your Action button or Back Tap, and make the flash blink when someone calls.",
             ])
+            Button { emergency = true } label: {
+                Label(L("Emergency light"), systemImage: "light.beacon.max.fill").frame(maxWidth: .infinity)
+            }
+            .primaryButton().tint(HandyColor.danger)
+            .accessibilityIdentifier("light-emergency")
+            .accessibilityHint(L("Flashes SOS on the light and the whole screen, with an optional siren"))
+            Toggle(L("Sound a siren with it"), isOn: $siren).font(HandyFont.caption).tint(HandyColor.accent)
             if !torch.available { LimitNote("No flash on this device — the screen light and mirror still work.") }
 
             HStack(spacing: HandySpacing.s8) {
@@ -227,11 +243,24 @@ struct FlashlightView: View {
                         if !torch.morseText.isEmpty { torch.stop() } else { torch.flashMorse(morse) }
                     } label: { Text(torch.morseText.isEmpty ? "Flash it" : "Stop") }.compactButton().disabled(!torch.available || (morse.trimmingCharacters(in: .whitespaces).isEmpty && torch.morseText.isEmpty))
                 }
+                HandyFlow(spacing: HandySpacing.s8) {
+                    Text(L("Speed")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    ForEach(TorchExtras.morseSpeeds, id: \.unitMs) { sp in
+                        HChip(text: L(sp.label), selected: torch.morseUnitMs == sp.unitMs) { torch.morseUnitMs = sp.unitMs }
+                    }
+                }
+                if !morse.isEmpty, TorchExtras.morseSeconds(morse, unitMs: torch.morseUnitMs) > 0 {
+                    Text("\(L("One pass takes about")) \(Int(TorchExtras.morseSeconds(morse, unitMs: torch.morseUnitMs).rounded(.up))) \(L("seconds, then it repeats."))")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
                 if !morse.isEmpty {
                     Text(Torch.encodeMorse(morse)).font(.system(.body, design: .monospaced)).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
                 }
             }
             .cardStyle()
+
+            quickStartCard
+            ringFlashCard
 
             Text(torch.isOn ? (torch.morseText.isEmpty ? "On — \(torch.mode.label). Tap it again to turn off." : "Flashing “\(torch.morseText)” in Morse. Tap Stop to end.") : "Off. Tap any pattern to start.")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
@@ -242,9 +271,161 @@ struct FlashlightView: View {
         // locks or the app leaves the foreground, so an auto-lock would silently kill it.
         .onChange(of: torch.isOn) { _, on in UIApplication.shared.isIdleTimerDisabled = on }
         .onChange(of: scenePhase) { _, phase in if phase == .active { torch.resumeIfNeeded() } }
-        .onDisappear { torch.stop(); UIApplication.shared.isIdleTimerDisabled = false }
+        // A full-screen cover can count as leaving this page; the emergency light owns the torch then.
+        .onDisappear { if !emergency { torch.stop(); UIApplication.shared.isIdleTimerDisabled = false } }
+        .onAppear { takeShortcut() }
+        .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in if (n.object as? String) == "light" { takeShortcut() } }
         .fullScreenCover(isPresented: $screenLight) { ScreenLightSheet() }
+        .fullScreenCover(isPresented: $emergency) { EmergencyLightSheet(torch: torch, siren: siren) }
         .fullScreenCover(isPresented: $mirror) { MirrorSheet() }
+    }
+
+    /// A shortcut (Action button, Back Tap, Siri) asked for a pattern: start it the moment the page opens.
+    private func takeShortcut() {
+        guard let p = TorchExtras.takePending() else { return }
+        if p == "emergency" { emergency = true; return }
+        if let m = Torch.Mode(rawValue: p), torch.available, !(torch.isOn && torch.mode == m) { torch.select(m) }
+    }
+
+    /// Set once: SOS from the Action button, Back Tap or Siri, without unlocking and hunting for the app.
+    private var quickStartCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("One press to SOS"), systemImage: "bolt.fill").font(HandyFont.bodyStrong)
+            Text(L("Put the light on a button so it's there in the dark. Do this once and it's always ready."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(Array([
+                    "Action button (iPhone 15 Pro and later): Settings → Action Button → swipe to Shortcut → choose Tenzy → Flashlight pattern.",
+                    "Back Tap (any recent iPhone): first open Shortcuts → + → add Tenzy's Flashlight pattern → pick SOS. Then Settings → Accessibility → Touch → Back Tap → Double Tap → choose that shortcut.",
+                    "Siri: just say “Start SOS light in Tenzy” — nothing to set up.",
+                ].enumerated()), id: \.offset) { i, line in
+                    HStack(alignment: .top, spacing: 6) {
+                        Text("\(i + 1).").font(HandyFont.caption.monospacedDigit()).foregroundStyle(HandyColor.accent)
+                        Text(L(line)).font(HandyFont.caption).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+            HStack(spacing: HandySpacing.s8) {
+                Button { if let u = URL(string: "shortcuts://") { UIApplication.shared.open(u) } } label: {
+                    Label(L("Open Shortcuts"), systemImage: "square.2.layers.3d").frame(maxWidth: .infinity)
+                }.secondaryButton()
+                Button {
+                    // Test run: exactly what the button will do — SOS starts, then stops by itself.
+                    if !(torch.isOn && torch.mode == .sos && torch.morseText.isEmpty) { torch.select(.sos) }
+                    sosNote = "SOS is flashing — that's what your button will do. It stops in 6 seconds."
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 6) { if torch.isOn && torch.mode == .sos { torch.stop() }; sosNote = nil }
+                } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }
+                .secondaryButton().disabled(!torch.available).accessibilityIdentifier("light-sos-test")
+            }
+            if let sosNote { Text(L(sosNote)).font(HandyFont.caption).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+        }
+        .cardStyle()
+    }
+
+    /// iPhone can blink the flash for calls and alerts — a built-in setting most people never find.
+    private var ringFlashCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label(L("Flash when someone calls"), systemImage: "phone.badge.waveform.fill").font(HandyFont.bodyStrong)
+            Text(L("See calls and messages in a loud room or with the sound off: iPhone can blink its flash for every call and alert. It's built into iPhone — Tenzy shows you where."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(Array([
+                    "Open Settings → Accessibility → Audio & Visual.",
+                    "Turn on LED Flash for Alerts. Turn on Flash on Silent too, if you want it with the ringer off.",
+                    "Tap Test run below, then lock your phone and wait 10 seconds.",
+                ].enumerated()), id: \.offset) { i, line in
+                    HStack(alignment: .top, spacing: 6) {
+                        Text("\(i + 1).").font(HandyFont.caption.monospacedDigit()).foregroundStyle(HandyColor.accent)
+                        Text(L(line)).font(HandyFont.caption).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+            NotificationsOffCard(isOff: $notifyOff)
+            Button { Task { await ringTest() } } label: {
+                Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity)
+            }.secondaryButton().accessibilityIdentifier("light-ring-test")
+            if let alertTest { Text(L(alertTest)).font(HandyFont.caption).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+        }
+        .cardStyle()
+    }
+
+    private func ringTest() async {
+        guard await NotifyPermission.ensure() else { notifyOff = true; return }
+        notifyOff = false
+        let c = UNMutableNotificationContent()
+        c.title = L("Flashlight+ test"); c.body = L("Did the flash blink? Then calls and alerts will blink it too."); c.sound = .default
+        try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "light-flash-test", content: c,
+                                                                                trigger: UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)))
+        alertTest = "Lock your phone now. In 10 seconds a test alert arrives — if the flash blinks, you're set."
+    }
+}
+
+/// Emergency: SOS on the LED and the whole screen at full brightness, with a siren that plays even
+/// on silent. One big Stop. Keeps the phone awake so it keeps going until you stop it.
+private struct EmergencyLightSheet: View {
+    @ObservedObject var torch: Torch
+    let siren: Bool
+    @Environment(\.dismiss) private var dismiss
+    @State private var bright = true
+    @State private var player: AVAudioPlayer?
+    @State private var flasher: Task<Void, Never>?
+    @State private var saved: CGFloat = UIScreen.main.brightness
+    @State private var sound = true
+
+    var body: some View {
+        ZStack {
+            (bright ? Color.white : Color.red).ignoresSafeArea()
+            VStack(spacing: HandySpacing.s16) {
+                Text("SOS").font(.system(size: 96, weight: .black)).foregroundStyle(bright ? Color.red : Color.white)
+                    .accessibilityLabel(L("Emergency light is on"))
+                Spacer()
+                if siren {
+                    Button { sound.toggle(); sound ? player?.play() : player?.pause() } label: {
+                        Label(sound ? L("Mute siren") : L("Siren on"), systemImage: sound ? "speaker.slash.fill" : "speaker.wave.3.fill")
+                            .font(HandyFont.bodyStrong).padding(.horizontal, 20).padding(.vertical, 12)
+                            .background(.black.opacity(0.75), in: Capsule()).foregroundStyle(.white)
+                    }
+                }
+                Button { dismiss() } label: {
+                    Text(L("Stop")).font(.system(size: 28, weight: .bold)).frame(maxWidth: .infinity, minHeight: 72)
+                        .background(.black, in: RoundedRectangle(cornerRadius: 22, style: .continuous)).foregroundStyle(.white)
+                }
+                .accessibilityIdentifier("emergency-stop")
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .statusBarHidden()
+        .onAppear(perform: start)
+        .onDisappear(perform: end)
+    }
+
+    private func start() {
+        saved = UIScreen.main.brightness
+        UIScreen.main.brightness = 1
+        UIApplication.shared.isIdleTimerDisabled = true
+        if torch.available, !(torch.isOn && torch.mode == .sos && torch.morseText.isEmpty) { torch.select(.sos) }
+        if siren {
+            try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)   // plays even with the ringer off
+            try? AVAudioSession.sharedInstance().setActive(true)
+            if let p = try? AVAudioPlayer(data: TorchExtras.sirenWAV()) { p.numberOfLoops = -1; p.volume = 1; p.play(); player = p }
+        }
+        // The screen flashes the same SOS rhythm as the LED: · · · — — — · · ·
+        flasher = Task { @MainActor in
+            let pattern = [200, 200, 200, 600, 600, 600, 200, 200, 200]
+            while !Task.isCancelled {
+                for d in pattern { bright = false; try? await Task.sleep(for: .milliseconds(d)); bright = true; try? await Task.sleep(for: .milliseconds(200)) }
+                try? await Task.sleep(for: .milliseconds(1200))
+            }
+        }
+    }
+
+    private func end() {
+        flasher?.cancel(); flasher = nil
+        player?.stop(); player = nil
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        torch.stop()
+        UIScreen.main.brightness = saved
+        UIApplication.shared.isIdleTimerDisabled = false
     }
 }
 

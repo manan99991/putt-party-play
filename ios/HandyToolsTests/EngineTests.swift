@@ -2608,6 +2608,25 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testFlashlightMorseSirenAndShortcut() {
+        XCTAssertEqual(Torch.encodeMorse("sos"), "... --- ...")
+        XCTAssertEqual(TorchExtras.morseSeconds("E", unitMs: 100), 0.9, accuracy: 0.0001)
+        XCTAssertEqual(TorchExtras.morseSeconds("SOS", unitMs: 100), 3.5, accuracy: 0.0001)
+        XCTAssertEqual(TorchExtras.morseSeconds("###", unitMs: 100), 0, "nothing Morse can send takes no time")
+        XCTAssertLessThan(TorchExtras.morseSeconds("HELP", unitMs: 110), TorchExtras.morseSeconds("HELP", unitMs: 280), "slow is slower")
+        let wav = TorchExtras.sirenWAV(seconds: 1, sampleRate: 8000)
+        XCTAssertEqual(wav.count, 44 + 8000 * 2)
+        XCTAssertEqual(String(decoding: wav.prefix(4), as: UTF8.self), "RIFF")
+        let pcm = Data(wav.dropFirst(44)).withUnsafeBytes { Array($0.bindMemory(to: Int16.self)) }
+        XCTAssertGreaterThan(pcm.map { abs(Int($0)) }.max() ?? 0, 20000, "the siren is loud")
+        XCTAssertNoThrow(try AVAudioPlayer(data: wav), "iPhone can play it")
+        TorchExtras.setPending("sos")
+        XCTAssertEqual(TorchExtras.takePending(), "sos")
+        XCTAssertNil(TorchExtras.takePending(), "a shortcut's request is used once")
+        TorchExtras.setPending("rm -rf"); XCTAssertNil(TorchExtras.takePending(), "only known patterns")
+        for p in TorchExtras.shortcutPatterns where p != "emergency" { XCTAssertNotNil(Torch.Mode(rawValue: p), p) }
+    }
+
     func testSalePriceAndSplitTheBill() {
         let s = PriceMath.sale(price: 100, discounts: [30, 20])
         XCTAssertEqual(s.final, 56, accuracy: 0.001); XCTAssertEqual(PriceMath.percent(s.realPercent), "44", "30% then 20% is 44% off, not 50%")

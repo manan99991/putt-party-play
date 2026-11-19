@@ -559,6 +559,16 @@
   "pt": "Cerca de",
   "zh": "约"
  },
+ "Action button (iPhone 15 Pro and later): Settings → Action Button → swipe to Shortcut → choose Tenzy → Flashlight pattern.": {
+  "de": "Aktionstaste (ab iPhone 15 Pro): Einstellungen → Aktionstaste → zu Kurzbefehl wischen → Tenzy → Flashlight pattern wählen.",
+  "es": "Botón de Acción (iPhone 15 Pro y posteriores): Ajustes → Botón de Acción → desliza hasta Atajo → elige Tenzy → Flashlight pattern.",
+  "fr": "Bouton Action (iPhone 15 Pro et plus) : Réglages → Bouton Action → glissez jusqu'à Raccourci → choisissez Tenzy → Flashlight pattern.",
+  "hi": "ऐक्शन बटन (iPhone 15 Pro और नए): सेटिंग्स → Action Button → Shortcut तक स्वाइप करें → Tenzy → Flashlight pattern चुनें।",
+  "it": "Tasto Azione (iPhone 15 Pro e successivi): Impostazioni → Tasto Azione → scorri fino a Comando rapido → scegli Tenzy → Flashlight pattern.",
+  "ja": "アクションボタン（iPhone 15 Pro以降）：設定 → アクションボタン → ショートカットまでスワイプ → Tenzy → Flashlight pattern を選択。",
+  "pt": "Botão de Ação (iPhone 15 Pro e posteriores): Ajustes → Botão de Ação → deslize até Atalho → escolha Tenzy → Flashlight pattern.",
+  "zh": "操作按钮（iPhone 15 Pro 及更新机型）：设置 → 操作按钮 → 滑到快捷指令 → 选择 Tenzy → Flashlight pattern。"
+ },
  "Add": {
   "de": "Hinzufügen",
   "es": "Añadir",
@@ -1558,6 +1568,16 @@
   "ja": "戻る",
   "pt": "Voltar",
   "zh": "返回"
+ },
+ "Back Tap (any recent iPhone): first open Shortcuts → + → add Tenzy's Flashlight pattern → pick SOS. Then Settings → Accessibility → Touch → Back Tap → Double Tap → choose that shortcut.": {
+  "de": "Auf Rückseite tippen (neuere iPhones): erst Kurzbefehle → + → Tenzys Flashlight pattern hinzufügen → SOS wählen. Dann Einstellungen → Bedienungshilfen → Tippen → Auf Rückseite tippen → Doppeltippen → diesen Kurzbefehl wählen.",
+  "es": "Toque posterior (iPhone recientes): primero Atajos → + → añade Flashlight pattern de Tenzy → elige SOS. Luego Ajustes → Accesibilidad → Tocar → Toque posterior → Doble toque → elige ese atajo.",
+  "fr": "Toucher le dos (iPhone récents) : d'abord Raccourcis → + → ajoutez Flashlight pattern de Tenzy → choisissez SOS. Puis Réglages → Accessibilité → Toucher → Toucher le dos → Toucher deux fois → choisissez ce raccourci.",
+  "hi": "बैक टैप (हाल के iPhone): पहले Shortcuts → + → Tenzy का Flashlight pattern जोड़ें → SOS चुनें। फिर सेटिंग्स → Accessibility → Touch → Back Tap → Double Tap → वह शॉर्टकट चुनें।",
+  "it": "Tocco posteriore (iPhone recenti): prima Comandi → + → aggiungi Flashlight pattern di Tenzy → scegli SOS. Poi Impostazioni → Accessibilità → Tocco → Tocco posteriore → Doppio tocco → scegli quel comando.",
+  "ja": "背面タップ（最近のiPhone）：まずショートカット → ＋ → TenzyのFlashlight patternを追加 → SOSを選択。次に設定 → アクセシビリティ → タッチ → 背面タップ → ダブルタップ → そのショートカットを選択。",
+  "pt": "Toque traseiro (iPhones recentes): primeiro Atalhos → + → adicione Flashlight pattern da Tenzy → escolha SOS. Depois Ajustes → Acessibilidade → Toque → Toque Traseiro → Toque Duplo → escolha esse atalho.",
+  "zh": "轻点背面（较新的 iPhone）：先打开快捷指令 → + → 添加 Tenzy 的 Flashlight pattern → 选 SOS。然后设置 → 辅助功能 → 触控 → 轻点背面 → 轻点两下 → 选择该快捷指令。"
  },
  "Back to automatic": {
   "de": "Zurück zu Automatik",
@@ -4509,6 +4529,16 @@
   "pt": "Diagnóstico",
   "zh": "诊断"
  },
+ "Did the flash blink? Then calls and alerts will blink it too.": {
+  "de": "Hat der Blitz geblinkt? Dann blinkt er auch bei Anrufen und Hinweisen.",
+  "es": "¿Parpadeó el flash? Entonces también lo hará con llamadas y avisos.",
+  "fr": "Le flash a clignoté ? Alors il clignotera aussi pour les appels et alertes.",
+  "hi": "फ़्लैश चमका? तो कॉल और अलर्ट पर भी चमकेगा।",
+  "it": "Il flash ha lampeggiato? Allora lampeggerà anche per chiamate e avvisi.",
+  "ja": "フラッシュは点滅しましたか？それなら着信や通知でも点滅します。",
+  "pt": "O flash piscou? Então vai piscar também em chamadas e alertas.",
+  "zh": "闪光灯闪了吗？那么来电和提醒时也会闪。"
+ },
  "Didn't find any speech in that recording. If it has talking in it, make sure Dictation is on in Settings › General › Keyboard and try again.": {
   "de": "In dieser Aufnahme wurde keine Sprache gefunden. Falls doch gesprochen wird, prüfe, ob Diktat unter Einstellungen › Allgemein › Tastatur an ist, und versuch es erneut.",
   "es": "No se encontró voz en esa grabación. Si tiene conversación, comprueba que Dictado esté activado en Ajustes › General › Teclado y reinténtalo.",
@@ -5198,6 +5228,36 @@
   "ja": "緊急",
   "pt": "Emergência",
   "zh": "紧急"
+ },
+ "Emergency light": {
+  "de": "Notlicht",
+  "es": "Luz de emergencia",
+  "fr": "Lumière d'urgence",
+  "hi": "आपातकालीन रोशनी",
+  "it": "Luce di emergenza",
+  "ja": "緊急ライト",
+  "pt": "Luz de emergência",
+  "zh": "紧急灯"
+ },
+ "Emergency light flashes SOS on the LED and the screen and can sound a siren — for being found in the dark.": {
+  "de": "Das Notlicht blinkt SOS mit LED und Bildschirm und kann eine Sirene spielen – damit man dich im Dunkeln findet.",
+  "es": "La luz de emergencia emite SOS con el LED y la pantalla y puede sonar una sirena, para que te encuentren en la oscuridad.",
+  "fr": "La lumière d'urgence fait clignoter SOS sur la LED et l'écran et peut déclencher une sirène — pour être trouvé dans le noir.",
+  "hi": "आपातकालीन रोशनी LED और स्क्रीन पर SOS चमकाती है और सायरन बजा सकती है — ताकि अंधेरे में आपको ढूँढा जा सके।",
+  "it": "La luce di emergenza lampeggia SOS su LED e schermo e può suonare una sirena, per farti trovare al buio.",
+  "ja": "緊急ライトはLEDと画面でSOSを点滅し、サイレンも鳴らせます — 暗闇で見つけてもらうために。",
+  "pt": "A luz de emergência pisca SOS no LED e na tela e pode tocar uma sirene — para ser encontrado no escuro.",
+  "zh": "紧急灯用 LED 和屏幕闪烁 SOS，并可响起警笛——让别人在黑暗中找到你。"
+ },
+ "Emergency light is on": {
+  "de": "Notlicht ist an",
+  "es": "La luz de emergencia está encendida",
+  "fr": "La lumière d'urgence est allumée",
+  "hi": "आपातकालीन रोशनी चालू है",
+  "it": "La luce di emergenza è accesa",
+  "ja": "緊急ライトがオンです",
+  "pt": "A luz de emergência está ligada",
+  "zh": "紧急灯已开启"
  },
  "Emoji": {
   "de": "Emoji",
@@ -6189,6 +6249,26 @@
   "pt": "Horário fixo — o resto se encaixa em volta.",
   "zh": "时间固定——其他事围绕它安排。"
  },
+ "Flash when someone calls": {
+  "de": "Blitz bei Anrufen",
+  "es": "Flash al recibir llamadas",
+  "fr": "Flash quand on vous appelle",
+  "hi": "कॉल आने पर फ़्लैश",
+  "it": "Flash quando qualcuno chiama",
+  "ja": "着信時にフラッシュ",
+  "pt": "Flash quando alguém liga",
+  "zh": "来电时闪光"
+ },
+ "Flashes SOS on the light and the whole screen, with an optional siren": {
+  "de": "Blinkt SOS mit Licht und ganzem Bildschirm, optional mit Sirene",
+  "es": "Emite SOS con la luz y toda la pantalla, con sirena opcional",
+  "fr": "Fait clignoter SOS avec la lampe et tout l'écran, sirène en option",
+  "hi": "लाइट और पूरी स्क्रीन पर SOS चमकाता है, साथ में सायरन भी चुन सकते हैं",
+  "it": "Lampeggia SOS con la luce e tutto lo schermo, con sirena facoltativa",
+  "ja": "ライトと画面全体でSOSを点滅（サイレンも可）",
+  "pt": "Pisca SOS na luz e na tela inteira, com sirene opcional",
+  "zh": "用闪光灯和整个屏幕闪烁 SOS，可选警笛"
+ },
  "Flashlight": {
   "de": "Taschenlampe",
   "es": "Linterna",
@@ -6218,6 +6298,16 @@
   "ja": "ライト+",
   "pt": "Lanterna+",
   "zh": "手电筒+"
+ },
+ "Flashlight+ test": {
+  "de": "Flashlight+-Test",
+  "es": "Prueba de Flashlight+",
+  "fr": "Test Flashlight+",
+  "hi": "Flashlight+ टेस्ट",
+  "it": "Prova di Flashlight+",
+  "ja": "Flashlight+ テスト",
+  "pt": "Teste do Flashlight+",
+  "zh": "Flashlight+ 测试"
  },
  "Flipbook": {
   "de": "Daumenkino",
@@ -8639,6 +8729,16 @@
   "pt": "Bloquear agora",
   "zh": "立即锁定"
  },
+ "Lock your phone now. In 10 seconds a test alert arrives — if the flash blinks, you're set.": {
+  "de": "Sperre jetzt dein Telefon. In 10 Sekunden kommt ein Testhinweis – blinkt der Blitz, ist alles bereit.",
+  "es": "Bloquea el teléfono ahora. En 10 segundos llega un aviso de prueba: si el flash parpadea, listo.",
+  "fr": "Verrouillez votre téléphone. Dans 10 secondes une alerte de test arrive — si le flash clignote, c'est réglé.",
+  "hi": "अब फ़ोन लॉक करें। 10 सेकंड में टेस्ट अलर्ट आएगा — फ़्लैश चमका तो सब सेट है।",
+  "it": "Blocca ora il telefono. Tra 10 secondi arriva un avviso di prova: se il flash lampeggia, sei a posto.",
+  "ja": "今すぐロックしてください。10秒後にテスト通知が届きます — フラッシュが点滅すれば設定完了です。",
+  "pt": "Bloqueie o telefone agora. Em 10 segundos chega um alerta de teste — se o flash piscar, está pronto.",
+  "zh": "现在锁屏。10 秒后会收到测试提醒——闪光灯闪了就设置好了。"
+ },
  "Locked": {
   "de": "Gesperrt",
   "es": "Bloqueado",
@@ -9838,6 +9938,16 @@
   "ja": "これ未満",
   "pt": "Deve ser inferior a",
   "zh": "必须小于"
+ },
+ "Mute siren": {
+  "de": "Sirene stumm",
+  "es": "Silenciar sirena",
+  "fr": "Couper la sirène",
+  "hi": "सायरन बंद करें",
+  "it": "Silenzia sirena",
+  "ja": "サイレンを消す",
+  "pt": "Silenciar sirene",
+  "zh": "静音警笛"
  },
  "My Day": {
   "de": "Mein Tag",
@@ -11139,6 +11249,26 @@
   "pt": "Um parágrafo",
   "zh": "一段"
  },
+ "One pass takes about": {
+  "de": "Ein Durchlauf dauert etwa",
+  "es": "Una pasada tarda unos",
+  "fr": "Un passage dure environ",
+  "hi": "एक बार में लगभग",
+  "it": "Un passaggio dura circa",
+  "ja": "1回あたり約",
+  "pt": "Uma passagem leva cerca de",
+  "zh": "一遍大约需要"
+ },
+ "One press to SOS": {
+  "de": "Ein Druck für SOS",
+  "es": "SOS con una pulsación",
+  "fr": "SOS en une pression",
+  "hi": "एक दबाव में SOS",
+  "it": "SOS con una pressione",
+  "ja": "ワンプッシュでSOS",
+  "pt": "SOS com um toque",
+  "zh": "一键 SOS"
+ },
  "One short note each morning with what matters today — set it once and it just comes.": {
   "de": "Jeden Morgen eine kurze Notiz mit dem, was heute zählt – einmal einrichten, dann kommt sie von selbst.",
   "es": "Una nota breve cada mañana con lo importante de hoy: configúrala una vez y llega sola.",
@@ -11268,6 +11398,16 @@
   "ja": "設定を開く",
   "pt": "Abrir Definições",
   "zh": "打开设置"
+ },
+ "Open Settings → Accessibility → Audio & Visual.": {
+  "de": "Einstellungen → Bedienungshilfen → Audio & Visuelles öffnen.",
+  "es": "Abre Ajustes → Accesibilidad → Audio y visual.",
+  "fr": "Ouvrez Réglages → Accessibilité → Audio et visuel.",
+  "hi": "सेटिंग्स → Accessibility → Audio & Visual खोलें।",
+  "it": "Apri Impostazioni → Accessibilità → Audio e immagini.",
+  "ja": "設定 → アクセシビリティ → オーディオとビジュアル を開きます。",
+  "pt": "Abra Ajustes → Acessibilidade → Áudio e Visual.",
+  "zh": "打开 设置 → 辅助功能 → 音频与视觉。"
  },
  "Open Shortcuts": {
   "de": "Kurzbefehle öffnen",
@@ -11828,6 +11968,16 @@
   "ja": "ここにテキスト・メール・DMを貼り付けます…",
   "pt": "Cola aqui o texto, e-mail ou mensagem…",
   "zh": "在此粘贴文本、邮件或私信…"
+ },
+ "Patterns, SOS and Morse on the LED, an emergency light with a siren, a screen light and a mirror — and a one-press SOS from your Action button.": {
+  "de": "Muster, SOS und Morse mit der LED, ein Notlicht mit Sirene, ein Bildschirmlicht und ein Spiegel – und SOS mit einem Druck auf die Aktionstaste.",
+  "es": "Patrones, SOS y Morse con el LED, luz de emergencia con sirena, luz de pantalla y espejo, y SOS con una pulsación del botón de Acción.",
+  "fr": "Motifs, SOS et Morse sur la LED, lumière d'urgence avec sirène, lumière d'écran et miroir — et SOS en une pression sur le bouton Action.",
+  "hi": "LED पर पैटर्न, SOS और मोर्स, सायरन वाली आपातकालीन रोशनी, स्क्रीन लाइट और आईना — और ऐक्शन बटन से एक दबाव में SOS।",
+  "it": "Sequenze, SOS e Morse sul LED, luce di emergenza con sirena, luce dello schermo e specchio, e SOS con una pressione del tasto Azione.",
+  "ja": "LEDでパターン・SOS・モールス、サイレン付き緊急ライト、画面ライト、ミラー — アクションボタンでワンプッシュSOSも。",
+  "pt": "Padrões, SOS e Morse no LED, luz de emergência com sirene, luz de tela e espelho — e SOS com um toque no Botão de Ação.",
+  "zh": "LED 图案、SOS 和摩斯码，带警笛的紧急灯、屏幕灯和镜子——还能用操作按钮一键 SOS。"
  },
  "Pause between clips": {
   "de": "Pause zwischen Clips",
@@ -12988,6 +13138,16 @@
   "ja": "空を広く入れるなら、水平線を下の線に。",
   "pt": "Coloque o horizonte na linha de baixo para mais céu.",
   "zh": "把地平线放在下方线上，天空更多。"
+ },
+ "Put the light on a button so it's there in the dark. Do this once and it's always ready.": {
+  "de": "Leg das Licht auf eine Taste, damit es im Dunkeln da ist. Einmal einrichten, immer bereit.",
+  "es": "Pon la luz en un botón para tenerla a mano en la oscuridad. Hazlo una vez y siempre estará lista.",
+  "fr": "Mettez la lampe sur un bouton pour l'avoir dans le noir. Une fois réglé, c'est toujours prêt.",
+  "hi": "रोशनी को एक बटन पर रखें ताकि अंधेरे में तुरंत मिले। एक बार सेट करें, हमेशा तैयार।",
+  "it": "Metti la luce su un tasto, così ce l'hai al buio. Fallo una volta ed è sempre pronta.",
+  "ja": "ライトをボタンに割り当てて、暗闇ですぐ使えるように。一度設定すればいつでも使えます。",
+  "pt": "Coloque a luz num botão para tê-la no escuro. Faça uma vez e fica sempre pronta.",
+  "zh": "把灯放到一个按键上，黑暗中随时可用。设置一次，永远就绪。"
  },
  "Put this tool first on the widget": {
   "de": "Dieses Tool im Widget nach oben",
@@ -14179,6 +14339,16 @@
   "pt": "Corre inteiramente no teu telemóvel; a mensagem nunca é enviada para lado nenhum. Um resultado limpo não é garantia — quando há dinheiro ou códigos envolvidos, confirma por um canal oficial.",
   "zh": "完全在你的手机上运行；消息绝不会发送到任何地方。结果干净并不等于担保——涉及钱款或验证码时，请通过官方渠道核实。"
  },
+ "SOS is flashing — that's what your button will do. It stops in 6 seconds.": {
+  "de": "SOS blinkt – das macht deine Taste. Es stoppt in 6 Sekunden.",
+  "es": "SOS parpadea: eso hará tu botón. Se detiene en 6 segundos.",
+  "fr": "SOS clignote — c'est ce que fera votre bouton. Arrêt dans 6 secondes.",
+  "hi": "SOS चमक रहा है — आपका बटन यही करेगा। 6 सेकंड में रुक जाएगा।",
+  "it": "SOS lampeggia: è ciò che farà il tuo tasto. Si ferma tra 6 secondi.",
+  "ja": "SOSが点滅中 — ボタンでこうなります。6秒で止まります。",
+  "pt": "SOS está piscando — é isso que seu botão fará. Para em 6 segundos.",
+  "zh": "SOS 正在闪烁——这就是你的按键会做的。6 秒后停止。"
+ },
  "Safety": {
   "de": "Sicherheit",
   "es": "Seguridad",
@@ -15149,6 +15319,16 @@
   "pt": "Ver Pro",
   "zh": "查看 Pro"
  },
+ "See calls and messages in a loud room or with the sound off: iPhone can blink its flash for every call and alert. It's built into iPhone — Tenzy shows you where.": {
+  "de": "Anrufe und Nachrichten sehen, wenn es laut ist oder der Ton aus ist: iPhone kann bei jedem Anruf und Hinweis blinken. Das ist in iPhone eingebaut – Tenzy zeigt dir, wo.",
+  "es": "Ve llamadas y mensajes en un sitio ruidoso o sin sonido: el iPhone puede hacer parpadear su flash en cada llamada y aviso. Viene en el iPhone; Tenzy te muestra dónde.",
+  "fr": "Voyez appels et messages dans le bruit ou en silencieux : l'iPhone peut faire clignoter son flash à chaque appel et alerte. C'est intégré à l'iPhone — Tenzy vous montre où.",
+  "hi": "शोर में या आवाज़ बंद होने पर भी कॉल और मैसेज देखें: iPhone हर कॉल और अलर्ट पर फ़्लैश चमका सकता है। यह iPhone में ही है — Tenzy बताता है कहाँ।",
+  "it": "Vedi chiamate e messaggi in un posto rumoroso o senza suono: l'iPhone può far lampeggiare il flash a ogni chiamata e avviso. È già nell'iPhone; Tenzy ti mostra dove.",
+  "ja": "騒がしい場所や消音中でも着信や通知がわかります：iPhoneは着信や通知のたびにフラッシュを点滅できます。iPhoneの機能です — 場所はTenzyが案内します。",
+  "pt": "Veja chamadas e mensagens num lugar barulhento ou sem som: o iPhone pode piscar o flash a cada chamada e alerta. Já vem no iPhone — a Tenzy mostra onde.",
+  "zh": "在嘈杂环境或静音时也能看到来电和消息：iPhone 可在每次来电和提醒时闪光。这是 iPhone 自带功能——Tenzy 告诉你在哪里。"
+ },
  "Select": {
   "de": "Auswählen",
   "es": "Seleccionar",
@@ -15339,6 +15519,16 @@
   "pt": "Configurar",
   "zh": "设置"
  },
+ "Set the brightness and an auto-off timer so it won't drain your battery.": {
+  "de": "Stell Helligkeit und Auto-Aus ein, damit der Akku hält.",
+  "es": "Ajusta el brillo y el apagado automático para no gastar batería.",
+  "fr": "Réglez la luminosité et l'arrêt auto pour ménager la batterie.",
+  "hi": "चमक और ऑटो-ऑफ़ सेट करें ताकि बैटरी न खत्म हो।",
+  "it": "Imposta luminosità e spegnimento automatico per non scaricare la batteria.",
+  "ja": "明るさと自動オフを設定して電池の消耗を防ぎます。",
+  "pt": "Ajuste o brilho e o desligamento automático para poupar bateria.",
+  "zh": "设置亮度和自动关闭，以免耗电。"
+ },
  "Set this to the language spoken in the recording.": {
   "de": "Stelle dies auf die im Aufnahme gesprochene Sprache.",
   "es": "Ajústalo al idioma hablado en la grabación.",
@@ -15378,6 +15568,16 @@
   "ja": "一度だけ設定",
   "pt": "Configura uma vez",
   "zh": "设置一次"
+ },
+ "Set up once: put SOS on your Action button or Back Tap, and make the flash blink when someone calls.": {
+  "de": "Einmal einrichten: SOS auf die Aktionstaste oder Auf Rückseite tippen legen und den Blitz bei Anrufen blinken lassen.",
+  "es": "Configura una vez: pon SOS en el botón de Acción o Toque posterior y haz que el flash parpadee con las llamadas.",
+  "fr": "À régler une fois : mettez SOS sur le bouton Action ou Toucher le dos, et faites clignoter le flash aux appels.",
+  "hi": "एक बार सेट करें: SOS को ऐक्शन बटन या बैक टैप पर रखें, और कॉल आने पर फ़्लैश चमकाएँ।",
+  "it": "Imposta una volta: metti SOS sul tasto Azione o Tocco posteriore e fai lampeggiare il flash alle chiamate.",
+  "ja": "一度設定：SOSをアクションボタンや背面タップに割り当て、着信時にフラッシュを点滅させます。",
+  "pt": "Configure uma vez: coloque SOS no Botão de Ação ou Toque Traseiro e faça o flash piscar nas chamadas.",
+  "zh": "设置一次：把 SOS 放到操作按钮或轻点背面，并让来电时闪光。"
  },
  "Settings": {
   "de": "Einstellungen",
@@ -15919,6 +16119,26 @@
   "pt": "Silhueta",
   "zh": "剪影"
  },
+ "Siren on": {
+  "de": "Sirene an",
+  "es": "Sirena activada",
+  "fr": "Sirène activée",
+  "hi": "सायरन चालू",
+  "it": "Sirena attiva",
+  "ja": "サイレンをオン",
+  "pt": "Sirene ligada",
+  "zh": "打开警笛"
+ },
+ "Siri: just say “Start SOS light in Tenzy” — nothing to set up.": {
+  "de": "Siri: Sag einfach „Start SOS light in Tenzy“ – nichts einzurichten.",
+  "es": "Siri: di «Start SOS light in Tenzy»; no hay que configurar nada.",
+  "fr": "Siri : dites « Start SOS light in Tenzy » — rien à régler.",
+  "hi": "Siri: बस कहें “Start SOS light in Tenzy” — कुछ सेट नहीं करना।",
+  "it": "Siri: di' «Start SOS light in Tenzy», niente da configurare.",
+  "ja": "Siri：「Start SOS light in Tenzy」と言うだけ。設定は不要です。",
+  "pt": "Siri: diga “Start SOS light in Tenzy” — nada a configurar.",
+  "zh": "Siri：只要说 “Start SOS light in Tenzy”，无需设置。"
+ },
  "Sit or lie down for a few minutes": {
   "de": "Ein paar Minuten sitzen oder liegen",
   "es": "Siéntate o túmbate unos minutos",
@@ -16358,6 +16578,16 @@
   "ja": "音声と声",
   "pt": "Som e voz",
   "zh": "声音和语音"
+ },
+ "Sound a siren with it": {
+  "de": "Dazu eine Sirene abspielen",
+  "es": "Hacer sonar una sirena",
+  "fr": "Faire retentir une sirène",
+  "hi": "साथ में सायरन बजाएँ",
+  "it": "Suona anche una sirena",
+  "ja": "サイレンも鳴らす",
+  "pt": "Tocar uma sirene junto",
+  "zh": "同时响起警笛"
  },
  "Soundboard": {
   "de": "Soundboard",
@@ -17229,6 +17459,16 @@
   "pt": "Toca em Digitalizar para listar tudo na tua Wi-Fi. Liga-te primeiro à rede Wi-Fi — isto não vê dispositivos por dados móveis.",
   "zh": "点按扫描以列出你 Wi-Fi 上的一切。请先加入 Wi-Fi 网络 — 这无法通过移动数据看到设备。"
  },
+ "Tap Test run below, then lock your phone and wait 10 seconds.": {
+  "de": "Tippe unten auf Testlauf, sperre dann das Telefon und warte 10 Sekunden.",
+  "es": "Toca Prueba abajo, bloquea el teléfono y espera 10 segundos.",
+  "fr": "Touchez Essai ci-dessous, verrouillez le téléphone et attendez 10 secondes.",
+  "hi": "नीचे टेस्ट रन दबाएँ, फिर फ़ोन लॉक करें और 10 सेकंड रुकें।",
+  "it": "Tocca Prova qui sotto, poi blocca il telefono e aspetta 10 secondi.",
+  "ja": "下の「テスト実行」をタップし、iPhoneをロックして10秒待ちます。",
+  "pt": "Toque em Teste abaixo, depois bloqueie o telefone e espere 10 segundos.",
+  "zh": "点下方的“试运行”，然后锁屏并等待 10 秒。"
+ },
  "Tap Use sound as… → Standard Ringtone.": {
   "de": "Tippe auf „Ton verwenden als …“ → „Standardklingelton“.",
   "es": "Toca Usar sonido como… → Tono de llamada estándar.",
@@ -17288,6 +17528,16 @@
   "ja": "名前をタップして、誰の発言か付けましょう。",
   "pt": "Toque num nome para marcar quem disse cada parte.",
   "zh": "点按名字，标注每段是谁说的。"
+ },
+ "Tap a pattern to turn the torch on; tap it again to turn it off.": {
+  "de": "Tippe auf ein Muster zum Einschalten, nochmal zum Ausschalten.",
+  "es": "Toca un patrón para encender la linterna; tócalo otra vez para apagarla.",
+  "fr": "Touchez un motif pour allumer ; touchez-le à nouveau pour éteindre.",
+  "hi": "टॉर्च चालू करने के लिए पैटर्न दबाएँ; बंद करने के लिए फिर दबाएँ।",
+  "it": "Tocca una sequenza per accendere; toccala di nuovo per spegnere.",
+  "ja": "パターンをタップで点灯、もう一度タップで消灯。",
+  "pt": "Toque num padrão para ligar; toque de novo para desligar.",
+  "zh": "点一个图案打开手电筒，再点一次关闭。"
  },
  "Tap a result to open the file. Scanned PDFs without a text layer get a quick on-device OCR of their first pages.": {
   "de": "Tippe ein Ergebnis an, um die Datei zu öffnen. Gescannte PDFs ohne Textebene erhalten ein schnelles On-Device-OCR ihrer ersten Seiten.",
@@ -19288,6 +19538,16 @@
   "ja": "オンにして時刻を選びます（朝7時がおすすめ）。",
   "pt": "Ative e escolha uma hora — 7h é um bom começo.",
   "zh": "打开并选个时间——早上 7 点不错。"
+ },
+ "Turn on LED Flash for Alerts. Turn on Flash on Silent too, if you want it with the ringer off.": {
+  "de": "LED-Blitz bei Hinweisen einschalten. Auch „Blitz im Stumm-Modus“, wenn es bei ausgeschaltetem Klingelton blinken soll.",
+  "es": "Activa Flash LED para alertas. Activa también Flash en modo silencio si lo quieres con el timbre apagado.",
+  "fr": "Activez Flash LED pour les alertes. Activez aussi Flash en mode silencieux si vous le voulez sonnerie coupée.",
+  "hi": "LED Flash for Alerts चालू करें। रिंगर बंद होने पर भी चाहिए तो Flash on Silent भी चालू करें।",
+  "it": "Attiva Flash LED per avvisi. Attiva anche Flash in modalità silenziosa, se lo vuoi con la suoneria spenta.",
+  "ja": "「LEDフラッシュ通知」をオンに。消音時にも光らせたいなら「消音モードで点滅」もオン。",
+  "pt": "Ative Flash LED para Alertas. Ative também Flash no Silencioso, se quiser com a campainha desligada.",
+  "zh": "打开“LED 闪烁以示提醒”。如需静音时也闪，请同时打开“静音时闪烁”。"
  },
  "Turn on Peaking — the red edges show exactly what's sharp.": {
   "de": "Schalte Peaking ein — die roten Kanten zeigen genau, was scharf ist.",
@@ -21798,6 +22058,16 @@
   "ja": "枚。",
   "pt": "capturas.",
   "zh": "张截图。"
+ },
+ "seconds, then it repeats.": {
+  "de": "Sekunden, dann wiederholt es sich.",
+  "es": "segundos y luego se repite.",
+  "fr": "secondes, puis ça recommence.",
+  "hi": "सेकंड लगते हैं, फिर दोहराता है।",
+  "it": "secondi, poi si ripete.",
+  "ja": "秒、その後くり返します。",
+  "pt": "segundos e depois se repete.",
+  "zh": "秒，然后重复。"
  },
  "selected": {
   "de": "ausgewählt",

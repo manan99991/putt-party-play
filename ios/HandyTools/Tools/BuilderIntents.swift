@@ -135,11 +135,42 @@ struct OpenToolIntent: AppIntent {
     }
 }
 
+/// The flashlight patterns a button or Siri can start.
+enum LightPattern: String, AppEnum {
+    case sos, steady, strobeMed, emergency
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Light pattern"
+    static let caseDisplayRepresentations: [LightPattern: DisplayRepresentation] = [
+        .sos: "SOS", .steady: "Steady light", .strobeMed: "Strobe", .emergency: "Emergency light with siren",
+    ]
+}
+
+/// "Flashlight pattern": for the Action button, Back Tap or Siri. Opens Flashlight+ and starts it at once —
+/// iPhone only lets an app drive the flash while it's on screen, so it opens rather than running hidden.
+struct FlashlightPatternIntent: AppIntent {
+    static let title: LocalizedStringResource = "Flashlight pattern"
+    static let description: IntentDescription? = IntentDescription("Opens Tenzy's Flashlight+ and starts SOS, a steady light, a strobe or the emergency light with a siren.")
+    static let openAppWhenRun: Bool = true
+
+    @Parameter(title: "Pattern", default: .sos) var pattern: LightPattern
+
+    static var parameterSummary: some ParameterSummary { Summary("Start \(\.$pattern)") }
+
+    @MainActor
+    func perform() async throws -> some IntentResult {
+        TorchExtras.setPending(pattern.rawValue)
+        NotificationCenter.default.post(name: .openTool, object: "light")
+        return .result()
+    }
+}
+
 /// Makes the actions findable in Shortcuts, Spotlight and Siri without any setup.
 struct TenzyShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
         AppShortcut(intent: OpenToolIntent(),
                     phrases: ["Open a \(.applicationName) tool", "Run a \(.applicationName) tool"],
                     shortTitle: "Open a Tool", systemImageName: "wand.and.stars")
+        AppShortcut(intent: FlashlightPatternIntent(),
+                    phrases: ["Start SOS light in \(.applicationName)", "\(.applicationName) SOS light", "Start \(\.$pattern) in \(.applicationName)"],
+                    shortTitle: "Flashlight SOS", systemImageName: "light.beacon.max.fill")
     }
 }
