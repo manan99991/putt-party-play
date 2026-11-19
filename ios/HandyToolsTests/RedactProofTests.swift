@@ -30,3 +30,19 @@ final class RedactProofTests: XCTestCase {
 
     private func norm(_ s: String) -> String { RedactFinder.norm(s) }
 }
+
+final class UpsideDownPageTests: XCTestCase {
+    func testAnUpsideDownPageIsSpottedAndAnUprightOneIsNot() {
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1
+        let page = UIGraphicsImageRenderer(size: CGSize(width: 1200, height: 1600), format: f).image { c in
+            UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 1200, height: 1600))
+            let a: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 40), .foregroundColor: UIColor.black]
+            for (i, line) in ["Dear tenant,", "Your lease renews on the first of March.", "Please sign and return both pages.", "Thank you for staying with us."].enumerated() {
+                (line as NSString).draw(at: CGPoint(x: 80, y: 120 + CGFloat(i) * 90), withAttributes: a)
+            }
+        }
+        XCTAssertFalse(PDFPages.looksUpsideDown(page))
+        let flipped = UIImage(cgImage: page.cgImage!, scale: 1, orientation: .down).normalizedUp()
+        XCTAssertTrue(PDFPages.looksUpsideDown(flipped))
+    }
+}

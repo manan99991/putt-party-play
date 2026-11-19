@@ -111,6 +111,21 @@ struct PDFPagesView: View {
                 splitURLs = []
             } label: { Label(L("Drop blank pages"), systemImage: "doc.badge.ellipsis") }.compactButton()
                 .accessibilityIdentifier("pages-blank")
+            Button {
+                guard let data = sourceData else { return }
+                let indexes = items.map(\.index)
+                note = "Checking which pages are upside down…"
+                Task {
+                    let flips = await Task.detached(priority: .userInitiated) { () -> [Int] in
+                        guard let doc = PDFDocument(data: data) else { return [] }
+                        return indexes.filter { i in doc.page(at: i).map { PDFPages.looksUpsideDown(PDFSearchable.render($0, maxWidth: 1200)) } ?? false }
+                    }.value
+                    for i in items.indices where flips.contains(items[i].index) { items[i].rotation = PDFPages.normalized(items[i].rotation + 180) }
+                    splitURLs = []
+                    note = flips.isEmpty ? "No upside-down pages found." : "Turned \(flips.count) upside-down page\(flips.count == 1 ? "" : "s") the right way up."
+                }
+            } label: { Label(L("Fix upside-down pages"), systemImage: "arrow.uturn.down") }.compactButton()
+                .accessibilityIdentifier("pages-upside")
             Button { items.reverse(); splitURLs = []; note = nil } label: { Label(L("Reverse order"), systemImage: "arrow.up.arrow.down") }.compactButton()
             Button { for i in items.indices { items[i].rotation = PDFPages.normalized(items[i].rotation + 90) }; splitURLs = []; note = nil } label: { Label(L("Turn all"), systemImage: "rotate.right") }.compactButton()
         }

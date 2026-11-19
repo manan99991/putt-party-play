@@ -1,6 +1,7 @@
 import Foundation
 import PDFKit
 import UIKit
+import Vision
 
 /// Organize a PDF's pages: keep any subset, in any order, each with its own extra rotation. Pages are
 /// COPIED from the source — not re-rendered — so text stays sharp, vector and selectable, and the file
@@ -59,6 +60,19 @@ enum PDFPages {
 
     /// A page with (almost) nothing on it: fewer than 0.3% of its pixels are darker than light grey.
     /// Scanners and "print to PDF" leave these behind all the time.
+    /// True when a page's text reads clearly only turned round: read both ways up, and the 180° turn wins by a clear
+    /// margin (more words, read with more confidence). Pages with little text are left as they are.
+    static func looksUpsideDown(_ image: UIImage) -> Bool {
+        guard let cg = image.cgImage else { return false }
+        func score(_ o: CGImagePropertyOrientation) -> Float {
+            let r = VNRecognizeTextRequest(); r.recognitionLevel = .fast; r.usesLanguageCorrection = false
+            try? VNImageRequestHandler(cgImage: cg, orientation: o).perform([r])
+            return (r.results ?? []).compactMap { $0.topCandidates(1).first }.reduce(0) { $0 + $1.confidence * Float(min(40, $1.string.count)) }
+        }
+        let up = score(.up), turned = score(.down)
+        return turned > 40 && turned > up * 1.8
+    }
+
     static func looksBlank(_ image: UIImage) -> Bool {
         guard let cg = image.cgImage else { return false }
         let w = 60, h = 80
