@@ -56,6 +56,9 @@ struct ProCameraView: View {
             }
             .pickerStyle(.segmented).disabled(cam.recording || cam.accumulating)
             .accessibilityIdentifier("procam-mode")
+            NavigationLink { ShotGuideView() } label: {
+                Label(L("Guided shots: rental car, moving in, selling, damaged parcel — one dated PDF"), systemImage: "checklist").font(HandyFont.caption)
+            }.accessibilityIdentifier("procam-guided")
             ZStack {
                 ProcessedFrameView(image: processed, holder: holder, fit: true)
                     .overlay {
