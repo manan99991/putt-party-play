@@ -2451,6 +2451,24 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(ZipPrep.emailNote(bytes: 10_000_000)); XCTAssertNotNil(ZipPrep.emailNote(bytes: 30_000_000))
     }
 
+    func testStyledQRCodesStillScan() throws {
+        let url = "https://tenzy.app/menu?table=12"
+        let grid = try XCTUnwrap(QRStyle.matrix(url, correction: "M"))
+        XCTAssertEqual(grid.count, grid.first?.count, "a square grid")
+        XCTAssertTrue(QRStyle.inEye(1, 1, n: grid.count, margin: 1) && QRStyle.inEye(grid.count - 2, 1, n: grid.count, margin: 1))
+        XCTAssertFalse(QRStyle.inEye(grid.count / 2, grid.count / 2, n: grid.count, margin: 1))
+        XCTAssertNil(QRStyle.matrix("   ", correction: "M"))
+        // Each look: what it renders reads back as exactly the link (or it falls back to plain, which does).
+        let looks = [QRStyle.Look(ink: 0x5B2BB5, dots: true), QRStyle.Look(ink: 0x0B7A75, center: "☕️"),
+                     QRStyle.Look(ink: 0x1B2A6B, dots: true, center: "🍕", caption: "Scan for our menu")]
+        for l in looks {
+            let r = try XCTUnwrap(QRStyle.safeRender(url, look: l))
+            XCTAssertEqual(QRStyle.reads(r.image), url, "\(l) must scan")
+        }
+        let captioned = try XCTUnwrap(QRStyle.render(url, look: QRStyle.Look(caption: "Hi")))
+        XCTAssertGreaterThan(captioned.size.height, captioned.size.width, "room for the caption")
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

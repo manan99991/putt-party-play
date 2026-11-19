@@ -2129,6 +2129,16 @@
   "pt": "Cancelar",
   "zh": "取消"
  },
+ "Caption under the code (e.g. Scan for our menu)": {
+  "de": "Text unter dem Code (z. B. Scannen für die Speisekarte)",
+  "es": "Texto bajo el código (p. ej. Escanea para ver el menú)",
+  "fr": "Légende sous le code (ex. Scannez pour le menu)",
+  "hi": "कोड के नीचे लाइन (जैसे मेन्यू के लिए स्कैन करें)",
+  "it": "Didascalia sotto il codice (es. Scansiona per il menu)",
+  "ja": "コードの下の文字（例：スキャンでメニュー）",
+  "pt": "Legenda por baixo (ex.: Leia para ver o menu)",
+  "zh": "码下方的文字（如：扫码看菜单）"
+ },
  "Card name": {
   "de": "Kartenname",
   "es": "Nombre de la tarjeta",
@@ -4959,6 +4969,16 @@
   "pt": "Todos os números e e-mails ficam num contacto; os duplicados são removidos. Não pode ser anulado, por isso garante que tens uma cópia.",
   "zh": "所有号码和邮箱都保留在一个联系人上；重复项会被移除。此操作无法撤销，请先确保已备份。"
  },
+ "Every styled code is test-scanned before you see it — if a style wouldn't scan, you get the plain one instead.": {
+  "de": "Jeder gestaltete Code wird vorher testweise gescannt – wenn ein Stil nicht scannbar wäre, bekommst du den schlichten.",
+  "es": "Cada código con estilo se escanea de prueba antes de mostrarlo; si un estilo no se leyera, recibes el sencillo.",
+  "fr": "Chaque code stylisé est testé au scan avant affichage — si un style ne se lit pas, vous obtenez le code simple.",
+  "hi": "हर सजाया कोड दिखाने से पहले टेस्ट-स्कैन होता है — अगर कोई स्टाइल स्कैन न हो, तो सादा कोड मिलता है।",
+  "it": "Ogni codice decorato viene scansionato di prova prima di mostrarlo: se uno stile non si legge, ricevi quello semplice.",
+  "ja": "デザインしたコードは表示前に試しに読み取ります。読めないデザインなら、シンプルなコードになります。",
+  "pt": "Cada código com estilo é testado antes de o ver — se um estilo não ler, recebe o simples.",
+  "zh": "每个美化后的码都会先试扫；如果某种样式扫不出，会改用普通样式。"
+ },
  "Every tool Tenzy has — tap any to open it. It all runs on your phone.": {
   "de": "Jedes Tenzy-Werkzeug – tippe zum Öffnen. Alles läuft auf deinem Telefon.",
   "es": "Todas las herramientas de Tenzy: toca cualquiera para abrirla. Todo funciona en tu teléfono.",
@@ -6448,6 +6468,16 @@
   "ja": "使うものだけ許可し、あとは後回しに。各ツールは必要になった時にまた尋ねます。",
   "pt": "Concede o que vais usar; ignora o resto. Cada ferramenta volta a pedir quando precisar.",
   "zh": "授予要用的，其余跳过。每个工具首次需要时会再询问。"
+ },
+ "Green": {
+  "de": "Grün",
+  "es": "Verde",
+  "fr": "Vert",
+  "hi": "हरा",
+  "it": "Verde",
+  "ja": "緑",
+  "pt": "Verde",
+  "zh": "绿"
  },
  "Grid": {
   "de": "Raster",
@@ -8349,6 +8379,16 @@
   "pt": "Torná-lo",
   "zh": "制作为"
  },
+ "Make it look good": {
+  "de": "Schön gestalten",
+  "es": "Darle estilo",
+  "fr": "Lui donner du style",
+  "hi": "इसे सुंदर बनाएँ",
+  "it": "Rendilo bello",
+  "ja": "デザインする",
+  "pt": "Dar-lhe estilo",
+  "zh": "美化一下"
+ },
  "Make it searchable": {
   "de": "Durchsuchbar machen",
   "es": "Hacerlo buscable",
@@ -9268,6 +9308,16 @@
   "ja": "ツールに名前を付ける",
   "pt": "Dá nome à tua ferramenta",
   "zh": "为你的工具命名"
+ },
+ "Navy": {
+  "de": "Marineblau",
+  "es": "Azul marino",
+  "fr": "Bleu marine",
+  "hi": "नेवी",
+  "it": "Blu navy",
+  "ja": "ネイビー",
+  "pt": "Azul-marinho",
+  "zh": "藏青"
  },
  "Near": {
   "de": "Nah",
@@ -11339,6 +11389,16 @@
   "pt": "Sugestões para você",
   "zh": "为你推荐"
  },
+ "Picture in the middle": {
+  "de": "Bild in der Mitte",
+  "es": "Imagen en el centro",
+  "fr": "Image au centre",
+  "hi": "बीच में तस्वीर",
+  "it": "Immagine al centro",
+  "ja": "中央の絵",
+  "pt": "Imagem no centro",
+  "zh": "中间的图案"
+ },
  "Pills left now:": {
   "de": "Tabletten übrig:",
   "es": "Pastillas que quedan:",
@@ -11868,6 +11928,16 @@
   "ja": "フラッシュ付きの勢いあるズームカット",
   "pt": "Cortes com zoom e flash",
   "zh": "带闪光的强力缩放切换"
+ },
+ "Purple": {
+  "de": "Lila",
+  "es": "Morado",
+  "fr": "Violet",
+  "hi": "बैंगनी",
+  "it": "Viola",
+  "ja": "紫",
+  "pt": "Roxo",
+  "zh": "紫"
  },
  "Pushes you to \"verify\" your account": {
   "de": "Drängt dich, dein Konto zu „verifizieren“",
@@ -12489,6 +12559,16 @@
   "pt": "Gravação → falas, tarefas, e-mail",
   "zh": "录音 → 发言、待办、邮件"
  },
+ "Red": {
+  "de": "Rot",
+  "es": "Rojo",
+  "fr": "Rouge",
+  "hi": "लाल",
+  "it": "Rosso",
+  "ja": "赤",
+  "pt": "Vermelho",
+  "zh": "红"
+ },
  "Redact": {
   "de": "Schwärzen",
   "es": "Ocultar",
@@ -12978,6 +13058,16 @@
   "ja": "回転",
   "pt": "Rodar",
   "zh": "旋转"
+ },
+ "Round dots": {
+  "de": "Runde Punkte",
+  "es": "Puntos redondos",
+  "fr": "Points ronds",
+  "hi": "गोल बिंदु",
+  "it": "Punti rotondi",
+  "ja": "丸いドット",
+  "pt": "Pontos redondos",
+  "zh": "圆点"
  },
  "Rows & columns (comma-separated). Fix anything the scan got wrong:": {
   "de": "Zeilen und Spalten (durch Kommas getrennt). Korrigiere, was der Scan falsch erfasst hat:",
@@ -16059,6 +16149,16 @@
   "pt": "Imposto %",
   "zh": "税 %"
  },
+ "Teal": {
+  "de": "Petrol",
+  "es": "Verde azulado",
+  "fr": "Bleu canard",
+  "hi": "टील",
+  "it": "Verde acqua",
+  "ja": "ティール",
+  "pt": "Azul-petróleo",
+  "zh": "青绿"
+ },
  "Tell me at least one thing you need to do — even a small one.": {
   "de": "Nenn mir mindestens eine Sache, die du erledigen musst – auch eine kleine.",
   "es": "Dime al menos una cosa que tengas que hacer, aunque sea pequeña.",
@@ -16498,6 +16598,16 @@
   "ja": "それには動画が必要です — 上の動画をタップ。",
   "pt": "Esse precisa de um vídeo — toca em Vídeo acima.",
   "zh": "那个需要一个视频 — 点按上方的视频。"
+ },
+ "That style wouldn't scan reliably with this much text, so here's the plain code. Try fewer details, no picture, or squares.": {
+  "de": "Mit so viel Text wäre der Stil nicht zuverlässig scannbar, darum hier der schlichte Code. Versuch weniger Angaben, kein Bild oder Quadrate.",
+  "es": "Con tanto texto ese estilo no se leería bien, así que aquí está el código sencillo. Prueba con menos datos, sin imagen o con cuadrados.",
+  "fr": "Avec autant de texte ce style ne se lirait pas bien, voici donc le code simple. Essayez moins de détails, sans image, ou des carrés.",
+  "hi": "इतने टेक्स्ट के साथ यह स्टाइल ठीक से स्कैन नहीं होता, इसलिए सादा कोड है। कम जानकारी, बिना तस्वीर या चौकोर आज़माएँ।",
+  "it": "Con così tanto testo lo stile non si leggerebbe bene, ecco il codice semplice. Prova con meno dati, senza immagine o con quadrati.",
+  "ja": "この文字量ではデザインが確実に読めないため、シンプルなコードにしました。情報を減らす、絵なし、四角を試してください。",
+  "pt": "Com tanto texto esse estilo não leria bem, por isso aqui está o código simples. Tente menos dados, sem imagem ou quadrados.",
+  "zh": "文字太多，这种样式扫不稳，所以给你普通码。试试减少内容、去掉图案或用方块。"
  },
  "That took too long and was stopped.": {
   "de": "Das dauerte zu lange und wurde gestoppt.",

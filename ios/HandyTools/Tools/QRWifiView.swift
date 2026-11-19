@@ -36,6 +36,8 @@ struct QRWifiView: View {
     @State private var qrImage: UIImage?
     @State private var batchImages: [UIImage] = []
     @State private var cardImage: UIImage?
+    @State private var look = QRStyle.Look()
+    @State private var styleNote: String?
 
     var body: some View {
         ToolPage(title: "QR & Wi‑Fi", subtitle: "Scan any code and act on it, make your own, or print a Wi‑Fi card for guests.") {
@@ -115,10 +117,12 @@ struct QRWifiView: View {
                     .overlay(alignment: .topLeading) { if batch.isEmpty { Text(L("One link or text per line — one QR each")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             }
             Picker(L("Size"), selection: $sizeIdx) { Text(L("Small")).tag(0); Text(L("Medium")).tag(1); Text(L("Large")).tag(2) }.pickerStyle(.segmented)
+            if kind != 4 { styleCard }
 
             Button { generate() } label: { Label(kind == 4 ? "Make all" : "Make QR code", systemImage: "qrcode").frame(maxWidth: .infinity) }.primaryButton()
 
             if let qrImage {
+                if let styleNote { Label(L(styleNote), systemImage: "info.circle").font(HandyFont.micro).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true) }
                 Image(uiImage: qrImage).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).frame(maxWidth: .infinity)
                     .padding(HandySpacing.s24).background(.white, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
                 if let png = qrImage.pngData() {
@@ -148,13 +152,53 @@ struct QRWifiView: View {
 
     private var scale: CGFloat { [8, 12, 18][sizeIdx] }
 
-    private func generate() {
-        qrImage = nil; batchImages = []
+    /// Colour, dots, a picture in the middle and a caption. Every styled code is test-scanned before you see it.
+    private var styleCard: some View {
+        DisclosureGroup {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                HStack(spacing: 10) {
+                    ForEach(Array(QRStyle.inks.enumerated()), id: \.offset) { _, ink in
+                        Button { look.ink = ink.hex } label: {
+                            Circle().fill(Color(uiColor: UIColor(rgb: ink.hex))).frame(width: 30, height: 30)
+                                .overlay(Circle().stroke(HandyColor.accent, lineWidth: look.ink == ink.hex ? 3 : 0).padding(-4))
+                        }.buttonStyle(.plain).accessibilityLabel(L(ink.name)).accessibilityAddTraits(look.ink == ink.hex ? .isSelected : [])
+                    }
+                }
+                Toggle(L("Round dots"), isOn: $look.dots).tint(HandyColor.accent)
+                Text(L("Picture in the middle")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                HandyFlow(spacing: 6) {
+                    ForEach(QRStyle.centers, id: \.self) { e in
+                        HChip(text: e.isEmpty ? L("None") : e, selected: (look.center ?? "") == e) { look.center = e.isEmpty ? nil : e }
+                    }
+                }
+                TextField(L("Caption under the code (e.g. Scan for our menu)"), text: $look.caption).textFieldStyle(.roundedBorder)
+                Text(L("Every styled code is test-scanned before you see it — if a style wouldn't scan, you get the plain one instead."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }.padding(.top, HandySpacing.s8)
+        } label: { Label(L("Make it look good"), systemImage: "paintpalette").font(HandyFont.bodyStrong) }
+        .tint(HandyColor.accent)
+        .onChange(of: look) { _, _ in qrImage = nil }
+    }
+
+    private var payload: String {
         switch kind {
-        case 0: qrImage = QRGen.make(text, scale: scale)
-        case 1: qrImage = QRGen.make(QRPayload.wifi(ssid: ssid, password: password, security: ["WPA", "WEP", "nopass"][security], hidden: hidden), scale: scale)
-        case 2: qrImage = QRGen.make(QRPayload.vcard(name: cName, phone: cPhone, email: cEmail, org: cOrg), scale: scale)
-        case 3: qrImage = QRGen.make(sms.isEmpty ? "tel:\(phone)" : "SMSTO:\(phone):\(sms)", scale: scale)
+        case 0: return text
+        case 1: return QRPayload.wifi(ssid: ssid, password: password, security: ["WPA", "WEP", "nopass"][security], hidden: hidden)
+        case 2: return QRPayload.vcard(name: cName, phone: cPhone, email: cEmail, org: cOrg)
+        default: return sms.isEmpty ? "tel:\(phone)" : "SMSTO:\(phone):\(sms)"
+        }
+    }
+
+    private func generate() {
+        qrImage = nil; batchImages = []; styleNote = nil
+        switch kind {
+        case 0, 1, 2, 3:
+            if look == QRStyle.Look() {
+                qrImage = QRGen.make(payload, scale: scale)
+            } else if let r = QRStyle.safeRender(payload, look: look) {
+                qrImage = r.image
+                if r.fellBack { styleNote = "That style wouldn't scan reliably with this much text, so here's the plain code. Try fewer details, no picture, or squares." }
+            }
         default:
             batchImages = batch.split(whereSeparator: \.isNewline).map { String($0).trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }.compactMap { QRGen.make($0, scale: 10) }
         }
