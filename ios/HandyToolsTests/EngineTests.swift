@@ -2608,6 +2608,30 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
     }
 
+    func testColorTypeCheckPairsFoolOnlyTheirOwnEye() {
+        for d in ColorVision.Deficiency.allCases {
+            for base in ColorVisionCheck.bases {
+                let (a, b) = ColorVisionCheck.pair(d, base: base)
+                let la = ColorVisionCheck.linear(a), lb = ColorVisionCheck.linear(b)
+                let typical = simd_distance(la, lb)
+                XCTAssertGreaterThan(ColorVisionCheck.difference(a, b), 12, "a typical eye sees the odd one (\(d))")
+                let own = simd_distance(ColorVision.simulationMatrix(d, severity: 1) * la, ColorVision.simulationMatrix(d, severity: 1) * lb)
+                XCTAssertLessThan(own, typical * 0.15, "\(d.short) eyes can't tell this pair apart")
+                for (x, y) in [(a, b)] { XCTAssertTrue(x.min() >= 0 && x.max() <= 1 && y.min() >= 0 && y.max() <= 1, "fits on screen") }
+            }
+        }
+        let r = ColorVisionCheck.rounds(seed: 42)
+        XCTAssertEqual(r.count, 6); XCTAssertEqual(r, ColorVisionCheck.rounds(seed: 42), "replayable")
+        for d in ColorVision.Deficiency.allCases { XCTAssertEqual(r.filter { $0.deficiency == d }.count, 2) }
+        for round in r { XCTAssertEqual(round.tiles.count, 9); XCTAssertTrue((0..<9).contains(round.oddIndex)) }
+        XCTAssertNil(ColorVisionCheck.result(missed: []).type)
+        XCTAssertEqual(ColorVisionCheck.result(missed: [.deutan, .deutan]).type, .deutan)
+        XCTAssertEqual(ColorVisionCheck.result(missed: [.tritan]).type, .tritan)
+        XCTAssertEqual(ColorVisionCheck.matchWords([0.2, 0.3, 0.8], [0.2, 0.3, 0.8]), "Same colour")
+        XCTAssertEqual(ColorVisionCheck.matchWords([0.1, 0.1, 0.6], [0.9, 0.2, 0.1]), "Different colours")
+        XCTAssertLessThan(ColorVisionCheck.difference([0.5, 0.5, 0.5], [0.52, 0.5, 0.5]), 5, "navy and navy-ish socks match")
+    }
+
     func testFlashlightMorseSirenAndShortcut() {
         XCTAssertEqual(Torch.encodeMorse("sos"), "... --- ...")
         XCTAssertEqual(TorchExtras.morseSeconds("E", unitMs: 100), 0.9, accuracy: 0.0001)

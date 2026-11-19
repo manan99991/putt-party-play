@@ -3669,6 +3669,16 @@
   "pt": "Cantos",
   "zh": "圆角"
  },
+ "Correct shifts confusing colours into ones you can tell apart; Highlight keeps just one colour.": {
+  "de": "Korrigieren verschiebt verwechselbare Farben in unterscheidbare; Hervorheben behält nur eine Farbe.",
+  "es": "Corregir cambia los colores confusos por otros que distingues; Resaltar deja solo un color.",
+  "fr": "Corriger change les couleurs confondues en couleurs distinguables ; Mettre en avant n'en garde qu'une.",
+  "hi": "सुधार उलझाने वाले रंगों को पहचानने लायक बनाता है; हाइलाइट सिर्फ़ एक रंग रखता है।",
+  "it": "Correggi sposta i colori che confondi in altri distinguibili; Evidenzia tiene un solo colore.",
+  "ja": "補正は見分けにくい色を見分けやすい色に、強調は1色だけ残します。",
+  "pt": "Corrigir muda as cores confusas para outras que você distingue; Destacar mantém só uma cor.",
+  "zh": "校正把容易混淆的颜色变成能分辨的颜色；突出只保留一种颜色。"
+ },
  "Correction": {
   "de": "Korrektur",
   "es": "Corrección",
@@ -4569,6 +4579,16 @@
   "pt": "Outro PDF",
   "zh": "其他 PDF"
  },
+ "Different colours": {
+  "de": "Verschiedene Farben",
+  "es": "Colores diferentes",
+  "fr": "Couleurs différentes",
+  "hi": "अलग-अलग रंग",
+  "it": "Colori diversi",
+  "ja": "違う色",
+  "pt": "Cores diferentes",
+  "zh": "不同颜色"
+ },
  "Different photo": {
   "de": "Anderes Foto",
   "es": "Otra foto",
@@ -4638,6 +4658,16 @@
   "ja": "もう1つ",
   "pt": "Fazer outro",
   "zh": "再来一个"
+ },
+ "Do these match?": {
+  "de": "Passen die zusammen?",
+  "es": "¿Combinan?",
+  "fr": "Ça va ensemble ?",
+  "hi": "क्या ये मेल खाते हैं?",
+  "it": "Si abbinano?",
+  "ja": "これは合う？",
+  "pt": "Combinam?",
+  "zh": "这些搭配吗？"
  },
  "Do you like it?": {
   "de": "Gefällt es dir?",
@@ -7369,6 +7399,16 @@
   "pt": "Segure o celular reto sobre a página, preenchendo o quadro.",
   "zh": "手机平放在页面正上方，填满画面。"
  },
+ "Hold this colour": {
+  "de": "Diese Farbe festhalten",
+  "es": "Fijar este color",
+  "fr": "Garder cette couleur",
+  "hi": "यह रंग पकड़ें",
+  "it": "Tieni questo colore",
+  "ja": "この色を固定",
+  "pt": "Segurar esta cor",
+  "zh": "固定这个颜色"
+ },
  "Holographic": {
   "de": "Holografisch",
   "es": "Holográfico",
@@ -8479,6 +8519,16 @@
   "pt": "Duração",
   "zh": "长度"
  },
+ "Let go": {
+  "de": "Loslassen",
+  "es": "Soltar",
+  "fr": "Relâcher",
+  "hi": "छोड़ें",
+  "it": "Rilascia",
+  "ja": "解除",
+  "pt": "Soltar",
+  "zh": "松开"
+ },
  "Level, compass & sensors": {
   "de": "Wasserwaage, Kompass & Sensoren",
   "es": "Nivel, brújula y sensores",
@@ -8628,6 +8678,16 @@
   "ja": "色覚補正をリアルタイム",
   "pt": "Correção de daltonismo ao vivo",
   "zh": "实时色盲校正"
+ },
+ "Live correction for colour-blind eyes, a one-colour highlight, a colour namer that says it out loud and tells you if two things match — camera or photo.": {
+  "de": "Live-Korrektur für farbenblinde Augen, Hervorhebung einer Farbe, ein Farbbenenner, der die Farbe vorliest und sagt, ob zwei Dinge zusammenpassen – Kamera oder Foto.",
+  "es": "Corrección en vivo para daltónicos, resaltado de un color y un nombrador de colores que lo dice en voz alta y te dice si dos cosas combinan, con cámara o foto.",
+  "fr": "Correction en direct pour les yeux daltoniens, mise en avant d'une couleur, un nommeur de couleurs qui la dit à voix haute et vous dit si deux choses vont ensemble — caméra ou photo.",
+  "hi": "रंग-अंधता के लिए लाइव सुधार, एक रंग को उभारना, रंग का नाम बोलकर बताना और दो चीज़ें मेल खाती हैं या नहीं — कैमरा या फ़ोटो से।",
+  "it": "Correzione dal vivo per occhi daltonici, evidenziazione di un colore e un riconoscitore che dice il colore ad alta voce e ti dice se due cose si abbinano, con fotocamera o foto.",
+  "ja": "色覚のライブ補正、1色だけ強調、色名の読み上げ、2つの物が合うかの判定 — カメラでも写真でも。",
+  "pt": "Correção ao vivo para daltonismo, destaque de uma cor e um identificador que diz a cor em voz alta e diz se duas coisas combinam — câmera ou foto.",
+  "zh": "色盲实时校正、单色突出、会朗读颜色名称并告诉你两样东西是否搭配——用相机或照片。"
  },
  "Live preview": {
   "de": "Live-Vorschau",
@@ -10129,6 +10189,16 @@
   "pt": "Nome (opcional) — ex. Marca branca",
   "zh": "名称（可选）— 例如 自有品牌"
  },
+ "Name it reads the colour in the ring. Hold one colour, then point at another to see if they match.": {
+  "de": "Benennen liest die Farbe im Ring. Halte eine Farbe fest und richte dich auf eine andere, um zu sehen, ob sie passen.",
+  "es": "Nombrar lee el color del aro. Fija un color y apunta a otro para ver si combinan.",
+  "fr": "Nommer lit la couleur dans l'anneau. Gardez une couleur, puis visez-en une autre pour voir si elles vont ensemble.",
+  "hi": "नाम बताएँ रिंग के रंग को पढ़ता है। एक रंग पकड़ें, फिर दूसरे पर रखें और देखें कि मेल खाते हैं।",
+  "it": "Nomina legge il colore nell'anello. Tieni un colore, poi punta un altro per vedere se si abbinano.",
+  "ja": "名前は輪の中の色を読みます。1色を固定して別の物に向けると合うかわかります。",
+  "pt": "Nomear lê a cor no anel. Segure uma cor e aponte para outra para ver se combinam.",
+  "zh": "识别会读出圆圈里的颜色。先固定一种颜色，再对准另一个，看是否搭配。"
+ },
  "Name this tool": {
   "de": "Dieses Tool benennen",
   "es": "Nombra esta herramienta",
@@ -10788,6 +10858,16 @@
   "ja": "この端末にはありません",
   "pt": "Não está neste telemóvel",
   "zh": "不在此手机上"
+ },
+ "Not sure which type you are? Tap “Which type am I?” — a 1-minute check sets it for you.": {
+  "de": "Unsicher, welcher Typ du bist? Tippe auf „Welcher Typ bin ich?“ – ein 1-Minuten-Check stellt es ein.",
+  "es": "¿No sabes qué tipo eres? Toca «¿Qué tipo soy?»: una prueba de 1 minuto lo configura.",
+  "fr": "Vous ne savez pas quel type vous êtes ? Touchez « Quel type suis-je ? » — un test d'1 minute le règle.",
+  "hi": "पता नहीं आपका प्रकार कौन-सा है? “मेरा प्रकार कौन-सा है?” दबाएँ — 1 मिनट की जाँच इसे सेट कर देगी।",
+  "it": "Non sai di che tipo sei? Tocca «Che tipo sono?»: un controllo di 1 minuto lo imposta.",
+  "ja": "自分のタイプがわからない？「自分はどのタイプ？」をタップ — 1分のチェックで設定します。",
+  "pt": "Não sabe qual é o seu tipo? Toque em “Qual é o meu tipo?” — um teste de 1 minuto define para você.",
+  "zh": "不确定自己是哪种类型？点“我是哪种类型？”——1 分钟检查帮你设置。"
  },
  "Note (Level 3, near the lift…)": {
   "de": "Notiz (Ebene 3, nahe dem Aufzug…)",
@@ -12729,6 +12809,16 @@
   "pt": "Aponta a câmara a qualquer QR ou código de barras. É lido no teu telemóvel — nada é enviado.",
   "zh": "将相机对准任意二维码或条形码。它在你的手机上读取 — 不上传任何内容。"
  },
+ "Point the ring at the second thing — socks, paint, a cable, a shirt and tie.": {
+  "de": "Richte den Ring auf das zweite Ding – Socken, Farbe, Kabel, Hemd und Krawatte.",
+  "es": "Apunta el aro a lo segundo: calcetines, pintura, un cable, camisa y corbata.",
+  "fr": "Visez le second objet — chaussettes, peinture, câble, chemise et cravate.",
+  "hi": "रिंग को दूसरी चीज़ पर रखें — मोज़े, पेंट, केबल, शर्ट और टाई।",
+  "it": "Punta l'anello sulla seconda cosa: calzini, vernice, un cavo, camicia e cravatta.",
+  "ja": "2つ目の物に輪を合わせて — 靴下、塗料、ケーブル、シャツとネクタイ。",
+  "pt": "Aponte o anel para a segunda coisa — meias, tinta, um cabo, camisa e gravata.",
+  "zh": "把圆圈对准第二样东西——袜子、油漆、线缆、衬衫和领带。"
+ },
  "Polaroid stack": {
   "de": "Polaroid-Stapel",
   "es": "Pila de Polaroid",
@@ -14259,6 +14349,16 @@
   "pt": "Rodar",
   "zh": "旋转"
  },
+ "Round": {
+  "de": "Runde",
+  "es": "Ronda",
+  "fr": "Manche",
+  "hi": "राउंड",
+  "it": "Turno",
+  "ja": "ラウンド",
+  "pt": "Rodada",
+  "zh": "第"
+ },
  "Round dots": {
   "de": "Runde Punkte",
   "es": "Puntos redondos",
@@ -14368,6 +14468,16 @@
   "ja": "消費税 %（任意）",
   "pt": "Imposto % (opcional)",
   "zh": "销售税 %（可选）"
+ },
+ "Same colour": {
+  "de": "Gleiche Farbe",
+  "es": "Mismo color",
+  "fr": "Même couleur",
+  "hi": "एक ही रंग",
+  "it": "Stesso colore",
+  "ja": "同じ色",
+  "pt": "Mesma cor",
+  "zh": "相同颜色"
  },
  "Same emoji on all": {
   "de": "Gleiches Emoji für alle",
@@ -14868,6 +14978,16 @@
   "ja": "やることを全部話すと、手順・休憩・確認が届きます。",
   "pt": "Diga tudo o que tem para fazer; receba passos, pausas e lembretes.",
   "zh": "说出所有待办，得到步骤、休息和提醒。"
+ },
+ "Say it": {
+  "de": "Vorlesen",
+  "es": "Decirlo",
+  "fr": "Le dire",
+  "hi": "बोलें",
+  "it": "Dillo",
+  "ja": "読み上げ",
+  "pt": "Falar",
+  "zh": "读出来"
  },
  "Says to apply by texting a keyword to a number": {
   "de": "Sagt, man solle sich per SMS mit einem Stichwort bewerben",
@@ -15549,6 +15669,16 @@
   "pt": "Define isto para o idioma falado na gravação. Da primeira vez, o telemóvel pode pedir para o transferir.",
   "zh": "将其设为录音中所讲的语言。首次使用时，手机可能会要求下载它。"
  },
+ "Set to": {
+  "de": "Eingestellt auf",
+  "es": "Configurado en",
+  "fr": "Réglé sur",
+  "hi": "सेट किया गया:",
+  "it": "Impostato su",
+  "ja": "設定：",
+  "pt": "Definido para",
+  "zh": "已设为"
+ },
  "Set up medicines for someone else": {
   "de": "Medikamente für jemand anderen einrichten",
   "es": "Configurar medicamentos para otra persona",
@@ -16118,6 +16248,26 @@
   "ja": "シルエット",
   "pt": "Silhueta",
   "zh": "剪影"
+ },
+ "Similar, but you can see the difference side by side": {
+  "de": "Ähnlich, aber nebeneinander sieht man den Unterschied",
+  "es": "Parecidos, pero lado a lado se nota la diferencia",
+  "fr": "Semblables, mais côte à côte on voit la différence",
+  "hi": "मिलते-जुलते, पर साथ रखने पर फ़र्क दिखता है",
+  "it": "Simili, ma affiancati si vede la differenza",
+  "ja": "似ているが、並べると違いがわかる",
+  "pt": "Parecidas, mas lado a lado dá para ver a diferença",
+  "zh": "相似，但放在一起能看出差别"
+ },
+ "Simulate shows family or a designer how you see the scene.": {
+  "de": "Simulieren zeigt Familie oder Designern, wie du die Szene siehst.",
+  "es": "Simular muestra a la familia o a un diseñador cómo ves la escena.",
+  "fr": "Simuler montre à la famille ou à un designer comment vous voyez la scène.",
+  "hi": "सिमुलेट परिवार या डिज़ाइनर को दिखाता है कि आप दृश्य कैसे देखते हैं।",
+  "it": "Simula mostra a famiglia o a un designer come vedi la scena.",
+  "ja": "シミュレーションで家族やデザイナーにあなたの見え方を見せられます。",
+  "pt": "Simular mostra à família ou a um designer como você vê a cena.",
+  "zh": "模拟让家人或设计师看到你眼中的画面。"
  },
  "Siren on": {
   "de": "Sirene an",
@@ -16798,6 +16948,16 @@
   "ja": "Excel 用の表（.csv）",
   "pt": "Folha para Excel (.csv)",
   "zh": "Excel 表格（.csv）"
+ },
+ "Square": {
+  "de": "Quadrat",
+  "es": "Cuadrado",
+  "fr": "Carré",
+  "hi": "वर्ग",
+  "it": "Quadrato",
+  "ja": "四角",
+  "pt": "Quadrado",
+  "zh": "方块"
  },
  "Stand up and stretch your arms up once": {
   "de": "Aufstehen und die Arme einmal hochstrecken",
@@ -17648,6 +17808,16 @@
   "ja": "画像をタップでピント合わせ。下の各ボタンはカメラ自身の最適なオート設定から始まります。",
   "pt": "Toca na imagem para focar. Cada botão abaixo parte das melhores definições automáticas da câmara.",
   "zh": "点按图片对焦。下方每个按钮都从相机自身的最佳自动设置开始。"
+ },
+ "Tap the square that's a different colour.": {
+  "de": "Tippe auf das Quadrat mit der anderen Farbe.",
+  "es": "Toca el cuadrado de otro color.",
+  "fr": "Touchez le carré d'une couleur différente.",
+  "hi": "अलग रंग वाले वर्ग पर टैप करें।",
+  "it": "Tocca il quadrato di colore diverso.",
+  "ja": "色が違う四角をタップ。",
+  "pt": "Toque no quadrado de cor diferente.",
+  "zh": "点颜色不同的方块。"
  },
  "Tap the video to play or pause": {
   "de": "Tippe aufs Video zum Abspielen oder Pausieren",
@@ -18609,6 +18779,16 @@
   "pt": "Precisam de mais do que alguns passos, por isso o Tenzy tem uma ferramenta completa para cada uma.",
   "zh": "这些需要不止几个步骤，所以 Tenzy 为每项都准备了完整工具。"
  },
+ "They all look the same": {
+  "de": "Alle sehen gleich aus",
+  "es": "Todos se ven iguales",
+  "fr": "Ils semblent tous pareils",
+  "hi": "सब एक जैसे दिखते हैं",
+  "it": "Sembrano tutti uguali",
+  "ja": "全部同じに見える",
+  "pt": "Todos parecem iguais",
+  "zh": "看起来都一样"
+ },
  "They also leave the My Tools widget and Shortcuts.": {
   "de": "Sie verschwinden auch aus dem My-Tools-Widget und aus Kurzbefehlen.",
   "es": "También desaparecen del widget My Tools y de Atajos.",
@@ -18778,6 +18958,16 @@
   "ja": "これはQRコードです",
   "pt": "Isto é um código QR",
   "zh": "这是一个二维码"
+ },
+ "This is a quick helper, not an eye test. For a real answer, an optician can check your colour vision.": {
+  "de": "Das ist eine schnelle Hilfe, kein Sehtest. Eine echte Antwort gibt dir ein Optiker.",
+  "es": "Es una ayuda rápida, no una prueba de la vista. Para una respuesta real, un óptico puede revisar tu visión del color.",
+  "fr": "C'est une aide rapide, pas un examen de la vue. Pour une vraie réponse, un opticien peut tester votre vision des couleurs.",
+  "hi": "यह एक त्वरित मदद है, आँखों की जाँच नहीं। सही जवाब के लिए नेत्र विशेषज्ञ से रंग-दृष्टि जँचवाएँ।",
+  "it": "È un aiuto rapido, non un esame della vista. Per una risposta vera, un ottico può controllare la tua visione dei colori.",
+  "ja": "これは簡易ヘルパーで、視力検査ではありません。正確には眼鏡店や眼科で色覚を確認できます。",
+  "pt": "É uma ajuda rápida, não um exame de vista. Para uma resposta real, um oftalmologista pode avaliar sua visão de cores.",
+  "zh": "这只是快速辅助，不是视力检查。如需确切结论，请让验光师检查色觉。"
  },
  "This phone couldn't create that format.": {
   "de": "Dieses Telefon konnte dieses Format nicht erstellen.",
@@ -19609,6 +19799,16 @@
   "pt": "Vire o rosto para a câmera — ele está de lado.",
   "zh": "请把脸转向镜头——现在偏向一侧。"
  },
+ "Turn your screen brightness up and don't tilt the phone. Go with your first look.": {
+  "de": "Helligkeit hoch und das Telefon nicht kippen. Nimm deinen ersten Eindruck.",
+  "es": "Sube el brillo y no inclines el teléfono. Hazle caso a tu primera impresión.",
+  "fr": "Montez la luminosité et n'inclinez pas le téléphone. Fiez-vous à votre premier regard.",
+  "hi": "स्क्रीन की चमक बढ़ाएँ और फ़ोन न झुकाएँ। पहली नज़र पर भरोसा करें।",
+  "it": "Alza la luminosità e non inclinare il telefono. Segui la prima impressione.",
+  "ja": "画面を明るくし、傾けずに。最初の印象で選んでください。",
+  "pt": "Aumente o brilho e não incline o telefone. Vá pela primeira impressão.",
+  "zh": "调高屏幕亮度，不要倾斜手机。以第一眼为准。"
+ },
  "Turns": {
   "de": "Abschnitte",
   "es": "Turnos",
@@ -20049,6 +20249,16 @@
   "pt": "Usar o som de um vídeo",
   "zh": "使用视频里的声音"
  },
+ "Use this": {
+  "de": "Übernehmen",
+  "es": "Usar esto",
+  "fr": "Utiliser",
+  "hi": "इसे इस्तेमाल करें",
+  "it": "Usa questo",
+  "ja": "これを使う",
+  "pt": "Usar isto",
+  "zh": "使用此结果"
+ },
  "Use this as the source (e.g. trim, then shrink)": {
   "de": "Dies als Quelle verwenden (z. B. kürzen, dann verkleinern)",
   "es": "Usar esto como origen (p. ej. recortar y luego reducir)",
@@ -20108,6 +20318,16 @@
   "ja": "ベジタリアン",
   "pt": "Vegetariano",
   "zh": "素食"
+ },
+ "Very close — most people would call them the same": {
+  "de": "Sehr nah – die meisten würden sie gleich nennen",
+  "es": "Muy parecidos: casi todos dirían que son iguales",
+  "fr": "Très proches — la plupart les diraient identiques",
+  "hi": "बहुत क़रीब — ज़्यादातर लोग इन्हें एक ही कहेंगे",
+  "it": "Molto vicini: quasi tutti li direbbero uguali",
+  "ja": "とても近い — ほとんどの人は同じと言います",
+  "pt": "Muito próximas — a maioria diria que são iguais",
+  "zh": "非常接近——大多数人会说是同一种"
  },
  "Video": {
   "de": "Video",
@@ -20689,6 +20909,16 @@
   "pt": "Que parte",
   "zh": "哪一部分"
  },
+ "Which type am I?": {
+  "de": "Welcher Typ bin ich?",
+  "es": "¿Qué tipo soy?",
+  "fr": "Quel type suis-je ?",
+  "hi": "मेरा प्रकार कौन-सा है?",
+  "it": "Che tipo sono?",
+  "ja": "自分はどのタイプ？",
+  "pt": "Qual é o meu tipo?",
+  "zh": "我是哪种类型？"
+ },
  "While you're out: the pharmacy aisle for anything you need": {
   "de": "Unterwegs: in der Apothekenabteilung holen, was du brauchst",
   "es": "Ya que sales: el pasillo de farmacia para lo que necesites",
@@ -21018,6 +21248,16 @@
   "ja": "節約額",
   "pt": "Poupa",
   "zh": "你省下"
+ },
+ "You spotted every odd one out — your colour vision looks typical on this check.": {
+  "de": "Du hast jedes andere Feld gefunden – dein Farbsehen wirkt bei diesem Check typisch.",
+  "es": "Encontraste todos los distintos: tu visión del color parece típica en esta prueba.",
+  "fr": "Vous avez trouvé chaque intrus — votre vision des couleurs semble typique sur ce test.",
+  "hi": "आपने हर अलग वाला पहचान लिया — इस जाँच में आपकी रंग-दृष्टि सामान्य लगती है।",
+  "it": "Hai trovato ogni intruso: la tua visione dei colori sembra tipica in questo controllo.",
+  "ja": "すべての違う色を見つけました — このチェックでは色覚は一般的なようです。",
+  "pt": "Você achou todos os diferentes — sua visão de cores parece típica neste teste.",
+  "zh": "你找出了每个不同的——这次检查中你的色觉看起来正常。"
  },
  "You'll get:": {
   "de": "Du bekommst:",
@@ -21578,6 +21818,16 @@
   "ja": "本日終了",
   "pt": "termina hoje",
   "zh": "今天到期"
+ },
+ "from your check — correction is on.": {
+  "de": "aus deinem Check – Korrektur ist an.",
+  "es": "según tu prueba; la corrección está activada.",
+  "fr": "d'après votre test — la correction est activée.",
+  "hi": "आपकी जाँच से — सुधार चालू है।",
+  "it": "dal tuo controllo: la correzione è attiva.",
+  "ja": "（チェック結果より）— 補正はオンです。",
+  "pt": "pelo seu teste — a correção está ligada.",
+  "zh": "（根据你的检查）——校正已开启。"
  },
  "furthest-away doses will be scheduled as the nearer ones pass. Open Tenzy now and then to top them up.": {
   "de": "fernsten Dosen werden geplant, sobald die näheren vorbei sind. Öffne Tenzy ab und zu zum Auffüllen.",
