@@ -436,6 +436,10 @@ struct BuilderView: View {
     @State private var renaming: Chain?
     /// "Put on Home Screen": the tool whose how-to is showing.
     @State private var homing: Chain?
+    /// My tools "Select" mode: tick several, delete them together after a clear warning.
+    @State private var selectingTools = false
+    @State private var pickedTools: Set<String> = []
+    @State private var confirmDelete: [String]?
     @State private var newName = ""
     /// "Start with what you have": the thing picked, waiting for a tool to be chosen for it.
     @State private var given: Given?
@@ -544,7 +548,29 @@ struct BuilderView: View {
                             Text(L("Nothing saved yet. Build one from the start screen and it lands here."))
                                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         }
-                        ForEach(mine) { c in row(c, mine: true) }
+                        ForEach(mine) { c in
+                            if selectingTools {
+                                Button { if pickedTools.contains(c.id) { pickedTools.remove(c.id) } else { pickedTools.insert(c.id) } } label: {
+                                    HStack(spacing: HandySpacing.s12) {
+                                        Image(systemName: pickedTools.contains(c.id) ? "checkmark.circle.fill" : "circle")
+                                            .font(.system(size: 24)).foregroundStyle(pickedTools.contains(c.id) ? HandyColor.accent : HandyColor.textSecondary)
+                                        if let f = c.steps.first { BlockBadge(block: f.block) }
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text(ChainText.displayName(c)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).lineLimit(2).multilineTextAlignment(.leading)
+                                            if let when = c.schedule {
+                                                Label(when.label(uses24h: ToolSchedules.uses24h), systemImage: "bell").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+                                            }
+                                        }
+                                        Spacer(minLength: 0)
+                                    }.cardStyle(padding: HandySpacing.s12)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityAddTraits(pickedTools.contains(c.id) ? [.isButton, .isSelected] : .isButton)
+                                .accessibilityIdentifier("pick-mine-\(c.id)")
+                            } else {
+                                row(c, mine: true)
+                            }
+                        }
                         if !sheets.isEmpty {
                             NavigationLink { SheetsView() } label: { subLinkRow("My sheets", sheets.count == 1 ? "1 sheet your tools add to" : "\(sheets.count) sheets your tools add to", "tablecells") }.buttonStyle(.plain)
                         }
@@ -554,7 +580,36 @@ struct BuilderView: View {
                     }.padding(HandySpacing.gutter)
                 }
                 .navigationTitle(L("My tools")).navigationBarTitleDisplayMode(.inline)
-                .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { showMine = false } } }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        if !mine.isEmpty {
+                            Button(selectingTools ? L("Cancel") : L("Select")) { selectingTools.toggle(); pickedTools = [] }
+                                .accessibilityIdentifier("mine-select")
+                        }
+                    }
+                    ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { selectingTools = false; pickedTools = []; showMine = false } }
+                }
+                .safeAreaInset(edge: .bottom) {
+                    if selectingTools {
+                        HStack(spacing: HandySpacing.s12) {
+                            Button(pickedTools.count == mine.count ? L("Select none") : L("Select all")) {
+                                pickedTools = pickedTools.count == mine.count ? [] : Set(mine.map(\.id))
+                            }.textButton()
+                            Spacer()
+                            Button(role: .destructive) { confirmDelete = Array(pickedTools) } label: {
+                                Label(pickedTools.isEmpty ? L("Delete") : "\(L("Delete")) \(pickedTools.count)", systemImage: "trash")
+                            }
+                            .buttonStyle(.borderedProminent).tint(HandyColor.danger).disabled(pickedTools.isEmpty)
+                            .accessibilityIdentifier("mine-delete")
+                        }
+                        .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s8)
+                        .background(HandyColor.surface)
+                    }
+                }
+                .confirmationDialog(deleteTitle, isPresented: Binding(get: { confirmDelete != nil }, set: { if !$0 { confirmDelete = nil } }), titleVisibility: .visible) {
+                    Button(deleteButton, role: .destructive) { deleteTools(confirmDelete ?? []) }
+                    Button(L("Keep them"), role: .cancel) { confirmDelete = nil }
+                } message: { Text(deleteMessage) }
             }
         }
         .sheet(isPresented: $showTemplates, onDismiss: { pasteNote = nil }) {
@@ -642,6 +697,29 @@ struct BuilderView: View {
             if saved.count > mine.count, let added = saved.last { mine = saved; note = "Added \(added.name)." }
             openReminded()
         }
+    }
+
+    // MARK: deleting tools — always confirmed, because a deleted tool and its reminders can't come back
+
+    private var deleting: [Chain] { mine.filter { (confirmDelete ?? []).contains($0.id) } }
+    private var deleteTitle: String {
+        deleting.count == 1 ? "\(L("Delete")) \u{201C}\(ChainText.displayName(deleting[0]))\u{201D}?" : "\(L("Delete")) \(deleting.count) \(L("tools?"))"
+    }
+    private var deleteButton: String { deleting.count == 1 ? L("Delete tool") : "\(L("Delete")) \(deleting.count) \(L("tools"))" }
+    private var deleteMessage: String {
+        let reminders = deleting.filter { $0.schedule != nil }.count
+        var m = L("This can't be undone.")
+        if reminders > 0 { m += " " + (reminders == 1 ? L("Its reminder will stop too.") : "\(reminders) \(L("reminders will stop too."))") }
+        m += " " + L("They also leave the My Tools widget and Shortcuts.")
+        return m
+    }
+    private func deleteTools(_ ids: [String]) {
+        let n = mine.filter { ids.contains($0.id) }.count
+        mine.removeAll { ids.contains($0.id) }
+        persist()   // also cancels their reminders and refreshes the widget
+        confirmDelete = nil; pickedTools = []; selectingTools = false
+        note = n == 1 ? "Deleted 1 tool." : "Deleted \(n) tools."
+        HandyHaptics.success()
     }
 
     /// An action from a row in My tools that opens its own screen: My tools is itself a sheet, and iPhone can't
@@ -911,7 +989,7 @@ struct BuilderView: View {
                     note = "Copied \u{201C}\(ChainText.displayName(c))\u{201D}. Paste it in a message; on their phone they copy it and tap Templates → Add a shared tool. Or use Share as a link or QR code — they just tap it."
                 }
                 if ToolLink.live { Button(L("Share as a link or QR code")) { fromMine { linking = c } } }
-                Button(L("Delete"), role: .destructive) { mine.removeAll { $0.id == c.id }; persist() }
+                Button(L("Delete"), role: .destructive) { confirmDelete = [c.id] }
             } label: { Image(systemName: "ellipsis.circle").accessibilityLabel(L("More")).font(.system(size: 20)).frame(width: 44, height: 44) }
             // A compact button with room around its word, so it never looks squeezed beside a long name.
             Button { fromMine { running = c } } label: {

@@ -4139,6 +4139,16 @@
   "pt": "Eliminar esta folha? As suas entradas são removidas deste telemóvel. Não pode ser anulado.",
   "zh": "删除此表格？其条目将从本机移除。此操作无法撤销。"
  },
+ "Delete tool": {
+  "de": "Tool löschen",
+  "es": "Eliminar herramienta",
+  "fr": "Supprimer l'outil",
+  "hi": "टूल हटाएँ",
+  "it": "Elimina strumento",
+  "ja": "ツールを削除",
+  "pt": "Apagar ferramenta",
+  "zh": "删除工具"
+ },
  "Deleting asks iOS to remove the items — you'll get the system confirmation, and they go to Recently Deleted for 30 days.": {
   "de": "Beim Löschen entfernt iOS die Objekte — du erhältst die Systembestätigung, und sie landen 30 Tage in „Zuletzt gelöscht“.",
   "es": "Al borrar, iOS elimina los elementos: verás la confirmación del sistema y pasan a Eliminados recientemente durante 30 días.",
@@ -7188,6 +7198,16 @@
   "ja": "その項目はこの端末から削除されます。元に戻せません。",
   "pt": "As suas entradas são removidas deste telemóvel. Não pode ser anulado.",
   "zh": "其条目将从本机移除。此操作无法撤销。"
+ },
+ "Its reminder will stop too.": {
+  "de": "Seine Erinnerung endet auch.",
+  "es": "Su recordatorio también se detendrá.",
+  "fr": "Son rappel s'arrêtera aussi.",
+  "hi": "इसका रिमाइंडर भी बंद होगा।",
+  "it": "Anche il suo promemoria si fermerà.",
+  "ja": "リマインダーも止まります。",
+  "pt": "O lembrete também para.",
+  "zh": "它的提醒也会停止。"
  },
  "Job offer that's too good to be true": {
   "de": "Jobangebot, das zu gut ist, um wahr zu sein",
@@ -14099,6 +14119,36 @@
   "pt": "Ver Pro",
   "zh": "查看 Pro"
  },
+ "Select": {
+  "de": "Auswählen",
+  "es": "Seleccionar",
+  "fr": "Sélectionner",
+  "hi": "चुनें",
+  "it": "Seleziona",
+  "ja": "選択",
+  "pt": "Selecionar",
+  "zh": "选择"
+ },
+ "Select all": {
+  "de": "Alle auswählen",
+  "es": "Seleccionar todo",
+  "fr": "Tout sélectionner",
+  "hi": "सभी चुनें",
+  "it": "Seleziona tutto",
+  "ja": "すべて選択",
+  "pt": "Selecionar tudo",
+  "zh": "全选"
+ },
+ "Select none": {
+  "de": "Keine auswählen",
+  "es": "No seleccionar ninguno",
+  "fr": "Ne rien sélectionner",
+  "hi": "कोई नहीं",
+  "it": "Deseleziona tutto",
+  "ja": "選択解除",
+  "pt": "Não selecionar nenhum",
+  "zh": "全不选"
+ },
  "Select the": {
   "de": "Wähle die",
   "es": "Seleccionar las",
@@ -17079,6 +17129,16 @@
   "pt": "Precisam de mais do que alguns passos, por isso o Tenzy tem uma ferramenta completa para cada uma.",
   "zh": "这些需要不止几个步骤，所以 Tenzy 为每项都准备了完整工具。"
  },
+ "They also leave the My Tools widget and Shortcuts.": {
+  "de": "Sie verschwinden auch aus dem My-Tools-Widget und aus Kurzbefehlen.",
+  "es": "También desaparecen del widget My Tools y de Atajos.",
+  "fr": "Ils quittent aussi le widget My Tools et Raccourcis.",
+  "hi": "ये My Tools विजेट और Shortcuts से भी हट जाएँगे।",
+  "it": "Spariscono anche dal widget My Tools e da Comandi.",
+  "ja": "My Tools ウィジェットとショートカットからも消えます。",
+  "pt": "Também saem do widget My Tools e dos Atalhos.",
+  "zh": "也会从 My Tools 小组件和快捷指令中移除。"
+ },
  "They are removed from this phone. Anything you already saved or sent is not touched.": {
   "de": "Sie werden von diesem Handy entfernt. Was du bereits gespeichert oder gesendet hast, bleibt unberührt.",
   "es": "Se eliminan de este teléfono. Lo que ya guardaste o enviaste no se toca.",
@@ -17168,6 +17228,16 @@
   "ja": "写真アプリの中身を数えるため、写真へのアクセスが必要です。",
   "pt": "Este alerta conta o que há em Fotos, então o Tenzy precisa de acesso a Fotos.",
   "zh": "此提醒需要统计照片，所以 Tenzy 需要照片访问权限。"
+ },
+ "This can't be undone.": {
+  "de": "Das lässt sich nicht rückgängig machen.",
+  "es": "No se puede deshacer.",
+  "fr": "C'est irréversible.",
+  "hi": "यह वापस नहीं हो सकता।",
+  "it": "Non si può annullare.",
+  "ja": "元に戻せません。",
+  "pt": "Não pode ser desfeito.",
+  "zh": "此操作无法撤销。"
  },
  "This clip has no audio track to save.": {
   "de": "Dieser Clip hat keine Tonspur.",
@@ -20089,6 +20159,16 @@
   "pt": "lembretes",
   "zh": "提醒"
  },
+ "reminders will stop too.": {
+  "de": "Erinnerungen enden auch.",
+  "es": "recordatorios también se detendrán.",
+  "fr": "rappels s'arrêteront aussi.",
+  "hi": "रिमाइंडर भी बंद होंगे।",
+  "it": "promemoria si fermeranno.",
+  "ja": "件のリマインダーも止まります。",
+  "pt": "lembretes também param.",
+  "zh": "个提醒也会停止。"
+ },
  "return window closed": {
   "de": "Rückgabefrist abgelaufen",
   "es": "plazo de devolución vencido",
@@ -20308,6 +20388,26 @@
   "ja": "件を連絡先へ",
   "pt": "nos Contatos",
   "zh": "到通讯录"
+ },
+ "tools": {
+  "de": "Tools",
+  "es": "herramientas",
+  "fr": "outils",
+  "hi": "टूल",
+  "it": "strumenti",
+  "ja": "個のツール",
+  "pt": "ferramentas",
+  "zh": "个工具"
+ },
+ "tools?": {
+  "de": "Tools löschen?",
+  "es": "herramientas?",
+  "fr": "outils ?",
+  "hi": "टूल हटाएँ?",
+  "it": "strumenti?",
+  "ja": "個のツールを削除しますか？",
+  "pt": "ferramentas?",
+  "zh": "个工具？"
  },
  "translating": {
   "de": "Übersetzen",
