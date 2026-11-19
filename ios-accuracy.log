@@ -1,0 +1,699 @@
+SCORE my-boards-read 0.456
+MY BOARDS	file	words read	| missed
+board-farm-todo.png	21/51	| install road sign, plant chickes, seed grain amaranth, update seed tracking, screen door, set up irr. pump, mow grass mulch, seed corn, seed oats in fall brassica section, final harvest spinach, drip bombs, weed beets, weed green onion, weed potatoes, clean GH lettuce, seed bok choy, weed onions, email CSA, set up washing station, update farm site, clear fence, turn compost, canopy weights, seed radish, test soaker hoses
+board-sticky-calendar.jpg	8/22	| visualizing tasks, preparing for productivity, schedule your week, Sweden's 6hr workdays, where post ideas came from, 30 ways to work smarter, what we call our writing, Physical products I love, keep employees happy, time wasters, what I wish I'd known about startups, Dinner w/ Dad, Skype w/ Adam, Skype w/ Aaron (CM)
+board-people-week.jpg	1/20	| Angie Alston, Job 208-1, Angie Alston, Job 208-1, Al Cantor, Job 216, Al Cantor, Catch-up, Al Cantor, Job 410, Adam Carraway, Ken Darlington, Job 439-1, Kim Farthington, Job 618, Kim Farthington, Job 620, Carri Smithington, Float - Unassigned
+board-in-out.jpg	6/6	| 
+
+SCORE my-boards-understood 0.733
+MY BOARDS UNDERSTOOD	file	kind	items	done	events	people	| missed
+board-farm-todo.png	lists	0.39	0.00	1.00	1.00	| install road sign, plant chickes, seed grain amaranth, update seed tracking, screen door, set up irr. pump, mow grass mulch, seed corn, seed oats in fall brassica section, final harvest spinach, drip bombs, weed beets, weed green onion, weed potatoes, clean GH lettuce, seed bok choy, weed onions, email CSA, set up washing station, update farm site
+   read: outhouse [BUILD-FIX] | ext. lights [BUILD-FIX] | gutter [BUILD-FIX] | Adrip bambs [BUILD-FIX] | tims Brasels, bras, cauli in seen bats in full brassia stin [BUILD-FIX] | → collect much for towns [BUILD-FIX] | weed peas [BUILD-FIX] | weed bets [BUILD-FIX] | Dweed greenomin [BUILD-FIX] | a wood potatoes [BUILD-FIX] | MH outside doer handle [BUILD-FIX] | 2 dear Gu lettuce [BUILD-FIX] | veed ovims [BUILD-FIX] | compesting toilet [BUILD-FIX] | E mistain [BUILD-FIX] | necabuts clean for [BUILD-FIX] | plant chices | I set grein amanuth | a mulch brassicas | update sed trackedo | screen deer | I set up im pamp | seca com (isection) | i fine harvest spinach (rite) | gttads frumiteall | Enuks /veed first-seared | wittend/grass | carail CSA | a paid picker stakes | 3 fix market bins | smugnuHells [O transacy /celenac tIdeafence] | 1 Compost tea [O transacy /celenac tIdeafence] | set up rinsing station [O transacy /celenac tIdeafence] | fence battery check [O transacy /celenac tIdeafence] | Duponte farmie [O transacy /celenac tIdeafence] | YEn "o market stand | sumade 3' re | field stand | pumpin 6'=t="D trailer? [MIN] | a soil test [MIN]
+board-sticky-calendar.jpg	calendar	0.33	1.00	0.00	1.00	| visualizing tasks, schedule your week, Sweden's 6hr workdays, where post ideas came from, 30 ways to work smarter, Physical products I love, keep employees happy, editing, time wasters, what I wish I'd known about startups
+   read: EN: before $ [2 visuMiting] | Aaron (CM) [2 visuMiting] | preparing f [2 visuMiting] | after work [2 visuMiting] | roductiviti [2 visuMiting] | 900 [2 visuMiting] | MTC w/ Tyson [Day 6] | from [ice Were post] | The List Issue [ice Were post] | call our [BBC: what we] | BBC: Physical [Day 18] | products / love [Day 18] | To [(i editing] | posts [Day 18]
+   events: 2030 @ —
+board-people-week.jpg	lists	1.00	1.00	1.00	0.00	| 
+   read: w:n / دمد. [MON] | Joe 535 - [MON] | Q. Tray - Seale Offer [MON] | สาธ 455 [MON] | Softe Ler [MON] | Cute Lae [MON] | Sh-flu Lat [VACATION -] | МідикА Гакм [VACATION -] | FN- Site 40% [VACATION -] | PM-•n [VACATION -] | Sete Lne [VACATION -] | S.An Lue [VACATION -] | Switch tea Lad [VACATION -] | Sukk, to Lone [VACATION -] | Job 700 [VACATION -] | Chat - Onesened [VACATION -] | ded 436 [TUE] | J.t 11 [TUE] | ceteye [WED] | Jeo 431-1 [WED] | i= wE [WED] | Safety Cowe [WED] | Job 44-1 [JDE 401] | Jo4 H1f [JDE 401] | Myat Franny [JDE 401] | Pal-Ste 312 [JDE 401] | Jes 705 [JDE 401] | Bartery tem [FRI] | Joe 439-1 [FRI] | Jo 6z0 [FRI]
+board-in-out.jpg	lists	1.00	1.00	1.00	1.00	| 
+   read: 
+
+SCORE my-menus 0.725
+MY MENUS	file	dishes found	right price	| missed
+menu-chinese-red.jpg	26	16/24	| 黑椒牛肉烩饭 18, 鸡腿饭套餐 18, 糖醋排骨饭 15, 台式三杯鸡饭 13, 法式猪扒饭 8, 铁板田鸡 18, 铁板鱿鱼 15, 七彩干贝羹 15
+menu-chinese-orange.jpg	86	25/31	| 干煸牛肉丝 38, 红烧排骨 32, 糖醋排骨 32, 孜然羊肉 38, 锅包肉 30, 香辣小河虾 22
+
+SCORE my-posters 0.733
+MY POSTERS	file	title	date	time	place	link	| read
+poster-upcoming-events.jpg	1.00	0	0	1.00	1	| Upcoming Events / — / Lorem Ipsum Auditorium / https://www.loremipsum.com
+poster-speed-dating.jpg	0.33	1	1	1.00	1	| Speed Dating / 2027-10-20 18:00:00 +0000 / Downtown Ballroom 1234 Broadway Ave / https://www.speeddating.com
+
+SCORE my-receipts 0.667
+MY RECEIPTS	file	shop	date	total	items	| read
+receipt-east-repair-plain.png	1.00	1	1	2/3	| East Repair Inc. / 2019-02-11 / 154.06 / Front and rear brake cables=100.0; Labor 3hrs=15.0
+receipt-east-repair-vintage.png	1.00	1	1	2/3	| East Repair Inc. / 2019-02-11 / 154.06 / Front and rear brake cables=100.0; New set of pedal arms=30.0
+receipt-xero.png	0.33	0	0	0/3	| Vectan Posters and Sochers / — / — / 
+receipt-quickbooks.png	1.00	0	1	3/3	| East Repair Inc. / — / 145.00 / Front and rear brake cables=100.0; New set of pedal arms=30.0; Labor 3hrs=15.0
+
+SCORE receipts n=126 shop=0.803 date=0.889 total=0.841
+RECEIPTS (SROIE)	shop	date	total	| read: shop / date / total	| right: shop / date / total
+000	1.00	1	1	| BOOK TA_K (TAMAN DAYA) SDN BHD / 25/12/2018 / 9.00	| BOOK TA .K (TAMAN DAYA) SDN BHD / 25/12/2018 / 9.00
+005	1.00	0	1	| ABC HO TRADING / 01/09/2019 / 31.00	| ABC HO TRADING / 09/01/2019 / 31.00
+   text: tan chay yee ⏎ ABC HO TRADING ⏎ No.284, JALAN HARMONI 3/2, ⏎ TAMAN DESA HARMONI. ⏎ 81100 JOHOR BAHRUJOHOR ⏎ 07-355 2616 ⏎ Cash Bill: 01-143008 ⏎ Date  : 09/01/2019 8:01:11 PM ⏎ Cashier : 01 ⏎ Description  Qty  Price  Amount ⏎ RM  RM ⏎ Plastic  2  15.50  31.00 ⏎ Total  31.00 ⏎ Total Amount:  31.00 ⏎ Cash Received  101.00 ⏎ Change :  70.00 ⏎ "Goods Sold are non-refundable* ⏎ ***Thank You**  31.00 ⏎ ***Please Come Again***
+010	1.00	1	1	| SAM SAM TRADING CO / 29/12/2017 / 14.10	| SAM SAM TRADING CO / 29-12-2017 / 14.10
+015	0.75	1	1	| HOME MASTER HARDWARE & / 22/12/2017 / 15.90	| HOME MASTER HARDWARE & ELECTRICAL / 22/12/2017 / 15.90
+   text: HOME MASTER HARDWARE & ⏎ ELECTRICAL ⏎ NG.113G & 115G, JALAN SETIA GEMEILANG ⏎ U13/EG BANDAR SETIA ALAM, ⏎ 40170 BANDAR SETIA ALAMi, ⏎ GELANGOR. ⏎ Company Reg No. :SA03711551-P ⏎ GST Reg No. :001637511168 ⏎ TAX INVOICE ⏎ Involce No.:  CS 67832 ⏎ Date:  22/12/2017 14:03 ⏎ Cashler#:  CASHIER ⏎ RAA  Code ⏎ 24MMx7Y M.ONE TAPE ⏎ 1.00  X 15.90  15.90  GR ⏎ Subtotal :  15.90 ⏎ Total Excl. of GST  15.00 ⏎ Total Ingl. of GST  15.90 ⏎ Total Amt Rounded  15.90 ⏎ Payment  50.00 ⏎ Change Due :  34.10 ⏎ Total Item(a) : 1 ⏎ G  ummary  Amount (Fli)  Tax (RM) ⏎ GR  © 6%  15.00  0.90 ⏎ * THANK YOU* ⏎ ANY GOODS RETURN PLEASE DO WITHIN ⏎ 7 DAYS WITH ORIGINAL RECEIPT TQM
+020	1.00	1	0	| SYL ROASTED DELIGHTS SDN. BHD. / 06/03/2018 / 51.42	| SYL ROASTED DELIGHTS SDN. BHD. / 06/03/2018 / 54.50
+   text: RsK. ⏎ SYL ROASTED DELIGHTS SDN. BHD. ⏎ 1227035 ⏎ 75, JALAN SS 22/19, DAMANSARA JAYA, 47400 PJ. ⏎ TEL : 03-7731 8169 ⏎ G51 ID : 002046390272 ⏎ Doc No.  SO00022185  TABLE  A10 ⏎ Cashier USER  Date  06/03/2018 ⏎ Salesperson.  Time:  12:06:00 ⏎ Description  Qty  Price  Amount ⏎ (T02) BRAISED PORK  20  7.00  14.00 ⏎ RICE WITH PEANUT ⏎ ٢٠)  ,monuT PORK-  1.0  12.00  12.00 ⏎ SMALL ⏎ (VO2) SOUR & SPICY  1.0  12.00  12.00 ⏎ MUSTARD ⏎ (B03) JASMINE GREEN  2.0  2.30  4.60 ⏎ TEA(HOT) ⏎ (R05) ROAST PORK +  1.0  11.90  11.90 ⏎ ROAST CHICKEN RICE ⏎ Total Qty:  7  51.42 ⏎ Total Sales (Excluding GST) :  51.42 ⏎ Discount :  0.00 ⏎ Total GST :  3.08 ⏎ Rounding  64.50XW  0.00 ⏎ Total Sales (Inclusive of GST)
+025	0.75	1	1	| TED HENG STATIONERY & BOOKS / 23/01/2018 / 18.00	| TEO HENG STATIONERY & BOOKS / 23/01/2018 / 18.00
+   text: TED HENG STATIONERY & BOOKS ⏎ （001451637-M） ⏎ NO. 53, JALAN BESAR, 45600 BAIANG BERJUNIAI ⏎ SELANGOR DARUL EHSAN ⏎ TEL : 03-3271 9872  FAX : 03-3271 9481 ⏎ GST No. : 000689913856 ⏎ SIMPLIRILED TAX INVOICE ⏎ CASH ⏎ Receipt No.: CS1801/27037 Date: 23/01/2018 ⏎ ITEM  OTY U/P DISC%  AMOUNT ⏎ (RM) ⏎ TP-24  5  1.32  0.00  6.60★ ⏎ - DOUBLE SIDED TISSUE TAPE 18MM ⏎ 9557546631393  2.08  0.00  10.38＊ ⏎ - G SOFT 6ML QUICK DRY CORRECTION PEN ⏎ Total Qty. :  16.98 ⏎ SUB-TOTAL (X)2 3  16.98 ⏎ TOTAL TAX  1.02 ⏎ ROUNDING  JAN- 20i0  0.00 ⏎ TOTAL  18.00 ⏎ CASH  18.00 ⏎ CHANGE  0.00 ⏎ GST SUMMARY ⏎ TAX CODE  AMOUNT  TAX ⏎ (RM)  (RM) ⏎ SR  6.00  16.98  1.02 ⏎ TOTAL:  16.98  1.02 ⏎ Note: (*) Indicated The Item Sold Has Been Related ⏎ To GST (Goods & Services Tax). ⏎ GOODS SOLD ARE NOT RETURNABLE, ⏎ THANK YOU.
+030	1.00	1	1	| UNIHAKKA INTERNATIONAL SDN BHD / 05/03/2018 / 8.20	| UNIHAKKA INTERNATIONAL SDN BHD / 05 MAR 2018 / $8.20
+035	1.00	0	1	| UNIHAKKA INTERNATIONAL SDN BHD / — / 8.20	| UNIHAKKA INTERNATIONAL SDN BHD / 12 MAR 2018 / $8.20
+   text: A03047 ⏎ UNIHAKKA INTERNATIONAL SDN BHD ⏎ （867388-U） ⏎ 12, Jalan Tampol 7/4,Kawasan Perindustrlan ⏎ Tampoi,81200 Johor Bahru, Johor ⏎ TAX INVOICE ⏎ Involce#: OR18031202170432 ⏎ Item  Cty  Total ⏎ SR 100100000035- 1 Meat + 3 Vege ⏎ $7.10  $7.10 ⏎ SR 100100000015-Vegetable ⏎ $1.10  $1.10 ⏎ Total Amount: $8.20 ⏎ GST @6%6：$0.46 ⏎ Nett Total: $8.20 ⏎ Payment Mode  Amoun ⏎ CASH  $8.20 ⏎ Change  $0.00 ⏎ GST Summary  Amount($)  Tax(8) ⏎ SR = GST @E%  7.74  0.16 ⏎ GST REG #000656195584 ⏎ BAR WANG RICE@PERMAS JAYA ⏎ (Price Inclusive O/ GST) ⏎ Thank You & Come Acain! ⏎ Like and Follow Us on Facebook! ⏎ Facebook.com/BarWangRice
+040	0.00	1	0	| BISTRO & CAFE / 12/03/2018 / 314.47	| THREE STOOGES / 12/03/2018 / 343.95
+   text: HREE STOOGES ⏎ BISTRO & CAFE ⏎ 109, SS21/1A, ⏎ DAMANSARA UTAMA ⏎ GST ID : 001661886464 ⏎ TABLE : BAR 7 ⏎ ORDER: 00012916 ⏎ BIZDATE: 12/03/2018 ⏎ CASHIER: CASHIER ⏎ BILL DT: 12/03/2018 10:25:49 PM  RM ⏎ QTY ITEM  AMOUNT ⏎ 1 HH GUINESS 12 GLASSES  150.00 ⏎ 1 HH TIGER 12 GLASSES  145.00 ⏎ 2  SUB TOTAL  295.00 ⏎ SERVICE CHARGE 10%  29.50 ⏎ GST 6%  19.47 ⏎ ROUNDING ADJ  -0.02 ⏎ NEI TOTAL  213 0r ⏎ Tax Summar  Amount  Tax ⏎ SVC : ERVICL CHARGE TO  295.00  • 50 ⏎ SR GS: 6%  324.50 ⏎ Thank y  Me Again  K
+045	1.00	1	1	| UNIHAKKA INTERNATIONAL SDN BHD / 27/03/2018 / 6.90	| UNIHAKKA INTERNATIONAL SDN BHD / 27 MAR 2018 / $6.90
+050	1.00	1	1	| Timeless Kitchenette San Bhd / 23/03/2018 / 593.10	| TIMELESS KITCHENETTE SDN BHD / 2018-03-23 / 593.10
+055	1.00	1	1	| UNIHAKKA INTERNATIONAL SDN BHD / 19/03/2018 / 8.20	| UNIHAKKA INTERNATIONAL SDN BHD / 19 MAR 2018 / $8.20
+060	1.00	1	1	| BENS INDEPENDENT GROCER SDN. BHD / 12/03/2018 / 77.20	| BENS INDEPENDENT GROCER SDN. BHD / 12/03/18 / 77.20
+065	0.67	1	1	| RESTAURANT JIAWEI / 09/03/2018 / 65.20	| RESTAURANT JIAWEI JIAWEI HOUSE / 9/3/2018 / 65.20
+   text: RESTAURANT JIAWEI ⏎ JIAWEI HOUSE ⏎ 002693074-K ⏎ 13, JLN TASIK UTAMA 8 ⏎ MEDAN NIAGA DAMAI SG BESI ⏎ 57000 KL ⏎ INVOICE ⏎ Invoice : 9820  Cashier: admin ⏎ POS No: 1 ⏎ Date : 9/3/2018 20:54:50 ⏎ Table : 16 ⏎ ITEM  QTY U/P (RM) DISC (%) Aint (RM) ⏎ B. Bean Bitterground Fish Head (S) ⏎ 1  35.00  0.00 ⏎ F. Hong Kong Sauteed (S) ⏎ 1  16.00  0.00 ⏎ Steamed Egg (S) ⏎ 1  10.00  0. 00 ⏎ Chinese Tea ⏎ 2  0.60  0.00  1.20 ⏎ COLD ⏎ Rice (B) ⏎ 2  1.50  0.00  3 ⏎ Sub Total Before Discount  RM 65.20 ⏎ Service Charge  RM 0.00 ⏎ Total Sales  RM 65.20 ⏎ Rounding Adjustment  RM 0.00 ⏎ TOTAL  RM 65.20 ⏎ *************  ＊*****＊***
+070	0.00	0	1	| TAMAN BERKELEY / — / 141.50	| 99 SPEED MART S/B / 05-02-18 / 141.50
+   text: 99 SPEED MART S/D (519537 X) ⏎ LOT P.T. 2811, JALAN ANGSA, ⏎ TAMAN BERKELEY ⏎ 41150 KLANG, SCLANGOR ⏎ 13İ7 TRILLIUM SE BESI ⏎ GST ID. NO: 000181747712 ⏎ INVDICE NO: 18299/102/0230 ⏎ 01:34ГM  568017  05 02-18 ⏎ 2506 YONCCHUN LOKAM MNORN S  RM62.50 z ⏎ 85 X RM 12.50 ⏎ 2508 YONGCHUN LOKAN MNDRN M  RM79.00 z ⏎ 85 X RM 15.80 ⏎ Total Sales (Inclusive GST) RM 141.50 ⏎ CASH RM 150.00 ⏎ CHANGE RM  3.50 ⏎ GST Summary  Amount (RM)  Tax (RM) ⏎ Z = 0%  141.50  .00 ⏎ Thank You. Please come again ⏎ Keep the invoice for applicable returns
+075	1.00	1	1	| LIAN HING STATIONERY SDN BHD / 30/03/2018 / 159.00	| LIAN HING STATIONERY SDN BHD / 30/03/2018 / 159.00
+080	1.00	1	1	| HON HWA HARDWARE TRADING / 21/09/2017 / 10.40	| HON HWA HARDWARE TRADING / 21/09/2017 / 10.40
+085	1.00	1	1	| MR. D.I.Y. SDN BHD / 28/12/2017 / 9.90	| MR. D.I.Y. SDN BHD / 28-12-17 / 9.90
+090	1.00	1	1	| TRI SHAAS SDN BHD (728515-M) / 13/03/2017 / 5.00	| TRI SHAAS SDN BHD / 13/03/2017 / 5.00
+095	0.67	1	0	| POPULAR BOOK / 07/01/2018 / 31.47	| POPULAR BOOK CO. (M) SDN BHD / 07/01/18 / 31.45
+   text: POPULAR BOOK ⏎ CO. (M) SDN BHD ⏎ (Company No. 113825-W) ⏎ (GST Reg No. 001492992000) ⏎ No 8, Jalan 7/119B, Desa Tun Razak ⏎ 56000 Kuala Lumpur, Malaysia ⏎ KL FESTIVAL CITY MALL ⏎ Tel: 03-41424540/20 ⏎ 07/01/18 14:41 Slip No.: 7010385084 ⏎ Norhasmida  Trans: 364810 ⏎ Description  Amount ⏎ 70g P.Copy 450'S ⏎ Зрс @ 13.69  41.07 T ⏎ Stat-Great Saving  -9.60 ⏎ Total RM Incl. of GST  31.47 ⏎ Rounding Adj  -0.02 ⏎ Total RM  31.45 ⏎ Cash  -50.00 ⏎ CHANGE  18.55 ⏎ Item Count  3 ⏎ GST  mary Amount (RM)  Tax (RM) ⏎ Т е 6%  29.69  1.78 ⏎ Total Savings  -9.60 ⏎ BE A POPULAR CARD MEMBER ⏎ AND ENJOY SPECIAL DISCOUNTS ⏎ THANK YOU. PLEASE COME AGAIN. ⏎ www.popular.com.lty ⏎ Buy Chinese books online ⏎ www.popularonline.com.my
+100	1.00	1	1	| SYARIKAT PERNIAGAAN GIN KEE / 02/12/2017 / 7.42	| SYARIKAT PERNIAGAAN GIN KEE / 02/12/2017 / 7.42
+105	1.00	1	1	| SWEET FOREST CAFE / 14/02/2018 / 30.30	| SWEET FOREST CAFE / 14-02-2018 / 30.30
+110	1.00	1	1	| LIM SENG THO HARDWARE TRADING / 29/12/2017 / 6.00	| LIM SENG THO HARDWARE TRADING / 29/12/2017 / 6.00
+115	1.00	1	1	| SYARIKAT PERNIAGAAN GIN KEE / 10/01/2018 / 23.32	| SYARIKAT PERNIAGAAN GIN KEE / 10/01/2018 / 23.32
+120	1.00	1	1	| SYARIKAT PERNIAGAAN GIN KEE / 13/01/2018 / 6.36	| SYARIKAT PERNIAGAAN GIN KEE / 13/01/2018 / 6.36
+125	1.00	1	1	| SYARIKAT PERNIAGAAN GIN KEE / 12/02/2018 / 270.30	| SYARIKAT PERNIAGAAN GIN KEE / 12/02/2018 / 270.30
+130	1.00	1	1	| BEYOND BROTHERS HARDWARE / 05/02/2018 / 63.60	| BEYOND BROTHERS HARDWARE / 05/02/2018 / 63.60
+135	1.00	1	1	| ASO ELECTRICAL TRADING SDN BHD / 04/12/2017 / 99.00	| ASO ELECTRICAL TRADING SDN BHD / 04/12/2017 / 99.00
+140	1.00	1	1	| RESTORAN WAN SHENG / 16/03/2018 / 9.60	| RESTORAN WAN SHENG / 16-03-2018 / 9.60
+145	1.00	1	1	| Gerbang Alaf Restaurants Sdn Bhd / 10/03/2018 / 8.50	| GERBANG ALAF RESTAURANTS SDN BHD / 10/03/2018 / 8.50
+150	1.00	1	1	| SWC ENTERPRISE / 28/03/2018 / 30.00	| SWC ENTERPRISE SDN BHD / 28/03/2018 / 30.00
+155	0.67	1	1	| bang Alaf Restaurants Sdn Bhd / 02/03/2018 / 28.50	| GERBANG ALAF RESTAURANTS SDN BHD / 02/03/2018 / 28.50
+   text: bang Alaf Restaurants Sdn Bhd ⏎ （65351-M） ⏎ formerly known as ⏎ Golden Arches Restaurants Sdn Bhd ⏎ Licensee of McDonald's ⏎ Level 6, Bangunan TH, Damansara Uptown3 ⏎ No.3, Jalan SS21/39,47400 Petaling Jaya ⏎ Selangor ⏎ (GST ID No: 000504664064) ⏎ icDonald's Rawang DT (#188) ⏎ Tel No. 03-6092-1968 ⏎ TAX INVOICE ⏎ MFY Side 1 ⏎ INV# 004881904569068 ⏎ ORD #15 -REG #19- 02/03/2018 12:59:16 ⏎ QTY ITEM  TOTAL ⏎ 1 L McChicken  11.10 ⏎ 1 L Coke ⏎ 1 L Fries ⏎ 1 6Nuggets  7.50 ⏎ 1 Barbecue Sauce ⏎ 1 AyamGoreng(TA)  9.90 ⏎ TakeOut Total (incl GST)  28.50 ⏎ Total Rounded  28.50 ⏎ Cash Tendered  50.00 ⏎ Ch.  21.50 ⏎ TOTAL INCLUDES 6% GST  1.61 ⏎ Thank You and Please Come Again.
+160	0.33	1	1	| Ottogo Enterprise / 21/01/2018 / 8.60	| CT281 - TEALIVE SHELL KEPONG OTTOGO ENTERPRISE / 21/01/2018 / RM8.60
+   text: Your order number is ⏎ 7290 ⏎ tealive ⏎ CT281 - Tealive Shell Kepong ⏎ Ottogo Enterprise ⏎ 002570632-X ⏎ GST ID:001018802176 ⏎ SHELL STATION PT15944, Mukim ⏎ Batu, ⏎ JIn Besar Kepong ⏎ TAX INVOICE ⏎ Counter: 7290  Take Away ⏎ Bill No:  394024495  COMPLETED ⏎ Date  21/01/2018  15:46:09 ⏎ Sales Remarks. ⏎ Item Name  Qty Price(RM) ⏎ Hazelnut Coco -L  7 50  SR ⏎ :Pearl  1  1.10 ⏎ Sub Total  RM8.60 ⏎ Rounding  RM0.00 ⏎ Total Sales Incl GST @ 6%  RM8.60 ⏎ Cash  8.60 ⏎ Tendered  9.00 ⏎ Change  0.40 ⏎ Code  Amount  Tax ⏎ SR @ 6%  8.12  0.48 ⏎ You have just missed out 8 points ⏎ Sign up for a Tealive UniTea Card ⏎ today to enjoy exclusive member ⏎ promotions and collect BPoints to ⏎ redeem on future purchases ⏎ Thank You Please Come Again ⏎ Printed at:21/01/2018 15:46:09
+165	0.33	1	1	| or Dakoalbi Solaris / 05/01/2018 / 71.00	| MR . DAKGALBI SOLARIS / 2018-01-05 / 71.00
+   text: or Dakoalbi Solaris ⏎ bRN GST No. 000417619968 President: Kang ⏎ No. J-G-02, Soho KI, Solaris Mont Kiera, 50 ⏎ 480 KL ⏎ GST No. ⏎ TEL)03 6206 5567 ⏎ [Sales]2018-01-05 22:55:25  PosNo: 86 ⏎ Description  qty  Price ⏎ Fried Rice 3 Pax  1  71.00(S) ⏎ 1 Item (Inclusive of GST)  71.00 ⏎ Round Amt  0.00 ⏎ TOTAL ⏎ Cash  71.00 ⏎ Cash Received  101.00 ⏎ Change  30.00 ⏎ GST @6%  4.02 ⏎ GSTSummary  Amount (RM)  GST (RM) ⏎ S=GST @ 6%:  66.98  4.02 ⏎ Z=GST @ 0%:  C.CO  0.00 ⏎ Receipt No: 18010500047 ⏎ Person  : S-Admin ⏎ Table No: [Hal]]-9
+170	1.00	1	1	| Zen and coffee 28 S/B / 25/03/2018 / 105.00	| ZEN AND COFFEE 28 S/B / 25 MAR 2018 / 105.00
+175	0.67	1	1	| POPULAR BOOK / 11/02/2018 / 11.80	| POPULAR BOOK CO. (M) SDN BHD / 11/02/18 / 11.80
+   text: POPULAR BOOK ⏎ CO. (M) SDN BHD ⏎ (Co. No. 113825-W) ⏎ (GST Reg No. 001492992000) ⏎ No 8, Jalan 7/118B, Desa Tun Razak ⏎ 56000 Kuala Lumpur, Malaysia ⏎ AMPANG POINT CENTRE ⏎ Tel: 03-42601064/66 ⏎ 11/02/18 19:21  Slip No.: 8030098553 ⏎ Mohd Nor Azai  Trans: 79369 ⏎ Description  Amount ⏎ PB D/S Tape 12mm  1.90 1 ⏎ H/C A4 400'S  9.90 T ⏎ Total RM Incl. of GST  11.80 ⏎ Cash  -11.80 ⏎ Item Count  2 ⏎ GST Summary  Amount (RM)  Tax (RM) ⏎ T @ 6%  11.13  0.67 ⏎ Total Savings  0.00 ⏎ BE A POPULAR CARD MEMBER ⏎ AND ENJOY SPECIAL DISCOUNTS ⏎ THANK YOU. PLEASE COME AGAIN. ⏎ www.popular.com.my ⏎ Buy Chinese books online ⏎ www.popularonline.com.ny
+180	1.00	1	1	| BHPetrol Subang Airport / 18/01/2018 / 41.95	| BHPETROL SUBANG AIRPORT / 18-01-2018 / 41.95
+185	1.00	1	0	| SUPER SEVEN CASH & CARRY SDN 3HD / 12/02/2018 / 921.25	| SUPER SEVEN CASH & CARRY SDN BHD / 12-02-2018 / RM367.10
+   text: SUPER SEVEN CASH & CARRY SDN 3HD ⏎ (590150-A) ⏎ FASARAYA BORUNG SUPER SEVEN ⏎ NO. 1 Jalan Euro 1 ⏎ Off Jalan Batu Tiga ⏎ Sungai Buloh Seksyen U3 Shah Alam, 40150 ⏎ http://www.super7.com.my ⏎ TEL : 03-78590861 ⏎ FAX : 03-78590864 ⏎ GST I : 000639090688 ⏎ TAX INVOICE ⏎ Custumer : [77853745] ⏎ Mr5. ONG GUAT CHYE ⏎ TAX INVOICE NO : 195147  COUNTER :002 ⏎ OPLRATUR : [SYUNADAH BT FAIZAL A-CASHIER] ⏎ 12-02-2018  11:34:45 AM ⏎ (RM) ⏎ LORY FITTLET 300UP(3)6KG @63.00 ⏎ FM41:000055  *4  252.00 ZR ⏎ BERAS BIRI-BIRI 10KG 5% ISTIMEWA @53.50 ⏎ 9556606389892  *1  53.50 ZR ⏎ EAMANG BESAR INDIA/CINA GUNI  18.50 ⏎ FM429000000  *2  17.00 ZR ⏎ 2APAS CILI 1KG @19.50 ⏎ 95560650003:-  19.50 ZR ⏎ BABAS KARI DAGING 1KG  ＠17.20 ⏎ 95o6065000345 *1  17.20 LR ⏎ CILI B0H 3KG KCK @7.90 ⏎ 9554100157801 *1  7.90 SR ⏎ QUANTITY : 10 Units  367-10 ⏎ iotal Sales (Incl. GST 06%)  RM4367.10 ⏎ Rounding Adjustment  RM0.00 ⏎ Nel leta!  RM367.10 ⏎ rayiment Method  VISA CARD ⏎ GST Sumnary  Sales Amt  Tax Amt ⏎ (RM)  (RM) ⏎ ZR (0%)  359.20  0.00 ⏎ Sh 16%)  7.45  0:45 / ⏎ FIFASE VERIFY YOUR RECEIPT ⏎ CEriRE LEAVING THE COUNTER.
+190	1.00	1	1	| MR. D.I.'. (M) SDN BHD / 02/03/2018 / 71.90	| MR. D. I. Y. (M) SDN BHD / 02-03-18 / 71.90
+195	1.00	1	1	| AEON CO. (M) BHD (126926-H) / 09/03/2018 / 31.00	| AEON CO. (M) BHD / 09/03/2018 / 31.00
+200	1.00	1	1	| MR. D.I.Y. (M) SON BHD / 17/03/2018 / 42.90	| MR. D.I.Y. (M) SDN BHD / 17-03-18 / 42.90
+205	0.00	1	1	| MK. U.L.Y. (M) SON BHD / 23/03/2018 / 26.10	| MR. D.I.Y. (M) SDN BHD / 23-03-18 / 26.10
+   text: 31803051 ⏎ MK. U.L.Y. (M) SON BHD ⏎ (CO.REG : 860671-D) " ⏎ LOT 1851-A & 1851-B, JALAN KPB 6, ⏎ KAWASAN PERINDUSTRIAN BALAKONG, ⏎ 43300 SERI KEMBANGAN, SELANGOR ⏎ (GST ID No :000306020352) ⏎ (IOI PUCHONG) ⏎ -TAX INVOICE- ⏎ DOUBLE EXT BOX 10Y 40/016 CBD4110  *S ⏎ WA21 - 20 ⏎ 9553114461423  1 X 25.90  25,90 ⏎ PLASTIC BAGS  *S ⏎ 99999  1 X  0.20  0.20 ⏎ Item(s) : 2  Qty(s) : 2 ⏎ Total Incl. GST@6%  RM 26.10 ⏎ CASH  RM 50.00 ⏎ CHANGE  RM 23.90 ⏎ GST @6% included in total  RM 1.48 ⏎ ＊ー  -* ⏎ 23-03-18 18:09 SH01 ZJ86  T1 R000111754 ⏎ OPERATOR TRAINEE CASHIER ⏎ EXCHANGE ARE ALLOWED WITHIN ⏎ 7 DAY WITH RECEIPT. ⏎ STRICTLY NO CASH REFUND.
+210	1.00	1	1	| KAISON FURNISHING SDN BHD / 29/01/2018 / 7838.80	| KAISON FURNISHING SDN BHD / 29-01-18 / 7838.80
+215	1.00	1	1	| SINNATHAMBY HOLDINGS SDN. SHD. (2 19336-T) / 06/02/2018 / 109.70	| SINNATHAMBY HOLDINGS SDN. BHD. / 06/02/2018 / 109.70
+220	1.00	1	1	| PRINT EXPERT SDN BHD / 12/01/2018 / 4.25	| PRINT EXPERT SDN BHD / 12/01/2018 / 4.25
+225	0.00	0	1	| CAFE CREME / 22/05/2095 / 56.00	| RELAIS TOTAL OULMES / 30/03/2018 / 56.00
+   text: RELAIS TOTAL OULMES ⏎ AUTOROUTE RABAT MEKNES ⏎ 15000 KHEMISSET ⏎ Tel. : 05.22.95.66.66 ⏎ Le 30/03/2018 a 12:36 V201855892CAISSIER 1, C ⏎ BDES GNATIONE  TOTAL ⏎ CAFE CREME  12.00  2  24.00 ⏎ CAFE EXPRESSO  10.00  2  20.00 ⏎ CHOCOLAT CHAUD  12.00  1  12.00 ⏎ Total Facture :  56.00 DH ⏎ REGLE PAR ESPECE  56.00 DH ⏎ ****Merci de votre visite**** ⏎ PAT: 37993027/RC: 209031/IF: 40132774 ⏎ ICE: 000081241000051
+230	1.00	0	0	| Anzel Advertising (1) 5dn bhd (758785-H) / 19/11/2026 / 8.48	| ANZEL ADVERTISING (M) SDN BHD / 27/03/2018 / 8.50
+   text: EXPrint ⏎ Anzel Advertising (1) 5dn bhd (758785-H) ⏎ Unit G-5B, Ground Floor, Wisma UOA I!, ⏎ No 21, Jalan Pinang ⏎ 50450 Kuala Lumpur, Malaysia ⏎ Tel: 03-2183 2786/ 03-2181 6708 ⏎ GST No: 002121732098 ⏎ Tax Cash Sales ⏎ No. : UDA-0818-01713 ⏎ Qty  RM TaN ⏎ Plasic Lamination A4 @  2.00  4.24 81 ⏎ 2.00 ⏎ дл. COL Simili 00gmm @  2.00  4.24 81 ⏎ 2.00 ⏎ Total Art Ind. GST @ 6% :  8.48 ⏎ Rounding Adjustment  (0.02) ⏎ Totel Amt Payabte:  8.S0 ⏎ Paid Amount:  100.00 ⏎ Chonge :  91.50 ⏎ Total Cty Tender: ⏎ THANK YOU ⏎ For any enquiry, please e-maii us: ⏎ www.exprintshop.com ⏎ E: exprintucaki@gmail.com ⏎ 04:54 pm, 27 March, 2018 ⏎ FoST Surma  Amount ⏎ (RM)  (FIM)! ⏎ 3.00 ⏎ G451 ⏎ THANK YOU ⏎ For any enquiry, please e-mai us: ⏎ 27/03/2016 16:54:04
+235	1.00	1	1	| B & BEST RESTAURANT / 10/02/2017 / 7.40	| B & BEST RESTAURANT / 10/02/2017 / 7.40
+240	1.00	1	1	| TANJONGMAS BOOKCENTRE (PJ SDN BHD / 17/03/2017 / 62.00	| TANJONGMAS BOOKCENTRE (PJ) SDN BHD / 17/03/2017 / 62.00
+245	1.00	1	1	| MEI LET RESTAURANT / 22/01/2017 / 67.85	| MEI LET RESTAURANT / 22/01/2017 / 67.85
+250	0.00	1	1	| T HANDIGEAFT & TAN OEING / 09/04/2018 / 104.00	| GL HANDICRAFT & TAII ORING / 09/04/2018 / 104.00
+   text: T HANDIGEAFT & TAN OEING ⏎ 19. JALAN KANGIL, ⏎ OFF JALAN PUDU, ⏎ 55100 KUALA LUMPUR ⏎ MALAYSIA ⏎ Company Reg No. :75495-W ⏎ GST Reg No. :001943632736 ⏎ TAA INVOICE ⏎ Invoice No.:  CS 10217 ⏎ Date:  09/04/2018 10:52 ⏎ Cashler#:  01 ⏎ Cene ⏎ MONA M ACRYIC YARN ⏎ 8.00 PKTS  13.00  108.00  SFE ⏎ Subiotal :  104.00 ⏎ Total Exol. OF GST ⏎ • Total Inci. of GST  104.00 ⏎ Total Ami Rounded  104.00 ⏎ Payment:  104.00 ⏎ Change Due :  0.00 ⏎ Total Item (a) : 8 ⏎ GST Summary  Amount (RIM)  Tax (FUM) ⏎ SR  © 6%  96.11  5.89 ⏎ * THANK YOU * ⏎ •* PLEASE COME AGAIN
+255	0.67	1	0	| YONG GEN ENTERPRISE POSTED / 25/04/2017 / 92.50	| YONG CEN ENTERPRISE / 25/04/2017 / 94.00
+   text: (P.) ⏎ YONG GEN ENTERPRISE POSTED  8, JALAN SUBANG JASA 3, ⏎ 40150 SHAH ALAM, SELANGOR. ⏎ .012-9719493 ⏎ NO: 001147981824 ⏎ CASH ⏎ REGEIPT #: CS00033060 DATE: 25/04/2017 ⏎ SALESPERSON :  TIME: 07:53:00 ⏎ COUNTER : ⏎ ITEM  OTY WIF AMOUNT ⏎ 2411802040  100 0.25 25.00 ⏎ ZRL:IKAN BILIS KOPEK A++ 10G ⏎ 24118023030  125.00  25.00 ⏎ SR:TEPUNG JAGUNG CAP BINTANG 20X4C ⏎ 2411602303  1  42.50  42.50 ⏎ ZRL:VITAMAS GARTON ⏎ TOTAL QUANTITY  102 ⏎ SUB-TOTAL 92.50 ⏎ DISC  0.00 ⏎ GST  1.50 ⏎ TAX  0.00 ⏎ HUDING  0.00  94 ⏎ T!  94.00 ⏎ GASH  94.00 ⏎ CHANGE  0.00 ⏎ GOODS SOLD ARE NOT RETURNABLE, ⏎ THANK YOU.
+260	1.00	1	1	| PERNIAGAAN RIANG RIA / 10/05/2017 / 22.60	| PERNIAGAAN RIANG RIA / 10-05-2017 / 22.60
+265	1.00	1	1	| Broadview Marketing Sdn Bhd (728384-1) / 15/05/2017 / 4.70	| BROADVIEW MARKETING SDN BHD / 15/05/2017 / 4.70
+270	1.00	1	1	| ELKEN SERVICE SDN BHD (310184-X) / 10/10/2017 / 250.00	| ELKEN SERVICE SDN BHD / 10 OCT 2017 / 250.00
+275	0.00	1	0	| TAMAN BERKELEY / 10/05/2017 / 11.58	| 99 SPEED MART S/B / 10-05-17 / 11.50
+   text: 31705509 ⏎ 99 SPEED NART S/B (519537-X) ⏎ LOT P.T. 2811, JALAN ANGSA, ⏎ TAMAN BERKELEY ⏎ 41150 KLANG, SELAMGOR ⏎ 1214-JINJANG UTARA ⏎ OST 1D. NO: 000181747712 ⏎ INVOICE NO: 19028/103/70269 ⏎ 02:31PM  565497  10-05-17 ⏎ 355 CRISPI ROLL 12 BRAIN SE  RM6.85 = ⏎ 9413 CS 1002 A5 H/COVER NOT  RM4.65 g ⏎ Total Sales (inclusive GST) RM  11.58 ⏎ CASH RM 52.00 ⏎ CHANDE RH  40.50 ⏎ 0ST Suomary  AmountiRM)  Tax(RN) ⏎ 5= 57  10.85  - 65 ⏎ Thank You, Please come again ⏎ Keep the invoice for applicable returns
+280	1.00	1	1	| B & BEST RESTAURANT / 22/04/2017 / 22.25	| B & BEST RESTAURANT / 22/04/2017 / 22.25
+285	1.00	1	1	| UNIHAKKA INTERNATIONAL SDN BHD / 09/04/2018 / 8.20	| UNIHAKKA INTERNATIONAL SDN BHD / 09 APR 2018 / $8.20
+290	1.00	1	1	| LAVENDER CONFECTIONERY & BAKERY S/B / 14/04/2018 / 12.30	| LAVENDER CONFECTIONERY & BAKERY S/B / 14/04/2018 / 12.30
+295	0.50	0	1	| UNIHAKKA IN9 Apr 2DAB 18NAL SDN BHD / — / 9.90	| UNIHAKKA INTERNATIONAL SDN BHD / 19 APR 2018 / $9.90
+   text: A04070 ⏎ UNIHAKKA IN9 Apr 2DAB 18NAL SDN BHD ⏎ （867388-U） ⏎ 12, Jalan Tampoi 7/4,Kawasan Perindustrian ⏎ Tampoi,81200 Johor Bahru, Johor ⏎ TAXINVOICE ⏎ Invoice#: OR18041902170358 ⏎ Item  Qty  Total ⏎ SR 100100000030-2 Vege ⏎ $3.30  $3.30 ⏎ SR 100100000169-Veggies ⏎ $1.30  $1.30 ⏎ SR 100100000170- Imported Veggies ⏎ $1.60  ＄1.60 ⏎ SR 100100000008- Seafood (S) ⏎ $3.70  $3.70 ⏎ Total Amount: $9.90 ⏎ GST @6%: $0.56 ⏎ Nen Tntal so co ⏎ Payment Mode  Amnount ⏎ CASH  $9.90 ⏎ Change  $0.00 ⏎ AMOUnT(S)  Tax($) ⏎ 934  056 ⏎ GST REG #000656195584 ⏎ BAR WANG RICE@PERMAS JAYA ⏎ (Price Inclusive Of GST) ⏎ Thank You & Come Again! ⏎ Like and Follow Us on Facebook! ⏎ Facebook.com/BarWangRice
+300	1.00	1	1	| AEON CO. (M) BHD (126926-H) / 18/04/2018 / 1.75	| AEON CO. (M) BHD / 18/04/2018 / 1.75
+305	0.00	1	1	| Аошз / 17/04/2018 / 81.80	| YHM AEON TEBRAU CITY / 17/04/2018 / 81.80
+   text: Аошз ⏎ YHM Aeon Tebrau City ⏎ S117, Second Floor, ⏎ Aeon Tebrau City, ⏎ 1, Jalan Desa Tebrau, ⏎ Taman Desa Tebrau, ⏎ 81100 Johor Bahru, Johor. ⏎ 002105827328 ⏎ * TAX INVOICE * ⏎ Order No.  1000070 17/04/2018 07:13 PM ⏎ Receipt No.:003-1227834  Pax: ⏎ Cashier  :Cashier ⏎ Eat In ⏎ Item  Qty  U.Price  Amount Tax ⏎ FG-A00019  1.50  3.00 SR ⏎ Green Tea  3.80 SR ⏎ FG-H00027  3.80 ⏎ Chikuwa Tempura ⏎ FG-H00030  3.80  3.80 SR ⏎ Karaage ⏎ FG-Y00133  16.80  16.80 SR ⏎ Otm Spicy Yakiniku BowlR  16.80  16.80 SR ⏎ FG-Y00226 ⏎ Otm Spicy Teri Chicken Bowl R ⏎ FG-Y00229  18.80  18.80 SR ⏎ Otm Tori Katsu Set ⏎ FG-Y00268  0.00  0.00 SR ⏎ Katsu Sauce ⏎ FG-Y00264  0.00  0.00 SR ⏎ Miso Soup  18.80 SR ⏎ FG-Y00229  18.80 ⏎ Otm Tori Katsu Set ⏎ FG-Y00267  0.00  0.00 SR ⏎ Taru Taru Sauce ⏎ FG-Y00265  0.00  0.00 SR ⏎ Wakame Soup ⏎ SubTotal  81.80 ⏎ Total  81.80 ⏎ TOTAL:MYR  81-11.18  .80 ⏎ Total Excluded Tax
+310	1.00	1	1	| DOMINO'S PIZZA / 27/04/2018 / 7.20	| DOMINO'S PIZZA / 27/04/18 / 7.20
+315	0.00	1	1	| Outlet:03-80626265 Careline:03-56381988 / 18/04/2018 / 11.25	| BERRY'S CAKE HOUSE / 18/04/2018 / 11.25
+   text: 3180404  daff ret ⏎ BERRY'S CAKE HOUSE ⏎ (Co No. 315481-T) GST No. 001287233536 ⏎ No. 1, ⏎ JIn Puteri 1/6, ⏎ Bandar Puteri, ⏎ 47100 Puchong, ⏎ Selangor ⏎ Outlet:03-80626265 Careline:03-56381988 ⏎ 18/04/2018 5:18:08 p  Session: 11444 ⏎ User:1 .  TAX Invoice No:14551  POS: 2 ⏎ Desc & Code  014  Price  Amount ⏎ 00014960 RAISIN ALMOND BREAD ⏎ 1,00  4.55  4.55 ⏎ 00002493 CHEESE ROLL (4) ⏎ 1.00  3.90  3.90 ⏎ 00002479 BUTTER ROLL (4) ⏎ 1.00  2.80  2.80 ⏎ Total Inclusive of Tax  11.25 ⏎ Rounding Adjustment  0.00 ⏎ SubTotal  11.25 ⏎ RINGGIT M'SIA  20.00 ⏎ Payment  -20.00 ⏎ Change  8.75 ⏎ Item Count  3 ⏎ Item Total  3 ⏎ GST Summary  Amount  GST ⏎ GST 0% *  0.00  0.00 ⏎ G5T 67  10.61  0.64 ⏎ Receipt/Trx No  14551/1582555 ⏎ All Berry's products are available ⏎ at Berry's Outlet Only. ⏎ customerservice@berrys.com.my ⏎ www.berrys.com.my
+320	0.33	0	0	| bakery / 04/05/2013 / 13.50	| THE ROTI MAN BAKERY / 04-05-2018 / RM20.40
+   text: 3180502 ⏎ Röti ⏎ man ⏎ bakery  000965911-p ⏎ 117, Jalan Radin Jagus, Sri Petaling ⏎ Tel:03-9054 3785 ⏎ GST 00029206280 ⏎ MC #01 ⏎ REG C01  04-05-2013 16:07  456277 ⏎ Bacon  RM4.90  S ⏎ Wainut Raisin  RM8.60  S ⏎ Dark Rye Bun  RM6. 90  S ⏎ 3 No ⏎ SUBTOTAL  RM20. 40 ⏎ CASH  RM20.40 ⏎ TAX INVOICE NO.  223894 ⏎ THANK YOU PLEASE COME AGAIN ⏎ PRICE INCLSIVE 6% GST
+325	0.00	1	1	| Store Name: D9001-BP009 OSCAR COLOUR LAB / 13/10/2017 / 234.40	| DIGI TELECOMMUNICATIONS SDN BHD / 13/10/2017 / 234.40
+   text: DIGI TELECOMMUNICATIONS SON EHD ⏎ (201283-M) ⏎ LOT LG 315  LEBUH BANDAR UTAMA-BANDAR UTAMA,  -UTAMA SHOPPING CENTRE, ⏎ SELANGOR ⏎ TAX INVOICE ⏎ GST Reg Number:  001211957248 ⏎ 13/10/2017  12:35 ⏎ rus Login ID: DMgr5401/ ⏎ Store Name: D9001-BP009 OSCAR COLOUR LAB ⏎ & TELECOMMUNICATION SDN. BHD. (523847-W) ⏎ BILL PAYMENT ⏎ Paid Amount  234.40 ⏎ Sub Total Amount  234.40 ⏎ Total Amount  234.40 ⏎ Credit Card  234.40 ⏎ Credit Card No.:XXXX XXXX XXXX 6974 ⏎ Total Amount Collected  234.40 ⏎ Customer Name: LIM RUEY CHYI ⏎ Mobile No.: 60143149319 ⏎ Account No.: 1000004587104 ⏎ Customer Copy ⏎ Thank You ⏎ Have a nice day ⏎ 34013001929120171013
+330	1.00	1	1	| GARDENIA BAKERIES (KL) SDN BHD (139386 X) / 30/07/2017 / 20.21	| GARDENIA BAKERIES (KL) SDN BHD / 30/07/2017 / 20.21
+335	1.00	0	1	| GARDENIA BAKERIES (KL) SDA BHD (139386 X) / 23/01/2027 / 41.44	| GARDENIA BAKERIES (KL) SDN BHD / 28/08/2017 / 41.44
+   text: GARDENIA BAKERIES (KL) SDA BHD (139386 X) ⏎ Lot 3, Jalan Pelabur 23/1, ⏎ 40300 Shah Alam, Selangor. ⏎ Tel: 03- 55423228 Fax:03- 55423213 ⏎ GST ID: 000381399040 ⏎ TAX INVOICE / ADJUSTMENT NOTE ⏎ Cash Inv No.: 7828F715 ⏎ V E0514  Dote: 28/08/2017 ⏎ MAKASSAR FRESH MARKET SDN BHD ⏎ GROUND FLOOR, NO. 4 & 6, ⏎ JALAN SS 15/46, ⏎ 47500 SUBANG JAYA,  SELANGOR ⏎ V E05: Ridzuan ( 11900) ⏎ DD: 28/08/2017 12:26 ⏎ Description  U.P Iss Exc  D Sale Amt(RM) ⏎ O. C. WHITE  2.135  3  6.39 ⏎ WIIOLEMEAL  2.78  5  _o g  5  13.90 ⏎ 0. C JUMBO  2.97  2  -5.94 ⏎ Total 8% supplies:  14.35 ⏎ DELICIA-B/SCOTCH 3.72  6.72 20  3  11.16 ⏎ CR-CHOCLT  20  14.40 ⏎ Total 6% supplies (excl. GST):  25.56 ⏎ GST:  1.53 ⏎ Total 6% supplies (Inc. GST):  27.09 ⏎ Total 0% supplies:  14.35 ⏎ Total Payable:  41.44 ⏎ E.&.O.E. ⏎ Received above goods in good order condition. ⏎ The recipient of Gardenta's products is ⏎ required to make necessary adjustments to its ⏎ input tox loins, on the basic of the ⏎ adjustments shown in this Tax Invoice / ⏎ Adjustment, Note ⏎ CUSTOMER'S COPY
+340	0.67	1	1	| GARDENIA BAKERIES (KI.) SDN BHD (139386 X) / 06/08/2017 / 68.41	| GARDENIA BAKERIES (KL) SDN BHD / 06/08/2017 / 68.41
+   text: GARDENIA BAKERIES (KI.) SDN BHD (139386 X) ⏎ Lot 3, Jalan Pelabur 23/1, ⏎ 40300 Shah Alam, 'Selangor. ⏎ Tel: 03- 55423228 Fax:03- 55423213 ⏎ GST ID: 000381399040 ⏎ TAX INVOICE / ADJUSTMENT NOTE ⏎ Cash Inv No.: 7806F710 ⏎ VE0514  Date: 06/08/2017 ⏎ MAKASSAR FRESH MARKET SDN BHO ⏎ JALAN SS 15/4B,  GROUND FLOOR, NO. 4 & 6, ⏎ 47500 SUBANG JAYA,  SELANGOR ⏎ VE05: Ridzuan(11900) ⏎ DD: 06/08/2017  10:49 ⏎ Description U.P Iss Exe D Sale  Anit (RM) ⏎ O.C. WHITE 2.13 12  12  25.56 ⏎ WHOL EMEAL  13.90 ⏎ 14.85 ⏎ Total 0% supplies:  54.31 ⏎ TWIG-CHOC  1.33 1000  10  13.30 ⏎ Total 6% supplies (excl. GST):  13.30 ⏎ GST:  0.80 ⏎ Total 6% supplies (Inc. GST):  14.10 ⏎ Total 0% supplies:  54.31 ⏎ Total Payable:  68.41 ⏎ E.&.B.E. ⏎ Received above goods in good order condition. ⏎ The recipient of Gardenia's products is ⏎ required to make necessary adjustments to its ⏎ input tax claus, on the basic of the ⏎ adjustments shown in this Tax Invoice / ⏎ Adjustinent Note ⏎ CUSTOMER'S COPY
+345	1.00	1	1	| GARDENIA BAKERIES (KL) SDA BHD (139386 X) / 03/09/2017 / 29.59	| GARDENIA BAKERIES (KL) SDN BHD / 03/09/2017 / 29.59
+350	1.00	1	1	| PINGHWAI TRADING SDN BHD / 23/09/2017 / 1007.50	| PINGHWAI TRADING SDN BHD / 23/09/2017 / 1,007.50
+355	1.00	1	1	| GARDENIA BAKERIES (KL) SDN BHD (139386 0) / 16/09/2017 / 3.21	| GARDENIA BAKERIES (KL) SDN BHD / 16/09/2017 / 3.21
+360	1.00	1	1	| GARDENIA BAKERIES (KL) SDN BHD (139386 X) / 24/10/2017 / 41.87	| GARDENIA BAKERIES (KL) SDN BHD / 24/10/2017 / 41.87
+365	1.00	1	1	| GARDENIA BAKERIES (KL) SĐN BHD (139386 X) / 22/10/2017 / 34.21	| GARDENIA BAKERIES (KL) SDN BHD / 22/10/2017 / 34.21
+370	1.00	1	1	| GARDENIA BAKERIES (KL) SDN BHD (139386 X) / 12/10/2017 / 59.54	| GARDENIA BAKERIES (KL) SDN BHD / 12/10/2017 / 59.54
+375	1.00	1	1	| GARDENIA BAKERIES (KL) SDN BHD ( 139386 X) / 01/10/2017 / 31.32	| GARDENIA BAKERIES (KL) SDN BHD / 01/10/2017 / 31.32
+380	0.00	1	1	| TAMAN BERKELEY / 14/12/2016 / 61.65	| 99 SPEED MART S/B / 14-12-16 / 61.65
+   text: 99 SPEED MART S/B (519537-X) ⏎ LOT P.T. 2811, JALAN ANGSA, ⏎ TAMAN BERKELEY ⏎ 41150 KLANG, SELANGOR ⏎ 1320-TMN BATU ⏎ GST ID. NO: 000181747712 ⏎ INVOICE NO: 17881/102/T0298 ⏎ 07:49PN  563094  14-12-16 ⏎ 5422 MI SEDAAP MI GORENG AS  RM3. 79 s ⏎ 0155 TWISTIES CHIPSTER ORIG  RM2. 85 s ⏎ 0954 MISTER POTATO BBQ (B)  RM4.90 s ⏎ 82 X RM 2.45 ⏎ 5588 EAGLE FRIED DACE WT SA  RM13.98 s ⏎ 82 X RM 6.99 ⏎ 183 PLANTA MARJERIN 2406  RMS. 20 $ ⏎ 507 COKE 1.5L  RM5.98 s ⏎ E2 X RM 2.99 ⏎ 5725 CAP TAKRAW BERAS SUPER  RM24.95 z ⏎ Total Sales (Inclusive GST) RM  61.65 ⏎ CREDIT RM  61.65 ⏎ CHANGE RM  .00 ⏎ GST Summary  Amount (RM)  Tax (RN) ⏎ $ = 6%  34.62  2.08 ⏎ z = 0%  24.95  .00 ⏎ Thank You. Please come again ⏎ Keep the invoice for applicable returns
+385	0.00	1	1	| TAMAN BERKELEY / 05/12/2016 / 15.90	| 99 SPEED MART S/B / 05-12-16 / 15.90
+   text: 99 SPEED MART S/B (519537-X) ⏎ LOT P.T. 2811, JALAN ANGSA, ⏎ TAMAN BERKELEY ⏎ 41150 KLANG, SELANGOR ⏎ 1558-TMN PUSAT KEPONG ⏎ GST ID. NO: 000181747712 ⏎ INVOICE NO: 17872/102/0476 ⏎ 08:53PM  561781  05-12-16 ⏎ 5386 STAR BRAND GARBAGE BAG  RM15.90 s ⏎ 83 X RM 5.30 ⏎ Total Sales (Inclusive GST) RM  15.90 ⏎ CASH RM  51.00 ⏎ CHANGE RM  35.10 ⏎ GST Summary  Amount (RM)  Tax (RM) ⏎ S = 6%  15.00  .90 ⏎ Thank You. Please come again ⏎ Keep the invoice for applicable returns
+390	1.00	1	1	| MR. D.I.Y. (KUCHAI) SDN BHD / 24/01/2016 / 57.40	| MR. D.I.Y. (KUCHAI) SDN BHD / 24-01-16 / RM 57.40
+395	1.00	1	1	| Yam Fresh / 31/07/2016 / 8.35	| YAM FRESH / 2016-07-31 / RM8.35
+400	0.33	1	1	| SIN / 28/02/2016 / 110.00	| SIN THYE & COMPANY / 28/02/2016 / 110.00
+   text: SIMPLIFIED TAX INVOICE ⏎ SIN  | THYE & COMPANY ⏎ RED. NO:00168397-H ⏎ GST NO: 001329332224 ⏎ NO.54,  BATU 5,JALAN IPOH, ⏎ KG.BATU, ⏎ 51200 KÚALA LUMPUR ⏎ TEL: 03-6258 0869 FAX: 03-6251 7978 ⏎ MON-SAT 7.30am-6.00pm ⏎ SUN 7.30am-2.00pm ⏎ CASH ⏎ RECEIPT #: CS00052997 DATE: 28/02/2016 ⏎ SALESPERSON : 6  TIME: 11:05:00 ⏎ CASHIER : USER ⏎ ITEM  QTY  U/P AMOUNT ⏎ 813086000911  1  103.77  103.77% ⏎ KR600 KING'S SAFETY SHOES ⏎ TOTAL QUANTITY  1 ⏎ SUB-TOTAL  103.77 ⏎ DISC  0.00 ⏎ TAX  0.00 ⏎ ROUNDING  0.00 ⏎ TOTAL  110.00 ⏎ CASH  110-00 ⏎ CHANGE  0.00 ⏎ GST SUMMARY ⏎ CODE  AMOUNT  %  TAX/AMT ⏎ SR  103.77  6  6.23 ⏎ TAX TOTAL:  6.23 ⏎ GOODS SOLD ARE NOT RETURNABLE,  THANK YOU.
+405	0.00	1	0	| JALAN KAPAR / 11/05/2016 / 177.22	| 99 SPEED MART S/B / 11-05-16 / 177.20
+   text: 99 SPEED MART S/B (519537-X) ⏎ LOT P.T. 33198, BATU 4 ⏎ JALAN KAPAR, MUKIM KAPAR ⏎ 42100 KLANG, SELANGOR ⏎ 1605-TMN SRI BINTANG ⏎ GST ID. NO: 000181747712 ⏎ INVOICE NO: 17664/103/0027 ⏎ 10: 12AM  560272  11-05-16 ⏎ 967 ANCHOR SERBUK CUCI 4KG c  RM18.80 s ⏎ 02 X RM 9.40 ⏎ 886 DOVE CREAM BAR SOAP 100  RM26.50 s ⏎ 210 X RM 2.65 ⏎ 5551 FERNLEAF FULL CRM MILK  RM40.95 s ⏎ 2267 COLGATE GREAT REGULAR  RM15.98 s ⏎ 02 X RM 7.99 ⏎ 265 LEE KUM KEE SOS TIRAM C  RM22.80 s ⏎ 83 X RM 7.60 ⏎ 193 CHEONG CHAN S05 KARAMEL  RM5.09 $ ⏎ 2394 MISTER POTATO CHIPS BB  RM7.90 s ⏎ 02 X RM 3.95 ⏎ 8019 MARIGOLD HL MILK 1L  RM12.70 s ⏎ 02 X RM 6.35 ⏎ 706 BINTANG TEPUNG JAGUNG 4  RN1.35 s ⏎ 2216 NUTELLA FERRERO HAZELN  RM14.65 s ⏎ 9547 NUTRIPLUS CHEESE CHICK  RM10.50 s ⏎ 02 X RM 5.25 ⏎ Total Sales (Inclusive GST) RM 177.22 ⏎ Rounding Adjustment RM  -，02 ⏎ Rounding RM  177.20 ⏎ CREDIT RM  177.20 ⏎ CHANGE RM  00 ⏎ GST Summary  Amount (RM)  Tax (RM) ⏎ 5 = 6%  167.19  10.03 ⏎ Thank You. Please come again ⏎ Keep the invoice for applicable returns
+410	0.67	1	1	| FACE TO FACE NOODLE HOUSE / 21/05/2018 / 31.60	| FTOF NOODLE HOUSE / 21/05/2018 / RM31.60
+   text: FACE TO FACE NOODLE HOUSE ⏎ FTOF NOODLE HOUSE ⏎ (002049088-U) ⏎ No. 25, Jalan Metro Perdana Barat 2, ⏎ Taman Usahawan Kepong, Kepong Utara, ⏎ 52100 Kuala Lumpur. ⏎ Tel: 016-680 8777 ⏎ (GST ID: 001927782400) ⏎ Date:  21/05/2018Time:  11:12:56AM ⏎ INV No: 443181 ⏎ Table:  12-Dine In ⏎ Counter: C1 ⏎ Staff:  T.Y. / JAMES LELE ⏎ Description ⏎ Unit Discount  Tax ⏎ Unit Price  Amount Code ⏎ 711-Omega Half Boiled Egg ⏎ RM 3.20  1 0.00  RM3.20 SR ⏎ 706-Toasted Bread (Homemade Kaya) ⏎ RM 4.30  1 0.00  RM4.30 SR ⏎ 837-Honey Lemon (Hot) ⏎ RM 3.90  1 0.00  RM3.90 SR ⏎ 838-Honey Lemon (Cold) ⏎ RM 4.20  Q.00  RM4.20 SR ⏎ 2022-House Specialty Hot & Spicy ⏎ Pan Mee (Dry) (b) ⏎ RM 8.00  1 0.00  RM8.00 SR ⏎ 2021-House Specialty Hot & Spicy ⏎ Pan Mee (Dry) (a) ⏎ RM 8.00  1  0.00  RM8.00 SR ⏎ Qty  Total Amount:  RM31.60 ⏎ Discount:  RM0.00 ⏎ After Discount:  RM31.60 ⏎ Cent Rounding:  RM0.00 ⏎ Total Sales:  RM31.60 ⏎ 00 ⏎ GST Summary Excl Amount(RM)  Tax(RM) ⏎ SR = 6%  29.81  1.79
+415	0.00	1	0	| TAMAN BERKELEY / 14/08/2017 / 14.38	| 99 SPEED MART S/B / 14-08-17 / 14.40
+   text: 99 SPEED MART S/D (519537-X) ⏎ LOT P.T. 2811, JALAN ANDSA, ⏎ TAMAN BERKELEY ⏎ 41150 KLANG, SELANCOR ⏎ 1243-JLN PUDU ULU ⏎ GST ID. NO: 000181747712 ⏎ INVOICE NO: 18124/102/T0146 ⏎ 01:11PM  566449  14-08-17 ⏎ 587 LISTERINE COOL MINT MOU  RMB.99 s ⏎ 2190 SPRING FRESH MINERAL W.  RM1.40 s ⏎ 5353 SUMMER GOAT MILK BODY  RM3.99 S ⏎ Total Sales (Inclusive GST) RM  14.38 ⏎ Rounding Adjustment RM  .02 ⏎ Rounding RM  14.40 ⏎ CASH RM  20.00 ⏎ CHANGE RM  5.60 ⏎ summary  Amount (RM)  Tax (RM) ⏎ = = 6%  13.56 ⏎ Thank You, Please come again ⏎ Keep the invoice for applicable returns
+420	1.00	1	0	| Guardian Health And Beauty Son Bhd / 18/05/2018 / 11.86	| GUARDIAN HEALTH AND BEAUTY SDN BHD / 18/05/18 / 2.28
+   text: Guardian Health And Beauty Son Bhd ⏎ Handar  Baru Kawang ⏎ No 15 Jalan Bandar Kawang 10 ⏎ Handar Baru Kawang ⏎ lel:05-60952052- ⏎ Company Keg #/101085-1 ⏎ 6S1 Keg #0008998/4816 ⏎ KM ⏎ 121062680 100 PLUS 500ML  2.28 8 ⏎ SUBIDIAL  2.28 ⏎ IUIAL (bSI INUL)  2.28 ⏎ LASH  5.00 ⏎ RUUNDING ADUUSIMENIS  0.02 ⏎ CHANGE DUE  0.70 ⏎ b5I - Kate —-b5l ExcI - 651 Amt ⏎ 6%  2.15 0.15 ⏎ Thank You For Shopping ⏎ At buardian ⏎ ALL Amounts Are In KM ⏎ Goods sold are non-retundable. ⏎ Dispensed medicines sold are ⏎ not returnable. ⏎ ALl exchanges and returns including ⏎ buardian brand products must be made ⏎ within /days with original receipts and ⏎ product in original condition. ⏎ St:8282 Ctr2 ID:2055 laxInv:21T// ⏎ 17:45  18/05/18
+425	1.00	1	1	| UNIHAKKA INTERNATIONAL SDN BHD / 30/05/2018 / 8.70	| UNIHAKKA INTERNATIONAL SDN BHD / 30 MAY 2018 / $8.70
+430	1.00	1	1	| UNIHAKKA INTERNATIONAL SDN BHD / 07/05/2018 / 8.70	| UNIHAKKA INTERNATIONAL SDN BHD / 07 MAY 2018 / $8.70
+435	0.50	1	1	| VERBENA CONFECTIUNERY SDN BHD / 12/05/2018 / 75.70	| VERBENA CONFECTIONERY SDN BHD / 12/05/2018 / 75.70
+   text: A0S07S ⏎ VERBENA CONFECTIUNERY SDN BHD ⏎ （774288-V） ⏎ 1, Jalan Sutera Tanjung 8/4, ⏎ Tmn Sutera Utama, 81300 Skudai, JB. ⏎ Tel : 607-556 1878 ⏎ GST NO : 001837056000 ⏎ 12/05/2018 15:16  B656954 ⏎ Qty  Descriptions  Amount ⏎ 2  8" PANDAN KAYA CAKE  55.00 T ⏎ HOTDOG BUN  5.60 T ⏎ 12r  OTA BOAT  3.50 ⏎ SPICY CHICKEN FLOSS  5.80 T ⏎ DIRTY BREAD  5.80T ⏎ TOTAL  75.70 ⏎ CASH  100.00 ⏎ CHANGE  24.30 ⏎ PRICES INCLUSIVE 6% GST ⏎ Thank you. ⏎ Please  come again. ⏎ GST Summary  amount  Tax ⏎ T:6% GST  71.42  4.28 ⏎ Z:Zero Rated  0.00  0.00 ⏎ 1. Goods sold are not refundable or ⏎ exchangeable. ⏎ 2. Our products contain no added ⏎ preservatives, please keep in fridg ⏎ Time: 15:16:11 ⏎ Csh: 109  POS: T002 Shf:201805121
+440	0.50	0	0	| DOMINO'S PIZZA / 05/08/2018 / 15.60	| DOMINO'S PIZZA TAMAN UNIVERSITI / 08/05/18 / 6.70
+   text: TAX INVOICE  AO143 ⏎ DOMINO'S PIZZA ⏎ GET REE NO : 00189425/240 ⏎ DOMINO'S PIZZA TAMAN UNIVERSITI ⏎ 30, Jln Kebudayaan 7, Imn Universiti ⏎ 81300 Skudai, Johor ⏎ CARRI OUT HOW  Pay By: CASH ⏎ OLCEK  ：1131  By  : WEB_30503 ⏎ Order Time: 10:52:09  Date: 08/05/18 ⏎ Name: MS JOAN WONG ⏎ Pickup Time: 11:07:09 ⏎ Sty Menu  ESC  upon Disa ⏎ WTUELA-I  15.60 ⏎ 8.90 15.60 ⏎ Toral icens ⏎ Sub-Total  15.60 ⏎ Coupon Discount ⏎ Grand Iota:  6.70 ⏎ Payment  50.00 ⏎ Change Due  43.30 ⏎ SUPPORT OUR SMILE CIMPAIGN: ⏎ Did we smile at you? ⏎ www.dominos.com.my/snile and ⏎ receive a 30% off side item e-coupon ⏎ ubon survey submission ⏎ Survey Code: WBE080740082052 ⏎ Thank you for visiting Dominot ⏎ Please Come Again! ⏎ - 300 - 888-333 ⏎ Ta ya comelient to the PDPA 201L ⏎ Visit www.dominos. my/terns ⏎ to view our Personal data ⏎ Dommal Food
+445	1.00	1	1	| MR. D.I.Y. (M) SDN BHD / 19/04/2018 / 34.80	| MR. D.I.Y. (M) SDN BHD / 19-04-18 / RM 34.80
+450	1.00	1	1	| MR. D.I.Y. (M) SDN BHD / 28/04/2018 / 53.20	| MR. D.I.Y. (M) SDN BHD / 28-04-18 / 53.20
+455	1.00	1	1	| ENW Hardware Centre (M) Sdn. Bhd. / 14/04/2018 / 156.00	| ENW HARDWARE CENTRE (M) SDN. BHD. / 14/04/2018 / 156.00
+460	0.00	1	1	| AMPHAWA THAI TEA & CO. / 11/05/2018 / 9.45	| DIMILIKI OLEH T PLUS F&B SDN. BHD. / 11/05/2018 / 9.45
+   text: A0514 ⏎ AMPHAWA THAI TEA & CO. ⏎ Dimiliki oleh T PLUS F&B SDN. BHD. ⏎ （1219716-T） ⏎ PARADIGM MALL ⏎ LOT NO.: 4F-27 & 4FK-38, 4TH FLOOR ⏎ TEL: TELEPHONE  FAX: FAX ⏎ GST ID : 000707211264 ⏎ TAX INVOICE ⏎ Order No  197  UFO ⏎ Receipt #:  CSPD029197 ⏎ TAKE AWAY  Date:  11/05/2018 ⏎ Cashier:  MARIBEL  Time:  15:23:00 ⏎ Description  Qty Price  Amt Tax ⏎ MÕ3. THAI MILK TEA - CHA  8.90  8.90  SR ⏎ YEN ⏎ Total: ⏎ Total Sales (Excluding GST) :  8.90 ⏎ Discount:  0.00 ⏎ Service Charge  0.00 ⏎ Total GST :  0.53 ⏎ Rounding :  0.02 ⏎ Total Sales (Inclusive of GST)  9.45 ⏎ CASH  10.00 ⏎ CHANGE  0.55 ⏎ GST SUMMARY ⏎ Tax Code  % Amt (RM) ⏎ SR  8.90 ⏎ 8.90  0.53 ⏎ ndicated this tax code belong to service ⏎ GOODS SOLD ARE NOT RETURNABLE, THANK YOU.
+465	1.00	1	0	| WARAKUYA PERMAS CITY SDN BHD / 07/05/2018 / 24.10	| WARAKUYA PERMAS CITY SDN BHD / 07/05/2018 / 24.40
+   text: A05/2 ⏎ WARAKUYA PERMAS CITY SDN BHD ⏎ Reg No: 1203194W ⏎ JALAN PERMAS UTARA 1, ⏎ PERMAS JAYA 81750 MASAI JOHOR ⏎ Tel : 0111-558 0000 ⏎ GST ID: 0016 6993 5104 ⏎ TAX INVOICE NO  47 ⏎ Date: 07/05/2018 5:42:46 PM PAX NO: 1  66346 ⏎ Cashier: c002 ⏎ Waiter: ALICE ⏎ Qty Code/Desc  Total RM ⏎ BUTA SHOGA YAKI SET  19.90 ⏎ ICED GREEN TEA  1.00 ⏎ Serv Charge 10%  2.09 ⏎ GST @ 6%  138 ⏎ Rounding Adi :  003 ⏎ Total Amount :  24.10 ⏎ TOTAL:  RM 24.40 ⏎ Type 2  Qty: 2 ⏎ CASH  30.40 ⏎ Change RM: 6.00- ⏎ GST Summary  Amount RM  TAX RM ⏎ SR 6%  22.99  1.38 ⏎ . Thank Vni ! Pleaso Come Again ! ..
+470	1.00	1	1	| SANYU STATIONERY SHOP / 05/09/2017 / 14.90	| SANYU STATIONERY SHOP / 05/09/2017 / 14.90
+475	1.00	1	1	| SANYU STATIONERY SHOP / 04/04/2017 / 14.90	| SANYU STATIONERY SHOP / 04/04/2017 / 14.90
+480	1.00	1	1	| SANYU STATIONERY SHOP / 14/12/2017 / 36.00	| SANYU STATIONERY SHOP / 14/12/2017 / 36.00
+485	1.00	1	1	| SANYU STATIONERY SHOP / 20/09/2017 / 12.00	| SANYU STATIONERY SHOP / 20/09/2017 / 12.00
+490	1.00	1	1	| SANYU STATIONERY SHOP / 06/11/2017 / 8.70	| SANYU STATIONERY SHOP / 06/11/2017 / 8.70
+495	1.00	1	1	| SANYU STATIONERY SHOP / 15/07/2017 / 8.70	| SANYU STATIONERY SHOP / 15/07/2017 / 8.70
+500	1.00	1	1	| SANYU STATIONERY SHOP / 02/12/2017 / 8.70	| SANYU STATIONERY SHOP / 02/12/2017 / 8.70
+505	0.17	0	1	| ENTERPRISE / — / 4.00	| AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD / 13/07/2017 / 4.00
+   text: AIK HUAT HARBUARE ⏎ ENTERPRISE  (SETIA ⏎ ALAM 1822131-4  SIN ⏎ JALAN SEILA INMAN ⏎ GST NO: 000394529768 ⏎ SIMPLIFTED TAX INVOICE ⏎ CASH ⏎ RECEIPT #: CSP0397224 DATE: 13707/2017 ⏎ SALESPERSOM : AH002  TIME: 08:13:00 ⏎ ITEM  eTY  U/P  AMDUNT ⏎ 4060150000005  1  (P36  4.003 ⏎ 15AMP UMS PLUG TOP (STRIM) ⏎ TOTAL QUANTITY  1 ⏎ SUB-TOTAL (GST)  4.00 ⏎ DISC  0.00 ⏎ ROUNDING  0.08 ⏎ TOTAL  4x公0 ⏎ CASH  20.00 ⏎ CHANGE  16.00 ⏎ *GST @ 6% INCLBOED IN TOTAL ⏎ GST SUMMARY ⏎ CODE  AMGUN G  TAX/AMT ⏎ SR  3.77  6  0.23 ⏎ TAX TOTAL:  0.23 ⏎ OOODS SOLD ARE NOT REPUNDABLE, ⏎ THANK YOU ROR CHOOSING US. ⏎ FLS PROVIDE ORTOINAL BILL FOR 030DS ⏎ EXCHANGE WITHIN 1 WEBE FROE IRANSACTION ⏎ COODS HUST BE IN ORIGINAL SIATE TO BE ⏎ ENTITLED ROR EXCHANGE
+510	0.17	1	0	| ENTERPRISE ISETLA / 13/12/2017 / 24.80	| AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD / 13/12/2017 / 24.00
+   text: AIK  HUAT HARDWARE ⏎ ENTERPRISE ISETLA ⏎ ALAM)  SUN  BHD ⏎ 922737-X ⏎ TEL. 65 I EAS FAR. 19. 14862608  NO. 17-G,_ JALAN SETIA INDAR ⏎ GST NO: 000394528763 ⏎ SLMPLIFIED TAX INVOICE ⏎ CASH ⏎ RECEIPT #: CSP0420207 DATE: 13/12/2017 ⏎ SALESPERSON : AH019  TIME: 17:58:00 ⏎ ITEM  OTY  U/P AMOUNT ⏎ (RM)  (RM) ⏎ PHILIPS 19W/E27/827 ESSENTIAL BULB W/WHI  8710163220987  12.00  24.00 S ⏎ TOTAL QUANTITY  2 ⏎ SUB-TOTAL (GST)  24.80 ⏎ DISC  U.00 ⏎ ROUNDING  0.00 ⏎ TOTAL  24.00 ⏎ CASH  100.00 ⏎ CHANGE  76.00 ⏎ *GST @ 6% INCLUDED IN TOTAL ⏎ GST SUMMARY ⏎ CODE  AMOUNT  %  TAX/ANT ⏎ SR  22.64  6  1.36 ⏎ TAX TOTAL:  1.36 ⏎ GOODS SOLD ARE NOT REFUNDABLE; ⏎ THANK YOU FOR CHOOSING US. ⏎ FLS PROVIDE ORIGINAL BILL FOR GOODS ⏎ EXCHANGE MITHIN 1 WEEK FROM TRANSACTION ⏎ GOODS HUST BE IN ORIGINAL STATE TO BE ⏎ ENTITLED POR EXCHANGE.
+515	0.33	1	1	| ENTERPRISE (SETIA / 04/09/2017 / 28.00	| AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD / 04/09/2017 / 28.00
+   text: TUKAR KEPALA ⏎ GAS !!! DAPUR ⏎ AIK HUAT HARIMARI ⏎ ENTERPRISE (SETIA ⏎ ALAM) SIN BHU ⏎ 822737-X ⏎ NO. 17-G, JALAN SETIA INDAH ⏎ (X) U13/X, ⏎ GST NO: 000394528768 ⏎ SIMPLIFIED TAX INVOIDE ⏎ CASH ⏎ RECEIPT #: CSP0404314 DATE: 04/09/2017 ⏎ SALESPERSON : AH019  TIME: 12:01:00 ⏎ ITEM  OTY  U/P  AMOUNT ⏎ 28.02  (RA: ⏎ 9555019100268  1  28.00 5 ⏎ MILUX M268 GAS REGULATOR H/D ⏎ TOTAL QUANTITY ⏎ SUB-TOTAL (GST)  28.00 ⏎ DISC  0.00 ⏎ ROUNDING  0.00 ⏎ TOTAL  2B.40 ⏎ CASH  40.00 ⏎ CHANGE  12.00 ⏎ *GST 0 8% INCLUDED IN TOTAL ⏎ GST SUMMARY ⏎ CODE  AMOUNT  TAX/ANT ⏎ SR-  26.42  6  1.58 ⏎ TAX TOTAL:  1.58 ⏎ 0OODS SOLD ARE NOT REPUNUABLE, ⏎ THANE YOU FOR CHOOSING US ⏎ PLS FROVIDE ORIGINAL BILL FOR GOODS ⏎ EXCHANGE RITAIN I MEER FROM IRANSACTION ⏎ GOODS MUST BE IN ORIPINN GIATE TO RE ⏎ ENTITLED FOR ENCHANCE
+520	1.00	1	1	| UNIHAKKA INTERNATIONAL SDN BHD / 04/06/2018 / 7.70	| UNIHAKKA INTERNATIONAL SDN BHD / 04 JUN 2018 / RM7.70
+525	1.00	1	0	| AEON CO. (M) BHD (126928-H) / 10/06/2018 / 127.37	| AEON CO. (M) BHD / 10/06/2018 / 127.35
+   text: AEON CO. (M) BHD (126928-H)  106024 ⏎ 3RD FLR, AEON TAMAN MALURI SC ⏎ JLN JEJAKA, TAMAN MALURI ⏎ CHERAS, 55100 KUALA LUMPUR ⏎ GST ID : 002017394688 ⏎ SHOPPING HOURS ⏎ SUN-THU: 1000 HRS - 2230 HRS ⏎ FRI-SAT: 1000 HRS - 2300 HRS ⏎ Tx 000001038556  15,56SR ⏎ CHEK HUP 2INI ⏎ Item promo @12.99  -2.57 ⏎ 1x 000006429720  10.28SR ⏎ MS SWM ENZO RT •  18.50SR ⏎ 1x 000005457342 ⏎ VALENCIA ORANGE ⏎ 1x 000000812627  10.00SR ⏎ US RED GLOBE  10.50SR ⏎ 1x 000006454333 ⏎ CN PEAR ⏎ 1x 000004023432  14.00SR ⏎ CHN FUJI AP 4S ⏎ 1x 000008626349  10.90SR ⏎ AUS SEEKA KIWI ⏎ Item promo @9.00  -1.90 ⏎ Tx 000007773877  7.90SR ⏎ CHILE ANGELENO ⏎ 1x 000000388658  2.50SR ⏎ CUT FRUITS 1.99 ⏎ 1x 000004291022  4.80SR ⏎ CHERRY SUNGOLD ⏎ 1x 000007802317  18.90SR ⏎ TURKEY CHERRY 2 ⏎ Item promo @11.90  -7.00 ⏎ 1x 000000135412  15. 00SR ⏎ SUSHI SET-PTC ⏎ Sub-total  127.37 ⏎ Total Sales Incl GST  127.37 ⏎ Rounding Adj  -0.02 ⏎ Total After Adj Incl GST  127.35 ⏎ CASH  150.00
+530	0.50	1	1	| PASARAYA CINDA SDN BHD / 15/06/2018 / 14.20	| PASARAYA CINWA SDN BHD / 15/06/2018 / 14.20
+   text: A0605O ⏎ PASARAYA CINDA SDN BHD ⏎ NO.6, 8, 10& 12 JALAN PERMAS 4/3 ⏎ BANDAR BARU PERMAS JAYA, ⏎ 81750 JOHOR BAHRU,JOHOR. ⏎ TEL: 07-3881722 FAX: 07-3873971 ⏎ GST ID: 000931172352 ⏎ TAX INVOICE ⏎ LOC NO  CS01076695  Date: 15/06/2018 ⏎ Cashier  : JULIANA  Time: 09:40:00 ⏎ Salesperson  JULIANA  Ref.: ⏎ (GST)  (GST) ⏎ Item  aty SiPrice.  S/Price  Amount  Tax ⏎ 955782104250(  2.50  2.50  2.50 SRO ⏎ YELLOW ROCK SUGAR 250G ⏎ 2200056  2.80  2.80  2,80 SRO ⏎ GREEN BEAN  280G ⏎ 8.90  8.90  8.90 SRO ⏎ ROYAL UMBRELLA BERAS WANGI 1KG ⏎ Total Qly:  14.20 ⏎ Total Sales (Excluding GST) :  14.20 ⏎ Discount  0.00 ⏎ Total GST  0.00 ⏎ Rounding :  0.00 ⏎ Total Sales (Inclusive of GST) :  14.20 ⏎ CASH:  20.20 ⏎ Change  6.00 ⏎ GST SUMMARY ⏎ Tax Code  Amt (RM)  Tax (RM) ⏎ SRO  14.20 ⏎ Total:  14.20  0.00 ⏎ GOODS SOLD ARE NOT RETURNABLE, THANK YOU ⏎ **RE-PRINT **
+535	1.00	1	0	| UNIHAKKA INTERNATIONAL SDN BHD / 16/06/2018 / 7.72	| UNIHAKKA INTERNATIONAL SDN BHD / 16 JUN 2018 / RM7.70
+   text: Aobofl ⏎ UNIHAKKA INTERNATIONAL SDN BHD  16 Jun 2018 18:25 ⏎ 2987248- ⏎ 12, Jalan Tampoi 7/4.Kawasan Perindustrian ⏎ Tampoi.81200 Johor Bahru.Johol ⏎ TAX INVOICE ⏎ Invoice # : OR18061602170510 ⏎ Total ⏎ Qtv ⏎ SR 100100000035- 1 Meat + 3 Vege ⏎ RM6.69  PM6 6O ⏎ SR I00100000015- Vegetable ⏎ DM103  RM1.03 ⏎ Total Amount: RM7.72 ⏎ eST 00 RM0.00 ⏎ Rounding: -RM0.02 ⏎ Not Total: RM7.70 ⏎ Payment Mode  DRA7 70 ⏎ CASH ⏎ RM0.00 ⏎ Change ⏎ TawRM) ⏎ 0 00 ⏎ GST REG #000656195584 ⏎ BAR WANG RICE@PERMAS JAYA ⏎ Thank You & Come Again! ⏎ Like and Follow Us on Facebook! ⏎ Eacohonk com/BarWangRice
+540	1.00	0	1	| UNIHAKKA INTERNATIONAL SDN BHC / — / 8.50	| UNIHAKKA INTERNATIONAL SDN BHD / 22 JUN 2018 / RM8.50
+   text: UNIHAKKA INTERNATIONAL SDN BHC  A06103 ⏎ < Jun 201010:0 ⏎ （867388-U） ⏎ 12, Jalan Tampoi 7/4,Kawasan Perindustrian ⏎ Tampoi,81200 Johor Bahru,Johor ⏎ TAX INVOICE ⏎ Invoice# : OR18062202170372 ⏎ Item  Qty  Total ⏎ SR 100100000170- Imported Veggies ⏎ RM1.50  RM1.50 ⏎ SR 100100000031 - 3 Vege ⏎ RM4.15  RM4.15 ⏎ SR 10010000171-Meat Dish  RM2.83  RM2.83 ⏎ Total Amount: RM8.48 ⏎ GST @0%: RM0.00 ⏎ Rounding: RM0.02 ⏎ Nett Total: RM8.50 ⏎ Payment Mode  Amount ⏎ CASH  RM8.50 ⏎ Change  RM0.00 ⏎ GST Summary  Amount(RM)  Tax(RM) ⏎ SR = GST @0%  000 ⏎ GSTREG #000656195584 ⏎ BAR WANG RICE@PERMAS JAYA ⏎ Thank You & Come Again! ⏎ Like and Follow Us on Facebook! ⏎ Facebook.com/BarWangRice
+545	1.00	1	1	| RESTORAN WAN SHENG / 04/04/2018 / 7.80	| RESTORAN WAN SHENG / 04-04-2018 / 7.80
+550	1.00	1	1	| Gerbang Alaf Restaurants San Bhd / 11/05/2018 / 18.90	| GERBANG ALAF RESTAURANTS SDN BHD / 11/05/2018 / 18.90
+555	1.00	0	1	| MR. D.I.Y. (M) SDN BHD / 03/10/2026 / 69.20	| MR. D.I.Y. (M) SDN BHD / 03-05-18 / 69.20
+   text: MR. D.I.Y. (M) SDN BHD ⏎ (CO REG : 860871-D) ⏎ LOT 1851-A & 1851-B, JALAN KPB 6, ⏎ KAWASAN PERINDUSTRIAN BALAKONG, ⏎ 43300 SERI KEMBANGAN, SELANGOR ⏎ (GST ID No: 000306020352) ⏎ (MELAWATI MALL) ⏎ - TAX INVOICE- ⏎ ARTLINE WHITEBOARD MAKER PEN 500A (R *S ⏎ WA25 - 24/288 ⏎ 4974052854583  1 X 3.10  3.10 ⏎ ARTLINE WHITEBOARD MAKER PEN 500A (B  *S ⏎ WA26 - 24/288 ⏎ 4974052854569  1 X 3.10  3.10 ⏎ MAGNETIC WHITEBOARD LD001# 120*90CM  *S ⏎ HC07-08 - 6 ⏎ 9087397  1 X 63.00 63.00 ⏎ Item(s) : 3  Qty(s) : 3 ⏎ Total Incl. GST@6%  RM 69.20 ⏎ CASH  RM 69.20 ⏎ GST Summary  Amt (RM)  Tax (RM) ⏎ GST S@6%  65.28  3.92 ⏎ *-  --* ⏎ 03-05-18 14:12 SH02 ZJ94  T1 R000090406 ⏎ OPERATOR MLWC - SITI AISHAH ⏎ EXCHANGE ARE ALLOWED WITHIN ⏎ 7 DAYS WITH RECEIPT. ⏎ STRICTLY NO CASH REFUND.
+560	1.00	1	1	| RESTORAN WAN SHENG / 09/06/2018 / 4.80	| RESTORAN WAN SHENG / 09-06-2018 / 4.80
+565	1.00	1	1	| RESTORAN WAN SHENG / 01/06/2018 / 4.80	| RESTORAN WAN SHENG / 01-06-2018 / 4.80
+570	1.00	1	1	| RESTORAN WAN SHENG / 20/06/2018 / 9.60	| RESTORAN WAN SHENG / 20-06-2018 / 9.60
+575	0.00	1	1	| TAMAN BERKELEY / 05/05/2018 / 137.15	| 99 SPEED MART S/B / 05-05-18 / 137.15
+   text: 99 SPEED MART 5/B (519537-X) ⏎ LOT P.T. 2811, JALAN ANGSA, ⏎ TAMAN BERKELEY ⏎ *41150 KLANG, SELANGOR ⏎ 1237-TMN INDAH PERDANA ⏎ GST ID. NO : 000181747712 ⏎ INVOICE NO: 18388/103/T0126 ⏎ 05:23PM  568268  05-05-18 ⏎ 0715 KNORR CHICKEN STOCK 1K RM134.80 s ⏎ 28 X RM 16.85 ⏎ 8048 GARDENIA ENRICHED WHIT  RM2.35 z ⏎ Total Sales (Inclusive 65T) RM 137.15 ⏎ CASH RM 150,15 ⏎ CHANGE RM  13,00 ⏎ G5T Summary  Amount (RM)  Tax (RH) ⏎ S = 67  127.20  7,60 ⏎ 2 = 0%  2.35  ,00 ⏎ Thank You, Please come again ⏎ Keep the invoice for applicable returns
+580	1.00	0	1	| MR. D.I.Y. (KUCHAI) SDN BHD / 24/06/2027 / 17.45	| MR. D.I.Y. (KUCHAI) SDN BHD / 25-06-18 / 17.45
+   text: MR. D.I.Y. (KUCHAI) SDN BHD ⏎ *(CO Reg : 750441-W) ⏎ LOT 1851-A & 1851-B, JALAN KPB 6, ⏎ KAWASAN PERINDUSTRIAN BALAKONG, ⏎ 43300 SERI KEMBANGAN, SELANGOR ⏎ (GST ID No :000473792512) ⏎ (KEPONG) ⏎ - TAX INVOICE - ⏎ CYLINDRICAL LOCK 3871SS  *S ⏎ GA06-07 - 6/24 ⏎ 6942131718178  81 X 17.45 17.45 ⏎ Item (s) : 1  Qty(s) : 1 ⏎ Total Incl. GST  RM 17.45 ⏎ CASH  RM 50.00 ⏎ CHANGE  RM 32.55 ⏎ GST Summary  Amt (RM)  Tax (RM) ⏎ GST SR@0%  17.45  0.00 ⏎ *  一＊ ⏎ 25-06-18 11:25 SH01 B003  T1 R000637565 ⏎ OPERATOR KPOT - SHAHRUL NIZAM ⏎ EXCHANGE ARE ALLOWED WITHIN ⏎ 7 DAYS WITH RECEIPT. ⏎ STRICTLY NO CASH REFUND.
+585	1.00	1	1	| Sanjung Realiti Sdn. Bhd. (779763-K) / 27/06/2018 / 1.50	| SANJUNG REALITI SDN. BHD. / 27/06/18 / 1.50
+590	1.00	1	0	| OGN GROUP SDN BHD / 17/06/2018 / 28.31	| OGN GROUP SDN BHD / 17/06/2018 / 28.30
+   text: JIMART@SP3 ⏎ OGN GROUP SDN BHD ⏎ Roc: 1026984-X ⏎ No.29M, Jalan Dinar G U3/G, Seksyen U3, ⏎ Subang Perdana, 40150 Shah Alam ⏎ 013-336 3999 ⏎ GST Reg No: 002077622272 ⏎ TAXINVOICE ⏎ Invoice No  ：SP3-01-147902 ⏎ Date  : 17/06/2018 7:36:12 PM ⏎ Cashier  : Jimart ⏎ Descriptior  Qty  Price Amount ⏎ *SR 6001188379050  5  "3.68  18.40 ⏎ Kitchen Lighter 2015 ⏎ 2 SR 9555586101265  1  9.91  9.91 ⏎ Cotton White Mop 450 W.HDL ⏎ Total item Discount  0.00 ⏎ Total Sales Inclusive GST@ 0.00%  28.31 ⏎ Rounding Adjustment:  -0.01 ⏎ TOTAL:  28.30 ⏎ CASH  50.00 ⏎ Change:  21.70 ⏎ GST Summary %  Amount(RM)  Tax(RM) • ⏎ SR  0.00  28.31  *0.00 ⏎ i love jimart ⏎ GOODS SOLD ARE NOT RETURNABLE ⏎ Thank You. Please Come Again.
+595	1.00	1	0	| ONE ONE THREE SEAFOOD RESTAURANT SDN BHD / 28/04/2018 / 65.72	| ONE ONE THREE SEAFOOD RESTAURANT SDN BHD / 28-04-2018 / 65.70
+   text: ONE ONE THREE SEAFOOD RESTAURANT SDN BHD ⏎ (1120908-M) ⏎ NO.1, TAMAN SRI DENGKIL, JALAN AIR HITAM ⏎ 43600 DENGKIL, SELANGOR. ⏎ (GST Reg. No : 000670224384) ⏎ Tax  Invoice ⏎ Table  • 40 ⏎ B111#:V001-536988  Order#: 137088 ⏎ Date : 28-04-2018 20:10:51 ⏎ Cashier: 113 CASHIER  Pax (s) : 0 ⏎ Qty Description  Total TAX ⏎ D 20.00 SR ⏎ Chicken Item ⏎ 1  D 15.00 SR ⏎ Vege item ⏎ D 22.00 SR ⏎ Sausage Fried Rice (L) ⏎ 1  D 5.00 SR ⏎ Beverage ⏎ Total (Excluding GST) :  62.00 ⏎ GST Payabie:  3.72 ⏎ Total (Inclusive of GST):  65.72 ⏎ Rounding Adj  -0.02 ⏎ TOTAL:  65.70 ⏎ Closed: 1  28-04-2018  21:08:20 ⏎ Server: 113 CASHIER ⏎ CASH :  65.70 ⏎ GST Summary  Amount (RM)  Tax(RM) ⏎ SR  (@ 6%)  62.00  3.72 ⏎ **** Thank You **** ⏎ Please Come Again
+600	1.00	1	1	| MEGAH RETAIL SDN BHD / 09/05/2018 / 4.70	| MEGAH RETAIL SDN BHD / 09/05/2018 / 4.70
+605	1.00	1	1	| KEDAI PAPAN YEW CHUAN / 03/05/2018 / 178.08	| KEDAI PAPAN YEW CHUAN / 03/05/2018 / 178.08
+610	1.00	1	0	| GH DISTRIBUTOR & MARKETING SDN BHD / 20/06/2018 / 35.20	| GH DISTRIBUTOR & MARKETING SDN BHD / 20/06/2018 / 85.20
+   text: Mkn ⏎ GHEE HIANG ⏎ GH DISTRIBUTOR & MARKETING SDN BHD ⏎ (1097826-H) ⏎ 216, Macalister Road, 10400 Penang. ⏎ 10400 Penang. ⏎ ;Tel: 04-227 2222 ⏎ GST Reg.No.: 001315377152 ⏎ TAX INVOICE ⏎ Invoice No : 216_01/2104? ⏎ Date  : 20/06/2018 #1  12:53 PM ⏎ Cashier  : PART TIMERS 05 ⏎ PRN ON  : 20/06/2018 12:56 PM ⏎ QTY ITEM  RM ⏎ *** Retail/Takeaway *** ⏎ 4  TAU SAR PNEAH (S) 16PCS @9.00  36.00 SR ⏎ 2 DB TAU SAR PNEAH (S) 12PCS @7.60  15.20 SR ⏎ 2 ВЕН TEH SAN 8PCS @8.00  16.00 SR ⏎ 2 PHONG PNEAH 6PCS @9.00  18.00 SR ⏎ 10 SubTotal  85.20 ⏎ Net Total  35.20 ⏎ Cash  100.20 ⏎ CHANGE  15.00 ⏎ *** 20/06/2018 12:56 PM *** ⏎ ax Summar y  Amount  Tax ⏎ SR:GST @0%  85.20  0.00 ⏎ THANK YOH, PLEASE COME AGAIN ⏎ Goods Sold Are Non Refurdable
+615	1.00	1	0	| MR. D.I.Y. (M) SDN BHD / 15/07/2018 / 7.16	| MR. D.I.Y. (M) SDN BHD / 15-07-18 / 7.15
+   text: MR. D.I.Y. (M) SDN BHD ⏎ (CO.REG : 860671-D) ⏎ LOT 1851-A & 1851-B, JALAN KPB 6, ⏎ KAWASAN PERINDUSTRIAN BALAKONG, ⏎ 43300 SERI KEMBANGAN, SELANGOR ⏎ (GST ID No :000306020352) ⏎ (PUSAT PERNIAGAAN BUNGA RAYA, MANTIN)  -TAX INVOICE- ⏎ SPRAYER SX-260# 550ML  *S ⏎ HA06H001-3 - 70 ⏎ 9065940  4 X 1.79 7.16 ⏎ Item(s) : 1  Qty(s) : 4 ⏎ Total Incl. GST  RM 7.16 ⏎ ROUNDING ADJUSTMENT  -RM 0.01 ⏎ TOTAL ROUNDED  RM 7.15 ⏎ CASH  RM 20.20 ⏎ CHANGE  RM 13.05 ⏎ GST Summary  Amt(RM)  Tax (RM) ⏎ GST SR@0%  7.16  0.00 ⏎ *  -* ⏎ 15-07-18 10:35 SH01 ZI33  T2 R000010082 ⏎ OPERATOR TRAINEE CASHIER ⏎ EXCHANGE ARE ALLOWED WITHIN ⏎ 7 DAYS WITH RECEIPT. ⏎ STRICTLY NO CASH REFUND.
+620	1.00	1	1	| ONE ONE THREE SEAFOOD RESTAURANT SDN BHD / 17/06/2018 / 58.00	| ONE ONE THREE SEAFOOD RESTAURANT SDN BHD / 17-06-2018 / 58.00
+625	1.00	0	1	| LIAN HING STATIONERY SDN BHD / 27/03/2027 / 12.00	| LIAN HING STATIONERY SDN BHD / 27/03/2018 / 12.00
+   text: 3180303 ⏎ LIAN HING STATIONERY SDN BHD ⏎ (162761-M) ⏎ NO.32 & 33. JALAN SR 1/9, SEKSYEN 9, ⏎ TAMAN SERDANG RAYA, ⏎ 43300 SERI KEMBANGAN, SELANGOR ⏎ DARUL EHSAN ⏎ GSTID : 002139201536 ⏎ Tax Invoice ⏎ 27/03 2018  No : CS-20243 ⏎ Qty Tax  RM ⏎ F/Castell 187057-75 Tack-tt  2 SR  12.00 ⏎ 75g- White (new) (@) 5.6600 ⏎ Total Amt Incl. GST (ò 6% :  12.00 ⏎ Rounding Adjustment ⏎ Total Amt Payable :  12.00 ⏎ Paid Amount  20.00 ⏎ Change :  8.00 ⏎ Total Qty Tender :  2 ⏎ GST Summary  Amount  Tax ⏎ (RM)  (RM) ⏎ SR @ A  11.32  068 ⏎ Total  11.32  0.68 ⏎ THANK YOU ⏎ For anv enauirv. blease contact us:
+
+SCORE audio-tools n=11 0.091
+AUDIO TOOLS	clip	length	convert	compress	ringtone	trim+fade	2× speed	| problem
+0	5.9	0	1	1	0	1	| m4a failed; trim failed
+1	4.8	0	1	1	0	1	| m4a failed; trim failed
+2	12.5	0	1	1	0	1	| m4a failed; trim failed
+3	9.9	0	1	1	0	1	| m4a failed; trim failed
+4	29.4	0	1	1	0	1	| m4a failed; trim failed
+5	9.0	0	1	1	0	1	| m4a failed; trim failed
+6	5.6	0	1	1	0	1	| m4a failed; trim failed
+7	9.2	0	1	1	0	1	| m4a failed; trim failed
+8	5.1	0	1	1	0	1	| m4a failed; trim failed
+9	18.3	0	1	1	0	1	| m4a failed; trim failed
+join	10.7						| 
+
+SCORE cutout n=3 0.000
+CUT-OUT	photo	variant	background clear	person solid	| problem
+face-selfie-close.jpg	as taken	1	0	|  holes in the person
+face-selfie-close.jpg	farther away	1	0	|  holes in the person
+face-selfie-close.jpg	dim	1	0	|  holes in the person
+
+SCORE fitit n=26 0.962
+FIT IT	photo	target	got	long side	| problem
+board-farm-todo.png	100 KB	98 KB	500	| 
+board-farm-todo.png	500 KB	101 KB	500	| 
+board-in-out.jpg	100 KB	75 KB	600	| 
+board-in-out.jpg	500 KB	75 KB	600	| 
+board-people-week.jpg	100 KB	98 KB	701	| 
+board-people-week.jpg	500 KB	369 KB	1200	| 
+board-sticky-calendar.jpg	100 KB	98 KB	809	| 
+board-sticky-calendar.jpg	500 KB	492 KB	2056	| 
+face-selfie-close.jpg	100 KB	97 KB	921	| 
+face-selfie-close.jpg	500 KB	136 KB	967	| 
+menu-chinese-orange.jpg	100 KB	98 KB	515	| shrunk to 515 px — too small to read
+menu-chinese-orange.jpg	500 KB	487 KB	1478	| 
+menu-chinese-red.jpg	100 KB	98 KB	646	| 
+menu-chinese-red.jpg	500 KB	285 KB	1107	| 
+poster-speed-dating.jpg	100 KB	94 KB	636	| 
+poster-speed-dating.jpg	500 KB	113 KB	636	| 
+poster-upcoming-events.jpg	100 KB	97 KB	908	| 
+poster-upcoming-events.jpg	500 KB	392 KB	1600	| 
+receipt-east-repair-plain.png	100 KB	98 KB	1276	| 
+receipt-east-repair-plain.png	500 KB	363 KB	2868	| 
+receipt-east-repair-vintage.png	100 KB	98 KB	1068	| 
+receipt-east-repair-vintage.png	500 KB	492 KB	2868	| 
+receipt-quickbooks.png	100 KB	98 KB	1339	| 
+receipt-quickbooks.png	500 KB	337 KB	2868	| 
+receipt-xero.png	100 KB	98 KB	1332	| 
+receipt-xero.png	500 KB	342 KB	2868	| 
+
+SCORE passport n=30 0.000
+PASSPORT	photo	country	variant	head mm (limits)	eyes mm (limits)	background	size	score	| what failed
+face-selfie-close.jpg	us	as taken	—	—	plain	ok	88	| no face found in the finished photo
+face-selfie-close.jpg	us	tilted	—	—	plain	ok	88	| no face found in the finished photo
+face-selfie-close.jpg	us	dim	—	—	plain	ok	90	| no face found in the finished photo
+face-selfie-close.jpg	us	low-res	—	—	plain	ok	93	| no face found in the finished photo
+face-selfie-close.jpg	us	farther away	—	—	plain	ok	95	| no face found in the finished photo
+face-selfie-close.jpg	uk	as taken	—	—	plain	ok	93	| no face found in the finished photo
+face-selfie-close.jpg	uk	tilted	1582.2 (29–34)	—	plain	ok	80	| head 1582.2 mm; head still tilted 50°
+face-selfie-close.jpg	uk	dim	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	uk	low-res	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	uk	farther away	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	as taken	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	tilted	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	dim	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	low-res	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	farther away	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	as taken	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	tilted	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	dim	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	low-res	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	farther away	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca	as taken	—	—	plain	ok	45	| no face found in the finished photo
+face-selfie-close.jpg	ca	tilted	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca	dim	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca	low-res	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca	farther away	—	—	plain	ok	87	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	as taken	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	tilted	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	dim	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	low-res	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	farther away	—	—	plain	ok	92	| no face found in the finished photo
+
+SCORE pdf-tools n=24 0.500
+PDF TOOLS	file	pages	reorder	lock	shrink	searchable	| problem
+160F-2019.pdf	1	1	1	1	has text	| 
+annotation-tx2.pdf	1	1	1	1	failed	| no text layer added
+bug1175962.pdf	1	1	1	1	has text	| 
+bug1708041.pdf	6	1	1	1	has text	| 
+bug1871353.1.pdf	1	1	1	1	failed	| no text layer added
+bug1997343.pdf	2	0	1	1	has text	| reorder lost or mixed pages
+colorspace_atan.pdf	1	1	1	1	failed	| no text layer added
+highlights.pdf	14	1	1	1	has text	| 
+issue11144_reduced.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue1453.pdf	1	1	1	1	has text	| 
+issue15557.pdf	1	1	1	1	failed	| no text layer added
+issue19550.pdf	1	0	1	1	failed	| reorder lost or mixed pages; no text layer added
+issue2074.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue2537r.pdf	1	1	1	1	failed	| no text layer added
+issue5704.pdf	1	1	1	1	has text	| 
+issue6179_reduced.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue7020.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue7878.pdf	1	1	1	1	has text	| 
+javauninstall-7r.pdf	1	1	1	1	has text	| 
+multimedia_annotations.pdf	1	1	1	1	has text	| 
+pdfjs_wikipedia.pdf	1	1	1	1	has text	| 
+perf_paths_map.pdf	1	1	1	1	has text	| 
+perf_text_render_modes.pdf	1	1	1	1	has text	| 
+pr4922.pdf	2	0	1	1	has text	| reorder lost or mixed pages
+
+SCORE photo-flows n=28 0.964
+PHOTO FLOWS	flow	photo	| result
+under 2 MB	board-farm-todo.png	| 101 KB
+safe to share	board-farm-todo.png	| no location
+under 2 MB	board-in-out.jpg	| 75 KB
+safe to share	board-in-out.jpg	| no location
+under 2 MB	board-people-week.jpg	| 369 KB
+safe to share	board-people-week.jpg	| no location
+under 2 MB	board-sticky-calendar.jpg	| 946 KB
+safe to share	board-sticky-calendar.jpg	| no location
+under 2 MB	face-selfie-close.jpg	| 136 KB
+safe to share	face-selfie-close.jpg	| no location
+under 2 MB	menu-chinese-orange.jpg	| 624 KB
+safe to share	menu-chinese-orange.jpg	| no location
+under 2 MB	menu-chinese-red.jpg	| 285 KB
+safe to share	menu-chinese-red.jpg	| no location
+under 2 MB	poster-speed-dating.jpg	| 113 KB
+safe to share	poster-speed-dating.jpg	| no location
+under 2 MB	poster-upcoming-events.jpg	| 392 KB
+safe to share	poster-upcoming-events.jpg	| no location
+under 2 MB	receipt-east-repair-plain.png	| 363 KB
+safe to share	receipt-east-repair-plain.png	| no location
+under 2 MB	receipt-east-repair-vintage.png	| 552 KB
+safe to share	receipt-east-repair-vintage.png	| no location
+under 2 MB	receipt-quickbooks.png	| 337 KB
+safe to share	receipt-quickbooks.png	| no location
+under 2 MB	receipt-xero.png	| 342 KB
+safe to share	receipt-xero.png	| no location
+hide faces	face-selfie-close.jpg as taken	| 1 face(s) before, 0 after, 89 KB
+hide faces	face-selfie-close.jpg farther away	| 1 face(s) before, 1 after, 140 KB
+
+SCORE cord n=100 total=0.710 items=0.736
+CORD RECEIPTS	file	total	items	| read total / right total | missed items
+000	1	1/1	| 60000.0 / 60000 | 
+001	0	0/3	| — / 91000 | J.STB PROMO 17500, Y.B.BAT 46000, Y.BASO PROM 27500
+002	1	1/1	| 28000.0 / 28000 | 
+003	1	1/1	| 11000.0 / 11000 | 
+004	1	1/3	| 174600.0 / 174600 | ICE BLACKCOFFE 82000, CHIKEN KATSU FF 51000
+005	1	1/1	| 31000.0 / 31000 | 
+006	0	3/3	| 40000.0 / 46000 | 
+007	1	1/1	| 111000.0 / 111000 | 
+008	1	1/1	| 50000.0 / 50000 | 
+009	0	0/1	| — / — | Bumbu Kaldu Ayam 1 36000
+010	1	0/1	| 17000.0 / 17000 | CINNAMON SUGAR 17000
+011	1	1/1	| 230000.0 / 230000 | 
+012	1	0/0	| 120000.0 / 120000 | 
+013	1	2/2	| 51300.0 / 51300 | 
+014	1	5/6	| 281435.0 / 281435 | Chamomile 25000
+015	1	2/2	| 63000.0 / 63000 | 
+016	1	2/2	| 70000.0 / 70000 | 
+017	1	4/6	| 91.0 / 91000 | Plastik Amook 0, Plastik Putih Take Away 0
+018	0	0/1	| — / 156000 | Propolis Cair 156000
+019	0	0/2	| — / 176000 | AMBUSH DBL CHS 60000, AMBUSH CHS BUR 100000
+020	0	5/5	| 377059.0 / 377859 | 
+021	1	2/2	| 38000.0 / 38000 | 
+022	1	2/2	| 40000.0 / 40000 | 
+023	0	2/2	| 3000.0 / 63000 | 
+024	0	0/3	| — / 118000 | 5001-Corn Flakes Cookies 56000, 5003-Chokoreto Cookies 62000, 6002-Plastic Bag Medium 0
+025	1	3/3	| 43000.0 / 43000 | 
+026	1	2/2	| 138000.0 / 138000 | 
+027	1	2/2	| 61600.0 / 61600 | 
+028	1	3/3	| 426195.0 / 426195 | 
+029	0	6/6	| 132636.0 / 145900 | 
+030	1	1/1	| 31500.0 / 31500 | 
+031	1	2/2	| 113886.0 / 113886 | 
+032	1	1/1	| 24000.0 / 24000 | 
+033	1	3/3	| 148127.0 / 148127 | 
+034	0	2/2	| 65000.0 / 93500 | 
+035	1	4/4	| 54000.0 / 54000 | 
+036	0	1/1	| 120000.0 / 40000 | 
+037	0	1/1	| 20000.0 / — | 
+038	1	9/9	| 664329.0 / 664329 | 
+039	0	3/3	| 7013807.0 / — | 
+040	0	0/2	| — / 68000 | Snack Lestari All 54000, Bakery Aneka Sisir Banana,Pizza,yoko,Mar mer,Daging,abon,keju,cokelat,dll 14000
+041	1	10/10	| 365000.0 / 36500000 | 
+042	1	1/1	| 16500.0 / 16500 | 
+043	1	1/1	| 165000.0 / 16500000 | 
+044	1	1/1	| 30000.0 / 30000 | 
+045	1	4/4	| 88000.0 / 88000 | 
+046	1	2/2	| 40000.0 / 40000 | 
+047	1	2/3	| 63000.0 / 6300000 | PLASTIC BAG RED CENTRAL SI 0
+048	1	1/1	| 25000.0 / 25000 | 
+049	1	2/2	| 23000.0 / 23000 | 
+050	1	1/1	| 19500.0 / 19500 | 
+051	1	4/4	| 334000.0 / 334000 | 
+052	1	2/2	| 40000.0 / 40000 | 
+053	1	2/3	| 123585.0 / 123585 | Pecel Komplit + Nasi 42000
+054	1	1/1	| 10000.0 / 10000 | 
+055	1	1/2	| 54000.0 / 54000 | ROYAL CHEESE TART 32000
+056	0	0/1	| 8181.0 / 8999 | AIR MINERAL 8181
+057	0	2/2	| 42000.0 / — | 
+058	1	1/1	| 60500.0 / 60500 | 
+059	1	9/9	| 680500.0 / 680500 | 
+060	1	0/2	| 26250.0 / 26250 | Topping Milo Sparkle (untuk 1 Po rsi) 1250, Bola Ubi Mini Original (14 Pcs ) 25000
+061	1	3/6	| 24500.0 / 24500 | MIKA SEDANG 0, PLASTIK KECIL 0, TEH KOTAK 5000
+062	0	1/2	| 20000.0 / 48000 | Combo 2 30000
+063	1	2/2	| 57000.0 / 57000 | 
+064	1	1/1	| 16000.0 / 16000 | 
+065	1	1/1	| 13000.0 / 13000 | 
+066	1	1/2	| 40000.0 / 40000 | PLASTIK 25 0
+067	1	1/1	| 9500.0 / 950000 | 
+068	0	1/1	| 50000.0 / 20000 | 
+069	0	3/3	| 14000.0 / 74000 | 
+070	0	8/8	| 1343000.0 / 1565938 | 
+071	0	0/1	| — / 198000 | Cuka Apel Tetes 198000
+072	0	1/1	| 15909.0 / 17500 | 
+073	1	0/2	| 22000.0 / 22000 | 1001-Choco Bun 22000, 6001-Plastic Bag Small 0
+074	0	4/4	| 856240.0 / 330264 | 
+075	1	6/6	| 282000.0 / 282000 | 
+076	0	0/4	| — / — | BASO TAHU 46000, NASI PUTIH 6000, BASO TAHU 46000, NASI PUTIH 12000
+077	1	0/1	| 17000.0 / 17000 | TRIPPLE CHEESE 17000
+078	1	0/1	| 30000.0 / 30000 | Lemon Tea (L) 25000
+079	0	1/2	| 44000.0 / 22000 | 6001-Plastic Bag Small 0
+080	1	1/1	| 25000.0 / 25000 | 
+081	1	0/3	| 50000.0 / 50000 | 3002-Kyoto Choco Mochi 28000, 1001-Choco Bun 22000, 6001-Plastic Bag Small 0
+082	1	3/3	| 385000.0 / 385000 | 
+083	1	1/1	| 23000.0 / 23000 | 
+084	1	0/2	| 39600.0 / 39600 | Kroket 12000, Arem Arem 24000
+085	1	7/11	| 197450.0 / 197450 | Nasi Putih 30000, Sambal Gabus Asin Cb 18000, Telur Dadar 10000, Es Batu 4000
+086	1	1/2	| 22000.0 / 22000 | Mamamia 12500
+087	1	1/1	| 40150.0 / 40150 | 
+088	1	0/2	| 47000.0 / 47000 | STIX ECLAIRS 19000, ALMOND CREAM CHEESE 28000
+089	0	1/1	| 120000.0 / 40000 | 
+090	1	1/1	| 29500.0 / 29500 | 
+091	0	1/2	| 44000.0 / 21000 | GORENGAN 6000
+092	1	0/1	| 240000.0 / 240000 | - TICKET CP 240000
+093	1	0/1	| 17999.0 / 17999 | THAI ICED TEA (L) 16363
+094	1	0/4	| 140063.0 / 140063 | TAHU GORENG 28000, CAKWE 17000, PHO TAI CHIN(R) 63000, TEA 11000
+095	1	2/2	| 61799.0 / 61799 | 
+096	0	1/1	| 82000.0 / 41000 | 
+097	1	2/3	| 55000.0 / 55000 | PUYUH GO 6000
+098	0	2/3	| 639380.0 / 250690 | TRUFFLE CREAM 77000
+099	1	1/1	| 75000.0 / 75000 | 
+
+SCORE generated-cards n=144 0.750
+GENERATED CARDS	card	layout	trouble	name	title	company	phone	email	site	address	| read
+	0	0	clean	0	1	1	1	1	0	1	|  / Creative Director / STUDIO SALFORD Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	0	tilt	0	1	1	1	1	0	1	|  / Creative Director / STUDIO SALFORD Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	0	perspective	0	1	1	1	1	0	1	|  / Creative Director / STUDIO SALFORD Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	0	blur	0	1	1	1	1	0	1	|  / Creative Director / STUDIO SALFORD Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	0	glare	0	1	1	1	1	0	1	|  / Creative Director / STUDIO SALFORD Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	0	lowres	0	1	1	1	1	0	1	|  / Creative Director / STUDIO SALFORD Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	1	clean	1	1	1	1	1	0	0	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street
+	0	1	tilt	1	1	1	1	1	0	0	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street
+	0	1	perspective	1	1	1	1	1	0	0	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street
+	0	1	blur	1	1	1	1	1	0	0	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street
+	0	1	glare	1	1	1	1	1	0	0	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street
+	0	1	lowres	1	1	1	1	1	0	0	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street
+	0	2	clean	0	1	1	1	1	0	1	|  / Creative Director / Studio Salford Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	2	tilt	0	1	1	1	1	0	1	|  / Creative Director / Studio Salford Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	2	perspective	0	1	1	1	1	0	1	|  / Creative Director / Studio Salford Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	2	blur	0	1	1	1	1	0	1	|  / Creative Director / Studio Salford Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	2	glare	0	1	1	1	1	0	1	|  / Creative Director / Studio Salford Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	2	lowres	0	1	1	1	1	0	1	|  / Creative Director / Studio Salford Henrietta Mitchell / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / 12 Chapel Street, Salford M3 5JZ
+	0	3	clean	1	1	1	1	1	0	1	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / A 12 Chapel Street, Salford M3 5JZ
+	0	3	tilt	1	1	1	1	1	0	1	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / A 12 Chapel Street, Salford M3 5JZ
+	0	3	perspective	1	1	1	1	1	0	1	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / A 12 Chapel Street, Salford M3 5JZ
+	0	3	blur	1	1	1	1	1	0	1	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / A 12 Chapel Street, Salford M3 5JZ
+	0	3	glare	1	1	1	1	1	0	1	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / A 12 Chapel Street, Salford M3 5JZ
+	0	3	lowres	1	1	1	1	1	0	1	| Henrietta Mitchell / Creative Director / Studio Salford / +44 161 496 0732 / henrietta@studiosalford.co.uk / www.studiosalford.co / A 12 Chapel Street, Salford M3 5JZ
+	1	0	clean	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / BRIGHTLINE LOGISTICS PVT LTD Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	0	tilt	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / BRIGHTLINE LOGISTICS PVT LTD Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	0	perspective	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / BRIGHTLINE LOGISTICS PVT LTD Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	0	blur	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / BRIGHTLINE LOGISTICS PVT LTD Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	0	glare	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / BRIGHTLINE LOGISTICS PVT LTD Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	0	lowres	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / BRIGHTLINE LOGISTICS PVT LTD Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	1	clean	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	1	tilt	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	1	perspective	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	1	blur	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	1	glare	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	1	lowres	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	2	clean	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / Brightline Logistics Pvt Ltd Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	2	tilt	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / Brightline Logistics Pvt Ltd Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	2	perspective	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / Brightline Logistics Pvt Ltd Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	2	blur	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / Brightline Logistics Pvt Ltd Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	2	glare	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / Brightline Logistics Pvt Ltd Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	2	lowres	0	1	1	1	1	1	0	| 4th Floor, Nirlon Park, Mumbai 400063 / Senior Sales Manager / Brightline Logistics Pvt Ltd Rajesh Kumar / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	3	clean	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	3	tilt	0	1	1	1	1	1	0	| A 4th Floor, Nirlon Park, Mumbai 400063 / Rajesh Kumar  Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	3	perspective	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	3	blur	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	3	glare	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	1	3	lowres	1	1	1	1	1	1	0	| Rajesh Kumar / Senior Sales Manager / Brightline Logistics Pvt Ltd / +91 98201 45678 / rajesh.kumar@brightline.in / brightline.in / 
+	2	0	clean	0	1	1	1	1	0	0	| ortegavidal.es / Attorney at Law / ORTEGA & VIDAL ABOGADOS Ana Lucía Ortega / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	0	tilt	0	1	1	1	1	0	0	| ortegavidal.es / Attorney at Law / ORTEGA & VIDAL ABOGADOS Ana Lucía Ortega / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	0	perspective	0	1	1	1	1	0	0	| ortegavidal.es / Attorney at Law / ORTEGA & VIDAL ABOGADOS Ana Lucía Ortega / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	0	blur	0	1	1	1	1	0	0	| ortegavidal.es / Attorney at Law / ORTEGA & VIDAL ABOGADOS Ana Lucía Ortega / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	0	glare	0	1	1	1	1	0	0	| ortegavidal.es / Attorney at Law / ORTEGA & VIDAL ABOGADOS Ana Lucía Ortega / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	0	lowres	0	1	1	1	1	0	0	| ortegavidal.es / Attorney at Law / ORTEGA & VIDAL ABOGADOS Ana Lucía Ortega / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	1	clean	1	1	0	1	1	0	0	| Ana Lucía Ortega / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	1	tilt	1	1	0	1	1	0	0	| Ana Lucía Ortega / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	1	perspective	1	1	0	1	1	0	0	| Ana Lucía Ortega / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	1	blur	1	1	0	1	1	0	0	| Ana Lucía Ortega / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	1	glare	1	1	0	1	1	0	0	| Ana Lucía Ortega / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	1	lowres	1	1	0	1	1	0	0	| Ana Lucía Ortega / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	2	clean	0	1	0	1	1	0	0	| Ortega & Vidal Abogados / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	2	tilt	0	1	0	1	1	0	0	| Ortega & Vidal Abogados / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	2	perspective	0	1	0	1	1	0	0	| Ortega & Vidal Abogados / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	2	blur	0	1	0	1	1	0	0	| Ortega & Vidal Abogados / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	2	glare	0	1	0	1	1	0	0	| Ortega & Vidal Abogados / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	2	lowres	0	1	0	1	1	0	0	| Ortega & Vidal Abogados / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	3	clean	0	1	0	1	1	0	0	| W ortegavidal.es / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	3	tilt	0	0	0	1	1	0	0	| W ortegavidal.es /  / Ana Lucía Ortega  Attorney at Law / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	3	perspective	0	1	0	1	1	0	0	| W ortegavidal.es / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	3	blur	0	1	0	1	1	0	0	| W ortegavidal.es / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	3	glare	0	1	0	1	1	0	0	| W ortegavidal.es / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	2	3	lowres	0	1	0	1	1	0	0	| W ortegavidal.es / Attorney at Law /  / +34 912 345 678 / aortega@ortegavidal.es /  / 
+	3	0	clean	0	1	1	1	1	1	1	|  / Lead Engineer / NORTHWIND ROBOTICS INC. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	0	tilt	0	1	1	1	1	1	1	|  / Lead Engineer / NORTHWIND ROBOTICS INC. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	0	perspective	0	1	1	1	1	1	1	|  / Lead Engineer / NORTHWIND ROBOTICS INC. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	0	blur	0	1	1	1	1	1	1	|  / Lead Engineer / NORTHWIND ROBOTICS INC. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	0	glare	0	1	1	1	1	1	1	|  / Lead Engineer / NORTHWIND ROBOTICS INC. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	0	lowres	0	1	1	1	1	1	1	|  / Lead Engineer / NORTHWIND ROBOTICS INC. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	1	tilt	1	1	1	1	1	1	0	| Wei Zhang / Lead Engineer / Northwind Robotics Inc. / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300
+	3	2	clean	0	1	1	1	1	1	1	|  / Lead Engineer / Northwind Robotics Inc. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	2	tilt	0	1	1	1	1	1	1	|  / Lead Engineer / Northwind Robotics Inc. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	2	perspective	0	1	1	1	1	1	1	|  / Lead Engineer / Northwind Robotics Inc. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	2	blur	0	1	1	1	1	1	1	|  / Lead Engineer / Northwind Robotics Inc. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	2	glare	0	1	1	1	1	1	1	|  / Lead Engineer / Northwind Robotics Inc. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	2	lowres	0	1	1	1	1	1	1	|  / Lead Engineer / Northwind Robotics Inc. Wei Zhang / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / 500 Howard Street, Suite 300, San Francisco, CA 94105
+	3	3	tilt	0	1	1	1	1	1	1	|  / Wei Zhang  Lead Engineer / Northwind Robotics Inc. / (415) 555-0199 / wei@northwindrobotics.com / northwindrobotics.com / A 500 Howard Street, Suite 300, San Francisco, CA 94105
+	4	0	clean	0	1	1	1	1	1	1	|  / Realtor / PRAIRIE HOME REALTY Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	0	tilt	0	1	1	1	1	1	1	|  / Realtor / PRAIRIE HOME REALTY Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	0	perspective	0	1	1	1	1	1	1	|  / Realtor / PRAIRIE HOME REALTY Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	0	blur	0	1	1	1	1	1	1	|  / Realtor / PRAIRIE HOME REALTY Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	0	glare	0	1	1	1	1	1	1	|  / Realtor / PRAIRIE HOME REALTY Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	0	lowres	0	1	1	1	1	1	1	|  / Realtor / PRAIRIE HOME REALTY Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	1	tilt	1	1	1	1	1	1	0	| Olivia Brennan / Realtor / Prairie Home Realty / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave
+	4	2	clean	0	1	1	1	1	1	1	|  / Realtor / Prairie Home Realty Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	2	tilt	0	1	1	1	1	1	1	|  / Realtor / Prairie Home Realty Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	2	perspective	0	1	1	1	1	1	1	|  / Realtor / Prairie Home Realty Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	2	blur	0	1	1	1	1	1	1	|  / Realtor / Prairie Home Realty Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	2	glare	0	1	1	1	1	1	1	|  / Realtor / Prairie Home Realty Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	4	2	lowres	0	1	1	1	1	1	1	|  / Realtor / Prairie Home Realty Olivia Brennan / 630-555-0142 / olivia@prairiehome.com / www.prairiehome.com / 1520 Ogden Ave, Naperville, IL 60540
+	5	0	clean	0	0	1	1	1	0	1	| Dental Surgeon /  / BRIGHT SMILE CLINIC Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	0	tilt	0	0	1	1	1	0	1	| Dental Surgeon /  / BRIGHT SMILE CLINIC Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	0	perspective	0	0	1	1	1	0	1	| Dental Surgeon /  / BRIGHT SMILE CLINIC Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	0	blur	0	0	1	1	1	0	1	| Dental Surgeon /  / BRIGHT SMILE CLINIC Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	0	glare	0	0	1	1	1	0	1	| Dental Surgeon /  / BRIGHT SMILE CLINIC Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	0	lowres	0	0	1	1	1	0	1	| Dental Surgeon /  / BRIGHT SMILE CLINIC Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	1	clean	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way
+	5	1	tilt	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way
+	5	1	perspective	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way
+	5	1	blur	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way
+	5	1	glare	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way
+	5	1	lowres	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way
+	5	2	clean	0	0	1	1	1	0	1	| Dental Surgeon /  / Bright Smile Clinic Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	2	tilt	0	0	1	1	1	0	1	| Dental Surgeon /  / Bright Smile Clinic Dr. Samuel Okafor / +234803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	2	perspective	0	0	1	1	1	0	1	| Dental Surgeon /  / Bright Smile Clinic Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	2	blur	0	0	1	1	1	0	1	| Dental Surgeon /  / Bright Smile Clinic Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	2	glare	0	0	1	1	1	0	1	| Dental Surgeon /  / Bright Smile Clinic Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	2	lowres	0	0	1	1	1	0	1	| Dental Surgeon /  / Bright Smile Clinic Dr. Samuel Okafor / +234 803 555 0101 / s.okafor@brightsmile.ng /  / 12 Admiralty Way, Lekki, Lagos
+	5	3	clean	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / A 12 Admiralty Way, Lekki, Lagos
+	5	3	tilt	0	0	1	1	1	0	1	| W brightsmile.ng /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / A 12 Admiralty Way, Lekki, Lagos
+	5	3	perspective	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / A 12 Admiralty Way, Lekki, Lagos
+	5	3	blur	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / A 12 Admiralty Way, Lekki, Lagos
+	5	3	glare	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / A 12 Admiralty Way, Lekki, Lagos
+	5	3	lowres	1	0	1	1	1	0	1	| Dr. Samuel Okafor /  / Bright Smile Clinic / +234 803 555 0101 / s.okafor@brightsmile.ng /  / A 12 Admiralty Way, Lekki, Lagos
+
+SCORE generated-posters n=96 0.812
+GENERATED POSTERS	poster	style	trouble	title	date	time	place	| read
+	0	0	clean	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	0	tilt	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	0	perspective	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	0	blur	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	0	dim	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	0	lowres	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	1	clean	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	1	tilt	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	1	perspective	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	1	blur	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	1	dim	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	1	lowres	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	2	clean	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	2	tilt	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	2	perspective	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	2	blur	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	2	dim	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	2	lowres	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	3	clean	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	3	tilt	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	3	perspective	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	3	blur	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	3	dim	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	0	3	lowres	1	1	1	0	| Spring Book Fair / 2027-04-18 10:00:00 +0000 / 200 W Jefferson Ave
+	1	0	clean	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	0	tilt	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / Doors 7:30pm The Blue Room, 41 Canal St
+	1	0	perspective	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	0	blur	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	0	dim	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	0	lowres	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	1	clean	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	1	tilt	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / Doors 7:30pm The Blue Room, 41 Canal St
+	1	1	perspective	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	1	blur	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	1	dim	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	1	lowres	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	2	clean	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	2	tilt	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / Doors 7:30pm The Blue Room, 41 Canal St
+	1	2	perspective	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	2	blur	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	2	dim	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	2	lowres	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	3	clean	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	3	tilt	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / Doors 7:30pm The Blue Room, 41 Canal St
+	1	3	perspective	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	3	blur	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	3	dim	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	1	3	lowres	1	0	1	1	| Jazz Night / 2026-11-20 19:30:00 +0000 / The Blue Room 41 Canal St
+	2	0	clean	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	0	tilt	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	0	perspective	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	0	blur	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	0	dim	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	0	lowres	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	1	clean	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	1	tilt	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	1	perspective	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	1	blur	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	1	dim	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	1	lowres	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	2	clean	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	2	tilt	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	2	perspective	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	2	blur	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	2	dim	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	2	lowres	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	3	clean	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	3	tilt	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	3	perspective	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	3	blur	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	3	dim	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+	2	3	lowres	1	1	0	1	| Charity 5K Run / 2027-08-09 12:00:00 +0000 / Riverside Park Gate B
+
+SCORE handwriting n=120 characters=0.895
+HANDWRITING (IAM lines)	file	characters right	| read / written
+000	0.82	| assuredness assuredness "Bella Bella Marie" (Parlophone), a lively song that changes tempo mid-way. / assuredness " Bella Bella Marie " ( Parlophone ) , a lively song that changes tempo mid-way .
+008	0.83	| The yumbers include "Scothand the Brave? "Men of Harlech, / The numbers include " Scotland the Brave , " " Men of Harlech , "
+013	0.47	| (BBE , .(10.15 / ( B B C , 10.15 ) .
+014	0.70	| "He Nawara's baud," "larceysleeves" aud "English hose. is / " McNamara's Band , " " Greensleeves " and " English Rose . "
+019	0.81	| will be with fir hay welessly the fremier of the freder allon, / will be with Sir Roy Welensky the Premier of the Federation
+022	0.70	| sucess last right lu ITV's "Private Potter "his i9ا " / success last night in I T V's " Private Potter , " his
+023	0.78	| wan coulday be regended as a machive. / man could only be regarded as a machine .
+024	0.83	| date." ACTOR Tam Conteroy was an outstandiny / date . " ACTOR Tom Courtenay was an outstanding
+030	0.83	| craggy Lace, and distivate, baltled eyes. They stripped. / craggy face , and obstinate , baffled eyes . They stripped
+033	0.79	| hive of his ugle little dress, to leave kine for / him of his ugly battle-dress , to leave him for
+034	0.00	|  / vision .
+062	0.80	| plan and to He litterent public for which, , or against which, ll anhor doral. / plan and to the different public for which , or against which , the author wrote .
+063	0.81	| Ole thish. article excluded any allegorica. L intrpretation, of the boopd. / The third article excluded any allegorical interpretation of the Gospel .
+067	0.77	| could of ll chaos by plosing le Aragments, or shee eats, or pages, in araler. / could of the chaos by placing the fragments , or sheets , or pages , in order .
+068	0.78	| present stale of the loopal is the resull of an noridant-pone hisay. Ma / present state of the Gospel is the result of an accident-prone history . The
+069	0.62	| who was nal accilentally damaged. ho editor, who sas not the callor, much whal he / accidentally damaged . An editor , who was not the author , made what he
+070	0.76	| original ca corillen on a vall, on coolex, cahial fell into disorder or das / original was written on a roll , or codex , which fell into disorder or was
+088	0.80	| paragrapes workings were outted. C.t. Rolerts is ot / paragraphos markings were omitted . C. H. Roberts is of
+090	0.79	| some workings wald le used, Ough which, it is / some markings would be used , although which , it is
+091	0.74	| upassible to say / impossible to say .
+095	0.81	| is now wed to work a paragrap ending. Trequently / it is now used to mark a paragraph ending . Frequently
+105	0.00	|  / reference .
+114	0.85	| Hey ar in modern books / they are in modern books .
+117	0.82	| edesiastical circles. In luis Natural History, 13.11.12, / ecclesiastical circles . In his Natural History , 13 . 11-12 ,
+
+SCORE camera-trouble 0.652
+MY PHOTOS UNDER CAMERA TROUBLE	trouble	receipt totals	poster dates	menu dishes
+	tilt	2/4	2/2	0.59
+	perspective	3/4	1/2	0.72
+	blur	3/4	1/2	0.64
+	dim	3/4	1/2	0.85
+	glare	3/4	1/2	0.74
+	lowres	2/4	1/2	0.71
+	jpeg	3/4	1/2	0.71
+
