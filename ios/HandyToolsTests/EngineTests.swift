@@ -2627,16 +2627,19 @@ final class EngineTests: XCTestCase {
         XCTAssertNotNil(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: CMTimeSubtract(start, CMTime(value: 60, timescale: 600))))
         // Sound before the first frame is left out.
         XCTAssertFalse(rec.appendAudio(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: start)!), "no sound before the picture starts")
+        // Picture and sound arrive together, as they do from a camera and microphone.
+        var t = start
         for i in 0..<60 {
-            XCTAssertTrue(rec.appendVideo(frame(i), at: CMTimeAdd(start, CMTime(value: Int64(i * 20), timescale: 600))), "frame \(i)")
+            let ft = CMTimeAdd(start, CMTime(value: Int64(i * 20), timescale: 600))
+            XCTAssertTrue(rec.appendVideo(frame(i), at: ft), "frame \(i)")
+            let until = CMTimeAdd(ft, CMTime(value: 20, timescale: 600))
+            while CMTimeCompare(t, until) < 0 {
+                let buf = try XCTUnwrap(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: t))
+                rec.appendAudio(buf)
+                t = CMTimeAdd(t, CMTime(value: 1024, timescale: 44_100))
+            }
         }
         XCTAssertFalse(rec.appendVideo(frame(0), at: start), "a frame from the past is never written")
-        var t = start
-        while CMTimeCompare(t, CMTimeAdd(start, CMTime(seconds: 2, preferredTimescale: 600))) < 0 {
-            let buf = try XCTUnwrap(VideoRecorder.audioBuffer(frequency: 440, frames: 1024, at: t))
-            rec.appendAudio(buf)
-            t = CMTimeAdd(t, CMTime(value: 1024, timescale: 44_100))
-        }
         XCTAssertEqual(rec.frames, 60)
         XCTAssertGreaterThan(rec.audioBuffers, 70)
         XCTAssertEqual(rec.seconds, 59.0 / 30.0, accuracy: 0.01)

@@ -72,12 +72,25 @@ enum NumberReader {
         let found = all(in: text)
         guard !found.isEmpty else { return nil }
         let h = hint.trimmingCharacters(in: .whitespaces)
-        if !h.isEmpty, let r = text.range(of: h, options: [.caseInsensitive, .diacriticInsensitive]) {
+        if !h.isEmpty, let r = wholeWord(h, in: text) {
             let utf16At = NSRange(r, in: text).upperBound
             if let after = found.first(where: { $0.offset >= utf16At && $0.offset - utf16At < 120 }) { return after.value }
             if let before = found.last(where: { $0.offset < utf16At }) { return before.value }
         }
         return (found.first { $0.money } ?? found[0]).value
+    }
+
+    /// The hint as a word on its own ("Total", not the end of "Subtotal"); the first loose match if there's none.
+    static func wholeWord(_ h: String, in text: String) -> Range<String.Index>? {
+        var from = text.startIndex, loose: Range<String.Index>?
+        while let r = text.range(of: h, options: [.caseInsensitive, .diacriticInsensitive], range: from..<text.endIndex) {
+            if loose == nil { loose = r }
+            let before = r.lowerBound == text.startIndex ? nil : text[text.index(before: r.lowerBound)]
+            let after = r.upperBound == text.endIndex ? nil : text[r.upperBound]
+            if !(before?.isLetter ?? false), !(after?.isLetter ?? false) { return r }
+            from = r.upperBound
+        }
+        return loose
     }
 
     static func plain(_ v: Double) -> String {
