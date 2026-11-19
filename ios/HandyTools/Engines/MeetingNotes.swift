@@ -15,6 +15,19 @@ import NaturalLanguage
 /// Honesty: on-device transcription can hear *when* the talking pauses but cannot tell *whose* voice it is, so
 /// turns are numbered and time-stamped rather than labelled with invented speaker names.
 enum MeetingNotes {
+    /// To-dos as reminders: who it's for when a name leads it ("Sam to send the deck", "Priya will book the room"),
+    /// and when when it's said ("by Friday", "tomorrow").
+    @MainActor static func reminders(_ todos: [String], list: String, now: Date = Date()) -> [PlannerStore.Entry] {
+        todos.map { t in
+            let clean = t.trimmingCharacters(in: CharacterSet(charactersIn: "☐•-* ").union(.whitespaces))
+            var who: String?
+            if let r = clean.range(of: #"^([A-Z][a-z]+(?: [A-Z][a-z]+)?)\s+(to|will|should|needs to|must|is going to)\b"#, options: .regularExpression) {
+                who = clean[r].components(separatedBy: " ").prefix { $0.first?.isUppercase == true }.joined(separator: " ")
+            }
+            return PlannerStore.Entry(text: clean, list: list, due: Understand.due(in: clean, now: now), person: who, source: "Meeting notes")
+        }
+    }
+
 
     /// One timed word from the recogniser — the atom the turn-splitter groups.
     struct Timed { let text: String; let start: Double; let end: Double }

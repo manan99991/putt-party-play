@@ -15,6 +15,7 @@ struct MeetingNotesView: View {
     @State private var transcript = ""
     @State private var summary: [String] = []
     @State private var todos: [String] = []
+    @State private var remindersNote: String?
     @State private var turns: [MeetingNotes.Turn] = []
     @State private var people: [String] = []
     @State private var emailDraft = ""
@@ -94,6 +95,18 @@ struct MeetingNotesView: View {
             if hasResult {
                 if !summary.isEmpty { section(title: "Summary", systemImage: "list.bullet.clipboard", lines: summary.map { "• " + $0 }, shareText: "Summary\n" + summary.map { "• " + $0 }.joined(separator: "\n")) }
                 if !todos.isEmpty { section(title: "To-dos", systemImage: "checklist", lines: todos.map { "☐ " + $0 }, shareText: "To-dos\n" + todos.map { "☐ " + $0 }.joined(separator: "\n")) }
+                if !todos.isEmpty {
+                    Button {
+                        let entries = MeetingNotes.reminders(todos, list: "Meeting \(Date().formatted(date: .abbreviated, time: .omitted))")
+                        Task {
+                            let n = (try? await PlannerStore.toReminders(entries)) ?? -1
+                            remindersNote = n < 0 ? "Allow Reminders for Tenzy in Settings, then tap again." : "\(n) to-do\(n == 1 ? "" : "s") added to Reminders, with who and when where it was said."
+                            if n > 0 { HandyHaptics.success() }
+                        }
+                    } label: { Label(L("Put the to-dos in Reminders"), systemImage: "checklist").frame(maxWidth: .infinity) }.secondaryButton()
+                        .accessibilityIdentifier("meeting-reminders")
+                    if let remindersNote { Text(L(remindersNote)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
+                }
                 if !turns.isEmpty { turnsSection }
                 emailSection
                 transcriptSection

@@ -12,3 +12,14 @@ final class TuneGuideTests: XCTestCase {
         XCTAssertTrue(TuneGuide.words(.down(cents: 10)).contains("loosen"))
     }
 }
+
+final class MeetingRemindersTests: XCTestCase {
+    @MainActor func testWhoAndWhenComeWithEachToDo() {
+        let now = Calendar.current.date(from: DateComponents(year: 2026, month: 11, day: 19))!   // a Thursday
+        let r = MeetingNotes.reminders(["Sam to send the deck by Friday", "Priya Shah will book the room tomorrow", "update the budget"], list: "Meeting", now: now)
+        XCTAssertEqual(r.map(\.person), ["Sam", "Priya Shah", nil])
+        XCTAssertEqual(r[0].due.map { Calendar.current.component(.weekday, from: $0) }, 6, "Friday")
+        XCTAssertEqual(r[1].due.map { Calendar.current.component(.day, from: $0) }, 20, "tomorrow")
+        XCTAssertNil(r[2].due)
+    }
+}
