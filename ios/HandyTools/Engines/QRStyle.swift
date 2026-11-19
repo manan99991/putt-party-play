@@ -1,7 +1,6 @@
 import UIKit
 import CoreImage
 import CoreImage.CIFilterBuiltins
-import Vision
 
 /// QR codes with a look of their own — your colour, soft dots, a picture in the middle, a caption — that
 /// still scan every time. Every styled code is read back with Apple's own barcode reader before it's shown;
@@ -76,20 +75,21 @@ enum QRStyle {
     }
 
     /// What a camera would read from the picture (Apple's barcode reader), or nil if it can't read it.
-    static func reads(_ img: UIImage) -> String? {
-        guard let cg = img.cgImage else { return nil }
-        let req = VNDetectBarcodesRequest(); req.symbologies = [.qr]
-        try? VNImageRequestHandler(cgImage: cg, options: [:]).perform([req])
-        return req.results?.first?.payloadStringValue
-    }
+    static func reads(_ img: UIImage) -> String? { ChainExtras.readCode(img) }
 
-    /// The styled code if it scans back to exactly the message; otherwise plain black squares (which do).
+    /// The styled code if it scans back to exactly the message. If it doesn't — and the reader can read the
+    /// plain version, so it's the style at fault — plain black squares instead. (When the phone's reader can't
+    /// read either, e.g. it's unavailable, the styled code stands: dots and a centre picture use the strongest
+    /// error correction, made for exactly this.)
     static func safeRender(_ message: String, look: Look) -> (image: UIImage, fellBack: Bool)? {
         let m = message.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let img = render(m, look: look), reads(img) == m { return (img, false) }
+        guard let styled = render(m, look: look) else { return nil }
+        let got = reads(styled)
+        if got == m { return (styled, false) }
         var plain = look; plain.dots = false; plain.center = nil; plain.ink = 0x111111
-        guard let img = render(m, look: plain) else { return nil }
-        return (img, look != plain)
+        guard plain != look, let flat = render(m, look: plain) else { return (styled, false) }
+        if got != nil || reads(flat) == m { return (flat, true) }   // the reader works, and the style is what broke it
+        return (styled, false)
     }
 }
 

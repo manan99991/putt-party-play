@@ -11,7 +11,7 @@ enum RingtoneSmart {
         guard let tracks = try? await asset.loadTracks(withMediaType: .audio), !tracks.isEmpty,
               let dur = try? await asset.load(.duration), dur.seconds > 0,
               let reader = try? AVAssetReader(asset: asset) else { return nil }
-        let rate = 4000.0
+        let rate = 8000.0   // the lowest rate the reader accepts (8–192 kHz); plenty for loudness
         let out = AVAssetReaderAudioMixOutput(audioTracks: tracks, audioSettings: [
             AVFormatIDKey: kAudioFormatLinearPCM, AVLinearPCMBitDepthKey: 16, AVLinearPCMIsFloatKey: false,
             AVLinearPCMIsBigEndianKey: false, AVLinearPCMIsNonInterleaved: false, AVNumberOfChannelsKey: 1, AVSampleRateKey: rate])
