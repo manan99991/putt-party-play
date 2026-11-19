@@ -22,6 +22,10 @@ struct CleanerView: View {
     @State private var receivedOnly = false                // videos tab: only videos not recorded on this phone
     @State private var busy = false
     @State private var note: String?
+    @State private var extraRows: [PhotoCleaner.PlanRow] = []     // bursts, old screenshots, videos sent to you
+    @State private var planOff: Set<String> = []
+    @State private var freeBefore: Int64?
+    @State private var cleanedBytes: Int64 = 0
     // "Keep only my newest N screenshots" — starts at the number the screenshot alert watches for.
     @State private var keepN = Int(AlertStore.rule(.screenshots)?.limit ?? 100)
     @State private var keepCustom = ""
@@ -51,7 +55,7 @@ struct CleanerView: View {
     var body: some View {
         let footer: AnyView? = (authorized && !all.isEmpty && !isScanning) ? AnyView(actionBar) : nil
         return ToolPage(title: "Cleaner",
-                        subtitle: "See how much space you can free — duplicate copies cleared in one tap (keeping one of each), plus screenshots and big videos to review. iOS confirms every delete.",
+                        subtitle: "How much space you can free, biggest wins first — one tap clears it, keeping the best of every set. iPhone confirms every delete.",
                         footer: footer, working: busy) {
             HowTo("cleaner", [
                 "Open it and it finds the safe wins for you — duplicate copies you can clear in one tap.",
@@ -94,7 +98,7 @@ struct CleanerView: View {
                 if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
             }
         }
-        .onAppear { if authorized { CleanerIndex.shared.prewarm(); refreshForCat() } }
+        .onAppear { if authorized { CleanerIndex.shared.prewarm(); refreshForCat(); loadPlan() } }
         .onChange(of: index.duplicates) { _, _ in if cat == .duplicates { preselectDuplicateExtras() } }
     }
 
@@ -104,40 +108,87 @@ struct CleanerView: View {
     private var safeDupExtras: [PhotoCleaner.Item] { (index.duplicates ?? []).flatMap { $0.dropFirst() } }
     private var safeReclaim: Int64 { safeDupExtras.reduce(Int64(0)) { $0 + $1.bytes } }
 
+    /// Everything worth clearing, biggest first: duplicate copies (one of each kept), burst frames (the best kept),
+    /// screenshots older than a month, videos other people sent. Favourites are never in it.
+    private var planRows: [PhotoCleaner.PlanRow] {
+        PhotoCleaner.plan([PhotoCleaner.PlanRow(id: "dups", title: "Duplicate copies", why: "The best copy of each is kept", items: safeDupExtras.filter { !$0.asset.isFavorite })] + extraRows)
+    }
+    private var planIncluded: [PhotoCleaner.Item] { planRows.filter { !planOff.contains($0.id) }.flatMap(\.items) }
+    private var planBytes: Int64 { planIncluded.reduce(0) { $0 + $1.bytes } }
+
+    private func loadPlan() {
+        guard authorized else { return }
+        freeBefore = PhotoCleaner.freeBytes()
+        Task.detached(priority: .utility) {
+            let b = PhotoCleaner.bursts()
+            let old = PhotoCleaner.oldScreenshots()
+            let sent = PhotoCleaner.videos(receivedOnly: true)
+            let rows = [
+                PhotoCleaner.PlanRow(id: "bursts", title: "Extra burst shots", why: b.isEmpty ? "" : "Keeping one of each burst — \(b.first!.why)", items: b.flatMap(\.extras)),
+                PhotoCleaner.PlanRow(id: "oldshots", title: "Screenshots older than a month", why: "Favourites left alone", items: old),
+                PhotoCleaner.PlanRow(id: "sent", title: "Videos sent to you", why: "Saved or forwarded — not recorded on this phone", items: sent),
+            ]
+            await MainActor.run { extraRows = rows }
+        }
+    }
+
     @ViewBuilder private var cleanupHero: some View {
+        let rows = planRows
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            if index.scanning && safeDupExtras.isEmpty {
+            if let freeBefore {
+                Text("\(L("Free on your phone now:")) \(PhotoCleaner.format(freeBefore))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            if index.scanning && rows.isEmpty {
                 ToolProgressBar(label: "Finding space you can free…")
-            } else if safeDupExtras.isEmpty {
-                Label(L("No duplicate copies to clear — your library's already tidy."), systemImage: "checkmark.seal.fill")
+            } else if rows.isEmpty {
+                Label(L("Nothing safe to clear — your library's already tidy."), systemImage: "checkmark.seal.fill")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.success)
             } else {
-                Text("Free up about \(PhotoCleaner.format(safeReclaim))")
-                    .font(.system(size: 26, weight: .bold, design: .rounded))
-                Text("\(safeDupExtras.count) duplicate cop\(safeDupExtras.count == 1 ? "y" : "ies") — I'll keep the best one of each.")
-                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                Button { cleanSafeDuplicates() } label: {
+                Text("\(L("Free about")) \(PhotoCleaner.format(planBytes))").font(.system(size: 28, weight: .bold, design: .rounded))
+                    .accessibilityIdentifier("cleaner-plan-total")
+                Text(L("Biggest wins first. Switch off anything you want to keep.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                ForEach(rows) { r in
+                    Toggle(isOn: Binding(get: { !planOff.contains(r.id) }, set: { on in if on { planOff.remove(r.id) } else { planOff.insert(r.id) } })) {
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text("\(L(r.title)) · \(r.items.count)").font(HandyFont.body.weight(.semibold))
+                            Text("\(PhotoCleaner.format(r.bytes))\(r.why.isEmpty ? "" : " · " + L(r.why))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }.tint(HandyColor.accent)
+                }
+                Button { cleanPlan() } label: {
                     HStack { if busy { ProgressView().tint(.white) }
-                        Label("Clean \(safeDupExtras.count) duplicate cop\(safeDupExtras.count == 1 ? "y" : "ies")", systemImage: "sparkles") }.frame(maxWidth: .infinity)
-                }.primaryButton().disabled(busy)
+                        Label("\(L("Clean")) \(planIncluded.count) \(L(planIncluded.count == 1 ? "item" : "items"))", systemImage: "sparkles") }.frame(maxWidth: .infinity)
+                }.primaryButton().disabled(busy || planIncluded.isEmpty).accessibilityIdentifier("cleaner-plan-clean")
+                Text(L("iPhone asks you to confirm. Everything goes to Recently Deleted for 30 days, so nothing is lost by mistake."))
+                    .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            }
+            if cleanedBytes > 0 {
+                VStack(alignment: .leading, spacing: 4) {
+                    Label("\(L("Cleared about")) \(PhotoCleaner.format(cleanedBytes))", systemImage: "checkmark.circle.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
+                    if let freeBefore { Text("\(L("Free space")): \(PhotoCleaner.format(freeBefore)) → \(L("about")) \(PhotoCleaner.format(freeBefore + cleanedBytes)) \(L("once Recently Deleted is emptied"))").font(HandyFont.caption) }
+                    Text(L("To get the space back now: Photos → Albums → Recently Deleted → Select → Delete All.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    Button(L("Open Photos")) { if let u = URL(string: "photos-redirect://") { UIApplication.shared.open(u) } }.textButton()
+                }.padding(.top, 4)
             }
         }.cardStyle()
     }
 
-    private func cleanSafeDuplicates() {
-        let extras = safeDupExtras
-        guard !extras.isEmpty else { return }
-        let ids = Set(extras.map { $0.id })
-        let freed = extras.reduce(Int64(0)) { $0 + $1.bytes }
+    private func cleanPlan() {
+        let items = planIncluded
+        guard !items.isEmpty else { return }
+        let ids = Set(items.map(\.id))
+        let freed = items.reduce(Int64(0)) { $0 + $1.bytes }
         busy = true
         Task {
-            let ok = await PhotoCleaner.delete(extras.map { $0.asset })
+            let ok = await PhotoCleaner.delete(items.map(\.asset))
             await MainActor.run {
                 busy = false
                 guard ok else { note = "Nothing was deleted."; return }
                 CleanerIndex.shared.remove(ids: ids)
                 selected.subtract(ids)
-                note = "Cleaned — kept one of each. Freed about \(PhotoCleaner.format(freed))."
+                extraRows = extraRows.map { PhotoCleaner.PlanRow(id: $0.id, title: $0.title, why: $0.why, items: $0.items.filter { !ids.contains($0.id) }) }
+                cleanedBytes += freed
                 HandyHaptics.success()
             }
         }
@@ -195,7 +246,7 @@ struct CleanerView: View {
                 Task {
                     let s = await PhotoCleaner.authorize()
                     authorized = (s == .authorized || s == .limited)
-                    if authorized { CleanerIndex.shared.prewarm(); refreshForCat() }
+                    if authorized { CleanerIndex.shared.prewarm(); refreshForCat(); loadPlan() }
                 }
             } label: { Label(Permission.photosDenied ? "Open Settings to allow photos" : "Allow photo access",
                              systemImage: Permission.photosDenied ? "gearshape" : "checkmark.shield").frame(maxWidth: .infinity) }.primaryButton()

@@ -173,6 +173,62 @@ enum PhotoCleaner {
         (a.0 ^ b.0).nonzeroBitCount + (a.1 ^ b.1).nonzeroBitCount
     }
 
+    // MARK: bursts — the best shot of each kept, the rest cleared
+
+    struct Burst: Identifiable { let keep: Item; let extras: [Item]; let why: String; var id: String { keep.id } }
+
+    /// Burst photos: iPhone keeps every frame (hidden behind the cover photo) and they all take space. Keep the
+    /// one you picked, else the one iPhone picked as best, else the cover — and say which.
+    static func bursts(limit: Int = 4000) -> [Burst] {
+        let o = PHFetchOptions()
+        o.includeAllBurstAssets = true
+        o.predicate = NSPredicate(format: "burstIdentifier != nil")
+        o.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        o.fetchLimit = limit
+        var byBurst: [String: [PHAsset]] = [:]
+        PHAsset.fetchAssets(with: .image, options: o).enumerateObjects { a, _, _ in
+            if let b = a.burstIdentifier { byBurst[b, default: []].append(a) }
+        }
+        return byBurst.values.compactMap { frames -> Burst? in
+            guard frames.count > 1 else { return nil }
+            let pick = best(frames.map { (id: $0.localIdentifier, user: $0.burstSelectionTypes.contains(.userPick),
+                                          auto: $0.burstSelectionTypes.contains(.autoPick), cover: $0.representsBurst, fav: $0.isFavorite) })
+            guard let keep = frames.first(where: { $0.localIdentifier == pick.id }) else { return nil }
+            let extras = frames.filter { $0.localIdentifier != pick.id && !$0.isFavorite }.map { Item(asset: $0, bytes: estimatedBytes(of: $0)) }
+            return extras.isEmpty ? nil : Burst(keep: Item(asset: keep, bytes: estimatedBytes(of: keep)), extras: extras, why: pick.why)
+        }.sorted { $0.extras.count > $1.extras.count }
+    }
+
+    /// Which frame of a burst to keep, and why. Pure and unit-tested.
+    static func best(_ frames: [(id: String, user: Bool, auto: Bool, cover: Bool, fav: Bool)]) -> (id: String, why: String) {
+        if let f = frames.first(where: { $0.user }) { return (f.id, "the one you picked") }
+        if let f = frames.first(where: { $0.fav }) { return (f.id, "your favourite") }
+        if let f = frames.first(where: { $0.auto }) { return (f.id, "iPhone's pick of the burst — sharpest, eyes open") }
+        if let f = frames.first(where: { $0.cover }) { return (f.id, "the burst's cover photo") }
+        return (frames[0].id, "the first frame")
+    }
+
+    // MARK: screenshots older than a month
+
+    static func oldScreenshots(days: Int = 30, now: Date = Date()) -> [Item] {
+        let cut = now.addingTimeInterval(-Double(days) * 86_400)
+        return screenshots().filter { ($0.asset.creationDate ?? now) < cut && !$0.asset.isFavorite }
+    }
+
+    // MARK: the plan — biggest wins first
+
+    struct PlanRow: Identifiable { let id: String; let title: String; let why: String; let items: [Item]
+        var bytes: Int64 { items.reduce(0) { $0 + $1.bytes } } }
+
+    /// Rows with something in them, largest first. Pure: the caller fills the rows.
+    static func plan(_ rows: [PlanRow]) -> [PlanRow] { rows.filter { !$0.items.isEmpty }.sorted { $0.bytes > $1.bytes } }
+
+    /// Space free on the phone right now (what iOS would let an important download use).
+    static func freeBytes() -> Int64? {
+        let url = URL(fileURLWithPath: NSHomeDirectory())
+        return (try? url.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]))?.volumeAvailableCapacityForImportantUsage
+    }
+
     // MARK: delete (iOS shows the confirmation and performs it)
 
     static func delete(_ assets: [PHAsset]) async -> Bool {
