@@ -2397,6 +2397,18 @@ final class EngineTests: XCTestCase {
         XCTAssertNotNil(pdf); XCTAssertEqual(pdf.flatMap { PDFDocument(data: $0) }?.pageCount, 3)
     }
 
+    func testArrivalAlertShowsMyListAtTheStore() {
+        let m = ArrivalAlert.message(place: "Jewel-Osco", task: "Groceries", items: ["milk", " eggs ", "", "bread"])
+        XCTAssertEqual(m.title, "You're at Jewel-Osco")
+        XCTAssertEqual(m.body, "Your list: milk, eggs, bread.")
+        let long = ArrivalAlert.message(place: "Aldi", task: "Groceries", items: (1...11).map { "item \($0)" })
+        XCTAssertTrue(long.body.hasSuffix("item 8 and 3 more."))
+        XCTAssertEqual(ArrivalAlert.message(place: "CVS", task: "Pick up prescription", items: []).body, "Time for: Pick up prescription.")
+        let step = UUID()
+        XCTAssertEqual(ArrivalAlert.id("Jewel-Osco", step: step), ArrivalAlert.id("Jewel-Osco", step: step), "same place, same alert — never doubled")
+        XCTAssertNotEqual(ArrivalAlert.id("Jewel-Osco", step: step), ArrivalAlert.id("Aldi", step: step))
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

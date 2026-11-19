@@ -6809,6 +6809,16 @@
   "pt": "Enorme, lenta e retumbante",
   "zh": "巨大、缓慢、轰鸣"
  },
+ "I'll show your list when you get here": {
+  "de": "Deine Liste kommt, sobald du hier bist",
+  "es": "Te mostraré tu lista cuando llegues",
+  "fr": "Votre liste s'affichera à votre arrivée",
+  "hi": "यहाँ पहुँचने पर आपकी सूची दिखेगी",
+  "it": "Ti mostrerò la lista quando arrivi",
+  "ja": "着いたらリストを表示します",
+  "pt": "Mostro a sua lista quando chegar",
+  "zh": "到达时会显示你的清单"
+ },
  "INVOICE": {
   "de": "RECHNUNG",
   "es": "FACTURA",
@@ -14319,6 +14329,16 @@
   "pt": "Mostra-me um",
   "zh": "给我看一个"
  },
+ "Show my list when I get here": {
+  "de": "Meine Liste zeigen, wenn ich hier ankomme",
+  "es": "Mostrar mi lista al llegar aquí",
+  "fr": "Afficher ma liste quand j'arrive ici",
+  "hi": "यहाँ पहुँचने पर मेरी सूची दिखाएँ",
+  "it": "Mostra la mia lista quando arrivo qui",
+  "ja": "ここに着いたらリストを表示",
+  "pt": "Mostrar a minha lista quando chegar aqui",
+  "zh": "到这里时显示我的清单"
+ },
  "Show or hide": {
   "de": "Ein- oder ausblenden",
   "es": "Mostrar u ocultar",
@@ -19308,6 +19328,16 @@
   "ja": "iPhoneは1つのアプリに64件までの通知を許可しています — 最も先の",
   "pt": "O iPhone permite 64 alertas por app — as",
   "zh": "iPhone每个App最多64条提醒——最远的"
+ },
+ "iPhone shows the alert once, as you arrive. It watches the place itself — Tenzy doesn't track you.": {
+  "de": "Das iPhone zeigt die Mitteilung einmal, wenn du ankommst. Es achtet selbst auf den Ort – Tenzy verfolgt dich nicht.",
+  "es": "El iPhone muestra el aviso una vez, al llegar. Vigila el lugar por sí mismo: Tenzy no te rastrea.",
+  "fr": "L'iPhone affiche l'alerte une fois, à votre arrivée. Il surveille le lieu lui-même — Tenzy ne vous suit pas.",
+  "hi": "पहुँचते ही iPhone एक बार अलर्ट दिखाता है। जगह पर iPhone ख़ुद नज़र रखता है — Tenzy आपको ट्रैक नहीं करता।",
+  "it": "L'iPhone mostra l'avviso una volta, all'arrivo. Controlla il luogo da solo: Tenzy non ti traccia.",
+  "ja": "到着時に iPhone が一度だけ通知します。場所は iPhone 自体が見守り、Tenzy があなたを追跡することはありません。",
+  "pt": "O iPhone mostra o alerta uma vez, ao chegar. Ele próprio vigia o local — o Tenzy não o segue.",
+  "zh": "到达时 iPhone 会提醒一次。由 iPhone 自己留意地点，Tenzy 不会追踪你。"
  },
  "incl.": {
   "de": "inkl.",

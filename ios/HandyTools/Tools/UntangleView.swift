@@ -26,6 +26,7 @@ struct UntangleView: View {
     @State private var nudges = false
     @State private var notifOff = false
     @State private var tick = Date()
+    @State private var arrivals: Set<String> = []          // "show my list when I get here" alerts that are set
     @State private var cardImage: UIImage?                    // the plan as a picture, while the share sheet is up
     @FocusState private var focused: Bool
 
@@ -177,7 +178,7 @@ struct UntangleView: View {
                     Text(L("List")).font(HandyFont.micro.weight(.bold)).foregroundStyle(HandyColor.textSecondary)
                     HandyFlow(spacing: 6) { ForEach(s.items, id: \.self) { Text(L($0)).font(HandyFont.caption).padding(.horizontal, 10).padding(.vertical, 4).background(HandyColor.surface, in: Capsule()) } }
                 }
-                if let q = s.kind.placeQuery { placesBlock(q) }
+                if let q = s.kind.placeQuery { placesBlock(q, step: s) }
                 Label { Text(L(s.feel)).font(HandyFont.caption.italic()) } icon: { Image(systemName: "sparkles").foregroundStyle(HandyColor.accent) }
                 if s.status != .done { checkIn(s) }
             }
@@ -195,7 +196,7 @@ struct UntangleView: View {
         }
     }
 
-    private func placesBlock(_ q: String) -> some View {
+    private func placesBlock(_ q: String, step s: UntanglePlan.Step) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             if let list = nearby.places[q], !list.isEmpty {
                 ForEach(list) { pl in
@@ -211,6 +212,18 @@ struct UntangleView: View {
                             Image(systemName: "arrow.triangle.turn.up.right.circle").foregroundStyle(HandyColor.accent)
                         }
                     }.buttonStyle(.plain)
+                    let key = ArrivalAlert.id(pl.name, step: s.id)
+                    Button { toggleArrival(pl, step: s) } label: {
+                        Label(arrivals.contains(key) ? L("I'll show your list when you get here") : L("Show my list when I get here"),
+                              systemImage: arrivals.contains(key) ? "bell.badge.fill" : "bell")
+                            .font(HandyFont.micro)
+                    }
+                    .buttonStyle(.plain).foregroundStyle(HandyColor.accent).padding(.leading, 26)
+                    .accessibilityIdentifier("arrive-\(pl.name)")
+                }
+                if !arrivals.isEmpty {
+                    Text(L("iPhone shows the alert once, as you arrive. It watches the place itself — Tenzy doesn't track you."))
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                 }
             } else if nearby.looking.contains(q) {
                 HStack(spacing: 6) { ProgressView(); Text(L("Finding the closest…")).font(HandyFont.caption) }
@@ -264,6 +277,21 @@ struct UntangleView: View {
     }
 
     // MARK: - Actions
+
+    private func toggleArrival(_ pl: NearbyPlaces.Place, step s: UntanglePlan.Step) {
+        let key = ArrivalAlert.id(pl.name, step: s.id)
+        if arrivals.contains(key) { ArrivalAlert.cancel(place: pl.name, step: s.id); arrivals.remove(key); return }
+        Task {
+            let ok = await NotifyPermission.ensure()
+            await MainActor.run {
+                notifOff = !ok
+                guard ok, let c = pl.item.placemark.location?.coordinate else { return }   // same source as the search
+                ArrivalAlert.schedule(place: pl.name, at: c, step: s.id, task: s.title, items: s.items)
+                arrivals.insert(key)
+                note = "Set. When you reach \(pl.name), your list pops up."
+            }
+        }
+    }
 
     private func build() {
         errorText = nil

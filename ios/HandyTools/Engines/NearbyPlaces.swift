@@ -140,3 +140,35 @@ enum UntangleCheckIns {
         (try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound])) ?? false
     }
 }
+
+/// "Remind me of my list when I get there": a one-time alert iPhone shows when you arrive at the store you
+/// picked (about 150 m around it), with your shopping list. iPhone watches the place itself — Tenzy doesn't
+/// track you, and it works with "While Using" location access.
+enum ArrivalAlert {
+    static let radius: CLLocationDistance = 150
+
+    static func id(_ placeName: String, step: UUID) -> String { "arrive-\(step.uuidString)-\(placeName.lowercased().filter(\.isLetter).prefix(24))" }
+
+    /// The words of the alert, with the person's own list (the first eight things, then "and N more").
+    static func message(place: String, task: String, items: [String]) -> (title: String, body: String) {
+        let list = items.map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+        let shown = list.prefix(8).joined(separator: ", ")
+        let more = list.count > 8 ? " and \(list.count - 8) more" : ""
+        return ("You're at \(place)", list.isEmpty ? "Time for: \(task)." : "Your list: \(shown)\(more).")
+    }
+
+    static func schedule(place: String, at c: CLLocationCoordinate2D, step: UUID, task: String, items: [String]) {
+        let m = message(place: place, task: task, items: items)
+        let content = UNMutableNotificationContent()
+        content.title = m.title; content.body = m.body; content.sound = .default
+        content.userInfo = ["open": "untangle"]
+        let region = CLCircularRegion(center: c, radius: radius, identifier: id(place, step: step))
+        region.notifyOnEntry = true; region.notifyOnExit = false
+        UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: id(place, step: step), content: content,
+                                                                     trigger: UNLocationNotificationTrigger(region: region, repeats: false)))
+    }
+
+    static func cancel(place: String, step: UUID) {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id(place, step: step)])
+    }
+}
