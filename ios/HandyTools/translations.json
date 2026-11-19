@@ -1089,6 +1089,16 @@
   "pt": "Tudo numa só página (ambos os lados de um documento)",
   "zh": "全部放在一页（证件正反面）"
  },
+ "All pages": {
+  "de": "Alle Seiten",
+  "es": "Todas las páginas",
+  "fr": "Toutes les pages",
+  "hi": "सारे पेज",
+  "it": "Tutte le pagine",
+  "ja": "全ページ",
+  "pt": "Todas as páginas",
+  "zh": "全部页面"
+ },
  "All text": {
   "de": "Gesamter Text",
   "es": "Todo el texto",
@@ -2779,6 +2789,16 @@
   "pt": "Escolha um formulário PDF — inscrição, impostos ou escola — e preencha aqui.",
   "zh": "选择PDF表单——申请表、税表或学校表格——在这里填写。"
  },
+ "Choose a PDF — from Files, Mail or Downloads.": {
+  "de": "Wähle ein PDF – aus Dateien, Mail oder Downloads.",
+  "es": "Elige un PDF de Archivos, Mail o Descargas.",
+  "fr": "Choisissez un PDF — depuis Fichiers, Mail ou Téléchargements.",
+  "hi": "कोई PDF चुनें — Files, Mail या Downloads से।",
+  "it": "Scegli un PDF da File, Mail o Download.",
+  "ja": "ファイル・メール・ダウンロードからPDFを選択。",
+  "pt": "Escolha um PDF — de Arquivos, Mail ou Downloads.",
+  "zh": "从“文件”、邮件或下载中选择 PDF。"
+ },
  "Choose a PIN only you know. You'll need it to look back at your days — not to save them.": {
   "de": "Wähle eine PIN, die nur du kennst. Du brauchst sie zum Zurückschauen – nicht zum Speichern.",
   "es": "Elige un PIN que solo tú sepas. Lo necesitarás para revisar tus días, no para guardarlos.",
@@ -3068,6 +3088,16 @@
   "ja": "音声ファイルを1つ — またはボイスメモを複数まとめて選びます。",
   "pt": "Escolha um arquivo de áudio — ou vários memorandos de voz de uma vez.",
   "zh": "选择一个音频文件，或一次选多个语音备忘录。"
+ },
+ "Choose pages": {
+  "de": "Seiten wählen",
+  "es": "Elegir páginas",
+  "fr": "Choisir les pages",
+  "hi": "पेज चुनें",
+  "it": "Scegli pagine",
+  "ja": "ページを選ぶ",
+  "pt": "Escolher páginas",
+  "zh": "选择页面"
  },
  "Choose photos": {
   "de": "Fotos auswählen",
@@ -3728,6 +3758,16 @@
   "ja": "コピー（原本を保持）",
   "pt": "Copiar (manter originais)",
   "zh": "复制（保留原件）"
+ },
+ "Copy all the text": {
+  "de": "Ganzen Text kopieren",
+  "es": "Copiar todo el texto",
+  "fr": "Copier tout le texte",
+  "hi": "सारा टेक्स्ट कॉपी करें",
+  "it": "Copia tutto il testo",
+  "ja": "テキストをすべてコピー",
+  "pt": "Copiar todo o texto",
+  "zh": "复制全部文字"
  },
  "Copy details": {
   "de": "Details kopieren",
@@ -6699,6 +6739,16 @@
   "pt": "Para tradução com câmara em direto, usa Capturar — toca numa linha e escolhe Traduzir.",
   "zh": "若需实时相机翻译，请使用「捕捉」——在那里点按一行并选择「翻译」。"
  },
+ "For printing (300 dpi)": {
+  "de": "Zum Drucken (300 dpi)",
+  "es": "Para imprimir (300 ppp)",
+  "fr": "Pour imprimer (300 ppp)",
+  "hi": "प्रिंट के लिए (300 dpi)",
+  "it": "Per la stampa (300 dpi)",
+  "ja": "印刷用（300 dpi）",
+  "pt": "Para imprimir (300 dpi)",
+  "zh": "用于打印（300 dpi）"
+ },
  "Forgot your PIN?": {
   "de": "PIN vergessen?",
   "es": "¿Olvidaste el PIN?",
@@ -6918,6 +6968,16 @@
   "ja": "写真から",
   "pt": "A partir de Fotos",
   "zh": "从照片"
+ },
+ "From page": {
+  "de": "Von Seite",
+  "es": "Desde la página",
+  "fr": "De la page",
+  "hi": "पेज से",
+  "it": "Dalla pagina",
+  "ja": "開始ページ",
+  "pt": "Da página",
+  "zh": "起始页"
  },
  "From the letter": {
   "de": "Aus dem Brief",
@@ -7888,6 +7948,16 @@
   "ja": "PINを忘れたら、この答えで新しいPINを設定できます。自分は忘れず、他人は知らないものを。大文字小文字は区別しません。",
   "pt": "Se esquecer o PIN, esta resposta deixa você criar outro. Escolha algo que você sempre lembra e os outros não sabem. Maiúsculas não importam.",
   "zh": "忘记 PIN 时，可用这个答案重设。选一个你永远记得、别人不知道的。不区分大小写。"
+ },
+ "Images: pick all pages or a range, and the size (email, sharing or print). Save straight to Photos.": {
+  "de": "Bilder: alle Seiten oder einen Bereich und die Größe wählen (E-Mail, Teilen oder Druck). Direkt in Fotos sichern.",
+  "es": "Imágenes: elige todas las páginas o un rango, y el tamaño (correo, compartir o imprimir). Guarda directo en Fotos.",
+  "fr": "Images : toutes les pages ou une plage, et la taille (e-mail, partage ou impression). Enregistrez directement dans Photos.",
+  "hi": "इमेज: सारे पेज या एक रेंज और आकार चुनें (ईमेल, शेयर या प्रिंट)। सीधे Photos में सेव करें।",
+  "it": "Immagini: scegli tutte le pagine o un intervallo e la dimensione (email, condivisione o stampa). Salva direttamente in Foto.",
+  "ja": "画像：全ページか範囲と、サイズ（メール・共有・印刷）を選び、そのまま写真に保存。",
+  "pt": "Imagens: escolha todas as páginas ou um intervalo e o tamanho (e-mail, compartilhar ou imprimir). Salve direto em Fotos.",
+  "zh": "图片：选择全部页面或页码范围，以及尺寸（邮件、分享或打印），直接存到“照片”。"
  },
  "Important": {
   "de": "Wichtig",
@@ -12719,6 +12789,16 @@
   "pt": "Fotos e vídeos",
   "zh": "照片和视频"
  },
+ "Photos access is off — allow it in Settings to save.": {
+  "de": "Fotozugriff ist aus – erlaube ihn in den Einstellungen.",
+  "es": "El acceso a Fotos está desactivado: permítelo en Ajustes.",
+  "fr": "L'accès à Photos est désactivé — autorisez-le dans Réglages.",
+  "hi": "Photos की अनुमति बंद है — सेव करने के लिए Settings में चालू करें।",
+  "it": "L'accesso a Foto è disattivato: consentilo in Impostazioni.",
+  "ja": "写真へのアクセスがオフです — 設定で許可してください。",
+  "pt": "O acesso a Fotos está desligado — permita em Ajustes.",
+  "zh": "照片访问已关闭——请在设置中允许。"
+ },
  "Photos and videos are already compressed, so the zip is about the same size — it's one tidy file to send.": {
   "de": "Fotos und Videos sind schon komprimiert, die Zip ist also etwa gleich groß – aber eine ordentliche Datei zum Senden.",
   "es": "Fotos y vídeos ya están comprimidos, así que el zip pesa casi lo mismo: es un único archivo ordenado para enviar.",
@@ -16529,6 +16609,16 @@
   "pt": "Nítida e com exposição uniforme para ler cada palavra.",
   "zh": "清晰、曝光均匀，每个字都看得清。"
  },
+ "Sharp, for sharing": {
+  "de": "Scharf, zum Teilen",
+  "es": "Nítido, para compartir",
+  "fr": "Net, pour partager",
+  "hi": "साफ़, शेयर के लिए",
+  "it": "Nitido, per condividere",
+  "ja": "くっきり（共有用）",
+  "pt": "Nítido, para compartilhar",
+  "zh": "清晰，用于分享"
+ },
  "Sharpen text": {
   "de": "Text schärfen",
   "es": "Realzar texto",
@@ -17028,6 +17118,16 @@
   "ja": "小さな写真のアップロード",
   "pt": "Envio de foto pequena",
   "zh": "小照片上传"
+ },
+ "Small, for email": {
+  "de": "Klein, für E-Mail",
+  "es": "Pequeño, para correo",
+  "fr": "Petit, pour e-mail",
+  "hi": "छोटा, ईमेल के लिए",
+  "it": "Piccolo, per email",
+  "ja": "小（メール用）",
+  "pt": "Pequeno, para e-mail",
+  "zh": "小，用于邮件"
  },
  "Smallest (voice)": {
   "de": "Am kleinsten (Sprache)",
@@ -18829,6 +18929,16 @@
   "pt": "Ferramentas de texto",
   "zh": "文本工具"
  },
+ "Text copied": {
+  "de": "Text kopiert",
+  "es": "Texto copiado",
+  "fr": "Texte copié",
+  "hi": "टेक्स्ट कॉपी हुआ",
+  "it": "Testo copiato",
+  "ja": "テキストをコピーしました",
+  "pt": "Texto copiado",
+  "zh": "文字已复制"
+ },
  "Text is recognised and the translation is drawn over it in place, on the phone. Reads Latin-alphabet text (Spanish, French, German, Italian, Portuguese…).": {
   "de": "Der Text wird erkannt und die Übersetzung an Ort und Stelle darübergelegt, auf dem Handy. Liest Text im lateinischen Alphabet (Spanisch, Französisch, Deutsch, Italienisch, Portugiesisch…).",
   "es": "El texto se reconoce y la traducción se dibuja encima en su sitio, en el teléfono. Lee texto en alfabeto latino (español, francés, alemán, italiano, portugués…).",
@@ -18928,6 +19038,16 @@
   "ja": "テキスト・リンク・メッセージ",
   "pt": "Texto, links e mensagens",
   "zh": "文字、链接和消息"
+ },
+ "Text: pulls the words out — even from a scan — to copy or save as a .txt.": {
+  "de": "Text: holt die Wörter heraus – auch aus einem Scan – zum Kopieren oder als .txt.",
+  "es": "Texto: saca las palabras —incluso de un escaneo— para copiarlas o guardarlas como .txt.",
+  "fr": "Texte : extrait les mots — même d'un scan — pour les copier ou les enregistrer en .txt.",
+  "hi": "टेक्स्ट: शब्द निकालता है — स्कैन से भी — कॉपी करने या .txt सेव करने के लिए।",
+  "it": "Testo: estrae le parole, anche da una scansione, da copiare o salvare in .txt.",
+  "ja": "テキスト：スキャンからでも文字を抽出し、コピーや.txt保存ができます。",
+  "pt": "Texto: extrai as palavras — até de um scan — para copiar ou salvar como .txt.",
+  "zh": "文字：即使是扫描件也能提取文字，可复制或存为 .txt。"
  },
  "That PDF has no pages.": {
   "de": "Dieses PDF hat keine Seiten.",
@@ -19599,6 +19719,16 @@
   "pt": "É uma ajuda rápida, não um exame de vista. Para uma resposta real, um oftalmologista pode avaliar sua visão de cores.",
   "zh": "这只是快速辅助，不是视力检查。如需确切结论，请让验光师检查色觉。"
  },
+ "This page": {
+  "de": "Diese Seite",
+  "es": "Esta página",
+  "fr": "Cette page",
+  "hi": "यह पेज",
+  "it": "Questa pagina",
+  "ja": "このページ",
+  "pt": "Esta página",
+  "zh": "当前页"
+ },
  "This phone couldn't create that format.": {
   "de": "Dieses Telefon konnte dieses Format nicht erstellen.",
   "es": "Este teléfono no pudo crear ese formato.",
@@ -19968,6 +20098,16 @@
   "ja": "タイトル・アーティスト・アルバム・ジャケット",
   "pt": "Título, artista, álbum e capa",
   "zh": "标题、艺人、专辑和封面"
+ },
+ "To page": {
+  "de": "Bis Seite",
+  "es": "Hasta la página",
+  "fr": "À la page",
+  "hi": "पेज तक",
+  "it": "Alla pagina",
+  "ja": "終了ページ",
+  "pt": "Até a página",
+  "zh": "结束页"
  },
  "To use it as your ringtone": {
   "de": "So wird es dein Klingelton",
@@ -20358,6 +20498,16 @@
   "ja": "回転",
   "pt": "Rodar",
   "zh": "旋转"
+ },
+ "Turn a PDF into pictures — all pages or just the ones you need, sized for email, sharing or print — or pull its text out. On your phone.": {
+  "de": "Mach aus einem PDF Bilder – alle Seiten oder nur die nötigen, in Größe für E-Mail, Teilen oder Druck – oder hol den Text heraus. Auf deinem Telefon.",
+  "es": "Convierte un PDF en imágenes —todas las páginas o solo las que necesitas, al tamaño para correo, compartir o imprimir— o saca su texto. En tu teléfono.",
+  "fr": "Transformez un PDF en images — toutes les pages ou seulement celles qu'il faut, au format e-mail, partage ou impression — ou extrayez son texte. Sur votre téléphone.",
+  "hi": "PDF को तस्वीरों में बदलें — सारे पेज या सिर्फ़ ज़रूरी, ईमेल, शेयर या प्रिंट के आकार में — या उसका टेक्स्ट निकालें। अपने फ़ोन पर।",
+  "it": "Trasforma un PDF in immagini, tutte le pagine o solo quelle che servono, nel formato per email, condivisione o stampa, oppure estrai il testo. Sul telefono.",
+  "ja": "PDFを画像に — 全ページでも必要なページだけでも、メール・共有・印刷向けのサイズで — またはテキストを抽出。iPhone上で。",
+  "pt": "Transforme um PDF em imagens — todas as páginas ou só as que precisa, no tamanho para e-mail, compartilhar ou imprimir — ou extraia o texto. No seu telefone.",
+  "zh": "把 PDF 转成图片——全部页面或只要需要的页，按邮件、分享或打印尺寸——或提取文字。全在手机上。"
  },
  "Turn a meeting into notes and to-dos": {
   "de": "Ein Meeting in Notizen und Aufgaben verwandeln",
@@ -23598,6 +23748,16 @@
   "ja": "何て言ってる？",
   "pt": "o que estão dizendo?",
   "zh": "他们在说什么？"
+ },
+ "words": {
+  "de": "Wörter",
+  "es": "palabras",
+  "fr": "mots",
+  "hi": "शब्द",
+  "it": "parole",
+  "ja": "語",
+  "pt": "palavras",
+  "zh": "个词"
  },
  "words found": {
   "de": "Wörter gefunden",

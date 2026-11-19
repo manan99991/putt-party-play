@@ -2616,7 +2616,8 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(DocEngine.pageIndexes(all: false, current: 0, from: 1, to: 1, count: 0), [])
         // A real 3-page PDF: only pages 2–3, at email size.
         let imgs = (0..<3).map { i in UIGraphicsImageRenderer(size: CGSize(width: 612, height: 792)).image { c in UIColor(white: CGFloat(i) / 3, alpha: 1).setFill(); c.fill(CGRect(x: 0, y: 0, width: 612, height: 792)) } }
-        let pdf = try! XCTUnwrap(DocEngine.pdf(images: imgs, ocr: [], options: DocEngine.PDFOptions()))
+        var o = DocEngine.PDFOptions(); o.searchable = false
+        let pdf = try! XCTUnwrap(DocEngine.pdf(images: imgs, ocr: [nil, nil, nil], options: o))
         let out = DocEngine.pdfToImages(pdf, maxWidth: 1000, only: [1, 2])
         XCTAssertEqual(out.count, 2)
         let w = UIImage(data: out[0])!.size.width

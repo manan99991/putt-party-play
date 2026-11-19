@@ -262,7 +262,7 @@ enum DocEngine {
         for i in (only ?? Array(0..<doc.pageCount)) where i >= 0 && i < doc.pageCount {
             guard let page = doc.page(at: i) else { continue }
             let b = page.bounds(for: .mediaBox)
-            let scale = min(3, maxWidth / max(1, b.width))
+            let scale = min(4.5, maxWidth / max(1, b.width))
             let size = CGSize(width: (b.width * scale).rounded(), height: (b.height * scale).rounded())
             let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
             let img = UIGraphicsImageRenderer(size: size, format: fmt).image { c in
