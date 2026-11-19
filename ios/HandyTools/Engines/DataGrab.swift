@@ -38,7 +38,10 @@ enum DataGrab {
 
     // MARK: receipt
 
-    static let moneyPattern = #"(?:[$€£₹]|USD|EUR|GBP|INR|CAD|AUD)?\s?-?\d{1,3}(?:[,\d]{0,9})(?:[.,]\d{2})\b"#
+    /// A price: "$12.50", "1,234.56", "1.234,56" — or a whole-number currency grouped in thousands, the way
+    /// rupiah, won, yen and dong are printed ("60.000", "Rp 25.000", "1,250,000"). Dates and phone numbers
+    /// ("11.02.2019", "555.123.4567") are not prices.
+    static let moneyPattern = #"(?:[$€£₹¥₩]|USD|EUR|GBP|INR|CAD|AUD|IDR|Rp\.?)?\s?-?(?:(?<![\d.,/])\d{1,3}(?:[,.]?\d{3}){0,3}[.,]\d{2}\b(?![.,/]\d)|(?<![\d.,])\d{1,3}(?:[.,]\d{3})+(?![.,]?\d))"#
 
     /// Words that head a receipt but aren't the shop's name.
     private static let notAShop = #"^(receipt|sales receipt|cash receipt|receipt example|invoice|tax invoice|bill|from|bill to|ship to|sold to|customer( name| address)?|logo|date.*|invoice (number|no\.?)|receipt (number|no\.?|#)|description|qty|thank you.*|welcome.*|copy|duplicate|original)$"#
@@ -73,7 +76,7 @@ enum DataGrab {
         for (word, name) in [("visa", "Visa"), ("mastercard", "Mastercard"), ("amex", "Amex"), ("american express", "Amex"), ("discover", "Discover"),
                              ("apple pay", "Apple Pay"), ("google pay", "Google Pay"), ("debit", "Debit card"), ("credit", "Credit card"),
                              ("cash", "Cash"), ("cheque", "Check"), ("payment method: check", "Check")] where low.contains(word) { r.payment = name; break }
-        if let sym = text.range(of: #"[$€£₹]"#, options: .regularExpression) { r.currency = String(text[sym]) }
+        if let sym = text.range(of: #"[$€£₹¥₩]|\bRp\b"#, options: .regularExpression) { r.currency = String(text[sym]) }
 
         var balance: Double?
         for raw in lines {
@@ -175,6 +178,7 @@ enum DataGrab {
         // "1.234,56" → 1234.56 ; "1,234.56" → 1234.56
         if let c = s.lastIndex(of: ","), let d = s.lastIndex(of: "."), c > d { s = s.replacingOccurrences(of: ".", with: "").replacingOccurrences(of: ",", with: ".") }
         else if s.contains(","), !s.contains(".") , s.split(separator: ",").last?.count == 2 { s = s.replacingOccurrences(of: ",", with: ".") }
+        else if !s.contains(","), s.range(of: #"^-?\d{1,3}(\.\d{3})+$"#, options: .regularExpression) != nil { s = s.replacingOccurrences(of: ".", with: "") }   // "60.000" → 60000
         else { s = s.replacingOccurrences(of: ",", with: "") }
         return Double(s)
     }
