@@ -148,13 +148,13 @@ enum SmartAlerts {
     static func registerBackground() {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: taskID, using: nil) { task in
             scheduleBackground()
-            let work = Task { await checkAll(); await DailyBrief.refresh(); task.setTaskCompleted(success: true) }
+            let work = Task { await checkAll(); await DailyBrief.refresh(); await PageWatcher.checkAll(); task.setTaskCompleted(success: true) }
             task.expirationHandler = { work.cancel() }
         }
     }
 
     static func scheduleBackground() {
-        guard AlertStore.load().contains(where: \.on) || DailyBrief.on else { return }
+        guard AlertStore.load().contains(where: \.on) || DailyBrief.on || PageWatcher.any else { return }
         let r = BGAppRefreshTaskRequest(identifier: taskID)
         r.earliestBeginDate = Date().addingTimeInterval(3 * 3600)
         try? BGTaskScheduler.shared.submit(r)

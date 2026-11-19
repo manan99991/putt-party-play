@@ -416,6 +416,8 @@ struct Chain: Codable, Equatable, Identifiable {
     var versus: Bool?
     /// Flipbook: the chosen photos played as a page-turning riffle video.
     var flipbook: Bool?
+    /// "Tell me when" the number in this tool's result crosses a value. nil: off.
+    var watch: NumberWatch?
 
     /// nil when valid, otherwise a plain-words reason. Shared by the builder UI, imports and describe-it.
     func problem(starting with: ChainKind) -> String? {

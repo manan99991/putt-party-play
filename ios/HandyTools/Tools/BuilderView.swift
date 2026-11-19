@@ -1081,6 +1081,7 @@ private struct ChainEditor: View {
                 }
                 if endKind != nil { finishCard.padding(.top, HandySpacing.s12) }
                 if endKind != nil { ScheduleCard(schedule: $chain.schedule).padding(.top, HandySpacing.s12) }
+                if endKind == .text { WatchCard(watch: $chain.watch).padding(.top, HandySpacing.s12) }
                 if let p = chain.problem(starting: startKind), !chain.steps.isEmpty {
                     Text(p).font(HandyFont.caption).foregroundStyle(HandyColor.danger).padding(.top, HandySpacing.s12)
                 }
@@ -1590,6 +1591,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var noun = "Photo"
     @State private var busy = false
     @State private var result: ChainPayload?
+    @State private var watchLine: String?
     @State private var message: String?
     @State private var report: ChainRunner.RunReport?   // the per-step "what went through" story, for multi-step flows
     @ObservedObject private var store = StoreManager.shared
@@ -1724,6 +1726,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? "Working…" : progress) }
                 if let report { stepLog(report) }
                 if let message { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                if let watchLine {
+                    Label(watchLine, systemImage: "bell.badge.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+                        .padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
+                        .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                        .accessibilityIdentifier("run-watch-line")
+                }
                 if let result { output(result) }
                 if !batch.isEmpty { batchView }
                 sendOn
@@ -2235,7 +2243,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     }
 
     private func go(_ input: ChainPayload) {
-        busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0
+        busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
         // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
         // say what's happening rather than showing a bare spinner on a long meeting recording.
         if case let .file(_, ext) = input, ["m4a", "mp3", "wav", "aiff", "aifc", "caf", "aac", "m4b", "flac", "ogg"].contains(ext.lowercased()) {
@@ -2257,6 +2265,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 if let p = rep.result {
                     result = p
                     message = rep.stopper.map(ChainRunView.bestEffortNote)   // best-effort note if a step couldn't finish
+                    if case .text(let t) = p { watchLine = ToolWatch.check(chain, text: t, notify: false) }
                     finished(Outbox.make(p, named: chain.fileName, tool: chain.name))
                 } else if let f = rep.stopper {
                     message = ChainRunView.words(f)

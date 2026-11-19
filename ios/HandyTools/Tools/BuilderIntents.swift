@@ -76,6 +76,7 @@ enum ToolIntentSupport {
         switch await ChainRunner.run(chain, input: input) {
         case .failure(let f): throw ToolIntentError(message: words(f))
         case .success(let out):
+            if case .text(let t) = out { ToolWatch.check(chain, text: t) }   // "Tell me when" — a notification if it crossed
             guard let f = file(out, chain: chain) else { throw ToolIntentError(message: "The result couldn't be saved.") }
             return IntentFile(data: f.data, filename: f.name, type: UTType(filenameExtension: (f.name as NSString).pathExtension))
         }

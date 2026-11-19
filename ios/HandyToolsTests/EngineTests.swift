@@ -2662,6 +2662,54 @@ final class EngineTests: XCTestCase {
         try? FileManager.default.removeItem(at: movie)
     }
 
+    func testTellMeWhenReadsTheRightNumberAndSpeaksOncePerCrossing() {
+        XCTAssertEqual(NumberReader.number("$1,299.99"), 1299.99)
+        XCTAssertEqual(NumberReader.number("1.299,99 €"), 1299.99)
+        XCTAssertEqual(NumberReader.number("12,50"), 12.5)
+        XCTAssertEqual(NumberReader.number("1,299"), 1299)
+        XCTAssertNil(NumberReader.number("free"))
+        let receipt = "Store #4412  Apples 3.49  Bread 2.99  Subtotal 46.10  Tax 3.80  Total $49.90  Card ****1234"
+        XCTAssertEqual(NumberReader.pick(in: receipt, near: "Total"), 49.90, "the number after the words you gave")
+        XCTAssertEqual(NumberReader.pick(in: receipt, near: "tax"), 3.80, "any case")
+        XCTAssertEqual(NumberReader.pick(in: "Order 88213 shipped. Price: £19.99", near: ""), 19.99, "money beats an order number")
+        XCTAssertNil(NumberReader.pick(in: "no numbers here", near: "Total"))
+
+        let below = NumberWatch(condition: .below, value: 50, near: "Price")
+        var m = WatchMemory()
+        XCTAssertFalse(NumberReader.evaluate(below, value: 59, memory: &m))
+        XCTAssertTrue(NumberReader.evaluate(below, value: 45, memory: &m), "speaks when it drops below")
+        XCTAssertFalse(NumberReader.evaluate(below, value: 44, memory: &m), "once — not again while it stays low")
+        XCTAssertFalse(NumberReader.evaluate(below, value: 55, memory: &m), "back above re-arms it quietly")
+        XCTAssertTrue(NumberReader.evaluate(below, value: 49, memory: &m), "and the next drop speaks again")
+        var c = WatchMemory()
+        let changes = NumberWatch(condition: .changes, value: 0, near: "")
+        XCTAssertFalse(NumberReader.evaluate(changes, value: 10, memory: &c), "the first look only learns the number")
+        XCTAssertFalse(NumberReader.evaluate(changes, value: 10, memory: &c))
+        XCTAssertTrue(NumberReader.evaluate(changes, value: 12, memory: &c))
+        XCTAssertEqual(NumberReader.message(below, value: 45, previous: 59, what: "Shoes"), "Shoes is 45 — below your 50.")
+        XCTAssertEqual(NumberReader.message(changes, value: 12, previous: 10, what: "Rate"), "Rate changed from 10 to 12.")
+
+        let html = """
+        <html><head><style>.p{color:red}</style><script>var price = 999;</script>
+        <script type="application/ld+json">{"@type":"Product","offers":{"price":"79.00"}}</script></head>
+        <body><h1>Trail shoes</h1><span class="was">Was &pound;120.00</span><span>Now&nbsp;&pound;89.99</span></body></html>
+        """
+        let text = PageWatcher.visibleText(html)
+        XCTAssertFalse(text.contains("color:red") || text.contains("var price"), "scripts and styles are not read")
+        XCTAssertTrue(text.contains("Now £89.99"), text)
+        XCTAssertEqual(NumberReader.pick(in: text, near: "Now"), 89.99)
+        XCTAssertEqual(NumberReader.pick(in: text, near: "Price"), 79, "structured price data is readable too")
+
+        var chain = Chain(id: "watch-test-\(UUID().uuidString.prefix(4))", name: "Receipt total", steps: [])
+        chain.watch = NumberWatch(condition: .above, value: 40, near: "Total")
+        XCTAssertEqual(ToolWatch.check(chain, text: receipt, notify: false), "Total is 49.90 — above your 40.")
+        XCTAssertNil(ToolWatch.check(chain, text: receipt, notify: false), "a second run over the line stays quiet")
+        chain.watch = nil
+        XCTAssertNil(ToolWatch.check(chain, text: receipt, notify: false), "no watch, no alert")
+        let saved = try? JSONDecoder().decode(Chain.self, from: Data(#"{"id":"a","name":"Old tool","steps":[]}"#.utf8))
+        XCTAssertNotNil(saved, "tools saved before Tell me when existed still load")
+    }
+
     func testVideoScenesAndFilmingCoach() {
         XCTAssertEqual(VideoScene.action.fps, 60)
         XCTAssertEqual(VideoScene.cinematic.fps, 24)

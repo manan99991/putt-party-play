@@ -649,6 +649,16 @@
   "pt": "Adicionar remédio",
   "zh": "添加药品"
  },
+ "Add a product or a flight page and Tenzy tells you when the price drops.": {
+  "de": "Füge eine Produkt- oder Flugseite hinzu, und Tenzy sagt dir, wenn der Preis fällt.",
+  "es": "Añade un producto o un vuelo y Tenzy te avisa cuando baje el precio.",
+  "fr": "Ajoutez un produit ou un vol et Tenzy vous prévient quand le prix baisse.",
+  "hi": "कोई प्रोडक्ट या फ़्लाइट पेज जोड़ें, कीमत गिरने पर Tenzy बताएगा।",
+  "it": "Aggiungi un prodotto o un volo e Tenzy ti avvisa quando il prezzo scende.",
+  "ja": "商品やフライトのページを追加すると、値下がりをお知らせします。",
+  "pt": "Adicione um produto ou voo e a Tenzy avisa quando o preço cair.",
+  "zh": "添加商品或航班页面，降价时 Tenzy 会提醒你。"
+ },
  "Add a shared tool": {
   "de": "Geteiltes Tool hinzufügen",
   "es": "Añadir una herramienta compartida",
@@ -1789,6 +1799,16 @@
   "pt": "Fundo",
   "zh": "背景"
  },
+ "Background App Refresh is off, so pages are only checked while Tenzy is open. Turn it on in Settings → General → Background App Refresh.": {
+  "de": "Hintergrundaktualisierung ist aus, Seiten werden nur bei geöffnetem Tenzy geprüft. Einschalten unter Einstellungen → Allgemein → Hintergrundaktualisierung.",
+  "es": "La actualización en segundo plano está desactivada; solo se revisa con Tenzy abierto. Actívala en Ajustes → General → Actualización en segundo plano.",
+  "fr": "L'actualisation en arrière-plan est désactivée : vérification seulement Tenzy ouvert. Activez-la dans Réglages → Général → Actualisation en arrière-plan.",
+  "hi": "Background App Refresh बंद है, इसलिए पेज सिर्फ़ Tenzy खुला होने पर जाँचे जाते हैं। Settings → General → Background App Refresh में चालू करें।",
+  "it": "L'aggiornamento in background è disattivato: le pagine si controllano solo con Tenzy aperto. Attivalo in Impostazioni → Generali → Aggiorna app in background.",
+  "ja": "Appのバックグラウンド更新がオフのため、Tenzyを開いているときだけ確認します。設定 → 一般 → Appのバックグラウンド更新でオンに。",
+  "pt": "A Atualização em 2º plano está desligada; só verifica com a Tenzy aberta. Ative em Ajustes → Geral → Atualização em 2º Plano.",
+  "zh": "后台 App 刷新已关闭，只在 Tenzy 打开时检查。请在 设置 → 通用 → 后台 App 刷新 中开启。"
+ },
  "Background is dark or busy — stand in front of a plain light wall, or turn on 'Clean white background'.": {
   "de": "Hintergrund ist dunkel oder unruhig – stell dich vor eine helle, schlichte Wand oder schalte „Sauberer weißer Hintergrund“ ein.",
   "es": "El fondo es oscuro o recargado: ponte ante una pared clara y lisa o activa «Fondo blanco limpio».",
@@ -2689,6 +2709,16 @@
   "pt": "Verificar",
   "zh": "验证"
  },
+ "Check all now": {
+  "de": "Alle jetzt prüfen",
+  "es": "Comprobar todo ahora",
+  "fr": "Tout vérifier",
+  "hi": "सब अभी जाँचें",
+  "it": "Controlla tutto ora",
+  "ja": "今すぐすべて確認",
+  "pt": "Verificar tudo agora",
+  "zh": "立即全部检查"
+ },
  "Check it": {
   "de": "Prüfen",
   "es": "Compruébalo",
@@ -2708,6 +2738,16 @@
   "ja": "確認して修正",
   "pt": "Confira e corrija",
   "zh": "检查并修改"
+ },
+ "Check now": {
+  "de": "Jetzt prüfen",
+  "es": "Comprobar ahora",
+  "fr": "Vérifier",
+  "hi": "अभी जाँचें",
+  "it": "Controlla ora",
+  "ja": "今すぐ確認",
+  "pt": "Verificar agora",
+  "zh": "立即检查"
  },
  "Check the fridge and write the list first": {
   "de": "Erst den Kühlschrank checken und die Liste schreiben",
@@ -2749,6 +2789,16 @@
   "pt": "Caixa de seleção",
   "zh": "复选框"
  },
+ "Checked": {
+  "de": "Geprüft",
+  "es": "Comprobado",
+  "fr": "Vérifié",
+  "hi": "जाँचा गया",
+  "it": "Controllato",
+  "ja": "確認",
+  "pt": "Verificado",
+  "zh": "已检查"
+ },
  "Checking today's weather…": {
   "de": "Wetter für heute wird geprüft …",
   "es": "Consultando el tiempo de hoy…",
@@ -2758,6 +2808,16 @@
   "ja": "今日の天気を確認中…",
   "pt": "Verificando o clima de hoje…",
   "zh": "正在查看今天的天气…"
+ },
+ "Checking…": {
+  "de": "Prüfe …",
+  "es": "Comprobando…",
+  "fr": "Vérification…",
+  "hi": "जाँच रहे हैं…",
+  "it": "Controllo…",
+  "ja": "確認中…",
+  "pt": "Verificando…",
+  "zh": "正在检查…"
  },
  "Checks run each time you open Tenzy and a few times a day in the background, when iPhone allows. At most one alert a day.": {
   "de": "Geprüft wird bei jedem Öffnen und ein paar Mal am Tag im Hintergrund, wenn das iPhone es erlaubt. Höchstens ein Hinweis pro Tag.",
@@ -3198,6 +3258,16 @@
   "ja": "ページの写真を選択",
   "pt": "Escolher fotos de páginas",
   "zh": "选择页面照片"
+ },
+ "Choose: drops below, goes above, or changes. Tap Check now to see the number Tenzy reads.": {
+  "de": "Wähle: fällt unter, steigt über oder ändert sich. Tippe auf Jetzt prüfen, um die gelesene Zahl zu sehen.",
+  "es": "Elige: baja de, sube de o cambia. Toca Comprobar ahora para ver el número que lee Tenzy.",
+  "fr": "Choisissez : descend sous, passe au-dessus ou change. Touchez Vérifier pour voir le nombre lu.",
+  "hi": "चुनें: नीचे गिरे, ऊपर जाए या बदले। Tenzy कौन-सा नंबर पढ़ता है, देखने के लिए अभी जाँचें दबाएँ।",
+  "it": "Scegli: scende sotto, supera o cambia. Tocca Controlla ora per vedere il numero letto.",
+  "ja": "「下回る」「上回る」「変わったら」から選び、「今すぐ確認」で読み取る数値を確認。",
+  "pt": "Escolha: cai abaixo, passa de ou muda. Toque em Verificar agora para ver o número lido.",
+  "zh": "选择：低于、高于或变化。点“立即检查”查看 Tenzy 读到的数字。"
  },
  "Choose…": {
   "de": "Wählen …",
@@ -3968,6 +4038,16 @@
   "ja": "リストをコピー",
   "pt": "Copiar a lista",
   "zh": "复制清单"
+ },
+ "Copy the page's link (a product, a flight, a rate) and paste it here.": {
+  "de": "Kopiere den Link der Seite (Produkt, Flug, Kurs) und füge ihn hier ein.",
+  "es": "Copia el enlace de la página (un producto, un vuelo, una tarifa) y pégalo aquí.",
+  "fr": "Copiez le lien de la page (produit, vol, taux) et collez-le ici.",
+  "hi": "पेज का लिंक (प्रोडक्ट, फ़्लाइट, रेट) कॉपी करें और यहाँ पेस्ट करें।",
+  "it": "Copia il link della pagina (un prodotto, un volo, un tasso) e incollalo qui.",
+  "ja": "ページのリンク（商品、フライト、レート）をコピーして貼り付けます。",
+  "pt": "Copie o link da página (um produto, um voo, uma taxa) e cole aqui.",
+  "zh": "复制网页链接（商品、航班、汇率）并粘贴到这里。"
  },
  "Copy to share": {
   "de": "Zum Teilen kopieren",
@@ -5438,6 +5518,16 @@
   "ja": "各自が自分の言語で話すと、端末が翻訳してもう一方の言語で読み上げます。端末の音声認識を使用し — 言語パックを入れればオフラインで動作します。",
   "pt": "Cada lado fala no seu idioma; o telemóvel traduz e lê em voz alta no outro. Usa o reconhecimento de voz do telemóvel — offline quando o pacote de idioma está instalado.",
   "zh": "双方各用自己的语言说话；手机翻译后用另一种语言朗读。使用手机的语音识别 — 安装语言包后可离线。"
+ },
+ "Each time this tool runs — from Tenzy, a reminder, a Shortcut or the share sheet — it reads the number in the result and tells you when it crosses your line. Once per crossing, never a stream of alerts.": {
+  "de": "Jedes Mal, wenn dieses Werkzeug läuft – in Tenzy, per Erinnerung, Kurzbefehl oder Teilen-Menü –, liest es die Zahl im Ergebnis und sagt Bescheid, wenn sie deine Grenze überschreitet. Einmal pro Überschreitung, keine Flut.",
+  "es": "Cada vez que se ejecuta —desde Tenzy, un recordatorio, un Atajo o Compartir— lee el número del resultado y te avisa cuando cruza tu límite. Una vez por cruce, sin avalanchas.",
+  "fr": "À chaque exécution — depuis Tenzy, un rappel, un Raccourci ou Partager — il lit le nombre du résultat et vous prévient quand il franchit votre seuil. Une fois par franchissement, jamais en rafale.",
+  "hi": "हर बार यह टूल चलने पर — Tenzy, रिमाइंडर, शॉर्टकट या शेयर शीट से — यह नतीजे का नंबर पढ़ता है और आपकी सीमा पार होने पर बताता है। हर बार सिर्फ़ एक सूचना।",
+  "it": "Ogni volta che lo strumento viene eseguito (da Tenzy, un promemoria, un Comando rapido o Condividi) legge il numero nel risultato e ti avvisa quando supera la soglia. Una volta per superamento, mai una raffica.",
+  "ja": "このツールが実行されるたび（Tenzy、リマインダー、ショートカット、共有シート）、結果の数値を読んで基準を超えたら知らせます。1回の超過につき1回だけ。",
+  "pt": "Sempre que a ferramenta roda — pela Tenzy, um lembrete, um Atalho ou Compartilhar — ela lê o número do resultado e avisa quando passa do seu limite. Uma vez por cruzamento, sem enxurrada.",
+  "zh": "每次运行此工具（在 Tenzy、提醒、快捷指令或分享菜单中），它都会读取结果中的数字，越过你设定的线时提醒你。每次越线只提醒一次。"
  },
  "Easy foods if you're unwell: soup, fruit, crackers, tea": {
   "de": "Leichtes Essen, wenn du krank bist: Suppe, Obst, Cracker, Tee",
@@ -6939,6 +7029,16 @@
   "pt": "Para a frente e para trás",
   "zh": "前后"
  },
+ "Found": {
+  "de": "Gefunden:",
+  "es": "Encontrado:",
+  "fr": "Trouvé :",
+  "hi": "मिला:",
+  "it": "Trovato:",
+  "ja": "検出：",
+  "pt": "Encontrado:",
+  "zh": "找到："
+ },
  "Found nothing here, so it was skipped — the next steps still ran.": {
   "de": "Hier wurde nichts gefunden, daher übersprungen — die nächsten Schritte liefen trotzdem.",
   "es": "No se encontró nada aquí, así que se omitió; los pasos siguientes sí se ejecutaron.",
@@ -8298,6 +8398,16 @@
   "ja": "すでに十分圧縮されていました。",
   "pt": "Já estava bem comprimido.",
   "zh": "原本已经压缩得很好了。"
+ },
+ "It's already past your number — you'd get an alert on the first check.": {
+  "de": "Schon über deiner Zahl – du bekommst beim ersten Check eine Meldung.",
+  "es": "Ya ha pasado tu número: recibirás un aviso en la primera revisión.",
+  "fr": "Déjà au-delà de votre nombre — alerte dès la première vérification.",
+  "hi": "यह पहले ही आपकी सीमा पार है — पहली जाँच पर सूचना मिलेगी।",
+  "it": "Ha già superato il tuo numero: riceverai un avviso al primo controllo.",
+  "ja": "すでに基準を超えています — 最初のチェックでお知らせします。",
+  "pt": "Já passou do seu número — você recebe um alerta na primeira verificação.",
+  "zh": "已经越过你的数字——第一次检查就会提醒。"
  },
  "It's built from what's already in Tenzy — Medicine Reminders, Sorted (bills and letters), your contacts' birthdays and the Cleaner alerts. Add things there and they show up here.": {
   "de": "Sie entsteht aus dem, was schon in Tenzy ist – Medikamente, Sorted (Rechnungen und Briefe), Geburtstage deiner Kontakte und Cleaner-Hinweise. Trag dort etwas ein, und es erscheint hier.",
@@ -10889,6 +10999,16 @@
   "pt": "Dá nome à tua ferramenta",
   "zh": "为你的工具命名"
  },
+ "Name, e.g. Running shoes": {
+  "de": "Name, z. B. Laufschuhe",
+  "es": "Nombre, p. ej. Zapatillas",
+  "fr": "Nom, ex. Chaussures de course",
+  "hi": "नाम, जैसे रनिंग शूज़",
+  "it": "Nome, es. Scarpe da corsa",
+  "ja": "名前（例：ランニングシューズ）",
+  "pt": "Nome, ex.: Tênis de corrida",
+  "zh": "名称，例如：跑鞋"
+ },
  "Navy": {
   "de": "Marineblau",
   "es": "Azul marino",
@@ -11119,6 +11239,16 @@
   "pt": "Frase seguinte",
   "zh": "下一句"
  },
+ "Next to the words": {
+  "de": "Neben den Wörtern",
+  "es": "Junto a las palabras",
+  "fr": "À côté des mots",
+  "hi": "इन शब्दों के पास",
+  "it": "Vicino alle parole",
+  "ja": "次の語の近く",
+  "pt": "Perto das palavras",
+  "zh": "靠近这些词"
+ },
  "Night recorder": {
   "de": "Nachtrekorder",
   "es": "Grabadora nocturna",
@@ -11319,6 +11449,16 @@
   "pt": "Ainda sem notas.",
   "zh": "还没有笔记。"
  },
+ "No number found on the page.": {
+  "de": "Keine Zahl auf der Seite gefunden.",
+  "es": "No se encontró ningún número en la página.",
+  "fr": "Aucun nombre trouvé sur la page.",
+  "hi": "पेज पर कोई नंबर नहीं मिला।",
+  "it": "Nessun numero trovato nella pagina.",
+  "ja": "ページに数値が見つかりません。",
+  "pt": "Nenhum número encontrado na página.",
+  "zh": "网页上没有找到数字。"
+ },
  "No nuts": {
   "de": "Keine Nüsse",
   "es": "Sin frutos secos",
@@ -11328,6 +11468,16 @@
   "ja": "ナッツなし",
   "pt": "Sem nozes",
   "zh": "不吃坚果"
+ },
+ "No pages watched yet": {
+  "de": "Noch keine Seiten",
+  "es": "Aún no vigilas ninguna página",
+  "fr": "Aucune page surveillée",
+  "hi": "अभी कोई पेज नहीं",
+  "it": "Nessuna pagina ancora",
+  "ja": "まだページはありません",
+  "pt": "Nenhuma página ainda",
+  "zh": "还没有关注的网页"
  },
  "No phone": {
   "de": "Ohne Telefon",
@@ -11558,6 +11708,16 @@
   "ja": "この端末にはありません",
   "pt": "Não está neste telemóvel",
   "zh": "不在此手机上"
+ },
+ "Not past your number yet — you'll get one alert when it is.": {
+  "de": "Noch nicht über deiner Zahl – du bekommst eine Meldung, wenn es so weit ist.",
+  "es": "Aún no pasa tu número; recibirás un aviso cuando lo haga.",
+  "fr": "Pas encore au-delà — une alerte quand ce sera le cas.",
+  "hi": "अभी सीमा पार नहीं — पार होने पर एक सूचना मिलेगी।",
+  "it": "Non ha ancora superato il tuo numero: riceverai un avviso quando succede.",
+  "ja": "まだ基準を超えていません — 超えたら1回お知らせします。",
+  "pt": "Ainda não passou — você recebe um alerta quando passar.",
+  "zh": "还没越过你的数字——越过时会提醒一次。"
  },
  "Not sure which type you are? Tap “Which type am I?” — a 1-minute check sets it for you.": {
   "de": "Unsicher, welcher Typ du bist? Tippe auf „Welcher Typ bin ich?“ – ein 1-Minuten-Check stellt es ein.",
@@ -12349,6 +12509,16 @@
   "pt": "Abrir ajustes de notificações",
   "zh": "打开通知设置"
  },
+ "Open page": {
+  "de": "Seite öffnen",
+  "es": "Abrir página",
+  "fr": "Ouvrir la page",
+  "hi": "पेज खोलें",
+  "it": "Apri pagina",
+  "ja": "ページを開く",
+  "pt": "Abrir página",
+  "zh": "打开网页"
+ },
  "Open scanner": {
   "de": "Scanner öffnen",
   "es": "Abrir escáner",
@@ -12858,6 +13028,16 @@
   "ja": "テキストを貼り付けるか、下で写真を撮影…",
   "pt": "Cola texto, ou tira uma foto abaixo…",
   "zh": "粘贴文本，或在下方拍张照片…"
+ },
+ "Paste the page link": {
+  "de": "Link der Seite einfügen",
+  "es": "Pega el enlace de la página",
+  "fr": "Collez le lien de la page",
+  "hi": "पेज का लिंक पेस्ट करें",
+  "it": "Incolla il link della pagina",
+  "ja": "ページのリンクを貼り付け",
+  "pt": "Cole o link da página",
+  "zh": "粘贴网页链接"
  },
  "Paste the text, email or DM here…": {
   "de": "Füge hier den Text, die E-Mail oder DM ein…",
@@ -13849,6 +14029,16 @@
   "pt": "Verificar preços",
   "zh": "比价"
  },
+ "Price Watch": {
+  "de": "Preiswächter",
+  "es": "Vigilante de precios",
+  "fr": "Veille prix",
+  "hi": "प्राइस वॉच",
+  "it": "Controllo prezzi",
+  "ja": "価格ウォッチ",
+  "pt": "Alerta de preço",
+  "zh": "价格提醒"
+ },
  "Print it as a paper flipbook": {
   "de": "Als Papier-Daumenkino drucken",
   "es": "Imprimir como folioscopio de papel",
@@ -14528,6 +14718,16 @@
   "ja": "背面カメラの露出を読み取ります——気になる面に向けてください。おおよそ（±30%）で、植物・机・部屋に十分です。",
   "pt": "Lê a exposição da câmara traseira — aponta-a à superfície que te interessa. Aproximado (±30%), serve para plantas, secretárias e divisões.",
   "zh": "读取后置相机的曝光——对准你关心的表面。近似值（±30%），适用于植物、桌面和房间。"
+ },
+ "Reads the page the way a browser first gets it. A few shops only show prices after running scripts — Check now tells you straight away if a page won't work. Nothing about you is sent anywhere.": {
+  "de": "Liest die Seite so, wie ein Browser sie zuerst bekommt. Manche Shops zeigen Preise erst nach Skripten – Jetzt prüfen sagt sofort, wenn eine Seite nicht geht. Nichts über dich wird gesendet.",
+  "es": "Lee la página como la recibe un navegador al principio. Algunas tiendas solo muestran precios tras ejecutar scripts; Comprobar ahora te dice al momento si no funciona. No se envía nada sobre ti.",
+  "fr": "Lit la page comme un navigateur la reçoit d'abord. Certaines boutiques n'affichent les prix qu'après des scripts — Vérifier vous le dit tout de suite. Rien sur vous n'est envoyé.",
+  "hi": "पेज वैसे पढ़ता है जैसे ब्राउज़र पहले पाता है। कुछ दुकानें स्क्रिप्ट चलने के बाद ही कीमत दिखाती हैं — अभी जाँचें तुरंत बता देगा। आपकी कोई जानकारी नहीं भेजी जाती।",
+  "it": "Legge la pagina come la riceve all'inizio un browser. Alcuni negozi mostrano i prezzi solo dopo gli script: Controlla ora te lo dice subito. Nulla su di te viene inviato.",
+  "ja": "ブラウザが最初に受け取る形でページを読みます。スクリプト実行後にしか価格を出さない店もあります — 「今すぐ確認」ですぐわかります。あなたの情報は送信されません。",
+  "pt": "Lê a página como o navegador a recebe primeiro. Algumas lojas só mostram preços após scripts — Verificar agora avisa na hora. Nada sobre você é enviado.",
+  "zh": "按浏览器最初拿到的样子读取网页。少数商店要运行脚本后才显示价格——“立即检查”会马上告诉你。不会发送任何关于你的信息。"
  },
  "Reads the phone's GNSS directly. Speed and heading need you to be moving, and a clear view of the sky gives the best fix. Nothing is sent anywhere.": {
   "de": "Liest das GNSS des Handys direkt. Geschwindigkeit und Kurs erfordern Bewegung, und freie Sicht zum Himmel liefert den besten Fix. Nichts wird irgendwohin gesendet.",
@@ -15808,6 +16008,16 @@
   "ja": "保存・共有・印刷",
   "pt": "Guardar, partilhar ou imprimir",
   "zh": "保存、分享或打印"
+ },
+ "Save. iPhone checks a few times a day when it's charging or idle — light on battery and data — and tells you once when it crosses.": {
+  "de": "Sichern. Das iPhone prüft ein paar Mal am Tag beim Laden oder im Ruhezustand – schont Akku und Daten – und sagt einmal Bescheid.",
+  "es": "Guarda. El iPhone revisa unas veces al día cuando carga o está en reposo —poca batería y datos— y te avisa una vez.",
+  "fr": "Enregistrez. L'iPhone vérifie quelques fois par jour en charge ou au repos — léger pour la batterie et les données — et prévient une fois.",
+  "hi": "सेव करें। iPhone दिन में कुछ बार चार्जिंग या खाली समय में जाँचता है — बैटरी और डेटा पर हल्का — और एक बार बताता है।",
+  "it": "Salva. L'iPhone controlla qualche volta al giorno in carica o a riposo, leggero su batteria e dati, e ti avvisa una volta.",
+  "ja": "保存。iPhoneが充電中や待機中に1日数回チェック — 電池とデータに優しく — 超えたら1回お知らせ。",
+  "pt": "Salve. O iPhone verifica algumas vezes por dia carregando ou em repouso — leve na bateria e nos dados — e avisa uma vez.",
+  "zh": "保存。iPhone 在充电或闲置时每天检查几次——省电省流量——越线时提醒一次。"
  },
  "Saved in": {
   "de": "Gespeichert in",
@@ -18129,6 +18339,16 @@
   "pt": "Começar a gravar",
   "zh": "开始录制"
  },
+ "Start watching": {
+  "de": "Beobachten starten",
+  "es": "Empezar a vigilar",
+  "fr": "Commencer",
+  "hi": "नज़र रखना शुरू करें",
+  "it": "Inizia a controllare",
+  "ja": "見張りを開始",
+  "pt": "Começar a acompanhar",
+  "zh": "开始关注"
+ },
  "Start with something else": {
   "de": "Mit etwas anderem beginnen",
   "es": "Empezar con otra cosa",
@@ -18278,6 +18498,16 @@
   "ja": "録画停止",
   "pt": "Parar gravação",
   "zh": "停止录制"
+ },
+ "Stop watching": {
+  "de": "Nicht mehr beobachten",
+  "es": "Dejar de vigilar",
+  "fr": "Ne plus surveiller",
+  "hi": "नज़र रखना बंद करें",
+  "it": "Smetti di controllare",
+  "ja": "見張りをやめる",
+  "pt": "Parar de acompanhar",
+  "zh": "停止关注"
  },
  "Storage": {
   "de": "Speicher",
@@ -19069,6 +19299,26 @@
   "pt": "Me avise quando eu tiver mais de",
   "zh": "超过这个数量时提醒我："
  },
+ "Tell me when a price drops": {
+  "de": "Sag mir, wenn ein Preis fällt",
+  "es": "Avísame si baja un precio",
+  "fr": "Préviens-moi si un prix baisse",
+  "hi": "कीमत गिरे तो बताएँ",
+  "it": "Avvisami se un prezzo scende",
+  "ja": "値下がりをお知らせ",
+  "pt": "Avise quando um preço cair",
+  "zh": "降价时提醒我"
+ },
+ "Tell me when a price on a web page drops — or any number on it changes. Set it once; your phone checks quietly in the background.": {
+  "de": "Sag mir, wenn ein Preis auf einer Webseite fällt – oder sich eine Zahl ändert. Einmal einrichten; dein Telefon prüft leise im Hintergrund.",
+  "es": "Avísame cuando baje un precio en una web, o cambie cualquier número. Configúralo una vez; el teléfono revisa en silencio en segundo plano.",
+  "fr": "Préviens-moi quand un prix baisse sur une page web — ou qu'un nombre change. À régler une fois ; le téléphone vérifie discrètement en arrière-plan.",
+  "hi": "वेब पेज पर कीमत गिरे — या कोई नंबर बदले — तो बताएँ। एक बार सेट करें; फ़ोन चुपचाप बैकग्राउंड में जाँचता है।",
+  "it": "Avvisami quando un prezzo su una pagina scende, o cambia un numero. Imposta una volta; il telefono controlla in silenzio in background.",
+  "ja": "ウェブページの価格が下がったら — または数値が変わったら — お知らせ。一度設定すれば、iPhoneがバックグラウンドで静かにチェックします。",
+  "pt": "Avise quando um preço numa página cair — ou qualquer número mudar. Configure uma vez; o telefone verifica em segundo plano.",
+  "zh": "网页上的价格下降（或任何数字变化）时提醒你。设置一次，手机在后台安静检查。"
+ },
  "Tell me when my phone has less than": {
   "de": "Sag mir Bescheid, wenn mein Handy weniger hat als",
   "es": "Avísame cuando mi teléfono tenga menos de",
@@ -19088,6 +19338,16 @@
   "ja": "写真アプリの動画が次を超えたら知らせて：",
   "pt": "Me avise quando os vídeos em Fotos passarem de",
   "zh": "照片中的视频超过这个时提醒我："
+ },
+ "Tell me when…": {
+  "de": "Sag mir, wenn …",
+  "es": "Avísame cuando…",
+  "fr": "Préviens-moi quand…",
+  "hi": "मुझे बताएँ जब…",
+  "it": "Avvisami quando…",
+  "ja": "お知らせ条件…",
+  "pt": "Avise quando…",
+  "zh": "在以下情况提醒我…"
  },
  "Tells you to keep it secret": {
   "de": "Sagt dir, es geheim zu halten",
@@ -19319,6 +19579,16 @@
   "pt": "Teste enviado — chega em 5 segundos.",
   "zh": "测试已发送——5 秒后到达。"
  },
+ "Test sent — it arrives in 5 seconds. That's what you'll see when it crosses.": {
+  "de": "Test gesendet – er kommt in 5 Sekunden. So sieht es aus, wenn die Grenze überschritten wird.",
+  "es": "Prueba enviada: llega en 5 segundos. Es lo que verás cuando cruce.",
+  "fr": "Test envoyé — il arrive dans 5 secondes. C'est ce que vous verrez au franchissement.",
+  "hi": "टेस्ट भेजा — 5 सेकंड में आएगा। सीमा पार होने पर यही दिखेगा।",
+  "it": "Prova inviata: arriva tra 5 secondi. È quello che vedrai al superamento.",
+  "ja": "テスト送信 — 5秒後に届きます。超えたときはこう表示されます。",
+  "pt": "Teste enviado — chega em 5 segundos. É o que você verá quando cruzar.",
+  "zh": "测试已发送——5 秒后到达。越线时就会这样显示。"
+ },
  "Test sent — lock your phone; it arrives in 5 seconds.": {
   "de": "Test gesendet – sperre das Telefon; er kommt in 5 Sekunden.",
   "es": "Prueba enviada: bloquea el teléfono; llega en 5 segundos.",
@@ -19328,6 +19598,16 @@
   "ja": "テスト送信 — iPhoneをロックしてください。5秒後に届きます。",
   "pt": "Teste enviado — bloqueie o telefone; chega em 5 segundos.",
   "zh": "测试已发送——锁屏，5 秒后到达。"
+ },
+ "Test · Tell me when": {
+  "de": "Test · Sag mir, wenn",
+  "es": "Prueba · Avísame cuando",
+  "fr": "Test · Préviens-moi quand",
+  "hi": "टेस्ट · मुझे बताएँ जब",
+  "it": "Prova · Avvisami quando",
+  "ja": "テスト · お知らせ",
+  "pt": "Teste · Avise quando",
+  "zh": "测试 · 提醒我"
  },
  "Testing…": {
   "de": "Test läuft…",
@@ -19778,6 +20058,16 @@
   "ja": "ライブカメラの読み取りには実機のiPhone（とカメラアクセス）が必要です。写真はどこでも使えます。",
   "pt": "O leitor de câmara em direto precisa de um iPhone real (e acesso à câmara). As fotos funcionam em todo o lado.",
   "zh": "实时相机读取需要真实的 iPhone（并授予相机权限）。照片在任何地方都可用。"
+ },
+ "The number": {
+  "de": "Die Zahl",
+  "es": "El número",
+  "fr": "Le nombre",
+  "hi": "नंबर",
+  "it": "Il numero",
+  "ja": "数値",
+  "pt": "O número",
+  "zh": "数字"
  },
  "The phone can't tell ages, so you choose which faces to cover. Saved as a fresh copy with no location data.": {
   "de": "Das Telefon erkennt kein Alter, also wählst du, welche Gesichter verdeckt werden. Gespeichert als neue Kopie ohne Standortdaten.",
@@ -21509,6 +21799,16 @@
   "pt": "Cima",
   "zh": "向上"
  },
+ "Up to 10 pages, to keep it light on your battery.": {
+  "de": "Bis zu 10 Seiten, damit es den Akku schont.",
+  "es": "Hasta 10 páginas, para cuidar la batería.",
+  "fr": "Jusqu'à 10 pages, pour ménager la batterie.",
+  "hi": "बैटरी बचाने के लिए अधिकतम 10 पेज।",
+  "it": "Fino a 10 pagine, per risparmiare batteria.",
+  "ja": "電池のため最大10ページまで。",
+  "pt": "Até 10 páginas, para poupar bateria.",
+  "zh": "最多 10 个网页，以节省电量。"
+ },
  "Up to 72 frames. Smaller + fewer fps = a GIF that actually sends in chat.": {
   "de": "Bis zu 72 Bilder. Kleiner + weniger fps = ein GIF, das sich im Chat auch senden lässt.",
   "es": "Hasta 72 fotogramas. Más pequeño + menos fps = un GIF que de verdad se envía por chat.",
@@ -22019,6 +22319,16 @@
   "pt": "Garantia (meses)",
   "zh": "保修（月）"
  },
+ "Watch a page": {
+  "de": "Seite beobachten",
+  "es": "Vigilar una página",
+  "fr": "Surveiller une page",
+  "hi": "पेज पर नज़र रखें",
+  "it": "Controlla una pagina",
+  "ja": "ページを見張る",
+  "pt": "Acompanhar uma página",
+  "zh": "关注一个网页"
+ },
  "Wave the phone in a figure‑8 to calibrate.": {
   "de": "Bewege das Handy in einer Acht, um zu kalibrieren.",
   "es": "Mueve el teléfono en un ocho para calibrar.",
@@ -22489,6 +22799,16 @@
   "pt": "Rede Wi‑Fi",
   "zh": "Wi‑Fi网络"
  },
+ "Words next to it (optional), e.g. Price, Sale": {
+  "de": "Wörter daneben (optional), z. B. Preis, Angebot",
+  "es": "Palabras al lado (opcional), p. ej. Precio, Oferta",
+  "fr": "Mots à côté (facultatif), ex. Prix, Promo",
+  "hi": "पास के शब्द (वैकल्पिक), जैसे Price, Sale",
+  "it": "Parole vicine (facoltativo), es. Prezzo, Saldi",
+  "ja": "近くの言葉（任意）例：価格、セール",
+  "pt": "Palavras ao lado (opcional), ex.: Preço, Oferta",
+  "zh": "旁边的词（可选），例如：价格、特价"
+ },
  "Words to write across it": {
   "de": "Wörter, die darübergeschrieben werden",
   "es": "Palabras para escribir encima",
@@ -22778,6 +23098,16 @@
   "ja": "届く通知:",
   "pt": "Vai receber:",
   "zh": "你会收到："
+ },
+ "You'll hear when it changes.": {
+  "de": "Du hörst, wenn es sich ändert.",
+  "es": "Te avisaremos cuando cambie.",
+  "fr": "Vous serez prévenu quand il change.",
+  "hi": "बदलने पर आपको पता चलेगा।",
+  "it": "Ti avviseremo quando cambia.",
+  "ja": "変わったらお知らせします。",
+  "pt": "Você será avisado quando mudar.",
+  "zh": "变化时会通知你。"
  },
  "You'll see the calendar entry before it's added — tap Add to keep it.": {
   "de": "Du siehst den Eintrag, bevor er hinzugefügt wird – tippe auf „Hinzufügen“, um ihn zu behalten.",
@@ -23249,6 +23579,16 @@
   "pt": "ligar ao dentista, levantar uma encomenda nos correios às 15h, enviar e-mail ao Sam, pagar a renda sexta-feira",
   "zh": "给牙医打电话，下午 3 点到邮局取包裹，给 Sam 发邮件，周五付房租"
  },
+ "changes at all": {
+  "de": "sich überhaupt ändert",
+  "es": "cambia",
+  "fr": "change",
+  "hi": "बदले",
+  "it": "cambia",
+  "ja": "変わったら",
+  "pt": "mudar",
+  "zh": "有任何变化"
+ },
  "coats": {
   "de": "Anstriche",
   "es": "manos",
@@ -23359,6 +23699,16 @@
   "pt": "dias seguidos",
   "zh": "天连续"
  },
+ "drops below": {
+  "de": "fällt unter",
+  "es": "baja de",
+  "fr": "descend sous",
+  "hi": "नीचे गिरे",
+  "it": "scende sotto",
+  "ja": "を下回る",
+  "pt": "cai abaixo de",
+  "zh": "低于"
+ },
  "e.g. 1-2, 3, 4-  (blank = every page)": {
   "de": "z. B. 1-2, 3, 4-  (leer = jede Seite)",
   "es": "p. ej. 1-2, 3, 4-  (vacío = todas las páginas)",
@@ -23368,6 +23718,16 @@
   "ja": "例：1-2, 3, 4-  （空＝全ページ）",
   "pt": "ex. 1-2, 3, 4-  (vazio = todas as páginas)",
   "zh": "例如 1-2, 3, 4-  （留空＝每一页）"
+ },
+ "e.g. 50": {
+  "de": "z. B. 50",
+  "es": "p. ej. 50",
+  "fr": "ex. 50",
+  "hi": "जैसे 50",
+  "it": "es. 50",
+  "ja": "例：50",
+  "pt": "ex.: 50",
+  "zh": "例如 50"
  },
  "e.g. HELP or your name": {
   "de": "z. B. HILFE oder dein Name",
@@ -23398,6 +23758,16 @@
   "ja": "例：ソファの壁、寝室の窓",
   "pt": "ex.: parede do sofá, janela do quarto",
   "zh": "例如：沙发墙、卧室窗户"
+ },
+ "e.g. Total, Balance, Price": {
+  "de": "z. B. Summe, Saldo, Preis",
+  "es": "p. ej. Total, Saldo, Precio",
+  "fr": "ex. Total, Solde, Prix",
+  "hi": "जैसे Total, Balance, Price",
+  "it": "es. Totale, Saldo, Prezzo",
+  "ja": "例：合計、残高、価格",
+  "pt": "ex.: Total, Saldo, Preço",
+  "zh": "例如：合计、余额、价格"
  },
  "e.g. shrink a photo under 1 MB and hide where it was taken": {
   "de": "z. B. ein Foto unter 1 MB verkleinern und verbergen, wo es aufgenommen wurde",
@@ -23448,6 +23818,16 @@
   "ja": "服用分は、近いものが過ぎるにつれて予約されます。ときどきTenzyを開いて補充してください。",
   "pt": "doses mais distantes serão agendadas conforme as próximas passarem. Abra o Tenzy de vez em quando para completar.",
   "zh": "剂量会在较近的过去后再排上。偶尔打开Tenzy补充一下。"
+ },
+ "goes above": {
+  "de": "steigt über",
+  "es": "sube de",
+  "fr": "passe au-dessus de",
+  "hi": "ऊपर जाए",
+  "it": "supera",
+  "ja": "を上回る",
+  "pt": "passa de",
+  "zh": "高于"
  },
  "good": {
   "de": "gut",

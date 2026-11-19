@@ -39,7 +39,7 @@ struct TenzyApp: App {
             .copyToastHost()   // one shared "Copied" confirmation for every tool
             .onChange(of: phase) { _, p in
                 // Every time Tenzy comes to the front: check the "tell me when…" alerts, and book the next background check.
-                if p == .active, !Launch.uitest { Task { await SmartAlerts.checkAll(); await DailyBrief.refresh() }; SmartAlerts.scheduleBackground() }
+                if p == .active, !Launch.uitest { Task { await SmartAlerts.checkAll(); await DailyBrief.refresh(); await PageWatcher.checkAll() }; SmartAlerts.scheduleBackground() }
                 // A flashlight shortcut that ran while Tenzy was closed: open Flashlight+, which starts the pattern.
                 if p == .active, UserDefaults.standard.string(forKey: TorchExtras.pendingKey) != nil {
                     showOnboarding = false
@@ -140,6 +140,7 @@ struct Tool: Identifiable {
     Tool(id: "textstudio", name: "Text Studio",      blurb: "Fix, rewrite, reply, summarize",    icon: "text.badge.checkmark",                page: 9, ai: true, asset: "tool_textstudio", keywords: ["text","grammar","proofread","rewrite","tone","reply","summarize","summary","edit","polish","email","message","ai"]),
     Tool(id: "thinking",   name: "Thinking tools",   blurb: "Untangle, plan the day, decide, explain, reword", icon: "brain.head.profile",       page: 9, ai: true, asset: "tool_explain", keywords: ["think","thinking","untangle","plan my day","decide","decision","crossroads","explain","plain english","reword","rewrite","tone","brain dump","clear my head","prep","checklist","focus","overwhelmed","steps","to-do","todo","ai"]),
     Tool(id: "medreminder", name: "Medicine Reminders", blurb: "Reminders with a Taken button",   icon: "pills.fill",                          page: 8, asset: "tool_rest", keywords: ["medicine","medication","pill","pills","tablet","dose","reminder","medicine reminder","pill reminder","vitamins","refill","prescription","take my meds"]),
+    Tool(id: "pricewatch", name: "Price Watch",      blurb: "Tell me when a price drops",      icon: "bell.badge.fill",                     page: 8, asset: "tool_livecaptions", keywords: ["price watch","price drop","price alert","tell me when","watch a price","deal alert","cheaper","back in stock","track price","rate alert","web page","notify me"]),
     Tool(id: "brief",      name: "Daily Brief",      blurb: "Your day in one morning note",    icon: "sun.horizon.fill",                    page: 8, asset: "tool_rest", keywords: ["daily brief","morning","today","my day","summary","agenda","what's today","briefing","digest","weather","what to wear","reminders","due today"]),
     Tool(id: "daydiary",   name: "My Day",           blurb: "How was today? One tap, or say why", icon: "heart.text.square",               page: 8, asset: "tool_rest", keywords: ["diary","journal","mood","my day","how was my day","log my day","daily log","good day","bad day","feelings","gratitude","evening","reflect","private diary"]),
     Tool(id: "untangle",   name: "Untangle",         blurb: "Everything on your plate, planned",  icon: "scribble.variable",                page: 9, asset: "tool_explain", keywords: ["untangle","plan my day","organize my day","to do","to-do","todo","overwhelmed","tasks","errands","schedule my day","not feeling well","day plan","reminders for my tasks"]),
@@ -375,6 +376,7 @@ struct ToolDestination: View {
         case "medreminder": MedRemindersView()
         case "daydiary": DayDiaryView()
         case "brief": DailyBriefView()
+        case "pricewatch": PriceWatchView()
         case "cards": BusinessCardsView()
         case "myalerts": MyAlertsView()
         case "menu": MenuView()

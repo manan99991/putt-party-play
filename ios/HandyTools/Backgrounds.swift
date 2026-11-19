@@ -59,6 +59,7 @@ enum TenzyArt {
         "medreminder": "rest",
         "daydiary": "rest",
         "brief": "rest",
+        "pricewatch": "livecaptions",
         "cards": "datagrab",
         "untangle": "explain",
         "menu": "translate",
