@@ -262,7 +262,7 @@ enum AudioEdit {
                 AVFormatIDKey: kAudioFormatMPEG4AAC,
                 AVSampleRateKey: read.rate,
                 AVNumberOfChannelsKey: read.channels,
-                AVEncoderBitRateKey: read.channels >= 2 ? 128_000 : 96_000,
+                AVEncoderBitRateKey: AACRate.safe(read.channels >= 2 ? 128_000 : 96_000, sampleRate: Double(read.rate), channels: read.channels),
             ]
         }
 

@@ -55,7 +55,7 @@ jobs:
           c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
           c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
           rm -f "$RUNNER_TEMP/accuracy.txt"
-          TEST_RUNNER_REAL_PHOTOS="$REAL" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" TEST_RUNNER_ACCURACY_REPORT="$RUNNER_TEMP/accuracy.txt" xcodebuild test \
+          TEST_RUNNER_QA_OUT="$RUNNER_TEMP/qa-out" TEST_RUNNER_REAL_PHOTOS="$REAL" TEST_RUNNER_GOLDEN="$PWD/RealPhotos/golden.json" TEST_RUNNER_ACCURACY_REPORT="$RUNNER_TEMP/accuracy.txt" xcodebuild test \
             -project HandyTools.xcodeproj -scheme HandyTools \
             -destination "id=$UDID" \
             ${{ matrix.tests }} \
@@ -71,6 +71,18 @@ jobs:
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
           [ -f ios/accuracy.txt ] && bash .github/publish-log.sh "ios-accuracy-${{ matrix.part }}" ios/accuracy.txt || true
+      - name: Finished pictures (encrypted — some show Manan's face)
+        if: always()
+        env: { TEST_PHOTOS_KEY: "${{ secrets.TEST_PHOTOS_KEY }}" }
+        run: |
+          if [ -d "$RUNNER_TEMP/qa-out" ] && [ -n "$TEST_PHOTOS_KEY" ]; then
+            OSSL=$( [ -x /opt/homebrew/opt/openssl@3/bin/openssl ] && echo /opt/homebrew/opt/openssl@3/bin/openssl || echo openssl )
+            (cd "$RUNNER_TEMP/qa-out" && zip -q -r "$RUNNER_TEMP/qa-out.zip" .)
+            $OSSL enc -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -in "$RUNNER_TEMP/qa-out.zip" -out "$RUNNER_TEMP/qa-out-${{ matrix.part }}.zip.enc" -pass env:TEST_PHOTOS_KEY
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: "qa-out-${{ matrix.part }}", path: "${{ runner.temp }}/qa-out-${{ matrix.part }}.zip.enc", if-no-files-found: ignore, retention-days: 7 }
       - name: Scores in the run summary
         if: always()
         run: |

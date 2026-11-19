@@ -147,7 +147,7 @@ enum AudioConvert {
                 AVFormatIDKey: kAudioFormatMPEG4AAC,
                 AVNumberOfChannelsKey: channels,
                 AVSampleRateKey: sampleRate,
-                AVEncoderBitRateKey: bitRate ?? (channels >= 2 ? 128_000 : 96_000),
+                AVEncoderBitRateKey: AACRate.safe(bitRate ?? (channels >= 2 ? 128_000 : 96_000), sampleRate: sampleRate, channels: channels),
             ]
         }
 
@@ -317,5 +317,16 @@ extension AudioConvert {
             }
         }
         return .failure(lastError)
+    }
+}
+
+
+/// AAC can't be encoded at just any bit rate: a phone-call or speech recording at 8–16 kHz refuses 96 kbps,
+/// and the whole convert/trim/clean failed on it. Cap the rate to what the encoder accepts at that sample rate
+/// (about 3 bits per sample per channel), keeping the usual 96–128 kbps for normal 44.1/48 kHz audio.
+enum AACRate {
+    static func safe(_ wanted: Int, sampleRate: Double, channels: Int) -> Int {
+        let cap = Int(sampleRate * 3) * max(1, channels)
+        return max(16_000, min(wanted, cap))
     }
 }

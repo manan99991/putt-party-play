@@ -14,6 +14,12 @@ import ImageIO
 final class ToolOutputQualityTests: XCTestCase {
     private var root: URL? { ProcessInfo.processInfo.environment["REAL_PHOTOS"].map { URL(fileURLWithPath: $0) } }
     private var reportURL: URL { URL(fileURLWithPath: ProcessInfo.processInfo.environment["ACCURACY_REPORT"] ?? NSTemporaryDirectory() + "accuracy.txt") }
+    /// Keep a tool's finished picture so it can be looked at (the QA lab encrypts these before upload).
+    static func keep(_ img: UIImage, as name: String) {
+        guard let dir = ProcessInfo.processInfo.environment["QA_OUT"], let d = img.pngData() else { return }
+        try? FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        try? d.write(to: URL(fileURLWithPath: dir).appendingPathComponent(name.replacingOccurrences(of: "/", with: "-") + ".png"))
+    }
     private func report(_ lines: [String]) { RealPhotoAccuracyTests.append(lines, to: reportURL); lines.forEach { print("ACC| " + $0) } }
 
     private func privatePhotos(_ prefix: String? = nil) throws -> [(String, UIImage)] {
@@ -50,10 +56,12 @@ final class ToolOutputQualityTests: XCTestCase {
                 for (v, img) in variants {
                     n += 1
                     guard let made = PassportPhoto.make(img, spec: spec), let cg = made.image.cgImage else {
+                        Self.keep(img, as: "passport-\(spec.id)-\(v)-INPUT-nothing-made")
                         lines.append("\(name)\t\(spec.id)\t\(v)\t—\t—\t—\t—\t—\t| no photo made"); continue
                     }
                     // Re-measure the finished photo ourselves.
                     var fails: [String] = []
+                    Self.keep(made.image, as: "passport-\(spec.id)-\(v)")
                     let sizeOK = abs(CGFloat(cg.width) - spec.px.width) <= 1 && abs(CGFloat(cg.height) - spec.px.height) <= 1
                     if !sizeOK { fails.append("file is \(cg.width)×\(cg.height), should be \(Int(spec.px.width))×\(Int(spec.px.height))") }
                     var headText = "—", eyeText = "—"
@@ -147,8 +155,10 @@ final class ToolOutputQualityTests: XCTestCase {
             for (v, img) in [("as taken", face), ("farther away", Self.farther(face)), ("dim", ToughPhotoTests.trouble(face, .dim))] {
                 n += 1
                 guard let cut = ImageStudio.cutout(img), let cg = cut.cgImage else {
+                    Self.keep(img, as: "cutout-INPUT-failed")
                     lines.append("\(name)\t\(v)\t—\t—\t| no cut-out (subject lifting may not run in the simulator)"); continue
                 }
+                Self.keep(cut, as: "cutout-\(name)-\(v)")
                 let w = CGFloat(cg.width), h = CGFloat(cg.height)
                 let corners = Self.alpha(cg, at: [CGPoint(x: 3, y: 3), CGPoint(x: w - 4, y: 3)])
                 let centre = Self.alpha(cg, at: [CGPoint(x: w / 2, y: h * 0.45)])
@@ -171,7 +181,9 @@ final class ToolOutputQualityTests: XCTestCase {
         var lines = ["PDF TOOLS\tfile\tpages\treorder\tlock\tshrink\tsearchable\t| problem"]
         var good = 0.0, n = 0.0
         var ocrDone = 0
-        func text(_ d: Data?, _ i: Int) -> String { d.flatMap { PDFDocument(data: $0)?.page(at: i)?.string } ?? "" }
+        func text(_ d: Data?, _ i: Int) -> String {
+            (d.flatMap { PDFDocument(data: $0)?.page(at: i)?.string } ?? "").filter { $0.isLetter || $0.isNumber }
+        }
         for f in files {
             guard let data = try? Data(contentsOf: dir.appendingPathComponent(f)), let doc = PDFDocument(data: data), doc.pageCount > 0, !doc.isLocked else { continue }
             let pages = doc.pageCount
@@ -196,8 +208,10 @@ final class ToolOutputQualityTests: XCTestCase {
             if !PDFSearchable.hasText(data), ocrDone < 6, pages <= 6 {
                 ocrDone += 1
                 let made = await PDFSearchable.make(data)
-                let ok = made.map { PDFSearchable.hasText($0.data) && PDFDocument(data: $0.data)?.pageCount == pages } ?? false
-                searchText = ok ? "made" : "failed"
+                // A page that is only a drawing has nothing to read: no text layer is the right answer there.
+                let readable = (0..<pages).contains { i in doc.page(at: i).map { !DocEngine.recognize(PDFSearchable.render($0, maxWidth: 1600)).isEmpty } ?? false }
+                let ok = !readable || (made.map { PDFSearchable.hasText($0.data) && PDFDocument(data: $0.data)?.pageCount == pages } ?? false)
+                searchText = !readable ? "no words on it" : ok ? "made" : "failed"
                 if !ok { fails.append("no text layer added") }
             }
             n += 1; if fails.isEmpty { good += 1 }
