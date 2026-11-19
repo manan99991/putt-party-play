@@ -65,6 +65,24 @@ struct LensView: View {
             inputCard
             if busy { HStack { ProgressView(); Text(L("Reading the text…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
+            if hasText, LabelFirst.isLabel(text) {
+                let parts = LabelFirst.parts(text)
+                if !parts.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label(L("The important part, as printed"), systemImage: "exclamationmark.bubble.fill").font(HandyFont.bodyStrong)
+                        ForEach(parts, id: \.title) { p in
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(L(p.title)).font(HandyFont.caption.weight(.semibold)).foregroundStyle(p.title == "Warnings" ? HandyColor.danger : HandyColor.accent)
+                                ForEach(p.lines, id: \.self) { Text($0).font(.system(size: 19, weight: .medium)).fixedSize(horizontal: false, vertical: true) }
+                            }
+                        }
+                        Button { reader.load(LabelFirst.spoken(parts)); reader.play(); action = .listen } label: {
+                            Label(L("Read these aloud"), systemImage: "speaker.wave.2.fill").frame(maxWidth: .infinity)
+                        }.primaryButton()
+                        Text(L("The label's own words. If anything is unclear, ask a pharmacist.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+                }
+            }
             if hasText {
                 HandyFlow(spacing: HandySpacing.s8) {
                     ForEach(Action.allCases, id: \.rawValue) { a in
