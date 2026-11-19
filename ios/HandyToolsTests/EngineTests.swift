@@ -2409,6 +2409,25 @@ final class EngineTests: XCTestCase {
         XCTAssertNotEqual(ArrivalAlert.id("Jewel-Osco", step: step), ArrivalAlert.id("Aldi", step: step))
     }
 
+    func testRingtoneStartsOnTheBestPartAndReadsTheSong() async throws {
+        // A quiet intro, a loud chorus at 60–90 s, quiet again: the tone starts on the chorus.
+        let lv: [Float] = (0..<120).map { i in (60..<90).contains(i) ? 1.0 : 0.2 }   // one value per second
+        XCTAssertEqual(RingtoneSmart.bestStart(lv, total: 120, length: 30), 60, accuracy: 1.01)
+        XCTAssertEqual(RingtoneSmart.bestStart(lv, total: 20, length: 30), 0, "a clip shorter than the tone starts at 0")
+        XCTAssertEqual(RingtoneSmart.bestStart([], total: 100, length: 30), 0)
+        let flat = [Float](repeating: 0.5, count: 50)
+        XCTAssertEqual(RingtoneSmart.bestStart(flat, total: 50, length: 10), 0, "no clear peak → the start, never a random spot")
+        XCTAssertLessThanOrEqual(RingtoneSmart.bestStart(lv, total: 120, length: 30) + 30, 120.0001)
+        let src = try makeToneFile(seconds: 2.0)
+        defer { try? FileManager.default.removeItem(at: src) }
+        let levels = try XCTUnwrap(await RingtoneSmart.levels(src, buckets: 40))
+        XCTAssertEqual(levels.count, 40); XCTAssertEqual(levels.max() ?? 0, 1, accuracy: 0.001)
+        if case .success(let u) = await AudioConvert.ringtone(src, start: 0, length: 1.5, fade: 0.5) {
+            let d = (try? await AVURLAsset(url: u).load(.duration))?.seconds ?? 0
+            XCTAssertEqual(d, 1.5, accuracy: 0.2, "the faded tone is the length chosen")
+        } else { XCTFail("ringtone with a fade should export") }
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

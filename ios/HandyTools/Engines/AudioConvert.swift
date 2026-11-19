@@ -191,9 +191,9 @@ enum AudioConvert {
     /// the slice is clamped inside the source so a bad range can never produce an empty or over-long
     /// file. The caller hands the result off via the share sheet (Files → GarageBand), since iOS gives
     /// no API to set a ringtone directly.
-    static func ringtone(_ src: URL, start: Double, length: Double) async -> Result<URL, Failure> {
+    static func ringtone(_ src: URL, start: Double, length: Double, fade: Double = 0) async -> Result<URL, Failure> {
         let asset = AVURLAsset(url: src)
-        guard (try? await asset.loadTracks(withMediaType: .audio).first) != nil else {
+        guard let track = try? await asset.loadTracks(withMediaType: .audio).first else {
             return .failure(.noAudioTrack)
         }
         let total = (try? await asset.load(.duration))?.seconds ?? 0
@@ -211,6 +211,15 @@ enum AudioConvert {
         session.outputFileType = .m4a   // .m4r is the same container; only the extension differs
         session.timeRange = range
         session.metadata = []
+        // A gentle fade in and out, so the tone starts softly and never cuts off mid-note.
+        if fade > 0 {
+            let f = min(fade, len / 3)
+            let p = AVMutableAudioMixInputParameters(track: track)
+            p.setVolumeRamp(fromStartVolume: 0, toEndVolume: 1, timeRange: CMTimeRange(start: range.start, duration: CMTime(seconds: f, preferredTimescale: 600)))
+            p.setVolumeRamp(fromStartVolume: 1, toEndVolume: 0, timeRange: CMTimeRange(start: CMTime(seconds: begin + len - f, preferredTimescale: 600), duration: CMTime(seconds: f, preferredTimescale: 600)))
+            let mix = AVMutableAudioMix(); mix.inputParameters = [p]
+            session.audioMix = mix
+        }
 
         let ok = await withTaskGroup(of: Bool.self) { group -> Bool in
             group.addTask { await session.export(); return session.status == .completed }

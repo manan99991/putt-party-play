@@ -1649,6 +1649,16 @@
   "pt": "Melhor estimativa do reconhecimento no dispositivo — uma pesquisa rápida confirma a espécie ou o modelo exatos.",
   "zh": "基于设备端识别的最佳猜测——快速搜索即可确认确切的物种或型号。"
  },
+ "Best part": {
+  "de": "Bester Teil",
+  "es": "Mejor parte",
+  "fr": "Meilleur passage",
+  "hi": "सबसे अच्छा हिस्सा",
+  "it": "Parte migliore",
+  "ja": "いちばん良い部分",
+  "pt": "Melhor parte",
+  "zh": "最佳片段"
+ },
  "Big swing today — wear layers you can take off.": {
   "de": "Große Temperaturschwankung – Schichten, die du ausziehen kannst.",
   "es": "Gran cambio de temperatura hoy: capas que puedas quitarte.",
@@ -2538,6 +2548,16 @@
   "ja": "スキャンしたPDFを選ぶと、Tenzyが全ページを読み取り、文字の検索・コピーが可能に。",
   "pt": "Escolha um PDF escaneado e o Tenzy lê cada página para você pesquisar e copiar o texto.",
   "zh": "选择扫描的PDF，Tenzy会读取每一页，让你能搜索和复制文字。"
+ },
+ "Choose a song or audio file": {
+  "de": "Song oder Audiodatei wählen",
+  "es": "Elegir una canción o audio",
+  "fr": "Choisir une chanson ou un fichier audio",
+  "hi": "गाना या ऑडियो फ़ाइल चुनें",
+  "it": "Scegli una canzone o un file audio",
+  "ja": "曲や音声ファイルを選ぶ",
+  "pt": "Escolher uma música ou ficheiro de áudio",
+  "zh": "选择歌曲或音频文件"
  },
  "Choose a song or recording to name it properly and give it cover art.": {
   "de": "Wähle einen Song oder eine Aufnahme, um ihn richtig zu benennen und ein Cover zu geben.",
@@ -5259,6 +5279,16 @@
   "pt": "Rostos e texto pessoal (matrículas, números, e-mails) são detetados e tapados automaticamente em todo o clip, e localização/metadados são removidos. Melhor esforço — confirma o resultado antes de partilhar.",
   "zh": "整个片段中的人脸和个人文字（车牌、电话号码、邮箱）会被自动识别并涂黑，位置/元数据也会被清除。尽力而为——分享前请检查结果。"
  },
+ "Fade in and out": {
+  "de": "Ein- und ausblenden",
+  "es": "Entrada y salida suaves",
+  "fr": "Fondu au début et à la fin",
+  "hi": "धीरे शुरू और धीरे ख़त्म",
+  "it": "Dissolvenza in entrata e uscita",
+  "ja": "フェードイン・アウト",
+  "pt": "Entrada e saída suaves",
+  "zh": "淡入淡出"
+ },
  "Far": {
   "de": "Fern",
   "es": "Lejos",
@@ -6489,6 +6519,16 @@
   "pt": "Ouça antes de guardar",
   "zh": "保存前先试听"
  },
+ "Hear this part": {
+  "de": "Diesen Teil anhören",
+  "es": "Escuchar esta parte",
+  "fr": "Écouter ce passage",
+  "hi": "यह हिस्सा सुनें",
+  "it": "Ascolta questa parte",
+  "ja": "この部分を聴く",
+  "pt": "Ouvir esta parte",
+  "zh": "试听这一段"
+ },
  "Hearing Boost": {
   "de": "Hörverstärker",
   "es": "Mejora auditiva",
@@ -7498,6 +7538,16 @@
   "ja": "主な詳細",
   "pt": "Detalhes principais",
   "zh": "关键细节"
+ },
+ "Kind": {
+  "de": "Art",
+  "es": "Tipo",
+  "fr": "Type",
+  "hi": "प्रकार",
+  "it": "Tipo",
+  "ja": "種類",
+  "pt": "Tipo",
+  "zh": "类型"
  },
  "Label": {
   "de": "Beschriftung",
@@ -10199,6 +10249,16 @@
   "pt": "Abrir",
   "zh": "打开"
  },
+ "Open GarageBand (free from Apple), tap Browse, and open the file you saved.": {
+  "de": "Öffne GarageBand (kostenlos von Apple), tippe auf „Durchsuchen“ und öffne die Datei.",
+  "es": "Abre GarageBand (gratis de Apple), toca Explorar y abre el archivo.",
+  "fr": "Ouvrez GarageBand (gratuit, d'Apple), touchez Parcourir et ouvrez le fichier.",
+  "hi": "GarageBand खोलें (Apple का मुफ़्त ऐप), Browse दबाएँ और सेव की फ़ाइल खोलें।",
+  "it": "Apri GarageBand (gratis di Apple), tocca Sfoglia e apri il file.",
+  "ja": "GarageBand（Apple の無料アプリ）を開き、ブラウズから保存したファイルを開きます。",
+  "pt": "Abra o GarageBand (grátis, da Apple), toque em Procurar e abra o ficheiro.",
+  "zh": "打开 GarageBand（Apple 免费应用），点“浏览”，打开保存的文件。"
+ },
  "Open Maps": {
   "de": "Karten öffnen",
   "es": "Abrir Mapas",
@@ -11549,6 +11609,16 @@
   "pt": "Mantém premido o código para ver o que contém, sem o abrir.",
   "zh": "长按代码即可查看其内容而无需打开。"
  },
+ "Press and hold the song, tap Share, then Ringtone, then Export.": {
+  "de": "Halte den Song gedrückt, tippe auf „Teilen“, „Klingelton“, dann „Exportieren“.",
+  "es": "Mantén pulsada la canción, toca Compartir, Tono de llamada y Exportar.",
+  "fr": "Maintenez le morceau, touchez Partager, Sonnerie, puis Exporter.",
+  "hi": "गाने को दबाकर रखें, शेयर → रिंगटोन → एक्सपोर्ट दबाएँ।",
+  "it": "Tieni premuto il brano, tocca Condividi, Suoneria, poi Esporta.",
+  "ja": "曲を長押し→共有→着信音→書き出す。",
+  "pt": "Mantenha premida a música, toque em Partilhar, Toque e Exportar.",
+  "zh": "长按歌曲，点“共享”→“电话铃声”→“导出”。"
+ },
  "Pressure to act fast": {
   "de": "Druck, schnell zu handeln",
   "es": "Presión para actuar rápido",
@@ -12818,6 +12888,16 @@
   "ja": "現在：",
   "pt": "Agora:",
   "zh": "目前："
+ },
+ "Ringtone · up to 30 s": {
+  "de": "Klingelton · bis 30 s",
+  "es": "Tono de llamada · hasta 30 s",
+  "fr": "Sonnerie · 30 s max",
+  "hi": "रिंगटोन · 30 सेकंड तक",
+  "it": "Suoneria · fino a 30 s",
+  "ja": "着信音・最大30秒",
+  "pt": "Toque · até 30 s",
+  "zh": "来电铃声 · 最长 30 秒"
  },
  "Robot": {
   "de": "Roboter",
@@ -14829,6 +14909,16 @@
   "pt": "Info e capa da música",
   "zh": "歌曲信息与封面"
  },
+ "Songs from Apple Music can't be used (they're protected) — use a file you own, a voice memo or a video.": {
+  "de": "Songs aus Apple Music gehen nicht (sie sind geschützt) – nimm eine eigene Datei, ein Sprachmemo oder ein Video.",
+  "es": "Las canciones de Apple Music no se pueden usar (están protegidas): usa un archivo tuyo, una nota de voz o un vídeo.",
+  "fr": "Les morceaux d'Apple Music ne peuvent pas être utilisés (ils sont protégés) — utilisez un fichier à vous, un mémo vocal ou une vidéo.",
+  "hi": "Apple Music के गाने इस्तेमाल नहीं हो सकते (वे सुरक्षित हैं) — अपनी फ़ाइल, वॉइस मेमो या वीडियो लें।",
+  "it": "I brani di Apple Music non si possono usare (sono protetti): usa un tuo file, un memo vocale o un video.",
+  "ja": "Apple Music の曲は保護されているため使えません。自分のファイル、ボイスメモ、動画を使ってください。",
+  "pt": "As músicas do Apple Music não podem ser usadas (são protegidas) — use um ficheiro seu, uma gravação ou um vídeo.",
+  "zh": "Apple Music 的歌曲受保护无法使用，请用你自己的文件、语音备忘录或视频。"
+ },
  "Sort": {
   "de": "Sortieren",
   "es": "Ordenar",
@@ -15158,6 +15248,16 @@
   "ja": "いちばん目に入る場所から",
   "pt": "Comece pelo canto que você mais vê",
   "zh": "从最常看到的地方开始"
+ },
+ "Started on the song's best part — the loudest, fullest stretch. Tap the waveform to move it.": {
+  "de": "Beginnt beim besten Teil des Songs – der lautesten, vollsten Stelle. Tippe auf die Wellenform, um ihn zu verschieben.",
+  "es": "Empieza en la mejor parte: el tramo más fuerte y lleno. Toca la forma de onda para moverlo.",
+  "fr": "Commence sur le meilleur passage — le plus fort et le plus plein. Touchez la forme d'onde pour le déplacer.",
+  "hi": "गाने के सबसे अच्छे हिस्से से शुरू — सबसे ज़ोरदार, भरा हुआ हिस्सा। बदलने के लिए वेवफ़ॉर्म पर टैप करें।",
+  "it": "Parte dal punto migliore: il tratto più forte e pieno. Tocca la forma d'onda per spostarlo.",
+  "ja": "曲のいちばん盛り上がる部分から始めました。波形をタップして移動できます。",
+  "pt": "Começa na melhor parte — o trecho mais forte e cheio. Toque na forma de onda para mudar.",
+  "zh": "已从歌曲最精彩的部分开始。点波形可以移动。"
  },
  "Step back a little — you're very close to their face.": {
   "de": "Geh etwas zurück – du bist sehr nah am Gesicht.",
@@ -15649,6 +15749,16 @@
   "pt": "Toca em Gravar e começa a falar — a transcrição aparece enquanto falas.",
   "zh": "点按录音并开始讲话 — 文字记录会随你说话实时出现。"
  },
+ "Tap Save or share, then Save to Files.": {
+  "de": "Tippe auf „Sichern oder teilen“, dann „In Dateien sichern“.",
+  "es": "Toca Guardar o compartir y luego Guardar en Archivos.",
+  "fr": "Touchez Enregistrer ou partager, puis Enregistrer dans Fichiers.",
+  "hi": "‘सेव या शेयर’ दबाएँ, फिर ‘Files में सेव करें’।",
+  "it": "Tocca Salva o condividi, poi Salva in File.",
+  "ja": "「保存または共有」→「ファイルに保存」をタップ。",
+  "pt": "Toque em Guardar ou partilhar e depois Guardar em Ficheiros.",
+  "zh": "点“保存或分享”，然后“存储到文件”。"
+ },
  "Tap Save to Photos above, then open Photos and tap a sticker.": {
   "de": "Tippe oben auf „In Fotos sichern“, öffne dann Fotos und tippe auf einen Sticker.",
   "es": "Toca Guardar en Fotos arriba, luego abre Fotos y toca un sticker.",
@@ -15678,6 +15788,26 @@
   "ja": "スキャンをタップするとWi-Fi上のすべてを一覧します。先にWi-Fiに接続してください — モバイルデータでは端末を検出できません。",
   "pt": "Toca em Digitalizar para listar tudo na tua Wi-Fi. Liga-te primeiro à rede Wi-Fi — isto não vê dispositivos por dados móveis.",
   "zh": "点按扫描以列出你 Wi-Fi 上的一切。请先加入 Wi-Fi 网络 — 这无法通过移动数据看到设备。"
+ },
+ "Tap Use sound as… → Standard Ringtone.": {
+  "de": "Tippe auf „Ton verwenden als …“ → „Standardklingelton“.",
+  "es": "Toca Usar sonido como… → Tono de llamada estándar.",
+  "fr": "Touchez Utiliser le son comme… → Sonnerie par défaut.",
+  "hi": "‘आवाज़ को इस रूप में इस्तेमाल करें…’ → स्टैंडर्ड रिंगटोन।",
+  "it": "Tocca Usa suono come… → Suoneria standard.",
+  "ja": "「サウンドを使用…」→「標準の着信音」。",
+  "pt": "Toque em Usar som como… → Toque padrão.",
+  "zh": "点“将声音用作…”→“标准电话铃声”。"
+ },
+ "Tap Use sound as… → Standard Text Tone.": {
+  "de": "Tippe auf „Ton verwenden als …“ → „Standard-Nachrichtenton“.",
+  "es": "Toca Usar sonido como… → Tono de mensaje estándar.",
+  "fr": "Touchez Utiliser le son comme… → Son de message par défaut.",
+  "hi": "‘आवाज़ को इस रूप में इस्तेमाल करें…’ → स्टैंडर्ड टेक्स्ट टोन।",
+  "it": "Tocca Usa suono come… → Suono messaggio standard.",
+  "ja": "「サウンドを使用…」→「標準のメッセージ音」。",
+  "pt": "Toque em Usar som como… → Som de mensagem padrão.",
+  "zh": "点“将声音用作…”→“标准短信铃声”。"
  },
  "Tap Use the screenshots I just took — or pick them yourself, then fix the order.": {
   "de": "Tippe auf „Die gerade gemachten Screenshots nehmen“ – oder wähle sie selbst und korrigiere die Reihenfolge.",
@@ -16198,6 +16328,16 @@
   "ja": "翻訳するテキスト",
   "pt": "Texto a traduzir",
   "zh": "要翻译的文本"
+ },
+ "Text tone · up to 10 s": {
+  "de": "Nachrichtenton · bis 10 s",
+  "es": "Tono de mensaje · hasta 10 s",
+  "fr": "Son de message · 10 s max",
+  "hi": "मैसेज टोन · 10 सेकंड तक",
+  "it": "Suono messaggio · fino a 10 s",
+  "ja": "メッセージ音・最大10秒",
+  "pt": "Som de mensagem · até 10 s",
+  "zh": "短信提示音 · 最长 10 秒"
  },
  "Text, camera, voice — offline": {
   "de": "Text, Kamera, Stimme — offline",
@@ -17079,6 +17219,16 @@
   "pt": "Título, artista, álbum e capa",
   "zh": "标题、艺人、专辑和封面"
  },
+ "To use it as your ringtone": {
+  "de": "So wird es dein Klingelton",
+  "es": "Para usarlo como tono",
+  "fr": "Pour l'utiliser comme sonnerie",
+  "hi": "इसे रिंगटोन बनाने के लिए",
+  "it": "Per usarla come suoneria",
+  "ja": "着信音にするには",
+  "pt": "Para usar como toque",
+  "zh": "设为铃声的方法"
+ },
  "To-dos": {
   "de": "Aufgaben",
   "es": "Tareas",
@@ -17939,6 +18089,16 @@
   "pt": "Usar as capturas que acabei de fazer",
   "zh": "使用我刚截的图"
  },
+ "Use the sound from a video": {
+  "de": "Ton aus einem Video nehmen",
+  "es": "Usar el sonido de un vídeo",
+  "fr": "Utiliser le son d'une vidéo",
+  "hi": "किसी वीडियो की आवाज़ लें",
+  "it": "Usa l'audio di un video",
+  "ja": "動画の音を使う",
+  "pt": "Usar o som de um vídeo",
+  "zh": "使用视频里的声音"
+ },
  "Use this as the source (e.g. trim, then shrink)": {
   "de": "Dies als Quelle verwenden (z. B. kürzen, dann verkleinern)",
   "es": "Usar esto como origen (p. ej. recortar y luego reducir)",
@@ -18228,6 +18388,16 @@
   "ja": "キャリブレーションのため、端末を8の字に動かします。",
   "pt": "Faz um movimento em oito com o telemóvel para calibrar.",
   "zh": "将手机做「8」字形挥动以校准。"
+ },
+ "Waveform of the song. The highlighted part becomes your tone.": {
+  "de": "Wellenform des Songs. Der markierte Teil wird dein Ton.",
+  "es": "Forma de onda de la canción. La parte resaltada será tu tono.",
+  "fr": "Forme d'onde du morceau. La partie en surbrillance devient votre sonnerie.",
+  "hi": "गाने की वेवफ़ॉर्म। हाइलाइट हिस्सा आपकी टोन बनेगा।",
+  "it": "Forma d'onda del brano. La parte evidenziata diventa la tua suoneria.",
+  "ja": "曲の波形。ハイライト部分が着信音になります。",
+  "pt": "Forma de onda da música. A parte destacada será o seu toque.",
+  "zh": "歌曲波形，高亮部分就是你的铃声。"
  },
  "We'll remind you a week before it ends.": {
   "de": "Wir erinnern dich eine Woche vor Ablauf.",
@@ -19328,6 +19498,16 @@
   "ja": "iPhoneは1つのアプリに64件までの通知を許可しています — 最も先の",
   "pt": "O iPhone permite 64 alertas por app — as",
   "zh": "iPhone每个App最多64条提醒——最远的"
+ },
+ "iPhone doesn't let any app set a tone directly — this is Apple's own way, and it takes under a minute.": {
+  "de": "Das iPhone lässt keine App direkt einen Ton setzen – das ist Apples eigener Weg und dauert unter einer Minute.",
+  "es": "El iPhone no deja que ninguna app ponga un tono directamente: este es el camino de Apple y tarda menos de un minuto.",
+  "fr": "L'iPhone ne laisse aucune app régler un son directement — c'est la méthode d'Apple, en moins d'une minute.",
+  "hi": "iPhone किसी ऐप को सीधे टोन सेट नहीं करने देता — यह Apple का अपना तरीका है, एक मिनट से कम लगता है।",
+  "it": "L'iPhone non permette a nessuna app di impostare un suono direttamente: questo è il metodo di Apple e richiede meno di un minuto.",
+  "ja": "iPhone ではアプリから直接設定できません。これが Apple 公式の方法で、1分もかかりません。",
+  "pt": "O iPhone não deixa nenhuma app definir um som diretamente — este é o método da Apple e demora menos de um minuto.",
+  "zh": "iPhone 不允许任何应用直接设置铃声——这是 Apple 自己的方法，不到一分钟。"
  },
  "iPhone shows the alert once, as you arrive. It watches the place itself — Tenzy doesn't track you.": {
   "de": "Das iPhone zeigt die Mitteilung einmal, wenn du ankommst. Es achtet selbst auf den Ort – Tenzy verfolgt dich nicht.",
