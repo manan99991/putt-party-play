@@ -829,6 +829,16 @@
   "pt": "Todo o texto",
   "zh": "全部文字"
  },
+ "Allow Photos access": {
+  "de": "Zugriff auf Fotos erlauben",
+  "es": "Permitir acceso a Fotos",
+  "fr": "Autoriser l'accès à Photos",
+  "hi": "Photos की अनुमति दें",
+  "it": "Consenti accesso a Foto",
+  "ja": "写真へのアクセスを許可",
+  "pt": "Permitir acesso a Fotos",
+  "zh": "允许访问照片"
+ },
  "Allow photo access to scan for space you can free. Nothing leaves your phone, and deleting always asks you first.": {
   "de": "Erlaube den Fotozugriff, um freiräumbaren Speicher zu finden. Nichts verlässt dein Handy, und Löschen fragt immer zuerst nach.",
   "es": "Permite el acceso a fotos para buscar espacio que puedas liberar. Nada sale de tu teléfono, y borrar siempre te pregunta antes.",
@@ -2098,6 +2108,26 @@
   "ja": "今日の天気を確認中…",
   "pt": "Verificando o clima de hoje…",
   "zh": "正在查看今天的天气…"
+ },
+ "Checks run each time you open Tenzy and a few times a day in the background, when iPhone allows. At most one alert a day.": {
+  "de": "Geprüft wird bei jedem Öffnen und ein paar Mal am Tag im Hintergrund, wenn das iPhone es erlaubt. Höchstens ein Hinweis pro Tag.",
+  "es": "Se comprueba al abrir Tenzy y unas cuantas veces al día en segundo plano, cuando el iPhone lo permite. Como mucho, un aviso al día.",
+  "fr": "Vérifié à chaque ouverture et quelques fois par jour en arrière-plan, quand l'iPhone le permet. Au plus une alerte par jour.",
+  "hi": "हर बार Tenzy खोलने पर और दिन में कुछ बार बैकग्राउंड में, जब iPhone अनुमति दे। दिन में ज़्यादा से ज़्यादा एक अलर्ट।",
+  "it": "Controllo a ogni apertura e qualche volta al giorno in background, quando l'iPhone lo consente. Al massimo un avviso al giorno.",
+  "ja": "Tenzyを開くたびと、iPhoneが許すときに1日数回バックグラウンドで確認します。通知は1日1回まで。",
+  "pt": "A verificação acontece ao abrir o Tenzy e algumas vezes por dia em segundo plano, quando o iPhone permite. No máximo um alerta por dia.",
+  "zh": "每次打开 Tenzy 时检查，在 iPhone 允许时每天后台检查几次。每天最多提醒一次。"
+ },
+ "Checks run each time you open Tenzy. Turn on Background App Refresh for Tenzy in Settings so it can also check during the day.": {
+  "de": "Geprüft wird bei jedem Öffnen von Tenzy. Aktiviere „Hintergrundaktualisierung“ für Tenzy, damit es auch tagsüber prüft.",
+  "es": "Se comprueba cada vez que abres Tenzy. Activa Actualización en segundo plano para Tenzy en Ajustes para que también compruebe durante el día.",
+  "fr": "Vérifié à chaque ouverture de Tenzy. Activez l'actualisation en arrière-plan pour Tenzy dans Réglages pour qu'il vérifie aussi en journée.",
+  "hi": "हर बार Tenzy खोलने पर जाँच होती है। दिन में भी जाँच के लिए Settings में Tenzy का Background App Refresh चालू करें।",
+  "it": "Il controllo avviene a ogni apertura di Tenzy. Attiva Aggiorna app in background per Tenzy in Impostazioni per controllare anche di giorno.",
+  "ja": "Tenzyを開くたびに確認します。日中も確認するには、設定でTenzyの「Appのバックグラウンド更新」をオンに。",
+  "pt": "A verificação acontece sempre que você abre o Tenzy. Ative a Atualização em segundo plano do Tenzy em Ajustes para checar durante o dia também.",
+  "zh": "每次打开 Tenzy 时检查。在“设置”中为 Tenzy 打开“后台 App 刷新”，白天也能检查。"
  },
  "Checks the address itself — look-alike brands, risky endings, shorteners, raw IPs. Nothing is opened.": {
   "de": "Prüft die Adresse selbst — nachgemachte Marken, riskante Endungen, Kürzungsdienste, rohe IPs. Nichts wird geöffnet.",
@@ -5679,6 +5709,26 @@
   "pt": "Varrimento completo 40 Hz → 16 kHz (10 s)",
   "zh": "完整扫频 40 Hz → 16 kHz（10 秒）"
  },
+ "GB": {
+  "de": "GB",
+  "es": "GB",
+  "fr": "Go",
+  "hi": "GB",
+  "it": "GB",
+  "ja": "GB",
+  "pt": "GB",
+  "zh": "GB"
+ },
+ "GB free": {
+  "de": "GB frei",
+  "es": "GB libres",
+  "fr": "Go libres",
+  "hi": "GB खाली",
+  "it": "GB liberi",
+  "ja": "GB の空き",
+  "pt": "GB livres",
+  "zh": "GB 可用"
+ },
  "GIF Maker": {
   "de": "GIF-Ersteller",
   "es": "Creador de GIF",
@@ -6948,6 +6998,16 @@
   "ja": "大きい順",
   "pt": "Maiores primeiro",
   "zh": "最大优先"
+ },
+ "Last checked": {
+  "de": "Zuletzt geprüft",
+  "es": "Última comprobación",
+  "fr": "Dernière vérification",
+  "hi": "आख़िरी जाँच",
+  "it": "Ultimo controllo",
+  "ja": "最終確認",
+  "pt": "Última verificação",
+  "zh": "上次检查"
  },
  "Last day": {
   "de": "Letzter Tag",
@@ -8299,6 +8359,16 @@
   "pt": "Meu telemóvel",
   "zh": "我的手机"
  },
+ "My alerts": {
+  "de": "Meine Hinweise",
+  "es": "Mis alertas",
+  "fr": "Mes alertes",
+  "hi": "मेरे अलर्ट",
+  "it": "I miei avvisi",
+  "ja": "マイアラート",
+  "pt": "Meus alertas",
+  "zh": "我的提醒"
+ },
  "My days": {
   "de": "Meine Tage",
   "es": "Mis días",
@@ -9129,6 +9199,16 @@
   "pt": "As notificações do Tenzy estão desligadas, então os lembretes não podem avisar. Ative em Ajustes → Notificações → Tenzy.",
   "zh": "Tenzy的通知已关闭，提醒无法通知你。请在设置→通知→Tenzy中打开。"
  },
+ "Notify me when it's time to clean up": {
+  "de": "Sag Bescheid, wenn Aufräumen ansteht",
+  "es": "Avísame cuando toque limpiar",
+  "fr": "Prévenez-moi quand il faut faire le ménage",
+  "hi": "सफ़ाई का समय होने पर बताएँ",
+  "it": "Avvisami quando è ora di fare pulizia",
+  "ja": "片づけどきに知らせて",
+  "pt": "Me avise quando for hora de limpar",
+  "zh": "该清理时提醒我"
+ },
  "Now": {
   "de": "Jetzt",
   "es": "Ahora",
@@ -9538,6 +9618,16 @@
   "ja": "オリジナル",
   "pt": "Original",
   "zh": "原图"
+ },
+ "Other": {
+  "de": "Andere",
+  "es": "Otro",
+  "fr": "Autre",
+  "hi": "अन्य",
+  "it": "Altro",
+  "ja": "その他",
+  "pt": "Outro",
+  "zh": "其他"
  },
  "Out of free AI actions for today.": {
   "de": "Keine kostenlosen KI-Aktionen mehr für heute.",
@@ -11779,6 +11869,16 @@
   "pt": "Logo depois da última parada — uma viagem em vez de duas.",
   "zh": "紧接上一站——一趟出门代替两趟。"
  },
+ "Right now:": {
+  "de": "Gerade:",
+  "es": "Ahora mismo:",
+  "fr": "En ce moment :",
+  "hi": "अभी:",
+  "it": "Adesso:",
+  "ja": "現在：",
+  "pt": "Agora:",
+  "zh": "目前："
+ },
  "Robot": {
   "de": "Roboter",
   "es": "Robot",
@@ -12499,6 +12599,16 @@
   "pt": "Captura de ecrã",
   "zh": "截图"
  },
+ "Screenshots piling up, space running low, big videos": {
+  "de": "Viele Screenshots, wenig Speicher, große Videos",
+  "es": "Capturas acumuladas, poco espacio, vídeos grandes",
+  "fr": "Captures qui s'accumulent, espace faible, grosses vidéos",
+  "hi": "ढेर सारे स्क्रीनशॉट, कम जगह, बड़े वीडियो",
+  "it": "Screenshot accumulati, poco spazio, video grandi",
+  "ja": "たまったスクショ、容量不足、大きな動画",
+  "pt": "Capturas acumuladas, pouco espaço, vídeos grandes",
+  "zh": "截图堆积、空间不足、大视频"
+ },
  "Scrubber": {
   "de": "Reiniger",
   "es": "Limpiador",
@@ -12678,6 +12788,16 @@
   "ja": "フィードバックを送る",
   "pt": "Enviar feedback",
   "zh": "发送反馈"
+ },
+ "Send me a test": {
+  "de": "Test senden",
+  "es": "Envíame una prueba",
+  "fr": "M'envoyer un test",
+  "hi": "मुझे टेस्ट भेजें",
+  "it": "Inviami una prova",
+  "ja": "テスト通知を送る",
+  "pt": "Me envie um teste",
+  "zh": "给我发个测试"
  },
  "Send my location": {
   "de": "Meinen Standort senden",
@@ -14589,6 +14709,36 @@
   "pt": "Me diga pelo menos uma coisa que precisa fazer — mesmo pequena.",
   "zh": "至少告诉我一件要做的事——小事也行。"
  },
+ "Tell me when I have more than": {
+  "de": "Sag mir Bescheid, wenn ich mehr habe als",
+  "es": "Avísame cuando tenga más de",
+  "fr": "Prévenez-moi quand j'ai plus de",
+  "hi": "मुझे बताएँ जब मेरे पास इससे ज़्यादा हों:",
+  "it": "Avvisami quando ho più di",
+  "ja": "次の数を超えたら知らせて：",
+  "pt": "Me avise quando eu tiver mais de",
+  "zh": "超过这个数量时提醒我："
+ },
+ "Tell me when my phone has less than": {
+  "de": "Sag mir Bescheid, wenn mein Handy weniger hat als",
+  "es": "Avísame cuando mi teléfono tenga menos de",
+  "fr": "Prévenez-moi quand mon téléphone a moins de",
+  "hi": "मुझे बताएँ जब फ़ोन में इससे कम हो:",
+  "it": "Avvisami quando il telefono ha meno di",
+  "ja": "空きが次を下回ったら知らせて：",
+  "pt": "Me avise quando o celular tiver menos de",
+  "zh": "手机剩余低于这个时提醒我："
+ },
+ "Tell me when videos in Photos take more than": {
+  "de": "Sag mir Bescheid, wenn Videos in Fotos mehr belegen als",
+  "es": "Avísame cuando los vídeos de Fotos ocupen más de",
+  "fr": "Prévenez-moi quand les vidéos de Photos dépassent",
+  "hi": "मुझे बताएँ जब Photos के वीडियो इससे ज़्यादा जगह लें:",
+  "it": "Avvisami quando i video in Foto superano",
+  "ja": "写真アプリの動画が次を超えたら知らせて：",
+  "pt": "Me avise quando os vídeos em Fotos passarem de",
+  "zh": "照片中的视频超过这个时提醒我："
+ },
  "Tells you to keep it secret": {
   "de": "Sagt dir, es geheim zu halten",
   "es": "Te pide que lo mantengas en secreto",
@@ -14638,6 +14788,16 @@
   "ja": "Tenzyにはこのためのツールがあります",
   "pt": "O Tenzy já tem uma ferramenta para isso",
   "zh": "Tenzy 已有可以做到这件事的工具"
+ },
+ "Tenzy can only see the photos you chose, so the count covers those. Allow full access in Settings for an exact count.": {
+  "de": "Tenzy sieht nur die gewählten Fotos, also zählt es nur diese. Für eine genaue Zahl vollen Zugriff in den Einstellungen erlauben.",
+  "es": "Tenzy solo ve las fotos que elegiste, así que cuenta esas. Permite acceso completo en Ajustes para un recuento exacto.",
+  "fr": "Tenzy ne voit que les photos choisies, le compte porte donc sur elles. Autorisez l'accès complet dans Réglages pour un compte exact.",
+  "hi": "Tenzy सिर्फ़ आपकी चुनी फ़ोटो देख सकता है, तो गिनती उन्हीं की है। सही गिनती के लिए Settings में पूरी अनुमति दें।",
+  "it": "Tenzy vede solo le foto scelte, quindi conta quelle. Consenti l'accesso completo in Impostazioni per un conteggio esatto.",
+  "ja": "選んだ写真しか見えないため、その分だけ数えます。正確に数えるには設定でフルアクセスを許可してください。",
+  "pt": "O Tenzy só vê as fotos que você escolheu, então conta essas. Permita acesso total em Ajustes para uma contagem exata.",
+  "zh": "Tenzy 只能看到你选的照片，所以只统计这些。要精确统计，请在“设置”中允许完全访问。"
  },
  "Tenzy couldn't read that audio file.": {
   "de": "Tenzy konnte diese Audiodatei nicht lesen.",
@@ -14698,6 +14858,16 @@
   "ja": "Tenzyはこの端末の写真と動画を読み取り、容量を使っているものを表示します。何もアップロードされません。",
   "pt": "O Tenzy lê as tuas fotos e vídeos neste dispositivo para mostrar o que ocupa espaço. Nada é enviado.",
   "zh": "Tenzy 在本设备上读取你的照片和视频，以显示什么在占用空间。不上传任何内容。"
+ },
+ "Tenzy taps you on the shoulder only when it matters.": {
+  "de": "Tenzy meldet sich nur, wenn es wichtig ist.",
+  "es": "Tenzy te avisa solo cuando importa.",
+  "fr": "Tenzy ne vous prévient que quand c'est utile.",
+  "hi": "Tenzy सिर्फ़ ज़रूरी होने पर याद दिलाता है।",
+  "it": "Tenzy ti avvisa solo quando serve.",
+  "ja": "Tenzyは必要なときだけ声をかけます。",
+  "pt": "O Tenzy só te chama quando importa.",
+  "zh": "Tenzy 只在需要时提醒你。"
  },
  "Tenzy tool": {
   "de": "Tenzy-Tool",
@@ -15318,6 +15488,16 @@
   "ja": "このPDFには入力欄がありません — 紙の書式です。",
   "pt": "Este PDF não tem campos preenchíveis — é um formulário plano.",
   "zh": "此PDF没有可填写的框——是扁平表单。"
+ },
+ "This alert counts what's in Photos, so Tenzy needs Photos access.": {
+  "de": "Dieser Hinweis zählt in Fotos – Tenzy braucht Zugriff auf Fotos.",
+  "es": "Esta alerta cuenta lo que hay en Fotos, así que Tenzy necesita acceso a Fotos.",
+  "fr": "Cette alerte compte ce qu'il y a dans Photos, Tenzy a donc besoin d'y accéder.",
+  "hi": "यह अलर्ट Photos में गिनती करता है, इसलिए Tenzy को Photos की अनुमति चाहिए।",
+  "it": "Questo avviso conta ciò che è in Foto, quindi Tenzy ha bisogno dell'accesso a Foto.",
+  "ja": "写真アプリの中身を数えるため、写真へのアクセスが必要です。",
+  "pt": "Este alerta conta o que há em Fotos, então o Tenzy precisa de acesso a Fotos.",
+  "zh": "此提醒需要统计照片，所以 Tenzy 需要照片访问权限。"
  },
  "This clip has no audio track to save.": {
   "de": "Dieser Clip hat keine Tonspur.",
@@ -16819,6 +16999,16 @@
   "pt": "O que vestir",
   "zh": "穿什么"
  },
+ "What you'll see": {
+  "de": "Das wirst du sehen",
+  "es": "Lo que verás",
+  "fr": "Ce que vous verrez",
+  "hi": "आपको यह दिखेगा",
+  "it": "Cosa vedrai",
+  "ja": "表示される内容",
+  "pt": "O que você vai ver",
+  "zh": "你会看到"
+ },
  "What's in this photo": {
   "de": "Was ist auf diesem Foto",
   "es": "Qué hay en esta foto",
@@ -16849,6 +17039,26 @@
   "pt": "Ao adicionar a partir de Fotos, eliminar o original",
   "zh": "从照片添加时，删除原件"
  },
+ "When my phone is running out of space": {
+  "de": "Wenn mein Speicher knapp wird",
+  "es": "Cuando mi teléfono se quede sin espacio",
+  "fr": "Quand mon téléphone manque d'espace",
+  "hi": "जब फ़ोन की जगह खत्म होने लगे",
+  "it": "Quando il telefono sta finendo lo spazio",
+  "ja": "空き容量が少なくなったら",
+  "pt": "Quando o celular estiver sem espaço",
+  "zh": "手机空间快不够时"
+ },
+ "When my screenshots pile up": {
+  "de": "Wenn sich Screenshots stapeln",
+  "es": "Cuando se acumulan mis capturas",
+  "fr": "Quand mes captures s'accumulent",
+  "hi": "जब स्क्रीनशॉट बहुत हो जाएँ",
+  "it": "Quando gli screenshot si accumulano",
+  "ja": "スクリーンショットがたまったら",
+  "pt": "Quando as capturas se acumularem",
+  "zh": "截图堆积时"
+ },
  "When the tool finishes, the link it made opens.": {
   "de": "Wenn das Tool fertig ist, öffnet sich der erstellte Link.",
   "es": "Cuando la herramienta termina, se abre el enlace que creó.",
@@ -16858,6 +17068,16 @@
   "ja": "ツールが完了すると、作成されたリンクが開きます。",
   "pt": "Quando a ferramenta termina, abre-se o link que criou.",
   "zh": "工具完成后，它生成的链接会自动打开。"
+ },
+ "When videos take up a lot of space": {
+  "de": "Wenn Videos viel Platz belegen",
+  "es": "Cuando los vídeos ocupen mucho espacio",
+  "fr": "Quand les vidéos prennent beaucoup de place",
+  "hi": "जब वीडियो बहुत जगह लें",
+  "it": "Quando i video occupano molto spazio",
+  "ja": "動画が容量を圧迫したら",
+  "pt": "Quando os vídeos ocuparem muito espaço",
+  "zh": "视频占用大量空间时"
  },
  "Where I Parked": {
   "de": "Wo geparkt",
@@ -17739,6 +17959,16 @@
   "pt": "nada registrado",
   "zh": "无记录"
  },
+ "past your limit, so you'd get this today.": {
+  "de": "über deinem Limit – du bekämst das heute.",
+  "es": "por encima de tu límite, así que lo recibirías hoy.",
+  "fr": "au-delà de votre limite, vous le recevriez aujourd'hui.",
+  "hi": "आपकी सीमा से ज़्यादा, तो यह आज आएगा।",
+  "it": "oltre il limite, quindi lo riceveresti oggi.",
+  "ja": "上限を超えているので、今日届きます。",
+  "pt": "acima do seu limite, então você receberia hoje.",
+  "zh": "已超出你的限制，今天就会收到。"
+ },
  "payments or bank accounts": {
   "de": "Zahlungen oder Bankkonten",
   "es": "pagos o cuentas bancarias",
@@ -17818,6 +18048,16 @@
   "ja": "返品期限が迫っています",
   "pt": "prazos de devolução acabando",
   "zh": "退货期即将截止"
+ },
+ "screenshots": {
+  "de": "Screenshots",
+  "es": "capturas",
+  "fr": "captures",
+  "hi": "स्क्रीनशॉट",
+  "it": "screenshot",
+  "ja": "枚のスクリーンショット",
+  "pt": "capturas",
+  "zh": "张截图"
  },
  "sending a message": {
   "de": "eine Nachricht senden",

@@ -58,6 +58,14 @@ struct CleanerView: View {
                 authGate
             } else {
                 cleanupHero
+                DisclosureGroup {
+                    VStack(spacing: HandySpacing.s8) {
+                        SmartAlertCard(kind: .screenshots)
+                        SmartAlertCard(kind: .lowSpace)
+                        SmartAlertCard(kind: .bigVideos)
+                    }.padding(.top, HandySpacing.s8)
+                } label: { Label(L("Notify me when it's time to clean up"), systemImage: "bell.badge").font(HandyFont.bodyStrong) }
+                .tint(HandyColor.accent)
                 Picker(L(""), selection: $cat) { ForEach(Cat.allCases, id: \.rawValue) { Text($0.title).tag($0) } }
                     .pickerStyle(.segmented)
                     .onChange(of: cat) { _, _ in refreshForCat() }

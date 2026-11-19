@@ -62,7 +62,8 @@ targets:
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UIRequiresFullScreen: true
         ITSAppUsesNonExemptEncryption: false
-        UIBackgroundModes: [audio]   # Rest keeps playing sleep sounds / listening for snoring with the screen off
+        UIBackgroundModes: [audio, fetch]   # audio: Rest keeps playing with the screen off · fetch: smart alert checks
+        BGTaskSchedulerPermittedIdentifiers: [com.tenzy.toolkit.smartalerts]
         CFBundleURLTypes:
           - CFBundleURLName: com.tenzy.toolkit
             CFBundleURLSchemes: [tenzy]

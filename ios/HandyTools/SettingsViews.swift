@@ -212,6 +212,12 @@ struct SettingsView: View {
                     }
 
                     Section(L("What Tenzy does")) {
+                        NavigationLink(value: "myalerts") {
+                            Label { VStack(alignment: .leading, spacing: 2) {
+                                Text(L("My alerts")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                Text(L("Screenshots piling up, space running low, big videos")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            } } icon: { Image(systemName: "bell.badge.fill").foregroundStyle(HandyColor.accent) }
+                        }
                         NavigationLink(value: "alltools") {
                             HStack(spacing: HandySpacing.s16) {
                                 ZStack {

@@ -17,7 +17,9 @@ struct TenzyApp: App {
     init() {
         Diagnostics.shared.start()
         ToolNotifications.shared.install()   // so a tapped tool reminder opens that tool
+        SmartAlerts.registerBackground()      // "tell me when…" checks, when iPhone grants a background refresh
     }
+    @Environment(\.scenePhase) private var phase
 
     var body: some Scene {
         WindowGroup {
@@ -35,6 +37,10 @@ struct TenzyApp: App {
                 if let r = crashReport { CrashBanner(summary: r) { crashReport = nil } }
             }
             .copyToastHost()   // one shared "Copied" confirmation for every tool
+            .onChange(of: phase) { _, p in
+                // Every time Tenzy comes to the front: check the "tell me when…" alerts, and book the next background check.
+                if p == .active, !Launch.uitest { Task { await SmartAlerts.checkAll() }; SmartAlerts.scheduleBackground() }
+            }
             .onAppear {
                 if let r = Launch.route, r.hasPrefix("onboarding") { onboardingPage = Int(r.dropFirst("onboarding".count)).map { $0 - 1 } ?? 0; showOnboarding = true }
                 if crashReport == nil, !Launch.uitest { crashReport = Diagnostics.shared.takePendingCrash() }
@@ -353,6 +359,7 @@ struct ToolDestination: View {
         case "sticker": StickerMakerView()
         case "medreminder": MedRemindersView()
         case "daydiary": DayDiaryView()
+        case "myalerts": MyAlertsView()
         case "menu": MenuView()
         case "audioconvert": AudioConvertView()
         case "audiocompress": AudioCompressView()

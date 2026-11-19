@@ -2283,6 +2283,36 @@ final class EngineTests: XCTestCase {
         XCTAssertTrue(DayDiary.message(for: .good).contains("tomorrow")); XCTAssertTrue(DayDiary.message(for: .bad).contains("tomorrow"))
     }
 
+    func testSmartAlertsFireOnlyWhenTrueAndOnceADay() {
+        typealias A = SmartAlerts
+        let now = Date()
+        var shots = A.Rule(kind: .screenshots, limit: 100)
+        XCTAssertFalse(A.shouldFire(shots, value: 100, now: now), "at the limit isn't past it")
+        XCTAssertTrue(A.shouldFire(shots, value: 152, now: now))
+        shots.lastFired = now.addingTimeInterval(-3600)
+        XCTAssertFalse(A.shouldFire(shots, value: 152, now: now), "never twice in a day")
+        shots.lastFired = now.addingTimeInterval(-21 * 3600)
+        XCTAssertTrue(A.shouldFire(shots, value: 152, now: now))
+        shots.on = false; XCTAssertFalse(A.shouldFire(shots, value: 999, now: now), "off means off")
+        let space = A.Rule(kind: .lowSpace, limit: 5)
+        XCTAssertTrue(A.shouldFire(space, value: 3.2, now: now)); XCTAssertFalse(A.shouldFire(space, value: 12, now: now), "free space fires below")
+        // The words carry the person's own numbers.
+        let m = A.message(.screenshots, value: 152, limit: 100)
+        XCTAssertEqual(m.title, "You have 152 screenshots"); XCTAssertTrue(m.body.contains("newest 100"))
+        XCTAssertTrue(A.message(.lowSpace, value: 3.24, limit: 5).title.contains("3.2 GB"))
+        // Saving from the card keeps what the checks recorded, but a new limit re-arms the alert.
+        let key = "smartalerts.rules"; let saved = UserDefaults.standard.data(forKey: key)
+        defer { UserDefaults.standard.set(saved, forKey: key) }
+        AlertStore.save([A.Rule(kind: .screenshots, limit: 100, lastFired: now, lastChecked: now, lastValue: 140)])
+        AlertStore.upsert(A.Rule(kind: .screenshots, limit: 100))
+        XCTAssertEqual(AlertStore.rule(.screenshots)?.lastFired, now)
+        AlertStore.upsert(A.Rule(kind: .screenshots, limit: 150))
+        XCTAssertNil(AlertStore.rule(.screenshots)?.lastFired)
+        XCTAssertEqual(AlertStore.rule(.screenshots)?.lastValue, 140)
+        // Free space is always readable (no permission needed) and positive.
+        XCTAssertGreaterThan(A.read(.lowSpace) ?? 0, 0)
+    }
+
     func testAnimateLooksAndPrintableFlipbook() throws {
         let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
         XCTAssertEqual(Animate.applyLook(.original, to: photos).count, 3)
