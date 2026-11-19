@@ -2336,13 +2336,21 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 // (With the original known, the insight above shows it — with press-and-hold to compare.)
                 Image(uiImage: img).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
                     .cardStyle(padding: HandySpacing.s8)
-            } else if ext.lowercased() == "pdf", let page = PDFDocument(data: d)?.page(at: 0) {
+            } else if ext.lowercased() == "pdf", PDFDocument(data: d)?.page(at: 0) != nil {
                 if chain.steps.contains(where: { $0.block == .photoPdf }) {
                     ScanInsight(pdf: d, original: inputPhoto)
                 }
-                Image(uiImage: page.thumbnail(of: CGSize(width: 360, height: 480), for: .cropBox))
-                    .resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
-                    .cardStyle(padding: HandySpacing.s8)
+                // The real PDF, scrollable page by page — so it reads as a PDF document, not a photo.
+                let n = PDFDocument(data: d)?.pageCount ?? 1
+                VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                    Label("PDF · \(n) \(L(n == 1 ? "page" : "pages"))", systemImage: "doc.richtext").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    PDFPreview(data: d).frame(height: 420).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    if chain.finish?.kind == .mail {
+                        Text(L("It's attached as a PDF. Mail shows a one-page PDF as a picture in the message — the person you send it to gets the PDF file."))
+                            .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .cardStyle(padding: HandySpacing.s8)
             } else if ["csv", "vcf", "ics", "txt", "json", "md", "rtf", "html", "xml"].contains(ext.lowercased()),
                       let s = String(data: d, encoding: .utf8), !s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 // A CSV / contact / calendar / text file is its text — show it so an expense sheet, a vCard
