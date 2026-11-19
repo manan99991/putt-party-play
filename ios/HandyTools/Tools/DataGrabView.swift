@@ -5,6 +5,7 @@ import PhotosUI
 /// becomes a calendar event; a printed table becomes a CSV. On-device OCR + rules, with an optional
 /// on-device AI pass to tidy the result. No typing.
 struct DataGrabView: View {
+    @State private var photo: UIImage?
     @State private var text = ""
     @State private var kind: DataGrab.Kind = .text
     @State private var autoKind: DataGrab.Kind = .text
@@ -59,7 +60,10 @@ struct DataGrabView: View {
             busy = true; errorText = nil
             Task {
                 guard let d = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: d) else { await MainActor.run { busy = false }; return }
-                let s = await AIEngine.recognizeText(img)
+                await MainActor.run { photo = img }
+                // Row by row, so prices stay with their items and a card's two columns stay apart.
+                let box = UncheckedImage(img)
+                let s = await Task.detached(priority: .userInitiated) { ChainRunner.rows(DocEngine.recognize(box.image.normalizedUp())) }.value
                 await MainActor.run { busy = false; if s.isEmpty { errorText = "No text found in that image." } else { text = s; run() } }
             }
         }
@@ -79,28 +83,11 @@ struct DataGrabView: View {
 
     // MARK: receipt
 
+    /// The same rich receipt as "Read a receipt": every line checked, then into this month's expenses, kept with
+    /// its photo, or opened as a spreadsheet.
     private var receiptView: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            field("Merchant", $receipt.merchant)
-            if let d = receipt.date { row("Date", d.formatted(date: .abbreviated, time: .omitted)) }
-            ForEach(Array(receipt.items.enumerated()), id: \.offset) { i, it in
-                HStack { Text(it.0).font(HandyFont.body).lineLimit(1); Spacer(); Text(money(it.1)).font(HandyFont.body).monospacedDigit() }
-            }
-            Divider()
-            if let s = receipt.subtotal { row("Subtotal", money(s)) }
-            if let t = receipt.tax { row("Tax", money(t)) }
-            if let t = receipt.tip { row("Tip", money(t)) }
-            HStack { Text(L("Total")).font(HandyFont.bodyStrong); Spacer(); Text(money(receipt.total ?? 0)).font(HandyFont.bodyStrong).monospacedDigit() }
-            HandyFlow(spacing: HandySpacing.s8) {
-                ShareLink(item: XLSXFile(data: XLSXWriter.workbook(rows: DataGrab.receiptRows(receipt), sheetName: receipt.merchant.isEmpty ? "Receipt" : receipt.merchant) ?? Data()), preview: SharePreview("Receipt.xlsx")) { Label(L("Excel"), systemImage: "tablecells.badge.ellipsis") }.compactButton()
-                ShareLink(item: CSVFile(data: Data(DataGrab.receiptCSV(receipt).utf8)), preview: SharePreview("Receipt.csv")) { Label(L("Items as CSV"), systemImage: "tablecells") }.compactButton()
-                Button { Copier.copy(DataGrab.expenseRow(receipt)) } label: { Label(L("Copy expense row"), systemImage: "doc.on.doc") }.compactButton()
-            }
-            Text(L("The expense row pastes straight into a Numbers/Excel/Google Sheets expense log.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        }.cardStyle(padding: HandySpacing.s12)
+        ReceiptResult(receipt: receipt, photo: photo).id("\(receipt.merchant)|\(receipt.total ?? 0)|\(receipt.items.count)")
     }
-
-    // MARK: card
 
     private var cardView: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {

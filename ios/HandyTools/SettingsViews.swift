@@ -225,7 +225,7 @@ struct SettingsView: View {
                                     Image(systemName: "square.grid.2x2.fill").font(.system(size: 18)).foregroundStyle(HandyColor.accent)
                                 }
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text("All \(TOOLS.count) tools").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                    Text(L("Every tool")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                                     Text(L("Everything Tenzy does, each with a tap to open")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                                 }
                                 Spacer()

@@ -72,6 +72,7 @@ struct ScanView: View {
                 }
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+            if pages.isEmpty { AlsoInThisTool(hub: "scan") }
         }
         .onAppear { if Launch.sample, pages.isEmpty { append([SampleAssets.document(), SampleAssets.receipt()]) } }
         .fullScreenCover(isPresented: $showScanner) {

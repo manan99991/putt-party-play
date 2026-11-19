@@ -72,6 +72,7 @@ struct ScrubView: View {
                     }.primaryButton()
                 }
             }
+            if original == nil && videoInURL == nil { AlsoInThisTool(hub: "scrub") }
         }
         .onAppear { if Launch.sample, original == nil, let d = SampleAssets.photo().jpegData(compressionQuality: 0.9) { originalData = d; original = UIImage(data: d); meta = Scrubber.metadata(in: d); if let img = original { let f = Scrubber.detect(img); boxes = f.faces.map { Box(rect: $0, kind: .face, on: true) } + f.text.map { Box(rect: $0.rect, kind: .text, on: $0.personal) } } } }
         .onChange(of: pickedItem) { _, item in load(item) }

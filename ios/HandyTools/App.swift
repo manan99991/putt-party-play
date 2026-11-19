@@ -112,6 +112,13 @@ struct Tool: Identifiable {
     /// The everyday basics stay free; everything else is a Pro tool. One place to tune the split.
     static let freeIDs: Set<String> = ["light", "qrwifi", "seeread", "measure", "cleaner", "translate", "vault"]
     var pro: Bool { !Tool.freeIDs.contains(id) }
+
+    /// Tools that live inside another tool now (so there's one clear place for each kind of job). They keep every
+    /// feature and their own screen — they're reached from inside that tool, from search and from shortcuts.
+    static let homes: [String: String] = ["voicenotes": "speechnotes", "meetingnotes": "speechnotes",
+                                          "audioedit": "audiostudio", "ringtone": "audiostudio", "audiomix": "audiostudio", "audioclean": "audiostudio",
+                                          "faceemoji": "scrub", "pdfsearchable": "scan", "audiocompress": "fitit"]
+    var home: String? { Tool.homes[id] }
 }
 
 /// The full catalog: every standalone tool, up to 10 per page.
@@ -163,7 +170,7 @@ struct Tool: Identifiable {
     Tool(id: "audioconvert", name: "Audio Convert",  blurb: "Change a recording's file type",  icon: "arrow.left.arrow.right.circle.fill",                       page: 5, asset: "tool_audiolab", keywords: ["audio convert","audio converter","audio format","convert audio","extract audio","audio from video","video to audio","m4a","wav","aiff","caf","aac","mp3 to m4a","change audio format","sound file","audio file","music file"]),
     Tool(id: "audiocompress", name: "Compress Audio", blurb: "Shrink a recording to email it",    icon: "arrow.down.right.and.arrow.up.left.circle", page: 5, asset: "tool_audiolab", keywords: ["compress audio","shrink audio","smaller audio","audio too big","file too large","email a recording","reduce audio size","make smaller","bitrate","voice memo size"]),
     Tool(id: "ringtone",   name: "Ringtone",         blurb: "Trim a clip into a ringtone",     icon: "bell.and.waves.left.and.right.fill",                     page: 5, asset: "tool_audiolab", keywords: ["ringtone","ring tone","ringtones","m4r","custom ringtone","make a ringtone","phone ringtone","song to ringtone","alarm sound"]),
-    Tool(id: "audioedit",  name: "Audio Editor",     blurb: "Trim a recording, cut the silences",         icon: "waveform.badge.minus",                page: 5, asset: "tool_audiolab", keywords: ["audio editor","edit audio","trim audio","cut audio","shorten audio","crop audio","fade","fade in","fade out","silence","remove silence","cut silence","dead air","gap"]),
+    Tool(id: "audioedit",  name: "Trim & Fade",     blurb: "Trim a recording, cut the silences",         icon: "waveform.badge.minus",                page: 5, asset: "tool_audiolab", keywords: ["audio editor","edit audio","trim audio","cut audio","shorten audio","crop audio","fade","fade in","fade out","silence","remove silence","cut silence","dead air","gap"]),
     Tool(id: "audiomix",   name: "Join & Speed",     blurb: "Join recordings, change the speed", icon: "waveform.path.badge.plus",                    page: 5, asset: "tool_audiolab", keywords: ["join audio","merge audio","combine audio","join clips","stitch","append","speed up audio","slow down audio","playback speed","faster","slower","2x","lecture speed"]),
     Tool(id: "audiotags",  name: "Song Info & Cover", blurb: "Fix a song's title and cover",  icon: "music.note.list",                     page: 5, asset: "tool_audiolab", keywords: ["album art","cover art","song info","song title","artist","album","id3","tags","rename song","music tags","metadata","artwork"]),
     Tool(id: "audioclean", name: "Audio Cleanup",    blurb: "Make a recording clearer",        icon: "wand.and.stars",                      page: 5, asset: "tool_audiolab", keywords: ["audio cleanup","clean up audio","clean audio","noise reduction","reduce noise","background noise","remove noise","hiss","hum","rumble","clearer","clearer voice","voice clarity","boost volume","normalize audio","even out volume","louder","noisy recording"]),
@@ -184,6 +191,9 @@ struct Tool: Identifiable {
     Tool(id: "fileviewer", name: "File Opener",      blurb: "Open files people send you",              icon: "doc.fill",                            page: 3, asset: "tool_lens", keywords: ["file","open","opener","viewer","docx","pages","keynote","numbers","xls","zip","epub","unknown","won't open","can't open","any file"]),
     Tool(id: "pricecheck", name: "Price Check",      blurb: "Which one is the better deal?",  icon: "tag.fill",                            page: 3, asset: "tool_livecaptions", keywords: ["price","unit price","compare","deal","cheaper","per 100g","per unit","budget","cart","shopping","grocery","value","label","ingredients","nutrition","additives","allergens"]),
     Tool(id: "vault",      name: "Vault",            blurb: "Lock away private photos and files",                    icon: "lock.fill",                           page: 3, asset: "tool_vault", keywords: ["vault","secure","private","lock","face id","hidden","photos","notes","files","cards","safe"]),
+    // Hubs: one place for jobs that belong together. Each job inside is the full tool it always was.
+    Tool(id: "speechnotes", name: "Notes from Speech", blurb: "Live notes, or notes from a recording", icon: "waveform.and.mic", page: 2, ai: true, asset: "tool_voicenotes", keywords: ["action items","ai","audio","call notes","dictation","follow up email","follow-up email","interview","meeting","meeting minutes","meeting notes","meeting recap","meeting recording","minutes","notes","recap","record","record a meeting","speech","stand-up","standup","summary","transcribe","transcript","turns","voice","who said what","notes from speech"]),
+    Tool(id: "audiostudio", name: "Audio Editor", blurb: "Trim, ringtone, join, clean up", icon: "slider.horizontal.3", page: 5, asset: "tool_audiolab", keywords: ["2x","alarm sound","append","audio cleanup","audio editor","background noise","boost volume","clean audio","clean up audio","clearer","clearer voice","combine audio","crop audio","custom ringtone","cut audio","cut silence","dead air","edit audio","even out volume","fade","fade in","fade out","faster","gap","hiss","hum","join audio","join clips","lecture speed","louder","m4r","make a ringtone","merge audio","noise reduction","noisy recording","normalize audio","phone ringtone","playback speed","reduce noise","remove noise","remove silence","ring tone","ringtone","ringtones","rumble","shorten audio","silence","slow down audio","slower","song to ringtone","speed up audio","stitch","trim audio","voice clarity","audio editor","ringtone","join","speed","cleanup"]),
 ]
 
 /// Words that mean the same thing to a user. A query token is expanded to its whole group before
@@ -263,7 +273,7 @@ enum SearchSynonyms {
     return TOOLS.map { ($0, score($0)) }.filter { $0.1 > 0 }.sorted { $0.1 > $1.1 }.map { $0.0 }
 }
 
-@MainActor func tools(onPage p: Int) -> [Tool] { TOOLS.filter { $0.page == p } }
+@MainActor func tools(onPage p: Int) -> [Tool] { TOOLS.filter { $0.page == p && $0.home == nil } }
 
 /// Tool routing without AnyView: this @ViewBuilder switch is the single destination map.
 /// Turns OFF the NavigationStack edge swipe-back while a tool is on screen. Tools need horizontal
@@ -336,6 +346,8 @@ struct ToolDestination: View {
         // ── Page 3 ──
         case "translate": TranslateView()
         case "voicenotes": VoiceNotesView()
+        case "speechnotes": ToolHub(id: "speechnotes")
+        case "audiostudio": ToolHub(id: "audiostudio")
         case "livecaptions": LiveCaptionsView()
         case "cleaner": CleanerView()
         // Everything else is being built — show an honest placeholder, never a blank screen.
@@ -866,7 +878,7 @@ struct PaywallView: View {
             Text(L("Every tool and every builder step. No daily limits.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
 
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                ForEach(["Unlock all \(TOOLS.count) tools", "Every Build-your-own step, unlimited saved tools", "Every theme unlocked", "No daily limits — build and run freely"], id: \.self) { line in
+                ForEach(["Unlock every tool", "Every Build-your-own step, unlimited saved tools", "Every theme unlocked", "No daily limits — build and run freely"], id: \.self) { line in
                     HStack(spacing: HandySpacing.s12) {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(HandyColor.accent)
                         Text(line).font(HandyFont.body)

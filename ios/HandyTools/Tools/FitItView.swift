@@ -72,6 +72,7 @@ struct FitItView: View {
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
 
             if output != nil { resultCard }
+            if source == nil { AlsoInThisTool(hub: "fitit") }
         }
         .onChange(of: pickedItem) { _, item in loadPhotoItem(item) }
         .handoff("fitit") { p in

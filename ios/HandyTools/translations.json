@@ -349,6 +349,16 @@
   "pt": "Um amplificador de som casual, não um aparelho auditivo ou dispositivo médico. Mantém o volume confortável para proteger os ouvidos, e consulta um profissional se tiveres dificuldade em ouvir.",
   "zh": "这是一个随手用的声音放大器，不是助听器或医疗设备。请将音量保持在舒适范围以保护听力，若有听力问题请就医。"
  },
+ "A clean M4A or WAV you can hear before saving": {
+  "de": "Ein sauberes M4A oder WAV, vor dem Speichern anhörbar",
+  "es": "Un M4A o WAV limpio que escuchas antes de guardar",
+  "fr": "Un M4A ou WAV propre à écouter avant d'enregistrer",
+  "hi": "साफ़ M4A या WAV, सहेजने से पहले सुन सकें",
+  "it": "Un M4A o WAV pulito da ascoltare prima di salvare",
+  "ja": "保存前に聴ける M4A/WAV",
+  "pt": "Um M4A ou WAV limpo para ouvir antes de salvar",
+  "zh": "保存前可试听的 M4A 或 WAV"
+ },
  "A clean PDF, signed or stamped": {
   "de": "Ein sauberes PDF, unterschrieben oder gestempelt",
   "es": "Un PDF limpio, firmado o sellado",
@@ -358,6 +368,16 @@
   "ja": "きれいなPDF（署名・スタンプ付きも）",
   "pt": "Um PDF limpo, assinado ou carimbado",
   "zh": "干净的 PDF，可签名或盖章"
+ },
+ "A clearer recording, before and after to compare": {
+  "de": "Eine klarere Aufnahme, vorher und nachher zum Vergleichen",
+  "es": "Una grabación más clara, con antes y después",
+  "fr": "Un enregistrement plus net, avant/après à comparer",
+  "hi": "साफ़ रिकॉर्डिंग, पहले और बाद की तुलना",
+  "it": "Una registrazione più chiara, prima e dopo a confronto",
+  "ja": "前後を比べられる、聞きやすい録音",
+  "pt": "Uma gravação mais clara, antes e depois para comparar",
+  "zh": "更清晰的录音，可前后对比"
  },
  "A collage, a video or one PDF": {
   "de": "Eine Collage, ein Video oder ein PDF",
@@ -479,6 +499,16 @@
   "pt": "Uma foto",
   "zh": "一张照片"
  },
+ "A photo that's fun to share and keeps people private": {
+  "de": "Ein Foto zum Teilen, das Menschen privat hält",
+  "es": "Una foto divertida de compartir que protege a la gente",
+  "fr": "Une photo amusante à partager, qui protège les gens",
+  "hi": "शेयर करने लायक मज़ेदार फ़ोटो जो लोगों की निजता बचाए",
+  "it": "Una foto divertente da condividere che protegge le persone",
+  "ja": "楽しく共有でき、人のプライバシーも守れる写真",
+  "pt": "Uma foto divertida de compartilhar que protege as pessoas",
+  "zh": "好玩又保护隐私的照片"
+ },
  "A photo tool also takes scans, PDF pages and QR codes. A text tool also takes a link, what you say, a contact, where you are, or the words in a PDF. A recording tool writes out what was said.": {
   "de": "Ein Foto-Tool nimmt auch Scans, PDF-Seiten und QR-Codes. Ein Text-Tool nimmt auch einen Link, das Gesprochene, einen Kontakt, deinen Standort oder den Text eines PDFs. Ein Aufnahme-Tool schreibt das Gesagte auf.",
   "es": "Una herramienta de foto también acepta escaneos, páginas PDF y códigos QR. Una de texto acepta un enlace, lo que dices, un contacto, dónde estás o el texto de un PDF. Una de grabación transcribe lo dicho.",
@@ -549,6 +579,26 @@
   "pt": "Um recomeço antes da próxima etapa.",
   "zh": "进入下一段前重新充电。"
  },
+ "A ringtone file, with the steps to set it": {
+  "de": "Eine Klingelton-Datei mit Anleitung zum Einstellen",
+  "es": "Un archivo de tono, con los pasos para ponerlo",
+  "fr": "Un fichier sonnerie, avec les étapes pour l'activer",
+  "hi": "रिंगटोन फ़ाइल, सेट करने के चरणों के साथ",
+  "it": "Un file suoneria, con i passi per impostarla",
+  "ja": "着信音ファイルと設定手順",
+  "pt": "Um arquivo de toque, com os passos para definir",
+  "zh": "铃声文件和设置步骤"
+ },
+ "A searchable PDF, with the text shown before you save": {
+  "de": "Ein durchsuchbares PDF, Text vor dem Speichern sichtbar",
+  "es": "Un PDF buscable, con el texto visible antes de guardar",
+  "fr": "Un PDF cherchable, texte affiché avant d'enregistrer",
+  "hi": "खोजने योग्य PDF, सहेजने से पहले टेक्स्ट दिखे",
+  "it": "Un PDF ricercabile, con il testo visibile prima di salvare",
+  "ja": "保存前に文字を確認できる検索可能なPDF",
+  "pt": "Um PDF pesquisável, com o texto mostrado antes de salvar",
+  "zh": "可搜索的 PDF，保存前显示文字"
+ },
  "A shower early resets how you feel for everything after it.": {
   "de": "Eine frühe Dusche verändert, wie du dich danach fühlst.",
   "es": "Una ducha temprano cambia cómo te sientes para todo lo demás.",
@@ -558,6 +608,16 @@
   "ja": "早めのシャワーで、その後の気分がリセットされます。",
   "pt": "Um banho cedo muda como você se sente pro resto do dia.",
   "zh": "早点洗个澡，之后做什么感觉都不一样。"
+ },
+ "A smaller audio file, sizes shown before you choose": {
+  "de": "Eine kleinere Audiodatei, Größen vorab angezeigt",
+  "es": "Un audio más pequeño, con tamaños antes de elegir",
+  "fr": "Un audio plus léger, tailles affichées avant de choisir",
+  "hi": "छोटी ऑडियो फ़ाइल, चुनने से पहले साइज़ दिखे",
+  "it": "Un audio più piccolo, dimensioni mostrate prima",
+  "ja": "選ぶ前にサイズが分かる小さな音声",
+  "pt": "Um áudio menor, tamanhos mostrados antes de escolher",
+  "zh": "更小的音频，选择前显示大小"
  },
  "A strip of film rolls past": {
   "de": "Ein Filmstreifen rollt vorbei",
@@ -1219,6 +1279,16 @@
   "pt": "Permite o acesso às fotos para procurar espaço que possas libertar. Nada sai do teu telemóvel, e apagar pede sempre confirmação.",
   "zh": "允许访问照片以查找可释放的空间。所有内容都不离开你的手机，删除前也总会先询问。"
  },
+ "Already have a scanned PDF? Read every page so you can search, select and copy its words.": {
+  "de": "Schon ein gescanntes PDF? Jede Seite lesen, um Text zu suchen, markieren und kopieren.",
+  "es": "¿Ya tienes un PDF escaneado? Lee cada página para buscar, seleccionar y copiar el texto.",
+  "fr": "Vous avez déjà un PDF scanné ? Lisez chaque page pour chercher, sélectionner et copier.",
+  "hi": "पहले से स्कैन किया PDF है? हर पेज पढ़ें ताकि शब्द खोज, चुन और कॉपी कर सकें।",
+  "it": "Hai già un PDF scansionato? Leggi ogni pagina per cercare, selezionare e copiare.",
+  "ja": "スキャン済みのPDFも、全ページを読み取って検索・選択・コピー可能に。",
+  "pt": "Já tem um PDF digitalizado? Leia cada página para pesquisar, selecionar e copiar.",
+  "zh": "已有扫描 PDF？读取每页，即可搜索、选择和复制文字。"
+ },
  "Also add it to my calendar": {
   "de": "Auch in meinen Kalender eintragen",
   "es": "Añadirlo también a mi calendario",
@@ -1238,6 +1308,16 @@
   "ja": "眼鏡・帽子・撮影時期など国ごとの規定も確認してください。参考用で、公式の判定ではありません。",
   "pt": "Confira também as regras do seu país sobre óculos, chapéus e idade da foto. Uma ajuda, não um veredito oficial.",
   "zh": "还请查看你所在国家关于眼镜、头饰和照片时效的规定。仅供参考，并非官方结论。"
+ },
+ "Also in this tool": {
+  "de": "Auch in diesem Tool",
+  "es": "También en esta herramienta",
+  "fr": "Aussi dans cet outil",
+  "hi": "इस टूल में और भी",
+  "it": "Anche in questo strumento",
+  "ja": "このツールでできること",
+  "pt": "Também nesta ferramenta",
+  "zh": "此工具还能"
  },
  "Also make a GIF (for chats)": {
   "de": "Auch ein GIF erstellen (für Chats)",
@@ -1598,6 +1678,16 @@
   "ja": "音声変換",
   "pt": "Converter áudio",
   "zh": "音频转换"
+ },
+ "Audio Editor": {
+  "de": "Audio-Editor",
+  "es": "Editor de audio",
+  "fr": "Éditeur audio",
+  "hi": "ऑडियो एडिटर",
+  "it": "Editor audio",
+  "ja": "オーディオ編集",
+  "pt": "Editor de áudio",
+  "zh": "音频编辑"
  },
  "Audio Lab": {
   "de": "Audio-Labor",
@@ -3389,6 +3479,16 @@
   "pt": "Escolher fotos de páginas",
   "zh": "选择页面照片"
  },
+ "Choose up to 30 seconds of any song or video.": {
+  "de": "Wähle bis zu 30 Sekunden aus einem Song oder Video.",
+  "es": "Elige hasta 30 segundos de una canción o vídeo.",
+  "fr": "Choisissez jusqu'à 30 secondes d'une chanson ou vidéo.",
+  "hi": "किसी गाने या वीडियो से 30 सेकंड तक चुनें।",
+  "it": "Scegli fino a 30 secondi di un brano o video.",
+  "ja": "曲や動画から最大30秒を選びます。",
+  "pt": "Escolha até 30 segundos de uma música ou vídeo.",
+  "zh": "从歌曲或视频中选最多 30 秒。"
+ },
  "Choose: drops below, goes above, or changes. Tap Check now to see the number Tenzy reads.": {
   "de": "Wähle: fällt unter, steigt über oder ändert sich. Tippe auf Jetzt prüfen, um die gelesene Zahl zu sehen.",
   "es": "Elige: baja de, sube de o cambia. Toca Comprobar ahora para ver el número que lee Tenzy.",
@@ -4688,6 +4788,16 @@
   "ja": "すべて隠す",
   "pt": "Cobrir todos",
   "zh": "全部遮住"
+ },
+ "Cover faces with emoji": {
+  "de": "Gesichter mit Emoji verdecken",
+  "es": "Tapar caras con emojis",
+  "fr": "Couvrir les visages d'emoji",
+  "hi": "चेहरों को इमोजी से ढकें",
+  "it": "Copri i volti con emoji",
+  "ja": "顔を絵文字で隠す",
+  "pt": "Cobrir rostos com emoji",
+  "zh": "用表情遮住脸"
  },
  "Cover faces with emoji — you choose which ones.": {
   "de": "Gesichter mit Emoji verdecken – du wählst, welche.",
@@ -6148,6 +6258,16 @@
   "ja": "デザインしたコードは表示前に試しに読み取ります。読めないデザインなら、シンプルなコードになります。",
   "pt": "Cada código com estilo é testado antes de o ver — se um estilo não ler, recebe o simples.",
   "zh": "每个美化后的码都会先试扫；如果某种样式扫不出，会改用普通样式。"
+ },
+ "Every tool": {
+  "de": "Alle Tools",
+  "es": "Todas las herramientas",
+  "fr": "Tous les outils",
+  "hi": "हर टूल",
+  "it": "Tutti gli strumenti",
+  "ja": "すべてのツール",
+  "pt": "Todas as ferramentas",
+  "zh": "所有工具"
  },
  "Every tool Tenzy has — tap any to open it. It all runs on your phone.": {
   "de": "Jedes Tenzy-Werkzeug – tippe zum Öffnen. Alles läuft auf deinem Telefon.",
@@ -8989,6 +9109,16 @@
   "pt": "Junte clipes ou acelere/desacelere sem voz de esquilo.",
   "zh": "合并片段，或变速而不变成“花栗鼠声”。"
  },
+ "Join clips or change speed": {
+  "de": "Clips verbinden oder Tempo ändern",
+  "es": "Unir clips o cambiar la velocidad",
+  "fr": "Joindre des extraits ou changer la vitesse",
+  "hi": "क्लिप जोड़ें या गति बदलें",
+  "it": "Unisci clip o cambia velocità",
+  "ja": "つなぐ・速度を変える",
+  "pt": "Juntar clipes ou mudar a velocidade",
+  "zh": "合并片段或调速"
+ },
  "Join clips, speed up or slow down": {
   "de": "Clips verbinden, schneller oder langsamer",
   "es": "Une clips, acelera o ralentiza",
@@ -9228,6 +9358,16 @@
   "ja": "シンプルに",
   "pt": "Mantenha simples",
   "zh": "简单就好"
+ },
+ "Keep just the part you want, fade it in and out, cut long silences.": {
+  "de": "Nur den gewünschten Teil behalten, ein- und ausblenden, lange Pausen entfernen.",
+  "es": "Quédate solo con la parte que quieres, con fundidos, sin silencios largos.",
+  "fr": "Gardez la partie voulue, ajoutez des fondus, coupez les longs silences.",
+  "hi": "सिर्फ़ चाहा हिस्सा रखें, फ़ेड करें, लंबी खामोशी हटाएँ।",
+  "it": "Tieni solo la parte che vuoi, dissolvenze, via i silenzi lunghi.",
+  "ja": "必要な部分だけ残し、フェードを付け、長い無音をカット。",
+  "pt": "Fique só com a parte que quer, com fade, sem silêncios longos.",
+  "zh": "只留想要的部分，加淡入淡出，剪掉长静音。"
  },
  "Keep lines": {
   "de": "Zeilen behalten",
@@ -9859,6 +9999,16 @@
   "pt": "Correção ao vivo para daltonismo, destaque de uma cor e um identificador que diz a cor em voz alta e diz se duas coisas combinam — câmera ou foto.",
   "zh": "色盲实时校正、单色突出、会朗读颜色名称并告诉你两样东西是否搭配——用相机或照片。"
  },
+ "Live notes, or notes from a recording": {
+  "de": "Live-Notizen oder Notizen aus einer Aufnahme",
+  "es": "Notas en directo o de una grabación",
+  "fr": "Notes en direct ou depuis un enregistrement",
+  "hi": "लाइव नोट्स, या रिकॉर्डिंग से नोट्स",
+  "it": "Note dal vivo o da una registrazione",
+  "ja": "その場でメモ、または録音から",
+  "pt": "Notas ao vivo ou de uma gravação",
+  "zh": "实时笔记或从录音生成"
+ },
  "Live preview": {
   "de": "Live-Vorschau",
   "es": "Vista previa en vivo",
@@ -10309,6 +10459,16 @@
   "pt": "Criar folha de impressão 4×6",
   "zh": "制作 4×6 打印页"
  },
+ "Make a PDF searchable": {
+  "de": "PDF durchsuchbar machen",
+  "es": "Hacer un PDF buscable",
+  "fr": "Rendre un PDF cherchable",
+  "hi": "PDF को खोजने योग्य बनाएँ",
+  "it": "Rendi ricercabile un PDF",
+  "ja": "PDFを検索可能に",
+  "pt": "Deixar um PDF pesquisável",
+  "zh": "让 PDF 可搜索"
+ },
  "Make a Zip": {
   "de": "Zip erstellen",
   "es": "Crear un Zip",
@@ -10369,6 +10529,16 @@
   "pt": "Deixe uma gravação pequena o suficiente para enviar.",
   "zh": "把录音压小，方便邮件或消息发送。"
  },
+ "Make a ringtone": {
+  "de": "Klingelton machen",
+  "es": "Hacer un tono",
+  "fr": "Créer une sonnerie",
+  "hi": "रिंगटोन बनाएँ",
+  "it": "Crea una suoneria",
+  "ja": "着信音を作る",
+  "pt": "Fazer um toque",
+  "zh": "制作铃声"
+ },
  "Make a scan's words searchable": {
   "de": "Text eines Scans durchsuchbar machen",
   "es": "Haz que el texto de un escaneo se pueda buscar",
@@ -10398,6 +10568,16 @@
   "ja": "作業をすべてこなすツールを作成——端末内で動作します。",
   "pt": "Cria uma ferramenta que faz o trabalho todo — corre no teu telemóvel.",
   "zh": "创建一个能完成整件事的工具——它在你的手机上运行。"
+ },
+ "Make a voice memo or song small enough to email or message.": {
+  "de": "Sprachmemo oder Song klein genug für Mail oder Nachricht machen.",
+  "es": "Haz una nota de voz o canción lo bastante pequeña para correo o mensaje.",
+  "fr": "Rendez un mémo ou une chanson assez léger pour un e-mail ou un message.",
+  "hi": "वॉइस मेमो या गाने को ईमेल या मैसेज लायक छोटा करें।",
+  "it": "Rendi una nota vocale o un brano abbastanza piccolo per email o messaggi.",
+  "ja": "ボイスメモや曲をメール・メッセージで送れるサイズに。",
+  "pt": "Deixe um áudio ou música pequeno o bastante para e-mail ou mensagem.",
+  "zh": "把语音备忘录或歌曲压到能发邮件或消息的大小。"
  },
  "Make all": {
   "de": "Alle erstellen",
@@ -10468,6 +10648,16 @@
   "ja": "GIF にする",
   "pt": "Fazer um GIF",
   "zh": "做成 GIF"
+ },
+ "Make it clearer": {
+  "de": "Klarer machen",
+  "es": "Hacerla más clara",
+  "fr": "La rendre plus nette",
+  "hi": "इसे साफ़ बनाएँ",
+  "it": "Rendila più chiara",
+  "ja": "聞き取りやすく",
+  "pt": "Deixar mais clara",
+  "zh": "让它更清晰"
  },
  "Make it look good": {
   "de": "Schön gestalten",
@@ -12459,6 +12649,36 @@
   "pt": "Notas e tarefas de uma reunião",
   "zh": "会议笔记和待办"
  },
+ "Notes from Speech": {
+  "de": "Notizen aus Sprache",
+  "es": "Notas de voz",
+  "fr": "Notes à partir de la voix",
+  "hi": "बोली से नोट्स",
+  "it": "Note dalla voce",
+  "ja": "音声からメモ",
+  "pt": "Notas da fala",
+  "zh": "语音转笔记"
+ },
+ "Notes from a meeting recording": {
+  "de": "Notizen aus einer Meeting-Aufnahme",
+  "es": "Notas de una grabación de reunión",
+  "fr": "Notes d'un enregistrement de réunion",
+  "hi": "मीटिंग रिकॉर्डिंग से नोट्स",
+  "it": "Note da una registrazione di riunione",
+  "ja": "会議の録音からメモ",
+  "pt": "Notas de uma gravação de reunião",
+  "zh": "从会议录音生成笔记"
+ },
+ "Notes kept on your phone, searchable and shareable": {
+  "de": "Notizen auf deinem Handy, durchsuchbar und teilbar",
+  "es": "Notas en tu teléfono, buscables y para compartir",
+  "fr": "Notes gardées sur le téléphone, cherchables et partageables",
+  "hi": "आपके फ़ोन पर रखे नोट्स, खोजने और शेयर करने योग्य",
+  "it": "Note sul telefono, ricercabili e condivisibili",
+  "ja": "スマホに保存、検索・共有できるメモ",
+  "pt": "Notas no celular, pesquisáveis e compartilháveis",
+  "zh": "笔记存在手机上，可搜索可分享"
+ },
  "Nothing captured yet. Plug the phone in, put it on the nightstand, start listening, and check back in the morning.": {
   "de": "Noch nichts aufgenommen. Schließe das Handy an, leg es auf den Nachttisch, starte das Lauschen und schau morgens nach.",
   "es": "Aún no se ha captado nada. Enchufa el teléfono, ponlo en la mesita, empieza a escuchar y revisa por la mañana.",
@@ -12898,6 +13118,16 @@
   "ja": "1つのファイル — 画像・PDF・音声・動画 — で全変換オプション、または複数の写真を一度にまとめて変換・1つのPDFに結合。すべて端末内で動作し、無料です。",
   "pt": "Um ficheiro — imagem, PDF, áudio ou vídeo — para todas as opções de conversão, ou várias fotos de uma vez para converter em lote ou juntar num PDF. Tudo no teu telemóvel e sem custo.",
   "zh": "一个文件 — 图片、PDF、音频或视频 — 可获得完整转换选项，或一次选多张照片批量转换或合并为一个 PDF。全部在你的手机上运行，免费。"
+ },
+ "One file, played back before you save": {
+  "de": "Eine Datei, vor dem Speichern abgespielt",
+  "es": "Un archivo que escuchas antes de guardar",
+  "fr": "Un fichier, écouté avant d'enregistrer",
+  "hi": "एक फ़ाइल, सहेजने से पहले सुनें",
+  "it": "Un file, ascoltato prima di salvare",
+  "ja": "保存前に再生できる1ファイル",
+  "pt": "Um arquivo, tocado antes de salvar",
+  "zh": "一个文件，保存前可播放"
  },
  "One link or text per line — one QR each": {
   "de": "Ein Link oder Text pro Zeile — je ein QR",
@@ -14239,6 +14469,16 @@
   "pt": "Escolha uma foto. O Tenzy encontra os rostos — toque para escolher quais recebem emoji. Ótimo para fotos de crianças antes de postar.",
   "zh": "选一张照片，Tenzy找出人脸——点按选择哪些加表情。发孩子照片前很实用。"
  },
+ "Pick a recording or a video of a meeting.": {
+  "de": "Wähle eine Aufnahme oder ein Video eines Meetings.",
+  "es": "Elige una grabación o un vídeo de una reunión.",
+  "fr": "Choisissez un enregistrement ou une vidéo de réunion.",
+  "hi": "मीटिंग की रिकॉर्डिंग या वीडियो चुनें।",
+  "it": "Scegli una registrazione o un video di una riunione.",
+  "ja": "会議の録音か動画を選びます。",
+  "pt": "Escolha uma gravação ou vídeo de reunião.",
+  "zh": "选择会议录音或视频。"
+ },
  "Pick a tool. It explains itself.": {
   "de": "Wähle ein Tool. Es erklärt sich selbst.",
   "es": "Elige una herramienta. Se explica sola.",
@@ -14258,6 +14498,16 @@
   "ja": "音声録音や任意のサウンドファイルを選んでください。この端末から出ることはありません。",
   "pt": "Escolhe uma gravação de voz ou qualquer ficheiro de som. Nunca sai deste telemóvel.",
   "zh": "选择一段语音录音或任意声音文件。它绝不离开本机。"
+ },
+ "Pick an emoji for each face, or leave a face showing.": {
+  "de": "Wähle ein Emoji pro Gesicht oder lass eins sichtbar.",
+  "es": "Elige un emoji para cada cara, o deja alguna a la vista.",
+  "fr": "Choisissez un emoji par visage, ou laissez-en un visible.",
+  "hi": "हर चेहरे के लिए इमोजी चुनें, या किसी को दिखने दें।",
+  "it": "Scegli un'emoji per ogni volto o lasciane uno visibile.",
+  "ja": "顔ごとに絵文字を選ぶか、そのまま残せます。",
+  "pt": "Escolha um emoji para cada rosto, ou deixe um visível.",
+  "zh": "为每张脸选表情，也可以保留某张脸。"
  },
  "Pick any file. The other device scans the code or opens the address — same Wi-Fi, no cable, no cloud.": {
   "de": "Wähle eine beliebige Datei. Das andere Gerät scannt den Code oder öffnet die Adresse — gleiches WLAN, kein Kabel, keine Cloud.",
@@ -15078,6 +15328,16 @@
   "ja": "ホーム画面に追加",
   "pt": "Colocar no ecrã principal",
   "zh": "添加到主屏幕"
+ },
+ "Put recordings in order as one file, or play a lecture faster or slower without the chipmunk effect.": {
+  "de": "Aufnahmen zu einer Datei ordnen oder einen Vortrag schneller oder langsamer abspielen – ohne Mickymaus-Effekt.",
+  "es": "Ordena grabaciones en un archivo, o reproduce una clase más rápida o lenta sin voz de ardilla.",
+  "fr": "Mettez des enregistrements en un fichier, ou accélérez/ralentissez un cours sans voix de dessin animé.",
+  "hi": "रिकॉर्डिंग को एक फ़ाइल में जोड़ें, या लेक्चर को बिना चिपमंक आवाज़ के तेज़/धीमा करें।",
+  "it": "Metti in fila le registrazioni in un file, o velocizza/rallenta una lezione senza effetto scoiattolo.",
+  "ja": "録音を順に1つに、または講義を声が変わらず速く・遅く。",
+  "pt": "Junte gravações num arquivo, ou acelere/desacelere uma aula sem voz de esquilo.",
+  "zh": "把录音按顺序合成一个文件，或在不变调的情况下加速/减速讲座。"
  },
  "Put the horizon on a line, not across the middle.": {
   "de": "Setz den Horizont auf eine Linie, nicht in die Mitte.",
@@ -15988,6 +16248,16 @@
   "ja": "ジャケットを削除",
   "pt": "Remover capa",
   "zh": "移除封面"
+ },
+ "Remove hum and hiss, and bring a quiet recording up to an even volume.": {
+  "de": "Brummen und Rauschen entfernen und eine leise Aufnahme gleichmäßig lauter machen.",
+  "es": "Quita zumbidos y siseos y sube una grabación baja a un volumen uniforme.",
+  "fr": "Retirez ronflements et souffle, remontez un enregistrement trop faible.",
+  "hi": "गुनगुनाहट और सरसराहट हटाएँ, धीमी रिकॉर्डिंग को बराबर आवाज़ तक लाएँ।",
+  "it": "Togli ronzii e fruscii e porta una registrazione bassa a un volume uniforme.",
+  "ja": "ハムやヒスを除き、小さい録音を均一な音量に。",
+  "pt": "Remova zumbido e chiado e iguale o volume de uma gravação baixa.",
+  "zh": "去掉嗡嗡声和嘶声，把小声录音调到均匀音量。"
  },
  "Remove location, hide faces": {
   "de": "Standort entfernen, Gesichter verbergen",
@@ -18359,6 +18629,16 @@
   "pt": "A mostrar a primeira parte de um ficheiro grande.",
   "zh": "正在显示大文件的第一部分。"
  },
+ "Shrink a recording": {
+  "de": "Aufnahme verkleinern",
+  "es": "Reducir una grabación",
+  "fr": "Réduire un enregistrement",
+  "hi": "रिकॉर्डिंग छोटी करें",
+  "it": "Riduci una registrazione",
+  "ja": "録音を小さく",
+  "pt": "Diminuir uma gravação",
+  "zh": "压缩录音"
+ },
  "Shrink a recording to email it": {
   "de": "Aufnahme verkleinern, um sie zu mailen",
   "es": "Reduce una grabación para enviarla por correo",
@@ -19148,6 +19428,16 @@
   "ja": "話す",
   "pt": "Falar",
   "zh": "说话"
+ },
+ "Speak and watch the words appear. When you stop, you get a summary and the to-dos.": {
+  "de": "Sprich und sieh die Wörter erscheinen. Danach bekommst du Zusammenfassung und Aufgaben.",
+  "es": "Habla y mira aparecer las palabras. Al parar, tienes un resumen y las tareas.",
+  "fr": "Parlez et voyez les mots apparaître. À la fin : un résumé et les tâches.",
+  "hi": "बोलें और शब्द दिखते जाएँ। रुकने पर सारांश और काम मिलेंगे।",
+  "it": "Parla e guarda apparire le parole. Alla fine: riassunto e cose da fare.",
+  "ja": "話すと文字が表示され、終わると要約とToDoが出ます。",
+  "pt": "Fale e veja as palavras aparecerem. Ao parar, recebe um resumo e as tarefas.",
+  "zh": "说话时文字实时出现，结束后得到摘要和待办。"
  },
  "Speak reply": {
   "de": "Antwort sprechen",
@@ -20028,6 +20318,16 @@
   "ja": "話す",
   "pt": "Falar",
   "zh": "说话"
+ },
+ "Talk and take notes": {
+  "de": "Sprechen und mitschreiben lassen",
+  "es": "Habla y toma notas",
+  "fr": "Parlez, prenez des notes",
+  "hi": "बोलें और नोट्स लें",
+  "it": "Parla e prendi appunti",
+  "ja": "話してメモを取る",
+  "pt": "Fale e anote",
+  "zh": "边说边记"
  },
  "Talk it out. Get the transcript, a summary and the to-dos — kept on your phone.": {
   "de": "Einfach reden. Transkript, Zusammenfassung und To-dos – auf deinem Telefon.",
@@ -22499,6 +22799,16 @@
   "pt": "Traduza textos, placas e falas",
   "zh": "翻译文字、标牌和语音"
  },
+ "Trim & Fade": {
+  "de": "Kürzen & Ausblenden",
+  "es": "Recortar y fundir",
+  "fr": "Couper et fondu",
+  "hi": "ट्रिम और फ़ेड",
+  "it": "Taglia e dissolvi",
+  "ja": "トリムとフェード",
+  "pt": "Cortar e esmaecer",
+  "zh": "剪辑与淡入淡出"
+ },
  "Trim a clip into a ringtone": {
   "de": "Clip zum Klingelton kürzen",
   "es": "Recorta un clip como tono de llamada",
@@ -22519,6 +22829,16 @@
   "pt": "Corte uma gravação e os silêncios",
   "zh": "剪辑录音，去掉静音"
  },
+ "Trim and fade": {
+  "de": "Kürzen und ausblenden",
+  "es": "Recortar y fundir",
+  "fr": "Couper et fondu",
+  "hi": "ट्रिम और फ़ेड",
+  "it": "Taglia e dissolvi",
+  "ja": "トリムとフェード",
+  "pt": "Cortar e esmaecer",
+  "zh": "剪辑和淡入淡出"
+ },
  "Trim, GIF, slow-mo, a still": {
   "de": "Kürzen, GIF, Zeitlupe, Standbild",
   "es": "Recortar, GIF, cámara lenta, fotograma",
@@ -22528,6 +22848,16 @@
   "ja": "トリム、GIF、スロー、静止画",
   "pt": "Cortar, GIF, câmera lenta, quadro",
   "zh": "剪辑、GIF、慢动作、截图"
+ },
+ "Trim, ringtone, join, clean up": {
+  "de": "Kürzen, Klingelton, verbinden, säubern",
+  "es": "Recortar, tono, unir, limpiar",
+  "fr": "Couper, sonnerie, joindre, nettoyer",
+  "hi": "ट्रिम, रिंगटोन, जोड़ें, साफ़ करें",
+  "it": "Taglia, suoneria, unisci, pulisci",
+  "ja": "トリム・着信音・結合・クリーンアップ",
+  "pt": "Cortar, toque, juntar, limpar",
+  "zh": "剪辑、铃声、合并、降噪"
  },
  "Trip": {
   "de": "Fahrt",
@@ -23148,6 +23478,16 @@
   "ja": "Proを解放（テスター）",
   "pt": "Desbloquear Pro (tester)",
   "zh": "解锁 Pro（测试）"
+ },
+ "Unlock every tool": {
+  "de": "Alle Tools freischalten",
+  "es": "Desbloquea todas las herramientas",
+  "fr": "Débloquez tous les outils",
+  "hi": "हर टूल अनलॉक करें",
+  "it": "Sblocca tutti gli strumenti",
+  "ja": "すべてのツールを解放",
+  "pt": "Desbloqueie todas as ferramentas",
+  "zh": "解锁所有工具"
  },
  "Unmark": {
   "de": "Markierung entfernen",
@@ -24218,6 +24558,16 @@
   "ja": "誰の発言？",
   "pt": "Quem disse isso?",
   "zh": "这是谁说的？"
+ },
+ "Who said what, a summary, a to-do list and a ready follow-up email": {
+  "de": "Wer was gesagt hat, Zusammenfassung, Aufgabenliste und fertige Folge-Mail",
+  "es": "Quién dijo qué, un resumen, tareas y un correo de seguimiento listo",
+  "fr": "Qui a dit quoi, un résumé, les tâches et un e-mail de suivi prêt",
+  "hi": "किसने क्या कहा, सारांश, कामों की सूची और तैयार फ़ॉलो-अप ईमेल",
+  "it": "Chi ha detto cosa, riassunto, cose da fare e un'email di follow-up pronta",
+  "ja": "誰が何を言ったか、要約、ToDo、送るだけのフォローメール",
+  "pt": "Quem disse o quê, resumo, tarefas e um e-mail de acompanhamento pronto",
+  "zh": "谁说了什么、摘要、待办和写好的跟进邮件"
  },
  "Who said what, the to-dos, and an email ready to send.": {
   "de": "Wer was gesagt hat, die Aufgaben und eine fertige E-Mail.",

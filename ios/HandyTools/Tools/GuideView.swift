@@ -53,6 +53,7 @@ struct GuideView: View {
         NavigationStack(path: $path) {
             start
                 .navigationDestination(for: Stop.self) { stop in destination(stop) }
+                .navigationDestination(for: String.self) { id in ToolDestination(id: id) }
         }
         .interactiveDismissDisabled(!path.isEmpty)
         .task {

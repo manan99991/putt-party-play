@@ -200,4 +200,20 @@ final class GuideMenuReceiptTests: XCTestCase {
         XCTAssertEqual(ToolHandoff.shared.takePhotos("collage").count, 3)
         XCTAssertTrue(ToolHandoff.shared.takePhotos("collage").isEmpty, "used once")
     }
+
+    // MARK: tools brought together
+
+    /// Every tool that moved into another keeps its own full screen and is one tap away inside its new home —
+    /// nothing is lost, and the Home grid shows one clear place for each kind of job.
+    @MainActor func testMergedToolsAreAllStillReachable() {
+        for (tool, home) in Tool.homes {
+            XCTAssertNotNil(TOOLS.first { $0.id == tool }, "\(tool) still exists")
+            XCTAssertNotNil(TOOLS.first { $0.id == home }, "\(home) exists")
+            XCTAssertTrue(ToolHub.jobs(home).contains { $0.id == tool }, "\(tool) is a card inside \(home)")
+            XCTAssertFalse((1...9).flatMap { tools(onPage: $0) }.contains { $0.id == tool }, "\(tool) isn't listed twice on Home")
+            XCTAssertTrue(searchTools(TOOLS.first { $0.id == tool }!.name).contains { $0.id == tool }, "searching \(tool)'s name still finds it")
+        }
+        for hub in Set(Tool.homes.values) { XCTAssertTrue((1...9).flatMap { tools(onPage: $0) }.contains { $0.id == hub }, "\(hub) is on Home") }
+        XCTAssertTrue(searchTools("ringtone").contains { $0.id == "audiostudio" || $0.id == "ringtone" })
+    }
 }
