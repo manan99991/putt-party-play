@@ -652,7 +652,10 @@ enum ChainRunner {
             var opts = DocEngine.PDFOptions()
             switch step.settings["pagesize"] { case "a4": opts.pageSize = .a4; case "letter": opts.pageSize = .letter; default: break }
             if step.settings["searchable"] == "false" { opts.searchable = false }
-            guard let d = DocEngine.pdf(images: [img], ocr: [opts.searchable ? DocEngine.recognize(img) : nil], options: opts) else { return .failure(.failed(b)) }
+            // A photo of a page becomes the page: corners found and flattened, paper whitened, ink darkened —
+            // like a scanner, not a snapshot of a desk. "Keep as photographed" turns it off.
+            let page = step.settings["flatten"] == "false" ? img : PageFlatten.scan(img).image
+            guard let d = DocEngine.pdf(images: [page], ocr: [opts.searchable ? DocEngine.recognize(page) : nil], options: opts) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "pdf"))
 
         case (.chatLink, .text(let t)):

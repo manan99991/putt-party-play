@@ -41,3 +41,39 @@ final class PaperTests: XCTestCase {
         XCTAssertNil(Paper.decode("Most likely: Lamp — 40%"))
     }
 }
+
+/// Scan: a photo of a page is flattened to the page only when a page clearly sits inside the photo.
+final class PageFlattenTests: XCTestCase {
+    func testOnlyARealPageInsideThePhotoIsCropped() {
+        // A sheet covering the middle of a desk photo: crop to it.
+        XCTAssertNotNil(PageFlatten.accept(CGPoint(x: 0.15, y: 0.9), CGPoint(x: 0.85, y: 0.92), CGPoint(x: 0.12, y: 0.08), CGPoint(x: 0.88, y: 0.1)))
+        // Already the whole frame (a scanner page): leave it.
+        XCTAssertNil(PageFlatten.accept(CGPoint(x: 0, y: 1), CGPoint(x: 1, y: 1), CGPoint(x: 0, y: 0), CGPoint(x: 1, y: 0)))
+        // A small label in the corner is not the page.
+        XCTAssertNil(PageFlatten.accept(CGPoint(x: 0.1, y: 0.3), CGPoint(x: 0.3, y: 0.3), CGPoint(x: 0.1, y: 0.1), CGPoint(x: 0.3, y: 0.1)))
+    }
+
+    func testAPhotographedPageComesOutFlatAndWhite() throws {
+        // A white sheet with lines of "text", photographed on a dark wooden desk, slightly askew.
+        let size = CGSize(width: 1200, height: 1600)
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1
+        let photo = UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            UIColor(red: 0.35, green: 0.22, blue: 0.12, alpha: 1).setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+            let page = UIBezierPath(); page.move(to: CGPoint(x: 220, y: 180)); page.addLine(to: CGPoint(x: 1010, y: 230))
+            page.addLine(to: CGPoint(x: 960, y: 1420)); page.addLine(to: CGPoint(x: 180, y: 1380)); page.close()
+            UIColor(white: 0.82, alpha: 1).setFill(); page.fill()
+            UIColor(white: 0.3, alpha: 1).setFill()
+            for i in 0..<18 { ctx.fill(CGRect(x: 300, y: 320 + i * 55, width: 520, height: 14)) }
+        }
+        let r = PageFlatten.scan(photo)
+        XCTAssertTrue(r.whitened)
+        if r.flattened {
+            // The desk is gone: the corners of the result are paper, not wood.
+            let cg = try XCTUnwrap(r.image.cgImage)
+            let w = CGFloat(cg.width), h = CGFloat(cg.height)
+            let v = ToolOutputQualityTests.pixels(cg, at: [CGPoint(x: 12, y: 12), CGPoint(x: w - 12, y: 12), CGPoint(x: 12, y: h - 12), CGPoint(x: w - 12, y: h - 12)])
+            let corner = v.reduce(0, +) / Double(max(1, v.count)) / 255
+            XCTAssertGreaterThan(corner, 0.6, "corner brightness \(corner)")
+        }
+    }
+}
