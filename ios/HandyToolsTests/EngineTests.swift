@@ -2635,12 +2635,14 @@ final class EngineTests: XCTestCase {
         let out = await rec.finish()
         let movie = try XCTUnwrap(out, "the movie is written")
         let asset = AVURLAsset(url: movie)
-        XCTAssertEqual(try await asset.load(.duration).seconds, 2.0, accuracy: 0.15, "2 seconds of frames → a 2-second clip")
+        let length = try await asset.load(.duration).seconds
+        XCTAssertEqual(length, 2.0, accuracy: 0.15, "2 seconds of frames → a 2-second clip")
         let v = try await asset.loadTracks(withMediaType: .video)
         XCTAssertEqual(v.count, 1)
         let size = try await v[0].load(.naturalSize)
         XCTAssertEqual(size.width, 640); XCTAssertEqual(size.height, 360)
-        XCTAssertEqual(Double(try await v[0].load(.nominalFrameRate)), 30, accuracy: 1.5)
+        let rate = try await v[0].load(.nominalFrameRate)
+        XCTAssertEqual(Double(rate), 30, accuracy: 1.5)
         let img = try await AVAssetImageGenerator(asset: asset).image(at: .zero).image
         XCTAssertEqual(img.width, 640, "it plays: the first frame decodes")
         try? FileManager.default.removeItem(at: movie)
