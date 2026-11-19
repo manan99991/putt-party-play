@@ -21,9 +21,9 @@ final class ShieldReportTests: XCTestCase {
 final class StrongPasswordTests: XCTestCase {
     func testPasswordsAreWordsAndDigitsAndDiffer() {
         let a = PDFProtectView.strongPassword(), b = PDFProtectView.strongPassword()
-        XCTAssertEqual(a.split(separator: "-").count, 4)
+        XCTAssertEqual(a.split(separator: "-").count, 5)
         XCTAssertEqual(a.split(separator: "-").last?.count, 4)
         XCTAssertNotEqual(a, b)
-        XCTAssertGreaterThanOrEqual(Set(PDFProtectView.words).count, 64, "64 words × 3 + 4 digits ≈ 31 bits of words + 13 of digits")
+        XCTAssertGreaterThanOrEqual(Set(PDFProtectView.words).count, 64, "64 words × 4 (24 bits) + 4 digits (13 bits)")
     }
 }

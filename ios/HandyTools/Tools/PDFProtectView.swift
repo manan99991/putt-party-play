@@ -203,15 +203,15 @@ struct PDFProtectView: View {
         }
     }
 
-    /// Three everyday words and four digits, e.g. "Maple-Tiger-Harbor-4827": about 50 bits — far beyond guessing,
-    /// easy to read down a phone line. Uses the system's secure random source.
+    /// Four everyday words and four digits, e.g. "Maple-Tiger-Harbor-Ember-4827": about 37 bits from the system's secure
+    /// random source — beyond guessing by hand, still easy to read down a phone line.
     static let words = ["Maple", "Tiger", "Harbor", "Cactus", "Velvet", "Orbit", "Pepper", "Canyon", "Willow", "Falcon", "Lemon", "Glacier", "Comet", "Saddle", "Meadow", "Pebble",
                         "Rocket", "Thistle", "Lantern", "Bamboo", "Copper", "Dolphin", "Ember", "Juniper", "Marble", "Nectar", "Otter", "Prairie", "Quartz", "Raven", "Summit", "Tulip",
                         "Umber", "Violet", "Walnut", "Yonder", "Zephyr", "Anchor", "Biscuit", "Cobalt", "Dune", "Fern", "Garnet", "Hazel", "Iris", "Jasper", "Kettle", "Lagoon",
                         "Mango", "Nimbus", "Olive", "Parrot", "Ripple", "Sparrow", "Timber", "Valley", "Wren", "Amber", "Breeze", "Cedar", "Delta", "Echo", "Fable", "Grove"]
     static func strongPassword() -> String {
         var g = SystemRandomNumberGenerator()
-        let picked = (0..<3).map { _ in words.randomElement(using: &g)! }
+        let picked = (0..<4).map { _ in words.randomElement(using: &g)! }
         return picked.joined(separator: "-") + "-" + String(format: "%04d", Int.random(in: 0...9999, using: &g))
     }
 
