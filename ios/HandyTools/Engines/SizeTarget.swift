@@ -15,6 +15,20 @@ enum SizeTarget {
         ("500 KB", 500_000), ("200 KB", 200_000), ("50 KB", 50_000),
     ]
 
+    /// "Where is it going?" — the common places a file has to fit, with their usual limit, so nobody has to
+    /// know the number. Plain names; the limit is shown next to each.
+    static let destinations: [(name: String, bytes: Int, icon: String)] = [
+        ("Email (Gmail, iCloud, Yahoo)", 25_000_000, "envelope"),
+        ("Outlook email", 20_000_000, "envelope.badge"),
+        ("WhatsApp video", 16_000_000, "message"),
+        ("Discord", 10_000_000, "bubble.left.and.bubble.right"),
+        ("Job application", 5_000_000, "briefcase"),
+        ("Most website forms", 2_000_000, "globe"),
+        ("US visa photo (DS-160)", 240_000, "person.crop.square"),
+        ("Small photo upload", 100_000, "photo"),
+        ("Signature upload", 50_000, "signature"),
+    ]
+
     static func format(_ bytes: Int) -> String {
         ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
     }

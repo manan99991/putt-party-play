@@ -4529,6 +4529,16 @@
   "pt": "Direções",
   "zh": "路线"
  },
+ "Discord": {
+  "de": "Discord",
+  "es": "Discord",
+  "fr": "Discord",
+  "hi": "Discord",
+  "it": "Discord",
+  "ja": "Discord",
+  "pt": "Discord",
+  "zh": "Discord"
+ },
  "Dishes, prices & diet, any language": {
   "de": "Gerichte, Preise & Ernährung, jede Sprache",
   "es": "Platos, precios y dieta, en cualquier idioma",
@@ -5078,6 +5088,16 @@
   "ja": "メール",
   "pt": "E-mail",
   "zh": "电子邮件"
+ },
+ "Email (Gmail, iCloud, Yahoo)": {
+  "de": "E-Mail (Gmail, iCloud, Yahoo)",
+  "es": "Correo (Gmail, iCloud, Yahoo)",
+  "fr": "E-mail (Gmail, iCloud, Yahoo)",
+  "hi": "ईमेल (Gmail, iCloud, Yahoo)",
+  "it": "Email (Gmail, iCloud, Yahoo)",
+  "ja": "メール（Gmail・iCloud・Yahoo）",
+  "pt": "Email (Gmail, iCloud, Yahoo)",
+  "zh": "邮件（Gmail、iCloud、Yahoo）"
  },
  "Email a copy": {
   "de": "Kopie per E-Mail",
@@ -7649,6 +7669,16 @@
   "pt": "O lembrete também para.",
   "zh": "它的提醒也会停止。"
  },
+ "Job application": {
+  "de": "Bewerbung",
+  "es": "Solicitud de empleo",
+  "fr": "Candidature",
+  "hi": "नौकरी का आवेदन",
+  "it": "Candidatura",
+  "ja": "求人応募",
+  "pt": "Candidatura",
+  "zh": "求职申请"
+ },
  "Job offer that's too good to be true": {
   "de": "Jobangebot, das zu gut ist, um wahr zu sein",
   "es": "Oferta de trabajo demasiado buena para ser verdad",
@@ -9509,6 +9539,16 @@
   "pt": "Mais recente",
   "zh": "最近"
  },
+ "Most website forms": {
+  "de": "Die meisten Webformulare",
+  "es": "La mayoría de formularios web",
+  "fr": "La plupart des formulaires web",
+  "hi": "ज़्यादातर वेबसाइट फ़ॉर्म",
+  "it": "La maggior parte dei moduli web",
+  "ja": "多くのウェブフォーム",
+  "pt": "A maioria dos formulários web",
+  "zh": "多数网站表单"
+ },
  "Mouth looks open or a big smile — most countries want a neutral expression.": {
   "de": "Mund wirkt offen oder breites Lächeln – die meisten Länder wollen einen neutralen Ausdruck.",
   "es": "La boca parece abierta o una gran sonrisa: la mayoría de países piden expresión neutra.",
@@ -11279,6 +11319,16 @@
   "pt": "Ou cria um GIF a partir de fotos:",
   "zh": "或用照片制作 GIF："
  },
+ "Or the exact limit:": {
+  "de": "Oder das genaue Limit:",
+  "es": "O el límite exacto:",
+  "fr": "Ou la limite exacte :",
+  "hi": "या सटीक सीमा:",
+  "it": "Oppure il limite esatto:",
+  "ja": "または上限を指定：",
+  "pt": "Ou o limite exato:",
+  "zh": "或精确上限："
+ },
  "Organize Pages": {
   "de": "Seiten ordnen",
   "es": "Organizar páginas",
@@ -11338,6 +11388,16 @@
   "ja": "Outlook / Exchange",
   "pt": "Outlook / Exchange",
   "zh": "Outlook / Exchange"
+ },
+ "Outlook email": {
+  "de": "Outlook-Mail",
+  "es": "Correo de Outlook",
+  "fr": "E-mail Outlook",
+  "hi": "Outlook ईमेल",
+  "it": "Email Outlook",
+  "ja": "Outlook メール",
+  "pt": "Email do Outlook",
+  "zh": "Outlook 邮件"
  },
  "Over 25 MB — too big for most email. Turn on Make photos smaller, or send it through a link (iCloud, Drive).": {
   "de": "Über 25 MB – zu groß für die meisten E-Mails. Schalte „Fotos verkleinern“ ein oder sende es per Link (iCloud, Drive).",
@@ -15669,6 +15729,16 @@
   "pt": "Assina na caixa com o dedo. Fica guardado só neste telemóvel.",
   "zh": "用手指在框内签名。仅保存在本机上。"
  },
+ "Signature upload": {
+  "de": "Unterschrift hochladen",
+  "es": "Subida de firma",
+  "fr": "Envoi de signature",
+  "hi": "हस्ताक्षर अपलोड",
+  "it": "Caricamento firma",
+  "ja": "署名のアップロード",
+  "pt": "Envio de assinatura",
+  "zh": "签名上传"
+ },
  "Silhouette": {
   "de": "Silhouette",
   "es": "Silueta",
@@ -15848,6 +15918,16 @@
   "ja": "小さいファイル、どこでも再生",
   "pt": "Arquivo pequeno, toca em qualquer lugar",
   "zh": "文件小，到处都能播放"
+ },
+ "Small photo upload": {
+  "de": "Kleiner Foto-Upload",
+  "es": "Subida de foto pequeña",
+  "fr": "Petit envoi de photo",
+  "hi": "छोटी फ़ोटो अपलोड",
+  "it": "Caricamento foto piccola",
+  "ja": "小さな写真のアップロード",
+  "pt": "Envio de foto pequena",
+  "zh": "小照片上传"
  },
  "Smallest (voice)": {
   "de": "Am kleinsten (Sprache)",
@@ -19219,6 +19299,16 @@
   "pt": "URL",
   "zh": "网址"
  },
+ "US visa photo (DS-160)": {
+  "de": "US-Visumfoto (DS-160)",
+  "es": "Foto de visa de EE. UU. (DS-160)",
+  "fr": "Photo de visa US (DS-160)",
+  "hi": "US वीज़ा फ़ोटो (DS-160)",
+  "it": "Foto visto USA (DS-160)",
+  "ja": "米国ビザ写真（DS-160）",
+  "pt": "Foto de visto dos EUA (DS-160)",
+  "zh": "美国签证照片（DS-160）"
+ },
  "Uncompressed, Apple standard": {
   "de": "Unkomprimiert, Apple-Standard",
   "es": "Sin comprimir, estándar de Apple",
@@ -19968,6 +20058,16 @@
   "ja": "この写真には何が",
   "pt": "O que há nesta foto",
   "zh": "这张照片里有什么"
+ },
+ "WhatsApp video": {
+  "de": "WhatsApp-Video",
+  "es": "Vídeo de WhatsApp",
+  "fr": "Vidéo WhatsApp",
+  "hi": "WhatsApp वीडियो",
+  "it": "Video WhatsApp",
+  "ja": "WhatsApp 動画",
+  "pt": "Vídeo do WhatsApp",
+  "zh": "WhatsApp 视频"
  },
  "When": {
   "de": "Wann",

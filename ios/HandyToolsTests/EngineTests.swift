@@ -2600,6 +2600,14 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(MedCare.imported("hello")); XCTAssertNil(MedCare.imported("tenzy-meds:notbase64!!"))
     }
 
+    func testFitItKnowsWhereThingsAreGoing() {
+        let d = SizeTarget.destinations
+        XCTAssertEqual(d.first { $0.name.hasPrefix("Email") }?.bytes, 25_000_000)
+        XCTAssertEqual(d.first { $0.name.contains("DS-160") }?.bytes, 240_000)
+        XCTAssertEqual(d.map { $0.bytes }, d.map { $0.bytes }.sorted(by: >), "biggest first, the way people scan the list")
+        XCTAssertEqual(Set(d.map { $0.name }).count, d.count)
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

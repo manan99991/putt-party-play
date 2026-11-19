@@ -97,9 +97,28 @@ struct FitItView: View {
         switch source { case .image: return "photo"; case .video: return "film"; case .pdf: return "doc.fill"; case .none: return "questionmark" }
     }
 
+    /// Where it's going — tap the place, the right limit is set for you.
+    private var destinations: [(name: String, bytes: Int, icon: String)] {
+        if case .video = source { return SizeTarget.destinations.filter { $0.bytes >= 1_000_000 } }
+        return SizeTarget.destinations
+    }
+
     private var targetPicker: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Text(L("Must be under")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Where is it going?")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            HandyFlow(spacing: HandySpacing.s8) {
+                ForEach(Array(destinations.enumerated()), id: \.offset) { _, d in
+                    let on = targetBytes == d.bytes && customValue.isEmpty
+                    Button { targetBytes = d.bytes; customValue = ""; errorText = nil } label: {
+                        Label("\(L(d.name)) · \(SizeTarget.format(d.bytes))", systemImage: d.icon).font(HandyFont.caption)
+                            .padding(.horizontal, 10).padding(.vertical, 7)
+                            .background(on ? HandyColor.accent : HandyColor.surface, in: Capsule())
+                            .foregroundStyle(on ? HandyColor.onAccent : HandyColor.textPrimary)
+                            .overlay(Capsule().stroke(HandyColor.border, lineWidth: on ? 0 : 1))
+                    }.buttonStyle(.plain).accessibilityAddTraits(on ? .isSelected : [])
+                }
+            }
+            Text(L("Or the exact limit:")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).padding(.top, 4)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(availablePresets, id: \.bytes) { p in
                     HChip(text: p.label, selected: targetBytes == p.bytes && customValue.isEmpty) { targetBytes = p.bytes; customValue = ""; errorText = nil }
