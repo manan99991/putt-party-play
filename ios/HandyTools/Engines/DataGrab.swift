@@ -230,28 +230,28 @@ enum DataGrab {
             c.address = cells[ci].text; addressCells.insert(ci)
         }
         let candidates = cells.indices.filter { !addressCells.contains($0) && !isContact(cells[$0].text) && cells[$0].text.filter(\.isLetter).count >= 2 }
-        func text(_ i: Int) -> String { cells[i].text }
-        let ti = candidates.first { text($0).range(of: titleWords, options: [.regularExpression, .caseInsensitive]) != nil && text($0).split(separator: " ").count <= 5 }
-        c.title = ti.map(text) ?? ""
+        func cell(_ i: Int) -> String { cells[i].text }
+        let ti = candidates.first { cell($0).range(of: titleWords, options: [.regularExpression, .caseInsensitive]) != nil && cell($0).split(separator: " ").count <= 5 }
+        c.title = ti.map(cell) ?? ""
         let companyWord = #"\b(inc|llc|ltd|gmbh|corp|co\.|company|group|studio|studios|labs|partners|agency|solutions|technologies|consulting|robotics|systems|bank|university|hospital|clinic|design|media|realty|law|associates|& co)\b"#
         let personLike = #"^[A-Z][a-zA-Z'’.-]+(?: [A-Z][a-zA-Z'’.-]+){1,3}$"#
-        var ci = candidates.first { $0 != ti && text($0).range(of: companyWord, options: [.regularExpression, .caseInsensitive]) != nil }
-        if ci == nil { ci = candidates.first { $0 != ti && text($0) == text($0).uppercased() && text($0).count > 3 && text($0).range(of: personLike, options: .regularExpression) == nil } }
+        var ci = candidates.first { $0 != ti && cell($0).range(of: companyWord, options: [.regularExpression, .caseInsensitive]) != nil }
+        if ci == nil { ci = candidates.first { $0 != ti && cell($0) == cell($0).uppercased() && cell($0).count > 3 && cell($0).range(of: personLike, options: .regularExpression) == nil } }
         var companyParts = Set<Int>()
         if let k = ci {
-            var name = text(k); companyParts.insert(k)
+            var name = cell(k); companyParts.insert(k)
             // A company name printed on two lines ("Studio" over "Salford") is one name.
             if let below = candidates.first(where: { cells[$0].row == cells[k].row + 1 && cells[$0].col == cells[k].col && $0 != ti }),
-               text(below).split(separator: " ").count <= 3, text(below).rangeOfCharacter(from: .decimalDigits) == nil,
-               text(below).range(of: titleWords, options: [.regularExpression, .caseInsensitive]) == nil {
-                name += " " + text(below); companyParts.insert(below)
+               cell(below).split(separator: " ").count <= 3, cell(below).rangeOfCharacter(from: .decimalDigits) == nil,
+               cell(below).range(of: titleWords, options: [.regularExpression, .caseInsensitive]) == nil {
+                name += " " + cell(below); companyParts.insert(below)
             }
             c.company = name
         }
         let rest = candidates.filter { $0 != ti && !companyParts.contains($0) }
-        c.name = rest.first { text($0).range(of: personLike, options: .regularExpression) != nil }.map(text)
-            ?? rest.first { text($0).range(of: #"^[A-Za-z][A-Za-z'’.-]*(?: [A-Za-z][A-Za-z'’.-]*){1,3}$"#, options: .regularExpression) != nil }.map(text)
-            ?? rest.first.map(text) ?? ""
+        c.name = rest.first { cell($0).range(of: personLike, options: .regularExpression) != nil }.map(cell)
+            ?? rest.first { cell($0).range(of: #"^[A-Za-z][A-Za-z'’.-]*(?: [A-Za-z][A-Za-z'’.-]*){1,3}$"#, options: .regularExpression) != nil }.map(cell)
+            ?? rest.first.map(cell) ?? ""
         return c
     }
 
