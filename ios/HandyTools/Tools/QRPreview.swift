@@ -116,10 +116,19 @@ struct QRPreviewSheet: View {
             CopyButton(text: content.url?.absoluteString ?? content.detail)
 
             if let url = content.url {
-                Text(L("Only open it if you trust where it goes. Scammers hide fake sites in QR codes."))
-                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                // Checked on the phone before anything opens: who really owns the site, and any warning signs.
+                let v = ScamAnalyzer.verdict(for: url)
+                VStack(alignment: .leading, spacing: 4) {
+                    Label("\(L("Goes to")) \(v.owner)", systemImage: v.risky ? "exclamationmark.triangle.fill" : (v.knownSafe ? "checkmark.shield.fill" : "globe"))
+                        .font(HandyFont.bodyStrong).foregroundStyle(v.risky ? HandyColor.danger : (v.knownSafe ? HandyColor.success : HandyColor.textPrimary))
+                    ForEach(v.issues, id: \.self) { Text("• " + L($0)).font(HandyFont.caption).foregroundStyle(HandyColor.danger).fixedSize(horizontal: false, vertical: true) }
+                    if !v.risky {
+                        Text(L(v.knownSafe ? "A well-known site's own address." : "No warning signs found — still only open it if you trust where it came from."))
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    }
+                }
                 Button { UIApplication.shared.open(url) } label: {
-                    Label(L("Open link"), systemImage: "safari").frame(maxWidth: .infinity)
+                    Label(L(v.risky ? "Open anyway" : "Open link"), systemImage: "safari").frame(maxWidth: .infinity)
                 }.secondaryButton()
             }
             Button(L("Done")) { dismiss() }.textButton().frame(maxWidth: .infinity)
