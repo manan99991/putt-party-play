@@ -130,6 +130,7 @@ struct Tool: Identifiable {
     Tool(id: "daydiary",   name: "My Day",           blurb: "How was today? One tap, or say why", icon: "heart.text.square",               page: 8, asset: "tool_rest", keywords: ["diary","journal","mood","my day","how was my day","log my day","daily log","good day","bad day","feelings","gratitude","evening","reflect","private diary"]),
     Tool(id: "untangle",   name: "Untangle",         blurb: "Everything on your plate, planned",  icon: "scribble.variable",                page: 9, asset: "tool_explain", keywords: ["untangle","plan my day","organize my day","to do","to-do","todo","overwhelmed","tasks","errands","schedule my day","not feeling well","day plan","reminders for my tasks"]),
     Tool(id: "menu",       name: "Menu Assistant",   blurb: "Dishes, prices & diet, any language", icon: "menucard",                            page: 6, asset: "tool_translate", keywords: ["menu","restaurant","dish","food","order","allergy","allergies","vegetarian","vegan","gluten","halal","what to eat","abroad","travel","eat out"]),
+    Tool(id: "cards",      name: "Business Cards",   blurb: "Scan cards into contacts, no duplicates", icon: "person.text.rectangle",          page: 6, asset: "tool_datagrab", keywords: ["business card","card","cards","contact","contacts","scan card","vcard","networking","conference","linkedin","add contact","name card"]),
     Tool(id: "pdfannotate", name: "Annotate",        blurb: "Highlight & draw on a PDF, baked in", icon: "highlighter",                        page: 4, asset: "tool_scan", keywords: ["annotate","annotation","highlight","highlighter","marker","markup","mark up","draw","drawing","pen","freehand","note","notes","comment","pdf"]),
     Tool(id: "pdfconvert", name: "Convert",          blurb: "PDF → image pages or text",         icon: "doc.on.doc",                          page: 4, asset: "tool_scan", keywords: ["convert","pdf to image","pdf to text","extract text","pages","image","images","jpg","jpeg","png","picture","export","copy text"]),
     Tool(id: "pdfpages",   name: "Organize Pages",   blurb: "Reorder, rotate or remove pages",   icon: "rectangle.stack",                     page: 4, asset: "tool_scan", keywords: ["organize pages","reorder","rearrange","move pages","page order","rotate pages","turn pages","upside down","sideways","delete pages","remove pages","extract pages","drop a page","keep pages"]),
@@ -359,6 +360,7 @@ struct ToolDestination: View {
         case "sticker": StickerMakerView()
         case "medreminder": MedRemindersView()
         case "daydiary": DayDiaryView()
+        case "cards": BusinessCardsView()
         case "myalerts": MyAlertsView()
         case "menu": MenuView()
         case "audioconvert": AudioConvertView()
@@ -678,7 +680,7 @@ struct AllToolsView: View {
     @ObservedObject private var theme = ThemeManager.shared
     private let cols = [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)]
     private let groups: [(title: String, page: Int)] = [
-        ("Photo, video & sharing", 1), ("Help me think", 9), ("Reminders", 8), ("Animate & create", 7), ("Scan, read & organize", 2), ("Tools, sensors & accessibility", 3), ("Documents & PDF", 4), ("Audio & voice", 5), ("Plan, travel & health", 6)
+        ("Photo, video & sharing", 1), ("Help me think", 9), ("Reminders", 8), ("Animate & create", 7), ("Scan, read & organize", 2), ("Tools, sensors & accessibility", 3), ("Documents & PDF", 4), ("Audio & voice", 5), ("People, food & travel", 6)
     ]
     var body: some View {
         ScrollView {

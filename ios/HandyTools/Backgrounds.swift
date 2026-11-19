@@ -58,6 +58,7 @@ enum TenzyArt {
         "sticker": "studio",
         "medreminder": "rest",
         "daydiary": "rest",
+        "cards": "datagrab",
         "untangle": "explain",
         "menu": "translate",
         "audioconvert": "audiolab",

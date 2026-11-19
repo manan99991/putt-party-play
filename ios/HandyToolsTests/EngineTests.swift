@@ -2313,6 +2313,29 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(A.read(.lowSpace) ?? 0, 0)
     }
 
+    func testBusinessCardsReadMergeAndNeverMistakeAChat() throws {
+        let front = "JANE R. DOE\nSenior Product Manager\nACME ROBOTICS INC\n+1 (312) 555-0147\njane.doe@acme.io"
+        let back = "www.acme.io\n200 Main Street, Chicago\nMobile 312 555 0199\njane.doe@acme.io"
+        XCTAssertTrue(CardKit.looksLikeCard(front))
+        // The real screenshot that was wrongly read as a card: a Teams chat.
+        let chat = "Bechara, Bernard\nthanks Manan, can we actually remove\nthe other attendees for Friday? I worry\nthat people will still call in even the\nmeeting is optional to them.\nUpdated.\nToday 10:09 AM\nHi Manan, I can't attend the meeting on Friday, can you move it to next week please"
+        XCTAssertFalse(CardKit.looksLikeCard(chat))
+        let m = CardKit.merge(DataGrab.card(front), DataGrab.card(back))
+        XCTAssertEqual(m.emails.count, 1, "same email on both sides is kept once")
+        XCTAssertEqual(m.phones.count, 2, "the back's mobile is added")
+        XCTAssertFalse(m.website.isEmpty)
+        let url = try XCTUnwrap(CardKit.linkedIn(m))
+        XCTAssertTrue(url.absoluteString.hasPrefix("https://www.linkedin.com/search/results/people/"))
+        XCTAssertTrue(CardKit.metNote(where: "HIMSS, Chicago").hasPrefix("Met at HIMSS, Chicago"))
+        XCTAssertTrue(CardKit.metNote(where: "").hasPrefix("Met "))
+        let c = CardKit.contact(CardKit.Entry(card: m))
+        XCTAssertEqual(c.emailAddresses.count, 1); XCTAssertEqual(c.phoneNumbers.count, 2)
+        XCTAssertEqual(m.company, "ACME ROBOTICS INC", "the company word wins, not the all-caps name")
+        XCTAssertEqual(m.name, "JANE R. DOE"); XCTAssertEqual(c.givenName, "JANE")
+        XCTAssertNotNil(CardKit.qr(m))
+        XCTAssertNil(CardKit.linkedIn(DataGrab.Card()))
+    }
+
     func testAnimateLooksAndPrintableFlipbook() throws {
         let photos = [Self.text("ONE"), Self.text("TWO"), Self.text("THREE")]
         XCTAssertEqual(Animate.applyLook(.original, to: photos).count, 3)

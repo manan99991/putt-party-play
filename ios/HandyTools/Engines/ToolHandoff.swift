@@ -20,7 +20,7 @@ final class ToolHandoff {
     nonisolated static func tools(for kind: ChainKind) -> [String] {
         switch kind {
         case .pdf: return ["pdfsign", "pdfform", "pdfsearchable", "pdfprotect", "pdfpages", "zipmaker"]
-        case .image, .photoFile: return ["sticker", "animate", "collage", "faceemoji", "comicstrip", "menu"]
+        case .image, .photoFile: return ["sticker", "animate", "collage", "faceemoji", "comicstrip", "menu", "cards"]
         case .audio: return ["meetingnotes", "audiocompress", "audiomix", "audiotags", "audioconvert", "zipmaker"]
         case .video: return ["audiocompress", "audioconvert", "audiomix"]
         case .file: return ["zipmaker"]

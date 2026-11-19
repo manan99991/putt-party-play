@@ -95,8 +95,15 @@ enum DataGrab {
         let used = Set(c.emails + c.phones + [c.website])
         let candidates = lines.filter { l in !used.contains(where: { !$0.isEmpty && l.contains($0) }) && l.range(of: #"^\+?[\d\s().-]{7,}$"#, options: .regularExpression) == nil }
         c.title = candidates.first { $0.range(of: titleWords, options: [.regularExpression, .caseInsensitive]) != nil } ?? ""
-        c.company = candidates.first { $0 != c.title && ($0.range(of: #"\b(inc|llc|ltd|gmbh|corp|co\.|company|group|studio|labs|partners|agency|solutions|technologies|consulting)\b"#, options: [.regularExpression, .caseInsensitive]) != nil || $0 == $0.uppercased() && $0.count > 3 && $0.rangeOfCharacter(from: .letters) != nil) } ?? ""
-        c.name = candidates.first { l in l != c.title && l != c.company && l.range(of: #"^[A-Z][a-zA-Z'’.-]+(?: [A-Z][a-zA-Z'’.-]+){1,3}$"#, options: .regularExpression) != nil } ?? candidates.first { $0 != c.title && $0 != c.company } ?? ""
+        // A company word (Inc, LLC, Labs…) beats an all-caps line — names are often printed in capitals too.
+        let companyWord = #"\b(inc|llc|ltd|gmbh|corp|co\.|company|group|studio|labs|partners|agency|solutions|technologies|consulting|robotics|systems|bank|university|hospital|clinic)\b"#
+        let personLike = #"^[A-Za-z][A-Za-z'’.-]*(?: [A-Za-z][A-Za-z'’.-]*){1,3}$"#
+        c.company = candidates.first { $0 != c.title && $0.range(of: companyWord, options: [.regularExpression, .caseInsensitive]) != nil }
+            ?? candidates.first { $0 != c.title && $0 == $0.uppercased() && $0.count > 3 && $0.rangeOfCharacter(from: .letters) != nil && $0.range(of: personLike, options: .regularExpression) == nil }
+            ?? ""
+        c.name = candidates.first { l in l != c.title && l != c.company && l.range(of: #"^[A-Z][a-zA-Z'’.-]+(?: [A-Z][a-zA-Z'’.-]+){1,3}$"#, options: .regularExpression) != nil }
+            ?? candidates.first { l in l != c.title && l != c.company && l.range(of: personLike, options: .regularExpression) != nil }
+            ?? candidates.first { $0 != c.title && $0 != c.company } ?? ""
         if let addr = matches(#"\d{1,6} [A-Za-z0-9 .'-]{3,40}(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Way|Suite|Ste|Floor)\b.*"#, in: text).first { c.address = addr }
         return c
     }

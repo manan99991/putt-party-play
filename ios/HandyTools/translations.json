@@ -729,6 +729,16 @@
   "pt": "Adicionando fotos…",
   "zh": "正在添加照片…"
  },
+ "Address": {
+  "de": "Adresse",
+  "es": "Dirección",
+  "fr": "Adresse",
+  "hi": "पता",
+  "it": "Indirizzo",
+  "ja": "住所",
+  "pt": "Endereço",
+  "zh": "地址"
+ },
  "Addressed to:": {
   "de": "An:",
   "es": "Para:",
@@ -928,6 +938,16 @@
   "ja": "復旧用の質問に答える",
   "pt": "Responda à sua pergunta de recuperação",
   "zh": "回答你的找回问题"
+ },
+ "Anyone can scan this with their camera to add the contact.": {
+  "de": "Jeder kann das mit der Kamera scannen und den Kontakt hinzufügen.",
+  "es": "Cualquiera puede escanearlo con la cámara para añadir el contacto.",
+  "fr": "N'importe qui peut le scanner avec l'appareil photo pour ajouter le contact.",
+  "hi": "कोई भी इसे कैमरे से स्कैन करके कॉन्टैक्ट जोड़ सकता है।",
+  "it": "Chiunque può scansionarlo con la fotocamera per aggiungere il contatto.",
+  "ja": "カメラで読み取るだけで連絡先を追加できます。",
+  "pt": "Qualquer pessoa pode escanear com a câmera para adicionar o contato.",
+  "zh": "任何人用相机扫一扫即可添加联系人。"
  },
  "Anything from the pharmacy aisle": {
   "de": "Etwas aus der Apothekenabteilung",
@@ -1839,6 +1859,16 @@
   "pt": "Explosão",
   "zh": "爆炸星"
  },
+ "Business Cards": {
+  "de": "Visitenkarten",
+  "es": "Tarjetas de visita",
+  "fr": "Cartes de visite",
+  "hi": "बिज़नेस कार्ड",
+  "it": "Biglietti da visita",
+  "ja": "名刺",
+  "pt": "Cartões de visita",
+  "zh": "名片"
+ },
  "Calibrate": {
   "de": "Kalibrieren",
   "es": "Calibrar",
@@ -2409,6 +2439,16 @@
   "pt": "Escolher áudio",
   "zh": "选择音频"
  },
+ "Choose card photos": {
+  "de": "Kartenfotos wählen",
+  "es": "Elegir fotos de tarjetas",
+  "fr": "Choisir des photos de cartes",
+  "hi": "कार्ड की फ़ोटो चुनें",
+  "it": "Scegli foto dei biglietti",
+  "ja": "名刺の写真を選ぶ",
+  "pt": "Escolher fotos de cartões",
+  "zh": "选择名片照片"
+ },
  "Choose clips": {
   "de": "Clips wählen",
   "es": "Elegir clips",
@@ -2829,6 +2869,16 @@
   "pt": "Chega ao Android na próxima atualização.",
   "zh": "将在下次更新中登陆 Android。"
  },
+ "Company": {
+  "de": "Firma",
+  "es": "Empresa",
+  "fr": "Entreprise",
+  "hi": "कंपनी",
+  "it": "Azienda",
+  "ja": "会社",
+  "pt": "Empresa",
+  "zh": "公司"
+ },
  "Compress": {
   "de": "Komprimieren",
   "es": "Comprimir",
@@ -3099,6 +3149,16 @@
   "pt": "Copiar figurinha",
   "zh": "复制贴纸"
  },
+ "Copy text": {
+  "de": "Text kopieren",
+  "es": "Copiar texto",
+  "fr": "Copier le texte",
+  "hi": "टेक्स्ट कॉपी करें",
+  "it": "Copia testo",
+  "ja": "テキストをコピー",
+  "pt": "Copiar texto",
+  "zh": "复制文字"
+ },
  "Copy to share": {
   "de": "Zum Teilen kopieren",
   "es": "Copiar para compartir",
@@ -3339,6 +3399,16 @@
   "pt": "Não foi possível ler texto nessa imagem — tente uma captura mais nítida.",
   "zh": "这张图片里读不到文字——换一张更清晰的截图试试。"
  },
+ "Couldn't read any words in that — try a sharper photo with the card filling the frame.": {
+  "de": "Keine Wörter lesbar – versuch ein schärferes Foto, auf dem die Karte das Bild füllt.",
+  "es": "No se pudo leer nada: prueba una foto más nítida con la tarjeta llenando el encuadre.",
+  "fr": "Aucun mot lisible — essayez une photo plus nette où la carte remplit le cadre.",
+  "hi": "इसमें कोई शब्द नहीं पढ़ा जा सका — ऐसी साफ़ फ़ोटो आज़माएँ जिसमें कार्ड पूरा फ़्रेम भरे।",
+  "it": "Nessuna parola leggibile: prova una foto più nitida con il biglietto a tutto schermo.",
+  "ja": "文字を読み取れませんでした。名刺が画面いっぱいの鮮明な写真でお試しください。",
+  "pt": "Não foi possível ler nada — tente uma foto mais nítida com o cartão preenchendo a tela.",
+  "zh": "读不到文字——请换一张更清晰、名片占满画面的照片。"
+ },
  "Couldn't read frames from this video. Try a different range.": {
   "de": "Bilder aus diesem Video ließen sich nicht lesen. Versuch einen anderen Bereich.",
   "es": "No se pudieron leer fotogramas de este vídeo. Prueba otro rango.",
@@ -3458,6 +3528,16 @@
   "ja": "zipを保存できませんでした — もう一度お試しください。",
   "pt": "Não foi possível salvar o zip — tente de novo.",
   "zh": "无法保存zip——请重试。"
+ },
+ "Couldn't save to Contacts — try saving one card at a time.": {
+  "de": "Speichern in Kontakte fehlgeschlagen – versuch es Karte für Karte.",
+  "es": "No se pudo guardar en Contactos: prueba con una tarjeta a la vez.",
+  "fr": "Impossible d'enregistrer dans Contacts — essayez une carte à la fois.",
+  "hi": "Contacts में सहेज नहीं सका — एक-एक कार्ड करके आज़माएँ।",
+  "it": "Impossibile salvare in Contatti: prova un biglietto alla volta.",
+  "ja": "連絡先に保存できませんでした。1枚ずつお試しください。",
+  "pt": "Não foi possível salvar nos Contatos — tente um cartão por vez.",
+  "zh": "无法存储到通讯录——请逐张保存。"
  },
  "Couldn't save — try again.": {
   "de": "Speichern fehlgeschlagen – nochmal versuchen.",
@@ -5159,6 +5239,16 @@
   "pt": "Encontra duplicados, junta e faz backup",
   "zh": "查找重复、合并并备份"
  },
+ "Find on LinkedIn": {
+  "de": "Auf LinkedIn finden",
+  "es": "Buscar en LinkedIn",
+  "fr": "Trouver sur LinkedIn",
+  "hi": "LinkedIn पर खोजें",
+  "it": "Trova su LinkedIn",
+  "ja": "LinkedInで探す",
+  "pt": "Encontrar no LinkedIn",
+  "zh": "在领英上查找"
+ },
  "Finding faces…": {
   "de": "Gesichter werden gesucht …",
   "es": "Buscando caras…",
@@ -5438,6 +5528,16 @@
   "ja": "フォローアップメール",
   "pt": "E-mail de acompanhamento",
   "zh": "跟进邮件"
+ },
+ "Follow-up reminder": {
+  "de": "Erinnerung zum Nachfassen",
+  "es": "Recordatorio de seguimiento",
+  "fr": "Rappel de relance",
+  "hi": "फ़ॉलो-अप रिमाइंडर",
+  "it": "Promemoria di follow-up",
+  "ja": "フォローアップのリマインダー",
+  "pt": "Lembrete de retorno",
+  "zh": "跟进提醒"
  },
  "Food spotted": {
   "de": "Essen erkannt",
@@ -6419,6 +6519,36 @@
   "pt": "Se esquecer o PIN, esta resposta deixa você criar outro. Escolha algo que você sempre lembra e os outros não sabem. Maiúsculas não importam.",
   "zh": "忘记 PIN 时，可用这个答案重设。选一个你永远记得、别人不知道的。不区分大小写。"
  },
+ "In 2 weeks": {
+  "de": "In 2 Wochen",
+  "es": "En 2 semanas",
+  "fr": "Dans 2 semaines",
+  "hi": "2 हफ़्ते में",
+  "it": "Tra 2 settimane",
+  "ja": "2週間後",
+  "pt": "Em 2 semanas",
+  "zh": "两周后"
+ },
+ "In 3 days": {
+  "de": "In 3 Tagen",
+  "es": "En 3 días",
+  "fr": "Dans 3 jours",
+  "hi": "3 दिन में",
+  "it": "Tra 3 giorni",
+  "ja": "3日後",
+  "pt": "Em 3 dias",
+  "zh": "3 天后"
+ },
+ "In a week": {
+  "de": "In einer Woche",
+  "es": "En una semana",
+  "fr": "Dans une semaine",
+  "hi": "एक हफ़्ते में",
+  "it": "Tra una settimana",
+  "ja": "1週間後",
+  "pt": "Em uma semana",
+  "zh": "一周后"
+ },
  "In iCloud": {
   "de": "In iCloud",
   "es": "En iCloud",
@@ -6598,6 +6728,16 @@
   "ja": "うますぎる求人",
   "pt": "Oferta de emprego boa demais para ser verdade",
   "zh": "好得不真实的工作邀约"
+ },
+ "Job title": {
+  "de": "Position",
+  "es": "Cargo",
+  "fr": "Poste",
+  "hi": "पद",
+  "it": "Ruolo",
+  "ja": "役職",
+  "pt": "Cargo",
+  "zh": "职位"
  },
  "Join & Speed": {
   "de": "Verbinden & Tempo",
@@ -8369,6 +8509,16 @@
   "pt": "Meus alertas",
   "zh": "我的提醒"
  },
+ "My cards have a back side — pair them front, back": {
+  "de": "Meine Karten haben eine Rückseite – Vorder- und Rückseite koppeln",
+  "es": "Mis tarjetas tienen reverso: emparejar anverso y reverso",
+  "fr": "Mes cartes ont un verso — associer recto et verso",
+  "hi": "मेरे कार्ड के पीछे भी जानकारी है — आगे-पीछे जोड़ें",
+  "it": "I biglietti hanno un retro: abbina fronte e retro",
+  "ja": "裏面あり — 表と裏をセットで",
+  "pt": "Meus cartões têm verso — juntar frente e verso",
+  "zh": "名片有背面——正反面配对"
+ },
  "My days": {
   "de": "Meine Tage",
   "es": "Mis días",
@@ -8608,6 +8758,16 @@
   "ja": "新しいPIN（4〜8桁）",
   "pt": "Novo PIN (4–8 números)",
   "zh": "新 PIN（4–8 位数字）"
+ },
+ "New contact": {
+  "de": "Neuer Kontakt",
+  "es": "Nuevo contacto",
+  "fr": "Nouveau contact",
+  "hi": "नया कॉन्टैक्ट",
+  "it": "Nuovo contatto",
+  "ja": "新しい連絡先",
+  "pt": "Novo contato",
+  "zh": "新联系人"
  },
  "New name": {
   "de": "Neuer Name",
@@ -9979,6 +10139,16 @@
   "pt": "Lápis",
   "zh": "铅笔"
  },
+ "People, food & travel": {
+  "de": "Menschen, Essen & Reisen",
+  "es": "Personas, comida y viajes",
+  "fr": "Personnes, repas et voyages",
+  "hi": "लोग, खाना और यात्रा",
+  "it": "Persone, cibo e viaggi",
+  "ja": "人・食・旅",
+  "pt": "Pessoas, comida e viagem",
+  "zh": "人脉、美食与出行"
+ },
  "Perimeter": {
   "de": "Umfang",
   "es": "Perímetro",
@@ -10949,6 +11119,16 @@
   "pt": "QR e Wi-Fi",
   "zh": "二维码和 Wi-Fi"
  },
+ "QR code": {
+  "de": "QR-Code",
+  "es": "Código QR",
+  "fr": "Code QR",
+  "hi": "QR कोड",
+  "it": "Codice QR",
+  "ja": "QRコード",
+  "pt": "Código QR",
+  "zh": "二维码"
+ },
  "QR code for this tool": {
   "de": "QR-Code für dieses Tool",
   "es": "Código QR de esta herramienta",
@@ -11268,6 +11448,16 @@
   "ja": "テキストを読み取り中…",
   "pt": "A ler o texto…",
   "zh": "正在读取文字…"
+ },
+ "Reading your cards…": {
+  "de": "Karten werden gelesen …",
+  "es": "Leyendo tus tarjetas…",
+  "fr": "Lecture de vos cartes…",
+  "hi": "आपके कार्ड पढ़ रहे हैं…",
+  "it": "Lettura dei biglietti…",
+  "ja": "名刺を読み取り中…",
+  "pt": "Lendo seus cartões…",
+  "zh": "正在读取名片…"
  },
  "Reading your connection…": {
   "de": "Verbindung wird gelesen…",
@@ -12259,6 +12449,16 @@
   "pt": "Guardar a folha de impressão",
   "zh": "保存打印页"
  },
+ "Save to Contacts": {
+  "de": "In Kontakten sichern",
+  "es": "Guardar en Contactos",
+  "fr": "Enregistrer dans Contacts",
+  "hi": "Contacts में सहेजें",
+  "it": "Salva in Contatti",
+  "ja": "連絡先に保存",
+  "pt": "Salvar nos Contatos",
+  "zh": "存储到通讯录"
+ },
  "Save to Notes": {
   "de": "In Notizen sichern",
   "es": "Guardar en Notas",
@@ -12479,6 +12679,16 @@
   "pt": "Digitalizar foto ou captura",
   "zh": "扫描照片或截图"
  },
+ "Scan a whole stack in one go — each card becomes its own contact.": {
+  "de": "Scanne einen ganzen Stapel auf einmal – jede Karte wird ein eigener Kontakt.",
+  "es": "Escanea un montón de una vez: cada tarjeta será un contacto.",
+  "fr": "Scannez une pile d'un coup — chaque carte devient un contact.",
+  "hi": "पूरा ढेर एक बार में स्कैन करें — हर कार्ड अलग कॉन्टैक्ट बनेगा।",
+  "it": "Scansiona una pila in una volta: ogni biglietto diventa un contatto.",
+  "ja": "まとめてスキャン。1枚ずつ別の連絡先になります。",
+  "pt": "Escaneie uma pilha de uma vez — cada cartão vira um contato.",
+  "zh": "一次扫描一叠——每张名片都会成为单独的联系人。"
+ },
  "Scan again": {
   "de": "Erneut scannen",
   "es": "Escanear de nuevo",
@@ -12498,6 +12708,36 @@
   "ja": "コードを読み取って操作、自作、ゲスト用Wi‑Fiカードの印刷も。",
   "pt": "Escaneie qualquer código e aja, crie o seu ou imprima um cartão de Wi‑Fi para visitas.",
   "zh": "扫描任意码并操作、自己生成，或为客人打印Wi‑Fi卡。"
+ },
+ "Scan cards into contacts, no duplicates": {
+  "de": "Karten in Kontakte – ohne Duplikate",
+  "es": "Tarjetas a contactos, sin duplicados",
+  "fr": "Cartes en contacts, sans doublons",
+  "hi": "कार्ड को कॉन्टैक्ट में, बिना डुप्लिकेट",
+  "it": "Biglietti in contatti, senza doppioni",
+  "ja": "名刺を連絡先に・重複なし",
+  "pt": "Cartões em contatos, sem duplicados",
+  "zh": "名片转联系人，不重复"
+ },
+ "Scan cards into real contacts — check every detail first, never a duplicate.": {
+  "de": "Karten in echte Kontakte scannen – jedes Detail vorher prüfen, nie doppelt.",
+  "es": "Escanea tarjetas como contactos reales: revisa cada dato antes, sin duplicados.",
+  "fr": "Scannez des cartes en vrais contacts — vérifiez chaque détail, jamais de doublon.",
+  "hi": "कार्ड स्कैन करके असली कॉन्टैक्ट बनाएँ — पहले हर जानकारी जाँचें, कोई डुप्लिकेट नहीं।",
+  "it": "Scansiona biglietti in contatti veri: controlla ogni dettaglio prima, mai doppioni.",
+  "ja": "名刺を本物の連絡先に。保存前にすべて確認、重複なし。",
+  "pt": "Escaneie cartões como contatos de verdade — confira cada detalhe antes, sem duplicados.",
+  "zh": "把名片扫描成真正的联系人——先核对每项信息，绝不重复。"
+ },
+ "Scan cards with the camera": {
+  "de": "Karten mit der Kamera scannen",
+  "es": "Escanear tarjetas con la cámara",
+  "fr": "Scanner des cartes avec l'appareil photo",
+  "hi": "कैमरे से कार्ड स्कैन करें",
+  "it": "Scansiona con la fotocamera",
+  "ja": "カメラで名刺をスキャン",
+  "pt": "Escanear cartões com a câmera",
+  "zh": "用相机扫描名片"
  },
  "Scan more pages": {
   "de": "Weitere Seiten scannen",
@@ -12988,6 +13228,16 @@
   "ja": "音声を共有",
   "pt": "Partilhar áudio",
   "zh": "分享音频"
+ },
+ "Share contact": {
+  "de": "Kontakt teilen",
+  "es": "Compartir contacto",
+  "fr": "Partager le contact",
+  "hi": "कॉन्टैक्ट शेयर करें",
+  "it": "Condividi contatto",
+  "ja": "連絡先を共有",
+  "pt": "Compartilhar contato",
+  "zh": "分享联系人"
  },
  "Share email": {
   "de": "E-Mail teilen",
@@ -14829,6 +15079,16 @@
   "pt": "O Tenzy teve um problema da última vez",
   "zh": "Tenzy 上次遇到了问题"
  },
+ "Tenzy needs Contacts access to save them all at once — allow it in Settings, or save each card on its own.": {
+  "de": "Tenzy braucht Zugriff auf Kontakte, um alle auf einmal zu sichern – in den Einstellungen erlauben oder jede Karte einzeln sichern.",
+  "es": "Tenzy necesita acceso a Contactos para guardarlas todas: permítelo en Ajustes o guarda cada tarjeta por separado.",
+  "fr": "Tenzy a besoin d'accéder à Contacts pour tout enregistrer d'un coup — autorisez-le dans Réglages, ou enregistrez chaque carte séparément.",
+  "hi": "सबको एक साथ सहेजने के लिए Tenzy को Contacts की अनुमति चाहिए — Settings में दें, या हर कार्ड अलग सहेजें।",
+  "it": "Tenzy ha bisogno dell'accesso a Contatti per salvarli tutti insieme: consentilo in Impostazioni o salva un biglietto alla volta.",
+  "ja": "まとめて保存するには連絡先へのアクセスが必要です。設定で許可するか、1枚ずつ保存してください。",
+  "pt": "O Tenzy precisa de acesso aos Contatos para salvar todos de uma vez — permita em Ajustes ou salve um por um.",
+  "zh": "一次全部保存需要通讯录权限——请在“设置”中允许，或逐张保存。"
+ },
  "Tenzy needs permission to add to Photos — allow it in Settings → Privacy → Photos → Tenzy, or use Copy.": {
   "de": "Tenzy braucht die Erlaubnis, zu Fotos hinzuzufügen – erlaube es unter Einstellungen → Datenschutz → Fotos → Tenzy oder nutze Kopieren.",
   "es": "Tenzy necesita permiso para añadir a Fotos: actívalo en Ajustes → Privacidad → Fotos → Tenzy, o usa Copiar.",
@@ -15409,6 +15669,16 @@
   "pt": "Depois",
   "zh": "然后"
  },
+ "There's no phone number or email laid out like a card. Here's what it says — copy it, or try a clearer photo of the card.": {
+  "de": "Keine Telefonnummer oder E-Mail wie auf einer Karte. Hier steht, was drauf ist – kopieren oder ein klareres Foto versuchen.",
+  "es": "No hay teléfono ni correo dispuestos como en una tarjeta. Esto es lo que dice: cópialo o prueba una foto más clara.",
+  "fr": "Aucun numéro ni e-mail présenté comme sur une carte. Voici le texte — copiez-le, ou essayez une photo plus nette.",
+  "hi": "कार्ड जैसा कोई फ़ोन नंबर या ईमेल नहीं है। इसमें यह लिखा है — कॉपी करें, या कार्ड की साफ़ फ़ोटो आज़माएँ।",
+  "it": "Nessun telefono o email disposti come su un biglietto. Ecco cosa dice: copialo o prova una foto più chiara.",
+  "ja": "名刺のような電話番号やメールがありません。読み取った文字はこちら。コピーするか、鮮明な写真でお試しください。",
+  "pt": "Não há telefone nem e-mail dispostos como num cartão. Aqui está o que diz — copie ou tente uma foto mais nítida.",
+  "zh": "没有像名片那样的电话或邮箱。下面是读到的文字——可复制，或换一张更清晰的名片照片。"
+ },
  "They are removed from this phone. Anything you already saved or sent is not touched.": {
   "de": "Sie werden von diesem Handy entfernt. Was du bereits gespeichert oder gesendet hast, bleibt unberührt.",
   "es": "Se eliminan de este teléfono. Lo que ya guardaste o enviaste no se toca.",
@@ -15518,6 +15788,16 @@
   "ja": "この端末ではこの画像形式をデコードできません — 上の“開く方法”をお試しください。",
   "pt": "Este dispositivo não consegue descodificar este formato de imagem — tenta “Abrir com” acima.",
   "zh": "此设备无法解码此图片格式 — 请尝试上方的“打开方式”。"
+ },
+ "This doesn't look like a business card": {
+  "de": "Das sieht nicht wie eine Visitenkarte aus",
+  "es": "Esto no parece una tarjeta de visita",
+  "fr": "Cela ne ressemble pas à une carte de visite",
+  "hi": "यह बिज़नेस कार्ड जैसा नहीं लगता",
+  "it": "Non sembra un biglietto da visita",
+  "ja": "名刺ではないようです",
+  "pt": "Isso não parece um cartão de visita",
+  "zh": "这看起来不像名片"
  },
  "This file type can't hold song info, so Tenzy saves a tagged M4A copy — it plays everywhere.": {
   "de": "Dieser Dateityp kann keine Song-Infos speichern, daher sichert Tenzy eine getaggte M4A-Kopie – die läuft überall.",
@@ -15858,6 +16138,16 @@
   "ja": "実行するたびに今日の日付が追加されます。",
   "pt": "A data de hoje é adicionada sempre que executa.",
   "zh": "每次运行时都会加入当天的日期。"
+ },
+ "Tomorrow": {
+  "de": "Morgen",
+  "es": "Mañana",
+  "fr": "Demain",
+  "hi": "कल",
+  "it": "Domani",
+  "ja": "明日",
+  "pt": "Amanhã",
+  "zh": "明天"
  },
  "Too dark — face a window or a lamp.": {
   "de": "Zu dunkel – stell dich vor ein Fenster oder eine Lampe.",
@@ -16899,6 +17189,16 @@
   "pt": "Vamos lembrar-te uma semana antes de terminar.",
   "zh": "我们会在到期前一周提醒你。"
  },
+ "Website": {
+  "de": "Website",
+  "es": "Sitio web",
+  "fr": "Site web",
+  "hi": "वेबसाइट",
+  "it": "Sito web",
+  "ja": "ウェブサイト",
+  "pt": "Site",
+  "zh": "网站"
+ },
  "What Tenzy does": {
   "de": "Was Tenzy kann",
   "es": "Qué hace Tenzy",
@@ -17088,6 +17388,16 @@
   "ja": "駐車位置",
   "pt": "Onde estacionei",
   "zh": "停车位置"
+ },
+ "Where did you meet?": {
+  "de": "Wo habt ihr euch getroffen?",
+  "es": "¿Dónde os conocisteis?",
+  "fr": "Où vous êtes-vous rencontrés ?",
+  "hi": "आप कहाँ मिले?",
+  "it": "Dove vi siete conosciuti?",
+  "ja": "どこで会いましたか？",
+  "pt": "Onde vocês se conheceram?",
+  "zh": "你们在哪里认识的？"
  },
  "Where is it going?": {
   "de": "Wohin geht es?",
@@ -17759,6 +18069,16 @@
   "pt": "ex. AJUDA ou o teu nome",
   "zh": "例如 HELP 或你的名字"
  },
+ "e.g. HIMSS conference, Chicago (optional)": {
+  "de": "z. B. HIMSS-Konferenz, Chicago (optional)",
+  "es": "p. ej., congreso HIMSS, Chicago (opcional)",
+  "fr": "ex. conférence HIMSS, Chicago (facultatif)",
+  "hi": "जैसे HIMSS कॉन्फ़्रेंस, शिकागो (वैकल्पिक)",
+  "it": "es. conferenza HIMSS, Chicago (facoltativo)",
+  "ja": "例：HIMSSカンファレンス、シカゴ（任意）",
+  "pt": "ex.: conferência HIMSS, Chicago (opcional)",
+  "zh": "例如：HIMSS 大会，芝加哥（可选）"
+ },
  "e.g. shrink a photo under 1 MB and hide where it was taken": {
   "de": "z. B. ein Foto unter 1 MB verkleinern und verbergen, wo es aufgenommen wurde",
   "es": "p. ej. reducir una foto a menos de 1 MB y ocultar dónde se tomó",
@@ -18208,6 +18528,16 @@
   "ja": "件の要修正",
   "pt": "itens para corrigir",
   "zh": "项需修正"
+ },
+ "to Contacts": {
+  "de": "in Kontakte",
+  "es": "en Contactos",
+  "fr": "dans Contacts",
+  "hi": "Contacts में",
+  "it": "in Contatti",
+  "ja": "件を連絡先へ",
+  "pt": "nos Contatos",
+  "zh": "到通讯录"
  },
  "translating": {
   "de": "Übersetzen",

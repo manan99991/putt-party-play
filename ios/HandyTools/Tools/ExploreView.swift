@@ -20,7 +20,7 @@ struct ExploreView: View {
         ("Everyday, sensors & accessibility", 3),
         ("Documents & PDF", 4),
         ("Audio & voice", 5),
-        ("Plan, travel & health", 6),
+        ("People, food & travel", 6),
     ]
 
     /// Hero tools spotlighted at the top — each is a real, full tool that shows Tenzy at its best.
