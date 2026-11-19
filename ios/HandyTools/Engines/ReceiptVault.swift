@@ -325,6 +325,18 @@ enum WarrantyReminders {
     static func cancel(_ r: Receipt) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["warranty-\(r.id.uuidString)"])
     }
+
+    /// Test run: the warranty alert as it will look (for your newest receipt with a warranty, if any), in 5 seconds.
+    static func testRun(store: String?, ends: Date?) async {
+        let end = ends ?? Calendar.current.date(byAdding: .day, value: leadDays, to: Date()) ?? Date()
+        let c = UNMutableNotificationContent()
+        c.title = "Test · Warranty ending soon"
+        c.body = "\(store ?? "Your receipt") — warranty ends \(end.formatted(date: .abbreviated, time: .omitted)). Tap to find the receipt."
+        c.sound = .default
+        c.userInfo = ["open": "warranty"]
+        try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "warranty-test-\(UUID().uuidString)", content: c,
+                                                                                trigger: UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)))
+    }
 }
 
 /// "Last chance to return" — two days before the window closes and on the last morning.

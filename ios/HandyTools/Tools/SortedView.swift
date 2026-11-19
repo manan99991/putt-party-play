@@ -20,6 +20,7 @@ struct SortedView: View {
     @State private var showScanner = false
     @State private var notifOff = false
     @State private var savedNote: String?
+    @State private var testNote: String?
 
     private var hasText: Bool { text.trimmingCharacters(in: .whitespacesAndNewlines).count >= 4 }
 
@@ -116,6 +117,15 @@ struct SortedView: View {
                     if let at = SortedLetters.remindAt(d.wrappedValue) {
                         Text("\(L("You'll get:")) \u{201C}\(SortedLetters.message(d.wrappedValue, now: at).title)\u{201D} — \(at.formatted(date: .abbreviated, time: .shortened))")
                             .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        Button {
+                            let item = d.wrappedValue
+                            Task {
+                                guard await NotifyPermission.ensure() else { notifOff = true; return }
+                                await SortedLetters.testRun(item); testNote = L("Test sent — it arrives in 5 seconds.")
+                            }
+                        } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
+                            .accessibilityIdentifier("sorted-testrun")
+                        if let testNote { Text(testNote).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
                     } else {
                         Text(L("That moment has already passed, so pick a later reminder.")).font(HandyFont.micro).foregroundStyle(HandyColor.amber)
                     }

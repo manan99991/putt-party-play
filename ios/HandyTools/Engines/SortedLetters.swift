@@ -101,6 +101,16 @@ enum SortedLetters {
     static func cancel(_ i: Item) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["sorted-\(i.id.uuidString)"])
     }
+
+    /// Test run: the exact reminder this letter will send, in 5 seconds.
+    static func testRun(_ i: Item) async {
+        let m = message(i, now: remindAt(i) ?? Date())
+        let c = UNMutableNotificationContent()
+        c.title = "Test · " + m.title; c.body = m.body; c.sound = .default
+        c.userInfo = ["open": "sorted"]
+        try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "sorted-test-\(UUID().uuidString)", content: c,
+                                                                                trigger: UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)))
+    }
 }
 
 /// The saved letters, kept privately in the app's own storage.

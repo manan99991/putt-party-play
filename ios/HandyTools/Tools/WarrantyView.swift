@@ -17,6 +17,7 @@ struct WarrantyView: View {
     @AppStorage("warranty.lead") private var warrantyLead = 7
     @AppStorage("returns.remind") private var returnsOn = true
     @State private var notifOff = false
+    @State private var testNote: String?
 
     private var results: [Receipt] { ReceiptSearch.rank(store.receipts, query: query) }
     private var expiring: [Receipt] { store.expiring(within: 45) }
@@ -94,6 +95,17 @@ struct WarrantyView: View {
                     }
                 }
                 NotificationsOffCard(isOff: $notifOff)
+                if warrantyOn || returnsOn {
+                    Button {
+                        let r = store.receipts.first { $0.warrantyEnds != nil }
+                        Task {
+                            guard await NotifyPermission.ensure() else { notifOff = true; return }
+                            await WarrantyReminders.testRun(store: r?.store, ends: r?.warrantyEnds); testNote = L("Test sent — it arrives in 5 seconds.")
+                        }
+                    } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }.secondaryButton()
+                        .accessibilityIdentifier("warranty-testrun")
+                    if let testNote { Text(testNote).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
+                }
                 Text(L("Alerts are set on your phone for each receipt with a date. Nothing is sent anywhere.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
             }.padding(.top, HandySpacing.s8)
         } label: { Label(L("Notify me"), systemImage: "bell.badge").font(HandyFont.bodyStrong) }
