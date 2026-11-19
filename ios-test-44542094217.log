@@ -1,0 +1,6 @@
+== test.log (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:2638:34: error: 'async' call in an autoclosure that does not support concurrency
+     |                                  `- error: 'async' call in an autoclosure that does not support concurrency
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsTests/EngineTests.swift:2643:41: error: 'async' call in an autoclosure that does not support concurrency
+     |                                         `- error: 'async' call in an autoclosure that does not support concurrency
+** TEST FAILED **
