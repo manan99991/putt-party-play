@@ -2337,6 +2337,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 Image(uiImage: img).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
                     .cardStyle(padding: HandySpacing.s8)
             } else if ext.lowercased() == "pdf", let page = PDFDocument(data: d)?.page(at: 0) {
+                if chain.steps.contains(where: { $0.block == .photoPdf }) {
+                    ScanInsight(pdf: d, original: inputPhoto)
+                }
                 Image(uiImage: page.thumbnail(of: CGSize(width: 360, height: 480), for: .cropBox))
                     .resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 360)
                     .cardStyle(padding: HandySpacing.s8)
