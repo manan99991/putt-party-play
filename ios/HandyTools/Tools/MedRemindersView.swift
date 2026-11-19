@@ -216,6 +216,32 @@ struct MedEditor: View {
                                    in: med.start..., displayedComponents: .date)
                     }
                 }
+                Section {
+                    Toggle(L("Count my pills and tell me when to refill"), isOn: Binding(get: { med.supply != nil },
+                                                                                       set: { med.supply = $0 ? (med.supply ?? 30) : nil }))
+                    if let left = med.supply {
+                        Stepper("\(L("Pills left now:")) \(left)", value: Binding(get: { med.supply ?? 0 }, set: { med.supply = max(0, $0) }), in: 0...2000)
+                        Stepper("\(L("Pills per dose:")) \(med.perDose ?? 1)", value: Binding(get: { med.perDose ?? 1 }, set: { med.perDose = $0 }), in: 1...10)
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("\(L("Tell me when")) \(med.refillAt ?? 7) \(L("are left"))").font(HandyFont.body)
+                            HStack {
+                                ForEach([3, 7, 10, 14], id: \.self) { n in
+                                    HChip(text: "\(n)", selected: (med.refillAt ?? 7) == n) { med.refillAt = n }
+                                }
+                            }.buttonStyle(.borderless)   // in a Form row, each chip must be its own tap target
+                        }
+                        if let d = MedSchedule.daysLeft(med) {
+                            Text("\(L("At this schedule that's about")) \(d) \(L(d == 1 ? "day" : "days")). \(L("Each Taken counts one dose off; undoing it puts it back."))")
+                                .font(HandyFont.caption).foregroundStyle(left <= (med.refillAt ?? 7) ? HandyColor.amber : HandyColor.textSecondary)
+                        }
+                        if left <= (med.refillAt ?? 7) {
+                            Label(L("You're already at your refill point — time to order more."), systemImage: "exclamationmark.circle")
+                                .font(HandyFont.caption).foregroundStyle(HandyColor.amber)
+                        }
+                    }
+                } header: { Text(L("Refill")) } footer: {
+                    Text(L("You get one alert when the count reaches your number. Tenzy never orders or suggests doses — ask your pharmacist about refills."))
+                }
                 Section(L("Follow-up")) {
                     Toggle(L("Remind me later (refill, check-in)"), isOn: $hasFollowUp)
                     if hasFollowUp {

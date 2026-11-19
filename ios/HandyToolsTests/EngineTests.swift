@@ -2321,6 +2321,27 @@ final class EngineTests: XCTestCase {
         XCTAssertGreaterThan(A.read(.lowSpace) ?? 0, 0)
     }
 
+    func testMedicinePillCountWarnsOnceAtTheRefillPoint() throws {
+        var m = Med(); m.name = "Vitamin D"; m.times = [TimeOfDay(hour: 8, minute: 0), TimeOfDay(hour: 20, minute: 0)]
+        XCTAssertNil(MedSchedule.daysLeft(m), "not counting until asked")
+        m.supply = 9; m.perDose = 1; m.refillAt = 7
+        XCTAssertEqual(MedSchedule.daysLeft(m), 4, "two a day, nine left")
+        let a = MedSchedule.counted(m, taken: true)
+        XCTAssertEqual(a.supply, 8); XCTAssertFalse(MedSchedule.crossedRefill(from: m, to: a))
+        let b = MedSchedule.counted(a, taken: true)
+        XCTAssertEqual(b.supply, 7); XCTAssertTrue(MedSchedule.crossedRefill(from: a, to: b), "fires on reaching the number")
+        let c = MedSchedule.counted(b, taken: true)
+        XCTAssertFalse(MedSchedule.crossedRefill(from: b, to: c), "and only once")
+        XCTAssertEqual(MedSchedule.counted(c, taken: false).supply, 7, "undo puts the dose back")
+        var z = m; z.supply = 1; z.perDose = 2
+        XCTAssertEqual(MedSchedule.counted(z, taken: true).supply, 0, "never below zero")
+        XCTAssertTrue(MedSchedule.refillMessage(b).body.hasPrefix("7 left."))
+        XCTAssertFalse(MedSchedule.refillMessage(b).body.lowercased().contains("take"), "no dosing advice")
+        // A medicine saved before counting existed still loads.
+        let old = #"{"id":"6B0A5D6E-3F3C-4C59-9E7B-3D2C1B0A9F8E","name":"Old","dose":"","note":"","pattern":"daily","times":[{"hour":8,"minute":0}],"weekdays":[2],"everyHours":8,"firstHour":8,"lastHour":22,"start":0,"followUpNote":"x","paused":false}"#
+        XCTAssertNoThrow(try JSONDecoder().decode(Med.self, from: Data(old.utf8)))
+    }
+
     func testKeepOnlyMyNewestScreenshots() {
         let shots = Array(1...130)                                   // newest first
         XCTAssertEqual(PhotoCleaner.beyondNewest(shots, keep: 100), Array(101...130), "the 30 oldest go")

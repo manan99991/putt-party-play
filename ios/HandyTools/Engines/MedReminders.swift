@@ -37,6 +37,11 @@ struct Med: Identifiable, Codable, Equatable {
     var followUp: Date?
     var followUpNote: String = "Refill or check in with your doctor"
     var paused = false
+    // Optional pill count (optional so medicines saved before this still load): how many are left, how many
+    // each dose uses, and the count at which to say "time to refill".
+    var supply: Int?
+    var perDose: Int?
+    var refillAt: Int?
 }
 
 struct DoseLog: Codable, Identifiable, Equatable {
@@ -141,6 +146,45 @@ enum MedSchedule {
         return (kept, all.count - kept.count)
     }
 
+    // MARK: - Pill count
+
+    /// Doses a week, from the schedule (a "some days" medicine counts only its days).
+    static func dosesPerWeek(_ m: Med) -> Int {
+        clockTimes(m).count * (m.pattern == .weekdays ? m.weekdays.count : 7)
+    }
+    /// Roughly how many days the pills last, or nil when not counting.
+    static func daysLeft(_ m: Med) -> Int? {
+        guard let left = m.supply else { return nil }
+        let perDay = Double(dosesPerWeek(m) * max(1, m.perDose ?? 1)) / 7
+        return perDay > 0 ? Int((Double(left) / perDay).rounded(.down)) : nil
+    }
+    /// The count after a dose is logged (+1 dose back when it's un-logged). Never below zero.
+    static func counted(_ m: Med, taken: Bool) -> Med {
+        var x = m
+        guard let left = m.supply else { return x }
+        let n = max(1, m.perDose ?? 1)
+        x.supply = max(0, taken ? left - n : left + n)
+        return x
+    }
+    /// True only on the dose that takes the count down to the refill point — so the alert comes once, not every dose.
+    static func crossedRefill(from old: Med, to new: Med) -> Bool {
+        guard let a = old.supply, let b = new.supply else { return false }
+        let at = old.refillAt ?? 7
+        return a > at && b <= at
+    }
+    static func refillMessage(_ m: Med) -> (title: String, body: String) {
+        let left = m.supply ?? 0
+        let days = daysLeft(m).map { $0 <= 0 ? " That's less than a day." : " That's about \($0) day\($0 == 1 ? "" : "s")." } ?? ""
+        return ("Time to refill \(m.name)", "\(left) left.\(days) Order more or ask your pharmacy, then update the count in Tenzy.")
+    }
+    static func postRefill(_ m: Med) {
+        let msg = refillMessage(m)
+        let c = UNMutableNotificationContent()
+        c.title = msg.title; c.body = msg.body; c.sound = .default
+        c.userInfo = ["open": "medreminder"]
+        UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "medrefill-\(m.id.uuidString)", content: c, trigger: nil))
+    }
+
     /// "Mon, Wed, Fri at 8:00 AM and 8:00 PM" — plain words for the schedule.
     static func summary(_ m: Med) -> String {
         let times = MedSchedule.clockTimes(m).map(\.label)
@@ -155,6 +199,7 @@ enum MedSchedule {
         }
         if let e = m.end { s += " · until \(e.formatted(date: .abbreviated, time: .omitted))" }
         if let f = m.followUp { s += " · follow-up \(f.formatted(date: .abbreviated, time: .omitted))" }
+        if let left = m.supply { s += " · \(left) left" + (daysLeft(m).map { " (about \($0) d)" } ?? "") }
         return s
     }
 
@@ -235,6 +280,15 @@ final class MedStore: ObservableObject {
     }
 
     func setTaken(_ m: Med, at: Date, _ taken: Bool) {
+        // Count pills only when the logged state really changes (a second tap on Taken doesn't take two).
+        if isTaken(m, at: at) != taken, let i = meds.firstIndex(where: { $0.id == m.id }), meds[i].supply != nil {
+            let before = meds[i]
+            meds[i] = MedSchedule.counted(before, taken: taken)
+            if MedSchedule.crossedRefill(from: before, to: meds[i]) {
+                let after = meds[i]
+                Task { if await NotifyPermission.state() == .allowed { MedSchedule.postRefill(after) } }
+            }
+        }
         log.removeAll { $0.medID == m.id && abs($0.scheduled.timeIntervalSince(at)) < 60 }
         if taken { log.append(DoseLog(medID: m.id, scheduled: at, taken: Date())) }
         let cutoff = Calendar.current.date(byAdding: .day, value: -60, to: Date()) ?? Date()

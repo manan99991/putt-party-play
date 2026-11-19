@@ -1139,6 +1139,16 @@
   "pt": "Às",
   "zh": "时间"
  },
+ "At this schedule that's about": {
+  "de": "Bei diesem Plan reicht das etwa",
+  "es": "Con este horario son unos",
+  "fr": "À ce rythme, cela fait environ",
+  "hi": "इस शेड्यूल पर यह लगभग",
+  "it": "Con questo programma sono circa",
+  "ja": "このスケジュールで約",
+  "pt": "Com este horário são cerca de",
+  "zh": "按此安排大约够"
+ },
  "Audio": {
   "de": "Audio",
   "es": "Audio",
@@ -3629,6 +3639,16 @@
   "pt": "Não foi possível usar essa foto — tente outra.",
   "zh": "无法使用该照片——请换一张。"
  },
+ "Count my pills and tell me when to refill": {
+  "de": "Tabletten zählen und an Nachschub erinnern",
+  "es": "Contar mis pastillas y avisarme para reponer",
+  "fr": "Compter mes comprimés et me prévenir pour le renouvellement",
+  "hi": "मेरी गोलियाँ गिनें और रीफ़िल का समय बताएँ",
+  "it": "Conta le mie pillole e avvisami per il rifornimento",
+  "ja": "錠数を数えて補充時期を知らせる",
+  "pt": "Contar os comprimidos e avisar-me para repor",
+  "zh": "记录药片数量并提醒我补药"
+ },
  "Country": {
   "de": "Land",
   "es": "País",
@@ -4408,6 +4428,16 @@
   "ja": "重複、大きな動画、古いスクショを確認してから。",
   "pt": "Duplicados, vídeos grandes e capturas antigas, revistos primeiro.",
   "zh": "重复照片、大视频和旧截图，先查看再处理。"
+ },
+ "Each Taken counts one dose off; undoing it puts it back.": {
+  "de": "Jedes „Genommen“ zieht eine Dosis ab; Rückgängig legt sie zurück.",
+  "es": "Cada «Tomado» resta una toma; deshacerlo la devuelve.",
+  "fr": "Chaque « Pris » retire une prise ; l'annuler la remet.",
+  "hi": "हर ‘ले ली’ एक ख़ुराक घटाता है; वापस लेने पर जुड़ जाती है।",
+  "it": "Ogni «Presa» toglie una dose; annullarla la rimette.",
+  "ja": "「飲んだ」で1回分減り、取り消すと戻ります。",
+  "pt": "Cada «Tomado» desconta uma dose; anular devolve-a.",
+  "zh": "每点一次“已服用”减一次剂量，撤销会加回。"
  },
  "Each dose on time, with Taken and Snooze on the alert.": {
   "de": "Jede Dosis pünktlich, mit „Genommen“ und „Später“ direkt in der Mitteilung.",
@@ -10789,6 +10819,26 @@
   "pt": "Sugestões para você",
   "zh": "为你推荐"
  },
+ "Pills left now:": {
+  "de": "Tabletten übrig:",
+  "es": "Pastillas que quedan:",
+  "fr": "Comprimés restants :",
+  "hi": "अभी बची गोलियाँ:",
+  "it": "Pillole rimaste:",
+  "ja": "残りの錠数:",
+  "pt": "Comprimidos restantes:",
+  "zh": "剩余药片："
+ },
+ "Pills per dose:": {
+  "de": "Tabletten pro Dosis:",
+  "es": "Pastillas por toma:",
+  "fr": "Comprimés par prise :",
+  "hi": "हर ख़ुराक में गोलियाँ:",
+  "it": "Pillole per dose:",
+  "ja": "1回の錠数:",
+  "pt": "Comprimidos por dose:",
+  "zh": "每次药片数："
+ },
  "Pinch to zoom, drag to pan.": {
   "de": "Zum Zoomen spreizen, zum Verschieben ziehen.",
   "es": "Pellizca para ampliar, arrastra para desplazar.",
@@ -11918,6 +11968,16 @@
   "ja": "署名をやり直す",
   "pt": "Refazer assinatura",
   "zh": "重做签名"
+ },
+ "Refill": {
+  "de": "Nachschub",
+  "es": "Reposición",
+  "fr": "Renouvellement",
+  "hi": "रीफ़िल",
+  "it": "Rifornimento",
+  "ja": "補充",
+  "pt": "Reposição",
+  "zh": "补药"
  },
  "Remind me later (refill, check-in)": {
   "de": "Später erinnern (Nachfüllen, Kontrolle)",
@@ -15259,6 +15319,16 @@
   "pt": "Me diga pelo menos uma coisa que precisa fazer — mesmo pequena.",
   "zh": "至少告诉我一件要做的事——小事也行。"
  },
+ "Tell me when": {
+  "de": "Sag mir Bescheid, wenn",
+  "es": "Avísame cuando queden",
+  "fr": "Préviens-moi quand il en reste",
+  "hi": "मुझे बताएँ जब",
+  "it": "Avvisami quando ne restano",
+  "ja": "残り",
+  "pt": "Avise-me quando restarem",
+  "zh": "剩下"
+ },
  "Tell me when I have more than": {
   "de": "Sag mir Bescheid, wenn ich mehr habe als",
   "es": "Avísame cuando tenga más de",
@@ -17999,6 +18069,16 @@
   "pt": "Você não precisa fazer tudo a toda hoje. Passos pequenos, pausas no meio — com calma também dá conta.",
   "zh": "今天不必全速前进。小步走，中间休息——慢慢来也能做完。"
  },
+ "You get one alert when the count reaches your number. Tenzy never orders or suggests doses — ask your pharmacist about refills.": {
+  "de": "Du bekommst eine Mitteilung, wenn deine Zahl erreicht ist. Tenzy bestellt nichts und schlägt keine Dosen vor – frag deine Apotheke.",
+  "es": "Recibes un aviso cuando se llegue a tu número. Tenzy nunca pide ni sugiere dosis: consulta a tu farmacéutico.",
+  "fr": "Vous recevez une alerte quand votre nombre est atteint. Tenzy ne commande rien et ne suggère aucune dose — demandez à votre pharmacien.",
+  "hi": "संख्या पहुँचने पर आपको एक अलर्ट मिलेगा। Tenzy कभी ऑर्डर नहीं करता या ख़ुराक नहीं बताता — रीफ़िल के लिए फ़ार्मासिस्ट से पूछें।",
+  "it": "Ricevi un avviso quando si arriva al tuo numero. Tenzy non ordina né suggerisce dosi: chiedi al farmacista.",
+  "ja": "数に達したら1回だけ通知します。Tenzy が注文したり用量を提案したりすることはありません。補充は薬剤師に相談してください。",
+  "pt": "Recebe um alerta quando chegar ao seu número. O Tenzy nunca encomenda nem sugere doses — fale com o farmacêutico.",
+  "zh": "数量到达时提醒一次。Tenzy 不会代购药品或建议剂量，补药请咨询药剂师。"
+ },
  "You have": {
   "de": "Du hast",
   "es": "Tienes",
@@ -18038,6 +18118,16 @@
   "ja": "Proをご利用中。ありがとう。",
   "pt": "És Pro. Obrigado.",
   "zh": "您已是 Pro。谢谢。"
+ },
+ "You're already at your refill point — time to order more.": {
+  "de": "Du bist schon beim Nachfüllpunkt – Zeit, neue zu besorgen.",
+  "es": "Ya estás en tu punto de reposición: hora de pedir más.",
+  "fr": "Vous êtes déjà au seuil de renouvellement : il est temps d'en commander.",
+  "hi": "आप रीफ़िल की सीमा पर हैं — और मँगाने का समय है।",
+  "it": "Sei già alla soglia di rifornimento: è ora di ordinarne altre.",
+  "ja": "すでに補充の目安です。追加を手配しましょう。",
+  "pt": "Já está no ponto de reposição — altura de pedir mais.",
+  "zh": "已到补药数量，该去买药了。"
  },
  "You're mixing weight, volume and count — compare like with like for a fair result.": {
   "de": "Du mischst Gewicht, Volumen und Stückzahl — vergleiche Gleiches mit Gleichem für ein faires Ergebnis.",
@@ -18369,6 +18459,16 @@
   "pt": "uma lista de tarefas",
   "zh": "待办清单"
  },
+ "are left": {
+  "de": "übrig sind",
+  "es": "pastillas",
+  "fr": "comprimés",
+  "hi": "बचें",
+  "it": "pillole",
+  "ja": "錠で知らせる",
+  "pt": "comprimidos",
+  "zh": "片时提醒我"
+ },
  "average": {
   "de": "Durchschnitt",
   "es": "promedio",
@@ -18399,6 +18499,16 @@
   "pt": "ligar ao dentista, levantar uma encomenda nos correios às 15h, enviar e-mail ao Sam, pagar a renda sexta-feira",
   "zh": "给牙医打电话，下午 3 点到邮局取包裹，给 Sam 发邮件，周五付房租"
  },
+ "day": {
+  "de": "Tag",
+  "es": "día",
+  "fr": "jour",
+  "hi": "दिन",
+  "it": "giorno",
+  "ja": "日",
+  "pt": "dia",
+  "zh": "天"
+ },
  "day returns": {
   "de": "Tage Rückgabe",
   "es": "días de devolución",
@@ -18408,6 +18518,16 @@
   "ja": "日間返品可",
   "pt": "dias para devolução",
   "zh": "天退货"
+ },
+ "days": {
+  "de": "Tage",
+  "es": "días",
+  "fr": "jours",
+  "hi": "दिन",
+  "it": "giorni",
+  "ja": "日",
+  "pt": "dias",
+  "zh": "天"
  },
  "days in a row": {
   "de": "Tage in Folge",
