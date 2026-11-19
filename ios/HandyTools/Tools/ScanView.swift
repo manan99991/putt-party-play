@@ -46,6 +46,11 @@ struct ScanView: View {
     @State private var outputs: [URL] = []
     @State private var jpgOutputs: [URL] = []
     @State private var outputBytes = 0
+    // what it is (read from the first page's words)
+    @State private var smart: ScanSmart.Read?
+    @State private var smartFor: UUID?
+    @State private var reminded: Bool?
+    @State private var watermarkID = true
 
     private let limits: [(String, Int)] = [("No limit", 0), ("Under 10 MB", 10_000_000), ("Under 5 MB", 5_000_000), ("Under 2 MB", 2_000_000), ("Under 1 MB", 1_000_000), ("Under 500 KB", 500_000)]
     private var overQuota: Bool { !Usage.hasRoom("scan", limit: Limits.freeScanPerDay) }
@@ -62,6 +67,7 @@ struct ScanView: View {
                 emptyState
             } else {
                 pageStrip
+                smartCard.task(id: pages.first?.id) { readWhatItIs() }
                 preview
                 modeChips
                 switch mode {
@@ -442,6 +448,48 @@ struct ScanView: View {
         place(.text(t)); newText = ""
     }
 
+    /// Read the first page once (its text is kept for export), and work out what it is.
+    private func readWhatItIs() {
+        guard let first = pages.first, smartFor != first.id else { return }
+        smartFor = first.id; reminded = nil
+        let p = first
+        Task.detached(priority: .utility) {
+            let lines = p.ocr ?? DocEngine.recognize(DocEngine.render(p))
+            let r = ScanSmart.read(DocEngine.text(lines))
+            await MainActor.run {
+                if let i = pages.firstIndex(where: { $0.id == p.id }), pages[i].ocr == nil { pages[i].ocr = lines }
+                smart = lines.isEmpty ? nil : r
+            }
+        }
+    }
+
+    @ViewBuilder private var smartCard: some View {
+        if let smart {
+            VStack(alignment: .leading, spacing: 6) {
+                Label(L(smart.summary), systemImage: ["bill": "doc.text.fill", "receipt": "receipt", "letter": "envelope.fill", "form": "square.and.pencil", "id": "person.text.rectangle", "other": "doc"][smart.kind.rawValue] ?? "doc")
+                    .font(HandyFont.bodyStrong).fixedSize(horizontal: false, vertical: true)
+                Text("\(L("Saved as")) “\(smart.name).pdf”").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                switch smart.kind {
+                case .bill, .letter:
+                    if smart.due != nil {
+                        Button {
+                            Task { reminded = (try? await ScanSmart.remind(smart)) ?? false; if reminded == true { HandyHaptics.success() } }
+                        } label: { Label(L(reminded == true ? "Reminder set: 3 days before and on the day" : "Remind me 3 days before and on the day"), systemImage: reminded == true ? "checkmark.circle.fill" : "bell.badge").frame(maxWidth: .infinity) }
+                            .secondaryButton().disabled(reminded == true).accessibilityIdentifier("scan-remind")
+                        if reminded == false { Button(L("Allow Reminders for Tenzy — open Settings")) { Permission.openSettings() }.textButton() }
+                    }
+                case .form:
+                    Button { mode = .sign } label: { Label(L("Sign and fill it"), systemImage: "signature").frame(maxWidth: .infinity) }.secondaryButton()
+                case .id:
+                    Toggle(L("Mark the copy 'For verification only' so it can't be reused"), isOn: $watermarkID).tint(HandyColor.accent).font(HandyFont.caption)
+                case .receipt:
+                    Text(L("Tip: Warranty & Receipts keeps it with a return-by reminder.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                case .other: EmptyView()
+                }
+            }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+        }
+    }
+
     private func runOCR(all: Bool) {
         commitInk(to: selected)
         ocrBusy = true
@@ -483,13 +531,15 @@ struct ScanView: View {
         working = true; errorText = nil; outputs = []; jpgOutputs = []
         let snapshot = pages, opts = DocEngine.PDFOptions(searchable: searchable, pageSize: pageSize)
         let limit = limitIdx.map { limits[$0].1 } ?? 0, split = splitting, spec = splitSpec
+        let base = smart?.name ?? "Scan \(Date().formatted(.dateTime.day().month(.abbreviated).year()))", mark = smart?.kind == .id && watermarkID
         Task.detached(priority: .userInitiated) {
             let data: Data? = limit > 0 ? DocEngine.pdfUnder(snapshot, targetBytes: limit, base: opts) : DocEngine.pdf(snapshot, options: opts)
             var files: [URL] = []
             if let data {
-                let parts = split ? DocEngine.split(data, ranges: spec) : [data]
+                let marked = mark ? (PDFOverlay.watermark(data, text: "For verification only") ?? data) : data
+                let parts = split ? DocEngine.split(marked, ranges: spec) : [marked]
                 for (i, d) in parts.enumerated() {
-                    let url = FileManager.default.temporaryDirectory.appendingPathComponent(split ? "Scan-part\(i + 1).pdf" : "Scan-\(Int(Date().timeIntervalSince1970)).pdf")
+                    let url = FileManager.default.temporaryDirectory.appendingPathComponent(split ? "\(base) part \(i + 1).pdf" : "\(base).pdf")
                     try? FileManager.default.removeItem(at: url)
                     if (try? d.write(to: url)) != nil { files.append(url) }
                 }
