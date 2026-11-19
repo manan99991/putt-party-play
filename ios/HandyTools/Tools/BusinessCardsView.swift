@@ -27,7 +27,13 @@ struct BusinessCardsView: View {
                 if reading { ToolProgressBar(value: progress, label: "Reading your cards…") }
                 if !entries.isEmpty {
                     meetCard
-                    ForEach($entries) { $e in CardEditor(entry: $e, onSave: { save(e) }, followUp: followUp) }
+                    if entries.count > 1 {
+                        Text(L("Tap ✕ on any card you don't want — it won't be saved.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }
+                    ForEach($entries) { $e in
+                        CardEditor(entry: $e, onSave: { save(e) }, followUp: followUp,
+                                   onRemove: { let id = e.id; withAnimation { entries.removeAll { $0.id == id } } })
+                    }
                 }
                 ForEach(notCards, id: \.self) { t in notACard(t) }
                 if let n = note { Label(L(n), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(Color.green) }
@@ -183,6 +189,7 @@ private struct CardEditor: View {
     @Binding var entry: CardKit.Entry
     let onSave: () -> Void
     let followUp: Int
+    var onRemove: (() -> Void)? = nil
     @State private var showQR = false
 
     var body: some View {
@@ -192,6 +199,16 @@ private struct CardEditor: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(entry.card.name.isEmpty ? L("New contact") : entry.card.name).font(HandyFont.bodyStrong)
                     Text([entry.card.title, entry.card.company].filter { !$0.isEmpty }.joined(separator: " · ")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+                Spacer(minLength: 0)
+                if let onRemove {
+                    Button { onRemove() } label: {
+                        Image(systemName: "xmark").font(.system(size: 13, weight: .bold)).foregroundStyle(HandyColor.textSecondary)
+                            .frame(width: 44, height: 44).contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(L("Remove this card"))
+                    .accessibilityIdentifier("card-remove")
                 }
             }
             field("Name", $entry.card.name)
