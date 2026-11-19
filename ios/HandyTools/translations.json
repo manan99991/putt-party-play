@@ -1919,6 +1919,16 @@
   "pt": "Original",
   "zh": "原图"
  },
+ "As taken": {
+  "de": "Wie aufgenommen",
+  "es": "Tal cual",
+  "fr": "Telle quelle",
+  "hi": "जैसी ली गई",
+  "it": "Com'è",
+  "ja": "撮影時のまま",
+  "pt": "Como tirada",
+  "zh": "原样"
+ },
  "Ask": {
   "de": "Fragen",
   "es": "Preguntar",
@@ -2818,6 +2828,16 @@
   "ja": "ぼかしは元に戻せます。当アプリの黒塗りは戻せません。コピーでは下のピクセルが完全に消えます。",
   "pt": "O desfoque pode ser revertido. Os nossos blocos não — os píxeis por baixo desaparecem na cópia.",
   "zh": "模糊可以还原。我们的遮挡块不能——副本中下方的像素已彻底消失。"
+ },
+ "Blurred photo": {
+  "de": "Unscharfes Foto",
+  "es": "Foto desenfocada",
+  "fr": "Photo floutée",
+  "hi": "धुंधली फ़ोटो",
+  "it": "Foto sfocata",
+  "ja": "ぼかした写真",
+  "pt": "Foto desfocada",
+  "zh": "模糊照片"
  },
  "Boil it down": {
   "de": "Zusammenfassen",
@@ -4609,6 +4629,16 @@
   "pt": "Fechar HUD",
   "zh": "关闭 HUD"
  },
+ "Close crop": {
+  "de": "Eng zugeschnitten",
+  "es": "Recorte ajustado",
+  "fr": "Recadrage serré",
+  "hi": "नज़दीकी क्रॉप",
+  "it": "Ritaglio stretto",
+  "ja": "ぴったり切り抜き",
+  "pt": "Corte justo",
+  "zh": "紧凑裁剪"
+ },
  "Close scanner": {
   "de": "Scanner schließen",
   "es": "Cerrar escáner",
@@ -4708,6 +4738,16 @@
   "ja": "色覚",
   "pt": "Visão de cor",
   "zh": "色觉"
+ },
+ "Colour": {
+  "de": "Farbe",
+  "es": "Color",
+  "fr": "Couleur",
+  "hi": "रंग",
+  "it": "Colore",
+  "ja": "色",
+  "pt": "Cor",
+  "zh": "颜色"
  },
  "Column": {
   "de": "Spalte",
@@ -5008,6 +5048,16 @@
   "ja": "涼しい — ジャケットか暖かいセーターを。",
   "pt": "Fresco — jaqueta ou um suéter quente.",
   "zh": "凉——夹克或保暖毛衣。"
+ },
+ "Copied — paste it into Messages, WhatsApp or a document.": {
+  "de": "Kopiert – füge es in Nachrichten, WhatsApp oder ein Dokument ein.",
+  "es": "Copiado: pégalo en Mensajes, WhatsApp o un documento.",
+  "fr": "Copié — collez-le dans Messages, WhatsApp ou un document.",
+  "hi": "कॉपी हो गया — Messages, WhatsApp या किसी दस्तावेज़ में पेस्ट करें।",
+  "it": "Copiato — incollalo in Messaggi, WhatsApp o un documento.",
+  "ja": "コピーしました。メッセージやWhatsApp、書類に貼り付けできます。",
+  "pt": "Copiado — cole no Mensagens, WhatsApp ou num documento.",
+  "zh": "已复制——可粘贴到“信息”、WhatsApp 或文档中。"
  },
  "Copied — paste it into any chat": {
   "de": "Kopiert – in jeden Chat einfügen",
@@ -7608,6 +7658,16 @@
   "ja": "全員入った？端に少し余白を。",
   "pt": "Todo mundo? Deixe um pouco de espaço nas bordas.",
   "zh": "都在画面里吗？边缘留点空间。"
+ },
+ "Everything": {
+  "de": "Alles",
+  "es": "Todo",
+  "fr": "Tout",
+  "hi": "सब कुछ",
+  "it": "Tutto",
+  "ja": "すべて",
+  "pt": "Tudo",
+  "zh": "全部"
  },
  "Everything Tenzy does, each with a tap to open": {
   "de": "Alles, was Tenzy kann, mit einem Tipp",
@@ -12799,6 +12859,16 @@
   "pt": "Deixe o texto do scan pesquisável",
   "zh": "让扫描件的文字可搜索"
  },
+ "Make a sticker": {
+  "de": "Sticker machen",
+  "es": "Crear sticker",
+  "fr": "Créer un autocollant",
+  "hi": "स्टिकर बनाएं",
+  "it": "Crea uno sticker",
+  "ja": "ステッカーにする",
+  "pt": "Fazer figurinha",
+  "zh": "做成贴纸"
+ },
  "Make a strong one for me": {
   "de": "Erstell mir ein starkes",
   "es": "Créame una segura",
@@ -16029,6 +16099,16 @@
   "pt": "Uma única vez, no teu telemóvel. Podes pesquisar o que já está pronto — da próxima vez é instantâneo.",
   "zh": "一次性，在你的手机上。你可以搜索已就绪的内容——下次即是即时的。"
  },
+ "Only": {
+  "de": "Nur",
+  "es": "Solo",
+  "fr": "Seulement",
+  "hi": "सिर्फ़",
+  "it": "Solo",
+  "ja": "のみ",
+  "pt": "Só",
+  "zh": "仅"
+ },
  "Only just — allow for skirting boards and handles.": {
   "de": "Ganz knapp – denk an Sockelleisten und Griffe.",
   "es": "Justo justo: ten en cuenta zócalos y tiradores.",
@@ -16818,6 +16898,16 @@
   "ja": "パート",
   "pt": "Parte",
   "zh": "部分"
+ },
+ "Part of the subject runs off the edge of your photo, so it ends in a straight line there. For a clean edge all round, use a photo with a little space around them.": {
+  "de": "Ein Teil des Motivs reicht über den Rand deines Fotos hinaus und endet dort gerade. Für saubere Kanten rundum nimm ein Foto mit etwas Platz drumherum.",
+  "es": "Parte del sujeto se sale del borde de tu foto, así que ahí termina en línea recta. Para un borde limpio, usa una foto con algo de espacio alrededor.",
+  "fr": "Une partie du sujet sort du bord de votre photo, il s'y termine donc en ligne droite. Pour un contour net, utilisez une photo avec un peu d'espace autour.",
+  "hi": "विषय का कुछ हिस्सा फ़ोटो के किनारे से बाहर है, इसलिए वहां सीधी रेखा में कटता है। साफ़ किनारे के लिए आसपास थोड़ी जगह वाली फ़ोटो लें।",
+  "it": "Parte del soggetto esce dal bordo della foto, quindi lì termina con una linea dritta. Per un bordo pulito usa una foto con un po' di spazio intorno.",
+  "ja": "被写体の一部が写真の端からはみ出しているため、そこで直線的に切れます。きれいな輪郭にするには、周りに余白のある写真を使ってください。",
+  "pt": "Parte do objeto sai da borda da foto, então termina em linha reta ali. Para uma borda limpa, use uma foto com um pouco de espaço em volta.",
+  "zh": "主体有一部分超出了照片边缘，因此那里会是一条直线。想要完整干净的边缘，请使用主体周围留有空间的照片。"
  },
  "Passport photos come from photos — choose a photo above.": {
   "de": "Passfotos entstehen aus Fotos — wähle oben ein Foto.",
@@ -18079,6 +18169,16 @@
   "pt": "Mantenha premida a música, toque em Partilhar, Toque e Exportar.",
   "zh": "长按歌曲，点“共享”→“电话铃声”→“导出”。"
  },
+ "Press and hold to see your photo": {
+  "de": "Gedrückt halten, um dein Foto zu sehen",
+  "es": "Mantén pulsado para ver tu foto",
+  "fr": "Maintenez appuyé pour voir votre photo",
+  "hi": "अपनी फ़ोटो देखने के लिए दबाकर रखें",
+  "it": "Tieni premuto per vedere la tua foto",
+  "ja": "長押しで元の写真を表示",
+  "pt": "Toque e segure para ver sua foto",
+  "zh": "按住查看原照片"
+ },
  "Pressure to act fast": {
   "de": "Druck, schnell zu handeln",
   "es": "Presión para actuar rápido",
@@ -18308,6 +18408,16 @@
   "ja": "動画を処理中…",
   "pt": "Processando vídeo…",
   "zh": "正在处理视频…"
+ },
+ "Profile picture": {
+  "de": "Profilbild",
+  "es": "Foto de perfil",
+  "fr": "Photo de profil",
+  "hi": "प्रोफ़ाइल फ़ोटो",
+  "it": "Foto profilo",
+  "ja": "プロフィール写真",
+  "pt": "Foto de perfil",
+  "zh": "头像"
  },
  "Protect": {
   "de": "Schützen",
@@ -20799,6 +20909,16 @@
   "pt": "Salvo em Fotos",
   "zh": "已存到照片"
  },
+ "Saved to Photos — see-through PNG.": {
+  "de": "In Fotos gesichert – transparentes PNG.",
+  "es": "Guardado en Fotos: PNG transparente.",
+  "fr": "Enregistré dans Photos — PNG transparent.",
+  "hi": "Photos में सहेजा — पारदर्शी PNG।",
+  "it": "Salvato in Foto — PNG trasparente.",
+  "ja": "写真に保存しました（透明PNG）。",
+  "pt": "Salvo no Fotos — PNG transparente.",
+  "zh": "已存储到“照片”——透明 PNG。"
+ },
  "Saved to Photos.": {
   "de": "In Fotos gesichert.",
   "es": "Guardado en Fotos.",
@@ -21399,6 +21519,16 @@
   "pt": "Ver a foto",
   "zh": "查看照片"
  },
+ "See-through": {
+  "de": "Transparent",
+  "es": "Transparente",
+  "fr": "Transparent",
+  "hi": "पारदर्शी",
+  "it": "Trasparente",
+  "ja": "透明",
+  "pt": "Transparente",
+  "zh": "透明"
+ },
  "Select": {
   "de": "Auswählen",
   "es": "Seleccionar",
@@ -21788,6 +21918,16 @@
   "ja": "設定",
   "pt": "Definições",
   "zh": "设置"
+ },
+ "Shape": {
+  "de": "Format",
+  "es": "Forma",
+  "fr": "Format",
+  "hi": "आकार",
+  "it": "Formato",
+  "ja": "形",
+  "pt": "Formato",
+  "zh": "形状"
  },
  "Share": {
   "de": "Teilen",
@@ -22969,6 +23109,16 @@
   "pt": "Brilho suave",
   "zh": "柔光"
  },
+ "Soft grey": {
+  "de": "Hellgrau",
+  "es": "Gris suave",
+  "fr": "Gris clair",
+  "hi": "हल्का स्लेटी",
+  "it": "Grigio chiaro",
+  "ja": "ライトグレー",
+  "pt": "Cinza suave",
+  "zh": "浅灰"
+ },
  "Soft or blurry": {
   "de": "Weich oder unscharf",
   "es": "Suave o borrosa",
@@ -22978,6 +23128,16 @@
   "ja": "ぼやけています",
   "pt": "Suave ou borrada",
   "zh": "模糊"
+ },
+ "Soft shadow under it": {
+  "de": "Weicher Schatten darunter",
+  "es": "Sombra suave debajo",
+  "fr": "Ombre douce dessous",
+  "hi": "नीचे हल्की छाया",
+  "it": "Ombra morbida sotto",
+  "ja": "下にやわらかい影",
+  "pt": "Sombra suave embaixo",
+  "zh": "下方柔和阴影"
  },
  "Soft shadow under the product": {
   "de": "Weicher Schatten unter dem Produkt",
@@ -23828,6 +23988,16 @@
   "ja": "近くのお店",
   "pt": "Lojas perto de mim",
   "zh": "附近的商店"
+ },
+ "Story 9:16": {
+  "de": "Story 9:16",
+  "es": "Historia 9:16",
+  "fr": "Story 9:16",
+  "hi": "स्टोरी 9:16",
+  "it": "Storia 9:16",
+  "ja": "ストーリー 9:16",
+  "pt": "Story 9:16",
+  "zh": "快拍 9:16"
  },
  "Straighten a tilted head": {
   "de": "Schiefen Kopf gerade richten",
@@ -25668,6 +25838,16 @@
   "ja": "角の順番がばらばらだったので、縁に沿って並べ直しました。",
   "pt": "Os cantos estavam fora de ordem, então o Tenzy os reordenou pela borda.",
   "zh": "角点顺序不对，Tenzy 已按边缘重新排序。"
+ },
+ "The cut-out. Press and hold to see your photo.": {
+  "de": "Der Ausschnitt. Gedrückt halten, um dein Foto zu sehen.",
+  "es": "El recorte. Mantén pulsado para ver tu foto.",
+  "fr": "Le détourage. Maintenez appuyé pour voir votre photo.",
+  "hi": "कटआउट। अपनी फ़ोटो देखने के लिए दबाकर रखें।",
+  "it": "Il ritaglio. Tieni premuto per vedere la tua foto.",
+  "ja": "切り抜き。長押しで元の写真を表示。",
+  "pt": "O recorte. Toque e segure para ver sua foto.",
+  "zh": "抠图结果。按住查看原照片。"
  },
  "The end": {
   "de": "Das Ende",
@@ -29988,6 +30168,16 @@
   "ja": "撮った動画",
   "pt": "Seu clipe",
   "zh": "你的视频"
+ },
+ "Your colour": {
+  "de": "Deine Farbe",
+  "es": "Tu color",
+  "fr": "Votre couleur",
+  "hi": "आपका रंग",
+  "it": "Il tuo colore",
+  "ja": "好きな色",
+  "pt": "Sua cor",
+  "zh": "自选颜色"
  },
  "Your day in one morning note": {
   "de": "Dein Tag in einer Morgennotiz",

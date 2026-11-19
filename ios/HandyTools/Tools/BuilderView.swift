@@ -2326,6 +2326,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             .cardStyle(padding: HandySpacing.s12)
             CopyButton(text: t)
             }
+        case .image(let i) where chain.steps.last?.block == .cutout:
+            // A cut-out is finished here: subject picker, backdrop, shadow, shape, and Photos / chat / sticker / profile.
+            CutoutResult(original: inputPhoto, firstCut: i)
         case .image(let i):
             Image(uiImage: i).resizable().scaledToFit().frame(maxHeight: 320)
                 .modifier(QRPeekIfCode(enabled: isQRResult, image: i))

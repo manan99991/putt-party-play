@@ -114,6 +114,10 @@ struct StudioView: View {
             }
         }
         .onAppear { if Launch.sample, original == nil { original = SampleAssets.photo(); originalBytes = original?.jpegData(compressionQuality: 0.95)?.count ?? 0 } }
+        // Handed a photo from another tool (e.g. the cut-out's "Profile picture"): straight into that job.
+        .handoff("studio") { p in
+            if let img = ToolHandoff.image(p) { original = img.normalizedUp(); originalBytes = 0; reset(); job = .profile; run(.profile) }
+        }
         .onChange(of: pickedItem) { _, item in
             Task {
                 if let d = try? await item?.loadTransferable(type: Data.self), let img = UIImage(data: d) {
