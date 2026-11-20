@@ -1982,6 +1982,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 started = true
                 Task { if let u = await SampleAssets.movie() { await MainActor.run { go(.video(u)) } } }
             }
+            if Launch.uitest, Launch.sample, initial == nil, !started, chain.id == "photo-sketch" {
+                started = true
+                go(.image(SampleAssets.photo()))
+            }
             if Launch.uitest, Launch.sample, initial == nil, !started, ["ID copy", "Scan PDF"].contains(ResultScreens.screen(for: chain) ?? "") {
                 started = true
                 let doc = ResultScreens.screen(for: chain) == "Scan PDF"
@@ -2403,6 +2407,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             .cardStyle(padding: HandySpacing.s12)
             CopyButton(text: t)
             }
+        case .image(let i) where [.emojiFaces, .meme, .artFilter, .emojiMosaic].contains(chain.steps.last?.block):
+            // Same finish for every fun photo: other looks on the same photo, Copy into a chat, Photos, Share, the full tool.
+            FunFinishCard(block: chain.steps.last!.block, original: inputPhoto, result: i,
+                          look: chain.steps.last?.settings["style"] ?? chain.steps.last?.settings["emoji"] ?? "")
         case .image(let i) where [.makeQr, .wifiQr, .contactQr].contains(chain.steps.last?.block):
             // Same finish as QR & Wi‑Fi: tested by reading it back, what it does when scanned, Photos / Share / print card.
             CodeFinishCard(image: i)
@@ -2423,6 +2431,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 ExpenseSheetCard(file: f, added: 1)
             } else if lext == "gif" {
                 GIFFinishCard(data: d, shareURL: tempURL(d, ext))
+            } else if chain.steps.last?.block == .sticker, let img = UIImage(data: d) {
+                FunFinishCard(block: .sticker, original: inputPhoto, result: img, look: "")
             } else if chain.steps.last?.block == .readAloud, ChainPayload.isAudio(ext), let u = tempURL(d, ext) {
                 // Ready to listen: player with speed, how long, and the words it reads.
                 ListenFinishCard(url: u, text: { if case .text(let t)? = lastStepInput { return t }; return nil }())

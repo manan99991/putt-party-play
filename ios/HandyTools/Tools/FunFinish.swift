@@ -1,0 +1,116 @@
+import SwiftUI
+
+/// The finish for a fun photo — sticker, emoji faces, meme, emoji art, pencil sketch, comic — the same for the
+/// ready-made tools and any built tool ending in one of those steps: the result big; other looks tried on the same
+/// photo with one tap; Copy (paste straight into a chat), Save to Photos, Share; and the way into the full tool
+/// (Sticker studio's ten looks, an emoji per face, a comic strip) carrying the photo over.
+struct FunFinishCard: View {
+    let block: Block
+    let original: UIImage?
+    @State var result: UIImage
+    @State var look: String
+
+    @State private var busy: String?
+    @State private var note: String?
+
+    /// The looks offered on the result, per kind of fun step: (setting value, label).
+    static func looks(_ b: Block) -> [(id: String, name: String)] {
+        switch b {
+        case .artFilter: return PixelArt.styles
+        case .emojiFaces: return ChainText.faceEmojis.map { ($0, $0) }
+        default: return []
+        }
+    }
+    /// The full tool for this job, when it does more than the finish card.
+    static func fullTool(_ b: Block) -> (id: String, label: String)? {
+        switch b {
+        case .sticker: return ("sticker", "Ten sticker looks in Sticker studio")
+        case .emojiFaces: return ("faceemoji", "A different emoji for each face")
+        case .artFilter: return ("comicstrip", "Make a comic strip")
+        default: return nil
+        }
+    }
+
+    private var isSticker: Bool { block == .sticker }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            ZStack {
+                if isSticker { Checkerboard().clipShape(RoundedRectangle(cornerRadius: 12)) }
+                Image(uiImage: result).resizable().scaledToFit().padding(isSticker ? 12 : 0)
+            }
+            .frame(maxWidth: .infinity).frame(maxHeight: 380)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+
+            let options = Self.looks(block)
+            if !options.isEmpty, original != nil {
+                Text(L(block == .emojiFaces ? "Try another emoji" : "Try another look")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(options, id: \.id) { o in
+                            Button { restyle(o.id) } label: {
+                                HStack(spacing: 4) {
+                                    if busy == o.id { ProgressView().controlSize(.mini) }
+                                    Text(block == .emojiFaces ? o.name : L(o.name)).font(block == .emojiFaces ? .title3 : HandyFont.caption)
+                                }
+                                .padding(.horizontal, 10).padding(.vertical, 7)
+                                .background(look == o.id ? HandyColor.accent : HandyColor.surface, in: Capsule())
+                                .foregroundStyle(look == o.id ? Color.white : HandyColor.textPrimary)
+                            }.buttonStyle(.plain).disabled(busy != nil)
+                        }
+                    }
+                }
+                .accessibilityIdentifier("fun-looks")
+            }
+
+            Button {
+                UIPasteboard.general.image = result
+                CopyToast.shared.flash(L("Copied — paste it into any chat"))
+            } label: { Label(L("Copy — paste into any chat"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.primaryButton()
+            HStack(spacing: HandySpacing.s8) {
+                Button {
+                    Task {
+                        let d = (isSticker ? result.pngData() : result.jpegData(compressionQuality: 0.92)) ?? Data()
+                        let ok = await PhotoSaver.save(d)
+                        note = L(ok ? (isSticker ? "Saved to Photos as a see-through sticker." : "Saved to Photos.") : "Couldn't save — allow Tenzy to add photos in Settings.")
+                    }
+                } label: { Label(L("Save to Photos"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }.secondaryButton()
+                if let d = result.pngData() {
+                    ShareLink(item: PNGFile(data: d), preview: SharePreview(L("Picture"), image: Image(uiImage: result))) {
+                        Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+                    }.secondaryButton()
+                }
+            }
+            if isSticker {
+                VStack(alignment: .leading, spacing: 4) {
+                    Label(L("Keep it in your sticker drawer"), systemImage: "face.smiling").font(HandyFont.caption.weight(.semibold))
+                    Text(L("Save to Photos, open it in Photos, touch and hold the sticker, then tap Add Sticker. It's then in Messages, WhatsApp and any app's emoji keyboard."))
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            if let full = Self.fullTool(block), let o = original {
+                Button {
+                    ToolHandoff.shared.put(.image(o), for: full.id)
+                    NotificationCenter.default.post(name: .openTool, object: full.id)
+                } label: { Label(L(full.label), systemImage: "arrow.up.forward.app").frame(maxWidth: .infinity) }.textButton()
+            }
+            if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("fun-finish")
+    }
+
+    private func restyle(_ id: String) {
+        guard id != look, let o = original else { return }
+        busy = id
+        let key = block == .emojiFaces ? "emoji" : "style"
+        Task {
+            let r = await ChainRunner.apply(ChainStep(block: block, settings: [key: id]), to: .image(o))
+            await MainActor.run {
+                busy = nil
+                if case .success(.image(let img)) = r { result = img; look = id } else { note = L("That look couldn't be made from this photo.") }
+            }
+        }
+    }
+}

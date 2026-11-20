@@ -826,6 +826,7 @@ enum ResultScreens {
         case .scamCheck: return "Scam verdict"
         case .voiceChange: return "Voice finish"
         case .readAloud: return "Listen finish"
+        case .sticker, .emojiFaces, .meme, .artFilter, .emojiMosaic: return "Fun finish"
         case .makeQr, .wifiQr, .contactQr: return "Code finish"
         case .chatLink: return "Chat link"
         case .photoPdf: return "Scan PDF"
@@ -855,12 +856,6 @@ enum ResultScreens {
         "photo-collage": "pb-photo",
         "where-i-am": "pb-text",
         "photos-flipbook": "pb-photo",
-        "sticker-maker": "pb-fun",
-        "emoji-faces": "pb-fun",
-        "meme": "pb-fun",
-        "emoji-mosaic": "pb-fun",
-        "photo-sketch": "pb-fun",
-        "photo-comic": "pb-fun",
         "before-after": "pb-photo",
         "photo-sell": "pb-photo",
         "lecture-summary": "pb-text",

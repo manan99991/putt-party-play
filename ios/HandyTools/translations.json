@@ -489,6 +489,16 @@
   "pt": "Foi guardado um relatório de falha neste telemóvel. Enviá-lo para corrigir o erro? Nada é enviado a menos que toques em Enviar.",
   "zh": "本机已保存一份崩溃报告。发送它以便修复该缺陷？除非你点按「发送」，否则不会上传任何内容。"
  },
+ "A different emoji for each face": {
+  "de": "Für jedes Gesicht ein anderes Emoji",
+  "es": "Un emoji distinto para cada cara",
+  "fr": "Un emoji différent pour chaque visage",
+  "hi": "हर चेहरे के लिए अलग इमोजी",
+  "it": "Un'emoji diversa per ogni volto",
+  "ja": "顔ごとに違う絵文字",
+  "pt": "Um emoji diferente para cada cara",
+  "zh": "每张脸用不同表情"
+ },
  "A flip-book video of your photos": {
   "de": "Ein Daumenkino-Video deiner Fotos",
   "es": "Un vídeo tipo folioscopio con tus fotos",
@@ -5338,6 +5348,16 @@
   "ja": "コピー — 身分証として無効",
   "pt": "Cópia — não vale como documento",
   "zh": "复印件——不可作为身份证件"
+ },
+ "Copy — paste into any chat": {
+  "de": "Kopieren – in jeden Chat einfügen",
+  "es": "Copiar: pégalo en cualquier chat",
+  "fr": "Copier — collez-le dans n'importe quelle discussion",
+  "hi": "कॉपी करें — किसी भी चैट में पेस्ट करें",
+  "it": "Copia: incollala in qualsiasi chat",
+  "ja": "コピーしてどのチャットにも貼り付け",
+  "pt": "Copiar — cole em qualquer conversa",
+  "zh": "复制，粘贴到任意聊天"
  },
  "Corners": {
   "de": "Ecken",
@@ -13109,6 +13129,16 @@
   "pt": "Fazer um clipe",
   "zh": "做个短片"
  },
+ "Make a comic strip": {
+  "de": "Comicstreifen machen",
+  "es": "Hacer una tira cómica",
+  "fr": "Faire une bande dessinée",
+  "hi": "कॉमिक स्ट्रिप बनाएँ",
+  "it": "Crea una striscia a fumetti",
+  "ja": "4コマ漫画を作る",
+  "pt": "Fazer uma tira de BD",
+  "zh": "制作连环漫画"
+ },
  "Make a document": {
   "de": "Ein Dokument machen",
   "es": "Hacer un documento",
@@ -18139,6 +18169,16 @@
   "pt": "Sugestões para você",
   "zh": "为你推荐"
  },
+ "Picture": {
+  "de": "Bild",
+  "es": "Imagen",
+  "fr": "Image",
+  "hi": "चित्र",
+  "it": "Immagine",
+  "ja": "画像",
+  "pt": "Imagem",
+  "zh": "图片"
+ },
  "Picture in the middle": {
   "de": "Bild in der Mitte",
   "es": "Imagen en el centro",
@@ -21359,6 +21399,16 @@
   "pt": "Salvar em Fotos",
   "zh": "存到照片"
  },
+ "Save to Photos, open it in Photos, touch and hold the sticker, then tap Add Sticker. It's then in Messages, WhatsApp and any app's emoji keyboard.": {
+  "de": "In Fotos sichern, dort öffnen, den Sticker gedrückt halten und „Sticker hinzufügen“ tippen. Dann ist er in Nachrichten, WhatsApp und der Emoji-Tastatur jeder App.",
+  "es": "Guárdalo en Fotos, ábrelo, mantén pulsado el sticker y toca Añadir sticker. Estará en Mensajes, WhatsApp y el teclado de emojis de cualquier app.",
+  "fr": "Enregistrez-le dans Photos, ouvrez-le, maintenez l'autocollant et touchez Ajouter l'autocollant. Il sera dans Messages, WhatsApp et le clavier emoji de toute app.",
+  "hi": "फ़ोटो में सहेजें, उसे खोलें, स्टिकर को दबाकर रखें और Add Sticker पर टैप करें। फिर यह Messages, WhatsApp और हर ऐप के इमोजी कीबोर्ड में होगा।",
+  "it": "Salvalo in Foto, aprilo, tieni premuto lo sticker e tocca Aggiungi sticker. Sarà in Messaggi, WhatsApp e nella tastiera emoji di ogni app.",
+  "ja": "写真に保存して開き、ステッカーを長押しして「ステッカーを追加」をタップ。メッセージやWhatsApp、各アプリの絵文字キーボードで使えます。",
+  "pt": "Guarde em Fotos, abra-o, mantenha premido o autocolante e toque em Adicionar autocolante. Fica nas Mensagens, WhatsApp e no teclado de emojis de qualquer app.",
+  "zh": "存到照片后打开，长按贴纸并轻点“添加贴纸”。之后在信息、WhatsApp 和任意应用的表情键盘里都能用。"
+ },
  "Save transcript": {
   "de": "Transkript speichern",
   "es": "Guardar transcripción",
@@ -21458,6 +21508,16 @@
   "ja": "写真に保存しました",
   "pt": "Salvo em Fotos",
   "zh": "已存到照片"
+ },
+ "Saved to Photos as a see-through sticker.": {
+  "de": "Als transparenter Sticker in Fotos gesichert.",
+  "es": "Guardado en Fotos como sticker transparente.",
+  "fr": "Enregistré dans Photos comme autocollant transparent.",
+  "hi": "फ़ोटो में पारदर्शी स्टिकर के रूप में सहेजा गया।",
+  "it": "Salvato in Foto come sticker trasparente.",
+  "ja": "透明ステッカーとして写真に保存しました。",
+  "pt": "Guardado em Fotos como autocolante transparente.",
+  "zh": "已作为透明贴纸存储到照片。"
  },
  "Saved to Photos — it plays in the Animated album.": {
   "de": "In Fotos gesichert – es läuft im Album „Animiert“.",
@@ -25829,6 +25889,16 @@
   "pt": "Modelos",
   "zh": "模板"
  },
+ "Ten sticker looks in Sticker studio": {
+  "de": "Zehn Sticker-Looks im Sticker-Studio",
+  "es": "Diez estilos de sticker en el estudio",
+  "fr": "Dix styles dans le studio d'autocollants",
+  "hi": "स्टिकर स्टूडियो में दस लुक",
+  "it": "Dieci stili nello studio sticker",
+  "ja": "ステッカースタジオで10種類のスタイル",
+  "pt": "Dez estilos no estúdio de autocolantes",
+  "zh": "贴纸工作室里的十种风格"
+ },
  "Tenzy": {
   "de": "Tenzy",
   "es": "Tenzy",
@@ -26338,6 +26408,16 @@
   "ja": "このファイルにはTenzyが読める音声がありません。",
   "pt": "Esse arquivo não tem áudio que o Tenzy consiga ler.",
   "zh": "该文件没有Tenzy可读取的音频。"
+ },
+ "That look couldn't be made from this photo.": {
+  "de": "Dieser Look ließ sich aus dem Foto nicht machen.",
+  "es": "No se pudo hacer ese estilo con esta foto.",
+  "fr": "Ce style n'a pas pu être créé avec cette photo.",
+  "hi": "इस फ़ोटो से वह लुक नहीं बन सका।",
+  "it": "Non è stato possibile creare quello stile da questa foto.",
+  "ja": "この写真ではそのスタイルを作れませんでした。",
+  "pt": "Não foi possível fazer esse estilo com esta foto.",
+  "zh": "无法用这张照片做出这种效果。"
  },
  "That moment has already passed, so pick a later reminder.": {
   "de": "Dieser Zeitpunkt ist schon vorbei – wähle eine spätere Erinnerung.",
@@ -28218,6 +28298,26 @@
   "ja": "撮り直す",
   "pt": "Tentar de novo",
   "zh": "再拍一张"
+ },
+ "Try another emoji": {
+  "de": "Anderes Emoji probieren",
+  "es": "Prueba otro emoji",
+  "fr": "Essayer un autre emoji",
+  "hi": "दूसरा इमोजी आज़माएँ",
+  "it": "Prova un'altra emoji",
+  "ja": "別の絵文字にする",
+  "pt": "Experimentar outro emoji",
+  "zh": "换个表情"
+ },
+ "Try another look": {
+  "de": "Anderen Look probieren",
+  "es": "Prueba otro estilo",
+  "fr": "Essayer un autre style",
+  "hi": "दूसरा लुक आज़माएँ",
+  "it": "Prova un altro stile",
+  "ja": "別のスタイルにする",
+  "pt": "Experimentar outro estilo",
+  "zh": "换个风格"
  },
  "Try another size": {
   "de": "Andere Größe probieren",

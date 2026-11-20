@@ -109,6 +109,18 @@ final class PromiseTests: XCTestCase {
         }
     }
 
+    /// "Fun photos: try other looks on the result, copy into a chat" — same finish on every fun ready-made tool.
+    func testFunPhotoFinishOffersOtherLooks() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "run-photo-sketch", "-uitest", "-sample"]
+        app.launch()
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "fun-finish").firstMatch.waitForExistence(timeout: 60), "photo-sketch: not on the fun finish")
+        XCTAssertTrue(app.buttons.containing(NSPredicate(format: "label CONTAINS 'Copy'")).firstMatch.exists, "no Copy into a chat")
+        let comic = app.buttons.containing(NSPredicate(format: "label CONTAINS 'Comic'")).firstMatch
+        XCTAssertTrue(comic.exists, "no other looks offered"); comic.tap()
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "fun-finish").firstMatch.exists)
+    }
+
     /// "Sign a form: draw your signature" — the pad must show 'Sign in the box first' until there's ink.
     func testSignaturePadWontSaveBlank() {
         let app = open("sign-and-send")
