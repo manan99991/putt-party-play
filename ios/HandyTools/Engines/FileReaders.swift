@@ -164,7 +164,7 @@ enum FileReaders {
             for (from, to) in [("<p>", "<p>"), ("<title>", "<h2>"), ("</title>", "</h2>"), ("<subtitle>", "<h3>"), ("</subtitle>", "</h3>"), ("<emphasis>", "<em>"), ("</emphasis>", "</em>"), ("<strong>", "<b>"), ("</strong>", "</b>"), ("<empty-line/>", "<br>"), ("<poem>", "<blockquote>"), ("</poem>", "</blockquote>")] {
                 h = h.replacingOccurrences(of: from, with: to)
             }
-            for (id, src) in images { h = h.replacingOccurrences(of: #"<image l:href="#\#(id)"/>"#, with: "<img src=\"\(src)\">").replacingOccurrences(of: #"<image xlink:href="#\#(id)"/>"#, with: "<img src=\"\(src)\">") }
+            for (id, src) in images { h = h.replacingOccurrences(of: "<image l:href=\"#\(id)\"/>", with: "<img src=\"\(src)\">").replacingOccurrences(of: "<image xlink:href=\"#\(id)\"/>", with: "<img src=\"\(src)\">") }
             return h
         }
         guard let body = firstMatch(#"<body\b[^>]*>([\s\S]*?)</body>"#, in: x) else { return nil }

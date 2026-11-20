@@ -231,8 +231,8 @@ struct AudioMixView: View {
     }
 
     private func runSpeed() {
-        let items = clips.filter { !$0.unreadable }, r = rate
-        guard !items.isEmpty else { errorText = "None of these files has sound Tenzy can read."; return }, join = alsoJoin && clips.count > 1
+        let items = clips.filter { !$0.unreadable }, r = rate, join = alsoJoin && clips.count > 1
+        guard !items.isEmpty else { errorText = "None of these files has sound Tenzy can read."; return }
         working = true; errorText = nil; progress = 0
         Task {
             var out: [(name: String, url: URL, seconds: Double)] = []

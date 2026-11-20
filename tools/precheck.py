@@ -77,6 +77,17 @@ for f, s in clean.items():
         if now != before:
             bad.append(f"{os.path.relpath(f, ios)}: '{o}{c}' balance changed ({before} → {now}) — a missing or extra {o if now > before else c}")
 
+# 2b. a single-# raw string that contains "# closes early (#"href="#x"# ends at href=") — and a guard whose
+# else-block is followed by ", name = value" (only a let/var list can continue with a comma).
+for f in clean:
+    for n, ln in enumerate(open(f, encoding="utf-8").read().split("\n"), 1):
+        for m in re.finditer(r'(?<![#"])#"', ln):
+            close = ln.find('"#', m.end())
+            if close >= 0 and close + 2 < len(ln) and re.match(r'[\w\\<"/]', ln[close + 2]):
+                bad.append(f"{os.path.relpath(f, ios)}:{n}: raw string #\"…\"# has a \"# inside it, so it ends early — use ##\"…\"## or a normal string")
+        if re.match(r'\s*guard\b', ln) and re.search(r'\}\s*,\s*\w+\s*=', ln):
+            bad.append(f"{os.path.relpath(f, ios)}:{n}: ', name = …' after a guard's else block doesn't compile — move it into the let above")
+
 # 4. translations
 tr = json.load(open(os.path.join(ios, "HandyTools", "translations.json")))
 miss = set()
