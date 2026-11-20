@@ -11,7 +11,6 @@ struct UntangleView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var speech = SpeechStream()
     @StateObject private var nearby = NearbyPlaces()
-    @StateObject private var weather = WeatherNow()
 
     @State private var input = ""
     @State private var shot: PhotosPickerItem?
@@ -35,9 +34,13 @@ struct UntangleView: View {
 
     /// true when pushed inside the app's own navigation (Describe it, search); false as its own sheet.
     var embedded = false
+    /// A to-do list handed over from Think it through: planned as soon as the screen opens.
+    var seed = ""
+    /// What was typed is worries, a decision or a question, not things to do: answered by Think it through instead.
+    @State private var thinkAbout: String?
 
     private var page: some View {
-        ToolPage(title: "Untangle", subtitle: "Everything on your plate → a plan built around how you feel today.", working: reading) {
+        ToolPage(title: "Plan my day", subtitle: "Your to-do list → a timed plan built around how you feel today.", working: reading) {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 inputCard
                 if let p = plan { planView(p) }
@@ -63,6 +66,13 @@ struct UntangleView: View {
         .onChange(of: startIn) { _, _ in if plan != nil { build() } }
         .onReceive(timer) { tick = $0 }
         .onDisappear { speech.stop() }
+        .onAppear { if !seed.isEmpty, input.isEmpty { input = seed; build() } }
+        .sheet(item: Binding(get: { thinkAbout.map(ThinkSeed.init) }, set: { thinkAbout = $0?.text })) { s in
+            NavigationStack {
+                ThinkBoxView(seed: s.text)
+                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { thinkAbout = nil } } }
+            }
+        }
     }
 
     // MARK: - Input
@@ -103,7 +113,6 @@ struct UntangleView: View {
     private func planView(_ p: UntanglePlan.Plan) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             header(p)
-            WeatherWearCard(weather: weather, unwell: p.situation.unwell, goingOut: p.steps.contains { $0.kind.needsTrip })
             presets
             if let c = p.careNote {
                 Label { Text(L(c)).font(HandyFont.caption) } icon: { Image(systemName: "cross.case.fill").foregroundStyle(HandyColor.danger) }
@@ -251,7 +260,7 @@ struct UntangleView: View {
                 ShareLink(item: UntanglePlan.text(p)) { Label(L("Share as text"), systemImage: "text.alignleft").frame(maxWidth: .infinity) }.secondaryButton()
             }
             if let n = note { Text(L(n)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-            Text(L("Made on your phone. What you type or say never leaves it — only your rough location is used for maps and weather.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Made on your phone. What you type or say never leaves it — only your rough location is used for maps.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
         .sheet(isPresented: Binding(get: { cardImage != nil }, set: { if !$0 { cardImage = nil } })) {
             if let img = cardImage {
@@ -296,6 +305,12 @@ struct UntangleView: View {
     private func build() {
         errorText = nil
         guard !trimmed.isEmpty else { return }
+        // "life, overwhelming, money, debts" is not six 20-minute tasks. Anything that isn't a to-do list goes to
+        // Think it through, which answers the worry, the decision or the question itself.
+        switch ThinkBrain.kind(of: trimmed) {
+        case .worry, .decision, .question, .message: plan = nil; thinkAbout = trimmed; return
+        default: break
+        }
         let start = Date().addingTimeInterval(TimeInterval(startIn * 60))
         var p = UntanglePlan.make(from: trimmed, detail: detail, energy: energy, start: start)
         if p.steps.isEmpty {
@@ -313,7 +328,6 @@ struct UntangleView: View {
         }
         withAnimation { plan = p }
         if let q = p.steps.compactMap({ $0.kind.placeQuery }).first, nearby.places[q] == nil, !nearby.denied { nearby.find(q) }
-        weather.load(using: nearby)
         if nudges { UntangleCheckIns.schedule(p) }
         HandyHaptics.success()
     }

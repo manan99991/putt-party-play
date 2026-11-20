@@ -1683,6 +1683,45 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(PDFPages.build(src, items: [PDFPages.Item(index: 9)]), "nothing usable → nil, never an empty file")
     }
 
+    /// Think it through reads what was typed before answering. The real report: "Lfe, overwhelming, money, stock
+    /// losses, huge debts, margins interest" was turned into six 20-minute tasks with the weather on top. It is
+    /// worries about money: answered as worries, with the money untangled and small first steps — never a timetable.
+    func testThinkBoxReadsWorriesAsWorriesNotTasks() throws {
+        let said = "Lfe, overwhelming, money, stock losses, huge debts, margins interest"
+        XCTAssertEqual(ThinkBrain.kind(of: said), .worry)
+        let a = ThinkBrain.builtIn(said, region: "US")
+        XCTAssertEqual(a.kind, .worry)
+        XCTAssertNil(a.support, "no crisis words — no crisis card")
+        XCTAssertTrue(a.sections.contains { $0.title.hasPrefix("Money") }, "the money worries are pulled out")
+        let weighing = try XCTUnwrap(a.sections.first { $0.title == "What's weighing on you" })
+        XCTAssertTrue(weighing.bullets.joined().contains("huge debts") && weighing.bullets.joined().contains("stock losses"), "in the person's own words")
+        XCTAssertTrue(a.steps.contains { $0.text.lowercased().contains("debt") }, "first step: the debts on one page")
+        XCTAssertTrue(a.steps.contains { $0.text.lowercased().contains("margin") }, "margin interest → check the margin balance")
+        XCTAssertFalse(a.steps.contains { ["Lfe", "Money", "Overwhelming"].contains($0.text) }, "never the words themselves as tasks")
+        XCTAssertTrue(a.recommendation.contains("credit counsellor"))
+        XCTAssertEqual(a.caution, "General guidance, not financial advice.")
+        let everything = ThinkBoxView.plain(a).lowercased()
+        XCTAssertFalse(everything.contains("weather") || everything.contains("°"), "nothing they didn't raise")
+
+        // The other kinds are read for what they are.
+        XCTAssertEqual(ThinkBrain.kind(of: "gym, finish the deck, pick up Deeyan at 3pm, groceries, call the dentist"), .tasks)
+        XCTAssertEqual(ThinkBrain.kind(of: "Should I switch to a 4-day work week?"), .decision)
+        XCTAssertEqual(ThinkBrain.kind(of: "What is a margin loan?"), .question)
+        XCTAssertEqual(ThinkBrain.kind(of: "reword this: hey i cant make the 2pm thursday meeting move it"), .message)
+        XCTAssertEqual(ThinkBrain.kind(of: "getting ready for a first visit to a new dentist"), .prep)
+        XCTAssertEqual(ThinkBrain.kind(of: "I'm so stressed about work and can't sleep"), .worry)
+        XCTAssertEqual(ThinkBrain.kind(of: "pay bills, buy milk, call mum"), .tasks, "one money word in a real to-do list is still a to-do list")
+
+        let list = ThinkBrain.builtIn("pay bills, buy milk, call mum")
+        XCTAssertEqual(list.kind, .tasks); XCTAssertEqual(list.steps.map(\.text), ["Pay bills", "Buy milk", "Call mum"])
+
+        // Someone in crisis gets help to reach, first, and no to-do list.
+        let hurt = ThinkBrain.builtIn("everything is falling apart and I want to end my life", region: "US")
+        XCTAssertEqual(hurt.support?.call, "988")
+        XCTAssertTrue(hurt.steps.isEmpty)
+        XCTAssertEqual(ThinkBrain.builtIn("I don't want to be here anymore", region: "GB").support?.call, "116123")
+    }
+
     /// A receipt screenshotted in a dark browser: only the light receipt panel is read — not the title bar above it
     /// nor the strip of other receipts' thumbnails below. A light photo, or a page that fills the frame, is left alone.
     func testLightPanelFindsTheReceiptInADarkScreenshot() throws {

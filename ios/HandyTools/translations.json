@@ -36628,5 +36628,315 @@
   "ja": " ルクス",
   "pt": " lux",
   "zh": " 勒克斯"
+ },
+ "Add these to Reminders": {
+  "de": "Zu Erinnerungen hinzufügen",
+  "es": "Añadir a Recordatorios",
+  "fr": "Ajouter aux Rappels",
+  "hi": "इन्हें रिमाइंडर में जोड़ें",
+  "it": "Aggiungi a Promemoria",
+  "ja": "リマインダーに追加",
+  "pt": "Adicionar aos Lembretes",
+  "zh": "添加到提醒事项"
+ },
+ "Ask a follow-up…": {
+  "de": "Weitere Frage stellen…",
+  "es": "Haz otra pregunta…",
+  "fr": "Poser une autre question…",
+  "hi": "आगे कुछ पूछें…",
+  "it": "Fai un'altra domanda…",
+  "ja": "続けて質問…",
+  "pt": "Faça outra pergunta…",
+  "zh": "继续提问…"
+ },
+ "Ask next": {
+  "de": "Als Nächstes fragen",
+  "es": "Pregunta después",
+  "fr": "À demander ensuite",
+  "hi": "आगे पूछें",
+  "it": "Chiedi poi",
+  "ja": "次に聞くこと",
+  "pt": "Pergunte a seguir",
+  "zh": "接下来可以问"
+ },
+ "Listening… say it the way you'd tell a friend.": {
+  "de": "Ich höre zu… sag es so, wie du es einem Freund erzählen würdest.",
+  "es": "Escuchando… dilo como se lo contarías a un amigo.",
+  "fr": "J'écoute… dis-le comme tu le dirais à un ami.",
+  "hi": "सुन रहा है… वैसे ही कहें जैसे किसी दोस्त से कहते।",
+  "it": "Ti ascolto… dillo come lo diresti a un amico.",
+  "ja": "聞いています… 友だちに話すように言ってください。",
+  "pt": "Ouvindo… diga como contaria a um amigo.",
+  "zh": "正在听… 像跟朋友说话一样说出来。"
+ },
+ "Made on your phone. What you type or say never leaves it — only your rough location is used for maps.": {
+  "de": "Auf deinem Telefon erstellt. Was du tippst oder sagst, verlässt es nie – nur dein ungefährer Standort wird für Karten genutzt.",
+  "es": "Hecho en tu teléfono. Lo que escribes o dices nunca sale de él; solo se usa tu ubicación aproximada para los mapas.",
+  "fr": "Créé sur ton téléphone. Ce que tu tapes ou dis ne le quitte jamais — seule ta position approximative sert aux cartes.",
+  "hi": "आपके फ़ोन पर बना। आप जो लिखते या बोलते हैं, वह फ़ोन से बाहर नहीं जाता — मानचित्र के लिए सिर्फ़ आपकी अनुमानित जगह इस्तेमाल होती है।",
+  "it": "Creato sul tuo telefono. Ciò che scrivi o dici non lo lascia mai: per le mappe si usa solo la tua posizione approssimativa.",
+  "ja": "iPhone上で作成。入力や音声は端末の外に出ません。地図にはおおよその位置情報だけを使います。",
+  "pt": "Feito no seu telefone. O que você digita ou diz nunca sai dele — só sua localização aproximada é usada para mapas.",
+  "zh": "在你的手机上生成。你输入或说的内容不会离开手机——地图只使用你的大致位置。"
+ },
+ "Say it however it comes out — \"money, debts, overwhelmed\", \"should I take the new job?\", \"call mum, pay rent, book dentist\"": {
+  "de": "Sag es, wie es kommt – „Geld, Schulden, überfordert“, „Soll ich den neuen Job annehmen?“, „Mama anrufen, Miete zahlen, Zahnarzt buchen“",
+  "es": "Dilo como te salga: «dinero, deudas, agobiado», «¿acepto el nuevo trabajo?», «llamar a mamá, pagar el alquiler, pedir cita al dentista»",
+  "fr": "Dis-le comme ça vient — « argent, dettes, débordé », « dois-je accepter le nouveau poste ? », « appeler maman, payer le loyer, prendre RDV dentiste »",
+  "hi": "जैसे मन में आए वैसे लिखें — \"पैसा, कर्ज़, बहुत परेशान\", \"क्या मुझे नई नौकरी लेनी चाहिए?\", \"माँ को फ़ोन, किराया भरना, डेंटिस्ट बुक करना\"",
+  "it": "Scrivilo come viene — «soldi, debiti, sopraffatto», «accetto il nuovo lavoro?», «chiamare la mamma, pagare l'affitto, prenotare il dentista»",
+  "ja": "思いつくままに —「お金、借金、いっぱいいっぱい」「新しい仕事を受けるべき？」「母に電話、家賃を払う、歯医者を予約」",
+  "pt": "Diga do jeito que vier — \"dinheiro, dívidas, sobrecarregado\", \"devo aceitar o novo emprego?\", \"ligar pra mãe, pagar o aluguel, marcar dentista\"",
+  "zh": "想到什么就写什么——“钱、债务、压力太大”“要不要换新工作？”“给妈妈打电话、交房租、约牙医”"
+ },
+ "Talk to someone now": {
+  "de": "Sprich jetzt mit jemandem",
+  "es": "Habla con alguien ahora",
+  "fr": "Parle à quelqu'un maintenant",
+  "hi": "अभी किसी से बात करें",
+  "it": "Parla con qualcuno adesso",
+  "ja": "今すぐ誰かに話す",
+  "pt": "Fale com alguém agora",
+  "zh": "现在就找人聊聊"
+ },
+ "Think it through": {
+  "de": "Durchdenken",
+  "es": "Piénsalo bien",
+  "fr": "Y voir clair",
+  "hi": "सोच-समझ लें",
+  "it": "Pensaci su",
+  "ja": "じっくり考える",
+  "pt": "Pense com calma",
+  "zh": "理一理思路"
+ },
+ "Time these out for today": {
+  "de": "Für heute zeitlich planen",
+  "es": "Repártelas en el día de hoy",
+  "fr": "Les caler dans ma journée",
+  "hi": "आज के लिए समय तय करें",
+  "it": "Distribuiscile nella giornata",
+  "ja": "今日の予定に組み込む",
+  "pt": "Distribuir no meu dia",
+  "zh": "排进今天的时间"
+ },
+ "What I'd do": {
+  "de": "Was ich tun würde",
+  "es": "Lo que yo haría",
+  "fr": "Ce que je ferais",
+  "hi": "मैं क्या करता",
+  "it": "Cosa farei io",
+  "ja": "私ならこうする",
+  "pt": "O que eu faria",
+  "zh": "我的建议"
+ },
+ "Something weighing on you": {
+  "de": "Etwas, das dich belastet",
+  "es": "Algo que te pesa",
+  "fr": "Quelque chose qui te pèse",
+  "hi": "कुछ जो मन पर भारी है",
+  "it": "Qualcosa che ti pesa",
+  "ja": "気になっていること",
+  "pt": "Algo que está pesando",
+  "zh": "让你心烦的事"
+ },
+ "A decision": {
+  "de": "Eine Entscheidung",
+  "es": "Una decisión",
+  "fr": "Une décision",
+  "hi": "एक फ़ैसला",
+  "it": "Una decisione",
+  "ja": "決めたいこと",
+  "pt": "Uma decisão",
+  "zh": "一个决定"
+ },
+ "Things to get done": {
+  "de": "Dinge zu erledigen",
+  "es": "Cosas por hacer",
+  "fr": "Choses à faire",
+  "hi": "करने वाले काम",
+  "it": "Cose da fare",
+  "ja": "やること",
+  "pt": "Coisas a fazer",
+  "zh": "要做的事"
+ },
+ "A question": {
+  "de": "Eine Frage",
+  "es": "Una pregunta",
+  "fr": "Une question",
+  "hi": "एक सवाल",
+  "it": "Una domanda",
+  "ja": "質問",
+  "pt": "Uma pergunta",
+  "zh": "一个问题"
+ },
+ "A message to get right": {
+  "de": "Eine Nachricht, die passen soll",
+  "es": "Un mensaje que quieres bordar",
+  "fr": "Un message à bien tourner",
+  "hi": "एक संदेश जिसे सही लिखना है",
+  "it": "Un messaggio da scrivere bene",
+  "ja": "うまく伝えたいメッセージ",
+  "pt": "Uma mensagem para acertar",
+  "zh": "想写好的一条消息"
+ },
+ "Getting ready": {
+  "de": "Vorbereitung",
+  "es": "Prepararse",
+  "fr": "Se préparer",
+  "hi": "तैयारी",
+  "it": "Prepararsi",
+  "ja": "準備",
+  "pt": "Preparação",
+  "zh": "做准备"
+ },
+ "An idea to shape": {
+  "de": "Eine Idee ausarbeiten",
+  "es": "Una idea por dar forma",
+  "fr": "Une idée à façonner",
+  "hi": "एक आइडिया को आकार देना",
+  "it": "Un'idea da definire",
+  "ja": "形にしたいアイデア",
+  "pt": "Uma ideia para lapidar",
+  "zh": "想理清的点子"
+ },
+ "Answered by Apple's Private Cloud Compute — nothing is stored or seen by anyone.": {
+  "de": "Beantwortet von Apples Private Cloud Compute – nichts wird gespeichert oder von jemandem gesehen.",
+  "es": "Respondido por Private Cloud Compute de Apple: nada se guarda ni lo ve nadie.",
+  "fr": "Réponse par Private Cloud Compute d'Apple — rien n'est conservé ni vu par personne.",
+  "hi": "Apple के Private Cloud Compute से जवाब — कुछ भी सहेजा या किसी को दिखाया नहीं जाता।",
+  "it": "Risposta da Private Cloud Compute di Apple: nulla viene salvato o visto da nessuno.",
+  "ja": "AppleのPrivate Cloud Computeで回答 — 何も保存されず、誰にも見られません。",
+  "pt": "Respondido pelo Private Cloud Compute da Apple — nada é guardado nem visto por ninguém.",
+  "zh": "由 Apple 私密云计算回答——不会保存，也不会被任何人看到。"
+ },
+ "Answered on your iPhone. Nothing left your phone.": {
+  "de": "Auf deinem iPhone beantwortet. Nichts hat dein Telefon verlassen.",
+  "es": "Respondido en tu iPhone. Nada salió de tu teléfono.",
+  "fr": "Réponse sur ton iPhone. Rien n'a quitté ton téléphone.",
+  "hi": "आपके iPhone पर जवाब दिया गया। कुछ भी फ़ोन से बाहर नहीं गया।",
+  "it": "Risposta sul tuo iPhone. Nulla ha lasciato il telefono.",
+  "ja": "iPhone上で回答しました。何も端末の外に出ていません。",
+  "pt": "Respondido no seu iPhone. Nada saiu do seu telefone.",
+  "zh": "在你的 iPhone 上回答，没有任何内容离开手机。"
+ },
+ "Built-in answer. With Apple Intelligence (iPhone 15 Pro or newer) Tenzy writes a fuller one for your exact situation.": {
+  "de": "Eingebaute Antwort. Mit Apple Intelligence (iPhone 15 Pro oder neuer) schreibt Tenzy eine ausführlichere für genau deine Lage.",
+  "es": "Respuesta integrada. Con Apple Intelligence (iPhone 15 Pro o posterior), Tenzy escribe una más completa para tu situación.",
+  "fr": "Réponse intégrée. Avec Apple Intelligence (iPhone 15 Pro ou plus récent), Tenzy en écrit une plus complète pour ta situation.",
+  "hi": "बिल्ट-इन जवाब। Apple Intelligence (iPhone 15 Pro या नया) के साथ Tenzy आपकी स्थिति के लिए ज़्यादा पूरा जवाब लिखता है।",
+  "it": "Risposta integrata. Con Apple Intelligence (iPhone 15 Pro o successivi) Tenzy ne scrive una più completa per la tua situazione.",
+  "ja": "内蔵の回答です。Apple Intelligence（iPhone 15 Pro以降）なら、あなたの状況に合わせてもっと詳しく答えます。",
+  "pt": "Resposta integrada. Com o Apple Intelligence (iPhone 15 Pro ou mais novo), o Tenzy escreve uma mais completa para a sua situação.",
+  "zh": "内置回答。在支持 Apple 智能的 iPhone（iPhone 15 Pro 或更新）上，Tenzy 会针对你的情况写得更完整。"
+ },
+ "Plan my day": {
+  "de": "Meinen Tag planen",
+  "es": "Planear mi día",
+  "fr": "Planifier ma journée",
+  "hi": "मेरा दिन प्लान करें",
+  "it": "Pianifica la mia giornata",
+  "ja": "今日の計画",
+  "pt": "Planejar meu dia",
+  "zh": "规划我的一天"
+ },
+ "Your to-do list → a timed plan built around how you feel today.": {
+  "de": "Deine To-do-Liste → ein Zeitplan, der zu deinem Befinden heute passt.",
+  "es": "Tu lista de tareas → un plan con horas según cómo te sientes hoy.",
+  "fr": "Ta liste de tâches → un planning adapté à ton état du jour.",
+  "hi": "आपकी टू-डू सूची → आज आप कैसा महसूस करते हैं उसके हिसाब से समय वाली योजना।",
+  "it": "La tua lista di cose da fare → un piano con orari, su misura di come ti senti oggi.",
+  "ja": "やることリスト → 今日の体調に合わせた時間割。",
+  "pt": "Sua lista de tarefas → um plano com horários feito para como você se sente hoje.",
+  "zh": "你的待办清单 → 按你今天的状态排好的时间计划。"
+ },
+ "Whatever's on your mind — worries, a decision, a to-do list, a question. Tenzy works out what you need.": {
+  "de": "Was dich gerade beschäftigt – Sorgen, eine Entscheidung, eine To-do-Liste, eine Frage. Tenzy erkennt, was du brauchst.",
+  "es": "Lo que tengas en la cabeza: preocupaciones, una decisión, una lista de tareas, una pregunta. Tenzy sabe lo que necesitas.",
+  "fr": "Ce que tu as en tête — soucis, décision, liste de tâches, question. Tenzy comprend ce dont tu as besoin.",
+  "hi": "जो भी मन में है — चिंताएँ, कोई फ़ैसला, टू-डू सूची, कोई सवाल। Tenzy समझता है कि आपको क्या चाहिए।",
+  "it": "Qualunque cosa hai in mente: preoccupazioni, una decisione, una lista di cose da fare, una domanda. Tenzy capisce cosa ti serve.",
+  "ja": "心にあることを何でも — 悩み、決めたいこと、やること、質問。Tenzyが必要なことを見極めます。",
+  "pt": "O que estiver na sua cabeça — preocupações, uma decisão, uma lista de tarefas, uma pergunta. O Tenzy entende do que você precisa.",
+  "zh": "心里想的任何事——烦恼、要做的决定、待办清单、问题。Tenzy 会弄清你需要什么。"
+ },
+ "Your list": {
+  "de": "Deine Liste",
+  "es": "Tu lista",
+  "fr": "Ta liste",
+  "hi": "आपकी सूची",
+  "it": "La tua lista",
+  "ja": "あなたのリスト",
+  "pt": "Sua lista",
+  "zh": "你的清单"
+ },
+ "Small first steps": {
+  "de": "Kleine erste Schritte",
+  "es": "Primeros pasos pequeños",
+  "fr": "Petits premiers pas",
+  "hi": "छोटे पहले कदम",
+  "it": "Piccoli primi passi",
+  "ja": "小さな最初の一歩",
+  "pt": "Primeiros passos pequenos",
+  "zh": "先迈出的小步"
+ },
+ "New": {
+  "de": "Neu",
+  "es": "Nuevo",
+  "fr": "Nouveau",
+  "hi": "नया",
+  "it": "Nuovo",
+  "ja": "新規",
+  "pt": "Novo",
+  "zh": "新的"
+ },
+ "General guidance, not financial advice.": {
+  "de": "Allgemeine Orientierung, keine Finanzberatung.",
+  "es": "Orientación general, no asesoramiento financiero.",
+  "fr": "Conseils généraux, pas un conseil financier.",
+  "hi": "सामान्य मार्गदर्शन, वित्तीय सलाह नहीं।",
+  "it": "Indicazioni generali, non consulenza finanziaria.",
+  "ja": "一般的な目安であり、金融アドバイスではありません。",
+  "pt": "Orientação geral, não aconselhamento financeiro.",
+  "zh": "一般性建议，不构成理财建议。"
+ },
+ "Worries, decisions, lists, questions": {
+  "de": "Sorgen, Entscheidungen, Listen, Fragen",
+  "es": "Preocupaciones, decisiones, listas, preguntas",
+  "fr": "Soucis, décisions, listes, questions",
+  "hi": "चिंताएँ, फ़ैसले, सूचियाँ, सवाल",
+  "it": "Preoccupazioni, decisioni, liste, domande",
+  "ja": "悩み・決断・リスト・質問",
+  "pt": "Preocupações, decisões, listas, perguntas",
+  "zh": "烦恼、决定、清单、问题"
+ },
+ "Your to-dos, timed around how you feel": {
+  "de": "Deine Aufgaben, getaktet nach deinem Befinden",
+  "es": "Tus tareas, con horas según cómo te sientes",
+  "fr": "Tes tâches, calées selon ton état",
+  "hi": "आपके काम, आपके मूड के हिसाब से समय पर",
+  "it": "Le tue cose da fare, con orari secondo come ti senti",
+  "ja": "やることを体調に合わせて時間割に",
+  "pt": "Suas tarefas, com horários conforme você se sente",
+  "zh": "按你的状态给待办排时间"
+ },
+ "Thinking it through…": {
+  "de": "Denke nach…",
+  "es": "Pensándolo…",
+  "fr": "Je réfléchis…",
+  "hi": "सोच रहा है…",
+  "it": "Ci sto pensando…",
+  "ja": "考えています…",
+  "pt": "Pensando…",
+  "zh": "正在思考…"
+ },
+ "Tenzy wasn't allowed to read what you copied. Tap Paste again and choose Allow Paste — or turn on Settings › Apps › Tenzy › Paste from Other Apps › Allow.": {
+  "de": "Tenzy durfte das Kopierte nicht lesen. Tippe erneut auf Einsetzen und wähle „Einsetzen erlauben“ – oder aktiviere es unter Einstellungen › Apps › Tenzy › Aus anderen Apps einsetzen › Erlauben.",
+  "es": "Tenzy no tuvo permiso para leer lo que copiaste. Toca Pegar otra vez y elige Permitir pegar, o actívalo en Ajustes › Apps › Tenzy › Pegar de otras apps › Permitir.",
+  "fr": "Tenzy n'a pas été autorisé à lire ce que tu as copié. Touche Coller à nouveau et choisis Autoriser le collage — ou active Réglages › Apps › Tenzy › Coller depuis d'autres apps › Autoriser.",
+  "hi": "Tenzy को आपकी कॉपी की गई चीज़ पढ़ने की अनुमति नहीं मिली। फिर से Paste दबाएँ और Allow Paste चुनें — या Settings › Apps › Tenzy › Paste from Other Apps › Allow चालू करें।",
+  "it": "Tenzy non ha avuto il permesso di leggere ciò che hai copiato. Tocca di nuovo Incolla e scegli Consenti incolla, oppure attiva Impostazioni › App › Tenzy › Incolla da altre app › Consenti.",
+  "ja": "Tenzyはコピーした内容を読む許可がありませんでした。もう一度「ペースト」をタップして「ペーストを許可」を選ぶか、設定 › アプリ › Tenzy › ほかのAppからペースト › 許可 をオンにしてください。",
+  "pt": "O Tenzy não teve permissão para ler o que você copiou. Toque em Colar de novo e escolha Permitir Colar — ou ative em Ajustes › Apps › Tenzy › Colar de Outros Apps › Permitir.",
+  "zh": "Tenzy 没有获准读取你复制的内容。再点一次“粘贴”并选择“允许粘贴”，或在 设置 › App › Tenzy › 从其他 App 粘贴 › 允许 中开启。"
  }
 }
