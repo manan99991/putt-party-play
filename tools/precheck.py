@@ -88,6 +88,11 @@ for f in clean:
         if re.match(r'\s*guard\b', ln) and re.search(r'\}\s*,\s*\w+\s*=', ln):
             bad.append(f"{os.path.relpath(f, ios)}:{n}: ', name = …' after a guard's else block doesn't compile — move it into the let above")
 
+# 2c. `Type.member` where the member exists but on another type (ChainMedia.x when x is Transcriber's) — changed lines only.
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import members_check
+bad += members_check.check(root, ios)
+
 # 4. translations
 tr = json.load(open(os.path.join(ios, "HandyTools", "translations.json")))
 miss = set()

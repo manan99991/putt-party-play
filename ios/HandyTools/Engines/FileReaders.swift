@@ -81,7 +81,7 @@ enum FileReaders {
         if ext == "xps" || ext == "oxps", let t = xpsText(url) { return .text(t, title: "Text of this XPS document") }
         // Voice notes and Ogg audio (WhatsApp, Telegram, podcasts): decoded so they play like any recording.
         if AudioIntake.isOggOpus(url) {
-            if let m4a = ChainMedia.oggOpusToM4A(url) { return .quickLook(m4a) }
+            if let m4a = Transcriber.oggOpusToM4A(url) { return .quickLook(m4a) }
             return info(url, kind: "Ogg audio", "This Ogg file uses Vorbis, which Tenzy can't play yet — Opus voice notes play fine.")
         }
         if quickLookExts.contains(ext) { return .quickLook(url) }

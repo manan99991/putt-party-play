@@ -171,7 +171,7 @@ struct AudioConvertView: View {
             let dest = local.appendingPathComponent(url.lastPathComponent)
             if (try? FileManager.default.copyItem(at: url, to: dest)) != nil {
                 // Voice notes (Ogg-Opus) are decoded first, the same as every other audio tool does.
-                if AudioIntake.isOggOpus(dest), let m4a = ChainMedia.oggOpusToM4A(dest) {
+                if AudioIntake.isOggOpus(dest), let m4a = Transcriber.oggOpusToM4A(dest) {
                     let named = local.appendingPathComponent(AudioIntake.cleanName(url.deletingPathExtension().lastPathComponent) + ".m4a")
                     out.append((try? FileManager.default.moveItem(at: m4a, to: named)) != nil ? named : m4a)
                 } else { out.append(dest) }

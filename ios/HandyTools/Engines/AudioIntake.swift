@@ -12,14 +12,14 @@ enum AudioIntake {
         let local = FileManager.default.temporaryDirectory.appendingPathComponent("ain-\(UUID().uuidString.prefix(8)).\(ext)")
         guard (try? FileManager.default.copyItem(at: url, to: local)) != nil else { return nil }
         let name = cleanName(url.deletingPathExtension().lastPathComponent)
-        if isOggOpus(local), let m4a = ChainMedia.oggOpusToM4A(local) { return (m4a, name) }
+        if isOggOpus(local), let m4a = Transcriber.oggOpusToM4A(local) { return (m4a, name) }
         return (local, name)
     }
 
     /// Ogg by its ending, or by the "OggS" bytes every Ogg file starts with (voice notes are often saved without
     /// an ending, or as .m4a/.mp3 by mistake).
     static func isOggOpus(_ u: URL) -> Bool {
-        if ChainMedia.oggOpusExts.contains(u.pathExtension.lowercased()) { return true }
+        if Transcriber.oggOpusExts.contains(u.pathExtension.lowercased()) { return true }
         guard let h = try? FileHandle(forReadingFrom: u) else { return false }
         defer { try? h.close() }
         return (try? h.read(upToCount: 4)) == Data("OggS".utf8)
