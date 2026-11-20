@@ -85,7 +85,7 @@ enum Guide {
         case .video:
             switch block {
             case .videoShrink, .videoMute, .videoRotate, .videoVertical: return "share"
-            case .videoTrim, .videoGif, .videoSpeed, .videoLoop, .videoStill: return "clip"
+            case .videoTrim, .videoGif, .videoSpeed, .videoLoop, .videoStill, .videoCelebrate: return "clip"
             case .videoAudio, .voiceChange: return "sound"
             case .videoCaptions, .speechText, .summarize, .translate: return "words"
             default: return "more"

@@ -1435,7 +1435,7 @@ private struct ChainEditor: View {
         case .translate: return ["to": "en"]; case .rewrite: return ["style": "clear"]
         case .pdfShrink: return ["mb": "5"]; case .pdfLock: return ["password": ""]; case .pdfPages: return ["pages": ""]
         case .emojiFaces: return ["emoji": ChainText.faceEmojis[0]]; case .meme: return ["top": "", "bottom": ""]
-        case .videoSpeed: return ["speed": "slow"]; case .videoLoop: return ["style": "boomerang"]
+        case .videoSpeed: return ["speed": "slow"]; case .videoLoop: return ["style": "boomerang"]; case .videoCelebrate: return ["theme": "", "text": ""]
         case .artFilter: return ["style": "sketch"]; case .voiceChange: return ["voice": "chipmunk"]
         default: return [:] }
     }
@@ -1568,6 +1568,15 @@ private struct ChainEditor: View {
                     HChip(text: "\(ChainText.voiceLooks[v.id]?.emoji ?? "") \(L(v.name))", selected: current == v.id) { chain.steps[i].settings["voice"] = v.id }
                 }
             }
+        case .videoCelebrate:
+            Picker(L("Celebration"), selection: Binding(get: { chain.steps[i].settings["theme"] ?? "" }, set: { chain.steps[i].settings["theme"] = $0 })) {
+                Text(L("The next one coming up")).tag("")
+                ForEach(Celebrate.ordered()) { t in Text("\(t.emoji) \(L(t.name))").tag(t.id) }
+            }.pickerStyle(.menu).font(HandyFont.caption)
+            TextField(L("Words on the video (empty = the greeting)"), text: Binding(get: { chain.steps[i].settings["text"] ?? "" }, set: { chain.steps[i].settings["text"] = $0 }))
+                .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+                .accessibilityIdentifier("celebrate-block-words")
+            Text(L("For dragging the words, more fonts and any typed celebration, open the Celebrate tool.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .videoLoop:
             Picker(L("Plays"), selection: Binding(get: { chain.steps[i].settings["style"] == "reverse" ? "reverse" : "boomerang" }, set: { chain.steps[i].settings["style"] = $0 })) {
                 Text(L("Forwards and back")).tag("boomerang"); Text(L("Backwards")).tag("reverse")

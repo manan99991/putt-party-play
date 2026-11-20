@@ -95,6 +95,11 @@ enum ChainPlanner {
         // Just for fun. These requests name exactly what they want, so they are read before anything else.
         let film = has(["video", " clip", "movie", "footage", "live photo"])
         if has(["boomerang"]) { return build(ask, [ChainStep(block: .videoLoop, settings: ["style": "boomerang"])]) }
+        // "Christmas video", "add fireworks to my clip", "Diwali greeting video": decorate it for that celebration.
+        if film, has(["celebrat", "festival", "decorat", "greeting", "fireworks", "confetti", "snow", "festive", "holiday"]) || (film && Celebrate.match(ask) != nil) {
+            let t = Celebrate.match(ask)
+            return build(ask, [ChainStep(block: .videoCelebrate, settings: ["theme": t?.id ?? "", "text": ""])])
+        }
         if has(["reverse", "backwards", "backward"]), film || has([" gif"]) { return build(ask, [ChainStep(block: .videoLoop, settings: ["style": "reverse"])]) }
         if has(["slow mo", "slow-mo", "slowmo", "slow motion", "slow it down", "slow down", "half speed"]) { return build(ask, [ChainStep(block: .videoSpeed, settings: ["speed": "slow"])]) }
         if has(["speed up", "speed it up", "sped up", "timelapse", "time lapse", "time-lapse", "fast forward", "double speed", " 2x", " 4x"]) || (film && has(["faster"])) {

@@ -3779,6 +3779,16 @@
   "pt": "Celebrar",
   "zh": "庆祝"
  },
+ "Celebration": {
+  "de": "Fest",
+  "es": "Celebración",
+  "fr": "Fête",
+  "hi": "उत्सव",
+  "it": "Festa",
+  "ja": "お祝い",
+  "pt": "Celebração",
+  "zh": "节日"
+ },
  "Centre the ring on the thing. The name and hex code update live; freeze to hold it.": {
   "de": "Zentriere den Ring auf dem Objekt. Name und Hex-Code aktualisieren live; einfrieren, um sie zu halten.",
   "es": "Centra el anillo sobre el objeto. El nombre y el código hex se actualizan en vivo; congela para fijarlo.",
@@ -6648,6 +6658,16 @@
   "ja": "死者の日",
   "pt": "Dia dos Mortos",
   "zh": "亡灵节"
+ },
+ "Decorate a video for a celebration": {
+  "de": "Ein Video für ein Fest schmücken",
+  "es": "Decorar un vídeo para una celebración",
+  "fr": "Décorer une vidéo pour une fête",
+  "hi": "उत्सव के लिए वीडियो सजाएँ",
+  "it": "Decora un video per una festa",
+  "ja": "動画をお祝い用に飾る",
+  "pt": "Decorar um vídeo para uma celebração",
+  "zh": "为节日装饰视频"
  },
  "Decorate a video for any festival": {
   "de": "Ein Video für jedes Fest schmücken",
@@ -9868,6 +9888,16 @@
   "ja": "口座開設専用",
   "pt": "Somente para abertura de conta",
   "zh": "仅用于开户"
+ },
+ "For dragging the words, more fonts and any typed celebration, open the Celebrate tool.": {
+  "de": "Zum Verschieben der Worte, für mehr Schriften und eigene Feste öffne das Feiern-Werkzeug.",
+  "es": "Para mover las palabras, más letras y celebraciones escritas, abre la herramienta Celebrar.",
+  "fr": "Pour déplacer les mots, plus de polices et toute fête tapée, ouvrez l'outil Célébrer.",
+  "hi": "शब्द खिसकाने, ज़्यादा फ़ॉन्ट और कोई भी लिखा उत्सव के लिए उत्सव टूल खोलें।",
+  "it": "Per spostare le parole, più font e feste scritte, apri lo strumento Festeggia.",
+  "ja": "言葉の移動、フォントの追加、入力したお祝いには「お祝い」ツールを開いてください。",
+  "pt": "Para arrastar as palavras, mais fontes e qualquer celebração digitada, abra a ferramenta Celebrar.",
+  "zh": "要拖动文字、更多字体或输入任意节日，请打开“庆祝”工具。"
  },
  "For employment check only": {
   "de": "Nur zur Beschäftigungsprüfung",
@@ -25779,6 +25809,16 @@
   "pt": "Neve, fogos, diyas, lanternas — qualquer festa — com suas palavras",
   "zh": "雪花、烟花、油灯、灯笼——任何节日——配上你的话"
  },
+ "Snow, fireworks, diyas, lanterns — any of 50 celebrations, or one you type — with the greeting placed clear of faces.": {
+  "de": "Schnee, Feuerwerk, Diyas, Laternen – eins von 50 Festen oder eins, das du eintippst – mit dem Gruß abseits der Gesichter.",
+  "es": "Nieve, fuegos, diyas, farolillos —cualquiera de 50 celebraciones o la que escribas— con el saludo lejos de las caras.",
+  "fr": "Neige, feux d'artifice, diyas, lanternes — 50 fêtes ou celle que vous tapez — avec le message loin des visages.",
+  "hi": "बर्फ़, आतिशबाज़ी, दीये, लालटेन — 50 में से कोई भी उत्सव या जो आप लिखें — शुभकामना चेहरों से दूर।",
+  "it": "Neve, fuochi, diya, lanterne — una delle 50 feste o quella che scrivi — con l'augurio lontano dai volti.",
+  "ja": "雪、花火、ディヤ、ランタン — 50のお祝いから、または入力したもの — あいさつは顔から離して。",
+  "pt": "Neve, fogos, diyas, lanternas — qualquer uma de 50 celebrações ou a que digitar — com a saudação longe dos rostos.",
+  "zh": "雪花、烟花、油灯、灯笼——50 个节日任选或自己输入——祝福语不挡脸。"
+ },
  "So this reminder can't reach you. Tap below, turn on Allow Notifications, then come back — it switches on by itself.": {
   "de": "Diese Erinnerung kann dich also nicht erreichen. Tippe unten, aktiviere „Mitteilungen erlauben“ und komm zurück – sie schaltet sich dann selbst ein.",
   "es": "Así este recordatorio no te llega. Toca abajo, activa Permitir notificaciones y vuelve: se activará solo.",
@@ -28968,6 +29008,26 @@
   "ja": "新しいコピー。長押しで元の写真",
   "pt": "A nova cópia. Segure para ver a original.",
   "zh": "新副本。按住查看原图"
+ },
+ "The next festival coming up (or any you pick) — snow, fireworks, diyas, lanterns — with its greeting placed clear of faces.": {
+  "de": "Das nächste Fest (oder eins deiner Wahl) – Schnee, Feuerwerk, Diyas, Laternen – mit dem Gruß dort, wo er keine Gesichter verdeckt.",
+  "es": "La próxima fiesta (o la que elijas) —nieve, fuegos, diyas, farolillos— con el saludo donde no tape caras.",
+  "fr": "La prochaine fête (ou celle que vous choisissez) — neige, feux d'artifice, diyas, lanternes — avec le message loin des visages.",
+  "hi": "आने वाला अगला त्योहार (या जो आप चुनें) — बर्फ़, आतिशबाज़ी, दीये, लालटेन — शुभकामना चेहरों से दूर रखी जाती है।",
+  "it": "La prossima festa (o quella che scegli) — neve, fuochi, diya, lanterne — con l'augurio lontano dai volti.",
+  "ja": "次のお祝い（または選んだもの）— 雪、花火、ディヤ、ランタン — あいさつは顔にかからない位置に。",
+  "pt": "A próxima festa (ou a que escolher) — neve, fogos, diyas, lanternas — com a saudação longe dos rostos.",
+  "zh": "即将到来的节日（或你选的）——雪花、烟花、油灯、灯笼——祝福语放在不挡脸的位置。"
+ },
+ "The next one coming up": {
+  "de": "Das nächste anstehende",
+  "es": "La próxima que llega",
+  "fr": "La prochaine à venir",
+  "hi": "अगला आने वाला",
+  "it": "La prossima in arrivo",
+  "ja": "次に来るもの",
+  "pt": "A próxima que vem",
+  "zh": "下一个即将到来的"
  },
  "The number": {
   "de": "Die Zahl",
@@ -33119,6 +33179,16 @@
   "pt": "Palavras ao lado (opcional), ex.: Preço, Oferta",
   "zh": "旁边的词（可选），例如：价格、特价"
  },
+ "Words on the video (empty = the greeting)": {
+  "de": "Worte im Video (leer = der Gruß)",
+  "es": "Palabras en el vídeo (vacío = el saludo)",
+  "fr": "Mots sur la vidéo (vide = le message)",
+  "hi": "वीडियो पर शब्द (खाली = शुभकामना)",
+  "it": "Parole sul video (vuoto = l'augurio)",
+  "ja": "動画の言葉（空欄＝あいさつ）",
+  "pt": "Palavras no vídeo (vazio = a saudação)",
+  "zh": "视频上的文字（留空＝祝福语）"
+ },
  "Words to write across it": {
   "de": "Wörter, die darübergeschrieben werden",
   "es": "Palabras para escribir encima",
@@ -34528,6 +34598,16 @@
   "ja": "日連続",
   "pt": "dias seguidos",
   "zh": "天连续"
+ },
+ "decorates it for a celebration, with your words": {
+  "de": "schmückt es für ein Fest, mit deinen Worten",
+  "es": "lo decora para una celebración, con tus palabras",
+  "fr": "le décore pour une fête, avec vos mots",
+  "hi": "इसे उत्सव के लिए सजाता है, आपके शब्दों के साथ",
+  "it": "lo decora per una festa, con le tue parole",
+  "ja": "お祝い用に飾り、言葉を添えます",
+  "pt": "decora para uma celebração, com suas palavras",
+  "zh": "为节日装饰它，并配上你的话"
  },
  "dish": {
   "de": "Gericht",

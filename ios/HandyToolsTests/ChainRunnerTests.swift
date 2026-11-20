@@ -870,7 +870,7 @@ final class ReturnByTests: XCTestCase {
 
 final class VideoTests: XCTestCase {
     func testVideoStepsOnlyFitAVideoAndSayWhatTheyGive() {
-        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop]
+        let v: [Block] = [.videoShrink, .videoStill, .videoMute, .videoAudio, .videoTrim, .videoGif, .videoRotate, .videoVertical, .videoCaptions, .videoSpeed, .videoLoop, .videoCelebrate]
         XCTAssertTrue(v.allSatisfy { $0.takes == .video })
         XCTAssertEqual(Block.starting(with: .video), v)
         XCTAssertFalse(Block.starting(with: .image).contains(.videoShrink)); XCTAssertFalse(Block.starting(with: .text).contains(.videoStill))

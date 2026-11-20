@@ -109,6 +109,17 @@ enum ChainMedia {
             guard let out = await respeed(url, rate: ChainText.speedRate(step.settings["speed"])) else { return .failure(.failed(b)) }
             return .success(.video(out))
 
+        case (.videoCelebrate, .video(let url)):
+            // The same decorations and words as the Celebrate tool; an empty choice means the next festival coming up.
+            let picked = step.settings["theme"] ?? ""
+            let theme = picked.isEmpty ? (Celebrate.comingUp().first ?? Celebrate.themes[0]) : (Celebrate.theme(picked) ?? Celebrate.resolve(picked))
+            let words = (step.settings["text"] ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            var cap = Celebrate.Caption(text: words.isEmpty ? L(theme.greeting) : words)
+            let gen = AVAssetImageGenerator(asset: AVURLAsset(url: url)); gen.appliesPreferredTrackTransform = true; gen.maximumSize = CGSize(width: 640, height: 640)
+            cap.center = Celebrate.clearSpot(in: try? await gen.image(at: CMTime(seconds: 1, preferredTimescale: 600)).image)
+            guard let out = await Celebrate.export(url, theme: theme, amount: 1, caption: step.settings["words"] == "0" ? nil : cap) else { return .failure(.failed(b)) }
+            return .success(.video(out))
+
         case (.videoLoop, .video(let url)):
             // The first two and a half seconds, played forwards then backwards (or just backwards), for ever.
             let length = await VideoEngine.duration(url)
