@@ -134,6 +134,7 @@ jobs:
         timeout-minutes: 30
         continue-on-error: true
         run: |
+          t() { local n=$1; shift; perl -e 'alarm shift; exec @ARGV' "$n" "$@" || echo "::warning::timed out or failed after ${n}s: $*"; }
           set -x
           APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/HandyTools.app" -maxdepth 6 | head -1)
           echo "APP=$APP"
@@ -144,15 +145,15 @@ jobs:
           c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
           print(c[0]["udid"]); print(c[0]["name"], file=sys.stderr)')
           xcrun simctl boot "$UDID" || true
-          xcrun simctl bootstatus "$UDID" -b
-          xcrun simctl install "$UDID" "$APP"
+          t 300 xcrun simctl bootstatus "$UDID" -b
+          t 120 xcrun simctl install "$UDID" "$APP"
           # Explicitly grant every permission a tool might ask for, so no system permission alert
           # pops during capture and lingers over later screenshots (grant all alone left mic undetermined).
           for p in all camera microphone photos location speech-recognition; do
             xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true
           done
           # Pre-answer the App Tracking Transparency prompt so it doesn't cover every screenshot
-          xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
+          t 60 xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
           xcrun simctl spawn "$UDID" defaults write com.apple.AppTrackingTransparency.plist 2>/dev/null || true
           xcrun simctl terminate "$UDID" com.tenzy.toolkit || true
           mkdir -p shots
@@ -161,22 +162,22 @@ jobs:
             xcrun simctl ui "$UDID" appearance $mode
             for r in onboarding onboarding2 onboarding3 setup settings privacy home paywall homepro fitit scan studio video formatfix scrub cleaner qrwifi stitch shareready light contacts measure magnify procam gpsdash audiolab rest colorvision sorted textstudio translate voicenotes livecaptions shield lens memory datagrab describe vault; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
-              xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
+              t 60 xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -route $r
               sleep 9
-              xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
+              t 30 xcrun simctl io "$UDID" screenshot shots/ios-$mode-$r.png
             done
           done
           # Store hero captures: demo data on (-demo), iPhone then iPad 13", one appearance (the app's own theme).
           HERO="explore home describebuilt templates mytools medreminder brief pricewatch contacts sorted warranty cleaner fitit procam soundboard sticker scan light measure untangle thinking gpsdash pdfpages translate shield rest meetingnotes studio privacy paywall"
           xcrun simctl ui "$UDID" appearance dark
           xcrun simctl uninstall "$UDID" com.tenzy.toolkit || true
-          xcrun simctl install "$UDID" "$APP"
+          t 120 xcrun simctl install "$UDID" "$APP"
           for p in all camera microphone photos location speech-recognition contacts; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           for r in $HERO; do
             xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
-            xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -demo -route $r
+            t 60 xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -sample -demo -route $r
             sleep 9
-            xcrun simctl io "$UDID" screenshot shots/hero-iphone-$r.png
+            t 30 xcrun simctl io "$UDID" screenshot shots/hero-iphone-$r.png
           done
           IPAD=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys
@@ -184,16 +185,16 @@ jobs:
           c=[x for k,v in d.items() if "iOS" in k for x in v if "iPad Pro" in x["name"] and "13" in x["name"]] or [x for k,v in d.items() if "iOS" in k for x in v if "iPad" in x["name"]]
           c.sort(key=lambda x:x["name"]); print(c[-1]["udid"] if c else "")')
           if [ -n "$IPAD" ]; then
-            xcrun simctl boot "$IPAD" || true; xcrun simctl bootstatus "$IPAD" -b
-            xcrun simctl install "$IPAD" "$APP"
+            xcrun simctl boot "$IPAD" || true; t 300 xcrun simctl bootstatus "$IPAD" -b
+            t 120 xcrun simctl install "$IPAD" "$APP"
             xcrun simctl status_bar "$IPAD" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 || true
             xcrun simctl ui "$IPAD" appearance dark
             for p in all camera microphone photos location speech-recognition contacts; do xcrun simctl privacy "$IPAD" grant $p com.tenzy.toolkit 2>/dev/null || true; done
             for r in $HERO; do
               xcrun simctl terminate "$IPAD" com.tenzy.toolkit 2>/dev/null || true
-              xcrun simctl launch "$IPAD" com.tenzy.toolkit -screenshots -sample -demo -route $r
+              t 60 xcrun simctl launch "$IPAD" com.tenzy.toolkit -screenshots -sample -demo -route $r
               sleep 9
-              xcrun simctl io "$IPAD" screenshot shots/hero-ipad-$r.png
+              t 30 xcrun simctl io "$IPAD" screenshot shots/hero-ipad-$r.png
             done
           fi
           ls -la shots
