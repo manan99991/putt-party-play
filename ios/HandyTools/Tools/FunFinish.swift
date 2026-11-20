@@ -114,3 +114,25 @@ struct FunFinishCard: View {
         }
     }
 }
+
+/// Where a finished photo usually goes: straight into Photos, or pasted into a chat. Under every photo result.
+struct PhotoLandingRow: View {
+    let data: Data
+    let image: UIImage
+    @State private var note: String?
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: HandySpacing.s8) {
+                Button {
+                    Task { let ok = await PhotoSaver.save(data); note = L(ok ? "Saved to Photos." : "Couldn't save — allow Tenzy to add photos in Settings.") }
+                } label: { Label(L("Save to Photos"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }.secondaryButton()
+                Button {
+                    UIPasteboard.general.image = image
+                    CopyToast.shared.flash(L("Copied — paste it into any chat"))
+                } label: { Label(L("Copy"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }.secondaryButton()
+            }
+            if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+        }
+        .accessibilityIdentifier("photo-landing")
+    }
+}

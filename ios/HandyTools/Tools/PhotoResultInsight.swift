@@ -15,6 +15,7 @@ struct PhotoResultInsight: View {
     let stripped: Bool             // the flow removes hidden details
     var hideFaces: (() -> Void)?   // runs "hide faces and numbers" on the result
     var fitIt: (() -> Void)?       // opens Fit It with the result
+    var limitBytes: Int? = nil     // the size it had to get under (upload limit), checked on the file
 
     @State private var before = Scrubber.Metadata()
     @State private var after = Scrubber.Metadata()
@@ -54,6 +55,11 @@ struct PhotoResultInsight: View {
             }
             Text(samePx ? "\(L("Full size kept")) · \(px(afterImage))" : "\(px(beforeImage)) → \(px(afterImage))")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            if let limitBytes {
+                let ok = b <= limitBytes
+                Label("\(L(ok ? "Under" : "Still over")) \(SizeTarget.format(limitBytes))", systemImage: ok ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                    .font(HandyFont.caption).foregroundStyle(ok ? Color.green : Color.orange)
+            }
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .combine)

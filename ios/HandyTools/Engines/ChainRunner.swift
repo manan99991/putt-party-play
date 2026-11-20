@@ -811,6 +811,9 @@ enum ResultScreens {
         if blocks == [.readText, .actionItems], chain.finish == nil { return "Board review" }
         if blocks.contains(.watermark), [.watermark, .stripLocation, .shrinkImage].contains(last) { return "ID copy" }
         if chain.gif == true { return "GIF finish" }
+        if chain.collage == true || chain.versus == true { return "Picture finish" }
+        if chain.flipbook == true { return "Video finish" }
+        if [.shrinkImage, .stripLocation, .hideSensitive, .resizePhoto, .enhance, .convertImage].contains(last) { return "Photo finish" }
         switch last {
         case .cutout: return "Cut-out finishing"
         case .identify: return "What is this / written things"
@@ -839,7 +842,6 @@ enum ResultScreens {
     /// Ready-made tools that still end on the plain result, each with the tracker group rebuilding it. This list may
     /// only shrink: the test fails if a tool here now has a finished screen (take it off) or a new tool lands plain.
     static let knownGaps: [String: String] = [
-        "hide-sensitive": "pb-photo",
         "short-summary": "pb-text",
         "table-to-sheet": "pb-receipts",
         "tidy-text": "pb-text",
@@ -847,23 +849,15 @@ enum ResultScreens {
         "shelf-best-deal": "pb-receipts",
         "video-still": "pb-video",
         "return-by": "pb-receipts",
-        "share-shield": "pb-photo",
-        "portal-photo": "pb-photo",
         "memo-to-notes": "pb-text",
         "sign-to-english": "pb-text",
         "page-summary": "pb-text",
         "video-words": "pb-text",
-        "photo-collage": "pb-photo",
         "where-i-am": "pb-text",
-        "photos-flipbook": "pb-photo",
-        "before-after": "pb-photo",
-        "photo-sell": "pb-photo",
         "lecture-summary": "pb-text",
         "pdf-summary": "pb-text",
         "pdf-english": "pb-text",
         "rewrite-clear": "pb-text",
-        "photo-under-2mb": "pb-photo",
-        "safe-to-share": "pb-photo",
     ]
 }
 

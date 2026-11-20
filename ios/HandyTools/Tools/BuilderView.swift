@@ -1857,7 +1857,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 } else if let result {
                     if let orig = originalPhoto, case .file(let d, let e) = result, ChainPayload.isPhoto(e) {
                         PhotoResultInsight(original: orig, result: d, stripped: chain.steps.contains { $0.block == .stripLocation },
-                                           hideFaces: chain.steps.contains { $0.block == .hideSensitive } ? nil : { hideInResult(d, e) })
+                                           hideFaces: chain.steps.contains { $0.block == .hideSensitive } ? nil : { hideInResult(d, e) },
+                                           limitBytes: chain.steps.last(where: { $0.block == .shrinkImage })?.settings["mb"].flatMap { Double($0) }.map { Int(max(0.01, $0) * 1_000_000) })
                     }
                     output(result)
                 }
@@ -2411,6 +2412,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // Same finish for every fun photo: other looks on the same photo, Copy into a chat, Photos, Share, the full tool.
             FunFinishCard(block: chain.steps.last!.block, original: inputPhoto, result: i,
                           look: chain.steps.last?.settings["style"] ?? chain.steps.last?.settings["emoji"] ?? "")
+        case .image(let i) where chain.collage == true || chain.versus == true:
+            // A collage or a before/after: the picture, Copy into a chat, Photos, Share.
+            FunFinishCard(block: .stripLocation, original: nil, result: i, look: "")
         case .image(let i) where [.makeQr, .wifiQr, .contactQr].contains(chain.steps.last?.block):
             // Same finish as QR & Wi‑Fi: tested by reading it back, what it does when scanned, Photos / Share / print card.
             CodeFinishCard(image: i)
@@ -2484,6 +2488,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             if let u = tempURL(d, ext) {
                 Text("\(SizeTarget.format(d.count)) · \(ext.uppercased())").font(HandyFont.caption)
                 ShareLink(item: u) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                if ChainPayload.isPhoto(ext), let img = UIImage(data: d) { PhotoLandingRow(data: d, image: img) }
             }
             }
         case .video(let u):
@@ -2512,7 +2517,11 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
 
     private func go(_ input: ChainPayload) {
         busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
-        if case .file(let d, let e) = input, ChainPayload.isPhoto(e) { originalPhoto = d } else { originalPhoto = nil }
+        // The photo as it came in, for the before/after on the finish. A picture handed over in memory (shared, pasted)
+        // is kept as a JPEG of the same pixels.
+        if case .file(let d, let e) = input, ChainPayload.isPhoto(e) { originalPhoto = d }
+        else if case .image(let img) = input { originalPhoto = img.jpegData(compressionQuality: 0.95) }
+        else { originalPhoto = nil }
         passportSource = chain.steps.last?.block == .passportPhoto ? ToolHandoff.image(input) : nil
         inputPhoto = ToolHandoff.image(input)
         if case .video(let u) = input { inputVideo = u } else { inputVideo = nil }
