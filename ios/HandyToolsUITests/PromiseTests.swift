@@ -121,6 +121,15 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "fun-finish").firstMatch.exists)
     }
 
+    /// "Text results read well and say how much shorter" — same finish for summaries, translations, tidied text.
+    func testTextToolsFinishOnTheTextScreen() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "run-short-summary", "-uitest", "-sample"]
+        app.launch()
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "text-finish").firstMatch.waitForExistence(timeout: 60), "short-summary: not on the text finish")
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "text-shorter").firstMatch.exists, "no 'how much shorter' line")
+    }
+
     /// "Sign a form: draw your signature" — the pad must show 'Sign in the box first' until there's ink.
     func testSignaturePadWontSaveBlank() {
         let app = open("sign-and-send")

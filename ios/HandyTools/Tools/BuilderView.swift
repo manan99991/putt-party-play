@@ -1974,6 +1974,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 "scam-check": "URGENT: Your account will be suspended within 24 hours. Verify at http://paypal.secure-login.top/verify and pay the fee in Apple gift cards.",
                 "text-to-qr": "https://www.apple.com/",
                 "whatsapp-no-save": "+1 312 555 0142",
+                "short-summary": "The city council met on Tuesday to discuss the new bike lanes on Main Street. After two hours of debate, members voted six to three to build the lanes next spring. Shop owners worried about losing parking spaces, so the council agreed to add a new car park behind the library. Work starts in April and should finish by the end of June. Residents can see the plans at the library and send comments until the end of the month. The mayor said the lanes will make the street safer for children walking to school.",
             ]
             if Launch.uitest, Launch.sample, initial == nil, !started, let t = sampleText[chain.id] {
                 started = true
@@ -2381,6 +2382,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 ReceiptResult(receipt: r, photo: initial.flatMap(ToolHandoff.image))
             } else if chain.steps.last?.block == .actionItems {
                 RemindersResult(planText: t)
+            } else if let b = chain.steps.last?.block, [.summarize, .translate, .rewrite, .cleanText, .speechText].contains(b) {
+                // Same finish for every text result: read it, how much shorter / the original, Copy, Share, hear it, Maps.
+                TextFinishCard(text: t, source: { if case .text(let s)? = lastStepInput { return s }; return nil }(), block: b)
             } else if chain.steps.last?.block == .chatLink, t.hasPrefix("http") {
                 ChatLinkFinishCard(link: t.trimmingCharacters(in: .whitespacesAndNewlines))
             } else if chain.steps.last?.block == .scamCheck, let checked = scamChecked {

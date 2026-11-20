@@ -19469,6 +19469,16 @@
   "pt": "Ler no Assistente de cardápio",
   "zh": "在菜单助手中阅读"
  },
+ "Read it to me": {
+  "de": "Vorlesen",
+  "es": "Léemelo",
+  "fr": "Lis-le-moi",
+  "hi": "मुझे पढ़कर सुनाएँ",
+  "it": "Leggimelo",
+  "ja": "読み上げる",
+  "pt": "Ler para mim",
+  "zh": "读给我听"
+ },
  "Read my mood": {
   "de": "Stimmung erkennen",
   "es": "Leer mi ánimo",
@@ -20628,6 +20638,16 @@
   "ja": "日々を振り返る",
   "pt": "Rever meus dias",
   "zh": "回顾我的日子"
+ },
+ "Rewritten": {
+  "de": "Umgeschrieben",
+  "es": "Reescrito",
+  "fr": "Réécrit",
+  "hi": "फिर से लिखा",
+  "it": "Riscritto",
+  "ja": "書き直し",
+  "pt": "Reescrito",
+  "zh": "改写后"
  },
  "Right": {
   "de": "Rechts",
@@ -26799,6 +26819,16 @@
   "pt": "O órgão que recebe a foto tem a palavra final.",
   "zh": "最终以受理照片的机构为准。"
  },
+ "The original": {
+  "de": "Das Original",
+  "es": "El original",
+  "fr": "L'original",
+  "hi": "मूल",
+  "it": "L'originale",
+  "ja": "元の文章",
+  "pt": "O original",
+  "zh": "原文"
+ },
  "The original stops above your shoulders": {
   "de": "Das Original endet über den Schultern",
   "es": "El original se corta por encima de los hombros",
@@ -27509,6 +27539,16 @@
   "pt": "Três respirações lentas",
   "zh": "三次慢呼吸"
  },
+ "Tidied": {
+  "de": "Aufgeräumt",
+  "es": "Ordenado",
+  "fr": "Nettoyé",
+  "hi": "साफ़ किया गया",
+  "it": "Riordinato",
+  "ja": "整えた文章",
+  "pt": "Arrumado",
+  "zh": "已整理"
+ },
  "Tidy contacts and birthdays": {
   "de": "Kontakte und Geburtstage im Griff",
   "es": "Contactos y cumpleaños en orden",
@@ -28208,6 +28248,16 @@
   "ja": "文字・看板・会話を翻訳",
   "pt": "Traduza textos, placas e falas",
   "zh": "翻译文字、标牌和语音"
+ },
+ "Translation": {
+  "de": "Übersetzung",
+  "es": "Traducción",
+  "fr": "Traduction",
+  "hi": "अनुवाद",
+  "it": "Traduzione",
+  "ja": "翻訳",
+  "pt": "Tradução",
+  "zh": "翻译"
  },
  "Trim & Fade": {
   "de": "Kürzen & Ausblenden",
@@ -30059,6 +30109,16 @@
   "pt": "O que vestir",
   "zh": "穿什么"
  },
+ "What was said": {
+  "de": "Was gesagt wurde",
+  "es": "Lo que se dijo",
+  "fr": "Ce qui a été dit",
+  "hi": "क्या कहा गया",
+  "it": "Cosa è stato detto",
+  "ja": "話された内容",
+  "pt": "O que foi dito",
+  "zh": "说了什么"
+ },
  "What you can still return": {
   "de": "Was du noch zurückgeben kannst",
   "es": "Lo que aún puedes devolver",
@@ -30318,6 +30378,16 @@
   "ja": "どこに投稿しますか？",
   "pt": "Onde vai postar?",
   "zh": "你要发到哪里？"
+ },
+ "Where you are": {
+  "de": "Wo du bist",
+  "es": "Dónde estás",
+  "fr": "Où vous êtes",
+  "hi": "आप कहाँ हैं",
+  "it": "Dove sei",
+  "ja": "現在地",
+  "pt": "Onde está",
+  "zh": "你的位置"
  },
  "Which one is the better deal?": {
   "de": "Was ist das bessere Angebot?",
@@ -33099,6 +33169,16 @@
   "pt": "linhas curtas preenchidas com vazios",
   "zh": "短行以空白补齐"
  },
+ "shorter": {
+  "de": "kürzer",
+  "es": "más corto",
+  "fr": "plus court",
+  "hi": "छोटा",
+  "it": "più breve",
+  "ja": "短く",
+  "pt": "mais curto",
+  "zh": "更短"
+ },
  "shots": {
   "de": "Fotos",
   "es": "fotos",
@@ -33688,6 +33768,16 @@
   "ja": "語をどのPDFアプリでも検索できます",
   "pt": "palavras pesquisáveis em qualquer app de PDF",
   "zh": "个词可在任何 PDF 应用中搜索"
+ },
+ "words to": {
+  "de": "Wörter auf",
+  "es": "palabras a",
+  "fr": "mots à",
+  "hi": "शब्दों से",
+  "it": "parole a",
+  "ja": "語から",
+  "pt": "palavras para",
+  "zh": "词缩到"
  },
  "— a little extra for the server.": {
   "de": "– ein kleines Extra fürs Personal.",

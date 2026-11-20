@@ -829,6 +829,7 @@ enum ResultScreens {
         case .scamCheck: return "Scam verdict"
         case .voiceChange: return "Voice finish"
         case .readAloud: return "Listen finish"
+        case .summarize, .translate, .rewrite, .cleanText, .speechText: return "Text finish"
         case .sticker, .emojiFaces, .meme, .artFilter, .emojiMosaic: return "Fun finish"
         case .makeQr, .wifiQr, .contactQr: return "Code finish"
         case .chatLink: return "Chat link"
@@ -842,22 +843,11 @@ enum ResultScreens {
     /// Ready-made tools that still end on the plain result, each with the tracker group rebuilding it. This list may
     /// only shrink: the test fails if a tool here now has a finished screen (take it off) or a new tool lands plain.
     static let knownGaps: [String: String] = [
-        "short-summary": "pb-text",
         "table-to-sheet": "pb-receipts",
-        "tidy-text": "pb-text",
         "clean-link": "pb-safety",
         "shelf-best-deal": "pb-receipts",
         "video-still": "pb-video",
         "return-by": "pb-receipts",
-        "memo-to-notes": "pb-text",
-        "sign-to-english": "pb-text",
-        "page-summary": "pb-text",
-        "video-words": "pb-text",
-        "where-i-am": "pb-text",
-        "lecture-summary": "pb-text",
-        "pdf-summary": "pb-text",
-        "pdf-english": "pb-text",
-        "rewrite-clear": "pb-text",
     ]
 }
 
