@@ -114,11 +114,11 @@ enum VideoEngine {
 
     /// Universal video → H.264/AAC MP4 transcode via AVAssetReader/Writer. Decodes to BGRA pixel
     /// buffers (so any playable source works, HDR included — flattened to SDR) and re-encodes H.264.
-    /// ALWAYS returns: a hard timeout cancels the reader/writer and the continuation resumes on every
-    /// path, so it can never hang the UI. `maxDimension` caps the longest side; `videoBps` sets the
+    /// No time limit (any length, any size); progress is reported and the continuation resumes on every
+    /// path. It stops only when its task is cancelled (the person taps Stop). `maxDimension` caps the longest side; `videoBps` sets the
     /// video bitrate (both derive sane defaults from the source when nil). `progress` is 0...1.
     static func transcodeH264(_ asset: AVAsset, maxDimension: CGFloat? = nil, videoBps: Int? = nil,
-                              timeout: TimeInterval = 180, progress: ((Double) -> Void)? = nil) async -> URL? {
+                              progress: ((Double) -> Void)? = nil) async -> URL? {
         guard let vTrack = try? await asset.loadTracks(withMediaType: .video).first else { return nil }
         let aTrack = try? await asset.loadTracks(withMediaType: .audio).first
         let natural = (try? await vTrack.load(.naturalSize)) ?? CGSize(width: 1280, height: 720)
@@ -214,9 +214,12 @@ enum VideoEngine {
                 }
                 return writer.status == .completed
             }
+            // No time limit — a long or 4K video simply takes its time, with progress showing. It stops only
+            // when the person taps Stop (the task is cancelled).
             group.addTask {
-                try? await Task.sleep(nanoseconds: UInt64(timeout * 1_000_000_000))
-                reader.cancelReading(); writer.cancelWriting()
+                while !Task.isCancelled { try? await Task.sleep(nanoseconds: 300_000_000) }
+                // Only a job still running is stopped; a finished file is never touched.
+                if writer.status == .writing { reader.cancelReading(); writer.cancelWriting() }
                 return false
             }
             let first = await group.next() ?? false
@@ -283,19 +286,17 @@ enum VideoEngine {
     /// (a flat 3 minutes failed long or 4K videos that were simply still working). A wedged export is
     /// cancelled so the tool says so instead of freezing.
     static func run(_ session: AVAssetExportSession, seconds: Double) async -> Bool {
-        let ceiling = max(180, seconds.isFinite ? seconds * 3 : 180)
         await MainActor.run { RunProgress.shared.begin() }
         let completed = await withTaskGroup(of: Bool?.self) { group -> Bool in
             group.addTask { await session.export(); return session.status == .completed }
             group.addTask {
-                let start = Date()
+                // No time limit: it runs as long as the video needs, showing progress, and stops only on Stop.
                 while !Task.isCancelled {
-                    let p = Double(session.progress)
-                    await MainActor.run { RunProgress.shared.set(min(0.99, p)) }
-                    if Date().timeIntervalSince(start) > ceiling { session.cancelExport(); return false }
+                    await MainActor.run { RunProgress.shared.set(min(0.99, Double(session.progress))) }
                     try? await Task.sleep(nanoseconds: 300_000_000)
                 }
-                return nil
+                if session.status == .exporting || session.status == .waiting { session.cancelExport() }
+                return false
             }
             var result = false
             for await r in group { if let r { result = r; group.cancelAll(); break } }
@@ -362,8 +363,7 @@ func tenzyWriteGIF(frames: [CGImage], delay: Double) -> URL? {
 struct MovieImport: Transferable {
     let url: URL
 
-    /// Loads a picked video with its real download/copy progress (0…1), giving up after a stall rather than
-    /// hanging: the limit restarts whenever progress moves, so a big video that keeps arriving is never cut off.
+    /// Loads a picked video with its real download/copy progress (0…1). Any size; stops only when cancelled.
     @MainActor static func load(_ item: PhotosPickerItem, progress: @escaping (Double) -> Void) async -> MovieImport? {
         await withCheckedContinuation { (cont: CheckedContinuation<MovieImport?, Never>) in
             var done = false
@@ -371,11 +371,12 @@ struct MovieImport: Transferable {
                 Task { @MainActor in if !done { done = true; cont.resume(returning: try? r.get()) } }
             }
             Task { @MainActor in
-                var last = -1.0, quiet = 0.0
+                // No time limit: a big iCloud video keeps arriving with the percentage showing. Stop cancels it.
+                var last = -1.0
                 while !done {
+                    if Task.isCancelled { done = true; p.cancel(); cont.resume(returning: nil); return }
                     let f = p.fractionCompleted
-                    if f != last { last = f; quiet = 0; progress(f) } else { quiet += 0.3 }
-                    if quiet > 120 { done = true; p.cancel(); cont.resume(returning: nil); return }   // two minutes with nothing arriving
+                    if f != last { last = f; progress(f) }
                     try? await Task.sleep(nanoseconds: 300_000_000)
                 }
             }

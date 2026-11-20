@@ -15,6 +15,7 @@ enum VideoEngine {
     static func bestFrame(_ url: URL, maxDim: CGFloat = 1920) async -> UIImage? { nil }
     static func mute(_ src: URL) async -> URL? { nil }
     static func extractAudio(_ src: URL) async -> URL? { nil }
+    static func run(_ session: AVAssetExportSession, seconds: Double) async -> Bool { false }
 }
 
 extension UIImage {

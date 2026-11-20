@@ -57,6 +57,24 @@ for f in sorted(members):
     for t in sorted(used & app_types - member_defs):
         bad.append(f"share extension: {os.path.relpath(f, ios)} uses {t}, defined only in {', '.join(os.path.relpath(x, ios) for x in defs[t])} — add that file to ShareExtension sources in project.yml or a stand-in in EngineShims.swift")
 
+import sys as _s0; _s0.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# 1b. stand-ins must have every member the extension's files call: `VideoEngine.run` used by SizeTarget (compiled
+# into the share extension) must exist on the VideoEngine stand-in, not only on the app's VideoEngine.
+shims = os.path.join(ios, "ShareExtension", "EngineShims.swift")
+if os.path.exists(shims):
+    import members_check as _mc
+    shim_src = _mc.strip(open(shims, encoding="utf-8").read())
+    shim_owned = _mc.enclosing_types(shim_src)
+    shim_types = set(re.findall(r'\b(?:enum|struct|class|actor)\s+(\w+)', shim_src))
+    for f in sorted(members):
+        if f == shims: continue
+        s2 = clean.get(f, "")
+        own_types = set(re.findall(r'\b(?:enum|struct|class|actor|extension)\s+(\w+)', s2))
+        for m in re.finditer(r'(?<![\w.])([A-Z]\w+)\.([a-z_]\w*)\s*\(', s2):
+            t, mem = m.group(1), m.group(2)
+            if t in shim_types and t not in own_types and t not in member_defs - shim_types and not (mem in shim_owned and t in shim_owned[mem]):
+                bad.append(f"share extension: {os.path.relpath(f, ios)} calls {t}.{mem}, but the {t} stand-in in EngineShims.swift has no {mem}")
+
 # 2. patterns that never compile
 pats = [
     (r'(&&|\|\||\?\?)\s*(try\s+)?await\b', "`await` on the right of &&, || or ?? — move it into a `let` first"),

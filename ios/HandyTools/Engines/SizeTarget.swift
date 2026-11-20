@@ -163,6 +163,9 @@ enum SizeTarget {
            let n = try? await v.load(.naturalSize) {
             longest = max(n.width, n.height, 2)
         }
+        // Fast path: the phone's own export at a standard size, when Apple's estimate says it fits. It uses the
+        // hardware encoder and handles HDR properly, so most videos are done in a fraction of their length.
+        if let fast = await presetFit(asset, longest: longest, targetBytes: targetBytes, seconds: duration) { return (fast, true) }
         let audioBps = 96_000
         var videoBps = max(120_000, Int(Double(targetBytes) * 8.0 / duration) - audioBps)
         // Each retry both lowers the bitrate AND shrinks the frame relative to the source, so the
@@ -180,8 +183,6 @@ enum SizeTarget {
         let carry = (Double(videoBps) / (30 * 0.07) * 16 / 9).squareRoot()
         let start = min(1, max(0.13, CGFloat(carry) / longest))
         let shrink: [CGFloat] = [1.0, 0.7, 0.5, 0.35, 0.25, 0.18, 0.13].map { $0 * start }.filter { longest * $0 >= 160 }
-        // Each pass may take as long as the clip needs (a 7-minute 4K video can't re-encode in 3 minutes).
-        let passTimeout = max(180, duration * 3)
         var pass = 0
         var best: URL?; var bestSize = Int.max
         for s in shrink {
@@ -189,7 +190,7 @@ enum SizeTarget {
             let k = pass; pass += 1
             // One bar across passes: the first pass is most of the work; a later pass moves the rest of the way.
             let report: ((Double) -> Void)? = progress.map { p in { f in p(k == 0 ? f * 0.85 : 0.85 + 0.15 * (Double(k - 1) + f) / Double(max(1, shrink.count - 1))) } }
-            if let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, timeout: passTimeout, progress: report) {
+            if let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, progress: report) {
                 let sz = fileSize(out) ?? Int.max
                 if sz <= targetBytes { if let b = best { try? FileManager.default.removeItem(at: b) }; return (out, true) }
                 // Keep the smallest attempt as the fallback; a tighter frame next pass may still fit.
@@ -204,6 +205,23 @@ enum SizeTarget {
 
     /// Strict: the result only if it lands at or under the target, else nil. Used by Share-Ready and
     /// the size-target test, which need a hard "it fits" guarantee.
+    /// The largest standard size whose estimated file fits the target, exported and checked. nil when none fits.
+    private static func presetFit(_ asset: AVAsset, longest: CGFloat, targetBytes: Int, seconds: Double) async -> URL? {
+        let presets: [(String, CGFloat)] = [(AVAssetExportPreset1920x1080, 1920), (AVAssetExportPreset1280x720, 1280),
+                                             (AVAssetExportPreset960x540, 960), (AVAssetExportPreset640x480, 640)]
+        for (name, side) in presets where side <= max(640, longest) {
+            guard let s = AVAssetExportSession(asset: asset, presetName: name), s.supportedFileTypes.contains(.mp4) else { continue }
+            s.outputFileType = .mp4
+            guard let est = try? await s.estimateOutputFileLength(), est > 0, est <= Int64(Double(targetBytes) * 0.9) else { continue }
+            let out = VideoEngine.tempURL("mp4")
+            s.outputURL = out; s.metadata = []; s.shouldOptimizeForNetworkUse = true
+            guard await VideoEngine.run(s, seconds: seconds) else { return nil }   // stopped
+            if let sz = fileSize(out), sz <= targetBytes { return out }
+            try? FileManager.default.removeItem(at: out)   // the estimate was off — try the next size down
+        }
+        return nil
+    }
+
     static func video(url: URL, targetBytes: Int, progress: ((Double) -> Void)? = nil) async -> URL? {
         guard let r = await videoBestEffort(url: url, targetBytes: targetBytes, progress: progress) else { return nil }
         if r.fits { return r.url }

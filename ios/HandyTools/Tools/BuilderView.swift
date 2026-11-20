@@ -1634,6 +1634,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var inputVideo: URL?
     @State private var scamChecked: String?
     @State private var lastStepInput: ChainPayload?
+    /// The job running now, so Stop can end it (no time limits — a long video takes its time, and you decide).
+    @State private var runTask: Task<Void, Never>?
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
     @State private var progress = ""
@@ -1834,7 +1836,14 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     }
                     Button(L("Run")) { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
-                if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? chain.steps.first.map { "\($0.block.title)…" } ?? "" : progress) }
+                if busy {
+                    ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? chain.steps.first.map { "\($0.block.title)…" } ?? "" : progress)
+                    Button(role: .cancel) {
+                        runTask?.cancel(); runTask = nil
+                        busy = false; progress = ""; progressValue = 0; RunProgress.shared.end()
+                        message = "Stopped. Nothing was changed — pick it again whenever you like."
+                    } label: { Label(L("Stop"), systemImage: "stop.circle") }.textButton().accessibilityIdentifier("run-stop")
+                }
                 if let report { stepLog(report) }
                 if let message, boardSource == nil { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let watchLine {
@@ -2017,7 +2026,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             guard let item else { return }
             videoPick = nil
             busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the video ready…"; progressValue = 0
-            Task {
+            runTask = Task {
                 // Shows how much of the video has come in (an iCloud video downloads first) instead of a bare wait.
                 let movie = await MovieImport.load(item) { f in Task { @MainActor in progressValue = f; progress = f > 0 ? "Getting the video ready — \(Int(f * 100))%" : "Getting the video ready…" } }
                 await MainActor.run {
@@ -2030,7 +2039,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             guard let item else { return }
             livePick = nil
             busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the Live Photo ready…"; progressValue = 0
-            Task {
+            runTask = Task {
                 let movie = await loadWithinTimeout(180) { await LivePhotoVideo.movie(from: item) }
                 await MainActor.run {
                     if let movie { go(.video(movie)) } else { busy = false; progress = ""; message = "That Live Photo didn't load. If it's a large iCloud item, open it once in Photos to download it, then try again — or choose a video." }
@@ -2159,7 +2168,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let tool = runChain
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-batch-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        Task {
+        runTask = Task {
             var out: [BatchItem] = []
             var kept: [ChainPayload] = []      // only held when everything is going into one PDF
             for i in 0..<count {
@@ -2548,11 +2557,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let tool = runChain
         let multiStep = tool.steps.count > 1
         let name = chain.name
-        Task {
+        runTask = Task {
             // Completion keeps the job alive if the user switches away and notifies them when it's done.
             let rep = await Completion.run(name, ok: { $0.completed || $0.result != nil }, body: { ChainRunView.notificationLine($0) }, open: "results") {
                 await ChainRunner.runReport(tool, input: input)
             }
+            if Task.isCancelled { return }   // stopped: leave the screen as Stop left it
             await MainActor.run {
                 busy = false
                 // Show the step-by-step story for a multi-step flow, so the person sees exactly what ran,
