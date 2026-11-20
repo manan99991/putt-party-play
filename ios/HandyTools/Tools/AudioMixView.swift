@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 /// or slower without the chipmunk effect. Live progress, then play the result before Save or Share.
 struct AudioMixView: View {
     enum Mode: Hashable { case join, speed }
-    struct Clip: Identifiable, Equatable { let id = UUID(); let url: URL; let name: String; var seconds: Double = 0 }
+    struct Clip: Identifiable, Equatable { let id = UUID(); let url: URL; let name: String; var seconds: Double = 0; var unreadable = false }
 
     @State private var mode: Mode = .join
     @State private var clips: [Clip] = []
@@ -68,7 +68,11 @@ struct AudioMixView: View {
                     Text("\(i + 1)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(width: 18)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(c.name).font(HandyFont.bodyStrong).lineLimit(1)
-                        Text(AudioCompressView.duration(c.seconds)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        if c.unreadable {
+                            Text(L("No sound Tenzy can read in this file — remove it")).font(HandyFont.micro).foregroundStyle(HandyColor.danger)
+                        } else {
+                            Text(AudioCompressView.duration(c.seconds)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        }
                     }
                     Spacer()
                     iconButton("arrow.up", L("Move up"), disabled: i == 0) { clips.swapAt(i, i - 1) }
@@ -195,32 +199,34 @@ struct AudioMixView: View {
         errorText = nil
         var added: [Clip] = []
         for url in urls {
-            let access = url.startAccessingSecurityScopedResource()
-            defer { if access { url.stopAccessingSecurityScopedResource() } }
-            let local = FileManager.default.temporaryDirectory
-                .appendingPathComponent("amix-\(UUID().uuidString.prefix(6)).\(url.pathExtension.isEmpty ? "audio" : url.pathExtension)")
-            guard (try? FileManager.default.copyItem(at: url, to: local)) != nil else { continue }
-            added.append(Clip(url: local, name: url.deletingPathExtension().lastPathComponent))
+            guard let took = AudioIntake.local(url) else { continue }
+            added.append(Clip(url: took.url, name: took.name))
         }
         if added.count < urls.count { errorText = "Some files couldn't be opened." }
         clips += added
         for c in added {
             Task {
-                let d = (try? await AVURLAsset(url: c.url).load(.duration))?.seconds ?? 0
+                let asset = AVURLAsset(url: c.url)
+                let d = (try? await asset.load(.duration))?.seconds ?? 0
+                let hasSound = !((try? await asset.loadTracks(withMediaType: .audio)) ?? []).isEmpty
                 await MainActor.run {
-                    if let i = clips.firstIndex(where: { $0.id == c.id }) { clips[i].seconds = d.isFinite ? d : 0 }
+                    if let i = clips.firstIndex(where: { $0.id == c.id }) { clips[i].seconds = d.isFinite ? d : 0; clips[i].unreadable = !hasSound }
                 }
             }
         }
     }
 
     private func runJoin() {
+        if let bad = clips.first(where: \.unreadable) {
+            errorText = "“\(bad.name)” has no sound Tenzy can read — remove it to join the others."; return
+        }
         let urls = clips.map(\.url), g = gap
         start { p in await AudioMix.merge(urls, gap: g, progress: p) }
     }
 
     private func runSpeed() {
-        let items = clips, r = rate, join = alsoJoin && clips.count > 1
+        let items = clips.filter { !$0.unreadable }, r = rate
+        guard !items.isEmpty else { errorText = "None of these files has sound Tenzy can read."; return }, join = alsoJoin && clips.count > 1
         working = true; errorText = nil; progress = 0
         Task {
             var out: [(name: String, url: URL, seconds: Double)] = []

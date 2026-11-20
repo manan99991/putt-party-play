@@ -77,3 +77,20 @@ final class PageFlattenTests: XCTestCase {
         }
     }
 }
+
+/// The shared way in for audio: names people can read, voice notes recognised even without a file ending.
+final class AudioIntakeTests: XCTestCase {
+    func testDoubleEncodedNamesAreMadeReadable() {
+        XCTAssertEqual(AudioIntake.cleanName("DON%25E2%2580%2599T"), "DON’T")
+        XCTAssertEqual(AudioIntake.cleanName("Kya%2520Meri%2520Life"), "Kya Meri Life")
+        XCTAssertEqual(AudioIntake.cleanName("Voice_memo_12"), "Voice memo 12")
+    }
+    func testAVoiceNoteIsSpottedByItsBytesNotItsName() throws {
+        let u = FileManager.default.temporaryDirectory.appendingPathComponent("note-\(UUID().uuidString).m4a")
+        try (Data("OggS".utf8) + Data(repeating: 0, count: 60)).write(to: u)
+        XCTAssertTrue(AudioIntake.isOggOpus(u))
+        let v = FileManager.default.temporaryDirectory.appendingPathComponent("song-\(UUID().uuidString).m4a")
+        try Data(repeating: 1, count: 60).write(to: v)
+        XCTAssertFalse(AudioIntake.isOggOpus(v))
+    }
+}

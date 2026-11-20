@@ -15209,6 +15209,16 @@
   "pt": "Sem frutos do mar",
   "zh": "不吃贝类"
  },
+ "No sound Tenzy can read in this file — remove it": {
+  "de": "Kein lesbarer Ton in dieser Datei – entferne sie",
+  "es": "Este archivo no tiene sonido que Tenzy pueda leer: quítalo",
+  "fr": "Aucun son lisible par Tenzy dans ce fichier — retirez-le",
+  "hi": "इस फ़ाइल में Tenzy के पढ़ने लायक आवाज़ नहीं — इसे हटाएं",
+  "it": "Nessun audio leggibile da Tenzy in questo file — rimuovilo",
+  "ja": "このファイルには読み取れる音声がありません。削除してください",
+  "pt": "Este arquivo não tem som que o Tenzy consiga ler — remova-o",
+  "zh": "此文件中没有 Tenzy 可读取的声音——请移除"
+ },
  "No table found — each line becomes a row; columns split on tabs, commas or wide gaps.": {
   "de": "Keine Tabelle gefunden – jede Zeile wird eine Reihe; Spalten trennen sich an Tabs, Kommas oder großen Lücken.",
   "es": "No se encontró tabla: cada línea es una fila; las columnas se separan por tabulaciones, comas o huecos amplios.",

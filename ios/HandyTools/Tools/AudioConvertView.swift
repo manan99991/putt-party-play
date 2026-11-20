@@ -169,7 +169,13 @@ struct AudioConvertView: View {
             let local = FileManager.default.temporaryDirectory.appendingPathComponent("batch-\(UUID().uuidString.prefix(6))", isDirectory: true)
             try? FileManager.default.createDirectory(at: local, withIntermediateDirectories: true)
             let dest = local.appendingPathComponent(url.lastPathComponent)
-            if (try? FileManager.default.copyItem(at: url, to: dest)) != nil { out.append(dest) }
+            if (try? FileManager.default.copyItem(at: url, to: dest)) != nil {
+                // Voice notes (Ogg-Opus) are decoded first, the same as every other audio tool does.
+                if AudioIntake.isOggOpus(dest), let m4a = ChainMedia.oggOpusToM4A(dest) {
+                    let named = local.appendingPathComponent(AudioIntake.cleanName(url.deletingPathExtension().lastPathComponent) + ".m4a")
+                    out.append((try? FileManager.default.moveItem(at: m4a, to: named)) != nil ? named : m4a)
+                } else { out.append(dest) }
+            }
         }
         batch = out; batchDone = []; batchFailed = 0; sourceURL = nil; clearResult()
         if out.contains(where: { $0.pathExtension.lowercased() == "mp3" }) { format = .m4a }
@@ -239,15 +245,14 @@ struct AudioConvertView: View {
         let access = url.startAccessingSecurityScopedResource()
         defer { if access { url.stopAccessingSecurityScopedResource() } }
         // Copy into our own temp dir so the file stays readable after the security-scoped access ends.
-        let local = FileManager.default.temporaryDirectory
-            .appendingPathComponent("acin-\(UUID().uuidString.prefix(6)).\(url.pathExtension.isEmpty ? "audio" : url.pathExtension)")
-        try? FileManager.default.removeItem(at: local)
-        guard (try? FileManager.default.copyItem(at: url, to: local)) != nil else {
+        // The shared way in: kept readable, voice notes decoded, the name made readable.
+        guard let took = AudioIntake.local(url) else {
             errorText = "Couldn't open that audio file."; return
         }
+        let local = took.url
         sourceURL = local
         batch = []
-        fileName = url.deletingPathExtension().lastPathComponent
+        fileName = took.name
         sourceBytes = ((try? FileManager.default.attributesOfItem(atPath: local.path)[.size]) as? NSNumber)?.intValue ?? 0
         seconds = 0
         Task { if let d = try? await AVURLAsset(url: local).load(.duration) { seconds = d.seconds.isFinite ? d.seconds : 0 } }

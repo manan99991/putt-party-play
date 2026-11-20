@@ -199,14 +199,13 @@ struct AudioCleanView: View {
     private func load(_ url: URL) {
         let access = url.startAccessingSecurityScopedResource()
         defer { if access { url.stopAccessingSecurityScopedResource() } }
-        let local = FileManager.default.temporaryDirectory
-            .appendingPathComponent("acln-\(UUID().uuidString.prefix(6)).\(url.pathExtension.isEmpty ? "audio" : url.pathExtension)")
-        try? FileManager.default.removeItem(at: local)
-        guard (try? FileManager.default.copyItem(at: url, to: local)) != nil else {
+        // The shared way in: kept readable, voice notes decoded, the name made readable.
+        guard let took = AudioIntake.local(url) else {
             errorText = "Couldn't open that file."; return
         }
+        let local = took.url
         sourceURL = local
-        fileName = url.deletingPathExtension().lastPathComponent
+        fileName = took.name
         total = 0
         clearResult()
         Task {
