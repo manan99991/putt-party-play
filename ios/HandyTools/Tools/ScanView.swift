@@ -636,47 +636,217 @@ private struct InkCanvas: UIViewRepresentable {
     }
 }
 
-/// Draw once, keep forever: a white pad that saves a trimmed transparent signature.
+/// Draw once, keep forever: a white pad that saves a trimmed transparent signature — the same pad on every door
+/// (Sign PDF, Scan, the ready-made signing tools, Build your own). Drawn with our own finger tracking, not
+/// PencilKit: PencilKit swapped black ink for white in dark mode and fought the sheet for the finger, which is how
+/// signatures came out blank. Here the ink is exactly the colour picked, in every theme. Five pen colours, three
+/// thicknesses, or type your name and pick a handwriting.
 struct SignaturePadSheet: View {
     let saved: (UIImage) -> Void
     @Environment(\.dismiss) private var dismiss
-    @State private var pad = PKCanvasView()
-    @State private var inked = false
-    @State private var tooSmall = false
+    @State private var strokes: [[CGPoint]] = []
+    @State private var current: [CGPoint] = []
+    @State private var ink: SignatureInk = SignatureInk.remembered
+    @State private var width: CGFloat = 3.2
+    @State private var typing = false
+    @State private var typed = ""
+    @State private var hand: Int = 0
+    @State private var problem: String?
+
+    private var inked: Bool { typing ? !typed.trimmingCharacters(in: .whitespaces).isEmpty : !strokes.isEmpty }
+
     var body: some View {
         NavigationStack {
-            VStack(spacing: HandySpacing.s16) {
-                Text(L("Sign in the box with your finger. It's saved on this phone only.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                ZStack {
-                    RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).fill(Color.white)
-                    Rectangle().fill(HandyColor.border).frame(height: 1).padding(.horizontal, 24).offset(y: 50)
-                    InkCanvas(canvas: pad) { d in inked = !d.strokes.isEmpty; tooSmall = false }
+            ScrollView {
+                VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                    Picker("", selection: $typing) {
+                        Text(L("Draw")).tag(false)
+                        Text(L("Type my name")).tag(true)
+                    }.pickerStyle(.segmented)
+                    Text(L(typing ? "Type your name and pick a handwriting." : "Sign in the box with your finger. It's saved on this phone only."))
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    pad
+                    // Pen colours — the ink on the pad changes straight away so you can see it before saving.
+                    HStack(spacing: 12) {
+                        ForEach(SignatureInk.all) { c in
+                            Button { ink = c; SignatureInk.remembered = c } label: {
+                                ZStack {
+                                    Circle().fill(Color(c.ui)).frame(width: 32, height: 32)
+                                    if ink == c { Image(systemName: "checkmark").font(.caption.bold()).foregroundStyle(.white) }
+                                }
+                                .overlay(Circle().stroke(ink == c ? HandyColor.accent : HandyColor.border, lineWidth: ink == c ? 3 : 1).padding(-3))
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(L(c.name)).accessibilityIdentifier("ink-\(c.id)")
+                        }
+                        Spacer()
+                        if !typing {
+                            Menu {
+                                Button(L("Fine")) { width = 2.2 }
+                                Button(L("Medium")) { width = 3.2 }
+                                Button(L("Bold")) { width = 4.8 }
+                            } label: { Image(systemName: "lineweight").font(.title3) }
+                            .accessibilityLabel(L("Pen thickness"))
+                        }
+                    }
+                    HStack {
+                        Button { strokes = []; current = []; typed = ""; problem = nil } label: { Label(L("Clear"), systemImage: "eraser") }
+                            .textButton().accessibilityIdentifier("signature-clear")
+                        if !typing && !strokes.isEmpty {
+                            Button { _ = strokes.popLast() } label: { Label(L("Undo"), systemImage: "arrow.uturn.backward") }.textButton()
+                        }
+                        Spacer()
+                        if inked {
+                            Label(L("Looks good"), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success)
+                                .accessibilityIdentifier("signature-looks-good")
+                        }
+                    }
+                    if let problem { Text(L(problem)).font(HandyFont.caption).foregroundStyle(HandyColor.amber) }
+                    Button { save() } label: { Text(L(inked ? "Save signature" : "Sign in the box first")).frame(maxWidth: .infinity) }
+                        .primaryButton().disabled(!inked).padding(.top, HandySpacing.s4)
                 }
-                .frame(height: 220)
-                .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
-                HStack {
-                    Button { pad.drawing = PKDrawing(); inked = false } label: { Label(L("Clear"), systemImage: "eraser") }.textButton()
-                    Spacer()
-                    if inked { Label(L("Looks good"), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success) }
-                }
-                if tooSmall {
-                    Text(L("That's too small to read as a signature — sign a little bigger.")).font(HandyFont.caption).foregroundStyle(HandyColor.amber)
-                }
-                Button {
-                    if let img = DocEngine.saveSignature(pad.drawing) { saved(img); HandyHaptics.success(); dismiss() } else { tooSmall = true }
-                } label: { Text(L(inked ? "Save signature" : "Sign in the box first")).frame(maxWidth: .infinity) }
-                    .primaryButton().disabled(!inked).padding(.top, HandySpacing.s8)
-                Spacer()
+                .padding(HandySpacing.gutter)
             }
-            .padding(HandySpacing.gutter)
+            .scrollDisabled(!typing)   // drawing: nothing may scroll under the finger
             .background(HandyColor.bg)
             .navigationTitle(L("Your signature")).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Cancel")) { dismiss() } } }
         }
-        .presentationDetents([.medium])
-        // The sheet's swipe-to-dismiss gesture was eating the finger stroke, so nothing inked. Disable
-        // interactive dismiss (Cancel/Save are the way out) so every finger drag reaches the canvas.
+        .presentationDetents([.large])
+        // Swiping the sheet down must never steal the signing stroke: Cancel / Save are the way out.
         .interactiveDismissDisabled(true)
+    }
+
+    @ViewBuilder private var pad: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).fill(Color.white)
+            // The signing line, like paper.
+            Rectangle().fill(Color.black.opacity(0.15)).frame(height: 1).padding(.horizontal, 24).offset(y: 50)
+            Text("✕").font(.title3).foregroundStyle(Color.black.opacity(0.25)).frame(maxWidth: .infinity, alignment: .leading).padding(.leading, 18).offset(y: 34)
+            if typing {
+                if let img = SignatureInk.typedImage(typed, hand: hand, color: ink.ui) {
+                    Image(uiImage: img).resizable().scaledToFit().padding(20)
+                } else {
+                    Text(L("Your name appears here")).foregroundStyle(Color.black.opacity(0.3))
+                }
+            } else {
+                Canvas { ctx, _ in
+                    for s in strokes + [current] where !s.isEmpty {
+                        ctx.stroke(SignatureInk.path(s), with: .color(Color(ink.ui)), style: StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round))
+                    }
+                }
+                .contentShape(Rectangle())
+                .highPriorityGesture(
+                    DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged { v in current.append(v.location); problem = nil }
+                        .onEnded { _ in if !current.isEmpty { strokes.append(current) }; current = [] }
+                )
+                .accessibilityElement()
+                .accessibilityLabel(L("Signature pad"))
+                .accessibilityIdentifier("signature-pad")
+                if strokes.isEmpty && current.isEmpty {
+                    Text(L("Sign here")).foregroundStyle(Color.black.opacity(0.25)).allowsHitTesting(false)
+                }
+            }
+        }
+        .environment(\.colorScheme, .light)
+        .frame(height: 220)
+        .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+        if typing {
+            TextField(L("Your name"), text: $typed)
+                .textInputAutocapitalization(.words).autocorrectionDisabled()
+                .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 10))
+                .accessibilityIdentifier("signature-typed")
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(SignatureInk.hands.indices, id: \.self) { i in
+                        Button { hand = i } label: {
+                            Text(typed.isEmpty ? L("Signature") : typed).font(Font(SignatureInk.handFont(i, size: 20) as CTFont))
+                                .lineLimit(1).padding(.horizontal, 12).padding(.vertical, 8)
+                                .background(hand == i ? HandyColor.accent.opacity(0.18) : HandyColor.surface, in: Capsule())
+                                .overlay(Capsule().stroke(hand == i ? HandyColor.accent : HandyColor.border, lineWidth: 1))
+                        }.buttonStyle(.plain)
+                    }
+                }
+            }
+        }
+    }
+
+    private func save() {
+        let img = typing ? SignatureInk.typedImage(typed, hand: hand, color: ink.ui, scale: 3)
+                         : SignatureInk.image(strokes, color: ink.ui, width: width)
+        if let img, let kept = DocEngine.saveSignature(image: img) { saved(kept); HandyHaptics.success(); dismiss() }
+        else { problem = "That's too small to read as a signature — sign a little bigger." }
+    }
+}
+
+/// Pen colours for signatures, and how a signature is turned into a clean see-through picture.
+struct SignatureInk: Identifiable, Equatable {
+    let id: String
+    let name: String
+    let hex: UInt32
+    var ui: UIColor { UIColor(red: CGFloat((hex >> 16) & 0xFF) / 255, green: CGFloat((hex >> 8) & 0xFF) / 255, blue: CGFloat(hex & 0xFF) / 255, alpha: 1) }
+
+    static let all = [
+        SignatureInk(id: "black", name: "Black ink", hex: 0x111111),
+        SignatureInk(id: "blue", name: "Blue ink", hex: 0x1D4ED8),
+        SignatureInk(id: "navy", name: "Navy ink", hex: 0x1E2A78),
+        SignatureInk(id: "red", name: "Red ink", hex: 0xB91C1C),
+        SignatureInk(id: "green", name: "Green ink", hex: 0x166534),
+    ]
+    static var remembered: SignatureInk {
+        get { all.first { $0.id == UserDefaults.standard.string(forKey: "tenzy.sign.ink") } ?? all[0] }
+        set { UserDefaults.standard.set(newValue.id, forKey: "tenzy.sign.ink") }
+    }
+
+    /// A smooth line through the finger's points (curves between midpoints, so it reads like pen, not polygon).
+    static func path(_ pts: [CGPoint]) -> Path {
+        var p = Path()
+        guard let first = pts.first else { return p }
+        if pts.count == 1 { return Path(ellipseIn: CGRect(x: first.x - 1.2, y: first.y - 1.2, width: 2.4, height: 2.4)) }
+        p.move(to: first)
+        for i in 1..<pts.count {
+            let mid = CGPoint(x: (pts[i - 1].x + pts[i].x) / 2, y: (pts[i - 1].y + pts[i].y) / 2)
+            p.addQuadCurve(to: mid, control: pts[i - 1])
+        }
+        p.addLine(to: pts[pts.count - 1])
+        return p
+    }
+
+    /// The strokes as a trimmed, see-through, sharp (3×) picture in the chosen ink. nil if there's nothing.
+    static func image(_ strokes: [[CGPoint]], color: UIColor, width: CGFloat) -> UIImage? {
+        let all = strokes.flatMap { $0 }
+        guard !all.isEmpty else { return nil }
+        let minX = all.map(\.x).min()!, maxX = all.map(\.x).max()!, minY = all.map(\.y).min()!, maxY = all.map(\.y).max()!
+        let pad = width * 2 + 6
+        let bounds = CGRect(x: minX - pad, y: minY - pad, width: maxX - minX + pad * 2, height: maxY - minY + pad * 2)
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 3; fmt.opaque = false
+        return UIGraphicsImageRenderer(size: bounds.size, format: fmt).image { r in
+            let c = r.cgContext
+            c.translateBy(x: -bounds.minX, y: -bounds.minY)
+            c.setStrokeColor(color.cgColor); c.setFillColor(color.cgColor)
+            c.setLineWidth(width); c.setLineCap(.round); c.setLineJoin(.round)
+            for s in strokes where !s.isEmpty {
+                c.addPath(path(s).cgPath)
+                if s.count == 1 { c.fillPath() } else { c.strokePath() }
+            }
+        }
+    }
+
+    static let hands = ["SnellRoundhand-Black", "Zapfino", "BradleyHandITCTT-Bold", "Noteworthy-Bold", "SavoyeLetPlain"]
+    static func handFont(_ i: Int, size: CGFloat) -> UIFont {
+        UIFont(name: hands[max(0, min(hands.count - 1, i))], size: size) ?? .italicSystemFont(ofSize: size)
+    }
+
+    /// A typed name in a handwriting font, trimmed and see-through.
+    static func typedImage(_ text: String, hand: Int, color: UIColor, scale: CGFloat = 2) -> UIImage? {
+        let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !t.isEmpty else { return nil }
+        let attrs: [NSAttributedString.Key: Any] = [.font: handFont(hand, size: 64), .foregroundColor: color]
+        let s = (t as NSString).size(withAttributes: attrs)
+        let size = CGSize(width: ceil(s.width) + 24, height: ceil(s.height) + 16)
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = scale; fmt.opaque = false
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { _ in (t as NSString).draw(at: CGPoint(x: 12, y: 8), withAttributes: attrs) }
     }
 }
 

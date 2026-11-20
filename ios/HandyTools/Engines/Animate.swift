@@ -2,8 +2,8 @@ import AVFoundation
 import CoreImage
 import UIKit
 
-/// Animate — photos in, a polished, post-ready video out. Nine styles, every one drawn with plain Core
-/// Graphics and encoded with the phone's own H.264 encoder, so it works on every iPhone, offline, in any
+/// Animate — photos in, a polished, post-ready video out. 26 styles, drawn with Core Graphics and Core
+/// Image, and encoded with the phone's own H.264 encoder, so it works on every iPhone, offline, in any
 /// country. Frames are streamed straight into the encoder (constant memory: a 30-second 1080×1920 video
 /// never holds more than a couple of frames), and photos are prepared lazily, a few at a time.
 /// Output is sized to a real platform format (VideoFormat) — Reels/TikTok/Shorts, Story, Square,
@@ -12,7 +12,24 @@ enum Animate {
 
     enum Style: String, CaseIterable, Identifiable {
         case kenBurns, crossfade, slide, zoomPulse, polaroid, cube, filmStrip, flipbook, boomerang
+        case pageTurn, fold, copyMachine, cardFlip, carousel, doors, whoosh, lightLeak
+        case ripple, swirl, pixelate, glitch, iris, heart, blinds, shatter, dust
         var id: String { rawValue }
+
+        /// How the style picker groups them.
+        enum Group: String, CaseIterable, Identifiable {
+            case smooth = "Smooth", paper = "Paper & film", threeD = "3D", fun = "Fun"
+            var id: String { rawValue }
+        }
+        var group: Group {
+            switch self {
+            case .kenBurns, .crossfade, .slide, .whoosh, .lightLeak, .boomerang: return .smooth
+            case .pageTurn, .flipbook, .fold, .polaroid, .filmStrip, .copyMachine: return .paper
+            case .cube, .cardFlip, .carousel, .doors: return .threeD
+            default: return .fun
+            }
+        }
+        static func inGroup(_ g: Group) -> [Style] { allCases.filter { $0.group == g } }
         var title: String {
             switch self {
             case .kenBurns: return "Ken Burns"
@@ -24,6 +41,23 @@ enum Animate {
             case .filmStrip: return "Film strip"
             case .flipbook: return "Flipbook"
             case .boomerang: return "Boomerang"
+            case .pageTurn: return "Page turn"
+            case .fold: return "Fold"
+            case .copyMachine: return "Scanner"
+            case .cardFlip: return "Card flip"
+            case .carousel: return "Carousel"
+            case .doors: return "Doors"
+            case .whoosh: return "Whoosh"
+            case .lightLeak: return "Light leak"
+            case .ripple: return "Ripple"
+            case .swirl: return "Swirl"
+            case .pixelate: return "Pixelate"
+            case .glitch: return "Glitch"
+            case .iris: return "Iris"
+            case .heart: return "Heart"
+            case .blinds: return "Blinds"
+            case .shatter: return "Shatter"
+            case .dust: return "Dust"
             }
         }
         var blurb: String {
@@ -35,8 +69,25 @@ enum Animate {
             case .polaroid: return "Prints drop onto a pile"
             case .cube: return "Photos turn like a spinning cube"
             case .filmStrip: return "A strip of film rolls past"
-            case .flipbook: return "Pages flick like a flipbook"
+            case .flipbook: return "Pages riffle past with a real page curl"
             case .boomerang: return "Back-and-forth loop — great for bursts"
+            case .pageTurn: return "Each photo is a page you turn, curl and shadow"
+            case .fold: return "Folds away like a paper fan"
+            case .copyMachine: return "A light bar sweeps the next photo in"
+            case .cardFlip: return "Each photo flips over like a card"
+            case .carousel: return "Photos ride round on a 3D carousel"
+            case .doors: return "Opens like double doors onto the next photo"
+            case .whoosh: return "Zooms through with motion blur"
+            case .lightLeak: return "Warm film light washes between photos"
+            case .ripple: return "A ripple spreads like a drop in water"
+            case .swirl: return "Twists into the next photo"
+            case .pixelate: return "Breaks into pixels and back"
+            case .glitch: return "Digital glitch cuts"
+            case .iris: return "A circle opens onto the next photo"
+            case .heart: return "A heart opens onto the next photo"
+            case .blinds: return "Slats swipe across"
+            case .shatter: return "Breaks into pieces"
+            case .dust: return "Crumbles away like dust"
             }
         }
         var icon: String {
@@ -50,6 +101,23 @@ enum Animate {
             case .filmStrip: return "film"
             case .flipbook: return "book.pages"
             case .boomerang: return "arrow.left.arrow.right"
+            case .pageTurn: return "book"
+            case .fold: return "rectangle.split.3x1"
+            case .copyMachine: return "scanner"
+            case .cardFlip: return "rectangle.portrait.rotate"
+            case .carousel: return "rotate.3d"
+            case .doors: return "door.french.open"
+            case .whoosh: return "wind"
+            case .lightLeak: return "sun.haze"
+            case .ripple: return "drop"
+            case .swirl: return "tornado"
+            case .pixelate: return "square.grid.3x3"
+            case .glitch: return "waveform.path"
+            case .iris: return "circle.dashed"
+            case .heart: return "heart"
+            case .blinds: return "blinds.vertical.open"
+            case .shatter: return "burst"
+            case .dust: return "aqi.medium"
             }
         }
         var minPhotos: Int { [.kenBurns, .zoomPulse, .polaroid, .filmStrip].contains(self) ? 1 : 2 }
@@ -105,12 +173,15 @@ enum Animate {
             return Timeline(fps: fps, hold: Double(per) / Double(fps), trans: 0, count: n, frameCount: cycle * per * 3)
         }
         let baseHold: Double = n == 1 ? 5 : (n <= 3 ? 2.6 : (n <= 8 ? 2.0 : 1.3))
-        let hold = baseHold * f
+        // A flipbook riffles: short rests, quick curls (photos repeat to make a loop — see `sequence`).
+        let hold = (settings.style == .flipbook ? 0.35 : baseHold) * f
         let trans: Double
         switch settings.style {
-        case .zoomPulse: trans = 0.25 * f
-        case .flipbook: trans = 0.35 * f
-        case .crossfade, .kenBurns: trans = 0.7 * f
+        case .zoomPulse, .glitch: trans = 0.3 * f
+        case .flipbook, .whoosh: trans = 0.45 * f
+        case .crossfade, .kenBurns, .carousel, .iris, .pixelate, .blinds: trans = 0.7 * f
+        case .cube, .cardFlip, .fold, .swirl, .heart, .shatter: trans = 0.85 * f
+        case .pageTurn, .doors, .copyMachine, .lightLeak, .ripple, .dust: trans = 1.05 * f
         default: trans = 0.5 * f
         }
         let total = Double(n) * hold + Double(n - 1) * trans
@@ -133,9 +204,26 @@ enum Animate {
 
     // MARK: - Render
 
+    /// The photos in the order they play. A flipbook riffles the pages round and round (ending back on the first
+    /// page so it loops cleanly) until it lasts at least ~6 seconds; every other style plays each photo once.
+    static func sequence(_ images: [UIImage], settings: Settings) -> [UIImage] {
+        guard settings.style == .flipbook, images.count >= 2 else { return images }
+        let per = 0.8 * settings.pace.factor
+        let rounds = max(1, min(6, Int((6 / (per * Double(images.count))).rounded(.up))))
+        let out = Array((0..<rounds).flatMap { _ in images }.prefix(80))
+        return out + [images[0]]
+    }
+    /// How many photos actually play (for the preview's length label).
+    static func playCount(_ n: Int, settings: Settings) -> Int {
+        guard settings.style == .flipbook, n >= 2 else { return n }
+        let per = 0.8 * settings.pace.factor
+        return min(80, max(1, min(6, Int((6 / (per * Double(n))).rounded(.up)))) * n) + 1
+    }
+
     /// Render the video. `scale` < 1 makes a quick low-resolution draft for the live preview.
     static func render(_ images: [UIImage], settings: Settings, scale: CGFloat = 1, fps: Int = 30,
                        progress: ((Double) -> Void)? = nil) async -> URL? {
+        let images = sequence(images, settings: settings)
         guard !images.isEmpty else { return nil }
         let size = evenSize(CGSize(width: settings.format.size.width * scale, height: settings.format.size.height * scale))
         let tl = timeline(count: images.count, settings: settings, fps: fps)
@@ -149,6 +237,7 @@ enum Animate {
 
     /// One still frame (for thumbnails and tests).
     static func still(_ images: [UIImage], settings: Settings, at fraction: Double, scale: CGFloat = 0.25) -> UIImage? {
+        let images = sequence(images, settings: settings)
         guard !images.isEmpty else { return nil }
         let size = evenSize(CGSize(width: settings.format.size.width * scale, height: settings.format.size.height * scale))
         let tl = timeline(count: images.count, settings: settings)
@@ -250,6 +339,7 @@ enum Animate {
             case .filmStrip: filmStrip(i, tl, ctx); return
             case .polaroid: polaroid(i, tl, ctx); return
             case .kenBurns: kenBurns(i, tl, ctx); return
+            case .carousel: carousel(i, tl, ctx); return
             default: break
             }
             switch Animate.phase(frame: i, in: tl) {
@@ -273,7 +363,23 @@ enum Animate {
                 case .cube:
                     cube(k, k + 1, e, ctx)
                 case .flipbook:
-                    flip(k, k + 1, e, ctx)
+                    curl(k, k + 1, e, radius: 0.09, ctx)
+                case .pageTurn:
+                    curl(k, k + 1, e, radius: 0.2, ctx)
+                case .cardFlip:
+                    cardFlip(k, k + 1, e, ctx)
+                case .doors:
+                    doors(k, k + 1, v, ctx)
+                case .fold, .ripple, .blinds, .copyMachine, .shatter, .dust:
+                    transition(style, k, k + 1, e, ctx)
+                case .swirl, .pixelate, .whoosh:
+                    warp(style, k, k + 1, e, ctx)
+                case .glitch:
+                    glitch(k, k + 1, v, frame: i, ctx)
+                case .iris, .heart:
+                    reveal(k, k + 1, e, heart: style == .heart, ctx)
+                case .lightLeak:
+                    lightLeak(k, k + 1, e, ctx)
                 default:
                     photo(k, ctx)
                 }
@@ -304,35 +410,287 @@ enum Animate {
             prepareAhead(Animate.phase(frame: i, in: tl))
         }
 
-        private func cube(_ a: Int, _ b: Int, _ e: Double, _ ctx: CGContext) {
-            let w = size.width, h = size.height, p = CGFloat(e)
-            let edge = w * (1 - p)
-            let bulge = 0.06 * sin(.pi * p)                               // faces shrink a touch mid-turn
-            if edge > 1 {
-                let rect = CGRect(x: 0, y: h * bulge / 2, width: edge, height: h * (1 - bulge))
-                drawCanvas(a, in: rect, ctx: ctx)
-                ctx.setFillColor(UIColor(white: 0, alpha: 0.55 * p).cgColor); ctx.fill(rect)
-            }
-            if w - edge > 1 {
-                let rect = CGRect(x: edge, y: h * bulge / 2, width: w - edge, height: h * (1 - bulge))
-                drawCanvas(b, in: rect, ctx: ctx)
-                ctx.setFillColor(UIColor(white: 0, alpha: 0.55 * (1 - p)).cgColor); ctx.fill(rect)
-            }
+        // MARK: Core Image / 3D styles
+
+        private func ciCanvas(_ j: Int) -> CIImage? { canvas(j).map { CIImage(cgImage: $0) } }
+
+        /// Draw a Core Image result over whatever is already on the frame (transparent parts let it show).
+        private func put(_ img: CIImage, _ ctx: CGContext) {
+            guard let cg = ci.createCGImage(img.cropped(to: full), from: full) else { return }
+            ctx.draw(cg, in: full)
         }
 
-        private func flip(_ a: Int, _ b: Int, _ e: Double, _ ctx: CGContext) {
-            photo(b, ctx)
-            let w = size.width * (1 - CGFloat(e))
-            guard w > 1 else { return }
-            let rect = CGRect(x: 0, y: 0, width: w, height: size.height)
-            ctx.saveGState(); ctx.clip(to: rect)
-            drawCanvas(a, in: rect, ctx: ctx)
-            let shadowW = min(size.width * 0.05, w)
-            if let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
-                                  colors: [UIColor(white: 0, alpha: 0).cgColor, UIColor(white: 0, alpha: 0.55).cgColor] as CFArray,
-                                  locations: [0, 1]) {
-                ctx.drawLinearGradient(g, start: CGPoint(x: w - shadowW, y: 0), end: CGPoint(x: w, y: 0), options: [])
+        private func shade(_ img: CIImage, _ k: CGFloat) -> CIImage {
+            let m = max(0, min(1, 1 - k))
+            return img.applyingFilter("CIColorMatrix", parameters: [
+                "inputRVector": CIVector(x: m, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: m, z: 0, w: 0),
+                "inputBVector": CIVector(x: 0, y: 0, z: m, w: 0)])
+        }
+
+        /// A photo standing upright in 3D: centre (cx, cz) — z grows away from the viewer, 0 is the screen —
+        /// turned by `yaw` about its vertical axis, seen in perspective from `D` in front of the screen.
+        /// nil when it is edge-on or facing away.
+        private func plane(_ img: CIImage, cx: CGFloat, cz: CGFloat, yaw: CGFloat, halfW: CGFloat, halfH: CGFloat,
+                           D: CGFloat, zoom: CGFloat = 1) -> CIImage? {
+            func edge(_ u: CGFloat) -> (x: CGFloat, f: CGFloat) {
+                let x = cx + u * cos(yaw), z = cz + u * sin(yaw)
+                let f = D / max(1, D + z) * zoom
+                return (size.width / 2 + x * f, f)
             }
+            let l = edge(-halfW), r = edge(halfW)
+            guard r.x - l.x > 1 else { return nil }
+            let my = size.height / 2
+            return img.applyingFilter("CIPerspectiveTransform", parameters: [
+                "inputTopLeft": CIVector(x: l.x, y: my + halfH * l.f), "inputTopRight": CIVector(x: r.x, y: my + halfH * r.f),
+                "inputBottomRight": CIVector(x: r.x, y: my - halfH * r.f), "inputBottomLeft": CIVector(x: l.x, y: my - halfH * l.f)])
+        }
+
+        private func drawBackdrop(_ j: Int, _ ctx: CGContext, dim: CGFloat = 0.45) {
+            if let bg = backdrop(j) { ctx.draw(bg, in: full) }
+            ctx.setFillColor(UIColor(white: 0, alpha: dim).cgColor); ctx.fill(full)
+        }
+
+        /// A real cube turning left: the front face swings away as the right face comes round, in perspective.
+        private func cube(_ a: Int, _ b: Int, _ e: Double, _ ctx: CGContext) {
+            guard let A = ciCanvas(a), let B = ciCanvas(b) else { return }
+            let half = size.width / 2, hh = size.height / 2, p = CGFloat(e)
+            let phi = p * .pi / 2, D = size.width * 2.2
+            let zoom = 1 / (1 + 0.25 * sin(p * .pi))
+            drawBackdrop(p < 0.5 ? a : b, ctx)
+            var faces: [(CIImage, CGFloat)] = []
+            if let f = plane(shade(A, 0.6 * p), cx: -half * sin(phi), cz: half - half * cos(phi), yaw: -phi, halfW: half, halfH: hh, D: D, zoom: zoom) {
+                faces.append((f, half - half * cos(phi)))
+            }
+            if let f = plane(shade(B, 0.6 * (1 - p)), cx: half * cos(phi), cz: half - half * sin(phi), yaw: .pi / 2 - phi, halfW: half, halfH: hh, D: D, zoom: zoom) {
+                faces.append((f, half - half * sin(phi)))
+            }
+            var out = CIImage.empty()
+            for (img, _) in faces.sorted(by: { $0.1 > $1.1 }) { out = img.composited(over: out) }
+            put(out, ctx)
+        }
+
+        /// The photo flips over like a playing card, lifting a little as it turns; the next photo is on its back.
+        private func cardFlip(_ a: Int, _ b: Int, _ e: Double, _ ctx: CGContext) {
+            guard let A = ciCanvas(a), let B = ciCanvas(b) else { return }
+            let th = CGFloat(e) * .pi
+            drawBackdrop(e < 0.5 ? a : b, ctx)
+            let img = th < .pi / 2 ? A : B
+            let yaw = th < .pi / 2 ? th : th - .pi
+            let lift = 1 / (1 + 0.18 * sin(th))
+            if let f = plane(shade(img, 0.35 * sin(th)), cx: 0, cz: 0, yaw: yaw, halfW: size.width / 2, halfH: size.height / 2,
+                             D: size.width * 2.6, zoom: lift) { put(f, ctx) }
+        }
+
+        /// Photos on a turning 3D carousel: the one in front faces you, its neighbours angle away to each side.
+        private func carousel(_ i: Int, _ tl: Timeline, _ ctx: CGContext) {
+            let pos: CGFloat
+            switch Animate.phase(frame: i, in: tl) {
+            case .hold(let k, _): pos = CGFloat(k)
+            case .move(let k, let v): pos = CGFloat(k) + CGFloat(Animate.easeInOut(v))
+            }
+            let cur = min(tl.count - 1, Int(pos.rounded()))
+            drawBackdrop(cur, ctx, dim: 0.5)
+            let w = size.width
+            var cards: [(CIImage, CGFloat)] = []
+            for j in max(0, Int(pos) - 2)...min(tl.count - 1, Int(pos) + 2) {
+                let s = CGFloat(j) - pos
+                guard abs(s) < 1.9, let img = ciCanvas(j) else { continue }
+                let c = max(-1, min(1, s))
+                let z = abs(s) * w * 0.5
+                if let f = plane(shade(img, min(0.7, abs(s) * 0.45)), cx: s * w * 0.5, cz: z, yaw: c * 0.95,
+                                 halfW: w * 0.36, halfH: size.height * 0.36, D: w * 2.2) {
+                    cards.append((f, z))
+                }
+            }
+            var out = CIImage.empty()
+            for (img, _) in cards.sorted(by: { $0.1 > $1.1 }) { out = img.composited(over: out) }
+            put(out, ctx)
+            evict(keep: [cur - 1, cur, cur + 1, cur + 2])
+        }
+
+        /// The photo splits down the middle and swings open toward you like double doors.
+        private func doors(_ a: Int, _ b: Int, _ v: Double, _ ctx: CGContext) {
+            guard let A = ciCanvas(a) else { return }
+            let w = size.width, hh = size.height / 2, q = w / 4
+            let e = CGFloat(Animate.easeInOut(v))
+            photo(b, ctx, scale: 0.86 + 0.14 * e)
+            ctx.setFillColor(UIColor(white: 0, alpha: 0.6 * (1 - e)).cgColor); ctx.fill(full)
+            let beta = e * .pi * 0.56
+            let D = w * 2.2
+            let left = A.cropped(to: CGRect(x: 0, y: 0, width: w / 2, height: size.height))
+            let right = A.cropped(to: CGRect(x: w / 2, y: 0, width: w / 2, height: size.height))
+            var out = CIImage.empty()
+            if let l = plane(shade(left, 0.5 * sin(beta)), cx: -w / 2 + q * cos(beta), cz: -q * sin(beta), yaw: -beta, halfW: q, halfH: hh, D: D) {
+                out = l.composited(over: out)
+            }
+            if let r = plane(shade(right, 0.5 * sin(beta)), cx: w / 2 - q * cos(beta), cz: -q * sin(beta), yaw: beta, halfW: q, halfH: hh, D: D) {
+                out = r.composited(over: out)
+            }
+            put(out, ctx)
+        }
+
+        /// A real page curl: the page lifts from the right edge, shows its paper back and casts a shadow.
+        private func curl(_ a: Int, _ b: Int, _ e: Double, radius: CGFloat, _ ctx: CGContext) {
+            guard let A = ciCanvas(a), let B = ciCanvas(b) else { return }
+            let back = A.transformed(by: CGAffineTransform(scaleX: -1, y: 1).translatedBy(x: -size.width, y: 0))
+                .applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 0.25, kCIInputBrightnessKey: 0.38, kCIInputContrastKey: 0.45])
+            guard let f = CIFilter(name: "CIPageCurlWithShadowTransition") else { photo(e < 0.5 ? a : b, ctx); return }
+            f.setValue(A, forKey: kCIInputImageKey)
+            f.setValue(B, forKey: kCIInputTargetImageKey)
+            f.setValue(back, forKey: "inputBacksideImage")
+            f.setValue(CIVector(cgRect: full), forKey: kCIInputExtentKey)
+            f.setValue(e, forKey: kCIInputTimeKey)
+            f.setValue(Animate.curlAngle + 0.16, forKey: kCIInputAngleKey)
+            f.setValue(size.width * radius, forKey: kCIInputRadiusKey)
+            f.setValue(0.6, forKey: "inputShadowSize")
+            f.setValue(0.75, forKey: "inputShadowAmount")
+            f.setValue(CIVector(cgRect: full), forKey: "inputShadowExtent")
+            guard let out = f.outputImage else { return }
+            put(out.composited(over: B), ctx)
+        }
+
+        private lazy var dustMask: CIImage = {
+            let noise = CIFilter(name: "CIRandomGenerator")?.outputImage ?? CIImage(color: .gray)
+            let w = self.size.width
+            return noise.transformed(by: CGAffineTransform(scaleX: max(1, w / 90), y: max(1, w / 90)))
+                .applyingFilter("CIColorControls", parameters: [kCIInputSaturationKey: 0])
+                .clampedToExtent().applyingGaussianBlur(sigma: Double(w) / 60).cropped(to: self.full)
+        }()
+
+        /// Core Image's built-in transitions, each tuned for the frame size.
+        private func transition(_ style: Style, _ a: Int, _ b: Int, _ e: Double, _ ctx: CGContext) {
+            guard let A = ciCanvas(a), let B = ciCanvas(b) else { return }
+            let w = size.width
+            let center = CIVector(x: size.width / 2, y: size.height / 2)
+            var out: CIImage?
+            switch style {
+            case .fold:
+                out = A.applyingFilter("CIAccordionFoldTransition", parameters: [kCIInputTargetImageKey: B, kCIInputTimeKey: e,
+                    "inputBottomHeight": 0, "inputNumberOfFolds": 4, "inputFoldShadowAmount": 0.6])
+            case .ripple:
+                let shading = CIFilter(name: "CIRadialGradient", parameters: ["inputCenter": center, "inputRadius0": 0, "inputRadius1": w * 0.7,
+                    "inputColor0": CIColor(red: 1, green: 1, blue: 1, alpha: 0.55), "inputColor1": CIColor(red: 1, green: 1, blue: 1, alpha: 0)])?
+                    .outputImage?.cropped(to: full) ?? CIImage.empty()
+                out = A.applyingFilter("CIRippleTransition", parameters: [kCIInputTargetImageKey: B, kCIInputTimeKey: e,
+                    "inputShadingImage": shading, kCIInputCenterKey: center, kCIInputExtentKey: CIVector(cgRect: full),
+                    kCIInputWidthKey: w * 0.14, kCIInputScaleKey: w * 0.05])
+            case .blinds:
+                out = A.applyingFilter("CIBarsSwipeTransition", parameters: [kCIInputTargetImageKey: B, kCIInputTimeKey: e,
+                    kCIInputAngleKey: CGFloat.pi, kCIInputWidthKey: w * 0.09, "inputBarOffset": 12])
+            case .copyMachine:
+                out = A.applyingFilter("CICopyMachineTransition", parameters: [kCIInputTargetImageKey: B, kCIInputTimeKey: e,
+                    kCIInputExtentKey: CIVector(cgRect: full), kCIInputColorKey: CIColor(red: 0.7, green: 0.95, blue: 1),
+                    kCIInputAngleKey: 0, kCIInputWidthKey: w * 0.22, "inputOpacity": 1.3])
+            case .shatter:
+                out = A.applyingFilter("CIModTransition", parameters: [kCIInputTargetImageKey: B, kCIInputTimeKey: e,
+                    kCIInputCenterKey: center, kCIInputAngleKey: 2.0, kCIInputRadiusKey: w * 0.22, "inputCompression": 300])
+            case .dust:
+                out = A.applyingFilter("CIDisintegrateWithMaskTransition", parameters: [kCIInputTargetImageKey: B, kCIInputTimeKey: e,
+                    kCIInputMaskImageKey: dustMask, "inputShadowRadius": w * 0.012, "inputShadowDensity": 0.6,
+                    "inputShadowOffset": CIVector(x: 0, y: -w * 0.008)])
+            default: break
+            }
+            guard let out else { photo(e < 0.5 ? a : b, ctx); return }
+            put(out.cropped(to: full).composited(over: B), ctx)
+        }
+
+        /// Twist, pixel or zoom-blur on the way out of one photo and into the next.
+        private func warp(_ style: Style, _ a: Int, _ b: Int, _ e: Double, _ ctx: CGContext) {
+            guard let A = ciCanvas(a), let B = ciCanvas(b) else { return }
+            let w = size.width, c = CIVector(x: size.width / 2, y: size.height / 2)
+            let peak = CGFloat(sin(e * .pi))
+            var out: CIImage
+            switch style {
+            case .swirl:
+                let mix = A.applyingFilter("CIDissolveTransition", parameters: [kCIInputTargetImageKey: B, kCIInputTimeKey: e])
+                out = mix.clampedToExtent().applyingFilter("CITwirlDistortion", parameters: [kCIInputCenterKey: c,
+                    kCIInputRadiusKey: max(size.width, size.height) * 0.75, kCIInputAngleKey: 2.6 * .pi * peak])
+            case .pixelate:
+                let base = e < 0.5 ? A : B
+                out = base.clampedToExtent().applyingFilter("CIPixellate", parameters: [kCIInputCenterKey: c, kCIInputScaleKey: max(1, w / 11 * peak)])
+            default:   // whoosh
+                func zoomed(_ img: CIImage, _ s: CGFloat, _ blur: CGFloat) -> CIImage {
+                    let t = CGAffineTransform(translationX: -size.width / 2, y: -size.height / 2).concatenating(CGAffineTransform(scaleX: s, y: s))
+                        .concatenating(CGAffineTransform(translationX: size.width / 2, y: size.height / 2))
+                    return img.transformed(by: t).clampedToExtent().applyingFilter("CIZoomBlur", parameters: [kCIInputCenterKey: c, "inputAmount": blur])
+                }
+                let p = CGFloat(e)
+                let outA = zoomed(A, 1 + 0.6 * p, w * 0.07 * p)
+                let inB = zoomed(B, 0.7 + 0.3 * p, w * 0.07 * (1 - p))
+                let mixT = min(1, max(0, (e - 0.35) / 0.3))
+                out = outA.applyingFilter("CIDissolveTransition", parameters: [kCIInputTargetImageKey: inB, kCIInputTimeKey: mixT])
+            }
+            put(out.cropped(to: full), ctx)
+        }
+
+        /// Digital glitch: colour channels split, slices jump sideways, then it cuts to the next photo.
+        private func glitch(_ a: Int, _ b: Int, _ v: Double, frame i: Int, _ ctx: CGContext) {
+            guard let base = ciCanvas(v < 0.5 ? a : b) else { return }
+            let w = size.width, h = size.height, k = CGFloat(sin(v * .pi))
+            func only(_ ch: Int) -> CIImage {
+                base.applyingFilter("CIColorMatrix", parameters: [
+                    "inputRVector": CIVector(x: ch == 0 ? 1 : 0, y: 0, z: 0, w: 0), "inputGVector": CIVector(x: 0, y: ch == 1 ? 1 : 0, z: 0, w: 0),
+                    "inputBVector": CIVector(x: 0, y: 0, z: ch == 2 ? 1 : 0, w: 0)])
+            }
+            let d = w * 0.03 * k
+            let split = only(0).transformed(by: CGAffineTransform(translationX: d, y: 0))
+                .applyingFilter("CIAdditionCompositing", parameters: [kCIInputBackgroundImageKey: only(1)])
+                .applyingFilter("CIAdditionCompositing", parameters: [kCIInputBackgroundImageKey: only(2).transformed(by: CGAffineTransform(translationX: -d, y: 0))])
+                .cropped(to: full)
+            var out = split
+            var rng = SeededRandom(seed: UInt64(i / 2 + 11) &* 2654435761)
+            for _ in 0..<(1 + Int(9 * k)) {
+                let y = CGFloat(rng.next()) * h, sh = CGFloat(rng.next(0.01, 0.07)) * h
+                let dx = CGFloat(rng.next(-0.14, 0.14)) * w * k
+                out = split.cropped(to: CGRect(x: 0, y: y, width: w, height: sh)).transformed(by: CGAffineTransform(translationX: dx, y: 0)).composited(over: out)
+            }
+            put(out, ctx)
+        }
+
+        /// The next photo opens through a growing circle or heart, with a soft bright rim.
+        private func reveal(_ a: Int, _ b: Int, _ e: Double, heart: Bool, _ ctx: CGContext) {
+            photo(a, ctx)
+            let r = CGFloat(e) * hypot(size.width, size.height) * (heart ? 0.95 : 0.55)
+            guard r > 1 else { return }
+            let c = CGPoint(x: size.width / 2, y: size.height / 2)
+            let path: CGPath
+            if heart {
+                let m = CGMutablePath()
+                func p(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: c.x + x * r, y: c.y + y * r) }
+                m.move(to: p(0, -0.85))
+                m.addCurve(to: p(-1, 0.25), control1: p(-0.5, -0.45), control2: p(-1, -0.15))
+                m.addCurve(to: p(0, 0.55), control1: p(-1, 0.85), control2: p(-0.25, 0.95))
+                m.addCurve(to: p(1, 0.25), control1: p(0.25, 0.95), control2: p(1, 0.85))
+                m.addCurve(to: p(0, -0.85), control1: p(1, -0.15), control2: p(0.5, -0.45))
+                m.closeSubpath()
+                path = m
+            } else {
+                path = CGPath(ellipseIn: CGRect(x: c.x - r, y: c.y - r, width: r * 2, height: r * 2), transform: nil)
+            }
+            ctx.saveGState(); ctx.addPath(path); ctx.clip()
+            photo(b, ctx)
+            ctx.restoreGState()
+            ctx.saveGState()
+            ctx.addPath(path)
+            ctx.setStrokeColor(UIColor(white: 1, alpha: 0.85 * (1 - CGFloat(e))).cgColor)
+            ctx.setLineWidth(size.width * 0.012)
+            ctx.setShadow(offset: .zero, blur: size.width * 0.03, color: UIColor(white: 1, alpha: 0.9).cgColor)
+            ctx.strokePath()
+            ctx.restoreGState()
+        }
+
+        /// A warm film light leak washes across as one photo dissolves into the next.
+        private func lightLeak(_ a: Int, _ b: Int, _ e: Double, _ ctx: CGContext) {
+            photo(a, ctx); photo(b, ctx, alpha: CGFloat(e))
+            let k = CGFloat(sin(e * .pi))
+            let x = size.width * (-0.2 + 1.4 * CGFloat(e))
+            let cols = [UIColor(red: 1, green: 0.62, blue: 0.2, alpha: 0.95 * k).cgColor,
+                        UIColor(red: 1, green: 0.3, blue: 0.35, alpha: 0.55 * k).cgColor,
+                        UIColor(red: 1, green: 0.2, blue: 0.4, alpha: 0).cgColor] as CFArray
+            guard let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cols, locations: [0, 0.45, 1]) else { return }
+            ctx.saveGState(); ctx.setBlendMode(.screen)
+            ctx.drawRadialGradient(g, startCenter: CGPoint(x: x, y: size.height * 0.62), startRadius: 0,
+                                   endCenter: CGPoint(x: x, y: size.height * 0.62), endRadius: max(size.width, size.height) * 0.7, options: [])
             ctx.restoreGState()
         }
 
@@ -461,7 +819,15 @@ enum Animate {
             return img
         }
 
+        private var backs: [Int: CGImage] = [:]
         private func backdrop(_ j: Int) -> CGImage? {
+            if let b = backs[j] { return b }
+            if backs.count > 3 { backs = [:] }
+            let made = makeBackdrop(j)
+            backs[j] = made
+            return made
+        }
+        private func makeBackdrop(_ j: Int) -> CGImage? {
             guard images.indices.contains(j) else { return nil }
             let src = images[j].normalizedUp()
             guard let b = blurred(src) else { return nil }
@@ -529,6 +895,28 @@ enum Animate {
             if canvases.count > 3 { canvases = canvases.filter { keep.contains($0.key) } }
         }
     }
+
+    /// The page-curl angle that lifts the RIGHT edge first, so pages turn like a book's. Measured once on a tiny
+    /// test picture instead of assumed, so the direction is right on every iOS version.
+    static let curlAngle: CGFloat = {
+        let ctx = CIContext(options: [.useSoftwareRenderer: false])
+        let ext = CGRect(x: 0, y: 0, width: 64, height: 32)
+        let red = CIImage(color: CIColor(red: 1, green: 0, blue: 0)).cropped(to: ext)
+        let blue = CIImage(color: CIColor(red: 0, green: 0, blue: 1)).cropped(to: ext)
+        for a in [CGFloat.pi, 0, -CGFloat.pi / 2, CGFloat.pi / 2] {
+            guard let f = CIFilter(name: "CIPageCurlWithShadowTransition") else { break }
+            f.setValue(red, forKey: kCIInputImageKey); f.setValue(blue, forKey: kCIInputTargetImageKey)
+            f.setValue(red, forKey: "inputBacksideImage")
+            f.setValue(CIVector(cgRect: ext), forKey: kCIInputExtentKey)
+            f.setValue(0.3, forKey: kCIInputTimeKey); f.setValue(a, forKey: kCIInputAngleKey); f.setValue(4, forKey: kCIInputRadiusKey)
+            guard let out = f.outputImage?.composited(over: blue).cropped(to: ext) else { continue }
+            var px = [UInt8](repeating: 0, count: 64 * 32 * 4)
+            ctx.render(out, toBitmap: &px, rowBytes: 64 * 4, bounds: ext, format: .RGBA8, colorSpace: CGColorSpaceCreateDeviceRGB())
+            func isBlue(_ x: Int) -> Bool { let o = (16 * 64 + x) * 4; return Int(px[o + 2]) > Int(px[o]) + 60 }
+            if isBlue(62) && !isBlue(2) { return a }
+        }
+        return .pi
+    }()
 
     static func easeInOut(_ t: Double) -> Double { t * t * (3 - 2 * t) }
     static func easeOut(_ t: Double) -> Double { 1 - pow(1 - t, 3) }

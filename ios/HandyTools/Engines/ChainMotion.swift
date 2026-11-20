@@ -2,7 +2,7 @@ import AVFoundation
 import UIKit
 
 /// The motion engine behind the creative tools: turns a set of still frames into a real MP4, and renders the
-/// moving pieces (a before/after swipe-reveal now; the flipbook page-riffle next). Everything is drawn on the
+/// moving pieces (the before/after swipe-reveal; flipbooks and the other photo animations live in Animate). Drawn on the
 /// phone and encoded with the phone's own H.264 encoder — nothing leaves the device.
 enum ChainMotion {
 
@@ -125,60 +125,5 @@ enum ChainMotion {
         let k = long / max(s.width, s.height)
         let w = Int((s.width * k).rounded()), h = Int((s.height * k).rounded())
         return CGSize(width: max(2, w - w % 2), height: max(2, h - h % 2))
-    }
-
-    // MARK: - Flipbook page-riffle
-
-    /// A looping flipbook: each photo holds briefly, then a page turns to the next — the "flick the pages"
-    /// animation — as an MP4. nil if there are fewer than two photos or the phone can't encode it.
-    static func flipbookVideo(images: [UIImage], longEdge: CGFloat = 1080) async -> Data? {
-        guard images.count >= 2, let first = images.first else { return nil }
-        let size = fitSize(first.size, long: longEdge)
-        let pages = images.map { normalizedFrame($0, size: size) }
-        var frames: [CGImage] = []
-        let hold = 7, flip = 7
-        for idx in pages.indices {
-            if let cg = pages[idx].cgImage { for _ in 0..<hold { frames.append(cg) } }
-            let next = pages[(idx + 1) % pages.count]   // loop: the last page turns back to the first
-            for s in 1...flip {
-                if let f = flipFrame(top: pages[idx], under: next, progress: CGFloat(s) / CGFloat(flip), size: size) { frames.append(f) }
-            }
-        }
-        guard let url = await framesToMP4(frames, fps: 24, size: size) else { return nil }
-        let d = try? Data(contentsOf: url)
-        try? FileManager.default.removeItem(at: url)
-        return d
-    }
-
-    /// One frame of a page turning: the top page foreshortens toward its left spine, revealing the next page,
-    /// with a soft shadow along the lifting edge.
-    private static func flipFrame(top: UIImage, under: UIImage, progress p: CGFloat, size: CGSize) -> CGImage? {
-        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
-        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
-            let c = ctx.cgContext
-            UIColor(white: 0.07, alpha: 1).setFill(); c.fill(CGRect(origin: .zero, size: size))
-            under.draw(in: CGRect(origin: .zero, size: size))
-            let w = size.width * (1 - p)
-            if w > 1 {
-                c.saveGState()
-                c.clip(to: CGRect(x: 0, y: 0, width: w, height: size.height))
-                top.draw(in: CGRect(x: 0, y: 0, width: w, height: size.height))
-                let shadowW = min(44, w)
-                if let grad = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(),
-                                         colors: [UIColor(white: 0, alpha: 0).cgColor, UIColor(white: 0, alpha: 0.55).cgColor] as CFArray,
-                                         locations: [0, 1]) {
-                    c.drawLinearGradient(grad, start: CGPoint(x: w - shadowW, y: 0), end: CGPoint(x: w, y: 0), options: [])
-                }
-                c.restoreGState()
-            }
-        }.cgImage
-    }
-
-    /// Render an image aspect-filled onto a `size` canvas so every page is the same shape.
-    private static func normalizedFrame(_ img: UIImage, size: CGSize) -> UIImage {
-        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1; fmt.opaque = true
-        return UIGraphicsImageRenderer(size: size, format: fmt).image { _ in
-            drawAspectFill(img.normalizedUp(), in: size)
-        }
     }
 }

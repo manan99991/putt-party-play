@@ -511,6 +511,35 @@ final class EngineTests: XCTestCase {
         DocEngine.clearSignature()
     }
 
+    /// Every pen colour on the pad saves a real, visible signature in that colour; a dot or nothing is refused.
+    func testEveryPenColourSavesAVisibleSignature() throws {
+        let strokes: [[CGPoint]] = [(0..<30).map { i in CGPoint(x: 20 + CGFloat(i) * 6, y: 80 + sin(CGFloat(i) / 3) * 30) },
+                                    [CGPoint(x: 60, y: 40), CGPoint(x: 90, y: 120)]]
+        for ink in SignatureInk.all {
+            let img = try XCTUnwrap(SignatureInk.image(strokes, color: ink.ui, width: 3.2), ink.name)
+            XCTAssertGreaterThan(DocEngine.visibleInk(img), 0.01, "\(ink.name) is visible")
+            let kept = try XCTUnwrap(DocEngine.saveSignature(image: img), "\(ink.name) is accepted")
+            XCTAssertNotNil(DocEngine.savedSignature)
+            // The ink really is that colour (not flipped by dark mode).
+            let cg = try XCTUnwrap(kept.cgImage)
+            var px = [UInt8](repeating: 0, count: cg.width * cg.height * 4)
+            let ctx = try XCTUnwrap(CGContext(data: &px, width: cg.width, height: cg.height, bitsPerComponent: 8, bytesPerRow: cg.width * 4,
+                                              space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+            ctx.draw(cg, in: CGRect(x: 0, y: 0, width: cg.width, height: cg.height))
+            var sum = (r: 0, g: 0, b: 0, n: 0)
+            for i in stride(from: 0, to: px.count, by: 4) where px[i + 3] > 240 { sum.r += Int(px[i]); sum.g += Int(px[i + 1]); sum.b += Int(px[i + 2]); sum.n += 1 }
+            XCTAssertGreaterThan(sum.n, 0)
+            let want = (r: Int((ink.hex >> 16) & 0xFF), g: Int((ink.hex >> 8) & 0xFF), b: Int(ink.hex & 0xFF))
+            XCTAssertEqual(Double(sum.r / sum.n), Double(want.r), accuracy: 40, "\(ink.name) red")
+            XCTAssertEqual(Double(sum.b / sum.n), Double(want.b), accuracy: 40, "\(ink.name) blue")
+        }
+        XCTAssertNil(SignatureInk.image([], color: .black, width: 3))
+        let dot = try XCTUnwrap(SignatureInk.image([[CGPoint(x: 5, y: 5)]], color: .black, width: 3))
+        XCTAssertNil(DocEngine.saveSignature(image: dot), "a dot isn't a signature")
+        XCTAssertNotNil(DocEngine.saveSignature(image: try XCTUnwrap(SignatureInk.typedImage("Manan Shah", hand: 0, color: SignatureInk.all[1].ui))))
+        DocEngine.clearSignature()
+    }
+
     // MARK: capture
 
     @MainActor func testCaptureFindsCodesInPhotosAndActionsInText() throws {
@@ -1813,13 +1842,66 @@ final class EngineTests: XCTestCase {
             XCTAssertEqual(size, Animate.evenSize(CGSize(width: s.format.size.width * 0.1, height: s.format.size.height * 0.1)),
                            "\(style.title) is exactly the platform's shape")
             let secs = try await asset.load(.duration).seconds
-            XCTAssertEqual(secs, Animate.timeline(count: 3, settings: s, fps: 10).seconds, accuracy: 0.25, "\(style.title) length")
+            XCTAssertEqual(secs, Animate.timeline(count: Animate.playCount(3, settings: s), settings: s, fps: 10).seconds, accuracy: 0.25, "\(style.title) length")
         }
         // A one-photo video works (styles that need two are disabled in the UI).
         var one = Animate.Settings(); one.style = .polaroid
         let still = try XCTUnwrap(Animate.still([photos[0]], settings: one, at: 0.9))
         XCTAssertEqual(still.size, Animate.evenSize(CGSize(width: 270, height: 480)))
         XCTAssertEqual(Animate.Style.cube.minPhotos, 2)
+    }
+
+    /// Every transition really moves: halfway through it the frame is neither photo — no hard cuts dressed up as styles.
+    /// And the page curl turns like a book (the right edge lifts first).
+    func testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook() throws {
+        let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
+        let b = Self.solid(UIColor(red: 0.1, green: 0.25, blue: 0.95, alpha: 1), mark: "B")
+        func diff(_ x: UIImage, _ y: UIImage) -> Double {
+            guard let p = x.cgImage, let q = y.cgImage else { return 0 }
+            let gx = VideoJoin.gray(p), gy = VideoJoin.gray(q)
+            guard gx.count == gy.count, !gx.isEmpty else { return 0 }
+            return Double(zip(gx, gy).reduce(0) { $0 + abs(Int($1.0) - Int($1.1)) }) / Double(gx.count)
+        }
+        let transitions = Animate.Style.allCases.filter { ![.boomerang, .kenBurns, .polaroid, .filmStrip, .carousel].contains($0) }
+        for style in transitions {
+            var s = Animate.Settings(); s.style = style; s.format = try XCTUnwrap(VideoFormat.preset("square"))
+            let n = Animate.playCount(2, settings: s)
+            let tl = Animate.timeline(count: n, settings: s)
+            let at = { (t: Double) in t / tl.seconds }
+            let first = try XCTUnwrap(Animate.still([a, b], settings: s, at: at(tl.hold * 0.5), scale: 0.1))
+            let mid = try XCTUnwrap(Animate.still([a, b], settings: s, at: at(tl.hold + tl.trans * 0.5), scale: 0.1), style.title)
+            let second = try XCTUnwrap(Animate.still([a, b], settings: s, at: at(tl.hold * 1.5 + tl.trans), scale: 0.1))
+            XCTAssertGreaterThan(diff(first, second), 10, "\(style.title): the two photos differ")
+            XCTAssertGreaterThan(diff(mid, first), 4, "\(style.title): halfway is not still the first photo")
+            if style != .glitch && style != .zoomPulse && style != .pixelate {
+                XCTAssertGreaterThan(diff(mid, second), 4, "\(style.title): halfway is not already the second photo")
+            }
+        }
+        // Book direction: early in a page turn the right side already shows the next page, the left side doesn't.
+        var s = Animate.Settings(); s.style = .pageTurn; s.format = try XCTUnwrap(VideoFormat.preset("youtube"))
+        let tl = Animate.timeline(count: 2, settings: s)
+        let early = try XCTUnwrap(Animate.still([a, b], settings: s, at: (tl.hold + tl.trans * 0.3) / tl.seconds, scale: 0.1)?.cgImage)
+        let px = try XCTUnwrap(Self.rgb(early, x: early.width - 3, y: early.height / 2))
+        let left = try XCTUnwrap(Self.rgb(early, x: 3, y: early.height / 2))
+        XCTAssertGreaterThan(px.b, px.r, "right edge shows the next (blue) page first")
+        XCTAssertGreaterThan(left.r, left.b, "left edge still shows the first (red) page")
+    }
+
+    static func solid(_ c: UIColor, mark: String) -> UIImage {
+        let size = CGSize(width: 800, height: 800)
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { ctx in
+            c.setFill(); ctx.fill(CGRect(origin: .zero, size: size))
+            (mark as NSString).draw(at: CGPoint(x: 300, y: 250), withAttributes: [.font: UIFont.boldSystemFont(ofSize: 260), .foregroundColor: UIColor.white])
+        }
+    }
+
+    static func rgb(_ cg: CGImage, x: Int, y: Int) -> (r: Int, g: Int, b: Int)? {
+        var px = [UInt8](repeating: 0, count: 4)
+        guard let ctx = CGContext(data: &px, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: CGColorSpaceCreateDeviceRGB(),
+                                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+        ctx.draw(cg, in: CGRect(x: -x, y: -(cg.height - 1 - y), width: cg.width, height: cg.height))
+        return (Int(px[0]), Int(px[1]), Int(px[2]))
     }
 
     func testVideoReframeMakesExactPlatformSizes() async throws {

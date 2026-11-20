@@ -339,6 +339,16 @@
   "pt": "30 ferramentas que o teu telemóvel esqueceu.",
   "zh": "手机遗漏的 30 个工具。"
  },
+ "3D": {
+  "de": "3D",
+  "es": "3D",
+  "fr": "3D",
+  "hi": "3D",
+  "it": "3D",
+  "ja": "3D",
+  "pt": "3D",
+  "zh": "3D"
+ },
  "3D cube": {
   "de": "3D-Würfel",
   "es": "Cubo 3D",
@@ -438,6 +448,16 @@
   "ja": "これは気軽な音の増幅ツールで、補聴器や医療機器ではありません。耳を守るため音量は無理のない範囲に保ち、聞こえに問題があれば専門家に相談してください。",
   "pt": "Um amplificador de som casual, não um aparelho auditivo ou dispositivo médico. Mantém o volume confortável para proteger os ouvidos, e consulta um profissional se tiveres dificuldade em ouvir.",
   "zh": "这是一个随手用的声音放大器，不是助听器或医疗设备。请将音量保持在舒适范围以保护听力，若有听力问题请就医。"
+ },
+ "A circle opens onto the next photo": {
+  "de": "Ein Kreis öffnet sich zum nächsten Foto",
+  "es": "Un círculo se abre a la siguiente foto",
+  "fr": "Un cercle s'ouvre sur la photo suivante",
+  "hi": "एक घेरा खुलकर अगली फ़ोटो दिखाता है",
+  "it": "Un cerchio si apre sulla foto successiva",
+  "ja": "円が開いて次の写真へ",
+  "pt": "Um círculo se abre para a próxima foto",
+  "zh": "一个圆圈展开显出下一张"
  },
  "A clean M4A or WAV you can hear before saving": {
   "de": "Ein sauberes M4A oder WAV, vor dem Speichern anhörbar",
@@ -568,6 +588,26 @@
   "ja": "大変な日",
   "pt": "Um dia difícil",
   "zh": "艰难的一天"
+ },
+ "A heart opens onto the next photo": {
+  "de": "Ein Herz öffnet sich zum nächsten Foto",
+  "es": "Un corazón se abre a la siguiente foto",
+  "fr": "Un cœur s'ouvre sur la photo suivante",
+  "hi": "एक दिल खुलकर अगली फ़ोटो दिखाता है",
+  "it": "Un cuore si apre sulla foto successiva",
+  "ja": "ハートが開いて次の写真へ",
+  "pt": "Um coração se abre para a próxima foto",
+  "zh": "一颗爱心展开显出下一张"
+ },
+ "A light bar sweeps the next photo in": {
+  "de": "Ein Lichtbalken holt das nächste Foto herein",
+  "es": "Una barra de luz trae la siguiente foto",
+  "fr": "Une barre lumineuse fait entrer la photo suivante",
+  "hi": "रोशनी की पट्टी अगली फ़ोटो लाती है",
+  "it": "Una barra di luce porta la foto successiva",
+  "ja": "光のバーが次の写真を運んでくる",
+  "pt": "Uma barra de luz traz a próxima foto",
+  "zh": "一道光扫过，换成下一张"
  },
  "A local record of what the app did — tools opened, how long actions took, UI freezes and crashes. Share it with me to debug a problem. It only leaves your phone when you send it.": {
   "de": "Ein lokales Protokoll der App — geöffnete Tools, Dauer von Aktionen, Hänger und Abstürze. Teile es zur Fehlersuche. Es verlässt dein Handy nur, wenn du es sendest.",
@@ -708,6 +748,16 @@
   "ja": "着信音ファイルと設定手順",
   "pt": "Um arquivo de toque, com os passos para definir",
   "zh": "铃声文件和设置步骤"
+ },
+ "A ripple spreads like a drop in water": {
+  "de": "Eine Welle breitet sich aus wie ein Tropfen im Wasser",
+  "es": "Una onda se expande como una gota en el agua",
+  "fr": "Une onde se propage comme une goutte dans l'eau",
+  "hi": "पानी में बूँद की तरह लहर फैलती है",
+  "it": "Un'onda si allarga come una goccia nell'acqua",
+  "ja": "水滴のように波紋が広がる",
+  "pt": "Uma ondulação se espalha como uma gota na água",
+  "zh": "像水滴一样泛起涟漪"
  },
  "A searchable PDF, with the text shown before you save": {
   "de": "Ein durchsuchbares PDF, Text vor dem Speichern sichtbar",
@@ -2869,6 +2919,16 @@
   "pt": "Preto e branco",
   "zh": "黑白"
  },
+ "Black ink": {
+  "de": "Schwarze Tinte",
+  "es": "Tinta negra",
+  "fr": "Encre noire",
+  "hi": "काली स्याही",
+  "it": "Inchiostro nero",
+  "ja": "黒インク",
+  "pt": "Tinta preta",
+  "zh": "黑色墨水"
+ },
  "Black out text so it's truly gone": {
   "de": "Text schwärzen – wirklich entfernt",
   "es": "Tapa texto para que desaparezca de verdad",
@@ -2888,6 +2948,26 @@
   "ja": "空白",
   "pt": "Em branco",
   "zh": "空白"
+ },
+ "Blinds": {
+  "de": "Jalousie",
+  "es": "Persianas",
+  "fr": "Stores",
+  "hi": "ब्लाइंड्स",
+  "it": "Veneziane",
+  "ja": "ブラインド",
+  "pt": "Persianas",
+  "zh": "百叶窗"
+ },
+ "Blue ink": {
+  "de": "Blaue Tinte",
+  "es": "Tinta azul",
+  "fr": "Encre bleue",
+  "hi": "नीली स्याही",
+  "it": "Inchiostro blu",
+  "ja": "青インク",
+  "pt": "Tinta azul",
+  "zh": "蓝色墨水"
  },
  "Blur can be undone. Our blocks can't — the pixels underneath are gone in the copy.": {
   "de": "Unschärfe lässt sich rückgängig machen. Unsere Blöcke nicht — die Pixel darunter sind in der Kopie weg.",
@@ -2918,6 +2998,16 @@
   "ja": "要約する",
   "pt": "Resumir",
   "zh": "提炼要点"
+ },
+ "Bold": {
+  "de": "Fett",
+  "es": "Grueso",
+  "fr": "Épais",
+  "hi": "मोटा",
+  "it": "Spesso",
+  "ja": "太い",
+  "pt": "Grosso",
+  "zh": "粗"
  },
  "Boomerang": {
   "de": "Boomerang",
@@ -2988,6 +3078,26 @@
   "ja": "結論",
   "pt": "Conclusão",
   "zh": "底线"
+ },
+ "Breaks into pieces": {
+  "de": "Zerbricht in Stücke",
+  "es": "Se rompe en pedazos",
+  "fr": "Se brise en morceaux",
+  "hi": "टुकड़ों में टूटता है",
+  "it": "Si rompe in pezzi",
+  "ja": "粉々に砕ける",
+  "pt": "Quebra em pedaços",
+  "zh": "碎成碎片"
+ },
+ "Breaks into pixels and back": {
+  "de": "Zerfällt in Pixel und zurück",
+  "es": "Se rompe en píxeles y vuelve",
+  "fr": "Se décompose en pixels puis revient",
+  "hi": "पिक्सेल में बिखरकर वापस आता है",
+  "it": "Si scompone in pixel e torna",
+  "ja": "ピクセルに崩れて戻る",
+  "pt": "Vira pixels e volta",
+  "zh": "碎成像素再复原"
  },
  "Bright scene — I've lifted the exposure so white stays white.": {
   "de": "Helle Szene – ich habe die Belichtung angehoben, damit Weiß weiß bleibt.",
@@ -3449,6 +3559,16 @@
   "pt": "Legenda por baixo (ex.: Leia para ver o menu)",
   "zh": "码下方的文字（如：扫码看菜单）"
  },
+ "Card flip": {
+  "de": "Karte umdrehen",
+  "es": "Voltear carta",
+  "fr": "Carte retournée",
+  "hi": "कार्ड पलट",
+  "it": "Carta girata",
+  "ja": "カードめくり",
+  "pt": "Virar carta",
+  "zh": "翻牌"
+ },
  "Card name": {
   "de": "Kartenname",
   "es": "Nombre de la tarjeta",
@@ -3478,6 +3598,16 @@
   "ja": "介護者（任意）",
   "pt": "Cuidador (opcional)",
   "zh": "照护人（可选）"
+ },
+ "Carousel": {
+  "de": "Karussell",
+  "es": "Carrusel",
+  "fr": "Carrousel",
+  "hi": "कैरोसेल",
+  "it": "Carosello",
+  "ja": "カルーセル",
+  "pt": "Carrossel",
+  "zh": "旋转木马"
  },
  "Cartoon": {
   "de": "Cartoon",
@@ -6009,6 +6139,16 @@
   "pt": "Transição suave",
   "zh": "交叉淡化"
  },
+ "Crumbles away like dust": {
+  "de": "Zerfällt wie Staub",
+  "es": "Se deshace como polvo",
+  "fr": "S'effrite comme de la poussière",
+  "hi": "धूल की तरह बिखर जाता है",
+  "it": "Si sbriciola come polvere",
+  "ja": "ちりのように崩れる",
+  "pt": "Desfaz-se como poeira",
+  "zh": "像尘埃一样散去"
+ },
  "Custom": {
   "de": "Benutzerdefiniert",
   "es": "Personalizado",
@@ -6458,6 +6598,16 @@
   "ja": "別の写真・動画",
   "pt": "Outra foto/vídeo",
   "zh": "其他照片/视频"
+ },
+ "Digital glitch cuts": {
+  "de": "Digitale Glitch-Schnitte",
+  "es": "Cortes con glitch digital",
+  "fr": "Coupes glitch numériques",
+  "hi": "डिजिटल ग्लिच कट",
+  "it": "Tagli glitch digitali",
+  "ja": "デジタルグリッチのカット",
+  "pt": "Cortes com glitch digital",
+  "zh": "数字故障风切换"
  },
  "Direct sun": {
   "de": "Direkte Sonne",
@@ -6979,6 +7129,16 @@
   "pt": "Duplicados, vídeos grandes e capturas antigas, revistos primeiro.",
   "zh": "重复照片、大视频和旧截图，先查看再处理。"
  },
+ "Dust": {
+  "de": "Staub",
+  "es": "Polvo",
+  "fr": "Poussière",
+  "hi": "धूल",
+  "it": "Polvere",
+  "ja": "ちり",
+  "pt": "Poeira",
+  "zh": "尘散"
+ },
  "EU / Schengen": {
   "de": "EU / Schengen",
   "es": "UE / Schengen",
@@ -7078,6 +7238,26 @@
   "ja": "1人あたり",
   "pt": "Cada pessoa paga",
   "zh": "每人支付"
+ },
+ "Each photo flips over like a card": {
+  "de": "Jedes Foto dreht sich wie eine Karte um",
+  "es": "Cada foto se voltea como una carta",
+  "fr": "Chaque photo se retourne comme une carte",
+  "hi": "हर फ़ोटो कार्ड की तरह पलटती है",
+  "it": "Ogni foto si gira come una carta",
+  "ja": "写真がカードのように裏返る",
+  "pt": "Cada foto vira como uma carta",
+  "zh": "每张照片像卡片一样翻转"
+ },
+ "Each photo is a page you turn, curl and shadow": {
+  "de": "Jedes Foto ist eine Seite, die du umblätterst – mit Wölbung und Schatten",
+  "es": "Cada foto es una página que pasas, con doblez y sombra",
+  "fr": "Chaque photo est une page qui se tourne, avec courbure et ombre",
+  "hi": "हर फ़ोटो एक पन्ना है जो मुड़कर पलटता है, परछाईं के साथ",
+  "it": "Ogni foto è una pagina che giri, con piega e ombra",
+  "ja": "写真ごとにページがめくれ、影も付きます",
+  "pt": "Cada foto é uma página que vira, com dobra e sombra",
+  "zh": "每张照片都像书页一样翻过，带卷曲和阴影"
  },
  "Each photo pushes the last away": {
   "de": "Jedes Foto schiebt das vorige weg",
@@ -8669,6 +8849,16 @@
   "pt": "Encontra parafusos, pregos e canos de metal, não a madeira. Pode haver fiação perto — confira antes de furar.",
   "zh": "可找到螺丝、钉子和金属管，不能识别木头。龙骨附近可能有电线，钻孔前请确认。"
  },
+ "Fine": {
+  "de": "Fein",
+  "es": "Fino",
+  "fr": "Fin",
+  "hi": "पतला",
+  "it": "Fine",
+  "ja": "細い",
+  "pt": "Fino",
+  "zh": "细"
+ },
  "Fine-tune": {
   "de": "Feinabstimmung",
   "es": "Ajustar",
@@ -9108,6 +9298,26 @@
   "ja": "いちばん近いところにピント。",
   "pt": "Foco no detalhe mais próximo.",
   "zh": "对焦最近的细节。"
+ },
+ "Fold": {
+  "de": "Falten",
+  "es": "Plegar",
+  "fr": "Pliage",
+  "hi": "मोड़",
+  "it": "Piega",
+  "ja": "折りたたみ",
+  "pt": "Dobrar",
+  "zh": "折叠"
+ },
+ "Folds away like a paper fan": {
+  "de": "Faltet sich weg wie ein Papierfächer",
+  "es": "Se pliega como un abanico de papel",
+  "fr": "Se replie comme un éventail en papier",
+  "hi": "कागज़ के पंखे की तरह मुड़ जाता है",
+  "it": "Si ripiega come un ventaglio di carta",
+  "ja": "紙の扇のように折りたたまれる",
+  "pt": "Dobra como um leque de papel",
+  "zh": "像纸扇一样折叠收起"
  },
  "Follow the movement and tap — the shutter is set to freeze it.": {
   "de": "Folge der Bewegung und tippe – der Verschluss friert sie ein.",
@@ -9619,6 +9829,16 @@
   "pt": "Varrimento completo 40 Hz → 16 kHz (10 s)",
   "zh": "完整扫频 40 Hz → 16 kHz（10 秒）"
  },
+ "Fun": {
+  "de": "Spaß",
+  "es": "Divertido",
+  "fr": "Fun",
+  "hi": "मज़ेदार",
+  "it": "Divertente",
+  "ja": "楽しい",
+  "pt": "Divertido",
+  "zh": "趣味"
+ },
  "Funny voices": {
   "de": "Lustige Stimmen",
   "es": "Voces divertidas",
@@ -9889,6 +10109,16 @@
   "pt": "Óculos só se precisar: sem tinta, reflexo ou armação sobre os olhos",
   "zh": "仅在必要时戴眼镜：无色片、无反光、镜框不遮眼"
  },
+ "Glitch": {
+  "de": "Glitch",
+  "es": "Glitch",
+  "fr": "Glitch",
+  "hi": "ग्लिच",
+  "it": "Glitch",
+  "ja": "グリッチ",
+  "pt": "Glitch",
+  "zh": "故障风"
+ },
  "Gluten": {
   "de": "Gluten",
   "es": "Gluten",
@@ -10118,6 +10348,16 @@
   "ja": "緑の帯：頭頂部が入るべき範囲。青の帯：目が入るべき範囲。長押しで元の写真。",
   "pt": "Faixa verde: onde pode ficar o topo da cabeça. Faixa azul: onde podem ficar os olhos. Toque e segure para ver o original.",
   "zh": "绿色带：头顶应在的范围。蓝色带：眼睛应在的范围。长按查看原图。"
+ },
+ "Green ink": {
+  "de": "Grüne Tinte",
+  "es": "Tinta verde",
+  "fr": "Encre verte",
+  "hi": "हरी स्याही",
+  "it": "Inchiostro verde",
+  "ja": "緑インク",
+  "pt": "Tinta verde",
+  "zh": "绿色墨水"
  },
  "Grid": {
   "de": "Raster",
@@ -10378,6 +10618,16 @@
   "ja": "聴覚ブースト",
   "pt": "Reforço auditivo",
   "zh": "助听增强"
+ },
+ "Heart": {
+  "de": "Herz",
+  "es": "Corazón",
+  "fr": "Cœur",
+  "hi": "दिल",
+  "it": "Cuore",
+  "ja": "ハート",
+  "pt": "Coração",
+  "zh": "爱心"
  },
  "Heavy job — best for short clips. The detector samples frames and burns fixed boxes over the faces and text it finds, then re-encodes the clip so all metadata (including location) is dropped. One thing to know: the boxes don't track movement, so if a face or plate moves across the frame, size the box to cover its whole path — or redact a photo for pixel-exact control.": {
   "de": "Aufwendige Aufgabe — am besten für kurze Clips. Der Detektor tastet Bilder ab und legt feste Kästen über gefundene Gesichter und Texte, dann wird der Clip neu kodiert, sodass alle Metadaten (auch der Standort) entfernt werden. Zu wissen: die Kästen folgen keiner Bewegung, also wenn sich ein Gesicht oder Kennzeichen durchs Bild bewegt, dimensioniere den Kasten über den ganzen Weg — oder schwärze ein Foto für pixelgenaue Kontrolle.",
@@ -11188,6 +11438,16 @@
   "ja": "請求書番号",
   "pt": "Fatura n.º",
   "zh": "发票编号"
+ },
+ "Iris": {
+  "de": "Iris",
+  "es": "Iris",
+  "fr": "Iris",
+  "hi": "आइरिस",
+  "it": "Iride",
+  "ja": "アイリス",
+  "pt": "Íris",
+  "zh": "圆形展开"
  },
  "Is it too loud?": {
   "de": "Ist es zu laut?",
@@ -12458,6 +12718,16 @@
   "ja": "逆光です — 顔を明るくしました。光の方を向くとさらに良くなります。",
   "pt": "A luz está atrás — clareei o rosto. Virar para a luz é ainda melhor.",
   "zh": "逆光——我已提亮面部。让对方转向光线会更好。"
+ },
+ "Light leak": {
+  "de": "Lichteinfall",
+  "es": "Fuga de luz",
+  "fr": "Fuite de lumière",
+  "hi": "लाइट लीक",
+  "it": "Light leak",
+  "ja": "光漏れ",
+  "pt": "Vazamento de luz",
+  "zh": "漏光"
  },
  "Light, plain background": {
   "de": "Heller, schlichter Hintergrund",
@@ -14869,6 +15139,16 @@
   "pt": "Azul-marinho",
   "zh": "藏青"
  },
+ "Navy ink": {
+  "de": "Marineblaue Tinte",
+  "es": "Tinta azul marino",
+  "fr": "Encre bleu marine",
+  "hi": "गहरी नीली स्याही",
+  "it": "Inchiostro blu scuro",
+  "ja": "紺インク",
+  "pt": "Tinta azul-marinho",
+  "zh": "藏青色墨水"
+ },
  "Near": {
   "de": "Nah",
   "es": "Cerca",
@@ -16979,6 +17259,16 @@
   "pt": "Abre na hora",
   "zh": "立即打开"
  },
+ "Opens like double doors onto the next photo": {
+  "de": "Öffnet sich wie eine Flügeltür zum nächsten Foto",
+  "es": "Se abre como puertas dobles a la siguiente foto",
+  "fr": "S'ouvre comme une double porte sur la photo suivante",
+  "hi": "दोहरे दरवाज़े की तरह खुलकर अगली फ़ोटो दिखाता है",
+  "it": "Si apre come una doppia porta sulla foto successiva",
+  "ja": "両開きの扉のように次の写真へ",
+  "pt": "Abre como portas duplas para a próxima foto",
+  "zh": "像双开门一样打开，露出下一张"
+ },
  "Opens the share sheet — pick Contacts to save, or send the card on.": {
   "de": "Öffnet das Teilen-Menü — wähle Kontakte zum Speichern oder sende die Karte weiter.",
   "es": "Abre el menú de compartir: elige Contactos para guardar, o envía la tarjeta.",
@@ -17279,6 +17569,16 @@
   "pt": "Página detectada",
   "zh": "发现文档"
  },
+ "Page turn": {
+  "de": "Umblättern",
+  "es": "Pasar página",
+  "fr": "Page tournée",
+  "hi": "पन्ना पलटना",
+  "it": "Pagina che gira",
+  "ja": "ページめくり",
+  "pt": "Virar página",
+  "zh": "翻页"
+ },
  "Pages are flattened to reach the size, so text won't be selectable in the copy.": {
   "de": "Die Seiten werden verflacht, um die Größe zu erreichen, daher ist der Text in der Kopie nicht markierbar.",
   "es": "Las páginas se aplanan para alcanzar el tamaño, así que el texto no se podrá seleccionar en la copia.",
@@ -17308,6 +17608,16 @@
   "ja": "パラパラ漫画のようにページがめくれる",
   "pt": "Páginas passam como um flipbook",
   "zh": "页面像翻页书一样翻动"
+ },
+ "Pages riffle past with a real page curl": {
+  "de": "Seiten blättern mit echter Seitenwölbung vorbei",
+  "es": "Las páginas pasan con un doblez real",
+  "fr": "Les pages défilent avec une vraie page qui se courbe",
+  "hi": "असली मुड़ते पन्नों के साथ पन्ने फड़फड़ाते हैं",
+  "it": "Le pagine scorrono con una vera piega",
+  "ja": "本物のようにページがめくれてパラパラ",
+  "pt": "As páginas passam com uma dobra real",
+  "zh": "页面带着真实卷曲快速翻过"
  },
  "Pages to keep (optional, e.g. 1-3, 5)": {
   "de": "Zu behaltende Seiten (optional, z. B. 1-3, 5)",
@@ -17388,6 +17698,16 @@
   "ja": "コマ",
   "pt": "Quadro",
   "zh": "第几格"
+ },
+ "Paper & film": {
+  "de": "Papier & Film",
+  "es": "Papel y película",
+  "fr": "Papier et pellicule",
+  "hi": "कागज़ और फ़िल्म",
+  "it": "Carta e pellicola",
+  "ja": "紙とフィルム",
+  "pt": "Papel e filme",
+  "zh": "纸张与胶片"
  },
  "Paperwork for the year": {
   "de": "Unterlagen fürs Jahr",
@@ -17668,6 +17988,16 @@
   "ja": "一時停止中",
   "pt": "Pausado",
   "zh": "已暂停"
+ },
+ "Pen thickness": {
+  "de": "Stiftstärke",
+  "es": "Grosor del bolígrafo",
+  "fr": "Épaisseur du stylo",
+  "hi": "पेन की मोटाई",
+  "it": "Spessore della penna",
+  "ja": "ペンの太さ",
+  "pt": "Espessura da caneta",
+  "zh": "笔画粗细"
  },
  "Pencil": {
   "de": "Bleistift",
@@ -17989,6 +18319,16 @@
   "pt": "Fotos em uma imagem com design — no tamanho de Stories, posts ou panorâmico.",
   "zh": "把照片做成一张设计图——快拍、帖子或宽屏尺寸。"
  },
+ "Photos ride round on a 3D carousel": {
+  "de": "Fotos drehen sich auf einem 3D-Karussell",
+  "es": "Las fotos giran en un carrusel 3D",
+  "fr": "Les photos tournent sur un carrousel 3D",
+  "hi": "फ़ोटो 3D कैरोसेल पर घूमती हैं",
+  "it": "Le foto girano su un carosello 3D",
+  "ja": "写真が3Dカルーセルで回る",
+  "pt": "As fotos giram num carrossel 3D",
+  "zh": "照片在 3D 旋转木马上转动"
+ },
  "Photos turn like a spinning cube": {
   "de": "Fotos drehen sich wie ein Würfel",
   "es": "Las fotos giran como un cubo",
@@ -18018,6 +18358,16 @@
   "ja": "2〜12枚の写真を選択 — グリッド・メイン・モザイク・フォトストリップ、ストーリーズや投稿用に。",
   "pt": "Escolha de 2 a 12 fotos — grade, destaque, mosaico ou tira, prontas para Stories ou um post.",
   "zh": "选择2到12张照片——网格、主图、马赛克或照片条，适合快拍或帖子。"
+ },
+ "Pick a few photos. Tenzy turns them into a smooth video — 26 styles: page turn, flipbook, 3D cube, carousel, ripple, heart and more.": {
+  "de": "Wähle ein paar Fotos. Tenzy macht daraus ein flüssiges Video – 26 Stile: Umblättern, Daumenkino, 3D-Würfel, Karussell, Welle, Herz und mehr.",
+  "es": "Elige unas fotos. Tenzy las convierte en un vídeo fluido: 26 estilos, como pasar página, flipbook, cubo 3D, carrusel, onda, corazón y más.",
+  "fr": "Choisissez quelques photos. Tenzy en fait une vidéo fluide — 26 styles : page tournée, flipbook, cube 3D, carrousel, ondulation, cœur et plus.",
+  "hi": "कुछ फ़ोटो चुनें। Tenzy उन्हें स्मूद वीडियो बनाता है — 26 स्टाइल: पन्ना पलटना, फ़्लिपबुक, 3D क्यूब, कैरोसेल, लहर, दिल और भी।",
+  "it": "Scegli alcune foto. Tenzy le trasforma in un video fluido: 26 stili, tra cui pagina che gira, flipbook, cubo 3D, carosello, onda, cuore e altro.",
+  "ja": "写真を数枚選ぶと、Tenzyが滑らかな動画にします — ページめくり、パラパラ漫画、3Dキューブ、カルーセル、波紋、ハートなど26スタイル。",
+  "pt": "Escolha algumas fotos. O Tenzy faz um vídeo suave — 26 estilos: virar página, flipbook, cubo 3D, carrossel, ondulação, coração e mais.",
+  "zh": "选几张照片，Tenzy 把它们做成流畅的视频——26 种风格：翻页、手翻书、3D 立方体、旋转木马、涟漪、爱心等。"
  },
  "Pick a few photos. Tenzy turns them into a smooth video — Ken Burns, Polaroid stack, 3D cube, film strip and more.": {
   "de": "Wähle ein paar Fotos. Tenzy macht daraus ein flüssiges Video – Ken Burns, Polaroid-Stapel, 3D-Würfel, Filmstreifen und mehr.",
@@ -18368,6 +18718,16 @@
   "ja": "ピンク",
   "pt": "Rosa",
   "zh": "粉色"
+ },
+ "Pixelate": {
+  "de": "Verpixeln",
+  "es": "Pixelar",
+  "fr": "Pixeliser",
+  "hi": "पिक्सेल",
+  "it": "Pixel",
+  "ja": "ピクセル",
+  "pt": "Pixelar",
+  "zh": "像素化"
  },
  "Place signature": {
   "de": "Unterschrift platzieren",
@@ -20099,6 +20459,16 @@
   "pt": "Vermelho",
   "zh": "红"
  },
+ "Red ink": {
+  "de": "Rote Tinte",
+  "es": "Tinta roja",
+  "fr": "Encre rouge",
+  "hi": "लाल स्याही",
+  "it": "Inchiostro rosso",
+  "ja": "赤インク",
+  "pt": "Tinta vermelha",
+  "zh": "红色墨水"
+ },
  "Redact": {
   "de": "Schwärzen",
   "es": "Ocultar",
@@ -20848,6 +21218,16 @@
   "ja": "着信音：",
   "pt": "Toque:",
   "zh": "铃声："
+ },
+ "Ripple": {
+  "de": "Welle",
+  "es": "Onda",
+  "fr": "Ondulation",
+  "hi": "लहर",
+  "it": "Onda",
+  "ja": "波紋",
+  "pt": "Ondulação",
+  "zh": "涟漪"
  },
  "Robot": {
   "de": "Roboter",
@@ -22039,6 +22419,16 @@
   "pt": "Escanear, ler e organizar",
   "zh": "扫描、阅读与整理"
  },
+ "Scanner": {
+  "de": "Scanner",
+  "es": "Escáner",
+  "fr": "Scanner",
+  "hi": "स्कैनर",
+  "it": "Scanner",
+  "ja": "スキャナー",
+  "pt": "Scanner",
+  "zh": "扫描仪"
+ },
  "Schedule": {
   "de": "Zeitplan",
   "es": "Horario",
@@ -23079,6 +23469,16 @@
   "pt": "Realçar texto",
   "zh": "锐化文字"
  },
+ "Shatter": {
+  "de": "Zersplittern",
+  "es": "Romper",
+  "fr": "Éclats",
+  "hi": "टुकड़े",
+  "it": "Frantumi",
+  "ja": "粉砕",
+  "pt": "Estilhaçar",
+  "zh": "碎裂"
+ },
  "Sheet name": {
   "de": "Tabellenname",
   "es": "Nombre de la hoja",
@@ -23389,6 +23789,16 @@
   "pt": "Assine qualquer PDF com sua assinatura",
   "zh": "用你的签名签署任何PDF"
  },
+ "Sign here": {
+  "de": "Hier unterschreiben",
+  "es": "Firma aquí",
+  "fr": "Signez ici",
+  "hi": "यहाँ हस्ताक्षर करें",
+  "it": "Firma qui",
+  "ja": "ここに署名",
+  "pt": "Assine aqui",
+  "zh": "在此签名"
+ },
  "Sign here with your finger": {
   "de": "Hier mit dem Finger unterschreiben",
   "es": "Firma aquí con el dedo",
@@ -23438,6 +23848,26 @@
   "ja": "求められている箇所に署名 — 全ページ",
   "pt": "Assinar onde pede — todas as páginas",
   "zh": "在要求签名处签名——每一页"
+ },
+ "Signature": {
+  "de": "Unterschrift",
+  "es": "Firma",
+  "fr": "Signature",
+  "hi": "हस्ताक्षर",
+  "it": "Firma",
+  "ja": "署名",
+  "pt": "Assinatura",
+  "zh": "签名"
+ },
+ "Signature pad": {
+  "de": "Unterschriftenfeld",
+  "es": "Panel de firma",
+  "fr": "Zone de signature",
+  "hi": "हस्ताक्षर पैड",
+  "it": "Riquadro firma",
+  "ja": "署名パッド",
+  "pt": "Área de assinatura",
+  "zh": "签名板"
  },
  "Signature upload": {
   "de": "Unterschrift hochladen",
@@ -23588,6 +24018,16 @@
   "ja": "スカイ",
   "pt": "Céu",
   "zh": "天蓝"
+ },
+ "Slats swipe across": {
+  "de": "Lamellen wischen hinüber",
+  "es": "Las lamas se deslizan",
+  "fr": "Des lamelles balaient l'image",
+  "hi": "पट्टियाँ सरकती हैं",
+  "it": "Le lamelle scorrono",
+  "ja": "スラットが横切る",
+  "pt": "Lâminas deslizam",
+  "zh": "百叶条横扫而过"
  },
  "Sleep sounds and a snore check": {
   "de": "Schlafgeräusche und Schnarch-Check",
@@ -23788,6 +24228,16 @@
   "ja": "いちばん小さいファイル",
   "pt": "Ficheiro mais pequeno",
   "zh": "最小文件"
+ },
+ "Smooth": {
+  "de": "Sanft",
+  "es": "Suave",
+  "fr": "Fluide",
+  "hi": "स्मूद",
+  "it": "Fluido",
+  "ja": "なめらか",
+  "pt": "Suave",
+  "zh": "流畅"
  },
  "Smoothness": {
   "de": "Glättung",
@@ -25098,6 +25548,16 @@
   "ja": "壁の近くをゆっくり動かして、間柱のネジ・釘・配管・配線ボックスを探します。ケースの磁石から離してください。センサーは端末上部の近くにあります。",
   "pt": "Varre devagar junto à parede para encontrar parafusos de barrotes, pregos, tubos e caixas elétricas. Mantém-no longe dos ímanes da capa. O sensor fica perto do topo do telemóvel.",
   "zh": "贴着墙面缓慢扫动，寻找墙筋的螺丝、钉子、管道和接线盒。使其远离保护壳的磁铁。传感器位于手机顶部附近。"
+ },
+ "Swirl": {
+  "de": "Wirbel",
+  "es": "Remolino",
+  "fr": "Tourbillon",
+  "hi": "भँवर",
+  "it": "Vortice",
+  "ja": "渦",
+  "pt": "Redemoinho",
+  "zh": "漩涡"
  },
  "Symbol": {
   "de": "Symbol",
@@ -26678,6 +27138,16 @@
   "ja": "この動画ではその速度にできませんでした。",
   "pt": "Não foi possível fazer essa velocidade com este vídeo.",
   "zh": "无法用这个视频做出这个速度。"
+ },
+ "That style couldn't be made from these photos.": {
+  "de": "Dieser Stil ließ sich aus diesen Fotos nicht machen.",
+  "es": "Ese estilo no se pudo hacer con estas fotos.",
+  "fr": "Ce style n'a pas pu être créé avec ces photos.",
+  "hi": "इन फ़ोटो से यह स्टाइल नहीं बन सका।",
+  "it": "Non è stato possibile creare questo stile con queste foto.",
+  "ja": "この写真ではそのスタイルを作れませんでした。",
+  "pt": "Não foi possível fazer esse estilo com estas fotos.",
+  "zh": "无法用这些照片制作该样式。"
  },
  "That style wouldn't scan reliably with this much text, so here's the plain code. Try fewer details, no picture, or squares.": {
   "de": "Mit so viel Text wäre der Stil nicht zuverlässig scannbar, darum hier der schlichte Code. Versuch weniger Angaben, kein Bild oder Quadrate.",
@@ -28579,6 +29049,16 @@
   "pt": "Tentar de novo",
   "zh": "再拍一张"
  },
+ "Try another animation on the same photos": {
+  "de": "Andere Animation mit denselben Fotos",
+  "es": "Prueba otra animación con las mismas fotos",
+  "fr": "Essayez une autre animation sur les mêmes photos",
+  "hi": "इन्हीं फ़ोटो पर दूसरा एनिमेशन आज़माएँ",
+  "it": "Prova un'altra animazione con le stesse foto",
+  "ja": "同じ写真で別のアニメーションを試す",
+  "pt": "Experimente outra animação nas mesmas fotos",
+  "zh": "用同样的照片试试别的动画"
+ },
  "Try another emoji": {
   "de": "Anderes Emoji probieren",
   "es": "Prueba otro emoji",
@@ -28959,6 +29439,16 @@
   "pt": "Falas",
   "zh": "发言段落"
  },
+ "Twists into the next photo": {
+  "de": "Dreht sich ins nächste Foto",
+  "es": "Gira hacia la siguiente foto",
+  "fr": "Tourbillonne vers la photo suivante",
+  "hi": "घूमकर अगली फ़ोटो में बदलता है",
+  "it": "Si attorciglia nella foto successiva",
+  "ja": "渦を巻いて次の写真へ",
+  "pt": "Gira para a próxima foto",
+  "zh": "旋转进入下一张"
+ },
  "Two days before, at 10 am, and on the last morning, at 9 am.": {
   "de": "Zwei Tage vorher um 10 Uhr und am letzten Morgen um 9 Uhr.",
   "es": "Dos días antes, a las 10, y la última mañana, a las 9.",
@@ -29059,6 +29549,16 @@
   "pt": "Digite de novo",
   "zh": "再输入一次"
  },
+ "Type my name": {
+  "de": "Namen tippen",
+  "es": "Escribir mi nombre",
+  "fr": "Taper mon nom",
+  "hi": "अपना नाम लिखें",
+  "it": "Scrivi il mio nome",
+  "ja": "名前を入力",
+  "pt": "Digitar meu nome",
+  "zh": "输入我的名字"
+ },
  "Type on it with Sign": {
   "de": "Mit „Unterschreiben“ darauf tippen",
   "es": "Escribir con Firmar",
@@ -29108,6 +29608,16 @@
   "ja": "やりたいことを入力——写真を縮小、レシートをスキャン、QRコードを作成。",
   "pt": "Escreve o que queres fazer — reduzir uma foto, digitalizar um recibo, criar um código QR.",
   "zh": "输入你想做的事——缩小照片、扫描收据、生成二维码。"
+ },
+ "Type your name and pick a handwriting.": {
+  "de": "Namen eingeben und eine Handschrift wählen.",
+  "es": "Escribe tu nombre y elige una letra.",
+  "fr": "Tapez votre nom et choisissez une écriture.",
+  "hi": "अपना नाम लिखें और लिखावट चुनें।",
+  "it": "Scrivi il tuo nome e scegli una calligrafia.",
+  "ja": "名前を入力して筆跡を選んでください。",
+  "pt": "Digite seu nome e escolha uma letra.",
+  "zh": "输入你的名字并选择一种笔迹。"
  },
  "Typical limits: email 25 MB, most portals 2 MB, government photo uploads 50–200 KB.": {
   "de": "Typische Grenzen: E-Mail 25 MB, die meisten Portale 2 MB, behördliche Foto-Uploads 50–200 KB.",
@@ -29989,6 +30499,16 @@
   "pt": "Quente",
   "zh": "暖色"
  },
+ "Warm film light washes between photos": {
+  "de": "Warmes Filmlicht zwischen den Fotos",
+  "es": "Luz cálida de película entre fotos",
+  "fr": "Une lumière chaude de pellicule passe entre les photos",
+  "hi": "फ़ोटो के बीच गर्म फ़िल्मी रोशनी",
+  "it": "Luce calda da pellicola tra le foto",
+  "ja": "写真の間に温かいフィルムの光",
+  "pt": "Luz quente de filme entre as fotos",
+  "zh": "照片之间掠过温暖的胶片光"
+ },
  "Warm water, not hot, if you're unwell": {
   "de": "Warmes, nicht heißes Wasser, wenn du krank bist",
   "es": "Agua tibia, no caliente, si no te encuentras bien",
@@ -30809,6 +31329,16 @@
   "pt": "Plantas de cômodo precisam de iPhone com LiDAR (modelos Pro).",
   "zh": "整间平面图需要带 LiDAR 的 iPhone（Pro 机型）。"
  },
+ "Whoosh": {
+  "de": "Wusch",
+  "es": "Zas",
+  "fr": "Whoosh",
+  "hi": "फ़र्राटा",
+  "it": "Whoosh",
+  "ja": "ビュン",
+  "pt": "Zum",
+  "zh": "嗖"
+ },
  "Wi-Fi password": {
   "de": "WLAN-Passwort",
   "es": "Contraseña del wifi",
@@ -31529,6 +32059,16 @@
   "pt": "Seus remédios",
   "zh": "你的药品"
  },
+ "Your name": {
+  "de": "Dein Name",
+  "es": "Tu nombre",
+  "fr": "Votre nom",
+  "hi": "आपका नाम",
+  "it": "Il tuo nome",
+  "ja": "お名前",
+  "pt": "Seu nome",
+  "zh": "你的名字"
+ },
  "Your name (for Name / Initials)": {
   "de": "Dein Name (für Name / Initialen)",
   "es": "Tu nombre (para Nombre / Iniciales)",
@@ -31538,6 +32078,16 @@
   "ja": "氏名（名前／イニシャル用）",
   "pt": "O teu nome (para Nome / Iniciais)",
   "zh": "你的名字（用于姓名／缩写）"
+ },
+ "Your name appears here": {
+  "de": "Hier erscheint dein Name",
+  "es": "Tu nombre aparece aquí",
+  "fr": "Votre nom apparaît ici",
+  "hi": "आपका नाम यहाँ दिखेगा",
+  "it": "Il tuo nome appare qui",
+  "ja": "ここに名前が表示されます",
+  "pt": "Seu nome aparece aqui",
+  "zh": "你的名字会显示在这里"
  },
  "Your name as it should appear": {
   "de": "Dein Name, wie er erscheinen soll",
@@ -31808,6 +32358,16 @@
   "ja": "ズームはカメラアプリの上限を超えます。手を固定せずに細かい文字を読むにはフリーズしてください。",
   "pt": "O zoom vai além do que a app Câmara permite. Congela para ler as letras pequenas sem manter a mão firme.",
   "zh": "变焦超出了相机应用允许的范围。冻结即可无需保持不动地阅读小字。"
+ },
+ "Zooms through with motion blur": {
+  "de": "Zoomt mit Bewegungsunschärfe hindurch",
+  "es": "Atraviesa con zoom y desenfoque",
+  "fr": "Zoom à travers avec flou de mouvement",
+  "hi": "मोशन ब्लर के साथ ज़ूम करता है",
+  "it": "Zoom con sfocatura di movimento",
+  "ja": "モーションブラーでズームして抜ける",
+  "pt": "Atravessa com zoom e desfoque",
+  "zh": "带动态模糊的穿越缩放"
  },
  "a PDF": {
   "de": "ein PDF",

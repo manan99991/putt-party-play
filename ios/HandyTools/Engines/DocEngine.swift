@@ -488,6 +488,24 @@ enum DocEngine {
         AppGroup.defaults.set(img.pngData(), forKey: sigKey)
         return img
     }
+    /// Keep a signature drawn or typed on the pad (any pen colour). nil for a blank or a dot.
+    static func saveSignature(image img: UIImage) -> UIImage? {
+        guard max(img.size.width, img.size.height) >= 40, visibleInk(img) > 0.004 else { return nil }
+        AppGroup.defaults.set(img.pngData(), forKey: sigKey)
+        return img
+    }
+    /// Share of the picture covered by ink of any colour.
+    static func visibleInk(_ img: UIImage) -> Double {
+        guard let cg = img.cgImage else { return 0 }
+        let w = min(cg.width, 300), h = max(1, Int(Double(cg.height) * Double(w) / Double(max(cg.width, 1))))
+        var buf = [UInt8](repeating: 0, count: w * h * 4)
+        guard let ctx = CGContext(data: &buf, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w * 4,
+                                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return 0 }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        var n = 0
+        for i in stride(from: 3, to: buf.count, by: 4) where buf[i] > 100 { n += 1 }
+        return Double(n) / Double(w * h)
+    }
     /// Share of the picture that is dark, visible ink (not white, not see-through).
     static func inkCoverage(_ img: UIImage) -> Double {
         guard let cg = img.cgImage else { return 0 }

@@ -43,6 +43,48 @@ final class ToolOutputQualityTests: XCTestCase {
         }
     }
 
+    // MARK: animations
+
+    /// A contact sheet of every animation style — five frames across its first transition, one row per style — so the
+    /// motion can be looked at, not just measured. Synthetic pictures only (no one's photos).
+    func testAnimationStylesContactSheet() throws {
+        guard ProcessInfo.processInfo.environment["QA_OUT"] != nil else { throw XCTSkip("runs in the QA lab") }
+        func pic(_ hue: CGFloat, _ label: String) -> UIImage {
+            let size = CGSize(width: 900, height: 1200)
+            let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1
+            return UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+                let cols = [UIColor(hue: hue, saturation: 0.7, brightness: 0.95, alpha: 1).cgColor, UIColor(hue: hue + 0.15, saturation: 0.8, brightness: 0.4, alpha: 1).cgColor] as CFArray
+                if let g = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: cols, locations: [0, 1]) {
+                    c.cgContext.drawLinearGradient(g, start: .zero, end: CGPoint(x: 900, y: 1200), options: [])
+                }
+                UIColor(white: 1, alpha: 0.85).setFill()
+                c.cgContext.fillEllipse(in: CGRect(x: 120, y: 160, width: 260, height: 260))
+                UIColor(white: 0, alpha: 0.3).setFill(); c.fill(CGRect(x: 0, y: 900, width: 900, height: 300))
+                (label as NSString).draw(at: CGPoint(x: 330, y: 480), withAttributes: [.font: UIFont.boldSystemFont(ofSize: 300), .foregroundColor: UIColor.white])
+            }
+        }
+        let photos = [pic(0.02, "1"), pic(0.55, "2"), pic(0.3, "3")]
+        let styles = Animate.Style.allCases
+        let cell = CGSize(width: 216, height: 270), label: CGFloat = 130
+        let sheet = CGSize(width: label + cell.width * 5, height: cell.height * CGFloat(styles.count))
+        let fmt = UIGraphicsImageRendererFormat(); fmt.scale = 1
+        let img = UIGraphicsImageRenderer(size: sheet, format: fmt).image { c in
+            UIColor.black.setFill(); c.fill(CGRect(origin: .zero, size: sheet))
+            for (row, style) in styles.enumerated() {
+                var s = Animate.Settings(); s.style = style; s.format = VideoFormat.preset("portrait")!
+                let tl = Animate.timeline(count: Animate.playCount(photos.count, settings: s), settings: s)
+                (style.title as NSString).draw(at: CGPoint(x: 8, y: CGFloat(row) * cell.height + 8),
+                                               withAttributes: [.font: UIFont.boldSystemFont(ofSize: 20), .foregroundColor: UIColor.white])
+                for col in 0..<5 {
+                    let t = tl.hold + tl.trans * Double(col) / 4 - (col == 0 ? tl.hold * 0.5 : 0)
+                    guard let f = Animate.still(photos, settings: s, at: min(0.999, t / tl.seconds), scale: 0.2) else { continue }
+                    f.draw(in: CGRect(x: label + CGFloat(col) * cell.width, y: CGFloat(row) * cell.height, width: cell.width - 4, height: cell.height - 4))
+                }
+            }
+        }
+        Self.keep(img, as: "animate-contact-sheet")
+    }
+
     // MARK: passport
 
     func testPassportPhotosMeetEachCountrysRules() throws {

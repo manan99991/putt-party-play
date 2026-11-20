@@ -138,5 +138,19 @@ final class PromiseTests: XCTestCase {
         draw.tap()
         XCTAssertTrue(app.buttons["Sign in the box first"].waitForExistence(timeout: 5), "Save is offered before anything is drawn")
         XCTAssertFalse(app.buttons["Sign in the box first"].isEnabled)
+        // Now really sign with a finger, in blue ink, and save — the 4th report was a pad that never inked.
+        let pad = app.descendants(matching: .any).matching(identifier: "signature-pad").firstMatch
+        XCTAssertTrue(pad.waitForExistence(timeout: 5), "no signing pad")
+        app.buttons["ink-blue"].tap()
+        let a = pad.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.6))
+        a.press(forDuration: 0.05, thenDragTo: pad.coordinate(withNormalizedOffset: CGVector(dx: 0.45, dy: 0.3)))
+        pad.coordinate(withNormalizedOffset: CGVector(dx: 0.45, dy: 0.3)).press(forDuration: 0.05, thenDragTo: pad.coordinate(withNormalizedOffset: CGVector(dx: 0.8, dy: 0.65)))
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "signature-looks-good").firstMatch.waitForExistence(timeout: 5),
+                      "a finger stroke didn't ink the pad")
+        let save = app.buttons["Save signature"]
+        XCTAssertTrue(save.isEnabled)
+        save.tap()
+        XCTAssertFalse(app.buttons["Save signature"].waitForExistence(timeout: 3), "the signature wasn't accepted")
+        XCTAssertTrue(app.buttons["run-draw-signature"].waitForNonExistence(timeout: 5), "the tool still asks for a signature after one was saved")
     }
 }

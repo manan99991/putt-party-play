@@ -5,7 +5,7 @@ import AVKit
 /// Animate — add photos, get a polished video sized for where you'll post it. Tenzy picks a style that
 /// suits how many photos you chose; every change (style, format, framing, pace) re-plays a quick live
 /// preview, and "Make video" renders the full-quality MP4 with live progress, finishing in the
-/// background if you leave. Nine styles, five real platform formats, all on device.
+/// background if you leave. 26 styles, five real platform formats, all on device.
 struct AnimateView: View {
     @State private var photos: [UIImage] = []
     @State private var picks: [PhotosPickerItem] = []
@@ -58,7 +58,7 @@ struct AnimateView: View {
     private var pickCard: some View {
         VStack(spacing: HandySpacing.s16) {
             Image(systemName: "sparkles.rectangle.stack").font(.system(size: 44)).foregroundStyle(HandyColor.accent)
-            Text(L("Pick a few photos. Tenzy turns them into a smooth video — Ken Burns, Polaroid stack, 3D cube, film strip and more."))
+            Text(L("Pick a few photos. Tenzy turns them into a smooth video — 26 styles: page turn, flipbook, 3D cube, carousel, ripple, heart and more."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
             PhotosPicker(selection: $picks, maxSelectionCount: Self.maxPhotos, matching: .images) {
                 Label(L("Choose photos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
@@ -90,8 +90,11 @@ struct AnimateView: View {
             }
 
             section("Style")
-            LazyVGrid(columns: cols, spacing: HandySpacing.s8) {
-                ForEach(Animate.Style.allCases) { s in styleTile(s) }
+            ForEach(Animate.Style.Group.allCases) { g in
+                Text(L(g.rawValue)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                LazyVGrid(columns: cols, spacing: HandySpacing.s8) {
+                    ForEach(Animate.Style.inGroup(g)) { s in styleTile(s) }
+                }
             }
 
             section("Where will you post it?")
@@ -134,7 +137,7 @@ struct AnimateView: View {
 
     private var previewBox: some View {
         let ratio = settings.format.size.width / settings.format.size.height
-        let tl = Animate.timeline(count: photos.count, settings: settings)
+        let tl = Animate.timeline(count: Animate.playCount(photos.count, settings: settings), settings: settings)
         return VStack(spacing: HandySpacing.s4) {
             ZStack {
                 RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).fill(Color.black)

@@ -1632,6 +1632,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     var initialMany: [ChainPayload] = []
     @State private var started = false
     @State private var inputVideo: URL?
+    /// The photos a flipbook was made from, so its finish can try every other animation on them.
+    @State private var animPhotos: [UIImage] = []
     @State private var scamChecked: String?
     /// A video waiting for you to pick its part (tools that keep a stretch: stories, reels, first minute).
     @State private var choosing: URL?
@@ -2271,15 +2273,25 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     if case .file(let d, let e) = p, ChainPayload.isPhoto(e) { return UIImage(data: d) }
                     return nil
                 }
-                if imgs.count >= 2, let data = await ChainMotion.flipbookVideo(images: imgs) {
-                    let url = FileManager.default.temporaryDirectory.appendingPathComponent(ChainName.file(pattern: chain.fileName, tool: chain.name, ext: "mp4"))
-                    if (try? data.write(to: url)) != nil {
-                        await MainActor.run {
-                            busy = false; progress = ""; result = .video(url)
-                            finished(Outbox.make(.video(url), named: chain.fileName, tool: chain.name))
-                        }
-                        return
+                // The same engine and real page curl as the Animate tool, shaped to the photos.
+                let small = imgs.map { $0.resized(maxDimension: 1440).normalizedUp() }
+                await MainActor.run { RunProgress.shared.begin(); progress = "Turning the pages…" }
+                var made: URL?
+                if imgs.count >= 2 {
+                    made = await Animate.render(small, settings: Animate.settings(for: small, style: .flipbook)) { p in
+                        Task { @MainActor in RunProgress.shared.set(p) }
                     }
+                }
+                await MainActor.run { RunProgress.shared.end() }
+                if let made {
+                    let url = FileManager.default.temporaryDirectory.appendingPathComponent(ChainName.file(pattern: chain.fileName, tool: chain.name, ext: "mp4"))
+                    try? FileManager.default.removeItem(at: url)
+                    let final = (try? FileManager.default.moveItem(at: made, to: url)) != nil ? url : made
+                    await MainActor.run {
+                        busy = false; progress = ""; animPhotos = small; result = .video(final)
+                        finished(Outbox.make(.video(final), named: chain.fileName, tool: chain.name))
+                    }
+                    return
                 }
                 await MainActor.run { busy = false; progress = ""; message = "A flipbook needs at least two photos." }
                 return
@@ -2558,7 +2570,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
         case .video(let u):
             // Same finish as the Video tool: watch it, what changed against your original, each promise checked on the file.
-            if chain.steps.last?.block == .videoSpeed {
+            if chain.flipbook == true, !animPhotos.isEmpty {
+                AnimateFinishCard(photos: animPhotos, style: .flipbook, url: u).id(u)
+            } else if chain.steps.last?.block == .videoSpeed {
                 // Speed: sound kept at natural pitch, and every other speed one tap away on the same clip.
                 SpeedFinishCard(source: inputVideo, url: u, rate: ChainText.speedRate(chain.steps.last?.settings["speed"])).id(u)
             } else {
