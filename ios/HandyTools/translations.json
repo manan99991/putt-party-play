@@ -37428,5 +37428,35 @@
   "ja": "今のままでいる",
   "pt": "Ficar como está",
   "zh": "维持现状"
+ },
+ "How long it will take": {
+  "de": "Wie lange es dauert",
+  "es": "Cuánto va a tardar",
+  "fr": "Combien de temps ça prend",
+  "hi": "कितना समय लगेगा",
+  "it": "Quanto ci vorrà",
+  "ja": "どのくらいかかるか",
+  "pt": "Quanto tempo vai levar",
+  "zh": "要花多长时间"
+ },
+ "More casual": {
+  "de": "Lockerer",
+  "es": "Más informal",
+  "fr": "Plus décontracté",
+  "hi": "ज़्यादा सहज",
+  "it": "Più informale",
+  "ja": "カジュアルに",
+  "pt": "Mais casual",
+  "zh": "更随意"
+ },
+ "Kinder": {
+  "de": "Freundlicher",
+  "es": "Más amable",
+  "fr": "Plus gentil",
+  "hi": "ज़्यादा विनम्र",
+  "it": "Più gentile",
+  "ja": "やさしく",
+  "pt": "Mais gentil",
+  "zh": "更体贴"
  }
 }

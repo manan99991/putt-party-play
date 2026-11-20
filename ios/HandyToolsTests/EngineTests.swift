@@ -1726,6 +1726,8 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(ThinkBrain.tone(of: "need the deck done asap"), "in a hurry")
         XCTAssertNil(ThinkBrain.tone(of: "buy milk, call mum"))
         XCTAssertEqual(ThinkBrain.kind(of: "what can I cook with eggs, rice and spinach"), .recipe)
+        XCTAssertEqual(ThinkBrain.kind(of: "how long will it take to paint a bedroom?"), .estimate)
+        XCTAssertEqual(ThinkBrain.kind(of: "explain compound interest"), .question)
 
         // A step too big to start breaks into ones you can start now; a step that's two jobs splits in two.
         let small = ThinkBrain.breakDown(ThinkBrain.Step(text: "Clean the garage", minutes: 60))

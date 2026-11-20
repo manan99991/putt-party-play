@@ -14,7 +14,7 @@ import FoundationModels
 enum ThinkBrain {
 
     enum Kind: String, CaseIterable, Equatable, Codable {
-        case worry, decision, tasks, question, message, prep, idea, recipe, judge
+        case worry, decision, tasks, question, message, prep, idea, recipe, judge, estimate
         var label: String {
             switch self {
             case .worry: return "Something weighing on you"
@@ -26,6 +26,7 @@ enum ThinkBrain {
             case .idea: return "An idea to shape"
             case .recipe: return "A meal from what you have"
             case .judge: return "How a message comes across"
+            case .estimate: return "How long it will take"
             }
         }
         var icon: String {
@@ -39,6 +40,7 @@ enum ThinkBrain {
             case .idea: return "sparkles"
             case .recipe: return "fork.knife"
             case .judge: return "eye"
+            case .estimate: return "hourglass"
             }
         }
     }
@@ -128,6 +130,7 @@ enum ThinkBrain {
             || has(t, #"\b(he|she|they|my (boss|manager|partner|wife|husband|friend|mum|mom|dad|landlord|client)) (said|wrote|texted|replied|messaged|sent)\b.{0,20}[:\"“]"#) { return .judge }
         if has(t, #"^(please\s+)?(re-?word|rewrite|rephrase|reply to|respond to|make (this|it) (sound|more|less|shorter|nicer|polite)|fix (this|my) (message|email|text)|write (a|an|me a) (message|email|text|note|reply))"#)
             || has(t, #"^(hi|hey|hello|dear)\b.{25,}"#) { return .message }
+        if has(t, #"^how long (will|does|would|should|do|might)|\bhow long (it|this|that) (will|would)? ?take|\bestimate (how long|the time)|\bhow much time\b"#) { return .estimate }
         if has(t, #"\bshould i\b|\bor not\b|\bvs\.?\b|\bversus\b|which (one|is better|should)|\bdecid|\bchoose between\b|\bworth it\b|\bpros and cons\b"#) { return .decision }
         if has(t, #"(what (can|should) i (cook|make)|recipe|dinner (idea|with)|i have .*(eggs|chicken|rice|pasta|potato|tofu|beans|spinach|onion))"#) { return .recipe }
         if has(t, #"(getting ready|prepare|prep for|packing for|before (my|the) (interview|appointment|trip|meeting|surgery|exam)|first day|checklist for)"#) { return .prep }
@@ -329,7 +332,7 @@ enum ThinkBrain {
                           recommendation: "Weigh each side below — tap a point to make it matter more or less, and add your own. The lean updates as you go.",
                           followUps: ["What are the pros and cons?", "What would change your answer?"],
                           options: decisionOptions(text))
-        case .question, .message, .prep, .idea, .recipe:
+        case .question, .message, .prep, .idea, .recipe, .estimate:
             return Answer(kind: k, understood: "\(k.label).",
                           headline: "This one needs Apple Intelligence",
                           sections: [Section(title: "Why", bullets: [
@@ -390,14 +393,19 @@ enum ThinkBrain {
     Never mention weather, apps or anything they did not raise.
     Tone: read how they sound (stressed, in a hurry, frustrated, excited, calm) and match it — gentle and short when \
     they're stressed, brisk when they're in a hurry, steady when they're frustrated. Name it in two or three words.
-    Message: give the ready-to-send text, plus 3 or 4 variants labelled by tone (Warmer, More professional, Shorter, \
-    Firmer), each keeping every name, time and fact.
+    Message: give the ready-to-send text, plus 4 to 6 variants labelled by tone (Warmer, More professional, Shorter, \
+    Firmer, More casual, Kinder), each keeping every name, time and fact.
     Tasks: order them so the one that unblocks the rest comes first, and give honest minutes for each.
     Recipe (they list ingredients or ask what to cook): one dish they can make mostly from what they have — you need \
     not use every ingredient — respecting any diet they mention; the ingredients with amounts, numbered method steps \
     with minutes, and what to swap if something is missing.
     Decision: list every real option (for a yes/no, the option and staying as they are), each with 2 to 4 specific pros \
     and cons weighted 1 (small), 2 (medium) or 3 (big) for THEIR situation; then a lean, and what would change it.
+    Question (Professor): explain in plain words first, then one concrete everyday example, then why it matters to \
+    them; follow the detail level — few means the short version, tiny means build it up from the very basics.
+    Estimate (they ask how long something takes): a realistic range in the headline ("About 2 to 3 hours"), the steps \
+    with minutes, what makes it take longer, and how to make it faster.
+    Recipe extras: honour servings, equipment, time and diet if they mention them.
     Judge (they ask how a message they received comes across, or what someone meant): sections How it comes across, \
     What they probably mean, What to watch for; be fair to the sender and don't invent bad intent; then a calm \
     recommended reply as the rewrite, with variants labelled Friendly, Short and Clear the air.
@@ -416,7 +424,7 @@ enum ThinkBrain {
     }
     @available(iOS 26.0, *)
     @Generable struct AIAnswer {
-        @Guide(description: "One of: worry, decision, tasks, question, message, prep, idea, recipe, judge") var kind: String
+        @Guide(description: "One of: worry, decision, tasks, question, message, prep, idea, recipe, judge, estimate") var kind: String
         @Guide(description: "One warm, specific sentence showing you understood, in their own terms") var understood: String
         @Guide(description: "The core of the answer in under 8 words") var headline: String
         @Guide(description: "2 to 4 sections that untangle the situation") var sections: [AISection]
@@ -425,7 +433,7 @@ enum ThinkBrain {
         @Guide(description: "Only for a message: the ready-to-send text. Otherwise empty") var rewrite: String
         @Guide(description: "2 or 3 short follow-up questions they might ask next, in their voice") var followUps: [String]
         @Guide(description: "How they sound in two or three words, e.g. stressed, in a hurry, calm") var tone: String
-        @Guide(description: "For a message: 3 or 4 versions labelled Warmer, More professional, Shorter, Firmer. For judge: replies labelled Friendly, Short, Clear the air. Otherwise empty") var variants: [AIVariant]
+        @Guide(description: "For a message: 4 to 6 versions labelled Warmer, More professional, Shorter, Firmer, More casual, Kinder. For judge: replies labelled Friendly, Short, Clear the air. Otherwise empty") var variants: [AIVariant]
         @Guide(description: "Only for a decision: every option, each with weighted pros and cons. Otherwise empty") var options: [AIOption]
     }
     @available(iOS 26.0, *)
@@ -441,7 +449,7 @@ enum ThinkBrain {
     }
     @available(iOS 26.0, *)
     @Generable struct AIVariant {
-        @Guide(description: "The label: Warmer, More professional, Shorter, Firmer, Friendly, Short or Clear the air") var label: String
+        @Guide(description: "The label: Warmer, More professional, Shorter, Firmer, More casual, Kinder, Friendly, Short or Clear the air") var label: String
         @Guide(description: "The full message in that tone, ready to send") var text: String
     }
     @available(iOS 26.0, *)
