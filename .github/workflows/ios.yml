@@ -129,6 +129,10 @@ jobs:
       # Accuracy on real photos runs in its own workflow (qa-lab.yml) so a slow or cancelled step here never skips it.
       - name: Simulator screenshots of every tool
         if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') || contains(github.event.head_commit.message, 'Ship-Store=YES') || contains(github.event.head_commit.message, 'Capture-Shots=YES') }}"
+        # Screenshots never gate a TestFlight: on 20 Nov this step hung for two hours after every test
+        # had passed and took the whole build down with it. Capped, and a failure here doesn't fail the job.
+        timeout-minutes: 30
+        continue-on-error: true
         run: |
           set -x
           APP=$(find ~/Library/Developer/Xcode/DerivedData -path "*Debug-iphonesimulator/HandyTools.app" -maxdepth 6 | head -1)
