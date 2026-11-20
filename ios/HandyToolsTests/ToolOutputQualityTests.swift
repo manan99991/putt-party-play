@@ -20,6 +20,14 @@ final class ToolOutputQualityTests: XCTestCase {
         try? FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         try? d.write(to: URL(fileURLWithPath: dir).appendingPathComponent(name.replacingOccurrences(of: "/", with: "-") + ".png"))
     }
+    /// Keep what was read off a private photo (text and where it sits), encrypted like the pictures, so a wrong
+    /// "What is this?" answer can be traced to the words it saw.
+    static func keepText(_ lines: [DocEngine.OCRLine], as name: String) {
+        guard let dir = ProcessInfo.processInfo.environment["QA_OUT"] else { return }
+        try? FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        let body = lines.map { String(format: "%.3f %.3f %.3f %.3f\t", $0.box.minX, $0.box.minY, $0.box.width, $0.box.height) + $0.text }.joined(separator: "\n")
+        try? body.write(to: URL(fileURLWithPath: dir).appendingPathComponent("ocr-" + name + ".txt"), atomically: true, encoding: .utf8)
+    }
     private func report(_ lines: [String]) { RealPhotoAccuracyTests.append(lines, to: reportURL); lines.forEach { print("ACC| " + $0) } }
 
     private func privatePhotos(_ prefix: String? = nil) throws -> [(String, UIImage)] {
@@ -439,6 +447,7 @@ final class ToolOutputQualityTests: XCTestCase {
             guard let want = expected(name) else { continue }
             n += 1
             let o = await Identifier.identify(img)
+            Self.keepText(DocEngine.recognize(img.normalizedUp()), as: name)
             let got = o.paper?.kind
             var ok = want.contains(got)
             if got == .schedule, name.contains("schedule") {
