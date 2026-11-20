@@ -3,6 +3,7 @@ import UIKit
 import ImageIO
 import Compression
 import SQLite3
+import AVFoundation
 import UniformTypeIdentifiers
 
 /// File Opener's readers: every common file people get sent — books, comics, emails, tables, code, archives,
@@ -609,3 +610,48 @@ extension FileReaders {
         return String(data: d, encoding: .windowsCP1252)
     }
 }
+
+// MARK: - what File Opener promises, format by format
+
+extension FileReaders {
+    enum Support: Equatable { case reads, apple, notYet(String) }
+
+    /// Formats File Opener does NOT read yet, each with the honest reason shown to the person. A format leaves this
+    /// list only when its reader is built (the coverage test fails if one is both here and readable).
+    static let notYet: [String: String] = {
+        var m: [String: String] = [:]
+        func add(_ exts: [String], _ why: String) { for e in exts { m[e] = why } }
+        add(["msg", "oft"], "Outlook message — reader being built.")
+        add(["dat"], "Winmail.dat from Outlook — reader being built.")
+        add(["7z", "rar", "r00", "cbr", "cab", "arj", "lzh", "lha", "wim", "xar", "zipx"], "Packed with a method Tenzy can't unpack yet (RAR / 7-Zip family).")
+        add(["bz2", "bzip2", "tbz", "tbz2", "zst", "zstd", "tzst", "lz4", "lz5", "z", "taz"], "Compressed with a method Tenzy can't unpack yet.")
+        add(["cpio", "ar", "deb", "udeb", "rpm"], "Software package — listing its files is being built.")
+        add(["apfs", "cramfs", "dmg", "ext4", "fat", "hfs", "iso", "ntfs", "qcow", "qcow2", "simg", "squashfs", "udf", "vdi", "vhd", "vhdx", "avhdx", "vmdk"],
+            "Disk image — Tenzy shows its type and size; browsing what's inside isn't built yet.")
+        add(["dylib", "elf", "sys"], "A computer program — Tenzy shows what kind and its details; programs can't run on a phone.")
+        add(["chm"], "Windows help file — reader being built.")
+        add(["mid", "midi", "imy", "ota"], "Music notes (MIDI / ringtone code) — player being built.")
+        add(["mkv", "mka", "webm"], "Matroska / WebM — player being built.")
+        add(["ogg", "oga"], "Ogg Vorbis music — player being built (Opus voice notes already play).")
+        return m
+    }()
+
+    /// What File Opener does with a file ending — the same tables `read` uses, plus what this phone's own image and
+    /// media frameworks decode, so the answer can't drift from what actually happens.
+    static func support(_ raw: String) -> Support {
+        let ext = (raw as NSString).pathExtension.isEmpty ? raw.lowercased() : (raw as NSString).pathExtension.lowercased()
+        if tableExts.contains(ext) || codeExts.contains(ext) || bookExts.contains(ext) || officeAlias[ext] != nil
+            || ["eml", "emlx", "mht", "mhtml", "db", "sqlite", "sqlite3", "db3", "pbm", "pgm", "ppm", "pnm", "pam", "xps", "oxps", "opus", "cbz",
+                "zip", "jar", "apk", "aab", "ipa", "tar", "tgz", "gz", "gzip", "xz", "txz", "lzma", "tlzma", "html", "htm", "xhtml", "text"].contains(ext) { return .reads }
+        if let why = notYet[ext] { return .notYet(why) }
+        if quickLookExts.contains(ext) { return .apple }
+        if let t = UTType(filenameExtension: ext) {
+            let images = (CGImageSourceCopyTypeIdentifiers() as? [String]) ?? []
+            if images.contains(where: { UTType($0).map { t.conforms(to: $0) } ?? false }) { return .reads }
+            if AVURLAssetTypes.all.contains(where: { t.conforms(to: $0) }) { return .apple }
+        }
+        return .notYet("Not supported yet.")
+    }
+}
+
+enum AVURLAssetTypes { static let all: [UTType] = AVURLAsset.audiovisualTypes().compactMap { UTType($0.rawValue) } }

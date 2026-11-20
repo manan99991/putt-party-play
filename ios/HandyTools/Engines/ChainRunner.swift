@@ -793,6 +793,110 @@ extension ChainRunner {
     }
 }
 
+/// Which finished result screen a tool lands on — the same screen its dedicated tool uses — or nil when it still
+/// ends on the plain result (a bare picture, file or text). The Builder's result view routes by this, and a test
+/// fails if any ready-made tool lands on the plain result without being on the public known-gap list.
+enum ResultScreens {
+    static func screen(for chain: Chain) -> String? {
+        let blocks = chain.steps.map(\.block)
+        guard let last = blocks.last else { return nil }
+        if blocks == [.readText, .actionItems], chain.finish == nil { return "Board review" }
+        switch last {
+        case .cutout: return "Cut-out finishing"
+        case .identify: return "What is this / written things"
+        case .passportPhoto: return "Passport studio"
+        case .pullReceipt, .expenseRow: return "Receipt"
+        case .addToList where blocks.contains(.expenseRow): return "Expense sheet"
+        case .actionItems: return "Reminders"
+        case .pullDetails: return "Links, emails, phones"
+        case .calendarEvent: return "Calendar event"
+        case .businessCard: return "Contact card"
+        case .photoPdf: return "Scan PDF"
+        default: return nil
+        }
+    }
+
+    /// Ready-made tools that still end on the plain result, each with the tracker group rebuilding it. This list may
+    /// only shrink: the test fails if a tool here now has a finished screen (take it off) or a new tool lands plain.
+    static let knownGaps: [String: String] = [
+        "hide-sensitive": "pb-photo",
+        "short-summary": "pb-text",
+        "table-to-sheet": "pb-receipts",
+        "tidy-text": "pb-text",
+        "scam-check": "pb-safety",
+        "clean-link": "pb-safety",
+        "shelf-best-deal": "pb-receipts",
+        "text-to-qr": "pb-codes",
+        "sign-and-send": "pb-sign",
+        "whatsapp-no-save": "pb-codes",
+        "contact-qr": "pb-codes",
+        "video-email": "pb-video",
+        "video-chat": "pb-video",
+        "video-still": "pb-video",
+        "video-quiet": "pb-video",
+        "return-by": "pb-receipts",
+        "wifi-sign": "pb-codes",
+        "id-both-sides": "pb-id",
+        "share-shield": "pb-photo",
+        "id-copy-watermarked": "pb-id",
+        "portal-photo": "pb-photo",
+        "memo-to-notes": "pb-text",
+        "qr-safe": "pb-safety",
+        "sign-to-english": "pb-text",
+        "page-to-pdf": "pb-pdf",
+        "page-summary": "pb-text",
+        "listen-later": "pb-listen",
+        "pdf-email": "pb-pdf",
+        "pdf-join": "pb-pdf",
+        "pdf-first-page": "pb-pdf",
+        "video-story": "pb-video",
+        "video-gif": "pb-video",
+        "video-words": "pb-text",
+        "photo-collage": "pb-photo",
+        "where-i-am": "pb-text",
+        "photos-gif": "pb-photo",
+        "photos-flipbook": "pb-photo",
+        "sticker-maker": "pb-fun",
+        "emoji-faces": "pb-fun",
+        "meme": "pb-fun",
+        "emoji-mosaic": "pb-fun",
+        "video-boomerang": "pb-video",
+        "video-slowmo": "pb-video",
+        "video-fast": "pb-video",
+        "photo-sketch": "pb-fun",
+        "photo-comic": "pb-fun",
+        "voice-chipmunk": "pb-voice",
+        "voice-deep": "pb-voice",
+        "voice-helium": "pb-voice",
+        "voice-giant": "pb-voice",
+        "voice-robot": "pb-voice",
+        "voice-alien": "pb-voice",
+        "voice-monster": "pb-voice",
+        "voice-walkie": "pb-voice",
+        "voice-cave": "pb-voice",
+        "voice-ghost": "pb-voice",
+        "video-voice": "pb-voice",
+        "before-after": "pb-photo",
+        "photo-sell": "pb-photo",
+        "letter-listen": "pb-text",
+        "lecture-summary": "pb-text",
+        "voice-spanish": "pb-text",
+        "form-portal": "pb-sign",
+        "doc-portal": "pb-pdf",
+        "id-portal": "pb-id",
+        "reel-captions": "pb-video",
+        "video-minute-email": "pb-video",
+        "pdf-summary": "pb-text",
+        "pdf-english": "pb-text",
+        "pdf-listen": "pb-listen",
+        "page-listen": "pb-text",
+        "chat-scam": "pb-safety",
+        "rewrite-clear": "pb-text",
+        "photo-under-2mb": "pb-photo",
+        "safe-to-share": "pb-photo",
+    ]
+}
+
 /// Starter chains shipped inside the app. Users can run them, or copy one and edit it.
 enum ChainTemplates {
     static let all: [Chain] = [
