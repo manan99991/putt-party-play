@@ -156,7 +156,7 @@ enum Guide {
     static func goal(ofTool id: String, kind: ChainKind, count: Int) -> String {
         if kind == .video {
             switch id {
-            case "video", "audiomix": return "clip"
+            case "video", "audiomix", "celebrate": return "clip"
             case "fitit": return "share"
             case "audioconvert", "ringtone": return "sound"
             case "meetingnotes": return "words"
@@ -165,6 +165,7 @@ enum Guide {
         }
         switch id {
         case "collage", "animate": return count > 1 ? "together" : "fun"
+        case "celebrate": return "fun"
         case "comicstrip": return count > 1 ? "together" : "fun"
         case "sticker", "faceemoji": return "fun"
         case "scrub", "fitit": return "share"
@@ -278,6 +279,7 @@ enum Guide {
         "ringtone": ("Ringtone from this video", "Up to 30 seconds of its sound, with the steps to set it"),
         "meetingnotes": ("Notes from a video call or talk", "Who said what, a summary and the to-dos"),
         "audiomix": ("Join videos or change their speed", "One video, or faster / slower with natural voices"),
+        "celebrate": ("Decorate it for a celebration", "Snow, fireworks, diyas, lanterns — any festival — with your words on it"),
     ]
 
     @MainActor static func title(_ o: Option, count: Int, kind: ChainKind? = nil) -> String {

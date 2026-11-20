@@ -511,6 +511,91 @@ final class EngineTests: XCTestCase {
         DocEngine.clearSignature()
     }
 
+    /// Celebrate: what people type, in many languages, finds the right celebration; anything else becomes one made
+    /// from their words; every celebration draws visible decorations; a decorated video keeps its length.
+    func testCelebrateFindsAnyCelebrationAndDecoratesEveryFrame() async throws {
+        let cases: [(String, String)] = [("Happy Diwali!", "diwali"), ("दिवाली की शुभकामनाएं", "diwali"), ("Feliz Navidad", "christmas"),
+                                         ("joyeux noël", "christmas"), ("Eid Mubarak", "eid"), ("春节快乐", "lunarnewyear"),
+                                         ("happy bday Maya", "birthday"), ("Thanksgiving dinner", "thanksgiving"), ("Holi hai", "holi"),
+                                         ("st. patrick's day", "stpatricks"), ("Happy New Year 2027", "newyear"), ("Shana Tova", "roshhashanah")]
+        for (typed, id) in cases { XCTAssertEqual(Celebrate.match(typed)?.id, id, typed) }
+        XCTAssertNil(Celebrate.match("seidel and pasta"), "'eid' inside a word is not Eid")
+        let mine = Celebrate.resolve("Bruno's adoption day 🐶🎾")
+        XCTAssertTrue(mine.custom); XCTAssertEqual(mine.greeting, "Bruno's adoption day 🐶🎾")
+        XCTAssertTrue(mine.layers.contains { if case .rise(let e) = $0 { return e.contains("🐶") }; return false }, "their emoji drift up")
+        XCTAssertEqual(Celebrate.resolve("Happy Diwali from the Shah family").greeting, "Happy Diwali from the Shah family", "their own words kept")
+        XCTAssertGreaterThan(Celebrate.themes.count, 45)
+        XCTAssertEqual(Set(Celebrate.themes.map(\.id)).count, Celebrate.themes.count, "unique ids")
+        // November: Thanksgiving and Diwali-season festivals come up first.
+        let nov = DateComponents(calendar: .current, year: 2026, month: 11, day: 20).date!
+        XCTAssertTrue(Celebrate.comingUp(now: nov).contains { $0.id == "thanksgiving" })
+        XCTAssertTrue(Celebrate.comingUp(now: nov).contains { $0.id == "christmas" })
+
+        // Every celebration really draws something, at the start and later on, and the same moment looks the same.
+        for theme in Celebrate.themes + [mine] {
+            let p = Celebrate.Painter(theme: theme, size: CGSize(width: 180, height: 320), amount: 1)
+            for t in [0.4, 3.7] {
+                let img = try XCTUnwrap(p.image(at: t), theme.id)
+                XCTAssertGreaterThan(DocEngine.visibleInk(UIImage(cgImage: img)), 0.002, "\(theme.name) draws at \(t)s")
+            }
+            let a = try XCTUnwrap(p.image(at: 2)), b = try XCTUnwrap(p.image(at: 2))
+            XCTAssertEqual(a.dataProvider?.data as Data?, b.dataProvider?.data as Data?, "\(theme.name): the preview and the saved video match")
+        }
+        // Words: drawn see-through around the letters, and placed clear of the edges.
+        let cap = try XCTUnwrap(Celebrate.captionImage(Celebrate.Caption(text: "Happy Diwali"), frame: CGSize(width: 1080, height: 1920)))
+        XCTAssertLessThan(cap.size.width, 1080); XCTAssertGreaterThan(DocEngine.visibleInk(cap), 0.02)
+        XCTAssertEqual(Celebrate.clearSpot(in: nil), CGPoint(x: 0.5, y: 0.16))
+
+        // A real video, decorated with words: same length, plays, right shape.
+        let fixture = await Self.movie(seconds: 1.5)
+        let src = try XCTUnwrap(fixture)
+        defer { try? FileManager.default.removeItem(at: src) }
+        let made = await Celebrate.export(src, theme: Celebrate.theme("diwali")!, amount: 1, caption: Celebrate.Caption(text: "Happy Diwali"))
+        let out = try XCTUnwrap(made, "decorated video made")
+        defer { try? FileManager.default.removeItem(at: out) }
+        let d0 = try await AVURLAsset(url: src).load(.duration).seconds, d1 = try await AVURLAsset(url: out).load(.duration).seconds
+        XCTAssertEqual(d1, d0, accuracy: 0.15, "same length")
+        // A photo becomes a short video to decorate.
+        let photoVideo = await Celebrate.videoFromPhoto(Self.text("HELLO"))
+        let pv = try XCTUnwrap(photoVideo)
+        let pvSecs = try await AVURLAsset(url: pv).load(.duration).seconds
+        XCTAssertGreaterThan(pvSecs, 4)
+        try? FileManager.default.removeItem(at: pv)
+    }
+
+    /// Protect PDF does it all at once — watermark + password + no printing + no copying — and the saved file really
+    /// does each (read back from the file, not taken on trust).
+    func testProtectPDFWatermarksLocksAndBlocksInOnePass() throws {
+        let src = try XCTUnwrap(DocEngine.pdf(images: [Self.text("PAGE ONE"), Self.text("PAGE TWO")], ocr: [nil, nil], options: { var o = DocEngine.PDFOptions(); o.searchable = false; return o }()))
+        var p = PDFSecure.Protection(watermark: "CONFIDENTIAL")
+        p.recipient = "Priya"; p.openPassword = "Maple-Tiger-1234"; p.allowPrinting = false; p.allowCopying = false
+        let out = try XCTUnwrap(PDFSecure.apply(src, p))
+        let c = try XCTUnwrap(PDFSecure.check(out, password: "Maple-Tiger-1234", watermark: "CONFIDENTIAL"))
+        XCTAssertFalse(c.opensWithoutPassword, "asks for the password")
+        XCTAssertTrue(c.passwordOpens, "the password opens it")
+        XCTAssertTrue(c.watermarkFound, "the watermark is on the pages")
+        XCTAssertFalse(c.printingAllowed, "printing blocked")
+        XCTAssertFalse(c.copyingAllowed, "copying blocked")
+        XCTAssertEqual(c.pages, 2)
+        XCTAssertNil(PDFSecure.unlock(out, password: "wrong"))
+        // The 'who it's for' line is on every page.
+        let doc = try XCTUnwrap(PDFDocument(data: out)); XCTAssertTrue(doc.unlock(withPassword: "Maple-Tiger-1234"))
+        XCTAssertFalse(doc.findString("Priya", withOptions: .caseInsensitive).isEmpty, "recipient line present")
+
+        // No password, but printing blocked: opens freely, still can't print.
+        var q = PDFSecure.Protection(watermark: "DRAFT"); q.style = .tiled; q.allowPrinting = false
+        let open = try XCTUnwrap(PDFSecure.apply(src, q))
+        let qc = try XCTUnwrap(PDFSecure.check(open, password: "", watermark: "DRAFT"))
+        XCTAssertTrue(qc.opensWithoutPassword); XCTAssertFalse(qc.printingAllowed); XCTAssertTrue(qc.copyingAllowed); XCTAssertTrue(qc.watermarkFound)
+
+        // Footer style and burned in: pages become pictures, the mark can't be lifted off as text.
+        var r = PDFSecure.Protection(watermark: "COPY"); r.style = .footer; r.burnIn = true
+        let burned = try XCTUnwrap(PDFSecure.apply(src, r))
+        let bc = try XCTUnwrap(PDFSecure.check(burned, password: "", watermark: "COPY"))
+        XCTAssertEqual(bc.pages, 2); XCTAssertFalse(bc.watermarkFound, "burned-in words are part of the picture, not text")
+        XCTAssertNotNil(PDFSecure.preview(src, p), "live preview of page 1")
+    }
+
     /// Every pen colour on the pad saves a real, visible signature in that colour; a dot or nothing is refused.
     func testEveryPenColourSavesAVisibleSignature() throws {
         let strokes: [[CGPoint]] = [(0..<30).map { i in CGPoint(x: 20 + CGFloat(i) * 6, y: 80 + sin(CGFloat(i) / 3) * 30) },

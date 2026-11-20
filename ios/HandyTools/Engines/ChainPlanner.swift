@@ -166,7 +166,15 @@ enum ChainPlanner {
             if has(["shrink", "smaller", "compress", "reduce", "under ", " mb", "email"]) {
                 p.append(ChainStep(block: .pdfShrink, settings: ["mb": String(number(near: ["mb", "megabyte"], in: s, before: true) ?? 5)]))
             }
-            if has(["password", "lock", "protect", "encrypt"]) { p.append(ChainStep(block: .pdfLock, settings: ["password": ""])) }
+            let marks = has(["watermark", "confidential", "draft"])
+            if has(["password", "lock", "protect", "encrypt", "no print", "can't print", "cannot print", "no copy"]) || marks {
+                var set = ["password": ""]
+                if marks { set["mark"] = has(["draft"]) ? "DRAFT" : "CONFIDENTIAL" }
+                if has(["no print", "can't print", "cannot print", "block print", "stop print"]) { set["noprint"] = "1" }
+                if has(["no copy", "can't copy", "cannot copy", "block copy", "stop copy"]) { set["nocopy"] = "1" }
+                if !has(["password", "lock", "encrypt"]) { set["open"] = "0" }
+                p.append(ChainStep(block: .pdfLock, settings: set))
+            }
             if !p.isEmpty {
                 var c = build(ask, p)
                 if join { c?.combine = true }

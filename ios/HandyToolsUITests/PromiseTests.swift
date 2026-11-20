@@ -153,4 +153,43 @@ final class PromiseTests: XCTestCase {
         XCTAssertFalse(app.buttons["Save signature"].waitForExistence(timeout: 3), "the signature wasn't accepted")
         XCTAssertTrue(app.buttons["run-draw-signature"].waitForNonExistence(timeout: 5), "the tool still asks for a signature after one was saved")
     }
+
+    /// "Watermark and lock at the same time" — Protect PDF does watermark + password + no printing in one go, and the
+    /// finished screen shows each one checked on the saved file.
+    func testProtectPDFDoesEverythingAtOnce() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "pdfprotect", "-uitest", "-sample"]
+        app.launch()
+        let make = app.buttons["protect-make"]
+        XCTAssertTrue(make.waitForExistence(timeout: 20), "no password section next to the watermark")
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "protect-mark-text").firstMatch.exists, "watermark words box missing")
+        make.tap()
+        let noPrint = app.switches["protect-noprint"]
+        if noPrint.waitForExistence(timeout: 5) { noPrint.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap() }
+        let run = app.buttons["protect-run"]
+        XCTAssertTrue(run.waitForExistence(timeout: 5)); XCTAssertTrue(run.isEnabled, "can't run with watermark + password")
+        run.tap()
+        let checks = app.descendants(matching: .any).matching(identifier: "protect-checks").firstMatch
+        XCTAssertTrue(checks.waitForExistence(timeout: 30), "no checked result")
+        XCTAssertTrue(app.staticTexts["Printing is blocked"].exists || app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'Printing is blocked'")).firstMatch.exists)
+        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'CONFIDENTIAL'")).firstMatch.exists, "watermark not confirmed on the file")
+    }
+
+    /// Celebrate: a photo becomes a video with the celebration on it; picking a festival changes the words; typing any
+    /// celebration (in another language) picks the right one.
+    func testCelebrateOffersEveryFestivalAndTypedOnes() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "celebrate", "-uitest", "-sample"]
+        app.launch()
+        let preview = app.descendants(matching: .any).matching(identifier: "celebrate-preview").firstMatch
+        XCTAssertTrue(preview.waitForExistence(timeout: 90), "the sample never became a decorated preview")
+        XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "celebrate-caption").firstMatch.exists, "no words on the video")
+        let typed = app.textFields["celebrate-type"]
+        XCTAssertTrue(typed.waitForExistence(timeout: 5))
+        typed.tap(); typed.typeText("Feliz Navidad\n")
+        let words = app.descendants(matching: .any).matching(identifier: "celebrate-words").firstMatch
+        XCTAssertTrue(words.waitForExistence(timeout: 5))
+        XCTAssertEqual(words.value as? String, "Merry Christmas", "typing Feliz Navidad should pick Christmas and its greeting")
+        XCTAssertTrue(app.buttons["celebrate-make"].exists)
+    }
 }

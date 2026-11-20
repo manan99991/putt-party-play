@@ -65,12 +65,20 @@ enum ChainExtras {
             return .success(.file(d, ext: "pdf"))
 
         case (.pdfLock, .file(let d, _)):
+            // The same protection as the Protect tool: watermark, password to open, printing / copying blocked — in one pass.
             let password = (step.settings["password"] ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !password.isEmpty else { return .failure(.invalid("Lock with a password needs a password. Edit the tool and type one in.")) }
-            guard let doc = PDFDocument(data: d) else { return .failure(.invalid(cantOpen(b))) }
-            let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".pdf")
-            defer { try? FileManager.default.removeItem(at: url) }
-            guard doc.write(to: url, withOptions: [.userPasswordOption: password, .ownerPasswordOption: password]), let out = try? Data(contentsOf: url) else { return .failure(.failed(b)) }
+            let wantsOpen = step.settings["open"] != "0"
+            var p = PDFSecure.Protection()
+            p.watermark = step.settings["mark"] ?? ""
+            p.recipient = step.settings["for"] ?? ""
+            p.style = PDFSecure.Protection.Style(rawValue: step.settings["style"] ?? "") ?? .diagonal
+            p.allowPrinting = step.settings["noprint"] != "1"
+            p.allowCopying = step.settings["nocopy"] != "1"
+            p.openPassword = wantsOpen ? password : ""
+            guard !wantsOpen || !password.isEmpty else { return .failure(.invalid("Lock with a password needs a password. Edit the tool and type one in.")) }
+            guard p.hasWatermark || p.encrypts else { return .failure(.invalid("Turn on a watermark, a password or a block on printing or copying.")) }
+            guard PDFDocument(data: d) != nil else { return .failure(.invalid(cantOpen(b))) }
+            guard let out = PDFSecure.apply(d, p) else { return .failure(.failed(b)) }
             return .success(.file(out, ext: "pdf"))
 
         case (.pdfPages, .file(let d, _)):

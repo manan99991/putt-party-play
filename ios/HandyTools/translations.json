@@ -369,6 +369,16 @@
   "pt": "4 horas",
   "zh": "4 小时"
  },
+ "4th of July": {
+  "de": "4. Juli",
+  "es": "4 de Julio",
+  "fr": "4 juillet",
+  "hi": "4 जुलाई",
+  "it": "4 luglio",
+  "ja": "独立記念日",
+  "pt": "4 de Julho",
+  "zh": "美国独立日"
+ },
  "A PDF": {
   "de": "Ein PDF",
   "es": "Un PDF",
@@ -649,6 +659,16 @@
   "pt": "Uma resposta de IA numa linha precisa do Gemini Nano no dispositivo (Pixel 9, Galaxy S24+ e mais recentes). Caso contrário, obténs a captura que melhor corresponde.",
   "zh": "一行式 AI 回答需要设备端 Gemini Nano（Pixel 9、Galaxy S24+ 及更新机型）。否则你会得到最匹配的截图。"
  },
+ "A password to open, a watermark, and printing or copying blocked — whichever you turn on.": {
+  "de": "Passwort zum Öffnen, Wasserzeichen, Drucken oder Kopieren gesperrt – was du einschaltest.",
+  "es": "Contraseña para abrir, marca de agua y bloqueo de impresión o copia: lo que actives.",
+  "fr": "Mot de passe d'ouverture, filigrane, impression ou copie bloquées — selon ce que vous activez.",
+  "hi": "खोलने का पासवर्ड, वॉटरमार्क, और प्रिंट या कॉपी पर रोक — जो भी आप चालू करें।",
+  "it": "Password per aprire, filigrana e blocco di stampa o copia: quello che attivi.",
+  "ja": "開くパスワード、透かし、印刷やコピーの禁止 — オンにしたものを適用。",
+  "pt": "Senha para abrir, marca-d'água e bloqueio de impressão ou cópia — o que você ativar.",
+  "zh": "打开密码、水印、禁止打印或复制——你打开哪项就做哪项。"
+ },
  "A photo": {
   "de": "Ein Foto",
   "es": "Una foto",
@@ -809,6 +829,16 @@
   "pt": "Um rolo de filme passa",
   "zh": "一条胶片滚过"
  },
+ "A touch": {
+  "de": "Ein Hauch",
+  "es": "Un toque",
+  "fr": "Une touche",
+  "hi": "थोड़ा",
+  "it": "Un tocco",
+  "ja": "少し",
+  "pt": "Um toque",
+  "zh": "少量"
+ },
  "A touch brighter and warmer, so it looks as good as it tastes.": {
   "de": "Etwas heller und wärmer – sieht so gut aus, wie es schmeckt.",
   "es": "Un poco más luminosa y cálida, para que se vea tan rica como sabe.",
@@ -898,6 +928,16 @@
   "ja": "約",
   "pt": "Cerca de",
   "zh": "约"
+ },
+ "Across the page": {
+  "de": "Quer über die Seite",
+  "es": "A lo ancho de la página",
+  "fr": "En travers de la page",
+  "hi": "पन्ने के आर-पार",
+  "it": "Attraverso la pagina",
+  "ja": "ページに斜めに",
+  "pt": "Atravessando a página",
+  "zh": "横贯整页"
  },
  "Action button (iPhone 15 Pro and later): Settings → Action Button → swipe to Shortcut → choose Tenzy → Flashlight pattern.": {
   "de": "Aktionstaste (ab iPhone 15 Pro): Einstellungen → Aktionstaste → zu Kurzbefehl wischen → Tenzy → Flashlight pattern wählen.",
@@ -1649,6 +1689,16 @@
   "pt": "Quase lá",
   "zh": "差一点"
  },
+ "Along the bottom": {
+  "de": "Am unteren Rand",
+  "es": "En la parte inferior",
+  "fr": "En bas de page",
+  "hi": "नीचे की ओर",
+  "it": "In basso",
+  "ja": "下部に",
+  "pt": "Na parte de baixo",
+  "zh": "沿底部"
+ },
  "Already have a scanned PDF? Read every page so you can search, select and copy its words.": {
   "de": "Schon ein gescanntes PDF? Jede Seite lesen, um Text zu suchen, markieren und kopieren.",
   "es": "¿Ya tienes un PDF escaneado? Lee cada página para buscar, seleccionar y copiar el texto.",
@@ -1778,6 +1828,16 @@
   "ja": "アニメと作成",
   "pt": "Animar e criar",
   "zh": "动画与创作"
+ },
+ "Anniversary": {
+  "de": "Jahrestag",
+  "es": "Aniversario",
+  "fr": "Anniversaire de mariage",
+  "hi": "सालगिरह",
+  "it": "Anniversario",
+  "ja": "記念日",
+  "pt": "Aniversário de casamento",
+  "zh": "纪念日"
  },
  "Annotated PDF": {
   "de": "Kommentiertes PDF",
@@ -2119,6 +2179,16 @@
   "pt": "Pede um pagamento impossível de rastrear",
   "zh": "要求无法追踪的付款"
  },
+ "Asks for your password, and your password opens it": {
+  "de": "Fragt nach deinem Passwort, und dein Passwort öffnet es",
+  "es": "Pide tu contraseña y tu contraseña lo abre",
+  "fr": "Demande votre mot de passe, et votre mot de passe l'ouvre",
+  "hi": "आपका पासवर्ड माँगता है, और आपके पासवर्ड से खुलता है",
+  "it": "Chiede la tua password, e la tua password lo apre",
+  "ja": "パスワードを求め、そのパスワードで開けます",
+  "pt": "Pede sua senha, e sua senha o abre",
+  "zh": "需要输入密码，并且你的密码能打开"
+ },
  "At": {
   "de": "Um",
   "es": "A las",
@@ -2288,6 +2358,16 @@
   "ja": "自動バックアップ",
   "pt": "Cópia de segurança automática",
   "zh": "自动备份"
+ },
+ "Autumn": {
+  "de": "Herbst",
+  "es": "Otoño",
+  "fr": "Automne",
+  "hi": "शरद ऋतु",
+  "it": "Autunno",
+  "ja": "秋",
+  "pt": "Outono",
+  "zh": "秋天"
  },
  "Averages ~30 frames per second into one image: silky water, light trails, crowds that vanish. Brace the phone and press the blue button.": {
   "de": "Mittelt ~30 Bilder pro Sekunde zu einem Bild: seidiges Wasser, Lichtspuren, verschwindende Menschenmengen. Handy abstützen und den blauen Knopf drücken.",
@@ -2578,6 +2658,16 @@
   "ja": "バッジ",
   "pt": "Selo",
   "zh": "徽章"
+ },
+ "Baisakhi": {
+  "de": "Baisakhi",
+  "es": "Baisakhi",
+  "fr": "Baisakhi",
+  "hi": "बैसाखी",
+  "it": "Baisakhi",
+  "ja": "バイサキ",
+  "pt": "Baisakhi",
+  "zh": "丰收节"
  },
  "Balanced": {
   "de": "Ausgewogen",
@@ -2959,6 +3049,26 @@
   "pt": "Persianas",
   "zh": "百叶窗"
  },
+ "Block copying the words": {
+  "de": "Kopieren des Textes sperren",
+  "es": "Bloquear copiar el texto",
+  "fr": "Bloquer la copie du texte",
+  "hi": "शब्द कॉपी करना रोकें",
+  "it": "Blocca la copia del testo",
+  "ja": "文字のコピーを禁止",
+  "pt": "Bloquear copiar o texto",
+  "zh": "禁止复制文字"
+ },
+ "Block printing": {
+  "de": "Drucken sperren",
+  "es": "Bloquear impresión",
+  "fr": "Bloquer l'impression",
+  "hi": "प्रिंट करना रोकें",
+  "it": "Blocca la stampa",
+  "ja": "印刷を禁止",
+  "pt": "Bloquear impressão",
+  "zh": "禁止打印"
+ },
  "Blue ink": {
   "de": "Blaue Tinte",
   "es": "Tinta azul",
@@ -3299,6 +3409,16 @@
   "pt": "Junte arquivos em um .zip",
   "zh": "将文件打包成一个.zip"
  },
+ "Burn it in": {
+  "de": "Fest einbrennen",
+  "es": "Incrustarlo",
+  "fr": "L'incruster",
+  "hi": "पक्का छाप दें",
+  "it": "Incorporalo",
+  "ja": "焼き込む",
+  "pt": "Gravar na página",
+  "zh": "固化到页面"
+ },
  "Burn to a CD or DJ software": {
   "de": "Auf CD brennen oder DJ-Software",
   "es": "Grabar un CD o software de DJ",
@@ -3499,6 +3619,16 @@
   "pt": "Canadá",
   "zh": "加拿大"
  },
+ "Canada Day": {
+  "de": "Canada Day",
+  "es": "Día de Canadá",
+  "fr": "Fête du Canada",
+  "hi": "कनाडा दिवस",
+  "it": "Canada Day",
+  "ja": "カナダデー",
+  "pt": "Dia do Canadá",
+  "zh": "加拿大国庆日"
+ },
  "Canada online": {
   "de": "Kanada online",
   "es": "Canadá en línea",
@@ -3599,6 +3729,16 @@
   "pt": "Cuidador (opcional)",
   "zh": "照护人（可选）"
  },
+ "Carnival": {
+  "de": "Karneval",
+  "es": "Carnaval",
+  "fr": "Carnaval",
+  "hi": "कार्निवल",
+  "it": "Carnevale",
+  "ja": "カーニバル",
+  "pt": "Carnaval",
+  "zh": "狂欢节"
+ },
  "Carousel": {
   "de": "Karussell",
   "es": "Carrusel",
@@ -3629,6 +3769,16 @@
   "pt": "Altura do teto",
   "zh": "层高"
  },
+ "Celebrate": {
+  "de": "Feiern",
+  "es": "Celebrar",
+  "fr": "Célébrer",
+  "hi": "उत्सव",
+  "it": "Festeggia",
+  "ja": "お祝い",
+  "pt": "Celebrar",
+  "zh": "庆祝"
+ },
  "Centre the ring on the thing. The name and hex code update live; freeze to hold it.": {
   "de": "Zentriere den Ring auf dem Objekt. Name und Hex-Code aktualisieren live; einfrieren, um sie zu halten.",
   "es": "Centra el anillo sobre el objeto. El nombre y el código hex se actualizan en vivo; congela para fijarlo.",
@@ -3648,6 +3798,16 @@
   "ja": "顔を中央に配置し、300 dpiで正確な比率にトリミング。4×6のシートに4枚または6枚印刷します。印刷前に必ず当局の正確な規定を確認してください。",
   "pt": "Centra o rosto e recorta à proporção exata a 300 ppp; imprime 4 ou 6 numa folha 4×6. Confirma sempre as regras exatas da tua entidade antes de imprimir.",
   "zh": "将面部居中并以 300 dpi 裁剪为精确比例；在 4×6 相纸上打印 4 或 6 张。打印前请务必核对主管机构的确切规定。"
+ },
+ "Chag Pesach Sameach": {
+  "de": "Chag Pessach Sameach",
+  "es": "Jag Pésaj Saméaj",
+  "fr": "Joyeuse Pâque",
+  "hi": "पासओवर की शुभकामनाएँ",
+  "it": "Chag Pesach Sameach",
+  "ja": "過越祭おめでとう",
+  "pt": "Feliz Pessach",
+  "zh": "逾越节快乐"
  },
  "Change": {
   "de": "Ändern",
@@ -3999,6 +4159,16 @@
   "pt": "Verifica o próprio endereço — marcas imitadas, terminações arriscadas, encurtadores, IP em bruto. Nada é aberto.",
   "zh": "检查网址本身 — 仿冒品牌、可疑后缀、短链接、裸 IP。不打开任何内容。"
  },
+ "Cherry blossom": {
+  "de": "Kirschblüte",
+  "es": "Flor de cerezo",
+  "fr": "Fleurs de cerisier",
+  "hi": "चेरी ब्लॉसम",
+  "it": "Fiori di ciliegio",
+  "ja": "お花見",
+  "pt": "Flor de cerejeira",
+  "zh": "樱花季"
+ },
  "Chicken": {
   "de": "Hähnchen",
   "es": "Pollo",
@@ -4088,6 +4258,16 @@
   "ja": "パスワードでロック、解除、または透かしを入れるPDFを選択。",
   "pt": "Escolha um PDF para proteger com senha, desbloquear ou pôr marca d'água.",
   "zh": "选择要加密、解锁或加水印的 PDF。"
+ },
+ "Choose a PDF to watermark, lock with a password, block printing and copying — all at once — or unlock.": {
+  "de": "Wähle ein PDF: Wasserzeichen, Passwort, Drucken und Kopieren sperren – alles auf einmal – oder entsperren.",
+  "es": "Elige un PDF para poner marca de agua, contraseña, bloquear impresión y copia —todo a la vez— o desbloquearlo.",
+  "fr": "Choisissez un PDF à filigraner, verrouiller par mot de passe, bloquer à l'impression et à la copie — tout d'un coup — ou déverrouiller.",
+  "hi": "एक PDF चुनें — वॉटरमार्क, पासवर्ड, प्रिंट और कॉपी पर रोक, सब एक साथ — या अनलॉक करें।",
+  "it": "Scegli un PDF per filigrana, password, blocco di stampa e copia — tutto insieme — o per sbloccarlo.",
+  "ja": "PDFを選んで、透かし・パスワード・印刷とコピーの禁止を一度に、またはロック解除。",
+  "pt": "Escolha um PDF para marca-d'água, senha, bloquear impressão e cópia — tudo de uma vez — ou desbloquear.",
+  "zh": "选择一个 PDF：加水印、设密码、禁止打印和复制——一次完成——或解锁。"
  },
  "Choose a PDF — from Files, Mail or Downloads.": {
   "de": "Wähle ein PDF – aus Dateien, Mail oder Downloads.",
@@ -4399,6 +4579,16 @@
   "pt": "Escolher um vídeo",
   "zh": "选择视频"
  },
+ "Choose a video or photo": {
+  "de": "Video oder Foto wählen",
+  "es": "Elegir vídeo o foto",
+  "fr": "Choisir une vidéo ou une photo",
+  "hi": "वीडियो या फ़ोटो चुनें",
+  "it": "Scegli video o foto",
+  "ja": "動画か写真を選ぶ",
+  "pt": "Escolher vídeo ou foto",
+  "zh": "选择视频或照片"
+ },
  "Choose an audio file, then convert it to another format.": {
   "de": "Wähle eine Audiodatei und wandle sie in ein anderes Format um.",
   "es": "Elige un archivo de audio y conviértelo a otro formato.",
@@ -4428,6 +4618,16 @@
   "ja": "別の動画を選ぶ",
   "pt": "Escolher outro vídeo",
   "zh": "选择其他视频"
+ },
+ "Choose another video or photo": {
+  "de": "Anderes Video oder Foto",
+  "es": "Elegir otro vídeo o foto",
+  "fr": "Choisir une autre vidéo ou photo",
+  "hi": "दूसरा वीडियो या फ़ोटो चुनें",
+  "it": "Scegli un altro video o foto",
+  "ja": "別の動画か写真を選ぶ",
+  "pt": "Escolher outro vídeo ou foto",
+  "zh": "换一个视频或照片"
  },
  "Choose audio": {
   "de": "Audio wählen",
@@ -4588,6 +4788,26 @@
   "ja": "選択…",
   "pt": "Escolher…",
   "zh": "选择…"
+ },
+ "Christmas": {
+  "de": "Weihnachten",
+  "es": "Navidad",
+  "fr": "Noël",
+  "hi": "क्रिसमस",
+  "it": "Natale",
+  "ja": "クリスマス",
+  "pt": "Natal",
+  "zh": "圣诞节"
+ },
+ "Chuseok": {
+  "de": "Chuseok",
+  "es": "Chuseok",
+  "fr": "Chuseok",
+  "hi": "चुसोक",
+  "it": "Chuseok",
+  "ja": "秋夕",
+  "pt": "Chuseok",
+  "zh": "中秋（韩国）"
  },
  "Cinematic": {
   "de": "Kino-Look",
@@ -5079,6 +5299,16 @@
   "pt": "Chega ao Android na próxima atualização.",
   "zh": "将在下次更新中登陆 Android。"
  },
+ "Coming up": {
+  "de": "Demnächst",
+  "es": "Próximamente",
+  "fr": "À venir",
+  "hi": "आने वाले",
+  "it": "In arrivo",
+  "ja": "もうすぐ",
+  "pt": "Em breve",
+  "zh": "即将到来"
+ },
  "Company": {
   "de": "Firma",
   "es": "Empresa",
@@ -5168,6 +5398,36 @@
   "ja": "原材料表に戸惑ったら？撮影すれば、添加物・アレルゲン・1食分の計算をわかりやすく読み解きます。",
   "pt": "Confuso com uma lista de ingredientes? Fotografa-a e obtém uma leitura clara dos aditivos, alergénios e do cálculo por dose.",
   "zh": "被配料表搞糊涂了？拍下来，即可用通俗语言读懂添加剂、过敏原和每份用量的换算。"
+ },
+ "Congratulations": {
+  "de": "Glückwunsch",
+  "es": "Felicidades",
+  "fr": "Félicitations",
+  "hi": "बधाई",
+  "it": "Congratulazioni",
+  "ja": "おめでとう",
+  "pt": "Parabéns",
+  "zh": "恭喜"
+ },
+ "Congratulations!": {
+  "de": "Herzlichen Glückwunsch!",
+  "es": "¡Felicidades!",
+  "fr": "Félicitations !",
+  "hi": "बधाई हो!",
+  "it": "Congratulazioni!",
+  "ja": "おめでとう！",
+  "pt": "Parabéns!",
+  "zh": "恭喜！"
+ },
+ "Congratulations, Graduate!": {
+  "de": "Glückwunsch zum Abschluss!",
+  "es": "¡Felicidades, graduado!",
+  "fr": "Félicitations, diplômé !",
+  "hi": "बधाई हो, ग्रेजुएट!",
+  "it": "Congratulazioni, laureato!",
+  "ja": "卒業おめでとう！",
+  "pt": "Parabéns, formando!",
+  "zh": "毕业快乐！"
  },
  "Contact": {
   "de": "Kontakt",
@@ -5529,6 +5789,16 @@
   "pt": "Copiar — cole em qualquer conversa",
   "zh": "复制，粘贴到任意聊天"
  },
+ "Copying the words is blocked": {
+  "de": "Kopieren des Textes ist gesperrt",
+  "es": "Copiar el texto está bloqueado",
+  "fr": "La copie du texte est bloquée",
+  "hi": "शब्द कॉपी करना बंद है",
+  "it": "La copia del testo è bloccata",
+  "ja": "文字のコピーは禁止されています",
+  "pt": "Copiar o texto está bloqueado",
+  "zh": "已禁止复制文字"
+ },
  "Corners": {
   "de": "Ecken",
   "es": "Esquinas",
@@ -5709,6 +5979,16 @@
   "pt": "Não foi possível criar o vídeo — tente de novo ou com menos fotos.",
   "zh": "无法生成视频——请重试或减少照片。"
  },
+ "Couldn't make the video — try again.": {
+  "de": "Video konnte nicht erstellt werden – nochmal versuchen.",
+  "es": "No se pudo hacer el vídeo; inténtalo de nuevo.",
+  "fr": "Impossible de créer la vidéo — réessayez.",
+  "hi": "वीडियो नहीं बन सका — फिर कोशिश करें।",
+  "it": "Impossibile creare il video — riprova.",
+  "ja": "動画を作れませんでした — もう一度お試しください。",
+  "pt": "Não foi possível fazer o vídeo — tente de novo.",
+  "zh": "视频没能做好——请再试一次。"
+ },
  "Couldn't open that PDF.": {
   "de": "Dieses PDF ließ sich nicht öffnen.",
   "es": "No se pudo abrir ese PDF.",
@@ -5748,6 +6028,16 @@
   "ja": "その写真を開けませんでした。",
   "pt": "Não foi possível abrir essa foto.",
   "zh": "无法打开该照片。"
+ },
+ "Couldn't open that — try another video or photo.": {
+  "de": "Das ließ sich nicht öffnen – anderes Video oder Foto wählen.",
+  "es": "No se pudo abrir; prueba otro vídeo o foto.",
+  "fr": "Impossible de l'ouvrir — essayez une autre vidéo ou photo.",
+  "hi": "यह नहीं खुला — दूसरा वीडियो या फ़ोटो आज़माएँ।",
+  "it": "Impossibile aprirlo — prova un altro video o foto.",
+  "ja": "開けませんでした — 別の動画か写真をお試しください。",
+  "pt": "Não foi possível abrir — tente outro vídeo ou foto.",
+  "zh": "打不开——换一个视频或照片。"
  },
  "Couldn't open this item.": {
   "de": "Element konnte nicht geöffnet werden.",
@@ -6009,6 +6299,16 @@
   "pt": "Não foi possível cortar este clipe. Tente um intervalo um pouco diferente.",
   "zh": "无法剪切该片段，请稍微调整范围。"
  },
+ "Couldn't turn that photo into a video — try another.": {
+  "de": "Aus diesem Foto ließ sich kein Video machen – nimm ein anderes.",
+  "es": "No se pudo convertir esa foto en vídeo; prueba otra.",
+  "fr": "Impossible de transformer cette photo en vidéo — essayez-en une autre.",
+  "hi": "उस फ़ोटो से वीडियो नहीं बना — दूसरी आज़माएँ।",
+  "it": "Impossibile trasformare la foto in video — provane un'altra.",
+  "ja": "その写真は動画にできませんでした — 別の写真をお試しください。",
+  "pt": "Não foi possível transformar essa foto em vídeo — tente outra.",
+  "zh": "无法把这张照片做成视频——换一张试试。"
+ },
  "Couldn't use that photo — try another.": {
   "de": "Dieses Foto ging nicht – versuch ein anderes.",
   "es": "No se pudo usar esa foto: prueba otra.",
@@ -6219,6 +6519,16 @@
   "pt": "Recortando suas figurinhas…",
   "zh": "正在抠出你的贴纸…"
  },
+ "DO NOT SHARE": {
+  "de": "NICHT WEITERGEBEN",
+  "es": "NO COMPARTIR",
+  "fr": "NE PAS PARTAGER",
+  "hi": "शेयर न करें",
+  "it": "NON CONDIVIDERE",
+  "ja": "共有禁止",
+  "pt": "NÃO COMPARTILHAR",
+  "zh": "请勿分享"
+ },
  "Daily Brief": {
   "de": "Tägliche Übersicht",
   "es": "Resumen diario",
@@ -6328,6 +6638,56 @@
   "ja": "前日",
   "pt": "Na véspera",
   "zh": "前一天"
+ },
+ "Day of the Dead": {
+  "de": "Tag der Toten",
+  "es": "Día de Muertos",
+  "fr": "Jour des morts",
+  "hi": "मृतकों का दिन",
+  "it": "Giorno dei morti",
+  "ja": "死者の日",
+  "pt": "Dia dos Mortos",
+  "zh": "亡灵节"
+ },
+ "Decorate a video for any festival": {
+  "de": "Ein Video für jedes Fest schmücken",
+  "es": "Decora un vídeo para cualquier fiesta",
+  "fr": "Décorez une vidéo pour toute fête",
+  "hi": "किसी भी त्योहार के लिए वीडियो सजाएँ",
+  "it": "Decora un video per ogni festa",
+  "ja": "どんなお祝いにも動画を飾る",
+  "pt": "Decore um vídeo para qualquer festa",
+  "zh": "为任何节日装饰视频"
+ },
+ "Decorate a video or photo for any celebration — snow, fireworks, diyas, lanterns — and add your words.": {
+  "de": "Schmücke ein Video oder Foto für jedes Fest – Schnee, Feuerwerk, Diyas, Laternen – mit deinen Worten.",
+  "es": "Decora un vídeo o una foto para cualquier celebración —nieve, fuegos artificiales, diyas, farolillos— y añade tus palabras.",
+  "fr": "Décorez une vidéo ou une photo pour toute fête — neige, feux d'artifice, diyas, lanternes — avec vos mots.",
+  "hi": "किसी भी उत्सव के लिए वीडियो या फ़ोटो सजाएँ — बर्फ़, आतिशबाज़ी, दीये, लालटेन — और अपने शब्द जोड़ें।",
+  "it": "Decora un video o una foto per ogni festa — neve, fuochi d'artificio, diya, lanterne — e aggiungi le tue parole.",
+  "ja": "動画や写真をお祝い仕様に — 雪、花火、ディヤ、ランタン — 言葉も添えて。",
+  "pt": "Decore um vídeo ou foto para qualquer celebração — neve, fogos, diyas, lanternas — com suas palavras.",
+  "zh": "为任何节日装饰视频或照片——雪花、烟花、油灯、灯笼——再加上你的话。"
+ },
+ "Decorate it for a celebration": {
+  "de": "Für ein Fest schmücken",
+  "es": "Decorarlo para una celebración",
+  "fr": "Le décorer pour une fête",
+  "hi": "इसे उत्सव के लिए सजाएँ",
+  "it": "Decoralo per una festa",
+  "ja": "お祝い用に飾る",
+  "pt": "Decorar para uma celebração",
+  "zh": "为节日装饰它"
+ },
+ "Decorating every frame…": {
+  "de": "Jedes Bild wird geschmückt…",
+  "es": "Decorando cada fotograma…",
+  "fr": "Décoration de chaque image…",
+  "hi": "हर फ़्रेम सज रहा है…",
+  "it": "Decoro ogni fotogramma…",
+  "ja": "全フレームを装飾中…",
+  "pt": "Decorando cada quadro…",
+  "zh": "正在装饰每一帧…"
  },
  "Deep": {
   "de": "Tief",
@@ -6659,6 +7019,16 @@
   "pt": "Dispensar",
   "zh": "关闭"
  },
+ "Diwali": {
+  "de": "Diwali",
+  "es": "Diwali",
+  "fr": "Diwali",
+  "hi": "दिवाली",
+  "it": "Diwali",
+  "ja": "ディワリ",
+  "pt": "Diwali",
+  "zh": "排灯节"
+ },
  "Do another": {
   "de": "Noch eins",
   "es": "Hacer otro",
@@ -6939,6 +7309,16 @@
   "pt": "Arrasta sobre a foto para tapar rostos, nomes, números de cartão. Números e e-mails podem ser encontrados automaticamente no telemóvel.",
   "zh": "在照片上拖动以涂黑人脸、姓名、卡号。号码和邮箱可在手机上自动识别。"
  },
+ "Drag the words on the video to move them; pinch to make them bigger or smaller. They start where they won't cover faces.": {
+  "de": "Ziehe die Worte im Video, um sie zu verschieben; mit zwei Fingern größer oder kleiner. Sie starten dort, wo sie keine Gesichter verdecken.",
+  "es": "Arrastra las palabras para moverlas; pellizca para agrandarlas o achicarlas. Empiezan donde no tapan caras.",
+  "fr": "Faites glisser les mots pour les déplacer ; pincez pour les agrandir ou réduire. Ils commencent là où ils ne cachent aucun visage.",
+  "hi": "शब्द खिसकाने के लिए खींचें; बड़ा-छोटा करने के लिए पिंच करें। शुरू में वे चेहरों को नहीं ढकते।",
+  "it": "Trascina le parole per spostarle; pizzica per ingrandirle o rimpicciolirle. Partono dove non coprono i volti.",
+  "ja": "言葉はドラッグで移動、ピンチで拡大・縮小。最初は顔に重ならない場所に置かれます。",
+  "pt": "Arraste as palavras para mover; pince para aumentar ou diminuir. Elas começam onde não cobrem rostos.",
+  "zh": "拖动文字可移动，双指缩放可调大小。文字初始位置不会挡住人脸。"
+ },
  "Drag the yellow ends to choose what stays. Original quality — no re-encode when the clip allows it.": {
   "de": "Zieh die gelben Enden, um festzulegen, was bleibt. Originalqualität – keine Neucodierung, wenn der Clip es erlaubt.",
   "es": "Arrastra los extremos amarillos para elegir qué se queda. Calidad original: sin recodificar cuando el clip lo permite.",
@@ -7129,6 +7509,16 @@
   "pt": "Duplicados, vídeos grandes e capturas antigas, revistos primeiro.",
   "zh": "重复照片、大视频和旧截图，先查看再处理。"
  },
+ "Durga Puja": {
+  "de": "Durga Puja",
+  "es": "Durga Puja",
+  "fr": "Durga Puja",
+  "hi": "दुर्गा पूजा",
+  "it": "Durga Puja",
+  "ja": "ドゥルガー・プージャ",
+  "pt": "Durga Puja",
+  "zh": "杜尔迦节"
+ },
  "Dust": {
   "de": "Staub",
   "es": "Polvo",
@@ -7298,6 +7688,16 @@
   "ja": "このツールが実行されるたび（Tenzy、リマインダー、ショートカット、共有シート）、結果の数値を読んで基準を超えたら知らせます。1回の超過につき1回だけ。",
   "pt": "Sempre que a ferramenta roda — pela Tenzy, um lembrete, um Atalho ou Compartilhar — ela lê o número do resultado e avisa quando passa do seu limite. Uma vez por cruzamento, sem enxurrada.",
   "zh": "每次运行此工具（在 Tenzy、提醒、快捷指令或分享菜单中），它都会读取结果中的数字，越过你设定的线时提醒你。每次越线只提醒一次。"
+ },
+ "Easter": {
+  "de": "Ostern",
+  "es": "Pascua",
+  "fr": "Pâques",
+  "hi": "ईस्टर",
+  "it": "Pasqua",
+  "ja": "イースター",
+  "pt": "Páscoa",
+  "zh": "复活节"
  },
  "Easy foods if you're unwell: soup, fruit, crackers, tea": {
   "de": "Leichtes Essen, wenn du krank bist: Suppe, Obst, Cracker, Tee",
@@ -7488,6 +7888,36 @@
   "ja": "卵",
   "pt": "Ovo",
   "zh": "鸡蛋"
+ },
+ "Eid": {
+  "de": "Eid",
+  "es": "Eid",
+  "fr": "Aïd",
+  "hi": "ईद",
+  "it": "Eid",
+  "ja": "イード",
+  "pt": "Eid",
+  "zh": "开斋节"
+ },
+ "Eid Mubarak": {
+  "de": "Eid Mubarak",
+  "es": "Eid Mubarak",
+  "fr": "Aïd Moubarak",
+  "hi": "ईद मुबारक",
+  "it": "Eid Mubarak",
+  "ja": "イード・ムバラク",
+  "pt": "Eid Mubarak",
+  "zh": "开斋节快乐"
+ },
+ "Elegant": {
+  "de": "Elegant",
+  "es": "Elegante",
+  "fr": "Élégant",
+  "hi": "सुरुचिपूर्ण",
+  "it": "Elegante",
+  "ja": "エレガント",
+  "pt": "Elegante",
+  "zh": "优雅"
  },
  "Email": {
   "de": "E-Mail",
@@ -7828,6 +8258,16 @@
   "ja": "間隔",
   "pt": "A cada",
   "zh": "每"
+ },
+ "Every celebration": {
+  "de": "Alle Feste",
+  "es": "Todas las celebraciones",
+  "fr": "Toutes les fêtes",
+  "hi": "सभी उत्सव",
+  "it": "Tutte le feste",
+  "ja": "すべてのお祝い",
+  "pt": "Todas as celebrações",
+  "zh": "所有节日"
  },
  "Every contact has a name and a number. ✓": {
   "de": "Jeder Kontakt hat einen Namen und eine Nummer. ✓",
@@ -8559,6 +8999,16 @@
   "pt": "Obturador mais rápido para o pet em movimento sair nítido.",
   "zh": "更快的快门，让活动的宠物也清晰。"
  },
+ "Father's Day": {
+  "de": "Vatertag",
+  "es": "Día del Padre",
+  "fr": "Fête des pères",
+  "hi": "फ़ादर्स डे",
+  "it": "Festa del papà",
+  "ja": "父の日",
+  "pt": "Dia dos Pais",
+  "zh": "父亲节"
+ },
  "Favorite": {
   "de": "Favorit",
   "es": "Favorito",
@@ -8598,6 +9048,16 @@
   "ja": "体感",
   "pt": "Sensação",
   "zh": "体感"
+ },
+ "Feliz Día de Muertos": {
+  "de": "Feliz Día de Muertos",
+  "es": "Feliz Día de Muertos",
+  "fr": "Feliz Día de Muertos",
+  "hi": "Feliz Día de Muertos",
+  "it": "Feliz Día de Muertos",
+  "ja": "Feliz Día de Muertos",
+  "pt": "Feliz Día de Muertos",
+  "zh": "Feliz Día de Muertos"
  },
  "File": {
   "de": "Datei",
@@ -9369,6 +9829,16 @@
   "pt": "Comida detectada",
   "zh": "发现美食"
  },
+ "For": {
+  "de": "Für",
+  "es": "Para",
+  "fr": "Pour",
+  "hi": "के लिए",
+  "it": "Per",
+  "ja": "宛先",
+  "pt": "Para",
+  "zh": "发给"
+ },
  "For a photo that passes": {
   "de": "Für ein Foto, das durchgeht",
   "es": "Para una foto que pase",
@@ -9899,6 +10369,26 @@
   "pt": "O GPS Dashboard precisa de acesso à localização para ler a tua velocidade e posição. Nada é enviado — fica no teu telemóvel.",
   "zh": "GPS 仪表盘需要位置权限以读取你的速度和位置。不上传任何内容 — 它留在你的手机上。"
  },
+ "Ganesh Chaturthi": {
+  "de": "Ganesh Chaturthi",
+  "es": "Ganesh Chaturthi",
+  "fr": "Ganesh Chaturthi",
+  "hi": "गणेश चतुर्थी",
+  "it": "Ganesh Chaturthi",
+  "ja": "ガネーシャ・チャトゥルティー",
+  "pt": "Ganesh Chaturthi",
+  "zh": "象头神节"
+ },
+ "Ganpati Bappa Morya": {
+  "de": "Ganpati Bappa Morya",
+  "es": "Ganpati Bappa Morya",
+  "fr": "Ganpati Bappa Morya",
+  "hi": "गणपति बप्पा मोरया",
+  "it": "Ganpati Bappa Morya",
+  "ja": "ガンパティ・バッパ・モリヤ",
+  "pt": "Ganpati Bappa Morya",
+  "zh": "Ganpati Bappa Morya"
+ },
  "Gathering your day…": {
   "de": "Dein Tag wird zusammengestellt …",
   "es": "Reuniendo tu día…",
@@ -10028,6 +10518,16 @@
   "ja": "GPS測位中… 遅い場合は屋外に出てください。",
   "pt": "A obter sinal GPS… sai para o exterior se estiver lento.",
   "zh": "正在获取 GPS 定位… 如果很慢请走到户外。"
+ },
+ "Getting it ready…": {
+  "de": "Wird vorbereitet…",
+  "es": "Preparándolo…",
+  "fr": "Préparation…",
+  "hi": "तैयार हो रहा है…",
+  "it": "Preparazione…",
+  "ja": "準備中…",
+  "pt": "Preparando…",
+  "zh": "正在准备…"
  },
  "Getting the videos…": {
   "de": "Videos werden geladen …",
@@ -10319,6 +10819,16 @@
   "pt": "Entendido — a preparar o teu ficheiro. Um vídeo grande ou do iCloud pode demorar um momento.",
   "zh": "好的——正在准备你的文件。较大或 iCloud 中的视频可能需要片刻。"
  },
+ "Graduation": {
+  "de": "Abschluss",
+  "es": "Graduación",
+  "fr": "Remise des diplômes",
+  "hi": "दीक्षांत",
+  "it": "Laurea",
+  "ja": "卒業",
+  "pt": "Formatura",
+  "zh": "毕业"
+ },
  "Grant what you'll use; skip the rest. Any tool will ask again the first time it needs something.": {
   "de": "Erlaube, was du nutzt; den Rest überspringen. Jedes Werkzeug fragt beim ersten Bedarf erneut.",
   "es": "Concede lo que vayas a usar; omite el resto. Cada herramienta volverá a preguntar la primera vez que lo necesite.",
@@ -10439,6 +10949,16 @@
   "pt": "Fotos guiadas: carro alugado, mudança, venda, encomenda danificada — um PDF datado",
   "zh": "引导拍摄：租车、入住、出售、包裹损坏——生成一份带日期的 PDF"
  },
+ "Gurpurab": {
+  "de": "Gurpurab",
+  "es": "Gurpurab",
+  "fr": "Gurpurab",
+  "hi": "गुरपुरब",
+  "it": "Gurpurab",
+  "ja": "グルプラブ",
+  "pt": "Gurpurab",
+  "zh": "古鲁诞辰节"
+ },
  "HEIC/MOV → JPG/MP4, in batch": {
   "de": "HEIC/MOV → JPG/MP4, im Stapel",
   "es": "HEIC/MOV → JPG/MP4, por lotes",
@@ -10459,6 +10979,26 @@
   "pt": "Cabelo ou algo na cabeça dificultou achar o topo. Confira se a linha de cima está no alto da cabeça.",
   "zh": "头发或头饰使头顶难以识别。请确认上方的线位于头顶。"
  },
+ "Halloween": {
+  "de": "Halloween",
+  "es": "Halloween",
+  "fr": "Halloween",
+  "hi": "हैलोवीन",
+  "it": "Halloween",
+  "ja": "ハロウィン",
+  "pt": "Halloween",
+  "zh": "万圣节"
+ },
+ "Handwritten": {
+  "de": "Handschrift",
+  "es": "A mano",
+  "fr": "Manuscrit",
+  "hi": "हस्तलिखित",
+  "it": "A mano",
+  "ja": "手書き",
+  "pt": "Manuscrita",
+  "zh": "手写"
+ },
  "Hang something straight": {
   "de": "Etwas gerade aufhängen",
   "es": "Colgar algo recto",
@@ -10468,6 +11008,376 @@
   "ja": "まっすぐ掛ける",
   "pt": "Pendurar algo reto",
   "zh": "挂正东西"
+ },
+ "Hanukkah": {
+  "de": "Chanukka",
+  "es": "Janucá",
+  "fr": "Hanoukka",
+  "hi": "हनुक्का",
+  "it": "Hanukkah",
+  "ja": "ハヌカ",
+  "pt": "Hanukkah",
+  "zh": "光明节"
+ },
+ "Happy 4th of July": {
+  "de": "Frohen 4. Juli",
+  "es": "Feliz 4 de Julio",
+  "fr": "Joyeux 4 juillet",
+  "hi": "4 जुलाई की शुभकामनाएँ",
+  "it": "Buon 4 luglio",
+  "ja": "ハッピー独立記念日",
+  "pt": "Feliz 4 de Julho",
+  "zh": "独立日快乐"
+ },
+ "Happy Anniversary": {
+  "de": "Alles Gute zum Jahrestag",
+  "es": "Feliz aniversario",
+  "fr": "Joyeux anniversaire de mariage",
+  "hi": "सालगिरह मुबारक",
+  "it": "Buon anniversario",
+  "ja": "記念日おめでとう",
+  "pt": "Feliz aniversário de casamento",
+  "zh": "纪念日快乐"
+ },
+ "Happy Baisakhi": {
+  "de": "Frohes Baisakhi",
+  "es": "Feliz Baisakhi",
+  "fr": "Joyeux Baisakhi",
+  "hi": "बैसाखी की शुभकामनाएँ",
+  "it": "Buon Baisakhi",
+  "ja": "ハッピー・バイサキ",
+  "pt": "Feliz Baisakhi",
+  "zh": "丰收节快乐"
+ },
+ "Happy Birthday": {
+  "de": "Alles Gute zum Geburtstag",
+  "es": "Feliz cumpleaños",
+  "fr": "Joyeux anniversaire",
+  "hi": "जन्मदिन मुबारक",
+  "it": "Buon compleanno",
+  "ja": "お誕生日おめでとう",
+  "pt": "Feliz aniversário",
+  "zh": "生日快乐"
+ },
+ "Happy Canada Day": {
+  "de": "Happy Canada Day",
+  "es": "Feliz Día de Canadá",
+  "fr": "Bonne fête du Canada",
+  "hi": "कनाडा दिवस की शुभकामनाएँ",
+  "it": "Buon Canada Day",
+  "ja": "ハッピー・カナダデー",
+  "pt": "Feliz Dia do Canadá",
+  "zh": "加拿大国庆日快乐"
+ },
+ "Happy Carnival": {
+  "de": "Fröhlichen Karneval",
+  "es": "Feliz Carnaval",
+  "fr": "Joyeux Carnaval",
+  "hi": "कार्निवल की शुभकामनाएँ",
+  "it": "Buon Carnevale",
+  "ja": "ハッピーカーニバル",
+  "pt": "Feliz Carnaval",
+  "zh": "狂欢节快乐"
+ },
+ "Happy Chuseok": {
+  "de": "Frohes Chuseok",
+  "es": "Feliz Chuseok",
+  "fr": "Joyeux Chuseok",
+  "hi": "चुसोक की शुभकामनाएँ",
+  "it": "Buon Chuseok",
+  "ja": "秋夕おめでとう",
+  "pt": "Feliz Chuseok",
+  "zh": "中秋快乐"
+ },
+ "Happy Diwali": {
+  "de": "Frohes Diwali",
+  "es": "Feliz Diwali",
+  "fr": "Joyeux Diwali",
+  "hi": "दिवाली की शुभकामनाएँ",
+  "it": "Buon Diwali",
+  "ja": "ハッピー・ディワリ",
+  "pt": "Feliz Diwali",
+  "zh": "排灯节快乐"
+ },
+ "Happy Diwali from all of us": {
+  "de": "Frohes Diwali von uns allen",
+  "es": "Feliz Diwali de parte de todos",
+  "fr": "Joyeux Diwali de nous tous",
+  "hi": "हम सबकी ओर से दिवाली की शुभकामनाएँ",
+  "it": "Buon Diwali da tutti noi",
+  "ja": "みんなからハッピー・ディワリ",
+  "pt": "Feliz Diwali de todos nós",
+  "zh": "我们全家祝你排灯节快乐"
+ },
+ "Happy Easter": {
+  "de": "Frohe Ostern",
+  "es": "Felices Pascuas",
+  "fr": "Joyeuses Pâques",
+  "hi": "ईस्टर की शुभकामनाएँ",
+  "it": "Buona Pasqua",
+  "ja": "ハッピーイースター",
+  "pt": "Feliz Páscoa",
+  "zh": "复活节快乐"
+ },
+ "Happy Father's Day": {
+  "de": "Alles Gute zum Vatertag",
+  "es": "Feliz Día del Padre",
+  "fr": "Bonne fête des pères",
+  "hi": "फ़ादर्स डे की शुभकामनाएँ",
+  "it": "Buona festa del papà",
+  "ja": "父の日おめでとう",
+  "pt": "Feliz Dia dos Pais",
+  "zh": "父亲节快乐"
+ },
+ "Happy Gurpurab": {
+  "de": "Frohes Gurpurab",
+  "es": "Feliz Gurpurab",
+  "fr": "Joyeux Gurpurab",
+  "hi": "गुरपुरब की शुभकामनाएँ",
+  "it": "Buon Gurpurab",
+  "ja": "ハッピー・グルプラブ",
+  "pt": "Feliz Gurpurab",
+  "zh": "古鲁诞辰节快乐"
+ },
+ "Happy Halloween": {
+  "de": "Happy Halloween",
+  "es": "Feliz Halloween",
+  "fr": "Joyeux Halloween",
+  "hi": "हैप्पी हैलोवीन",
+  "it": "Buon Halloween",
+  "ja": "ハッピーハロウィン",
+  "pt": "Feliz Halloween",
+  "zh": "万圣节快乐"
+ },
+ "Happy Hanukkah": {
+  "de": "Frohes Chanukka",
+  "es": "Feliz Janucá",
+  "fr": "Joyeuse Hanoukka",
+  "hi": "हनुक्का की शुभकामनाएँ",
+  "it": "Felice Hanukkah",
+  "ja": "ハッピー・ハヌカ",
+  "pt": "Feliz Hanukkah",
+  "zh": "光明节快乐"
+ },
+ "Happy Holi": {
+  "de": "Frohes Holi",
+  "es": "Feliz Holi",
+  "fr": "Joyeux Holi",
+  "hi": "होली की शुभकामनाएँ",
+  "it": "Buon Holi",
+  "ja": "ハッピー・ホーリー",
+  "pt": "Feliz Holi",
+  "zh": "洒红节快乐"
+ },
+ "Happy Holidays": {
+  "de": "Frohe Feiertage",
+  "es": "Felices fiestas",
+  "fr": "Joyeuses fêtes",
+  "hi": "छुट्टियों की शुभकामनाएँ",
+  "it": "Buone feste",
+  "ja": "ハッピーホリデー",
+  "pt": "Boas festas",
+  "zh": "节日快乐"
+ },
+ "Happy Independence Day": {
+  "de": "Frohen Unabhängigkeitstag",
+  "es": "Feliz Día de la Independencia",
+  "fr": "Bonne fête de l'Indépendance",
+  "hi": "स्वतंत्रता दिवस की शुभकामनाएँ",
+  "it": "Buona festa dell'Indipendenza",
+  "ja": "独立記念日おめでとう",
+  "pt": "Feliz Dia da Independência",
+  "zh": "独立日快乐"
+ },
+ "Happy Janmashtami": {
+  "de": "Frohes Janmashtami",
+  "es": "Feliz Janmashtami",
+  "fr": "Joyeux Janmashtami",
+  "hi": "जन्माष्टमी की शुभकामनाएँ",
+  "it": "Buon Janmashtami",
+  "ja": "ハッピー・ジャンマシュタミ",
+  "pt": "Feliz Janmashtami",
+  "zh": "黑天诞辰节快乐"
+ },
+ "Happy Kwanzaa": {
+  "de": "Frohes Kwanzaa",
+  "es": "Feliz Kwanzaa",
+  "fr": "Joyeux Kwanzaa",
+  "hi": "क्वानज़ा की शुभकामनाएँ",
+  "it": "Buon Kwanzaa",
+  "ja": "ハッピー・クワンザ",
+  "pt": "Feliz Kwanzaa",
+  "zh": "宽扎节快乐"
+ },
+ "Happy Loi Krathong": {
+  "de": "Frohes Loi Krathong",
+  "es": "Feliz Loi Krathong",
+  "fr": "Joyeux Loi Krathong",
+  "hi": "लोई क्राथोंग की शुभकामनाएँ",
+  "it": "Buon Loi Krathong",
+  "ja": "ハッピー・ロイクラトン",
+  "pt": "Feliz Loi Krathong",
+  "zh": "水灯节快乐"
+ },
+ "Happy Lunar New Year": {
+  "de": "Frohes Mondneujahr",
+  "es": "Feliz Año Nuevo Lunar",
+  "fr": "Bonne année lunaire",
+  "hi": "चंद्र नववर्ष की शुभकामनाएँ",
+  "it": "Felice Capodanno lunare",
+  "ja": "旧正月おめでとう",
+  "pt": "Feliz Ano-Novo Lunar",
+  "zh": "新春快乐"
+ },
+ "Happy Mid-Autumn Festival": {
+  "de": "Frohes Mondfest",
+  "es": "Feliz Festival de Medio Otoño",
+  "fr": "Joyeuse fête de la Mi-Automne",
+  "hi": "मध्य-शरद उत्सव की शुभकामनाएँ",
+  "it": "Buona festa di metà autunno",
+  "ja": "中秋節おめでとう",
+  "pt": "Feliz Festival do Meio do Outono",
+  "zh": "中秋快乐"
+ },
+ "Happy Mother's Day": {
+  "de": "Alles Liebe zum Muttertag",
+  "es": "Feliz Día de la Madre",
+  "fr": "Bonne fête des mères",
+  "hi": "मदर्स डे की शुभकामनाएँ",
+  "it": "Buona festa della mamma",
+  "ja": "母の日おめでとう",
+  "pt": "Feliz Dia das Mães",
+  "zh": "母亲节快乐"
+ },
+ "Happy Navratri": {
+  "de": "Frohes Navratri",
+  "es": "Feliz Navratri",
+  "fr": "Joyeux Navratri",
+  "hi": "नवरात्रि की शुभकामनाएँ",
+  "it": "Buon Navratri",
+  "ja": "ハッピー・ナヴァラートリ",
+  "pt": "Feliz Navratri",
+  "zh": "九夜节快乐"
+ },
+ "Happy New Year": {
+  "de": "Frohes neues Jahr",
+  "es": "Feliz Año Nuevo",
+  "fr": "Bonne année",
+  "hi": "नया साल मुबारक",
+  "it": "Buon anno",
+  "ja": "あけましておめでとう",
+  "pt": "Feliz Ano-Novo",
+  "zh": "新年快乐"
+ },
+ "Happy Nowruz": {
+  "de": "Frohes Nouruz",
+  "es": "Feliz Nouruz",
+  "fr": "Joyeux Norouz",
+  "hi": "नवरोज़ मुबारक",
+  "it": "Buon Nowruz",
+  "ja": "ノウルーズおめでとう",
+  "pt": "Feliz Nowruz",
+  "zh": "诺鲁孜节快乐"
+ },
+ "Happy Onam": {
+  "de": "Frohes Onam",
+  "es": "Feliz Onam",
+  "fr": "Joyeux Onam",
+  "hi": "ओणम की शुभकामनाएँ",
+  "it": "Buon Onam",
+  "ja": "ハッピー・オーナム",
+  "pt": "Feliz Onam",
+  "zh": "欧南节快乐"
+ },
+ "Happy Pongal": {
+  "de": "Frohes Pongal",
+  "es": "Feliz Pongal",
+  "fr": "Joyeux Pongal",
+  "hi": "पोंगल की शुभकामनाएँ",
+  "it": "Buon Pongal",
+  "ja": "ハッピー・ポンガル",
+  "pt": "Feliz Pongal",
+  "zh": "丰收节快乐"
+ },
+ "Happy Pride": {
+  "de": "Happy Pride",
+  "es": "Feliz Orgullo",
+  "fr": "Joyeuse Fierté",
+  "hi": "हैप्पी प्राइड",
+  "it": "Buon Pride",
+  "ja": "ハッピープライド",
+  "pt": "Feliz Orgulho",
+  "zh": "骄傲月快乐"
+ },
+ "Happy Raksha Bandhan": {
+  "de": "Frohes Raksha Bandhan",
+  "es": "Feliz Raksha Bandhan",
+  "fr": "Joyeux Raksha Bandhan",
+  "hi": "रक्षाबंधन की शुभकामनाएँ",
+  "it": "Buon Raksha Bandhan",
+  "ja": "ハッピー・ラクシャ・バンダン",
+  "pt": "Feliz Raksha Bandhan",
+  "zh": "兄妹节快乐"
+ },
+ "Happy Retirement": {
+  "de": "Alles Gute zum Ruhestand",
+  "es": "Feliz jubilación",
+  "fr": "Bonne retraite",
+  "hi": "सेवानिवृत्ति की शुभकामनाएँ",
+  "it": "Buona pensione",
+  "ja": "退職おめでとう",
+  "pt": "Feliz aposentadoria",
+  "zh": "退休快乐"
+ },
+ "Happy Songkran": {
+  "de": "Frohes Songkran",
+  "es": "Feliz Songkran",
+  "fr": "Joyeux Songkran",
+  "hi": "सोंगक्रान की शुभकामनाएँ",
+  "it": "Buon Songkran",
+  "ja": "ハッピー・ソンクラーン",
+  "pt": "Feliz Songkran",
+  "zh": "泼水节快乐"
+ },
+ "Happy St. Patrick's Day": {
+  "de": "Frohen St. Patrick's Day",
+  "es": "Feliz Día de San Patricio",
+  "fr": "Joyeuse Saint-Patrick",
+  "hi": "सेंट पैट्रिक दिवस की शुभकामनाएँ",
+  "it": "Buon San Patrizio",
+  "ja": "ハッピー・セント・パトリックス・デー",
+  "pt": "Feliz Dia de São Patrício",
+  "zh": "圣帕特里克节快乐"
+ },
+ "Happy Thanksgiving": {
+  "de": "Happy Thanksgiving",
+  "es": "Feliz Día de Acción de Gracias",
+  "fr": "Joyeux Thanksgiving",
+  "hi": "हैप्पी थैंक्सगिविंग",
+  "it": "Buon Ringraziamento",
+  "ja": "ハッピー・サンクスギビング",
+  "pt": "Feliz Ação de Graças",
+  "zh": "感恩节快乐"
+ },
+ "Happy Valentine's Day": {
+  "de": "Alles Liebe zum Valentinstag",
+  "es": "Feliz San Valentín",
+  "fr": "Joyeuse Saint-Valentin",
+  "hi": "हैप्पी वैलेंटाइन डे",
+  "it": "Buon San Valentino",
+  "ja": "ハッピーバレンタイン",
+  "pt": "Feliz Dia dos Namorados",
+  "zh": "情人节快乐"
+ },
+ "Happy Vesak": {
+  "de": "Frohes Vesak",
+  "es": "Feliz Vesak",
+  "fr": "Joyeux Vesak",
+  "hi": "वेसाक की शुभकामनाएँ",
+  "it": "Buon Vesak",
+  "ja": "ハッピー・ウェーサーカ",
+  "pt": "Feliz Vesak",
+  "zh": "卫塞节快乐"
  },
  "Has": {
   "de": "Enthält",
@@ -10669,6 +11579,26 @@
   "pt": "Hélio",
   "zh": "氦气"
  },
+ "Hello, Autumn": {
+  "de": "Hallo, Herbst",
+  "es": "Hola, otoño",
+  "fr": "Bonjour l'automne",
+  "hi": "नमस्ते, शरद",
+  "it": "Ciao, autunno",
+  "ja": "こんにちは、秋",
+  "pt": "Olá, outono",
+  "zh": "你好，秋天"
+ },
+ "Hello, Summer": {
+  "de": "Hallo, Sommer",
+  "es": "Hola, verano",
+  "fr": "Bonjour l'été",
+  "hi": "नमस्ते, गर्मी",
+  "it": "Ciao, estate",
+  "ja": "こんにちは、夏",
+  "pt": "Olá, verão",
+  "zh": "你好，夏天"
+ },
  "Help": {
   "de": "Hilfe",
   "es": "Ayuda",
@@ -10738,6 +11668,16 @@
   "ja": "非表示：",
   "pt": "Ocultados:",
   "zh": "已隐藏"
+ },
+ "Hidden details removed": {
+  "de": "Versteckte Angaben entfernt",
+  "es": "Datos ocultos eliminados",
+  "fr": "Détails cachés supprimés",
+  "hi": "छिपी जानकारी हटाई",
+  "it": "Dati nascosti rimossi",
+  "ja": "隠れた情報を削除",
+  "pt": "Detalhes ocultos removidos",
+  "zh": "已删除隐藏信息"
  },
  "Hidden network": {
   "de": "Verborgenes Netzwerk",
@@ -10969,6 +11909,16 @@
   "pt": "Segurar esta cor",
   "zh": "固定这个颜色"
  },
+ "Holi": {
+  "de": "Holi",
+  "es": "Holi",
+  "fr": "Holi",
+  "hi": "होली",
+  "it": "Holi",
+  "ja": "ホーリー",
+  "pt": "Holi",
+  "zh": "洒红节"
+ },
  "Holographic": {
   "de": "Holografisch",
   "es": "Holográfico",
@@ -11008,6 +11958,16 @@
   "ja": "家常料理は豚肉入りのことが多いです",
   "pt": "Pratos caseiros muitas vezes levam porco",
   "zh": "家常菜常放猪肉"
+ },
+ "Honoured by Apple, Adobe, Chrome and other standard PDF apps. Nobody can switch these back on — keep your original.": {
+  "de": "Gilt in Apple, Adobe, Chrome und anderen PDF-Apps. Niemand kann das wieder einschalten – behalte dein Original.",
+  "es": "Lo respetan Apple, Adobe, Chrome y otras apps de PDF. Nadie puede volver a activarlo: guarda tu original.",
+  "fr": "Respecté par Apple, Adobe, Chrome et les autres lecteurs PDF. Personne ne peut le réactiver — gardez votre original.",
+  "hi": "Apple, Adobe, Chrome और दूसरे PDF ऐप इसे मानते हैं। इसे कोई वापस चालू नहीं कर सकता — अपनी मूल फ़ाइल रखें।",
+  "it": "Rispettato da Apple, Adobe, Chrome e altre app PDF. Nessuno può riattivarlo: conserva l'originale.",
+  "ja": "Apple、Adobe、ChromeなどのPDFアプリで有効です。元に戻すことはできないので、元のファイルは保管してください。",
+  "pt": "Respeitado pela Apple, Adobe, Chrome e outros apps de PDF. Ninguém pode reativar — guarde o original.",
+  "zh": "Apple、Adobe、Chrome 等常见 PDF 应用都会遵守。任何人都无法再打开这些权限——请保留原件。"
  },
  "Hot — light, loose clothes, and drink plenty of water.": {
   "de": "Heiß – leichte, luftige Kleidung und viel trinken.",
@@ -11068,6 +12028,16 @@
   "ja": "どのくらいの長さ",
   "pt": "Quanto tempo",
   "zh": "多长时间"
+ },
+ "How much": {
+  "de": "Wie viel",
+  "es": "Cuánto",
+  "fr": "Combien",
+  "hi": "कितना",
+  "it": "Quanto",
+  "ja": "量",
+  "pt": "Quanto",
+  "zh": "多少"
  },
  "How strong is it": {
   "de": "Wie stark ist es",
@@ -11298,6 +12268,16 @@
   "ja": "税込み",
   "pt": "Inclui imposto",
   "zh": "含税"
+ },
+ "Independence · Republic Day": {
+  "de": "Unabhängigkeits- · Republiktag",
+  "es": "Día de la Independencia · República",
+  "fr": "Fête de l'Indépendance · de la République",
+  "hi": "स्वतंत्रता · गणतंत्र दिवस",
+  "it": "Festa dell'Indipendenza · della Repubblica",
+  "ja": "独立記念日・共和国記念日",
+  "pt": "Independência · Dia da República",
+  "zh": "独立日 · 共和国日"
  },
  "India": {
   "de": "Indien",
@@ -11689,6 +12669,16 @@
   "pt": "Largura, polegadas",
   "zh": "宽度（英寸）"
  },
+ "Janmashtami": {
+  "de": "Janmashtami",
+  "es": "Janmashtami",
+  "fr": "Janmashtami",
+  "hi": "जन्माष्टमी",
+  "it": "Janmashtami",
+  "ja": "ジャンマシュタミ",
+  "pt": "Janmashtami",
+  "zh": "黑天诞辰节"
+ },
  "Job application": {
   "de": "Bewerbung",
   "es": "Solicitud de empleo",
@@ -11899,6 +12889,16 @@
   "pt": "Anote a única coisa que você precisa da ligação",
   "zh": "记下这通电话最需要的那件事"
  },
+ "Just Married": {
+  "de": "Frisch verheiratet",
+  "es": "Recién casados",
+  "fr": "Jeunes mariés",
+  "hi": "नवविवाहित",
+  "it": "Appena sposati",
+  "ja": "祝・結婚",
+  "pt": "Recém-casados",
+  "zh": "新婚快乐"
+ },
  "Just open it": {
   "de": "Einfach öffnen",
   "es": "Solo abrirlo",
@@ -11908,6 +12908,16 @@
   "ja": "そのまま開く",
   "pt": "Só abrir",
   "zh": "直接打开"
+ },
+ "Just right": {
+  "de": "Genau richtig",
+  "es": "Justo",
+  "fr": "Juste ce qu'il faut",
+  "hi": "बिल्कुल सही",
+  "it": "Giusto",
+  "ja": "ちょうどいい",
+  "pt": "Na medida",
+  "zh": "刚好"
  },
  "Just the audio from your video, in the format you pick": {
   "de": "Nur der Ton deines Videos, im gewünschten Format",
@@ -12389,6 +13399,16 @@
   "pt": "Tipo",
   "zh": "类型"
  },
+ "Kwanzaa": {
+  "de": "Kwanzaa",
+  "es": "Kwanzaa",
+  "fr": "Kwanzaa",
+  "hi": "क्वानज़ा",
+  "it": "Kwanzaa",
+  "ja": "クワンザ",
+  "pt": "Kwanzaa",
+  "zh": "宽扎节"
+ },
  "Label": {
   "de": "Beschriftung",
   "es": "Etiqueta",
@@ -12638,6 +13658,16 @@
   "ja": "解除",
   "pt": "Soltar",
   "zh": "松开"
+ },
+ "Let's celebrate!": {
+  "de": "Lasst uns feiern!",
+  "es": "¡A celebrar!",
+  "fr": "Faisons la fête !",
+  "hi": "चलो जश्न मनाएँ!",
+  "it": "Festeggiamo!",
+  "ja": "お祝いしよう！",
+  "pt": "Vamos celebrar!",
+  "zh": "一起庆祝吧！"
  },
  "Level": {
   "de": "Gerade",
@@ -13089,6 +14119,16 @@
   "pt": "Registre como foi seu dia num toque",
   "zh": "一键记录今天过得如何"
  },
+ "Loi Krathong": {
+  "de": "Loi Krathong",
+  "es": "Loi Krathong",
+  "fr": "Loi Krathong",
+  "hi": "लोई क्राथोंग",
+  "it": "Loi Krathong",
+  "ja": "ロイクラトン",
+  "pt": "Loi Krathong",
+  "zh": "水灯节"
+ },
  "Long Screenshot": {
   "de": "Langer Screenshot",
   "es": "Captura larga",
@@ -13269,6 +14309,16 @@
   "pt": "Estilos, contornos e uma folha para imprimir.",
   "zh": "多种风格、描边和可打印贴纸页。"
  },
+ "Lots": {
+  "de": "Viel",
+  "es": "Mucho",
+  "fr": "Beaucoup",
+  "hi": "ढेर सारा",
+  "it": "Tanto",
+  "ja": "たっぷり",
+  "pt": "Bastante",
+  "zh": "很多"
+ },
  "Loud enough to harm your hearing — step away or use earplugs.": {
   "de": "Laut genug, um das Gehör zu schädigen – Abstand halten oder Ohrstöpsel nutzen.",
   "es": "Lo bastante fuerte para dañar el oído: aléjate o usa tapones.",
@@ -13339,6 +14389,16 @@
   "pt": "Valores de sensibilidade mais baixos disparam mais cedo. O sensor fica perto do topo do telemóvel — passa essa extremidade pela parede ou pelo chão.",
   "zh": "灵敏度数值越低越早触发。传感器位于手机顶部附近 — 用那一端在墙面或地面上扫动。"
  },
+ "Lunar New Year": {
+  "de": "Mondneujahr",
+  "es": "Año Nuevo Lunar",
+  "fr": "Nouvel An lunaire",
+  "hi": "चंद्र नववर्ष",
+  "it": "Capodanno lunare",
+  "ja": "旧正月",
+  "pt": "Ano-Novo Lunar",
+  "zh": "农历新年"
+ },
  "M4A is about a tenth the size of WAV and plays on every phone and computer.": {
   "de": "M4A ist etwa ein Zehntel so groß wie WAV und spielt auf jedem Telefon und Computer.",
   "es": "M4A ocupa una décima parte que WAV y suena en cualquier teléfono y ordenador.",
@@ -13368,6 +14428,16 @@
   "ja": "イリノイの一人が制作。各ツールはスマホで動作 — 何もアップロードしません。",
   "pt": "Feito por uma pessoa no Illinois. Cada ferramenta corre no telefone — nada é enviado.",
   "zh": "由伊利诺伊州的一个人打造。每个工具都在手机上运行 — 不上传任何内容。"
+ },
+ "Made from your words — tap a celebration below to switch.": {
+  "de": "Aus deinen Worten gemacht – tippe unten auf ein Fest zum Wechseln.",
+  "es": "Hecho con tus palabras: toca una celebración abajo para cambiar.",
+  "fr": "Créé à partir de vos mots — touchez une fête ci-dessous pour changer.",
+  "hi": "आपके शब्दों से बना — बदलने के लिए नीचे कोई उत्सव चुनें।",
+  "it": "Creato dalle tue parole — tocca una festa qui sotto per cambiare.",
+  "ja": "あなたの言葉から作成 — 下のお祝いをタップで切り替え。",
+  "pt": "Feito com suas palavras — toque numa celebração abaixo para trocar.",
+  "zh": "根据你的文字生成——点下方的节日即可切换。"
  },
  "Made on the phone. A Wi-Fi code lets guests join by scanning — the password never leaves the picture.": {
   "de": "Auf dem Handy erstellt. Ein WLAN-Code lässt Gäste per Scan beitreten — das Passwort verlässt das Bild nie.",
@@ -13838,6 +14908,16 @@
   "ja": "書類パックを作る",
   "pt": "Criar o pacote de papelada",
   "zh": "生成文件包"
+ },
+ "Make the video": {
+  "de": "Video erstellen",
+  "es": "Hacer el vídeo",
+  "fr": "Créer la vidéo",
+  "hi": "वीडियो बनाएँ",
+  "it": "Crea il video",
+  "ja": "動画を作る",
+  "pt": "Fazer o vídeo",
+  "zh": "制作视频"
  },
  "Make those boxes bigger and redact again.": {
   "de": "Vergrößere diese Kästen und schwärze erneut.",
@@ -14319,6 +15399,16 @@
   "pt": "Juntar liga as entradas num só contacto e mantém todos os números e e-mails — nada se perde.",
   "zh": "合并会把条目链接为一个联系人，并保留所有号码和邮箱 — 不会丢失任何内容。"
  },
+ "Merry Christmas": {
+  "de": "Frohe Weihnachten",
+  "es": "Feliz Navidad",
+  "fr": "Joyeux Noël",
+  "hi": "मेरी क्रिसमस",
+  "it": "Buon Natale",
+  "ja": "メリークリスマス",
+  "pt": "Feliz Natal",
+  "zh": "圣诞快乐"
+ },
  "Message": {
   "de": "Nachricht",
   "es": "Mensaje",
@@ -14378,6 +15468,16 @@
   "ja": "Tenzyのマイクがオフのため無音です。設定 → Tenzy → マイクでオンにしてください。",
   "pt": "O microfone está desligado para a Tenzy, então os clipes ficam sem som. Ative em Ajustes → Tenzy → Microfone.",
   "zh": "Tenzy 的麦克风已关闭，视频将没有声音。请在 设置 → Tenzy → 麦克风 中开启。"
+ },
+ "Mid-Autumn Festival": {
+  "de": "Mondfest",
+  "es": "Festival de Medio Otoño",
+  "fr": "Fête de la Mi-Automne",
+  "hi": "मध्य-शरद उत्सव",
+  "it": "Festa di metà autunno",
+  "ja": "中秋節",
+  "pt": "Festival do Meio do Outono",
+  "zh": "中秋节"
  },
  "Mild — a light jacket or long sleeves.": {
   "de": "Mild – leichte Jacke oder lange Ärmel.",
@@ -14578,6 +15678,16 @@
   "ja": "多くのウェブフォーム",
   "pt": "A maioria dos formulários web",
   "zh": "多数网站表单"
+ },
+ "Mother's Day": {
+  "de": "Muttertag",
+  "es": "Día de la Madre",
+  "fr": "Fête des mères",
+  "hi": "मदर्स डे",
+  "it": "Festa della mamma",
+  "ja": "母の日",
+  "pt": "Dia das Mães",
+  "zh": "母亲节"
  },
  "Mouth looks open or a big smile — most countries want a neutral expression.": {
   "de": "Mund wirkt offen oder breites Lächeln – die meisten Länder wollen einen neutralen Ausdruck.",
@@ -15129,6 +16239,16 @@
   "pt": "Nomes escritos por extenso não são ocultados — confira antes de compartilhar.",
   "zh": "以文字书写的姓名不会被隐藏——分享前请检查。"
  },
+ "Navratri": {
+  "de": "Navratri",
+  "es": "Navratri",
+  "fr": "Navratri",
+  "hi": "नवरात्रि",
+  "it": "Navratri",
+  "ja": "ナヴァラートリ",
+  "pt": "Navratri",
+  "zh": "九夜节"
+ },
  "Navy": {
   "de": "Marineblau",
   "es": "Azul marino",
@@ -15178,6 +16298,16 @@
   "ja": "コードにかざすためだけに必要です。録画もアップロードもされません。",
   "pt": "Só é preciso para apontar a um código. Nada é gravado ou enviado.",
   "zh": "仅用于对准代码。不录制也不上传任何内容。"
+ },
+ "Needs a password to open": {
+  "de": "Passwort zum Öffnen nötig",
+  "es": "Necesita contraseña para abrir",
+  "fr": "Mot de passe requis pour ouvrir",
+  "hi": "खोलने के लिए पासवर्ड चाहिए",
+  "it": "Serve una password per aprirlo",
+  "ja": "開くのにパスワードが必要",
+  "pt": "Precisa de senha para abrir",
+  "zh": "打开需要密码"
  },
  "Needs on-device Gemini": {
   "de": "Benötigt Gemini auf dem Gerät",
@@ -15348,6 +16478,26 @@
   "ja": "新しいPIN（4〜8桁）",
   "pt": "Novo PIN (4–8 números)",
   "zh": "新 PIN（4–8 位数字）"
+ },
+ "New Year": {
+  "de": "Neujahr",
+  "es": "Año Nuevo",
+  "fr": "Nouvel An",
+  "hi": "नया साल",
+  "it": "Capodanno",
+  "ja": "新年",
+  "pt": "Ano-Novo",
+  "zh": "新年"
+ },
+ "New baby": {
+  "de": "Neues Baby",
+  "es": "Nuevo bebé",
+  "fr": "Nouveau bébé",
+  "hi": "नन्हा मेहमान",
+  "it": "Nuovo bebè",
+  "ja": "赤ちゃん誕生",
+  "pt": "Novo bebê",
+  "zh": "新生宝宝"
  },
  "New contact": {
   "de": "Neuer Kontakt",
@@ -15589,6 +16739,16 @@
   "pt": "Sem dados de ligação disponíveis.",
   "zh": "无可用的连接详情。"
  },
+ "No copying": {
+  "de": "Kein Kopieren",
+  "es": "Sin copiar",
+  "fr": "Pas de copie",
+  "hi": "कॉपी नहीं",
+  "it": "Niente copia",
+  "ja": "コピー不可",
+  "pt": "Sem cópia",
+  "zh": "不能复制"
+ },
  "No duplicate copies to clear — your library's already tidy.": {
   "de": "Keine Duplikate zu entfernen — deine Mediathek ist schon aufgeräumt.",
   "es": "No hay copias duplicadas que limpiar: tu biblioteca ya está ordenada.",
@@ -15799,6 +16959,16 @@
   "pt": "Sem porco",
   "zh": "不吃猪肉"
  },
+ "No printing": {
+  "de": "Kein Drucken",
+  "es": "Sin imprimir",
+  "fr": "Pas d'impression",
+  "hi": "प्रिंट नहीं",
+  "it": "Niente stampa",
+  "ja": "印刷不可",
+  "pt": "Sem impressão",
+  "zh": "不能打印"
+ },
  "No readable tables (the file may be encrypted or not a database).": {
   "de": "Keine lesbaren Tabellen (die Datei ist evtl. verschlüsselt oder keine Datenbank).",
   "es": "No hay tablas legibles (el archivo puede estar cifrado o no ser una base de datos).",
@@ -15928,6 +17098,16 @@
   "ja": "アドレスに危険なサインはありません",
   "pt": "Nenhum sinal de alerta no endereço",
   "zh": "地址中没有可疑迹象"
+ },
+ "Nobody can delete the watermark in a PDF editor. The words on the pages stop being selectable.": {
+  "de": "Niemand kann das Wasserzeichen in einem PDF-Editor löschen. Der Text der Seiten ist dann nicht mehr auswählbar.",
+  "es": "Nadie podrá borrar la marca de agua en un editor de PDF. El texto de las páginas dejará de poder seleccionarse.",
+  "fr": "Personne ne pourra effacer le filigrane dans un éditeur PDF. Le texte des pages ne sera plus sélectionnable.",
+  "hi": "PDF एडिटर में कोई वॉटरमार्क नहीं मिटा सकेगा। पन्नों के शब्द चुने नहीं जा सकेंगे।",
+  "it": "Nessuno potrà cancellare la filigrana in un editor PDF. Il testo delle pagine non sarà più selezionabile.",
+  "ja": "PDF編集アプリで透かしを消せなくなります。ページの文字は選択できなくなります。",
+  "pt": "Ninguém poderá apagar a marca-d'água num editor de PDF. O texto das páginas deixa de ser selecionável.",
+  "zh": "在 PDF 编辑器里无法删除水印。页面上的文字将不能再被选中。"
  },
  "Noir": {
   "de": "Noir",
@@ -16519,6 +17699,16 @@
   "pt": "Agora toque no canto oposto, no alto à direita.",
   "zh": "现在点按对角，右上角。"
  },
+ "Nowruz": {
+  "de": "Nouruz",
+  "es": "Nouruz",
+  "fr": "Norouz",
+  "hi": "नवरोज़",
+  "it": "Nowruz",
+  "ja": "ノウルーズ",
+  "pt": "Nowruz",
+  "zh": "诺鲁孜节"
+ },
  "Nudge again": {
   "de": "Erneut erinnern",
   "es": "Avisar otra vez",
@@ -16598,6 +17788,16 @@
   "ja": "言語パックをダウンロードすればオフラインで動作します（端末内ML Kit）。翻訳した内容が端末外に出ることはありません。",
   "pt": "Offline assim que um pacote de idioma for transferido (ML Kit no dispositivo). Nada do que traduzes sai do telemóvel.",
   "zh": "下载语言包后即可离线（设备端 ML Kit）。你翻译的任何内容都不离开手机。"
+ },
+ "Oktoberfest": {
+  "de": "Oktoberfest",
+  "es": "Oktoberfest",
+  "fr": "Oktoberfest",
+  "hi": "ऑक्टोबरफ़ेस्ट",
+  "it": "Oktoberfest",
+  "ja": "オクトーバーフェスト",
+  "pt": "Oktoberfest",
+  "zh": "啤酒节"
  },
  "On": {
   "de": "Am",
@@ -16688,6 +17888,16 @@
   "ja": "この端末では現在この言語の端末内文字起こしを利用できません。",
   "pt": "A transcrição no aparelho não está disponível para este idioma neste telefone agora.",
   "zh": "此手机目前不支持该语言的设备端转写。"
+ },
+ "Onam": {
+  "de": "Onam",
+  "es": "Onam",
+  "fr": "Onam",
+  "hi": "ओणम",
+  "it": "Onam",
+  "ja": "オーナム",
+  "pt": "Onam",
+  "zh": "欧南节"
  },
  "Once the basics are done, your head is clearer for work. A shorter block — it still counts.": {
   "de": "Wenn das Nötigste erledigt ist, ist der Kopf freier für die Arbeit. Ein kürzerer Block – zählt trotzdem.",
@@ -17439,6 +18649,16 @@
   "pt": "Mais de 25 MB — grande demais para a maioria dos emails. Ative Reduzir as fotos ou envie por link (iCloud, Drive).",
   "zh": "超过 25 MB，大多数邮件发不了。打开“缩小照片”，或通过链接（iCloud、Drive）发送。"
  },
+ "PAID": {
+  "de": "BEZAHLT",
+  "es": "PAGADO",
+  "fr": "PAYÉ",
+  "hi": "भुगतान हुआ",
+  "it": "PAGATO",
+  "ja": "支払済",
+  "pt": "PAGO",
+  "zh": "已付款"
+ },
  "PDF": {
   "de": "PDF",
   "es": "PDF",
@@ -17538,6 +18758,16 @@
   "ja": "ページ",
   "pt": "Página",
   "zh": "页"
+ },
+ "Page 1 as it will look": {
+  "de": "Seite 1, wie sie aussehen wird",
+  "es": "Página 1 tal como quedará",
+  "fr": "La page 1 telle qu'elle sera",
+  "hi": "पन्ना 1 जैसा दिखेगा",
+  "it": "Pagina 1 come apparirà",
+  "ja": "1ページ目の仕上がり",
+  "pt": "Página 1 como vai ficar",
+  "zh": "第 1 页的效果"
  },
  "Page colour": {
   "de": "Seitenfarbe",
@@ -17789,6 +19019,16 @@
   "pt": "Parte do objeto sai da borda da foto, então termina em linha reta ali. Para uma borda limpa, use uma foto com um pouco de espaço em volta.",
   "zh": "主体有一部分超出了照片边缘，因此那里会是一条直线。想要完整干净的边缘，请使用主体周围留有空间的照片。"
  },
+ "Passover": {
+  "de": "Pessach",
+  "es": "Pésaj",
+  "fr": "Pâque juive",
+  "hi": "पासओवर",
+  "it": "Pesach",
+  "ja": "過越祭",
+  "pt": "Páscoa judaica",
+  "zh": "逾越节"
+ },
  "Passport photos come from photos — choose a photo above.": {
   "de": "Passfotos entstehen aus Fotos — wähle oben ein Foto.",
   "es": "Las fotos de pasaporte salen de fotos — elige una foto arriba.",
@@ -17838,6 +19078,16 @@
   "ja": "パスワードを解除しました。このコピーは自由に開けます。",
   "pt": "Senha removida — esta cópia abre livremente.",
   "zh": "密码已移除——此副本可直接打开。"
+ },
+ "Password to open": {
+  "de": "Passwort zum Öffnen",
+  "es": "Contraseña para abrir",
+  "fr": "Mot de passe d'ouverture",
+  "hi": "खोलने का पासवर्ड",
+  "it": "Password per aprire",
+  "ja": "開くためのパスワード",
+  "pt": "Senha para abrir",
+  "zh": "打开密码"
  },
  "Password-lock or watermark a PDF": {
   "de": "PDF mit Passwort sperren oder Wasserzeichen",
@@ -18459,6 +19709,16 @@
   "pt": "Escolhe uma ferramenta. Explica-se sozinha.",
   "zh": "挑一个工具。它会自我说明。"
  },
+ "Pick a video or a photo. Add snow for Christmas, fireworks for New Year, diyas for Diwali, lanterns for Lunar New Year — or any celebration you type — and your own words.": {
+  "de": "Wähle ein Video oder Foto. Schnee zu Weihnachten, Feuerwerk zu Neujahr, Diyas zu Diwali, Laternen zum Mondneujahr – oder jedes Fest, das du eintippst – und deine eigenen Worte.",
+  "es": "Elige un vídeo o una foto. Nieve para Navidad, fuegos para Año Nuevo, diyas para Diwali, farolillos para el Año Nuevo Lunar —o cualquier celebración que escribas— y tus palabras.",
+  "fr": "Choisissez une vidéo ou une photo. De la neige pour Noël, des feux d'artifice pour le Nouvel An, des diyas pour Diwali, des lanternes pour le Nouvel An lunaire — ou toute fête que vous tapez — et vos mots.",
+  "hi": "वीडियो या फ़ोटो चुनें। क्रिसमस पर बर्फ़, नए साल पर आतिशबाज़ी, दिवाली पर दीये, चंद्र नववर्ष पर लालटेन — या जो भी उत्सव आप लिखें — और अपने शब्द।",
+  "it": "Scegli un video o una foto. Neve per Natale, fuochi per Capodanno, diya per Diwali, lanterne per il Capodanno lunare — o qualsiasi festa scrivi — e le tue parole.",
+  "ja": "動画か写真を選んでください。クリスマスには雪、新年には花火、ディワリにはディヤ、旧正月にはランタン — 入力したどんなお祝いでも — そしてあなたの言葉を。",
+  "pt": "Escolha um vídeo ou foto. Neve no Natal, fogos no Ano-Novo, diyas no Diwali, lanternas no Ano-Novo Lunar — ou qualquer festa que digitar — e suas palavras.",
+  "zh": "选一段视频或一张照片。圣诞加雪花，新年放烟花，排灯节点油灯，农历新年挂灯笼——或输入任何节日——再加上你的话。"
+ },
  "Pick a voice recording or any sound file. It never leaves this phone.": {
   "de": "Wähle eine Sprachaufnahme oder beliebige Audiodatei. Sie verlässt dieses Handy nie.",
   "es": "Elige una grabación de voz o cualquier archivo de sonido. Nunca sale de este teléfono.",
@@ -19039,6 +20299,16 @@
   "pt": "Pilha de Polaroids",
   "zh": "拍立得叠放"
  },
+ "Pongal · Sankranti": {
+  "de": "Pongal · Sankranti",
+  "es": "Pongal · Sankranti",
+  "fr": "Pongal · Sankranti",
+  "hi": "पोंगल · संक्रांति",
+  "it": "Pongal · Sankranti",
+  "ja": "ポンガル・サンクランティ",
+  "pt": "Pongal · Sankranti",
+  "zh": "丰收节"
+ },
  "Pop": {
   "de": "Pop",
   "es": "Pop",
@@ -19269,6 +20539,16 @@
   "pt": "Alerta de preço",
   "zh": "价格提醒"
  },
+ "Pride": {
+  "de": "Pride",
+  "es": "Orgullo",
+  "fr": "Fierté",
+  "hi": "प्राइड",
+  "it": "Pride",
+  "ja": "プライド",
+  "pt": "Orgulho",
+  "zh": "骄傲月"
+ },
  "Print it as a paper flipbook": {
   "de": "Als Papier-Daumenkino drucken",
   "es": "Imprimir como folioscopio de papel",
@@ -19318,6 +20598,16 @@
   "ja": "来客用の印刷カード",
   "pt": "Cartão para imprimir para convidados",
   "zh": "可打印的访客卡片"
+ },
+ "Printing is blocked": {
+  "de": "Drucken ist gesperrt",
+  "es": "La impresión está bloqueada",
+  "fr": "L'impression est bloquée",
+  "hi": "प्रिंट करना बंद है",
+  "it": "La stampa è bloccata",
+  "ja": "印刷は禁止されています",
+  "pt": "A impressão está bloqueada",
+  "zh": "已禁止打印"
  },
  "Prints drop onto a pile": {
   "de": "Abzüge fallen auf einen Stapel",
@@ -19439,6 +20729,16 @@
   "pt": "Foto de perfil",
   "zh": "头像"
  },
+ "Prost!": {
+  "de": "Prost!",
+  "es": "¡Salud!",
+  "fr": "Santé !",
+  "hi": "चियर्स!",
+  "it": "Salute!",
+  "ja": "乾杯！",
+  "pt": "Saúde!",
+  "zh": "干杯！"
+ },
  "Protect": {
   "de": "Schützen",
   "es": "Proteger",
@@ -19448,6 +20748,46 @@
   "ja": "保護",
   "pt": "Proteger",
   "zh": "保护"
+ },
+ "Protect PDF": {
+  "de": "PDF schützen",
+  "es": "Proteger PDF",
+  "fr": "Protéger le PDF",
+  "hi": "PDF सुरक्षित करें",
+  "it": "Proteggi PDF",
+  "ja": "PDFを保護",
+  "pt": "Proteger PDF",
+  "zh": "保护 PDF"
+ },
+ "Protected — checked on the saved file below.": {
+  "de": "Geschützt – unten an der gespeicherten Datei geprüft.",
+  "es": "Protegido: comprobado en el archivo guardado abajo.",
+  "fr": "Protégé — vérifié sur le fichier enregistré ci-dessous.",
+  "hi": "सुरक्षित — नीचे सेव की गई फ़ाइल पर जाँचा गया।",
+  "it": "Protetto: verificato sul file salvato qui sotto.",
+  "ja": "保護しました — 保存したファイルで確認済み（下）。",
+  "pt": "Protegido — conferido no arquivo salvo abaixo.",
+  "zh": "已保护——已在下方保存的文件上核实。"
+ },
+ "Protected.": {
+  "de": "Geschützt.",
+  "es": "Protegido.",
+  "fr": "Protégé.",
+  "hi": "सुरक्षित।",
+  "it": "Protetto.",
+  "ja": "保護しました。",
+  "pt": "Protegido.",
+  "zh": "已保护。"
+ },
+ "Protecting every page…": {
+  "de": "Jede Seite wird geschützt…",
+  "es": "Protegiendo cada página…",
+  "fr": "Protection de chaque page…",
+  "hi": "हर पन्ना सुरक्षित हो रहा है…",
+  "it": "Protezione di ogni pagina…",
+  "ja": "全ページを保護中…",
+  "pt": "Protegendo cada página…",
+  "zh": "正在保护每一页…"
  },
  "Proved: searched the finished file for all": {
   "de": "Nachgewiesen: Die fertige Datei wurde durchsucht nach allen",
@@ -19768,6 +21108,36 @@
   "ja": "レインボー",
   "pt": "Arco-íris",
   "zh": "彩虹"
+ },
+ "Raksha Bandhan": {
+  "de": "Raksha Bandhan",
+  "es": "Raksha Bandhan",
+  "fr": "Raksha Bandhan",
+  "hi": "रक्षाबंधन",
+  "it": "Raksha Bandhan",
+  "ja": "ラクシャ・バンダン",
+  "pt": "Raksha Bandhan",
+  "zh": "兄妹节"
+ },
+ "Ramadan": {
+  "de": "Ramadan",
+  "es": "Ramadán",
+  "fr": "Ramadan",
+  "hi": "रमज़ान",
+  "it": "Ramadan",
+  "ja": "ラマダン",
+  "pt": "Ramadã",
+  "zh": "斋月"
+ },
+ "Ramadan Kareem": {
+  "de": "Ramadan Kareem",
+  "es": "Ramadán Kareem",
+  "fr": "Ramadan Karim",
+  "hi": "रमज़ान करीम",
+  "it": "Ramadan Kareem",
+  "ja": "ラマダン・カリーム",
+  "pt": "Ramadã Kareem",
+  "zh": "斋月吉祥"
  },
  "Rate Tenzy": {
   "de": "Tenzy bewerten",
@@ -20949,6 +22319,16 @@
   "pt": "Repetir",
   "zh": "重复"
  },
+ "Repeated": {
+  "de": "Wiederholt",
+  "es": "Repetida",
+  "fr": "Répété",
+  "hi": "बार-बार",
+  "it": "Ripetuta",
+  "ja": "繰り返し",
+  "pt": "Repetida",
+  "zh": "平铺重复"
+ },
  "Report and block it": {
   "de": "Melden und blockieren",
   "es": "Denunciar y bloquear",
@@ -21078,6 +22458,16 @@
   "ja": "撮り直しをおすすめします",
   "pt": "Melhor tirar outra",
   "zh": "建议重拍"
+ },
+ "Retirement": {
+  "de": "Ruhestand",
+  "es": "Jubilación",
+  "fr": "Retraite",
+  "hi": "सेवानिवृत्ति",
+  "it": "Pensione",
+  "ja": "退職",
+  "pt": "Aposentadoria",
+  "zh": "退休"
  },
  "Retro": {
   "de": "Retro",
@@ -21258,6 +22648,16 @@
   "ja": "部屋",
   "pt": "Cômodo",
   "zh": "房间"
+ },
+ "Rosh Hashanah": {
+  "de": "Rosch Haschana",
+  "es": "Rosh Hashaná",
+  "fr": "Roch Hachana",
+  "hi": "रोश हशाना",
+  "it": "Rosh Hashanah",
+  "ja": "ローシュ・ハッシャナー",
+  "pt": "Rosh Hashaná",
+  "zh": "犹太新年"
  },
  "Rotate": {
   "de": "Drehen",
@@ -22479,6 +23879,16 @@
   "pt": "Capturas acumuladas, pouco espaço, vídeos grandes",
   "zh": "截图堆积、空间不足、大视频"
  },
+ "Script": {
+  "de": "Schreibschrift",
+  "es": "Caligrafía",
+  "fr": "Script",
+  "hi": "सुलेख",
+  "it": "Corsivo",
+  "ja": "筆記体",
+  "pt": "Cursiva",
+  "zh": "花体"
+ },
  "Scrubber": {
   "de": "Reiniger",
   "es": "Limpiador",
@@ -23099,6 +24509,16 @@
   "pt": "Definições",
   "zh": "设置"
  },
+ "Shana Tova": {
+  "de": "Schana Towa",
+  "es": "Shaná Tová",
+  "fr": "Chana Tova",
+  "hi": "शाना टोवा",
+  "it": "Shana Tova",
+  "ja": "シャナ・トヴァ",
+  "pt": "Shaná Tová",
+  "zh": "新年好"
+ },
  "Shape": {
   "de": "Format",
   "es": "Forma",
@@ -23708,6 +25128,16 @@
   "ja": "縮小・トリム・変換・GIF",
   "pt": "Reduzir, cortar, converter, GIF",
   "zh": "压缩、裁剪、转换、GIF"
+ },
+ "Shubho Durga Puja": {
+  "de": "Shubho Durga Puja",
+  "es": "Shubho Durga Puja",
+  "fr": "Shubho Durga Puja",
+  "hi": "शुभो दुर्गा पूजा",
+  "it": "Shubho Durga Puja",
+  "ja": "シュボ・ドゥルガー・プージャ",
+  "pt": "Shubho Durga Puja",
+  "zh": "杜尔迦节快乐"
  },
  "Shutter": {
   "de": "Auslöser",
@@ -24339,6 +25769,16 @@
   "pt": "Duração da soneca",
   "zh": "贪睡时长"
  },
+ "Snow, fireworks, diyas, lanterns — any festival — with your words on it": {
+  "de": "Schnee, Feuerwerk, Diyas, Laternen – jedes Fest – mit deinen Worten",
+  "es": "Nieve, fuegos, diyas, farolillos —cualquier fiesta— con tus palabras",
+  "fr": "Neige, feux d'artifice, diyas, lanternes — toute fête — avec vos mots",
+  "hi": "बर्फ़, आतिशबाज़ी, दीये, लालटेन — कोई भी त्योहार — आपके शब्दों के साथ",
+  "it": "Neve, fuochi, diya, lanterne — ogni festa — con le tue parole",
+  "ja": "雪、花火、ディヤ、ランタン — どんなお祝いも — あなたの言葉と",
+  "pt": "Neve, fogos, diyas, lanternas — qualquer festa — com suas palavras",
+  "zh": "雪花、烟花、油灯、灯笼——任何节日——配上你的话"
+ },
  "So this reminder can't reach you. Tap below, turn on Allow Notifications, then come back — it switches on by itself.": {
   "de": "Diese Erinnerung kann dich also nicht erreichen. Tippe unten, aktiviere „Mitteilungen erlauben“ und komm zurück – sie schaltet sich dann selbst ein.",
   "es": "Así este recordatorio no te llega. Toca abajo, activa Permitir notificaciones y vuelve: se activará solo.",
@@ -24528,6 +25968,16 @@
   "ja": "曲情報とジャケット",
   "pt": "Info e capa da música",
   "zh": "歌曲信息与封面"
+ },
+ "Songkran": {
+  "de": "Songkran",
+  "es": "Songkran",
+  "fr": "Songkran",
+  "hi": "सोंगक्रान",
+  "it": "Songkran",
+  "ja": "ソンクラーン",
+  "pt": "Songkran",
+  "zh": "泼水节"
  },
  "Songs from Apple Music can't be used (they're protected) — use a file you own, a voice memo or a video.": {
   "de": "Songs aus Apple Music gehen nicht (sie sind geschützt) – nimm eine eigene Datei, ein Sprachmemo oder ein Video.",
@@ -24879,6 +26329,16 @@
   "pt": "Folha para Excel (.csv)",
   "zh": "Excel 表格（.csv）"
  },
+ "Spring is here": {
+  "de": "Der Frühling ist da",
+  "es": "Llegó la primavera",
+  "fr": "Le printemps est là",
+  "hi": "बसंत आ गया",
+  "it": "È primavera",
+  "ja": "春が来た",
+  "pt": "A primavera chegou",
+  "zh": "春天来了"
+ },
  "Square": {
   "de": "Quadrat",
   "es": "Cuadrado",
@@ -24888,6 +26348,16 @@
   "ja": "四角",
   "pt": "Quadrado",
   "zh": "方块"
+ },
+ "St Patrick's Day": {
+  "de": "St. Patrick's Day",
+  "es": "Día de San Patricio",
+  "fr": "Saint-Patrick",
+  "hi": "सेंट पैट्रिक दिवस",
+  "it": "San Patrizio",
+  "ja": "聖パトリックの日",
+  "pt": "Dia de São Patrício",
+  "zh": "圣帕特里克节"
  },
  "Stand in front of a plain light wall and try again.": {
   "de": "Vor eine helle, einfarbige Wand stellen und erneut versuchen.",
@@ -25269,6 +26739,16 @@
   "pt": "Parar de acompanhar",
   "zh": "停止关注"
  },
+ "Stopped.": {
+  "de": "Gestoppt.",
+  "es": "Detenido.",
+  "fr": "Arrêté.",
+  "hi": "रोक दिया।",
+  "it": "Interrotto.",
+  "ja": "停止しました。",
+  "pt": "Parado.",
+  "zh": "已停止。"
+ },
  "Storage": {
   "de": "Speicher",
   "es": "Almacenamiento",
@@ -25488,6 +26968,16 @@
   "ja": "要約",
   "pt": "Resumo",
   "zh": "摘要"
+ },
+ "Summer": {
+  "de": "Sommer",
+  "es": "Verano",
+  "fr": "Été",
+  "hi": "गर्मी",
+  "it": "Estate",
+  "ja": "夏",
+  "pt": "Verão",
+  "zh": "夏天"
  },
  "Sun direction, Qibla, and how high you are": {
   "de": "Sonnenrichtung, Qibla und deine Höhe",
@@ -27039,6 +28529,16 @@
   "pt": "Texto: extrai as palavras — até de um scan — para copiar ou salvar como .txt.",
   "zh": "文字：即使是扫描件也能提取文字，可复制或存为 .txt。"
  },
+ "Thanksgiving": {
+  "de": "Thanksgiving",
+  "es": "Acción de Gracias",
+  "fr": "Thanksgiving",
+  "hi": "थैंक्सगिविंग",
+  "it": "Ringraziamento",
+  "ja": "感謝祭",
+  "pt": "Ação de Graças",
+  "zh": "感恩节"
+ },
  "That PDF has no pages.": {
   "de": "Dieses PDF hat keine Seiten.",
   "es": "Ese PDF no tiene páginas.",
@@ -27658,6 +29158,16 @@
   "ja": "2つの角がほぼ同じ高さです。下の角、次に対角の上の角を。",
   "pt": "Os dois cantos estão quase na mesma altura — toque num de baixo e depois no de cima oposto.",
   "zh": "两个角几乎同高，请先点下角，再点对角的上角。"
+ },
+ "The two don't match yet.": {
+  "de": "Die beiden stimmen noch nicht überein.",
+  "es": "Todavía no coinciden.",
+  "fr": "Les deux ne correspondent pas encore.",
+  "hi": "दोनों अभी मेल नहीं खाते।",
+  "it": "Le due non coincidono ancora.",
+  "ja": "まだ一致していません。",
+  "pt": "As duas ainda não coincidem.",
+  "zh": "两次输入还不一致。"
  },
  "The words it reads": {
   "de": "Die Wörter, die vorgelesen werden",
@@ -29059,6 +30569,16 @@
   "pt": "Experimente outra animação nas mesmas fotos",
   "zh": "用同样的照片试试别的动画"
  },
+ "Try another celebration": {
+  "de": "Anderes Fest ausprobieren",
+  "es": "Probar otra celebración",
+  "fr": "Essayer une autre fête",
+  "hi": "दूसरा उत्सव आज़माएँ",
+  "it": "Prova un'altra festa",
+  "ja": "別のお祝いを試す",
+  "pt": "Tentar outra celebração",
+  "zh": "换个节日试试"
+ },
  "Try another emoji": {
   "de": "Anderes Emoji probieren",
   "es": "Prueba otro emoji",
@@ -29309,6 +30829,16 @@
   "pt": "Ativa o Peaking — as margens vermelhas mostram exatamente o que está nítido.",
   "zh": "打开峰值对焦——红色边缘精确显示哪些部分清晰。"
  },
+ "Turn on a watermark, a password or a block on printing or copying.": {
+  "de": "Schalte ein Wasserzeichen, ein Passwort oder eine Druck-/Kopiersperre ein.",
+  "es": "Activa una marca de agua, una contraseña o un bloqueo de impresión o copia.",
+  "fr": "Activez un filigrane, un mot de passe ou un blocage d'impression ou de copie.",
+  "hi": "वॉटरमार्क, पासवर्ड या प्रिंट/कॉपी पर रोक चालू करें।",
+  "it": "Attiva una filigrana, una password o un blocco di stampa o copia.",
+  "ja": "透かし、パスワード、印刷やコピーの禁止のいずれかをオンにしてください。",
+  "pt": "Ative uma marca-d'água, uma senha ou um bloqueio de impressão ou cópia.",
+  "zh": "请打开水印、密码，或禁止打印/复制中的一项。"
+ },
  "Turn on location to drop and find your parking pin. Your location is used only on this phone to measure the distance back — it's never uploaded.": {
   "de": "Schalte den Standort ein, um deinen Parkpin zu setzen und wiederzufinden. Dein Standort wird nur auf diesem Handy genutzt, um die Entfernung zurück zu messen — nie hochgeladen.",
   "es": "Activa la ubicación para colocar y encontrar tu pin de aparcamiento. Tu ubicación se usa solo en este teléfono para medir la distancia de vuelta — nunca se sube.",
@@ -29378,6 +30908,16 @@
   "ja": "写真をメッセージやWhatsAppなどで使えるデザインステッカーに。",
   "pt": "Transforme fotos em figurinhas estilosas para Mensagens, WhatsApp e mais.",
   "zh": "把照片变成精心设计的贴纸，用于“信息”、WhatsApp 等。"
+ },
+ "Turn something on above.": {
+  "de": "Schalte oben etwas ein.",
+  "es": "Activa algo arriba.",
+  "fr": "Activez une option ci-dessus.",
+  "hi": "ऊपर कुछ चालू करें।",
+  "it": "Attiva qualcosa qui sopra.",
+  "ja": "上で何かをオンにしてください。",
+  "pt": "Ative algo acima.",
+  "zh": "请在上方打开一项。"
  },
  "Turn the phone sideways for a video that fills TVs and YouTube.": {
   "de": "Dreh das Telefon quer – für Videos, die Fernseher und YouTube füllen.",
@@ -29508,6 +31048,16 @@
   "ja": "返信を入力 — 端末が読み上げます",
   "pt": "Escreve uma resposta — o telemóvel di-la-á",
   "zh": "输入回复 — 手机会读出来"
+ },
+ "Type any celebration — Navidad, Eid, दिवाली, 春节…": {
+  "de": "Beliebiges Fest eingeben – Navidad, Eid, दिवाली, 春节…",
+  "es": "Escribe cualquier celebración: Navidad, Eid, दिवाली, 春节…",
+  "fr": "Tapez une fête — Navidad, Eid, दिवाली, 春节…",
+  "hi": "कोई भी उत्सव लिखें — Navidad, Eid, दिवाली, 春节…",
+  "it": "Scrivi una festa — Navidad, Eid, दिवाली, 春节…",
+  "ja": "お祝いを入力 — Navidad、Eid、दिवाली、春节…",
+  "pt": "Digite qualquer celebração — Navidad, Eid, दिवाली, 春节…",
+  "zh": "输入任何节日——Navidad、Eid、दिवाली、春节…"
  },
  "Type here": {
   "de": "Hier tippen",
@@ -30099,6 +31649,26 @@
   "pt": "Geralmente salteado com porco",
   "zh": "通常和猪肉一起炒"
  },
+ "VOID": {
+  "de": "UNGÜLTIG",
+  "es": "ANULADO",
+  "fr": "ANNULÉ",
+  "hi": "रद्द",
+  "it": "ANNULLATO",
+  "ja": "無効",
+  "pt": "ANULADO",
+  "zh": "作废"
+ },
+ "Valentine's Day": {
+  "de": "Valentinstag",
+  "es": "San Valentín",
+  "fr": "Saint-Valentin",
+  "hi": "वैलेंटाइन डे",
+  "it": "San Valentino",
+  "ja": "バレンタインデー",
+  "pt": "Dia dos Namorados",
+  "zh": "情人节"
+ },
  "Vault": {
   "de": "Tresor",
   "es": "Caja fuerte",
@@ -30178,6 +31748,16 @@
   "ja": "とても長い録音",
   "pt": "Gravação muito longa",
   "zh": "很长的录音"
+ },
+ "Vesak": {
+  "de": "Vesak",
+  "es": "Vesak",
+  "fr": "Vesak",
+  "hi": "वेसाक",
+  "it": "Vesak",
+  "ja": "ウェーサーカ",
+  "pt": "Vesak",
+  "zh": "卫塞节"
  },
  "Video": {
   "de": "Video",
@@ -30599,6 +32179,46 @@
   "pt": "Acompanhar uma página",
   "zh": "关注一个网页"
  },
+ "Watermark": {
+  "de": "Wasserzeichen",
+  "es": "Marca de agua",
+  "fr": "Filigrane",
+  "hi": "वॉटरमार्क",
+  "it": "Filigrana",
+  "ja": "透かし",
+  "pt": "Marca-d'água",
+  "zh": "水印"
+ },
+ "Watermark burned in": {
+  "de": "Wasserzeichen eingebrannt",
+  "es": "Marca de agua incrustada",
+  "fr": "Filigrane incrusté",
+  "hi": "वॉटरमार्क पक्का छपा",
+  "it": "Filigrana incorporata",
+  "ja": "透かしを焼き込み",
+  "pt": "Marca-d'água gravada",
+  "zh": "水印已固化"
+ },
+ "Watermark every page": {
+  "de": "Jede Seite mit Wasserzeichen",
+  "es": "Marca de agua en cada página",
+  "fr": "Filigrane sur chaque page",
+  "hi": "हर पन्ने पर वॉटरमार्क",
+  "it": "Filigrana su ogni pagina",
+  "ja": "全ページに透かし",
+  "pt": "Marca-d'água em cada página",
+  "zh": "每页加水印"
+ },
+ "Watermark on every page": {
+  "de": "Wasserzeichen auf jeder Seite",
+  "es": "Marca de agua en cada página",
+  "fr": "Filigrane sur chaque page",
+  "hi": "हर पन्ने पर वॉटरमार्क",
+  "it": "Filigrana su ogni pagina",
+  "ja": "全ページに透かし",
+  "pt": "Marca-d'água em todas as páginas",
+  "zh": "每页都有水印"
+ },
  "Watermark text": {
   "de": "Wasserzeichentext",
   "es": "Texto de la marca de agua",
@@ -30608,6 +32228,26 @@
   "ja": "透かしの文字",
   "pt": "Texto da marca d'água",
   "zh": "水印文字"
+ },
+ "Watermark words": {
+  "de": "Wasserzeichen-Text",
+  "es": "Texto de la marca de agua",
+  "fr": "Texte du filigrane",
+  "hi": "वॉटरमार्क के शब्द",
+  "it": "Testo della filigrana",
+  "ja": "透かしの文字",
+  "pt": "Texto da marca-d'água",
+  "zh": "水印文字"
+ },
+ "Watermark words (optional)": {
+  "de": "Wasserzeichen-Text (optional)",
+  "es": "Texto de la marca de agua (opcional)",
+  "fr": "Texte du filigrane (facultatif)",
+  "hi": "वॉटरमार्क के शब्द (वैकल्पिक)",
+  "it": "Testo della filigrana (facoltativo)",
+  "ja": "透かしの文字（任意）",
+  "pt": "Texto da marca-d'água (opcional)",
+  "zh": "水印文字（可选）"
  },
  "Watermarked on every page — check it below.": {
   "de": "Wasserzeichen auf jeder Seite – unten prüfen.",
@@ -30659,6 +32299,16 @@
   "pt": "Site",
   "zh": "网站"
  },
+ "Wedding": {
+  "de": "Hochzeit",
+  "es": "Boda",
+  "fr": "Mariage",
+  "hi": "शादी",
+  "it": "Matrimonio",
+  "ja": "結婚式",
+  "pt": "Casamento",
+  "zh": "婚礼"
+ },
  "Weekly": {
   "de": "Wöchentlich",
   "es": "Semanal",
@@ -30668,6 +32318,16 @@
   "ja": "毎週",
   "pt": "Semanal",
   "zh": "每周"
+ },
+ "Welcome, little one!": {
+  "de": "Willkommen, Kleines!",
+  "es": "¡Bienvenido, pequeñín!",
+  "fr": "Bienvenue, petit bout !",
+  "hi": "स्वागत है, नन्हे मेहमान!",
+  "it": "Benvenuto, piccolino!",
+  "ja": "ようこそ、赤ちゃん！",
+  "pt": "Bem-vindo, pequenino!",
+  "zh": "欢迎你，小宝贝！"
  },
  "What": {
   "de": "Was",
@@ -30828,6 +32488,16 @@
   "ja": "何を頼めばいい？",
   "pt": "O que devo pedir?",
   "zh": "我该点什么？"
+ },
+ "What they can do with it": {
+  "de": "Was andere damit dürfen",
+  "es": "Qué pueden hacer con él",
+  "fr": "Ce qu'on peut en faire",
+  "hi": "वे इसके साथ क्या कर सकते हैं",
+  "it": "Cosa possono farci",
+  "ja": "できることを制限",
+  "pt": "O que podem fazer com ele",
+  "zh": "对方能做什么"
  },
  "What this is": {
   "de": "Was das ist",
@@ -31258,6 +32928,16 @@
   "ja": "ホワイトノイズ＋いびき録音",
   "pt": "Ruído branco + gravador de ressono",
   "zh": "白噪音 + 鼾声录制"
+ },
+ "Who is this copy for? (optional)": {
+  "de": "Für wen ist diese Kopie? (optional)",
+  "es": "¿Para quién es esta copia? (opcional)",
+  "fr": "Pour qui est cette copie ? (facultatif)",
+  "hi": "यह कॉपी किसके लिए है? (वैकल्पिक)",
+  "it": "Per chi è questa copia? (facoltativo)",
+  "ja": "このコピーは誰宛て？（任意）",
+  "pt": "Para quem é esta cópia? (opcional)",
+  "zh": "这份副本给谁？（可选）"
  },
  "Who said this?": {
   "de": "Wer hat das gesagt?",
@@ -31949,6 +33629,16 @@
   "pt": "Seu corpo está pedindo — com um pouco de energia, o resto fica mais fácil.",
   "zh": "身体需要它——补充一点能量，后面都更轻松。"
  },
+ "Your celebration": {
+  "de": "Dein Fest",
+  "es": "Tu celebración",
+  "fr": "Votre fête",
+  "hi": "आपका उत्सव",
+  "it": "La tua festa",
+  "ja": "あなたのお祝い",
+  "pt": "Sua celebração",
+  "zh": "你的节日"
+ },
  "Your childhood best friend's first name": {
   "de": "Vorname deiner besten Kindheitsfreundin/deines besten Kindheitsfreundes",
   "es": "El nombre de tu mejor amigo de la infancia",
@@ -32308,6 +33998,16 @@
   "ja": "あなたの透かし",
   "pt": "Sua marca d'água",
   "zh": "你的水印"
+ },
+ "Your words on the video": {
+  "de": "Deine Worte im Video",
+  "es": "Tus palabras en el vídeo",
+  "fr": "Vos mots sur la vidéo",
+  "hi": "वीडियो पर आपके शब्द",
+  "it": "Le tue parole sul video",
+  "ja": "動画に言葉を入れる",
+  "pt": "Suas palavras no vídeo",
+  "zh": "视频上的文字"
  },
  "Yu-xiang (“fish-fragrant”) sauce has no fish, but it's usually cooked with pork": {
   "de": "Yu-Xiang-Sauce („Fischduft“) enthält keinen Fisch, wird aber meist mit Schwein gekocht",
@@ -33159,6 +34859,16 @@
   "pt": "passa de",
   "zh": "高于"
  },
+ "goes on every page — if it's passed on, it says whose copy it was.": {
+  "de": "steht auf jeder Seite – wird es weitergegeben, sieht man, wessen Kopie es war.",
+  "es": "va en cada página: si se reenvía, dirá de quién era la copia.",
+  "fr": "figure sur chaque page — si elle circule, on saura à qui était la copie.",
+  "hi": "हर पन्ने पर लिखा होगा — आगे भेजी गई तो पता चलेगा किसकी कॉपी थी।",
+  "it": "va su ogni pagina: se viene inoltrata, si saprà di chi era la copia.",
+  "ja": "全ページに入ります。転送されても誰のコピーか分かります。",
+  "pt": "vai em todas as páginas — se for repassada, mostra de quem era a cópia.",
+  "zh": "会印在每一页——如果被转发，就能看出是谁的副本。"
+ },
  "good": {
   "de": "gut",
   "es": "buenos",
@@ -33898,6 +35608,16 @@
   "ja": "価格",
   "pt": "preços em",
   "zh": "价格单位"
+ },
+ "protects it — password, watermark, no printing or copying": {
+  "de": "schützt es – Passwort, Wasserzeichen, kein Drucken oder Kopieren",
+  "es": "lo protege: contraseña, marca de agua, sin imprimir ni copiar",
+  "fr": "le protège — mot de passe, filigrane, ni impression ni copie",
+  "hi": "इसे सुरक्षित करता है — पासवर्ड, वॉटरमार्क, प्रिंट या कॉपी नहीं",
+  "it": "lo protegge: password, filigrana, niente stampa o copia",
+  "ja": "保護します — パスワード、透かし、印刷・コピー禁止",
+  "pt": "protege — senha, marca-d'água, sem imprimir ou copiar",
+  "zh": "保护它——密码、水印、禁止打印或复制"
  },
  "quality": {
   "de": "Qualität",

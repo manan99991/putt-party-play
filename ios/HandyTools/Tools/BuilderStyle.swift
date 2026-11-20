@@ -127,7 +127,7 @@ extension Block {
         case .pageText: return "Opens the link and keeps only the words: no menus, ads or pop-ups."
         case .textPdf: return "Lays the text out as a clean PDF."
         case .pdfShrink: return "Makes a PDF fit under a size you pick."
-        case .pdfLock: return "Asks for a password before the PDF opens."
+        case .pdfLock: return "A password to open, a watermark, and printing or copying blocked — whichever you turn on."
         case .pdfPages: return "Keeps only the pages you list. Leave it empty to keep them all."
         case .pdfText: return "Pulls the words out of a PDF, even a scanned one."
         case .sticker: return "Cuts out the person, pet or object and gives it a white edge, ready for WhatsApp or Messages."

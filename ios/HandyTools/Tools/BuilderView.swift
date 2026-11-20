@@ -1525,6 +1525,20 @@ private struct ChainEditor: View {
                 .textInputAutocapitalization(.never).autocorrectionDisabled()
                 .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
             Text(L("Kept on this phone with the tool. It is left out when you copy the tool to share.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Toggle(L("Needs a password to open"), isOn: Binding(get: { chain.steps[i].settings["open"] != "0" }, set: { chain.steps[i].settings["open"] = $0 ? "1" : "0" }))
+                .font(HandyFont.caption).tint(HandyColor.accent)
+            TextField(L("Watermark words (optional)"), text: Binding(get: { chain.steps[i].settings["mark"] ?? "" }, set: { chain.steps[i].settings["mark"] = $0 }))
+                .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+                .accessibilityIdentifier("lock-mark")
+            TextField(L("Who is this copy for? (optional)"), text: Binding(get: { chain.steps[i].settings["for"] ?? "" }, set: { chain.steps[i].settings["for"] = $0 }))
+                .font(HandyFont.caption).padding(HandySpacing.s8).background(HandyColor.bg, in: RoundedRectangle(cornerRadius: 8))
+            Picker(L("Watermark"), selection: Binding(get: { chain.steps[i].settings["style"] ?? "diagonal" }, set: { chain.steps[i].settings["style"] = $0 })) {
+                ForEach(PDFSecure.Protection.Style.allCases) { Text(L($0.title)).tag($0.rawValue) }
+            }.pickerStyle(.segmented)
+            Toggle(L("Block printing"), isOn: Binding(get: { chain.steps[i].settings["noprint"] == "1" }, set: { chain.steps[i].settings["noprint"] = $0 ? "1" : "0" }))
+                .font(HandyFont.caption).tint(HandyColor.accent)
+            Toggle(L("Block copying the words"), isOn: Binding(get: { chain.steps[i].settings["nocopy"] == "1" }, set: { chain.steps[i].settings["nocopy"] = $0 ? "1" : "0" }))
+                .font(HandyFont.caption).tint(HandyColor.accent)
         case .pdfPages:
             TextField(L("Pages, e.g. 1-3, 5 (empty keeps all)"), text: Binding(get: { chain.steps[i].settings["pages"] ?? "" }, set: { chain.steps[i].settings["pages"] = $0 }))
                 .keyboardType(.numbersAndPunctuation).autocorrectionDisabled()

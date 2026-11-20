@@ -239,7 +239,7 @@ extension Block {
         case .pageText: return "reads the page at a link"
         case .textPdf: return "turns text into a PDF"
         case .pdfShrink: return "shrinks the PDF"
-        case .pdfLock: return "locks it with a password"
+        case .pdfLock: return "protects it — password, watermark, no printing or copying"
         case .pdfPages: return "keeps the pages you choose"
         case .pdfText: return "reads the PDF's words"
         case .sticker: return "makes a cut-out sticker"
