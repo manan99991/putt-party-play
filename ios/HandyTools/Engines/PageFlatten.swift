@@ -41,7 +41,14 @@ enum PageFlatten {
     /// nil when no page clearly sits inside the picture.
     static func cropToPage(_ image: UIImage) -> UIImage? {
         let up = image.normalizedUp()
-        guard let cg = up.cgImage, let q = corners(cg) else { return nil }
+        guard let cg = up.cgImage else { return nil }
+        guard let q = corners(cg) else {
+            // No page edges found — but a screenshot of a receipt in a dark browser or app is a light panel framed
+            // by dark chrome (title bar above; "Visit / Share" and more thumbnails below). Read just the panel, so
+            // a thumbnail's "EAST MECHANICS… RECEIPT DATE 11/02/2019" never stands in for the receipt itself.
+            guard let r = lightPanel(cg), let c = cg.cropping(to: r) else { return nil }
+            return UIImage(cgImage: c)
+        }
         let w = CGFloat(cg.width), h = CGFloat(cg.height)
         let f = CIFilter.perspectiveCorrection()
         f.inputImage = CIImage(cgImage: cg)
@@ -138,6 +145,60 @@ enum PageFlatten {
             return true
         }
         return ok ? buf : nil
+    }
+
+    /// The light document panel in a dark-framed screenshot, in pixels: the tallest band of mostly-light rows,
+    /// with dark rows just above and below it, covering 25–90 % of the picture. Nil for ordinary photos, light-mode
+    /// screenshots (light all the way down) and pages that already fill the frame.
+    static func lightPanel(_ cg: CGImage) -> CGRect? {
+        let W = cg.width, H = cg.height
+        guard W > 50, H > 50 else { return nil }
+        let s = min(1, 400 / CGFloat(W))                      // measure on a small copy: fast, and enough
+        let w = max(1, Int(CGFloat(W) * s)), h = max(1, Int(CGFloat(H) * s))
+        var g = [UInt8](repeating: 0, count: w * h)
+        guard let c = CGContext(data: &g, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w,
+                                space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue) else { return nil }
+        c.interpolationQuality = .medium
+        c.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))   // row 0 of the buffer is the top of the picture
+        let x0 = w / 10, x1 = w - w / 10
+        let rowLight: [Double] = (0..<h).map { y in
+            var n = 0
+            for x in x0..<x1 where g[y * w + x] > 200 { n += 1 }
+            return Double(n) / Double(max(1, x1 - x0))
+        }
+        // Longest run of light rows; a short dark gap (a line of text, a rule) doesn't end it.
+        let maxGap = max(1, h / 100)
+        var best = (0, -1), start: Int? = nil, last = 0, gap = 0
+        for y in 0...h {
+            if y < h, rowLight[y] > 0.55 {
+                if start == nil { start = y }
+                last = y; gap = 0
+            } else if let s0 = start {
+                gap += 1
+                if gap > maxGap || y == h {
+                    if last - s0 > best.1 - best.0 { best = (s0, last) }
+                    start = nil; gap = 0
+                }
+            }
+        }
+        let (y0, y1) = best
+        guard y1 - y0 >= h / 4 else { return nil }
+        let band = max(1, h * 3 / 100)
+        func mean(_ r: Range<Int>) -> Double { r.isEmpty ? 1 : r.map { rowLight[$0] }.reduce(0, +) / Double(r.count) }
+        let above = y0 > 0 ? mean(max(0, y0 - band)..<y0) : 1
+        let below = y1 < h - 1 ? mean((y1 + 1)..<min(h, y1 + 1 + band)) : 1
+        guard above < 0.15, below < 0.4 else { return nil }   // framed by dark chrome, not a light photo
+        var xa = w, xb = -1
+        for x in 0..<w {
+            var n = 0
+            for y in y0...y1 where g[y * w + x] > 200 { n += 1 }
+            if Double(n) / Double(y1 - y0 + 1) > 0.55 { xa = min(xa, x); xb = max(xb, x) }
+        }
+        guard xb > xa else { return nil }
+        let area = Double((xb - xa + 1) * (y1 - y0 + 1)) / Double(w * h)
+        guard area >= 0.25, area <= 0.9 else { return nil }
+        return CGRect(x: CGFloat(xa) / s, y: CGFloat(y0) / s, width: CGFloat(xb - xa + 1) / s, height: CGFloat(y1 - y0 + 1) / s)
+            .integral.intersection(CGRect(x: 0, y: 0, width: W, height: H))
     }
 
     struct Quad { let topLeft, topRight, bottomLeft, bottomRight: CGPoint }

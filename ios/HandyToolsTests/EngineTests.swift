@@ -1683,6 +1683,25 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(PDFPages.build(src, items: [PDFPages.Item(index: 9)]), "nothing usable → nil, never an empty file")
     }
 
+    /// A receipt screenshotted in a dark browser: only the light receipt panel is read — not the title bar above it
+    /// nor the strip of other receipts' thumbnails below. A light photo, or a page that fills the frame, is left alone.
+    func testLightPanelFindsTheReceiptInADarkScreenshot() throws {
+        let size = CGSize(width: 660, height: 1434)
+        let shot = UIGraphicsImageRenderer(size: size, format: { let f = UIGraphicsImageRendererFormat.default(); f.scale = 1; return f }()).image { c in
+            UIColor(white: 0.12, alpha: 1).setFill(); c.fill(CGRect(origin: .zero, size: size))
+            UIColor.white.setFill(); c.fill(CGRect(x: 18, y: 170, width: 624, height: 735))          // the receipt
+            UIColor.black.setFill()
+            for y in stride(from: 220, to: 880, by: 40) { c.fill(CGRect(x: 60, y: y, width: 400, height: 10)) }   // its text
+            UIColor(white: 0.95, alpha: 1).setFill(); c.fill(CGRect(x: 6, y: 1100, width: 300, height: 130))    // thumbnails
+            c.fill(CGRect(x: 330, y: 1100, width: 320, height: 130))
+        }
+        guard let cg = shot.cgImage, let r = PageFlatten.lightPanel(cg) else { return XCTFail("the receipt panel must be found") }
+        XCTAssertEqual(r.minY, 170, accuracy: 12); XCTAssertEqual(r.maxY, 905, accuracy: 12)
+        XCTAssertEqual(r.minX, 18, accuracy: 12); XCTAssertEqual(r.maxX, 642, accuracy: 12)
+        let light = UIGraphicsImageRenderer(size: size).image { c in UIColor.white.setFill(); c.fill(CGRect(origin: .zero, size: size)) }
+        XCTAssertNil(light.cgImage.flatMap(PageFlatten.lightPanel), "a light picture has no dark frame — nothing to cut")
+    }
+
     /// Nothing changed → the original bytes come back. The Core Graphics fallback keeps every page's words, in the
     /// new order, and a quarter turn swaps the page's width and height.
     func testPDFPagesKeepsTextWhenRedrawn() throws {
