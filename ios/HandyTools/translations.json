@@ -36578,5 +36578,55 @@
   "ja": "ドラッグで移動、ピンチでサイズ変更",
   "pt": "Arraste para mover, belisque para redimensionar",
   "zh": "拖动以移动，双指缩放以调整大小"
+ },
+ "WPA/WPA2/3": {
+  "de": "WPA/WPA2/3",
+  "es": "WPA/WPA2/3",
+  "fr": "WPA/WPA2/3",
+  "hi": "WPA/WPA2/3",
+  "it": "WPA/WPA2/3",
+  "ja": "WPA/WPA2/3",
+  "pt": "WPA/WPA2/3",
+  "zh": "WPA/WPA2/3"
+ },
+ "µT": {
+  "de": "µT",
+  "es": "µT",
+  "fr": "µT",
+  "hi": "µT",
+  "it": "µT",
+  "ja": "µT",
+  "pt": "µT",
+  "zh": "µT"
+ },
+ "A4": {
+  "de": "A4",
+  "es": "A4",
+  "fr": "A4",
+  "hi": "A4",
+  "it": "A4",
+  "ja": "A4",
+  "pt": "A4",
+  "zh": "A4"
+ },
+ " dB": {
+  "de": " dB",
+  "es": " dB",
+  "fr": " dB",
+  "hi": " dB",
+  "it": " dB",
+  "ja": " dB",
+  "pt": " dB",
+  "zh": " dB"
+ },
+ " lux": {
+  "de": " lux",
+  "es": " lux",
+  "fr": " lux",
+  "hi": " लक्स",
+  "it": " lux",
+  "ja": " ルクス",
+  "pt": " lux",
+  "zh": " 勒克斯"
  }
 }
