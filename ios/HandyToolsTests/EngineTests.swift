@@ -1683,6 +1683,32 @@ final class EngineTests: XCTestCase {
         XCTAssertNil(PDFPages.build(src, items: [PDFPages.Item(index: 9)]), "nothing usable → nil, never an empty file")
     }
 
+    /// Nothing changed → the original bytes come back. The Core Graphics fallback keeps every page's words, in the
+    /// new order, and a quarter turn swaps the page's width and height.
+    func testPDFPagesKeepsTextWhenRedrawn() throws {
+        func page(_ word: String, _ h: CGFloat) -> UIImage {
+            UIGraphicsImageRenderer(size: CGSize(width: 600, height: h)).image { c in
+                UIColor.white.setFill(); c.fill(CGRect(x: 0, y: 0, width: 600, height: h))
+                (word as NSString).draw(at: CGPoint(x: 40, y: 60), withAttributes: [.font: UIFont.boldSystemFont(ofSize: 64), .foregroundColor: UIColor.black])
+            }
+        }
+        var opts = DocEngine.PDFOptions(); opts.searchable = true
+        let imgs = [page("INVOICE", 400), page("RECEIPT", 800)]
+        let ocr = imgs.map { Optional(DocEngine.recognize($0)) }
+        guard let src = DocEngine.pdf(images: imgs, ocr: ocr, options: opts), let srcDoc = PDFDocument(data: src)
+        else { return XCTFail("could not build source PDF") }
+        XCTAssertEqual(PDFPages.build(src, items: PDFPages.items(pageCount: 2)), src, "no change → the original file, byte for byte")
+
+        let plan = [PDFPages.Item(index: 1, rotation: 90), PDFPages.Item(index: 0)]
+        guard let drawn = PDFPages.drawn(src, items: plan), let out = PDFDocument(data: drawn)
+        else { return XCTFail("drawn returned nil") }
+        XCTAssertEqual(out.pageCount, 2)
+        XCTAssertTrue(PDFPages.keepsText(drawn, src: srcDoc, items: plan), "every page must still read the same words")
+        let first = out.page(at: 0)!.bounds(for: .mediaBox).size, tall = srcDoc.page(at: 1)!.bounds(for: .cropBox).size
+        XCTAssertEqual(first.width, tall.height, accuracy: 2, "a quarter turn: the tall page now lies on its side")
+        XCTAssertEqual(first.height, tall.width, accuracy: 2)
+    }
+
     func testVideoFormatFillAndFit() throws {
         let src = CGSize(width: 1920, height: 1080)      // a landscape video
         let reels = CGSize(width: 1080, height: 1920)    // into a 9:16 canvas

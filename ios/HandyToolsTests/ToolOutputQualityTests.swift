@@ -190,6 +190,13 @@ final class ToolOutputQualityTests: XCTestCase {
     // MARK: cut-out (stickers, Studio)
 
     func testCutoutLiftsAPersonCleanly() throws {
+        #if targetEnvironment(simulator)
+        // Apple: subject lifting (VNGenerateForegroundInstanceMaskRequest) "is not supported on CPU and will
+        // therefore not run in the simulator" (developer.apple.com/forums/thread/764948). A 0 here would be a
+        // score of the lab, not the app — so the cut-out is proven on a phone instead.
+        report(["SCORE cutout n=0 phone-only", "CUT-OUT\tsubject lifting doesn't run in the simulator — checked on a phone"])
+        return
+        #else
         let faces = try privatePhotos("face-")
         var lines = ["CUT-OUT\tphoto\tvariant\tbackground clear\tperson solid\t| problem"]
         var good = 0.0, n = 0.0
@@ -211,6 +218,7 @@ final class ToolOutputQualityTests: XCTestCase {
         }
         lines.insert(String(format: "SCORE cutout n=%.0f %.3f", n, good / max(1, n)), at: 0)
         report(lines)
+        #endif
     }
 
     // MARK: PDF tools on real-world PDFs (PDF.js test corpus: odd fonts, scans, forms, rotations)
@@ -251,9 +259,19 @@ final class ToolOutputQualityTests: XCTestCase {
                 ocrDone += 1
                 let made = await PDFSearchable.make(data)
                 // A page that is only a drawing has nothing to read: no text layer is the right answer there.
-                let readable = (0..<pages).contains { i in doc.page(at: i).map { !DocEngine.recognize(PDFSearchable.render($0, maxWidth: 1600)).isEmpty } ?? false }
-                let ok = !readable || (made.map { PDFSearchable.hasText($0.data) && PDFDocument(data: $0.data)?.pageCount == pages } ?? false)
-                searchText = !readable ? "no words on it" : ok ? "made" : "failed"
+                // Otherwise the promise is "the words you can see become searchable": the text layer must hold at
+                // least 80% of the letters OCR reads off the pages. (hasText's 20-character floor is for deciding
+                // whether a PDF already has text — a stamp with three words on it is still made searchable.)
+                func letters(_ s: String) -> Int { s.filter { $0.isLetter || $0.isNumber }.count }
+                var seen = 0
+                for i in 0..<pages {
+                    guard let p = doc.page(at: i) else { continue }
+                    for line in DocEngine.recognize(PDFSearchable.render(p, maxWidth: 1600)) { seen += letters(line.text) }
+                }
+                let readable = seen > 0
+                let got = letters(made.flatMap { PDFDocument(data: $0.data)?.string } ?? "")
+                let ok = !readable || (made.flatMap { PDFDocument(data: $0.data)?.pageCount } == pages && Double(got) >= Double(seen) * 0.8)
+                searchText = !readable ? "no words on it" : ok ? "made (\(got)/\(seen) letters)" : "failed (\(got)/\(seen) letters)"
                 if !ok { fails.append("no text layer added") }
             }
             n += 1; if fails.isEmpty { good += 1 }

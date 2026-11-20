@@ -24,15 +24,64 @@ enum PDFPages {
     /// usable is left (so the tool never hands back an empty file).
     static func build(_ data: Data, items: [Item]) -> Data? {
         guard let src = PDFDocument(data: data), src.pageCount > 0, !items.isEmpty else { return nil }
+        let valid = items.filter { $0.index >= 0 && $0.index < src.pageCount }
+        guard !valid.isEmpty else { return nil }
+        // Nothing moved, turned or removed: hand back the original bytes — forms, signatures, links and odd
+        // fonts all stay exactly as they were.
+        if valid.count == src.pageCount, valid.enumerated().allSatisfy({ $0.offset == $0.element.index && normalized($0.element.rotation) == 0 }) {
+            return data
+        }
         let out = PDFDocument()
-        for it in items {
-            guard it.index >= 0, it.index < src.pageCount,
-                  let page = src.page(at: it.index)?.copy() as? PDFPage else { continue }
+        for it in valid {
+            guard let page = src.page(at: it.index)?.copy() as? PDFPage else { continue }
             page.rotation = normalized(page.rotation + it.rotation)
             out.insert(page, at: out.pageCount)
         }
-        guard out.pageCount > 0 else { return nil }
-        return out.dataRepresentation()
+        guard out.pageCount > 0, let kit = out.dataRepresentation() else { return nil }
+        // PDFKit's writer can drop a page's font maps on unusual PDFs, so the words stop being searchable or
+        // copyable (the QA lab saw this on 6 of 24 real-world files). Check every page still reads the same; if
+        // not, redraw the pages with Core Graphics, which carries each page's fonts across untouched.
+        if keepsText(kit, src: src, items: valid) { return kit }
+        if let drawn = drawn(data, items: valid), keepsText(drawn, src: src, items: valid) { return drawn }
+        return kit
+    }
+
+    private static func letters(_ p: PDFPage?) -> String { (p?.string ?? "").filter { $0.isLetter || $0.isNumber } }
+
+    /// Every page of `out` holds the same words as the source page it came from.
+    static func keepsText(_ out: Data, src: PDFDocument, items: [Item]) -> Bool {
+        guard let doc = PDFDocument(data: out), doc.pageCount == items.count else { return false }
+        for (i, it) in items.enumerated() where letters(doc.page(at: i)) != letters(src.page(at: it.index)) { return false }
+        return true
+    }
+
+    /// The same pages, in order and turned, drawn into a fresh PDF by Core Graphics (each page's own content
+    /// and fonts copied as they are). Links and form fields don't come across, so this is only the fallback.
+    static func drawn(_ data: Data, items: [Item]) -> Data? {
+        guard let provider = CGDataProvider(data: data as CFData), let doc = CGPDFDocument(provider) else { return nil }
+        let out = NSMutableData()
+        guard let consumer = CGDataConsumer(data: out as CFMutableData), let ctx = CGContext(consumer: consumer, mediaBox: nil, nil) else { return nil }
+        var made = 0
+        for it in items {
+            guard let page = doc.page(at: it.index + 1) else { continue }
+            let box = page.getBoxRect(.cropBox)
+            let turn = normalized(Int(page.rotationAngle) + it.rotation)
+            let size = turn % 180 == 0 ? box.size : CGSize(width: box.height, height: box.width)
+            var media = CGRect(origin: .zero, size: size)
+            ctx.beginPage(mediaBox: &media)
+            ctx.saveGState()
+            // Centre the page's crop box on the new page and turn it clockwise (PDF /Rotate is clockwise).
+            ctx.translateBy(x: size.width / 2, y: size.height / 2)
+            ctx.rotate(by: -CGFloat(turn) * .pi / 180)
+            ctx.translateBy(x: -box.width / 2 - box.minX, y: -box.height / 2 - box.minY)
+            ctx.clip(to: box)
+            ctx.drawPDFPage(page)
+            ctx.restoreGState()
+            ctx.endPage()
+            made += 1
+        }
+        ctx.closePDF()
+        return made > 0 ? out as Data : nil
     }
 
     /// Add another PDF's pages after this one's — the merged file becomes the new source, so every tool here

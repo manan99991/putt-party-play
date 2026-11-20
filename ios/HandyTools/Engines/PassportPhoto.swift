@@ -167,7 +167,9 @@ enum PassportPhoto {
             }
         }
 
-        let mask = personMask(cg)
+        // A person outline that doesn't cover the face is wrong (the model failed): painting the background
+        // through it would paint over the person, so the photo keeps its own background instead.
+        let mask = personMask(cg).flatMap { coverage($0, of: face.box, width: CGFloat(cg.width), height: CGFloat(cg.height)) > 0.6 ? $0 : nil }
         if let mask, let crown = crownFromMask(mask, face: face, height: CGFloat(cg.height), width: CGFloat(cg.width)) {
             face.crown = crown; face.crownMeasured = true
         }
@@ -359,11 +361,20 @@ enum PassportPhoto {
         try? handler.perform([marks, quality])
         let obs = marks.results?.first ?? main
         let size = CGSize(width: W, height: H)
-        func pts(_ r: VNFaceLandmarkRegion2D?) -> [CGPoint] { (r?.pointsInImage(imageSize: size) ?? []).map { CGPoint(x: $0.x, y: H - $0.y) } }
-        func mid(_ p: [CGPoint]) -> CGPoint? { p.isEmpty ? nil : CGPoint(x: p.map(\.x).reduce(0, +) / CGFloat(p.count), y: p.map(\.y).reduce(0, +) / CGFloat(p.count)) }
-
         let bb = main.boundingBox
         let box = CGRect(x: bb.minX * W, y: (1 - bb.maxY) * H, width: bb.width * W, height: bb.height * H)
+        guard box.width.isFinite, box.height.isFinite, box.width > 1, box.height > 1 else { return nil }
+        // Landmark points must sit on the face. When the landmark model can't run (the QA lab's simulator
+        // logged "Unable to compile network" and returned points trillions of pixels away), a region that
+        // strays outside the face's neighbourhood is dropped and the face box stands in for it — otherwise
+        // the photo gets scaled to nothing and the finished passport photo has no face in it.
+        let near = box.insetBy(dx: -box.width * 0.6, dy: -box.height * 0.6)
+        func pts(_ r: VNFaceLandmarkRegion2D?) -> [CGPoint] {
+            let p = (r?.pointsInImage(imageSize: size) ?? []).map { CGPoint(x: $0.x, y: H - $0.y) }
+            return p.allSatisfy({ $0.x.isFinite && $0.y.isFinite && near.contains($0) }) ? p : []
+        }
+        func mid(_ p: [CGPoint]) -> CGPoint? { p.isEmpty ? nil : CGPoint(x: p.map(\.x).reduce(0, +) / CGFloat(p.count), y: p.map(\.y).reduce(0, +) / CGFloat(p.count)) }
+
         let lm = obs.landmarks
         let contour = pts(lm?.faceContour)
         let chin = contour.max(by: { $0.y < $1.y }) ?? CGPoint(x: box.midX, y: box.maxY)
@@ -400,6 +411,23 @@ enum PassportPhoto {
         let handler = VNImageRequestHandler(cgImage: cg, orientation: .up)
         guard (try? handler.perform([req])) != nil, let pb = req.results?.first?.pixelBuffer else { return nil }
         return pb
+    }
+
+    /// Share of a rectangle (image pixels, y down) that the 8-bit person outline covers.
+    static func coverage(_ pb: CVPixelBuffer, of r: CGRect, width W: CGFloat, height H: CGFloat) -> Double {
+        CVPixelBufferLockBaseAddress(pb, .readOnly); defer { CVPixelBufferUnlockBaseAddress(pb, .readOnly) }
+        guard let base = CVPixelBufferGetBaseAddress(pb), W > 0, H > 0 else { return 0 }
+        let mw = CVPixelBufferGetWidth(pb), mh = CVPixelBufferGetHeight(pb), row = CVPixelBufferGetBytesPerRow(pb)
+        let p = base.assumingMemoryBound(to: UInt8.self)
+        let sx = CGFloat(mw) / W, sy = CGFloat(mh) / H
+        let x0 = max(0, Int(r.minX * sx)), x1 = min(mw - 1, Int(r.maxX * sx))
+        let y0 = max(0, Int(r.minY * sy)), y1 = min(mh - 1, Int(r.maxY * sy))
+        guard x1 > x0, y1 > y0 else { return 0 }
+        var on = 0, all = 0
+        for y in stride(from: y0, through: y1, by: 2) {
+            for x in stride(from: x0, through: x1, by: 2) { all += 1; if p[y * row + x] > 127 { on += 1 } }
+        }
+        return Double(on) / Double(max(1, all))
     }
 
     /// The top of the head: the first row, scanning down above the face, where the person outline covers
