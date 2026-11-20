@@ -463,8 +463,10 @@ enum ChainRunner {
         if let p = chain.problem(starting: input.kind) { return .failed(.invalid(p)) }
         var value = input
         var best: ChainPayload? = nil   // the furthest useful result past the raw input
+        var lastIn: ChainPayload? = nil
         for (i, step) in chain.steps.enumerated() {
             let isLast = i == chain.steps.count - 1
+            if isLast { lastIn = value }
             switch await apply(step, to: value) {
             case .success(let next): value = next; best = next
             case .failure(.nothingFound) where !isLast && step.block.takes == step.block.gives:
@@ -491,6 +493,7 @@ enum ChainRunner {
         var result: ChainPayload?      // the furthest useful payload (the final one if it completed)
         var completed: Bool            // reached the end (some steps may have been skipped)
         var stopper: Failure?          // the failure that stopped it, if it didn't complete
+        var finalInput: ChainPayload? = nil   // what the last step was given (e.g. the text a scam check judged)
     }
 
     /// Runs the flow and records every step's outcome. Same best-effort rules as runKeepingBest — an
@@ -503,8 +506,10 @@ enum ChainRunner {
         var value = input
         var best: ChainPayload? = nil
         var lines: [RunReport.Line] = []
+        var lastIn: ChainPayload? = nil
         for (i, step) in chain.steps.enumerated() {
             let isLast = i == chain.steps.count - 1
+            if isLast { lastIn = value }
             switch await apply(step, to: value) {
             case .success(let next):
                 value = next; best = next
@@ -516,7 +521,7 @@ enum ChainRunner {
                 return RunReport(lines: lines, result: best, completed: false, stopper: f)
             }
         }
-        return RunReport(lines: lines, result: best ?? value, completed: true, stopper: nil)
+        return RunReport(lines: lines, result: best ?? value, completed: true, stopper: nil, finalInput: lastIn)
     }
 
     static func apply(_ step: ChainStep, to rawInput: ChainPayload, dryRun: Bool = false) async -> Result<ChainPayload, Failure> {
@@ -815,6 +820,7 @@ enum ResultScreens {
         case .businessCard: return "Contact card"
         case .videoShrink, .videoTrim, .videoSpeed, .videoMute, .videoVertical, .videoCaptions, .videoRotate: return "Video finish"
         case .videoGif, .videoLoop: return "GIF finish"
+        case .scamCheck: return "Scam verdict"
         case .photoPdf: return "Scan PDF"
         case .pdfShrink where blocks.contains(.photoPdf): return "Scan PDF"
         default: return nil
@@ -828,7 +834,6 @@ enum ResultScreens {
         "short-summary": "pb-text",
         "table-to-sheet": "pb-receipts",
         "tidy-text": "pb-text",
-        "scam-check": "pb-safety",
         "clean-link": "pb-safety",
         "shelf-best-deal": "pb-receipts",
         "text-to-qr": "pb-codes",
@@ -840,7 +845,6 @@ enum ResultScreens {
         "share-shield": "pb-photo",
         "portal-photo": "pb-photo",
         "memo-to-notes": "pb-text",
-        "qr-safe": "pb-safety",
         "sign-to-english": "pb-text",
         "page-to-pdf": "pb-pdf",
         "page-summary": "pb-text",
@@ -878,7 +882,6 @@ enum ResultScreens {
         "pdf-english": "pb-text",
         "pdf-listen": "pb-listen",
         "page-listen": "pb-text",
-        "chat-scam": "pb-safety",
         "rewrite-clear": "pb-text",
         "photo-under-2mb": "pb-photo",
         "safe-to-share": "pb-photo",

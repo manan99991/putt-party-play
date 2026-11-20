@@ -65,6 +65,15 @@ final class PromiseTests: XCTestCase {
         }
     }
 
+    /// "Scam checks give the same verdict everywhere" — the ready-made check lands on Message Shield's verdict card.
+    func testScamCheckLandsOnTheShieldVerdict() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "run-scam-check", "-uitest", "-sample"]
+        app.launch()
+        XCTAssertTrue(app.descendants(matching: .any)["scam-verdict"].waitForExistence(timeout: 30), "scam-check: not on the verdict card")
+        XCTAssertTrue(app.staticTexts["What to do"].exists, "scam-check: no 'What to do'")
+    }
+
     /// "Sign a form: draw your signature" — the pad must show 'Sign in the box first' until there's ink.
     func testSignaturePadWontSaveBlank() {
         let app = open("sign-and-send")

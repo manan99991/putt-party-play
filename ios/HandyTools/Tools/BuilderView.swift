@@ -1617,6 +1617,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     var initialMany: [ChainPayload] = []
     @State private var started = false
     @State private var inputVideo: URL?
+    @State private var scamChecked: String?
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
     @State private var progress = ""
@@ -1942,6 +1943,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             // UI tests can't drive the photo picker: with -sample an ID-copy tool runs on a made-up photo, so the
             // finished screen itself is checked, not just the run screen.
+            if Launch.uitest, Launch.sample, initial == nil, !started, chain.id == "scam-check" {
+                started = true
+                go(.text("URGENT: Your account will be suspended within 24 hours. Verify at http://paypal.secure-login.top/verify and pay the fee in Apple gift cards."))
+            }
             if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Video finish" {
                 started = true
                 Task { if let u = await SampleAssets.movie() { await MainActor.run { go(.video(u)) } } }
@@ -2340,6 +2345,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 ReceiptResult(receipt: r, photo: initial.flatMap(ToolHandoff.image))
             } else if chain.steps.last?.block == .actionItems {
                 RemindersResult(planText: t)
+            } else if chain.steps.last?.block == .scamCheck, let checked = scamChecked {
+                // Same verdict as Message Shield: score, each sign explained, links, what to do, report / block / warn.
+                ScamVerdictCard(text: checked, report: ScamAnalyzer.analyze(checked)).id(checked)
             } else if chain.steps.last?.block == .identify {
                 IdentifyResult(text: t, photo: inputPhoto)
             } else if chain.steps.last?.block == .pullDetails {
@@ -2477,6 +2485,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 // Show the step-by-step story for a multi-step flow, so the person sees exactly what ran,
                 // what was skipped and why, and what (if anything) couldn't finish.
                 report = multiStep ? rep : nil
+                if case .text(let t)? = rep.finalInput { scamChecked = t } else { scamChecked = nil }
                 if let p = rep.result {
                     result = p
                     message = rep.stopper.map(ChainRunView.bestEffortNote)   // best-effort note if a step couldn't finish

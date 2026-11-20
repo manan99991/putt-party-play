@@ -9,10 +9,8 @@ struct ShieldView: View {
     @State private var report: ScamAnalyzer.Report?
     @State private var photoItem: PhotosPickerItem?
     @State private var busy = false
-    @State private var aiOpinion = ""
-    @State private var aiVerdict: ScamAnalyzer.Verdict?
-    @State private var aiBusy = false
     @State private var errorText: String?
+    @State private var checked = ""   // the text the shown verdict is about
 
     var body: some View {
         ToolPage(title: "Message Shield", subtitle: "Paste a message or drop in a screenshot. See exactly why it's a scam — or why it's fine.", working: busy) {
@@ -30,14 +28,14 @@ struct ShieldView: View {
                 HStack(spacing: HandySpacing.s8) {
                     Button(L("Paste")) { if let s = UIPasteboard.general.string { text = s; analyze() } }.compactButton()
                     PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Screenshot"), systemImage: "photo") }.compactButton()
-                    if !text.isEmpty { Button(L("Clear")) { text = ""; report = nil; aiOpinion = ""; aiVerdict = nil }.textButton() }
+                    if !text.isEmpty { Button(L("Clear")) { text = ""; report = nil }.textButton() }
                     Spacer()
                 }
             }
             Button { analyze() } label: { HStack { if busy { ProgressView().tint(.white) }; Label(L("Check it"), systemImage: "shield.lefthalf.filled") }.frame(maxWidth: .infinity) }
                 .primaryButton().disabled(text.trimmingCharacters(in: .whitespaces).isEmpty || busy)
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
-            if let r = report { reportView(r) }
+            if let r = report { ScamVerdictCard(text: checked, report: r).id(checked) }
             Text(L("Runs entirely on your phone; the message is never sent anywhere. A clean result isn't a guarantee — when money or codes are involved, verify through an official channel."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
@@ -55,9 +53,52 @@ struct ShieldView: View {
     }
 
     private func analyze() {
-        errorText = nil; aiOpinion = ""; aiVerdict = nil
+        errorText = nil; checked = text
         report = ScamAnalyzer.analyze(text)
         HandyHaptics.light()
+    }
+
+    /// Messages, already addressed to 7726 with the scam text, ready for you to press Send.
+    static func forwardURL(_ text: String) -> URL? {
+        let body = String(text.prefix(600)).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        return URL(string: "sms:7726&body=\(body)")
+    }
+
+    static func officialReport(_ region: String) -> (name: String, url: URL)? {
+        switch region {
+        case "US": return ("the FTC", URL(string: "https://reportfraud.ftc.gov/")!)
+        case "GB": return ("Action Fraud", URL(string: "https://www.actionfraud.police.uk/")!)
+        case "CA": return ("the Canadian Anti-Fraud Centre", URL(string: "https://antifraudcentre-centreantifraude.ca/")!)
+        case "AU": return ("Scamwatch", URL(string: "https://www.scamwatch.gov.au/report-a-scam")!)
+        case "IN": return ("the cybercrime portal", URL(string: "https://cybercrime.gov.in/")!)
+        default: return nil
+        }
+    }
+
+    static func warning(_ text: String, findings: [String]) -> String {
+        let quote = text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(160)
+        return "Heads up — this scam is going round. If you get it, don't tap the link or reply:\n\n“\(quote)\(text.count > 160 ? "…" : "")”\n\n"
+            + "How to spot it: " + findings.prefix(3).joined(separator: "; ") + ".\n\nIf it says it's from your bank or a delivery company, open their app or type their website yourself."
+    }
+}
+
+/// The verdict for a message: the score, each warning sign explained, every link checked, what to do, an optional
+/// on-device AI second opinion, and Report / Block / Warn my family. One card for every door — Message Shield, the
+/// ready-made scam checks (message, chat screenshot, QR code) and any tool built to check for scams.
+struct ScamVerdictCard: View {
+    let text: String
+    let report: ScamAnalyzer.Report
+    @State private var aiOpinion = ""
+    @State private var aiVerdict: ScamAnalyzer.Verdict?
+    @State private var aiBusy = false
+    @State private var errorText: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            reportView(report)
+            if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+        }
+        .accessibilityIdentifier("scam-verdict")
     }
 
     // The headline must never contradict the AI second opinion. When the on-device AI judges the
@@ -147,43 +188,20 @@ struct ShieldView: View {
         let region = Locale.current.region?.identifier ?? ""
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Label(L("Report and block it"), systemImage: "hand.raised.fill").font(HandyFont.bodyStrong)
-            if ["US", "GB", "CA", "IE"].contains(region), let u = Self.forwardURL(text) {
+            if ["US", "GB", "CA", "IE"].contains(region), let u = ShieldView.forwardURL(text) {
                 Button { UIApplication.shared.open(u) } label: {
                     Label(L("Forward it to 7726 (free) — your carrier blocks the sender"), systemImage: "arrowshape.turn.up.right.fill").frame(maxWidth: .infinity)
                 }.secondaryButton().accessibilityIdentifier("shield-7726")
             }
-            if let site = Self.officialReport(region) {
+            if let site = ShieldView.officialReport(region) {
                 Link(destination: site.url) { Label("\(L("Report it to")) \(site.name)", systemImage: "building.columns").frame(maxWidth: .infinity) }.secondaryButton()
             }
             Text(L("To block it: open the message, tap the sender's name at the top, then Block Caller. Then delete the message."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-            ShareLink(item: Self.warning(text, findings: r.findings.map(\.title))) {
+            ShareLink(item: ShieldView.warning(text, findings: r.findings.map(\.title))) {
                 Label(L("Warn my family — they may get the same one"), systemImage: "person.2.wave.2.fill").frame(maxWidth: .infinity)
             }.primaryButton()
         }.cardStyle(padding: HandySpacing.s12)
-    }
-
-    /// Messages, already addressed to 7726 with the scam text, ready for you to press Send.
-    static func forwardURL(_ text: String) -> URL? {
-        let body = String(text.prefix(600)).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        return URL(string: "sms:7726&body=\(body)")
-    }
-
-    static func officialReport(_ region: String) -> (name: String, url: URL)? {
-        switch region {
-        case "US": return ("the FTC", URL(string: "https://reportfraud.ftc.gov/")!)
-        case "GB": return ("Action Fraud", URL(string: "https://www.actionfraud.police.uk/")!)
-        case "CA": return ("the Canadian Anti-Fraud Centre", URL(string: "https://antifraudcentre-centreantifraude.ca/")!)
-        case "AU": return ("Scamwatch", URL(string: "https://www.scamwatch.gov.au/report-a-scam")!)
-        case "IN": return ("the cybercrime portal", URL(string: "https://cybercrime.gov.in/")!)
-        default: return nil
-        }
-    }
-
-    static func warning(_ text: String, findings: [String]) -> String {
-        let quote = text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(160)
-        return "Heads up — this scam is going round. If you get it, don't tap the link or reply:\n\n“\(quote)\(text.count > 160 ? "…" : "")”\n\n"
-            + "How to spot it: " + findings.prefix(3).joined(separator: "; ") + ".\n\nIf it says it's from your bank or a delivery company, open their app or type their website yourself."
     }
 
     private func color(_ v: ScamAnalyzer.Verdict) -> Color { v == .likelyScam ? HandyColor.danger : v == .suspicious ? HandyColor.accent : HandyColor.success }
