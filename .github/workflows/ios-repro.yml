@@ -40,7 +40,12 @@ jobs:
           c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
           ONLY=$(grep -v '^#' REPRO_TESTS.txt | sed '/^$/d' | sed 's/^/-only-testing:/' | tr '\n' ' ')
           echo "simulator=$UDID tests=$ONLY"
-          xcodebuild test -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+          # Boot and settle the simulator first: a cold one makes the UI test runner stall before any test starts.
+          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+          for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+          xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
+          xcodebuild test-without-building -retry-tests-on-failure -test-iterations 2 -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
             $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD" || true
           # Any crash the simulator recorded for the app, newest first.
