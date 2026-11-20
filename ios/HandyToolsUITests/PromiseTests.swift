@@ -58,7 +58,7 @@ final class PromiseTests: XCTestCase {
             let app = XCUIApplication()
             app.launchArguments = ["-route", "run-\(id)", "-uitest", "-sample"]
             app.launch()
-            let row = app.descendants(matching: .any)[check]
+            let row = app.descendants(matching: .any).matching(identifier: check).firstMatch
             XCTAssertTrue(row.waitForExistence(timeout: 120), "\(id): no check on the finished video")
             XCTAssertTrue(row.label.contains(says), "\(id): check says '\(row.label)'")
             app.terminate()
@@ -91,7 +91,7 @@ final class PromiseTests: XCTestCase {
             let app = XCUIApplication()
             app.launchArguments = ["-route", "run-\(id)", "-uitest", "-sample"]
             app.launch()
-            let tested = app.descendants(matching: .any)["code-tested"]
+            let tested = app.descendants(matching: .any).matching(identifier: "code-tested").firstMatch
             XCTAssertTrue(tested.waitForExistence(timeout: 30), "\(id): the code wasn't tested")
             XCTAssertTrue(tested.label.contains("Tested"), "\(id): \(tested.label)")
             app.terminate()

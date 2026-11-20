@@ -135,6 +135,7 @@ struct VideoFinishCard: View {
         Label { Text(text).font(HandyFont.caption).fixedSize(horizontal: false, vertical: true) } icon: {
             Image(systemName: ok ? "checkmark.circle.fill" : "exclamationmark.triangle.fill").foregroundStyle(ok ? Color.green : Color.orange)
         }
+        .accessibilityElement(children: .combine)   // one element per check, so a test (and VoiceOver) reads it once
     }
 }
 

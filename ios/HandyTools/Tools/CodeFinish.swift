@@ -28,6 +28,7 @@ struct CodeFinishCard: View {
                 } icon: {
                     Image(systemName: decoded != nil ? "checkmark.circle.fill" : "exclamationmark.triangle.fill").foregroundStyle(decoded != nil ? Color.green : Color.orange)
                 }
+                .accessibilityElement(children: .combine)
                 .accessibilityIdentifier("code-tested")
                 if let decoded {
                     Text(L("When someone scans it")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
