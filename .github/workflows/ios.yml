@@ -94,7 +94,7 @@ jobs:
           grep -E "error:|Test Case .*failed|failed - " test.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
           grep -q "TEST SUCCEEDED" test.log
       - name: iPad smoke — every tool opens without crashing on iPad (gates the deploy)
-        timeout-minutes: 25
+        timeout-minutes: 50   # ~200 tools at ~8 s a launch on the iPad simulator; 25 min cut it off mid-run, it was never hung
         run: |
           set -o pipefail
           IPAD=$(xcrun simctl list devices available -j | python3 -c '
