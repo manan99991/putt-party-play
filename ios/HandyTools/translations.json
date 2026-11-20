@@ -16109,6 +16109,16 @@
   "pt": "Ainda nada guardado. Cria um no ecrã inicial e aparece aqui.",
   "zh": "尚未保存任何内容。从起始屏幕创建一个，它就会出现在这里。"
  },
+ "Nothing stands out as moving in this clip — the whole clip is slowed instead.": {
+  "de": "In diesem Clip sticht keine Bewegung heraus – der ganze Clip wird verlangsamt.",
+  "es": "Nada destaca por moverse en este clip; se ralentiza el clip entero.",
+  "fr": "Rien ne bouge particulièrement dans ce clip — tout le clip est ralenti.",
+  "hi": "इस क्लिप में कोई हिस्सा खास हिलता नहीं — पूरी क्लिप धीमी की गई है।",
+  "it": "In questo clip niente spicca per movimento: viene rallentato tutto.",
+  "ja": "目立つ動きがないため、クリップ全体をスローにしています。",
+  "pt": "Nada se destaca em movimento neste clipe — o clipe todo é abrandado.",
+  "zh": "这段视频没有特别明显的动作，所以整段放慢。"
+ },
  "Nothing to open": {
   "de": "Nichts zu öffnen",
   "es": "Nada que abrir",
@@ -23659,6 +23669,16 @@
   "pt": "Mais devagar — passos suaves deixam assistível.",
   "zh": "慢一点——步子平稳更好看。"
  },
+ "Slow just the best moment": {
+  "de": "Nur den besten Moment verlangsamen",
+  "es": "Ralentizar solo el mejor momento",
+  "fr": "Ralentir seulement le meilleur moment",
+  "hi": "सिर्फ़ सबसे अच्छा पल धीमा करें",
+  "it": "Rallenta solo il momento migliore",
+  "ja": "いちばんの瞬間だけスローに",
+  "pt": "Abrandar só o melhor momento",
+  "zh": "只放慢最精彩的瞬间"
+ },
  "Slower": {
   "de": "Langsamer",
   "es": "Más lento",
@@ -26588,6 +26608,16 @@
   "ja": "答えが一致しません。大文字小文字や空白は関係ありません。もう一度。",
   "pt": "Essa resposta não confere. Maiúsculas e espaços não importam — tente de novo.",
   "zh": "答案不匹配。大小写和空格不影响，请再试一次。"
+ },
+ "That couldn't be made from this video.": {
+  "de": "Das ließ sich aus diesem Video nicht machen.",
+  "es": "No se pudo hacer con este vídeo.",
+  "fr": "Impossible avec cette vidéo.",
+  "hi": "इस वीडियो से यह नहीं बन सका।",
+  "it": "Non è stato possibile farlo con questo video.",
+  "ja": "この動画では作れませんでした。",
+  "pt": "Não foi possível fazer com este vídeo.",
+  "zh": "无法用这个视频做到。"
  },
  "That file has no audio Tenzy can read.": {
   "de": "Diese Datei hat keinen Ton, den Tenzy lesen kann.",

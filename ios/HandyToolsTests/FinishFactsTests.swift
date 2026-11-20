@@ -175,6 +175,16 @@ final class FinishFactsTests: XCTestCase {
         let f = await VideoFacts.read(u)
         XCTAssertEqual(try XCTUnwrap(f).seconds, 2, accuracy: 0.35)
     }
+
+    /// Slow-mo "best moment": the busiest stretch is found from frame changes.
+    func testBusiestMomentIsWhereTheFramesChangeMost() {
+        let still = [UInt8](repeating: 100, count: 16), moved = [UInt8](repeating: 200, count: 16)
+        let frames = [still, still, still, moved, still, moved, still, still, still]
+        let scores = VideoJoin.motionScores(frames)
+        XCTAssertEqual(scores.count, 8)
+        XCTAssertEqual(VideoJoin.busiestWindow(scores, window: 3), 2)
+        XCTAssertNil(VideoJoin.busiestWindow(VideoJoin.motionScores([still, still, still, still]), window: 2), "a still clip has no best moment")
+    }
 }
 
 /// A tiny lock box so a progress callback from another thread can be collected in a test.

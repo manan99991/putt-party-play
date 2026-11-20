@@ -87,3 +87,86 @@ enum VideoJoin {
         return ok ? out : nil
     }
 }
+
+extension VideoJoin {
+    /// Where the most happens: samples small frames 4 times a second, measures how much each changes from the last,
+    /// and returns the busiest stretch of `length` seconds (the jump, the splash, the goal). nil for a still clip.
+    static func busiestMoment(_ url: URL, length: Double = 2.5) async -> ClosedRange<Double>? {
+        let asset = AVURLAsset(url: url)
+        guard let d = try? await asset.load(.duration).seconds, d > length + 0.5 else { return nil }
+        let gen = AVAssetImageGenerator(asset: asset)
+        gen.appliesPreferredTrackTransform = true
+        gen.maximumSize = CGSize(width: 48, height: 48)
+        gen.requestedTimeToleranceBefore = CMTime(seconds: 0.1, preferredTimescale: 600)
+        gen.requestedTimeToleranceAfter = CMTime(seconds: 0.1, preferredTimescale: 600)
+        let step = 0.25
+        var lums: [[UInt8]] = []
+        var t = 0.0
+        while t < d {
+            if let (img, _) = try? await gen.image(at: CMTime(seconds: t, preferredTimescale: 600)) { lums.append(gray(img)) } else { lums.append([]) }
+            t += step
+        }
+        let change = motionScores(lums)
+        guard let best = busiestWindow(change, window: Int(length / step)) else { return nil }
+        let a = Double(best) * step
+        return a...min(d, a + length)
+    }
+
+    /// 0…255 brightness of a small picture, row by row.
+    static func gray(_ cg: CGImage) -> [UInt8] {
+        let w = cg.width, h = cg.height
+        var px = [UInt8](repeating: 0, count: w * h)
+        guard let ctx = CGContext(data: &px, width: w, height: h, bitsPerComponent: 8, bytesPerRow: w, space: CGColorSpaceCreateDeviceGray(), bitmapInfo: 0) else { return [] }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+        return px
+    }
+
+    /// How much each frame differs from the one before (mean absolute brightness change). Pure, so it's unit-tested.
+    static func motionScores(_ frames: [[UInt8]]) -> [Double] {
+        guard frames.count > 1 else { return [] }
+        return (1..<frames.count).map { i in
+            let a = frames[i - 1], b = frames[i]
+            guard !a.isEmpty, a.count == b.count else { return 0 }
+            var sum = 0
+            for k in a.indices { sum += abs(Int(a[k]) - Int(b[k])) }
+            return Double(sum) / Double(a.count)
+        }
+    }
+
+    /// The start index of the window with the most change. nil when nothing moves. Pure, so it's unit-tested.
+    static func busiestWindow(_ scores: [Double], window: Int) -> Int? {
+        let w = max(1, window)
+        guard scores.count >= w else { return scores.isEmpty ? nil : 0 }
+        var sum = scores.prefix(w).reduce(0, +), best = sum, at = 0
+        for i in w..<scores.count {
+            sum += scores[i] - scores[i - w]
+            if sum > best { best = sum; at = i - w + 1 }
+        }
+        return best > 0.5 * Double(w) ? at : nil
+    }
+
+    /// Normal speed, then `moment` at `rate` (0.25 = 4× slower), then normal again — the slow-mo ramp phones do,
+    /// with the sound kept (voices at natural pitch).
+    static func ramp(_ url: URL, moment: ClosedRange<Double>, rate: Double, progress: ((Double) -> Void)? = nil) async -> URL? {
+        let asset = AVURLAsset(url: url)
+        guard let v = try? await asset.loadTracks(withMediaType: .video).first, let dur = try? await asset.load(.duration) else { return nil }
+        let comp = AVMutableComposition()
+        guard let cv = comp.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
+        let whole = CMTimeRange(start: .zero, duration: dur)
+        guard (try? cv.insertTimeRange(whole, of: v, at: .zero)) != nil else { return nil }
+        cv.preferredTransform = (try? await v.load(.preferredTransform)) ?? .identity
+        var ca: AVMutableCompositionTrack?
+        if let a = try? await asset.loadTracks(withMediaType: .audio).first, let t = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) {
+            if (try? t.insertTimeRange(whole, of: a, at: .zero)) != nil { ca = t } else { comp.removeTrack(t) }
+        }
+        let slow = CMTimeRange(start: CMTime(seconds: moment.lowerBound, preferredTimescale: 600),
+                               end: CMTime(seconds: min(moment.upperBound, dur.seconds), preferredTimescale: 600))
+        let longer = CMTimeMultiplyByFloat64(slow.duration, multiplier: 1 / max(0.1, rate))
+        cv.scaleTimeRange(slow, toDuration: longer)
+        ca?.scaleTimeRange(slow, toDuration: longer)
+        guard let s = AVAssetExportSession(asset: comp, presetName: AVAssetExportPresetHighestQuality) else { return nil }
+        let out = VideoEngine.tempURL("mp4")
+        s.outputURL = out; s.outputFileType = .mp4; s.metadata = []; s.audioTimePitchAlgorithm = .spectral
+        return await VideoEngine.run(s, seconds: dur.seconds) ? out : nil
+    }
+}

@@ -264,9 +264,30 @@ struct SpeedFinishCard: View {
                     }
                 }
                 .accessibilityIdentifier("speed-choices")
+                if rate < 1 {
+                    // The slow-mo ramp phones do: normal, then the busiest moment slowed right down, then normal.
+                    Button { slowMoment() } label: {
+                        Label(moment.map { "\(L("Slow just the best moment")) (\(VideoFacts.clock($0.lowerBound))–\(VideoFacts.clock($0.upperBound)))" } ?? L("Slow just the best moment"),
+                              systemImage: "sparkles").frame(maxWidth: .infinity)
+                    }.secondaryButton().disabled(busy != nil).accessibilityIdentifier("speed-moment")
+                }
                 if busy != nil { ToolProgressBar(value: prog.fraction, label: "Changing the speed…") }
             }
             if let problem { Text(L(problem)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+        }
+    }
+
+    @State private var moment: ClosedRange<Double>?
+
+    private func slowMoment() {
+        guard let s = source else { return }
+        busy = -1; problem = nil
+        Task {
+            let m = await VideoJoin.busiestMoment(s)
+            guard let m else { await MainActor.run { busy = nil; problem = "Nothing stands out as moving in this clip — the whole clip is slowed instead." }; return }
+            await MainActor.run { moment = m }
+            let out = await VideoJoin.ramp(s, moment: m, rate: rate < 1 ? rate : 0.25)
+            await MainActor.run { busy = nil; if let out { url = out } else { problem = "That couldn't be made from this video." } }
         }
     }
 
