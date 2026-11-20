@@ -1748,6 +1748,22 @@ final class EngineTests: XCTestCase {
     /// Beyond goblin.tools' Consultant and Judge: a decision becomes a board of options whose weighed pros and cons
     /// decide the lean (and move it when the person re-weighs); a message someone sent is read for how it comes
     /// across, with replies; the detail level sets how small steps get; and past conversations are kept on the phone.
+    /// Your 20 Nov "friend leaving for India" answer: three of its four steps were "Decide…", "Tell me…" — not
+    /// things to do. Only real actions stay; a decision leads with the bottom line.
+    @MainActor func testThinkStepsAreRealActions() {
+        let model = [ThinkBrain.Step(text: "Decide if you'll shower first or not.", minutes: 10),
+                     ThinkBrain.Step(text: "Take a quick shower and get dressed.", minutes: 15),
+                     ThinkBrain.Step(text: "Tell me if you're leaning toward staying or going.", minutes: 5),
+                     ThinkBrain.Step(text: "Head over and say goodbye.", minutes: 30),
+                     ThinkBrain.Step(text: "Think about what you want to say.", minutes: 5)]
+        XCTAssertEqual(ThinkBrain.realSteps(model).map(\.text), ["Take a quick shower and get dressed.", "Head over and say goodbye."])
+        let onlyThinking = [ThinkBrain.Step(text: "Decide which matters more.", minutes: 5)]
+        XCTAssertEqual(ThinkBrain.realSteps(onlyThinking).count, 1, "never leave the list empty")
+        XCTAssertTrue(ThinkBoxView.bottomLineFirst(.decision))
+        XCTAssertTrue(ThinkBoxView.bottomLineFirst(.worry))
+        XCTAssertFalse(ThinkBoxView.bottomLineFirst(.message))
+    }
+
     func testThinkBoxDecidesJudgesAndRemembers() throws {
         // Options read from how the decision is asked.
         XCTAssertEqual(ThinkBrain.decisionOptions("Should I rent or buy?").map(\.name), ["Rent", "Buy"])

@@ -162,6 +162,9 @@ struct ThinkBoxView: View {
             .frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s16)
             .accessibilityElement(children: .combine).accessibilityIdentifier("think-answer")
 
+            // A decision or a worry gets the bottom line straight away, before the reasons.
+            if Self.bottomLineFirst(a.kind) { recommendationCard(a) }
+
             if !a.rewrite.isEmpty {
                 let versions = [ThinkBrain.Variant(label: a.kind == .judge ? "Suggested reply" : "Best fit", text: a.rewrite)] + a.variants
                 let shown = versions.first { $0.label == tone } ?? versions[0]
@@ -247,15 +250,7 @@ struct ThinkBoxView: View {
                 }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s16)
             }
 
-            if !a.recommendation.isEmpty {
-                VStack(alignment: .leading, spacing: 6) {
-                    Label(L("What I'd do"), systemImage: "hand.thumbsup").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
-                    Text(a.recommendation).font(HandyFont.body).fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(HandySpacing.s16)
-                .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
-            }
+            if !Self.bottomLineFirst(a.kind) { recommendationCard(a) }
 
             if latest, a.engine != .builtIn, a.support == nil {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -290,6 +285,22 @@ struct ThinkBoxView: View {
             if latest {
                 ShareLink(item: Self.plain(a)) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             }
+        }
+    }
+
+    /// Kinds where the answer leads with what to do; a message or a judged message leads with the text itself.
+    static func bottomLineFirst(_ k: ThinkBrain.Kind) -> Bool { [.decision, .worry, .idea, .prep].contains(k) }
+
+    @ViewBuilder private func recommendationCard(_ a: ThinkBrain.Answer) -> some View {
+        if !a.recommendation.isEmpty {
+            VStack(alignment: .leading, spacing: 6) {
+                Label(L("What I'd do"), systemImage: "hand.thumbsup").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+                Text(a.recommendation).font(HandyFont.body).fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(HandySpacing.s16)
+            .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+            .accessibilityIdentifier("think-bottom-line")
         }
     }
 
