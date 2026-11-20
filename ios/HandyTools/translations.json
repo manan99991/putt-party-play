@@ -10819,6 +10819,16 @@
   "pt": "Em Ficheiros, Transferências, Mail, Safari ou numa conversa: toque no ficheiro, em Partilhar e depois em Tenzy. Abre aqui. Se o Tenzy não aparecer na fila de apps, deslize até ao fim, toque em Mais e ative-o.",
   "zh": "在“文件”、下载、邮件、Safari 或聊天中：点文件→分享→Tenzy，就会在这里打开。如果应用行里没有 Tenzy，滑到最后点“更多”并打开它。"
  },
+ "In Messages and WhatsApp, share it from here so it stays animated.": {
+  "de": "In Nachrichten und WhatsApp von hier aus teilen, damit es animiert bleibt.",
+  "es": "En Mensajes y WhatsApp, compártelo desde aquí para que siga animado.",
+  "fr": "Dans Messages et WhatsApp, partagez-le d'ici pour qu'il reste animé.",
+  "hi": "Messages और WhatsApp में यहीं से शेयर करें, ताकि यह चलता रहे।",
+  "it": "In Messaggi e WhatsApp condividila da qui, così resta animata.",
+  "ja": "メッセージやWhatsAppでは、ここから共有すると動いたまま送れます。",
+  "pt": "No Mensagens e WhatsApp, partilhe daqui para continuar animado.",
+  "zh": "在信息和 WhatsApp 中，请从这里分享，这样才能保持动画。"
+ },
  "In a week": {
   "de": "In einer Woche",
   "es": "En una semana",
@@ -15329,6 +15339,16 @@
   "pt": "Este arquivo não tem som que o Tenzy consiga ler — remova-o",
   "zh": "此文件中没有 Tenzy 可读取的声音——请移除"
  },
+ "No sound in it — checked": {
+  "de": "Kein Ton darin — geprüft",
+  "es": "Sin sonido — comprobado",
+  "fr": "Aucun son — vérifié",
+  "hi": "इसमें कोई आवाज़ नहीं — जाँचा गया",
+  "it": "Nessun audio — verificato",
+  "ja": "音声なし（確認済み）",
+  "pt": "Sem som — verificado",
+  "zh": "没有声音（已检查）"
+ },
  "No table found — each line becomes a row; columns split on tabs, commas or wide gaps.": {
   "de": "Keine Tabelle gefunden – jede Zeile wird eine Reihe; Spalten trennen sich an Tabs, Kommas oder großen Lücken.",
   "es": "No se encontró tabla: cada línea es una fila; las columnas se separan por tabulaciones, comas o huecos amplios.",
@@ -15548,6 +15568,16 @@
   "ja": "自分のタイプがわからない？「自分はどのタイプ？」をタップ — 1分のチェックで設定します。",
   "pt": "Não sabe qual é o seu tipo? Toque em “Qual é o meu tipo?” — um teste de 1 minuto define para você.",
   "zh": "不确定自己是哪种类型？点“我是哪种类型？”——1 分钟检查帮你设置。"
+ },
+ "Not tall": {
+  "de": "Nicht hochkant",
+  "es": "No es vertical",
+  "fr": "Pas en hauteur",
+  "hi": "लंबवत नहीं",
+  "it": "Non verticale",
+  "ja": "縦長ではありません",
+  "pt": "Não é vertical",
+  "zh": "不是竖屏"
  },
  "Note (Level 3, near the lift…)": {
   "de": "Notiz (Ebene 3, nahe dem Aufzug…)",
@@ -18198,6 +18228,16 @@
   "ja": "この声で録音の試聴を再生します",
   "pt": "Reproduz uma amostra da gravação com esta voz",
   "zh": "用这个声音试听你的录音"
+ },
+ "Plays in": {
+  "de": "Dauer",
+  "es": "Dura",
+  "fr": "Dure",
+  "hi": "चलने का समय",
+  "it": "Dura",
+  "ja": "再生時間",
+  "pt": "Dura",
+  "zh": "播放时长"
  },
  "Plenty": {
   "de": "Reichlich",
@@ -21179,6 +21219,16 @@
   "pt": "Salvo em Fotos",
   "zh": "已存到照片"
  },
+ "Saved to Photos — it plays in the Animated album.": {
+  "de": "In Fotos gesichert – es läuft im Album „Animiert“.",
+  "es": "Guardado en Fotos: se reproduce en el álbum Animadas.",
+  "fr": "Enregistré dans Photos — il s'anime dans l'album Animations.",
+  "hi": "फ़ोटो में सहेजा गया — यह Animated एल्बम में चलता है।",
+  "it": "Salvata in Foto: si anima nell'album Animate.",
+  "ja": "写真に保存しました。「アニメーション」アルバムで動きます。",
+  "pt": "Guardado em Fotos — anima no álbum Animados.",
+  "zh": "已存储到照片，可在“动图”相簿中播放。"
+ },
  "Saved to Photos — see-through PNG.": {
   "de": "In Fotos gesichert – transparentes PNG.",
   "es": "Guardado en Fotos: PNG transparente.",
@@ -23609,6 +23659,16 @@
   "pt": "Tocar uma sirene junto",
   "zh": "同时响起警笛"
  },
+ "Sound is still in it": {
+  "de": "Der Ton ist noch drin",
+  "es": "Todavía tiene sonido",
+  "fr": "Le son est encore présent",
+  "hi": "आवाज़ अभी भी है",
+  "it": "L'audio è ancora presente",
+  "ja": "まだ音声が入っています",
+  "pt": "Ainda tem som",
+  "zh": "仍有声音"
+ },
  "Soundboard": {
   "de": "Soundboard",
   "es": "Mesa de sonidos",
@@ -24158,6 +24218,16 @@
   "ja": "ステッカー、コミック、絵文字の顔、ミーム",
   "pt": "Figurinhas, quadrinhos, rostos com emoji, memes",
   "zh": "贴纸、漫画、表情脸、梗图"
+ },
+ "Still over": {
+  "de": "Noch über",
+  "es": "Todavía supera",
+  "fr": "Toujours au-dessus de",
+  "hi": "अभी भी अधिक",
+  "it": "Ancora sopra",
+  "ja": "まだ超過",
+  "pt": "Ainda acima de",
+  "zh": "仍超过"
  },
  "Still readable in the file:": {
   "de": "Noch lesbar in der Datei:",
@@ -24878,6 +24948,16 @@
   "ja": "話すだけ。文字起こし・要約・ToDoを端末内に。",
   "pt": "Fale. Receba a transcrição, um resumo e as tarefas — no seu telefone.",
   "zh": "说出来。得到转写、摘要和待办——都存在手机上。"
+ },
+ "Tall 9:16 for Stories and Reels": {
+  "de": "Hochkant 9:16 für Stories und Reels",
+  "es": "Vertical 9:16 para Stories y Reels",
+  "fr": "Vertical 9:16 pour Stories et Reels",
+  "hi": "Stories और Reels के लिए 9:16 लंबवत",
+  "it": "Verticale 9:16 per Storie e Reel",
+  "ja": "ストーリーズ・リール用の縦長 9:16",
+  "pt": "Vertical 9:16 para Stories e Reels",
+  "zh": "竖屏 9:16，适合快拍和 Reels"
  },
  "Tap Add Action, search for Tenzy, and choose Open a Tool.": {
   "de": "Tippe auf „Aktion hinzufügen“, suche Tenzy und wähle „Open a Tool“.",
@@ -28409,6 +28489,16 @@
   "pt": "Sem compressão, compatível com tudo",
   "zh": "无压缩，普遍支持"
  },
+ "Under": {
+  "de": "Unter",
+  "es": "Por debajo de",
+  "fr": "Sous",
+  "hi": "इससे कम:",
+  "it": "Sotto",
+  "ja": "以下:",
+  "pt": "Abaixo de",
+  "zh": "低于"
+ },
  "Under ": {
   "de": "Unter ",
   "es": "Menos de ",
@@ -30469,6 +30559,16 @@
   "pt": "Você tem o que precisa para se sentir melhor.",
   "zh": "你有了让自己好起来的东西。"
  },
+ "Your GIF is ready": {
+  "de": "Dein GIF ist fertig",
+  "es": "Tu GIF está listo",
+  "fr": "Votre GIF est prêt",
+  "hi": "आपका GIF तैयार है",
+  "it": "La tua GIF è pronta",
+  "ja": "GIFができました",
+  "pt": "O seu GIF está pronto",
+  "zh": "GIF 已就绪"
+ },
  "Your ID copy is ready": {
   "de": "Deine Ausweiskopie ist fertig",
   "es": "Tu copia del documento está lista",
@@ -30898,6 +30998,16 @@
   "ja": "大変な日",
   "pt": "um dia difícil",
   "zh": "艰难的一天"
+ },
+ "a loop": {
+  "de": "pro Durchlauf",
+  "es": "por vuelta",
+  "fr": "par boucle",
+  "hi": "एक लूप",
+  "it": "per giro",
+  "ja": "1ループ",
+  "pt": "por ciclo",
+  "zh": "每轮"
  },
  "a spreadsheet": {
   "de": "eine Tabelle",
@@ -31339,6 +31449,16 @@
   "pt": "pratos",
   "zh": "道菜"
  },
+ "down from": {
+  "de": "vorher",
+  "es": "antes",
+  "fr": "au lieu de",
+  "hi": "पहले",
+  "it": "prima",
+  "ja": "元は",
+  "pt": "antes",
+  "zh": "原为"
+ },
  "drops below": {
   "de": "fällt unter",
   "es": "baja de",
@@ -31519,6 +31639,16 @@
   "pt": "rostos",
   "zh": "张脸"
  },
+ "faster": {
+  "de": "schneller",
+  "es": "más rápido",
+  "fr": "plus rapide",
+  "hi": "तेज़",
+  "it": "più veloce",
+  "ja": "速く",
+  "pt": "mais rápido",
+  "zh": "更快"
+ },
  "field": {
   "de": "Feld",
   "es": "campo",
@@ -31568,6 +31698,36 @@
   "ja": "現在地を確認中…",
   "pt": "descobrindo onde você está…",
   "zh": "正在定位…"
+ },
+ "fits where you're sending it": {
+  "de": "passt dorthin, wohin du es schickst",
+  "es": "cabe donde lo envías",
+  "fr": "passe là où vous l'envoyez",
+  "hi": "जहाँ भेज रहे हैं वहाँ फ़िट",
+  "it": "va bene dove lo invii",
+  "ja": "送り先に収まります",
+  "pt": "cabe onde o vai enviar",
+  "zh": "符合发送要求"
+ },
+ "frames": {
+  "de": "Bilder",
+  "es": "fotogramas",
+  "fr": "images",
+  "hi": "फ़्रेम",
+  "it": "fotogrammi",
+  "ja": "フレーム",
+  "pt": "fotogramas",
+  "zh": "帧"
+ },
+ "from": {
+  "de": "vorher",
+  "es": "antes",
+  "fr": "avant",
+  "hi": "पहले",
+  "it": "prima",
+  "ja": "元",
+  "pt": "antes",
+  "zh": "原"
  },
  "from your check — correction is on.": {
   "de": "aus deinem Check – Korrektur ist an.",
@@ -31808,6 +31968,16 @@
   "ja": "行",
   "pt": "linhas",
   "zh": "行"
+ },
+ "long": {
+  "de": "lang",
+  "es": "de duración",
+  "fr": "de durée",
+  "hi": "लंबा",
+  "it": "di durata",
+  "ja": "の長さ",
+  "pt": "de duração",
+  "zh": "长"
  },
  "looking things up online": {
   "de": "Online-Suche",
@@ -32509,6 +32679,16 @@
   "pt": "exibindo até 200 linhas",
   "zh": "最多显示 200 行"
  },
+ "slower": {
+  "de": "langsamer",
+  "es": "más lento",
+  "fr": "plus lent",
+  "hi": "धीमा",
+  "it": "più lento",
+  "ja": "遅く",
+  "pt": "mais lento",
+  "zh": "更慢"
+ },
  "smaller": {
   "de": "kleiner",
   "es": "más pequeño",
@@ -32868,6 +33048,16 @@
   "ja": "移動",
   "pt": "de deslocação",
   "zh": "路程"
+ },
+ "trim it shorter to fit": {
+  "de": "kürzer schneiden, damit es passt",
+  "es": "recórtalo para que quepa",
+  "fr": "coupez-la pour qu'elle passe",
+  "hi": "फ़िट करने के लिए छोटा करें",
+  "it": "accorcialo per farlo stare",
+  "ja": "短くカットすると収まります",
+  "pt": "corte-o para caber",
+  "zh": "剪短一些就能符合"
  },
  "turn left": {
   "de": "links drehen",

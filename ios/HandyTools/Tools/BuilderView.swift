@@ -1616,6 +1616,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     /// Several photos picked at once (from "What to do with it"): each one gets the same steps, like a batch picked here.
     var initialMany: [ChainPayload] = []
     @State private var started = false
+    @State private var inputVideo: URL?
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
     @State private var progress = ""
@@ -1941,6 +1942,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             // UI tests can't drive the photo picker: with -sample an ID-copy tool runs on a made-up photo, so the
             // finished screen itself is checked, not just the run screen.
+            if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Video finish" {
+                started = true
+                Task { if let u = await SampleAssets.movie() { await MainActor.run { go(.video(u)) } } }
+            }
             if Launch.uitest, Launch.sample, initial == nil, !started, ["ID copy", "Scan PDF"].contains(ResultScreens.screen(for: chain) ?? "") {
                 started = true
                 let doc = ResultScreens.screen(for: chain) == "Scan PDF"
@@ -2372,6 +2377,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             let lext = ext.lowercased()
             if lext == "csv", let f = sheetFile {
                 ExpenseSheetCard(file: f, added: 1)
+            } else if lext == "gif" {
+                GIFFinishCard(data: d, shareURL: tempURL(d, ext))
             } else if lext == "ics", let icsText = String(data: d, encoding: .utf8) {
                 CalendarEventResult(ics: icsText, shareURL: tempURL(d, ext))
             } else if lext == "vcf" {
@@ -2422,9 +2429,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             }
         case .video(let u):
-            Label(L("Your video is ready") + (SizeTarget.fileSize(u).map { " · " + SizeTarget.format($0) } ?? ""), systemImage: "film").font(HandyFont.bodyStrong)
-            VideoResultPreview(url: u)   // watch it before saving, like photos and PDFs
-            ShareLink(item: u) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+            // Same finish as the Video tool: watch it, what changed against your original, each promise checked on the file.
+            VideoFinishCard(url: u, source: inputVideo, promise: VideoPromise(chain))
         }
     }
 
@@ -2451,6 +2457,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         if case .file(let d, let e) = input, ChainPayload.isPhoto(e) { originalPhoto = d } else { originalPhoto = nil }
         passportSource = chain.steps.last?.block == .passportPhoto ? ToolHandoff.image(input) : nil
         inputPhoto = ToolHandoff.image(input)
+        if case .video(let u) = input { inputVideo = u } else { inputVideo = nil }
         boardSource = chain.steps.map(\.block) == [.readText, .actionItems] && chain.finish == nil ? ToolHandoff.image(input) : nil
         // A spoken recording is transcribed on the phone — that takes roughly as long as the clip, so
         // say what's happening rather than showing a bare spinner on a long meeting recording.

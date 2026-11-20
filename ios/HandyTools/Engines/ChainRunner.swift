@@ -691,7 +691,7 @@ enum ChainRunner {
         case (.videoShrink, .video(let url)):
             // Re-encoded to fit the limit. The new file carries no location or camera details from the original.
             let mb = ChainText.videoLimit(step.settings["mb"])
-            guard let out = await SizeTarget.videoBestEffort(url: url, targetBytes: mb * 1_048_576) else { return .failure(.failed(b)) }
+            guard let out = await SizeTarget.videoBestEffort(url: url, targetBytes: mb * 1_000_000) else { return .failure(.failed(b)) }
             return .success(.video(out.url))
 
         case (.videoStill, .video(let url)):
@@ -802,6 +802,7 @@ enum ResultScreens {
         guard let last = blocks.last else { return nil }
         if blocks == [.readText, .actionItems], chain.finish == nil { return "Board review" }
         if blocks.contains(.watermark), [.watermark, .stripLocation, .shrinkImage].contains(last) { return "ID copy" }
+        if chain.gif == true { return "GIF finish" }
         switch last {
         case .cutout: return "Cut-out finishing"
         case .identify: return "What is this / written things"
@@ -812,6 +813,8 @@ enum ResultScreens {
         case .pullDetails: return "Links, emails, phones"
         case .calendarEvent: return "Calendar event"
         case .businessCard: return "Contact card"
+        case .videoShrink, .videoTrim, .videoSpeed, .videoMute, .videoVertical, .videoCaptions, .videoRotate: return "Video finish"
+        case .videoGif, .videoLoop: return "GIF finish"
         case .photoPdf: return "Scan PDF"
         case .pdfShrink where blocks.contains(.photoPdf): return "Scan PDF"
         default: return nil
@@ -831,10 +834,7 @@ enum ResultScreens {
         "text-to-qr": "pb-codes",
         "whatsapp-no-save": "pb-codes",
         "contact-qr": "pb-codes",
-        "video-email": "pb-video",
-        "video-chat": "pb-video",
         "video-still": "pb-video",
-        "video-quiet": "pb-video",
         "return-by": "pb-receipts",
         "wifi-sign": "pb-codes",
         "share-shield": "pb-photo",
@@ -848,20 +848,14 @@ enum ResultScreens {
         "pdf-email": "pb-pdf",
         "pdf-join": "pb-pdf",
         "pdf-first-page": "pb-pdf",
-        "video-story": "pb-video",
-        "video-gif": "pb-video",
         "video-words": "pb-text",
         "photo-collage": "pb-photo",
         "where-i-am": "pb-text",
-        "photos-gif": "pb-photo",
         "photos-flipbook": "pb-photo",
         "sticker-maker": "pb-fun",
         "emoji-faces": "pb-fun",
         "meme": "pb-fun",
         "emoji-mosaic": "pb-fun",
-        "video-boomerang": "pb-video",
-        "video-slowmo": "pb-video",
-        "video-fast": "pb-video",
         "photo-sketch": "pb-fun",
         "photo-comic": "pb-fun",
         "voice-chipmunk": "pb-voice",
@@ -880,8 +874,6 @@ enum ResultScreens {
         "letter-listen": "pb-text",
         "lecture-summary": "pb-text",
         "voice-spanish": "pb-text",
-        "reel-captions": "pb-video",
-        "video-minute-email": "pb-video",
         "pdf-summary": "pb-text",
         "pdf-english": "pb-text",
         "pdf-listen": "pb-listen",

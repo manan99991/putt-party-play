@@ -51,6 +51,20 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["pdf-size-check"].waitForExistence(timeout: 90), "doc-portal: no size check on the finished PDF")
     }
 
+    /// (The sample movie has no sound track, so muting is checked on real clips in QA, not here.)
+    /// "Video tools finish on the same screen as the Video tool, with each promise checked on the file."
+    func testVideoToolsCheckTheirPromiseOnTheFile() {
+        for (id, check, says) in [("video-fast", "video-speed-check", "faster"), ("video-slowmo", "video-speed-check", "slower"), ("video-chat", "video-size-check", "Under")] {
+            let app = XCUIApplication()
+            app.launchArguments = ["-route", "run-\(id)", "-uitest", "-sample"]
+            app.launch()
+            let row = app.descendants(matching: .any)[check]
+            XCTAssertTrue(row.waitForExistence(timeout: 120), "\(id): no check on the finished video")
+            XCTAssertTrue(row.label.contains(says), "\(id): check says '\(row.label)'")
+            app.terminate()
+        }
+    }
+
     /// "Sign a form: draw your signature" — the pad must show 'Sign in the box first' until there's ink.
     func testSignaturePadWontSaveBlank() {
         let app = open("sign-and-send")

@@ -310,7 +310,31 @@ struct VideoView: View {
         }
     }
 
-    private func resultCard(_ r: Output) -> some View {
+    /// What this run promised, so the shared finish card checks it on the file.
+    private var toolPromise: VideoPromise {
+        var p = VideoPromise()
+        switch mode {
+        case .shrink: p.underBytes = targetBytes
+        case .trim: p.maxSeconds = max(0.5, trimEnd - trimStart)
+        case .mute: p.silent = true
+        default: break
+        }
+        return p
+    }
+
+    @ViewBuilder private func resultCard(_ r: Output) -> some View {
+        if r.kind == .video {
+            // The same finish as every ready-made video tool: what changed, each promise checked on the file.
+            VideoFinishCard(url: r.url, source: source, promise: toolPromise, note: resultNote)
+            Button { adopt(r) } label: { Label(L("Use this as the source (e.g. trim, then shrink)"), systemImage: "arrow.uturn.down").frame(maxWidth: .infinity) }.secondaryButton()
+        } else if r.kind == .gif, let d = try? Data(contentsOf: r.url) {
+            GIFFinishCard(data: d, shareURL: r.url)
+        } else {
+            oldResultCard(r)
+        }
+    }
+
+    private func oldResultCard(_ r: Output) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             HStack(spacing: HandySpacing.s12) {
                 Image(systemName: resultNote == nil ? "checkmark.circle.fill" : "exclamationmark.circle.fill").foregroundStyle(resultNote == nil ? HandyColor.success : HandyColor.accent).font(.system(size: 22))
