@@ -1609,6 +1609,16 @@
   "pt": "Também nesta ferramenta",
   "zh": "此工具还能"
  },
+ "Also join them into one file": {
+  "de": "Zusätzlich zu einer Datei verbinden",
+  "es": "Unirlos también en un archivo",
+  "fr": "Les réunir aussi en un seul fichier",
+  "hi": "इन्हें एक फ़ाइल में भी जोड़ें",
+  "it": "Uniscili anche in un unico file",
+  "ja": "1つのファイルにもまとめる",
+  "pt": "Também juntar num arquivo",
+  "zh": "同时合并为一个文件"
+ },
  "Also make a GIF (for chats)": {
   "de": "Auch ein GIF erstellen (für Chats)",
   "es": "Crear también un GIF (para chats)",
@@ -3489,6 +3499,16 @@
   "pt": "Mudar velocidade",
   "zh": "变速"
  },
+ "Change speed of all": {
+  "de": "Tempo aller ändern",
+  "es": "Cambiar la velocidad de todos",
+  "fr": "Changer la vitesse de tous",
+  "hi": "सबकी स्पीड बदलें",
+  "it": "Cambia la velocità di tutti",
+  "ja": "すべての速度を変更",
+  "pt": "Mudar a velocidade de todos",
+  "zh": "全部改变速度"
+ },
  "Change the voice": {
   "de": "Stimme ändern",
   "es": "Cambiar la voz",
@@ -4228,6 +4248,16 @@
   "ja": "別の写真を選ぶ",
   "pt": "Escolher outras fotos",
   "zh": "选择其他照片"
+ },
+ "Choose files": {
+  "de": "Dateien wählen",
+  "es": "Elegir archivos",
+  "fr": "Choisir des fichiers",
+  "hi": "फ़ाइलें चुनें",
+  "it": "Scegli file",
+  "ja": "ファイルを選択",
+  "pt": "Escolher arquivos",
+  "zh": "选择文件"
  },
  "Choose menu photo": {
   "de": "Speisekartenfoto wählen",
@@ -17639,6 +17669,16 @@
   "pt": "Escolhe qualquer ficheiro. O outro dispositivo digitaliza o código ou abre o endereço — mesma Wi-Fi, sem cabo, sem nuvem.",
   "zh": "选择任意文件。另一台设备扫码或打开该地址 — 同一 Wi-Fi，无需数据线，无需云端。"
  },
+ "Pick lectures, podcasts or voice memos — one or several — to play faster or slower.": {
+  "de": "Wähle Vorträge, Podcasts oder Sprachmemos – eins oder mehrere –, um sie schneller oder langsamer abzuspielen.",
+  "es": "Elige clases, pódcasts o notas de voz (una o varias) para oírlas más rápido o más lento.",
+  "fr": "Choisissez des cours, podcasts ou mémos vocaux — un ou plusieurs — à écouter plus vite ou plus lentement.",
+  "hi": "लेक्चर, पॉडकास्ट या वॉइस मेमो चुनें — एक या कई — तेज़ या धीमा चलाने के लिए।",
+  "it": "Scegli lezioni, podcast o memo vocali — uno o più — da ascoltare più veloci o più lenti.",
+  "ja": "講義、ポッドキャスト、ボイスメモを1つでも複数でも選んで、速く・遅く再生できます。",
+  "pt": "Escolha aulas, podcasts ou memos de voz — um ou vários — para tocar mais rápido ou mais devagar.",
+  "zh": "选择讲座、播客或语音备忘录（一个或多个），加快或放慢播放。"
+ },
  "Pick one photo or a few — people, pets, food, anything. Tenzy cuts them out and shows you ten sticker styles to choose from.": {
   "de": "Wähle ein oder mehrere Fotos – Menschen, Haustiere, Essen, alles. Tenzy schneidet sie aus und zeigt dir zehn Sticker-Stile zur Auswahl.",
   "es": "Elige una foto o varias: personas, mascotas, comida, lo que sea. Tenzy las recorta y te muestra diez estilos de sticker para elegir.",
@@ -30639,6 +30679,16 @@
   "pt": "adicionados ao Planner do Tenzy.",
   "zh": "项已添加到 Tenzy 计划。"
  },
+ "all together": {
+  "de": "insgesamt",
+  "es": "en total",
+  "fr": "au total",
+  "hi": "कुल मिलाकर",
+  "it": "in tutto",
+  "ja": "合計",
+  "pt": "no total",
+  "zh": "合计"
+ },
  "already done": {
   "de": "schon erledigt",
   "es": "ya hechas",
@@ -30698,6 +30748,16 @@
   "ja": "合計の表示どおり",
   "pt": "como diz o total",
   "zh": "与总计一致"
+ },
+ "at": {
+  "de": "mit",
+  "es": "a",
+  "fr": "à",
+  "hi": "पर",
+  "it": "a",
+  "ja": "—",
+  "pt": "a",
+  "zh": "速度"
  },
  "average": {
   "de": "Durchschnitt",

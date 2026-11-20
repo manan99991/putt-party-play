@@ -17,6 +17,9 @@ struct AudioMixView: View {
     @State private var working = false
     @State private var resultURL: URL?
     @State private var resultSeconds: Double = 0
+    /// Speed results, one per clip, in the same order — every clip you picked is kept.
+    @State private var speedResults: [(name: String, url: URL, seconds: Double)] = []
+    @State private var alsoJoin = false
     @State private var errorText: String?
     @State private var showFiles = false
 
@@ -28,6 +31,7 @@ struct AudioMixView: View {
                  working: working) {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
                 if let url = resultURL { result(url) }
+                else if !speedResults.isEmpty { speedResultList }
                 else {
                     Picker("", selection: $mode) {
                         Text(L("Join clips")).tag(Mode.join)
@@ -42,13 +46,11 @@ struct AudioMixView: View {
             .padding(.vertical, HandySpacing.s12)
         }
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.audio, .movie],
-                      allowsMultipleSelection: mode == .join) { res in
+                      allowsMultipleSelection: true) { res in
             if case .success(let urls) = res { add(urls) }
         }
-        .onChange(of: mode) { _, m in
-            errorText = nil
-            if m == .speed, clips.count > 1 { clips = Array(clips.prefix(1)) }
-        }
+        // The clips you picked stay picked on both sides — switching to Change speed never drops any.
+        .onChange(of: mode) { _, _ in errorText = nil }
         .finishes(working, tool: "Join & Speed")
         .handoff("audiomix") { p in if let u = ToolHandoff.fileURL(p) { add([u]) } }
     }
@@ -96,14 +98,26 @@ struct AudioMixView: View {
 
     private var speedEditor: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            if let c = clips.first {
-                HStack {
-                    Image(systemName: "waveform").foregroundStyle(HandyColor.accent)
-                    Text(c.name).font(HandyFont.bodyStrong).lineLimit(1)
-                    Spacer()
-                    Text(AudioCompressView.duration(c.seconds)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            if clips.isEmpty {
+                Text(L("Pick lectures, podcasts or voice memos — one or several — to play faster or slower."))
+                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                Button { showFiles = true } label: {
+                    Label(L("Choose files"), systemImage: "folder").frame(maxWidth: .infinity)
+                }.primaryButton()
+            } else {
+                ForEach(clips) { c in
+                    HStack {
+                        Image(systemName: "waveform").foregroundStyle(HandyColor.accent)
+                        Text(c.name).font(HandyFont.bodyStrong).lineLimit(1)
+                        Spacer()
+                        Text("\(AudioCompressView.duration(c.seconds)) → \(AudioCompressView.duration(c.seconds / rate))")
+                            .font(HandyFont.caption).monospacedDigit().foregroundStyle(HandyColor.textSecondary)
+                        Button { clips.removeAll { $0.id == c.id } } label: { Image(systemName: "trash").frame(width: 32, height: 32) }
+                            .buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityLabel(L("Remove"))
+                    }
+                    .cardStyle(padding: HandySpacing.s12)
                 }
-                .cardStyle(padding: HandySpacing.s12)
+                Button { showFiles = true } label: { Label(L("Add more"), systemImage: "plus").frame(maxWidth: .infinity) }.secondaryButton()
                 HStack(spacing: HandySpacing.s8) {
                     ForEach(AudioMix.speeds, id: \.self) { s in
                         Button("\(s.formatted())×") { rate = s }
@@ -111,20 +125,40 @@ struct AudioMixView: View {
                             .tint(rate == s ? HandyColor.accent : HandyColor.textSecondary)
                     }
                 }
-                Text("\(rate > 1 ? L("Faster") : L("Slower")) — \(L("new length")) \(AudioCompressView.duration(c.seconds / rate)). \(L("Voices keep their natural pitch."))")
+                let total = clips.reduce(0) { $0 + $1.seconds }
+                Text("\(rate > 1 ? L("Faster") : L("Slower")) — \(clips.count == 1 ? L("new length") : L("all together")) \(AudioCompressView.duration(total / rate)). \(L("Voices keep their natural pitch."))")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                if clips.count > 1 {
+                    Toggle(L("Also join them into one file"), isOn: $alsoJoin).font(HandyFont.body).tint(HandyColor.accent)
+                }
                 Button { runSpeed() } label: {
-                    Label(L("Change speed"), systemImage: "speedometer").frame(maxWidth: .infinity)
+                    Label(clips.count == 1 ? L("Change speed") : "\(L("Change speed of all")) \(clips.count)", systemImage: "speedometer").frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working)
-                Button(L("Choose a different file")) { clips = [] }.textButton().font(HandyFont.caption)
-                    .frame(maxWidth: .infinity)
-            } else {
-                Text(L("Pick a lecture, podcast or voice memo to play faster or slower."))
-                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
-                Button { showFiles = true } label: {
-                    Label(L("Choose a file"), systemImage: "folder").frame(maxWidth: .infinity)
-                }.primaryButton()
             }
+        }
+    }
+
+    /// Every sped-up clip, each playable and shareable, plus Save all — the same number of files you picked.
+    private var speedResultList: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Label("\(speedResults.count) \(L(speedResults.count == 1 ? "file" : "files")) \(L("at")) \(rate.formatted())×", systemImage: "checkmark.circle.fill")
+                .font(HandyFont.caption).foregroundStyle(HandyColor.success)
+            ForEach(speedResults, id: \.url) { r in
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text(r.name).font(HandyFont.bodyStrong).lineLimit(1)
+                        Spacer()
+                        Text(AudioCompressView.duration(r.seconds)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        ShareLink(item: r.url) { Image(systemName: "square.and.arrow.up") }.accessibilityLabel(L("Share"))
+                    }
+                    AudioPlayBar(url: r.url)
+                }
+                .cardStyle(padding: HandySpacing.s12)
+            }
+            ShareLink(items: speedResults.map(\.url)) {
+                Label(speedResults.count == 1 ? L("Save or share") : "\(L("Save or share all")) (\(speedResults.count))", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)
+            }.primaryButton()
+            Button(L("Back to editing")) { speedResults = []; progress = 0 }.textButton().font(HandyFont.caption)
         }
     }
 
@@ -169,7 +203,7 @@ struct AudioMixView: View {
             added.append(Clip(url: local, name: url.deletingPathExtension().lastPathComponent))
         }
         if added.count < urls.count { errorText = "Some files couldn't be opened." }
-        if mode == .speed { clips = Array(added.prefix(1)) } else { clips += added }
+        clips += added
         for c in added {
             Task {
                 let d = (try? await AVURLAsset(url: c.url).load(.duration))?.seconds ?? 0
@@ -186,9 +220,34 @@ struct AudioMixView: View {
     }
 
     private func runSpeed() {
-        guard let src = clips.first?.url else { return }
-        let r = rate
-        start { p in await AudioMix.speed(src, rate: r, progress: p) }
+        let items = clips, r = rate, join = alsoJoin && clips.count > 1
+        working = true; errorText = nil; progress = 0
+        Task {
+            var out: [(name: String, url: URL, seconds: Double)] = []
+            var failed = 0
+            for (i, c) in items.enumerated() {
+                let outcome = await AudioMix.speed(c.url, rate: r) { p in
+                    Task { @MainActor in progress = (Double(i) + p) / Double(items.count + (join ? 1 : 0)) }
+                }
+                guard case .success(let tmp) = outcome else { failed += 1; continue }
+                let name = "\(c.name) (\(r.formatted())x)".components(separatedBy: CharacterSet(charactersIn: "/\\:")).joined(separator: "-")
+                let named = FileManager.default.temporaryDirectory.appendingPathComponent("\(String(name.prefix(60))).m4a")
+                try? FileManager.default.removeItem(at: named)
+                let u = (try? FileManager.default.moveItem(at: tmp, to: named)) != nil ? named : tmp
+                let d = (try? await AVURLAsset(url: u).load(.duration))?.seconds ?? 0
+                out.append((name, u, d))
+            }
+            if join, out.count > 1, case .success(let j) = await AudioMix.merge(out.map(\.url), gap: 0, progress: { p in Task { @MainActor in progress = (Double(items.count) + p) / Double(items.count + 1) } }) {
+                let d = (try? await AVURLAsset(url: j).load(.duration))?.seconds ?? 0
+                out.append(("All joined (\(r.formatted())x)", j, d))
+            }
+            await MainActor.run {
+                working = false
+                speedResults = out
+                if failed > 0 { errorText = "\(failed) of \(items.count) couldn't be changed — the others are ready." }
+                if !out.isEmpty { HandyHaptics.success() }
+            }
+        }
     }
 
     private func start(_ job: @escaping (@escaping (Double) -> Void) async -> Result<URL, AudioMix.Failure>) {
