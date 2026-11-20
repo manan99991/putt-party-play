@@ -43,6 +43,12 @@ struct GuideView: View {
     }
     private func options(_ goal: String) -> [Guide.Option] { goals.first { $0.goal == goal }?.options ?? [] }
 
+    /// UI tests only: leave parts of this screen out to find which part breaks ("-guideskip header,grid").
+    static let skip: Set<String> = {
+        guard Launch.uitest, let i = Launch.args.firstIndex(of: "-guideskip"), Launch.args.indices.contains(i + 1) else { return [] }
+        return Set(Launch.args[i + 1].split(separator: ",").map(String.init))
+    }()
+
     private var guess: Guide.Guess? { clues.flatMap { Guide.guess($0, kind: kind) } }
     private var suggested: Guide.Option? {
         guard let g = guess else { return nil }
@@ -58,6 +64,7 @@ struct GuideView: View {
         .interactiveDismissDisabled(!path.isEmpty)
         .task {
             Diagnostics.shared.crumb("Guide: \(given.label)")
+            guard !Self.skip.contains("task") else { return }
             guard isPhoto, let first = photos.first else { return }
             previews.prepare(photos: photos)
             let file: Data? = { if case .file(let d, _) = given.payload { return d } else { return nil } }()
@@ -72,17 +79,19 @@ struct GuideView: View {
     private var start: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
-                GuideSteps(step: 1)
-                header
+                if !Self.skip.contains("steps") { GuideSteps(step: 1) }
+                if !Self.skip.contains("header") { header }
                 justOpen
                 Text(L("What do you want to do?")).font(HandyFont.title)
-                if let s = suggested, let g = guess { suggestion(s, why: g.why) }
+                if Self.skip.contains("suggest") { EmptyView() }
+                else if let s = suggested, let g = guess { suggestion(s, why: g.why) }
                 else if isPhoto && clues == nil { ToolProgressBar(label: "Looking at your photo…", showsTime: false) }
-                LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
+                if !Self.skip.contains("grid") { LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
                     ForEach(goals, id: \.goal) { g in
                         Button { Diagnostics.shared.crumb("Guide: chose \(g.goal)"); path.append(.goal(g.goal)) } label: { GoalTile(goal: Guide.goal(g.goal, count: given.count), ways: g.options.count, highlighted: guess?.goal == g.goal) }
                             .buttonStyle(.plain).accessibilityIdentifier("goal-\(g.goal)")
                     }
+                }
                 }
                 if goals.isEmpty {
                     Text("No tool takes \(given.payload.kind.label) yet. Close this, tap Blank, and build one that starts with it.")

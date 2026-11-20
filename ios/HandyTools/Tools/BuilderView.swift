@@ -519,7 +519,10 @@ struct BuilderView: View {
             }
         }
         .sheet(item: $running) { c in NavigationStack { ChainRunView(chain: c) } }
-        .sheet(item: $given) { g in GuideView(given: g, mine: mine) }
+        .sheet(item: $given) { g in
+            if GuideView.skip.contains("all") { Text(verbatim: "What do you want to do?") }   // UI tests only: is it the guide or the sheet?
+            else { GuideView(given: g, mine: mine) }
+        }
         .sheet(item: $unzipping) { t in
             UnzipView(url: t.url) { g in
                 // A file opened from inside the archive → close Unzip, then hand it to the tools.
