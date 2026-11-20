@@ -1,0 +1,6 @@
+fetched 2026-11-20T21:43:42Z: 2 shared crashes
+shared crash 2026-11-20T21:40:39.535Z build None log 50513 chars
+shared crash 2026-10-19T03:30:18.429Z build None log 23866 chars
+build 1795209761: 0 crash signatures
+build 1795091041: 0 crash signatures
+build 1794942167: 0 crash signatures
