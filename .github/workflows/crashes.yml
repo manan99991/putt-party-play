@@ -1,0 +1,38 @@
+name: TestFlight crashes
+# Pulls every crash a tester shared from TestFlight ("Share" on the crash alert) and the newest
+# crash signatures Apple collected, so crashes reach the developer without anyone forwarding them.
+# Output is encrypted (the repo is public) and published to ci-logs as crashes.zip.enc.
+on:
+  workflow_dispatch:
+  push:
+    branches: [handytools]
+    paths: ['.github/workflows/crashes.yml', 'tools/fetch_crashes.py', 'ios/CRASH_CHECK.md']
+  schedule:
+    - cron: '17 */2 * * *'
+permissions:
+  contents: write
+concurrency: { group: crashes, cancel-in-progress: false }
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8_B64: ${{ secrets.ASC_KEY_P8_B64 }}
+      TEST_PHOTOS_KEY: ${{ secrets.TEST_PHOTOS_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: Fetch crash reports from App Store Connect
+        run: |
+          pip install -q pyjwt cryptography requests
+          python3 tools/fetch_crashes.py "$RUNNER_TEMP/crashes"
+      - name: Publish (encrypted)
+        run: |
+          cd "$RUNNER_TEMP" && zip -qr crashes.zip crashes
+          openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -in crashes.zip -out crashes.zip.enc -pass env:TEST_PHOTOS_KEY
+          mkdir -p pub && cp crashes.zip.enc pub/ && cp crashes/summary.txt pub/count.txt 2>/dev/null || true
+          # count.txt holds only counts and dates, nothing personal.
+          bash "$GITHUB_WORKSPACE/.github/publish-log.sh" crashes pub
