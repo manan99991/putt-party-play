@@ -1948,9 +1948,14 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 started = true
                 go(.file(SampleAssets.tone(), ext: "wav"))
             }
-            if Launch.uitest, Launch.sample, initial == nil, !started, chain.id == "scam-check" {
+            let sampleText: [String: String] = [
+                "scam-check": "URGENT: Your account will be suspended within 24 hours. Verify at http://paypal.secure-login.top/verify and pay the fee in Apple gift cards.",
+                "text-to-qr": "https://www.apple.com/",
+                "whatsapp-no-save": "+1 312 555 0142",
+            ]
+            if Launch.uitest, Launch.sample, initial == nil, !started, let t = sampleText[chain.id] {
                 started = true
-                go(.text("URGENT: Your account will be suspended within 24 hours. Verify at http://paypal.secure-login.top/verify and pay the fee in Apple gift cards."))
+                go(.text(t))
             }
             if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Video finish" {
                 started = true
@@ -2350,6 +2355,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 ReceiptResult(receipt: r, photo: initial.flatMap(ToolHandoff.image))
             } else if chain.steps.last?.block == .actionItems {
                 RemindersResult(planText: t)
+            } else if chain.steps.last?.block == .chatLink, t.hasPrefix("http") {
+                ChatLinkFinishCard(link: t.trimmingCharacters(in: .whitespacesAndNewlines))
             } else if chain.steps.last?.block == .scamCheck, let checked = scamChecked {
                 // Same verdict as Message Shield: score, each sign explained, links, what to do, report / block / warn.
                 ScamVerdictCard(text: checked, report: ScamAnalyzer.analyze(checked)).id(checked)
@@ -2375,6 +2382,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             .cardStyle(padding: HandySpacing.s12)
             CopyButton(text: t)
             }
+        case .image(let i) where [.makeQr, .wifiQr, .contactQr].contains(chain.steps.last?.block):
+            // Same finish as QR & Wi‑Fi: tested by reading it back, what it does when scanned, Photos / Share / print card.
+            CodeFinishCard(image: i)
         case .image(let i) where chain.steps.last?.block == .cutout:
             // A cut-out is finished here: subject picker, backdrop, shadow, shape, and Photos / chat / sticker / profile.
             CutoutResult(original: inputPhoto, firstCut: i)

@@ -822,6 +822,8 @@ enum ResultScreens {
         case .videoGif, .videoLoop: return "GIF finish"
         case .scamCheck: return "Scam verdict"
         case .voiceChange: return "Voice finish"
+        case .makeQr, .wifiQr, .contactQr: return "Code finish"
+        case .chatLink: return "Chat link"
         case .photoPdf: return "Scan PDF"
         case .pdfShrink where blocks.contains(.photoPdf): return "Scan PDF"
         default: return nil
@@ -837,12 +839,8 @@ enum ResultScreens {
         "tidy-text": "pb-text",
         "clean-link": "pb-safety",
         "shelf-best-deal": "pb-receipts",
-        "text-to-qr": "pb-codes",
-        "whatsapp-no-save": "pb-codes",
-        "contact-qr": "pb-codes",
         "video-still": "pb-video",
         "return-by": "pb-receipts",
-        "wifi-sign": "pb-codes",
         "share-shield": "pb-photo",
         "portal-photo": "pb-photo",
         "memo-to-notes": "pb-text",

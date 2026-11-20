@@ -123,11 +123,8 @@ struct QRWifiView: View {
 
             if let qrImage {
                 if let styleNote { Label(L(styleNote), systemImage: "info.circle").font(HandyFont.micro).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true) }
-                Image(uiImage: qrImage).interpolation(.none).resizable().scaledToFit().frame(maxWidth: 260).frame(maxWidth: .infinity)
-                    .padding(HandySpacing.s24).background(.white, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
-                if let png = qrImage.pngData() {
-                    ShareLink(item: PNGFile(data: png), preview: SharePreview("QR code")) { Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
-                }
+                // Same finish as every code tool: tested by reading it back, what it does when scanned, Photos / Share.
+                CodeFinishCard(image: qrImage)
             }
             if !batchImages.isEmpty {
                 Text("\(batchImages.count) codes made").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

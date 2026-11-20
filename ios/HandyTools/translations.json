@@ -3569,6 +3569,16 @@
   "pt": "Alterados",
   "zh": "已更改"
  },
+ "Chat link ready": {
+  "de": "Chat-Link fertig",
+  "es": "Enlace de chat listo",
+  "fr": "Lien de discussion prêt",
+  "hi": "चैट लिंक तैयार",
+  "it": "Link alla chat pronto",
+  "ja": "チャットリンクができました",
+  "pt": "Link de conversa pronto",
+  "zh": "聊天链接已就绪"
+ },
  "Check": {
   "de": "Prüfen",
   "es": "Comprobar",
@@ -5568,6 +5578,16 @@
   "ja": "この動画のフレームを読めませんでした。別の範囲をお試しください。",
   "pt": "Não foi possível ler os quadros deste vídeo. Tente outro intervalo.",
   "zh": "无法读取该视频的画面，请换个范围。"
+ },
+ "Couldn't read it back — make it bigger or use fewer words": {
+  "de": "Konnte nicht zurückgelesen werden – größer machen oder weniger Text",
+  "es": "No se pudo leer: hazlo más grande o usa menos texto",
+  "fr": "Illisible — agrandissez-le ou mettez moins de texte",
+  "hi": "वापस पढ़ा नहीं जा सका — इसे बड़ा करें या कम शब्द रखें",
+  "it": "Non si legge: ingrandiscilo o usa meno testo",
+  "ja": "読み取れません。大きくするか文字を減らしてください",
+  "pt": "Não foi possível ler — aumente-o ou use menos texto",
+  "zh": "无法识别——请放大或减少文字"
  },
  "Couldn't read that PDF — try again.": {
   "de": "Dieses PDF ließ sich nicht lesen – versuch es erneut.",
@@ -16649,6 +16669,16 @@
   "pt": "Abrir digitalizador",
   "zh": "打开扫描器"
  },
+ "Open the chat in WhatsApp": {
+  "de": "Chat in WhatsApp öffnen",
+  "es": "Abrir el chat en WhatsApp",
+  "fr": "Ouvrir la discussion dans WhatsApp",
+  "hi": "WhatsApp में चैट खोलें",
+  "it": "Apri la chat in WhatsApp",
+  "ja": "WhatsAppでチャットを開く",
+  "pt": "Abrir a conversa no WhatsApp",
+  "zh": "在 WhatsApp 中打开聊天"
+ },
  "Open the curtains — let light in": {
   "de": "Vorhänge auf – Licht reinlassen",
   "es": "Abre las cortinas: deja entrar la luz",
@@ -18598,6 +18628,16 @@
   "ja": "ステッカーシートを印刷",
   "pt": "Imprimir folha de figurinhas",
   "zh": "打印贴纸页"
+ },
+ "Printable card for guests": {
+  "de": "Druckbare Karte für Gäste",
+  "es": "Tarjeta imprimible para invitados",
+  "fr": "Carte imprimable pour les invités",
+  "hi": "मेहमानों के लिए प्रिंट करने योग्य कार्ड",
+  "it": "Biglietto stampabile per gli ospiti",
+  "ja": "来客用の印刷カード",
+  "pt": "Cartão para imprimir para convidados",
+  "zh": "可打印的访客卡片"
  },
  "Prints drop onto a pile": {
   "de": "Abzüge fallen auf einen Stapel",
@@ -25849,6 +25889,26 @@
   "pt": "Teste · Avise quando",
   "zh": "测试 · 提醒我"
  },
+ "Tested — a phone camera reads it": {
+  "de": "Getestet – eine Handykamera liest ihn",
+  "es": "Probado: la cámara de un móvil lo lee",
+  "fr": "Testé — un appareil photo de téléphone le lit",
+  "hi": "जाँचा गया — फ़ोन कैमरा इसे पढ़ लेता है",
+  "it": "Provato: la fotocamera di un telefono lo legge",
+  "ja": "テスト済み：スマホのカメラで読み取れます",
+  "pt": "Testado — a câmara de um telemóvel lê-o",
+  "zh": "已测试：手机相机可以识别"
+ },
+ "Testing it like a phone camera…": {
+  "de": "Wird wie mit einer Handykamera getestet …",
+  "es": "Probándolo como una cámara de móvil…",
+  "fr": "Test comme avec l'appareil photo d'un téléphone…",
+  "hi": "फ़ोन कैमरे की तरह जाँच हो रही है…",
+  "it": "Lo provo come la fotocamera di un telefono…",
+  "ja": "スマホのカメラと同じように読み取りテスト中…",
+  "pt": "A testar como a câmara de um telemóvel…",
+  "zh": "正在像手机相机一样测试…"
+ },
  "Testing…": {
   "de": "Test läuft…",
   "es": "Probando…",
@@ -26418,6 +26478,16 @@
   "ja": "数値",
   "pt": "O número",
   "zh": "数字"
+ },
+ "The number is never saved to your contacts.": {
+  "de": "Die Nummer wird nie in deinen Kontakten gespeichert.",
+  "es": "El número nunca se guarda en tus contactos.",
+  "fr": "Le numéro n'est jamais enregistré dans vos contacts.",
+  "hi": "नंबर कभी आपके संपर्कों में सहेजा नहीं जाता।",
+  "it": "Il numero non viene mai salvato nei contatti.",
+  "ja": "番号が連絡先に保存されることはありません。",
+  "pt": "O número nunca é guardado nos seus contactos.",
+  "zh": "号码不会存入你的通讯录。"
  },
  "The office that takes the photo has the final say.": {
   "de": "Die Stelle, die das Foto annimmt, entscheidet endgültig.",
@@ -29778,6 +29848,16 @@
   "ja": "スクリーンショットがたまったら",
   "pt": "Quando as capturas se acumularem",
   "zh": "截图堆积时"
+ },
+ "When someone scans it": {
+  "de": "Wenn ihn jemand scannt",
+  "es": "Cuando alguien lo escanee",
+  "fr": "Quand quelqu'un le scanne",
+  "hi": "जब कोई इसे स्कैन करे",
+  "it": "Quando qualcuno lo scansiona",
+  "ja": "誰かが読み取ると",
+  "pt": "Quando alguém o ler",
+  "zh": "有人扫描时"
  },
  "When the tool finishes, the link it made opens.": {
   "de": "Wenn das Tool fertig ist, öffnet sich der erstellte Link.",

@@ -85,6 +85,19 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Deep voice"].waitForExistence(timeout: 30), "switching to Deep didn't remake it")
     }
 
+    /// "Every code is tested before you share it" — the made code is read back and says what it does.
+    func testMadeCodesAreTestedOnTheFinish() {
+        for id in ["text-to-qr", "whatsapp-no-save"] {
+            let app = XCUIApplication()
+            app.launchArguments = ["-route", "run-\(id)", "-uitest", "-sample"]
+            app.launch()
+            let tested = app.descendants(matching: .any)["code-tested"]
+            XCTAssertTrue(tested.waitForExistence(timeout: 30), "\(id): the code wasn't tested")
+            XCTAssertTrue(tested.label.contains("Tested"), "\(id): \(tested.label)")
+            app.terminate()
+        }
+    }
+
     /// "Sign a form: draw your signature" — the pad must show 'Sign in the box first' until there's ink.
     func testSignaturePadWontSaveBlank() {
         let app = open("sign-and-send")
