@@ -101,7 +101,7 @@ struct TranslateView: View {
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 .overlay(alignment: .topLeading) { if input.isEmpty { Text(L("Type or paste…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             HStack(spacing: HandySpacing.s8) {
-                Button(L("Paste")) { if let s = UIPasteboard.general.string { input = s } }.compactButton()
+                Button(L("Paste")) { if let s = Clipboard.text { input = s } }.compactButton()
                 Button { translate(input, from: fromCode, to: toCode, speak: false) } label: { HStack { if busy { ProgressView().tint(.white) }; Label(L("Translate"), systemImage: "character.bubble") }.frame(maxWidth: .infinity) }
                     .primaryButton().disabled(input.trimmingCharacters(in: .whitespaces).isEmpty || busy || overQuota || sameLang)
             }

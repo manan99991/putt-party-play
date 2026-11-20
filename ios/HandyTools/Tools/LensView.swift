@@ -107,7 +107,7 @@ struct LensView: View {
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                 .overlay(alignment: .topLeading) { if text.isEmpty { Text(L("Paste text, or bring it in below…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
             HandyFlow(spacing: HandySpacing.s8) {
-                Button(L("Paste")) { if let s = UIPasteboard.general.string { setText(s) } }.compactButton()
+                Button(L("Paste")) { if let s = Clipboard.text { setText(s) } }.compactButton()
                 PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Photo"), systemImage: "camera.viewfinder") }.compactButton()
                 Button { showFiles = true } label: { Label(L("PDF"), systemImage: "doc.fill") }.compactButton()
                 if hasText { Button(L("Clear")) { clearAll() }.textButton() }

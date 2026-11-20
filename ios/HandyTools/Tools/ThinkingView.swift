@@ -137,7 +137,7 @@ struct ThinkingToolView: View {
                         .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(focused ? HandyColor.accent : HandyColor.border, lineWidth: 1))
                         .overlay(alignment: .topLeading) { if input.isEmpty { Text(tool.placeholder).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
                     HStack {
-                        Button(L("Paste")) { if let s = UIPasteboard.general.string { input = s } }.compactButton()
+                        Button(L("Paste")) { if let s = Clipboard.text { input = s } }.compactButton()
                         if !input.isEmpty { Button(L("Clear")) { input = ""; reset() }.textButton() }
                         Spacer()
                     }

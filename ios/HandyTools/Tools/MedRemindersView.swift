@@ -344,7 +344,7 @@ private struct CareCard: View {
                         Button { Copier.copy(MedCare.shareText(store.meds), note: "Medicine list copied — paste it in a text") } label: { Label(L("Copy the list"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }
                             .secondaryButton().disabled(store.meds.isEmpty)
                         Button {
-                            let t = UIPasteboard.general.string ?? ""
+                            let t = Clipboard.text ?? ""
                             if let found = MedCare.imported(t) { pasteFound = found } else { note = t.isEmpty ? "Nothing copied yet. Copy the whole message they sent, then tap here." : "That isn't a Tenzy medicine list. Copy the whole message they sent, then tap here." }
                         } label: { Label(L("Add medicines someone sent me"), systemImage: "square.and.arrow.down").frame(maxWidth: .infinity) }
                             .secondaryButton().accessibilityIdentifier("meds-import")

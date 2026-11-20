@@ -26,7 +26,7 @@ struct ShieldView: View {
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     .overlay(alignment: .topLeading) { if text.isEmpty { Text(L("Paste the text, email or DM here…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
                 HStack(spacing: HandySpacing.s8) {
-                    Button(L("Paste")) { if let s = UIPasteboard.general.string { text = s; analyze() } }.compactButton()
+                    Button(L("Paste")) { if let s = Clipboard.text { text = s; analyze() } }.compactButton()
                     PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Screenshot"), systemImage: "photo") }.compactButton()
                     if !text.isEmpty { Button(L("Clear")) { text = ""; report = nil }.textButton() }
                     Spacer()

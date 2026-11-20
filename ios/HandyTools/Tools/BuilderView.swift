@@ -671,7 +671,7 @@ struct BuilderView: View {
                             Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []); showTemplates = false } label: { Label(L("Blank"), systemImage: "plus") }.font(HandyFont.caption)
                             Spacer()
                             Button {
-                                let clip = UIPasteboard.general.string ?? ""
+                                let clip = Clipboard.text ?? ""
                                 if let c = ToolLink.chain(from: clip) {
                                     if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) {
                                         mine.append(c); persist(); pasteNote = nil; note = "Added \(c.name)."; showTemplates = false
@@ -818,10 +818,18 @@ struct BuilderView: View {
                     // Prefer an image when the clipboard reports one, reading it robustly — plain
                     // `pb.image` returns nil for HEIC / file-backed / multi-representation items that
                     // still set `hasImages`, which used to dead-end the tile that said "Image copied".
+                    // A link copied from Safari, Photos or a share sheet often comes as a URL only, with no
+                    // plain-text copy — so `pb.string` alone said "nothing copied" under a tile reading
+                    // "Link copied". Read the URL too.
+                    let copied = Clipboard.text ?? ""
                     if pb.hasImages, let img = pasteboardImage() { note = nil; given = Given(payload: .image(img), label: "A photo") }
-                    else if let g = Given.from(text: pb.string ?? "") { note = nil; given = g }
+                    else if let g = Given.from(text: copied) { note = nil; given = g }
                     else if let img = pasteboardImage() { note = nil; given = Given(payload: .image(img), label: "A photo") }
-                    else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
+                    else if clipKind != nil {
+                        // Something is there but iOS didn't hand it over — the person tapped "Don't Allow".
+                        note = "Tenzy wasn't allowed to read what you copied. Tap Paste again and choose Allow Paste — or turn on Settings › Apps › Tenzy › Paste from Other Apps › Allow."
+                    } else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
+                    refreshClipKind()
                 } label: { objTile("Paste", sub: clipKind.map { "\($0) copied" } ?? "Nothing copied") }.accessibilityIdentifier("have-paste")
             }
             if gettingReady {

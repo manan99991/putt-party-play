@@ -28,7 +28,7 @@ struct DataGrabView: View {
             ])
             if text.isEmpty {
                 PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Choose a photo or screenshot"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity) }.secondaryButton()
-                Button { if let s = UIPasteboard.general.string { text = s; run() } } label: { Label(L("Paste text instead"), systemImage: "doc.on.clipboard").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { if let s = Clipboard.text { text = s; run() } } label: { Label(L("Paste text instead"), systemImage: "doc.on.clipboard").frame(maxWidth: .infinity) }.secondaryButton()
                 if busy { ToolProgressBar(label: "Reading…") }
             } else {
                 HandyFlow(spacing: HandySpacing.s8) {
