@@ -1941,12 +1941,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             // UI tests can't drive the photo picker: with -sample an ID-copy tool runs on a made-up photo, so the
             // finished screen itself is checked, not just the run screen.
-            if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "ID copy" {
+            if Launch.uitest, Launch.sample, initial == nil, !started, ["ID copy", "Scan PDF"].contains(ResultScreens.screen(for: chain) ?? "") {
                 started = true
+                let doc = ResultScreens.screen(for: chain) == "Scan PDF"
                 Task { @MainActor in
                     try? await Task.sleep(for: .seconds(1))   // let the watermark card load its words first
-                    if chain.combine == true { runBatch(count: 2) { _ in SampleAssets.photo() } }
-                    else if let d = SampleAssets.photo().jpegData(compressionQuality: 0.9) { go(.file(d, ext: "jpg")) }
+                    if chain.combine == true { runBatch(count: 2) { _ in doc ? SampleAssets.receipt() : SampleAssets.photo() } }
+                    else if let d = (doc ? SampleAssets.receipt() : SampleAssets.photo()).jpegData(compressionQuality: 0.9) { go(.file(d, ext: "jpg")) }
                 }
             }
             if initialMany.count > 1, !started {
@@ -2392,6 +2393,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 let n = PDFDocument(data: d)?.pageCount ?? 1
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Label("PDF · \(n) \(L(n == 1 ? "page" : "pages"))", systemImage: "doc.richtext").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    if let s = chain.steps.last(where: { $0.block == .pdfShrink })?.settings["mb"], let mb = Double(s) {
+                        // The size the upload needs, checked on the file itself.
+                        let t = Int(mb * 1_000_000), ok = d.count <= t
+                        Label("\(SizeTarget.format(d.count)) — \(L(ok ? "under" : "over")) \(SizeTarget.format(t))", systemImage: ok ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                            .font(HandyFont.caption).foregroundStyle(ok ? Color.green : Color.orange)
+                            .accessibilityIdentifier("pdf-size-check")
+                    }
                     PDFPreview(data: d).frame(height: 420).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     if chain.finish?.kind == .mail {
                         Text(L("It's attached as a PDF. Mail shows a one-page PDF as a picture in the message — the person you send it to gets the PDF file."))

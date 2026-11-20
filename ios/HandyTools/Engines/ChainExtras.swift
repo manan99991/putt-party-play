@@ -57,7 +57,7 @@ enum ChainExtras {
         case (.pdfShrink, .file(let d, _)):
             guard PDFDocument(data: d) != nil else { return .failure(.invalid(cantOpen(b))) }
             // Best effort: the smallest copy that fits the limit, or the smallest one this PDF allows. Never bigger than it came in.
-            var target = ChainText.pdfLimit(step.settings["mb"]) * 1_048_576
+            var target = ChainText.pdfLimit(step.settings["mb"]) * 1_000_000   // "1 MB" as upload sites count it, same as photos
             while target < d.count {
                 if let out = await SizeTarget.pdf(d, targetBytes: target), out.count < d.count { return .success(.file(out, ext: "pdf")) }
                 target *= 2

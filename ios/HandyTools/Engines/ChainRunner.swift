@@ -813,6 +813,7 @@ enum ResultScreens {
         case .calendarEvent: return "Calendar event"
         case .businessCard: return "Contact card"
         case .photoPdf: return "Scan PDF"
+        case .pdfShrink where blocks.contains(.photoPdf): return "Scan PDF"
         default: return nil
         }
     }
@@ -879,8 +880,6 @@ enum ResultScreens {
         "letter-listen": "pb-text",
         "lecture-summary": "pb-text",
         "voice-spanish": "pb-text",
-        "form-portal": "pb-sign",
-        "doc-portal": "pb-pdf",
         "reel-captions": "pb-video",
         "video-minute-email": "pb-video",
         "pdf-summary": "pb-text",

@@ -43,6 +43,14 @@ final class PromiseTests: XCTestCase {
         }
     }
 
+    /// "Portal PDFs say whether they're under the size the site needs" — checked on the finished file.
+    func testPortalPDFShowsItsSizeCheck() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "run-doc-portal", "-uitest", "-sample"]
+        app.launch()
+        XCTAssertTrue(app.descendants(matching: .any)["pdf-size-check"].waitForExistence(timeout: 90), "doc-portal: no size check on the finished PDF")
+    }
+
     /// "Sign a form: draw your signature" — the pad must show 'Sign in the box first' until there's ink.
     func testSignaturePadWontSaveBlank() {
         let app = open("sign-and-send")
