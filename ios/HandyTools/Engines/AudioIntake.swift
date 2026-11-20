@@ -25,6 +25,19 @@ enum AudioIntake {
         return (try? h.read(upToCount: 4)) == Data("OggS".utf8)
     }
 
+    /// When a file named like a song, video or picture actually holds text — a web error page or a message like
+    /// {"message":"Attachment not found"} saved under the file's name by a download that failed — what it says.
+    static func textInstead(_ u: URL) -> String? {
+        guard let h = try? FileHandle(forReadingFrom: u) else { return nil }
+        defer { try? h.close() }
+        guard let d = try? h.read(upToCount: 4096), !d.isEmpty, let t = String(data: d, encoding: .utf8) else { return nil }
+        let trimmed = t.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let first = trimmed.first, "{[<".contains(first) || trimmed.lowercased().hasPrefix("error") else { return nil }
+        // Real text only: no binary control bytes.
+        guard !t.unicodeScalars.contains(where: { $0.value < 9 }) else { return nil }
+        return String(trimmed.prefix(200))
+    }
+
     /// File names that were percent-encoded once or twice by the app that saved them, decoded for people.
     static func cleanName(_ s: String) -> String {
         var t = s

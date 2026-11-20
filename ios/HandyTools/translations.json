@@ -11379,6 +11379,16 @@
   "pt": "Anote a única coisa que você precisa da ligação",
   "zh": "记下这通电话最需要的那件事"
  },
+ "Just open it": {
+  "de": "Einfach öffnen",
+  "es": "Solo abrirlo",
+  "fr": "Juste l'ouvrir",
+  "hi": "बस खोलें",
+  "it": "Aprilo e basta",
+  "ja": "そのまま開く",
+  "pt": "Só abrir",
+  "zh": "直接打开"
+ },
  "Just the sound": {
   "de": "Nur den Ton",
   "es": "Solo el sonido",
@@ -19099,6 +19109,16 @@
   "pt": "Lê, ouve e amplia tudo",
   "zh": "朗读、聆听并放大任何内容"
  },
+ "Read, play or scroll through the whole thing here — even when no other app opens it.": {
+  "de": "Hier komplett lesen, abspielen oder durchblättern – auch wenn keine andere App es öffnet.",
+  "es": "Léelo, reprodúcelo o recórrelo entero aquí, aunque ninguna otra app lo abra.",
+  "fr": "Lisez, écoutez ou parcourez tout ici — même si aucune autre app ne l'ouvre.",
+  "hi": "पूरा यहीं पढ़ें, चलाएं या स्क्रॉल करें — भले कोई और ऐप इसे न खोले।",
+  "it": "Leggi, riproduci o scorri tutto qui — anche se nessun'altra app lo apre.",
+  "ja": "他のアプリで開けなくても、ここで全体を読む・再生する・スクロールできます。",
+  "pt": "Leia, toque ou role tudo aqui — mesmo quando nenhum outro app abre.",
+  "zh": "在这里完整阅读、播放或浏览——即使其他应用都打不开。"
+ },
  "Reading contacts…": {
   "de": "Kontakte werden gelesen…",
   "es": "Leyendo contactos…",
@@ -26609,6 +26629,16 @@
   "pt": "Isso não parece um cartão de visita",
   "zh": "这看起来不像名片"
  },
+ "This file is named like a": {
+  "de": "Diese Datei heißt wie ein(e)",
+  "es": "Este archivo tiene nombre de",
+  "fr": "Ce fichier porte un nom de",
+  "hi": "इस फ़ाइल का नाम ऐसा है जैसे",
+  "it": "Questo file ha il nome di un",
+  "ja": "このファイルは名前が",
+  "pt": "Este arquivo tem nome de",
+  "zh": "此文件名称像是"
+ },
  "This file type can't hold song info, so Tenzy saves a tagged M4A copy — it plays everywhere.": {
   "de": "Dieser Dateityp kann keine Song-Infos speichern, daher sichert Tenzy eine getaggte M4A-Kopie – die läuft überall.",
   "es": "Este tipo de archivo no guarda info de canción, así que Tenzy guarda una copia M4A etiquetada que se reproduce en todas partes.",
@@ -26638,6 +26668,16 @@
   "ja": "これは簡易ヘルパーで、視力検査ではありません。正確には眼鏡店や眼科で色覚を確認できます。",
   "pt": "É uma ajuda rápida, não um exame de vista. Para uma resposta real, um oftalmologista pode avaliar sua visão de cores.",
   "zh": "这只是快速辅助，不是视力检查。如需确切结论，请让验光师检查色觉。"
+ },
+ "This isn't a recording — the file only holds text, so the download probably failed. It says:": {
+  "de": "Das ist keine Aufnahme – die Datei enthält nur Text, der Download ist wohl fehlgeschlagen. Darin steht:",
+  "es": "No es una grabación: el archivo solo contiene texto, probablemente falló la descarga. Dice:",
+  "fr": "Ce n'est pas un enregistrement — le fichier ne contient que du texte, le téléchargement a sans doute échoué. Il indique :",
+  "hi": "यह रिकॉर्डिंग नहीं है — फ़ाइल में सिर्फ़ टेक्स्ट है, शायद डाउनलोड विफल हुआ। इसमें लिखा है:",
+  "it": "Non è una registrazione — il file contiene solo testo, probabilmente il download non è riuscito. Dice:",
+  "ja": "これは録音ではありません。ファイルには文字しか入っておらず、ダウンロードに失敗した可能性があります。内容：",
+  "pt": "Não é uma gravação — o arquivo só tem texto, então o download provavelmente falhou. Diz:",
+  "zh": "这不是录音——文件里只有文字，可能下载失败了。内容是："
  },
  "This page": {
   "de": "Diese Seite",
@@ -30818,6 +30858,16 @@
   "ja": "件の請求書・手紙",
   "pt": "contas e cartas",
   "zh": "份账单和信件"
+ },
+ "but only holds text — usually a download that didn't finish. It says:": {
+  "de": "enthält aber nur Text – meist ein abgebrochener Download. Darin steht:",
+  "es": "pero solo contiene texto; suele ser una descarga que no terminó. Dice:",
+  "fr": "mais ne contient que du texte — souvent un téléchargement inachevé. Il indique :",
+  "hi": "पर इसमें सिर्फ़ टेक्स्ट है — अक्सर अधूरा डाउनलोड। इसमें लिखा है:",
+  "it": "ma contiene solo testo — di solito un download non completato. Dice:",
+  "ja": "のようですが、中身は文字だけです。ダウンロードが途中で止まった可能性があります。内容：",
+  "pt": "mas só tem texto — geralmente um download que não terminou. Diz:",
+  "zh": "但里面只有文字——通常是没下载完。内容是："
  },
  "calendar events": {
   "de": "Kalendertermine",

@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 /// or slower without the chipmunk effect. Live progress, then play the result before Save or Share.
 struct AudioMixView: View {
     enum Mode: Hashable { case join, speed }
-    struct Clip: Identifiable, Equatable { let id = UUID(); let url: URL; let name: String; var seconds: Double = 0; var unreadable = false }
+    struct Clip: Identifiable, Equatable { let id = UUID(); let url: URL; let name: String; var seconds: Double = 0; var unreadable = false; var why: String? = nil }
 
     @State private var mode: Mode = .join
     @State private var clips: [Clip] = []
@@ -69,7 +69,8 @@ struct AudioMixView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(c.name).font(HandyFont.bodyStrong).lineLimit(1)
                         if c.unreadable {
-                            Text(L("No sound Tenzy can read in this file — remove it")).font(HandyFont.micro).foregroundStyle(HandyColor.danger)
+                            Text(c.why ?? L("No sound Tenzy can read in this file — remove it")).font(HandyFont.micro).foregroundStyle(HandyColor.danger)
+                                .fixedSize(horizontal: false, vertical: true)
                         } else {
                             Text(AudioCompressView.duration(c.seconds)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                         }
@@ -210,7 +211,12 @@ struct AudioMixView: View {
                 let d = (try? await asset.load(.duration))?.seconds ?? 0
                 let hasSound = !((try? await asset.loadTracks(withMediaType: .audio)) ?? []).isEmpty
                 await MainActor.run {
-                    if let i = clips.firstIndex(where: { $0.id == c.id }) { clips[i].seconds = d.isFinite ? d : 0; clips[i].unreadable = !hasSound }
+                    if let i = clips.firstIndex(where: { $0.id == c.id }) {
+                        clips[i].seconds = d.isFinite ? d : 0; clips[i].unreadable = !hasSound
+                        if !hasSound, let t = AudioIntake.textInstead(c.url) {
+                            clips[i].why = "\(L("This isn't a recording — the file only holds text, so the download probably failed. It says:")) \(t)"
+                        }
+                    }
                 }
             }
         }

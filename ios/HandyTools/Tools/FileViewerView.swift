@@ -96,6 +96,10 @@ struct FileViewerView: View {
         info = FileInfo(name: url.lastPathComponent, kind: kind, typeLabel: typeLabel.capitalized,
                         size: ByteCountFormatter.string(fromByteCount: size, countStyle: .file), url: url)
         errorText = nil
+        // Named like a song, video, picture or document but holding text: say so instead of a blank preview.
+        if kind != .code, kind != .text, let t = AudioIntake.textInstead(url) {
+            errorText = "\(L("This file is named like a")) \(typeLabel.lowercased()) \(L("but only holds text — usually a download that didn't finish. It says:")) \(t)"
+        }
         // For text-like files, surface the content too (QuickLook shows it, but this makes it copyable).
         textPeek = (kind == .code || kind == .text) ? (try? String(contentsOf: url, encoding: .utf8)).map { String($0.prefix(60_000)) } : nil
     }

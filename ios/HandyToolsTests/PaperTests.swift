@@ -94,3 +94,15 @@ final class AudioIntakeTests: XCTestCase {
         XCTAssertFalse(AudioIntake.isOggOpus(v))
     }
 }
+
+extension AudioIntakeTests {
+    /// Your "DON'T GIVE UP" .mp3 was a 34-byte failed download: {"message":"Attachment not found"}.
+    func testAFailedDownloadSavedAsMp3IsCalledWhatItIs() throws {
+        let u = FileManager.default.temporaryDirectory.appendingPathComponent("song-\(UUID().uuidString).mp3")
+        try Data(#"{"message":"Attachment not found"}"#.utf8).write(to: u)
+        XCTAssertEqual(AudioIntake.textInstead(u), #"{"message":"Attachment not found"}"#)
+        let real = FileManager.default.temporaryDirectory.appendingPathComponent("real-\(UUID().uuidString).mp3")
+        try (Data([0x49, 0x44, 0x33, 0x04, 0, 0]) + Data(repeating: 0xFF, count: 200)).write(to: real)
+        XCTAssertNil(AudioIntake.textInstead(real))
+    }
+}

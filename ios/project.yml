@@ -69,7 +69,29 @@ targets:
             CFBundleURLSchemes: [tenzy]
         # "Open in Tenzy": Tenzy appears in the Share sheet / "Open in…" for ANY file (Files, Downloads, Mail,
         # Safari, WhatsApp…). Alternate rank, so it never takes over as the default app for a type.
+        # Files' "Open With" only lists apps that name the type itself (catch-alls like public.data are ignored there),
+        # so each kind File Opener handles is named, plus the catch-all for the Share sheet.
         CFBundleDocumentTypes:
+          - CFBundleTypeName: Audio
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [public.audio, public.mp3, public.mpeg-4-audio, com.apple.m4a-audio, com.microsoft.waveform-audio, public.aiff-audio, org.xiph.flac, org.xiph.ogg, org.xiph.opus, public.aac-audio]
+          - CFBundleTypeName: Video
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [public.movie, public.mpeg-4, com.apple.quicktime-movie, public.avi, org.webmproject.webm]
+          - CFBundleTypeName: Documents
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.adobe.pdf, public.plain-text, public.rtf, public.html, public.json, public.xml, public.comma-separated-values-text, org.openxmlformats.wordprocessingml.document, org.openxmlformats.spreadsheetml.sheet, org.openxmlformats.presentationml.presentation, com.microsoft.word.doc, com.microsoft.excel.xls, com.microsoft.powerpoint.ppt, com.apple.iwork.pages.sections, com.apple.iwork.numbers.sections, com.apple.iwork.keynote.sections, org.idpf.epub-container, public.vcard, com.apple.ical.ics]
+          - CFBundleTypeName: Pictures
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [public.image, public.heic, public.jpeg, public.png, com.compuserve.gif, org.webmproject.webp, public.svg-image]
+          - CFBundleTypeName: Archives
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [public.zip-archive, org.gnu.gnu-zip-archive, public.tar-archive]
           - CFBundleTypeName: Any file
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate

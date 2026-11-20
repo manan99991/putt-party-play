@@ -73,6 +73,7 @@ struct GuideView: View {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
                 GuideSteps(step: 1)
                 header
+                justOpen
                 Text(L("What do you want to do?")).font(HandyFont.title)
                 if let s = suggested, let g = guess { suggestion(s, why: g.why) }
                 else if isPhoto && clues == nil { ToolProgressBar(label: "Looking at your photo…", showsTime: false) }
@@ -122,6 +123,30 @@ struct GuideView: View {
                     Text(t).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(3)
                 }
             }
+        }
+    }
+
+    /// First choice for any file, video or recording: just look at it — read the whole document, play the clip,
+    /// scroll the sheet — in File Opener, even when no other app on the phone opens it.
+    @ViewBuilder private var justOpen: some View {
+        if !isPhoto, given.payload.kind != .text, let url = ToolHandoff.fileURL(given.payload, name: "File") {
+            Button {
+                FileOpenInbox.shared.receive(url)
+                path.append(.tool("fileviewer"))
+            } label: {
+                HStack(spacing: HandySpacing.s12) {
+                    Image(systemName: "eye").font(.title3).foregroundStyle(HandyColor.accent).frame(width: 36)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(L("Just open it")).font(HandyFont.bodyStrong)
+                        Text(L("Read, play or scroll through the whole thing here — even when no other app opens it.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
+                }
+                .padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
+                .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            }
+            .buttonStyle(.plain).accessibilityIdentifier("guide-just-open")
         }
     }
 
