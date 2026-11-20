@@ -1703,6 +1703,11 @@ final class EngineTests: XCTestCase {
         let everything = ThinkBoxView.plain(a).lowercased()
         XCTAssertFalse(everything.contains("weather") || everything.contains("°"), "nothing they didn't raise")
 
+        // Only what they raised: no margin talk for someone who never mentioned margin.
+        let card = ThinkBrain.builtIn("stressed about money and credit card debt", region: "US")
+        XCTAssertEqual(card.kind, .worry)
+        XCTAssertFalse(ThinkBoxView.plain(card).lowercased().contains("margin"))
+
         // The other kinds are read for what they are.
         XCTAssertEqual(ThinkBrain.kind(of: "gym, finish the deck, pick up Deeyan at 3pm, groceries, call the dentist"), .tasks)
         XCTAssertEqual(ThinkBrain.kind(of: "Should I switch to a 4-day work week?"), .decision)

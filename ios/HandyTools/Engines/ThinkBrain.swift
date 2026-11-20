@@ -127,7 +127,7 @@ enum ThinkBrain {
         Theme(name: "Money", words: ["money", "debt", "loan", "credit card", "bills?", "rent", "mortgage", "margin", "stock", "loss", "invest",
                                      "interest", "broke", "overdraft", "tax", "savings", "paycheck", "salary"],
               control: ["Get the whole picture on one page: every debt, what you owe, the interest rate and the next due date. Seeing it is smaller than imagining it.",
-                        "Anything with a deadline or a rising cost — a margin call, a payment about to bounce, the highest interest rate — comes first.",
+                        "Anything with a deadline or a rising cost — a payment about to bounce, the highest interest rate — comes first.",
                         "Hold off on big money moves (new trades, new loans) while you feel this way; decide them on a calmer day.",
                         "Call a lender before you miss a payment, not after — most have hardship options they don't advertise."],
               firstStep: Step(text: "List every debt: who, how much, interest rate, next due date", minutes: 20)),
@@ -172,7 +172,14 @@ enum ThinkBrain {
             if !found.isEmpty {
                 sections.append(Section(title: "What's weighing on you", bullets: found.map { "\($0.0.name): \($0.1.joined(separator: ", "))" }))
             }
-            for (th, _) in found { sections.append(Section(title: "\(th.name) — what you can do", bullets: th.control)) }
+            for (th, _) in found {
+                var control = th.control
+                // Only what they raised: margin comes up when they mentioned it, never as a stock example.
+                if th.name == "Money", has(text, #"\bmargin"#) {
+                    control.insert("Margin debt can force sales at the worst moment: know your margin balance and how far prices can fall before a margin call.", at: 1)
+                }
+                sections.append(Section(title: "\(th.name) — what you can do", bullets: control))
+            }
             if found.isEmpty {
                 sections.append(Section(title: "What you can do", bullets: [
                     "Write each worry on its own line. Next to each, write the one thing you could do about it — or 'nothing right now'.",

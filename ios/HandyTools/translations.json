@@ -36938,5 +36938,15 @@
   "ja": "Tenzyはコピーした内容を読む許可がありませんでした。もう一度「ペースト」をタップして「ペーストを許可」を選ぶか、設定 › アプリ › Tenzy › ほかのAppからペースト › 許可 をオンにしてください。",
   "pt": "O Tenzy não teve permissão para ler o que você copiou. Toque em Colar de novo e escolha Permitir Colar — ou ative em Ajustes › Apps › Tenzy › Colar de Outros Apps › Permitir.",
   "zh": "Tenzy 没有获准读取你复制的内容。再点一次“粘贴”并选择“允许粘贴”，或在 设置 › App › Tenzy › 从其他 App 粘贴 › 允许 中开启。"
+ },
+ "Everything you need to do today, and how you feel — e.g. \"Shower, groceries, office work, not feeling well\"": {
+  "de": "Alles, was du heute erledigen musst, und wie es dir geht – z. B. „Duschen, Einkaufen, Büroarbeit, fühle mich nicht gut“",
+  "es": "Todo lo que tienes que hacer hoy y cómo te sientes; p. ej., «ducha, compra, trabajo, no me encuentro bien»",
+  "fr": "Tout ce que tu dois faire aujourd'hui, et comment tu te sens — ex. « douche, courses, boulot, pas en forme »",
+  "hi": "आज जो कुछ करना है, और आप कैसा महसूस कर रहे हैं — जैसे \"नहाना, किराना, ऑफ़िस का काम, तबीयत ठीक नहीं\"",
+  "it": "Tutto quello che devi fare oggi e come ti senti — es. «doccia, spesa, lavoro, non mi sento bene»",
+  "ja": "今日やること全部と今の体調 — 例：「シャワー、買い物、仕事、体調がいまいち」",
+  "pt": "Tudo o que você precisa fazer hoje, e como se sente — ex.: \"banho, mercado, trabalho, não estou bem\"",
+  "zh": "今天要做的所有事，以及你的状态——例如“洗澡、买菜、办公、不太舒服”"
  }
 }

@@ -85,7 +85,7 @@ struct UntangleView: View {
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(focused || speech.running ? HandyColor.accent : HandyColor.border, lineWidth: 1))
                 .overlay(alignment: .topLeading) {
                     if input.isEmpty {
-                        Text(L("Everything on your mind, and how you feel — e.g. \"Shower, groceries, office work, not feeling well\""))
+                        Text(L("Everything you need to do today, and how you feel — e.g. \"Shower, groceries, office work, not feeling well\""))
                             .foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false)
                     }
                 }
