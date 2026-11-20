@@ -57,6 +57,7 @@ struct AudioCleanView: View {
             Button { showFiles = true } label: {
                 Label(L("Choose audio or video"), systemImage: "folder").frame(maxWidth: .infinity)
             }.primaryButton()
+            FromVideosButton { if let u = $0.first { load(u) } }
         }
         .cardStyle(padding: HandySpacing.s16)
     }

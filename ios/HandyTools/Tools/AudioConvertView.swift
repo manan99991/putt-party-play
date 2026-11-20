@@ -68,6 +68,7 @@ struct AudioConvertView: View {
             Button { showFiles = true } label: {
                 Label(L("Choose audio"), systemImage: "folder").frame(maxWidth: .infinity)
             }.primaryButton()
+            FromVideosButton(multiple: true) { urls in if urls.count == 1 { load(urls[0]) } else { loadBatch(urls) } }
         }
         .cardStyle(padding: HandySpacing.s16)
     }

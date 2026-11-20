@@ -82,9 +82,12 @@ struct AudioMixView: View {
                 }
                 .cardStyle(padding: HandySpacing.s12)
             }
-            Button { showFiles = true } label: {
-                Label(clips.isEmpty ? L("Choose clips") : L("Add more"), systemImage: "plus").frame(maxWidth: .infinity)
-            }.secondaryButton()
+            HStack(spacing: HandySpacing.s8) {
+                Button { showFiles = true } label: {
+                    Label(clips.isEmpty ? L("From Files") : L("Add from Files"), systemImage: "folder").frame(maxWidth: .infinity)
+                }.secondaryButton()
+                FromVideosButton(title: clips.isEmpty ? "From my videos" : "Add videos", multiple: true) { add($0) }
+            }
             if clips.count >= 2 {
                 Text(L("Pause between clips")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Picker("", selection: $gap) {
@@ -107,8 +110,9 @@ struct AudioMixView: View {
                 Text(L("Pick lectures, podcasts or voice memos — one or several — to play faster or slower."))
                     .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                 Button { showFiles = true } label: {
-                    Label(L("Choose files"), systemImage: "folder").frame(maxWidth: .infinity)
+                    Label(L("From Files"), systemImage: "folder").frame(maxWidth: .infinity)
                 }.primaryButton()
+                FromVideosButton(multiple: true) { add($0) }
             } else {
                 ForEach(clips) { c in
                     HStack {
@@ -122,7 +126,10 @@ struct AudioMixView: View {
                     }
                     .cardStyle(padding: HandySpacing.s12)
                 }
-                Button { showFiles = true } label: { Label(L("Add more"), systemImage: "plus").frame(maxWidth: .infinity) }.secondaryButton()
+                HStack(spacing: HandySpacing.s8) {
+                    Button { showFiles = true } label: { Label(L("Add from Files"), systemImage: "folder").frame(maxWidth: .infinity) }.secondaryButton()
+                    FromVideosButton(title: "Add videos", multiple: true) { add($0) }
+                }
                 HStack(spacing: HandySpacing.s8) {
                     ForEach(AudioMix.speeds, id: \.self) { s in
                         Button("\(s.formatted())×") { rate = s }

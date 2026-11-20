@@ -52,6 +52,7 @@ struct AudioCompressView: View {
             Button { showFiles = true } label: {
                 Label(L("Choose a file"), systemImage: "folder").frame(maxWidth: .infinity)
             }.primaryButton()
+            FromVideosButton { if let u = $0.first { load(u) } }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
         .cardStyle(padding: HandySpacing.s16)

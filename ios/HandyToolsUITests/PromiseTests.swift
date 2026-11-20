@@ -98,6 +98,17 @@ final class PromiseTests: XCTestCase {
         }
     }
 
+    /// "Audio tools take the sound from my videos, not only from Files" (Join & Speed opened Files only).
+    func testAudioToolsOfferMyVideos() {
+        for id in ["audiomix", "audioclean", "audiocompress", "audioconvert", "audioedit", "meetingnotes", "soundboard"] {
+            let app = XCUIApplication()
+            app.launchArguments = ["-route", id, "-uitest"]
+            app.launch()
+            XCTAssertTrue(app.descendants(matching: .any)["audio-from-videos"].waitForExistence(timeout: 15), "\(id): no way to pick from my videos")
+            app.terminate()
+        }
+    }
+
     /// "Sign a form: draw your signature" — the pad must show 'Sign in the box first' until there's ink.
     func testSignaturePadWontSaveBlank() {
         let app = open("sign-and-send")

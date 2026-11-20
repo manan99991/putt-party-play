@@ -63,6 +63,7 @@ struct MeetingNotesView: View {
             Button { showFiles = true } label: {
                 Label(L("Choose a recording"), systemImage: "folder").frame(maxWidth: .infinity)
             }.primaryButton()
+            FromVideosButton { if let u = $0.first { load(u) } }
             if !store.isPremium { QuotaChip(name: "ai", limit: Limits.freeAiPerDay).environmentObject(store) }
         }
         .cardStyle(padding: HandySpacing.s16)
