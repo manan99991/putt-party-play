@@ -51,6 +51,7 @@ struct ScanView: View {
     @State private var smartFor: UUID?
     @State private var reminded: Bool?
     @State private var watermarkID = true
+    @State private var idWords = ""
 
     private let limits: [(String, Int)] = [("No limit", 0), ("Under 10 MB", 10_000_000), ("Under 5 MB", 5_000_000), ("Under 2 MB", 2_000_000), ("Under 1 MB", 1_000_000), ("Under 500 KB", 500_000)]
     private var overQuota: Bool { !Usage.hasRoom("scan", limit: Limits.freeScanPerDay) }
@@ -481,7 +482,8 @@ struct ScanView: View {
                 case .form:
                     Button { mode = .sign } label: { Label(L("Sign and fill it"), systemImage: "signature").frame(maxWidth: .infinity) }.secondaryButton()
                 case .id:
-                    Toggle(L("Mark the copy 'For verification only' so it can't be reused"), isOn: $watermarkID).tint(HandyColor.accent).font(HandyFont.caption)
+                    Toggle(L("Write who it's for across the copy, so it can't be reused"), isOn: $watermarkID).tint(HandyColor.accent).font(HandyFont.caption)
+                    if watermarkID { WatermarkWordsCard(words: $idWords, storeKey: "tenzy.watermark.scan-id") }
                 case .receipt:
                     Text(L("Tip: Warranty & Receipts keeps it with a return-by reminder.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 case .other: EmptyView()
@@ -531,12 +533,12 @@ struct ScanView: View {
         working = true; errorText = nil; outputs = []; jpgOutputs = []
         let snapshot = pages, opts = DocEngine.PDFOptions(searchable: searchable, pageSize: pageSize)
         let limit = limitIdx.map { limits[$0].1 } ?? 0, split = splitting, spec = splitSpec
-        let base = smart?.name ?? "Scan \(Date().formatted(.dateTime.day().month(.abbreviated).year()))", mark = smart?.kind == .id && watermarkID
+        let base = smart?.name ?? "Scan \(Date().formatted(.dateTime.day().month(.abbreviated).year()))", mark = smart?.kind == .id && watermarkID, markLine = IDCopyCheck.line(idWords)
         Task.detached(priority: .userInitiated) {
             let data: Data? = limit > 0 ? DocEngine.pdfUnder(snapshot, targetBytes: limit, base: opts) : DocEngine.pdf(snapshot, options: opts)
             var files: [URL] = []
             if let data {
-                let marked = mark ? (PDFOverlay.watermark(data, text: "For verification only") ?? data) : data
+                let marked = mark ? (PDFOverlay.watermark(data, text: markLine) ?? data) : data
                 let parts = split ? DocEngine.split(marked, ranges: spec) : [marked]
                 for (i, d) in parts.enumerated() {
                     let url = FileManager.default.temporaryDirectory.appendingPathComponent(split ? "\(base) part \(i + 1).pdf" : "\(base).pdf")

@@ -1689,34 +1689,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     /// choices for the usual cases and a live line showing exactly what will be written (date added).
     @ViewBuilder private var watermarkSetup: some View {
         if hasWatermark {
-            VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                Label(L("Your watermark"), systemImage: "signature").font(HandyFont.bodyStrong)
-                TextField(L("e.g. For Chase account opening only"), text: $watermarkWords)
-                    .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12))
-                    .accessibilityIdentifier("run-watermark-words")
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
-                        ForEach(["For verification only", "For account opening only", "For rental application only", "For employment check only", "Copy — not valid as ID"], id: \.self) { w in
-                            Button { watermarkWords = L(w) } label: {
-                                Text(L(w)).font(HandyFont.caption).padding(.horizontal, 10).padding(.vertical, 7)
-                                    .background(watermarkWords == L(w) ? HandyColor.accent : HandyColor.surface, in: Capsule())
-                                    .foregroundStyle(watermarkWords == L(w) ? Color.white : HandyColor.textPrimary)
-                            }.buttonStyle(.plain)
-                        }
-                    }
-                }
-                Text("\(L("Written across it:")) “\(ChainImage.watermarkLine(watermarkWords.trimmingCharacters(in: .whitespacesAndNewlines), on: Date()))”")
-                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                Text(L("Name who it's for, so the copy can't be reused anywhere else. Today's date is added.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-            }
-            .cardStyle(padding: HandySpacing.s12)
-            .onAppear {
-                if watermarkWords.isEmpty {
-                    watermarkWords = UserDefaults.standard.string(forKey: "tenzy.watermark.\(chain.id)")
-                        ?? chain.steps.first(where: { $0.block == .watermark })?.settings["text"] ?? ""
-                }
-            }
-            .onChange(of: watermarkWords) { _, v in UserDefaults.standard.set(v, forKey: "tenzy.watermark.\(chain.id)") }
+            WatermarkWordsCard(words: $watermarkWords, storeKey: "tenzy.watermark.\(chain.id)",
+                               fallback: chain.steps.first(where: { $0.block == .watermark })?.settings["text"] ?? "For verification only")
         }
     }
 
@@ -1852,6 +1826,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     // Same screen as Studio → Passport: score, guide lines, fixes, checks, Photos and print sheet.
                     PassportStudio(original: src, specID: chain.steps.last?.settings["country"] ?? "us",
                                    retake: { result = nil; passportSource = nil })
+                } else if let result, ResultScreens.screen(for: chain) == "ID copy" {
+                    // Same finish on every door that makes an ID copy: the words on it, location gone, size, Photos / PDF.
+                    IDCopyResult(result: result, original: originalPhoto, words: watermarkWords, chain: chain,
+                                 fileName: { ChainName.file(pattern: chain.fileName, tool: chain.name, ext: $0) })
                 } else if let result {
                     if let orig = originalPhoto, case .file(let d, let e) = result, ChainPayload.isPhoto(e) {
                         PhotoResultInsight(original: orig, result: d, stripped: chain.steps.contains { $0.block == .stripLocation },
@@ -1960,6 +1938,16 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // child picker/sheet doesn't fire onAppear, so a result you're actively viewing is safe.)
             if initial == nil, initialMany.isEmpty, !started, !busy {
                 result = nil; batch = []; outbox = nil; report = nil; message = nil; picks = []; memePhotos = []
+            }
+            // UI tests can't drive the photo picker: with -sample an ID-copy tool runs on a made-up photo, so the
+            // finished screen itself is checked, not just the run screen.
+            if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "ID copy" {
+                started = true
+                Task { @MainActor in
+                    try? await Task.sleep(for: .seconds(1))   // let the watermark card load its words first
+                    if chain.combine == true { runBatch(count: 2) { _ in SampleAssets.photo() } }
+                    else if let d = SampleAssets.photo().jpegData(compressionQuality: 0.9) { go(.file(d, ext: "jpg")) }
+                }
             }
             if initialMany.count > 1, !started {
                 started = true

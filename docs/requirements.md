@@ -9,11 +9,12 @@ Nothing is reported as done until its check passes in CI. The tracker reads from
 | # | What was asked (his words, short) | Applies to | Check that proves it | Status |
 |---|---|---|---|---|
 | R1 | "support each and every file" — the 253-format list he sent | File Opener, Open With, Just open it | `FormatCoverageTests` (every format read, or on the public not-yet list with the reason); `FileReadersTests` (real bytes per family) | 253 accounted for; not-yet list being built down |
-| R2 | One finished result screen per job, the same from every door | All 90 ready-made tools | `ResultScreenTests` (fails on any tool landing on the plain result unless on the known-gap list; list may only shrink) | 17 of 90 on their real screen |
-| R3 | Your own watermark on ID copies | Both ID tools, Scan, Builder step | `PromiseTests.testWatermarkToolsLetYouTypeYourOwnWords` | built, check in CI |
+| R2 | One finished result screen per job, the same from every door | All 90 ready-made tools | `ResultScreenTests` (fails on any tool landing on the plain result unless on the known-gap list; list may only shrink) | 20 of 90 on their real screen (ID copies added) |
+| R3 | Your own watermark on ID copies | All 3 ID tools, Scan's ID mode (was a fixed line until 20 Nov — the ledger wrongly listed it), Edit tool, Builder step | `PromiseTests.testWatermarkToolsLetYouTypeYourOwnWords` + `testIDCopyToolsFinishOnTheIDCopyScreen` (one shared `WatermarkWordsCard`) | built, check in CI |
 | R4 | Signature pad draws and never saves blank | Builder sign tools, Scan, Sign PDF | `PromiseTests.testSignaturePadWontSaveBlank` + unit `inkCoverage` | built, check in CI |
 | R5 | Keep every picked file; act on all of them | Join & Speed, every multi-file tool | review of every tab-switch (only one offender, fixed); UI check to add | built |
 | R6 | Fingers removed from document photos | Scan, Builder scan, every document intake | `PageFlattenTests` + real-photo QA | built, real-file proof pending |
 | R7 | Receipts read from screenshots; only receipts become expenses; no duplicates | Expense sheet, Data Grabber, Warranty | `RunningListTests`, `PrivatePhotoAccuracyTests.testReceipts` | built, QuickBooks date still missed |
 | R8 | "What is this?" names written things and reads them | Identify tool, Builder, Share sheet | `PaperTests` + `ToolOutputQualityTests.testIdentifyNamesWrittenThingsByKind` | built, real-file score pending |
 | R9 | Never mark done unless it meets the bar | Tracker | Tracker stage "Built" = CI green; "Done" = real-file check + his phone check | in force |
+| R10 | ID copies finish on a real screen: words on it, location gone, size checked, Photos / PDF | id-copy-watermarked, id-portal, id-both-sides, any built tool ending in a watermark | `PromiseTests.testIDCopyToolsFinishOnTheIDCopyScreen` (runs each on a sample photo); facts read back from the file (`IDCopyCheck.facts`) | built, check in CI |

@@ -801,6 +801,7 @@ enum ResultScreens {
         let blocks = chain.steps.map(\.block)
         guard let last = blocks.last else { return nil }
         if blocks == [.readText, .actionItems], chain.finish == nil { return "Board review" }
+        if blocks.contains(.watermark), [.watermark, .stripLocation, .shrinkImage].contains(last) { return "ID copy" }
         switch last {
         case .cutout: return "Cut-out finishing"
         case .identify: return "What is this / written things"
@@ -827,7 +828,6 @@ enum ResultScreens {
         "clean-link": "pb-safety",
         "shelf-best-deal": "pb-receipts",
         "text-to-qr": "pb-codes",
-        "sign-and-send": "pb-sign",
         "whatsapp-no-save": "pb-codes",
         "contact-qr": "pb-codes",
         "video-email": "pb-video",
@@ -836,9 +836,7 @@ enum ResultScreens {
         "video-quiet": "pb-video",
         "return-by": "pb-receipts",
         "wifi-sign": "pb-codes",
-        "id-both-sides": "pb-id",
         "share-shield": "pb-photo",
-        "id-copy-watermarked": "pb-id",
         "portal-photo": "pb-photo",
         "memo-to-notes": "pb-text",
         "qr-safe": "pb-safety",
@@ -883,7 +881,6 @@ enum ResultScreens {
         "voice-spanish": "pb-text",
         "form-portal": "pb-sign",
         "doc-portal": "pb-pdf",
-        "id-portal": "pb-id",
         "reel-captions": "pb-video",
         "video-minute-email": "pb-video",
         "pdf-summary": "pb-text",

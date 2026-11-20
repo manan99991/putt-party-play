@@ -2919,6 +2919,16 @@
   "pt": "Ambos os telemóveis têm de estar na MESMA Wi-Fi. Num iPhone, o Safari pode avisar que o link “não é privado/seguro” — é normal num link direto entre telemóveis, não é um erro: toca em “Mostrar endereço IP” se aparecer, depois “Continuar” e “Transferir ficheiro”. Nada é enviado.",
   "zh": "两部手机必须在同一个 Wi-Fi 上。在 iPhone 上，Safari 可能警告该链接“不是私密/安全的” — 对于手机到手机的直连这是正常的，并非错误：如出现，点按“显示 IP 地址”，然后“继续”，再“下载文件”。不上传任何内容。"
  },
+ "Both sides on one page": {
+  "de": "Beide Seiten auf einer Seite",
+  "es": "Ambas caras en una página",
+  "fr": "Les deux côtés sur une page",
+  "hi": "दोनों ओर एक ही पृष्ठ पर",
+  "it": "Entrambi i lati su una pagina",
+  "ja": "両面を1ページに",
+  "pt": "Ambos os lados numa página",
+  "zh": "正反面在同一页"
+ },
  "Both sides, edit any field, never a duplicate.": {
   "de": "Beide Seiten, jedes Feld bearbeitbar, nie doppelt.",
   "es": "Ambas caras, cualquier campo editable, nunca duplicados.",
@@ -3258,6 +3268,16 @@
   "ja": "カメラへのアクセスでライブスキャンができます。なくてもギャラリーの画像をスキャンできます。",
   "pt": "O acesso à câmara permite digitalizar em direto. Também podes digitalizar uma imagem da galeria sem ele.",
   "zh": "相机权限可用于实时扫描。没有它你也可以扫描图库中的图片。"
+ },
+ "Camera details are still in the file": {
+  "de": "Kameradaten sind noch in der Datei",
+  "es": "Los datos de la cámara siguen en el archivo",
+  "fr": "Les infos de l'appareil sont encore dans le fichier",
+  "hi": "कैमरा विवरण अभी भी फ़ाइल में हैं",
+  "it": "I dati della fotocamera sono ancora nel file",
+  "ja": "カメラ情報がまだファイルに残っています",
+  "pt": "Os dados da câmara ainda estão no ficheiro",
+  "zh": "文件中仍有相机信息"
  },
  "Camera isn't allowed for Tenzy — pick a photo from Library instead, or allow it in Settings › Apps › Tenzy.": {
   "de": "Die Kamera ist für Tenzy nicht erlaubt — wähle stattdessen ein Foto aus der Mediathek, oder erlaube sie unter Einstellungen › Apps › Tenzy.",
@@ -12449,6 +12469,16 @@
   "pt": "A localização está desligada, por isso o Tenzy não calcula o trajeto. O lembrete chega na mesma.",
   "zh": "定位已关闭，Tenzy 无法计算车程，但仍会提醒你。"
  },
+ "Location is still in the file": {
+  "de": "Der Standort ist noch in der Datei",
+  "es": "La ubicación sigue en el archivo",
+  "fr": "La position est encore dans le fichier",
+  "hi": "स्थान अभी भी फ़ाइल में है",
+  "it": "La posizione è ancora nel file",
+  "ja": "位置情報がまだファイルに残っています",
+  "pt": "A localização ainda está no ficheiro",
+  "zh": "文件中仍有位置信息"
+ },
  "Lock a PDF with a password": {
   "de": "PDF mit Passwort sperren",
   "es": "Protege un PDF con contraseña",
@@ -13478,6 +13508,16 @@
   "ja": "書き込み完了 — ページに焼き込み済みで、テキストは選択可能なままです。",
   "pt": "Marcado — fixado na página, e o texto continua selecionável.",
   "zh": "已标注——固定在页面中，文字仍可选择。"
+ },
+ "Marked:": {
+  "de": "Markiert:",
+  "es": "Marcado:",
+  "fr": "Marqué :",
+  "hi": "चिह्नित:",
+  "it": "Contrassegnato:",
+  "ja": "記載:",
+  "pt": "Marcado:",
+  "zh": "已标注："
  },
  "Measure": {
   "de": "Messen",
@@ -14969,6 +15009,16 @@
   "pt": "Nenhuma página em branco encontrada.",
   "zh": "没有发现空白页。"
  },
+ "No camera or time-taken details in the file": {
+  "de": "Keine Kamera- oder Aufnahmezeitdaten in der Datei",
+  "es": "Sin datos de cámara ni de hora en el archivo",
+  "fr": "Aucune info d'appareil ni d'heure de prise dans le fichier",
+  "hi": "फ़ाइल में कैमरा या खींचने के समय का विवरण नहीं",
+  "it": "Nessun dato di fotocamera o ora di scatto nel file",
+  "ja": "カメラや撮影日時の情報はありません",
+  "pt": "Sem dados de câmara ou hora no ficheiro",
+  "zh": "文件中没有相机或拍摄时间信息"
+ },
  "No clear date found, so there's nothing to calendar — the details above are still yours to copy.": {
   "de": "Kein klares Datum gefunden, also nichts für den Kalender — die Details oben kannst du trotzdem kopieren.",
   "es": "No se encontró una fecha clara, así que no hay nada que añadir al calendario; los detalles de arriba puedes copiarlos.",
@@ -15118,6 +15168,16 @@
   "ja": "この写真に位置情報はありません",
   "pt": "Esta foto não tem dados de localização",
   "zh": "此照片不含位置数据"
+ },
+ "No location in the file": {
+  "de": "Kein Standort in der Datei",
+  "es": "Sin ubicación en el archivo",
+  "fr": "Aucune position dans le fichier",
+  "hi": "फ़ाइल में कोई स्थान नहीं",
+  "it": "Nessuna posizione nel file",
+  "ja": "位置情報はありません",
+  "pt": "Sem localização no ficheiro",
+  "zh": "文件中没有位置信息"
  },
  "No misspellings found; tidied spacing and capitals.": {
   "de": "Keine Tippfehler gefunden; Abstände und Großschreibung aufgeräumt.",
@@ -18348,6 +18408,16 @@
   "ja": "曲を長押し→共有→着信音→書き出す。",
   "pt": "Mantenha premida a música, toque em Partilhar, Toque e Exportar.",
   "zh": "长按歌曲，点“共享”→“电话铃声”→“导出”。"
+ },
+ "Press and hold to see your original. Tap to zoom.": {
+  "de": "Gedrückt halten, um das Original zu sehen. Tippen zum Zoomen.",
+  "es": "Mantén pulsado para ver tu original. Toca para ampliar.",
+  "fr": "Maintenez appuyé pour voir l'original. Touchez pour zoomer.",
+  "hi": "मूल देखने के लिए दबाकर रखें। ज़ूम के लिए टैप करें।",
+  "it": "Tieni premuto per vedere l'originale. Tocca per ingrandire.",
+  "ja": "長押しで元の写真、タップで拡大。",
+  "pt": "Mantenha premido para ver o original. Toque para ampliar.",
+  "zh": "长按查看原图，轻点放大。"
  },
  "Press and hold to see your photo": {
   "de": "Gedrückt halten, um dein Foto zu sehen",
@@ -21808,6 +21878,16 @@
   "ja": "ファイルとは別の方法で送りましょう。PDFをメールしたならパスワードはメッセージで。片方だけでは開けません。",
   "pt": "Envie por um caminho diferente do arquivo — se mandou o PDF por e-mail, mande a senha por mensagem. Quem tiver só um dos dois não consegue abrir.",
   "zh": "用与文件不同的方式发送——如果用邮件发了 PDF，就用短信发密码。只拿到其中之一的人无法打开。"
+ },
+ "Send it only to the place named on it. If a copy turns up anywhere else, the words show where it came from.": {
+  "de": "Schick sie nur an die Stelle, die darauf steht. Taucht eine Kopie woanders auf, zeigen die Worte, woher sie stammt.",
+  "es": "Envíala solo al sitio que aparece en ella. Si una copia aparece en otro lugar, las palabras muestran de dónde salió.",
+  "fr": "Envoyez-la uniquement à l'organisme indiqué dessus. Si une copie apparaît ailleurs, les mots montrent d'où elle vient.",
+  "hi": "इसे केवल उसी जगह भेजें जिसका नाम इस पर लिखा है। अगर कोई कॉपी कहीं और मिलती है, तो शब्द बताते हैं कि वह कहाँ से आई।",
+  "it": "Inviala solo all'ente indicato. Se una copia spunta altrove, le parole mostrano da dove viene.",
+  "ja": "記載した相手にだけ送ってください。他の場所でコピーが見つかっても、文字で出どころがわかります。",
+  "pt": "Envie-a só para a entidade nela indicada. Se uma cópia aparecer noutro sítio, as palavras mostram de onde veio.",
+  "zh": "只发给上面写明的机构。如果副本出现在别处，文字能说明它的来源。"
  },
  "Send me a daily brief": {
   "de": "Schick mir eine tägliche Übersicht",
@@ -30119,6 +30199,16 @@
   "pt": "Transcrever, legendas, notas",
   "zh": "转写、字幕、笔记"
  },
+ "Write who it's for across the copy, so it can't be reused": {
+  "de": "Schreib quer über die Kopie, für wen sie ist, damit sie nicht wiederverwendet werden kann",
+  "es": "Escribe para quién es sobre la copia, para que no se pueda reutilizar",
+  "fr": "Écrivez sur la copie à qui elle est destinée, pour qu'elle ne soit pas réutilisée",
+  "hi": "कॉपी पर लिखें कि यह किसके लिए है, ताकि इसका दोबारा उपयोग न हो",
+  "it": "Scrivi sulla copia a chi è destinata, così non può essere riutilizzata",
+  "ja": "悪用されないよう、提出先をコピーに書き込む",
+  "pt": "Escreva na cópia para quem é, para não poder ser reutilizada",
+  "zh": "在副本上写明用途，防止被挪用"
+ },
  "Write {date} where today's date should go.": {
   "de": "Schreibe {date}, wo das heutige Datum stehen soll.",
   "es": "Escribe {date} donde debe ir la fecha de hoy.",
@@ -30379,6 +30469,16 @@
   "pt": "Você tem o que precisa para se sentir melhor.",
   "zh": "你有了让自己好起来的东西。"
  },
+ "Your ID copy is ready": {
+  "de": "Deine Ausweiskopie ist fertig",
+  "es": "Tu copia del documento está lista",
+  "fr": "Votre copie de pièce d'identité est prête",
+  "hi": "आपकी ID कॉपी तैयार है",
+  "it": "La copia del documento è pronta",
+  "ja": "身分証のコピーができました",
+  "pt": "A cópia do documento está pronta",
+  "zh": "证件副本已就绪"
+ },
  "Your answer": {
   "de": "Deine Antwort",
   "es": "Tu respuesta",
@@ -30499,6 +30599,16 @@
   "pt": "O nome do seu primeiro pet",
   "zh": "你第一只宠物的名字"
  },
+ "Your marked copy is ready": {
+  "de": "Deine markierte Kopie ist fertig",
+  "es": "Tu copia marcada está lista",
+  "fr": "Votre copie marquée est prête",
+  "hi": "आपकी चिह्नित कॉपी तैयार है",
+  "it": "La copia contrassegnata è pronta",
+  "ja": "マーク入りのコピーができました",
+  "pt": "A cópia marcada está pronta",
+  "zh": "已标注的副本已就绪"
+ },
  "Your medicines": {
   "de": "Deine Medikamente",
   "es": "Tus medicinas",
@@ -30549,6 +30659,16 @@
   "pt": "Sua nova voz está pronta — ouça e depois salve ou compartilhe.",
   "zh": "新声音已就绪——播放后保存或分享。"
  },
+ "Your original": {
+  "de": "Dein Original",
+  "es": "Tu original",
+  "fr": "Votre original",
+  "hi": "आपका मूल",
+  "it": "Il tuo originale",
+  "ja": "元の写真",
+  "pt": "O seu original",
+  "zh": "你的原图"
+ },
  "Your personal assistant for the things that matter — on your phone, never uploaded.": {
   "de": "Dein persönlicher Assistent für das, was zählt – auf deinem Telefon, nie hochgeladen.",
   "es": "Tu asistente personal para lo que importa: en tu teléfono, sin subir nada.",
@@ -30588,6 +30708,16 @@
   "ja": "あなたの写真",
   "pt": "Sua foto",
   "zh": "你的照片"
+ },
+ "Your photo's location was removed": {
+  "de": "Der Standort deines Fotos wurde entfernt",
+  "es": "Se quitó la ubicación de tu foto",
+  "fr": "La position de votre photo a été supprimée",
+  "hi": "आपकी फ़ोटो का स्थान हटा दिया गया",
+  "it": "La posizione della tua foto è stata rimossa",
+  "ja": "写真の位置情報を削除しました",
+  "pt": "A localização da sua foto foi removida",
+  "zh": "已删除照片的位置信息"
  },
  "Your plan as a picture": {
   "de": "Dein Plan als Bild",
@@ -31999,6 +32129,16 @@
   "pt": "fora em 50 cm",
   "zh": "（每 50 厘米）"
  },
+ "over": {
+  "de": "über",
+  "es": "por encima de",
+  "fr": "au-dessus de",
+  "hi": "से अधिक",
+  "it": "sopra",
+  "ja": "超過",
+  "pt": "acima de",
+  "zh": "超过"
+ },
  "overdue": {
   "de": "überfällig",
   "es": "vencida",
@@ -32758,6 +32898,16 @@
   "ja": "歳になる",
   "pt": "faz",
   "zh": "满"
+ },
+ "under": {
+  "de": "unter",
+  "es": "por debajo de",
+  "fr": "sous",
+  "hi": "से कम",
+  "it": "sotto",
+  "ja": "以下",
+  "pt": "abaixo de",
+  "zh": "低于"
  },
  "voice": {
   "de": "",
