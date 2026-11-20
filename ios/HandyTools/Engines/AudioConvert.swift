@@ -221,36 +221,44 @@ enum AudioConvert {
         let range = CMTimeRange(start: CMTime(seconds: begin, preferredTimescale: 600),
                                 duration: CMTime(seconds: len, preferredTimescale: 600))
 
-        guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A) else {
-            return .failure(.cannotWrite)
-        }
-        let out = VideoEngine.tempURL("m4r")
-        session.outputURL = out
-        session.outputFileType = .m4a   // .m4r is the same container; only the extension differs
-        session.timeRange = range
-        session.metadata = []
         // A gentle fade in and out, so the tone starts softly and never cuts off mid-note.
+        var mix: AVMutableAudioMix?
         if fade > 0 {
             let f = min(fade, len / 3)
             let p = AVMutableAudioMixInputParameters(track: track)
             p.setVolumeRamp(fromStartVolume: 0, toEndVolume: 1, timeRange: CMTimeRange(start: range.start, duration: CMTime(seconds: f, preferredTimescale: 600)))
             p.setVolumeRamp(fromStartVolume: 1, toEndVolume: 0, timeRange: CMTimeRange(start: CMTime(seconds: begin + len - f, preferredTimescale: 600), duration: CMTime(seconds: f, preferredTimescale: 600)))
-            let mix = AVMutableAudioMix(); mix.inputParameters = [p]
-            session.audioMix = mix
+            let m = AVMutableAudioMix(); m.inputParameters = [p]
+            mix = m
         }
 
-        let ok = await withTaskGroup(of: Bool.self) { group -> Bool in
-            group.addTask { await session.export(); return session.status == .completed }
-            group.addTask {
-                try? await Task.sleep(nanoseconds: 120 * 1_000_000_000)
-                session.cancelExport(); return false
+        // A ringtone is at most 30 s of audio and normally exports in a second or two. Now and then the system's
+        // exporter stalls; rather than leave the user on a spinner, give it a fair window, then start again with a
+        // fresh exporter once before giving up.
+        let window = UInt64(max(20, len * 2 + 10) * 1_000_000_000)
+        for _ in 0..<2 {
+            guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A) else {
+                return .failure(.cannotWrite)
             }
-            let first = await group.next() ?? false
-            group.cancelAll()
-            return first
+            let out = VideoEngine.tempURL("m4r")
+            session.outputURL = out
+            session.outputFileType = .m4a   // .m4r is the same container; only the extension differs
+            session.timeRange = range
+            session.metadata = []
+            session.audioMix = mix
+            let ok = await withTaskGroup(of: Bool.self) { group -> Bool in
+                group.addTask { await session.export(); return session.status == .completed }
+                group.addTask {
+                    try? await Task.sleep(nanoseconds: window)
+                    session.cancelExport(); return false
+                }
+                let first = await group.next() ?? false
+                group.cancelAll()
+                return first
+            }
+            if ok { return .success(out) }
+            try? FileManager.default.removeItem(at: out)
         }
-        if ok { return .success(out) }
-        try? FileManager.default.removeItem(at: out)
         return .failure(.cannotWrite)
     }
 }
