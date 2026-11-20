@@ -2385,6 +2385,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             } else if let b = chain.steps.last?.block, [.summarize, .translate, .rewrite, .cleanText, .speechText].contains(b) {
                 // Same finish for every text result: read it, how much shorter / the original, Copy, Share, hear it, Maps.
                 TextFinishCard(text: t, source: { if case .text(let s)? = lastStepInput { return s }; return nil }(), block: b)
+            } else if chain.steps.last?.block == .cleanLinks {
+                LinkFinishCard(cleaned: t, original: { if case .text(let s)? = lastStepInput { return s }; return nil }())
+            } else if chain.steps.last?.block == .priceCompare {
+                DealFinishCard(text: t, photo: inputPhoto)
             } else if chain.steps.last?.block == .chatLink, t.hasPrefix("http") {
                 ChatLinkFinishCard(link: t.trimmingCharacters(in: .whitespacesAndNewlines))
             } else if chain.steps.last?.block == .scamCheck, let checked = scamChecked {
@@ -2416,6 +2420,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             // Same finish for every fun photo: other looks on the same photo, Copy into a chat, Photos, Share, the full tool.
             FunFinishCard(block: chain.steps.last!.block, original: inputPhoto, result: i,
                           look: chain.steps.last?.settings["style"] ?? chain.steps.last?.settings["emoji"] ?? "")
+        case .image(let i) where chain.steps.last?.block == .videoStill:
+            // The sharpest frame, any other moment one slide away, then Photos / Copy / Share.
+            StillFinishCard(video: inputVideo, image: i)
         case .image(let i) where chain.collage == true || chain.versus == true:
             // A collage or a before/after: the picture, Copy into a chat, Photos, Share.
             FunFinishCard(block: .stripLocation, original: nil, result: i, look: "")
@@ -2437,6 +2444,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             let lext = ext.lowercased()
             if lext == "csv", let f = sheetFile {
                 ExpenseSheetCard(file: f, added: 1)
+            } else if lext == "csv", chain.steps.last?.block == .makeTable {
+                TableFinishCard(csv: d, name: chain.fileName ?? "Table")
             } else if lext == "gif" {
                 GIFFinishCard(data: d, shareURL: tempURL(d, ext))
             } else if chain.steps.last?.block == .sticker, let img = UIImage(data: d) {

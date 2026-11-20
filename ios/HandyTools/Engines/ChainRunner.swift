@@ -829,6 +829,11 @@ enum ResultScreens {
         case .scamCheck: return "Scam verdict"
         case .voiceChange: return "Voice finish"
         case .readAloud: return "Listen finish"
+        case .makeTable: return "Table"
+        case .cleanLinks: return "Clean link"
+        case .priceCompare: return "Best deal"
+        case .videoStill: return "Still"
+        case .returnBy: return "Calendar event"
         case .summarize, .translate, .rewrite, .cleanText, .speechText: return "Text finish"
         case .sticker, .emojiFaces, .meme, .artFilter, .emojiMosaic: return "Fun finish"
         case .makeQr, .wifiQr, .contactQr: return "Code finish"
@@ -842,13 +847,7 @@ enum ResultScreens {
 
     /// Ready-made tools that still end on the plain result, each with the tracker group rebuilding it. This list may
     /// only shrink: the test fails if a tool here now has a finished screen (take it off) or a new tool lands plain.
-    static let knownGaps: [String: String] = [
-        "table-to-sheet": "pb-receipts",
-        "clean-link": "pb-safety",
-        "shelf-best-deal": "pb-receipts",
-        "video-still": "pb-video",
-        "return-by": "pb-receipts",
-    ]
+    static let knownGaps: [String: String] = [:]
 }
 
 /// Starter chains shipped inside the app. Users can run them, or copy one and edit it.

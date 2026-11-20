@@ -2669,6 +2669,16 @@
   "pt": "Atrás",
   "zh": "背后"
  },
+ "Best deal": {
+  "de": "Bestes Angebot",
+  "es": "Mejor oferta",
+  "fr": "Meilleure affaire",
+  "hi": "सबसे अच्छा सौदा",
+  "it": "Offerta migliore",
+  "ja": "いちばんお得",
+  "pt": "Melhor negócio",
+  "zh": "最划算"
+ },
  "Best deal, budget & label decode": {
   "de": "Bestes Angebot, Budget & Etiketten",
   "es": "Mejor precio, presupuesto y etiquetas",
@@ -4539,6 +4549,16 @@
   "pt": "Limpar",
   "zh": "清理"
  },
+ "Clean link": {
+  "de": "Sauberer Link",
+  "es": "Enlace limpio",
+  "fr": "Lien propre",
+  "hi": "साफ़ लिंक",
+  "it": "Link pulito",
+  "ja": "きれいなリンク",
+  "pt": "Link limpo",
+  "zh": "干净的链接"
+ },
  "Clean up & back up": {
   "de": "Aufräumen & sichern",
   "es": "Limpiar y copiar",
@@ -5208,6 +5228,16 @@
   "ja": "コピー（原本を保持）",
   "pt": "Copiar (manter originais)",
   "zh": "复制（保留原件）"
+ },
+ "Copy (pastes as a table)": {
+  "de": "Kopieren (als Tabelle einfügen)",
+  "es": "Copiar (se pega como tabla)",
+  "fr": "Copier (se colle en tableau)",
+  "hi": "कॉपी करें (टेबल के रूप में पेस्ट होगा)",
+  "it": "Copia (si incolla come tabella)",
+  "ja": "コピー（表として貼り付け）",
+  "pt": "Copiar (cola como tabela)",
+  "zh": "复制（粘贴为表格）"
  },
  "Copy all the text": {
   "de": "Ganzen Text kopieren",
@@ -15559,6 +15589,16 @@
   "pt": "Sem lentes escuras nem reflexos nos olhos",
   "zh": "不戴有色眼镜，眼部无反光"
  },
+ "No tracking found — the link was already clean.": {
+  "de": "Kein Tracking gefunden – der Link war schon sauber.",
+  "es": "No se encontró rastreo: el enlace ya estaba limpio.",
+  "fr": "Aucun pistage trouvé — le lien était déjà propre.",
+  "hi": "कोई ट्रैकिंग नहीं मिली — लिंक पहले से साफ़ था।",
+  "it": "Nessun tracciamento: il link era già pulito.",
+  "ja": "追跡情報はありませんでした。リンクはすでにきれいです。",
+  "pt": "Sem rastreio — o link já estava limpo.",
+  "zh": "未发现跟踪参数，链接本来就是干净的。"
+ },
  "No warning signs in the address": {
   "de": "Keine Warnzeichen in der Adresse",
   "es": "Sin señales de alerta en la dirección",
@@ -18038,6 +18078,16 @@
   "ja": "顔ごとに絵文字を選ぶか、そのまま残せます。",
   "pt": "Escolha um emoji para cada rosto, ou deixe um visível.",
   "zh": "为每张脸选表情，也可以保留某张脸。"
+ },
+ "Pick another moment": {
+  "de": "Anderen Moment wählen",
+  "es": "Elige otro momento",
+  "fr": "Choisir un autre moment",
+  "hi": "दूसरा पल चुनें",
+  "it": "Scegli un altro momento",
+  "ja": "別の瞬間を選ぶ",
+  "pt": "Escolher outro momento",
+  "zh": "选择其他时刻"
  },
  "Pick any file. The other device scans the code or opens the address — same Wi-Fi, no cable, no cloud.": {
   "de": "Wähle eine beliebige Datei. Das andere Gerät scannt den Code oder öffnet die Adresse — gleiches WLAN, kein Kabel, keine Cloud.",
@@ -27049,6 +27099,16 @@
   "pt": "Depois",
   "zh": "然后"
  },
+ "Then, cheapest per unit first": {
+  "de": "Dann, günstigster pro Einheit zuerst",
+  "es": "Luego, de más barato por unidad a más caro",
+  "fr": "Ensuite, du moins cher à l'unité",
+  "hi": "फिर, प्रति यूनिट सबसे सस्ता पहले",
+  "it": "Poi, dal più economico per unità",
+  "ja": "続いて単価の安い順",
+  "pt": "Depois, o mais barato por unidade primeiro",
+  "zh": "其余按单价从低到高"
+ },
  "There's a code in it": {
   "de": "Da ist ein Code drin",
   "es": "Contiene un código",
@@ -28158,6 +28218,16 @@
   "ja": "追跡番号",
   "pt": "Código de rastreio",
   "zh": "快递单号"
+ },
+ "Tracking taken off:": {
+  "de": "Tracking entfernt:",
+  "es": "Rastreo eliminado:",
+  "fr": "Pistage retiré :",
+  "hi": "हटाई गई ट्रैकिंग:",
+  "it": "Tracciamento rimosso:",
+  "ja": "削除した追跡情報:",
+  "pt": "Rastreio removido:",
+  "zh": "已去除的跟踪："
  },
  "Transcribed on your phone; nothing is uploaded.": {
   "de": "Auf deinem Telefon transkribiert; nichts wird hochgeladen.",
