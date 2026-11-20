@@ -6,3 +6,4 @@
 - 2026-11-20 — daily TestFlight (standing yes): signature pad 5 inks, Protect PDF all-at-once, 26 animation styles, Celebrate, ringtone export retry (all green on 8408c3cc).
 - 2026-11-20 — retry of today's TestFlight: run 44725365648 passed every test but the non-gating screenshot step hung for 2 h and took the build down; that step is now capped at 30 min and can't fail the build.
 - 2026-11-20 — today's TestFlight, third attempt: run 44753284462 passed every test but froze copying its log (old full-history fetch, fixed in 3c9…); this build carries everything from today: signature 5 inks, Protect PDF, 26 animation styles, Celebrate, ringtone fix, audio tools, Think it through (rebuilt), Paste, receipt screenshots, Organize Pages text, passport/profile safety net.
+- 2026-11-20 — fourth attempt: 44779973948 failed one timing test (video recorder dropped 12 of 60 frames on a loaded test machine). Offline recording now waits for the encoder instead of dropping frames.

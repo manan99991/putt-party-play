@@ -67,7 +67,8 @@ final class VideoRecorder: @unchecked Sendable {
     private func ready(_ input: AVAssetWriterInput) -> Bool {
         if input.isReadyForMoreMediaData { return true }
         guard !realtime else { return false }
-        for _ in 0..<200 { usleep(5_000); if input.isReadyForMoreMediaData { return true } }
+        // Not live: never drop a frame because the encoder is busy — wait for it (up to 10 s on a slow, loaded phone).
+        for _ in 0..<2000 { usleep(5_000); if input.isReadyForMoreMediaData { return true } }
         return false
     }
 
