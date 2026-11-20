@@ -57,6 +57,21 @@ for f in sorted(members):
     for t in sorted(used & app_types - member_defs):
         bad.append(f"share extension: {os.path.relpath(f, ios)} uses {t}, defined only in {', '.join(os.path.relpath(x, ios) for x in defs[t])} — add that file to ShareExtension sources in project.yml or a stand-in in EngineShims.swift")
 
+# 1c. Top-level functions too (L(...) for translations was missed once): a free function a share-extension file calls
+# must be defined in a file that target compiles.
+topfn = re.compile(r'^(?:@\w+\s+)*(?:private\s+|fileprivate\s+|internal\s+|public\s+)?func\s+(\w+)\s*[(<]', re.M)
+fn_defs = {}
+for f, s2 in clean.items():
+    for m in topfn.finditer(s2): fn_defs.setdefault(m.group(1), set()).add(f)
+member_fns = {n for n, fs in fn_defs.items() if fs & members}
+app_fns = {n for n, fs in fn_defs.items() if not (fs & members)}
+for f in sorted(members):
+    # Calls inside string interpolation count too ("\\(L("Page"))"), so only comments are stripped here.
+    s2 = re.sub(r'/\*[\s\S]*?\*/', '', re.sub(r'//[^\n]*', '', code.get(f, "")))
+    for n in sorted(app_fns - member_fns):
+        if re.search(r'(?<![\w.])' + re.escape(n) + r'\(', s2):
+            bad.append(f"share extension: {os.path.relpath(f, ios)} calls {n}(), defined only in {', '.join(os.path.relpath(x, ios) for x in fn_defs[n])} — add that file to ShareExtension sources in project.yml")
+
 import sys as _s0; _s0.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # 1b. stand-ins must have every member the extension's files call: `VideoEngine.run` used by SizeTarget (compiled
 # into the share extension) must exist on the VideoEngine stand-in, not only on the app's VideoEngine.

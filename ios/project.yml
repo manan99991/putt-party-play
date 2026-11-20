@@ -227,6 +227,7 @@ targets:
       - HandyTools/Engines/PixelArt.swift
       - HandyTools/Engines/DocEngine.swift
       - HandyTools/Engines/PDFOverlay.swift
+      - HandyTools/Localizer.swift
       - HandyTools/Engines/DataGrab.swift
       - HandyTools/Engines/TextTools.swift
       - HandyTools/Engines/TextTidy.swift
