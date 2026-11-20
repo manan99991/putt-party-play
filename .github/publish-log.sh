@@ -22,7 +22,8 @@ stage() {
 }
 
 for attempt in 1 2 3 4 5 6 7 8; do
-  if git -C "$dir" fetch -q "$REMOTE" ci-logs 2>/dev/null; then
+  # Only the tip: the branch holds months of screenshots, and fetching all of it cost ~10 minutes per publish.
+  if git -C "$dir" fetch -q --depth 1 "$REMOTE" ci-logs 2>/dev/null; then
     git -C "$dir" checkout -q -B ci-logs FETCH_HEAD
   else
     git -C "$dir" checkout -q -B ci-logs
