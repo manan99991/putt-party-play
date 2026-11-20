@@ -288,7 +288,8 @@ enum ThinkBrain {
             turns.append((t, ThinkBrain.builtIn(turns.isEmpty ? t : all)))
         }
 
-        private func askModel(_ text: String) async -> Answer? {
+        /// `prompt` overrides the usual wording — used when a fresh session has to be told what came before.
+        private func askModel(_ text: String, prompt override: String? = nil, retried: Bool = false) async -> Answer? {
             #if canImport(FoundationModels)
             if #available(iOS 26.0, *) {
                 let session: LanguageModelSession
@@ -297,7 +298,7 @@ enum ThinkBrain {
                     guard let made = Self.makeSession() else { return nil }
                     session = made.0; engine = made.1; self.session = made.0
                 }
-                let prompt = turns.isEmpty ? "What they wrote:\n\(text)" : "Their follow-up:\n\(text)"
+                let prompt = override ?? (turns.isEmpty ? "What they wrote:\n\(text)" : "Their follow-up:\n\(text)")
                 do {
                     let r = try await withThrowingTaskGroup(of: AIAnswer?.self) { g in
                         g.addTask { try await session.respond(to: prompt, generating: AIAnswer.self).content }
@@ -308,10 +309,12 @@ enum ThinkBrain {
                     guard let r else { return nil }
                     return ThinkBrain.answer(from: r, engine: engine, asked: text)
                 } catch {
-                    // Cloud unreachable or over today's limit: start again on the phone's own model.
-                    if engine == .cloud { self.session = nil; engine = .phone
-                        if let s = Self.phoneSession() { self.session = s; return await askModel(text) } }
-                    return nil
+                    // The cloud was unreachable or over today's limit, or a long conversation filled the model's
+                    // memory: start once more on a fresh on-phone session, told what was said before.
+                    guard !retried, let fresh = Self.phoneSession() else { return nil }
+                    self.session = fresh; engine = .phone
+                    let earlier = turns.map { "- \($0.asked)" }.joined(separator: "\n")
+                    return await askModel(text, prompt: turns.isEmpty ? nil : "Earlier they said:\n\(earlier)\n\nTheir follow-up:\n\(text)", retried: true)
                 }
             }
             #endif
