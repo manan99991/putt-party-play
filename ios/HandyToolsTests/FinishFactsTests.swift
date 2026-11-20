@@ -141,6 +141,20 @@ final class FinishFactsTests: XCTestCase {
         let failed = ChainRunView.notificationLine(ChainRunner.RunReport(lines: [], result: nil, completed: false, stopper: .invalid("That video has no sound to remove.")))
         XCTAssertTrue(failed.contains("no sound to remove"), failed)
     }
+
+    /// "Remove the sound" took minutes: it now copies the picture as it is, so it's quick and keeps the size.
+    func testMutingAVideoIsQuickAndKeepsThePicture() async throws {
+        let m = await SampleAssets.movie(seconds: 6, size: CGSize(width: 1280, height: 720))
+        let src = try XCTUnwrap(m)
+        let t0 = Date()
+        let out = await VideoEngine.mute(src)
+        let took = Date().timeIntervalSince(t0)
+        let u = try XCTUnwrap(out, "mute failed")
+        let f = await VideoFacts.read(u)
+        XCTAssertEqual(try XCTUnwrap(f).size, CGSize(width: 1280, height: 720))
+        XCTAssertFalse(try XCTUnwrap(f).hasSound)
+        XCTAssertLessThan(took, 15, "muting a 6-second clip took \(took) s — it should copy, not re-encode")
+    }
 }
 
 /// A tiny lock box so a progress callback from another thread can be collected in a test.
