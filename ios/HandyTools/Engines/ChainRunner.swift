@@ -821,6 +821,7 @@ enum ResultScreens {
         case .videoShrink, .videoTrim, .videoSpeed, .videoMute, .videoVertical, .videoCaptions, .videoRotate: return "Video finish"
         case .videoGif, .videoLoop: return "GIF finish"
         case .scamCheck: return "Scam verdict"
+        case .voiceChange: return "Voice finish"
         case .photoPdf: return "Scan PDF"
         case .pdfShrink where blocks.contains(.photoPdf): return "Scan PDF"
         default: return nil
@@ -862,17 +863,6 @@ enum ResultScreens {
         "emoji-mosaic": "pb-fun",
         "photo-sketch": "pb-fun",
         "photo-comic": "pb-fun",
-        "voice-chipmunk": "pb-voice",
-        "voice-deep": "pb-voice",
-        "voice-helium": "pb-voice",
-        "voice-giant": "pb-voice",
-        "voice-robot": "pb-voice",
-        "voice-alien": "pb-voice",
-        "voice-monster": "pb-voice",
-        "voice-walkie": "pb-voice",
-        "voice-cave": "pb-voice",
-        "voice-ghost": "pb-voice",
-        "video-voice": "pb-voice",
         "before-after": "pb-photo",
         "photo-sell": "pb-photo",
         "letter-listen": "pb-text",

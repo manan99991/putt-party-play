@@ -333,7 +333,7 @@ private struct VideoResultPreview: View {
 /// A full audio player for a result — so a transcribed-to-voice / funny-voice / extracted-audio clip can be
 /// heard, scrubbed and skipped before Save or share, instead of a bare "2.8 MB · WAV" or a play-only button.
 /// A draggable progress bar, current/total time, and 15-second skip either way. Works on every phone.
-private final class AudioScrubModel: ObservableObject {
+final class AudioScrubModel: ObservableObject {
     @Published var current: Double = 0
     @Published var duration: Double = 0
     @Published var playing = false
@@ -364,7 +364,7 @@ private final class AudioScrubModel: ObservableObject {
     func stop() { player?.pause(); if let token { player?.removeTimeObserver(token); self.token = nil } }
 }
 
-private struct AudioResultPreview: View {
+struct AudioResultPreview: View {
     let url: URL
     @StateObject private var m = AudioScrubModel()
     var body: some View {
@@ -1618,6 +1618,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var started = false
     @State private var inputVideo: URL?
     @State private var scamChecked: String?
+    @State private var lastStepInput: ChainPayload?
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
     @State private var progress = ""
@@ -1943,6 +1944,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
             // UI tests can't drive the photo picker: with -sample an ID-copy tool runs on a made-up photo, so the
             // finished screen itself is checked, not just the run screen.
+            if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Voice finish", chain.steps.first?.block == .voiceChange {
+                started = true
+                go(.file(SampleAssets.tone(), ext: "wav"))
+            }
             if Launch.uitest, Launch.sample, initial == nil, !started, chain.id == "scam-check" {
                 started = true
                 go(.text("URGENT: Your account will be suspended within 24 hours. Verify at http://paypal.secure-login.top/verify and pay the fee in Apple gift cards."))
@@ -2387,6 +2392,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 ExpenseSheetCard(file: f, added: 1)
             } else if lext == "gif" {
                 GIFFinishCard(data: d, shareURL: tempURL(d, ext))
+            } else if chain.steps.last?.block == .voiceChange, ChainPayload.isAudio(ext) {
+                // Same finish as the voice picker: hear it, compare with your original, switch voice right here.
+                VoiceFinishCard(original: { if case .file(let o, let e)? = lastStepInput { return (o, e) }; return nil }(),
+                                voice: chain.steps.last?.settings["voice"] ?? "chipmunk", result: d)
             } else if lext == "ics", let icsText = String(data: d, encoding: .utf8) {
                 CalendarEventResult(ics: icsText, shareURL: tempURL(d, ext))
             } else if lext == "vcf" {
@@ -2485,6 +2494,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 // Show the step-by-step story for a multi-step flow, so the person sees exactly what ran,
                 // what was skipped and why, and what (if anything) couldn't finish.
                 report = multiStep ? rep : nil
+                lastStepInput = rep.finalInput
                 if case .text(let t)? = rep.finalInput { scamChecked = t } else { scamChecked = nil }
                 if let p = rep.result {
                     result = p

@@ -22429,6 +22429,16 @@
   "pt": "Partilhar ou guardar a cópia",
   "zh": "分享或保存备份"
  },
+ "Share or save to Files": {
+  "de": "Teilen oder in Dateien sichern",
+  "es": "Compartir o guardar en Archivos",
+  "fr": "Partager ou enregistrer dans Fichiers",
+  "hi": "शेयर करें या Files में सहेजें",
+  "it": "Condividi o salva in File",
+  "ja": "共有または「ファイル」に保存",
+  "pt": "Partilhar ou guardar em Ficheiros",
+  "zh": "共享或存储到“文件”"
+ },
  "Share organized": {
   "de": "Geordnet teilen",
   "es": "Compartir organizado",
@@ -27928,6 +27938,16 @@
   "ja": "別のスタイルを試す",
   "pt": "Tentar outro estilo",
   "zh": "换个风格"
+ },
+ "Try another voice on the same recording": {
+  "de": "Eine andere Stimme auf dieselbe Aufnahme",
+  "es": "Prueba otra voz con la misma grabación",
+  "fr": "Essayez une autre voix sur le même enregistrement",
+  "hi": "उसी रिकॉर्डिंग पर दूसरी आवाज़ आज़माएँ",
+  "it": "Prova un'altra voce sulla stessa registrazione",
+  "ja": "同じ録音で別の声を試す",
+  "pt": "Experimente outra voz na mesma gravação",
+  "zh": "用同一段录音试试别的声音"
  },
  "Try searching it for": {
   "de": "Such darin zum Beispiel nach",

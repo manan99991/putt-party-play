@@ -74,6 +74,17 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["What to do"].exists, "scam-check: no 'What to do'")
     }
 
+    /// "Voice tools: compare with your original and switch voice without starting over" — on the finished screen.
+    func testVoiceToolsLetYouSwitchVoiceOnTheResult() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "run-voice-robot", "-uitest", "-sample"]
+        app.launch()
+        XCTAssertTrue(app.descendants(matching: .any)["voice-finish"].waitForExistence(timeout: 60), "voice-robot: not on the voice finish")
+        XCTAssertTrue(app.buttons["voice-finish-original"].exists, "voice-robot: no way to play the original")
+        app.buttons.containing(NSPredicate(format: "label CONTAINS 'Deep'")).firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["Deep voice"].waitForExistence(timeout: 30), "switching to Deep didn't remake it")
+    }
+
     /// "Sign a form: draw your signature" — the pad must show 'Sign in the box first' until there's ink.
     func testSignaturePadWontSaveBlank() {
         let app = open("sign-and-send")

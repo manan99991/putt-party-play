@@ -114,4 +114,19 @@ enum SampleAssets {
         guard let d = img.jpegData(compressionQuality: 0.9), (try? d.write(to: url)) != nil else { return nil }
         return url
     }
+
+    /// A 2-second rising tone with a little wobble, as a plain WAV — a stand-in recording for voice tools in UI tests.
+    static func tone(seconds: Double = 2) -> Data {
+        let rate = 44_100, n = Int(Double(rate) * seconds)
+        var samples = [UInt8](); samples.reserveCapacity(n * 2)
+        var phase = 0.0
+        for i in 0..<n {
+            let t = Double(i) / Double(rate)
+            let f = 220 + 220 * t / seconds + 12 * sin(2 * .pi * 5 * t)
+            phase += 2 * .pi * f / Double(rate)
+            let v = Int16(max(-32767, min(32767, sin(phase) * 12_000)))
+            samples.append(UInt8(truncatingIfNeeded: v)); samples.append(UInt8(truncatingIfNeeded: v >> 8))
+        }
+        return Data(ChainText.wavHeader(sampleRate: rate, channels: 1, dataBytes: samples.count) + samples)
+    }
 }
