@@ -1,3 +1,2 @@
 # Tests the crash-repro run executes (one per line).
-HandyToolsUITests/MultiPhotoTests
-# rerun after simulator boot fix
+HandyToolsUITests/MultiPhotoTests/testPickingManyPhotosOpensTheGuide

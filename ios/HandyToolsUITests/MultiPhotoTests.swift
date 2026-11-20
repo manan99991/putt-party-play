@@ -28,7 +28,7 @@ final class MultiPhotoTests: XCTestCase {
     }
 
     func testPickingManyPhotosOpensTheGuide() {
-        for n in [2, 8, 20] {
+        for n in [1, 2, 8, 20] {
             launch(photos: n)
             XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 90), "guide never opened for \(n) photos")
             sleep(4)   // let the guess and the previews finish

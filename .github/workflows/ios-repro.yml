@@ -49,7 +49,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
             $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD" || true
           # Any crash the simulator recorded for the app, newest first.
-          ls -t ~/Library/Logs/DiagnosticReports/HandyTools* 2>/dev/null | head -3 | while read f; do echo "== $f"; head -c 60000 "$f"; done > crashes.txt || true
+          ls -t ~/Library/Logs/DiagnosticReports/HandyTools-* 2>/dev/null | head -2 | xargs python3 ../tools/ips_summary.py > crashes.txt 2>&1 || true
           grep -q "TEST SUCCEEDED" repro.log
       - name: Publish log
         if: always()
