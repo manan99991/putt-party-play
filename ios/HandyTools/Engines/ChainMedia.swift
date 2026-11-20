@@ -38,8 +38,9 @@ enum ChainMedia {
             defer { try? FileManager.default.removeItem(at: url) }
             // "auto"/unset = the phone's own language (the smart default); a chosen language transcribes in it.
             let lang = step.settings["lang"] ?? "auto"
-            let locale = (lang == "auto" || lang.isEmpty) ? Locale.current : Locale(identifier: lang)
-            switch await Transcriber.listen(to: url, locale: locale) {
+            let auto = lang == "auto" || lang.isEmpty
+            let locale = auto ? Locale.current : Locale(identifier: lang)
+            switch await Transcriber.listen(to: url, locale: locale, detect: auto) {
             case .failure(let p): return .failure(.invalid(p.words(for: b)))
             case .success(let heard):
                 let text = heard.text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -491,11 +492,70 @@ enum Transcriber {
         return min(1, max(0, Double(pos) / Double(total)))
     }
 
-    static func listen(to url: URL, locale: Locale = .current) async -> Result<Heard, Problem> {
+    /// The languages worth trying when the tool is set to "auto": the phone's own, then the person's other
+    /// preferred languages (a family that speaks Hindi at home and English at work has both), each only if this
+    /// phone can recognise it on device.
+    static func candidateLocales(_ preferred: [String] = Locale.preferredLanguages, current: Locale = .current) -> [Locale] {
+        var out: [Locale] = [], seen = Set<String>()
+        for id in [current.identifier] + preferred {
+            let l = Locale(identifier: id)
+            let key = l.language.languageCode?.identifier ?? id
+            guard !seen.contains(key) else { continue }
+            seen.insert(key); out.append(l)
+            if out.count == 4 { break }
+        }
+        return out
+    }
+
+    /// One window of speech through one recogniser: the words and how sure it was (0…1, averaged over words).
+    private static func probe(_ recognizer: SFSpeechRecognizer, url: URL) async -> (text: String, sure: Double) {
+        guard let file = try? AVAudioFile(forReading: url) else { return ("", 0) }
+        let fmt = file.processingFormat
+        let req = SFSpeechAudioBufferRecognitionRequest()
+        req.requiresOnDeviceRecognition = true; req.shouldReportPartialResults = false
+        let once = Once<(String, Double)>()
+        let box = Box()
+        box.task = recognizer.recognitionTask(with: req) { result, error in
+            if let result, result.isFinal {
+                let segs = result.bestTranscription.segments
+                let sure = segs.isEmpty ? 0 : segs.map { Double($0.confidence) }.reduce(0, +) / Double(segs.count)
+                once.finish((result.bestTranscription.formattedString, sure * min(1, Double(segs.count) / 8)))
+            } else if error != nil { once.finish(("", 0)) }
+        }
+        let frames = AVAudioFrameCount(min(Double(file.length), fmt.sampleRate * windowSeconds))
+        var read: AVAudioFrameCount = 0
+        while read < frames {
+            guard let buf = AVAudioPCMBuffer(pcmFormat: fmt, frameCapacity: min(16000, frames - read)) else { break }
+            do { try file.read(into: buf, frameCount: min(16000, frames - read)) } catch { break }
+            if buf.frameLength == 0 { break }
+            req.append(buf); read += buf.frameLength
+        }
+        req.endAudio()
+        // A recogniser that never answers just loses the comparison — it doesn't hold the job up.
+        DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish(("", 0)) }
+        let r = await withCheckedContinuation { once.wait($0) }
+        return (r.0, r.1)
+    }
+
+    static func listen(to url: URL, locale: Locale = .current, detect: Bool = false) async -> Result<Heard, Problem> {
         let asked = Once<SFSpeechRecognizerAuthorizationStatus>()
         Permission.speech { asked.finish($0) }
         let status = await withCheckedContinuation { asked.wait($0) }
         guard status == .authorized else { return .failure(.denied) }
+        var locale = locale
+        if detect {
+            // Which language is it? Try the first stretch in each of the person's languages and keep the one the
+            // phone is surest about, instead of forcing Hindi or Spanish speech through English ("Mama mama mama").
+            let readable = await readableAudioURL(for: url)
+            var best: (Locale, Double)? = nil
+            for l in candidateLocales() {
+                guard let r = SFSpeechRecognizer(locale: l), r.isAvailable, r.supportsOnDeviceRecognition else { continue }
+                let p = await probe(r, url: readable)
+                if p.sure > (best?.1 ?? -1) { best = (l, p.sure) }
+            }
+            if readable != url { try? FileManager.default.removeItem(at: readable) }
+            if let b = best { locale = b.0 }
+        }
         // The chosen language first; fall back to the device's, then any available recognizer, so a tool
         // set to transcribe Hindi uses a Hindi recogniser instead of forcing the words through English.
         guard let recognizer = (SFSpeechRecognizer(locale: locale).flatMap { $0.supportsOnDeviceRecognition ? $0 : nil })

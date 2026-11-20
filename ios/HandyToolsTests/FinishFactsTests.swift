@@ -155,6 +155,13 @@ final class FinishFactsTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(f).hasSound)
         XCTAssertLessThan(took, 15, "muting a 6-second clip took \(took) s — it should copy, not re-encode")
     }
+
+    /// "Write out what was said" heard only "Mama mama mama": with the language on auto it now tries each of the
+    /// person's languages on the first stretch and keeps the one the phone is surest about.
+    func testAutoTranscriptionTriesEachOfThePersonsLanguages() {
+        let c = Transcriber.candidateLocales(["en-US", "hi-IN", "en-GB", "gu-IN", "es-ES", "fr-FR"], current: Locale(identifier: "en_US"))
+        XCTAssertEqual(c.map { $0.language.languageCode?.identifier }, ["en", "hi", "gu", "es"])
+    }
 }
 
 /// A tiny lock box so a progress callback from another thread can be collected in a test.

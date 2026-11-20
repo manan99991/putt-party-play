@@ -1,6 +1,7 @@
 import UIKit
 import AVFoundation
 import PhotosUI
+import SwiftUI
 import ImageIO
 import UniformTypeIdentifiers
 import CoreTransferable
