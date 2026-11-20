@@ -50,7 +50,7 @@ enum FileReaders {
     static let quickLookExts: Set<String> = [
         "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "pages", "numbers", "key", "rtf", "rtfd", "html", "htm", "xhtml",
         "mp3", "m4a", "aac", "wav", "aif", "aiff", "caf", "flac", "amr", "3ga", "3gpa", "mp4", "m4v", "mov", "3gp", "3g2",
-        "usdz", "reality", "vcf", "ics", "odt", "ods", "odp",
+        "usdz", "reality", "vcf", "ics", "odt", "ods", "odp", "svg",
     ]
     static let bookExts: Set<String> = ["epub", "fb2", "mobi", "azw", "azw3", "prc", "pdb"]
     static let archiveExts: Set<String> = ["zip", "zipx", "jar", "apk", "aab", "ipa", "xpi", "war", "tar", "tgz", "gz", "gzip", "taz", "xz", "txz", "lzma", "tlzma", "lz4", "xps", "oxps", "cbz"]
@@ -633,6 +633,12 @@ extension FileReaders {
         add(["mid", "midi", "imy", "ota"], "Music notes (MIDI / ringtone code) — player being built.")
         add(["mkv", "mka", "webm"], "Matroska / WebM — player being built.")
         add(["ogg", "oga"], "Ogg Vorbis music — player being built (Opus voice notes already play).")
+        add(["lzma", "tlzma"], "Compressed with LZMA — unpacking being built.")
+        // Pictures the iPhone's own decoder doesn't know (it knows PSD, TGA, EXR, JP2, AVIF, ICO, BMP, TIFF, HEIC, WebP and most RAW).
+        add(["dds", "iff", "jng", "mng", "pcd", "pcx", "ras", "rgb", "rgba", "sgi", "wbmp", "xbm", "xpm", "avifs", "exr", "jp2", "tga", "targa", "psd", "ico", "avif", "heif", "bmp", "tif", "tiff"],
+            "Picture format — decoder being built.")
+        add(["3fr", "arw", "bay", "cr2", "cr3", "crw", "dcr", "dng", "erf", "kdc", "mos", "mrw", "nef", "nrw", "orf", "pef", "raf", "raw", "rw2", "rwl", "sr2", "srf", "srw", "x3f"],
+            "This camera's RAW format isn't one the iPhone decodes yet.")
         return m
     }()
 
@@ -642,14 +648,14 @@ extension FileReaders {
         let ext = (raw as NSString).pathExtension.isEmpty ? raw.lowercased() : (raw as NSString).pathExtension.lowercased()
         if tableExts.contains(ext) || codeExts.contains(ext) || bookExts.contains(ext) || officeAlias[ext] != nil
             || ["eml", "emlx", "mht", "mhtml", "db", "sqlite", "sqlite3", "db3", "pbm", "pgm", "ppm", "pnm", "pam", "xps", "oxps", "opus", "cbz",
-                "zip", "jar", "apk", "aab", "ipa", "tar", "tgz", "gz", "gzip", "xz", "txz", "lzma", "tlzma", "html", "htm", "xhtml", "text"].contains(ext) { return .reads }
-        if let why = notYet[ext] { return .notYet(why) }
+                "zip", "jar", "apk", "aab", "ipa", "tar", "tgz", "gz", "gzip", "xz", "txz", "html", "htm", "xhtml", "text"].contains(ext) { return .reads }
         if quickLookExts.contains(ext) { return .apple }
         if let t = UTType(filenameExtension: ext) {
             let images = (CGImageSourceCopyTypeIdentifiers() as? [String]) ?? []
             if images.contains(where: { UTType($0).map { t.conforms(to: $0) } ?? false }) { return .reads }
             if AVURLAssetTypes.all.contains(where: { t.conforms(to: $0) }) { return .apple }
         }
+        if let why = notYet[ext] { return .notYet(why) }
         return .notYet("Not supported yet.")
     }
 }
