@@ -1,0 +1,166 @@
+SCORE audio-tools n=11 1.000
+AUDIO TOOLS	clip	length	convert	compress	ringtone	trim+fade	2× speed	| problem
+0	5.9	1	1	1	1	1	| 
+1	4.8	1	1	1	1	1	| 
+2	12.5	1	1	1	1	1	| 
+3	9.9	1	1	1	1	1	| 
+4	29.4	1	1	1	1	1	| 
+5	9.0	1	1	1	1	1	| 
+6	5.6	1	1	1	1	1	| 
+7	9.2	1	1	1	1	1	| 
+8	5.1	1	1	1	1	1	| 
+9	18.3	1	1	1	1	1	| 
+join	10.7						| 
+
+SCORE cutout n=3 0.000
+CUT-OUT	photo	variant	background clear	person solid	| problem
+face-selfie-close.jpg	as taken	1	0	|  holes in the person
+face-selfie-close.jpg	farther away	1	0	|  holes in the person
+face-selfie-close.jpg	dim	1	0	|  holes in the person
+
+SCORE fitit n=28 0.964
+FIT IT	photo	target	got	long side	| problem
+board-farm-todo.png	100 KB	98 KB	500	| 
+board-farm-todo.png	500 KB	101 KB	500	| 
+board-in-out.jpg	100 KB	75 KB	600	| 
+board-in-out.jpg	500 KB	75 KB	600	| 
+board-people-week.jpg	100 KB	98 KB	701	| 
+board-people-week.jpg	500 KB	369 KB	1200	| 
+board-schedule-whiteboard.jpg	100 KB	98 KB	701	| 
+board-schedule-whiteboard.jpg	500 KB	369 KB	1200	| 
+board-sticky-calendar.jpg	100 KB	98 KB	809	| 
+board-sticky-calendar.jpg	500 KB	492 KB	2056	| 
+face-selfie-close.jpg	100 KB	97 KB	921	| 
+face-selfie-close.jpg	500 KB	136 KB	967	| 
+menu-chinese-orange.jpg	100 KB	98 KB	515	| shrunk to 515 px — too small to read
+menu-chinese-orange.jpg	500 KB	487 KB	1478	| 
+menu-chinese-red.jpg	100 KB	98 KB	646	| 
+menu-chinese-red.jpg	500 KB	285 KB	1107	| 
+poster-speed-dating.jpg	100 KB	94 KB	636	| 
+poster-speed-dating.jpg	500 KB	113 KB	636	| 
+poster-upcoming-events.jpg	100 KB	97 KB	908	| 
+poster-upcoming-events.jpg	500 KB	392 KB	1600	| 
+receipt-east-repair-plain.png	100 KB	98 KB	1276	| 
+receipt-east-repair-plain.png	500 KB	363 KB	2868	| 
+receipt-east-repair-vintage.png	100 KB	98 KB	1068	| 
+receipt-east-repair-vintage.png	500 KB	492 KB	2868	| 
+receipt-quickbooks.png	100 KB	98 KB	1339	| 
+receipt-quickbooks.png	500 KB	337 KB	2868	| 
+receipt-xero.png	100 KB	98 KB	1332	| 
+receipt-xero.png	500 KB	342 KB	2868	| 
+
+SCORE identify-written n=13 0.308
+IDENTIFY	photo	got	gist	| ok
+board-farm-todo.png	bill	From Build-Fix.	| WRONG, wanted ["lists"]
+board-people-week.jpg	menu	6 dishes with prices — open it to read it in your language and check allergens.	| WRONG, wanted ["schedule"]
+board-schedule-whiteboard.jpg	menu	6 dishes with prices — open it to read it in your language and check allergens.	| WRONG, wanted ["schedule"]
+board-sticky-calendar.jpg	calendar	1 thing written on the days.	| ok
+face-selfie-close.jpg	not paper (-)		| ok
+menu-chinese-orange.jpg	lists	104 items under 3 headings.	| WRONG, wanted ["menu"]
+menu-chinese-red.jpg	menu	9 dishes with prices — open it to read it in your language and check allergens.	| ok
+poster-speed-dating.jpg	card	LET US HELP YOU, SPEED UP THE PROCESS! Speed Dating	| WRONG, wanted ["poster", "page"]
+poster-upcoming-events.jpg	lists	7 items under 3 headings.	| WRONG, wanted ["poster", "page"]
+receipt-east-repair-plain.png	bill	From receipt.	| WRONG, wanted ["receipt"]
+receipt-east-repair-vintage.png	bill	From East Repair Inc..	| WRONG, wanted ["receipt"]
+receipt-quickbooks.png	receipt	Total $145.00.	| ok
+receipt-xero.png	lists	38 items under 5 headings.	| WRONG, wanted ["receipt"]
+
+SCORE passport n=30 0.000
+PASSPORT	photo	country	variant	head mm (limits)	eyes mm (limits)	background	size	score	| what failed
+face-selfie-close.jpg	us	as taken	—	—	plain	ok	88	| no face found in the finished photo
+face-selfie-close.jpg	us	tilted	—	—	plain	ok	88	| no face found in the finished photo
+face-selfie-close.jpg	us	dim	—	—	plain	ok	90	| no face found in the finished photo
+face-selfie-close.jpg	us	low-res	—	—	plain	ok	93	| no face found in the finished photo
+face-selfie-close.jpg	us	farther away	—	—	plain	ok	95	| no face found in the finished photo
+face-selfie-close.jpg	uk	as taken	—	—	plain	ok	93	| no face found in the finished photo
+face-selfie-close.jpg	uk	tilted	1582.2 (29–34)	—	plain	ok	80	| head 1582.2 mm; head still tilted 50°
+face-selfie-close.jpg	uk	dim	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	uk	low-res	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	uk	farther away	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	as taken	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	tilted	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	dim	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	low-res	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	eu	farther away	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	as taken	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	tilted	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	dim	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	low-res	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	in	farther away	—	—	kept	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca	as taken	—	—	plain	ok	45	| no face found in the finished photo
+face-selfie-close.jpg	ca	tilted	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca	dim	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca	low-res	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca	farther away	—	—	plain	ok	87	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	as taken	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	tilted	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	dim	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	low-res	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	ca-online	farther away	—	—	plain	ok	92	| no face found in the finished photo
+
+SCORE pdf-tools n=24 0.583
+PDF TOOLS	file	pages	reorder	lock	shrink	searchable	| problem
+160F-2019.pdf	1	1	1	1	has text	| 
+annotation-tx2.pdf	1	1	1	1	failed	| no text layer added
+bug1175962.pdf	1	1	1	1	has text	| 
+bug1708041.pdf	6	1	1	1	has text	| 
+bug1871353.1.pdf	1	1	1	1	failed	| no text layer added
+bug1997343.pdf	2	0	1	1	has text	| reorder lost or mixed pages
+colorspace_atan.pdf	1	1	1	1	no words on it	| 
+highlights.pdf	14	1	1	1	has text	| 
+issue11144_reduced.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue1453.pdf	1	1	1	1	has text	| 
+issue15557.pdf	1	1	1	1	failed	| no text layer added
+issue19550.pdf	1	0	1	1	failed	| reorder lost or mixed pages; no text layer added
+issue2074.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue2537r.pdf	1	1	1	1	failed	| no text layer added
+issue5704.pdf	1	1	1	1	has text	| 
+issue6179_reduced.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue7020.pdf	1	1	1	1	has text	| 
+issue7878.pdf	1	1	1	1	has text	| 
+javauninstall-7r.pdf	1	1	1	1	has text	| 
+multimedia_annotations.pdf	1	1	1	1	has text	| 
+pdfjs_wikipedia.pdf	1	1	1	1	has text	| 
+perf_paths_map.pdf	1	1	1	1	has text	| 
+perf_text_render_modes.pdf	1	1	1	1	has text	| 
+pr4922.pdf	2	0	1	1	has text	| reorder lost or mixed pages
+
+SCORE photo-flows n=30 0.967
+PHOTO FLOWS	flow	photo	| result
+under 2 MB	board-farm-todo.png	| 101 KB
+safe to share	board-farm-todo.png	| no location
+under 2 MB	board-in-out.jpg	| 75 KB
+safe to share	board-in-out.jpg	| no location
+under 2 MB	board-people-week.jpg	| 369 KB
+safe to share	board-people-week.jpg	| no location
+under 2 MB	board-schedule-whiteboard.jpg	| 369 KB
+safe to share	board-schedule-whiteboard.jpg	| no location
+under 2 MB	board-sticky-calendar.jpg	| 946 KB
+safe to share	board-sticky-calendar.jpg	| no location
+under 2 MB	face-selfie-close.jpg	| 136 KB
+safe to share	face-selfie-close.jpg	| no location
+under 2 MB	menu-chinese-orange.jpg	| 624 KB
+safe to share	menu-chinese-orange.jpg	| no location
+under 2 MB	menu-chinese-red.jpg	| 285 KB
+safe to share	menu-chinese-red.jpg	| no location
+under 2 MB	poster-speed-dating.jpg	| 113 KB
+safe to share	poster-speed-dating.jpg	| no location
+under 2 MB	poster-upcoming-events.jpg	| 392 KB
+safe to share	poster-upcoming-events.jpg	| no location
+under 2 MB	receipt-east-repair-plain.png	| 363 KB
+safe to share	receipt-east-repair-plain.png	| no location
+under 2 MB	receipt-east-repair-vintage.png	| 552 KB
+safe to share	receipt-east-repair-vintage.png	| no location
+under 2 MB	receipt-quickbooks.png	| 337 KB
+safe to share	receipt-quickbooks.png	| no location
+under 2 MB	receipt-xero.png	| 342 KB
+safe to share	receipt-xero.png	| no location
+hide faces	face-selfie-close.jpg as taken	| 1 face(s) before, 0 after, 89 KB
+hide faces	face-selfie-close.jpg farther away	| 1 face(s) before, 1 after, 140 KB
+
+SCORE profile-picture n=3 0.000
+PROFILE PICTURE	photo	variant	face centre x	head share	| problem
+face-selfie-close.jpg	as taken	2755691411280.10	21624208779506.52	| face off centre; head 2162420877950651% of the height; top of the head cut off
+face-selfie-close.jpg	farther away	14333426816207.85	100905248494045.42	| face off centre; head 10090524849404542% of the height; top of the head cut off
+face-selfie-close.jpg	tilted	195751428216091.09	1746988888110581.25	| face off centre; head 174698888811058112% of the height; top of the head cut off
+
