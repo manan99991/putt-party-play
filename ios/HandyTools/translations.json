@@ -5219,6 +5219,16 @@
   "pt": "Copiar para partilhar",
   "zh": "复制以分享"
  },
+ "Copy — not valid as ID": {
+  "de": "Kopie – nicht als Ausweis gültig",
+  "es": "Copia: no válida como identificación",
+  "fr": "Copie — ne vaut pas pièce d'identité",
+  "hi": "कॉपी — पहचान पत्र के रूप में मान्य नहीं",
+  "it": "Copia — non valida come documento",
+  "ja": "コピー — 身分証として無効",
+  "pt": "Cópia — não vale como documento",
+  "zh": "复印件——不可作为身份证件"
+ },
  "Corners": {
   "de": "Ecken",
   "es": "Esquinas",
@@ -8949,6 +8959,26 @@
   "pt": "Para quadro ou prateleira: apoie o lado comprido do celular em cima. Para mesa: deite o celular.",
   "zh": "挂画或搁架：把手机长边贴在顶部。桌面：把手机平放。"
  },
+ "For account opening only": {
+  "de": "Nur zur Kontoeröffnung",
+  "es": "Solo para abrir una cuenta",
+  "fr": "Uniquement pour l'ouverture d'un compte",
+  "hi": "सिर्फ़ खाता खोलने के लिए",
+  "it": "Solo per l'apertura del conto",
+  "ja": "口座開設専用",
+  "pt": "Somente para abertura de conta",
+  "zh": "仅用于开户"
+ },
+ "For employment check only": {
+  "de": "Nur zur Beschäftigungsprüfung",
+  "es": "Solo para verificación laboral",
+  "fr": "Uniquement pour vérification d'emploi",
+  "hi": "सिर्फ़ नौकरी की जांच के लिए",
+  "it": "Solo per verifica d'impiego",
+  "ja": "雇用確認専用",
+  "pt": "Somente para verificação de emprego",
+  "zh": "仅用于入职核查"
+ },
  "For live camera translation, use Capture — tap a line there and choose Translate.": {
   "de": "Für Live-Kameraübersetzung nutze „Erfassen“ — tippe dort eine Zeile an und wähle „Übersetzen“.",
   "es": "Para traducción con cámara en vivo, usa Capturar: toca una línea ahí y elige Traducir.",
@@ -8968,6 +8998,26 @@
   "ja": "印刷用（300 dpi）",
   "pt": "Para imprimir (300 dpi)",
   "zh": "用于打印（300 dpi）"
+ },
+ "For rental application only": {
+  "de": "Nur für den Mietantrag",
+  "es": "Solo para la solicitud de alquiler",
+  "fr": "Uniquement pour le dossier de location",
+  "hi": "सिर्फ़ किराये के आवेदन के लिए",
+  "it": "Solo per la richiesta d'affitto",
+  "ja": "賃貸申込専用",
+  "pt": "Somente para pedido de aluguel",
+  "zh": "仅用于租房申请"
+ },
+ "For verification only": {
+  "de": "Nur zur Prüfung",
+  "es": "Solo para verificación",
+  "fr": "Uniquement pour vérification",
+  "hi": "सिर्फ़ सत्यापन के लिए",
+  "it": "Solo per verifica",
+  "ja": "確認専用",
+  "pt": "Somente para verificação",
+  "zh": "仅供核验"
  },
  "Forgot your PIN?": {
   "de": "PIN vergessen?",
@@ -14388,6 +14438,16 @@
   "ja": "このツールに名前を付ける",
   "pt": "Dá nome a esta ferramenta",
   "zh": "为此工具命名"
+ },
+ "Name who it's for, so the copy can't be reused anywhere else. Today's date is added.": {
+  "de": "Nenne, für wen es ist, damit die Kopie nirgends sonst verwendet werden kann. Das heutige Datum wird ergänzt.",
+  "es": "Indica para quién es, así la copia no se puede reutilizar en otro sitio. Se añade la fecha de hoy.",
+  "fr": "Indiquez pour qui c'est, afin que la copie ne puisse servir ailleurs. La date du jour est ajoutée.",
+  "hi": "लिखें कि यह किसके लिए है, ताकि कॉपी कहीं और इस्तेमाल न हो सके। आज की तारीख़ जुड़ जाती है।",
+  "it": "Indica per chi è, così la copia non può essere riusata altrove. Viene aggiunta la data di oggi.",
+  "ja": "提出先を書いておけば、コピーを他で使い回されません。今日の日付が追加されます。",
+  "pt": "Diga para quem é, para a cópia não ser reutilizada em outro lugar. A data de hoje é incluída.",
+  "zh": "写明给谁用，副本就无法被挪作他用。会自动加上今天的日期。"
  },
  "Name your tool": {
   "de": "Benenne dein Tool",
@@ -29889,6 +29949,16 @@
   "pt": "Escreve {month} para começar uma folha nova a cada mês. O exemplo mostrado aqui não é guardado.",
   "zh": "写 {month} 可每月新建一个表格。此处显示的示例不会被保存。"
  },
+ "Written across it:": {
+  "de": "Darüber geschrieben:",
+  "es": "Se escribe encima:",
+  "fr": "Écrit en travers :",
+  "hi": "इस पर लिखा जाएगा:",
+  "it": "Scritto sopra:",
+  "ja": "書き込まれる文字：",
+  "pt": "Escrito por cima:",
+  "zh": "将写在上面："
+ },
  "Wrong-number opener": {
   "de": "Falsche-Nummer-Masche",
   "es": "Inicio de «número equivocado»",
@@ -30409,6 +30479,16 @@
   "pt": "O teu vídeo está pronto",
   "zh": "你的视频已就绪"
  },
+ "Your watermark": {
+  "de": "Dein Wasserzeichen",
+  "es": "Tu marca de agua",
+  "fr": "Votre filigrane",
+  "hi": "आपका वॉटरमार्क",
+  "it": "La tua filigrana",
+  "ja": "あなたの透かし",
+  "pt": "Sua marca d'água",
+  "zh": "你的水印"
+ },
  "Yu-xiang (“fish-fragrant”) sauce has no fish, but it's usually cooked with pork": {
   "de": "Yu-Xiang-Sauce („Fischduft“) enthält keinen Fisch, wird aber meist mit Schwein gekocht",
   "es": "La salsa yu-xiang («aroma de pescado») no lleva pescado, pero suele llevar cerdo",
@@ -30918,6 +30998,16 @@
   "ja": "例：50",
   "pt": "ex.: 50",
   "zh": "例如 50"
+ },
+ "e.g. For Chase account opening only": {
+  "de": "z. B. Nur zur Kontoeröffnung bei Chase",
+  "es": "p. ej., Solo para abrir una cuenta en Chase",
+  "fr": "ex. Uniquement pour l'ouverture d'un compte Chase",
+  "hi": "जैसे सिर्फ़ Chase खाता खोलने के लिए",
+  "it": "es. Solo per l'apertura del conto Chase",
+  "ja": "例：Chaseの口座開設専用",
+  "pt": "ex.: Somente para abertura de conta no Chase",
+  "zh": "例如：仅用于 Chase 开户"
  },
  "e.g. HELP or your name": {
   "de": "z. B. HILFE oder dein Name",

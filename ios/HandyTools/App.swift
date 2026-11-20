@@ -414,6 +414,9 @@ struct ToolDestination: View {
         case "audioclean": AudioCleanView()
         case "meetingnotes": MeetingNotesView()
         case "soundboard": SoundboardView()
+        // A ready-made tool by its id ("run-watermark-id"): used by the promise checks in the UI tests and by links.
+        case let r where r.hasPrefix("run-") && ChainTemplates.all.contains(where: { $0.id == String(r.dropFirst(4)) }):
+            ChainRunView(chain: ChainTemplates.all.first(where: { $0.id == String(r.dropFirst(4)) })!)
         default: ComingSoonView(id: id)
         }
     }

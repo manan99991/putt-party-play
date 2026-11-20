@@ -1638,6 +1638,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var livePick: PhotosPickerItem?
     /// A meme's words can be typed fresh for each run.
     @State private var memeTop = ""
+    @State private var watermarkWords = ""
     @State private var memeBottom = ""
     @State private var memeLoaded = false
     /// The photos picked for a meme are held so the caption can be typed in any order and re-applied
@@ -1667,16 +1668,56 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     /// A QR-making result gets the long-press "what's inside this code" preview; ordinary photos don't.
     private var isQRResult: Bool { chain.steps.contains { [.makeQr, .contactQr, .wifiQr].contains($0.block) } }
     /// A free user can't run a tool that uses a Pro step; they see the lock card instead of the inputs.
-    private var locked: Bool { !store.isPremium && chain.needsPro }
+    private var locked: Bool { !store.isPremium && chain.needsPro && !Launch.uitest && !AppEnv.isTestBuild }
 
     /// The tool as it runs this time: a meme step takes the words typed on this screen.
     private var runChain: Chain {
-        guard hasMeme else { return chain }
+        guard hasMeme || hasWatermark else { return chain }
         var c = chain
         for i in c.steps.indices where c.steps[i].block == .meme {
             c.steps[i].settings["top"] = memeTop; c.steps[i].settings["bottom"] = memeBottom
         }
+        // Your own words across the copy, typed right here — not hidden in the tool's edit screen.
+        for i in c.steps.indices where c.steps[i].block == .watermark {
+            c.steps[i].settings["text"] = watermarkWords.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
         return c
+    }
+    private var hasWatermark: Bool { chain.steps.contains { $0.block == .watermark } }
+
+    /// "Your watermark": who the copy is for, typed on the run screen, remembered per tool, with ready-made
+    /// choices for the usual cases and a live line showing exactly what will be written (date added).
+    @ViewBuilder private var watermarkSetup: some View {
+        if hasWatermark {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                Label(L("Your watermark"), systemImage: "signature").font(HandyFont.bodyStrong)
+                TextField(L("e.g. For Chase account opening only"), text: $watermarkWords)
+                    .padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12))
+                    .accessibilityIdentifier("run-watermark-words")
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(["For verification only", "For account opening only", "For rental application only", "For employment check only", "Copy — not valid as ID"], id: \.self) { w in
+                            Button { watermarkWords = L(w) } label: {
+                                Text(L(w)).font(HandyFont.caption).padding(.horizontal, 10).padding(.vertical, 7)
+                                    .background(watermarkWords == L(w) ? HandyColor.accent : HandyColor.surface, in: Capsule())
+                                    .foregroundStyle(watermarkWords == L(w) ? Color.white : HandyColor.textPrimary)
+                            }.buttonStyle(.plain)
+                        }
+                    }
+                }
+                Text("\(L("Written across it:")) “\(ChainImage.watermarkLine(watermarkWords.trimmingCharacters(in: .whitespacesAndNewlines), on: Date()))”")
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                Text(L("Name who it's for, so the copy can't be reused anywhere else. Today's date is added.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
+            .cardStyle(padding: HandySpacing.s12)
+            .onAppear {
+                if watermarkWords.isEmpty {
+                    watermarkWords = UserDefaults.standard.string(forKey: "tenzy.watermark.\(chain.id)")
+                        ?? chain.steps.first(where: { $0.block == .watermark })?.settings["text"] ?? ""
+                }
+            }
+            .onChange(of: watermarkWords) { _, v in UserDefaults.standard.set(v, forKey: "tenzy.watermark.\(chain.id)") }
+        }
     }
 
     /// Draw the meme onto the photos held from the last pick, using whatever caption is typed right now.
@@ -1726,6 +1767,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     }
                 }
                 stampSetup
+                watermarkSetup
                 if hasMeme {
                     TextField(L("Top line"), text: $memeTop).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12)).accessibilityIdentifier("run-meme-top")
                     TextField(L("Bottom line"), text: $memeBottom).padding(HandySpacing.s12).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12)).accessibilityIdentifier("run-meme-bottom")
