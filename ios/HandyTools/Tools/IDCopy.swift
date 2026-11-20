@@ -131,6 +131,7 @@ struct IDCopyResult: View {
                 actions(d, ext)
             }
             .cardStyle(padding: HandySpacing.s12)
+            .accessibilityElement(children: .contain)
             .accessibilityIdentifier("idcopy-result")
     }
 

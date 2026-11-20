@@ -25,6 +25,7 @@ struct ListenFinishCard: View {
             ShareLink(item: url) { Label(L("Share or save to Files"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         }
         .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("listen-finish")
     }
 }

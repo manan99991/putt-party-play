@@ -61,6 +61,7 @@ struct VoiceFinishCard: View {
             Text("\(SizeTarget.format(result.count)) · WAV").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
         .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("voice-finish")
         .onAppear { if resultURL == nil { writeResult() } }
         .onDisappear { player?.stop() }

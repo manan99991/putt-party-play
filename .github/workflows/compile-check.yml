@@ -1,0 +1,40 @@
+name: Compile check
+
+# Fast first signal: does everything (app, share extension, unit + UI test targets) compile?
+# Runs alone (never queued behind the full iOS run), a newer push cancels an older check, and it never
+# signs, uploads or ships anything.
+on:
+  push:
+    branches: [handytools]
+    paths: ["ios/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compile-check
+  cancel-in-progress: true
+
+jobs:
+  compile:
+    runs-on: xcode-27
+    timeout-minutes: 25
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+      - name: Generate project
+        run: brew install xcodegen >/dev/null && xcodegen generate
+      - name: Compile app and tests
+        run: |
+          set -o pipefail
+          xcodebuild build-for-testing \
+            -project HandyTools.xcodeproj -scheme HandyTools \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee compile.log | grep -E "error:|\*\* TEST BUILD" || true
+          grep -q "TEST BUILD SUCCEEDED" compile.log

@@ -24,7 +24,8 @@ final class FinishFactsTests: XCTestCase {
         let d = NSMutableData()
         let dest = try XCTUnwrap(CGImageDestinationCreateWithData(d, UTType.gif.identifier as CFString, 3, nil))
         for i in 0..<3 {
-            let img = UIGraphicsImageRenderer(size: CGSize(width: 40, height: 30)).image { c in
+            let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+            let img = UIGraphicsImageRenderer(size: CGSize(width: 40, height: 30), format: fmt).image { c in
                 UIColor(hue: CGFloat(i) / 3, saturation: 1, brightness: 1, alpha: 1).setFill(); c.fill(CGRect(x: 0, y: 0, width: 40, height: 30))
             }
             CGImageDestinationAddImage(dest, img.cgImage!, [kCGImagePropertyGIFDictionary as String: [kCGImagePropertyGIFDelayTime as String: 0.2]] as CFDictionary)

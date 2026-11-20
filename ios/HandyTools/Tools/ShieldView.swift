@@ -98,6 +98,7 @@ struct ScamVerdictCard: View {
             reportView(report)
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
         }
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("scam-verdict")
     }
 

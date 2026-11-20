@@ -86,6 +86,7 @@ struct VideoFinishCard: View {
             if let saved { Text(saved).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
         }
         .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("video-finish")
         .task(id: url) {
             if player == nil { player = AVPlayer(url: url) }
@@ -180,6 +181,7 @@ struct GIFFinishCard: View {
             Text(L("In Messages and WhatsApp, share it from here so it stays animated.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
         .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("gif-finish")
     }
 }

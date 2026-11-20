@@ -48,6 +48,7 @@ struct CodeFinishCard: View {
             if let saved { Text(saved).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
         }
         .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("code-finish")
         .task(id: ObjectIdentifier(image)) {
             let img = image
@@ -76,6 +77,7 @@ struct ChatLinkFinishCard: View {
             if let qr = QRGen.make(link, scale: 10) { CodeFinishCard(image: qr) }
         }
         .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("chat-finish")
     }
 }
