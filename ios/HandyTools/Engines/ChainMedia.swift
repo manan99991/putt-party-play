@@ -43,7 +43,10 @@ enum ChainMedia {
             switch await Transcriber.listen(to: url, locale: locale, detect: auto) {
             case .failure(let p): return .failure(.invalid(p.words(for: b)))
             case .success(let heard):
-                let text = heard.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                var text = heard.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !text.isEmpty, !heard.cantDo.isEmpty {
+                    text += "\n\n(" + "This phone can't write out \(heard.cantDo.joined(separator: ", ")) on the device, so those parts may be missing or spelled as English." + ")"
+                }
                 return text.isEmpty ? .failure(.invalid("\(b.title) didn't hear any words in that recording.")) : .success(.text(text))
             }
 
@@ -381,7 +384,11 @@ final class Once<T>: @unchecked Sendable {
 
 /// Turns a recording into words, on the phone only.
 enum Transcriber {
-    struct Heard { let text: String; let words: [(text: String, start: Double, end: Double)] }
+    struct Heard {
+        let text: String; let words: [(text: String, start: Double, end: Double)]
+        /// Languages the person speaks that this phone can't write out on device (said plainly under the text).
+        var cantDo: [String] = []
+    }
     enum Problem: Error {
         case denied, unavailable, nothing, recognizerFailed
         func words(for b: Block) -> String {
@@ -497,9 +504,14 @@ enum Transcriber {
     /// phone can recognise it on device.
     static func candidateLocales(_ preferred: [String] = Locale.preferredLanguages, current: Locale = .current) -> [Locale] {
         var out: [Locale] = [], seen = Set<String>()
-        for id in [current.identifier] + preferred {
+        // Indian languages are often mixed with English: Indian English hears that English far better than US English.
+        let indian: Set<String> = ["hi", "gu", "mr", "ta", "te", "bn", "kn", "ml", "pa", "ur"]
+        let codes = ([current.identifier] + preferred).compactMap { Locale(identifier: $0).language.languageCode?.identifier }
+        var ids = [current.identifier] + preferred
+        if current.region?.identifier == "IN" || codes.contains(where: indian.contains) { ids.insert("en-IN", at: 1) }
+        for id in ids {
             let l = Locale(identifier: id)
-            let key = l.language.languageCode?.identifier ?? id
+            let key = l.identifier == "en-IN" ? "en-IN" : (l.language.languageCode?.identifier ?? id)
             guard !seen.contains(key) else { continue }
             seen.insert(key); out.append(l)
             if out.count == 4 { break }
@@ -538,6 +550,8 @@ enum Transcriber {
     }
 
     static func listen(to url: URL, locale: Locale = .current, detect: Bool = false) async -> Result<Heard, Problem> {
+        var cantDo: [String] = []
+        var also: SFSpeechRecognizer? = nil
         let asked = Once<SFSpeechRecognizerAuthorizationStatus>()
         Permission.speech { asked.finish($0) }
         let status = await withCheckedContinuation { asked.wait($0) }
@@ -547,14 +561,23 @@ enum Transcriber {
             // Which language is it? Try the first stretch in each of the person's languages and keep the one the
             // phone is surest about, instead of forcing Hindi or Spanish speech through English ("Mama mama mama").
             let readable = await readableAudioURL(for: url)
-            var best: (Locale, Double)? = nil
+            var scored: [(Locale, Double)] = []
             for l in candidateLocales() {
-                guard let r = SFSpeechRecognizer(locale: l), r.isAvailable, r.supportsOnDeviceRecognition else { continue }
-                let p = await probe(r, url: readable)
-                if p.sure > (best?.1 ?? -1) { best = (l, p.sure) }
+                guard let r = SFSpeechRecognizer(locale: l), r.isAvailable, r.supportsOnDeviceRecognition else {
+                    let name = Locale.current.localizedString(forLanguageCode: l.language.languageCode?.identifier ?? "") ?? l.identifier
+                    if !l.identifier.hasPrefix("en") { cantDo.append(name) }
+                    continue
+                }
+                scored.append((l, await probe(r, url: readable).sure))
             }
             if readable != url { try? FileManager.default.removeItem(at: readable) }
-            if let b = best { locale = b.0 }
+            scored.sort { $0.1 > $1.1 }
+            if let b = scored.first {
+                locale = b.0
+                // A second language that came close is listened with too, stretch by stretch — for talk that mixes
+                // English with Hindi or Gujarati, each stretch keeps whichever the phone is surer of.
+                if scored.count > 1, scored[1].1 > b.1 - 0.2, let r = SFSpeechRecognizer(locale: scored[1].0) { also = r }
+            }
         }
         // The chosen language first; fall back to the device's, then any available recognizer, so a tool
         // set to transcribe Hindi uses a Hindi recogniser instead of forcing the words through English.
@@ -582,16 +605,25 @@ enum Transcriber {
 
         var parts: [String] = []
         let recogError = Flag()
+        let listeners = [recognizer] + (also.map { [$0] } ?? [])
         while file.framePosition < total {
-            let req = SFSpeechAudioBufferRecognitionRequest()
-            req.requiresOnDeviceRecognition = true
-            req.shouldReportPartialResults = false
-            req.addsPunctuation = true
-            let once = Once<String>()
-            let box = Box()
-            box.task = recognizer.recognitionTask(with: req) { result, error in
-                if let result, result.isFinal { once.finish(result.bestTranscription.formattedString) }
-                else if error != nil { recogError.set(); once.finish("") }
+            if Task.isCancelled { break }
+            // The same stretch goes to each language being listened in; the surer result is kept.
+            var reqs: [SFSpeechAudioBufferRecognitionRequest] = [], waits: [Once<(String, Double)>] = [], boxes: [Box] = []
+            for r in listeners {
+                let req = SFSpeechAudioBufferRecognitionRequest()
+                req.requiresOnDeviceRecognition = true
+                req.shouldReportPartialResults = false
+                req.addsPunctuation = true
+                let once = Once<(String, Double)>(), box = Box()
+                box.task = r.recognitionTask(with: req) { result, error in
+                    if let result, result.isFinal {
+                        let segs = result.bestTranscription.segments
+                        let sure = segs.isEmpty ? 0 : segs.map { Double($0.confidence) }.reduce(0, +) / Double(segs.count)
+                        once.finish((result.bestTranscription.formattedString, sure))
+                    } else if error != nil { recogError.set(); once.finish(("", 0)) }
+                }
+                reqs.append(req); waits.append(once); boxes.append(box)
             }
             var read: AVAudioFrameCount = 0
             while read < windowFrames && file.framePosition < total {
@@ -599,13 +631,15 @@ enum Transcriber {
                 guard let buf = AVAudioPCMBuffer(pcmFormat: fmt, frameCapacity: cap) else { break }
                 do { try file.read(into: buf, frameCount: cap) } catch { break }
                 if buf.frameLength == 0 { break }
-                req.append(buf)
+                for req in reqs { req.append(buf) }
                 read += buf.frameLength
             }
-            req.endAudio()
-            // A 40s window recognises in well under a minute; cap so one stuck window can't stall the job.
-            DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish("") }
-            let text = await withCheckedContinuation { once.wait($0) }
+            for req in reqs { req.endAudio() }
+            // A recogniser that never answers for a stretch just gives that stretch up; the job carries on.
+            for (box, once) in zip(boxes, waits) { DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish(("", 0)) } }
+            var heard: [(String, Double)] = []
+            for once in waits { heard.append(await withCheckedContinuation { once.wait($0) }) }
+            let text = heard.filter { !$0.0.isEmpty }.max { $0.1 < $1.1 }?.0 ?? ""
             if !text.isEmpty { parts.append(text) }
             await MainActor.run { RunProgress.shared.set(fraction(file.framePosition, of: total)) }
             if read == 0 { break }   // nothing read — avoid an endless loop on a malformed file
@@ -614,7 +648,7 @@ enum Transcriber {
         // Empty because the recogniser erred (model/Dictation not ready) is a different problem from a
         // recording that genuinely has no speech — report the right one so the message is honest.
         guard !joined.isEmpty else { return .failure(recogError.value ? .recognizerFailed : .nothing) }
-        return .success(Heard(text: joined, words: []))
+        return .success(Heard(text: joined, words: [], cantDo: cantDo))
     }
 }
 

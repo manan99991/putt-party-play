@@ -160,7 +160,10 @@ final class FinishFactsTests: XCTestCase {
     /// person's languages on the first stretch and keeps the one the phone is surest about.
     func testAutoTranscriptionTriesEachOfThePersonsLanguages() {
         let c = Transcriber.candidateLocales(["en-US", "hi-IN", "en-GB", "gu-IN", "es-ES", "fr-FR"], current: Locale(identifier: "en_US"))
-        XCTAssertEqual(c.map { $0.language.languageCode?.identifier }, ["en", "hi", "gu", "es"])
+        // Your language, Indian English (because Hindi/Gujarati are in your list — talk often mixes them), then Hindi and Gujarati.
+        XCTAssertEqual(c.map(\.identifier), ["en_US", "en-IN", "hi-IN", "gu-IN"])
+        let plain = Transcriber.candidateLocales(["en-US", "es-ES"], current: Locale(identifier: "en_US"))
+        XCTAssertEqual(plain.map(\.identifier), ["en_US", "es-ES"])
     }
 }
 
