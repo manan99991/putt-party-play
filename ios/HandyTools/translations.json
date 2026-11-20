@@ -5499,6 +5499,16 @@
   "pt": "Nenhum prato encontrado na foto — tente mais perto, mais reto e com boa luz.",
   "zh": "照片中未找到菜品——请靠近、放平并在光线好的地方重试。"
  },
+ "Couldn't finish": {
+  "de": "Nicht fertig geworden",
+  "es": "No se pudo terminar",
+  "fr": "N'a pas pu terminer",
+  "hi": "पूरा नहीं हो सका",
+  "it": "Non completato",
+  "ja": "完了できませんでした",
+  "pt": "Não terminou",
+  "zh": "未能完成"
+ },
  "Couldn't get under that size without ruining it. Try a larger limit.": {
   "de": "Ohne Qualitätsverlust nicht unter diese Größe zu bringen. Versuch eine größere Grenze.",
   "es": "No se pudo bajar de ese tamaño sin arruinarla. Prueba un límite mayor.",
@@ -25779,6 +25789,56 @@
   "pt": "Toque para mudar o nome dentro do zip",
   "zh": "点击可重命名 zip 里的这个文件"
  },
+ "Tap to see it.": {
+  "de": "Tippen zum Ansehen.",
+  "es": "Toca para verlo.",
+  "fr": "Touchez pour le voir.",
+  "hi": "देखने के लिए टैप करें।",
+  "it": "Tocca per vederlo.",
+  "ja": "タップして見る。",
+  "pt": "Toque para ver.",
+  "zh": "轻点查看。"
+ },
+ "Tap to see what happened and try again.": {
+  "de": "Tippen, um zu sehen, was passiert ist, und es erneut zu versuchen.",
+  "es": "Toca para ver qué pasó y reintentarlo.",
+  "fr": "Touchez pour voir ce qui s'est passé et réessayer.",
+  "hi": "क्या हुआ देखने और फिर से कोशिश करने के लिए टैप करें।",
+  "it": "Tocca per vedere cosa è successo e riprovare.",
+  "ja": "タップして内容を確認し、やり直す。",
+  "pt": "Toque para ver o que aconteceu e tentar de novo.",
+  "zh": "轻点查看原因并重试。"
+ },
+ "Tap to see what happened.": {
+  "de": "Tippen, um zu sehen, was passiert ist.",
+  "es": "Toca para ver qué pasó.",
+  "fr": "Touchez pour voir ce qui s'est passé.",
+  "hi": "क्या हुआ देखने के लिए टैप करें।",
+  "it": "Tocca per vedere cosa è successo.",
+  "ja": "タップして内容を確認。",
+  "pt": "Toque para ver o que aconteceu.",
+  "zh": "轻点查看情况。"
+ },
+ "Tap to see your result.": {
+  "de": "Tippen, um das Ergebnis zu sehen.",
+  "es": "Toca para ver el resultado.",
+  "fr": "Touchez pour voir le résultat.",
+  "hi": "नतीजा देखने के लिए टैप करें।",
+  "it": "Tocca per vedere il risultato.",
+  "ja": "タップして結果を見る。",
+  "pt": "Toque para ver o resultado.",
+  "zh": "轻点查看结果。"
+ },
+ "Tap to try again.": {
+  "de": "Tippen, um es erneut zu versuchen.",
+  "es": "Toca para reintentarlo.",
+  "fr": "Touchez pour réessayer.",
+  "hi": "फिर से कोशिश करने के लिए टैप करें।",
+  "it": "Tocca per riprovare.",
+  "ja": "タップしてやり直す。",
+  "pt": "Toque para tentar de novo.",
+  "zh": "轻点重试。"
+ },
  "Tap what it's for (email it, GarageBand, a CD…) and the right format is picked for you.": {
   "de": "Tippe, wofür es ist (E-Mail, GarageBand, CD …), und das passende Format wird gewählt.",
   "es": "Toca para qué es (correo, GarageBand, un CD…) y se elige el formato adecuado.",
@@ -31169,6 +31229,16 @@
   "pt": "A cópia do documento está pronta",
   "zh": "证件副本已就绪"
  },
+ "Your PDF is ready": {
+  "de": "Dein PDF ist fertig",
+  "es": "Tu PDF está listo",
+  "fr": "Votre PDF est prêt",
+  "hi": "आपका PDF तैयार है",
+  "it": "Il tuo PDF è pronto",
+  "ja": "PDFができました",
+  "pt": "O seu PDF está pronto",
+  "zh": "PDF 已就绪"
+ },
  "Your answer": {
   "de": "Deine Antwort",
   "es": "Tu respuesta",
@@ -31278,6 +31348,16 @@
   "ja": "好きだった先生の名字",
   "pt": "O sobrenome do seu professor favorito",
   "zh": "你最喜欢的老师的姓"
+ },
+ "Your file is ready": {
+  "de": "Deine Datei ist fertig",
+  "es": "Tu archivo está listo",
+  "fr": "Votre fichier est prêt",
+  "hi": "आपकी फ़ाइल तैयार है",
+  "it": "Il tuo file è pronto",
+  "ja": "ファイルができました",
+  "pt": "O seu ficheiro está pronto",
+  "zh": "文件已就绪"
  },
  "Your first pet's name": {
   "de": "Name deines ersten Haustiers",
@@ -31409,6 +31489,26 @@
   "pt": "A localização da sua foto foi removida",
   "zh": "已删除照片的位置信息"
  },
+ "Your picture is ready": {
+  "de": "Dein Bild ist fertig",
+  "es": "Tu imagen está lista",
+  "fr": "Votre image est prête",
+  "hi": "आपकी तस्वीर तैयार है",
+  "it": "La tua immagine è pronta",
+  "ja": "画像ができました",
+  "pt": "A sua imagem está pronta",
+  "zh": "图片已就绪"
+ },
+ "Your picture is ready.": {
+  "de": "Dein Bild ist fertig.",
+  "es": "Tu imagen está lista.",
+  "fr": "Votre image est prête.",
+  "hi": "आपकी तस्वीर तैयार है।",
+  "it": "La tua immagine è pronta.",
+  "ja": "画像ができました。",
+  "pt": "A sua imagem está pronta.",
+  "zh": "图片已就绪。"
+ },
  "Your plan as a picture": {
   "de": "Dein Plan als Bild",
   "es": "Tu plan como imagen",
@@ -31418,6 +31518,16 @@
   "ja": "計画を画像に",
   "pt": "O seu plano como imagem",
   "zh": "你的计划图片"
+ },
+ "Your recording is ready": {
+  "de": "Deine Aufnahme ist fertig",
+  "es": "Tu grabación está lista",
+  "fr": "Votre enregistrement est prêt",
+  "hi": "आपकी रिकॉर्डिंग तैयार है",
+  "it": "La tua registrazione è pronta",
+  "ja": "録音ができました",
+  "pt": "A sua gravação está pronta",
+  "zh": "录音已就绪"
  },
  "Your result": {
   "de": "Dein Ergebnis",

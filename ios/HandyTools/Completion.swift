@@ -23,12 +23,13 @@ enum Completion {
 
     /// Runs `work` off the main thread while holding a background task so it can finish off-screen,
     /// then posts a completion notification if the app isn't frontmost when it ends.
-    static func run<T>(_ tool: String, ok: @escaping (T) -> Bool = { _ in true }, work: () async -> T) async -> T {
+    static func run<T>(_ tool: String, ok: @escaping (T) -> Bool = { _ in true }, body: @escaping @MainActor (T) -> String? = { _ in nil },
+                       open: String? = nil, work: () async -> T) async -> T {
         prime()
         let id = await beginBG()
         let out = await work()
-        let active = await MainActor.run { UIApplication.shared.applicationState == .active }
-        if !active { notifyDone(tool, ok: ok(out)) }
+        let (active, line) = await MainActor.run { (UIApplication.shared.applicationState == .active, body(out)) }
+        if !active { notifyDone(tool, ok: ok(out), body: line, open: open) }
         await endBG(id)
         return out
     }
@@ -45,11 +46,14 @@ enum Completion {
     }
 
     /// Posts "<tool> is done" (or a needs-you nudge) so the user knows a job finished while away.
-    static func notifyDone(_ tool: String, ok: Bool = true) {
+    /// The body says what came out (or why it didn't), and tapping it opens where the result is — never just the app.
+    static func notifyDone(_ tool: String, ok: Bool = true, body: String? = nil, open: String? = nil) {
         let c = UNMutableNotificationContent()
-        c.title = ok ? "\(tool) is done" : "\(tool) couldn't finish"
-        c.body = ok ? "Your result is ready in Tenzy." : "Open Tenzy to try again."
+        c.title = L(ok ? "Done" : "Couldn't finish") + " — " + L(tool)
+        c.body = body ?? L(ok ? "Tap to see your result." : "Tap to see what happened and try again.")
         c.sound = .default
+        c.threadIdentifier = "results"
+        if let open { c.userInfo = ["open": open] }
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "done-\(UUID().uuidString)", content: c, trigger: nil))
     }
 }
@@ -73,7 +77,8 @@ private struct FinishesModifier: ViewModifier {
                 }
             } else {
                 if bgId != .invalid { UIApplication.shared.endBackgroundTask(bgId); bgId = .invalid }
-                if phase != .active { Completion.notifyDone(tool) }
+                // Tapping it opens this tool, where the result is waiting.
+                if phase != .active { Completion.notifyDone(tool, open: TOOLS.first { $0.name == tool || $0.id == tool }?.id) }
             }
         }
     }

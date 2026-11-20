@@ -130,6 +130,17 @@ final class FinishFactsTests: XCTestCase {
         XCTAssertEqual(v, v.sorted(), "progress went backwards")
         XCTAssertGreaterThan(v.last ?? 0, 0.5)
     }
+
+    /// "I can't see what the notification is about": a finished-job alert names what came out, or why it stopped.
+    @MainActor func testFinishedJobNotificationSaysWhatCameOut() {
+        let two = pdf(["One", "Two"])
+        let ok = ChainRunView.notificationLine(ChainRunner.RunReport(lines: [], result: .file(two, ext: "pdf"), completed: true, stopper: nil))
+        XCTAssertTrue(ok.contains("PDF") && ok.contains("2"), ok)
+        let text = ChainRunView.notificationLine(ChainRunner.RunReport(lines: [], result: .text("Meeting moved to Friday 3pm"), completed: true, stopper: nil))
+        XCTAssertTrue(text.contains("Meeting moved to Friday"), text)
+        let failed = ChainRunView.notificationLine(ChainRunner.RunReport(lines: [], result: nil, completed: false, stopper: .invalid("That video has no sound to remove.")))
+        XCTAssertTrue(failed.contains("no sound to remove"), failed)
+    }
 }
 
 /// A tiny lock box so a progress callback from another thread can be collected in a test.

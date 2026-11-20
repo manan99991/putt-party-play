@@ -2549,7 +2549,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let name = chain.name
         Task {
             // Completion keeps the job alive if the user switches away and notifies them when it's done.
-            let rep = await Completion.run(name, ok: { $0.completed || $0.result != nil }) {
+            let rep = await Completion.run(name, ok: { $0.completed || $0.result != nil }, body: { ChainRunView.notificationLine($0) }, open: "results") {
                 await ChainRunner.runReport(tool, input: input)
             }
             await MainActor.run {
@@ -2596,6 +2596,27 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 }
             }
         }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+    }
+
+    /// What a finished-job notification says: what came out (kind, size, pages, the first words), or why it stopped.
+    static func notificationLine(_ rep: ChainRunner.RunReport) -> String {
+        guard let p = rep.result else {
+            return rep.stopper.map { words($0) + " " + L("Tap to try again.") } ?? L("Tap to see what happened.")
+        }
+        let tap = L("Tap to see it.")
+        switch p {
+        case .text(let t):
+            let one = t.split(whereSeparator: \.isNewline).first.map(String.init) ?? t
+            return "“\(String(one.prefix(90)))\(one.count > 90 ? "…" : "")” — " + tap
+        case .image: return L("Your picture is ready.") + " " + tap
+        case .video(let u): return L("Your video is ready") + (SizeTarget.fileSize(u).map { " — " + SizeTarget.format($0) } ?? "") + ". " + tap
+        case .file(let d, let ext):
+            let e = ext.lowercased()
+            if e == "pdf", let n = PDFDocument(data: d)?.pageCount { return "\(L("Your PDF is ready")) — \(n) \(L(n == 1 ? "page" : "pages")), \(SizeTarget.format(d.count)). " + tap }
+            if ChainPayload.isPhoto(e) { return "\(L("Your picture is ready")) — \(SizeTarget.format(d.count)). " + tap }
+            if ChainPayload.isAudio(e) { return "\(L("Your recording is ready")) — \(SizeTarget.format(d.count)). " + tap }
+            return "\(L("Your file is ready")) — \(e.uppercased()), \(SizeTarget.format(d.count)). " + tap
+        }
     }
 
     static func words(_ f: ChainRunner.Failure) -> String {
