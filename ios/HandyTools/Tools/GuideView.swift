@@ -57,6 +57,7 @@ struct GuideView: View {
         }
         .interactiveDismissDisabled(!path.isEmpty)
         .task {
+            Diagnostics.shared.crumb("Guide: \(given.label)")
             guard isPhoto, let first = photos.first else { return }
             previews.prepare(photos: photos)
             let file: Data? = { if case .file(let d, _) = given.payload { return d } else { return nil } }()
@@ -79,7 +80,7 @@ struct GuideView: View {
                 else if isPhoto && clues == nil { ToolProgressBar(label: "Looking at your photo…", showsTime: false) }
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: HandySpacing.s12), GridItem(.flexible(), spacing: HandySpacing.s12)], spacing: HandySpacing.s12) {
                     ForEach(goals, id: \.goal) { g in
-                        Button { path.append(.goal(g.goal)) } label: { GoalTile(goal: Guide.goal(g.goal, count: given.count), ways: g.options.count, highlighted: guess?.goal == g.goal) }
+                        Button { Diagnostics.shared.crumb("Guide: chose \(g.goal)"); path.append(.goal(g.goal)) } label: { GoalTile(goal: Guide.goal(g.goal, count: given.count), ways: g.options.count, highlighted: guess?.goal == g.goal) }
                             .buttonStyle(.plain).accessibilityIdentifier("goal-\(g.goal)")
                     }
                 }
@@ -184,6 +185,7 @@ struct GuideView: View {
 
     /// Open a choice inside this same walk, so Back comes straight back here (never to Home).
     private func open(_ o: Guide.Option) {
+        Diagnostics.shared.crumb("Guide: opened \(o.id) with \(given.count)")
         switch o {
         case .tool(let id):
             ToolHandoff.shared.put(given.payload, for: id, others: given.more)

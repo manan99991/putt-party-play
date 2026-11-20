@@ -1,0 +1,55 @@
+name: iOS crash repro
+
+# Runs only the tests named in ios/REPRO_TESTS.txt (one -only-testing target per line), so a crash
+# from a tester can be reproduced and its fix proven in ~20 minutes instead of the full 75-minute run.
+# Never uploads anything to TestFlight or the store.
+on:
+  push:
+    branches: [handytools]
+    paths: ["ios/REPRO_TESTS.txt", ".github/workflows/ios-repro.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ios-repro
+  cancel-in-progress: true
+
+jobs:
+  repro:
+    runs-on: xcode-27
+    timeout-minutes: 60
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: Select newest Xcode
+        run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+      - name: Generate project
+        run: brew install xcodegen >/dev/null && xcodegen generate
+      - name: Run the repro tests
+        timeout-minutes: 45
+        run: |
+          set -o pipefail
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
+          ONLY=$(grep -v '^#' REPRO_TESTS.txt | sed '/^$/d' | sed 's/^/-only-testing:/' | tr '\n' ' ')
+          echo "simulator=$UDID tests=$ONLY"
+          xcodebuild test -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
+            $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD" || true
+          # Any crash the simulator recorded for the app, newest first.
+          ls -t ~/Library/Logs/DiagnosticReports/HandyTools* 2>/dev/null | head -3 | while read f; do echo "== $f"; head -c 60000 "$f"; done > crashes.txt || true
+          grep -q "TEST SUCCEEDED" repro.log
+      - name: Publish log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert" ios/repro.log | head -300; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
+          bash .github/publish-log.sh ios-repro ios-repro.log || true

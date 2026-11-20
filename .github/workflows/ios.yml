@@ -88,6 +88,7 @@ jobs:
             -only-testing:HandyToolsUITests/LiveToolTests \
             -only-testing:HandyToolsUITests/ToolControlsReachableTests \
             -only-testing:HandyToolsUITests/PromiseTests \
+            -only-testing:HandyToolsUITests/MultiPhotoTests \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
             -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true

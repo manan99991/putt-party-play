@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import PhotosUI
+import ImageIO
 import VisionKit
 import UniformTypeIdentifiers
 import WidgetKit
@@ -13,6 +14,18 @@ import AVKit
 private let audioImportTypes: [UTType] = [.audio] + ["opus", "ogg", "oga"].compactMap { UTType(filenameExtension: $0) }
 import AVFoundation
 import Compression
+
+extension UIImage {
+    /// A display copy no larger than `maxDimension`, decoded straight from the file at that size (upright),
+    /// so a 48-megapixel photo never sits in memory at full size just to be shown.
+    static func downsampled(_ data: Data, maxDimension: CGFloat) -> UIImage? {
+        guard let src = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary) else { return UIImage(data: data) }
+        let opts: [CFString: Any] = [kCGImageSourceCreateThumbnailFromImageAlways: true, kCGImageSourceCreateThumbnailWithTransform: true,
+                                     kCGImageSourceShouldCacheImmediately: true, kCGImageSourceThumbnailMaxPixelSize: maxDimension]
+        guard let cg = CGImageSourceCreateThumbnailAtIndex(src, 0, opts as CFDictionary) else { return UIImage(data: data) }
+        return UIImage(cgImage: cg)
+    }
+}
 
 /// Something handed over before a tool was chosen: "here is what I have, what can you do with it?"
 struct Given: Identifiable {
@@ -532,28 +545,23 @@ struct BuilderView: View {
             // One photo or many: all of them go to the chooser together, in the order they were picked.
             guard !items.isEmpty else { return }
             anyPhotos = []; gettingReady = true; note = nil
+            Diagnostics.shared.crumb("Build your own: picked \(items.count) photo\(items.count == 1 ? "" : "s")")
             Task {
-                var imgs: [UIImage] = []
-                var files: [ChainPayload] = []
+                var picked: [(Data, String)] = []
                 for it in items {
                     let ext = it.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
-                    if let d = await loadWithinTimeout(120, { try? await it.loadTransferable(type: Data.self) }), let img = UIImage(data: d) {
-                        imgs.append(img)
-                        files.append(ChainPayload.isPhoto(ext) ? .file(d, ext: ext) : .image(img))   // the original file, hidden details and all
-                    }
+                    if let d = await loadWithinTimeout(120, { try? await it.loadTransferable(type: Data.self) }) { picked.append((d, ext)) }
                 }
-                await MainActor.run {
-                    gettingReady = false
-                    guard let first = imgs.first, let firstFile = files.first else {
-                        note = items.count == 1 ? "That photo didn't load. If it's a large iCloud photo, open it once in Photos to download it, then pick it again."
-                                                : "Those photos didn't load. If they're large iCloud photos, open them once in Photos to download them, then pick again."
-                        return
-                    }
-                    if imgs.count < items.count { note = "\(items.count - imgs.count) of the photos didn't load, so Tenzy went ahead with \(imgs.count)." }
-                    _ = first
-                    given = Given(payload: firstFile, label: imgs.count == 1 ? "A photo" : "\(imgs.count) photos", more: Array(imgs.dropFirst()), moreFiles: Array(files.dropFirst()))
-                }
+                await takePhotos(picked, asked: items.count)
             }
+        }
+        .task {
+            // UI tests: hand over N full-size phone photos through the very same path a real pick takes.
+            guard Launch.uitest, let i = Launch.args.firstIndex(of: "-givephotos"), Launch.args.indices.contains(i + 1),
+                  let n = Int(Launch.args[i + 1]), n > 0, given == nil else { return }
+            gettingReady = true
+            let picked = await Task.detached(priority: .userInitiated) { (0..<n).compactMap { k in BuilderView.testPhoto(k).map { ($0, "jpg") } } }.value
+            await takePhotos(picked, asked: n)
         }
         .onChange(of: anyPick) { _, item in
             guard let item else { return }
@@ -788,6 +796,41 @@ struct BuilderView: View {
         guard showMine else { act(); return }
         showMine = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { act() }
+    }
+
+    /// Picked photos → the chooser. Keeps the original files (hidden details and all) but only small copies
+    /// on screen: twenty 48-megapixel photos held as full images is gigabytes, and the phone ends the app.
+    @MainActor private func takePhotos(_ picked: [(Data, String)], asked: Int) async {
+        let made: [(UIImage, ChainPayload)] = await Task.detached(priority: .userInitiated) {
+            picked.compactMap { d, ext -> (UIImage, ChainPayload)? in
+                guard let small = UIImage.downsampled(d, maxDimension: 2048) else { return nil }
+                return (small, ChainPayload.isPhoto(ext) ? .file(d, ext: ext) : .image(UIImage(data: d) ?? small))
+            }
+        }.value
+        gettingReady = false
+        guard let firstFile = made.first?.1 else {
+            note = asked == 1 ? "That photo didn't load. If it's a large iCloud photo, open it once in Photos to download it, then pick it again."
+                              : "Those photos didn't load. If they're large iCloud photos, open them once in Photos to download them, then pick again."
+            return
+        }
+        if made.count < asked { note = "\(asked - made.count) of the photos didn't load, so Tenzy went ahead with \(made.count)." }
+        Diagnostics.shared.crumb("Build your own: chooser with \(made.count) photo\(made.count == 1 ? "" : "s")")
+        given = Given(payload: firstFile, label: made.count == 1 ? "A photo" : "\(made.count) photos",
+                      more: made.dropFirst().map(\.0), moreFiles: made.dropFirst().map(\.1))
+    }
+
+    /// A full-size 4032×3024 JPEG, like a phone camera's, with a different picture each time (UI tests only).
+    nonisolated static func testPhoto(_ k: Int) -> Data? {
+        let size = CGSize(width: 4032, height: 3024)
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1
+        let img = UIGraphicsImageRenderer(size: size, format: f).image { ctx in
+            let hues: [CGFloat] = [0.05, 0.33, 0.6, 0.85, 0.15, 0.5]
+            UIColor(hue: hues[k % hues.count], saturation: 0.5, brightness: 0.85, alpha: 1).setFill()
+            ctx.fill(CGRect(origin: .zero, size: size))
+            UIColor.white.setFill()
+            ctx.cgContext.fillEllipse(in: CGRect(x: 1200 + CGFloat(k * 60), y: 700, width: 1600, height: 1600))
+        }
+        return img.jpegData(compressionQuality: 0.85)
     }
 
     /// Saves the tools and keeps the phone's reminders and the home-screen widget in step with them.

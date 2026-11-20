@@ -1,0 +1,2 @@
+# Tests the crash-repro run executes (one per line).
+HandyToolsUITests/MultiPhotoTests

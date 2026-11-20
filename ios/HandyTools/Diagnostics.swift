@@ -23,7 +23,35 @@ final class Diagnostics: @unchecked Sendable {
     nonisolated(unsafe) private var toolHint = "Home"
     var currentTool: String {
         get { lock.lock(); defer { lock.unlock() }; return _currentTool }
-        set { lock.lock(); _currentTool = newValue; lock.unlock(); toolHint = newValue; log("open: \(newValue)") }
+        set { lock.lock(); _currentTool = newValue; lock.unlock(); toolHint = newValue; log("open: \(newValue)"); crumbSignal.signal() }
+    }
+
+    /// The last thing the person did ("Build your own: picked 6 photos"), for crash reports.
+    nonisolated(unsafe) private var crumbHint = "—"
+    private let crumbSignal = DispatchSemaphore(value: 0)
+    private var crumbThread: Thread?
+
+    /// Records a step. Besides the log, it names a parked thread after it, and thread names are printed in
+    /// Apple's own crash report — so a crash shared from TestFlight says where the person was and what
+    /// they had just done, with no extra tap and nothing sent anywhere else.
+    func crumb(_ what: String) {
+        let text = String(what.prefix(52))
+        crumbHint = text
+        log("· \(text)")
+        crumbSignal.signal()
+    }
+
+    private func startCrumbThread() {
+        let t = Thread { [weak self] in
+            while let self {
+                Thread.current.name = "Tenzy: \(self.toolHint) · \(self.crumbHint)"
+                self.crumbSignal.wait()
+            }
+        }
+        t.qualityOfService = .background
+        t.stackSize = 64 * 1024
+        t.start()
+        crumbThread = t
     }
 
     /// Written the instant a crash/signal fires; read once on the next launch to proactively offer the
@@ -56,6 +84,7 @@ final class Diagnostics: @unchecked Sendable {
         installCrashHandler()
         installSignalHandlers()
         startHangMonitor()
+        startCrumbThread()
     }
 
     // MARK: writing
@@ -144,18 +173,30 @@ final class Diagnostics: @unchecked Sendable {
     /// signal, the current tool, and a backtrace, then restore the default handler so the OS still
     /// produces its normal crash report.
     private func installSignalHandlers() {
+        // A stack overflow (SIGSEGV on the stack guard) leaves no stack for the handler, so it never ran and
+        // the next launch had nothing to report. Give the main thread a spare stack for signal handlers.
+        if Thread.isMainThread {
+            let size = 256 * 1024
+            if let mem = malloc(size) {
+                var ss = stack_t(ss_sp: mem, ss_size: size, ss_flags: 0)
+                sigaltstack(&ss, nil)
+            }
+        }
         let signals: [Int32] = [SIGABRT, SIGILL, SIGSEGV, SIGFPE, SIGBUS, SIGTRAP]
         for s in signals {
-            signal(s) { sig in
+            var action = sigaction()
+            action.sa_flags = SA_ONSTACK
+            action.__sigaction_u.__sa_handler = { sig in
                 let name = String(cString: strsignal(sig))
                 let frames = Thread.callStackSymbols.prefix(16).joined(separator: " | ")
                 // Lock-free: read the plain tool hint and append straight to the file.
-                let line = "\(Diagnostics.stamp())  💥 SIGNAL \(sig) (\(name)) — tool: \(Diagnostics.shared.toolHint)  ::  \(frames)"
+                let line = "\(Diagnostics.stamp())  💥 SIGNAL \(sig) (\(name)) — tool: \(Diagnostics.shared.toolHint) — last: \(Diagnostics.shared.crumbHint)  ::  \(frames)"
                 Diagnostics.shared.append(line)
-                Diagnostics.shared.raiseFlag("Crashed in \(Diagnostics.shared.toolHint) — signal \(name)")
+                Diagnostics.shared.raiseFlag("Crashed in \(Diagnostics.shared.toolHint) (\(Diagnostics.shared.crumbHint)) — signal \(name)")
                 signal(sig, SIG_DFL)
                 raise(sig)
             }
+            sigaction(s, &action, nil)
         }
     }
 
