@@ -4259,6 +4259,16 @@
   "pt": "Escolher outra foto",
   "zh": "选择另一张照片"
  },
+ "Choose another video": {
+  "de": "Anderes Video wählen",
+  "es": "Elegir otro vídeo",
+  "fr": "Choisir une autre vidéo",
+  "hi": "दूसरा वीडियो चुनें",
+  "it": "Scegli un altro video",
+  "ja": "別の動画を選ぶ",
+  "pt": "Escolher outro vídeo",
+  "zh": "选择其他视频"
+ },
  "Choose audio": {
   "de": "Audio wählen",
   "es": "Elegir audio",
@@ -12748,6 +12758,16 @@
   "ja": "縦長スクショ：フローティングボタンをタップして開始し、ゆっくり下にスクロールしてもう一度タップ — Tenzyが画面をつないで1枚の縦長画像にします。追加の権限は不要です。",
   "pt": "Captura longa: toca no botão flutuante para começar, desliza devagar e toca de novo — o Tenzy junta os ecrãs numa imagem alta. Não é preciso permissão extra.",
   "zh": "长截图：点按悬浮按钮开始，缓慢向下滚动，再次点按 — Tenzy 会把各屏拼成一张长图。无需额外权限。"
+ },
+ "Long videos can take a few minutes — the bar shows how far along it is. A Live Photo is used as its short video.": {
+  "de": "Lange Videos können ein paar Minuten dauern – der Balken zeigt den Fortschritt. Bei einem Live Photo wird sein kurzes Video verwendet.",
+  "es": "Los vídeos largos pueden tardar unos minutos; la barra muestra cuánto falta. De una Live Photo se usa su vídeo corto.",
+  "fr": "Les longues vidéos peuvent prendre quelques minutes — la barre indique l'avancement. Pour une Live Photo, sa courte vidéo est utilisée.",
+  "hi": "लंबे वीडियो में कुछ मिनट लग सकते हैं — बार दिखाता है कितना हुआ। Live Photo का छोटा वीडियो इस्तेमाल होता है।",
+  "it": "I video lunghi possono richiedere qualche minuto: la barra mostra a che punto è. Di una Live Photo si usa il breve video.",
+  "ja": "長い動画は数分かかることがあります。バーで進み具合がわかります。Live Photoはその短い動画を使います。",
+  "pt": "Vídeos longos podem demorar alguns minutos — a barra mostra o progresso. De uma Live Photo usa-se o vídeo curto.",
+  "zh": "长视频可能需要几分钟，进度条会显示进度。实况照片会使用其短视频。"
  },
  "Long videos take a little while. Keep Tenzy open until it finishes.": {
   "de": "Lange Videos dauern etwas. Lass Tenzy geöffnet, bis es fertig ist.",

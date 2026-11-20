@@ -175,11 +175,21 @@ enum SizeTarget {
         // the file. Compressible clips hit the target in the first pass or two and never reach the
         // small steps; a near-incompressible 1080p clip needs them to land under an aggressive target.
         func bitrateCeiling(_ bps: Int) -> CGFloat { bps < 1_200_000 ? 960 : (bps < 3_000_000 ? 1440 : 3840) }
-        let shrink: [CGFloat] = [1.0, 0.7, 0.5, 0.35, 0.25, 0.18, 0.13]
+        // Start at a frame size this bitrate can actually carry (~0.07 bits per pixel at 30 fps), so most videos
+        // fit on the FIRST pass instead of re-encoding a 4K clip at full size and then again smaller.
+        let carry = (Double(videoBps) / (30 * 0.07) * 16 / 9).squareRoot()
+        let start = min(1, max(0.13, CGFloat(carry) / longest))
+        let shrink: [CGFloat] = [1.0, 0.7, 0.5, 0.35, 0.25, 0.18, 0.13].map { $0 * start }.filter { longest * $0 >= 160 }
+        // Each pass may take as long as the clip needs (a 7-minute 4K video can't re-encode in 3 minutes).
+        let passTimeout = max(180, duration * 3)
+        var pass = 0
         var best: URL?; var bestSize = Int.max
         for s in shrink {
             let cap = max(192, min(bitrateCeiling(videoBps), longest * s))   // never below ~192px
-            if let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, progress: progress) {
+            let k = pass; pass += 1
+            // One bar across passes: the first pass is most of the work; a later pass moves the rest of the way.
+            let report: ((Double) -> Void)? = progress.map { p in { f in p(k == 0 ? f * 0.85 : 0.85 + 0.15 * (Double(k - 1) + f) / Double(max(1, shrink.count - 1))) } }
+            if let out = await VideoEngine.transcodeH264(asset, maxDimension: cap, videoBps: videoBps, timeout: passTimeout, progress: report) {
                 let sz = fileSize(out) ?? Int.max
                 if sz <= targetBytes { if let b = best { try? FileManager.default.removeItem(at: b) }; return (out, true) }
                 // Keep the smallest attempt as the fallback; a tighter frame next pass may still fit.

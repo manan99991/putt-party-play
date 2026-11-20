@@ -117,4 +117,25 @@ final class FinishFactsTests: XCTestCase {
         XCTAssertTrue(Guide.goalIDs(for: .video, count: 1).contains("sound"))
         XCTAssertFalse(ToolHandoff.tools(for: .audio).contains("video"))
     }
+
+    /// "Shrink a video" showed a bare 'Working…' for minutes: the shrink now reports one bar that only moves forward.
+    func testVideoShrinkReportsProgressThatOnlyMovesForward() async throws {
+        let m = await SampleAssets.movie(seconds: 4, size: CGSize(width: 1280, height: 720))
+        let src = try XCTUnwrap(m)
+        let seen = Locked<[Double]>([])
+        let r = await SizeTarget.videoBestEffort(url: src, targetBytes: 150_000) { f in seen.mutate { $0.append(f) } }
+        XCTAssertNotNil(r, "a shrink always hands something back")
+        let v = seen.value
+        XCTAssertFalse(v.isEmpty, "no progress was reported")
+        XCTAssertEqual(v, v.sorted(), "progress went backwards")
+        XCTAssertGreaterThan(v.last ?? 0, 0.5)
+    }
+}
+
+/// A tiny lock box so a progress callback from another thread can be collected in a test.
+final class Locked<T>: @unchecked Sendable {
+    private var v: T; private let l = NSLock()
+    init(_ v: T) { self.v = v }
+    var value: T { l.lock(); defer { l.unlock() }; return v }
+    func mutate(_ f: (inout T) -> Void) { l.lock(); f(&v); l.unlock() }
 }

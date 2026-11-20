@@ -55,3 +55,11 @@ enum Paper {
     static func classify(_ lines: [DocEngine.OCRLine], now: Date = Date()) -> Read? { nil }
     static func encode(_ r: Read) -> String { r.name }
 }
+
+// Live progress for long engine work is shown on the app's run screen; in the share sheet it's a no-op.
+@MainActor final class RunProgress {
+    static let shared = RunProgress()
+    func begin() {}
+    func set(_ f: Double) {}
+    func end() {}
+}

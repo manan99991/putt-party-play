@@ -1779,11 +1779,17 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 } else if start == .pdf {
                     pdfInputs
                 } else if start == .video {
-                    PhotosPicker(selection: $videoPick, matching: .videos) { Label(L("Choose a video"), systemImage: "film").frame(maxWidth: .infinity) }
-                        .primaryButton().accessibilityIdentifier("run-video")
-                    PhotosPicker(selection: $livePick, matching: .livePhotos) { Label(L("Choose a Live Photo"), systemImage: "livephoto").frame(maxWidth: .infinity) }
-                        .secondaryButton().accessibilityIdentifier("run-live-photo")
-                    Text(L("Long videos take a little while. Keep Tenzy open until it finishes. A Live Photo is used as its short video.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    if busy, let v = inputVideo {
+                        // While it works: which video, how long and big it is, and what it's being made into —
+                        // instead of the pick buttons, so it never looks like nothing was chosen.
+                        RunningOnVideoCard(url: v, goal: chain.name)
+                    } else {
+                        PhotosPicker(selection: $videoPick, matching: .videos) { Label(L(result == nil ? "Choose a video" : "Choose another video"), systemImage: "film").frame(maxWidth: .infinity) }
+                            .primaryButton().accessibilityIdentifier("run-video")
+                        PhotosPicker(selection: $livePick, matching: .livePhotos) { Label(L("Choose a Live Photo"), systemImage: "livephoto").frame(maxWidth: .infinity) }
+                            .secondaryButton().accessibilityIdentifier("run-live-photo")
+                        Text(L("Long videos can take a few minutes — the bar shows how far along it is. A Live Photo is used as its short video.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    }
                 } else if start != .text {
                     PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label(L("Choose photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
                     if chain.steps.first?.block == .passportPhoto {
@@ -1828,7 +1834,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     }
                     Button(L("Run")) { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
-                if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? "Working…" : progress) }
+                if busy { ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? chain.steps.first.map { "\($0.block.title)…" } ?? "" : progress) }
                 if let report { stepLog(report) }
                 if let message, boardSource == nil { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 if let watchLine {

@@ -196,3 +196,37 @@ enum VideoSaver {
         } catch { return false }
     }
 }
+
+/// Shown while a video job runs: a frame from the video, its length and size, and what it's being made into.
+struct RunningOnVideoCard: View {
+    let url: URL
+    let goal: String
+    @State private var thumb: UIImage?
+    @State private var facts: VideoFacts?
+
+    var body: some View {
+        HStack(spacing: HandySpacing.s12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10).fill(HandyColor.surface)
+                if let thumb { Image(uiImage: thumb).resizable().scaledToFill() }
+            }
+            .frame(width: 72, height: 72).clipShape(RoundedRectangle(cornerRadius: 10))
+            VStack(alignment: .leading, spacing: 4) {
+                Text(L("Your video")).font(HandyFont.bodyStrong)
+                if let f = facts {
+                    Text("\(VideoFacts.clock(f.seconds)) · \(SizeTarget.format(f.bytes)) · \(Int(f.size.width))×\(Int(f.size.height))")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).monospacedDigit()
+                }
+                Text(L(goal)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+            }
+            Spacer(minLength: 0)
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("running-on-video")
+        .task(id: url) {
+            facts = await VideoFacts.read(url)
+            thumb = await VideoEngine.thumbnail(url, at: 0.5)
+        }
+    }
+}

@@ -696,7 +696,10 @@ enum ChainRunner {
         case (.videoShrink, .video(let url)):
             // Re-encoded to fit the limit. The new file carries no location or camera details from the original.
             let mb = ChainText.videoLimit(step.settings["mb"])
-            guard let out = await SizeTarget.videoBestEffort(url: url, targetBytes: mb * 1_000_000) else { return .failure(.failed(b)) }
+            await MainActor.run { RunProgress.shared.begin() }
+            let out = await SizeTarget.videoBestEffort(url: url, targetBytes: mb * 1_000_000) { f in Task { @MainActor in RunProgress.shared.set(f) } }
+            await MainActor.run { RunProgress.shared.end() }
+            guard let out else { return .failure(.failed(b)) }
             return .success(.video(out.url))
 
         case (.videoStill, .video(let url)):
