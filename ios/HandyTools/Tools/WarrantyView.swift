@@ -317,7 +317,7 @@ private struct ReceiptDetail: View {
     @ViewBuilder private var claimPack: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Label(L("Something wrong with it?"), systemImage: "wrench.and.screwdriver").font(HandyFont.bodyStrong)
-            TextField(L("What's wrong (optional)"), text: $problemNote, axis: .vertical).textFieldStyle(.roundedBorder)
+            TextField(L("What's wrong (optional)"), text: $problemNote, axis: .vertical).textFieldStyle(.handy)
             PhotosPicker(selection: $problemItem, matching: .images) {
                 Label(L(problem == nil ? "Add a photo of the problem (optional)" : "Photo added — change it"), systemImage: "camera").frame(maxWidth: .infinity)
             }.secondaryButton()

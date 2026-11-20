@@ -90,7 +90,7 @@ struct AudioTagsView: View {
     private func field(_ label: String, _ text: Binding<String>) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s4) {
             Text(L(label)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            TextField(L(label), text: text).textFieldStyle(.roundedBorder)
+            TextField(L(label), text: text).textFieldStyle(.handy)
         }
     }
 

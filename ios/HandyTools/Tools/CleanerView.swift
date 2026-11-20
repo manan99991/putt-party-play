@@ -214,7 +214,7 @@ struct CleanerView: View {
                 ForEach([50, 100, 200, 500], id: \.self) { n in
                     HChip(text: "\(n)", selected: keepN == n && keepCustom.isEmpty) { keepN = n; keepCustom = "" }
                 }
-                TextField(L("Other"), text: $keepCustom).keyboardType(.numberPad).frame(width: 80).textFieldStyle(.roundedBorder)
+                TextField(L("Other"), text: $keepCustom).keyboardType(.numberPad).frame(width: 80).textFieldStyle(.handy)
                     .onChange(of: keepCustom) { _, t in if let v = Int(t.filter(\.isNumber)), v >= 0 { keepN = v } }
                     .accessibilityLabel(L("Another number to keep"))
             }

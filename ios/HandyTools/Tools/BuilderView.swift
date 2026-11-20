@@ -911,7 +911,7 @@ struct BuilderView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Label(L("Describe it"), systemImage: "sparkles").font(HandyFont.cardTitle)
             TextField(L("e.g. shrink a photo under 1 MB and hide where it was taken"), text: $ask, axis: .vertical)
-                .lineLimit(3...8).textFieldStyle(.roundedBorder).accessibilityIdentifier("describe-field")
+                .lineLimit(3...8).textFieldStyle(.handy).accessibilityIdentifier("describe-field")
             Button { buildFromAsk() } label: { Label(planning ? "Working…" : "Build it for me", systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(planning || ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }.cardStyle()

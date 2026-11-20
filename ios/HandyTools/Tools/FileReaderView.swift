@@ -127,7 +127,7 @@ private struct TextReader: View {
                 Spacer()
                 CopyButton(text: text)
             }
-            TextField(L("Find in this file"), text: $find).textFieldStyle(.roundedBorder).autocorrectionDisabled().textInputAutocapitalization(.never)
+            TextField(L("Find in this file"), text: $find).textFieldStyle(.handy).autocorrectionDisabled().textInputAutocapitalization(.never)
             if find.count >= 2 { Text("\(hits) \(L(hits == 1 ? "match" : "matches"))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
             ScrollView([.vertical, .horizontal]) {
                 Text(highlighted).font(.system(size: 12, design: .monospaced)).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading).padding(8)

@@ -90,7 +90,7 @@ struct ZipMakerView: View {
                     Label(L(note), systemImage: "envelope.badge").font(HandyFont.micro).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true)
                 }
                 Text(L("Zip name")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                TextField(L("Zip name"), text: $archiveName).textFieldStyle(.roundedBorder)
+                TextField(L("Zip name"), text: $archiveName).textFieldStyle(.handy)
                 if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
                 Button { run() } label: {
                     Label(L("Make zip"), systemImage: "doc.zipper").frame(maxWidth: .infinity)

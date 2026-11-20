@@ -335,8 +335,8 @@ struct MeasureARView: View {
         return VStack(alignment: .leading, spacing: 6) {
             Text(L("Will it fit?")).font(HandyFont.bodyStrong)
             HStack {
-                TextField(metric ? L("Its width, cm") : L("Its width, inches"), text: $itemW).keyboardType(.decimalPad).textFieldStyle(.roundedBorder)
-                if spaceH != nil { TextField(metric ? L("Its height, cm") : L("Its height, inches"), text: $itemH).keyboardType(.decimalPad).textFieldStyle(.roundedBorder) }
+                TextField(metric ? L("Its width, cm") : L("Its width, inches"), text: $itemW).keyboardType(.decimalPad).textFieldStyle(.handy)
+                if spaceH != nil { TextField(metric ? L("Its height, cm") : L("Its height, inches"), text: $itemH).keyboardType(.decimalPad).textFieldStyle(.handy) }
             }
             if let w {
                 let worst = Self.worstGap(space: space, spaceH: spaceH, w: w, h: h)

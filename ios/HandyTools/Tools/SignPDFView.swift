@@ -122,7 +122,7 @@ struct SignPDFView: View {
                 }
                 HStack(spacing: HandySpacing.s8) {
                     TextField(L("Name, initials or any text"), text: $typed)
-                        .textFieldStyle(.roundedBorder)
+                        .textFieldStyle(.handy)
                     Button { let t = typed.trimmingCharacters(in: .whitespaces); if !t.isEmpty { add(.text(t), width: 0.3); typed = "" } } label: {
                         Text(L("Add"))
                     }.secondaryButton().disabled(typed.trimmingCharacters(in: .whitespaces).isEmpty)

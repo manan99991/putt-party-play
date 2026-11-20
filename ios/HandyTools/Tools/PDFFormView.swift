@@ -89,7 +89,7 @@ struct PDFFormView: View {
                     HStack { TextField(L("Postcode / ZIP"), text: $me.postcode); TextField(L("Country"), text: $me.country) }
                     TextField(L("Date of birth"), text: $me.birth)
                     Text(L("Kept only on this phone, never sent anywhere.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-                }.textFieldStyle(.roundedBorder).font(HandyFont.body)
+                }.textFieldStyle(.handy).font(HandyFont.body)
             } label: { Text(L("My details")).font(HandyFont.caption.weight(.semibold)) }
             .onChange(of: me) { _, v in v.save() }
         }.cardStyle(padding: HandySpacing.s12)
@@ -133,9 +133,9 @@ struct PDFFormView: View {
             switch f.kind {
             case .text:
                 if f.multiline {
-                    TextField(L("Type here"), text: binding, axis: .vertical).lineLimit(2...6).textFieldStyle(.roundedBorder)
+                    TextField(L("Type here"), text: binding, axis: .vertical).lineLimit(2...6).textFieldStyle(.handy)
                 } else {
-                    TextField(L("Type here"), text: binding).textFieldStyle(.roundedBorder)
+                    TextField(L("Type here"), text: binding).textFieldStyle(.handy)
                 }
             case .checkbox:
                 Toggle(isOn: Binding(get: { !(values[f.id] ?? f.value).isEmpty },
@@ -144,7 +144,7 @@ struct PDFFormView: View {
                 }.tint(HandyColor.accent)
             case .choice:
                 if f.options.isEmpty {
-                    TextField(L("Type here"), text: binding).textFieldStyle(.roundedBorder)
+                    TextField(L("Type here"), text: binding).textFieldStyle(.handy)
                 } else {
                     Picker(f.name, selection: binding) {
                         Text(L("Choose…")).tag("")

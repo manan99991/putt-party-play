@@ -168,7 +168,7 @@ struct QRWifiView: View {
                         HChip(text: e.isEmpty ? L("None") : e, selected: (look.center ?? "") == e) { look.center = e.isEmpty ? nil : e }
                     }
                 }
-                TextField(L("Caption under the code (e.g. Scan for our menu)"), text: $look.caption).textFieldStyle(.roundedBorder)
+                TextField(L("Caption under the code (e.g. Scan for our menu)"), text: $look.caption).textFieldStyle(.handy)
                 Text(L("Every styled code is test-scanned before you see it — if a style wouldn't scan, you get the plain one instead."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }.padding(.top, HandySpacing.s8)

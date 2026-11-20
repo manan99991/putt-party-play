@@ -142,7 +142,7 @@ struct GPSDashboardView: View {
                 }
                 .frame(height: 160).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 if let parkedAt { Text("Saved \(parkedAt.formatted(.relative(presentation: .named)))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-                TextField(L("Note (Level 3, near the lift…)"), text: $parkNote).textFieldStyle(.roundedBorder).onChange(of: parkNote) { _, n in ParkStore.setNote(n) }
+                TextField(L("Note (Level 3, near the lift…)"), text: $parkNote).textFieldStyle(.handy).onChange(of: parkNote) { _, n in ParkStore.setNote(n) }
                 HStack(spacing: HandySpacing.s8) {
                     Button { walkBack(p) } label: { Label(L("Walk me back"), systemImage: "figure.walk").frame(maxWidth: .infinity) }.primaryButton()
                     Button { park() } label: { Label(L("Move pin here"), systemImage: "mappin.and.ellipse") }.compactButton()

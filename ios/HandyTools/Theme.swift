@@ -263,6 +263,21 @@ struct HandyPrimaryButtonStyle: ButtonStyle {
 }
 
 /** Secondary: pill, transparent, 1.5pt hairline, primary text. */
+/// The app's text box: a raised surface with a hairline border and clear text in both themes. Replaces the system
+/// rounded-border look, which drew solid black boxes with near-invisible placeholders on the dark screens.
+struct HandyFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .foregroundStyle(HandyColor.textPrimary)
+            .padding(.horizontal, 12).padding(.vertical, 10)
+            .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+    }
+}
+extension TextFieldStyle where Self == HandyFieldStyle {
+    static var handy: HandyFieldStyle { HandyFieldStyle() }
+}
+
 struct HandySecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

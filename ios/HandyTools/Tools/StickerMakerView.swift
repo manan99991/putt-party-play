@@ -130,7 +130,7 @@ struct StickerMakerView: View {
             }
 
             TextField(L("Add words (optional) — e.g. LOL, Yay, Miss you"), text: Binding(get: { style.caption }, set: { style.caption = String($0.prefix(24)) }))
-                .textFieldStyle(.roundedBorder)
+                .textFieldStyle(.handy)
 
             DisclosureGroup(isExpanded: $fineTune) { fineTunePanel } label: {
                 Label(L("Fine-tune"), systemImage: "slider.horizontal.3").font(HandyFont.bodyStrong)

@@ -103,7 +103,7 @@ struct MenuView: View {
             if let cur = menuCurrency, cur != homeCurrency {
                 HStack(spacing: HandySpacing.s8) {
                     Text("1 \(cur) =").font(HandyFont.caption)
-                    TextField("0.00", text: $rateText).keyboardType(.decimalPad).textFieldStyle(.roundedBorder).frame(width: 90)
+                    TextField("0.00", text: $rateText).keyboardType(.decimalPad).textFieldStyle(.handy).frame(width: 90)
                     Text(homeCurrency).font(HandyFont.caption)
                     Spacer()
                 }

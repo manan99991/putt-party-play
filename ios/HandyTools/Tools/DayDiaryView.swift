@@ -231,7 +231,7 @@ struct DiaryReviewGate: View {
             Image(systemName: "lock.fill").font(.system(size: 40)).foregroundStyle(HandyColor.accent)
             Text(L("Enter your diary PIN")).font(HandyFont.title)
             SecureField(L("PIN"), text: $pin).keyboardType(.numberPad).textContentType(.oneTimeCode)
-                .multilineTextAlignment(.center).font(.system(size: 28, weight: .semibold)).textFieldStyle(.roundedBorder).frame(maxWidth: 220)
+                .multilineTextAlignment(.center).font(.system(size: 28, weight: .semibold)).textFieldStyle(.handy).frame(maxWidth: 220)
                 .onChange(of: pin) { _, v in if v.count >= 4, store.check(pin: v) { open() } }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             Button(L("Unlock")) { store.check(pin: pin) ? open() : (errorText = "That's not it — try again.") }.primaryButton().disabled(pin.count < 4)

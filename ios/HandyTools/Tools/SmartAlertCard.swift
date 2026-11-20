@@ -29,7 +29,7 @@ struct SmartAlertCard: View {
                         HChip(text: SmartAlerts.number(v, kind), selected: rule.limit == v) { rule.limit = v; custom = "" }
                     }
                     TextField(L("Other"), text: $custom).keyboardType(.decimalPad).focused($typing)
-                        .frame(width: 80).textFieldStyle(.roundedBorder)
+                        .frame(width: 80).textFieldStyle(.handy)
                         .onChange(of: custom) { _, t in if let v = Double(t.replacingOccurrences(of: ",", with: ".")), v > 0 { rule.limit = v } }
                 }
                 if let c = current {

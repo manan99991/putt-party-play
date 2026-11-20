@@ -66,7 +66,7 @@ struct BusinessCardsView: View {
     private var meetCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             Text(L("Where did you meet?")).font(HandyFont.bodyStrong)
-            TextField(L("e.g. HIMSS conference, Chicago (optional)"), text: $place).textFieldStyle(.roundedBorder)
+            TextField(L("e.g. HIMSS conference, Chicago (optional)"), text: $place).textFieldStyle(.handy)
             Text(L("Follow-up reminder")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach([(0, "None"), (1, "Tomorrow"), (3, "In 3 days"), (7, "In a week"), (14, "In 2 weeks")], id: \.0) { d, t in

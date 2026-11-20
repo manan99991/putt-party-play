@@ -55,11 +55,11 @@ struct ComicStripView: View {
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(formats) { f in HChip(text: "\(f.name) · \(f.ratio)", selected: format == f) { format = f } }
             }
-            TextField(L("Title (optional)"), text: $title).textFieldStyle(.roundedBorder)
+            TextField(L("Title (optional)"), text: $title).textFieldStyle(.handy)
             ForEach(words.indices, id: \.self) { i in
                 TextField("\(L("Panel")) \(i + 1) — \(L("what are they saying?"))",
                           text: Binding(get: { words[i] }, set: { words[i] = String($0.prefix(90)) }))
-                    .textFieldStyle(.roundedBorder)
+                    .textFieldStyle(.handy)
             }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let url = resultURL {

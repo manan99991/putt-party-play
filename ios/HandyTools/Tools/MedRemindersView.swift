@@ -324,8 +324,8 @@ private struct CareCard: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(L("Caregiver (optional)")).font(HandyFont.bodyStrong)
                     Text(L("Someone who helps — a son, a daughter, a nurse. Their name goes on the alert with a Text button, so reaching them is one tap.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                    TextField(L("Their name"), text: $name).textFieldStyle(.roundedBorder)
-                    TextField(L("Their mobile number"), text: $phone).textFieldStyle(.roundedBorder).keyboardType(.phonePad)
+                    TextField(L("Their name"), text: $name).textFieldStyle(.handy)
+                    TextField(L("Their mobile number"), text: $phone).textFieldStyle(.handy).keyboardType(.phonePad)
                     if !phone.filter(\.isNumber).isEmpty {
                         Text(summary).font(HandyFont.caption).padding(8).frame(maxWidth: .infinity, alignment: .leading)
                             .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 10))

@@ -23,7 +23,7 @@ struct TranscriptOrganizerView: View {
             if renaming {
                 ForEach(speakers.indices, id: \.self) { i in
                     TextField(L("Name"), text: Binding(get: { speakers[i] }, set: { speakers[i] = $0 }))
-                        .textFieldStyle(.roundedBorder)
+                        .textFieldStyle(.handy)
                 }
                 if speakers.count < 6 {
                     Button(L("Add a speaker")) { speakers.append("Speaker \(speakers.count + 1)") }

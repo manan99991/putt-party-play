@@ -33,13 +33,13 @@ struct WatchCard: View {
                 if w.condition != .changes {
                     HStack {
                         Text(L("The number")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                        TextField("100", text: $valueText).keyboardType(.decimalPad).textFieldStyle(.roundedBorder).frame(width: 120)
+                        TextField("100", text: $valueText).keyboardType(.decimalPad).textFieldStyle(.handy).frame(width: 120)
                             .onChange(of: valueText) { _, t in if let v = NumberReader.number(t) { watch?.value = v } }
                     }
                 }
                 HStack {
                     Text(L("Next to the words")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                    TextField(L("e.g. Total, Balance, Price"), text: Binding(get: { watch?.near ?? "" }, set: { watch?.near = $0 })).textFieldStyle(.roundedBorder)
+                    TextField(L("e.g. Total, Balance, Price"), text: Binding(get: { watch?.near ?? "" }, set: { watch?.near = $0 })).textFieldStyle(.handy)
                 }
                 NotificationsOffCard(isOff: $notifyOff)
                 Button {
@@ -132,25 +132,25 @@ struct PriceWatchView: View {
 
     private var addCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            TextField(L("Paste the page link"), text: $url).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled().textFieldStyle(.roundedBorder)
+            TextField(L("Paste the page link"), text: $url).keyboardType(.URL).textInputAutocapitalization(.never).autocorrectionDisabled().textFieldStyle(.handy)
                 .accessibilityIdentifier("pricewatch-url")
             if url.isEmpty {
                 // PasteButton reads the clipboard only when tapped — no "allow paste" pop-up.
                 PasteButton(payloadType: URL.self) { urls in if let u = urls.first { url = u.absoluteString } }
                     .buttonBorderShape(.capsule).labelStyle(.titleAndIcon)
             }
-            TextField(L("Name, e.g. Running shoes"), text: $name).textFieldStyle(.roundedBorder)
+            TextField(L("Name, e.g. Running shoes"), text: $name).textFieldStyle(.handy)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(NumberWatch.Condition.allCases) { c in HChip(text: L(c.label), selected: watch.condition == c) { watch.condition = c } }
             }
             if watch.condition != .changes {
                 HStack {
                     Text(L("The number")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                    TextField(L("e.g. 50"), text: $valueText).keyboardType(.decimalPad).textFieldStyle(.roundedBorder).frame(width: 120)
+                    TextField(L("e.g. 50"), text: $valueText).keyboardType(.decimalPad).textFieldStyle(.handy).frame(width: 120)
                         .onChange(of: valueText) { _, t in if let v = NumberReader.number(t) { watch.value = v } }
                 }
             }
-            TextField(L("Words next to it (optional), e.g. Price, Sale"), text: $watch.near).textFieldStyle(.roundedBorder)
+            TextField(L("Words next to it (optional), e.g. Price, Sale"), text: $watch.near).textFieldStyle(.handy)
             Button { Task { await testNow() } } label: {
                 Label(testing ? L("Checking…") : L("Check now"), systemImage: "magnifyingglass").frame(maxWidth: .infinity)
             }.secondaryButton().disabled(testing || pageURL == nil).accessibilityIdentifier("pricewatch-test")
