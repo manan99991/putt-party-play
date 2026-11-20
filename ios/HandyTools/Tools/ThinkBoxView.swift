@@ -40,7 +40,11 @@ struct ThinkBoxView: View {
         .onChange(of: speech.transcript) { _, t in if speech.running, !t.isEmpty { input = t } }
         .onChange(of: shot) { _, item in readShot(item) }
         .onDisappear { speech.stop() }
-        .onAppear { if !seed.isEmpty, talk.turns.isEmpty, !thinking { input = seed; ask(seed) } }
+        .onAppear {
+            // Screenshots and UI tests: a typical worried list, so the page shows the answer, not an empty box.
+            let start = seed.isEmpty && Launch.sample && Launch.route == "thinking" ? "overwhelmed, money, credit card debt, work deadline Friday, can't sleep" : seed
+            if !start.isEmpty, talk.turns.isEmpty, !thinking { input = start; ask(start) }
+        }
         .sheet(item: $planDay) { s in UntangleView(seed: s.text) }
     }
 

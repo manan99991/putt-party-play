@@ -8,6 +8,11 @@ on:
     branches-ignore: [handytools, ci-logs]
     paths: ["ios/.shots", ".github/workflows/ios-shots.yml"]
   workflow_dispatch:
+    inputs:
+      routes:
+        description: Routes to shoot (space-separated); empty = the standard set
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -53,8 +58,9 @@ jobs:
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           mkdir -p shots
           # Focused Aurora (Direction C) review set; restore the full list when the visual pass goes back to all tools.
-          ROUTES="home onboarding settings paywall qrwifi translate scan studio shield"
-          for mode in light; do
+          ROUTES="${{ inputs.routes }}"; [ -n "$ROUTES" ] || ROUTES="home onboarding settings paywall qrwifi translate scan studio shield"
+          MODES="light"; [ -n "${{ inputs.routes }}" ] && MODES="light dark"
+          for mode in $MODES; do
             xcrun simctl ui "$UDID" appearance $mode
             for r in $ROUTES; do
               xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
