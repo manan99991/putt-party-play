@@ -189,8 +189,12 @@ enum Guide {
     /// Only goals that have something in them are returned, in the order they're shown; "Something else" last.
     /// Ready-made flows that a full tool already does better — shown once, as the tool, so there are never two
     /// choices that do the same job (the flows stay in Build your own for anyone who wants to change them).
+    /// Ready-made flows that do exactly what a tool on the same list does: offered once, as the tool,
+    /// so the list never shows the same job twice under two names.
     static let coveredBy: [String: String] = ["card-to-contact": "cards", "safe-to-share": "scrub", "photo-under-2mb": "fitit",
-                                              "sticker": "sticker", "hide-sensitive": "scrub"]
+                                              "sticker": "sticker", "hide-sensitive": "scrub",
+                                              "video-celebrate": "celebrate", "sticker-maker": "sticker",
+                                              "emoji-faces": "faceemoji", "what-is-this": "identify"]
 
     static func sort(kind: ChainKind, count: Int, tools: [String], chains: [Chain], voices: Bool) -> [(goal: String, options: [Option])] {
         var by: [String: [Option]] = [:]

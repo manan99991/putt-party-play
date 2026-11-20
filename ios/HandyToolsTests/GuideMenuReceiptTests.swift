@@ -176,6 +176,27 @@ final class GuideMenuReceiptTests: XCTestCase {
         }.count)
     }
 
+    /// Your 20 Nov screenshot: "Decorate it for a celebration" and "Decorate a video for a celebration" were the
+    /// same job listed twice under Make a clip. Each job shows once, for videos and for photos.
+    @MainActor func testNoJobIsListedTwice() {
+        for kind in [ChainKind.video, .image] {
+            let chains = ChainTemplates.all.filter { $0.problem(starting: kind) == nil }
+            let tools = ToolHandoff.tools(for: kind)
+            let all = Guide.sort(kind: kind, count: 1, tools: tools, chains: chains, voices: false).flatMap(\.options)
+            for (chain, tool) in Guide.coveredBy where tools.contains(tool) {
+                XCTAssertFalse(all.contains { $0.id == "chain-" + chain }, "\(chain) repeats the \(tool) tool for \(kind)")
+            }
+            let titles = all.map { Guide.title($0, count: 1, kind: kind).lowercased() }
+            XCTAssertEqual(Set(titles).count, titles.count, "two choices with the same name for \(kind): \(titles)")
+        }
+        let video = Guide.sort(kind: .video, count: 1, tools: ToolHandoff.tools(for: .video),
+                               chains: ChainTemplates.all.filter { $0.problem(starting: .video) == nil }, voices: false).flatMap(\.options)
+        if ToolHandoff.tools(for: .video).contains("celebrate") {
+            XCTAssertTrue(video.contains(.tool("celebrate")))
+            XCTAssertFalse(video.contains { $0.id == "chain-video-celebrate" })
+        }
+    }
+
     func testTheGuessReadsWhatsInThePhoto() {
         XCTAssertEqual(Guide.guess(.init(count: 3), kind: .image)?.goal, "together")
         XCTAssertEqual(Guide.guess(.init(text: "SUBTOTAL 12.00\nTAX 1.00\nTOTAL 13.00\nVISA"), kind: .image)?.goal, "save")
