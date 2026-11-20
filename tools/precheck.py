@@ -16,7 +16,7 @@ bad = []
 
 def strip(src):
     src = re.sub(r'"""[\s\S]*?"""', '""', src)
-    src = re.sub(r'#"(?:[^"\\]|\\.)*"#', '""', src)
+    src = re.sub(r'#"[\s\S]*?"#', '""', src)
     src = re.sub(r'"(?:[^"\\\n]|\\.)*"', '""', src)
     src = re.sub(r'//[^\n]*', '', src)
     src = re.sub(r'/\*[\s\S]*?\*/', '', src)

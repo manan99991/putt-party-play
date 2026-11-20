@@ -48,6 +48,7 @@ targets:
       - target: StickyWidget
       - sdk: VisionKit.framework
       - sdk: Vision.framework
+      - sdk: libsqlite3.tbd
     entitlements:
       path: HandyTools/HandyTools.entitlements
       properties:
@@ -91,11 +92,108 @@ targets:
           - CFBundleTypeName: Archives
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
-            LSItemContentTypes: [public.zip-archive, org.gnu.gnu-zip-archive, public.tar-archive]
+            LSItemContentTypes: [public.zip-archive, org.gnu.gnu-zip-archive, public.tar-archive, public.archive, org.tukaani.xz-archive, com.tenzy.tgz, com.tenzy.apk]
+          - CFBundleTypeName: Books and comics
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [org.idpf.epub-container, com.tenzy.mobi, com.tenzy.azw3, com.tenzy.azw, com.tenzy.fb2, com.tenzy.cbz, com.tenzy.cbr, com.tenzy.pdb]
+          - CFBundleTypeName: Email
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.apple.mail.email, com.tenzy.emlx, com.tenzy.msg]
+          - CFBundleTypeName: Code and data
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [public.source-code, public.script, public.shell-script, public.log, public.yaml, com.tenzy.tsv, com.tenzy.sqlite, com.tenzy.netpbm, com.tenzy.xps]
+          - CFBundleTypeName: More pictures and video
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [public.camera-raw-image, com.adobe.photoshop-image, com.truevision.tga-image, public.avif, com.microsoft.ico, com.microsoft.bmp, public.tiff, public.3gpp, public.mpeg-2-transport-stream, com.tenzy.mkv]
           - CFBundleTypeName: Any file
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
             LSItemContentTypes: [public.item, public.content, public.data]
+        UTImportedTypeDeclarations:
+          - UTTypeIdentifier: com.tenzy.mobi
+            UTTypeDescription: Mobipocket eBook
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [mobi, prc]
+          - UTTypeIdentifier: com.tenzy.azw3
+            UTTypeDescription: Kindle eBook (KF8)
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [azw3]
+          - UTTypeIdentifier: com.tenzy.azw
+            UTTypeDescription: Kindle eBook
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [azw]
+          - UTTypeIdentifier: com.tenzy.fb2
+            UTTypeDescription: FictionBook
+            UTTypeConformsTo: [public.xml]
+            UTTypeTagSpecification:
+              public.filename-extension: [fb2]
+          - UTTypeIdentifier: com.tenzy.cbz
+            UTTypeDescription: Comic book (ZIP)
+            UTTypeConformsTo: [public.zip-archive]
+            UTTypeTagSpecification:
+              public.filename-extension: [cbz]
+          - UTTypeIdentifier: com.tenzy.cbr
+            UTTypeDescription: Comic book (RAR)
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [cbr, cb7]
+          - UTTypeIdentifier: com.tenzy.pdb
+            UTTypeDescription: Palm eBook
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [pdb]
+          - UTTypeIdentifier: com.tenzy.emlx
+            UTTypeDescription: Apple Mail message
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [emlx]
+          - UTTypeIdentifier: com.tenzy.msg
+            UTTypeDescription: Outlook message
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [msg]
+          - UTTypeIdentifier: com.tenzy.tsv
+            UTTypeDescription: Delimited table
+            UTTypeConformsTo: [public.plain-text]
+            UTTypeTagSpecification:
+              public.filename-extension: [tsv, psv, ssv, tab]
+          - UTTypeIdentifier: com.tenzy.sqlite
+            UTTypeDescription: SQLite database
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [sqlite, sqlite3, db, db3]
+          - UTTypeIdentifier: com.tenzy.netpbm
+            UTTypeDescription: Netpbm image
+            UTTypeConformsTo: [public.image]
+            UTTypeTagSpecification:
+              public.filename-extension: [pbm, pgm, ppm, pnm]
+          - UTTypeIdentifier: com.tenzy.xps
+            UTTypeDescription: XPS document
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [xps, oxps]
+          - UTTypeIdentifier: com.tenzy.tgz
+            UTTypeDescription: Compressed TAR
+            UTTypeConformsTo: [public.archive]
+            UTTypeTagSpecification:
+              public.filename-extension: [tgz, txz, tbz, tbz2, taz]
+          - UTTypeIdentifier: com.tenzy.apk
+            UTTypeDescription: Android app package
+            UTTypeConformsTo: [public.zip-archive]
+            UTTypeTagSpecification:
+              public.filename-extension: [apk, aab]
+          - UTTypeIdentifier: com.tenzy.mkv
+            UTTypeDescription: Matroska video
+            UTTypeConformsTo: [public.movie]
+            UTTypeTagSpecification:
+              public.filename-extension: [mkv, mka, webm]
         LSSupportsOpeningDocumentsInPlace: false
         # --- Tool permissions ---
         NSCameraUsageDescription: Needed for Scan, Capture, Color Vision, the magnifier, mirror and light meter. Frames are processed on your phone and never uploaded.

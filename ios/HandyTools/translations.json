@@ -89,6 +89,16 @@
   "pt": "(vazio)",
   "zh": "(空)"
  },
+ "(no subject)": {
+  "de": "(kein Betreff)",
+  "es": "(sin asunto)",
+  "fr": "(sans objet)",
+  "hi": "(कोई विषय नहीं)",
+  "it": "(nessun oggetto)",
+  "ja": "（件名なし）",
+  "pt": "(sem assunto)",
+  "zh": "（无主题）"
+ },
  "+10 min": {
   "de": "+10 Min.",
   "es": "+10 min",
@@ -2718,6 +2728,16 @@
   "ja": "大きな作業は専用ツールで",
   "pt": "Tarefas maiores, ferramentas completas",
   "zh": "大任务，用完整工具"
+ },
+ "Bigger text": {
+  "de": "Größere Schrift",
+  "es": "Texto más grande",
+  "fr": "Texte plus grand",
+  "hi": "बड़ा टेक्स्ट",
+  "it": "Testo più grande",
+  "ja": "文字を大きく",
+  "pt": "Texto maior",
+  "zh": "放大文字"
  },
  "Biggest folders": {
   "de": "Größte Ordner",
@@ -8429,6 +8449,16 @@
   "pt": "Encontra duplicados, junta e faz backup",
   "zh": "查找重复、合并并备份"
  },
+ "Find in this file": {
+  "de": "In dieser Datei suchen",
+  "es": "Buscar en este archivo",
+  "fr": "Rechercher dans ce fichier",
+  "hi": "इस फ़ाइल में खोजें",
+  "it": "Cerca in questo file",
+  "ja": "このファイル内を検索",
+  "pt": "Buscar neste arquivo",
+  "zh": "在此文件中查找"
+ },
  "Find on LinkedIn": {
   "de": "Auf LinkedIn finden",
   "es": "Buscar en LinkedIn",
@@ -8528,6 +8558,16 @@
   "ja": "ステッカーを仕上げています…",
   "pt": "Finalizando suas figurinhas…",
   "zh": "正在完成你的贴纸…"
+ },
+ "First bytes of the file": {
+  "de": "Erste Bytes der Datei",
+  "es": "Primeros bytes del archivo",
+  "fr": "Premiers octets du fichier",
+  "hi": "फ़ाइल के शुरुआती बाइट",
+  "it": "Primi byte del file",
+  "ja": "ファイルの先頭バイト",
+  "pt": "Primeiros bytes do arquivo",
+  "zh": "文件开头的字节"
  },
  "First name": {
   "de": "Vorname",
@@ -16529,6 +16569,16 @@
   "pt": "Abra as cortinas — deixe a luz entrar",
   "zh": "拉开窗帘，让光进来"
  },
+ "Opening…": {
+  "de": "Wird geöffnet …",
+  "es": "Abriendo…",
+  "fr": "Ouverture…",
+  "hi": "खुल रहा है…",
+  "it": "Apertura…",
+  "ja": "開いています…",
+  "pt": "Abrindo…",
+  "zh": "正在打开…"
+ },
  "Opens it straight away": {
   "de": "Öffnet es sofort",
   "es": "Lo abre al momento",
@@ -16808,6 +16858,16 @@
   "ja": "ページ",
   "pt": "Página",
   "zh": "页"
+ },
+ "Page colour": {
+  "de": "Seitenfarbe",
+  "es": "Color de página",
+  "fr": "Couleur de page",
+  "hi": "पेज का रंग",
+  "it": "Colore pagina",
+  "ja": "ページの色",
+  "pt": "Cor da página",
+  "zh": "页面颜色"
  },
  "Page size": {
   "de": "Seitengröße",
@@ -18328,6 +18388,16 @@
   "ja": "署名ページのプレビュー",
   "pt": "Prévia da página assinada",
   "zh": "已签名页面预览"
+ },
+ "Previous": {
+  "de": "Zurück",
+  "es": "Anterior",
+  "fr": "Précédent",
+  "hi": "पिछला",
+  "it": "Precedente",
+  "ja": "前へ",
+  "pt": "Anterior",
+  "zh": "上一页"
  },
  "Previous month": {
   "de": "Voriger Monat",
@@ -23069,6 +23139,16 @@
   "pt": "Pequeno, para e-mail",
   "zh": "小，用于邮件"
  },
+ "Smaller text": {
+  "de": "Kleinere Schrift",
+  "es": "Texto más pequeño",
+  "fr": "Texte plus petit",
+  "hi": "छोटा टेक्स्ट",
+  "it": "Testo più piccolo",
+  "ja": "文字を小さく",
+  "pt": "Texto menor",
+  "zh": "缩小文字"
+ },
  "Smaller, private, the right format": {
   "de": "Kleiner, privat, im richtigen Format",
   "es": "Más pequeña, privada, en el formato correcto",
@@ -24388,6 +24468,16 @@
   "ja": "記号",
   "pt": "Símbolo",
   "zh": "符号"
+ },
+ "Table": {
+  "de": "Tabelle",
+  "es": "Tabla",
+  "fr": "Table",
+  "hi": "टेबल",
+  "it": "Tabella",
+  "ja": "テーブル",
+  "pt": "Tabela",
+  "zh": "表"
  },
  "Tables as a spreadsheet (Excel)": {
   "de": "Tabellen als Tabellenblatt (Excel)",
@@ -27118,6 +27208,16 @@
   "ja": "タイトル・アーティスト・アルバム・ジャケット",
   "pt": "Título, artista, álbum e capa",
   "zh": "标题、艺人、专辑和封面"
+ },
+ "To": {
+  "de": "An",
+  "es": "Para",
+  "fr": "À",
+  "hi": "पाने वाला",
+  "it": "A",
+  "ja": "宛先",
+  "pt": "Para",
+  "zh": "收件人"
  },
  "To Calendar": {
   "de": "In den Kalender",
@@ -30099,6 +30199,16 @@
   "pt": "Você ainda pode preencher: abra Assinar, use «Adicionar texto» para digitar em qualquer lugar e assine.",
   "zh": "仍可填写：打开“签名”，用“添加文字”在页面任意位置输入，再加上签名。"
  },
+ "You can still share it to an app made for this kind of file.": {
+  "de": "Du kannst sie trotzdem an eine App für diese Dateiart weitergeben.",
+  "es": "Aun así puedes compartirlo con una app hecha para este tipo de archivo.",
+  "fr": "Vous pouvez quand même le partager vers une app faite pour ce type de fichier.",
+  "hi": "आप इसे इस तरह की फ़ाइल वाले ऐप में शेयर कर सकते हैं।",
+  "it": "Puoi comunque condividerlo con un'app fatta per questo tipo di file.",
+  "ja": "この種類のファイル用のアプリに共有できます。",
+  "pt": "Você ainda pode compartilhar com um app feito para esse tipo de arquivo.",
+  "zh": "你仍可以分享到专门处理此类文件的应用。"
+ },
  "You don't have to do it all at full speed today. Small steps, rest in between — doing it gently still gets it done.": {
   "de": "Du musst heute nicht alles mit vollem Tempo machen. Kleine Schritte, Pausen dazwischen – sanft schaffst du es trotzdem.",
   "es": "Hoy no tienes que hacerlo todo a toda velocidad. Pasos pequeños, descansos entre medias: hacerlo con calma también lo saca adelante.",
@@ -30808,6 +30918,26 @@
   "ja": "—",
   "pt": "a",
   "zh": "速度"
+ },
+ "attachment": {
+  "de": "Anhang",
+  "es": "adjunto",
+  "fr": "pièce jointe",
+  "hi": "अटैचमेंट",
+  "it": "allegato",
+  "ja": "件の添付",
+  "pt": "anexo",
+  "zh": "个附件"
+ },
+ "attachments": {
+  "de": "Anhänge",
+  "es": "adjuntos",
+  "fr": "pièces jointes",
+  "hi": "अटैचमेंट",
+  "it": "allegati",
+  "ja": "件の添付",
+  "pt": "anexos",
+  "zh": "个附件"
  },
  "average": {
   "de": "Durchschnitt",
@@ -31539,6 +31669,16 @@
   "pt": "restantes",
   "zh": "项剩余"
  },
+ "lines": {
+  "de": "Zeilen",
+  "es": "líneas",
+  "fr": "lignes",
+  "hi": "पंक्तियां",
+  "it": "righe",
+  "ja": "行",
+  "pt": "linhas",
+  "zh": "行"
+ },
  "looking things up online": {
   "de": "Online-Suche",
   "es": "buscar en internet",
@@ -31608,6 +31748,26 @@
   "ja": "件のマーク",
   "pt": "marcas",
   "zh": "处标记"
+ },
+ "match": {
+  "de": "Treffer",
+  "es": "coincidencia",
+  "fr": "résultat",
+  "hi": "मिलान",
+  "it": "risultato",
+  "ja": "件一致",
+  "pt": "resultado",
+  "zh": "处匹配"
+ },
+ "matches": {
+  "de": "Treffer",
+  "es": "coincidencias",
+  "fr": "résultats",
+  "hi": "मिलान",
+  "it": "risultati",
+  "ja": "件一致",
+  "pt": "resultados",
+  "zh": "处匹配"
  },
  "min": {
   "de": "Min.",
@@ -32199,6 +32359,16 @@
   "pt": "exibindo",
   "zh": "显示"
  },
+ "showing up to 200 rows": {
+  "de": "bis zu 200 Zeilen",
+  "es": "mostrando hasta 200 filas",
+  "fr": "jusqu'à 200 lignes affichées",
+  "hi": "200 पंक्तियों तक दिखाई जा रही हैं",
+  "it": "fino a 200 righe",
+  "ja": "最大200行を表示",
+  "pt": "exibindo até 200 linhas",
+  "zh": "最多显示 200 行"
+ },
  "smaller": {
   "de": "kleiner",
   "es": "más pequeño",
@@ -32279,6 +32449,16 @@
   "pt": "deslizado",
   "zh": "已划走"
  },
+ "tables": {
+  "de": "Tabellen",
+  "es": "tablas",
+  "fr": "tables",
+  "hi": "टेबल",
+  "it": "tabelle",
+  "ja": "個のテーブル",
+  "pt": "tabelas",
+  "zh": "个表"
+ },
  "taken": {
   "de": "aufgenommen",
   "es": "tomadas",
@@ -32308,6 +32488,16 @@
   "ja": "上をタップで閉じる · スライダーで明るさ調整",
   "pt": "toca acima para fechar · o cursor ajusta o brilho",
   "zh": "点按上方关闭 · 滑块设置亮度"
+ },
+ "tap one to open it": {
+  "de": "zum Öffnen antippen",
+  "es": "toca uno para abrirlo",
+  "fr": "touchez-en un pour l'ouvrir",
+  "hi": "खोलने के लिए एक पर टैप करें",
+  "it": "tocca per aprire",
+  "ja": "タップして開く",
+  "pt": "toque para abrir",
+  "zh": "轻点即可打开"
  },
  "tap to change colour · hold to close": {
   "de": "tippen zum Farbwechsel · halten zum Schließen",

@@ -49,10 +49,9 @@ struct FileViewerView: View {
                     Spacer()
                 }.cardStyle(padding: HandySpacing.s12)
 
-                QuickLookPreview(url: info.url)
-                    .frame(height: 460)
-                    .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+                // Read by what it really is: books by chapter, comics by page, emails with attachments, tables,
+                // archives you can open things inside, databases, code — Apple's viewer for the rest.
+                FileReaderView(url: info.url)
 
                 if let textPeek {
                     DisclosureGroup("Text in this file") {
@@ -79,7 +78,7 @@ struct FileViewerView: View {
             Label(L("Open any file in Tenzy, from anywhere"), systemImage: "square.and.arrow.up.on.square").font(HandyFont.bodyStrong)
             Text(L("In Files, Downloads, Mail, Safari or a chat: tap the file, tap Share, then tap Tenzy. It opens right here. If Tenzy isn't in the row of apps, swipe to the end, tap More and switch it on."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-            Text(L("PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · images · RAW · video · audio · ZIP · text · code · CSV · and more"))
+            Text("PDF · Word · Excel · PowerPoint · Pages · Numbers · Keynote · EPUB · Kindle MOBI/AZW3 · FB2 · CBZ comics · EML emails · CSV/TSV · JSON · code · SQLite · ZIP/TAR/GZ/XZ · RAW · PSD · TGA · voice notes · audio · video")
                 .font(HandyFont.micro).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true)
         }.cardStyle(padding: HandySpacing.s12)
     }
@@ -101,7 +100,7 @@ struct FileViewerView: View {
             errorText = "\(L("This file is named like a")) \(typeLabel.lowercased()) \(L("but only holds text — usually a download that didn't finish. It says:")) \(t)"
         }
         // For text-like files, surface the content too (QuickLook shows it, but this makes it copyable).
-        textPeek = (kind == .code || kind == .text) ? (try? String(contentsOf: url, encoding: .utf8)).map { String($0.prefix(60_000)) } : nil
+        textPeek = nil   // the reader shows text files in full now (find, copy)
     }
 }
 
@@ -111,7 +110,7 @@ enum FileKind: String {
 
     static func of(ext raw: String) -> FileKind {
         let e = raw.lowercased()
-        if ["pdf", "doc", "docx", "pages", "rtf", "key", "keynote", "ppt", "pptx", "xls", "xlsx", "numbers", "epub", "odt"].contains(e) { return .document }
+        if ["pdf", "doc", "docx", "pages", "rtf", "key", "keynote", "ppt", "pptx", "xls", "xlsx", "numbers", "epub", "odt", "mobi", "azw", "azw3", "fb2", "prc", "pdb", "eml", "emlx", "xps", "oxps", "cbz", "cbr", "docm", "dotx", "xlsm", "xltx", "pptm", "potx", "ppsx"].contains(e) { return .document }
         if ["jpg", "jpeg", "png", "gif", "heic", "heif", "webp", "tiff", "bmp", "svg", "raw", "dng", "cr2", "nef", "arw"].contains(e) { return .image }
         if ["mp4", "mov", "m4v", "avi", "mkv", "webm", "hevc", "3gp"].contains(e) { return .video }
         if ["mp3", "m4a", "wav", "aac", "flac", "aiff", "ogg", "caf"].contains(e) { return .audio }
@@ -139,7 +138,7 @@ enum FileKind: String {
 
 /// QuickLook preview, embedded — Apple's own renderer, so it handles PDFs, Office/iWork, images, text,
 /// CSV and many more for free, in the UI the user already knows.
-private struct QuickLookPreview: UIViewControllerRepresentable {
+struct QuickLookPreview: UIViewControllerRepresentable {
     let url: URL
     func makeCoordinator() -> Coordinator { Coordinator(url: url) }
     func makeUIViewController(context: Context) -> QLPreviewController {
