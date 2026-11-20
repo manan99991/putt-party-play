@@ -12,11 +12,8 @@ AUDIO TOOLS	clip	length	convert	compress	ringtone	trim+fade	2× speed	| problem
 9	18.3	1	1	1	1	1	| 
 join	10.7						| 
 
-SCORE cutout n=3 0.000
-CUT-OUT	photo	variant	background clear	person solid	| problem
-face-selfie-close.jpg	as taken	1	0	|  holes in the person
-face-selfie-close.jpg	farther away	1	0	|  holes in the person
-face-selfie-close.jpg	dim	1	0	|  holes in the person
+SCORE cutout n=0 phone-only
+CUT-OUT	subject lifting doesn't run in the simulator — checked on a phone
 
 SCORE fitit n=28 0.964
 FIT IT	photo	target	got	long side	| problem
@@ -65,57 +62,57 @@ receipt-east-repair-vintage.png	bill	From East Repair Inc..	| WRONG, wanted ["re
 receipt-quickbooks.png	receipt	Total $145.00.	| ok
 receipt-xero.png	lists	38 items under 5 headings.	| WRONG, wanted ["receipt"]
 
-SCORE passport n=30 0.000
+SCORE passport n=30 0.533
 PASSPORT	photo	country	variant	head mm (limits)	eyes mm (limits)	background	size	score	| what failed
-face-selfie-close.jpg	us	as taken	—	—	plain	ok	88	| no face found in the finished photo
-face-selfie-close.jpg	us	tilted	—	—	plain	ok	88	| no face found in the finished photo
-face-selfie-close.jpg	us	dim	—	—	plain	ok	90	| no face found in the finished photo
-face-selfie-close.jpg	us	low-res	—	—	plain	ok	93	| no face found in the finished photo
-face-selfie-close.jpg	us	farther away	—	—	plain	ok	95	| no face found in the finished photo
-face-selfie-close.jpg	uk	as taken	—	—	plain	ok	93	| no face found in the finished photo
-face-selfie-close.jpg	uk	tilted	1582.2 (29–34)	—	plain	ok	80	| head 1582.2 mm; head still tilted 50°
-face-selfie-close.jpg	uk	dim	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	uk	low-res	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	uk	farther away	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	eu	as taken	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	eu	tilted	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	eu	dim	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	eu	low-res	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	eu	farther away	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	in	as taken	—	—	kept	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	in	tilted	—	—	kept	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	in	dim	—	—	kept	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	in	low-res	—	—	kept	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	in	farther away	—	—	kept	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	ca	as taken	—	—	plain	ok	45	| no face found in the finished photo
-face-selfie-close.jpg	ca	tilted	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	ca	dim	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	ca	low-res	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	ca	farther away	—	—	plain	ok	87	| no face found in the finished photo
-face-selfie-close.jpg	ca-online	as taken	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	ca-online	tilted	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	ca-online	dim	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	ca-online	low-res	—	—	plain	ok	92	| no face found in the finished photo
-face-selfie-close.jpg	ca-online	farther away	—	—	plain	ok	92	| no face found in the finished photo
+face-selfie-close.jpg	us	as taken	—	—	off by 205	ok	79	| no face found in the finished photo; background not plain
+face-selfie-close.jpg	us	tilted	—	—	off by 145	ok	79	| no face found in the finished photo; background not plain
+face-selfie-close.jpg	us	dim	—	—	off by 140	ok	81	| no face found in the finished photo; background not plain
+face-selfie-close.jpg	us	low-res	44.6 (25–35)	28.3 (28–35)	plain	ok	76	| head 44.6 mm; head still tilted -13°
+face-selfie-close.jpg	us	farther away	58.7 (25–35)	31.9 (28–35)	plain	ok	83	| head 58.7 mm; head still tilted 21°
+face-selfie-close.jpg	uk	as taken	22.4 (29–34)	—	plain	ok	98	| head 22.4 mm
+face-selfie-close.jpg	uk	tilted	30.7 (29–34)	—	off by 20	ok	95	| background not plain
+face-selfie-close.jpg	uk	dim	32.1 (29–34)	—	off by 71	ok	90	| background not plain
+face-selfie-close.jpg	uk	low-res	31.2 (29–34)	—	off by 20	ok	95	| background not plain
+face-selfie-close.jpg	uk	farther away	31.3 (29–34)	—	off by 20	ok	95	| background not plain
+face-selfie-close.jpg	eu	as taken	33.7 (32–36)	—	plain	ok	95	| 
+face-selfie-close.jpg	eu	tilted	33.4 (32–36)	—	plain	ok	95	| 
+face-selfie-close.jpg	eu	dim	36.4 (32–36)	—	off by 91	ok	85	| background not plain
+face-selfie-close.jpg	eu	low-res	33.6 (32–36)	—	plain	ok	95	| 
+face-selfie-close.jpg	eu	farther away	33.8 (32–36)	—	plain	ok	95	| 
+face-selfie-close.jpg	in	as taken	36.9 (36–38.2)	—	kept	ok	95	| 
+face-selfie-close.jpg	in	tilted	36.2 (36–38.2)	—	kept	ok	95	| 
+face-selfie-close.jpg	in	dim	40.6 (36–38.2)	—	kept	ok	88	| head 40.6 mm
+face-selfie-close.jpg	in	low-res	36.7 (36–38.2)	—	kept	ok	90	| 
+face-selfie-close.jpg	in	farther away	37.2 (36–38.2)	—	kept	ok	93	| 
+face-selfie-close.jpg	ca	as taken	33.1 (31–36)	—	plain	ok	93	| 
+face-selfie-close.jpg	ca	tilted	33.3 (31–36)	—	plain	ok	93	| 
+face-selfie-close.jpg	ca	dim	33.1 (31–36)	—	plain	ok	93	| 
+face-selfie-close.jpg	ca	low-res	33.4 (31–36)	—	plain	ok	93	| 
+face-selfie-close.jpg	ca	farther away	33.6 (31–36)	—	off by 114	ok	95	| background not plain
+face-selfie-close.jpg	ca-online	as taken	35.3 (33.8–37.5)	—	plain	ok	88	| 
+face-selfie-close.jpg	ca-online	tilted	35.6 (33.8–37.5)	—	plain	ok	88	| 
+face-selfie-close.jpg	ca-online	dim	34.9 (33.8–37.5)	—	plain	ok	83	| 
+face-selfie-close.jpg	ca-online	low-res	35.4 (33.8–37.5)	—	plain	ok	88	| 
+face-selfie-close.jpg	ca-online	farther away	35.7 (33.8–37.5)	—	off by 114	ok	90	| background not plain
 
-SCORE pdf-tools n=24 0.583
+SCORE pdf-tools n=24 0.917
 PDF TOOLS	file	pages	reorder	lock	shrink	searchable	| problem
 160F-2019.pdf	1	1	1	1	has text	| 
-annotation-tx2.pdf	1	1	1	1	failed	| no text layer added
+annotation-tx2.pdf	1	1	1	1	made (12/12 letters)	| 
 bug1175962.pdf	1	1	1	1	has text	| 
 bug1708041.pdf	6	1	1	1	has text	| 
-bug1871353.1.pdf	1	1	1	1	failed	| no text layer added
+bug1871353.1.pdf	1	1	1	1	made (2/2 letters)	| 
 bug1997343.pdf	2	0	1	1	has text	| reorder lost or mixed pages
 colorspace_atan.pdf	1	1	1	1	no words on it	| 
 highlights.pdf	14	1	1	1	has text	| 
-issue11144_reduced.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue11144_reduced.pdf	1	1	1	1	has text	| 
 issue1453.pdf	1	1	1	1	has text	| 
-issue15557.pdf	1	1	1	1	failed	| no text layer added
-issue19550.pdf	1	0	1	1	failed	| reorder lost or mixed pages; no text layer added
-issue2074.pdf	1	0	1	1	has text	| reorder lost or mixed pages
-issue2537r.pdf	1	1	1	1	failed	| no text layer added
+issue15557.pdf	1	1	1	1	made (8/8 letters)	| 
+issue19550.pdf	1	1	1	1	made (15/15 letters)	| 
+issue2074.pdf	1	1	1	1	has text	| 
+issue2537r.pdf	1	1	1	1	made (6/6 letters)	| 
 issue5704.pdf	1	1	1	1	has text	| 
-issue6179_reduced.pdf	1	0	1	1	has text	| reorder lost or mixed pages
+issue6179_reduced.pdf	1	1	1	1	has text	| 
 issue7020.pdf	1	1	1	1	has text	| 
 issue7878.pdf	1	1	1	1	has text	| 
 javauninstall-7r.pdf	1	1	1	1	has text	| 
@@ -158,9 +155,9 @@ safe to share	receipt-xero.png	| no location
 hide faces	face-selfie-close.jpg as taken	| 1 face(s) before, 0 after, 89 KB
 hide faces	face-selfie-close.jpg farther away	| 1 face(s) before, 1 after, 140 KB
 
-SCORE profile-picture n=3 0.000
+SCORE profile-picture n=3 1.000
 PROFILE PICTURE	photo	variant	face centre x	head share	| problem
-face-selfie-close.jpg	as taken	2755691411280.10	21624208779506.52	| face off centre; head 2162420877950651% of the height; top of the head cut off
-face-selfie-close.jpg	farther away	14333426816207.85	100905248494045.42	| face off centre; head 10090524849404542% of the height; top of the head cut off
-face-selfie-close.jpg	tilted	195751428216091.09	1746988888110581.25	| face off centre; head 174698888811058112% of the height; top of the head cut off
+face-selfie-close.jpg	as taken	0.48	0.55	| 
+face-selfie-close.jpg	farther away	0.50	0.56	| 
+face-selfie-close.jpg	tilted	0.50	0.55	| 
 
