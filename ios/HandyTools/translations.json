@@ -3609,6 +3609,16 @@
   "pt": "Alterados",
   "zh": "已更改"
  },
+ "Changing the speed…": {
+  "de": "Tempo wird geändert …",
+  "es": "Cambiando la velocidad…",
+  "fr": "Changement de vitesse…",
+  "hi": "गति बदली जा रही है…",
+  "it": "Cambio la velocità…",
+  "ja": "速度を変更中…",
+  "pt": "A mudar a velocidade…",
+  "zh": "正在调整速度…"
+ },
  "Chat link ready": {
   "de": "Chat-Link fertig",
   "es": "Enlace de chat listo",
@@ -26579,6 +26589,16 @@
   "pt": "Esse precisa de um vídeo — toca em Vídeo acima.",
   "zh": "那个需要一个视频 — 点按上方的视频。"
  },
+ "That speed couldn't be made from this video.": {
+  "de": "Dieses Tempo ließ sich aus dem Video nicht machen.",
+  "es": "No se pudo hacer esa velocidad con este vídeo.",
+  "fr": "Cette vitesse n'a pas pu être créée avec cette vidéo.",
+  "hi": "इस वीडियो से वह गति नहीं बन सकी।",
+  "it": "Non è stato possibile creare quella velocità da questo video.",
+  "ja": "この動画ではその速度にできませんでした。",
+  "pt": "Não foi possível fazer essa velocidade com este vídeo.",
+  "zh": "无法用这个视频做出这个速度。"
+ },
  "That style wouldn't scan reliably with this much text, so here's the plain code. Try fewer details, no picture, or squares.": {
   "de": "Mit so viel Text wäre der Stil nicht zuverlässig scannbar, darum hier der schlichte Code. Versuch weniger Angaben, kein Bild oder Quadrate.",
   "es": "Con tanto texto ese estilo no se leería bien, así que aquí está el código sencillo. Prueba con menos datos, sin imagen o con cuadrados.",
@@ -28508,6 +28528,16 @@
   "ja": "別のサイズを試す",
   "pt": "Tentar outro tamanho",
   "zh": "换个大小"
+ },
+ "Try another speed — sound stays natural": {
+  "de": "Anderes Tempo probieren – der Ton bleibt natürlich",
+  "es": "Prueba otra velocidad: el sonido sigue natural",
+  "fr": "Essayez une autre vitesse — le son reste naturel",
+  "hi": "दूसरी गति आज़माएँ — आवाज़ स्वाभाविक रहती है",
+  "it": "Prova un'altra velocità: l'audio resta naturale",
+  "ja": "別の速度を試す（音声は自然なまま）",
+  "pt": "Experimente outra velocidade — o som fica natural",
+  "zh": "换个速度试试，声音保持自然"
  },
  "Try another style": {
   "de": "Anderen Stil probieren",
@@ -33408,6 +33438,16 @@
   "ja": "最大200行を表示",
   "pt": "exibindo até 200 linhas",
   "zh": "最多显示 200 行"
+ },
+ "slow": {
+  "de": "langsam",
+  "es": "lento",
+  "fr": "lent",
+  "hi": "धीमा",
+  "it": "lento",
+  "ja": "スロー",
+  "pt": "lento",
+  "zh": "慢"
  },
  "slower": {
   "de": "langsamer",

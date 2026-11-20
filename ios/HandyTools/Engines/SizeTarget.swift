@@ -212,7 +212,8 @@ enum SizeTarget {
         for (name, side) in presets where side <= max(640, longest) {
             guard let s = AVAssetExportSession(asset: asset, presetName: name), s.supportedFileTypes.contains(.mp4) else { continue }
             s.outputFileType = .mp4
-            guard let est = try? await s.estimateOutputFileLength(), est > 0, est <= Int64(Double(targetBytes) * 0.9) else { continue }
+            let est: Int64 = await withCheckedContinuation { c in s.estimateOutputFileLength { len, _ in c.resume(returning: len) } }
+            guard est > 0, est <= Int64(Double(targetBytes) * 0.9) else { continue }
             let out = VideoEngine.tempURL("mp4")
             s.outputURL = out; s.metadata = []; s.shouldOptimizeForNetworkUse = true
             guard await VideoEngine.run(s, seconds: seconds) else { return nil }   // stopped

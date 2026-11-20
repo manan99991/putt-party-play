@@ -2530,7 +2530,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
         case .video(let u):
             // Same finish as the Video tool: watch it, what changed against your original, each promise checked on the file.
-            VideoFinishCard(url: u, source: inputVideo, promise: VideoPromise(chain)).id(u)   // a new result never shows the old player
+            if chain.steps.last?.block == .videoSpeed {
+                // Speed: sound kept at natural pitch, and every other speed one tap away on the same clip.
+                SpeedFinishCard(source: inputVideo, url: u, rate: ChainText.speedRate(chain.steps.last?.settings["speed"])).id(u)
+            } else {
+                VideoFinishCard(url: u, source: inputVideo, promise: VideoPromise(chain)).id(u)   // a new result never shows the old player
+            }
         }
     }
 

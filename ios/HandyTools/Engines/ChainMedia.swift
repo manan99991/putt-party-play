@@ -287,20 +287,14 @@ enum ChainMedia {
     }
 
     /// The same video played slower or faster. It comes out without sound, since sound at another speed is only noise.
-    private static func respeed(_ url: URL, rate: Double) async -> URL? {
-        let asset = AVURLAsset(url: url)
-        guard rate > 0, let track = (try? await asset.loadTracks(withMediaType: .video))?.first,
-              let length = try? await asset.load(.duration), length.seconds > 0 else { return nil }
-        let film = AVMutableComposition()
-        guard let lane = film.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
-        let whole = CMTimeRange(start: .zero, duration: length)
-        guard (try? lane.insertTimeRange(whole, of: track, at: .zero)) != nil else { return nil }
-        lane.preferredTransform = (try? await track.load(.preferredTransform)) ?? .identity
-        lane.scaleTimeRange(whole, toDuration: CMTimeMultiplyByFloat64(length, multiplier: 1 / rate))
-        guard let session = AVAssetExportSession(asset: film, presetName: AVAssetExportPresetHighestQuality) else { return nil }
-        let out = VideoEngine.tempURL("mp4")
-        session.outputURL = out; session.outputFileType = .mp4; session.metadata = []
-        return await VideoEngine.run(session, seconds: (try? await film.load(.duration))?.seconds ?? 0) ? out : nil
+    /// Faster or slower, sound kept: voices keep their natural pitch (no chipmunk, no growl), the picture is turned
+    /// upright. (It used to drop the sound entirely.)
+    static func respeed(_ url: URL, rate: Double) async -> URL? {
+        guard rate > 0 else { return nil }
+        await MainActor.run { RunProgress.shared.begin() }
+        let out = await VideoJoin.join([url], rate: rate) { f in Task { @MainActor in RunProgress.shared.set(min(0.99, f)) } }
+        await MainActor.run { RunProgress.shared.end() }
+        return out
     }
 
     /// The middle of the frame at 9:16 (a phone held upright), with even pixel sizes as video encoders need.

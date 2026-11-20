@@ -165,6 +165,16 @@ final class FinishFactsTests: XCTestCase {
         let plain = Transcriber.candidateLocales(["en-US", "es-ES"], current: Locale(identifier: "en_US"))
         XCTAssertEqual(plain.map(\.identifier), ["en_US", "es-ES"])
     }
+
+    /// "Speed a video up" dropped the sound: it now goes through the same path as Join & Speed (sound kept, natural pitch).
+    func testSpeedingUpKeepsTheVideoAndHalvesTheLength() async throws {
+        let m = await SampleAssets.movie(seconds: 4)
+        let src = try XCTUnwrap(m)
+        let fast = await ChainMedia.respeed(src, rate: 2)
+        let u = try XCTUnwrap(fast)
+        let f = await VideoFacts.read(u)
+        XCTAssertEqual(try XCTUnwrap(f).seconds, 2, accuracy: 0.35)
+    }
 }
 
 /// A tiny lock box so a progress callback from another thread can be collected in a test.

@@ -231,3 +231,54 @@ struct RunningOnVideoCard: View {
         }
     }
 }
+
+/// The finish for a speed change: the video at the chosen speed, with the sound kept at natural pitch, and every
+/// other speed one tap away on the same clip — so you can find the one that feels right without starting over.
+struct SpeedFinishCard: View {
+    let source: URL?
+    @State var url: URL
+    @State var rate: Double
+    @State private var busy: Double?
+    @State private var problem: String?
+    @ObservedObject private var prog = RunProgress.shared
+    static let rates: [Double] = [0.25, 0.5, 0.75, 1.5, 2, 4]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            VideoFinishCard(url: url, source: source, promise: { var p = VideoPromise(); p.speed = rate > 1 ? "fast" : "slow"; return p }()).id(url)
+            if source != nil {
+                Text(L("Try another speed — sound stays natural")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(Self.rates, id: \.self) { r in
+                            Button { change(r) } label: {
+                                HStack(spacing: 4) {
+                                    if busy == r { ProgressView().controlSize(.mini) }
+                                    Text(r < 1 ? "\(r.formatted())× \(L("slow"))" : "\(r.formatted())×").font(HandyFont.caption)
+                                }
+                                .padding(.horizontal, 12).padding(.vertical, 8)
+                                .background(rate == r ? HandyColor.accent : HandyColor.surface, in: Capsule())
+                                .foregroundStyle(rate == r ? Color.white : HandyColor.textPrimary)
+                            }.buttonStyle(.plain).disabled(busy != nil)
+                        }
+                    }
+                }
+                .accessibilityIdentifier("speed-choices")
+                if busy != nil { ToolProgressBar(value: prog.fraction, label: "Changing the speed…") }
+            }
+            if let problem { Text(L(problem)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+        }
+    }
+
+    private func change(_ r: Double) {
+        guard r != rate, let s = source else { return }
+        busy = r; problem = nil
+        Task {
+            let out = await ChainMedia.respeed(s, rate: r)
+            await MainActor.run {
+                busy = nil
+                if let out { url = out; rate = r } else { problem = "That speed couldn't be made from this video." }
+            }
+        }
+    }
+}
