@@ -89,7 +89,7 @@ struct VideoFinishCard: View {
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("video-finish")
         .task(id: url) {
-            if player == nil { player = AVPlayer(url: url) }
+            player?.pause(); player = AVPlayer(url: url)   // always the video this card is about
             facts = await VideoFacts.read(url)
             if let source { before = await VideoFacts.read(source) }
         }

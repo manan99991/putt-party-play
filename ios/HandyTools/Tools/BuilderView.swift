@@ -1776,16 +1776,15 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 if let why = chain.unavailable {
                     Label(why, systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber).cardStyle(padding: HandySpacing.s12)
                 }
+                // While a job runs, new picks wait: the inputs dim and can't be tapped, so the result on screen is always
+                // the thing you picked (two jobs racing gave a preview of one video and a share of another).
+                Group {
                 if start == .audio {
                     audioInputs
                 } else if start == .pdf {
                     pdfInputs
                 } else if start == .video {
-                    if busy, let v = inputVideo {
-                        // While it works: which video, how long and big it is, and what it's being made into —
-                        // instead of the pick buttons, so it never looks like nothing was chosen.
-                        RunningOnVideoCard(url: v, goal: chain.name)
-                    } else {
+                    Group {
                         PhotosPicker(selection: $videoPick, matching: .videos) { Label(L(result == nil ? "Choose a video" : "Choose another video"), systemImage: "film").frame(maxWidth: .infinity) }
                             .primaryButton().accessibilityIdentifier("run-video")
                         PhotosPicker(selection: $livePick, matching: .livePhotos) { Label(L("Choose a Live Photo"), systemImage: "livephoto").frame(maxWidth: .infinity) }
@@ -1835,6 +1834,21 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                         Text("\(text.count) characters — scroll inside the box to read it all.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     }
                     Button(L("Run")) { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+                }
+                .disabled(busy)
+                .opacity(busy ? 0.35 : 1)
+                .overlay(alignment: .top) {
+                    if busy {
+                        Label(L("Working on what you picked — new picks wait until it's done, or tap Stop."), systemImage: "hourglass")
+                            .font(HandyFont.caption).padding(.horizontal, 12).padding(.vertical, 8)
+                            .background(HandyColor.surfaceRaised, in: Capsule())
+                            .accessibilityIdentifier("run-busy-note")
+                    }
+                }
+                if busy, start == .video, let v = inputVideo {
+                    // While it works: which video, how long and big it is, and what it's being made into.
+                    RunningOnVideoCard(url: v, goal: chain.name)
                 }
                 if busy {
                     ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? chain.steps.first.map { "\($0.block.title)…" } ?? "" : progress)
@@ -2516,7 +2530,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             }
         case .video(let u):
             // Same finish as the Video tool: watch it, what changed against your original, each promise checked on the file.
-            VideoFinishCard(url: u, source: inputVideo, promise: VideoPromise(chain))
+            VideoFinishCard(url: u, source: inputVideo, promise: VideoPromise(chain)).id(u)   // a new result never shows the old player
         }
     }
 
@@ -2539,6 +2553,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     }
 
     private func go(_ input: ChainPayload) {
+        runTask?.cancel()   // one job at a time: a new one replaces the old, so what's shown is always what was picked
         busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
         // The photo as it came in, for the before/after on the finish. A picture handed over in memory (shared, pasted)
         // is kept as a JPEG of the same pixels.

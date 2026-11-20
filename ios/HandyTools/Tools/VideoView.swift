@@ -107,7 +107,8 @@ struct VideoView: View {
                     ToolProgressBar(value: progressValue > 0 ? progressValue : nil, label: "Keep Tenzy open while this finishes.")
                 }
 
-                PhotosPicker(selection: $pickedItem, matching: .videos) { Label(L("Choose a different video"), systemImage: "film") }.textButton()
+                // While a job runs, a new pick waits — the result shown is always for the video on screen.
+                PhotosPicker(selection: $pickedItem, matching: .videos) { Label(L(working ? "Working — pick another when it's done" : "Choose a different video"), systemImage: "film") }.textButton().disabled(working)
             }
 
             if let loadNote { ToolProgressBar(label: loadNote, showsTime: false) }

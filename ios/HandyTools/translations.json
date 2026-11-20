@@ -30819,6 +30819,16 @@
   "pt": "Calcular o trajeto",
   "zh": "计算车程"
  },
+ "Working on what you picked — new picks wait until it's done, or tap Stop.": {
+  "de": "Arbeitet an deiner Auswahl – Neues wartet, bis es fertig ist, oder tippe auf Stopp.",
+  "es": "Trabajando en lo que elegiste: lo nuevo espera a que termine, o toca Detener.",
+  "fr": "Traitement de votre choix — les nouveaux choix attendent la fin, ou touchez Arrêter.",
+  "hi": "आपकी चुनी चीज़ पर काम चल रहा है — नई चीज़ें इसके पूरा होने तक रुकेंगी, या Stop दबाएँ।",
+  "it": "Sto lavorando su ciò che hai scelto: le nuove scelte aspettano la fine, oppure tocca Stop.",
+  "ja": "選んだものを処理中です。終わるまで新しい選択は待機します。止めるには「停止」をタップ。",
+  "pt": "A trabalhar no que escolheu — novas escolhas esperam até terminar, ou toque em Parar.",
+  "zh": "正在处理你选的内容，新的选择会等它完成，或轻点“停止”。"
+ },
  "Working on your photo…": {
   "de": "Foto wird bearbeitet …",
   "es": "Trabajando en tu foto…",
@@ -30838,6 +30848,16 @@
   "ja": "運転時間を計算中…",
   "pt": "A calcular o trajeto…",
   "zh": "正在计算车程…"
+ },
+ "Working — pick another when it's done": {
+  "de": "Läuft – danach ein anderes wählen",
+  "es": "Procesando: elige otro al terminar",
+  "fr": "En cours — choisissez-en une autre après",
+  "hi": "काम चल रहा है — पूरा होने पर दूसरा चुनें",
+  "it": "In corso: scegline un altro alla fine",
+  "ja": "処理中 — 終わったら別のものを選択",
+  "pt": "Em curso — escolha outro quando terminar",
+  "zh": "处理中，完成后再选另一个"
  },
  "Working…": {
   "de": "Wird bearbeitet…",
