@@ -34,9 +34,9 @@ final class ToolHandoff {
         case .pdf: return ["pdfsign", "pdfform", "pdfsearchable", "pdfprotect", "pdfpages", "fitit", "zipmaker"]
         case .image, .photoFile: return ["scrub", "fitit", "sticker", "animate", "collage", "faceemoji", "comicstrip", "menu", "cards"]
         case .audio: return ["meetingnotes", "audiocompress", "audiomix", "audiotags", "audioconvert", "zipmaker"]
-        // Video tools only (audio tools live under Audio): the Video tool (shrink, trim, GIF, mute, sound out,
-        // for social), Fit It, and Join & Speed, which keeps videos as videos.
-        case .video: return ["video", "fitit", "audiomix"]
+        // Everything that starts from a video, named as a video job (Guide.videoNames): edit it, send it, join or speed it,
+        // take its sound out (MP3/M4A, ringtone) and get its words. Plain audio-only jobs (song info, compress audio) stay under Audio.
+        case .video: return ["video", "fitit", "audiomix", "audioconvert", "ringtone", "meetingnotes"]
         case .file: return ["zipmaker"]
         case .text: return []
         }

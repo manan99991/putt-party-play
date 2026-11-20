@@ -307,7 +307,7 @@ struct OptionRow: View {
             }
             .frame(width: side, height: side)
             VStack(alignment: .leading, spacing: 3) {
-                Text(Guide.title(option, count: count)).font(big ? HandyFont.cardTitle : HandyFont.bodyStrong)
+                Text(Guide.title(option, count: count, kind: kind)).font(big ? HandyFont.cardTitle : HandyFont.bodyStrong)
                     .foregroundStyle(HandyColor.textPrimary).multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(L(Guide.gets(option, kind: kind))).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)

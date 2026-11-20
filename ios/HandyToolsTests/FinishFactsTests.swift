@@ -102,12 +102,19 @@ final class FinishFactsTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(ff).seconds, 1.25, accuracy: 0.3, "2x makes it half as long")
     }
 
-    /// "Video shows only video tools; audio only audio tools."
-    func testVideoAndAudioListsStayInTheirLane() {
-        let audioOnly: Set = ["audiocompress", "audioconvert", "audiotags", "meetingnotes", "audioclean", "audioedit", "ringtone", "soundboard"]
+    /// "A video shows everything you can do starting from a video — including taking its sound out — named as video jobs;
+    /// audio-only jobs (song info, compress audio) stay under Audio."
+    @MainActor func testVideoListIsEveryVideoJobNamedAsOne() {
         let video = ToolHandoff.tools(for: .video)
-        XCTAssertEqual(video.first, "video", "the Video tool comes first for a video")
-        XCTAssertTrue(Set(video).isDisjoint(with: audioOnly), "audio-only tools offered for a video: \(Set(video).intersection(audioOnly))")
+        XCTAssertEqual(video.first, "video")
+        for must in ["audioconvert", "ringtone", "meetingnotes", "audiomix", "fitit"] { XCTAssertTrue(video.contains(must), "\(must) missing for a video") }
+        XCTAssertFalse(video.contains("audiotags")); XCTAssertFalse(video.contains("audiocompress"))
+        for id in video where id != "video" && id != "fitit" {
+            XCTAssertNotNil(Guide.videoNames[id], "\(id) is offered for a video under its audio name")
+        }
+        XCTAssertEqual(Guide.title(.tool("audioconvert"), count: 1, kind: .video), "Save the sound as MP3 or M4A")
+        XCTAssertEqual(Guide.goal(ofTool: "audioconvert", kind: .video, count: 1), "sound")
+        XCTAssertTrue(Guide.goalIDs(for: .video, count: 1).contains("sound"))
         XCTAssertFalse(ToolHandoff.tools(for: .audio).contains("video"))
     }
 }

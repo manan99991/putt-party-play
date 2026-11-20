@@ -9669,6 +9669,16 @@
   "pt": "Abaixe até a altura dos olhos dele para a melhor foto.",
   "zh": "蹲到它的视线高度，拍得最好。"
  },
+ "Get the sound out": {
+  "de": "Den Ton herausholen",
+  "es": "Sacar el sonido",
+  "fr": "Extraire le son",
+  "hi": "आवाज़ निकालें",
+  "it": "Estrai l'audio",
+  "ja": "音声を取り出す",
+  "pt": "Extrair o som",
+  "zh": "提取声音"
+ },
  "Get the words": {
   "de": "Text holen",
   "es": "Sacar las palabras",
@@ -11489,6 +11499,16 @@
   "pt": "Juntar vários PDF num só",
   "zh": "将多个 PDF 合并为一个"
  },
+ "Join videos or change their speed": {
+  "de": "Videos verbinden oder Tempo ändern",
+  "es": "Unir vídeos o cambiar su velocidad",
+  "fr": "Assembler des vidéos ou changer leur vitesse",
+  "hi": "वीडियो जोड़ें या उनकी गति बदलें",
+  "it": "Unisci video o cambiane la velocità",
+  "ja": "動画をつなぐ・速度を変える",
+  "pt": "Juntar vídeos ou mudar a velocidade",
+  "zh": "拼接视频或调整速度"
+ },
  "Joined": {
   "de": "Verbunden",
   "es": "Unido",
@@ -11538,6 +11558,16 @@
   "ja": "そのまま開く",
   "pt": "Só abrir",
   "zh": "直接打开"
+ },
+ "Just the audio from your video, in the format you pick": {
+  "de": "Nur der Ton deines Videos, im gewünschten Format",
+  "es": "Solo el audio de tu vídeo, en el formato que elijas",
+  "fr": "Juste le son de votre vidéo, au format choisi",
+  "hi": "आपके वीडियो की सिर्फ़ आवाज़, आपके चुने फ़ॉर्मैट में",
+  "it": "Solo l'audio del video, nel formato che scegli",
+  "ja": "動画の音声だけを、選んだ形式で",
+  "pt": "Só o áudio do vídeo, no formato que escolher",
+  "zh": "只要视频的声音，格式由你选"
  },
  "Just the sound": {
   "de": "Nur den Ton",
@@ -15769,6 +15799,16 @@
   "pt": "Notas de uma gravação de reunião",
   "zh": "从会议录音生成笔记"
  },
+ "Notes from a video call or talk": {
+  "de": "Notizen aus einem Videoanruf oder Vortrag",
+  "es": "Notas de una videollamada o charla",
+  "fr": "Notes d'un appel vidéo ou d'une conférence",
+  "hi": "वीडियो कॉल या भाषण से नोट्स",
+  "it": "Appunti da una videochiamata o un intervento",
+  "ja": "ビデオ通話や講演のメモ",
+  "pt": "Notas de uma videochamada ou palestra",
+  "zh": "视频通话或讲座的笔记"
+ },
  "Notes kept on your phone, searchable and shareable": {
   "de": "Notizen auf deinem Handy, durchsuchbar und teilbar",
   "es": "Notas en tu teléfono, buscables y para compartir",
@@ -16428,6 +16468,16 @@
   "ja": "お店が開いていて空いている時間に1回で。",
   "pt": "Uma viagem só, quando as lojas estão abertas e tranquilas.",
   "zh": "一趟出门，挑商店营业且人少的时候。"
+ },
+ "One video, or faster / slower with natural voices": {
+  "de": "Ein Video, oder schneller / langsamer mit natürlichen Stimmen",
+  "es": "Un vídeo, o más rápido / lento con voces naturales",
+  "fr": "Une vidéo, ou plus rapide / lente avec des voix naturelles",
+  "hi": "एक वीडियो, या प्राकृतिक आवाज़ के साथ तेज़ / धीमा",
+  "it": "Un video, o più veloce / lento con voci naturali",
+  "ja": "1本の動画に、または自然な声のまま速く／遅く",
+  "pt": "Um vídeo, ou mais rápido / lento com vozes naturais",
+  "zh": "合成一个视频，或在保持自然声音下加快/放慢"
  },
  "One-time, on your phone. You can search what's ready now — next time it's instant.": {
   "de": "Einmalig, auf deinem Handy. Du kannst durchsuchen, was schon fertig ist — beim nächsten Mal ist es sofort da.",
@@ -20549,6 +20599,16 @@
   "pt": "Agora:",
   "zh": "目前："
  },
+ "Ringtone from this video": {
+  "de": "Klingelton aus diesem Video",
+  "es": "Tono de este vídeo",
+  "fr": "Sonnerie à partir de cette vidéo",
+  "hi": "इस वीडियो से रिंगटोन",
+  "it": "Suoneria da questo video",
+  "ja": "この動画から着信音",
+  "pt": "Toque a partir deste vídeo",
+  "zh": "用这个视频做铃声"
+ },
  "Ringtone ready — play it, then save or share.": {
   "de": "Klingelton fertig – abspielen, dann sichern oder teilen.",
   "es": "Tono listo: reprodúcelo y luego guárdalo o compártelo.",
@@ -20929,6 +20989,16 @@
   "pt": "Salve todos num arquivo de cartões em Arquivos, iCloud Drive ou Google Drive. Abre em qualquer telefone ou computador.",
   "zh": "把所有人存成一个联系人卡片文件，放到“文件”、iCloud 云盘或 Google 云端硬盘，任何手机或电脑都能打开。"
  },
+ "Save it as MP3 or M4A, make a ringtone": {
+  "de": "Als MP3 oder M4A sichern, Klingelton machen",
+  "es": "Guárdalo como MP3 o M4A, haz un tono",
+  "fr": "En MP3 ou M4A, ou en sonnerie",
+  "hi": "MP3 या M4A में सहेजें, रिंगटोन बनाएँ",
+  "it": "Salvalo in MP3 o M4A, crea una suoneria",
+  "ja": "MP3やM4Aで保存、着信音にする",
+  "pt": "Guardar em MP3 ou M4A, fazer um toque",
+  "zh": "存为 MP3 或 M4A，做成铃声"
+ },
  "Save it to Photos, share it, or send it as a PDF cut into pages.": {
   "de": "In Fotos sichern, teilen oder als PDF mit Seiten senden.",
   "es": "Guárdala en Fotos, compártela o envíala como PDF en páginas.",
@@ -21198,6 +21268,16 @@
   "ja": "印刷シートを保存",
   "pt": "Guardar a folha de impressão",
   "zh": "保存打印页"
+ },
+ "Save the sound as MP3 or M4A": {
+  "de": "Ton als MP3 oder M4A sichern",
+  "es": "Guardar el sonido en MP3 o M4A",
+  "fr": "Enregistrer le son en MP3 ou M4A",
+  "hi": "आवाज़ को MP3 या M4A में सहेजें",
+  "it": "Salva l'audio in MP3 o M4A",
+  "ja": "音声をMP3またはM4Aで保存",
+  "pt": "Guardar o som em MP3 ou M4A",
+  "zh": "把声音存为 MP3 或 M4A"
  },
  "Save this room": {
   "de": "Diesen Raum speichern",
@@ -28899,6 +28979,16 @@
   "pt": "Até 10 páginas, para poupar bateria.",
   "zh": "最多 10 个网页，以节省电量。"
  },
+ "Up to 30 seconds of its sound, with the steps to set it": {
+  "de": "Bis zu 30 Sekunden Ton, mit Anleitung zum Einstellen",
+  "es": "Hasta 30 segundos de su sonido, con los pasos para ponerlo",
+  "fr": "Jusqu'à 30 secondes de son, avec les étapes pour la définir",
+  "hi": "इसकी आवाज़ के 30 सेकंड तक, लगाने के चरणों के साथ",
+  "it": "Fino a 30 secondi di audio, con i passi per impostarla",
+  "ja": "最大30秒の音声と設定手順",
+  "pt": "Até 30 segundos do som, com os passos para o definir",
+  "zh": "最多 30 秒的声音，并附设置步骤"
+ },
  "Up to 72 frames. Smaller + fewer fps = a GIF that actually sends in chat.": {
   "de": "Bis zu 72 Bilder. Kleiner + weniger fps = ein GIF, das sich im Chat auch senden lässt.",
   "es": "Hasta 72 fotogramas. Más pequeño + menos fps = un GIF que de verdad se envía por chat.",
@@ -30218,6 +30308,16 @@
   "ja": "誰の発言？",
   "pt": "Quem disse isso?",
   "zh": "这是谁说的？"
+ },
+ "Who said what, a summary and the to-dos": {
+  "de": "Wer was gesagt hat, eine Zusammenfassung und die Aufgaben",
+  "es": "Quién dijo qué, un resumen y las tareas",
+  "fr": "Qui a dit quoi, un résumé et les tâches",
+  "hi": "किसने क्या कहा, सारांश और काम",
+  "it": "Chi ha detto cosa, un riassunto e le cose da fare",
+  "ja": "誰が何を言ったか、要約とToDo",
+  "pt": "Quem disse o quê, um resumo e as tarefas",
+  "zh": "谁说了什么、摘要和待办"
  },
  "Who said what, a summary, a to-do list and a ready follow-up email": {
   "de": "Wer was gesagt hat, Zusammenfassung, Aufgabenliste und fertige Folge-Mail",

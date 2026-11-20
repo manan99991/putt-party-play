@@ -57,6 +57,7 @@ enum Guide {
         case "doc":      return Goal(id: id, title: "Make a document", line: "A clean PDF, signed or stamped", icon: "doc.richtext.fill")
         case "clip":     return Goal(id: id, title: "Make a clip", line: "Trim, GIF, slow-mo, a still", icon: "film.stack")
         case "words":    return Goal(id: id, title: "Get the words", line: "Write out what's said, captions, notes", icon: "captions.bubble.fill")
+        case "sound":    return Goal(id: id, title: "Get the sound out", line: "Save it as MP3 or M4A, make a ringtone", icon: "waveform")
         case "voice":    return Goal(id: id, title: "Change the voice", line: "Hear it as a chipmunk, robot and more", icon: "waveform.and.person.filled")
         case "edit":     return Goal(id: id, title: "Mix or label it", line: "Join recordings, fix the title and artist", icon: "slider.horizontal.3")
         case "sign":     return Goal(id: id, title: "Sign or fill it in", line: "Your signature, a stamp, form fields", icon: "signature")
@@ -70,7 +71,7 @@ enum Guide {
     static func goalIDs(for kind: ChainKind, count: Int) -> [String] {
         switch kind {
         case .image, .photoFile: return count > 1 ? ["together", "fun", "share", "doc", "read", "save"] : ["fun", "share", "read", "save", "doc", "together"]
-        case .video: return ["share", "clip", "words"]
+        case .video: return ["share", "clip", "sound", "words"]
         case .pdf: return ["sign", "share", "pages", "read"]
         case .audio: return ["words", "voice", "share", "edit"]
         case .text: return ["read", "save", "share", "check"]
@@ -85,7 +86,8 @@ enum Guide {
             switch block {
             case .videoShrink, .videoMute, .videoRotate, .videoVertical: return "share"
             case .videoTrim, .videoGif, .videoSpeed, .videoLoop, .videoStill: return "clip"
-            case .videoCaptions, .videoAudio, .speechText, .summarize, .translate: return "words"
+            case .videoAudio, .voiceChange: return "sound"
+            case .videoCaptions, .speechText, .summarize, .translate: return "words"
             default: return "more"
             }
         case .pdf:
@@ -152,6 +154,15 @@ enum Guide {
 
     /// The goal a full tool serves.
     static func goal(ofTool id: String, kind: ChainKind, count: Int) -> String {
+        if kind == .video {
+            switch id {
+            case "video", "audiomix": return "clip"
+            case "fitit": return "share"
+            case "audioconvert", "ringtone": return "sound"
+            case "meetingnotes": return "words"
+            default: break
+            }
+        }
         switch id {
         case "collage", "animate": return count > 1 ? "together" : "fun"
         case "comicstrip": return count > 1 ? "together" : "fun"
@@ -261,8 +272,17 @@ enum Guide {
     }
 
     /// A choice's name, in plain words: a saved request ("I want an image to convert to pdf") becomes what it does.
-    @MainActor static func title(_ o: Option, count: Int) -> String {
+    /// Audio tools offered for a video are named for what they do to the video, so the Video list reads as video jobs.
+    static let videoNames: [String: (name: String, gets: String)] = [
+        "audioconvert": ("Save the sound as MP3 or M4A", "Just the audio from your video, in the format you pick"),
+        "ringtone": ("Ringtone from this video", "Up to 30 seconds of its sound, with the steps to set it"),
+        "meetingnotes": ("Notes from a video call or talk", "Who said what, a summary and the to-dos"),
+        "audiomix": ("Join videos or change their speed", "One video, or faster / slower with natural voices"),
+    ]
+
+    @MainActor static func title(_ o: Option, count: Int, kind: ChainKind? = nil) -> String {
         switch o {
+        case .tool(let id) where kind == .video && videoNames[id] != nil: return L(videoNames[id]!.name)
         case .tool(let id): return L(TOOLS.first { $0.id == id }?.name ?? id)
         case .voices: return L("Change the voice")
         case .chain(let c):
@@ -275,6 +295,7 @@ enum Guide {
     /// What you end up with, in one plain line.
     @MainActor static func gets(_ o: Option, kind: ChainKind) -> String {
         switch o {
+        case .tool(let id) where kind == .video && videoNames[id] != nil: return videoNames[id]!.gets
         case .tool(let id): return TOOLS.first { $0.id == id }?.blurb ?? ""
         case .voices: return "Hear your recording in each voice, then keep the one you like"
         case .chain(let c):

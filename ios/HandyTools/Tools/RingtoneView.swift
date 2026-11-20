@@ -58,6 +58,7 @@ struct RingtoneView: View {
         }
         .onDisappear { stopPreview() }
         .finishes(working, tool: "Ringtone")
+        .handoff("ringtone") { p in if let u = ToolHandoff.fileURL(p) { load(u) } }
     }
 
     // MARK: - Pick
