@@ -12609,6 +12609,16 @@
   "pt": "Protegido — agora pede sua senha para abrir.",
   "zh": "已加密——现在打开需要输入密码。"
  },
+ "Locked — opens only with your password": {
+  "de": "Gesperrt – öffnet sich nur mit deinem Passwort",
+  "es": "Bloqueado: solo se abre con tu contraseña",
+  "fr": "Verrouillé — s'ouvre uniquement avec votre mot de passe",
+  "hi": "लॉक — केवल आपके पासवर्ड से खुलता है",
+  "it": "Bloccato: si apre solo con la tua password",
+  "ja": "ロック済み：パスワードでのみ開けます",
+  "pt": "Bloqueado — só abre com a sua palavra-passe",
+  "zh": "已加密：只能用你的密码打开"
+ },
  "Log how your day went in a tap": {
   "de": "Mit einem Tipp festhalten, wie der Tag war",
   "es": "Anota cómo fue tu día con un toque",
@@ -15539,6 +15549,16 @@
   "pt": "Não está bem — uma camada a mais que o normal.",
   "zh": "身体不舒服——比平时多穿一层。"
  },
+ "Not locked": {
+  "de": "Nicht gesperrt",
+  "es": "No está bloqueado",
+  "fr": "Non verrouillé",
+  "hi": "लॉक नहीं है",
+  "it": "Non bloccato",
+  "ja": "ロックされていません",
+  "pt": "Não está bloqueado",
+  "zh": "未加密"
+ },
  "Not now": {
   "de": "Nicht jetzt",
   "es": "Ahora no",
@@ -17998,6 +18018,16 @@
   "ja": "中央の絵",
   "pt": "Imagem no centro",
   "zh": "中间的图案"
+ },
+ "Pictures only — words can't be searched yet": {
+  "de": "Nur Bilder – Wörter noch nicht durchsuchbar",
+  "es": "Solo imágenes: aún no se pueden buscar palabras",
+  "fr": "Images uniquement — les mots ne sont pas encore interrogeables",
+  "hi": "केवल चित्र — शब्द अभी खोजे नहीं जा सकते",
+  "it": "Solo immagini: le parole non sono ancora ricercabili",
+  "ja": "画像のみ：まだ文字を検索できません",
+  "pt": "Só imagens — ainda não é possível pesquisar palavras",
+  "zh": "仅图片：暂时无法搜索文字"
  },
  "Pictures, shelves, a wobbly table — beeps when it's level": {
   "de": "Bilder, Regale, ein wackliger Tisch – piept, wenn es gerade ist",
@@ -21808,6 +21838,16 @@
   "ja": "検索可能なテキスト（検索・コピー）",
   "pt": "Texto pesquisável (procurar e copiar)",
   "zh": "可搜索文字（查找和复制）"
+ },
+ "Searchable — words can be found and copied": {
+  "de": "Durchsuchbar – Wörter lassen sich finden und kopieren",
+  "es": "Con búsqueda: las palabras se pueden buscar y copiar",
+  "fr": "Interrogeable — les mots peuvent être trouvés et copiés",
+  "hi": "खोजने योग्य — शब्द खोजे और कॉपी किए जा सकते हैं",
+  "it": "Ricercabile: le parole si possono trovare e copiare",
+  "ja": "検索可能：文字を検索・コピーできます",
+  "pt": "Pesquisável — as palavras podem ser encontradas e copiadas",
+  "zh": "可搜索：文字可查找和复制"
  },
  "Searches every PDF, Word, Excel, PowerPoint and text file you add — no account, nothing uploaded.": {
   "de": "Durchsucht jedes PDF, Word, Excel, PowerPoint und jede Textdatei, die du hinzufügst — kein Konto, nichts wird hochgeladen.",

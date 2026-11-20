@@ -826,6 +826,7 @@ enum ResultScreens {
         case .chatLink: return "Chat link"
         case .photoPdf: return "Scan PDF"
         case .pdfShrink where blocks.contains(.photoPdf): return "Scan PDF"
+        case .pdfShrink, .pdfPages, .textPdf, .pdfLock: return "PDF finish"
         default: return nil
         }
     }
@@ -845,12 +846,8 @@ enum ResultScreens {
         "portal-photo": "pb-photo",
         "memo-to-notes": "pb-text",
         "sign-to-english": "pb-text",
-        "page-to-pdf": "pb-pdf",
         "page-summary": "pb-text",
         "listen-later": "pb-listen",
-        "pdf-email": "pb-pdf",
-        "pdf-join": "pb-pdf",
-        "pdf-first-page": "pb-pdf",
         "video-words": "pb-text",
         "photo-collage": "pb-photo",
         "where-i-am": "pb-text",

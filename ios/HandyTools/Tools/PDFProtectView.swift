@@ -183,6 +183,7 @@ struct PDFProtectView: View {
             Label(resultNote, systemImage: "checkmark.shield.fill")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.success)
                 .frame(maxWidth: .infinity, alignment: .leading)
+            if let d = try? Data(contentsOf: url) { PDFFactsRows(data: d, source: sourceData, expectLocked: lockedWith != nil).frame(maxWidth: .infinity, alignment: .leading) }
             if let img = resultPreview {
                 Image(uiImage: img).resizable().scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: 360)

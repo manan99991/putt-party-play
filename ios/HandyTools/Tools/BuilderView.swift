@@ -2424,16 +2424,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     ScanInsight(pdf: d, original: inputPhoto)
                 }
                 // The real PDF, scrollable page by page — so it reads as a PDF document, not a photo.
-                let n = PDFDocument(data: d)?.pageCount ?? 1
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    Label("PDF · \(n) \(L(n == 1 ? "page" : "pages"))", systemImage: "doc.richtext").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                    if let s = chain.steps.last(where: { $0.block == .pdfShrink })?.settings["mb"], let mb = Double(s) {
-                        // The size the upload needs, checked on the file itself.
-                        let t = Int(mb * 1_000_000), ok = d.count <= t
-                        Label("\(SizeTarget.format(d.count)) — \(L(ok ? "under" : "over")) \(SizeTarget.format(t))", systemImage: ok ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
-                            .font(HandyFont.caption).foregroundStyle(ok ? Color.green : Color.orange)
-                            .accessibilityIdentifier("pdf-size-check")
-                    }
+                    // Same checks as the PDF tools, read from the file: pages, size against the original and any limit,
+                    // searchable words, locked when it should be.
+                    PDFFactsRows(data: d,
+                                 source: { if case .file(let o, let e)? = lastStepInput, e.lowercased() == "pdf", o != d { return o }; return nil }(),
+                                 limitBytes: chain.steps.last(where: { $0.block == .pdfShrink })?.settings["mb"].flatMap { Double($0) }.map { Int($0 * 1_000_000) },
+                                 expectLocked: chain.steps.contains { $0.block == .pdfLock })
                     PDFPreview(data: d).frame(height: 420).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     if chain.finish?.kind == .mail {
                         Text(L("It's attached as a PDF. Mail shows a one-page PDF as a picture in the message — the person you send it to gets the PDF file."))
