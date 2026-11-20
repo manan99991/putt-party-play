@@ -36568,5 +36568,15 @@
   "ja": "‹ 戻る",
   "pt": "‹ Voltar",
   "zh": "‹ 返回"
+ },
+ "Drag to move, pinch to resize": {
+  "de": "Ziehen zum Verschieben, mit zwei Fingern Größe ändern",
+  "es": "Arrastra para mover, pellizca para cambiar el tamaño",
+  "fr": "Faites glisser pour déplacer, pincez pour redimensionner",
+  "hi": "हिलाने के लिए खींचें, आकार बदलने के लिए पिंच करें",
+  "it": "Trascina per spostare, pizzica per ridimensionare",
+  "ja": "ドラッグで移動、ピンチでサイズ変更",
+  "pt": "Arraste para mover, belisque para redimensionar",
+  "zh": "拖动以移动，双指缩放以调整大小"
  }
 }
