@@ -16,7 +16,7 @@ final class MultiPhotoTests: XCTestCase {
     }
 
     private func launch(photos: Int) {
-        app.launchArguments = ["-route", "builder", "-uitest", "-givephotos", "\(photos)"]
+        app.launchArguments = ["-route", "home", "-uitest", "-givephotos", "\(photos)"]
         app.launch()
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 25), "Build your own did not launch")
     }

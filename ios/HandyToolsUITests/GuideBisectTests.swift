@@ -6,13 +6,13 @@ final class GuideBisectTests: XCTestCase {
     func testWhichPartCloses() {
         continueAfterFailure = true
         var report: [String] = []
-        for skip in ["all", "", "task", "header", "suggest", "grid", "steps", "task,header,suggest,grid,steps"] {
+        for skip in ["", "all", "", "task", "header", "suggest", "grid", "steps", "task,header,suggest,grid,steps"] {
             let app = XCUIApplication()
-            var args = ["-route", "builder", "-uitest", "-givephotos", "2"]
+            var args = ["-route", "home", "-uitest", "-givephotos", "2"]
             if !skip.isEmpty { args += ["-guideskip", skip] }
             app.launchArguments = args
             app.launch()
-            let opened = app.staticTexts["What do you want to do?"].waitForExistence(timeout: 60)
+            let opened = app.wait(for: .runningForeground, timeout: 20) && app.staticTexts["What do you want to do?"].waitForExistence(timeout: 60)
             sleep(6)
             let alive = app.state == .runningForeground
             report.append("BISECT skip=[\(skip)] opened=\(opened) alive=\(alive)")
