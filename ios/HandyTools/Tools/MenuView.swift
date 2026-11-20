@@ -137,7 +137,7 @@ struct MenuView: View {
                     }.padding(.top, 4)
                 }
                 ForEach(shown.filter { $0.section == sec && $0.note }) { n in
-                    Label(translated[n.id] ?? n.name, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Label(translated[n.id] ?? MenuReader.gloss(n.name.replacingOccurrences(of: "、", with: " ")).map { "\($0) — \(n.name)" } ?? n.name, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 ForEach(shown.filter { $0.section == sec && !$0.note }) { item in row(item) }
             }
@@ -152,17 +152,22 @@ struct MenuView: View {
     }
 
     /// A section heading in the reader's language when the menu's was translated.
-    private func sectionTitle(_ sec: String) -> String { sectionNames[sec] ?? sec }
+    private func sectionTitle(_ sec: String) -> String {
+        sectionNames[sec] ?? (MenuReader.needsTranslation([sec]) ? sec.components(separatedBy: " · ").map { MenuReader.gloss($0) ?? $0 }.joined(separator: " · ") : sec)
+    }
 
     private func row(_ item: MenuReader.Item) -> some View {
         let clash = MenuReader.conflicts(item, diets: diets)
         let verdict = MenuReader.verdict(item, diets: diets)
-        let foreign = translated[item.id] != nil && MenuReader.needsTranslation([item.name])
+        // Apple's translation when it's done; until then (or offline, or with the language not downloaded) a plain
+        // English name built from the menu words, so the person always knows what they're looking at.
+        let english = translated[item.id] ?? (MenuReader.needsTranslation([item.name]) ? MenuReader.gloss(item.name) : nil)
+        let foreign = english != nil && MenuReader.needsTranslation([item.name])
         return VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .firstTextBaseline) {
                 VStack(alignment: .leading, spacing: 2) {
                     // A menu in a script the person can't read leads with the translation; the original stays below to point at.
-                    Text(foreign ? (translated[item.id] ?? item.name) : item.name).font(HandyFont.bodyStrong)
+                    Text(foreign ? (english ?? item.name) : item.name).font(HandyFont.bodyStrong)
                     if foreign { Text(item.name).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 }
                 Spacer()
@@ -242,7 +247,8 @@ struct MenuView: View {
     private func startTranslation() {
         translating = true; errorText = nil
         let target = Locale.Language(identifier: Locale.preferredLanguages.first ?? "en")
-        if translateConfig == nil { translateConfig = TranslationSession.Configuration(source: nil, target: target) } else { translateConfig?.invalidate() }
+        let source = MenuReader.language(of: items.map(\.name))
+        if translateConfig == nil || translateConfig?.source != source { translateConfig = TranslationSession.Configuration(source: source, target: target) } else { translateConfig?.invalidate() }
     }
 
     private func suggest() {

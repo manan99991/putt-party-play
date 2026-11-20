@@ -64,6 +64,23 @@ final class GuideMenuReceiptTests: XCTestCase {
         XCTAssertFalse(MenuReader.flags("Stir-fried fish-flavored shredded pork").contains(.fish))
     }
 
+    /// Your 20 Nov screenshot: a Chinese menu showed only characters. Every dish now has a plain English name even
+    /// before (or without) Apple's translation, and 烤翅 (grilled wings) is known to be chicken, not "ask first".
+    func testChineseDishesGetEnglishNames() {
+        XCTAssertEqual(MenuReader.gloss("香辣鱼"), "Spicy fish")
+        XCTAssertEqual(MenuReader.gloss("烤虾"), "Grilled shrimp")
+        XCTAssertEqual(MenuReader.gloss("烤牛蛙"), "Grilled bullfrog")
+        XCTAssertEqual(MenuReader.gloss("烤翅"), "Grilled wings")
+        XCTAssertEqual(MenuReader.gloss("酸菜鱼"), "Pickled-cabbage fish")
+        XCTAssertEqual(MenuReader.gloss("水煮鱼"), "Chili-poached fish")
+        XCTAssertEqual(MenuReader.gloss("红烧全鱼"), "Soy-braised whole fish")
+        XCTAssertEqual(MenuReader.gloss("重庆辣子鸡"), "Chongqing chili chicken")
+        XCTAssertEqual(MenuReader.gloss("特色篇"), "House specials")
+        XCTAssertNil(MenuReader.gloss("Spicy fish"), "English stays as it is")
+        XCTAssertTrue(MenuReader.flags("烤翅").contains(.chicken))
+        XCTAssertTrue(MenuReader.flags("鱼翅").contains(.fish))
+    }
+
     func testFitsOnlyWhenTheMenuSaysSo() {
         let d = MenuReader.parse(["拍黄瓜 8元", "扬州炒饭 8元", "回锅肉 22元"])
         XCTAssertEqual(MenuReader.verdict(d[0], diets: [.vegetarian]), .fits)

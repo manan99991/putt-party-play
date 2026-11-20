@@ -1,4 +1,5 @@
 import Foundation
+import NaturalLanguage
 import UIKit
 import Vision
 
@@ -208,6 +209,65 @@ enum MenuReader {
 
     /// True when the menu is written in a script the person probably can't read (Chinese, Japanese, Korean,
     /// Cyrillic, Arabic, Thai…), so the dish names are translated straight away.
+    /// A plain-English name for a Chinese dish, from the menu words it's built of ("香辣鱼" → "Spicy fish",
+    /// "红烧全鱼" → "Soy-braised whole fish"). Works with no download and no network, so a menu never shows only
+    /// characters the person can't read; Apple's full translation replaces it when it arrives. nil when too few of
+    /// the characters are known to say anything honest.
+    static func gloss(_ name: String) -> String? {
+        let chars = Array(name.filter { isCJK($0) })
+        guard chars.count >= 1, cjkShare(name) > 0.5 else { return nil }
+        var parts: [String] = [], known = 0, i = 0
+        while i < chars.count {
+            var hit: (Int, String)?
+            for len in stride(from: min(4, chars.count - i), through: 1, by: -1) {
+                if let e = glossary[String(chars[i..<i + len])] { hit = (len, e); break }
+            }
+            if let (len, e) = hit { if !e.isEmpty, parts.last != e { parts.append(e) }; known += len; i += len } else { i += 1 }
+        }
+        guard !parts.isEmpty, Double(known) / Double(chars.count) >= 0.6 else { return nil }
+        let text = parts.joined(separator: " ")
+        return text.prefix(1).uppercased() + text.dropFirst()
+    }
+
+    /// Common Chinese menu words. Longer entries win over the characters inside them (牛蛙 is bullfrog, not beef + frog).
+    static let glossary: [String: String] = [
+        // places and styles
+        "重庆": "Chongqing", "四川": "Sichuan", "川味": "Sichuan-style", "湖南": "Hunan", "湘": "Hunan-style", "北京": "Beijing",
+        "巫山": "Wushan", "东北": "Northeastern", "广式": "Cantonese", "粤式": "Cantonese", "新疆": "Xinjiang", "家常": "home-style",
+        "特色": "house special", "特色篇": "House specials", "招牌": "signature", "篇": "", "类": "",
+        // ways of cooking
+        "烤": "grilled", "炸": "fried", "炒": "stir-fried", "爆炒": "flash-fried", "小炒": "wok-fried", "蒸": "steamed", "清蒸": "steamed",
+        "煮": "boiled", "水煮": "chili-poached", "红烧": "soy-braised", "焖": "braised", "炖": "stewed", "卤": "marinated",
+        "干锅": "dry-pot", "干煸": "dry-fried", "铁板": "sizzling", "凉拌": "cold dressed", "拌": "dressed", "煎": "pan-fried",
+        "回锅": "twice-cooked", "糖醋": "sweet and sour", "泼辣": "hot-oil", "烧": "braised", "熏": "smoked", "白切": "poached",
+        "铁锅": "iron-pot", "石锅": "stone-pot", "火锅": "hot pot", "麻辣烫": "spicy hot pot",
+        // flavours
+        "香辣": "spicy", "麻辣": "numbing-spicy", "辣": "chili", "辣子": "chili", "泡椒": "pickled-chili", "酸辣": "hot and sour",
+        "酸菜": "pickled-cabbage", "鱼香": "garlic-chili sauce", "宫保": "kung pao", "椒盐": "salt and pepper", "孜然": "cumin",
+        "蒜蓉": "garlic", "葱": "scallion", "姜": "ginger", "豆豉": "black bean", "豆鼓": "black bean", "黑椒": "black pepper",
+        "咖喱": "curry", "番茄": "tomato", "西红柿": "tomato", "酱": "sauce", "甜": "sweet", "酸": "sour", "香": "fragrant",
+        "麻婆": "mapo", "口水": "mouth-watering", "剁椒": "chopped-chili", "酸汤": "sour-broth",
+        // fish and seafood
+        "鱼": "fish", "全鱼": "whole fish", "鱼头": "fish head", "鱼片": "fish slices", "虾": "shrimp", "大虾": "prawns", "龙虾": "lobster",
+        "小龙虾": "crayfish", "蟹": "crab", "螃蟹": "crab", "鱿鱼": "squid", "墨鱼": "cuttlefish", "章鱼": "octopus", "贝": "shellfish",
+        "扇贝": "scallops", "蛤蜊": "clams", "花甲": "clams", "生蚝": "oysters", "海鲜": "seafood", "鳝鱼": "eel", "鲈鱼": "sea bass",
+        "鱼翅": "shark fin", "鲍鱼": "abalone", "牛蛙": "bullfrog", "田鸡": "frog",
+        // meat
+        "鸡": "chicken", "童子鸡": "young chicken", "鸡翅": "chicken wings", "翅": "wings", "鸡腿": "chicken leg", "鸡爪": "chicken feet",
+        "凤爪": "chicken feet", "鸭": "duck", "烤鸭": "roast duck", "鹅": "goose", "牛": "beef", "牛肉": "beef", "肥牛": "sliced beef",
+        "羊": "lamb", "羊肉": "lamb", "羊排": "lamb ribs", "猪": "pork", "猪肉": "pork", "肉": "meat", "肉丝": "shredded pork",
+        "排骨": "spare ribs", "五花肉": "pork belly", "肘子": "pork knuckle", "腊肉": "cured pork", "香肠": "sausage", "兔": "rabbit",
+        "肚": "tripe", "毛肚": "beef tripe", "肥肠": "pork intestines", "腰花": "kidney", "串": "skewers",
+        // plants, staples and the rest
+        "豆腐": "tofu", "豆": "beans", "土豆": "potato", "土豆丝": "shredded potato", "茄子": "eggplant", "青菜": "greens",
+        "白菜": "napa cabbage", "包菜": "cabbage", "西兰花": "broccoli", "菠菜": "spinach", "蘑菇": "mushrooms", "香菇": "shiitake",
+        "木耳": "wood-ear mushroom", "藕": "lotus root", "黄瓜": "cucumber", "花生": "peanuts", "蛋": "egg", "鸡蛋": "egg",
+        "饭": "rice", "米饭": "rice", "炒饭": "fried rice", "面": "noodles", "面条": "noodles", "粉": "rice noodles", "饺子": "dumplings",
+        "包子": "buns", "馒头": "steamed bun", "饼": "pancake", "粥": "congee", "汤": "soup", "锅": "pot", "全": "whole",
+        "小": "small", "大": "large", "份": "portion", "例": "regular", "啤酒": "beer", "茶": "tea", "可乐": "cola", "饮料": "drinks",
+        "凉菜": "cold dishes", "热菜": "hot dishes", "主食": "staples", "素菜": "vegetable dishes", "荤菜": "meat dishes",
+    ]
+
     static func needsTranslation(_ lines: [String], reader: String = Locale.preferredLanguages.first ?? "en") -> Bool {
         let letters = lines.joined().filter(\.isLetter)
         guard !letters.isEmpty else { return false }
@@ -216,6 +276,14 @@ enum MenuReader {
         let lang = String(reader.prefix(2))
         if ["zh", "ja", "ko"].contains(lang) { return cjkShare(lines.joined()) < 0.3 }
         return true
+    }
+
+    /// The menu's language, so the translation never fails on "couldn't tell what language this is" with short names.
+    static func language(of lines: [String]) -> Locale.Language? {
+        let r = NLLanguageRecognizer()
+        r.processString(lines.joined(separator: "\n"))
+        guard let l = r.dominantLanguage, l != .undetermined else { return nil }
+        return Locale.Language(identifier: l.rawValue)
     }
 
     /// Chinese, Japanese or Korean writing — no spaces between words, no capital letters.
@@ -355,12 +423,12 @@ enum MenuReader {
     // 鱼香 is a sauce with no fish in it, 鱿鱼/墨鱼/章鱼 are squid, cuttlefish and octopus.
     static let cjkTraps: [(String, String)] = [("牛蛙", "蛙"), ("蜗牛", "螺"), ("田鸡", "蛙"), ("鸡蛋", "蛋"), ("鱼香", "※"),
                                                ("鱿鱼", "鱿"), ("墨鱼", "鱿"), ("章鱼", "鱿"), ("夫妻肺片", "牛肺片"), ("宫保", "花生辣"),
-                                               ("蛋炒饭", "蛋饭"), ("凤爪", "鸡爪")]
+                                               ("蛋炒饭", "蛋饭"), ("凤爪", "鸡爪"), ("鱼翅", "鱼")]
     static let cjkWords: [Flag: [String]] = [
         .pork: ["猪", "排骨", "肥肠", "腊肉", "火腿", "培根", "腰花", "肝尖", "猪肝", "耳丝", "肚丝", "丸子", "叉烧", "回锅", "锅包肉",
                 "东坡", "狮子头", "卤肉", "红烧肉", "白肉", "豚", "ポーク", "とんかつ", "チャーシュー", "돼지", "삼겹살", "제육", "족발"],
         .beef: ["牛", "ビーフ", "소고기", "불고기", "쇠고기"],
-        .chicken: ["鸡", "鶏", "鳥", "チキン", "唐揚げ", "닭", "치킨"],
+        .chicken: ["鸡", "翅", "鶏", "鳥", "チキン", "唐揚げ", "닭", "치킨"],
         .meat: ["羊", "鸭", "鹅", "兔", "蛙", "驴", "鹿", "鴨", "양고기", "오리"],
         .fish: ["鱼", "鲈", "鳕", "鲑", "鳝", "鳗", "鱼头", "魚", "鮭", "鮪", "まぐろ", "サーモン", "刺身", "생선", "연어", "참치"],
         .shellfish: ["虾", "蟹", "贝", "蛤", "蚝", "牡蛎", "鱿", "螺", "蚌", "海鲜", "三鲜", "海参", "海老", "えび", "エビ", "かに", "カニ",
