@@ -13,8 +13,8 @@ import FoundationModels
 /// needs no model so every phone still gets a real, specific answer. The built-in parts are pure and unit-tested.
 enum ThinkBrain {
 
-    enum Kind: String, CaseIterable, Equatable {
-        case worry, decision, tasks, question, message, prep, idea, recipe
+    enum Kind: String, CaseIterable, Equatable, Codable {
+        case worry, decision, tasks, question, message, prep, idea, recipe, judge
         var label: String {
             switch self {
             case .worry: return "Something weighing on you"
@@ -25,6 +25,7 @@ enum ThinkBrain {
             case .prep: return "Getting ready"
             case .idea: return "An idea to shape"
             case .recipe: return "A meal from what you have"
+            case .judge: return "How a message comes across"
             }
         }
         var icon: String {
@@ -37,11 +38,12 @@ enum ThinkBrain {
             case .prep: return "bag"
             case .idea: return "sparkles"
             case .recipe: return "fork.knife"
+            case .judge: return "eye"
             }
         }
     }
 
-    enum Engine: Equatable { case cloud, phone, builtIn
+    enum Engine: String, Equatable, Codable { case cloud, phone, builtIn
         var note: String {
             switch self {
             case .cloud: return "Answered by Apple's Private Cloud Compute — nothing is stored or seen by anyone."
@@ -51,10 +53,10 @@ enum ThinkBrain {
         }
     }
 
-    struct Section: Equatable, Identifiable { var id: String { title }; let title: String; let bullets: [String] }
-    struct Step: Equatable, Identifiable { var id: String { text }; let text: String; let minutes: Int? }
+    struct Section: Equatable, Identifiable, Codable { var id: String { title }; let title: String; let bullets: [String] }
+    struct Step: Equatable, Identifiable, Codable { var id: String { text }; let text: String; let minutes: Int? }
 
-    struct Answer: Equatable {
+    struct Answer: Equatable, Codable {
         var kind: Kind
         var understood: String
         var headline: String
@@ -68,11 +70,39 @@ enum ThinkBrain {
         var engine: Engine = .builtIn
         var tone: String?               // how they sound — "stressed", "in a hurry" — and the answer matches it
         var variants: [Variant] = []    // a message in several tones: warmer, more professional, shorter, firmer
+        var options: [Option] = []      // a decision: each choice with its pros and cons, weighed
     }
-    struct Variant: Equatable, Identifiable { var id: String { label }; let label: String; let text: String }
+    /// One choice in a decision. Each pro and con carries a weight (1 small, 2 medium, 3 big) the person can change;
+    /// the lean is worked out from the weights, so the answer moves when what matters to them moves.
+    struct Option: Equatable, Identifiable, Codable {
+        var id: String { name }
+        var name: String
+        var pros: [Point]
+        var cons: [Point]
+        var score: Int { pros.map(\.weight).reduce(0, +) - cons.map(\.weight).reduce(0, +) }
+    }
+    struct Point: Equatable, Identifiable, Codable { var id: String { text }; var text: String; var weight: Int }
+    /// The option the weights favour, and by how much — nil when they tie.
+    static func lean(_ options: [Option]) -> (Option, Int)? {
+        let ranked = options.sorted { $0.score > $1.score }
+        guard let top = ranked.first, ranked.count > 1, top.score > ranked[1].score else { return nil }
+        return (top, top.score - ranked[1].score)
+    }
+    /// How finely to break things down — goblin's "spiciness", in plain words.
+    enum Detail: String, CaseIterable, Codable { case few, balanced, tiny
+        var label: String { ["A few big steps", "Balanced", "Tiny steps"][Self.allCases.firstIndex(of: self)!] }
+        var prompt: String {
+            switch self {
+            case .few: return "Detail: a few big steps (3 or 4)."
+            case .balanced: return "Detail: balanced (5 to 7 steps)."
+            case .tiny: return "Detail: tiny steps (8 to 15 very small, physical micro-steps, for a day when starting is hard)."
+            }
+        }
+    }
+    struct Variant: Equatable, Identifiable, Codable { var id: String { label }; let label: String; let text: String }
 
     /// Help to reach right now, for the person's country.
-    struct Support: Equatable { let line: String; let call: String?; let text: String?; let web: String }
+    struct Support: Equatable, Codable { let line: String; let call: String?; let text: String?; let web: String }
 
     // MARK: - Reading what it is (no model)
 
@@ -94,6 +124,8 @@ enum ThinkBrain {
     /// answer on phones without one, and the safety net when the model fails.
     static func kind(of raw: String) -> Kind {
         let t = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        if has(t, #"(how does (this|it|that) (sound|come across|read|land)|what does (this|she|he|it|that|they) (mean|really mean)|is (this|it|that) (rude|ok|okay|passive|mean|too much|harsh)|(is|are) (he|she|they|my \w+) (mad|upset|angry|annoyed|annoyed with me)|read between the lines|what'?s the tone|judge (this|the tone))"#)
+            || has(t, #"\b(he|she|they|my (boss|manager|partner|wife|husband|friend|mum|mom|dad|landlord|client)) (said|wrote|texted|replied|messaged|sent)\b.{0,20}[:\"“]"#) { return .judge }
         if has(t, #"^(please\s+)?(re-?word|rewrite|rephrase|reply to|respond to|make (this|it) (sound|more|less|shorter|nicer|polite)|fix (this|my) (message|email|text)|write (a|an|me a) (message|email|text|note|reply))"#)
             || has(t, #"^(hi|hey|hello|dear)\b.{25,}"#) { return .message }
         if has(t, #"\bshould i\b|\bor not\b|\bvs\.?\b|\bversus\b|which (one|is better|should)|\bdecid|\bchoose between\b|\bworth it\b|\bpros and cons\b"#) { return .decision }
@@ -171,15 +203,37 @@ enum ThinkBrain {
     }
 
     /// One step, broken into smaller ones you can start right away — when there's no model to do it properly.
-    static func breakDown(_ step: Step) -> [Step] {
+    static func breakDown(_ step: Step, detail: Detail = .balanced) -> [Step] {
         let parts = ThinkingEngine.split(step.text.replacingOccurrences(of: " and ", with: ", "))
         if parts.count > 1 { return parts.map { Step(text: $0.prefix(1).uppercased() + $0.dropFirst(), minutes: step.minutes.map { max(2, $0 / parts.count) }) } }
         let what = step.text.prefix(1).lowercased() + step.text.dropFirst()
         let m = step.minutes ?? 20
+        if detail == .tiny {
+            return [Step(text: "Stand up and go to where you'll \(what)", minutes: 1),
+                    Step(text: "Put out everything you need, where you can see it", minutes: 3),
+                    Step(text: "Do just the first small part — 5 minutes, then you can stop", minutes: 5),
+                    Step(text: "Take one breath, then do the next small part", minutes: 5),
+                    Step(text: "Keep going in 5-minute bits until it's done", minutes: max(2, m - 16)),
+                    Step(text: "Put things away", minutes: 1),
+                    Step(text: "Tick it off — that counts", minutes: 1)]
+        }
         return [Step(text: "Get out everything you need to \(what)", minutes: 3),
                 Step(text: "Set a 10-minute timer and just start", minutes: 10),
                 Step(text: "Keep going until it's done — \(what)", minutes: max(5, m - 14)),
                 Step(text: "Tick it off and note what's next", minutes: 1)]
+    }
+
+    /// How a message comes across, from its words alone: the reading behind "is she annoyed with me?".
+    static func reading(of t: String) -> [String] {
+        var r: [String] = []
+        if has(t, #"(per my last|as (previously|already) (mentioned|stated)|just a (gentle )?reminder|going forward|noted\.?$|as discussed)"#) { r.append("Pointed — they think they've said this before") }
+        if has(t, #"\b(asap|urgent|immediately|right away|by (eod|end of day|today))\b|!!"#) { r.append("Urgent — they want it soon") }
+        if has(t, #"\b(disappointed|unacceptable|not ok|frustrat|annoyed|upset|angry)"#) || t.filter(\.isUppercase).count > max(12, t.count / 3) { r.append("Upset — something has bothered them") }
+        if has(t, #"\b(thanks|thank you|appreciate|great|love|awesome|no worries|no rush)\b|:\)|😊|🙂"#) { r.append("Friendly and warm") }
+        if has(t, #"^\s*(k|ok|okay|fine|sure|whatever)\.?\s*$"#) { r.append("Very short — could be busy, could be cool; don't read too much into one word") }
+        if has(t, #"\b(please|kindly|regards|dear)\b"#), r.isEmpty { r.append("Polite and formal") }
+        if r.isEmpty { r.append("Neutral — nothing in the words themselves says they're upset") }
+        return r
     }
 
     static func builtIn(_ raw: String, region: String? = Locale.current.region?.identifier, now: Date = Date()) -> Answer {
@@ -246,6 +300,23 @@ enum ThinkBrain {
                           steps: tasks.map { Step(text: $0.text.prefix(1).uppercased() + $0.text.dropFirst(), minutes: nil) },
                           recommendation: "Do the quickest one first — it gets you moving.",
                           followUps: ["Which of these should I do first?", "Plan my day around these"])
+        case .judge:
+            let quoted = text.range(of: #"[:"“](.+)$"#, options: .regularExpression).map { String(text[$0]).trimmingCharacters(in: CharacterSet(charactersIn: ":\"“” ")) } ?? text
+            let read = reading(of: quoted)
+            return Answer(kind: .judge, understood: "You want to know how this message really comes across.",
+                          headline: read[0].components(separatedBy: " — ").first ?? read[0],
+                          sections: [Section(title: "How it comes across", bullets: read),
+                                     Section(title: "Before you reply", bullets: [
+                                        "Read it once more as if a friend sent it — the kindest reading is usually closest.",
+                                        "If you're unsure, ask: a short \"Just checking — all good?\" clears it up fast."])],
+                          recommendation: read.contains { $0.hasPrefix("Upset") || $0.hasPrefix("Pointed") }
+                            ? "Reply calmly and fix the thing they mention first; keep it short and skip the defending."
+                            : "Take it at face value and reply normally.",
+                          rewrite: "Thanks for letting me know — I'm on it.",
+                          followUps: ["Write me a calm reply", "Am I overthinking this?"],
+                          variants: [Variant(label: "Friendly", text: "Thanks for the heads-up! I'll sort it out and get back to you."),
+                                     Variant(label: "Short", text: "On it — will update you soon."),
+                                     Variant(label: "Clear the air", text: "Just checking — is everything all right? Happy to talk it through.")])
         case .decision:
             let q = text.replacingOccurrences(of: #"(?i)^should i\s+"#, with: "", options: .regularExpression).trimmingCharacters(in: CharacterSet(charactersIn: "?. "))
             return Answer(kind: .decision, understood: "You're deciding whether to \(q).",
@@ -255,8 +326,9 @@ enum ThinkBrain {
                             "Can I undo it if it goes wrong? Easy to undo means try it.",
                             "What does it cost — money, time, and what I'd give up?",
                             "If a friend asked me this, what would I tell them?"])],
-                          recommendation: "If it's easy to undo, try it for a short, set time and then decide for good.",
-                          followUps: ["What are the pros and cons?", "What would change your answer?"])
+                          recommendation: "Weigh each side below — tap a point to make it matter more or less, and add your own. The lean updates as you go.",
+                          followUps: ["What are the pros and cons?", "What would change your answer?"],
+                          options: decisionOptions(text))
         case .question, .message, .prep, .idea, .recipe:
             return Answer(kind: k, understood: "\(k.label).",
                           headline: "This one needs Apple Intelligence",
@@ -264,6 +336,39 @@ enum ThinkBrain {
                             "Explaining, rewording and planning something new need a language model. Tenzy uses Apple's, which runs on iPhone 15 Pro and newer with Apple Intelligence turned on — free and private."])],
                           recommendation: "Turn on Apple Intelligence in Settings if your iPhone supports it, then ask again.")
         }
+    }
+
+    /// "rent" → "Rent", but "iPhone" stays "iPhone".
+    static func capFirst(_ s: String) -> String {
+        let c = Array(s)
+        if c.count > 1, c[1].isUppercase { return s }
+        return s.prefix(1).uppercased() + s.dropFirst()
+    }
+
+    private static func splitting(_ s: String, by pattern: String) -> [String] {
+        guard let re = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else { return [s] }
+        var out: [String] = [], last = s.startIndex
+        for m in re.matches(in: s, range: NSRange(s.startIndex..., in: s)) {
+            if let r = Range(m.range, in: s) { out.append(String(s[last..<r.lowerBound])); last = r.upperBound }
+        }
+        out.append(String(s[last...]))
+        return out
+    }
+
+    /// The choices in a decision, read from how it's asked: "A or B", "A vs B", or "should I X" (X, or stay as you are).
+    /// Built-in answers start them empty so the person weighs their own reasons; the model fills them in.
+    static func decisionOptions(_ raw: String) -> [Option] {
+        let t = raw.trimmingCharacters(in: CharacterSet(charactersIn: "?.! ").union(.whitespacesAndNewlines))
+        let body = t.replacingOccurrences(of: #"(?i)^(should i|do i|which is better[:,]?|help me decide[:,]?|i can'?t decide (between|whether to)?)\s*"#, with: "", options: .regularExpression)
+        for sep in [#"\s+vs\.?\s+"#, #"\s+versus\s+"#, #"\s+or\s+"#] {
+            let parts = splitting(body, by: sep).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
+            if parts.count >= 2, !parts.last!.lowercased().hasPrefix("not") {
+                return parts.prefix(4).map { Option(name: capFirst($0), pros: [], cons: []) }
+            }
+        }
+        let what = body.replacingOccurrences(of: #"(?i)\s+or not$"#, with: "", options: .regularExpression)
+        return [Option(name: capFirst(what), pros: [], cons: []),
+                Option(name: "Stay as you are", pros: [], cons: [])]
     }
 
     // MARK: - The model
@@ -288,8 +393,14 @@ enum ThinkBrain {
     Message: give the ready-to-send text, plus 3 or 4 variants labelled by tone (Warmer, More professional, Shorter, \
     Firmer), each keeping every name, time and fact.
     Tasks: order them so the one that unblocks the rest comes first, and give honest minutes for each.
-    Recipe (they list ingredients or ask what to cook): one dish they can make mostly from what they have, the \
-    ingredients with amounts, numbered method steps with minutes, and what to swap if something is missing.
+    Recipe (they list ingredients or ask what to cook): one dish they can make mostly from what they have — you need \
+    not use every ingredient — respecting any diet they mention; the ingredients with amounts, numbered method steps \
+    with minutes, and what to swap if something is missing.
+    Decision: list every real option (for a yes/no, the option and staying as they are), each with 2 to 4 specific pros \
+    and cons weighted 1 (small), 2 (medium) or 3 (big) for THEIR situation; then a lean, and what would change it.
+    Judge (they ask how a message they received comes across, or what someone meant): sections How it comes across, \
+    What they probably mean, What to watch for; be fair to the sender and don't invent bad intent; then a calm \
+    recommended reply as the rewrite, with variants labelled Friendly, Short and Clear the air.
     """
 
     #if canImport(FoundationModels)
@@ -305,7 +416,7 @@ enum ThinkBrain {
     }
     @available(iOS 26.0, *)
     @Generable struct AIAnswer {
-        @Guide(description: "One of: worry, decision, tasks, question, message, prep, idea, recipe") var kind: String
+        @Guide(description: "One of: worry, decision, tasks, question, message, prep, idea, recipe, judge") var kind: String
         @Guide(description: "One warm, specific sentence showing you understood, in their own terms") var understood: String
         @Guide(description: "The core of the answer in under 8 words") var headline: String
         @Guide(description: "2 to 4 sections that untangle the situation") var sections: [AISection]
@@ -314,35 +425,56 @@ enum ThinkBrain {
         @Guide(description: "Only for a message: the ready-to-send text. Otherwise empty") var rewrite: String
         @Guide(description: "2 or 3 short follow-up questions they might ask next, in their voice") var followUps: [String]
         @Guide(description: "How they sound in two or three words, e.g. stressed, in a hurry, calm") var tone: String
-        @Guide(description: "Only for a message: 3 or 4 versions labelled Warmer, More professional, Shorter, Firmer. Otherwise empty") var variants: [AIVariant]
+        @Guide(description: "For a message: 3 or 4 versions labelled Warmer, More professional, Shorter, Firmer. For judge: replies labelled Friendly, Short, Clear the air. Otherwise empty") var variants: [AIVariant]
+        @Guide(description: "Only for a decision: every option, each with weighted pros and cons. Otherwise empty") var options: [AIOption]
+    }
+    @available(iOS 26.0, *)
+    @Generable struct AIPoint {
+        @Guide(description: "One specific reason, in a short sentence") var text: String
+        @Guide(description: "How much it matters for them: 1 small, 2 medium, 3 big") var weight: Int
+    }
+    @available(iOS 26.0, *)
+    @Generable struct AIOption {
+        @Guide(description: "The option, in a few words") var name: String
+        @Guide(description: "2 to 4 pros") var pros: [AIPoint]
+        @Guide(description: "2 to 4 cons") var cons: [AIPoint]
     }
     @available(iOS 26.0, *)
     @Generable struct AIVariant {
-        @Guide(description: "The tone: Warmer, More professional, Shorter or Firmer") var label: String
+        @Guide(description: "The label: Warmer, More professional, Shorter, Firmer, Friendly, Short or Clear the air") var label: String
         @Guide(description: "The full message in that tone, ready to send") var text: String
     }
     @available(iOS 26.0, *)
     @Generable struct AIBreakdown {
-        @Guide(description: "3 to 6 smaller steps, each doable in one go, starting with a verb, smallest and easiest first") var steps: [AIStep]
+        @Guide(description: "Smaller steps, each doable in one go, starting with a verb, smallest and easiest first, as many as the detail level asks") var steps: [AIStep]
     }
     #endif
 
     /// A conversation with the model: the first question and every follow-up, so "and what about the margin
     /// interest?" is answered knowing what came before. Falls back to the built-in answer, never dead-ends.
+    struct Turn: Codable, Equatable { let asked: String; let answer: Answer }
+
     @MainActor final class Conversation: ObservableObject {
-        @Published private(set) var turns: [(asked: String, answer: Answer)] = []
+        @Published private(set) var turns: [Turn] = []
         private var session: AnyObject?
         private var engine: Engine = .builtIn
+        private var saved = UUID()
+        /// How finely steps are broken down; the model and the built-in breakdown both follow it.
+        var detail: Detail = .balanced
 
         var last: Answer? { turns.last?.answer }
-        func reset() { turns = []; session = nil }
+        func reset() { turns = []; session = nil; saved = UUID() }
+        /// Pick up an earlier conversation from history: the answers come back as they were, and a follow-up is
+        /// asked on a fresh session told what was said before.
+        func restore(_ s: ThinkHistory.Saved) { turns = s.turns; session = nil; saved = s.id }
+        private func keep() { ThinkHistory.save(id: saved, turns: turns) }
 
         /// One step broken into smaller ones (the "too big to start" fix), in the same conversation so it knows
         /// what the step is part of. Built-in breakdown when there's no model.
         func breakDown(_ step: Step) async -> [Step] {
             #if canImport(FoundationModels)
             if #available(iOS 26.0, *), let session = self.session as? LanguageModelSession {
-                let prompt = "Break this step into smaller steps they can start right now: \(step.text)"
+                let prompt = "Break this step into smaller steps they can start right now. \(detail.prompt) Step: \(step.text)"
                 if let r = try? await withThrowingTaskGroup(of: AIBreakdown?.self, body: { g in
                     g.addTask { try await session.respond(to: prompt, generating: AIBreakdown.self).content }
                     g.addTask { try await Task.sleep(nanoseconds: 60_000_000_000); return nil }
@@ -353,17 +485,18 @@ enum ThinkBrain {
                 }
             }
             #endif
-            return ThinkBrain.breakDown(step)
+            return ThinkBrain.breakDown(step, detail: detail)
         }
 
         func ask(_ text: String) async {
             let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !t.isEmpty else { return }
-            if ThinkBrain.needsSupport(t) { turns.append((t, ThinkBrain.builtIn(t))); return }
-            if let a = await askModel(t) { turns.append((t, a)); return }
+            defer { keep() }
+            if ThinkBrain.needsSupport(t) { turns.append(Turn(asked: t, answer: ThinkBrain.builtIn(t))); return }
+            if let a = await askModel(t) { turns.append(Turn(asked: t, answer: a)); return }
             // No model: a follow-up is answered from everything said so far.
             let all = (turns.map(\.asked) + [t]).joined(separator: ", ")
-            turns.append((t, ThinkBrain.builtIn(turns.isEmpty ? t : all)))
+            turns.append(Turn(asked: t, answer: ThinkBrain.builtIn(turns.isEmpty ? t : all)))
         }
 
         /// `prompt` overrides the usual wording — used when a fresh session has to be told what came before.
@@ -371,12 +504,16 @@ enum ThinkBrain {
             #if canImport(FoundationModels)
             if #available(iOS 26.0, *) {
                 let session: LanguageModelSession
+                var fresh = false
                 if let s = self.session as? LanguageModelSession { session = s }
                 else {
                     guard let made = Self.makeSession() else { return nil }
-                    session = made.0; engine = made.1; self.session = made.0
+                    session = made.0; engine = made.1; self.session = made.0; fresh = true
                 }
-                let prompt = override ?? (turns.isEmpty ? "What they wrote:\n\(text)" : "Their follow-up:\n\(text)")
+                let earlier = turns.map { "- \($0.asked)" }.joined(separator: "\n")
+                let base = turns.isEmpty ? "What they wrote:\n\(text)"
+                    : (fresh ? "Earlier they said:\n\(earlier)\n\nTheir follow-up:\n\(text)" : "Their follow-up:\n\(text)")
+                let prompt = (override ?? base) + "\n\n" + detail.prompt
                 do {
                     let r = try await withThrowingTaskGroup(of: AIAnswer?.self) { g in
                         g.addTask { try await session.respond(to: prompt, generating: AIAnswer.self).content }
@@ -428,11 +565,40 @@ enum ThinkBrain {
         return Answer(kind: k, understood: r.understood, headline: r.headline,
                       sections: r.sections.filter { !$0.bullets.isEmpty }.map { Section(title: $0.title, bullets: $0.bullets) },
                       steps: r.steps.map { Step(text: $0.text, minutes: $0.minutes > 0 ? $0.minutes : nil) },
-                      recommendation: r.recommendation, rewrite: k == .message ? r.rewrite : "",
+                      recommendation: r.recommendation, rewrite: k == .message || k == .judge ? r.rewrite : "",
                       followUps: Array(r.followUps.prefix(3)),
                       caution: money ? "General guidance, not financial advice." : nil, engine: engine,
                       tone: r.tone.trimmingCharacters(in: .whitespaces).isEmpty ? tone(of: asked) : r.tone.lowercased(),
-                      variants: k == .message ? r.variants.filter { !$0.text.isEmpty }.map { Variant(label: $0.label, text: $0.text) } : [])
+                      variants: k == .message || k == .judge ? r.variants.filter { !$0.text.isEmpty }.map { Variant(label: $0.label, text: $0.text) } : [],
+                      options: k == .decision ? r.options.map { o in
+                        Option(name: o.name, pros: o.pros.map { Point(text: $0.text, weight: min(3, max(1, $0.weight))) },
+                               cons: o.cons.map { Point(text: $0.text, weight: min(3, max(1, $0.weight))) }) } : [])
     }
     #endif
+}
+
+/// Past conversations, kept on this phone only — so a decision you weighed or a plan you made last week is still
+/// there. The last 30, newest first; "Clear" removes them all.
+enum ThinkHistory {
+    struct Saved: Codable, Identifiable, Equatable { let id: UUID; var date: Date; var turns: [ThinkBrain.Turn]
+        var title: String { turns.first?.asked ?? "" }
+        var headline: String { turns.last?.answer.headline ?? "" }
+    }
+    static var url: URL {
+        let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir.appendingPathComponent("think-history.json")
+    }
+    static func load(from u: URL = url) -> [Saved] {
+        (try? JSONDecoder().decode([Saved].self, from: Data(contentsOf: u))) ?? []
+    }
+    static func save(id: UUID, turns: [ThinkBrain.Turn], to u: URL = url, now: Date = Date()) {
+        guard !turns.isEmpty else { return }
+        var all = load(from: u).filter { $0.id != id }
+        all.insert(Saved(id: id, date: now, turns: turns), at: 0)
+        if let d = try? JSONEncoder().encode(Array(all.prefix(30))) {
+            try? d.write(to: u, options: [.atomic, .completeFileProtection])
+        }
+    }
+    static func clear(at u: URL = url) { try? FileManager.default.removeItem(at: u) }
 }

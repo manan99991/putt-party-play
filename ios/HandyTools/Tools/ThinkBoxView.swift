@@ -22,6 +22,12 @@ struct ThinkBoxView: View {
     @State private var broken: [String: [ThinkBrain.Step]] = [:]   // a step's smaller steps, once asked for
     @State private var breaking: String?
     @State private var tone: String?                                 // which version of a message is showing
+    @State private var boards: [Int: [ThinkBrain.Option]] = [:]      // a decision's options as the person weighs them
+    @State private var adding: [String: String] = [:]                // a pro or con being typed, per option
+    @State private var history: [ThinkHistory.Saved] = []
+    @State private var focus: [ThinkBrain.Step]?
+    @AppStorage("think.detail") private var detailRaw = ThinkBrain.Detail.balanced.rawValue
+    private var detail: ThinkBrain.Detail { ThinkBrain.Detail(rawValue: detailRaw) ?? .balanced }
     @FocusState private var focused: Bool
 
     private var trimmed: String { input.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -29,11 +35,14 @@ struct ThinkBoxView: View {
     var body: some View {
         ToolPage(title: "Think it through", subtitle: "Whatever's on your mind — worries, a decision, a to-do list, a question. Tenzy works out what you need.", working: thinking || reading) {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                if talk.turns.isEmpty { inputCard } else { askedCard }
+                if talk.turns.isEmpty {
+                    inputCard
+                    if !history.isEmpty, !thinking { historyCard }
+                } else { askedCard }
                 if thinking && talk.turns.isEmpty { ToolProgressBar(label: "Thinking it through…", showsTime: false) }
                 ForEach(Array(talk.turns.enumerated()), id: \.offset) { i, turn in
                     if i > 0 { Text("“\(turn.asked)”").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textSecondary).padding(.top, HandySpacing.s8) }
-                    answerView(turn.answer, latest: i == talk.turns.count - 1)
+                    answerView(turn.answer, index: i, latest: i == talk.turns.count - 1)
                 }
                 if !talk.turns.isEmpty { followUpCard }
             }
@@ -49,6 +58,9 @@ struct ThinkBoxView: View {
             if !start.isEmpty, talk.turns.isEmpty, !thinking { input = start; ask(start) }
         }
         .sheet(item: $planDay) { s in UntangleView(seed: s.text) }
+        .sheet(isPresented: Binding(get: { focus != nil }, set: { if !$0 { focus = nil } })) { FocusRunView(steps: focus ?? []) }
+        .onAppear { history = ThinkHistory.load(); talk.detail = detail }
+        .onChange(of: detailRaw) { _, _ in talk.detail = detail }
     }
 
     // MARK: - Asking
@@ -79,6 +91,12 @@ struct ThinkBoxView: View {
             if speech.running { Text(L("Listening… say it the way you'd tell a friend.")).font(HandyFont.caption).foregroundStyle(HandyColor.accent) }
             if reading { ToolProgressBar(label: "Reading your screenshot…", showsTime: false) }
             if let e = errorText ?? speech.errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+            VStack(alignment: .leading, spacing: 4) {
+                Text(L("How much detail in the steps")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                HStack(spacing: HandySpacing.s8) {
+                    ForEach(ThinkBrain.Detail.allCases, id: \.self) { d in HChip(text: L(d.label), selected: d == detail) { detailRaw = d.rawValue } }
+                }
+            }
             Button { ask(trimmed) } label: { Label(L("Think it through"), systemImage: "sparkles").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(trimmed.isEmpty || thinking).accessibilityIdentifier("think-go")
         }
@@ -88,7 +106,7 @@ struct ThinkBoxView: View {
         HStack(alignment: .top, spacing: HandySpacing.s8) {
             Text("“\(talk.turns.first?.asked ?? "")”").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Button(L("New")) { talk.reset(); input = ""; followUp = ""; added = nil; broken = [:]; tone = nil }.textButton()
+            Button(L("New")) { talk.reset(); input = ""; followUp = ""; added = nil; broken = [:]; tone = nil; boards = [:]; history = ThinkHistory.load() }.textButton()
         }
     }
 
@@ -109,9 +127,28 @@ struct ThinkBoxView: View {
         }
     }
 
+    private var historyCard: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack {
+                Text(L("Earlier")).font(HandyFont.bodyStrong)
+                Spacer()
+                Button(L("Clear")) { ThinkHistory.clear(); history = [] }.textButton()
+            }
+            ForEach(history.prefix(5)) { h in
+                Button { talk.restore(h); boards = [:]; broken = [:] } label: {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(h.headline).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
+                        Text("“\(h.title)” · \(h.date.formatted(date: .abbreviated, time: .shortened))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                }.buttonStyle(.plain)
+            }
+            Text(L("Kept on this phone only.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+        }.cardStyle(padding: HandySpacing.s16)
+    }
+
     // MARK: - The answer
 
-    @ViewBuilder private func answerView(_ a: ThinkBrain.Answer, latest: Bool) -> some View {
+    @ViewBuilder private func answerView(_ a: ThinkBrain.Answer, index: Int, latest: Bool) -> some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             if let s = a.support { supportCard(s) }
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
@@ -126,10 +163,10 @@ struct ThinkBoxView: View {
             .accessibilityElement(children: .combine).accessibilityIdentifier("think-answer")
 
             if !a.rewrite.isEmpty {
-                let versions = [ThinkBrain.Variant(label: "Best fit", text: a.rewrite)] + a.variants
+                let versions = [ThinkBrain.Variant(label: a.kind == .judge ? "Suggested reply" : "Best fit", text: a.rewrite)] + a.variants
                 let shown = versions.first { $0.label == tone } ?? versions[0]
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
-                    Text(L("Ready to send")).font(HandyFont.bodyStrong)
+                    Text(L(a.kind == .judge ? "If you want to reply" : "Ready to send")).font(HandyFont.bodyStrong)
                     if versions.count > 1 {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: HandySpacing.s8) {
@@ -158,11 +195,14 @@ struct ThinkBoxView: View {
                 }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s16)
             }
 
+            if !a.options.isEmpty { decisionBoard(index: index, start: a.options) }
+
             if !a.steps.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text(L(a.kind == .tasks ? "Your list" : "Small first steps")).font(HandyFont.bodyStrong)
                     if let total = Self.totalMinutes(a.steps) {
-                        Text("\(L("About")) \(Self.duration(total)) \(L("in all"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        Text("\(L("About")) \(Self.duration(total)) \(L("in all")) · \(L("done by")) \(Date().addingTimeInterval(Double(total) * 60).formatted(date: .omitted, time: .shortened)) \(L("if you start now"))")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
                     ForEach(Array(a.steps.enumerated()), id: \.offset) { i, s in
                         VStack(alignment: .leading, spacing: 6) {
@@ -190,10 +230,15 @@ struct ThinkBoxView: View {
                             }
                         }
                     }
+                    if latest {
+                        Button { focus = a.steps.flatMap { broken[$0.text] ?? [$0] } } label: {
+                            Label(L("Start — one step at a time"), systemImage: "play.fill").frame(maxWidth: .infinity)
+                        }.primaryButton().accessibilityIdentifier("think-focus")
+                    }
                     if latest, a.kind == .tasks {
                         Button { planDay = ThinkSeed(text: a.steps.map(\.text).joined(separator: "\n")) } label: {
                             Label(L("Time these out for today"), systemImage: "clock").frame(maxWidth: .infinity)
-                        }.primaryButton()
+                        }.secondaryButton()
                     }
                     if latest {
                         Button { addSteps(a.steps) } label: { Label(L("Add these to Reminders"), systemImage: "checklist").frame(maxWidth: .infinity) }.secondaryButton()
@@ -272,6 +317,69 @@ struct ThinkBoxView: View {
         Task { await talk.ask(t); thinking = false; tone = nil; HandyHaptics.success() }
     }
 
+    // MARK: - Decision board
+
+    @ViewBuilder private func decisionBoard(index: Int, start: [ThinkBrain.Option]) -> some View {
+        let options = boards[index] ?? start
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            if let lean = ThinkBrain.lean(options) {
+                Label("\(L("Leaning")): \(lean.0.name) (+\(lean.1))", systemImage: "scalemass").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
+            } else {
+                Label(L("Even so far — tap a reason to make it matter more, or add your own"), systemImage: "scalemass").font(HandyFont.bodyStrong)
+            }
+            ForEach(Array(options.enumerated()), id: \.offset) { oi, o in
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Text(o.name).font(HandyFont.bodyStrong)
+                        Spacer()
+                        Text(o.score > 0 ? "+\(o.score)" : "\(o.score)").font(HandyFont.caption.weight(.bold))
+                            .foregroundStyle(o.score >= 0 ? HandyColor.success : HandyColor.danger)
+                    }
+                    ForEach(Array(o.pros.enumerated()), id: \.offset) { pi, p in pointRow(p, pro: true) { weigh(index, start, oi, pro: true, pi) } }
+                    ForEach(Array(o.cons.enumerated()), id: \.offset) { ci, c in pointRow(c, pro: false) { weigh(index, start, oi, pro: false, ci) } }
+                    HStack(spacing: 6) {
+                        TextField(L("Add your own reason…"), text: Binding(get: { adding[o.name] ?? "" }, set: { adding[o.name] = $0 }))
+                            .font(HandyFont.caption).padding(8)
+                            .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.small, style: .continuous))
+                        Button(L("Pro")) { addPoint(index, start, oi, pro: true) }.compactButton()
+                        Button(L("Con")) { addPoint(index, start, oi, pro: false) }.compactButton()
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+            }
+            Text(L("Dots show how much each reason matters — tap to change it.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+        }
+        .accessibilityElement(children: .contain).accessibilityIdentifier("think-decision")
+    }
+
+    private func pointRow(_ p: ThinkBrain.Point, pro: Bool, tap: @escaping () -> Void) -> some View {
+        Button(action: tap) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Image(systemName: pro ? "plus.circle.fill" : "minus.circle.fill").foregroundStyle(pro ? HandyColor.success : HandyColor.danger)
+                Text(p.text).font(HandyFont.body).foregroundStyle(HandyColor.textPrimary).multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 4)
+                HStack(spacing: 3) { ForEach(1...3, id: \.self) { i in Circle().fill(i <= p.weight ? HandyColor.accent : HandyColor.border).frame(width: 7, height: 7) } }
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(pro ? L("Pro") : L("Con")): \(p.text), \(L("matters")) \(p.weight) \(L("of 3"))")
+    }
+
+    private func weigh(_ index: Int, _ start: [ThinkBrain.Option], _ oi: Int, pro: Bool, _ pi: Int) {
+        var o = boards[index] ?? start
+        if pro { o[oi].pros[pi].weight = o[oi].pros[pi].weight % 3 + 1 } else { o[oi].cons[pi].weight = o[oi].cons[pi].weight % 3 + 1 }
+        boards[index] = o; HandyHaptics.light()
+    }
+
+    private func addPoint(_ index: Int, _ start: [ThinkBrain.Option], _ oi: Int, pro: Bool) {
+        var o = boards[index] ?? start
+        let text = (adding[o[oi].name] ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !text.isEmpty else { return }
+        let p = ThinkBrain.Point(text: text, weight: 2)
+        if pro { o[oi].pros.append(p) } else { o[oi].cons.append(p) }
+        adding[o[oi].name] = ""; boards[index] = o
+    }
+
     private func breakDown(_ s: ThinkBrain.Step) {
         breaking = s.text
         Task { broken[s.text] = await talk.breakDown(s); breaking = nil }
@@ -331,6 +439,11 @@ struct ThinkBoxView: View {
         if !a.rewrite.isEmpty { out += [a.rewrite, ""] }
         for s in a.sections { out.append(s.title); out += s.bullets.map { "• \($0)" }; out.append("") }
         if !a.steps.isEmpty { out.append("Next steps"); out += a.steps.enumerated().map { "\($0.offset + 1). \($0.element.text)" }; out.append("") }
+        for o in a.options {
+            out.append("\(o.name) (\(o.score >= 0 ? "+" : "")\(o.score))")
+            out += o.pros.map { "  + \($0.text)" } + o.cons.map { "  − \($0.text)" }
+        }
+        if !a.options.isEmpty { out.append("") }
         if !a.recommendation.isEmpty { out += ["What I'd do: \(a.recommendation)"] }
         return out.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
     }

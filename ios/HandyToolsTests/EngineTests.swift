@@ -1743,6 +1743,56 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(ThinkBrain.builtIn("I don't want to be here anymore", region: "GB").support?.call, "116123")
     }
 
+    /// Beyond goblin.tools' Consultant and Judge: a decision becomes a board of options whose weighed pros and cons
+    /// decide the lean (and move it when the person re-weighs); a message someone sent is read for how it comes
+    /// across, with replies; the detail level sets how small steps get; and past conversations are kept on the phone.
+    func testThinkBoxDecidesJudgesAndRemembers() throws {
+        // Options read from how the decision is asked.
+        XCTAssertEqual(ThinkBrain.decisionOptions("Should I rent or buy?").map(\.name), ["Rent", "Buy"])
+        XCTAssertEqual(ThinkBrain.decisionOptions("iPhone vs Pixel vs Galaxy").map(\.name), ["iPhone", "Pixel", "Galaxy"], "brand names keep their spelling")
+        XCTAssertEqual(ThinkBrain.decisionOptions("Should I take the new job or not?").map(\.name), ["Take the new job", "Stay as you are"])
+        let d = ThinkBrain.builtIn("Should I switch to a 4-day work week?")
+        XCTAssertEqual(d.kind, .decision); XCTAssertEqual(d.options.count, 2)
+
+        // The weights decide the lean, and re-weighing moves it.
+        var opts = [ThinkBrain.Option(name: "Rent", pros: [.init(text: "Flexible", weight: 3)], cons: [.init(text: "No equity", weight: 2)]),
+                    ThinkBrain.Option(name: "Buy", pros: [.init(text: "Equity", weight: 2)], cons: [.init(text: "Big deposit", weight: 3)])]
+        XCTAssertEqual(ThinkBrain.lean(opts)?.0.name, "Rent"); XCTAssertEqual(ThinkBrain.lean(opts)?.1, 2)
+        opts[1].pros[0].weight = 3; opts[1].cons[0].weight = 1
+        XCTAssertEqual(ThinkBrain.lean(opts)?.0.name, "Buy", "what matters to them changed, so the lean changed")
+        opts[1].pros[0].weight = 2; opts[1].cons[0].weight = 1
+        XCTAssertNil(ThinkBrain.lean(opts), "a tie says so instead of pretending")
+
+        // Judge: what a received message really sounds like.
+        XCTAssertEqual(ThinkBrain.kind(of: "my boss wrote: \"Per my last email, I need this by EOD.\" is she annoyed with me?"), .judge)
+        XCTAssertEqual(ThinkBrain.kind(of: "how does this sound: thanks so much, no rush!"), .judge)
+        XCTAssertEqual(ThinkBrain.kind(of: "rewrite this to sound nicer: send me the file"), .message, "rewording stays rewording")
+        let j = ThinkBrain.builtIn("my boss wrote: \"Per my last email, I need this by EOD.\"")
+        XCTAssertEqual(j.kind, .judge)
+        let felt = j.sections.first { $0.title == "How it comes across" }?.bullets ?? []
+        XCTAssertTrue(felt.contains { $0.hasPrefix("Pointed") } && felt.contains { $0.hasPrefix("Urgent") })
+        XCTAssertFalse(j.rewrite.isEmpty); XCTAssertEqual(j.variants.map(\.label), ["Friendly", "Short", "Clear the air"])
+        XCTAssertTrue(ThinkBrain.reading(of: "Thanks so much, no rush :)").contains("Friendly and warm"))
+        XCTAssertTrue(ThinkBrain.reading(of: "ok").first?.hasPrefix("Very short") ?? false)
+
+        // Detail level: tiny steps for a hard day.
+        XCTAssertEqual(ThinkBrain.breakDown(.init(text: "Clean the kitchen", minutes: 40), detail: .tiny).count, 7)
+        XCTAssertEqual(ThinkBrain.breakDown(.init(text: "Clean the kitchen", minutes: 40), detail: .tiny).compactMap(\.minutes).reduce(0, +), 40)
+
+        // History: kept on the phone, newest first, the same conversation updated rather than duplicated.
+        let file = FileManager.default.temporaryDirectory.appendingPathComponent("think-\(UUID().uuidString).json")
+        let id = UUID()
+        let t1 = ThinkBrain.Turn(asked: "Should I rent or buy?", answer: d)
+        ThinkHistory.save(id: id, turns: [t1], to: file)
+        ThinkHistory.save(id: id, turns: [t1, ThinkBrain.Turn(asked: "What would change it?", answer: d)], to: file)
+        ThinkHistory.save(id: UUID(), turns: [ThinkBrain.Turn(asked: "buy milk", answer: ThinkBrain.builtIn("buy milk"))], to: file)
+        let saved = ThinkHistory.load(from: file)
+        XCTAssertEqual(saved.count, 2); XCTAssertEqual(saved[0].title, "buy milk")
+        XCTAssertEqual(saved[1].turns.count, 2); XCTAssertEqual(saved[1].turns[0].answer, d, "answers come back exactly as they were")
+        ThinkHistory.clear(at: file); XCTAssertTrue(ThinkHistory.load(from: file).isEmpty)
+        XCTAssertEqual(FocusRunView.clock(125), "2:05")
+    }
+
     /// A receipt screenshotted in a dark browser: only the light receipt panel is read — not the title bar above it
     /// nor the strip of other receipts' thumbnails below. A light photo, or a page that fills the frame, is left alone.
     func testLightPanelFindsTheReceiptInADarkScreenshot() throws {

@@ -37168,5 +37168,265 @@
   "ja": "あるもので一品",
   "pt": "Uma refeição com o que você tem",
   "zh": "用现有食材做一道菜"
+ },
+ "+5 min": {
+  "de": "+5 Min.",
+  "es": "+5 min",
+  "fr": "+5 min",
+  "hi": "+5 मिनट",
+  "it": "+5 min",
+  "ja": "+5分",
+  "pt": "+5 min",
+  "zh": "+5 分钟"
+ },
+ "Add your own reason…": {
+  "de": "Eigenen Grund hinzufügen…",
+  "es": "Añade tu propio motivo…",
+  "fr": "Ajoute ta propre raison…",
+  "hi": "अपनी वजह जोड़ें…",
+  "it": "Aggiungi un tuo motivo…",
+  "ja": "自分の理由を追加…",
+  "pt": "Adicione seu próprio motivo…",
+  "zh": "添加你自己的理由…"
+ },
+ "All done": {
+  "de": "Alles erledigt",
+  "es": "Todo hecho",
+  "fr": "Tout est fait",
+  "hi": "सब हो गया",
+  "it": "Tutto fatto",
+  "ja": "すべて完了",
+  "pt": "Tudo feito",
+  "zh": "全部完成"
+ },
+ "Dots show how much each reason matters — tap to change it.": {
+  "de": "Die Punkte zeigen, wie viel jeder Grund zählt – tippe, um es zu ändern.",
+  "es": "Los puntos muestran cuánto pesa cada motivo; tócalos para cambiarlo.",
+  "fr": "Les points montrent l'importance de chaque raison — touche pour la changer.",
+  "hi": "बिंदु बताते हैं कि हर वजह कितनी अहम है — बदलने के लिए टैप करें।",
+  "it": "I punti indicano quanto conta ogni motivo: toccali per cambiarlo.",
+  "ja": "点は各理由の重みです。タップで変更できます。",
+  "pt": "Os pontos mostram quanto cada motivo pesa — toque para mudar.",
+  "zh": "圆点表示每个理由的分量——点一下可以调整。"
+ },
+ "Earlier": {
+  "de": "Früher",
+  "es": "Antes",
+  "fr": "Précédemment",
+  "hi": "पहले",
+  "it": "In precedenza",
+  "ja": "以前の内容",
+  "pt": "Anteriores",
+  "zh": "之前的"
+ },
+ "Even so far — tap a reason to make it matter more, or add your own": {
+  "de": "Bisher ausgeglichen – tippe auf einen Grund, um ihn stärker zu gewichten, oder füge eigene hinzu",
+  "es": "Por ahora empatados: toca un motivo para darle más peso o añade el tuyo",
+  "fr": "Égalité pour l'instant — touche une raison pour lui donner plus de poids, ou ajoute la tienne",
+  "hi": "अभी बराबर — किसी वजह को ज़्यादा अहम बनाने के लिए टैप करें, या अपनी जोड़ें",
+  "it": "Per ora in parità: tocca un motivo per dargli più peso o aggiungine uno tuo",
+  "ja": "今のところ互角 — 理由をタップして重みを変えるか、自分の理由を追加",
+  "pt": "Empate até agora — toque num motivo para dar mais peso, ou adicione o seu",
+  "zh": "目前打平——点一下理由提高分量，或添加你自己的"
+ },
+ "How much detail in the steps": {
+  "de": "Wie detailliert die Schritte sein sollen",
+  "es": "Cuánto detalle en los pasos",
+  "fr": "Niveau de détail des étapes",
+  "hi": "कदमों में कितना विस्तार",
+  "it": "Quanto dettaglio nei passi",
+  "ja": "ステップの細かさ",
+  "pt": "Quanto detalhe nos passos",
+  "zh": "步骤要多细"
+ },
+ "Kept on this phone only.": {
+  "de": "Nur auf diesem Telefon gespeichert.",
+  "es": "Se guarda solo en este teléfono.",
+  "fr": "Conservé uniquement sur ce téléphone.",
+  "hi": "सिर्फ़ इसी फ़ोन पर रखा जाता है।",
+  "it": "Conservato solo su questo telefono.",
+  "ja": "この端末にのみ保存されます。",
+  "pt": "Guardado só neste telefone.",
+  "zh": "只保存在这台手机上。"
+ },
+ "Leaning": {
+  "de": "Tendenz",
+  "es": "Inclinación",
+  "fr": "Penchant",
+  "hi": "झुकाव",
+  "it": "Tendenza",
+  "ja": "優勢",
+  "pt": "Tendência",
+  "zh": "倾向"
+ },
+ "Start — one step at a time": {
+  "de": "Starten – ein Schritt nach dem anderen",
+  "es": "Empezar: un paso cada vez",
+  "fr": "Commencer — une étape à la fois",
+  "hi": "शुरू करें — एक बार में एक कदम",
+  "it": "Inizia: un passo alla volta",
+  "ja": "開始 — 一つずつ",
+  "pt": "Começar — um passo de cada vez",
+  "zh": "开始——一次一步"
+ },
+ "Taking longer is fine — keep going, or skip and come back.": {
+  "de": "Länger zu brauchen ist okay – mach weiter oder überspring es und komm später zurück.",
+  "es": "Tardar más está bien: sigue, o sáltalo y vuelve luego.",
+  "fr": "Prendre plus de temps, c'est normal — continue, ou passe et reviens-y.",
+  "hi": "ज़्यादा समय लगना ठीक है — जारी रखें, या छोड़कर बाद में लौटें।",
+  "it": "Metterci di più va bene: continua, o salta e torna dopo.",
+  "ja": "時間がかかっても大丈夫 — 続けるか、スキップして後で戻りましょう。",
+  "pt": "Demorar mais tudo bem — continue, ou pule e volte depois.",
+  "zh": "多花点时间没关系——继续，或者先跳过、稍后再回来。"
+ },
+ "done by": {
+  "de": "fertig um",
+  "es": "terminado a las",
+  "fr": "fini à",
+  "hi": "पूरा होगा",
+  "it": "finito alle",
+  "ja": "完了予定",
+  "pt": "pronto às",
+  "zh": "完成于"
+ },
+ "if you start now": {
+  "de": "wenn du jetzt anfängst",
+  "es": "si empiezas ahora",
+  "fr": "si tu commences maintenant",
+  "hi": "अगर अभी शुरू करें",
+  "it": "se inizi ora",
+  "ja": "（今から始めた場合）",
+  "pt": "se começar agora",
+  "zh": "（如果现在开始）"
+ },
+ "of 3": {
+  "de": "von 3",
+  "es": "de 3",
+  "fr": "sur 3",
+  "hi": "3 में से",
+  "it": "su 3",
+  "ja": "/3",
+  "pt": "de 3",
+  "zh": "（满分3）"
+ },
+ "steps done. That counts.": {
+  "de": "Schritte erledigt. Das zählt.",
+  "es": "pasos hechos. Eso cuenta.",
+  "fr": "étapes faites. Ça compte.",
+  "hi": "कदम पूरे। यह मायने रखता है।",
+  "it": "passi fatti. Conta.",
+  "ja": "ステップ完了。それで十分です。",
+  "pt": "passos feitos. Isso conta.",
+  "zh": "步完成了。这很了不起。"
+ },
+ "A few big steps": {
+  "de": "Wenige große Schritte",
+  "es": "Pocos pasos grandes",
+  "fr": "Quelques grandes étapes",
+  "hi": "कुछ बड़े कदम",
+  "it": "Pochi passi grandi",
+  "ja": "大きく少なめ",
+  "pt": "Poucos passos grandes",
+  "zh": "几个大步骤"
+ },
+ "Tiny steps": {
+  "de": "Winzige Schritte",
+  "es": "Pasos diminutos",
+  "fr": "Toutes petites étapes",
+  "hi": "बहुत छोटे कदम",
+  "it": "Passi piccolissimi",
+  "ja": "とても細かく",
+  "pt": "Passos minúsculos",
+  "zh": "很小的步骤"
+ },
+ "How a message comes across": {
+  "de": "Wie eine Nachricht ankommt",
+  "es": "Cómo suena un mensaje",
+  "fr": "Comment un message est perçu",
+  "hi": "संदेश कैसा लगता है",
+  "it": "Come suona un messaggio",
+  "ja": "メッセージの受け取られ方",
+  "pt": "Como uma mensagem soa",
+  "zh": "这条消息给人的感觉"
+ },
+ "Suggested reply": {
+  "de": "Antwortvorschlag",
+  "es": "Respuesta sugerida",
+  "fr": "Réponse suggérée",
+  "hi": "सुझाया गया जवाब",
+  "it": "Risposta suggerita",
+  "ja": "返信の例",
+  "pt": "Resposta sugerida",
+  "zh": "建议回复"
+ },
+ "If you want to reply": {
+  "de": "Falls du antworten willst",
+  "es": "Si quieres responder",
+  "fr": "Si tu veux répondre",
+  "hi": "अगर जवाब देना चाहें",
+  "it": "Se vuoi rispondere",
+  "ja": "返信するなら",
+  "pt": "Se quiser responder",
+  "zh": "如果想回复"
+ },
+ "Friendly": {
+  "de": "Freundlich",
+  "es": "Amable",
+  "fr": "Amical",
+  "hi": "दोस्ताना",
+  "it": "Cordiale",
+  "ja": "親しみやすく",
+  "pt": "Simpático",
+  "zh": "友好"
+ },
+ "Short": {
+  "de": "Kurz",
+  "es": "Breve",
+  "fr": "Court",
+  "hi": "छोटा",
+  "it": "Breve",
+  "ja": "短く",
+  "pt": "Curto",
+  "zh": "简短"
+ },
+ "Clear the air": {
+  "de": "Die Luft klären",
+  "es": "Aclarar las cosas",
+  "fr": "Crever l'abcès",
+  "hi": "बात साफ़ करें",
+  "it": "Chiarire",
+  "ja": "わだかまりを解く",
+  "pt": "Esclarecer",
+  "zh": "把话说开"
+ },
+ "Con": {
+  "de": "Contra",
+  "es": "En contra",
+  "fr": "Contre",
+  "hi": "विपक्ष",
+  "it": "Contro",
+  "ja": "反対",
+  "pt": "Contra",
+  "zh": "弊"
+ },
+ "matters": {
+  "de": "Gewicht",
+  "es": "peso",
+  "fr": "importance",
+  "hi": "अहमियत",
+  "it": "peso",
+  "ja": "重み",
+  "pt": "peso",
+  "zh": "分量"
+ },
+ "Stay as you are": {
+  "de": "So bleiben, wie es ist",
+  "es": "Quedarte como estás",
+  "fr": "Rester comme tu es",
+  "hi": "जैसा है वैसा रहें",
+  "it": "Restare come sei",
+  "ja": "今のままでいる",
+  "pt": "Ficar como está",
+  "zh": "维持现状"
  }
 }
