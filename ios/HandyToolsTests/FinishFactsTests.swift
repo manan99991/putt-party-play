@@ -79,4 +79,26 @@ final class FinishFactsTests: XCTestCase {
         // A watermark at the start of some other job doesn't make it an ID copy.
         XCTAssertNil(ResultScreens.screen(for: Chain(id: "x", name: "x", steps: [ChainStep(block: .watermark), ChainStep(block: .cleanText)])))
     }
+
+    func testVideoJoinTurnsClipsUprightAndKeepsThemVideos() async throws {
+        // A phone video stored sideways (1920x1080, turned 90°) fits a 1080x1920 frame exactly.
+        let t = CGAffineTransform(rotationAngle: .pi / 2)
+        let r = CGRect(x: 0, y: 0, width: 1920, height: 1080).applying(VideoJoin.fit(natural: CGSize(width: 1920, height: 1080), transform: t, into: CGSize(width: 1080, height: 1920)))
+        XCTAssertEqual(r.minX, 0, accuracy: 0.5); XCTAssertEqual(r.minY, 0, accuracy: 0.5)
+        XCTAssertEqual(r.width, 1080, accuracy: 0.5); XCTAssertEqual(r.height, 1920, accuracy: 0.5)
+        XCTAssertEqual(VideoJoin.even(CGSize(width: 641, height: 359)), CGSize(width: 640, height: 358))
+
+        let ma = await SampleAssets.movie(), mb = await SampleAssets.movie()
+        let a = try XCTUnwrap(ma), b = try XCTUnwrap(mb)
+        let j = await VideoJoin.join([a, b])
+        let joined = try XCTUnwrap(j, "two videos must join into a video")
+        let jf = await VideoFacts.read(joined)
+        let f = try XCTUnwrap(jf)
+        XCTAssertEqual(f.seconds, 5, accuracy: 0.4, "both clips, end to end")
+        XCTAssertEqual(f.size, CGSize(width: 640, height: 360))
+        let fu = await VideoJoin.join([a], rate: 2)
+        let fast = try XCTUnwrap(fu)
+        let ff = await VideoFacts.read(fast)
+        XCTAssertEqual(try XCTUnwrap(ff).seconds, 1.25, accuracy: 0.3, "2x makes it half as long")
+    }
 }

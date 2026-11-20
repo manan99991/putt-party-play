@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 /// or slower without the chipmunk effect. Live progress, then play the result before Save or Share.
 struct AudioMixView: View {
     enum Mode: Hashable { case join, speed }
-    struct Clip: Identifiable, Equatable { let id = UUID(); let url: URL; let name: String; var seconds: Double = 0; var unreadable = false; var why: String? = nil }
+    struct Clip: Identifiable, Equatable { let id = UUID(); let url: URL; let name: String; var seconds: Double = 0; var unreadable = false; var why: String? = nil; var isVideo = false; var hasSound = true }
 
     @State private var mode: Mode = .join
     @State private var clips: [Clip] = []
@@ -22,6 +22,21 @@ struct AudioMixView: View {
     @State private var alsoJoin = false
     @State private var errorText: String?
     @State private var showFiles = false
+    /// When every clip is a video: make a video (true) or keep just the sound.
+    @State private var keepPicture = true
+    @State private var resultIsVideo = false
+    private var allVideos: Bool { !clips.isEmpty && clips.allSatisfy(\.isVideo) }
+    private var makeVideo: Bool { allVideos && keepPicture }
+
+    /// Videos in → choose a video out (default) or just the sound.
+    @ViewBuilder private var outputChoice: some View {
+        if allVideos {
+            Picker("", selection: $keepPicture) {
+                Label(L("Video"), systemImage: "film").tag(true)
+                Label(L("Sound only"), systemImage: "waveform").tag(false)
+            }.pickerStyle(.segmented).accessibilityIdentifier("mix-output")
+        }
+    }
 
     private let gaps: [Double] = [0, 0.5, 1, 2]
 
@@ -89,11 +104,14 @@ struct AudioMixView: View {
                 FromVideosButton(title: clips.isEmpty ? "From my videos" : "Add videos", multiple: true) { add($0) }
             }
             if clips.count >= 2 {
-                Text(L("Pause between clips")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                Picker("", selection: $gap) {
-                    ForEach(gaps, id: \.self) { g in Text(g == 0 ? L("None") : "\(g.formatted()) s").tag(g) }
-                }.pickerStyle(.segmented)
-                let total = clips.reduce(0) { $0 + $1.seconds } + gap * Double(clips.count - 1)
+                outputChoice
+                if !makeVideo {
+                    Text(L("Pause between clips")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Picker("", selection: $gap) {
+                        ForEach(gaps, id: \.self) { g in Text(g == 0 ? L("None") : "\(g.formatted()) s").tag(g) }
+                    }.pickerStyle(.segmented)
+                }
+                let total = clips.reduce(0) { $0 + $1.seconds } + (makeVideo ? 0 : gap * Double(clips.count - 1))
                 Text("\(L("Total")) \(AudioCompressView.duration(total))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Button { runJoin() } label: {
                     Label(L("Join into one"), systemImage: "link").frame(maxWidth: .infinity)
@@ -140,6 +158,7 @@ struct AudioMixView: View {
                 let total = clips.reduce(0) { $0 + $1.seconds }
                 Text("\(rate > 1 ? L("Faster") : L("Slower")) — \(clips.count == 1 ? L("new length") : L("all together")) \(AudioCompressView.duration(total / rate)). \(L("Voices keep their natural pitch."))")
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                outputChoice
                 if clips.count > 1 {
                     Toggle(L("Also join them into one file"), isOn: $alsoJoin).font(HandyFont.body).tint(HandyColor.accent)
                 }
@@ -163,7 +182,7 @@ struct AudioMixView: View {
                         Text(AudioCompressView.duration(r.seconds)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         ShareLink(item: r.url) { Image(systemName: "square.and.arrow.up") }.accessibilityLabel(L("Share"))
                     }
-                    AudioPlayBar(url: r.url)
+                    if r.url.pathExtension.lowercased() == "mp4" { VideoFinishCard(url: r.url) } else { AudioPlayBar(url: r.url) }
                 }
                 .cardStyle(padding: HandySpacing.s12)
             }
@@ -186,7 +205,17 @@ struct AudioMixView: View {
 
     // MARK: - Result
 
-    private func result(_ url: URL) -> some View {
+    @ViewBuilder private func result(_ url: URL) -> some View {
+        if resultIsVideo {
+            // Same finish as the Video tool: watch it, size, length, speed, Save to Photos / Share.
+            VideoFinishCard(url: url, source: mode == .speed ? clips.first?.url : nil)
+            Button(L("Back to editing")) { resultURL = nil; progress = 0 }.textButton().font(HandyFont.caption)
+        } else {
+            audioResult(url)
+        }
+    }
+
+    private func audioResult(_ url: URL) -> some View {
         VStack(spacing: HandySpacing.s8) {
             Label("\(mode == .join ? L("Joined") : L("Speed changed")) — \(AudioCompressView.duration(resultSeconds))",
                   systemImage: "checkmark.circle.fill")
@@ -217,9 +246,12 @@ struct AudioMixView: View {
                 let asset = AVURLAsset(url: c.url)
                 let d = (try? await asset.load(.duration))?.seconds ?? 0
                 let hasSound = !((try? await asset.loadTracks(withMediaType: .audio)) ?? []).isEmpty
+                let hasPicture = !((try? await asset.loadTracks(withMediaType: .video)) ?? []).isEmpty
                 await MainActor.run {
                     if let i = clips.firstIndex(where: { $0.id == c.id }) {
-                        clips[i].seconds = d.isFinite ? d : 0; clips[i].unreadable = !hasSound
+                        clips[i].seconds = d.isFinite ? d : 0; clips[i].isVideo = hasPicture; clips[i].hasSound = hasSound
+                        // A silent video still joins or speeds up as a video; only sound-only output needs sound.
+                        clips[i].unreadable = !hasSound && !hasPicture
                         if !hasSound, let t = AudioIntake.textInstead(c.url) {
                             clips[i].why = "\(L("This isn't a recording — the file only holds text, so the download probably failed. It says:")) \(t)"
                         }
@@ -230,7 +262,8 @@ struct AudioMixView: View {
     }
 
     private func runJoin() {
-        if let bad = clips.first(where: \.unreadable) {
+        if makeVideo { startVideo(clips.map(\.url), rate: 1, name: "Joined"); return }
+        if let bad = clips.first(where: { $0.unreadable || !$0.hasSound }) {
             errorText = "“\(bad.name)” has no sound Tenzy can read — remove it to join the others."; return
         }
         let urls = clips.map(\.url), g = gap
@@ -238,6 +271,7 @@ struct AudioMixView: View {
     }
 
     private func runSpeed() {
+        if makeVideo { runVideoSpeed(); return }
         let items = clips.filter { !$0.unreadable }, r = rate, join = alsoJoin && clips.count > 1
         guard !items.isEmpty else { errorText = "None of these files has sound Tenzy can read."; return }
         working = true; errorText = nil; progress = 0
@@ -281,6 +315,7 @@ struct AudioMixView: View {
                 working = false
                 switch outcome {
                 case .success(let tmp):
+                    resultIsVideo = false
                     let named = FileManager.default.temporaryDirectory.appendingPathComponent("\(String(name.prefix(60))).m4a")
                     try? FileManager.default.removeItem(at: named)
                     resultURL = (try? FileManager.default.moveItem(at: tmp, to: named)) != nil ? named : tmp
@@ -289,6 +324,52 @@ struct AudioMixView: View {
                 case .failure(let f):
                     errorText = f.message
                 }
+            }
+        }
+    }
+
+    // MARK: - Videos stay videos
+
+    private func startVideo(_ urls: [URL], rate: Double, name: String) {
+        working = true; errorText = nil; progress = 0
+        Task {
+            let out = await VideoJoin.join(urls, rate: rate) { p in Task { @MainActor in progress = p } }
+            await MainActor.run {
+                working = false
+                if let out {
+                    let named = FileManager.default.temporaryDirectory.appendingPathComponent("\(String(name.prefix(60))).mp4")
+                    try? FileManager.default.removeItem(at: named)
+                    resultURL = (try? FileManager.default.moveItem(at: out, to: named)) != nil ? named : out
+                    resultIsVideo = true
+                    HandyHaptics.success()
+                } else {
+                    errorText = "Couldn't make the video on this phone. Try Sound only, or fewer clips."
+                }
+            }
+        }
+    }
+
+    private func runVideoSpeed() {
+        let items = clips, r = rate, join = alsoJoin && clips.count > 1
+        if items.count == 1 { startVideo([items[0].url], rate: r, name: "\(items[0].name) (\(r.formatted())x)"); return }
+        working = true; errorText = nil; progress = 0
+        Task {
+            var out: [(name: String, url: URL, seconds: Double)] = []
+            var failed = 0
+            let steps = Double(items.count + (join ? 1 : 0))
+            for (i, c) in items.enumerated() {
+                guard let u = await VideoJoin.join([c.url], rate: r, progress: { p in Task { @MainActor in progress = (Double(i) + p) / steps } }) else { failed += 1; continue }
+                let d = (try? await AVURLAsset(url: u).load(.duration))?.seconds ?? 0
+                out.append(("\(c.name) (\(r.formatted())x)", u, d))
+            }
+            if join, let j = await VideoJoin.join(items.map(\.url), rate: r, progress: { p in Task { @MainActor in progress = (Double(items.count) + p) / steps } }) {
+                let d = (try? await AVURLAsset(url: j).load(.duration))?.seconds ?? 0
+                out.append(("All joined (\(r.formatted())x)", j, d))
+            }
+            await MainActor.run {
+                working = false; speedResults = out
+                if failed > 0 { errorText = "\(failed) of \(items.count) couldn't be changed — the others are ready." }
+                if !out.isEmpty { HandyHaptics.success() }
             }
         }
     }

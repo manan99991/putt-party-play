@@ -23819,6 +23819,16 @@
   "pt": "Ainda tem som",
   "zh": "仍有声音"
  },
+ "Sound only": {
+  "de": "Nur Ton",
+  "es": "Solo sonido",
+  "fr": "Son uniquement",
+  "hi": "केवल आवाज़",
+  "it": "Solo audio",
+  "ja": "音声のみ",
+  "pt": "Só som",
+  "zh": "仅声音"
+ },
  "Soundboard": {
   "de": "Soundboard",
   "es": "Mesa de sonidos",
