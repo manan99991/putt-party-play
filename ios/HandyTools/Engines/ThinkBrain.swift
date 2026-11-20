@@ -14,7 +14,7 @@ import FoundationModels
 enum ThinkBrain {
 
     enum Kind: String, CaseIterable, Equatable {
-        case worry, decision, tasks, question, message, prep, idea
+        case worry, decision, tasks, question, message, prep, idea, recipe
         var label: String {
             switch self {
             case .worry: return "Something weighing on you"
@@ -24,6 +24,7 @@ enum ThinkBrain {
             case .message: return "A message to get right"
             case .prep: return "Getting ready"
             case .idea: return "An idea to shape"
+            case .recipe: return "A meal from what you have"
             }
         }
         var icon: String {
@@ -35,6 +36,7 @@ enum ThinkBrain {
             case .message: return "text.bubble"
             case .prep: return "bag"
             case .idea: return "sparkles"
+            case .recipe: return "fork.knife"
             }
         }
     }
@@ -64,7 +66,10 @@ enum ThinkBrain {
         var caution: String?            // "General guidance, not financial advice" and the like
         var support: Support?           // crisis help, shown before anything else
         var engine: Engine = .builtIn
+        var tone: String?               // how they sound — "stressed", "in a hurry" — and the answer matches it
+        var variants: [Variant] = []    // a message in several tones: warmer, more professional, shorter, firmer
     }
+    struct Variant: Equatable, Identifiable { var id: String { label }; let label: String; let text: String }
 
     /// Help to reach right now, for the person's country.
     struct Support: Equatable { let line: String; let call: String?; let text: String?; let web: String }
@@ -92,6 +97,7 @@ enum ThinkBrain {
         if has(t, #"^(please\s+)?(re-?word|rewrite|rephrase|reply to|respond to|make (this|it) (sound|more|less|shorter|nicer|polite)|fix (this|my) (message|email|text)|write (a|an|me a) (message|email|text|note|reply))"#)
             || has(t, #"^(hi|hey|hello|dear)\b.{25,}"#) { return .message }
         if has(t, #"\bshould i\b|\bor not\b|\bvs\.?\b|\bversus\b|which (one|is better|should)|\bdecid|\bchoose between\b|\bworth it\b|\bpros and cons\b"#) { return .decision }
+        if has(t, #"(what (can|should) i (cook|make)|recipe|dinner (idea|with)|i have .*(eggs|chicken|rice|pasta|potato|tofu|beans|spinach|onion))"#) { return .recipe }
         if has(t, #"(getting ready|prepare|prep for|packing for|before (my|the) (interview|appointment|trip|meeting|surgery|exam)|first day|checklist for)"#) { return .prep }
         let worry = count(t, worryWords)
         let doing = has(t, #"\b("# + taskVerbs.joined(separator: "|") + #")\b"#)
@@ -154,7 +160,35 @@ enum ThinkBrain {
         }
     }
 
+    /// How the person sounds, read from their words, so the answer can match it. Nil when it's plain.
+    static func tone(of t: String) -> String? {
+        if needsSupport(t) { return "in pain" }
+        if count(t, ["overwhelm", "stress", "anxious", "panic", "can'?t cope", "scared", "worried", "exhausted", "too much", "hopeless"]) > 0 { return "stressed" }
+        if has(t, #"\b(asap|urgent|right now|hurry|deadline (is )?(today|tomorrow))\b|!!"#) { return "in a hurry" }
+        if has(t, #"\b(angry|furious|pissed|annoyed|fed up|unfair)\b"#) { return "frustrated" }
+        if has(t, #"\b(excited|can'?t wait|thrilled)\b"#) { return "excited" }
+        return nil
+    }
+
+    /// One step, broken into smaller ones you can start right away — when there's no model to do it properly.
+    static func breakDown(_ step: Step) -> [Step] {
+        let parts = ThinkingEngine.split(step.text.replacingOccurrences(of: " and ", with: ", "))
+        if parts.count > 1 { return parts.map { Step(text: $0.prefix(1).uppercased() + $0.dropFirst(), minutes: step.minutes.map { max(2, $0 / parts.count) }) } }
+        let what = step.text.prefix(1).lowercased() + step.text.dropFirst()
+        let m = step.minutes ?? 20
+        return [Step(text: "Get out everything you need to \(what)", minutes: 3),
+                Step(text: "Set a 10-minute timer and just start", minutes: 10),
+                Step(text: "Keep going until it's done — \(what)", minutes: max(5, m - 14)),
+                Step(text: "Tick it off and note what's next", minutes: 1)]
+    }
+
     static func builtIn(_ raw: String, region: String? = Locale.current.region?.identifier, now: Date = Date()) -> Answer {
+        var a = builtInCore(raw, region: region, now: now)
+        a.tone = tone(of: raw)
+        return a
+    }
+
+    private static func builtInCore(_ raw: String, region: String?, now: Date) -> Answer {
         let text = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         if needsSupport(text) {
             return Answer(kind: .worry, understood: "It sounds like you're in a lot of pain right now.",
@@ -223,7 +257,7 @@ enum ThinkBrain {
                             "If a friend asked me this, what would I tell them?"])],
                           recommendation: "If it's easy to undo, try it for a short, set time and then decide for good.",
                           followUps: ["What are the pros and cons?", "What would change your answer?"])
-        case .question, .message, .prep, .idea:
+        case .question, .message, .prep, .idea, .recipe:
             return Answer(kind: k, understood: "\(k.label).",
                           headline: "This one needs Apple Intelligence",
                           sections: [Section(title: "Why", bullets: [
@@ -249,6 +283,13 @@ enum ThinkBrain {
     Money: general guidance only; never tell them to buy, sell or hold a specific investment; when debts are serious suggest \
     a free nonprofit credit counsellor or a qualified adviser. Health: never diagnose or give doses; suggest a clinician. \
     Never mention weather, apps or anything they did not raise.
+    Tone: read how they sound (stressed, in a hurry, frustrated, excited, calm) and match it — gentle and short when \
+    they're stressed, brisk when they're in a hurry, steady when they're frustrated. Name it in two or three words.
+    Message: give the ready-to-send text, plus 3 or 4 variants labelled by tone (Warmer, More professional, Shorter, \
+    Firmer), each keeping every name, time and fact.
+    Tasks: order them so the one that unblocks the rest comes first, and give honest minutes for each.
+    Recipe (they list ingredients or ask what to cook): one dish they can make mostly from what they have, the \
+    ingredients with amounts, numbered method steps with minutes, and what to swap if something is missing.
     """
 
     #if canImport(FoundationModels)
@@ -264,7 +305,7 @@ enum ThinkBrain {
     }
     @available(iOS 26.0, *)
     @Generable struct AIAnswer {
-        @Guide(description: "One of: worry, decision, tasks, question, message, prep, idea") var kind: String
+        @Guide(description: "One of: worry, decision, tasks, question, message, prep, idea, recipe") var kind: String
         @Guide(description: "One warm, specific sentence showing you understood, in their own terms") var understood: String
         @Guide(description: "The core of the answer in under 8 words") var headline: String
         @Guide(description: "2 to 4 sections that untangle the situation") var sections: [AISection]
@@ -272,6 +313,17 @@ enum ThinkBrain {
         @Guide(description: "The bottom line in one or two sentences, with a clear lean") var recommendation: String
         @Guide(description: "Only for a message: the ready-to-send text. Otherwise empty") var rewrite: String
         @Guide(description: "2 or 3 short follow-up questions they might ask next, in their voice") var followUps: [String]
+        @Guide(description: "How they sound in two or three words, e.g. stressed, in a hurry, calm") var tone: String
+        @Guide(description: "Only for a message: 3 or 4 versions labelled Warmer, More professional, Shorter, Firmer. Otherwise empty") var variants: [AIVariant]
+    }
+    @available(iOS 26.0, *)
+    @Generable struct AIVariant {
+        @Guide(description: "The tone: Warmer, More professional, Shorter or Firmer") var label: String
+        @Guide(description: "The full message in that tone, ready to send") var text: String
+    }
+    @available(iOS 26.0, *)
+    @Generable struct AIBreakdown {
+        @Guide(description: "3 to 6 smaller steps, each doable in one go, starting with a verb, smallest and easiest first") var steps: [AIStep]
     }
     #endif
 
@@ -284,6 +336,25 @@ enum ThinkBrain {
 
         var last: Answer? { turns.last?.answer }
         func reset() { turns = []; session = nil }
+
+        /// One step broken into smaller ones (the "too big to start" fix), in the same conversation so it knows
+        /// what the step is part of. Built-in breakdown when there's no model.
+        func breakDown(_ step: Step) async -> [Step] {
+            #if canImport(FoundationModels)
+            if #available(iOS 26.0, *), let session = self.session as? LanguageModelSession {
+                let prompt = "Break this step into smaller steps they can start right now: \(step.text)"
+                if let r = try? await withThrowingTaskGroup(of: AIBreakdown?.self, body: { g in
+                    g.addTask { try await session.respond(to: prompt, generating: AIBreakdown.self).content }
+                    g.addTask { try await Task.sleep(nanoseconds: 60_000_000_000); return nil }
+                    defer { g.cancelAll() }
+                    return try await g.next() ?? nil
+                }), !r.steps.isEmpty {
+                    return r.steps.map { Step(text: $0.text, minutes: $0.minutes > 0 ? $0.minutes : nil) }
+                }
+            }
+            #endif
+            return ThinkBrain.breakDown(step)
+        }
 
         func ask(_ text: String) async {
             let t = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -359,7 +430,9 @@ enum ThinkBrain {
                       steps: r.steps.map { Step(text: $0.text, minutes: $0.minutes > 0 ? $0.minutes : nil) },
                       recommendation: r.recommendation, rewrite: k == .message ? r.rewrite : "",
                       followUps: Array(r.followUps.prefix(3)),
-                      caution: money ? "General guidance, not financial advice." : nil, engine: engine)
+                      caution: money ? "General guidance, not financial advice." : nil, engine: engine,
+                      tone: r.tone.trimmingCharacters(in: .whitespaces).isEmpty ? tone(of: asked) : r.tone.lowercased(),
+                      variants: k == .message ? r.variants.filter { !$0.text.isEmpty }.map { Variant(label: $0.label, text: $0.text) } : [])
     }
     #endif
 }

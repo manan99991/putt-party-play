@@ -36948,5 +36948,225 @@
   "ja": "今日やること全部と今の体調 — 例：「シャワー、買い物、仕事、体調がいまいち」",
   "pt": "Tudo o que você precisa fazer hoje, e como se sente — ex.: \"banho, mercado, trabalho, não estou bem\"",
   "zh": "今天要做的所有事，以及你的状态——例如“洗澡、买菜、办公、不太舒服”"
+ },
+ "Too big? Break it down": {
+  "de": "Zu groß? In kleine Schritte teilen",
+  "es": "¿Demasiado grande? Divídelo",
+  "fr": "Trop gros ? Découpe-le",
+  "hi": "बहुत बड़ा? छोटे हिस्सों में बाँटें",
+  "it": "Troppo grande? Dividilo",
+  "ja": "大きすぎる？細かく分ける",
+  "pt": "Grande demais? Divida em partes",
+  "zh": "太大？拆成小步"
+ },
+ "You sound": {
+  "de": "Du klingst",
+  "es": "Suenas",
+  "fr": "Tu as l'air",
+  "hi": "आप लगते हैं",
+  "it": "Sembri",
+  "ja": "あなたは",
+  "pt": "Você parece",
+  "zh": "你听起来"
+ },
+ "in all": {
+  "de": "insgesamt",
+  "es": "en total",
+  "fr": "au total",
+  "hi": "कुल",
+  "it": "in tutto",
+  "ja": "合計",
+  "pt": "no total",
+  "zh": "总共"
+ },
+ "stressed": {
+  "de": "gestresst",
+  "es": "estresado",
+  "fr": "stressé",
+  "hi": "तनाव में",
+  "it": "stressato",
+  "ja": "ストレスを感じている",
+  "pt": "estressado",
+  "zh": "压力很大"
+ },
+ "in a hurry": {
+  "de": "in Eile",
+  "es": "con prisa",
+  "fr": "pressé",
+  "hi": "जल्दी में",
+  "it": "di fretta",
+  "ja": "急いでいる",
+  "pt": "com pressa",
+  "zh": "很着急"
+ },
+ "frustrated": {
+  "de": "frustriert",
+  "es": "frustrado",
+  "fr": "frustré",
+  "hi": "परेशान",
+  "it": "frustrato",
+  "ja": "いら立っている",
+  "pt": "frustrado",
+  "zh": "很沮丧"
+ },
+ "excited": {
+  "de": "begeistert",
+  "es": "ilusionado",
+  "fr": "enthousiaste",
+  "hi": "उत्साहित",
+  "it": "entusiasta",
+  "ja": "わくわくしている",
+  "pt": "animado",
+  "zh": "很兴奋"
+ },
+ "kept this calm and short.": {
+  "de": "ich halte es ruhig und kurz.",
+  "es": "lo mantengo tranquilo y breve.",
+  "fr": "je reste calme et bref.",
+  "hi": "इसे शांत और छोटा रखा है।",
+  "it": "l'ho tenuto calmo e breve.",
+  "ja": "落ち着いて短くまとめました。",
+  "pt": "mantive calmo e curto.",
+  "zh": "我尽量说得平和简短。"
+ },
+ "straight to the point.": {
+  "de": "direkt auf den Punkt.",
+  "es": "directo al grano.",
+  "fr": "droit au but.",
+  "hi": "सीधे मुद्दे पर।",
+  "it": "dritto al punto.",
+  "ja": "要点だけにしました。",
+  "pt": "direto ao ponto.",
+  "zh": "直接说重点。"
+ },
+ "kept this steady and practical.": {
+  "de": "ich bleibe ruhig und praktisch.",
+  "es": "lo mantengo sereno y práctico.",
+  "fr": "je reste posé et concret.",
+  "hi": "इसे स्थिर और व्यावहारिक रखा है।",
+  "it": "l'ho tenuto pacato e pratico.",
+  "ja": "落ち着いて実用的にまとめました。",
+  "pt": "mantive firme e prático.",
+  "zh": "我尽量说得冷静务实。"
+ },
+ "let's make the most of it.": {
+  "de": "lass uns das Beste daraus machen.",
+  "es": "saquémosle el máximo partido.",
+  "fr": "profitons-en au maximum.",
+  "hi": "चलिए इसका पूरा फ़ायदा उठाएँ।",
+  "it": "sfruttiamolo al massimo.",
+  "ja": "最大限に活かしましょう。",
+  "pt": "vamos aproveitar ao máximo.",
+  "zh": "好好把握这个机会。"
+ },
+ "answered to match.": {
+  "de": "passend geantwortet.",
+  "es": "respondo en el mismo tono.",
+  "fr": "réponse adaptée.",
+  "hi": "उसी हिसाब से जवाब दिया।",
+  "it": "risposta adatta.",
+  "ja": "それに合わせて答えました。",
+  "pt": "respondi no mesmo tom.",
+  "zh": "按你的语气回答。"
+ },
+ "Best fit": {
+  "de": "Am passendsten",
+  "es": "La más adecuada",
+  "fr": "Le plus adapté",
+  "hi": "सबसे सही",
+  "it": "Più adatta",
+  "ja": "いちばん合う",
+  "pt": "Mais adequada",
+  "zh": "最合适"
+ },
+ "Warmer": {
+  "de": "Herzlicher",
+  "es": "Más cálido",
+  "fr": "Plus chaleureux",
+  "hi": "ज़्यादा अपनापन",
+  "it": "Più caloroso",
+  "ja": "あたたかく",
+  "pt": "Mais caloroso",
+  "zh": "更亲切"
+ },
+ "More professional": {
+  "de": "Professioneller",
+  "es": "Más profesional",
+  "fr": "Plus professionnel",
+  "hi": "ज़्यादा प्रोफ़ेशनल",
+  "it": "Più professionale",
+  "ja": "ビジネス向け",
+  "pt": "Mais profissional",
+  "zh": "更正式"
+ },
+ "Shorter": {
+  "de": "Kürzer",
+  "es": "Más corto",
+  "fr": "Plus court",
+  "hi": "छोटा",
+  "it": "Più breve",
+  "ja": "短く",
+  "pt": "Mais curto",
+  "zh": "更简短"
+ },
+ "Firmer": {
+  "de": "Bestimmter",
+  "es": "Más firme",
+  "fr": "Plus ferme",
+  "hi": "ज़्यादा दृढ़",
+  "it": "Più deciso",
+  "ja": "きっぱり",
+  "pt": "Mais firme",
+  "zh": "更坚定"
+ },
+ "Simpler": {
+  "de": "Einfacher",
+  "es": "Más simple",
+  "fr": "Plus simple",
+  "hi": "और आसान",
+  "it": "Più semplice",
+  "ja": "もっと簡単に",
+  "pt": "Mais simples",
+  "zh": "更简单"
+ },
+ "More detail": {
+  "de": "Mehr Details",
+  "es": "Más detalle",
+  "fr": "Plus de détails",
+  "hi": "और विस्तार",
+  "it": "Più dettagli",
+  "ja": "もっと詳しく",
+  "pt": "Mais detalhes",
+  "zh": "更详细"
+ },
+ "Another angle": {
+  "de": "Anderer Blickwinkel",
+  "es": "Otro enfoque",
+  "fr": "Autre angle",
+  "hi": "दूसरा नज़रिया",
+  "it": "Altro punto di vista",
+  "ja": "別の見方",
+  "pt": "Outro ângulo",
+  "zh": "换个角度"
+ },
+ "Gentler": {
+  "de": "Sanfter",
+  "es": "Más suave",
+  "fr": "Plus doux",
+  "hi": "और नरमी से",
+  "it": "Più delicato",
+  "ja": "もっとやさしく",
+  "pt": "Mais gentil",
+  "zh": "更温和"
+ },
+ "A meal from what you have": {
+  "de": "Ein Gericht aus dem, was da ist",
+  "es": "Una comida con lo que tienes",
+  "fr": "Un plat avec ce que tu as",
+  "hi": "जो है उससे खाना",
+  "it": "Un piatto con quello che hai",
+  "ja": "あるもので一品",
+  "pt": "Uma refeição com o que você tem",
+  "zh": "用现有食材做一道菜"
  }
 }

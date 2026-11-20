@@ -1720,6 +1720,22 @@ final class EngineTests: XCTestCase {
         let list = ThinkBrain.builtIn("pay bills, buy milk, call mum")
         XCTAssertEqual(list.kind, .tasks); XCTAssertEqual(list.steps.map(\.text), ["Pay bills", "Buy milk", "Call mum"])
 
+        // How they sound, so the answer can match it.
+        XCTAssertEqual(ThinkBrain.tone(of: said), "stressed")
+        XCTAssertEqual(a.tone, "stressed")
+        XCTAssertEqual(ThinkBrain.tone(of: "need the deck done asap"), "in a hurry")
+        XCTAssertNil(ThinkBrain.tone(of: "buy milk, call mum"))
+        XCTAssertEqual(ThinkBrain.kind(of: "what can I cook with eggs, rice and spinach"), .recipe)
+
+        // A step too big to start breaks into ones you can start now; a step that's two jobs splits in two.
+        let small = ThinkBrain.breakDown(ThinkBrain.Step(text: "Clean the garage", minutes: 60))
+        XCTAssertEqual(small.count, 4); XCTAssertTrue(small[0].text.contains("clean the garage"))
+        XCTAssertEqual(small.compactMap(\.minutes).reduce(0, +), 60, "the pieces add up to the whole")
+        XCTAssertEqual(ThinkBrain.breakDown(ThinkBrain.Step(text: "Email Ana and book flights", minutes: 20)).map(\.text), ["Email Ana", "Book flights"])
+        XCTAssertEqual(ThinkBoxView.totalMinutes([.init(text: "a", minutes: 20), .init(text: "b", minutes: 50)]), 70)
+        XCTAssertNil(ThinkBoxView.totalMinutes([.init(text: "a", minutes: 20), .init(text: "b", minutes: nil)]), "no total from guesses")
+        XCTAssertEqual(ThinkBoxView.duration(70), "1 h 10 min"); XCTAssertEqual(ThinkBoxView.duration(45), "45 min")
+
         // Someone in crisis gets help to reach, first, and no to-do list.
         let hurt = ThinkBrain.builtIn("everything is falling apart and I want to end my life", region: "US")
         XCTAssertEqual(hurt.support?.call, "988")

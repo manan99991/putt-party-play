@@ -19,6 +19,9 @@ struct ThinkBoxView: View {
     @State private var thinking = false
     @State private var errorText: String?
     @State private var added: String?
+    @State private var broken: [String: [ThinkBrain.Step]] = [:]   // a step's smaller steps, once asked for
+    @State private var breaking: String?
+    @State private var tone: String?                                 // which version of a message is showing
     @FocusState private var focused: Bool
 
     private var trimmed: String { input.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -85,7 +88,7 @@ struct ThinkBoxView: View {
         HStack(alignment: .top, spacing: HandySpacing.s8) {
             Text("“\(talk.turns.first?.asked ?? "")”").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Button(L("New")) { talk.reset(); input = ""; followUp = ""; added = nil }.textButton()
+            Button(L("New")) { talk.reset(); input = ""; followUp = ""; added = nil; broken = [:]; tone = nil }.textButton()
         }
     }
 
@@ -115,17 +118,30 @@ struct ThinkBoxView: View {
                 Label(L(a.kind.label), systemImage: a.kind.icon).font(HandyFont.micro).foregroundStyle(HandyColor.accent)
                 Text(a.headline).font(HandyFont.title).fixedSize(horizontal: false, vertical: true)
                 Text(a.understood).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                if let t = a.tone, a.support == nil {
+                    Label("\(L("You sound")) \(L(t)) — \(L(Self.toneNote(t)))", systemImage: "waveform").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s16)
             .accessibilityElement(children: .combine).accessibilityIdentifier("think-answer")
 
             if !a.rewrite.isEmpty {
+                let versions = [ThinkBrain.Variant(label: "Best fit", text: a.rewrite)] + a.variants
+                let shown = versions.first { $0.label == tone } ?? versions[0]
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text(L("Ready to send")).font(HandyFont.bodyStrong)
-                    Text(a.rewrite).font(HandyFont.body).textSelection(.enabled).fixedSize(horizontal: false, vertical: true)
+                    if versions.count > 1 {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: HandySpacing.s8) {
+                                ForEach(versions) { v in HChip(text: L(v.label), selected: v.label == shown.label) { tone = v.label } }
+                            }
+                        }
+                    }
+                    Text(shown.text).font(HandyFont.body).textSelection(.enabled).fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("think-message")
                     HStack {
-                        Button { UIPasteboard.general.string = a.rewrite; HandyHaptics.success() } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
-                        ShareLink(item: a.rewrite) { Label(L("Send"), systemImage: "paperplane") }.compactButton()
+                        Button { UIPasteboard.general.string = shown.text; HandyHaptics.success() } label: { Label(L("Copy"), systemImage: "doc.on.doc") }.compactButton()
+                        ShareLink(item: shown.text) { Label(L("Send"), systemImage: "paperplane") }.compactButton()
                     }
                 }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s16)
             }
@@ -145,13 +161,33 @@ struct ThinkBoxView: View {
             if !a.steps.isEmpty {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text(L(a.kind == .tasks ? "Your list" : "Small first steps")).font(HandyFont.bodyStrong)
+                    if let total = Self.totalMinutes(a.steps) {
+                        Text("\(L("About")) \(Self.duration(total)) \(L("in all"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    }
                     ForEach(Array(a.steps.enumerated()), id: \.offset) { i, s in
-                        HStack(alignment: .firstTextBaseline, spacing: 10) {
-                            Text("\(i + 1)").font(HandyFont.caption.weight(.bold)).foregroundStyle(HandyColor.onAccent)
-                                .frame(width: 22, height: 22).background(HandyColor.accent, in: Circle())
-                            Text(s.text).font(HandyFont.body).fixedSize(horizontal: false, vertical: true)
-                            Spacer(minLength: 4)
-                            if let m = s.minutes { Text("\(m) \(L("min"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                        VStack(alignment: .leading, spacing: 6) {
+                            HStack(alignment: .firstTextBaseline, spacing: 10) {
+                                Text("\(i + 1)").font(HandyFont.caption.weight(.bold)).foregroundStyle(HandyColor.onAccent)
+                                    .frame(width: 22, height: 22).background(HandyColor.accent, in: Circle())
+                                Text(s.text).font(HandyFont.body).fixedSize(horizontal: false, vertical: true)
+                                Spacer(minLength: 4)
+                                if let m = s.minutes { Text("\(m) \(L("min"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                            }
+                            if let small = broken[s.text] {
+                                ForEach(small) { b in
+                                    HStack(alignment: .firstTextBaseline, spacing: 8) {
+                                        Image(systemName: "circle").font(.caption2).foregroundStyle(HandyColor.accent)
+                                        Text(b.text).font(HandyFont.caption).fixedSize(horizontal: false, vertical: true)
+                                        Spacer(minLength: 4)
+                                        if let m = b.minutes { Text("\(m) \(L("min"))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
+                                    }.padding(.leading, 32)
+                                }
+                            } else if latest {
+                                Button { breakDown(s) } label: {
+                                    if breaking == s.text { ProgressView().controlSize(.mini) }
+                                    else { Label(L("Too big? Break it down"), systemImage: "arrow.down.right.and.arrow.up.left").font(HandyFont.caption) }
+                                }.textButton().padding(.leading, 32).disabled(breaking != nil)
+                            }
                         }
                     }
                     if latest, a.kind == .tasks {
@@ -174,6 +210,14 @@ struct ThinkBoxView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(HandySpacing.s16)
                 .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+            }
+
+            if latest, a.engine != .builtIn, a.support == nil {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: HandySpacing.s8) {
+                        ForEach(Self.refinements, id: \.label) { r in HChip(text: L(r.label), selected: false) { ask(r.prompt) } }
+                    }
+                }
             }
 
             if latest, !a.followUps.isEmpty {
@@ -225,8 +269,39 @@ struct ThinkBoxView: View {
         guard !t.isEmpty, !thinking else { return }
         speech.stop(); focused = false; errorText = nil; added = nil
         thinking = true
-        Task { await talk.ask(t); thinking = false; HandyHaptics.success() }
+        Task { await talk.ask(t); thinking = false; tone = nil; HandyHaptics.success() }
     }
+
+    private func breakDown(_ s: ThinkBrain.Step) {
+        breaking = s.text
+        Task { broken[s.text] = await talk.breakDown(s); breaking = nil }
+    }
+
+    /// One tap to reshape the last answer.
+    struct Refine: Hashable { let label: String; let prompt: String }
+    static let refinements = [
+        Refine(label: "Simpler", prompt: "Say that again more simply, in fewer words."),
+        Refine(label: "More detail", prompt: "Go deeper on that — more specific detail."),
+        Refine(label: "Another angle", prompt: "Look at it from a different angle."),
+        Refine(label: "Gentler", prompt: "Say that more gently."),
+    ]
+
+    static func toneNote(_ t: String) -> String {
+        switch t {
+        case "stressed": return "kept this calm and short."
+        case "in a hurry": return "straight to the point."
+        case "frustrated": return "kept this steady and practical."
+        case "excited": return "let's make the most of it."
+        default: return "answered to match."
+        }
+    }
+
+    static func totalMinutes(_ steps: [ThinkBrain.Step]) -> Int? {
+        let m = steps.compactMap(\.minutes)
+        return m.count == steps.count && !m.isEmpty ? m.reduce(0, +) : nil
+    }
+
+    static func duration(_ m: Int) -> String { m < 60 ? "\(m) min" : (m % 60 == 0 ? "\(m / 60) h" : "\(m / 60) h \(m % 60) min") }
 
     private func askFollowUp() { let q = followUp; followUp = ""; ask(q) }
 
