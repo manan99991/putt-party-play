@@ -822,6 +822,7 @@ enum ResultScreens {
         case .videoGif, .videoLoop: return "GIF finish"
         case .scamCheck: return "Scam verdict"
         case .voiceChange: return "Voice finish"
+        case .readAloud: return "Listen finish"
         case .makeQr, .wifiQr, .contactQr: return "Code finish"
         case .chatLink: return "Chat link"
         case .photoPdf: return "Scan PDF"
@@ -847,7 +848,6 @@ enum ResultScreens {
         "memo-to-notes": "pb-text",
         "sign-to-english": "pb-text",
         "page-summary": "pb-text",
-        "listen-later": "pb-listen",
         "video-words": "pb-text",
         "photo-collage": "pb-photo",
         "where-i-am": "pb-text",
@@ -860,13 +860,9 @@ enum ResultScreens {
         "photo-comic": "pb-fun",
         "before-after": "pb-photo",
         "photo-sell": "pb-photo",
-        "letter-listen": "pb-text",
         "lecture-summary": "pb-text",
-        "voice-spanish": "pb-text",
         "pdf-summary": "pb-text",
         "pdf-english": "pb-text",
-        "pdf-listen": "pb-listen",
-        "page-listen": "pb-text",
         "rewrite-clear": "pb-text",
         "photo-under-2mb": "pb-photo",
         "safe-to-share": "pb-photo",

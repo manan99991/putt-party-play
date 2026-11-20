@@ -337,6 +337,7 @@ final class AudioScrubModel: ObservableObject {
     @Published var current: Double = 0
     @Published var duration: Double = 0
     @Published var playing = false
+    @Published var rate: Float = 1
     var dragging = false
     private var player: AVPlayer?
     private var token: Any?
@@ -356,9 +357,10 @@ final class AudioScrubModel: ObservableObject {
     }
     func toggle() {
         guard let player else { return }
-        if playing { player.pause() } else { if duration > 0, current >= duration - 0.1 { seek(0) }; player.play() }
+        if playing { player.pause() } else { if duration > 0, current >= duration - 0.1 { seek(0) }; player.playImmediately(atRate: rate) }
         playing.toggle()
     }
+    func setRate(_ r: Float) { rate = r; if playing { player?.rate = r } }
     func skip(_ by: Double) { seek(min(max(current + by, 0), max(duration, 0))) }
     func seek(_ to: Double) { current = to; player?.seek(to: CMTime(seconds: to, preferredTimescale: 600)) }
     func stop() { player?.pause(); if let token { player?.removeTimeObserver(token); self.token = nil } }
@@ -366,6 +368,8 @@ final class AudioScrubModel: ObservableObject {
 
 struct AudioResultPreview: View {
     let url: URL
+    /// Listening speed chips (for things read aloud).
+    var speeds = false
     @StateObject private var m = AudioScrubModel()
     var body: some View {
         VStack(spacing: HandySpacing.s8) {
@@ -382,6 +386,17 @@ struct AudioResultPreview: View {
                 Text(clock(m.current)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Spacer()
                 Text(clock(m.duration)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }
+            if speeds {
+                HStack(spacing: 8) {
+                    ForEach([Float(1), 1.25, 1.5, 2], id: \.self) { r in
+                        Button { m.setRate(r) } label: {
+                            Text(r == 1 ? "1×" : String(format: "%g×", r)).font(HandyFont.caption).padding(.horizontal, 10).padding(.vertical, 6)
+                                .background(m.rate == r ? HandyColor.accent : HandyColor.surface, in: Capsule())
+                                .foregroundStyle(m.rate == r ? Color.white : HandyColor.textPrimary)
+                        }.buttonStyle(.plain).accessibilityIdentifier("listen-speed-\(r)")
+                    }
+                }
             }
         }
         .cardStyle(padding: HandySpacing.s12)
@@ -2402,6 +2417,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 ExpenseSheetCard(file: f, added: 1)
             } else if lext == "gif" {
                 GIFFinishCard(data: d, shareURL: tempURL(d, ext))
+            } else if chain.steps.last?.block == .readAloud, ChainPayload.isAudio(ext), let u = tempURL(d, ext) {
+                // Ready to listen: player with speed, how long, and the words it reads.
+                ListenFinishCard(url: u, text: { if case .text(let t)? = lastStepInput { return t }; return nil }())
             } else if chain.steps.last?.block == .voiceChange, ChainPayload.isAudio(ext) {
                 // Same finish as the voice picker: hear it, compare with your original, switch voice right here.
                 VoiceFinishCard(original: { if case .file(let o, let e)? = lastStepInput { return (o, e) }; return nil }(),

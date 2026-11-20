@@ -19589,6 +19589,16 @@
   "pt": "Pronto",
   "zh": "完成"
  },
+ "Ready to listen": {
+  "de": "Bereit zum Anhören",
+  "es": "Listo para escuchar",
+  "fr": "Prêt à écouter",
+  "hi": "सुनने के लिए तैयार",
+  "it": "Pronto da ascoltare",
+  "ja": "再生の準備ができました",
+  "pt": "Pronto a ouvir",
+  "zh": "可以收听了"
+ },
  "Ready to save": {
   "de": "Bereit zum Speichern",
   "es": "Listo para guardar",
@@ -26688,6 +26698,16 @@
   "ja": "2つの角がほぼ同じ高さです。下の角、次に対角の上の角を。",
   "pt": "Os dois cantos estão quase na mesma altura — toque num de baixo e depois no de cima oposto.",
   "zh": "两个角几乎同高，请先点下角，再点对角的上角。"
+ },
+ "The words it reads": {
+  "de": "Die Wörter, die vorgelesen werden",
+  "es": "Las palabras que lee",
+  "fr": "Les mots lus",
+  "hi": "यह जो शब्द पढ़ता है",
+  "it": "Le parole che legge",
+  "ja": "読み上げる文章",
+  "pt": "As palavras que lê",
+  "zh": "朗读的文字"
  },
  "The work weight is lighter, and you can stop thinking about it.": {
   "de": "Die Arbeit wiegt weniger, und du kannst aufhören, daran zu denken.",
