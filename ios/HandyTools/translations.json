@@ -11419,6 +11419,16 @@
   "pt": "Juntar clipes ou mudar a velocidade",
   "zh": "合并片段或调速"
  },
+ "Join clips, change the speed": {
+  "de": "Clips verbinden, Tempo ändern",
+  "es": "Unir clips, cambiar la velocidad",
+  "fr": "Assembler des clips, changer la vitesse",
+  "hi": "क्लिप जोड़ें, गति बदलें",
+  "it": "Unisci clip, cambia la velocità",
+  "ja": "クリップをつなぐ・速度を変える",
+  "pt": "Juntar clipes, mudar a velocidade",
+  "zh": "拼接片段，调整速度"
+ },
  "Join clips, speed up or slow down": {
   "de": "Clips verbinden, schneller oder langsamer",
   "es": "Une clips, acelera o ralentiza",

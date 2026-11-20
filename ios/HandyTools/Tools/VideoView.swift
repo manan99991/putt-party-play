@@ -120,6 +120,8 @@ struct VideoView: View {
         .onChange(of: job.stamp) { _, _ in syncJob() }
         .onAppear { syncJob() }
         .onDisappear { player?.pause(); keptPreview?.pause() }
+        // A video shared in, or picked from "Start with what you have → Video", opens straight here.
+        .handoff("video") { p in if let u = ToolHandoff.fileURL(p) { open(u) } }
     }
 
     // MARK: send on…
@@ -379,6 +381,21 @@ struct VideoView: View {
             let t = await VideoEngine.thumbnail(movie.url, at: min(0.5, d / 2))
             await MainActor.run {
                 source = movie.url; sourceBytes = SizeTarget.fileSize(movie.url) ?? 0; duration = d; thumb = t
+                trimStart = 0; trimEnd = d; gifFrom = 0; gifLength = min(3, max(0.5, d))
+                if targetBytes >= sourceBytes { targetBytes = videoPresets.first(where: { $0.bytes < sourceBytes })?.bytes ?? max(1_000_000, sourceBytes / 2) }
+                refreshTrimThumbs(); refreshStrip(); keptPreview?.pause(); keptPreview = nil
+            }
+        }
+    }
+
+    /// Load a video from a file (hand-off), the same way a picked one loads.
+    private func open(_ url: URL) {
+        bus.clear(jobKey); result = nil; errorText = nil; resultNote = nil; player?.pause(); player = nil
+        Task {
+            let d = await VideoEngine.duration(url)
+            let t = await VideoEngine.thumbnail(url, at: min(0.5, d / 2))
+            await MainActor.run {
+                source = url; sourceBytes = SizeTarget.fileSize(url) ?? 0; duration = d; thumb = t
                 trimStart = 0; trimEnd = d; gifFrom = 0; gifLength = min(3, max(0.5, d))
                 if targetBytes >= sourceBytes { targetBytes = videoPresets.first(where: { $0.bytes < sourceBytes })?.bytes ?? max(1_000_000, sourceBytes / 2) }
                 refreshTrimThumbs(); refreshStrip(); keptPreview?.pause(); keptPreview = nil

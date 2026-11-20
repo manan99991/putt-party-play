@@ -165,7 +165,9 @@ enum Guide {
         case "pdfpages": return "pages"
         case "meetingnotes": return "words"
         case "audiocompress", "audioconvert": return "share"
-        case "audiomix", "audiotags": return kind == .audio ? "edit" : "more"
+        case "video": return "edit"
+        case "audiomix": return "edit"
+        case "audiotags": return kind == .audio ? "edit" : "more"
         case "zipmaker": return kind == .file ? "more" : "share"
         default: return "more"
         }

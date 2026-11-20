@@ -101,4 +101,13 @@ final class FinishFactsTests: XCTestCase {
         let ff = await VideoFacts.read(fast)
         XCTAssertEqual(try XCTUnwrap(ff).seconds, 1.25, accuracy: 0.3, "2x makes it half as long")
     }
+
+    /// "Video shows only video tools; audio only audio tools."
+    func testVideoAndAudioListsStayInTheirLane() {
+        let audioOnly: Set = ["audiocompress", "audioconvert", "audiotags", "meetingnotes", "audioclean", "audioedit", "ringtone", "soundboard"]
+        let video = ToolHandoff.tools(for: .video)
+        XCTAssertEqual(video.first, "video", "the Video tool comes first for a video")
+        XCTAssertTrue(Set(video).isDisjoint(with: audioOnly), "audio-only tools offered for a video: \(Set(video).intersection(audioOnly))")
+        XCTAssertFalse(ToolHandoff.tools(for: .audio).contains("video"))
+    }
 }
