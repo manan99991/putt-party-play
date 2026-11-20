@@ -2018,7 +2018,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             videoPick = nil
             busy = true; result = nil; message = nil; batch = []; outbox = nil; progress = "Getting the video ready…"; progressValue = 0
             Task {
-                let movie = await loadWithinTimeout(180) { try? await item.loadTransferable(type: MovieImport.self) }
+                // Shows how much of the video has come in (an iCloud video downloads first) instead of a bare wait.
+                let movie = await MovieImport.load(item) { f in Task { @MainActor in progressValue = f; progress = f > 0 ? "Getting the video ready — \(Int(f * 100))%" : "Getting the video ready…" } }
                 await MainActor.run {
                     if let movie { go(.video(movie.url)) }
                     else { busy = false; progress = ""; message = "That video didn't load. If it's a large iCloud video, open it once in Photos to download it to this phone, then pick it again." }

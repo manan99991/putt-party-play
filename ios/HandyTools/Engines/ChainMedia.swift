@@ -296,8 +296,7 @@ enum ChainMedia {
         guard let session = AVAssetExportSession(asset: film, presetName: AVAssetExportPresetHighestQuality) else { return nil }
         let out = VideoEngine.tempURL("mp4")
         session.outputURL = out; session.outputFileType = .mp4; session.metadata = []
-        await session.export()
-        return session.status == .completed ? out : nil
+        return await VideoEngine.run(session, seconds: (try? await film.load(.duration))?.seconds ?? 0) ? out : nil
     }
 
     /// The middle of the frame at 9:16 (a phone held upright), with even pixel sizes as video encoders need.
@@ -320,8 +319,7 @@ enum ChainMedia {
         guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else { return nil }
         let out = VideoEngine.tempURL("mp4")
         session.outputURL = out; session.outputFileType = .mp4; session.videoComposition = comp; session.metadata = []
-        await session.export()
-        return session.status == .completed ? out : nil
+        return await VideoEngine.run(session, seconds: (try? await asset.load(.duration))?.seconds ?? 0) ? out : nil
     }
 }
 

@@ -29,6 +29,7 @@ struct VideoView: View {
     private var working: Bool { job.working }
     private var progressValue: Double { job.progress }
     @State private var errorText: String?
+    @State private var loadNote: String?     // "Getting the video ready — 40%" while a picked video comes in
     @State private var resultNote: String?   // honest "smallest we could do" line when a shrink can't hit the target
     @State private var result: Output?
     @State private var player: AVPlayer?
@@ -109,6 +110,7 @@ struct VideoView: View {
                 PhotosPicker(selection: $pickedItem, matching: .videos) { Label(L("Choose a different video"), systemImage: "film") }.textButton()
             }
 
+            if let loadNote { ToolProgressBar(label: loadNote, showsTime: false) }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let result { resultCard(result) }
         }
@@ -376,7 +378,10 @@ struct VideoView: View {
         guard let item else { return }
         bus.clear(jobKey); result = nil; errorText = nil; resultNote = nil; player?.pause(); player = nil
         Task {
-            guard let movie = try? await item.loadTransferable(type: MovieImport.self) else { await MainActor.run { errorText = "Couldn't load that video." }; return }
+            guard let movie = await MovieImport.load(item, progress: { f in loadNote = "Getting the video ready — \(Int(f * 100))%" }) else {
+                await MainActor.run { loadNote = nil; errorText = "That video didn't load. If it's a large iCloud video, open it once in Photos to download it, then pick it again." }; return
+            }
+            await MainActor.run { loadNote = nil }
             let d = await VideoEngine.duration(movie.url)
             let t = await VideoEngine.thumbnail(movie.url, at: min(0.5, d / 2))
             await MainActor.run {

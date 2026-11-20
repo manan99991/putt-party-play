@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import PhotosUI
 import ImageIO
 import UniformTypeIdentifiers
 import CoreTransferable
@@ -243,6 +244,10 @@ enum VideoEngine {
         let dur = (try? await asset.load(.duration)) ?? .zero
         try? cv.insertTimeRange(CMTimeRange(start: .zero, duration: dur), of: vTrack, at: .zero)
         cv.preferredTransform = (try? await vTrack.load(.preferredTransform)) ?? .identity
+        // Dropping the sound needs no re-encoding: copy the picture as it is (seconds, not minutes), and only
+        // re-encode if this phone can't pass the picture straight through.
+        if let fast = await export(comp, preset: AVAssetExportPresetPassthrough, type: .mp4, ext: "mp4") { return fast }
+        if let fast = await export(comp, preset: AVAssetExportPresetPassthrough, type: .mov, ext: "mov") { return fast }
         return await export(comp, preset: AVAssetExportPresetHighestQuality, type: .mp4, ext: "mp4")
     }
 
@@ -270,22 +275,34 @@ enum VideoEngine {
         session.shouldOptimizeForNetworkUse = true
         session.metadata = []
         if let range { session.timeRange = range }
-        // Hard timeout: some device codecs can wedge an export (certain HDR / slow-mo / long clips), and
-        // an unbounded await would hang the spinner forever. Race the export against a timer; whichever
-        // finishes first wins, and on timeout we cancel the session so the tool fails cleanly (and the
-        // caller surfaces an error) instead of freezing.
-        let completed = await withTaskGroup(of: Bool.self) { group -> Bool in
+        let seconds = range?.duration.seconds ?? ((try? await asset.load(.duration))?.seconds ?? 0)
+        return await run(session, seconds: seconds) ? out : nil
+    }
+
+    /// Runs an export with a live percentage on the run screen and a ceiling that grows with the clip
+    /// (a flat 3 minutes failed long or 4K videos that were simply still working). A wedged export is
+    /// cancelled so the tool says so instead of freezing.
+    static func run(_ session: AVAssetExportSession, seconds: Double) async -> Bool {
+        let ceiling = max(180, seconds.isFinite ? seconds * 3 : 180)
+        await MainActor.run { RunProgress.shared.begin() }
+        let completed = await withTaskGroup(of: Bool?.self) { group -> Bool in
             group.addTask { await session.export(); return session.status == .completed }
             group.addTask {
-                try? await Task.sleep(nanoseconds: 180 * 1_000_000_000)   // 3 min ceiling
-                session.cancelExport()
-                return false
+                let start = Date()
+                while !Task.isCancelled {
+                    let p = Double(session.progress)
+                    await MainActor.run { RunProgress.shared.set(min(0.99, p)) }
+                    if Date().timeIntervalSince(start) > ceiling { session.cancelExport(); return false }
+                    try? await Task.sleep(nanoseconds: 300_000_000)
+                }
+                return nil
             }
-            let first = await group.next() ?? false
-            group.cancelAll()
-            return first
+            var result = false
+            for await r in group { if let r { result = r; group.cancelAll(); break } }
+            return result
         }
-        return completed ? out : nil
+        await MainActor.run { RunProgress.shared.end() }
+        return completed
     }
     private static func export(_ src: URL, preset: String, type: AVFileType, ext: String, range: CMTimeRange? = nil) async -> URL? {
         await export(AVURLAsset(url: src), preset: preset, type: type, ext: ext, range: range)
@@ -344,6 +361,26 @@ func tenzyWriteGIF(frames: [CGImage], delay: Double) -> URL? {
 /// Imports a picked video into a stable temp file we can read frames from.
 struct MovieImport: Transferable {
     let url: URL
+
+    /// Loads a picked video with its real download/copy progress (0…1), giving up after a stall rather than
+    /// hanging: the limit restarts whenever progress moves, so a big video that keeps arriving is never cut off.
+    @MainActor static func load(_ item: PhotosPickerItem, progress: @escaping (Double) -> Void) async -> MovieImport? {
+        await withCheckedContinuation { (cont: CheckedContinuation<MovieImport?, Never>) in
+            var done = false
+            let p = item.loadTransferable(type: MovieImport.self) { r in
+                Task { @MainActor in if !done { done = true; cont.resume(returning: try? r.get()) } }
+            }
+            Task { @MainActor in
+                var last = -1.0, quiet = 0.0
+                while !done {
+                    let f = p.fractionCompleted
+                    if f != last { last = f; quiet = 0; progress(f) } else { quiet += 0.3 }
+                    if quiet > 120 { done = true; p.cancel(); cont.resume(returning: nil); return }   // two minutes with nothing arriving
+                    try? await Task.sleep(nanoseconds: 300_000_000)
+                }
+            }
+        }
+    }
     static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(contentType: .movie) { SentTransferredFile($0.url) } importing: { received in
             let copy = VideoEngine.tempURL("mov")
