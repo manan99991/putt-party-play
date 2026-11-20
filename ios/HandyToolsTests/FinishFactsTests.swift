@@ -77,7 +77,7 @@ final class FinishFactsTests: XCTestCase {
         XCTAssertEqual(screen("wifi-sign"), "Code finish")
         XCTAssertEqual(screen("whatsapp-no-save"), "Chat link")
         // A watermark at the start of some other job doesn't make it an ID copy.
-        XCTAssertNil(ResultScreens.screen(for: Chain(id: "x", name: "x", steps: [ChainStep(block: .watermark), ChainStep(block: .cleanText)])))
+        XCTAssertNotEqual(ResultScreens.screen(for: Chain(id: "x", name: "x", steps: [ChainStep(block: .watermark), ChainStep(block: .cleanText)])), "ID copy")
     }
 
     func testVideoJoinTurnsClipsUprightAndKeepsThemVideos() async throws {

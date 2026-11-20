@@ -606,7 +606,8 @@ enum Animate {
                 out = mix.clampedToExtent().applyingFilter("CITwirlDistortion", parameters: [kCIInputCenterKey: c,
                     kCIInputRadiusKey: max(size.width, size.height) * 0.75, kCIInputAngleKey: 2.6 * .pi * peak])
             case .pixelate:
-                let base = e < 0.5 ? A : B
+                let mixT = min(1, max(0, (e - 0.35) / 0.3))   // swap photos while they're in pixels
+                let base = A.applyingFilter("CIDissolveTransition", parameters: [kCIInputTargetImageKey: B, kCIInputTimeKey: mixT])
                 out = base.clampedToExtent().applyingFilter("CIPixellate", parameters: [kCIInputCenterKey: c, kCIInputScaleKey: max(1, w / 11 * peak)])
             default:   // whoosh
                 func zoomed(_ img: CIImage, _ s: CGFloat, _ blur: CGFloat) -> CIImage {

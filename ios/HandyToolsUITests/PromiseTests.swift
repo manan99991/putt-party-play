@@ -165,7 +165,10 @@ final class PromiseTests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any).matching(identifier: "protect-mark-text").firstMatch.exists, "watermark words box missing")
         make.tap()
         let noPrint = app.switches["protect-noprint"]
-        if noPrint.waitForExistence(timeout: 5) { noPrint.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap() }
+        XCTAssertTrue(noPrint.waitForExistence(timeout: 5), "no block-printing switch")
+        for _ in 0..<6 where !noPrint.isHittable { app.swipeUp() }
+        noPrint.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap()
+        XCTAssertEqual(noPrint.value as? String, "1", "block printing didn't switch on")
         let run = app.buttons["protect-run"]
         XCTAssertTrue(run.waitForExistence(timeout: 5)); XCTAssertTrue(run.isEnabled, "can't run with watermark + password")
         run.tap()

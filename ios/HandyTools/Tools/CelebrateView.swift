@@ -210,6 +210,9 @@ struct CelebrateView: View {
                                     }
                                     .onEnded { _ in pinchStart = nil })
                         )
+                        .accessibilityElement()
+                        .accessibilityLabel(caption.text)
+                        .accessibilityHint(L("Drag to move, pinch to resize"))
                         .accessibilityIdentifier("celebrate-caption")
                 }
             }
@@ -217,6 +220,7 @@ struct CelebrateView: View {
         .aspectRatio(aspect, contentMode: .fit)
         .frame(maxWidth: .infinity, maxHeight: 440)
         .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("celebrate-preview")
     }
 

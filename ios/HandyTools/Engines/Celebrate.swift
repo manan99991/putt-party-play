@@ -220,7 +220,7 @@ enum Celebrate {
               palette: rainbow, layers: [.fireworks(rainbow), .confetti(rainbow), .corners(["🎉", "🏆"])]),
         Theme(id: "holidays", name: "Happy Holidays", emoji: "❄️", greeting: "Happy Holidays", months: [12, 1],
               keywords: ["holidays", "happy holidays", "holiday season", "seasons greetings", "season's greetings", "winter", "snow"],
-              palette: [white, silver, 0x90CAF9], layers: [.glow(0x90CAF9), .snow, .sparkles([white, silver, 0x90CAF9])]),
+              palette: [white, silver, 0x90CAF9], layers: [.glow(0x90CAF9), .snow, .fall(["❄️"]), .sparkles([white, silver, 0x90CAF9])]),
         Theme(id: "autumn", name: "Autumn", emoji: "🍁", greeting: "Hello, Autumn", months: [9, 10, 11],
               keywords: ["autumn", "fall season", "fall leaves"],
               palette: [orange, 0x8D6E63], layers: [.glow(orange), .fall(["🍁", "🍂"])]),

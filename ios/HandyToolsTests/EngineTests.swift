@@ -1940,7 +1940,7 @@ final class EngineTests: XCTestCase {
     /// And the page curl turns like a book (the right edge lifts first).
     func testEveryAnimationHasRealInBetweenFramesAndTheCurlTurnsLikeABook() throws {
         let a = Self.solid(UIColor(red: 0.9, green: 0.15, blue: 0.15, alpha: 1), mark: "A")
-        let b = Self.solid(UIColor(red: 0.1, green: 0.25, blue: 0.95, alpha: 1), mark: "B")
+        let b = Self.solid(UIColor(red: 0.45, green: 0.75, blue: 1.0, alpha: 1), mark: "B")   // much brighter than A, so a blend shows
         func diff(_ x: UIImage, _ y: UIImage) -> Double {
             guard let p = x.cgImage, let q = y.cgImage else { return 0 }
             let gx = VideoJoin.gray(p), gy = VideoJoin.gray(q)
