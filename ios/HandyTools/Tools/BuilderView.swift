@@ -1633,6 +1633,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var started = false
     @State private var inputVideo: URL?
     @State private var scamChecked: String?
+    /// A video waiting for you to pick its part (tools that keep a stretch: stories, reels, first minute).
+    @State private var choosing: URL?
+    @State private var partRange: ClosedRange<Double>?
+    @State private var partStart: Double = 0
+    @State private var partEnd: Double = 0
+    @State private var partLength: Double = 0
+    @State private var partFrames: [UIImage] = []
     @State private var lastStepInput: ChainPayload?
     /// The job running now, so Stop can end it (no time limits — a long video takes its time, and you decide).
     @State private var runTask: Task<Void, Never>?
@@ -1692,8 +1699,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
 
     /// The tool as it runs this time: a meme step takes the words typed on this screen.
     private var runChain: Chain {
-        guard hasMeme || hasWatermark else { return chain }
+        guard hasMeme || hasWatermark || partRange != nil else { return chain }
         var c = chain
+        // The part of the video picked on this screen.
+        if let r = partRange, let i = c.steps.firstIndex(where: { $0.block == .videoTrim }) {
+            c.steps[i].settings["start"] = String(r.lowerBound); c.steps[i].settings["end"] = String(r.upperBound)
+        }
         for i in c.steps.indices where c.steps[i].block == .meme {
             c.steps[i].settings["top"] = memeTop; c.steps[i].settings["bottom"] = memeBottom
         }
@@ -1844,6 +1855,12 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                             .font(HandyFont.caption).padding(.horizontal, 12).padding(.vertical, 8)
                             .background(HandyColor.surfaceRaised, in: Capsule())
                             .accessibilityIdentifier("run-busy-note")
+                    }
+                }
+                if let v = choosing, !busy {
+                    PartPicker(url: v, frames: partFrames, length: partLength, maxSeconds: Double(chain.steps.first?.settings["secs"] ?? "") ?? partLength,
+                               start: $partStart, end: $partEnd) {
+                        partRange = partStart...partEnd; choosing = nil; go(.video(v))
                     }
                 }
                 if busy, start == .video, let v = inputVideo {
@@ -2043,6 +2060,17 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             runTask = Task {
                 // Shows how much of the video has come in (an iCloud video downloads first) instead of a bare wait.
                 let movie = await MovieImport.load(item) { f in Task { @MainActor in progressValue = f; progress = f > 0 ? "Getting the video ready — \(Int(f * 100))%" : "Getting the video ready…" } }
+                if let movie, chain.steps.first?.block == .videoTrim {
+                    // Keep-a-part tools: show the video and let you pick the stretch first.
+                    let d = await VideoEngine.duration(movie.url)
+                    let strip = await VideoEngine.filmstrip(movie.url)
+                    await MainActor.run {
+                        busy = false; progress = ""
+                        let w = ChainText.trimWindow(side: chain.steps.first?.settings["side"], secs: chain.steps.first?.settings["secs"], duration: d)
+                        partLength = d; partStart = w.start; partEnd = w.end; partFrames = strip; choosing = movie.url
+                    }
+                    return
+                }
                 await MainActor.run {
                     if let movie { go(.video(movie.url)) }
                     else { busy = false; progress = ""; message = "That video didn't load. If it's a large iCloud video, open it once in Photos to download it to this phone, then pick it again." }
@@ -2480,7 +2508,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             } else if chain.steps.last?.block == .voiceChange, ChainPayload.isAudio(ext) {
                 // Same finish as the voice picker: hear it, compare with your original, switch voice right here.
                 VoiceFinishCard(original: { if case .file(let o, let e)? = lastStepInput { return (o, e) }; return nil }(),
-                                voice: chain.steps.last?.settings["voice"] ?? "chipmunk", result: d)
+                                voice: chain.steps.last?.settings["voice"] ?? "chipmunk", result: d, video: inputVideo)
             } else if lext == "ics", let icsText = String(data: d, encoding: .utf8) {
                 CalendarEventResult(ics: icsText, shareURL: tempURL(d, ext))
             } else if lext == "vcf" {
@@ -2616,7 +2644,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     case .stopped: Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(HandyColor.amber)
                     }
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("\(line.block.title) — \(line.block.does)").font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
+                        // "Keep only the sound — keeps only the sound" said the same thing twice: show the line once.
+                        Text(line.block.does.lowercased().split(separator: " ").dropFirst() == line.block.title.lowercased().split(separator: " ").dropFirst() ? line.block.title : "\(line.block.title) — \(line.block.does)")
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
                         switch line.mark {
                         case .ran: EmptyView()
                         case .skipped: Text(L("Found nothing here, so it was skipped — the next steps still ran.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)

@@ -5649,6 +5649,16 @@
   "pt": "Não foi possível analisar este APK.",
   "zh": "无法解析此 APK。"
  },
+ "Couldn't put the voice on the video — the sound file is below.": {
+  "de": "Die Stimme ließ sich nicht aufs Video legen – die Tondatei ist unten.",
+  "es": "No se pudo poner la voz en el vídeo; el archivo de sonido está abajo.",
+  "fr": "Impossible d'ajouter la voix à la vidéo — le fichier son est ci-dessous.",
+  "hi": "आवाज़ वीडियो पर नहीं लग सकी — साउंड फ़ाइल नीचे है।",
+  "it": "Non è stato possibile mettere la voce sul video: il file audio è qui sotto.",
+  "ja": "声を動画に入れられませんでした。音声ファイルは下にあります。",
+  "pt": "Não foi possível pôr a voz no vídeo — o ficheiro de som está abaixo.",
+  "zh": "无法把声音放进视频，声音文件在下方。"
+ },
  "Couldn't read any text in that picture — try a clearer screenshot.": {
   "de": "Im Bild war kein Text lesbar – versuch einen klareren Screenshot.",
   "es": "No se pudo leer texto en esa imagen; prueba con una captura más nítida.",
@@ -11658,6 +11668,16 @@
   "ja": "音だけ",
   "pt": "Só o som",
   "zh": "只要声音"
+ },
+ "Just the sound (WAV)": {
+  "de": "Nur der Ton (WAV)",
+  "es": "Solo el sonido (WAV)",
+  "fr": "Le son seul (WAV)",
+  "hi": "सिर्फ़ आवाज़ (WAV)",
+  "it": "Solo l'audio (WAV)",
+  "ja": "音声だけ（WAV）",
+  "pt": "Só o som (WAV)",
+  "zh": "仅声音（WAV）"
  },
  "Just the two-minute start. Nothing else yet. Once you're up, the next step is waiting and it's small.": {
   "de": "Nur der Zwei-Minuten-Start. Sonst noch nichts. Wenn du auf bist, wartet ein kleiner nächster Schritt.",
@@ -18179,6 +18199,16 @@
   "pt": "Escolha a ÚNICA coisa mais importante hoje",
   "zh": "选出今天最重要的那一件事"
  },
+ "Pick the part to keep": {
+  "de": "Wähle den Teil, der bleiben soll",
+  "es": "Elige la parte que quieres conservar",
+  "fr": "Choisissez la partie à garder",
+  "hi": "रखने वाला हिस्सा चुनें",
+  "it": "Scegli la parte da tenere",
+  "ja": "残す部分を選ぶ",
+  "pt": "Escolha a parte a manter",
+  "zh": "选择要保留的部分"
+ },
  "Pick two different languages to translate.": {
   "de": "Wähle zwei verschiedene Sprachen zum Übersetzen.",
   "es": "Elige dos idiomas distintos para traducir.",
@@ -18508,6 +18538,16 @@
   "ja": "プレビューを再生してから保存・共有。変換前後のサイズが表示されます。",
   "pt": "Ouça a prévia e depois salve ou compartilhe. O tamanho antes e depois é mostrado.",
   "zh": "先试听，再保存或分享。会显示转换前后的大小。"
+ },
+ "Play this part": {
+  "de": "Diesen Teil abspielen",
+  "es": "Reproducir esta parte",
+  "fr": "Lire cette partie",
+  "hi": "यह हिस्सा चलाएँ",
+  "it": "Riproduci questa parte",
+  "ja": "この部分を再生",
+  "pt": "Reproduzir esta parte",
+  "zh": "播放这一段"
  },
  "Plays": {
   "de": "Durchläufe",
@@ -19238,6 +19278,16 @@
   "ja": "このツールをウィジェットの先頭に",
   "pt": "Pôr esta ferramenta em primeiro no widget",
   "zh": "把这个工具放到小组件第一位"
+ },
+ "Putting the new voice on your video…": {
+  "de": "Die neue Stimme kommt auf dein Video …",
+  "es": "Poniendo la nueva voz en tu vídeo…",
+  "fr": "Ajout de la nouvelle voix à votre vidéo…",
+  "hi": "नई आवाज़ आपके वीडियो पर लगाई जा रही है…",
+  "it": "Metto la nuova voce sul video…",
+  "ja": "新しい声を動画に入れています…",
+  "pt": "A colocar a nova voz no vídeo…",
+  "zh": "正在把新声音放进视频…"
  },
  "QR & Wi‑Fi": {
   "de": "QR & WLAN",
@@ -29449,6 +29499,16 @@
   "pt": "Usar isto como origem (ex.: cortar e depois reduzir)",
   "zh": "将此作为源文件使用（例如先裁剪再缩小）"
  },
+ "Use this part": {
+  "de": "Diesen Teil verwenden",
+  "es": "Usar esta parte",
+  "fr": "Utiliser cette partie",
+  "hi": "यह हिस्सा इस्तेमाल करें",
+  "it": "Usa questa parte",
+  "ja": "この部分を使う",
+  "pt": "Usar esta parte",
+  "zh": "使用这一段"
+ },
  "Use this room": {
   "de": "Diesen Raum nutzen",
   "es": "Usar esta habitación",
@@ -32669,6 +32729,16 @@
   "pt": "incl.",
   "zh": "含"
  },
+ "it will be shortened": {
+  "de": "es wird gekürzt",
+  "es": "se acortará",
+  "fr": "il sera raccourci",
+  "hi": "इसे छोटा किया जाएगा",
+  "it": "verrà accorciato",
+  "ja": "短くなります",
+  "pt": "será encurtado",
+  "zh": "会被缩短"
+ },
  "it's a long recording. Trim it first in Audio Edit to go smaller.": {
   "de": "es ist eine lange Aufnahme. Kürze sie zuerst im Audio-Editor.",
   "es": "es una grabación larga. Recórtala antes en el Editor de audio.",
@@ -32688,6 +32758,16 @@
   "ja": "件を追加しました（下で強調表示）。",
   "pt": "acabaram de entrar, destacados abaixo.",
   "zh": "条刚添加，已在下方高亮。"
+ },
+ "kept": {
+  "de": "behalten",
+  "es": "conservado",
+  "fr": "gardé",
+  "hi": "रखा गया",
+  "it": "tenuto",
+  "ja": "残す",
+  "pt": "mantido",
+  "zh": "保留"
  },
  "last day to return": {
   "de": "letzter Rückgabetag",
@@ -32728,6 +32808,16 @@
   "ja": "の長さ",
   "pt": "de duração",
   "zh": "长"
+ },
+ "longer than": {
+  "de": "länger als",
+  "es": "más largo que",
+  "fr": "plus long que",
+  "hi": "इससे लंबा",
+  "it": "più lungo di",
+  "ja": "より長い",
+  "pt": "mais longo que",
+  "zh": "超过"
  },
  "looking things up online": {
   "de": "Online-Suche",

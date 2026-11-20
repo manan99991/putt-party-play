@@ -9,6 +9,10 @@ struct VoiceFinishCard: View {
     let original: (data: Data, ext: String)?
     @State var voice: String
     @State var result: Data
+    /// When the voice came from a video: the video, so the result is that video with the new voice — not just a sound file.
+    var video: URL? = nil
+    @State private var videoOut: URL?
+    @State private var mixing = false
 
     @State private var busy: String?
     @State private var problem: String?
@@ -32,7 +36,10 @@ struct VoiceFinishCard: View {
                     if let line = ChainText.voiceLooks[voice]?.line { Text(L(line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 }
             }
-            if let u = resultURL { AudioResultPreview(url: u).id(result.count ^ voice.hashValue) }
+            if video != nil {
+                if let v = videoOut { VideoFinishCard(url: v).id(v) }
+                else if mixing { ToolProgressBar(label: "Putting the new voice on your video…", showsTime: false) }
+            } else if let u = resultURL { AudioResultPreview(url: u).id(result.count ^ voice.hashValue) }
             if original != nil {
                 Button { toggleOriginal() } label: {
                     Label(playingOriginal ? L("Stop") : L("Play my original"), systemImage: playingOriginal ? "stop.fill" : "waveform").frame(maxWidth: .infinity)
@@ -56,14 +63,18 @@ struct VoiceFinishCard: View {
             }
             if let problem { Text(L(problem)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let u = resultURL {
-                ShareLink(item: u) { Label(L("Share or save to Files"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                if video != nil {
+                    ShareLink(item: u) { Label(L("Just the sound (WAV)"), systemImage: "waveform").frame(maxWidth: .infinity) }.textButton()
+                } else {
+                    ShareLink(item: u) { Label(L("Share or save to Files"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                }
             }
             Text("\(SizeTarget.format(result.count)) · WAV").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
         .cardStyle(padding: HandySpacing.s12)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("voice-finish")
-        .onAppear { if resultURL == nil { writeResult() } }
+        .onAppear { if resultURL == nil { writeResult() }; remix() }
         .onDisappear { player?.stop() }
     }
 
@@ -81,8 +92,21 @@ struct VoiceFinishCard: View {
             let r = await ChainRunner.apply(ChainStep(block: .voiceChange, settings: ["voice": id]), to: .file(o.data, ext: o.ext))
             await MainActor.run {
                 busy = nil
-                if case .success(.file(let d, _)) = r { result = d; voice = id; writeResult() } else { problem = "That voice couldn't be made from this recording." }
+                if case .success(.file(let d, _)) = r { result = d; voice = id; writeResult(); remix() } else { problem = "That voice couldn't be made from this recording." }
             }
+        }
+    }
+
+    /// Lays the current voice over the video (when it came from one).
+    private func remix() {
+        guard let v = video else { return }
+        mixing = true; videoOut = nil
+        let d = result
+        Task {
+            let a = FileManager.default.temporaryDirectory.appendingPathComponent("voice-\(UUID().uuidString).wav")
+            try? d.write(to: a)
+            let out = await VideoEngine.replaceAudio(video: v, with: a)
+            await MainActor.run { mixing = false; videoOut = out; if out == nil { problem = "Couldn't put the voice on the video — the sound file is below." } }
         }
     }
 }

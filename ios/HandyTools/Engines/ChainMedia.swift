@@ -78,7 +78,9 @@ enum ChainMedia {
 
         case (.videoTrim, .video(let url)):
             let length = await VideoEngine.duration(url)
-            let keep = ChainText.trimWindow(side: step.settings["side"], secs: step.settings["secs"], duration: length)
+            // The part you picked on the run screen, else the tool's default (first/last N seconds).
+            let picked = Double(step.settings["start"] ?? "").flatMap { s in Double(step.settings["end"] ?? "").map { (start: max(0, s), end: min(length, $0)) } }
+            let keep = picked ?? ChainText.trimWindow(side: step.settings["side"], secs: step.settings["secs"], duration: length)
             guard keep.end > keep.start, let out = await VideoEngine.trim(url, start: keep.start, end: keep.end) else { return .failure(.failed(b)) }
             return .success(.video(out))
 
@@ -136,7 +138,8 @@ enum ChainMedia {
         case (.videoCaptions, .video(let url)):
             guard let sound = await VideoEngine.extractAudio(url) else { return .failure(.invalid("Add captions found no sound in that video.")) }
             defer { try? FileManager.default.removeItem(at: sound) }
-            switch await Transcriber.listen(to: sound) {
+            // Captions hear the same way as "Write out what was said": your languages, the surer one per stretch.
+            switch await Transcriber.listen(to: sound, detect: true) {
             case .failure(let p): return .failure(.invalid(p.words(for: b)))
             case .success(let heard):
                 let lines = ChainText.captionLines(heard.words)
@@ -598,24 +601,29 @@ enum Transcriber {
         defer { Task { @MainActor in RunProgress.shared.end() } }
 
         var parts: [String] = []
+        var allWords: [(text: String, start: Double, end: Double)] = []   // timed words, for captions
         let recogError = Flag()
         let listeners = [recognizer] + (also.map { [$0] } ?? [])
         while file.framePosition < total {
             if Task.isCancelled { break }
             // The same stretch goes to each language being listened in; the surer result is kept.
-            var reqs: [SFSpeechAudioBufferRecognitionRequest] = [], waits: [Once<(String, Double)>] = [], boxes: [Box] = []
+            typealias Said = (text: String, sure: Double, words: [(text: String, start: Double, end: Double)])
+            let offset = Double(file.framePosition) / fmt.sampleRate   // where this stretch starts in the recording
+            var reqs: [SFSpeechAudioBufferRecognitionRequest] = [], waits: [Once<Said>] = [], boxes: [Box] = []
             for r in listeners {
                 let req = SFSpeechAudioBufferRecognitionRequest()
                 req.requiresOnDeviceRecognition = true
                 req.shouldReportPartialResults = false
                 req.addsPunctuation = true
-                let once = Once<(String, Double)>(), box = Box()
+                let once = Once<Said>(), box = Box()
                 box.task = r.recognitionTask(with: req) { result, error in
                     if let result, result.isFinal {
                         let segs = result.bestTranscription.segments
                         let sure = segs.isEmpty ? 0 : segs.map { Double($0.confidence) }.reduce(0, +) / Double(segs.count)
-                        once.finish((result.bestTranscription.formattedString, sure))
-                    } else if error != nil { recogError.set(); once.finish(("", 0)) }
+                        // Each word's time in the whole recording — what captions are timed by.
+                        let words = segs.map { (text: $0.substring, start: offset + $0.timestamp, end: offset + $0.timestamp + max(0.2, $0.duration)) }
+                        once.finish((result.bestTranscription.formattedString, sure, words))
+                    } else if error != nil { recogError.set(); once.finish(("", 0, [])) }
                 }
                 reqs.append(req); waits.append(once); boxes.append(box)
             }
@@ -630,11 +638,12 @@ enum Transcriber {
             }
             for req in reqs { req.endAudio() }
             // A recogniser that never answers for a stretch just gives that stretch up; the job carries on.
-            for (box, once) in zip(boxes, waits) { DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish(("", 0)) } }
-            var heard: [(String, Double)] = []
+            for (box, once) in zip(boxes, waits) { DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish(("", 0, [])) } }
+            var heard: [Said] = []
             for once in waits { heard.append(await withCheckedContinuation { once.wait($0) }) }
-            let text = heard.filter { !$0.0.isEmpty }.max { $0.1 < $1.1 }?.0 ?? ""
-            if !text.isEmpty { parts.append(text) }
+            if let best = heard.filter({ !$0.text.isEmpty }).max(by: { $0.sure < $1.sure }) {
+                parts.append(best.text); allWords += best.words
+            }
             await MainActor.run { RunProgress.shared.set(fraction(file.framePosition, of: total)) }
             if read == 0 { break }   // nothing read — avoid an endless loop on a malformed file
         }
@@ -642,7 +651,7 @@ enum Transcriber {
         // Empty because the recogniser erred (model/Dictation not ready) is a different problem from a
         // recording that genuinely has no speech — report the right one so the message is honest.
         guard !joined.isEmpty else { return .failure(recogError.value ? .recognizerFailed : .nothing) }
-        return .success(Heard(text: joined, words: [], cantDo: cantDo))
+        return .success(Heard(text: joined, words: allWords, cantDo: cantDo))
     }
 }
 

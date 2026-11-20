@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import AVKit
 
 /// The trim bar people know from Photos: a row of frames from the clip with a yellow frame you drag from either
 /// end. The parts you're cutting are dimmed, the kept length is shown live, and each end can be nudged a tenth
@@ -117,5 +118,45 @@ extension VideoEngine {
             if let cg = try? gen.copyCGImage(at: CMTime(seconds: t, preferredTimescale: 600), actualTime: nil) { out.append(UIImage(cgImage: cg)) }
         }
         return out
+    }
+}
+
+/// Pick the part to keep before a keep-a-part tool runs (stories, reels, the first minute): the filmstrip with
+/// handles, the length kept against the most allowed, play just that part, then Use this part.
+struct PartPicker: View {
+    let url: URL
+    let frames: [UIImage]
+    let length: Double
+    let maxSeconds: Double
+    @Binding var start: Double
+    @Binding var end: Double
+    let use: () -> Void
+    @State private var player: AVPlayer?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            Label(L("Pick the part to keep"), systemImage: "scissors").font(HandyFont.bodyStrong)
+            if let player { VideoPlayer(player: player).frame(height: 220).clipShape(RoundedRectangle(cornerRadius: 12)) }
+            TrimStrip(frames: frames, duration: length, start: $start, end: $end).frame(height: 64)
+            let kept = end - start
+            Text("\(VideoFacts.clock(start)) – \(VideoFacts.clock(end)) · \(VideoFacts.clock(kept)) \(L("kept"))" + (kept > maxSeconds + 0.5 ? " · \(L("longer than")) \(VideoFacts.clock(maxSeconds)) — \(L("it will be shortened"))" : ""))
+                .font(HandyFont.caption).monospacedDigit().foregroundStyle(kept > maxSeconds + 0.5 ? HandyColor.amber : HandyColor.textSecondary)
+            HStack(spacing: HandySpacing.s8) {
+                Button { playPart() } label: { Label(L("Play this part"), systemImage: "play.fill").frame(maxWidth: .infinity) }.secondaryButton()
+                Button { player?.pause(); use() } label: { Label(L("Use this part"), systemImage: "checkmark").frame(maxWidth: .infinity) }.primaryButton()
+                    .accessibilityIdentifier("part-use")
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+        .onAppear { player = AVPlayer(url: url) }
+        .onChange(of: end) { _, v in if v - start > maxSeconds { start = max(0, v - maxSeconds) } }
+        .onChange(of: start) { _, v in if end - v > maxSeconds { end = min(length, v + maxSeconds) } }
+        .onDisappear { player?.pause() }
+    }
+
+    private func playPart() {
+        guard let player else { return }
+        player.currentItem?.forwardPlaybackEndTime = CMTime(seconds: end, preferredTimescale: 600)
+        player.seek(to: CMTime(seconds: start, preferredTimescale: 600)) { _ in player.play() }
     }
 }

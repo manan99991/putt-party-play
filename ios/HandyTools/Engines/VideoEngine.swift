@@ -255,6 +255,24 @@ enum VideoEngine {
         return await export(comp, preset: AVAssetExportPresetHighestQuality, type: .mp4, ext: "mp4")
     }
 
+    /// The video with its sound swapped for `audio` (a changed voice, say): the picture is copied as it is, the new
+    /// sound laid over it from the start, trimmed to the video's length.
+    static func replaceAudio(video src: URL, with audio: URL) async -> URL? {
+        let v = AVURLAsset(url: src), a = AVURLAsset(url: audio)
+        guard let vTrack = try? await v.loadTracks(withMediaType: .video).first,
+              let aTrack = try? await a.loadTracks(withMediaType: .audio).first,
+              let vDur = try? await v.load(.duration), let aDur = try? await a.load(.duration) else { return nil }
+        let comp = AVMutableComposition()
+        guard let cv = comp.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid),
+              let ca = comp.addMutableTrack(withMediaType: .audio, preferredTrackID: kCMPersistentTrackID_Invalid) else { return nil }
+        guard (try? cv.insertTimeRange(CMTimeRange(start: .zero, duration: vDur), of: vTrack, at: .zero)) != nil,
+              (try? ca.insertTimeRange(CMTimeRange(start: .zero, duration: CMTimeMinimum(vDur, aDur)), of: aTrack, at: .zero)) != nil else { return nil }
+        cv.preferredTransform = (try? await vTrack.load(.preferredTransform)) ?? .identity
+        // The new sound is WAV/PCM, which an MP4 can't carry as-is, so the export re-encodes the sound only where needed.
+        if let fast = await export(comp, preset: AVAssetExportPresetHighestQuality, type: .mp4, ext: "mp4") { return fast }
+        return await export(comp, preset: AVAssetExportPresetHighestQuality, type: .mov, ext: "mov")
+    }
+
     /// Audio only, as M4A (AAC). iOS has no built-in MP3 encoder; M4A plays everywhere.
     static func extractAudio(_ src: URL) async -> URL? {
         let asset = AVURLAsset(url: src)
@@ -279,7 +297,8 @@ enum VideoEngine {
         session.shouldOptimizeForNetworkUse = true
         session.metadata = []
         if let range { session.timeRange = range }
-        let seconds = range?.duration.seconds ?? ((try? await asset.load(.duration))?.seconds ?? 0)
+        let whole = (try? await asset.load(.duration))?.seconds ?? 0
+        let seconds = range?.duration.seconds ?? whole
         return await run(session, seconds: seconds) ? out : nil
     }
 

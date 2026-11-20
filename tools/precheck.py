@@ -77,7 +77,7 @@ if os.path.exists(shims):
 
 # 2. patterns that never compile
 pats = [
-    (r'(&&|\|\||\?\?)\s*(try\s+)?await\b', "`await` on the right of &&, || or ?? — move it into a `let` first"),
+    (r'(&&|\|\||\?\?)[\s(]*(try[?!]?\s+)?await\b', "`await` on the right of &&, || or ?? — move it into a `let` first"),
     (r'\bXCT(?:Unwrap|Assert\w*)\((?:try\s+)?await\b', "`await` inside an XCTest assertion (it's an autoclosure) — move it into a `let` first"),
 ]
 for f, s in clean.items():
