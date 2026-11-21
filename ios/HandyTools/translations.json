@@ -19737,7 +19737,7 @@
   "it": "Scegli uno strumento. Si spiega da solo.",
   "ja": "ツールを選んでください。使い方はその場で分かります。",
   "pt": "Escolhe uma ferramenta. Explica-se sozinha.",
-  "zh": "挑一个工具。它会自我说明。"
+  "zh": "挑一个工具，它会告诉你怎么用。"
  },
  "Pick a video or a photo. Add snow for Christmas, fireworks for New Year, diyas for Diwali, lanterns for Lunar New Year — or any celebration you type — and your own words.": {
   "de": "Wähle ein Video oder Foto. Schnee zu Weihnachten, Feuerwerk zu Neujahr, Diyas zu Diwali, Laternen zum Mondneujahr – oder jedes Fest, das du eintippst – und deine eigenen Worte.",
@@ -30723,7 +30723,7 @@
   "de": "Versuche „photo“, „pdf“, „scan“ oder „ai“.",
   "es": "Prueba «photo», «pdf», «scan» o «ai».",
   "fr": "Essayez « photo », « pdf », « scan » ou « ai ».",
-  "hi": "«photo», «pdf», «scan» या «ai» आज़माएं।",
+  "hi": "“photo”, “pdf”, “scan” या “ai” आज़माएं।",
   "it": "Prova «photo», «pdf», «scan» o «ai».",
   "ja": "「photo」「pdf」「scan」「ai」を試してください。",
   "pt": "Experimenta «photo», «pdf», «scan» ou «ai».",
@@ -33577,7 +33577,7 @@
   "it": "Sei Pro. Grazie.",
   "ja": "Proをご利用中。ありがとう。",
   "pt": "És Pro. Obrigado.",
-  "zh": "您已是 Pro。谢谢。"
+  "zh": "你已经是 Pro 了，谢谢！"
  },
  "You're already at your refill point — time to order more.": {
   "de": "Du bist schon beim Nachfüllpunkt – Zeit, neue zu besorgen.",
