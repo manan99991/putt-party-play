@@ -110,7 +110,7 @@ enum FileKind: String {
 
     static func of(ext raw: String) -> FileKind {
         let e = raw.lowercased()
-        if ["pdf", "doc", "docx", "pages", "rtf", "key", "keynote", "ppt", "pptx", "xls", "xlsx", "numbers", "epub", "odt", "mobi", "azw", "azw3", "fb2", "prc", "pdb", "eml", "emlx", "xps", "oxps", "cbz", "cbr", "docm", "dotx", "xlsm", "xltx", "pptm", "potx", "ppsx"].contains(e) { return .document }
+        if ["pdf", "doc", "docx", "pages", "rtf", "key", "keynote", "ppt", "pptx", "xls", "xlsx", "numbers", "epub", "odt", "mobi", "azw", "azw3", "fb2", "prc", "pdb", "eml", "emlx", "msg", "oft", "dat", "tnef", "xps", "oxps", "cbz", "cbr", "docm", "dotx", "xlsm", "xltx", "pptm", "potx", "ppsx"].contains(e) { return .document }
         if ["jpg", "jpeg", "png", "gif", "heic", "heif", "webp", "tiff", "bmp", "svg", "raw", "dng", "cr2", "nef", "arw"].contains(e) { return .image }
         if ["mp4", "mov", "m4v", "avi", "mkv", "webm", "hevc", "3gp"].contains(e) { return .video }
         if ["mp3", "m4a", "wav", "aac", "flac", "aiff", "ogg", "caf"].contains(e) { return .audio }

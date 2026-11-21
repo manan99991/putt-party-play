@@ -100,7 +100,7 @@ targets:
           - CFBundleTypeName: Email
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
-            LSItemContentTypes: [com.apple.mail.email, com.tenzy.emlx, com.tenzy.msg]
+            LSItemContentTypes: [com.apple.mail.email, com.tenzy.emlx, com.tenzy.msg, com.tenzy.tnef]
           - CFBundleTypeName: Code and data
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
@@ -158,7 +158,13 @@ targets:
             UTTypeDescription: Outlook message
             UTTypeConformsTo: [public.data]
             UTTypeTagSpecification:
-              public.filename-extension: [msg]
+              public.filename-extension: [msg, oft]
+          - UTTypeIdentifier: com.tenzy.tnef
+            UTTypeDescription: Outlook attachments (winmail.dat)
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [tnef]
+              public.mime-type: [application/ms-tnef, application/vnd.ms-tnef]
           - UTTypeIdentifier: com.tenzy.tsv
             UTTypeDescription: Delimited table
             UTTypeConformsTo: [public.plain-text]

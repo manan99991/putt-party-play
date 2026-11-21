@@ -75,6 +75,10 @@ enum FileReaders {
             }
         }
         if ext == "eml" || ext == "emlx" || ext == "mht" || ext == "mhtml", let e = email(url) { return .email(e) }
+        // Outlook's own files: a saved message (.msg / .oft) and the winmail.dat it sends instead of attachments.
+        if ext == "msg" || ext == "oft" || head.starts(with: OfficeMail.Compound.magic) && ext.isEmpty,
+           let d = try? Data(contentsOf: url), let e = OfficeMail.msg(d) { return .email(e) }
+        if ext == "dat" || ext == "tnef" || head.starts(with: OfficeMail.tnefMagic), let d = try? Data(contentsOf: url), let e = OfficeMail.tnef(d) { return .email(e) }
         if tableExts.contains(ext), let t = textOf(url) { let rows = table(t, ext: ext); return .table(rows, note: rows.count > 2000 ? "Showing the first 2,000 rows." : nil) }
         if ["db", "sqlite", "sqlite3", "db3"].contains(ext) || head.starts(with: Array("SQLite format 3".utf8)), let d = sqlite(url) { return .database(d) }
         if ["pbm", "pgm", "ppm", "pnm", "pam"].contains(ext), let img = netpbm(url) { return .image(img) }
