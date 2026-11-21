@@ -314,3 +314,25 @@ final class GuideMenuReceiptTests: XCTestCase {
         XCTAssertFalse(e.notes.lowercased().contains("shutterstock"))
     }
 }
+
+/// "PDF under 5 MB (mine)", "… copy", "… copy copy" were all offered side by side (20 Nov). The same tool saved
+/// several times — or copied from a ready-made one — is offered once, in the guide and the Share sheet.
+final class SameToolOnceTests: XCTestCase {
+    @MainActor func testCopiesOfOneToolAreOfferedOnce() throws {
+        let base = try XCTUnwrap(ChainTemplates.all.first { $0.id == "pdf-email" })
+        var mine = base; mine.id = "mine-1"; mine.name = "PDF under 5 MB for email (mine)"
+        var copy = mine; copy.id = "mine-2"; copy.name = mine.name + " copy"
+        var copy2 = copy; copy2.id = "mine-3"; copy2.name = copy.name + " copy"
+        var different = mine; different.id = "mine-4"; different.steps[0].settings["mb"] = "2"
+
+        let offered = ChainStore.offers(for: .pdf, mine: [mine, copy, copy2, different], last: nil)
+        let names = offered.map(\.name)
+        XCTAssertEqual(names.filter { $0.hasPrefix("PDF under 5 MB for email (mine)") }.count, 2, "copies offered again: \(names)")
+        XCTAssertFalse(offered.contains { $0.id == "pdf-email" }, "the ready-made it was copied from is offered too")
+        XCTAssertTrue(offered.contains { $0.id == "mine-4" }, "a tool with different settings is a different tool")
+
+        let sorted = Guide.sort(kind: .pdf, count: 1, tools: [], chains: [mine, copy, copy2] + ChainTemplates.all, voices: false)
+        let chains = sorted.flatMap(\.options).compactMap { o -> String? in if case .chain(let c) = o { return c.id }; return nil }
+        XCTAssertEqual(chains.filter { ["mine-1", "mine-2", "mine-3", "pdf-email"].contains($0) }, ["mine-1"])
+    }
+}

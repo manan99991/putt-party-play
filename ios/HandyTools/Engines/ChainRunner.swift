@@ -1045,7 +1045,7 @@ enum ChainStore {
         var all = (mine + ChainTemplates.all).filter { $0.problem(starting: kind) == nil && $0.unavailable == nil }
         if kind == .text, let text { all = all.filter { fitsText($0, text) } }
         if let last, let i = all.firstIndex(where: { $0.id == last }) { all.insert(all.remove(at: i), at: 0) }
-        return all
+        return ChainSame.unique(all)   // the same tool saved twice (or copied from a ready-made) is offered once
     }
 
     /// A link/phone/page tool fits a piece of text only when that text really contains a link, number or URL.
@@ -1896,5 +1896,22 @@ enum ToolLink {
         while b64.count % 4 != 0 { b64 += "=" }
         guard let d = Data(base64Encoded: b64), let json = String(data: d, encoding: .utf8) else { return nil }
         return Chain.imported(from: Chain.prefix + json)
+    }
+}
+
+/// Two tools that do exactly the same thing — same steps, same settings, same ending — are one choice, whatever
+/// they're called ("PDF under 5 MB (mine)", "… copy", "… copy copy", and the ready-made it was copied from). Every
+/// list that offers tools (the guide after a pick, the Share sheet, search) shows each job once, keeping the first:
+/// the person's own tool before a ready-made one.
+enum ChainSame {
+    static func key(_ c: Chain) -> String {
+        var n = c
+        n.id = ""; n.name = ""; n.blurb = nil; n.fileName = nil; n.schedule = nil; n.watch = nil
+        let enc = JSONEncoder(); enc.outputFormatting = .sortedKeys
+        return (try? enc.encode(n)).map { String(decoding: $0, as: UTF8.self) } ?? c.id
+    }
+    static func unique(_ chains: [Chain]) -> [Chain] {
+        var seen = Set<String>()
+        return chains.filter { seen.insert(key($0)).inserted }
     }
 }

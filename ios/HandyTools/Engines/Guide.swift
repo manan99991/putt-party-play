@@ -200,7 +200,7 @@ enum Guide {
         var by: [String: [Option]] = [:]
         for t in tools { by[goal(ofTool: t, kind: kind, count: count), default: []].append(.tool(t)) }
         if voices { by["voice", default: []].append(.voices) }
-        for c in chains {
+        for c in ChainSame.unique(chains) {
             if let t = coveredBy[c.id], tools.contains(t), ChainTemplates.all.contains(where: { $0.id == c.id }) { continue }
             // Several-photo flows need several photos.
             if count < 2, c.collage == true || c.gif == true || c.flipbook == true || c.versus == true { continue }
