@@ -61,3 +61,15 @@ final class ReceiptDateOCRTests: XCTestCase {
         XCTAssertNotNil(r.date, "no date read from 0B/11/2022")
     }
 }
+
+/// A poster set the day and time between bullets and icons ("WHEN× © 9PM • 12 MARCH") and came back with no date.
+final class PosterDateTests: XCTestCase {
+    func testDayAndTimeBetweenBulletsAreRead() {
+        let now = Calendar.current.date(from: DateComponents(year: 2026, month: 1, day: 5))!
+        let e = DataGrab.event("UPCOMING\nEVENTS\nWHERE\nTHE OLD LIBRARY\nWHEN× © 9PM • 12 MARCH\nTICKETS WWW.EXAMPLE.COM", now: now)
+        let c = e.start.map { Calendar.current.dateComponents([.month, .day, .hour], from: $0) }
+        XCTAssertEqual(c?.month, 3, "\(String(describing: e.start))")
+        XCTAssertEqual(c?.day, 12)
+        XCTAssertEqual(c?.hour, 21)
+    }
+}

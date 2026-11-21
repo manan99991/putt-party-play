@@ -381,7 +381,9 @@ enum DataGrab {
         var e = Event()
         // Stock watermarks are read in pieces ("utterstoc", "hutterstock") stuck to real words: cut them out.
         let lines = text.split(whereSeparator: \.isNewline).map { stripWatermark(String($0)).trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty && !isWatermark($0) }
-        let flat = lines.map { columns($0).joined(separator: " ") }
+        // Posters set the day and time between bullets and icons ("WHEN× © 9PM • 12 MARCH"): read them as spaces.
+        let flat = lines.map { columns($0).joined(separator: " ").replacingOccurrences(of: #"[•·×©®™|◆●▪︎★☆]+"#, with: " ", options: .regularExpression)
+            .replacingOccurrences(of: #"\s{2,}"#, with: " ", options: .regularExpression) }
         let cal = Calendar.current
         let hasYear = text.range(of: #"\b(19|20)\d{2}\b"#, options: .regularExpression) != nil
 
