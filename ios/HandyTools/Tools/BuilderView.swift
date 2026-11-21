@@ -880,7 +880,7 @@ struct BuilderView: View {
             }
             if gettingReady {
                 HStack(spacing: HandySpacing.s8) {
-                    ProgressView()
+                    BusySpinner()
                     Text(L("Got it — getting your file ready. A large or iCloud video can take a moment.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

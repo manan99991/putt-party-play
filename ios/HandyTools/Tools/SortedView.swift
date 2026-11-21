@@ -36,7 +36,7 @@ struct SortedView: View {
             if busy { ToolProgressBar(label: "Reading it…") }
 
             if hasText {
-                Button { run() } label: { HStack { if working { ProgressView().tint(.white) }; Label(working ? "Thinking…" : "Make sense of it", systemImage: "wand.and.stars") }.frame(maxWidth: .infinity) }
+                Button { run() } label: { HStack { if working { BusySpinner().tint(.white) }; Label(working ? "Thinking…" : "Make sense of it", systemImage: "wand.and.stars") }.frame(maxWidth: .infinity) }
                     .primaryButton().disabled(working)
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }

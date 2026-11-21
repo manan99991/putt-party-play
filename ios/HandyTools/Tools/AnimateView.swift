@@ -147,7 +147,7 @@ struct AnimateView: View {
                     Image(uiImage: still).resizable().scaledToFit()
                 }
                 if previewing {
-                    ProgressView().tint(.white).padding(8)
+                    BusySpinner().tint(.white).padding(8)
                         .background(.black.opacity(0.4), in: Circle())
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing).padding(8)
                 }

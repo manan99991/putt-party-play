@@ -68,7 +68,7 @@ struct CaptureView: View {
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
 
-            if busy { HStack { ProgressView(); Text(L("Reading…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack { BusySpinner(); Text(L("Reading…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let grab { result(grab) }
         }
@@ -98,7 +98,7 @@ struct CaptureView: View {
                 HStack(spacing: HandySpacing.s8) {
                     ShareLink(item: g.text) { Label(L("Share"), systemImage: "square.and.arrow.up") }.compactButton()
                     if AIEngine.isAvailable {
-                        Button { ask(g.text) } label: { HStack { if aiBusy { ProgressView() }; Label(L("What does this mean?"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
+                        Button { ask(g.text) } label: { HStack { if aiBusy { BusySpinner() }; Label(L("What does this mean?"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
                     }
                     Spacer()
                 }

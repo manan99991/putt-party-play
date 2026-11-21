@@ -32,7 +32,7 @@ struct ShieldView: View {
                     Spacer()
                 }
             }
-            Button { analyze() } label: { HStack { if busy { ProgressView().tint(.white) }; Label(L("Check it"), systemImage: "shield.lefthalf.filled") }.frame(maxWidth: .infinity) }
+            Button { analyze() } label: { HStack { if busy { BusySpinner().tint(.white) }; Label(L("Check it"), systemImage: "shield.lefthalf.filled") }.frame(maxWidth: .infinity) }
                 .primaryButton().disabled(text.trimmingCharacters(in: .whitespaces).isEmpty || busy)
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let r = report { ScamVerdictCard(text: checked, report: r).id(checked) }
@@ -173,7 +173,7 @@ struct ScamVerdictCard: View {
             ForEach(adviceList(r), id: \.self) { a in HStack(alignment: .top, spacing: 6) { Text(L("•")); Text(a) }.font(HandyFont.body) }
             if AIEngine.isAvailable {
                 if aiOpinion.isEmpty {
-                    Button { secondOpinion() } label: { HStack { if aiBusy { ProgressView() }; Label(L("Second opinion (on-device AI)"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
+                    Button { secondOpinion() } label: { HStack { if aiBusy { BusySpinner() }; Label(L("Second opinion (on-device AI)"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
                 } else {
                     Text(aiOpinion).font(HandyFont.body).padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
                         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))

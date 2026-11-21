@@ -43,7 +43,7 @@ struct DailyBriefView: View {
 
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
                 Text(L("Today")).font(HandyFont.cardTitle)
-                if loading { HStack { ProgressView(); Text(L("Gathering your day…")).font(HandyFont.caption) } }
+                if loading { HStack { BusySpinner(); Text(L("Gathering your day…")).font(HandyFont.caption) } }
                 else if lines.isEmpty {
                     Text(L("Nothing pressing today. Enjoy it.")).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
                 } else {

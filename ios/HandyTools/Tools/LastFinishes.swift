@@ -105,7 +105,7 @@ struct StillFinishCard: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity).frame(maxHeight: 380)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(alignment: .topTrailing) { if loading { ProgressView().padding(8) } }
+                .overlay(alignment: .topTrailing) { if loading { BusySpinner().padding(8) } }
             if video != nil, length > 0 {
                 Text("\(L("Pick another moment")) · \(VideoFacts.clock(at))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).monospacedDigit()
                 Slider(value: $at, in: 0...max(0.1, length - 0.05)) { editing in if !editing { grab() } }

@@ -89,7 +89,7 @@ struct StickerMakerView: View {
             ZStack {
                 Checkerboard().clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 if let p = preview { Image(uiImage: p).resizable().scaledToFit().padding(HandySpacing.s12) }
-                else { ProgressView() }
+                else { BusySpinner() }
             }
             .frame(maxWidth: .infinity).frame(height: 320)
 
@@ -117,7 +117,7 @@ struct StickerMakerView: View {
                             VStack(spacing: 4) {
                                 ZStack {
                                     Checkerboard()
-                                    if let t = thumbs[p.id] { Image(uiImage: t).resizable().scaledToFit().padding(6) } else { ProgressView() }
+                                    if let t = thumbs[p.id] { Image(uiImage: t).resizable().scaledToFit().padding(6) } else { BusySpinner() }
                                 }
                                 .frame(width: 92, height: 92)
                                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))

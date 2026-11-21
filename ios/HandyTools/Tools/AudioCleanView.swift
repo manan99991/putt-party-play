@@ -82,7 +82,7 @@ struct AudioCleanView: View {
                 options
             } else if errorText == nil {
                 HStack(spacing: HandySpacing.s8) {
-                    ProgressView()
+                    BusySpinner()
                     Text(L("Reading the clip…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }.frame(maxWidth: .infinity, alignment: .leading)
             }

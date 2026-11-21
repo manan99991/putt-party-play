@@ -30,7 +30,7 @@ struct StitchView: View {
                 "Save it to Photos, share it, or send it as a PDF cut into pages.",
             ])
             Button { useLatest() } label: {
-                HStack { if finding { ProgressView().tint(.white) }; Label(L("Use the screenshots I just took"), systemImage: "sparkles.rectangle.stack") }.frame(maxWidth: .infinity)
+                HStack { if finding { BusySpinner().tint(.white) }; Label(L("Use the screenshots I just took"), systemImage: "sparkles.rectangle.stack") }.frame(maxWidth: .infinity)
             }
             .primaryButton().disabled(finding).accessibilityIdentifier("stitch-latest")
             PhotosPicker(selection: $items, maxSelectionCount: 12, matching: .screenshots) {
@@ -72,7 +72,7 @@ struct StitchView: View {
                 if overQuota { LimitReachedBanner(message: "You've stitched today's \(Limits.freeStitchPerDay) free screenshots.") }
 
                 Button { run() } label: {
-                    HStack { if working { ProgressView().tint(.white) }; Text(working ? "Stitching…" : "Stitch into one image") }.frame(maxWidth: .infinity)
+                    HStack { if working { BusySpinner().tint(.white) }; Text(working ? "Stitching…" : "Stitch into one image") }.frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working || overQuota || shots.count < 2)
                 if working { ToolProgressBar(label: "Stitching your screenshots into one tall image…") }
             }
@@ -115,7 +115,7 @@ struct StitchView: View {
                         HandyHaptics.success()
                     }
                 } label: {
-                    HStack { if hiding { ProgressView() }; Label(L("Hide faces and numbers before sharing"), systemImage: "eye.slash") }.frame(maxWidth: .infinity)
+                    HStack { if hiding { BusySpinner() }; Label(L("Hide faces and numbers before sharing"), systemImage: "eye.slash") }.frame(maxWidth: .infinity)
                 }.secondaryButton().disabled(hiding || hiddenCount != nil).accessibilityIdentifier("stitch-hide")
                 if let hiddenCount {
                     Text(hiddenCount == 0 ? L("No faces or personal numbers found.") : "\(L("Hid")) \(hiddenCount) \(L(hiddenCount == 1 ? "face or number" : "faces and numbers")). \(L("Names written as words aren't hidden — check before you share."))")

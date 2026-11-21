@@ -76,7 +76,7 @@ struct VideoFinishCard: View {
             if let f = facts {
                 VStack(alignment: .leading, spacing: HandySpacing.s8) { rows(f) }
             } else {
-                ProgressView().frame(maxWidth: .infinity)
+                BusySpinner().frame(maxWidth: .infinity)
             }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
             ShareLink(item: url) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()

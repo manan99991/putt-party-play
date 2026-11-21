@@ -269,3 +269,22 @@ private struct OutputThumb: View {
         }.value
     }
 }
+
+/// The spinner for work whose length can't be measured, used everywhere a tool works: after two seconds it shows a
+/// running clock beside it ("0:07"), so a slow job never looks frozen. Quick jobs look exactly as before.
+struct BusySpinner: View {
+    @State private var started = Date()
+    var body: some View {
+        HStack(spacing: 6) {
+            ProgressView()
+            TimelineView(.periodic(from: started, by: 1)) { ctx in
+                let s = Int(ctx.date.timeIntervalSince(started))
+                if s >= 2 {
+                    Text(String(format: "%d:%02d", s / 60, s % 60)).font(.system(size: 12, weight: .semibold)).monospacedDigit()
+                        .accessibilityLabel(Text("\(s) seconds"))
+                }
+            }
+        }
+        .onAppear { started = Date() }
+    }
+}

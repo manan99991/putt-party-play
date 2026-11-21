@@ -164,7 +164,7 @@ struct ThinkingToolView: View {
                     if tool.usesModel && !store.isPremium { QuotaChip(name: "ai", limit: Limits.freeAiPerDay).environmentObject(store) }
                     if tool.usesModel && overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeAiPerDay) free AI actions.") }
                     Button { run() } label: {
-                        HStack { if working { ProgressView().tint(.white) }; Label(working ? "Thinking…" : "Think it through", systemImage: "sparkles") }.frame(maxWidth: .infinity)
+                        HStack { if working { BusySpinner().tint(.white) }; Label(working ? "Thinking…" : "Think it through", systemImage: "sparkles") }.frame(maxWidth: .infinity)
                     }.primaryButton().disabled(working || trimmed.isEmpty || (tool.usesModel && overQuota))
                 }
                 if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }

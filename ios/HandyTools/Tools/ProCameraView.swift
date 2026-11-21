@@ -271,7 +271,7 @@ struct ProCameraView: View {
             ZStack {
                 Circle().stroke(HandyColor.textPrimary, lineWidth: 3).frame(width: 58, height: 58)
                 Circle().fill(panel == .long ? HandyColor.accent : HandyColor.danger).frame(width: 46, height: 46)
-                if shooting || cam.saving { ProgressView().tint(.white) }
+                if shooting || cam.saving { BusySpinner().tint(.white) }
             }
         }.buttonStyle(.plain).disabled(shooting || cam.saving || cam.accumulating || cam.latest == nil)
         .accessibilityLabel(panel == .long ? "Start long exposure" : "Take photo")
@@ -362,7 +362,7 @@ struct ProCameraView: View {
     private var bestButton: some View {
         Button { panel == .long ? startLong() : shoot() } label: {
             HStack(spacing: 10) {
-                if shooting || cam.saving { ProgressView().tint(.white) } else { Image(systemName: panel == .long ? "drop.fill" : "camera.aperture") }
+                if shooting || cam.saving { BusySpinner().tint(.white) } else { Image(systemName: panel == .long ? "drop.fill" : "camera.aperture") }
                 Text(bestLabel).font(.system(size: 17, weight: .semibold))
             }
             .frame(maxWidth: .infinity, minHeight: 56)

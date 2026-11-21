@@ -40,7 +40,7 @@ struct MemoryView: View {
                 if index.indexing { indexingCard }
                 else if index.entries.isEmpty { emptyIndexCard }
 
-                if answering { HStack { ProgressView(); Text(L("Looking through your photos…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+                if answering { HStack { BusySpinner(); Text(L("Looking through your photos…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
                 if let aiAnswer, !aiAnswer.isEmpty {
                     answerCard(aiAnswer)
                     if !results.isEmpty { Text(L("Pulled from your photos below — tap any to open the original.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
@@ -92,7 +92,7 @@ struct MemoryView: View {
 
     private var indexingCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            HStack { ProgressView(); Text(index.total > 0 ? "Building your photo index — \(index.done) of \(index.total)" : "Building your photo index…").font(HandyFont.body) }
+            HStack { BusySpinner(); Text(index.total > 0 ? "Building your photo index — \(index.done) of \(index.total)" : "Building your photo index…").font(HandyFont.body) }
             ProgressView(value: index.progress).tint(HandyColor.accent)
             Text(L("One-time, on your phone. You can search what's ready now — next time it's instant.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.cardStyle()
@@ -214,7 +214,7 @@ private struct MemoryImageViewer: View {
                             .clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                             .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
                     } else if loading {
-                        ProgressView().frame(maxWidth: .infinity, minHeight: 240)
+                        BusySpinner().frame(maxWidth: .infinity, minHeight: 240)
                     } else {
                         VStack(spacing: HandySpacing.s8) {
                             Image(systemName: "photo.badge.exclamationmark").font(.system(size: 32)).foregroundStyle(HandyColor.textSecondary)

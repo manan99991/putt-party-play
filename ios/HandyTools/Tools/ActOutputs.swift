@@ -329,7 +329,7 @@ struct RemindersResult: View {
             if let status { Text(status).font(HandyFont.caption).foregroundStyle(status.hasPrefix("Couldn't") ? HandyColor.amber : HandyColor.success) }
 
             Button { add() } label: {
-                HStack { if busy { ProgressView().tint(.white) }; Label(L("Add to Reminders"), systemImage: "checklist") }.frame(maxWidth: .infinity)
+                HStack { if busy { BusySpinner().tint(.white) }; Label(L("Add to Reminders"), systemImage: "checklist") }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(busy || titles.isEmpty)
             CopyButton(text: planText)
         }

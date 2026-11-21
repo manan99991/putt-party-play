@@ -62,7 +62,7 @@ struct SceneDescriberView: View {
             }
 
             Button { describeNow() } label: {
-                HStack { if busy { ProgressView().tint(.white) }; Label(busy ? "Looking…" : "Describe what's in front of me", systemImage: "eye.fill") }.frame(maxWidth: .infinity)
+                HStack { if busy { BusySpinner().tint(.white) }; Label(busy ? "Looking…" : "Describe what's in front of me", systemImage: "eye.fill") }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(busy || cam.latest == nil)
             .accessibilityHint(L("Speaks a description of the camera view"))
 

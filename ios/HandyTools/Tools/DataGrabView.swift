@@ -43,7 +43,7 @@ struct DataGrabView: View {
                 }
                 if AIEngine.isAvailable {
                     if aiText.isEmpty {
-                        Button { refine() } label: { HStack { if aiBusy { ProgressView() }; Label(L("Tidy with on-device AI"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
+                        Button { refine() } label: { HStack { if aiBusy { BusySpinner() }; Label(L("Tidy with on-device AI"), systemImage: "sparkles") } }.compactButton().disabled(aiBusy)
                     } else {
                         Text(aiText).font(.system(.body, design: .monospaced)).textSelection(.enabled).padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
                             .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))

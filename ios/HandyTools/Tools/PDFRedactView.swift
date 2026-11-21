@@ -75,7 +75,7 @@ struct PDFRedactView: View {
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
             Button { findForMe() } label: {
-                HStack { if finding { ProgressView() }; Label(L("Find personal details for me"), systemImage: "sparkle.magnifyingglass") }.frame(maxWidth: .infinity)
+                HStack { if finding { BusySpinner() }; Label(L("Find personal details for me"), systemImage: "sparkle.magnifyingglass") }.frame(maxWidth: .infinity)
             }.secondaryButton().disabled(finding).accessibilityIdentifier("redact-find")
             if let foundNote { Text(L(foundNote)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
             Button { runRedact() } label: {
@@ -157,7 +157,7 @@ struct PDFRedactView: View {
                           systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.danger).frame(maxWidth: .infinity, alignment: .leading)
                 }
             } else {
-                HStack(spacing: 6) { ProgressView(); Text(L("Checking the hidden words are really gone…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                HStack(spacing: 6) { BusySpinner(); Text(L("Checking the hidden words are really gone…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             }
             ShareLink(item: PDFFile(data: out), preview: SharePreview(L("Redacted PDF"))) {
                 Label(L("Save or share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity)

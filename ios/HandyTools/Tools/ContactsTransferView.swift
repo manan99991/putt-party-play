@@ -44,7 +44,7 @@ struct ContactsTransferView: View {
             }
             Section {
                 Button { move ? (confirmMove = true) : run() } label: {
-                    HStack { if busy { ProgressView() }; Text(label).frame(maxWidth: .infinity) }
+                    HStack { if busy { BusySpinner() }; Text(label).frame(maxWidth: .infinity) }
                 }.primaryButton().disabled(!ready).listRowInsets(EdgeInsets()).listRowBackground(Color.clear)
                 if busy { ProgressView(value: progress) }
                 Button { pickFile = true } label: { Label(L("Or add contacts from a .vcf file"), systemImage: "doc.badge.plus") }

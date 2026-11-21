@@ -271,7 +271,7 @@ struct VideoView: View {
             if !store.isPremium { QuotaChip(name: "video", limit: Limits.freeVideoPerDay).environmentObject(store) }
             if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeVideoPerDay) free video jobs.") }
             Button { runPhotoGIF() } label: {
-                HStack { if working { ProgressView().tint(.white) }; Text(working ? "Making GIF…" : "Make GIF from \(gifPhotos.count) photos") }.frame(maxWidth: .infinity)
+                HStack { if working { BusySpinner().tint(.white) }; Text(working ? "Making GIF…" : "Make GIF from \(gifPhotos.count) photos") }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(working || overQuota)
         }
         .cardStyle(padding: HandySpacing.s12)

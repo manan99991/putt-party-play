@@ -105,7 +105,7 @@ struct SignPDFView: View {
                 }
                 if let sig = signature {
                     Button { signWhereAsked(sig) } label: {
-                        HStack { if finding { ProgressView() }; Label(L("Sign where it asks — every page"), systemImage: "wand.and.stars") }.frame(maxWidth: .infinity)
+                        HStack { if finding { BusySpinner() }; Label(L("Sign where it asks — every page"), systemImage: "wand.and.stars") }.frame(maxWidth: .infinity)
                     }.secondaryButton().disabled(finding).accessibilityIdentifier("sign-auto")
                 }
                 if let spotNote { Text(L(spotNote)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }

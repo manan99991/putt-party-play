@@ -58,7 +58,7 @@ struct TextStudioView: View {
             } else {
                 if !store.isPremium && (action.needsAI || AIEngine.isAvailable) { QuotaChip(name: "ai", limit: Limits.freeAiPerDay).environmentObject(store) }
                 if overQuota && action.needsAI { LimitReachedBanner(message: "You've used today's \(Limits.freeAiPerDay) free AI actions.") }
-                Button { run() } label: { HStack { if working { ProgressView().tint(.white) }; Label(working ? "Working…" : label, systemImage: action.icon) }.frame(maxWidth: .infinity) }
+                Button { run() } label: { HStack { if working { BusySpinner().tint(.white) }; Label(working ? "Working…" : label, systemImage: action.icon) }.frame(maxWidth: .infinity) }
                     .primaryButton().disabled(working || text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || (overQuota && action.needsAI))
             }
             if let errorText { Text(errorText).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }

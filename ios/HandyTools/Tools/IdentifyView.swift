@@ -25,7 +25,7 @@ struct IdentifyView: View {
                 Button { showCamera = true } label: { Label(L("Photograph"), systemImage: "camera.fill").frame(maxWidth: .infinity) }.primaryButton()
                 PhotosPicker(selection: $pickerItem, matching: .images) { Label(L("From Photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.secondaryButton()
             }
-            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text(L("Looking…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack(spacing: HandySpacing.s8) { BusySpinner(); Text(L("Looking…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
             if let image, outcome?.paper == nil {
                 Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 240)

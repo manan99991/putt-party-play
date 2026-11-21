@@ -127,7 +127,7 @@ struct ScrubView: View {
                     Rectangle().fill(Color.black.opacity(0.5)).overlay(Rectangle().stroke(HandyColor.accent, lineWidth: 1.5))
                         .frame(width: r.width, height: r.height).offset(x: r.minX, y: r.minY)
                 }
-                if detecting { ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity) }
+                if detecting { BusySpinner().frame(maxWidth: .infinity, maxHeight: .infinity) }
             }
             .contentShape(Rectangle())
             .gesture(DragGesture(minimumDistance: 6)
@@ -175,7 +175,7 @@ struct ScrubView: View {
             if overQuota { LimitReachedBanner(message: "You've scrubbed today's \(Limits.freeScrubPerDay) free photos.") }
             Button { make() } label: {
                 HStack {
-                    if working { ProgressView().tint(.white) }
+                    if working { BusySpinner().tint(.white) }
                     Label(boxes.contains { $0.on } ? "Redact & make clean copy" : "Make clean copy (strip data)", systemImage: "checkmark.shield")
                 }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(overQuota || detecting || working)
@@ -197,7 +197,7 @@ struct ScrubView: View {
             } else {
                 Button { scrubVideo(url) } label: {
                     HStack {
-                        if videoWorking { ProgressView().tint(.white) }
+                        if videoWorking { BusySpinner().tint(.white) }
                         Label(videoWorking ? "Scrubbing… \(Int(videoProgress * 100))%" : "Black out faces & personal info", systemImage: "checkmark.shield")
                     }.frame(maxWidth: .infinity)
                 }.primaryButton().disabled(overQuota || videoWorking)

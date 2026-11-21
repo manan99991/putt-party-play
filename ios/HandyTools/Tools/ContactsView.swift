@@ -55,7 +55,7 @@ struct ContactsView: View {
                         Spacer(); Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
                     }.cardStyle(padding: HandySpacing.s12)
                 }.buttonStyle(.plain).accessibilityIdentifier("move-contacts")
-                if scanning { HStack { ProgressView(); Text(L("Reading your contacts…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+                if scanning { HStack { BusySpinner(); Text(L("Reading your contacts…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
                 if let r = report { reportBody(r) }
                 if let error { Text(error).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             }
@@ -114,7 +114,7 @@ struct ContactsView: View {
                 ShareLink(item: backupURL) { Label(L("Share or save the backup"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
             } else {
                 Button { backup() } label: {
-                    HStack { if busy { ProgressView() }; Label(L("Back up all contacts (.vcf)"), systemImage: "arrow.down.doc") }.frame(maxWidth: .infinity)
+                    HStack { if busy { BusySpinner() }; Label(L("Back up all contacts (.vcf)"), systemImage: "arrow.down.doc") }.frame(maxWidth: .infinity)
                 }.primaryButton().disabled(busy)
             }
         }
@@ -136,7 +136,7 @@ struct ContactsView: View {
         if r.duplicateGroups.count > 1 {
             Button { pendingMergeAll = r.duplicateGroups } label: {
                 HStack {
-                    if busy { ProgressView().tint(.white) }
+                    if busy { BusySpinner().tint(.white) }
                     Label(mergeProgress ?? "Merge all \(r.duplicateGroups.count) duplicate groups", systemImage: "arrow.triangle.merge")
                 }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(busy)
@@ -333,7 +333,7 @@ private struct ContactsTidySheet: View {
                     ShareLink(item: url) { Label(L("Share .vcf"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
                 } else {
                     Button { exportGroup() } label: {
-                        HStack { if busy { ProgressView() }; Label(L("Export (.vcf)"), systemImage: "square.and.arrow.up") }.frame(maxWidth: .infinity)
+                        HStack { if busy { BusySpinner() }; Label(L("Export (.vcf)"), systemImage: "square.and.arrow.up") }.frame(maxWidth: .infinity)
                     }.secondaryButton().disabled(busy)
                 }
                 if group.deletable {

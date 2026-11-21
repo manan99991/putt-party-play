@@ -235,7 +235,7 @@ struct UntangleView: View {
                         .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                 }
             } else if nearby.looking.contains(q) {
-                HStack(spacing: 6) { ProgressView(); Text(L("Finding the closest…")).font(HandyFont.caption) }
+                HStack(spacing: 6) { BusySpinner(); Text(L("Finding the closest…")).font(HandyFont.caption) }
             } else {
                 HStack {
                     Button { nearby.find(q) } label: { Label(L(q == "pharmacy" ? "Pharmacies near me" : "Stores near me"), systemImage: "location.fill") }.compactButton()

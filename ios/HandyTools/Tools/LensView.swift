@@ -63,7 +63,7 @@ struct LensView: View {
             ])
 
             inputCard
-            if busy { HStack { ProgressView(); Text(L("Reading the text…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack { BusySpinner(); Text(L("Reading the text…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
             if hasText, LabelFirst.isLabel(text) {
                 let parts = LabelFirst.parts(text)
@@ -140,7 +140,7 @@ struct LensView: View {
                 }.foregroundStyle(HandyColor.textPrimary).frame(maxWidth: .infinity)
                 HStack { Image(systemName: "tortoise"); Slider(value: $rate, in: 0.3...0.7).tint(HandyColor.accent).onChange(of: rate) { _, r in reader.rate = Float(r) }; Image(systemName: "hare"); Text(String(format: "%.1f×", rate / Double(AVSpeechUtteranceDefaultSpeechRate))).font(HandyFont.caption).monospacedDigit().frame(width: 40) }.foregroundStyle(HandyColor.textSecondary)
                 HStack(spacing: HandySpacing.s8) {
-                    Button { export() } label: { HStack { if reader.exporting { ProgressView() }; Label(L("Save as audio"), systemImage: "waveform.badge.plus") } }.compactButton().disabled(reader.exporting)
+                    Button { export() } label: { HStack { if reader.exporting { BusySpinner() }; Label(L("Save as audio"), systemImage: "waveform.badge.plus") } }.compactButton().disabled(reader.exporting)
                     if let exported { ShareLink(item: exported) { Label(L("Share audio"), systemImage: "square.and.arrow.up") }.compactButton() }
                     Spacer()
                     Button { reader.stop(); reader.sentences = []; exported = nil } label: { Image(systemName: "xmark").accessibilityLabel(L("Close")).frame(width: 36, height: 36) }.compactButton()
@@ -155,7 +155,7 @@ struct LensView: View {
     private var simplifyPanel: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             if !store.isPremium && AIEngine.isAvailable { QuotaChip(name: "ai", limit: Limits.freeAiPerDay).environmentObject(store) }
-            Button { simplify() } label: { HStack { if working { ProgressView().tint(.white) }; Label(working ? "Thinking…" : "Put it in plain English", systemImage: "text.book.closed") }.frame(maxWidth: .infinity) }
+            Button { simplify() } label: { HStack { if working { BusySpinner().tint(.white) }; Label(working ? "Thinking…" : "Put it in plain English", systemImage: "text.book.closed") }.frame(maxWidth: .infinity) }
                 .primaryButton().disabled(working)
             if !AIEngine.isAvailable {
                 LimitNote("Full plain-English rewriting needs Apple Intelligence (iPhone 15 Pro or newer). The glossary and red-flag checks below still run on every phone.")

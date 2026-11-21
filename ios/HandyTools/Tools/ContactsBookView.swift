@@ -45,7 +45,7 @@ struct ContactsBookView: View {
             searchBar
             filterChips
             scopeRow
-            if loading { HStack { ProgressView(); Text(L("Reading your contacts…")).font(HandyFont.caption) } }
+            if loading { HStack { BusySpinner(); Text(L("Reading your contacts…")).font(HandyFont.caption) } }
             HStack {
                 Text("\(shown.count) \(L("of")) \(people.count) \(L("contacts"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 Spacer()
@@ -599,7 +599,7 @@ private struct PlanContactView: View {
                 Section {
                     if let address {
                         Text(address).font(HandyFont.caption)
-                        if finding { HStack { ProgressView(); Text(L("Working out the drive…")).font(HandyFont.caption) } }
+                        if finding { HStack { BusySpinner(); Text(L("Working out the drive…")).font(HandyFont.caption) } }
                         else if let t = travel {
                             Label("\(L("About")) \(t) \(L("min drive from here — you'll get a \"leave now\" alert"))", systemImage: "car.fill").font(HandyFont.caption)
                             if let leave = ContactBook.leaveBy(start: start, travelMinutes: t) {

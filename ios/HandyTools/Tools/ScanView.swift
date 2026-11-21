@@ -261,7 +261,7 @@ struct ScanView: View {
     private var textControls: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             if ocrText.isEmpty {
-                Button { runOCR(all: false) } label: { HStack { if ocrBusy { ProgressView().tint(.white) }; Text(ocrBusy ? "Reading…" : "Read this page") }.frame(maxWidth: .infinity) }.primaryButton().disabled(ocrBusy)
+                Button { runOCR(all: false) } label: { HStack { if ocrBusy { BusySpinner().tint(.white) }; Text(ocrBusy ? "Reading…" : "Read this page") }.frame(maxWidth: .infinity) }.primaryButton().disabled(ocrBusy)
                 Button { runOCR(all: true) } label: { Label(L("Read every page"), systemImage: "doc.text.magnifyingglass").frame(maxWidth: .infinity) }.secondaryButton().disabled(ocrBusy)
             } else {
                 ScrollView { Text(ocrText).font(HandyFont.body).textSelection(.enabled).frame(maxWidth: .infinity, alignment: .leading) }
@@ -307,7 +307,7 @@ struct ScanView: View {
             if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeScanPerDay) free exports.") }
 
             Button { export() } label: {
-                HStack { if working { ProgressView().tint(.white) }; Text(working ? "Building PDF…" : exportLabel) }.frame(maxWidth: .infinity)
+                HStack { if working { BusySpinner().tint(.white) }; Text(working ? "Building PDF…" : exportLabel) }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(working || overQuota)
             if working { ToolProgressBar(label: "Building your PDF…") }
 

@@ -71,7 +71,7 @@ struct VaultView: View {
                 unlocking = true
                 Task { await vault.unlock(); unlocking = false }
             } label: {
-                HStack { if unlocking { ProgressView().tint(.white) }; Label(L("Unlock"), systemImage: "faceid") }.frame(maxWidth: .infinity)
+                HStack { if unlocking { BusySpinner().tint(.white) }; Label(L("Unlock"), systemImage: "faceid") }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(unlocking)
             if let e = vault.errorText { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger).multilineTextAlignment(.center) }
         }.frame(maxWidth: .infinity)

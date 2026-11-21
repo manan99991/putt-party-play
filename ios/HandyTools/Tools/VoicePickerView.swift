@@ -69,7 +69,7 @@ struct VoicePickerView: View {
                     Text(L(look.line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
                 Spacer(minLength: 0)
-                if rendering == id { ProgressView() }
+                if rendering == id { BusySpinner() }
                 else { Image(systemName: playing == id ? "speaker.wave.2.fill" : "play.circle").font(.system(size: 22)).foregroundStyle(HandyColor.accent) }
             }
             .padding(HandySpacing.s12)

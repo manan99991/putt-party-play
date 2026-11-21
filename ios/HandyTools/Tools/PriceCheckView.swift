@@ -56,7 +56,7 @@ private struct ComparePanel: View {
             PhotosPicker(selection: $photoItem, matching: .images) {
                 Label(L("Scan a photo or screenshot"), systemImage: "camera.viewfinder").frame(maxWidth: .infinity)
             }.secondaryButton()
-            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text(L("Reading prices…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack(spacing: HandySpacing.s8) { BusySpinner(); Text(L("Reading prices…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
             if let scanNote { Text(scanNote).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }
 
             if usesOz {
@@ -262,7 +262,7 @@ private struct LabelPanel: View {
             PhotosPicker(selection: $photoItem, matching: .images) {
                 Label(L("Snap or choose a label"), systemImage: "text.viewfinder").frame(maxWidth: .infinity)
             }.secondaryButton()
-            if busy { HStack(spacing: HandySpacing.s8) { ProgressView(); Text(L("Reading the label…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+            if busy { HStack(spacing: HandySpacing.s8) { BusySpinner(); Text(L("Reading the label…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
 
             if let result {
                 if let note = result.servingNote {

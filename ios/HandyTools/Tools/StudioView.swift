@@ -85,7 +85,7 @@ struct StudioView: View {
                         if overQuota { LimitReachedBanner(message: "You've used today's \(Limits.freeStudioPerDay) free Studio edits.") }
                         if output == nil {
                             Button { run(job) } label: {
-                                HStack { if working { ProgressView().tint(.white) }; Text(working ? L("Working…") : L(actionLabel(job))) }.frame(maxWidth: .infinity)
+                                HStack { if working { BusySpinner().tint(.white) }; Text(working ? L("Working…") : L(actionLabel(job))) }.frame(maxWidth: .infinity)
                             }.primaryButton().disabled(working || overQuota).accessibilityIdentifier("studio-run")
                         }
                         if working { ToolProgressBar(label: "Working on your photo…") }

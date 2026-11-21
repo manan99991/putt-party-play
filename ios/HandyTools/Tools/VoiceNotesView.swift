@@ -44,7 +44,7 @@ struct VoiceNotesView: View {
 
             if !speech.transcript.isEmpty && !speech.running {
                 if summary.isEmpty && todos.isEmpty {
-                    Button { digest() } label: { HStack { if working { ProgressView().tint(.white) }; Label(working ? "Reading…" : "Summary + to-dos", systemImage: "list.bullet.clipboard") }.frame(maxWidth: .infinity) }.secondaryButton().disabled(working)
+                    Button { digest() } label: { HStack { if working { BusySpinner().tint(.white) }; Label(working ? "Reading…" : "Summary + to-dos", systemImage: "list.bullet.clipboard") }.frame(maxWidth: .infinity) }.secondaryButton().disabled(working)
                 } else {
                     VStack(alignment: .leading, spacing: HandySpacing.s8) {
                         if !summary.isEmpty { Text(L("Summary")).font(HandyFont.bodyStrong); ForEach(summary, id: \.self) { Text("• \($0)").font(HandyFont.body) } }

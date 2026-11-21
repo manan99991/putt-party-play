@@ -157,7 +157,7 @@ struct CleanerView: View {
                     }.tint(HandyColor.accent)
                 }
                 Button { cleanPlan() } label: {
-                    HStack { if busy { ProgressView().tint(.white) }
+                    HStack { if busy { BusySpinner().tint(.white) }
                         Label("\(L("Clean")) \(planIncluded.count) \(L(planIncluded.count == 1 ? "item" : "items"))", systemImage: "sparkles") }.frame(maxWidth: .infinity)
                 }.primaryButton().disabled(busy || planIncluded.isEmpty).accessibilityIdentifier("cleaner-plan-clean")
                 Text(L("iPhone asks you to confirm. Everything goes to Recently Deleted for 30 days, so nothing is lost by mistake."))
@@ -255,7 +255,7 @@ struct CleanerView: View {
 
     private var scanningView: some View {
         VStack(spacing: 6) {
-            if cat == .duplicates { ProgressView(value: index.progress) } else { ProgressView() }
+            if cat == .duplicates { ProgressView(value: index.progress) } else { BusySpinner() }
             Text(cat == .duplicates ? "Scanning your photos & videos… \(Int(index.progress * 100))%" : "Scanning…")
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }.frame(maxWidth: .infinity).padding(.vertical, HandySpacing.s24)
@@ -318,7 +318,7 @@ struct CleanerView: View {
             }
             Button { deleteSelected() } label: {
                 HStack {
-                    if busy { ProgressView().tint(.white) }
+                    if busy { BusySpinner().tint(.white) }
                     Text(selected.isEmpty ? "Select items to free space" : "Delete \(selectedItems.count) · free about \(PhotoCleaner.format(reclaim))")
                 }.frame(maxWidth: .infinity)
             }.primaryButton().disabled(selected.isEmpty || busy)
