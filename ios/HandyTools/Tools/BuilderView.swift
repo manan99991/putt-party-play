@@ -2874,7 +2874,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let first = chain.steps.first?.block
         switch start {
         case .text:
-            let t = "Lunch with Priya on Friday 12 June at 1:30 pm at Cafe Rio, 220 Main Street, Naperville. Call her on +1 312 555 0142 if late. The menu is at https://www.example.com/menu. Bring the signed lease and two printed copies of the budget."
+            // A contact tool gets an email signature to read; everything else a note with a date, a place, a number and a link.
+            let t = chain.steps.contains { $0.block == .businessCard }
+                ? "Maya Patel\nProduct Designer · Northwind Studio\n+1 312 555 0199 | maya@northwind.example\nnorthwind.example"
+                : "Lunch with Priya on Friday 12 June at 1:30 pm at Cafe Rio, 220 Main Street, Naperville. Call her on +1 312 555 0142 if late. The menu is at https://www.example.com/menu. Bring the signed lease and two printed copies of the budget."
             text = t
             go(.text(t))
         case .video:
