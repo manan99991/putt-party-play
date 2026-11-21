@@ -1,3 +1,1 @@
 == smoke (results)
-error: The package product 'BitByteData-product' requires minimum platform version 17.0 for the iOS platform, but this target supports 15.0 (in target 'SWCompression' from project 'SWCompression')
-** TEST FAILED **
