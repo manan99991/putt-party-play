@@ -45,7 +45,7 @@ REALINPUT pdf-join: result (run-result)
 REALINPUT pdf-first-page: result (run-result)
 REALINPUT video-story: result (run-result)
 REALINPUT video-gif: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1401.826 seconds).
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1508.738 seconds).
 Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' started.
 REALINPUT video-words: result (run-steplog)
 REALINPUT photo-collage: result (run-result)
@@ -92,8 +92,8 @@ REALINPUT whiteboard-email: result (run-result)
 REALINPUT chat-scam: result (run-result)
 REALINPUT rewrite-clear: result (run-result)
 REALINPUT signature-contact: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1157.241 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 2559.067 (2559.108) seconds
+Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1071.722 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 2580.460 (2580.476) seconds
 Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
 TOOLINPUT studio: ok
 TOOLINPUT procam: ok
@@ -112,3 +112,56 @@ TOOLINPUT sorted: ok
 TOOLINPUT memory: ok
 TOOLINPUT warranty: ok
 TOOLINPUT textstudio: ok
+TOOLINPUT thinking: ok
+TOOLINPUT medreminder: ok
+TOOLINPUT pricewatch: ok
+TOOLINPUT planner: ok
+TOOLINPUT brief: ok
+TOOLINPUT daydiary: ok
+TOOLINPUT untangle: ok
+TOOLINPUT menu: ok
+TOOLINPUT cards: ok
+TOOLINPUT pdfannotate: ok
+TOOLINPUT pdfconvert: ok
+TOOLINPUT pdfpages: ok
+TOOLINPUT pdfsign: ok
+TOOLINPUT pdfprotect: ok
+TOOLINPUT pdfsearchable: ok
+TOOLINPUT pdfform: ok
+TOOLINPUT zipmaker: ok
+TOOLINPUT celebrate: ok
+TOOLINPUT animate: ok
+TOOLINPUT collage: ok
+TOOLINPUT faceemoji: ok
+TOOLINPUT comicstrip: ok
+TOOLINPUT sticker: ok
+TOOLINPUT audioconvert: ok
+TOOLINPUT audiocompress: ok
+TOOLINPUT ringtone: ok
+TOOLINPUT audioedit: ok
+TOOLINPUT audiomix: ok
+TOOLINPUT audiotags: ok
+TOOLINPUT audioclean: ok
+TOOLINPUT meetingnotes: ok
+TOOLINPUT soundboard: ok
+TOOLINPUT translate: ok
+TOOLINPUT voicenotes: ok
+TOOLINPUT shield: ok
+TOOLINPUT contacts: ok
+TOOLINPUT light: ok
+TOOLINPUT measure: ok
+TOOLINPUT gpsdash: ok
+TOOLINPUT audiolab: ok
+TOOLINPUT rest: ok
+TOOLINPUT seeread: ok
+TOOLINPUT colorvision: ok
+TOOLINPUT fileviewer: ok
+TOOLINPUT pricecheck: ok
+TOOLINPUT vault: ok
+TOOLINPUT speechnotes: ok
+TOOLINPUT audiostudio: ok
+Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (2099.397 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 2099.397 (2099.399) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 4679.858 (4679.888) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 4679.858 (4679.890) seconds
+** TEST EXECUTE SUCCEEDED **
