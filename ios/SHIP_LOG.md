@@ -12,3 +12,4 @@
 - 2026-11-21 — daily TestFlight (standing yes): crash after picking several photos fixed and proven (MultiPhotoTests), menu dishes in English, Think it through decisions, each job listed once, crash reports name the screen.
 - 2026-11-21: Staged listing on App Store Connect — name "Tenzy: Personal Assistant" (Manan: "stage the name"). No submit.
 - 2026-11-21: Launch build for App Store review (Manan: iOS today, Android after): home 'What do you need?', tool page design, one-or-separate PDFs, same tool once, Share sheet previews, voice memo silence fix, What is this?/receipt/passport fixes, running clocks.
+- 2026-11-21: Launch build re-sent on the newest commit (includes the subscription-step fix).
