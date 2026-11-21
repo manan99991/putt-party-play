@@ -11,7 +11,11 @@ enum ChainFun {
         switch (b, input) {
         case (.sticker, .image(let img)):
             // Saved as a PNG so the see-through background survives being shared.
-            guard let cut = ImageStudio.cutout(img), let out = sticker(cut), let d = out.pngData() else {
+            // A look from the sticker studio when one is picked on the finish (Classic, Comic, Neon, Holographic…),
+            // otherwise the plain white-edged sticker.
+            let preset = StickerStudio.presets.first { $0.id == step.settings["style"] }
+            guard let cut = ImageStudio.cutout(img), let out = preset.flatMap({ StickerStudio.render(cut, style: $0.style) }) ?? sticker(cut),
+                  let d = out.pngData() else {
                 return .failure(.invalid("Make a sticker couldn't find a person, pet or object to cut out. Try a photo where it stands clear of the background."))
             }
             return .success(.file(d, ext: "png"))

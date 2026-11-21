@@ -17,6 +17,7 @@ struct FunFinishCard: View {
     static func looks(_ b: Block) -> [(id: String, name: String)] {
         switch b {
         case .artFilter: return PixelArt.styles
+        case .sticker: return StickerStudio.presets.map { ($0.id, $0.name) }
         case .emojiFaces: return ChainText.faceEmojis.map { ($0, $0) }
         default: return []
         }
@@ -24,7 +25,7 @@ struct FunFinishCard: View {
     /// The full tool for this job, when it does more than the finish card.
     static func fullTool(_ b: Block) -> (id: String, label: String)? {
         switch b {
-        case .sticker: return ("sticker", "Ten sticker looks in Sticker studio")
+        case .sticker: return ("sticker", "Fine-tune it in Sticker studio")
         case .emojiFaces: return ("faceemoji", "A different emoji for each face")
         case .artFilter: return ("comicstrip", "Make a comic strip")
         default: return nil
@@ -35,12 +36,21 @@ struct FunFinishCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            ZStack {
-                if isSticker { Checkerboard().clipShape(RoundedRectangle(cornerRadius: 12)) }
-                Image(uiImage: result).resizable().scaledToFit().padding(isSticker ? 12 : 0)
+            if block == .artFilter, let o = original, o.size.width > 0 {
+                // An art style changes the whole photo: the before/after slider shows exactly what it did.
+                let h = min(380, max(220, 340 * o.size.height / o.size.width))
+                CompareSlider(before: o.normalizedUp(), after: result, height: h)
+                    .frame(height: h)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .accessibilityIdentifier("fun-compare")
+            } else {
+                ZStack {
+                    if isSticker { Checkerboard().clipShape(RoundedRectangle(cornerRadius: 12)) }
+                    Image(uiImage: result).resizable().scaledToFit().padding(isSticker ? 12 : 0)
+                }
+                .frame(maxWidth: .infinity).frame(maxHeight: 380)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
-            .frame(maxWidth: .infinity).frame(maxHeight: 380)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
 
             let options = Self.looks(block)
             if !options.isEmpty, original != nil {
@@ -109,7 +119,11 @@ struct FunFinishCard: View {
             let r = await ChainRunner.apply(ChainStep(block: block, settings: [key: id]), to: .image(o))
             await MainActor.run {
                 busy = nil
-                if case .success(.image(let img)) = r { result = img; look = id } else { note = L("That look couldn't be made from this photo.") }
+                switch r {
+                case .success(.image(let img)): result = img; look = id
+                case .success(.file(let d, _)): if let img = UIImage(data: d) { result = img; look = id }   // a sticker comes back as a see-through PNG
+                default: note = L("That look couldn't be made from this photo.")
+                }
             }
         }
     }

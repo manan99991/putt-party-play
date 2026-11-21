@@ -224,6 +224,7 @@ targets:
       - HandyTools/Engines/NumberWatch.swift
       - HandyTools/Engines/ChainExtras.swift
       - HandyTools/Engines/ChainFun.swift
+      - HandyTools/Engines/StickerStudio.swift
       - HandyTools/Engines/PixelArt.swift
       - HandyTools/Engines/DocEngine.swift
       # Signing tools sign on the form's own lines, in the share sheet too.

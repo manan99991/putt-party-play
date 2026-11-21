@@ -207,6 +207,7 @@ struct EventsBatchResult: View {
                         if !ev.notes.isEmpty { e.notes = ev.notes }
                         if let u = ev.url.flatMap(URL.init(string:)) { e.url = u }
                         e.calendar = cal
+                        EventAlarms.apply(to: e)
                         try store.save(e, span: .thisEvent, commit: false)
                     }
                     try store.commit()
@@ -237,6 +238,7 @@ struct EventEditSheet: UIViewControllerRepresentable {
         if !event.notes.isEmpty { e.notes = event.notes }
         if let u = event.url.flatMap(URL.init(string:)) { e.url = u }
         e.calendar = store.defaultCalendarForNewEvents
+        EventAlarms.apply(to: e)
         vc.event = e
         vc.editViewDelegate = context.coordinator
         return vc
@@ -356,5 +358,16 @@ struct RemindersResult: View {
             }
             busy = false
         }
+    }
+}
+
+/// The nudges an event gets when Tenzy adds it, so it actually reminds you: a return deadline three days ahead and
+/// on the morning itself (in time to take it back); anything else an hour before it starts.
+enum EventAlarms {
+    static func offsets(title: String) -> [TimeInterval] {
+        title.hasPrefix("Last day to return") ? [-3 * 86_400, 0] : [-3_600]
+    }
+    static func apply(to e: EKEvent) {
+        e.alarms = offsets(title: e.title ?? "").map { EKAlarm(relativeOffset: $0) }
     }
 }
