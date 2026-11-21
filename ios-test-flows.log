@@ -1,24 +1,24 @@
 == flows (results)
-Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (129.223 seconds).
-Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (17.749 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 146.973 (146.980) seconds
-Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (87.428 seconds).
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (88.207 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 175.635 (175.675) seconds
-Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (97.025 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (42.995 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testFunPhotoFinishOffersOtherLooks]' passed (32.653 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (46.635 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (61.180 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testPortalPDFShowsItsSizeCheck]' passed (55.151 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testProtectPDFDoesEverythingAtOnce]' passed (30.273 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (11.732 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (26.466 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (11.360 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (56.293 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testVoiceToolsLetYouSwitchVoiceOnTheResult]' passed (16.821 seconds).
-Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (37.100 seconds).
-	 Executed 13 tests, with 0 failures (0 unexpected) in 525.686 (525.703) seconds
-	 Executed 17 tests, with 0 failures (0 unexpected) in 848.293 (848.372) seconds
-	 Executed 17 tests, with 0 failures (0 unexpected) in 848.293 (848.374) seconds
+Test Case '-[HandyToolsUITests.LiveToolTests testHardwareToolsOpenLiveWithoutCrashing]' passed (142.373 seconds).
+Test Case '-[HandyToolsUITests.LiveToolTests testPlayingASleepSoundDoesNotCrash]' passed (19.025 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 161.398 (161.409) seconds
+Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (90.585 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (71.755 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 162.340 (162.342) seconds
+Test Case '-[HandyToolsUITests.PromiseTests testAudioToolsOfferMyVideos]' passed (90.988 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testCelebrateOffersEveryFestivalAndTypedOnes]' passed (30.855 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testFunPhotoFinishOffersOtherLooks]' passed (34.158 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testIDCopyToolsFinishOnTheIDCopyScreen]' passed (63.320 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testMadeCodesAreTestedOnTheFinish]' passed (70.036 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testPortalPDFShowsItsSizeCheck]' passed (61.718 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testProtectPDFDoesEverythingAtOnce]' passed (40.443 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testScamCheckLandsOnTheShieldVerdict]' passed (28.136 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testSignaturePadWontSaveBlank]' passed (32.327 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testTextToolsFinishOnTheTextScreen]' passed (12.833 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVideoToolsCheckTheirPromiseOnTheFile]' passed (59.459 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testVoiceToolsLetYouSwitchVoiceOnTheResult]' passed (15.334 seconds).
+Test Case '-[HandyToolsUITests.PromiseTests testWatermarkToolsLetYouTypeYourOwnWords]' passed (49.668 seconds).
+	 Executed 13 tests, with 0 failures (0 unexpected) in 589.276 (589.300) seconds
+	 Executed 17 tests, with 0 failures (0 unexpected) in 913.014 (913.056) seconds
+	 Executed 17 tests, with 0 failures (0 unexpected) in 913.014 (913.058) seconds
 ** TEST SUCCEEDED **
