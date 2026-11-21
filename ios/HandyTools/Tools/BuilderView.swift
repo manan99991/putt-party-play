@@ -505,6 +505,8 @@ struct BuilderView: View {
             Spacer(minLength: 0)
             HStack(spacing: HandySpacing.s8) {
                 footBtn(mine.isEmpty ? "My tools" : "My tools · \(mine.count)") { showMine = true }
+                // Everything that runs on its own — reminders, alerts, scheduled tools — in one place.
+                footBtn("Automations") { NotificationCenter.default.post(name: .openTool, object: "automations") }
                 footBtn("Templates") { showTemplates = true }
                 footBtn("Guide") { showGuide = true }
             }

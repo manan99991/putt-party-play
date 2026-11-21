@@ -556,6 +556,7 @@ struct HomeView: View {
                 case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
                 case "privacy": PrivacyView().toolbarRole(.editor)
                 case "builder": BuilderView().toolbarRole(.editor)
+                case "automations": AutomationsView().toolbarRole(.editor)   // the personal-assistant hub
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
                 default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
                 }
