@@ -64,3 +64,12 @@ enum Paper {
     func set(_ f: Double) {}
     func end() {}
 }
+
+import SwiftUI
+
+/// The app's colour-from-hex (Theme.swift is app-only); the share sheet uses it for the same tool colours as the app.
+extension Color {
+    init(hex: UInt32) {
+        self.init(.sRGB, red: Double((hex >> 16) & 0xFF) / 255, green: Double((hex >> 8) & 0xFF) / 255, blue: Double(hex & 0xFF) / 255, opacity: 1)
+    }
+}

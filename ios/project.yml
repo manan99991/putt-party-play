@@ -246,6 +246,7 @@ targets:
       - HandyTools/Engines/PageFlatten.swift
       # The email / message composer, so a tool that ends with "Email it" can do that from the share sheet too.
       - HandyTools/Tools/BuilderSend.swift
+      - HandyTools/Tools/BuilderStyle.swift
     entitlements:
       path: ShareExtension/ShareExtension.entitlements
       properties:

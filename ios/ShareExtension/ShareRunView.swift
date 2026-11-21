@@ -1,3 +1,4 @@
+import QuickLookThumbnailing
 import SwiftUI
 import UIKit
 import ImageIO
@@ -222,9 +223,9 @@ struct ShareRunView: View {
     @ViewBuilder private var content: some View {
         switch model.phase {
         case .loading:
-            ProgressView("Getting it ready…").frame(maxWidth: .infinity, maxHeight: .infinity)
+            ShareWorking(title: "Getting it ready…", label: "", block: nil)
         case .running(let label):
-            ProgressView(label).frame(maxWidth: .infinity, maxHeight: .infinity)
+            ShareWorking(title: model.ran?.name ?? "Working", label: label, block: model.ran?.steps.last?.block)
         case .saved:
             Label("Saved to Clips", systemImage: "checkmark.circle.fill").font(.title3.bold()).frame(maxWidth: .infinity, maxHeight: .infinity)
         case .nothing:
@@ -250,10 +251,15 @@ struct ShareRunView: View {
             Section {
                 ForEach(model.tools) { c in
                     Button { model.run(c) } label: {
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text(c.name).font(.body.weight(.semibold)).foregroundStyle(.primary)
-                            Text(c.steps.map(\.block.title).joined(separator: " → ")).font(.footnote).foregroundStyle(.secondary)
+                        // The same face as in the app: the tool's mark in its colour, its name, the steps it runs.
+                        HStack(spacing: 12) {
+                            if let b = c.steps.last?.block { BlockBadge(block: b, size: 40) }
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(c.name).font(.body.weight(.semibold)).foregroundStyle(.primary)
+                                Text(c.steps.map(\.block.title).joined(separator: " → ")).font(.footnote).foregroundStyle(.secondary)
+                            }
                         }
+                        .padding(.vertical, 2)
                     }
                     .accessibilityIdentifier("share-tool-\(c.id)")
                 }
@@ -273,7 +279,12 @@ struct ShareRunView: View {
                     } else if let t = r.text {
                         Text(t).textSelection(.enabled)
                     } else if let u = r.url {
-                        Label(model.results.count > 1 ? "\(model.noun) \(r.n) is ready" : "Ready: \(u.pathExtension.uppercased()) file", systemImage: "checkmark.circle.fill")
+                        // See what was made before sharing it: the picture, or the PDF's first page.
+                        VStack(alignment: .leading, spacing: 8) {
+                            Label(model.results.count > 1 ? "\(model.noun) \(r.n) is ready" : "Ready: \(u.pathExtension.uppercased()) file", systemImage: "checkmark.circle.fill")
+                                .foregroundStyle(.green)
+                            SharePreviewThumb(url: u)
+                        }
                     }
                 }
             }
@@ -295,6 +306,59 @@ struct ShareRunView: View {
         }
         .sheet(isPresented: $sending) {
             if let f = model.ending { SendSheet(finish: f, subject: model.ran?.name ?? "Tenzy", box: model.outbox).ignoresSafeArea() }
+        }
+    }
+}
+
+
+/// What the share sheet shows while a tool works: the tool's mark breathing in its colour, what's happening, and a
+/// running clock once it passes two seconds — so it never looks frozen.
+struct ShareWorking: View {
+    let title: String
+    let label: String
+    let block: Block?
+    @State private var started = Date()
+    @State private var breathe = false
+    var body: some View {
+        VStack(spacing: 16) {
+            ZStack {
+                Circle().fill((block?.tint ?? .accentColor).opacity(0.16)).frame(width: 84, height: 84)
+                    .scaleEffect(breathe ? 1.1 : 0.92)
+                    .animation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true), value: breathe)
+                if let block { BlockBadge(block: block, size: 52) } else { ProgressView() }
+            }
+            .accessibilityHidden(true)
+            Text(title).font(.headline).multilineTextAlignment(.center)
+            HStack(spacing: 6) {
+                ProgressView()
+                TimelineView(.periodic(from: started, by: 1)) { ctx in
+                    let s = Int(ctx.date.timeIntervalSince(started))
+                    let clock = s >= 2 ? String(format: " · %d:%02d", s / 60, s % 60) : ""
+                    Text((label.isEmpty ? "Working…" : label) + clock).font(.footnote).monospacedDigit().foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding(32)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear { breathe = true }
+    }
+}
+
+/// A small picture of a finished file (photo or PDF page), made by the system's own thumbnailer.
+struct SharePreviewThumb: View {
+    let url: URL
+    @State private var thumb: UIImage?
+    var body: some View {
+        Group {
+            if let thumb {
+                Image(uiImage: thumb).resizable().scaledToFit().frame(maxHeight: 220)
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .accessibilityLabel(Text("Preview of the result"))
+            }
+        }
+        .task(id: url) {
+            let req = QLThumbnailGenerator.Request(fileAt: url, size: CGSize(width: 600, height: 600), scale: 2, representationTypes: .thumbnail)
+            thumb = try? await QLThumbnailGenerator.shared.generateBestRepresentation(for: req).uiImage
         }
     }
 }
