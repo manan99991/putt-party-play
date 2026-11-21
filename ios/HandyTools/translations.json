@@ -3999,15 +3999,15 @@
   "pt": "Confira de novo o lugar da planta",
   "zh": "再测一次那个放植物的位置"
  },
- "Check the date and time against the poster — you can change anything before saving.": {
-  "de": "Prüfe Datum und Uhrzeit mit dem Plakat – du kannst vor dem Sichern alles ändern.",
-  "es": "Comprueba la fecha y la hora con el cartel: puedes cambiar todo antes de guardar.",
-  "fr": "Vérifiez la date et l'heure sur l'affiche — vous pouvez tout modifier avant d'enregistrer.",
-  "hi": "तारीख़ और समय पोस्टर से मिला लें — सहेजने से पहले कुछ भी बदल सकते हैं।",
-  "it": "Controlla data e ora sul poster — puoi cambiare tutto prima di salvare.",
-  "ja": "日付と時刻をポスターと照らし合わせてください。保存前に何でも変更できます。",
-  "pt": "Confira a data e a hora com o cartaz — dá para mudar tudo antes de salvar.",
-  "zh": "请对照海报核对日期和时间——保存前可以修改任何内容。"
+ "Check the date and time — you can change anything before saving.": {
+  "de": "Prüfe Datum und Uhrzeit – du kannst vor dem Sichern alles ändern.",
+  "es": "Comprueba la fecha y la hora: puedes cambiar todo antes de guardar.",
+  "fr": "Vérifiez la date et l'heure — vous pouvez tout modifier avant d'enregistrer.",
+  "hi": "तारीख़ और समय जाँच लें — सहेजने से पहले कुछ भी बदल सकते हैं।",
+  "it": "Controlla data e ora — puoi cambiare tutto prima di salvare.",
+  "ja": "日付と時刻を確認してください。保存前に何でも変更できます。",
+  "pt": "Confira a data e a hora — dá para mudar tudo antes de salvar.",
+  "zh": "请核对日期和时间——保存前可以修改任何内容。"
  },
  "Check the fridge and write the list first": {
   "de": "Erst den Kühlschrank checken und die Liste schreiben",

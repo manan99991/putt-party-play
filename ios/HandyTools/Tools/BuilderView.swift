@@ -2881,7 +2881,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             let doc = first.map { reads.contains($0) } ?? false
             // The paper that fits the job: a card for a contact tool, a poster for an event, a shelf for a deal…
             let job = chain.steps.first { [.businessCard, .calendarEvent, .priceCompare, .actionItems, .wifiQr, .returnBy].contains($0.block) }?.block
-            let pic = { (i: Int) -> UIImage in doc ? SampleAssets.paper(for: job) : SampleAssets.photo(CGSize(width: 1200 + i * 40, height: 1600)) }
+            // A form to sign for the signing tools, so their finished screen shows the signature on the form's line.
+            let signs = chain.steps.contains { $0.block == .stamp }
+            let pic = { (i: Int) -> UIImage in signs ? SampleAssets.document() : doc ? SampleAssets.paper(for: job) : SampleAssets.photo(CGSize(width: 1200 + i * 40, height: 1600)) }
             if hasMeme { memePhotos = [pic(0)]; memeTop = memeTop.isEmpty ? "WHEN THE TEST" : memeTop; memeBottom = memeBottom.isEmpty ? "PASSES" : memeBottom; makeMeme() }
             else if chain.versus == true { runBatch(count: 2) { i in pic(i) } }
             else if chain.gif == true || chain.collage == true || chain.flipbook == true || chain.combine == true { runBatch(count: 3) { i in pic(i) } }

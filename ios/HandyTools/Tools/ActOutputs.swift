@@ -162,7 +162,7 @@ struct EventCard: View {
             } else {
                 Button { showEdit = true } label: { Label(L("Add to Calendar"), systemImage: "calendar.badge.plus") }.compactButton()
             }
-            Text(L("Check the date and time against the poster — you can change anything before saving.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            Text(L("Check the date and time — you can change anything before saving.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
         }
         .cardStyle(padding: HandySpacing.s12)
         .sheet(isPresented: $showEdit) { EventEditSheet(event: event).ignoresSafeArea() }
