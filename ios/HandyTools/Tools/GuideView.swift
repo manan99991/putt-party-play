@@ -165,7 +165,7 @@ struct GuideView: View {
         Button { open(o) } label: {
             VStack(alignment: .leading, spacing: HandySpacing.s8) {
                 Label(L(why), systemImage: "sparkles").font(HandyFont.micro).foregroundStyle(HandyColor.accent)
-                OptionRow(option: o, kind: kind, count: given.count, preview: previews.image(o), snippet: previews.snippet(o), big: true)
+                OptionRow(option: o, kind: kind, count: given.count, preview: Self.skip.contains("preview") ? nil : previews.image(o), snippet: previews.snippet(o), big: true)
             }
             .padding(HandySpacing.s12)
             .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
