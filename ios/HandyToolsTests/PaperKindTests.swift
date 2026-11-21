@@ -51,3 +51,13 @@ final class PaperKindTests: XCTestCase {
                              "Amount due: 64.20", "Payment due date: 14 April 2026", "Account number 55821"]), .bill)
     }
 }
+
+/// The QuickBooks receipt came back with no date: the camera read 08/11/2022 as "0B/11/2022".
+final class ReceiptDateOCRTests: XCTestCase {
+    func testDateWithALookAlikeLetterIsStillRead() {
+        XCTAssertEqual(DataGrab.ocrDigits("0B/11/2022"), "08/11/2022")
+        XCTAssertEqual(DataGrab.ocrDigits("Ref BOS-11"), "Ref BOS-11")   // not a date: left alone
+        let r = DataGrab.receipt("Maple Bike Repair\nRECEIPT DATE\n0B/11/2022\nTOTAL\n$145.00")
+        XCTAssertNotNil(r.date, "no date read from 0B/11/2022")
+    }
+}

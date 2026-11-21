@@ -49,10 +49,25 @@ enum DataGrab {
     /// Lines near the top that are never the shop: registration numbers, document titles, screenshot chrome.
     private static let notAShopLine = #"(co\.?\s*-?\s*re?g|company\s*(no|reg)|\bgst\b|\btax\s*invoice|order\s*number|\bcash\s*sale|receipt\s*example|^lot\b|^tel\b|^fax\b|google\.com|^\d{1,2}:\d{2}$|^(share|save|visit|done)$|\|)"#
 
+    /// The camera often reads a printed digit as a look-alike letter inside a date ("0B/11/2022"): in a token shaped
+    /// like a date, O→0, B→8, I/l→1, S→5, so the date is still found.
+    static func ocrDigits(_ line: String) -> String {
+        let ns = line as NSString
+        guard let re = try? NSRegularExpression(pattern: #"\b[0-9OoBIlS]{1,4}[/.-][0-9OoBIlS]{1,2}[/.-][0-9OoBIlS]{2,4}\b"#) else { return line }
+        var out = line
+        for m in re.matches(in: line, range: NSRange(location: 0, length: ns.length)).reversed() {
+            let tok = ns.substring(with: m.range)
+            guard tok.filter(\.isNumber).count >= 4, tok.contains(where: \.isLetter) else { continue }
+            let fixed = String(tok.map { c -> Character in ["O": "0", "o": "0", "B": "8", "I": "1", "l": "1", "S": "5"][c] ?? c })
+            out = (out as NSString).replacingCharacters(in: m.range, with: fixed)
+        }
+        return out
+    }
+
     static func receipt(_ text: String) -> Receipt {
         var r = Receipt()
         let lines = text.split(whereSeparator: \.isNewline).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
-        let flat = lines.map { columns($0).joined(separator: " ") }
+        let flat = lines.map { ocrDigits(columns($0).joined(separator: " ")) }
 
         // The shop: right after "From", else the first top line that names a business, else the first plain line.
         // A business name can sit below a logo, a title or (in a screenshot) the browser bar: look a little further

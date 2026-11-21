@@ -198,15 +198,7 @@ struct PDFConvertView: View {
                 let imgs = pages, picked = DocEngine.pageIndexes(all: allPages, current: page, from: fromPage, to: toPage, count: pages.count)
                 tableNote = "Reading the tables…"
                 Task {
-                    let rows = await Task.detached(priority: .userInitiated) { () -> [[String]] in
-                        var all: [[String]] = []
-                        for i in picked where imgs.indices.contains(i) {
-                            // Read by position so columns stay columns, then keep the rows that have them.
-                            let t = DataGrab.tableRows(ChainRunner.rows(DocEngine.recognize(imgs[i]))).rows.filter { $0.filter { !$0.isEmpty }.count >= 2 }
-                            all += t
-                        }
-                        return all
-                    }.value
+                    let rows = await Task.detached(priority: .userInitiated) { PDFTables.rows(imgs, pages: picked) }.value
                     tableRows = rows
                     tableNote = rows.count < 2 ? "No table found on these pages." : "\(rows.count) rows × \(rows.map(\.count).max() ?? 0) columns — numbers kept as numbers."
                 }
@@ -296,5 +288,18 @@ struct PDFConvertView: View {
         let trimmed = raw.components(separatedBy: CharacterSet(charactersIn: "/\\:")).joined(separator: "-")
             .trimmingCharacters(in: .whitespacesAndNewlines)
         return trimmed.isEmpty ? "Document" : String(trimmed.prefix(60))
+    }
+}
+
+
+/// Tables on PDF pages as spreadsheet rows: each page read by position so columns stay columns, then only the rows
+/// that have two or more filled cells kept. (Pulled out of the screen so a test can run it on a real table.)
+enum PDFTables {
+    static func rows(_ pages: [UIImage], pages picked: [Int]) -> [[String]] {
+        var all: [[String]] = []
+        for i in picked where pages.indices.contains(i) {
+            all += DataGrab.tableRows(ChainRunner.rows(DocEngine.recognize(pages[i]))).rows.filter { $0.filter { !$0.isEmpty }.count >= 2 }
+        }
+        return all
     }
 }

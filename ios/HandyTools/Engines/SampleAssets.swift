@@ -123,8 +123,18 @@ enum SampleAssets {
             let b = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.black]
             c.beginPage()
             ("INVOICE 1042" as NSString).draw(at: CGPoint(x: 60, y: 60), withAttributes: h)
-            ("Bill to: Rivera Design LLC, 88 Oak Lane, Austin TX 78701\nDate: 14 March 2026   Due: 13 April 2026\n\nItem                      Qty    Price\nLogo design                 1    $450.00\nBusiness cards (box)        2     $38.00\nWebsite banner              1    $120.00\n\nSubtotal $646.00   Tax $53.30   Total $699.30\nQuestions: billing@example.com or +1 512 555 0199" as NSString)
-                .draw(in: CGRect(x: 60, y: 110, width: 492, height: 600), withAttributes: b)
+            ("Bill to: Rivera Design LLC, 88 Oak Lane, Austin TX 78701\nDate: 14 March 2026   Due: 13 April 2026" as NSString)
+                .draw(in: CGRect(x: 60, y: 110, width: 492, height: 60), withAttributes: b)
+            // The items as a real table: each cell in its own column.
+            let th = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), .foregroundColor: UIColor.black]
+            let rows = [["Item", "Qty", "Price"], ["Logo design", "1", "450.00"], ["Business cards", "2", "38.00"],
+                        ["Website banner", "1", "120.00"], ["Total", "", "646.00"]]
+            for (r, row) in rows.enumerated() {
+                for (c, cell) in row.enumerated() {
+                    (cell as NSString).draw(at: CGPoint(x: [60, 330, 450][c], y: 200 + CGFloat(r) * 28), withAttributes: r == 0 ? th : b)
+                }
+            }
+            ("Questions: billing@example.com or +1 512 555 0199" as NSString).draw(at: CGPoint(x: 60, y: 360), withAttributes: b)
             c.beginPage()
             ("TERMS" as NSString).draw(at: CGPoint(x: 60, y: 60), withAttributes: h)
             ("Payment is due within 30 days. A late fee of 2% a month applies after the due date.\nAll work stays the property of the designer until paid in full.\nThis agreement renews each year unless either side gives 60 days written notice." as NSString)
