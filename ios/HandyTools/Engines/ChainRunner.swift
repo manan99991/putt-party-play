@@ -271,7 +271,10 @@ extension Block {
         case .actionItems: return "notes or a transcript with things to do in them"
         case .readCode: return "a photo with a QR code or barcode in it"
         case .identify, .describe: return "a clear, close photo of the thing"
-        case .readText, .pdfText, .pageText, .speechText: return "something with readable words in it"
+        case .readText: return "a clear photo of printed or written words"
+        case .pdfText: return "a PDF with words in it"
+        case .pageText: return "a link to a web page"
+        case .speechText: return "a recording of someone talking"
         default: return takes == .text ? "some text to work with" : takes == .image ? "a clear, close photo" : takes == .video ? "a video" : takes == .pdf ? "a PDF" : "a recording"
         }
     }
@@ -290,7 +293,12 @@ extension Chain {
         return body.prefix(1).uppercased() + body.dropFirst() + "."
     }
     /// What good input looks like, from the first step — the hint shown under the description.
-    var wants: String? { steps.first?.block.needs }
+    /// The most telling step's hint: a receipt tool says "a photo of a receipt…", not the reading step's general one.
+    var wants: String? {
+        let general: Set<Block> = [.readText, .pdfText, .pageText, .speechText]
+        let specific = steps.dropFirst().first { !general.contains($0.block) && $0.block.takes == steps.first?.block.gives && $0.block.needs != "some text to work with" }
+        return (specific ?? steps.first)?.block.needs
+    }
 }
 
 struct ChainStep: Codable, Equatable {

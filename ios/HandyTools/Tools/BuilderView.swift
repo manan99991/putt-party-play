@@ -1961,7 +1961,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 }
                 if !busy, result != nil || !batch.isEmpty || boardSource != nil, passportSource == nil { ResultBanner().accessibilityIdentifier("run-result") }
                 if let report { stepLog(report) }
-                if let message, boardSource == nil {
+                // The same words already in "Here's how far it got" aren't shown a second time underneath.
+                if let message, boardSource == nil, !(report?.lines.contains { if case .stopped(let f) = $0.mark { return ChainRunView.words(f) == message }; return false } ?? false) {
                     Label(message, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
