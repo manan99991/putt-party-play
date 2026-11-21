@@ -44,7 +44,8 @@ final class NeverBiggerTests: XCTestCase {
         XCTAssertNil(p[kCGImagePropertyGPSDictionary], "location still in the photo")
         XCTAssertNil((p[kCGImagePropertyTIFFDictionary] as? [CFString: Any])?[kCGImagePropertyTIFFMake], "camera name still in the photo")
         XCTAssertEqual((p[kCGImagePropertyOrientation] as? NSNumber)?.intValue, 6, "the photo would be turned on its side")
-        XCTAssertEqual((p[kCGImagePropertyPixelWidth] as? NSNumber)?.intValue, 640)
+        // Same pixels as the original (the renderer draws at screen scale, so compare with it, not with 640).
+        XCTAssertEqual((p[kCGImagePropertyPixelWidth] as? NSNumber)?.intValue, (try props(original)[kCGImagePropertyPixelWidth] as? NSNumber)?.intValue)
         XCTAssertLessThanOrEqual(clean.count, original.count, "cleaned copy grew: \(original.count) → \(clean.count) bytes")
     }
 

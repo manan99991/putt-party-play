@@ -15,3 +15,4 @@
 - 2026-11-21: Launch build re-sent on the newest commit (includes the subscription-step fix).
 - 2026-11-21: Launch build re-sent with the Gold Book audit fixes (text tools, never-bigger photos, GIF fit, signature first, store-shot sample medicines). The earlier one's iPad smoke stopped on a simulator that wouldn't close the app; nothing had uploaded.
 - 2026-11-21: Launch build re-sent: the photo-cleaning step now strips the JPEG's EXIF/XMP blocks byte for byte (ImageIO's lossless copy refused in CI, so the new never-bigger tests failed and stopped the upload).
+- 2026-11-21: Launch build re-sent: the cleaned-photo test compared with a fixed 640 px while the test picture is drawn at screen scale (1920 px); the cleaner itself passed (never bigger, no location).
