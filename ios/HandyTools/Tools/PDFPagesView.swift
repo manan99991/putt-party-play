@@ -167,18 +167,22 @@ struct PDFPagesView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 6, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
             VStack(alignment: .leading, spacing: 2) {
-                Text("\(L("Page")) \(pos + 1)").font(HandyFont.bodyStrong)
+                Text("\(L("Page")) \(pos + 1)").font(HandyFont.bodyStrong).lineLimit(1).fixedSize()
                 if item.index != pos || item.rotation != 0 {
                     Text(item.rotation == 0 ? "\(L("was page")) \(item.index + 1)"
                                             : "\(L("was page")) \(item.index + 1) · \(item.rotation)°")
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
             }
+            .layoutPriority(1)
             Spacer(minLength: 0)
-            iconButton("arrow.up", L("Move up"), disabled: pos == 0) { items.swapAt(pos, pos - 1) }
-            iconButton("arrow.down", L("Move down"), disabled: pos == items.count - 1) { items.swapAt(pos, pos + 1) }
-            iconButton("rotate.right", L("Rotate")) { items[pos].rotation = PDFPages.normalized(items[pos].rotation + 90) }
-            iconButton("trash", L("Remove page"), disabled: items.count == 1, tint: HandyColor.danger) { items.remove(at: pos) }
+            // The four actions sit close together so "Page 12" never breaks onto two lines ("Pag / e 2" on a phone).
+            HStack(spacing: 0) {
+                iconButton("arrow.up", L("Move up"), disabled: pos == 0) { items.swapAt(pos, pos - 1) }
+                iconButton("arrow.down", L("Move down"), disabled: pos == items.count - 1) { items.swapAt(pos, pos + 1) }
+                iconButton("rotate.right", L("Rotate")) { items[pos].rotation = PDFPages.normalized(items[pos].rotation + 90) }
+                iconButton("trash", L("Remove page"), disabled: items.count == 1, tint: HandyColor.danger) { items.remove(at: pos) }
+            }
         }
         .padding(HandySpacing.s8)
         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))

@@ -18,12 +18,16 @@ final class ScreenshotTests: XCTestCase {
             app.launchArguments = ["-screenshots", "-uitest", "-sample", "-route", r]
             app.launch()
             guard app.wait(for: .runningForeground, timeout: 30) else { continue }
+            // A system prompt (speech, photos…) is answered with Allow first, so it doesn't sit over every picture.
+            let sb = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+            func allow() { for l in ["Allow", "OK", "Allow Full Access", "Allow While Using App"] where sb.alerts.buttons[l].exists { sb.alerts.buttons[l].firstMatch.tap(); break } }
+            sleep(1); allow()
             if r.hasPrefix("run-") {
                 // A ready-made tool works on its sample: the working card first, then the finished screen.
-                sleep(2); save(r + "-a-working")
-                sleep(10); save(r + "-b-done")
+                sleep(2); allow(); save(r + "-a-working")
+                sleep(10); allow(); save(r + "-b-done")
             } else {
-                sleep(6); save(r)
+                sleep(6); allow(); save(r)
             }
             app.terminate()
         }
