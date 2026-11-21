@@ -37458,5 +37458,35 @@
   "ja": "やさしく",
   "pt": "Mais gentil",
   "zh": "更体贴"
+ },
+ "Working on it": {
+  "de": "Wird bearbeitet",
+  "es": "Trabajando en ello",
+  "fr": "En cours",
+  "hi": "काम चल रहा है",
+  "it": "Ci sto lavorando",
+  "ja": "処理中",
+  "pt": "A trabalhar nisso",
+  "zh": "正在处理"
+ },
+ "Start with": {
+  "de": "Beginne mit",
+  "es": "Empieza con",
+  "fr": "Commencez par",
+  "hi": "इससे शुरू करें",
+  "it": "Inizia con",
+  "ja": "ここから始める",
+  "pt": "Comece com",
+  "zh": "从这里开始"
+ },
+ "New picks wait until this is done.": {
+  "de": "Neue Auswahl wartet, bis das fertig ist.",
+  "es": "Lo nuevo espera hasta que esto termine.",
+  "fr": "Les nouveaux choix attendent la fin.",
+  "hi": "नई चीज़ें इसके पूरा होने तक रुकेंगी।",
+  "it": "Le nuove scelte aspettano la fine.",
+  "ja": "終わるまで新しい選択は待機します。",
+  "pt": "Novas escolhas esperam até isto terminar.",
+  "zh": "新的选择会等到完成后再处理。"
  }
 }

@@ -1022,13 +1022,11 @@ struct ToolPage<Content: View>: View {
                 // scrolling, so the header + options stay compact (the ScrollView remains for the few
                 // tools whose controls genuinely exceed one screen).
                 VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                    HStack(spacing: HandySpacing.s12) {
-                        if !toolID.isEmpty { ToolIconBadge(id: toolID, symbol: TOOLS.first { $0.id == toolID }?.icon ?? "wrench.and.screwdriver.fill", size: 44) }
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(L(title)).font(HandyFont.title)
-                            Text(L(subtitle)).font(.system(size: 15)).foregroundStyle(HandyColor.textSecondary)
-                        }
+                    // The tool's face: its mark, name and one line, on a card in the tool family's colour.
+                    ToolHero(title: L(title), subtitle: L(subtitle), tint: ToolIconBadge.tint(for: toolID)) {
+                        if !toolID.isEmpty { ToolIconBadge(id: toolID, symbol: TOOLS.first { $0.id == toolID }?.icon ?? "wrench.and.screwdriver.fill", size: 52) }
                     }
+                    .padding(.bottom, HandySpacing.s4)
                     content()
                 }
                 .padding(.horizontal, HandySpacing.gutter)

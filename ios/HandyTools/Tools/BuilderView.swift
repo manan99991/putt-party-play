@@ -1816,11 +1816,22 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         if locked { lockCard } else { runBody }
     }
 
+    /// The step that says what this flow is for: its icon and colour lead the page.
+    private var heroBlock: Block { chain.steps.isEmpty ? .summarize : Guide.keyBlock(chain, kind: start) }
+
+    private var hero: some View {
+        ToolHero(title: chain.name, subtitle: chain.about, tint: heroBlock.tint,
+                 steps: chain.steps.map { ($0.block.icon, $0.block.title) },
+                 hint: chain.wants.map { "Works best with \($0)." }) {
+            BlockBadge(block: heroBlock, size: 52)
+        }
+    }
+
     /// Shown when a free user opens a tool that uses a Pro step: what it needs, and a one-tap path to Pro.
     private var lockCard: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
-                Text(chain.name).font(HandyFont.title)
+                hero
                 VStack(spacing: HandySpacing.s12) {
                     ZStack { Circle().fill(HandyColor.accentSoft).frame(width: 72, height: 72); Image(systemName: "lock.fill").font(.system(size: 30)).foregroundStyle(HandyColor.accent) }
                     Text(L("A Pro tool")).font(.system(size: 22, weight: .bold))
@@ -1837,19 +1848,10 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
 
     private var runBody: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                Text(chain.name).font(HandyFont.title)
-                // Tell the person what this flow does and what good input looks like, the moment it opens —
-                // instead of a bare title over three file buttons with no clue what they're for.
-                VStack(alignment: .leading, spacing: HandySpacing.s4) {
-                    Text(chain.about).font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                    if let w = chain.wants {
-                        Label("Works best with \(w).", systemImage: "lightbulb")
-                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
+            VStack(alignment: .leading, spacing: HandySpacing.s16) {
+                // Tell the person what this flow does, the steps it runs and what good input looks like, the moment
+                // it opens — on the tool's own card, instead of a bare title over file buttons.
+                hero
                 stampSetup
                 watermarkSetup
                 if hasMeme {
@@ -1866,9 +1868,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 if let why = chain.unavailable {
                     Label(why, systemImage: "exclamationmark.triangle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.amber).cardStyle(padding: HandySpacing.s12)
                 }
-                // While a job runs, new picks wait: the inputs dim and can't be tapped, so the result on screen is always
-                // the thing you picked (two jobs racing gave a preview of one video and a share of another).
-                Group {
+                // While a job runs, new picks wait: the inputs step aside for one working card, so the result on screen is
+                // always the thing you picked (two jobs racing gave a preview of one video and a share of another).
+                // (The note used to be an overlay on a Group, which SwiftUI repeats on every child — three inputs drew
+                // three stacked banners.)
+                if !busy {
+                VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                SectionLabel(text: "Start with", icon: ChainEditor.icon(for: start))
                 if start == .audio {
                     audioInputs
                 } else if start == .pdf {
@@ -1926,15 +1932,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     Button(L("Run")) { go(.text(text)) }.primaryButton().disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
                 }
-                .disabled(busy)
-                .opacity(busy ? 0.35 : 1)
-                .overlay(alignment: .top) {
-                    if busy {
-                        Label(L("Working on what you picked — new picks wait until it's done, or tap Stop."), systemImage: "hourglass")
-                            .font(HandyFont.caption).padding(.horizontal, 12).padding(.vertical, 8)
-                            .background(HandyColor.surfaceRaised, in: Capsule())
-                            .accessibilityIdentifier("run-busy-note")
-                    }
+                .cardStyle()
+                .transition(.opacity)
                 }
                 if let v = choosing, !busy {
                     PartPicker(url: v, frames: partFrames, length: partLength, maxSeconds: Double(chain.steps.first?.settings["secs"] ?? "") ?? partLength,
@@ -1947,15 +1946,24 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     RunningOnVideoCard(url: v, goal: chain.name)
                 }
                 if busy {
-                    ToolProgressBar(value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil), label: progress.isEmpty ? chain.steps.first.map { "\($0.block.title)…" } ?? "" : progress)
-                    Button(role: .cancel) {
+                    WorkingCard(tint: heroBlock.tint, icon: heroBlock.icon,
+                                value: runProgress.fraction ?? (progressValue > 0 ? progressValue : nil),
+                                label: progress.isEmpty ? chain.steps.first.map { "\($0.block.title)…" } ?? "" : progress,
+                                note: "New picks wait until this is done.") {
                         runTask?.cancel(); runTask = nil
                         busy = false; progress = ""; progressValue = 0; RunProgress.shared.end()
                         message = "Stopped. Nothing was changed — pick it again whenever you like."
-                    } label: { Label(L("Stop"), systemImage: "stop.circle") }.textButton().accessibilityIdentifier("run-stop")
+                    }
+                    .transition(.opacity)
                 }
+                if !busy, result != nil, boardSource == nil, passportSource == nil { ResultBanner() }
                 if let report { stepLog(report) }
-                if let message, boardSource == nil { Text(message).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                if let message, boardSource == nil {
+                    Label(message, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
+                        .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                }
                 if let watchLine {
                     Label(watchLine, systemImage: "bell.badge.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
                         .padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
@@ -1984,6 +1992,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 if !batch.isEmpty { batchView }
                 sendOn
             }.padding(HandySpacing.gutter)
+            .animation(.easeOut(duration: HandyMotion.base), value: busy)
         }
         .background(Ground())
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { dismiss() } } }
