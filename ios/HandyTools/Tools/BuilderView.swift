@@ -495,7 +495,7 @@ struct BuilderView: View {
 
     var body: some View {
         // Scrolls when the page is taller than the phone (small phones, big text), so nothing ever sits under the
-        // clock; the three bottom buttons stay pinned above the tab bar.
+        // clock or behind another button.
         ScrollView {
         VStack(alignment: .leading, spacing: HandySpacing.s16) {
             // Problem first: the person says what they need; Tenzy finds the tool, or builds one.
@@ -508,21 +508,18 @@ struct BuilderView: View {
             anythingTiles
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             if ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, builtIn == nil { quickStarts }
-        }
-        .frame(maxWidth: .infinity, alignment: .top)
-        .padding(.horizontal, HandySpacing.gutter)
-        .padding(.vertical, HandySpacing.s8)
-        }
-        .scrollDismissesKeyboard(.interactively)
-        .safeAreaInset(edge: .bottom) {
             HStack(spacing: HandySpacing.s8) {
                 // Your saved tools and reminders live in My stuff; from here, every tool and the ready-made ones.
                 footBtn("All tools") { NotificationCenter.default.post(name: .openTool, object: "explore", userInfo: ["from": "builder"]) }
                 footBtn("Templates") { showTemplates = true }
                 footBtn("Guide") { showGuide = true }
             }
-            .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s8)
         }
+        .frame(maxWidth: .infinity, alignment: .top)
+        .padding(.horizontal, HandySpacing.gutter)
+        .padding(.vertical, HandySpacing.s8)
+        }
+        .scrollDismissesKeyboard(.interactively)
         .sheet(item: $editing) { c in
             NavigationStack {
                 ChainEditor(chain: c, hint: editHint, good: editGood, gaps: editGaps, ask: editAsk) { saved in
