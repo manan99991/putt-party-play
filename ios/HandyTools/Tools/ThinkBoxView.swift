@@ -84,7 +84,7 @@ struct ThinkBoxView: View {
                         Label(speech.running ? L("Stop") : L("Talk"), systemImage: speech.running ? "stop.circle.fill" : "mic.fill")
                     }.compactButton()
                     PhotosPicker(selection: $shot, matching: .images) { Label(L("Screenshot"), systemImage: "text.viewfinder") }.compactButton()
-                    Button { if let s = Clipboard.text { input = input.isEmpty ? s : input + "\n" + s } } label: { Label(L("Paste"), systemImage: "doc.on.clipboard") }.compactButton()
+                    PasteTextButton { s in input = input.isEmpty ? s : input + "\n" + s }
                     if !input.isEmpty { Button(L("Clear")) { input = "" }.textButton() }
                 }
             }

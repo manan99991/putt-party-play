@@ -686,21 +686,21 @@ struct BuilderView: View {
                         HStack {
                             Button { editHint = nil; editing = Chain(id: UUID().uuidString, name: "", steps: []); showTemplates = false } label: { Label(L("Blank"), systemImage: "plus") }.font(HandyFont.caption)
                             Spacer()
-                            Button {
-                                let clip = Clipboard.text ?? ""
-                                if let c = ToolLink.chain(from: clip) {
-                                    if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) {
-                                        mine.append(c); persist(); pasteNote = nil; note = "Added \(c.name)."; showTemplates = false
+                            HStack(spacing: 6) {
+                                Text(L("Add a shared tool")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                                PasteTextButton { clip in
+                                    if let c = ToolLink.chain(from: clip) {
+                                        if BuilderLimits.canSave(savedCount: mine.count, isPremium: StoreManager.shared.isPremium) {
+                                            mine.append(c); persist(); pasteNote = nil; note = "Added \(c.name)."; showTemplates = false
+                                        } else {
+                                            pasteNote = "You've saved the \(BuilderLimits.freeSaved) tools the free plan keeps. Go Pro to add more."
+                                        }
                                     } else {
-                                        pasteNote = "You've saved the \(BuilderLimits.freeSaved) tools the free plan keeps. Go Pro to add more."
+                                        pasteNote = "That's not a Tenzy tool link. Use a tool's “Copy to share” button, then tap Add a shared tool."
                                     }
-                                } else {
-                                    pasteNote = clip.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                                        ? "Nothing's copied yet. On another Tenzy, open a tool and tap “Copy to share”, then come back and tap Add a shared tool."
-                                        : "That's not a Tenzy tool link. Use a tool's “Copy to share” button, then tap Add a shared tool."
                                 }
-                            } label: { Label(L("Add a shared tool"), systemImage: "square.and.arrow.down") }.font(HandyFont.caption)
                                 .accessibilityHint(L("Adds a tool someone sent you. Copy their link first."))
+                            }
                         }
                         Text(L("Got a Tenzy tool from a friend? Copy the link they sent, then tap Add a shared tool. To send one of yours, open My tools and choose Copy to share."))
                             .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
@@ -864,24 +864,18 @@ struct BuilderView: View {
             HStack(spacing: HandySpacing.s8) {
                 Button { pickTypes = [.pdf]; pickingAny = true } label: { objTile("PDF") }.accessibilityIdentifier("have-pdf")
                 Button { pickTypes = [.item]; pickingAny = true } label: { objTile("File") }.accessibilityIdentifier("have-file")
-                Button {
-                    let pb = UIPasteboard.general
-                    // Prefer an image when the clipboard reports one, reading it robustly — plain
-                    // `pb.image` returns nil for HEIC / file-backed / multi-representation items that
-                    // still set `hasImages`, which used to dead-end the tile that said "Image copied".
-                    // A link copied from Safari, Photos or a share sheet often comes as a URL only, with no
-                    // plain-text copy — so `pb.string` alone said "nothing copied" under a tile reading
-                    // "Link copied". Read the URL too.
-                    let copied = Clipboard.text ?? ""
-                    if pb.hasImages, let img = pasteboardImage() { note = nil; given = Given(payload: .image(img), label: "A photo") }
-                    else if let g = Given.from(text: copied) { note = nil; given = g }
-                    else if let img = pasteboardImage() { note = nil; given = Given(payload: .image(img), label: "A photo") }
-                    else if clipKind != nil {
-                        // Something is there but iOS didn't hand it over — the person tapped "Don't Allow".
-                        note = "Tenzy wasn't allowed to read what you copied. Tap Paste again and choose Allow Paste — or turn on Settings › Apps › Tenzy › Paste from Other Apps › Allow."
-                    } else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
-                    refreshClipKind()
-                } label: { objTile("Paste", sub: clipKind.map { "\($0) copied" } ?? "Nothing copied") }.accessibilityIdentifier("have-paste")
+                // The system paste control reads the clipboard with no "Allow Paste?" prompt and can never be
+                // refused — a custom button reading UIPasteboard asked every time, and dead-ended on "Don't Allow".
+                VStack(spacing: 6) {
+                    PasteButton(supportedContentTypes: [.image, .url, .plainText]) { providers in pasteHome(providers) }
+                        .labelStyle(.titleAndIcon)
+                        .buttonBorderShape(.roundedRectangle(radius: 10))
+                        .tint(Color(hex: 0x14B8A6))
+                        .accessibilityIdentifier("have-paste")
+                    Text(L(clipKind.map { "\($0) copied" } ?? "Nothing copied")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
+                }
+                .frame(maxWidth: .infinity, minHeight: 84)
+                .cardStyle(padding: HandySpacing.s8)
             }
             if gettingReady {
                 HStack(spacing: HandySpacing.s8) {
@@ -897,28 +891,28 @@ struct BuilderView: View {
         .onChange(of: scenePhase) { _, p in if p == .active { refreshClipKind() } }
         .onReceive(NotificationCenter.default.publisher(for: UIPasteboard.changedNotification)) { _ in refreshClipKind() }
     }
+    /// What the paste control handed over: a picture, a link or text, each starting the matching tools.
+    private func pasteHome(_ providers: [NSItemProvider]) {
+        func done(_ g: Given?) {
+            DispatchQueue.main.async {
+                if let g { note = nil; given = g } else { note = "There is nothing copied to paste. Copy some text, a link or a picture first." }
+                refreshClipKind()
+            }
+        }
+        if let p = providers.first(where: { $0.canLoadObject(ofClass: UIImage.self) }) {
+            _ = p.loadObject(ofClass: UIImage.self) { obj, _ in done((obj as? UIImage).map { Given(payload: .image($0), label: "A photo") }) }
+        } else if let p = providers.first(where: { $0.canLoadObject(ofClass: URL.self) }) {
+            _ = p.loadObject(ofClass: URL.self) { obj, _ in done((obj as? URL).flatMap { Given.from(text: $0.absoluteString) }) }
+        } else if let p = providers.first(where: { $0.canLoadObject(ofClass: String.self) }) {
+            _ = p.loadObject(ofClass: String.self) { obj, _ in done((obj as? String).flatMap { Given.from(text: $0) }) }
+        } else { done(nil) }
+    }
+
     /// What's on the clipboard, read prompt-free — hasImages/hasURLs/hasStrings return the type without
     /// exposing the contents, so only the Paste tap (which reads it) ever triggers the iOS paste prompt.
     private func refreshClipKind() {
         let pb = UIPasteboard.general
         clipKind = pb.hasImages ? "Image" : pb.hasURLs ? "Link" : pb.hasStrings ? "Text" : nil
-    }
-    /// Reads an image from the clipboard even when `UIPasteboard.image` returns nil — HEIC, file-backed
-    /// or multi-representation items that still report `hasImages`. Falls back to decoding the raw data
-    /// for each known image type, then any item carrying an image-conforming representation.
-    private func pasteboardImage() -> UIImage? {
-        let pb = UIPasteboard.general
-        if let img = pb.image { return img }
-        for t in [UTType.png, .jpeg, .heic, .tiff, .gif, .bmp, .webP, .image] {
-            if let d = pb.data(forPasteboardType: t.identifier), let im = UIImage(data: d) { return im }
-        }
-        for item in pb.items {
-            for (type, value) in item where (UTType(type)?.conforms(to: .image) ?? false) {
-                if let im = value as? UIImage { return im }
-                if let d = value as? Data, let im = UIImage(data: d) { return im }
-            }
-        }
-        return nil
     }
     private func objTile(_ title: String, sub: String? = nil) -> some View {
         // Each kind of thing gets its own mark and colour, so the six read at a glance.

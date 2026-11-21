@@ -95,7 +95,7 @@ struct UntangleView: View {
                         Label(speech.running ? L("Stop") : L("Talk"), systemImage: speech.running ? "stop.circle.fill" : "mic.fill")
                     }.compactButton()
                     PhotosPicker(selection: $shot, matching: .images) { Label(L("Screenshot"), systemImage: "text.viewfinder") }.compactButton()
-                    Button { if let s = Clipboard.text { input = s } } label: { Label(L("Paste"), systemImage: "doc.on.clipboard") }.compactButton()
+                    PasteTextButton { input = $0 }
                     if !input.isEmpty { Button(L("Clear")) { input = ""; plan = nil; UntangleCheckIns.cancelAll() }.textButton() }
                 }
             }

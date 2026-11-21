@@ -38,7 +38,7 @@ struct TextStudioView: View {
                     .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(focused ? HandyColor.accent : HandyColor.border, lineWidth: 1))
                     .overlay(alignment: .topLeading) { if text.isEmpty { Text(L("Type or paste your text, email, or the message you're replying to…")).foregroundStyle(HandyColor.textSecondary).padding(HandySpacing.s12).allowsHitTesting(false) } }
                 HStack {
-                    Button(L("Paste")) { if let s = Clipboard.text { text = s } }.compactButton()
+                    PasteTextButton { text = $0 }
                     if !text.isEmpty { Button(L("Clear")) { text = ""; output = "" }.textButton() }
                     Spacer()
                     if !text.isEmpty { Text("\(stats.words) words · \(stats.readingSeconds)s read · grade \(String(format: "%.0f", stats.grade))").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary) }

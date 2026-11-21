@@ -79,7 +79,7 @@ struct SortedView: View {
             HandyFlow(spacing: HandySpacing.s8) {
                 Button { showScanner = true } label: { Label(L("Scan pages"), systemImage: "doc.viewfinder") }.compactButton()
                 PhotosPicker(selection: $photoItem, matching: .images) { Label(L("Photo"), systemImage: "photo") }.compactButton()
-                Button(L("Paste")) { if let s = Clipboard.text { text = s; parsed = nil } }.compactButton()
+                PasteTextButton { text = $0; parsed = nil }
                 if hasText { Button(L("Clear")) { text = ""; parsed = nil; draft = nil; errorText = nil } .textButton() }
             }
         }
