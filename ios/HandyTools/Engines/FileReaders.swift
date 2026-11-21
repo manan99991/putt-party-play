@@ -94,7 +94,7 @@ enum FileReaders {
         // Voice notes and Ogg audio (WhatsApp, Telegram, podcasts): decoded so they play like any recording.
         if AudioIntake.isOggOpus(url) {
             if let m4a = Transcriber.oggOpusToM4A(url) { return .quickLook(m4a) }
-            return info(url, kind: "Ogg audio", "This Ogg file uses Vorbis, which Tenzy can't play yet — Opus voice notes play fine.")
+            return info(url, kind: "Ogg audio", "This Ogg file couldn't be read — it may be damaged or only partly downloaded.")
         }
         // MIDI: iPhone has no MIDI sounds, so the notes are played into a normal audio file you can hear and share.
         if ["mid", "midi", "kar", "smf"].contains(ext) || head.starts(with: Array("MThd".utf8)) {

@@ -463,10 +463,13 @@ enum Transcriber {
         let out = FileManager.default.temporaryDirectory.appendingPathComponent("tenzy-opus-\(UUID().uuidString).m4a")
         do {
             try OGGConverter.convertOpusOGGToM4aFile(src: src, dest: out)
-            return FileManager.default.fileExists(atPath: out.path) ? out : nil
-        } catch { return nil }
+            if FileManager.default.fileExists(atPath: out.path) { return out }
+        } catch {}
+        // Not Opus: an Ogg Vorbis file (podcasts, many Android recordings) — decoded the other way, so it works
+        // everywhere an Ogg is accepted (File Opener, voice tools, ready-made tools, the Share sheet).
+        return VorbisAudio.toM4A(src)
         #else
-        return nil
+        return VorbisAudio.toM4A(src)
         #endif
     }
 

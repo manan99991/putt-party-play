@@ -29,6 +29,9 @@ packages:
     # No tagged release upstream; its binary deps (vector-im opus-swift 0.8.4 / ogg-swift 0.8.3) are versioned.
     url: https://github.com/element-hq/swift-ogg
     branch: main
+  StbVorbis:
+    # Local package: stb_vorbis (public domain) to play Ogg Vorbis files in File Opener.
+    path: Packages/StbVorbis
   SWCompression:
     # Pure-Swift 7-Zip (LZMA/LZMA2), BZip2 and LZ4 (MIT). File Opener tier 2: .7z, .cb7 comics, .bz2, .tbz2.
     url: https://github.com/tsolomko/SWCompression
@@ -49,6 +52,7 @@ targets:
     dependencies:
       - package: SwiftOGG
       - package: SWCompression
+      - package: StbVorbis
       - target: ShareExtension
       - target: StickyWidget
       - sdk: VisionKit.framework
