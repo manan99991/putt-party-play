@@ -37628,5 +37628,435 @@
   "ja": "これは何？",
   "pt": "O que é isto?",
   "zh": "这是什么？"
+ },
+ "Your automations": {
+  "de": "Deine Automationen",
+  "es": "Tus automatizaciones",
+  "fr": "Vos automatisations",
+  "hi": "आपके ऑटोमेशन",
+  "it": "Le tue automazioni",
+  "ja": "あなたのオートメーション",
+  "pt": "Suas automações",
+  "zh": "你的自动化"
+ },
+ "Everything Tenzy does for you on its own, in one place.": {
+  "de": "Alles, was Tenzy von selbst für dich erledigt, an einem Ort.",
+  "es": "Todo lo que Tenzy hace por ti solo, en un mismo lugar.",
+  "fr": "Tout ce que Tenzy fait pour vous tout seul, au même endroit.",
+  "hi": "Tenzy आपके लिए जो कुछ अपने आप करता है, सब एक जगह।",
+  "it": "Tutto ciò che Tenzy fa per te da solo, in un unico posto.",
+  "ja": "Tenzyが自動でしてくれることを、ひとつの場所に。",
+  "pt": "Tudo o que o Tenzy faz sozinho por você, em um só lugar.",
+  "zh": "Tenzy 自动为你做的一切，都在这里。"
+ },
+ "Set and running": {
+  "de": "Eingerichtet und aktiv",
+  "es": "Configurado y en marcha",
+  "fr": "Configuré et actif",
+  "hi": "सेट और चालू",
+  "it": "Impostato e attivo",
+  "ja": "設定済み・実行中",
+  "pt": "Configurado e ativo",
+  "zh": "已设置并运行"
+ },
+ "Looking at what's set…": {
+  "de": "Ich sehe nach, was eingerichtet ist …",
+  "es": "Revisando lo que está configurado…",
+  "fr": "Je regarde ce qui est configuré…",
+  "hi": "देख रहे हैं कि क्या सेट है…",
+  "it": "Controllo cosa è impostato…",
+  "ja": "設定内容を確認中…",
+  "pt": "Verificando o que está configurado…",
+  "zh": "正在查看已设置的内容…"
+ },
+ "Nothing is set yet. Pick one below — each takes a minute and has a Test run.": {
+  "de": "Noch nichts eingerichtet. Wähle unten etwas aus – jedes dauert eine Minute und hat einen Testlauf.",
+  "es": "Aún no hay nada configurado. Elige uno abajo: cada uno lleva un minuto y tiene una prueba.",
+  "fr": "Rien n'est encore configuré. Choisissez-en un ci-dessous : chacun prend une minute et a un essai.",
+  "hi": "अभी कुछ सेट नहीं है। नीचे से कोई चुनें — हर एक में एक मिनट लगता है और टेस्ट रन होता है।",
+  "it": "Non è ancora impostato nulla. Scegline uno qui sotto: ognuno richiede un minuto e ha una prova.",
+  "ja": "まだ何も設定されていません。下から選んでください。どれも1分ででき、テスト実行があります。",
+  "pt": "Nada configurado ainda. Escolha um abaixo — cada um leva um minuto e tem um teste.",
+  "zh": "还没有设置任何内容。在下面选一个——每个只需一分钟，并且可以试运行。"
+ },
+ "Set one up": {
+  "de": "Etwas einrichten",
+  "es": "Configura uno",
+  "fr": "En configurer un",
+  "hi": "एक सेट करें",
+  "it": "Impostane uno",
+  "ja": "ひとつ設定する",
+  "pt": "Configure um",
+  "zh": "设置一个"
+ },
+ "Reminders come from iPhone itself, so they arrive even when Tenzy is closed. Turn one off inside its tool.": {
+  "de": "Erinnerungen kommen vom iPhone selbst – sie erscheinen auch, wenn Tenzy geschlossen ist. Ausschalten kannst du sie im jeweiligen Tool.",
+  "es": "Los recordatorios los envía el propio iPhone, así que llegan aunque Tenzy esté cerrado. Desactívalos dentro de su herramienta.",
+  "fr": "Les rappels viennent de l'iPhone lui-même : ils arrivent même quand Tenzy est fermé. Désactivez-les dans leur outil.",
+  "hi": "रिमाइंडर iPhone खुद भेजता है, इसलिए Tenzy बंद होने पर भी आते हैं। किसी को बंद करने के लिए उसके टूल में जाएँ।",
+  "it": "I promemoria arrivano dall'iPhone stesso, anche con Tenzy chiuso. Disattivali dentro il loro strumento.",
+  "ja": "リマインダーはiPhone自体から届くので、Tenzyを閉じていても届きます。オフにするにはそのツールの中で。",
+  "pt": "Os lembretes vêm do próprio iPhone, então chegam mesmo com o Tenzy fechado. Desative dentro da ferramenta.",
+  "zh": "提醒由 iPhone 本身发送，所以即使 Tenzy 已关闭也会收到。要关闭，请在对应的工具里操作。"
+ },
+ "Nothing below can reach you until they're on.": {
+  "de": "Nichts hiervon erreicht dich, bis sie an sind.",
+  "es": "Nada de esto te llegará hasta que las actives.",
+  "fr": "Rien de ceci ne vous parviendra tant qu'elles sont désactivées.",
+  "hi": "जब तक ये चालू नहीं होतीं, नीचे का कुछ भी आप तक नहीं पहुँचेगा।",
+  "it": "Nulla di questo ti raggiungerà finché non le attivi.",
+  "ja": "オンにするまで、以下は届きません。",
+  "pt": "Nada disto chega até você enquanto estiverem desligadas.",
+  "zh": "在打开之前，下面的提醒都无法送达。"
+ },
+ "Turn on notifications": {
+  "de": "Mitteilungen einschalten",
+  "es": "Activar notificaciones",
+  "fr": "Activer les notifications",
+  "hi": "सूचनाएँ चालू करें",
+  "it": "Attiva le notifiche",
+  "ja": "通知をオンにする",
+  "pt": "Ativar notificações",
+  "zh": "打开通知"
+ },
+ "Sent — check the top of the screen": {
+  "de": "Gesendet – schau oben auf den Bildschirm",
+  "es": "Enviado: mira la parte de arriba de la pantalla",
+  "fr": "Envoyé — regardez en haut de l'écran",
+  "hi": "भेज दिया — स्क्रीन के ऊपर देखें",
+  "it": "Inviato: guarda in cima allo schermo",
+  "ja": "送信しました。画面の上部を見てください",
+  "pt": "Enviado — veja o topo da tela",
+  "zh": "已发送——请看屏幕顶部"
+ },
+ "1 reminder set": {
+  "de": "1 Erinnerung eingerichtet",
+  "es": "1 recordatorio configurado",
+  "fr": "1 rappel configuré",
+  "hi": "1 रिमाइंडर सेट",
+  "it": "1 promemoria impostato",
+  "ja": "リマインダー1件",
+  "pt": "1 lembrete configurado",
+  "zh": "已设置 1 个提醒"
+ },
+ "reminders set": {
+  "de": "Erinnerungen eingerichtet",
+  "es": "recordatorios configurados",
+  "fr": "rappels configurés",
+  "hi": "रिमाइंडर सेट",
+  "it": "promemoria impostati",
+  "ja": "件のリマインダー",
+  "pt": "lembretes configurados",
+  "zh": "个提醒已设置"
+ },
+ "next": {
+  "de": "nächste",
+  "es": "próximo",
+  "fr": "prochain",
+  "hi": "अगला",
+  "it": "prossimo",
+  "ja": "次回",
+  "pt": "próximo",
+  "zh": "下次"
+ },
+ "Test": {
+  "de": "Test",
+  "es": "Prueba",
+  "fr": "Essai",
+  "hi": "टेस्ट",
+  "it": "Prova",
+  "ja": "テスト",
+  "pt": "Teste",
+  "zh": "测试"
+ },
+ "Contacts backup": {
+  "de": "Kontakte-Backup",
+  "es": "Copia de contactos",
+  "fr": "Sauvegarde des contacts",
+  "hi": "कॉन्टैक्ट बैकअप",
+  "it": "Backup dei contatti",
+  "ja": "連絡先のバックアップ",
+  "pt": "Backup dos contatos",
+  "zh": "通讯录备份"
+ },
+ "Plans and arrivals": {
+  "de": "Pläne und Ankünfte",
+  "es": "Planes y llegadas",
+  "fr": "Projets et arrivées",
+  "hi": "योजनाएँ और पहुँचना",
+  "it": "Piani e arrivi",
+  "ja": "予定と到着",
+  "pt": "Planos e chegadas",
+  "zh": "计划和到达"
+ },
+ "Bills and letters": {
+  "de": "Rechnungen und Briefe",
+  "es": "Facturas y cartas",
+  "fr": "Factures et courriers",
+  "hi": "बिल और पत्र",
+  "it": "Bollette e lettere",
+  "ja": "請求書と手紙",
+  "pt": "Contas e cartas",
+  "zh": "账单和信件"
+ },
+ "Warranties and returns": {
+  "de": "Garantien und Rückgaben",
+  "es": "Garantías y devoluciones",
+  "fr": "Garanties et retours",
+  "hi": "वारंटी और वापसी",
+  "it": "Garanzie e resi",
+  "ja": "保証と返品",
+  "pt": "Garantias e devoluções",
+  "zh": "保修和退货"
+ },
+ "Documents expiring": {
+  "de": "Ablaufende Dokumente",
+  "es": "Documentos que vencen",
+  "fr": "Documents qui expirent",
+  "hi": "समाप्त हो रहे दस्तावेज़",
+  "it": "Documenti in scadenza",
+  "ja": "期限が近い書類",
+  "pt": "Documentos vencendo",
+  "zh": "即将到期的证件"
+ },
+ "Tool reminders": {
+  "de": "Tool-Erinnerungen",
+  "es": "Recordatorios de herramientas",
+  "fr": "Rappels d'outils",
+  "hi": "टूल रिमाइंडर",
+  "it": "Promemoria degli strumenti",
+  "ja": "ツールのリマインダー",
+  "pt": "Lembretes de ferramentas",
+  "zh": "工具提醒"
+ },
+ "Tell me when · Price Watch": {
+  "de": "Sag mir Bescheid · Preiswächter",
+  "es": "Avísame · Vigilar precio",
+  "fr": "Préviens-moi · Suivi de prix",
+  "hi": "मुझे बताएँ · कीमत पर नज़र",
+  "it": "Avvisami · Controllo prezzi",
+  "ja": "お知らせ · 価格ウォッチ",
+  "pt": "Me avise · Vigiar preço",
+  "zh": "提醒我 · 价格监控"
+ },
+ "Bedtime": {
+  "de": "Schlafenszeit",
+  "es": "Hora de dormir",
+  "fr": "Coucher",
+  "hi": "सोने का समय",
+  "it": "Ora di dormire",
+  "ja": "就寝",
+  "pt": "Hora de dormir",
+  "zh": "就寝时间"
+ },
+ "Morning plan": {
+  "de": "Morgenplan",
+  "es": "Plan de la mañana",
+  "fr": "Plan du matin",
+  "hi": "सुबह की योजना",
+  "it": "Piano del mattino",
+  "ja": "朝のプラン",
+  "pt": "Plano da manhã",
+  "zh": "早晨计划"
+ },
+ "Phone alerts": {
+  "de": "Handy-Hinweise",
+  "es": "Alertas del teléfono",
+  "fr": "Alertes du téléphone",
+  "hi": "फ़ोन अलर्ट",
+  "it": "Avvisi del telefono",
+  "ja": "スマホのアラート",
+  "pt": "Alertas do celular",
+  "zh": "手机提醒"
+ },
+ "Other reminders": {
+  "de": "Andere Erinnerungen",
+  "es": "Otros recordatorios",
+  "fr": "Autres rappels",
+  "hi": "अन्य रिमाइंडर",
+  "it": "Altri promemoria",
+  "ja": "その他のリマインダー",
+  "pt": "Outros lembretes",
+  "zh": "其他提醒"
+ },
+ "Medicine reminders": {
+  "de": "Medikamenten-Erinnerungen",
+  "es": "Recordatorios de medicinas",
+  "fr": "Rappels de médicaments",
+  "hi": "दवा रिमाइंडर",
+  "it": "Promemoria per i farmaci",
+  "ja": "服薬リマインダー",
+  "pt": "Lembretes de remédios",
+  "zh": "用药提醒"
+ },
+ "A Taken button, refills, a nudge if you miss one": {
+  "de": "Ein Genommen-Knopf, Nachfüllen, ein Hinweis, wenn du eine vergisst",
+  "es": "Un botón de Tomada, reposición y un aviso si se te pasa una",
+  "fr": "Un bouton Pris, les renouvellements, un rappel si vous en oubliez un",
+  "hi": "‘ले ली’ बटन, रिफ़िल, और छूट जाने पर याद दिलाना",
+  "it": "Un pulsante Presa, i rifornimenti, un avviso se ne salti una",
+  "ja": "「服用済み」ボタン、補充、飲み忘れのお知らせ",
+  "pt": "Botão Tomei, reposição e um aviso se esquecer",
+  "zh": "“已服用”按钮、补药提醒，漏服时会提醒你"
+ },
+ "A morning brief": {
+  "de": "Ein Morgen-Briefing",
+  "es": "Un resumen matutino",
+  "fr": "Un point du matin",
+  "hi": "सुबह का सारांश",
+  "it": "Un riepilogo del mattino",
+  "ja": "朝のブリーフ",
+  "pt": "Um resumo da manhã",
+  "zh": "早间简报"
+ },
+ "Today's doses, bills, birthdays and weather in one note": {
+  "de": "Heutige Dosen, Rechnungen, Geburtstage und Wetter in einer Notiz",
+  "es": "Las dosis, facturas, cumpleaños y el tiempo de hoy en una nota",
+  "fr": "Les doses, factures, anniversaires et la météo du jour en une note",
+  "hi": "आज की दवाएँ, बिल, जन्मदिन और मौसम — एक नोट में",
+  "it": "Dosi, bollette, compleanni e meteo di oggi in una nota",
+  "ja": "今日の服薬・請求・誕生日・天気をひとつの通知に",
+  "pt": "Doses, contas, aniversários e tempo de hoje em uma nota",
+  "zh": "今天的用药、账单、生日和天气，汇成一条提醒"
+ },
+ "Back up my contacts every month": {
+  "de": "Kontakte jeden Monat sichern",
+  "es": "Copia de mis contactos cada mes",
+  "fr": "Sauvegarder mes contacts chaque mois",
+  "hi": "हर महीने मेरे कॉन्टैक्ट का बैकअप",
+  "it": "Backup dei contatti ogni mese",
+  "ja": "毎月連絡先をバックアップ",
+  "pt": "Fazer backup dos contatos todo mês",
+  "zh": "每月备份我的通讯录"
+ },
+ "A dated copy in Files, so a lost phone isn't lost contacts": {
+  "de": "Eine datierte Kopie in Dateien – verlorenes Handy heißt nicht verlorene Kontakte",
+  "es": "Una copia con fecha en Archivos: perder el móvil no es perder los contactos",
+  "fr": "Une copie datée dans Fichiers : perdre le téléphone ne veut pas dire perdre les contacts",
+  "hi": "Files में तारीख़ वाली कॉपी — फ़ोन खोए तो कॉन्टैक्ट न खोएँ",
+  "it": "Una copia datata in File: perdere il telefono non significa perdere i contatti",
+  "ja": "日付入りのコピーを「ファイル」に。スマホをなくしても連絡先は無事",
+  "pt": "Uma cópia datada em Arquivos: perder o celular não é perder os contatos",
+  "zh": "在“文件”里存一份带日期的副本，丢了手机也不丢通讯录"
+ },
+ "Birthday reminders": {
+  "de": "Geburtstags-Erinnerungen",
+  "es": "Recordatorios de cumpleaños",
+  "fr": "Rappels d'anniversaire",
+  "hi": "जन्मदिन रिमाइंडर",
+  "it": "Promemoria dei compleanni",
+  "ja": "誕生日リマインダー",
+  "pt": "Lembretes de aniversário",
+  "zh": "生日提醒"
+ },
+ "A day early, with a wish ready to send": {
+  "de": "Einen Tag vorher, mit einem fertigen Glückwunsch",
+  "es": "Un día antes, con una felicitación lista para enviar",
+  "fr": "La veille, avec un message prêt à envoyer",
+  "hi": "एक दिन पहले, भेजने के लिए तैयार शुभकामना के साथ",
+  "it": "Un giorno prima, con un augurio pronto da inviare",
+  "ja": "前日に、送れるお祝いメッセージ付きで",
+  "pt": "Um dia antes, com uma mensagem pronta para enviar",
+  "zh": "提前一天，附上写好的祝福"
+ },
+ "Bill reminders": {
+  "de": "Rechnungs-Erinnerungen",
+  "es": "Recordatorios de facturas",
+  "fr": "Rappels de factures",
+  "hi": "बिल रिमाइंडर",
+  "it": "Promemoria delle bollette",
+  "ja": "請求書のリマインダー",
+  "pt": "Lembretes de contas",
+  "zh": "账单提醒"
+ },
+ "Snap a bill; get told before it's due": {
+  "de": "Rechnung fotografieren – rechtzeitig erinnert werden",
+  "es": "Fotografía una factura y te avisamos antes del vencimiento",
+  "fr": "Photographiez une facture ; soyez prévenu avant l'échéance",
+  "hi": "बिल की फ़ोटो लें; ड्यू डेट से पहले बताया जाएगा",
+  "it": "Fotografa una bolletta e ricevi un avviso prima della scadenza",
+  "ja": "請求書を撮るだけで、期限前にお知らせ",
+  "pt": "Fotografe uma conta e seja avisado antes do vencimento",
+  "zh": "拍下账单，到期前提醒你"
+ },
+ "Tell me when my phone fills up": {
+  "de": "Sag mir, wenn mein Handy voll wird",
+  "es": "Avísame cuando el teléfono se llene",
+  "fr": "Préviens-moi quand mon téléphone se remplit",
+  "hi": "जब फ़ोन भरने लगे तो बताएँ",
+  "it": "Avvisami quando il telefono si riempie",
+  "ja": "スマホがいっぱいになったら知らせる",
+  "pt": "Me avise quando o celular estiver enchendo",
+  "zh": "手机快满时提醒我"
+ },
+ "Watch a price": {
+  "de": "Einen Preis beobachten",
+  "es": "Vigilar un precio",
+  "fr": "Surveiller un prix",
+  "hi": "किसी कीमत पर नज़र रखें",
+  "it": "Tieni d'occhio un prezzo",
+  "ja": "価格をウォッチ",
+  "pt": "Vigiar um preço",
+  "zh": "监控一个价格"
+ },
+ "Told when a price on a web page drops": {
+  "de": "Benachrichtigt, wenn ein Preis auf einer Webseite fällt",
+  "es": "Te avisamos cuando baje un precio de una web",
+  "fr": "Prévenu quand un prix baisse sur une page web",
+  "hi": "वेब पेज पर कीमत घटने पर सूचना",
+  "it": "Avvisato quando un prezzo su una pagina web scende",
+  "ja": "ウェブページの価格が下がったらお知らせ",
+  "pt": "Aviso quando um preço em uma página cair",
+  "zh": "网页上的价格下降时通知你"
+ },
+ "Run one of my tools on a schedule": {
+  "de": "Eines meiner Tools nach Zeitplan ausführen",
+  "es": "Usar una de mis herramientas con horario",
+  "fr": "Lancer un de mes outils à heure fixe",
+  "hi": "मेरा कोई टूल तय समय पर चलाएँ",
+  "it": "Usare uno dei miei strumenti a orari fissi",
+  "ja": "自分のツールを決まった時間に実行",
+  "pt": "Rodar uma das minhas ferramentas em horário fixo",
+  "zh": "按时间表运行我的某个工具"
+ },
+ "e.g. 'scan my receipts every Friday at 6'": {
+  "de": "z. B. „Belege jeden Freitag um 18 Uhr scannen“",
+  "es": "p. ej., «escanear mis recibos cada viernes a las 6»",
+  "fr": "p. ex. « scanner mes reçus chaque vendredi à 18 h »",
+  "hi": "जैसे ‘हर शुक्रवार शाम 6 बजे मेरी रसीदें स्कैन करो’",
+  "it": "es. «scansiona le mie ricevute ogni venerdì alle 18»",
+  "ja": "例:「毎週金曜18時にレシートをスキャン」",
+  "pt": "ex.: “escanear meus recibos toda sexta às 18h”",
+  "zh": "例如“每周五晚 6 点扫描我的收据”"
+ },
+ "A bedtime nudge": {
+  "de": "Eine Erinnerung zur Schlafenszeit",
+  "es": "Un aviso a la hora de dormir",
+  "fr": "Un rappel au coucher",
+  "hi": "सोने के समय की याद",
+  "it": "Un promemoria per andare a dormire",
+  "ja": "就寝のお知らせ",
+  "pt": "Um lembrete na hora de dormir",
+  "zh": "睡前提醒"
+ },
+ "A wind-down reminder at the same time each night": {
+  "de": "Jeden Abend zur gleichen Zeit ein Hinweis zum Runterfahren",
+  "es": "Un recordatorio para relajarte cada noche a la misma hora",
+  "fr": "Un rappel pour décompresser chaque soir à la même heure",
+  "hi": "हर रात एक ही समय पर आराम करने की याद",
+  "it": "Un promemoria per rilassarti ogni sera alla stessa ora",
+  "ja": "毎晩同じ時間に、くつろぐ時間のお知らせ",
+  "pt": "Um lembrete para desacelerar toda noite no mesmo horário",
+  "zh": "每晚同一时间提醒你放松下来"
+ },
+ "Automations": {
+  "de": "Automationen",
+  "es": "Automatizaciones",
+  "fr": "Automatisations",
+  "hi": "ऑटोमेशन",
+  "it": "Automazioni",
+  "ja": "オートメーション",
+  "pt": "Automações",
+  "zh": "自动化"
  }
 }
