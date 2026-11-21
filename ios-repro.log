@@ -1,19 +1,36 @@
-Test Case '-[HandyToolsUITests.GuideBisectTests testWhichPartCloses]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:20: error: -[HandyToolsUITests.GuideBisectTests testWhichPartCloses] : Failed to get matching snapshots: Lost connection to the application (pid 27745). (Underlying Error: Couldn’t communicate with a helper application. Try your operation again. If that fails, quit and relaunch the application and try again. connection to service with pid 27745 created from an endpoint)
-Test Case '-[HandyToolsUITests.GuideBisectTests testWhichPartCloses]' failed (103.434 seconds).
-	 Executed 1 test, with 1 failure (0 unexpected) in 103.434 (103.446) seconds
-Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' started.
-<unknown>:0: error: -[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp] : com.tenzy.toolkit crashed
-Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' failed (96.945 seconds).
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' started.
-<unknown>:0: error: -[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide] : com.tenzy.toolkit crashed
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' failed (106.716 seconds).
-	 Executed 2 tests, with 2 failures (0 unexpected) in 203.660 (203.664) seconds
-	 Executed 3 tests, with 3 failures (0 unexpected) in 307.095 (307.121) seconds
-	 Executed 3 tests, with 3 failures (0 unexpected) in 307.095 (307.122) seconds
+Test Case '-[HandyToolsUITests.GuideBisectTests test1_everything]' started.
+BISECT skip=[] read=false alive=false
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:18: error: -[HandyToolsUITests.GuideBisectTests test1_everything] : XCTAssertTrue failed - skip=[] closed the app
+<unknown>:0: error: -[HandyToolsUITests.GuideBisectTests test1_everything] : com.tenzy.toolkit crashed
+Test Case '-[HandyToolsUITests.GuideBisectTests test1_everything]' failed (131.389 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test2_noSuggestion]' started.
+BISECT skip=[suggest] read=true alive=true
+Test Case '-[HandyToolsUITests.GuideBisectTests test2_noSuggestion]' passed (30.152 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test3_noPreviewPicture]' started.
+BISECT skip=[preview] read=true alive=true
+Test Case '-[HandyToolsUITests.GuideBisectTests test3_noPreviewPicture]' passed (29.909 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test4_noGoalTiles]' started.
+BISECT skip=[grid] read=false alive=false
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:18: error: -[HandyToolsUITests.GuideBisectTests test4_noGoalTiles] : XCTAssertTrue failed - skip=[grid] closed the app
+<unknown>:0: error: -[HandyToolsUITests.GuideBisectTests test4_noGoalTiles] : com.tenzy.toolkit crashed
+Test Case '-[HandyToolsUITests.GuideBisectTests test4_noGoalTiles]' failed (68.972 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test5_noHeader]' started.
+BISECT skip=[header] read=false alive=false
+<unknown>:0: error: -[HandyToolsUITests.GuideBisectTests test5_noHeader] : com.tenzy.toolkit crashed
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:18: error: -[HandyToolsUITests.GuideBisectTests test5_noHeader] : XCTAssertTrue failed - skip=[header] closed the app
+Test Case '-[HandyToolsUITests.GuideBisectTests test5_noHeader]' failed (58.256 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test6_noSuggestionNoGrid]' started.
+BISECT skip=[suggest,grid] read=true alive=true
+Test Case '-[HandyToolsUITests.GuideBisectTests test6_noSuggestionNoGrid]' passed (25.427 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test7_onePhoto]' started.
+BISECT skip=[] read=true alive=true
+Test Case '-[HandyToolsUITests.GuideBisectTests test7_onePhoto]' passed (25.760 seconds).
+	 Executed 7 tests, with 6 failures (0 unexpected) in 369.866 (369.894) seconds
+	 Executed 7 tests, with 6 failures (0 unexpected) in 369.866 (369.900) seconds
+	 Executed 7 tests, with 6 failures (0 unexpected) in 369.866 (369.901) seconds
 == crash reports
-== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-21-005302.ips
-exception: {'codes': '0x0000000000000002, 0x000000016ace7fb8', 'message': 'Could not determine thread index for stack guard region', 'rawCodes': [2, 6086885304], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016ace7fb8'}
+== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-21-012324.ips
+exception: {'codes': '0x0000000000000002, 0x000000016c737f98', 'message': 'Could not determine thread index for stack guard region', 'rawCodes': [2, 6114475928], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016c737f98'}
 thread name: Tenzy: Home · Guide: 2 photos
 thread name: com.apple.SwiftUI.AsyncRenderer
 crashed thread frames: 177
@@ -97,23 +114,15 @@ most repeated:
      5  ?
      3  DynamicPreferenceCombiner.value.getter
      2  specialized static AccessibilityViewModifier._makeView(modifier:inputs:body:)
-== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-21-005103.ips
-exception: {'codes': '0x0000000000000002, 0x000000016ee9ffe0', 'message': 'Could not determine thread index for stack guard region', 'rawCodes': [2, 6155796448], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016ee9ffe0'}
-thread name: Tenzy: Home · Guide: 6 photos
+== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-21-012226.ips
+exception: {'codes': '0x0000000000000002, 0x000000016c74bf98', 'message': 'Could not determine thread index for stack guard region', 'rawCodes': [2, 6114557848], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016c74bf98'}
+thread name: Tenzy: Home · Guide: 2 photos
 thread name: com.apple.SwiftUI.AsyncRenderer
-crashed thread frames: 172
+crashed thread frames: 177
 app frames: 2
      1  static TenzyApp.$main()  [HandyTools.debug.dylib]
      1  __debug_main_executable_dylib_entry_point  [HandyTools.debug.dylib]
 outermost 60 frames:
-    SwiftUICore DynamicViewList.WrappedList.applyNodes(from:style:list:transform:to:)  
-    SwiftUICore ViewList.applySublists(from:list:to:)  
-    SwiftUICore specialized DynamicContainerInfo.updateItems(disableTransitions:dirtyFlags:hasDepth:)  
-    SwiftUICore specialized DynamicContainerInfo.updateValue()  
-    SwiftUICore specialized implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
-    AttributeGraph AG::Graph::UpdateStack::update()  
-    AttributeGraph AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)  
-    AttributeGraph AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)  
     AttributeGraph AGGraphGetValue  
     SwiftUICore DynamicPreferenceCombiner.info.getter  
     SwiftUICore DynamicPreferenceCombiner.value.getter  
@@ -150,11 +159,19 @@ outermost 60 frames:
     SwiftUICore ViewGraphRootValueUpdater._updateViewGraph<A>(body:)  
     SwiftUICore ViewGraphRootValueUpdater.updateGraph<A>(body:)  
     SwiftUI closure #1 in closure #1 in _UIHostingView.beginTransaction()  
-    SwiftUICore <deduplicated_symbol>  
-    SwiftUICore specialized static NSRunLoop.flushObservers()  
-    SwiftUICore @objc closure #1 in static NSRunLoop.addObserver(_:)  
-    CoreFoundation __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__  
-    CoreFoundation __CFRunLoopDoObservers  
+    UIKitCore ?  
+    UIKitCore ?  
+    UIKitCore ?  
+    SwiftUICore UpdateGroup.dispatchImmediately<A>(reason:_:)  
+    SwiftUICore static ViewGraphHostUpdate.dispatchImmediately<A>(_:)  
+    UIKitCore ?  
+    UIKitCore ?  
+    UIKitCore _UIUpdateSequenceRunNext  
+    UIKitCore schedulerStepScheduledMainSectionContinue  
+    UpdateCycle UC::DriverCore::continueProcessing()  
+    CoreFoundation __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__  
+    CoreFoundation __CFRunLoopDoSource0  
+    CoreFoundation __CFRunLoopDoSources0  
     CoreFoundation __CFRunLoopRun  
     CoreFoundation _CFRunLoopRunSpecificWithOptions  
     GraphicsServices GSEventRunModal  
@@ -167,7 +184,7 @@ outermost 60 frames:
     dyld_sim start_sim  
     dyld start  
 most repeated:
-    14  <deduplicated_symbol>
+    13  <deduplicated_symbol>
      7  closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
      7  partial apply for closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
      7  protocol witness for _ViewList_Elements.makeElements(from:inputs:body:) in conformance ModifiedElements
@@ -179,6 +196,6 @@ most repeated:
      5  AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)
      5  AGGraphGetValue
      5  implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)
+     5  ?
      3  DynamicPreferenceCombiner.value.getter
      2  specialized static AccessibilityViewModifier._makeView(modifier:inputs:body:)
-     2  specialized static UnaryLayout<>.makeViewImpl(modifier:inputs:body:)
