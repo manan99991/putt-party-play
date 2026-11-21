@@ -1,43 +1,41 @@
-Test Case '-[HandyToolsUITests.GuideBisectTests test1_everything]' started.
-BISECT skip=[] read=false alive=false
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:18: error: -[HandyToolsUITests.GuideBisectTests test1_everything] : XCTAssertTrue failed - skip=[] closed the app
-<unknown>:0: error: -[HandyToolsUITests.GuideBisectTests test1_everything] : com.tenzy.toolkit crashed
-Test Case '-[HandyToolsUITests.GuideBisectTests test1_everything]' failed (131.389 seconds).
-Test Case '-[HandyToolsUITests.GuideBisectTests test2_noSuggestion]' started.
-BISECT skip=[suggest] read=true alive=true
-Test Case '-[HandyToolsUITests.GuideBisectTests test2_noSuggestion]' passed (30.152 seconds).
-Test Case '-[HandyToolsUITests.GuideBisectTests test3_noPreviewPicture]' started.
+Test Case '-[HandyToolsUITests.GuideBisectTests test1_asShipped]' started.
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:13: error: -[HandyToolsUITests.GuideBisectTests test1_asShipped] : Failed to get matching snapshots: Lost connection to the application (pid 21059). (Underlying Error: Couldn’t communicate with a helper application. Try your operation again. If that fails, quit and relaunch the application and try again. connection to service with pid 21059 created from an endpoint)
+Test Case '-[HandyToolsUITests.GuideBisectTests test1_asShipped]' failed (90.594 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test2_withoutTheBadge]' started.
+BISECT skip=[nobadge] read=true alive=true
+Test Case '-[HandyToolsUITests.GuideBisectTests test2_withoutTheBadge]' passed (29.248 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test3_decorativePicture]' started.
+BISECT skip=[flat] read=false alive=false
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:17: error: -[HandyToolsUITests.GuideBisectTests test3_decorativePicture] : XCTAssertTrue failed - skip=[flat] closed the app
+<unknown>:0: error: -[HandyToolsUITests.GuideBisectTests test3_decorativePicture] : com.tenzy.toolkit crashed
+Test Case '-[HandyToolsUITests.GuideBisectTests test3_decorativePicture]' failed (59.912 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test4_drawnByUIKit]' started.
+<unknown>:0: error: -[HandyToolsUITests.GuideBisectTests test4_drawnByUIKit] : com.tenzy.toolkit crashed
+BISECT skip=[uikit] read=false alive=false
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:17: error: -[HandyToolsUITests.GuideBisectTests test4_drawnByUIKit] : XCTAssertTrue failed - skip=[uikit] closed the app
+Test Case '-[HandyToolsUITests.GuideBisectTests test4_drawnByUIKit]' failed (54.592 seconds).
+Test Case '-[HandyToolsUITests.GuideBisectTests test5_noPreview]' started.
 BISECT skip=[preview] read=true alive=true
-Test Case '-[HandyToolsUITests.GuideBisectTests test3_noPreviewPicture]' passed (29.909 seconds).
-Test Case '-[HandyToolsUITests.GuideBisectTests test4_noGoalTiles]' started.
-BISECT skip=[grid] read=false alive=false
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:18: error: -[HandyToolsUITests.GuideBisectTests test4_noGoalTiles] : XCTAssertTrue failed - skip=[grid] closed the app
-<unknown>:0: error: -[HandyToolsUITests.GuideBisectTests test4_noGoalTiles] : com.tenzy.toolkit crashed
-Test Case '-[HandyToolsUITests.GuideBisectTests test4_noGoalTiles]' failed (68.972 seconds).
-Test Case '-[HandyToolsUITests.GuideBisectTests test5_noHeader]' started.
-BISECT skip=[header] read=false alive=false
-<unknown>:0: error: -[HandyToolsUITests.GuideBisectTests test5_noHeader] : com.tenzy.toolkit crashed
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:18: error: -[HandyToolsUITests.GuideBisectTests test5_noHeader] : XCTAssertTrue failed - skip=[header] closed the app
-Test Case '-[HandyToolsUITests.GuideBisectTests test5_noHeader]' failed (58.256 seconds).
-Test Case '-[HandyToolsUITests.GuideBisectTests test6_noSuggestionNoGrid]' started.
-BISECT skip=[suggest,grid] read=true alive=true
-Test Case '-[HandyToolsUITests.GuideBisectTests test6_noSuggestionNoGrid]' passed (25.427 seconds).
-Test Case '-[HandyToolsUITests.GuideBisectTests test7_onePhoto]' started.
-BISECT skip=[] read=true alive=true
-Test Case '-[HandyToolsUITests.GuideBisectTests test7_onePhoto]' passed (25.760 seconds).
-	 Executed 7 tests, with 6 failures (0 unexpected) in 369.866 (369.894) seconds
-	 Executed 7 tests, with 6 failures (0 unexpected) in 369.866 (369.900) seconds
-	 Executed 7 tests, with 6 failures (0 unexpected) in 369.866 (369.901) seconds
+Test Case '-[HandyToolsUITests.GuideBisectTests test5_noPreview]' passed (22.920 seconds).
+	 Executed 5 tests, with 5 failures (0 unexpected) in 257.265 (257.276) seconds
+	 Executed 5 tests, with 5 failures (0 unexpected) in 257.265 (257.280) seconds
+	 Executed 5 tests, with 5 failures (0 unexpected) in 257.265 (257.281) seconds
 == crash reports
-== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-21-012324.ips
-exception: {'codes': '0x0000000000000002, 0x000000016c737f98', 'message': 'Could not determine thread index for stack guard region', 'rawCodes': [2, 6114475928], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016c737f98'}
+== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-21-014417.ips
+exception: {'codes': '0x0000000000000002, 0x000000016ea17fe0', 'message': 'Thread stack size exceeded due to excessive recursion', 'rawCodes': [2, 6151045088], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016ea17fe0'}
 thread name: Tenzy: Home · Guide: 2 photos
 thread name: com.apple.SwiftUI.AsyncRenderer
-crashed thread frames: 177
+crashed thread frames: 158
 app frames: 2
      1  static TenzyApp.$main()  [HandyTools.debug.dylib]
      1  __debug_main_executable_dylib_entry_point  [HandyTools.debug.dylib]
 outermost 60 frames:
+    SwiftUICore specialized DynamicContainerInfo.updateItems(disableTransitions:dirtyFlags:hasDepth:)  
+    SwiftUICore specialized DynamicContainerInfo.updateValue()  
+    SwiftUICore specialized implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
+    AttributeGraph AG::Graph::UpdateStack::update()  
+    AttributeGraph AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)  
+    AttributeGraph AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)  
     AttributeGraph AGGraphGetValue  
     SwiftUICore DynamicPreferenceCombiner.info.getter  
     SwiftUICore DynamicPreferenceCombiner.value.getter  
@@ -52,12 +50,14 @@ outermost 60 frames:
     AttributeGraph AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)  
     AttributeGraph AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)  
     AttributeGraph AGGraphGetValue  
-    SwiftUICore DynamicPreferenceCombiner.value.getter  
+    SwiftUICore PairPreferenceCombiner.value.getter  
     SwiftUICore implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
     AttributeGraph AG::Graph::UpdateStack::update()  
     AttributeGraph AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)  
     AttributeGraph AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)  
     AttributeGraph AGGraphGetValue  
+    SwiftUICore closure #1 in PairPreferenceCombiner.value.getter  
+    SwiftUI protocol witness for static PreferenceKey.reduce(value:nextValue:) in conformance ContainerBackgroundKeys.NavigationKey  
     SwiftUICore PairPreferenceCombiner.value.getter  
     SwiftUICore implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
     AttributeGraph AG::Graph::UpdateStack::update()  
@@ -74,19 +74,11 @@ outermost 60 frames:
     SwiftUICore ViewGraphRootValueUpdater._updateViewGraph<A>(body:)  
     SwiftUICore ViewGraphRootValueUpdater.updateGraph<A>(body:)  
     SwiftUI closure #1 in closure #1 in _UIHostingView.beginTransaction()  
-    UIKitCore ?  
-    UIKitCore ?  
-    UIKitCore ?  
-    SwiftUICore UpdateGroup.dispatchImmediately<A>(reason:_:)  
-    SwiftUICore static ViewGraphHostUpdate.dispatchImmediately<A>(_:)  
-    UIKitCore ?  
-    UIKitCore ?  
-    UIKitCore _UIUpdateSequenceRunNext  
-    UIKitCore schedulerStepScheduledMainSectionContinue  
-    UpdateCycle UC::DriverCore::continueProcessing()  
-    CoreFoundation __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__  
-    CoreFoundation __CFRunLoopDoSource0  
-    CoreFoundation __CFRunLoopDoSources0  
+    SwiftUICore <deduplicated_symbol>  
+    SwiftUICore specialized static NSRunLoop.flushObservers()  
+    SwiftUICore @objc closure #1 in static NSRunLoop.addObserver(_:)  
+    CoreFoundation __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__  
+    CoreFoundation __CFRunLoopDoObservers  
     CoreFoundation __CFRunLoopRun  
     CoreFoundation _CFRunLoopRunSpecificWithOptions  
     GraphicsServices GSEventRunModal  
@@ -99,26 +91,26 @@ outermost 60 frames:
     dyld_sim start_sim  
     dyld start  
 most repeated:
-    13  <deduplicated_symbol>
-     7  closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
-     7  partial apply for closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
-     7  protocol witness for _ViewList_Elements.makeElements(from:inputs:body:) in conformance ModifiedElements
+    11  <deduplicated_symbol>
      6  closure #2 in static ModifiedContent<>._makeView(view:inputs:)
      6  static ModifiedContent<>._makeView(view:inputs:)
-     6  ModifiedViewList.applyNodes(from:style:list:transform:to:)
      6  AG::Graph::UpdateStack::update()
      5  AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)
      5  AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)
      5  AGGraphGetValue
      5  implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)
-     5  ?
-     3  DynamicPreferenceCombiner.value.getter
+     4  closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
+     4  partial apply for closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
+     4  protocol witness for _ViewList_Elements.makeElements(from:inputs:body:) in conformance ModifiedElements
+     3  ModifiedViewList.applyNodes(from:style:list:transform:to:)
+     3  PairPreferenceCombiner.value.getter
      2  specialized static AccessibilityViewModifier._makeView(modifier:inputs:body:)
-== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-21-012226.ips
-exception: {'codes': '0x0000000000000002, 0x000000016c74bf98', 'message': 'Could not determine thread index for stack guard region', 'rawCodes': [2, 6114557848], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016c74bf98'}
+     2  specialized static UnaryLayout<>.makeViewImpl(modifier:inputs:body:)
+== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-21-014355.ips
+exception: {'codes': '0x0000000000000002, 0x000000016cf93e64', 'message': 'Could not determine thread index for stack guard region', 'rawCodes': [2, 6123241060], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016cf93e64'}
 thread name: Tenzy: Home · Guide: 2 photos
 thread name: com.apple.SwiftUI.AsyncRenderer
-crashed thread frames: 177
+crashed thread frames: 170
 app frames: 2
      1  static TenzyApp.$main()  [HandyTools.debug.dylib]
      1  __debug_main_executable_dylib_entry_point  [HandyTools.debug.dylib]
@@ -184,14 +176,14 @@ outermost 60 frames:
     dyld_sim start_sim  
     dyld start  
 most repeated:
-    13  <deduplicated_symbol>
-     7  closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
-     7  partial apply for closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
-     7  protocol witness for _ViewList_Elements.makeElements(from:inputs:body:) in conformance ModifiedElements
+    12  <deduplicated_symbol>
      6  closure #2 in static ModifiedContent<>._makeView(view:inputs:)
      6  static ModifiedContent<>._makeView(view:inputs:)
-     6  ModifiedViewList.applyNodes(from:style:list:transform:to:)
+     6  closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
+     6  partial apply for closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
+     6  protocol witness for _ViewList_Elements.makeElements(from:inputs:body:) in conformance ModifiedElements
      6  AG::Graph::UpdateStack::update()
+     5  ModifiedViewList.applyNodes(from:style:list:transform:to:)
      5  AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)
      5  AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)
      5  AGGraphGetValue
