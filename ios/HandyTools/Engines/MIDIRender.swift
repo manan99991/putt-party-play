@@ -138,15 +138,34 @@ enum MIDIRender {
     static func toM4A(_ url: URL) -> URL? {
         guard let d = try? Data(contentsOf: url), let song = parse(d) else { return nil }
         let samples = render(song)
-        let out = FileManager.default.temporaryDirectory.appendingPathComponent(url.deletingPathExtension().lastPathComponent + ".m4a")
-        try? FileManager.default.removeItem(at: out)
         guard let format = AVAudioFormat(standardFormatWithSampleRate: rate, channels: 1),
-              let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(samples.count)),
-              let file = try? AVAudioFile(forWriting: out, settings: [AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: rate,
-                                                                      AVNumberOfChannelsKey: 1]) else { return nil }   // the encoder picks a bit rate it supports at this rate
+              let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(samples.count)) else { return nil }
         buffer.frameLength = AVAudioFrameCount(samples.count)
         samples.withUnsafeBufferPointer { src in buffer.floatChannelData![0].update(from: src.baseAddress!, count: samples.count) }
-        do { try file.write(from: buffer) } catch { return nil }
-        return out
+        return AudioOut.save(buffer, name: url.deletingPathExtension().lastPathComponent)
+    }
+}
+
+/// Sound made in the app, saved as a file anyone can play: AAC (.m4a) when the phone's encoder takes it at this sample
+/// rate, else plain WAV — so a song or a voice note always opens, never a dead end.
+enum AudioOut {
+    static func save(_ buffer: AVAudioPCMBuffer, name: String) -> URL? {
+        let rate = buffer.format.sampleRate, ch = Int(buffer.format.channelCount)
+        let tries: [(String, [String: Any])] = [
+            ("m4a", [AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: rate, AVNumberOfChannelsKey: ch]),
+            ("wav", [AVFormatIDKey: kAudioFormatLinearPCM, AVSampleRateKey: rate, AVNumberOfChannelsKey: ch, AVLinearPCMBitDepthKey: 16,
+                     AVLinearPCMIsFloatKey: false, AVLinearPCMIsBigEndianKey: false, AVLinearPCMIsNonInterleaved: false]),
+        ]
+        for (ext, settings) in tries {
+            let out = FileManager.default.temporaryDirectory.appendingPathComponent(name + "." + ext)
+            try? FileManager.default.removeItem(at: out)
+            let written: Bool = {
+                guard let f = try? AVAudioFile(forWriting: out, settings: settings, commonFormat: .pcmFormatFloat32, interleaved: false) else { return false }
+                return (try? f.write(from: buffer)) != nil
+            }()   // the file is closed here, before anyone reads it
+            if written { return out }
+            try? FileManager.default.removeItem(at: out)
+        }
+        return nil
     }
 }

@@ -27,12 +27,7 @@ enum VorbisAudio {
             let dst = buffer.floatChannelData![c]
             for i in 0..<n { dst[i] = Float(pcm[i * ch + c]) / 32768 }
         }
-        let out = FileManager.default.temporaryDirectory.appendingPathComponent(url.deletingPathExtension().lastPathComponent + ".m4a")
-        try? FileManager.default.removeItem(at: out)
-        guard let file = try? AVAudioFile(forWriting: out, settings: [AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: Double(rate),
-                                                                      AVNumberOfChannelsKey: ch]) else { return nil }   // the encoder picks a bit rate it supports at this rate
-        do { try file.write(from: buffer) } catch { return nil }
-        return out
+        return AudioOut.save(buffer, name: url.deletingPathExtension().lastPathComponent)
         #else
         return nil
         #endif
