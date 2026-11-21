@@ -840,7 +840,20 @@ enum ChainRunner {
             let plan = StampPlan(step.settings["marks"] ?? StampPlan.standard.text)
             guard !plan.spots.isEmpty else { return .failure(.invalid("Sign and stamp has nothing to place. Turn on the signature, your name or the date.")) }
             var stamps: [DocEngine.Stamp] = []
-            for s in plan.spots {
+            // Where the form itself asks — the same reading Sign PDF uses — before the plan's fixed spots: the
+            // signature goes on the "Signature" line and the date on the "Date" line, on any form.
+            let asked = SignSpots.find(img)
+            let marks = Set(plan.spots.map(\.mark))
+            var placed: Set<StampPlan.Mark> = []
+            for s in asked {
+                if s.kind == .signature, marks.contains(.signature) {
+                    guard let sig = DocEngine.savedSignature else { return .failure(.invalid("Sign and stamp needs your signature first. In Tenzy, open this tool and tap Draw my signature — it's kept for next time.")) }
+                    stamps.append(DocEngine.Stamp(kind: .signature(sig), center: s.center, width: s.width)); placed.insert(.signature)
+                } else if s.kind == .date, marks.contains(.date) {
+                    stamps.append(DocEngine.Stamp(kind: .text(StampPlan.dateText(Date())), center: s.center, width: s.width)); placed.insert(.date)
+                }
+            }
+            for s in plan.spots where !placed.contains(s.mark) {
                 let at = CGPoint(x: s.x, y: s.y)
                 switch s.mark {
                 case .signature:

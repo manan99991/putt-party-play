@@ -226,6 +226,8 @@ targets:
       - HandyTools/Engines/ChainFun.swift
       - HandyTools/Engines/PixelArt.swift
       - HandyTools/Engines/DocEngine.swift
+      # Signing tools sign on the form's own lines, in the share sheet too.
+      - HandyTools/Engines/SignSpots.swift
       - HandyTools/Engines/PDFOverlay.swift
       - HandyTools/Localizer.swift
       - HandyTools/Engines/DataGrab.swift
