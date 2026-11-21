@@ -2,7 +2,7 @@
 """Store slides from today's app (Nov 21 2026): the personal-assistant positioning, the Aurora look.
 
 Input: raw simulator captures named <mode>-<route>.png (as ScreenshotTests saves them).
-Output: framed slides at the store sizes — iPhone 6.9" 1320x2868, iPad 13" 2064x2752. RGB, no alpha.
+Output: framed slides at the store sizes — iPhone 6.9" 1290x2796 (rulebook §4), iPad 13" 2064x2752. RGB, no alpha.
 
 Rules from docs/rulebook.md §3: no tool counts, no "#1/best", no "free"/price/"no ads" on a slide, nothing the
 build doesn't do. Each caption is a job the person has, not a feature list.
@@ -24,7 +24,7 @@ SLIDES = [
     ("pdfsign",                    "Sign and send.",            "Signs right where the form asks.", (239, 68, 68)),
 ]
 
-SIZES = {"iphone": (1320, 2868), "ipad": (2064, 2752)}
+SIZES = {"iphone": (1290, 2796), "ipad": (2064, 2752)}
 CROP = {"iphone": 1.0, "ipad": 0.58}
 BG = (5, 4, 12)
 FONT_B = "/usr/share/fonts/opentype/inter/InterDisplay-Bold.otf"
