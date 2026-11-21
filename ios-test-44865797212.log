@@ -1,0 +1,7 @@
+== test.log (results)
+	8   CoreSimulator                       0x0000000114d1899c __45-[SimServiceContext deviceSetWithPath:error:]_block_invoke_2 + 608
+	11  CoreSimulator                       0x0000000114d18544 -[SimServiceContext deviceSetWithPath:error:] + 472
+  8   __45-[SimServiceContext deviceSetWithPath:error:]_block_invoke_2 (in CoreSimulator)
+ 11   -[SimServiceContext deviceSetWithPath:error:] (in CoreSimulator)
+  8   __45-[SimServiceContext deviceSetWithPath:error:]_block_invoke_2 (in CoreSimulator)
+ 11   -[SimServiceContext deviceSetWithPath:error:] (in CoreSimulator)
