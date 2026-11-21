@@ -1,10 +1,10 @@
 == smoke (results)
-Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (992.218 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 992.218 (992.227) seconds
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1062.189 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (25.136 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (30.615 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1117.940 (1117.944) seconds
-	 Executed 4 tests, with 0 failures (0 unexpected) in 2110.158 (2110.182) seconds
-	 Executed 4 tests, with 0 failures (0 unexpected) in 2110.158 (2110.184) seconds
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (1184.334 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 1184.334 (1184.384) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1096.771 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (16.900 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (26.540 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 1140.211 (1140.217) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 2324.545 (2324.609) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 2324.545 (2324.612) seconds
 ** TEST SUCCEEDED **
