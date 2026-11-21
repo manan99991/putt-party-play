@@ -12,6 +12,9 @@ enum ImageClean {
               let type = CGImageSourceGetType(src) else { return nil }
         let props = CGImageSourceCopyPropertiesAtIndex(src, 0, nil) as? [CFString: Any]
         let orientation = (props?[kCGImagePropertyOrientation] as? NSNumber) ?? 1
+        // A JPEG is cleaned byte by byte: its picture data is copied untouched, only the EXIF/XMP and Photoshop
+        // blocks are dropped (ImageIO's lossless copy refused the empty-metadata swap in the CI test, 21 Nov).
+        if data.starts(with: [0xFF, 0xD8]), let d = strippedJPEG(data, orientation: orientation.uint16Value) { return verified(d) }
         let out = NSMutableData()
         guard let dst = CGImageDestinationCreateWithData(out, type, 1, nil) else { return nil }
         let opts: [CFString: Any] = [
@@ -22,12 +25,49 @@ enum ImageClean {
             kCGImageDestinationOrientation: orientation,
         ]
         guard CGImageDestinationCopyImageSource(dst, src, opts as CFDictionary, nil) else { return nil }
-        let d = out as Data
-        // Belt and braces: never hand back something that no longer opens or still says where it was taken.
+        return verified(out as Data)
+    }
+
+    /// Never hand back something that no longer opens or still says where it was taken.
+    private static func verified(_ d: Data) -> Data? {
         guard let check = CGImageSourceCreateWithData(d as CFData, nil),
+              CGImageSourceCreateImageAtIndex(check, 0, nil) != nil,
               let p = CGImageSourceCopyPropertiesAtIndex(check, 0, nil) as? [CFString: Any],
               p[kCGImagePropertyGPSDictionary] == nil else { return nil }
         return d
+    }
+
+    /// The JPEG's segments up to the picture data, minus APP1 (EXIF, XMP) and APP13 (Photoshop/IPTC); the colour
+    /// profile (APP2) and everything from the start of the scan on are kept byte for byte. A turned photo gets a
+    /// tiny EXIF block carrying only its orientation, so it still shows the right way up.
+    static func strippedJPEG(_ data: Data, orientation: UInt16) -> Data? {
+        let b = [UInt8](data)
+        guard b.count > 4, b[0] == 0xFF, b[1] == 0xD8 else { return nil }
+        var out: [UInt8] = [0xFF, 0xD8]
+        if orientation > 1 && orientation <= 8 {
+            let tiff: [UInt8] = [0x4D, 0x4D, 0x00, 0x2A, 0x00, 0x00, 0x00, 0x08,          // big-endian TIFF, IFD at 8
+                                 0x00, 0x01,                                              // one entry
+                                 0x01, 0x12, 0x00, 0x03, 0x00, 0x00, 0x00, 0x01,          // Orientation, SHORT, 1
+                                 UInt8(orientation >> 8), UInt8(orientation & 0xFF), 0x00, 0x00,
+                                 0x00, 0x00, 0x00, 0x00]                                  // no next IFD
+            let body: [UInt8] = Array("Exif".utf8) + [0, 0] + tiff
+            let len = body.count + 2
+            out += [0xFF, 0xE1, UInt8(len >> 8), UInt8(len & 0xFF)] + body
+        }
+        var i = 2
+        while i + 4 <= b.count {
+            guard b[i] == 0xFF else { return nil }
+            let marker = b[i + 1]
+            if marker == 0xFF { i += 1; continue }                       // fill byte
+            if marker == 0xDA { out += b[i...]; return Data(out) }       // start of scan: the rest is the picture
+            if marker == 0xD9 { return nil }                             // ended before any picture
+            if (0xD0...0xD7).contains(marker) || marker == 0x01 { out += b[i..<(i + 2)]; i += 2; continue }
+            let len = Int(b[i + 2]) << 8 | Int(b[i + 3])
+            guard len >= 2, i + 2 + len <= b.count else { return nil }
+            if marker != 0xE1 && marker != 0xED { out += b[i..<(i + 2 + len)] }
+            i += 2 + len
+        }
+        return nil
     }
 }
 
