@@ -1,0 +1,159 @@
+== xcode
+Xcode_27.0.0.app
+Xcode_27.0.app
+Xcode_27.1.0.app
+Xcode_27.1.app
+Xcode_27.2.0.app
+Xcode_27.2.app
+Xcode_27.app
+Xcode.app
+Xcode 27.2
+Build version 27B52
+== setup.log
+[32m==>[0m [1mDownloading bottle manifests[0m
+✔︎ Bottle Manifest xcodegen (2.46.0)
+[32m==>[0m [1mFetching downloads for: [32mxcodegen[39m[0m
+✔︎ Bottle xcodegen (2.46.0)
+[34m==>[0m [1mPouring xcodegen--2.46.0.arm64_golden_gate.bottle.1.tar.gz[0m
+🍺  /opt/homebrew/Cellar/xcodegen/2.46.0: 38 files, 7.5MB
+⚙️  Generating plists...
+⚙️  Generating project...
+⚙️  Writing project...
+Created project at /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools.xcodeproj
+Command line invocation:
+    /Applications/Xcode_27.2.app/Contents/Developer/usr/bin/xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
+
+Resolve Package Graph
+
+Fetching from https://github.com/element-hq/swift-ogg
+
+Fetching from https://github.com/vector-im/ogg-swift.git
+
+Fetching from https://github.com/tsolomko/SWCompression
+
+Fetching from https://github.com/vector-im/opus-swift
+
+Fetching from https://github.com/tsolomko/BitByteData
+
+Creating working copy of package ‘swift-ogg’
+
+Checking out main (a00a22b) of package ‘swift-ogg’
+
+Creating working copy of package ‘SWCompression’
+
+Checking out 4.8.6 of package ‘SWCompression’
+
+Creating working copy of package ‘ogg-swift’
+
+Checking out 0.8.3 of package ‘ogg-swift’
+
+Creating working copy of package ‘opus-swift’
+
+Checking out 0.8.4 of package ‘opus-swift’
+
+Creating working copy of package ‘BitByteData’
+
+Checking out 2.1.0 of package ‘BitByteData’
+
+
+Resolved source packages:
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+  BitByteData: https://github.com/tsolomko/BitByteData @ 2.1.0
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+
+resolved source packages: SwiftOGG, YbridOpus, SWCompression, BitByteData, YbridOgg
+== build.log
+Command line invocation:
+    /Applications/Xcode_27.2.app/Contents/Developer/usr/bin/xcodebuild build -project HandyTools.xcodeproj -scheme HandyTools -destination "generic/platform=iOS Simulator" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+    CODE_SIGNING_REQUIRED = NO
+
+Resolve Package Graph
+
+
+Resolved source packages:
+  BitByteData: https://github.com/tsolomko/BitByteData @ 2.1.0
+  YbridOgg: https://github.com/vector-im/ogg-swift.git @ 0.8.3
+  SWCompression: https://github.com/tsolomko/SWCompression @ 4.8.6
+  SwiftOGG: https://github.com/element-hq/swift-ogg @ main (a00a22b)
+  YbridOpus: https://github.com/vector-im/opus-swift @ 0.8.4
+
+2026-11-21 21:49:45.487 xcodebuild[2479:10801] [MT] IDESchemeActionsInvocationRecord: Device <DVTiOSDeviceSimulatorPlaceholder: 0x754c24cdc0 (Any iOS Simulator Device | undefined_arch)> is missing operatingSystemVersion, operatingSystemVersionWithBuildNumber.
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (14 targets)
+    Target 'HandyTools' in project 'HandyTools'
+        ➜ Explicit dependency on target 'ShareExtension' in project 'HandyTools'
+        ➜ Explicit dependency on target 'StickyWidget' in project 'HandyTools'
+        ➜ Explicit dependency on target 'SwiftOGG-product' in project 'SwiftOGG'
+        ➜ Explicit dependency on target 'SWCompression-product' in project 'SWCompression'
+    Target 'SWCompression-product' in project 'SWCompression'
+        ➜ Explicit dependency on target 'SWCompression' in project 'SWCompression'
+        ➜ Explicit dependency on target 'SWCompression_SWCompression' in project 'SWCompression'
+        ➜ Explicit dependency on target 'BitByteData-product' in project 'BitByteData'
+    Target 'SWCompression' in project 'SWCompression'
+        ➜ Explicit dependency on target 'SWCompression_SWCompression' in project 'SWCompression'
+        ➜ Explicit dependency on target 'BitByteData-product' in project 'BitByteData'
+    Target 'BitByteData-product' in project 'BitByteData'
+        ➜ Explicit dependency on target 'BitByteData' in project 'BitByteData'
+        ➜ Explicit dependency on target 'BitByteData_BitByteData' in project 'BitByteData'
+    Target 'BitByteData' in project 'BitByteData'
+        ➜ Explicit dependency on target 'BitByteData_BitByteData' in project 'BitByteData'
+    Target 'BitByteData_BitByteData' in project 'BitByteData' (no dependencies)
+    Target 'SWCompression_SWCompression' in project 'SWCompression' (no dependencies)
+    Target 'SwiftOGG-product' in project 'SwiftOGG'
+        ➜ Explicit dependency on target 'SwiftOGG' in project 'SwiftOGG'
+        ➜ Explicit dependency on target 'Copustools' in project 'SwiftOGG'
+        ➜ Explicit dependency on target 'YbridOpus-product' in project 'YbridOpus'
+        ➜ Explicit dependency on target 'YbridOgg-product' in project 'YbridOgg'
+    Target 'SwiftOGG' in project 'SwiftOGG'
+        ➜ Explicit dependency on target 'Copustools' in project 'SwiftOGG'
+        ➜ Explicit dependency on target 'YbridOpus-product' in project 'YbridOpus'
+        ➜ Explicit dependency on target 'YbridOgg-product' in project 'YbridOgg'
+    Target 'YbridOgg-product' in project 'YbridOgg' (no dependencies)
+    Target 'YbridOpus-product' in project 'YbridOpus' (no dependencies)
+    Target 'Copustools' in project 'SwiftOGG' (no dependencies)
+    Target 'StickyWidget' in project 'HandyTools' (no dependencies)
+    Target 'ShareExtension' in project 'HandyTools' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode_27.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode_27.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode_27.2.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.2.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode_27.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode_27.2.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.2.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode_27.2.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode_27.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+ExecuteExternalTool /Applications/Xcode_27.2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch x86_64 -isysroot /Applications/Xcode_27.2.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.2.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode_27.2.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+Build description signature: 3330c1086f717622b8dc8aeed9ab673d
+Build description path: /Users/runner/Library/Developer/Xcode/DerivedData/HandyTools-eysegntanndoyxazuuwgquynwhyg/Build/Intermediates.noindex/XCBuildData/3330c1086f717622b8dc8aeed9ab673d.xcbuilddata
+error: The package product 'BitByteData-product' requires minimum platform version 17.0 for the iOS platform, but this target supports 15.0 (in target 'SWCompression' from project 'SWCompression')
+** BUILD FAILED **
+
+
+The following build commands failed:
+	Building project HandyTools with scheme HandyTools
+(1 failure)
