@@ -494,6 +494,9 @@ struct BuilderView: View {
     @State private var showGuide = false
 
     var body: some View {
+        // Scrolls when the page is taller than the phone (small phones, big text), so nothing ever sits under the
+        // clock; the three bottom buttons stay pinned above the tab bar.
+        ScrollView {
         VStack(alignment: .leading, spacing: HandySpacing.s16) {
             // Problem first: the person says what they need; Tenzy finds the tool, or builds one.
             Text(L("What do you need?")).font(HandyFont.display).frame(maxWidth: .infinity, alignment: .leading)
@@ -505,17 +508,21 @@ struct BuilderView: View {
             anythingTiles
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
             if ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, builtIn == nil { quickStarts }
-            Spacer(minLength: 0)
+        }
+        .frame(maxWidth: .infinity, alignment: .top)
+        .padding(.horizontal, HandySpacing.gutter)
+        .padding(.vertical, HandySpacing.s8)
+        }
+        .scrollDismissesKeyboard(.interactively)
+        .safeAreaInset(edge: .bottom) {
             HStack(spacing: HandySpacing.s8) {
                 // Your saved tools and reminders live in My stuff; from here, every tool and the ready-made ones.
                 footBtn("All tools") { NotificationCenter.default.post(name: .openTool, object: "explore", userInfo: ["from": "builder"]) }
                 footBtn("Templates") { showTemplates = true }
                 footBtn("Guide") { showGuide = true }
             }
+            .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s8)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(.horizontal, HandySpacing.gutter)
-        .padding(.vertical, HandySpacing.s8)
         .sheet(item: $editing) { c in
             NavigationStack {
                 ChainEditor(chain: c, hint: editHint, good: editGood, gaps: editGaps, ask: editAsk) { saved in
@@ -877,7 +884,7 @@ struct BuilderView: View {
                         .accessibilityIdentifier("have-paste")
                     Text(L(clipKind.map { "\($0) copied" } ?? "Nothing copied")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
                 }
-                .frame(maxWidth: .infinity, minHeight: 84)
+                .frame(maxWidth: .infinity, minHeight: 76)
                 .cardStyle(padding: HandySpacing.s8)
             }
             // Things that don't start from a file: your contacts, a worry or decision to think through, and the
@@ -940,7 +947,7 @@ struct BuilderView: View {
             Text(L(title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
             if let sub { Text(L(sub)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
         }
-        .frame(maxWidth: .infinity, minHeight: 84)
+        .frame(maxWidth: .infinity, minHeight: 76)
         .cardStyle(padding: HandySpacing.s8)
     }
 

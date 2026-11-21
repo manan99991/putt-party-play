@@ -244,6 +244,8 @@ struct AutomationsView: View {
             let sorted = ps.sorted { (next($0) ?? .distantFuture) < (next($1) ?? .distantFuture) }
             return Row(id: k, group: g, count: ps.count, next: sorted.first.flatMap(next), sample: sorted[0])
         }.sorted { ($0.next ?? .distantFuture) < ($1.next ?? .distantFuture) }
+        // Show what's set straight away; the count alerts' live numbers fill in after.
+        await MainActor.run { rows = built; denied = settings.authorizationStatus == .denied; loaded = true }
         // The live number for each count alert, so the card shows where it stands right now.
         var fresh = AlertStore.load()
         for i in fresh.indices where fresh[i].on {
