@@ -1,8 +1,8 @@
 Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' started.
-Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (132.774 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (137.900 seconds).
 Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' started.
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (82.400 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 215.175 (215.191) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 215.175 (215.201) seconds
-	 Executed 2 tests, with 0 failures (0 unexpected) in 215.175 (215.203) seconds
+Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (81.322 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 219.222 (219.233) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 219.222 (219.260) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 219.222 (219.264) seconds
 == crash reports
