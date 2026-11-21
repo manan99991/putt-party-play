@@ -1,9 +1,8 @@
 Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/MultiPhotoTests.swift:59: error: -[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp] : Failed to tap Button (Element at index 0): No matches found for Descendants matching type NavigationBar from input {(
-Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' failed (70.579 seconds).
+Test Case '-[HandyToolsUITests.MultiPhotoTests testEveryChoiceForSixPhotosOpensWithoutClosingTheApp]' passed (132.774 seconds).
 Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' started.
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (85.705 seconds).
-	 Executed 2 tests, with 1 failure (0 unexpected) in 156.284 (156.316) seconds
-	 Executed 2 tests, with 1 failure (0 unexpected) in 156.284 (156.327) seconds
-	 Executed 2 tests, with 1 failure (0 unexpected) in 156.284 (156.329) seconds
+Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' passed (82.400 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 215.175 (215.191) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 215.175 (215.201) seconds
+	 Executed 2 tests, with 0 failures (0 unexpected) in 215.175 (215.203) seconds
 == crash reports
