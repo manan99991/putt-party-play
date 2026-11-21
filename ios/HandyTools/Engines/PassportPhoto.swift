@@ -243,6 +243,11 @@ enum PassportPhoto {
         func add(_ id: String, _ title: String, _ st: State, _ detail: String, _ fix: String, _ w: Double, hard: Bool = false) {
             checks.append(Check(id: id, title: title, state: st, detail: detail, fix: fix, weight: w, hard: hard))
         }
+        // The finished photo must still show a face: if it doesn't, nothing else on the list matters.
+        if outCG != nil, after == nil {
+            add("found", "Your face in the finished photo", .fail, "No face could be found in the finished photo",
+                "Try another photo with your whole head and shoulders in view, facing the camera.", 20, hard: true)
+        }
         add("one", "Just you, face fully in view", face.count == 1 ? .pass : .fail,
             face.count == 1 ? "One face found" : "\(face.count) faces found",
             "Only you should be in the photo. Take one with nobody else in the frame.", 15, hard: true)
@@ -253,7 +258,10 @@ enum PassportPhoto {
             "Tilted \(Int(face.pitch.rounded()))° up or down",
             "Hold the camera at eye level and keep your chin level.", 5, hard: face.pitch >= 18)
         let headIn = spec.head.contains(headMM)
-        add("head", "Head size", headIn ? .pass : .warn,
+        // A little outside the range is a warning; far outside means the photo isn't usable as it is.
+        let headSpan = spec.head.upperBound - spec.head.lowerBound
+        let headFar = headMM < spec.head.lowerBound - max(2, headSpan * 0.5) || headMM > spec.head.upperBound + max(2, headSpan * 0.5)
+        add("head", "Head size", headIn ? .pass : (headFar ? .fail : .warn),
             spec.percent ? "\(Int((headMM / Double(spec.mm.height) * 100).rounded()))% of the height (needs \(spec.headText))" : "\(fmt((headMM * 10).rounded() / 10)) mm (needs \(spec.headText))",
             crownWasClamped ? "Hair or a head covering made the top of your head hard to find. Check the top line sits at the top of your head." : "Try a photo with your whole head and shoulders in view.", 15)
         if let eyes = spec.eyes {
@@ -302,6 +310,8 @@ enum PassportPhoto {
         let got = checks.reduce(0.0) { $0 + $1.weight * ($1.state == .pass ? 1 : ($1.state == .warn ? 0.5 : 0)) }
         var score = Int((got / max(total, 1) * 100).rounded())
         if checks.contains(where: { $0.hard && $0.state == .fail }) { score = min(score, 45) }
+        // Never call a photo nearly ready when the head size — the rule offices reject on most — is far off.
+        if headFar { score = min(score, 60) }
 
         let ppmOut = ppm
         let chinOut = placed.chin.y
@@ -377,10 +387,22 @@ enum PassportPhoto {
 
         let lm = obs.landmarks
         let contour = pts(lm?.faceContour)
-        let chin = contour.max(by: { $0.y < $1.y }) ?? CGPoint(x: box.midX, y: box.maxY)
+        var chin = contour.max(by: { $0.y < $1.y }) ?? CGPoint(x: box.midX, y: box.maxY)
         var e1 = mid(pts(lm?.leftPupil)) ?? mid(pts(lm?.leftEye)) ?? CGPoint(x: box.minX + box.width * 0.3, y: box.minY + box.height * 0.4)
         var e2 = mid(pts(lm?.rightPupil)) ?? mid(pts(lm?.rightEye)) ?? CGPoint(x: box.minX + box.width * 0.7, y: box.minY + box.height * 0.4)
         if e1.x > e2.x { swap(&e1, &e2) }
+        // Points near the face can still be wrong (a bad landmark read, a hand on the chin): the chin must sit by the
+        // bottom of the face box and the eyes in its upper half, a fair way apart. A read that disagrees with the box
+        // is replaced by the box's own proportions — a passport photo zoomed into a nose came from one that didn't.
+        if abs(chin.y - box.maxY) > box.height * 0.3 || chin.x < box.minX || chin.x > box.maxX {
+            chin = CGPoint(x: box.midX, y: box.maxY)
+        }
+        let eyesBelieved = [e1, e2].allSatisfy { $0.y > box.minY + box.height * 0.1 && $0.y < box.minY + box.height * 0.65 && $0.x > box.minX && $0.x < box.maxX }
+            && (e2.x - e1.x) > box.width * 0.22 && (e2.x - e1.x) < box.width * 0.8 && (chin.y - (e1.y + e2.y) / 2) > box.height * 0.35
+        if !eyesBelieved {
+            e1 = CGPoint(x: box.minX + box.width * 0.3, y: box.minY + box.height * 0.4)
+            e2 = CGPoint(x: box.minX + box.width * 0.7, y: box.minY + box.height * 0.4)
+        }
         let roll = atan2(Double(e2.y - e1.y), Double(e2.x - e1.x)) * 180 / .pi
         func deg(_ n: NSNumber?) -> Double { abs((n?.doubleValue ?? 0) * 180 / .pi) }
         let eyeOpen = [lm?.leftEye, lm?.rightEye].compactMap { $0 }.map(PassportCheck.openness)
