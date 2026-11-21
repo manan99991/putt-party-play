@@ -53,6 +53,50 @@ enum SampleAssets {
         return [page(0), page(1200)]
     }
 
+    /// Printed lines on a page of the given size and colour — the base for each kind of sample paper below.
+    private static func paper(_ lines: [String], size: CGSize = CGSize(width: 1000, height: 1300), bg: UIColor = .white,
+                              font: (Int) -> UIFont = { _ in .systemFont(ofSize: 44, weight: .medium) }, gap: CGFloat = 90) -> UIImage {
+        let fmt = UIGraphicsImageRendererFormat.default(); fmt.scale = 1
+        return UIGraphicsImageRenderer(size: size, format: fmt).image { c in
+            bg.setFill(); c.fill(CGRect(origin: .zero, size: size))
+            for (i, l) in lines.enumerated() {
+                (l as NSString).draw(at: CGPoint(x: 80, y: 110 + CGFloat(i) * gap), withAttributes: [.font: font(i), .foregroundColor: UIColor.black])
+            }
+        }
+    }
+
+    /// The right kind of made-up paper for what a flow is for, so a test or screenshot proves the real job (a card
+    /// becomes a contact, a poster an event) instead of feeding a receipt to everything. All names and numbers invented.
+    static func paper(for job: Block?) -> UIImage {
+        switch job {
+        case .businessCard?:
+            return paper(["Maya Patel", "Product Designer", "Northwind Studio", "+1 312 555 0199", "maya@northwind.example", "northwind.example"],
+                         size: CGSize(width: 1050, height: 640), font: { $0 == 0 ? .boldSystemFont(ofSize: 60) : .systemFont(ofSize: 40) }, gap: 80)
+        case .calendarEvent?:
+            let d = Calendar.current.date(byAdding: .day, value: 12, to: Date()) ?? Date()
+            let day = d.formatted(.dateTime.weekday(.wide).month(.abbreviated).day()).uppercased()
+            return paper(["BOOK SWAP NIGHT", "Bring a book, take a book", day, "6:30 PM - 9:00 PM", "Town Hall, 22 High Street"],
+                         bg: UIColor(red: 1, green: 0.95, blue: 0.8, alpha: 1), font: { $0 == 0 ? .boldSystemFont(ofSize: 76) : .systemFont(ofSize: 48, weight: .semibold) }, gap: 130)
+        case .priceCompare?:
+            return paper(["Pasta, Brand A", "500 g", "$2.49", "", "Pasta, Brand B", "1 kg", "$3.99"], gap: 100)
+        case .actionItems?:
+            return paper(["TEAM TO-DO", "Sam: send the budget by Friday", "Jo: book the venue on Monday", "Kim: order the snacks", "Lee: print 20 name badges"],
+                         font: { $0 == 0 ? .boldSystemFont(ofSize: 60) : .systemFont(ofSize: 44) }, gap: 110)
+        case .wifiQr?:
+            return paper(["FREE WIFI", "Network: CafeGuest", "Password: latte2026"], size: CGSize(width: 1000, height: 600),
+                         font: { $0 == 0 ? .boldSystemFont(ofSize: 70) : .systemFont(ofSize: 52, weight: .semibold) }, gap: 120)
+        case .returnBy?:
+            // Bought a few days ago, so the return window is still open.
+            let d = Calendar.current.date(byAdding: .day, value: -4, to: Date()) ?? Date()
+            let f = DateFormatter(); f.dateFormat = "MM/dd/yyyy h:mm a"; f.locale = Locale(identifier: "en_US_POSIX")
+            return paper(["HARBOR HOME GOODS", "18 Lake Ave, Naperville IL", f.string(from: d), "", "Table lamp           34.99", "Bulb 2-pack           6.50",
+                          "", "Subtotal             41.49", "Tax                   3.11", "Total                44.60", "", "Returns within 30 days with receipt"],
+                         size: CGSize(width: 900, height: 1300), font: { _ in .monospacedSystemFont(ofSize: 38, weight: .medium) }, gap: 84)
+        default:
+            return receipt()
+        }
+    }
+
     static func receipt() -> UIImage {
         let lines = ["BLUE BOTTLE COFFEE", "300 Webster St, Oakland CA", "03/14/2026 8:41 AM", "", "Cappuccino            4.75", "Almond Croissant      5.25", "Oat milk              0.75", "", "Subtotal             10.75", "Tax                   0.97", "Tip                   2.00", "Total                13.72", "", "VISA ****4421", "Thank you for visiting!"]
         let size = CGSize(width: 900, height: 1500)
