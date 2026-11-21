@@ -68,7 +68,7 @@ jobs:
         if: "${{ contains(github.event.head_commit.message, 'Ship-Store=YES') || contains(github.event.head_commit.message, 'Capture-Shots=YES') }}"
         # Screenshots never gate a TestFlight: on 20 Nov this step hung for two hours after every test
         # had passed and took the whole build down with it. Capped, and a failure here doesn't fail the job.
-        timeout-minutes: 30
+        timeout-minutes: 45
         continue-on-error: true
         run: |
           t() { local n=$1; shift; perl -e 'alarm shift; exec @ARGV' "$n" "$@" || echo "::warning::timed out or failed after ${n}s: $*"; }
@@ -83,7 +83,14 @@ jobs:
           print(c[0]["udid"]); print(c[0]["name"], file=sys.stderr)')
           xcrun simctl boot "$UDID" || true
           t 300 xcrun simctl bootstatus "$UDID" -b
-          t 120 xcrun simctl install "$UDID" "$APP"
+          # A just-booted simulator can take minutes to accept its first install (the tests used to warm it up first).
+          for try in 1 2 3; do
+            t 240 xcrun simctl install "$UDID" "$APP"
+            xcrun simctl get_app_container "$UDID" com.tenzy.toolkit >/dev/null 2>&1 && break
+            sleep 20
+          done
+          # No app, no screenshots: 50 pictures of the simulator's home screen help nobody.
+          xcrun simctl get_app_container "$UDID" com.tenzy.toolkit >/dev/null 2>&1 || { echo "::warning::app didn't install on the simulator; no screenshots this run"; exit 0; }
           # Explicitly grant every permission a tool might ask for, so no system permission alert
           # pops during capture and lingers over later screenshots (grant all alone left mic undetermined).
           for p in all camera microphone photos location speech-recognition; do
@@ -123,7 +130,7 @@ jobs:
           c.sort(key=lambda x:x["name"]); print(c[-1]["udid"] if c else "")')
           if [ -n "$IPAD" ]; then
             xcrun simctl boot "$IPAD" || true; t 300 xcrun simctl bootstatus "$IPAD" -b
-            t 120 xcrun simctl install "$IPAD" "$APP"
+            for try in 1 2 3; do t 240 xcrun simctl install "$IPAD" "$APP"; xcrun simctl get_app_container "$IPAD" com.tenzy.toolkit >/dev/null 2>&1 && break; sleep 20; done
             xcrun simctl status_bar "$IPAD" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 || true
             xcrun simctl ui "$IPAD" appearance dark
             for p in all camera microphone photos location speech-recognition contacts; do xcrun simctl privacy "$IPAD" grant $p com.tenzy.toolkit 2>/dev/null || true; done
