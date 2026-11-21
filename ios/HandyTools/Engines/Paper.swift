@@ -41,21 +41,40 @@ enum Paper {
                         gist: n == 0 ? "A calendar page — nothing written on the days." : "\(n) thing\(n == 1 ? "" : "s") written on the days.", text: text)
         }
 
-        // A receipt: a total and several money lines.
+        // A board with the days of the week as headings (MON, TUE…): a schedule, even when the handwriting under
+        // them is too rough to read as names — "Joe 535" under the days is a rota, not a dish with a price.
+        let dayHeads = Set(lines.filter { $0.text.count <= 10 }.compactMap { Understand.weekday($0.text) })
+        if dayHeads.count >= 4 {
+            return Read(kind: .schedule, name: "A weekly schedule board", gist: scheduleGist(board, lines: lines), text: text)
+        }
+
+        // A receipt: a total and several money lines — or a page that calls itself a receipt ("RECEIPT #", "Sales
+        // receipt") with money on it. "BILL TO" on a receipt doesn't make it a bill.
         let moneyLines = lines.filter { $0.text.range(of: #"\d[.,]\d{2}\b"#, options: .regularExpression) != nil }.count
-        if moneyLines >= 3, has(#"\b(total|subtotal|amount due|balance|cash|change|vat|gst|tax|visa|mastercard)\b"#) {
+        let saysReceipt = lines.contains { $0.text.range(of: #"^\s*(sales |cash |payment )?receipt\b"#, options: [.regularExpression, .caseInsensitive]) != nil }
+        if (moneyLines >= 3 && has(#"\b(total|subtotal|amount due|balance|cash|change|vat|gst|tax|visa|mastercard)\b"#)) || (saysReceipt && moneyLines >= 1) || lines.filter({ $0.text.range(of: #"^\s*receipt\s*$"#, options: [.regularExpression, .caseInsensitive]) != nil }).count >= 2 {
             let r = DataGrab.receipt(text)
-            if let t = r.total {
-                let from = r.merchant.isEmpty ? "" : " from \(r.merchant)"
-                let when = r.date.map { " on " + $0.formatted(date: .abbreviated, time: .omitted) } ?? ""
-                return Read(kind: .receipt, name: "A receipt\(from)", gist: "Total \(r.currency)\(String(format: "%.2f", t))\(when).", text: text)
+            // The total often sits on its own line far from the word TOTAL: then it is the largest amount on the page.
+            let amounts = lines.compactMap { l -> Double? in
+                guard let m = l.text.range(of: #"\d{1,3}(?:[,]\d{3})*[.]\d{2}\b"#, options: .regularExpression) else { return nil }
+                return Double(l.text[m].replacingOccurrences(of: ",", with: ""))
+            }
+            let from = r.merchant.isEmpty ? "" : " from \(r.merchant)"
+            let when = r.date.map { " on " + $0.formatted(date: .abbreviated, time: .omitted) } ?? ""
+            if let t = r.total ?? amounts.max() {
+                return Read(kind: .receipt, name: "A receipt\(from)", gist: "Total \(r.currency.isEmpty ? (text.contains("$") ? "$" : "") : r.currency)\(String(format: "%.2f", t))\(when).", text: text)
+            }
+            if saysReceipt || moneyLines >= 3 {
+                return Read(kind: .receipt, name: "A receipt\(from)", gist: "The total is hard to read on this photo — open it to check the amounts.", text: text)
             }
         }
 
         // A menu: many dishes with prices, no till words.
         let priced = lines.compactMap { MenuReader.splitPrice($0.text) }.filter { $0.name.filter(\.isLetter).count >= 3 }
-        if priced.count >= 5 || (moneyLines >= 6 && !has(#"\b(total|subtotal|change)\b"#)) {
-            let n = max(priced.count, moneyLines)
+        // Menus often print the price on its own line beside the dish ("香辣鱼" then "50元"): count those too.
+        let priceOnly = lines.filter { MenuReader.isPriceOnly($0.text) }.count
+        if priced.count >= 5 || (moneyLines >= 6 && !has(#"\b(total|subtotal|change)\b"#)) || (priceOnly >= 5 && !has(#"\b(total|subtotal|tax|amount)\b"#)) {
+            let n = max(priced.count, moneyLines, priceOnly)
             return Read(kind: .menu, name: "A menu", gist: "\(n) dishes with prices — open it to read it in your language and check allergens.", text: text)
         }
 
@@ -63,6 +82,23 @@ enum Paper {
             let medicine = has(#"\b(tablets?|capsules?|mg|dose|dosage|pharmacist|doctor)\b"#)
             return Read(kind: .label, name: medicine ? "A medicine label" : "A product label",
                         gist: medicine ? "The label's own words, grouped: directions, warnings, expiry." : "What it contains and how to use it, as printed.", text: text)
+        }
+
+        // An event poster before a business card: a poster also lists a phone and an email, but it has a day and a time.
+        let ev = DataGrab.event(text, now: now)
+        let posterWords = Set(["tickets", "ticket", "rsvp", "admission", "join us", "upcoming", "doors open", "venue", "where", "when", "event", "events", "dinner", "concert", "party", "festival"].filter { has("\\b" + $0 + "\\b") })
+        let dated = has(#"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.? \d{1,2}\b|\b\d{1,2} (jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b"#)
+        let timed = has(#"\b\d{1,2}(:\d{2})? ?(am|pm)\b"#)
+        // A letter or bill also carries a date: those words keep it out of the poster pile.
+        let letter = lines.contains { $0.text.range(of: #"^\s*dear [^,]{1,40},\s*$"#, options: [.regularExpression, .caseInsensitive]) != nil }
+        let billy = letter || has(#"\b(invoice|statement|account (no|number)|amount due|payment due|due date|pay by)\b"#)
+        if !billy, lines.count <= 30, (ev.start != nil && !ev.title.isEmpty && (dated || timed)) || (posterWords.count >= 2 && (dated || timed)) {
+            let title = ev.title.isEmpty ? (lines.max { $0.box.height < $1.box.height }?.text ?? lines[0].text) : ev.title
+            let when = ev.start.map { s -> String in
+                let c = Calendar.current.dateComponents([.hour, .minute], from: s)
+                return " — " + s.formatted(date: .abbreviated, time: (c.hour ?? 0) != 0 || (c.minute ?? 0) != 0 ? .shortened : .omitted)
+            } ?? ""
+            return Read(kind: .poster, name: "An event poster", gist: title + when, text: text)
         }
 
         // A business card: a phone or email and few lines.
@@ -73,15 +109,16 @@ enum Paper {
         }
 
         // An event poster: a date (and usually a time) with a big title, not too much text.
-        let ev = DataGrab.event(text, now: now)
-        if let s = ev.start, !ev.title.isEmpty, lines.count <= 30 {
+        if !billy, let s = ev.start, !ev.title.isEmpty, lines.count <= 30 {
             let c = Calendar.current.dateComponents([.hour, .minute], from: s)
             let timed = (c.hour ?? 0) != 0 || (c.minute ?? 0) != 0
             return Read(kind: .poster, name: "An event poster",
                         gist: "\(ev.title) — \(s.formatted(date: .abbreviated, time: timed ? .shortened : .omitted))", text: text)
         }
 
-        if has(#"\b(dear |invoice|statement|account (no|number)|amount due|payment due|due date|pay by|reference|bill)\b"#) {
+        // A letter or bill. "Dear" only counts opening a letter ("Dear Ms Lee,"), not inside a note ("2 dear Gu lettuce").
+        let listy = board.kind == .lists && board.tasks.count >= 8 && moneyLines < 2
+        if !listy, letter || has(#"\b(invoice|statement|account (no|number)|amount due|payment due|due date|pay by|bill)\b"#) {
             let s = ScanSmart.read(text, now: now)
             var g: [String] = []
             if let a = s.amount { g.append("Amount " + String(format: "%.2f", a)) }
