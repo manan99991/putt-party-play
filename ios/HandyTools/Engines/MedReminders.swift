@@ -266,6 +266,8 @@ final class MedStore: ObservableObject {
         guard Launch.sample, meds.isEmpty else { return }
         save(Med(name: "Vitamin D", dose: "1 capsule", note: "with breakfast", times: [TimeOfDay(hour: 8, minute: 0)], supply: 24, perDose: 1, refillAt: 7))
         save(Med(name: "Magnesium", dose: "1 tablet", note: "", times: [TimeOfDay(hour: 21, minute: 0)], supply: 5, perDose: 1, refillAt: 7))
+        // This morning's dose already taken, the way a real day looks — not a red "Missed!".
+        for (m, at) in MedSchedule.today(meds) where at <= Date() { setTaken(m, at: at, true) }
     }
 
     func save(_ m: Med) {
