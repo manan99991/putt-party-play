@@ -23,6 +23,16 @@ final class MultiPhotoTests: XCTestCase {
 
     private func alive(_ step: String) { XCTAssertEqual(app.state, .runningForeground, "crashed: \(step)") }
 
+    /// Back one screen: the bar's back button where there is one, else the tool page's own Back, else an edge swipe.
+    private func goBack() {
+        let bar = app.navigationBars.buttons.firstMatch
+        if bar.exists, bar.isHittable { bar.tap(); return }
+        let back = app.buttons.matching(NSPredicate(format: "label ==[c] 'Back' OR identifier ==[c] 'back'")).firstMatch
+        if back.exists, back.isHittable { back.tap(); return }
+        let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.01, dy: 0.5))
+        start.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.8, dy: 0.5)))
+    }
+
     private func goals() -> [String] {
         app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH 'goal-'")).allElementsBoundByIndex.map(\.identifier)
     }
@@ -56,10 +66,10 @@ final class MultiPhotoTests: XCTestCase {
                 ways.firstMatch.tap()
                 sleep(6)
                 alive("after opening the first way under \(id)")
-                app.navigationBars.buttons.element(boundBy: 0).tap()
+                goBack()
                 sleep(1)
             }
-            app.navigationBars.buttons.element(boundBy: 0).tap()
+            goBack()
             sleep(1)
             alive("back from \(id)")
         }
