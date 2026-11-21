@@ -38058,5 +38058,135 @@
   "ja": "オートメーション",
   "pt": "Automações",
   "zh": "自动化"
+ },
+ "Nothing is set yet. Tap New automation — each takes a minute and has a Test run.": {
+  "de": "Noch nichts eingerichtet. Tippe auf „Neue Automation“ – jede dauert eine Minute und hat einen Testlauf.",
+  "es": "Aún no hay nada configurado. Toca Nueva automatización: cada una lleva un minuto y tiene una prueba.",
+  "fr": "Rien n'est encore configuré. Touchez Nouvelle automatisation : chacune prend une minute et a un essai.",
+  "hi": "अभी कुछ सेट नहीं है। ‘नया ऑटोमेशन’ पर टैप करें — हर एक में एक मिनट लगता है और टेस्ट रन होता है।",
+  "it": "Non è ancora impostato nulla. Tocca Nuova automazione: ognuna richiede un minuto e ha una prova.",
+  "ja": "まだ何も設定されていません。「新しいオートメーション」をタップ。どれも1分ででき、テスト実行があります。",
+  "pt": "Nada configurado ainda. Toque em Nova automação — cada uma leva um minuto e tem um teste.",
+  "zh": "还没有设置任何内容。点“新建自动化”——每个只需一分钟，并且可以试运行。"
+ },
+ "New automation": {
+  "de": "Neue Automation",
+  "es": "Nueva automatización",
+  "fr": "Nouvelle automatisation",
+  "hi": "नया ऑटोमेशन",
+  "it": "Nuova automazione",
+  "ja": "新しいオートメーション",
+  "pt": "Nova automação",
+  "zh": "新建自动化"
+ },
+ "now": {
+  "de": "jetzt",
+  "es": "ahora",
+  "fr": "maintenant",
+  "hi": "अभी",
+  "it": "ora",
+  "ja": "現在",
+  "pt": "agora",
+  "zh": "当前"
+ },
+ "Do it now": {
+  "de": "Jetzt erledigen",
+  "es": "Hazlo ahora",
+  "fr": "Le faire maintenant",
+  "hi": "अभी करें",
+  "it": "Fallo ora",
+  "ja": "今すぐ実行",
+  "pt": "Fazer agora",
+  "zh": "立即处理"
+ },
+ "Pick what Tenzy should look after. Everything runs on your phone.": {
+  "de": "Wähle, worum sich Tenzy kümmern soll. Alles läuft auf deinem Handy.",
+  "es": "Elige de qué debe encargarse Tenzy. Todo se hace en tu teléfono.",
+  "fr": "Choisissez ce dont Tenzy doit s'occuper. Tout se passe sur votre téléphone.",
+  "hi": "चुनें कि Tenzy किस बात का ध्यान रखे। सब कुछ आपके फ़ोन पर चलता है।",
+  "it": "Scegli di cosa deve occuparsi Tenzy. Tutto avviene sul tuo telefono.",
+  "ja": "Tenzyに任せることを選んでください。すべてスマホの中で動きます。",
+  "pt": "Escolha do que o Tenzy deve cuidar. Tudo roda no seu celular.",
+  "zh": "选择要让 Tenzy 帮你照看的事。一切都在你的手机上运行。"
+ },
+ "When a count builds up": {
+  "de": "Wenn sich etwas ansammelt",
+  "es": "Cuando algo se acumula",
+  "fr": "Quand quelque chose s'accumule",
+  "hi": "जब कोई गिनती बढ़ जाए",
+  "it": "Quando qualcosa si accumula",
+  "ja": "数がたまったら",
+  "pt": "Quando algo se acumula",
+  "zh": "当数量累积时"
+ },
+ "On a schedule": {
+  "de": "Nach Zeitplan",
+  "es": "Con horario",
+  "fr": "À heure fixe",
+  "hi": "तय समय पर",
+  "it": "A orari fissi",
+  "ja": "スケジュールで",
+  "pt": "Em um horário",
+  "zh": "按时间表"
+ },
+ "Back up my contacts": {
+  "de": "Meine Kontakte sichern",
+  "es": "Copia de mis contactos",
+  "fr": "Sauvegarder mes contacts",
+  "hi": "मेरे कॉन्टैक्ट का बैकअप",
+  "it": "Backup dei miei contatti",
+  "ja": "連絡先をバックアップ",
+  "pt": "Fazer backup dos meus contatos",
+  "zh": "备份我的通讯录"
+ },
+ "A dated copy of everyone in Files, on the schedule you pick, with a nudge when it's saved.": {
+  "de": "Eine datierte Kopie aller Kontakte in Dateien, nach deinem Zeitplan, mit Hinweis, wenn sie gesichert ist.",
+  "es": "Una copia con fecha de todos en Archivos, con el horario que elijas y un aviso cuando se guarde.",
+  "fr": "Une copie datée de tous vos contacts dans Fichiers, au rythme choisi, avec un rappel une fois enregistrée.",
+  "hi": "आपके चुने समय पर सभी कॉन्टैक्ट की तारीख़ वाली कॉपी Files में, सेव होने पर सूचना के साथ।",
+  "it": "Una copia datata di tutti in File, con la frequenza che scegli e un avviso quando è salvata.",
+  "ja": "選んだ間隔で全員の日付入りコピーを「ファイル」に保存し、保存したらお知らせ。",
+  "pt": "Uma cópia datada de todos em Arquivos, no horário que você escolher, com aviso quando for salva.",
+  "zh": "按你选的频率，把所有联系人带日期地存一份到“文件”，存好后提醒你。"
+ },
+ "How often": {
+  "de": "Wie oft",
+  "es": "Con qué frecuencia",
+  "fr": "À quelle fréquence",
+  "hi": "कितनी बार",
+  "it": "Ogni quanto",
+  "ja": "頻度",
+  "pt": "Com que frequência",
+  "zh": "频率"
+ },
+ "Your own": {
+  "de": "Deine eigene",
+  "es": "La tuya",
+  "fr": "La vôtre",
+  "hi": "आपका अपना",
+  "it": "La tua",
+  "ja": "自分で作る",
+  "pt": "A sua",
+  "zh": "自定义"
+ },
+ "Build a custom automation": {
+  "de": "Eigene Automation bauen",
+  "es": "Crea tu propia automatización",
+  "fr": "Créer votre automatisation",
+  "hi": "अपना ऑटोमेशन बनाएँ",
+  "it": "Crea un'automazione su misura",
+  "ja": "自分だけのオートメーションを作る",
+  "pt": "Criar uma automação sua",
+  "zh": "创建自定义自动化"
+ },
+ "Make a tool in Build your own, then give it a time — it reminds you and opens ready to run.": {
+  "de": "Erstelle ein Tool in „Selbst bauen“ und gib ihm eine Zeit – es erinnert dich und öffnet sich startklar.",
+  "es": "Crea una herramienta en Crea la tuya y dale una hora: te avisa y se abre lista para usar.",
+  "fr": "Créez un outil dans Créez le vôtre, puis donnez-lui une heure : il vous le rappelle et s'ouvre prêt à lancer.",
+  "hi": "‘खुद बनाएँ’ में टूल बनाएँ, फिर उसे समय दें — वह याद दिलाएगा और चलाने के लिए तैयार खुलेगा।",
+  "it": "Crea uno strumento in Crea il tuo e dagli un orario: ti avvisa e si apre pronto all'uso.",
+  "ja": "「自分で作る」でツールを作り、時間を設定。お知らせして、すぐ実行できる状態で開きます。",
+  "pt": "Crie uma ferramenta em Crie a sua e dê um horário — ela avisa e abre pronta para rodar.",
+  "zh": "在“自己动手做”里做一个工具，再给它设个时间——到时会提醒你，并直接打开准备运行。"
  }
 }

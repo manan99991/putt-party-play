@@ -57,6 +57,7 @@ struct AutomationsView: View {
     @State private var denied = false
     @State private var loaded = false
     @State private var tested: String?
+    @State private var adding = false
 
     var body: some View {
         ScrollView {
@@ -71,32 +72,13 @@ struct AutomationsView: View {
                 if !loaded {
                     HStack { BusySpinner(); Text(L("Looking at what's set…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 } else if rows.isEmpty && rules.filter(\.on).isEmpty {
-                    Text(L("Nothing is set yet. Pick one below — each takes a minute and has a Test run."))
+                    Text(L("Nothing is set yet. Tap New automation — each takes a minute and has a Test run."))
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
                 }
                 ForEach(rows) { r in running(r) }
-                ForEach(rules) { r in ruleRow(r) }
-                let set = Set(rows.map(\.group.key) + (rules.contains(where: \.on) ? ["smart"] : []))
-                let ideas = AutomationGroups.ideas.filter { !set.contains($0.key) }
-                if !ideas.isEmpty {
-                    SectionLabel(text: L("Set one up"), icon: "plus.circle.fill")
-                    VStack(spacing: 0) {
-                        ForEach(ideas, id: \.key) { i in
-                            Button { open(i.tool) } label: {
-                                HStack(spacing: HandySpacing.s12) {
-                                    Image(systemName: i.icon).foregroundStyle(HandyColor.accent).frame(width: 28)
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(L(i.title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                        Text(L(i.detail)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                                    }
-                                    Spacer(minLength: 0)
-                                    Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                                }.padding(.vertical, 10).contentShape(Rectangle())
-                            }.buttonStyle(.plain).accessibilityIdentifier("auto-idea-\(i.key)")
-                            if i.key != ideas.last?.key { Divider() }
-                        }
-                    }.cardStyle(padding: HandySpacing.s12)
-                }
+                ForEach(rules.filter(\.on)) { r in ruleRow(r) }
+                Button { adding = true } label: { Label(L("New automation"), systemImage: "plus").frame(maxWidth: .infinity) }
+                    .primaryButton().accessibilityIdentifier("auto-new")
                 Text(L("Reminders come from iPhone itself, so they arrive even when Tenzy is closed. Turn one off inside its tool."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
@@ -105,6 +87,9 @@ struct AutomationsView: View {
         .background(Ground())
         .accessibilityIdentifier("automations")
         .task { await load() }
+        .sheet(isPresented: $adding, onDismiss: { Task { await load() } }) {
+            NewAutomationSheet(already: Set(rows.map(\.group.key))) { tool in adding = false; open(tool) }
+        }
     }
 
     private var notificationsOff: some View {
@@ -141,20 +126,32 @@ struct AutomationsView: View {
     }
 
     private func ruleRow(_ r: SmartAlerts.Rule) -> some View {
-        HStack(spacing: HandySpacing.s12) {
-            Image(systemName: "iphone.gen3").foregroundStyle(HandyColor.accent).frame(width: 28)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(L(r.kind.title)).font(HandyFont.bodyStrong).fixedSize(horizontal: false, vertical: true)
-                if let v = r.lastValue, let c = r.lastChecked {
-                    Text("\(L("Last checked")) \(c.formatted(.relative(presentation: .named))) · \(Int(v))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+        let due = r.lastValue.map { SmartAlerts.crossed(r, value: $0) } ?? false
+        return VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack(spacing: HandySpacing.s12) {
+                Image(systemName: r.kind == .lowSpace ? "internaldrive" : r.kind == .screenshots ? "camera.viewfinder" : "film.stack")
+                    .foregroundStyle(HandyColor.accent).frame(width: 28)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L(r.kind.title)).font(HandyFont.bodyStrong).fixedSize(horizontal: false, vertical: true)
+                    Text("\(L(r.kind.sentence.before)) \(SmartAlerts.number(r.limit, r.kind)) \(L(r.kind.sentence.after))")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                 }
+                Spacer(minLength: 0)
+                Toggle("", isOn: Binding(get: { r.on }, set: { on in
+                    var n = r; n.on = on; AlertStore.upsert(n); rules = AlertStore.load()
+                })).labelsHidden().tint(HandyColor.accent)
             }
-            Spacer(minLength: 0)
-            Toggle("", isOn: Binding(get: { r.on }, set: { on in
-                var n = r; n.on = on; AlertStore.upsert(n); rules = AlertStore.load()
-            })).labelsHidden().tint(HandyColor.accent)
+            if r.on, let v = r.lastValue {
+                Label("\(SmartAlerts.number(v, r.kind)) \(L("now"))\(due ? " — " + L("due") : "")", systemImage: "circle.fill")
+                    .font(HandyFont.caption.weight(.semibold)).foregroundStyle(due ? HandyColor.danger : HandyColor.success)
+                    .accessibilityIdentifier("auto-progress-\(r.kind.rawValue)")
+            }
+            if r.on {
+                Button { open(r.kind.opens) } label: { Label(L("Do it now"), systemImage: "sparkles").frame(maxWidth: .infinity) }.compactButton()
+            }
         }
         .cardStyle(padding: HandySpacing.s12)
+        .accessibilityIdentifier("auto-rule-\(r.kind.rawValue)")
     }
 
     private func when(_ r: Row) -> String {
@@ -193,11 +190,89 @@ struct AutomationsView: View {
             let sorted = ps.sorted { (next($0) ?? .distantFuture) < (next($1) ?? .distantFuture) }
             return Row(id: k, group: g, count: ps.count, next: sorted.first.flatMap(next), sample: sorted[0])
         }.sorted { ($0.next ?? .distantFuture) < ($1.next ?? .distantFuture) }
+        // The live number for each count alert, so the card shows where it stands right now.
+        var fresh = AlertStore.load()
+        for i in fresh.indices where fresh[i].on {
+            let k = fresh[i].kind
+            if let v = await Task.detached(priority: .utility, operation: { SmartAlerts.read(k) }).value {
+                fresh[i].lastValue = v; fresh[i].lastChecked = Date()
+            }
+        }
+        AlertStore.save(fresh)
         await MainActor.run {
             rows = built
-            rules = AlertStore.load()
+            rules = fresh
             denied = settings.authorizationStatus == .denied
             loaded = true
+        }
+    }
+}
+
+/// "+ New automation", as in the approved prototype: when a count builds up, on a schedule, or your own. The count
+/// alerts and the contacts backup are set right here with the same cards their tools use; the rest open the tool
+/// that sets them up, already where the setting is.
+struct NewAutomationSheet: View {
+    let already: Set<String>
+    var open: (String) -> Void
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var backup = ContactsBackup()
+    @State private var testedBackup = false
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: HandySpacing.s16) {
+                    Text(L("Pick what Tenzy should look after. Everything runs on your phone."))
+                        .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+
+                    SectionLabel(text: L("When a count builds up"), icon: "chart.bar.fill")
+                    ForEach(SmartAlerts.Kind.allCases) { k in SmartAlertCard(kind: k).cardStyle(padding: HandySpacing.s12) }
+
+                    SectionLabel(text: L("On a schedule"), icon: "calendar")
+                    VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                        Label(L("Back up my contacts"), systemImage: "person.crop.circle.badge.checkmark").font(HandyFont.bodyStrong)
+                        Text(L("A dated copy of everyone in Files, on the schedule you pick, with a nudge when it's saved."))
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        Picker(L("How often"), selection: $backup.frequency) {
+                            ForEach([BackupFrequency.off, .weekly, .monthly, .quarterly], id: \.self) { Text(L($0.title)).tag($0) }
+                        }.pickerStyle(.segmented)
+                        if backup.frequency != .off {
+                            Button {
+                                Task { await ContactBackupReminder.testRun(); testedBackup = true }
+                            } label: { Label(testedBackup ? L("Sent — check the top of the screen") : L("Test run"), systemImage: "paperplane").frame(maxWidth: .infinity) }
+                                .compactButton()
+                        }
+                    }.cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-new-backup")
+
+                    let ideas = AutomationGroups.ideas.filter { !already.contains($0.key) && !["smart", "backup"].contains($0.key) }
+                    ForEach(ideas, id: \.key) { i in
+                        Button { open(i.tool) } label: {
+                            HStack(spacing: HandySpacing.s12) {
+                                Image(systemName: i.icon).foregroundStyle(HandyColor.accent).frame(width: 28)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(L(i.title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                                    Text(L(i.detail)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                                }
+                                Spacer(minLength: 0)
+                                Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                            }.contentShape(Rectangle())
+                        }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-idea-\(i.key)")
+                    }
+
+                    SectionLabel(text: L("Your own"), icon: "wand.and.stars")
+                    Button { open("builder") } label: {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Label(L("Build a custom automation"), systemImage: "sparkles").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                            Text(L("Make a tool in Build your own, then give it a time — it reminds you and opens ready to run."))
+                                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                        }.frame(maxWidth: .infinity, alignment: .leading)
+                    }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12)
+                }
+                .padding(HandySpacing.gutter)
+            }
+            .background(Ground())
+            .navigationTitle(L("New automation")).navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
         }
     }
 }
