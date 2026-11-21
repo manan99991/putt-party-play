@@ -39,6 +39,10 @@ packages:
     # Pure-Swift 7-Zip (LZMA/LZMA2), BZip2 and LZ4 (MIT). File Opener tier 2: .7z, .cb7 comics, .bz2, .tbz2.
     url: https://github.com/tsolomko/SWCompression
     exactVersion: 4.8.6
+  BitByteData:
+    # SWCompression's own dependency, held at 2.0.4: 2.1.0 asks for iOS 17 while SWCompression's targets say 15.
+    url: https://github.com/tsolomko/BitByteData
+    exactVersion: 2.0.4
 
 targets:
   HandyTools:
@@ -55,6 +59,7 @@ targets:
     dependencies:
       - package: SwiftOGG
       - package: SWCompression
+      - package: BitByteData
       - package: StbVorbis
       - package: Unrar
       - target: ShareExtension

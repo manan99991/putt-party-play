@@ -15,12 +15,10 @@ ios = os.path.join(root, "ios")
 bad = []
 
 def strip(src):
-    src = re.sub(r'"""[\s\S]*?"""', '""', src)
-    src = re.sub(r'#"[\s\S]*?"#', '""', src)
-    src = re.sub(r'"(?:[^"\\\n]|\\.)*"', '""', src)
-    src = re.sub(r'//[^\n]*', '', src)
-    src = re.sub(r'/\*[\s\S]*?\*/', '', src)
-    return src
+    # One left-to-right pass (strings, raw strings, comments) — separate regex passes mistook "/#" in an
+    # ordinary string for the start of a raw string.
+    import members_check as _mc
+    return _mc.strip(src)
 
 files = glob.glob(os.path.join(ios, "**", "*.swift"), recursive=True)
 code = {f: open(f, encoding="utf-8").read() for f in files}

@@ -10,6 +10,16 @@ def strip(s):
             j = s.find('\n', i); i = n if j < 0 else j; continue
         if s.startswith('/*', i):
             j = s.find('*/', i + 2); i = n if j < 0 else j + 2; continue
+        if c == '#':
+            # a raw string: #"…"#, ##"…"## or #"""…"""# — quotes inside it don't end it
+            k = 0
+            while i + k < n and s[i + k] == '#': k += 1
+            if i + k < n and s[i + k] == '"':
+                tri = s.startswith('"""', i + k)
+                q = ('"""' if tri else '"') + '#' * k
+                j = s.find(q, i + k + (3 if tri else 1))
+                i = n if j < 0 else j + len(q); out.append('""'); continue
+            out.append(s[i:i + k]); i += k; continue
         if c == '"':
             # skip a string, honouring \( ... ) interpolation with nesting
             raw = s.startswith('"""', i); q = '"""' if raw else '"'; i += len(q); depth = 0
