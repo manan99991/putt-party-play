@@ -266,8 +266,49 @@ jobs:
   # Runs only when App Store Connect secrets are present. Archives, signs with an
   # ASC API key via automatic signing, and uploads to TestFlight. Gated on `build` (which runs the tests): a red
   # suite blocks the upload.
+  # Every ready-made tool run on a real file, and every tool opened with its sample, each screen read the way
+  # VoiceOver reads it (the 20 Nov crash). About an hour, so it runs beside the build on the daily TestFlight commit
+  # and the upload waits for it: a crash, a job that never ends or a blank finish stops the upload.
+  realinput:
+    if: "${{ contains(github.event.head_commit.message, 'Ship-Build=YES') }}"
+    runs-on: xcode-27
+    timeout-minutes: 120
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+      - name: Generate project
+        run: brew install xcodegen >/dev/null && xcodegen generate
+      - name: Real files through every tool (gates the upload)
+        timeout-minutes: 105
+        run: |
+          set -o pipefail
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys
+          d=json.load(sys.stdin)["devices"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
+          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
+          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+          for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+          xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
+          xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
+            -only-testing:HandyToolsUITests/RealInputTests -only-testing:HandyToolsUITests/ToolRealInputTests \
+            2>&1 | tee realinput.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (EXECUTE )?(SUCCEEDED|FAILED)|REALINPUT|TOOLINPUT" || true
+          grep -qE "TEST (EXECUTE )?SUCCEEDED" realinput.log
+      - name: Publish log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          grep -E "error:|Test Case|Executed|TEST (EXECUTE )?(SUCCEEDED|FAILED)|REALINPUT|TOOLINPUT|failed -" ios/realinput.log 2>/dev/null | head -400 > ios-realinput.log || true
+          bash .github/publish-log.sh ios-realinput ios-realinput.log || true
+
   testflight:
-    needs: build
+    needs: [build, realinput]
     # Decoupled from `build` so signing can be iterated fast — `archive` compiles the code too.
     # HOLD: build + test run on every push, but TestFlight upload happens ONLY when the commit
     # message contains the trailer line  Ship-Build: YES  — a distinctive token that is never written

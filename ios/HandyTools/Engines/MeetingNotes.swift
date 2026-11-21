@@ -93,7 +93,7 @@ enum MeetingNotes {
             }
             req.endAudio()
             // A 40s window recognises well under a minute; cap so one stuck window can't stall the job.
-            DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish(nil) }
+            DispatchQueue.global().asyncAfter(deadline: .now() + Transcriber.waitFor(seconds: Double(read) / fmt.sampleRate)) { box.task?.cancel(); once.finish(nil) }
             let transcription = await withCheckedContinuation { once.wait($0) }
             if let transcription {
                 let line = transcription.formattedString.trimmingCharacters(in: .whitespacesAndNewlines)

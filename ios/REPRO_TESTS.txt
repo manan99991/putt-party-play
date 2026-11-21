@@ -1,3 +1,4 @@
 # One -only-testing target per line; lines starting with # are ignored.
-# Every ready-made flow on a real file, screen read like VoiceOver (first proving run before it joins the gate).
+# Second proving run: every ready-made tool on a real file (memo hang fixed) + every tool opened with its sample.
 HandyToolsUITests/RealInputTests
+HandyToolsUITests/ToolRealInputTests

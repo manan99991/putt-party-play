@@ -46,6 +46,9 @@ final class RealInputTests: XCTestCase {
             var reads = 0
             while Date() < deadline, app.state == .runningForeground {
                 // Read the whole screen while it works, as VoiceOver would — the crash path of 20 Nov.
+                // A system prompt (speech recognition, photos…) is answered the way a person would: Allow.
+                let sb = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+                for label in ["Allow", "OK", "Allow Full Access", "Allow While Using App"] where sb.alerts.buttons[label].exists { sb.alerts.buttons[label].firstMatch.tap(); break }
                 if reads % 3 == 0 { _ = app.debugDescription }
                 reads += 1
                 if !busy.exists, finishes.contains(where: { app.descendants(matching: .any)[$0].exists }) || app.descendants(matching: .any)["run-message"].exists { break }

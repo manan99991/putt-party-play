@@ -2112,7 +2112,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 started = true
                 go(.text(t))
             }
-            if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Video finish" {
+            if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Video finish", start == .video {
                 started = true
                 Task { if let u = await SampleAssets.movie() { await MainActor.run { go(.video(u)) } } }
             }

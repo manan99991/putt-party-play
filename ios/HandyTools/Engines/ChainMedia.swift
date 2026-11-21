@@ -528,6 +528,11 @@ enum Transcriber {
     }
 
     /// One window of speech through one recogniser: the words and how sure it was (0…1, averaged over words).
+    /// How long to wait for the recogniser's answer on a stretch of audio: half again its length plus a few seconds,
+    /// never more than a minute. A memo of silence or music gets no answer at all — with a flat minute per language
+    /// tried and per stretch, a 3-second clip with no words sat for minutes before saying so (21 Nov test run).
+    static func waitFor(seconds: Double) -> Double { min(60, max(8, seconds * 1.5 + 8)) }
+
     private static func probe(_ recognizer: SFSpeechRecognizer, url: URL) async -> (text: String, sure: Double) {
         guard let file = try? AVAudioFile(forReading: url) else { return ("", 0) }
         let fmt = file.processingFormat
@@ -551,8 +556,9 @@ enum Transcriber {
             req.append(buf); read += buf.frameLength
         }
         req.endAudio()
-        // A recogniser that never answers just loses the comparison — it doesn't hold the job up.
-        DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish(("", 0)) }
+        // A recogniser that never answers just loses the comparison — it doesn't hold the job up. With no speech in it,
+        // a stretch can get no answer at all, so the wait matches the audio's length instead of a flat minute.
+        DispatchQueue.global().asyncAfter(deadline: .now() + waitFor(seconds: Double(read) / fmt.sampleRate)) { box.task?.cancel(); once.finish(("", 0)) }
         let r = await withCheckedContinuation { once.wait($0) }
         return (r.0, r.1)
     }
@@ -649,7 +655,8 @@ enum Transcriber {
             }
             for req in reqs { req.endAudio() }
             // A recogniser that never answers for a stretch just gives that stretch up; the job carries on.
-            for (box, once) in zip(boxes, waits) { DispatchQueue.global().asyncAfter(deadline: .now() + 60) { box.task?.cancel(); once.finish(("", 0, [])) } }
+            let wait = waitFor(seconds: Double(read) / fmt.sampleRate)
+            for (box, once) in zip(boxes, waits) { DispatchQueue.global().asyncAfter(deadline: .now() + wait) { box.task?.cancel(); once.finish(("", 0, [])) } }
             var heard: [Said] = []
             for once in waits { heard.append(await withCheckedContinuation { once.wait($0) }) }
             if let best = heard.filter({ !$0.text.isEmpty }).max(by: { $0.sure < $1.sure }) {
