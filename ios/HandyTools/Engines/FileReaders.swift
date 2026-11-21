@@ -88,6 +88,11 @@ enum FileReaders {
             if let m4a = Transcriber.oggOpusToM4A(url) { return .quickLook(m4a) }
             return info(url, kind: "Ogg audio", "This Ogg file uses Vorbis, which Tenzy can't play yet — Opus voice notes play fine.")
         }
+        // MIDI: iPhone has no MIDI sounds, so the notes are played into a normal audio file you can hear and share.
+        if ["mid", "midi", "kar", "smf"].contains(ext) || head.starts(with: Array("MThd".utf8)) {
+            if let m4a = MIDIRender.toM4A(url) { return .quickLook(m4a) }
+            return info(url, kind: "MIDI music", "This MIDI file has no notes Tenzy can play.")
+        }
         if quickLookExts.contains(ext) { return .quickLook(url) }
         if let img = imageIO(url) { return .image(img) }                                       // PSD, TGA, EXR, JP2, AVIF, RAW, ICO, DDS…
         if archiveExts.contains(ext) || head.starts(with: [0x50, 0x4B, 0x03, 0x04]) || head.starts(with: [0x1F, 0x8B]) || head.starts(with: [0xFD, 0x37, 0x7A, 0x58, 0x5A]) {

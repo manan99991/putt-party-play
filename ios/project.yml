@@ -76,7 +76,7 @@ targets:
           - CFBundleTypeName: Audio
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
-            LSItemContentTypes: [public.audio, public.mp3, public.mpeg-4-audio, com.apple.m4a-audio, com.microsoft.waveform-audio, public.aiff-audio, org.xiph.flac, org.xiph.ogg, org.xiph.opus, public.aac-audio]
+            LSItemContentTypes: [public.audio, public.midi-audio, public.mp3, public.mpeg-4-audio, com.apple.m4a-audio, com.microsoft.waveform-audio, public.aiff-audio, org.xiph.flac, org.xiph.ogg, org.xiph.opus, public.aac-audio]
           - CFBundleTypeName: Video
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
