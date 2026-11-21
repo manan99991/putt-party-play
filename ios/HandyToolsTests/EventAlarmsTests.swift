@@ -15,6 +15,6 @@ final class EventAlarmsTests: XCTestCase {
         let e = EKEvent(eventStore: EKEventStore())
         e.title = ChainText.returnTitle("Harbor Home Goods")
         EventAlarms.apply(to: e)
-        XCTAssertEqual(e.alarms?.map(\.relativeOffset), [-3 * 86_400, 0])
+        XCTAssertEqual(e.alarms?.map(\.relativeOffset).sorted(), [-3 * 86_400, 0])   // EventKit keeps its own order
     }
 }

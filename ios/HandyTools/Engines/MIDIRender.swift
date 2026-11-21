@@ -143,7 +143,7 @@ enum MIDIRender {
         guard let format = AVAudioFormat(standardFormatWithSampleRate: rate, channels: 1),
               let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(samples.count)),
               let file = try? AVAudioFile(forWriting: out, settings: [AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: rate,
-                                                                      AVNumberOfChannelsKey: 1, AVEncoderBitRateKey: AACRate.safe(96_000, sampleRate: rate, channels: 1)]) else { return nil }
+                                                                      AVNumberOfChannelsKey: 1]) else { return nil }   // the encoder picks a bit rate it supports at this rate
         buffer.frameLength = AVAudioFrameCount(samples.count)
         samples.withUnsafeBufferPointer { src in buffer.floatChannelData![0].update(from: src.baseAddress!, count: samples.count) }
         do { try file.write(from: buffer) } catch { return nil }
