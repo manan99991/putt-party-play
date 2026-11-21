@@ -111,7 +111,7 @@ struct GuideView: View {
             HStack(spacing: HandySpacing.s8) {
                 ForEach(Array(previews.thumbs.prefix(4).enumerated()), id: \.offset) { i, t in
                     ZStack {
-                        Image(uiImage: t).resizable().scaledToFill().frame(width: 64, height: 64).clipped()
+                        Image(uiImage: t).resizable().scaledToFill().frame(width: 64, height: 64).clipped().accessibilityHidden(true)
                         if i == 3, given.count > 4 {
                             Color.black.opacity(0.55)
                             Text("+\(given.count - 3)").font(HandyFont.bodyStrong).foregroundStyle(.white)
@@ -172,6 +172,9 @@ struct GuideView: View {
             .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(HandyColor.accent.opacity(0.6), lineWidth: 1.5))
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(L(why)). \(Guide.title(o, count: given.count, kind: kind))"))
+        .accessibilityAddTraits(.isButton)
         .accessibilityIdentifier("guide-suggested")
         .accessibilityHint(L("Opens it straight away"))
     }
@@ -250,7 +253,8 @@ private struct GoalTile: View {
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous)
             .stroke(highlighted ? HandyColor.accent : HandyColor.border, lineWidth: highlighted ? 1.5 : 1))
         .contentShape(Rectangle())
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(L(goal.title)). \(L(goal.line)). \(ways) \(L(ways == 1 ? "way" : "ways"))"))
     }
 }
 
@@ -309,7 +313,7 @@ struct OptionRow: View {
         HStack(alignment: .top, spacing: HandySpacing.s12) {
             ZStack {
                 if let preview {
-                    Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped()
+                    Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped().accessibilityHidden(true)
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                         .overlay(alignment: .bottomTrailing) { badge(22).padding(3) }
                 } else {
@@ -335,7 +339,17 @@ struct OptionRow: View {
             Image(systemName: "chevron.right").font(.system(size: 13, weight: .semibold)).foregroundStyle(HandyColor.textSecondary).padding(.top, 4)
         }
         .contentShape(Rectangle())
-        .accessibilityElement(children: .combine)
+        // One plain label, read out as a single button. Combining this row's children (a photo preview with a
+        // badge laid over it) made iOS's screen reading recurse until the app ran out of stack — your 20 Nov
+        // crash after picking several photos, whenever anything read the screen (VoiceOver, Voice Control, tests).
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(accessibilityText))
+    }
+
+    private var accessibilityText: String {
+        var parts = [Guide.title(option, count: count, kind: kind), L(Guide.gets(option, kind: kind))]
+        if let snippet, !snippet.isEmpty { parts.append(snippet) }
+        return parts.joined(separator: ". ")
     }
 
     @ViewBuilder private func badge(_ size: CGFloat) -> some View {
