@@ -313,9 +313,23 @@ struct OptionRow: View {
         HStack(alignment: .top, spacing: HandySpacing.s12) {
             ZStack {
                 if let preview {
-                    Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped().accessibilityHidden(true)
-                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        .overlay(alignment: .bottomTrailing) { badge(22).padding(3) }
+                    let v = GuideView.skip
+                    if v.contains("uikit") {
+                        PlainPicture(image: preview).frame(width: side, height: side)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .overlay(alignment: .bottomTrailing) { badge(22).padding(3) }
+                    } else if v.contains("nobadge") {
+                        Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped().accessibilityHidden(true)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    } else if v.contains("flat"), let cg = preview.cgImage {
+                        Image(decorative: cg, scale: 1).resizable().scaledToFill().frame(width: side, height: side).clipped()
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .overlay(alignment: .bottomTrailing) { badge(22).padding(3) }
+                    } else {
+                        Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped().accessibilityHidden(true)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .overlay(alignment: .bottomTrailing) { badge(22).padding(3) }
+                    }
                 } else {
                     badge(side)
                 }
@@ -431,4 +445,18 @@ struct OptionRow: View {
         default: return nil
         }
     }
+}
+
+
+/// A picture drawn by UIKit, outside SwiftUI's own image handling (test variant while finding the 20 Nov crash).
+struct PlainPicture: UIViewRepresentable {
+    let image: UIImage
+    func makeUIView(context: Context) -> UIImageView {
+        let v = UIImageView(image: image)
+        v.contentMode = .scaleAspectFill; v.clipsToBounds = true; v.isAccessibilityElement = false
+        v.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        v.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        return v
+    }
+    func updateUIView(_ v: UIImageView, context: Context) { v.image = image }
 }

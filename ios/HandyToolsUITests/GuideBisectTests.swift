@@ -1,8 +1,7 @@
 import XCTest
 
-/// Finds which part of the "What do you want to do?" screen closes the app when several photos are handed
-/// over and the screen is read (VoiceOver, Voice Control, a UI test). One test per version, so a crash in
-/// one doesn't hide the others.
+/// Your 20 Nov crash: the suggested choice's preview picture (a 2×2 of your photos) closes the app when the
+/// screen is read. Each test draws that picture a different way; the one that survives is the fix.
 final class GuideBisectTests: XCTestCase {
     private func survives(skipping skip: String, photos: Int = 2) {
         let app = XCUIApplication()
@@ -17,11 +16,9 @@ final class GuideBisectTests: XCTestCase {
         print("BISECT skip=[\(skip)] read=\(found) alive=\(alive)")
         XCTAssertTrue(found && alive, "skip=[\(skip)] closed the app")
     }
-    func test1_everything() { survives(skipping: "") }
-    func test2_noSuggestion() { survives(skipping: "suggest") }
-    func test3_noPreviewPicture() { survives(skipping: "preview") }
-    func test4_noGoalTiles() { survives(skipping: "grid") }
-    func test5_noHeader() { survives(skipping: "header") }
-    func test6_noSuggestionNoGrid() { survives(skipping: "suggest,grid") }
-    func test7_onePhoto() { survives(skipping: "", photos: 1) }
+    func test1_asShipped() { survives(skipping: "") }
+    func test2_withoutTheBadge() { survives(skipping: "nobadge") }
+    func test3_decorativePicture() { survives(skipping: "flat") }
+    func test4_drawnByUIKit() { survives(skipping: "uikit") }
+    func test5_noPreview() { survives(skipping: "preview") }
 }
