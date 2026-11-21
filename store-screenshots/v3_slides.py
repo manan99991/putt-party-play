@@ -21,10 +21,11 @@ SLIDES = [
     ("run-receipt-to-row-b-done",  "Receipts, sorted.",         "Items and total, straight into your expenses.",   (20, 184, 166)),
     ("thinking",                   "Think it through.",         "Worries and choices, sorted into next steps.",    (34, 197, 94)),
     ("fitit",                      "Fits any upload limit.",    "Photo, video or PDF — just under the size.",      (139, 92, 246)),
-    ("pdfsign",                    "Sign and send.",            "Signs where the form asks. Initials on every page.", (239, 68, 68)),
+    ("pdfsign",                    "Sign and send.",            "Signs right where the form asks.", (239, 68, 68)),
 ]
 
 SIZES = {"iphone": (1320, 2868), "ipad": (2064, 2752)}
+CROP = {"iphone": 1.0, "ipad": 0.58}
 BG = (5, 4, 12)
 FONT_B = "/usr/share/fonts/opentype/inter/InterDisplay-Bold.otf"
 FONT_R = "/usr/share/fonts/opentype/inter/Inter-Medium.otf"
@@ -45,7 +46,7 @@ def rounded(img, r):
     return out, m
 
 
-def slide(capture, title, sub, glow, size):
+def slide(capture, title, sub, glow, size, crop=1.0):
     W, H = size
     canvas = Image.new("RGB", (W, H), BG)
     # A soft glow in the job's colour behind the phone.
@@ -62,23 +63,33 @@ def slide(capture, title, sub, glow, size):
     ft, fs = font(FONT_B, t_size), font(FONT_R, s_size)
     y = int(H * 0.065)
     # Headline: wrap to the width.
-    words, line, lines = title.split(), "", []
-    for w in words:
-        test = (line + " " + w).strip()
-        if draw.textlength(test, font=ft) > W - 2 * margin and line:
-            lines.append(line); line = w
-        else:
-            line = test
-    lines.append(line)
-    for ln in lines:
+    def wrap(text, f):
+        words, line, lines = text.split(), "", []
+        for w in words:
+            test = (line + " " + w).strip()
+            if draw.textlength(test, font=f) > W - 2 * margin and line:
+                lines.append(line); line = w
+            else:
+                line = test
+        return lines + [line]
+    for ln in wrap(title, ft):
         draw.text((margin, y), ln, font=ft, fill=(255, 255, 255))
         y += int(t_size * 1.12)
     y += int(s_size * 0.4)
-    draw.text((margin, y), sub, font=fs, fill=(210, 255, 58))
-    y += int(s_size * 1.9)
+    # The supporting line wraps too: "Initials on every page." ran off the edge of the iPhone slide.
+    for ln in wrap(sub, fs):
+        draw.text((margin, y), ln, font=fs, fill=(210, 255, 58))
+        y += int(s_size * 1.3)
+    y += int(s_size * 0.6)
 
     # The screen: scaled to fit what's left, rounded, with a hairline and a shadow; bottom bleeds off the edge.
     shot = capture.convert("RGB")
+    # An iPad screen holds an iPhone's worth of content spread thin; showing its top part makes the words readable.
+    if crop < 1:
+        # Fill the slide's width and let the screen run off the bottom, like the iPhone slides.
+        fit = (W - 2 * int(W * 0.08)) / shot.width
+        need = int((H - y + int(H * 0.06)) / fit)
+        shot = shot.crop((0, 0, shot.width, min(shot.height, need)))
     avail_h = H - y + int(H * 0.06)
     scale = min((W - 2 * margin) / shot.width, avail_h / shot.height)
     sw, sh = int(shot.width * scale), int(shot.height * scale)
@@ -108,7 +119,7 @@ def main():
         if not os.path.exists(p):
             print("skip (no capture):", p); continue
         n += 1
-        slide(Image.open(p), title, sub, glow, SIZES[a.device]).save(os.path.join(a.output, f"{a.device}-{n:02d}.png"))
+        slide(Image.open(p), title, sub, glow, SIZES[a.device], CROP[a.device]).save(os.path.join(a.output, f"{a.device}-{n:02d}.png"))
     print(n, "slides")
 
 

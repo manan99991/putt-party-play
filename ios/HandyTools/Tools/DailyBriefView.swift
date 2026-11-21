@@ -68,6 +68,7 @@ struct DailyBriefView: View {
             }
         }
         .task {
+            MedStore.shared.addSampleIfEmpty()
             await load()
             // Weather only when location is already allowed — never a surprise permission prompt on open.
             let st = CLLocationManager().authorizationStatus

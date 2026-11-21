@@ -37,7 +37,7 @@ struct MedRemindersView: View {
             } onCancel: { editing = nil }
         }
         .onChange(of: blocked) { _, off in resumeIfAllowed(off) }
-        .onAppear { checkBlocked() }
+        .onAppear { checkBlocked(); store.addSampleIfEmpty() }
     }
 
     private var emptyCard: some View {

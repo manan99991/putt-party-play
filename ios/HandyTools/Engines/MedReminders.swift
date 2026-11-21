@@ -260,6 +260,14 @@ final class MedStore: ObservableObject {
         }
     }
 
+    /// Screenshots and UI tests only (-sample): two made-up everyday supplements, so the store pictures show the
+    /// tool in use instead of an empty list. Never runs for a person.
+    func addSampleIfEmpty() {
+        guard Launch.sample, meds.isEmpty else { return }
+        save(Med(name: "Vitamin D", dose: "1 capsule", note: "with breakfast", times: [TimeOfDay(hour: 8, minute: 0)], supply: 24, perDose: 1, refillAt: 7))
+        save(Med(name: "Magnesium", dose: "1 tablet", note: "", times: [TimeOfDay(hour: 21, minute: 0)], supply: 5, perDose: 1, refillAt: 7))
+    }
+
     func save(_ m: Med) {
         if let i = meds.firstIndex(where: { $0.id == m.id }) { meds[i] = m } else { meds.append(m) }
         persist(); reschedule()
