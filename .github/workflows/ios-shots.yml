@@ -13,12 +13,16 @@ on:
         description: Routes to shoot (space-separated); empty = the standard set
         required: false
         default: ""
+      device:
+        description: "iPhone (default), iPhoneMax (6.9-inch store size) or iPad (13-inch store size)"
+        required: false
+        default: "iPhone"
 
 permissions:
   contents: write
 
 concurrency:
-  group: ios-shots-${{ github.ref }}
+  group: ios-shots-${{ github.ref }}-${{ inputs.device }}
   cancel-in-progress: true
 
 jobs:
@@ -31,6 +35,7 @@ jobs:
       - name: Select newest Xcode
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)" && xcodebuild -version
       - name: Generate + build for testing
+        env: { DEVICE: "${{ inputs.device || 'iPhone' }}" }
         run: |
           set -o pipefail
           brew install xcodegen && xcodegen generate
@@ -38,8 +43,17 @@ jobs:
           UDID=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys
           d=json.load(sys.stdin)["devices"]
-          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
-          c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
+          import os
+          want=os.environ.get("DEVICE","iPhone")
+          allv=[x for k,v in d.items() if "iOS" in k for x in v]
+          if want=="iPad":
+              c=[x for x in allv if "iPad Pro 13" in x["name"]] or [x for x in allv if x["name"].startswith("iPad Pro")]
+          elif want=="iPhoneMax":
+              c=[x for x in allv if "Pro Max" in x["name"]]
+              c.sort(key=lambda x:(not x["name"].startswith("iPhone 17"), x["name"]))
+          else:
+              c=[x for x in allv if x["name"].startswith("iPhone")]
+              c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
           print(c[0]["udid"])')
           echo "UDID=$UDID" >> "$GITHUB_ENV"
           xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" -derivedDataPath build \
@@ -69,7 +83,9 @@ jobs:
         if: always()
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
-        run: bash .github/publish-log.sh ios-shots-v2 ios/shots
+        run: |
+          D="${{ inputs.device || 'iPhone' }}"; NAME=ios-shots-v2; [ "$D" != "iPhone" ] && NAME="ios-shots-$D"
+          bash .github/publish-log.sh "$NAME" ios/shots
       # Also upload as a downloadable artifact — the ci-logs push above is egress-limited and
       # often doesn't land, so this is the reliable way to retrieve the PNGs.
       - name: Upload screenshots artifact

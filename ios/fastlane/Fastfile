@@ -118,7 +118,7 @@ platform :ios do
     base = "https://api.appstoreconnect.apple.com"
     http = Net::HTTP.new("api.appstoreconnect.apple.com", 443); http.use_ssl = true
     req = lambda do |method, path, body = nil|
-      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch }[method]
+      klass = { get: Net::HTTP::Get, post: Net::HTTP::Post, patch: Net::HTTP::Patch, delete: Net::HTTP::Delete }[method]
       r = klass.new(URI(base + path))
       r["Authorization"] = "Bearer #{token.text}"
       r["Content-Type"] = "application/json"
