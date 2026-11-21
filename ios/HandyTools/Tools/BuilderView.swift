@@ -1956,13 +1956,14 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     }
                     .transition(.opacity)
                 }
-                if !busy, result != nil, boardSource == nil, passportSource == nil { ResultBanner() }
+                if !busy, result != nil || !batch.isEmpty || boardSource != nil, passportSource == nil { ResultBanner().accessibilityIdentifier("run-result") }
                 if let report { stepLog(report) }
                 if let message, boardSource == nil {
                     Label(message, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(HandySpacing.s12).frame(maxWidth: .infinity, alignment: .leading)
                         .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
+                        .accessibilityIdentifier("run-message")
                 }
                 if let watchLine {
                     Label(watchLine, systemImage: "bell.badge.fill").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.accent)
@@ -2123,6 +2124,15 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     try? await Task.sleep(for: .seconds(1))   // let the watermark card load its words first
                     if chain.combine == true { runBatch(count: 2) { _ in doc ? SampleAssets.receipt() : SampleAssets.photo() } }
                     else if let d = (doc ? SampleAssets.receipt() : SampleAssets.photo()).jpegData(compressionQuality: 0.9) { go(.file(d, ext: "jpg")) }
+                }
+            }
+            // Every other ready-made flow gets a real file of the kind it starts with, through the same path a pick
+            // takes — so the real-input test runs all of them, not only the handful above.
+            if Launch.uitest, Launch.sample, initial == nil, !started {
+                started = true
+                Task { @MainActor in
+                    try? await Task.sleep(for: .seconds(1))
+                    await feedSample()
                 }
             }
             if initialMany.count > 1, !started {
@@ -2685,6 +2695,30 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         return (try? d.write(to: u)) != nil ? u : nil
     }
 
+    /// UI tests only: a sample of the kind this flow starts with, handed over the way a real pick is.
+    @MainActor private func feedSample() async {
+        let reads: Set<Block> = [.readText, .pullReceipt, .summarize, .actionItems, .cleanText, .pullDetails, .makeTable, .expenseRow, .returnBy, .businessCard, .calendarEvent, .photoPdf, .priceCompare, .identify]
+        let first = chain.steps.first?.block
+        switch start {
+        case .text:
+            go(.text("Lunch with Priya on Friday 12 June at 1:30 pm at Cafe Rio, 220 Main Street, Naperville. Call her on +1 312 555 0142 if late. The menu is at https://www.example.com/menu. Bring the signed lease and two printed copies of the budget."))
+        case .video:
+            if let u = await SampleAssets.movie() { go(.video(u)) } else { message = "Sample video couldn't be made." }
+        case .audio:
+            go(.file(SampleAssets.tone(seconds: 3), ext: "wav"))
+        case .pdf:
+            if chain.combine == true { let one = SampleAssets.pdf(); runMany(count: 2, noun: "PDF") { _ in .file(one, ext: "pdf") } }
+            else { go(.file(SampleAssets.pdf(), ext: "pdf")) }
+        default:
+            let doc = first.map { reads.contains($0) } ?? false
+            let pic = { (i: Int) -> UIImage in doc ? SampleAssets.receipt() : SampleAssets.photo(CGSize(width: 1200 + i * 40, height: 1600)) }
+            if hasMeme { memePhotos = [pic(0)]; memeTop = memeTop.isEmpty ? "WHEN THE TEST" : memeTop; memeBottom = memeBottom.isEmpty ? "PASSES" : memeBottom; makeMeme() }
+            else if chain.versus == true { runBatch(count: 2) { i in pic(i) } }
+            else if chain.gif == true || chain.collage == true || chain.flipbook == true || chain.combine == true { runBatch(count: 3) { i in pic(i) } }
+            else if let d = pic(0).jpegData(compressionQuality: 0.9) { go(.file(d, ext: "jpg")) }
+        }
+    }
+
     private func go(_ input: ChainPayload) {
         runTask?.cancel()   // one job at a time: a new one replaces the old, so what's shown is always what was picked
         busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
@@ -2757,6 +2791,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 }
             }
         }.frame(maxWidth: .infinity, alignment: .leading).cardStyle(padding: HandySpacing.s12)
+        .accessibilityIdentifier("run-steplog")
     }
 
     /// What a finished-job notification says: what came out (kind, size, pages, the first words), or why it stopped.

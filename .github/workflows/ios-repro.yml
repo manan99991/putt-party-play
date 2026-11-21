@@ -19,7 +19,7 @@ concurrency:
 jobs:
   repro:
     runs-on: xcode-27
-    timeout-minutes: 60
+    timeout-minutes: 110
     defaults:
       run: { working-directory: ios }
     steps:
@@ -30,7 +30,7 @@ jobs:
       - name: Generate project
         run: brew install xcodegen >/dev/null && xcodegen generate
       - name: Run the repro tests
-        timeout-minutes: 45
+        timeout-minutes: 95
         run: |
           set -o pipefail
           UDID=$(xcrun simctl list devices available -j | python3 -c '
@@ -47,7 +47,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation 2>&1 | tail -3
           xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
-            $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD" || true
+            $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD|REALINPUT" || true
           # Any crash the simulator recorded for the app, newest first.
           ls -t ~/Library/Logs/DiagnosticReports/HandyTools-* 2>/dev/null | head -2 | xargs python3 ../tools/ips_summary.py > crashes.txt 2>&1 || true
           grep -qE "TEST (EXECUTE )?SUCCEEDED" repro.log
@@ -56,5 +56,5 @@ jobs:
         working-directory: .
         env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
         run: |
-          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT" ios/repro.log | head -300; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
+          { grep -E "error:|Test Case|Executed|TEST (SUCCEEDED|FAILED)|crashed|failed -|XCTAssert|BISECT|REALINPUT" ios/repro.log | head -300; echo "== crash reports"; cat ios/crashes.txt 2>/dev/null; } > ios-repro.log
           bash .github/publish-log.sh ios-repro ios-repro.log || true
