@@ -181,9 +181,11 @@ struct ToolPageArt: View {
                 .scaledToFill()
             LinearGradient(
                 colors: [
-                    HandyColor.bg.opacity(0.10),
-                    HandyColor.bg.opacity(0.45),
-                    HandyColor.bg.opacity(0.84)
+                    // Deeper through the middle, where loose text and buttons sit: the art stays visible but no
+                    // longer runs through the words (Contacts and Flashlight+ captions, 21 Nov audit).
+                    HandyColor.bg.opacity(0.22),
+                    HandyColor.bg.opacity(0.62),
+                    HandyColor.bg.opacity(0.86)
                 ],
                 startPoint: .top, endPoint: .bottom
             )

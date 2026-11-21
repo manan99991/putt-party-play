@@ -284,6 +284,9 @@ struct HandySecondaryButtonStyle: ButtonStyle {
             .font(HandyFont.bodyStrong)
             .foregroundStyle(HandyColor.textPrimary)
             .frame(maxWidth: .infinity, minHeight: HandySpacing.primaryButtonHeight)
+            // A surface under the label: on a tool page with art, the picture showed straight through the button
+            // ("Screen light" over the torch beam, 21 Nov audit).
+            .background(HandyColor.surface.opacity(configuration.isPressed ? 0.95 : 0.82), in: Capsule())
             .overlay(Capsule().stroke(HandyColor.border, lineWidth: 1.5))
             .contentShape(Capsule())
             .scaleEffect(configuration.isPressed ? HandyMotion.pressScale : 1)
