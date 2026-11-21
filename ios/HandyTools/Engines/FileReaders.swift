@@ -23,7 +23,8 @@ enum FileReaders {
         case table([[String]], note: String?)                // CSV / TSV / pipe / semicolon
         case text(String, title: String)                     // code, logs, config, pretty JSON/XML, Markdown
         case book(Book)                                      // EPUB, FB2, MOBI/AZW3/PRC/PDB
-        case comic([Data])                                   // CBZ (and CBR that's really a ZIP)
+        case comic([Data])                                   // CBZ, CBR, CB7
+        case webVideo(URL)                                   // WebM (VP8/VP9/AV1 + Opus/Vorbis), played by the web engine
         case email(Email)                                    // EML / EMLX
         case database([(table: String, rows: [[String]])])   // SQLite
         case archive([ArchiveEntry], kind: String)           // ZIP/JAR/APK/TAR/TGZ/GZ/XZ listings, entries openable
@@ -105,6 +106,14 @@ enum FileReaders {
         if ["mid", "midi", "kar", "smf"].contains(ext) || head.starts(with: Array("MThd".utf8)) {
             if let m4a = MIDIRender.toM4A(url) { return .quickLook(m4a) }
             return info(url, kind: "MIDI music", "This MIDI file has no notes Tenzy can play.")
+        }
+        // Matroska / WebM: moved into an MP4 as-is, or played as WebM — see Matroska.
+        if ["mkv", "mka", "mk3d", "webm"].contains(ext) || head.starts(with: Matroska.magic) {
+            switch Matroska.open(url) {
+            case .web(let u): return .webVideo(u)
+            case .mp4(let u, _): return .quickLook(u)
+            case .problem(let why): return info(url, kind: ext == "webm" ? "WebM video" : "Matroska video", why)
+            }
         }
         if quickLookExts.contains(ext) { return .quickLook(url) }
         if let img = imageIO(url) { return .image(img) }                                       // PSD, TGA, EXR, JP2, AVIF, RAW, ICO, DDS…
@@ -700,18 +709,14 @@ extension FileReaders {
     static let notYet: [String: String] = {
         var m: [String: String] = [:]
         func add(_ exts: [String], _ why: String) { for e in exts { m[e] = why } }
-        add(["msg", "oft"], "Outlook message — reader being built.")
-        add(["dat"], "Winmail.dat from Outlook — reader being built.")
-        add(["7z", "rar", "r00", "cbr", "cab", "arj", "lzh", "lha", "wim", "xar", "zipx"], "Packed with a method Tenzy can't unpack yet (RAR / 7-Zip family).")
-        add(["bz2", "bzip2", "tbz", "tbz2", "zst", "zstd", "tzst", "lz4", "lz5", "z", "taz"], "Compressed with a method Tenzy can't unpack yet.")
+        add(["r00", "cab", "arj", "lzh", "lha", "wim", "xar", "zipx"], "Packed with a method Tenzy can't unpack yet (split RAR parts, CAB and similar).")
+        add(["zst", "zstd", "tzst", "lz4", "lz5", "z", "taz"], "Compressed with a method Tenzy can't unpack yet.")
         add(["cpio", "ar", "deb", "udeb", "rpm"], "Software package — listing its files is being built.")
         add(["apfs", "cramfs", "dmg", "ext4", "fat", "hfs", "iso", "ntfs", "qcow", "qcow2", "simg", "squashfs", "udf", "vdi", "vhd", "vhdx", "avhdx", "vmdk"],
             "Disk image — Tenzy shows its type and size; browsing what's inside isn't built yet.")
         add(["dylib", "elf", "sys"], "A computer program — Tenzy shows what kind and its details; programs can't run on a phone.")
         add(["chm"], "Windows help file — reader being built.")
-        add(["mid", "midi", "imy", "ota"], "Music notes (MIDI / ringtone code) — player being built.")
-        add(["mkv", "mka", "webm"], "Matroska / WebM — player being built.")
-        add(["ogg", "oga"], "Ogg Vorbis music — player being built (Opus voice notes already play).")
+        add(["imy", "ota"], "Old phone ringtone code — player being built.")
         add(["lzma", "tlzma"], "Compressed with LZMA — unpacking being built.")
         // Pictures the iPhone's own decoder doesn't know (it knows PSD, TGA, EXR, JP2, AVIF, ICO, BMP, TIFF, HEIC, WebP and most RAW).
         add(["dds", "iff", "jng", "mng", "pcd", "pcx", "ras", "rgb", "rgba", "sgi", "wbmp", "xbm", "xpm", "avifs", "exr", "jp2", "tga", "targa", "psd", "ico", "avif", "heif", "bmp", "tif", "tiff"],
@@ -727,7 +732,9 @@ extension FileReaders {
         let ext = (raw as NSString).pathExtension.isEmpty ? raw.lowercased() : (raw as NSString).pathExtension.lowercased()
         if tableExts.contains(ext) || codeExts.contains(ext) || bookExts.contains(ext) || officeAlias[ext] != nil
             || ["eml", "emlx", "mht", "mhtml", "db", "sqlite", "sqlite3", "db3", "pbm", "pgm", "ppm", "pnm", "pam", "xps", "oxps", "opus", "cbz",
-                "zip", "jar", "apk", "aab", "ipa", "tar", "tgz", "gz", "gzip", "xz", "txz", "html", "htm", "xhtml", "text"].contains(ext) { return .reads }
+                "zip", "jar", "apk", "aab", "ipa", "tar", "tgz", "gz", "gzip", "xz", "txz", "html", "htm", "xhtml", "text",
+                "msg", "oft", "dat", "tnef", "rar", "cbr", "7z", "cb7", "bz2", "bzip2", "tbz", "tbz2", "mid", "midi", "kar", "smf",
+                "ogg", "oga", "mkv", "mka", "mk3d", "webm"].contains(ext) { return .reads }
         if quickLookExts.contains(ext) { return .apple }
         if let t = UTType(filenameExtension: ext) {
             let images = (CGImageSourceCopyTypeIdentifiers() as? [String]) ?? []

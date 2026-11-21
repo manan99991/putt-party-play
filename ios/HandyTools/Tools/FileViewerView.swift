@@ -113,7 +113,7 @@ enum FileKind: String {
         if ["pdf", "doc", "docx", "pages", "rtf", "key", "keynote", "ppt", "pptx", "xls", "xlsx", "numbers", "epub", "odt", "mobi", "azw", "azw3", "fb2", "prc", "pdb", "eml", "emlx", "msg", "oft", "dat", "tnef", "xps", "oxps", "cbz", "cbr", "docm", "dotx", "xlsm", "xltx", "pptm", "potx", "ppsx"].contains(e) { return .document }
         if ["jpg", "jpeg", "png", "gif", "heic", "heif", "webp", "tiff", "bmp", "svg", "raw", "dng", "cr2", "nef", "arw"].contains(e) { return .image }
         if ["mp4", "mov", "m4v", "avi", "mkv", "webm", "hevc", "3gp"].contains(e) { return .video }
-        if ["mp3", "m4a", "wav", "aac", "flac", "aiff", "ogg", "oga", "caf", "mid", "midi", "kar"].contains(e) { return .audio }
+        if ["mp3", "m4a", "wav", "aac", "flac", "aiff", "ogg", "oga", "caf", "mid", "midi", "kar", "mka"].contains(e) { return .audio }
         if ["zip", "rar", "7z", "tar", "gz", "bz2", "xz"].contains(e) { return .archive }
         if ["swift", "js", "ts", "py", "java", "kt", "c", "cpp", "h", "m", "cs", "go", "rb", "php", "rs", "sh", "html", "css", "json", "xml", "yml", "yaml", "sql"].contains(e) { return .code }
         if ["txt", "md", "csv", "log", "tsv"].contains(e) { return .text }

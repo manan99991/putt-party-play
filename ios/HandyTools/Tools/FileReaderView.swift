@@ -49,6 +49,8 @@ struct FileReaderView: View {
             DatabaseReader(tables: tables, name: url.deletingPathExtension().lastPathComponent)
         case .archive(let entries, let kind):
             ArchiveReader(entries: entries, kind: kind) { e in if let d = e.data() { inner = temp((e.name as NSString).lastPathComponent, d) } }
+        case .webVideo(let u):
+            WebVideo(url: u).frame(height: 420).clipShape(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
         case .image(let img):
             ZoomableImage(image: img)
         case .info(let kind, let detail, let hex):
@@ -215,6 +217,29 @@ struct HTMLPage: UIViewRepresentable {
             if a.navigationType == .linkActivated, let u = a.request.url, u.scheme?.hasPrefix("http") == true { UIApplication.shared.open(u); decisionHandler(.cancel) } else { decisionHandler(.allow) }
         }
     }
+}
+
+/// WebM picture and sound (VP8, VP9, AV1, Opus, Vorbis) played by the system web engine, which decodes them.
+struct WebVideo: UIViewRepresentable {
+    let url: URL
+    func makeUIView(context: Context) -> WKWebView {
+        let c = WKWebViewConfiguration()
+        c.allowsInlineMediaPlayback = true
+        c.defaultWebpagePreferences.allowsContentJavaScript = false
+        let v = WKWebView(frame: .zero, configuration: c)
+        v.isOpaque = false
+        v.backgroundColor = .black
+        v.scrollView.isScrollEnabled = false
+        let dir = url.deletingLastPathComponent(), page = dir.appendingPathComponent("tenzy-player.html")
+        let src = url.lastPathComponent.addingPercentEncoding(withAllowedCharacters: .alphanumerics.union(CharacterSet(charactersIn: ".-_"))) ?? "video.webm"
+        let html = "<!doctype html><meta name=viewport content='width=device-width,initial-scale=1'>"
+            + "<style>html,body{margin:0;height:100%;background:#000}video{width:100%;height:100%}</style>"
+            + "<video src='\(src)' controls playsinline preload=metadata></video>"
+        try? html.write(to: page, atomically: true, encoding: .utf8)
+        v.loadFileURL(page, allowingReadAccessTo: dir)
+        return v
+    }
+    func updateUIView(_ v: WKWebView, context: Context) {}
 }
 
 // MARK: - comics
