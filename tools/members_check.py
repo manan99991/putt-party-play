@@ -55,7 +55,8 @@ def check(root, ios, base='origin/handytools'):
         s = strip(open(f, encoding='utf-8').read())
         types.update(re.findall(r'\b(?:enum|struct|class|actor)\s+(\w+)', s))
         for k, v in enclosing_types(s).items(): owners.setdefault(k, set()).update(v)
-    diff = subprocess.run(['git', 'diff', '-U0', base, '--', 'ios'], cwd=root, capture_output=True, text=True).stdout
+    # Swift only (the check is about Swift members); vendored C/C++ sources may not be UTF-8.
+    diff = subprocess.run(['git', 'diff', '-U0', base, '--', 'ios/**/*.swift', 'ios/*.swift'], cwd=root, capture_output=True, text=True, errors='replace').stdout
     bad = []; cur = None; line = 0
     for d in diff.split('\n'):
         if d.startswith('+++ '): cur = d[6:] if d.startswith('+++ b/') else None; continue
