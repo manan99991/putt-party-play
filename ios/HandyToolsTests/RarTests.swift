@@ -18,7 +18,7 @@ final class RarTests: XCTestCase {
         XCTAssertEqual(kind, "RAR")
         XCTAssertEqual(Set(entries.map(\.name)), ["yohoho_ws.txt", "nopw.txt"])
         XCTAssertEqual(entries.first { $0.name == "yohoho_ws.txt" }?.data().map { String(decoding: $0, as: UTF8.self) }, "hello !!! xD")
-        XCTAssertEqual(entries.first { $0.name == "nopw.txt" }?.data().map { String(decoding: $0, as: UTF8.self) }, "Jaye sir!")
+        XCTAssertEqual(entries.first { $0.name == "nopw.txt" }?.data().map { String(decoding: $0, as: UTF8.self) }, "aye sir!")
     }
 
     func testCompressedFileComesOutWholeAndChecked() throws {

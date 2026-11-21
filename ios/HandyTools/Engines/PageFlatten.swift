@@ -42,6 +42,7 @@ enum PageFlatten {
     static func cropToPage(_ image: UIImage) -> UIImage? {
         let up = image.normalizedUp()
         guard let cg = up.cgImage else { return nil }
+        if edgesAreBlankPaper(cg) { return nil }
         guard let q = corners(cg) else {
             // No page edges found — but a screenshot of a receipt in a dark browser or app is a light panel framed
             // by dark chrome (title bar above; "Visit / Share" and more thumbnails below). Read just the panel, so
@@ -150,6 +151,22 @@ enum PageFlatten {
     /// The light document panel in a dark-framed screenshot, in pixels: the tallest band of mostly-light rows,
     /// with dark rows just above and below it, covering 25–90 % of the picture. Nil for ordinary photos, light-mode
     /// screenshots (light all the way down) and pages that already fill the frame.
+    /// The picture is already just the page (a scan, a screenshot of a document, a flat image): every edge is one
+    /// light paper colour, so there is no outline to find — and hunting for one can only cut words off.
+    static func edgesAreBlankPaper(_ cg: CGImage) -> Bool {
+        let w = 120, h = max(8, Int(120 * CGFloat(cg.height) / CGFloat(max(1, cg.width))))
+        guard let px = rgba(cg, w, h) else { return false }
+        var lum: [Double] = []
+        func add(_ x: Int, _ y: Int) {
+            let i = (y * w + x) * 4
+            lum.append((0.299 * Double(px[i]) + 0.587 * Double(px[i + 1]) + 0.114 * Double(px[i + 2])) / 255)
+        }
+        for x in 0..<w { add(x, 0); add(x, 1); add(x, h - 1); add(x, h - 2) }
+        for y in 0..<h { add(0, y); add(1, y); add(w - 1, y); add(w - 2, y) }
+        let mean = lum.reduce(0, +) / Double(lum.count)
+        return mean > 0.75 && (lum.map { abs($0 - mean) }.max() ?? 1) < 0.08
+    }
+
     static func lightPanel(_ cg: CGImage) -> CGRect? {
         let W = cg.width, H = cg.height
         guard W > 50, H > 50 else { return nil }

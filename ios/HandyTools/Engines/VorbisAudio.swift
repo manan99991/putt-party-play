@@ -30,7 +30,7 @@ enum VorbisAudio {
         let out = FileManager.default.temporaryDirectory.appendingPathComponent(url.deletingPathExtension().lastPathComponent + ".m4a")
         try? FileManager.default.removeItem(at: out)
         guard let file = try? AVAudioFile(forWriting: out, settings: [AVFormatIDKey: kAudioFormatMPEG4AAC, AVSampleRateKey: Double(rate),
-                                                                      AVNumberOfChannelsKey: ch, AVEncoderBitRateKey: 128_000]) else { return nil }
+                                                                      AVNumberOfChannelsKey: ch, AVEncoderBitRateKey: AACRate.safe(ch >= 2 ? 128_000 : 96_000, sampleRate: Double(rate), channels: ch)]) else { return nil }
         do { try file.write(from: buffer) } catch { return nil }
         return out
         #else

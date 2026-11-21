@@ -11,7 +11,11 @@ final class SampleJobTests: XCTestCase {
         let d = try XCTUnwrap(img.jpegData(compressionQuality: 0.9))
         switch await ChainRunner.run(c, input: .file(d, ext: "jpg")) {
         case .success(let p): return p
-        case .failure(let f): XCTFail("\(id): \(f)"); throw XCTSkip("no result")
+        case .failure(let f):
+            // Say what was read, so a failure shows whether the reading or the understanding missed.
+            let read = ChainText.readDocument(img).map(\.text).joined(separator: " | ")
+            XCTFail("\(id): \(f) — page crop: \(PageFlatten.cropToPage(img).map { "\(Int($0.size.width))x\(Int($0.size.height))" } ?? "none"), read: \(read)")
+            throw XCTSkip("no result")
         }
     }
     private func text(_ p: ChainPayload) -> String {

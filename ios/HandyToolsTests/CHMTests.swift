@@ -34,7 +34,7 @@ final class CHMTests: XCTestCase {
     }
 
     func testAlignedAndStoredBlocks() throws {
-        let stream = [UInt8](try XCTUnwrap(Data(base64Encoded: Self.mixed)))
+        let stream = [UInt8](try XCTUnwrap(Data(base64Encoded: Self.mixed, options: .ignoreUnknownCharacters)))
         let out = try XCTUnwrap(LZX.decode(stream, from: 0, to: stream.count, count: 310, windowBits: 16))
         XCTAssertEqual(out.count, 310)
         XCTAssertEqual(fnv(Data(out)), 0xe4f9528d)
