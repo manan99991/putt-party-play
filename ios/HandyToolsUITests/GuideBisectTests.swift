@@ -1,29 +1,27 @@
 import XCTest
 
-/// Finds which part of the "What do you want to do?" screen closes the app when several photos are
-/// handed over (your 20 Nov crash): opens it with parts left out and reports which versions survive.
-/// It never asks the screen for its contents (that query itself times out while the app is stuck) — it only
-/// checks whether the app is still running.
+/// Finds which part of the "What do you want to do?" screen closes the app when several photos are handed
+/// over and the screen is read (VoiceOver, Voice Control, a UI test). One test per version, so a crash in
+/// one doesn't hide the others.
 final class GuideBisectTests: XCTestCase {
-    func testWhichPartCloses() {
-        continueAfterFailure = true
-        var report: [String] = []
-        for skip in ["", "all", "task", "header", "suggest", "preview", "grid", "steps", "header,preview", "task,header,suggest,grid,steps"] {
-            let app = XCUIApplication()
-            var args = ["-route", "home", "-uitest", "-givephotos", "2"]
-            if !skip.isEmpty { args += ["-guideskip", skip] }
-            app.launchArguments = args
-            app.launch()
-            sleep(12)
-            let before = app.state == .runningForeground
-            // Reading the screen the way VoiceOver (or a UI test) does is what tips it over.
-            let found = app.staticTexts["What do you want to do?"].waitForExistence(timeout: 30)
-            sleep(3)
-            let line = "BISECT skip=[\(skip)] alive=\(before) read=\(found) aliveAfterRead=\(app.state == .runningForeground)"
-            print(line); report.append(line)
-            app.terminate()
-            sleep(2)
-        }
-        XCTContext.runActivity(named: report.joined(separator: " | ")) { _ in }
+    private func survives(skipping skip: String, photos: Int = 2) {
+        let app = XCUIApplication()
+        var args = ["-route", "home", "-uitest", "-givephotos", "\(photos)"]
+        if !skip.isEmpty { args += ["-guideskip", skip] }
+        app.launchArguments = args
+        app.launch()
+        sleep(12)
+        let found = app.staticTexts["What do you want to do?"].waitForExistence(timeout: 30)
+        sleep(2)
+        let alive = app.state == .runningForeground
+        print("BISECT skip=[\(skip)] read=\(found) alive=\(alive)")
+        XCTAssertTrue(found && alive, "skip=[\(skip)] closed the app")
     }
+    func test1_everything() { survives(skipping: "") }
+    func test2_noSuggestion() { survives(skipping: "suggest") }
+    func test3_noPreviewPicture() { survives(skipping: "preview") }
+    func test4_noGoalTiles() { survives(skipping: "grid") }
+    func test5_noHeader() { survives(skipping: "header") }
+    func test6_noSuggestionNoGrid() { survives(skipping: "suggest,grid") }
+    func test7_onePhoto() { survives(skipping: "", photos: 1) }
 }
