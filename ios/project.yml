@@ -109,7 +109,7 @@ targets:
           - CFBundleTypeName: Books and comics
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
-            LSItemContentTypes: [org.idpf.epub-container, com.tenzy.mobi, com.tenzy.azw3, com.tenzy.azw, com.tenzy.fb2, com.tenzy.cbz, com.tenzy.cbr, com.tenzy.pdb]
+            LSItemContentTypes: [org.idpf.epub-container, com.tenzy.mobi, com.tenzy.azw3, com.tenzy.azw, com.tenzy.fb2, com.tenzy.cbz, com.tenzy.cbr, com.tenzy.pdb, com.tenzy.chm]
           - CFBundleTypeName: Email
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
@@ -193,6 +193,12 @@ targets:
             UTTypeConformsTo: [public.image]
             UTTypeTagSpecification:
               public.filename-extension: [pbm, pgm, ppm, pnm]
+          - UTTypeIdentifier: com.tenzy.chm
+            UTTypeDescription: Windows help file
+            UTTypeConformsTo: [public.data]
+            UTTypeTagSpecification:
+              public.filename-extension: [chm]
+              public.mime-type: [application/vnd.ms-htmlhelp]
           - UTTypeIdentifier: com.tenzy.xps
             UTTypeDescription: XPS document
             UTTypeConformsTo: [public.data]

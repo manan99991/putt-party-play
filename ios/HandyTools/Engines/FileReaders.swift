@@ -82,6 +82,10 @@ enum FileReaders {
         }
         if ext == "epub", let b = epub(url) { return .book(b) }
         if ext == "fb2", let b = fb2(url) { return .book(b) }
+        if ext == "chm" || head.starts(with: CHMReader.magic) {
+            if let b = CHMReader.book(url) { return .book(b) }
+            return info(url, kind: "Windows help file", "This help file couldn't be unpacked — it may be damaged or only partly downloaded.")
+        }
         if ["mobi", "azw", "azw3", "prc", "pdb"].contains(ext) {
             switch mobi(url) {
             case .success(let b): return .book(b)
@@ -715,7 +719,6 @@ extension FileReaders {
         add(["apfs", "cramfs", "dmg", "ext4", "fat", "hfs", "iso", "ntfs", "qcow", "qcow2", "simg", "squashfs", "udf", "vdi", "vhd", "vhdx", "avhdx", "vmdk"],
             "Disk image — Tenzy shows its type and size; browsing what's inside isn't built yet.")
         add(["dylib", "elf", "sys"], "A computer program — Tenzy shows what kind and its details; programs can't run on a phone.")
-        add(["chm"], "Windows help file — reader being built.")
         add(["imy", "ota"], "Old phone ringtone code — player being built.")
         add(["lzma", "tlzma"], "Compressed with LZMA — unpacking being built.")
         // Pictures the iPhone's own decoder doesn't know (it knows PSD, TGA, EXR, JP2, AVIF, ICO, BMP, TIFF, HEIC, WebP and most RAW).
@@ -734,7 +737,7 @@ extension FileReaders {
             || ["eml", "emlx", "mht", "mhtml", "db", "sqlite", "sqlite3", "db3", "pbm", "pgm", "ppm", "pnm", "pam", "xps", "oxps", "opus", "cbz",
                 "zip", "jar", "apk", "aab", "ipa", "tar", "tgz", "gz", "gzip", "xz", "txz", "html", "htm", "xhtml", "text",
                 "msg", "oft", "dat", "tnef", "rar", "cbr", "7z", "cb7", "bz2", "bzip2", "tbz", "tbz2", "mid", "midi", "kar", "smf",
-                "ogg", "oga", "mkv", "mka", "mk3d", "webm"].contains(ext) { return .reads }
+                "ogg", "oga", "mkv", "mka", "mk3d", "webm", "chm"].contains(ext) { return .reads }
         if quickLookExts.contains(ext) { return .apple }
         if let t = UTType(filenameExtension: ext) {
             let images = (CGImageSourceCopyTypeIdentifiers() as? [String]) ?? []
