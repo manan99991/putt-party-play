@@ -200,7 +200,7 @@ enum FileReaders {
             switch self {
             case .notMobi: return "This doesn't look like a Kindle or Mobipocket book inside."
             case .drm: return "This book is locked to a Kindle account (DRM), so only the Kindle app can open it."
-            case .kf8Huffman: return "This book uses Kindle's dictionary compression, which Tenzy can't unpack yet. The Kindle app opens it."
+            case .kf8Huffman: return "This book's Kindle dictionary is damaged or missing, so its text can't be unpacked. The Kindle app may still open it."
             }
         }
     }
@@ -222,7 +222,14 @@ enum FileReaders {
         func r0u32(_ o: Int) -> Int { o + 4 <= r0.count ? Int(r0[o]) << 24 | Int(r0[o + 1]) << 16 | Int(r0[o + 2]) << 8 | Int(r0[o + 3]) : 0 }
         let compression = r0u16(0), textCount = r0u16(8)
         if r0u16(12) != 0 { return .failure(.drm) }
-        if compression == 17480 { return .failure(.kf8Huffman) }
+        // Kindle's dictionary compression: the HUFF record and its CDIC dictionaries sit at the offset the header gives.
+        var huff: MobiHuff?
+        if compression == 17480 {
+            let first = r0u32(0x70), count = r0u32(0x74)
+            guard first > 0, count >= 2, first + count <= n,
+                  let h = MobiHuff(huff: Array(record(first)), cdics: (first + 1..<first + count).map { Array(record($0)) }) else { return .failure(.kf8Huffman) }
+            huff = h
+        }
         var title = url.deletingPathExtension().lastPathComponent, firstImage = -1, extraFlags = 0, encoding = String.Encoding.windowsCP1252
         if r0.count > 20, String(decoding: r0[16..<20], as: UTF8.self) == "MOBI" {
             let headerLen = r0u32(20)
@@ -237,7 +244,7 @@ enum FileReaders {
             var rec = Array(record(i))
             // Trailing entries some files append to each text record: strip them before decompressing.
             if extraFlags != 0 { rec = stripTrailing(rec, flags: extraFlags) }
-            text.append(contentsOf: compression == 2 ? palmDOC(rec) : rec)
+            text.append(contentsOf: compression == 2 ? palmDOC(rec) : huff.map { $0.unpack(rec) } ?? rec)
         }
         var html = String(data: text, encoding: encoding) ?? String(decoding: text, as: UTF8.self)
         if firstImage > 0 {
