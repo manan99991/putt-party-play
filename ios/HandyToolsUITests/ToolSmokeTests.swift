@@ -25,6 +25,7 @@ final class ToolSmokeTests: XCTestCase {
 
     func testEveryToolOpensWithoutCrashing() {
         for id in Self.toolIDs {
+            print("SMOKE \(id)")   // so a failure that names no tool (the simulator not closing the app) still says where
             let app = XCUIApplication()
             app.launchArguments = ["-route", id, "-uitest"]
             app.launch()

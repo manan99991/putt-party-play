@@ -13,3 +13,4 @@
 - 2026-11-21: Staged listing on App Store Connect — name "Tenzy: Personal Assistant" (Manan: "stage the name"). No submit.
 - 2026-11-21: Launch build for App Store review (Manan: iOS today, Android after): home 'What do you need?', tool page design, one-or-separate PDFs, same tool once, Share sheet previews, voice memo silence fix, What is this?/receipt/passport fixes, running clocks.
 - 2026-11-21: Launch build re-sent on the newest commit (includes the subscription-step fix).
+- 2026-11-21: Launch build re-sent with the Gold Book audit fixes (text tools, never-bigger photos, GIF fit, signature first, store-shot sample medicines). The earlier one's iPad smoke stopped on a simulator that wouldn't close the app; nothing had uploaded.
