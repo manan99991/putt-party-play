@@ -340,7 +340,14 @@ enum DataGrab {
     /// Stock-photo watermarks and print marks — never part of an event.
     static func isWatermark(_ l: String) -> Bool {
         let low = l.lowercased().split(whereSeparator: \.isWhitespace).joined(separator: " ")
-        return ["shutterstock", "istock", "getty", "dreamstime", "adobe stock", "alamy", "123rf", "depositphotos", "vector eps", "image id", "©"].contains { low.contains($0) }
+        if ["shutterstock", "istock", "getty", "dreamstime", "adobe stock", "alamy", "123rf", "depositphotos", "vector eps", "image id"].contains(where: { low.contains($0) }) { return true }
+        // "©" marks a credit line — unless the line carries a time or a day: posters set "WHEN © 9PM • 12 MARCH" with
+        // icons the camera reads as ©, and dropping that line lost the event's date.
+        if low.contains("©") {
+            let when = low.range(of: #"\b\d{1,2}(:\d{2})?\s?(am|pm)\b|\b\d{1,2}\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+\d{1,2}\b"#, options: .regularExpression) != nil
+            return !when
+        }
+        return false
     }
 
     /// Pieces of stock-photo watermarks, however the camera split them.

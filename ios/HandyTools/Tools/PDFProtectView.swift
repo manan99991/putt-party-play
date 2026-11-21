@@ -129,8 +129,9 @@ struct PDFProtectView: View {
     private var markCard: some View {
         section("Watermark every page", icon: "drop.fill", on: $useMark, id: "protect-mark") {
             field("Watermark words", $prot.watermark, id: "protect-mark-text")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+            // Wraps onto a second row instead of hiding words off the right edge (every choice visible at once).
+            Group {
+                HandyFlow(spacing: 8) {
                     ForEach(["CONFIDENTIAL", "DRAFT", "COPY", "SAMPLE", "DO NOT SHARE", "PAID", "VOID"], id: \.self) { w in
                         Button { prot.watermark = w } label: {
                             Text(L(w)).font(HandyFont.caption).padding(.horizontal, 10).padding(.vertical, 6)
