@@ -1832,6 +1832,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var scanning = false
     @State private var selfie = false
     @State private var signing = false
+    /// What was picked before the signature existed: run as soon as it's drawn.
+    @State private var afterSigning: (() -> Void)?
     @State private var hasSignature = DocEngine.savedSignature != nil
     @State private var myName = StampBook.name
     /// Decided once when the screen opens, so the field doesn't vanish while the name is being typed.
@@ -2025,7 +2027,22 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                     if let e = speech.errorText { Text(e).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
                     // Capped so a long paste or a whole file scrolls *inside* this box instead of
                     // stretching down the page — the Run button and everything after it stay reachable.
-                    TextEditor(text: $text).frame(minHeight: 140, maxHeight: 260).cardStyle(padding: HandySpacing.s8)
+                    // The system editor paints its own opaque black; hidden here so the box sits on the card's
+                    // surface, with a placeholder that names what to put in (Gold Book C2, A2).
+                    TextEditor(text: $text)
+                        .scrollContentBackground(.hidden)
+                        .font(HandyFont.body)
+                        .frame(minHeight: 140, maxHeight: 260)
+                        .overlay(alignment: .topLeading) {
+                            if text.isEmpty {
+                                Text(chain.wants.map { "Type or paste \($0) here." } ?? "Type or paste here.")
+                                    .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary)
+                                    .padding(.horizontal, 5).padding(.vertical, 8)
+                                    .allowsHitTesting(false)
+                            }
+                        }
+                        .cardStyle(padding: HandySpacing.s8)
+                        .accessibilityIdentifier("in-text")
                     if text.count > 400 {
                         Text("\(text.count) characters — scroll inside the box to read it all.").font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     }
@@ -2144,7 +2161,13 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 }
             }
         }
-        .sheet(isPresented: $signing) { SignaturePadSheet { _ in hasSignature = true } }
+        .sheet(isPresented: $signing, onDismiss: {
+            // The form picked before signing goes on once the signature is drawn; closed without one, say why.
+            guard let next = afterSigning else { return }
+            afterSigning = nil
+            if DocEngine.savedSignature != nil { next() }
+            else { message = "This tool signs for you, so it needs your signature first. Tap Draw my signature, then pick your form again." }
+        }) { SignaturePadSheet { _ in hasSignature = true } }
         .sheet(isPresented: $pickingContact) {
             ContactPickerSheet { picked in
                 pickingContact = false
@@ -2194,6 +2217,15 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             if initial == nil, initialMany.isEmpty, !started, !busy {
                 result = nil; batch = []; outbox = nil; report = nil; message = nil; picks = []; memePhotos = []
             }
+            // UI tests can't draw on the signature pad: a made-up signature stands in, so a signing tool's real
+            // signed result is what gets checked.
+            if Launch.uitest, Launch.sample, signsForYou, DocEngine.savedSignature == nil {
+                let sig = UIGraphicsImageRenderer(size: CGSize(width: 420, height: 140)).image { _ in
+                    ("Alex Sample" as NSString).draw(at: CGPoint(x: 10, y: 30), withAttributes: [
+                        .font: UIFont(name: "SnellRoundhand-Bold", size: 64) ?? .italicSystemFont(ofSize: 60), .foregroundColor: UIColor.black])
+                }
+                hasSignature = DocEngine.saveSignature(image: sig) != nil
+            }
             // UI tests can't drive the photo picker: with -sample an ID-copy tool runs on a made-up photo, so the
             // finished screen itself is checked, not just the run screen.
             if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Voice finish", chain.steps.first?.block == .voiceChange {
@@ -2208,6 +2240,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
             ]
             if Launch.uitest, Launch.sample, initial == nil, !started, let t = sampleText[chain.id] {
                 started = true
+                text = t   // the box shows what went in, as it does when a person types it
                 go(.text(t))
             }
             if Launch.uitest, Launch.sample, initial == nil, !started, ResultScreens.screen(for: chain) == "Video finish", start == .video {
@@ -2400,6 +2433,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
 
     /// The same for anything a tool can start with: photos, pages, or several PDFs.
     private func runMany(count: Int, noun name: String, before: @escaping (Int) -> Int? = { _ in nil }, load: @escaping (Int) async -> ChainPayload?) {
+        if needsSignatureFirst({ runMany(count: count, noun: name, before: before, load: load) }) { return }
         busy = true; result = nil; message = nil; batch = []; outbox = nil; noun = name; progressValue = 0
         mergedPDF = nil; mergePDFs = nil
         let combine = chain.combine == true
@@ -2833,7 +2867,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         let first = chain.steps.first?.block
         switch start {
         case .text:
-            go(.text("Lunch with Priya on Friday 12 June at 1:30 pm at Cafe Rio, 220 Main Street, Naperville. Call her on +1 312 555 0142 if late. The menu is at https://www.example.com/menu. Bring the signed lease and two printed copies of the budget."))
+            let t = "Lunch with Priya on Friday 12 June at 1:30 pm at Cafe Rio, 220 Main Street, Naperville. Call her on +1 312 555 0142 if late. The menu is at https://www.example.com/menu. Bring the signed lease and two printed copies of the budget."
+            text = t
+            go(.text(t))
         case .video:
             if let u = await SampleAssets.movie() { go(.video(u)) } else { message = "Sample video couldn't be made." }
         case .audio:
@@ -2851,7 +2887,21 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         }
     }
 
+    /// Does any step of this tool place the person's signature?
+    private var signsForYou: Bool {
+        chain.steps.contains { $0.block == .stamp && StampPlan($0.settings["marks"] ?? StampPlan.standard.text).has(.signature) }
+    }
+
+    /// A tool that signs asks for the signature before it takes the form, never after the run fails (Gold Book B2).
+    /// True when the pad was opened instead; `then` runs once the signature is drawn.
+    private func needsSignatureFirst(_ then: @escaping () -> Void) -> Bool {
+        guard signsForYou, DocEngine.savedSignature == nil else { return false }
+        afterSigning = then; signing = true
+        return true
+    }
+
     private func go(_ input: ChainPayload) {
+        if needsSignatureFirst({ go(input) }) { return }
         runTask?.cancel()   // one job at a time: a new one replaces the old, so what's shown is always what was picked
         busy = true; result = nil; message = nil; report = nil; batch = []; outbox = nil; progressValue = 0; watchLine = nil
         // The photo as it came in, for the before/after on the finish. A picture handed over in memory (shared, pasted)

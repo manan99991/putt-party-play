@@ -40,11 +40,21 @@ struct AnimatedGIFView: UIViewRepresentable {
         v.clipsToBounds = true
         v.image = UIImage.animatedGIF(data: data)
         v.startAnimating()
-        v.setContentHuggingPriority(.defaultLow, for: .vertical)
-        v.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        // Both axes: a 1200-pixel-wide GIF otherwise insists on its own width and pushes the whole finish
+        // screen off the left edge (photos-gif, video-gif, boomerang, Nov 21).
+        for axis in [NSLayoutConstraint.Axis.vertical, .horizontal] {
+            v.setContentHuggingPriority(.defaultLow, for: axis)
+            v.setContentCompressionResistancePriority(.defaultLow, for: axis)
+        }
         return v
     }
     func updateUIView(_ uiView: UIImageView, context: Context) {}
+    /// As wide as it's offered, as tall as the picture's shape needs.
+    func sizeThatFits(_ proposal: ProposedViewSize, uiView: UIImageView, context: Context) -> CGSize? {
+        guard let w = proposal.width, w.isFinite, let s = uiView.image?.size, s.width > 0 else { return nil }
+        let h = w * s.height / s.width
+        return CGSize(width: w, height: min(h, proposal.height.flatMap { $0.isFinite ? $0 : nil } ?? h))
+    }
 }
 
 /// "Act on it" result views. A calendar or contact result does the real thing — opens the native

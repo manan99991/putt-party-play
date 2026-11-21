@@ -1,5 +1,35 @@
 import UIKit
 import PDFKit
+import ImageIO
+
+/// The same photo with its hidden data (location, camera details, XMP) taken out, copied without re-encoding so
+/// the pixels, quality and size stay as they were. The orientation is kept, so the photo isn't turned on its side.
+enum ImageClean {
+    static func isJPEG(_ ext: String) -> Bool { ["jpg", "jpeg"].contains(ext.lowercased()) }
+
+    static func withoutMetadata(_ data: Data) -> Data? {
+        guard let src = CGImageSourceCreateWithData(data as CFData, nil), CGImageSourceGetCount(src) == 1,
+              let type = CGImageSourceGetType(src) else { return nil }
+        let props = CGImageSourceCopyPropertiesAtIndex(src, 0, nil) as? [CFString: Any]
+        let orientation = (props?[kCGImagePropertyOrientation] as? NSNumber) ?? 1
+        let out = NSMutableData()
+        guard let dst = CGImageDestinationCreateWithData(out, type, 1, nil) else { return nil }
+        let opts: [CFString: Any] = [
+            kCGImageDestinationMetadata: CGImageMetadataCreateMutable(),
+            kCGImageDestinationMergeMetadata: false,
+            kCGImageMetadataShouldExcludeGPS: true,
+            kCGImageMetadataShouldExcludeXMP: true,
+            kCGImageDestinationOrientation: orientation,
+        ]
+        guard CGImageDestinationCopyImageSource(dst, src, opts as CFDictionary, nil) else { return nil }
+        let d = out as Data
+        // Belt and braces: never hand back something that no longer opens or still says where it was taken.
+        guard let check = CGImageSourceCreateWithData(d as CFData, nil),
+              let p = CGImageSourceCopyPropertiesAtIndex(check, 0, nil) as? [CFString: Any],
+              p[kCGImagePropertyGPSDictionary] == nil else { return nil }
+        return d
+    }
+}
 
 /// Tenzy Builder, Milestone 1: a chain is plain data (a list of built-in blocks with settings) that this
 /// runner executes by calling the engines the app already ships. No downloaded or generated code ever runs,
@@ -295,10 +325,23 @@ extension Chain {
     /// What good input looks like, from the first step — the hint shown under the description.
     /// The most telling step's hint: a receipt tool says "a photo of a receipt…", not the reading step's general one.
     var wants: String? {
+        if let h = Chain.inputHints[id] { return h }
         let general: Set<Block> = [.readText, .pdfText, .pageText, .speechText]
         let specific = steps.dropFirst().first { !general.contains($0.block) && $0.block.takes == steps.first?.block.gives && $0.block.needs != "some text to work with" }
         return (specific ?? steps.first)?.block.needs
     }
+    /// Ready-made text tools whose steps alone would say "some text to work with": what to actually give each one.
+    static let inputHints: [String: String] = [
+        "clean-link": "a link copied from anywhere — a shop, a post, an email",
+        "contact-qr": "your name, phone and email (tap Contact to fill them in)",
+        "listen-later": "an article, email or notes you'd rather hear than read",
+        "short-summary": "a long article, email or notes",
+        "tidy-text": "text copied from a PDF, email or web page with broken lines",
+        "text-to-qr": "a link, a Wi-Fi password or any short text",
+        "signature-contact": "an email signature with a name, phone or email",
+        "rewrite-clear": "a message you wrote that you want to sound clearer",
+        "where-i-am": "a short note, then tap Location to add where you are",
+    ]
 }
 
 struct ChainStep: Codable, Equatable {
@@ -569,11 +612,21 @@ enum ChainRunner {
         case (.shrinkImage, .image(let img)):
             let mb = Double(step.settings["mb"] ?? "") ?? 2
             // "2 MB" means 2,000,000 bytes — what upload sites count and what the phone shows — so it's always under.
-            guard let data = await SizeTarget.image(img, targetBytes: Int(max(0.01, mb) * 1_000_000)) else { return .failure(.failed(b)) }
+            let target = Int(max(0.01, mb) * 1_000_000)
+            // A JPEG already under the size is kept as it is (only its hidden data removed): re-saving it would
+            // lose quality and could even make it bigger (119 KB came back as 124 KB, Nov 21).
+            if case .file(let d, let ext) = rawInput, ImageClean.isJPEG(ext), d.count <= target, let same = ImageClean.withoutMetadata(d) {
+                return .success(.file(same, ext: "jpg"))
+            }
+            guard let data = await SizeTarget.image(img, targetBytes: target) else { return .failure(.failed(b)) }
             return .success(.file(data, ext: "jpg"))
 
         case (.stripLocation, .image(let img)):
-            // Re-encoding from pixels carries no EXIF/GPS across.
+            // A JPEG keeps its exact pixels — only the location, camera and XMP data come out, so it's never
+            // bigger or softer than what went in. Anything else is re-encoded from pixels, which carries none across.
+            if case .file(let d, let ext) = rawInput, ImageClean.isJPEG(ext), let same = ImageClean.withoutMetadata(d) {
+                return .success(.file(same, ext: "jpg"))
+            }
             guard let data = img.jpegData(compressionQuality: 0.92) else { return .failure(.failed(b)) }
             return .success(.file(data, ext: "jpg"))
 
@@ -751,7 +804,7 @@ enum ChainRunner {
                 let at = CGPoint(x: s.x, y: s.y)
                 switch s.mark {
                 case .signature:
-                    guard let sig = DocEngine.savedSignature else { return .failure(.invalid("Sign and stamp needs your signature. Edit the tool and tap Draw my signature.")) }
+                    guard let sig = DocEngine.savedSignature else { return .failure(.invalid("Sign and stamp needs your signature first. In Tenzy, open this tool and tap Draw my signature — it's kept for next time.")) }
                     stamps.append(DocEngine.Stamp(kind: .signature(sig), center: at, width: CGFloat(s.w)))
                 case .name:
                     let n = StampBook.name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -915,7 +968,8 @@ enum ChainTemplates {
         Chain(id: "video-gif", name: "Turn a video into a GIF", steps: [ChainStep(block: .videoGif)]),
         Chain(id: "video-words", name: "Write out what was said in a video", steps: [ChainStep(block: .videoAudio), ChainStep(block: .speechText)]),
         Chain(id: "photo-collage", name: "Photos into one collage", steps: [ChainStep(block: .stripLocation)], collage: true, blurb: "Lays your chosen photos out as one combined picture."),
-        Chain(id: "where-i-am", name: "Send where I am", steps: [ChainStep(block: .cleanText)], finish: ChainFinish(kind: .message, to: "")),
+        Chain(id: "where-i-am", name: "Send where I am", steps: [ChainStep(block: .cleanText)], finish: ChainFinish(kind: .message, to: ""),
+              blurb: "Puts your address and a map link into a message, ready to send."),
         Chain(id: "photos-gif", name: "Turn photos into a GIF", steps: [ChainStep(block: .stripLocation)], blurb: "Plays your chosen photos one after another as a looping GIF.", gif: true),
         Chain(id: "photos-flipbook", name: "Turn photos into a flipbook", steps: [ChainStep(block: .stripLocation)], blurb: "Flips your chosen photos like the pages of a book — a looping page-riffle video to share.", flipbook: true),
         Chain(id: "sticker-maker", name: "Turn a photo into a sticker", steps: [ChainStep(block: .sticker)]),
