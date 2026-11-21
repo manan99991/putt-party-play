@@ -18,14 +18,30 @@ enum ImageStudio {
         let req = VNGenerateForegroundInstanceMaskRequest()
         if (try? handler.perform([req])) != nil, let res = req.results?.first, !res.allInstances.isEmpty {
             if let mask = try? res.generateScaledMaskForImage(forInstances: res.allInstances, from: handler),
-               let clean = refinedCutout(cg, mask: CIImage(cvPixelBuffer: mask)) { return clean }
+               let clean = refinedCutout(cg, mask: CIImage(cvPixelBuffer: mask)), visibleShare(clean) >= 0.01 { return clean }
         }
         if let res = req.results?.first, !res.allInstances.isEmpty,
            let masked = try? res.generateMaskedImage(ofInstances: res.allInstances, from: handler, croppedToInstancesExtent: false) {
             let ci = CIImage(cvPixelBuffer: masked)
-            if let out = CIContext().createCGImage(ci, from: ci.extent) { return UIImage(cgImage: out) }
+            if let out = CIContext().createCGImage(ci, from: ci.extent), visibleShare(UIImage(cgImage: out)) >= 0.01 { return UIImage(cgImage: out) }
         }
-        return saliencyCutout(cg)
+        // Never hand back an empty see-through picture as a "result" (the 21 Nov audit showed a blank checkerboard):
+        // nothing found means a plain "couldn't find a subject" with what to try instead.
+        guard let s = saliencyCutout(cg), visibleShare(s) >= 0.01 else { return nil }
+        return s
+    }
+
+    /// How much of a cut-out is actually there (0 = fully see-through, 1 = solid), from a 64x64 look at its alpha.
+    static func visibleShare(_ img: UIImage) -> Double {
+        guard let cg = img.cgImage else { return 0 }
+        let n = 64
+        var px = [UInt8](repeating: 0, count: n * n * 4)
+        guard let ctx = CGContext(data: &px, width: n, height: n, bitsPerComponent: 8, bytesPerRow: n * 4,
+                                  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return 1 }
+        ctx.draw(cg, in: CGRect(x: 0, y: 0, width: n, height: n))
+        var on = 0
+        for i in stride(from: 3, to: px.count, by: 4) where px[i] > 32 { on += 1 }
+        return Double(on) / Double(n * n)
     }
 
     /// Clean edges: pull the mask in by a pixel or two (removes the background "halo" that clings to a
