@@ -30,73 +30,40 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select newest Xcode
         run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)" && xcodebuild -version
-      - name: Generate + build for simulator
+      - name: Generate + build for testing
         run: |
           set -o pipefail
           brew install xcodegen && xcodegen generate
           xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools
-          xcodebuild build -project HandyTools.xcodeproj -scheme HandyTools -configuration Debug \
-            -destination 'generic/platform=iOS Simulator' -derivedDataPath build \
-            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
-            2>&1 | tee build.log | grep -E "error:|BUILD" || true
-          grep -q "BUILD SUCCEEDED" build.log
-      - name: Screenshot every route
-        timeout-minutes: 40
-        run: |
-          # Every simulator call gets a watchdog: a hung launch or screenshot is reported and skipped, never a 2-hour stall.
-          t() { local n=$1; shift; perl -e 'alarm shift; exec @ARGV' "$n" "$@" || echo "::warning::timed out or failed after ${n}s: $*"; }
-          APP=$(find build -name "HandyTools.app" -path "*iphonesimulator*" | head -1)
           UDID=$(xcrun simctl list devices available -j | python3 -c '
           import json,sys
           d=json.load(sys.stdin)["devices"]
           c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
           c.sort(key=lambda x:(not x["name"].startswith("iPhone 17 Pro"), not x["name"].startswith("iPhone 16 Pro"), x["name"]))
           print(c[0]["udid"])')
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+          xcodebuild build-for-testing -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee build.log | grep -E "error:|TEST BUILD|BUILD" || true
+          grep -qE "TEST BUILD SUCCEEDED|BUILD SUCCEEDED" build.log
+      - name: Screenshot every route
+        timeout-minutes: 60
+        run: |
+          # Taken by a UI test, so the test runner installs the app (plain simctl install timed out on cold simulators
+          # and every picture was the simulator's home screen).
           xcrun simctl boot "$UDID" || true
-          t 300 xcrun simctl bootstatus "$UDID" -b
-          t 120 xcrun simctl install "$UDID" "$APP"
-          xcrun simctl privacy "$UDID" grant all com.tenzy.toolkit || true
-          t 60 xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots; sleep 4
-          xcrun simctl terminate "$UDID" com.tenzy.toolkit || true
+          xcrun simctl bootstatus "$UDID" -b || true
+          for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
           mkdir -p shots
-          # Focused Aurora (Direction C) review set; restore the full list when the visual pass goes back to all tools.
           ROUTES="${{ inputs.routes }}"; [ -n "$ROUTES" ] || ROUTES="home onboarding settings paywall qrwifi translate scan studio shield"
-          MODES="light"; [ -n "${{ inputs.routes }}" ] && MODES="light dark"
-          for mode in $MODES; do
+          for mode in light dark; do
             xcrun simctl ui "$UDID" appearance $mode
-            for r in $ROUTES; do
-              xcrun simctl terminate "$UDID" com.tenzy.toolkit 2>/dev/null || true
-              t 60 xcrun simctl launch "$UDID" com.tenzy.toolkit -screenshots -theme aurora -sample -route $r
-              sleep 7
-              t 30 xcrun simctl io "$UDID" screenshot shots/$mode-$r.png
-            done
+            TEST_RUNNER_SHOTS_DIR="$PWD/shots" TEST_RUNNER_SHOTS_MODE=$mode TEST_RUNNER_SHOTS_ROUTES="$ROUTES" \
+              xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" -derivedDataPath build \
+              -only-testing:HandyToolsUITests/ScreenshotTests CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+              2>&1 | grep -E "error:|Test Case|TEST (EXECUTE )?(SUCCEEDED|FAILED)" || true
           done
-          # iPad 13" pass (App Store needs an iPad set for the universal app): only the routes used in the slides.
-          IPAD=$(xcrun simctl list devices available -j | python3 -c '
-          import json,sys
-          d=json.load(sys.stdin)["devices"]
-          c=[x for k,v in d.items() if "iOS" in k for x in v if "iPad Pro 13" in x["name"]]
-          print(c[0]["udid"] if c else "")')
-          if [ -n "$IPAD" ]; then
-            xcrun simctl boot "$IPAD" || true
-            t 300 xcrun simctl bootstatus "$IPAD" -b
-            t 120 xcrun simctl install "$IPAD" "$APP"
-            xcrun simctl privacy "$IPAD" grant all com.tenzy.toolkit || true
-            t 60 xcrun simctl launch "$IPAD" com.tenzy.toolkit -screenshots; sleep 4
-            xcrun simctl terminate "$IPAD" com.tenzy.toolkit || true
-            xcrun simctl status_bar "$IPAD" override --time 9:41 --batteryState charged --batteryLevel 100 --wifiBars 3 --cellularBars 4 || true
-            for pair in light:home light:paywall; do
-              mode=${pair%%:*}; r=${pair##*:}
-              xcrun simctl ui "$IPAD" appearance $mode
-              xcrun simctl terminate "$IPAD" com.tenzy.toolkit 2>/dev/null || true
-              t 60 xcrun simctl launch "$IPAD" com.tenzy.toolkit -screenshots -theme aurora -sample -route $r
-              sleep 7
-              t 30 xcrun simctl io "$IPAD" screenshot shots/ipad-$mode-$r.png
-            done
-          else
-            echo "::warning::no iPad Pro 13 simulator found"
-          fi
           ls shots | wc -l
       - name: Publish screenshots
         if: always()
