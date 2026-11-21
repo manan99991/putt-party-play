@@ -37538,5 +37538,95 @@
   "ja": "1枚、または一度に20枚まで選べます。最後に、別々のPDFにするか1つにまとめるかを選べます。",
   "pt": "Escolha um ou até 20 de uma vez. No fim, guarde-os como PDFs separados ou junte-os num só.",
   "zh": "选一张，或一次最多 20 张。最后可以保留为单独的 PDF，或合并成一个。"
+ },
+ "Say it in your own words, or start with what you have. Tenzy finds the way — or builds it.": {
+  "de": "Sag es in deinen Worten oder fang mit dem an, was du hast. Tenzy findet den Weg – oder baut ihn.",
+  "es": "Dilo con tus palabras o empieza con lo que tienes. Tenzy encuentra la forma, o la crea.",
+  "fr": "Dites-le avec vos mots, ou partez de ce que vous avez. Tenzy trouve la solution, ou la crée.",
+  "hi": "अपने शब्दों में बताएँ, या जो आपके पास है उससे शुरू करें। Tenzy रास्ता ढूँढता है — या बना देता है।",
+  "it": "Dillo con parole tue o parti da ciò che hai. Tenzy trova la strada, o la crea.",
+  "ja": "あなたの言葉で伝えるか、手元にあるものから始めてください。Tenzy が方法を見つけます。なければ作ります。",
+  "pt": "Diga por palavras suas, ou comece pelo que tem. O Tenzy encontra o caminho — ou cria-o.",
+  "zh": "用你自己的话说出来，或从手头的东西开始。Tenzy 会找到办法，没有就帮你做一个。"
+ },
+ "Tell Tenzy": {
+  "de": "Sag es Tenzy",
+  "es": "Díselo a Tenzy",
+  "fr": "Dites-le à Tenzy",
+  "hi": "Tenzy को बताएँ",
+  "it": "Dillo a Tenzy",
+  "ja": "Tenzy に伝える",
+  "pt": "Diga ao Tenzy",
+  "zh": "告诉 Tenzy"
+ },
+ "Ready now": {
+  "de": "Sofort bereit",
+  "es": "Listo ya",
+  "fr": "Prêt maintenant",
+  "hi": "अभी तैयार",
+  "it": "Pronto subito",
+  "ja": "すぐ使える",
+  "pt": "Pronto já",
+  "zh": "现在就能用"
+ },
+ "Quick starts": {
+  "de": "Schnellstart",
+  "es": "Para empezar",
+  "fr": "Démarrages rapides",
+  "hi": "झटपट शुरू करें",
+  "it": "Per iniziare",
+  "ja": "すぐに始める",
+  "pt": "Para começar",
+  "zh": "快速开始"
+ },
+ "Shrink to send": {
+  "de": "Zum Senden verkleinern",
+  "es": "Reducir para enviar",
+  "fr": "Réduire pour envoyer",
+  "hi": "भेजने के लिए छोटा करें",
+  "it": "Riduci per inviare",
+  "ja": "送れるサイズに",
+  "pt": "Reduzir para enviar",
+  "zh": "压缩后发送"
+ },
+ "Scan to PDF": {
+  "de": "Als PDF scannen",
+  "es": "Escanear a PDF",
+  "fr": "Scanner en PDF",
+  "hi": "स्कैन करके PDF",
+  "it": "Scansiona in PDF",
+  "ja": "スキャンしてPDF",
+  "pt": "Digitalizar para PDF",
+  "zh": "扫描成 PDF"
+ },
+ "Sign a PDF": {
+  "de": "PDF unterschreiben",
+  "es": "Firmar un PDF",
+  "fr": "Signer un PDF",
+  "hi": "PDF पर साइन करें",
+  "it": "Firma un PDF",
+  "ja": "PDFに署名",
+  "pt": "Assinar um PDF",
+  "zh": "签署 PDF"
+ },
+ "Read a menu": {
+  "de": "Speisekarte lesen",
+  "es": "Leer una carta",
+  "fr": "Lire un menu",
+  "hi": "मेन्यू पढ़ें",
+  "it": "Leggi un menù",
+  "ja": "メニューを読む",
+  "pt": "Ler um menu",
+  "zh": "看懂菜单"
+ },
+ "What is this?": {
+  "de": "Was ist das?",
+  "es": "¿Qué es esto?",
+  "fr": "Qu'est-ce que c'est ?",
+  "hi": "यह क्या है?",
+  "it": "Che cos'è?",
+  "ja": "これは何？",
+  "pt": "O que é isto?",
+  "zh": "这是什么？"
  }
 }

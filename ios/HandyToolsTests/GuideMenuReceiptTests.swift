@@ -336,3 +336,13 @@ final class SameToolOnceTests: XCTestCase {
         XCTAssertEqual(chains.filter { ["mine-1", "mine-2", "mine-3", "pdf-email"].contains($0) }, ["mine-1"])
     }
 }
+
+/// The home box finds what already exists as the person types: tools and ready-made tools, before anything is built.
+final class ReadyNowTests: XCTestCase {
+    @MainActor func testTypingANeedFindsTheReadyMadeToolAndTheTool() {
+        let flows = BuilderView.searchChains("shrink a pdf to email it", in: ChainTemplates.all).map(\.id)
+        XCTAssertTrue(flows.contains("pdf-email"), "\(flows.prefix(5))")
+        XCTAssertTrue(searchTools("sign a pdf").prefix(3).contains { $0.id == "pdfsign" })
+        XCTAssertTrue(BuilderView.searchChains("please help", in: ChainTemplates.all).isEmpty, "filler words alone match nothing")
+    }
+}

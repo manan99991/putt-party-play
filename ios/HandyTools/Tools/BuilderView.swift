@@ -492,13 +492,16 @@ struct BuilderView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s16) {
-            Text(L("Build your own")).font(HandyFont.display).frame(maxWidth: .infinity, alignment: .leading)
-            Text(L("Make a tool that does the whole job — it runs on your phone."))
+            // Problem first: the person says what they need; Tenzy finds the tool, or builds one.
+            Text(L("What do you need?")).font(HandyFont.display).frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityAddTraits(.isHeader)
+            Text(L("Say it in your own words, or start with what you have. Tenzy finds the way — or builds it."))
                 .font(.system(size: 14)).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
             hero
             if let b = builtIn { builtInCard(b) }
             anythingTiles
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            if ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, builtIn == nil { quickStarts }
             Spacer(minLength: 0)
             HStack(spacing: HandySpacing.s8) {
                 footBtn(mine.isEmpty ? "My tools" : "My tools · \(mine.count)") { showMine = true }
@@ -916,12 +919,105 @@ struct BuilderView: View {
         return nil
     }
     private func objTile(_ title: String, sub: String? = nil) -> some View {
-        VStack(spacing: 2) {
+        // Each kind of thing gets its own mark and colour, so the six read at a glance.
+        let look: [String: (String, UInt32)] = ["Photo": ("photo.on.rectangle.angled", 0xEC4899), "Video": ("film", 0x8B5CF6),
+            "Audio": ("waveform", 0xF59E0B), "PDF": ("doc.richtext", 0xEF4444), "File": ("folder", 0x3B82F6), "Paste": ("doc.on.clipboard", 0x14B8A6)]
+        let (icon, hex) = look[title] ?? ("square", 0x64748B)
+        let tint = Color(hex: hex)
+        return VStack(spacing: 6) {
+            Image(systemName: icon).font(.system(size: 18, weight: .semibold)).foregroundStyle(.white)
+                .frame(width: 36, height: 36)
+                .background(LinearGradient(colors: [tint, tint.opacity(0.75)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .accessibilityHidden(true)
             Text(L(title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
             if let sub { Text(L(sub)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
         }
-        .frame(maxWidth: .infinity, minHeight: 56)
-        .cardStyle(padding: HandySpacing.s12)
+        .frame(maxWidth: .infinity, minHeight: 84)
+        .cardStyle(padding: HandySpacing.s8)
+    }
+
+    /// While the person types: the tools and ready-made tools that already do it, one tap away — before anything is built.
+    @ViewBuilder private var readyNow: some View {
+        let q = ask.trimmingCharacters(in: .whitespacesAndNewlines)
+        if q.count >= 3, builtIn == nil {
+            let tools = Array(searchTools(q).prefix(2))
+            let flows = Array(BuilderView.searchChains(q, in: mine + ChainTemplates.all).prefix(2))
+            if !tools.isEmpty || !flows.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    SectionLabel(text: "Ready now", icon: "bolt.fill")
+                    ForEach(tools) { t in
+                        Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
+                            readyRow(ToolIconBadge(id: t.id, symbol: t.icon, size: 32), L(t.name), L(t.blurb))
+                        }.buttonStyle(.plain).accessibilityIdentifier("ready-tool-\(t.id)")
+                    }
+                    ForEach(flows) { c in
+                        Button { running = c } label: {
+                            readyRow(BlockBadge(block: Guide.keyBlock(c, kind: c.steps.first?.block.takes ?? .image), size: 32), c.name, c.about)
+                        }.buttonStyle(.plain).accessibilityIdentifier("ready-flow-\(c.id)")
+                    }
+                }
+            }
+        }
+    }
+
+    private func readyRow<M: View>(_ mark: M, _ title: String, _ sub: String) -> some View {
+        HStack(spacing: 10) {
+            mark
+            VStack(alignment: .leading, spacing: 1) {
+                Text(title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
+                Text(sub).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
+            }
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right").font(.system(size: 12, weight: .semibold)).foregroundStyle(HandyColor.textSecondary)
+        }
+        .padding(8)
+        .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+    }
+
+    /// The jobs people come for most, one tap each — so an empty page still shows where to start.
+    @ViewBuilder private var quickStarts: some View {
+        let picks: [(String, String)] = [("fitit", "Shrink to send"), ("scan", "Scan to PDF"), ("pdfsign", "Sign a PDF"),
+                                         ("identify", "What is this?"), ("menu", "Read a menu"), ("thinking", "Think it through")]
+        let shown = picks.compactMap { p in TOOLS.first { $0.id == p.0 }.map { ($0, p.1) } }
+        if !shown.isEmpty {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                SectionLabel(text: "Quick starts", icon: "sparkles")
+                HandyFlow(spacing: 8, lineSpacing: 8) {
+                    ForEach(shown, id: \.0.id) { pick in
+                        let t = pick.0, label = pick.1
+                        Button { NotificationCenter.default.post(name: .openTool, object: t.id, userInfo: ["from": "builder"]) } label: {
+                            HStack(spacing: 6) {
+                                ToolIconBadge(id: t.id, symbol: t.icon, size: 22)
+                                Text(L(label)).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
+                            }
+                            .padding(.leading, 5).padding(.trailing, 12).padding(.vertical, 5)
+                            .background(HandyColor.surface, in: Capsule())
+                            .overlay(Capsule().stroke(HandyColor.border, lineWidth: 1))
+                        }
+                        .buttonStyle(.plain).accessibilityIdentifier("quick-\(t.id)")
+                    }
+                }
+            }
+        }
+    }
+
+    /// Ready-made and saved tools whose name or description matches what was typed (synonyms count).
+    static func searchChains(_ raw: String, in chains: [Chain]) -> [Chain] {
+        let tokens = raw.lowercased().split(whereSeparator: { !$0.isLetter && !$0.isNumber }).map(String.init).filter { $0.count >= 3 }
+        guard !tokens.isEmpty else { return [] }
+        let stop: Set<String> = ["the", "and", "for", "with", "into", "from", "that", "this", "want", "need", "make", "can", "how", "please", "help"]
+        let words = tokens.filter { !stop.contains($0) }
+        guard !words.isEmpty else { return [] }
+        let scored = ChainSame.unique(chains).map { c -> (Chain, Int) in
+            let hay = (c.name + " " + c.about).lowercased()
+            let hits = words.filter { w in SearchSynonyms.expand(w).contains { hay.contains($0) } }.count
+            return (c, hits * 10 + (c.name.lowercased().contains(words[0]) ? 5 : 0))
+        }
+        let need = max(1, (words.count + 1) / 2)
+        return scored.filter { $0.1 >= need * 10 }.sorted { $0.1 > $1.1 }.map(\.0)
     }
     private func footBtn(_ label: String, _ action: @escaping () -> Void) -> some View {
         Button(action: action) {
@@ -963,9 +1059,10 @@ struct BuilderView: View {
 
     private var hero: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
-            Label(L("Describe it"), systemImage: "sparkles").font(HandyFont.cardTitle)
+            Label(L("Tell Tenzy"), systemImage: "sparkles").font(HandyFont.cardTitle)
             TextField(L("e.g. shrink a photo under 1 MB and hide where it was taken"), text: $ask, axis: .vertical)
-                .lineLimit(3...8).textFieldStyle(.handy).accessibilityIdentifier("describe-field")
+                .lineLimit(2...6).textFieldStyle(.handy).accessibilityIdentifier("describe-field")
+            readyNow
             Button { buildFromAsk() } label: { Label(planning ? "Working…" : "Build it for me", systemImage: "wand.and.stars").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(planning || ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }.cardStyle()
