@@ -438,6 +438,9 @@ fileprivate func loadWithinTimeout<T: Sendable>(_ seconds: Double, _ work: @esca
 /// Tenzy Builder (M2): run a starter or saved tool, or build your own by stacking blocks.
 /// Everything here is data over built-in blocks (see ChainRunner), nothing is downloaded or generated as code.
 struct BuilderView: View {
+    /// Opened from My stuff › My tools: show the saved tools straight away, and go back when they're closed.
+    var openMine = false
+    @Environment(\.dismiss) private var dismissPage
     @State private var mine: [Chain] = ChainStore.load()
     @State private var editing: Chain?
     @State private var running: Chain?
@@ -504,9 +507,8 @@ struct BuilderView: View {
             if ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, builtIn == nil { quickStarts }
             Spacer(minLength: 0)
             HStack(spacing: HandySpacing.s8) {
-                footBtn(mine.isEmpty ? "My tools" : "My tools · \(mine.count)") { showMine = true }
-                // Everything that runs on its own — reminders, alerts, scheduled tools — in one place.
-                footBtn("Automations") { NotificationCenter.default.post(name: .openTool, object: "automations") }
+                // Your saved tools and reminders live in My stuff; from here, every tool and the ready-made ones.
+                footBtn("All tools") { NotificationCenter.default.post(name: .openTool, object: "explore", userInfo: ["from": "builder"]) }
                 footBtn("Templates") { showTemplates = true }
                 footBtn("Guide") { showGuide = true }
             }
@@ -603,7 +605,7 @@ struct BuilderView: View {
                 }
             }
         }
-        .sheet(isPresented: $showMine) {
+        .sheet(isPresented: $showMine, onDismiss: { if openMine { dismissPage() } }) {
             NavigationStack {
                 ScrollView {
                     VStack(alignment: .leading, spacing: HandySpacing.s12) {
@@ -762,6 +764,7 @@ struct BuilderView: View {
             // Store screenshots: open the Templates or My tools sheet straight away.
             if Launch.screenshots, Launch.route == "templates" { showTemplates = true }
             if Launch.screenshots, Launch.route == "mytools" { showMine = true }
+            if openMine { showMine = true }
             if Launch.screenshots, Launch.route == "describebuilt" {
                 ask = "Shrink a photo under 1 MB, remove the location and email it"
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) { buildFromAsk() }
@@ -850,7 +853,7 @@ struct BuilderView: View {
         NotificationCenter.default.post(name: .showPaywall, object: nil)
     }
 
-    /// "Start with what you have": six objects on one page, nothing to scroll — pick the thing and
+    /// "Start with what you have": nine starting points on one page, nothing to scroll — pick the thing and
     /// Tenzy lists the tools that fit it.
     private var anythingTiles: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
@@ -876,6 +879,13 @@ struct BuilderView: View {
                 }
                 .frame(maxWidth: .infinity, minHeight: 84)
                 .cardStyle(padding: HandySpacing.s8)
+            }
+            // Things that don't start from a file: your contacts, a worry or decision to think through, and the
+            // reminders Tenzy can handle for you (they live in My stuff).
+            HStack(spacing: HandySpacing.s8) {
+                Button { NotificationCenter.default.post(name: .openTool, object: "contacts", userInfo: ["from": "builder"]) } label: { objTile("Contacts") }.accessibilityIdentifier("have-contacts")
+                Button { NotificationCenter.default.post(name: .openTool, object: "thinking", userInfo: ["from": "builder"]) } label: { objTile("Think") }.accessibilityIdentifier("have-think")
+                Button { NotificationCenter.default.post(name: .showMyStuff, object: nil) } label: { objTile("Reminders") }.accessibilityIdentifier("have-reminders")
             }
             if gettingReady {
                 HStack(spacing: HandySpacing.s8) {
@@ -917,7 +927,8 @@ struct BuilderView: View {
     private func objTile(_ title: String, sub: String? = nil) -> some View {
         // Each kind of thing gets its own mark and colour, so the six read at a glance.
         let look: [String: (String, UInt32)] = ["Photo": ("photo.on.rectangle.angled", 0xEC4899), "Video": ("film", 0x8B5CF6),
-            "Audio": ("waveform", 0xF59E0B), "PDF": ("doc.richtext", 0xEF4444), "File": ("folder", 0x3B82F6), "Paste": ("doc.on.clipboard", 0x14B8A6)]
+            "Audio": ("waveform", 0xF59E0B), "PDF": ("doc.richtext", 0xEF4444), "File": ("folder", 0x3B82F6), "Paste": ("doc.on.clipboard", 0x14B8A6),
+            "Contacts": ("person.2.fill", 0x0EA5E9), "Think": ("lightbulb.max.fill", 0x22C55E), "Reminders": ("bell.badge.fill", 0xF97316)]
         let (icon, hex) = look[title] ?? ("square", 0x64748B)
         let tint = Color(hex: hex)
         return VStack(spacing: 6) {
@@ -976,7 +987,7 @@ struct BuilderView: View {
     /// The jobs people come for most, one tap each — so an empty page still shows where to start.
     @ViewBuilder private var quickStarts: some View {
         let picks: [(String, String)] = [("fitit", "Shrink to send"), ("scan", "Scan to PDF"), ("pdfsign", "Sign a PDF"),
-                                         ("identify", "What is this?"), ("menu", "Read a menu"), ("thinking", "Think it through")]
+                                         ("identify", "What is this?"), ("menu", "Read a menu")]
         let shown = picks.compactMap { p in TOOLS.first { $0.id == p.0 }.map { ($0, p.1) } }
         if !shown.isEmpty {
             VStack(alignment: .leading, spacing: HandySpacing.s8) {

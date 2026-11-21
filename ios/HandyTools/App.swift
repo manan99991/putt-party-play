@@ -451,19 +451,17 @@ enum Launch {
     static var sample: Bool { args.contains("-sample") }
 }
 
-/// The three home destinations of the rebuilt interface. Build is the front door (make a tool),
-/// Search is the powerful way into any single tool, Settings holds the map, themes and Pro.
-enum RootTab { case build, explore, search, settings }
+/// Two places, nothing more: Home (say what you need, or start with what you have — every tool is reached from
+/// there) and My stuff (what Tenzy looks after for you: reminders and automations, your tools, history, settings).
+enum RootTab { case home, mine }
 
 /// The bottom tab bar for the three home destinations.
 private struct TenzyTabBar: View {
     @Binding var selection: RootTab
     var body: some View {
         HStack(spacing: 0) {
-            item(.build, "square.stack.3d.up.fill", "Build")
-            item(.explore, "square.grid.2x2.fill", "Explore")
-            item(.search, "magnifyingglass", "Search")
-            item(.settings, "gearshape.fill", "Settings")
+            item(.home, "house.fill", "Home")
+            item(.mine, "tray.full.fill", "My stuff")
         }
         .padding(.top, 8)
         .padding(.bottom, 4)
@@ -481,7 +479,7 @@ private struct TenzyTabBar: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityIdentifier(t == .build ? "builder-entry" : label.lowercased() + "-tab")
+        .accessibilityIdentifier(t == .home ? "builder-entry" : "mystuff-tab")
     }
 }
 
@@ -504,7 +502,7 @@ struct HomeView: View {
     @ObservedObject private var theme = ThemeManager.shared   // re-skin the home grid live on a theme change
     @State private var showPaywall = false
     @State private var page = 1
-    @State private var tab: RootTab = Launch.route == "explore" ? .explore : (Launch.route == "search" ? .search : .build)
+    @State private var tab: RootTab = Launch.route == "mystuff" ? .mine : .home
     @State private var search = ""
     @FocusState private var searching: Bool
     @State private var path: [String] = Launch.route.flatMap { $0.hasPrefix("onboarding") || ScreenshotDemo.homeRoutes.contains($0) ? nil : [$0] } ?? []
@@ -524,23 +522,13 @@ struct HomeView: View {
             VStack(spacing: 0) {
                 Group {
                     switch tab {
-                    case .build:
-                        // The front door: the Builder's own start screen (Describe it · Start with
-                        // what you have · Ready-made) is the home now.
+                    case .home:
+                        // The front door: say it, or start with what you have. Typing shows the tools that
+                        // already do it (search), and All tools opens the full list (explore).
                         BuilderView()
-                    case .explore:
-                        // The browse home: every tool, one tap away, grouped by what it's for.
-                        ExploreView()
-                    case .search:
-                        VStack(spacing: 0) {
-                            SearchField(text: $search, focused: $searching)
-                                .padding(.horizontal, HandySpacing.gutter)
-                                .padding(.vertical, HandySpacing.s8)
-                                .accessibilityIdentifier("tool-search")
-                            if hasSearch { SearchResults(query: search) } else { SearchPrompt() }
-                        }
-                    case .settings:
-                        SettingsView()
+                    case .mine:
+                        // Everything that's yours: reminders and automations first, then your tools, history, settings.
+                        AutomationsView(tab: true)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -556,6 +544,8 @@ struct HomeView: View {
                 case "setup": SetupView(onDone: { path.removeLast() }).toolbarRole(.editor)
                 case "privacy": PrivacyView().toolbarRole(.editor)
                 case "builder": BuilderView().toolbarRole(.editor)
+                case "mytools": BuilderView(openMine: true).toolbarRole(.editor)   // My stuff › My tools
+                case "explore": ExploreView().toolbarRole(.editor)                 // Home › All tools
                 case "automations": AutomationsView().toolbarRole(.editor)   // the personal-assistant hub
                 case "results": HistoryView().toolbarRole(.editor)   // a finished-job notification lands here
                 default: ToolDestination(id: id).toolbarRole(.editor).disablesSwipeBack()
@@ -565,9 +555,11 @@ struct HomeView: View {
             .onChange(of: path) { _, p in searching = false; if p.last == "paywall" { path.removeLast(); showPaywall = true } }
             .onAppear {
                 if Launch.route == "paywall" { showPaywall = true }
+                if Launch.route == "explore" { path = ["explore"] }
                 if ToolSchedules.hasPending { path = ["builder"] }   // launched by tapping a tool reminder
             }
             .onReceive(NotificationCenter.default.publisher(for: .showPaywall)) { _ in showPaywall = true }
+            .onReceive(NotificationCenter.default.publisher(for: .showMyStuff)) { _ in path = []; tab = .mine }
             .onReceive(NotificationCenter.default.publisher(for: .openTool)) { n in
                 // Opened from inside the app (a helper, a list): go one step deeper so Back returns there.
                 // Opened from outside (a notification, a widget, a cold start): start fresh at that tool.
@@ -1048,6 +1040,7 @@ struct ToolPage<Content: View>: View {
 
 extension Notification.Name {
     static let openTool = Notification.Name("handytools.openTool")
+    static let showMyStuff = Notification.Name("handytools.showMyStuff")
     static let showPaywall = Notification.Name("handytools.showPaywall")
     static let showSetup = Notification.Name("handytools.showSetup")
 }

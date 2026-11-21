@@ -38188,5 +38188,55 @@
   "ja": "「自分で作る」でツールを作り、時間を設定。お知らせして、すぐ実行できる状態で開きます。",
   "pt": "Crie uma ferramenta em Crie a sua e dê um horário — ela avisa e abre pronta para rodar.",
   "zh": "在“自己动手做”里做一个工具，再给它设个时间——到时会提醒你，并直接打开准备运行。"
+ },
+ "My stuff": {
+  "de": "Meine Sachen",
+  "es": "Lo mío",
+  "fr": "Mes affaires",
+  "hi": "मेरा सामान",
+  "it": "Le mie cose",
+  "ja": "マイスペース",
+  "pt": "As minhas coisas",
+  "zh": "我的"
+ },
+ "Switch one on": {
+  "de": "Eins einschalten",
+  "es": "Activa uno",
+  "fr": "En activer un",
+  "hi": "एक चालू करें",
+  "it": "Attivane uno",
+  "ja": "オンにする",
+  "pt": "Ative um",
+  "zh": "开启一项"
+ },
+ "All tools": {
+  "de": "Alle Werkzeuge",
+  "es": "Todas las herramientas",
+  "fr": "Tous les outils",
+  "hi": "सभी टूल",
+  "it": "Tutti gli strumenti",
+  "ja": "すべてのツール",
+  "pt": "Todas as ferramentas",
+  "zh": "全部工具"
+ },
+ "Think": {
+  "de": "Nachdenken",
+  "es": "Pensar",
+  "fr": "Réfléchir",
+  "hi": "सोचें",
+  "it": "Riflettere",
+  "ja": "考える",
+  "pt": "Pensar",
+  "zh": "想一想"
+ },
+ "Alerts and backup": {
+  "de": "Hinweise und Sicherung",
+  "es": "Avisos y copia de seguridad",
+  "fr": "Alertes et sauvegarde",
+  "hi": "अलर्ट और बैकअप",
+  "it": "Avvisi e backup",
+  "ja": "通知とバックアップ",
+  "pt": "Alertas e cópia de segurança",
+  "zh": "提醒与备份"
  }
 }

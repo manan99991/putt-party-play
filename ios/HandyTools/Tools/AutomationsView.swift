@@ -50,6 +50,8 @@ enum AutomationGroups {
 }
 
 struct AutomationsView: View {
+    /// Shown as the My stuff tab: its own header with Settings, My tools and History above the reminders.
+    var tab = false
     private struct Row: Identifiable { let id: String; let group: AutomationGroups.Group; let count: Int; let next: Date?; let sample: UNNotificationRequest }
 
     @State private var rows: [Row] = []
@@ -62,23 +64,37 @@ struct AutomationsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
-                ToolHero(title: L("Your automations"), subtitle: L("Everything Tenzy does for you on its own, in one place."),
-                         tint: HandyColor.accent, steps: [], hint: nil) {
-                    Image(systemName: "bolt.badge.clock.fill").font(.system(size: 26, weight: .semibold)).foregroundStyle(HandyColor.accent)
-                        .frame(width: 52, height: 52).background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                if tab { tabHeader } else {
+                    ToolHero(title: L("Your automations"), subtitle: L("Everything Tenzy does for you on its own, in one place."),
+                             tint: HandyColor.accent, steps: [], hint: nil) {
+                        Image(systemName: "bolt.badge.clock.fill").font(.system(size: 26, weight: .semibold)).foregroundStyle(HandyColor.accent)
+                            .frame(width: 52, height: 52).background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
                 }
                 if denied { notificationsOff }
                 SectionLabel(text: L("Set and running"), icon: "checkmark.seal.fill")
                 if !loaded {
                     HStack { BusySpinner(); Text(L("Looking at what's set…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
                 } else if rows.isEmpty && rules.filter(\.on).isEmpty {
-                    Text(L("Nothing is set yet. Tap New automation — each takes a minute and has a Test run."))
+                    Text(L("Nothing is set yet. Pick one below — each takes a minute and has a Test run."))
                         .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).cardStyle()
                 }
                 ForEach(rows) { r in running(r) }
                 ForEach(rules.filter(\.on)) { r in ruleRow(r) }
-                Button { adding = true } label: { Label(L("New automation"), systemImage: "plus").frame(maxWidth: .infinity) }
-                    .primaryButton().accessibilityIdentifier("auto-new")
+                // The ready-made ones not set yet, right here (no extra screen), then your own.
+                let ideas = AutomationGroups.ideas.filter { !Set(rows.map(\.group.key)).contains($0.key) }
+                if !ideas.isEmpty {
+                    SectionLabel(text: L("Switch one on"), icon: "plus.circle.fill")
+                    ForEach(ideas, id: \.key) { i in ideaRow(i) }
+                }
+                SectionLabel(text: L("Your own"), icon: "wand.and.stars")
+                Button { open("builder") } label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label(L("Build a custom automation"), systemImage: "sparkles").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                        Text(L("Make a tool in Build your own, then give it a time — it reminds you and opens ready to run."))
+                            .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-own")
                 Text(L("Reminders come from iPhone itself, so they arrive even when Tenzy is closed. Turn one off inside its tool."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
@@ -90,6 +106,44 @@ struct AutomationsView: View {
         .sheet(isPresented: $adding, onDismiss: { Task { await load() } }) {
             NewAutomationSheet(already: Set(rows.map(\.group.key))) { tool in adding = false; open(tool) }
         }
+    }
+
+    private var tabHeader: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s12) {
+            HStack {
+                Text(L("My stuff")).font(HandyFont.display)
+                Spacer()
+                NavigationLink(value: "settings") {
+                    Image(systemName: "gearshape").font(.system(size: 18)).foregroundStyle(HandyColor.textSecondary).frame(width: 44, height: 44)
+                }.accessibilityLabel(L("Settings")).accessibilityIdentifier("settings-tab")
+            }
+            HStack(spacing: HandySpacing.s8) {
+                shortcut(ChainStore.load().isEmpty ? "My tools" : "My tools · \(ChainStore.load().count)", "square.stack.3d.up.fill", "mytools")
+                shortcut("History", "clock.arrow.circlepath", "results")
+            }
+        }
+    }
+
+    private func shortcut(_ title: String, _ icon: String, _ route: String) -> some View {
+        NavigationLink(value: route) {
+            Label(L(title), systemImage: icon).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                .frame(maxWidth: .infinity, minHeight: 52)
+        }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s8).accessibilityIdentifier("mine-\(route)")
+    }
+
+    /// A ready-made reminder not set yet: phone alerts and the contacts backup are set right here; the rest open their tool.
+    private func ideaRow(_ i: (key: String, title: String, detail: String, icon: String, tool: String)) -> some View {
+        Button { if i.key == "smart" || i.key == "backup" { adding = true } else { open(i.tool) } } label: {
+            HStack(spacing: HandySpacing.s12) {
+                Image(systemName: i.icon).foregroundStyle(HandyColor.accent).frame(width: 28)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(L(i.title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                    Text(L(i.detail)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            }.contentShape(Rectangle())
+        }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-idea-\(i.key)")
     }
 
     private var notificationsOff: some View {
@@ -244,34 +298,11 @@ struct NewAutomationSheet: View {
                         }
                     }.cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-new-backup")
 
-                    let ideas = AutomationGroups.ideas.filter { !already.contains($0.key) && !["smart", "backup"].contains($0.key) }
-                    ForEach(ideas, id: \.key) { i in
-                        Button { open(i.tool) } label: {
-                            HStack(spacing: HandySpacing.s12) {
-                                Image(systemName: i.icon).foregroundStyle(HandyColor.accent).frame(width: 28)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(L(i.title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                                    Text(L(i.detail)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                                }
-                                Spacer(minLength: 0)
-                                Image(systemName: "chevron.right").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                            }.contentShape(Rectangle())
-                        }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12).accessibilityIdentifier("auto-idea-\(i.key)")
-                    }
-
-                    SectionLabel(text: L("Your own"), icon: "wand.and.stars")
-                    Button { open("builder") } label: {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Label(L("Build a custom automation"), systemImage: "sparkles").font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
-                            Text(L("Make a tool in Build your own, then give it a time — it reminds you and opens ready to run."))
-                                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                        }.frame(maxWidth: .infinity, alignment: .leading)
-                    }.buttonStyle(.plain).cardStyle(padding: HandySpacing.s12)
                 }
                 .padding(HandySpacing.gutter)
             }
             .background(Ground())
-            .navigationTitle(L("New automation")).navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(L("Alerts and backup")).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
         }
     }
