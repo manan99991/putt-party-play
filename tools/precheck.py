@@ -109,6 +109,14 @@ for f, s in clean.items():
         now = s.count(o) - s.count(c)
         before = (strip(old).count(o) - strip(old).count(c)) if old else 0
         if now != before:
+            # A push that slipped through with a broken file must be repairable: going back to the balance the
+            # file had in one of the few versions before it is a repair, not a new imbalance.
+            earlier = []
+            for back in range(1, 4):
+                prev = subprocess.run(["git", "show", f"origin/handytools~{back}:{rel}"], cwd=root, capture_output=True, text=True).stdout
+                if prev: earlier.append(strip(prev).count(o) - strip(prev).count(c))
+            if now in earlier:
+                continue
             bad.append(f"{os.path.relpath(f, ios)}: '{o}{c}' balance changed ({before} → {now}) — a missing or extra {o if now > before else c}")
 
 # 2b. a single-# raw string that contains "# closes early (#"href="#x"# ends at href=") — and a guard whose

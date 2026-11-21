@@ -319,11 +319,6 @@ struct OptionRow: View {
                     Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped().accessibilityHidden(true)
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 } else {
-                        Image(uiImage: preview).resizable().scaledToFill().frame(width: side, height: side).clipped().accessibilityHidden(true)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                            .overlay(alignment: .bottomTrailing) { badge(22).padding(3) }
-                    }
-                } else {
                     badge(side)
                 }
             }
