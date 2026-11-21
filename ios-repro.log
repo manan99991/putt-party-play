@@ -33,8 +33,8 @@ REALINPUT id-both-sides: result (run-result)
 REALINPUT share-shield: result (run-result)
 REALINPUT id-copy-watermarked: result (run-result)
 REALINPUT portal-photo: result (run-result)
-REALINPUT memo-to-notes: STILL WORKING after 150 s
-REALINPUT memo-to-tasks: STILL WORKING after 150 s
+REALINPUT memo-to-notes: result (run-steplog)
+REALINPUT memo-to-tasks: result (run-steplog)
 REALINPUT qr-safe: result (run-steplog)
 REALINPUT sign-to-english: result (run-result)
 REALINPUT page-to-pdf: result (run-steplog)
@@ -45,14 +45,13 @@ REALINPUT pdf-join: result (run-result)
 REALINPUT pdf-first-page: result (run-result)
 REALINPUT video-story: result (run-result)
 REALINPUT video-gif: result (run-result)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/RealInputTests.swift:71: error: -[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles] : XCTAssertTrue failed - Never finished: memo-to-notes, memo-to-tasks
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' failed (1305.127 seconds).
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1661.829 seconds).
 Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' started.
 REALINPUT video-words: result (run-steplog)
 REALINPUT photo-collage: result (run-result)
 REALINPUT where-i-am: result (run-result)
 REALINPUT photos-gif: result (run-result)
-REALINPUT photos-flipbook: message — Step 1, Strip location, needs a photo but gets a video.
+REALINPUT photos-flipbook: result (run-result)
 REALINPUT sticker-maker: message — Make a sticker couldn't find a person, pet or object to cut out. Try a photo where it stands clear of the background.
 REALINPUT emoji-faces: message — Emoji over faces didn't find a face in that photo. Try one where the face is clear and turned to the camera.
 REALINPUT meme: result (run-result)
@@ -93,8 +92,76 @@ REALINPUT whiteboard-email: result (run-result)
 REALINPUT chat-scam: result (run-result)
 REALINPUT rewrite-clear: result (run-result)
 REALINPUT signature-contact: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1061.742 seconds).
-	 Executed 2 tests, with 1 failure (0 unexpected) in 2366.869 (2366.875) seconds
-	 Executed 2 tests, with 1 failure (0 unexpected) in 2366.869 (2366.882) seconds
-	 Executed 2 tests, with 1 failure (0 unexpected) in 2366.869 (2366.883) seconds
+Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1132.424 seconds).
+	 Executed 2 tests, with 0 failures (0 unexpected) in 2794.253 (2794.269) seconds
+Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
+TOOLINPUT studio: ok
+TOOLINPUT procam: ok
+TOOLINPUT video: ok
+TOOLINPUT formatfix: ok
+TOOLINPUT fitit: ok
+TOOLINPUT scrub: ok
+TOOLINPUT identify: ok
+TOOLINPUT stitch: ok
+TOOLINPUT qrwifi: ok
+TOOLINPUT cleaner: ok
+TOOLINPUT scan: ok
+TOOLINPUT datagrab: ok
+TOOLINPUT pdfredact: ok
+TOOLINPUT sorted: ok
+TOOLINPUT memory: ok
+TOOLINPUT warranty: ok
+TOOLINPUT textstudio: ok
+TOOLINPUT thinking: ok
+TOOLINPUT medreminder: ok
+TOOLINPUT pricewatch: ok
+TOOLINPUT planner: ok
+TOOLINPUT brief: ok
+TOOLINPUT daydiary: ok
+TOOLINPUT untangle: ok
+TOOLINPUT menu: ok
+TOOLINPUT cards: ok
+TOOLINPUT pdfannotate: ok
+TOOLINPUT pdfconvert: ok
+TOOLINPUT pdfpages: ok
+TOOLINPUT pdfsign: ok
+TOOLINPUT pdfprotect: ok
+TOOLINPUT pdfsearchable: ok
+TOOLINPUT pdfform: ok
+TOOLINPUT zipmaker: ok
+TOOLINPUT celebrate: ok
+TOOLINPUT animate: ok
+TOOLINPUT collage: ok
+TOOLINPUT faceemoji: ok
+TOOLINPUT comicstrip: ok
+TOOLINPUT sticker: ok
+TOOLINPUT audioconvert: ok
+TOOLINPUT audiocompress: ok
+TOOLINPUT ringtone: ok
+TOOLINPUT audioedit: ok
+TOOLINPUT audiomix: ok
+TOOLINPUT audiotags: ok
+TOOLINPUT audioclean: ok
+TOOLINPUT meetingnotes: ok
+TOOLINPUT soundboard: ok
+TOOLINPUT translate: ok
+TOOLINPUT voicenotes: ok
+TOOLINPUT shield: ok
+TOOLINPUT contacts: ok
+TOOLINPUT light: ok
+TOOLINPUT measure: ok
+TOOLINPUT gpsdash: ok
+TOOLINPUT audiolab: ok
+TOOLINPUT rest: ok
+TOOLINPUT seeread: ok
+TOOLINPUT colorvision: ok
+TOOLINPUT fileviewer: ok
+TOOLINPUT pricecheck: ok
+TOOLINPUT vault: ok
+TOOLINPUT speechnotes: ok
+TOOLINPUT audiostudio: ok
+Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (2008.965 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 2008.965 (2008.968) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 4803.218 (4803.252) seconds
+	 Executed 3 tests, with 0 failures (0 unexpected) in 4803.218 (4803.256) seconds
 == crash reports
