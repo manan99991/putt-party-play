@@ -50,7 +50,7 @@ jobs:
             $ONLY 2>&1 | tee repro.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|crashed|BUILD" || true
           # Any crash the simulator recorded for the app, newest first.
           ls -t ~/Library/Logs/DiagnosticReports/HandyTools-* 2>/dev/null | head -2 | xargs python3 ../tools/ips_summary.py > crashes.txt 2>&1 || true
-          grep -q "TEST SUCCEEDED" repro.log
+          grep -qE "TEST (EXECUTE )?SUCCEEDED" repro.log
       - name: Publish log
         if: always()
         working-directory: .
