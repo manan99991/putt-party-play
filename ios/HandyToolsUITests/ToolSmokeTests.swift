@@ -5,14 +5,20 @@ import XCTest
 /// if a tool's view crashes on appear, the app leaves the foreground and the test fails for that id.
 final class ToolSmokeTests: XCTestCase {
 
-    /// Keep in lock-step with the catalog in App.swift. Adding a tool? Add its id here.
+    /// Every tool in the catalog (App.swift TOOLS). HandyToolsTests.ToolCatalogCoverageTests fails the build if a tool
+    /// is missing here — until 21 Nov this list had 25 of 65, so 40 tools were never opened by any test.
     static let toolIDs = [
-        // Page 1 · Files, photos & docs
-        "fitit", "scan", "studio", "video", "formatfix", "scrub", "cleaner", "qrwifi", "stitch", "shareready",
-        // Page 2 · Camera, sensors & everyday
-        "light", "contacts", "measure", "magnify", "procam", "gpsdash", "audiolab", "rest", "colorvision", "sorted",
-        // Page 3 · Words, AI & accessibility
-        "lens", "memory", "textstudio", "translate", "voicenotes", "livecaptions", "shield", "datagrab", "describe", "vault",
+        "studio", "procam", "video", "formatfix", "fitit", "scrub", "identify", "stitch",
+        "qrwifi", "cleaner", "scan", "datagrab", "pdfredact", "sorted", "memory", "warranty",
+        "textstudio", "thinking", "medreminder", "pricewatch", "planner", "brief", "daydiary", "untangle",
+        "menu", "cards", "pdfannotate", "pdfconvert", "pdfpages", "pdfsign", "pdfprotect", "pdfsearchable",
+        "pdfform", "zipmaker", "celebrate", "animate", "collage", "faceemoji", "comicstrip", "sticker",
+        "audioconvert", "audiocompress", "ringtone", "audioedit", "audiomix", "audiotags", "audioclean", "meetingnotes",
+        "soundboard", "translate", "voicenotes", "shield", "contacts", "light", "measure", "gpsdash",
+        "audiolab", "rest", "seeread", "colorvision", "fileviewer", "pricecheck", "vault", "speechnotes",
+        "audiostudio",
+        // Older screens still reachable from other tools and links.
+        "magnify", "shareready", "lens", "livecaptions", "describe",
     ]
 
     override func setUp() { continueAfterFailure = true }
@@ -23,9 +29,13 @@ final class ToolSmokeTests: XCTestCase {
             app.launchArguments = ["-route", id, "-uitest"]
             app.launch()
             XCTAssertTrue(app.wait(for: .runningForeground, timeout: 25), "\(id): did not reach foreground")
-            // Force a UI query — throws/returns 0 against a dead process if the view crashed on appear.
-            _ = app.descendants(matching: .any).count
+            // Read the whole screen the way VoiceOver does (the 20 Nov crash came from exactly that), top and bottom.
+            sleep(1)
+            _ = app.debugDescription
             XCTAssertEqual(app.state, .runningForeground, "\(id): crashed on open")
+            app.swipeUp()
+            _ = app.debugDescription
+            XCTAssertEqual(app.state, .runningForeground, "\(id): crashed when scrolled")
             app.terminate()
         }
     }
