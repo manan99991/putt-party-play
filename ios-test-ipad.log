@@ -1,8 +1,3 @@
 == ipad (results)
-Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (1111.839 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (20.041 seconds).
-Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (25.676 seconds).
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1157.556 (1157.570) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1157.556 (1157.571) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 1157.556 (1157.575) seconds
-** TEST SUCCEEDED **
+error: The package product 'BitByteData-product' requires minimum platform version 17.0 for the iOS platform, but this target supports 15.0 (in target 'SWCompression' from project 'SWCompression')
+** TEST FAILED **
