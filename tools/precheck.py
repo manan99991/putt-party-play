@@ -135,6 +135,19 @@ import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__
 import members_check
 bad += members_check.check(root, ios)
 
+# 2d. The same type declared twice in one target (a test class added under a name another file already uses) —
+# a whole CI compile round was lost to this on 21 Nov. Private/fileprivate types may repeat across files.
+topdecl = re.compile(r'^(?!\s)(?:@\w+\s+)*(?:(public|internal|final|open)\s+)*(?:final\s+)?(class|struct|enum|actor|protocol)\s+([A-Z]\w*)', re.M)
+for target in ("HandyTools", "HandyToolsTests", "HandyToolsUITests", "ShareExtension"):
+    seen = {}
+    for f, s2 in clean.items():
+        if os.path.relpath(f, ios).split(os.sep)[0] != target: continue
+        for m in topdecl.finditer(s2):
+            seen.setdefault(m.group(3), []).append(os.path.relpath(f, ios))
+    for name, fs in seen.items():
+        if len(set(fs)) > 1:
+            bad.append(f"{target}: {name} is declared in {', '.join(sorted(set(fs)))} — rename one")
+
 # 4. translations
 tr = json.load(open(os.path.join(ios, "HandyTools", "translations.json")))
 miss = set()
