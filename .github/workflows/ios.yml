@@ -60,73 +60,6 @@ jobs:
           cat plist-check.log
           echo "::warning title=plist::$summary"
           bash .github/publish-log.sh ios-plist plist-check.log || true
-      # Full test gate, on the SAME Mac as the build: one runner per commit instead of two, so a busy
-      # GitHub macOS pool only has to find us one machine. The deploy will NOT upload unless the engine
-      # unit tests, the every-tool smoke suite and the iPad smoke pass. Regression tests for every
-      # shipped crash fix live in HandyToolsTests, so a fixed crash cannot silently return.
-      - name: Test (engine unit + smoke + LIVE hardware) — gates the deploy
-        run: |
-          set -o pipefail
-          UDID=$(xcrun simctl list devices available -j | python3 -c '
-          import json,sys
-          d=json.load(sys.stdin)["devices"]
-          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith("iPhone")]
-          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"])')
-          echo "simulator=$UDID"
-          # Boot the sim and PRE-AUTHORIZE the app, so the live test drives the real camera / mic /
-          # location permission + audio-callback paths (the ones the smoke run disables) with no
-          # prompt. This is the check that would have caught the Pro Camera / Audio Lab crashes.
-          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
-          for p in camera microphone photos location; do
-            xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true
-          done
-          xcodebuild test \
-            -project HandyTools.xcodeproj -scheme HandyTools \
-            -destination "id=$UDID" \
-            -only-testing:HandyToolsTests \
-            -only-testing:HandyToolsUITests/ToolSmokeTests \
-            -only-testing:HandyToolsUITests/LiveToolTests \
-            -only-testing:HandyToolsUITests/ToolControlsReachableTests \
-            -only-testing:HandyToolsUITests/PromiseTests \
-            -only-testing:HandyToolsUITests/MultiPhotoTests \
-            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
-            -skipPackagePluginValidation -skipMacroValidation \
-            2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true
-          grep -E "error:|Test Case .*failed|failed - " test.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
-          grep -q "TEST SUCCEEDED" test.log
-      - name: iPad smoke — every tool opens without crashing on iPad (gates the deploy)
-        timeout-minutes: 50   # ~200 tools at ~8 s a launch on the iPad simulator; 25 min cut it off mid-run, it was never hung
-        run: |
-          set -o pipefail
-          IPAD=$(xcrun simctl list devices available -j | python3 -c '
-          import json,sys
-          d=json.load(sys.stdin)["devices"]
-          c=[x for k,v in d.items() if "iOS" in k for x in v if "iPad" in x["name"]]
-          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"] if c else "")')
-          [ -n "$IPAD" ] || { echo "::error::no iPad simulator available"; exit 1; }
-          echo "ipad simulator=$IPAD"
-          xcrun simctl bootstatus "$IPAD" -b || xcrun simctl boot "$IPAD" || true
-          for p in camera microphone photos location; do xcrun simctl privacy "$IPAD" grant $p com.tenzy.toolkit 2>/dev/null || true; done
-          xcodebuild test \
-            -project HandyTools.xcodeproj -scheme HandyTools \
-            -destination "id=$IPAD" \
-            -only-testing:HandyToolsUITests/ToolSmokeTests \
-            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
-            -skipPackagePluginValidation -skipMacroValidation \
-            2>&1 | tee ipad.log | grep -E "error:|Test Case .*(passed|failed)|TEST (SUCCEEDED|FAILED)" || true
-          grep -E "Test Case .*failed|failed - " ipad.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head | sed 's/^/::error::/' || true
-          grep -q "TEST SUCCEEDED" ipad.log || { echo "== last lines of the iPad run"; tail -60 ipad.log; exit 1; }
-      - name: iPad run, last lines (when it didn't finish)
-        if: failure() || cancelled()
-        run: tail -80 ipad.log 2>/dev/null || true
-      - name: Publish test log
-        if: always()
-        working-directory: .
-        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
-        run: |
-          { echo "== test.log (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -200; } > ios-test.log
-          bash .github/publish-log.sh ios-test ios-test.log || true
-          bash .github/publish-log.sh "ios-test-${GITHUB_RUN_ID}" ios-test.log || true
       # Accuracy on real photos runs in its own workflow (qa-lab.yml) so a slow or cancelled step here never skips it.
       - name: Simulator screenshots of every tool
         # Not on a TestFlight build any more: twice on 20 Nov this step hung after every test had passed and the
@@ -266,6 +199,66 @@ jobs:
   # Runs only when App Store Connect secrets are present. Archives, signs with an
   # ASC API key via automatic signing, and uploads to TestFlight. Gated on `build` (which runs the tests): a red
   # suite blocks the upload.
+  # The test gate, split four ways so the parts run at the same time on separate Macs (one after another they took
+  # 62 min + the iPad pass). Nothing is dropped: the upload waits for every part, as before.
+  tests:
+    if: "${{ !contains(github.event.head_commit.message, 'Ship-Store=YES') && !contains(github.event.head_commit.message, 'Ship-Stage=YES') }}"
+    runs-on: xcode-27
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - part: unit
+            device: iPhone
+            only: "-only-testing:HandyToolsTests"
+          - part: smoke
+            device: iPhone
+            only: "-only-testing:HandyToolsUITests/ToolSmokeTests -only-testing:HandyToolsUITests/ToolControlsReachableTests"
+          - part: flows
+            device: iPhone
+            only: "-only-testing:HandyToolsUITests/LiveToolTests -only-testing:HandyToolsUITests/PromiseTests -only-testing:HandyToolsUITests/MultiPhotoTests"
+          - part: ipad
+            device: iPad
+            only: "-only-testing:HandyToolsUITests/ToolSmokeTests"
+    defaults:
+      run: { working-directory: ios }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - run: sudo xcode-select -s "$(ls -d /Applications/Xcode*.app | sort -V | tail -1)"
+      - name: Generate project
+        run: |
+          set -o pipefail
+          { brew install xcodegen && xcodegen generate && xcodebuild -resolvePackageDependencies -project HandyTools.xcodeproj -scheme HandyTools; } 2>&1 | tail -3
+      - name: Test — ${{ matrix.part }} (gates the deploy)
+        timeout-minutes: 80
+        env: { DEVICE: "${{ matrix.device }}", ONLY: "${{ matrix.only }}" }
+        run: |
+          set -o pipefail
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json,sys,os
+          d=json.load(sys.stdin)["devices"]; want=os.environ["DEVICE"]
+          c=[x for k,v in d.items() if "iOS" in k for x in v if x["name"].startswith(want)]
+          c.sort(key=lambda x:x["name"]); print(c[-1]["udid"] if c else "")')
+          [ -n "$UDID" ] || { echo "::error::no $DEVICE simulator"; exit 1; }
+          echo "simulator=$UDID part=${{ matrix.part }}"
+          # Boot and pre-authorize so the live tests drive the real camera / mic / location paths with no prompt.
+          xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
+          for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+          xcodebuild test -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" $ONLY \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
+            2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true
+          grep -E "error:|Test Case .*failed|failed - " test.log | sed 's#/Users/runner/work/[^/]*/[^/]*/##' | sort -u | head -20 | sed 's/^/::error::/' || true
+          grep -q "TEST SUCCEEDED" test.log || { echo "== last lines"; tail -60 test.log; exit 1; }
+      - name: Publish test log
+        if: always()
+        working-directory: .
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          { echo "== ${{ matrix.part }} (results)"; grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)" ios/test.log 2>/dev/null | head -300; } > ios-test-${{ matrix.part }}.log
+          bash .github/publish-log.sh ios-test-${{ matrix.part }} ios-test-${{ matrix.part }}.log || true
+
   # Every ready-made tool run on a real file, and every tool opened with its sample, each screen read the way
   # VoiceOver reads it (the 20 Nov crash). About an hour, so it runs beside the build on the daily TestFlight commit
   # and the upload waits for it: a crash, a job that never ends or a blank finish stops the upload.
@@ -308,7 +301,7 @@ jobs:
           bash .github/publish-log.sh ios-realinput ios-realinput.log || true
 
   testflight:
-    needs: [build, realinput]
+    needs: [build, tests, realinput]
     # Decoupled from `build` so signing can be iterated fast — `archive` compiles the code too.
     # HOLD: build + test run on every push, but TestFlight upload happens ONLY when the commit
     # message contains the trailer line  Ship-Build: YES  — a distinctive token that is never written
