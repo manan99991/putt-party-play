@@ -1,1 +1,9 @@
 == ipad (results)
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/ToolSmokeTests.swift:39: error: -[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing] : Failed to terminate com.tenzy.toolkit:36206: Failed to terminate com.tenzy.toolkit:0
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' failed (659.324 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (40.851 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (26.554 seconds).
+	 Executed 3 tests, with 1 failure (0 unexpected) in 726.729 (726.747) seconds
+	 Executed 3 tests, with 1 failure (0 unexpected) in 726.729 (726.756) seconds
+	 Executed 3 tests, with 1 failure (0 unexpected) in 726.729 (726.757) seconds
+** TEST FAILED **
