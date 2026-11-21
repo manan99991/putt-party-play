@@ -2,6 +2,9 @@ import Foundation
 #if canImport(SWCompression)
 import SWCompression   // 7-Zip, BZip2
 #endif
+#if canImport(Unrar)
+import Unrar           // RAR, CBR
+#endif
 import UIKit
 import ImageIO
 import Compression
@@ -56,7 +59,7 @@ enum FileReaders {
         "usdz", "reality", "vcf", "ics", "odt", "ods", "odp", "svg",
     ]
     static let bookExts: Set<String> = ["epub", "fb2", "mobi", "azw", "azw3", "prc", "pdb"]
-    static let archiveExts: Set<String> = ["7z", "bz2", "tbz", "tbz2", "zip", "zipx", "jar", "apk", "aab", "ipa", "xpi", "war", "tar", "tgz", "gz", "gzip", "taz", "xz", "txz", "lzma", "tlzma", "lz4", "xps", "oxps", "cbz"]
+    static let archiveExts: Set<String> = ["rar", "7z", "bz2", "tbz", "tbz2", "zip", "zipx", "jar", "apk", "aab", "ipa", "xpi", "war", "tar", "tgz", "gz", "gzip", "taz", "xz", "txz", "lzma", "tlzma", "lz4", "xps", "oxps", "cbz"]
 
     /// The reading for a file — by what's inside first, the ending second.
     static func read(_ url: URL) -> Reading {
@@ -66,13 +69,15 @@ enum FileReaders {
         if let base = officeAlias[ext], let copy = renamed(url, to: base) { return .quickLook(copy) }
         if ext == "cbz" || ext == "cbr" || ext == "cb7" {
             if head.starts(with: [0x50, 0x4B]), let pages = comicPages(url) { return .comic(pages) }
-            if head.starts(with: sevenZipMagic), let a = archive(url) {
+            if head.starts(with: sevenZipMagic) || head.starts(with: rarMagic), let a = archive(url) {
                 let pages = a.entries.filter { ["jpg", "jpeg", "png", "webp", "gif", "heic"].contains(($0.name as NSString).pathExtension.lowercased()) }
                     .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }.compactMap { $0.data() }
                 if !pages.isEmpty { return .comic(pages) }
             }
             return info(url, kind: ext == "cbr" ? "Comic book (RAR)" : "Comic book",
-                        "This comic is packed with RAR or 7-Zip, which Tenzy can't unpack yet. Most comic apps can — or ask the sender for a CBZ.")
+                        head.starts(with: rarMagic) && { if case .failure(.locked) = rar(url) { return true }; return false }()
+                        ? "This comic is locked with a password, so its pages can't be opened."
+                        : "This comic has no pages Tenzy can show — it may be damaged or only partly downloaded.")
         }
         if ext == "epub", let b = epub(url) { return .book(b) }
         if ext == "fb2", let b = fb2(url) { return .book(b) }
@@ -103,7 +108,10 @@ enum FileReaders {
         }
         if quickLookExts.contains(ext) { return .quickLook(url) }
         if let img = imageIO(url) { return .image(img) }                                       // PSD, TGA, EXR, JP2, AVIF, RAW, ICO, DDS…
-        if archiveExts.contains(ext) || head.starts(with: sevenZipMagic) || head.starts(with: Array("BZh".utf8)) || head.starts(with: [0x50, 0x4B, 0x03, 0x04]) || head.starts(with: [0x1F, 0x8B]) || head.starts(with: [0xFD, 0x37, 0x7A, 0x58, 0x5A]) {
+        if head.starts(with: rarMagic), case .failure(.locked) = rar(url) {
+            return info(url, kind: "RAR archive", "This archive is locked with a password, so Tenzy can't open what's inside. Ask the sender for the password-free version.")
+        }
+        if archiveExts.contains(ext) || head.starts(with: rarMagic) || head.starts(with: sevenZipMagic) || head.starts(with: Array("BZh".utf8)) || head.starts(with: [0x50, 0x4B, 0x03, 0x04]) || head.starts(with: [0x1F, 0x8B]) || head.starts(with: [0xFD, 0x37, 0x7A, 0x58, 0x5A]) {
             if let a = archive(url) { return .archive(a.entries, kind: a.kind) }
         }
         if ext == "json" || ext == "geojson", let t = prettyJSON(url) { return .text(t, title: "JSON") }
@@ -417,8 +425,42 @@ enum FileReaders {
 
     static let sevenZipMagic: [UInt8] = [0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C]
 
+    static let rarMagic: [UInt8] = [0x52, 0x61, 0x72, 0x21, 0x1A, 0x07]
+    enum RarProblem: Error { case locked, bad }
+
+    /// A RAR archive's files, each read only when opened (UnRAR decodes it in memory; nothing is written out).
+    static func rar(_ url: URL) -> Result<[ArchiveEntry], RarProblem> {
+        #if canImport(Unrar)
+        var list: UnsafeMutablePointer<TzRarEntry>? = nil
+        var count: Int32 = 0
+        let status = tz_rar_list(url.path, &list, &count)
+        defer { tz_rar_free(list) }
+        if status == Int32(TZ_RAR_LOCKED) { return .failure(.locked) }
+        guard let list, count > 0 else { return .failure(.bad) }
+        var out: [ArchiveEntry] = []
+        for i in 0..<Int(count) {
+            var e = list[i]
+            guard e.isDir == 0 else { continue }
+            if e.locked != 0 { return .failure(.locked) }
+            let name = withUnsafeBytes(of: &e.name) { String(decoding: $0.prefix { $0 != 0 }, as: UTF8.self) }
+            let path = url.path
+            out.append(ArchiveEntry(name: name, size: Int(e.size), data: {
+                var buf: UnsafeMutablePointer<UInt8>? = nil
+                var size: UInt64 = 0
+                guard tz_rar_read(path, name, 400_000_000, &buf, &size) == Int32(TZ_RAR_OK), let buf else { return nil }
+                defer { tz_rar_free(buf) }
+                return Data(bytes: buf, count: Int(size))
+            }))
+        }
+        return out.isEmpty ? .failure(.bad) : .success(out)
+        #else
+        return .failure(.bad)
+        #endif
+    }
+
     static func archive(_ url: URL) -> (entries: [ArchiveEntry], kind: String)? {
         let head = firstBytes(url, 6)
+        if head.starts(with: rarMagic), case .success(let entries) = rar(url) { return (entries, "RAR") }
         #if canImport(SWCompression)
         if head.starts(with: sevenZipMagic), let raw = try? Data(contentsOf: url) {
             guard let all = try? SevenZipContainer.open(container: raw) else { return nil }

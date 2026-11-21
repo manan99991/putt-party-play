@@ -29,6 +29,9 @@ packages:
     # No tagged release upstream; its binary deps (vector-im opus-swift 0.8.4 / ogg-swift 0.8.3) are versioned.
     url: https://github.com/element-hq/swift-ogg
     branch: main
+  Unrar:
+    # Local package: UnRAR 6.12 freeware source (see its Package.swift for the licence paragraph) for .rar and .cbr.
+    path: Packages/Unrar
   StbVorbis:
     # Local package: stb_vorbis (public domain) to play Ogg Vorbis files in File Opener.
     path: Packages/StbVorbis
@@ -53,6 +56,7 @@ targets:
       - package: SwiftOGG
       - package: SWCompression
       - package: StbVorbis
+      - package: Unrar
       - target: ShareExtension
       - target: StickyWidget
       - sdk: VisionKit.framework
@@ -101,7 +105,7 @@ targets:
           - CFBundleTypeName: Archives
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
-            LSItemContentTypes: [public.zip-archive, org.gnu.gnu-zip-archive, public.tar-archive, public.archive, org.tukaani.xz-archive, com.tenzy.tgz, com.tenzy.apk]
+            LSItemContentTypes: [public.zip-archive, org.gnu.gnu-zip-archive, public.tar-archive, public.archive, org.tukaani.xz-archive, com.tenzy.tgz, com.tenzy.apk, com.rarlab.rar-archive, org.7-zip.7-zip-archive, public.bzip2-archive]
           - CFBundleTypeName: Books and comics
             CFBundleTypeRole: Viewer
             LSHandlerRank: Alternate
