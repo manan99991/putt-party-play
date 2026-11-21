@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import AVFoundation
+import PDFKit
 
 /// A determinate progress bar with a short status line, for any tool doing work the user is waiting
 /// on. Prefer this over a bare spinner so people can see how far a job has got and that it's moving.
@@ -259,6 +260,10 @@ private struct OutputThumb: View {
         let ext = url.pathExtension.lowercased()
         if ["jpg", "jpeg", "png", "heic", "heif", "gif", "webp", "tiff"].contains(ext) {
             return await Task.detached { UIImage(contentsOfFile: url.path)?.resized(maxDimension: 200) }.value
+        }
+        if ext == "pdf" {
+            // The first page, so a batch of PDFs shows what's in each — not a row of file icons.
+            return await Task.detached { PDFDocument(url: url)?.page(at: 0)?.thumbnail(of: CGSize(width: 200, height: 200), for: .mediaBox) }.value
         }
         return await Task.detached { () -> UIImage? in
             let gen = AVAssetImageGenerator(asset: AVURLAsset(url: url))

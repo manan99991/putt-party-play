@@ -1724,6 +1724,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     @State private var runTask: Task<Void, Never>?
     @State private var picks: [PhotosPickerItem] = []
     @State private var batch: [BatchItem] = []
+    /// When a run hands back several PDFs: join them into one (nil = not decided yet, use the tool's default).
+    @State private var mergePDFs: Bool?
+    @State private var mergedPDF: URL?
     @State private var progress = ""
     @State private var progressValue: Double = 0   // 0 = indeterminate
     @ObservedObject private var runProgress = RunProgress.shared   // live fraction from deep engine work (transcription)
@@ -1902,7 +1905,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                         Button { pickingPDF = true } label: { Label(L("Choose a PDF"), systemImage: "doc.richtext").frame(maxWidth: .infinity) }
                             .secondaryButton().accessibilityIdentifier("run-pdf")
                     }
-                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : chain.flipbook == true ? "Pick 2–20 photos. They flip like the pages of a book." : chain.versus == true ? "Pick two photos: the before, then the after." : "Pick one, or up to 20 at once. Each one gets the same steps.")
+                    Text(chain.combine == true ? "Pick or scan as many pages as you need. They all go into one PDF." : chain.collage == true ? "Pick up to 20 photos. They are laid out as one picture." : chain.gif == true ? "Pick up to 20 photos. They play one after another as a GIF." : chain.flipbook == true ? "Pick 2–20 photos. They flip like the pages of a book." : chain.versus == true ? "Pick two photos: the before, then the after." : (chain.steps.last?.block == .photoPdf ? "Pick one, or up to 20 at once. At the end, keep them as separate PDFs or join them into one." : "Pick one, or up to 20 at once. Each one gets the same steps."))
                         .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 } else {
                     // Ways to get the words in without typing them.
@@ -2300,6 +2303,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     /// The same for anything a tool can start with: photos, pages, or several PDFs.
     private func runMany(count: Int, noun name: String, before: @escaping (Int) -> Int? = { _ in nil }, load: @escaping (Int) async -> ChainPayload?) {
         busy = true; result = nil; message = nil; batch = []; outbox = nil; noun = name; progressValue = 0
+        mergedPDF = nil; mergePDFs = nil
         let combine = chain.combine == true
         let collage = chain.collage == true
         let gif = chain.gif == true
@@ -2527,7 +2531,37 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 if let h = b.hint { Text(h).font(HandyFont.micro).foregroundStyle(HandyColor.amber).fixedSize(horizontal: false, vertical: true) }
             }.cardStyle(padding: HandySpacing.s12)
         }
-        if !urls.isEmpty {
+        let mergeable = PDFMerge.canMerge(urls)
+        // Photos turned into PDFs usually belong in one file; PDFs that came in separately stay separate. Either way
+        // the person decides, right above Share.
+        let merging = mergeable && (mergePDFs ?? !chain.steps.contains { $0.block.takes == .pdf })
+        if mergeable {
+            VStack(alignment: .leading, spacing: HandySpacing.s8) {
+                SectionLabel(text: "How to save them", icon: "doc.on.doc")
+                Picker("", selection: Binding(get: { merging }, set: { mergePDFs = $0 })) {
+                    Text(L("One PDF")).tag(true)
+                    Text("\(urls.count) separate PDFs").tag(false)
+                }
+                .pickerStyle(.segmented).accessibilityIdentifier("batch-merge")
+                if merging, let m = mergedPDF {
+                    Label("\(PDFMerge.pageCount(m)) pages in one PDF · \(SizeTarget.fileSize(m).map(SizeTarget.format) ?? "")", systemImage: "doc.richtext")
+                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    ResultPreview(kind: .pdfData((try? Data(contentsOf: m)) ?? Data()), maxHeight: 220)
+                } else if merging {
+                    HStack(spacing: 8) { ProgressView(); Text(L("Joining the pages…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+                }
+            }
+            .cardStyle(padding: HandySpacing.s12)
+            .task(id: urls.map(\.path).joined()) {
+                let name = ChainName.file(pattern: chain.fileName, tool: chain.name, ext: "pdf").replacingOccurrences(of: ".pdf", with: "")
+                let list = urls
+                mergedPDF = await Task.detached { PDFMerge.merge(list, name: name) }.value
+            }
+        }
+        if merging, let m = mergedPDF {
+            ShareLink(item: m) { Label(L("Save or share the PDF"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                .accessibilityIdentifier("batch-share-merged")
+        } else if !urls.isEmpty {
             ShareLink(items: urls) { Label("Save or share all (\(urls.count))", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
         }
         if !texts.isEmpty {

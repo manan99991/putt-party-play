@@ -543,3 +543,29 @@ extension UIImage {
         }
     }
 }
+
+/// Several PDFs made in one go, joined into one file in order. Used wherever a tool hands back 2+ PDFs (the run
+/// screen for every ready-made and built tool, and the Share sheet), so the person can choose one PDF or many.
+enum PDFMerge {
+    /// True when every file is a PDF that can be joined (2 or more, none locked with a password).
+    static func canMerge(_ urls: [URL]) -> Bool {
+        guard urls.count > 1, urls.allSatisfy({ $0.pathExtension.lowercased() == "pdf" }) else { return false }
+        return urls.allSatisfy { u in PDFDocument(url: u).map { !$0.isLocked && $0.pageCount > 0 } ?? false }
+    }
+
+    /// The pages of every file, in order, as one PDF written next to them. Nil if any file can't be read.
+    static func merge(_ urls: [URL], name: String) -> URL? {
+        let out = PDFDocument()
+        for u in urls {
+            guard let doc = PDFDocument(url: u), !doc.isLocked else { return nil }
+            for i in 0..<doc.pageCount { if let p = doc.page(at: i)?.copy() as? PDFPage { out.insert(p, at: out.pageCount) } }
+        }
+        guard out.pageCount > 0, let dir = urls.first?.deletingLastPathComponent() else { return nil }
+        let safe = name.replacingOccurrences(of: "/", with: "-").trimmingCharacters(in: .whitespaces)
+        let url = dir.appendingPathComponent((safe.isEmpty ? "Combined" : safe) + ".pdf")
+        guard out.write(to: url) else { return nil }
+        return url
+    }
+
+    static func pageCount(_ url: URL) -> Int { PDFDocument(url: url)?.pageCount ?? 0 }
+}

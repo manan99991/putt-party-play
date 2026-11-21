@@ -37488,5 +37488,55 @@
   "ja": "終わるまで新しい選択は待機します。",
   "pt": "Novas escolhas esperam até isto terminar.",
   "zh": "新的选择会等到完成后再处理。"
+ },
+ "How to save them": {
+  "de": "So speichern",
+  "es": "Cómo guardarlos",
+  "fr": "Comment les enregistrer",
+  "hi": "इन्हें कैसे सहेजें",
+  "it": "Come salvarli",
+  "ja": "保存のしかた",
+  "pt": "Como guardar",
+  "zh": "保存方式"
+ },
+ "One PDF": {
+  "de": "Ein PDF",
+  "es": "Un solo PDF",
+  "fr": "Un seul PDF",
+  "hi": "एक PDF",
+  "it": "Un solo PDF",
+  "ja": "1つのPDF",
+  "pt": "Um só PDF",
+  "zh": "一个 PDF"
+ },
+ "Joining the pages…": {
+  "de": "Seiten werden zusammengefügt…",
+  "es": "Uniendo las páginas…",
+  "fr": "Assemblage des pages…",
+  "hi": "पन्ने जोड़े जा रहे हैं…",
+  "it": "Unione delle pagine…",
+  "ja": "ページをまとめています…",
+  "pt": "A juntar as páginas…",
+  "zh": "正在合并页面…"
+ },
+ "Save or share the PDF": {
+  "de": "PDF sichern oder teilen",
+  "es": "Guardar o compartir el PDF",
+  "fr": "Enregistrer ou partager le PDF",
+  "hi": "PDF सहेजें या शेयर करें",
+  "it": "Salva o condividi il PDF",
+  "ja": "PDFを保存・共有",
+  "pt": "Guardar ou partilhar o PDF",
+  "zh": "保存或分享 PDF"
+ },
+ "Pick one, or up to 20 at once. At the end, keep them as separate PDFs or join them into one.": {
+  "de": "Wähle eins oder bis zu 20 auf einmal. Am Ende behältst du sie als einzelne PDFs oder fügst sie zu einem zusammen.",
+  "es": "Elige uno o hasta 20 a la vez. Al final, guárdalos como PDF separados o únelos en uno.",
+  "fr": "Choisissez-en un ou jusqu'à 20 à la fois. À la fin, gardez des PDF séparés ou réunissez-les en un seul.",
+  "hi": "एक चुनें, या एक साथ 20 तक। आख़िर में इन्हें अलग-अलग PDF रखें या एक में जोड़ें।",
+  "it": "Scegline uno o fino a 20 insieme. Alla fine tienili come PDF separati o uniscili in uno.",
+  "ja": "1枚、または一度に20枚まで選べます。最後に、別々のPDFにするか1つにまとめるかを選べます。",
+  "pt": "Escolha um ou até 20 de uma vez. No fim, guarde-os como PDFs separados ou junte-os num só.",
+  "zh": "选一张，或一次最多 20 张。最后可以保留为单独的 PDF，或合并成一个。"
  }
 }

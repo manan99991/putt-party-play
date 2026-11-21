@@ -84,7 +84,7 @@ final class ShareModel: ObservableObject {
     func run(_ chain: Chain) {
         ChainStore.lastShared = chain.id
         ran = chain
-        results = []
+        results = []; joined = nil
         Task {
             var out: [ShareResult] = []
             if isText {
@@ -115,7 +115,18 @@ final class ShareModel: ObservableObject {
         }
     }
 
-    var files: [URL] { results.compactMap(\.url) }
+    /// Several PDFs made at once can go out as one file (the same choice as in the app).
+    @Published var joinPDFs = true
+    private var joined: URL?   // made once, the first time it's needed (not published: it's read while drawing)
+    var canJoin: Bool { PDFMerge.canMerge(results.compactMap(\.url)) }
+    var files: [URL] {
+        let all = results.compactMap(\.url)
+        if joinPDFs, canJoin {
+            if joined == nil { joined = PDFMerge.merge(all, name: ran?.name ?? "Combined") }
+            if let j = joined { return [j] }
+        }
+        return all
+    }
     var texts: [String] { results.compactMap(\.text) }
     var okCount: Int { results.filter { $0.note == nil }.count }
 
@@ -287,6 +298,15 @@ struct ShareRunView: View {
                         }
                     }
                 }
+            }
+            if model.canJoin {
+                Section {
+                    Picker("", selection: $model.joinPDFs) {
+                        Text("One PDF").tag(true)
+                        Text("\(model.results.compactMap(\.url).count) separate PDFs").tag(false)
+                    }
+                    .pickerStyle(.segmented).accessibilityIdentifier("share-merge")
+                } header: { Text("How to save them") }
             }
             Section {
                 // The tool's own ending first: the email or message opens filled in, and the person taps Send.
