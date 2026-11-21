@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(SWCompression)
+import SWCompression   // 7-Zip, BZip2
+#endif
 import UIKit
 import ImageIO
 import Compression
@@ -53,7 +56,7 @@ enum FileReaders {
         "usdz", "reality", "vcf", "ics", "odt", "ods", "odp", "svg",
     ]
     static let bookExts: Set<String> = ["epub", "fb2", "mobi", "azw", "azw3", "prc", "pdb"]
-    static let archiveExts: Set<String> = ["zip", "zipx", "jar", "apk", "aab", "ipa", "xpi", "war", "tar", "tgz", "gz", "gzip", "taz", "xz", "txz", "lzma", "tlzma", "lz4", "xps", "oxps", "cbz"]
+    static let archiveExts: Set<String> = ["7z", "bz2", "tbz", "tbz2", "zip", "zipx", "jar", "apk", "aab", "ipa", "xpi", "war", "tar", "tgz", "gz", "gzip", "taz", "xz", "txz", "lzma", "tlzma", "lz4", "xps", "oxps", "cbz"]
 
     /// The reading for a file — by what's inside first, the ending second.
     static func read(_ url: URL) -> Reading {
@@ -63,6 +66,11 @@ enum FileReaders {
         if let base = officeAlias[ext], let copy = renamed(url, to: base) { return .quickLook(copy) }
         if ext == "cbz" || ext == "cbr" || ext == "cb7" {
             if head.starts(with: [0x50, 0x4B]), let pages = comicPages(url) { return .comic(pages) }
+            if head.starts(with: sevenZipMagic), let a = archive(url) {
+                let pages = a.entries.filter { ["jpg", "jpeg", "png", "webp", "gif", "heic"].contains(($0.name as NSString).pathExtension.lowercased()) }
+                    .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }.compactMap { $0.data() }
+                if !pages.isEmpty { return .comic(pages) }
+            }
             return info(url, kind: ext == "cbr" ? "Comic book (RAR)" : "Comic book",
                         "This comic is packed with RAR or 7-Zip, which Tenzy can't unpack yet. Most comic apps can — or ask the sender for a CBZ.")
         }
@@ -95,7 +103,7 @@ enum FileReaders {
         }
         if quickLookExts.contains(ext) { return .quickLook(url) }
         if let img = imageIO(url) { return .image(img) }                                       // PSD, TGA, EXR, JP2, AVIF, RAW, ICO, DDS…
-        if archiveExts.contains(ext) || head.starts(with: [0x50, 0x4B, 0x03, 0x04]) || head.starts(with: [0x1F, 0x8B]) || head.starts(with: [0xFD, 0x37, 0x7A, 0x58, 0x5A]) {
+        if archiveExts.contains(ext) || head.starts(with: sevenZipMagic) || head.starts(with: Array("BZh".utf8)) || head.starts(with: [0x50, 0x4B, 0x03, 0x04]) || head.starts(with: [0x1F, 0x8B]) || head.starts(with: [0xFD, 0x37, 0x7A, 0x58, 0x5A]) {
             if let a = archive(url) { return .archive(a.entries, kind: a.kind) }
         }
         if ext == "json" || ext == "geojson", let t = prettyJSON(url) { return .text(t, title: "JSON") }
@@ -400,8 +408,21 @@ enum FileReaders {
 
     // MARK: - archives
 
+    static let sevenZipMagic: [UInt8] = [0x37, 0x7A, 0xBC, 0xAF, 0x27, 0x1C]
+
     static func archive(_ url: URL) -> (entries: [ArchiveEntry], kind: String)? {
         let head = firstBytes(url, 6)
+        #if canImport(SWCompression)
+        if head.starts(with: sevenZipMagic), let raw = try? Data(contentsOf: url) {
+            guard let all = try? SevenZipContainer.open(container: raw) else { return nil }
+            let files = all.filter { $0.info.type == .regular }
+            return (files.map { e in ArchiveEntry(name: e.info.name, size: e.info.size ?? e.data?.count ?? 0, data: { e.data }) }, "7-Zip")
+        }
+        if head.starts(with: Array("BZh".utf8)), let raw = try? Data(contentsOf: url), let d = try? BZip2.decompress(data: raw) {
+            if let entries = tar(d), !entries.isEmpty { return (entries, "TAR (BZip2)") }
+            return ([ArchiveEntry(name: url.deletingPathExtension().lastPathComponent, size: d.count, data: { d })], "BZip2")
+        }
+        #endif
         if head.starts(with: [0x50, 0x4B]) {
             let names = Given.Zip.names(in: url).filter { !$0.hasPrefix("__MACOSX") }
             guard !names.isEmpty else { return nil }
