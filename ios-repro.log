@@ -1,96 +1,15 @@
 Test Case '-[HandyToolsUITests.GuideBisectTests testWhichPartCloses]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/GuideBisectTests.swift:15: error: -[HandyToolsUITests.GuideBisectTests testWhichPartCloses] : Failed to get matching snapshots: Timed out while evaluating UI query.
-Test Case '-[HandyToolsUITests.GuideBisectTests testWhichPartCloses]' failed (187.124 seconds).
-	 Executed 1 test, with 1 failure (0 unexpected) in 187.124 (187.192) seconds
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' started.
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/MultiPhotoTests.swift:33: error: -[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide] : Failed to get matching snapshots: Timed out while evaluating UI query.
-Test Case '-[HandyToolsUITests.MultiPhotoTests testPickingManyPhotosOpensTheGuide]' failed (128.786 seconds).
-	 Executed 1 test, with 1 failure (0 unexpected) in 128.786 (128.793) seconds
-	 Executed 2 tests, with 2 failures (0 unexpected) in 315.910 (315.999) seconds
-	 Executed 2 tests, with 2 failures (0 unexpected) in 315.910 (316.001) seconds
+BISECT skip=[] alive=true
+BISECT skip=[all] alive=true
+BISECT skip=[task] alive=true
+BISECT skip=[header] alive=true
+BISECT skip=[suggest] alive=true
+BISECT skip=[grid] alive=true
+BISECT skip=[steps] alive=true
+BISECT skip=[task,header,suggest,grid,steps] alive=true
+    t =   219.62s BISECT skip=[] alive=true | BISECT skip=[all] alive=true | BISECT skip=[task] alive=true | BISECT skip=[header] alive=true | BISECT skip=[suggest] alive=true | BISECT skip=[grid] alive=true | BISECT skip=[steps] alive=true | BISECT skip=[task,header,suggest,grid,steps] alive=true
+Test Case '-[HandyToolsUITests.GuideBisectTests testWhichPartCloses]' passed (220.050 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 220.050 (220.059) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 220.050 (220.066) seconds
+	 Executed 1 test, with 0 failures (0 unexpected) in 220.050 (220.067) seconds
 == crash reports
-== /Users/runner/Library/Logs/DiagnosticReports/HandyTools-2026-11-20-233809.ips
-exception: {'codes': '0x0000000000000002, 0x000000016cf7be54', 'message': 'Could not determine thread index for stack guard region', 'rawCodes': [2, 6123142740], 'type': 'EXC_BAD_ACCESS', 'signal': 'SIGSEGV', 'subtype': 'KERN_PROTECTION_FAILURE at 0x000000016cf7be54'}
-thread name: Tenzy: Home · Guide: 2 photos
-thread name: com.apple.SwiftUI.AsyncRenderer
-crashed thread frames: 170
-app frames: 2
-     1  static TenzyApp.$main()  [HandyTools.debug.dylib]
-     1  __debug_main_executable_dylib_entry_point  [HandyTools.debug.dylib]
-outermost 60 frames:
-    AttributeGraph AGGraphGetValue  
-    SwiftUICore DynamicPreferenceCombiner.info.getter  
-    SwiftUICore DynamicPreferenceCombiner.value.getter  
-    SwiftUICore implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
-    AttributeGraph AG::Graph::UpdateStack::update()  
-    AttributeGraph AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)  
-    AttributeGraph AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)  
-    AttributeGraph AGGraphGetValue  
-    SwiftUICore PairPreferenceCombiner.value.getter  
-    SwiftUICore implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
-    AttributeGraph AG::Graph::UpdateStack::update()  
-    AttributeGraph AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)  
-    AttributeGraph AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)  
-    AttributeGraph AGGraphGetValue  
-    SwiftUICore DynamicPreferenceCombiner.value.getter  
-    SwiftUICore implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
-    AttributeGraph AG::Graph::UpdateStack::update()  
-    AttributeGraph AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)  
-    AttributeGraph AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)  
-    AttributeGraph AGGraphGetValue  
-    SwiftUICore PairPreferenceCombiner.value.getter  
-    SwiftUICore implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
-    AttributeGraph AG::Graph::UpdateStack::update()  
-    AttributeGraph AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)  
-    AttributeGraph AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)  
-    AttributeGraph AGGraphGetValue  
-    SwiftUICore DynamicPreferenceCombiner.value.getter  
-    SwiftUICore implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)  
-    AttributeGraph AG::Graph::UpdateStack::update()  
-    AttributeGraph AG::Subgraph::update(unsigned int)  
-    SwiftUICore GraphHost.flushTransactions()  
-    SwiftUI <deduplicated_symbol>  
-    SwiftUICore <deduplicated_symbol>  
-    SwiftUICore ViewGraphRootValueUpdater._updateViewGraph<A>(body:)  
-    SwiftUICore ViewGraphRootValueUpdater.updateGraph<A>(body:)  
-    SwiftUI closure #1 in closure #1 in _UIHostingView.beginTransaction()  
-    UIKitCore ?  
-    UIKitCore ?  
-    UIKitCore ?  
-    SwiftUICore UpdateGroup.dispatchImmediately<A>(reason:_:)  
-    SwiftUICore static ViewGraphHostUpdate.dispatchImmediately<A>(_:)  
-    UIKitCore ?  
-    UIKitCore ?  
-    UIKitCore _UIUpdateSequenceRunNext  
-    UIKitCore schedulerStepScheduledMainSectionContinue  
-    UpdateCycle UC::DriverCore::continueProcessing()  
-    CoreFoundation __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__  
-    CoreFoundation __CFRunLoopDoSource0  
-    CoreFoundation __CFRunLoopDoSources0  
-    CoreFoundation __CFRunLoopRun  
-    CoreFoundation _CFRunLoopRunSpecificWithOptions  
-    GraphicsServices GSEventRunModal  
-    UIKitCore UIApplicationMain  
-    SwiftUI closure #1 in KitRendererCommon(_:)  
-    SwiftUI runApp<A>(_:)  
-    SwiftUI static App.main()  
-    HandyTools.debug.dylib static TenzyApp.$main() /<compiler-generated> 
-    HandyTools.debug.dylib __debug_main_executable_dylib_entry_point App.swift 
-    dyld_sim start_sim  
-    dyld start  
-most repeated:
-    12  <deduplicated_symbol>
-     6  closure #2 in static ModifiedContent<>._makeView(view:inputs:)
-     6  static ModifiedContent<>._makeView(view:inputs:)
-     6  closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
-     6  partial apply for closure #1 in closure #1 in ModifiedElements.makeElements(from:inputs:body:)
-     6  protocol witness for _ViewList_Elements.makeElements(from:inputs:body:) in conformance ModifiedElements
-     6  AG::Graph::UpdateStack::update()
-     5  ModifiedViewList.applyNodes(from:style:list:transform:to:)
-     5  AG::Graph::update_attribute(AG::data::ptr<AG::Node>, unsigned int)
-     5  AG::Graph::input_value_ref_slow(AG::data::ptr<AG::Node>, AG::AttributeID, unsigned int, unsigned int, AGSwiftMetadata const*, unsigned char&, long)
-     5  AGGraphGetValue
-     5  implicit closure #1 in closure #1 in closure #1 in Attribute.init<A>(_:)
-     5  ?
-     3  DynamicPreferenceCombiner.value.getter
-     2  specialized static AccessibilityViewModifier._makeView(modifier:inputs:body:)
