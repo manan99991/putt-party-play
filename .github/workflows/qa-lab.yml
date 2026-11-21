@@ -85,6 +85,9 @@ jobs:
             OSSL=$( [ -x /opt/homebrew/opt/openssl@3/bin/openssl ] && echo /opt/homebrew/opt/openssl@3/bin/openssl || echo openssl )
             (cd "$RUNNER_TEMP/qa-out" && zip -q -r "$RUNNER_TEMP/qa-out.zip" .)
             $OSSL enc -aes-256-cbc -pbkdf2 -iter 100000 -md sha256 -in "$RUNNER_TEMP/qa-out.zip" -out "$RUNNER_TEMP/qa-out-${{ matrix.part }}.zip.enc" -pass env:TEST_PHOTOS_KEY
+            # Artifact downloads are blocked where Claude works: also put the (encrypted) file on ci-logs.
+            mkdir -p "$RUNNER_TEMP/qa-pub" && cp "$RUNNER_TEMP/qa-out-${{ matrix.part }}.zip.enc" "$RUNNER_TEMP/qa-pub/"
+            GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}" bash "$GITHUB_WORKSPACE/.github/publish-log.sh" "qa-out-${{ matrix.part }}" "$RUNNER_TEMP/qa-pub" || true
           fi
       - uses: actions/upload-artifact@v4
         if: always()
