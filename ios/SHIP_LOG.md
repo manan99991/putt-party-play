@@ -9,3 +9,4 @@
 - 2026-11-20 — fourth attempt: 44779973948 failed one timing test (video recorder dropped 12 of 60 frames on a loaded test machine). Offline recording now waits for the encoder instead of dropping frames.
 - 2026-11-20 — fifth attempt: 44787986861 passed every test again, then the screenshot step hung 46 min past its 30-min cap. Screenshots no longer run on TestFlight builds at all.
 - 2026-11-20 — crash on 1.2.65 (picking several photos in Build your own): repro test added; photos now kept as small display copies; crash reports now name the screen and last step.
+- 2026-11-21 — daily TestFlight (standing yes): crash after picking several photos fixed and proven (MultiPhotoTests), menu dishes in English, Think it through decisions, each job listed once, crash reports name the screen.
