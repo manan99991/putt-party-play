@@ -42,6 +42,61 @@ enum MedCare {
         return s + " — from Tenzy Medicine Reminders"
     }
 
+    /// The text a caregiver gets: always something useful — how the week went (or that nothing was due yet), today's
+    /// doses and whether each is taken, and the medicines with their times. Pure.
+    static func update(to name: String, meds: [Med], taken: Int, due: Int, missed: [String],
+                       today: [(name: String, at: Date, taken: Bool)]) -> String {
+        var lines: [String] = []
+        let first = name.split(separator: " ").first.map(String.init) ?? ""
+        lines.append(first.isEmpty ? "My medicines — an update from Tenzy:" : "Hi \(first) — my medicines, from Tenzy:")
+        if due > 0 {
+            let pct = Int((Double(taken) / Double(due) * 100).rounded())
+            var w = "This week: \(taken) of \(due) doses taken (\(pct)%)."
+            if !missed.isEmpty { w += " Missed: " + missed.prefix(4).joined(separator: ", ") + (missed.count > 4 ? " and \(missed.count - 4) more." : ".") }
+            lines.append(w)
+        } else {
+            lines.append("Reminders are set up — nothing was due yet this week.")
+        }
+        if !today.isEmpty {
+            lines.append("Today: " + today.map { "\($0.name) \($0.at.formatted(date: .omitted, time: .shortened)) \($0.taken ? "✓ taken" : "not yet")" }.joined(separator: ", ") + ".")
+        }
+        let active = meds.filter { !$0.paused }
+        if !active.isEmpty {
+            lines.append("My medicines:\n" + active.map { "• \($0.name) — \(MedSchedule.summary($0))" }.joined(separator: "\n"))
+        }
+        return lines.joined(separator: "\n")
+    }
+
+    /// The text from the missed-dose alert's "Text <name>" button.
+    static func missedNote(_ med: String, due: Date?, to name: String) -> String {
+        let first = name.split(separator: " ").first.map(String.init) ?? ""
+        let when = due.map { " (due \($0.formatted(date: .omitted, time: .shortened)))" } ?? ""
+        return "\(first.isEmpty ? "Hi" : "Hi \(first)") — my \(med)\(when) isn't marked taken yet. Just letting you know."
+    }
+
+    /// What goes to someone else's phone: the list they can read, and the code Tenzy reads to set it up.
+    static func shareMessage(_ meds: [Med]) -> String {
+        let readable = meds.map { "• \($0.name) — \(MedSchedule.summary($0))" }.joined(separator: "\n")
+        return "Your medicine reminders:\n\(readable)\n\nTo set them up: open Tenzy → Medicine Reminders → Family & caregiver → Add medicines someone sent me, after copying this whole message.\n\n\(shareText(meds))"
+    }
+
+    // MARK: a weekly nudge to send the caregiver an update
+    static let weeklyID = "medcare-weekly"
+    static var weeklyOn: Bool { UserDefaults.standard.bool(forKey: "medcare.weekly") }
+    static func setWeekly(_ on: Bool, name: String) async {
+        UserDefaults.standard.set(on, forKey: "medcare.weekly")
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [weeklyID])
+        guard on else { return }
+        let c = UNMutableNotificationContent()
+        c.title = name.isEmpty ? "Send this week's medicine update" : "Send \(name) this week's medicine update"
+        c.body = "One tap in Tenzy writes it for you — how many doses were taken and any that were missed."
+        c.sound = .default
+        c.userInfo = ["open": "medreminder"]
+        var when = DateComponents(); when.weekday = 1; when.hour = 18; when.minute = 0
+        try? await center.add(UNNotificationRequest(identifier: weeklyID, content: c, trigger: UNCalendarNotificationTrigger(dateMatching: when, repeats: true)))
+    }
+
     static func smsURL(_ phone: String, body: String) -> URL? {
         let p = phone.filter { $0.isNumber || $0 == "+" }
         guard !p.isEmpty, let b = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return nil }

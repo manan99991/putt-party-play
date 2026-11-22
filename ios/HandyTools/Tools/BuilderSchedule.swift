@@ -99,8 +99,10 @@ final class ToolNotifications: NSObject, UNUserNotificationCenterDelegate {
                 MedSchedule.snooze(content)
             case MedCare.textAction:
                 Task { @MainActor in
-                    let name = medID.flatMap { id in MedStore.shared.meds.first { $0.id == id }?.name } ?? "my medicine"
-                    if let u = MedCare.smsURL(MedCare.caregiverPhone, body: "Just a note about \(name) — ") { _ = await UIApplication.shared.open(u) }
+                    let name = medID.flatMap { id in MedStore.shared.meds.first { $0.id == id }?.name } ?? "medicine"
+                    let due = content.userInfo["dose"] as? Double
+                    let body = MedCare.missedNote(name, due: due.map { Date(timeIntervalSince1970: $0) }, to: MedCare.caregiverName)
+                    if let u = MedCare.smsURL(MedCare.caregiverPhone, body: body) { _ = await UIApplication.shared.open(u) }
                 }
             default:
                 DispatchQueue.main.async { NotificationCenter.default.post(name: .openTool, object: "medreminder") }

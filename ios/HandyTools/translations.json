@@ -28410,14 +28410,14 @@
   "zh": "测试中…"
  },
  "Text": {
-  "de": "Text",
-  "es": "Texto",
-  "fr": "Texte",
-  "hi": "टेक्स्ट",
-  "it": "Testo",
-  "ja": "テキスト",
-  "pt": "Texto",
-  "zh": "文本"
+  "de": "Nachricht an",
+  "es": "Enviar a",
+  "fr": "Écrire à",
+  "hi": "मैसेज करें:",
+  "it": "Scrivi a",
+  "ja": "メッセージ：",
+  "pt": "Mandar para",
+  "zh": "发给"
  },
  "Text Studio": {
   "de": "Text-Studio",
@@ -40298,5 +40298,215 @@
   "ja": "この動画では作れませんでした — 別の動画で試してください。",
   "pt": "Não foi possível com este vídeo — tente outro.",
   "zh": "这段视频做不了——换一段试试。"
+ },
+ "1. Add their medicines here.": {
+  "de": "1. Füge hier ihre Medikamente hinzu.",
+  "es": "1. Añade aquí sus medicinas.",
+  "fr": "1. Ajoute ici leurs médicaments.",
+  "hi": "1. उनकी दवाइयाँ यहाँ जोड़ें।",
+  "it": "1. Aggiungi qui i loro farmaci.",
+  "ja": "1. ここにその人の薬を追加します。",
+  "pt": "1. Adicione os remédios dela aqui.",
+  "zh": "1. 在这里添加对方的药。"
+ },
+ "2. Tap Send the list — they get the list and a code.": {
+  "de": "2. Tippe auf „Liste senden“ – sie bekommen die Liste und einen Code.",
+  "es": "2. Toca Enviar la lista: reciben la lista y un código.",
+  "fr": "2. Touche Envoyer la liste — ils reçoivent la liste et un code.",
+  "hi": "2. सूची भेजें पर टैप करें — उन्हें सूची और एक कोड मिलता है।",
+  "it": "2. Tocca Invia l'elenco — ricevono l'elenco e un codice.",
+  "ja": "2. 「リストを送る」をタップ — リストとコードが届きます。",
+  "pt": "2. Toque em Enviar a lista — a pessoa recebe a lista e um código.",
+  "zh": "2. 点“发送清单”——对方会收到清单和一段代码。"
+ },
+ "3. On their phone: copy the whole message, open Tenzy → Medicine Reminders → Family & caregiver, tap Paste below. Their reminders start straight away.": {
+  "de": "3. Auf ihrem Telefon: die ganze Nachricht kopieren, Tenzy → Medikamenten-Erinnerungen → Familie & Betreuung öffnen, unten auf Einfügen tippen. Die Erinnerungen starten sofort.",
+  "es": "3. En su teléfono: copia todo el mensaje, abre Tenzy → Recordatorios de medicinas → Familia y cuidador, toca Pegar abajo. Sus recordatorios empiezan al momento.",
+  "fr": "3. Sur leur téléphone : copie tout le message, ouvre Tenzy → Rappels de médicaments → Famille et aidant, touche Coller en bas. Leurs rappels démarrent tout de suite.",
+  "hi": "3. उनके फ़ोन पर: पूरा मैसेज कॉपी करें, Tenzy → दवा रिमाइंडर → परिवार और देखभाल खोलें, नीचे पेस्ट पर टैप करें। रिमाइंडर तुरंत शुरू हो जाते हैं।",
+  "it": "3. Sul loro telefono: copia tutto il messaggio, apri Tenzy → Promemoria farmaci → Famiglia e assistenza, tocca Incolla qui sotto. I promemoria partono subito.",
+  "ja": "3. 相手の端末で：メッセージ全体をコピーし、Tenzy → 服薬リマインダー → 家族と介護 を開いて下の「ペースト」をタップ。すぐにリマインダーが始まります。",
+  "pt": "3. No telefone dela: copie a mensagem inteira, abra Tenzy → Lembretes de remédios → Família e cuidador e toque em Colar abaixo. Os lembretes começam na hora.",
+  "zh": "3. 在对方手机上：复制整条消息，打开 Tenzy → 用药提醒 → 家人与照护，点下方的粘贴。提醒立刻开始。"
+ },
+ "A son, a daughter, a nurse. When a dose is missed, the follow-up alert gets a \"Text\" button for them, and Tenzy writes them an update whenever you want to send one.": {
+  "de": "Ein Sohn, eine Tochter, eine Pflegekraft. Wird eine Dosis verpasst, bekommt die Folgeerinnerung eine „Nachricht“-Taste für sie, und Tenzy schreibt ihnen ein Update, wann immer du eins senden willst.",
+  "es": "Un hijo, una hija, una enfermera. Si se salta una dosis, el aviso de seguimiento tiene un botón \"Mensaje\" para esa persona, y Tenzy le escribe una actualización cuando quieras enviarla.",
+  "fr": "Un fils, une fille, une infirmière. Si une prise est oubliée, le rappel de suivi a un bouton « Message » pour eux, et Tenzy leur écrit un point quand tu veux en envoyer un.",
+  "hi": "बेटा, बेटी, नर्स। कोई खुराक छूटने पर फ़ॉलो-अप अलर्ट में उनके लिए \"मैसेज\" बटन आता है, और जब भी आप भेजना चाहें Tenzy उनके लिए अपडेट लिख देता है।",
+  "it": "Un figlio, una figlia, un'infermiera. Se una dose salta, il promemoria successivo ha un pulsante \"Messaggio\" per loro, e Tenzy scrive un aggiornamento quando vuoi inviarlo.",
+  "ja": "息子、娘、看護師など。飲み忘れがあると、再通知にその人への「メッセージ」ボタンが付き、送りたいときにTenzyが近況を書きます。",
+  "pt": "Um filho, uma filha, uma enfermeira. Se uma dose for esquecida, o alerta seguinte ganha um botão \"Mensagem\" para essa pessoa, e o Tenzy escreve uma atualização quando você quiser enviar.",
+  "zh": "儿子、女儿或护士。漏服时，后续提醒上会有给他们的“发消息”按钮；你想发时，Tenzy 会替你写好近况。"
+ },
+ "Got a list from someone? Copy their message, then:": {
+  "de": "Liste von jemandem bekommen? Nachricht kopieren, dann:",
+  "es": "¿Te enviaron una lista? Copia su mensaje y luego:",
+  "fr": "Reçu une liste ? Copie leur message, puis :",
+  "hi": "किसी ने सूची भेजी? उनका मैसेज कॉपी करें, फिर:",
+  "it": "Hai ricevuto un elenco? Copia il messaggio, poi:",
+  "ja": "リストが届いた？メッセージをコピーしてから：",
+  "pt": "Recebeu uma lista? Copie a mensagem e depois:",
+  "zh": "收到别人的清单？先复制消息，然后："
+ },
+ "Pick from my contacts": {
+  "de": "Aus meinen Kontakten wählen",
+  "es": "Elegir de mis contactos",
+  "fr": "Choisir dans mes contacts",
+  "hi": "मेरे कॉन्टैक्ट से चुनें",
+  "it": "Scegli dai miei contatti",
+  "ja": "連絡先から選ぶ",
+  "pt": "Escolher dos meus contatos",
+  "zh": "从通讯录选择"
+ },
+ "Remind me every Sunday to send": {
+  "de": "Erinnere mich jeden Sonntag, zu senden an",
+  "es": "Recuérdame cada domingo enviar a",
+  "fr": "Rappelle-moi chaque dimanche d'envoyer à",
+  "hi": "हर रविवार मुझे याद दिलाएँ, भेजना है:",
+  "it": "Ricordami ogni domenica di inviare a",
+  "ja": "毎週日曜に送るよう知らせる：",
+  "pt": "Me lembre todo domingo de enviar para",
+  "zh": "每周日提醒我发给"
+ },
+ "Send the list": {
+  "de": "Liste senden",
+  "es": "Enviar la lista",
+  "fr": "Envoyer la liste",
+  "hi": "सूची भेजें",
+  "it": "Invia l'elenco",
+  "ja": "リストを送る",
+  "pt": "Enviar a lista",
+  "zh": "发送清单"
+ },
+ "Sends you a dose alert now and its follow-up a few seconds later, exactly as they'll come.": {
+  "de": "Sendet dir jetzt eine Erinnerung und Sekunden später die Folgeerinnerung – genau wie sie kommen werden.",
+  "es": "Te envía ahora un aviso de dosis y unos segundos después el de seguimiento, tal como llegarán.",
+  "fr": "T'envoie un rappel maintenant et son suivi quelques secondes après, exactement comme ils arriveront.",
+  "hi": "अभी एक खुराक अलर्ट और कुछ सेकंड बाद उसका फ़ॉलो-अप भेजता है, बिल्कुल जैसे वे आएँगे।",
+  "it": "Ti invia ora un promemoria e dopo pochi secondi quello successivo, esattamente come arriveranno.",
+  "ja": "服薬通知を今すぐ、数秒後に再通知を、本番と同じ形で送ります。",
+  "pt": "Envia agora um alerta de dose e, segundos depois, o de acompanhamento, exatamente como vão chegar.",
+  "zh": "现在发一条用药提醒，几秒后再发后续提醒，和正式的一模一样。"
+ },
+ "Sunday at 6 pm. Open the alert and it's written for you.": {
+  "de": "Sonntag um 18 Uhr. Öffne die Erinnerung und es ist schon geschrieben.",
+  "es": "Domingo a las 6 pm. Abre el aviso y ya está escrito.",
+  "fr": "Dimanche à 18 h. Ouvre le rappel, c'est déjà écrit.",
+  "hi": "रविवार शाम 6 बजे। अलर्ट खोलें, मैसेज लिखा मिलेगा।",
+  "it": "Domenica alle 18. Apri il promemoria ed è già scritto.",
+  "ja": "日曜18時。通知を開けば文面はできています。",
+  "pt": "Domingo às 18h. Abra o alerta e já está escrito.",
+  "zh": "周日下午 6 点。打开提醒，文字已写好。"
+ },
+ "Tenzy reminds you on this phone. It never texts anyone by itself — iPhone doesn't allow that — so every message is shown to you first and you tap Send.": {
+  "de": "Tenzy erinnert dich auf diesem Telefon. Es schreibt niemandem von selbst – das erlaubt das iPhone nicht –, also siehst du jede Nachricht zuerst und tippst auf Senden.",
+  "es": "Tenzy te recuerda en este teléfono. Nunca envía mensajes por su cuenta (el iPhone no lo permite), así que ves cada mensaje primero y tocas Enviar.",
+  "fr": "Tenzy te rappelle sur ce téléphone. Il n'écrit jamais à personne tout seul — l'iPhone ne le permet pas — tu vois chaque message d'abord et touches Envoyer.",
+  "hi": "Tenzy इसी फ़ोन पर आपको याद दिलाता है। यह खुद किसी को मैसेज नहीं भेजता — iPhone इसकी अनुमति नहीं देता — इसलिए हर मैसेज पहले आपको दिखता है और आप भेजें टैप करते हैं।",
+  "it": "Tenzy ti avvisa su questo telefono. Non scrive mai a nessuno da solo — l'iPhone non lo consente — quindi vedi ogni messaggio prima e tocchi Invia.",
+  "ja": "Tenzyはこの端末であなたに知らせます。自分から誰かにメッセージを送ることはありません（iPhoneが許可していないため）。必ず先に表示され、送信はあなたがタップします。",
+  "pt": "O Tenzy lembra você neste telefone. Ele nunca envia mensagens sozinho — o iPhone não permite — então você vê cada mensagem antes e toca em Enviar.",
+  "zh": "Tenzy 只在这台手机上提醒你，绝不自动给任何人发消息（iPhone 不允许），每条消息都会先给你看，由你点发送。"
+ },
+ "The text": {
+  "de": "Die Nachricht, die",
+  "es": "El mensaje que",
+  "fr": "Le message que",
+  "hi": "यह मैसेज",
+  "it": "Il messaggio che",
+  "ja": "届く文面：",
+  "pt": "A mensagem que",
+  "zh": "这条消息会发给"
+ },
+ "gets": {
+  "de": "bekommt",
+  "es": "recibe",
+  "fr": "reçoit",
+  "hi": "को मिलता है",
+  "it": "riceve",
+  "ja": "さん",
+  "pt": "recebe",
+  "zh": "收到"
+ },
+ "an update": {
+  "de": "ein Update",
+  "es": "una actualización",
+  "fr": "un point",
+  "hi": "एक अपडेट",
+  "it": "un aggiornamento",
+  "ja": "近況を",
+  "pt": "uma atualização",
+  "zh": "近况"
+ },
+ "this update": {
+  "de": "dieses Update",
+  "es": "esta actualización",
+  "fr": "ce point",
+  "hi": "यह अपडेट",
+  "it": "questo aggiornamento",
+  "ja": "この近況を",
+  "pt": "esta atualização",
+  "zh": "这条近况"
+ },
+ "Keep someone who helps in the loop": {
+  "de": "Eine helfende Person auf dem Laufenden halten",
+  "es": "Mantén informada a quien te ayuda",
+  "fr": "Tenir informée la personne qui aide",
+  "hi": "जो मदद करते हैं उन्हें जानकारी में रखें",
+  "it": "Tieni aggiornato chi ti aiuta",
+  "ja": "支えてくれる人に知らせる",
+  "pt": "Mantenha quem ajuda informado",
+  "zh": "让帮忙照看的人随时知道"
+ },
+ "Set up medicines on someone else's phone": {
+  "de": "Medikamente auf dem Telefon einer anderen Person einrichten",
+  "es": "Configura medicinas en el teléfono de otra persona",
+  "fr": "Configurer les médicaments sur le téléphone de quelqu'un d'autre",
+  "hi": "किसी और के फ़ोन पर दवाइयाँ सेट करें",
+  "it": "Imposta i farmaci sul telefono di un'altra persona",
+  "ja": "別の人の端末に薬を設定",
+  "pt": "Configurar remédios no telefone de outra pessoa",
+  "zh": "在别人的手机上设置用药"
+ },
+ "Off — one alert per dose.": {
+  "de": "Aus – eine Erinnerung pro Dosis.",
+  "es": "Desactivado: un aviso por dosis.",
+  "fr": "Désactivé — un rappel par prise.",
+  "hi": "बंद — हर खुराक पर एक अलर्ट।",
+  "it": "Off — un promemoria per dose.",
+  "ja": "オフ — 1回の服薬に通知は1つ。",
+  "pt": "Desligado — um alerta por dose.",
+  "zh": "关闭——每次用药只提醒一次。"
+ },
+ "A second alert comes if Taken wasn't tapped. Tapping Taken on either one stops the other.": {
+  "de": "Eine zweite Erinnerung kommt, wenn nicht auf „Genommen“ getippt wurde. „Genommen“ auf einer stoppt die andere.",
+  "es": "Llega un segundo aviso si no se tocó Tomado. Tocar Tomado en cualquiera detiene el otro.",
+  "fr": "Un second rappel arrive si Pris n'a pas été touché. Toucher Pris sur l'un arrête l'autre.",
+  "hi": "अगर लिया गया टैप नहीं हुआ तो दूसरा अलर्ट आता है। किसी एक पर लिया गया टैप करने से दूसरा रुक जाता है।",
+  "it": "Arriva un secondo promemoria se non hai toccato Preso. Toccare Preso su uno ferma l'altro.",
+  "ja": "「飲んだ」がタップされないと2回目の通知が来ます。どちらかで「飲んだ」を押すともう一方は止まります。",
+  "pt": "Um segundo alerta chega se Tomado não foi tocado. Tocar em Tomado em qualquer um para o outro.",
+  "zh": "没点“已服用”就会再提醒一次。任意一条点“已服用”，另一条就不会来。"
+ },
+ "That isn't a Tenzy medicine list. Copy the whole message they sent, then tap Paste.": {
+  "de": "Das ist keine Tenzy-Medikamentenliste. Kopiere die ganze Nachricht und tippe dann auf Einfügen.",
+  "es": "Eso no es una lista de medicinas de Tenzy. Copia todo el mensaje que te enviaron y toca Pegar.",
+  "fr": "Ce n'est pas une liste de médicaments Tenzy. Copie tout le message reçu, puis touche Coller.",
+  "hi": "यह Tenzy दवा सूची नहीं है। उनका पूरा मैसेज कॉपी करें, फिर पेस्ट टैप करें।",
+  "it": "Non è un elenco farmaci di Tenzy. Copia tutto il messaggio ricevuto, poi tocca Incolla.",
+  "ja": "Tenzyの薬リストではありません。送られたメッセージ全体をコピーしてからペーストしてください。",
+  "pt": "Isso não é uma lista de remédios do Tenzy. Copie a mensagem inteira e toque em Colar.",
+  "zh": "这不是 Tenzy 的用药清单。请复制对方发来的整条消息，再点粘贴。"
+ },
+ "On — every Sunday at 6 pm.": {
+  "de": "An – jeden Sonntag um 18 Uhr.",
+  "es": "Activado: cada domingo a las 6 pm.",
+  "fr": "Activé — chaque dimanche à 18 h.",
+  "hi": "चालू — हर रविवार शाम 6 बजे।",
+  "it": "Attivo — ogni domenica alle 18.",
+  "ja": "オン — 毎週日曜18時。",
+  "pt": "Ligado — todo domingo às 18h.",
+  "zh": "已开启——每周日下午 6 点。"
  }
 }

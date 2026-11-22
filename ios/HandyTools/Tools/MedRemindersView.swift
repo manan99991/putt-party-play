@@ -1,4 +1,7 @@
 import SwiftUI
+import Contacts
+import ContactsUI
+import MessageUI
 import UserNotifications
 
 /// Medicine Reminders — add a medicine once (name, dose, when), get a reminder with "Taken ✓" and
@@ -295,61 +298,86 @@ struct MedEditor: View {
     }
 }
 
-/// Family & caregiver: a second nudge if a dose isn't marked Taken, a caregiver one tap away from the alert,
-/// a weekly summary to send them, and setting up medicines on one phone for someone else's.
+/// Family & caregiver, in three plain steps: (1) a second nudge if a dose isn't marked Taken; (2) someone who helps —
+/// they're one tap from the missed-dose alert, and Tenzy writes them a real update (how the week went, today's doses,
+/// the medicines) that you send, with an optional Sunday reminder to do it; (3) setting up someone else's medicines on
+/// their phone. Tenzy never texts anyone on its own — iPhone doesn't allow it — so every message is shown first.
 private struct CareCard: View {
     @ObservedObject var store: MedStore
     @AppStorage("medcare.followup") private var followUp = 0
     @AppStorage("medcare.name") private var name = ""
     @AppStorage("medcare.phone") private var phone = ""
+    @AppStorage("medcare.weekly") private var weekly = false
     @State private var pasteFound: [Med]?
     @State private var note: String?
+    @State private var picking = false
+    @State private var composing: TextDraft?
+    @State private var notifOff = false
 
-    private var summary: String {
+    private var hasPhone: Bool { !phone.filter(\.isNumber).isEmpty }
+    private var who: String { name.trimmingCharacters(in: .whitespaces).isEmpty ? L("them") : name }
+    private var update: String {
         let w = store.week()
-        return MedCare.weekSummary(taken: w.taken, due: w.due, missed: store.missedThisWeek())
+        let today = MedSchedule.today(store.meds).map { (name: $0.med.name, at: $0.at, taken: store.isTaken($0.med, at: $0.at)) }
+        return MedCare.update(to: name, meds: store.meds, taken: w.taken, due: w.due, missed: store.missedThisWeek(), today: today)
     }
 
     var body: some View {
         DisclosureGroup {
-            VStack(alignment: .leading, spacing: HandySpacing.s12) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(L("If a dose isn't marked Taken, nudge again")).font(HandyFont.bodyStrong)
+            VStack(alignment: .leading, spacing: HandySpacing.s16) {
+                Text(L("Tenzy reminds you on this phone. It never texts anyone by itself — iPhone doesn't allow that — so every message is shown to you first and you tap Send."))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+
+                step(1, "If a dose isn't marked Taken, nudge again") {
                     Picker(L("Nudge again"), selection: $followUp) {
                         Text(L("Off")).tag(0); Text("15 min").tag(15); Text("30 min").tag(30); Text("1 hour").tag(60)
-                    }.pickerStyle(.segmented)
-                    Text(L("The second alert has Taken ✓ on it. Tapping Taken on either one stops the other.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    }.pickerStyle(.segmented).accessibilityIdentifier("care-followup")
+                    Text(L(followUp == 0 ? "Off — one alert per dose." : "A second alert comes if Taken wasn't tapped. Tapping Taken on either one stops the other."))
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                 }
-                Divider()
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(L("Caregiver (optional)")).font(HandyFont.bodyStrong)
-                    Text(L("Someone who helps — a son, a daughter, a nurse. Their name goes on the alert with a Text button, so reaching them is one tap.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+
+                step(2, "Keep someone who helps in the loop") {
+                    Text(L("A son, a daughter, a nurse. When a dose is missed, the follow-up alert gets a \"Text\" button for them, and Tenzy writes them an update whenever you want to send one."))
+                        .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    Button { picking = true } label: { Label(L("Pick from my contacts"), systemImage: "person.crop.circle.badge.plus").frame(maxWidth: .infinity) }
+                        .secondaryButton().accessibilityIdentifier("care-pick")
                     TextField(L("Their name"), text: $name).textFieldStyle(.handy)
                     TextField(L("Their mobile number"), text: $phone).textFieldStyle(.handy).keyboardType(.phonePad)
-                    if !phone.filter(\.isNumber).isEmpty {
-                        Text(summary).font(HandyFont.caption).padding(8).frame(maxWidth: .infinity, alignment: .leading)
-                            .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 10))
-                        if let u = MedCare.smsURL(phone, body: summary) {
-                            Link(destination: u) { Label("\(L("Send")) \(name.isEmpty ? L("them") : name) \(L("this week's summary"))", systemImage: "message.fill").frame(maxWidth: .infinity) }
-                                .secondaryButton()
+                    if hasPhone {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("\(L("The text")) \(who) \(L("gets"))").font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textSecondary)
+                            Text(update).font(HandyFont.caption).foregroundStyle(HandyColor.textPrimary)
+                                .padding(10).frame(maxWidth: .infinity, alignment: .leading)
+                                .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .accessibilityIdentifier("care-update")
                         }
-                        Text(L("iPhone doesn't let apps send texts on their own, so you see the message and tap Send.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                        Button { composing = TextDraft(to: [phone], body: update) } label: {
+                            Label("\(L("Text")) \(who) \(L("this update"))", systemImage: "message.fill").frame(maxWidth: .infinity)
+                        }.primaryButton().accessibilityIdentifier("care-send")
+                        Toggle(isOn: $weekly) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("\(L("Remind me every Sunday to send")) \(who) \(L("an update"))").font(HandyFont.caption.weight(.semibold))
+                                Text(L("Sunday at 6 pm. Open the alert and it's written for you.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                            }
+                        }.tint(HandyColor.accent).accessibilityIdentifier("care-weekly")
+                        NotificationsOffCard(isOff: $notifOff)
                     }
                 }
-                Divider()
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(L("Set up medicines for someone else")).font(HandyFont.bodyStrong)
-                    Text(L("On your phone: add their medicines here, then Copy the list and text it to them. On their phone: open Tenzy → Medicine Reminders → Add medicines someone sent me. Their reminders start straight away.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-                    HStack(spacing: HandySpacing.s8) {
-                        Button { Copier.copy(MedCare.shareText(store.meds), note: "Medicine list copied — paste it in a text") } label: { Label(L("Copy the list"), systemImage: "doc.on.doc").frame(maxWidth: .infinity) }
-                            .secondaryButton().disabled(store.meds.isEmpty)
-                        VStack(spacing: 4) {
-                            Text(L("Add medicines someone sent me")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-                            PasteTextButton(wide: true) { t in
-                                if let found = MedCare.imported(t) { pasteFound = found } else { note = "That isn't a Tenzy medicine list. Copy the whole message they sent, then tap here." }
-                            }.accessibilityIdentifier("meds-import")
-                        }.frame(maxWidth: .infinity)
-                    }
+
+                step(3, "Set up medicines on someone else's phone") {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(L("1. Add their medicines here.")).font(HandyFont.caption)
+                        Text(L("2. Tap Send the list — they get the list and a code.")).font(HandyFont.caption)
+                        Text(L("3. On their phone: copy the whole message, open Tenzy → Medicine Reminders → Family & caregiver, tap Paste below. Their reminders start straight away.")).font(HandyFont.caption)
+                    }.foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+                    Button { composing = TextDraft(to: [], body: MedCare.shareMessage(store.meds)) } label: {
+                        Label(L("Send the list"), systemImage: "paperplane.fill").frame(maxWidth: .infinity)
+                    }.secondaryButton().disabled(store.meds.isEmpty).accessibilityIdentifier("care-share")
+                    Text(L("Got a list from someone? Copy their message, then:")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    PasteTextButton(wide: true) { t in
+                        if let found = MedCare.imported(t) { pasteFound = found } else { note = "That isn't a Tenzy medicine list. Copy the whole message they sent, then tap Paste." }
+                    }.accessibilityIdentifier("meds-import")
                     if let found = pasteFound {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("\(L("Add these")) \(found.count)?").font(HandyFont.caption.weight(.semibold))
@@ -361,21 +389,64 @@ private struct CareCard: View {
                         }.cardStyle(padding: HandySpacing.s8)
                     }
                 }
-                Button { testRun() } label: { Label(L("Test run — send me a dose alert and its follow-up now"), systemImage: "checkmark.seal") }
-                    .compactButton().disabled(store.meds.isEmpty).accessibilityIdentifier("care-test")
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Button { testRun() } label: { Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity) }
+                        .secondaryButton().disabled(store.meds.isEmpty).accessibilityIdentifier("care-test")
+                    Text(L("Sends you a dose alert now and its follow-up a few seconds later, exactly as they'll come.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                }
                 if let note { Label(L(note), systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.accent).fixedSize(horizontal: false, vertical: true) }
-            }.padding(.top, HandySpacing.s8)
+            }
+            .padding(.top, HandySpacing.s8)
+            .frame(maxWidth: .infinity, alignment: .leading)
         } label: { Label(L("Family & caregiver"), systemImage: "figure.2.and.child.holdinghands").font(HandyFont.bodyStrong) }
         .tint(HandyColor.accent)
         .cardStyle(padding: HandySpacing.s12)
         .onChange(of: followUp) { _, _ in store.reschedule() }
-        .onChange(of: name) { _, _ in ToolNotifications.shared.install() }   // the alert's "Text <name>" button
+        .onChange(of: name) { _, _ in ToolNotifications.shared.install(); if weekly { Task { await MedCare.setWeekly(true, name: name) } } }
+        .onChange(of: weekly) { _, on in
+            Task {
+                if on, !(await NotifyPermission.ensure()) { notifOff = true }
+                await MedCare.setWeekly(on, name: name)
+                note = on ? "On — every Sunday at 6 pm." : nil
+            }
+        }
+        .sheet(isPresented: $picking) {
+            PersonPicker { n, p in picking = false; if let n { name = n }; if let p { phone = p } }.ignoresSafeArea()
+        }
+        .sheet(item: $composing) { d in
+            if TextComposer.canSend {
+                TextComposer(draft: d) { composing = nil }.ignoresSafeArea()
+            } else {
+                // No Messages on this device (an iPad without a phone): share the same words instead.
+                NavigationStack {
+                    VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                        Text(d.body).font(HandyFont.caption).padding(10).background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12))
+                        ShareLink(item: d.body) { Label(L("Share"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.primaryButton()
+                        Spacer()
+                    }.padding(HandySpacing.gutter)
+                    .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Done")) { composing = nil } } }
+                }
+            }
+        }
+    }
+
+    private func step<Content: View>(_ n: Int, _ title: String, @ViewBuilder _ content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text("\(n)").font(.system(size: 12, weight: .bold)).foregroundStyle(HandyColor.onAccent)
+                    .frame(width: 22, height: 22).background(HandyColor.accent, in: Circle())
+                Text(L(title)).font(HandyFont.bodyStrong).fixedSize(horizontal: false, vertical: true)
+            }
+            content()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func testRun() {
         guard let m = store.meds.first else { return }
         Task {
-            guard await NotifyPermission.ensure() else { note = "Notifications are off for Tenzy — turn them on to get reminders."; return }
+            guard await NotifyPermission.ensure() else { note = "Notifications are off for Tenzy — turn them on to get reminders."; notifOff = true; return }
             let now = Date()
             let fu = MedCare.followUpMessage(m, dose: now, caregiver: name)
             let msgs: [(String, String)] = [("Test · Time for \(m.name)", [m.dose, m.note].filter { !$0.isEmpty }.joined(separator: " · ")), (fu.title, fu.body)]
@@ -383,11 +454,71 @@ private struct CareCard: View {
                 let c = UNMutableNotificationContent()
                 c.title = i == 0 ? msg.0 : "Test · " + msg.0; c.body = msg.1; c.sound = .default
                 c.categoryIdentifier = MedSchedule.category
-                c.userInfo = ["med": m.id.uuidString]
+                c.userInfo = ["med": m.id.uuidString, "dose": now.timeIntervalSince1970]
                 let trigger = i == 0 ? nil : UNTimeIntervalNotificationTrigger(timeInterval: 6, repeats: false)
                 try? await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "medtest-\(i)-\(UUID().uuidString)", content: c, trigger: trigger))
             }
-            note = "Sent — the dose alert now and its follow-up in a few seconds. Long-press one to see the buttons."
+            note = "Sent — the dose alert now and its follow-up in a few seconds. Long-press one to see its buttons."
         }
+    }
+}
+
+/// A text ready to send: who to, and the words.
+struct TextDraft: Identifiable { let id = UUID(); let to: [String]; let body: String }
+
+/// Messages' own compose screen, filled in — so the words are always there and the person taps Send.
+struct TextComposer: UIViewControllerRepresentable {
+    static var canSend: Bool { MFMessageComposeViewController.canSendText() }
+    let draft: TextDraft
+    let done: () -> Void
+    func makeCoordinator() -> Coordinator { Coordinator(done: done) }
+    func makeUIViewController(context: Context) -> MFMessageComposeViewController {
+        let vc = MFMessageComposeViewController()
+        vc.messageComposeDelegate = context.coordinator
+        vc.recipients = draft.to.map { $0.filter { $0.isNumber || $0 == "+" } }.filter { !$0.isEmpty }
+        vc.body = draft.body
+        return vc
+    }
+    func updateUIViewController(_ vc: MFMessageComposeViewController, context: Context) {}
+    final class Coordinator: NSObject, MFMessageComposeViewControllerDelegate {
+        let done: () -> Void
+        init(done: @escaping () -> Void) { self.done = done }
+        func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) { done() }
+    }
+}
+
+/// Apple's contact picker for one person's name and mobile number. Needs no permission.
+struct PersonPicker: UIViewControllerRepresentable {
+    let done: (String?, String?) -> Void
+    func makeCoordinator() -> Coordinator { Coordinator(done: done) }
+    func makeUIViewController(context: Context) -> Host {
+        let h = Host()
+        h.picker.delegate = context.coordinator
+        h.picker.displayedPropertyKeys = [CNContactPhoneNumbersKey]
+        h.picker.predicateForEnablingContact = NSPredicate(format: "phoneNumbers.@count > 0")
+        return h
+    }
+    func updateUIViewController(_ vc: Host, context: Context) {}
+    final class Host: UIViewController {
+        let picker = CNContactPickerViewController()
+        private var shown = false
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            if !shown { shown = true; present(picker, animated: false) }
+        }
+    }
+    final class Coordinator: NSObject, CNContactPickerDelegate {
+        let done: (String?, String?) -> Void
+        init(done: @escaping (String?, String?) -> Void) { self.done = done }
+        func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
+            let name = CNContactFormatter.string(from: contact, style: .fullName)
+            let mobile = contact.phoneNumbers.first { ContactBook.kind(CNLabeledValue<NSString>.localizedString(forLabel: $0.label ?? "")) == "mobile" } ?? contact.phoneNumbers.first
+            done(name, mobile?.value.stringValue)
+        }
+        /// Tapping one number picks that number.
+        func contactPicker(_ picker: CNContactPickerViewController, didSelect prop: CNContactProperty) {
+            done(CNContactFormatter.string(from: prop.contact, style: .fullName), (prop.value as? CNPhoneNumber)?.stringValue)
+        }
+        func contactPickerDidCancel(_ picker: CNContactPickerViewController) { done(nil, nil) }
     }
 }
