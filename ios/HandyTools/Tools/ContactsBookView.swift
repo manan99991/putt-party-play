@@ -652,7 +652,9 @@ struct ContactDetailView: View {
             }
         }
         .sheet(isPresented: $planning) { NavigationStack { PlanContactView(person: person) { msg in note = msg } } }
-        .sheet(isPresented: $editing, onDismiss: { refresh() }) { SystemContactEditor(id: person.id) { editing = false }.ignoresSafeArea() }
+        .sheet(isPresented: $editing, onDismiss: { refresh() }) {
+            AppleContactCard(close: { editing = false }) { SystemContactEditor(id: person.id) { editing = false } }
+        }
     }
 
     private func section<A: View>(_ title: String, _ items: [ContactBook.Labeled], @ViewBuilder actions: @escaping (String) -> A) -> some View {
@@ -818,8 +820,6 @@ private struct SystemContactEditor: UIViewControllerRepresentable {
         vc.contactStore = store
         vc.allowsEditing = true
         vc.delegate = context.coordinator
-        // Apple's card has no way back on its own when shown from another app: a Done that always closes it.
-        vc.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in context.coordinator.onDone() })
         return UINavigationController(rootViewController: vc)
     }
     func updateUIViewController(_ vc: UINavigationController, context: Context) {}
@@ -827,5 +827,32 @@ private struct SystemContactEditor: UIViewControllerRepresentable {
         let onDone: () -> Void
         init(onDone: @escaping () -> Void) { self.onDone = onDone }
         func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) { onDone() }
+    }
+}
+
+/// Apple's own contact card, shown from Tenzy, with a way out that never depends on Apple's bar. On iOS 26 the card
+/// draws its own header (just "Edit"), hides any button an app adds to it, and swallows the swipe-down — so a person
+/// opened it and couldn't get back (Manan, 22 Nov). Tenzy's Close sits in its own strip above the card, always there,
+/// in view and in edit mode alike; Apple's ✓ still saves an edit, Close leaves without changing anything.
+struct AppleContactCard<Card: View>: View {
+    let close: () -> Void
+    @ViewBuilder let card: () -> Card
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Button(action: close) {
+                    Label(L("Close"), systemImage: "xmark").font(HandyFont.bodyStrong)
+                        .padding(.horizontal, 14).frame(minHeight: 44)
+                        .background(HandyColor.surface, in: Capsule())
+                }
+                .buttonStyle(.plain).foregroundStyle(HandyColor.textPrimary)
+                .accessibilityIdentifier("contact-card-close")
+                Spacer()
+            }
+            .padding(.horizontal, HandySpacing.gutter).padding(.vertical, 8)
+            .background(HandyColor.bg)
+            card().ignoresSafeArea(edges: .bottom)
+        }
+        .presentationDragIndicator(.visible)
     }
 }

@@ -252,7 +252,7 @@ jobs:
           echo "simulator=$UDID part=${{ matrix.part }}"
           # Boot and pre-authorize so the live tests drive the real camera / mic / location paths with no prompt.
           xcrun simctl bootstatus "$UDID" -b || xcrun simctl boot "$UDID" || true
-          for p in camera microphone photos location; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
+          for p in camera microphone photos location contacts; do xcrun simctl privacy "$UDID" grant $p com.tenzy.toolkit 2>/dev/null || true; done
           xcodebuild test -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" $ONLY \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO -skipPackagePluginValidation -skipMacroValidation \
             2>&1 | tee test.log | grep -E "error:|Test Case .*(passed|failed)|Executed .* test|TEST (SUCCEEDED|FAILED)|BUILD" || true

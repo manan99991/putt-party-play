@@ -254,4 +254,32 @@ final class PromiseTests: XCTestCase {
         XCTAssertEqual(words.value as? String, "Merry Christmas", "typing Feliz Navidad should pick Christmas and its greeting")
         XCTAssertTrue(app.buttons["celebrate-make"].exists)
     }
+
+    /// "I cannot go back to the app. I cannot close that screen" (Manan, 22 Nov, video): Contacts → a person →
+    /// "Edit everything in Contacts" opens Apple's own card, which on iOS 26 shows only "Edit" and no way out.
+    /// Tenzy's Close strip must be there, and must bring you back — before and after going into Edit.
+    func testAppleContactCardAlwaysCloses() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "contacts", "-uitest"]
+        app.launch()
+        let box = app.buttons["find-hasPhone"]
+        XCTAssertTrue(box.waitForExistence(timeout: 20), "Contacts finder didn't show (is contacts access granted?)")
+        box.tap()
+        let info = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Open '")).firstMatch
+        XCTAssertTrue(info.waitForExistence(timeout: 10), "no contact opened from the finder")
+        info.tap()
+        let editAll = app.buttons["Edit everything in Contacts"]
+        XCTAssertTrue(editAll.waitForExistence(timeout: 10), "the contact page has no way into Apple's card")
+        for round in 1...2 {
+            editAll.tap()
+            let close = app.buttons["contact-card-close"]
+            XCTAssertTrue(close.waitForExistence(timeout: 10), "round \(round): Apple's contact card opened with no Close")
+            if round == 2, app.buttons["Edit"].firstMatch.waitForExistence(timeout: 3) {
+                app.buttons["Edit"].firstMatch.tap()   // into Apple's edit mode — Close must still be there
+                XCTAssertTrue(close.waitForExistence(timeout: 5), "Close vanished in Apple's edit mode")
+            }
+            close.tap()
+            XCTAssertTrue(editAll.waitForExistence(timeout: 10), "round \(round): Close didn't bring you back to Tenzy")
+        }
+    }
 }

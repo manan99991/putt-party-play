@@ -320,7 +320,7 @@ private struct ContactsTidySheet: View {
             }.padding(HandySpacing.s12).background(.ultraThinMaterial)
         }
         .sheet(item: $editing) { t in
-            ContactEditor(id: t.id) { editing = nil; onChanged() }.ignoresSafeArea()
+            AppleContactCard(close: { editing = nil; onChanged() }) { ContactEditor(id: t.id) { editing = nil; onChanged() } }
         }
         .confirmationDialog("Delete \(group.recs.count) empty contacts?", isPresented: $confirmDelete, titleVisibility: .visible) {
             Button("Delete \(group.recs.count)", role: .destructive) { deleteAll() }
@@ -360,8 +360,6 @@ private struct ContactEditor: UIViewControllerRepresentable {
         vc.allowsEditing = true
         vc.allowsActions = true
         vc.delegate = context.coordinator
-        // Apple's card has no way back on its own when shown from another app: a Done that always closes it.
-        vc.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in context.coordinator.onDone() })
         return UINavigationController(rootViewController: vc)
     }
     func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {}
