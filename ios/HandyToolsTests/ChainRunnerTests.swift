@@ -1747,3 +1747,19 @@ final class ShrinkNeverBiggerTests: XCTestCase {
         XCTAssertLessThanOrEqual(out.count, Int(mb * 1_000_000))
     }
 }
+
+/// Manan's 22 Nov comparison: Think it through, given a message from an employee, answered "You need to shower and get
+/// ready" — copied from an example in its own instructions. Such lines are dropped unless the person raised them.
+final class ThinkLeakTests: XCTestCase {
+    let asked = "This is the message I received from an employee - Hey.. have u scheduled the meeting? And I am project manager, while I do want to help her, I don't want to setup this repeated expectations that I have to do this for her"
+
+    func testCopiedExampleChoresAreDropped() {
+        XCTAssertTrue(ThinkBrain.leaked("You need to shower and get ready.", asked: asked))
+        XCTAssertTrue(ThinkBrain.leaked("Say goodbye before they leave", asked: asked))
+        XCTAssertFalse(ThinkBrain.leaked("Set clear expectations that she books her own meetings.", asked: asked))
+    }
+
+    func testAChoreThePersonMentionedIsKept() {
+        XCTAssertFalse(ThinkBrain.leaked("Shower first — 10 minutes", asked: "I have to shower and get ready before the party, should I go?"))
+    }
+}

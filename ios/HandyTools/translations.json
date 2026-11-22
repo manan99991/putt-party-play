@@ -41208,5 +41208,15 @@
   "ja": "今日はどうでしたか？タップで保存、理由はお好みで。非公開・ロック付き・この端末だけ。",
   "pt": "Como correu hoje? Um toque guarda — depois diz porquê, se quiseres. Privado, bloqueado, só no teu telemóvel.",
   "zh": "今天过得怎么样？轻点一下即可保存——想说原因再说。私密、加锁，只存在你的手机上。"
+ },
+ "A reply you could send": {
+  "de": "Eine Antwort, die du senden könntest",
+  "es": "Una respuesta que podrías enviar",
+  "fr": "Une réponse que vous pourriez envoyer",
+  "hi": "एक जवाब जो आप भेज सकते हैं",
+  "it": "Una risposta che potresti inviare",
+  "ja": "送れる返信の例",
+  "pt": "Uma resposta que podias enviar",
+  "zh": "你可以发送的回复"
  }
 }

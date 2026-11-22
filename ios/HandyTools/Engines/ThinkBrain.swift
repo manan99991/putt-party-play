@@ -399,25 +399,40 @@ enum ThinkBrain {
     Recipe (they list ingredients or ask what to cook): one dish they can make mostly from what they have — you need \
     not use every ingredient — respecting any diet they mention; the ingredients with amounts, numbered method steps \
     with minutes, and what to swap if something is missing.
-    Decision: first find the real choice. Chores that stand in the way (a shower, getting ready, travel, paperwork) are \
-    steps, not options: "my friend leaves for good tomorrow, I'd have to shower and get ready, not sure I want to" is the \
-    choice "go and say goodbye, or skip it", and the shower is step 1. Give 2 or 3 options that are clearly different, \
+    Decision: first find the real choice. Small chores that stand in the way of one option are steps of that option, \
+    not options themselves. Give 2 or 3 options that are clearly different, \
     never two versions of the same thing; for a yes/no, the option and not doing it. Each gets 2 to 4 pros and cons \
     about THEIR situation (never generic ones like "feels rushed"), weighted 1 (small), 2 (medium) or 3 (big). \
     When one option can't be had again (someone leaving for good, a last chance, a deadline), say so plainly and weigh \
     regret: people rarely regret showing up, often regret missing a last chance. Then a clear lean and what would change it.
     Recommendation: start with what to do, in a few words, then why in their terms; warm when it's personal.
-    Steps are real actions with honest minutes (a quick shower is about 10 minutes); never "decide", "think about it" \
+    Steps are real actions with honest minutes, all taken from THEIR situation; never "decide", "think about it" \
     or "tell me" as a step, and no filler sections such as what to wear unless they asked.
     Question (Professor): explain in plain words first, then one concrete everyday example, then why it matters to \
     them; follow the detail level — few means the short version, tiny means build it up from the very basics.
     Estimate (they ask how long something takes): a realistic range in the headline ("About 2 to 3 hours"), the steps \
     with minutes, what makes it take longer, and how to make it faster.
     Recipe extras: honour servings, equipment, time and diet if they mention them.
+    Who is who: "I" and "me" are the person typing. Words in quotes or after "the message I received" were written by \
+    someone else. Keep every role exactly as they gave it (who manages whom, who asked whom) and never swap them.
+    Someone else's request plus how they want to handle it ("my employee asked X; I want her to do it herself") is a \
+    decision about how to respond: the options are their approach and the real alternative, each with pros and cons \
+    for both people; the recommendation is the best way to do it; and put a short, kind, ready-to-send reply to that \
+    person in rewrite.
+    Never copy wording from these instructions into the answer; every point must come from what they wrote.
     Judge (they ask how a message they received comes across, or what someone meant): sections How it comes across, \
     What they probably mean, What to watch for; be fair to the sender and don't invent bad intent; then a calm \
     recommended reply as the rewrite, with variants labelled Friendly, Short and Clear the air.
     """
+
+    /// The small on-phone model sometimes copies an example out of its own instructions into the answer — Manan's
+    /// 22 Nov run about an employee came back with "You need to shower and get ready" (the old goodbye example). A line
+    /// that talks about one of those example chores when the person never mentioned it is dropped.
+    static let exampleChores = ["shower", "get ready", "getting ready", "say goodbye", "leaves for good", "what to wear"]
+    static func leaked(_ line: String, asked: String) -> Bool {
+        let l = line.lowercased(), a = asked.lowercased()
+        return exampleChores.contains { l.contains($0) && !a.contains($0) }
+    }
 
     /// Steps that are things to DO. "Decide if you'll shower", "Tell me which way you lean" and "Think about it" are
     /// not steps (your 20 Nov goodbye example had three of them and a 1 h 15 min total); keep a list that has
@@ -447,7 +462,7 @@ enum ThinkBrain {
         @Guide(description: "2 to 4 sections that untangle the situation") var sections: [AISection]
         @Guide(description: "2 to 5 next actions, smallest first; empty for a pure question or message") var steps: [AIStep]
         @Guide(description: "The bottom line in one or two sentences, with a clear lean") var recommendation: String
-        @Guide(description: "Only for a message: the ready-to-send text. Otherwise empty") var rewrite: String
+        @Guide(description: "For a message: the ready-to-send text. For a decision about how to answer someone: a short reply to them. Otherwise empty") var rewrite: String
         @Guide(description: "2 or 3 short follow-up questions they might ask next, in their voice") var followUps: [String]
         @Guide(description: "How they sound in two or three words, e.g. stressed, in a hurry, calm") var tone: String
         @Guide(description: "For a message: 4 to 6 versions labelled Warmer, More professional, Shorter, Firmer, More casual, Kinder. For judge: replies labelled Friendly, Short, Clear the air. Otherwise empty") var variants: [AIVariant]
@@ -586,18 +601,19 @@ enum ThinkBrain {
     @available(iOS 26.0, *)
     static func answer(from r: AIAnswer, engine: Engine, asked: String) -> Answer {
         let k = Kind(rawValue: r.kind.lowercased().trimmingCharacters(in: .whitespaces)) ?? kind(of: asked)
+        let ok: (String) -> Bool = { !leaked($0, asked: asked) }
         let money = themesIn(asked).contains { $0.0.name == "Money" }
         return Answer(kind: k, understood: r.understood, headline: r.headline,
-                      sections: r.sections.filter { !$0.bullets.isEmpty }.map { Section(title: $0.title, bullets: $0.bullets) },
-                      steps: realSteps(r.steps.map { Step(text: $0.text, minutes: $0.minutes > 0 ? $0.minutes : nil) }),
-                      recommendation: r.recommendation, rewrite: k == .message || k == .judge ? r.rewrite : "",
+                      sections: r.sections.map { Section(title: $0.title, bullets: $0.bullets.filter(ok)) }.filter { !$0.bullets.isEmpty },
+                      steps: realSteps(r.steps.filter { ok($0.text) }.map { Step(text: $0.text, minutes: $0.minutes > 0 ? $0.minutes : nil) }),
+                      recommendation: r.recommendation, rewrite: [.message, .judge, .decision].contains(k) ? r.rewrite : "",
                       followUps: Array(r.followUps.prefix(3)),
                       caution: money ? "General guidance, not financial advice." : nil, engine: engine,
                       tone: r.tone.trimmingCharacters(in: .whitespaces).isEmpty ? tone(of: asked) : r.tone.lowercased(),
                       variants: k == .message || k == .judge ? r.variants.filter { !$0.text.isEmpty }.map { Variant(label: $0.label, text: $0.text) } : [],
                       options: k == .decision ? r.options.prefix(3).map { o in
-                        Option(name: o.name, pros: o.pros.map { Point(text: $0.text, weight: min(3, max(1, $0.weight))) },
-                               cons: o.cons.map { Point(text: $0.text, weight: min(3, max(1, $0.weight))) }) } : [])
+                        Option(name: o.name, pros: o.pros.filter { ok($0.text) }.map { Point(text: $0.text, weight: min(3, max(1, $0.weight))) },
+                               cons: o.cons.filter { ok($0.text) }.map { Point(text: $0.text, weight: min(3, max(1, $0.weight))) }) } : [])
     }
     #endif
 }

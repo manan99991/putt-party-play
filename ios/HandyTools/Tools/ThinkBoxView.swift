@@ -164,7 +164,7 @@ struct ThinkBoxView: View {
             if Self.bottomLineFirst(a.kind) { recommendationCard(a) }
 
             if !a.rewrite.isEmpty {
-                let versions = [ThinkBrain.Variant(label: a.kind == .judge ? "Suggested reply" : "Best fit", text: a.rewrite)] + a.variants
+                let versions = [ThinkBrain.Variant(label: a.kind == .judge ? "Suggested reply" : (a.kind == .decision ? "A reply you could send" : "Best fit"), text: a.rewrite)] + a.variants
                 let shown = versions.first { $0.label == tone } ?? versions[0]
                 VStack(alignment: .leading, spacing: HandySpacing.s8) {
                     Text(L(a.kind == .judge ? "If you want to reply" : "Ready to send")).font(HandyFont.bodyStrong)
