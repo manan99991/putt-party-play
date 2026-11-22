@@ -71,7 +71,7 @@ struct IdentifyView: View {
                     .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             }
         }
-        .sheet(isPresented: $showCamera) { CameraShot { img in if let img { run(img) } } }
+        .sheet(isPresented: $showCamera) { CameraShot { img in showCamera = false; if let img { run(img) } }.ignoresSafeArea() }
         .onChange(of: pickerItem) { _, item in
             guard let item else { return }
             busy = true

@@ -63,7 +63,14 @@ struct WarrantyView: View {
                 }
             }
         }
-        .sheet(isPresented: $showCamera) { CameraCapture { img in if let img { startDraft(img) } } }
+        // The camera always closes — on ✕ as well as after a photo (its ✕ did nothing before, Manan 22 Nov) — and the
+        // receipt opens only once it has, since a second sheet can't open over the first.
+        .sheet(isPresented: $showCamera) {
+            CameraCapture { img in
+                showCamera = false
+                if let img { DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { startDraft(img) } }
+            }.ignoresSafeArea()
+        }
         .sheet(item: $draft) { d in DraftSheet(draft: d, store: store) }
         .sheet(item: $open) { r in ReceiptDetail(receipt: r, store: store) }
         .onChange(of: pickerItem) { _, item in
