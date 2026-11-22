@@ -269,8 +269,9 @@ enum SearchSynonyms {
             s += keys.map { k -> Int in
                 if k == tok { return 90 }
                 if forms.contains(k) { return 70 }                                  // synonym hits a keyword exactly
-                if k.contains(tok) || tok.contains(k) { return 45 }
-                if forms.contains(where: { k.contains($0) || $0.contains(k) }) { return 28 }
+                // A very short keyword ("x" for X) only counts as a whole word, or "zzxqzzq" would find Post it.
+                if k.contains(tok) || (k.count >= 3 && tok.contains(k)) { return 45 }
+                if forms.contains(where: { k.contains($0) || (k.count >= 3 && $0.contains(k)) }) { return 28 }
                 return 0
             }.max() ?? 0
             if blurb.contains(tok) { s += 25 }
