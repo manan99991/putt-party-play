@@ -1,4 +1,5 @@
 import SwiftUI
+import AVFoundation
 
 /// "What to do with it", as a guided walk instead of a long list:
 ///   1. What you want — Tenzy looks at the photo and suggests the likeliest job, then up to six big choices.
@@ -41,7 +42,14 @@ struct GuideView: View {
         let rest = all.dropFirst(5).flatMap(\.options)
         return keep + [(goal: "more", options: Array(rest))]
     }
-    private func options(_ goal: String) -> [Guide.Option] { goals.first { $0.goal == goal }?.options ?? [] }
+    private func options(_ goal: String) -> [Guide.Option] {
+        if kind == .video { return videoJobs.first { $0.goal == goal }?.options ?? [] }
+        return goals.first { $0.goal == goal }?.options ?? []
+    }
+    /// A video's ways, sorted into the jobs people think in (Guide.videoJobs) — the whole choice on one screen.
+    private var videoJobs: [(goal: String, options: [Guide.Option])] {
+        Guide.videoJobs(Guide.sort(kind: .video, count: 1, tools: tools, chains: chains, voices: false).flatMap(\.options))
+    }
 
     /// UI tests only: leave parts of this screen out to find which part breaks ("-guideskip header,grid").
     static let skip: Set<String> = {
@@ -57,7 +65,7 @@ struct GuideView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            start
+            Group { if kind == .video { videoStart } else { start } }
                 .navigationDestination(for: Stop.self) { stop in destination(stop) }
                 .navigationDestination(for: String.self) { id in ToolDestination(id: id) }
         }
@@ -103,6 +111,85 @@ struct GuideView: View {
         .background(Ground())
         .navigationTitle(L("What to do with it")).navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Close")) { dismiss() } } }
+    }
+
+    // MARK: step 1 for a video — one screen, every job in plain words
+
+    @State private var facts: VideoFacts?
+    @State private var poster: UIImage?
+    private var videoURL: URL? { if case .video(let u) = given.payload { return u }; return nil }
+    private var hint: (goal: String, why: String)? { facts.map { Guide.videoHint(bytes: $0.bytes, seconds: $0.seconds, tall: $0.isTall) } }
+
+    private var videoStart: some View {
+        let jobs = videoJobs
+        let grid = jobs.filter { $0.goal != "stunning" }
+        return ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                GuideSteps(step: 1)
+                videoHeader
+                Text(L("What do you want to do with it?")).font(HandyFont.title).padding(.top, 2)
+                if let hero = jobs.first(where: { $0.goal == "stunning" }) {
+                    Button { pick(hero.goal, hero.options) } label: { StunningCard(goal: Guide.videoGoal(hero.goal), suggested: hint?.goal == hero.goal) }
+                        .buttonStyle(.plain).accessibilityIdentifier("goal-stunning")
+                }
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
+                    ForEach(grid, id: \.goal) { j in
+                        Button { pick(j.goal, j.options) } label: { VideoJobTile(goal: Guide.videoGoal(j.goal), suggested: hint?.goal == j.goal) }
+                            .buttonStyle(.plain).accessibilityIdentifier("goal-\(j.goal)")
+                    }
+                }
+            }
+            .padding(.horizontal, HandySpacing.gutter).padding(.vertical, HandySpacing.s12)
+        }
+        .background(Ground())
+        .navigationTitle(L("Your video")).navigationBarTitleDisplayMode(.inline)
+        .toolbar { ToolbarItem(placement: .cancellationAction) { Button(L("Close")) { dismiss() } } }
+        .task {
+            guard let u = videoURL else { return }
+            facts = await VideoFacts.read(u)
+            let gen = AVAssetImageGenerator(asset: AVURLAsset(url: u)); gen.appliesPreferredTrackTransform = true; gen.maximumSize = CGSize(width: 240, height: 240)
+            if let cg = try? await gen.image(at: CMTime(seconds: min(1, max(0, (facts?.seconds ?? 0) / 3)), preferredTimescale: 600)).image { poster = UIImage(cgImage: cg) }
+        }
+    }
+
+    /// One job with a single way goes straight there; several show the ways (step 2).
+    private func pick(_ goal: String, _ options: [Guide.Option]) {
+        Diagnostics.shared.crumb("Guide: chose video \(goal)")
+        if options.count == 1, let o = options.first { open(o) } else { path.append(.goal(goal)) }
+    }
+
+    /// The video itself: a frame to tap and watch, how long and big it is, and what Tenzy noticed.
+    private var videoHeader: some View {
+        HStack(spacing: HandySpacing.s12) {
+            Button {
+                if let u = ToolHandoff.fileURL(given.payload, name: "Video") { FileOpenInbox.shared.receive(u); path.append(.tool("fileviewer")) }
+            } label: {
+                ZStack {
+                    if let poster { Image(uiImage: poster).resizable().scaledToFill() } else { HandyColor.surface }
+                    Image(systemName: "play.fill").font(.system(size: 16, weight: .bold)).foregroundStyle(.white)
+                        .frame(width: 32, height: 32).background(.black.opacity(0.45), in: Circle())
+                }
+                .frame(width: 68, height: 68).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            }
+            .buttonStyle(.plain).accessibilityLabel(L("Play it")).accessibilityIdentifier("guide-just-open")
+            VStack(alignment: .leading, spacing: 3) {
+                if let f = facts {
+                    Text([VideoFacts.clock(f.seconds), SizeTarget.format(f.bytes), L(f.isTall ? "Tall" : f.size.width > f.size.height ? "Sideways" : "Square"), f.hasSound ? nil : L("No sound")].compactMap { $0 }.joined(separator: " · "))
+                        .font(HandyFont.bodyStrong).lineLimit(1).minimumScaleFactor(0.8)
+                } else {
+                    Text(L(given.label)).font(HandyFont.bodyStrong)
+                }
+                if let h = hint {
+                    Label(L(h.why), systemImage: "sparkles").font(HandyFont.caption).foregroundStyle(HandyColor.accent)
+                        .lineLimit(2).fixedSize(horizontal: false, vertical: true)
+                } else {
+                    Text(L("Tap the picture to watch it")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("video-header")
     }
 
     /// The thing that was handed over, so the person sees what they're working on.
@@ -183,7 +270,7 @@ struct GuideView: View {
 
     @ViewBuilder private func destination(_ stop: Stop) -> some View {
         switch stop {
-        case .goal(let g): GoalScreen(goal: Guide.goal(g, count: given.count), options: options(g), kind: kind, count: given.count, previews: previews, open: open)
+        case .goal(let g): GoalScreen(goal: kind == .video ? Guide.videoGoal(g) : Guide.goal(g, count: given.count), options: options(g), kind: kind, count: given.count, previews: previews, open: open)
         case .tool(let id): ToolDestination(id: id)
         case .chain(let id):
             if let c = chains.first(where: { $0.id == id }) {
@@ -226,6 +313,83 @@ struct GuideSteps: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(L("Step")) \(step) / 3")
+    }
+}
+
+/// The big card at the top for a video: the wow job.
+private struct StunningCard: View {
+    let goal: Guide.Goal
+    var suggested = false
+    var body: some View {
+        HStack(spacing: HandySpacing.s12) {
+            Image(systemName: goal.icon).font(.system(size: 24, weight: .semibold)).foregroundStyle(.white)
+                .frame(width: 52, height: 52).background(.white.opacity(0.2), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            VStack(alignment: .leading, spacing: 3) {
+                Text(L(goal.title)).font(HandyFont.title).foregroundStyle(.white)
+                Text(L(goal.line)).font(HandyFont.caption).foregroundStyle(.white.opacity(0.9)).fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+            Image(systemName: "chevron.right").font(.system(size: 15, weight: .bold)).foregroundStyle(.white.opacity(0.85))
+        }
+        .padding(HandySpacing.s16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(LinearGradient(colors: [Color(hex: 0x7C3AED), Color(hex: 0xDB2777), Color(hex: 0xF59E0B)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                    in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous).stroke(.white.opacity(suggested ? 0.9 : 0.15), lineWidth: suggested ? 2 : 1))
+        .shadow(color: Color(hex: 0xDB2777).opacity(0.35), radius: 14, y: 6)
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(L(goal.title)). \(L(goal.line))"))
+    }
+}
+
+/// One video job in the grid: a coloured picture, the job in a few words, and what it gets you.
+private struct VideoJobTile: View {
+    let goal: Guide.Goal
+    var suggested = false
+    static func tint(_ id: String) -> Color {
+        switch id {
+        case "post": return Color(hex: 0xE1306C)
+        case "cut": return Color(hex: 0x0EA5E9)
+        case "send": return Color(hex: 0x10B981)
+        case "fun": return Color(hex: 0xEAB308)
+        case "speed": return Color(hex: 0xF97316)
+        case "sound": return Color(hex: 0x8B5CF6)
+        case "words": return Color(hex: 0x3B82F6)
+        case "photo": return Color(hex: 0x14B8A6)
+        default: return Color(hex: 0x64748B)
+        }
+    }
+    var body: some View {
+        HStack(alignment: .center, spacing: 10) {
+            Image(systemName: goal.icon)
+                .font(.system(size: 18, weight: .semibold)).foregroundStyle(.white)
+                .frame(width: 40, height: 40)
+                .background(LinearGradient(colors: [Self.tint(goal.id), Self.tint(goal.id).opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                            in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+            VStack(alignment: .leading, spacing: 2) {
+                Text(L(goal.title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                    .lineLimit(2).minimumScaleFactor(0.85).fixedSize(horizontal: false, vertical: true)
+                Text(L(goal.line)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+                    .lineLimit(2).fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 10).padding(.vertical, 12)
+        .frame(maxWidth: .infinity, minHeight: 82, alignment: .leading)
+        .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: HandyRadius.card, style: .continuous)
+            .stroke(suggested ? HandyColor.accent : HandyColor.border, lineWidth: suggested ? 1.5 : 1))
+        .overlay(alignment: .topTrailing) {
+            if suggested {
+                Image(systemName: "sparkles").font(.system(size: 10, weight: .bold)).foregroundStyle(HandyColor.onAccent)
+                    .padding(5).background(HandyColor.accent, in: Circle()).offset(x: 4, y: -4)
+                    .accessibilityHidden(true)
+            }
+        }
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(L(goal.title)). \(L(goal.line))\(suggested ? ". " + L("Suggested") : "")"))
     }
 }
 

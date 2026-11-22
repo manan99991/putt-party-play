@@ -38658,5 +38658,275 @@
   "ja": "Tenzyを使い始める",
   "pt": "Começar a usar o Tenzy",
   "zh": "开始使用 Tenzy"
+ },
+ "Make it stunning": {
+  "de": "Mach es atemberaubend",
+  "es": "Hazlo espectacular",
+  "fr": "Rends-la spectaculaire",
+  "hi": "इसे शानदार बनाएँ",
+  "it": "Rendilo spettacolare",
+  "ja": "見違えるほど映えさせる",
+  "pt": "Deixe-o deslumbrante",
+  "zh": "让它惊艳"
+ },
+ "Effects, filters, light and festive magic": {
+  "de": "Effekte, Filter, Licht und Festzauber",
+  "es": "Efectos, filtros, luz y magia festiva",
+  "fr": "Effets, filtres, lumière et magie festive",
+  "hi": "इफ़ेक्ट, फ़िल्टर, रोशनी और त्योहार का जादू",
+  "it": "Effetti, filtri, luce e magia di festa",
+  "ja": "エフェクト、フィルター、光、お祝いの演出",
+  "pt": "Efeitos, filtros, luz e magia festiva",
+  "zh": "特效、滤镜、光效和节日氛围"
+ },
+ "Post it": {
+  "de": "Posten",
+  "es": "Publícalo",
+  "fr": "Publie-la",
+  "hi": "पोस्ट करें",
+  "it": "Pubblicalo",
+  "ja": "投稿する",
+  "pt": "Publique",
+  "zh": "发布"
+ },
+ "Tall for Reels, TikTok and Stories": {
+  "de": "Hochformat für Reels, TikTok und Stories",
+  "es": "Vertical para Reels, TikTok e Historias",
+  "fr": "Verticale pour Reels, TikTok et Stories",
+  "hi": "Reels, TikTok और Stories के लिए लंबा",
+  "it": "Verticale per Reels, TikTok e Storie",
+  "ja": "リール・TikTok・ストーリー用の縦長に",
+  "pt": "Vertical para Reels, TikTok e Stories",
+  "zh": "竖屏，适合 Reels、TikTok 和快拍"
+ },
+ "Cut it shorter": {
+  "de": "Kürzer schneiden",
+  "es": "Acórtalo",
+  "fr": "Raccourcis-la",
+  "hi": "छोटा करें",
+  "it": "Accorcialo",
+  "ja": "短くカットする",
+  "pt": "Encurte",
+  "zh": "剪短"
+ },
+ "Keep just the best part": {
+  "de": "Nur das Beste behalten",
+  "es": "Quédate con lo mejor",
+  "fr": "Garde le meilleur passage",
+  "hi": "बस सबसे अच्छा हिस्सा रखें",
+  "it": "Tieni solo la parte migliore",
+  "ja": "いいところだけ残す",
+  "pt": "Fique só com a melhor parte",
+  "zh": "只留最精彩的部分"
+ },
+ "Small enough for WhatsApp or email": {
+  "de": "Klein genug für WhatsApp oder E-Mail",
+  "es": "Lo bastante pequeño para WhatsApp o correo",
+  "fr": "Assez petite pour WhatsApp ou un e-mail",
+  "hi": "WhatsApp या ईमेल के लिए काफ़ी छोटा",
+  "it": "Abbastanza piccolo per WhatsApp o e-mail",
+  "ja": "WhatsAppやメールで送れるサイズに",
+  "pt": "Pequeno o bastante para WhatsApp ou e-mail",
+  "zh": "小到能用 WhatsApp 或邮件发送"
+ },
+ "Make it funny": {
+  "de": "Mach es lustig",
+  "es": "Hazlo divertido",
+  "fr": "Rends-la drôle",
+  "hi": "इसे मज़ेदार बनाएँ",
+  "it": "Rendilo divertente",
+  "ja": "おもしろくする",
+  "pt": "Deixe-o engraçado",
+  "zh": "让它变搞笑"
+ },
+ "Boomerang, GIF, silly voices": {
+  "de": "Boomerang, GIF, lustige Stimmen",
+  "es": "Boomerang, GIF, voces graciosas",
+  "fr": "Boomerang, GIF, voix rigolotes",
+  "hi": "बूमरैंग, GIF, मज़ेदार आवाज़ें",
+  "it": "Boomerang, GIF, voci buffe",
+  "ja": "ブーメラン、GIF、変な声",
+  "pt": "Boomerang, GIF, vozes engraçadas",
+  "zh": "回旋镖、GIF、搞怪声音"
+ },
+ "Slow-mo or fast": {
+  "de": "Zeitlupe oder schnell",
+  "es": "Cámara lenta o rápida",
+  "fr": "Ralenti ou accéléré",
+  "hi": "स्लो-मो या तेज़",
+  "it": "Rallentatore o veloce",
+  "ja": "スローか早送り",
+  "pt": "Câmera lenta ou rápido",
+  "zh": "慢动作或快放"
+ },
+ "Voices stay natural": {
+  "de": "Stimmen bleiben natürlich",
+  "es": "Las voces suenan naturales",
+  "fr": "Les voix restent naturelles",
+  "hi": "आवाज़ें स्वाभाविक रहती हैं",
+  "it": "Le voci restano naturali",
+  "ja": "声は自然なまま",
+  "pt": "As vozes continuam naturais",
+  "zh": "人声保持自然"
+ },
+ "Sound only, or none": {
+  "de": "Nur Ton oder ohne Ton",
+  "es": "Solo sonido o sin sonido",
+  "fr": "Juste le son, ou aucun",
+  "hi": "सिर्फ़ आवाज़, या बिल्कुल नहीं",
+  "it": "Solo audio, o niente",
+  "ja": "音だけ、または音なし",
+  "pt": "Só o som, ou nenhum",
+  "zh": "只要声音，或去掉声音"
+ },
+ "MP3, ringtone, or mute it": {
+  "de": "MP3, Klingelton oder stumm",
+  "es": "MP3, tono de llamada o silenciar",
+  "fr": "MP3, sonnerie ou muet",
+  "hi": "MP3, रिंगटोन, या म्यूट करें",
+  "it": "MP3, suoneria o muto",
+  "ja": "MP3、着信音、または消音",
+  "pt": "MP3, toque ou sem som",
+  "zh": "MP3、铃声或静音"
+ },
+ "Captions, transcript, notes": {
+  "de": "Untertitel, Abschrift, Notizen",
+  "es": "Subtítulos, transcripción, notas",
+  "fr": "Sous-titres, transcription, notes",
+  "hi": "कैप्शन, लिखित रूप, नोट्स",
+  "it": "Sottotitoli, trascrizione, note",
+  "ja": "字幕、文字起こし、メモ",
+  "pt": "Legendas, transcrição, notas",
+  "zh": "字幕、文字稿、笔记"
+ },
+ "Grab a photo": {
+  "de": "Foto herausholen",
+  "es": "Saca una foto",
+  "fr": "Extrais une photo",
+  "hi": "एक फ़ोटो निकालें",
+  "it": "Prendi una foto",
+  "ja": "写真を切り出す",
+  "pt": "Tire uma foto",
+  "zh": "截取一张照片"
+ },
+ "Any moment as a picture": {
+  "de": "Jeder Moment als Bild",
+  "es": "Cualquier momento como imagen",
+  "fr": "N'importe quel instant en image",
+  "hi": "कोई भी पल तस्वीर के रूप में",
+  "it": "Qualsiasi momento come immagine",
+  "ja": "どの瞬間も一枚の写真に",
+  "pt": "Qualquer momento como imagem",
+  "zh": "任意一刻存成图片"
+ },
+ "Too big for WhatsApp — Send it makes it fit": {
+  "de": "Zu groß für WhatsApp — „Senden“ macht es passend",
+  "es": "Demasiado grande para WhatsApp — Envíalo lo ajusta",
+  "fr": "Trop lourde pour WhatsApp — Envoie-la la fait tenir",
+  "hi": "WhatsApp के लिए बहुत बड़ा — भेजें इसे फ़िट कर देगा",
+  "it": "Troppo grande per WhatsApp — Invialo lo fa stare",
+  "ja": "WhatsAppには大きすぎ — 「送る」で収まるサイズに",
+  "pt": "Grande demais para o WhatsApp — Envie faz caber",
+  "zh": "WhatsApp 发不了，太大——“发送”会把它变小"
+ },
+ "It's sideways — Post it makes it tall": {
+  "de": "Es ist quer — „Posten“ macht es hochkant",
+  "es": "Está en horizontal — Publícalo lo pone en vertical",
+  "fr": "Elle est à l'horizontale — Publie-la la met en vertical",
+  "hi": "यह आड़ा है — पोस्ट करें इसे लंबा बना देगा",
+  "it": "È in orizzontale — Pubblicalo lo rende verticale",
+  "ja": "横向き — 「投稿する」で縦長に",
+  "pt": "Está na horizontal — Publique deixa na vertical",
+  "zh": "这是横屏——“发布”会把它变成竖屏"
+ },
+ "It's long — Cut it shorter keeps the best part": {
+  "de": "Es ist lang — „Kürzer schneiden“ behält das Beste",
+  "es": "Es largo — Acórtalo deja lo mejor",
+  "fr": "Elle est longue — Raccourcis-la garde le meilleur",
+  "hi": "यह लंबा है — छोटा करें सबसे अच्छा हिस्सा रखेगा",
+  "it": "È lungo — Accorcialo tiene la parte migliore",
+  "ja": "長め — 「短くカット」でいいところだけに",
+  "pt": "É longo — Encurte fica só com o melhor",
+  "zh": "有点长——“剪短”只留精彩部分"
+ },
+ "Ready to shine — try Make it stunning": {
+  "de": "Bereit zu glänzen — probier „Atemberaubend“",
+  "es": "Listo para brillar — prueba Hazlo espectacular",
+  "fr": "Prête à briller — essaie Rends-la spectaculaire",
+  "hi": "चमकने को तैयार — शानदार बनाएँ आज़माएँ",
+  "it": "Pronto a brillare — prova Rendilo spettacolare",
+  "ja": "映える準備OK — 「見違えるほど映えさせる」を試そう",
+  "pt": "Pronto para brilhar — experimente Deixe-o deslumbrante",
+  "zh": "准备好闪耀了——试试“让它惊艳”"
+ },
+ "What do you want to do with it?": {
+  "de": "Was möchtest du damit machen?",
+  "es": "¿Qué quieres hacer con él?",
+  "fr": "Que veux-tu en faire ?",
+  "hi": "आप इसके साथ क्या करना चाहते हैं?",
+  "it": "Cosa vuoi farci?",
+  "ja": "これで何をしますか？",
+  "pt": "O que você quer fazer com ele?",
+  "zh": "你想用它做什么？"
+ },
+ "Play it": {
+  "de": "Abspielen",
+  "es": "Reprodúcelo",
+  "fr": "Lis-la",
+  "hi": "चलाएँ",
+  "it": "Riproducilo",
+  "ja": "再生する",
+  "pt": "Reproduzir",
+  "zh": "播放"
+ },
+ "Tall": {
+  "de": "Hochformat",
+  "es": "Vertical",
+  "fr": "Vertical",
+  "hi": "लंबा",
+  "it": "Verticale",
+  "ja": "縦長",
+  "pt": "Vertical",
+  "zh": "竖屏"
+ },
+ "Sideways": {
+  "de": "Querformat",
+  "es": "Horizontal",
+  "fr": "Horizontal",
+  "hi": "आड़ा",
+  "it": "Orizzontale",
+  "ja": "横向き",
+  "pt": "Horizontal",
+  "zh": "横屏"
+ },
+ "No sound": {
+  "de": "Kein Ton",
+  "es": "Sin sonido",
+  "fr": "Pas de son",
+  "hi": "आवाज़ नहीं",
+  "it": "Senza audio",
+  "ja": "音声なし",
+  "pt": "Sem som",
+  "zh": "无声音"
+ },
+ "Tap the picture to watch it": {
+  "de": "Tippe aufs Bild, um es anzusehen",
+  "es": "Toca la imagen para verlo",
+  "fr": "Touche l'image pour la regarder",
+  "hi": "देखने के लिए तस्वीर पर टैप करें",
+  "it": "Tocca l'immagine per guardarlo",
+  "ja": "画像をタップして再生",
+  "pt": "Toque na imagem para assistir",
+  "zh": "点按画面即可观看"
+ },
+ "Suggested": {
+  "de": "Vorgeschlagen",
+  "es": "Sugerido",
+  "fr": "Suggéré",
+  "hi": "सुझाया गया",
+  "it": "Suggerito",
+  "ja": "おすすめ",
+  "pt": "Sugerido",
+  "zh": "推荐"
  }
 }

@@ -769,6 +769,10 @@ struct BuilderView: View {
             if Launch.screenshots, Launch.route == "templates" { showTemplates = true }
             if Launch.screenshots, Launch.route == "mytools" { showMine = true }
             if openMine { showMine = true }
+            // Store screenshots: a video handed over, so "What to do with it" shows the video page.
+            if Launch.screenshots, Launch.route == "guidevideo" {
+                Task { if let u = await SampleAssets.movie() { given = Given(payload: .video(u), label: "A video") } }
+            }
             if Launch.screenshots, Launch.route == "describebuilt" {
                 ask = "Shrink a photo under 1 MB, remove the location and email it"
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) { buildFromAsk() }
