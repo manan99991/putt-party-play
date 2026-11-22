@@ -1,4 +1,10 @@
 == smoke (results)
-/Users/runner/work/putt-party-play/putt-party-play/ios/HandyTools/ResultViewer.swift:129:16: error: invalid redeclaration of 'ZoomableImage'
-    |                `- error: invalid redeclaration of 'ZoomableImage'
-** TEST FAILED **
+Test Case '-[HandyToolsUITests.ToolControlsReachableTests testNoToolControlIsCutOffAtTheRightEdge]' passed (724.542 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 724.542 (724.575) seconds
+Test Case '-[HandyToolsUITests.ToolSmokeTests testEveryToolOpensWithoutCrashing]' passed (724.311 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testHomePagesAndSearchRender]' passed (14.028 seconds).
+Test Case '-[HandyToolsUITests.ToolSmokeTests testPaywallAndSettingsRender]' passed (17.090 seconds).
+	 Executed 3 tests, with 0 failures (0 unexpected) in 755.428 (755.431) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 1479.970 (1480.013) seconds
+	 Executed 4 tests, with 0 failures (0 unexpected) in 1479.970 (1480.014) seconds
+** TEST SUCCEEDED **
