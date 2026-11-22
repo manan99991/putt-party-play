@@ -900,9 +900,10 @@ struct BuilderView: View {
                     Text(L("Paste")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                     Text(L(clipKind.map { "\($0) copied" } ?? "Nothing copied")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
                 }
-                .frame(maxWidth: .infinity, minHeight: 68)
+                .frame(maxWidth: .infinity, minHeight: 68, maxHeight: .infinity)
                 .cardStyle(padding: HandySpacing.s8)
             }
+            .fixedSize(horizontal: false, vertical: true)   // Paste has a second line; PDF and File grow to match it
             if gettingReady {
                 HStack(spacing: HandySpacing.s8) {
                     BusySpinner()
@@ -956,7 +957,7 @@ struct BuilderView: View {
             Text(L(title)).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
             if let sub { Text(L(sub)).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(1) }
         }
-        .frame(maxWidth: .infinity, minHeight: 68)
+        .frame(maxWidth: .infinity, minHeight: 68, maxHeight: .infinity)
         .cardStyle(padding: HandySpacing.s8)
     }
 
