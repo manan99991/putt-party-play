@@ -516,21 +516,25 @@ struct CelebrateView: View {
         thumbTask?.cancel()
         guard let p = poster else { return }
         let base = recipe, t = tab, d = duration
-        let jobs: [(String, VideoFX.Recipe)] = {
-            func with(_ f: (inout VideoFX.Recipe) -> Void) -> VideoFX.Recipe { var r = base; f(&r); return r }
-            switch t {
-            case .vibes: return VideoFX.vibes.map { v in ("vibes-\(v.id)", with { $0 = v.recipe; $0.amount = base.amount }) }
-                + (Celebrate.comingUp().first.map { f in [("vibes-fest", with { $0.sparkle = "fest:" + f.id; if $0.look == "none" { $0.look = "golden" } })] } ?? [])
-            case .look: return VideoFX.looks.map { c in ("look-\(c.id)", with { $0.look = c.id; $0.light = "none"; $0.motion = "none"; $0.texture = "none"; $0.sparkle = "none" }) }
-            case .light: return VideoFX.lights.map { c in ("light-\(c.id)", with { $0.light = c.id; $0.sparkle = "none" }) }
-            case .texture: return VideoFX.textures.map { c in ("texture-\(c.id)", with { $0.texture = c.id; $0.sparkle = "none" }) }
-            default: return []
-            }
-        }()
-        guard !jobs.isEmpty else { return }
+        var jobs: [(String, VideoFX.Recipe)] = []
+        func add(_ key: String, _ change: (inout VideoFX.Recipe) -> Void) { var r = base; change(&r); jobs.append((key, r)) }
+        switch t {
+        case .vibes:
+            for v in VideoFX.vibes { add("vibes-\(v.id)") { r in r = v.recipe; r.amount = base.amount } }
+            if let f = Celebrate.comingUp().first { add("vibes-fest") { r in r.sparkle = "fest:" + f.id; if r.look == "none" { r.look = "golden" } } }
+        case .look:
+            for c in VideoFX.looks { add("look-\(c.id)") { r in r.look = c.id; r.light = "none"; r.motion = "none"; r.texture = "none"; r.sparkle = "none" } }
+        case .light:
+            for c in VideoFX.lights { add("light-\(c.id)") { r in r.light = c.id; r.sparkle = "none" } }
+        case .texture:
+            for c in VideoFX.textures { add("texture-\(c.id)") { r in r.texture = c.id; r.sparkle = "none" } }
+        default: break
+        }
+        let work = jobs
+        guard !work.isEmpty else { return }
         thumbTask = Task.detached(priority: .userInitiated) {
             try? await Task.sleep(nanoseconds: 120_000_000)
-            for (key, r) in jobs {
+            for (key, r) in work {
                 if Task.isCancelled { return }
                 let img = VideoFX.still(p, recipe: r, t: min(1.4, d * 0.4), duration: d)
                 await MainActor.run { if let img { thumbs[key] = img } }
