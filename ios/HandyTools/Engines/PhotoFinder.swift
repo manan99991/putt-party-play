@@ -12,7 +12,7 @@ import Vision
 enum PhotoFinder {
     /// What a tool is looking for.
     enum Kind: String, CaseIterable, Codable {
-        case receipt, document, card, menu, face, board, screenshot, code, product
+        case receipt, document, card, menu, face, people, board, screenshot, code, product
 
         var title: String {
             switch self {
@@ -21,6 +21,7 @@ enum PhotoFinder {
             case .card: return "Business cards"
             case .menu: return "Menus"
             case .face: return "Photos of a face"
+            case .people: return "Photos with people in them"
             case .board: return "Whiteboards, lists and calendars"
             case .screenshot: return "Screenshots"
             case .code: return "Photos with a QR code or barcode"
@@ -34,6 +35,7 @@ enum PhotoFinder {
             case .card: return "person.text.rectangle"
             case .menu: return "fork.knife"
             case .face: return "person.crop.square"
+            case .people: return "person.2.fill"
             case .board: return "list.bullet.rectangle"
             case .screenshot: return "iphone"
             case .code: return "qrcode"
@@ -85,6 +87,8 @@ enum PhotoFinder {
                 + money * 0.4 + label(["menu"]) * 2
         case .face:
             return s.faces == 1 ? 3 : (s.faces > 1 ? 1 : 0) - (s.screenshot ? 2 : 0) - (words > 20 ? 1 : 0)
+        case .people:
+            return (s.faces > 0 ? 3 : 0) - (s.screenshot ? 2 : 0) - (words > 20 ? 1 : 0)
         case .board:
             return label(["whiteboard", "blackboard", "chalkboard", "handwriting", "calendar", "sticky note", "notebook"]) * 2.5
                 + Double(hits(t, ["monday", "tuesday", "wednesday", "thursday", "friday", "to do", "todo", "groceries", "list"])) * 0.6

@@ -1787,6 +1787,8 @@ final class PhotoFinderScoreTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(labels: ["people", "portrait"], faces: 1), for: .face), PhotoFinder.threshold)
         XCTAssertLessThan(PhotoFinder.score(seen(receipt), for: .face), PhotoFinder.threshold)
         XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(shot: true), for: .screenshot), PhotoFinder.threshold)
+        XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(labels: ["people"], faces: 3), for: .people), PhotoFinder.threshold)
+        XCTAssertLessThan(PhotoFinder.score(seen(receipt), for: .people), PhotoFinder.threshold)
         XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen(codes: 1), for: .code), PhotoFinder.threshold)
         XCTAssertGreaterThanOrEqual(PhotoFinder.score(seen("STARTERS\nSoup 6.50\nSalad 8.00\nMAINS\nChicken pasta 16.00\nBurger 14.50\nDESSERT"), for: .menu), PhotoFinder.threshold)
     }

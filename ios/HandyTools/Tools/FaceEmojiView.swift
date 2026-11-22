@@ -63,7 +63,7 @@ struct FaceEmojiView: View {
             Text("🙈").font(.system(size: 52))
             Text(L("Pick a photo. Tenzy finds the faces — tap to choose which get an emoji. Great for kids' photos before posting."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            PhotosPicker(selection: $pick, matching: .images) {
+            SmartPhotoButton(kind: .people, picked: { if let i = $0.first { use(i) } }) {
                 Label(L("Choose a photo"), systemImage: "photo").frame(maxWidth: .infinity)
             }.primaryButton()
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
@@ -140,7 +140,7 @@ struct FaceEmojiView: View {
                 Button { make(img) } label: { Label(L("Done — make the photo"), systemImage: "checkmark").frame(maxWidth: .infinity) }
                     .primaryButton().disabled(working || covers.allSatisfy { $0.emoji == nil })
             }
-            PhotosPicker(selection: $pick, matching: .images) { Label(L("Choose a different photo"), systemImage: "photo") }
+            SmartPhotoButton(kind: .people, picked: { if let i = $0.first { use(i) } }) { Label(L("Choose a different photo"), systemImage: "photo") }
                 .textButton().font(HandyFont.caption).frame(maxWidth: .infinity)
             Text(L("The phone can't tell ages, so you choose which faces to cover. Saved as a fresh copy with no location data."))
                 .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
