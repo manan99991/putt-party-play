@@ -38478,5 +38478,155 @@
   "ja": "チケット",
   "pt": "Bilhete",
   "zh": "票"
+ },
+ "Snap": {
+  "de": "Schnapp",
+  "es": "Rápido",
+  "fr": "Éclair",
+  "hi": "झटपट",
+  "it": "Scatto",
+  "ja": "スナップ",
+  "pt": "Estalo",
+  "zh": "快闪"
+ },
+ "Stutter": {
+  "de": "Stotterer",
+  "es": "Tartamudeo",
+  "fr": "Bégaiement",
+  "hi": "अटकन",
+  "it": "Balbuzie",
+  "ja": "カクカク",
+  "pt": "Gaguejo",
+  "zh": "卡带"
+ },
+ "Slingshot": {
+  "de": "Steinschleuder",
+  "es": "Tirachinas",
+  "fr": "Lance-pierre",
+  "hi": "गुलेल",
+  "it": "Fionda",
+  "ja": "パチンコ",
+  "pt": "Estilingue",
+  "zh": "弹弓"
+ },
+ "Dramatic zoom": {
+  "de": "Dramatischer Zoom",
+  "es": "Zoom dramático",
+  "fr": "Zoom dramatique",
+  "hi": "ड्रामैटिक ज़ूम",
+  "it": "Zoom drammatico",
+  "ja": "ドラマチックズーム",
+  "pt": "Zoom dramático",
+  "zh": "戏剧变焦"
+ },
+ "Echo trail": {
+  "de": "Echo-Spur",
+  "es": "Estela fantasma",
+  "fr": "Traînée d'écho",
+  "hi": "परछाईं की लकीर",
+  "it": "Scia d'eco",
+  "ja": "残像エコー",
+  "pt": "Rastro de eco",
+  "zh": "残影"
+ },
+ "Mirror twins": {
+  "de": "Spiegelzwillinge",
+  "es": "Gemelos espejo",
+  "fr": "Jumeaux miroir",
+  "hi": "आईना जुड़वाँ",
+  "it": "Gemelli allo specchio",
+  "ja": "ミラーツイン",
+  "pt": "Gêmeos de espelho",
+  "zh": "镜像双胞胎"
+ },
+ "That style couldn't be made from this video.": {
+  "de": "Dieser Stil ließ sich aus diesem Video nicht erstellen.",
+  "es": "No se pudo crear ese estilo con este vídeo.",
+  "fr": "Ce style n'a pas pu être créé à partir de cette vidéo.",
+  "hi": "इस वीडियो से वह स्टाइल नहीं बन सकी।",
+  "it": "Non è stato possibile creare quello stile da questo video.",
+  "ja": "この動画ではそのスタイルを作れませんでした。",
+  "pt": "Não foi possível criar esse estilo com este vídeo.",
+  "zh": "无法用这个视频做出该风格。"
+ },
+ "Quick there-and-back with a punch at the turn": {
+  "de": "Schnell hin und zurück, mit Ruck an der Wende",
+  "es": "Ida y vuelta rápida con un golpe en el giro",
+  "fr": "Aller-retour rapide avec un coup au demi-tour",
+  "hi": "तेज़ आना-जाना, मोड़ पर एक झटके के साथ",
+  "it": "Andata e ritorno veloce con un colpo alla svolta",
+  "ja": "折り返しでガツンと決まる素早い往復",
+  "pt": "Ida e volta rápida com um impacto na virada",
+  "zh": "快速来回，折返处猛地一推"
+ },
+ "Gets stuck on the best bit — again, again, again": {
+  "de": "Bleibt am besten Moment hängen — nochmal, nochmal, nochmal",
+  "es": "Se atasca en lo mejor — otra vez, otra vez, otra vez",
+  "fr": "Reste bloqué sur le meilleur moment — encore, encore, encore",
+  "hi": "सबसे बढ़िया पल पर अटक जाता है — फिर, फिर, फिर",
+  "it": "Si incanta sul momento migliore — ancora, ancora, ancora",
+  "ja": "一番いいところで引っかかる — もう一回、もう一回、もう一回",
+  "pt": "Trava na melhor parte — de novo, de novo, de novo",
+  "zh": "卡在最精彩的一刻——一遍、一遍、又一遍"
+ },
+ "Slow-mo out, then whips back at full speed": {
+  "de": "In Zeitlupe hinaus, dann mit Vollgas zurück",
+  "es": "Sale a cámara lenta y vuelve a toda velocidad",
+  "fr": "Aller au ralenti, retour à toute vitesse",
+  "hi": "धीमे-धीमे आगे, फिर पूरी रफ़्तार से वापस",
+  "it": "Esce al rallentatore, poi torna indietro a tutta velocità",
+  "ja": "スローで進んで、全速力で戻る",
+  "pt": "Vai em câmera lenta e volta a toda a velocidade",
+  "zh": "慢动作出去，再全速弹回"
+ },
+ "Three sudden zooms onto the face": {
+  "de": "Drei plötzliche Zooms aufs Gesicht",
+  "es": "Tres zooms repentinos a la cara",
+  "fr": "Trois zooms soudains sur le visage",
+  "hi": "चेहरे पर तीन अचानक ज़ूम",
+  "it": "Tre zoom improvvisi sul viso",
+  "ja": "顔に向かっていきなり3回ズーム",
+  "pt": "Três zooms repentinos no rosto",
+  "zh": "对着脸突然放大三次"
+ },
+ "Every move leaves ghosts behind": {
+  "de": "Jede Bewegung hinterlässt Geister",
+  "es": "Cada movimiento deja fantasmas detrás",
+  "fr": "Chaque mouvement laisse des fantômes",
+  "hi": "हर हरकत अपने पीछे परछाइयाँ छोड़ती है",
+  "it": "Ogni movimento lascia dietro fantasmi",
+  "ja": "動くたびに残像が残る",
+  "pt": "Cada movimento deixa fantasmas para trás",
+  "zh": "每个动作都留下残影"
+ },
+ "One half copies the other": {
+  "de": "Eine Hälfte kopiert die andere",
+  "es": "Una mitad copia a la otra",
+  "fr": "Une moitié copie l'autre",
+  "hi": "एक आधा हिस्सा दूसरे की नकल करता है",
+  "it": "Una metà copia l'altra",
+  "ja": "半分がもう半分をそっくり真似する",
+  "pt": "Uma metade copia a outra",
+  "zh": "一半照着另一半"
+ },
+ "Plays it in reverse, for ever": {
+  "de": "Spielt es rückwärts, endlos",
+  "es": "Lo reproduce al revés, sin fin",
+  "fr": "Le joue à l'envers, à l'infini",
+  "hi": "इसे उल्टा चलाता है, हमेशा के लिए",
+  "it": "Lo riproduce al contrario, all'infinito",
+  "ja": "逆再生をずっと繰り返す",
+  "pt": "Reproduz ao contrário, para sempre",
+  "zh": "倒着播放，无限循环"
+ },
+ "The liveliest moment, looped with a twist — Snap, Stutter, Slingshot, Dramatic zoom, Echo trail or Mirror twins.": {
+  "de": "Der lebhafteste Moment als Schleife mit Pfiff — Schnapp, Stotterer, Steinschleuder, Dramatischer Zoom, Echo-Spur oder Spiegelzwillinge.",
+  "es": "El momento más animado, en bucle y con un giro — Rápido, Tartamudeo, Tirachinas, Zoom dramático, Estela fantasma o Gemelos espejo.",
+  "fr": "Le moment le plus animé, en boucle et avec une touche — Éclair, Bégaiement, Lance-pierre, Zoom dramatique, Traînée d'écho ou Jumeaux miroir.",
+  "hi": "सबसे जानदार पल, एक ट्विस्ट के साथ लूप में — झटपट, अटकन, गुलेल, ड्रामैटिक ज़ूम, परछाईं की लकीर या आईना जुड़वाँ।",
+  "it": "Il momento più vivace, in loop con un tocco in più — Scatto, Balbuzie, Fionda, Zoom drammatico, Scia d'eco o Gemelli allo specchio.",
+  "ja": "一番動きのある瞬間を、ひとひねりしてループ — スナップ、カクカク、パチンコ、ドラマチックズーム、残像エコー、ミラーツイン。",
+  "pt": "O momento mais animado, em loop com um toque especial — Estalo, Gaguejo, Estilingue, Zoom dramático, Rastro de eco ou Gêmeos de espelho.",
+  "zh": "最热闹的一刻，循环播放再加点花样——快闪、卡带、弹弓、戏剧变焦、残影或镜像双胞胎。"
  }
 }

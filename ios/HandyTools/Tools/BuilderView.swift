@@ -1597,7 +1597,7 @@ private struct ChainEditor: View {
         case .translate: return ["to": "en"]; case .rewrite: return ["style": "clear"]
         case .pdfShrink: return ["mb": "5"]; case .pdfLock: return ["password": ""]; case .pdfPages: return ["pages": ""]
         case .emojiFaces: return ["emoji": ChainText.faceEmojis[0]]; case .meme: return ["top": "", "bottom": ""]
-        case .videoSpeed: return ["speed": "slow"]; case .videoLoop: return ["style": "boomerang"]; case .videoCelebrate: return ["theme": "", "text": ""]
+        case .videoSpeed: return ["speed": "slow"]; case .videoLoop: return ["style": "snap"]; case .videoCelebrate: return ["theme": "", "text": ""]
         case .artFilter: return ["style": "sketch"]; case .voiceChange: return ["voice": "chipmunk"]
         default: return [:] }
     }
@@ -1740,9 +1740,15 @@ private struct ChainEditor: View {
                 .accessibilityIdentifier("celebrate-block-words")
             Text(L("For dragging the words, more fonts and any typed celebration, open the Celebrate tool.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .videoLoop:
-            Picker(L("Plays"), selection: Binding(get: { chain.steps[i].settings["style"] == "reverse" ? "reverse" : "boomerang" }, set: { chain.steps[i].settings["style"] = $0 })) {
-                Text(L("Forwards and back")).tag("boomerang"); Text(L("Backwards")).tag("reverse")
-            }.pickerStyle(.segmented)
+            let current = Boomerang.style(chain.steps[i].settings["style"]).id
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(Boomerang.styles) { st in
+                        HChip(text: "\(st.emoji) \(L(st.name))", selected: current == st.id) { chain.steps[i].settings["style"] = st.id }
+                    }
+                }
+            }
+            Text(L(Boomerang.style(current).line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         case .convertImage:
             Picker(L("Format"), selection: Binding(get: { chain.steps[i].settings["format"] ?? "JPG" }, set: { chain.steps[i].settings["format"] = $0 })) {
                 ForEach(ImageStudio.Format.allCases, id: \.rawValue) { Text($0.rawValue).tag($0.rawValue) }
@@ -2782,6 +2788,9 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                 ExpenseSheetCard(file: f, added: 1)
             } else if lext == "csv", chain.steps.last?.block == .makeTable {
                 TableFinishCard(csv: d, name: chain.fileName ?? "Table")
+            } else if lext == "gif", chain.steps.last?.block == .videoLoop, let v = inputVideo {
+                // Boomerang: every other style one tap away on the same moment.
+                BoomerangFinishCard(source: v, data: d, style: Boomerang.style(chain.steps.last?.settings["style"]).id, tool: chain.name)
             } else if lext == "gif" {
                 GIFFinishCard(data: d, shareURL: tempURL(d, ext), tool: chain.name, record: false)
             } else if chain.steps.last?.block == .sticker, let img = UIImage(data: d) {

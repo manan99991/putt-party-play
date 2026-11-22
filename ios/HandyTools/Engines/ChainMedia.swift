@@ -121,10 +121,8 @@ enum ChainMedia {
             return .success(.video(out))
 
         case (.videoLoop, .video(let url)):
-            // The first two and a half seconds, played forwards then backwards (or just backwards), for ever.
-            let length = await VideoEngine.duration(url)
-            let style = step.settings["style"]
-            guard let gif = await tenzyGIFFromVideo(url: url, start: 0, duration: min(max(length, 0.2), 2.5), fps: 10, speed: 1, maxDim: 400, order: { ChainText.loopOrder($0, style: style) }),
+            // The liveliest moment of the video, looped in the chosen style (Snap, Stutter, Slingshot, Dramatic zoom…).
+            guard let gif = await Boomerang.make(url, style: step.settings["style"]),
                   let d = try? Data(contentsOf: gif) else { return .failure(.failed(b)) }
             return .success(.file(d, ext: "gif"))
 

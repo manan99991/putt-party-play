@@ -136,7 +136,7 @@ extension Block {
         case .meme: return "Big white words across the top and bottom of the photo."
         case .emojiMosaic: return "Rebuilds the photo out of hundreds of emojis. Zoom in to see them."
         case .videoSpeed: return "Slow motion, or two or four times faster. Comes out without sound."
-        case .videoLoop: return "The first couple of seconds played forwards and back, as a GIF that loops for ever."
+        case .videoLoop: return "The liveliest moment, looped with a twist — Snap, Stutter, Slingshot, Dramatic zoom, Echo trail or Mirror twins."
         case .videoCelebrate: return "Snow, fireworks, diyas, lanterns — any of 50 celebrations, or one you type — with the greeting placed clear of faces."
         case .artFilter: return "Redraws the photo as a pencil sketch, a comic, black and white or pop art."
         case .voiceChange: return "Plays the recording as a chipmunk, a deep voice or a giant."

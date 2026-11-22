@@ -189,6 +189,57 @@ struct GIFFinishCard: View {
     }
 }
 
+/// A boomerang's finish: the GIF, and every other style one tap away on the same moment (the frames are kept, so a
+/// switch takes a moment, not another trip through the video).
+struct BoomerangFinishCard: View {
+    let source: URL
+    @State var data: Data
+    @State var style: String
+    var tool = "Boomerang"
+    @State private var busy: String?
+    @State private var problem: String?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            GIFFinishCard(data: data, shareURL: nil, tool: tool, record: false).id(data.hashValue)
+            Text(L("Try another style")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(Boomerang.styles) { st in
+                        Button { change(st.id) } label: {
+                            HStack(spacing: 4) {
+                                if busy == st.id { ProgressView().controlSize(.mini) } else { Text(st.emoji) }
+                                Text(L(st.name)).font(HandyFont.caption)
+                            }
+                            .padding(.horizontal, 12).padding(.vertical, 8)
+                            .background(style == st.id ? HandyColor.accent : HandyColor.surface, in: Capsule())
+                            .foregroundStyle(style == st.id ? Color.white : HandyColor.textPrimary)
+                        }
+                        .buttonStyle(.plain).disabled(busy != nil)
+                        .accessibilityIdentifier("boomerang-\(st.id)")
+                    }
+                }
+            }
+            .accessibilityIdentifier("boomerang-styles")
+            Text(L(Boomerang.style(style).line)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            if let problem { Text(L(problem)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+        }
+    }
+
+    private func change(_ id: String) {
+        guard id != style else { return }
+        busy = id; problem = nil
+        Task {
+            let out = await Boomerang.make(source, style: id)
+            let d = out.flatMap { try? Data(contentsOf: $0) }
+            await MainActor.run {
+                busy = nil
+                if let d { data = d; style = id } else { problem = "That style couldn't be made from this video." }
+            }
+        }
+    }
+}
+
 enum VideoSaver {
     static func save(_ url: URL) async -> Bool {
         let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
