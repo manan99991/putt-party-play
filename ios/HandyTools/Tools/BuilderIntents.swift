@@ -164,12 +164,75 @@ struct FlashlightPatternIntent: AppIntent {
     }
 }
 
+/// Any Tenzy tool by name, for Siri and Shortcuts: "Open Translate in Tenzy", "Tenzy Flashlight".
+struct AppToolEntity: AppEntity {
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Tenzy tool"
+    static let defaultQuery = AppToolQuery()
+    var id: String
+    var name: String
+    var blurb: String
+    var displayRepresentation: DisplayRepresentation { DisplayRepresentation(title: "\(name)", subtitle: "\(blurb)") }
+}
+
+struct AppToolQuery: EntityStringQuery {
+    @MainActor private static func all() -> [AppToolEntity] {
+        TOOLS.map { AppToolEntity(id: $0.id, name: L($0.name), blurb: L($0.blurb)) }
+    }
+    func entities(for identifiers: [String]) async throws -> [AppToolEntity] {
+        let all = await AppToolQuery.all()
+        return identifiers.compactMap { id in all.first { $0.id == id } }
+    }
+    func entities(matching string: String) async throws -> [AppToolEntity] {
+        let q = string.lowercased()
+        let hits = await MainActor.run { searchTools(string).map(\.id) }
+        let all = await AppToolQuery.all()
+        let byName = all.filter { $0.name.lowercased().contains(q) }
+        let ranked = hits.compactMap { id in all.first { $0.id == id } }
+        var seen = Set<String>()
+        return (byName + ranked).filter { seen.insert($0.id).inserted }
+    }
+    func suggestedEntities() async throws -> [AppToolEntity] { await AppToolQuery.all() }
+}
+
+/// A tool asked for while Tenzy was closed: kept here until Tenzy is on screen to open it.
+enum AppToolLaunch {
+    static let pendingKey = "siri.pendingTool"
+    static func takePending() -> String? {
+        let d = UserDefaults.standard
+        defer { d.removeObject(forKey: pendingKey) }
+        return d.string(forKey: pendingKey)
+    }
+}
+
+/// "Open [tool] in Tenzy": any of Tenzy's own tools, ready to use.
+struct OpenAppToolIntent: AppIntent {
+    static let title: LocalizedStringResource = "Open a Tenzy Tool"
+    static let description: IntentDescription? = IntentDescription("Opens any Tenzy tool by name — Flashlight, Scan, Translate, Medicine Reminders and the rest.")
+    static let openAppWhenRun: Bool = true
+
+    @Parameter(title: "Tool") var tool: AppToolEntity
+
+    static var parameterSummary: some ParameterSummary { Summary("Open \(\.$tool)") }
+
+    @MainActor
+    func perform() async throws -> some IntentResult {
+        UserDefaults.standard.set(tool.id, forKey: AppToolLaunch.pendingKey)
+        if UIApplication.shared.applicationState == .active, let id = AppToolLaunch.takePending() {
+            NotificationCenter.default.post(name: .openTool, object: id)
+        }
+        return .result()
+    }
+}
+
 /// Makes the actions findable in Shortcuts, Spotlight and Siri without any setup.
 struct TenzyShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
         AppShortcut(intent: OpenToolIntent(),
                     phrases: ["Open a \(.applicationName) tool", "Run a \(.applicationName) tool"],
                     shortTitle: "Open a Tool", systemImageName: "wand.and.stars")
+        AppShortcut(intent: OpenAppToolIntent(),
+                    phrases: ["Open \(\.$tool) in \(.applicationName)", "\(.applicationName) \(\.$tool)", "Use \(.applicationName) \(\.$tool)"],
+                    shortTitle: "Open a Tenzy Tool", systemImageName: "square.grid.2x2.fill")
         AppShortcut(intent: FlashlightPatternIntent(),
                     phrases: ["Start SOS light in \(.applicationName)", "\(.applicationName) SOS light", "Start \(\.$pattern) in \(.applicationName)"],
                     shortTitle: "Flashlight SOS", systemImageName: "light.beacon.max.fill")

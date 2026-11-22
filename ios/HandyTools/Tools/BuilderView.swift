@@ -497,6 +497,9 @@ struct BuilderView: View {
     @State private var backToMine = false
     @State private var showTemplates = false
     @State private var shelf: HomeShelves.Shelf?
+    /// The first-minute demo: until it's tried or dismissed, Home offers to show a real job on a sample.
+    @AppStorage("tenzy.firstTry") private var triedFirst = false
+    @State private var demoRun: Chain?
 
     var body: some View {
         // Scrolls when the page is taller than the phone (small phones, big text), so nothing ever sits under the
@@ -510,6 +513,7 @@ struct BuilderView: View {
             hero
             if let b = builtIn { builtInCard(b) }
             if let note { Text(note).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
+            if !triedFirst, !Launch.screenshots, builtIn == nil, ask.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { firstTry }
             anythingTiles
             shelfTiles
             HStack(spacing: HandySpacing.s8) {
@@ -534,6 +538,7 @@ struct BuilderView: View {
             }
         }
         .sheet(item: $running, onDismiss: returnToMine) { c in NavigationStack { ChainRunView(chain: c) } }
+        .sheet(item: $demoRun) { c in NavigationStack { ChainRunView(chain: c, initial: .image(SampleAssets.photo()), demo: true) } }
         .sheet(item: $shelf) { sh in
             ShelfSheet(shelf: sh) { id in
                 shelf = nil
@@ -984,6 +989,33 @@ struct BuilderView: View {
                 }.buttonStyle(.plain).accessibilityIdentifier("have-reminders")
             }
         }
+    }
+
+    /// "See it work in 10 seconds": one real job on a sample photo — the phone number hidden, where it was taken
+    /// removed, made small enough to send — so a new person sees Tenzy work before doing anything themselves.
+    private var firstTry: some View {
+        HStack(spacing: HandySpacing.s12) {
+            Image(systemName: "play.circle.fill").font(.system(size: 26)).foregroundStyle(HandyColor.accent).accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(L("See it work in 10 seconds")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                Text(L("Hide private details, remove location, shrink — on a sample")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).lineLimit(2)
+            }
+            Spacer(minLength: 0)
+            Button(L("Try it")) {
+                triedFirst = true
+                if let c = ChainTemplates.all.first(where: { $0.id == BuilderIntro.demoID }) { demoRun = c }
+            }
+            .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.onAccent)
+            .padding(.horizontal, 14).frame(minHeight: 40)
+            .background(HandyColor.accent, in: Capsule())
+            .buttonStyle(.plain).accessibilityIdentifier("first-try")
+            Button { withAnimation { triedFirst = true } } label: {
+                Image(systemName: "xmark").font(.system(size: 13, weight: .bold)).foregroundStyle(HandyColor.textSecondary).frame(width: 32, height: 40)
+            }
+            .buttonStyle(.plain).accessibilityLabel(L("Not now"))
+        }
+        .padding(.horizontal, HandySpacing.s12).padding(.vertical, 8)
+        .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 
     private func smallTile(_ title: String, icon: String, hex: UInt32) -> some View {
@@ -1883,6 +1915,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     var initial: ChainPayload? = nil
     /// Several photos picked at once (from "What to do with it"): each one gets the same steps, like a batch picked here.
     var initialMany: [ChainPayload] = []
+    /// Home's first-minute demo on a sample: shown working for everyone, Pro or not (nothing of theirs is used).
+    var demo = false
     @State private var started = false
     @State private var inputVideo: URL?
     /// The photos a flipbook was made from, so its finish can try every other animation on them.
@@ -1955,7 +1989,7 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     /// A QR-making result gets the long-press "what's inside this code" preview; ordinary photos don't.
     private var isQRResult: Bool { chain.steps.contains { [.makeQr, .contactQr, .wifiQr].contains($0.block) } }
     /// A free user can't run a tool that uses a Pro step; they see the lock card instead of the inputs.
-    private var locked: Bool { !store.isPremium && chain.needsPro && !Launch.uitest && !AppEnv.isTestBuild }
+    private var locked: Bool { !demo && !store.isPremium && chain.needsPro && !Launch.uitest && !AppEnv.isTestBuild }
 
     /// The tool as it runs this time: a meme step takes the words typed on this screen.
     private var runChain: Chain {

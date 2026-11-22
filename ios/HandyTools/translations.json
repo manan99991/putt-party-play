@@ -40978,5 +40978,35 @@
   "ja": "今日をもっと楽にしよう",
   "pt": "Vamos facilitar o seu dia",
   "zh": "让今天更轻松"
+ },
+ "See it work in 10 seconds": {
+  "de": "In 10 Sekunden in Aktion sehen",
+  "es": "Míralo funcionar en 10 segundos",
+  "fr": "Voyez-le à l'œuvre en 10 secondes",
+  "hi": "10 सेकंड में काम करते देखो",
+  "it": "Guardalo all'opera in 10 secondi",
+  "ja": "10秒で動きを見てみよう",
+  "pt": "Veja a funcionar em 10 segundos",
+  "zh": "10 秒看它如何工作"
+ },
+ "Hide private details, remove location, shrink — on a sample": {
+  "de": "Private Details verbergen, Ort entfernen, verkleinern – an einem Beispiel",
+  "es": "Oculta datos privados, quita la ubicación, reduce — en un ejemplo",
+  "fr": "Masquer les infos privées, retirer le lieu, réduire — sur un exemple",
+  "hi": "निजी जानकारी छिपाओ, लोकेशन हटाओ, छोटा करो — एक नमूने पर",
+  "it": "Nascondi dati privati, togli la posizione, riduci — su un esempio",
+  "ja": "個人情報を隠す、位置情報を削除、縮小 — サンプルで",
+  "pt": "Ocultar dados privados, remover a localização, reduzir — num exemplo",
+  "zh": "隐藏隐私信息、去掉位置、压缩 — 用示例试试"
+ },
+ "Try it": {
+  "de": "Ausprobieren",
+  "es": "Pruébalo",
+  "fr": "Essayer",
+  "hi": "आज़माओ",
+  "it": "Provalo",
+  "ja": "試す",
+  "pt": "Experimentar",
+  "zh": "试一试"
  }
 }

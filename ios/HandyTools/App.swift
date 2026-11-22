@@ -44,6 +44,11 @@ struct TenzyApp: App {
             .onChange(of: phase) { _, p in
                 // Every time Tenzy comes to the front: check the "tell me when…" alerts, and book the next background check.
                 if p == .active, !Launch.uitest { Task { await SmartAlerts.checkAll(); await DailyBrief.refresh(); await PageWatcher.checkAll() }; SmartAlerts.scheduleBackground() }
+                // "Open Translate in Tenzy" said while Tenzy was closed: open that tool now it's on screen.
+                if p == .active, let id = AppToolLaunch.takePending() {
+                    showOnboarding = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { NotificationCenter.default.post(name: .openTool, object: id) }
+                }
                 // A flashlight shortcut that ran while Tenzy was closed: open Flashlight+, which starts the pattern.
                 if p == .active, UserDefaults.standard.string(forKey: TorchExtras.pendingKey) != nil {
                     showOnboarding = false
@@ -53,6 +58,8 @@ struct TenzyApp: App {
             .onAppear {
                 if let r = Launch.route, r.hasPrefix("onboarding") { onboardingPage = Int(r.dropFirst("onboarding".count)).map { $0 - 1 } ?? 0; showOnboarding = true }
                 if crashReport == nil, !Launch.uitest { crashReport = Diagnostics.shared.takePendingCrash() }
+                RatingAsk.noteLaunch()
+                TenzyShortcuts.updateAppShortcutParameters()   // Siri learns every tool name, in the chosen language
             }
             .onOpenURL { url in
                 // A file opened in Tenzy from the Share sheet / "Open in…" (Files, Downloads, Mail, Safari…):

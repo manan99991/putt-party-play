@@ -120,7 +120,7 @@ struct KeepShare: View {
             }
         }
         .sheet(isPresented: $exporting) {
-            FilesExporter(urls: urls) { ok in exporting = false; if ok { saved = .files; note = nil } }.ignoresSafeArea()
+            FilesExporter(urls: urls) { ok in exporting = false; if ok { saved = .files; note = nil; RatingAsk.keptSomething() } }.ignoresSafeArea()
         }
     }
 
@@ -160,6 +160,7 @@ struct KeepShare: View {
                 }
             }
             saved = .photos; note = nil
+            RatingAsk.keptSomething()
         } catch {
             note = L("Photos couldn't take this file, so it's offered as a file instead.")
             exporting = true
