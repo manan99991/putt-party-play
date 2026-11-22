@@ -48,38 +48,36 @@ jobs:
           # Install + warm up once, so the recording starts on a launched app, not a cold boot.
           TEST_RUNNER_PREVIEW_TOUR=warm xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools -destination "id=$UDID" \
             -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO >/dev/null 2>&1 || true
-          xcrun simctl io "$UDID" recordVideo --codec h264 --force preview/raw.mov &
-          REC=$!
-          T0=$(python3 -c 'import time;print(time.time())')
-          # Stream the test log through a pseudo-terminal (`script`), so lines arrive as they happen — through a plain
-          # pipe xcodebuild buffers them, and the marks were timed late. Each XCTContext mark is noted on this clock.
+          # The recorder starts when the tour says TOUR-START (the test then holds on Home for 6 s while it spins up)
+          # and stops at TOUR-END, so the film holds the tour and nothing else. Marks arrive live through a pty.
           script -q /dev/null env TEST_RUNNER_PREVIEW_TOUR=1 xcodebuild test-without-building -project HandyTools.xcodeproj -scheme HandyTools \
             -destination "id=$UDID" -derivedDataPath build -only-testing:HandyToolsUITests/PreviewTourTests CODE_SIGNING_ALLOWED=NO 2>&1 \
             | while IFS= read -r line; do
-                for m in TOUR-START DEMO-TAP DEMO-RESULT TOUR-END; do
+                for m in TOUR-START PLAY DEMO-TAP DEMO-RESULT TOUR-END; do
                   case "$line" in *"$m"*) [ -f "preview/$m.t" ] || python3 -c 'import time;print(time.time())' > "preview/$m.t" ;; esac
                 done
+                case "$line" in
+                  *TOUR-START*) [ -f preview/rec.pid ] || { xcrun simctl io "$UDID" recordVideo --codec h264 --force preview/raw.mov & echo $! > preview/rec.pid; } ;;
+                  *TOUR-END*) sleep 1; [ -f preview/rec.pid ] && kill -INT "$(cat preview/rec.pid)" ;;
+                esac
                 case "$line" in *error:*|*"Test Case"*|*TEST\ *) echo "$line";; esac
               done
-          sleep 1
-          T1=$(python3 -c 'import time;print(time.time())')
-          kill -INT $REC; wait $REC || true
+          sleep 3
           D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 preview/raw.mov)
-          # Times on the video, counted from when recording began (the marks now arrive live, so this clock is right;
-          # counting back from the end was wrong because the recorder stops writing once the screen goes still).
-          # The demo's wait on this slow simulator is cut down to a beat; everything else is shown as it happened.
+          # Video times counted back from its end (= TOUR-END + 1 s). Show 1 s of Home before PLAY; the demo's wait
+          # on this slow simulator, if long, is cut to a beat.
           python3 - <<PY
           import os
-          t0=$T0; t1=$T1; d=float("$D" or 0)
-          def at(m, default):
-              p=f"preview/{m}.t"
-              return float(open(p).read())-t0+0.4 if os.path.exists(p) else default
-          s=at("TOUR-START", d-35); e=at("TOUR-END", d-1)
-          tap=at("DEMO-TAP", None); res=at("DEMO-RESULT", None)
-          segs=[[s, tap+1.5], [res-0.4, e]] if tap is not None and res is not None and res-tap > 3 else [[s, e]]
+          d=float("$D" or 0)
+          def t(m): p=f"preview/{m}.t"; return float(open(p).read()) if os.path.exists(p) else None
+          end=t("TOUR-END") or 0
+          def at(m):
+              x=t(m); return None if x is None else d-(end+1-x)
+          play=at("PLAY") or max(0,d-30); tap=at("DEMO-TAP"); res=at("DEMO-RESULT")
+          s=max(0, play-1.0); e=d
+          segs=[[s, tap+1.5], [res-0.4, e]] if tap is not None and res is not None and res-tap > 4 else [[s, e]]
           total=sum(b-a for a,b in segs)
           if total > 30: segs[-1][1] -= total-30
-          segs=[[max(0,a),b] for a,b in segs]
           open("preview/cut.txt","w").write(" ".join(f"{a:.2f} {b:.2f}" for a,b in segs)+"\n")
           print("recording", d, "s; segments", segs, "length", sum(b-a for a,b in segs))
           PY

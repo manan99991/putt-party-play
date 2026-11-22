@@ -24,8 +24,10 @@ final class PreviewTourTests: XCTestCase {
             return
         }
 
-        mark("TOUR-START")                         // the workflow cuts the video from here (30 s in all)
-        sleep(1)                                   // the headline and Home, still
+        mark("TOUR-START")                         // the workflow starts recording now…
+        sleep(6)                                   // …and the recorder takes a few seconds to spin up
+        mark("PLAY")                               // the film shows 1 s of Home before this, then the tour
+        sleep(1)
 
         any["first-try"].tap()                     // a real job on a sample: hidden, stripped, shrunk
         mark("DEMO-TAP")
