@@ -236,6 +236,14 @@ function roundOnSink(shots,stars){if(!IN_ROUND)return;const r=rget();if(!r)retur
 function roundNext(){const r=rget();if(!r){reset();return;}const next=r.holes[roundIdx()+1];if(next)location.href="../"+next+"/?round="+r.round;else location.href="../play/?done="+r.round;}
 again.onclick=()=>{ if(IN_ROUND) roundNext(); else reset(); };
 // SWAYING "PUTT PARTY" FLAG at the cup (owner 31 Oct): black cloth, white text, constant sway.
+function drawRealCup(){   /* REAL HOLE (owner 22 Nov: "put an actual hole instead of a tunnel that looks like it, with the flag going in"): soft lip shadow, white cup liner, dark hole, the far inside wall lit — and the flag stands IN the hole. Capture physics unchanged. */
+ const cxp=toX(cup.u),cyp=toY(cup.v),FL=0.5,r=Math.max(5,BALLR*S()*1.55);g.save();
+ g.beginPath();g.ellipse(cxp,cyp+r*0.08,r*1.5,r*1.5*FL,0,0,7);g.fillStyle="rgba(0,0,0,0.17)";g.fill();
+ g.beginPath();g.ellipse(cxp,cyp,r*1.13,r*1.13*FL,0,0,7);g.fillStyle="#f3efe6";g.fill();
+ const hg=g.createLinearGradient(0,cyp-r*FL,0,cyp+r*FL);hg.addColorStop(0,"#040604");hg.addColorStop(1,"#1a2617");
+ g.beginPath();g.ellipse(cxp,cyp,r,r*FL,0,0,7);g.fillStyle=hg;g.fill();
+ g.save();g.beginPath();g.ellipse(cxp,cyp,r,r*FL,0,0,7);g.clip();g.beginPath();g.ellipse(cxp,cyp-r*FL*0.62,r*1.02,r*FL*0.7,0,0,7);g.fillStyle="rgba(228,224,212,0.9)";g.fill();g.beginPath();g.ellipse(cxp,cyp-r*FL*0.18,r*1.02,r*FL*0.55,0,0,7);g.fillStyle="#0b120a";g.fill();g.restore();
+ g.restore();if(GCFG.flag&&GCFG.flag.on)drawFlag(cxp,cyp);}
 function drawFlag(cxp,cyp){
   var ph=GCFG.flag.h*scl()*1.7,fw=ph*0.74,fh=ph*0.48,top=cyp-ph,amp=fw*0.15,ft=Date.now()/560,SEG=10,i,u;
   g.save();g.lineCap="round";
@@ -1002,7 +1010,7 @@ if(EDIT){edraw();drawAmbient();return;}
  if(OBJS.length)drawObjs();   // editor-placed pieces, under the whirlpool + ball
  // WHIRLPOOL drop-zone: drawn FLAT on the ground (foreshortened ellipse for the 3/4 view), animated swirl + a dark cup hole
  // NETFLIX-STYLE FUNNEL CUP: a raised rim around a dished pit that slants down to the hole. A slow ball rolls down the slope and drops; a too-hard ball rides the far lip and escapes (physics handles that via the over-hit latch above). The dish radius = whirlR, so what you SEE is exactly what grabs.
- {const cxp=toX(cup.u),cyp=toY(cup.v),R=whirlR*S(),FLAT=0.52,cr=CUPR*S();
+ drawRealCup();if(false){const cxp=toX(cup.u),cyp=toY(cup.v),R=whirlR*S(),FLAT=0.52,cr=CUPR*S();
   // FUNNEL = the course colour, ~2 shades darker (owner), with gentle bowl shading — NOT near-black.
   const base=_shade(turfRGB,0.72);   // "course colour + 2 shades darker"
   const rimEdge=_shade(turfRGB,0.52),rimDark=_shade(turfRGB,0.64),rimLit=_shade(turfRGB,0.92),rimTop=_shade(turfRGB,1.06);
