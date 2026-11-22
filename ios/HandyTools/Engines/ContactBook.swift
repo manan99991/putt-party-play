@@ -37,24 +37,42 @@ enum ContactBook {
         var sortKey: String { (family.isEmpty ? name : family + " " + given).lowercased() }
     }
 
-    /// The one-tap filters. Each is plain words a person would use.
+    /// The one-tap filters. Each is plain words a person would use, and most come in pairs — "No phone" and its
+    /// opposite "Has a phone" — so any contact can be found from either side.
     enum Filter: String, CaseIterable, Identifiable {
-        case favorite, emergency, important, noPhone, noEmail, noPhoto, work, home, mobile, social, birthday, company
+        case favorite, emergency, important
+        case noPhone, hasPhone, noEmail, hasEmail, noFirst, hasFirst, noLast, hasLast, noCompany, company
+        case noPhoto, hasPhoto, noBirthday, birthday, noAddress, hasAddress, emailOnly, phoneOnly, noMobile, mobile
+        case work, home, social
         var id: String { rawValue }
         var title: String {
             switch self {
             case .favorite: return "Favorites"
             case .emergency: return "Emergency"
             case .important: return "Important"
-            case .noPhone: return "No phone"
+            case .noPhone: return "No phone number"
+            case .hasPhone: return "Has a phone number"
             case .noEmail: return "No email"
+            case .hasEmail: return "Has an email"
+            case .noFirst: return "No first name"
+            case .hasFirst: return "Has a first name"
+            case .noLast: return "No last name"
+            case .hasLast: return "Has a last name"
+            case .noCompany: return "No company"
+            case .company: return "Has a company"
             case .noPhoto: return "No photo"
+            case .hasPhoto: return "Has a photo"
+            case .noBirthday: return "No birthday"
+            case .birthday: return "Has a birthday"
+            case .noAddress: return "No address"
+            case .hasAddress: return "Has an address"
+            case .emailOnly: return "Only an email"
+            case .phoneOnly: return "Only a phone number"
+            case .noMobile: return "No mobile number"
+            case .mobile: return "Has a mobile number"
             case .work: return "Work"
             case .home: return "Home"
-            case .mobile: return "Mobile"
             case .social: return "Social media"
-            case .birthday: return "Birthdays"
-            case .company: return "Has a company"
             }
         }
         var icon: String {
@@ -63,16 +81,38 @@ enum ContactBook {
             case .emergency: return "cross.case.fill"
             case .important: return "exclamationmark.circle.fill"
             case .noPhone: return "phone.down"
+            case .hasPhone: return "phone.fill"
             case .noEmail: return "envelope.badge"
+            case .hasEmail: return "envelope.fill"
+            case .noFirst, .noLast: return "person.fill.questionmark"
+            case .hasFirst, .hasLast: return "person.fill.checkmark"
+            case .noCompany: return "building.2.crop.circle"
+            case .company: return "building.2.fill"
             case .noPhoto: return "person.crop.circle.badge.questionmark"
-            case .work: return "briefcase"
-            case .home: return "house"
+            case .hasPhoto: return "person.crop.circle.fill"
+            case .noBirthday: return "gift"
+            case .birthday: return "gift.fill"
+            case .noAddress: return "mappin.slash"
+            case .hasAddress: return "mappin.and.ellipse"
+            case .emailOnly: return "at"
+            case .phoneOnly: return "phone.connection"
+            case .noMobile: return "iphone.slash"
             case .mobile: return "iphone"
-            case .social: return "bubble.left.and.bubble.right"
-            case .birthday: return "gift"
-            case .company: return "building.2"
+            case .work: return "briefcase.fill"
+            case .home: return "house.fill"
+            case .social: return "bubble.left.and.bubble.right.fill"
             }
         }
+        /// The other side of a pair ("No email" ↔ "Has an email"); nil for marks and kinds.
+        var opposite: Filter? { Self.pairs.first { $0.0 == self }?.1 ?? Self.pairs.first { $0.1 == self }?.0 }
+        /// What's missing first, the opposite next to it.
+        static let pairs: [(Filter, Filter)] = [
+            (.noPhone, .hasPhone), (.noEmail, .hasEmail), (.noFirst, .hasFirst), (.noLast, .hasLast),
+            (.noCompany, .company), (.noPhoto, .hasPhoto), (.noBirthday, .birthday), (.noAddress, .hasAddress),
+            (.noMobile, .mobile), (.emailOnly, .phoneOnly),
+        ]
+        static let marks: [Filter] = [.favorite, .emergency, .important]
+        static let kinds: [Filter] = [.work, .home, .social]
     }
 
     /// Tenzy's own marks (iPhone doesn't let apps change its Favorites or Medical ID).
@@ -99,20 +139,42 @@ enum ContactBook {
     }
 
     static func passes(_ p: Person, _ f: Filter, tags: Set<Tag>) -> Bool {
+        func blank(_ s: String) -> Bool { s.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
         switch f {
         case .favorite: return tags.contains(.favorite)
         case .emergency: return tags.contains(.emergency)
         case .important: return tags.contains(.important)
         case .noPhone: return p.phones.isEmpty
+        case .hasPhone: return !p.phones.isEmpty
         case .noEmail: return p.emails.isEmpty
+        case .hasEmail: return !p.emails.isEmpty
+        case .noFirst: return blank(p.given)
+        case .hasFirst: return !blank(p.given)
+        case .noLast: return blank(p.family)
+        case .hasLast: return !blank(p.family)
+        case .noCompany: return blank(p.company)
+        case .company: return !blank(p.company)
         case .noPhoto: return !p.hasPhoto
+        case .hasPhoto: return p.hasPhoto
+        case .noBirthday: return !(p.birthday?.month != nil && p.birthday?.day != nil)
+        case .birthday: return p.birthday?.month != nil && p.birthday?.day != nil
+        case .noAddress: return p.addresses.isEmpty
+        case .hasAddress: return !p.addresses.isEmpty
+        case .emailOnly: return p.phones.isEmpty && !p.emails.isEmpty
+        case .phoneOnly: return !p.phones.isEmpty && p.emails.isEmpty
+        case .noMobile: return !p.phones.contains { kind($0.label) == "mobile" }
+        case .mobile: return p.phones.contains { kind($0.label) == "mobile" }
         case .work: return !p.company.isEmpty || (p.phones + p.emails + p.addresses).contains { kind($0.label) == "work" }
         case .home: return (p.phones + p.emails + p.addresses).contains { kind($0.label) == "home" }
-        case .mobile: return p.phones.contains { kind($0.label) == "mobile" }
         case .social: return !p.socials.isEmpty
-        case .birthday: return p.birthday?.month != nil && p.birthday?.day != nil
-        case .company: return !p.company.isEmpty
         }
+    }
+
+    /// How many people each filter finds — what the finder shows on every button. Pure.
+    static func counts(_ people: [Person], tags: [String: Set<Tag>]) -> [Filter: Int] {
+        var out: [Filter: Int] = [:]
+        for f in Filter.allCases { out[f] = people.filter { passes($0, f, tags: tags[$0.id] ?? []) }.count }
+        return out
     }
 
     /// Search by any part of the name, company, job title, email, or the digits of a number.

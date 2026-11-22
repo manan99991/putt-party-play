@@ -3,99 +3,44 @@ import Contacts
 import ContactsUI
 import PhotosUI
 
-/// Contacts Pro — every contact in one fast list: search anything, one-tap filters (no phone, no email, work,
-/// home, social, birthdays, your Favorite / Emergency / Important marks), groups and accounts, then select
-/// many and export (Excel or contact cards), email, save to the cloud, group, mark or delete — always
-/// confirmed. Tap a person for their photo, marks, one-tap call/text/email/directions, birthday and
-/// "plan a call or visit".
+/// Contacts — nothing open by default: every way to find people is on one screen, in pairs ("No phone number" next
+/// to "Has a phone number", "No email" next to "Has an email", first name, last name, company, photo, birthday,
+/// address, mobile, only-an-email ↔ only-a-phone), plus your marks, work / home / social, groups and accounts. Each
+/// shows how many people it finds. Tap one and only those people open — all ticked — ready to send to someone,
+/// save as a spreadsheet, back up, email, mark, group, fix in one go or delete (always confirmed). Narrow it down
+/// with more conditions or flip to the opposite in one tap. Search finds anyone by name, company, number or email.
 struct ContactsBookView: View {
     @State private var people: [ContactBook.Person] = []
     @State private var groups: [ContactBook.Group] = []
     @State private var accounts: [String] = []
     @State private var tags: [String: Set<ContactBook.Tag>] = ContactTags.load()
+    @State private var counts: [ContactBook.Filter: Int] = [:]
     @State private var loading = false
     @State private var query = ""
-    @State private var filters: Set<ContactBook.Filter> = []
-    @State private var group: String?
-    @State private var account: String?
-    @State private var selecting = false
-    @State private var picked: Set<String> = []
+    @State private var finding: ContactFinding?
     @State private var open: ContactBook.Person?
-    @State private var exportURL: URL?
-    @State private var confirmDelete = false
-    @State private var showGroupPicker = false
-    @State private var note: String?
-    @State private var showMail: URL?
     @AppStorage("birthdays.on") private var birthdaysOn = false
     @AppStorage("birthdays.hour") private var birthdayHour = 9
     @State private var notifOff = false
-    @State private var editing: ContactBook.BulkField?
-    @State private var editValue = ""
-    @State private var backupURL: URL?
-    @State private var backupEvery = ContactBackupReminder.every
-    @State private var backupNote: String?
-
-    private var shown: [ContactBook.Person] {
-        ContactBook.filtered(people, query: query, filters: filters, group: group, account: account, tags: tags)
-    }
-    private var chosen: [ContactBook.Person] { people.filter { picked.contains($0.id) } }
+    @State private var note: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             searchBar
-            filterChips
-            scopeRow
-            if loading { HStack { BusySpinner(); Text(L("Reading your contacts…")).font(HandyFont.caption) } }
-            HStack {
-                Text("\(shown.count) \(L("of")) \(people.count) \(L("contacts"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                Spacer()
-                Button(selecting ? L("Done") : L("Select")) { selecting.toggle(); picked = [] }.textButton().accessibilityIdentifier("book-select")
-            }
-            if selecting {
-                HStack {
-                    Button(picked.count == shown.count && !shown.isEmpty ? L("Select none") : "\(L("Select all")) \(shown.count)") {
-                        picked = picked.count == shown.count ? [] : Set(shown.map(\.id))
-                    }.textButton().font(HandyFont.caption)
-                    Spacer()
-                    Text("\(picked.count) \(L("selected"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                }
+            if !query.trimmingCharacters(in: .whitespaces).isEmpty {
+                searchResults
+            } else {
+                finder
             }
             if let note { Label(L(note), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
-            LazyVStack(spacing: 6) {
-                ForEach(shown) { p in row(p) }
-            }
-            if !loading && shown.isEmpty && !people.isEmpty {
-                EmptyState(icon: "magnifyingglass", line: "No one matches", sub: "Clear a filter or try fewer letters.")
-            }
             birthdayCard
-            backupCard
         }
-        .alert(L(editing?.title ?? ""), isPresented: Binding(get: { editing != nil }, set: { if !$0 { editing = nil } })) {
-            TextField(L(editing?.prompt ?? ""), text: $editValue)
-                .keyboardType(editing == .countryCode ? .phonePad : .default)
-            Button("\(L("Change")) \(picked.count)") { if let f = editing { bulkEdit(f, editValue) } }
-            Button(L("Cancel"), role: .cancel) {}
-        } message: {
-            Text(editing == .countryCode
-                 ? L("Numbers that already start with + or 00 are left as they are. A leading 0 is dropped, the way international dialling needs.")
-                 : L("This changes the contact on your iPhone and the account it syncs to."))
-        }
-        .safeAreaInset(edge: .bottom) { if selecting && !picked.isEmpty { bulkBar } }
         .task { if people.isEmpty { await reload() } }
+        .sheet(item: $finding, onDismiss: { tags = ContactTags.load(); Task { await reload() } }) { f in
+            NavigationStack { ContactResultsView(people: people, groups: groups, finding: f) }
+        }
         .sheet(item: $open, onDismiss: { tags = ContactTags.load(); Task { await reload() } }) { p in
             NavigationStack { ContactDetailView(person: p, groups: groups) }
-        }
-        .sheet(isPresented: $showGroupPicker) {
-            NavigationStack { GroupPickerView(groups: groups, ids: Array(picked)) { msg in note = msg; selecting = false; picked = []; Task { await reload() } } }
-        }
-        .sheet(item: Binding(get: { showMail.map { MailFile(url: $0) } }, set: { showMail = $0?.url })) { f in
-            MailComposer(subject: "Contacts", body: "Attached: \(chosen.count) contacts from Tenzy.", attachment: f.url)
-        }
-        .confirmationDialog("\(L("Delete")) \(picked.count) \(L("contacts?"))", isPresented: $confirmDelete, titleVisibility: .visible) {
-            Button("\(L("Delete")) \(picked.count) \(L("contacts"))", role: .destructive) { deleteChosen() }
-            Button(L("Keep them"), role: .cancel) {}
-        } message: {
-            Text(L("They're removed from your iPhone and every account they sync to (iCloud, Gmail, Outlook). iPhone has no contacts trash, so this can't be undone — export them first if you might need them."))
         }
     }
 
@@ -113,187 +58,108 @@ struct ContactsBookView: View {
         .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
     }
 
-    private var filterChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 6) {
-                ForEach(ContactBook.Filter.allCases) { f in
-                    let on = filters.contains(f)
-                    let n = people.filter { ContactBook.passes($0, f, tags: tags[$0.id] ?? []) }.count
-                    Button { if on { filters.remove(f) } else { filters.insert(f) } } label: {
-                        Label("\(L(f.title)) \(n)", systemImage: f.icon).font(HandyFont.caption)
-                            .padding(.horizontal, 10).padding(.vertical, 7)
-                            .background(on ? HandyColor.accent : HandyColor.surface, in: Capsule())
-                            .foregroundStyle(on ? HandyColor.onAccent : HandyColor.textPrimary)
-                            .overlay(Capsule().stroke(HandyColor.border, lineWidth: on ? 0 : 1))
-                    }.buttonStyle(.plain).accessibilityAddTraits(on ? .isSelected : [])
+    /// While typing: who matches, and one tap to work on all of them.
+    private var searchResults: some View {
+        let found = ContactBook.filtered(people, query: query, filters: [], group: nil, account: nil, tags: tags)
+        return VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text("\(found.count) \(L(found.count == 1 ? "contact" : "contacts"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Spacer()
+                if found.count > 1 {
+                    Button { finding = ContactFinding(query: query) } label: { Label(L("Work on all of them"), systemImage: "checklist") }.textButton().font(HandyFont.caption)
                 }
             }
+            ForEach(found.prefix(25)) { p in
+                Button { open = p } label: { ContactRow(person: p, marks: tags[p.id] ?? [], picked: nil) }.buttonStyle(.plain)
+            }
+            if found.count > 25 {
+                Button { finding = ContactFinding(query: query) } label: { Text("\(L("See all")) \(found.count)").frame(maxWidth: .infinity) }.secondaryButton()
+            }
+            if found.isEmpty, !loading { EmptyState(icon: "magnifyingglass", line: "No one matches", sub: "Try fewer letters, or part of their number.") }
         }
     }
 
-    private var scopeRow: some View {
-        HStack(spacing: HandySpacing.s8) {
-            Menu {
-                Button(L("All groups")) { group = nil }
-                ForEach(groups) { g in Button("\(g.name)\(g.account.isEmpty ? "" : " · \(g.account)")") { group = g.id } }
-            } label: { Label(groups.first { $0.id == group }?.name ?? L("All groups"), systemImage: "person.3").font(HandyFont.caption) }
-                .compactButton()
-            Menu {
-                Button(L("All accounts")) { account = nil }
-                ForEach(accounts, id: \.self) { a in Button(L(a)) { account = a } }
-            } label: { Label(account.map { L($0) } ?? L("All accounts"), systemImage: "tray.2").font(HandyFont.caption) }
-                .compactButton()
-            Spacer()
-            if !filters.isEmpty || group != nil || account != nil || !query.isEmpty {
-                Button(L("Clear")) { filters = []; group = nil; account = nil; query = "" }.textButton().font(HandyFont.caption)
-            }
-        }
-    }
-
-    private func row(_ p: ContactBook.Person) -> some View {
-        let on = picked.contains(p.id)
-        let marks = tags[p.id] ?? []
-        return Button {
-            if selecting { if on { picked.remove(p.id) } else { picked.insert(p.id) } } else { open = p }
-        } label: {
-            HStack(spacing: HandySpacing.s12) {
-                if selecting {
-                    Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.system(size: 22))
-                        .foregroundStyle(on ? HandyColor.accent : HandyColor.textSecondary)
+    /// Every way to find people, on one screen, with how many each finds.
+    private var finder: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(L("Find contacts that…")).font(HandyFont.title)
+                Spacer()
+                if loading { BusySpinner() } else {
+                    Text("\(people.count) \(L("in all"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 }
-                ContactAvatar(person: p, size: 40)
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 4) {
-                        Text(p.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
-                        ForEach(ContactBook.Tag.allCases.filter { marks.contains($0) }) { t in
-                            Image(systemName: t.icon).font(.system(size: 11)).foregroundStyle(t == .emergency ? HandyColor.danger : HandyColor.amber)
-                                .accessibilityLabel(L(t.title))
-                        }
+            }
+            Text(L("Tap one to see just those people — then send, save, back up or fix them together."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
+            ForEach(ContactBook.Filter.pairs, id: \.0) { pair in
+                HStack(spacing: 8) {
+                    finderButton(pair.0, missing: true)
+                    finderButton(pair.1, missing: false)
+                }
+            }
+            Text(L("Your marks")).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textSecondary).padding(.top, 4)
+            HStack(spacing: 8) { ForEach(ContactBook.Filter.marks) { finderButton($0, missing: false, small: true) } }
+            Text(L("Kind of contact")).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textSecondary).padding(.top, 4)
+            HStack(spacing: 8) { ForEach(ContactBook.Filter.kinds) { finderButton($0, missing: false, small: true) } }
+            if !groups.isEmpty || accounts.count > 1 {
+                Text(L("Groups and accounts")).font(HandyFont.caption.weight(.semibold)).foregroundStyle(HandyColor.textSecondary).padding(.top, 4)
+                HStack(spacing: 8) {
+                    if !groups.isEmpty {
+                        Menu {
+                            ForEach(groups) { g in
+                                Button("\(g.name) · \(people.filter { $0.groups.contains(g.id) }.count)") { finding = ContactFinding(group: g.id, title: g.name) }
+                            }
+                        } label: { scopeLabel(L("A group"), "person.3.fill", groups.count) }
                     }
-                    Text([p.company.isEmpty ? nil : p.company, p.phones.first.map { "\(L($0.label)) \($0.value)" } ?? p.emails.first?.value]
-                            .compactMap { $0 }.joined(separator: " · "))
-                        .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
+                    if accounts.count > 1 {
+                        Menu {
+                            ForEach(accounts, id: \.self) { a in
+                                Button("\(L(a)) · \(people.filter { $0.account == a }.count)") { finding = ContactFinding(account: a, title: L(a)) }
+                            }
+                        } label: { scopeLabel(L("An account"), "tray.2.fill", accounts.count) }
+                    }
+                }
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("contacts-finder")
+    }
+
+    private func scopeLabel(_ title: String, _ icon: String, _ n: Int) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon).foregroundStyle(HandyColor.accent).frame(width: 22)
+            Text(title).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+            Spacer(minLength: 0)
+            Text("\(n)").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Image(systemName: "chevron.up.chevron.down").font(.caption).foregroundStyle(HandyColor.textSecondary)
+        }
+        .padding(.horizontal, 12).frame(minHeight: 52)
+        .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+    }
+
+    private func finderButton(_ f: ContactBook.Filter, missing: Bool, small: Bool = false) -> some View {
+        let n = counts[f] ?? 0
+        return Button { finding = ContactFinding(filters: [f]) } label: {
+            HStack(spacing: 8) {
+                Image(systemName: f.icon).font(.system(size: small ? 14 : 16, weight: .semibold))
+                    .foregroundStyle(n == 0 ? HandyColor.textSecondary : (missing ? HandyColor.amber : HandyColor.accent)).frame(width: 22)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(L(f.title)).font(small ? HandyFont.caption.weight(.semibold) : HandyFont.caption.weight(.semibold))
+                        .foregroundStyle(HandyColor.textPrimary).lineLimit(2).minimumScaleFactor(0.85).multilineTextAlignment(.leading)
+                    Text(loading && people.isEmpty ? "…" : "\(n)").font(HandyFont.micro.monospacedDigit()).foregroundStyle(HandyColor.textSecondary)
                 }
                 Spacer(minLength: 0)
-                if !selecting { Image(systemName: "chevron.right").font(.caption).foregroundStyle(HandyColor.textSecondary) }
             }
-            .padding(.vertical, 8).padding(.horizontal, HandySpacing.s12)
-            .background(on ? HandyColor.accentSoft : HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-            .contentShape(Rectangle())
+            .padding(.horizontal, 10).frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
+            .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+            .opacity(n == 0 && !loading ? 0.55 : 1)
         }
         .buttonStyle(.plain)
-        .accessibilityAddTraits(on ? [.isButton, .isSelected] : .isButton)
-    }
-
-    /// What you can do with everyone you ticked.
-    private var bulkBar: some View {
-        VStack(spacing: HandySpacing.s8) {
-            HStack(spacing: HandySpacing.s8) {
-                Menu {
-                    Button { exportURL = ContactBook.csvFile(chosen, tags: tags, name: exportName) } label: { Label(L("Spreadsheet for Excel (.csv)"), systemImage: "tablecells") }
-                    Button { exportURL = ContactBook.vcard(Array(picked), name: exportName) } label: { Label(L("Contact cards (.vcf)"), systemImage: "person.crop.rectangle.stack") }
-                    if MailComposer.canSend {
-                        Button { showMail = ContactBook.csvFile(chosen, tags: tags, name: exportName) } label: { Label(L("Email as a spreadsheet"), systemImage: "envelope") }
-                        Button { showMail = ContactBook.vcard(Array(picked), name: exportName) } label: { Label(L("Email as contact cards"), systemImage: "envelope.badge") }
-                    }
-                } label: { Label(L("Export"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-                    .secondaryButton().accessibilityIdentifier("book-export")
-                Button { showGroupPicker = true } label: { Label(L("Group"), systemImage: "person.3").frame(maxWidth: .infinity) }.secondaryButton()
-                Menu {
-                    ForEach(ContactBook.Tag.allCases) { t in
-                        Button { mark(t, on: true) } label: { Label("\(L("Mark as")) \(L(t.title))", systemImage: t.icon) }
-                        Button { mark(t, on: false) } label: { Label("\(L("Unmark")) \(L(t.title))", systemImage: "minus.circle") }
-                    }
-                } label: { Label(L("Mark"), systemImage: "star").frame(maxWidth: .infinity) }.secondaryButton()
-                Menu {
-                    ForEach(ContactBook.BulkField.allCases) { f in
-                        Button { editValue = f == .countryCode ? defaultCode : ""; editing = f } label: { Label(L(f.title), systemImage: f == .countryCode ? "phone.badge.plus" : "pencil") }
-                    }
-                } label: { Label(L("Edit"), systemImage: "pencil").frame(maxWidth: .infinity) }.secondaryButton().accessibilityIdentifier("book-bulk-edit")
-            }
-            Button(role: .destructive) { confirmDelete = true } label: { Label("\(L("Delete")) \(picked.count)", systemImage: "trash").frame(maxWidth: .infinity) }
-                .buttonStyle(.bordered).tint(HandyColor.danger)
-            if let u = exportURL {
-                ShareLink(item: u) { Label("\(L("Save or send")) \(u.lastPathComponent)", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-                    .primaryButton()
-                Text(L("Save to Files, iCloud Drive or Google Drive, AirDrop it, or send it in any app.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
-            }
-        }
-        .padding(HandySpacing.s12)
-        .background(HandyColor.bg)
-        .onChange(of: picked) { _, _ in exportURL = nil }
-    }
-
-    private var defaultCode: String {
-        switch Locale.current.region?.identifier ?? "US" {
-        case "US", "CA": return "+1"
-        case "GB": return "+44"
-        case "IN": return "+91"
-        case "AU": return "+61"
-        case "DE": return "+49"
-        case "FR": return "+33"
-        case "ES": return "+34"
-        case "IT": return "+39"
-        case "BR": return "+55"
-        case "MX": return "+52"
-        case "JP": return "+81"
-        default: return "+"
-        }
-    }
-
-    private func bulkEdit(_ f: ContactBook.BulkField, _ value: String) {
-        let ids = Array(picked)
-        Task {
-            let r = await Task.detached(priority: .userInitiated) { ContactBook.bulkSet(ids, field: f, value: value) }.value
-            note = r.failed > 0 ? "\(L("Changed")) \(r.changed) · \(r.failed) \(L("couldn't be changed (read-only account)"))"
-                                : (r.changed == 0 ? L("Nothing needed changing.") : "\(L("Changed")) \(r.changed) \(L("contacts"))")
-            selecting = false; picked = []; editing = nil
-            HandyHaptics.success()
-            await reload()
-        }
-    }
-
-    /// Everyone in one file, and a regular nudge to do it again.
-    private var backupCard: some View {
-        VStack(alignment: .leading, spacing: HandySpacing.s8) {
-            Label(L("Back up all your contacts"), systemImage: "externaldrive.badge.icloud").font(HandyFont.bodyStrong)
-            Text(ContactBackupReminder.last.map { "\(L("Last backup")) \($0.formatted(.relative(presentation: .named)))" } ?? L("Save everyone to one contact-card file in Files, iCloud Drive or Google Drive. It opens on any phone or computer."))
-                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
-            if let u = backupURL {
-                ShareLink(item: u) { Label("\(L("Save")) \(u.lastPathComponent)", systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }
-                    .primaryButton().simultaneousGesture(TapGesture().onEnded { ContactBackupReminder.markDone() })
-            } else {
-                Button {
-                    backupURL = ContactBook.vcard(people.map(\.id), name: "Contacts backup \(Date().formatted(.dateTime.year().month().day()))")
-                } label: { Label("\(L("Back up")) \(people.count) \(L("contacts"))", systemImage: "arrow.down.doc").frame(maxWidth: .infinity) }
-                    .primaryButton().disabled(people.isEmpty).accessibilityIdentifier("book-backup")
-            }
-            HandyFlow(spacing: HandySpacing.s8) {
-                Text(L("Remind me")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-                ForEach([(0, "Off"), (7, "Weekly"), (30, "Monthly")], id: \.0) { v in
-                    HChip(text: L(v.1), selected: backupEvery == v.0) {
-                        Task {
-                            if v.0 > 0, !(await NotifyPermission.ensure()) { notifOff = true; return }
-                            backupEvery = v.0; await ContactBackupReminder.set(every: v.0)
-                            backupNote = v.0 == 7 ? L("On — every Sunday at 7 pm.") : v.0 == 30 ? L("On — the 1st of each month at 7 pm.") : nil
-                        }
-                    }
-                }
-            }
-            if backupEvery > 0 {
-                Button { Task { await ContactBackupReminder.testRun(); backupNote = L("Test sent — it arrives in 5 seconds.") } } label: {
-                    Label(L("Test run"), systemImage: "checkmark.seal").frame(maxWidth: .infinity)
-                }.secondaryButton()
-            }
-            if let backupNote { Text(backupNote).font(HandyFont.caption).foregroundStyle(HandyColor.success) }
-        }
-        .cardStyle()
-    }
-
-    private var exportName: String {
-        if let g = groups.first(where: { $0.id == group }) { return "\(g.name) contacts" }
-        if filters.count == 1, let f = filters.first { return "\(f.title) contacts" }
-        return "\(picked.count) contacts"
+        .disabled(n == 0 && !loading)
+        .accessibilityLabel(Text("\(L(f.title)), \(n)"))
+        .accessibilityIdentifier("find-\(f.rawValue)")
     }
 
     /// Birthday reminders: one switch, a time, and a Test run.
@@ -339,25 +205,295 @@ struct ContactsBookView: View {
     private func reload() async {
         loading = true
         let r = await Task.detached(priority: .userInitiated) { ContactBook.load() }.value
-        people = r.people; groups = r.groups; accounts = r.accounts; loading = false
-        picked = picked.filter { id in r.people.contains { $0.id == id } }
+        let t = ContactTags.load()
+        let c = await Task.detached(priority: .userInitiated) { ContactBook.counts(r.people, tags: t) }.value
+        people = r.people; groups = r.groups; accounts = r.accounts; tags = t; counts = c; loading = false
         BirthdayReminders.refresh(r.people)
+    }
+}
+
+/// What a tap on the finder asks for: conditions, a search, a group or an account.
+struct ContactFinding: Identifiable {
+    let id = UUID()
+    var filters: Set<ContactBook.Filter> = []
+    var query = ""
+    var group: String? = nil
+    var account: String? = nil
+    var title: String? = nil
+}
+
+/// One person in a list: photo or initials, name with their marks, and the first useful detail.
+struct ContactRow: View {
+    let person: ContactBook.Person
+    let marks: Set<ContactBook.Tag>
+    /// nil = not choosing; true/false = ticked or not.
+    let picked: Bool?
+    var body: some View {
+        HStack(spacing: HandySpacing.s12) {
+            if let on = picked {
+                Image(systemName: on ? "checkmark.circle.fill" : "circle").font(.system(size: 22))
+                    .foregroundStyle(on ? HandyColor.accent : HandyColor.textSecondary)
+            }
+            ContactAvatar(person: person, size: 40)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 4) {
+                    Text(person.name).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary).lineLimit(1)
+                    ForEach(ContactBook.Tag.allCases.filter { marks.contains($0) }) { t in
+                        Image(systemName: t.icon).font(.system(size: 11)).foregroundStyle(t == .emergency ? HandyColor.danger : HandyColor.amber)
+                            .accessibilityLabel(L(t.title))
+                    }
+                }
+                Text([person.company.isEmpty ? nil : person.company, person.phones.first.map { "\(L($0.label)) \($0.value)" } ?? person.emails.first?.value]
+                        .compactMap { $0 }.joined(separator: " · "))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).lineLimit(1)
+            }
+            Spacer(minLength: 0)
+            if picked == nil { Image(systemName: "chevron.right").font(.caption).foregroundStyle(HandyColor.textSecondary) }
+        }
+        .padding(.vertical, 8).padding(.horizontal, HandySpacing.s12)
+        .background(picked == true ? HandyColor.accentSoft : HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(picked == true ? [.isButton, .isSelected] : .isButton)
+    }
+}
+
+/// The people a finder tap found — all ticked — and everything you can do with them together.
+struct ContactResultsView: View {
+    let groups: [ContactBook.Group]
+    @State private var people: [ContactBook.Person]
+    @State private var tags: [String: Set<ContactBook.Tag>] = ContactTags.load()
+    @State private var filters: Set<ContactBook.Filter>
+    @State private var query: String
+    @State private var group: String?
+    @State private var account: String?
+    private let title: String?
+    @State private var picked: Set<String> = []
+    @State private var touched = false
+    @State private var open: ContactBook.Person?
+    @State private var ready: (url: URL, lead: KeepShare.Lead)?
+    @State private var showMail: URL?
+    @State private var showGroupPicker = false
+    @State private var confirmDelete = false
+    @State private var editing: ContactBook.BulkField?
+    @State private var editValue = ""
+    @State private var note: String?
+    @Environment(\.dismiss) private var dismiss
+
+    init(people: [ContactBook.Person], groups: [ContactBook.Group], finding f: ContactFinding) {
+        self.groups = groups
+        _people = State(initialValue: people)
+        _filters = State(initialValue: f.filters)
+        _query = State(initialValue: f.query)
+        _group = State(initialValue: f.group)
+        _account = State(initialValue: f.account)
+        title = f.title
+    }
+
+    private var shown: [ContactBook.Person] {
+        ContactBook.filtered(people, query: query, filters: filters, group: group, account: account, tags: tags)
+    }
+    private var chosen: [ContactBook.Person] { shown.filter { picked.contains($0.id) } }
+    private var heading: String {
+        if let title { return title }
+        if !query.isEmpty { return "“\(query)”" }
+        return filters.sorted { $0.rawValue < $1.rawValue }.map { L($0.title) }.joined(separator: " + ")
+    }
+    private let actionCols = [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)]
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: HandySpacing.s12) {
+                conditions
+                actions
+                if let note { Label(L(note), systemImage: "checkmark.circle.fill").font(HandyFont.caption).foregroundStyle(HandyColor.success).fixedSize(horizontal: false, vertical: true) }
+                HStack {
+                    Text("\(chosen.count) \(L("of")) \(shown.count) \(L("ticked"))").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                    Spacer()
+                    Button(chosen.count == shown.count ? L("Tick none") : L("Tick all")) {
+                        touched = true
+                        picked = chosen.count == shown.count ? [] : Set(shown.map(\.id))
+                    }.textButton().font(HandyFont.caption).accessibilityIdentifier("results-tick-all")
+                }
+                LazyVStack(spacing: 6) {
+                    ForEach(shown) { p in
+                        HStack(spacing: 6) {
+                            Button {
+                                touched = true
+                                if picked.contains(p.id) { picked.remove(p.id) } else { picked.insert(p.id) }
+                            } label: { ContactRow(person: p, marks: tags[p.id] ?? [], picked: picked.contains(p.id)) }
+                                .buttonStyle(.plain)
+                            Button { open = p } label: { Image(systemName: "info.circle").font(.system(size: 20)).frame(width: 36, height: 44) }
+                                .buttonStyle(.plain).foregroundStyle(HandyColor.accent).accessibilityLabel("\(L("Open")) \(p.name)")
+                        }
+                    }
+                }
+                if shown.isEmpty { EmptyState(icon: "checkmark.circle", line: "No one left here", sub: "Everyone that matched has been sorted out.") }
+            }
+            .padding(HandySpacing.gutter)
+        }
+        .background(Ground())
+        .navigationTitle(heading).navigationBarTitleDisplayMode(.inline)
+        .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L("Done")) { dismiss() } } }
+        .onAppear { if !touched { picked = Set(shown.map(\.id)) } }
+        .onChange(of: filters) { _, _ in picked = Set(shown.map(\.id)); ready = nil }
+        .sheet(item: $open, onDismiss: { Task { await reload() } }) { p in NavigationStack { ContactDetailView(person: p, groups: groups) } }
+        .sheet(isPresented: $showGroupPicker) {
+            NavigationStack { GroupPickerView(groups: groups, ids: chosen.map(\.id)) { msg in note = msg; Task { await reload() } } }
+        }
+        .sheet(item: Binding(get: { showMail.map { MailFile(url: $0) } }, set: { showMail = $0?.url })) { f in
+            MailComposer(subject: "Contacts", body: "Attached: \(chosen.count) contacts.", attachment: f.url)
+        }
+        .alert(L(editing?.title ?? ""), isPresented: Binding(get: { editing != nil }, set: { if !$0 { editing = nil } })) {
+            TextField(L(editing?.prompt ?? ""), text: $editValue).keyboardType(editing == .countryCode ? .phonePad : .default)
+            Button("\(L("Change")) \(chosen.count)") { if let f = editing { bulkEdit(f, editValue) } }
+            Button(L("Cancel"), role: .cancel) {}
+        } message: {
+            Text(editing == .countryCode
+                 ? L("Numbers that already start with + or 00 are left as they are. A leading 0 is dropped, the way international dialling needs.")
+                 : L("This changes the contact on your iPhone and the account it syncs to."))
+        }
+        .confirmationDialog("\(L("Delete")) \(chosen.count) \(L("contacts?"))", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("\(L("Delete")) \(chosen.count) \(L("contacts"))", role: .destructive) { deleteChosen() }
+            Button(L("Keep them"), role: .cancel) {}
+        } message: {
+            Text(L("They're removed from your iPhone and every account they sync to (iCloud, Gmail, Outlook). iPhone has no contacts trash, so this can't be undone — export them first if you might need them."))
+        }
+    }
+
+    /// What's being shown, the opposite in one tap, and more conditions to narrow it down.
+    private var conditions: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            Text("\(shown.count) \(L(shown.count == 1 ? "contact" : "contacts"))").font(HandyFont.title)
+            HandyFlow(spacing: 6) {
+                ForEach(filters.sorted { $0.rawValue < $1.rawValue }) { f in
+                    Button { filters.remove(f) } label: {
+                        Label(L(f.title), systemImage: "xmark").font(HandyFont.caption)
+                            .padding(.horizontal, 10).padding(.vertical, 6)
+                            .background(HandyColor.accentSoft, in: Capsule()).foregroundStyle(HandyColor.textPrimary)
+                    }.buttonStyle(.plain).accessibilityLabel("\(L("Remove")) \(L(f.title))")
+                }
+                Menu {
+                    ForEach(ContactBook.Filter.allCases.filter { f in !filters.contains(f) && !(f.opposite.map(filters.contains) ?? false) }) { f in
+                        Button("\(L(f.title)) · \(shown.filter { ContactBook.passes($0, f, tags: tags[$0.id] ?? []) }.count)") { filters.insert(f) }
+                    }
+                } label: {
+                    Label(L("Narrow it down"), systemImage: "plus").font(HandyFont.caption.weight(.semibold))
+                        .padding(.horizontal, 10).padding(.vertical, 6)
+                        .overlay(Capsule().stroke(HandyColor.accent, lineWidth: 1)).foregroundStyle(HandyColor.accent)
+                }.accessibilityIdentifier("results-narrow")
+            }
+            if filters.count == 1, let f = filters.first, let o = f.opposite {
+                Button { filters = [o] } label: {
+                    Label("\(L("Show the opposite")): \(L(o.title))", systemImage: "arrow.left.arrow.right").font(HandyFont.caption)
+                }.textButton().accessibilityIdentifier("results-opposite")
+            }
+        }
+    }
+
+    /// Everything you can do with the ticked people, all on screen.
+    private var actions: some View {
+        VStack(alignment: .leading, spacing: HandySpacing.s8) {
+            LazyVGrid(columns: actionCols, spacing: 8) {
+                tile("Send", "paperplane.fill", "results-send") { ready = ContactBook.vcard(chosen.map(\.id), name: exportName).map { ($0, .share) } }
+                tile("Spreadsheet", "tablecells.fill", "results-csv") { ready = ContactBook.csvFile(chosen, tags: tags, name: exportName).map { ($0, .save) } }
+                tile("Back up", "externaldrive.fill.badge.icloud", "results-backup") {
+                    ready = ContactBook.vcard(chosen.map(\.id), name: "\(exportName) backup \(Date().formatted(.dateTime.year().month().day()))").map { ($0, .save) }
+                }
+                if MailComposer.canSend {
+                    tile("Email", "envelope.fill", "results-email") { showMail = ContactBook.vcard(chosen.map(\.id), name: exportName) }
+                }
+                Menu {
+                    ForEach(ContactBook.Tag.allCases) { t in
+                        Button { mark(t, on: true) } label: { Label("\(L("Mark as")) \(L(t.title))", systemImage: t.icon) }
+                        Button { mark(t, on: false) } label: { Label("\(L("Unmark")) \(L(t.title))", systemImage: "minus.circle") }
+                    }
+                } label: { tileLabel("Mark", "star.fill") }.disabled(chosen.isEmpty)
+                tile("Group", "person.3.fill", "results-group") { showGroupPicker = true }
+                Menu {
+                    ForEach(ContactBook.BulkField.allCases) { f in
+                        Button { editValue = f == .countryCode ? defaultCode : ""; editing = f } label: { Label(L(f.title), systemImage: f == .countryCode ? "phone.badge.plus" : "pencil") }
+                    }
+                } label: { tileLabel("Fix", "pencil") }.disabled(chosen.isEmpty).accessibilityIdentifier("book-bulk-edit")
+                tile("Delete", "trash.fill", "results-delete", danger: true) { confirmDelete = true }
+            }
+            if let r = ready {
+                KeepShare([.file(r.url)], lead: r.lead, tool: "Contacts", record: false).id(r.url)
+                Text(L("Save to Files, iCloud Drive or Google Drive, AirDrop it, or send it in any app.")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
+            }
+        }
+        .cardStyle(padding: HandySpacing.s12)
+    }
+
+    private func tile(_ title: String, _ icon: String, _ id: String, danger: Bool = false, action: @escaping () -> Void) -> some View {
+        Button(action: action) { tileLabel(title, icon, danger: danger) }
+            .buttonStyle(.plain).disabled(chosen.isEmpty).accessibilityIdentifier(id)
+    }
+    private func tileLabel(_ title: String, _ icon: String, danger: Bool = false) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon).font(.system(size: 18, weight: .semibold))
+            Text(L(title)).font(HandyFont.micro).lineLimit(1).minimumScaleFactor(0.8)
+        }
+        .foregroundStyle(chosen.isEmpty ? HandyColor.textSecondary : (danger ? HandyColor.danger : HandyColor.accent))
+        .frame(maxWidth: .infinity, minHeight: 58)
+        .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(HandyColor.border, lineWidth: 1))
+    }
+
+    private var exportName: String {
+        if let title { return "\(title) contacts" }
+        if filters.count == 1, let f = filters.first { return "\(f.title) contacts" }
+        return "\(chosen.count) contacts"
+    }
+
+    private var defaultCode: String {
+        switch Locale.current.region?.identifier ?? "US" {
+        case "US", "CA": return "+1"
+        case "GB": return "+44"
+        case "IN": return "+91"
+        case "AU": return "+61"
+        case "DE": return "+49"
+        case "FR": return "+33"
+        case "ES": return "+34"
+        case "IT": return "+39"
+        case "BR": return "+55"
+        case "MX": return "+52"
+        case "JP": return "+81"
+        default: return "+"
+        }
+    }
+
+    private func reload() async {
+        let r = await Task.detached(priority: .userInitiated) { ContactBook.load() }.value
+        people = r.people; tags = ContactTags.load()
+        picked = picked.filter { id in r.people.contains { $0.id == id } }
     }
 
     private func mark(_ t: ContactBook.Tag, on: Bool) {
-        for id in picked { if on { tags[id, default: []].insert(t) } else { tags[id]?.remove(t) } }
+        for p in chosen { if on { tags[p.id, default: []].insert(t) } else { tags[p.id]?.remove(t) } }
         ContactTags.save(tags)
-        note = on ? "Marked \(picked.count) as \(t.title)." : "Unmarked \(picked.count)."
+        note = on ? "Marked \(chosen.count) as \(t.title)." : "Unmarked \(chosen.count)."
+    }
+
+    private func bulkEdit(_ f: ContactBook.BulkField, _ value: String) {
+        let ids = chosen.map(\.id)
+        Task {
+            let r = await Task.detached(priority: .userInitiated) { ContactBook.bulkSet(ids, field: f, value: value) }.value
+            note = r.failed > 0 ? "\(L("Changed")) \(r.changed) · \(r.failed) \(L("couldn't be changed (read-only account)"))"
+                                : (r.changed == 0 ? L("Nothing needed changing.") : "\(L("Changed")) \(r.changed) \(L("contacts"))")
+            editing = nil
+            HandyHaptics.success()
+            await reload()
+        }
     }
 
     private func deleteChosen() {
-        let ids = Array(picked)
+        let ids = chosen.map(\.id)
         do {
             try ContactBook.delete(ids)
             for id in ids { tags[id] = nil }
             ContactTags.save(tags)
             note = "Deleted \(ids.count) contact\(ids.count == 1 ? "" : "s")."
-            selecting = false; picked = []
             Task { await reload() }
         } catch { note = "Couldn't delete — some accounts (like a work directory) don't allow it." }
     }
@@ -516,7 +652,7 @@ struct ContactDetailView: View {
             }
         }
         .sheet(isPresented: $planning) { NavigationStack { PlanContactView(person: person) { msg in note = msg } } }
-        .sheet(isPresented: $editing, onDismiss: { refresh() }) { SystemContactEditor(id: person.id).ignoresSafeArea() }
+        .sheet(isPresented: $editing, onDismiss: { refresh() }) { SystemContactEditor(id: person.id) { editing = false }.ignoresSafeArea() }
     }
 
     private func section<A: View>(_ title: String, _ items: [ContactBook.Labeled], @ViewBuilder actions: @escaping (String) -> A) -> some View {
@@ -673,7 +809,8 @@ private struct PlanContactView: View {
 /// Apple's own contact editor, for everything else (names, numbers, labels, birthday, social profiles).
 private struct SystemContactEditor: UIViewControllerRepresentable {
     let id: String
-    func makeCoordinator() -> Coordinator { Coordinator() }
+    let onDone: () -> Void
+    func makeCoordinator() -> Coordinator { Coordinator(onDone: onDone) }
     func makeUIViewController(context: Context) -> UINavigationController {
         let store = CNContactStore()
         let c = (try? store.unifiedContact(withIdentifier: id, keysToFetch: [CNContactViewController.descriptorForRequiredKeys()])) ?? CNContact()
@@ -681,8 +818,14 @@ private struct SystemContactEditor: UIViewControllerRepresentable {
         vc.contactStore = store
         vc.allowsEditing = true
         vc.delegate = context.coordinator
+        // Apple's card has no way back on its own when shown from another app: a Done that always closes it.
+        vc.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in context.coordinator.onDone() })
         return UINavigationController(rootViewController: vc)
     }
     func updateUIViewController(_ vc: UINavigationController, context: Context) {}
-    final class Coordinator: NSObject, CNContactViewControllerDelegate {}
+    final class Coordinator: NSObject, CNContactViewControllerDelegate {
+        let onDone: () -> Void
+        init(onDone: @escaping () -> Void) { self.onDone = onDone }
+        func contactViewController(_ viewController: CNContactViewController, didCompleteWith contact: CNContact?) { onDone() }
+    }
 }

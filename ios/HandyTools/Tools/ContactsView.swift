@@ -20,31 +20,25 @@ struct ContactsView: View {
     @State private var backupNote: String?
     @State private var showMail = false
     @State private var showTransfer = false
-    @AppStorage("contacts.tab") private var tab = 0     // 0 My contacts · 1 Clean up & back up
+    @State private var notifOff = false
 
     struct TidyGroup: Identifiable { let id = UUID(); let title: String; let icon: String; let recs: [ContactRec]; let deletable: Bool }
 
     var body: some View {
-        ToolPage(title: "Contacts", subtitle: "Search, filter and group everyone, export or back up any group, plan calls and visits, birthday reminders — and clean up duplicates. All on your phone.", working: busy) {
+        ToolPage(title: "Contacts", subtitle: "Find anyone by what they have or what's missing, then send, save, back up or fix them together. Duplicates merged, backups on a schedule. All on your phone.", working: busy) {
             HowTo("contacts", [
-                "My contacts: search anything, tap a filter (no phone, work, birthdays…), tick people, then export, group, mark or delete.",
-                "Tap a person to add a photo, mark them Favorite / Emergency / Important, or plan a call or visit with a reminder.",
-                "Clean up & back up: merge duplicates without losing a number, and keep automatic backups.",
+                "Find contacts that…: tap any box — No email, Has a company, No birthday… — to see just those people.",
+                "They open all ticked: send them to someone, save a spreadsheet, back up, mark, group, fix or delete them together.",
+                "Clean up merges duplicates without losing a number. Back up keeps a copy on the schedule you pick.",
             ])
 
             if !authorized {
                 permissionCard
             } else {
-                Picker(L("View"), selection: $tab) {
-                    Text(L("My contacts")).tag(0)
-                    Text(L("Clean up & back up")).tag(1)
-                }.pickerStyle(.segmented).accessibilityIdentifier("contacts-tab")
-            }
-            if authorized && tab == 0 {
                 ContactsBookView()
-            } else if authorized {
-                backupBar
-                autoBackupCard
+                Text(L("Clean up")).font(HandyFont.title).padding(.top, HandySpacing.s8)
+                if scanning { HStack { BusySpinner(); Text(L("Reading your contacts…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
+                if let r = report { reportBody(r) }
                 Button { showTransfer = true } label: {
                     HStack {
                         Image(systemName: "arrow.left.arrow.right.circle.fill").font(.system(size: 26)).foregroundStyle(HandyColor.accent)
@@ -55,14 +49,22 @@ struct ContactsView: View {
                         Spacer(); Image(systemName: "chevron.right").foregroundStyle(HandyColor.textSecondary)
                     }.cardStyle(padding: HandySpacing.s12)
                 }.buttonStyle(.plain).accessibilityIdentifier("move-contacts")
-                if scanning { HStack { BusySpinner(); Text(L("Reading your contacts…")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) } }
-                if let r = report { reportBody(r) }
                 if let error { Text(error).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
+                Text(L("Back up")).font(HandyFont.title).padding(.top, HandySpacing.s8)
+                autoBackupCard
             }
             Text(L("Everything runs on your phone; nothing is uploaded. A merge is permanent — iOS has no contacts trash — so back up before you merge."))
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
-        .task { if authorized && report == nil { scan() }; await autoBackupIfDue() }
+        .task {
+            // One backup schedule: an older "remind me" choice becomes the automatic backup (which reminds too).
+            if ContactBackupReminder.every > 0, autoBackup.frequency == .off {
+                autoBackup.frequency = ContactBackupReminder.every >= 30 ? .monthly : .weekly
+                await ContactBackupReminder.set(every: 0)
+            }
+            if authorized && report == nil { scan() }
+            await autoBackupIfDue()
+        }
         .sheet(isPresented: $showMail) {
             if let url = autoBackup.lastBackupURL {
                 MailComposer(subject: "My contacts backup", body: "Attached is a backup of my contacts (.vcf). Keep it somewhere safe.", attachment: url)
@@ -108,18 +110,6 @@ struct ContactsView: View {
         }
     }
 
-    private var backupBar: some View {
-        Group {
-            if let backupURL {
-                ShareLink(item: backupURL) { Label(L("Share or save the backup"), systemImage: "square.and.arrow.up").frame(maxWidth: .infinity) }.secondaryButton()
-            } else {
-                Button { backup() } label: {
-                    HStack { if busy { BusySpinner() }; Label(L("Back up all contacts (.vcf)"), systemImage: "arrow.down.doc") }.frame(maxWidth: .infinity)
-                }.primaryButton().disabled(busy)
-            }
-        }
-    }
-
     @ViewBuilder private func reportBody(_ r: ContactsReport) -> some View {
         HStack {
             Text("\(r.total) contacts · \(r.duplicateCount) duplicate\(r.duplicateCount == 1 ? "" : "s")")
@@ -158,9 +148,7 @@ struct ContactsView: View {
 
         // Tidy up — health buckets, each opening a list with one-tap fixes.
         let buckets: [TidyGroup] = [
-            TidyGroup(title: "No phone number", icon: "phone.badge.plus", recs: r.noPhone, deletable: false),
-            TidyGroup(title: "Only an email", icon: "envelope", recs: r.emailOnly, deletable: false),
-            TidyGroup(title: "No name", icon: "person.fill.questionmark", recs: r.noName, deletable: false),
+            TidyGroup(title: "No name at all", icon: "person.fill.questionmark", recs: r.noName, deletable: false),
             TidyGroup(title: "Empty — nothing saved", icon: "person.crop.circle.badge.xmark", recs: r.empty, deletable: true),
         ].filter { !$0.recs.isEmpty }
         if !buckets.isEmpty {
@@ -179,18 +167,9 @@ struct ContactsView: View {
                 }.buttonStyle(.plain)
             }
         } else {
-            Text(L("Every contact has a name and a number. ✓")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+            Text(L("No empty or nameless contacts. ✓")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
         }
 
-        if !r.sources.isEmpty {
-            Text(L("Where they're saved")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-            HandyFlow(spacing: HandySpacing.s8) {
-                ForEach(r.sources) { s in
-                    Text("\(s.name) · \(s.count)").font(HandyFont.micro).padding(.horizontal, 10).padding(.vertical, 5)
-                        .background(HandyColor.surface, in: Capsule()).overlay(Capsule().stroke(HandyColor.border, lineWidth: 1))
-                }
-            }
-        }
     }
 
     // MARK: actions
@@ -203,24 +182,12 @@ struct ContactsView: View {
         }
     }
 
-    private func backup() {
-        busy = true; error = nil
-        Task {
-            do {
-                let url = try await Task.detached { try ContactsEngine.exportVCard() }.value
-                await MainActor.run { backupURL = url; busy = false; HandyHaptics.success() }
-            } catch {
-                await MainActor.run { self.error = "Couldn't create the autoBackup. Try again."; busy = false }
-            }
-        }
-    }
-
     // MARK: automatic backup
 
     private var autoBackupCard: some View {
         VStack(alignment: .leading, spacing: HandySpacing.s8) {
             HStack {
-                Label(L("Automatic backup"), systemImage: "clock.arrow.circlepath").font(HandyFont.bodyStrong)
+                Label(L("Back up automatically"), systemImage: "clock.arrow.circlepath").font(HandyFont.bodyStrong)
                 Spacer()
                 Text(autoBackup.lastBackup.map { "Last: " + $0.formatted(date: .abbreviated, time: .omitted) } ?? "Never")
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
@@ -229,18 +196,29 @@ struct ContactsView: View {
                 .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
             HandyFlow(spacing: HandySpacing.s8) {
                 ForEach(BackupFrequency.allCases, id: \.rawValue) { f in
-                    HChip(text: f.title, selected: autoBackup.frequency == f) {
-                        autoBackup.frequency = f
-                        if f != .off { runBackupNow() }
+                    HChip(text: L(f.title), selected: autoBackup.frequency == f) {
+                        Task {
+                            if f != .off, !(await NotifyPermission.ensure()) { notifOff = true }
+                            autoBackup.frequency = f
+                            if f != .off { runBackupNow() }
+                        }
                     }
                 }
             }
+            NotificationsOffCard(isOff: $notifOff)
+            if autoBackup.frequency != .off {
+                Button { Task { await ContactBackupReminder.testRun(); backupNote = L("Test sent — it arrives in 5 seconds.") } } label: {
+                    Label(L("Test run"), systemImage: "checkmark.seal")
+                }.compactButton().accessibilityIdentifier("backup-test")
+            }
             if let backupNote { Text(backupNote).font(HandyFont.micro).foregroundStyle(HandyColor.accent) }
+            Button { runBackupNow() } label: {
+                HStack { if busy { BusySpinner() }; Label("\(L("Back up all")) \(report?.total ?? 0) \(L("contacts now"))", systemImage: "arrow.down.doc.fill") }.frame(maxWidth: .infinity)
+            }.primaryButton().disabled(busy).accessibilityIdentifier("backup-now")
             HStack(spacing: HandySpacing.s8) {
-                Button { runBackupNow() } label: { Label(L("Back up now"), systemImage: "arrow.down.doc") }.compactButton().disabled(busy)
                 if autoBackup.lastBackupURL != nil {
                     if MailComposer.canSend { Button { showMail = true } label: { Label(L("Email a copy"), systemImage: "envelope") }.compactButton() }
-                    if let u = autoBackup.lastBackupURL { ShareLink(item: u) { Image(systemName: "square.and.arrow.up").frame(width: 36, height: 36) }.compactButton() }
+                    if let u = autoBackup.lastBackupURL { ShareLink(item: u) { Label(L("Share the backup"), systemImage: "square.and.arrow.up") }.compactButton() }
                 }
             }
         }.cardStyle(padding: HandySpacing.s12)
@@ -382,6 +360,8 @@ private struct ContactEditor: UIViewControllerRepresentable {
         vc.allowsEditing = true
         vc.allowsActions = true
         vc.delegate = context.coordinator
+        // Apple's card has no way back on its own when shown from another app: a Done that always closes it.
+        vc.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .done, primaryAction: UIAction { _ in context.coordinator.onDone() })
         return UINavigationController(rootViewController: vc)
     }
     func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {}

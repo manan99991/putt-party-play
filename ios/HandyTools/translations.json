@@ -39528,5 +39528,505 @@
   "ja": "音声だけを、どんなメールでも送れるサイズに",
   "pt": "Só o áudio, pequeno o bastante para qualquer e-mail",
   "zh": "只要音频，小到能发任何邮件"
+ },
+ "No phone number": {
+  "de": "Keine Telefonnummer",
+  "es": "Sin teléfono",
+  "fr": "Pas de numéro",
+  "hi": "कोई फ़ोन नंबर नहीं",
+  "it": "Nessun numero",
+  "ja": "電話番号なし",
+  "pt": "Sem telefone",
+  "zh": "无电话号码"
+ },
+ "Has a phone number": {
+  "de": "Hat eine Telefonnummer",
+  "es": "Tiene teléfono",
+  "fr": "A un numéro",
+  "hi": "फ़ोन नंबर है",
+  "it": "Ha un numero",
+  "ja": "電話番号あり",
+  "pt": "Tem telefone",
+  "zh": "有电话号码"
+ },
+ "Has an email": {
+  "de": "Hat eine E-Mail",
+  "es": "Tiene correo",
+  "fr": "A un e-mail",
+  "hi": "ईमेल है",
+  "it": "Ha un'e-mail",
+  "ja": "メールあり",
+  "pt": "Tem e-mail",
+  "zh": "有邮箱"
+ },
+ "No first name": {
+  "de": "Kein Vorname",
+  "es": "Sin nombre",
+  "fr": "Pas de prénom",
+  "hi": "पहला नाम नहीं",
+  "it": "Nessun nome",
+  "ja": "名なし",
+  "pt": "Sem primeiro nome",
+  "zh": "无名字"
+ },
+ "Has a first name": {
+  "de": "Hat einen Vornamen",
+  "es": "Tiene nombre",
+  "fr": "A un prénom",
+  "hi": "पहला नाम है",
+  "it": "Ha un nome",
+  "ja": "名あり",
+  "pt": "Tem primeiro nome",
+  "zh": "有名字"
+ },
+ "No last name": {
+  "de": "Kein Nachname",
+  "es": "Sin apellido",
+  "fr": "Pas de nom",
+  "hi": "उपनाम नहीं",
+  "it": "Nessun cognome",
+  "ja": "姓なし",
+  "pt": "Sem sobrenome",
+  "zh": "无姓氏"
+ },
+ "Has a last name": {
+  "de": "Hat einen Nachnamen",
+  "es": "Tiene apellido",
+  "fr": "A un nom",
+  "hi": "उपनाम है",
+  "it": "Ha un cognome",
+  "ja": "姓あり",
+  "pt": "Tem sobrenome",
+  "zh": "有姓氏"
+ },
+ "No company": {
+  "de": "Keine Firma",
+  "es": "Sin empresa",
+  "fr": "Pas d'entreprise",
+  "hi": "कोई कंपनी नहीं",
+  "it": "Nessuna azienda",
+  "ja": "会社なし",
+  "pt": "Sem empresa",
+  "zh": "无公司"
+ },
+ "Has a photo": {
+  "de": "Hat ein Foto",
+  "es": "Tiene foto",
+  "fr": "A une photo",
+  "hi": "फ़ोटो है",
+  "it": "Ha una foto",
+  "ja": "写真あり",
+  "pt": "Tem foto",
+  "zh": "有照片"
+ },
+ "No birthday": {
+  "de": "Kein Geburtstag",
+  "es": "Sin cumpleaños",
+  "fr": "Pas d'anniversaire",
+  "hi": "जन्मदिन नहीं",
+  "it": "Nessun compleanno",
+  "ja": "誕生日なし",
+  "pt": "Sem aniversário",
+  "zh": "无生日"
+ },
+ "Has a birthday": {
+  "de": "Hat einen Geburtstag",
+  "es": "Tiene cumpleaños",
+  "fr": "A un anniversaire",
+  "hi": "जन्मदिन है",
+  "it": "Ha un compleanno",
+  "ja": "誕生日あり",
+  "pt": "Tem aniversário",
+  "zh": "有生日"
+ },
+ "No address": {
+  "de": "Keine Adresse",
+  "es": "Sin dirección",
+  "fr": "Pas d'adresse",
+  "hi": "कोई पता नहीं",
+  "it": "Nessun indirizzo",
+  "ja": "住所なし",
+  "pt": "Sem endereço",
+  "zh": "无地址"
+ },
+ "Has an address": {
+  "de": "Hat eine Adresse",
+  "es": "Tiene dirección",
+  "fr": "A une adresse",
+  "hi": "पता है",
+  "it": "Ha un indirizzo",
+  "ja": "住所あり",
+  "pt": "Tem endereço",
+  "zh": "有地址"
+ },
+ "Only an email": {
+  "de": "Nur eine E-Mail",
+  "es": "Solo un correo",
+  "fr": "Seulement un e-mail",
+  "hi": "सिर्फ़ ईमेल",
+  "it": "Solo un'e-mail",
+  "ja": "メールのみ",
+  "pt": "Só e-mail",
+  "zh": "只有邮箱"
+ },
+ "Only a phone number": {
+  "de": "Nur eine Telefonnummer",
+  "es": "Solo un teléfono",
+  "fr": "Seulement un numéro",
+  "hi": "सिर्फ़ फ़ोन नंबर",
+  "it": "Solo un numero",
+  "ja": "電話番号のみ",
+  "pt": "Só telefone",
+  "zh": "只有电话"
+ },
+ "No mobile number": {
+  "de": "Keine Handynummer",
+  "es": "Sin móvil",
+  "fr": "Pas de mobile",
+  "hi": "कोई मोबाइल नंबर नहीं",
+  "it": "Nessun cellulare",
+  "ja": "携帯番号なし",
+  "pt": "Sem celular",
+  "zh": "无手机号"
+ },
+ "Has a mobile number": {
+  "de": "Hat eine Handynummer",
+  "es": "Tiene móvil",
+  "fr": "A un mobile",
+  "hi": "मोबाइल नंबर है",
+  "it": "Ha un cellulare",
+  "ja": "携帯番号あり",
+  "pt": "Tem celular",
+  "zh": "有手机号"
+ },
+ "A group": {
+  "de": "Eine Gruppe",
+  "es": "Un grupo",
+  "fr": "Un groupe",
+  "hi": "एक समूह",
+  "it": "Un gruppo",
+  "ja": "グループ",
+  "pt": "Um grupo",
+  "zh": "某个分组"
+ },
+ "An account": {
+  "de": "Ein Konto",
+  "es": "Una cuenta",
+  "fr": "Un compte",
+  "hi": "एक खाता",
+  "it": "Un account",
+  "ja": "アカウント",
+  "pt": "Uma conta",
+  "zh": "某个账户"
+ },
+ "Back up all": {
+  "de": "Alle sichern:",
+  "es": "Copia de los",
+  "fr": "Sauvegarder les",
+  "hi": "सभी का बैकअप:",
+  "it": "Copia di tutti i",
+  "ja": "すべてバックアップ:",
+  "pt": "Fazer backup de todos os",
+  "zh": "备份全部"
+ },
+ "Back up automatically": {
+  "de": "Automatisch sichern",
+  "es": "Copia automática",
+  "fr": "Sauvegarde automatique",
+  "hi": "अपने-आप बैकअप",
+  "it": "Backup automatico",
+  "ja": "自動でバックアップ",
+  "pt": "Backup automático",
+  "zh": "自动备份"
+ },
+ "Clean up": {
+  "de": "Aufräumen",
+  "es": "Limpiar",
+  "fr": "Nettoyer",
+  "hi": "साफ़-सफ़ाई",
+  "it": "Pulizia",
+  "ja": "整理",
+  "pt": "Limpar",
+  "zh": "整理"
+ },
+ "Find contacts that…": {
+  "de": "Kontakte finden, die…",
+  "es": "Encuentra contactos que…",
+  "fr": "Trouver les contacts qui…",
+  "hi": "ऐसे कॉन्टैक्ट खोजें जिनमें…",
+  "it": "Trova i contatti che…",
+  "ja": "次の連絡先を探す…",
+  "pt": "Encontre contatos que…",
+  "zh": "查找这样的联系人…"
+ },
+ "Groups and accounts": {
+  "de": "Gruppen und Konten",
+  "es": "Grupos y cuentas",
+  "fr": "Groupes et comptes",
+  "hi": "समूह और खाते",
+  "it": "Gruppi e account",
+  "ja": "グループとアカウント",
+  "pt": "Grupos e contas",
+  "zh": "分组和账户"
+ },
+ "Kind of contact": {
+  "de": "Art des Kontakts",
+  "es": "Tipo de contacto",
+  "fr": "Type de contact",
+  "hi": "कॉन्टैक्ट का प्रकार",
+  "it": "Tipo di contatto",
+  "ja": "連絡先の種類",
+  "pt": "Tipo de contato",
+  "zh": "联系人类型"
+ },
+ "Narrow it down": {
+  "de": "Weiter eingrenzen",
+  "es": "Afinar más",
+  "fr": "Affiner",
+  "hi": "और छाँटें",
+  "it": "Restringi",
+  "ja": "さらに絞り込む",
+  "pt": "Refinar",
+  "zh": "进一步筛选"
+ },
+ "See all": {
+  "de": "Alle zeigen",
+  "es": "Ver todos",
+  "fr": "Tout voir",
+  "hi": "सभी देखें",
+  "it": "Vedi tutti",
+  "ja": "すべて表示",
+  "pt": "Ver todos",
+  "zh": "查看全部"
+ },
+ "Share the backup": {
+  "de": "Sicherung teilen",
+  "es": "Compartir la copia",
+  "fr": "Partager la sauvegarde",
+  "hi": "बैकअप शेयर करें",
+  "it": "Condividi il backup",
+  "ja": "バックアップを共有",
+  "pt": "Compartilhar o backup",
+  "zh": "分享备份"
+ },
+ "Show the opposite": {
+  "de": "Das Gegenteil zeigen",
+  "es": "Mostrar lo contrario",
+  "fr": "Afficher l'inverse",
+  "hi": "उल्टा दिखाएँ",
+  "it": "Mostra l'opposto",
+  "ja": "逆を表示",
+  "pt": "Mostrar o oposto",
+  "zh": "显示相反项"
+ },
+ "Tap one to see just those people — then send, save, back up or fix them together.": {
+  "de": "Tippe auf eins, um nur diese Personen zu sehen – dann zusammen senden, sichern oder korrigieren.",
+  "es": "Toca uno para ver solo a esas personas y luego envíalas, guárdalas, haz copia o corrígelas juntas.",
+  "fr": "Touche-en un pour ne voir que ces personnes — puis envoie, enregistre, sauvegarde ou corrige-les ensemble.",
+  "hi": "सिर्फ़ उन लोगों को देखने के लिए किसी एक पर टैप करें — फिर उन्हें साथ में भेजें, सहेजें, बैकअप लें या ठीक करें।",
+  "it": "Toccane uno per vedere solo quelle persone — poi inviale, salvale, fai il backup o correggile insieme.",
+  "ja": "タップするとその人たちだけを表示 — まとめて送信・保存・バックアップ・修正できます。",
+  "pt": "Toque em um para ver só essas pessoas — depois envie, salve, faça backup ou corrija todas juntas.",
+  "zh": "点一个就只显示这些人——然后一起发送、保存、备份或修正。"
+ },
+ "Tick all": {
+  "de": "Alle abhaken",
+  "es": "Marcar todos",
+  "fr": "Tout cocher",
+  "hi": "सभी चुनें",
+  "it": "Spunta tutti",
+  "ja": "すべてチェック",
+  "pt": "Marcar todos",
+  "zh": "全选"
+ },
+ "Tick none": {
+  "de": "Keine abhaken",
+  "es": "Desmarcar todos",
+  "fr": "Tout décocher",
+  "hi": "कोई नहीं चुनें",
+  "it": "Togli tutte",
+  "ja": "すべて外す",
+  "pt": "Desmarcar todos",
+  "zh": "全不选"
+ },
+ "ticked": {
+  "de": "abgehakt",
+  "es": "marcados",
+  "fr": "cochés",
+  "hi": "चुने गए",
+  "it": "spuntati",
+  "ja": "件をチェック",
+  "pt": "marcados",
+  "zh": "已勾选"
+ },
+ "Your marks": {
+  "de": "Deine Markierungen",
+  "es": "Tus marcas",
+  "fr": "Tes marques",
+  "hi": "आपके निशान",
+  "it": "I tuoi segni",
+  "ja": "あなたのマーク",
+  "pt": "Suas marcações",
+  "zh": "你的标记"
+ },
+ "Work on all of them": {
+  "de": "Mit allen arbeiten",
+  "es": "Trabajar con todos",
+  "fr": "Les traiter tous",
+  "hi": "सभी पर काम करें",
+  "it": "Lavora su tutti",
+  "ja": "全員をまとめて操作",
+  "pt": "Trabalhar com todos",
+  "zh": "全部一起处理"
+ },
+ "contact": {
+  "de": "Kontakt",
+  "es": "contacto",
+  "fr": "contact",
+  "hi": "कॉन्टैक्ट",
+  "it": "contatto",
+  "ja": "件",
+  "pt": "contato",
+  "zh": "位联系人"
+ },
+ "contacts now": {
+  "de": "Kontakte jetzt",
+  "es": "contactos ahora",
+  "fr": "contacts maintenant",
+  "hi": "कॉन्टैक्ट अभी",
+  "it": "contatti ora",
+  "ja": "件の連絡先を今すぐ",
+  "pt": "contatos agora",
+  "zh": "位联系人"
+ },
+ "Spreadsheet": {
+  "de": "Tabelle",
+  "es": "Hoja de cálculo",
+  "fr": "Tableur",
+  "hi": "स्प्रेडशीट",
+  "it": "Foglio di calcolo",
+  "ja": "表計算",
+  "pt": "Planilha",
+  "zh": "表格"
+ },
+ "Fix": {
+  "de": "Korrigieren",
+  "es": "Corregir",
+  "fr": "Corriger",
+  "hi": "ठीक करें",
+  "it": "Correggi",
+  "ja": "修正",
+  "pt": "Corrigir",
+  "zh": "修正"
+ },
+ "No name at all": {
+  "de": "Überhaupt kein Name",
+  "es": "Sin ningún nombre",
+  "fr": "Aucun nom",
+  "hi": "कोई नाम नहीं",
+  "it": "Nessun nome affatto",
+  "ja": "名前がまったくない",
+  "pt": "Sem nenhum nome",
+  "zh": "完全没有名字"
+ },
+ "No empty or nameless contacts. ✓": {
+  "de": "Keine leeren oder namenlosen Kontakte. ✓",
+  "es": "No hay contactos vacíos ni sin nombre. ✓",
+  "fr": "Aucun contact vide ou sans nom. ✓",
+  "hi": "कोई खाली या बिना नाम का कॉन्टैक्ट नहीं। ✓",
+  "it": "Nessun contatto vuoto o senza nome. ✓",
+  "ja": "空や名前のない連絡先はありません。✓",
+  "pt": "Nenhum contato vazio ou sem nome. ✓",
+  "zh": "没有空白或无名的联系人。✓"
+ },
+ "Find anyone by what they have or what's missing, then send, save, back up or fix them together. Duplicates merged, backups on a schedule. All on your phone.": {
+  "de": "Finde jeden nach dem, was er hat oder was fehlt, und sende, sichere oder korrigiere sie zusammen. Duplikate zusammengeführt, Sicherungen nach Plan. Alles auf deinem Telefon.",
+  "es": "Encuentra a cualquiera por lo que tiene o lo que le falta y envíalos, guárdalos, haz copia o corrígelos juntos. Duplicados unidos, copias programadas. Todo en tu teléfono.",
+  "fr": "Trouve n'importe qui selon ce qu'il a ou ce qui manque, puis envoie, enregistre, sauvegarde ou corrige-les ensemble. Doublons fusionnés, sauvegardes programmées. Tout sur ton téléphone.",
+  "hi": "किसी को भी इससे खोजें कि उसमें क्या है या क्या नहीं — फिर साथ में भेजें, सहेजें, बैकअप लें या ठीक करें। डुप्लिकेट मिलाएँ, तय समय पर बैकअप। सब आपके फ़ोन पर।",
+  "it": "Trova chiunque in base a ciò che ha o che manca, poi inviali, salvali, fai il backup o correggili insieme. Duplicati uniti, backup programmati. Tutto sul telefono.",
+  "ja": "あるもの・ないもので誰でも探して、まとめて送信・保存・バックアップ・修正。重複は統合、バックアップは定期的に。すべて端末上で。",
+  "pt": "Encontre qualquer pessoa pelo que tem ou pelo que falta, depois envie, salve, faça backup ou corrija juntos. Duplicados unidos, backups agendados. Tudo no seu telefone.",
+  "zh": "按已有或缺少的信息找到任何人，再一起发送、保存、备份或修正。合并重复项，定时备份。全部在手机上完成。"
+ },
+ "Find contacts that…: tap any box — No email, Has a company, No birthday… — to see just those people.": {
+  "de": "Kontakte finden, die…: Tippe auf ein Feld – Keine E-Mail, Hat eine Firma, Kein Geburtstag… –, um nur diese Personen zu sehen.",
+  "es": "Encuentra contactos que…: toca una casilla —Sin correo, Tiene empresa, Sin cumpleaños…— para ver solo a esas personas.",
+  "fr": "Trouver les contacts qui… : touche une case — Pas d'e-mail, A une entreprise, Pas d'anniversaire… — pour ne voir que ces personnes.",
+  "hi": "ऐसे कॉन्टैक्ट खोजें…: कोई भी बॉक्स टैप करें — ईमेल नहीं, कंपनी है, जन्मदिन नहीं… — सिर्फ़ उन लोगों को देखने के लिए।",
+  "it": "Trova i contatti che…: tocca una casella — Nessuna e-mail, Ha un'azienda, Nessun compleanno… — per vedere solo quelle persone.",
+  "ja": "次の連絡先を探す…：「メールなし」「会社あり」「誕生日なし」などをタップすると、その人たちだけを表示。",
+  "pt": "Encontre contatos que…: toque em uma caixa — Sem e-mail, Tem empresa, Sem aniversário… — para ver só essas pessoas.",
+  "zh": "查找这样的联系人…：点任意一格——无邮箱、有公司、无生日…——就只显示这些人。"
+ },
+ "They open all ticked: send them to someone, save a spreadsheet, back up, mark, group, fix or delete them together.": {
+  "de": "Sie öffnen sich alle abgehakt: an jemanden senden, als Tabelle sichern, sichern, markieren, gruppieren, korrigieren oder zusammen löschen.",
+  "es": "Se abren todos marcados: envíalos a alguien, guarda una hoja de cálculo, haz copia, márcalos, agrúpalos, corrígelos o bórralos juntos.",
+  "fr": "Ils s'ouvrent tous cochés : envoie-les à quelqu'un, enregistre un tableur, sauvegarde, marque, groupe, corrige ou supprime-les ensemble.",
+  "hi": "सभी चुने हुए खुलते हैं: किसी को भेजें, स्प्रेडशीट सहेजें, बैकअप लें, निशान लगाएँ, समूह बनाएँ, ठीक करें या साथ में हटाएँ।",
+  "it": "Si aprono tutti spuntati: inviali a qualcuno, salva un foglio di calcolo, fai il backup, segna, raggruppa, correggi o eliminali insieme.",
+  "ja": "全員チェック済みで開きます：送信、表計算で保存、バックアップ、マーク、グループ化、修正、まとめて削除。",
+  "pt": "Abrem todos marcados: envie para alguém, salve uma planilha, faça backup, marque, agrupe, corrija ou apague juntos.",
+  "zh": "打开时全部已勾选：发给别人、存成表格、备份、标记、分组、修正或一起删除。"
+ },
+ "Clean up merges duplicates without losing a number. Back up keeps a copy on the schedule you pick.": {
+  "de": "Aufräumen führt Duplikate zusammen, ohne eine Nummer zu verlieren. Sichern bewahrt eine Kopie nach deinem Zeitplan.",
+  "es": "Limpiar une duplicados sin perder un número. Copia guarda una copia con la frecuencia que elijas.",
+  "fr": "Nettoyer fusionne les doublons sans perdre un numéro. Sauvegarder garde une copie au rythme choisi.",
+  "hi": "साफ़-सफ़ाई बिना कोई नंबर खोए डुप्लिकेट मिलाती है। बैकअप आपके चुने समय पर एक कॉपी रखता है।",
+  "it": "Pulizia unisce i duplicati senza perdere un numero. Backup tiene una copia con la frequenza che scegli.",
+  "ja": "整理は番号を失わずに重複を統合。バックアップは選んだ頻度でコピーを保存。",
+  "pt": "Limpar une duplicados sem perder um número. Backup guarda uma cópia na frequência que você escolher.",
+  "zh": "整理会合并重复项，不丢任何号码。备份按你选的频率保存一份。"
+ },
+ "No one left here": {
+  "de": "Hier ist niemand mehr",
+  "es": "No queda nadie aquí",
+  "fr": "Plus personne ici",
+  "hi": "यहाँ कोई नहीं बचा",
+  "it": "Non è rimasto nessuno",
+  "ja": "ここには誰もいません",
+  "pt": "Não sobrou ninguém aqui",
+  "zh": "这里没人了"
+ },
+ "Everyone that matched has been sorted out.": {
+  "de": "Alle Treffer wurden erledigt.",
+  "es": "Todos los que coincidían ya están resueltos.",
+  "fr": "Tous ceux qui correspondaient ont été réglés.",
+  "hi": "जो भी मेल खाते थे, सब निपट गए।",
+  "it": "Tutti quelli che corrispondevano sono stati sistemati.",
+  "ja": "該当した人はすべて片付きました。",
+  "pt": "Todos que combinavam já foram resolvidos.",
+  "zh": "符合条件的都处理好了。"
+ },
+ "Try fewer letters, or part of their number.": {
+  "de": "Versuche weniger Buchstaben oder einen Teil der Nummer.",
+  "es": "Prueba con menos letras o parte del número.",
+  "fr": "Essaie moins de lettres ou une partie du numéro.",
+  "hi": "कम अक्षर या नंबर का कुछ हिस्सा आज़माएँ।",
+  "it": "Prova meno lettere o parte del numero.",
+  "ja": "文字を減らすか、番号の一部で試してください。",
+  "pt": "Tente menos letras ou parte do número.",
+  "zh": "试试少输几个字，或输入部分号码。"
+ },
+ "Quarterly": {
+  "de": "Vierteljährlich",
+  "es": "Trimestral",
+  "fr": "Trimestriel",
+  "hi": "तिमाही",
+  "it": "Trimestrale",
+  "ja": "四半期ごと",
+  "pt": "Trimestral",
+  "zh": "每季度"
+ },
+ "Yearly": {
+  "de": "Jährlich",
+  "es": "Anual",
+  "fr": "Annuel",
+  "hi": "सालाना",
+  "it": "Annuale",
+  "ja": "毎年",
+  "pt": "Anual",
+  "zh": "每年"
  }
 }
