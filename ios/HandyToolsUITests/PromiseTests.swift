@@ -31,7 +31,8 @@ final class PromiseTests: XCTestCase {
         app.launch()
         let mine = app.buttons["home-mytools"]
         XCTAssertTrue(mine.waitForExistence(timeout: 20), "no My tools on Home")
-        XCTAssertTrue(mine.isHittable, "Home doesn't fit: My tools is below the fold")
+        let screen = app.windows.firstMatch.frame
+        XCTAssertTrue(mine.isHittable, "Home doesn't fit: My tools at \(mine.frame), screen \(screen), tab bar top \(app.buttons["Home"].firstMatch.frame.minY)")
         for id in ["have-photo", "have-paste", "shelf-camera", "shelf-phone", "have-reminders"] {
             XCTAssertTrue(app.descendants(matching: .any)[id].firstMatch.isHittable, "\(id) isn't on screen without scrolling")
         }
