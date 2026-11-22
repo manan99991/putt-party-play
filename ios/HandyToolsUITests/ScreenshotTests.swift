@@ -26,6 +26,10 @@ final class ScreenshotTests: XCTestCase {
                 // A ready-made tool works on its sample: the working card first, then the finished screen.
                 sleep(2); allow(); save(r + "-a-working")
                 sleep(10); allow(); save(r + "-b-done")
+                // Then the end of the finished screen, where Save and Share are.
+                let keep = app.descendants(matching: .any)["keep-save"]
+                for _ in 0..<6 where !(keep.exists && keep.isHittable) { app.swipeUp(); usleep(400_000) }
+                save(r + "-c-end")
             } else {
                 sleep(6); allow(); save(r)
             }
