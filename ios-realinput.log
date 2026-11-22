@@ -8,7 +8,7 @@ REALINPUT whiteboard-to-tasks: result (run-result)
 REALINPUT passport-photo: message — Passport photo works best with a clear, close photo. Try a clearer or closer photo.
 REALINPUT hide-sensitive: result (run-result)
 REALINPUT short-summary: result (run-result)
-REALINPUT sticker: result (run-result)
+REALINPUT sticker: message — Cut out subject works best with a clear, close photo. Try a clearer or closer photo.
 REALINPUT table-to-sheet: result (run-result)
 REALINPUT links-and-numbers: result (run-result)
 REALINPUT tidy-text: result (run-result)
@@ -21,7 +21,7 @@ REALINPUT what-is-this: result (run-result)
 REALINPUT scan-to-pdf: result (run-result)
 REALINPUT sign-and-send: result (run-result)
 REALINPUT receipt-run: result (run-result)
-REALINPUT whatsapp-no-save: result (run-result)
+REALINPUT whatsapp-no-save: CRASHED
 REALINPUT contact-qr: result (run-result)
 REALINPUT video-email: result (run-result)
 REALINPUT video-chat: result (run-result)
@@ -45,7 +45,8 @@ REALINPUT pdf-join: result (run-result)
 REALINPUT pdf-first-page: result (run-result)
 REALINPUT video-story: result (run-result)
 REALINPUT video-gif: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' passed (1508.738 seconds).
+/Users/runner/work/putt-party-play/putt-party-play/ios/HandyToolsUITests/RealInputTests.swift:73: error: -[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles] : XCTAssertTrue failed - The app closed on: whatsapp-no-save
+Test Case '-[HandyToolsUITests.RealInputTests testFirstHalfOfFlowsRunOnRealFiles]' failed (1144.431 seconds).
 Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' started.
 REALINPUT video-words: result (run-steplog)
 REALINPUT photo-collage: result (run-result)
@@ -92,8 +93,8 @@ REALINPUT whiteboard-email: result (run-result)
 REALINPUT chat-scam: result (run-result)
 REALINPUT rewrite-clear: result (run-result)
 REALINPUT signature-contact: result (run-result)
-Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1071.722 seconds).
-	 Executed 2 tests, with 0 failures (0 unexpected) in 2580.460 (2580.476) seconds
+Test Case '-[HandyToolsUITests.RealInputTests testSecondHalfOfFlowsRunOnRealFiles]' passed (1269.026 seconds).
+	 Executed 2 tests, with 1 failure (0 unexpected) in 2413.457 (2413.541) seconds
 Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' started.
 TOOLINPUT studio: ok
 TOOLINPUT procam: ok
@@ -160,8 +161,8 @@ TOOLINPUT pricecheck: ok
 TOOLINPUT vault: ok
 TOOLINPUT speechnotes: ok
 TOOLINPUT audiostudio: ok
-Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (2099.397 seconds).
-	 Executed 1 test, with 0 failures (0 unexpected) in 2099.397 (2099.399) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 4679.858 (4679.888) seconds
-	 Executed 3 tests, with 0 failures (0 unexpected) in 4679.858 (4679.890) seconds
-** TEST EXECUTE SUCCEEDED **
+Test Case '-[HandyToolsUITests.ToolRealInputTests testEveryToolWithItsSampleKeepsTheAppOpen]' passed (2232.995 seconds).
+	 Executed 1 test, with 0 failures (0 unexpected) in 2232.995 (2233.003) seconds
+	 Executed 3 tests, with 1 failure (0 unexpected) in 4646.452 (4646.561) seconds
+	 Executed 3 tests, with 1 failure (0 unexpected) in 4646.452 (4646.563) seconds
+** TEST EXECUTE FAILED **
