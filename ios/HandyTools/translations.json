@@ -36350,13 +36350,13 @@
   "zh": "低于"
  },
  "voice": {
-  "de": "",
-  "es": "",
-  "fr": "",
+  "de": "Stimme",
+  "es": "voz",
+  "fr": "voix",
   "hi": "आवाज़",
-  "it": "",
-  "ja": "の声",
-  "pt": "",
+  "it": "voce",
+  "ja": "声",
+  "pt": "voz",
   "zh": "声音"
  },
  "voice note(s)": {

@@ -31,6 +31,8 @@ final class Localizer {
 
     func translate(_ english: String) -> String {
         guard language != "en" else { return english }
-        return table[english]?[language] ?? english
+        // An empty entry counts as missing, so a gap in the file shows English, never a blank label.
+        guard let t = table[english]?[language], !t.isEmpty else { return english }
+        return t
     }
 }

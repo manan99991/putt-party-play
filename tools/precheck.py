@@ -157,6 +157,12 @@ for f, s in code.items():
         k = k.replace('\\"', '"').replace("\\\\", "\\")
         if k.strip() and k not in tr and not re.fullmatch(r"[\W\d]*|[A-Za-z]{1,4}|[a-z./]+", k): miss.add(k)
 
+# A translation that is there but empty would show a blank label in that language.
+LANGS = ["de", "es", "fr", "hi", "it", "ja", "pt", "zh"]
+for k, v in tr.items():
+    gaps = [l for l in LANGS if not str(v.get(l, "")).strip()]
+    if gaps: bad.append(f"translations.json: \"{k[:60]}\" has no {', '.join(gaps)} text")
+
 for b in bad: print("✗", b)
 if miss: print(f"! {len(miss)} strings without translations (run the translation pass):", "; ".join(sorted(miss)[:15]), "…" if len(miss) > 15 else "")
 print("precheck:", "FAILED" if bad else "ok", f"({len(files)} files)")
