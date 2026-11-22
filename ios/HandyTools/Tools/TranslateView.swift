@@ -30,6 +30,8 @@ struct TranslateView: View {
     private enum PickerSide: Int, Identifiable { case from, to; var id: Int { rawValue } }
     @State private var showPicker: PickerSide? = nil
     @State private var travelCat = 0
+    /// Face to face: the phone flat between two people, each half facing its reader, big type, one mic each.
+    @State private var faceToFace = false
     @AppStorage("translate.favs") private var favsRaw = ""
     private var favs: Set<String> { Set(favsRaw.split(separator: "\n").map(String.init)) }
 
@@ -71,6 +73,12 @@ struct TranslateView: View {
         }
         .onChange(of: speech.running) { was, now in if was, !now, let side = talkingSide { heard(side) } }
         .fullScreenCover(item: $big) { b in BigTextView(text: b.text) }
+        .fullScreenCover(isPresented: $faceToFace) {
+            FaceToFaceView(meCode: fromCode, themCode: toCode,
+                           forMe: exchanges.last(where: { $0.side == 1 })?.said, forThem: exchanges.last(where: { $0.side == 0 })?.said,
+                           live: speech.running ? speech.live : "", activeSide: speech.running ? talkingSide : nil, busy: busy,
+                           talk: { startTalk($0) }, close: { speech.stop(); faceToFace = false })
+        }
         .onChange(of: photoItem) { _, item in
             guard let item else { return }
             busy = true
@@ -150,26 +158,31 @@ struct TranslateView: View {
                 talkButton(side: 0, label: name(fromCode))
                 talkButton(side: 1, label: name(toCode))
             }
+            Button { faceToFace = true } label: { Label(L("Face to face"), systemImage: "rectangle.split.1x2") .frame(maxWidth: .infinity) }
+                .secondaryButton().disabled(sameLang).accessibilityIdentifier("translate-face")
+            Text(L("Lay the phone flat between you: each side reads its own half, in big type, and taps its own mic."))
+                .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
             if !exchanges.isEmpty { HStack { Button(role: .destructive) { exchanges = [] } label: { Label(L("Clear"), systemImage: "trash") }.textButton(); Spacer(); ShareLink(item: exchanges.map { "\($0.heard)\n→ \($0.said)" }.joined(separator: "\n\n")) { Label(L("Share transcript"), systemImage: "square.and.arrow.up") }.textButton() } }
         }
     }
 
     private func talkButton(side: Int, label: String) -> some View {
         let active = talkingSide == side && speech.running
-        return Button {
-            if active { speech.stop() }
-            else {
-                guard Usage.hasRoom("translate", limit: Limits.freeTranslatePerDay) else { return }
-                speaker.stop(); speech.stop(); talkingSide = side
-                speech.locale = SpeechStream.bestLocale(forLanguage: side == 0 ? fromCode : toCode); speech.clear(); speech.start()
-            }
-        } label: {
+        return Button { startTalk(side) } label: {
             VStack(spacing: 4) { Image(systemName: active ? "stop.fill" : "mic.fill").font(.system(size: 22)); Text(active ? "Tap when done" : "\(label) speaks").font(HandyFont.caption) }
                 .frame(maxWidth: .infinity, minHeight: 72)
                 .foregroundStyle(active ? .white : HandyColor.textPrimary)
                 .background(active ? HandyColor.danger : HandyColor.surface, in: RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: HandyRadius.input, style: .continuous).stroke(active ? Color.clear : HandyColor.border, lineWidth: 1))
         }.buttonStyle(.plain).disabled((overQuota || sameLang) && !active)
+    }
+
+    /// One side starts (or, if it's already listening, stops) talking. Shared by the Talk buttons and Face to face.
+    private func startTalk(_ side: Int) {
+        if talkingSide == side && speech.running { speech.stop(); return }
+        guard !sameLang, Usage.hasRoom("translate", limit: Limits.freeTranslatePerDay) else { return }
+        speaker.stop(); speech.stop(); talkingSide = side
+        speech.locale = SpeechStream.bestLocale(forLanguage: side == 0 ? fromCode : toCode); speech.clear(); speech.start()
     }
 
     private func heard(_ side: Int) {
@@ -311,5 +324,67 @@ struct BigTextView: View {
         }
         .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
         .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+    }
+}
+
+
+/// Face to face: the phone lies flat between two people. The top half is turned to face the other person and shows
+/// what you said, in their language, in big type; the bottom half shows their reply in yours. Each half has its own
+/// mic, labelled in its own language, so neither of you has to read upside down or pass the phone across.
+struct FaceToFaceView: View {
+    let meCode: String
+    let themCode: String
+    let forMe: String?
+    let forThem: String?
+    let live: String
+    let activeSide: Int?          // 0 = me speaking, 1 = them
+    let busy: Bool
+    let talk: (Int) -> Void
+    let close: () -> Void
+
+    private func native(_ code: String) -> String {
+        Locale(identifier: code).localizedString(forLanguageCode: code)?.capitalized(with: Locale(identifier: code)) ?? code
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            half(side: 1, text: forThem, lang: themCode)
+                .rotationEffect(.degrees(180))
+                .background(HandyColor.accentSoft)
+            Rectangle().fill(HandyColor.border).frame(height: 1)
+            half(side: 0, text: forMe, lang: meCode)
+                .background(HandyColor.bg)
+        }
+        .ignoresSafeArea(edges: .bottom)
+        .overlay(alignment: .topLeading) {
+            Button(L("Done")) { close() }.buttonStyle(.bordered).padding(.leading, 16).padding(.top, 4)
+                .accessibilityIdentifier("face-done")
+        }
+        .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
+        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+    }
+
+    /// One person's half: the latest line for them (or what they're saying right now), and their mic.
+    private func half(side: Int, text: String?, lang: String) -> some View {
+        let speaking = activeSide == side
+        let shown = speaking && !live.isEmpty ? live : (text ?? "")
+        return VStack(spacing: 14) {
+            Spacer(minLength: 8)
+            Text(shown.isEmpty ? "…" : shown)
+                .font(.system(size: 34, weight: .bold)).minimumScaleFactor(0.3)
+                .foregroundStyle(speaking ? HandyColor.accent : HandyColor.textPrimary)
+                .multilineTextAlignment(.center).frame(maxWidth: .infinity, maxHeight: .infinity).padding(.horizontal, 20)
+            Button { talk(side) } label: {
+                Label(speaking ? "■" : native(lang), systemImage: speaking ? "stop.fill" : "mic.fill")
+                    .font(.system(size: 20, weight: .semibold)).frame(maxWidth: .infinity, minHeight: 56)
+                    .foregroundStyle(speaking ? .white : HandyColor.onAccent)
+                    .background(speaking ? HandyColor.danger : HandyColor.accent, in: Capsule())
+            }
+            .buttonStyle(.plain).padding(.horizontal, 24).padding(.bottom, 18)
+            .disabled(busy && !speaking)
+            .accessibilityLabel(speaking ? L("Stop") : "\(L("Speak")) \(native(lang))")
+            .accessibilityIdentifier("face-mic-\(side)")
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
