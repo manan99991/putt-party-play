@@ -71,7 +71,7 @@ struct StickerMakerView: View {
             Text("✂️").font(.system(size: 52))
             Text(L("Pick one photo or a few — people, pets, food, anything. Tenzy cuts them out and shows you ten sticker styles to choose from."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            PhotosPicker(selection: $picks, maxSelectionCount: 12, matching: .images) {
+            SmartPhotoButton(kind: .any, max: 12, picked: { imgs in cut(Array(imgs.prefix(12))) }) {
                 Label(L("Choose photos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
             }.primaryButton()
             if cutting { ToolProgressBar(value: cutProgress, label: "Cutting out your stickers…") }
@@ -217,7 +217,7 @@ struct StickerMakerView: View {
             }
             if let e = errorText { Text(L(e)).font(HandyFont.caption).foregroundStyle(HandyColor.danger) }
             if let n = note { Text(L(n)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary) }
-            PhotosPicker(selection: $picks, maxSelectionCount: 12, matching: .images) { Label(L("Make more"), systemImage: "photo") }
+            SmartPhotoButton(kind: .any, max: 12, picked: { imgs in cut(Array(imgs.prefix(12))) }) { Label(L("Make more"), systemImage: "photo") }
                 .textButton().font(HandyFont.caption).frame(maxWidth: .infinity)
         }
     }

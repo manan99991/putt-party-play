@@ -100,7 +100,7 @@ struct ScanView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Button { showScanner = true } label: { Label(L("Scan with the camera"), systemImage: "doc.viewfinder").frame(maxWidth: .infinity) }
                 .primaryButton().disabled(!VNDocumentCameraViewController.isSupported)
-            PhotosPicker(selection: $photoItems, maxSelectionCount: 40, matching: .images) {
+            SmartPhotoButton(kind: .document, max: 40, picked: { imgs in let got = imgs.map { $0.resized(maxDimension: 2400) }; append(got); for i in max(0, pages.count - got.count)..<pages.count { pages[i].filter = .color } }) {
                 Label(L("Choose photos of pages"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
             }.secondaryButton()
             Button { showPDFImporter = true } label: { Label(L("Open a PDF (or several, to merge)"), systemImage: "doc.fill").frame(maxWidth: .infinity) }.secondaryButton()
@@ -135,7 +135,7 @@ struct ScanView: View {
                         }
                     }.buttonStyle(.plain)
                 }
-                PhotosPicker(selection: $photoItems, maxSelectionCount: 40, matching: .images) {
+                SmartPhotoButton(kind: .document, max: 40, picked: { imgs in let got = imgs.map { $0.resized(maxDimension: 2400) }; append(got); for i in max(0, pages.count - got.count)..<pages.count { pages[i].filter = .color } }) {
                     VStack { Image(systemName: "photo").font(.system(size: 18)); Text(L("Photos")).font(HandyFont.micro) }
                         .foregroundStyle(HandyColor.accent).frame(width: 56, height: 74)
                         .background(HandyColor.accentSoft, in: RoundedRectangle(cornerRadius: 8, style: .continuous))

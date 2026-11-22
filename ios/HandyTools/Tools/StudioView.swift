@@ -50,7 +50,7 @@ struct StudioView: View {
     private var overQuota: Bool { !Usage.hasRoom("studio", limit: Limits.freeStudioPerDay) }
 
     var body: some View {
-        ToolPage(title: "Studio", subtitle: "What's the photo for? Pick the job — Studio does the rest and shows you before and after.", working: working) {
+        ToolPage(title: "Photo Studio", subtitle: "What's the photo for? Pick the job — Studio does the rest and shows you before and after.", working: working) {
             if original == nil {
                 PhotosPicker(selection: $pickedItem, matching: .images) {
                     Label(L("Choose a photo"), systemImage: "photo").frame(maxWidth: .infinity)
@@ -201,7 +201,7 @@ struct StudioView: View {
     @ViewBuilder private func landing(_ out: Output) -> some View {
         Text("\(SizeTarget.format(out.data.count)) · \(out.kind)\(originalBytes > 0 ? " · \(L("was")) \(SizeTarget.format(originalBytes))" : "")")
             .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
-        KeepShare([.data(out.data, name: "Studio", ext: out.kind.lowercased())], tool: "Studio")
+        KeepShare([.data(out.data, name: "Studio", ext: out.kind.lowercased())], tool: "Photo Studio")
     }
 
     // MARK: run

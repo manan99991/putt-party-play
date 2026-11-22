@@ -11,7 +11,7 @@ extension Guide {
     static func videoGoal(_ id: String) -> Goal {
         switch id {
         case "stunning": return Goal(id: id, title: "Make it stunning", line: "Effects, filters, light and festive magic", icon: "wand.and.stars")
-        case "post":     return Goal(id: id, title: "Post it", line: "TikTok, Reels, Shorts and more", icon: "play.square.stack.fill")
+        case "post":     return Goal(id: id, title: "Post a Video", line: "TikTok, Reels, Shorts and more", icon: "play.square.stack.fill")
         case "cut":      return Goal(id: id, title: "Cut it shorter", line: "Keep just the best part", icon: "scissors")
         case "send":     return Goal(id: id, title: "Send it", line: "Small enough for any chat or email", icon: "paperplane.fill")
         case "fun":      return Goal(id: id, title: "Make it funny", line: "Boomerang, GIF, silly voices", icon: "face.smiling.inverse")

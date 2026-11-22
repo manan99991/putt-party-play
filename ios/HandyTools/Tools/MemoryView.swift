@@ -19,7 +19,7 @@ struct MemoryView: View {
     @State private var viewing: MemoryEngine.Entry?
 
     var body: some View {
-        ToolPage(title: "Memory", subtitle: "Ask your own photos and videos anything — by what they say (a Wi-Fi password, a confirmation number, where you parked) or what they show (you in a red dress, your dog at the beach). Read on your phone, never uploaded.") {
+        ToolPage(title: "Search My Photos", subtitle: "Ask your own photos and videos anything — by what they say (a Wi-Fi password, a confirmation number, where you parked) or what they show (you in a red dress, your dog at the beach). Read on your phone, never uploaded.") {
             HowTo("memory", [
                 "Build the index once — it reads your phone's own photos on-device; a big library fills in as you watch.",
                 "Ask in plain words: \u{201C}the Wi-Fi password I saved\u{201D}, \u{201C}me in a red dress\u{201D}, \u{201C}my parking spot\u{201D}.",

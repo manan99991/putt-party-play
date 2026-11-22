@@ -27,7 +27,7 @@ enum HomeShelves {
         Shelf(id: "words", title: "Words & voice", line: "Write, translate, take notes, spot scams",
               icon: "text.bubble.fill", hex: 0x22C55E,
               tools: ["textstudio", "translate", "speechnotes", "shield", "memory"]),
-        Shelf(id: "day", title: "My day", line: "Medicine, plans, bills, prices and receipts",
+        Shelf(id: "day", title: "Daily life", line: "Medicine, plans, moods, bills, prices and receipts",
               icon: "calendar", hex: 0xF97316,
               tools: ["medreminder", "untangle", "planner", "brief", "daydiary", "sorted", "warranty", "pricewatch", "pricecheck"]),
     ]

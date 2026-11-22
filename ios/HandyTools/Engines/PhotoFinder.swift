@@ -1,6 +1,7 @@
 import Photos
 import UIKit
 import Vision
+import UniformTypeIdentifiers
 
 /// "Show me only the receipts" — when a tool asks for a photo, the photos that look like what it needs come first,
 /// so nobody scrolls through hundreds of pictures (Manan, 22 Nov: "if they go into the warranty flow and click on
@@ -13,6 +14,8 @@ enum PhotoFinder {
     /// What a tool is looking for.
     enum Kind: String, CaseIterable, Codable {
         case receipt, document, card, menu, face, people, board, screenshot, code, product
+        /// No filter: every recent photo, newest first — for tools that take any photos, with swipe-to-select.
+        case any
 
         var title: String {
             switch self {
@@ -22,6 +25,7 @@ enum PhotoFinder {
             case .menu: return "Menus"
             case .face: return "Photos of a face"
             case .people: return "Photos with people in them"
+            case .any: return "Your photos"
             case .board: return "Whiteboards, lists and calendars"
             case .screenshot: return "Screenshots"
             case .code: return "Photos with a QR code or barcode"
@@ -36,6 +40,7 @@ enum PhotoFinder {
             case .menu: return "fork.knife"
             case .face: return "person.crop.square"
             case .people: return "person.2.fill"
+            case .any: return "photo.on.rectangle"
             case .board: return "list.bullet.rectangle"
             case .screenshot: return "iphone"
             case .code: return "qrcode"
@@ -87,6 +92,8 @@ enum PhotoFinder {
                 + money * 0.4 + label(["menu"]) * 2
         case .face:
             return s.faces == 1 ? 3 : (s.faces > 1 ? 1 : 0) - (s.screenshot ? 2 : 0) - (words > 20 ? 1 : 0)
+        case .any:
+            return threshold
         case .people:
             return (s.faces > 0 ? 3 : 0) - (s.screenshot ? 2 : 0) - (words > 20 ? 1 : 0)
         case .board:
@@ -141,6 +148,20 @@ enum PhotoFinder {
         }
     }
 
+    /// The photo's own file, untouched — so a flow that strips location or shrinks it works on the real bytes and its
+    /// real size (a re-saved copy would lose the details and could even be bigger than what the person picked).
+    static func original(_ a: PHAsset) async -> (Data, String)? {
+        let opt = PHImageRequestOptions()
+        opt.isNetworkAccessAllowed = true; opt.version = .current; opt.deliveryMode = .highQualityFormat
+        return await withCheckedContinuation { cont in
+            PHImageManager.default().requestImageDataAndOrientation(for: a, options: opt) { data, uti, _, _ in
+                guard let data else { cont.resume(returning: nil); return }
+                let ext = uti.flatMap { UTType($0)?.preferredFilenameExtension } ?? "jpg"
+                cont.resume(returning: (data, ext))
+            }
+        }
+    }
+
     /// Read one photo: labels, a fast text pass, faces, codes. Small image, one handler — about 0.1 s on a phone.
     static func read(_ a: PHAsset) async -> Seen? {
         guard let img = await image(a, side: 720), let cg = img.cgImage else { return nil }
@@ -174,8 +195,10 @@ enum PhotoFinder {
         task = Task {
             if access == .notDetermined { access = await PHPhotoLibrary.requestAuthorization(for: .readWrite) }
             guard access == .authorized || access == .limited else { finished = true; return }
-            let assets = PhotoFinder.recentPhotos(limit: limit)
+            let assets = PhotoFinder.recentPhotos(limit: kind == .any ? 2000 : limit)
             total = assets.count; looked = 0; matches = []; finished = false
+            // Any photo will do: show them all at once — nothing to read.
+            if kind == .any { matches = assets; looked = assets.count; finished = true; return }
             var cache = PhotoFinder.loadCache()
             var scored: [(PHAsset, Double)] = []
             var fresh = 0

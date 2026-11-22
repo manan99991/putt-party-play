@@ -68,7 +68,7 @@ struct CelebrateView: View {
     private let cols = [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)]
 
     var body: some View {
-        ToolPage(title: "Video effects",
+        ToolPage(title: "Video Effects",
                  subtitle: "Make it stunning — looks, light, motion, sparkle and words, as subtle or as wild as you like.",
                  working: working) {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
@@ -89,7 +89,7 @@ struct CelebrateView: View {
         .onDisappear { player.pause(); previewTask?.cancel(); thumbTask?.cancel() }
         .handoff("celebrate") { p in adopt(p) }
         .onAppear { if Launch.sample, source == nil { sample() } }
-        .finishes(working, tool: "Video effects")
+        .finishes(working, tool: "Video Effects")
     }
 
     // MARK: - Pick
@@ -408,7 +408,7 @@ struct CelebrateView: View {
         VStack(alignment: .leading, spacing: HandySpacing.s12) {
             Label(resultTitle, systemImage: "checkmark.circle.fill")
                 .font(HandyFont.bodyStrong).foregroundStyle(HandyColor.success)
-            VideoFinishCard(url: url, source: source, tool: "Video effects").id(url)
+            VideoFinishCard(url: url, source: source, tool: "Video Effects").id(url)
             Button(L("Try another look")) { resultURL = nil; schedulePreview() }.textButton().frame(maxWidth: .infinity)
         }
         .accessibilityElement(children: .contain).accessibilityIdentifier("celebrate-result")

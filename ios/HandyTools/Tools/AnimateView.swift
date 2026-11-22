@@ -60,7 +60,7 @@ struct AnimateView: View {
             Image(systemName: "sparkles.rectangle.stack").font(.system(size: 44)).foregroundStyle(HandyColor.accent)
             Text(L("Pick a few photos. Tenzy turns them into a smooth video — 26 styles: page turn, flipbook, 3D cube, carousel, ripple, heart and more."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            PhotosPicker(selection: $picks, maxSelectionCount: Self.maxPhotos, matching: .images) {
+            SmartPhotoButton(kind: .any, max: Self.maxPhotos, picked: { imgs in adopt(imgs.prefix(Self.maxPhotos).map { $0.resized(maxDimension: 1440).normalizedUp() }) }) {
                 Label(L("Choose photos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
             }.primaryButton()
             if loading { ToolProgressBar(label: "Getting your photos…", showsTime: false) }
@@ -81,7 +81,7 @@ struct AnimateView: View {
                             .frame(width: 52, height: 52)
                             .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                     }
-                    PhotosPicker(selection: $picks, maxSelectionCount: Self.maxPhotos, matching: .images) {
+                    SmartPhotoButton(kind: .any, max: Self.maxPhotos, picked: { imgs in adopt(imgs.prefix(Self.maxPhotos).map { $0.resized(maxDimension: 1440).normalizedUp() }) }) {
                         Image(systemName: "plus").frame(width: 52, height: 52)
                             .background(HandyColor.surface, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                     }.accessibilityLabel(L("Change photos"))

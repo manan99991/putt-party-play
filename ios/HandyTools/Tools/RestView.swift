@@ -16,7 +16,7 @@ struct RestView: View {
     @State private var notifyOff = false
 
     var body: some View {
-        ToolPage(title: "Rest", subtitle: "Sleep sounds with a fading timer, a bedtime nudge, and a recorder that keeps only the noisy moments — with a morning summary of your night.") {
+        ToolPage(title: "Sleep Sounds", subtitle: "Sleep sounds with a fading timer, a bedtime nudge, and a recorder that keeps only the noisy moments — with a morning summary of your night.") {
             HowTo("rest", [
                 "Pick a sound — brown, pink, fan and more — and set the volume.",
                 "Set a sleep timer so it fades out on its own. It keeps playing with the screen locked.",

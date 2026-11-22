@@ -16,7 +16,7 @@ struct PlannerView: View {
     @State private var notifOff = false
 
     var body: some View {
-        ToolPage(title: "Planner", subtitle: "Snap a whiteboard, wall calendar, list or schedule. It becomes a planner you can tick off, with a morning note of what's due.") {
+        ToolPage(title: "Photo to Checklist", subtitle: "Snap a whiteboard, wall calendar, list or schedule. It becomes a planner you can tick off, with a morning note of what's due.") {
             HStack(spacing: HandySpacing.s8) {
                 SmartPhotoButton(kind: .board, picked: { if let i = $0.first { reading = PhotoBox(image: i) } }) { Label(L("Read a photo"), systemImage: "photo").frame(maxWidth: .infinity) }
                     .primaryButton().accessibilityIdentifier("planner-photo")

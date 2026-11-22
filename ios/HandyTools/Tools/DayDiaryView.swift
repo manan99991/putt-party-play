@@ -29,7 +29,7 @@ struct DayDiaryView: View {
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        ToolPage(title: "My Day", subtitle: "How did today go? One tap saves it — then say why if you like. Private, locked, only on your phone.", working: saving) {
+        ToolPage(title: "Mood Diary", subtitle: "How did today go? One tap saves it — then say why if you like. Private, locked, only on your phone.", working: saving) {
             VStack(spacing: HandySpacing.s16) {
                 Text(Date().formatted(date: .complete, time: .omitted)).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 if let r = recordingMood { recordingCard(r) } else if let m = askWhy { followUp(m) } else { moodButton }

@@ -21,7 +21,7 @@ struct PostItView: View {
     private var platform: SocialPost.Platform { SocialPost.platform(platformID) ?? SocialPost.platforms[0] }
 
     var body: some View {
-        ToolPage(title: "Post it", subtitle: "Ready for TikTok, Reels, Shorts and more — the right shape, length and size, then straight into the app.") {
+        ToolPage(title: "Post a Video", subtitle: "Ready for TikTok, Reels, Shorts and more — the right shape, length and size, then straight into the app.") {
             VStack(alignment: .leading, spacing: HandySpacing.s16) {
                 if source == nil { pickCard } else { editor }
             }
@@ -190,7 +190,7 @@ struct PostReadyCard: View {
                        : "Saves it to Photos, copies your caption, and opens the app — pick the video if it asks, paste the caption, tap Post."))
                     .font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
                 if let note { Label(note, systemImage: "info.circle").font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true) }
-                KeepShare(parts.map { KeepItem.file($0) }, lead: .share, tool: "Post it")
+                KeepShare(parts.map { KeepItem.file($0) }, lead: .share, tool: "Post a Video")
                 if let another { Button(L("Post it somewhere else")) { player?.pause(); another() }.textButton().frame(maxWidth: .infinity) }
             }
         }

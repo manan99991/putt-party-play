@@ -34,7 +34,7 @@ struct ComicStripView: View {
             Text("💥").font(.system(size: 52))
             Text(L("Pick 1 to 4 photos. Tenzy inks them like a comic and you add what everyone's saying."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            PhotosPicker(selection: $picks, maxSelectionCount: 4, matching: .images) {
+            SmartPhotoButton(kind: .any, max: 4, picked: { imgs in ink(imgs.prefix(4).map { $0.resized(maxDimension: 1400).normalizedUp() }) }) {
                 Label(L("Choose photos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
             }.primaryButton()
             if inking { ToolProgressBar(label: "Inking your panels…", showsTime: false) }
@@ -68,7 +68,7 @@ struct ComicStripView: View {
                 Button { make() } label: { Label(L("Make comic"), systemImage: "checkmark").frame(maxWidth: .infinity) }
                     .primaryButton().disabled(working)
             }
-            PhotosPicker(selection: $picks, maxSelectionCount: 4, matching: .images) { Label(L("Choose different photos"), systemImage: "photo") }
+            SmartPhotoButton(kind: .any, max: 4, picked: { imgs in ink(imgs.prefix(4).map { $0.resized(maxDimension: 1400).normalizedUp() }) }) { Label(L("Choose different photos"), systemImage: "photo") }
                 .textButton().font(HandyFont.caption).frame(maxWidth: .infinity)
         }
         .onChange(of: words) { _, _ in refresh() }

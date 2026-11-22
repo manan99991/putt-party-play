@@ -338,4 +338,24 @@ final class PromiseTests: XCTestCase {
         app.buttons["Cancel"].firstMatch.tap()
         XCTAssertTrue(from.waitForExistence(timeout: 10), "Cancel didn't close the picker")
     }
+
+    /// "Just swiping the finger lets select multiple files" (Manan, 22 Nov): Home › Photo opens Tenzy's own grid, and a
+    /// sideways swipe across the first row ticks every photo it passes over.
+    func testSwipeAcrossPhotosPicksSeveral() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-route", "home", "-uitest"]
+        app.launch()
+        let tile = app.descendants(matching: .any)["have-photo"].firstMatch
+        XCTAssertTrue(tile.waitForExistence(timeout: 20))
+        tile.tap()
+        let cells = app.buttons.matching(identifier: "finder-photo")
+        XCTAssertTrue(cells.firstMatch.waitForExistence(timeout: 20), "the photo grid didn't open")
+        guard cells.count >= 3 else { return }   // a simulator with fewer photos can't show a swipe
+        let from = cells.element(boundBy: 0).coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.5))
+        let to = cells.element(boundBy: 2).coordinate(withNormalizedOffset: CGVector(dx: 0.7, dy: 0.5))
+        from.press(forDuration: 0.05, thenDragTo: to)
+        let use = app.buttons["finder-use"]
+        XCTAssertTrue(use.waitForExistence(timeout: 5), "swiping across photos didn't pick any")
+        XCTAssertTrue(use.label.contains("3"), "a swipe across three photos picked: \(use.label)")
+    }
 }

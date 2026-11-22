@@ -39,7 +39,7 @@ struct FitItView: View {
     }
 
     var body: some View {
-        ToolPage(title: "Fit It", subtitle: "Shrink a photo, video, or PDF to land just under the size limit you need.", working: working) {
+        ToolPage(title: "Fit Under a Limit", subtitle: "Shrink a photo, video, or PDF to land just under the size limit you need.", working: working) {
             HowTo("fitit", [
                 "Pick a photo or PDF that is too big to send.",
                 "Choose the size it must come under, or type a custom limit.",
@@ -190,11 +190,11 @@ struct FitItView: View {
     @ViewBuilder private var shareButton: some View {
         switch output {
         case .data(let d, let ext) where ext == "pdf":
-            KeepShare([.data(d, name: "Fitted PDF", ext: "pdf")], lead: .share, tool: "Fit It")
+            KeepShare([.data(d, name: "Fitted PDF", ext: "pdf")], lead: .share, tool: "Fit Under a Limit")
         case .data(let d, _):
-            KeepShare([.data(d, name: "Fitted photo", ext: "jpg")], lead: .share, tool: "Fit It", original: originalID, originalBytes: sourceBytes)
+            KeepShare([.data(d, name: "Fitted photo", ext: "jpg")], lead: .share, tool: "Fit Under a Limit", original: originalID, originalBytes: sourceBytes)
         case .file(let url):
-            KeepShare(url, lead: .share, tool: "Fit It", original: originalID, originalBytes: sourceBytes)
+            KeepShare(url, lead: .share, tool: "Fit Under a Limit", original: originalID, originalBytes: sourceBytes)
         case .none:
             EmptyView()
         }

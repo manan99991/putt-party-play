@@ -41408,5 +41408,385 @@
   "ja": "人が写っている写真",
   "pt": "Fotos com pessoas",
   "zh": "有人物的照片"
+ },
+ "Bills & Letters": {
+  "de": "Rechnungen & Briefe",
+  "es": "Facturas y cartas",
+  "fr": "Factures et courriers",
+  "hi": "बिल और पत्र",
+  "it": "Bollette e lettere",
+  "ja": "請求書と手紙",
+  "pt": "Contas e cartas",
+  "zh": "账单和信件"
+ },
+ "Search My Photos": {
+  "de": "Fotos durchsuchen",
+  "es": "Buscar en mis fotos",
+  "fr": "Chercher dans mes photos",
+  "hi": "मेरी फ़ोटो खोजें",
+  "it": "Cerca nelle mie foto",
+  "ja": "写真を検索",
+  "pt": "Procurar nas fotos",
+  "zh": "搜索我的照片"
+ },
+ "Find any photo by what's in it or written on it": {
+  "de": "Jedes Foto finden – nach Inhalt oder Text darauf",
+  "es": "Encuentra cualquier foto por lo que muestra o lo que dice",
+  "fr": "Retrouvez une photo par ce qu'elle montre ou ce qui y est écrit",
+  "hi": "किसी भी फ़ोटो को उसमें दिखी चीज़ या लिखे शब्दों से खोजें",
+  "it": "Trova qualsiasi foto da ciò che mostra o c'è scritto",
+  "ja": "写っているものや文字で写真を探す",
+  "pt": "Encontra qualquer foto pelo que mostra ou tem escrito",
+  "zh": "按内容或上面的文字找到任何照片"
+ },
+ "Photo to Checklist": {
+  "de": "Foto zur Checkliste",
+  "es": "De foto a lista",
+  "fr": "Photo en liste",
+  "hi": "फ़ोटो से चेकलिस्ट",
+  "it": "Da foto a lista",
+  "ja": "写真をチェックリストに",
+  "pt": "Foto para lista",
+  "zh": "照片转清单"
+ },
+ "Snap a whiteboard or list, tick it off here": {
+  "de": "Whiteboard oder Liste fotografieren, hier abhaken",
+  "es": "Foto de una pizarra o lista y márcala aquí",
+  "fr": "Photographiez un tableau ou une liste, cochez ici",
+  "hi": "व्हाइटबोर्ड या सूची की फ़ोटो लें, यहाँ टिक करें",
+  "it": "Fotografa una lavagna o lista, spunta qui",
+  "ja": "ホワイトボードやリストを撮ってここでチェック",
+  "pt": "Fotografa um quadro ou lista e risca aqui",
+  "zh": "拍下白板或清单，在这里勾选完成"
+ },
+ "Morning Summary": {
+  "de": "Morgenübersicht",
+  "es": "Resumen matinal",
+  "fr": "Résumé du matin",
+  "hi": "सुबह का सार",
+  "it": "Riepilogo del mattino",
+  "ja": "朝のまとめ",
+  "pt": "Resumo da manhã",
+  "zh": "早间摘要"
+ },
+ "One note each morning: doses, bills, birthdays": {
+  "de": "Jeden Morgen eine Nachricht: Dosen, Rechnungen, Geburtstage",
+  "es": "Una nota cada mañana: dosis, facturas, cumpleaños",
+  "fr": "Une note chaque matin : doses, factures, anniversaires",
+  "hi": "हर सुबह एक नोट: दवा, बिल, जन्मदिन",
+  "it": "Una nota ogni mattina: dosi, bollette, compleanni",
+  "ja": "毎朝ひとつの通知：服薬・請求・誕生日",
+  "pt": "Uma nota cada manhã: doses, contas, aniversários",
+  "zh": "每天早上一条通知：用药、账单、生日"
+ },
+ "Mood Diary": {
+  "de": "Stimmungstagebuch",
+  "es": "Diario de ánimo",
+  "fr": "Journal d'humeur",
+  "hi": "मूड डायरी",
+  "it": "Diario dell'umore",
+  "ja": "気分日記",
+  "pt": "Diário de humor",
+  "zh": "心情日记"
+ },
+ "Good day or bad? One tap, plus a voice note": {
+  "de": "Guter oder schlechter Tag? Ein Tipp, dazu eine Sprachnotiz",
+  "es": "¿Buen día o malo? Un toque y una nota de voz",
+  "fr": "Bonne ou mauvaise journée ? Un toucher, plus une note vocale",
+  "hi": "अच्छा दिन या बुरा? एक टैप, साथ में वॉइस नोट",
+  "it": "Bella giornata o no? Un tocco e una nota vocale",
+  "ja": "いい日？つらい日？ワンタップと音声メモ",
+  "pt": "Dia bom ou mau? Um toque e uma nota de voz",
+  "zh": "好日子还是坏日子？轻点一下，再加语音备注"
+ },
+ "Plan My Day": {
+  "de": "Meinen Tag planen",
+  "es": "Planear mi día",
+  "fr": "Planifier ma journée",
+  "hi": "मेरा दिन प्लान करें",
+  "it": "Pianifica la giornata",
+  "ja": "今日の計画",
+  "pt": "Planear o meu dia",
+  "zh": "规划我的一天"
+ },
+ "Your to-dos as a timed plan for how you feel": {
+  "de": "Deine Aufgaben als Zeitplan, passend zu deiner Verfassung",
+  "es": "Tus tareas como plan con horarios según cómo te sientes",
+  "fr": "Vos tâches en plan horaire selon votre forme",
+  "hi": "आपके काम, आपके मूड के हिसाब से समय-योजना में",
+  "it": "Le tue cose da fare in un piano orario adatto a come ti senti",
+  "ja": "気分に合わせた時間割つきのやることリスト",
+  "pt": "As tuas tarefas num plano com horas, conforme te sentes",
+  "zh": "按你的状态把待办排成有时间的计划"
+ },
+ "Photo Studio": {
+  "de": "Fotostudio",
+  "es": "Estudio de fotos",
+  "fr": "Studio photo",
+  "hi": "फ़ोटो स्टूडियो",
+  "it": "Studio foto",
+  "ja": "フォトスタジオ",
+  "pt": "Estúdio de fotos",
+  "zh": "照片工作室"
+ },
+ "Fix, brighten, cut out or resize any photo": {
+  "de": "Fotos reparieren, aufhellen, freistellen oder skalieren",
+  "es": "Arregla, aclara, recorta o cambia el tamaño de cualquier foto",
+  "fr": "Corrigez, éclaircissez, détourez ou redimensionnez une photo",
+  "hi": "किसी भी फ़ोटो को ठीक, उजला, कट-आउट या रीसाइज़ करें",
+  "it": "Sistema, schiarisci, scontorna o ridimensiona qualsiasi foto",
+  "ja": "写真の補正・明るさ・切り抜き・サイズ変更",
+  "pt": "Corrige, ilumina, recorta ou redimensiona qualquer foto",
+  "zh": "修复、提亮、抠图或调整任何照片的大小"
+ },
+ "Sleep Sounds": {
+  "de": "Schlafgeräusche",
+  "es": "Sonidos para dormir",
+  "fr": "Sons pour dormir",
+  "hi": "नींद की आवाज़ें",
+  "it": "Suoni per dormire",
+  "ja": "睡眠サウンド",
+  "pt": "Sons para dormir",
+  "zh": "助眠声音"
+ },
+ "Sleep sounds with a timer and a snore check": {
+  "de": "Schlafgeräusche mit Timer und Schnarch-Check",
+  "es": "Sonidos para dormir con temporizador y control de ronquidos",
+  "fr": "Sons pour dormir avec minuteur et contrôle du ronflement",
+  "hi": "टाइमर और खर्राटे जाँच के साथ नींद की आवाज़ें",
+  "it": "Suoni per dormire con timer e controllo del russare",
+  "ja": "タイマーといびきチェック付きの睡眠サウンド",
+  "pt": "Sons para dormir com temporizador e verificação de ressonar",
+  "zh": "带定时和打鼾检测的助眠声音"
+ },
+ "Scam Check": {
+  "de": "Betrugs-Check",
+  "es": "Detector de estafas",
+  "fr": "Vérif. arnaque",
+  "hi": "स्कैम जाँच",
+  "it": "Controllo truffe",
+  "ja": "詐欺チェック",
+  "pt": "Verificar burla",
+  "zh": "诈骗检查"
+ },
+ "Paste a text or email: is it a scam?": {
+  "de": "Text oder E-Mail einfügen: Ist es Betrug?",
+  "es": "Pega un mensaje o correo: ¿es una estafa?",
+  "fr": "Collez un SMS ou un e-mail : est-ce une arnaque ?",
+  "hi": "मैसेज या ईमेल पेस्ट करें: क्या यह स्कैम है?",
+  "it": "Incolla un messaggio o un'email: è una truffa?",
+  "ja": "メッセージやメールを貼り付け：詐欺？",
+  "pt": "Cola uma mensagem ou email: é burla?",
+  "zh": "粘贴短信或邮件：是不是诈骗？"
+ },
+ "Fit Under a Limit": {
+  "de": "Unter ein Limit bringen",
+  "es": "Ajustar a un límite",
+  "fr": "Sous une limite",
+  "hi": "सीमा में फ़िट करें",
+  "it": "Sotto un limite",
+  "ja": "サイズ上限に収める",
+  "pt": "Caber num limite",
+  "zh": "压到限制以下"
+ },
+ "Shrink any file under an upload limit": {
+  "de": "Jede Datei unter ein Upload-Limit verkleinern",
+  "es": "Reduce cualquier archivo por debajo de un límite de subida",
+  "fr": "Réduisez un fichier sous une limite d'envoi",
+  "hi": "किसी भी फ़ाइल को अपलोड सीमा से छोटा करें",
+  "it": "Riduci qualsiasi file sotto un limite di caricamento",
+  "ja": "どんなファイルもアップロード上限以下に縮小",
+  "pt": "Reduz qualquer ficheiro abaixo de um limite de envio",
+  "zh": "把任何文件压缩到上传限制以下"
+ },
+ "Post a Video": {
+  "de": "Video posten",
+  "es": "Publicar un vídeo",
+  "fr": "Publier une vidéo",
+  "hi": "वीडियो पोस्ट करें",
+  "it": "Pubblica un video",
+  "ja": "動画を投稿",
+  "pt": "Publicar um vídeo",
+  "zh": "发布视频"
+ },
+ "The right shape for TikTok, Reels, Shorts": {
+  "de": "Das richtige Format für TikTok, Reels, Shorts",
+  "es": "El formato justo para TikTok, Reels, Shorts",
+  "fr": "Le bon format pour TikTok, Reels, Shorts",
+  "hi": "TikTok, Reels, Shorts के लिए सही आकार",
+  "it": "Il formato giusto per TikTok, Reels, Shorts",
+  "ja": "TikTok・リール・ショートに合う形",
+  "pt": "O formato certo para TikTok, Reels, Shorts",
+  "zh": "适合 TikTok、Reels、Shorts 的尺寸"
+ },
+ "Video Effects": {
+  "de": "Videoeffekte",
+  "es": "Efectos de vídeo",
+  "fr": "Effets vidéo",
+  "hi": "वीडियो इफ़ेक्ट",
+  "it": "Effetti video",
+  "ja": "動画エフェクト",
+  "pt": "Efeitos de vídeo",
+  "zh": "视频特效"
+ },
+ "Looks, light, sparkle and words on any video": {
+  "de": "Looks, Licht, Glitzer und Text auf jedem Video",
+  "es": "Estilos, luz, brillo y texto en cualquier vídeo",
+  "fr": "Looks, lumière, paillettes et texte sur toute vidéo",
+  "hi": "किसी भी वीडियो पर लुक, रोशनी, चमक और शब्द",
+  "it": "Look, luce, brillantini e testo su qualsiasi video",
+  "ja": "どんな動画にもルック・光・キラキラ・文字",
+  "pt": "Estilos, luz, brilho e texto em qualquer vídeo",
+  "zh": "为任何视频加滤镜、光效、闪光和文字"
+ },
+ "Dose alerts with a Taken button and refills": {
+  "de": "Dosis-Erinnerungen mit Eingenommen-Taste und Nachfüllen",
+  "es": "Avisos de dosis con botón Tomado y recargas",
+  "fr": "Rappels de dose avec bouton Pris et renouvellements",
+  "hi": "'ले लिया' बटन और रीफ़िल के साथ दवा अलर्ट",
+  "it": "Avvisi delle dosi con tasto Presa e ricariche",
+  "ja": "「服用した」ボタンと補充のお知らせ付き",
+  "pt": "Alertas de dose com botão Tomado e recargas",
+  "zh": "带“已服用”按钮和补药提醒的服药提醒"
+ },
+ "Watch a shop's page, get told when it drops": {
+  "de": "Eine Shopseite beobachten, Bescheid bei Preissenkung",
+  "es": "Vigila la página de una tienda y te avisa si baja",
+  "fr": "Surveillez une page boutique, alerte en cas de baisse",
+  "hi": "दुकान का पेज देखें, दाम गिरने पर सूचना",
+  "it": "Tieni d'occhio la pagina di un negozio, avviso se cala",
+  "ja": "ショップのページを見張り、値下がりで通知",
+  "pt": "Vigia a página de uma loja e avisa quando baixar",
+  "zh": "关注商店页面，降价时通知你"
+ },
+ "Compare sizes and prices in the store": {
+  "de": "Größen und Preise im Laden vergleichen",
+  "es": "Compara tamaños y precios en la tienda",
+  "fr": "Comparez tailles et prix en magasin",
+  "hi": "दुकान में साइज़ और दाम की तुलना करें",
+  "it": "Confronta formati e prezzi in negozio",
+  "ja": "店頭でサイズと値段を比較",
+  "pt": "Compara tamanhos e preços na loja",
+  "zh": "在店里比较规格和价格"
+ },
+ "File receipts, get warned before warranties end": {
+  "de": "Quittungen ablegen, Warnung vor Garantieende",
+  "es": "Guarda recibos y avisa antes de que acabe la garantía",
+  "fr": "Classez les reçus, alerte avant la fin des garanties",
+  "hi": "रसीदें रखें, वारंटी ख़त्म होने से पहले सूचना पाएँ",
+  "it": "Archivia gli scontrini, avviso prima che scada la garanzia",
+  "ja": "レシートを保管、保証切れ前にお知らせ",
+  "pt": "Guarda recibos e avisa antes de a garantia acabar",
+  "zh": "保存收据，保修到期前提醒你"
+ },
+ "Plants, animals, products: point and find out": {
+  "de": "Pflanzen, Tiere, Produkte: zeigen und erfahren",
+  "es": "Plantas, animales, productos: apunta y descúbrelo",
+  "fr": "Plantes, animaux, produits : visez et découvrez",
+  "hi": "पौधे, जानवर, उत्पाद: कैमरा दिखाएँ और जानें",
+  "it": "Piante, animali, prodotti: inquadra e scopri",
+  "ja": "植物・動物・製品：向けるだけでわかる",
+  "pt": "Plantas, animais, produtos: aponta e descobre",
+  "zh": "植物、动物、商品：对准即可识别"
+ },
+ "Receipts, cards and tables into rows or contacts": {
+  "de": "Quittungen, Karten und Tabellen in Zeilen oder Kontakte",
+  "es": "Recibos, tarjetas y tablas a filas o contactos",
+  "fr": "Reçus, cartes et tableaux en lignes ou contacts",
+  "hi": "रसीदें, कार्ड और तालिकाएँ पंक्तियों या संपर्कों में",
+  "it": "Scontrini, biglietti e tabelle in righe o contatti",
+  "ja": "レシート・名刺・表を行や連絡先に",
+  "pt": "Recibos, cartões e tabelas em linhas ou contactos",
+  "zh": "把收据、名片和表格变成表格行或联系人"
+ },
+ "Untangle a worry, weigh a choice, get a plan": {
+  "de": "Sorgen entwirren, Entscheidungen abwägen, Plan bekommen",
+  "es": "Desenreda una preocupación, sopesa una decisión, ten un plan",
+  "fr": "Démêler un souci, peser un choix, obtenir un plan",
+  "hi": "चिंता सुलझाएँ, फ़ैसला तौलें, योजना पाएँ",
+  "it": "Sciogli un pensiero, valuta una scelta, ottieni un piano",
+  "ja": "悩みを整理し、選択を比べ、計画を立てる",
+  "pt": "Desfaz uma preocupação, pesa uma escolha, faz um plano",
+  "zh": "理清烦恼、权衡选择、得到计划"
+ },
+ "Daily life": {
+  "de": "Alltag",
+  "es": "Día a día",
+  "fr": "Quotidien",
+  "hi": "रोज़मर्रा",
+  "it": "Vita quotidiana",
+  "ja": "毎日の暮らし",
+  "pt": "Dia a dia",
+  "zh": "日常生活"
+ },
+ "Medicine, plans, moods, bills, prices and receipts": {
+  "de": "Medizin, Pläne, Stimmung, Rechnungen, Preise und Quittungen",
+  "es": "Medicinas, planes, ánimo, facturas, precios y recibos",
+  "fr": "Médicaments, plans, humeur, factures, prix et reçus",
+  "hi": "दवा, योजनाएँ, मूड, बिल, दाम और रसीदें",
+  "it": "Medicine, piani, umore, bollette, prezzi e scontrini",
+  "ja": "薬・予定・気分・請求・値段・レシート",
+  "pt": "Medicação, planos, humor, contas, preços e recibos",
+  "zh": "用药、计划、心情、账单、价格和收据"
+ },
+ "Today's Timeline": {
+  "de": "Zeitplan für heute",
+  "es": "Línea de tiempo de hoy",
+  "fr": "Chronologie du jour",
+  "hi": "आज की टाइमलाइन",
+  "it": "Programma di oggi",
+  "ja": "今日のタイムライン",
+  "pt": "Cronologia de hoje",
+  "zh": "今日时间线"
+ },
+ "Snap a bill: what's owed, when, and a reminder": {
+  "de": "Rechnung fotografieren: Betrag, Frist und Erinnerung",
+  "es": "Foto de una factura: cuánto, cuándo y un recordatorio",
+  "fr": "Photographiez une facture : montant, échéance, rappel",
+  "hi": "बिल की फ़ोटो: कितना, कब, और रिमाइंडर",
+  "it": "Fotografa una bolletta: quanto, quando e un promemoria",
+  "ja": "請求書を撮影：金額・期限・リマインダー",
+  "pt": "Fotografa uma conta: quanto, quando e um lembrete",
+  "zh": "拍下账单：金额、期限和提醒"
+ },
+ "Make HEIC, MOV and more open anywhere": {
+  "de": "HEIC, MOV und mehr überall öffnen",
+  "es": "Haz que HEIC, MOV y más se abran en todas partes",
+  "fr": "Ouvrez HEIC, MOV et plus partout",
+  "hi": "HEIC, MOV आदि हर जगह खोलें",
+  "it": "Apri HEIC, MOV e altro ovunque",
+  "ja": "HEICやMOVなどをどこでも開ける形に",
+  "pt": "Abre HEIC, MOV e mais em todo o lado",
+  "zh": "让 HEIC、MOV 等在任何地方都能打开"
+ },
+ "Tap photos, or swipe a finger across them to pick several at once.": {
+  "de": "Tippe Fotos an oder wische mit dem Finger darüber, um mehrere auf einmal zu wählen.",
+  "es": "Toca las fotos o desliza el dedo por encima para elegir varias a la vez.",
+  "fr": "Touchez les photos ou glissez le doigt dessus pour en choisir plusieurs.",
+  "hi": "फ़ोटो पर टैप करें, या एक साथ कई चुनने के लिए उन पर उँगली फेरें।",
+  "it": "Tocca le foto o scorri il dito sopra per sceglierne diverse insieme.",
+  "ja": "写真をタップ、または指でなぞってまとめて選べます。",
+  "pt": "Toca nas fotos ou desliza o dedo por cima para escolher várias.",
+  "zh": "轻点照片，或用手指滑过以一次选择多张。"
+ },
+ "Tap one to use it.": {
+  "de": "Tippe eins an, um es zu verwenden.",
+  "es": "Toca una para usarla.",
+  "fr": "Touchez-en une pour l'utiliser.",
+  "hi": "इस्तेमाल के लिए किसी पर टैप करें।",
+  "it": "Toccane una per usarla.",
+  "ja": "タップして使う",
+  "pt": "Toca numa para a usar.",
+  "zh": "轻点即可使用。"
+ },
+ "Your photos": {
+  "de": "Deine Fotos",
+  "es": "Tus fotos",
+  "fr": "Vos photos",
+  "hi": "आपकी फ़ोटो",
+  "it": "Le tue foto",
+  "ja": "あなたの写真",
+  "pt": "As tuas fotos",
+  "zh": "你的照片"
  }
 }

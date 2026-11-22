@@ -11,7 +11,7 @@ enum ThinkingTool: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .untangle: return "Untangle"
-        case .myday: return "My Day"
+        case .myday: return "Today's Timeline"
         case .clearhead: return "Clear My Head"
         case .crossroads: return "Crossroads"
         case .plain: return "Plain"

@@ -40,7 +40,7 @@ struct UntangleView: View {
     @State private var thinkAbout: String?
 
     private var page: some View {
-        ToolPage(title: "Plan my day", subtitle: "Your to-do list → a timed plan built around how you feel today.", working: reading) {
+        ToolPage(title: "Plan My Day", subtitle: "Your to-do list → a timed plan built around how you feel today.", working: reading) {
             VStack(alignment: .leading, spacing: HandySpacing.s12) {
                 inputCard
                 if let p = plan { planView(p) }

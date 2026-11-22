@@ -12,7 +12,7 @@ enum AutomationGroups {
     static func group(id: String, open: String? = nil) -> Group {
         let table: [(prefixes: [String], g: Group)] = [
             (["med-", "medfu-", "medrefill-"], Group(key: "med", title: "Medicines", icon: "pills.fill", tool: "medreminder")),
-            (["daily-brief"], Group(key: "brief", title: "Daily Brief", icon: "sun.max.fill", tool: "brief")),
+            (["daily-brief"], Group(key: "brief", title: "Morning Summary", icon: "sun.max.fill", tool: "brief")),
             (["bday-"], Group(key: "bday", title: "Birthdays", icon: "gift.fill", tool: "contacts")),
             (["contacts-backup"], Group(key: "backup", title: "Contacts backup", icon: "person.crop.circle.badge.checkmark", tool: "contacts")),
             (["plan-", "arrive-", "untangle-"], Group(key: "plans", title: "Plans and arrivals", icon: "mappin.and.ellipse", tool: "untangle")),
@@ -24,7 +24,7 @@ enum AutomationGroups {
             (["park-meter"], Group(key: "park", title: "Parking meter", icon: "parkingsign.circle.fill", tool: "gpsdash")),
             (["rest-"], Group(key: "rest", title: "Bedtime", icon: "moon.zzz.fill", tool: "rest")),
             (["planner."], Group(key: "planner", title: "Morning plan", icon: "list.bullet.clipboard", tool: "planner")),
-            (["daydiary-"], Group(key: "diary", title: "My Day", icon: "book.closed.fill", tool: "daydiary")),
+            (["daydiary-"], Group(key: "diary", title: "Mood Diary", icon: "book.closed.fill", tool: "daydiary")),
             (["smart-"], Group(key: "smart", title: "Phone alerts", icon: "iphone.gen3", tool: "cleaner")),
         ]
         for row in table where row.prefixes.contains(where: { id.hasPrefix($0) }) { return row.g }

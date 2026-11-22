@@ -93,7 +93,7 @@ struct VideoFinishCard: View {
                 HStack(spacing: 8) {
                     Image(systemName: "paperplane.circle.fill").font(.system(size: 22)).foregroundStyle(HandyColor.accent)
                     VStack(alignment: .leading, spacing: 1) {
-                        Text(L("Post it")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
+                        Text(L("Post a Video")).font(HandyFont.bodyStrong).foregroundStyle(HandyColor.textPrimary)
                         Text(L("TikTok, Reels, Shorts and more")).font(HandyFont.micro).foregroundStyle(HandyColor.textSecondary)
                     }
                     Spacer(minLength: 0)

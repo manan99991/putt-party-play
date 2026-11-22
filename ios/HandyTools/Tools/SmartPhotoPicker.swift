@@ -9,11 +9,17 @@ import PhotosUI
 struct SmartPhotoPicker: View {
     let kind: PhotoFinder.Kind
     var maxCount = 1
-    let done: ([UIImage]) -> Void
+    var done: ([UIImage]) -> Void = { _ in }
+    /// When set, the picked photos come back as their own original files (bytes + extension) instead of pictures.
+    var doneFiles: (([(Data, String)]) -> Void)? = nil
     @StateObject private var finder = PhotoFinderModel()
     @State private var picked: [String] = []
     @State private var allItems: [PhotosPickerItem] = []
     @State private var loading = false
+    /// Where each photo sits on screen, so a swipe across them picks every one it passes over.
+    @State private var frames: [String: CGRect] = [:]
+    @State private var swipeAdds: Bool?
+    @State private var swipeSkip = false
     @Environment(\.dismiss) private var dismiss
 
     private let cols = Array(repeating: GridItem(.flexible(), spacing: 6), count: 3)
@@ -28,8 +34,15 @@ struct SmartPhotoPicker: View {
                     } else {
                         if !finder.matches.isEmpty {
                             LazyVGrid(columns: cols, spacing: 6) {
-                                ForEach(finder.matches, id: \.localIdentifier) { a in cell(a) }
+                                ForEach(finder.matches, id: \.localIdentifier) { a in
+                                    cell(a).background(GeometryReader { g in
+                                        Color.clear.preference(key: CellFrames.self, value: [a.localIdentifier: g.frame(in: .named("finder-grid"))])
+                                    })
+                                }
                             }
+                            .coordinateSpace(name: "finder-grid")
+                            .onPreferenceChange(CellFrames.self) { frames = $0 }
+                            .simultaneousGesture(maxCount > 1 ? swipeSelect : nil)
                         }
                         status
                     }
@@ -46,9 +59,11 @@ struct SmartPhotoPicker: View {
                 guard !items.isEmpty else { return }
                 loading = true
                 Task {
-                    var out: [UIImage] = []
-                    for i in items { if let d = try? await i.loadTransferable(type: Data.self), let im = UIImage(data: d) { out.append(im) } }
-                    finish(out)
+                    var files: [(Data, String)] = []
+                    for i in items {
+                        if let d = try? await i.loadTransferable(type: Data.self) { files.append((d, i.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg")) }
+                    }
+                    finishFiles(files)
                 }
             }
         }
@@ -59,7 +74,9 @@ struct SmartPhotoPicker: View {
             Image(systemName: kind.icon).font(.system(size: 18, weight: .semibold)).foregroundStyle(HandyColor.accent)
             VStack(alignment: .leading, spacing: 2) {
                 Text(L(kind.title)).font(HandyFont.bodyStrong)
-                Text(L("Found in your photos — tap one to use it.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
+                Text(maxCount > 1 ? L("Tap photos, or swipe a finger across them to pick several at once.")
+                     : (kind == .any ? L("Tap one to use it.") : L("Found in your photos — tap one to use it.")))
+                    .font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary).fixedSize(horizontal: false, vertical: true)
             }
         }
     }
@@ -93,6 +110,25 @@ struct SmartPhotoPicker: View {
             Button { Permission.openSettings() } label: { Label(L("Allow in Settings"), systemImage: "gearshape").frame(maxWidth: .infinity) }.secondaryButton()
         }
         .cardStyle(padding: HandySpacing.s12)
+    }
+
+    /// Swipe sideways across photos to pick them all, the way Photos does: the first photo touched decides whether the
+    /// swipe ticks or unticks. A mostly-up-or-down drag is left to scroll the page.
+    private var swipeSelect: some Gesture {
+        DragGesture(minimumDistance: 12, coordinateSpace: .named("finder-grid"))
+            .onChanged { v in
+                if swipeAdds == nil && !swipeSkip {
+                    if abs(v.translation.height) > abs(v.translation.width) { swipeSkip = true; return }
+                }
+                guard !swipeSkip else { return }
+                for p in [v.startLocation, v.location] {
+                    guard let id = frames.first(where: { $0.value.contains(p) })?.key else { continue }
+                    if swipeAdds == nil { swipeAdds = !picked.contains(id) }
+                    if swipeAdds == true, !picked.contains(id), picked.count < maxCount { picked.append(id); HandyHaptics.light() }
+                    if swipeAdds == false, picked.contains(id) { picked.removeAll { $0 == id }; HandyHaptics.light() }
+                }
+            }
+            .onEnded { _ in swipeAdds = nil; swipeSkip = false }
     }
 
     private func cell(_ a: PHAsset) -> some View {
@@ -138,9 +174,24 @@ struct SmartPhotoPicker: View {
             let assets = PHAsset.fetchAssets(withLocalIdentifiers: ids, options: nil)
             var byID: [String: PHAsset] = [:]
             assets.enumerateObjects { a, _, _ in byID[a.localIdentifier] = a }
-            var out: [UIImage] = []
-            for id in ids { if let a = byID[id], let im = await PhotoFinder.image(a, side: 2600) { out.append(im) } }
-            finish(out)
+            if doneFiles != nil {
+                var files: [(Data, String)] = []
+                for id in ids { if let a = byID[id], let f = await PhotoFinder.original(a) { files.append(f) } }
+                finishFiles(files)
+            } else {
+                var out: [UIImage] = []
+                for id in ids { if let a = byID[id], let im = await PhotoFinder.image(a, side: 2600) { out.append(im) } }
+                finish(out)
+            }
+        }
+    }
+
+    private func finishFiles(_ files: [(Data, String)]) {
+        if let doneFiles {
+            finder.stop(); dismiss()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { doneFiles(files) }
+        } else {
+            finish(files.compactMap { UIImage(data: $0.0) })
         }
     }
 
@@ -175,5 +226,23 @@ struct SmartPhotoButton<Content: View>: View {
     var body: some View {
         Button { open = true } label: { label() }
             .sheet(isPresented: $open) { SmartPhotoPicker(kind: kind, maxCount: max, done: picked) }
+    }
+}
+
+private struct CellFrames: PreferenceKey {
+    static var defaultValue: [String: CGRect] = [:]
+    static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) { value.merge(nextValue()) { $1 } }
+}
+
+/// The same, for flows that need each photo's own original file (bytes + extension), not a re-saved picture.
+struct SmartPhotoFilesButton<Content: View>: View {
+    let kind: PhotoFinder.Kind
+    var max = 1
+    let picked: ([(Data, String)]) -> Void
+    @ViewBuilder let label: () -> Content
+    @State private var open = false
+    var body: some View {
+        Button { open = true } label: { label() }
+            .sheet(isPresented: $open) { SmartPhotoPicker(kind: kind, maxCount: max, doneFiles: picked) }
     }
 }

@@ -44,7 +44,7 @@ struct CollageView: View {
             Image(systemName: "square.grid.3x3.square").font(.system(size: 44)).foregroundStyle(HandyColor.accent)
             Text(L("Pick 2 to 12 photos — Grid, Hero, Mosaic or a photo strip, ready for Stories or a post."))
                 .font(HandyFont.body).foregroundStyle(HandyColor.textSecondary).multilineTextAlignment(.center)
-            PhotosPicker(selection: $picks, maxSelectionCount: 12, matching: .images) {
+            SmartPhotoButton(kind: .any, max: 12, picked: { imgs in let p = imgs.prefix(12).map { $0.resized(maxDimension: 1600).normalizedUp() }; photos = p; layout = p.count >= 5 ? .mosaic : (p.count == 3 ? .hero : .grid); refresh() }) {
                 Label(L("Choose photos"), systemImage: "photo.on.rectangle.angled").frame(maxWidth: .infinity)
             }.primaryButton()
             if loading { ToolProgressBar(label: "Getting your photos…", showsTime: false) }
@@ -108,7 +108,7 @@ struct CollageView: View {
                     Label(L("Make collage"), systemImage: "checkmark").frame(maxWidth: .infinity)
                 }.primaryButton().disabled(working)
             }
-            PhotosPicker(selection: $picks, maxSelectionCount: 12, matching: .images) {
+            SmartPhotoButton(kind: .any, max: 12, picked: { imgs in let p = imgs.prefix(12).map { $0.resized(maxDimension: 1600).normalizedUp() }; photos = p; layout = p.count >= 5 ? .mosaic : (p.count == 3 ? .hero : .grid); refresh() }) {
                 Label(L("Choose different photos"), systemImage: "photo.on.rectangle")
             }.textButton().font(HandyFont.caption).frame(maxWidth: .infinity)
         }

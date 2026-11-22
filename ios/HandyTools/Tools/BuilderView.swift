@@ -892,7 +892,12 @@ struct BuilderView: View {
             Text(L("…or start with what you have")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
             HStack(spacing: HandySpacing.s8) {
-                PhotosPicker(selection: $anyPhotos, maxSelectionCount: 20, selectionBehavior: .ordered, matching: .images) { objTile("Photo") }.accessibilityIdentifier("have-photo")
+                // Our own photo grid: big tiles, tap or swipe a finger across to pick several (Manan, 22 Nov), originals kept.
+                SmartPhotoFilesButton(kind: .any, max: 20, picked: { files in
+                    guard !files.isEmpty else { return }
+                    gettingReady = true; note = nil
+                    Task { await takePhotos(files, asked: files.count) }
+                }) { objTile("Photo") }.buttonStyle(.plain).accessibilityIdentifier("have-photo")
                 PhotosPicker(selection: $anyPick, matching: .videos) { objTile("Video") }.accessibilityIdentifier("have-video")
                 Button { pickTypes = audioImportTypes; pickingAny = true } label: { objTile("Audio") }.accessibilityIdentifier("have-audio")
             }
@@ -2110,7 +2115,8 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
                         Text(L("Long videos can take a few minutes — the bar shows how far along it is. A Live Photo is used as its short video.")).font(HandyFont.caption).foregroundStyle(HandyColor.textSecondary)
                     }
                 } else if start != .text {
-                    PhotosPicker(selection: $picks, maxSelectionCount: 20, matching: .images) { Label(L("Choose photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
+                    SmartPhotoFilesButton(kind: photoKind, max: 20, picked: { takePicked($0) }) { Label(L("Choose photos"), systemImage: "photo.on.rectangle").frame(maxWidth: .infinity) }.primaryButton()
+                        .accessibilityIdentifier("run-choose-photos")
                     if chain.steps.first?.block == .passportPhoto {
                         // A passport photo starts from a portrait, never a scan or a PDF.
                         Button { selfie = true } label: { Label(L("Take one now"), systemImage: "camera").frame(maxWidth: .infinity) }
@@ -2241,44 +2247,14 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
         .onChange(of: picks) { _, items in
             guard !items.isEmpty else { return }
             picks = []
-            // A meme keeps its photos so the caption can be typed before or after picking, then applied
-            // (and re-applied) with the Make meme button — picking no longer runs it with empty words.
-            if hasMeme {
-                busy = true; result = nil; message = nil; batch = []; progress = "Getting your photos ready…"; progressValue = 0
-                Task {
-                    var imgs: [UIImage] = []
-                    for it in items {
-                        if let img = await loadWithinTimeout(120, { (try? await it.loadTransferable(type: Data.self)).flatMap(UIImage.init) }) { imgs.append(img) }
-                    }
-                    await MainActor.run {
-                        busy = false; progress = ""
-                        memePhotos = imgs
-                        if imgs.isEmpty { message = "Those photos didn't load. If they're large iCloud photos, open them once in Photos, then pick again." }
-                        else if memeTop.isEmpty, memeBottom.isEmpty { message = "Added \(imgs.count) photo\(imgs.count == 1 ? "" : "s"). Now type a top or bottom line above, then tap Make meme." }
-                        else { makeMeme() }
-                    }
+            busy = true; result = nil; message = nil; progress = "Getting your photos ready…"; progressValue = 0
+            Task {
+                var files: [(Data, String)] = []
+                for it in items {
+                    let ext = it.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
+                    if let d = await loadWithinTimeout(120, { try? await it.loadTransferable(type: Data.self) }) { files.append((d, ext)) }
                 }
-                return
-            }
-            if items.count == 1, chain.gif != true, chain.versus != true, chain.flipbook != true, let item = items.first {
-                busy = true; result = nil; message = nil; progress = "Getting the photo ready…"; progressValue = 0
-                let ext = item.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
-                Task {
-                    let data = await loadWithinTimeout(120) { try? await item.loadTransferable(type: Data.self) }
-                    await MainActor.run {
-                        // Keep the photo as its own file, so its hidden details travel with it and can be reported on.
-                        if let data, UIImage(data: data) != nil { go(ChainPayload.isPhoto(ext) ? .file(data, ext: ext) : .image(UIImage(data: data)!)) }
-                        else { busy = false; progress = ""; message = "That photo didn't load. If it's a large iCloud photo, open it once in Photos to download it, then pick it again." }
-                    }
-                }
-            } else {
-                let sizes = BeforeSizes()
-                runMany(count: items.count, noun: "Photo", before: { sizes.get($0) }) { i in
-                    guard let d = try? await items[i].loadTransferable(type: Data.self), let img = UIImage(data: d) else { return nil }
-                    sizes.set(i, d.count)
-                    let ext = items[i].supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
-                    return ChainPayload.isPhoto(ext) ? .file(d, ext: ext) : .image(img)
-                }
+                await MainActor.run { takePicked(files) }
             }
         }
         .sheet(isPresented: $signing, onDismiss: {
@@ -2744,6 +2720,49 @@ struct ChainRunView: View {   // internal (not private) so the test target can r
     private var sheetFile: String? {
         guard let st = chain.steps.last, st.block == .addToList, chain.steps.contains(where: { $0.block == .expenseRow }) else { return nil }
         return ChainName.file(pattern: st.settings["list"] ?? RunningList.defaultName, tool: "List", ext: "csv")
+    }
+
+    /// What the photo grid should show first for this tool: receipts for a receipt flow, faces for a passport photo…
+    private var photoKind: PhotoFinder.Kind {
+        let b = Set(chain.steps.map(\.block))
+        if !b.isDisjoint(with: [.pullReceipt, .expenseRow]) { return .receipt }
+        if b.contains(.passportPhoto) { return .face }
+        if b.contains(.readCode) { return .code }
+        if !b.isDisjoint(with: [.emojiFaces, .hideSensitive]) { return .people }
+        if b.contains(.photoPdf) { return .document }
+        return .any
+    }
+
+    /// Photos picked for this tool (each its own original file), run the same way whichever picker they came from.
+    private func takePicked(_ files: [(Data, String)]) {
+        busy = false; progress = ""
+        guard !files.isEmpty else {
+            message = "Those photos didn't load. If they're large iCloud photos, open them once in Photos, then pick again."; return
+        }
+        // A meme keeps its photos so the caption can be typed before or after picking, then applied
+        // (and re-applied) with the Make meme button — picking no longer runs it with empty words.
+        if hasMeme {
+            let imgs = files.compactMap { UIImage(data: $0.0) }
+            memePhotos = imgs
+            if imgs.isEmpty { message = "Those photos didn't load. If they're large iCloud photos, open them once in Photos, then pick again." }
+            else if memeTop.isEmpty, memeBottom.isEmpty { message = "Added \(imgs.count) photo\(imgs.count == 1 ? "" : "s"). Now type a top or bottom line above, then tap Make meme." }
+            else { makeMeme() }
+            return
+        }
+        result = nil; message = nil
+        if files.count == 1, chain.gif != true, chain.versus != true, chain.flipbook != true, case let (data, ext)? = files.first {
+            // Keep the photo as its own file, so its hidden details travel with it and can be reported on.
+            if let img = UIImage(data: data) { go(ChainPayload.isPhoto(ext) ? .file(data, ext: ext) : .image(img)) }
+            else { message = "That photo didn't load. If it's a large iCloud photo, open it once in Photos to download it, then pick it again." }
+        } else {
+            let sizes = BeforeSizes()
+            runMany(count: files.count, noun: "Photo", before: { sizes.get($0) }) { i in
+                let (d, ext) = files[i]
+                guard let img = UIImage(data: d) else { return nil }
+                sizes.set(i, d.count)
+                return ChainPayload.isPhoto(ext) ? .file(d, ext: ext) : .image(img)
+            }
+        }
     }
 
     @ViewBuilder private var batchView: some View {
