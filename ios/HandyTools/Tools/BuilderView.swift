@@ -1044,8 +1044,10 @@ struct BuilderView: View {
     @ViewBuilder private var readyNow: some View {
         let q = ask.trimmingCharacters(in: .whitespacesAndNewlines)
         if q.count >= 3, builtIn == nil {
-            let tools = Array(searchTools(q).prefix(2))
-            let flows = Array(BuilderView.searchChains(q, in: mine + ChainTemplates.all).prefix(2))
+            let named = ReadyNow.kinds(in: q)
+            let tools = Array(searchTools(q).filter { ReadyNow.fits(tool: $0.id, kinds: named) }.prefix(2))
+            let flows = Array(BuilderView.searchChains(q, in: mine + ChainTemplates.all)
+                .filter { ReadyNow.fits(start: $0.steps.first?.block.takes, kinds: named) }.prefix(2))
             if !tools.isEmpty || !flows.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     SectionLabel(text: "Ready now", icon: "bolt.fill")
